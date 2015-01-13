@@ -194,6 +194,7 @@ import org.graffiti.util.DesktopMenuManager;
 import org.graffiti.util.InstanceCreationException;
 
 import scenario.ScenarioService;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.navigation.NavigationComponentView;
 
 /**
  * Constructs a new graffiti frame, which contains the main gui components.
@@ -411,6 +412,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	
 	private JPanel progressPanel;
 	
+	private NavigationComponentView navigationView;
+	
 	// private JSplitPane jSplitPane_pluginPanelAndProgressView;
 	private JComponent jSplitPane_pluginPanelAndProgressView;
 	
@@ -532,12 +535,19 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		pluginPanel.setLayout(new BoxLayout(pluginPanel, BoxLayout.Y_AXIS));
 		guiMap.put(pluginPanel.getId(), pluginPanel);
 		
+		navigationView = new NavigationComponentView();
+		navigationView.setMinimumSize(new Dimension(0, 100));
+		addSessionListener(navigationView);
+		guiMap.put(navigationView.getId(), navigationView);
+		
+		
+		
 		UIManager.put("SplitPaneDivider.border", new EmptyBorder(0, 0, 0, 0));
 		
 		if (progressPanel != null) {
-			jSplitPane_pluginPanelAndProgressView = TableLayout.getSplitVertical(pluginPanel, progressPanel,
+			jSplitPane_pluginPanelAndProgressView = TableLayout.getSplitVertical(navigationView, progressPanel,
 					TableLayout.FILL, TableLayout.PREFERRED);
-			jSplitPane_pluginPanelAndProgressView.setMinimumSize(new Dimension(0, 0));
+			jSplitPane_pluginPanelAndProgressView.setMinimumSize(new Dimension(0, 120));
 			sidepanel = jSplitPane_pluginPanelAndProgressView;
 		} else {
 			sidepanel = pluginPanel;
@@ -550,8 +560,10 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		
 		// p.add(jtp, "0,0");
 		// p.add(desktop, "0,1");
+		JSplitPane splitpanePluginNav = new JSplitPane(JSplitPane.VERTICAL_SPLIT, pluginPanel, sidepanel);
+		splitpanePluginNav.setDividerLocation(0.5);
 		
-		vertSplitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, desktop, sidepanel);
+		vertSplitter = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, desktop, splitpanePluginNav);
 		this.progressPanel = progressPanel;
 		
 		vertSplitter.setContinuousLayout(true);
@@ -565,7 +577,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		
 		// the size of the component right of the splitter (the tab panel) is fixed
 		// the size of the component left of the splitter is changed
-		vertSplitter.setResizeWeight(1.0);
+//		vertSplitter.setResizeWeight(1.0);
 		
 		// vertSplitter.setDividerSize(5);
 		// vertSplitter.setBackground(null);
