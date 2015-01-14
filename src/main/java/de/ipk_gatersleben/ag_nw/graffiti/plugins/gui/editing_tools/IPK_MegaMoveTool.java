@@ -239,10 +239,12 @@ public class IPK_MegaMoveTool
 		super.mouseClicked(e);
 		if(!MegaTools.wasScrollPaneMovement() && SwingUtilities.isRightMouseButton(e)) {
 			View activeView = MainFrame.getInstance().getActiveEditorSession().getActiveView();
+			
 			if(activeView instanceof IPKGraffitiView) {
 				JPopupMenu	popupmenu = new DefaultContextMenuManager().getContextMenu(
 							MegaTools.getLastMouseE());
-				popupmenu.show(activeView.getViewComponent(), (int)(e.getX()*zoom.getScaleX()), (int)(e.getY()*zoom.getScaleY()));
+//				System.out.println("mouse x/y"+e.getX()+"/"+e.getY()+" zoom: "+activeView.getZoom().getScaleX()+" zoomedmouse x/y"+(int)(e.getX() / zoom.getScaleX())+"/"+(int)(e.getY() / zoom.getScaleY()));
+				popupmenu.show(activeView.getViewComponent(), (int)(e.getX() * activeView.getZoom().getScaleX()), (int)(e.getY()*activeView.getZoom().getScaleY()));
 			}
 		}
 	}

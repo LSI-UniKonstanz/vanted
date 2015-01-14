@@ -122,7 +122,7 @@ public class IPK_MegaCreateTool
 			if(activeView instanceof IPKGraffitiView) {
 				JPopupMenu	popupmenu = new DefaultContextMenuManager().getContextMenu(
 							MegaTools.getLastMouseE());
-				popupmenu.show(activeView.getViewComponent(), (int)(e.getX()*zoom.getScaleX()), (int)(e.getY()*zoom.getScaleY()));
+				popupmenu.show(activeView.getViewComponent(), (int)(e.getX()*activeView.getZoom().getScaleX()), (int)(e.getY()*activeView.getZoom().getScaleY()));
 			}
 		}
 	}
