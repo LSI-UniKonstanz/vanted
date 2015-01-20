@@ -296,7 +296,7 @@ public abstract class AbstractTool
 	public void displayAsMarked(NodeComponentInterface comp) {
 		if (comp != null) {
 			((JComponent) comp).setBorder(border);
-			((JComponent) comp).getParent().repaint();
+			((JComponent) comp).repaint();
 		}
 	}
 	
@@ -309,7 +309,7 @@ public abstract class AbstractTool
 	public void displayAsMarked(EdgeComponentInterface comp) {
 		if (comp != null) {
 			((JComponent) comp).setBorder(edgeBorder);
-			((JComponent) comp).getParent().repaint();
+			((JComponent) comp).repaint();
 		}
 	}
 	
