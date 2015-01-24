@@ -78,7 +78,7 @@ public class IPKDefaultView
 	
 	@Override
 	public String getDefaultView() {
-		return "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffitiView";
+		return null;//"de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffitiView";
 	}
 	
 }

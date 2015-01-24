@@ -17,6 +17,8 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -59,6 +62,7 @@ import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraphElementComponent;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.MessageListener;
+import org.graffiti.plugin.view.View;
 import org.graffiti.selection.Selection;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartMouseEvent;
@@ -109,6 +113,7 @@ public class FastView
 	HashMap<GraphElement, Integer> elementsOfSeriesOne2bin = new HashMap<GraphElement, Integer>();
 	HashMap<GraphElement, Integer> elementsOfSeriesTwo2bin = new HashMap<GraphElement, Integer>();
 	
+
 	public ChartPanel getChart() {
 		return cp;
 	}
@@ -517,7 +522,7 @@ public class FastView
 	
 	public void close() {
 		// Method is regularly called
-		// System.err.println("FastView: close");
+
 	}
 	
 	public void completeRedraw() {
@@ -828,4 +833,6 @@ public class FastView
 	public boolean redrawActive() {
 		return false;
 	}
+	
+
 }

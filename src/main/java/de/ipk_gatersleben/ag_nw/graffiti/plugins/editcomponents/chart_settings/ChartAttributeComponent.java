@@ -11,6 +11,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 
 import org.AttributeHelper;
 import org.graffiti.attributes.Attribute;
@@ -83,9 +84,10 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 		
 		String ct = (String) attr.getValue();
 		JComponent chart = ChartComponentManager.getInstance().getChartComponent(ct, ge);
+		
 		if (chart != null)
 			add(chart, "1,1");
-		
+		add(new JLabel("CHART"), "0,0");
 		if (ge instanceof Node) {
 			setSize(getLabelTransformedSize(AttributeHelper.getSizeD((Node) ge)));
 			setLocation(shift.x, shift.y + getCurrentLabelShift());

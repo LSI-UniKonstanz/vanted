@@ -577,7 +577,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		
 		// the size of the component right of the splitter (the tab panel) is fixed
 		// the size of the component left of the splitter is changed
-//		vertSplitter.setResizeWeight(1.0);
+		vertSplitter.setResizeWeight(1.0);
 		
 		// vertSplitter.setDividerSize(5);
 		// vertSplitter.setBackground(null);

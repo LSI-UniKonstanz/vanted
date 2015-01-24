@@ -118,6 +118,7 @@ public class IPK_StandardTools
 			public void ancestorAdded(AncestorEvent event) {
 				// look for other tools in the enclosing container
 				// AND REMOVE THEM
+				/*
 				Component[] l = megaCreateButton.getParent().getComponents();
 				if (l != null && l.length > 0)
 					for (int i = 0; i < l.length; i++) {
@@ -135,6 +136,7 @@ public class IPK_StandardTools
 						}
 						((ModeToolbar) megaCreateButton.getParent()).setName(""); // Edit-Tools");
 					}
+					*/
 				megaCreateButton.getParent().validate();
 				megaCreateButton.getParent().repaint();
 			}

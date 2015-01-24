@@ -223,6 +223,7 @@ public class XmlDataChartComponent extends JComponent {
 		}
 		if (co.borderHor > 0)
 			chartPanel.setBorder(BorderFactory.createEmptyBorder(1, 0, 3, 0));
+		
 		return chartPanel;
 	}
 	

@@ -312,6 +312,9 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	
 	@Override
 	public void paint(Graphics g) {
+//		g.setColor(Color.BLUE);
+//		Graphics2D g2 = (Graphics2D)g;
+//		g.fillRect(0, 0, getWidth()-1, getHeight()-1);
 		super.paint(g);
 	}
 	

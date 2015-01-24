@@ -66,7 +66,7 @@ public class ToolButton
 			return;
 		for (Iterator<ToolButton> it = knownTools.iterator(); it.hasNext();) {
 			ToolButton t = (ToolButton) it.next();
-			// System.out.println(t.tool.isActive());
+			System.out.println(t.tool.getToolName()+" active: "+t.tool.isActive());
 			t.setSelected(t.tool.isActive());
 		}
 	}

@@ -122,7 +122,7 @@ public abstract class AbstractTool
 	/** Border for unmarked graph elements. */
 	private static final EmptyBorder empty = new EmptyBorder(0, 0, 0, 0); // 3, 3, 3, 3 ?
 	
-	protected static List<Tool> knownTools = new LinkedList<Tool>();
+	public static List<Tool> knownTools = new LinkedList<Tool>();
 	
 	// ~ Methods ================================================================
 	
@@ -130,7 +130,7 @@ public abstract class AbstractTool
 		synchronized (checkActivationTimer) {
 			if (!checkActivationTimer.isRunning()) {
 				checkActivationTimer.setRepeats(true);
-				checkActivationTimer.start();
+//				checkActivationTimer.start();
 			}
 		}
 	}
