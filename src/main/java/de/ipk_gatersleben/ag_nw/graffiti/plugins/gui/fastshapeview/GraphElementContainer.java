@@ -5,6 +5,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.fastshapeview;
 
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -41,6 +42,8 @@ public abstract class GraphElementContainer implements GraffitiViewComponent{
 
 	GraphElement graphElement;
 	
+	boolean isSelected;
+	
 	/**
 	 * 
 	 */
@@ -48,7 +51,7 @@ public abstract class GraphElementContainer implements GraffitiViewComponent{
 		this.view = view;
 		this.graphElement = ge;
 		dependentContainer = new ArrayList<GraphElementContainer>();
-		
+		isSelected = false;
 	}
 	public abstract void createShape();
 
@@ -57,6 +60,16 @@ public abstract class GraphElementContainer implements GraffitiViewComponent{
 	public abstract void updateFromDependentContainer( GraphElement ge);
 	
 	public abstract void paint(Graphics g);
+	
+	public void repaint() {
+		Rectangle bounds = shape.getBounds();
+		this.view.repaint(
+				bounds.x, 
+				bounds.y, 
+				bounds.width, 
+				bounds.height);
+		
+	}
 	
 	public MyShape getShape() {
 		return shape;

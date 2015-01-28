@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -56,6 +57,9 @@ implements GraphView{
 	private final Map<MouseMotionListener, ZoomedMouseMotionListener> zoomedMouseMotionListeners = new LinkedHashMap<MouseMotionListener, ZoomedMouseMotionListener>();
 
 
+	private List<DrawCallback> listListenerDrawCallbackDrawBefore;
+	private List<DrawCallback> listListenerDrawCallbackDrawAfter;
+	
 	/**
 	 *  Default constructor
 	 */
@@ -68,6 +72,9 @@ implements GraphView{
 		listNodeElementContainer = new ArrayList<NodeElementContainer>();
 		listEdgeElementContainer = new ArrayList<EdgeElementContainer>();
 				
+		
+		listListenerDrawCallbackDrawBefore = new ArrayList<FastShapeView.DrawCallback>();
+		listListenerDrawCallbackDrawAfter = new ArrayList<FastShapeView.DrawCallback>();
 	}
 
 
@@ -75,6 +82,8 @@ implements GraphView{
 	public void completeRedraw() {
 		int width = 100;
 		int height = 100;
+		listEdgeElementContainer.clear();
+		listNodeElementContainer.clear();
 		for(Node curNode : currentGraph.getNodes()){
 			NodeElementContainer nec = new NodeElementContainer(this, curNode);
 			mapGraphElementToGraphelementContainer.put(nec.graphElement, nec);
@@ -136,18 +145,39 @@ implements GraphView{
 
 	@Override
 	protected void paintComponent(Graphics g) {
+		for(DrawCallback drawcallbackBefore : listListenerDrawCallbackDrawBefore)
+			drawcallbackBefore.drawBefore(g);
 		super.paintComponent(g);
 		char[] text = "shape view demo".toCharArray();
 		g.drawChars(text, 0, text.length, 10, 10);
 		
-		
+		int drawn = 0;
 		
 		for(NodeElementContainer nec : listNodeElementContainer){
-			nec.paint(g);
+			if(nec.getShape().intersects(g.getClipBounds())){
+				nec.paint(g);
+				drawn++;
+			}
 		}
+//		logger.debug("drawn nodes: "+drawn);
+		drawn = 0;
+		Rectangle clipBounds = g.getClipBounds();
 		for(EdgeElementContainer eec : listEdgeElementContainer){
-			eec.paint(g);
+			Rectangle bounds = eec.getShape().getBounds();
+//			if(g.hitClip(bounds.x, bounds.y, bounds.width, bounds.height)){
+			if(eec.getShape().intersects(clipBounds.x, clipBounds.y, clipBounds.width, clipBounds.height)){
+				eec.paint(g);
+//				logger.debug("clip  g:"+clipBounds.x+","+clipBounds.y+","+clipBounds.width+","+clipBounds.height);
+//				logger.debug("bound e:"+bounds.x+","+bounds.y+","+bounds.width+","+bounds.height);
+				drawn++;
+			}
 		}
+		
+//		logger.debug("drawn edges: "+drawn);
+		
+		for(DrawCallback drawcallbackAfter : listListenerDrawCallbackDrawAfter)
+			drawcallbackAfter.drawAfter(g);
+
 	}
 	
 	
@@ -352,5 +382,23 @@ implements GraphView{
 		zoomedMouseMotionListeners.remove(l);
 	}
 	
+	public void addDrawBeforeListener(DrawCallback drawcallback){
+		this.listListenerDrawCallbackDrawBefore.add(drawcallback);
+	}
+	public void removeDrawBeforeListener(DrawCallback drawcallback){
+		this.listListenerDrawCallbackDrawBefore.remove(drawcallback);
+	}
+
+	public void addDrawAfterListener(DrawCallback drawcallback){
+		this.listListenerDrawCallbackDrawAfter.add(drawcallback);
+	}
+	public void removeDrawAfterListener(DrawCallback drawcallback){
+		this.listListenerDrawCallbackDrawAfter.remove(drawcallback);
+	}
+
+	public interface DrawCallback {
+		public void drawBefore(Graphics g);
+		public void drawAfter(Graphics g);
+	}
 	
 }

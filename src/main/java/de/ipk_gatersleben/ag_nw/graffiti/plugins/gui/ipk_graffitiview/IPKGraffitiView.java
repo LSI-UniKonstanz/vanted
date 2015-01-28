@@ -169,8 +169,8 @@ public class IPKGraffitiView
 		Rectangle clipBounds = g.getClipBounds();
 		
 		long startTime=System.currentTimeMillis();
-//		logger.debug("start paint cliprect("+clipBounds.x+" : "+clipBounds.y+" | "+clipBounds.width+" : "+clipBounds.height+")");
-
+		logger.debug("start paint cliprect("+clipBounds.x+" : "+clipBounds.y+" | "+clipBounds.width+" : "+clipBounds.height+")");
+		System.out.println("start paint cliprect("+clipBounds.x+" : "+clipBounds.y+" | "+clipBounds.width+" : "+clipBounds.height+")");
 		if (!printInProgress)
 			((Graphics2D) g).transform(zoom);
 		
@@ -189,11 +189,13 @@ public class IPKGraffitiView
 	
 	@Override
 	public void repaint() {
-//		logger.debug("issuing repaint");
+		logger.debug("issuing repaint");
 		super.repaint();
 		
 		
 	}
+	
+	
 	
 	private void drawBackground(Graphics g) {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR &&

@@ -179,7 +179,8 @@ public abstract class MegaTools extends AbstractUndoableTool {
 				}
 				// }
 				if (lastSelectedComp != null && lastSelectedComp.getParent() != null) {
-					lastSelectedComp.getParent().repaint();
+//					lastSelectedComp.getParent().repaint();
+					lastSelectedComp.repaint();
 				}
 			}
 		} else {
@@ -297,7 +298,7 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		
 		// there is a new active session. Change the selection
 		// model therefore
-		if (s != null) {
+		if (s != null) {	
 			this.selectionModel = ((EditorSession) s).getSelectionModel();
 			this.selection = selectionModel.getActiveSelection();
 			unDisplayAsMarked(getCompsForElems(s.getGraph().getGraphElements()));

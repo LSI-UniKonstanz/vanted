@@ -139,7 +139,6 @@ public class StraightLineEdgeShape
 		
 		start = attachSourceArrow(edgeAttr, start, end);
 		end = attachTargetArrow(edgeAttr, end, start);
-		
 		line2D = new Line2D.Double(start, end);
 		
 		realBounds = getThickBounds(this.line2D, edgeAttr);
@@ -153,6 +152,7 @@ public class StraightLineEdgeShape
 			this.realBounds.add(
 								StandardArrowShape.addThickness(tailArrow.getBounds2D(), getFrameThickness()));
 		}
+		
 		
 		AffineTransform at = new AffineTransform();
 		at.setToTranslation(-realBounds.getX(), -realBounds.getY());

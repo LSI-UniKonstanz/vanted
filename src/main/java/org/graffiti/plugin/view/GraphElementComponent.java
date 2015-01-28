@@ -10,8 +10,10 @@
 package org.graffiti.plugin.view;
 
 import java.awt.Graphics;
+import java.awt.geom.AffineTransform;
 
 import javax.swing.JComponent;
+import javax.swing.RepaintManager;
 
 import org.graffiti.graphics.GraphicAttributeConstants;
 
@@ -54,6 +56,21 @@ public abstract class GraphElementComponent
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 	}
+	
+    public void repaint(long tm, int x, int y, int width, int height) {
+    	if(getParent() != null) {
+    	AffineTransform zoom = ((AbstractView) getParent()).getZoom();
+        RepaintManager.currentManager(this).addDirtyRegion(
+        		(JComponent)getParent(), 
+        		(int)(getX()*zoom.getScaleX()), 
+        		(int)(getY()*zoom.getScaleY()),
+        		(int)(width*zoom.getScaleX()), 
+        		(int)(height*zoom.getScaleY())
+        		);
+    	} else
+    		super.repaint(tm, x, y, width, height);
+    }
+
 }
 
 // ------------------------------------------------------------------------------

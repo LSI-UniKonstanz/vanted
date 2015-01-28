@@ -3,11 +3,14 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.fastshapeview;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.font.GraphicAttribute;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,6 +32,7 @@ import org.graffiti.plugin.tool.Tool;
 import org.graffiti.plugin.view.ZoomListener;
 import org.graffiti.plugin.view.Zoomable;
 import org.graffiti.plugins.modes.defaults.MegaTools;
+import org.graffiti.plugins.modes.defaults.SelectionRectangle;
 import org.graffiti.selection.SelectionEvent;
 import org.graffiti.selection.SelectionListener;
 import org.graffiti.session.Session;
@@ -41,25 +45,40 @@ import scenario.ScenarioService;
  *
  */
 public class FastShapeMoveTool extends MouseInputAdapter
-implements Tool, SessionListener, SelectionListener, MouseWheelListener {
+implements Tool, SessionListener, SelectionListener, MouseWheelListener, FastShapeView.DrawCallback {
 
-	JComponent activeView;
+	enum STATE {
+		IDLE,
+		SELECTION,
+		MOUSEOVER,
+		MOVEELEMENTS
+	}
+	
+	STATE curState;
+	
+	FastShapeView activeView;
 
-	GraphElementContainer lastClickedContainer;
+	GraphElementContainer lastSelectedContainer;
 	
 	MouseEvent lastPressedMouseEvent;
+	MouseEvent currentDragMouseEvent;
+	MouseEvent currentMoveMouseEvent;
+	MouseEvent lastDraggedMouseEvent;
 	
 	/** Flag set by <code>activate</code> and <code>deactivate</code>. */
 	protected boolean isActive;
 
-	protected static List<Tool> knownTools = new LinkedList<Tool>();
 
+	SelectionRectangle selectionRectangle;
+	
+	Rectangle2D currentDragFrame;
+	Rectangle2D oldDragFrame;
 	/**
 	 * 
 	 */
 	public FastShapeMoveTool() {
-		if (!knownTools.contains(this))
-			knownTools.add(this);
+		if (!AbstractTool.knownTools.contains(this))
+			AbstractTool.knownTools.add(this);
 	}
 	
 	public void activate() {
@@ -71,10 +90,10 @@ implements Tool, SessionListener, SelectionListener, MouseWheelListener {
 		
 		// System.out.println("Activate "+toString());
 		
-		activeView = MainFrame.getInstance().getActiveSession().getActiveView().getViewComponent();
-		if( ! (activeView instanceof FastShapeView))
+		JComponent viewComponent = MainFrame.getInstance().getActiveSession().getActiveView().getViewComponent();
+		if( ! (viewComponent instanceof FastShapeView))
 			return;
-
+		activeView = (FastShapeView)viewComponent;
 		deactivateAll();
 		//
 		// Zoomable myView = MainFrame.getInstance().getActiveSession().getActiveView();
@@ -89,15 +108,25 @@ implements Tool, SessionListener, SelectionListener, MouseWheelListener {
 			activeView.addMouseListener(this);
 			activeView.addMouseMotionListener(this);
 			activeView.addMouseWheelListener(this);
+			
+			activeView.addDrawAfterListener(this);
+			
+			curState = STATE.IDLE;
+			
+			currentDragFrame = new Rectangle2D.Float();
+			
 			activeView.repaint();
 		} catch (Exception e) {
 			isActive = false;
 		}
 		ToolButton.requestToolButtonFocus();
+		
+		selectionRectangle = new SelectionRectangle();
+		
 	}
 	
 	public void deactivateAll() {
-		for (Iterator<Tool> it = knownTools.iterator(); it.hasNext();) {
+		for (Iterator<Tool> it = AbstractTool.knownTools.iterator(); it.hasNext();) {
 			Tool t = (Tool) it.next();
 			t.deactivate();
 		}
@@ -139,24 +168,107 @@ implements Tool, SessionListener, SelectionListener, MouseWheelListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		lastPressedMouseEvent = e;
-		lastClickedContainer = ((FastShapeView)activeView).findContainer(e.getX(), e.getY());
+		lastDraggedMouseEvent = e;
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if(lastClickedContainer == null)
-			return;
-		
-		int diffx = e.getX() - lastPressedMouseEvent.getX();
-		int diffy = e.getY() - lastPressedMouseEvent.getY();
-		Attribute attribute = lastClickedContainer.graphElement.getAttribute(GraphicAttributeConstants.GRAPHICS);
-		if(attribute instanceof NodeGraphicAttribute) {
-		CoordinateAttribute coord = ((NodeGraphicAttribute)attribute).getCoordinate();
-		coord.setCoordinate(coord.getX() + diffx, coord.getY() + diffy);
+		currentDragMouseEvent = e;
+		if(lastSelectedContainer == null) {
+			curState = STATE.SELECTION;
+			calculateDragRectangle();
+			activeView.repaint();
+		} else {
+			int diffx = currentDragMouseEvent.getX() - lastDraggedMouseEvent.getX();
+			int diffy = currentDragMouseEvent.getY() - lastDraggedMouseEvent.getY();
+			Attribute attribute = lastSelectedContainer.graphElement.getAttribute(GraphicAttributeConstants.GRAPHICS);
+			if(attribute instanceof NodeGraphicAttribute) {
+			CoordinateAttribute coord = ((NodeGraphicAttribute)attribute).getCoordinate();
+			coord.setCoordinate(coord.getX() + diffx, coord.getY() + diffy);
+			}
 		}
-		lastPressedMouseEvent = e;
+		lastDraggedMouseEvent = e;
 	}
 
+	
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		super.mouseMoved(e);
+		curState = STATE.MOUSEOVER;
+		GraphElementContainer foundContainer = ((FastShapeView)activeView).findContainer(e.getX(), e.getY());
+		if(lastSelectedContainer != null) {
+			lastSelectedContainer.isSelected = false;
+			lastSelectedContainer.repaint();
+		}
+		if(foundContainer != null){
+
+			lastSelectedContainer = foundContainer;
+			lastSelectedContainer.isSelected = true;
+			lastSelectedContainer.repaint();
+		}else
+			lastSelectedContainer = null;
+//		System.out.println("mosue moved: "+e.getX()+"'"+e.getY());
+	}
+
+	
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		super.mouseReleased(e);
+		curState = STATE.IDLE;
+		
+		activeView.repaint();
+	}
+
+	@Override
+	public void drawBefore(Graphics g) {
+	}
+
+	@Override
+	public void drawAfter(Graphics g) {
+		Graphics2D g2 = (Graphics2D)g;
+		
+		if(curState == STATE.SELECTION) {
+			Graphics localGraphics;
+
+			localGraphics = g2.create(
+					(int)currentDragFrame.getX(),
+					(int)currentDragFrame.getY(),
+					(int)currentDragFrame.getWidth(),
+					(int)currentDragFrame.getHeight());
+			
+			System.out.println((int)currentDragFrame.getX()+","+
+					(int)currentDragFrame.getY()+","+
+					(int)currentDragFrame.getWidth()+","+
+					(int)currentDragFrame.getHeight());
+			selectionRectangle.setBounds(
+					0, 
+					0, 
+					(int)currentDragFrame.getWidth(), 
+					(int)currentDragFrame.getHeight());
+			selectionRectangle.paint(localGraphics);
+			
+		}
+		if(curState == STATE.MOUSEOVER) {
+			if(lastSelectedContainer != null) {
+				
+			}
+		}
+	}
+
+	void calculateDragRectangle() {
+		int x = Math.min(lastPressedMouseEvent.getX(), currentDragMouseEvent.getX());
+		int y = Math.min(lastPressedMouseEvent.getY(), currentDragMouseEvent.getY());
+		int w = Math.abs(lastPressedMouseEvent.getX() - currentDragMouseEvent.getX());
+		int h = Math.abs(lastPressedMouseEvent.getY() - currentDragMouseEvent.getY());
+//		System.out.println("x:"+x+",y:"+y+",w:"+w+",h:"+h);
+		currentDragFrame.setFrame(
+				x, 
+				y, 
+				w, 
+				h);
+	}
+	
 	@Override
 	public void selectionChanged(SelectionEvent e) {
 	}

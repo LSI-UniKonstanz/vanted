@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 
 import javax.swing.JComponent;
 
@@ -89,6 +90,17 @@ public class NodeElementContainer extends GraphElementContainer{
 		g.setColor(Color.BLACK);		
 		
 		shape.paint(g);
+		
+		if(isSelected){
+			g.setColor(Color.RED);
+			Rectangle bounds = shape.getBounds();
+			g.drawRect(
+					bounds.x, 
+					bounds.y, 
+					bounds.width -1, 
+					bounds.height -1);
+		}
+		
 		Graphics2D g2 = (Graphics2D)g;
 		Graphics localGraphics;
 //		AffineTransform saveTransform = g2.getTransform();

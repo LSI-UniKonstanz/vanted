@@ -85,7 +85,7 @@ public abstract class AbstractTool
 	
 	/** Used to display marked nodes. */
 	/** Size of bullets used to display marked edges. */
-	protected static final int BORDERSIZE = 10;
+	protected static final int BORDERSIZE = 5;
 	
 	// private final LineBorder border = new LineBorder(java.awt.Color.RED, 4);
 	
@@ -360,8 +360,8 @@ public abstract class AbstractTool
 				}
 			} else
 				((JComponent) comp).setBorder(tempBorder);
-			if (((JComponent) comp).getParent() != null)
-				((JComponent) comp).getParent().repaint();
+//			if (((JComponent) comp).getParent() != null)
+//				((JComponent) comp).getParent().repaint();
 		}
 		if (!processed) {
 			try {
@@ -467,8 +467,10 @@ public abstract class AbstractTool
 	private void unDisplayAsMarked(NodeComponentInterface comp) {
 		if (comp != null && ((JComponent) comp).getBorder() != empty) {
 			((JComponent) comp).setBorder(empty);
-			if (((JComponent) comp).getParent() != null)
-				((JComponent) comp).getParent().repaint();
+//			if (((JComponent) comp).getParent() != null)
+//				((JComponent) comp).getParent().repaint();
+//			((JComponent) comp).repaint();
+			
 		}
 	}
 	
