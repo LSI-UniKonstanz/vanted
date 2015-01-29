@@ -152,6 +152,8 @@ public class PathwayLinkVisualizationComponent
 	
 	@Override
 	public void paint(Graphics g) {
+		if(!checkVisibility())
+			return;
 		if (getMode() == 0)
 			return;
 		super.paint(g);

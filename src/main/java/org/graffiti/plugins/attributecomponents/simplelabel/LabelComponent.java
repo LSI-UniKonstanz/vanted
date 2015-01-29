@@ -312,7 +312,8 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	
 	@Override
 	public void paint(Graphics g) {
-		super.paint(g);
+		if(checkVisibility())
+			super.paint(g);
 	}
 	
 	private static final HashMap<TextAttribute, Object> fontAttributes = getFontAttributes();

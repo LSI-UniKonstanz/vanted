@@ -170,7 +170,9 @@ public class NodeComponent
 									nodeAttr.getLineMode().getDashArray(),
 									nodeAttr.getLineMode().getDashPhase());
 			}
-			drawArea.setStroke(stroke);
+			if(getViewDrawMode() == DrawMode.NORMAL) {
+				drawArea.setStroke(stroke);
+			}
 		}
 		
 		// draw background image
@@ -211,27 +213,29 @@ public class NodeComponent
 			drawArea.setPaint(framePaint);
 			drawArea.draw(shape);
 		}
-		if (shape instanceof PolygonalNodeShape) {
-			PolygonalNodeShape pp = (PolygonalNodeShape) shape;
-			if (pp.ignorePoints != null && pp.ignorePoints.size() > 0) {
-				drawArea.setPaint(framePaint);
-				drawArea.fillPolygon(pp.getIgnorePolygon());
+		
+		if(getViewDrawMode() == DrawMode.NORMAL) {
+			if (shape instanceof PolygonalNodeShape) {
+				PolygonalNodeShape pp = (PolygonalNodeShape) shape;
+				if (pp.ignorePoints != null && pp.ignorePoints.size() > 0) {
+					drawArea.setPaint(framePaint);
+					drawArea.fillPolygon(pp.getIgnorePolygon());
+				}
+			}
+
+			if (shape instanceof ProvidesAdditonalDrawingShapes) {
+				Collection<Shape> postShapes = ((ProvidesAdditonalDrawingShapes) shape).getPostBorderShapes();
+				if (postShapes != null)
+					for (Shape s : postShapes) {
+						drawArea.setPaint(fillPaint);
+						drawArea.fill(s);
+						if (drawFrame) {
+							drawArea.setPaint(framePaint);
+							drawArea.draw(s);
+						}
+					}
 			}
 		}
-		
-		if (shape instanceof ProvidesAdditonalDrawingShapes) {
-			Collection<Shape> postShapes = ((ProvidesAdditonalDrawingShapes) shape).getPostBorderShapes();
-			if (postShapes != null)
-				for (Shape s : postShapes) {
-					drawArea.setPaint(fillPaint);
-					drawArea.fill(s);
-					if (drawFrame) {
-						drawArea.setPaint(framePaint);
-						drawArea.draw(s);
-					}
-				}
-		}
-		
 		drawArea.translate(-1 - shape.getXexcess(), -1 - shape.getYexcess());
 	}
 	

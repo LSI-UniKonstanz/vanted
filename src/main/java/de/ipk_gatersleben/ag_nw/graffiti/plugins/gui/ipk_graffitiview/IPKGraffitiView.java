@@ -141,18 +141,22 @@ public class IPKGraffitiView
 			repaintManager.setDoubleBufferingEnabled(true);
 			// useAntialiasing = true;
 			// if (useAntialiasing) {
-			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-								RenderingHints.VALUE_ANTIALIAS_ON);
-			// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-			// RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-			// RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
-			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-								RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 			
-			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-								RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
-			
+			if(drawMode == DrawMode.NORMAL 
+					&& getGraph().getNumberOfNodes() < 1000
+					&& getGraph().getNumberOfEdges() < 300) {
+				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+									RenderingHints.VALUE_ANTIALIAS_ON);
+				// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+				// RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+				// RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
+				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+									RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+				
+				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+									RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+			}
 			// } else {
 			// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 			// RenderingHints.VALUE_ANTIALIAS_OFF);
@@ -176,7 +180,7 @@ public class IPKGraffitiView
 		
 //		
 		
-		if (!printInProgress && drawMode != DrawMode.REDUCED)
+		if (!printInProgress && drawMode == DrawMode.NORMAL)
 			drawBackground(g);
 		
 		super.paint(g);

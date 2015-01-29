@@ -119,7 +119,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 				if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
 					hc.addTab("Workflow", getWorkFlowHelp());
 				hc.addTab("Examples", new TabExampleFiles());
-				hc.addTab("Settings", getSettings());
+//				hc.addTab("Settings", getSettings());
 			} catch (Exception e) {
 				ErrorMsg.addErrorMessage(e);
 			}

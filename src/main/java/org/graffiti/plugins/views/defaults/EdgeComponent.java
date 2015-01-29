@@ -191,40 +191,44 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		// Color(frameColor.getRed(),
 		// frameColor.getGreen(),
 		// frameColor.getBlue());
-		
-		g2d.setStroke(stroke);
-		
+
+		g2d.setPaint(frameColorOpaque);
+
+		if(getViewDrawMode() == DrawMode.NORMAL) {
+			g2d.setStroke(stroke);
+			if (edgeAttr.getUseGradient() > 0)
+				g2d.setPaint(gp);
+		}
 		// draw the outline of the shape according to attributes
 		// must not be transparent because otherwise would lead to
 		// problems with overlapping fill and frame
 		
-		g2d.setPaint(frameColorOpaque);
-		if (edgeAttr.getUseGradient() > 0)
-			g2d.setPaint(gp);
 		g2d.draw(shape);
 		
-		if (hArrow != null) {
-			if (((LineEdgeShape) shape).hollowTargetArrowShape) {
-				g2d.setPaint(Color.WHITE);
-				g2d.fill(hArrow);
-				g2d.setPaint(frameColorOpaque);
-				g2d.draw(hArrow);
-			} else {
-				g2d.setPaint(frameColorOpaque);
-				g2d.fill(hArrow);
+		if(getViewDrawMode() == DrawMode.NORMAL) {
+			if (hArrow != null) {
+				if (((LineEdgeShape) shape).hollowTargetArrowShape) {
+					g2d.setPaint(Color.WHITE);
+					g2d.fill(hArrow);
+					g2d.setPaint(frameColorOpaque);
+					g2d.draw(hArrow);
+				} else {
+					g2d.setPaint(frameColorOpaque);
+					g2d.fill(hArrow);
+				}
 			}
-		}
-		
-		Shape tArrow = edgeShape.getTailArrow();
-		if (tArrow != null) {
-			if (((LineEdgeShape) shape).hollowSourceArrowShape) {
-				g2d.setPaint(Color.WHITE);
-				g2d.fill(tArrow);
-				g2d.setPaint(fillColorOpaque);
-				g2d.draw(tArrow);
-			} else {
-				g2d.setPaint(fillColorOpaque);
-				g2d.fill(tArrow);
+
+			Shape tArrow = edgeShape.getTailArrow();
+			if (tArrow != null) {
+				if (((LineEdgeShape) shape).hollowSourceArrowShape) {
+					g2d.setPaint(Color.WHITE);
+					g2d.fill(tArrow);
+					g2d.setPaint(fillColorOpaque);
+					g2d.draw(tArrow);
+				} else {
+					g2d.setPaint(fillColorOpaque);
+					g2d.fill(tArrow);
+				}
 			}
 		}
 	}
@@ -417,6 +421,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		else
 			return "Double-click to edit relations / reactions | ";
 	}
+	
 }
 
 // ------------------------------------------------------------------------------

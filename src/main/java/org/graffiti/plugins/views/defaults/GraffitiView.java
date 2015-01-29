@@ -1881,7 +1881,14 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 */
 	public void setDrawMode(DrawMode dm) {
 		this.drawMode = dm;
+		repaint();
 	}
+
+	public DrawMode getDrawMode() {
+		return drawMode;
+	}
+	
+	
 }
 
 // ------------------------------------------------------------------------------
