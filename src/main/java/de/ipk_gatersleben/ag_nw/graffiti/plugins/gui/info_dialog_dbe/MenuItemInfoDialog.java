@@ -98,7 +98,7 @@ public class MenuItemInfoDialog
 	public MenuItemInfoDialog() {
 		super();
 		setName("ipk.help");
-		setText("Help");
+		setText("?");
 		setMnemonic('H');
 		setEnabled(true);
 		
@@ -490,14 +490,7 @@ public class MenuItemInfoDialog
 				DatabaseFileStatusService.showStatusDialog();
 			}
 		});
-		
-		JMenuItem preferences = new JMenuItem("Preferences");
-		preferences.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				showPreferences();
-			}
-		});
-		
+
 		final JMenuItem error = new JMenuItem(errorMessagesMenuTitle);
 		error.setMnemonic('E');
 		error.addActionListener(new ActionListener() {
@@ -580,8 +573,6 @@ public class MenuItemInfoDialog
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.URL_RELEASEINFO))
 			insert(jMenuItemReleaseInfo, pos++);
 		insert(database, pos++);
-		if (!SystemInfo.isMac())
-			insert(preferences, pos++);
 		insert(feedback, pos++);
 		
 		// if (ReleaseInfo.getRunningReleaseStatus()==Release.KGML_EDITOR ||

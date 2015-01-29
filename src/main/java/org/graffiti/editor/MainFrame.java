@@ -129,6 +129,7 @@ import org.graffiti.editor.actions.PasteAction;
 import org.graffiti.editor.actions.PluginManagerEditAction;
 import org.graffiti.editor.actions.RunAlgorithm;
 import org.graffiti.editor.actions.SelectAllAction;
+import org.graffiti.editor.actions.ShowPreferencesAction;
 import org.graffiti.editor.actions.ViewNewAction;
 import org.graffiti.event.ListenerManager;
 import org.graffiti.event.ListenerNotFoundException;
@@ -293,6 +294,9 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	
 	/** The main frame's static actions */
 	private GraffitiAction editUndo;
+	
+	/** The programs preferences */
+	private GraffitiAction editPreferences;
 	
 	/** The main frame's static actions */
 	public GraffitiAction fileClose;
@@ -577,7 +581,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		
 		// the size of the component right of the splitter (the tab panel) is fixed
 		// the size of the component left of the splitter is changed
-//		vertSplitter.setResizeWeight(1.0);
+		vertSplitter.setResizeWeight(1.0);
 		
 		// vertSplitter.setDividerSize(5);
 		// vertSplitter.setBackground(null);
@@ -2819,6 +2823,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		editDelete = new DeleteAction(this);
 		editSelectAll = new SelectAllAction(this);
 		
+		editPreferences = new ShowPreferencesAction(this);
+		
 		// redrawView = new RedrawViewAction(this);
 	}
 	
@@ -2960,7 +2966,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		JMenuItem selectCmd = createMenuItem(editSelectAll);
 		selectCmd.setIcon(iBundle.getImageIcon("menu.file.exit.icon"));
 		editMenu.add(selectCmd);
-		// editMenu.addSeparator();
+		editMenu.addSeparator();
+		editMenu.add(createMenuItem(editPreferences)); 
 		// JMenuItem redrawCmd = createMenuItem(redrawView);
 		// redrawCmd.setIcon(iBundle.getImageIcon("menu.file.exit.icon"));
 		// editMenu.add(redrawCmd);

@@ -384,7 +384,13 @@ public abstract class AbstractGraphElementComponent
 	 */
 	protected abstract void recreate()
 						throws ShapeNotFoundException;
-	
+
+	protected DrawMode getViewDrawMode() {
+		if(getParent() instanceof GraffitiView)
+			return ((GraffitiView)getParent()).getDrawMode();
+		return DrawMode.NORMAL;
+	}
+
 }
 
 // ------------------------------------------------------------------------------

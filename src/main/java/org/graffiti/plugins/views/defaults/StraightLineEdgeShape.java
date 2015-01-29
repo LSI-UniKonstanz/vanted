@@ -12,6 +12,7 @@ package org.graffiti.plugins.views.defaults;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
+import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 
 import org.graffiti.graphics.EdgeGraphicAttribute;
@@ -94,6 +95,21 @@ public class StraightLineEdgeShape
 	// return point;
 	// }
 	
+	public PathIterator getPathIterator(AffineTransform t, double d) {
+		return line2D.getPathIterator(t, d);
+	}
+	
+	/**
+	 * DOCUMENT ME!
+	 * 
+	 * @param t
+	 *           DOCUMENT ME!
+	 * @return DOCUMENT ME!
+	 */
+	public PathIterator getPathIterator(AffineTransform t) {
+		return line2D.getPathIterator(t);
+	}
+	
 	/**
 	 * This method sets all necessary properties of an edge using the values
 	 * contained within the <code>CollectionAttribute</code> (like
@@ -120,7 +136,7 @@ public class StraightLineEdgeShape
 		Point2D start = getSourceDockingCoords(edgeAttr, sourceShape);
 		Point2D end = getTargetDockingCoords(edgeAttr, targetShape);
 		
-		this.line2D.setLine(start, end);
+		line2D.setLine(start, end);
 		
 		// clipping
 		// if no intersection was found, just draw from / to docking
@@ -140,7 +156,7 @@ public class StraightLineEdgeShape
 		start = attachSourceArrow(edgeAttr, start, end);
 		end = attachTargetArrow(edgeAttr, end, start);
 		
-		line2D = new Line2D.Double(start, end);
+		line2D.setLine(start, end);
 		
 		realBounds = getThickBounds(this.line2D, edgeAttr);
 		
@@ -160,7 +176,8 @@ public class StraightLineEdgeShape
 			headArrow = at.createTransformedShape(headArrow);
 		if (tailArrow != null)
 			tailArrow = at.createTransformedShape(tailArrow);
-		this.line2D = new Line2D.Double(at.transform(start, null), at.transform(end, null));
+		
+		this.line2D.setLine(at.transform(start, null), at.transform(end, null));
 		this.linePath = new GeneralPath(this.line2D);
 	}
 	

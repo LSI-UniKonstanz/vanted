@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Create XML Plugin file lists..."
 
-find ./src/main/java/ | grep "plugin.xml$" > src/main/resources/plugins.txt
+find ./src/main/java/ | grep "*.xml$" > src/main/resources/plugins.txt
 cd ../../..
 
 

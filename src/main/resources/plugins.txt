@@ -30,6 +30,7 @@ c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\ipk_graffitiview\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\kegg_bar\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\layout_control\plugin.xml
+c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\layout_control\pluginClusterTabs.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\rotate\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\set_background_color\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\startlayout\plugin.xml
@@ -94,3 +95,14 @@ c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\org\graffiti\plugins\tools\zoomtool\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\org\graffiti\plugins\views\defaults\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\org\graffiti\plugins\views\matrix\plugin.xml
+c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\org\jfree\chart\demo\categorydata.xml
+c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\org\jfree\chart\demo\piedata.xml
+c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\vanted_feature\FeatureAnalysisCommands.xml
+c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\vanted_feature\FeatureClustering.xml
+c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\vanted_feature\FeatureDataMapping.xml
+c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\vanted_feature\FeatureExtendedFileFormatSupport.xml
+c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\vanted_feature\FeatureHierarchies.xml
+c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\vanted_feature\FeatureMacroRecording.xml
+c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\vanted_feature\FeatureMetaCrop.xml
+c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\vanted_feature\FeatureSBGN.xml
+c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\vanted_feature\FeatureStatistics.xml

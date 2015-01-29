@@ -283,7 +283,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 	 * @param files
 	 *           the files
 	 */
-	private void expandClasspathByJarfile(URL[] files) {
+	public static void expandClasspathByJarfile(URL[] files) {
 		URLClassLoader loader = new URLClassLoader(files, InstanceLoader
 				.getCurrentLoader());
 		InstanceLoader.overrideLoader(loader);
