@@ -56,6 +56,7 @@
 
 	<target name="init" depends="clean, createpluginfilelistWin, createpluginfilelistMacLinux">
 		<mkdir dir="target/jar" />
+		<mkdir dir="target/classes" />
 	</target>
 	
 	<target name="createpluginfilelistWin" if="isWindows">
