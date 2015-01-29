@@ -192,7 +192,7 @@ public class GravistoMainHelper implements HelperClass {
 		
 		Properties p = System.getProperties();
 		String os = (String) p.get("os.name");
-		
+		System.out.println("context classloader "+Thread.currentThread().getContextClassLoader().toString());
 		try {
 			if (new File(ReleaseInfo.getAppFolderWithFinalSep() + "setting_java_look_and_feel").exists()) {
 				TextFile tf = new TextFile(new FileReader(new File(ReleaseInfo.getAppFolderWithFinalSep()
@@ -219,6 +219,7 @@ public class GravistoMainHelper implements HelperClass {
 						System.out.println("Info: could not activate desired java windows and button style"); //$NON-NLS-1$
 					}
 				} else {
+					System.out.println("context classloader "+Thread.currentThread().getContextClassLoader().toString());
 					Theme.loadTheme(Theme.getThemeDescription("VANTED"));
 					UIManager.setLookAndFeel("de.muntjak.tinylookandfeel.TinyLookAndFeel");
 				}
@@ -364,6 +365,8 @@ public class GravistoMainHelper implements HelperClass {
 						String loc2 = loc.toUpperCase();
 						loc2 = StringManipulationTools.stringReplace(loc2, "\\", "");
 						loc2 = StringManipulationTools.stringReplace(loc2, " ", "");
+						loc2 = StringManipulationTools.stringReplace(loc2, "/", "");
+						
 						if (loc2.indexOf(remove) >= 0) {
 							locations.remove(loc);
 							break;
