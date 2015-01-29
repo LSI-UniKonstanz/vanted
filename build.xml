@@ -74,9 +74,7 @@
 	
 	<target name="clean">
 
-		<delete includeemptydirs="true">
-			<fileset dir="target/classes" includes="**/*" />
-		</delete>
+		<delete dir="target/classes" />
 		<delete dir="target/jar" />
 	</target>
 
