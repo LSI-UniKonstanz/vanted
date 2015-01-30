@@ -1,0 +1,7 @@
+#Vanted version and build information. ONLY EDIT THE VANTED VERSION PROPERTY!
+#Fri, 30 Jan 2015 12:56:18 +1100
+#Vanted version and buld information. DO NOT EDIT!
+#Fri, 30 Jan 2015 12:54:42 +1100
+build.number=00020
+build.date=20150130
+vanted.version.number=2.3.0
