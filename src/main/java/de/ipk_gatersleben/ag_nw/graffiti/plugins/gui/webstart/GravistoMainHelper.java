@@ -192,7 +192,6 @@ public class GravistoMainHelper implements HelperClass {
 		
 		Properties p = System.getProperties();
 		String os = (String) p.get("os.name");
-		System.out.println("context classloader "+Thread.currentThread().getContextClassLoader().toString());
 		try {
 			if (new File(ReleaseInfo.getAppFolderWithFinalSep() + "setting_java_look_and_feel").exists()) {
 				TextFile tf = new TextFile(new FileReader(new File(ReleaseInfo.getAppFolderWithFinalSep()
