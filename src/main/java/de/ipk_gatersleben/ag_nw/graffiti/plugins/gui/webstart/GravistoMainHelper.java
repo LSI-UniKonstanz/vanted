@@ -218,7 +218,6 @@ public class GravistoMainHelper implements HelperClass {
 						System.out.println("Info: could not activate desired java windows and button style"); //$NON-NLS-1$
 					}
 				} else {
-					System.out.println("context classloader "+Thread.currentThread().getContextClassLoader().toString());
 					Theme.loadTheme(Theme.getThemeDescription("VANTED"));
 					UIManager.setLookAndFeel("de.muntjak.tinylookandfeel.TinyLookAndFeel");
 				}
