@@ -20,7 +20,7 @@
 		<propertyfile file="${buildnumber.file}"
 		    comment="Vanted version and build information. ONLY EDIT THE VANTED VERSION PROPERTY!">
 			<entry key="build.number" type="int" default="0" operation="+" pattern="00000"/>	    
-			<entry key="build.date" type="date" value="now" pattern="YYYYMMDD"/>
+			<entry key="build.date" type="date" value="now" pattern="YYYYMMdd"/>
 		</propertyfile>
 		<loadproperties srcFile="${buildnumber.file}"/>
 		<echo message="${vanted.version.number} ${build.number} ${build.date}"/>
