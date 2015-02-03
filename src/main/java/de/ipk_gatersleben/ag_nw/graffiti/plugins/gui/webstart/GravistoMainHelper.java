@@ -192,7 +192,6 @@ public class GravistoMainHelper implements HelperClass {
 		
 		Properties p = System.getProperties();
 		String os = (String) p.get("os.name");
-		
 		try {
 			if (new File(ReleaseInfo.getAppFolderWithFinalSep() + "setting_java_look_and_feel").exists()) {
 				TextFile tf = new TextFile(new FileReader(new File(ReleaseInfo.getAppFolderWithFinalSep()
@@ -364,6 +363,8 @@ public class GravistoMainHelper implements HelperClass {
 						String loc2 = loc.toUpperCase();
 						loc2 = StringManipulationTools.stringReplace(loc2, "\\", "");
 						loc2 = StringManipulationTools.stringReplace(loc2, " ", "");
+						loc2 = StringManipulationTools.stringReplace(loc2, "/", "");
+						
 						if (loc2.indexOf(remove) >= 0) {
 							locations.remove(loc);
 							break;

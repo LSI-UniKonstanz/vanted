@@ -3,6 +3,9 @@
 
 	<!-- ANT 1.7 is required -->
 	
+	<property name="buildnumber.file" value="src/main/resources/build.number"/>
+	<property name="jar.dest.path" value="target/jar"/>
+	
 	<condition property="isWindows" value="true">
 	    <os family="windows"/>
 	</condition>
@@ -12,11 +15,37 @@
 	    <os family="unix"/>
 	    </or>
 	</condition>
+	
+	<target name="nextbuildnumber">
+		<propertyfile file="${buildnumber.file}"
+		    comment="Vanted version and build information. ONLY EDIT THE VANTED VERSION PROPERTY!">
+			<entry key="build.number" type="int" default="0" operation="+" pattern="00000"/>	    
+			<entry key="build.date" type="date" value="now" pattern="YYYYMMdd"/>
+		</propertyfile>
+		<loadproperties srcFile="${buildnumber.file}"/>
+		<echo message="${vanted.version.number} ${build.number} ${build.date}"/>
+	</target>
+	
+	<target name="create-vanted-core-jar2" depends="nextbuildnumber">
+		<!-- create vanted-jarfile -->
+		<!--  reread the buildnumber file, to simulate a post-increment of the buildnumber (current buildnumber == buildnumber in file) -->
+		
+		<jar destfile="${jar.dest.path}/vanted-core-ver${vanted.version.number}-build-${build.date}-${build.number}.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Class-Path" value="." />
+				<!-- since Java 7u51 the jar manifest needs the permission attribute 
+					for webstart -->
+				<attribute name="Permissions" value="all-permissions" />
+			</manifest>
+			<fileset dir="target/classes" />
+		</jar>
 
-
+	</target>
 	<target name="create-vanted-core-jar" depends="compile">
 		<!-- create vanted-jarfile -->
-		<jar destfile="target/jar/vanted-core.jar" filesetmanifest="mergewithoutmain">
+		<loadproperties srcFile="${buildnumber.file}"/>
+		<jar destfile="${jar.dest.path}/vanted-core-ver${vanted.version.number}-build-${build.date}-${build.number}.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
 				<attribute name="Class-Path" value="." />
@@ -29,7 +58,9 @@
 
 	</target>
 
-	<target name="compile" depends="init">
+	<target name="compile" depends="nextbuildnumber, init">
+		
+		
 		<javac target="1.7" source="1.7" destdir="target/classes">
 			<src path="src/main/java" />
 			<!-- ignore symbol file due to compiling errors when trying to find somting 
@@ -55,7 +86,9 @@
 	</target>
 
 	<target name="init" depends="clean, createpluginfilelistWin, createpluginfilelistMacLinux">
-		<mkdir dir="target/jar" />
+		<mkdir dir="${jar.dest.path}" />
+		<mkdir dir="target/classes" />
+		
 	</target>
 	
 	<target name="createpluginfilelistWin" if="isWindows">
@@ -73,10 +106,10 @@
 	
 	<target name="clean">
 
-		<delete includeemptydirs="true">
-			<fileset dir="target/classes" includes="**/*" />
-		</delete>
-		<delete dir="target/jar" />
+		<delete dir="target/classes" />
+		<!-- 
+		<delete dir="${jar.dest.path}" />
+		 -->
 	</target>
 
 	<target name="create-fat-vanted-jar" depends="create-vanted-core-jar">
@@ -85,7 +118,7 @@
 			figure out if jars provide same packages/classes in different verions -->
 		<!-- <jar destfile="vanted_with_doublettes.jar" filesetmanifest="mergewithoutmain" 
 			duplicate="preserve"> -->
-		<jar destfile="target/jar/vanted_with_doublettes.jar"
+		<jar destfile="${jar.dest.path}/vanted_with_doublettes.jar"
 			filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}" />
@@ -98,7 +131,7 @@
 			</manifest>
 			<zipfileset
 				excludes="META-INF/*.MF META-INF/*.SF META-INF/*.DSA META-INF/*.RSA"
-				src="target/jar/vanted-core.jar" />
+				src="${jar.dest.path}/vanted-core-ver${vanted.version.number}-build-${build.date}-${build.number}.jar" />
 			<zipfileset
 				excludes="META-INF/*.MF META-INF/*.SF META-INF/*.DSA META-INF/*.RSA"
 				src="../vanted-lib-repository/commons-beanutils.jar" />
@@ -306,11 +339,11 @@
 		<!-- overwrite="false": keeps the newest version of a file default "true": 
 			older versions of file overwrite newer versions -->
 		<!-- <unzip src="vanted_with_doublettes.jar" dest="vanted_temp" overwrite="false"/> -->
-		<unzip src="target/jar/vanted_with_doublettes.jar" dest="target/jar/vanted_temp" />
-		<delete file="target/jar/vanted_with_doublettes.jar" />
-		<zip destfile="target/jar/vanted.jar" basedir="target/jar/vanted_temp" />
-		<delete dir="target/jar/vanted_temp" />
-
+		<unzip src="${jar.dest.path}/vanted_with_doublettes.jar" dest="${jar.dest.path}/vanted_temp" />
+		<delete file="${jar.dest.path}/vanted_with_doublettes.jar" />
+		<zip destfile="${jar.dest.path}/vanted-fatjar-ver${vanted.version.number}-build-${build.date}-${build.number}.jar" basedir="${jar.dest.path}/vanted_temp" />
+		<delete dir="${jar.dest.path}/vanted_temp" />
 	</target>
 
+	
 </project>
