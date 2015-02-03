@@ -2455,4 +2455,15 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		return v != null && v instanceof GraphView;
 	}
 	
+
+	@Override
+	public String getTabParentPath() {
+		return "Data Statistics";
+	}
+
+	@Override
+	public int getPreferredTabPosition() {
+		return InspectorTab.TAB_LEADING;
+	}
+
 }

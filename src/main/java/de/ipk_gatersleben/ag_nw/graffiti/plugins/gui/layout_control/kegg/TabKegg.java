@@ -1212,5 +1212,18 @@ public class TabKegg extends InspectorTab
 	}
 	public void pleaseContinueRun() {
 	}
+	
+
+	@Override
+	public String getTabParentPath() {
+		return "External Pathways";
+	}
+
+	@Override
+	public int getPreferredTabPosition() {
+		return InspectorTab.TAB_LEADING;
+	}
+	
+
 }
 

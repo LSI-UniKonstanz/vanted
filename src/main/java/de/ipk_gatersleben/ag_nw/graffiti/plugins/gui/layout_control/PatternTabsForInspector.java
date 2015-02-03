@@ -55,11 +55,11 @@ public class PatternTabsForInspector
 		// pathway tabs KEGG and MetaCrop
 		Collection<InspectorTab> subtabsPathway = new ArrayList<InspectorTab>();
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS))
-			subtabsPathway.add(new TabKegg());
+			tablist.add(new TabKegg());
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.MetaCrop_ACCESS))
-			subtabsPathway.add(new TabMetaCrop());
+			tablist.add(new TabMetaCrop());
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.RIMAS_ACCESS))
-			subtabsPathway.add(new RimasTab());
+			tablist.add(new RimasTab());
 		
 		// if (ReleaseInfo.getIsAllowedFeature(FeatureSet.SBGN))
 		// subtabsPathway.add(new TabSBGN());
@@ -71,24 +71,24 @@ public class PatternTabsForInspector
 			};
 		}
 		
-		if (subtabsPathway.size() > 0)
-			tablist.add(getSubtab("Pathways", subtabsPathway));
+//		if (subtabsPathway.size() > 0)
+//			tablist.add(getSubtab("Pathways", subtabsPathway));
 		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_LAYOUT))
 			tablist.add(new TabPluginControl());
 		
 		Collection<InspectorTab> subtabsTools = new ArrayList<InspectorTab>();
 		if (!ReleaseInfo.isRunningAsApplet() && ReleaseInfo.getIsAllowedFeature(FeatureSet.STATISTIC_FUNCTIONS))
-			subtabsTools.add(new TabStatistics());
+			tablist.add(new TabStatistics());
 
 //		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH))
 //			subtabsTools.add(new TabPatternLayout());
 		
 		tablist.add(new TabPatternLayout());
 		
-		if (subtabsTools.size() > 0)
-			tablist.add(getSubtab("Tools", subtabsTools));
-		
+//		if (subtabsTools.size() > 0)
+//			tablist.add(getSubtab("Tools", subtabsTools));
+//		
 		// GravistoService.getInstance().getMainFrame().addSelectionListener(new TabSubstrate());
 		
 		this.tabs = tablist.toArray(new InspectorTab[] {});
