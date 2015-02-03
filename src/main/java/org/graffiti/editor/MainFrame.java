@@ -58,6 +58,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -2085,26 +2086,34 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			targetNativeMenu.add(item, addAfter);
 			result = targetNativeMenu;
 		} else {
+			
+			Container curMenuComponent = getJMenuBar();
 			JMenu targetMenu;
 			
-			if (categoriesForAlgorithms.get(cat) == null) {
-				JMenu newCatMenu = new JMenu(cat);
-				// PLUGIN MENUS
-				// pluginMenu.add(newCatMenu); // add the new category menu to the
-				// plugin menu
-				
-				getJMenuBar().add(newCatMenu, getTargetMenuPosition(getJMenuBar(), newCatMenu.getText())); // add
-				// the
-				// new
-				// category
-				// as
-				// a
-				// top
-				// level
-				// menu
-				// item
-				
-				categoriesForAlgorithms.put(cat, newCatMenu);
+			StringTokenizer tokenizer = new StringTokenizer(cat,".");
+			StringBuffer catStringPath = new StringBuffer();
+			JMenu newCatMenu = null;
+			while(tokenizer.hasMoreTokens()) {
+				String curMenuName = tokenizer.nextToken();
+				if(catStringPath.length() > 0)
+					catStringPath.append(".");
+				catStringPath.append(curMenuName);
+				if ( categoriesForAlgorithms.get(catStringPath.toString()) == null) {
+					
+					
+						newCatMenu = new JMenu(curMenuName);
+						
+						if(curMenuComponent instanceof JMenuBar)
+							curMenuComponent.add(newCatMenu, getTargetMenuPosition((JMenuBar)curMenuComponent, newCatMenu.getText())); // add
+						else
+							curMenuComponent.add(newCatMenu); // add
+						
+						categoriesForAlgorithms.put(catStringPath.toString(), newCatMenu);
+						
+						curMenuComponent = newCatMenu;
+				} else {
+					curMenuComponent = categoriesForAlgorithms.get(catStringPath.toString());
+				}
 			}
 			
 			targetMenu = (JMenu) categoriesForAlgorithms.get(cat);
