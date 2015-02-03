@@ -51,29 +51,29 @@ import org.graffiti.session.SessionListener;
  * @version $Revision: 1.21 $
  */
 public abstract class AbstractTab
-					extends InspectorTab
-					implements SessionListener, SelectionListener, AttributeListener {
+extends InspectorTab
+implements SessionListener, SelectionListener, AttributeListener {
 	// ~ Instance fields ========================================================
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/** The attribute used to display the tree. */
 	protected Attribute collAttr;
-	
+
 	/** The root node of the displayed tree. */
 	protected DefaultMutableTreeNode rootNode;
-	
+
 	/** The elements that are displayed by this tab. */
 	protected Collection<Attributable> attributables;
-	
+
 	private TreeSelectionListener myTreeSelectionListener = new MyTreeSelectionListener();
-	
+
 	/**
 	 * Avoids duplicate updates
 	 */
 	private boolean rebuildActionNeeded = false;
-	private Timer timerRebuildTree = null;
-	
+	//	private Timer timerRebuildTree = null;
+
 	/**
 	 * Creates a new AbstractTab object.
 	 */
@@ -85,17 +85,17 @@ public abstract class AbstractTab
 		add(editPanel, "0,0");
 		validate();
 	}
-	
+
 	public String getEmptyDescription() {
 		return "Properties of active selection/session are editable at this place.";
 	}
-	
+
 	public String getTabNameForAttributeDescription() {
 		return getTitle();
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Called after an attribute has been added.
 	 * 
@@ -105,10 +105,10 @@ public abstract class AbstractTab
 	public void postAttributeAdded(AttributeEvent e) {
 		if (attributables != null)
 			if (attributables.contains(e.getAttribute().getAttributable())) {
-				rebuildTree();
+				startRebuildTreeActionThread();
 			}
 	}
-	
+
 	/**
 	 * Called after an attribute has been changed.
 	 * 
@@ -120,7 +120,7 @@ public abstract class AbstractTab
 			editPanel.updateTable(e.getAttribute());
 		}
 	}
-	
+
 	/**
 	 * Called after an attribute has been removed.
 	 * 
@@ -130,10 +130,10 @@ public abstract class AbstractTab
 	public void postAttributeRemoved(AttributeEvent e) {
 		if (attributables != null)
 			if (attributables.contains(e.getAttribute().getAttributable())) {
-				rebuildTree();
+				startRebuildTreeActionThread();
 			}
 	}
-	
+
 	/**
 	 * Called just before an attribute is added.
 	 * 
@@ -142,7 +142,7 @@ public abstract class AbstractTab
 	 */
 	public void preAttributeAdded(AttributeEvent e) {
 	}
-	
+
 	/**
 	 * Called before a change of an attribute takes place.
 	 * 
@@ -151,7 +151,7 @@ public abstract class AbstractTab
 	 */
 	public void preAttributeChanged(AttributeEvent e) {
 	}
-	
+
 	/**
 	 * Called just before an attribute is removed.
 	 * 
@@ -160,19 +160,31 @@ public abstract class AbstractTab
 	 */
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
-	
+
+	private synchronized void startRebuildTreeActionThread() {		
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				 rebuildTreeAction();
+			}
+		}).start();
+	}
+
 	private void rebuildTreeAction() {
+
+		rebuildActionNeeded = true;
 		if (rebuildActionNeeded) {
 			/** The tree view of the attribute hierarchy. */
 			// System.out.println("R: "+this.getClass().getName());
 			JTree attributeTree;
-			
+
 			// save current selection
 			String oldMarkedPath = null;
-			
+
 			// start new tree with given attribute at root
 			Attribute newAttr = collAttr;
-			
+
 			if (attributables != null && !attributables.isEmpty()) {
 				newAttr = (attributables.iterator().next()).getAttributes();
 				this.collAttr = newAttr;
@@ -180,28 +192,28 @@ public abstract class AbstractTab
 				newAttr = null;
 				collAttr = null;
 			}
-			
+
 			this.rootNode = new DefaultMutableTreeNode(new BooledAttribute(
-								newAttr, true));
+					newAttr, true));
 			attributeTree = new JTree(this.rootNode);
 			attributeTree.putClientProperty("JTree.lineStyle", "Angled");
 			attributeTree.getSelectionModel().setSelectionMode(
-								TreeSelectionModel.SINGLE_TREE_SELECTION);
-			
+					TreeSelectionModel.SINGLE_TREE_SELECTION);
+
 			/*
 			 * build attribute hierarchy of newAttr starting at root and
 			 * mark oldMarkedPath
 			 */
 			TreePath selectedTreePath = null;
 			DefaultMutableTreeNode selectedNode = fillNode(this.rootNode, newAttr,
-								attributables, oldMarkedPath);
-			
+					attributables, oldMarkedPath);
+
 			if (selectedNode != null) {
 				selectedTreePath = new TreePath(selectedNode.getPath());
 			}
-			
+
 			attributeTree.addTreeSelectionListener(myTreeSelectionListener);
-			
+
 			if (selectedTreePath == null) {
 				attributeTree.setSelectionRow(0);
 				attributeTree.expandRow(0);
@@ -213,42 +225,28 @@ public abstract class AbstractTab
 		}
 		rebuildActionNeeded = false;
 	}
-	
+
 	/**
 	 * Calls <code>buildTree</code> using the set attribute.
 	 */
 	public void rebuildTree() {
-		if (rebuildActionNeeded)
-			return;
-		if (timerRebuildTree != null && timerRebuildTree.isRunning())
-			return;
-		rebuildActionNeeded = true;
-		timerRebuildTree = new Timer(100, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!isShowing())
-					return;
-				
-				rebuildTreeAction();
-				timerRebuildTree.stop();
-			}
-		});
-		timerRebuildTree.start();
+		startRebuildTreeActionThread();
+
 	}
-	
+
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		rebuildTree();
 	}
-	
+
 	@Override
 	public boolean isSelectionListener() {
 		return true;
 	}
-	
+
 	public void selectionChanged(SelectionEvent e) {
-		//
-		
+		startRebuildTreeActionThread();
 	}
-	
+
 	public void sessionChanged(Session s) {
 		if (s != null && s.getGraph() != null) {
 			editPanel.setListenerManager(s.getGraph().getListenerManager());
@@ -266,11 +264,11 @@ public abstract class AbstractTab
 		}
 		rebuildTree();
 	}
-	
+
 	public void sessionDataChanged(Session s) {
 		// empty
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -281,7 +279,7 @@ public abstract class AbstractTab
 		attributables = graphElements;
 		rebuildTree();
 	}
-	
+
 	/**
 	 * Builds a tree of the hierarchy starting at attr and appends it to
 	 * treeNode.
@@ -295,10 +293,10 @@ public abstract class AbstractTab
 	 */
 	@SuppressWarnings("unused")
 	private void fillNode(DefaultMutableTreeNode treeNode, Attribute attr,
-						Collection<Attributable> graphElements) {
+			Collection<Attributable> graphElements) {
 		this.fillNode(treeNode, attr, graphElements, null);
 	}
-	
+
 	/**
 	 * Same as <code>fillNode(DefaultMutableTreeNode treeNode, Attribute attr)
 	 * </code> but additionally selects the given attribute at markedPath.
@@ -314,10 +312,10 @@ public abstract class AbstractTab
 	 * @return DOCUMENT ME!
 	 */
 	private DefaultMutableTreeNode fillNode(DefaultMutableTreeNode treeNode,
-						Attribute attr, Collection<Attributable> graphElements, String markedPath) {
+			Attribute attr, Collection<Attributable> graphElements, String markedPath) {
 		DefaultMutableTreeNode returnTreeNode = null;
 		DefaultMutableTreeNode newNode;
-		
+
 		boolean allHave = true;
 		boolean allSameValue = true;
 		Collection<Attribute> attrs;
@@ -328,106 +326,106 @@ public abstract class AbstractTab
 		} else
 			if (attr instanceof CompositeAttribute) {
 				attrs = new LinkedList<Attribute>();
-				
+
 				try {
 					attrs.add(((CompositeAttribute) attr).getAttributes());
 				} catch (RuntimeException e) {
 					Object attributeValue = attr.getValue();
-					
+
 					// check if present in all graph elements
 					if (graphElements.size() > 1) {
 						for (Iterator<Attributable> geit = graphElements.iterator(); geit.hasNext();) {
 							try {
 								Attribute oAttr = ((Attributable) geit.next())
-													.getAttribute(attr.getPath().substring(1));
-								
+										.getAttribute(attr.getPath().substring(1));
+
 								if (!attributeValue.equals(oAttr.getValue())) {
 									allSameValue = false;
-									
+
 									break;
 								}
 							} catch (AttributeNotFoundException anfe) {
 								// found graph element that has no such attribute
 								allHave = false;
-								
+
 								break;
 							}
 						}
 					}
-					
+
 					if (allHave) {
 						newNode = new DefaultMutableTreeNode(new BooledAttribute(attr, allSameValue));
-						
+
 						// treeNode.add(newNode);
 						if (attr.getPath().equals(markedPath)) {
 							// returnTreePath = new TreePath(newNode.getPath());
 							returnTreeNode = newNode;
 						}
 					}
-					
+
 					return returnTreeNode;
 				}
 			} else {
 				allHave = true;
 				allSameValue = true;
-				
+
 				Attribute attribute = attr;
 				// System.out.println("AAA: "+attribute.getClass().getSimpleName());
 				Object attributeValue = attribute.getValue();
-				
+
 				// check if present in all graph elements
 				if (graphElements.size() > 1) {
 					for (Iterator<Attributable> geit = graphElements.iterator(); geit.hasNext();) {
 						try {
 							Attribute oAttr = ((Attributable) geit.next())
-												.getAttribute(attribute.getPath().substring(1));
-							
+									.getAttribute(attribute.getPath().substring(1));
+
 							if (!attributeValue.equals(oAttr.getValue())) {
 								allSameValue = false;
-								
+
 								break;
 							}
 						} catch (AttributeNotFoundException anfe) {
 							// found graph element that has no such attribute
 							allHave = false;
-							
+
 							break;
 						}
 					}
 				}
-				
+
 				if (allHave) {
 					newNode = new DefaultMutableTreeNode(new BooledAttribute(attribute,
-										allSameValue));
-					
+							allSameValue));
+
 					// treeNode.add(newNode);
 					// if (attribute.getPath().equals(markedPath)) {
 					// returnTreePath = new TreePath(newNode.getPath());
 					// }
 				}
-				
+
 				return returnTreeNode;
 			}
-		
+
 		attrs = new ArrayList<Attribute>(attrs);
-		
+
 		for (Iterator<Attribute> it = attrs.iterator(); it.hasNext();) {
 			allHave = true;
 			allSameValue = true;
-			
+
 			Attribute attribute = (Attribute) it.next();
 			Object attributeValue = attribute.getValue();
-			
+
 			// check if present in all graph elements
 			if (graphElements.size() > 1) {
 				for (Iterator<Attributable> geit = graphElements.iterator(); geit.hasNext();) {
 					try {
 						Attribute oAttr = ((Attributable) geit.next())
-											.getAttribute(attribute.getPath().substring(1));
-						
+								.getAttribute(attribute.getPath().substring(1));
+
 						if (allSameValue && !attributeValue.equals(oAttr.getValue())) {
 							allSameValue = false;
-							
+
 							// break;
 						}
 					} catch (AttributeNotFoundException anfe) {
@@ -441,32 +439,32 @@ public abstract class AbstractTab
 					}
 				}
 			}
-			
+
 			if (allHave) {
 				newNode = new DefaultMutableTreeNode(new BooledAttribute(attribute,
-									allSameValue));
-				
+						allSameValue));
+
 				if (returnTreeNode == null) {
 					returnTreeNode = fillNode(newNode, attribute, graphElements,
-										markedPath);
+							markedPath);
 				} else {
 					fillNode(newNode, attribute, graphElements, null);
 				}
-				
+
 				treeNode.add(newNode);
-				
+
 				if (attribute.getPath().equals(markedPath)) {
 					returnTreeNode = newNode;
 				}
 			}
 		}
-		
+
 		// if (attr.getPath().equals(markedPath)) {
 		// returnTreePath = new TreePath(treeNode.getPath());
 		// }
 		return returnTreeNode;
 	}
-	
+
 	// ~ Inner Classes ==========================================================
 	/**
 	 * Implements valueChanged method that updates the table according to the
@@ -481,29 +479,29 @@ public abstract class AbstractTab
 		 */
 		public void valueChanged(TreeSelectionEvent e) {
 			TreePath treePath = e.getNewLeadSelectionPath();
-			
+
 			if (treePath != null) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath
-									.getLastPathComponent();
-				
+						.getLastPathComponent();
+
 				if (node == null)
 					return;
-				
+
 				// Attribute attr = (Attribute)node.getUserObject();
 				editPanel.buildTable(node, attributables, getTabNameForAttributeDescription());
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean visibleForView(View v) {
 		return v != null && (v instanceof GraphView);
 	}
-	
+
 	public void selectionListChanged(SelectionEvent e) {
 		// empty
 	}
-	
+
 	public void transactionStarted(TransactionEvent e) {
 		// empty
 	}

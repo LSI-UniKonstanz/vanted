@@ -80,8 +80,11 @@ public class PatternTabsForInspector
 		Collection<InspectorTab> subtabsTools = new ArrayList<InspectorTab>();
 		if (!ReleaseInfo.isRunningAsApplet() && ReleaseInfo.getIsAllowedFeature(FeatureSet.STATISTIC_FUNCTIONS))
 			subtabsTools.add(new TabStatistics());
-		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH))
-			subtabsTools.add(new TabPatternLayout());
+
+//		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH))
+//			subtabsTools.add(new TabPatternLayout());
+		
+		tablist.add(new TabPatternLayout());
 		
 		if (subtabsTools.size() > 0)
 			tablist.add(getSubtab("Tools", subtabsTools));

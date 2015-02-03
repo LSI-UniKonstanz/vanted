@@ -394,6 +394,13 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	/** The main frame's status bar. */
 	private StatusBar statusBar;
 	
+	/** the main panel for the inspector tabs
+	 *  This will be set by pluginAdded where one of the plugins
+	 *  should be the Inspector Plugin
+	 */
+	private InspectorPlugin inspectorPlugin = null;
+
+	
 	/**
 	 * The default view type, that will be always displayed if the user
 	 * deactivates the view chooser dialog. This variable is initialized with
@@ -1782,7 +1789,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		updateActions();
 	}
 	
-	InspectorPlugin inspectorPlugin = null;
 	
 	/**
 	 * Called by the plugin manager, iff a plugin has been added.

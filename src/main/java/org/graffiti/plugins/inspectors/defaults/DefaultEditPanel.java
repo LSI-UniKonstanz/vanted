@@ -1306,7 +1306,7 @@ public class DefaultEditPanel extends EditPanel {
 	public void showEmpty() {
 		this.displayedAttr = null;
 		this.displayedValueEditComponents = null;
-		this.editComponentsMap = null;
+//		this.editComponentsMap = null;
 		this.graphElements = null;
 		this.mapValueEditComponent2AttributeList = null;
 		
