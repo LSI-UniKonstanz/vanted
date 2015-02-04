@@ -110,5 +110,7 @@ echo "./de/ipk_gatersleben/ag_nw/graffiti/plugins/ios/importers/flatfile/plugin.
 echo "./de/ipk_gatersleben/ag_nw/graffiti/plugins/ios/exporters/matrix/plugin.xml" >> src\main\resources\plugins_exclude.txt
 echo "./de/ipk_gatersleben/ag_nw/graffiti/plugins/algorithms/collapsed_graph_producer/plugin.xml" >> src\main\resources\plugins_exclude.txt
 echo "./log4j.xml" >> src\main\resources\plugins_exclude.txt
+rem excluding the SOM plugin until it's fixed
+echo "./de/ipk_gatersleben/ag_nw/graffiti/plugins/algorithms/som/plugin.xml" >> src\main\resources\plugins_exclude.txt
 
 echo "READY"
