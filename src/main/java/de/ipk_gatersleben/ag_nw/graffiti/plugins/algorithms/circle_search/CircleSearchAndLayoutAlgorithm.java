@@ -145,7 +145,7 @@ public class CircleSearchAndLayoutAlgorithm extends AbstractAlgorithm {
 	}
 	
 	public String getName() {
-		return "Find and Layout Circles...";
+		return "Find and Layout Circles";
 	}
 	
 	@Override

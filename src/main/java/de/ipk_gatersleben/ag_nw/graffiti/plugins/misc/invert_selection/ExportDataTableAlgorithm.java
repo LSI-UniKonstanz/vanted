@@ -107,14 +107,14 @@ public class ExportDataTableAlgorithm extends AbstractEditorAlgorithm {
 	
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
-			return "Export Data...";
+			return "Data";
 		else
 			return null;
 	}
 	
 	@Override
 	public String getCategory() {
-		return "menu.file";
+		return "file.Export";
 	}
 	
 	private enum ExportType {

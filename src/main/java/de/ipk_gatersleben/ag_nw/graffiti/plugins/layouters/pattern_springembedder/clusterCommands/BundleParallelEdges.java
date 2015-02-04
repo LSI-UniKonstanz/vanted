@@ -34,14 +34,20 @@ public class BundleParallelEdges extends AbstractAlgorithm {
 	private static String source = "Cluster ID";
 	
 	public String getName() {
-		return "Bundle Parallel Edges...";
+		return "Bundle Parallel Edges";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Edges";
+		return "Network.Edges";
 	}
 	
+	
+	@Override
+	public boolean isLayoutAlgorithm() {
+		return true;
+	}
+
 	@Override
 	public String getDescription() {
 		return "<html>Will introduce bends to the selected egdes<br>" +

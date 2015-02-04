@@ -92,7 +92,7 @@ public class InvertSelectionAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "menu.edit";
+		return "edit.Selection";
 	}
 	
 	/**

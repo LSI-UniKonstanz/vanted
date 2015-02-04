@@ -2087,7 +2087,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			result = targetNativeMenu;
 		} else {
 			
-			Container curMenuComponent = getJMenuBar();
+			JComponent curMenuComponent = getJMenuBar();
 			JMenu targetMenu;
 			
 			StringTokenizer tokenizer = new StringTokenizer(cat,".");
@@ -2098,35 +2098,49 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				if(catStringPath.length() > 0)
 					catStringPath.append(".");
 				catStringPath.append(curMenuName);
-				if ( categoriesForAlgorithms.get(catStringPath.toString()) == null) {
+				if ( categoriesForAlgorithms.get(catStringPath.toString().toLowerCase()) == null) {
 					
 					
 						newCatMenu = new JMenu(curMenuName);
 						
 						if(curMenuComponent instanceof JMenuBar)
 							curMenuComponent.add(newCatMenu, getTargetMenuPosition((JMenuBar)curMenuComponent, newCatMenu.getText())); // add
-						else
-							curMenuComponent.add(newCatMenu); // add
+						else {
+							
+							Integer pluginMenuPosition = null;
+							if((pluginMenuPosition = (Integer) curMenuComponent.getClientProperty("pluginMenuPosition")) != null) {
+								curMenuComponent.add(newCatMenu, pluginMenuPosition.intValue());
+							} else {
+								curMenuComponent.add(newCatMenu);
+							}
+							
+//							curMenuComponent.add(newCatMenu); // add
+						}
 						
-						categoriesForAlgorithms.put(catStringPath.toString(), newCatMenu);
+						categoriesForAlgorithms.put(catStringPath.toString().toLowerCase(), newCatMenu);
 						
 						curMenuComponent = newCatMenu;
 				} else {
-					curMenuComponent = categoriesForAlgorithms.get(catStringPath.toString());
+					curMenuComponent = categoriesForAlgorithms.get(catStringPath.toString().toLowerCase());
 				}
 			}
 			
-			targetMenu = (JMenu) categoriesForAlgorithms.get(cat);
+			targetMenu = (JMenu) categoriesForAlgorithms.get(cat.toLowerCase());
 			
-			targetMenu.add(item);
-			sortMenuItems(targetMenu, 0);
+			Integer pluginMenuPosition = null;
+			if((pluginMenuPosition = (Integer) targetMenu.getClientProperty("pluginMenuPosition")) != null) {
+				targetMenu.add(item, pluginMenuPosition);
+			} else {
+				targetMenu.add(item);
+			}
+//			sortMenuItems(targetMenu, 0);
 			result = targetMenu;
 		}
 		int sortFrom = 0;
 		Integer pmp = (Integer) pluginMenu.getClientProperty("pluginMenuPosition");
 		if (pmp != null)
 			sortFrom = pmp.intValue();
-		sortMenuItems(pluginMenu, sortFrom);
+//		sortMenuItems(pluginMenu, sortFrom);
 		validate();
 		return result;
 	}
@@ -2853,9 +2867,13 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	 */
 	private JMenu createMenu(String name) {
 		String title = sBundle.getString("menu." + name);
+		if(title == null)
+			title = name;
 		JMenu menu = new JMenu(title);
 		
 		guiMap.put("menu." + name, menu);
+		
+		categoriesForAlgorithms.put(title.toLowerCase(), menu);
 		
 		try {
 			String mnem = sBundle.getString("menu." + name + ".mnemonic");
@@ -2886,7 +2904,12 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		JMenu fileMenu = createMenu("file");
 		menuBar.add(fileMenu);
 		
-		fileMenu.add(createMenuItem(newGraph));
+		JMenu menu_new = createMenu("New");
+		categoriesForAlgorithms.put("file.new", menu_new);
+		menu_new.add(createMenuItem(newGraph));
+		fileMenu.add(menu_new);
+		
+		
 		fileMenu.add(createMenuItem(viewNew));
 		fileMenu.add(createMenuItem(fileOpen));
 		fileMenu.addSeparator();
@@ -2967,6 +2990,9 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		fileMenu.putClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem", new Boolean(true));
 		
 		JMenu editMenu = createMenu("edit");
+		
+		categoriesForAlgorithms.put("edit", editMenu);
+		
 		editMenu.putClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem", new Boolean(true));
 		menuBar.add(editMenu);
 		

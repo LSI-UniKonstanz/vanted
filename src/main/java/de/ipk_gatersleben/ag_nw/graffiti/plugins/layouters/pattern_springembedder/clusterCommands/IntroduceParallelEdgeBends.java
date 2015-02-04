@@ -26,7 +26,7 @@ public class IntroduceParallelEdgeBends extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Edges";
+		return "Network.Edges";
 	}
 	
 	@Override

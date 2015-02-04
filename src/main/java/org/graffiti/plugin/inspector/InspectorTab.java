@@ -10,6 +10,10 @@
 package org.graffiti.plugin.inspector;
 
 import java.awt.Color;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -19,6 +23,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.Border;
 
 import org.ErrorMsg;
+import org.apache.log4j.Logger;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.view.View;
 import org.graffiti.selection.SelectionListener;
@@ -30,8 +35,10 @@ import org.graffiti.selection.SelectionListener;
  * @see InspectorPlugin
  */
 public abstract class InspectorTab
-extends JComponent {
+extends JComponent implements ComponentListener {
 
+	private static Logger logger = Logger.getLogger(InspectorTab.class);
+	
 	public static final int TAB_LEADING = Integer.MIN_VALUE;
 	public static final int TAB_TRAILING = Integer.MAX_VALUE;
 	public static final int TAB_RANDOM = 0;
@@ -60,6 +67,12 @@ extends JComponent {
 	
 	// ~ Methods ================================================================
 
+	/**
+	 * 
+	 */
+	public InspectorTab() {
+		addComponentListener(this);
+	}
 	/**
 	 * Returns the EditPanel of this tab.
 	 * 
@@ -291,6 +304,28 @@ extends JComponent {
 	public boolean isSelectionListener() {
 		return (this instanceof SelectionListener);
 	}
+
+	/**
+	 * override this method to trigger any action to be done, if this tab
+	 * gains visibility
+	 */
+	@Override
+	public void componentShown(ComponentEvent e) {
+//		logger.debug("Showing "+ getTitle());
+	}
+	
+	@Override
+	public void componentResized(ComponentEvent e) {
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+	}
+
 
 	
 }

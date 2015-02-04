@@ -37,12 +37,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
 public class MergeNodes extends AbstractAlgorithm {
 	
 	public String getName() {
-		return "Merge Nodes...";
+		return "Merge Nodes";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Nodes";
+		return "Network.Nodes";
 	}
 	
 	@Override

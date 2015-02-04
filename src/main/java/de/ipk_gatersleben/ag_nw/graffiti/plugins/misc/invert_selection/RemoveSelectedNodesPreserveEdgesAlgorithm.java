@@ -227,14 +227,14 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	 */
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
-			return "Remove Nodes...";
+			return "Remove Nodes";
 		else
 			return null;
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Nodes";
+		return "Network.Nodes";
 	}
 	
 	@Override

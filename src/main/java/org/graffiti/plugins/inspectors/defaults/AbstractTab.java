@@ -14,6 +14,7 @@ import info.clearthought.layout.TableLayoutConstants;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -161,18 +162,23 @@ implements SessionListener, SelectionListener, AttributeListener {
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
 
-	private synchronized void startRebuildTreeActionThread() {		
+	private void startRebuildTreeActionThread() {		
+		if( ! isShowing())
+			return;
+
+		rebuildTreeAction();
+		/*
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				 rebuildTreeAction();
 			}
 		}).start();
+		*/
 	}
 
 	private void rebuildTreeAction() {
-
+		
 		rebuildActionNeeded = true;
 		if (rebuildActionNeeded) {
 			/** The tree view of the attribute hierarchy. */
@@ -195,33 +201,37 @@ implements SessionListener, SelectionListener, AttributeListener {
 
 			this.rootNode = new DefaultMutableTreeNode(new BooledAttribute(
 					newAttr, true));
-			attributeTree = new JTree(this.rootNode);
-			attributeTree.putClientProperty("JTree.lineStyle", "Angled");
-			attributeTree.getSelectionModel().setSelectionMode(
-					TreeSelectionModel.SINGLE_TREE_SELECTION);
+			synchronized (this.rootNode) {
 
-			/*
-			 * build attribute hierarchy of newAttr starting at root and
-			 * mark oldMarkedPath
-			 */
-			TreePath selectedTreePath = null;
-			DefaultMutableTreeNode selectedNode = fillNode(this.rootNode, newAttr,
-					attributables, oldMarkedPath);
+				attributeTree = new JTree(this.rootNode);
+				attributeTree.putClientProperty("JTree.lineStyle", "Angled");
+				attributeTree.getSelectionModel().setSelectionMode(
+						TreeSelectionModel.SINGLE_TREE_SELECTION);
 
-			if (selectedNode != null) {
-				selectedTreePath = new TreePath(selectedNode.getPath());
+				/*
+				 * build attribute hierarchy of newAttr starting at root and
+				 * mark oldMarkedPath
+				 */
+				TreePath selectedTreePath = null;
+				DefaultMutableTreeNode selectedNode = fillNode(this.rootNode, newAttr,
+						attributables, oldMarkedPath);
+
+				if (selectedNode != null) {
+					selectedTreePath = new TreePath(selectedNode.getPath());
+				}
+
+				attributeTree.addTreeSelectionListener(myTreeSelectionListener);
+
+				if (selectedTreePath == null) {
+					attributeTree.setSelectionRow(0);
+					attributeTree.expandRow(0);
+				} else {
+					attributeTree.setSelectionPath(selectedTreePath);
+					attributeTree.scrollPathToVisible(selectedTreePath);
+				}
+				attributeTree.makeVisible(selectedTreePath);
 			}
 
-			attributeTree.addTreeSelectionListener(myTreeSelectionListener);
-
-			if (selectedTreePath == null) {
-				attributeTree.setSelectionRow(0);
-				attributeTree.expandRow(0);
-			} else {
-				attributeTree.setSelectionPath(selectedTreePath);
-				attributeTree.scrollPathToVisible(selectedTreePath);
-			}
-			attributeTree.makeVisible(selectedTreePath);
 		}
 		rebuildActionNeeded = false;
 	}
@@ -234,6 +244,12 @@ implements SessionListener, SelectionListener, AttributeListener {
 
 	}
 
+	@Override
+	public void componentShown(ComponentEvent e) {
+		rebuildTree();
+	}
+
+	
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		rebuildTree();
 	}

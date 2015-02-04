@@ -37,7 +37,7 @@ public class ExchangeNodePositionsAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "Nodes";
+		return "Network.Nodes";
 	}
 	
 	@Override

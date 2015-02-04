@@ -31,7 +31,7 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Elements";
+		return "File.New.Create Random Network";
 	}
 	
 	private int numberOfNodes = 5;
@@ -164,4 +164,11 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 		}
 		return rdg;
 	}
+
+	@Override
+	public boolean isAlwaysExecutable() {
+		return true;
+	}
+	
+	
 }

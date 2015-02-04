@@ -22,7 +22,7 @@ public class SetToolTipAlgorithm extends AbstractAlgorithm implements Algorithm 
 	
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TOOLTIPS))
-			return "Set Tooltip...";
+			return "Set Tooltip";
 		else
 			return null;
 	}

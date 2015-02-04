@@ -43,7 +43,7 @@ public class BringToFrontOrBackAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Layout";
+		return "Network.Arrange";
 	}
 	
 	@Override

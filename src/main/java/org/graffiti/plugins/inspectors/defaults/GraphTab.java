@@ -83,7 +83,7 @@ public class GraphTab
 	
 	@Override
 	public String getTabParentPath() {
-		return "Network";
+		return "Network.General";
 	}
 
 	@Override

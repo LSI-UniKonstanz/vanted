@@ -9,6 +9,7 @@
 
 package org.graffiti.plugins.inspectors.defaults;
 
+import java.awt.event.ComponentEvent;
 import java.util.Collection;
 
 import org.graffiti.editor.MainFrame;
@@ -53,8 +54,7 @@ public class EdgeTab
 		rebuildTree((Collection) e.getSelection().getEdges());
 	}
 
-	
-	
+
 	@Override
 	public void sessionChanged(Session s) {
 		super.sessionChanged(s);

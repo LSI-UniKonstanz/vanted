@@ -753,12 +753,12 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Create Website...";
+		return "Graph as Website";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "menu.file";
+		return "File.Export";
 	}
 	
 	@Override

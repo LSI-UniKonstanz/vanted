@@ -125,12 +125,12 @@ public class DuplicateEdge extends AbstractEditorAlgorithm {
 	
 	@Override
 	public String getName() {
-		return "Multiply Edge";
+		return "Clone Edge";
 	}
 	
 	@Override
 	public String getDescription() {
-		return "<html>This command will copy the edge with all attributes and<br>" +
+		return "<html>This command will clone the edge with all attributes and<br>" +
 						"connect this copy to the interactively chosen source and<br>" +
 						"target node. If there are many nodes chosen the edge will<br>" +
 						"be multiplicated several times.";
@@ -138,6 +138,6 @@ public class DuplicateEdge extends AbstractEditorAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Edges";
+		return "Network.Edges";
 	}
 }

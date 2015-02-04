@@ -30,7 +30,7 @@ public class SelectClusterAlgorithm extends AbstractEditorAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "menu.edit";
+		return "edit.Selection";
 	}
 	
 	@Override

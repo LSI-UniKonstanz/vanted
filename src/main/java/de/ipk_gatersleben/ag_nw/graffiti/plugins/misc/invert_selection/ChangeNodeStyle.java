@@ -11,12 +11,12 @@ public class ChangeNodeStyle extends AbstractEditorAlgorithm {
 	}
 	
 	public String getName() {
-		return "Change Node Style";
+		return "Node Attributes";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Nodes";
+		return "Network.Nodes";
 	}
 	
 	public boolean activeForView(View v) {

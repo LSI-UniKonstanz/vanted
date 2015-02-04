@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.StringManipulationTools;
+import org.apache.log4j.Logger;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
@@ -31,6 +32,9 @@ import org.graffiti.plugin.algorithm.PreconditionException;
  */
 public class NaivePatternFinderAlgorithm
 					extends AbstractAlgorithm {
+	
+	private static Logger logger = Logger.getLogger(NaivePatternFinderAlgorithm.class);
+	
 	/*************************************************************/
 	/* Member variables */
 	/*************************************************************/
@@ -124,7 +128,8 @@ public class NaivePatternFinderAlgorithm
 	 * Performs the matching of the target graph with all pattern graphs.
 	 */
 	public void execute() {
-		System.err.println("There are " + listOfPatterns.size()
+		
+		logger.debug("There are " + listOfPatterns.size()
 							+ " patterns in the list.");
 		
 		Iterator<Graph> i = listOfPatterns.iterator();
@@ -133,13 +138,13 @@ public class NaivePatternFinderAlgorithm
 		while (i.hasNext()) {
 			Graph currentPattern = (Graph) i.next();
 			
-			System.err.println("This pattern has "
+			logger.debug("This pattern has "
 								+ currentPattern.getNumberOfNodes()
 								+ " nodes and "
 								+ currentPattern.getNumberOfEdges() + " edges.");
 			
 			if (currentPattern.getNumberOfNodes() == 0) {
-				System.err.println("Pattern has no nodes, skipping...");
+				logger.debug("Pattern has no nodes, skipping...");
 				continue;
 			}
 			
@@ -168,7 +173,7 @@ public class NaivePatternFinderAlgorithm
 						boolean ignoreEdgeDirection,
 						final boolean startWithLargestCircle,
 						BackgroundTaskStatusProviderSupportingExternalCall status) {
-		System.err.println("There are " + patterns.size() + " patterns in the list.");
+		logger.debug("There are " + patterns.size() + " patterns in the list.");
 		
 		int j = 1;
 		Collections.sort(patterns, new Comparator<Graph>() {
@@ -200,13 +205,14 @@ public class NaivePatternFinderAlgorithm
 								+ " nodes and "
 								+ currentPattern.getNumberOfEdges() + " edges");
 			i++;
-			System.err.println("This pattern has "
+			
+			logger.debug("This pattern has "
 								+ currentPattern.getNumberOfNodes()
 								+ " nodes and "
 								+ currentPattern.getNumberOfEdges() + " edges.");
 			
 			if (currentPattern.getNumberOfNodes() == 0) {
-				System.err.println("Pattern has no nodes, skipping...");
+				logger.debug("Pattern has no nodes, skipping...");
 				continue;
 			}
 			

@@ -47,12 +47,12 @@ public class ColorizeAlgorithm extends AbstractAlgorithm {
 	private double gamma = 1d;
 	
 	public String getName() {
-		return null; // "Average Substance-Level > Background Color";
+		return "Average Substance-Level > Background Color";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Nodes";
+		return "Network.Nodes";
 	}
 	
 	@Override
