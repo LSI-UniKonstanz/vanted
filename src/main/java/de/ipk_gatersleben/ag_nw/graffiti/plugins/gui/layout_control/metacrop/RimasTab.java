@@ -153,7 +153,7 @@ public class RimasTab extends InspectorTab {
 
 	@Override
 	public String getTabParentPath() {
-		return "External Pathways";
+		return "Pathways";
 	}
 
 	@Override

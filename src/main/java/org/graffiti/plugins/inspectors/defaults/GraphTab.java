@@ -9,6 +9,7 @@
 
 package org.graffiti.plugins.inspectors.defaults;
 
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 
 import org.graffiti.attributes.Attributable;
@@ -81,9 +82,16 @@ public class GraphTab
 		rebuildTree(ge);
 	}
 	
+	
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+		rebuildTree();
+	}
+
 	@Override
 	public String getTabParentPath() {
-		return "Network.General";
+		return "Network";
 	}
 
 	@Override

@@ -85,6 +85,7 @@ extends GraffitiAction
 
 	}
 
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JDialog dialog = new JDialog(mainFrame);

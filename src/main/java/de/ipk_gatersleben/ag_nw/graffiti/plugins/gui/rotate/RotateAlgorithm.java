@@ -83,7 +83,8 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 	}
 	
 	public String getCategory() {
-		return "Layout";
+//		return "Layout";
+		return null;
 	}
 	
 	@Override

@@ -41,7 +41,7 @@ public class CombineMappingData extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Mapping";
+		return "Data.Mapping";
 	}
 	
 	@Override

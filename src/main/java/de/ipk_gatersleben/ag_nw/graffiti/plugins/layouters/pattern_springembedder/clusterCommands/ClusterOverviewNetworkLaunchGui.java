@@ -32,12 +32,12 @@ public class ClusterOverviewNetworkLaunchGui extends LaunchGui {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
 		else
-			return "Process Overview-Graph...";
+			return "Process Cluster Overview-Graph";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Cluster";
+		return "Network.Cluster";
 	}
 	
 }

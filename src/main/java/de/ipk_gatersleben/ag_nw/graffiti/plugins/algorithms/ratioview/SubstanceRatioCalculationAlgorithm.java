@@ -48,12 +48,12 @@ public class SubstanceRatioCalculationAlgorithm
 	private boolean useAverageValues = true;
 	
 	public String getName() {
-		return "Substance Ratio Matrix...";
+		return "Substance-Ratio Matrix View";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Mapping";
+		return "Data.Mapping";
 	}
 	
 	@Override

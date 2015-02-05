@@ -6,7 +6,9 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe;
 
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
+import info.clearthought.layout.TableLayoutConstraints;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -27,12 +29,16 @@ import javax.help.CSH;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -44,6 +50,8 @@ import javax.swing.text.html.HTMLFrameHyperlinkEvent;
 import org.AttributeHelper;
 import org.ErrorMsg;
 import org.FeatureSet;
+import org.FolderPanel;
+import org.JLabelJavaHelpLink;
 import org.Java_1_5_compatibility;
 import org.Release;
 import org.ReleaseInfo;
@@ -60,6 +68,7 @@ import apple.dts.samplecode.osxadapter.OSXAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.plugin_info.PluginInfoHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.TabExampleFiles;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.WorkflowHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.threading.SystemAnalysis;
 import de.ipk_gatersleben.ag_nw.graffiti.services.GUIhelper;
@@ -91,7 +100,11 @@ public class MenuItemInfoDialog
 	private int lastErrorCount = 0;
 	
 	final JMenuItem info;
-	
+
+	private JDialog dialogExamples;
+
+	private JDialog dialogWorkflow;
+
 	/**
 	 * Create Menu.
 	 */
@@ -99,7 +112,7 @@ public class MenuItemInfoDialog
 		super();
 		setName("ipk.help");
 		setText("?");
-		setMnemonic('H');
+		setMnemonic('?');
 		setEnabled(true);
 		
 		info = new JMenuItem("About " + DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT);
@@ -562,8 +575,44 @@ public class MenuItemInfoDialog
 			}
 		});
 		
+//		JMenuItem newsitem = new JMenuItem("News");
+//		newsitem.addActionListener(new ShowNewsAction());
+		
+		JMenuItem examplesItem = new JMenuItem("Examples");
+		examplesItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+					if(dialogExamples == null)
+						createExamplesDialog();
+					dialogExamples.setVisible(true);
+					dialogExamples.toFront();
+			}
+		});
+		
+		JMenuItem workflowItem = new JMenuItem("Workflow Tutorial");
+		workflowItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					
+					if(dialogWorkflow == null)
+						createWorkflowDialog();
+					dialogWorkflow.setVisible(true);
+					dialogWorkflow.toFront();
+					
+			}
+		});
+
+		
+		
 		int pos = 1;
 		insert(error, pos++);
+		insert(examplesItem, pos++);
+		insert(workflowItem, pos++);
+
+		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.GravistoJavaHelp))
 			insert(jMenuItemJavaHelp, pos++);
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.GravistoJavaHelp))
@@ -634,6 +683,69 @@ public class MenuItemInfoDialog
 	public void doQuit() {
 		MainFrame.getInstance().closeGravisto();
 	}
+	
+	protected void createExamplesDialog() {
+		dialogExamples = new JDialog(MainFrame.getInstance());
+		dialogExamples.setTitle("Examples");
+		dialogExamples.setModal(false);
+		dialogExamples.setPreferredSize(new Dimension(300, 300));
+//		JScrollPane scrollpane = new JScrollPane();
+		dialogExamples.getContentPane().setLayout(new BorderLayout());
+		dialogExamples.getContentPane().add(new TabExampleFiles(), BorderLayout.CENTER);
+		dialogExamples.pack();
+		dialogExamples.setLocationRelativeTo(MainFrame.getInstance());
+		
+	}
+
+	protected void createWorkflowDialog() {
+		final JPanel workFlowHelp = WorkflowHelper.getWorkFlowHelp();
+		
+		final JFrame dialogframe = new JFrame("Workflow Tutorial");
+	
+		
+		double[][] sizeM = { { TableLayoutConstants.FILL }, // Columns
+				{ TableLayoutConstants.FILL} }; // Rows
+		
+		
+		double border = 5;
+		
+		final JPanel myPanel = new JPanel();
+		myPanel.setLayout(new TableLayout(new double[][]{
+				{ border, 300, border }, // Columns
+				{	TableLayoutConstraints.PREFERRED }
+		}));
+		
+		myPanel.add(workFlowHelp, "1,0");
+
+		
+		
+		dialogWorkflow = new JDialog(MainFrame.getInstance());
+		dialogWorkflow.setTitle("Workflow Tutorial");
+		dialogWorkflow.setModal(false);
+		dialogWorkflow.setSize(new Dimension(350, 600));
+		
+		JScrollPane scrollpane = new JScrollPane(myPanel);
+		scrollpane.setPreferredSize(new Dimension(350, 600));
+	
+		dialogWorkflow.getContentPane().setLayout(new BorderLayout());
+		dialogWorkflow.getContentPane().add(scrollpane, BorderLayout.CENTER);
+//		dialogWorkflow.pack();
+		dialogWorkflow.setLocationRelativeTo(MainFrame.getInstance());
+
+		/*
+		dialogframe.setSize(new Dimension(350, 600));
+		dialogframe.getContentPane().setLayout(new BorderLayout());
+		
+		JScrollPane scrollpane = new JScrollPane(myPanel);
+		scrollpane.setPreferredSize(new Dimension(350, 600));
+		dialogframe.getContentPane().add(scrollpane, BorderLayout.CENTER);
+//		dialogframe.pack();
+		dialogframe.setLocationRelativeTo(MainFrame.getInstance());
+		dialogframe.setVisible(true);
+		*/
+	}
+
+	
 	
 	public void showPreferences() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR) {
@@ -904,6 +1016,8 @@ public class MenuItemInfoDialog
 	}
 	
 	private static ArrayList<String> knownUrls = new ArrayList<String>();
+
+
 	
 	protected static String getLibText(String lib, String desc, String licenseDesc, String[] licenseTextURLS) {
 		String res = "<li><b>" + lib + "</b><br>- " + StringManipulationTools.getWordWrap(desc, 60) + "<p><small>"

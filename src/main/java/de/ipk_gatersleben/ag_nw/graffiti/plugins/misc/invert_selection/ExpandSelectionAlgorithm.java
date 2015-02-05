@@ -130,7 +130,7 @@ public class ExpandSelectionAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "menu.edit";
+		return "edit.Selection";
 	}
 	
 	/**

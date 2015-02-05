@@ -34,7 +34,7 @@ public class CreateDirectChildrenClustersHistogramAlgorithm extends AbstractAlgo
 	
 	@Override
 	public String getCategory() {
-		return null;// "Hierarchy";
+		return "Network.Hierarchy";
 	}
 	
 	@Override

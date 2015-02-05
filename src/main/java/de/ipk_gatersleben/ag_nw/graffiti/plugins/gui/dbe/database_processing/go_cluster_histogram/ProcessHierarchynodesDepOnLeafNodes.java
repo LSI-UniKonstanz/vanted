@@ -33,7 +33,7 @@ public class ProcessHierarchynodesDepOnLeafNodes extends LaunchGui {
 	
 	@Override
 	public String getCategory() {
-		return null;// "Hierarchy";
+		return "Network.Hierarchy";
 	}
 	
 	@Override

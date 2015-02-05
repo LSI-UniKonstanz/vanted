@@ -124,7 +124,7 @@ public class ShortestPathSelectionAlgorithm
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Find Shortest Path...";
+		return "Find Shortest Paths";
 	}
 	
 	@Override
@@ -134,10 +134,7 @@ public class ShortestPathSelectionAlgorithm
 	
 	@Override
 	public String getCategory() {
-		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
-			return "menu.edit";
-		else
-			return "Analysis";
+			return "Network.Analysis";
 	}
 	
 	@Override

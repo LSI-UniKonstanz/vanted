@@ -47,7 +47,7 @@ public class StartLayoutAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Layout";
+		return "Network";
 	}
 	
 	@Override

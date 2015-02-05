@@ -11,6 +11,7 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.gui.GraffitiComponent;
 
 import vanted_feature.PluginFeatureClusterCommands;
+import vanted_feature.PluginFeatureHierarchyCommands;
 import vanted_feature.SelectAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_EditorPluginAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectEdgesAlgorithm;
@@ -27,6 +28,10 @@ public class InvertSelectionPlugin
 							new ChangeEdgeStyle(),
 							new ChangeElementStyle(),
 //							new SelectAlgorithm(),
+							
+							new ExpandSelectionAlgorithm(true, false),
+							new ExpandSelectionAlgorithm(false, false),
+							new ExpandSelectionAlgorithm(true, true),
 							
 							new InvertSelectionAlgorithm(),
 //							PluginFeatureClusterCommands.getSelectClusterAlgorithm(),

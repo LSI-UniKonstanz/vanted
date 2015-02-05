@@ -298,6 +298,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	
 	/** The programs preferences */
 	private GraffitiAction editPreferences;
+
+
 	
 	/** The main frame's static actions */
 	public GraffitiAction fileClose;
@@ -2112,6 +2114,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 								curMenuComponent.add(newCatMenu, pluginMenuPosition.intValue());
 							} else {
 								curMenuComponent.add(newCatMenu);
+								sortMenuItems((JMenu)curMenuComponent, 0);
 							}
 							
 //							curMenuComponent.add(newCatMenu); // add
@@ -2133,14 +2136,14 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			} else {
 				targetMenu.add(item);
 			}
-//			sortMenuItems(targetMenu, 0);
+			sortMenuItems(targetMenu, 0);
 			result = targetMenu;
 		}
 		int sortFrom = 0;
 		Integer pmp = (Integer) pluginMenu.getClientProperty("pluginMenuPosition");
 		if (pmp != null)
 			sortFrom = pmp.intValue();
-//		sortMenuItems(pluginMenu, sortFrom);
+		sortMenuItems(pluginMenu, sortFrom);
 		validate();
 		return result;
 	}
@@ -2853,8 +2856,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		editSelectAll = new SelectAllAction(this);
 		
 		editPreferences = new ShowPreferencesAction(this);
-		
-		// redrawView = new RedrawViewAction(this);
 	}
 	
 	/**
@@ -3762,6 +3763,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	ArrayList<GraffitiFrame> detachedFrames = new ArrayList<GraffitiFrame>();
 	
 	private boolean graphLoadingInProgress;
+
 	
 	// public JSplitPane getAttributePanel() {
 	// return jSplitPane_pluginPanelAndProgressView;

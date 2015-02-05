@@ -38,9 +38,18 @@ public class CircleSearchAndLayoutAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Analysis";
+		return "Layout";
 	}
 	
+	
+	
+	@Override
+	public boolean isLayoutAlgorithm() {
+		return true;
+	}
+
+
+
 	@Override
 	public String getDescription() {
 		return "<html>" +

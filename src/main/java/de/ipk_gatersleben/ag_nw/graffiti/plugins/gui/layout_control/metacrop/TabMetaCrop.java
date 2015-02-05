@@ -152,7 +152,7 @@ public class TabMetaCrop extends PathwayWebLinkTab {
 
 	@Override
 	public String getTabParentPath() {
-		return "External Pathways";
+		return "Pathways";
 	}
 
 	@Override

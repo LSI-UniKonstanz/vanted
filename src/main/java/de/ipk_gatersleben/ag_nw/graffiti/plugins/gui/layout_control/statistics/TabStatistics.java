@@ -2458,7 +2458,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 
 	@Override
 	public String getTabParentPath() {
-		return "Data Statistics";
+		return "Tools";
 	}
 
 	@Override

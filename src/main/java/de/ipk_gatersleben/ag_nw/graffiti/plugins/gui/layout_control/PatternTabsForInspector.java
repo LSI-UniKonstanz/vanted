@@ -44,7 +44,7 @@ public class PatternTabsForInspector
 		ArrayList<InspectorTab> tablist = new ArrayList<InspectorTab>();
 		
 		// if (!ReleaseInfo.isRunningAsApplet())
-		tablist.add(new WorkflowHelper());
+//		tablist.add(new WorkflowHelper());
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING)) {
 			ExperimentDataProcessingManager.addExperimentDataProcessor(new PutIntoSidePanel());
 			tablist.add(new TabDBE());

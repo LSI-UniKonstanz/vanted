@@ -47,12 +47,12 @@ public class GridPlacementAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "Layout";
+		return "Network";
 	}
 	
 	@Override
 	public boolean isLayoutAlgorithm() {
-		return false;
+		return true;
 	}
 	
 	/**

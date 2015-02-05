@@ -32,13 +32,9 @@ public class NoOverlappOfClustersAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "Cluster";
+		return "Network.Arrange";
 	}
-	
-	@Override
-	public KeyStroke getAcceleratorKeyStroke() {
-		return KeyStroke.getKeyStroke('U', SystemInfo.getAccelModifier());
-	}
+
 	
 	@Override
 	public void check()

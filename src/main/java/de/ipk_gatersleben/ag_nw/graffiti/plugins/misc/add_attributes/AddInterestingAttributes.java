@@ -55,7 +55,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return null;
+		return "Network.Compute Attributes";
 	}
 	
 	@Override

@@ -1216,7 +1216,7 @@ public class TabKegg extends InspectorTab
 
 	@Override
 	public String getTabParentPath() {
-		return "External Pathways";
+		return "Pathways";
 	}
 
 	@Override
