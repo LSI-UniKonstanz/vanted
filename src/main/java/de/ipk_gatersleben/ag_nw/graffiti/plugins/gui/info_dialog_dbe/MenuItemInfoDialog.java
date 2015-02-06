@@ -61,8 +61,18 @@ import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.editor.actions.ClipboardService;
+import org.graffiti.editor.actions.ShowPreferencesAction;
 import org.graffiti.plugin.gui.GraffitiContainer;
 import org.graffiti.plugin.gui.GraffitiMenu;
+
+import com.apple.eawt.AboutHandler;
+import com.apple.eawt.Application;
+import com.apple.eawt.PreferencesHandler;
+import com.apple.eawt.QuitHandler;
+import com.apple.eawt.QuitResponse;
+import com.apple.eawt.AppEvent.AboutEvent;
+import com.apple.eawt.AppEvent.PreferencesEvent;
+import com.apple.eawt.AppEvent.QuitEvent;
 
 import apple.dts.samplecode.osxadapter.OSXAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
@@ -288,10 +298,42 @@ public class MenuItemInfoDialog
 		
 		if (SystemInfo.isMac() && !ReleaseInfo.isRunningAsApplet()) {
 			try {
-				OSXAdapter.setAboutHandler(this, getClass().getDeclaredMethod("showAbout", (Class[]) null));
-				OSXAdapter.setQuitHandler(this, getClass().getDeclaredMethod("doQuit", (Class[]) null));
-				OSXAdapter.setPreferencesHandler(this, getClass().getDeclaredMethod("showPreferences", (Class[]) null));
-			} catch (Exception e) {
+//				OSXAdapter.setAboutHandler(this, getClass().getDeclaredMethod("showAbout", (Class[]) null));
+//				OSXAdapter.setQuitHandler(this, getClass().getDeclaredMethod("doQuit", (Class[]) null));
+//				OSXAdapter.setPreferencesHandler(this, getClass().getDeclaredMethod("showPreferences", (Class[]) null));
+				Application macApplication = Application.getApplication();
+				macApplication.setAboutHandler(new AboutHandler() {
+					
+					@Override
+					public void handleAbout(AboutEvent ae) {
+						
+						showAbout();						
+					}
+					
+				});
+				macApplication.setPreferencesHandler(new PreferencesHandler() {
+					
+					@Override
+					public void handlePreferences(PreferencesEvent pe) {
+						
+//						showPreferences();
+						ShowPreferencesAction showPreferencesAction = new ShowPreferencesAction(MainFrame.getInstance());
+						showPreferencesAction.actionPerformed(null);
+						
+					}
+				});
+				macApplication.setQuitHandler(new QuitHandler() {
+					
+					@Override
+					public void handleQuitRequestWith(QuitEvent qe, QuitResponse qr) {
+						
+//						default behaviour
+//						qr.performQuit();
+						doQuit();
+						
+					}
+				});
+				} catch (Exception e) {
 				ErrorMsg.addErrorMessage(e);
 			}
 		}

@@ -30,6 +30,10 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.SplashScreenInterface;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 
+import com.apple.eawt.Application;
+import com.apple.eawt.OpenFilesHandler;
+import com.apple.eawt.AppEvent.OpenFilesEvent;
+
 import apple.dts.samplecode.osxadapter.OSXAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.MenuItemInfoDialog;
@@ -238,7 +242,14 @@ public class Main {
 		
 		if (SystemInfo.isMac()) {
 			try {
-				OSXAdapter.setFileHandler(new GravistoService(), GravistoService.class.getDeclaredMethod("loadFile", new Class[] { String.class }));
+//				OSXAdapter.setFileHandler(new GravistoService(), GravistoService.class.getDeclaredMethod("loadFile", new Class[] { String.class }));
+				Application macApplication = Application.getApplication();
+				macApplication.setOpenFileHandler(new OpenFilesHandler() {
+					
+					@Override
+					public void openFiles(OpenFilesEvent arg0) {						
+					}
+				});
 			} catch (Exception err) {
 				ErrorMsg.addErrorMessage(err);
 			}
