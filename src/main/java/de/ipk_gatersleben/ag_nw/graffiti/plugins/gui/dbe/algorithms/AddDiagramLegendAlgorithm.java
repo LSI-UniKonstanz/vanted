@@ -53,7 +53,7 @@ public class AddDiagramLegendAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Mapping";
+		return "Data.Mapping";
 	}
 	
 	@Override

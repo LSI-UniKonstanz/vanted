@@ -51,7 +51,7 @@ public class CenterLayouterAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "Layout";
+		return "Network";
 	}
 	
 	@Override

@@ -37,12 +37,12 @@ public class RecolorEdgesAlgorithm extends AbstractAlgorithm {
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Set Color dep. on Attribute Value...";
+		return "Set Color dep. on Attribute Value";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Analysis";
+		return "Network.Compute Attributes";
 	}
 	
 	public void execute() {

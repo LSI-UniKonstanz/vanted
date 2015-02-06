@@ -53,12 +53,12 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Split Nodes...";
+		return "Split Nodes";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Nodes";
+		return "Network.Nodes";
 	}
 	
 	@Override

@@ -16,7 +16,7 @@ public class ShowLayoutTab extends AbstractEditorAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Layout";
+		return "Network";
 	}
 	
 	public boolean activeForView(View v) {

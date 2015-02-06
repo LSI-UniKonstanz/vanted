@@ -177,7 +177,7 @@ public class CalculateAttribute extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return null;// "Elements"; // "menu.edit";
+		return "Network.Compute Attributes";
 	}
 	
 	@Override

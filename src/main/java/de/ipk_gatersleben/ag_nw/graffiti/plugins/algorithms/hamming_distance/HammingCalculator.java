@@ -22,6 +22,7 @@ import org.AttributeHelper;
 import org.BackgroundTaskStatusProvider;
 import org.ErrorMsg;
 import org.ReleaseInfo;
+import org.apache.log4j.Logger;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Edge;
@@ -33,6 +34,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.TextFile;
 
 public class HammingCalculator implements Runnable,
 					BackgroundTaskStatusProvider {
+	
+	private static Logger logger = Logger.getLogger(HammingCalculator.class);
 	
 	private Collection<Graph> listOfGraphs;
 	private int[][] hammingDistances;
@@ -359,19 +362,19 @@ public class HammingCalculator implements Runnable,
 		if (validGraphIndex2 == 0) {
 			/* Print matrix */
 			for (i = 0; i < numberOfGraphs; i++) {
-				System.err.print("   " + i);
+				logger.debug("   " + i);
 			}
 			
-			System.err.println("");
+			logger.debug("");
 			
 			for (i = 0; i < numberOfGraphs; i++) {
-				System.err.print(i + "  ");
+				logger.debug(i + "  ");
 				
 				for (int j = 0; j < numberOfGraphs; j++) {
-					System.err.print(hammingDistances[i][j] + "   ");
+					logger.debug(hammingDistances[i][j] + "   ");
 				}
 				
-				System.err.println("");
+				logger.debug("");
 			}
 		}
 		// //////////////////////////////////////////////////////////////////////////////////////////////
@@ -472,12 +475,12 @@ public class HammingCalculator implements Runnable,
 									computeSum(currentCombination, hammingDistances,
 														numberOfGraphs);
 				
-				// System.err.println("Valid permutation");
+				// logger.debug("Valid permutation");
 				// for (int j = 0; j < numberOfGraphs; j++) {
-				// System.err.print(currentCombination[j] + " ");
+				// logger.debug(currentCombination[j] + " ");
 				// }
-				// System.err.println("currentSum " + currentSum);
-				// System.err.println("");
+				// logger.debug("currentSum " + currentSum);
+				// logger.debug("");
 				if (currentSum < minSum) {
 					minSum = currentSum;
 					
@@ -491,9 +494,9 @@ public class HammingCalculator implements Runnable,
 								numberOfGraphs);
 		}
 		
-		System.err.println("");
+		logger.debug("");
 		for (int i = 0; i < numberOfGraphs; i++) {
-			System.err.println(newOrder[i]);
+			logger.debug(newOrder[i]);
 		}
 	}
 	
@@ -649,7 +652,7 @@ public class HammingCalculator implements Runnable,
 			}
 		}
 		
-		// System.err.println("The two graphs have the hamming distance "
+		// logger.debug("The two graphs have the hamming distance "
 		// + hammingDistance);
 		return hammingDistance;
 	}

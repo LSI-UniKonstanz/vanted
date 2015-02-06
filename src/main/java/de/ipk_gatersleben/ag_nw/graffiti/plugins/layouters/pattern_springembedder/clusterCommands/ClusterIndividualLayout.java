@@ -56,7 +56,7 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return "Layout Pathway-Subgraphs";
 		else
-			return "Layout Subgraphs";
+			return "Layout Cluster";
 	}
 	
 	@Override
@@ -101,7 +101,7 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 	 */
 	@Override
 	public String getCategory() {
-		return "Cluster";
+		return "Network.Cluster";
 	}
 	
 	@Override

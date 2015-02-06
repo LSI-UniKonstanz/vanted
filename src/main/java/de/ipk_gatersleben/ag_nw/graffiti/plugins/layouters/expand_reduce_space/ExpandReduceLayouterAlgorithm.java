@@ -163,7 +163,7 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "Layout";
+		return "Network";
 	}
 	
 	/*
@@ -217,7 +217,7 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 	 */
 	@Override
 	public boolean isLayoutAlgorithm() {
-		return false;
+		return true;
 	}
 	
 	public static void doOperation(final Collection<Node> selectedNodes, final double factorX, double factorY, String description) {

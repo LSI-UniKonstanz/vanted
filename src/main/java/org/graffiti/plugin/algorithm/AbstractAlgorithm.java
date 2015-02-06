@@ -133,6 +133,14 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		return false;
 	}
 	
+	
+	/**
+	 * Indicates, if an algorithm is always executable - even without an active session
+	 * @return
+	 */
+	public boolean isAlwaysExecutable() {
+		return false;
+	}
 }
 
 // ------------------------------------------------------------------------------

@@ -37,6 +37,6 @@ public class InverseGraphPluginAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Edges";
+		return "Network.Edges";
 	}
 }

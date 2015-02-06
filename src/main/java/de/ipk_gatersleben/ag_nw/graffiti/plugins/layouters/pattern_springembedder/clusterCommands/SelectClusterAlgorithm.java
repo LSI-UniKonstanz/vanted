@@ -25,12 +25,12 @@ public class SelectClusterAlgorithm extends AbstractEditorAlgorithm {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return "Select Pathway-Subgraph...";
 		else
-			return "Select Cluster...";
+			return "Select Cluster";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "menu.edit";
+		return "edit.Selection";
 	}
 	
 	@Override

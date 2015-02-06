@@ -57,7 +57,7 @@ public class PruneTreeAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return null;// "Hierarchy";
+		return "Network.Hierarchy";
 	}
 	
 	@Override

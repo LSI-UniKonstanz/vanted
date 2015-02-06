@@ -61,7 +61,7 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Select Nodes...";
+		return "Select Nodes";
 	}
 	
 	@Override
@@ -160,7 +160,7 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 	
 	@Override
 	public String getCategory() {
-		return "menu.edit";
+		return "edit.Selection";
 	}
 	
 	/*

@@ -36,12 +36,12 @@ public class SetNumericAttributeFromDataAlgorithm extends AbstractAlgorithm {
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Set Visual Properties dep. on Attribute Value...";
+		return "Visual Attributes using Attribute Values";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Analysis";
+		return "Network.Compute Attributes";
 	}
 	
 	@Override

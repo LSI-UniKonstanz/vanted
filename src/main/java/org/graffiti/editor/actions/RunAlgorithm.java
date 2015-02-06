@@ -16,6 +16,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.help.HelpContext;
 import org.graffiti.managers.EditComponentManager;
 import org.graffiti.plugin.actions.GraffitiAction;
+import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.EditorAlgorithm;
 
@@ -77,6 +78,15 @@ public class RunAlgorithm
 				return ea.activeForView(mainFrame.getActiveSession().getActiveView());
 			else
 				return ea.activeForView(null);
+		} else if (algorithm instanceof AbstractAlgorithm){
+			boolean alwaysExecutable = ((AbstractAlgorithm)algorithm).isAlwaysExecutable();
+			if(alwaysExecutable)
+				return true;
+			else
+				if (!mainFrame.isSessionActive())
+					return false;
+				return true;
+
 		} else {
 			if (!mainFrame.isSessionActive())
 				return false;

@@ -514,5 +514,16 @@ public class TabPatternLayout extends InspectorTab {
 		else
 			return v != null && (v instanceof GraphView);
 	}
+
+	@Override
+	public String getTabParentPath() {
+		return "Network";
+	}
+
+	@Override
+	public int getPreferredTabPosition() {
+		return InspectorTab.TAB_TRAILING;
+	}
+	
 	
 }

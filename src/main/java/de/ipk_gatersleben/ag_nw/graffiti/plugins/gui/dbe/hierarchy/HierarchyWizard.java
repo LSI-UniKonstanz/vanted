@@ -183,7 +183,8 @@ public class HierarchyWizard extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return null;// "Hierarchy";
+		return "Network.Hierarchy";
+
 	}
 	
 	public String getName() {

@@ -118,6 +118,7 @@ public interface Algorithm {
 	public ActionEvent getActionEvent();
 	
 	public boolean mayWorkOnMultipleGraphs();
+
 }
 
 // ------------------------------------------------------------------------------

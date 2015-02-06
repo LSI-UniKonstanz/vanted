@@ -295,10 +295,7 @@ public class WeightedShortestPathSelectionAlgorithm
 	
 	@Override
 	public String getCategory() {
-		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
-			return "menu.edit";
-		else
-			return "Analysis";
+			return "Network.Analysis";
 	}
 	
 	public void setSelection(Selection selection) {

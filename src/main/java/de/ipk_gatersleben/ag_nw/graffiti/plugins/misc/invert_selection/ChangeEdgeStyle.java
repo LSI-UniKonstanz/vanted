@@ -11,12 +11,12 @@ public class ChangeEdgeStyle extends AbstractEditorAlgorithm {
 	}
 	
 	public String getName() {
-		return "Change Edge Style";
+		return "Change Edge Attributes";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Edges";
+		return "Network.Edges";
 	}
 	
 	public boolean activeForView(View v) {

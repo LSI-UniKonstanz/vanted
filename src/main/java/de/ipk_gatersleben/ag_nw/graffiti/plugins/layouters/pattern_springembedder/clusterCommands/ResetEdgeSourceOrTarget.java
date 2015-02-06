@@ -93,16 +93,16 @@ public class ResetEdgeSourceOrTarget extends AbstractEditorAlgorithm {
 	
 	@Override
 	public String getDescription() {
-		return "";
+		return "Resests the Attributes of the selected Edge";
 	}
 	
 	@Override
 	public String getName() {
-		return "Reconnect Edge";
+		return "Reset Edge Attributes";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Edges";
+		return "Network.Edges";
 	}
 }

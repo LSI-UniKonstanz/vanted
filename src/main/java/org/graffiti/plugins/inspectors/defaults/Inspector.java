@@ -11,6 +11,8 @@ package org.graffiti.plugins.inspectors.defaults;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -50,12 +52,10 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 	
 	private final HashMap<String, InspectorTab> rememberedTabs = new HashMap<String, InspectorTab>();
 	
-	private final LinkedHashSet<InspectorTab> hiddenTabs = new LinkedHashSet<InspectorTab>();
 	
 	/** DOCUMENT ME! */
 	private Session activeSession;
 	
-	private String oldviewname = "null1";
 	
 	// ~ Constructors ===========================================================
 	
@@ -147,6 +147,7 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 			return;
 		}
 		
+
 		EditorSession editorSession = null;
 		
 		try {
@@ -159,6 +160,16 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 		tab.setEditPanelInformation(valueEditComponents, editorSession != null ? editorSession.getGraphElementsMap() : null);
 		
 		if (!container.getTabs().contains(tab)) {
+			switch(tab.getPreferredTabPosition()) {
+
+			case InspectorTab.TAB_LEADING:
+				container.insertTab(tab.getTitle(), null, tab, null, 0);
+				break;
+			case InspectorTab.TAB_TRAILING:
+			default:
+				container.addTab(tab.getTitle(), null, tab);
+			}
+
 			container.addTab(tab, tab.getIcon());
 		}
 		
@@ -255,6 +266,7 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 		
 		InspectorTab selTab = getSelectedTab();
 		
+		/*
 		// System.out.println("STO "+oldviewname+" /// "+selTab.getTitle()+" NEW VIEW: "+
 		// (newView!=null ? newView.getViewName() :" NULL"));
 		rememberedTabs.put(oldviewname, selTab);
@@ -265,17 +277,17 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 		allTabs.addAll(hiddenTabs);
 		
 		ArrayList<InspectorTab> added = new ArrayList<InspectorTab>();
-		for (InspectorTab tab : allTabs) {
+		*/
+		
+		for (InspectorTab tab : container.getTabs()) {
 			if (!tab.visibleForView(newView) || (newView != null && !newView.worksWithTab(tab))) {
-				removeTab(tab);
-				hiddenTabs.add(tab);
+				container.hideTab(tab);
+				
 			} else {
-				if (hiddenTabs.contains(tab)) {
-					addTab(tab);
-					added.add(tab);
-				}
+				container.showTab(tab);
 			}
 		}
+		
 		
 		for (InspectorTab tab : getTabs()) {
 			if (tab instanceof ViewListener) {
@@ -283,27 +295,22 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 				sl.viewChanged(newView);
 			}
 		}
-		if (newView == null)
-			for (InspectorTab tab : hiddenTabs) {
-				if (tab instanceof ViewListener) {
-					ViewListener sl = (ViewListener) tab;
-					sl.viewChanged(newView);
-				}
-			}
+
 		
-		if (newView != null) {
-			setSelectedTab(rememberedTabs.get(newView.getClass().getName()));
-			oldviewname = newView.getClass().getName();
-		}
 	}
 	
 	@Override
 	public synchronized InspectorTab[] getInspectorTabs() {
-		return new InspectorTab[] { new SubtabHostTab("Network", new InspectorTab[] {
-							new GraphTab(),
-							new NodeTab(),
-							new EdgeTab()
-				}) };
+//		return new InspectorTab[] { new SubtabHostTab("Network", new InspectorTab[] {
+//							new GraphTab(),
+//							new NodeTab(),
+//							new EdgeTab()
+//				}) };
+		return new InspectorTab[] {
+				new EdgeTab(),
+				new NodeTab(),
+				new GraphTab()
+		};
 	}
 	
 	public void setSelectedTab(InspectorTab tab) {
@@ -317,6 +324,24 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 			return (InspectorTab) c;
 		} else
 			return null;
+	}
+	
+	
+	/** 
+	 * gets called each time a tab is added, to figure out the 
+	 * order of tab layout as given by their preferredTab Position parameter in InspectorTab
+	 */
+	private void sortTabs() {
+		Collections.sort(container.getTabs(), new Comparator<InspectorTab>() {
+
+			@Override
+			public int compare(InspectorTab o1, InspectorTab o2) {
+				if(o1.getPreferredTabPosition() == o2.getPreferredTabPosition())
+					return 0;
+				else return o1.getPreferredTabPosition() < o2.getPreferredTabPosition() ? -1 : 1;
+			}
+			
+		});
 	}
 }
 

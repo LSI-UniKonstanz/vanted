@@ -40,7 +40,7 @@ public class ApplyGraphLayout implements Algorithm {
 	Selection s;
 	
 	public String getName() {
-		return "Apply from Layouted File...";
+		return "Apply from Layouted File";
 	}
 	
 	public void setParameters(Parameter[] params) {
@@ -277,11 +277,12 @@ public class ApplyGraphLayout implements Algorithm {
 	}
 	
 	public String getCategory() {
-		return "Layout";
+//		return "Layout";
+		return null;
 	}
 	
 	public boolean isLayoutAlgorithm() {
-		return false;
+		return true;
 	}
 	
 	public boolean showMenuIcon() {

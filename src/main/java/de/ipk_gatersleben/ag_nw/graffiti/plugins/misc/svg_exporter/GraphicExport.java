@@ -30,11 +30,11 @@ public class GraphicExport extends LaunchGui {
 	
 	@Override
 	public String getName() {
-		return "Create Image File...";
+		return "Graph as Image";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "menu.file";
+		return "File.Export";
 	}
 }

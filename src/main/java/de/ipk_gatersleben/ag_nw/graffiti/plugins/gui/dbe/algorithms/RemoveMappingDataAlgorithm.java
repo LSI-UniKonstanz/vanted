@@ -37,7 +37,7 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Mapping";
+		return "Data.Mapping";
 	}
 	
 	/*

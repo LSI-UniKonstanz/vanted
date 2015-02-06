@@ -5,9 +5,13 @@ import info.clearthought.layout.TableLayoutConstants;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
@@ -27,18 +31,29 @@ import org.graffiti.session.SessionListener;
  * @author klukas
  */
 public class SubtabHostTab extends InspectorTab
-					implements SessionListener, ViewListener, ContainsTabbedPane, SelectionListener, AttributeListener {
+					implements SessionListener, ViewListener, ContainsTabbedPane, SelectionListener {
 	private static final long serialVersionUID = -3810951162912767447L;
 	
-	private Collection<InspectorTab> subtabs;
+	private List<InspectorTab> subtabs;
 	
-	JTabbedPane hc = new JTabbedPane();
+	JTabbedPane tabbedPane = new JTabbedPane();
+	
+	
 	
 	private LinkedHashSet<InspectorTab> hiddenTabs = new LinkedHashSet<InspectorTab>();
 	
+	/**
+	 * 
+	 */
+	public SubtabHostTab(String title) {
+		this.title = title;
+		this.subtabs = new ArrayList<InspectorTab>();
+		initComponents();
+	}
+	
 	public SubtabHostTab(String title, Collection<InspectorTab> subtabs) {
 		this.title = title;
-		this.subtabs = subtabs;
+		this.subtabs = new ArrayList<InspectorTab>(subtabs);
 		initComponents();
 	}
 	
@@ -47,7 +62,7 @@ public class SubtabHostTab extends InspectorTab
 		for (InspectorTab it : inspectorTabs)
 			tabs.add(it);
 		this.title = title;
-		this.subtabs = tabs;
+		this.subtabs = new ArrayList<InspectorTab>(subtabs);
 		initComponents();
 	}
 	
@@ -60,10 +75,10 @@ public class SubtabHostTab extends InspectorTab
 		setOpaque(false);
 		
 		for (InspectorTab tab : subtabs) {
-			hc.addTab(tab.getTitle(), tab);
+			tabbedPane.addTab(tab.getTitle(), tab);
 		}
-		hc.validate();
-		add(hc, "0,0");
+		tabbedPane.validate();
+		add(tabbedPane, "0,0");
 		
 		validate();
 	}
@@ -89,6 +104,59 @@ public class SubtabHostTab extends InspectorTab
 		return subtabs;
 	}
 	
+	
+	/**
+	 * Adds a tab to the inspector.
+	 * 
+	 * @param tab
+	 *           the tab to add to the inspector.
+	 */
+	public synchronized void addTab(InspectorTab tab, ImageIcon icon) {
+		if(! subtabs.contains(tab)) {
+			subtabs.add(tab);
+		}
+
+			switch(tab.getPreferredTabPosition()) {
+			
+				case InspectorTab.TAB_LEADING:
+					tabbedPane.insertTab(tab.getTitle(), icon, tab, null, 0);
+					break;
+				case InspectorTab.TAB_TRAILING:
+				default:
+					tabbedPane.addTab(tab.getTitle(), icon, tab);
+			}
+			
+	}
+	
+	/**
+	 * Removes a tab from the inspector.
+	 * 
+	 * @param tab
+	 *           the tab to remove from the inspector.
+	 */
+	public void removeTab(InspectorTab tab) {
+		int idx = tabbedPane.indexOfTab(tab.getTitle());
+		if (idx >= 0) {
+			tabbedPane.removeTabAt(idx);
+		}
+		if (subtabs.contains(tab))
+			subtabs.remove(tab);
+	}
+	
+	public void hideTab(InspectorTab tab) {
+		int idx = tabbedPane.indexOfTab(tab.getName());
+		if (idx >= 0)
+			tabbedPane.removeTabAt(idx);
+		hiddenTabs.add(tab);
+	}
+	public void showTab(InspectorTab tab) {
+		if (hiddenTabs.contains(tab)) {
+			
+			addTab(tab, tab.getIcon());
+			hiddenTabs.remove(tab);
+		}
+	}
+	
 	public void sessionDataChanged(Session s) {
 		for (InspectorTab tab : subtabs) {
 			if (tab instanceof SessionListener) {
@@ -99,32 +167,31 @@ public class SubtabHostTab extends InspectorTab
 	}
 	
 	public void viewChanged(final View v) {
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				for (InspectorTab tab : subtabs) {
 					if (!tab.visibleForView(v) || (v != null && !v.worksWithTab(tab))) {
-						int idx = hc.indexOfTab(tab.getName());
-						if (idx >= 0)
-							hc.removeTabAt(idx);;
-						hiddenTabs.add(tab);
+						hideTab(tab);
 					} else {
-						if (hiddenTabs.contains(tab))
-							hc.addTab(tab.getTitle(), tab);
+						showTab(tab);
 					}
 				}
-				hc.validate();
+				tabbedPane.validate();
 			}
 		});
+		
 	}
 	
 	public JTabbedPane getTabbedPane() {
-		return hc;
+		return tabbedPane;
 	}
 	
 	public boolean isSelectionListener() {
 		return true;
 	}
 	
+
 	public void selectionChanged(SelectionEvent e) {
 		for (InspectorTab tab : subtabs) {
 			if (tab.isSelectionListener()) {
@@ -214,7 +281,7 @@ public class SubtabHostTab extends InspectorTab
 			}
 		}
 	}
-	
+
 	@Override
 	public void setEditPanelInformation(
 						Map<?, ?> valueEditComponents,
@@ -225,5 +292,22 @@ public class SubtabHostTab extends InspectorTab
 				tab.getEditPanel().setGraphElementMap(map);
 			}
 		}
+	}
+	
+	/** 
+	 * gets called each time a tab is added, to figure out the 
+	 * order of tab layout as given by their preferredTab Position parameter in InspectorTab
+	 */
+	private void sortTabs() {
+		Collections.sort(subtabs, new Comparator<InspectorTab>() {
+
+			@Override
+			public int compare(InspectorTab o1, InspectorTab o2) {
+				if(o1.getPreferredTabPosition() == o2.getPreferredTabPosition())
+					return 0;
+				else return o1.getPreferredTabPosition() < o2.getPreferredTabPosition() ? -1 : 1;
+			}
+			
+		});
 	}
 }

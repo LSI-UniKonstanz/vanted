@@ -10,8 +10,13 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.gui.GraffitiComponent;
 
+import vanted_feature.PluginFeatureClusterCommands;
+import vanted_feature.PluginFeatureHierarchyCommands;
 import vanted_feature.SelectAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_EditorPluginAdapter;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectEdgesAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectNodesWithExperimentalDataAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.SelectClusterAlgorithm;
 
 public class InvertSelectionPlugin
 					extends IPK_EditorPluginAdapter {
@@ -22,7 +27,18 @@ public class InvertSelectionPlugin
 							new ChangeNodeStyle(),
 							new ChangeEdgeStyle(),
 							new ChangeElementStyle(),
-							new SelectAlgorithm(),
+//							new SelectAlgorithm(),
+							
+							new ExpandSelectionAlgorithm(true, false),
+							new ExpandSelectionAlgorithm(false, false),
+							new ExpandSelectionAlgorithm(true, true),
+							
+							new InvertSelectionAlgorithm(),
+//							PluginFeatureClusterCommands.getSelectClusterAlgorithm(),
+							new SelectClusterAlgorithm(),
+							new SelectNodesWithExperimentalDataAlgorithm(),
+							new SelectEdgesAlgorithm(),
+							
 							new SetToolTipAlgorithm(),
 							new SearchAndSelecAlgorithm(),
 							new FindReplaceDialog()

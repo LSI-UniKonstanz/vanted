@@ -21,15 +21,12 @@ public class GenerateGraphAlgorithmSelectionGUI extends LaunchGui {
 	
 	@Override
 	public String getName() {
-		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
-			return null;
-		else
-			return "Create Random Network...";
+		return "Create Random Network";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "menu.file";
+		return "File.New."+getName();
 	}
 	
 	@Override

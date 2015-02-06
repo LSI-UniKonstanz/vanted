@@ -38,11 +38,11 @@ public class SetCluster extends LaunchGui {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
 		else
-			return "Enter Cluster ID";
+			return "Set Cluster ID";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Cluster";
+		return "Network.Cluster";
 	}
 }

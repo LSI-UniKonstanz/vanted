@@ -42,7 +42,7 @@ public class PluginPatternSpringembedder
 				// new SetCluster(),
 				
 				new ResizeNodesDepDegreeAlgorithm(),
-							new BendsLaunchGUI(),
+//							new BendsLaunchGUI(),
 							new BundleParallelEdges(),
 							new IntroduceParallelEdgeBends(),
 							// new ResetEdgeSourceOrTarget(),

@@ -181,7 +181,7 @@ public class FindReplaceDialog
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Find and Replace...";
+		return "Find and Replace";
 	}
 	
 	@Override

@@ -9,10 +9,12 @@
 
 package org.graffiti.plugins.inspectors.defaults;
 
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 
 import org.graffiti.attributes.Attributable;
 import org.graffiti.event.AttributeEvent;
+import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.selection.SelectionEvent;
 import org.graffiti.session.Session;
 
@@ -79,6 +81,24 @@ public class GraphTab
 			ge.add(s.getGraph());
 		rebuildTree(ge);
 	}
+	
+	
+	
+	@Override
+	public void componentShown(ComponentEvent e) {
+		rebuildTree();
+	}
+
+	@Override
+	public String getTabParentPath() {
+		return "Network";
+	}
+
+	@Override
+	public int getPreferredTabPosition() {
+		return InspectorTab.TAB_LEADING;
+	}
+	
 }
 
 // ------------------------------------------------------------------------------

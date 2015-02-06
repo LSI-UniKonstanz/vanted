@@ -98,14 +98,14 @@ public class ImageAssignmentCommand extends AbstractAlgorithm {
 	
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
-			return "Embed Image...";
+			return "Embed Image";
 		else
 			return null;
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Nodes";
+		return "Network.Nodes";
 	}
 	
 }

@@ -9,9 +9,14 @@
 
 package org.graffiti.plugins.inspectors.defaults;
 
+import java.awt.event.ComponentEvent;
 import java.util.Collection;
 
+import org.graffiti.editor.MainFrame;
+import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.selection.SelectionEvent;
+import org.graffiti.session.EditorSession;
+import org.graffiti.session.Session;
 
 /**
  * Represents a tabulator in the inspector, which handles the properties of
@@ -30,6 +35,7 @@ public class EdgeTab
 	 * Constructs a <code>EdgeTab</code> and sets the title.
 	 */
 	public EdgeTab() {
+//		super();
 		this.title = "Edge";
 		EdgeTab.instance = this;
 	}
@@ -47,6 +53,53 @@ public class EdgeTab
 	public void selectionChanged(SelectionEvent e) {
 		rebuildTree((Collection) e.getSelection().getEdges());
 	}
+
+
+	@Override
+	public void sessionChanged(Session s) {
+		super.sessionChanged(s);
+
+		EditorSession editorSession = null;
+		
+		try {
+			editorSession = (EditorSession) s;
+		} catch (ClassCastException cce) {
+			// No selection is made if no EditorSession is active (?)
+			throw new RuntimeException("WARNING: should rarely happen " + cce);
+		}
+		
+		setEditPanelGraphElementMap(editorSession != null ? editorSession.getGraphElementsMap() : null);
+		
+
+	}
+
+	@Override
+	public void sessionDataChanged(Session s) {
+		super.sessionDataChanged(s);
+		EditorSession editorSession = null;
+		
+		try {
+			editorSession = (EditorSession) s;
+		} catch (ClassCastException cce) {
+			// No selection is made if no EditorSession is active (?)
+			throw new RuntimeException("WARNING: should rarely happen " + cce);
+		}
+		
+		setEditPanelGraphElementMap(editorSession != null ? editorSession.getGraphElementsMap() : null);
+
+	}
+
+	@Override
+	public String getTabParentPath() {
+		return "Network";
+	}
+
+	@Override
+	public int getPreferredTabPosition() {
+		return InspectorTab.TAB_LEADING;
+	}
+	
+	
 }
 
 // ------------------------------------------------------------------------------

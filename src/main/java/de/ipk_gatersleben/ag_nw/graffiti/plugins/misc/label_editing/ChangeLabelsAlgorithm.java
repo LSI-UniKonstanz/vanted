@@ -30,7 +30,7 @@ public class ChangeLabelsAlgorithm extends LaunchGui {
 	
 	@Override
 	public String getName() {
-		return "Change Labels...";
+		return "Change Labels";
 	}
 	
 	@Override

@@ -33,7 +33,7 @@ public class IntroduceBendsAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Edges";
+		return "Network.Edges";
 	}
 	
 	@Override

@@ -249,7 +249,7 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Search...";
+		return "Search";
 	}
 	
 	@Override

@@ -59,12 +59,12 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 	private NodeSortCommand sortCommand = NodeSortCommand.dontSort;
 	
 	public String getName() {
-		return "Create Condition Ratio View...";
+		return "Condition-Ratio View";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Mapping";
+		return "Data.Mapping";
 	}
 	
 	@Override

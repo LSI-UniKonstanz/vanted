@@ -51,7 +51,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Select Edges...";
+		return "Select Edges";
 	}
 	
 	@Override
@@ -122,7 +122,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "menu.edit";
+		return "edit.Selection";
 	}
 	
 	@Override

@@ -42,7 +42,7 @@ public class AdditionalIdentifiersAlgorithm extends AbstractAlgorithm {
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Add Alternative Data Identifiers...";
+		return "Add Alternative Data Identifiers";
 	}
 	
 	@Override
@@ -68,7 +68,7 @@ public class AdditionalIdentifiersAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Mapping";
+		return "Data.Mapping";
 	}
 	
 	@Override

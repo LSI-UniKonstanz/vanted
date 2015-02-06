@@ -122,10 +122,7 @@ public class PajekClusterColor extends AbstractAlgorithm {
 	 */
 	@Override
 	public String getCategory() {
-		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
-			return "Nodes";
-		else
-			return "Cluster";
+			return "Network.Cluster";
 	}
 	
 	@Override

@@ -58,6 +58,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -297,6 +298,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	
 	/** The programs preferences */
 	private GraffitiAction editPreferences;
+
+
 	
 	/** The main frame's static actions */
 	public GraffitiAction fileClose;
@@ -393,6 +396,13 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	
 	/** The main frame's status bar. */
 	private StatusBar statusBar;
+	
+	/** the main panel for the inspector tabs
+	 *  This will be set by pluginAdded where one of the plugins
+	 *  should be the Inspector Plugin
+	 */
+	private InspectorPlugin inspectorPlugin = null;
+
 	
 	/**
 	 * The default view type, that will be always displayed if the user
@@ -1782,7 +1792,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		updateActions();
 	}
 	
-	InspectorPlugin inspectorPlugin = null;
 	
 	/**
 	 * Called by the plugin manager, iff a plugin has been added.
@@ -2079,31 +2088,54 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			targetNativeMenu.add(item, addAfter);
 			result = targetNativeMenu;
 		} else {
+			
+			JComponent curMenuComponent = getJMenuBar();
 			JMenu targetMenu;
 			
-			if (categoriesForAlgorithms.get(cat) == null) {
-				JMenu newCatMenu = new JMenu(cat);
-				// PLUGIN MENUS
-				// pluginMenu.add(newCatMenu); // add the new category menu to the
-				// plugin menu
-				
-				getJMenuBar().add(newCatMenu, getTargetMenuPosition(getJMenuBar(), newCatMenu.getText())); // add
-				// the
-				// new
-				// category
-				// as
-				// a
-				// top
-				// level
-				// menu
-				// item
-				
-				categoriesForAlgorithms.put(cat, newCatMenu);
+			StringTokenizer tokenizer = new StringTokenizer(cat,".");
+			StringBuffer catStringPath = new StringBuffer();
+			JMenu newCatMenu = null;
+			while(tokenizer.hasMoreTokens()) {
+				String curMenuName = tokenizer.nextToken();
+				if(catStringPath.length() > 0)
+					catStringPath.append(".");
+				catStringPath.append(curMenuName);
+				if ( categoriesForAlgorithms.get(catStringPath.toString().toLowerCase()) == null) {
+					
+					
+						newCatMenu = new JMenu(curMenuName);
+						
+						if(curMenuComponent instanceof JMenuBar)
+							curMenuComponent.add(newCatMenu, getTargetMenuPosition((JMenuBar)curMenuComponent, newCatMenu.getText())); // add
+						else {
+							
+							Integer pluginMenuPosition = null;
+							if((pluginMenuPosition = (Integer) curMenuComponent.getClientProperty("pluginMenuPosition")) != null) {
+								curMenuComponent.add(newCatMenu, pluginMenuPosition.intValue());
+							} else {
+								curMenuComponent.add(newCatMenu);
+								sortMenuItems((JMenu)curMenuComponent, 0);
+							}
+							
+//							curMenuComponent.add(newCatMenu); // add
+						}
+						
+						categoriesForAlgorithms.put(catStringPath.toString().toLowerCase(), newCatMenu);
+						
+						curMenuComponent = newCatMenu;
+				} else {
+					curMenuComponent = categoriesForAlgorithms.get(catStringPath.toString().toLowerCase());
+				}
 			}
 			
-			targetMenu = (JMenu) categoriesForAlgorithms.get(cat);
+			targetMenu = (JMenu) categoriesForAlgorithms.get(cat.toLowerCase());
 			
-			targetMenu.add(item);
+			Integer pluginMenuPosition = null;
+			if((pluginMenuPosition = (Integer) targetMenu.getClientProperty("pluginMenuPosition")) != null) {
+				targetMenu.add(item, pluginMenuPosition);
+			} else {
+				targetMenu.add(item);
+			}
 			sortMenuItems(targetMenu, 0);
 			result = targetMenu;
 		}
@@ -2824,8 +2856,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		editSelectAll = new SelectAllAction(this);
 		
 		editPreferences = new ShowPreferencesAction(this);
-		
-		// redrawView = new RedrawViewAction(this);
 	}
 	
 	/**
@@ -2838,9 +2868,13 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	 */
 	private JMenu createMenu(String name) {
 		String title = sBundle.getString("menu." + name);
+		if(title == null)
+			title = name;
 		JMenu menu = new JMenu(title);
 		
 		guiMap.put("menu." + name, menu);
+		
+		categoriesForAlgorithms.put(title.toLowerCase(), menu);
 		
 		try {
 			String mnem = sBundle.getString("menu." + name + ".mnemonic");
@@ -2871,7 +2905,12 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		JMenu fileMenu = createMenu("file");
 		menuBar.add(fileMenu);
 		
-		fileMenu.add(createMenuItem(newGraph));
+		JMenu menu_new = createMenu("New");
+		categoriesForAlgorithms.put("file.new", menu_new);
+		menu_new.add(createMenuItem(newGraph));
+		fileMenu.add(menu_new);
+		
+		
 		fileMenu.add(createMenuItem(viewNew));
 		fileMenu.add(createMenuItem(fileOpen));
 		fileMenu.addSeparator();
@@ -2952,6 +2991,9 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		fileMenu.putClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem", new Boolean(true));
 		
 		JMenu editMenu = createMenu("edit");
+		
+		categoriesForAlgorithms.put("edit", editMenu);
+		
 		editMenu.putClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem", new Boolean(true));
 		menuBar.add(editMenu);
 		
@@ -3721,6 +3763,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	ArrayList<GraffitiFrame> detachedFrames = new ArrayList<GraffitiFrame>();
 	
 	private boolean graphLoadingInProgress;
+
 	
 	// public JSplitPane getAttributePanel() {
 	// return jSplitPane_pluginPanelAndProgressView;
