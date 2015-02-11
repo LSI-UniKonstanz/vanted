@@ -19,6 +19,7 @@ import java.util.StringTokenizer;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
+import org.apache.log4j.Logger;
 import org.graffiti.plugin.gui.GraffitiContainer;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.inspector.SubtabHostTab;
@@ -31,6 +32,9 @@ import org.graffiti.plugin.inspector.SubtabHostTab;
 public class InspectorContainer
 					extends JTabbedPane
 					implements GraffitiContainer {
+
+	static Logger logger = Logger.getLogger(InspectorContainer.class);
+	
 	// ~ Instance fields ========================================================
 	
 	/** The tabbed pane for the edge-, node- and graph-tab. */
@@ -107,9 +111,21 @@ public class InspectorContainer
 		
 		if(nestedTabPath == null) {
 		
+
 			tabs.add(tab);
 			
-			addTab(tab.getTitle(), icon, tab);
+			
+//			addTab(tab.getTitle(), icon, tab);
+			switch(tab.getPreferredTabPosition()) {
+
+			case InspectorTab.TAB_LEADING:
+				insertTab(tab.getTitle(), null, tab, null, 0);
+				break;
+			case InspectorTab.TAB_TRAILING:
+			default:
+				addTab(tab.getTitle(), null, tab);
+			}
+
 		} else {
 			JTabbedPane curTabbedPane = this;
 			SubtabHostTab curHierarchySubHostTab = null;
@@ -136,12 +152,15 @@ public class InspectorContainer
 				if(curHierarchySubHostTab == null) {
 					curHierarchySubHostTab = new SubtabHostTab(curHierarchyTabName);
 					curListInspectorTabs.add(curHierarchySubHostTab);
+					logger.debug("adding subhosttab:"+curHierarchySubHostTab.getTitle()+" to "+curTabbedPane.toString());
 					curTabbedPane.addTab(curHierarchySubHostTab.getTitle(), curHierarchySubHostTab.getIcon(), curHierarchySubHostTab);
+					curTabbedPane = curHierarchySubHostTab.getTabbedPane();
 				}
 				curListInspectorTabs = curHierarchySubHostTab.getTabs();
 			}
 			
 			if(curHierarchySubHostTab != null) {
+				logger.debug("adding tab:"+tab.getTitle()+" to "+curHierarchySubHostTab.getTitle());
 				curHierarchySubHostTab.addTab(tab, icon);
 			}
 			
@@ -177,9 +196,10 @@ public class InspectorContainer
 	
 	public void hideTab(InspectorTab tab) {
 		int idx = indexOfTab(tab.getName());
-		if (idx >= 0)
-			removeTabAt(idx);;
+		if (idx >= 0) {
+			removeTabAt(idx);
 		hiddenTabs.add(tab);
+		}
 	}
 	public void showTab(InspectorTab tab) {
 		if (hiddenTabs.contains(tab)) {

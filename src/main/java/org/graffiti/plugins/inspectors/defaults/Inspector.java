@@ -160,6 +160,7 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 		tab.setEditPanelInformation(valueEditComponents, editorSession != null ? editorSession.getGraphElementsMap() : null);
 		
 		if (!container.getTabs().contains(tab)) {
+			/*
 			switch(tab.getPreferredTabPosition()) {
 
 			case InspectorTab.TAB_LEADING:
@@ -169,7 +170,7 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 			default:
 				container.addTab(tab.getTitle(), null, tab);
 			}
-
+*/
 			container.addTab(tab, tab.getIcon());
 		}
 		
