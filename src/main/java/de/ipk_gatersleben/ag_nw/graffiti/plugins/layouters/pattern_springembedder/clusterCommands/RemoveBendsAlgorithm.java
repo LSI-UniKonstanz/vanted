@@ -24,7 +24,7 @@ public class RemoveBendsAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Network.Edges";
+		return "Network.Edges.Bends";
 	}
 	
 	@Override

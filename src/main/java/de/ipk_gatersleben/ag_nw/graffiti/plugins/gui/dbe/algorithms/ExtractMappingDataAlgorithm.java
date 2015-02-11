@@ -45,7 +45,7 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Data.Mapping";
+		return "Data";
 	}
 	
 	private boolean onlyOne = false;

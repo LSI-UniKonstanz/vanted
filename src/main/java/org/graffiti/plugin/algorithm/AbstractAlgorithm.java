@@ -37,6 +37,11 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	
 	protected ActionEvent actionEvent = null;
 	
+	/**
+	 * shall this algorithm also appear in the menu
+	 */
+	protected boolean isMenuAlgorithm = true;
+	
 	// ~ Methods ================================================================
 	
 	/*
@@ -121,6 +126,16 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		return false;
 	}
 	
+	public boolean isMenuAlgorithm() {
+		return isMenuAlgorithm;
+	}
+	
+	
+	
+	public void addAlgorithmToMenu(boolean isMenuAlgorithm) {
+		this.isMenuAlgorithm = isMenuAlgorithm;
+	}
+
 	public ActionEvent getActionEvent() {
 		return actionEvent;
 	}

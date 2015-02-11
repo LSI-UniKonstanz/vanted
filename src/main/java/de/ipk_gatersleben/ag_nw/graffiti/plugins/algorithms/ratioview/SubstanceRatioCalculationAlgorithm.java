@@ -53,7 +53,7 @@ public class SubstanceRatioCalculationAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "Data.Mapping";
+		return "Data";
 	}
 	
 	@Override

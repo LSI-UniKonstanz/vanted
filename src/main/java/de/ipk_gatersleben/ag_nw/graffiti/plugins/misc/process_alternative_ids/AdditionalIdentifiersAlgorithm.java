@@ -68,7 +68,7 @@ public class AdditionalIdentifiersAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Data.Mapping";
+		return "Data";
 	}
 	
 	@Override

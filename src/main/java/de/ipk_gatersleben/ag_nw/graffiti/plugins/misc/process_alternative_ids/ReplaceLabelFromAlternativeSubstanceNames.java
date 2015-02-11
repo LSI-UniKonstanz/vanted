@@ -43,7 +43,7 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "Data.Mapping.Alternate identifiers";
+		return "Data.Alternate identifiers";
 	}
 	
 	@Override

@@ -30,7 +30,7 @@ public class ReplaceDiagramTitleFromAlternativeSubstanceNames extends AbstractAl
 	
 	@Override
 	public String getCategory() {
-		return "Data.Mapping.Alternate identifiers";
+		return "Data.Alternate identifiers";
 	}
 	
 	@Override

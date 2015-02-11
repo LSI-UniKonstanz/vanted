@@ -49,7 +49,7 @@ public class GraphTab
 	
 	@Override
 	public String getTabNameForAttributeDescription() {
-		return "Network";
+		return "Graph";
 	}
 	
 	public static GraphTab getInstance() {
@@ -91,7 +91,7 @@ public class GraphTab
 
 	@Override
 	public String getTabParentPath() {
-		return "Network";
+		return "Attributes";
 	}
 
 	@Override
