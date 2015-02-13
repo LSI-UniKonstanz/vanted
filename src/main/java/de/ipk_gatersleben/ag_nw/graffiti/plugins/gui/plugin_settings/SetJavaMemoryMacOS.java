@@ -4,7 +4,14 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Properties;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -24,6 +31,11 @@ public class SetJavaMemoryMacOS {
 	
 	static final String RAMCONFIG = "vanted_ram_config.cfg";
 	
+	static final long MAXRAM = 6_000_000_000L;
+	
+	static final String KEY_RAM = "vanted.ram";
+	
+	String appExectutableFolder = null;
 	/**
 	 * 
 	 */
@@ -58,15 +70,24 @@ public class SetJavaMemoryMacOS {
 		else {
 			logger.debug("no config file found");
 			configFile = new File(homeFolder+"/"+RAMCONFIG);
-			
+			createConfigFile(configFile);
 			long calculateMemory = calculateMemory();
 			logger.debug("available memory: "+calculateMemory/1024/1024+"mb");
-			System.out.println("available memory: "+calculateMemory/1024/1024+"mb");
 		}
 	}
 	
-	private void createConfigFile() {
+	private void createConfigFile(File configFile) {
+		long calculateMemory = calculateMemory();
 		
+	}
+	
+	private long getPhysicalMemory() {
+		long mem = -1;
+		
+		com.sun.management.OperatingSystemMXBean operatingSystemMXBean = (com.sun.management.OperatingSystemMXBean)ManagementFactory.getOperatingSystemMXBean();
+		mem = operatingSystemMXBean.getTotalPhysicalMemorySize();
+		
+		return mem;
 	}
 	
 	/**
@@ -75,12 +96,29 @@ public class SetJavaMemoryMacOS {
 	 */
 
 	private long calculateMemory() {
-		long mem = -1;
+		long mem = getPhysicalMemory();
 		
-		com.sun.management.OperatingSystemMXBean operatingSystemMXBean = (com.sun.management.OperatingSystemMXBean)ManagementFactory.getOperatingSystemMXBean();
-		mem = operatingSystemMXBean.getTotalPhysicalMemorySize();
+		mem = mem / 3 > MAXRAM ? MAXRAM : mem /3; 
 		
 		return mem;
+	}
+	
+	private String getAppFolderLocation() {
+		String executionpath = null;
+
+		URL[] urls = ((URLClassLoader)Thread.currentThread().getContextClassLoader()).getURLs();
+		logger.debug("printing all urls for currents threads context classloader");
+		
+		
+		for(URL curURL : urls) {
+			logger.debug(curURL.getPath() + " " + curURL.getFile());
+			if(curURL.getPath().endsWith(".jar")) {
+				executionpath = curURL.getPath().substring(0, curURL.getPath().lastIndexOf("/"));
+				executionpath = executionpath.replace("%20", " ");
+				break;
+			}
+		}
+		return executionpath;
 	}
 	
 	public static void main(String[] args) {
