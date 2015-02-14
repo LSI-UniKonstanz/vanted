@@ -23,6 +23,7 @@ import java.util.Set;
 import javax.swing.JComponent;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
+import org.apache.log4j.Logger;
 import org.graffiti.core.StringBundle;
 import org.graffiti.editor.MessageType;
 import org.graffiti.event.AttributeEvent;
@@ -41,6 +42,8 @@ import org.graffiti.plugin.inspector.InspectorTab;
  * @version $Revision: 1.22 $
  */
 public abstract class AbstractView extends JComponent implements View {
+	
+	Logger logger = Logger.getLogger(AbstractView.class);
 	// ~ Static fields/initializers =============================================
 	private static final long serialVersionUID = 1L;
 	
@@ -324,7 +327,7 @@ public abstract class AbstractView extends JComponent implements View {
 		graphElementAttributeComponents = null;
 		
 	}
-	
+
 	/**
 	 * Called after an attribute has been added.
 	 * 

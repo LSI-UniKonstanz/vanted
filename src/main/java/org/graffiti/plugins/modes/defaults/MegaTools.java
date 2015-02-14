@@ -178,9 +178,9 @@ public abstract class MegaTools extends AbstractUndoableTool {
 					break;
 				}
 				// }
-				if (lastSelectedComp != null && lastSelectedComp.getParent() != null) {
-					lastSelectedComp.getParent().repaint();
-				}
+//				if (lastSelectedComp != null && lastSelectedComp.getParent() != null) {
+//					lastSelectedComp.getParent().repaint();
+//				}
 			}
 		} else {
 			if (lastSelectedComp instanceof GraphElementComponent) {
