@@ -184,13 +184,14 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 					listResults.setListData(simpleModel.toArray(new SimpleModel[simpleModel.size()]));
 				}
 			});
+		listResults.setEnabled(true);
 	}
 
 	@Override
 	public void resultForSBML(SimpleModel model, String modelstring) {
 		logger.debug("writing sbml file");
 		progressBar.setIndeterminate(false);
-		
+		listResults.setEnabled(true);
 	}
 
 	@Override
@@ -215,8 +216,10 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 	@Override
 	public void keyReleased(KeyEvent e) {
 //		logger.debug("keyReleased");
-		if(e.getKeyCode() == KeyEvent.VK_ENTER)
+		if(e.getKeyCode() == KeyEvent.VK_ENTER){
+			listResults.setEnabled(false);
 			triggerQuery(queryField.getText().trim());
+		}
 	}
 
 	class ListMouseAdapapter extends MouseAdapter {
@@ -224,6 +227,7 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if(e.getClickCount() == 2) {
+				listResults.setEnabled(false);
 				triggerLoadSBML(listResults.getSelectedValue());
 			}
 				

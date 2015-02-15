@@ -60,6 +60,7 @@ implements BiomodelsLoaderCallback{
 		logger.debug("creating graph from sbml model");
 			final InputSerializer is;
 			final StringReader reader;
+			final SimpleModel finalModel = model;
 			try {
 				final InputStream bis = new ByteArrayInputStream( modelstring.getBytes() );
 				is = MainFrame.getInstance().getIoManager().createInputSerializer(null, ".sbml");
@@ -71,7 +72,7 @@ implements BiomodelsLoaderCallback{
 					public void run() {
 						try {
 							Graph g = new AdjListGraph();
-							
+							g.setName(finalModel.getName());
 							is.read(bis, g);
 							
 							MainFrame.getInstance().showGraph(g, null);

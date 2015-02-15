@@ -54,20 +54,17 @@ public class BiomodelsAccessAdapter {
 	Set<String> setNonCuratedModelIds;
 	Set<String> setCuratedModelIds;
 
-	BioModelsWSClient client;
-	
 	List<BiomodelsLoaderCallback> listeners;
 	/**
 	 * 
 	 */
 	public BiomodelsAccessAdapter() {
-		client = new BioModelsWSClient();
 
 //		initSetStructures();
 	}
 
 	public List<SimpleModel> queryForSimpleModel(QueryType type, String query) throws BioModelsWSException {
-		
+		BioModelsWSClient client = createClient();
 		String[] resultIds = null;
 		
 		List<SimpleModel> resultSimpleModels = null;
@@ -106,7 +103,7 @@ public class BiomodelsAccessAdapter {
 	}
 
 	public String getSBMLModel(SimpleModel simpleModel) throws BioModelsWSException {
-		String result = client.getModelSBMLById(simpleModel.getId());
+		String result = createClient().getModelSBMLById(simpleModel.getId());
 		
 		notifyResultSBMLListeners(simpleModel, result);
 		
@@ -115,11 +112,15 @@ public class BiomodelsAccessAdapter {
 	
 
 	public String getSBMLModel(String modelId) throws BioModelsWSException {
-		SimpleModel simpleModel = client.getSimpleModelById(modelId);
+		SimpleModel simpleModel = createClient().getSimpleModelById(modelId);
 		String result = getSBMLModel(simpleModel);
 		return result;
 	}
 	
+	
+	private BioModelsWSClient createClient() {
+		return new BioModelsWSClient();
+	}
 	/**
 	 * @param resultSimpleModels
 	 */
@@ -143,6 +144,8 @@ public class BiomodelsAccessAdapter {
 	
 	private void initSetStructures(){
 
+		final BioModelsWSClient client = createClient();
+		
 		setCuratedModelIds = new HashSet<String>();
 
 		setNonCuratedModelIds = new HashSet<String>();
