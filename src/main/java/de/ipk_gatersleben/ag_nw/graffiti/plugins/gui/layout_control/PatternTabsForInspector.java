@@ -62,7 +62,7 @@ public class PatternTabsForInspector
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.RIMAS_ACCESS))
 			tablist.add(new RimasTab());
 		
-		tablist.add(new TabBiomodels());
+//		tablist.add(new TabBiomodels());
 		
 		// if (ReleaseInfo.getIsAllowedFeature(FeatureSet.SBGN))
 		// subtabsPathway.add(new TabSBGN());
