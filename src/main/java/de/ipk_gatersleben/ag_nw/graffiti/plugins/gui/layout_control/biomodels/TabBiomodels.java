@@ -23,6 +23,7 @@ import org.graffiti.plugin.view.View;
 import uk.ac.ebi.biomodels.ws.SimpleModel;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter.BiomodelsLoaderCallback;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter.QueryType;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_XML_Reader;
 
 /**
  * @author matthiak
@@ -32,9 +33,9 @@ public class TabBiomodels extends InspectorTab
 implements BiomodelsLoaderCallback{
 
 	static final Logger logger = Logger.getLogger(TabBiomodels.class);
-	
+
 	static final String NAME = "Biomodels";
-	
+
 	BiomodelsPanel panel;
 	/**
 	 * 
@@ -46,8 +47,8 @@ implements BiomodelsLoaderCallback{
 		add(panel, BorderLayout.CENTER);
 	}
 
-	
-	
+
+
 	@Override
 	public void resultForSimpleModelQuery(QueryType type,
 			List<SimpleModel> simpleModel) {
@@ -58,53 +59,49 @@ implements BiomodelsLoaderCallback{
 	@Override
 	public void resultForSBML(SimpleModel model, String modelstring) {
 		logger.debug("creating graph from sbml model");
-			final InputSerializer is;
-			final StringReader reader;
-			final SimpleModel finalModel = model;
-			try {
-				final InputStream bis = new ByteArrayInputStream( modelstring.getBytes() );
-				is = MainFrame.getInstance().getIoManager().createInputSerializer(null, ".sbml");
-//				reader = new StringReader(modelstring);
-
-				SwingUtilities.invokeLater(new Runnable() {
-					
-					@Override
-					public void run() {
-						try {
-							Graph g = new AdjListGraph();
-							g.setName(finalModel.getName());
-							is.read(bis, g);
-							
-							MainFrame.getInstance().showGraph(g, null);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					
-					}
-				});
-			
-			} catch (IllegalAccessException e1) {
-				e1.printStackTrace();
-			} catch (InstantiationException e1) {
-				e1.printStackTrace();
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			}
-			
-
-		
-		/*
+		final InputSerializer is;
+		final StringReader reader;
+		final SimpleModel finalModel = model;
 		try {
-			FileWriter writer = new FileWriter("/tmp/sbml-testwrite-"+model.getId()+".sbml");
-			writer.write(modelstring);
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+			final InputStream bis = new ByteArrayInputStream( modelstring.getBytes() );
+			is = MainFrame.getInstance().getIoManager().createInputSerializer(null, ".sbml");
+			//				reader = new StringReader(modelstring);
+
+
+			SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					try {
+						Graph g = new AdjListGraph();
+						g.setName(finalModel.getName());
+						boolean saveReaderstate = true;
+						if(is instanceof SBML_XML_Reader){
+							saveReaderstate = SBML_XML_Reader.isValidatingSBMLOnLoad();
+							SBML_XML_Reader.doValidateSBMLOnLoad(false);
+						}
+						is.read(bis, g);
+						if(is instanceof SBML_XML_Reader){
+							SBML_XML_Reader.doValidateSBMLOnLoad(saveReaderstate);
+						}
+						MainFrame.getInstance().showGraph(g, null);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+				}
+			});
+
+		} catch (IllegalAccessException e1) {
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			e1.printStackTrace();
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
 		}
-		*/
+
+
 	}
-
-
 
 	@Override
 	public String getTitle() {
@@ -131,5 +128,5 @@ implements BiomodelsLoaderCallback{
 		return InspectorTab.TAB_TRAILING;
 	}
 
-	
+
 }

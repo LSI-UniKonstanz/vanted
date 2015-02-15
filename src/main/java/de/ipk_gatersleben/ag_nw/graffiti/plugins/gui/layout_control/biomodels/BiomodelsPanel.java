@@ -14,10 +14,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -54,6 +53,8 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 	JList<SimpleModel> listResults;
 	
 	JProgressBar progressBar;
+	
+	JButton loadSelectedModels;
 	
 	JPanel rootpanel;
 	
@@ -107,7 +108,8 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 				{
 					5, TableLayout.PREFERRED, 
 					5, TableLayout.PREFERRED,
-					5, TableLayout.FILL
+					5, TableLayout.FILL,
+					5, TableLayout.PREFERRED
 				}
 		}));
 		
@@ -131,6 +133,10 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 		JScrollPane resultscrollpane = new JScrollPane(listResults);
 		constraint = new TableLayoutConstraints(1, 5, 3, 5, TableLayoutConstraints.CENTER, TableLayoutConstraints.CENTER);
 		rootpanel.add(resultscrollpane, constraint);
+		
+		loadSelectedModels = new JButton("Load Models");
+		loadSelectedModels.addActionListener(this);
+		rootpanel.add(loadSelectedModels, "1,7");
 		
 		add(rootpanel, BorderLayout.CENTER);
 	}
@@ -157,8 +163,8 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 
 		progressBar.setIndeterminate(true);
 		
-		if(callerThreadForSBML != null && callerThreadForSBML.isAlive())
-			callerThreadForSBML.stop();
+//		if(callerThreadForSBML != null && callerThreadForSBML.isAlive())
+//			callerThreadForSBML.stop();
 			
 		callerThreadForSBML = new CallerThreadForSBMLModel(model);
 		callerThreadForSBML.start();
@@ -189,14 +195,24 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 
 	@Override
 	public void resultForSBML(SimpleModel model, String modelstring) {
-		logger.debug("writing sbml file");
+		logger.debug("having result for SBML");
 		progressBar.setIndeterminate(false);
 		listResults.setEnabled(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		if(e.getSource().equals(loadSelectedModels)){
+			
+			List<SimpleModel> selectedValuesList = listResults.getSelectedValuesList();
+			if(selectedValuesList == null || selectedValuesList.isEmpty())
+				return;
+			
+			listResults.setEnabled(false);
+			for(SimpleModel model : selectedValuesList)
+				triggerLoadSBML(model);
+			
+		}
 	}
 
 	
