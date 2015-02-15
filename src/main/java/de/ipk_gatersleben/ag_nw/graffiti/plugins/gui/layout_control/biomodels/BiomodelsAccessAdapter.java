@@ -55,15 +55,23 @@ public class BiomodelsAccessAdapter {
 	Set<String> setCuratedModelIds;
 
 	List<BiomodelsLoaderCallback> listeners;
+	
+	/**
+	 * this variable is used by calling threads to indicate, that they want to abort the current
+	 * query
+	 * This results in NOT calling the callback methods
+	 */
+	boolean abort;
 	/**
 	 * 
 	 */
 	public BiomodelsAccessAdapter() {
-
+		abort = false;
 //		initSetStructures();
 	}
 
 	public List<SimpleModel> queryForSimpleModel(QueryType type, String query) throws BioModelsWSException {
+		abort = false;
 		BioModelsWSClient client = createClient();
 		String[] resultIds = null;
 		
@@ -96,16 +104,18 @@ public class BiomodelsAccessAdapter {
 		}
 		if(resultIds != null)
 			resultSimpleModels = client.getSimpleModelsByIds(resultIds);
-		
-		notifyResultSimpleModelListeners(type, resultSimpleModels);
+		if( ! isAbort() )
+			notifyResultSimpleModelListeners(type, resultSimpleModels);
 		
 		return resultSimpleModels;
 	}
 
 	public String getSBMLModel(SimpleModel simpleModel) throws BioModelsWSException {
+		abort = false;
 		String result = createClient().getModelSBMLById(simpleModel.getId());
 		
-		notifyResultSBMLListeners(simpleModel, result);
+		if( ! isAbort() )
+			notifyResultSBMLListeners(simpleModel, result);
 		
 		return result;
 	}
@@ -142,6 +152,20 @@ public class BiomodelsAccessAdapter {
 	}
 
 	
+	
+	public boolean isAbort() {
+		return abort;
+	}
+
+	public void setAbort(boolean abort) {
+		this.abort = abort;
+	}
+
+	/**
+	 * This methods sets up 2 sets of biomodels identifiers
+	 * These identifiers are then used to indicate items in the result set, if they're 
+	 * (non)curated
+	 */
 	private void initSetStructures(){
 
 		final BioModelsWSClient client = createClient();

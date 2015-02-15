@@ -40,6 +40,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.Bi
 public class BiomodelsPanel extends JPanel
 implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5772252664151135872L;
+
 	Logger logger = Logger.getLogger(BiomodelsPanel.class);
 	
 	JScrollPane scrollpane;
@@ -151,7 +156,7 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 		progressBar.setIndeterminate(true);
 		
 		if(callerThreadForSimpleModel != null && callerThreadForSimpleModel.isAlive())
-			callerThreadForSimpleModel.stop();
+			callerThreadForSimpleModel.cancelRequest();
 			
 		callerThreadForSimpleModel = new CallerThreadForSimpleModel(selItem, query);
 		callerThreadForSimpleModel.start();
@@ -163,8 +168,8 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 
 		progressBar.setIndeterminate(true);
 		
-//		if(callerThreadForSBML != null && callerThreadForSBML.isAlive())
-//			callerThreadForSBML.stop();
+		if(callerThreadForSimpleModel != null && callerThreadForSimpleModel.isAlive())
+			callerThreadForSimpleModel.cancelRequest();
 			
 		callerThreadForSBML = new CallerThreadForSBMLModel(model);
 		callerThreadForSBML.start();
@@ -197,7 +202,9 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 	public void resultForSBML(SimpleModel model, String modelstring) {
 		logger.debug("having result for SBML");
 		progressBar.setIndeterminate(false);
+		
 		listResults.setEnabled(true);
+		loadSelectedModels.setEnabled(true);
 	}
 
 	@Override
@@ -209,6 +216,7 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 				return;
 			
 			listResults.setEnabled(false);
+			loadSelectedModels.setEnabled(false);
 			for(SimpleModel model : selectedValuesList)
 				triggerLoadSBML(model);
 			
@@ -272,7 +280,10 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 				e.printStackTrace();
 			}
 		}
-		
+	
+		public void cancelRequest() {
+			adapter.setAbort(true);
+		}
 	}
 	class CallerThreadForSBMLModel extends Thread{
 		SimpleModel model;
@@ -293,5 +304,8 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 			}
 		}
 		
+		public void cancelRequest() {
+			adapter.setAbort(true);
+		}
 	}
 }

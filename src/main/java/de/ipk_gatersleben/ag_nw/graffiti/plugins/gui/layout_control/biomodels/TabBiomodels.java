@@ -7,7 +7,6 @@ import java.awt.BorderLayout;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.util.List;
 
 import javax.swing.SwingUtilities;
@@ -32,6 +31,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_XML_Rea
 public class TabBiomodels extends InspectorTab
 implements BiomodelsLoaderCallback{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4603467064417816569L;
+
+	
 	static final Logger logger = Logger.getLogger(TabBiomodels.class);
 
 	static final String NAME = "Biomodels";
@@ -60,13 +65,10 @@ implements BiomodelsLoaderCallback{
 	public void resultForSBML(SimpleModel model, String modelstring) {
 		logger.debug("creating graph from sbml model");
 		final InputSerializer is;
-		final StringReader reader;
 		final SimpleModel finalModel = model;
 		try {
 			final InputStream bis = new ByteArrayInputStream( modelstring.getBytes() );
 			is = MainFrame.getInstance().getIoManager().createInputSerializer(null, ".sbml");
-			//				reader = new StringReader(modelstring);
-
 
 			SwingUtilities.invokeLater(new Runnable() {
 
