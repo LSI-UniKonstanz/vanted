@@ -19,6 +19,7 @@ import org.graffiti.plugin.inspector.SubtabHostTab;
 
 import de.ipk_gatersleben.ag_nw.graffiti.DBE_EditorPluginAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.data_mapping.DataMapping;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.TabBiomodels;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.ExperimentDataProcessingManager;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.PutIntoSidePanel;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.TabDBE;
@@ -60,6 +61,8 @@ public class PatternTabsForInspector
 			tablist.add(new TabMetaCrop());
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.RIMAS_ACCESS))
 			tablist.add(new RimasTab());
+		
+		tablist.add(new TabBiomodels());
 		
 		// if (ReleaseInfo.getIsAllowedFeature(FeatureSet.SBGN))
 		// subtabsPathway.add(new TabSBGN());
