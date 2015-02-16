@@ -19,6 +19,7 @@ import java.util.StringTokenizer;
 import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.plugin.gui.GraffitiContainer;
 import org.graffiti.plugin.inspector.InspectorTab;
@@ -34,7 +35,9 @@ public class InspectorContainer
 					implements GraffitiContainer {
 
 	static Logger logger = Logger.getLogger(InspectorContainer.class);
-	
+	static {
+		logger.setLevel(Level.INFO); //Adjust for debugging purposes
+	}
 	// ~ Instance fields ========================================================
 	
 	/** The tabbed pane for the edge-, node- and graph-tab. */

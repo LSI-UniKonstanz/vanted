@@ -16,6 +16,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.event.AttributeEvent;
 import org.graffiti.event.AttributeListener;
@@ -36,7 +37,9 @@ implements SessionListener, ViewListener, ContainsTabbedPane, SelectionListener 
 	private static final long serialVersionUID = -3810951162912767447L;
 
 	static Logger logger = Logger.getLogger(SubtabHostTab.class);
-	
+	static {
+		logger.setLevel(Level.INFO); //Adjust for debugging purposes
+	}
 	private List<InspectorTab> subtabs;
 
 	JTabbedPane tabbedPane = new JTabbedPane();

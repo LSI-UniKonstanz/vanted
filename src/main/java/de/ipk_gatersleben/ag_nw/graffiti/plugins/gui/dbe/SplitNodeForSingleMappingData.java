@@ -112,8 +112,8 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 	 */
 	public void execute() {
 		
-		if (mCurrentMode == option2 && mMinimumDegree <= 1) {
-			MainFrame.showMessageDialog("<html>Cannot split nodes!<br>Please specify a node degree > 1.", "Error");
+		if (mCurrentMode == option2 && mMinimumDegree < 1) {
+			MainFrame.showMessageDialog("<html>Cannot split nodes!<br>Please specify a threshold over 0.", "Error");
 			return;
 		}
 		
@@ -158,7 +158,7 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 				}
 			}
 			if (mCurrentMode.equalsIgnoreCase(option2)) {
-				SplitResult res = splitNodes(graphNode, mMinimumDegree, graph, mProcessSelfLoops, mRepositionOfNodes);
+				SplitResult res = splitNodes(graphNode, mMinimumDegree + 1, graph, mProcessSelfLoops, mRepositionOfNodes);
 				newNodes = res.newNodes;
 				newEdges = res.newEdges;
 				removedNodes = res.removedNodes;
