@@ -83,12 +83,12 @@ public class GraphTab
 	}
 	
 	
-	
+/*	
 	@Override
 	public void componentShown(ComponentEvent e) {
-		rebuildTree();
+		startRebuildTreeActionThread();
 	}
-
+*/
 	@Override
 	public String getTabParentPath() {
 		return "Attributes";
