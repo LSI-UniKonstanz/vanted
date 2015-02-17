@@ -29,8 +29,8 @@ public class BiomodelsAccessAdapter {
 		PERSON("Person"),
 		PUBLICATION("Publication (Name/Id)"),
 		GO("GO Term"),
-		UNIPROT("Uniprot Ids");
-		
+		UNIPROT("Uniprot Ids"),
+		BIOMODELID("Biomodels Id");
 		
 		private String name;
 		
@@ -99,7 +99,9 @@ public class BiomodelsAccessAdapter {
 		case UNIPROT:	
 			resultIds = client.getModelsIdByUniprotIds(query.split(" "));
 			break;
-
+		case BIOMODELID:	
+			resultIds = new String[]{query};
+			break;
 		default:
 		}
 		if(resultIds != null)

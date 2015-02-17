@@ -72,24 +72,10 @@ public class TestPath2Models extends TestCase{
 	@Test
 	public void testLoadModelByNameSearch() {
 		
-		
 		try {
-			String searchterm = " ";
-			System.out.println("searching for "+searchterm);
-//			client.getAllCuratedModelsId();
-//			String[] modelsIdByName = client.getModelsIdByName(searchterm);
-			String[] modelsIdByName = client.getAllCuratedModelsId();
-
-				for(String curModel : modelsIdByName) {
-					System.out.println("  model id: "+curModel);
-					/*
-					String modelSBMLById = client.getModelSBMLById(curModel);
-					FileWriter writer = new FileWriter("/tmp/sbml-testwrite-"+curModel+".sbml");
-					writer.write(modelSBMLById);
-					writer.close();
-					*/
-				}
-			
+			String modelSBMLById = client.getModelSBMLById("BMID000000107284");
+			if(modelSBMLById != null)
+				System.out.println("have model");
 		} catch (BioModelsWSException e) {
 			e.printStackTrace();
 		}
