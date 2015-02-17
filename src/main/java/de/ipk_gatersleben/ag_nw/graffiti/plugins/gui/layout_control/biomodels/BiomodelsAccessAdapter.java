@@ -97,10 +97,10 @@ public class BiomodelsAccessAdapter {
 			resultIds = client.getModelsIdByPublication(query);
 			break;
 		case UNIPROT:	
-			resultIds = client.getModelsIdByUniprotIds(query.split(" "));
+			resultIds = client.getModelsIdByUniprotIds(query.split("[ ;:\t]"));
 			break;
 		case BIOMODELID:	
-			resultIds = new String[]{query};
+			resultIds = query.toUpperCase().split("[ ;:\t]");
 			break;
 		default:
 		}
