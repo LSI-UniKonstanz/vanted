@@ -3,7 +3,8 @@ echo "Create XML Plugin file lists..."
 
 find ./src/main/java/ -name "*.xml" > ./src/main/resources/plugins.txt
 
-
+rm src/main/resources/plugins_cluster.txt
+rm src/main/resources/plugins_exclude.txt
 
 echo create Cluster Plugin List
 echo "./org/graffiti/plugins/views/defaults/plugin.xml" > src/main/resources/plugins_cluster.txt
