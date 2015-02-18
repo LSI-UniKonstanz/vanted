@@ -9,10 +9,14 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.algorithms;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.AttributePathNameSearchType;
@@ -44,6 +48,16 @@ public class RecolorEdgesAlgorithm extends AbstractAlgorithm {
 	public String getCategory() {
 		return "Network.Compute Attributes";
 	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION,
+				Category.VISUAL
+				));
+	}
+
 	
 	public void execute() {
 		ArrayList<AttributePathNameSearchType> possibleNumericAttributes = new ArrayList<AttributePathNameSearchType>();

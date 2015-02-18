@@ -5,8 +5,10 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.davidtest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
@@ -19,6 +21,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -49,6 +52,17 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 	@Override
 	public String getDescription() {
 		return "Grubbs' Test for the identification of outliers";
+	}
+	
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.DATA,
+				Category.COMPUTATION,
+				Category.STATISTICS
+				));
 	}
 	
 	public void execute() {

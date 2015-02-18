@@ -7,8 +7,11 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
@@ -24,6 +27,7 @@ import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.transpath.TranspathPathway;
@@ -118,6 +122,13 @@ public class TranspathPathwayLoader extends AbstractAlgorithm {
 		return "Nodes";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.IMPORT
+				));
+	}
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TRANSPATH_ACCESS))
 			return "Load TRANSPATH (R) Pathway";

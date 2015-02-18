@@ -15,9 +15,12 @@ import info.clearthought.layout.TableLayoutConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -35,6 +38,7 @@ import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.CoordinateAttribute;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.algorithm.ThreadSafeAlgorithm;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
@@ -840,6 +844,19 @@ public class PatternSpringembedder
 		return null;
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.LAYOUT,
+				Category.GRAPH
+				));
+	}
+	
+	@Override
+	public String getMenuCategory() {
+		return null;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.algorithm.Algorithm#isLayoutAlgorithm()

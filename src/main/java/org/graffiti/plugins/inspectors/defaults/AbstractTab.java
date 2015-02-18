@@ -99,6 +99,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 					editPanel.updateTable(e.getAttribute());
 			}
 		});
+		delayThreadAttributeChanged.setName(getClass().getName().substring(getClass().getName().lastIndexOf(".")+1)+": DelayThread Attribute Changes");
 		delayThreadAttributeChanged.start();
 
 		delayThreadAttributeAddedRemoved = new DelayThread(new DelayThread.DelayedCallback() {
@@ -109,6 +110,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 				rebuildTreeAction();
 			}
 		});
+		delayThreadAttributeAddedRemoved.setName(getClass().getName().substring(getClass().getName().lastIndexOf(".")+1)+": DelayThread for Added/Removed Attribute");
 		delayThreadAttributeAddedRemoved.start();
 
 		setLayout(TableLayout.getLayout(TableLayoutConstants.FILL, TableLayoutConstants.FILL));

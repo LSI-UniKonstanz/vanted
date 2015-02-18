@@ -4,7 +4,12 @@
 
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 /**
  * @author Christian Klukas
@@ -43,6 +48,16 @@ public class NullLayoutAlgorithm extends AbstractAlgorithm {
 	public String getCategory() {
 		return "Layout";
 	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
+	}
+
 	
 	@Override
 	public String getDescription() {

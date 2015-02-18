@@ -1,7 +1,10 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.hierarchy;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.AlignmentSetting;
 import org.AttributeHelper;
@@ -9,6 +12,7 @@ import org.graffiti.editor.GravistoService;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
@@ -191,6 +195,17 @@ public class HierarchyWizard extends AbstractAlgorithm {
 		return "Analysis Pipeline";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.ANNOTATION,
+				Category.COMPUTATION,
+				Category.LAYOUT
+				));
+	}
+
 	@Override
 	public String getDescription() {
 		return "<html>Analysis Pipeline Overview:<ol>" +

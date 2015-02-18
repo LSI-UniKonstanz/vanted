@@ -7,9 +7,11 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.no_overlapp_as_tim;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JComponent;
 
@@ -19,6 +21,7 @@ import org.Vector2d;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -208,7 +211,16 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 	public String getCategory() {
 		return "Layout";
 	}
+
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
+	}
+
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;

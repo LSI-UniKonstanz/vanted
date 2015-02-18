@@ -9,11 +9,13 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.shortest_paths;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Set;
 
 import javax.swing.KeyStroke;
 
@@ -24,6 +26,7 @@ import org.apache.commons.collections.set.ListOrderedSet;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
@@ -297,7 +300,22 @@ public class WeightedShortestPathSelectionAlgorithm
 	public String getCategory() {
 			return "Network.Analysis";
 	}
+
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION,
+				Category.SEARCH
+				));
+	}	
+	
+	@Override
+	public String getMenuCategory() {
+		return null; //we don't want to appear in the menu
+	}
+
 	public void setSelection(Selection selection) {
 		this.selection = selection;
 	}

@@ -8,6 +8,9 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.KeyStroke;
 
@@ -17,6 +20,7 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
@@ -133,6 +137,15 @@ public class ExpandSelectionAlgorithm
 		return "edit.Selection";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.SELECTION
+				));
+	}
+
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 

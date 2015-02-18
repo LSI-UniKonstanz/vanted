@@ -1,10 +1,14 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.graph_generation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.PositionGridGenerator;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
@@ -43,6 +47,15 @@ public class BarabasiAlbertGraphGenerator extends AbstractAlgorithm {
 	public String getName() {
 		return "Generate Barabási–Albert random graph";
 	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION
+				));
+	}
+
 	
 	@Override
 	public String getDescription() {

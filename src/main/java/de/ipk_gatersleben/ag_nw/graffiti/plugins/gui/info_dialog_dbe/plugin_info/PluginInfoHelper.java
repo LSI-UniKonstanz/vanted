@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import org.ErrorMsg;
@@ -14,6 +15,7 @@ import org.graffiti.managers.pluginmgr.PluginEntry;
 import org.graffiti.plugin.EditorPlugin;
 import org.graffiti.plugin.GenericPlugin;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.ProvidesDirectMouseClickContextMenu;
 import org.graffiti.plugin.algorithm.ProvidesEdgeContextMenu;
 import org.graffiti.plugin.algorithm.ProvidesGeneralContextMenu;
@@ -383,6 +385,16 @@ public class PluginInfoHelper implements HelperClass {
 	}
 	
 	private static String getCategoryDesc(String category, String post) {
+		/*
+		if (category != null && category.size() > 0){
+			StringBuffer buf = new StringBuffer();
+			for(Category cat : category)
+				buf.append(cat).append(" / ");
+			String catstring = buf.toString();
+			catstring = catstring.substring(0, catstring.length() - 1);
+			return catstring + post;
+		}
+		 */
 		if (category != null && category.length() > 0)
 			return category + post;
 		else

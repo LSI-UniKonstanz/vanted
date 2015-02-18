@@ -4,9 +4,12 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.radial_tree;
 
 import java.awt.Color;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
@@ -21,6 +24,7 @@ import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.graphics.DimensionAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -875,6 +879,14 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	@Override
 	public String getCategory() {
 		return "Layout";
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
 	}
 	
 	@Override

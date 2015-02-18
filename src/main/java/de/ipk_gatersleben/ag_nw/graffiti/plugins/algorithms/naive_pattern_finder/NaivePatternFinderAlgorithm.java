@@ -5,12 +5,14 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.naive_pattern_finder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.StringManipulationTools;
@@ -23,6 +25,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 /**
@@ -70,6 +73,17 @@ public class NaivePatternFinderAlgorithm
 	public String getCategory() {
 		return "Analysis";
 	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.SEARCH,
+				Category.COMPUTATION
+				));
+	}
+
 	
 	/**
 	 * Checks the preconditions of the algorithm. These are: non empty target

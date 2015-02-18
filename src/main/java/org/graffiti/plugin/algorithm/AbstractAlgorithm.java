@@ -11,6 +11,7 @@ package org.graffiti.plugin.algorithm;
 
 import java.awt.event.ActionEvent;
 import java.util.Collection;
+import java.util.Set;
 
 import javax.swing.KeyStroke;
 
@@ -37,10 +38,6 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	
 	protected ActionEvent actionEvent = null;
 	
-	/**
-	 * shall this algorithm also appear in the menu
-	 */
-	protected boolean isMenuAlgorithm = true;
 	
 	// ~ Methods ================================================================
 	
@@ -111,7 +108,23 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	public String getCategory() {
 		return null;
 	}
+
 	
+	
+//	@Override
+//	public Set<Category> getSetCategory() {
+//		return null;
+//	}
+
+	/**
+	 * For backwards compatibility the standard implementation will return
+	 * the Category
+	 */
+	@Override
+	public String getMenuCategory() {
+		return getCategory();
+	}
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
@@ -124,16 +137,6 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	
 	public boolean isLayoutAlgorithm() {
 		return false;
-	}
-	
-	public boolean isMenuAlgorithm() {
-		return isMenuAlgorithm;
-	}
-	
-	
-	
-	public void addAlgorithmToMenu(boolean isMenuAlgorithm) {
-		this.isMenuAlgorithm = isMenuAlgorithm;
 	}
 
 	public ActionEvent getActionEvent() {

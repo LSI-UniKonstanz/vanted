@@ -9,7 +9,10 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.algorithms;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.AlignmentSetting;
 import org.AttributeHelper;
@@ -18,6 +21,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
@@ -56,6 +60,14 @@ public class AddDiagramLegendAlgorithm extends AbstractAlgorithm {
 		return "Data";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.VISUAL,
+				Category.CHART
+				));
+	}
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
