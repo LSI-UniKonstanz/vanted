@@ -26,6 +26,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.TabDBE;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.TabKegg;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.metacrop.RimasTab;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.metacrop.TabMetaCrop;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.network.TabNetworkAlgorithms;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.statistics.TabStatistics;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.WorkflowHelper;
 
@@ -88,6 +89,8 @@ public class PatternTabsForInspector
 //			subtabsTools.add(new TabPatternLayout());
 		
 		tablist.add(new TabPatternLayout());
+		
+		tablist.add(new TabNetworkAlgorithms());
 		
 //		if (subtabsTools.size() > 0)
 //			tablist.add(getSubtab("Tools", subtabsTools));

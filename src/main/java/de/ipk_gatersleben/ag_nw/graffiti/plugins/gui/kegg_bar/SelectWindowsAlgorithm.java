@@ -7,12 +7,16 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.kegg_bar;
 
 import java.beans.PropertyVetoException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JInternalFrame;
 
 import org.ErrorMsg;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
@@ -52,6 +56,14 @@ public class SelectWindowsAlgorithm extends AbstractAlgorithm {
 		return "menu.window";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.UI,
+				Category.SELECTION
+				));
+	}
+
 	public void execute() {
 		try {
 			desiredWindow.setIcon(false);

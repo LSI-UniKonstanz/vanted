@@ -72,6 +72,12 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 		this.guiComponents = new GraffitiComponent[] {
 							container
 		};
+		
+		tabs = new InspectorTab[] {
+				new EdgeTab(),
+				new NodeTab(),
+				new GraphTab()
+		};
 	}
 	
 	// ~ Methods ================================================================
@@ -300,19 +306,6 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 		
 	}
 	
-	@Override
-	public synchronized InspectorTab[] getInspectorTabs() {
-//		return new InspectorTab[] { new SubtabHostTab("Network", new InspectorTab[] {
-//							new GraphTab(),
-//							new NodeTab(),
-//							new EdgeTab()
-//				}) };
-		return new InspectorTab[] {
-				new EdgeTab(),
-				new NodeTab(),
-				new GraphTab()
-		};
-	}
 	
 	public void setSelectedTab(InspectorTab tab) {
 		if (tab != null && container != null && container.getTabs() != null && container.getTabs().contains(tab))

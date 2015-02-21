@@ -19,6 +19,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -26,12 +27,14 @@ import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
 import org.HelperClass;
+import org.graffiti.attributes.Attribute;
 import org.graffiti.core.StringBundle;
 import org.graffiti.managers.pluginmgr.DefaultPluginManager;
 import org.graffiti.managers.pluginmgr.PluginDescription;
 import org.graffiti.managers.pluginmgr.PluginEntry;
 import org.graffiti.managers.pluginmgr.PluginManagerException;
 import org.graffiti.managers.pluginmgr.PluginXMLParser;
+import org.graffiti.plugin.algorithm.Algorithm;
 
 /**
  *
@@ -132,18 +135,25 @@ public class PluginHelper implements HelperClass {
 	/**
 	 * @return
 	 */
-	public static List<Class> getAvailableAttributes() {
-		List<Class> result = new ArrayList<Class>();
-		Collection plugins = DefaultPluginManager.lastInstance.getPluginEntries();
-		for (Iterator it = plugins.iterator(); it.hasNext();) {
-			PluginEntry e = (PluginEntry) it.next();
-			Class[] at = e.getPlugin().getAttributes();
+	public static List<Class<Attribute>> getAvailableAttributes() {
+		List<Class<Attribute>> result = new ArrayList<Class<Attribute>>();
+		Collection<PluginEntry> plugins = DefaultPluginManager.lastInstance.getPluginEntries();
+		for(PluginEntry pluginEntry : plugins) {
+			Class<Attribute>[] at = pluginEntry.getPlugin().getAttributes();
 			if (at != null && at.length > 0) {
-				for (int i = 0; i < at.length; i++)
-					result.add(at[i]);
+				result.addAll(Arrays.asList(at));
 			}
 		}
 		return result;
+	}
+	
+	public static List<Algorithm> getAvailableAlgorithms() {
+		List<Algorithm> algorithms = new ArrayList<Algorithm>();
+		Collection<PluginEntry> pluginEntries = DefaultPluginManager.lastInstance.getPluginEntries();
+		for(PluginEntry pluginEntry : pluginEntries) {
+			algorithms.addAll(Arrays.asList(pluginEntry.getPlugin().getAlgorithms()));
+		}
+		return algorithms;
 	}
 }
 

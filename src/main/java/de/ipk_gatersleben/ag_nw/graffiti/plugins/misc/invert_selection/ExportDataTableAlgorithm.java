@@ -1,7 +1,9 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
@@ -13,6 +15,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
@@ -165,4 +168,12 @@ public class ExportDataTableAlgorithm extends AbstractEditorAlgorithm {
 		
 	}
 	
+
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.EXPORT,
+				Category.COMPUTATION
+				));
+	}
 }

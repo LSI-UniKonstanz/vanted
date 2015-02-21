@@ -7,6 +7,10 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.label_editing;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.AttributeHelper;
 import org.Release;
 import org.ReleaseInfo;
@@ -14,6 +18,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 /**
  * @author Christian Klukas
@@ -43,7 +48,19 @@ public class RestoreLabelAlgorithm extends AbstractAlgorithm {
 	public String getCategory() {
 		return null;// "Elements";
 	}
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.ANNOTATION
+				));
+	}
 	
+	@Override
+	public String getMenuCategory() {
+		return "edit.Change Label";
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()

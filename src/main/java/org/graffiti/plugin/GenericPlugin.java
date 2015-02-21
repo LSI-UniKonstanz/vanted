@@ -11,6 +11,7 @@ package org.graffiti.plugin;
 
 import javax.swing.ImageIcon;
 
+import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.AttributeDescription;
 import org.graffiti.options.GravistoPreferences;
 import org.graffiti.plugin.actions.URLattributeAction;
@@ -52,8 +53,8 @@ public interface GenericPlugin {
 	 * 
 	 * @return the attribute types provided by this plugin.
 	 */
-	@SuppressWarnings("unchecked")
-	public Class[] getAttributes();
+//	@SuppressWarnings("unchecked")
+	public Class<Attribute>[] getAttributes();
 	
 	public AttributeDescription[] getAttributeDescriptions();
 	

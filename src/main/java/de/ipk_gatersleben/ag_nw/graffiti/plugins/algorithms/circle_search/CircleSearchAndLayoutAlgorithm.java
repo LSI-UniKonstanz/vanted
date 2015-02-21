@@ -3,8 +3,11 @@
  *******************************************************************************/
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.circle_search;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.graffiti.graph.AdjListGraph;
@@ -12,6 +15,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -156,6 +160,16 @@ public class CircleSearchAndLayoutAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		return "Find and Layout Circles";
 	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT,
+				Category.SEARCH
+				));
+	}
+
 	
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {

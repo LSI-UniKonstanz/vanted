@@ -6,8 +6,11 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.hamming_distance;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.JFileChooser;
 
@@ -16,6 +19,7 @@ import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
@@ -304,4 +308,13 @@ public class HammingDistanceAlgorithm
 		return "Analysis";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.ANALYSIS
+				));
+	}
+
 }

@@ -6,12 +6,16 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.shortest_path;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.Vector2d;
 import org.graffiti.graph.Edge;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 /**
  * @author Christian Klukas
@@ -42,6 +46,15 @@ public class ShortestPathAlgorithm extends AbstractAlgorithm {
 	}
 	
 	public String getName() {
-		return null; // "SP Edge Routing";
+		return "SP Edge Routing";
 	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
+	}
+
 }

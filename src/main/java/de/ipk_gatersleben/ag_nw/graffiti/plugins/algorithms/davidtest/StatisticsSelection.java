@@ -2,10 +2,12 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.davidtest;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 import org.FeatureSet;
 import org.ReleaseInfo;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 
@@ -32,4 +34,11 @@ public class StatisticsSelection extends LaunchGui implements Algorithm {
 	public String getCategory() {
 		return "Data";
 	}
+
+	@Override
+	public Set<Category> getSetCategory() {
+		return null;
+	}
+	
+	
 }

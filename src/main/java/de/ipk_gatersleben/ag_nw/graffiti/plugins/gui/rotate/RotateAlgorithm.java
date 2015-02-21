@@ -17,10 +17,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -43,6 +46,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.ProvidesGeneralContextMenu;
 import org.graffiti.plugin.algorithm.ThreadSafeAlgorithm;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
@@ -86,6 +90,20 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 //		return "Layout";
 		return null;
 	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.LAYOUT,
+				Category.GRAPH
+				));
+	}
+	
+	@Override
+	public String getMenuCategory() {
+		return null;
+	}
+
 	
 	@Override
 	public String toString() {

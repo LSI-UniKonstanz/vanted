@@ -8,7 +8,10 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.kegg_bar;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JFileChooser;
 import javax.xml.rpc.ServiceException;
@@ -16,6 +19,7 @@ import javax.xml.rpc.ServiceException;
 import org.ErrorMsg;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
@@ -72,6 +76,17 @@ public class CreateOrgSpecificSuperGraphsAlgorithm extends AbstractAlgorithm {
 	public String getCategory() {
 		return "Nodes";
 	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT,
+				Category.COMPUTATION
+				));
+	}
+
 	
 	@Override
 	public void check() throws PreconditionException {

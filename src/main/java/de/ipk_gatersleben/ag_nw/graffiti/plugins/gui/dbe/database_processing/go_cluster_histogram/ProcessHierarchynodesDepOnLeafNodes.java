@@ -1,11 +1,16 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go_cluster_histogram;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.FeatureSet;
 import org.ReleaseInfo;
+import org.biojava.bio.Annotatable;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.alt_id_statistics.AlternativeIDannotationStatistics;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
@@ -42,4 +47,9 @@ public class ProcessHierarchynodesDepOnLeafNodes extends LaunchGui {
 							"added to the working-set of hierarchy-nodes.";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return null;
+	}
+
 }

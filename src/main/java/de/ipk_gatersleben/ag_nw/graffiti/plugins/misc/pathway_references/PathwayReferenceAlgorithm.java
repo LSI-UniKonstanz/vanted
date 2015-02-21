@@ -6,10 +6,15 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.pathway_references;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.AttributeHelper;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
@@ -27,6 +32,16 @@ public class PathwayReferenceAlgorithm extends AbstractAlgorithm implements Algo
 		return "Elements"; // "menu.edit";
 	}
 	
+
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION,
+				Category.MAPPING
+				));
+	}
+
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
