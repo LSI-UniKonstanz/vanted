@@ -1813,7 +1813,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		if (plugin.isViewListener())
 			viewManager.addViewListener((ViewListener) plugin);
 		
-		// Registers all plugins that are session listeners.
+		// Registers all plugins that are selection listeners to the listenermanager.
 		checkSelectionListener(plugin);
 		
 		if (plugin.needsEditComponents()) {
