@@ -80,7 +80,7 @@ public class NaivePatternFinderAlgorithm
 		return new HashSet<Category>(Arrays.asList(
 				Category.GRAPH,
 				Category.SEARCH,
-				Category.COMPUTATION
+				Category.ANALYSIS
 				));
 	}
 

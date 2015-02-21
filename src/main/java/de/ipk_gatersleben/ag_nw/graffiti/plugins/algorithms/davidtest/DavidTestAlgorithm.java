@@ -40,7 +40,7 @@ public class DavidTestAlgorithm
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
 				Category.DATA,
-				Category.COMPUTATION,
+				Category.ANALYSIS,
 				Category.STATISTICS
 				));
 	}

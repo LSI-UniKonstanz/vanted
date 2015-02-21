@@ -20,6 +20,7 @@ public enum Category {
 	NODE("Graph-Nodes","Algorithm working on graph nodes"),
 	CLUSTER("Cluster","Algorithm performing clustering tasks on graphs or data"),
 	COMPUTATION("Computation","Algorithm performing computational related tasks on graphs, graph elements, or data"),
+	ANALYSIS("Analysis","Algorithm performs an analysis on a graph or data"),
 	DATA("Data","Algorithm working with numerical data attached to graph"),
 	ANNOTATION("Annotation","Algorithm performing annotation tasks (labeling, hierarchies, ontologies) on graph, graph elements, or data"),
 	MAPPING("Mapping","Algorithm performing mapping tasks (in)between network and data domains (network-network / network-data / data-data)"),

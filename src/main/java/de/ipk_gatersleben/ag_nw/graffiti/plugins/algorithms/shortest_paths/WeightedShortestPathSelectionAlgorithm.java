@@ -43,7 +43,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchTyp
 public class WeightedShortestPathSelectionAlgorithm
 					extends AbstractAlgorithm {
 	
-	Selection selection;
+//	Selection selection;
 	
 	private boolean settingDirected = true;
 	private boolean considerEdgeWeight = true;
@@ -61,7 +61,7 @@ public class WeightedShortestPathSelectionAlgorithm
 	
 	@Override
 	public void check() throws PreconditionException {
-		super.check();
+//		super.check();
 		if (selection == null || selection.getNumberOfNodes() < 2)
 			throw new PreconditionException("at least one start and one end node has to be selected");
 	}
@@ -306,8 +306,8 @@ public class WeightedShortestPathSelectionAlgorithm
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
 				Category.GRAPH,
-				Category.COMPUTATION,
-				Category.SEARCH
+				Category.ANALYSIS,
+				Category.SELECTION
 				));
 	}	
 	

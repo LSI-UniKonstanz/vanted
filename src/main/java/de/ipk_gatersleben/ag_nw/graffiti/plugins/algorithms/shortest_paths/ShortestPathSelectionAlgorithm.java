@@ -49,7 +49,7 @@ public class ShortestPathSelectionAlgorithm
 	
 	@Override
 	public void check() throws PreconditionException {
-		super.check();
+//		super.check();
 		if (selection == null || selection.getNumberOfNodes() < 2)
 			throw new PreconditionException("at least one start and one end node has to be selected");
 	}
@@ -147,7 +147,7 @@ public class ShortestPathSelectionAlgorithm
 		return new HashSet<Category>(Arrays.asList(
 				Category.GRAPH,
 				Category.SELECTION,
-				Category.COMPUTATION
+				Category.ANALYSIS
 				));
 	}
 	

@@ -313,7 +313,7 @@ public class HammingDistanceAlgorithm
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
 				Category.GRAPH,
-				Category.COMPUTATION
+				Category.ANALYSIS
 				));
 	}
 

@@ -52,7 +52,7 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
 				Category.GRAPH,
-				Category.COMPUTATION,
+				Category.ANALYSIS,
 				Category.CLUSTER
 				));
 	}

@@ -46,15 +46,14 @@ public class ShortestPathAlgorithm extends AbstractAlgorithm {
 	}
 	
 	public String getName() {
-		return null; // "SP Edge Routing";
+		return "SP Edge Routing";
 	}
 	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
 				Category.GRAPH,
-				Category.SEARCH,
-				Category.COMPUTATION
+				Category.LAYOUT
 				));
 	}
 
