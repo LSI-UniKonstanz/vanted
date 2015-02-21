@@ -6,14 +6,25 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.network;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import org.graffiti.editor.GravistoService;
+import org.apache.log4j.Logger;
+import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.view.View;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.PreferencesDialog;
+import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
+import de.ipk_gatersleben.ag_nw.graffiti.services.algorithms.AlgorithmPanelFactory;
+import de.ipk_gatersleben.ag_nw.graffiti.services.algorithms.SearchAlgorithms;
+import de.ipk_gatersleben.ag_nw.graffiti.services.algorithms.SearchAlgorithms.LogicalOp;
+import de.ipk_gatersleben.ag_nw.graffiti.services.algorithms.SearchAlgorithms.OperatorOnCategories;
 
 /**
  * @author matthiak
@@ -21,16 +32,18 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.Preferences
  */
 public class TabNetworkAlgorithms extends InspectorTab{
 
+	static Logger logger = Logger.getLogger(TabNetworkAlgorithms.class);
+
 	private static String NAME = "Algorithms";
-	
-	
+
+
 	/**
 	 * 
 	 */
 	public TabNetworkAlgorithms() {
 		initComponents();
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 */
@@ -38,41 +51,56 @@ public class TabNetworkAlgorithms extends InspectorTab{
 		// initOldDialog();
 		initNewDialog();
 	}
-	
+
 	/**
 	 * 
 	 */
 	private void initNewDialog() {
 		double border = 2;
 		double[][] size =
-		{
-							{ border, TableLayoutConstants.FILL, border }, // Columns
+			{
+				{ border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.FILL, border }
-		}; // Rows
+			}; // Rows
 		this.setLayout(new TableLayout(size));
+
+		JButton searchAlgo = new JButton("search algos");
+		searchAlgo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				OperatorOnCategories[] opsOnCats = new OperatorOnCategories[]{
+						new OperatorOnCategories(
+								LogicalOp.OR, 
+								new Category[]{
+										Category.ANALYSIS, 
+										Category.DATA}),
+
+
+				};
+
+				logger.debug("===== Found Algorithms =====");
+				List<Algorithm> searchAlgorithms = SearchAlgorithms.searchAlgorithms(opsOnCats);
+				for(Algorithm algo : searchAlgorithms) {
+					logger.debug("Name : "+algo.getName());
+					for(Category cat : algo.getSetCategory())
+						logger.debug("   category: " + cat);
+				}
+
+			}
+		});
+//		add(searchAlgo, "1,1");
 		
-		PreferencesDialog pd = new PreferencesDialog();
-		GravistoService.getInstance().getMainFrame().getPluginManager().addPluginManagerListener(pd);
-		JPanel newPanel = new JPanel();
-		pd.initializeGUIforGivenContainer(
-				newPanel, 
-				null, 
+		JPanel algorithmspanel = AlgorithmPanelFactory.createForAlgorithms(
 				true, 
-				false, 
-				true, 
-				false, 
-				true, 
-				false, 
-				false, 
-				null, 
-				null, 
-				null, 
-				false);
-		this.add(newPanel, "1,1");
-		this.revalidate();
+				SearchAlgorithms.searchAlgorithms(
+						new Category[]{Category.ANALYSIS, Category.GRAPH}));
+		
+		add(algorithmspanel, "1,1");
 	}
-	
-	
+
+
 	@Override
 	public String getTitle() {
 		return NAME;
@@ -98,5 +126,5 @@ public class TabNetworkAlgorithms extends InspectorTab{
 		return InspectorTab.TAB_TRAILING;
 	}
 
-	
+
 }
