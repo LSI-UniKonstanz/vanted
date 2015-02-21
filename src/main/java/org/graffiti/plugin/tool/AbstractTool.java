@@ -360,8 +360,8 @@ public abstract class AbstractTool
 				}
 			} else
 				((JComponent) comp).setBorder(tempBorder);
-			if (((JComponent) comp).getParent() != null)
-				((JComponent) comp).getParent().repaint();
+//			if (((JComponent) comp).getParent() != null)
+//				((JComponent) comp).getParent().repaint();
 		}
 		if (!processed) {
 			try {
@@ -467,8 +467,8 @@ public abstract class AbstractTool
 	private void unDisplayAsMarked(NodeComponentInterface comp) {
 		if (comp != null && ((JComponent) comp).getBorder() != empty) {
 			((JComponent) comp).setBorder(empty);
-			if (((JComponent) comp).getParent() != null)
-				((JComponent) comp).getParent().repaint();
+//			if (((JComponent) comp).getParent() != null)
+//				((JComponent) comp).getParent().repaint();
 		}
 	}
 	
@@ -481,8 +481,8 @@ public abstract class AbstractTool
 	private void unDisplayAsMarked(EdgeComponentInterface comp) {
 		if (comp != null && ((JComponent) comp).getBorder() != empty) {
 			((JComponent) comp).setBorder(empty);
-			if (((JComponent) comp).getParent() != null)
-				((JComponent) comp).getParent().repaint();
+//			if (((JComponent) comp).getParent() != null)
+//				((JComponent) comp).getParent().repaint();
 		}
 	}
 	
