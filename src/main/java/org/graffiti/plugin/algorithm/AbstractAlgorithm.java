@@ -111,10 +111,10 @@ public abstract class AbstractAlgorithm implements Algorithm {
 
 	
 	
-//	@Override
-//	public Set<Category> getSetCategory() {
-//		return null;
-//	}
+	@Override
+	public Set<Category> getSetCategory() {
+		return null;
+	}
 
 	/**
 	 * For backwards compatibility the standard implementation will return
