@@ -413,12 +413,19 @@ implements GraffitiViewComponent, GraphicAttributeConstants {
 		if(parent != null && parent instanceof Zoomable) {
 			double zoomx = getZoom() == null ? 1 : getZoom().getScaleX();
 			double zoomy = getZoom() == null ? 1 : getZoom().getScaleY();
-			double newx = (double)getX() * zoomx;
-			double newy = (double)getY() * zoomy;
-			double newwidth = (double)width * zoomx;
-			double newheight = (double)height * zoomy;
+			double newx = (double)(getX()) * zoomx;
+			double newy = (double)(getY()) * zoomy;
+			double newwidth = (double)(width) * zoomx;
+			double newheight = (double)(height) * zoomy;
 //			logger.debug("repaint called with new zoomed repaint frame for parent");
-			parent.repaint(tm, (int)newx, (int)newy, (int)newwidth, (int)newheight);
+			/*
+			 * adjusting the width and height with a constant, because somehow the marking border 
+			 * on edges doesn't disappear (gets not completely removed).
+			 * So the redraw region is widened
+			 *
+			 */
+			int delta = 10; //10 pixels in rescaled (zoomed) space
+			parent.repaint(tm, (int)newx, (int)newy, (int)newwidth+delta, (int)newheight+delta);
 		}
 		else
 			super.repaint(tm, x, y, width, height);
