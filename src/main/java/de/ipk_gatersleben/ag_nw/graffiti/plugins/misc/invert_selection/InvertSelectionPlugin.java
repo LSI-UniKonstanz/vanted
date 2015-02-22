@@ -43,9 +43,9 @@ public class InvertSelectionPlugin
 							new SearchAndSelecAlgorithm(),
 							new FindReplaceDialog()
 		};
-		
-		guiComponents = new GraffitiComponent[] {
-							new SelectNodesComponent("defaultToolbar"), // defaultToolbar // toolbarPanel
-							};
+//		
+//		guiComponents = new GraffitiComponent[] {
+//							new SelectNodesComponent("defaultToolbar"), // defaultToolbar // toolbarPanel
+//							};
 	}
 }
