@@ -192,7 +192,6 @@ public class GravistoMainHelper implements HelperClass {
 		
 		Properties p = System.getProperties();
 		String os = (String) p.get("os.name");
-		
 		try {
 			if (new File(ReleaseInfo.getAppFolderWithFinalSep() + "setting_java_look_and_feel").exists()) {
 				TextFile tf = new TextFile(new FileReader(new File(ReleaseInfo.getAppFolderWithFinalSep()
@@ -309,10 +308,10 @@ public class GravistoMainHelper implements HelperClass {
 		installDragAndDropHandler(mainFrame);
 		
 		// ClassLoader cl = Main.class.getClassLoader();
-		URL r1 = cl.getResource("plugins1.txt");
-		URL r2 = cl.getResource("plugins2.txt");
-		URL r3 = cl.getResource("plugins3.txt");
-		URL r4 = cl.getResource("plugins4.txt");
+		URL r1 = cl.getResource("plugins.txt");
+//		URL r2 = cl.getResource("plugins2.txt");
+//		URL r3 = cl.getResource("plugins3.txt");
+//		URL r4 = cl.getResource("plugins4.txt");
 		URL r5 = null;
 		if (addPluginFile != null)
 			r5 = cl.getResource(addPluginFile);
@@ -337,9 +336,9 @@ public class GravistoMainHelper implements HelperClass {
 		ArrayList<String> locations = new ArrayList<String>();
 		try {
 			locations.addAll(new TextFile(r1));
-			locations.addAll(new TextFile(r2));
-			locations.addAll(new TextFile(r3));
-			locations.addAll(new TextFile(r4));
+//			locations.addAll(new TextFile(r2));
+//			locations.addAll(new TextFile(r3));
+//			locations.addAll(new TextFile(r4));
 			if (addPlugins != null)
 				for (String p : addPlugins)
 					if (p != null)
@@ -364,6 +363,8 @@ public class GravistoMainHelper implements HelperClass {
 						String loc2 = loc.toUpperCase();
 						loc2 = StringManipulationTools.stringReplace(loc2, "\\", "");
 						loc2 = StringManipulationTools.stringReplace(loc2, " ", "");
+						loc2 = StringManipulationTools.stringReplace(loc2, "/", "");
+						
 						if (loc2.indexOf(remove) >= 0) {
 							locations.remove(loc);
 							break;
@@ -381,9 +382,7 @@ public class GravistoMainHelper implements HelperClass {
 			System.err.println("-- Program needs to be stopped");
 			JOptionPane.showMessageDialog(null, "<html><h2>ERROR: Plugin-Description files could not be loaded</h2>"
 					+ "Program execution can not continue.<br>"
-					+ "Pleas check out the \"make\" project and execute<br>" +
-					"the createfilelist script from the make folder.<br>"
-					+ "See also the make - intro.txt in the make project for details.<br>"
+					+ "Pleas execute the createfilelist script from the make folder.<br>"
 					+ "The application needs to be closed.</html>");
 			System.err.println("EXIT");
 			System.exit(1);

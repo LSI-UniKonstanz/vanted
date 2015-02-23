@@ -4,9 +4,11 @@
 
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.svg_exporter;
 
+import org.AttributeHelper;
 import org.graffiti.plugin.algorithm.Algorithm;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.ppt_exporter.PPTAlgorithm;
 
 /**
  * This plugin provides a print feature.

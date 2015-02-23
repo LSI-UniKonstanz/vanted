@@ -6,12 +6,17 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.AttributeHelper;
 import org.FeatureSet;
 import org.ReleaseInfo;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
@@ -31,6 +36,16 @@ public class SetURLAlgorithm extends AbstractAlgorithm implements Algorithm {
 	public String getCategory() {
 		return "Elements"; // "menu.edit";
 	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION,
+				Category.MAPPING
+				));
+	}
+
 	
 	@Override
 	public boolean isLayoutAlgorithm() {

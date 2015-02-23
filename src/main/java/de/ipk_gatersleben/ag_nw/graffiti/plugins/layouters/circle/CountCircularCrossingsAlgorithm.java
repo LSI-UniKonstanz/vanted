@@ -6,8 +6,13 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.graffiti.editor.MainFrame;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
 
@@ -34,6 +39,15 @@ public class CountCircularCrossingsAlgorithm extends AbstractAlgorithm {
 		return "Analysis";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION
+				));
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()

@@ -4,13 +4,17 @@
 
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.Vector2d;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
@@ -39,6 +43,14 @@ public class RandomLayouterAlgorithm
 	@Override
 	public String getCategory() {
 		return "Layout";
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
 	}
 	
 	/**

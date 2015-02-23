@@ -281,6 +281,7 @@ public class FolderPanel extends JComponent {
 			removeAll();
 			
 			rowPanel.removeAll();
+			
 			ArrayList<GuiRow> guiComponentRowsForCurrentPage = new ArrayList<GuiRow>();
 			guiComponentRowsForCurrentPage
 								.addAll(getFilteredList(guiComponentRows));

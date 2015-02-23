@@ -7,8 +7,10 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go_cluster_histogram;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -20,6 +22,7 @@ import org.FolderPanel;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.AlgorithmWithComponentDescription;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.chart_settings.GraffitiCharts;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.ConditionInterface;
@@ -45,6 +48,20 @@ public class CreateGOchildrenTtestHistogramAlgorithm extends AbstractAlgorithm i
 		return "Hierarchy";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION,
+				Category.STATISTICS,
+				Category.CLUSTER,
+				Category.CHART,
+				Category.VISUAL
+				));
+	}
+
+
 	public JComponent getDescriptionComponent() {
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');

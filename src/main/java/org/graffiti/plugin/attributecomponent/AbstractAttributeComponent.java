@@ -12,7 +12,9 @@
  */
 package org.graffiti.plugin.attributecomponent;
 
+import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 
 import org.graffiti.attributes.Attribute;
 import org.graffiti.plugin.view.AttributeComponent;
@@ -20,6 +22,9 @@ import org.graffiti.plugin.view.CoordinateSystem;
 import org.graffiti.plugin.view.GraffitiViewComponent;
 import org.graffiti.plugin.view.GraphElementShape;
 import org.graffiti.plugin.view.ShapeNotFoundException;
+import org.graffiti.plugin.view.Zoomable;
+import org.graffiti.plugins.views.defaults.DrawMode;
+import org.graffiti.plugins.views.defaults.GraffitiView;
 
 /**
  * This component represents a <code>org.graffiti.attributes.Attribute</code>.
@@ -129,6 +134,27 @@ public abstract class AbstractAttributeComponent
 	@Override
 	public abstract void recreate()
 						throws ShapeNotFoundException;
+	
+	
+	public boolean checkVisibility() {
+		/* 
+		 * only draw component, if it is graphically visible or not FAST mode enabled
+		 */
+		if(getParent() instanceof GraffitiView){
+			GraffitiView view = (GraffitiView)getParent();
+			if(view.getDrawMode() == DrawMode.FAST)
+				return false;
+			AffineTransform zoom = view.getZoom();
+			//TODO: parameterize those constants..
+			if(getHeight() * zoom.getScaleX() < 10 || getWidth() * zoom.getScaleY() < 10)
+				return false;
+			else
+				return true;
+				
+		}
+		else
+			return true;
+	}
 }
 
 // ------------------------------------------------------------------------------

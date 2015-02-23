@@ -27,6 +27,8 @@ import org.graffiti.event.TransactionEvent;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.gui.AbstractGraffitiContainer;
 import org.graffiti.plugin.view.View;
+import org.graffiti.plugins.views.defaults.DrawMode;
+import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.session.Session;
 import org.graffiti.session.SessionListener;
 
@@ -335,7 +337,7 @@ AdjustmentListener, GraphListener, SessionListener
 			return;
 		if(view == null || scrollpane == null)
 			return;
-		logger.debug("mouse event");
+//		logger.debug("mouse event");
 		double normX = (double)e.getX() / (double)w;
 		double normY = (double)e.getY() / (double)h;
 
@@ -365,6 +367,8 @@ AdjustmentListener, GraphListener, SessionListener
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
+			((GraffitiView)viewcomponent).setDrawMode(DrawMode.NORMAL);
+
 		}
 
 		@Override
@@ -377,6 +381,7 @@ AdjustmentListener, GraphListener, SessionListener
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
+			((GraffitiView)viewcomponent).setDrawMode(DrawMode.FAST);
 			handleMouseEvent(e);
 		}
 

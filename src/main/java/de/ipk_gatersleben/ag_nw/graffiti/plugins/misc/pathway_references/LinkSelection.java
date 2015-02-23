@@ -1,11 +1,15 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.pathway_references;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.FeatureSet;
 import org.ReleaseInfo;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SetURLAlgorithm;
@@ -31,4 +35,10 @@ public class LinkSelection extends LaunchGui implements Algorithm {
 	public String getCategory() {
 		return "menu.edit";
 	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return null;
+	}
+
 }

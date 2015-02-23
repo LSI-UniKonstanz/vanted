@@ -8,8 +8,10 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go_cluster_histogram;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
@@ -25,6 +27,7 @@ import org.StringManipulationTools;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.AlgorithmWithComponentDescription;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
@@ -55,6 +58,21 @@ public class CreateGOchildrenClustersHistogramAlgorithm
 	public String getCategory() {
 		return "Hierarchy";
 	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION,
+				Category.STATISTICS,
+				Category.CHART,
+				Category.VISUAL,
+				Category.CLUSTER
+				));
+	}
+
+
 	
 	@Override
 	public String getDescription() {

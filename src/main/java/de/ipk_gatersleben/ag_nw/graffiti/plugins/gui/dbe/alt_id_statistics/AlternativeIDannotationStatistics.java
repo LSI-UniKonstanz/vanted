@@ -3,9 +3,11 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.alt_id_statistics;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.AttributeHelper;
@@ -15,6 +17,7 @@ import org.StringManipulationTools;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
@@ -76,6 +79,17 @@ public class AlternativeIDannotationStatistics extends AbstractAlgorithm {
 	@Override
 	public String getCategory() {
 		return "Hierarchy";
+	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.STATISTICS,
+				Category.CLUSTER,
+				Category.ANNOTATION
+				));
 	}
 	
 	@Override

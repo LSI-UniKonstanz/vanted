@@ -176,7 +176,8 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 	
 	@Override
 	public void paint(Graphics g) {
-		super.paint(g);
+		if(checkVisibility())
+			super.paint(g);
 	}
 	
 	/*

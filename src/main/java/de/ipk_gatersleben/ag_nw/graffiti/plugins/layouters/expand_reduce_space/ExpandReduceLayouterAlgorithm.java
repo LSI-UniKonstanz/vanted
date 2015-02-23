@@ -6,10 +6,13 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.expand_reduce_space;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import javax.swing.JMenuItem;
@@ -22,6 +25,7 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.ProvidesNodeContextMenu;
 import org.graffiti.plugin.parameter.Parameter;
 
@@ -163,9 +167,18 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "Layout";
+		return "Network";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.algorithm.Algorithm#setParameters(org.graffiti.plugin.parameter.Parameter[])
@@ -217,7 +230,7 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 	 */
 	@Override
 	public boolean isLayoutAlgorithm() {
-		return false;
+		return true;
 	}
 	
 	public static void doOperation(final Collection<Node> selectedNodes, final double factorX, double factorY, String description) {

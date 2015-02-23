@@ -115,11 +115,11 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 			add(nh.getNews((JTabbedPane) getParent()), "0,0");
 		} else {
 			try {
-				hc.addTab("News", nh.getNews(hc));
+//				hc.addTab("News", nh.getNews(hc));
 				if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
 					hc.addTab("Workflow", getWorkFlowHelp());
-				hc.addTab("Examples", new TabExampleFiles());
-				hc.addTab("Settings", getSettings());
+//				hc.addTab("Examples", new TabExampleFiles());
+//				hc.addTab("Settings", getSettings());
 			} catch (Exception e) {
 				ErrorMsg.addErrorMessage(e);
 			}
@@ -542,7 +542,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		return res;
 	}
 	
-	private JPanel getWorkFlowHelp() {
+	public static JPanel getWorkFlowHelp() {
 		JPanel help1 = new JPanel();
 		help1.setOpaque(false);
 		help1.setBackground(null);
@@ -566,7 +566,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 																						+ "<i>I hope you will enjoy the work with this program!</i> - C. Klukas")),
 												FolderPanel.getHelpButton(JLabelJavaHelpLink.getHelpActionListener("main"), Color.WHITE), false, 5);
 		intro.layoutRows();
-		
+		intro.addCollapseListenerDialogSizeUpdate();
 		/* new JLabel() */
 
 		FolderPanel step1 = new FolderPanel("1. Create / Load Input Form", true, true, false, null);
@@ -588,7 +588,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		// "inputformats"
 		
 		step1.layoutRows();
-		
+		step1.addCollapseListenerDialogSizeUpdate();
 		FolderPanel step2 = new FolderPanel("2. Create / Load Pathway", true, true, false, null
 							// JLabelJavaHelpLink.getHelpActionListener("inputformats"),
 							// "inputformats"
@@ -627,7 +627,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 												FolderPanel.getHelpButton(JLabelJavaHelpLink.getHelpActionListener("editcommands"), Color.WHITE), false, 5);
 		
 		step2.layoutRows();
-		
+		step2.addCollapseListenerDialogSizeUpdate();
 		FolderPanel step3 = new FolderPanel("3. Perform Data Mapping", true, true, false, null);
 		step3.setColumnStyle(TableLayout.FILL, TableLayout.PREFERRED);
 		step3
@@ -636,7 +636,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 																	"<html><small>Use the data mapping command from a experiment-tab created for a loaded experimental dataset (&quot;Experiments&quot; side-panel)")),
 												FolderPanel.getHelpButton(JLabelJavaHelpLink.getHelpActionListener("combine"), Color.WHITE), false, 5);
 		step3.layoutRows();
-		
+		step3.addCollapseListenerDialogSizeUpdate();
 		FolderPanel step4 = new FolderPanel("4. Modify Charts and Graph-Layout", true, true, false, null);
 		step4.setColumnStyle(TableLayout.FILL, TableLayout.PREFERRED);
 		step4
@@ -653,7 +653,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 																						+ "specifically only those elements, which have experimental data assigned.")),
 												FolderPanel.getHelpButton(JLabelJavaHelpLink.getHelpActionListener("sidepanels"), Color.WHITE), false, 6);
 		step4.layoutRows();
-		
+		step4.addCollapseListenerDialogSizeUpdate();
 		FolderPanel step5 = new FolderPanel("5. Statistic Analysis", true, true, false, null);
 		step5.setColumnStyle(TableLayout.FILL, TableLayout.PREFERRED);
 		
@@ -689,7 +689,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 							FolderPanel.getHelpButton(JLabelJavaHelpLink.getHelpActionListener("panel_statistics"), Color.WHITE),
 							false, 6);
 		step5.layoutRows();
-		
+		step5.addCollapseListenerDialogSizeUpdate();
 		FolderPanel step6 = new FolderPanel("6. Save / Export Work", true, true, false, null);
 		step6.setColumnStyle(TableLayout.FILL, TableLayout.PREFERRED);
 		step6
@@ -701,6 +701,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 																						+ "using the according commands from the File menu (create JPEG, PNG, ...).")),
 												FolderPanel.getHelpButton(JLabelJavaHelpLink.getHelpActionListener("filemenu"), Color.WHITE), false, 6);
 		step6.layoutRows();
+		step6.addCollapseListenerDialogSizeUpdate();
 		int b = 3;
 		
 		intro.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -1006,7 +1007,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		return result;
 	}
 	
-	private JLabel getCustomizedLabel(JLabel label) {
+	public static JLabel getCustomizedLabel(JLabel label) {
 		label.setBackground(Color.WHITE);
 		return label;
 	}

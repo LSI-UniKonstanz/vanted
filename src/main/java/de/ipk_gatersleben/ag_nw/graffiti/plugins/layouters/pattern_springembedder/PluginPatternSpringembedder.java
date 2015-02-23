@@ -13,7 +13,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.BringToFrontOrBackAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.BundleParallelEdges;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.DuplicateEdge;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.IntroduceBendsAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.IntroduceParallelEdgeBends;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.IntroduceSelfEdgeBends;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.RemoveBendsAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.ResizeNodesDepDegreeAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 
@@ -42,7 +45,7 @@ public class PluginPatternSpringembedder
 				// new SetCluster(),
 				
 				new ResizeNodesDepDegreeAlgorithm(),
-							new BendsLaunchGUI(),
+//							new BendsLaunchGUI(),
 							new BundleParallelEdges(),
 							new IntroduceParallelEdgeBends(),
 							// new ResetEdgeSourceOrTarget(),
@@ -50,7 +53,10 @@ public class PluginPatternSpringembedder
 							new BringToFrontOrBackAlgorithm(false),
 							new BringToFrontOrBackAlgorithm(true),
 							new RandomLayouterAlgorithm(),
-							new PatternSpringembedder3d()
+							new PatternSpringembedder3d(),
+							new RemoveBendsAlgorithm(),
+							new IntroduceSelfEdgeBends(),
+							new IntroduceBendsAlgorithm()
 		};
 	}
 	

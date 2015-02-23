@@ -9,8 +9,11 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.graph_cleanup;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -20,6 +23,7 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.ProvidesEdgeContextMenu;
 import org.graffiti.plugin.algorithm.ProvidesNodeContextMenu;
 import org.graffiti.plugin.parameter.Parameter;
@@ -74,6 +78,16 @@ public class NumberNodesAndEdgesAlgorithm extends AbstractAlgorithm
 	public String getCategory() {
 		return null;
 	}
+
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION
+				));
+	}
+
 	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm# setParameters(org.graffiti.plugin.algorithm.Parameter)

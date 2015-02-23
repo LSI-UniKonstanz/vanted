@@ -6,12 +6,17 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.AttributeHelper;
 import org.FeatureSet;
 import org.ReleaseInfo;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
@@ -22,7 +27,7 @@ public class SetToolTipAlgorithm extends AbstractAlgorithm implements Algorithm 
 	
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TOOLTIPS))
-			return "Set Tooltip...";
+			return "Set Tooltip";
 		else
 			return null;
 	}
@@ -30,6 +35,14 @@ public class SetToolTipAlgorithm extends AbstractAlgorithm implements Algorithm 
 	@Override
 	public String getCategory() {
 		return "menu.edit";
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.ANNOTATION
+				));
 	}
 	
 	@Override

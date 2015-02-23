@@ -9,9 +9,11 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.label_editing;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.Release;
@@ -20,6 +22,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.io.resources.FileSystemHandler;
 import org.graffiti.plugin.io.resources.IOurl;
 import org.graffiti.plugin.parameter.BooleanParameter;
@@ -69,6 +72,19 @@ public class ReplaceLabelAlgorithm extends AbstractAlgorithm {
 		return null;// "Elements";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.ANNOTATION
+				));
+	}
+	
+	@Override
+	public String getMenuCategory() {
+		return "edit.Change Label";
+	}
+
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {

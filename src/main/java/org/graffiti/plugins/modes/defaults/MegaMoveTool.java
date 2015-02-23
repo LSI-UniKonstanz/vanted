@@ -66,6 +66,7 @@ import org.graffiti.plugin.view.EdgeComponentInterface;
 import org.graffiti.plugin.view.EdgeShape;
 import org.graffiti.plugin.view.GraphElementComponent;
 import org.graffiti.plugin.view.View;
+import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.plugins.views.defaults.EdgeComponent;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.plugins.views.defaults.NodeComponent;
@@ -540,6 +541,8 @@ public class MegaMoveTool extends MegaTools {
 	@Override
 	public void mouseDragged(MouseEvent e) {
 //		logger.debug("MOUSE DRAGGED");
+		if(e.getSource() instanceof GraffitiView)
+			((GraffitiView)e.getSource()).setDrawMode(DrawMode.REDUCED);
 		
 		lastDragX = e.getPoint().getX();
 		lastDragY = e.getPoint().getY();
@@ -1352,7 +1355,9 @@ public class MegaMoveTool extends MegaTools {
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		
+		if(e.getSource() instanceof GraffitiView)
+			((GraffitiView)e.getSource()).setDrawMode(DrawMode.NORMAL);
+
 		/*
 		 * do nothing if we've moved the scrollpane with the right mouse button
 		 */

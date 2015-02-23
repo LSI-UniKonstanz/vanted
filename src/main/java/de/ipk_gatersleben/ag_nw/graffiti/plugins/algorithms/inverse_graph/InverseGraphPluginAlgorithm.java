@@ -4,11 +4,15 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.inverse_graph;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
@@ -37,6 +41,15 @@ public class InverseGraphPluginAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Edges";
+		return "Network.Edges";
 	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.EDGE,
+				Category.VISUAL
+				));
+	}
+
 }

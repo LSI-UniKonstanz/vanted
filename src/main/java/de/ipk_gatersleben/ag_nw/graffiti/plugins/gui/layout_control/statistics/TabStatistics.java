@@ -196,6 +196,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	 * Initialize GUI
 	 */
 	private void initComponents() {
+		setVisible(false);
 		stat = new JTabbedPane();
 		// stat.setTabPlacement(JTabbedPane.RIGHT);
 		// stat.addTab(null, new VTextIcon(stat, "Compare Samples",
@@ -2455,4 +2456,15 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		return v != null && v instanceof GraphView;
 	}
 	
+
+	@Override
+	public String getTabParentPath() {
+		return "Analysis.Data";
+	}
+
+	@Override
+	public int getPreferredTabPosition() {
+		return InspectorTab.TAB_LEADING;
+	}
+
 }

@@ -3,11 +3,16 @@
  *******************************************************************************/
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.swing.KeyStroke;
 
 import org.SystemInfo;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.view.View;
 
@@ -31,6 +36,15 @@ public class RecreateView extends AbstractEditorAlgorithm {
 	@Override
 	public String getCategory() {
 		return "menu.window";
+	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.UI,
+				Category.GRAPH
+				));
 	}
 	
 	@Override

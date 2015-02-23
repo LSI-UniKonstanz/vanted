@@ -1,10 +1,15 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.view.View;
 
@@ -93,16 +98,25 @@ public class ResetEdgeSourceOrTarget extends AbstractEditorAlgorithm {
 	
 	@Override
 	public String getDescription() {
-		return "";
+		return "Resests the Attributes of the selected Edge";
 	}
 	
 	@Override
 	public String getName() {
-		return "Reconnect Edge";
+		return "Reset Edge Attributes";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Edges";
+		return "Network.Edges";
+	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.EDGE,
+				Category.VISUAL
+				));
 	}
 }

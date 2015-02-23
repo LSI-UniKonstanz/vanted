@@ -3,6 +3,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.metacrop;
 import org.AttributeHelper;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
+import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
 
@@ -147,5 +148,15 @@ public class TabMetaCrop extends PathwayWebLinkTab {
 		return new String[] { ".gml", ".graphml" };
 		
 	}
-	
+
+
+	@Override
+	public String getTabParentPath() {
+		return "Pathways";
+	}
+
+	@Override
+	public int getPreferredTabPosition() {
+		return InspectorTab.TAB_LEADING;
+	}
 }

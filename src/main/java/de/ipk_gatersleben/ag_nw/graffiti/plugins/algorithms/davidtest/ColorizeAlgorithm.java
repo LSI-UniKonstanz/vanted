@@ -8,7 +8,10 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
@@ -22,6 +25,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -47,12 +51,23 @@ public class ColorizeAlgorithm extends AbstractAlgorithm {
 	private double gamma = 1d;
 	
 	public String getName() {
-		return null; // "Average Substance-Level > Background Color";
+		return "Average Substance-Level > Background Color";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Nodes";
+		return "Network.Nodes";
+	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.NODE,
+				Category.VISUAL,
+				Category.COMPUTATION,
+				Category.DATA
+				));
 	}
 	
 	@Override

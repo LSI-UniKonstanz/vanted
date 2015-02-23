@@ -1,9 +1,14 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 
 import org.graffiti.editor.GravistoService;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.view.View;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.ExperimentInterface;
@@ -50,5 +55,13 @@ public class PutIntoSidePanel extends AbstractExperimentDataProcessor {
 	@Override
 	public ImageIcon getIcon() {
 		return new ImageIcon(GravistoService.getResource(getClass(), "putintosidepanel.png", null));
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.UI,
+				Category.COMPUTATION
+				));
 	}
 }

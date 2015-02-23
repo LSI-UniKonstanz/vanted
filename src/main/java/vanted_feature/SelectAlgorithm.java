@@ -2,6 +2,7 @@ package vanted_feature;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 import org.FeatureSet;
 import org.Release;
@@ -9,6 +10,7 @@ import org.ReleaseInfo;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.selection.Selection;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectEdgesAlgorithm;
@@ -16,6 +18,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectNo
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.InvertSelectionAlgorithm;
 
+@Deprecated
 public class SelectAlgorithm extends LaunchGui {
 	
 	public SelectAlgorithm() {
@@ -35,18 +38,7 @@ public class SelectAlgorithm extends LaunchGui {
 			res.add(null);
 		
 		res.add(new InvertSelectionAlgorithm());
-		res.add(new AbstractAlgorithm() {
-			@Override
-			public String getName() {
-				return "Clear Selection";
-			}
-			
-			@Override
-			public void execute() {
-				Selection selection = new Selection("cleared selection");
-				MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(selection);
-			}
-		});
+//		res.add(new ClearSelection());
 		
 		if (res.size() > 2)
 			res.add(null);
@@ -80,5 +72,11 @@ public class SelectAlgorithm extends LaunchGui {
 	public String getCategory() {
 		return "menu.edit";
 	}
+
+	@Override
+	public Set<Category> getSetCategory() {
+		return null;
+	}
+	
 	
 }

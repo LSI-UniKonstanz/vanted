@@ -8,6 +8,8 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -19,6 +21,7 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
@@ -49,6 +52,16 @@ public class PajekClusterColor extends AbstractAlgorithm {
 			return "Pathway-Subgraph Coloring";
 		else
 			return "Color Clusters";
+	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.VISUAL,
+				Category.CLUSTER
+				));
 	}
 	
 	@Override
@@ -122,10 +135,7 @@ public class PajekClusterColor extends AbstractAlgorithm {
 	 */
 	@Override
 	public String getCategory() {
-		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
-			return "Nodes";
-		else
-			return "Cluster";
+			return "Network.Cluster";
 	}
 	
 	@Override

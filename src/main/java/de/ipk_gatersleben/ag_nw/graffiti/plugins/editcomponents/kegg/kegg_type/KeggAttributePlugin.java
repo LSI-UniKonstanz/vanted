@@ -6,10 +6,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.kegg.kegg_type;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.Release;
-import org.ReleaseInfo;
 import org.graffiti.attributes.StringAttribute;
-import org.graffiti.editor.MainFrame;
 import org.graffiti.plugin.EditorPlugin;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.gui.GraffitiComponent;
@@ -18,7 +15,6 @@ import org.graffiti.plugin.tool.Tool;
 import org.graffiti.plugin.view.GraffitiShape;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.kegg.kegg_editing.KeggEntryCreation;
 
 public class KeggAttributePlugin
 					extends IPK_PluginAdapter
@@ -30,7 +26,6 @@ public class KeggAttributePlugin
 	public KeggAttributePlugin() {
 		
 		this.algorithms = new Algorithm[] {
-							new KeggEntryCreation(),
 		};
 		
 		this.attributes = new Class[] {

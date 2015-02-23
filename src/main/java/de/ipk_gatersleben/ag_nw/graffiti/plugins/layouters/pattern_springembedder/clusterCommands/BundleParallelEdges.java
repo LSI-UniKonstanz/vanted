@@ -4,15 +4,18 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.Vector2d;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
@@ -34,14 +37,28 @@ public class BundleParallelEdges extends AbstractAlgorithm {
 	private static String source = "Cluster ID";
 	
 	public String getName() {
-		return "Bundle Parallel Edges...";
+		return "Bundle Parallel Edges";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Edges";
+		return "Network.Edges";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.EDGE,
+				Category.LAYOUT
+				));
+	}
+
+	
+	@Override
+	public boolean isLayoutAlgorithm() {
+		return true;
+	}
+
 	@Override
 	public String getDescription() {
 		return "<html>Will introduce bends to the selected egdes<br>" +

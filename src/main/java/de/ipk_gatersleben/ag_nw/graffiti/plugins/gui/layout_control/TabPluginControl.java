@@ -150,5 +150,6 @@ public class TabPluginControl
 	public boolean visibleForView(View v) {
 		return v != null && v instanceof GraphView;
 	}
+
 	
 }

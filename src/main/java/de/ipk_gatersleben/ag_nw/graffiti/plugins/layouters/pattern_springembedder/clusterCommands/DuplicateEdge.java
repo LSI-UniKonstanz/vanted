@@ -1,6 +1,9 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.ErrorMsg;
 import org.graffiti.editor.GravistoService;
@@ -8,6 +11,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.view.View;
 import org.graffiti.selection.Selection;
@@ -125,12 +129,12 @@ public class DuplicateEdge extends AbstractEditorAlgorithm {
 	
 	@Override
 	public String getName() {
-		return "Multiply Edge";
+		return "Clone Edge";
 	}
 	
 	@Override
 	public String getDescription() {
-		return "<html>This command will copy the edge with all attributes and<br>" +
+		return "<html>This command will clone the edge with all attributes and<br>" +
 						"connect this copy to the interactively chosen source and<br>" +
 						"target node. If there are many nodes chosen the edge will<br>" +
 						"be multiplicated several times.";
@@ -138,6 +142,15 @@ public class DuplicateEdge extends AbstractEditorAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Edges";
+		return "Network.Edges";
+	}
+	
+
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.EDGE
+				));
 	}
 }
