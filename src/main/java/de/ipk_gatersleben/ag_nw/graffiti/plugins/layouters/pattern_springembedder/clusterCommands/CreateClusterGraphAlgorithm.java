@@ -34,7 +34,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.ClusterColorAttribute;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.ClusterColorParameter;
-import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.CircleLayoutHelper;
 
 /**
  * @author Christian Klukas
@@ -201,7 +201,7 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		}
 		
 		if (applyLayout) {
-			AlgorithmServices.selectAndRunLayoutAlgorithm(clusterReferenceGraph,
+			CircleLayoutHelper.selectAndRunLayoutAlgorithm(clusterReferenceGraph,
 								new Selection(),
 								"Apply a Layout-Algorithm to the Overview-Graph", true);
 		}

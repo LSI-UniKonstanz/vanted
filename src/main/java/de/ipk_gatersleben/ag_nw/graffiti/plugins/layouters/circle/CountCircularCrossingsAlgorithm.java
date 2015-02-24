@@ -14,8 +14,6 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
 
-import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
-
 /**
  * @author Christian Klukas
  *         (c) 2004 IPK-Gatersleben
@@ -55,7 +53,7 @@ public class CountCircularCrossingsAlgorithm extends AbstractAlgorithm {
 	public void execute() {
 		if (selection.isEmpty())
 			selection.addAll(graph.getNodes());
-		int crossings = AlgorithmServices.getNumberOfCircularEdgeCrossings(selection.getNodes());
+		int crossings = CircleLayoutHelper.getNumberOfCircularEdgeCrossings(selection.getNodes());
 		MainFrame.showMessageDialog(
 							"Number of edge-crossings (in case of a circular layout of the selection) is " + crossings + ".",
 							"Edge-crossings of selected or all nodes");

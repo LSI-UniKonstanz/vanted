@@ -24,7 +24,6 @@ import org.graffiti.selection.Selection;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
-import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
 
 /**
  * Places all nodes on a circle with a user specified radius.
@@ -123,7 +122,7 @@ public class CircleLayouterWithMinimumCrossingsAlgorithm extends
 		final ArrayList<Node> sortedNodes = new ArrayList<Node>();
 		sortedNodes.addAll(workNodes);
 		
-		AlgorithmServices.doCircularEdgeCrossingsMinimization(this, sortedNodes,
+		CircleLayoutHelper.doCircularEdgeCrossingsMinimization(this, sortedNodes,
 							new Runnable() {
 								public void run() {
 									if (sortedNodes == null || workGraph == null

@@ -4,7 +4,7 @@
 /*
  * Created on 30.08.2004 by Christian Klukas
  */
-package de.ipk_gatersleben.ag_nw.graffiti.services;
+package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,13 +23,14 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.selection.Selection;
 
+import de.ipk_gatersleben.ag_nw.graffiti.services.RunAlgorithmDialog;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
  * @author Christian Klukas
  *         (c) 2004 IPK-Gatersleben
  */
-public class AlgorithmServices implements HelperClass {
+public class CircleLayoutHelper implements HelperClass {
 	
 	/**
 	 * @param sortedNodes
@@ -38,7 +39,7 @@ public class AlgorithmServices implements HelperClass {
 	 */
 	public static void doCircularEdgeCrossingsMinimization(
 						Object referenceObject, ArrayList<Node> nodes, Runnable threadUnsafePostTask) {
-		MyEdgeCrossingReduction mecr = new AlgorithmServices().new MyEdgeCrossingReduction(nodes, threadUnsafePostTask);
+		MyEdgeCrossingReduction mecr = new CircleLayoutHelper().new MyEdgeCrossingReduction(nodes, threadUnsafePostTask);
 		BackgroundTaskHelper bth = new BackgroundTaskHelper(mecr, mecr, "Reduce Edge Crossings", "Reduce Edge Crossings", true, false);
 		bth.startWork(referenceObject);
 	}
@@ -46,7 +47,7 @@ public class AlgorithmServices implements HelperClass {
 	public static int getNumberOfCircularEdgeCrossings(Collection<Node> nodes) {
 		Stack<Node> s = new Stack<Node>();
 		s.addAll(nodes);
-		return new AlgorithmServices().new MyEdgeCrossingReduction(null, null).calculateEdgeCrossings(s);
+		return new CircleLayoutHelper().new MyEdgeCrossingReduction(null, null).calculateEdgeCrossings(s);
 	}
 	
 	class MyEdgeCrossingReduction implements BackgroundTaskStatusProvider, Runnable {
