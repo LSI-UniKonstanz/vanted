@@ -14,7 +14,7 @@ import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
-import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.CircleLayoutHelper;
 
 /**
  * @author Christian Klukas
@@ -45,7 +45,7 @@ public class StartLayoutAlgorithm extends AbstractAlgorithm {
 	 * Performs the layout.
 	 */
 	public void execute() {
-		AlgorithmServices.selectAndRunLayoutAlgorithm(graph,
+		CircleLayoutHelper.selectAndRunLayoutAlgorithm(graph,
 							selection,
 							"Layout Network", true);
 	}

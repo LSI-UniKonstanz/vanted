@@ -10,6 +10,8 @@
 package org.graffiti.plugin.inspector;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyEvent;
@@ -20,6 +22,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
+import javax.swing.Scrollable;
 import javax.swing.border.Border;
 
 import org.ErrorMsg;
@@ -326,8 +329,6 @@ extends JComponent implements ComponentListener {
 	public void componentHidden(ComponentEvent e) {
 	}
 
-
-	
 }
 
 // ------------------------------------------------------------------------------

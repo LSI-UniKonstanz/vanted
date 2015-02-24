@@ -104,6 +104,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  * @author Christian Klukas
  * @version $Revision$
  */
+@Deprecated
 public class TabStatistics extends InspectorTab implements ActionListener, ContainsTabbedPane {
 	private static final long serialVersionUID = 1L;
 	

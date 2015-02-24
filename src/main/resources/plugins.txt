@@ -24,14 +24,14 @@ c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\editing_tools\url_attribute_context_commands\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\enhanced_attribute_editors\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\fast_view\plugin.xml
-c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\info_dialog\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\info_dialog_cluster_analysis\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\info_dialog_dbe\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\ipk_graffitiview\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\kegg_bar\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\layout_control\plugin.xml
-c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\layout_control\pluginClusterTabs.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\layout_control\biomodels\plugin.xml
+c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\layout_control\r\plugin.xml
+c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\layout_control\statistics\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\rotate\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\set_background_color\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\startlayout\plugin.xml

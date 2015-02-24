@@ -81,9 +81,9 @@ public class PatternTabsForInspector
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_LAYOUT))
 			tablist.add(new TabPluginControl());
 		
-		Collection<InspectorTab> subtabsTools = new ArrayList<InspectorTab>();
-		if (!ReleaseInfo.isRunningAsApplet() && ReleaseInfo.getIsAllowedFeature(FeatureSet.STATISTIC_FUNCTIONS))
-			tablist.add(new TabStatistics());
+//		Collection<InspectorTab> subtabsTools = new ArrayList<InspectorTab>();
+//		if (!ReleaseInfo.isRunningAsApplet() && ReleaseInfo.getIsAllowedFeature(FeatureSet.STATISTIC_FUNCTIONS))
+//			tablist.add(new TabStatistics());
 
 //		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH))
 //			subtabsTools.add(new TabPatternLayout());

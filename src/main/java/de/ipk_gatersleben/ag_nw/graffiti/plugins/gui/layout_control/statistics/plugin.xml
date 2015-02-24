@@ -6,12 +6,12 @@
 
 <plugin>
 	<author>Christian Klukas</author>
-	<description>Plugin Pane for the Inspector</description>
+	<description>Adds statistic tab and methods</description>
 
 	<plugindesc>
-	     <name>IPK Plugin Pane</name>
-             <main>de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.PatternTabsForClusterAnalysis</main>
-             <version>1.1</version>
+	     <name>Statistic Panel Plugin</name>
+             <main>de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.statistics.StatisticsPlugin</main>
+             <version>1.0</version>
              <available>http://www.ipk-gatersleben.de</available>
 	</plugindesc>
 </plugin>
