@@ -2,25 +2,25 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.r;
 
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
+import info.clearthought.layout.TableLayoutConstraints;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 
-
-
-
-
-
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import org.FolderPanel;
 import org.apache.log4j.Logger;
@@ -31,8 +31,9 @@ import org.graffiti.plugin.view.View;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.session.Session;
 import org.graffiti.session.SessionListenerExt;
-import org.rosuda.REngine.Rserve.RConnection;
-import org.rosuda.REngine.Rserve.RserveException;
+
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.statistics.ScrollablePanel;
+import de.ipk_gatersleben.ag_nw.graffiti.services.R.RService;
 
 
 public class TabRControl  extends InspectorTab implements ActionListener, SessionListenerExt{
@@ -40,6 +41,13 @@ public class TabRControl  extends InspectorTab implements ActionListener, Sessio
 	private static final long serialVersionUID = 1L;
 	
 	static Logger logger = Logger.getLogger(TabRControl.class);
+	
+	private static final String STATUS_OK = "R service up and running";
+	
+	private static final String STATUS_FAIL = "R service not available";
+	
+	private static final Color COL_STATUS_OK = new Color(10,200,10);
+	private static final Color COL_STATUS_FAIL = new Color(255,50,50);
 	
 	RScriptHandler scriptHandler;
 	
@@ -51,31 +59,48 @@ public class TabRControl  extends InspectorTab implements ActionListener, Sessio
 		graphDataLoaded = false;
 		graph = null;
 		MainFrame.getInstance().addSessionListener(this);
+		
+		RService.openRserve();
+		
 		scriptHandler = new RScriptHandler(this);
-		refreshPanel(scriptHandler.isScriptLoaded());
+		
+//		if(RService.isRserveReady()) {
+			refreshPanel(scriptHandler.isScriptLoaded());
+//		} else {
+//		}
 	}
 	
 	public void refreshPanel(boolean scriptLoaded)
 	{
+		scriptLoaded = true;
 		removeAll();
 		setBackground(null);
 		setOpaque(false);
 		double border = 5;
 		
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
-				{ border,
-												TableLayoutConstants.PREFERRED,
-												2 * border,
-												TableLayoutConstants.PREFERRED,
-												border } }; // Rows
-		JPanel cp = new JPanel(new TableLayout(size));
-		setLayout(new BorderLayout());
+						{ 	border,
+							TableLayoutConstants.PREFERRED,
+							2 * border,
+							TableLayoutConstants.PREFERRED,
+							2 * border,
+							TableLayoutConstants.PREFERRED,
+							border } }; // Rows
+		
+		int curRow = 1;
+		
+		ScrollablePanel cp = new ScrollablePanel(new TableLayout(size));
+
+		cp.add(createStatusRPanel(), "1,1");
+		
 				
-		ArrayList<FolderPanel> panelList = new ArrayList<FolderPanel>();
-		FolderPanel editScriptPanel = new FolderPanel("Edit Scripts", true, true, false, null);
-		editScriptPanel.setColumnStyle(TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
-		editScriptPanel.layoutRows();
-		editScriptPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, (int) border, 0));
+//		ArrayList<FolderPanel> panelList = new ArrayList<FolderPanel>();
+		
+		FolderPanel editScriptFolderPanel = new FolderPanel("Edit Scripts", false, true, false, null);
+		
+		editScriptFolderPanel.setColumnStyle(TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
+//		editScriptPanel.layoutRows();
+		editScriptFolderPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, (int) border, 0));
 
 		JButton newScript = new JButton("new R-Script");
 		newScript.setActionCommand("newButton");
@@ -85,17 +110,21 @@ public class TabRControl  extends InspectorTab implements ActionListener, Sessio
 		openScript.setActionCommand("openButton");
 		openScript.addActionListener(this);
 
-		editScriptPanel.addGuiComponentRow(null, newScript, false, 5);
-		editScriptPanel.addGuiComponentRow(null, openScript, false, 5);
-		panelList.add(editScriptPanel);
+		editScriptFolderPanel.addGuiComponentRow(null, newScript, false, 5);
+		editScriptFolderPanel.addGuiComponentRow(null, openScript, false, 5);
 		
+		editScriptFolderPanel.layoutRows();
+		
+//		panelList.add(editScriptFolderPanel);
+		cp.add(editScriptFolderPanel, "1,3");
 
 		
-		FolderPanel loadScriptPanel =
-			new FolderPanel("Load Input File", !scriptLoaded, true, false, null);
-		loadScriptPanel.setColumnStyle(TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
-		loadScriptPanel.layoutRows();
-		loadScriptPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, (int) border, 0));
+		FolderPanel loadScriptFolderPanel =
+			new FolderPanel("Load Input File", true, true, false, null);
+		
+		loadScriptFolderPanel.setColumnStyle(TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
+//		loadScriptPanel.layoutRows();
+		loadScriptFolderPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, (int) border, 0));
 
 		JButton loadScript = new JButton("load R-script");
 		loadScript.setActionCommand("loadButton");
@@ -106,45 +135,65 @@ public class TabRControl  extends InspectorTab implements ActionListener, Sessio
 		loadGraphData.setActionCommand("loadGraphDataButton");
 		loadGraphData.addActionListener(this);
 		
-		loadScriptPanel.addGuiComponentRow(null, loadScript, false, 5);
-		loadScriptPanel.addGuiComponentRow(null, loadGraphData, false, 5);
+		loadScriptFolderPanel.addGuiComponentRow(null, loadScript, false, 5);
+		loadScriptFolderPanel.addGuiComponentRow(null, loadGraphData, false, 5);
 		
 		if(scriptLoaded)
 		{
-			loadScriptPanel.addGuiComponentRow(null,scriptHandler.getInputVariablePanel(), false, 5);
+			loadScriptFolderPanel.addGuiComponentRow(null,scriptHandler.getInputVariablePanel(), false, 5);
 //            TODO: Output-Variablen
 //			loadScriptPanel.addGuiComponentRow(null,scriptHandler.getOutputVariablePanel(), true, 5);
 			JButton runScript = new JButton("run R-Script");
 			runScript.setActionCommand("runButton");
 			runScript.addActionListener(this);
-			loadScriptPanel.addGuiComponentRow(null, runScript, false, 5);
+			loadScriptFolderPanel.addGuiComponentRow(null, runScript, false, 5);
 
-			loadScriptPanel.setCondensedState(false);
-			loadScriptPanel.revalidate();
-			loadScriptPanel.repaint();
+			loadScriptFolderPanel.setCondensedState(false);
 		}
 		
-		panelList.add(loadScriptPanel);
-		cp.add(TableLayout.getMultiSplitVertical(panelList), "1,3");
+		
+		loadScriptFolderPanel.layoutRows();
+		
+		cp.add(loadScriptFolderPanel, "1,5");
+		
 		
 		JScrollPane sp = new JScrollPane(cp);
-		sp.getVerticalScrollBar().setUnitIncrement(15);
+		sp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		setLayout(new BorderLayout());
 		
 		add(sp, BorderLayout.CENTER);
-
-		
-		revalidate();
 		
 	}
 	
-	protected boolean checkRAvailability () {
-		try {
-			RConnection c = new RConnection();
-			return true;
-		} catch (RserveException e) {
-			logger.error(e.getLocalizedMessage());
-			return false;
+	
+	protected JComponent createStatusRPanel() {
+
+		
+		JLabel label = new JLabel("R status:");
+		label.setBorder(new EmptyBorder(5, 5, 5, 5));
+		JLabel statustext = new JLabel();
+		statustext.setBorder(new EmptyBorder(5, 5, 5, 5));
+		if(RService.isRserveReady()) {
+			statustext.setForeground(COL_STATUS_OK);
+			statustext.setText(STATUS_OK);
+		} else {
+			statustext.setForeground(COL_STATUS_FAIL);
+			statustext.setText(STATUS_FAIL);
 		}
+		
+		JButton checkButton = new JButton("rescan");
+		checkButton.setActionCommand("rescanService");
+		checkButton.addActionListener(this);
+		
+		JComponent get3Split = TableLayout.get3Split(
+				label, 
+				statustext, 
+				checkButton, 
+				TableLayoutConstraints.PREFERRED, 
+				TableLayoutConstraints.PREFERRED, 
+				TableLayoutConstraints.PREFERRED);
+		
+		return get3Split;
 	}
 	
 	protected void setGraph(Graph g)
@@ -187,6 +236,11 @@ public class TabRControl  extends InspectorTab implements ActionListener, Sessio
 		else if(e.getActionCommand().equals("runButton"))
 		{
 			runScript();
+		}
+		else if(e.getActionCommand().equals("rescanService")) {
+			logger.debug("rescanning");
+			RService.openRserve();
+			refreshPanel(scriptHandler.isScriptLoaded());
 		}
 	}
 	

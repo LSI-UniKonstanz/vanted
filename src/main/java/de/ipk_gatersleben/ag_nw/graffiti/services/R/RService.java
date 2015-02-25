@@ -250,7 +250,7 @@ public class RService {
     	return eval(name);
     }
         
-    private void openRserve() 
+    public static void openRserve() 
     {
     	waitingObject = new Object();
     	ssrs = new StartStopRserve(waitingObject);
@@ -296,7 +296,7 @@ public class RService {
         }
 	}
 
-	class StartStopRserve extends Thread{
+	static class StartStopRserve extends Thread{
 		
 		public StartStopRserve(Object waitObj){
 			waitingObject = waitObj;
@@ -342,7 +342,9 @@ public class RService {
 		   			{
 		   				synchronized(waitingObject)
 		   				{
+		   					RserveReady = true;
 		   					waitingObject.notify();
+		   					
 		   				}
 		   			}
 		   		}

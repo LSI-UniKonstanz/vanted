@@ -119,6 +119,7 @@ implements ActionListener{
 		JScrollPane jScrollPane = new JScrollPane(getStudentPanel());
 //		jScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		add(jScrollPane, BorderLayout.CENTER);
+		setMinimumSize(new Dimension(350,400));
 	}
 	
 	private JComponent getStudentPanel() {

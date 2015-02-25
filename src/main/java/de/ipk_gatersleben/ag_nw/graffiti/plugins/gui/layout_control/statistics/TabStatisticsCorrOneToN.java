@@ -8,6 +8,7 @@ import info.clearthought.layout.TableLayoutConstants;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
@@ -110,15 +111,27 @@ implements ActionListener {
 	int i = 0;
 
 	private void initGUI() {
+		removeAll();
 		setLayout(new BorderLayout());
+		JButton but = new JButton("relayout"+ (i++));
+		add(but, BorderLayout.NORTH);
+		but.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				initGUI();
+			}
+		});
+		
 		
 		JScrollPane jScrollPane = new JScrollPane(getAnalysisPanelOneToN());
 		add(jScrollPane, BorderLayout.CENTER);
+		
 	}
-
 
 	private JComponent getAnalysisPanelOneToN() {
 		ScrollablePanel result = new ScrollablePanel();
+		result.setMinimumSize(new Dimension(350,400));
 		result.setOpaque(false);
 		double border = 5;
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
