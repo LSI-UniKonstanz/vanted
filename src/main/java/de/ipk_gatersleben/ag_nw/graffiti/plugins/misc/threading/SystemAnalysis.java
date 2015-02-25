@@ -8,9 +8,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import org.AttributeHelper;
+import org.HelperClass;
 import org.junit.Test;
 
-public class SystemAnalysis {
+public class SystemAnalysis implements HelperClass{
 	
 	private static boolean fullPower = false;
 	
@@ -96,7 +97,7 @@ public class SystemAnalysis {
 		} // for
 	}
 	
-	public static long getRealSystemMemoryInMB() {
+	public static long getRealSystemMemoryInByte() {
 		OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
 		for (Method method : operatingSystemMXBean.getClass().getDeclaredMethods()) {
 			method.setAccessible(true);
@@ -110,7 +111,7 @@ public class SystemAnalysis {
 				} // try
 				if (method.getName().equals("getTotalPhysicalMemorySize")) {
 					Long l = (Long) value;
-					return l / 1024 / 1024;
+					return l;
 				}
 			} // if
 		} // for
