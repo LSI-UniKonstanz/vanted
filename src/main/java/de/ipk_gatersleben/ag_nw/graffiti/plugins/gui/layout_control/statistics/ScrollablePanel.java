@@ -3,6 +3,8 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.statistics;
 
+import info.clearthought.layout.TableLayout;
+
 import java.awt.Dimension;
 import java.awt.Rectangle;
 
@@ -20,9 +22,24 @@ public class ScrollablePanel extends JPanel implements Scrollable {
 	private static final long serialVersionUID = -1254006792188406703L;
 
 	
+	Dimension preferredScrollableViewportSize = new Dimension(300, 400);
+	
+	/**
+	 * 
+	 */
+	public ScrollablePanel() {
+		super();
+	}
+	
+	/**
+	 * @param tableLayout
+	 */
+	public ScrollablePanel(TableLayout tableLayout) {
+		super(tableLayout);
+	}
 	@Override
 	public Dimension getPreferredScrollableViewportSize() {
-		return new Dimension(250, 400);
+		return preferredScrollableViewportSize;
 	}
 	@Override
 	public int getScrollableUnitIncrement(Rectangle visibleRect,
@@ -36,7 +53,7 @@ public class ScrollablePanel extends JPanel implements Scrollable {
 	}
 	@Override
 	public boolean getScrollableTracksViewportWidth() {
-		return true;
+		return getPreferredSize().getWidth() < getParent().getWidth();
 	}
 	@Override
 	public boolean getScrollableTracksViewportHeight() {
