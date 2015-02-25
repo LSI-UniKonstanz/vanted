@@ -29,6 +29,7 @@ import javax.swing.UIManager;
 import net.iharder.dnd.FileDrop;
 
 import org.ApplicationStatus;
+import org.AttributeHelper;
 import org.ErrorMsg;
 import org.FeatureSet;
 import org.HelperClass;
@@ -63,6 +64,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.Experime
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.ExperimentDataProcessingManager;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.ExperimentDataProcessor;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.TableData;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.SetJavaMemoryMacOS;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.threading.SystemAnalysis;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
@@ -481,6 +483,32 @@ public class GravistoMainHelper implements HelperClass {
 			Thread tt = new Thread(r);
 			tt.setName("Ask for database download");
 			tt.start();
+			
+			/*
+			 * display the dialog box to inform the user that we changed the info.plist file with optimal 
+			 * RAM settings
+			 */
+			if(AttributeHelper.macOSrunning()) {
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						do {
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						} while ( ! mainFrame.getInstance().isVisible());
+						SetJavaMemoryMacOS.showDialog();
+						
+					}
+				}).start();
+			}
+			
+			
 		} else {
 			final String lastVersion = ReleaseInfo
 					.getOldVersionIfAppHasBeenUpdated(DBEgravistoHelper.DBE_GRAVISTO_VERSION);
