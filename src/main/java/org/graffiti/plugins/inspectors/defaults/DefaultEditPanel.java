@@ -236,6 +236,7 @@ public class DefaultEditPanel extends EditPanel {
 		
 		attributeScrollPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		attributeScrollPanel.getViewport().setOpaque(false);
+		attributeScrollPanel.getVerticalScrollBar().setUnitIncrement(50);
 		attributeScrollPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		
 		// applyButtonPanel.add(applyButton, BorderLayout.WEST);
