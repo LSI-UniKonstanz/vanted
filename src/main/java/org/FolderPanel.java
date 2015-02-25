@@ -434,7 +434,7 @@ public class FolderPanel extends JComponent {
 			}
 			add(rowPanel, "1,2");
 			
-			validate();
+			revalidate();
 			repaint();
 			
 			if (!hideSearch && lastSearchText.length() > 0 && currentSearchInputField != null) {
@@ -669,11 +669,11 @@ public class FolderPanel extends JComponent {
 			}
 		});
 		
-		// layoutRows();
-		// for (ActionListener al : collapse_listeners) {
-		// al.actionPerformed(new ActionEvent(this, condensedState ? 0 : 1,
-		// "collapseevent"));
-		// }
+		 layoutRows();
+		 for (ActionListener al : collapse_listeners) {
+		 al.actionPerformed(new ActionEvent(this, condensedState ? 0 : 1,
+		 "collapseevent"));
+		 }
 		
 		cmdButtonS.setBackground(frameColor);
 		cmdButtonS.setOpaque(true);
