@@ -10,14 +10,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.CharBuffer;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import org.AttributeHelper;
-import org.HomeFolder;
 import org.apache.log4j.Logger;
 import org.graffiti.editor.MainFrame;
 
