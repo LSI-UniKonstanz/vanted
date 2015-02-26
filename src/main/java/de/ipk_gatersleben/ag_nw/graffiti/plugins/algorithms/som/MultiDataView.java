@@ -9,7 +9,10 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.som;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JPanel;
 
@@ -18,6 +21,7 @@ import org.BioStatisticalCategoryDataset;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -50,6 +54,16 @@ public class MultiDataView extends AbstractAlgorithm {
 		return "Mapping";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.CHART,
+				Category.MAPPING,
+				Category.DATA
+				));
+	}
+
 	@Override
 	public String getDescription() {
 		return "<html>" + "This command makes it possible to view multiple measured substances<br>"

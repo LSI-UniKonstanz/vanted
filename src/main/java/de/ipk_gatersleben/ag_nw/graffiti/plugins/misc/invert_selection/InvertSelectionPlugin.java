@@ -34,7 +34,7 @@ public class InvertSelectionPlugin
 							new ExpandSelectionAlgorithm(true, true),
 							
 							new InvertSelectionAlgorithm(),
-//							PluginFeatureClusterCommands.getSelectClusterAlgorithm(),
+							new ClearSelection(),
 							new SelectClusterAlgorithm(),
 							new SelectNodesWithExperimentalDataAlgorithm(),
 							new SelectEdgesAlgorithm(),
@@ -43,9 +43,9 @@ public class InvertSelectionPlugin
 							new SearchAndSelecAlgorithm(),
 							new FindReplaceDialog()
 		};
-		
-		guiComponents = new GraffitiComponent[] {
-							new SelectNodesComponent("defaultToolbar"), // defaultToolbar // toolbarPanel
-							};
+//		
+//		guiComponents = new GraffitiComponent[] {
+//							new SelectNodesComponent("defaultToolbar"), // defaultToolbar // toolbarPanel
+//							};
 	}
 }

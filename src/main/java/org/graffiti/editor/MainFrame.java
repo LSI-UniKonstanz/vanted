@@ -1813,7 +1813,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		if (plugin.isViewListener())
 			viewManager.addViewListener((ViewListener) plugin);
 		
-		// Registers all plugins that are session listeners.
+		// Registers all plugins that are selection listeners to the listenermanager.
 		checkSelectionListener(plugin);
 		
 		if (plugin.needsEditComponents()) {
@@ -1970,7 +1970,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		Algorithm[] algorithms = plugin.getAlgorithms();
 		for (int i = algorithms.length - 1; i >= 0; i--) {
 			Algorithm a = algorithms[i];
-			if (a != null && a.getName() != null) {
+			if (a != null && a.getName() != null && a.getMenuCategory() != null) {
 				if (a.isLayoutAlgorithm()) {
 					// System.out.println("Skip Layouter: "+a.getName());
 					continue; // skip layout algorithms
@@ -1979,7 +1979,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 						editComponentManager, a);
 				
 				algorithmActions.add(action);
-				String cat = a.getCategory();
+				String cat = a.getMenuCategory();//a.getCategory();
 				final String myKey = "jMenuParent";
 				final JMenuItem menu = new JMenuItem(action) {
 					private static final long serialVersionUID = 8398436010665548408L;

@@ -14,6 +14,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ import org.color.ColorUtil;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.view.View;
 import org.graffiti.session.EditorSession;
 
@@ -761,6 +763,14 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 		return "File.Export";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.EXPORT
+				));
+	}
+
 	@Override
 	public ImageIcon getIcon() {
 		String path = this.getClass().getPackage().getName().replace('.', '/');

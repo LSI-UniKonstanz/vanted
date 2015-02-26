@@ -1,7 +1,12 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.svg_exporter;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.graffiti.editor.GravistoService;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
@@ -47,6 +52,15 @@ public class PDFSVGAlgorithm extends AbstractAlgorithm {
 		return "Create PDF/SVG";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.IMAGING,
+				Category.EXPORT
+				));
+	}
+
 	private enum ExportType {
 		PDF, SVG
 	}

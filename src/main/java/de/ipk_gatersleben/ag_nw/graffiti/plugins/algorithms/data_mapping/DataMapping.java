@@ -3,10 +3,12 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.data_mapping;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -25,6 +27,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
@@ -493,5 +496,14 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 	public enum ShowMappingResults {
 		NORMAL, DONT_SHOW_RESULTDIALOG, MAP_WITHOUT_VIEW
 		
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.MAPPING,
+				Category.GRAPH,
+				Category.COMPUTATION
+				));
 	}
 }

@@ -91,7 +91,7 @@ public class EdgeTab
 
 	@Override
 	public String getTabParentPath() {
-		return "Network";
+		return "Attributes";
 	}
 
 	@Override

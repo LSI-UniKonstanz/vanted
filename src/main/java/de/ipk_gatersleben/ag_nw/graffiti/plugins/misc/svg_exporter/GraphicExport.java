@@ -1,13 +1,18 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.svg_exporter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.ppt_exporter.PPTAlgorithm;
+
 
 public class GraphicExport extends LaunchGui {
 	
@@ -37,4 +42,10 @@ public class GraphicExport extends LaunchGui {
 	public String getCategory() {
 		return "File.Export";
 	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return null;
+	}
+	
 }

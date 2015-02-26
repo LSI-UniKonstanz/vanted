@@ -3,8 +3,11 @@
  *******************************************************************************/
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.rt_tree;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 import org.ErrorMsg;
 import org.graffiti.graph.AdjListGraph;
@@ -12,6 +15,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
@@ -30,6 +34,15 @@ public class MultiTreeLayout extends AbstractAlgorithm {
 		return "Layout";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
+	}
+
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;

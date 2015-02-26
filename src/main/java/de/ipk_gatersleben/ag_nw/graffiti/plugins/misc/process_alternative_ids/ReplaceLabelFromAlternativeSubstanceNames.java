@@ -7,14 +7,18 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.process_alternative_ids;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
@@ -43,9 +47,19 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "Data.Mapping.Alternate identifiers";
+		return "Data.Alternate identifiers";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.ANNOTATION,
+				Category.CLUSTER
+				));
+	}
+
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();

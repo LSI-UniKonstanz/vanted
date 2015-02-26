@@ -4,8 +4,11 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.ratioview;
 
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -25,6 +28,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.AlgorithmWithComponentDescription;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
@@ -53,9 +57,17 @@ public class SubstanceRatioCalculationAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "Data.Mapping";
+		return "Data";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.NODE,
+				Category.DATA,
+				Category.COMPUTATION
+				));
+	}
 	@Override
 	public String getDescription() {
 		return "<html>Calculates the ratio between any two substances.<br>" +

@@ -145,6 +145,7 @@ public abstract class AbstractAttributeComponent
 			if(view.getDrawMode() == DrawMode.FAST)
 				return false;
 			AffineTransform zoom = view.getZoom();
+			//TODO: parameterize those constants..
 			if(getHeight() * zoom.getScaleX() < 10 || getWidth() * zoom.getScaleY() < 10)
 				return false;
 			else

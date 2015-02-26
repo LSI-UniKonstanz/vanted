@@ -9,7 +9,10 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.print.printer;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.KeyStroke;
 
@@ -18,6 +21,7 @@ import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.tool.AbstractTool;
 import org.graffiti.plugin.view.View;
@@ -55,6 +59,15 @@ public class PrintAlgorithm extends AbstractAlgorithm {
 		return "Print...";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.IMAGING,
+				Category.EXPORT
+				));
+	}
+
 	// public Parameter[] getParameters() {
 	// return new Parameter[] {
 	// new BooleanParameter(printAllOpen, "Print all loaded documents", "If enabled all open graph windows are printed at once.")

@@ -8,6 +8,9 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 
 import javax.swing.ImageIcon;
@@ -26,6 +29,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.AlgorithmWithComponentDescription;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
@@ -236,6 +240,16 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	public String getCategory() {
 		return "Network.Nodes";
 	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.NODE,
+				Category.COMPUTATION
+				));
+	}
+
 	
 	@Override
 	public String getDescription() {

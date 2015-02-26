@@ -7,9 +7,11 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.FeatureSet;
@@ -22,6 +24,7 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
@@ -64,6 +67,14 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 		return "Select Nodes";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.NODE,
+				Category.SELECTION
+				));
+	}
+
 	@Override
 	public String getDescription() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING)) {

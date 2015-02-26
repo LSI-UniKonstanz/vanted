@@ -4,7 +4,10 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.copy_pattern_layout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.Vector2d;
@@ -12,6 +15,7 @@ import org.graffiti.editor.GravistoService;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
@@ -27,13 +31,23 @@ public class CopyPatternLayoutAlgorithm extends AbstractAlgorithm {
 	 * @see org.graffiti.plugin.ThreadSafeAlgorithm#getName()
 	 */
 	public String getName() {
-		return "Apply Search-Subgraph Layout";
+		return "Apply 'Search-Subgraph' Layout to Graph";
 	}
 	
 	@Override
 	public String getCategory() {
 		return "Layout";
 	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
+	}
+
 	
 	/**
 	 * Vecor node array, contains <code>patternNodeStruct</code> objects,

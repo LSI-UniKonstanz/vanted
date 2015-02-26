@@ -7,7 +7,10 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 
@@ -18,6 +21,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.compound_image.CompoundAttribute;
@@ -42,6 +46,13 @@ public class ShowOrHideImageAttributesAlgorithm extends AbstractAlgorithm {
 		return "Nodes";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.NODE,
+				Category.VISUAL
+				));
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()

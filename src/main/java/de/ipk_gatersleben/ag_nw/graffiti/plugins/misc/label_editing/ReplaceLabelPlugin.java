@@ -12,7 +12,12 @@ public class ReplaceLabelPlugin extends IPK_PluginAdapter {
 	
 	public ReplaceLabelPlugin() {
 		this.algorithms = new Algorithm[] {
-							new ChangeLabelsAlgorithm()
+//							new ChangeLabelsAlgorithm()
+				new ReplaceLabelAlgorithm(),
+				new RemoveParenthesisLabels(),
+				new RestoreLabelAlgorithm(),
+				new EnrichHiddenLabelsAlgorithm(),
+				new RemoveHiddenLabelsAlgorithm()
 		};
 	}
 }

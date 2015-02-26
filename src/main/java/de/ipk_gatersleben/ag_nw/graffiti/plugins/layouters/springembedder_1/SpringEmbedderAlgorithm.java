@@ -9,8 +9,11 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.springembedder_1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
 import org.graffiti.attributes.Attribute;
@@ -20,6 +23,7 @@ import org.graffiti.graph.Node;
 import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -94,6 +98,15 @@ public class SpringEmbedderAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		// return "Springembedder 1";
 		return null; // avoids listing in the plugin menu
+	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
 	}
 	
 	/**

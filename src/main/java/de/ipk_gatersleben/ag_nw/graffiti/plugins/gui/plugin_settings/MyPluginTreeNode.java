@@ -10,7 +10,7 @@ public class MyPluginTreeNode extends DefaultMutableTreeNode {
 	String nodeText;
 	Class<?> identifyAs;
 	
-	MyPluginTreeNode(String nodeText, Object data, Class<?> identifyAs) {
+	public MyPluginTreeNode(String nodeText, Object data, Class<?> identifyAs) {
 		super(data);
 		this.nodeText = nodeText;
 		this.identifyAs = identifyAs;
