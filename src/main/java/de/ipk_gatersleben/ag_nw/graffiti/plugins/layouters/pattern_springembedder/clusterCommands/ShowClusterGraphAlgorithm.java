@@ -3,6 +3,10 @@
  *******************************************************************************/
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.AttributeHelper;
 import org.ErrorMsg;
 import org.Release;
@@ -12,6 +16,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.session.EditorSession;
 
@@ -32,6 +37,20 @@ public class ShowClusterGraphAlgorithm extends AbstractAlgorithm {
 	public String getCategory() {
 		// return "Analysis";
 		return "Cluster";
+	}
+	
+	
+	@Override
+	public String getMenuCategory() {
+		return "Network.Cluster.Process Cluster Overview-Graph";
+	}
+
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.CLUSTER,
+				Category.GRAPH
+				));
 	}
 	
 	@Override

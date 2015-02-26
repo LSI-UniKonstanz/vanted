@@ -598,8 +598,14 @@ public class TabKegg extends InspectorTab
 	protected void downloadPathway(){
 		if(selectedPathwayNode != null)
 		{
-			logger.debug("Rufe den Graphen www.genome.jp/kegg-bin/download?entry="+pathwayNameToPathway.get(selectedPathwayNode.getUserObject())+"&format=kgml auf.");
+			final String keggpathwayId = pathwayNameToPathway.get(selectedPathwayNode.getUserObject());
+			
 	
+			if(keggpathwayId == null){
+				logger.error("no mapping from selected pathway to keggpathwayid found");
+				return;
+			}
+			logger.debug("Rufe den Graphen www.genome.jp/kegg-bin/download?entry="+keggpathwayId+"&format=kgml auf.");
 			BackgroundTaskHelper.issueSimpleTask(
 					"Retrieve Pathway",
 					"Please wait (Download in progress)...",
@@ -608,7 +614,8 @@ public class TabKegg extends InspectorTab
 			
 						try
 						{
-							graph = MainFrame.getInstance().getGraph(selectedPathwayNode.getUserObject().toString()+".xml", new URL("http://rest.kegg.jp/get/"+pathwayNameToPathway.get(selectedPathwayNode.getUserObject())+"/kgml"));
+							
+							graph = MainFrame.getInstance().getGraph(selectedPathwayNode.getUserObject().toString()+".xml", new URL("http://rest.kegg.jp/get/"+keggpathwayId+"/kgml"));
 //							graph = MainFrame.getInstance().getGraph(new IOurl("http://www.genome.jp/kegg-bin/download?entry="+pathwayNameToPathway.get(selectedPathwayNode.getUserObject())+"&format=kgml"), pathwayNameToPathway.get(selectedPathwayNode.getUserObject())+".xml");
 							ArrayList<Node> nodeList = (ArrayList<Node>) graph.getNodes();
 							HashMap<String, String[]> keggIDToEntry = new HashMap<String, String[]>();

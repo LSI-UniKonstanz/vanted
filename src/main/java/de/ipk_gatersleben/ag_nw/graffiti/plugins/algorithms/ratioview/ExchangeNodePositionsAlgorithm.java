@@ -9,8 +9,11 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.ratioview;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.KeyStroke;
 import javax.swing.undo.AbstractUndoableEdit;
@@ -22,6 +25,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
@@ -40,6 +44,15 @@ public class ExchangeNodePositionsAlgorithm
 		return "Network.Nodes";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
+	}
+
 	@Override
 	public void check() throws PreconditionException {
 		super.check();

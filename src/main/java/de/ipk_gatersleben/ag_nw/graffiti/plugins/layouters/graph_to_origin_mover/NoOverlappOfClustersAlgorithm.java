@@ -4,12 +4,17 @@
 
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.swing.KeyStroke;
 
 import org.Release;
 import org.ReleaseInfo;
 import org.SystemInfo;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.expand_no_overlapp.NoOverlappLayoutAlgorithm;
@@ -35,6 +40,15 @@ public class NoOverlappOfClustersAlgorithm
 		return "Network.Arrange";
 	}
 
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT,
+				Category.CLUSTER
+				));
+	}
 	
 	@Override
 	public void check()

@@ -4,8 +4,11 @@
 
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.resize_and_grid_layout;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.Vector2d;
@@ -14,6 +17,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -56,6 +60,15 @@ public class GridLayoutAlgorithm
 		return "Nodes";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
+	}
+
 	@Override
 	public void check()
 						throws PreconditionException {

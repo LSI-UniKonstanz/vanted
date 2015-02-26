@@ -6,6 +6,7 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.kegg_bar;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.session.Session;
@@ -84,6 +86,17 @@ public class MergeWindowsAlgorithm extends AbstractAlgorithm {
 	public String getCategory() {
 		return "menu.window";
 	}
+
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT,
+				Category.COMPUTATION
+				));
+	}
+
 	
 	@Override
 	public String getDescription() {

@@ -517,7 +517,7 @@ public class TabPatternLayout extends InspectorTab {
 
 	@Override
 	public String getTabParentPath() {
-		return "Network";
+		return "Analysis.Graph";
 	}
 
 	@Override

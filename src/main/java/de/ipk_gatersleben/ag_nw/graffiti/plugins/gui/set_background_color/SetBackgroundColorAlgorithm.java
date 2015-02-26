@@ -13,6 +13,9 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JColorChooser;
 import javax.swing.JMenuItem;
@@ -22,6 +25,7 @@ import org.AttributeHelper;
 import org.Release;
 import org.ReleaseInfo;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.ProvidesGeneralContextMenu;
 import org.graffiti.plugin.view.View;
 
@@ -52,6 +56,14 @@ public class SetBackgroundColorAlgorithm
 	@Override
 	public String getCategory() {
 		return "menu.window"; // View
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.VISUAL
+				));
 	}
 	
 	@Override

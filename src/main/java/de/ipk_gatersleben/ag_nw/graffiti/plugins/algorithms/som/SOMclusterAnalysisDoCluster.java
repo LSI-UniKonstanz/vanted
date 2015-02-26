@@ -7,8 +7,10 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.som;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.Vector;
 
 import org.AttributeHelper;
@@ -17,6 +19,7 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 
@@ -46,6 +49,16 @@ public class SOMclusterAnalysisDoCluster extends AbstractAlgorithm {
 	@Override
 	public String getCategory() {
 		return "Analysis";
+	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION,
+				Category.CLUSTER
+				));
 	}
 	
 	@Override

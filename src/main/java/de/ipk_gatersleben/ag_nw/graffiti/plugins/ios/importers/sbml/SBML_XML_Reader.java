@@ -42,11 +42,20 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 	
 	static Logger logger = Logger.getLogger(SBML_XML_Reader.class);
 	
+	static boolean doValidate = false;
+	
 	public SBML_XML_Reader() {
 		// System.out.println("SBML_XML_Reader with layout constructor");
 		// TODO Auto-generated constructor stub
 	}
 	
+	public static void doValidateSBMLOnLoad(boolean validate) {
+		doValidate = validate;
+	}
+	
+	public static boolean isValidatingSBMLOnLoad() {
+		return doValidate;
+	}
 	/**
 	 * Method controls the import of the SBML document.
 	 * 
@@ -79,7 +88,7 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 			if (null != is) {
 				
 				int validate = 1;
-				if (!SBML_XML_ReaderWriterPlugin.isTestintMode)
+				if (!SBML_XML_ReaderWriterPlugin.isTestintMode && doValidate)
 					validate = JOptionPane
 							.showConfirmDialog(
 									null,

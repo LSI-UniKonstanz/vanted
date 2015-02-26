@@ -4,9 +4,14 @@
 
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.startlayout;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.FeatureSet;
 import org.ReleaseInfo;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
@@ -47,11 +52,20 @@ public class StartLayoutAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Network";
+//		return "Network";
+		return null;
 	}
 	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
+	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH
+				));
 	}
 }

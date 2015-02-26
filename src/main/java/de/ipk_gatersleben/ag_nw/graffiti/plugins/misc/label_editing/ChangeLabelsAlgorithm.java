@@ -1,14 +1,19 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.label_editing;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.Release;
 import org.ReleaseInfo;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 
+@Deprecated
 public class ChangeLabelsAlgorithm extends LaunchGui {
 	
 	public ChangeLabelsAlgorithm() {
@@ -41,4 +46,10 @@ public class ChangeLabelsAlgorithm extends LaunchGui {
 			return "menu.edit";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return null;
+	}
+
 }

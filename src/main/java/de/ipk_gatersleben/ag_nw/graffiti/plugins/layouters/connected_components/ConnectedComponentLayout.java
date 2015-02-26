@@ -1,6 +1,7 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components;
 
 import java.awt.geom.Rectangle2D;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
@@ -11,6 +12,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
@@ -29,8 +31,18 @@ public class ConnectedComponentLayout extends AbstractAlgorithm {
 	}
 	
 	public String getName() {
-		return "Unconnected Subgraphs on Grid";
+		return "Layout unconnected subgraphs on Grid";
 	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
+	}
+
 	
 	@Override
 	public String getDescription() {

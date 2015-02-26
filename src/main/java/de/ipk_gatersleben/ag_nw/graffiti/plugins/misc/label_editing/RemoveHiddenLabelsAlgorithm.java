@@ -1,16 +1,35 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.label_editing;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.AttributeHelper;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 /**
  * @author rohn
  */
 public class RemoveHiddenLabelsAlgorithm extends AbstractAlgorithm {
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.ANNOTATION
+				));
+	}
+	
+	@Override
+	public String getMenuCategory() {
+		return "edit.Change Label";
+	}
+
 	
 	public String getName() {
 		return "Remove hidden labels";

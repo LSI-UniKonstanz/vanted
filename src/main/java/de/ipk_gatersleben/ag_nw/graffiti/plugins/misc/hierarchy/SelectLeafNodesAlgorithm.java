@@ -9,7 +9,10 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.hierarchy;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JMenuItem;
 
@@ -18,6 +21,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.ProvidesNodeContextMenu;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.EditorSession;
@@ -77,6 +81,14 @@ public class SelectLeafNodesAlgorithm
 		return null; // "Hierarchy";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.NODE,
+				Category.SELECTION
+				));
+	}
+
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 

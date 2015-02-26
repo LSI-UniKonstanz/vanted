@@ -9,6 +9,9 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.compound_image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -19,6 +22,7 @@ import org.ReleaseInfo;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
@@ -107,5 +111,15 @@ public class ImageAssignmentCommand extends AbstractAlgorithm {
 	public String getCategory() {
 		return "Network.Nodes";
 	}
+
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.NODE,
+				Category.IMAGING,
+				Category.VISUAL
+				));
+	}
+
 }

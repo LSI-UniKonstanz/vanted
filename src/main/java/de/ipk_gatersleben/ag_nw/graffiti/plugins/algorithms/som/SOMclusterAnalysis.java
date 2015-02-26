@@ -6,7 +6,12 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.som;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -40,6 +45,16 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 	 */
 	public String getName() {
 		return "Step 1: Analyse mapping-data and calculate centroids";
+	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.ANALYSIS,
+				Category.CLUSTER
+				));
 	}
 	
 	@Override

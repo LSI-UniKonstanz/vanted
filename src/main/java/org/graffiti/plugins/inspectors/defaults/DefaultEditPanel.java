@@ -141,6 +141,7 @@ public class DefaultEditPanel extends EditPanel {
 		this.emptyMessage = emptyMessage;
 		if (discardedRowIDs == null || discardedRowIDs.size() <= 0) {
 			discardedRowIDs = new HashSet<String>();
+		}
 			// discardedRowIDs.add("linemode");
 			discardedRowIDs.add("image");
 			discardedRowIDs.add("tiled");
@@ -190,7 +191,7 @@ public class DefaultEditPanel extends EditPanel {
 									"clusterbackground_grid" });
 			}
 			
-		}
+//		}
 		displayedValueEditComponents = new LinkedList<ValueEditComponent>();
 		
 		// this.attributeTypeMap = new HashMap();
@@ -970,6 +971,9 @@ public class DefaultEditPanel extends EditPanel {
 	}
 	
 	public static void setDiscardedRowIDs(HashSet<String> discardedRowIDs) {
+		if(DefaultEditPanel.discardedRowIDs != null)
+			DefaultEditPanel.discardedRowIDs.addAll(discardedRowIDs);
+
 		DefaultEditPanel.discardedRowIDs = discardedRowIDs;
 	}
 	
@@ -1211,12 +1215,11 @@ public class DefaultEditPanel extends EditPanel {
 			}
 			
 			private String[] getAttributeList() {
-				List r = PluginHelper.getAvailableAttributes();
+				List<Class<Attribute>> r = PluginHelper.getAvailableAttributes();
 				String[] result = new String[r.size()];
 				int i = 0;
-				for (Iterator it = r.iterator(); it.hasNext();) {
-					Class c = (Class) it.next();
-					result[i++] = c.getName();
+				for (Class<Attribute> classAttribute : r) {
+					result[i++] = classAttribute.getName();
 				}
 				return result;
 			}

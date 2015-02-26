@@ -10,8 +10,11 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.graph_cleanup;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.JMenu;
@@ -22,6 +25,7 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.GraphElementNotFoundException;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.ProvidesEdgeContextMenu;
 import org.graffiti.plugin.algorithm.ProvidesGeneralContextMenu;
 import org.graffiti.plugin.parameter.BooleanParameter;
@@ -173,6 +177,14 @@ public class DeleteNodesAlgorithm
 		// return "menu.edit";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH
+				));
+	}
+
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 

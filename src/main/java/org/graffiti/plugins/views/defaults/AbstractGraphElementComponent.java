@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.swing.JComponent;
 
+import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graphics.GraphicAttributeConstants;
@@ -40,24 +41,27 @@ import org.graffiti.plugin.view.Zoomable;
  * @version $Revision: 1.16 $
  */
 public abstract class AbstractGraphElementComponent
-					extends GraphElementComponent
-					implements GraffitiViewComponent, GraphicAttributeConstants {
+extends GraphElementComponent
+implements GraffitiViewComponent, GraphicAttributeConstants {
+
+	Logger logger = Logger.getLogger(AbstractGraphElementComponent.class);
+
 	// ~ Instance fields ========================================================
 	private static final long serialVersionUID = 1L;
-	
+
 	/** The <code>GraphElement</code> that is represented by this component. */
 	protected GraphElement graphElement;
-	
+
 	/** The <code>shape</code> that is drawn onto that component. */
 	protected GraphElementShape shape;
-	
+
 	/**
 	 * A list of components whose position is dependent on the position of this
 	 * shape. This is only meant for edges that depend on the position (and
 	 * other graphics attributes) of nodes.
 	 */
 	protected List<GraphElementComponent> dependentComponents;
-	
+
 	/**
 	 * A mapping between attribute classnames and attributeComponent classnames
 	 * that this <code>GraphElement</code> has. These attributes are therefore
@@ -65,11 +69,11 @@ public abstract class AbstractGraphElementComponent
 	 * this GraphElement. (this applies mainly to nodes)
 	 */
 	protected Map<Attribute, GraffitiViewComponent> attributeComponents;
-	
+
 	protected CoordinateSystem coordinateSystem;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor for GraphElementComponent.
 	 * 
@@ -83,9 +87,9 @@ public abstract class AbstractGraphElementComponent
 		dependentComponents = new ArrayList<GraphElementComponent>();
 		this.setOpaque(false);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns GraphElementShape object
 	 * 
@@ -94,7 +98,7 @@ public abstract class AbstractGraphElementComponent
 	public GraphElementShape getShape() {
 		return this.shape;
 	}
-	
+
 	/**
 	 * Adds an <code>Attribute</code> and its <code>GraffitiViewComponent</code> to the list of registered attributes
 	 * that can be displayed. This attribute is then treated as dependent on
@@ -109,7 +113,7 @@ public abstract class AbstractGraphElementComponent
 	public synchronized void addAttributeComponent(Attribute attr, GraffitiViewComponent ac) {
 		attributeComponents.put(attr, ac);
 	}
-	
+
 	/**
 	 * Adds a <code>GraphElementComponent</code> to the list of dependent <code>GraphElementComponent</code>s. These will nearly always be
 	 * <code>EdgeComponent</code>s that are dependent on their source or
@@ -122,7 +126,7 @@ public abstract class AbstractGraphElementComponent
 	public void addDependentComponent(GraphElementComponent comp) {
 		this.dependentComponents.add(comp);
 	}
-	
+
 	/**
 	 * Called when an attribute of the GraphElement represented by this
 	 * component has changed.
@@ -133,19 +137,19 @@ public abstract class AbstractGraphElementComponent
 	 *            DOCUMENT ME!
 	 */
 	public void attributeChanged(Attribute attr)
-						throws ShapeNotFoundException {
-		
+			throws ShapeNotFoundException {
+
 		if (attr.getPath().startsWith(Attribute.SEPARATOR + GraphicAttributeConstants.GRAPHICS)) {
 			if (!attr.getId().equals("cluster"))
 				graphicAttributeChanged(attr);
 		} else
 			nonGraphicAttributeChanged(attr);
-		
+
 		// if (!attr.getId().equals("cluster"))
 		// graphicAttributeChanged(attr);
 		// if(!attr.getPath().startsWith(Attribute.SEPARATOR + GraphicAttributeConstants.GRAPHICS))
 		// nonGraphicAttributeChanged(attr);
-		
+
 		/*
 		 * if(attr==null || "".equals(attr.getPath()))
 		 * {
@@ -170,14 +174,14 @@ public abstract class AbstractGraphElementComponent
 		 * }
 		 */
 	}
-	
+
 	/**
 	 * Removes a <code>GraphElementComponent</code> from the list of dependent <code>GraphElementComponent</code>s.
 	 */
 	public void clearDependentComponentList() {
 		this.dependentComponents = new ArrayList<GraphElementComponent>();
 	}
-	
+
 	/**
 	 * Called to initialize the shape of the NodeComponent correctly. Also
 	 * calls <code>repaint()</code>.
@@ -187,17 +191,17 @@ public abstract class AbstractGraphElementComponent
 	 *               resolved.
 	 */
 	public void createNewShape(CoordinateSystem coordSys)
-						throws ShapeNotFoundException {
+			throws ShapeNotFoundException {
 		this.coordinateSystem = coordSys;
 		recreate();
 	}
-	
+
 	/**
 	 * Called to initialize and draw a standard shape, if the specified
 	 * shape class could not be found.
 	 */
 	public abstract void createStandardShape();
-	
+
 	/**
 	 * Returns the attributeComponents of given attribute.
 	 * 
@@ -207,7 +211,7 @@ public abstract class AbstractGraphElementComponent
 	public synchronized AttributeComponent getAttributeComponent(Attribute attr) {
 		return (AttributeComponent) attributeComponents.get(attr);
 	}
-	
+
 	/**
 	 * Returns the attributeComponents of given attribute.
 	 * 
@@ -216,11 +220,11 @@ public abstract class AbstractGraphElementComponent
 	public synchronized Iterator<GraffitiViewComponent> getAttributeComponentIterator() {
 		return attributeComponents.values().iterator();
 	}
-	
+
 	public synchronized Collection<GraffitiViewComponent> getAttributeComponents() {
 		return attributeComponents.values();
 	}
-	
+
 	/**
 	 * Returns the graphElement.
 	 * 
@@ -229,14 +233,14 @@ public abstract class AbstractGraphElementComponent
 	public GraphElement getGraphElement() {
 		return graphElement;
 	}
-	
+
 	/**
 	 * Removes all entries in the attributeComponent list.
 	 */
 	public synchronized void clearAttributeComponentList() {
 		attributeComponents = new HashMap<Attribute, GraffitiViewComponent>();
 	}
-	
+
 	/**
 	 * Returns whether the given coordinates lie within this component and
 	 * within its encapsulated shape. The coordinates are assumed to be
@@ -263,7 +267,7 @@ public abstract class AbstractGraphElementComponent
 		 * return (super.contains(x, y) && this.shape.contains(x, y));
 		 */
 	}
-	
+
 	/**
 	 * Called when a graphic attribute of the GraphElement represented by this
 	 * component has changed.
@@ -274,7 +278,7 @@ public abstract class AbstractGraphElementComponent
 	 *            DOCUMENT ME!
 	 */
 	public synchronized void graphicAttributeChanged(Attribute attr)
-						throws ShapeNotFoundException {
+			throws ShapeNotFoundException {
 		/*
 		 * if the type of the shape or the size changed then we have to
 		 * rebuild the shape
@@ -283,18 +287,18 @@ public abstract class AbstractGraphElementComponent
 			for (Iterator<GraffitiViewComponent> it = attributeComponents.values().iterator(); it.hasNext();) {
 				((AttributeComponent) it.next()).recreate();
 			}
-			
+
 			createNewShape(CoordinateSystem.XY);
 		} else { // if another graphic attribute changed only repaint is needed
-		
+
 			for (Iterator<GraffitiViewComponent> it = attributeComponents.values().iterator(); it.hasNext();) {
 				((JComponent) it.next()).repaint();
 			}
-			
+
 			repaint();
 		}
 	}
-	
+
 	/**
 	 * Called when a non-graphic attribute of the GraphElement represented by
 	 * this component has changed.
@@ -305,20 +309,20 @@ public abstract class AbstractGraphElementComponent
 	 *            DOCUMENT ME!
 	 */
 	public synchronized void nonGraphicAttributeChanged(Attribute attr)
-						throws ShapeNotFoundException {
+			throws ShapeNotFoundException {
 		Attribute runAttr = attr;
-		
+
 		while (!(attr == null) && !runAttr.getPath().equals("")) {
 			if (attributeComponents.containsKey(runAttr)) {
 				(attributeComponents.get(runAttr)).attributeChanged(attr);
 				break;
 			}
-			
+
 			// "else":
 			runAttr = runAttr.getParent();
 		}
 	}
-	
+
 	/**
 	 * Paints the graph element contained in this component.
 	 * 
@@ -331,7 +335,7 @@ public abstract class AbstractGraphElementComponent
 		super.paintComponent(g);
 		drawShape(g);
 	}
-	
+
 	/**
 	 * Removes a <code>GraffitiViewComponent</code> of an <code>Attribute</code> from collection of attribute components.
 	 * 
@@ -341,7 +345,7 @@ public abstract class AbstractGraphElementComponent
 	public synchronized void removeAttributeComponent(Attribute attr) {
 		attributeComponents.remove(attr);
 	}
-	
+
 	/**
 	 * Removes a <code>GraphElementComponent</code> from the list of dependent <code>GraphElementComponent</code>s.
 	 * 
@@ -352,7 +356,7 @@ public abstract class AbstractGraphElementComponent
 	public void removeDependentComponent(GraphElementComponent comp) {
 		this.dependentComponents.remove(comp);
 	}
-	
+
 	/**
 	 * Retrieve the zoom value from the view this component is displayed in.
 	 * 
@@ -360,15 +364,15 @@ public abstract class AbstractGraphElementComponent
 	 */
 	protected AffineTransform getZoom() {
 		Container parent = getParent();
-		
+
 		if (parent instanceof Zoomable) {
 			AffineTransform zoom = ((Zoomable) parent).getZoom();
-			
+
 			return zoom;
 		} else
 			return View.NO_ZOOM;
 	}
-	
+
 	/**
 	 * Draws the shape of the graph element contained in this component
 	 * according to its graphic attributes.
@@ -377,13 +381,13 @@ public abstract class AbstractGraphElementComponent
 	 *           the graphics context in which to draw.
 	 */
 	protected abstract void drawShape(Graphics g);
-	
+
 	/**
 	 * Used when the shape changed in the datastructure. Makes the painter
 	 * create a new shape.
 	 */
 	protected abstract void recreate()
-						throws ShapeNotFoundException;
+			throws ShapeNotFoundException;
 
 	protected DrawMode getViewDrawMode() {
 		if(getParent() instanceof GraffitiView)
@@ -391,6 +395,41 @@ public abstract class AbstractGraphElementComponent
 		return DrawMode.NORMAL;
 	}
 
+	/**
+	 * Overrides the original method to deal with zoomable containers
+	 * It will not call the original repaint, which will call the repaintmanager with 
+	 * unzoomed coordinates and local coordinates relativ to this graphcomponent
+	 * so x and y are always 0
+	 * to create the correct repaint region we call the parent frame with new
+	 * coordinates, which regard the zoom 
+	 * the parent will then call its repaintmanager, which will have then the correct 
+	 * coordinates to paint. This component will then be repainted, because it falls in
+	 * the clipping bounds with regard to the current zoom
+	 */
+	@Override
+	public void repaint(long tm, int x, int y, int width, int height) {
+
+		Container parent = getParent();
+		if(parent != null && parent instanceof Zoomable) {
+			double zoomx = getZoom() == null ? 1 : getZoom().getScaleX();
+			double zoomy = getZoom() == null ? 1 : getZoom().getScaleY();
+			double newx = (double)(getX()) * zoomx;
+			double newy = (double)(getY()) * zoomy;
+			double newwidth = (double)(width) * zoomx;
+			double newheight = (double)(height) * zoomy;
+//			logger.debug("repaint called with new zoomed repaint frame for parent");
+			/*
+			 * adjusting the width and height with a constant, because somehow the marking border 
+			 * on edges doesn't disappear (gets not completely removed).
+			 * So the redraw region is widened
+			 *
+			 */
+			int delta = 10; //10 pixels in rescaled (zoomed) space
+			parent.repaint(tm, (int)newx, (int)newy, (int)newwidth+delta, (int)newheight+delta);
+		}
+		else
+			super.repaint(tm, x, y, width, height);
+	}
 }
 
 // ------------------------------------------------------------------------------

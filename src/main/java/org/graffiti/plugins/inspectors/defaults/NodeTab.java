@@ -53,7 +53,7 @@ public class NodeTab
 	
 	@Override
 	public String getTabParentPath() {
-		return "Network";
+		return "Attributes";
 	}
 	
 	@Override

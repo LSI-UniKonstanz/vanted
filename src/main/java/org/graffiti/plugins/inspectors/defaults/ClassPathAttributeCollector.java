@@ -67,10 +67,10 @@ public class ClassPathAttributeCollector {
 				fileName = fileName.substring(0, fileName.lastIndexOf(".class"));
 				
 				// }
-				Attribute _ = (Attribute) InstanceLoader.createInstance(fileName,
+				Attribute attr = (Attribute) InstanceLoader.createInstance(fileName,
 									"unique$&%%$%$%");
 				
-				if (_ == null)
+				if (attr == null)
 					throw new Exception("Could not create instance.");
 				
 				return fileName;

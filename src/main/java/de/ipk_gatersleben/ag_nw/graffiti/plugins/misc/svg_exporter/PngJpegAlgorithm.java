@@ -24,8 +24,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -67,6 +70,7 @@ import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.plugin.parameter.BooleanParameter;
@@ -122,6 +126,15 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 		return "menu.file";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.EXPORT,
+				Category.IMAGING
+				));
+	}
+
 	@Override
 	public void check() throws PreconditionException {
 		PngJpegAlgorithm.checkZoom();

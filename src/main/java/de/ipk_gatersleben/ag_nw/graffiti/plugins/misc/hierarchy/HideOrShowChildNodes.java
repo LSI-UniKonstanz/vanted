@@ -1,8 +1,10 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.hierarchy;
 
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -15,6 +17,7 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.algorithm.ProvidesNodeContextMenu;
 import org.graffiti.plugin.parameter.ObjectListParameter;
@@ -175,6 +178,15 @@ public class HideOrShowChildNodes extends AbstractAlgorithm
 
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.VISUAL
+				));
+	}
+
 	@Override
 	public String getDescription() {
 		return "<html>" +

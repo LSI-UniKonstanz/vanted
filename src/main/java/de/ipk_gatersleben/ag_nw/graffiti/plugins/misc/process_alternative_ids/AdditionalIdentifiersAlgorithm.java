@@ -9,6 +9,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.process_alternative_ids;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -19,6 +20,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
@@ -68,8 +70,17 @@ public class AdditionalIdentifiersAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Data.Mapping";
+		return "Data";
 	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.ANNOTATION
+				));
+	}
+
 	
 	@Override
 	public Parameter[] getParameters() {

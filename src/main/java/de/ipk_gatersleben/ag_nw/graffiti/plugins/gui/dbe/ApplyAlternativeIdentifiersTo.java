@@ -1,11 +1,15 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.Release;
 import org.ReleaseInfo;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.process_alternative_ids.ReplaceLabelFromAlternativeSubstanceNames;
@@ -33,4 +37,13 @@ public class ApplyAlternativeIdentifiersTo extends LaunchGui {
 		return "Mapping";
 	}
 	
+
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.MAPPING,
+				Category.CHART
+				));
+	}
 }
