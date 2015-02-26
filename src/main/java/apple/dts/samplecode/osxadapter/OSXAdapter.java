@@ -53,6 +53,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.ErrorMsg;
+
 public class OSXAdapter implements InvocationHandler {
 
 	protected Object targetObject;
@@ -113,11 +115,12 @@ public class OSXAdapter implements InvocationHandler {
 			public boolean callTarget(Object appleEvent) {
 				if (appleEvent != null) {
 					try {
+						ErrorMsg.addErrorMessage("open file using finder");
 						Method getFilenameMethod = appleEvent.getClass().getDeclaredMethod("getFilename", (Class[]) null);
 						String filename = (String) getFilenameMethod.invoke(appleEvent, (Object[]) null);
 						this.targetMethod.invoke(this.targetObject, new Object[] { filename });
 					} catch (Exception ex) {
-
+						ErrorMsg.addErrorMessage(ex);
 					}
 				}
 				return true;

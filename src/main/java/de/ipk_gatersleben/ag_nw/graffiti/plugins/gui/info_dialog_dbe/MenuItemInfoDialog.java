@@ -298,41 +298,49 @@ public class MenuItemInfoDialog
 		
 		if (SystemInfo.isMac() && !ReleaseInfo.isRunningAsApplet()) {
 			try {
-//				OSXAdapter.setAboutHandler(this, getClass().getDeclaredMethod("showAbout", (Class[]) null));
-//				OSXAdapter.setQuitHandler(this, getClass().getDeclaredMethod("doQuit", (Class[]) null));
-//				OSXAdapter.setPreferencesHandler(this, getClass().getDeclaredMethod("showPreferences", (Class[]) null));
+				// old code using class OSXAdapter from package apple.dts.samplecode.osxadapter
+				// classes with similar functionality are now part of the JDK/JRE
+				// OSXAdapter.setAboutHandler(this, getClass().getDeclaredMethod("showAbout", (Class[]) null));
+				// OSXAdapter.setQuitHandler(this, getClass().getDeclaredMethod("doQuit", (Class[]) null));
+				// OSXAdapter.setPreferencesHandler(this, getClass().getDeclaredMethod("showPreferences", (Class[]) null));
 				Application macApplication = Application.getApplication();
-				macApplication.setAboutHandler(new AboutHandler() {
-					
-					@Override
-					public void handleAbout(AboutEvent ae) {
-						
-						showAbout();						
-					}
-					
-				});
-				macApplication.setPreferencesHandler(new PreferencesHandler() {
-					
-					@Override
-					public void handlePreferences(PreferencesEvent pe) {
-						
-//						showPreferences();
-						ShowPreferencesAction showPreferencesAction = new ShowPreferencesAction(MainFrame.getInstance());
-						showPreferencesAction.actionPerformed(null);
-						
-					}
-				});
-				macApplication.setQuitHandler(new QuitHandler() {
-					
-					@Override
-					public void handleQuitRequestWith(QuitEvent qe, QuitResponse qr) {
-						
-//						default behaviour
-//						qr.performQuit();
-						doQuit();
-						
-					}
-				});
+				// implement About menu specific for Mac OS in the top menu bar
+//				macApplication.setAboutHandler(new AboutHandler() {
+//					
+//					@Override
+//					public void handleAbout(AboutEvent ae) {
+//						
+//						showAbout();
+//						
+//					}
+//					
+//				});
+//				// implement Preferences menu specific for Mac OS in the top menu bar
+//				macApplication.setPreferencesHandler(new PreferencesHandler() {
+//					
+//					@Override
+//					public void handlePreferences(PreferencesEvent pe) {
+//						
+//						// the showPreferences method from this class doesn't work anymore since the Preferences have been removed from the side panel 
+//						// showPreferences();
+//						ShowPreferencesAction showPreferencesAction = new ShowPreferencesAction(MainFrame.getInstance());
+//						showPreferencesAction.actionPerformed(null);
+//						
+//					}
+//				});
+//				// implement Quit menu specific for Mac OS in the top menu bar
+//				macApplication.setQuitHandler(new QuitHandler() {
+//					
+//					@Override
+//					public void handleQuitRequestWith(QuitEvent qe, QuitResponse qr) {
+//						
+//						// default behavior
+//						// qr.performQuit();
+//						// Vanted Quit method
+//						doQuit();
+//						
+//					}
+//				});
 				} catch (Exception e) {
 				ErrorMsg.addErrorMessage(e);
 			}

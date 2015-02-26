@@ -8,6 +8,7 @@ import info.clearthought.layout.TableLayoutConstants;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.ProxySelector;
 
 import javax.swing.ImageIcon;
@@ -15,6 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import org.ApplicationStatus;
 import org.AttributeHelper;
@@ -30,9 +32,12 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.SplashScreenInterface;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 
+import com.apple.eawt.AppEventListener;
 import com.apple.eawt.Application;
 import com.apple.eawt.OpenFilesHandler;
+import com.apple.eawt.OpenURIHandler;
 import com.apple.eawt.AppEvent.OpenFilesEvent;
+import com.apple.eawt.AppEvent.OpenURIEvent;
 
 import apple.dts.samplecode.osxadapter.OSXAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
@@ -243,13 +248,53 @@ public class Main {
 		if (SystemInfo.isMac()) {
 			try {
 //				OSXAdapter.setFileHandler(new GravistoService(), GravistoService.class.getDeclaredMethod("loadFile", new Class[] { String.class }));
+//				ErrorMsg.addErrorMessage("open handlers");
 				Application macApplication = Application.getApplication();
+//				macApplication.addAppEventListener(new AppEventListener() {
+//			
+//				
+//				} );
+				logger.debug("open handlers");
+//				macApplication.setOpenURIHandler(new OpenURIHandler() {
+//					
+//					@Override
+//					public void openURI(OpenURIEvent arg0) {
+//						try {
+////							ErrorMsg.addErrorMessage("uri open handler");
+//							logger.debug("uri open handler");
+//							MainFrame.getInstance().loadGraph("test", arg0.getURI().toURL());
+//						} catch (MalformedURLException e) {
+//							// TODO Auto-generated catch block
+//							ErrorMsg.addErrorMessage(e);
+//						}
+//						
+//						// TODO Auto-generated method stub
+//						
+//					}
+//				});
 				macApplication.setOpenFileHandler(new OpenFilesHandler() {
 					
 					@Override
-					public void openFiles(OpenFilesEvent arg0) {						
+					public void openFiles(OpenFilesEvent ofe) {
+						
+						logger.debug(ofe.getFiles().size() + " files");			
+						try {
+//							ErrorMsg.addErrorMessage("file open handler");
+							logger.debug("file open handler");
+							MainFrame.getInstance().loadGraphInBackground(ofe.getFiles().toArray(new File[ofe.getFiles().size()]), null, true);
+						} catch (IllegalAccessException e) {
+							// TODO Auto-generated catch block
+							logger.debug(e.getMessage());
+							ErrorMsg.addErrorMessage(e);
+						} catch (InstantiationException e) {
+							// TODO Auto-generated catch block
+							logger.debug(e.getMessage());
+							ErrorMsg.addErrorMessage(e);
+						}
+						
 					}
-				});
+					
+			});
 			} catch (Exception err) {
 				ErrorMsg.addErrorMessage(err);
 			}
