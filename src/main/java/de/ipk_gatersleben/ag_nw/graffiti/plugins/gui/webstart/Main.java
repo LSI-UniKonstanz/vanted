@@ -87,8 +87,7 @@ public class Main {
 							ClassLoader cl = this.getClass().getClassLoader();
 							String path = this.getClass().getPackage().getName()
 									.replace('.', '/');
-							ImageIcon icon = new ImageIcon(cl.getResource(path
-									+ "/vanted_logo.png"));
+							ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash.jpg"));
 							final MainFrame mainFrame = MainFrame.getInstance();
 							if (icon != null && mainFrame != null)
 								mainFrame.setIconImage(icon.getImage());
@@ -127,8 +126,7 @@ public class Main {
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName()
 				.replace('.', '/');
-		ImageIcon icon = new ImageIcon(cl.getResource(path
-				+ "/vanted_logo.png"));
+		ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash.jpg"));
 		((DBEsplashScreen) splashScreen).setIconImage(icon.getImage());
 		
 		splashScreen.setVisible(showMainFrame);
