@@ -269,7 +269,30 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	 * Calls buildShape if no NodeShapes have changed.
 	 */
 	public void updateShape() {
-		nodeComponentChanged();
+		//		nodeComponentChanged();
+		EdgeGraphicAttribute geAttr;
+		geAttr = (EdgeGraphicAttribute) this.graphElement
+				.getAttribute(GRAPHICS);
+		try {
+			((EdgeShape)this.shape).buildShape(geAttr,
+					(sourceComp != null ? (NodeShape) this.sourceComp.getShape()
+							: null),
+							(targetComp != null ? (NodeShape) this.targetComp.getShape()
+									: null));
+		} catch (ShapeNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		this.adjustComponentSize();
+
+		for (Iterator<?> it = this.attributeComponents.values().iterator(); it
+				.hasNext();) {
+			AttributeComponent attrComp = (AttributeComponent) it.next();
+			attrComp.setShift(this.getLocation());
+			attrComp.adjustComponentSize();
+		}
+		
+		
 	}
 	
 	/**
@@ -291,14 +314,24 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		}
 		geAttr = (EdgeGraphicAttribute) this.graphElement
 							.getAttribute(GRAPHICS);
+		
 		String shapeClass = geAttr.getShape();
+		String curShapeNameClassName = null;
+		
 		EdgeShape newShape = null;
 		
-		try {
-			newShape = (EdgeShape) InstanceLoader.createInstance(shapeClass);
-		} catch (InstanceCreationException ie) {
-			throw new ShapeNotFoundException(ie.toString());
-		}
+		if(this.shape != null)
+			curShapeNameClassName = this.shape.getClass().getName();
+		
+		if( ! shapeClass.equals(curShapeNameClassName)) {
+			try {
+				newShape = (EdgeShape) InstanceLoader.createInstance(shapeClass);
+				this.shape = newShape;
+			} catch (InstanceCreationException ie) {
+				throw new ShapeNotFoundException(ie.toString());
+			}
+		} else
+			newShape = (EdgeShape)this.shape;
 		
 		// get graphic attribute and pass it to the shape
 		newShape.buildShape(geAttr,
@@ -306,7 +339,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 												: null),
 							(targetComp != null ? (NodeShape) this.targetComp.getShape()
 												: null));
-		this.shape = newShape;
+		
 		this.adjustComponentSize();
 		
 		for (Iterator<?> it = this.attributeComponents.values().iterator(); it

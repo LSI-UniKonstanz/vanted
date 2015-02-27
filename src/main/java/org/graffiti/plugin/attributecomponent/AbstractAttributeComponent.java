@@ -136,6 +136,14 @@ public abstract class AbstractAttributeComponent
 						throws ShapeNotFoundException;
 	
 	
+	/**
+	 * Attribute components can use this method to check if they are
+	 * or should be visible in the view.
+	 * Currently there is hard coded variables defining visibility such as
+	 * presumed size of the component and the current drawing mode
+	 * Future implementation should parameterize this. 
+	 * @return
+	 */
 	public boolean checkVisibility() {
 		/* 
 		 * only draw component, if it is graphically visible or not FAST mode enabled

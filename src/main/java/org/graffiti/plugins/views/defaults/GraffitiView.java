@@ -137,8 +137,18 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	
 	protected CoordinateSystem coordinateSystem = CoordinateSystem.XY;
 	
+	/**
+	 * components can use this variable to check, if this view is currently
+	 * finishing a transaction and thus can behave differently as ususal
+	 * Currently it is used to selectively NOT update dependent components of each node
+	 * to avoid duplicate updates
+	 */
+	public boolean isFinishingTransacation;
+	
+	
 	public GraffitiView() {
 		setLayout(null);
+		isFinishingTransacation = false;
 	}
 	
 	// ~ Methods ================================================================
@@ -1200,12 +1210,18 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
+	public synchronized void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
+		
+		isFinishingTransacation = true;
+		
 		// System.out.println("EVENT DISPATCH THREAD? "+SwingUtilities.isEventDispatchThread());
-		activeTransactions = 0;
+
 		// checkGraphSize();
 		
 		blockAdjust = true;
+		
+		Set<GraphElementComponent> setDependendComponents = new HashSet<GraphElementComponent>();
+		
 		
 		// used to prevent updating an element several times
 		// Set<Attributable> attributables = new HashSet<Attributable>();
@@ -1297,11 +1313,15 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 										 */
 									}
 									if (gec != null) {
-										if (obj instanceof Attribute)
+										if (obj instanceof Attribute) 
 											gec.attributeChanged((Attribute) obj);
 										else {
 											gec.attributeChanged(atbl.getAttribute("graphics"));
 											gec.attributeChanged(atbl.getAttribute(""));
+										}
+										
+										if(gec instanceof AbstractGraphElementComponent) {
+											setDependendComponents.addAll(((AbstractGraphElementComponent)gec).getDependentGraphElementComponents());
 										}
 									}
 								}
@@ -1328,6 +1348,25 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 							"statusbar.error.attribute.ShapeNotFoundException",
 							MessageType.ERROR);
 				}
+			}
+		}
+		
+		logger.debug("in transaction: creating new shapes for dependend components");
+		long size = setDependendComponents.size();
+		long counter = 0;
+		for(GraphElementComponent gec : setDependendComponents) {
+			
+			if(++counter % 1000 == 0) {
+				System.out.print(".");
+			}
+			
+			try {
+				if(gec instanceof EdgeComponent)
+					((EdgeComponent)gec).updateShape();
+				else
+					((AbstractGraphElementComponent)gec).createNewShape(CoordinateSystem.XY);
+			} catch (ShapeNotFoundException e) {
+				e.printStackTrace();
 			}
 		}
 		
@@ -1365,7 +1404,10 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 			status.setCurrentStatusText2(s2);
 			status.setCurrentStatusValueFine(s3);
 		}
+		
+		activeTransactions--;
 		// ToolButton.requestToolButtonFocus();
+		isFinishingTransacation = false;
 	}
 	
 	private void checkHiddenStatus(GraphElement ge) {
