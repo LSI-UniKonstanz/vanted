@@ -140,8 +140,8 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	/**
 	 * components can use this variable to check, if this view is currently
 	 * finishing a transaction and thus can behave differently as ususal
-	 * Currently it is used to selectively NOT update dependent components of each node
-	 * to avoid duplicate updates
+	 * Currently it is used to selectively NOT update dependent components on each node
+	 * 
 	 */
 	public boolean isFinishingTransacation;
 	
@@ -1213,7 +1213,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	public synchronized void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		
 		isFinishingTransacation = true;
-		
+		activeTransactions--;
 		// System.out.println("EVENT DISPATCH THREAD? "+SwingUtilities.isEventDispatchThread());
 
 		// checkGraphSize();
@@ -1405,7 +1405,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 			status.setCurrentStatusValueFine(s3);
 		}
 		
-		activeTransactions--;
+
 		// ToolButton.requestToolButtonFocus();
 		isFinishingTransacation = false;
 	}
