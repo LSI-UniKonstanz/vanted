@@ -1243,6 +1243,10 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		int idx = 0;
 		int maxIdx = changed.size();
 		boolean requestCompleteRedraw = false;
+		logger.debug("changing "+changed.size()+" objects");
+		long time1;
+		
+		time1 = System.currentTimeMillis();
 		for (Object obj : changed) {
 			if (status != null)
 				if (status.wantsToStop())
@@ -1252,6 +1256,14 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 				status.setCurrentStatusText2("Processing change " + idx + "/" + maxIdx + "...");
 			if (status != null)
 				status.setCurrentStatusValueFine(100d * idx / maxIdx);
+			
+			if(idx % 500 == 0) {
+				long period = System.currentTimeMillis() - time1;
+				System.out.println("time for changing 500 objects "+period+"ms");
+				time1 = System.currentTimeMillis();
+			}
+			
+			
 			Attributable atbl = null;
 			// System.out.println("Changed: "+obj);
 			if (obj instanceof Attributable) {

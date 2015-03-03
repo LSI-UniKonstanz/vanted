@@ -50,6 +50,8 @@ public abstract class AbstractAttributeComponent
 	/** DOCUMENT ME! */
 	protected Point shift;
 	
+	protected Point loc = new Point();
+	
 	// ~ Constructors ===========================================================
 	
 	/**
@@ -103,6 +105,12 @@ public abstract class AbstractAttributeComponent
 		this.shift = shift;
 	}
 	
+
+	
+	@Override
+	public void adjustComponentPosition() {
+	}
+
 	/**
 	 * Called when a graphics attribute of the attribute represented by this
 	 * component has changed.
