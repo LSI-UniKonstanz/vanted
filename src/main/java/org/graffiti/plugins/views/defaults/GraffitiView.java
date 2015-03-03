@@ -116,7 +116,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	protected StringBundle sBundle = StringBundle.getInstance();
 	
 	/** Count active transactions like ListenerManager does */
-	private int activeTransactions = 0;
+//	private int getActiveTransactions() = 0;
 	
 	protected int maxNodeCnt = Integer.MAX_VALUE; // 5000
 	
@@ -294,6 +294,10 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		setVisible(false);
 	}
 	
+	protected int getActiveTransactions() {
+		return getGraph().getListenerManager().getNumTransactionsActive();
+	}
+	
 	boolean redrawInProgress = false;
 	
 	protected DrawMode drawMode = DrawMode.NORMAL;
@@ -320,7 +324,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		if (repaintFast && getParent() != null)
 			getParent().setVisible(false);
 		try {
-			if (activeTransactions > 0) {
+			if (getActiveTransactions() > 0) {
 				ErrorMsg.addErrorMessage("Recreation of view requested during run of transaction.");
 				getGraph().getListenerManager().finishOpenTransactions();
 			}
@@ -788,7 +792,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 */
 	@Override
 	public void postAttributeChanged(AttributeEvent e) {
-		if (activeTransactions > 0)
+		if (getActiveTransactions() > 0)
 			return;
 		
 		Attribute attr = e.getAttribute();
@@ -866,7 +870,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 */
 	@Override
 	public void postDirectedChanged(EdgeEvent e) {
-		if (activeTransactions > 0)
+		if (getActiveTransactions() > 0)
 			return;
 		
 		Edge edge = e.getEdge();
@@ -886,7 +890,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 */
 	@Override
 	public void postEdgeAdded(GraphEvent e) {
-		if (activeTransactions > 0)
+		if (getActiveTransactions() > 0)
 			return;
 		
 		Edge edge = e.getEdge();
@@ -932,7 +936,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 */
 	@Override
 	public void postEdgeRemoved(GraphEvent e) {
-		if (activeTransactions > 0)
+		if (getActiveTransactions() > 0)
 			return;
 		
 		Edge edge = e.getEdge();
@@ -968,7 +972,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 */
 	@Override
 	public void postEdgeReversed(EdgeEvent e) {
-		if (activeTransactions > 0)
+		if (getActiveTransactions() > 0)
 			return;
 		
 		Edge edge = e.getEdge();
@@ -988,7 +992,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 */
 	@Override
 	public void postGraphCleared(GraphEvent e) {
-		if (activeTransactions > 0)
+		if (getActiveTransactions() > 0)
 			return;
 		
 		clearGraphElementComponentMap();
@@ -1006,7 +1010,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 */
 	@Override
 	public void postNodeAdded(GraphEvent e) {
-		if (activeTransactions > 0)
+		if (getActiveTransactions() > 0)
 			return;
 		
 		Node node = e.getNode();
@@ -1044,13 +1048,13 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 */
 	@Override
 	public void postNodeRemoved(GraphEvent e) {
-		if (activeTransactions > 0)
+		if (getActiveTransactions() > 0)
 			return;
 		
 		Node node = e.getNode();
 		
 		processNodeRemoval(node);
-		// if (activeTransactions <= 0) {
+		// if (getActiveTransactions() <= 0) {
 		// adjustPreferredSize();
 		// repaint();
 		// }
@@ -1090,7 +1094,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 */
 	@Override
 	public void postSourceNodeChanged(EdgeEvent e) {
-		if (activeTransactions > 0)
+		if (getActiveTransactions() > 0)
 			return;
 		
 		Edge edge = e.getEdge();
@@ -1113,7 +1117,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 */
 	@Override
 	public void postTargetNodeChanged(EdgeEvent e) {
-		if (activeTransactions > 0)
+		if (getActiveTransactions() > 0)
 			return;
 		
 		Edge edge = e.getEdge();
@@ -1136,7 +1140,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 */
 	@Override
 	public void preSourceNodeChanged(EdgeEvent e) {
-		if (activeTransactions > 0)
+		if (getActiveTransactions() > 0)
 			return;
 		
 		Edge edge = e.getEdge();
@@ -1154,7 +1158,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 */
 	@Override
 	public void preTargetNodeChanged(EdgeEvent e) {
-		if (activeTransactions > 0)
+		if (getActiveTransactions() > 0)
 			return;
 		
 		Edge edge = e.getEdge();
@@ -1213,7 +1217,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	public synchronized void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		
 		isFinishingTransacation = true;
-		activeTransactions--;
+//		getActiveTransactions()--;
 		// System.out.println("EVENT DISPATCH THREAD? "+SwingUtilities.isEventDispatchThread());
 
 		// checkGraphSize();
@@ -1439,7 +1443,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	@Override
 	public void transactionStarted(TransactionEvent e) {
 		super.transactionStarted(e);
-		activeTransactions++;
+//		getActiveTransactions()++;
 		if (SwingUtilities.isEventDispatchThread())
 			repaint();
 	}
