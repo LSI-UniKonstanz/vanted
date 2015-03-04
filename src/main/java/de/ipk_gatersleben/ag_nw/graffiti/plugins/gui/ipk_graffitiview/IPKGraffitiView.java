@@ -135,7 +135,7 @@ public class IPKGraffitiView
 	 */
 	@Override
 	protected void paintComponent(Graphics g) {
-		synchronized (this) {
+//		synchronized (this) {
 			
 			RepaintManager repaintManager = RepaintManager.currentManager(this);
 			repaintManager.setDoubleBufferingEnabled(true);
@@ -165,7 +165,7 @@ public class IPKGraffitiView
 			// }
 			
 			super.paintComponent(g);
-		}
+//		}
 	}
 	
 	@Override
