@@ -12,6 +12,7 @@ package de.muntjak.tinylookandfeel;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
 import javax.swing.JComponent;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.ComponentUI;

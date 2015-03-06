@@ -10,16 +10,20 @@
 
 package de.muntjak.tinylookandfeel.borders;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
 
-import javax.swing.*;
-
+import javax.swing.AbstractButton;
+import javax.swing.JButton;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.UIResource;
 
-import de.muntjak.tinylookandfeel.*;
+import de.muntjak.tinylookandfeel.Theme;
+import de.muntjak.tinylookandfeel.TinyLookAndFeel;
+import de.muntjak.tinylookandfeel.TinySpinnerButtonUI;
 import de.muntjak.tinylookandfeel.util.DrawRoutines;
 
 /**

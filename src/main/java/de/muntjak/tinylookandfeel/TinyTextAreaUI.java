@@ -10,7 +10,7 @@
 
 package de.muntjak.tinylookandfeel;
 
-import javax.swing.*;
+import javax.swing.JComponent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicTextAreaUI;
 

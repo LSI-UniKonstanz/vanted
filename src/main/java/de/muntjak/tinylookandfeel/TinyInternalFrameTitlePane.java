@@ -35,6 +35,7 @@ import javax.swing.UIManager;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
+
 import de.muntjak.tinylookandfeel.borders.TinyFrameBorder;
 
 /**

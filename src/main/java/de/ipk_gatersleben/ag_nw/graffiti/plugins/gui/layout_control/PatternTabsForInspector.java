@@ -19,7 +19,6 @@ import org.graffiti.plugin.inspector.SubtabHostTab;
 
 import de.ipk_gatersleben.ag_nw.graffiti.DBE_EditorPluginAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.data_mapping.DataMapping;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.TabBiomodels;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.ExperimentDataProcessingManager;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.PutIntoSidePanel;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.TabDBE;
@@ -28,7 +27,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.metacrop.Rim
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.metacrop.TabMetaCrop;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.network.TabNetworkAlgorithms;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.statistics.TabStatistics;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.WorkflowHelper;
 
 /**
  * DOCUMENT ME!

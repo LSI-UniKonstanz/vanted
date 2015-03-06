@@ -10,7 +10,7 @@
 
 package de.muntjak.tinylookandfeel.util;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * ColorRoutines is a collection of static utility methods related

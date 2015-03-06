@@ -14,8 +14,8 @@ import java.text.ParseException;
 
 import javax.swing.JComponent;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.JSpinner.NumberEditor;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 
 import org.graffiti.attributes.ByteAttribute;

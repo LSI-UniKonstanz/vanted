@@ -10,8 +10,12 @@
 
 package de.muntjak.tinylookandfeel;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
+import javax.swing.JComponent;
+import javax.swing.JTextField;
 import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.metal.MetalComboBoxEditor;
 

@@ -10,11 +10,13 @@
 
 package de.muntjak.tinylookandfeel.util;
 
-import java.awt.*;
-import java.io.*;
+import java.awt.Font;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Vector;
 
-import javax.swing.plaf.*;
+import javax.swing.plaf.FontUIResource;
 
 import de.muntjak.tinylookandfeel.Theme;
 
