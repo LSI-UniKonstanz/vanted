@@ -10,11 +10,9 @@
 package org.graffiti.plugins.inspectors.defaults;
 
 import java.awt.Component;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 
 import org.ErrorMsg;
@@ -24,7 +22,6 @@ import org.graffiti.plugin.editcomponent.NeedEditComponents;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.inspector.InspectorPlugin;
 import org.graffiti.plugin.inspector.InspectorTab;
-import org.graffiti.plugin.inspector.SubtabHostTab;
 import org.graffiti.plugin.view.View;
 import org.graffiti.plugin.view.ViewListener;
 import org.graffiti.selection.SelectionEvent;

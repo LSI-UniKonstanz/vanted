@@ -10,7 +10,9 @@
 
 package de.muntjak.tinylookandfeel;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.metal.MetalTreeUI;
 import javax.swing.tree.DefaultTreeCellRenderer;

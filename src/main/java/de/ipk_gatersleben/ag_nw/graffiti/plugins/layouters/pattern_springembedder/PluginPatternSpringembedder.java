@@ -9,7 +9,6 @@ import org.graffiti.options.GravistoPreferences;
 import org.graffiti.plugin.algorithm.Algorithm;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.BendsLaunchGUI;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.BringToFrontOrBackAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.BundleParallelEdges;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.DuplicateEdge;

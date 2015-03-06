@@ -10,12 +10,17 @@
 
 package de.muntjak.tinylookandfeel.util;
 
-import java.awt.*;
-import java.io.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.Icon;
 import javax.swing.plaf.ColorUIResource;
 
 import de.muntjak.tinylookandfeel.Theme;

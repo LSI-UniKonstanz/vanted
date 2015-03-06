@@ -32,7 +32,6 @@ import org.graffiti.graphics.EdgeGraphicAttribute;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.EdgeComponentInterface;
 import org.graffiti.plugin.view.EdgeShape;
-import org.graffiti.plugin.view.GraffitiViewComponent;
 import org.graffiti.plugin.view.NodeComponentInterface;
 import org.graffiti.plugin.view.NodeShape;
 import org.graffiti.plugin.view.ShapeNotFoundException;

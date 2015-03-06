@@ -9,7 +9,6 @@
 
 package org.graffiti.plugins.inspectors.defaults;
 
-import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 
 import org.graffiti.attributes.Attributable;

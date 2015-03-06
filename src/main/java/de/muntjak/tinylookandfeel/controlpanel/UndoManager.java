@@ -19,11 +19,10 @@ import javax.swing.plaf.ColorUIResource;
 import de.muntjak.tinylookandfeel.controlpanel.ControlPanel.BooleanControl;
 import de.muntjak.tinylookandfeel.controlpanel.ControlPanel.ColorizeIconCheck;
 import de.muntjak.tinylookandfeel.controlpanel.ControlPanel.HSBControl;
-import de.muntjak.tinylookandfeel.controlpanel.IntControl;
 import de.muntjak.tinylookandfeel.controlpanel.ControlPanel.SpreadControl;
-import de.muntjak.tinylookandfeel.util.SBReference;
 import de.muntjak.tinylookandfeel.util.ColoredFont;
 import de.muntjak.tinylookandfeel.util.HSBReference;
+import de.muntjak.tinylookandfeel.util.SBReference;
 
 /**
  * UndoManager

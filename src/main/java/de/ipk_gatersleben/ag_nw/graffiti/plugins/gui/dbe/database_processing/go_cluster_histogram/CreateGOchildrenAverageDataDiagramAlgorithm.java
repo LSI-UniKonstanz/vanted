@@ -16,7 +16,6 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.biopax.paxtools.model.level2.catalysis;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;

@@ -10,7 +10,9 @@
 
 package de.muntjak.tinylookandfeel.borders;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
 
 import javax.swing.JToolBar;
 import javax.swing.plaf.metal.MetalBorders.ToolBarBorder;

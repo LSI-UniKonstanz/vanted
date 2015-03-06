@@ -21,7 +21,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
@@ -33,7 +32,6 @@ import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.graphics.NodeGraphicAttribute;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiViewComponent;
-import org.graffiti.plugin.view.GraphElementComponent;
 import org.graffiti.plugin.view.NodeComponentInterface;
 import org.graffiti.plugin.view.NodeShape;
 import org.graffiti.plugin.view.ProvidesAdditonalDrawingShapes;

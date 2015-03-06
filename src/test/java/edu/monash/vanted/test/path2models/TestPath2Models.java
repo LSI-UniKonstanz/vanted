@@ -3,18 +3,12 @@
  */
 package edu.monash.vanted.test.path2models;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
 import junit.framework.TestCase;
 
 import org.junit.Test;
 
 import uk.ac.ebi.biomodels.ws.BioModelsWSClient;
 import uk.ac.ebi.biomodels.ws.BioModelsWSException;
-import uk.ac.ebi.biomodels.ws.SimpleModel;
 
 /**
  * @author matthiak

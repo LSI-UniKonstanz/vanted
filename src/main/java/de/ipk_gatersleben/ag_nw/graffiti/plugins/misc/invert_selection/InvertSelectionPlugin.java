@@ -8,11 +8,7 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection;
 
 import org.graffiti.plugin.algorithm.Algorithm;
-import org.graffiti.plugin.gui.GraffitiComponent;
 
-import vanted_feature.PluginFeatureClusterCommands;
-import vanted_feature.PluginFeatureHierarchyCommands;
-import vanted_feature.SelectAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_EditorPluginAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectEdgesAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectNodesWithExperimentalDataAlgorithm;

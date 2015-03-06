@@ -27,8 +27,6 @@ import org.graffiti.plugin.attributecomponent.AbstractAttributeComponent;
 import org.graffiti.plugin.view.CoordinateSystem;
 import org.graffiti.plugin.view.ShapeNotFoundException;
 
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.KeggHelper;
-
 public class PathwayLinkVisualizationComponent
 					extends AbstractAttributeComponent implements MouseMotionListener {
 	private static final long serialVersionUID = 1L;

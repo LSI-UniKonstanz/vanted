@@ -21,8 +21,6 @@ import org.graffiti.event.ListenerManager;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
-import org.graffiti.graph.GraphElement;
-import org.graffiti.graph.Node;
 import org.graffiti.help.HelpContext;
 import org.graffiti.managers.IOManager;
 import org.graffiti.plugin.actions.GraffitiAction;

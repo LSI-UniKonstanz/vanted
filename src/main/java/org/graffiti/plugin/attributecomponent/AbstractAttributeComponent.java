@@ -12,7 +12,6 @@
  */
 package org.graffiti.plugin.attributecomponent;
 
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 
@@ -22,7 +21,6 @@ import org.graffiti.plugin.view.CoordinateSystem;
 import org.graffiti.plugin.view.GraffitiViewComponent;
 import org.graffiti.plugin.view.GraphElementShape;
 import org.graffiti.plugin.view.ShapeNotFoundException;
-import org.graffiti.plugin.view.Zoomable;
 import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 

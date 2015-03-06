@@ -10,9 +10,18 @@
 
 package de.muntjak.tinylookandfeel.util;
 
-import java.awt.*;
-import java.awt.image.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Transparency;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.awt.image.PixelGrabber;
+
+import javax.swing.ImageIcon;
+import javax.swing.SwingConstants;
 
 import de.muntjak.tinylookandfeel.Theme;
 

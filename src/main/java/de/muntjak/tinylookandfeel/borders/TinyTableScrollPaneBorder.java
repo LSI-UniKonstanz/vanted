@@ -10,11 +10,14 @@
 
 package de.muntjak.tinylookandfeel.borders;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
 import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.UIResource;
 
-import de.muntjak.tinylookandfeel.*;
+import de.muntjak.tinylookandfeel.Theme;
 
 /**
  * TinyTableScrollPaneBorder

@@ -27,8 +27,8 @@ import org.sbml.jsbml.SimpleSpeciesReference;
 import org.sbml.jsbml.SpeciesReference;
 import org.sbml.jsbml.ext.layout.BoundingBox;
 import org.sbml.jsbml.ext.layout.Dimensions;
-import org.sbml.jsbml.ext.layout.LayoutModelPlugin;
 import org.sbml.jsbml.ext.layout.Layout;
+import org.sbml.jsbml.ext.layout.LayoutModelPlugin;
 import org.sbml.jsbml.ext.layout.Point;
 import org.sbml.jsbml.ext.layout.ReactionGlyph;
 

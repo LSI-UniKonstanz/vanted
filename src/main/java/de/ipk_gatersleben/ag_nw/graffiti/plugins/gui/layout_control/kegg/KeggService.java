@@ -51,7 +51,6 @@ import org.jdom.input.SAXBuilder;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelperBio;
-import de.ipk_gatersleben.ag_nw.graffiti.KeggSoapAndPathwayService;
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 //import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundEntry;

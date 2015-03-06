@@ -14,7 +14,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go_
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go_cluster_histogram.ProcessHierarchynodesDepOnLeafNodes;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go_cluster_histogram.PruneTreeAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.kegg_reaction.CreateKeggReactionNetworkAlgorithm;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.hierarchy.HierarchyAlgorithms;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.hierarchy.HierarchyWizard;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.CreateHierarchyTree;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.hierarchy.HideOrShowChildNodes;

@@ -3,7 +3,6 @@
  *******************************************************************************/
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml;
 
-import org.apache.log4j.Logger;
 import org.graffiti.plugin.io.InputSerializer;
 import org.graffiti.plugin.io.OutputSerializer;
 

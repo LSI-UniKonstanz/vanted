@@ -10,12 +10,17 @@
 
 package de.muntjak.tinylookandfeel;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-import javax.swing.*;
+import javax.swing.SwingConstants;
 import javax.swing.plaf.basic.BasicArrowButton;
+
 import de.muntjak.tinylookandfeel.util.ColorRoutines;
 
 /**

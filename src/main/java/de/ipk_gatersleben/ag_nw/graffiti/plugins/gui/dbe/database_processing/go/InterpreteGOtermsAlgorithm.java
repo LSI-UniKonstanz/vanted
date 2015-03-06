@@ -36,8 +36,6 @@ import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeEntry;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.RemoveSelectedNodesPreserveEdgesAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;

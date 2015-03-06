@@ -26,7 +26,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import javax.swing.BorderFactory;

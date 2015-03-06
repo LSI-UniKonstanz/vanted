@@ -10,11 +10,15 @@
 
 package de.muntjak.tinylookandfeel.borders;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.HashMap;
 
-import javax.swing.*;
+import javax.swing.JInternalFrame;
 import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.UIResource;
 

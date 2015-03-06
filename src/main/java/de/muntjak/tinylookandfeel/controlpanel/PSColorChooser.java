@@ -10,15 +10,39 @@
 
 package de.muntjak.tinylookandfeel.controlpanel;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.image.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Toolkit;
+import java.awt.Transparency;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.image.BufferedImage;
+import java.util.Vector;
 
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
 
-import de.muntjak.tinylookandfeel.*;
+import de.muntjak.tinylookandfeel.Theme;
 import de.muntjak.tinylookandfeel.util.ColorRoutines;
 
 /**

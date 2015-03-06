@@ -7,7 +7,6 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,12 +15,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.AttributeHelper;
 import org.ErrorMsg;
 import org.FeatureSet;
 import org.OpenFileDialogService;
 import org.ReleaseInfo;
-import org.StringManipulationTools;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Edge;
@@ -34,8 +31,6 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeEntry;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.SubstanceInterface;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.Experiment2GraphHelper;

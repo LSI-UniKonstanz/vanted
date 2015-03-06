@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.Map.Entry;
 
 import org.ErrorMsg;
@@ -15,7 +14,6 @@ import org.graffiti.managers.pluginmgr.PluginEntry;
 import org.graffiti.plugin.EditorPlugin;
 import org.graffiti.plugin.GenericPlugin;
 import org.graffiti.plugin.algorithm.Algorithm;
-import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.ProvidesDirectMouseClickContextMenu;
 import org.graffiti.plugin.algorithm.ProvidesEdgeContextMenu;
 import org.graffiti.plugin.algorithm.ProvidesGeneralContextMenu;

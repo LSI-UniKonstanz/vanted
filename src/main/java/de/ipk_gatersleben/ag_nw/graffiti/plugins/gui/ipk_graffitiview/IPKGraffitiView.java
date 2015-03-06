@@ -21,7 +21,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -31,9 +30,7 @@ import java.util.Map;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.RepaintManager;
-import javax.swing.SwingUtilities;
 
 import org.AttributeHelper;
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
@@ -51,13 +48,11 @@ import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.options.OptionPane;
 import org.graffiti.plugin.view.GraphElementComponent;
-import org.graffiti.plugins.modes.defaults.MegaTools;
 import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.plugins.views.defaults.NodeComponent;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.ClusterColorAttribute;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.DefaultContextMenuManager;
 
 /**
  * An implementation of <code>org.graffiti.plugin.view.View2D</code>, that

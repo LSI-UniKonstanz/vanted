@@ -9,10 +9,8 @@
 
 package org.graffiti.plugins.inspectors.defaults;
 
-import java.awt.event.ComponentEvent;
 import java.util.Collection;
 
-import org.graffiti.editor.MainFrame;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.selection.SelectionEvent;
 import org.graffiti.session.EditorSession;
