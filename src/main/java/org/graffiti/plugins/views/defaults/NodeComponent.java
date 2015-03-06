@@ -21,6 +21,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
@@ -32,6 +33,7 @@ import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.graphics.NodeGraphicAttribute;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiViewComponent;
+import org.graffiti.plugin.view.GraphElementComponent;
 import org.graffiti.plugin.view.NodeComponentInterface;
 import org.graffiti.plugin.view.NodeShape;
 import org.graffiti.plugin.view.ProvidesAdditonalDrawingShapes;
@@ -137,7 +139,22 @@ public class NodeComponent
 				attrComp.setGraphElementShape(shape);
 				attrComp.attributeChanged(attr);
 			}
-			updateRelatedEdgeComponents();
+
+			/* only update dependend component if we're not finishing a transaction
+			 * Because during a transaction it happens, that each node will update
+			 * its dep. components, which can easily result in multiple recreation
+			 * of dep. components (like edges). This slows transaction very much down.
+			 * 
+			 *  This new approach goes that the View will collect all depenend components
+			 *  once and update them in one go.
+			 */
+			if(getParent() != null && getParent() instanceof GraffitiView) {
+				if( ! ((GraffitiView)getParent()).isFinishingTransacation)
+					updateRelatedEdgeComponents();
+					
+			} else {
+				updateRelatedEdgeComponents();
+			}
 		}
 	}
 	
@@ -322,6 +339,7 @@ public class NodeComponent
 	 *            DOCUMENT ME!
 	 */
 	protected void updateRelatedEdgeComponents() {
+
 		synchronized (dependentComponents) {
 			for (Iterator<?> it = dependentComponents.iterator(); it.hasNext();) {
 				EdgeComponent ec = null;
@@ -336,8 +354,10 @@ public class NodeComponent
 				}
 			}
 		}
+		
 	}
 	
+
 	@Override
 	public String getToolTipText() {
 		try {

@@ -50,6 +50,8 @@ public abstract class AbstractAttributeComponent
 	/** DOCUMENT ME! */
 	protected Point shift;
 	
+	protected Point loc = new Point();
+	
 	// ~ Constructors ===========================================================
 	
 	/**
@@ -103,6 +105,12 @@ public abstract class AbstractAttributeComponent
 		this.shift = shift;
 	}
 	
+
+	
+	@Override
+	public void adjustComponentPosition() {
+	}
+
 	/**
 	 * Called when a graphics attribute of the attribute represented by this
 	 * component has changed.
@@ -136,6 +144,14 @@ public abstract class AbstractAttributeComponent
 						throws ShapeNotFoundException;
 	
 	
+	/**
+	 * Attribute components can use this method to check if they are
+	 * or should be visible in the view.
+	 * Currently there is hard coded variables defining visibility such as
+	 * presumed size of the component and the current drawing mode
+	 * Future implementation should parameterize this. 
+	 * @return
+	 */
 	public boolean checkVisibility() {
 		/* 
 		 * only draw component, if it is graphically visible or not FAST mode enabled
