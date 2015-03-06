@@ -24,7 +24,6 @@ c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\editing_tools\url_attribute_context_commands\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\enhanced_attribute_editors\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\fast_view\plugin.xml
-c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\info_dialog\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\info_dialog_cluster_analysis\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\info_dialog_dbe\plugin.xml
 c:\Users\matthiak\Projects\Vanted\workspace-mergedvantedv3\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\gui\ipk_graffitiview\plugin.xml
