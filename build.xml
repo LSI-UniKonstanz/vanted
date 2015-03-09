@@ -120,9 +120,11 @@
 				<attribute name="Permissions" value="all-permissions" />
 			</manifest>
 			<zipfileset
+				encoding="utf-8"
 				excludes="META-INF/*.MF META-INF/*.SF META-INF/*.DSA META-INF/*.RSA"
 				src="${jar.dest.path}/vanted-core-ver${vanted.version.number}-build-${build.date}-${build.number}.jar" />
 			<zipfileset
+			    encoding="utf-8"
 				excludes="META-INF/*.MF META-INF/*.SF META-INF/*.DSA META-INF/*.RSA"
 				src="${jar.dest.path}/dependencies-all.jar" />
 		</jar>
