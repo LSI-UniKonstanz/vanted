@@ -947,6 +947,14 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	
 	protected void processEdgeRemoval(Edge edge) {
 		EdgeComponent ec = (EdgeComponent) getGraphElementComponent(edge);
+		
+		NodeComponent dependentNode;
+		dependentNode = (NodeComponent)getGraphElementComponent(edge.getSource());
+		if(dependentNode != null)
+			dependentNode.removeDependentComponent(ec);
+		dependentNode = (NodeComponent)getGraphElementComponent(edge.getTarget());
+		if(dependentNode != null)
+			dependentNode.removeDependentComponent(ec);
 		removeGraphElementComponent(edge);
 		if (ec != null) {
 			for (Iterator<?> it = ec.getAttributeComponentIterator(); it.hasNext();) {
@@ -1367,7 +1375,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 			}
 		}
 		
-		logger.debug("in transaction: creating new shapes for dependend components");
+		logger.debug("in transaction: updating "+setDependendComponents.size()+" dependend components");
 		long size = setDependendComponents.size();
 		long counter = 0;
 		for(GraphElementComponent gec : setDependendComponents) {
