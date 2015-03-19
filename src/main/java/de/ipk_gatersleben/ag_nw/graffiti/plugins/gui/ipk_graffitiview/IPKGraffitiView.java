@@ -52,7 +52,6 @@ import org.graffiti.graph.Node;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.OptionPane;
 import org.graffiti.options.PreferencesInterface;
-import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.GraphElementComponent;
@@ -88,7 +87,7 @@ public class IPKGraffitiView
 	
 	MouseEvent me;
 
-//	Preferences preferences = PreferenceManager.getPreferenceForClass(IPKGraffitiView.class);
+	Preferences preferences;
 	
 	public IPKGraffitiView() {
 		super();
@@ -104,8 +103,19 @@ public class IPKGraffitiView
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
 		arrayList.add(new IntegerParameter(100, "maxnodes", "Maximum Nodes until antialiasing is turned off"));
+		arrayList.add(new IntegerParameter(50, "maxedges", "Maximum Edges until antialiasing is turned off"));
 		return arrayList;
 
+	}
+
+	
+
+
+	@Override
+	public Preferences getPreferences() {
+		if(preferences == null)
+			preferences = PreferenceManager.getPreferenceForClass(IPKGraffitiView.class);
+		return preferences;
 	}
 
 
@@ -158,11 +168,12 @@ public class IPKGraffitiView
 			// useAntialiasing = true;
 			// if (useAntialiasing) {
 			
-			int maxNodes = 1000;//preferences.getInt("maxnodes", 1000);
-			
+			int maxNodes = getPreferences().getInt("maxnodes", 1000);
+			int maxEdges = getPreferences().getInt("maxedges", 300);
+			logger.debug("maxnodes: "+maxNodes);
 			if(drawMode == DrawMode.NORMAL 
 					&& getGraph().getNumberOfNodes() < maxNodes
-					&& getGraph().getNumberOfEdges() < 300) {
+					&& getGraph().getNumberOfEdges() < maxEdges) {
 				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 									RenderingHints.VALUE_ANTIALIAS_ON);
 				// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,

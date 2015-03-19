@@ -3,6 +3,7 @@ package org.graffiti.managers;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ import org.graffiti.plugin.parameter.Parameter;
 public class PreferenceManager 
 implements PluginManagerListener
 {
+	private static final String SETTINGSFILENAME = "settings.xml";
+
 	static Logger logger = Logger.getLogger(PreferenceManager.class);
 	
 	/**
@@ -141,7 +144,7 @@ implements PluginManagerListener
 		 * default parameters
 		 */
 		try {
-			if( ! Preferences.userRoot().nodeExists(clazz.getName().replace(".", "/") ) ) {
+			if( !  Preferences.userRoot().nodeExists(clazz.getName().replace(".", "/") ) ) {
 				Preferences algoDefaultPrefs = getPreferenceForClass(clazz);
 				for(Parameter defaultParameter :defaultPreferences) {
 					
@@ -167,4 +170,30 @@ implements PluginManagerListener
 		return Preferences.userRoot().node(pathName);
 	}
 	
+	/**
+	 * This method should be used when getting Preferences for a specific category for
+	 * a class/object. This can be used to structure paramters in categories
+	 */
+	public static Preferences getPreferenceCategoryForClass(Class<?> clazz, String category) {
+		
+		String pathName = clazz.getName().replace(".", "/");
+		return Preferences.userRoot().node(pathName+"/"+category);
+	}
+	
+
+	
+	public static void storePreferences() {
+		try {
+			Preferences.userRoot().exportSubtree(new FileOutputStream(new File(ReleaseInfo.getAppFolder()+"/"+SETTINGSFILENAME)));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BackingStoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

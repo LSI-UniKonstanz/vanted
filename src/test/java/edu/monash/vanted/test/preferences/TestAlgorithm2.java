@@ -18,6 +18,8 @@ import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffitiView;
+
 public class TestAlgorithm2 implements Algorithm, PreferencesInterface{
 
 	static {
@@ -25,7 +27,7 @@ public class TestAlgorithm2 implements Algorithm, PreferencesInterface{
 		
 	}
 	
-	Preferences prefs = PreferenceManager.getPreferenceForClass(TestAlgorithm2.class);
+	Preferences preferences;
 	
 	public TestAlgorithm2() {
 		
@@ -42,6 +44,12 @@ public class TestAlgorithm2 implements Algorithm, PreferencesInterface{
 
 
 
+	@Override
+	public Preferences getPreferences() {
+		if(preferences == null)
+			preferences = PreferenceManager.getPreferenceForClass(IPKGraffitiView.class);
+		return preferences;
+	}
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
@@ -75,7 +83,7 @@ public class TestAlgorithm2 implements Algorithm, PreferencesInterface{
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
-		System.out.println("algo exec: prefs int: "+prefs.getInt("TestAlgo-speed", -1));
+		System.out.println("algo exec: prefs int: "+getPreferences().getInt("TestAlgo-speed", -1));
 	}
 
 	@Override

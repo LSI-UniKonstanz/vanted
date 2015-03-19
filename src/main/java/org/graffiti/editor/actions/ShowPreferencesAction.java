@@ -42,6 +42,7 @@ import org.ReleaseInfo;
 import org.SettingsHelperDefaultIsFalse;
 import org.SettingsHelperDefaultIsTrue;
 import org.graffiti.editor.MainFrame;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.managers.pluginmgr.PluginEntry;
 import org.graffiti.options.PreferencePanel;
 import org.graffiti.plugin.GenericPluginAdapter;
@@ -296,6 +297,15 @@ extends GraffitiAction
 					});
 					res.add(btOptionsDialog, "1,13");
 					
+					JButton btSavePreferences = new JButton("Safe Preferences");
+					btSavePreferences.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							PreferenceManager.storePreferences();
+						}
+					});
+					res.add(btSavePreferences, "1,15");
 					// final JLabel memLabel = GravistoService.getMemoryInfoLabel(false);
 					// res.add(memLabel, "1,13");
 					return res;

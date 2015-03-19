@@ -23,6 +23,7 @@ import javax.swing.UIManager;
 import org.ReleaseInfo;
 import org.graffiti.attributes.AttributeTypesManager;
 import org.graffiti.core.StringBundle;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.managers.pluginmgr.DefaultPluginManager;
 import org.graffiti.managers.pluginmgr.PluginManager;
 import org.graffiti.managers.pluginmgr.PluginManagerException;
@@ -50,9 +51,9 @@ public class GraffitiEditor {
 	/** The editor's plugin manager. */
 	private PluginManager pluginManager;
 	
-	/** The preferences of the editor. */
-	private GravistoPreferences prefs;
-	
+//	/** The preferences of the editor. */
+//	private Preferences prefs;
+//	
 	// ~ Constructors ===========================================================
 	
 	/**
@@ -64,10 +65,11 @@ public class GraffitiEditor {
 		splashScreen.setVisible(true);
 		
 		// initialize the editor's prefs.
-		prefs = GravistoPreferences.userNodeForPackage(GraffitiEditor.class);
+//		prefs = Preferences.userNodeForPackage(GraffitiEditor.class);
+		
 		
 		// create an instance of the plugin manager.
-		pluginManager = new DefaultPluginManager(prefs.node("pluginmgr"));
+		pluginManager = new DefaultPluginManager(PreferenceManager.getPreferenceCategoryForClass(GraffitiEditor.class, "pluginmgr"));
 		
 		// create an instance of the attribute types manager ...
 		attributeTypesManager = new AttributeTypesManager();
@@ -76,7 +78,7 @@ public class GraffitiEditor {
 		pluginManager.addPluginManagerListener(attributeTypesManager);
 		
 		// construct and open the editor's main frame
-		mainFrame = new MainFrame(pluginManager, prefs.node("ui"));
+		mainFrame = new MainFrame(pluginManager, PreferenceManager.getPreferenceCategoryForClass(GraffitiEditor.class, "ui"));
 		
 		try {
 			pluginManager.loadStartupPlugins(splashScreen);

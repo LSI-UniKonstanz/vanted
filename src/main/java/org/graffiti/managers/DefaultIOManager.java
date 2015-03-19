@@ -114,7 +114,13 @@ public class DefaultIOManager implements IOManager {
 		outputSerializer = new ArrayList<OutputSerializer>();
 		listeners = new LinkedList<IOManagerListener>();
 		try {
-			fc = new JFileChooser();
+			/*
+			 * there might be a problem, when starting vanted, because if network drives are mapped
+			 * (on windows) but the server is not reachable, the JFileChooser constructor stops
+			 * This also means Vanted doesn't boot up.. 
+			 * To prevent this, a getter method was implemented so that the startup is garuanteed
+			 */
+//			fc = new JFileChooser();
 //			System.out.println("created filechooser");
 		} catch (AccessControlException ace) {
 			// ErrorMsg.addErrorMessage(ace);

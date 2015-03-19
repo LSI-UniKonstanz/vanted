@@ -16,7 +16,6 @@ import org.graffiti.attributes.AttributeManager;
 import org.graffiti.attributes.BooleanAttribute;
 import org.graffiti.core.ImageBundle;
 import org.graffiti.editor.actions.PasteAction;
-import org.graffiti.options.GravistoPreferences;
 import org.graffiti.plugin.EditorPluginAdapter;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.gui.ToolButton;
@@ -98,7 +97,7 @@ public class StandardTools
 	 * @see org.graffiti.plugin.GenericPlugin#configure(Preferences)
 	 */
 	@Override
-	public void configure(GravistoPreferences prefs) {
+	public void configure(Preferences prefs) {
 		super.configure(prefs);
 		megaCreate.setPrefs(this.prefs.node("megaCreateTool"));
 		megaMove.setPrefs(this.prefs.node("megaMoveTool"));

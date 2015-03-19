@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.prefs.Preferences;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -22,13 +23,13 @@ import org.ReleaseInfo;
 import org.graffiti.attributes.AttributeTypesManager;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.SplashScreenInterface;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.managers.pluginmgr.DefaultPluginEntry;
 import org.graffiti.managers.pluginmgr.DefaultPluginManager;
 import org.graffiti.managers.pluginmgr.PluginDescription;
 import org.graffiti.managers.pluginmgr.PluginEntry;
 import org.graffiti.managers.pluginmgr.PluginManager;
 import org.graffiti.managers.pluginmgr.PluginManagerException;
-import org.graffiti.options.GravistoPreferences;
 import org.graffiti.util.PluginHelper;
 import org.graffiti.util.ProgressViewer;
 
@@ -68,8 +69,7 @@ public class ClusterAnalysisMain {
 							DBEgravistoHelper.CLUSTER_ANALYSIS_VERSION, "");
 		splashScreen.setVisible(true);
 		
-		GravistoPreferences prefs = GravistoPreferences
-							.userNodeForPackage(ClusterAnalysisMain.class);
+		Preferences prefs = PreferenceManager.getPreferenceForClass(ClusterAnalysisMain.class);
 		pluginManager = new DefaultPluginManager(prefs);
 		
 		// create an instance of the attribute types manager ...
@@ -79,7 +79,7 @@ public class ClusterAnalysisMain {
 		pluginManager.addPluginManagerListener(attributeTypesManager);
 		
 		// construct and open the editor's main frame
-		GravistoPreferences uiPrefs = prefs.node("ui");
+		Preferences uiPrefs = PreferenceManager.getPreferenceCategoryForClass(ClusterAnalysisMain.class, "ui");
 		uiPrefs.put("showPluginManagerMenuOptions", "false");
 		uiPrefs.put("showPluginMenu", "false");
 		JPanel statusPanel = new JPanel();

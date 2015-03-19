@@ -158,7 +158,6 @@ import org.graffiti.managers.pluginmgr.PluginEntry;
 import org.graffiti.managers.pluginmgr.PluginManager;
 import org.graffiti.managers.pluginmgr.PluginManagerException;
 import org.graffiti.managers.pluginmgr.PluginManagerListener;
-import org.graffiti.options.GravistoPreferences;
 import org.graffiti.plugin.EditorPlugin;
 import org.graffiti.plugin.GenericPlugin;
 import org.graffiti.plugin.actions.GraffitiAction;
@@ -252,7 +251,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	 * The preferences of the editor's main frame. (e.g.: position and size of
 	 * the main frame.
 	 */
-	protected GravistoPreferences uiPrefs;
+	protected Preferences uiPrefs;
 	
 	/** The current active session. */
 	EditorSession activeEditorSession;
@@ -466,7 +465,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	 * @param prefs
 	 *           DOCUMENT ME!
 	 */
-	public MainFrame(PluginManager pluginmgr, GravistoPreferences prefs) {
+	public MainFrame(PluginManager pluginmgr, Preferences prefs) {
 		this(pluginmgr, prefs, null, false);
 	}
 	
@@ -478,7 +477,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	 * @param prefs
 	 *           DOCUMENT ME!
 	 */
-	public MainFrame(PluginManager pluginmgr, GravistoPreferences prefs, JPanel progressPanel, boolean showVantedHelp) {
+	public MainFrame(PluginManager pluginmgr, Preferences prefs, JPanel progressPanel, boolean showVantedHelp) {
 		super();
 		ErrorMsg.setRethrowErrorMessages(false);
 		
@@ -497,14 +496,15 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		algorithmManager = new DefaultAlgorithmManager();
 		modeManager = new DefaultModeManager();
 		toolManager = new DefaultToolManager(modeManager);
-		logger.debug("loading iomanager");
+//		logger.debug("loading iomanager");
+		
 		ioManager = new DefaultIOManager();
-		logger.debug("iomanager loaded");
+//		logger.debug("iomanager loaded");
 		
 		attributeComponentManager = new AttributeComponentManager();
 		editComponentManager = new EditComponentManager();
 		urlAttributeActionManager = new DefaultURLattributeActionManager();
-//		preferenceManager = new PreferenceManager();
+		preferenceManager = new PreferenceManager();
 		
 		
 		pluginmgr.addPluginManagerListener(this);
@@ -516,7 +516,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		pluginmgr.addPluginManagerListener(attributeComponentManager);
 		pluginmgr.addPluginManagerListener(editComponentManager);
 		pluginmgr.addPluginManagerListener(urlAttributeActionManager);
-//		pluginmgr.addPluginManagerListener(preferenceManager);
+		pluginmgr.addPluginManagerListener(preferenceManager);
 		
 		ioManager.addListener(this);
 		viewManager.addListener(this);
