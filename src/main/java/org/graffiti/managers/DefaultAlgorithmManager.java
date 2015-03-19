@@ -45,9 +45,8 @@ public class DefaultAlgorithmManager
 	/*
 	 * @see org.graffiti.managers.AlgorithmManager#getAlgorithms()
 	 */
-	@SuppressWarnings("unchecked")
-	public List getAlgorithms() {
-		return new LinkedList(algorithms.values());
+	public List<Algorithm> getAlgorithms() {
+		return new LinkedList<Algorithm>(algorithms.values());
 	}
 	
 	/*

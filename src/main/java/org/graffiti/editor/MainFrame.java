@@ -113,6 +113,7 @@ import org.Java_1_5_compatibility;
 import org.Release;
 import org.ReleaseInfo;
 import org.StringManipulationTools;
+import org.apache.log4j.Logger;
 import org.graffiti.core.ImageBundle;
 import org.graffiti.core.StringBundle;
 import org.graffiti.editor.actions.CopyAction;
@@ -148,6 +149,7 @@ import org.graffiti.managers.EditComponentManager;
 import org.graffiti.managers.IOManager;
 import org.graffiti.managers.ModeManager;
 import org.graffiti.managers.MyInputStreamCreator;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.managers.ToolManager;
 import org.graffiti.managers.URLattributeActionManager;
 import org.graffiti.managers.ViewManager;
@@ -209,6 +211,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 
 {
 	
+	Logger logger = Logger.getLogger(MainFrame.class);
 	/**
 	 * The only and single instance of this object
 	 */
@@ -443,6 +446,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	private RecentEntry[] recentfileslist;
 	private Component enclosingseparator;
 	private final File recentlist = new File(ReleaseInfo.getAppFolderWithFinalSep() + "recentfiles.txt");
+
+	private PreferenceManager preferenceManager;
 	
 	// private FrameTabbedPane jtp;
 	
@@ -492,10 +497,15 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		algorithmManager = new DefaultAlgorithmManager();
 		modeManager = new DefaultModeManager();
 		toolManager = new DefaultToolManager(modeManager);
+		logger.debug("loading iomanager");
 		ioManager = new DefaultIOManager();
+		logger.debug("iomanager loaded");
+		
 		attributeComponentManager = new AttributeComponentManager();
 		editComponentManager = new EditComponentManager();
 		urlAttributeActionManager = new DefaultURLattributeActionManager();
+//		preferenceManager = new PreferenceManager();
+		
 		
 		pluginmgr.addPluginManagerListener(this);
 		pluginmgr.addPluginManagerListener(viewManager);
@@ -506,6 +516,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		pluginmgr.addPluginManagerListener(attributeComponentManager);
 		pluginmgr.addPluginManagerListener(editComponentManager);
 		pluginmgr.addPluginManagerListener(urlAttributeActionManager);
+//		pluginmgr.addPluginManagerListener(preferenceManager);
 		
 		ioManager.addListener(this);
 		viewManager.addListener(this);
@@ -1164,15 +1175,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				placeViewInContainer(view, null, j);
 			
 			frame.pack();
-			
-			boolean maxx = false;
-			
-			JInternalFrame currentFrame = desktop.getSelectedFrame();
-			
-			if (!returnGraffitiFrame && (currentFrame == null || currentFrame.isMaximum())) {
-				maxx = true;
-			}
-			
+
 			GravistoService.getInstance().framesDeselect();
 			
 			if (!returnGraffitiFrame) {
@@ -1201,14 +1204,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					}
 				}
 			});
-			// anyway maximize view at beginning
-			if (false) {// maxx) {
-				try {
-					frame.setMaximum(true);
-				} catch (PropertyVetoException pve) {
-					ErrorMsg.addErrorMessage(pve);
-				}
-			}
+
 			viewFrameMapper.put(view, frame);
 			activeFrames.add(frame);
 		}
@@ -1699,10 +1695,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				showMessageDialog("No known input serializer for file extension " + ext + "!", "Error");
 			}
 			if (newGraph != null) {
-				if (false) // new method for vanted v2.1
-					newGraph.setName(url.toString());
-				else
-					newGraph.setName(fileName);
+				newGraph.setName(fileName);
 				newGraph.setModified(false);
 				if (fileTypeDescriptions != null && fileTypeDescriptions.length > 0)
 					newGraph.setFileTypeDescription(fileTypeDescriptions[0]);
@@ -3821,7 +3814,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		showMessage("Drag-Exit", MessageType.INFO);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void drop(DropTargetDropEvent e) {
 		showMessage("Drop", MessageType.INFO);
 		System.out.println("Drop");
@@ -3855,11 +3847,11 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				ErrorMsg.addErrorMessage(e1);
 			}
 		}
-		Object data = data0;
+		@SuppressWarnings("unchecked")
+		List<File> data = (List<File>)data0;
 		
 		if (data != null)
-			for (int i = 0; i < ((java.util.List) data).size(); i++) {
-				final File file = (File) ((java.util.List) data).get(i);
+			for (File file :  data) {
 				
 				if (file.isDirectory())
 					MainFrame.showMessageDialog("Drag & Drop is only supported for files, not folders!", "Error");

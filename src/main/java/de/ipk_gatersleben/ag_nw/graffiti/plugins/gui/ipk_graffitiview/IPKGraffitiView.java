@@ -25,7 +25,10 @@ import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.prefs.Preferences;
 
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -46,7 +49,12 @@ import org.graffiti.event.TransactionEvent;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.OptionPane;
+import org.graffiti.options.PreferencesInterface;
+import org.graffiti.plugin.parameter.BooleanParameter;
+import org.graffiti.plugin.parameter.IntegerParameter;
+import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.GraphElementComponent;
 import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.plugins.views.defaults.GraffitiView;
@@ -64,7 +72,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.C
  */
 public class IPKGraffitiView
 					extends GraffitiView
-					implements OptionPane, Printable, PaintStatusSupport {
+					implements OptionPane, Printable, PaintStatusSupport, PreferencesInterface {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -79,7 +87,8 @@ public class IPKGraffitiView
 	private static boolean useAntialiasing = true;
 	
 	MouseEvent me;
-	
+
+//	Preferences preferences = PreferenceManager.getPreferenceForClass(IPKGraffitiView.class);
 	
 	public IPKGraffitiView() {
 		super();
@@ -89,6 +98,18 @@ public class IPKGraffitiView
 		
 	}
 	
+	
+	
+	@Override
+	public List<Parameter> getDefaultParameters() {
+		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
+		arrayList.add(new IntegerParameter(100, "maxnodes", "Maximum Nodes until antialiasing is turned off"));
+		return arrayList;
+
+	}
+
+
+
 	@Override
 	public void setGraph(Graph g) {
 		super.setGraph(g);
@@ -137,8 +158,10 @@ public class IPKGraffitiView
 			// useAntialiasing = true;
 			// if (useAntialiasing) {
 			
+			int maxNodes = 1000;//preferences.getInt("maxnodes", 1000);
+			
 			if(drawMode == DrawMode.NORMAL 
-					&& getGraph().getNumberOfNodes() < 1000
+					&& getGraph().getNumberOfNodes() < maxNodes
 					&& getGraph().getNumberOfEdges() < 300) {
 				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 									RenderingHints.VALUE_ANTIALIAS_ON);
@@ -165,9 +188,9 @@ public class IPKGraffitiView
 	
 	@Override
 	public void paint(Graphics g) {
-		Rectangle clipBounds = g.getClipBounds();
+//		Rectangle clipBounds = g.getClipBounds();
 		
-		long startTime=System.currentTimeMillis();
+//		long startTime=System.currentTimeMillis();
 //		logger.debug("start paint cliprect("+clipBounds.x+" : "+clipBounds.y+" | "+clipBounds.width+" : "+clipBounds.height+")");
 
 		if (!printInProgress)
@@ -179,7 +202,7 @@ public class IPKGraffitiView
 			drawBackground(g);
 		
 		super.paint(g);
-		long lastPaintTime=System.currentTimeMillis()-startTime;
+//		long lastPaintTime=System.currentTimeMillis()-startTime;
 		// if (lastPaintTime>maxDrawTime) {
 //		 logger.debug("  end paint ..Redraw time: "+lastPaintTime+"ms");
 		// }

@@ -17,14 +17,18 @@ import javax.swing.ImageIcon;
 import org.ErrorMsg;
 import org.FeatureSet;
 import org.ReleaseInfo;
+import org.graffiti.attributes.Attribute;
+import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.EditorPlugin;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.editcomponent.JComponentParameterEditor;
+import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.mode.Mode;
 import org.graffiti.plugin.parameter.JComponentParameter;
 import org.graffiti.plugin.tool.Tool;
+import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiShape;
 
 import de.ipk_gatersleben.ag_nw.graffiti.DBE_PluginAdapter;
@@ -109,7 +113,7 @@ public class DBEplugin
 		}
 	}
 	
-	public Map<?, ?> getAttributeComponents() {
+	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return null;
 	}
 	
@@ -130,7 +134,7 @@ public class DBEplugin
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Map<Class<JComponentParameter>, Class<JComponentParameterEditor>> getValueEditComponents() {
+	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}
 	

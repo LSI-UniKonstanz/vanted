@@ -17,8 +17,10 @@ import java.util.Map;
 
 import org.ErrorMsg;
 import org.graffiti.editor.MainFrame;
+import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.EditorPluginAdapter;
 import org.graffiti.plugin.editcomponent.NeedEditComponents;
+import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.inspector.InspectorPlugin;
 import org.graffiti.plugin.inspector.InspectorTab;
@@ -80,9 +82,9 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 	// ~ Methods ================================================================
 	
 	/**
-	 * @see org.graffiti.plugin.editcomponent.NeedEditComponents#setEditComponentMap(java.util.Map)
+	 * @see org.graffiti.plugin.editcomponent.NeedEditComponents#setEditComponentMap(Map)
 	 */
-	public void setEditComponentMap(Map<?, ?> ecMap) {
+	public void setEditComponentMap(Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> ecMap) {
 		this.valueEditComponents = ecMap;
 	}
 	

@@ -46,7 +46,7 @@ public class SearchAlgorithms {
 		List<Algorithm> retlist = new ArrayList<Algorithm>();
 		
 		
-		List<Algorithm> availableAlgorithms = PluginHelper.getAvailableAlgorithms();
+		List<? extends Algorithm> availableAlgorithms = PluginHelper.getAvailableAlgorithms();
 		
 		for(Algorithm curAlgorithm : availableAlgorithms) {
 			

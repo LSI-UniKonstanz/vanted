@@ -43,6 +43,7 @@ import org.SettingsHelperDefaultIsFalse;
 import org.SettingsHelperDefaultIsTrue;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.managers.pluginmgr.PluginEntry;
+import org.graffiti.options.PreferencePanel;
 import org.graffiti.plugin.GenericPluginAdapter;
 import org.graffiti.plugin.actions.GraffitiAction;
 import org.graffiti.plugins.modes.defaults.MegaMoveTool;
@@ -114,7 +115,7 @@ extends GraffitiAction
 
 					JCheckBox helpEnabler = new JCheckBox("<html><font color='gray'>Help Functions (not yet available)");
 
-					final JComboBox lookSelection = new JComboBox();
+					final JComboBox<LookAndFeelWrapper> lookSelection = new JComboBox<>();
 					lookSelection.setOpaque(false);
 					final JMButton saveLook = new JMButton("Save");
 					saveLook.setEnabled(false);
@@ -282,6 +283,19 @@ extends GraffitiAction
 					res.add(new JLabel("<html>"
 							+ "<font color='#BB22222'>After restarting the program the changed settings will be fully active."), "1,11");
 
+					JButton btOptionsDialog = new JButton("Options Dialog");
+					btOptionsDialog.addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// TODO Auto-generated method stub
+//							OptionsDialog od = new OptionsDialog(MainFrame.getInstance());
+//							od.setVisible(true);
+							new PreferencePanel();
+						}
+					});
+					res.add(btOptionsDialog, "1,13");
+					
 					// final JLabel memLabel = GravistoService.getMemoryInfoLabel(false);
 					// res.add(memLabel, "1,13");
 					return res;

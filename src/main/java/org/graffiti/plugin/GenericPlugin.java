@@ -54,7 +54,7 @@ public interface GenericPlugin {
 	 * @return the attribute types provided by this plugin.
 	 */
 //	@SuppressWarnings("unchecked")
-	public Class<Attribute>[] getAttributes();
+	public Class<? extends Attribute>[] getAttributes();
 	
 	public AttributeDescription[] getAttributeDescriptions();
 	

@@ -11,12 +11,12 @@ import java.util.HashMap;
  */
 public class GravistoPreferences {
 	
-	@SuppressWarnings("unchecked")
 	HashMap<String, Comparable> optionsAndValues;
 	String preferencesNodeName;
+
 	
-	@SuppressWarnings("unchecked")
 	public GravistoPreferences(String preferencesNodeName) {
+		
 		this.preferencesNodeName = preferencesNodeName;
 		optionsAndValues = new HashMap<String, Comparable>();
 	}

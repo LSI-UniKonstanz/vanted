@@ -6,12 +6,16 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.kegg.kegg_type;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.StringAttribute;
+import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.EditorPlugin;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.mode.Mode;
 import org.graffiti.plugin.tool.Tool;
+import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiShape;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
@@ -19,8 +23,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 public class KeggAttributePlugin
 					extends IPK_PluginAdapter
 					implements EditorPlugin {
-	private HashMap<Class<?>, Class<?>> valueEditComponents;
-	private HashMap<?, ?> attributeComponents;
+	private HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
+	private Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
 	
 	@SuppressWarnings("unchecked")
 	public KeggAttributePlugin() {
@@ -73,8 +77,8 @@ public class KeggAttributePlugin
 		for (int index = 0; index < 100; index++)
 			StringAttribute.putAttributeType("kegg_reaction_type" + index, KeggReactionTypeAttribute.class);
 		
-		valueEditComponents = new HashMap();
-		attributeComponents = new HashMap();
+		valueEditComponents = new HashMap<>();
+		attributeComponents = new HashMap<>();
 		
 		valueEditComponents.put(
 							KeggTypeAttribute.class,
@@ -100,7 +104,7 @@ public class KeggAttributePlugin
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.EditorPlugin#getAttributeComponents()
 	 */
-	public Map<?, ?> getAttributeComponents() {
+	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
 	
@@ -140,7 +144,7 @@ public class KeggAttributePlugin
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.EditorPlugin#getValueEditComponents()
 	 */
-	public Map<Class<?>, Class<?>> getValueEditComponents() {
+	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}
 }

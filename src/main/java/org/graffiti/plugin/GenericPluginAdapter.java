@@ -11,6 +11,7 @@ package org.graffiti.plugin;
 
 import javax.swing.ImageIcon;
 
+import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.AttributeDescription;
 import org.graffiti.core.ImageBundle;
 import org.graffiti.core.StringBundle;
@@ -58,8 +59,7 @@ public abstract class GenericPluginAdapter
 	protected Extension[] extensions;
 	
 	/** The attribute types the plugin provides. */
-	@SuppressWarnings("unchecked")
-	protected Class[] attributes;
+	protected Class<? extends Attribute>[] attributes;
 	
 	/** The plugin's dependencies. */
 	protected String[] dependencies;
@@ -113,8 +113,7 @@ public abstract class GenericPluginAdapter
 	 * 
 	 * @return the attribute types provided by this plugin.
 	 */
-	@SuppressWarnings("unchecked")
-	public Class[] getAttributes() {
+	public Class<? extends Attribute>[] getAttributes() {
 		return this.attributes;
 	}
 	

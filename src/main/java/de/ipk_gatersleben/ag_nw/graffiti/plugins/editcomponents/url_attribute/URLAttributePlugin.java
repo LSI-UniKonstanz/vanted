@@ -6,12 +6,16 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.url_attribute;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.StringAttribute;
+import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.EditorPlugin;
 import org.graffiti.plugin.actions.URLattributeAction;
+import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.mode.Mode;
 import org.graffiti.plugin.tool.Tool;
+import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiShape;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
@@ -19,8 +23,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 public class URLAttributePlugin
 					extends IPK_PluginAdapter
 					implements EditorPlugin {
-	private HashMap<Class<URLAttribute>, Class<URLAttributeEditor>> valueEditComponents;
-	private HashMap<?, ?> attributeComponents;
+	private HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
+	private Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
 	
 	public URLAttributePlugin() {
 		this.attributes = new Class[] { URLAttribute.class };
@@ -44,8 +48,8 @@ public class URLAttributePlugin
 		for (int index = 0; index < 100; index++)
 			StringAttribute.putAttributeType("pathway_ref_url" + index, URLAttribute.class);
 		
-		valueEditComponents = new HashMap<Class<URLAttribute>, Class<URLAttributeEditor>>();
-		attributeComponents = new HashMap<Object, Object>();
+		valueEditComponents = new HashMap<>();
+		attributeComponents = new HashMap<>();
 		
 		valueEditComponents.put(
 							URLAttribute.class,
@@ -63,7 +67,7 @@ public class URLAttributePlugin
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.EditorPlugin#getAttributeComponents()
 	 */
-	public Map<?, ?> getAttributeComponents() {
+	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
 	
@@ -103,7 +107,7 @@ public class URLAttributePlugin
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.EditorPlugin#getValueEditComponents()
 	 */
-	public Map<Class<URLAttribute>, Class<URLAttributeEditor>> getValueEditComponents() {
+	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}
 }

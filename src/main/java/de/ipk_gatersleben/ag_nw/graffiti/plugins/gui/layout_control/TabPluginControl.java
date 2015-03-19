@@ -7,7 +7,6 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import org.graffiti.editor.GravistoService;
@@ -33,7 +32,7 @@ public class TabPluginControl
 	/**
 	 * DOCUMENT ME!
 	 */
-	JComboBox pluginSelection;
+//	JComboBox pluginSelection;
 	
 	/**
 	 * DOCUMENT ME!

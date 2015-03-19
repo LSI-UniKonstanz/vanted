@@ -1215,10 +1215,10 @@ public class DefaultEditPanel extends EditPanel {
 			}
 			
 			private String[] getAttributeList() {
-				List<Class<Attribute>> r = PluginHelper.getAvailableAttributes();
+				List<Class<? extends Attribute>> r = PluginHelper.getAvailableAttributes();
 				String[] result = new String[r.size()];
 				int i = 0;
-				for (Class<Attribute> classAttribute : r) {
+				for (Class<? extends Attribute> classAttribute : r) {
 					result[i++] = classAttribute.getName();
 				}
 				return result;

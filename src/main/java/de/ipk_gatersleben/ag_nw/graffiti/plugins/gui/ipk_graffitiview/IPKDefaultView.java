@@ -68,7 +68,7 @@ public class IPKDefaultView
 							TargetDockingAttribute.class,
 		};
 		
-		valueEditComponents = new HashMap<Class<?>, Class<?>>();
+		valueEditComponents = new HashMap<>();
 		valueEditComponents.put(GradientFillAttribute.class, GradientFillAttributeEditor.class);
 		valueEditComponents.put(ThicknessAttribute.class, ThicknessAttributeEditor.class);
 		valueEditComponents.put(SourceDockingAttribute.class, DockingAttributeEditor.class);

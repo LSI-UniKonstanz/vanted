@@ -368,6 +368,7 @@ public class OptionsDialog
 		
 		addOptionPane(new OverviewOptionPane(), rootGroup);
 		
+		
 		// initialize the jEdit branch of the options tree
 		// editGroup = new OptionGroup("editor");
 		// addOptionPane(new LoadSaveOptionPane(), editGroup);
