@@ -98,6 +98,8 @@ public class RSSFeedManager implements HelperClass {
 	}
 	
 	public static RSSFeedManager getInstance() {
+		if(instance == null)
+			instance = new RSSFeedManager(5);
 		return instance;
 	}
 	

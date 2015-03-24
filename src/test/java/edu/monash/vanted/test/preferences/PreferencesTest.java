@@ -21,7 +21,7 @@ public class PreferencesTest {
 
 	@Test
 	public void testPreferenceFieldLoading() {
-		PreferenceManager preferenceManager = new PreferenceManager();
+		PreferenceManager preferenceManager = PreferenceManager.getInstance();
 		
 		GenericPlugin plugin = new TestPlugin();
 		

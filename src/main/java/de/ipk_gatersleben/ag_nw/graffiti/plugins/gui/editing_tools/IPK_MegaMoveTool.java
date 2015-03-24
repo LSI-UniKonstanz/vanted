@@ -9,6 +9,7 @@ import java.awt.Event;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
@@ -25,6 +26,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
+import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.tool.AbstractTool;
 import org.graffiti.plugin.tool.Tool;
 import org.graffiti.plugin.view.View;
@@ -65,6 +67,21 @@ public class IPK_MegaMoveTool
 		});
 	}
 	
+	
+	/**
+	 * override this method, which is already implemented in the superclass
+	 * This must be done to clear the parameter list again, because this class would have
+	 * the same parameters than the super class but they wouldn't do anything here
+	 * and confuse the user
+	 */
+	@Override
+	public List<Parameter> getDefaultParameters() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 	@Override
 	protected void postProcessVisibilityChange(
 						GraphElement sourceElementGUIinteraction) {

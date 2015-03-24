@@ -28,7 +28,9 @@ import org.apache.log4j.Logger;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.SplashScreenInterface;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
+import org.vanted.VantedPreferences;
 
 import apple.dts.samplecode.osxadapter.OSXAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
@@ -231,6 +233,8 @@ public class Main {
 	
 	public static void startVantedExt(String[] args, String[] developerAddon) {
 		System.out.println("Welcome! About to start the application...");
+		
+		PreferenceManager.getInstance().addPreferencingClass(VantedPreferences.class);
 		
 		if (SystemInfo.isMac()) {
 			try {

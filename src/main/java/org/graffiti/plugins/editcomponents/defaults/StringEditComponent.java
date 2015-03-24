@@ -50,7 +50,7 @@ public class StringEditComponent
 	
 	/** The text field containing the value of the displayable. */
 	protected JTextComponent textComp;
-	
+	protected JComponent alternateComp;
 	protected JComponent searchComponent;
 	
 	private Boolean multiline;
@@ -71,18 +71,14 @@ public class StringEditComponent
 	public StringEditComponent(Displayable disp) {
 		super(disp);
 		
+		createComponent();
+		
 		searchComponent = getSearchComponent();
 	}
 	
 	// ~ Methods ================================================================
 	
-	/**
-	 * Returns the <code>JComponent</code> of this edit component.
-	 * 
-	 * @return the <code>JComponent</code> of this edit component.
-	 */
-	public JComponent getComponent() {
-		
+	private void createComponent() {
 		if (textComp == null) {
 			// System.out.println("creating StringAttribute");
 			boolean multiRow = multiline != null && multiline.booleanValue();
@@ -103,10 +99,19 @@ public class StringEditComponent
 			textComp.setMaximumSize(new Dimension(2000, 30));
 		}
 		
+		alternateComp = TableLayout.getSplit(textComp, searchComponent, TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
+	}
+	
+	/**
+	 * Returns the <code>JComponent</code> of this edit component.
+	 * 
+	 * @return the <code>JComponent</code> of this edit component.
+	 */
+	public JComponent getComponent() {
 		if (!(getDisplayable() instanceof Attribute))
 			return textComp;
 		else
-			return TableLayout.getSplit(textComp, searchComponent, TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
+			return alternateComp;
 	}
 	
 	private JComponent getSearchComponent() {

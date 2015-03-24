@@ -44,7 +44,7 @@ import org.SettingsHelperDefaultIsTrue;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.managers.pluginmgr.PluginEntry;
-import org.graffiti.options.PreferencePanel;
+import org.graffiti.options.OptionsDialog;
 import org.graffiti.plugin.GenericPluginAdapter;
 import org.graffiti.plugin.actions.GraffitiAction;
 import org.graffiti.plugins.modes.defaults.MegaMoveTool;
@@ -89,6 +89,8 @@ extends GraffitiAction
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		new OptionsDialog(mainFrame);
+		/*
 		JDialog dialog = new JDialog(mainFrame);
 		dialog.setTitle("Vanted Preferences");
 		
@@ -99,6 +101,7 @@ extends GraffitiAction
 		dialog.pack();
 		dialog.setLocationRelativeTo(mainFrame);
 		dialog.setVisible(true);
+		*/
 	}
 
 	private JPanel getSettings() {
@@ -290,9 +293,9 @@ extends GraffitiAction
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							// TODO Auto-generated method stub
-//							OptionsDialog od = new OptionsDialog(MainFrame.getInstance());
+							OptionsDialog od = new OptionsDialog(MainFrame.getInstance());
 //							od.setVisible(true);
-							new PreferencePanel();
+//							new PreferencePanel();
 						}
 					});
 					res.add(btOptionsDialog, "1,13");

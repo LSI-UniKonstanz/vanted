@@ -95,11 +95,12 @@ public class BooleanParameter
 	 */
 	@Override
 	public void setValue(Object value) {
-		try {
+		if(value instanceof Boolean)
 			this.value = (Boolean) value;
-		} catch (Exception e) {
-			throw new IllegalArgumentException(e.getMessage());
-		}
+		else if(value instanceof String)
+			this.value = Boolean.parseBoolean(value.toString());
+		else
+			throw new IllegalArgumentException("Invalid parameter");
 	}
 	
 	/**

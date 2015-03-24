@@ -158,6 +158,7 @@ import org.graffiti.managers.pluginmgr.PluginEntry;
 import org.graffiti.managers.pluginmgr.PluginManager;
 import org.graffiti.managers.pluginmgr.PluginManagerException;
 import org.graffiti.managers.pluginmgr.PluginManagerListener;
+import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.EditorPlugin;
 import org.graffiti.plugin.GenericPlugin;
 import org.graffiti.plugin.actions.GraffitiAction;
@@ -504,7 +505,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		attributeComponentManager = new AttributeComponentManager();
 		editComponentManager = new EditComponentManager();
 		urlAttributeActionManager = new DefaultURLattributeActionManager();
-		preferenceManager = new PreferenceManager();
+		preferenceManager = PreferenceManager.getInstance();
 		
 		
 		pluginmgr.addPluginManagerListener(this);
@@ -1847,6 +1848,14 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		}
 		if (ep.getInspectorTabs() != null) {
 			for (InspectorTab it : ep.getInspectorTabs()) {
+				
+				/*
+				 * check, if the Tab has a Preference and a bool setting 'show'
+				 */
+				if(it instanceof PreferencesInterface &&
+					 ! PreferenceManager.getPreferenceForClass(it.getClass()).getBoolean(InspectorTab.PREFERENCE_TAB_SHOW, true))
+						return;
+
 				if (inspectorPlugin == null) {
 					// ErrorMsg.addErrorMessage("Inspector Plugin not available. Can't add side-panel tabs.");
 				} else {

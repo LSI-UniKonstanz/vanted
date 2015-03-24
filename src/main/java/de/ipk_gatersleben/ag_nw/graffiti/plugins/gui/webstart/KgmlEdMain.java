@@ -39,6 +39,11 @@ public class KgmlEdMain {
 	/**
 	 * Constructs a new instance of the editor.
 	 */
+	/**
+	 * @param showMainFrame
+	 * @param applicationName
+	 * @param args
+	 */
 	public KgmlEdMain(final boolean showMainFrame, String applicationName, String[] args) {
 		// URL config,
 		final ThreadSafeOptions tso = new ThreadSafeOptions();

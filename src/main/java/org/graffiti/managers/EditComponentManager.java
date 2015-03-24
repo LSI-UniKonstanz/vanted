@@ -67,22 +67,32 @@ public class EditComponentManager
 	 */
 	public ValueEditComponent getValueEditComponent(Displayable aType)
 						throws EditComponentNotFoundException {
-		if (!(valueEditComponents.containsKey(aType))) {
+		if (!(valueEditComponents.containsKey(aType.getClass()))) {
 			throw new EditComponentNotFoundException(
 								"No registered ValueEditComponent for displayable type " +
 													aType);
 		}
 		
-		Class<? extends ValueEditComponent> ac = valueEditComponents.get(aType);
+		Class<? extends ValueEditComponent> ac = valueEditComponents.get(aType.getClass());
 		
-		try {
-			ValueEditComponent component = (ValueEditComponent) InstanceLoader.createInstance(ac.getClass(),
-								null);
-			
-			return component;
-		} catch (InstanceCreationException ice) {
-			throw new EditComponentNotFoundException(ice.getMessage());
-		}
+//			ValueEditComponent component = ac.newInstance();
+			ValueEditComponent component;
+			try {
+				component = (ValueEditComponent) InstanceLoader.createInstance(ac, "org.graffiti.plugin.Displayable", aType);
+//				component = (ValueEditComponent) InstanceLoader.createInstance(ac,
+//						aType);
+				component.setDisplayable(aType);
+				component.setEditFieldValue();
+				
+				return component;
+			} catch (InstanceCreationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		throw new EditComponentNotFoundException(
+				"No registered ValueEditComponent for displayable type " +
+						aType);
 	}
 	
 	/**

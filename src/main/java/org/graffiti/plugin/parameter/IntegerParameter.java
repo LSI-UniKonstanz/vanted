@@ -148,11 +148,16 @@ public class IntegerParameter
 	 */
 	@Override
 	public void setValue(Object value) {
-		try {
+		if(value instanceof Integer)
 			this.value = (Integer) value;
-		} catch (Exception e) {
-			throw new IllegalArgumentException(e.getMessage());
-		}
+		else if(value instanceof String)
+			try {
+				this.value = Integer.parseInt((String)value);
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				throw new IllegalArgumentException(e.getMessage());
+//				e.printStackTrace();
+			}
 	}
 	
 	/**

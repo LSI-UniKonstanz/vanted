@@ -29,6 +29,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.prefs.Preferences;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -58,7 +59,10 @@ import org.graffiti.graph.Node;
 import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.graphics.DimensionAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
+import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.gui.ToolButton;
+import org.graffiti.plugin.parameter.BooleanParameter;
+import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.CoordinateSystem;
 import org.graffiti.plugin.view.EdgeComponentInterface;
 import org.graffiti.plugin.view.EdgeShape;
@@ -79,12 +83,17 @@ import org.graffiti.undo.GraphElementsDeletionEdit;
  * @author Holleis, Klukas
  * @version $Revision: 1.67.6.2 $
  */
-public class MegaMoveTool extends MegaTools {
+public class MegaMoveTool extends MegaTools implements PreferencesInterface{
+//	private static final String PREFERENCE_USE_MOUSE_WHEEL_TO_ZOOM = "Use Mouse-wheel To Zoom";
+
+	private static final String PREFERENCE_SNAP_TO_GRID = "Snap to Grid";
+
 	// ~ Static fields/initializers =============================================
 	private static String rkey = "selrect";
 
 	static final Logger logger = Logger.getLogger(MegaMoveTool.class);
 	// ~ Instance fields ========================================================
+	
 	
 	/**
 	 * Specifies if - when there is a selection - graphelements are highlighted
@@ -160,6 +169,14 @@ public class MegaMoveTool extends MegaTools {
 	private CoordinateAttribute lastBendAdded;
 	private double lastBendAddedInitX, lastBendAddedInitY;
 	private long lastBendAddedTime = 0;
+	
+	
+	public static int gridMovement = 10;
+	public static int gridResizeSmallNodes = 2;
+	public static int gridResizeNormalNodes = 5;
+	public static int gridResizeLargeNodes = 10;
+	public static boolean gridEnabled = true;
+	
 	
 	private static MegaMoveTool thisInstance;
 	
@@ -275,6 +292,24 @@ public class MegaMoveTool extends MegaTools {
 		};
 	}
 	
+	
+	
+	@Override
+	public List<Parameter> getDefaultParameters() {
+		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
+		arrayList.add(new BooleanParameter(true, PREFERENCE_SNAP_TO_GRID, "Enable/Disable this option let nodes snap to the grid"));
+		return arrayList;
+	}
+
+
+
+	@Override
+	public void updatePreferences(Preferences preferences) {
+		gridEnabled = preferences.getBoolean(PREFERENCE_SNAP_TO_GRID, true);
+	}
+
+
+
 	private void processMovement(int diffX, int diffY, ActionEvent actionEvent) {
 		System.out.print(".");
 		int xn = diffX;
@@ -1077,14 +1112,12 @@ public class MegaMoveTool extends MegaTools {
 		}
 	}
 	
-	public static int gridMovement = 10;
-	public static int gridResizeSmallNodes = 2;
-	public static int gridResizeNormalNodes = 5;
-	public static int gridResizeLargeNodes = 10;
-	public static boolean gridEnabled = true;
+
 	
 	public static int getGrid(double sz) {
 		if (!gridEnabled)
+//		boolean snap = PreferenceManager.getPreferenceForClass(MegaMoveTool.class).getBoolean(PREFERENCE_SNAP_TO_GRID, true);
+//		if(!snap)
 			return 0;
 		if (sz < 0)
 			return gridMovement;

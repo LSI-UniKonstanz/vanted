@@ -1,20 +1,21 @@
 package org.graffiti.options;
 
-import java.util.HashMap;
+import info.clearthought.layout.TableLayout;
+
 import java.util.Map;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.apache.log4j.Logger;
-import org.graffiti.attributes.Attribute;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.ValueEditComponent;
-import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.util.InstanceCreationException;
 import org.graffiti.util.InstanceLoader;
 
@@ -36,17 +37,21 @@ public class PreferencePanel  extends JDialog{
 		Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> editComponents = MainFrame.getInstance().getEditComponentManager().getEditComponents();
 		Set<Class<? extends Displayable>> keySet = editComponents.keySet();
 		for(Object unknowndisplayable : keySet) {
-			/*
-			if(unknowndisplayable instanceof Displayable) {
-				Displayable displayable = (Displayable)unknowndisplayable;
-			} else {
-			}
-			*/
+			
+			Displayable displayable = null;
+				try {
+					displayable = (Displayable)InstanceLoader.createInstance((Class)unknowndisplayable);
+				} catch (InstanceCreationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
 			ValueEditComponent unknownVEC = null;
 			try {
 				Object o = editComponents.get(unknowndisplayable);
 				Class<?> c = (Class<?>)o;
 				unknownVEC = (ValueEditComponent)InstanceLoader.createInstance(c,"org.graffiti.plugin.Displayable", null);
+				unknownVEC.setDisplayable(displayable);
 			} catch (InstanceCreationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -55,7 +60,18 @@ public class PreferencePanel  extends JDialog{
 //				ValueEditComponent valueEditComponent = editComponents.get(unknowndisplayable);
 				logger.debug("displayable: " + unknowndisplayable + " , ValueEditComponent: "+unknownVEC);
 	
-				mainpanel.add(unknownVEC.getComponent());
+				try {
+					JComponent component2 = unknownVEC.getComponent();
+					
+					JComponent get3Split = TableLayout.get3Split(new JLabel(displayable.getClass().getSimpleName()), null, component2, TableLayout.PREFERRED, 5, TableLayout.FILL);
+
+					
+					if(component2 != null)
+						mainpanel.add(get3Split);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			} else {
 				logger.debug("no VEC: " + unknownVEC);
 			}

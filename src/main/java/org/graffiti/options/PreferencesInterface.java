@@ -1,13 +1,9 @@
 package org.graffiti.options;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.prefs.Preferences;
 
-import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.parameter.Parameter;
-
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffitiView;
 
 /**
  * Classes that want to provide settings that will be stored in a settings file and
@@ -33,23 +29,20 @@ public interface PreferencesInterface {
 	 * 
 	 * Entities providing preferences should add parameters to this array.
 	 */
-	public static List<Parameter> defaultPreferences = new ArrayList<>();
+//	public static List<Parameter> defaultPreferences = new ArrayList<>();
 	
 	
 	public List<Parameter> getDefaultParameters();
 	
+
+	
 	/**
-	 * a getter that needs to be implemented by the implementing class
-	 * Usually it should be the simple retrieval of the Preferences
-	 * and put the preferences in a field variable.
-	 * 
-	 * <code>
-	 * 		if(preferences == null)
-			preferences = PreferenceManager.getPreferenceForClass(IPKGraffitiView.class);
-			return preferences;
-	 * </code>
-	 * With java 8 this will be a 'default' method
-	 * @return
+	 * this method will be called, when preferences for this class has changed
+	 * and the implementing class gets the chance of setting class (static) variables
+	 * having the values of the parameters.
+	 * Setting static class variables will help increasing speed, when querying
+	 * the parameters. Direct variable access VS querying the Preferences Object for this class
+	 * @param preferences
 	 */
-	public Preferences getPreferences();
+	public void updatePreferences(Preferences preferences);
 }

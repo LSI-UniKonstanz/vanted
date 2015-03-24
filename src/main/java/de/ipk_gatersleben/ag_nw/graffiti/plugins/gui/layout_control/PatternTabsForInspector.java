@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import org.FeatureSet;
 import org.Release;
 import org.ReleaseInfo;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.inspector.InspectorTab;
 
@@ -43,21 +44,17 @@ public class PatternTabsForInspector
 		
 		// if (!ReleaseInfo.isRunningAsApplet())
 //		tablist.add(new WorkflowHelper());
-		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING)) {
-			ExperimentDataProcessingManager.addExperimentDataProcessor(new PutIntoSidePanel());
+
+		ExperimentDataProcessingManager.addExperimentDataProcessor(new PutIntoSidePanel());
 			tablist.add(new TabDBE());
-		}
-		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
 			algorithms = new Algorithm[] { new DataMapping() };
 		
 		// pathway tabs KEGG and MetaCrop
 //		Collection<InspectorTab> subtabsPathway = new ArrayList<InspectorTab>();
-		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS))
-			tablist.add(new TabKegg());
-		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.MetaCrop_ACCESS))
-			tablist.add(new TabMetaCrop());
-		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.RIMAS_ACCESS))
-			tablist.add(new RimasTab());
+		tablist.add(new TabKegg());
+		
+		tablist.add(new TabMetaCrop());
+		tablist.add(new RimasTab());
 		
 //		tablist.add(new TabBiomodels());
 		

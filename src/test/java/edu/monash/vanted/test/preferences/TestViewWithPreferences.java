@@ -32,12 +32,18 @@ implements PreferencesInterface{
 		return arrayList;
 	}
 
-
 	@Override
-	public Preferences getPreferences() {
-		if(preferences == null)
-			preferences = PreferenceManager.getPreferenceForClass(IPKGraffitiView.class);
-		return preferences;
+	public void updatePreferences(Preferences preferences) {
+		// TODO Auto-generated method stub
+		
 	}
+
+
+//	@Override
+//	public Preferences getPreferences() {
+//		if(preferences == null)
+//			preferences = PreferenceManager.getPreferenceForClass(IPKGraffitiView.class);
+//		return preferences;
+//	}
 	
 }

@@ -45,11 +45,19 @@ public class TestAlgorithm2 implements Algorithm, PreferencesInterface{
 
 
 	@Override
-	public Preferences getPreferences() {
-		if(preferences == null)
-			preferences = PreferenceManager.getPreferenceForClass(IPKGraffitiView.class);
-		return preferences;
+	public void updatePreferences(Preferences preferences) {
+		// TODO Auto-generated method stub
+		
 	}
+
+
+
+	//	@Override
+//	public Preferences getPreferences() {
+//		if(preferences == null)
+//			preferences = PreferenceManager.getPreferenceForClass(IPKGraffitiView.class);
+//		return preferences;
+//	}
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
@@ -83,7 +91,7 @@ public class TestAlgorithm2 implements Algorithm, PreferencesInterface{
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
-		System.out.println("algo exec: prefs int: "+getPreferences().getInt("TestAlgo-speed", -1));
+//		System.out.println("algo exec: prefs int: "+getPreferences().getInt("TestAlgo-speed", -1));
 	}
 
 	@Override
