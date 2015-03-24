@@ -160,7 +160,7 @@ public class InstanceLoader {
 	 * @throws InstanceCreationException
 	 *            DOCUMENT ME!
 	 */
-	public static Object createInstance(Class theClass, String paramClassname,
+	public static Object createInstance(Class<?> theClass, String paramClassname,
 						Object param)
 						throws InstanceCreationException {
 		try {

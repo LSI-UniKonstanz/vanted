@@ -1058,10 +1058,9 @@ public class GraphHelper implements HelperClass {
 		return sortedNodes;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static void selectGraphElements(Collection<GraphElement> elements) {
+	public static void selectGraphElements(Collection<? extends GraphElement> elements) {
 		try {
-			EditorSession es = findSession((Collection) elements);
+			EditorSession es = findSession(elements);
 			es.getSelectionModel().getActiveSelection().addAll(elements);
 			es.getSelectionModel().selectionChanged();
 		} catch (Exception e) {
@@ -1069,10 +1068,9 @@ public class GraphHelper implements HelperClass {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static void selectGraphElements(boolean clearBefore, Collection<GraphElement> elements) {
+	public static void selectGraphElements(boolean clearBefore, Collection<? extends GraphElement> elements) {
 		try {
-			EditorSession es = findSession((Collection) elements);
+			EditorSession es = findSession( elements);
 			if (clearBefore)
 				es.getSelectionModel().getActiveSelection().clear();
 			es.getSelectionModel().getActiveSelection().addAll(elements);
@@ -1082,7 +1080,7 @@ public class GraphHelper implements HelperClass {
 		}
 	}
 	
-	private static EditorSession findSession(Collection<Attributable> elements) {
+	private static EditorSession findSession(Collection<? extends Attributable> elements) {
 		if (elements == null || elements.size() == 0)
 			return null;
 		else {
@@ -1118,10 +1116,9 @@ public class GraphHelper implements HelperClass {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static void unselectGraphElements(Collection<GraphElement> elements) {
+	public static void unselectGraphElements(Collection<? extends GraphElement> elements) {
 		try {
-			EditorSession es = findSession((Collection) elements);
+			EditorSession es = findSession(elements);
 			es.getSelectionModel().getActiveSelection().removeAll(elements);
 			es.getSelectionModel().selectionChanged();
 		} catch (Exception e) {
@@ -1168,14 +1165,12 @@ public class GraphHelper implements HelperClass {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static void selectNodes(Collection<Node> nodes) {
-		selectGraphElements((Collection) nodes);
+		selectGraphElements(nodes);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static void selectNodes(boolean clearBefore, Collection<Node> nodes) {
-		selectGraphElements(clearBefore, (Collection) nodes);
+		selectGraphElements(clearBefore, nodes);
 	}
 	
 	public static Collection<GraphElement> getSelectedOrAllGraphElements(Graph graph) {
@@ -2102,7 +2097,6 @@ public class GraphHelper implements HelperClass {
 				newEdges.clear();
 			}
 			
-			@SuppressWarnings("unchecked")
 			@Override
 			public void redo() throws CannotRedoException {
 				Graph myGraph = null;
@@ -2144,9 +2138,9 @@ public class GraphHelper implements HelperClass {
 						}
 						newEdges.add(newEdge);
 					}
-					GraphHelper.unselectGraphElements((Collection) edges);
-					myGraph.deleteAll((Collection) edges);
-					GraphHelper.selectGraphElements((Collection) newEdges);
+					GraphHelper.unselectGraphElements(edges);
+					myGraph.deleteAll( edges);
+					GraphHelper.selectGraphElements( newEdges);
 					if (missing > 0)
 						MainFrame.showMessageDialog("<html>In the meantime " + missing
 								+ " edges have been removed from the graph.", "Processing incomplete");
@@ -2156,7 +2150,6 @@ public class GraphHelper implements HelperClass {
 				}
 			}
 			
-			@SuppressWarnings("unchecked")
 			@Override
 			public void undo() throws CannotUndoException {
 				Graph myGraph = null;
@@ -2201,10 +2194,10 @@ public class GraphHelper implements HelperClass {
 						}
 						edges.add(newEdge);
 					}
-					GraphHelper.unselectGraphElements((Collection) newEdges);
-					myGraph.deleteAll((Collection) newEdges);
+					GraphHelper.unselectGraphElements( newEdges);
+					myGraph.deleteAll( newEdges);
 					newEdges.clear();
-					GraphHelper.selectGraphElements((Collection) edges);
+					GraphHelper.selectGraphElements( edges);
 					if (missing > 0)
 						MainFrame.showMessageDialog("<html>In the meantime " + missing
 								+ " edges have been removed from the graph.", "Processing incomplete");
