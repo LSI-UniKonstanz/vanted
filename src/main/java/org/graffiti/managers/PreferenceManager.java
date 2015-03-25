@@ -48,11 +48,14 @@ implements PluginManagerListener
 		try {
 			Preferences.importPreferences(new FileInputStream(new File(ReleaseInfo.getAppFolder()+"/settings.xml")));
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			logger.debug("no preference file found "+e.getMessage());
+//			e.printStackTrace();
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+//			e.printStackTrace();
 		} catch (InvalidPreferencesFormatException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+//			e.printStackTrace();
 		}
 
 		listPreferencingObjects = new ArrayList<>();
@@ -69,6 +72,14 @@ implements PluginManagerListener
 	}
 
 
+	/**
+	 * Another way of adding custom classes that implement the PreferencesInterface
+	 * which will be added to the list of preferencing classes.
+	 * Use this method if your class is not part of a plugin which provides
+	 * new Views, Tabs, Algorithms, etc
+	 * 
+	 * @param preferencingClass
+	 */
 	public void addPreferencingClass(Class<? extends PreferencesInterface> preferencingClass)
 	{
 		logger.debug("checking general preferencing class '"+preferencingClass.getName()+"'");
@@ -84,18 +95,18 @@ implements PluginManagerListener
 		}
 	}
 
+	/**
+	 * called each time a plugin gets loaded
+	 * @param plugin
+	 * @param desc
+	 */
 	@SuppressWarnings({ "unchecked"})
 	@Override
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
 		for(Algorithm algo : plugin.getAlgorithms()) {
 			logger.debug("checking algo '"+algo.getName()+"'");
 			if(algo instanceof PreferencesInterface) {
-
-				//				logger.debug("algorithm has preferences size: " +((PreferencesInterface)algo).defaultPreferences.size());
 				checkAddAndSetClassesPreferences((PreferencesInterface)algo);
-				//				checkExistingPreferences(algo.getClass(), ((PreferencesInterface)algo).getDefaultParameters());
-
-				//				listPreferencingObjects.add((Class<? extends PreferencesInterface>)algo.getClass());
 			}
 		}
 
@@ -115,9 +126,6 @@ implements PluginManagerListener
 
 							PreferencesInterface pi = (PreferencesInterface)viewobject;
 							checkAddAndSetClassesPreferences((PreferencesInterface)viewobject);
-							//							checkExistingPreferences(forName, pi.getDefaultParameters());
-
-							//							listPreferencingObjects.add((Class<? extends PreferencesInterface>)forName);
 
 
 						} catch (InstantiationException e) {
@@ -140,9 +148,6 @@ implements PluginManagerListener
 				for(InspectorTab tab : editorPlugin.getInspectorTabs()) {
 					if(tab instanceof PreferencesInterface) {
 						checkAddAndSetClassesPreferences((PreferencesInterface)tab);
-						//						checkExistingPreferences(tab.getClass(), ((PreferencesInterface)tab).getDefaultParameters());
-
-						//						listPreferencingObjects.add((Class<? extends PreferencesInterface>)tab.getClass());
 					}
 				}
 			}
@@ -151,9 +156,6 @@ implements PluginManagerListener
 				for(Tool tool : editorPlugin.getTools()) {
 					if(tool instanceof PreferencesInterface) {
 						checkAddAndSetClassesPreferences((PreferencesInterface)tool);
-						//						checkExistingPreferences(tool.getClass(), ((PreferencesInterface)tool).getDefaultParameters());
-
-						//						listPreferencingObjects.add((Class<? extends PreferencesInterface>)tool.getClass());
 					}
 				}
 			}
@@ -161,7 +163,10 @@ implements PluginManagerListener
 	}
 	/**
 	 * if no preferences found, create a new preferences object from
-	 * default parameters
+	 * default parameters.
+	 * if parameters in already present preferences that are not anymore
+	 * part of the given preferences, the parameters in the preferences
+	 * gets deleted
 	 */
 	private Preferences checkExistingPreferences(Class<?> clazz, List<? extends Parameter> defaultPreferences) {
 
@@ -192,6 +197,13 @@ implements PluginManagerListener
 		return defaultPrefs;
 	}
 
+	/**
+	 * This method will do several things, that are repeatedly done to
+	 * get possibly existing Preferences and add the class to the list of
+	 * Preferencing Classes and also call the implementing object for first-time
+	 * setup during startup of the program
+	 * @param prefInterface
+	 */
 	private void checkAddAndSetClassesPreferences(PreferencesInterface prefInterface) {
 		Preferences defaultPrefs = checkExistingPreferences(prefInterface.getClass(), ((PreferencesInterface)prefInterface).getDefaultParameters());
 
@@ -224,6 +236,18 @@ implements PluginManagerListener
 		return Preferences.userRoot().node(pathName+"/"+category);
 	}
 
+	/**
+	 * This method will instantiate an Object from the given class and
+	 * call the updatePreferences method, which must be implemented by any 
+	 * PreferencesInterface implementing class.
+	 * The PreferencesInterface-object should then store the given preferences
+	 * in static variables, since those parameters are with regard to the class
+	 * The static variables will give fast access VS querying the Preferences
+	 * each time.
+	 *
+	 * @param clazz
+	 * @param preferences
+	 */
 	public static void updatePreferencesForClass(Class<? extends PreferencesInterface> clazz, Preferences preferences) {
 		try {
 			((PreferencesInterface)clazz.newInstance()).updatePreferences(preferences);
@@ -236,7 +260,9 @@ implements PluginManagerListener
 		}
 	}
 
-
+	/**
+	 * Stores the preferences in 'settings.xml' in the Vanted program directory
+	 */
 	public static void storePreferences() {
 		try {
 			Preferences.userRoot().exportSubtree(new FileOutputStream(new File(ReleaseInfo.getAppFolder()+"/"+SETTINGSFILENAME)));
