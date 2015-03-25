@@ -150,7 +150,7 @@ public class PathwayLinkVisualizationComponent
 	
 	@Override
 	public void paint(Graphics g) {
-		if(!checkVisibility())
+		if(!checkVisibility(10))
 			return;
 		if (getMode() == 0)
 			return;
