@@ -180,7 +180,7 @@ public class CompoundImageAttributeComponent extends AbstractAttributeComponent
 	
 	@Override
 	public void paint(Graphics g) {
-		if(checkVisibility())
+		if(checkVisibility(10))
 			super.paint(g);
 	}
 
