@@ -385,7 +385,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	
 	@Override
 	public void paint(Graphics g) {
-		if(checkVisibility())
+		if(checkVisibility(10))
 			super.paint(g);
 	}
 	

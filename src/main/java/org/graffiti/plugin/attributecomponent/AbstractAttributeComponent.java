@@ -148,9 +148,10 @@ public abstract class AbstractAttributeComponent
 	 * Currently there is hard coded variables defining visibility such as
 	 * presumed size of the component and the current drawing mode
 	 * Future implementation should parameterize this. 
+	 * @param minimumComponentSize TODO
 	 * @return
 	 */
-	public boolean checkVisibility() {
+	public boolean checkVisibility(int minimumComponentSize) {
 		/* 
 		 * only draw component, if it is graphically visible or not FAST mode enabled
 		 */
@@ -160,7 +161,8 @@ public abstract class AbstractAttributeComponent
 				return false;
 			AffineTransform zoom = view.getZoom();
 			//TODO: parameterize those constants..
-			if(getHeight() * zoom.getScaleX() < 10 || getWidth() * zoom.getScaleY() < 10)
+			if(getHeight() * zoom.getScaleX() < minimumComponentSize 
+					|| getWidth() * zoom.getScaleY() < minimumComponentSize)
 				return false;
 			else
 				return true;

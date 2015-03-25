@@ -196,7 +196,7 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 //			logger.debug("paint for bufferedimage");
 			super.paint(g);
 		}
-		if(checkVisibility()) {
+		if(checkVisibility(10)) {
 			if(getParent() instanceof GraffitiView) {
 				if ( ((GraffitiView)getParent()).getDrawMode() == DrawMode.REDUCED) {
 					g.drawImage(bufferedImage, 0, 0, null);
