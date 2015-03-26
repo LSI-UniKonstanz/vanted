@@ -28,7 +28,9 @@ import org.apache.log4j.Logger;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.SplashScreenInterface;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
+import org.vanted.VantedPreferences;
 
 import apple.dts.samplecode.osxadapter.OSXAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
@@ -40,8 +42,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.MenuItemInf
  * @version $Revision$
  */
 public class Main {
-	// ~ Static fields/initializers =============================================
-	private static final long serialVersionUID = -8853617468707668012L;
 	
 	static final Logger logger = Logger.getLogger(Main.class);
 	
@@ -85,8 +85,8 @@ public class Main {
 					public void run() {
 						if (showMainFrame) {
 							ClassLoader cl = this.getClass().getClassLoader();
-							String path = this.getClass().getPackage().getName()
-									.replace('.', '/');
+//							String path = this.getClass().getPackage().getName()
+//									.replace('.', '/');
 							ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash.jpg"));
 							final MainFrame mainFrame = MainFrame.getInstance();
 							if (icon != null && mainFrame != null)
@@ -124,8 +124,8 @@ public class Main {
 		
 		tso.setParam(0, splashScreen);
 		ClassLoader cl = this.getClass().getClassLoader();
-		String path = this.getClass().getPackage().getName()
-				.replace('.', '/');
+//		String path = this.getClass().getPackage().getName()
+//				.replace('.', '/');
 		ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash.jpg"));
 		((DBEsplashScreen) splashScreen).setIconImage(icon.getImage());
 		
@@ -233,6 +233,8 @@ public class Main {
 	
 	public static void startVantedExt(String[] args, String[] developerAddon) {
 		System.out.println("Welcome! About to start the application...");
+		
+		PreferenceManager.getInstance().addPreferencingClass(VantedPreferences.class);
 		
 		if (SystemInfo.isMac()) {
 			try {

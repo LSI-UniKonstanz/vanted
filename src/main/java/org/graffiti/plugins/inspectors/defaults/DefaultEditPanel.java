@@ -119,7 +119,7 @@ public class DefaultEditPanel extends EditPanel {
 	
 	List<ValueEditComponent> displayedValueEditComponents;
 	
-	private Collection<Attributable> graphElements;
+	private Collection<? extends Attributable> graphElements;
 	
 	/** Holds the ListenerManager where the panel is registered. */
 	ListenerManager listenerManager;
@@ -331,7 +331,7 @@ public class DefaultEditPanel extends EditPanel {
 	 *           DOCUMENT ME!
 	 */
 	@Override
-	public void buildTable(DefaultMutableTreeNode treeNode, Collection<Attributable> graphElements, String tabName) {
+	public void buildTable(DefaultMutableTreeNode treeNode, Collection<? extends Attributable> graphElements, String tabName) {
 		// rootNode = treeNode;
 		
 		Attribute collAttr = ((BooledAttribute) treeNode.getUserObject())
@@ -644,8 +644,8 @@ public class DefaultEditPanel extends EditPanel {
 		AbstractUndoableEdit delAttrCmd = new AbstractUndoableEdit() {
 			private static final long serialVersionUID = 1L;
 			
-			private HashMap<Attributable, ArrayList<Attribute>> deletedAttributes = new HashMap<Attributable, ArrayList<Attribute>>();
-			final Collection<Attributable> attributables = graphElements;
+			private Map<Attributable, ArrayList<Attribute>> deletedAttributes = new HashMap<>();
+			final Collection<? extends Attributable> attributables = graphElements;
 			
 			@Override
 			public String getPresentationName() {
@@ -664,7 +664,7 @@ public class DefaultEditPanel extends EditPanel {
 			
 			@Override
 			public void redo() throws CannotRedoException {
-				deletedAttributes = new LinkedHashMap<Attributable, ArrayList<Attribute>>();
+				deletedAttributes = new LinkedHashMap<>();
 				for (Attributable ge : attributables)
 					for (String del : StringManipulationTools.splitSafe(delPath, "$")) {
 						try {
@@ -1215,10 +1215,10 @@ public class DefaultEditPanel extends EditPanel {
 			}
 			
 			private String[] getAttributeList() {
-				List<Class<Attribute>> r = PluginHelper.getAvailableAttributes();
+				List<Class<? extends Attribute>> r = PluginHelper.getAvailableAttributes();
 				String[] result = new String[r.size()];
 				int i = 0;
-				for (Class<Attribute> classAttribute : r) {
+				for (Class<? extends Attribute> classAttribute : r) {
 					result[i++] = classAttribute.getName();
 				}
 				return result;

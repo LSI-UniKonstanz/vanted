@@ -9,12 +9,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.prefs.Preferences;
 
 import org.AttributeHelper;
 import org.Vector2d;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
+import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
@@ -31,13 +34,21 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
  * 
  * @author Dirk Koschützki, Christian Klukas, Matthias Klapperstueck
  */
-public class CircleLayouterAlgorithm extends AbstractAlgorithm {
+public class CircleLayouterAlgorithm extends AbstractAlgorithm implements PreferencesInterface {
 	
-	private double defaultRadius = 150;
+	/*
+	 * Preferencer variable 
+	 */
+	private static double defaultCircleRadius = 150;
+	
+	
+	
+	private double defaultRadius = defaultCircleRadius;
 	private boolean minimzeCrossings;
 	private boolean useSelection;
 	private boolean equalize = true;
 	private boolean averageCenterLength = true;
+	
 	/**
 	 * Creates a new CircleLayouterAlgorithm object.
 	 */
@@ -56,6 +67,20 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		this.defaultRadius = defaultRadius;
 	}
 	
+	@Override
+	public List<Parameter> getDefaultParameters() {
+		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
+		arrayList.add(new DoubleParameter(150, "default radius", "The default radius"));
+		return arrayList;
+
+	}
+
+	
+	@Override
+	public void updatePreferences(Preferences preferences) {
+		defaultCircleRadius = preferences.getDouble("default radius", 150);
+	}
+
 	@Override
 	public void reset() {
 		super.reset();
@@ -117,7 +142,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		else
 			workNodes.addAll(graph.getNodes());
 		
-		layoutOnCircles(workNodes, defaultRadius, getName());
+		layoutOnCircles(workNodes, defaultCircleRadius, getName());
 	}
 	
 	public void withMinimizingCrossings() {
@@ -152,8 +177,8 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 										double energy = 0;
 										int i = 0;
 										for (Node n : sortedNodes) {
-											double newX = Math.sin(singleStep * (testI + i)) * defaultRadius + ctr.x;
-											double newY = Math.cos(singleStep * (testI + i)) * defaultRadius + ctr.y;
+											double newX = Math.sin(singleStep * (testI + i)) * defaultCircleRadius + ctr.x;
+											double newY = Math.cos(singleStep * (testI + i)) * defaultCircleRadius + ctr.y;
 											energy += CircleLayouterAlgorithm.energyOfNode(n, newX, newY);
 											i++;
 										}
@@ -264,7 +289,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		
 //		Vector2d baseVector = new Vector2d(100,0);
 		for (Node n : nodes) {
-			String label = AttributeHelper.getLabel(n, null);
+//			String label = AttributeHelper.getLabel(n, null);
 			double angle = getAngle(ctr, n);
 			if(angleNodes.size() == 0)
 				angleNodes.add(new AngleNode(angle, n));
@@ -328,7 +353,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		DoubleParameter radiusParam = new DoubleParameter("Radius",
 							"The radius of the circle.");
 		
-		radiusParam.setDouble(defaultRadius);
+		radiusParam.setDouble(defaultCircleRadius);
 		
 		BooleanParameter useSelectionParam = new BooleanParameter(useSelection,
 							"Work on Selection", "Do the layout for the selected nodes");
@@ -406,4 +431,5 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 			this.node = node;
 		}
 	}
+
 }

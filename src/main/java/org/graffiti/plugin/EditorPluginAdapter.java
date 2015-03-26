@@ -12,10 +12,13 @@ package org.graffiti.plugin;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.graffiti.attributes.Attribute;
+import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.mode.Mode;
 import org.graffiti.plugin.tool.Tool;
+import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiShape;
 
 /**
@@ -31,12 +34,10 @@ public class EditorPluginAdapter
 	 * comment: A <code>java.util.Map</code> from <code>Attribute</code> to
 	 * the corresponding <code>LabelValueRow</code>-instance.
 	 */
-	@SuppressWarnings("unchecked")
-	protected Map attributeComponents;
+	protected Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
 	
 	/** The mapping between attribute classes and attributeComponent classes. */
-	@SuppressWarnings("unchecked")
-	protected Map valueEditComponents;
+	protected Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
 	
 	/** The gui components the plugin provides. */
 	protected GraffitiComponent[] guiComponents;
@@ -64,8 +65,8 @@ public class EditorPluginAdapter
 		this.modes = new Mode[0];
 		this.tools = new Tool[0];
 		this.shapes = new GraffitiShape[0];
-		this.valueEditComponents = new HashMap<Object, Object>();
-		this.attributeComponents = new HashMap<Object, Object>();
+		this.valueEditComponents = new HashMap<>();
+		this.attributeComponents = new HashMap<>();
 	}
 	
 	// ~ Methods ================================================================
@@ -77,7 +78,7 @@ public class EditorPluginAdapter
 	 * @return a mapping between attribute classnames and attributeComponent
 	 *         classnames.
 	 */
-	public Map<?, ?> getAttributeComponents() {
+	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return this.attributeComponents;
 	}
 	
@@ -129,7 +130,7 @@ public class EditorPluginAdapter
 	 * 
 	 * @return DOCUMENT ME!
 	 */
-	public Map<?, ?> getValueEditComponents() {
+	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return this.valueEditComponents;
 	}
 	

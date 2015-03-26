@@ -1255,7 +1255,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		int idx = 0;
 		int maxIdx = changed.size();
 		boolean requestCompleteRedraw = false;
-		logger.debug("changing "+changed.size()+" objects");
+//		logger.debug("changing "+changed.size()+" objects");
 		long time1;
 		
 		time1 = System.currentTimeMillis();
@@ -1375,7 +1375,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 			}
 		}
 		
-		logger.debug("in transaction: updating "+setDependendComponents.size()+" dependend components");
+//		logger.debug("in transaction: updating "+setDependendComponents.size()+" dependend components");
 		long size = setDependendComponents.size();
 		long counter = 0;
 		for(GraphElementComponent gec : setDependendComponents) {

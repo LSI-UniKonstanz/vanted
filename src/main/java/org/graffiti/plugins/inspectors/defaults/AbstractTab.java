@@ -70,7 +70,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 	protected DefaultMutableTreeNode rootNode;
 
 	/** The elements that are displayed by this tab. */
-	protected Collection<Attributable> attributables;
+	protected Collection<? extends Attributable> attributables;
 
 	private TreeSelectionListener myTreeSelectionListener = new MyTreeSelectionListener();
 
@@ -207,10 +207,11 @@ implements SessionListener, SelectionListener, AttributeListener {
 	}
 
 
-	private void rebuildTreeAction() {
+	protected void rebuildTreeAction() {
 
+		
 		/** The tree view of the attribute hierarchy. */
-		// logger.debug("R: "+this.getClass().getName());
+		logger.debug("classname: "+this.getClass().getName());
 		JTree attributeTree;
 
 		// save current selection
@@ -226,11 +227,9 @@ implements SessionListener, SelectionListener, AttributeListener {
 			newAttr = null;
 			collAttr = null;
 		}
-
 		this.rootNode = new DefaultMutableTreeNode(new BooledAttribute(
 				newAttr, true));
 		synchronized (this.rootNode) {
-
 			attributeTree = new JTree(this.rootNode);
 			attributeTree.putClientProperty("JTree.lineStyle", "Angled");
 			attributeTree.getSelectionModel().setSelectionMode(
@@ -238,18 +237,15 @@ implements SessionListener, SelectionListener, AttributeListener {
 
 			/*
 			 * build attribute hierarchy of newAttr starting at root and
-			 * mark oldMarkedPath
+			 * mark oldMarkedPath 
 			 */
 			TreePath selectedTreePath = null;
 			DefaultMutableTreeNode selectedNode = fillNode(this.rootNode, newAttr,
 					attributables, oldMarkedPath);
-
 			if (selectedNode != null) {
 				selectedTreePath = new TreePath(selectedNode.getPath());
 			}
-
 			attributeTree.addTreeSelectionListener(myTreeSelectionListener);
-
 			if (selectedTreePath == null) {
 				attributeTree.setSelectionRow(0);
 				attributeTree.expandRow(0);
@@ -259,7 +255,6 @@ implements SessionListener, SelectionListener, AttributeListener {
 			}
 			attributeTree.makeVisible(selectedTreePath);
 		}
-
 		//		}
 		//		rebuildActionNeeded = false;
 	}
@@ -286,6 +281,8 @@ implements SessionListener, SelectionListener, AttributeListener {
 
 	public void selectionChanged(SelectionEvent e) {
 		logger.debug("selectionChanged");
+		if( ! isShowing())
+			return;
 		rebuildTreeAction();
 	}
 
@@ -317,7 +314,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 	 * @param graphElements
 	 *           DOCUMENT ME!
 	 */
-	protected void rebuildTree(Collection<Attributable> graphElements) {
+	protected void rebuildTree(Collection<? extends Attributable> graphElements) {
 		attributables = graphElements;
 		rebuildTreeAction();
 	}
@@ -354,7 +351,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 	 * @return DOCUMENT ME!
 	 */
 	private DefaultMutableTreeNode fillNode(DefaultMutableTreeNode treeNode,
-			Attribute attr, Collection<Attributable> graphElements, String markedPath) {
+			Attribute attr, Collection<? extends Attributable> graphElements, String markedPath) {
 		DefaultMutableTreeNode returnTreeNode = null;
 		DefaultMutableTreeNode newNode;
 
@@ -376,7 +373,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 
 					// check if present in all graph elements
 					if (graphElements.size() > 1) {
-						for (Iterator<Attributable> geit = graphElements.iterator(); geit.hasNext();) {
+						for (Iterator<? extends Attributable> geit = graphElements.iterator(); geit.hasNext();) {
 							try {
 								Attribute oAttr = ((Attributable) geit.next())
 										.getAttribute(attr.getPath().substring(1));
@@ -417,7 +414,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 
 				// check if present in all graph elements
 				if (graphElements.size() > 1) {
-					for (Iterator<Attributable> geit = graphElements.iterator(); geit.hasNext();) {
+					for (Iterator<? extends Attributable> geit = graphElements.iterator(); geit.hasNext();) {
 						try {
 							Attribute oAttr = ((Attributable) geit.next())
 									.getAttribute(attribute.getPath().substring(1));
@@ -460,7 +457,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 
 			// check if present in all graph elements
 			if (graphElements.size() > 1) {
-				for (Iterator<Attributable> geit = graphElements.iterator(); geit.hasNext();) {
+				for (Iterator<? extends Attributable> geit = graphElements.iterator(); geit.hasNext();) {
 					try {
 						Attribute oAttr = ((Attributable) geit.next())
 								.getAttribute(attribute.getPath().substring(1));

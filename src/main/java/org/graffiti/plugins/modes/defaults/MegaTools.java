@@ -22,6 +22,7 @@ import javax.swing.Timer;
 
 import org.AttributeHelper;
 import org.Vector2d;
+import org.apache.log4j.Logger;
 import org.graffiti.editor.GraffitiFrame;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
@@ -48,6 +49,9 @@ import org.graffiti.session.Session;
  * @version $Revision: 1.35.6.1 $
  */
 public abstract class MegaTools extends AbstractUndoableTool {
+	
+	static final Logger logger = Logger.getLogger(MegaTools.class);
+	
 	// ~ Instance fields ========================================================
 	
 	// protected EditorSession session;
@@ -402,7 +406,6 @@ public abstract class MegaTools extends AbstractUndoableTool {
 				Node n = (Node) ge;
 				gelist = findContainingNodes(n);
 			}
-			
 			if (selection.getNodes().contains(ge)
 								|| selection.getEdges().contains(ge)) {
 				if (ctrlPressed) {
@@ -435,7 +438,6 @@ public abstract class MegaTools extends AbstractUndoableTool {
 				if (!ctrlPressed) {
 					// unselect all previously selected and create new selection
 					caller.unDisplayAsMarked(getAllMarkedComps());
-					
 					// selection = new Selection(ACTIVE);
 					// // resetSelectedComps();
 					// selectionModel.add(selection);
@@ -455,7 +457,6 @@ public abstract class MegaTools extends AbstractUndoableTool {
 						}
 					}
 				}
-				
 				if (issueSelectionEventIfSelectionChanged) {
 					fireSelectionChanged();
 				} else {

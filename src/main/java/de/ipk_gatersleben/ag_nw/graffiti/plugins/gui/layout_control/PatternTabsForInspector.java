@@ -8,14 +8,13 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import org.FeatureSet;
 import org.Release;
 import org.ReleaseInfo;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.inspector.InspectorTab;
-import org.graffiti.plugin.inspector.SubtabHostTab;
 
 import de.ipk_gatersleben.ag_nw.graffiti.DBE_EditorPluginAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.data_mapping.DataMapping;
@@ -45,21 +44,17 @@ public class PatternTabsForInspector
 		
 		// if (!ReleaseInfo.isRunningAsApplet())
 //		tablist.add(new WorkflowHelper());
-		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING)) {
-			ExperimentDataProcessingManager.addExperimentDataProcessor(new PutIntoSidePanel());
+
+		ExperimentDataProcessingManager.addExperimentDataProcessor(new PutIntoSidePanel());
 			tablist.add(new TabDBE());
-		}
-		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
 			algorithms = new Algorithm[] { new DataMapping() };
 		
 		// pathway tabs KEGG and MetaCrop
-		Collection<InspectorTab> subtabsPathway = new ArrayList<InspectorTab>();
-		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS))
-			tablist.add(new TabKegg());
-		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.MetaCrop_ACCESS))
-			tablist.add(new TabMetaCrop());
-		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.RIMAS_ACCESS))
-			tablist.add(new RimasTab());
+//		Collection<InspectorTab> subtabsPathway = new ArrayList<InspectorTab>();
+		tablist.add(new TabKegg());
+		
+		tablist.add(new TabMetaCrop());
+		tablist.add(new RimasTab());
 		
 //		tablist.add(new TabBiomodels());
 		
@@ -79,7 +74,7 @@ public class PatternTabsForInspector
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_LAYOUT))
 			tablist.add(new TabPluginControl());
 		
-		Collection<InspectorTab> subtabsTools = new ArrayList<InspectorTab>();
+//		Collection<InspectorTab> subtabsTools = new ArrayList<InspectorTab>();
 		if (!ReleaseInfo.isRunningAsApplet() && ReleaseInfo.getIsAllowedFeature(FeatureSet.STATISTIC_FUNCTIONS))
 			tablist.add(new TabStatistics());
 
@@ -98,6 +93,7 @@ public class PatternTabsForInspector
 		this.tabs = tablist.toArray(new InspectorTab[] {});
 	}
 	
+	/*
 	private InspectorTab getSubtab(String title,
 						Collection<InspectorTab> subtabs) {
 		if (subtabs.size() == 1)
@@ -105,5 +101,6 @@ public class PatternTabsForInspector
 		else
 			return new SubtabHostTab(title, subtabs);
 	}
+	*/
 	
 }

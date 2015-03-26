@@ -3,10 +3,11 @@
  *******************************************************************************/
 package vanted_feature;
 
+import java.util.prefs.Preferences;
+
 import org.Release;
 import org.ReleaseInfo;
 import org.SettingsHelperDefaultIsTrue;
-import org.graffiti.options.GravistoPreferences;
 import org.graffiti.plugin.algorithm.Algorithm;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
@@ -56,7 +57,7 @@ extends IPK_PluginAdapter {
 	}
 
 	@Override
-	public void configure(GravistoPreferences p) {
+	public void configure(Preferences p) {
 		super.configure(p);
 	}
 

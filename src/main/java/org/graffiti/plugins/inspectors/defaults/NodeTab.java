@@ -9,8 +9,6 @@
 
 package org.graffiti.plugins.inspectors.defaults;
 
-import java.util.Collection;
-
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.selection.SelectionEvent;
 
@@ -45,9 +43,11 @@ public class NodeTab
 		return instance;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void selectionChanged(SelectionEvent e) {
-		rebuildTree((Collection) e.getSelection().getNodes());
+		attributables = e.getSelection().getNodes();
+		if( ! isShowing())
+			return;
+		rebuildTreeAction();
 		
 	}
 	

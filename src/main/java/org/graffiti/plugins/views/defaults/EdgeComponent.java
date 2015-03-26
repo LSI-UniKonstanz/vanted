@@ -320,7 +320,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 							.getAttribute(GRAPHICS);
 		
 		String shapeClass = geAttr.getShape();
-		String curShapeNameClassName = null;
+//		String curShapeNameClassName = null;
 		
 		EdgeShape newShape = null;
 		

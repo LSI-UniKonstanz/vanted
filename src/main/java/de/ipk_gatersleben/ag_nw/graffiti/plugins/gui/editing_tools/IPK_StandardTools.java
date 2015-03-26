@@ -16,7 +16,6 @@ import org.AttributeHelper;
 import org.graffiti.core.ImageBundle;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.GraphElement;
-import org.graffiti.options.GravistoPreferences;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.gui.ModeToolbar;
@@ -265,7 +264,7 @@ public class IPK_StandardTools
 	 * @see org.graffiti.plugin.GenericPlugin#configure(Preferences)
 	 */
 	@Override
-	public void configure(GravistoPreferences preferences) {
+	public void configure(Preferences preferences) {
 		super.configure(preferences);
 		megaCreate.setPrefs(this.prefs.node("megaCreateTool"));
 		megaMove.setPrefs(this.prefs.node("megaMoveTool"));

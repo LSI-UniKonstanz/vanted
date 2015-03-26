@@ -62,7 +62,7 @@ public abstract class EditPanel
 	 *           DOCUMENT ME!
 	 */
 	public abstract void buildTable(DefaultMutableTreeNode treeNode,
-						Collection<Attributable> graphElements, String tabName);
+						Collection<? extends Attributable> graphElements, String tabName);
 	
 	/**
 	 * DOCUMENT ME!

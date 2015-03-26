@@ -11,6 +11,8 @@ package org.graffiti.plugin.editcomponent;
 
 import java.util.Map;
 
+import org.graffiti.plugin.Displayable;
+
 /**
  *
  */
@@ -22,7 +24,7 @@ public interface NeedEditComponents {
 	 * 
 	 * @param ecMap
 	 */
-	public void setEditComponentMap(Map<?, ?> ecMap);
+	public void setEditComponentMap(Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> ecMap);
 }
 
 // ------------------------------------------------------------------------------

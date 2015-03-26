@@ -3,6 +3,7 @@ package org.graffiti.plugin.inspector;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -95,6 +96,21 @@ implements SessionListener, ViewListener, ContainsTabbedPane, SelectionListener 
 		for (InspectorTab tab : subtabs)
 			visible = visible || ((tab.visibleForView(v) && (v == null || (v != null && v.worksWithTab(tab)))));
 		return visible;
+	}
+
+	
+	
+	/**
+	 * This componentShown callback is only called for the upmost tab and not it's children.
+	 * To send the component shown to the visible children we recurse this event
+	 * @param e
+	 */
+	@Override
+	public void componentShown(ComponentEvent e) {
+		for (InspectorTab tab : subtabs)
+			if(tab.isVisible())
+				tab.componentShown(e);
+		
 	}
 
 	public void sessionChanged(Session s) {

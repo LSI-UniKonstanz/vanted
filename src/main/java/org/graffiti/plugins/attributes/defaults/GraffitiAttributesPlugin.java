@@ -35,6 +35,7 @@ public class GraffitiAttributesPlugin
 	/**
 	 * Constructs a new <code>GraffitiAttributesPlugin</code>.
 	 */
+	@SuppressWarnings("unchecked")
 	public GraffitiAttributesPlugin() {
 		super();
 		this.attributes = new Class[] {

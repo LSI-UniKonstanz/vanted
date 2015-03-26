@@ -9,10 +9,11 @@
 
 package org.graffiti.plugin.tool;
 
+import java.util.prefs.Preferences;
+
 import javax.swing.event.MouseInputListener;
 
 import org.graffiti.graph.Graph;
-import org.graffiti.options.GravistoPreferences;
 
 /**
  * A <code>Tool</code> executes a specified action on a <code>ConstrainedGraph</code>.
@@ -78,7 +79,7 @@ public interface Tool
 	 * @param p
 	 *           the preferences of this tool.
 	 */
-	void setPrefs(GravistoPreferences p);
+	void setPrefs(Preferences p);
 	
 	public void deactivateAll();
 	

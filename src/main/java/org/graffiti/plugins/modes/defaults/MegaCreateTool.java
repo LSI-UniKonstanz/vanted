@@ -17,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.prefs.Preferences;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -52,7 +53,6 @@ import org.graffiti.graphics.DockingAttribute;
 import org.graffiti.graphics.EdgeGraphicAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.graphics.NodeGraphicAttribute;
-import org.graffiti.options.GravistoPreferences;
 import org.graffiti.plugin.gui.ToolButton;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraphElementComponent;
@@ -739,7 +739,7 @@ public class MegaCreateTool
 		graphics.setThickness(prefs.getDouble("thickness", 1));
 		graphics.setFrameThickness(prefs.getDouble("frameThickness", 1));
 		// setting the framecolor
-		GravistoPreferences fc = prefs.node("framecolor");
+		Preferences fc = prefs.node("framecolor");
 		int red = fc.getInt("red", 0);
 		int green = fc.getInt("green", 0);
 		int blue = fc.getInt("blue", 0);
@@ -761,9 +761,10 @@ public class MegaCreateTool
 		if (clickedNode.getGraph().isDirected())
 			graphics.setArrowhead(prefs.get("arrowhead", "org.graffiti.plugins.views.defaults.StandardArrowShape"));
 		// setting the lineMode
-		GravistoPreferences da = prefs.node("dashArray");
+		Preferences da = prefs.node("dashArray");
 		String[] daEntries;
-		daEntries = da.keys();
+//		daEntries = da.keys();
+		daEntries = new String[]{};
 		// no dashArray exists
 		if (daEntries.length == 0) {
 			graphics.getLineMode().setDashArray(null);

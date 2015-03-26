@@ -41,25 +41,21 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.XPathHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.NodeCacheEntry;
 
-@SuppressWarnings("unchecked")
 public class NodeTools {
 	
-	public static Vector2d getMaximumXY(Collection nodeList, double factorXY, double minx, double miny,
+	public static Vector2d getMaximumXY(Collection<Node> nodeList, double factorXY, double minx, double miny,
 						boolean includeSizeInformation) {
 		return getMaximumXY(nodeList, factorXY, minx, miny, includeSizeInformation, false);
 	}
 	
-	public static Vector2d getMaximumXY(Collection nodeList, double factorXY, double minx, double miny,
+	public static Vector2d getMaximumXY(Collection<Node> nodeList, double factorXY, double minx, double miny,
 						boolean includeSizeInformation, boolean includeInvisibleNodes) {
 		
 		double maxx = 0, maxy = 0;
 		
-		Iterator nodeIterator = nodeList.iterator();
-		while (nodeIterator.hasNext()) {
-			Object nodeOrPatternStruct = nodeIterator.next();
+		for(Node currentNode : nodeList) {
 			double x, y;
 			double sx = 0, sy = 0;
-			Node currentNode = (Node) nodeOrPatternStruct;
 			if (!includeInvisibleNodes) {
 				if (AttributeHelper.isHiddenGraphElement(currentNode))
 					continue;
@@ -81,22 +77,19 @@ public class NodeTools {
 		return new Vector2d((maxx * factorXY - minx), (maxy * factorXY - miny));
 	}
 	
-	public static Vector2d getMinimumXY(Collection nodeList, double factorXY, double subx, double suby,
+	public static Vector2d getMinimumXY(Collection<Node> nodeList, double factorXY, double subx, double suby,
 						boolean includeSizeInformation) {
 		return getMinimumXY(nodeList, factorXY, subx, suby, includeSizeInformation, false);
 	}
 	
-	public static Vector2d getMinimumXY(Collection nodeList, double factorXY, double subx, double suby,
+	public static Vector2d getMinimumXY(Collection<Node> nodeList, double factorXY, double subx, double suby,
 						boolean includeSizeInformation, boolean includeInvisibleNodes) {
 		
 		double minx = Double.MAX_VALUE, miny = Double.MAX_VALUE;
 		
-		Iterator nodeIterator = nodeList.iterator();
-		while (nodeIterator.hasNext()) {
-			Object nodeOrPatternStruct = nodeIterator.next();
+		for(Node currentNode : nodeList) {
 			double x, y;
 			double sx = 0, sy = 0;
-			Node currentNode = (Node) nodeOrPatternStruct;
 			if (!includeInvisibleNodes) {
 				if (AttributeHelper.isHiddenGraphElement(currentNode))
 					continue;
@@ -129,11 +122,11 @@ public class NodeTools {
 	 *           either <code>Node</code> objects, or <code>NodeCacheEntry</code> objects.
 	 * @return A <code>Vector2d</code> containing the position of the center.
 	 */
-	public static Vector2d getCenter(Collection nodeList) {
+	public static Vector2d getCenter(Collection<?> nodeList) {
 		double x = 0;
 		double y = 0;
 		
-		Iterator nodeIterator = nodeList.iterator();
+		Iterator<?> nodeIterator = nodeList.iterator();
 		int numberOfSelectedNodes = 0;
 		while (nodeIterator.hasNext()) {
 			Object nodeOrPatternStruct = nodeIterator.next();
@@ -160,12 +153,12 @@ public class NodeTools {
 		return new Vector2d(x, y);
 	}
 	
-	public static Vector3d getCenter3d(Collection nodeList) {
+	public static Vector3d getCenter3d(Collection<?> nodeList) {
 		double x = 0;
 		double y = 0;
 		double z = 0;
 		
-		Iterator nodeIterator = nodeList.iterator();
+		Iterator<?> nodeIterator = nodeList.iterator();
 		int numberOfSelectedNodes = 0;
 		while (nodeIterator.hasNext()) {
 			Object nodeOrPatternStruct = nodeIterator.next();
@@ -362,12 +355,10 @@ public class NodeTools {
 			if (lines.item(i).getNodeName().equals("line"))
 				result.add(lines.item(i));
 		}
-		Collections.sort(result, new Comparator() {
-			public int compare(Object o1, Object o2) {
-				org.w3c.dom.Node a = (org.w3c.dom.Node) o1;
-				org.w3c.dom.Node b = (org.w3c.dom.Node) o2;
-				String id1 = XPathHelper.getSeriesIDforLine(a);
-				String id2 = XPathHelper.getSeriesIDforLine(b);
+		Collections.sort(result, new Comparator<org.w3c.dom.Node>() {
+			public int compare(org.w3c.dom.Node o1, org.w3c.dom.Node o2) {
+				String id1 = XPathHelper.getSeriesIDforLine(o1);
+				String id2 = XPathHelper.getSeriesIDforLine(o2);
 				if (id1 == null)
 					id1 = "";
 				if (id2 == null)

@@ -114,13 +114,27 @@ public class DefaultIOManager implements IOManager {
 		outputSerializer = new ArrayList<OutputSerializer>();
 		listeners = new LinkedList<IOManagerListener>();
 		try {
-			fc = new JFileChooser();
+			/*
+			 * there might be a problem, when starting vanted, because if network drives are mapped
+			 * (on windows) but the server is not reachable, the JFileChooser constructor stops
+			 * This also means Vanted doesn't boot up.. 
+			 * To prevent this, a getter method was implemented so that the startup is garuanteed
+			 */
+//			fc = new JFileChooser();
+//			System.out.println("created filechooser");
 		} catch (AccessControlException ace) {
 			// ErrorMsg.addErrorMessage(ace);
 		}
 	}
 	
 	// ~ Methods ================================================================
+	
+	public JFileChooser getFileChooser() {
+		if(fc == null)
+			fc = new JFileChooser();
+		
+		return fc;
+	}
 	
 	/*
 	 * @see
@@ -213,6 +227,7 @@ public class DefaultIOManager implements IOManager {
 	 * @see org.graffiti.managers.IOManager#createOpenFileChooser()
 	 */
 	public JFileChooser createOpenFileChooser() {
+		fc = getFileChooser();
 		fc.resetChoosableFileFilters();
 		// Set<String> knownExt = new TreeSet<String>();
 		for (Iterator<InputSerializer> itr = inputSerializer.iterator(); itr.hasNext();) {
@@ -281,6 +296,7 @@ public class DefaultIOManager implements IOManager {
 	 * @see org.graffiti.managers.IOManager#createSaveFileChooser()
 	 */
 	public JFileChooser createSaveFileChooser() {
+		fc = getFileChooser();
 		String defaultExt = ".gml";
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			defaultExt = ".xml";

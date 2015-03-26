@@ -40,6 +40,13 @@ extends JComponent implements ComponentListener {
 	public static final int TAB_LEADING = Integer.MIN_VALUE;
 	public static final int TAB_TRAILING = Integer.MAX_VALUE;
 	public static final int TAB_RANDOM = 0;
+	
+	/*
+	 * a list of standard preference keys for use with preferences 
+	 * standard naming
+	 */
+	public static final String PREFERENCE_TAB_SHOW = "Show";
+
 	// ~ Instance fields ========================================================
 
 	/**

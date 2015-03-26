@@ -38,7 +38,6 @@ import org.graffiti.plugin.algorithm.Algorithm;
 /**
  *
  */
-@SuppressWarnings("unchecked")
 public class PluginHelper implements HelperClass {
 	// ~ Methods ================================================================
 	
@@ -88,9 +87,9 @@ public class PluginHelper implements HelperClass {
 		} else
 			if (fileName.toLowerCase().endsWith(".jar") ||
 								fileName.toLowerCase().endsWith(".zip")) {
-				try {
-					JarFile file = new JarFile(new File(
-										new URI(pluginLocation.toString())));
+				try(JarFile file = new JarFile(new File(
+						new URI(pluginLocation.toString())));) {
+					
 					StringBundle sBundle = StringBundle.getInstance();
 					ZipEntry entry = file.getEntry(sBundle.getString(
 										"plugin.xml.filename"));
@@ -134,11 +133,11 @@ public class PluginHelper implements HelperClass {
 	/**
 	 * @return
 	 */
-	public static List<Class<Attribute>> getAvailableAttributes() {
-		List<Class<Attribute>> result = new ArrayList<Class<Attribute>>();
+	public static List<Class<? extends Attribute>> getAvailableAttributes() {
+		List<Class<? extends Attribute>> result = new ArrayList<Class<? extends Attribute>>();
 		Collection<PluginEntry> plugins = DefaultPluginManager.lastInstance.getPluginEntries();
 		for(PluginEntry pluginEntry : plugins) {
-			Class<Attribute>[] at = pluginEntry.getPlugin().getAttributes();
+			Class<? extends Attribute>[] at = pluginEntry.getPlugin().getAttributes();
 			if (at != null && at.length > 0) {
 				result.addAll(Arrays.asList(at));
 			}
@@ -146,7 +145,7 @@ public class PluginHelper implements HelperClass {
 		return result;
 	}
 	
-	public static List<Algorithm> getAvailableAlgorithms() {
+	public static List<? extends Algorithm> getAvailableAlgorithms() {
 		List<Algorithm> algorithms = new ArrayList<Algorithm>();
 		Collection<PluginEntry> pluginEntries = DefaultPluginManager.lastInstance.getPluginEntries();
 		for(PluginEntry pluginEntry : pluginEntries) {

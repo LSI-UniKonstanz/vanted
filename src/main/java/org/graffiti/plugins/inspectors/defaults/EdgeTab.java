@@ -49,7 +49,11 @@ public class EdgeTab
 	
 	@SuppressWarnings("unchecked")
 	public void selectionChanged(SelectionEvent e) {
-		rebuildTree((Collection) e.getSelection().getEdges());
+		attributables = e.getSelection().getEdges();
+		if( ! isShowing())
+			return;
+		rebuildTreeAction();
+		
 	}
 
 

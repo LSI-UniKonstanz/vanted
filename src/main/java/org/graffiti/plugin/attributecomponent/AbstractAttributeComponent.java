@@ -171,6 +171,15 @@ public abstract class AbstractAttributeComponent
 		else
 			return true;
 	}
+	
+	protected DrawMode getDrawingModeOfView() {
+		if(getParent() instanceof GraffitiView){
+			GraffitiView view = (GraffitiView)getParent();
+			return view.getDrawMode();
+		}
+		else
+			return DrawMode.NORMAL;
+	}
 }
 
 // ------------------------------------------------------------------------------
