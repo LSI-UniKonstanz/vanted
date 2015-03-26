@@ -20,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.prefs.Preferences;
 
 import javax.swing.BorderFactory;
@@ -53,6 +54,7 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.tool.Tool;
+import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.View;
 
 /**
@@ -72,6 +74,7 @@ public class OptionsDialog
 	public static final String CAT_TABS = "Tabs";
 	public static final String CAT_MISC = "Misc";
 	public static final String CAT_TOOLS = "Tools";
+	public static final String CAT_ATTR_COMP = "Attribute Components";
 	
 	/**
 	 * 
@@ -218,7 +221,7 @@ public class OptionsDialog
 	
 	
 	private void prepareTree(OptionGroup parent) {
-		List<Class<? extends PreferencesInterface>> preferencingClasses = PreferenceManager.getInstance().getPreferencingClasses();
+		Set<Class<? extends PreferencesInterface>> preferencingClasses = PreferenceManager.getInstance().getPreferencingClasses();
 		
 		mapCategories = new HashedMap<>();
 		
@@ -251,7 +254,11 @@ public class OptionsDialog
 					categoryNode = getCategoryNode(CAT_TOOLS);
 					addOptionGroup(categoryNode, parent);
 					logger.debug("added new Tool category");
-				} else {
+				} else if(instance instanceof AttributeComponent) {
+					categoryNode = getCategoryNode(CAT_ATTR_COMP);
+					addOptionGroup(categoryNode, parent);
+				}
+				else {
 					categoryNode = getCategoryNode(CAT_MISC);
 					addOptionGroup(categoryNode, parent);
 					logger.debug("added new misc category");

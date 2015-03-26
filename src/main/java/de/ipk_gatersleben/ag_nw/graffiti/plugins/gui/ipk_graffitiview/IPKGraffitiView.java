@@ -178,7 +178,7 @@ public class IPKGraffitiView
 			// if (useAntialiasing) {
 			
 
-			logger.debug("maxnodes: "+MAX_NODES);
+//			logger.debug("paintcomponent");
 			if(drawMode == DrawMode.NORMAL 
 					&& getGraph().getNumberOfNodes() < MAX_NODES
 					&& getGraph().getNumberOfEdges() < MAX_EDGES) {

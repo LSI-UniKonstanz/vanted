@@ -62,7 +62,7 @@ public class VantedPreferences implements PreferencesInterface{
 	public void updatePreferences(Preferences preferences) {
 		final String lafName = preferences.get(PREFERENCE_LOOKANDFEEL,"");
 		String selLAF = UIManager.getLookAndFeel().getClass().getCanonicalName();
-		if(!selLAF.equals(lafName)) {
+		if(MainFrame.getInstance() != null && !selLAF.equals(lafName)) {
 			SwingUtilities.invokeLater(new Runnable() {
 				
 				@Override

@@ -69,6 +69,10 @@ public class ExpandSelectionAlgorithm
 		if (selection != null)
 			currentSelElements.addAll(selection.getElements());
 		for (GraphElement ge : currentSelElements) {
+			if (ge instanceof Edge) {
+				sel.add(((Edge)ge).getSource());
+				sel.add(((Edge)ge).getTarget());
+			}
 			if (ge instanceof Node) {
 				Node n = (Node) ge;
 				if (directed) {

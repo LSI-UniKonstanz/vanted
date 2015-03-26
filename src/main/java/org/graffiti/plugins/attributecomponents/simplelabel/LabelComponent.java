@@ -31,7 +31,10 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.prefs.Preferences;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -54,9 +57,14 @@ import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.graphics.LabelAttribute;
 import org.graffiti.graphics.NodeLabelAttribute;
 import org.graffiti.graphics.NodeLabelPositionAttribute;
+import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.attributecomponent.AbstractAttributeComponent;
+import org.graffiti.plugin.parameter.BooleanParameter;
+import org.graffiti.plugin.parameter.IntegerParameter;
+import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.NodeShape;
 import org.graffiti.plugin.view.ShapeNotFoundException;
+import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.util.Pair;
 
 /**
@@ -65,10 +73,17 @@ import org.graffiti.util.Pair;
  * @version $Revision: 1.59 $
  */
 public class LabelComponent extends AbstractAttributeComponent implements
-					GraphicAttributeConstants {
+					GraphicAttributeConstants, PreferencesInterface {
 	// ~ Instance fields ========================================================
 	
 	private static final long serialVersionUID = 1L;
+	
+	
+	private static int MINSIZE_VISIBILITY;
+	public static String PREF_MINSIZE_VISIBILITY="min-size visibility";
+
+	private static boolean DRAWRECT_MINSIZE;
+	public static String PREF_DRAWRECT_MINSIZE = "small rectangle when too small";
 	
 	/**
 	 * Flatness value used for the <code>PathIterator</code> used to place
@@ -107,12 +122,30 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	
 	// ~ Methods ================================================================
 	
+	
+	@Override
+	public List<Parameter> getDefaultParameters() {
+		List<Parameter> params = new ArrayList<Parameter>();
+		params.add(new IntegerParameter(10, PREF_MINSIZE_VISIBILITY, "<html>Minimum size (width/height) where this label<br/>ist still visible"));
+		params.add(new BooleanParameter(true, PREF_DRAWRECT_MINSIZE, "<html>Draw a rectangle instead of the label, <br/>if the label is too small"));
+		return params;
+	}
+
+	@Override
+	public void updatePreferences(Preferences preferences) {
+		MINSIZE_VISIBILITY = preferences.getInt(PREF_MINSIZE_VISIBILITY, 10);
+		DRAWRECT_MINSIZE = preferences.getBoolean(PREF_DRAWRECT_MINSIZE, true);
+	}	
+	
+	
+	
 	@Override
 	public void highlight(boolean value, MouseEvent e) {
 		super.highlight(value, e);
 		label.highlight(value);
 	}
-	
+
+
 	/**
 	 * obvious
 	 * 
@@ -385,8 +418,14 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	
 	@Override
 	public void paint(Graphics g) {
-		if(checkVisibility(10))
+		if(checkVisibility(MINSIZE_VISIBILITY))
 			super.paint(g);
+		else if (DRAWRECT_MINSIZE && ! (getDrawingModeOfView() == DrawMode.FAST)) {
+			g.setColor(new Color(200,200,200));
+			int height = getHeight();
+			int width = getWidth();
+			((Graphics2D)g).fillRect(0, height/4, width, height/2);
+		}
 	}
 	
 	private static final HashMap<TextAttribute, Object> fontAttributes = getFontAttributes();

@@ -45,6 +45,7 @@ import javax.swing.undo.CannotUndoException;
 import org.AttributeHelper;
 import org.ErrorMsg;
 import org.Vector2d;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.SortedCollectionAttribute;
@@ -92,6 +93,10 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface{
 	private static String rkey = "selrect";
 
 	static final Logger logger = Logger.getLogger(MegaMoveTool.class);
+	
+	static {
+		logger.setLevel(Level.INFO);
+	}
 	// ~ Instance fields ========================================================
 	
 	
@@ -464,6 +469,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface{
 	
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		logger.debug("begin mouseMoved");
 		super.mouseMoved(e);
 		Component src;
 		if (SwingUtilities.isMiddleMouseButton(e))
@@ -607,12 +613,12 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface{
 		}
 		
 		if (lastBendHit == null && !dragged) {
-			int x = e.getX();
-			int y = e.getY();
-			if (e.getWhen() - lastClick < 1000) {
-				x = lastClickPoint.x;
-				y = lastClickPoint.y;
-			}
+//			int x = e.getX();
+//			int y = e.getY();
+//			if (e.getWhen() - lastClick < 1000) {
+//				x = lastClickPoint.x;
+//				y = lastClickPoint.y;
+//			}
 			Component c = getFoundComponent();
 			if (c instanceof EdgeComponent) {
 				// break!
@@ -1174,7 +1180,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface{
 	
 	private long lastClick = Long.MIN_VALUE;
 	
-	private Point lastClickPoint;
+//	private Point lastClickPoint;
 	
 	/**
 	 * Invoked when the mouse button has been pressed.
@@ -1184,6 +1190,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface{
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
+		logger.debug("begin mousePressed");
 		if (e.getWhen() <= lastClick)
 			return;
 		lastClick = e.getWhen();
@@ -1204,7 +1211,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface{
 		if (!SwingUtilities.isLeftMouseButton(e) && !SwingUtilities.isMiddleMouseButton(e))
 			return;
 		
-		lastClickPoint = e.getPoint();
+//		lastClickPoint = e.getPoint();
 
 		dragged = false;
 		
@@ -1213,6 +1220,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface{
 		selection = session.getSelectionModel().getActiveSelection();
 		
 
+		logger.debug("1");
+		
 		resizeHit = false;
 		resizeHitTl = false;
 		resizeHitTr = false;
@@ -1268,6 +1277,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface{
 			}
 			
 			lastPressedPoint = e.getPoint();
+			logger.debug("2");
 		} else
 			if (src instanceof NodeComponent) {
 				NodeComponent nodeComp = (NodeComponent) src;
@@ -1292,11 +1302,9 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface{
 				
 				// if (!isInnerNode(nodeComp.getGraphElement()))
 				mid = !mid;
-				
 				mark(nodeComp,
 									(!resizeHit && !mid),
 									isControlDown(e) || (e.getClickCount() == 1 && e.isShiftDown()), this, true);
-				
 				if (resizeHit) {
 					lastPressedMousePointRel = new Point2D.Double(
 										e.getPoint().getX(),
@@ -1386,6 +1394,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface{
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		logger.debug("begin mouseReleased");
 		if(e.getSource() instanceof GraffitiView)
 			((GraffitiView)e.getSource()).setDrawMode(DrawMode.NORMAL);
 
@@ -1463,7 +1472,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface{
 		originalCoordinates = null;
 		
 		ToolButton.requestToolButtonFocus();
-		
+		logger.debug("end mouseReleased");
 	}
 	
 	private double min2(double a, double b) {
@@ -1475,7 +1484,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface{
 	 */
 	public void reset() {
 		lastPressedPoint = null;
-		lastClickPoint = null;
+//		lastClickPoint = null;
 	}
 	
 	/**

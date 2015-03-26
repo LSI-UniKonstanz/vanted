@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -15,6 +14,7 @@ import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 
 import org.ReleaseInfo;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.managers.pluginmgr.PluginDescription;
 import org.graffiti.managers.pluginmgr.PluginManagerListener;
@@ -25,6 +25,7 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.tool.Tool;
+import org.graffiti.plugin.view.AttributeComponent;
 
 public class PreferenceManager 
 implements PluginManagerListener
@@ -35,11 +36,15 @@ implements PluginManagerListener
 
 	static Logger logger = Logger.getLogger(PreferenceManager.class);
 
+	static {
+		logger.setLevel(Level.INFO);
+	}
+	
 	/**
 	 * holds the list of all objects/classes that implement the 
 	 * PreferencingInterface (can be Algorithms, Views,  etc)
 	 */
-	private List<Class<? extends PreferencesInterface>> listPreferencingObjects;
+	private Set<Class<? extends PreferencesInterface>> setPreferencingObjects;
 
 	private static PreferenceManager instance;
 
@@ -58,7 +63,7 @@ implements PluginManagerListener
 //			e.printStackTrace();
 		}
 
-		listPreferencingObjects = new ArrayList<>();
+		setPreferencingObjects = new HashSet<>();
 	}
 
 	public static PreferenceManager getInstance() {
@@ -67,8 +72,8 @@ implements PluginManagerListener
 		return instance;
 	}
 
-	public List<Class<? extends PreferencesInterface>> getPreferencingClasses(){
-		return listPreferencingObjects;
+	public Set<Class<? extends PreferencesInterface>> getPreferencingClasses(){
+		return setPreferencingObjects;
 	}
 
 
@@ -159,6 +164,21 @@ implements PluginManagerListener
 					}
 				}
 			}
+			if(editorPlugin.getAttributeComponents() != null) {
+				for(Class<? extends AttributeComponent> attrComponent : editorPlugin.getAttributeComponents().values()) {
+					try {
+						AttributeComponent attrCompInstance = (AttributeComponent)attrComponent.newInstance();
+						if(attrCompInstance instanceof PreferencesInterface)
+							checkAddAndSetClassesPreferences((PreferencesInterface)attrCompInstance);
+					} catch (InstantiationException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
 		}
 	}
 	/**
@@ -208,7 +228,7 @@ implements PluginManagerListener
 		Preferences defaultPrefs = checkExistingPreferences(prefInterface.getClass(), ((PreferencesInterface)prefInterface).getDefaultParameters());
 
 		if(defaultPrefs != null) {
-			listPreferencingObjects.add((Class<? extends PreferencesInterface>)prefInterface.getClass());
+			setPreferencingObjects.add((Class<? extends PreferencesInterface>)prefInterface.getClass());
 
 			prefInterface.updatePreferences(defaultPrefs);
 		}
