@@ -6,32 +6,21 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.kegg.kegg_type.pathway_kegg_operation;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
 import org.AttributeHelper;
-import org.ErrorMsg;
 import org.FeatureSet;
 import org.ReleaseInfo;
 import org.Vector2d;
-import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
-import org.graffiti.event.ListenerManager;
-import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
-import org.graffiti.selection.Selection;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.input.SAXBuilder;
 
-import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.KeggPathwayEntry;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Entry;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Gml2PathwayErrorInformation;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Gml2PathwayWarningInformation;
@@ -41,7 +30,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Relation;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.EntryType;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.IdRef;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.RelationType;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.NoOverlappOfClustersAlgorithm;
 
 public class PathwayKeggLoading {
 	

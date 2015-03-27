@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -65,7 +66,9 @@ public class DBEsplashScreen implements SplashScreenInterface {
 		} catch (Exception e) {
 			path = "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart".replace('.', '/');
 		}
-		ImageIcon icon = new ImageIcon(cl.getResource(path + "/vanted_logo_splash.jpg"));
+//		ImageIcon icon = new ImageIcon(cl.getResource(path + "/vanted_logo_splash.jpg"));
+		URL resource = cl.getResource("images/vanted_logo_splash.jpg");
+		ImageIcon icon = new ImageIcon(resource);
 		
 		infoLabel = new JLabel(getSplashScreenlabel(applicationName, -1));
 		infoLabel.setVerticalTextPosition(SwingConstants.CENTER);

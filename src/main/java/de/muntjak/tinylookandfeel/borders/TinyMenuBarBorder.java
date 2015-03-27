@@ -17,6 +17,7 @@ import java.awt.Insets;
 import javax.swing.JMenuBar;
 import javax.swing.border.AbstractBorder;
 import javax.swing.plaf.UIResource;
+
 import de.muntjak.tinylookandfeel.Theme;
 import de.muntjak.tinylookandfeel.TinyToolBarUI;
 

@@ -16,8 +16,6 @@ import java.util.Set;
 
 import javax.swing.KeyStroke;
 
-import org.Release;
-import org.ReleaseInfo;
 import org.apache.commons.collections.set.ListOrderedSet;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Edge;

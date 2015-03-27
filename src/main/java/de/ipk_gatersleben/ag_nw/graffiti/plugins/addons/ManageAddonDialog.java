@@ -95,7 +95,8 @@ public class ManageAddonDialog extends JDialog {
 		// this.manager = addonManager;
 		JButton jb = initGUI();
 		setTopText(msg);
-		
+		//TODO: TEST THIS
+		setModal(true);
 		setVisible(true);
 		installDragNDrop(jb);
 	}

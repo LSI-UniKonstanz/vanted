@@ -23,11 +23,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 
 import org.ErrorMsg;
 import org.ReleaseInfo;
 import org.graffiti.core.StringBundle;
-import org.graffiti.options.GravistoPreferences;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.GenericPlugin;
 import org.graffiti.util.InstanceCreationException;
 import org.graffiti.util.InstanceLoader;
@@ -70,7 +71,7 @@ public class DefaultPluginManager
 	private final List<PluginManagerListener> pluginManagerListeners;
 	
 	/** The preferences of the plugin manager. */
-	private final GravistoPreferences prefs;
+	private final Preferences prefs;
 	
 	// ~ Constructors ===========================================================
 	
@@ -81,7 +82,7 @@ public class DefaultPluginManager
 	 *           the preferences, which contain information about what to
 	 *           load during the instanciation of the plugin manager.
 	 */
-	public DefaultPluginManager(GravistoPreferences prefs) {
+	public DefaultPluginManager(Preferences prefs) {
 		this.prefs = prefs;
 		this.pluginEntries = new Hashtable<String, PluginEntry>();
 		this.pluginManagerListeners = new LinkedList<PluginManagerListener>();
@@ -340,7 +341,7 @@ public class DefaultPluginManager
 			for (String s : loading)
 				System.err.println("Loading of plugin " + s + " not finished (time-out).");
 		}
-		savePrefs();
+//		savePrefs();
 	}
 	
 	private void loadSetOfPlugins(final PluginEntry[] plugins,
@@ -478,8 +479,16 @@ public class DefaultPluginManager
 	 *               if an error occurred while loading one
 	 *               of the plugins.
 	 */
+	/*
+	 * this method cannot work properly anymore with the new preferences implementation
+	 * (non-Javadoc)
+	 * @see org.graffiti.managers.pluginmgr.PluginManager#loadStartupPlugins(org.graffiti.util.ProgressViewer)
+	 */
+	@Deprecated
 	public void loadStartupPlugins(ProgressViewer progressViewer)
 						throws PluginManagerException {
+
+		
 		// load the user's standard plugins
 		int numberOfPlugins = prefs.getInt("numberOfPlugins", 0);
 		
@@ -659,8 +668,9 @@ public class DefaultPluginManager
 		}
 		
 		if (prefs != null) {
-			GravistoPreferences pluginPrefs = prefs.node("pluginPrefs/" +
-								pluginNode.toString());
+			Preferences pluginPrefs;
+//			pluginPrefs = prefs.node("pluginPrefs/" + pluginNode.toString());
+			pluginPrefs = PreferenceManager.getPreferenceForClass(plugin.getClass());
 			
 			// configure the plugin's preferences
 			if (plugin != null)

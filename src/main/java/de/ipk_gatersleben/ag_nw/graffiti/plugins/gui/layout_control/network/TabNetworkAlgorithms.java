@@ -20,7 +20,6 @@ import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.view.View;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 
-import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
 import de.ipk_gatersleben.ag_nw.graffiti.services.algorithms.AlgorithmPanelFactory;
 import de.ipk_gatersleben.ag_nw.graffiti.services.algorithms.SearchAlgorithms;
 import de.ipk_gatersleben.ag_nw.graffiti.services.algorithms.SearchAlgorithms.LogicalOp;

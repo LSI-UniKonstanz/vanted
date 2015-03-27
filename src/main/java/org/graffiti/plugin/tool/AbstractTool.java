@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.prefs.Preferences;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
@@ -32,7 +33,6 @@ import org.AttributeHelper;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
-import org.graffiti.options.GravistoPreferences;
 import org.graffiti.plugin.gui.ToolButton;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.EdgeComponentInterface;
@@ -73,7 +73,7 @@ public abstract class AbstractTool
 	// private Graph graph;
 	
 	/** The preferences of this tool. */
-	protected GravistoPreferences prefs;
+	protected Preferences prefs;
 	
 	/** The current selection that this tool should work on / with. */
 	protected Selection selection;
@@ -591,7 +591,7 @@ public abstract class AbstractTool
 			return new LinkedList<GraphElementComponent>();
 	}
 	
-	public void setPrefs(GravistoPreferences p) {
+	public void setPrefs(Preferences p) {
 		prefs = p;
 	}
 }

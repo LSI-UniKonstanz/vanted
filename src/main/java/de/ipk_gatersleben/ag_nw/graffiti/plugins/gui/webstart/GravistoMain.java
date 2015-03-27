@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.prefs.Preferences;
 
 import javax.swing.ImageIcon;
 import javax.swing.JApplet;
@@ -29,10 +30,10 @@ import org.graffiti.attributes.AttributeTypesManager;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.editor.SplashScreenInterface;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.managers.pluginmgr.DefaultPluginManager;
 import org.graffiti.managers.pluginmgr.PluginManager;
 import org.graffiti.managers.pluginmgr.PluginManagerException;
-import org.graffiti.options.GravistoPreferences;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.DefaultContextMenuManager;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
@@ -91,7 +92,7 @@ public class GravistoMain extends JApplet {
 		
 		splashScreen.setText("Read plugin information");
 		
-		GravistoPreferences prefs = GravistoPreferences
+		Preferences prefs = Preferences
 							.userNodeForPackage(GravistoMain.class);
 		pluginManager = GravistoMainHelper.getPluginManager();
 		
@@ -104,7 +105,7 @@ public class GravistoMain extends JApplet {
 		pluginManager.addPluginManagerListener(attributeTypesManager);
 		
 		// construct and open the editor's main frame
-		GravistoPreferences uiPrefs = prefs.node("ui");
+		Preferences uiPrefs = prefs.node("ui");
 		uiPrefs.put("showPluginManagerMenuOptions", "false");
 		uiPrefs.put("showPluginMenu", "false");
 		
@@ -219,10 +220,10 @@ public class GravistoMain extends JApplet {
 		}
 		
 		// construct and open the editor's main frame
-		GravistoPreferences prefs = GravistoPreferences.userNodeForPackage(GravistoMain.class);
+		Preferences prefs = Preferences.userNodeForPackage(GravistoMain.class);
 		pluginManager = new DefaultPluginManager(prefs);
 		
-		GravistoPreferences uiPrefs = prefs.node("ui");
+		Preferences uiPrefs = prefs.node("ui");
 		uiPrefs.put("showPluginManagerMenuOptions", "false");
 		uiPrefs.put("showPluginMenu", "false");
 		

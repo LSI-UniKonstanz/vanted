@@ -12,7 +12,6 @@ package org.graffiti.plugins.modes.defaults;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Event;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -30,8 +29,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.prefs.Preferences;
 
-import javax.sound.midi.SysexMessage;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -46,6 +45,7 @@ import javax.swing.undo.CannotUndoException;
 import org.AttributeHelper;
 import org.ErrorMsg;
 import org.Vector2d;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.SortedCollectionAttribute;
@@ -60,7 +60,10 @@ import org.graffiti.graph.Node;
 import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.graphics.DimensionAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
+import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.gui.ToolButton;
+import org.graffiti.plugin.parameter.BooleanParameter;
+import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.CoordinateSystem;
 import org.graffiti.plugin.view.EdgeComponentInterface;
 import org.graffiti.plugin.view.EdgeShape;
@@ -81,12 +84,21 @@ import org.graffiti.undo.GraphElementsDeletionEdit;
  * @author Holleis, Klukas
  * @version $Revision: 1.67.6.2 $
  */
-public class MegaMoveTool extends MegaTools {
+public class MegaMoveTool extends MegaTools implements PreferencesInterface{
+//	private static final String PREFERENCE_USE_MOUSE_WHEEL_TO_ZOOM = "Use Mouse-wheel To Zoom";
+
+	private static final String PREFERENCE_SNAP_TO_GRID = "Snap to Grid";
+
 	// ~ Static fields/initializers =============================================
 	private static String rkey = "selrect";
 
 	static final Logger logger = Logger.getLogger(MegaMoveTool.class);
+	
+	static {
+		logger.setLevel(Level.INFO);
+	}
 	// ~ Instance fields ========================================================
+	
 	
 	/**
 	 * Specifies if - when there is a selection - graphelements are highlighted
@@ -162,6 +174,14 @@ public class MegaMoveTool extends MegaTools {
 	private CoordinateAttribute lastBendAdded;
 	private double lastBendAddedInitX, lastBendAddedInitY;
 	private long lastBendAddedTime = 0;
+	
+	
+	public static int gridMovement = 10;
+	public static int gridResizeSmallNodes = 2;
+	public static int gridResizeNormalNodes = 5;
+	public static int gridResizeLargeNodes = 10;
+	public static boolean gridEnabled = true;
+	
 	
 	private static MegaMoveTool thisInstance;
 	
@@ -277,6 +297,24 @@ public class MegaMoveTool extends MegaTools {
 		};
 	}
 	
+	
+	
+	@Override
+	public List<Parameter> getDefaultParameters() {
+		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
+		arrayList.add(new BooleanParameter(true, PREFERENCE_SNAP_TO_GRID, "Enable/Disable this option let nodes snap to the grid"));
+		return arrayList;
+	}
+
+
+
+	@Override
+	public void updatePreferences(Preferences preferences) {
+		gridEnabled = preferences.getBoolean(PREFERENCE_SNAP_TO_GRID, true);
+	}
+
+
+
 	private void processMovement(int diffX, int diffY, ActionEvent actionEvent) {
 		System.out.print(".");
 		int xn = diffX;
@@ -431,6 +469,7 @@ public class MegaMoveTool extends MegaTools {
 	
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		logger.debug("begin mouseMoved");
 		super.mouseMoved(e);
 		Component src;
 		if (SwingUtilities.isMiddleMouseButton(e))
@@ -574,12 +613,12 @@ public class MegaMoveTool extends MegaTools {
 		}
 		
 		if (lastBendHit == null && !dragged) {
-			int x = e.getX();
-			int y = e.getY();
-			if (e.getWhen() - lastClick < 1000) {
-				x = lastClickPoint.x;
-				y = lastClickPoint.y;
-			}
+//			int x = e.getX();
+//			int y = e.getY();
+//			if (e.getWhen() - lastClick < 1000) {
+//				x = lastClickPoint.x;
+//				y = lastClickPoint.y;
+//			}
 			Component c = getFoundComponent();
 			if (c instanceof EdgeComponent) {
 				// break!
@@ -1079,14 +1118,12 @@ public class MegaMoveTool extends MegaTools {
 		}
 	}
 	
-	public static int gridMovement = 10;
-	public static int gridResizeSmallNodes = 2;
-	public static int gridResizeNormalNodes = 5;
-	public static int gridResizeLargeNodes = 10;
-	public static boolean gridEnabled = true;
+
 	
 	public static int getGrid(double sz) {
 		if (!gridEnabled)
+//		boolean snap = PreferenceManager.getPreferenceForClass(MegaMoveTool.class).getBoolean(PREFERENCE_SNAP_TO_GRID, true);
+//		if(!snap)
 			return 0;
 		if (sz < 0)
 			return gridMovement;
@@ -1143,7 +1180,7 @@ public class MegaMoveTool extends MegaTools {
 	
 	private long lastClick = Long.MIN_VALUE;
 	
-	private Point lastClickPoint;
+//	private Point lastClickPoint;
 	
 	/**
 	 * Invoked when the mouse button has been pressed.
@@ -1153,6 +1190,7 @@ public class MegaMoveTool extends MegaTools {
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
+		logger.debug("begin mousePressed");
 		if (e.getWhen() <= lastClick)
 			return;
 		lastClick = e.getWhen();
@@ -1173,7 +1211,7 @@ public class MegaMoveTool extends MegaTools {
 		if (!SwingUtilities.isLeftMouseButton(e) && !SwingUtilities.isMiddleMouseButton(e))
 			return;
 		
-		lastClickPoint = e.getPoint();
+//		lastClickPoint = e.getPoint();
 
 		dragged = false;
 		
@@ -1182,6 +1220,8 @@ public class MegaMoveTool extends MegaTools {
 		selection = session.getSelectionModel().getActiveSelection();
 		
 
+		logger.debug("1");
+		
 		resizeHit = false;
 		resizeHitTl = false;
 		resizeHitTr = false;
@@ -1237,6 +1277,7 @@ public class MegaMoveTool extends MegaTools {
 			}
 			
 			lastPressedPoint = e.getPoint();
+			logger.debug("2");
 		} else
 			if (src instanceof NodeComponent) {
 				NodeComponent nodeComp = (NodeComponent) src;
@@ -1261,11 +1302,9 @@ public class MegaMoveTool extends MegaTools {
 				
 				// if (!isInnerNode(nodeComp.getGraphElement()))
 				mid = !mid;
-				
 				mark(nodeComp,
 									(!resizeHit && !mid),
 									isControlDown(e) || (e.getClickCount() == 1 && e.isShiftDown()), this, true);
-				
 				if (resizeHit) {
 					lastPressedMousePointRel = new Point2D.Double(
 										e.getPoint().getX(),
@@ -1355,6 +1394,7 @@ public class MegaMoveTool extends MegaTools {
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		logger.debug("begin mouseReleased");
 		if(e.getSource() instanceof GraffitiView)
 			((GraffitiView)e.getSource()).setDrawMode(DrawMode.NORMAL);
 
@@ -1432,7 +1472,7 @@ public class MegaMoveTool extends MegaTools {
 		originalCoordinates = null;
 		
 		ToolButton.requestToolButtonFocus();
-		
+		logger.debug("end mouseReleased");
 	}
 	
 	private double min2(double a, double b) {
@@ -1444,7 +1484,7 @@ public class MegaMoveTool extends MegaTools {
 	 */
 	public void reset() {
 		lastPressedPoint = null;
-		lastClickPoint = null;
+//		lastClickPoint = null;
 	}
 	
 	/**

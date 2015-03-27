@@ -75,6 +75,8 @@ public abstract class LineEdgeShape implements EdgeShape {
 	
 	/** The shape of the arrow on the source side. */
 	protected Shape headArrow;
+
+	private ArrowShape headShape;
 	
 	/** The shape of the arrow on the source side. */
 	protected Shape tailArrow;
@@ -412,7 +414,7 @@ public abstract class LineEdgeShape implements EdgeShape {
 			return other;
 		
 		Point2D newTarget = target;
-		ArrowShape tailShape = null;
+//		tailShape = null;
 		
 		String shapeClass = edgeAttr.getArrowtail();
 		
@@ -420,7 +422,8 @@ public abstract class LineEdgeShape implements EdgeShape {
 			hollowSourceArrowShape = shapeClass.contains("Thin");
 			try {
 				shapeClass = StringManipulationTools.stringReplace(shapeClass, "Thin", "");
-				tailShape = (ArrowShape) InstanceLoader.createInstance(shapeClass);
+				if( ! (tailShape != null) || ! (tailShape.getClass().equals(shapeClass)))
+					tailShape = (ArrowShape) InstanceLoader.createInstance(shapeClass);
 			} catch (InstanceCreationException ie) {
 				throw new ShapeNotFoundException(ie.toString());
 			}
@@ -470,7 +473,7 @@ public abstract class LineEdgeShape implements EdgeShape {
 			return other;
 		
 		Point2D newTarget = target;
-		ArrowShape headShape = null;
+//		headShape = null;
 		
 		String shapeClass = edgeAttr.getArrowhead();
 		
@@ -478,7 +481,8 @@ public abstract class LineEdgeShape implements EdgeShape {
 			hollowTargetArrowShape = shapeClass.contains("Thin");
 			try {
 				shapeClass = StringManipulationTools.stringReplace(shapeClass, "Thin", "");
-				headShape = (ArrowShape) InstanceLoader.createInstance(shapeClass);
+				if( ! (headShape != null) || ! (headShape.getClass().getName().equals(shapeClass)) )
+					headShape = (ArrowShape) InstanceLoader.createInstance(shapeClass);
 			} catch (InstanceCreationException ie) {
 				throw new ShapeNotFoundException(ie.toString());
 			}
@@ -496,6 +500,8 @@ public abstract class LineEdgeShape implements EdgeShape {
 	}
 	
 	private static HashMap<String, Point2D> defaultPorts = getDefaultPorts();
+	private ArrowShape tailShape;
+
 	
 	/**
 	 * Returns the coordinates of the port named <code>portName</code>.

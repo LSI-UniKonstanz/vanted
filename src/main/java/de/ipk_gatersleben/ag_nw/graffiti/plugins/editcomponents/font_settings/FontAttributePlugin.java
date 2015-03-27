@@ -6,11 +6,15 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.font_settings;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.StringAttribute;
+import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.EditorPlugin;
+import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.mode.Mode;
 import org.graffiti.plugin.tool.Tool;
+import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiShape;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
@@ -18,8 +22,16 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 public class FontAttributePlugin
 					extends IPK_PluginAdapter
 					implements EditorPlugin {
-	private HashMap<Class<FontAttribute>, Class<FontAttributeEditor>> valueEditComponents;
-	private HashMap<?, ?> attributeComponents;
+	/**
+	 * Maps from an attribute class to an AttributeComponent class. old
+	 * comment: A <code>java.util.Map</code> from <code>Attribute</code> to
+	 * the corresponding <code>LabelValueRow</code>-instance.
+	 */
+	private Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
+	
+	/** The mapping between attribute classes and attributeComponent classes. */
+	private HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
+	
 	
 	public FontAttributePlugin() {
 		this.attributes = new Class[1];
@@ -28,8 +40,8 @@ public class FontAttributePlugin
 		StringAttribute.putAttributeType("nodefont", FontAttribute.class);
 		StringAttribute.putAttributeType("charttitlefont", FontAttribute.class);
 		
-		valueEditComponents = new HashMap<Class<FontAttribute>, Class<FontAttributeEditor>>();
-		attributeComponents = new HashMap<Object, Object>();
+		valueEditComponents = new HashMap<>();
+		attributeComponents = new HashMap<>();
 		
 		valueEditComponents.put(
 							FontAttribute.class,
@@ -40,7 +52,7 @@ public class FontAttributePlugin
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.EditorPlugin#getAttributeComponents()
 	 */
-	public Map<?, ?> getAttributeComponents() {
+	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
 	
@@ -80,7 +92,7 @@ public class FontAttributePlugin
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.EditorPlugin#getValueEditComponents()
 	 */
-	public Map<Class<FontAttribute>, Class<FontAttributeEditor>> getValueEditComponents() {
+	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}
 }

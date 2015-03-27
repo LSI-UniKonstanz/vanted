@@ -10,10 +10,17 @@
 
 package de.muntjak.tinylookandfeel.controlpanel;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  * PlainDialog is a non-modal dialog for showing

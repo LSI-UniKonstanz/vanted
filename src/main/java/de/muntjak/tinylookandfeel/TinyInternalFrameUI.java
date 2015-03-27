@@ -14,10 +14,13 @@ import java.awt.Component;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
-import de.muntjak.tinylookandfeel.borders.*;
+
+import de.muntjak.tinylookandfeel.borders.TinyInternalFrameBorder;
 
 /**
  * TinyInternalFrameUI

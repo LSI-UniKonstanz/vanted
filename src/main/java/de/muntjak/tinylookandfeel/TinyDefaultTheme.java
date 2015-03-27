@@ -10,8 +10,10 @@
 
 package de.muntjak.tinylookandfeel;
 
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.UIDefaults;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;

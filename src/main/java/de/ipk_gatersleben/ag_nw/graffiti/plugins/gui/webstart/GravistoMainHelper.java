@@ -17,6 +17,7 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.prefs.Preferences;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -41,13 +42,13 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.editor.SplashScreenInterface;
 import org.graffiti.graph.Graph;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.managers.pluginmgr.DefaultPluginEntry;
 import org.graffiti.managers.pluginmgr.DefaultPluginManager;
 import org.graffiti.managers.pluginmgr.PluginDescription;
 import org.graffiti.managers.pluginmgr.PluginEntry;
 import org.graffiti.managers.pluginmgr.PluginManager;
 import org.graffiti.managers.pluginmgr.PluginManagerException;
-import org.graffiti.options.GravistoPreferences;
 import org.graffiti.plugin.io.resources.IOurl;
 import org.graffiti.util.PluginHelper;
 import org.graffiti.util.ProgressViewer;
@@ -72,11 +73,11 @@ import de.muntjak.tinylookandfeel.Theme;
 
 public class GravistoMainHelper implements HelperClass {
 	
-	private static final GravistoPreferences prefs = GravistoPreferences.userNodeForPackage(GravistoMainHelper.class);
+	private static final Preferences prefs = PreferenceManager.getPreferenceForClass(GravistoMainHelper.class);
 	
 	private static final PluginManager pluginManager = new DefaultPluginManager(getPreferences());
 	
-	public static GravistoPreferences getPreferences() {
+	public static Preferences getPreferences() {
 		return prefs;
 	}
 	
@@ -297,7 +298,7 @@ public class GravistoMainHelper implements HelperClass {
 		splashScreen.setText("Read plugin information");
 		
 		// construct and open the editor's main frame
-		GravistoPreferences uiPrefs = getPreferences().node("ui");
+		Preferences uiPrefs = getPreferences().node("ui");
 		uiPrefs.put("showPluginManagerMenuOptions", "false");
 		uiPrefs.put("showPluginMenu", "false");
 		

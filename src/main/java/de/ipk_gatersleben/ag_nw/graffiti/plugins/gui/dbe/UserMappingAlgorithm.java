@@ -28,9 +28,6 @@ import org.graffiti.plugin.algorithm.Category;
 
 import com.wcohen.secondstring.Levenstein;
 
-
-
-
 //import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundEntry;
 //import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeEntry;

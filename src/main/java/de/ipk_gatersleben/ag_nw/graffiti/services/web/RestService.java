@@ -1,6 +1,5 @@
 package de.ipk_gatersleben.ag_nw.graffiti.services.web;
 
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import javax.ws.rs.core.MediaType;
@@ -8,7 +7,6 @@ import javax.ws.rs.core.MediaType;
 import org.ErrorMsg;
 
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;

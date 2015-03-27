@@ -10,21 +10,20 @@
 package org.graffiti.plugins.inspectors.defaults;
 
 import java.awt.Component;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 
 import org.ErrorMsg;
 import org.graffiti.editor.MainFrame;
+import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.EditorPluginAdapter;
 import org.graffiti.plugin.editcomponent.NeedEditComponents;
+import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.inspector.InspectorPlugin;
 import org.graffiti.plugin.inspector.InspectorTab;
-import org.graffiti.plugin.inspector.SubtabHostTab;
 import org.graffiti.plugin.view.View;
 import org.graffiti.plugin.view.ViewListener;
 import org.graffiti.selection.SelectionEvent;
@@ -83,9 +82,9 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 	// ~ Methods ================================================================
 	
 	/**
-	 * @see org.graffiti.plugin.editcomponent.NeedEditComponents#setEditComponentMap(java.util.Map)
+	 * @see org.graffiti.plugin.editcomponent.NeedEditComponents#setEditComponentMap(Map)
 	 */
-	public void setEditComponentMap(Map<?, ?> ecMap) {
+	public void setEditComponentMap(Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> ecMap) {
 		this.valueEditComponents = ecMap;
 	}
 	

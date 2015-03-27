@@ -8,9 +8,9 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.svg_exporter;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Stack;
 import java.util.TreeSet;
-import java.util.Map.Entry;
 
 import org.StringManipulationTools;
 

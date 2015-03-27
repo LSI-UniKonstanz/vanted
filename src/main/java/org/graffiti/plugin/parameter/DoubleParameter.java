@@ -126,7 +126,16 @@ public class DoubleParameter
 	@Override
 	public void setValue(Object value) {
 		// TODO
-		this.value = (Double) value;
+		if(value instanceof Double)
+			this.value = (Double) value;
+		if(value instanceof String){
+			try {
+				value = Double.parseDouble((String)value);
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**

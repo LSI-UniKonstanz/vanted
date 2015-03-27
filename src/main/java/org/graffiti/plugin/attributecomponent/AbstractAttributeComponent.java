@@ -12,7 +12,6 @@
  */
 package org.graffiti.plugin.attributecomponent;
 
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 
@@ -22,7 +21,6 @@ import org.graffiti.plugin.view.CoordinateSystem;
 import org.graffiti.plugin.view.GraffitiViewComponent;
 import org.graffiti.plugin.view.GraphElementShape;
 import org.graffiti.plugin.view.ShapeNotFoundException;
-import org.graffiti.plugin.view.Zoomable;
 import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 
@@ -49,6 +47,8 @@ public abstract class AbstractAttributeComponent
 	
 	/** DOCUMENT ME! */
 	protected Point shift;
+	
+	protected Point loc = new Point();
 	
 	// ~ Constructors ===========================================================
 	
@@ -103,6 +103,12 @@ public abstract class AbstractAttributeComponent
 		this.shift = shift;
 	}
 	
+
+	
+	@Override
+	public void adjustComponentPosition() {
+	}
+
 	/**
 	 * Called when a graphics attribute of the attribute represented by this
 	 * component has changed.
@@ -136,7 +142,16 @@ public abstract class AbstractAttributeComponent
 						throws ShapeNotFoundException;
 	
 	
-	public boolean checkVisibility() {
+	/**
+	 * Attribute components can use this method to check if they are
+	 * or should be visible in the view.
+	 * Currently there is hard coded variables defining visibility such as
+	 * presumed size of the component and the current drawing mode
+	 * Future implementation should parameterize this. 
+	 * @param minimumComponentSize TODO
+	 * @return
+	 */
+	public boolean checkVisibility(int minimumComponentSize) {
 		/* 
 		 * only draw component, if it is graphically visible or not FAST mode enabled
 		 */
@@ -146,7 +161,8 @@ public abstract class AbstractAttributeComponent
 				return false;
 			AffineTransform zoom = view.getZoom();
 			//TODO: parameterize those constants..
-			if(getHeight() * zoom.getScaleX() < 10 || getWidth() * zoom.getScaleY() < 10)
+			if(getHeight() * zoom.getScaleX() < minimumComponentSize 
+					|| getWidth() * zoom.getScaleY() < minimumComponentSize)
 				return false;
 			else
 				return true;
@@ -154,6 +170,15 @@ public abstract class AbstractAttributeComponent
 		}
 		else
 			return true;
+	}
+	
+	protected DrawMode getDrawingModeOfView() {
+		if(getParent() instanceof GraffitiView){
+			GraffitiView view = (GraffitiView)getParent();
+			return view.getDrawMode();
+		}
+		else
+			return DrawMode.NORMAL;
 	}
 }
 

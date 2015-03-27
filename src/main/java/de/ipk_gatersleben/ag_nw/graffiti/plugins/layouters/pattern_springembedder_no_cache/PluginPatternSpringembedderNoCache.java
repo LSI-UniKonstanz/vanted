@@ -3,7 +3,8 @@
  *******************************************************************************/
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder_no_cache;
 
-import org.graffiti.options.GravistoPreferences;
+import java.util.prefs.Preferences;
+
 import org.graffiti.plugin.algorithm.Algorithm;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
@@ -27,7 +28,7 @@ public class PluginPatternSpringembedderNoCache
 	 * @see org.graffiti.plugin.GenericPlugin#configure(java.util.prefs.Preferences)
 	 */
 	@Override
-	public void configure(GravistoPreferences p) {
+	public void configure(Preferences p) {
 		super.configure(p);
 		if (algorithms == null) {
 			this.algorithms = new Algorithm[1];

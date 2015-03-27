@@ -11,10 +11,13 @@ package org.graffiti.plugin;
 
 import java.util.Map;
 
+import org.graffiti.attributes.Attribute;
+import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.mode.Mode;
 import org.graffiti.plugin.tool.Tool;
+import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiShape;
 
 /**
@@ -30,7 +33,7 @@ public interface EditorPlugin
 	 * 
 	 * @return DOCUMENT ME!
 	 */
-	public Map<?, ?> getAttributeComponents();
+	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents();
 	
 	/**
 	 * Returns the array of <code>GraffitiComponent</code>s the plugin
@@ -73,8 +76,7 @@ public interface EditorPlugin
 	 * 
 	 * @return DOCUMENT ME!
 	 */
-	@SuppressWarnings("unchecked")
-	public Map getValueEditComponents();
+	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents();
 	
 	public InspectorTab[] getInspectorTabs();
 }

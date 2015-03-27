@@ -10,13 +10,21 @@
 
 package de.muntjak.tinylookandfeel;
 
-import javax.swing.*;
-import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.UIResource;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 import java.util.HashMap;
+
+import javax.swing.ButtonModel;
+import javax.swing.Icon;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.UIResource;
 
 /**
  * MenuItemIconFactory

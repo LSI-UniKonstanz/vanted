@@ -53,7 +53,17 @@ public abstract class AttributeComponent
 	 */
 	public abstract void setGraphElementShape(GraphElementShape geShape);
 	
+	
+	/**
+	 * adjust the component size and position
+	 */
 	public abstract void adjustComponentSize();
+	
+	
+	/**
+	 * adjust the component position only
+	 */
+	public abstract void adjustComponentPosition();
 	
 	/**
 	 * DOCUMENT ME!

@@ -9,10 +9,15 @@ import info.clearthought.layout.TableLayoutConstants;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.prefs.Preferences;
 
 import javax.swing.JComponent;
 
 import org.AttributeHelper;
+import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.graph.Edge;
@@ -21,15 +26,24 @@ import org.graffiti.graph.Node;
 import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.graphics.DimensionAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
+import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.attributecomponent.AbstractAttributeComponent;
+import org.graffiti.plugin.parameter.IntegerParameter;
+import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.ShapeNotFoundException;
+import org.graffiti.plugins.views.defaults.DrawMode;
+import org.graffiti.plugins.views.defaults.GraffitiView;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.viewcomponents.EdgeComponentHelper;
 
 public class ChartAttributeComponent extends AbstractAttributeComponent
-		implements GraphicAttributeConstants {
+		implements GraphicAttributeConstants, PreferencesInterface {
 	private static final long serialVersionUID = 1L;
 	
+	static Logger logger = Logger.getLogger(ChartAttributeComponent.class);
+	
+	private static int MINSIZE_VISIBILITY;
+	public static String PREF_MINSIZE_VISIBILITY="min-size visibility";
 	/**
 	 * Flatness value used for the <code>PathIterator</code> used to place
 	 * labels.
@@ -37,6 +51,22 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 	protected final double flatness = 1.0d;
 	private Point loc = new Point();
 	
+	BufferedImage bufferedImage;
+	
+	
+	
+	@Override
+	public List<Parameter> getDefaultParameters() {
+		List<Parameter> params = new ArrayList<Parameter>();
+		params.add(new IntegerParameter(10, PREF_MINSIZE_VISIBILITY, "<html>Minimum size of width/height, that this <br/>component will be visible during painting"));
+		return params;
+	}
+
+	@Override
+	public void updatePreferences(Preferences preferences) {
+		MINSIZE_VISIBILITY = preferences.getInt(PREF_MINSIZE_VISIBILITY, 10);
+	}
+
 	@Override
 	public void attributeChanged(Attribute attr) throws ShapeNotFoundException {
 		GraphElement ge = (GraphElement) this.attr.getAttributable();
@@ -112,6 +142,12 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 			else
 				validateTree();
 		}
+		
+//		logger.debug("recreating chartimage with w h" + getWidth()+" "+getHeight());
+		bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+		Graphics graphics2 = bufferedImage.getGraphics();
+		super.print(graphics2);
+		
 	}
 	
 	private boolean isLabelTop() {
@@ -176,8 +212,19 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 	
 	@Override
 	public void paint(Graphics g) {
-		if(checkVisibility())
+		if(isPaintingForPrint()) {
+//			logger.debug("paint for bufferedimage");
 			super.paint(g);
+		}
+		if(checkVisibility(MINSIZE_VISIBILITY)) {
+			if(getParent() instanceof GraffitiView) {
+				if ( ((GraffitiView)getParent()).getDrawMode() == DrawMode.REDUCED) {
+					g.drawImage(bufferedImage, 0, 0, null);
+				}  else
+					super.paint(g);
+			}
+		}
+		
 	}
 	
 	/*

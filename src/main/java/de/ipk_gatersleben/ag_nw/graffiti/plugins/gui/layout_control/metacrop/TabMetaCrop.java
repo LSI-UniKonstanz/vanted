@@ -1,16 +1,24 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.metacrop;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.prefs.Preferences;
+
 import org.AttributeHelper;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
+import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.inspector.InspectorTab;
+import org.graffiti.plugin.parameter.BooleanParameter;
+import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
 
 @SuppressWarnings("nls")
-public class TabMetaCrop extends PathwayWebLinkTab {
+public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterface{
 	
 	private static final long serialVersionUID = 1L;
+	
 	
 	public TabMetaCrop() {
 		
@@ -24,6 +32,23 @@ public class TabMetaCrop extends PathwayWebLinkTab {
 		
 	}
 	
+	
+	
+	
+	@Override
+	public List<Parameter> getDefaultParameters() {
+		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
+		arrayList.add(new BooleanParameter(true, PREFERENCE_TAB_SHOW, "Enable/Disable this option to show/hide the Metacrop Tab"));
+		return arrayList;
+	}
+
+	
+	@Override
+	public void updatePreferences(Preferences preferences) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	@Override
 	public void addAnnotationsToGraphElements(Graph graph) {
 		

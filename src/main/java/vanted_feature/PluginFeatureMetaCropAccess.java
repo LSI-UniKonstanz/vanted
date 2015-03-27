@@ -3,11 +3,12 @@
  *******************************************************************************/
 package vanted_feature;
 
+import java.util.prefs.Preferences;
+
 import org.FeatureSet;
 import org.Release;
 import org.ReleaseInfo;
 import org.SettingsHelperDefaultIsTrue;
-import org.graffiti.options.GravistoPreferences;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 
@@ -32,7 +33,7 @@ public class PluginFeatureMetaCropAccess
 	 * @see org.graffiti.plugin.GenericPlugin#configure(java.util.prefs.Preferences)
 	 */
 	@Override
-	public void configure(GravistoPreferences p) {
+	public void configure(Preferences p) {
 		super.configure(p);
 	}
 }

@@ -51,7 +51,6 @@ public class GraffitiValueEditComponents
 	/**
 	 * Constructs a new <code>GraffitiValueEditComponent</code>.
 	 */
-	@SuppressWarnings("unchecked")
 	public GraffitiValueEditComponents() {
 		super();
 		

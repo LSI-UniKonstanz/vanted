@@ -32,7 +32,6 @@ import org.graffiti.graphics.EdgeGraphicAttribute;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.EdgeComponentInterface;
 import org.graffiti.plugin.view.EdgeShape;
-import org.graffiti.plugin.view.GraffitiViewComponent;
 import org.graffiti.plugin.view.NodeComponentInterface;
 import org.graffiti.plugin.view.NodeShape;
 import org.graffiti.plugin.view.ShapeNotFoundException;
@@ -252,14 +251,18 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		String id = attr.getId();
 		
 		if (id.equals(LINEMODE) || id.equals(FRAMETHICKNESS)
-							|| id.equals(FRAMECOLOR)) {
+							|| id.equals(FRAMECOLOR)
+							) {
 			repaint();
 		} else
 			if (id.equals(DOCKING)) {
 				((EdgeShape) this.shape).buildShape((EdgeGraphicAttribute) attr,
 									(NodeShape) sourceComp.getShape(), (NodeShape) targetComp
 														.getShape());
-			} else {
+			} if(id.startsWith("bend")) {
+				updateShape();
+			}
+			else {
 				createNewShape(coordinateSystem);
 			}
 		
@@ -269,7 +272,31 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	 * Calls buildShape if no NodeShapes have changed.
 	 */
 	public void updateShape() {
-		nodeComponentChanged();
+//		nodeComponentChanged();
+
+		EdgeGraphicAttribute geAttr;
+		geAttr = (EdgeGraphicAttribute) this.graphElement
+				.getAttribute(GRAPHICS);
+		try {			
+			((EdgeShape)this.shape).buildShape(geAttr,
+					(sourceComp != null ? (NodeShape) this.sourceComp.getShape()
+							: null),
+							(targetComp != null ? (NodeShape) this.targetComp.getShape()
+									: null));
+		} catch (ShapeNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		this.adjustComponentSize();
+
+		for (Iterator<?> it = this.attributeComponents.values().iterator(); it
+				.hasNext();) {
+			AttributeComponent attrComp = (AttributeComponent) it.next();
+			attrComp.setShift(this.getLocation());
+			attrComp.adjustComponentPosition();
+//			attrComp.adjustComponentSize();
+		}
+		
 	}
 	
 	/**
@@ -291,15 +318,25 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		}
 		geAttr = (EdgeGraphicAttribute) this.graphElement
 							.getAttribute(GRAPHICS);
+		
 		String shapeClass = geAttr.getShape();
+//		String curShapeNameClassName = null;
+		
 		EdgeShape newShape = null;
 		
-		try {
-			newShape = (EdgeShape) InstanceLoader.createInstance(shapeClass);
-		} catch (InstanceCreationException ie) {
-			throw new ShapeNotFoundException(ie.toString());
-		}
-		
+//		if(this.shape != null)
+//			curShapeNameClassName = this.shape.getClass().getName();
+//		
+//		if( ! shapeClass.equals(curShapeNameClassName)) {
+			try {
+				newShape = (EdgeShape) InstanceLoader.createInstance(shapeClass);
+				this.shape = newShape;
+			} catch (InstanceCreationException ie) {
+				throw new ShapeNotFoundException(ie.toString());
+			}
+//		} else
+//			newShape = (EdgeShape)this.shape;
+//		
 		// get graphic attribute and pass it to the shape
 		newShape.buildShape(geAttr,
 							(sourceComp != null ? (NodeShape) this.sourceComp.getShape()
@@ -376,12 +413,12 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 							(int) Math.floor(bounds.getY()) - 1,
 							(int) (Math.ceil(bounds.getWidth())) + 2,
 							(int) (Math.ceil(bounds.getHeight())) + 2);
-		for (GraffitiViewComponent ac : attributeComponents.values()) {
-			if (ac instanceof AttributeComponent) {
-				AttributeComponent acc = (AttributeComponent) ac;
-				acc.adjustComponentSize();
-			}
-		}
+//		for (GraffitiViewComponent ac : attributeComponents.values()) {
+//			if (ac instanceof AttributeComponent) {
+//				AttributeComponent acc = (AttributeComponent) ac;
+//				acc.adjustComponentSize();
+//			}
+//		}
 	}
 	
 	@Override

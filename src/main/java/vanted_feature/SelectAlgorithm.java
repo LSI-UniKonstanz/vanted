@@ -7,11 +7,8 @@ import java.util.Set;
 import org.FeatureSet;
 import org.Release;
 import org.ReleaseInfo;
-import org.graffiti.editor.MainFrame;
-import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.Category;
-import org.graffiti.selection.Selection;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectEdgesAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectNodesWithExperimentalDataAlgorithm;

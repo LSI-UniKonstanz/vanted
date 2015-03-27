@@ -127,6 +127,10 @@ implements GraffitiViewComponent, GraphicAttributeConstants {
 		this.dependentComponents.add(comp);
 	}
 
+	public List<GraphElementComponent> getDependentGraphElementComponents() {
+		return dependentComponents;
+	}
+	
 	/**
 	 * Called when an attribute of the GraphElement represented by this
 	 * component has changed.

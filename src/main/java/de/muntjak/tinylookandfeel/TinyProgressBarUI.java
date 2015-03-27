@@ -10,11 +10,18 @@
 
 package de.muntjak.tinylookandfeel;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JProgressBar;
+import javax.swing.LookAndFeel;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 

@@ -3,13 +3,13 @@
  *******************************************************************************/
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder;
 
+import java.util.prefs.Preferences;
+
 import org.graffiti.attributes.AttributeDescription;
 import org.graffiti.attributes.BooleanAttribute;
-import org.graffiti.options.GravistoPreferences;
 import org.graffiti.plugin.algorithm.Algorithm;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.BendsLaunchGUI;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.BringToFrontOrBackAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.BundleParallelEdges;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.DuplicateEdge;
@@ -65,7 +65,7 @@ public class PluginPatternSpringembedder
 	 * @see org.graffiti.plugin.GenericPlugin#configure(java.util.prefs.Preferences)
 	 */
 	@Override
-	public void configure(GravistoPreferences p) {
+	public void configure(Preferences p) {
 		super.configure(p);
 	}
 }

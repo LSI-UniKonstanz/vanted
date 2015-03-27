@@ -1,9 +1,7 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.svg_exporter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.AttributeHelper;
