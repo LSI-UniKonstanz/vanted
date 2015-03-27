@@ -58,16 +58,6 @@ public class PatternTabsForInspector
 		
 //		tablist.add(new TabBiomodels());
 		
-		// if (ReleaseInfo.getIsAllowedFeature(FeatureSet.SBGN))
-		// subtabsPathway.add(new TabSBGN());
-		
-		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR) {
-			attributeDescriptions = new org.graffiti.attributes.AttributeDescription[] {
-								new org.graffiti.attributes.AttributeDescription("role",
-													org.graffiti.attributes.StringAttribute.class, "SBGN:Role", true, true, null)
-			};
-		}
-		
 //		if (subtabsPathway.size() > 0)
 //			tablist.add(getSubtab("Pathways", subtabsPathway));
 		

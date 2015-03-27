@@ -409,9 +409,6 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 				if (lbl == null || lbl.length() == 0)
 					continue;
 				
-				if (AttributeHelper.getAttributeValue(n, "sbgn", "role", "", "").equals("COMPARTMENT"))
-					continue;
-				
 				String tn = KeggGmlHelper.getKeggType(n);
 				if (tn != null && tn.equals("map"))
 					continue;

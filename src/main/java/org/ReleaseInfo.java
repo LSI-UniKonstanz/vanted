@@ -157,8 +157,6 @@ public class ReleaseInfo implements HelperClass {
 					return true;
 			case FUNCAT_ACCESS:
 				return true;
-			case SBGN:
-				return false;
 			case URL_NODE_ANNOTATION:
 				if (currentRelease == Release.KGML_EDITOR)
 					return false;
