@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import javax.help.CSH;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
@@ -52,24 +54,17 @@ import org.Release;
 import org.ReleaseInfo;
 import org.StringManipulationTools;
 import org.SystemInfo;
+import org.apache.log4j.Logger;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.editor.actions.ClipboardService;
-import org.graffiti.editor.actions.ShowPreferencesAction;
 import org.graffiti.plugin.gui.GraffitiContainer;
 import org.graffiti.plugin.gui.GraffitiMenu;
+import org.vanted.osx.OSXSupport;
 
-import com.apple.eawt.AboutHandler;
 import com.apple.eawt.Application;
-import com.apple.eawt.PreferencesHandler;
-import com.apple.eawt.QuitHandler;
-import com.apple.eawt.QuitResponse;
-import com.apple.eawt.AppEvent.AboutEvent;
-import com.apple.eawt.AppEvent.PreferencesEvent;
-import com.apple.eawt.AppEvent.QuitEvent;
 
-import apple.dts.samplecode.osxadapter.OSXAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.plugin_info.PluginInfoHelper;
@@ -89,6 +84,9 @@ public class MenuItemInfoDialog
 		extends GraffitiMenu
 		implements GraffitiContainer {
 	// to avoid collisions let ID be package name + menu + name of the menu
+	
+	private static final Logger logger = Logger.getLogger(MenuItemInfoDialog.class.getName());
+    
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -298,7 +296,22 @@ public class MenuItemInfoDialog
 				// OSXAdapter.setAboutHandler(this, getClass().getDeclaredMethod("showAbout", (Class[]) null));
 				// OSXAdapter.setQuitHandler(this, getClass().getDeclaredMethod("doQuit", (Class[]) null));
 				// OSXAdapter.setPreferencesHandler(this, getClass().getDeclaredMethod("showPreferences", (Class[]) null));
-				Application macApplication = Application.getApplication();
+				
+				Action aboutAction = new AbstractAction() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						logger.debug("about action emtpy");
+						showAbout();
+					}
+				};
+				OSXSupport.addOSXHandler("com.apple.eawt.AboutHandler",
+						OSXSupport.HANDLE_ABOUT,
+            			"setAboutHandler",
+            			aboutAction);
+				
+				
 				// implement About menu specific for Mac OS in the top menu bar
 //				macApplication.setAboutHandler(new AboutHandler() {
 //					

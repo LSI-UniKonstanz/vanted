@@ -1436,7 +1436,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	
 	final ExecutorService loader = Executors.newFixedThreadPool(1);
 	
-	public void loadGraphInBackground(final File[] proposedFiles, final ActionEvent ae, boolean autoSwitch)
+	public void loadGraphInBackground(File[] proposedFiles, final ActionEvent ae, boolean autoSwitch)
 			
 			throws IllegalAccessException, InstantiationException {
 		final ArrayList<File> files = new ArrayList<File>();
@@ -1456,13 +1456,18 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				}
 			}
 			final EditorSession fesf = esf;
-			if (!windowCheck(fesf, file.getAbsolutePath(), autoSwitch))
+			if (!windowCheck(fesf, file.getAbsolutePath(), autoSwitch)){
 				filesToBeIgnored.add(file);
+			}
 		}
 		
-		for (File f : proposedFiles)
-			if (!filesToBeIgnored.contains(f))
+		for (File f : proposedFiles) {
+			
+			if (!filesToBeIgnored.contains(f)) {
 				files.add(f);
+			}
+		}
+		
 		
 		if (files.size() > 0)
 			loader.submit(new Runnable() {
@@ -1476,7 +1481,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 							Graph graph = null;
 							IOurl url = null;
 							if (file.exists()) {
-								System.out.println("Read file: " + file.getAbsolutePath());
+								logger.debug("Read file: " + file.getAbsolutePath());
 								final String fileName = file.getName();
 								showMessage("Loading graph file (" + fileName + ")... [" + i + "/" + files.size() + "]",
 										MessageType.PERMANENT_INFO);
