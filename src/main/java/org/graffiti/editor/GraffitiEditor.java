@@ -27,7 +27,6 @@ import org.graffiti.managers.PreferenceManager;
 import org.graffiti.managers.pluginmgr.DefaultPluginManager;
 import org.graffiti.managers.pluginmgr.PluginManager;
 import org.graffiti.managers.pluginmgr.PluginManagerException;
-import org.graffiti.options.GravistoPreferences;
 
 /**
  * Contains the graffiti editor.

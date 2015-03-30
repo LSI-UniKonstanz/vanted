@@ -63,8 +63,6 @@ import org.graffiti.plugin.gui.GraffitiContainer;
 import org.graffiti.plugin.gui.GraffitiMenu;
 import org.vanted.osx.OSXSupport;
 
-import com.apple.eawt.Application;
-
 import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.plugin_info.PluginInfoHelper;

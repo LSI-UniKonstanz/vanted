@@ -2,7 +2,6 @@ package org.vanted;
 
 import java.awt.Component;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.prefs.Preferences;
 
@@ -18,9 +17,6 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
-import org.graffiti.plugin.parameter.StringParameter;
-
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.LookAndFeelWrapper;
 
 /**
  * Global Preference class for VANTED.

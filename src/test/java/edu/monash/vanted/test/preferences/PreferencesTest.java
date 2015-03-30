@@ -1,13 +1,5 @@
 package edu.monash.vanted.test.preferences;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
-
-import org.ReleaseInfo;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.GenericPlugin;
 import org.junit.Before;

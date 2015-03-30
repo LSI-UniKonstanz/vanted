@@ -9,7 +9,6 @@ import java.util.prefs.Preferences;
 import javax.swing.KeyStroke;
 
 import org.graffiti.graph.Graph;
-import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.Category;
@@ -17,8 +16,6 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
-
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffitiView;
 
 public class TestAlgorithm2 implements Algorithm, PreferencesInterface{
 

@@ -1,12 +1,12 @@
 package org.graffiti.options;
 
+import info.clearthought.layout.TableLayout;
+import info.clearthought.layout.TableLayoutConstants;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Arrays;
-
-import info.clearthought.layout.TableLayout;
-import info.clearthought.layout.TableLayoutConstants;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
