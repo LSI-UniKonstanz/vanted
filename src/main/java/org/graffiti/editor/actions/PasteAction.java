@@ -69,7 +69,7 @@ public class PasteAction extends SelectionAction {
 	
 	HashMap<String, Integer> pasteHash2Offset = new HashMap<String, Integer>();
 	
-	public static String pastedNodeID = "pastedNode";
+	public static final String PASTED_NODE = "pastedNode";
 	
 	/**
 	 * Executes this action.
@@ -113,7 +113,7 @@ public class PasteAction extends SelectionAction {
 				}
 			}
 			for (Node node : newGraph.getNodes())
-				AttributeHelper.setAttribute(node, "", pastedNodeID, Boolean.TRUE);
+				AttributeHelper.setAttribute(node, "", PASTED_NODE, Boolean.TRUE);
 			Graph workGraph = getGraph();
 			boolean showGraphInNewView = false;
 			if (workGraph == null) {

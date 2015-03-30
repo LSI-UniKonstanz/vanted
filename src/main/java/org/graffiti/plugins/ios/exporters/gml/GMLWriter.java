@@ -38,6 +38,7 @@ import org.graffiti.attributes.ShortAttribute;
 import org.graffiti.attributes.SortedCollectionAttribute;
 import org.graffiti.attributes.StringAttribute;
 import org.graffiti.editor.MainFrame;
+import org.graffiti.editor.actions.PasteAction;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
@@ -132,6 +133,8 @@ public class GMLWriter
 		AttributeManager.getInstance().addUnwrittenAttribute(".graphics.bends");
 		// dontWriteAttrs.add(".tooltip");
 		AttributeManager.getInstance().addUnwrittenAttribute(".id");
+		
+		AttributeManager.getInstance().addUnwrittenAttribute("." + PasteAction.PASTED_NODE);
 		
 	}
 	

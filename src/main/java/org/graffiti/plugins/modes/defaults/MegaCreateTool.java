@@ -559,14 +559,6 @@ public class MegaCreateTool
 		}
 	}
 	
-	public static boolean isPastedNode(Node node) {
-		try {
-			return node.getBoolean(PasteAction.pastedNodeID);
-		} catch (Exception err) {
-			return false;
-		}
-	}
-	
 	public boolean isCreatingEdge() {
 		return creatingEdge;
 	}
