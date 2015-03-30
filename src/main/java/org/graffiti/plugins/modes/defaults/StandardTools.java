@@ -79,12 +79,6 @@ public class StandardTools
 		guiComponents[1] = megaMoveButton;
 		// guiComponents[2] = labelButton;
 		
-		AttributeManager.getInstance().addUnwrittenAttribute("." + PasteAction.pastedNodeID);
-		
-		this.attributeDescriptions = new AttributeDescription[] {
-							new AttributeDescription(PasteAction.pastedNodeID, BooleanAttribute.class, "is pasted", true, false, null)
-		};
-		
 	}
 	
 	// ~ Methods ================================================================

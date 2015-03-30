@@ -69,6 +69,7 @@ import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.attributes.CompositeAttribute;
 import org.graffiti.attributes.StringAttribute;
 import org.graffiti.editor.MainFrame;
+import org.graffiti.editor.actions.PasteAction;
 import org.graffiti.event.ListenerManager;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
@@ -175,6 +176,8 @@ public class DefaultEditPanel extends EditPanel {
 			discardedRowIDs.add("Edge:anchor");
 			discardedRowIDs.add("Edge:rounding");
 			discardedRowIDs.add("data");
+			
+			discardedRowIDs.add(PasteAction.PASTED_NODE);
 			
 			if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR) {
 				addDiscarded(discardedRowIDs, new String[] {
