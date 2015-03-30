@@ -108,6 +108,14 @@ public class InspectorContainer
 		addTabInHierarchy(tab, icon);
 	}
 	
+	/**
+	 * adds a given tab into the hierarchy of tabs.
+	 * If this hierachy doesn't exist yet it is created
+	 * 
+	 * The hierarchy is given by the tabs category string. This category string
+	 * is a '.' separated multi token string where each token represents a hierarchy level
+	 *
+	 */
 	private synchronized void addTabInHierarchy(InspectorTab tab, ImageIcon icon) {
 		
 		String nestedTabPath = tab.getTabParentPath();
@@ -131,7 +139,7 @@ public class InspectorContainer
 
 		} else {
 			JTabbedPane curTabbedPane = this;
-			SubtabHostTab curHierarchySubHostTab = null;
+			SubtabHostTab curHierarchySubHostTab = null; //Inspectortab, that can have subtabs
 			Collection<InspectorTab> curListInspectorTabs = tabs;
 			StringTokenizer pathtokenizer = new StringTokenizer(nestedTabPath,".");
 			
@@ -139,7 +147,7 @@ public class InspectorContainer
 				curHierarchySubHostTab = null;
 				String curHierarchyTabName = pathtokenizer.nextToken();
 				
-				for(InspectorTab curTab : curListInspectorTabs){
+				for(InspectorTab curTab : curListInspectorTabs){ //check all tabs of the current level
 					if(curTab.getTitle().equals(curHierarchyTabName)) {
 						if(curTab instanceof SubtabHostTab) {
 							curHierarchySubHostTab = (SubtabHostTab)curTab;
@@ -154,12 +162,12 @@ public class InspectorContainer
 				/* sub host tab not found, create one */
 				if(curHierarchySubHostTab == null) {
 					curHierarchySubHostTab = new SubtabHostTab(curHierarchyTabName);
-					curListInspectorTabs.add(curHierarchySubHostTab);
+					curListInspectorTabs.add(curHierarchySubHostTab); //add new subtabhosttab to current list of of tabs of current level
 					logger.debug("adding subhosttab:"+curHierarchySubHostTab.getTitle()+" to "+curTabbedPane.toString());
 					curTabbedPane.addTab(curHierarchySubHostTab.getTitle(), curHierarchySubHostTab.getIcon(), curHierarchySubHostTab);
 					curTabbedPane = curHierarchySubHostTab.getTabbedPane();
 				}
-				curListInspectorTabs = curHierarchySubHostTab.getTabs();
+				curListInspectorTabs = curHierarchySubHostTab.getTabs(); //for the next 'recursive' call into the hierarchy
 			}
 			
 			if(curHierarchySubHostTab != null) {
