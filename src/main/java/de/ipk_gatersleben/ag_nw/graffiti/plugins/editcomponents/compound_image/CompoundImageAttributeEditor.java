@@ -10,6 +10,9 @@ import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
 import java.awt.MediaTracker;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -18,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -30,10 +34,9 @@ import org.graffiti.attributes.Attribute;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
-import org.jdesktop.swingx.graphics.GraphicsUtilities;
 
-//import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundEntry;
-//import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundService;
+// import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundEntry;
+// import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.CachedWebDownload;
 
 /**
@@ -64,9 +67,9 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 	
 	@SuppressWarnings("deprecation")
 	public static JLabel getCompoundImageComponent(
-						JLabel currentInstance,
-						String imgName,
-						boolean acceptNULLreturn, int sizex, int sizey) {
+			JLabel currentInstance,
+			String imgName,
+			boolean acceptNULLreturn, int sizex, int sizey) {
 		
 		ImageIcon graphicComponent = null;
 		if (!knownInvalidUrls.contains(imgName)) {
@@ -75,13 +78,22 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 				if (imgName != null && imgName.length() > 0 && (!imgName.contains("/")) && (!imgName.contains("\\") && (!imgName.contains(".")))) {
 					if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS))
 						cachedFileName = CachedWebDownload.getCacheURL(new URL("http://www.genome.ad.jp/Fig/compound_small/" + imgName + ".gif"), imgName + ".gif",
-											"compound_image").toExternalForm();
+								"compound_image").toExternalForm();
 					else
 						cachedFileName = null;
 				} else {
 					cachedFileName = CachedWebDownload.getCacheURL(new URL(imgName), CachedWebDownload.getFileIdFromUrl(imgName), "image").toExternalForm();
 				}
-				BufferedImage bi = GraphicsUtilities.loadCompatibleImage(new URL(cachedFileName));
+				BufferedImage bi = ImageIO.read(new URL(cachedFileName));
+				if (!GraphicsEnvironment.isHeadless()) {
+					GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+					if (!bi.getColorModel().equals(gc.getColorModel())) {
+						BufferedImage compatibleImage = gc.createCompatibleImage(bi.getWidth(), bi.getHeight(), bi.getTransparency());
+						Graphics g = compatibleImage.getGraphics();
+						g.drawImage(bi, 0, 0, null);
+						g.dispose();
+					}
+				}
 				graphicComponent = new ImageIcon(bi);
 			} catch (NullPointerException npe) {
 				graphicComponent = null;
@@ -93,7 +105,16 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 			}
 			if (graphicComponent == null) {
 				try {
-					BufferedImage bi = GraphicsUtilities.loadCompatibleImage(new File(imgName).toURL());
+					BufferedImage bi = ImageIO.read(new File(imgName).toURL());
+					if (!GraphicsEnvironment.isHeadless()) {
+						GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+						if (!bi.getColorModel().equals(gc.getColorModel())) {
+							BufferedImage compatibleImage = gc.createCompatibleImage(bi.getWidth(), bi.getHeight(), bi.getTransparency());
+							Graphics g = compatibleImage.getGraphics();
+							g.drawImage(bi, 0, 0, null);
+							g.dispose();
+						}
+					}
 					graphicComponent = new ImageIcon(bi);
 					// graphicComponent = new ImageIcon(imgName);
 				} catch (Exception errrr) {
@@ -149,10 +170,10 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 			if (imgName.startsWith("cpd:"))
 				imgName = imgName.substring("cpd:".length());
 			
-//			CompoundEntry ce = CompoundService.getInformation(imgName);
-//			if (ce != null) {
-//				return ce.getID() + ".gif";
-//			}
+			// CompoundEntry ce = CompoundService.getInformation(imgName);
+			// if (ce != null) {
+			// return ce.getID() + ".gif";
+			// }
 			if (imgName.startsWith("C") && !imgName.contains(".")) {
 				imgName = imgName + ".gif";
 			}
@@ -162,7 +183,7 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 	
 	public JComponent getComponent() {
 		return TableLayout.getSplitVertical(imageContainer, compoundNumber,
-							TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
+				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
 	}
 	
 	public void setEditFieldValue() {
@@ -178,7 +199,7 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 	public void setValue() {
 		String text = compoundNumber.getText();
 		if (!text.equals(EMPTY_STRING) && !text.equals(IMAGE_NA)
-							&& !this.displayable.getValue().toString().equals(text)) {
+				&& !this.displayable.getValue().toString().equals(text)) {
 			this.displayable.setValue(text);
 		}
 	}
