@@ -54,7 +54,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.JLabelHTMLlink;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.addons.AddonManagerPlugin;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.plugin_info.PluginInfoHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.LookAndFeelWrapper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.ThemedLookAndFeelInfo;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.Main;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.TextFile;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
@@ -139,10 +138,6 @@ extends GraffitiAction
 					// i++;
 					// }
 
-					ThemedLookAndFeelInfo info = new ThemedLookAndFeelInfo("VANTED", "de.muntjak.tinylookandfeel.TinyLookAndFeel",
-							"VANTED");
-					lookSelection.addItem(new LookAndFeelWrapper(info));
-
 					try {
 						LookAndFeelWrapper avtiveLaF = null;
 						String sel = UIManager.getLookAndFeel().getClass().getCanonicalName();
@@ -165,8 +160,6 @@ extends GraffitiAction
 									LookAndFeelWrapper po = (LookAndFeelWrapper) lookSelection.getSelectedItem();
 									if (po == null)
 										return;
-
-									po.activateTheme();
 
 									try {
 										UIManager.setLookAndFeel(po.getClassName());

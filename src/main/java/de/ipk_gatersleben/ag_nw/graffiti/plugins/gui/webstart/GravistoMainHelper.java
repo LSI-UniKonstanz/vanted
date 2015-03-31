@@ -69,7 +69,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.SetJavaMemo
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.threading.SystemAnalysis;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
-import de.muntjak.tinylookandfeel.Theme;
 
 public class GravistoMainHelper implements HelperClass {
 	
@@ -220,9 +219,6 @@ public class GravistoMainHelper implements HelperClass {
 					} catch (Exception e) {
 						System.out.println("Info: could not activate desired java windows and button style"); //$NON-NLS-1$
 					}
-				} else {
-					Theme.loadTheme(Theme.getThemeDescription("VANTED"));
-					UIManager.setLookAndFeel("de.muntjak.tinylookandfeel.TinyLookAndFeel");
 				}
 			}
 		} catch (Exception e) {
