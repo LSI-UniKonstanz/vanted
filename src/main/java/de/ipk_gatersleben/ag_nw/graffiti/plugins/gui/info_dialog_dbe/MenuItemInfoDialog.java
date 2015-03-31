@@ -113,8 +113,8 @@ public class MenuItemInfoDialog
 		info = new JMenuItem("About " + DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT);
 		
 		ClassLoader cl = this.getClass().getClassLoader();
-		String path = this.getClass().getPackage().getName().replace('.', '/');
-		ImageIcon icon = new ImageIcon(cl.getResource(path + "/dbe_logo_16x16.png"));
+//		String path = this.getClass().getPackage().getName().replace('.', '/');
+		ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash_16x16.png"));
 		info.setIcon(icon);
 		KeyStroke f1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
 		info.setAccelerator(f1);
@@ -124,8 +124,8 @@ public class MenuItemInfoDialog
 			{
 				Runtime r = Runtime.getRuntime();
 				r.gc();
-				ClassLoader cl = this.getClass().getClassLoader();
-				String path = this.getClass().getPackage().getName().replace('.', '/');
+//				ClassLoader cl = this.getClass().getClassLoader();
+//				String path = this.getClass().getPackage().getName().replace('.', '/');
 //				ImageIcon icon = new ImageIcon(cl.getResource(path + "/pattern_graffiti_logo.png"));
 				int divisor = 1024;
 				
@@ -695,12 +695,6 @@ public class MenuItemInfoDialog
 	protected void createWorkflowDialog() {
 		final JPanel workFlowHelp = WorkflowHelper.getWorkFlowHelp();
 		
-		final JFrame dialogframe = new JFrame("Workflow Tutorial");
-	
-		
-		double[][] sizeM = { { TableLayoutConstants.FILL }, // Columns
-				{ TableLayoutConstants.FILL} }; // Rows
-		
 		
 		double border = 5;
 		
@@ -1023,12 +1017,12 @@ public class MenuItemInfoDialog
 			// res += "<br><small><font color=\"blue\">"+url+"</font></small>";
 			res += "<br><small><a href=\"" + url + "\">" + url + "</a></small>";
 		}
-		String res2 = "**" + lib + "**\n\n" + desc + "\n\n**" + licenseDesc + "**";
-		for (String url : licenseTextURLS) {
-			if (!knownUrls.contains(url))
-				knownUrls.add(url);
-			res2 += "\n\n[[" + url + "|" + url + "]]\n\n";
-		}
+//		String res2 = "**" + lib + "**\n\n" + desc + "\n\n**" + licenseDesc + "**";
+//		for (String url : licenseTextURLS) {
+//			if (!knownUrls.contains(url))
+//				knownUrls.add(url);
+//			res2 += "\n\n[[" + url + "|" + url + "]]\n\n";
+//		}
 		// System.out.println(res2);
 		return res;
 	}
