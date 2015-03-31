@@ -1436,7 +1436,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	
 	final ExecutorService loader = Executors.newFixedThreadPool(1);
 	
-	public void loadGraphInBackground(final File[] proposedFiles, final ActionEvent ae, boolean autoSwitch)
+	public void loadGraphInBackground(File[] proposedFiles, final ActionEvent ae, boolean autoSwitch)
 			
 			throws IllegalAccessException, InstantiationException {
 		final ArrayList<File> files = new ArrayList<File>();
@@ -1456,13 +1456,18 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				}
 			}
 			final EditorSession fesf = esf;
-			if (!windowCheck(fesf, file.getAbsolutePath(), autoSwitch))
+			if (!windowCheck(fesf, file.getAbsolutePath(), autoSwitch)){
 				filesToBeIgnored.add(file);
+			}
 		}
 		
-		for (File f : proposedFiles)
-			if (!filesToBeIgnored.contains(f))
+		for (File f : proposedFiles) {
+			
+			if (!filesToBeIgnored.contains(f)) {
 				files.add(f);
+			}
+		}
+		
 		
 		if (files.size() > 0)
 			loader.submit(new Runnable() {
@@ -1476,7 +1481,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 							Graph graph = null;
 							IOurl url = null;
 							if (file.exists()) {
-								System.out.println("Read file: " + file.getAbsolutePath());
+								logger.debug("Read file: " + file.getAbsolutePath());
 								final String fileName = file.getName();
 								showMessage("Loading graph file (" + fileName + ")... [" + i + "/" + files.size() + "]",
 										MessageType.PERMANENT_INFO);
@@ -2061,7 +2066,15 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	}
 	
 	/**
-	 * @param plugin
+	 * Adds a menu item to the menu given a category
+	 * The menuitem's action should be a GraffitiAction with the implemented Action that
+	 * is called, when the user clicks on that menu item
+	 * 
+	 * The category string defines the place, where this item is places
+	 * The category string is a '.'-separated string, where each token represents
+	 * a parental level of the items path
+	 * e.g. cat="New.Random" would put the menuitem 'item' in the submenu Random under New
+	 *
 	 * @param action
 	 * @param cat
 	 */
@@ -2074,6 +2087,10 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		
 		// System.out.println("Adding "+item.getText()+" to "+cat);
 		
+		/*
+		 * the category is equal to one of the root nodes (the menuitems in the menubar)
+		 * This is for downward compatibility
+		 */
 		if (guiMap.containsKey(cat) && guiMap.get(cat) instanceof JMenu) {
 			JMenu targetNativeMenu = (JMenu) guiMap.get(cat);
 			Boolean pluginMenuAddEmptySpaceInFrontOfMenuItem = (Boolean) targetNativeMenu
@@ -2090,7 +2107,9 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			targetNativeMenu.add(item, addAfter);
 			result = targetNativeMenu;
 		} else {
-			
+			/* the category is not under the root entry
+			 * so create or find the hierarchy to put the given 'item' into
+			 */
 			JComponent curMenuComponent = getJMenuBar();
 			JMenu targetMenu;
 			
@@ -2106,6 +2125,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					
 					
 						newCatMenu = new JMenu(curMenuName);
+						newCatMenu.setIcon(iBundle.getImageIcon("menu.file.exit.icon")); //placeholder (On Mac menuitems without icon will have no intendation)
+						
 						
 						if(curMenuComponent instanceof JMenuBar)
 							curMenuComponent.add(newCatMenu, getTargetMenuPosition((JMenuBar)curMenuComponent, newCatMenu.getText())); // add
@@ -2119,7 +2140,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 								sortMenuItems((JMenu)curMenuComponent, 0);
 							}
 							
-//							curMenuComponent.add(newCatMenu); // add
 						}
 						
 						categoriesForAlgorithms.put(catStringPath.toString().toLowerCase(), newCatMenu);
@@ -2907,7 +2927,11 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		JMenu fileMenu = createMenu("file");
 		menuBar.add(fileMenu);
 		
+		/*
+		 * create submenu entry for New graphs (random or empty)
+		 */
 		JMenu menu_new = createMenu("New");
+		menu_new.setIcon(iBundle.getImageIcon("menu.file.exit.icon"));
 		categoriesForAlgorithms.put("file.new", menu_new);
 		menu_new.add(createMenuItem(newGraph));
 		fileMenu.add(menu_new);

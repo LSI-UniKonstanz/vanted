@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import org.FeatureSet;
 import org.Release;
 import org.ReleaseInfo;
-import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.inspector.InspectorTab;
 
