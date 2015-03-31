@@ -333,7 +333,6 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		ImageIcon icon = new ImageIcon(cl.getResource(path + "/scriptentry.png"));
 		cmdExec.setIcon(icon);
 		cmdExec.addActionListener(new ActionListener() {
-			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent arg) {
 				if (arg.getSource() instanceof BSHscriptMenuEntry) {
 					BSHscriptMenuEntry src = (BSHscriptMenuEntry) arg.getSource();
@@ -344,7 +343,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 						String cmd = src.getCmdFile();
 						if (ruby == null) {
 							ruby = Ruby.getDefaultInstance();
-							ruby.getLoadService().init(ruby, new ArrayList());
+							ruby.getLoadService().init(ruby, new ArrayList<>());
 						}
 						String res = eval("load '" + cmd + "'");
 						if (res != null && res.length() > 0)

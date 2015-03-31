@@ -10,9 +10,6 @@
 package org.graffiti.plugins.inspectors.defaults;
 
 import java.awt.Component;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.ErrorMsg;
@@ -49,7 +46,7 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 	/** DOCUMENT ME! */
 	private final InspectorContainer container;
 	
-	private final HashMap<String, InspectorTab> rememberedTabs = new HashMap<String, InspectorTab>();
+//	private final HashMap<String, InspectorTab> rememberedTabs = new HashMap<String, InspectorTab>();
 	
 	
 	/** DOCUMENT ME! */
@@ -260,30 +257,9 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 			}
 		}
 	}
-	
-	/**
-	 *
-	 */
-	private void removeTab(InspectorTab tab) {
-		container.removeTab(tab);
-	}
+
 	
 	public void viewChanged(View newView) {
-		
-		InspectorTab selTab = getSelectedTab();
-		
-		/*
-		// System.out.println("STO "+oldviewname+" /// "+selTab.getTitle()+" NEW VIEW: "+
-		// (newView!=null ? newView.getViewName() :" NULL"));
-		rememberedTabs.put(oldviewname, selTab);
-		
-		LinkedHashSet<InspectorTab> allTabs = new LinkedHashSet<InspectorTab>();
-		for (InspectorTab tab : getTabs())
-			allTabs.add(tab);
-		allTabs.addAll(hiddenTabs);
-		
-		ArrayList<InspectorTab> added = new ArrayList<InspectorTab>();
-		*/
 		
 		for (InspectorTab tab : container.getTabs()) {
 			if (!tab.visibleForView(newView) || (newView != null && !newView.worksWithTab(tab))) {
@@ -324,18 +300,18 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 	 * gets called each time a tab is added, to figure out the 
 	 * order of tab layout as given by their preferredTab Position parameter in InspectorTab
 	 */
-	private void sortTabs() {
-		Collections.sort(container.getTabs(), new Comparator<InspectorTab>() {
-
-			@Override
-			public int compare(InspectorTab o1, InspectorTab o2) {
-				if(o1.getPreferredTabPosition() == o2.getPreferredTabPosition())
-					return 0;
-				else return o1.getPreferredTabPosition() < o2.getPreferredTabPosition() ? -1 : 1;
-			}
-			
-		});
-	}
+//	private void sortTabs() {
+//		Collections.sort(container.getTabs(), new Comparator<InspectorTab>() {
+//
+//			@Override
+//			public int compare(InspectorTab o1, InspectorTab o2) {
+//				if(o1.getPreferredTabPosition() == o2.getPreferredTabPosition())
+//					return 0;
+//				else return o1.getPreferredTabPosition() < o2.getPreferredTabPosition() ? -1 : 1;
+//			}
+//			
+//		});
+//	}
 }
 
 // ------------------------------------------------------------------------------

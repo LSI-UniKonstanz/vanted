@@ -65,14 +65,14 @@ public class XPathHelper implements HelperClass {
 	
 	public static int getTimeCountForSubstanceNode(Node nn) {
 		try {
-			ArrayList resultList = new ArrayList();
+			ArrayList<TimeAndTimeUnit> resultList = new ArrayList<>();
 			HashSet<String> memTest = new HashSet<String>();
 			XPath xpath = new DOMXPath("//substance/line/sample"); // /substance/line/sample
 			XPath xpathTimeValue = new DOMXPath("@time");
 			XPath xpathTimeUnit = new DOMXPath("@unit");
-			ArrayList results = (ArrayList) xpath.selectNodes(nn);
-			for (Iterator it = results.iterator(); it.hasNext();) {
-				Node n = (Node) it.next();
+			ArrayList<? super Node> results = (ArrayList<? super Node>) xpath.selectNodes(nn);
+			for (Object objNode : results) {
+				Node n = (Node) objNode;
 				String time = xpathTimeValue.stringValueOf(n);
 				String unit = xpathTimeUnit.stringValueOf(n);
 				TimeAndTimeUnit tatu = new TimeAndTimeUnit(time, unit);
