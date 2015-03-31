@@ -166,10 +166,6 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		// i++;
 		// }
 		
-		ThemedLookAndFeelInfo info = new ThemedLookAndFeelInfo("VANTED", "de.muntjak.tinylookandfeel.TinyLookAndFeel",
-							"VANTED");
-		lookSelection.addItem(new LookAndFeelWrapper(info));
-		
 		try {
 			LookAndFeelWrapper avtiveLaF = null;
 			String sel = UIManager.getLookAndFeel().getClass().getCanonicalName();
@@ -177,7 +173,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 				LookAndFeelWrapper d = new LookAndFeelWrapper(lafi);
 				if (d.getClassName().equals(sel))
 					avtiveLaF = d;
-				if (d.isValid() && !d.getName().equals("TinyLookAndFeel"))
+				if (d.isValid())
 					lookSelection.addItem(d);
 			}
 			if (avtiveLaF != null)
@@ -192,8 +188,6 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 						LookAndFeelWrapper po = (LookAndFeelWrapper) lookSelection.getSelectedItem();
 						if (po == null)
 							return;
-						
-						po.activateTheme();
 						
 						try {
 							UIManager.setLookAndFeel(po.getClassName());
