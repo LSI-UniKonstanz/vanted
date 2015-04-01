@@ -45,4 +45,12 @@ public interface PreferencesInterface {
 	 * @param preferences
 	 */
 	public void updatePreferences(Preferences preferences);
+	
+	/**
+	 * return a custom preference category, that this class will reside in.
+	 * If null is returned, this class will be put into a standard category
+	 * dependent on its Super class
+	 * @return
+	 */
+	public String getPreferencesAlternativeName();
 }

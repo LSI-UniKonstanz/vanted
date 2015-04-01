@@ -81,7 +81,12 @@ public class VantedPreferences implements PreferencesInterface{
 			});
 		}
 	}
-
+	
+	@Override
+	public String getPreferencesAlternativeName() {
+		// TODO Auto-generated method stub
+		return "Vanted Preferences";
+	}
 	private ObjectListParameter getLookAndFeelParameter() {
 		
 		ObjectListParameter objectlistparam;

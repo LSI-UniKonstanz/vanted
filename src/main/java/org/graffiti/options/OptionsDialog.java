@@ -79,7 +79,7 @@ public class OptionsDialog
 	public static final String CAT_TABS = "Tabs";
 	public static final String CAT_MISC = "Misc";
 	public static final String CAT_TOOLS = "Tools";
-	public static final String CAT_ATTR_COMP = "Attribute Components";
+	public static final String CAT_ATTR_COMP = "Visualisation";
 	
 	/**
 	 * 
@@ -154,8 +154,8 @@ public class OptionsDialog
 		 */
 		currentLabel = new JLabel();
 		currentLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		currentLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
-							Color.black));
+//		currentLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
+//							Color.black));
 		stage.add(currentLabel, BorderLayout.NORTH);
 		
 //		cardPanel = new JPanel(new CardLayout());
@@ -163,8 +163,8 @@ public class OptionsDialog
 		OverviewOptionPane overviewOptionPane = new OverviewOptionPane();
 		overviewOptionPane.init(null);
 		optionPaneContainer = new JScrollPane(overviewOptionPane);
-		optionPaneContainer.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1,
-							Color.blue));
+//		optionPaneContainer.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1,
+//							Color.blue));
 		stage.add(optionPaneContainer, BorderLayout.CENTER);
 		
 		paneTree = new JTree(createOptionTreeModel());
@@ -281,7 +281,10 @@ public class OptionsDialog
 					}
 				}
 				
-				addOptionPane(getParameterOptionPane(instance.getClass().getSimpleName(), defaultParameters, instance.getClass()), categoryNode);
+				String name = instance.getPreferencesAlternativeName();
+				if(name == null)
+					name = instance.getClass().getSimpleName();
+				addOptionPane(getParameterOptionPane(name, defaultParameters, instance.getClass()), categoryNode);
 				
 			} catch (InstantiationException e) {
 				e.printStackTrace();

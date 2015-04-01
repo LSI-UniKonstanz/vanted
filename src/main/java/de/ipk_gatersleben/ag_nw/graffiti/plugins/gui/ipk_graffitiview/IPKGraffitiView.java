@@ -125,6 +125,11 @@ public class IPKGraffitiView
 
 
 
+	@Override
+	public String getPreferencesAlternativeName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 	@Override

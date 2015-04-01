@@ -33,7 +33,11 @@ public class TestAlgorithm implements Algorithm, PreferencesInterface{
 		arrayList.add(new IntegerParameter(100, "TestAlgo-speed", "testalgo integer speed parameter"));
 		return arrayList;
 	}
-
+	@Override
+	public String getPreferencesAlternativeName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 //	@Override
 //	public Preferences getPreferences() {
 //		if(preferences == null)

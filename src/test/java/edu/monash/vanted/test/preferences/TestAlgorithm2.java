@@ -39,7 +39,11 @@ public class TestAlgorithm2 implements Algorithm, PreferencesInterface{
 		return arrayList;
 	}
 
-
+	@Override
+	public String getPreferencesAlternativeName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public void updatePreferences(Preferences preferences) {

@@ -68,6 +68,12 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 	}
 
 	@Override
+	public String getPreferencesAlternativeName() {
+		// TODO Auto-generated method stub
+		return "Charts";
+	}
+
+	@Override
 	public void attributeChanged(Attribute attr) throws ShapeNotFoundException {
 		GraphElement ge = (GraphElement) this.attr.getAttributable();
 		if (ge instanceof Node) {

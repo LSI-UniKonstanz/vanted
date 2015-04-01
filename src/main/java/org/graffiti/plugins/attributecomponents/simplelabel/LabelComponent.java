@@ -137,7 +137,12 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		DRAWRECT_MINSIZE = preferences.getBoolean(PREF_DRAWRECT_MINSIZE, true);
 	}	
 	
-	
+	@Override
+	public String getPreferencesAlternativeName() {
+		// TODO Auto-generated method stub
+		return "Labels";
+	}
+
 	
 	@Override
 	public void highlight(boolean value, MouseEvent e) {

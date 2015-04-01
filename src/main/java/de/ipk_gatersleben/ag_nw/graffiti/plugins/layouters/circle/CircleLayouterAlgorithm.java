@@ -80,6 +80,11 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm implements Prefer
 	public void updatePreferences(Preferences preferences) {
 		defaultCircleRadius = preferences.getDouble("default radius", 150);
 	}
+	@Override
+	public String getPreferencesAlternativeName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public void reset() {

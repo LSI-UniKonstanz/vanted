@@ -34,7 +34,11 @@ implements PreferencesInterface{
 		
 	}
 
-
+	@Override
+	public String getPreferencesAlternativeName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 //	@Override
 //	public Preferences getPreferences() {
 //		if(preferences == null)

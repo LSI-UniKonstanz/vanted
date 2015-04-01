@@ -96,7 +96,11 @@ public class RimasTab extends InspectorTab implements PreferencesInterface{
 		// TODO Auto-generated method stub
 		
 	}
-
+	@Override
+	public String getPreferencesAlternativeName() {
+		// TODO Auto-generated method stub
+		return "Rimas";
+	}
 	private JComponent getRIMASdownloadGUI() {
 		String i = "<font color='gray'>@";
 		ArrayList<JComponent> pathways = new ArrayList<JComponent>();

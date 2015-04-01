@@ -48,7 +48,11 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 		// TODO Auto-generated method stub
 		
 	}
-
+	@Override
+	public String getPreferencesAlternativeName() {
+		// TODO Auto-generated method stub
+		return "MetaCrop";
+	}
 	@Override
 	public void addAnnotationsToGraphElements(Graph graph) {
 		

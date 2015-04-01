@@ -313,6 +313,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface{
 		gridEnabled = preferences.getBoolean(PREFERENCE_SNAP_TO_GRID, true);
 	}
 
+	@Override
+	public String getPreferencesAlternativeName() {
+		// TODO Auto-generated method stub
+		return "Mouse Control";
+	}
 
 
 	private void processMovement(int diffX, int diffY, ActionEvent actionEvent) {
