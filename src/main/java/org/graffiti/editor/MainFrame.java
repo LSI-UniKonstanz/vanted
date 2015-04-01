@@ -2125,7 +2125,14 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					
 					
 						newCatMenu = new JMenu(curMenuName);
-						newCatMenu.setIcon(iBundle.getImageIcon("menu.file.exit.icon")); //placeholder (On Mac menuitems without icon will have no intendation)
+						/*
+						 * only add placeholder icon to non menubar root entries, since they create empy space in the
+						 * menubar.
+						 * This placeholder icon is anyway only there because some look and feels disalign menuitems
+						 * that have no icon
+						 */
+						if( ! (curMenuComponent instanceof JMenuBar) )
+							newCatMenu.setIcon(iBundle.getImageIcon("menu.file.exit.icon")); //placeholder icon resolving alignment issues on some LaF
 						
 						
 						if(curMenuComponent instanceof JMenuBar)
