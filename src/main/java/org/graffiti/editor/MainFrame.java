@@ -2086,7 +2086,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		JMenu result = null;
 		
 		// System.out.println("Adding "+item.getText()+" to "+cat);
-		
+		if (item.getIcon() == null)
+			item.setIcon(iBundle.getImageIcon("menu.file.exit.icon"));
 		/*
 		 * the category is equal to one of the root nodes (the menuitems in the menubar)
 		 * This is for downward compatibility
@@ -2097,8 +2098,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					.getClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem");
 			if (pluginMenuAddEmptySpaceInFrontOfMenuItem != null
 					&& pluginMenuAddEmptySpaceInFrontOfMenuItem.booleanValue() == true) {
-				if (item.getIcon() == null)
-					item.setIcon(iBundle.getImageIcon("menu.file.exit.icon"));
+				
 			}
 			int addAfter = targetNativeMenu.getItemCount();
 			Integer pmp = (Integer) targetNativeMenu.getClientProperty("pluginMenuPosition");
@@ -2106,7 +2106,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				addAfter = pmp.intValue();
 			targetNativeMenu.add(item, addAfter);
 			result = targetNativeMenu;
-		} else {
+		} else 
+		{
 			/* the category is not under the root entry
 			 * so create or find the hierarchy to put the given 'item' into
 			 */
