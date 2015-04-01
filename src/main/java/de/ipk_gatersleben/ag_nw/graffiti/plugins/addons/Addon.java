@@ -79,16 +79,49 @@ public class Addon {
 		// 1.8,2.1, //// 1.8,
 		StringTokenizer tok = new StringTokenizer(description.getCompatibleVersion(), ",");
 		boolean iscompatible = false;
-		int idxVersionPeriod = DBEgravistoHelper.DBE_GRAVISTO_VERSION_CODE.indexOf('.');
-		String mainversion = DBEgravistoHelper.DBE_GRAVISTO_VERSION_CODE.substring(0, idxVersionPeriod);
+		
+		/* split version number into separate main/min/build version number string array */
+		String[] strSplitMainversion = DBEgravistoHelper.DBE_GRAVISTO_VERSION_CODE.split("\\.");
+		String[] strSplitMinCompVersion = DBEgravistoHelper.DBE_MIN_COMPATIBILITY_VERSION.split("\\.");
+		
+		/*
+		 * we define N part version number, where N is defined by the number of sub version numbers
+		 * in the main version number string
+		 */
+		long[] longArrMainVersion = new long[strSplitMainversion.length];
+		long[] longArrMinVersion = new long[strSplitMainversion.length];
+		
+		for(int i = 0; i < strSplitMainversion.length; i++) {
+			longArrMainVersion[i] = Long.parseLong(strSplitMainversion[i]);
+			longArrMinVersion[i] = Long.parseLong(strSplitMinCompVersion[i]);
+		}
+		
+		
 		while(tok.hasMoreTokens()) {
-			String curVer = tok.nextToken();
-			//extract main version of addon
-			int idxVer = curVer.indexOf('.');
-			if(idxVer > 0)
-				curVer = curVer.substring(0, idxVer);
-			if(curVer.startsWith(mainversion))
-				iscompatible = true;
+			String[] strSplitAddonVersion = tok.nextToken().split("\\.");
+			
+			for(int i = 0; i < strSplitMainversion.length; i++) {
+				long longPartVersion = Long.parseLong(strSplitAddonVersion[i]);
+				/*
+				 * if the main / sub version is definitely larger then the min-main/sub version
+				 * we don't need to check further.
+				 */
+				if(longArrMinVersion[i] < longPartVersion 
+						&& longPartVersion <= longArrMainVersion[i]) {
+					return true;
+
+				} 
+				/*
+				 * But if it is equal to some minimum value we need to check the next part of the version
+				 * as well
+				 */
+				else if(longArrMinVersion[i] <= longPartVersion )
+					iscompatible = true;
+				else {
+					iscompatible = false;
+					break;
+				}
+			}
 		}
 		return iscompatible;
 	}

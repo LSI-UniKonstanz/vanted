@@ -27,6 +27,7 @@ public class DBEgravistoHelper implements HelperClass {
 
 	
 	public static String DBE_GRAVISTO_VERSION_CODE;// = "2.3.1"; // "DBE-Visualisation and Analysis V1.1";
+	public static String DBE_MIN_COMPATIBILITY_VERSION;
 	public static String VANTED_BUILD;
 	public static String  VANTED_BUILDDATE;
 	static {
@@ -37,6 +38,7 @@ public class DBEgravistoHelper implements HelperClass {
 			Properties props = new Properties();
 			props.load(resourceAsStream);
 			DBE_GRAVISTO_VERSION_CODE = props.getProperty("vanted.version.number");
+			DBE_MIN_COMPATIBILITY_VERSION = props.getProperty("vanted.min.compatibility");
 			VANTED_BUILD = props.getProperty("build.number");
 			VANTED_BUILDDATE = props.getProperty("build.date");		
 //			System.out.println("vanted version:"+DBE_GRAVISTO_VERSION_CODE+" build:"+VANTED_BUILD+" date:"+VANTED_BUILDDATE);
