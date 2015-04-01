@@ -46,6 +46,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.commons.collections15.map.HashedMap;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.core.ImageBundle;
 import org.graffiti.core.StringBundle;
@@ -67,7 +68,11 @@ public class OptionsDialog
 					implements ActionListener, TreeSelectionListener {
 	// ~ Static fields/initializers =============================================
 	
-	Logger logger = Logger.getLogger(OptionsDialog.class);
+	private static Logger logger = Logger.getLogger(OptionsDialog.class);
+	
+	static {
+		logger.setLevel(Level.INFO);
+	}
 	
 	public static final String CAT_VIEWS = "Views";
 	public static final String CAT_ALGORITHMS = "Algorithms";
