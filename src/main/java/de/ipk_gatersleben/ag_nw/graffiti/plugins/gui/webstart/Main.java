@@ -337,7 +337,7 @@ public class Main {
 		ProxySelector.setDefault(ps);
 		ReleaseInfo.setRunningReleaseStatus(Release.RELEASE_PUBLIC);
 
-		GravistoMainHelper.setLookAndFeel();
+//		GravistoMainHelper.setLookAndFeel();
 
 		String stS = "<font color=\"#9500C0\"><b>";
 		String stE = "</b></font>";
