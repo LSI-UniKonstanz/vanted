@@ -68,7 +68,6 @@ import java.util.prefs.Preferences;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -558,7 +557,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		// create a panel, which will contain the views for plugins
 		pluginPanel = new PluginPanel();
 		pluginPanel.setBorder(null);
-		pluginPanel.setLayout(new BoxLayout(pluginPanel, BoxLayout.Y_AXIS));
+//		pluginPanel.setLayout(new BoxLayout(pluginPanel, BoxLayout.Y_AXIS));
+//		pluginPanel.setLayout(new BorderLayout()
 		guiMap.put(pluginPanel.getId(), pluginPanel);
 		
 		navigationView = new NavigationComponentView();
