@@ -208,6 +208,12 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 	}
 
 	@Override
+	public void resultError(Exception e) {
+		progressBar.setIndeterminate(false);
+		
+	}
+
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(loadSelectedModels)){
 			
@@ -277,6 +283,7 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 				logger.debug("calling adapter for query");
 				adapter.queryForSimpleModel(selItem, query);
 			} catch (BioModelsWSException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

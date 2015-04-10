@@ -70,62 +70,88 @@ public class BiomodelsAccessAdapter {
 //		initSetStructures();
 	}
 
-	public List<SimpleModel> queryForSimpleModel(QueryType type, String query) throws BioModelsWSException {
+	public List<SimpleModel> queryForSimpleModel(QueryType type, String query) throws BioModelsWSException{
 		abort = false;
 		BioModelsWSClient client = createClient();
 		String[] resultIds = null;
 		
 		List<SimpleModel> resultSimpleModels = null;
 		
-		switch(type){
-		case NAME:
-			resultIds = client.getModelsIdByName(query);
-			break;
-		case TAXONOMY:
-			resultIds = client.getModelsIdByTaxonomy(query);
-			break;
-		case CHEBI:
-			resultIds = client.getModelsIdByChEBI(query);
-			break;
-		case PERSON:	
-			resultIds = client.getModelsIdByPerson(query);
-			break;
-		case GO:	
-			resultIds = client.getModelsIdByGO(query);
-			break;
-		case PUBLICATION:	
-			resultIds = client.getModelsIdByPublication(query);
-			break;
-		case UNIPROT:	
-			resultIds = client.getModelsIdByUniprotIds(query.split("[ ;:\t]"));
-			break;
-		case BIOMODELID:	
-			resultIds = query.toUpperCase().split("[ ;:\t]");
-			break;
-		default:
+		try {
+			switch(type){
+			case NAME:
+				resultIds = client.getModelsIdByName(query);
+				break;
+			case TAXONOMY:
+				resultIds = client.getModelsIdByTaxonomy(query);
+				break;
+			case CHEBI:
+				resultIds = client.getModelsIdByChEBI(query);
+				break;
+			case PERSON:	
+				resultIds = client.getModelsIdByPerson(query);
+				break;
+			case GO:	
+				resultIds = client.getModelsIdByGO(query);
+				break;
+			case PUBLICATION:	
+				resultIds = client.getModelsIdByPublication(query);
+				break;
+			case UNIPROT:	
+				resultIds = client.getModelsIdByUniprotIds(query.split("[ ;:\t]"));
+				break;
+			case BIOMODELID:	
+				resultIds = query.toUpperCase().split("[ ;:\t]");
+				break;
+			default:
+			}
+			if(resultIds != null)
+				resultSimpleModels = client.getSimpleModelsByIds(resultIds);
+			if( ! isAbort() )
+				notifyResultSimpleModelListeners(type, resultSimpleModels);
+		} catch (BioModelsWSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			notifyErrorListener(e);
+			throw e;
 		}
-		if(resultIds != null)
-			resultSimpleModels = client.getSimpleModelsByIds(resultIds);
-		if( ! isAbort() )
-			notifyResultSimpleModelListeners(type, resultSimpleModels);
 		
 		return resultSimpleModels;
 	}
 
-	public String getSBMLModel(SimpleModel simpleModel) throws BioModelsWSException {
+	public String getSBMLModel(SimpleModel simpleModel)  throws BioModelsWSException{
 		abort = false;
-		String result = createClient().getModelSBMLById(simpleModel.getId());
+		String result = null;
 		
-		if( ! isAbort() )
-			notifyResultSBMLListeners(simpleModel, result);
+		try {
+			result = createClient().getModelSBMLById(simpleModel.getId());
+			
+			if( ! isAbort() )
+				notifyResultSBMLListeners(simpleModel, result);
+		} catch (BioModelsWSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			notifyErrorListener(e);
+			throw e;
+		}
 		
 		return result;
 	}
 	
 
 	public String getSBMLModel(String modelId) throws BioModelsWSException {
-		SimpleModel simpleModel = createClient().getSimpleModelById(modelId);
-		String result = getSBMLModel(simpleModel);
+		SimpleModel simpleModel = null;
+		
+		String result = null;
+		try {
+			simpleModel = createClient().getSimpleModelById(modelId);
+			result = getSBMLModel(simpleModel);
+		} catch (BioModelsWSException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			notifyErrorListener(e);
+			throw e;
+		}
 		return result;
 	}
 	
@@ -153,7 +179,11 @@ public class BiomodelsAccessAdapter {
 				callback.resultForSBML(simpleModel, result);
 	}
 
-	
+	private void notifyErrorListener(Exception e) {
+		if(listeners != null)
+			for(BiomodelsLoaderCallback callback : listeners)
+				callback.resultError(e);
+	}
 	
 	public boolean isAbort() {
 		return abort;
@@ -166,7 +196,8 @@ public class BiomodelsAccessAdapter {
 	/**
 	 * This methods sets up 2 sets of biomodels identifiers
 	 * These identifiers are then used to indicate items in the result set, if they're 
-	 * (non)curated
+	 * (non)curated 
+	 * FUTURE IMPLEMENTATION
 	 */
 	private void initSetStructures(){
 
@@ -225,6 +256,8 @@ public class BiomodelsAccessAdapter {
 		public void resultForSimpleModelQuery(QueryType type, List<SimpleModel> simpleModel);
 		
 		public void resultForSBML(SimpleModel model, String modelstring);
+		
+		public void resultError(Exception e);
 	}
 	
 	/**

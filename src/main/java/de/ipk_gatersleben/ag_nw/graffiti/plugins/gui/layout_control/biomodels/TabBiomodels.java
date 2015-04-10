@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
@@ -104,6 +105,14 @@ implements BiomodelsLoaderCallback{
 
 
 	}
+
+	
+	@Override
+	public void resultError(Exception e) {
+		JOptionPane.showMessageDialog(MainFrame.getInstance(), "Unable to communicate with Biomodels Webservice", "Communication Error", JOptionPane.ERROR_MESSAGE);
+	}
+
+
 
 	@Override
 	public String getTitle() {
