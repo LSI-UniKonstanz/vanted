@@ -11,11 +11,7 @@ package org.graffiti.plugins.modes.defaults;
 
 import java.util.prefs.Preferences;
 
-import org.graffiti.attributes.AttributeDescription;
-import org.graffiti.attributes.AttributeManager;
-import org.graffiti.attributes.BooleanAttribute;
 import org.graffiti.core.ImageBundle;
-import org.graffiti.editor.actions.PasteAction;
 import org.graffiti.plugin.EditorPluginAdapter;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.gui.ToolButton;

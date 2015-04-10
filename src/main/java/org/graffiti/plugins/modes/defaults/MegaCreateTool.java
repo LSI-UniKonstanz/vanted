@@ -42,7 +42,6 @@ import org.graffiti.attributes.SortedCollectionAttribute;
 import org.graffiti.editor.GraffitiInternalFrame;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
-import org.graffiti.editor.actions.PasteAction;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;

@@ -10,7 +10,6 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control;
 import java.util.ArrayList;
 
 import org.FeatureSet;
-import org.Release;
 import org.ReleaseInfo;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.inspector.InspectorTab;
