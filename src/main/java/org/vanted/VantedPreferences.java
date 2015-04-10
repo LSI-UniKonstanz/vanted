@@ -15,8 +15,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.ReleaseInfo;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.options.PreferencesInterface;
+import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
+import org.graffiti.plugin.parameter.StringParameter;
 
 /**
  * Global Preference class for VANTED.
@@ -32,7 +34,9 @@ import org.graffiti.plugin.parameter.Parameter;
  */
 public class VantedPreferences implements PreferencesInterface{
 
-	public static final String PREFERENCE_LOOKANDFEEL = "lookandfeel";
+	public static final String PREFERENCE_LOOKANDFEEL = "Look and Feel";
+	public static final String PREFERENCE_PROXYHOST = "Proxy Host";
+	public static final String PREFERENCE_PROXYPORT = "Proxy Port";
 	
 	private static VantedPreferences instance;
 	
@@ -48,7 +52,8 @@ public class VantedPreferences implements PreferencesInterface{
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> params = new ArrayList<>();
 		params.add(getLookAndFeelParameter()); 
-		
+		params.add(new StringParameter("", PREFERENCE_PROXYHOST, "Name or IP  of the proxy host"));
+		params.add(new IntegerParameter(0, PREFERENCE_PROXYPORT, "Port number of the proxy"));
 		return params;
 	}
 
@@ -56,9 +61,13 @@ public class VantedPreferences implements PreferencesInterface{
 
 	@Override
 	public void updatePreferences(Preferences preferences) {
+		
+		/*
+		 * handle look and feel parameter
+		 */
 		final String lafName = preferences.get(PREFERENCE_LOOKANDFEEL,"");
 		String selLAF = UIManager.getLookAndFeel().getClass().getCanonicalName();
-		if(MainFrame.getInstance() != null && !selLAF.equals(lafName)) {
+		if(!selLAF.equals(lafName)) {
 			SwingUtilities.invokeLater(new Runnable() {
 				
 				@Override
@@ -71,15 +80,46 @@ public class VantedPreferences implements PreferencesInterface{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					if (ReleaseInfo.isRunningAsApplet())
-						SwingUtilities.updateComponentTreeUI(ReleaseInfo.getApplet());
-					else
-						SwingUtilities.updateComponentTreeUI(MainFrame.getInstance());
-					MainFrame.getInstance().repaint();
+					
+					/*
+					 * show changes for current instance running
+					 * This will only be executed when the preferences are updated using
+					 * the Preferences Dialog
+					 */
+					if(MainFrame.getInstance() != null) {
+						if (ReleaseInfo.isRunningAsApplet())
+							SwingUtilities.updateComponentTreeUI(ReleaseInfo.getApplet());
+						else
+							SwingUtilities.updateComponentTreeUI(MainFrame.getInstance());
+						MainFrame.getInstance().repaint();
+					}
 
 				}
 			});
 		}
+		
+		/*
+		 * handle proxy parameter
+		 */
+		String proxyhostname = preferences.get(PREFERENCE_PROXYHOST, null);
+		String proxyport = preferences.get(PREFERENCE_PROXYPORT, null);
+		if(proxyhostname != null && proxyport != null 
+				&& ! proxyhostname.isEmpty()) {
+			try {
+				Integer portnumber = Integer.parseInt(proxyport);
+				System.setProperty("http.proxySet", "true");
+				System.setProperty("http.proxyHost", proxyhostname);
+				System.setProperty("http.proxyPort", proxyport);
+				
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				System.setProperty("http.proxySet", "false");
+				
+			}
+		} else {
+			System.setProperty("http.proxySet", "false");
+		}
+			
 	}
 	
 	@Override
@@ -87,21 +127,35 @@ public class VantedPreferences implements PreferencesInterface{
 		// TODO Auto-generated method stub
 		return "Vanted Preferences";
 	}
+	
+	/**
+	 * retrieves all available LookandFeels from the system and creates
+	 * a new ObjectListparameter object, that will be used to display a
+	 * JComboBox
+	 * @return
+	 */
 	private ObjectListParameter getLookAndFeelParameter() {
 		
 		ObjectListParameter objectlistparam;
 		Object[] possibleValues;
 		String canonicalName = UIManager.getLookAndFeel().getClass().getCanonicalName();
 		
+		// temp variable to add the active LAF to the beginning of the objectlistparameter variable
 		LookAndFeelNameAndClass avtiveLaF = null;
+
 		List<LookAndFeelNameAndClass> listLAFs = new ArrayList<>();
+		
 		
 		for (LookAndFeelInfo lafi : UIManager.getInstalledLookAndFeels()) {
 			LookAndFeelNameAndClass d = new LookAndFeelNameAndClass(lafi.getName(), lafi.getClassName());
-			listLAFs.add(d);
 			if (d.toString().equals(canonicalName))
 				avtiveLaF = d;
+			else
+				listLAFs.add(d);
+				
 		}
+		// add active LaF to the beginning of the List
+		listLAFs.add(0, avtiveLaF);
 		
 		
 		possibleValues = listLAFs.toArray();
@@ -115,7 +169,12 @@ public class VantedPreferences implements PreferencesInterface{
 		return objectlistparam;
 	}
 	
-	
+	/**
+	 * Custom list cell renderer, that will have the LookAndFeelNameAndClass as object
+	 * and displays the human readable name of the lookandfeel class name
+	 * @author matthiak
+	 *
+	 */
 	class LookAndFeelWrapperListRenderer extends DefaultListCellRenderer {
 
 		/**
