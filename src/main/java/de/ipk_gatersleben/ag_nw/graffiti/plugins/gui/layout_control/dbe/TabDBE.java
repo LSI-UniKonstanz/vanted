@@ -50,19 +50,20 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private static List<String> projectList = new ArrayList<String>();
+	private List<String> projectList = new ArrayList<String>();
 	
-	private static List<ExperimentDataInfoPane> shownExpPanes = new ArrayList<ExperimentDataInfoPane>();
+	private List<ExperimentDataInfoPane> shownExpPanes = new ArrayList<ExperimentDataInfoPane>();
 	
-	static JTabbedPane jTabbedPaneExperimentPanels = new javax.swing.JTabbedPane();
+	private JTabbedPane jTabbedPaneExperimentPanels = new javax.swing.JTabbedPane();
 	
 	final String noNode = "no node is selected.";
 	
 	final static String NO_EXPERIMENT = "";
 	
-	private static boolean initPerformed = false;
+	private boolean initPerformed = false;
 	
-	private static TabDBE tabDbeInstance = null;
+
+	private static TabDBE instance = null;
 	
 	/**
 	 * Initialize GUI
@@ -74,7 +75,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		}
 		initPerformed = true;
 		
-		tabDbeInstance = this;
+		instance = this;
 		
 		jTabbedPaneExperimentPanels.setOpaque(false);
 		jTabbedPaneExperimentPanels.setBackground(null);
@@ -211,7 +212,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 	}
 	
 	public static List<String> getProjectList() {
-		return new ArrayList<String>(projectList);
+		return new ArrayList<String>(instance.projectList);
 	}
 	
 	/**
@@ -236,7 +237,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 			
 			public boolean process(List<File> files) {
 				// GravistoMainHelper.processDroppedFiles(files.toArray(new File[]{}), false, (Class)PutIntoSidePanel.class);
-				ExperimentLoader.loadFile(files, receiver != null ? receiver : tabDbeInstance);
+				ExperimentLoader.loadFile(files, receiver != null ? receiver : instance);
 				return true;
 			}
 			
@@ -376,14 +377,14 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 	
 	public synchronized static List<ProjectEntity> getLoadedProjectEntities() {
 		List<ProjectEntity> loadedProjects = new ArrayList<ProjectEntity>();
-		for (ExperimentDataInfoPane edip : shownExpPanes) {
+		for (ExperimentDataInfoPane edip : instance.shownExpPanes) {
 			loadedProjects.add(new ProjectEntity(edip.getExperimentName(), edip.getDocumentData()));
 		}
 		return loadedProjects;
 	}
 	
 	public synchronized static void addOrUpdateExperimentPane(ProjectEntity pe) {
-		for (ExperimentDataInfoPane expPane : shownExpPanes) {
+		for (ExperimentDataInfoPane expPane : instance.shownExpPanes) {
 			if (
 			// expPane.getDocument()==pe.getDocument() ||
 			expPane.getExperimentName().equals(pe.getExperimentName())) {
@@ -391,7 +392,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 				return;
 			}
 		}
-		tabDbeInstance.processReceivedData(null, pe.getExperimentName(), pe.getDocumentData(), pe.getGUI());
+		instance.processReceivedData(null, pe.getExperimentName(), pe.getDocumentData(), pe.getGUI());
 	}
 	
 	/*
