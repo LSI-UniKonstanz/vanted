@@ -60,7 +60,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.BSHscriptMenu
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.DefaultContextMenuManager;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.ExperimentInterface;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.DatabaseFileStatusService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.ExperimentDataPresenter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.ExperimentDataProcessingManager;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.ExperimentDataProcessor;
@@ -448,7 +447,12 @@ public class GravistoMainHelper implements HelperClass {
 		GravistoService.loadFiles();
 		
 		if (ReleaseInfo.isFirstRun()) {
-			Runnable r = new Runnable() {
+
+			/*
+			 * no database download window. the links don't work anyway anymore since kegg changed
+			 */
+/*
+ 			Runnable r = new Runnable() {
 				public void run() {
 					try {
 						Thread.sleep(5000);
@@ -480,7 +484,7 @@ public class GravistoMainHelper implements HelperClass {
 			Thread tt = new Thread(r);
 			tt.setName("Ask for database download");
 			tt.start();
-			
+*/			
 			/*
 			 * display the dialog box to inform the user that we changed the info.plist file with optimal 
 			 * RAM settings
@@ -493,7 +497,7 @@ public class GravistoMainHelper implements HelperClass {
 						// TODO Auto-generated method stub
 						do {
 							try {
-								Thread.sleep(1000);
+								Thread.sleep(5000);
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();

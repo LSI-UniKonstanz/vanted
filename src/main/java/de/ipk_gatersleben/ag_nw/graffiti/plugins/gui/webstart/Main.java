@@ -139,7 +139,7 @@ public class Main {
 		splashScreen.setVisible(showMainFrame);
 
 		GravistoMainHelper.createApplicationSettingsFolder(splashScreen);
-
+/*
 		if (!showMainFrame && !(new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted")).exists() &&
 				!(new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_rejected")).exists()) { // command line version automatically rejects
 			// kegg
@@ -149,12 +149,18 @@ public class Main {
 				e1.printStackTrace();
 			}
 		}
-
+*/
 		if (!(new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted")).exists() &&
 				!(new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_rejected")).exists()) {
 
 			ReleaseInfo.setIsFirstRun(true);
+			try {
+				new File(ReleaseInfo.getAppFolderWithFinalSep() + "license_kegg_accepted").createNewFile();
+			} catch (IOException e) {
+				ErrorMsg.addErrorMessage(e);
+			}
 
+/*
 			splashScreen.setVisible(false);
 			splashScreen.setText("Request KEGG License Status");
 			int result = askForEnablingKEGG();
@@ -180,6 +186,7 @@ public class Main {
 				System.exit(0);
 			}
 			splashScreen.setVisible(true);
+*/			
 		}
 
 		GravistoMainHelper.initApplicationExt(args, splashScreen, cl, null, addon);
