@@ -616,6 +616,11 @@ public class TabKegg extends InspectorTab
 						{
 							
 							graph = MainFrame.getInstance().getGraph(selectedPathwayNode.getUserObject().toString()+".xml", new URL("http://rest.kegg.jp/get/"+keggpathwayId+"/kgml"));
+							if(graph == null) {
+								ErrorMsg.addErrorMessage("Kegg Graph is null");
+								return;
+							}
+								
 //							graph = MainFrame.getInstance().getGraph(new IOurl("http://www.genome.jp/kegg-bin/download?entry="+pathwayNameToPathway.get(selectedPathwayNode.getUserObject())+"&format=kgml"), pathwayNameToPathway.get(selectedPathwayNode.getUserObject())+".xml");
 							ArrayList<Node> nodeList = (ArrayList<Node>) graph.getNodes();
 							HashMap<String, String[]> keggIDToEntry = new HashMap<String, String[]>();

@@ -65,19 +65,19 @@ public class ReleaseInfo implements HelperClass {
 				else
 					return true;
 			case KEGG_ACCESS:
-				if ((new File(getAppFolderWithFinalSep() + "license_kegg_accepted")).exists())
+//				if ((new File(getAppFolderWithFinalSep() + "license_kegg_accepted")).exists())
 					return true;
-				else
-					return false;
+//				else
+//					return false;
 			case KEGG_ACCESS_ENH:
 				if (!(currentRelease == Release.RELEASE_PUBLIC
 									|| currentRelease == Release.KGML_EDITOR || currentRelease == Release.DEBUG))
 					return false;
-				if ((new File(getAppFolderWithFinalSep() + "license_kegg_accepted"))
-									.exists())
+//				if ((new File(getAppFolderWithFinalSep() + "license_kegg_accepted"))
+//									.exists())
 					return true;
-				else
-					return false;
+//				else
+//					return false;
 			case TRANSPATH_ACCESS:
 				if (currentRelease == Release.DEBUG
 									|| currentRelease == Release.RELEASE_IPK)

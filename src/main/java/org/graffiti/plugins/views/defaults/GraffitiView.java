@@ -922,7 +922,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		add(component, 0);
 		addAttributeComponents(edge, component);
 		
-		validate();
+//		validate();
 		// repaint(edge);
 		if (getGraph() != null)
 			getGraph().setModified(true);
@@ -963,10 +963,10 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 			ec.clearAttributeComponentList();
 			
 			remove(ec);
-			validate();
+//			validate();
 			
 			// adjustPreferredSize();
-			repaint();
+//			repaint();
 		}
 		if (getGraph() != null)
 			getGraph().setModified(true);
@@ -1040,7 +1040,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		add(component, 0);
 		addAttributeComponents(node, component);
 		
-		validate();
+//		validate();
 		// repaint(node);
 		if (getGraph() != null)
 			getGraph().setModified(true);
@@ -1232,8 +1232,9 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		
 		blockAdjust = true;
 		
-		Set<GraphElementComponent> setDependendComponents = new HashSet<GraphElementComponent>();
+		Set<GraphElementComponent> setDependendComponents = new HashSet<>();
 		
+		Set<GraphElement> setPostAddedNodes = new HashSet<>();
 		
 		// used to prevent updating an element several times
 		// Set<Attributable> attributables = new HashSet<Attributable>();
@@ -1271,7 +1272,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 			
 			if(idx % 500 == 0) {
 				long period = System.currentTimeMillis() - time1;
-				System.out.println("time for changing 500 objects "+period+"ms");
+				logger.debug("time for changing 500 objects "+period+"ms");
 				time1 = System.currentTimeMillis();
 			}
 			
@@ -1352,7 +1353,8 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 							} else {
 								// graph element has been ADDED
 								if (atbl instanceof Node) {
-									postNodeAdded(new GraphEvent((Node) atbl));
+										setPostAddedNodes.add((Node)atbl);
+//									postNodeAdded(new GraphEvent((Node) atbl));
 								} else {
 									if (atbl instanceof Edge) {
 										edgesToAdd.add((Edge) atbl);
@@ -1393,6 +1395,24 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 				e.printStackTrace();
 			}
 		}
+
+		/*
+		 * add nodes and edges from transaction in one go
+		 */
+		if(! setPostAddedNodes.isEmpty()) {
+			setVisible(false); //disable layout-trigger for each added component
+			for(GraphElement atbl : setPostAddedNodes) {
+				postNodeAdded(new GraphEvent((Node) atbl));
+			}
+			// add pending edges
+			for (Iterator iter = edgesToAdd.iterator(); iter.hasNext();) {
+				idx++;
+				if (status != null)
+					status.setCurrentStatusValueFine(100d * idx / maxIdx);
+				postEdgeAdded(new GraphEvent((Edge) iter.next()));
+			}
+			setVisible(true); //layout components trigger
+		}
 		
 		if (requestCompleteRedraw) {
 			if (status != null)
@@ -1403,18 +1423,18 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 			if (status != null)
 				status.setCurrentStatusText2("Complete recreation finished");
 		} else {
-			if (status != null && edgesToAdd != null && edgesToAdd.size() > 0) {
-				idx = 0;
-				maxIdx = edgesToAdd.size();
-				status.setCurrentStatusText2("Add " + edgesToAdd.size() + " edges...");
-			}
-			// add pending edges
-			for (Iterator iter = edgesToAdd.iterator(); iter.hasNext();) {
-				idx++;
-				if (status != null)
-					status.setCurrentStatusValueFine(100d * idx / maxIdx);
-				postEdgeAdded(new GraphEvent((Edge) iter.next()));
-			}
+//			if (status != null && edgesToAdd != null && edgesToAdd.size() > 0) {
+//				idx = 0;
+//				maxIdx = edgesToAdd.size();
+//				status.setCurrentStatusText2("Add " + edgesToAdd.size() + " edges...");
+//			}
+//			// add pending edges
+//			for (Iterator iter = edgesToAdd.iterator(); iter.hasNext();) {
+//				idx++;
+//				if (status != null)
+//					status.setCurrentStatusValueFine(100d * idx / maxIdx);
+//				postEdgeAdded(new GraphEvent((Edge) iter.next()));
+//			}
 		}
 		blockAdjust = false;
 		
