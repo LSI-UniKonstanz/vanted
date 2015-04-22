@@ -44,7 +44,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectCo
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectEdgesAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectEnzymesAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectNodesWithExperimentalDataAlgorithm;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.add_attributes.AddInterestingAttributes;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.add_attributes.CalculateAttribute;
 
 public class DBEplugin
@@ -76,7 +75,7 @@ public class DBEplugin
 								new AddDiagramLegendAlgorithm(),
 								new SetNumericAttributeFromDataAlgorithm(),
 								new RecolorEdgesAlgorithm(),
-								new AddInterestingAttributes(),
+//								new AddInterestingAttributes(),
 								new CalculateAttribute(),
 								// new ColorScaleLegendAlgorithm(),
 					new CreateDistanceMatrixAlgorithm(),
