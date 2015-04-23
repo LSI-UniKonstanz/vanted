@@ -308,7 +308,7 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 		private void handleBrite(KoEntry curKoEntry, String line) {
 			int idx = line.indexOf("[BR:");
 			if (idx >= 0) {
-				String briteId = line.substring(idx);
+				String briteId = line.substring(idx + 4);
 				briteId = briteId.substring(1, briteId.indexOf("]")).toLowerCase(); //skip opening and closing brackets
 				BriteHierarchy briteHierarchy;
 				try {
