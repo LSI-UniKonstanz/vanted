@@ -7,30 +7,34 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.AttributeHelper;
 import org.ErrorMsg;
 import org.FeatureSet;
 import org.OpenFileDialogService;
 import org.ReleaseInfo;
+import org.StringManipulationTools;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
-import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_ko.BriteEntry;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_ko.KeggBriteService;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.SubstanceInterface;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.Experiment2GraphHelper;
@@ -99,16 +103,6 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 		return "Hierarchy";
 	}
 	
-	
-	@Override
-	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION,
-				Category.LAYOUT
-				));
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public Parameter[] getParameters() {
@@ -282,8 +276,164 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 							}
 						}
 						String organismInfo = null;
+						Set<BriteEntry> hierarchyInformationsForCurrentNode = new HashSet<BriteEntry>();
+						for (String altId : checkTheseIds) {
+							if (altId == null || altId.length() <= 0)
+								continue;
+							if (currentInformationProcessingSetting.equals(settingPointDivided)) {
+								try {
+									HashSet<BriteEntry> briteEntries = KeggBriteService.getInstance().getBriteHierarchy("ko00001").getEntriesMap().get(altId);
+									for (BriteEntry entry : briteEntries) {
+										hierarchyInformationsForCurrentNode.add(entry);
+									}
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+							if (currentInformationProcessingSetting.equals(settingKOenzymeLookup)) {
+								String ecId = EnzymeService.extractECId(altId);
+								if (ecId != null) {
+									try {
+										HashSet<BriteEntry> briteEntries = KeggBriteService.getInstance().getBriteHierarchy("ko00001").getECEntriesMap().get(ecId);
+										if(briteEntries != null){
+											for (BriteEntry entry : briteEntries) {
+												hierarchyInformationsForCurrentNode.add(entry);
+											}
+										}
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
 							}
 							
+							/*
+							 * The KO Gene Lookup will be implemented later
+							 */
+//							if (currentInformationProcessingSetting.equals(settingKOgeneLookup)) {
+//								// produced sometimes errors:
+//								// if (altId.indexOf(":")>0)
+//								// organismInfo = altId.substring(0,
+//								// altId.indexOf(":")).trim();
+//								for (KoEntry ko : KoService.getKoFromGeneIdOrKO(altId)) {
+//									for (String cat : ko.getKoClasses()) {
+//										cat = "KO Classes;" + cat;
+//										if (!hierarchyInformationsForCurrentNode.contains(cat))
+//											hierarchyInformationsForCurrentNode.add(cat);
+//									}
+//									Set<String> orgs = ko.getOrganismCodesForGeneID(altId);
+//									if (orgs != null && orgs.size() == 1)
+//										organismInfo = orgs.iterator().next();
+//								}
+//							}
+							
+							/*
+							 * The DB Link functionality will be reimplemented later
+							 */
+//							if (currentInformationProcessingSetting.equals(settingKOdbLinkLookup)) {
+//								for (KoEntry ko : KoService.getKoFromDBlink(altId)) {
+//									for (String cat : ko.getKoClasses()) {
+//										cat = "KO Classes;" + cat;
+//										if (!hierarchyInformationsForCurrentNode.contains(cat))
+//											hierarchyInformationsForCurrentNode.add(cat);
+//									}
+//								}
+//							}
+						}
+						Node lastNode = null;
+						lastNode = graphNode;
+						for (BriteEntry hierarchyInformation : hierarchyInformationsForCurrentNode) {
+//							if (hierarchyInformation != null && hierarchyInformation.length() > 0) {
+//								hierarchyInformation = StringManipulationTools.htmlToUnicode(hierarchyInformation);
+//								if (hierarchyInformation.indexOf("§") >= 0) {
+//									ErrorMsg
+//														.addErrorMessage("Internal error: funcat/ko definition should not contain character § (problematic: '"
+//																			+ hierarchyInformation + "')");
+//								} else {
+//									if (hierarchyInformation.startsWith("KO Classes;")) {
+//										hierarchyInformation = StringManipulationTools.stringReplace(hierarchyInformation, ";",
+//															"§");
+//									} else {
+//										hierarchyInformation = StringManipulationTools.stringReplace(hierarchyInformation, ".",
+//															"§");
+//										if (hierarchyInformation.indexOf(";") >= 0)
+//											hierarchyInformation = StringManipulationTools.stringReplace(hierarchyInformation,
+//																";", "§");
+//									}
+//									String[] graphH = hierarchyInformation.split("§");
+									
+//									String hierarchyEntityName = "";
+									
+									// skip actual enzyme and get right to the path elements
+									hierarchyInformation = hierarchyInformation.getParent();
+							
+									do {
+									
+										String hierarchyEntityName = hierarchyInformation.getName();
+										if(hierarchyEntityName.contains("KEGG Orthology")){
+											System.err.println();
+										}
+//										for (String hierarchyEntityNameLE : graphH) {
+										if (!hierarchy_tree_itemName2node.containsKey(hierarchyEntityName)) {
+											// System.out.println("not found: "+hierarchyEntityName);
+											Node n = GraphHelper.addNodeToGraph(fgraph, startX
+																+ hierarchy_tree_itemName2node.size() * stepX, startY
+																+ hierarchy_tree_itemName2node.size() * stepY, 1, 150, 30, Color.BLACK,
+																Color.WHITE);
+											AttributeHelper.setLabel(n, hierarchyEntityName);
+											
+											if (hierarchyInformation.getPathId() != null) {
+												// this should be a map-node
+												String id = hierarchyInformation.getPathId();
+//												id = hierarchyEntityNameLE.substring(hierarchyEntityNameLE.toLowerCase()
+//																	.indexOf("path:"), hierarchyEntityNameLE.indexOf("]", hierarchyEntityNameLE
+//																	.toLowerCase().indexOf("path:")));
+												if (organismInfo == null) {
+													KeggGmlHelper.setKeggId(n, id.toLowerCase());
+												} else {
+													KeggGmlHelper.setKeggId(n, id.toLowerCase());
+													id = StringManipulationTools.stringReplace(id, "ko", organismInfo);
+													KeggGmlHelper.setKeggId(n, id.toLowerCase(), 1);
+												}
+												KeggGmlHelper.setKeggType(n, "map");
+												AttributeHelper.setRoundedEdges(n, 15);
+											} else if(hierarchyInformation.getId() != null)
+												KeggGmlHelper.setKeggId(n, hierarchyInformation.getId().toLowerCase());
+											
+											hierarchy_tree_itemName2node.put(hierarchyEntityName, n);
+											
+											newNodes.add(n);
+										}
+										Node hierarchy_tree_node = hierarchy_tree_itemName2node.get(hierarchyEntityName);
+										if (lastNode != null) {
+											String lastnodename = AttributeHelper.getLabel(lastNode, "");
+											// connect nodes
+											if (!lastNode.getNeighbors().contains(hierarchy_tree_node)) {
+												Edge edge = fgraph.addEdge(hierarchy_tree_node, lastNode, true, AttributeHelper
+																	.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
+												newEdges.add(edge);
+											}
+										}
+										
+										lastNode = hierarchy_tree_node;
+										
+									} while((hierarchyInformation = hierarchyInformation.getParent()) != null);
+									lastNode = graphNode;
+//									if (lastNode != null) {
+//										// connect last funcat desc with node with exp.
+//										// data
+//										if (!lastNode.getNeighbors().contains(graphNode)) {
+//											Edge edge = fgraph.addEdge(lastNode, graphNode, true, AttributeHelper
+//																.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
+//											newEdges.add(edge);
+//										}
+//									}
+								}
+//							}
+							
+//						}
+					}
 				} finally {
 					if (!status.wantsToStop()) {
 						fgraph.getListenerManager().transactionFinished(this, false);
