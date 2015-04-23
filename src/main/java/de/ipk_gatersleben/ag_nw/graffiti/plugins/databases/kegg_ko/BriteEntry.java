@@ -30,17 +30,10 @@ public class BriteEntry {
 		return parent;
 	}
 
-//	public void setParent(BriteEntry parent) {
-//		this.parent = parent;
-//	}
-
 	public List<BriteEntry> getChildren() {
 		return children;
 	}
 
-//	public void setChildren(List<BriteEntry> children) {
-//		this.children = children;
-//	}
 
 	public void addChild(BriteEntry entry){
 		if(this.children == null)
