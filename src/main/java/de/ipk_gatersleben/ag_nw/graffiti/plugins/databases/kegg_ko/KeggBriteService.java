@@ -11,6 +11,8 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 import org.ReleaseInfo;
 import org.apache.log4j.Logger;
@@ -81,14 +83,11 @@ public class KeggBriteService {
 		
 		BriteHierarchy hierarchy = new BriteHierarchy();
 		
-		// this is the sole ID part of the brite id without the leading 'br:'
-		String realBriteId = briteId.substring(briteId.indexOf(":") + 1);
-		
-		File file = new File(ReleaseInfo.getAppFolder() + "/"+KEGG_CACHE_DIR+"/" + realBriteId);
+		File file = new File(ReleaseInfo.getAppFolder() + "/"+KEGG_CACHE_DIR+"/" + briteId);
 		
 		if( ! file.exists() ) {
-			loadBrite(realBriteId);
-			file = new File(ReleaseInfo.getAppFolder() + "/"+KEGG_CACHE_DIR+"/" + realBriteId);
+			loadBrite(briteId);
+			file = new File(ReleaseInfo.getAppFolder() + "/"+KEGG_CACHE_DIR+"/" + briteId);
 		}
 		
 		BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -136,9 +135,6 @@ public class KeggBriteService {
 			if(line.equals("!")) //we reached the end
 				break;
 			
-			if(line.contains("K01814"))
-				System.err.println();
-			
 			curDepth = line.charAt(0);
 			if(curDepth > prevDepth) { //next level
 				parent = current;
@@ -151,11 +147,13 @@ public class KeggBriteService {
 			current = readBriteEntry(parent, line);
 			
 			if(curDepth == maxDepth) {
-				if( ! hierarchy.getEntriesMap().containsKey(current.getId()))
-					hierarchy.getEntriesMap().put(current.getId(), new HashSet<BriteEntry>());
-				hierarchy.getEntriesMap().get(current.getId()).add(current);
+				hierarchy.addBriteEntryToEntryMap(current.getId(), current);
 			}
 
+			if(current.getSetEC() != null)
+				for(String curEC : current.getSetEC())
+					hierarchy.addBriteEntryToECEntryMap(curEC, current);
+			
 			parent.addChild(current);
 			
 			prevDepth = curDepth;
@@ -223,8 +221,33 @@ public class KeggBriteService {
 			line = line.substring(idx + 2).trim(); //cut ID including the 2 space characters
 		}
 		
-		String name = line;
+		/*
+		 * we currently assume, that if there is another DB identifier for this entry
+		 * it'll surrounded by '[' ']'
+		 */
+		String name = null;
+		Set<String> ecIds = null;
+		String pathid = null;
 		
-		return new BriteEntry(parent, id, name, null, null);
+		idx = line.lastIndexOf("[");
+		if(idx > 0) {
+			name = line.substring(0, idx);
+			String ids = line.substring(idx);
+			idx = ids.indexOf("EC:");
+			if(idx > 0) { // handle list of EC numbers
+				ecIds = new HashSet<>();
+				StringTokenizer ecs = new StringTokenizer(ids.substring(idx + 3, ids.indexOf("]")), " ");
+				while(ecs.hasMoreTokens())
+					ecIds.add(ecs.nextToken());
+			}
+			idx = ids.indexOf("PATH:");
+			if(idx > 0) { // handle mentioning of path id
+				pathid = ids.substring(idx + 5, ids.indexOf("]"));
+			}
+		} else
+			name = line;
+		
+		
+		return new BriteEntry(parent, id, name, ecIds, pathid);
 	}
 }
