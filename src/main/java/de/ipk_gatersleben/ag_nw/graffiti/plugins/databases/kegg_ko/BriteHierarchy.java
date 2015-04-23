@@ -35,6 +35,12 @@ public class BriteHierarchy {
 	 */
 	Map<String, HashSet<BriteEntry>> mapEntries;
 
+	/**
+	 * This map stores entries, where a link to a EC number was given
+	 * The key will be the EC number that retrieves a set of BriteEntries 
+	 */
+	Map<String, HashSet<BriteEntry>> mapEntriesByEC;
+	
 	
 	
 	public String getName() {
@@ -60,11 +66,32 @@ public class BriteHierarchy {
 		return mapEntries;
 	}
 
-	
-	protected void setMapEntries(Map<String, HashSet<BriteEntry>> mapEntries) {
-		this.mapEntries = mapEntries;
+	public void addBriteEntryToEntryMap(String id, BriteEntry entry) {
+		HashSet<BriteEntry> set;
+		if( (set =  getEntriesMap().get(id)) == null){
+			set = new HashSet<BriteEntry>();
+			getEntriesMap().put(id, set);
+		}
+		set.add(entry);
 	}
 
+	public Map<String, HashSet<BriteEntry>> getECEntriesMap() {
+		if(mapEntriesByEC == null)
+			mapEntriesByEC = new HashMap<>();
+		return mapEntriesByEC;
+	}
+
+	public void addBriteEntryToECEntryMap(String ecid, BriteEntry entry) {
+		HashSet<BriteEntry> set;
+		if( (set =  getECEntriesMap().get(ecid)) == null){
+			set = new HashSet<BriteEntry>();
+			getECEntriesMap().put(ecid, set);
+		}
+		set.add(entry);
+	}
+	
+
+	
 	protected void setName(String name) {
 		this.name = name;
 	}
