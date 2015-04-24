@@ -94,10 +94,9 @@ public interface Algorithm {
 	public String getCategory();
 	
 	/**
-	 * Returns a set of categories this algorithm belongs to.
+	 * Returns a set of categories to classify this algorithm .
 	 * 
-	 * This 
-	 * @return
+	 * @return Set of Category Enums that classify this algorithm.
 	 */
 	public Set<Category> getSetCategory();	
 	/**
