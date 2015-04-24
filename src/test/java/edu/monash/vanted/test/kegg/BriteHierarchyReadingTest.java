@@ -11,10 +11,11 @@ public class BriteHierarchyReadingTest {
 
 	public static void main(String[] args) {
 		try {
-			BriteHierarchy briteHierarchy = KeggBriteService.getInstance().getBriteHierarchy("br:br08620");
+			BriteHierarchy briteHierarchy = KeggBriteService.getInstance().getBriteHierarchy("ko00001");
 			
-			HashSet<BriteEntry> hashSet = briteHierarchy.getEntriesMap().get("NC_025244");
-			System.out.println();
+			HashSet<BriteEntry> hashSet = briteHierarchy.getEntriesMap().get("K16197");
+			HashSet<BriteEntry> hashSet2 = briteHierarchy.getECEntriesMap().get("2.3.3.1");
+			System.out.println("chance for breakpoint");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

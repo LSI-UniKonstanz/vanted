@@ -24,8 +24,12 @@ public class KoDBReaderTest {
 		listKOs.add("K00010");
 		listKOs.add("K00011");
 		listKOs.add("K00121");
-		List<KoEntry> entriesByKO = KeggAPIService.getInstance().getEntriesByKO(listKOs);
+//		List<KoEntry> entriesByKO = KeggAPIService.getInstance().getEntriesByKO(listKOs);
 		
+		List<String> listECs = new ArrayList<>();
+		listECs.add("2.7.1.2");
+		listECs.add("2.7.1.3");
+		List<KoEntry> entriesKO = KeggAPIService.getInstance().getEntriesByEC(listECs);
 		System.out.println();
 	}
 }
