@@ -66,6 +66,16 @@ public class BriteHierarchy {
 		return mapEntries;
 	}
 
+	/**
+	 * Method to get all Brite Entries (Leaf nodes in the hierarchy) that match the
+	 * given ID
+	 * @param id 
+	 * @return All brite entries matching the given id
+	 */
+	public HashSet<BriteEntry> getBriteEntryById(String id) {
+		return getEntriesMap().get(id);
+	}
+	
 	public void addBriteEntryToEntryMap(String id, BriteEntry entry) {
 		HashSet<BriteEntry> set;
 		if( (set =  getEntriesMap().get(id)) == null){
@@ -79,6 +89,16 @@ public class BriteHierarchy {
 		if(mapEntriesByEC == null)
 			mapEntriesByEC = new HashMap<>();
 		return mapEntriesByEC;
+	}
+
+	/**
+	 * Method to get all Brite Entries (Leaf nodes in the hierarchy) that match the
+	 * given EC number 
+	 * @param ec Number 
+	 * @return All brite entries matching the given EC number
+	 */
+	public HashSet<BriteEntry> getBriteEntryByEC(String ec) {
+		return getECEntriesMap().get(ec);
 	}
 
 	public void addBriteEntryToECEntryMap(String ecid, BriteEntry entry) {
