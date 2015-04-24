@@ -280,7 +280,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 						for (String altId : checkTheseIds) {
 							if (altId == null || altId.length() <= 0)
 								continue;
-							if (currentInformationProcessingSetting.equals(settingPointDivided)) {
+							if (currentInformationProcessingSetting.equals(settingKOgeneLookup)) {
 								try {
 									HashSet<BriteEntry> briteEntries = KeggBriteService.getInstance().getBriteHierarchy("ko00001").getEntriesMap().get(altId);
 									for (BriteEntry entry : briteEntries) {
@@ -311,7 +311,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 							/*
 							 * The KO Gene Lookup will be implemented later
 							 */
-//							if (currentInformationProcessingSetting.equals(settingKOgeneLookup)) {
+//							if (currentInformationProcessingSetting.equals(settingPointDivided)) {
 //								// produced sometimes errors:
 //								// if (altId.indexOf(":")>0)
 //								// organismInfo = altId.substring(0,
