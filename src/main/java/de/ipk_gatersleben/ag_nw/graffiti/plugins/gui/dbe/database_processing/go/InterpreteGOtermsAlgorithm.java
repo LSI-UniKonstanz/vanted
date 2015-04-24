@@ -11,12 +11,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.JLabel;
 
@@ -30,12 +28,14 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
-import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_ko.KeggAPIService;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_ko.KoEntry;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.RemoveSelectedNodesPreserveEdgesAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
@@ -65,15 +65,6 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 		return "Hierarchy";
 	}
 	
-	
-	@Override
-	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION
-				));
-	}
-
 	@Override
 	public String getDescription() {
 		return "<html>" +
@@ -183,6 +174,30 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 						valid = true;
 					} catch (Exception e) {
 						// empty
+					}
+					if (!valid) {
+//						EnzymeEntry eze = EnzymeService.getEnzymeInformation(test, false);
+						String extractECId = EnzymeService.extractECId(test);
+						
+						if (extractECId != null) {
+							
+							for (KoEntry koe : KeggAPIService.getInstance().getEntriesByEC(extractECId)) {
+								for (String goID : koe.getKoDbLinks("GO")) {
+									goTerms.add("GO:" + goID);
+								}
+							}
+						} else {
+							/*
+							 * for now only support KO ids as label
+							 */
+							if(test.startsWith("K")) {
+								for (KoEntry koe : KeggAPIService.getInstance().getEntriesByKO(test)) {
+									for (String goID : koe.getKoDbLinks("GO")) {
+										goTerms.add("GO:" + goID);
+									}
+								}
+							}
+						}
 					}
 				}
 			}

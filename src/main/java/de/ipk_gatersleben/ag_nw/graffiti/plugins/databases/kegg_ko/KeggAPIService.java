@@ -11,8 +11,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveAction;
 
@@ -43,12 +46,18 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 	static Logger logger = Logger.getLogger(KeggAPIService.class);
 	
 	static String URL_REST_KO = "http://rest.kegg.jp/get/";
+	// translation URL to get KO entries from other IDs
 	static String URL_REST_EC = "http://rest.kegg.jp/link/ko/";
 	
 	static int MAX_QUERY_SIZE = 10;
 	
 	static KeggAPIService instance;
 
+	/**
+	 * States for the state machine that reads the KO document
+	 * @author matthiak
+	 *
+	 */
 	enum KoEntryKey {
 		ENTRY("ENTRY"),
 		NAME("NAME"),
@@ -73,11 +82,13 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 	
 	
 	Map<String, KoEntry> mapKOIdToEntry;
-	Map<String, KoEntry> mapECIdToEntry;
+	Map<String, HashSet<KoEntry>> mapECIdToEntry;
 	
 	
 	private KeggAPIService() {
 		instance = this;
+		mapKOIdToEntry = new HashMap<String, KoEntry>();
+		mapECIdToEntry = new HashMap<String, HashSet<KoEntry>>();
 	}
 	
 	public static KeggAPIService getInstance() {
@@ -86,7 +97,18 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 		return instance;
 	}
 	
-	/*
+	/**
+	 * Retrieves an array of KO entries for a given EC number
+	 * @param ecId
+	 * @return
+	 */
+	public List<KoEntry> getEntriesByEC(String ecId) {
+		List<String> listEC = new ArrayList<String>();
+		listEC.add(ecId);
+		return getEntriesByEC(listEC);
+	}
+	
+	/** 
 	 * Algorithm to retrieve KO entries from EC numbers
 	 * 
 	 * 2 step process
@@ -95,42 +117,213 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 	 * 1. if not in cache find KO entry online
 	 * 2. download KO entry
 	 * 	-create KoEntry object and put it in the cache
-	 */
-	
-	/**
+	 * 
 	 * returns List of koEntry objects matching the given EC numbers
 	 */
 	public List<KoEntry> getEntriesByEC(List<String> listEC) {
-		List<KoEntry> listKoEntries = null;
+		List<KoEntry> retListKoEntries = new ArrayList<KoEntry>();
 		
-		return listKoEntries;
+		List<String> listIDsToTranslateFromKegg = new ArrayList<>();
+		
+		// try the cache first
+		for(String ec : listEC){
+			Set<KoEntry> koEntry = mapECIdToEntry.get(ec);
+			if(koEntry != null)
+				retListKoEntries.addAll(koEntry);
+			else {
+				listIDsToTranslateFromKegg.add("ec:"+ec); //prepend 'ec:' prefix for the lookup
+			}
+			
+		}
+		
+		if( ! listIDsToTranslateFromKegg.isEmpty()) {
+			ForkJoinPool pool = new ForkJoinPool(2);
+			
+			pool.invoke(
+					new RetrieveLinkMappingFromIDtoKO(
+							listIDsToTranslateFromKegg.toArray(new String[listIDsToTranslateFromKegg.size()]),
+							0,
+							listIDsToTranslateFromKegg.size()
+							)
+					);
+			
+			/*
+			 * after the linking from ecID to KO and retrieving of of KO,
+			 * do the lookup for the previously not found ECs
+			 */
+			for(String ectranslateId : listIDsToTranslateFromKegg){
+				String ec = ectranslateId.substring(3); // exclude the prefix 'ec:' put there before the translation
+				Set<KoEntry> koEntry = mapECIdToEntry.get(ec);
+				if(koEntry != null)
+					retListKoEntries.addAll(koEntry);
+			}
+		}
+		return retListKoEntries;
 	}
 	
+	/**
+	 * Retrieves an array of KO entries for a given EC number
+	 * @param ecId
+	 * @return
+	 */
+	public List<KoEntry> getEntriesByKO(String koId) {
+		List<String> listKOids = new ArrayList<String>();
+		listKOids.add(koId);
+		return getEntriesByKO(listKOids);
+	}
 	
 	/**
 	 * returns List of koEntry objects matching the given KO ids
 	 */
 	public List<KoEntry> getEntriesByKO(List<String> listKOids) {
-		List<KoEntry> listKoEntries = new ArrayList<KoEntry>();
+		List<KoEntry> retListKoEntries = new ArrayList<KoEntry>();
 	
-		List<KoEntry> synchronizedList = Collections.synchronizedList(listKoEntries);
+		List<String> listKOsToLoadFromKegg = new ArrayList<>();
 		
-		RetrieveKObyKOId task = new RetrieveKObyKOId(
-				listKOids.toArray(new String[listKOids.size()]),
-				0,
-				listKOids.size(),
-				synchronizedList
-				);
+		// try the cache first
+		for(String koid : listKOids){
+			KoEntry koEntry = mapKOIdToEntry.get(koid);
+			if(koEntry != null)
+				retListKoEntries.add(koEntry);
+			else
+				listKOsToLoadFromKegg.add(koid);
+			
+		}
 		
-		ForkJoinPool pool = new ForkJoinPool();
-		
-		
-		pool.invoke(task);
-		
-		return listKoEntries;
+		// load all KOids not found in cache from web
+		if( ! listKOsToLoadFromKegg.isEmpty() ) {
+			List<KoEntry> listLoadedKoEntries = new ArrayList<>();
+			List<KoEntry> synchronizedList = Collections.synchronizedList(listLoadedKoEntries);
+			
+			RetrieveKObyKOId task = new RetrieveKObyKOId(
+					listKOids.toArray(new String[listKOids.size()]),
+					0,
+					listKOids.size(),
+					synchronizedList
+					);
+			
+			ForkJoinPool pool = new ForkJoinPool(2);
+			
+			
+			pool.invoke(task);
+			// add KOentries to KO map and, if there are EC ids found, EC map as well 
+			for(KoEntry entry : listLoadedKoEntries) {
+				
+				mapKOIdToEntry.put(entry.getKoID(), entry);
+				
+				HashSet<String> hashSet = entry.getDbLinkId2Values().get("EC");
+				if(hashSet != null)
+					for(String curEC : hashSet) {
+						if(mapECIdToEntry.get(curEC) == null)
+							mapECIdToEntry.put(curEC, new HashSet<KoEntry>());
+						mapECIdToEntry.get(curEC).add(entry);
+					}
+			}
+			// add the downloaded entries to the return list
+			retListKoEntries.addAll(listLoadedKoEntries);
+			
+		}
+		return retListKoEntries;
 	}
 	
 	
+	class RetrieveLinkMappingFromIDtoKO extends RecursiveAction {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		String[] listIDsToTranslateFromKegg;
+		int leftIdx;
+		int rightIdx;
+
+		
+		
+		public RetrieveLinkMappingFromIDtoKO(String[] listIDsToTranslateFromKegg, int leftIdx, int rightIdx) {
+			super();
+			this.listIDsToTranslateFromKegg = listIDsToTranslateFromKegg;
+			this.leftIdx = leftIdx;
+			this.rightIdx = rightIdx;
+		}
+
+
+
+		@Override
+		protected void compute() {
+			
+			if((rightIdx - leftIdx) > MAX_QUERY_SIZE) {
+				invokeAll(
+						new RetrieveLinkMappingFromIDtoKO(listIDsToTranslateFromKegg, leftIdx, leftIdx + MAX_QUERY_SIZE),
+						new RetrieveLinkMappingFromIDtoKO(listIDsToTranslateFromKegg, leftIdx + MAX_QUERY_SIZE, rightIdx )
+						);
+			} else {
+				getKOEntries();
+			}
+		}
+
+
+
+		private void getKOEntries() {
+			List<String> listKoIds = translate();
+			if(listKoIds != null &&  ! listKoIds.isEmpty()) {
+				getEntriesByKO(listKoIds);
+			}
+		}
+		
+		/**
+		 * translates given ids to KO ids using KEGG REST API
+		 * @return
+		 */
+		private List<String> translate() {
+			List<String> retKOIds = new ArrayList<>();
+			if(listIDsToTranslateFromKegg.length == 0)
+				return retKOIds;
+			
+			StringBuilder str = new StringBuilder(URL_REST_EC);
+			
+			int idx = leftIdx;
+			str.append(listIDsToTranslateFromKegg[idx]);
+			idx++;
+			while(idx < rightIdx) {
+				str.append("+");
+				str.append(listIDsToTranslateFromKegg[idx]);
+				idx++;
+			}
+			
+			try {
+				URL url = new URL(str.toString());
+				HttpURLConnection openConnection = (HttpURLConnection)url.openConnection();
+				if(openConnection.getResponseCode() == HTTP.OK) {
+					BufferedReader reader = new BufferedReader(new InputStreamReader(openConnection.getInputStream()));
+					String line;
+					while((line = reader.readLine()) != null) {
+						String[] mappedIds = line.split("\t");
+						if(mappedIds.length != 2)
+							System.err.println();
+						retKOIds.add(mappedIds[1].trim());
+					}
+				}
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return retKOIds;
+		}
+	}
+	
+	
+	/**
+	 * A class that is called initially by the ForkJoin Pool.
+	 * 
+	 * Since KEGG only allows 10 Ids per query, we need to be able to split up queries.
+	 * The easiest parallel solution is to always take the first 10 pieces and recursively
+	 * fork a new Thread with the rest N elements. 
+	 * @author matthiak
+	 *
+	 */
 	class RetrieveKObyKOId extends RecursiveAction {
 		/**
 		 * 
@@ -154,16 +347,25 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 
 		@Override
 		protected void compute() {
+			/*
+			 * if the query size is larger than a constant (Kegg allows 10), split it up
+			 * and recursivley call both with subarrays
+			 */
 			if(rightIdx - leftIdx > MAX_QUERY_SIZE) {
 				invokeAll(	new RetrieveKObyKOId(arrayKo, leftIdx, leftIdx + MAX_QUERY_SIZE, synchronizedList),
 								new RetrieveKObyKOId(arrayKo, leftIdx + MAX_QUERY_SIZE, rightIdx, synchronizedList));
 			}
 			else {
-				loadKO();
+				// small enough.. parse the result
+				loadKO(synchronizedList);
 			}
 		}
 
-		protected void loadKO() {
+		/**
+		 * Loads the document from the Web using the KEGG REST service
+		 * Then calls the actual parsing method
+		 */
+		protected void loadKO(List<KoEntry> synchronizedList) {
 			StringBuffer buf = new StringBuffer();
 			
 			buf.append(URL_REST_KO);
@@ -197,7 +399,7 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 					while((len = is.read(buffer)) != -1)
 						bos.write(buffer, 0, len);
 					
-					splitResult(bos.toByteArray());
+					splitResult(bos.toByteArray(), synchronizedList);
 				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -206,7 +408,17 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 			
 		}
 		
-		protected void splitResult(byte[] resultStreamArray) throws IOException{
+		/**
+		 * Kegg REST KO Document parser.
+		 * 
+		 * Works like a state machine.
+		 * 
+		 * Adds the KO Entries to the synchronous list 
+		 * 
+		 * @param resultStreamArray
+		 * @throws IOException
+		 */
+		protected void splitResult(byte[] resultStreamArray, List<KoEntry> synchronizedList) throws IOException{
 			BufferedReader bufRead = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(resultStreamArray)));
 			
 			KoEntry curKoEntry = null;
@@ -217,6 +429,9 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 			
 			while((line = bufRead.readLine()) != null) {
 
+				/*
+				 * change the state, if a Tag at the beginning of he line was found
+				 */
 				if(line.startsWith(KoEntryKey.ENTRY.name())) {
 					curKey = KoEntryKey.ENTRY;
 					curKoEntry = new KoEntry();
@@ -246,6 +461,11 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 				
 				line = line.trim();
 				
+				/*
+				 * the handle methods are called for the given state
+				 * If the state doesn't change, methods are called for each line 
+				 * for the given Tag 
+				 */
 				switch(curKey) {
 					case ENTRY:
 						handleEntry(curKoEntry, line);
@@ -279,7 +499,7 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 		}
 
 		private void handleReferences(KoEntry curKoEntry, String line) {
-			// TODO Auto-generated method stub
+			// TODO Not yet implemented
 			
 		}
 
@@ -290,7 +510,7 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 				return;
 			}
 			String organism = KeyVals[0];
-			String[] geneids = KeyVals[1].split(" ");
+			String[] geneids = KeyVals[1].trim().split(" ");
 			
 			for(String geneid : geneids)
 				curKoEntry.addGeneForSpecies(organism, geneid);
@@ -299,7 +519,7 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 		private void handleDbLinks(KoEntry curKoEntry, String line) {
 			String[] KeyVals= line.split(":");
 			String dbName = KeyVals[0];
-			String[] values = KeyVals[1].split(" ");
+			String[] values = KeyVals[1].trim().split(" ");
 			
 			for(String value : values)
 				curKoEntry.addDbLinkValue(dbName, value);
