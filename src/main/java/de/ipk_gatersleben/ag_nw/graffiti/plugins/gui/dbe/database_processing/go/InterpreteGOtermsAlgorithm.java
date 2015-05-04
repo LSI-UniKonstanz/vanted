@@ -62,7 +62,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Hierarchy";
+		return "Hierarchy.GO";
 	}
 	
 	@Override

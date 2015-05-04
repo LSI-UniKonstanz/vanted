@@ -100,7 +100,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Hierarchy";
+		return "Hierarchy.KEGG";
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -280,7 +280,8 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 						for (String altId : checkTheseIds) {
 							if (altId == null || altId.length() <= 0)
 								continue;
-							if (currentInformationProcessingSetting.equals(settingKOgeneLookup)) {
+							if (currentInformationProcessingSetting.equals(settingKOgeneLookup
+									)) {
 								try {
 									HashSet<BriteEntry> briteEntries = KeggBriteService.getInstance().getBriteHierarchy("ko00001").getEntriesMap().get(altId);
 									for (BriteEntry entry : briteEntries) {
