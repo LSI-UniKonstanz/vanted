@@ -75,7 +75,7 @@ public class OptionsDialog
 	public static final String CAT_VIEWS = "Views";
 	public static final String CAT_ALGORITHMS = "Algorithms";
 	public static final String CAT_TABS = "Tabs";
-	public static final String CAT_MISC = "Misc";
+	public static final String CAT_GENERAL = "General";
 	public static final String CAT_TOOLS = "Tools";
 	public static final String CAT_ATTR_COMP = "Visualisation";
 	
@@ -262,9 +262,9 @@ public class OptionsDialog
 					addOptionGroup(categoryNode, parent);
 				}
 				else {
-					categoryNode = getCategoryNode(CAT_MISC);
+					categoryNode = getCategoryNode(CAT_GENERAL);
 					addOptionGroup(categoryNode, parent);
-					logger.debug("added new misc category");
+					logger.debug("added new general category");
 				}
 			
 				logger.debug("added new category");

@@ -162,6 +162,7 @@ import org.graffiti.plugin.EditorPlugin;
 import org.graffiti.plugin.GenericPlugin;
 import org.graffiti.plugin.actions.GraffitiAction;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.EditorAlgorithm;
 import org.graffiti.plugin.editcomponent.NeedEditComponents;
 import org.graffiti.plugin.extension.Extension;
@@ -195,6 +196,7 @@ import org.graffiti.session.SessionManager;
 import org.graffiti.undo.Undoable;
 import org.graffiti.util.DesktopMenuManager;
 import org.graffiti.util.InstanceCreationException;
+import org.vanted.VantedPreferences;
 
 import scenario.ScenarioService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.navigation.NavigationComponentView;
@@ -1977,6 +1979,17 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		Algorithm[] algorithms = plugin.getAlgorithms();
 		for (int i = algorithms.length - 1; i >= 0; i--) {
 			Algorithm a = algorithms[i];
+			
+			/*
+			 * check, if the preference are set to show or hide special algorithms
+			 */
+			boolean showHiddenAlgorithms = PreferenceManager.getPreferenceForClass(VantedPreferences.class).getBoolean(VantedPreferences.PREFERENCE_SHOWALL_ALGORITHMS, false);
+			Set<Category> setCategory = a.getSetCategory();
+			if(setCategory != null && setCategory.contains(Category.HIDDEN) && ! showHiddenAlgorithms)
+				continue;
+
+			
+			
 			if (a != null && a.getName() != null && a.getMenuCategory() != null) {
 				if (a.isLayoutAlgorithm()) {
 					// System.out.println("Skip Layouter: "+a.getName());

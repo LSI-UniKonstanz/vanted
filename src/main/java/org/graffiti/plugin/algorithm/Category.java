@@ -15,6 +15,16 @@ package org.graffiti.plugin.algorithm;
  */
 public enum Category {
 
+	/*
+	 *  special category for algorithms, that are present in Vanted and could be usefull for certain tasks
+	 *  but shouldnt appear in the menus.
+	 *  but the user still be able to see them, if he's an advanced user
+	 *  Currently, the idea is, to have a global preference setting, when enabled, the algorithms will appear 
+	 */
+	HIDDEN("Hidden","Algorihm is known to the system but hidden from the menu by standard (changeable through preferences)"),
+	/*
+	 * normal categories that algororithms should fall into
+	 */
 	GRAPH("Graph","Algorithm working on graphs"),
 	EDGE("Graph-Edges","Algorithm working on graph edges"),
 	NODE("Graph-Nodes","Algorithm working on graph nodes"),
@@ -34,7 +44,9 @@ public enum Category {
 	COMMUNICATION("Communication","Algorithm performing kinds of communication e.g. network sockets, mail, etc."),
 	STATISTICS("Statistics","Algorithm creating statistical data based on experimental data or network properties"),
 	IMPORT("Import","Algorithm importing data"),
-	EXPORT("Export","Algorithm exporting data");
+	EXPORT("Export","Algorithm exporting data"),
+	ENRICHMENT("Enrichment","Algorithm does enrichment operations on hierarchical networks"),
+	HIERARCHY("Hierachy","Algorithm creating hierarchical networks upon existing networks (Ontologies, Hierarchies, etc.)");
 	
 	private String name;
 	private String description;
