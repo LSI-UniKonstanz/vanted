@@ -71,9 +71,9 @@ public class StringEditComponent
 	public StringEditComponent(Displayable disp) {
 		super(disp);
 		
+		searchComponent = getSearchComponent();
 		createComponent();
 		
-		searchComponent = getSearchComponent();
 	}
 	
 	// ~ Methods ================================================================
