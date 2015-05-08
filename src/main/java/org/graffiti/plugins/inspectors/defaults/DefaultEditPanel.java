@@ -579,16 +579,17 @@ public class DefaultEditPanel extends EditPanel {
 		
 		JComponent editComponentViewComponent = editComponent.getComponent();
 		
-		textField.setMinimumSize(new Dimension(0, editComponentViewComponent
-							.getMinimumSize().height));
-		textField.setMaximumSize(new Dimension(textField.getMaximumSize().width,
-							editComponentViewComponent.getMaximumSize().height));
-		// textField.setPreferredSize(new Dimension(
-		// textField.getPreferredSize().width, editComponentViewComponent
-		// .getPreferredSize().height));
-		// textField.setSize(new Dimension(textField.getSize().width,
-		// editComponentViewComponent.getSize().height));
-		result.add(textField);
+//		textField.setMinimumSize(new Dimension(0, editComponentViewComponent
+//							.getMinimumSize().height));
+//		textField.setMaximumSize(new Dimension(textField.getMaximumSize().width,
+//							editComponentViewComponent.getMaximumSize().height));
+		 textField.setPreferredSize(new Dimension(
+		 textField.getPreferredSize().width, editComponentViewComponent
+		 .getPreferredSize().height));
+		 textField.setSize(new Dimension(textField.getSize().width,
+		 editComponentViewComponent.getSize().height));
+
+		 result.add(textField);
 		result.add(editComponentViewComponent);
 		synchronized (displayedValueEditComponents) {
 			displayedValueEditComponents.add(editComponent);

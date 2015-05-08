@@ -208,7 +208,6 @@ implements SessionListener, SelectionListener, AttributeListener {
 
 
 	protected void rebuildTreeAction() {
-
 		
 		/** The tree view of the attribute hierarchy. */
 		logger.debug("classname: "+this.getClass().getName());
