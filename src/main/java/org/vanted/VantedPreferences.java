@@ -15,6 +15,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.ReleaseInfo;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.options.PreferencesInterface;
+import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
@@ -37,6 +38,8 @@ public class VantedPreferences implements PreferencesInterface{
 	public static final String PREFERENCE_LOOKANDFEEL = "Look and Feel";
 	public static final String PREFERENCE_PROXYHOST = "Proxy Host";
 	public static final String PREFERENCE_PROXYPORT = "Proxy Port";
+
+	public static final String PREFERENCE_SHOWALL_ALGORITHMS = "Show all (hidden) algortihms";
 	
 	private static VantedPreferences instance;
 	
@@ -54,6 +57,7 @@ public class VantedPreferences implements PreferencesInterface{
 		params.add(getLookAndFeelParameter()); 
 		params.add(new StringParameter("", PREFERENCE_PROXYHOST, "Name or IP  of the proxy host"));
 		params.add(new IntegerParameter(0, PREFERENCE_PROXYPORT, "Port number of the proxy"));
+		params.add(new BooleanParameter(false, PREFERENCE_SHOWALL_ALGORITHMS, "Show algorithms, that are not shown normally as they might confuse users with their sole functionality"));
 		return params;
 	}
 
@@ -119,6 +123,8 @@ public class VantedPreferences implements PreferencesInterface{
 		} else {
 			System.setProperty("http.proxySet", "false");
 		}
+		
+		
 			
 	}
 	
@@ -127,6 +133,7 @@ public class VantedPreferences implements PreferencesInterface{
 		// TODO Auto-generated method stub
 		return "Vanted Preferences";
 	}
+	
 	
 	/**
 	 * retrieves all available LookandFeels from the system and creates

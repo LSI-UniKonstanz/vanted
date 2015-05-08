@@ -57,17 +57,24 @@ extends IPK_PluginAdapter {
 						new HierarchyWizard(), // Disable for normal use, since its functionality doesn't match what we want
 						new HideOrShowChildNodes(), //Disable for normal use. We don't need that now
 						new CreateHierarchyTree(), //Another Super-Dialog containing hierarchy algorithms
-							//including:	CreateGOtreeAlgorithm(), 		//Disable for normal use 
-							//				InterpreteGOtermsAlgorithm(), 	//combine the two into one
-							//				CreateFuncatGraphAlgorithm()
 							/*
+							 * including:	CreateGOtreeAlgorithm(), 		//Disable for normal use 
+											InterpreteGOtermsAlgorithm(), 	//combine the two into one
+											CreateFuncatGraphAlgorithm()
+							
 							 *  The two latter algos will be combined and the resulting algorithm will support
 							 *  GO and KEGG and EC and maybe later other hierarchy searching and creation algorithms
 							 *  	think of a new interface with easy extension
 							 */
 						new ProcessHierarchynodesDepOnLeafNodes(), //Super-dialog that contains the actutal algorithms to create the hierarchies
-							//including: 	
-
+							/*
+							 * including	CreateGOchildrenAverageDataDiagramAlgorithm()
+											CreateGOchildrenClustersHistogramAlgorithm()
+											ClusterHistogramFisherTest()
+											CreateGOchildrenTtestHistogramAlgorithm()
+											AlternativeIDannotationStatistics()
+							*/
+					
 						new CreateKeggReactionNetworkAlgorithm(),
 						new HierarchyAlgorithm(),
 						new SelectLeafNodesAlgorithm(),

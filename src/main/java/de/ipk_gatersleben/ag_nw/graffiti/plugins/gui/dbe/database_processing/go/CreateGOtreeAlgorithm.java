@@ -52,7 +52,8 @@ public class CreateGOtreeAlgorithm extends AbstractAlgorithm {
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
 				Category.GRAPH,
-				Category.COMPUTATION,
+				Category.HIDDEN,
+				Category.HIERARCHY,
 				Category.LAYOUT
 				));
 	}

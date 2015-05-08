@@ -85,7 +85,10 @@ public class SelectLeafNodesAlgorithm
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
 				Category.NODE,
-				Category.SELECTION
+				Category.SELECTION,
+				Category.HIDDEN,
+				Category.HIERARCHY
+				
 				));
 	}
 
