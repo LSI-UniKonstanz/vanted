@@ -1,4 +1,4 @@
-package de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_ko;
+package de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -29,10 +29,10 @@ import sun.net.www.http.HttpClient;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.FileDownloadStatusInformationProvider;
 
 /**
- * This Kegg API Service wrapper will retrieve and cache results looked up from the Kegg public REST webservice.
+ * This Kegg API Service helper will retrieve and cache results looked up from the Kegg public REST webservice.
  * The cache will be implemented using the MapDB database library.
  * 
- * The wrapper will return KoEntry objects (single or Lists) given on of the following inputs
+ * The service helper will return KoEntry objects (single or Lists) given on of the following commonly used inputs
  * - KO Ids
  * - EC number
  * - Gene ID
@@ -41,17 +41,17 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.FileDownloadStatusInf
  * @author matthiak
  *
  */
-public class KeggAPIService implements HelperClass, FileDownloadStatusInformationProvider{
+public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInformationProvider{
 
-	static Logger logger = Logger.getLogger(KeggAPIService.class);
+	static Logger logger = Logger.getLogger(KeggAPIServiceHelper.class);
 	
-	static String URL_REST_KO = "http://rest.kegg.jp/get/";
+	static String URL_REST_GET_DB_ENTRY = "http://rest.kegg.jp/get/";
 	// translation URL to get KO entries from other IDs
-	static String URL_REST_EC = "http://rest.kegg.jp/link/ko/";
+	static String URL_REST_LINK_ID = "http://rest.kegg.jp/link/ko/";
 	
 	static int MAX_QUERY_SIZE = 10;
 	
-	static KeggAPIService instance;
+	static KeggAPIServiceHelper instance;
 
 	/**
 	 * States for the state machine that reads the KO document
@@ -85,15 +85,15 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 	Map<String, HashSet<KoEntry>> mapECIdToEntry;
 	
 	
-	private KeggAPIService() {
+	private KeggAPIServiceHelper() {
 		instance = this;
 		mapKOIdToEntry = new HashMap<String, KoEntry>();
 		mapECIdToEntry = new HashMap<String, HashSet<KoEntry>>();
 	}
 	
-	public static KeggAPIService getInstance() {
+	public static KeggAPIServiceHelper getInstance() {
 		if(instance == null)
-			instance = new KeggAPIService();
+			instance = new KeggAPIServiceHelper();
 		return instance;
 	}
 	
@@ -162,8 +162,8 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 	}
 	
 	/**
-	 * Retrieves an array of KO entries for a given EC number
-	 * @param ecId
+	 * Retrieves an array of KO entries for a given KO id
+	 * @param KO id (K number)
 	 * @return
 	 */
 	public List<KoEntry> getEntriesByKO(String koId) {
@@ -173,7 +173,7 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 	}
 	
 	/**
-	 * returns List of koEntry objects matching the given KO ids
+	 * returns List of koEntry objects matching the given KO ids (K numbers)
 	 */
 	public List<KoEntry> getEntriesByKO(List<String> listKOids) {
 		List<KoEntry> retListKoEntries = new ArrayList<KoEntry>();
@@ -227,6 +227,17 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 	}
 	
 	
+	/**
+	 * Retrieves results from KEGG REST service, using the link functionality
+	 * see:  http://www.kegg.jp/kegg/rest/keggapi.html   [Linked entries]
+	 * 
+	 * The result set will be KO entries.
+	 * The source must be valid identifiers:
+	 * * 
+	 * 
+	 * @author matthiak
+	 *
+	 */
 	class RetrieveLinkMappingFromIDtoKO extends RecursiveAction {
 		/**
 		 * 
@@ -278,7 +289,7 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 			if(listIDsToTranslateFromKegg.length == 0)
 				return retKOIds;
 			
-			StringBuilder str = new StringBuilder(URL_REST_EC);
+			StringBuilder str = new StringBuilder(URL_REST_LINK_ID);
 			
 			int idx = leftIdx;
 			str.append(listIDsToTranslateFromKegg[idx]);
@@ -368,7 +379,7 @@ public class KeggAPIService implements HelperClass, FileDownloadStatusInformatio
 		protected void loadKO(List<KoEntry> synchronizedList) {
 			StringBuffer buf = new StringBuffer();
 			
-			buf.append(URL_REST_KO);
+			buf.append(URL_REST_GET_DB_ENTRY);
 			
 			int i = leftIdx; 
 			buf.append(arrayKo[i]);

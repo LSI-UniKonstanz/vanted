@@ -3,9 +3,9 @@ package edu.monash.vanted.test.kegg;
 import java.io.IOException;
 import java.util.HashSet;
 
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_ko.BriteEntry;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_ko.BriteHierarchy;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_ko.KeggBriteService;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.BriteEntry;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.BriteHierarchy;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.KeggBriteService;
 
 public class BriteHierarchyReadingTest {
 

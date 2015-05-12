@@ -33,8 +33,8 @@ import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_ko.KeggAPIService;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_ko.KoEntry;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.KeggAPIServiceHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.KoEntry;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.RemoveSelectedNodesPreserveEdgesAlgorithm;
@@ -181,7 +181,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 						
 						if (extractECId != null) {
 							
-							for (KoEntry koe : KeggAPIService.getInstance().getEntriesByEC(extractECId)) {
+							for (KoEntry koe : KeggAPIServiceHelper.getInstance().getEntriesByEC(extractECId)) {
 								for (String goID : koe.getKoDbLinks("GO")) {
 									goTerms.add("GO:" + goID);
 								}
@@ -191,7 +191,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 							 * for now only support KO ids as label
 							 */
 							if(test.startsWith("K")) {
-								for (KoEntry koe : KeggAPIService.getInstance().getEntriesByKO(test)) {
+								for (KoEntry koe : KeggAPIServiceHelper.getInstance().getEntriesByKO(test)) {
 									for (String goID : koe.getKoDbLinks("GO")) {
 										goTerms.add("GO:" + goID);
 									}

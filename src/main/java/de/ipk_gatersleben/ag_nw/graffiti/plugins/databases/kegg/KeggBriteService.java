@@ -1,4 +1,4 @@
-package de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_ko;
+package de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg;
 
 import java.io.BufferedReader;
 import java.io.File;

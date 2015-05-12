@@ -5,7 +5,7 @@
  * Created on 17.01.2005 by Christian Klukas
  * (c) 2005 IPK Gatersleben, Group Network Analysis
  */
-package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe;
+package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.hierarchies;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -48,10 +48,15 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 /**
- * @author Christian Klukas
- *         (c) 2005 IPK Gatersleben, Group Network Analysis
+ * This class replaces the CreateFuncatGraphAlgorithm, and InterpreteGOtermsAlgorithm
+ * The first class created KEGG hierarchies based on direct given hierarchies (using alternative labels in the nodes),
+ * or 
+ * 
+ * 
+ * 
+ * @author Matthias Klapperstueck
  */
-public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
+public class CreateHierachyGraphAlgorithm extends AbstractAlgorithm {
 	
 	private final String settingLabel = "Interpret Node Label";
 	private final String settingKEGGid = "Interpret KEGG ID";

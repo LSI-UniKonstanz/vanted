@@ -3,8 +3,8 @@ package edu.monash.vanted.test.kegg;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_ko.KeggAPIService;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_ko.KoEntry;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.KeggAPIServiceHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.KoEntry;
 
 public class KoDBReaderTest {
 
@@ -29,7 +29,7 @@ public class KoDBReaderTest {
 		List<String> listECs = new ArrayList<>();
 		listECs.add("2.7.1.2");
 		listECs.add("2.7.1.3");
-		List<KoEntry> entriesKO = KeggAPIService.getInstance().getEntriesByEC(listECs);
+		List<KoEntry> entriesKO = KeggAPIServiceHelper.getInstance().getEntriesByEC(listECs);
 		System.out.println();
 	}
 }

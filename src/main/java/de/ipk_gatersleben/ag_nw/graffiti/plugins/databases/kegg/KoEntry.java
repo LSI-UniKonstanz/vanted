@@ -4,7 +4,7 @@
 /*
  * Created on 12.10.2004 by Christian Klukas
  */
-package de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_ko;
+package de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg;
 
 import java.util.ArrayList;
 import java.util.Collection;

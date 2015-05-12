@@ -135,7 +135,8 @@ public class HierarchyAlgorithm
 		return new HashSet<Category>(Arrays.asList(
 				Category.GRAPH,
 				Category.VISUAL,
-				Category.LAYOUT
+				Category.LAYOUT,
+				Category.HIDDEN
 				));
 	}
 

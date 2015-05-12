@@ -11,9 +11,6 @@ import org.SettingsHelperDefaultIsTrue;
 import org.graffiti.plugin.algorithm.Algorithm;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.CreateFuncatGraphAlgorithm;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go.CreateGOtreeAlgorithm;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go.InterpreteGOtermsAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go_cluster_histogram.CreateDirectChildrenClustersHistogramAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go_cluster_histogram.ProcessHierarchynodesDepOnLeafNodes;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go_cluster_histogram.PruneTreeAlgorithm;
@@ -75,7 +72,7 @@ extends IPK_PluginAdapter {
 											AlternativeIDannotationStatistics()
 							*/
 					
-						new CreateKeggReactionNetworkAlgorithm(),
+						new CreateKeggReactionNetworkAlgorithm(), //Disable. This would create the complete KEGG reaction network, which we cannot create anymore
 						new HierarchyAlgorithm(),
 						new SelectLeafNodesAlgorithm(),
 				};
