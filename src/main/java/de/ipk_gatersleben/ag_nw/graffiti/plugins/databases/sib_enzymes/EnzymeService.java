@@ -408,7 +408,7 @@ public class EnzymeService extends MemoryHog
 		return result;
 	}
 	
-	static Pattern pattern = Pattern.compile("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+");
+	static Pattern pattern = Pattern.compile("\\d{1,2}(\\.(\\-|\\d{1,2})){3}");
 
 	public static String extractECId(String ecString) {
 		Matcher matcher = pattern.matcher(ecString);

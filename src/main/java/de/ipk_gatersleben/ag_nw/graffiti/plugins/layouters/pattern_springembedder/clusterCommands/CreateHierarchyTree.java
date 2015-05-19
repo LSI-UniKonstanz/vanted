@@ -16,6 +16,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go.
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go.InterpreteGOtermsAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 
+@Deprecated
 public class CreateHierarchyTree extends LaunchGui {
 	
 	@Override

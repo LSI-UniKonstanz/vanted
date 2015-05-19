@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.ReleaseInfo;
 import org.apache.log4j.Logger;
@@ -73,6 +75,40 @@ public class KeggBriteService {
 		
 	}
 	
+	/**
+	 * Method to get all Brite Entries (Leaf nodes in the hierarchy) that match the
+	 * given ID
+	 * 
+ 	 * It is a convenience method.
+	 * @param id 
+	 * @return All brite entries matching the given id
+	 * @throws IOException if method was unable to download (from KEGG) or read (cached) brite file
+	 */
+	public HashSet<BriteEntry> getBriteEntryForHierarchyByID(String briteId, String id) throws IOException  {
+		BriteHierarchy briteHierarchy = getBriteHierarchy(briteId);
+		if(briteHierarchy == null)
+			return null;
+		return briteHierarchy.getBriteEntryById(id);
+	}
+
+	/**
+	 * Method to get all Brite Entries (Leaf nodes in the hierarchy) that match the
+	 * 
+	 * It is a convenience method.
+	 * 
+	 * given EC number 
+	 * @param ec Number 
+	 * @return All brite entries matching the given EC number
+	 * @throws IOException if method was unable to download (from KEGG) or read (cached) brite file
+	 * 
+	 */
+	public HashSet<BriteEntry> getBriteEntryForHierarchyByEC(String briteId, String ec) throws IOException {
+		BriteHierarchy briteHierarchy = getBriteHierarchy(briteId);
+		if(briteHierarchy == null)
+			return null;
+		return briteHierarchy.getBriteEntryByEC(ec);
+	}
+
 	/**
 	 * reads and caches entries for the given Brite ID
 	 * 
@@ -250,4 +286,16 @@ public class KeggBriteService {
 		
 		return new BriteEntry(parent, id, name, ecIds, pathid);
 	}
+	
+	
+	static Pattern KNumberPattern = Pattern.compile("K\\d{5}");
+
+	public static String extractKeggKOId(String koString) {
+		Matcher matcher = KNumberPattern.matcher(koString);
+		if(matcher.find())
+			return matcher.group();
+		else
+			return null;
+	}
+
 }

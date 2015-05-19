@@ -37,6 +37,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.KeggAPIServiceHe
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.KoEntry;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.rt_tree.RTTreeLayout;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.RemoveSelectedNodesPreserveEdgesAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
@@ -57,12 +58,12 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Create Data-Specific Gene Ontology Network";
+		return "Create Gene Ontology Tree";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Hierarchy.GO";
+		return "Network.Hierarchy";
 	}
 	
 	@Override
@@ -143,10 +144,11 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 		HashSet<Node> knownNodes = new HashSet<Node>();
 		sp.setCurrentStatusText1("Process graph nodes...");
 		sp.setCurrentStatusText1("Enumerate existing GO-Term nodes...");
+		
 		for (Node n : graph.getNodes()) {
 			knownNodes.add(n);
-			NodeHelper nh = new NodeHelper(n);
-			String goLabel = (String) nh.getAttributeValue("go", "term", null, "");
+//			NodeHelper nh = new NodeHelper(n);
+			String goLabel = (String) AttributeHelper.getAttributeValue(n, "go", "term", null, "");
 			if (goLabel != null) {
 				goTerm2goNode.put(goLabel, n);
 			}
@@ -158,13 +160,17 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 		for (NodeHelper nh : workNodes) {
 			Collection<String> ids = nh.getAlternativeIDs();
 			ids.add(nh.getLabel());
+			
 			HashSet<String> goTerms = new HashSet<String>();
-			String lbl = nh.getLabel();
-			if (lbl != null && lbl.toUpperCase().startsWith("GO:"))
-				goTerms.add(lbl);
+			
+//			String lbl = nh.getLabel();
+//			if (lbl != null && lbl.toUpperCase().startsWith("GO:"))
+//				goTerms.add(lbl);
+			
 			for (String test : ids) {
-				if (test.toUpperCase().startsWith("GO:"))
-					goTerms.add(test.toUpperCase());
+				test = test.toUpperCase();
+				if (test.startsWith("GO:"))
+					goTerms.add(test);
 				else {
 					boolean valid = false;
 					try {
@@ -236,6 +242,33 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 								toBeDeleted, graph, false, sp);
 			sp.setCurrentStatusText2("Created GO hiearchy with a maximum depth of " + maxDepth + " (removed " + cnt + " GO term nodes)");
 		}
+		
+		/*
+		 * layout
+		 */
+		Collection<Node> newNodes = goTerm2goNode.values();
+		if (newNodes.size() > 0) {
+			// layout new nodes using tree layout
+			RTTreeLayout tree = new RTTreeLayout();
+			Parameter[] parameters2 = tree.getParameters();
+			for(Parameter curParam : parameters2) {
+				if(curParam.getName().equals("Tree Direction (0,90,180,270)")) {
+					((IntegerParameter)curParam).setValue(0);
+				}
+			}
+			tree.setParameters(parameters2);
+
+			tree.attach(graph, new Selection(newNodes));
+			tree.execute();
+			
+			// layout gene nodes using grid layout (no resize)
+//			Collection<Node> geneNodes = new ArrayList<Node>(workNodes);
+//			geneNodes.removeAll(newNodes);
+//			GridLayouterAlgorithm.layoutOnGrid(geneNodes, 1, 20, 20);
+//			
+//			CenterLayouterAlgorithm.moveGraph(graph, getName(), true, 50, 50);
+		}
+		
 		sp.setCurrentStatusText1("Processing completed");
 		if (maxDepth <= 0)
 			sp.setCurrentStatusText2("Created (unlimited) GO hiearchy");

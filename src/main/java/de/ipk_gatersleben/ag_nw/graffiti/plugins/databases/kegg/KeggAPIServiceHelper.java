@@ -307,9 +307,11 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 					BufferedReader reader = new BufferedReader(new InputStreamReader(openConnection.getInputStream()));
 					String line;
 					while((line = reader.readLine()) != null) {
+						if(line.isEmpty())
+							continue;
 						String[] mappedIds = line.split("\t");
-						if(mappedIds.length != 2)
-							System.err.println();
+//						if(mappedIds.length != 2)
+//							System.err.println(); //good place for Breakpoint
 						retKOIds.add(mappedIds[1].trim());
 					}
 				}
@@ -517,7 +519,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 		private void handleGenes(KoEntry curKoEntry, String line) {
 			String[] KeyVals= line.split(":");
 			if(KeyVals.length < 2) {
-				System.err.println();
+//				System.err.println();
 				return;
 			}
 			String organism = KeyVals[0];

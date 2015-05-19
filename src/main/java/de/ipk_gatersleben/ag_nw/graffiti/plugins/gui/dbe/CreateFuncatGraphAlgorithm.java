@@ -283,7 +283,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 							if (currentInformationProcessingSetting.equals(settingKOgeneLookup
 									)) {
 								try {
-									HashSet<BriteEntry> briteEntries = KeggBriteService.getInstance().getBriteHierarchy("ko00001").getEntriesMap().get(altId);
+									HashSet<BriteEntry> briteEntries = KeggBriteService.getInstance().getBriteEntryForHierarchyByID("ko00001", altId);
 									for (BriteEntry entry : briteEntries) {
 										hierarchyInformationsForCurrentNode.add(entry);
 									}
@@ -296,7 +296,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 								String ecId = EnzymeService.extractECId(altId);
 								if (ecId != null) {
 									try {
-										HashSet<BriteEntry> briteEntries = KeggBriteService.getInstance().getBriteHierarchy("ko00001").getECEntriesMap().get(ecId);
+										HashSet<BriteEntry> briteEntries = KeggBriteService.getInstance().getBriteEntryForHierarchyByEC("ko00001", ecId);
 										if(briteEntries != null){
 											for (BriteEntry entry : briteEntries) {
 												hierarchyInformationsForCurrentNode.add(entry);

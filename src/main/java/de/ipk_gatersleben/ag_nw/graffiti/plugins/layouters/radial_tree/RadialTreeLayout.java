@@ -872,8 +872,8 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return null;
-		// return "Radial Tree";
+//		return null;
+		 return "Radial Tree";
 	}
 	
 	@Override

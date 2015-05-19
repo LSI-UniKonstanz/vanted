@@ -11,9 +11,12 @@ import org.SettingsHelperDefaultIsTrue;
 import org.graffiti.plugin.algorithm.Algorithm;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go.CreateGOtreeAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go.InterpreteGOtermsAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go_cluster_histogram.CreateDirectChildrenClustersHistogramAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go_cluster_histogram.ProcessHierarchynodesDepOnLeafNodes;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go_cluster_histogram.PruneTreeAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.hierarchies.CreateKEGGOrthologyGraphAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.kegg_reaction.CreateKeggReactionNetworkAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.hierarchy.HierarchyWizard;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.CreateHierarchyTree;
@@ -75,6 +78,11 @@ extends IPK_PluginAdapter {
 						new CreateKeggReactionNetworkAlgorithm(), //Disable. This would create the complete KEGG reaction network, which we cannot create anymore
 						new HierarchyAlgorithm(),
 						new SelectLeafNodesAlgorithm(),
+						
+						new CreateKEGGOrthologyGraphAlgorithm(),
+						new InterpreteGOtermsAlgorithm(),
+						new CreateGOtreeAlgorithm()
+						
 				};
 				otherAlgorithms = new Algorithm[] {
 						new ExpandSelectionAlgorithm(true, false),
