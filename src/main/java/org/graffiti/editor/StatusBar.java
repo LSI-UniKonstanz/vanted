@@ -426,7 +426,9 @@ implements SessionListener, SelectionListener, GraphListener {
 	 */
 	@Override
 	public void selectionChanged(SelectionEvent e) {
-		activeSelection = e.getSelection();
+		logger.debug("selectionChanged");
+//		activeSelection = e.getSelection();
+		activeSelection = ((EditorSession) currentSession).getSelectionModel().getActiveSelection();
 		updateGraphInfo();
 	}
 
@@ -435,7 +437,9 @@ implements SessionListener, SelectionListener, GraphListener {
 	 */
 	@Override
 	public void selectionListChanged(SelectionEvent e) {
-		activeSelection = e.getSelection();
+		logger.debug("selectionListChanged");
+//		activeSelection = e.getSelection();
+		activeSelection = ((EditorSession) currentSession).getSelectionModel().getActiveSelection();
 		updateGraphInfo();
 	}
 
@@ -444,6 +448,7 @@ implements SessionListener, SelectionListener, GraphListener {
 	 */
 	@Override
 	public void sessionChanged(Session session) {
+		logger.debug("sessionChanged");
 		ListenerManager lm = null;
 
 		if (currentSession != null) {
@@ -650,6 +655,9 @@ implements SessionListener, SelectionListener, GraphListener {
 			return;
 		}
 
+		if(activeSelection != null)
+			logger.debug("Session: " + currentSession.getGraph().getName() + "SelectionHash: " + activeSelection.hashCode() + " Number sel Nodes=" + activeSelection.getNodes().size() + " , sel Edges=" + activeSelection.getEdges().size());
+		
 		boolean changed = false;
 		ArrayList<Node> nl = new ArrayList<Node>();
 		if (activeSelection != null)
@@ -664,7 +672,7 @@ implements SessionListener, SelectionListener, GraphListener {
 		int nodeCnt2 = activeSelection != null ? activeSelection.getNumberOfNodes() : 0;
 		changed = nodeCnt1 != nodeCnt2;
 		if (changed) {
-			((EditorSession) currentSession).getSelectionModel().selectionChanged();
+//			((EditorSession) currentSession).getSelectionModel().selectionChanged();
 		}
 		
 		initScrolling(activeSelection);

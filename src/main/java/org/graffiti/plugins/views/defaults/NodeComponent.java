@@ -165,6 +165,8 @@ public class NodeComponent
 	 */
 	@Override
 	protected void drawShape(Graphics g) {
+		
+		logger.debug("graph id " + getGraphElement().getGraph().getName() + ", node id:" + getGraphElement().getID() + ", border:" + getBorder().toString());
 		// super.drawShape(g);
 		Graphics2D drawArea = (Graphics2D) g;
 		
