@@ -54,9 +54,9 @@ extends IPK_PluginAdapter {
 						 */
 						new CreateDirectChildrenClustersHistogramAlgorithm(), // Disable for normal use
 						new PruneTreeAlgorithm(), //Disable for normal use
-						new HierarchyWizard(), // Disable for normal use, since its functionality doesn't match what we want
+//						new HierarchyWizard(), // Disable for normal use, since its functionality doesn't match what we want
 						new HideOrShowChildNodes(), //Disable for normal use. We don't need that now
-						new CreateHierarchyTree(), //Another Super-Dialog containing hierarchy algorithms
+//						new CreateHierarchyTree(), //Another Super-Dialog containing hierarchy algorithms
 							/*
 							 * including:	CreateGOtreeAlgorithm(), 		//Disable for normal use 
 											InterpreteGOtermsAlgorithm(), 	//combine the two into one

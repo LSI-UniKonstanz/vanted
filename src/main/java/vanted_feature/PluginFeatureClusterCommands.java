@@ -9,6 +9,7 @@ import org.SettingsHelperDefaultIsTrue;
 import org.graffiti.plugin.algorithm.Algorithm;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.clustering.sorting.SortIntoCluster;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.NoOverlappOfClustersAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.SetCluster;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.AddRandomClusterInformationAlgorithm;
@@ -33,7 +34,8 @@ public class PluginFeatureClusterCommands
 								new ClusterOverviewNetworkLaunchGui(),
 								new ClusterIndividualLayout(),
 								new SetCluster(),
-								new NoOverlappOfClustersAlgorithm()
+								new NoOverlappOfClustersAlgorithm(),
+								new SortIntoCluster()
 			};
 			alg = new SelectClusterAlgorithm();
 		}

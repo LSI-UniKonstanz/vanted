@@ -10,6 +10,8 @@
 package org.graffiti.plugin.algorithm;
 
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.KeyStroke;
@@ -95,7 +97,12 @@ public interface Algorithm {
 	
 	/**
 	 * Returns a set of categories to classify this algorithm .
-	 * 
+	 * e.g.
+	 *  return new HashSet<Category>(Arrays.asList(
+	 *			Category.GRAPH,
+	 *			Category.NODE
+	 *	));
+	 * is an algorithm, working on graphs and more specific on nodes
 	 * @return Set of Category Enums that classify this algorithm.
 	 */
 	public Set<Category> getSetCategory();	
