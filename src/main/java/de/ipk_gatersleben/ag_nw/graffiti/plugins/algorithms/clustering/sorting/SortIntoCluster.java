@@ -7,25 +7,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
 
 import org.AttributeHelper;
-import org.StringManipulationTools;
 import org.apache.log4j.Logger;
-import org.graffiti.attributes.Attribute;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.dialog.DefaultParameterDialog;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.DoubleParameter;
+import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.AttributePathNameSearchType;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchAndSelecAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchType;
@@ -83,7 +82,7 @@ public class SortIntoCluster extends AbstractAlgorithm{
 
 	@Override
 	public String getDescription() {
-		return super.getDescription();
+		return "<html>Puts network nodes (selected or all) in<br/>cluster, based on the selected Attribute.";
 	}
 
 
@@ -135,7 +134,21 @@ public class SortIntoCluster extends AbstractAlgorithm{
 		/*
 		 * get attribute type, where the clustering depends on
 		 */
-		Object attrValue = AttributeHelper.getAttributeValue(selectedOrAllNodes.iterator().next(), selAttrPath, selAttrName, null, null);
+		
+		Object attrValue = null;
+		attrType = null;
+		
+		List<Node> nodesWithSelectedAttribute = new ArrayList<>();
+		for(Node curNode : selectedOrAllNodes){
+			if((attrValue = AttributeHelper.getAttributeValue(curNode, selAttrPath, selAttrName, null, null)) != null) {
+				nodesWithSelectedAttribute.add(curNode);
+			}
+		}
+		
+		if(nodesWithSelectedAttribute.isEmpty())
+			return;
+		
+		//attrValue should still be set with the last value of the last checked node
 		if(attrValue instanceof String) {
 			attrType = EnumAttrType.STRING;
 
@@ -161,11 +174,11 @@ public class SortIntoCluster extends AbstractAlgorithm{
 		switch (attrType) {
 		case STRING: 
 			JOptionPane.showMessageDialog(MainFrame.getInstance(), "<html>Creating cluster from selected String attribute.<br/>Nodes with the same string value will be put<br?> into the same cluster", "Cluster Creation", JOptionPane.INFORMATION_MESSAGE);
-			clusterByString();
+			clusterByString(nodesWithSelectedAttribute);
 			break;
 		case NUMERIC:
 
-			clusterByValue();
+			clusterByValue(nodesWithSelectedAttribute);
 		} 
 
 	}
@@ -175,10 +188,10 @@ public class SortIntoCluster extends AbstractAlgorithm{
 	/**
 	 * 
 	 */
-	private void clusterByString() {
+	private void clusterByString(List<Node> nodesWithSelectedAttribute) {
 
 
-		for(Node curNode : getSelectedOrAllNodes()) {
+		for(Node curNode : nodesWithSelectedAttribute) {
 			String attributeValue = (String)AttributeHelper.getAttributeValue(curNode, selAttrPath, selAttrName, null, new String());
 			NodeTools.setClusterID(curNode, attributeValue);
 		}
@@ -195,12 +208,12 @@ public class SortIntoCluster extends AbstractAlgorithm{
 	 * Min / Max/ 0
 	 * 
 	 */
-	private void clusterByValue() {
+	private void clusterByValue(List<Node> nodesWithSelectedAttribute) {
 
 		double min = Double.MAX_VALUE;
 		double max = Double.MIN_VALUE;
 
-		for(Node curNode : getSelectedOrAllNodes()) {
+		for(Node curNode : nodesWithSelectedAttribute) {
 			Object attributeValue = AttributeHelper.getAttributeValue(curNode, selAttrPath, selAttrName, null, null);
 
 			double value = 0;
@@ -212,53 +225,93 @@ public class SortIntoCluster extends AbstractAlgorithm{
 				max = value;
 		}
 
-		lowerLimit = min + (max - min) / 3;
-		upperLimit = max - (max - min) / 3;
 
-		DefaultParameterDialog paramDialog = new DefaultParameterDialog(MainFrame.getInstance().getEditComponentManager(), MainFrame.getInstance(), getValueClusterParameters(),
-				selection, "Select Cluster bounds", "<html>Select bounds to seperate data into three clusters.<br/>"
-						+ " Max value: " + max + "<br/>Min value: " + min + ".", null, false);
+		DefaultParameterDialog paramDialog;
+
+		/*
+		 * ask user, how many clusters he wants the numeric to be split into
+		 * 
+		 * currently limited to 10
+		 */
+		Parameter[] numberOfSplitsParameter = new Parameter[] {
+			new IntegerParameter(2, 2, 10, "Number of clusters", "Choose the number of clusters")	
+		};
+
+		paramDialog = new DefaultParameterDialog(MainFrame.getInstance().getEditComponentManager(), MainFrame.getInstance(), numberOfSplitsParameter,
+				selection, "Select Number of Cluster", "<html>Choose the number of clusters, in which the numeric<br/>"
+						+ "values will be sorted in", null, false);
+
+		if (!paramDialog.isOkSelected()) {
+			return;
+		}
+
+		int numClusters = ((IntegerParameter)paramDialog.getEditedParameters()[0]).getInteger();
+		
+		paramDialog = new DefaultParameterDialog(MainFrame.getInstance().getEditComponentManager(), MainFrame.getInstance(), getClusterSplitValueParameters(min, max, numClusters),
+				selection, "Select Cluster split points", "<html>Select split points to seperate data into three clusters.<br/>"
+						+ " Max value found: <strong>" + max + "</strong><br/>Min value found: <strong>" + min + "</strong>.", null, false);
 
 		if (!paramDialog.isOkSelected()) {
 			return;
 		}
 		Parameter[] editedParameters = paramDialog.getEditedParameters();
 
-		double setLowerLimit = ((DoubleParameter)editedParameters[0]).getDouble();
-		double setUpperLimit = ((DoubleParameter)editedParameters[1]).getDouble();
+		
+		double[] limits = new double[numClusters];
+		
+		for(int i = 0; i < numClusters - 1; i++) {
+			limits[i] = ((DoubleParameter)editedParameters[i]).getDouble();
+		}
+		limits[numClusters - 1] = max; //last limit is the maximum (which should never be exceeded)
+		
+		String[] clusterNames = new String[numClusters];
+		
+		int i = 0;
+		clusterNames[i] = "Cluster between " + min + " and " + limits[i];
+		i++;
+		for(; i < numClusters; i++)
+			clusterNames[i] = "Cluster between " + limits[i - 1] + " and " + limits[i];
 
-		String clusterNameLow = "Cluster below " + setLowerLimit;
-		String clusterNameMiddle = "Cluster between " + setLowerLimit + " and " + setUpperLimit;
-		String clusterNameHigh = "Cluster above " + setUpperLimit;
-
-		for(Node curNode : getSelectedOrAllNodes()) {
+		for(Node curNode : nodesWithSelectedAttribute) {
 			Object attributeValue = AttributeHelper.getAttributeValue(curNode, selAttrPath, selAttrName, null, null);
 
 			double value = 0;
 			if(attributeValue instanceof Number)
 				value = ((Number)attributeValue).doubleValue();
-
-			if(value <= setLowerLimit) {
-				NodeTools.setClusterID(curNode, clusterNameLow);
-			} else if (value >= setUpperLimit) {
-				NodeTools.setClusterID(curNode, clusterNameHigh);
-			} else {
-				NodeTools.setClusterID(curNode, clusterNameMiddle);
+			else
+				continue;
+			
+			int curIdx = 0;
+			double result;
+			while((result = value - limits[curIdx++]) > 0 ) {
+				System.out.println();
 			}
-
+			
+			NodeTools.setClusterID(curNode, clusterNames[curIdx-1]); // +2 because undo the decrement (+1) and the splitpoint cluster name is splitpoint + 1 (+1)
+			
 		}
 
 	}
 
-	private Parameter[] getValueClusterParameters() {
-		return new Parameter[] {
-				new DoubleParameter(lowerLimit,
-						"Lower Limit",
-						"All nodes with a value below or equal this value will be grouped into the cluster 'down'."),
-				new DoubleParameter(upperLimit,
-						"Upper Limit",
-						"All nodes with a value above or equal this value will be grouped into the cluster 'up'.") };
-
-
+	/**
+	 * returns numClusters-1 DoubleParameters (NumSplitpoints = Numclusters - 1)
+	 * The initial values for the split points are calculated evenly based on the given max and min values
+	 * @param numClusters
+	 * @return
+	 */
+	private Parameter[] getClusterSplitValueParameters(double min, double max, int numClusters) {
+		
+		double increment = (max - min) / (double)numClusters;
+		
+		Parameter[] splitParameters = new Parameter[numClusters];
+		
+		for(int i = 0; i < numClusters - 1; i++) {
+			splitParameters[i] = new DoubleParameter(min + increment * (i + 1),
+					"Split point ("  + (i+1) + ")",
+					null);
+			
+		}
+		
+		return splitParameters;
 	}
 }
