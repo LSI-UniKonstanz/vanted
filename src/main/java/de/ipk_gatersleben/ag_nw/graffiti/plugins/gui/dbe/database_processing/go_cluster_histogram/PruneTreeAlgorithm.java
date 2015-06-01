@@ -68,7 +68,8 @@ public class PruneTreeAlgorithm extends AbstractAlgorithm {
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
 				Category.GRAPH,
-				Category.COMPUTATION
+				Category.HIDDEN,
+				Category.HIERARCHY
 				));
 	}
 

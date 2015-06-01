@@ -56,7 +56,7 @@ public class BundleParallelEdges extends AbstractAlgorithm {
 	
 	@Override
 	public boolean isLayoutAlgorithm() {
-		return true;
+		return false;
 	}
 
 	@Override

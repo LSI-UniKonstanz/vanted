@@ -9,15 +9,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.prefs.Preferences;
 
 import org.AttributeHelper;
 import org.Vector2d;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
-import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
@@ -34,12 +31,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
  * 
  * @author Dirk Koschützki, Christian Klukas, Matthias Klapperstueck
  */
-public class CircleLayouterAlgorithm extends AbstractAlgorithm implements PreferencesInterface {
+public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 	
 	/*
 	 * Preferencer variable 
 	 */
-	private static double defaultCircleRadius = 150;
+	private static double defaultCircleRadius = 500;
 	
 	
 	
@@ -66,25 +63,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm implements Prefer
 		super();
 		this.defaultRadius = defaultRadius;
 	}
-	
-	@Override
-	public List<Parameter> getDefaultParameters() {
-		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
-		arrayList.add(new DoubleParameter(150, "default radius", "The default radius"));
-		return arrayList;
 
-	}
-
-	
-	@Override
-	public void updatePreferences(Preferences preferences) {
-		defaultCircleRadius = preferences.getDouble("default radius", 150);
-	}
-	@Override
-	public String getPreferencesAlternativeName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void reset() {
@@ -147,7 +126,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm implements Prefer
 		else
 			workNodes.addAll(graph.getNodes());
 		
-		layoutOnCircles(workNodes, defaultCircleRadius, getName());
+		layoutOnCircles(workNodes, defaultRadius, getName());
 	}
 	
 	public void withMinimizingCrossings() {
@@ -182,8 +161,8 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm implements Prefer
 										double energy = 0;
 										int i = 0;
 										for (Node n : sortedNodes) {
-											double newX = Math.sin(singleStep * (testI + i)) * defaultCircleRadius + ctr.x;
-											double newY = Math.cos(singleStep * (testI + i)) * defaultCircleRadius + ctr.y;
+											double newX = Math.sin(singleStep * (testI + i)) * defaultRadius + ctr.x;
+											double newY = Math.cos(singleStep * (testI + i)) * defaultRadius + ctr.y;
 											energy += CircleLayouterAlgorithm.energyOfNode(n, newX, newY);
 											i++;
 										}

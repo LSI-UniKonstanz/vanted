@@ -16,6 +16,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -404,6 +406,16 @@ public class EnzymeService extends MemoryHog
 								.toUpperCase());
 		}
 		return result;
+	}
+	
+	static Pattern pattern = Pattern.compile("\\d{1,2}(\\.(\\-|\\d{1,2})){3}");
+
+	public static String extractECId(String ecString) {
+		Matcher matcher = pattern.matcher(ecString);
+		if(matcher.find())
+			return matcher.group();
+		else
+			return null;
 	}
 	
 	/**

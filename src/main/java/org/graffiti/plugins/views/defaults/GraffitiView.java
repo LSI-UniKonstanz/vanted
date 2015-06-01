@@ -1399,7 +1399,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		/*
 		 * add nodes and edges from transaction in one go
 		 */
-		if(! setPostAddedNodes.isEmpty()) {
+		if(! setPostAddedNodes.isEmpty() || ! edgesToAdd.isEmpty()) {
 			setVisible(false); //disable layout-trigger for each added component
 			for(GraphElement atbl : setPostAddedNodes) {
 				postNodeAdded(new GraphEvent((Node) atbl));

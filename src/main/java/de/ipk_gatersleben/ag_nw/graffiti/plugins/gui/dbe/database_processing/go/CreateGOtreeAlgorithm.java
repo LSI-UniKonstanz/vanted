@@ -44,7 +44,7 @@ public class CreateGOtreeAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Hierarchy";
+		return "Network.Hierarchy.Extra";
 	}
 	
 	
@@ -52,7 +52,8 @@ public class CreateGOtreeAlgorithm extends AbstractAlgorithm {
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
 				Category.GRAPH,
-				Category.COMPUTATION,
+				Category.HIDDEN,
+				Category.HIERARCHY,
 				Category.LAYOUT
 				));
 	}

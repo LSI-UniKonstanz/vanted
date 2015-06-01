@@ -44,7 +44,7 @@ public class HierarchyWizard extends AbstractAlgorithm {
 		
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl("", "");
 		
-		final String taskID = "Analysis Pipeline";
+		final String taskID = "Enrichment Wizard";
 		
 		final Collection<Node> nodeList = getSelectedOrAllNodes();
 		
@@ -208,7 +208,7 @@ public class HierarchyWizard extends AbstractAlgorithm {
 
 	@Override
 	public String getDescription() {
-		return "<html>Analysis Pipeline Overview:<ol>" +
+		return "<html>Enrichment Wizard:<ol>" +
 							"<li>Calculation of mapping sample average value" +
 							"<li>Assignment of cluster ID (up/down/unchanged) according to sample average" +
 							"<li>Construction of hierarchy tree" +

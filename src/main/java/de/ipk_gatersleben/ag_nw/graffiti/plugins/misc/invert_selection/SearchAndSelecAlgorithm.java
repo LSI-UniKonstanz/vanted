@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
@@ -164,7 +165,7 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 	}
 	
 	public static void enumerateAttributes(
-						ArrayList<AttributePathNameSearchType> possibleAttributes,
+			ArrayList<AttributePathNameSearchType> possibleAttributes,
 						Attributable attr, HashSet<SearchType> validSearchTypes) {
 		CollectionAttribute ca = attr.getAttributes();
 		Stack<CollectionAttribute> catts = new Stack<CollectionAttribute>();
@@ -222,7 +223,7 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 	}
 	
 	private static boolean listContains(
-						ArrayList<AttributePathNameSearchType> possibleAttributes,
+			ArrayList<AttributePathNameSearchType> possibleAttributes,
 						String desc, boolean inNode, boolean inEdge) {
 		boolean result = false;
 		for (AttributePathNameSearchType a : possibleAttributes) {

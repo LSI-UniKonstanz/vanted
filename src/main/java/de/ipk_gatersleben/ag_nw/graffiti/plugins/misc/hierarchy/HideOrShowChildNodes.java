@@ -183,6 +183,8 @@ public class HideOrShowChildNodes extends AbstractAlgorithm
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
 				Category.GRAPH,
+				Category.HIDDEN,
+				Category.HIERARCHY,
 				Category.VISUAL
 				));
 	}

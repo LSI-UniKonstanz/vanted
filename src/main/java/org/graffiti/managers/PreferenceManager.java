@@ -102,6 +102,14 @@ implements PluginManagerListener
 
 	/**
 	 * called each time a plugin gets loaded
+	 * 
+	 * Checks the Plugins entries (Views, Algorithms, Tabs, ViewComponents, Tools) if they implement the PreferenceInterface
+	 * If so, the preferences of this class will be 
+	 * a) read (and stored), if this is a new class (first time)
+	 * b) set, if there are present preferences stored
+	 * 
+	 *  Also this algorithm will synchronize the preferences, in case preferences have been created or deleted.
+	 * 
 	 * @param plugin
 	 * @param desc
 	 */
@@ -210,7 +218,7 @@ implements PluginManagerListener
 			}
 
 			for(String key : prefKeysToDelete)
-				defaultPrefs.remove(key);
+				defaultPrefs.remove(key); //removes key from preferences object
 		} catch (BackingStoreException e) {
 			e.printStackTrace();
 		}
@@ -247,8 +255,8 @@ implements PluginManagerListener
 	}
 
 	/**
-	 * This method should be used when getting Preferences for a specific category for
-	 * a class/object. This can be used to structure paramters in categories
+	 * This method should be used when getting Preferences for a specific category (folder) for
+	 * a class/object. This can be used to structure paramters in categories (folders)
 	 */
 	public static Preferences getPreferenceCategoryForClass(Class<?> clazz, String category) {
 

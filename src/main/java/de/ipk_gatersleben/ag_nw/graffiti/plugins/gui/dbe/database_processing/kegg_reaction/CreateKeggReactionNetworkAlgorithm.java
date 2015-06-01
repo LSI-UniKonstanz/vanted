@@ -68,7 +68,8 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 		return new HashSet<Category>(Arrays.asList(
 				Category.GRAPH,
 				Category.LAYOUT,
-				Category.COMPUTATION
+				Category.COMPUTATION,
+				Category.HIDDEN
 				));
 	}
 

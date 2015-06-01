@@ -44,8 +44,9 @@ public class CreateDirectChildrenClustersHistogramAlgorithm extends AbstractAlgo
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
 				Category.GRAPH,
-				Category.ANNOTATION,
-				Category.COMPUTATION
+				Category.ENRICHMENT,
+				Category.COMPUTATION,
+				Category.HIDDEN
 				));
 	}
 
