@@ -30,6 +30,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.MouseInputAdapter;
 
 import org.AttributeHelper;
+import org.apache.log4j.Logger;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
@@ -59,6 +60,8 @@ public abstract class AbstractTool
 					extends MouseInputAdapter
 					implements Tool, SessionListener, SelectionListener {
 	// ~ Instance fields ========================================================
+	
+	static final Logger logger = Logger.getLogger(AbstractTool.class);
 	
 	protected JComponent mouseComp = null;
 	
@@ -294,6 +297,10 @@ public abstract class AbstractTool
 	 *           DOCUMENT ME!
 	 */
 	public void displayAsMarked(NodeComponentInterface comp) {
+		
+		if(session != null && selection != null)
+			logger.debug("displayAsMarked- Session: " + session.getGraph().getName() + "SelectionHash: " + selection.hashCode() + " node " + comp.getGraphElement().getID());
+
 		if (comp != null) {
 			((JComponent) comp).setBorder(border);
 			((JComponent) comp).repaint();
@@ -381,14 +388,20 @@ public abstract class AbstractTool
 	 */
 	public void selectionChanged(SelectionEvent e) {
 		Selection sel = e.getSelection();
-		
+		if(sel.hashCode() != (session.getSelectionModel().getActiveSelection().hashCode()))
+			return;
 		if (this.isActive()) {
+			
+			if(session != null && selection != null)
+				logger.debug("selectionChanged- Session: " + session.getGraph().getName() + "SessionSelectionHash: " + session.getSelectionModel().getActiveSelection().hashCode() + " selectionEventHash: " + sel.hashCode());
+
+			
 			if (!sel.equals(this.selection) ||
 								(sel.getNewUnmarked().isEmpty() &&
 								sel.getNewMarked().isEmpty())) {
 				// must completely renew selection
 				if (selection != null) {
-					unDisplayAsMarked(getAllMarkedComps());
+//					unDisplayAsMarked(getAllMarkedComps());
 				}
 				
 				displayAsMarked(getCompsForElems(sel.getElements()));
@@ -418,6 +431,7 @@ public abstract class AbstractTool
 		}
 		
 		this.selection = sel;
+		logger.debug("selectionChanged: Tool selection is now: " + selection.hashCode());
 	}
 	
 	/**
@@ -431,6 +445,7 @@ public abstract class AbstractTool
 	 */
 	public void sessionChanged(Session s) {
 		session = (EditorSession) s;
+		
 	}
 	
 	/**
@@ -465,6 +480,9 @@ public abstract class AbstractTool
 	 *           DOCUMENT ME!
 	 */
 	private void unDisplayAsMarked(NodeComponentInterface comp) {
+		if(session != null && selection != null)
+			logger.debug("unDisplayAsMarked- Session: " + session.getGraph().getName() + "SelectionHash: " + selection.hashCode() + " node " + comp.getGraphElement().getID());
+
 		if (comp != null && ((JComponent) comp).getBorder() != empty) {
 			((JComponent) comp).setBorder(empty);
 //			if (((JComponent) comp).getParent() != null)

@@ -313,7 +313,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 * @see org.graffiti.plugin.view.View#completeRedraw()
 	 */
 	public void completeRedraw() {
-		logger.debug("complete redraw issued");
+		logger.debug("complete redraw issued for " + getGraph().getName());
 		if (redrawInProgress)
 			return;
 		redrawInProgress = true;
@@ -367,6 +367,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	}
 	
 	private void optimizedGraphElementCreation(final boolean addShapesAndAttributeComponentsTogether, final long startTime) {
+		logger.debug("optimizedGraphElementCreation for graph : " + getGraph().getName());
 		long nna;
 		long nne;
 		nna = System.currentTimeMillis();
@@ -607,6 +608,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	private void addElements(final BlockingQueue<JComponent> result,
 			final JComponent finishElement,
 			final long startTime, boolean nonBlock) {
+		logger.debug("addElements for graph : " + getGraph().getName());
 		JComponent sp = (JComponent) ErrorMsg.findParentComponent(this, JInternalFrame.class);
 		if (sp != null)
 			sp.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
