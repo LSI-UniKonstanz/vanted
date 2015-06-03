@@ -298,8 +298,8 @@ public abstract class AbstractTool
 	 */
 	public void displayAsMarked(NodeComponentInterface comp) {
 		
-		if(session != null && selection != null)
-			logger.debug("displayAsMarked- Session: " + session.getGraph().getName() + "SelectionHash: " + selection.hashCode() + " node " + comp.getGraphElement().getID());
+//		if(session != null && selection != null)
+//			logger.debug("displayAsMarked- Session: " + session.getGraph().getName() + "SelectionHash: " + selection.hashCode() + " node " + comp.getGraphElement().getID());
 
 		if (comp != null) {
 			((JComponent) comp).setBorder(border);
@@ -392,8 +392,8 @@ public abstract class AbstractTool
 			return;
 		if (this.isActive()) {
 			
-			if(session != null && selection != null)
-				logger.debug("selectionChanged- Session: " + session.getGraph().getName() + "SessionSelectionHash: " + session.getSelectionModel().getActiveSelection().hashCode() + " selectionEventHash: " + sel.hashCode());
+//			if(session != null && selection != null)
+//				logger.debug("selectionChanged- Session: " + session.getGraph().getName() + "SessionSelectionHash: " + session.getSelectionModel().getActiveSelection().hashCode() + " selectionEventHash: " + sel.hashCode());
 
 			
 			if (!sel.equals(this.selection) ||
@@ -431,7 +431,7 @@ public abstract class AbstractTool
 		}
 		
 		this.selection = sel;
-		logger.debug("selectionChanged: Tool selection is now: " + selection.hashCode());
+//		logger.debug("selectionChanged: Tool selection is now: " + selection.hashCode());
 	}
 	
 	/**
@@ -480,8 +480,8 @@ public abstract class AbstractTool
 	 *           DOCUMENT ME!
 	 */
 	private void unDisplayAsMarked(NodeComponentInterface comp) {
-		if(session != null && selection != null)
-			logger.debug("unDisplayAsMarked- Session: " + session.getGraph().getName() + "SelectionHash: " + selection.hashCode() + " node " + comp.getGraphElement().getID());
+//		if(session != null && selection != null)
+//			logger.debug("unDisplayAsMarked- Session: " + session.getGraph().getName() + "SelectionHash: " + selection.hashCode() + " node " + comp.getGraphElement().getID());
 
 		if (comp != null && ((JComponent) comp).getBorder() != empty) {
 			((JComponent) comp).setBorder(empty);

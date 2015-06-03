@@ -423,6 +423,8 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	
 	@Override
 	public void paint(Graphics g) {
+		if(label.getText().isEmpty())
+			return;
 		if(checkVisibility(MINSIZE_VISIBILITY))
 			super.paint(g);
 		else if (DRAWRECT_MINSIZE && ! (getDrawingModeOfView() == DrawMode.FAST)) {

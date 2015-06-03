@@ -29,6 +29,8 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -1162,13 +1164,21 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		}
 		
 		// this.addSession(session);
-		JScrollPane scrollPane = new JScrollPane(view.getViewComponent(), ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+		final JScrollPane scrollPane = new JScrollPane(view.getViewComponent(), ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(10);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
 		scrollPane.getViewport().setBackground(Color.WHITE);
 		scrollPane.setWheelScrollingEnabled(true);
+		
+		scrollPane.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
+			
+			@Override
+			public void adjustmentValueChanged(AdjustmentEvent e) {
+				logger.debug("horizontal scrollbar pos : " + e.getValue() + " maxval: " + scrollPane.getHorizontalScrollBar().getMaximum());
+			}
+		});
 		
 		if (!returnScrollPane) {
 			Container j = frame.getContentPane();
