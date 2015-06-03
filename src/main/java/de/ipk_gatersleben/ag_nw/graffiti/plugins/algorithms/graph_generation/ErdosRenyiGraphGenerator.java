@@ -57,7 +57,7 @@ public class ErdosRenyiGraphGenerator extends AbstractAlgorithm {
 				new IntegerParameter(numberOfNodes, "Number of nodes", "Number of nodes"),
 				new DoubleParameter(p, "Edge probability", "Edge-creation probability"),
 				new BooleanParameter(label, "Add node label", "If enabled, each node will be labeld (1,2,3,...)"),
-				new BooleanParameter(directed, "Create directed graph", "If enabled, a directed graph is created"),
+				new BooleanParameter(directed, "Create directed graph", "If enabled, a directed network is created"),
 				new BooleanParameter(selfLoops, "Create self loops", "If enabled, self loops are created") };
 	}
 	
@@ -83,19 +83,19 @@ public class ErdosRenyiGraphGenerator extends AbstractAlgorithm {
 	
 	@Override
 	public String getName() {
-		return "Generate Erdős–Rényi random graph";
+		return "Generate Erdős–Rényi random network";
 	}
 	
 	@Override
 	public String getDescription() {
 		return "<html>" +
-				"Using the G(n, p) model, a graph of given size is constructed by connecting <br>" +
-				"its nodes randomly. Each edge is included in the graph with probability p.";
+				"Using the G(n, p) model, a network of given size is constructed by connecting <br>" +
+				"its nodes randomly. Each edge is included in the network with probability p.";
 	}
 	
 	@Override
 	public void execute() {
-		BackgroundTaskHelper.issueSimpleTask("Generating random graph", "Generating random graph", new Runnable() {
+		BackgroundTaskHelper.issueSimpleTask("Generating random network", "Generating random network", new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -110,7 +110,7 @@ public class ErdosRenyiGraphGenerator extends AbstractAlgorithm {
 				} catch (Exception e) {
 					ErrorMsg.addErrorMessage(e);
 				} catch (OutOfMemoryError e) {
-					ErrorMsg.addErrorMessage("Out of memory! Please choose to create a smaller graph or increase memory of Java VM!");
+					ErrorMsg.addErrorMessage("Out of memory! Please choose to create a smaller network or increase memory of Java VM!");
 				}
 			}
 		}, null);

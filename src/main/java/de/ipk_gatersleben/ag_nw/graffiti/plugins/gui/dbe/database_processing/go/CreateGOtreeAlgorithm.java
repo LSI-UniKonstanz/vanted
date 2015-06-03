@@ -61,7 +61,7 @@ public class CreateGOtreeAlgorithm extends AbstractAlgorithm {
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
-			throw new PreconditionException("No active graph window");
+			throw new PreconditionException("No active network window");
 		super.check();
 	}
 	

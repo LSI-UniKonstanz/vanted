@@ -84,7 +84,7 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 			paramsA.add("<h1>My Pathway Website</h1>");
 			paramsB.add("Website-Description//");
 			paramsB
-								.add("VANTED graph to website export. VANTED is available at <a href=\"http://vanted.ipk-gatersleben.de\" target=\"_blank\">http://vanted.ipk-gatersleben.de</a>.");
+								.add("VANTED graph to website export. VANTED is available at <a href=\"https://immersive-analytics.infotech.monash.edu/vanted/\" target=\"_blank\">https://immersive-analytics.infotech.monash.edu/vanted/</a>.");
 			paramsC.add("Footer//");
 			paramsC.add("<small>Copyright (c) " + (new Date().getYear() + 1900)
 					+ " by NAME OF INSTITUTION.</small>");

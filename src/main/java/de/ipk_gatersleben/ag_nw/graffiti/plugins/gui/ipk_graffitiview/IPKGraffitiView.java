@@ -570,7 +570,7 @@ public class IPKGraffitiView
 	 * @see org.graffiti.options.OptionPane#getOptionName()
 	 */
 	public String getOptionName() {
-		return "Graph Network View (default)";
+		return "Network View (default)";
 	}
 	
 	private boolean printInProgress = false;

@@ -85,7 +85,7 @@ public class CircleLayouterWithMinimumCrossingsAlgorithm extends
 		PreconditionException errors = new PreconditionException();
 		
 		if (graph == null) {
-			errors.add("No graph available!");
+			errors.add("No network available!");
 		}
 		
 		// if (defaultRadius < 0) {
@@ -96,7 +96,7 @@ public class CircleLayouterWithMinimumCrossingsAlgorithm extends
 			throw errors;
 		}
 		if (graph.getNumberOfNodes() <= 0) {
-			throw new PreconditionException("The graph is empty. Cannot run layouter.");
+			throw new PreconditionException("The network is empty. Cannot run layouter.");
 		}
 		
 	}

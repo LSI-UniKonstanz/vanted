@@ -14,6 +14,11 @@ import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
+/**
+ * Needs implementation
+ * @author matthiak
+ *
+ */
 public class BarabasiAlbertGraphGenerator extends AbstractAlgorithm {
 	
 	@Override
@@ -45,7 +50,7 @@ public class BarabasiAlbertGraphGenerator extends AbstractAlgorithm {
 	}
 	
 	public String getName() {
-		return "Generate Barabási–Albert random graph";
+		return "Generate Barabási–Albert random network";
 	}
 	
 	@Override

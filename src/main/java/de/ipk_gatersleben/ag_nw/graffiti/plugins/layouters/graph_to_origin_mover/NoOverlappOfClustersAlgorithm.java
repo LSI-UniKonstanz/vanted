@@ -27,14 +27,14 @@ public class NoOverlappOfClustersAlgorithm
 					extends AbstractAlgorithm {
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
-			return "Remove Overlaps";
+			return "Remove Cluster Overlaps";
 		else
 			return "Separate Pathway-Subgraphs";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Network.Arrange";
+		return "Network.Cluster";
 	}
 
 	

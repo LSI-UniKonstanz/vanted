@@ -84,19 +84,19 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 	
 	@Override
 	public String getName() {
-		return "Generate Watts and Strogatz random graph";
+		return "Generate Watts and Strogatz random network";
 	}
 	
 	@Override
 	public String getDescription() {
 		return "<html>" +
-				"Create small-world random graph according to Watts and Strogatz model.";
+				"Create small-world random network according to Watts and Strogatz model.";
 	}
 	
 	@Override
 	public void execute() {
 		
-		BackgroundTaskHelper.issueSimpleTask("Generating random graph", "Generating random graph", new Runnable() {
+		BackgroundTaskHelper.issueSimpleTask("Generating random network", "Generating random network", new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -111,7 +111,7 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 				} catch (Exception e) {
 					ErrorMsg.addErrorMessage(e);
 				} catch (OutOfMemoryError e) {
-					ErrorMsg.addErrorMessage("Out of memory! Please choose to create a smaller graph or increase memory of Java VM!");
+					ErrorMsg.addErrorMessage("Out of memory! Please choose to create a smaller network or increase memory of Java VM!");
 				}
 			}
 		}, null);

@@ -37,7 +37,7 @@ public class GraphTab
 	 * Constructs a <code>GraphTab</code> and sets the title.
 	 */
 	public GraphTab() {
-		this.title = "Graph";
+		this.title = "Network";
 		instance = this;
 	}
 	
@@ -48,7 +48,7 @@ public class GraphTab
 	
 	@Override
 	public String getTabNameForAttributeDescription() {
-		return "Graph";
+		return "Network";
 	}
 	
 	public static GraphTab getInstance() {

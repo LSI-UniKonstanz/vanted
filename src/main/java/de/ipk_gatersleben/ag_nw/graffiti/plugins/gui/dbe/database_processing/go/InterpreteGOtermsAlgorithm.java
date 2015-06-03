@@ -142,7 +142,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 	private void interpreteGO(Graph graph, List<NodeHelper> workNodes, BackgroundTaskStatusProviderSupportingExternalCall sp) {
 		HashMap<String, Node> goTerm2goNode = new HashMap<String, Node>();
 		HashSet<Node> knownNodes = new HashSet<Node>();
-		sp.setCurrentStatusText1("Process graph nodes...");
+		sp.setCurrentStatusText1("Process network nodes...");
 		sp.setCurrentStatusText1("Enumerate existing GO-Term nodes...");
 		
 		for (Node n : graph.getNodes()) {

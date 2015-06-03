@@ -98,7 +98,7 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 				if (sp.wantsToStop())
 					sp.setCurrentStatusText2("Processing aborted");
 				else {
-					sp.setCurrentStatusText2("Create graph...");
+					sp.setCurrentStatusText2("Create network...");
 					Pathway p = new Pathway(
 										new KeggId("map00000"),
 										new MapOrg("map"),
@@ -110,8 +110,8 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 										reactions,
 										relations);
 					final Graph g = p.getGraph();
-					System.out.println("Graph: " + g.getNumberOfNodes() + " nodes, " + g.getNumberOfEdges() + " edges. Create view...");
-					sp.setCurrentStatusText2("Create graph view...");
+					System.out.println("Network: " + g.getNumberOfNodes() + " nodes, " + g.getNumberOfEdges() + " edges. Create view...");
+					sp.setCurrentStatusText2("Create network view...");
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
 							MainFrame.getInstance().showGraph(g, getActionEvent());

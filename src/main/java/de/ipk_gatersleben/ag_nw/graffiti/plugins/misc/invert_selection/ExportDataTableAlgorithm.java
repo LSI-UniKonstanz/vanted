@@ -110,7 +110,7 @@ public class ExportDataTableAlgorithm extends AbstractEditorAlgorithm {
 	
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
-			return "Data";
+			return "Calculated Data";
 		else
 			return null;
 	}

@@ -64,7 +64,7 @@ implements BiomodelsLoaderCallback{
 
 	@Override
 	public void resultForSBML(SimpleModel model, String modelstring) {
-		logger.debug("creating graph from sbml model");
+		logger.debug("creating network from sbml model");
 		final InputSerializer is;
 		final SimpleModel finalModel = model;
 		try {

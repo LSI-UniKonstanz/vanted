@@ -190,30 +190,14 @@ public class MenuItemInfoDialog
 										+
 										"<p><p>"
 										+
-										(DBEgravistoHelper.DBE_INFORMATIONSYSTEM_NAME.length() > 0 ? DBEgravistoHelper.DBE_GRAVISTO_NAME
+										DBEgravistoHelper.DBE_GRAVISTO_NAME
 												.replaceAll("<br>",
 														"")
 												+
 												" is part of the " +
 												DBEgravistoHelper.DBE_INFORMATIONSYSTEM_NAME
 												+ "<br>- <b>developed by Christian Klukas, Plant Bioinformatics Group<p><br>"
-												:
-												"<b>Development</b>"
-														+
-														"<br><br>"
-														+
-														"Application design and implementation by "
-														+
-														"members of the IPK working groups<br>"
-														+
-														"Image Analysis and Plant Bioinformatics - http://bioinformatics.ipk-gatersleben.de<br>"
-														+
-														"<br>Initial Gravisto library development at University of Passau.<br>" +
-														otherParties +
-														(otherParties2.length() > 0 ?
-																"<br><br><b>Information</b><br><br>" : "") +
-														otherParties2) +
-										"<small><small><small><br><font color=\"gray\"><br>System-Info: " +
+												+ "<small><small><small><br><font color=\"gray\"><br>System-Info: " +
 										Java_1_5_compatibility.getJavaVersion() + ", " +
 										SystemAnalysis.getNumberOfCPUs() + " CPU" + (SystemAnalysis.getNumberOfCPUs() > 1 ? "s, " : ", ")
 										+ "<br>used/free/max memory: " +

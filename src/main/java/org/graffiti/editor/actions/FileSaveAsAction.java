@@ -295,13 +295,13 @@ public class FileSaveAsAction
 				if (os == null)
 					MainFrame.getInstance().showMessageDialog("Output serializer unknown for file extension '" + ext + "'.");
 				else {
-					MainFrame.showMessage("Save graph to file " + file.getAbsolutePath() + "...", MessageType.PERMANENT_INFO);
+					MainFrame.showMessage("Save network to file " + file.getAbsolutePath() + "...", MessageType.PERMANENT_INFO);
 					os.write(new FileOutputStream(file), graph);
 					graph.setModified(false);
 					graph.setName(file.getAbsolutePath());
 					graph.setFileTypeDescription(fileTypeDescription);
 					long fs = file.length();
-					MainFrame.showMessage("Graph saved to file " + file.getAbsolutePath() + " (" + (fs / 1024) + "KB)", MessageType.INFO);
+					MainFrame.showMessage("Network saved to file " + file.getAbsolutePath() + " (" + (fs / 1024) + "KB)", MessageType.INFO);
 					MainFrame.getInstance().addNewRecentFileMenuItem(file);
 				}
 			} catch (Exception ioe) {

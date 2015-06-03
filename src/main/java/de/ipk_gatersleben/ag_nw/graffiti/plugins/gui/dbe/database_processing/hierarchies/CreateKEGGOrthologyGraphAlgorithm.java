@@ -310,7 +310,7 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 								+ " edges ");
 						status.setCurrentStatusText2("Update view. Please wait.");
 						MainFrame.showMessage("Added " + newNodes.size() + " nodes and " + newEdges.size()
-								+ " edges to the graph", MessageType.INFO);
+								+ " edges to the network", MessageType.INFO);
 						GraphHelper.postUndoableNodeAndEdgeAdditions(fgraph, newNodes, newEdges, getName());
 						if (newNodes.size() > 0) {
 							// layout new nodes using tree layout

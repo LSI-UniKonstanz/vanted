@@ -84,7 +84,7 @@ public class SelectionMenu
 		saveItem.setToolTipText("Adds the current selection to the list " +
 							"of loadable selections in this menu.\nOnly available till " +
 							"the session is closed.\nDoes not survive undo / redo " +
-							"operations on graph elements inside the selection.");
+							"operations on network elements inside the selection.");
 	}
 	
 	// ~ Methods ================================================================

@@ -112,7 +112,7 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 	
 	public Parameter[] getParameters() {
 		DoubleParameter degreeParam = new DoubleParameter(degree, "Degree",
-							"Degree to rotate graph clockwise");
+							"Degree to rotate network clockwise");
 		
 		// BooleanParameter useSelectionParam = new BooleanParameter(useSelection,
 		// "Work on Selection", "Rotate only selected Nodes");
@@ -412,7 +412,7 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 					options.setParam(1, new Integer(0));
 					fp.setTitle("Rotate Nodes");
 				} catch (NullPointerException err) {
-					fp.setTitle("Rotate Nodes (no graph active!)");
+					fp.setTitle("Rotate Nodes (no network active!)");
 				}
 			}
 			

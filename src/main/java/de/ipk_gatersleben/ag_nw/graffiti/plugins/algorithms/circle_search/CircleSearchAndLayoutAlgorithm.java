@@ -57,8 +57,8 @@ public class CircleSearchAndLayoutAlgorithm extends AbstractAlgorithm {
 	@Override
 	public String getDescription() {
 		return "<html>" +
-							"This algorithm searches for circular subgraphs<br>" +
-							"and applies a circle layout to these subgraphs.<br>" +
+							"This algorithm searches for circular sub-networks<br>" +
+							"and applies a circle layout to these sub-networks.<br>" +
 							"Plase specify the aproximate node distance and<br>" +
 							"the minimum and maximum size of circles (node count).<br>" +
 							"<small>Remark: There may be additional, overlapping circles -<br>" +
@@ -91,7 +91,7 @@ public class CircleSearchAndLayoutAlgorithm extends AbstractAlgorithm {
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null || graph.getNumberOfNodes() < 3)
-			throw new PreconditionException("No active graph or graph too small (less than 3 nodes)!");
+			throw new PreconditionException("No active network or network too small (less than 3 nodes)!");
 		if (startNodeCount < endNodeCount)
 			throw new PreconditionException("Start node count can not be smaller than end node count!");
 	}
@@ -129,7 +129,7 @@ public class CircleSearchAndLayoutAlgorithm extends AbstractAlgorithm {
 										circleGraphs.add(circleGraph);
 									}
 									if (!status.wantsToStop()) {
-										status.setCurrentStatusText2("Search circles in graph...");
+										status.setCurrentStatusText2("Search circles in network...");
 										if (circleGraphs.size() > 0) {
 											CircleLayouterAlgorithm layout = null;
 											if (doCircleLayout) {

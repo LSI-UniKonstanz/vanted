@@ -108,8 +108,8 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 	@Override
 	public String getDescription() {
 		return "<html>" + "Data mapping is performed, by connecting measured data with<br>"
-							+ "corresponding network nodes or eges of the current graph.<br><br><small>"
-							+ "If no graph window is open, a new graph will be created.<br><br>"
+							+ "corresponding network nodes or eges of the current network.<br><br><small>"
+							+ "If no network window is open, a new graph will be created.<br><br>"
 							+ "By default the connection is established, in case a substance name<br>"
 							+ "is equal to a node label. Optionally additional data annotations<br>"
 							+ "or build-in synonyme databases may be used to connect data.<br>"
@@ -307,7 +307,7 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 		if (activeView != null)
 			return "<html><center>Perform data mapping<br><small>(integrate data into network)";
 		else
-			return "<html><center>Show data in new window<br><small>(open a graph to integrate data into network)";
+			return "<html><center>Show data in new window<br><small>(open a network to integrate data into network)";
 		
 	}
 	
@@ -428,29 +428,29 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 								MainFrame.getInstance().setActiveSession(newlyCreatedWorkSession, activeView);
 								MainFrame.getInstance().showViewChooserDialog(newlyCreatedWorkSession, false, ae);
 								MainFrame.showMessageDialog("<html>" + mapResult.substanceCount
-													+ " substance IDs have been used to create a new target graph.<br>"
+													+ " substance IDs have been used to create a new target network.<br>"
 													+ "Mapping Details:<ul>" + "<li>" + mapResult.newNodes + " new nodes and "
 													+ mapResult.newEdges + " edges have been created.<br>" + "<li>"
 													+ mapResult.targetCountNodes + " nodes and " + mapResult.targetCountEdges
 													+ " edges contain data mappings from this operation.<br>" + "<li>At least "
 													+ mapResult.minMappingCount + " and at most " + mapResult.maxMappingCount + " substance"
 													+ (mapResult.maxMappingCount > 1 ? "s" : "") + " map"
-													+ (mapResult.maxMappingCount > 1 ? "" : "s") + " to a single graph element." + "</ul>",
+													+ (mapResult.maxMappingCount > 1 ? "" : "s") + " to a single network element." + "</ul>",
 													"Results of Data Mapping");
 							}
 						});
 				} else {
 					if (showResult() == ShowMappingResults.NORMAL)
 						MainFrame.showMessageDialog("<html>" + mapResult.substanceCount
-											+ " substances have been mapped onto graph " + workGraph.getName() + ".<br>" + "<br>"
+											+ " substances have been mapped onto network " + workGraph.getName() + ".<br>" + "<br>"
 											+ "Mapping Details:<ul>" + "<li>" + mapResult.newNodes + " new nodes and " + mapResult.newEdges
 											+ " edges have been created." + "<li>" + mapResult.targetCountNodes + " nodes and "
 											+ mapResult.targetCountEdges + " edges contain data mappings from this operation.<br>"
 											+ "<li>At least " + mapResult.minMappingCount + " and at most " + mapResult.maxMappingCount
 											+ " substance" + (mapResult.maxMappingCount > 1 ? "s" : "") + " map"
-											+ (mapResult.maxMappingCount > 1 ? "" : "s") + " to a single graph element." + "</ul><br>"
-											+ "Graph elements with a new data mapping have been selected.<br><br>"
-											+ "Hint: To limit the target scope of this operation you may select graph<br>"
+											+ (mapResult.maxMappingCount > 1 ? "" : "s") + " to a single network element." + "</ul><br>"
+											+ "Network elements with a new data mapping have been selected.<br><br>"
+											+ "Hint: To limit the target scope of this operation you may select network<br>"
 											+ "elements before performing the data mapping.", "Data Mapping Results");
 				}
 			}
