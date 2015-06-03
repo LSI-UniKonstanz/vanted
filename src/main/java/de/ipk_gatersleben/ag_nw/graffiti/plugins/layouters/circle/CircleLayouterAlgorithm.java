@@ -9,10 +9,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.AttributeHelper;
 import org.Vector2d;
+import org.apache.commons.collections.ListUtils;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
@@ -45,6 +47,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 	private boolean useSelection;
 	private boolean equalize = true;
 	private boolean averageCenterLength = true;
+	private boolean sortbycluster = false;
 	
 	/**
 	 * Creates a new CircleLayouterAlgorithm object.
@@ -91,7 +94,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		PreconditionException errors = new PreconditionException();
 		
 		if (graph == null) {
-			errors.add("No graph available!");
+			errors.add("No network available!");
 		}
 		
 		if (!errors.isEmpty()) {
@@ -99,7 +102,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		}
 		
 		if (graph.getNumberOfNodes() <= 0) {
-			throw new PreconditionException("The graph is empty. Cannot run layouter.");
+			throw new PreconditionException("The network is empty. Cannot run layouter.");
 		}
 	}
 	
@@ -216,6 +219,8 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		if( equalize ){
 			i = 0;
 			Collection<Node> orderedNodes = createCircleOrder(workNodes);
+			if(sortbycluster)
+				orderedNodes = sortByCluster(orderedNodes);
 			Node startNode = orderedNodes.iterator().next();
 			double startangle = getAngle(ctr, startNode);
 			for(Node n : orderedNodes){
@@ -228,6 +233,8 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 			}
 		} else {
 			for (Node n : workNodes) {
+				if(sortbycluster)
+					workNodes = sortByCluster(workNodes);
 				double x = AttributeHelper.getPositionX(n);
 				double y = AttributeHelper.getPositionY(n);
 				double dist = getDistance(ctr.x, ctr.y, n);
@@ -265,6 +272,14 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 							getName());
 	}
 
+	/**
+	 * Creates an ordered list of a given list of nodes for creation of 
+	 * circular layouts, without the disruption of the order of nodes.
+	 * The original order of nodes will be based on the center point (mean point of positions)
+	 * of the nodes.
+	 * @param nodes
+	 * @return
+	 */
 	public static Collection<Node> createCircleOrder(Collection<Node> nodes){
 		Vector2d ctr = NodeTools.getCenter(nodes);
 		
@@ -292,6 +307,28 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		for(AngleNode an : angleNodes)
 			orderedNodes.add(an.node);
 		return orderedNodes;
+	}
+	
+	private static Collection<Node> sortByCluster(Collection<Node> listNodeUnsorted) {
+		Map<String, ArrayList<Node>> mapClusterIdToNodes = new HashMap<String, ArrayList<Node>>();
+		for(Node curNode: listNodeUnsorted) {
+			String clusterId = NodeTools.getClusterID(curNode, null);
+			if(clusterId == null) 
+				clusterId = "cluster-without-id";
+			
+			ArrayList<Node> clusterNodeList;
+			if((clusterNodeList = mapClusterIdToNodes.get(clusterId)) == null) {
+				clusterNodeList = new ArrayList<Node>();
+				mapClusterIdToNodes.put(clusterId, clusterNodeList);
+			}
+			clusterNodeList.add(curNode);
+		}
+			
+		ArrayList<Node> resultList = new ArrayList<Node>();
+		for(ArrayList<Node> curClusterNodeList : mapClusterIdToNodes.values())
+			resultList.addAll(curClusterNodeList);
+		
+		return resultList;
 	}
 	
 	static double getAngle(Vector2d ctr, Node n){
@@ -346,14 +383,15 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		BooleanParameter avgDistBoolean = new BooleanParameter(false, "Average Radius", "This parameter overrules the 'Radius' parameter. It calculates the center of all nodes, \n" +
 				"selected for layout and calculates then the average distance to every node,\n" +
 				"which is then taken as final radius for the circle");
-
+		BooleanParameter sortbycluster = new BooleanParameter(true, "Sort by cluster", "Sort elements by their clusterID");
 		// BooleanParameter useSelectionParam = new BooleanParameter(useSelection,
 		// "Work on Selection", "Do the layout for the selected nodes");
 		//
 		return new Parameter[] { radiusParam, useSelectionParam,
 							new BooleanParameter(minimzeCrossings, "Minimize Crossings", "If checked, the edge crossings will be minimzed"),
 							equalizeParam,
-							avgDistBoolean};
+							avgDistBoolean,
+							sortbycluster};
 	}
 	
 	/**
@@ -370,6 +408,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		minimzeCrossings = ((BooleanParameter) params[2]).getBoolean();
 		equalize = ((BooleanParameter) params[3]).getBoolean().booleanValue();
 		averageCenterLength = ((BooleanParameter) params[4]).getBoolean().booleanValue();
+		sortbycluster = ((BooleanParameter) params[5]).getBoolean().booleanValue();
 	}
 	
 	/*
