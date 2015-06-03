@@ -84,7 +84,7 @@ public class SelectionModel {
 		if (this.activeSelection != null) {
 			Selection oldSel = this.selections.get(this.activeSelection);
 			oldSel.clear();
-			this.selectionChanged();
+//			this.selectionChanged();
 		}
 		
 		this.activeSelection = sel.getName();

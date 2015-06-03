@@ -34,6 +34,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.RepaintManager;
+import javax.swing.SwingUtilities;
 
 import org.AttributeHelper;
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
@@ -51,13 +52,16 @@ import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.options.OptionPane;
 import org.graffiti.options.PreferencesInterface;
+import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.GraphElementComponent;
+import org.graffiti.plugin.view.View;
 import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.plugins.views.defaults.NodeComponent;
 
+import sun.java2d.loops.ScaledBlit;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.ClusterColorAttribute;
 
 /**
@@ -85,11 +89,21 @@ public class IPKGraffitiView
 	private static boolean useAntialiasing = true;
 	
 	/*
-	 * static variables that cache values of the Class Parameters
-	 * Will be set during bootup by the preferencemanager
+	 * Static variables and they key-names that store values of the Class Preference Parameters
+	 * Will be set during bootup and update by the preferencemanager
 	 */
+	public static String PARAM_MAX_NODES = "Maximum Nodes";
+	private static int PARAMDEFVAL_MAX_NODES = 300;
 	private static int MAX_NODES;
+	
+	public static String PARAM_MAX_EDGES = "Maximum Edges";
+	private static int PARAMDEFVAL_MAX_EDGES = 300;
 	private static int MAX_EDGES;
+
+	public static String PARAM_DRAW_GRID= "Draw Grid";
+	private static boolean PARAMDEFVAL_DRAW_GRID = false;
+	private static boolean DRAW_GRID;
+	
 	
 	
 	MouseEvent me;
@@ -107,8 +121,9 @@ public class IPKGraffitiView
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
-		arrayList.add(new IntegerParameter(100, "maxnodes", "Maximum Nodes until antialiasing is turned off"));
-		arrayList.add(new IntegerParameter(50, "maxedges", "Maximum Edges until antialiasing is turned off"));
+		arrayList.add(new IntegerParameter(PARAMDEFVAL_MAX_NODES, PARAM_MAX_NODES, "Maximum Nodes until antialiasing is turned off"));
+		arrayList.add(new IntegerParameter(PARAMDEFVAL_MAX_EDGES, PARAM_MAX_EDGES, "Maximum Edges until antialiasing is turned off"));
+		arrayList.add(new BooleanParameter(PARAMDEFVAL_DRAW_GRID, PARAM_DRAW_GRID, "Enable / Disable grid drawing"));
 		return arrayList;
 
 	}
@@ -119,11 +134,24 @@ public class IPKGraffitiView
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		logger.debug("updating preferences");
-		MAX_NODES = preferences.getInt("maxnodes", 1000);
-		MAX_EDGES = preferences.getInt("maxedges", 300);
+		MAX_NODES = preferences.getInt(PARAM_MAX_NODES, PARAMDEFVAL_MAX_NODES);
+		MAX_EDGES = preferences.getInt(PARAM_MAX_EDGES, PARAMDEFVAL_MAX_EDGES);
+		DRAW_GRID = preferences.getBoolean(PARAM_DRAW_GRID, PARAMDEFVAL_DRAW_GRID);
+		
+		/*
+		 * Show changed of preferences immediately
+		 * 
+		 * Since the method usually is called by the PreferenceManager, it will have another
+		 * own instance created to update the preferences.
+		 * Any calls made to method of that instance are not received by the actual session-active IPKGraffitiViews
+		 * This actual session-active View must be retrieved and separately used. 
+		 */
+		if(MainFrame.getInstance().getActiveSession() != null)
+			((IPKGraffitiView)MainFrame.getInstance().getActiveSession().getActiveView()).repaint();
+		
 	}
 
-
+	
 
 	@Override
 	public String getPreferencesAlternativeName() {
@@ -173,6 +201,7 @@ public class IPKGraffitiView
 	 */
 	@Override
 	protected void paintComponent(Graphics g) {
+//			logger.debug("paintcomponent");
 //		synchronized (this) {
 			
 			RepaintManager repaintManager = RepaintManager.currentManager(this);
@@ -181,22 +210,7 @@ public class IPKGraffitiView
 			// if (useAntialiasing) {
 			
 
-//			logger.debug("paintcomponent");
-			if(drawMode == DrawMode.NORMAL 
-					&& getGraph().getNumberOfNodes() < MAX_NODES
-					&& getGraph().getNumberOfEdges() < MAX_EDGES) {
-				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-									RenderingHints.VALUE_ANTIALIAS_ON);
-				// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				// RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-				// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				// RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
-				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-									RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-				
-				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-									RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
-			}
+
 			// } else {
 			// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 			// RenderingHints.VALUE_ANTIALIAS_OFF);
@@ -211,17 +225,21 @@ public class IPKGraffitiView
 	@Override
 	public void paint(Graphics g) {
 //		Rectangle clipBounds = g.getClipBounds();
-		
+//		logger.debug("called paint");
 //		long startTime=System.currentTimeMillis();
 //		logger.debug("start paint cliprect("+clipBounds.x+" : "+clipBounds.y+" | "+clipBounds.width+" : "+clipBounds.height+")");
 
 		if (!printInProgress)
 			((Graphics2D) g).transform(zoom);
 		
-//		
+//	
+		setRenderingHints(g);  
 		
 		if (!printInProgress && drawMode == DrawMode.NORMAL)
 			drawBackground(g);
+		
+		if(DRAW_GRID)
+			drawGrid(g);
 		
 		super.paint(g);
 //		long lastPaintTime=System.currentTimeMillis()-startTime;
@@ -231,12 +249,82 @@ public class IPKGraffitiView
 	}
 	
 	
+	/**
+	 * @param g
+	 */
+	private void drawGrid(Graphics g) {
+		int width = getWidth();
+		int height = getHeight();
+//		logger.debug("ipkgraffitiview: w:"+width+", h: "+height);
+		
+		Rectangle visibleRect = getVisibleRect();
+		logger.debug("physical pixel area visible x: "+visibleRect.getX()+" y: "+visibleRect.getY()+" w: "+visibleRect.getWidth()+" h: "+visibleRect.getHeight());
+		/*
+		 * create grid every 50 pixles
+		 */
+		int STEP = 50;
+		int startx = 0;//(int) (visibleRect.getX() % STEP);
+		int starty = 0;//(int) (visibleRect.getY() % STEP);
+		int curX = startx;
+		int curY = starty;
+		
+		g.setColor(Color.LIGHT_GRAY);
+		int zoomedwidth = (int) ((visibleRect.getX() + visibleRect.getWidth()) * 1/getZoom().getScaleX());
+		int zoomedheight = (int) ((visibleRect.getY() + visibleRect.getHeight()) * 1/getZoom().getScaleX());
+		logger.debug("zoomedwidth " +zoomedwidth + " zoomedheight " + zoomedheight);
+		for(int i = 0; curX < zoomedwidth; i++ ) {
+			
+			g.drawLine(curX, 0, curX, zoomedheight);
+			
+			if(curX % 100 == 0) {
+				g.drawString(""+curX, curX + 5, (int)((visibleRect.getY() + 20)/ zoom.getScaleX()));
+			}
+			
+			curX += STEP;
+		}
+		for(int i = 0; curY < zoomedheight; i++ ) {
+			
+			g.drawLine(0, curY, zoomedwidth, curY);
+			
+			if(curY % 100 == 0) {
+				g.drawString(""+curY, (int)((visibleRect.getX() + 5)/ zoom.getScaleX()), curY + 10);
+			}
+			
+			curY += STEP;
+		}	
+
+	}
+
+
+
 	@Override
 	public void repaint() {
 //		logger.debug("issuing repaint");
 		super.repaint();
 		
 		
+	}
+	
+	/**
+	 * Depending on the given DRAWMODE, Antialiasing is enabled or disabled
+	 * @param g
+	 */
+	private void setRenderingHints(Graphics g) {
+		if(drawMode == DrawMode.NORMAL 
+				&& getGraph().getNumberOfNodes() < MAX_NODES
+				&& getGraph().getNumberOfEdges() < MAX_EDGES) {
+			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+								RenderingHints.VALUE_ANTIALIAS_ON);
+			// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+			// RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+			// RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
+			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+								RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			
+			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+								RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+		}
 	}
 	
 	private void drawBackground(Graphics g) {

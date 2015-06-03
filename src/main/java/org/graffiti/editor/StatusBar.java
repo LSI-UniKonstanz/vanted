@@ -43,6 +43,7 @@ import javax.swing.Timer;
 import org.AttributeHelper;
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.core.StringBundle;
 import org.graffiti.event.GraphEvent;
@@ -78,7 +79,11 @@ extends JPanel
 implements SessionListener, SelectionListener, GraphListener {
 	// ~ Static fields/initializers =============================================
 
-	Logger logger = Logger.getLogger(StatusBar.class);
+	static final Logger logger = Logger.getLogger(StatusBar.class);
+	
+	static {
+		logger.setLevel(Level.ERROR);
+	}
 	
 	private static final long serialVersionUID = 1L;
 

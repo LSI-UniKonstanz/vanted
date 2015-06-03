@@ -544,7 +544,7 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		if (gec != null) {
 			try {
 				GraphElement ge = ((GraphElementComponent) gec).getGraphElement();
-				logger.debug("selectedContain with selection hash " + selection.hashCode());
+//				logger.debug("selectedContain with selection hash " + selection.hashCode());
 				if (selection.getNodes().contains(ge)
 									|| selection.getEdges().contains(ge)) {
 					return true;
