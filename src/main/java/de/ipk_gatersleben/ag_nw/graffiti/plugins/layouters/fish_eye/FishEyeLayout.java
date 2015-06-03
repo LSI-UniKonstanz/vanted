@@ -944,10 +944,18 @@ public class FishEyeLayout extends AbstractAlgorithm {
 	 */
 	@Override
 	public String getCategory() {
-		return "Layout";
+//		return "Layout";
+		return null;
 	}
 	
 	
+	
+	@Override
+	public boolean isLayoutAlgorithm() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(

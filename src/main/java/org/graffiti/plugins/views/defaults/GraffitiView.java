@@ -608,7 +608,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	private void addElements(final BlockingQueue<JComponent> result,
 			final JComponent finishElement,
 			final long startTime, boolean nonBlock) {
-		logger.debug("addElements for graph : " + getGraph().getName());
+//		logger.debug("addElements for graph : " + getGraph().getName());
 		JComponent sp = (JComponent) ErrorMsg.findParentComponent(this, JInternalFrame.class);
 		if (sp != null)
 			sp.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
