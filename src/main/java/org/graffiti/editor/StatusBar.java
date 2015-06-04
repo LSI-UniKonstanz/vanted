@@ -433,8 +433,10 @@ implements SessionListener, SelectionListener, GraphListener {
 	public void selectionChanged(SelectionEvent e) {
 		logger.debug("selectionChanged");
 //		activeSelection = e.getSelection();
-		activeSelection = ((EditorSession) currentSession).getSelectionModel().getActiveSelection();
-		updateGraphInfo();
+		if(currentSession != null) {
+			activeSelection = ((EditorSession) currentSession).getSelectionModel().getActiveSelection();
+			updateGraphInfo();
+		}
 	}
 
 	/**
@@ -444,8 +446,10 @@ implements SessionListener, SelectionListener, GraphListener {
 	public void selectionListChanged(SelectionEvent e) {
 		logger.debug("selectionListChanged");
 //		activeSelection = e.getSelection();
-		activeSelection = ((EditorSession) currentSession).getSelectionModel().getActiveSelection();
-		updateGraphInfo();
+		if(currentSession != null) {
+			activeSelection = ((EditorSession) currentSession).getSelectionModel().getActiveSelection();
+			updateGraphInfo();
+		}
 	}
 
 	/**
