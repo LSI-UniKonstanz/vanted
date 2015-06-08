@@ -14,6 +14,9 @@ import java.util.TreeSet;
 
 import org.AttributeHelper;
 import org.Vector2df;
+import org.graffiti.attributes.Attribute;
+import org.graffiti.attributes.AttributeNotFoundException;
+import org.graffiti.attributes.HashMapAttribute;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
@@ -44,14 +47,30 @@ public class ClusterBackgroundDraw {
 				clusters.add(clusterId);
 		}
 		
-		ClusterColorAttribute cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(
-							graph,
-							ClusterColorAttribute.attributeFolder,
-							ClusterColorAttribute.attributeName,
-							ClusterColorAttribute.getDefaultValue(clusters.size()),
-							new ClusterColorAttribute("resulttype"), true);
+		HashMapAttribute a = (HashMapAttribute) AttributeHelper.getAttribute(graph, ClusterColorAttribute.attributeFolder);
+		ClusterColorAttribute cca = null;
+		try {
+			cca = (ClusterColorAttribute)a.getAttribute(ClusterColorAttribute.attributeName);
+		} catch (AttributeNotFoundException e) {
+			cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(
+					graph,
+					ClusterColorAttribute.attributeFolder,
+					ClusterColorAttribute.attributeName,
+					ClusterColorAttribute.getDefaultValue(clusters),
+					new ClusterColorAttribute("resulttype"), true);
+		}
 		
-		cca.ensureMinimumColorSelection(clusters.size());
+//		ClusterColorAttribute cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(
+//							graph,
+//							ClusterColorAttribute.attributeFolder,
+//							ClusterColorAttribute.attributeName,
+//							ClusterColorAttribute.getDefaultValue(clusters),
+//							new ClusterColorAttribute("resulttype"), true);
+		
+//		cca.ensureMinimumColorSelection(clusters.size());
+		
+		cca.updateClusterList(clusters);
+		
 		ArrayList<String> clusterArray = new ArrayList<String>(clusters);
 		for (int idx = 0; idx < clusterArray.size(); idx++) {
 			String cluster = clusterArray.get(idx);

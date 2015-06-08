@@ -72,10 +72,11 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		ClusterColorAttribute cca = (ClusterColorAttribute) AttributeHelper
 							.getAttributeValue(g, ClusterColorAttribute.attributeFolder,
 												ClusterColorAttribute.attributeName, ClusterColorAttribute
-																	.getDefaultValue(clusters.size()),
+																	.getDefaultValue(clusters),
 												new ClusterColorAttribute("resulttype"), false);
 		
-		cca.ensureMinimumColorSelection(clusters.size());
+//		cca.ensureMinimumColorSelection(clusters.size());
+		cca.updateClusterList(clusters);
 		ClusterColorAttribute cca_new = new ClusterColorAttribute(
 							ClusterColorAttribute.attributeName, cca.getString());
 		ClusterColorParameter op = new ClusterColorParameter(cca_new,

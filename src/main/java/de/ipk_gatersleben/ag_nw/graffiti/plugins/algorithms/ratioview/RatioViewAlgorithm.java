@@ -389,7 +389,8 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 		ratioGraph.setName("Ratio View " + (++createdRatioGraph));
 		ClusterColorAttribute cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(workGraph,
 							ClusterColorAttribute.attributeFolder, ClusterColorAttribute.attributeName, ClusterColorAttribute
-												.getDefaultValue(clusters.size()), new ClusterColorAttribute("resulttype"), false);
+												.getDefaultValue(clusters), new ClusterColorAttribute("resulttype"), false);
+		
 		ClusterColorAttribute cca2 = (ClusterColorAttribute) cca.copy();
 		ratioGraph.addAttribute(cca2, ClusterColorAttribute.attributeFolder);
 		if (status != null)
