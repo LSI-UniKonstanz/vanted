@@ -49,7 +49,7 @@ public class GridLayoutAlgorithm
 	private int maxX = 1;
 	
 	private double widthHeightRatio = 1;
-	private boolean resize = true;
+	private boolean resize = false;
 	
 	public String getName() {
 		return "Grid Layout";
@@ -269,10 +269,10 @@ public class GridLayoutAlgorithm
 												"The new height.");
 		
 		BooleanParameter limitXparameter =
-							new BooleanParameter(setWidth, "Non-rectangular grid", "If selected, the Width parameter will be used to create a non-rectangular grid");
+							new BooleanParameter(setWidth, "Consider Max Nodes Horizontally", "If selected, the 'Max Nodes horizontally' parameter will be used");
 		
 		IntegerParameter widthParameter =
-							new IntegerParameter(maxX, "Grid-Width", "The height of the grid depends on the number of nodes and the grid width");
+							new IntegerParameter(maxX, "Max Nodes horizontally", "The height of the grid depends on the number of nodes and the grid width");
 		
 		BooleanParameter moveToTopParameter =
 							new BooleanParameter(moveToTop, "Finish: Move to Upper-Left", "Move all network elements to the upper left");

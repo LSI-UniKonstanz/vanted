@@ -158,8 +158,9 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 		double current = 0;
 		double workload = workNodes.size();
 		for (NodeHelper nh : workNodes) {
-			Collection<String> ids = nh.getAlternativeIDs();
-			ids.add(nh.getLabel());
+//			Collection<String> ids = nh.getAlternativeIDs();
+			ArrayList<String> ids = AttributeHelper.getLabels(nh.getGraphNode(), true);
+//			ids.add(nh.getLabel());
 			
 			HashSet<String> goTerms = new HashSet<String>();
 			

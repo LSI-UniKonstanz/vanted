@@ -150,7 +150,7 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 		}
 		
 		if(getWidth() > 0 && getHeight() > 0) {
-			logger.debug("recreating chartimage with w h" + getWidth()+" "+getHeight());
+//			logger.debug("recreating chartimage with w h" + getWidth()+" "+getHeight());
 			bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 		}
 		if(bufferedImage != null) {

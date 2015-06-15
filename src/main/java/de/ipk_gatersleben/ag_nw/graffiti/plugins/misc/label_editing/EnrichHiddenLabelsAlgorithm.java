@@ -41,7 +41,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.TableDat
  */
 public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 	
-	private boolean ignoreFirstRow = true, removeallhiddenlabels;
+	private boolean ignoreFirstRow = true;
+	private boolean removeallhiddenlabels;
+	private boolean considerHiddenLabels;
 	private ArrayList<IOurl> urls = new ArrayList<IOurl>();
 	
 	public String getName() {
@@ -92,6 +94,9 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 							new BooleanParameter(removeallhiddenlabels, "Remove old labels",
 												"<html>if enabled, all existing hidden labels will be deleted before adding new labels.<br>" +
 																	"Otherwise the new labels will be appended"),
+							new BooleanParameter(considerHiddenLabels, "Consider alternative Labels",
+									"<html>if enabled, the algorithm will also check existing alternative identifiers<br>" +
+														"for the matching operation."),
 							new MultiFileSelectionParameter(urls, "Table Files", "Select the list of mapping table files to be used",
 												OpenExcelFileDialogService.EXCELFILE_EXTENSIONS, OpenExcelFileDialogService.SPREADSHEET_DESCRIPTION, true) };
 	}
@@ -101,6 +106,7 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 		int i = 0;
 		ignoreFirstRow = ((BooleanParameter) params[i++]).getBoolean();
 		removeallhiddenlabels = ((BooleanParameter) params[i++]).getBoolean();
+		considerHiddenLabels = ((BooleanParameter) params[i++]).getBoolean();
 		urls = ((MultiFileSelectionParameter) params[i++]).getFileList();
 	}
 	
@@ -139,7 +145,15 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 				if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR && ge instanceof Edge)
 					continue;
 				boolean doBreakFuzzy = false;
-				fuzzy: for (String label : AttributeHelper.getFuzzyLabels(AttributeHelper.getLabel(ge, null))) {
+				// get fuzzy label, which contains a set of the original label + label without HTML
+				HashSet<String> fuzzyLabels = AttributeHelper.getFuzzyLabels(AttributeHelper.getLabel(ge, null));
+				// add all the alternative identifiers, if selected as parameter, but without fuzz.
+				if(considerHiddenLabels) {
+					for(String altLabel : AttributeHelper.getLabels(ge))
+						if(altLabel != null && ! altLabel.isEmpty())
+							fuzzyLabels.add(altLabel.trim().toUpperCase());
+				}
+				fuzzy: for (String label : fuzzyLabels) {
 					if (id2alternatives.containsKey(label)) {
 						if (removeallhiddenlabels) {
 							for (int k = 1; k < 100; k++)
