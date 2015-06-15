@@ -1176,7 +1176,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			
 			@Override
 			public void adjustmentValueChanged(AdjustmentEvent e) {
-				logger.debug("horizontal scrollbar pos : " + e.getValue() + " maxval: " + scrollPane.getHorizontalScrollBar().getMaximum());
+//				logger.debug("horizontal scrollbar pos : " + e.getValue() + " maxval: " + scrollPane.getHorizontalScrollBar().getMaximum());
 			}
 		});
 		
