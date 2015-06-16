@@ -11,20 +11,23 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.ListSelectionModel;
+import javax.swing.JTree;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.JMButton;
 import org.graffiti.editor.GravistoService;
@@ -34,9 +37,11 @@ import org.graffiti.graph.Graph;
 import org.graffiti.managers.EditComponentManager;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
+import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.selection.Selection;
 
 import scenario.ScenarioService;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.MyPluginTreeNode;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.PreferencesDialog;
 
 /**
@@ -44,11 +49,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.Preferences
  *
  */
 public class AlgorithmPanelFactory extends JPanel
-implements ListSelectionListener{
+implements TreeSelectionListener{
 
 
 
-	//	JTree myTree;
+	JTree myTree;
 
 	DefaultMutableTreeNode rootNode;
 	DefaultMutableTreeNode rootNodeByPlugin;
@@ -56,12 +61,16 @@ implements ListSelectionListener{
 	DefaultMutableTreeNode rootNodeThreadSafeAlgorithms;
 	DefaultMutableTreeNode rootNodeSettings;
 	DefaultMutableTreeNode rootNodeScripts;
+	
+	HashMap<String, MyPluginTreeNode> knownNodes;
 
+	public ThreadSafeOptions optionsForPlugin = null;
+	
 	//	HashMap<String, MyPluginTreeNode> knownNodes;
 
 	JPanel settingsPanel;
 
-	JList<Algorithm> jListAlgorithms;
+//	JList<Algorithm> jListAlgorithms;
 
 	/**
 	 * 
@@ -95,21 +104,34 @@ implements ListSelectionListener{
 		settingsPanel = new JPanel();
 		
 		settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
+		settingsPanel.setPreferredSize(new Dimension(200,200));
 
-		jListAlgorithms = new JList<Algorithm>(algorithms);
-		jListAlgorithms.setSelectionMode(ListSelectionModel.SINGLE_SELECTION );
-		jListAlgorithms.setCellRenderer(new AlgorithmListCellRenderer());
-		jListAlgorithms.addListSelectionListener(this);
+//		jListAlgorithms = new JList<Algorithm>(algorithms);
+//		jListAlgorithms.setSelectionMode(ListSelectionModel.SINGLE_SELECTION );
+//		jListAlgorithms.setCellRenderer(new AlgorithmListCellRenderer());
+//		jListAlgorithms.addListSelectionListener(this);
 
+		rootNode = new DefaultMutableTreeNode("Algorithms");
+		
+		for(Algorithm algo : algorithms)
+			rootNode.add(new MyPluginTreeNode(algo.getName(), algo, Algorithm.class));
+		
+		myTree = new JTree(rootNode);
+//		DefaultTreeCellRenderer tcr = (DefaultTreeCellRenderer) myTree.getCellRenderer();
+//		tcr.setOpaque(true);
+//		tcr.setBackgroundNonSelectionColor(Color.YELLOW);
+		myTree.addTreeSelectionListener(this);
+		
 		JSplitPane mainComp;
 		// myTree.setOpaque(false);
-		JScrollPane sp = new JScrollPane(jListAlgorithms);
+		JScrollPane sp = new JScrollPane(myTree);
 		sp.setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+		sp.setMinimumSize(new Dimension(200,100));
 		if (!vertical)
 			mainComp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, sp, settingsPanel);
 		else
 			mainComp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, sp, settingsPanel);
-		mainComp.setDividerLocation(0.3); // 175
+		mainComp.setDividerLocation(0.5); // 175
 		mainComp.setDividerSize(7);
 //		mainComp.setOneTouchExpandable(true);
 
@@ -231,12 +253,17 @@ implements ListSelectionListener{
 	}
 
 	@Override
-	public void valueChanged(ListSelectionEvent e) {
-		if( ! e.getValueIsAdjusting()) {
-			Algorithm alg = jListAlgorithms.getSelectedValue();
-			initAlgorithmPreferencesPanel(alg, null, null);
-		}
+	public void valueChanged(TreeSelectionEvent e) {
+		processTreeSelectionEvent(e);
 	}
 
+	private void processTreeSelectionEvent(TreeSelectionEvent e) {
 
+		if (optionsForPlugin != null) {
+			optionsForPlugin.setAbortWanted(true);
+		}
+		Object lastPathComponent = e.getPath().getLastPathComponent();
+		if(lastPathComponent instanceof MyPluginTreeNode)
+			initAlgorithmPreferencesPanel((Algorithm)((MyPluginTreeNode)lastPathComponent).getUserObject(), null, null);
+	}	
 }
