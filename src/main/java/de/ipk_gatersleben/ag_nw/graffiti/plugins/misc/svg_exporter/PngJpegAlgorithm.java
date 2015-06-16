@@ -58,6 +58,7 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
 import org.ObjectRef;
 import org.StringManipulationTools;
+import org.UNCFileLocationCheck;
 import org.Vector2d;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.editor.ConfigureViewAction;
@@ -107,6 +108,23 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 		NeedsSwingThread {
 	
 	private PngJpegAlgorithmParams parameter = null;
+	
+	String targetString = null;
+	
+	ActionEvent lastEvent = null;
+	String lastFolder = null;
+	
+	private boolean askBeforeOverwrite = true;
+	
+	private boolean processMultipleViews;
+	
+	public Collection<String> lastLinks;
+	
+	public Collection<String> storedLinks;
+	
+	private de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.svg_exporter.LinkProcessor linkProcessor;
+	
+	private boolean saveScripts;
 	
 	public PngJpegAlgorithm(boolean jpg) {
 		super();
@@ -419,22 +437,7 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 	// PngJpegAlgorithm.createPNGimageFromGraph(g);
 	// }
 	
-	String targetString = null;
-	
-	ActionEvent lastEvent = null;
-	String lastFolder = null;
-	
-	private boolean askBeforeOverwrite = true;
-	
-	private boolean processMultipleViews;
-	
-	public Collection<String> lastLinks;
-	
-	public Collection<String> storedLinks;
-	
-	private de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.svg_exporter.LinkProcessor linkProcessor;
-	
-	private boolean saveScripts;
+
 	
 	public static void createPNGimageFromGraph(Graph g) {
 		PngJpegAlgorithm a = new PngJpegAlgorithm(false);
@@ -971,9 +974,12 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 				}
 			}
 		}
+		
 		if (f == null || !new File((String) lastFolder.getObject()).exists()) {
+		
 			f = FileHelper.getFileName(extension, "Image File", PngJpegAlgorithm
 					.replaceExtension(graph.getName(false), extension));
+				
 		}
 		
 		try {

@@ -25,6 +25,7 @@ import javax.swing.filechooser.FileFilter;
 import org.ErrorMsg;
 import org.OpenFileDialogService;
 import org.StringManipulationTools;
+import org.UNCFileLocationCheck;
 import org.graffiti.core.GenericFileFilter;
 import org.graffiti.core.StringBundle;
 import org.graffiti.editor.MainFrame;
@@ -149,6 +150,8 @@ public class FileSaveAsAction
 					String fileName = FileSaveAsAction.this.jTextFieldFileName.getText();
 					if (fileName != null && fileName.length() > 0) {
 						String path = fileChooser.getCurrentDirectory().getAbsolutePath();
+						
+						
 						// try to remove old file extension from file name
 						String oldFileExtension = ((GenericFileFilter) propertyChangeEvent.getOldValue()).getExtension();
 						if (fileName.endsWith(oldFileExtension))
@@ -201,6 +204,8 @@ public class FileSaveAsAction
 			
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				
+					
+				
 				File oldfile = null;
 				try {
 					oldfile = new File(mainFrame.getActiveEditorSession().getFileNameFull()).getParentFile();
@@ -208,6 +213,10 @@ public class FileSaveAsAction
 				}
 				
 				File file = fc.getSelectedFile();
+				
+				if(UNCFileLocationCheck.showUNCPathConfirmDialogForPath(file) != UNCFileLocationCheck.CONFIRM) 
+					continue;
+				
 				String ext = ((GenericFileFilter) fc.getFileFilter()).getExtension();
 				String description = ((GenericFileFilter) fc.getFileFilter()).getDescription();
 				description = description.substring(0, description.lastIndexOf("(") - 1);

@@ -16,6 +16,7 @@ import javax.swing.filechooser.FileFilter;
 
 import org.HelperClass;
 import org.OpenFileDialogService;
+import org.UNCFileLocationCheck;
 import org.graffiti.editor.GravistoService;
 
 public class FileHelper implements HelperClass {
@@ -61,19 +62,28 @@ public class FileHelper implements HelperClass {
 					file = new File(file.getAbsolutePath() + "." + ext);
 				}
 				
-				// System.err.println(fileName);
-				if (file.exists()) {
-					if (JOptionPane.showConfirmDialog(GravistoService.getInstance()
-										.getMainFrame(),
-										"<html>Do you want to overwrite the existing file <i>"
-															+ fileName + "</i>?</html>", "Overwrite File?",
+				// checks, if location is on UNC windows network path
+				if(UNCFileLocationCheck.showUNCPathConfirmDialogForPath(file) == UNCFileLocationCheck.CONFIRM) {
+
+
+					// System.err.println(fileName);
+					if (file.exists()) {
+						if (JOptionPane.showConfirmDialog(GravistoService.getInstance()
+								.getMainFrame(),
+								"<html>Do you want to overwrite the existing file <i>"
+										+ fileName + "</i>?</html>", "Overwrite File?",
 										JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+							needFile = false;
+						} else
+							file = null;
+					} else {
 						needFile = false;
-					} else
-						file = null;
+					}
+					
 				} else {
-					needFile = false;
+					file = null;
 				}
+					
 			} else {
 				// leave loop
 				needFile = false;

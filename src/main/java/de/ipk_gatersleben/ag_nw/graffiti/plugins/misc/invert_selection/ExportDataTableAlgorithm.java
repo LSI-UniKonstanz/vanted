@@ -10,6 +10,7 @@ import org.ErrorMsg;
 import org.FeatureSet;
 import org.OpenFileDialogService;
 import org.ReleaseInfo;
+import org.UNCFileLocationCheck;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
@@ -100,7 +101,8 @@ public class ExportDataTableAlgorithm extends AbstractEditorAlgorithm {
 				}
 			}
 			
-			File f = OpenFileDialogService.getSaveFile(new String[] { "txt" }, "tab-delimited Text file (*.txt)");
+			File f = null;
+			f = OpenFileDialogService.getSaveFile(new String[] { "txt" }, "tab-delimited Text file (*.txt)");
 			if (f != null)
 				TextFile.write(f.getAbsolutePath(), result.toString());
 		} catch (Exception e) {
