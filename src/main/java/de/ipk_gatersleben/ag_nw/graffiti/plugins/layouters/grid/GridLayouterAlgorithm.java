@@ -4,6 +4,7 @@
 
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.grid;
 
+import java.awt.Point;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -129,12 +130,18 @@ public class GridLayouterAlgorithm
 		if (numberOfNodes <= 0)
 			return;
 		int nodesOnLine = (int) (Math.sqrt(--numberOfNodes));
-		int nodeLines = (int) (Math.sqrt(numberOfNodes));
-		
+		GridLayouterAlgorithm.layoutOnGrid(workNodes, widthHeightRatio, xDistance, yDistance, nodesOnLine, null);
+
+	}
+	
+	public static void layoutOnGrid(Collection<Node> workNodes, double widthHeightRatio, double xDistance, double yDistance, int nodesOnLine, Point location) {
 		/*
 		 * Computes the number of nodes on each grid line under
 		 * consideration of the given width/heigth ratio
 		 */
+		int numberOfNodes = workNodes.size();
+		int nodeLines = (int) (Math.sqrt(numberOfNodes));
+		
 		nodesOnLine *= widthHeightRatio;
 		if (nodesOnLine == 0) {
 			nodesOnLine = 1;
@@ -143,9 +150,17 @@ public class GridLayouterAlgorithm
 		int j = 0;
 		
 		Vector2d ctr = NodeTools.getCenter(workNodes);
-		double xStart = ctr.x - (nodesOnLine * xDistance / 2d);
-		double yStart = ctr.y - (nodeLines * yDistance / 2d);
 		
+		double xStart;
+		
+		double yStart; 
+		if(location == null) {
+			xStart = ctr.x - (nodesOnLine * xDistance / 2d);
+			yStart = ctr.y - (nodeLines * yDistance / 2d);
+		} else {
+			xStart = location.getX();
+			yStart = location.getY();
+		}
 		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
 		
 		HashMap<Integer, Double> maxWidthInColumn = new HashMap<Integer, Double>();

@@ -8,6 +8,8 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.hierarchies;
 
 import java.awt.Color;
+import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,6 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import org.AttributeHelper;
+import org.Vector2d;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Edge;
@@ -329,8 +332,22 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 							// layout gene nodes using grid layout (no resize)
 							Collection<Node> geneNodes = new ArrayList<Node>(workNodes);
 							geneNodes.removeAll(newNodes);
-							GridLayouterAlgorithm.layoutOnGrid(geneNodes, 1, 20, 20);
 							
+							double minX = Double.MAX_VALUE;
+							double maxX = Double.MIN_VALUE;
+							double maxY = Double.MIN_VALUE;
+							for(Node curNode : newNodes) {
+								Point2D position = AttributeHelper.getPosition(curNode);
+								Vector2d size = AttributeHelper.getSize(curNode);
+								if(position.getX() < minX)
+									minX = position.getX();
+								if(position.getX() > maxX)
+									maxX = position.getX();
+								if(size.y + position.getY() > maxY)
+									maxY = size.y + position.getY();
+							}
+							GridLayouterAlgorithm.layoutOnGrid(geneNodes, 1, 20, 20, 30, new Point((int)minX, (int)maxY + 50));
+//							GraphHelper.moveGraph(fgraph, offX, offY);
 							CenterLayouterAlgorithm.moveGraph(fgraph, getName(), true, 50, 50);
 						}
 					} else {
