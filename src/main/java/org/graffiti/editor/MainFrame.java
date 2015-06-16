@@ -201,6 +201,7 @@ import org.graffiti.util.InstanceCreationException;
 import org.vanted.VantedPreferences;
 
 import scenario.ScenarioService;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.CloseAllWindows;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.navigation.NavigationComponentView;
 
 /**
@@ -3619,14 +3620,18 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			l.add(s);
 		}
 		if (unsavedGraphs.size() > 0) {
-			String names = "";
-			for (Graph g : unsavedGraphs)
-				names += "<li>" + g.getName() + (unsavedGraphs.indexOf(g) < unsavedGraphs.size() - 1 ? "<br>" : "");
-			int res = JOptionPane.showConfirmDialog(this,
-					"<html><b>Do you really want to close the application?</b><p><p>"
-							+ "The following graph(s) have not been saved, yet:<br><ol>" + names, unsavedGraphs.size()
-							+ " graph(s) not saved", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-			if (res == JOptionPane.YES_OPTION) {
+
+			GravistoService.getInstance().runAlgorithm(new CloseAllWindows(), null);
+//			String names = "";
+//			for (Graph g : unsavedGraphs)
+//				names += "<li>" + g.getName() + (unsavedGraphs.indexOf(g) < unsavedGraphs.size() - 1 ? "<br>" : "");
+//			int res = JOptionPane.showConfirmDialog(this,
+//					"<html><b>Do you really want to close the application?</b><p><p>"
+//							+ "The following graph(s) have not been saved, yet:<br><ol>" + names, unsavedGraphs.size()
+//							+ " graph(s) not saved", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+//			if (res == JOptionPane.YES_OPTION) {
+//				saveActiveFile();
+				
 				/*
 				 * for (Iterator it = l.iterator(); it.hasNext();) {
 				 * removeSession((Session) it.next()); } savePreferences();
@@ -3636,7 +3641,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					System.exit(0);
 				else
 					setVisible(false);
-			}
+//			}
 		} else {
 			// HomeFolder.deleteTemporaryFolder();
 			if (!ReleaseInfo.isRunningAsApplet())
