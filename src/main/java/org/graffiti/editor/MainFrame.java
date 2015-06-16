@@ -2330,17 +2330,19 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					JOptionPane.YES_NO_CANCEL_OPTION);
 			if (res == JOptionPane.YES_OPTION) {
 				// save current graph
-				Session as = MainFrame.getInstance().getActiveSession();
-				View av;
-				try {
-					av = MainFrame.getInstance().getActiveEditorSession().getActiveView();
-				} catch (Exception e) {
-					av = null;
-				}
-				MainFrame.getInstance().setActiveSession(session, null);
 				fileSaveAs.actionPerformed(new ActionEvent(this, 0, null));
-				MainFrame.getInstance().setActiveSession(as, av);
 			}
+			Session as = MainFrame.getInstance().getActiveSession();
+			View av;
+			try {
+				av = MainFrame.getInstance().getActiveEditorSession().getActiveView();
+			} catch (Exception e) {
+				av = null;
+			}
+			MainFrame.getInstance().setActiveSession(session, null);
+			MainFrame.getInstance().setActiveSession(as, av);
+
+			/*
 			if (res == JOptionPane.CANCEL_OPTION) {
 				final Graph gg = new AdjListGraph(new ListenerManager());
 				gg.addGraph(session.getGraph());
@@ -2350,6 +2352,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					}
 				});
 			}
+			*/
 			// continue, close view/session
 		}
 		
@@ -2390,7 +2393,11 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			if (sl instanceof SessionListenerExt)
 				((SessionListenerExt) sl).sessionClosed(session);
 		}
-		
+		//make random next session active session
+		if(! sessions.isEmpty())
+			MainFrame.getInstance().setActiveSession(sessions.iterator().next(), null);
+		else
+			MainFrame.getInstance().setActiveSession(null, null);
 		// session.getGraph().clear();
 		return true;
 	}

@@ -32,6 +32,8 @@ import uk.ac.ebi.biomodels.ws.BioModelsWSException;
 import uk.ac.ebi.biomodels.ws.SimpleModel;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter.BiomodelsLoaderCallback;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter.QueryType;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskPanelEntry;
 
 /**
  * @author matthiak
@@ -57,7 +59,7 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 	
 	JList<SimpleModel> listResults;
 	
-	JProgressBar progressBar;
+//	JProgressBar progressBar;
 	
 	JButton loadSelectedModels;
 	
@@ -127,10 +129,10 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 		queryField.addKeyListener(this);
 		rootpanel.add(queryField, "3,1");
 		
-		constraint = new TableLayoutConstraints(1, 3, 3, 3, TableLayoutConstraints.CENTER, TableLayoutConstraints.CENTER);
-		progressBar = new JProgressBar();
-		progressBar.setPreferredSize(new Dimension(30, 10));
-		rootpanel.add(progressBar, constraint);
+//		constraint = new TableLayoutConstraints(1, 3, 3, 3, TableLayoutConstraints.CENTER, TableLayoutConstraints.CENTER);
+//		progressBar = new JProgressBar();
+//		progressBar.setPreferredSize(new Dimension(30, 10));
+//		rootpanel.add(progressBar, constraint);
 		
 		listResults = new JList<SimpleModel>();
 		listResults.addMouseListener(new ListMouseAdapapter());
@@ -153,33 +155,45 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 		if(query == null || query.isEmpty())
 			return;
 
-		progressBar.setIndeterminate(true);
+//		progressBar.setIndeterminate(true);
 		
 		if(callerThreadForSimpleModel != null && callerThreadForSimpleModel.isAlive())
 			callerThreadForSimpleModel.cancelRequest();
 			
-		callerThreadForSimpleModel = new CallerThreadForSimpleModel(selItem, query);
-		callerThreadForSimpleModel.start();
+
+		BackgroundTaskHelper.issueSimpleTask(
+				"Biomodels query task", 
+				"query result list", 
+				new CallerThreadForSimpleModel(selItem, query), 
+				null);
+//		callerThreadForSimpleModel = new CallerThreadForSimpleModel(selItem, query);
+//		callerThreadForSimpleModel.start();
 	}
 
 	private void triggerLoadSBML(SimpleModel model){
 		if(model == null)
 			return;
 
-		progressBar.setIndeterminate(true);
+//		progressBar.setIndeterminate(true);
 		
-		if(callerThreadForSimpleModel != null && callerThreadForSimpleModel.isAlive())
-			callerThreadForSimpleModel.cancelRequest();
-			
-		callerThreadForSBML = new CallerThreadForSBMLModel(model);
-		callerThreadForSBML.start();
+//		if(callerThreadForSBML != null && callerThreadForSBML.isAlive())
+//			callerThreadForSBML.cancelRequest();
+//			
+//		callerThreadForSBML = new CallerThreadForSBMLModel(model);
+//		callerThreadForSBML.start();
+		BackgroundTaskHelper.issueSimpleTask(
+				"Biomodels query task", 
+				"query result list", 
+				new CallerThreadForSBMLModel(model),
+				null);
+
 	}
 	
 	@Override
 	public void resultForSimpleModelQuery(QueryType type,
 			final List<SimpleModel> simpleModel) {
 		
-		progressBar.setIndeterminate(false);
+//		progressBar.setIndeterminate(false);
 		
 		if(simpleModel == null){
 			logger.debug("no results");
@@ -201,7 +215,7 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 	@Override
 	public void resultForSBML(SimpleModel model, String modelstring) {
 		logger.debug("having result for SBML");
-		progressBar.setIndeterminate(false);
+//		progressBar.setIndeterminate(false);
 		
 		listResults.setEnabled(true);
 		loadSelectedModels.setEnabled(true);
@@ -209,7 +223,7 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 
 	@Override
 	public void resultError(Exception e) {
-		progressBar.setIndeterminate(false);
+//		progressBar.setIndeterminate(false);
 		
 	}
 

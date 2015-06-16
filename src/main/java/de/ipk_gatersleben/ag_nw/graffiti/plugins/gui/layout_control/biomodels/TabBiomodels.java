@@ -109,7 +109,7 @@ implements BiomodelsLoaderCallback{
 	
 	@Override
 	public void resultError(Exception e) {
-		JOptionPane.showMessageDialog(MainFrame.getInstance(), "Unable to communicate with Biomodels Webservice", "Communication Error", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(MainFrame.getInstance(), "Unable to communicate with Biomodels Webservice\n" + e.getMessage(), "Communication Error", JOptionPane.ERROR_MESSAGE);
 	}
 
 
