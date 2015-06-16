@@ -33,7 +33,7 @@ public class GraphicExport extends LaunchGui {
 	
 	@Override
 	public String getName() {
-		return "Graph as Image";
+		return "Network as Image";
 	}
 	
 	@Override
