@@ -125,6 +125,7 @@ public class OpenFileDialogService implements HelperClass {
 	}
 	
 	public static File getSaveFile(final String[] valid_extensions, final String description) {
+		do {
 		if (openDialog == null) {
 			openDialog = new JFileChooser();
 		}
@@ -152,9 +153,13 @@ public class OpenFileDialogService implements HelperClass {
 		
 		int option = openDialog.showSaveDialog(null);
 		if (option == JFileChooser.APPROVE_OPTION) {
-			return openDialog.getSelectedFile();
+			if(UNCFileLocationCheck.showUNCPathConfirmDialogForPath(openDialog.getSelectedFile()) == UNCFileLocationCheck.CONFIRM)
+				return openDialog.getSelectedFile();
 		} else
 			return null;
+		
+		} while (true);
+
 	}
 	
 	public static File getActiveDirectory() {
