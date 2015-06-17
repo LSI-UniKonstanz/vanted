@@ -73,15 +73,14 @@ import org.graffiti.util.Pair;
  * @version $Revision: 1.59 $
  */
 public class LabelComponent extends AbstractAttributeComponent implements
-					GraphicAttributeConstants, PreferencesInterface {
+		GraphicAttributeConstants, PreferencesInterface {
 	// ~ Instance fields ========================================================
 	
 	private static final long serialVersionUID = 1L;
 	
-	
 	private static int MINSIZE_VISIBILITY;
-	public static String PREF_MINSIZE_VISIBILITY="min-size visibility";
-
+	public static String PREF_MINSIZE_VISIBILITY = "min-size visibility";
+	
 	private static boolean DRAWRECT_MINSIZE;
 	public static String PREF_DRAWRECT_MINSIZE = "small rectangle when too small";
 	
@@ -108,8 +107,6 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	
 	protected int corrX = 0;
 	
-	
-	
 	// ~ Constructors ===========================================================
 	
 	/**
@@ -122,7 +119,6 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	
 	// ~ Methods ================================================================
 	
-	
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		List<Parameter> params = new ArrayList<Parameter>();
@@ -130,27 +126,25 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		params.add(new BooleanParameter(true, PREF_DRAWRECT_MINSIZE, "<html>Draw a rectangle instead of the label, <br/>if the label is too small"));
 		return params;
 	}
-
+	
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		MINSIZE_VISIBILITY = preferences.getInt(PREF_MINSIZE_VISIBILITY, 10);
 		DRAWRECT_MINSIZE = preferences.getBoolean(PREF_DRAWRECT_MINSIZE, true);
-	}	
+	}
 	
 	@Override
 	public String getPreferencesAlternativeName() {
 		// TODO Auto-generated method stub
 		return "Labels";
 	}
-
 	
 	@Override
 	public void highlight(boolean value, MouseEvent e) {
 		super.highlight(value, e);
 		label.highlight(value);
 	}
-
-
+	
 	/**
 	 * obvious
 	 * 
@@ -177,9 +171,8 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			setLocation((int) (loc.getX() + shift.getX()), (int) (loc.getY() + shift.getY())); // -1
 			return;
 		} else {
-//			recreate();
+			// recreate();
 			frame = labelAttr.getLabelFrameSetting();
-			
 			
 			double strokeWidth = 1d;
 			
@@ -201,42 +194,35 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				//
 			}
 			
-			
 			boolean needToAdjust = false;
 			
-			if( ! label.getText().equals(labelAttr.getLabel()))
+			if (!label.getText().equals(labelAttr.getLabel()))
 				needToAdjust = true;
-			if( ! label.getFrame().equals(frame))
+			if (!label.getFrame().equals(frame))
 				needToAdjust = true;
-			if( label.getStrokeWidth() != strokeWidth)
+			if (label.getStrokeWidth() != strokeWidth)
 				needToAdjust = true;
-			if( ! label.getBorderColor().equals(borderColor))
+			if (!label.getBorderColor().equals(borderColor))
 				needToAdjust = true;
-			if( ! label.getForeground().equals(labelAttr.getTextcolor()))
-				needToAdjust = true;
-			
-			if( !fontName.equals(labelAttr.getFontName()))
-				needToAdjust = true;
-			if( fontStyleInt != labelAttr.getFontStyleJava())
-				needToAdjust = true;
-			if( fontSize != labelAttr.getFontSize())
+			if (!label.getForeground().equals(labelAttr.getTextcolor()))
 				needToAdjust = true;
 			
+			if (!fontName.equals(labelAttr.getFontName()))
+				needToAdjust = true;
+			if (fontStyleInt != labelAttr.getFontStyleJava())
+				needToAdjust = true;
+			if (fontSize != labelAttr.getFontSize())
+				needToAdjust = true;
 			
-		
-			
-
-
-			if(needToAdjust) {
+			if (needToAdjust) {
 				updateBorderOrShadow(strokeWidth);
-
+				
 				labelAttr.setLastLabel(label);
-				label.setText( labelAttr.getLabel());
+				label.setText(labelAttr.getLabel());
 				label.setFrame(frame);
 				label.setStrokeWidth(strokeWidth);
 				label.setBorderColor(borderColor);
 				
-		
 				setLabelSettings(label, labelAttr.getTextcolor());
 				adjustComponentSize();
 			} else {
@@ -246,11 +232,11 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				 * if the text didn't change at all it is all just a position update
 				 */
 				updateLabelPosition();
-
-			}
 				
+			}
+			
 		}
-//		repaint();
+		// repaint();
 	}
 	
 	/**
@@ -298,7 +284,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			//
 		}
 		
-//		dropShadow = labelAttr.getUseDropShadow();
+		// dropShadow = labelAttr.getUseDropShadow();
 		
 		dropShadow = false;
 		
@@ -423,16 +409,17 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	
 	@Override
 	public void paint(Graphics g) {
-		if(label.getText().isEmpty() || fontSize <= 0)
+		if (label.getText().isEmpty() || fontSize <= 0)
 			return;
-		if(checkVisibility(MINSIZE_VISIBILITY))
+		if (checkVisibility(MINSIZE_VISIBILITY))
 			super.paint(g);
-		else if (DRAWRECT_MINSIZE && ! (getDrawingModeOfView() == DrawMode.FAST)) {
-			g.setColor(new Color(200,200,200));
-			int height = getHeight();
-			int width = getWidth();
-			((Graphics2D)g).fillRect(0, height/4, width, height/2);
-		}
+		else
+			if (DRAWRECT_MINSIZE && !(getDrawingModeOfView() == DrawMode.FAST)) {
+				g.setColor(new Color(200, 200, 200));
+				int height = getHeight();
+				int width = getWidth();
+				((Graphics2D) g).fillRect(0, height / 4, width, height / 2);
+			}
 	}
 	
 	private static final HashMap<TextAttribute, Object> fontAttributes = getFontAttributes();
@@ -450,11 +437,11 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	}
 	
 	private static final HashMap<String, Font> knownFontSettings = new HashMap<String, Font>();
-
+	
 	private String fontName;
-
+	
 	private int fontStyleInt;
-
+	
 	private int fontSize;
 	
 	private void setCachedFont(JLabel label, String fontName, int fontStyleInt,
@@ -508,13 +495,11 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		}
 	}
 	
-	
-	
 	@Override
 	public void adjustComponentPosition() {
 		updateLabelPosition();
 	}
-
+	
 	/**
 	 * Calculates a pair of two values: fst = sum of length of first (seg-1)
 	 * segments snd = length of segment number seg
@@ -1236,10 +1221,8 @@ public class LabelComponent extends AbstractAttributeComponent implements
 					cutrect.closePath();
 					if (fill)
 						g2d.fill(cutrect);
-					else {
+					else
 						g2d.draw(cutrect);
-						g2d.draw(cutrect);
-					}
 				} else
 					if (frame == LabelFrameSetting.RECTANGLE_ROUNDED) {
 						double mwh = (width < height ? width * 0.5 : height * 0.5);
@@ -1284,10 +1267,8 @@ public class LabelComponent extends AbstractAttributeComponent implements
 							gp.closePath();
 							if (fill)
 								g2d.fill(gp);
-							else {
+							else
 								g2d.draw(gp);
-								g2d.draw(gp);
-							}
 						} else
 							if (frame == LabelFrameSetting.CAPSULE) {
 								double mwh = (width < height ? width : height);
@@ -1370,7 +1351,24 @@ public class LabelComponent extends AbstractAttributeComponent implements
 													g2d.draw(new Ellipse2D.Double(x + offX, y + offY, minR, minR));
 											}
 										}
-								}
+								} else
+									if (frame == LabelFrameSetting.HEXAGON) {
+										GeneralPath gp = new GeneralPath();
+										double offA = 0.25;
+										double offB = 0.75;
+										gp.moveTo(x, y);
+										gp.lineTo(x + width, y);
+										gp.lineTo(x + width * offB, y + height * 0.5);
+										gp.lineTo(x + width, y + height);
+										gp.lineTo(x, y + height);
+										gp.lineTo(x + width * offA, y + height * 0.5);
+										gp.lineTo(x, y);
+										gp.closePath();
+										if (fill)
+											g2d.fill(gp);
+										else
+											g2d.draw(gp);
+									}
 		g2d.setColor(oc);
 	}
 	
