@@ -208,7 +208,7 @@ public class Main {
 						+
 						"For using VANTED you need also be aware of information about licenses and conditions for<br>"
 						+
-						"usage, listed at the program info dialog and the VANTED website (http://vanted.ipk-gatersleben.de).<br><br>"
+						"usage, listed at the program info dialog and the VANTED website (https://immersive-analytics.infotech.monash.edu/vanted).<br><br>"
 						+
 						"VANTED does not distribute information from KEGG but contains functionality for the online-access to <br>"
 						+

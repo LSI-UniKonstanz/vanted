@@ -22,7 +22,7 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 	
 	public TabMetaCrop() {
 		
-		super("MetaCrop", "http://vanted.ipk-gatersleben.de/addons/metacrop/gml/", "pathways", "pathway", "http://metacrop.ipk-gatersleben.de/", false);
+		super("MetaCrop", "https://immersive-analytics.infotech.monash.edu/vanted/addons/metacrop/gml/", "pathways", "pathway", "http://metacrop.ipk-gatersleben.de/", false);
 		
 	}
 	
@@ -68,7 +68,7 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 		// 'sbmlID' should always be empty
 		// the gml files shouldn't contain any sbml ids
 		// this is just a workaround in case there is no reference url
-		String prefURL = "http://bioinformatics.ipk-gatersleben.de/pls/htmldb_pgrc/f?p=metacrop:10:::NO::P10_PATHWAY_OBJECT_ID:";
+		String prefURL = "http://metacrop.ipk-gatersleben.de/pls/htmldb_pgrc/f?p=metacrop:10:::NO::P10_PATHWAY_OBJECT_ID:";
 		for (Node node : graph.getNodes()) {
 			String sbmlID = AttributeHelper.getSBMLid(node);
 			if (sbmlID != null && sbmlID.trim().length() > 0)
@@ -143,7 +143,7 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 				"UDP sugars;128",
 				"Valine degradation;124"
 		};
-		String prefURL = "http://bioinformatics.ipk-gatersleben.de/pls/htmldb_pgrc/f?p=metacrop:7:::NO::P7_PATHWAY_ID:";
+		String prefURL = "http://metacrop.ipk-gatersleben.de/pls/htmldb_pgrc/f?p=metacrop:7:::NO::P7_PATHWAY_ID:";
 		
 		String pathwayName = paramPathwayName.toUpperCase();
 		if (pathwayName.endsWith(".GML"))

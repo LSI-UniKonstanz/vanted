@@ -223,18 +223,5 @@ public class KeggSoapAndPathwayService
 	public void setCurrentStatusValue(int value) {
 		statusFine = value;
 	}
-	
-	// private static void initKeggList() throws JaxenException, IOException, ServiceException {
-	// String url = "http://pgrc-16.ipk-gatersleben.de/~klukas/www.genome.ad.jp";
-	// HTMLparser h = new HTMLparser();
-	//
-	// Collection<KeggPathwayEntry> pathways = h.getXMLpathways(
-	// url,
-	// new OrganismEntry("map", "Reference Pathways"), false);
-	// KeggService.resetCache();
-	// for (KeggPathwayEntry kwe : pathways) {
-	// kwe.setMappingCount("");
-	// keggPathwayEntries.add(kwe);
-	// }
-	// }
+
 }

@@ -283,10 +283,7 @@ public class ReleaseInfo implements HelperClass {
 	}
 	
 	public static String getAppWebURL() {
-		if (getRunningReleaseStatus() == Release.KGML_EDITOR)
-			return "http://kgml-ed.ipk-gatersleben.de";
-		else
-			return "http://vanted.ipk-gatersleben.de";
+		return "https://immersive-analytics.infotech.monash.edu/vanted";
 	}
 	
 	private static String helpIntro = "";

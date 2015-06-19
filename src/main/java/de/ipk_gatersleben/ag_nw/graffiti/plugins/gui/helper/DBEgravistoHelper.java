@@ -50,7 +50,7 @@ public class DBEgravistoHelper implements HelperClass {
 	
 	
 	
-	public static String DBE_GRAVISTO_VERSION_CODE_SUBVERSION = "release February 2015"; // "DBE-Visualisation and Analysis V1.1";
+	public static String DBE_GRAVISTO_VERSION_CODE_SUBVERSION = "release July 2015"; // "DBE-Visualisation and Analysis V1.1";
 	public static String DBE_GRAVISTO_VERSION = "DBE-Gravisto V"+DBE_GRAVISTO_VERSION_CODE; // "DBE-Visualisation and Analysis V1.1";
 	public static String DBE_GRAVISTO_NAME = "DBE-Gravisto";
 	public static String DBE_INFORMATIONSYSTEM_NAME = "DBE Information System";

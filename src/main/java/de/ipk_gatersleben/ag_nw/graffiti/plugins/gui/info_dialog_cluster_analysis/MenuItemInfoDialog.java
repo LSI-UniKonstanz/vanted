@@ -41,6 +41,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.threading.SystemAnalysis;
  * 
  * @author Christian Klukas
  */
+@Deprecated
 public class MenuItemInfoDialog
 					extends GraffitiMenu
 					implements GraffitiContainer {
@@ -107,32 +108,14 @@ public class MenuItemInfoDialog
 			}
 		});
 		
-		JMenuItem helpText = new JMenuItem("Tutorial");
-		helpText.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {
-				JFrame w = new JFrame("Help / Tutorial");
-				double border = 0;
-				double[][] size =
-				{ { border, TableLayoutConstants.FILL, border }, // Columns
-						{ border, TableLayoutConstants.FILL, border }
-				}; // Rows
-				w.setLayout(new TableLayout(size));
-				w.add(
-									getWebPane("http://pgrc-16.ipk-gatersleben.de/~klukas/expdat/gravisto/IPK-Cluster%20Analysis%20-%20Help.htm"),
-									"1,1");
-				w.setSize(640, 480);
-				w.setVisible(true);
-			}
-		});
-		
+
 		JMenuItem jMenuItemReleaseInfo = new JMenuItem("Release Info");
 		jMenuItemReleaseInfo.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
 				boolean ext = true;
 				if (ext) {
-					AttributeHelper.showInBrowser("http://vanted.ipk-gatersleben.de/index.php?file=doc139.html");
+					AttributeHelper.showInBrowser("https://immersive-analytics.infotech.monash.edu/vanted//index.php?file=doc139.html");
 					return;
 				}
 				JFrame w = new JFrame("Release Information");
@@ -142,10 +125,8 @@ public class MenuItemInfoDialog
 						{ border, TableLayoutConstants.FILL, border }
 				}; // Rows
 				w.setLayout(new TableLayout(size));
-				// http://vanted/index.php?file=doc139.html
-				// http://pgrc-16.ipk-gatersleben.de/~klukas/expdat/gravisto/release.html
 				w.add(
-									getWebPane("http://vanted.ipk-gatersleben.de/index.php?file=doc139.html"),
+									getWebPane("https://immersive-analytics.infotech.monash.edu/vanted//index.php?file=doc139.html"),
 									"1,1");
 				w.setSize(640, 480);
 				w.setVisible(true);
@@ -195,7 +176,6 @@ public class MenuItemInfoDialog
 		});
 		
 		insert(error, 1);
-		insert(helpText, 2);
 		// insert(jMenuItemReleaseInfo, 3);
 		insert(info, 2);
 		

@@ -16,6 +16,7 @@ import javax.naming.directory.InitialDirContext;
  * Demonstrates how to retrieve an attribute of a named object.
  * usage: java Getattr
  */
+@Deprecated
 class Getattr {
 	public static void main(String[] args) {
 		// Identify service provider to use

@@ -404,34 +404,14 @@ public class MenuItemInfoDialog
 			}
 		});
 		
-		JMenuItem helpText = new JMenuItem("Video Tutorials");
-		helpText.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {
-				String url = "http://pgrc-16.ipk-gatersleben.de/~klukas/expdat/gravisto/demo/demos.html";
-				AttributeHelper.showInBrowser(url);
-				// JFrame w = new JFrame("Help / Tutorial");
-				// double border = 0;
-				// double[][] size =
-				// { { border, TableLayoutConstants.FILL, border }, // Columns
-				// { border, TableLayoutConstants.FILL, border }
-				// }; // Rows
-				// w.setLayout(new TableLayout(size));
-				// w.add(
-				// getWebPane("http://pgrc-16.ipk-gatersleben.de/~klukas/expdat/gravisto/dbe-gravisto.html"),
-				// "1,1");
-				// w.setSize(640,480);
-				// w.setVisible(true);
-			}
-		});
-		
+
 		JMenuItem jMenuItemReleaseInfo = new JMenuItem("Release Info");
 		jMenuItemReleaseInfo.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
 				boolean ext = true;
 				if (ext) {
-					AttributeHelper.showInBrowser("http://vanted.ipk-gatersleben.de/index.php?file=doc139.html");
+					AttributeHelper.showInBrowser("https://immersive-analytics.infotech.monash.edu/vanted/index.php?file=doc139.html");
 					return;
 				}
 				JFrame w = new JFrame("Release Information");
@@ -441,10 +421,8 @@ public class MenuItemInfoDialog
 						{ border, TableLayoutConstants.FILL, border }
 				}; // Rows
 				w.setLayout(new TableLayout(size));
-				// http://vanted/index.php?file=doc139.html
-				// http://pgrc-16.ipk-gatersleben.de/~klukas/expdat/gravisto/release.html
 				w.add(
-						getWebPane("http://vanted.ipk-gatersleben.de/index.php?file=doc139.html"),
+						getWebPane("https://immersive-analytics.infotech.monash.edu/vanted/index.php?file=doc139.html"),
 						"1,1");
 				w.setSize(640, 480);
 				w.setVisible(true);
@@ -657,8 +635,8 @@ public class MenuItemInfoDialog
 			insert(jMenuItemJavaHelp, pos++);
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.GravistoJavaHelp))
 			insert(jMenuItemJavaHelpPDF, pos++);
-		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.URL_HELPTEXT))
-			insert(helpText, pos++);
+//		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.URL_HELPTEXT))
+//			insert(helpText, pos++);
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.URL_RELEASEINFO))
 			insert(jMenuItemReleaseInfo, pos++);
 		insert(database, pos++);

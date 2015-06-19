@@ -92,7 +92,7 @@ public class RSSFeedManager implements HelperClass {
 		/*
 		 * no further support for literature feed
 		 */
-//		String url3 = "http://vanted.ipk-gatersleben.de/literature.xml";
+//		String url3 = "https://immersive-analytics.infotech.monash.edu/vanted/literature.xml";
 //		if (text.indexOf(url3) <= 0)
 //			text += "Publications" + System.getProperty("line.separator") +
 //								url3 + System.getProperty("line.separator");
