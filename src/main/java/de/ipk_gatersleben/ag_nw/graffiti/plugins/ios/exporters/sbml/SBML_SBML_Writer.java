@@ -224,7 +224,7 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 //			try {
 //				is = connection.getInputStream();
 //			} catch (Exception e) {
-//				ErrorMsg.addErrorMessage("No internet connection. Can not validate document.");
+//				SBML_Logger.addErrorMessage("No internet connection. Can not validate document.");
 //				/*
 //				 * JOptionPane .showMessageDialog(null,
 //				 * "No internet connection. Can not validate document before saving."
@@ -260,7 +260,7 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 //					if (numberOfErrors > 0) {
 //						SBMLErrorLog errorLog = doc.getListOfErrors();
 //						for (int i = 0; i < numberOfErrors; i++) {
-//							ErrorMsg.addErrorMessage(errorLog.getError(i));
+//							SBML_Logger.addErrorMessage(errorLog.getError(i));
 //						}
 //					}
 //					if (numberOfErrors > 0) {

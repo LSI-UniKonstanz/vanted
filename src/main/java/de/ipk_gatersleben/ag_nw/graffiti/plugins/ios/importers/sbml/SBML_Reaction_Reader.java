@@ -38,6 +38,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLLocalParameter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLReactionHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLSpeciesHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
 public class SBML_Reaction_Reader {
 	
@@ -256,7 +257,7 @@ public class SBML_Reaction_Reader {
 						name = localParameter.getName();
 						value = localParameter.getValue();
 						if (value.equals(Double.NaN)) {
-							ErrorMsg.addErrorMessage("Attribute value of reaction "
+							SBML_Logger.addErrorMessage("Attribute value of reaction "
 									+ reactionID
 									+ " "
 									+ presentedAttributeName
@@ -573,7 +574,7 @@ public class SBML_Reaction_Reader {
 			reactantNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 			stoichiometry = Double.toString(ref.getStoichiometry());
 			if (ref.getStoichiometry() == Double.NaN) {
-				ErrorMsg.addErrorMessage("Attribute stochiometry of reaction "
+				SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
 						+ reactionID + " species " + ref.getSpecies()
 						+ " is not a valid double value.");
 			}
@@ -643,7 +644,7 @@ public class SBML_Reaction_Reader {
 				AttributeHelper.setArrowtail(newReactionEdge, true);
 			}
 			if (ref.getStoichiometry() == Double.NaN) {
-				ErrorMsg.addErrorMessage("Attribute stochiometry of reaction "
+				SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
 						+ reactionID + " species " + ref.getSpecies()
 						+ " is not a valid double value.");
 			}

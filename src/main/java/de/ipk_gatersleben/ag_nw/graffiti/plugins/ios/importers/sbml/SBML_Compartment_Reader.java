@@ -17,6 +17,7 @@ import org.sbml.jsbml.xml.XMLNode;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLCompartment;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLCompartmentHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
 public class SBML_Compartment_Reader {
 	
@@ -83,7 +84,7 @@ public class SBML_Compartment_Reader {
 						compartmentCount).toString();
 			}
 			if (size.equals(Double.NaN) && compartment.isSetSize()) {
-				ErrorMsg.addErrorMessage("Attribute size of "
+				SBML_Logger.addErrorMessage("Attribute size of "
 						+ presentedHeadline + " is not a valid double value.");
 			}
 			SBMLCompartment compartmentHelper = compartmentHelperObject

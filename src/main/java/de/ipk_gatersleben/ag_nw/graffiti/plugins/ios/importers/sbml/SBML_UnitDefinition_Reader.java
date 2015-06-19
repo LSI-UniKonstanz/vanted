@@ -20,6 +20,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLUnit;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLUnitDefinition;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLUnitDefinitionHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
 public class SBML_UnitDefinition_Reader {
 	
@@ -110,7 +111,7 @@ public class SBML_UnitDefinition_Reader {
 					int scale = unit.getScale();
 					Double exponent = unit.getExponent();
 					if (exponent.equals(Double.NaN)) {
-						ErrorMsg.addErrorMessage("Attribute exponent of unit definition "
+						SBML_Logger.addErrorMessage("Attribute exponent of unit definition "
 								+ unitCount
 								+ " sub unit "
 								+ subUnitCount
@@ -120,7 +121,7 @@ public class SBML_UnitDefinition_Reader {
 					}
 					Double multiplier = unit.getMultiplier();
 					if (multiplier.equals(Double.NaN)) {
-						ErrorMsg.addErrorMessage("Attribute multiplier of unit definition "
+						SBML_Logger.addErrorMessage("Attribute multiplier of unit definition "
 								+ unitCount
 								+ " sub unit "
 								+ subUnitCount

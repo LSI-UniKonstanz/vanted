@@ -33,6 +33,7 @@ import org.sbml.jsbml.SBMLErrorLog;
 import org.sbml.jsbml.SBMLReader;
 import org.sbml.jsbml.validator.SBMLValidator.CHECK_CATEGORY;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_XML_ReaderWriterPlugin;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskGUIprovider;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskPanelEntry;
@@ -77,7 +78,7 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 			try {
 				is = connection.getInputStream();
 			} catch (Exception e) {
-				// ErrorMsg.addErrorMessage("No internet connection");
+				// SBML_Logger.addErrorMessage("No internet connection");
 				readIn = true;
 				/*
 				 * JOptionPane.showMessageDialog(null,
@@ -114,7 +115,7 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 					if (numberOfErrors > 0) {
 						SBMLErrorLog errorLog = document.getListOfErrors();
 						for (int i = 0; i < numberOfErrors; i++) {
-							ErrorMsg.addErrorMessage(errorLog.getError(i));
+							SBML_Logger.addErrorMessage(errorLog.getError(i));
 						}
 					}
 					if (numberOfErrors > 0) {
@@ -149,7 +150,7 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 				SBMLErrorLog errors = document.getListOfErrors();
 				List<SBMLError> validationErrors = errors.getValidationErrors();
 				for (SBMLError sbmlError : validationErrors) {
-					ErrorMsg.addErrorMessage(sbmlError.getMessage() + ": at "
+					SBML_Logger.addErrorMessage(sbmlError.getMessage() + ": at "
 							+ sbmlError.getLine()
 							+ "\n near by: " + sbmlError.getExcerpt());
 				}
@@ -157,7 +158,7 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			ErrorMsg.addErrorMessage(e.getMessage());
+			SBML_Logger.addErrorMessage(e.getMessage());
 		}
 	}
 	
@@ -221,14 +222,14 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 							.addErrorMessage("Document can not be loaded. Check the document manually with the online validator (http://sbml.org/Facilities/Validator/).");
 				}
 			} catch (XMLStreamException e) {
-				ErrorMsg.addErrorMessage(e);
+				SBML_Logger.addErrorMessage(e);
 			}
 		} catch (JDOMException e) {
-			ErrorMsg.addErrorMessage(e);
+			SBML_Logger.addErrorMessage(e);
 		} catch (IOException e) {
-			ErrorMsg.addErrorMessage(e);
+			SBML_Logger.addErrorMessage(e);
 		} catch (Exception e) {
-			ErrorMsg.addErrorMessage(e);
+			SBML_Logger.addErrorMessage(e);
 		}
 		long endtime = System.currentTimeMillis();
 		taskWindow.setTaskFinished(true, endtime - starttime);
@@ -281,7 +282,7 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 			}
 		} catch (XMLStreamException error) {
 			
-			ErrorMsg.addErrorMessage(error);
+			SBML_Logger.addErrorMessage(error);
 			
 			logger.error(error.getMessage());
 			try {
@@ -295,7 +296,7 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 			in.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			ErrorMsg.addErrorMessage(e);
+			SBML_Logger.addErrorMessage(e);
 		}
 		long endtime = System.currentTimeMillis();
 		taskWindow.setTaskFinished(true, endtime - starttime);

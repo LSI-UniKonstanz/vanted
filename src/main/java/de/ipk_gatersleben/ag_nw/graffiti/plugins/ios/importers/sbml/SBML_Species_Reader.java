@@ -32,6 +32,7 @@ import org.sbml.jsbml.xml.XMLNode;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLSpeciesHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
 public class SBML_Species_Reader {
 	
@@ -87,14 +88,14 @@ public class SBML_Species_Reader {
 				compartment = speciesJSBML.getCompartment();
 				initialAmount = speciesJSBML.getInitialAmount();
 				if (initialAmount.equals(Double.NaN)) {
-					ErrorMsg.addErrorMessage("Attribute initialAmount of species "
+					SBML_Logger.addErrorMessage("Attribute initialAmount of species "
 							+ id
 							+ " is not a valid double value or it is coexistent with the initialConcentration value.");
 				}
 				initialConcentration = speciesJSBML.getInitialConcentration();
 				if (initialConcentration.equals(Double.NaN)
 						&& !(speciesJSBML.isSetInitialAmount())) {
-					ErrorMsg.addErrorMessage("Attribute initialConcentration of species "
+					SBML_Logger.addErrorMessage("Attribute initialConcentration of species "
 							+ id
 							+ " is not a valid double value or it is coexistent with the initialAmount value.");
 				}
