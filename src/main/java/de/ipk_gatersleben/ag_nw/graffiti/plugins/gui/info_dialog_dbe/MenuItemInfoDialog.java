@@ -157,7 +157,7 @@ public class MenuItemInfoDialog
 				else
 					copyR = "&copy; 2003-2014 IPK Gatersleben";
 				
-				copyRMonash = "&copy; 2014 Monash University";
+				copyRMonash = "&copy; 2014-2015 Monash University";
 				
 				int num = 0;
 				num = MainFrame.getInstance().getPluginManager().getPluginEntries().size();
