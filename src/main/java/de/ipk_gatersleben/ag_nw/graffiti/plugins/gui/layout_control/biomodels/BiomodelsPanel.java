@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -27,6 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.graffiti.editor.GravistoService;
 
 import uk.ac.ebi.biomodels.ws.BioModelsWSException;
 import uk.ac.ebi.biomodels.ws.SimpleModel;
@@ -53,7 +55,9 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 	
 	JTextField queryField;
 	
-	JLabel infoLabel;
+	JButton searchButton;
+	
+//	JText infoField;
 	
 	JComboBox<BiomodelsAccessAdapter.QueryType> comboQueryType;
 	
@@ -109,7 +113,7 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 		rootpanel.setLayout(new TableLayout(new double[][]{
 				//columns
 				{
-					5, TableLayout.PREFERRED, 5, TableLayout.FILL
+					5, TableLayout.PREFERRED, 5, TableLayout.FILL, 5, TableLayout.PREFERRED
 				},
 				//rows
 				{
@@ -129,6 +133,11 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 		queryField.addKeyListener(this);
 		rootpanel.add(queryField, "3,1");
 		
+		searchButton = new JButton();
+		searchButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("org/images/lupe.png")));
+		searchButton.addActionListener(this);
+		rootpanel.add(searchButton, "5,1");
+		
 //		constraint = new TableLayoutConstraints(1, 3, 3, 3, TableLayoutConstraints.CENTER, TableLayoutConstraints.CENTER);
 //		progressBar = new JProgressBar();
 //		progressBar.setPreferredSize(new Dimension(30, 10));
@@ -136,9 +145,10 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 		
 		listResults = new JList<SimpleModel>();
 		listResults.addMouseListener(new ListMouseAdapapter());
+		listResults.setCellRenderer(new ListBiomodelsCellRenderer());
 		
 		JScrollPane resultscrollpane = new JScrollPane(listResults);
-		constraint = new TableLayoutConstraints(1, 5, 3, 5, TableLayoutConstraints.CENTER, TableLayoutConstraints.CENTER);
+		constraint = new TableLayoutConstraints(1, 5, 5, 5, TableLayoutConstraints.CENTER, TableLayoutConstraints.CENTER);
 		rootpanel.add(resultscrollpane, constraint);
 		
 		loadSelectedModels = new JButton("Load Models");
@@ -146,6 +156,10 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 		rootpanel.add(loadSelectedModels, "1,7");
 		
 		add(rootpanel, BorderLayout.CENTER);
+		
+		
+		listResults.setEnabled(false);
+		loadSelectedModels.setEnabled(false);
 	}
 
 	private void triggerQuery(String query){
@@ -210,6 +224,7 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 				}
 			});
 		listResults.setEnabled(true);
+		loadSelectedModels.setEnabled(true);
 	}
 
 	@Override
@@ -241,6 +256,12 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 				triggerLoadSBML(model);
 			
 		}
+		if(e.getSource().equals(searchButton)) {
+			listResults.setEnabled(false);
+			loadSelectedModels.setEnabled(false);
+			triggerQuery(queryField.getText().trim());
+		}
+		
 	}
 
 	
@@ -262,6 +283,7 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 //		logger.debug("keyReleased");
 		if(e.getKeyCode() == KeyEvent.VK_ENTER){
 			listResults.setEnabled(false);
+			loadSelectedModels.setEnabled(false);
 			triggerQuery(queryField.getText().trim());
 		}
 	}
@@ -272,6 +294,7 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 		public void mouseClicked(MouseEvent e) {
 			if(e.getClickCount() == 2) {
 				listResults.setEnabled(false);
+				loadSelectedModels.setEnabled(false);
 				triggerLoadSBML(listResults.getSelectedValue());
 			}
 				
