@@ -85,7 +85,7 @@ public class SOManalysis extends LaunchGui implements Algorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Mapping";
+		return "Network.Cluster";
 	}
 	
 }
