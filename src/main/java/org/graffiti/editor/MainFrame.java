@@ -2330,17 +2330,18 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					JOptionPane.YES_NO_CANCEL_OPTION);
 			if (res == JOptionPane.YES_OPTION) {
 				// save current graph
+				logger.debug("closeSession: saving graph");
 				fileSaveAs.actionPerformed(new ActionEvent(this, 0, null));
 			}
-			Session as = MainFrame.getInstance().getActiveSession();
-			View av;
-			try {
-				av = MainFrame.getInstance().getActiveEditorSession().getActiveView();
-			} catch (Exception e) {
-				av = null;
-			}
-			MainFrame.getInstance().setActiveSession(session, null);
-			MainFrame.getInstance().setActiveSession(as, av);
+//			Session as = MainFrame.getInstance().getActiveSession();
+//			View av;
+//			try {
+//				av = MainFrame.getInstance().getActiveEditorSession().getActiveView();
+//			} catch (Exception e) {
+//				av = null;
+//			}
+//			MainFrame.getInstance().setActiveSession(session, null);
+//			MainFrame.getInstance().setActiveSession(as, av);
 
 			/*
 			if (res == JOptionPane.CANCEL_OPTION) {
