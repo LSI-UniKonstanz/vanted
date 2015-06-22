@@ -241,6 +241,7 @@ public class GridLayoutAlgorithm
 		}
 		
 		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, "Grid Layout");
+		
 	}
 	
 	@Override
@@ -274,8 +275,8 @@ public class GridLayoutAlgorithm
 		IntegerParameter widthParameter =
 							new IntegerParameter(maxX, "Max Nodes horizontally", "The height of the grid depends on the number of nodes and the grid width");
 		
-		BooleanParameter moveToTopParameter =
-							new BooleanParameter(moveToTop, "Finish: Move to Upper-Left", "Move all network elements to the upper left");
+//		BooleanParameter moveToTopParameter =
+//							new BooleanParameter(moveToTop, "Finish: Move to Upper-Left", "Move all network elements to the upper left");
 		
 		xDistanceParam.setDouble(xDistance - targetSizeX);
 		yDistanceParam.setDouble(yDistance - targetSizeY);
@@ -291,7 +292,7 @@ public class GridLayoutAlgorithm
 							heightParam,
 							limitXparameter,
 							widthParameter,
-							moveToTopParameter,
+//							moveToTopParameter,
 							widthHeightRatioParam, };
 	}
 	
@@ -308,7 +309,7 @@ public class GridLayoutAlgorithm
 		yDistance = p_yDistance + targetSizeY;
 		setWidth = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		maxX = ((IntegerParameter) params[i++]).getInteger().intValue();
-		moveToTop = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
+//		moveToTop = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		widthHeightRatio = ((DoubleParameter) params[i++]).getDouble().doubleValue();
 	}
 	
