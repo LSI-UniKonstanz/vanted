@@ -139,9 +139,9 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	private double ratioU = 1.2;
 	private boolean colorCodeEdgesWithCorrelationValue = true;
 	
-	private Color colR_1 = Color.RED;
+	private Color colR_1 = Color.BLUE;
 	private Color colR0 = Color.WHITE;
-	private Color colR1 = Color.BLUE;
+	private Color colR1 = Color.RED;
 	
 	JCheckBox checkBoxPlotAverage1;
 	JCheckBox checkBoxPlotAverage2;
