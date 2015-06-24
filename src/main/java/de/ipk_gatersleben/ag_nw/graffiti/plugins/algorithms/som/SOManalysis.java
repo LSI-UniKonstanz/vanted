@@ -38,7 +38,7 @@ public class SOManalysis extends LaunchGui implements Algorithm {
 			}
 		res.add(null);
 		res.add(new PajekClusterColor());
-		res.add(new NoOverlappOfClustersAlgorithm());
+//		res.add(new NoOverlappOfClustersAlgorithm());
 		return res;
 	}
 	

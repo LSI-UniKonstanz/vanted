@@ -39,7 +39,7 @@ public class SOMclusterAnalysisDoCluster extends AbstractAlgorithm {
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Step 2: Compare mapping-data to centroids and set cluster ID";
+		return "Step 2: Use trained SOM to classify data";
 	}
 	
 	/*

@@ -108,9 +108,7 @@ public class GridLayoutAlgorithm
 			return;
 		int numberOfNodes = nodes.size();
 		int nodesOnLine = (int) (Math.sqrt(numberOfNodes));
-		if (setWidth)
-			nodesOnLine = maxX;
-		
+	
 		int column = 0;
 		int row = 0;
 		
@@ -165,14 +163,18 @@ public class GridLayoutAlgorithm
 		}
 	}
 	
-	public static void layoutOnGrid(Collection<Node> workNodes, double widthHeightRatio, double xDistance, double yDistance) {
+	public void layoutOnGrid(Collection<Node> workNodes, double widthHeightRatio, double xDistance, double yDistance) {
 		workNodes = GraphHelper.getVisibleNodes(workNodes);
 		int numberOfNodes = workNodes.size();
 		if (numberOfNodes <= 0)
 			return;
 		int nodesOnLine = (int) (Math.sqrt(--numberOfNodes));
 		int nodeLines = (int) (Math.sqrt(numberOfNodes));
+
 		
+		if (setWidth)
+			nodesOnLine = maxX;
+	
 		/*
 		 * Computes the number of nodes on each grid line under
 		 * consideration of the given width/heigth ratio
