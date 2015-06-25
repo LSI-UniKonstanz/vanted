@@ -26,6 +26,7 @@ import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graphics.GraphicAttributeConstants;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.CoordinateSystem;
 import org.graffiti.plugin.view.GraffitiViewComponent;
@@ -34,6 +35,7 @@ import org.graffiti.plugin.view.GraphElementShape;
 import org.graffiti.plugin.view.ShapeNotFoundException;
 import org.graffiti.plugin.view.View;
 import org.graffiti.plugin.view.Zoomable;
+import org.vanted.VantedPreferences;
 
 /**
  * Class that shares common members for all GraphElementComponents.
@@ -337,6 +339,12 @@ implements GraffitiViewComponent, GraphicAttributeConstants {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		/*
+		 * Only for debugging
+		 */
+//		if(PreferenceManager.getPreferenceForClass(VantedPreferences.class).getBoolean(VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES, false)) {
+//			g.drawRect(0, 0, getWidth()-1, getHeight()-1);
+//		}
 		drawShape(g);
 	}
 

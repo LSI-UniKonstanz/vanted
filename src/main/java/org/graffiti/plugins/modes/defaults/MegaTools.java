@@ -134,12 +134,10 @@ public abstract class MegaTools extends AbstractUndoableTool {
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// MainFrame.showMesssage(e.getX()+" - "+e.getY(), MessageType.PERMANENT_INFO);
-		// System.out.println(e.getSource().toString());
+//		 MainFrame.showMesssage(e.getX()+" - "+e.getY(), MessageType.PERMANENT_INFO);
+//		System.out.println(e.getSource().toString());
 		setFoundComponent(findComponentAt(e, e.getX(), e.getY()));
-		
 		setLastMouseComponent(e, foundComponent);
-		
 		informAttributeComponentsAboutMouseEvents(e, foundComponent);
 		
 		boolean useNodeCursor = foundComponent instanceof NodeComponent;
@@ -362,6 +360,7 @@ public abstract class MegaTools extends AbstractUndoableTool {
 			AttributeComponent ac = (AttributeComponent) c;
 			return view.getComponentForElement((GraphElement) ac.getAttribute().getAttributable());
 		}
+
 		return c;
 	}
 	

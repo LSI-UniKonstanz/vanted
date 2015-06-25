@@ -96,7 +96,8 @@ implements SessionListener, SelectionListener, AttributeListener {
 			public void call(AttributeEvent e) {
 				logger.debug("editPanel.updateTable");
 				if(e != null)
-					editPanel.updateTable(e.getAttribute());
+					rebuildTreeAction();
+//					editPanel.updateTable(e.getAttribute());
 			}
 		});
 		delayThreadAttributeChanged.setName(getClass().getName().substring(getClass().getName().lastIndexOf(".")+1)+": DelayThread Attribute Changes");
@@ -208,6 +209,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 
 
 	protected void rebuildTreeAction() {
+
 		
 		/** The tree view of the attribute hierarchy. */
 		logger.debug("classname: "+this.getClass().getName());

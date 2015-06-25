@@ -11,6 +11,8 @@ package org.graffiti.plugins.inspectors.defaults;
 
 import java.util.ArrayList;
 
+import javax.swing.SwingUtilities;
+
 import org.graffiti.attributes.Attributable;
 import org.graffiti.event.AttributeEvent;
 import org.graffiti.plugin.inspector.InspectorTab;
@@ -74,11 +76,25 @@ public class GraphTab
 	
 	@Override
 	public void sessionChanged(Session s) {
-		super.sessionChanged(s);
 		ArrayList<Attributable> ge = new ArrayList<Attributable>();
 		if (s != null)
 			ge.add(s.getGraph());
-		rebuildTree(ge);
+		attributables = ge;
+		super.sessionChanged(s);
+//		rebuildTree(ge);
+		
+//		final Session fs = s;
+//		SwingUtilities.invokeLater(new Runnable() {
+//			
+//			@Override
+//			public void run() {
+//				ArrayList<Attributable> ge = new ArrayList<Attributable>();
+//				
+//				if (fs != null)
+//					ge.add(fs.getGraph());
+//				rebuildTree(ge);
+//			}
+//		});
 	}
 	
 

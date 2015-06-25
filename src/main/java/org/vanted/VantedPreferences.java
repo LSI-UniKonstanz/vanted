@@ -41,6 +41,8 @@ public class VantedPreferences implements PreferencesInterface{
 
 	public static final String PREFERENCE_SHOWALL_ALGORITHMS = "Show all (hidden) algortihms";
 	
+	public static final String PREFERENCE_DEBUG_SHOWPANELFRAMES = "Debug: Show GraphElement Panels";
+	
 	private static VantedPreferences instance;
 	
 	public VantedPreferences() {
@@ -58,6 +60,7 @@ public class VantedPreferences implements PreferencesInterface{
 		params.add(new StringParameter("", PREFERENCE_PROXYHOST, "Name or IP  of the proxy host"));
 		params.add(new IntegerParameter(0, PREFERENCE_PROXYPORT, "Port number of the proxy"));
 		params.add(new BooleanParameter(false, PREFERENCE_SHOWALL_ALGORITHMS, "Show algorithms, that are not shown normally as they might confuse users with their sole functionality"));
+		params.add(new BooleanParameter(false, PREFERENCE_DEBUG_SHOWPANELFRAMES, "For debugging purposes, show frames from each graph and attribute component."));
 		return params;
 	}
 

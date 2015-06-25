@@ -6,6 +6,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.chart_settings;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -26,6 +27,7 @@ import org.graffiti.graph.Node;
 import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.graphics.DimensionAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.attributecomponent.AbstractAttributeComponent;
 import org.graffiti.plugin.parameter.IntegerParameter;
@@ -33,6 +35,7 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.ShapeNotFoundException;
 import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.plugins.views.defaults.GraffitiView;
+import org.vanted.VantedPreferences;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.viewcomponents.EdgeComponentHelper;
 
@@ -44,6 +47,8 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 	
 	private static int MINSIZE_VISIBILITY;
 	public static String PREF_MINSIZE_VISIBILITY="min-size visibility";
+	
+	
 	/**
 	 * Flatness value used for the <code>PathIterator</code> used to place
 	 * labels.
@@ -118,6 +123,11 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 		setLayout(new TableLayout(size));
 		
 		String ct = (String) attr.getValue();
+		if(ct.equals("hidden"))
+			setVisible(false);
+		else
+			setVisible(true);
+		
 		JComponent chart = ChartComponentManager.getInstance().getChartComponent(ct, ge);
 		if (chart != null)
 			add(chart, "1,1");
@@ -225,8 +235,16 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 		if(isPaintingForPrint()) {
 //			logger.debug("paint for bufferedimage");
 			super.paint(g);
-		}
-		if(checkVisibility(MINSIZE_VISIBILITY)) {
+		} else if(checkVisibility(MINSIZE_VISIBILITY)) {
+
+			/*
+			 * Only for debugging
+			 */
+//			if(PreferenceManager.getPreferenceForClass(VantedPreferences.class).getBoolean(VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES, false)) {
+//				g.setColor(Color.BLUE);
+//				g.drawRect(0, 0, getWidth()-1, getHeight()-1);
+//			}
+			
 			if(getParent() instanceof GraffitiView) {
 				if ( ((GraffitiView)getParent()).getDrawMode() == DrawMode.REDUCED) {
 					g.drawImage(bufferedImage, 0, 0, null);
