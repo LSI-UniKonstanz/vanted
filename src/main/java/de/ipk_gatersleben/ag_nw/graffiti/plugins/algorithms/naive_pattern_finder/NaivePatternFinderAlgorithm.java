@@ -16,6 +16,7 @@ import java.util.Set;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.StringManipulationTools;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
@@ -37,6 +38,10 @@ public class NaivePatternFinderAlgorithm
 					extends AbstractAlgorithm {
 	
 	private static Logger logger = Logger.getLogger(NaivePatternFinderAlgorithm.class);
+	
+	static {
+		logger.setLevel(Level.INFO);
+	}
 	
 	/*************************************************************/
 	/* Member variables */

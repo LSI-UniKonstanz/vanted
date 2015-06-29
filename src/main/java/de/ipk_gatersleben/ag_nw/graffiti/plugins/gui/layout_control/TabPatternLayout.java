@@ -414,7 +414,7 @@ public class TabPatternLayout extends InspectorTab {
 	 */
 	public TabPatternLayout() {
 		super();
-		this.title = "Search Subgraph";
+		this.title = "Search Motifs";
 		initComponents();
 	}
 	
@@ -517,7 +517,7 @@ public class TabPatternLayout extends InspectorTab {
 
 	@Override
 	public String getTabParentPath() {
-		return "Analysis.Graph";
+		return "Analysis.Network";
 	}
 
 	@Override

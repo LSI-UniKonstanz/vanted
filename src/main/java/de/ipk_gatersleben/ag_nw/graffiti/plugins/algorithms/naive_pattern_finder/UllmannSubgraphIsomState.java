@@ -11,6 +11,9 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.AttributeHelper;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
@@ -26,7 +29,16 @@ import org.graffiti.graphics.NodeLabelAttribute;
  */
 class UllmannSubgraphIsomState
 					implements State {
-	
+
+	private static final Logger logger = Logger.getLogger(UllmannSubgraphIsomState.class);
+
+	static {
+		logger.setLevel(Level.INFO);
+	}
+	/*
+	 * for debugging
+	 */
+	public int currentRecursionLevel = 0;
 	/**
 	 * The graph we are searching within.
 	 */
@@ -201,7 +213,7 @@ class UllmannSubgraphIsomState
 					
 					boolean compatibleLabels =
 										isCompatibleNode(nodeOfPatternGraph, nodeOfTargetGraph);
-					
+//					compatibleLabels = true;
 					compatibilityMatrix[i][j] = compatibleInDegree && compatibleOutDegree
 										&& compatibleLabels;
 				} else {
@@ -331,11 +343,32 @@ class UllmannSubgraphIsomState
 		
 		int k;
 		
-		for (k = currentLengthOfCore; k < numberOfNodesInPatternGraph; k++) {
-			compatibilityMatrix[k][nodeOfTargetGraph] = false;
-		}
+//		for (k = currentLengthOfCore; k < numberOfNodesInPatternGraph; k++) {
+//			compatibilityMatrix[k][nodeOfTargetGraph] = false;
+//		}
+		
 		
 		refine();
+		 
+		if(logger.getLevel() == Level.DEBUG) {
+		
+			System.out.print("coreSetOfPatternGraph patterIds -> targetIds: ");
+			for(int i = 0 ; i < coreSetOfPatternGraph.length; i++)
+				if(coreSetOfPatternGraph[i] >= 0)
+					System.out.print(
+							AttributeHelper.getLabel(numberedNodesInPatternGraph[i], Integer.toString(i)) + " -> " 
+									+ AttributeHelper.getLabel(numberedNodesInTargetGraph[coreSetOfPatternGraph[i]], Integer.toString(i)) + ", ");
+			System.out.println();
+
+			System.out.print(" coreSetOfTargetGraph targetIds -> patterIds: ");
+			for(int i = 0; i < coreSetOfTargetGraph.length; i++)
+				if(coreSetOfTargetGraph[i] >= 0)
+					System.out.print(
+							AttributeHelper.getLabel(numberedNodesInTargetGraph[i], Integer.toString(i)) + " -> " 
+									+ AttributeHelper.getLabel(numberedNodesInPatternGraph[coreSetOfTargetGraph[i]], Integer.toString(i)) + ", ");
+			System.out.println();
+		 
+		}
 	}
 	
 	/**
@@ -475,7 +508,7 @@ class UllmannSubgraphIsomState
 	@Override
 	public Object clone() {
 		UllmannSubgraphIsomState newState = new UllmannSubgraphIsomState(ignoreEdgeDirection);
-		
+		newState.currentRecursionLevel = this.currentRecursionLevel;
 		newState.patternGraph = this.patternGraph;
 		newState.targetGraph = this.targetGraph;
 		
@@ -587,53 +620,108 @@ class UllmannSubgraphIsomState
 			
 			if (neighboursOfPatN1 == null) {
 				for (Node n : numberedNodesInPatternGraph) {
-					if (ignoreEdgeDirection)
-						patNode2neighbour.put(n, new HashSet<Node>(n.getNeighbors()));
-					else
-						patNode2neighbour.put(n, new HashSet<Node>(n.getOutNeighbors()));
+					if (ignoreEdgeDirection){
+						HashSet<Node> hashSet = new HashSet<Node>(n.getNeighbors());
+						/*
+						 * remove self loops (edges to the same node)
+						 */
+						hashSet.remove(n);
+						patNode2neighbour.put(n, hashSet);
+					}
+					else {
+						HashSet<Node> hashSet = new HashSet<Node>(n.getOutNeighbors());
+						/*
+						 * remove self loops (edges to the same node)
+						 */
+						hashSet.remove(n);
+
+						patNode2neighbour.put(n, hashSet);
+					}
 				}
 				neighboursOfPatN1 = patNode2neighbour.get(patternNode1);
 			}
-			
+			if(logger.getLevel() == Level.DEBUG)
+				printNeighbours(patternNode1, neighboursOfPatN1);
 			for (targetN1 = 0; targetN1 < numberOfNodesInTargetGraph; targetN1++) {
 				targetNode1 = numberedNodesInTargetGraph[targetN1];
 				
 				HashSet<Node> neighboursOfTargetN1 = node2neighbour.get(targetNode1);
 				if (neighboursOfTargetN1 == null) {
 					for (Node n : numberedNodesInTargetGraph) {
-						if (ignoreEdgeDirection)
-							node2neighbour.put(n, new HashSet<Node>(n.getNeighbors()));
-						else
-							node2neighbour.put(n, new HashSet<Node>(n.getOutNeighbors()));
+						if (ignoreEdgeDirection){
+							HashSet<Node> hashSet = new HashSet<Node>(n.getNeighbors());
+							/*
+							 * remove self loops (edges to the same node)
+							 */
+							hashSet.remove(n);
+							node2neighbour.put(n, hashSet);
+						}
+						else{
+							HashSet<Node> hashSet = new HashSet<Node>(n.getOutNeighbors());
+							/*
+							 * remove self loops (edges to the same node)
+							 */
+							hashSet.remove(n);
+
+							node2neighbour.put(n, hashSet);
+						}
 					}
 					neighboursOfTargetN1 = node2neighbour.get(targetNode1);
 				}
-				
+				if(logger.getLevel() == Level.DEBUG)
+					printNeighbours(targetNode1, neighboursOfTargetN1);
 				if (compatibilityMatrix[patN1][targetN1]) {
 					for (patN2 = currentLengthOfCore - 1; patN2 < currentLengthOfCore; patN2++) {
 						targetN2 = coreSetOfPatternGraph[patN2];
 						patternNode2 = numberedNodesInPatternGraph[patN2];
 						targetNode2 = numberedNodesInTargetGraph[targetN2];
-						
+						if(logger.getLevel() == Level.DEBUG) {
+							System.out.println("checking edge (PNode-PNode): " 
+									+ AttributeHelper.getLabel(patternNode1, patternNode1.toString())
+									+ " - " + AttributeHelper.getLabel(patternNode2, patternNode2.toString()));
+							System.out.println("checking edge (TNode-TNode): " 
+									+ AttributeHelper.getLabel(targetNode1, targetNode1.toString())
+									+ " - " + AttributeHelper.getLabel(targetNode2, targetNode2.toString()));
+						}
 						if (!ignoreEdgeDirection) {
-							edge_exists_pn12 = neighboursOfPatN1.contains(patternNode2);
-							edge_exists_pn21 = patNode2neighbour.get(patternNode2).contains(patternNode1);
-							edge_exists_tn12 = neighboursOfTargetN1.contains(targetNode2);
-							edge_exists_tn21 = node2neighbour.get(targetNode2).contains(targetNode1);
+							if(neighboursOfPatN1 != null)
+								edge_exists_pn12 = neighboursOfPatN1.contains(patternNode2);
+							else
+								edge_exists_pn12 = false;
+							if(patNode2neighbour.get(patternNode2) != null)
+								edge_exists_pn21 = patNode2neighbour.get(patternNode2).contains(patternNode1);
+							else
+								edge_exists_pn21 = false;
+							
+							if(neighboursOfTargetN1 != null)
+								edge_exists_tn12 = neighboursOfTargetN1.contains(targetNode2);
+							else
+								edge_exists_tn12 = false;
+							
+							if(node2neighbour.get(targetNode2) != null)
+								edge_exists_tn21 = node2neighbour.get(targetNode2).contains(targetNode1);
+							else
+								edge_exists_tn21 = false;
 							
 							if (edge_exists_pn12 != edge_exists_tn12 || edge_exists_pn21 != edge_exists_tn21) {
+								if(logger.getLevel() == Level.DEBUG)
+									System.out.println("compatibilityMatrix: setting pat:target to false");
 								compatibilityMatrix[patN1][targetN1] = false;
 								break;
 							} else
 								if (edge_exists_pn12
 													&& !compatibleEdgeExists(patternNode1, patternNode2,
 																		targetNode1, targetNode2)) {
+									if(logger.getLevel() == Level.DEBUG)
+										System.out.println("compatibilityMatrix: setting pat:target to false");
 									compatibilityMatrix[patN1][targetN1] = false;
 									break;
 								} else
 									if (edge_exists_pn21
 														&& !compatibleEdgeExists(patternNode2, patternNode1,
 																			targetNode2, targetNode1)) {
+										if(logger.getLevel() == Level.DEBUG)
+											System.out.println("compatibilityMatrix: setting pat:target to false");
 										compatibilityMatrix[patN1][targetN1] = false;
 										break;
 									}
@@ -831,5 +919,27 @@ class UllmannSubgraphIsomState
 		}
 		
 		return resultNodes;
+	}
+	
+	public void printCompatibilityMatrix() {
+		System.out.print("patNode\\targetNode\t");
+		for(Node n : numberedNodesInTargetGraph) 
+			System.out.print(AttributeHelper.getLabel(n,n.toString()) + "\t");
+		System.out.println();
+		for(int y = 0; y < numberedNodesInPatternGraph.length; y++) {
+			System.out.print("\t" + AttributeHelper.getLabel(numberedNodesInPatternGraph[y],numberedNodesInPatternGraph[y].toString()) + "\t\t");
+			for(int x = 0; x < numberedNodesInTargetGraph.length; x++) {
+				System.out.print(compatibilityMatrix[y][x] + "\t");
+			}
+			System.out.println();
+		}
+		
+	}
+	
+	public void printNeighbours(Node source, Collection<Node> neighbours) {
+		System.out.print("Neighbours of '" + AttributeHelper.getLabel(source, source.toString()) + "' -> ");
+		for(Node n : neighbours)
+			System.out.print(AttributeHelper.getLabel(n, n.toString()) + ", ");
+		System.out.println();
 	}
 }

@@ -6,6 +6,8 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.naive_pattern_finde
 
 import java.util.HashSet;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.graffiti.graph.Node;
 
 /**
@@ -14,7 +16,11 @@ import org.graffiti.graph.Node;
  * @author Dirk Koschützki
  */
 class Matcher {
+	private static final Logger logger = Logger.getLogger(Matcher.class);
 	
+	static {
+		logger.setLevel(Level.INFO);
+	}
 	/**
 	 * The matching nodes from the pattern graph.
 	 */
@@ -113,8 +119,10 @@ class Matcher {
 		boolean found = false;
 		
 		while (!found && state.computeNextPair(n1, n2)) {
+			
 			n1 = state.getNextNodeOfPattern();
 			n2 = state.getNextNodeOfTarget();
+			
 			if (state.isFeasiblePair(n1, n2)) {
 				State nextState = (UllmannSubgraphIsomState) state.clone();
 				
@@ -138,10 +146,13 @@ class Matcher {
 	 *           the name of the pattern
 	 * @return true, if a match was found
 	 */
+	
 	private boolean match2(State state, PatternVisitor visitor, PatternVisitor optVisitor2,
 						HashSet<Node> resultNodes,
 						String additionalInformation) {
+		logger.debug("--> Entering Level: " + ((UllmannSubgraphIsomState)state).currentRecursionLevel);
 		if (state.isGoal()) {
+			logger.debug("Pattern found: marking and returning");
 			numberOfMatchingNodes = state.getCoreLength();
 			matchingNodesOfPattern = state.getMatchingNodesOfPattern();
 			matchingNodesOfTarget = state.getMatchingNodesOfTarget();
@@ -160,6 +171,7 @@ class Matcher {
 		}
 		
 		if (state.isDead()) {
+			logger.debug("<-- Leaving Level: " + ((UllmannSubgraphIsomState)state).currentRecursionLevel + ": isDead:");
 			return false;
 		}
 		
@@ -167,15 +179,30 @@ class Matcher {
 		int nodeOfTarget = State.NULL_NODE;
 		
 		while (state.computeNextPair(nodeOfPattern, nodeOfTarget)) {
+			logger.debug("level[" + + ((UllmannSubgraphIsomState)state).currentRecursionLevel + "] while.computeNextPair");
+			logger.debug("computednextpair for prev: " + nodeOfPattern + " " + nodeOfTarget);
 			nodeOfPattern = state.getNextNodeOfPattern();
 			nodeOfTarget = state.getNextNodeOfTarget();
+			logger.debug("                   result: " + nodeOfPattern + " " + nodeOfTarget);
 			if (state.isFeasiblePair(nodeOfPattern, nodeOfTarget)) {
 				State nextState = (UllmannSubgraphIsomState) state.clone();
 				
+				logger.debug("matrix before addPair---");
+				if(logger.getLevel() == Level.DEBUG)
+					((UllmannSubgraphIsomState)state).printCompatibilityMatrix();
+				
 				nextState.addPair(nodeOfPattern, nodeOfTarget);
+				
+				logger.debug("matrix after addPair---");
+				if(logger.getLevel() == Level.DEBUG)
+					((UllmannSubgraphIsomState)nextState).printCompatibilityMatrix();
+				
+				((UllmannSubgraphIsomState)nextState).currentRecursionLevel++;
 				
 				if (match2(nextState, visitor, optVisitor2, resultNodes, additionalInformation)) {
 					nextState.backtrack();
+					logger.debug("<-- Leaving Level: " + ((UllmannSubgraphIsomState)nextState).currentRecursionLevel);
+
 					return true;
 				} else {
 					nextState.backtrack();
@@ -183,6 +210,7 @@ class Matcher {
 			}
 		}
 		
+		logger.debug("<-- Leaving Level: " + ((UllmannSubgraphIsomState)state).currentRecursionLevel);
 		return false;
 	}
 }
