@@ -46,6 +46,8 @@ import org.graffiti.session.Session;
 import org.graffiti.session.SessionListener;
 import org.graffiti.util.DelayThread;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.network.TabNetworkAlgorithms;
+
 /**
  * Represents an inspector tab.
  * 
@@ -96,8 +98,21 @@ implements SessionListener, SelectionListener, AttributeListener {
 			public void call(AttributeEvent e) {
 				logger.debug("editPanel.updateTable");
 				if(e != null)
-					rebuildTreeAction();
-//					editPanel.updateTable(e.getAttribute());
+					/*
+					 * until i find a better solution, this will be it.
+					 * The problem is, that recreating a ChartAttribute (through rebuildTreeAction)
+					 * triggers an attributechanged event.. that will trigger again this update
+					 * and so we get an infinite update loop
+					 * This doesn't happen when we only update the table
+					 * But.. Node and Edgetabs don't work properly when we only update the table
+					 * especially labels will not change, if updated using the LabelEditor dialog
+					 * So. for now.. we check, which tab acutally this is (Node/Edge/Graph tab are children of 
+					 * Abstracttab) and trigger the action appropriately
+					 */
+					if(instance instanceof GraphTab)
+						editPanel.updateTable(e.getAttribute());
+					else
+						rebuildTreeAction();
 			}
 		});
 		delayThreadAttributeChanged.setName(getClass().getName().substring(getClass().getName().lastIndexOf(".")+1)+": DelayThread Attribute Changes");
@@ -158,6 +173,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 	public void postAttributeChanged(AttributeEvent e) {
 		if( ! isShowing())
 			return;
+		logger.setLevel(Level.DEBUG);
 		logger.debug("postAttributeChanged");
 		if (attributables != null && attributables.contains(e.getAttribute().getAttributable())) {
 			delayThreadAttributeChanged.setAttributeEvent(e);
