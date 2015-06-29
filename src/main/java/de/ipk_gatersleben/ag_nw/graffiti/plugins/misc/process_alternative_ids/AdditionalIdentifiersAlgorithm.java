@@ -30,6 +30,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.Experime
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.OpenExcelFileDialogService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.TableData;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.Experiment2GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
  * @author Christian Klukas
@@ -100,58 +101,68 @@ public class AdditionalIdentifiersAlgorithm extends AbstractAlgorithm {
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
-		Collection<File> excelFiles = OpenExcelFileDialogService.getExcelFiles();
-		if (excelFiles != null && excelFiles.size() > 0) {
-			HashMap<String, Set<String>> id2alternatives = new HashMap<String, Set<String>>();
-			
-			for (File excelFile : excelFiles) {
-				TableData myData = ExperimentDataFileReader.getExcelTableData(excelFile);
-				
-				int startRow = (ignoreFirstRow ? 2 : 1);
-				
-				for (int row = startRow; row <= myData.getMaximumRow(); row++) {
-					String mainID = myData.getUnicodeStringCellData(1, row);
-					for (int col = 2; col <= myData.getMaximumCol(); col++) {
-						String alternativeID = myData.getUnicodeStringCellData(col, row);
-						if (alternativeID != null && alternativeID.length() > 0) {
-							if (!id2alternatives.containsKey(mainID))
-								id2alternatives.put(mainID, new HashSet<String>());
-							Set<String> alternatives = id2alternatives.get(mainID);
-							alternatives.add(alternativeID);
+		BackgroundTaskHelper.issueSimpleTask("Adding alternative identifiers", "working..", 
+				new Runnable() {
+			/* (non-Javadoc)
+			 * @see java.lang.Runnable#run()
+			 */
+			@Override
+			public void run() {
+				Collection<File> excelFiles = OpenExcelFileDialogService.getExcelFiles();
+				if (excelFiles != null && excelFiles.size() > 0) {
+					HashMap<String, Set<String>> id2alternatives = new HashMap<String, Set<String>>();
+					
+					for (File excelFile : excelFiles) {
+						TableData myData = ExperimentDataFileReader.getExcelTableData(excelFile);
+						
+						int startRow = (ignoreFirstRow ? 2 : 1);
+						
+						for (int row = startRow; row <= myData.getMaximumRow(); row++) {
+							String mainID = myData.getUnicodeStringCellData(1, row);
+							for (int col = 2; col <= myData.getMaximumCol(); col++) {
+								String alternativeID = myData.getUnicodeStringCellData(col, row);
+								if (alternativeID != null && alternativeID.length() > 0) {
+									if (!id2alternatives.containsKey(mainID))
+										id2alternatives.put(mainID, new HashSet<String>());
+									Set<String> alternatives = id2alternatives.get(mainID);
+									alternatives.add(alternativeID);
+								}
+							}
 						}
 					}
-				}
-			}
-			
-			ArrayList<SubstanceInterface> documents = new ArrayList<SubstanceInterface>();
-			for (Node n : getSelectedOrAllNodes()) {
-				try {
-					CollectionAttribute ca = (CollectionAttribute) n.getAttribute(Experiment2GraphHelper.mapFolder);
-					XMLAttribute xa = (XMLAttribute) ca.getAttribute(Experiment2GraphHelper.mapVarName);
-					Iterable<SubstanceInterface> mappingdata = xa.getMappedData();
-					for (SubstanceInterface md : mappingdata) {
-						documents.add(md);
-						md.clearSynonyms();
+					
+					ArrayList<SubstanceInterface> documents = new ArrayList<SubstanceInterface>();
+					for (Node n : getSelectedOrAllNodes()) {
+						try {
+							CollectionAttribute ca = (CollectionAttribute) n.getAttribute(Experiment2GraphHelper.mapFolder);
+							XMLAttribute xa = (XMLAttribute) ca.getAttribute(Experiment2GraphHelper.mapVarName);
+							Iterable<SubstanceInterface> mappingdata = xa.getMappedData();
+							for (SubstanceInterface md : mappingdata) {
+								documents.add(md);
+								md.clearSynonyms();
+							}
+						} catch (Exception anfe) {
+							// empty
+						}
 					}
-				} catch (Exception anfe) {
-					// empty
-				}
-			}
-			
-			int idCnt = 0;
-			for (SubstanceInterface xmlSubstanceNode : documents) {
-				String name = xmlSubstanceNode.getName();
-				Set<String> alternatives = id2alternatives.get(name);
-				if (alternatives != null) {
-					xmlSubstanceNode.setSynonyme(0, name);
-					int i = 0;
-					for (String alternativeID : alternatives) {
-						xmlSubstanceNode.setSynonyme((++i), alternativeID);
-						idCnt++;
+					
+					int idCnt = 0;
+					for (SubstanceInterface xmlSubstanceNode : documents) {
+						String name = xmlSubstanceNode.getName();
+						Set<String> alternatives = id2alternatives.get(name);
+						if (alternatives != null) {
+							xmlSubstanceNode.setSynonyme(0, name);
+							int i = 0;
+							for (String alternativeID : alternatives) {
+								xmlSubstanceNode.setSynonyme((++i), alternativeID);
+								idCnt++;
+							}
+						}
 					}
+					MainFrame.showMessage("Additional Identifiers (" + idCnt + ")", MessageType.INFO);
 				}
 			}
-			MainFrame.showMessage("Additional Identifiers (" + idCnt + ")", MessageType.INFO);
-		}
+		},
+		null);
 	}
 }
