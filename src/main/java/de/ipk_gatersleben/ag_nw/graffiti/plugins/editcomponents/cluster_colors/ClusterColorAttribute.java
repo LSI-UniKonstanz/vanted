@@ -300,6 +300,16 @@ public class ClusterColorAttribute extends StringAttribute {
 						foundIdx = i;
 					}
 				}
+				
+				/*
+				 * if through copy and paste more cluster than cluster colors are present
+				 * an indexoutofboundexception can happen, if we try to set up the lists
+				 * See comment above.
+				 * In that case, act like this is a new color.
+				 */
+				if(foundIdx >= listClusterColors.size())
+					foundIdx = -1;
+				
 				if(foundIdx >= 0 ) {
 					newListClusterColors.add(listClusterColors.get(foundIdx));
 					newListOutlineColors.add(listOutlineColors.get(foundIdx));
