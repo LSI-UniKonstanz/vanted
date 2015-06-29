@@ -402,7 +402,7 @@ public abstract class AbstractTool
 								sel.getNewMarked().isEmpty())) {
 				// must completely renew selection
 				if (selection != null) {
-//					unDisplayAsMarked(getAllMarkedComps());
+					unDisplayAsMarked(getAllMarkedComps());
 				}
 				
 				displayAsMarked(getCompsForElems(sel.getElements()));

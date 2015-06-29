@@ -81,10 +81,21 @@ public class SelectionModel {
 	 *           the name of the new selection.
 	 */
 	public void setActiveSelection(Selection sel) {
+		/*
+		 * this method fires two selection changed events
+		 * 1. event to clear previously selected elements
+		 * 2. event to select the new elements
+		 * Needs revamping of the code.. not optimal
+		 */
 		if (this.activeSelection != null) {
 			Selection oldSel = this.selections.get(this.activeSelection);
 			oldSel.clear();
-//			this.selectionChanged();
+			/*
+			 * fire selection change for current active selection, 
+			 * to unselect all elements in this old selection
+			 * old selection has been emptied.
+			 */
+			this.selectionChanged();
 		}
 		
 		this.activeSelection = sel.getName();
@@ -98,6 +109,9 @@ public class SelectionModel {
 			}
 		}
 		
+		/*
+		 * fire another selection change with the new active selection 
+		 */
 		this.selectionChanged();
 	}
 	

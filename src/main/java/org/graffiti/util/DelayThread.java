@@ -27,7 +27,7 @@ import org.graffiti.event.AttributeEvent;
 public class DelayThread extends Thread {
 	private Logger logger = Logger.getLogger(DelayThread.class);
 
-	static final int MAX_COUNT = 5;
+	static final int MAX_COUNT = 10;
 	int counter;
 	DelayedCallback callback;
 	AttributeEvent e;

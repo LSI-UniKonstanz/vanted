@@ -1222,7 +1222,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface{
 		
 		GravistoService.ensureActiveViewAndSession(e);
 		
-		selection = session.getSelectionModel().getActiveSelection();
+//		selection = session.getSelectionModel().getActiveSelection();
 		
 
 		logger.debug("1");
