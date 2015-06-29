@@ -273,11 +273,18 @@ public class ClusterColorAttribute extends StringAttribute {
 		 * Sooo. we just need to connect names, to already set colors.
 		 */
 		if(listClusterNames.isEmpty()) {
-			if(listClusterColors.size() != clusterNames.size()) {
-				System.out.println("existing object called, with attributehelpers defaultvalue call..ignoring");
-			} else
-				listClusterNames.addAll(clusterNames);
-				
+			/*
+			 * if graph is copied or the cluster color attribute was not updated
+			 * the number of clustercolors can diverge from the actual present clusters, since
+			 * clustercolors is a graph attribute .. 
+			 * e.g. copying from graph with two clusters.. copy one node (one cluster member)
+			 * insert to new graph.. graph attribute still has two colors colors but only one cluster
+			 * 
+			 *  By calling updateClusterList again with the actuall number of present clusters
+			 *  the clustercolors graph attribute gets updated.
+			 */
+			listClusterNames.addAll(clusterNames);
+			updateClusterList(clusterNames);
 		} else {
 
 			Color[] colors = Colors.getColors(clusterNames.size() * 2); //get some colors that won't match the existing ones

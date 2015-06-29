@@ -84,8 +84,8 @@ public class PajekClusterColor extends AbstractAlgorithm {
 		Graph g = graph;
 		Set<String> clusters = new TreeSet<String>();
 		for (GraphElement n : g.getGraphElements()) {
-			String clusterId = NodeTools.getClusterID(n, "");
-			if (!clusterId.equals(""))
+			String clusterId = NodeTools.getClusterID(n, null);
+			if (clusterId != null)
 				clusters.add(clusterId);
 		}
 		
