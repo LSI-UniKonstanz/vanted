@@ -73,6 +73,7 @@ public class TabPatternLayout extends InspectorTab {
 	
 	private JButton jButtonSearch;
 	private JCheckBox jDirectedSearch;
+	private JCheckBox jAllowOverlap;
 	private JButton jButtonCopyLayout;;
 	
 	private void initComponents() {
@@ -98,6 +99,11 @@ public class TabPatternLayout extends InspectorTab {
 		jDirectedSearch = new JCheckBox("directed");
 		jDirectedSearch.setOpaque(false);
 		jDirectedSearch.setSelected(true);
+		
+		jAllowOverlap = new JCheckBox("allow overlap");
+		jAllowOverlap.setOpaque(false);
+		jAllowOverlap.setSelected(true);
+		
 		
 		jButtonCopyLayout = new JMButton("Apply Layout");
 		
@@ -128,7 +134,7 @@ public class TabPatternLayout extends InspectorTab {
 			}
 		});
 		
-		jPanelButtons.setLayout(new java.awt.GridLayout(4, 2));
+		jPanelButtons.setLayout(new java.awt.GridLayout(5, 2));
 		
 		jButtonAddPattern.setText("Add Search-Graph");
 		jButtonAddPattern
@@ -228,6 +234,7 @@ public class TabPatternLayout extends InspectorTab {
 				}
 				NaivePatternFinderAlgorithm alg = new NaivePatternFinderAlgorithm();
 				alg.setIgnoreEdgeDirection(!jDirectedSearch.isSelected());
+				alg.setAllowOverlap(jAllowOverlap.isSelected());
 				GravistoService.getInstance().runAlgorithm(alg, graph, new Selection("empty"), null);
 				SearchOption[] so = new SearchOption[] { new SearchOption(LogicConnection.OR, NodeOrEdge.Nodes,
 									".AGNW.PATTERN.PATTERN_1", "PATTERN_NAME", "", 0, 0.0, false,
@@ -235,7 +242,8 @@ public class TabPatternLayout extends InspectorTab {
 				SearchDialog.doSearch(so);
 			}
 		});
-		jPanelButtons.add(TableLayout.getSplit(jButtonSearch, jDirectedSearch, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL));
+		jPanelButtons.add(jButtonSearch);
+//		jPanelButtons.add(TableLayout.getSplit(jButtonSearch, jDirectedSearch, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL));
 		
 		jButtonPatternSearch.setText("Select Search-Result Nodes");
 		jButtonPatternSearch.addActionListener(new ActionListener() {
@@ -248,6 +256,9 @@ public class TabPatternLayout extends InspectorTab {
 			}
 		});
 		jPanelButtons.add(jButtonPatternSearch);
+		
+		jPanelButtons.add(jDirectedSearch);
+		jPanelButtons.add(jAllowOverlap);
 		
 		jPanelPattern.setLayout(new java.awt.GridLayout(1, 1));
 		jPanelPattern.add(jTabbedPane1);
@@ -414,7 +425,7 @@ public class TabPatternLayout extends InspectorTab {
 	 */
 	public TabPatternLayout() {
 		super();
-		this.title = "Search Subgraph";
+		this.title = "Search Motifs";
 		initComponents();
 	}
 	
@@ -517,7 +528,7 @@ public class TabPatternLayout extends InspectorTab {
 
 	@Override
 	public String getTabParentPath() {
-		return "Analysis.Graph";
+		return "Analysis.Network";
 	}
 
 	@Override

@@ -9,6 +9,8 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,6 +25,7 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
 import org.OpenFileDialogService;
 import org.PositionGridGenerator;
+import org.Vector2d;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
@@ -37,6 +40,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.KeggAPIServiceHe
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.KoEntry;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.grid.GridLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.rt_tree.RTTreeLayout;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.RemoveSelectedNodesPreserveEdgesAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
@@ -133,10 +138,16 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 								public void run() {
 									fgraph.getListenerManager().transactionStarted(this);
 									interpreteGO(fgraph, workNodes, sp);
-									fgraph.getListenerManager().transactionFinished(this);
+									
 								}
 							},
-							null, sp);
+							new Runnable() {
+								
+								@Override
+								public void run() {
+									fgraph.getListenerManager().transactionFinished(this);
+								}
+							}, sp);
 	}
 	
 	private void interpreteGO(Graph graph, List<NodeHelper> workNodes, BackgroundTaskStatusProviderSupportingExternalCall sp) {
@@ -262,6 +273,22 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 			tree.attach(graph, new Selection(newNodes));
 			tree.execute();
 			
+			double minX = Double.MAX_VALUE;
+			double maxX = Double.MIN_VALUE;
+			double maxY = Double.MIN_VALUE;
+			for(Node curNode : newNodes) {
+				Point2D position = AttributeHelper.getPosition(curNode);
+				Vector2d size = AttributeHelper.getSize(curNode);
+				if(position.getX() < minX)
+					minX = position.getX();
+				if(position.getX() > maxX)
+					maxX = position.getX();
+				if(size.y + position.getY() > maxY)
+					maxY = size.y + position.getY();
+			}
+			GridLayouterAlgorithm.layoutOnGrid(knownNodes, 1, 20, 20, 30, new Point((int)minX, (int)maxY + 50));
+//			GraphHelper.moveGraph(fgraph, offX, offY);
+			CenterLayouterAlgorithm.moveGraph(graph, getName(), true, 50, 50);
 			// layout gene nodes using grid layout (no resize)
 //			Collection<Node> geneNodes = new ArrayList<Node>(workNodes);
 //			geneNodes.removeAll(newNodes);

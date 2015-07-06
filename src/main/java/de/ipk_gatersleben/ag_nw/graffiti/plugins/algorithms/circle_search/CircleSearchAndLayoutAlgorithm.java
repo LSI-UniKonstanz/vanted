@@ -143,8 +143,10 @@ public class CircleSearchAndLayoutAlgorithm extends AbstractAlgorithm {
 																	circleGraphs,
 																	layout,
 																	true,
+																	true,
 																	startLarge,
-																	status);
+																	status
+																	);
 											} finally {
 												graph.getListenerManager().transactionFinished(this, true);
 												GraphHelper.issueCompleteRedrawForGraph(graph);

@@ -31,5 +31,5 @@ interface PatternVisitor {
 	 *         required
 	 */
 	boolean visitPattern(int numberOfNodesInMatch, Node[] matchInPattern,
-						Node[] matchInTarget, String patternName);
+						Node[] matchInTarget, String patternName, boolean allowOverlap);
 }

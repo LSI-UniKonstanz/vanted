@@ -7,6 +7,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.naive_pattern_finde
 import java.util.HashMap;
 import java.util.Map;
 
+import org.AttributeHelper;
 import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
@@ -55,14 +56,15 @@ class MarkingPatternVisitor
 	 */
 	public boolean visitPattern(int numberOfNodesInMatch,
 						Node[] matchInPattern, Node[] matchInTarget,
-						String patternName) {
-		/* if we have marked one of the nodes, then we ignore this match completely. */
-		if (checkForDuplicateMatch(matchInTarget)) {
+						String patternName, boolean allowOverlap) {
+		
+		/* if option to NOT allow overlap: if we find an already marked nodes we ignore this match completely. */
+		if ( ! allowOverlap && checkForDuplicateMatch(matchInTarget)) {
 			return false;
 		}
 		
-		printoutLabels(matchInPattern, "Pattern");
-		printoutLabels(matchInTarget, "Target");
+//		printoutLabels(matchInPattern, "Pattern");
+//		printoutLabels(matchInTarget, "Target");
 		
 		markNodes(matchInPattern, matchInTarget, patternName);
 		markEdges(matchInPattern, matchInTarget, patternName);
@@ -108,14 +110,13 @@ class MarkingPatternVisitor
 		for (int i = 0; i < matchingNodes.length; i++) {
 			Node n1 = matchingNodes[i];
 			
-			try {
-				NodeLabelAttribute nl1 =
-									(NodeLabelAttribute) n1.getAttribute("label");
-				
-				System.err.println(prefix + " : " + nl1.getLabel());
-			} catch (AttributeNotFoundException e) {
-				System.err.println(prefix + " : NO-LABEL!");
-			}
+			System.err.println(prefix + " : " + AttributeHelper.getLabel(n1, ""));
+//			try {
+//				NodeLabelAttribute nl1 =
+//									(NodeLabelAttribute) n1.getAttribute("label");
+//			} catch (AttributeNotFoundException e) {
+//				System.err.println(prefix + " : NO-LABEL!");
+//			}
 		}
 	}
 	

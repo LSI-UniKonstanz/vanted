@@ -24,7 +24,7 @@ public class PatternVistorLayouter implements PatternVisitor {
 	}
 	
 	public boolean visitPattern(int numberOfNodesInMatch,
-						Node[] matchInPattern, Node[] matchInTarget, String patternName) {
+						Node[] matchInPattern, Node[] matchInTarget, String patternName, boolean allowOverlap) {
 		if (matchInTarget != null && matchInTarget.length > 0) {
 			if (MarkingPatternVisitor.checkForDuplicateMatch(matchInTarget)) {
 				return false;

@@ -16,6 +16,7 @@ import java.util.Set;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.StringManipulationTools;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
@@ -38,6 +39,10 @@ public class NaivePatternFinderAlgorithm
 	
 	private static Logger logger = Logger.getLogger(NaivePatternFinderAlgorithm.class);
 	
+	static {
+		logger.setLevel(Level.INFO);
+	}
+	
 	/*************************************************************/
 	/* Member variables */
 	/*************************************************************/
@@ -48,6 +53,8 @@ public class NaivePatternFinderAlgorithm
 	private ArrayList<Graph> listOfPatterns;
 	
 	private boolean ignoreEdgeDirection = false;
+	
+	private boolean allowOverlap = true;
 	
 	/**
 	 * Creates a new NaivePatternFinderAlgorithm object.
@@ -166,7 +173,7 @@ public class NaivePatternFinderAlgorithm
 			Matcher matcher = new Matcher();
 			PatternVisitor pv = new MarkingPatternVisitor(ignoreEdgeDirection);
 			
-			matcher.match(state, pv, null, null, "Pattern_" + j);
+			matcher.match(state, pv, null, null, "Pattern_" + j, allowOverlap);
 			j++;
 		}
 		MainFrame.showMessage("Pattern finder finished", MessageType.INFO);
@@ -186,6 +193,7 @@ public class NaivePatternFinderAlgorithm
 						Algorithm optLayoutAlgorithm,
 						boolean ignoreEdgeDirection,
 						final boolean startWithLargestCircle,
+						boolean allowOverlap,
 						BackgroundTaskStatusProviderSupportingExternalCall status) {
 		logger.debug("There are " + patterns.size() + " patterns in the list.");
 		
@@ -241,7 +249,7 @@ public class NaivePatternFinderAlgorithm
 			} else
 				layoutVisitor = new SelectResultsVisitor();
 			
-			matcher.match(state, pv, layoutVisitor, resultNodes, "Pattern_" + processName(currentPattern.getName() + "_" + j));
+			matcher.match(state, pv, layoutVisitor, resultNodes, "Pattern_" + processName(currentPattern.getName() + "_" + j), allowOverlap);
 			j++;
 		}
 		status.setCurrentStatusValueFine(100d);
@@ -303,4 +311,9 @@ public class NaivePatternFinderAlgorithm
 	public void setIgnoreEdgeDirection(boolean ignoreEdgeDirection) {
 		this.ignoreEdgeDirection = ignoreEdgeDirection;
 	}
+
+	public void setAllowOverlap(boolean allowOverlap) {
+		this.allowOverlap = allowOverlap;
+	}
+	
 }
