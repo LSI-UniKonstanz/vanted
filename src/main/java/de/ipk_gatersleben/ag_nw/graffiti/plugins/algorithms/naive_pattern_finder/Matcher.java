@@ -36,6 +36,8 @@ class Matcher {
 	 */
 	private int numberOfMatchingNodes;
 	
+	private boolean allowOverlap;
+	
 	/**
 	 * Finds a matching between two graph, if it exists, given the initial
 	 * state of the matching process. Returns true if a match has been found.
@@ -64,8 +66,8 @@ class Matcher {
 	 *           the name of the pattern
 	 */
 	public void match(State state, PatternVisitor visitor,
-						PatternVisitor optVisitor2, HashSet<Node> resultNodes, String patternName) {
-		match2(state, visitor, optVisitor2, resultNodes, patternName);
+						PatternVisitor optVisitor2, HashSet<Node> resultNodes, String patternName, boolean allowOverlap) {
+		match2(state, visitor, optVisitor2, resultNodes, patternName, allowOverlap);
 	}
 	
 	/**
@@ -95,6 +97,11 @@ class Matcher {
 		return numberOfMatchingNodes;
 	}
 	
+	
+	public boolean isAllowOverlap() {
+		return allowOverlap;
+	}
+
 	/**
 	 * Recursive implementation of the matching function.
 	 * 
@@ -149,7 +156,7 @@ class Matcher {
 	
 	private boolean match2(State state, PatternVisitor visitor, PatternVisitor optVisitor2,
 						HashSet<Node> resultNodes,
-						String additionalInformation) {
+						String additionalInformation, boolean allowOverlap) {
 		logger.debug("--> Entering Level: " + ((UllmannSubgraphIsomState)state).currentRecursionLevel);
 		if (state.isGoal()) {
 			logger.debug("Pattern found: marking and returning");
@@ -163,11 +170,11 @@ class Matcher {
 				optVisitor2.visitPattern(numberOfMatchingNodes,
 									matchingNodesOfPattern,
 									matchingNodesOfTarget,
-									additionalInformation);
+									additionalInformation, allowOverlap);
 			return visitor.visitPattern(numberOfMatchingNodes,
 								matchingNodesOfPattern,
 								matchingNodesOfTarget,
-								additionalInformation);
+								additionalInformation, allowOverlap);
 		}
 		
 		if (state.isDead()) {
@@ -199,7 +206,7 @@ class Matcher {
 				
 				((UllmannSubgraphIsomState)nextState).currentRecursionLevel++;
 				
-				if (match2(nextState, visitor, optVisitor2, resultNodes, additionalInformation)) {
+				if (match2(nextState, visitor, optVisitor2, resultNodes, additionalInformation, allowOverlap)) {
 					nextState.backtrack();
 					logger.debug("<-- Leaving Level: " + ((UllmannSubgraphIsomState)nextState).currentRecursionLevel);
 

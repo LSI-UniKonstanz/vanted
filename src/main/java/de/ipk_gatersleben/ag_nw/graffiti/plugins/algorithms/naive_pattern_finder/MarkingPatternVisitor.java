@@ -56,17 +56,12 @@ class MarkingPatternVisitor
 	 */
 	public boolean visitPattern(int numberOfNodesInMatch,
 						Node[] matchInPattern, Node[] matchInTarget,
-						String patternName) {
-		/*
-		 * outcommented the duplicate match, since it woudnn't allow
-		 * overlapping patterns and thus stop marking the rest 
-		 * of the pattern
-		 */
+						String patternName, boolean allowOverlap) {
 		
-		/* if we have marked one of the nodes, then we ignore this match completely. */
-//		if (checkForDuplicateMatch(matchInTarget)) {
-//			return false;
-//		}
+		/* if option to NOT allow overlap: if we find an already marked nodes we ignore this match completely. */
+		if ( ! allowOverlap && checkForDuplicateMatch(matchInTarget)) {
+			return false;
+		}
 		
 //		printoutLabels(matchInPattern, "Pattern");
 //		printoutLabels(matchInTarget, "Target");

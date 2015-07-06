@@ -10,7 +10,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 public class SelectResultsVisitor implements PatternVisitor {
 	
 	public boolean visitPattern(int numberOfNodesInMatch,
-						Node[] matchInPattern, Node[] matchInTarget, String patternName) {
+						Node[] matchInPattern, Node[] matchInTarget, String patternName, boolean allowOverlap) {
 		for (Node n : matchInTarget)
 			GraphHelper.selectGraphElement(n);
 		return false;
