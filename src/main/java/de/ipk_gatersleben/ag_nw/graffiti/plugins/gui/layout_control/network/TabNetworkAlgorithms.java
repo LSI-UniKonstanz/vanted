@@ -117,7 +117,7 @@ public class TabNetworkAlgorithms extends InspectorTab{
 
 	@Override
 	public String getTabParentPath() {
-		return "Analysis.Graph";
+		return "Analysis.Network";
 	}
 
 	@Override

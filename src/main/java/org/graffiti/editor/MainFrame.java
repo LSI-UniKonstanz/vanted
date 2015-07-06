@@ -2328,6 +2328,9 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					+ "Graph " + graphName + " contains<br>" + session.getGraph().getNodes().size() + " node(s) and "
 					+ session.getGraph().getEdges().size() + " edge(s)!", sBundle.getString("frame.close_save_title"),
 					JOptionPane.YES_NO_CANCEL_OPTION);
+			
+			if( res == JOptionPane.CANCEL_OPTION)
+				return false;
 			if (res == JOptionPane.YES_OPTION) {
 				// save current graph
 				logger.debug("closeSession: saving graph");
@@ -3628,8 +3631,15 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			l.add(s);
 		}
 		if (unsavedGraphs.size() > 0) {
-
-			GravistoService.getInstance().runAlgorithm(new CloseAllWindows(), null);
+			Set<Session> session = new HashSet<Session>(MainFrame.getSessions());
+			for (Session s : session) {
+				/*
+				 * check, if user canceled closing operation when being asked to save
+				 */
+				boolean closeOK = MainFrame.getInstance().getSessionManager().closeSession(s);
+				if( ! closeOK )
+					return;
+			}
 //			String names = "";
 //			for (Graph g : unsavedGraphs)
 //				names += "<li>" + g.getName() + (unsavedGraphs.indexOf(g) < unsavedGraphs.size() - 1 ? "<br>" : "");
