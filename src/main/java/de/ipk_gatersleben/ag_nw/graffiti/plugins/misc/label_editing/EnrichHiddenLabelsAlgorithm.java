@@ -44,6 +44,7 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 	private boolean ignoreFirstRow = true;
 	private boolean removeallhiddenlabels;
 	private boolean considerHiddenLabels;
+	private boolean ignoreCase;
 	private ArrayList<IOurl> urls = new ArrayList<IOurl>();
 	
 	public String getName() {
@@ -87,6 +88,7 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public Parameter[] getParameters() {
+		urls.clear();
 		return new Parameter[] {
 							new BooleanParameter(ignoreFirstRow, "Skip first row", "<html>" +
 												"If enabled, the first row is not processed.<br>" +
@@ -97,6 +99,8 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 							new BooleanParameter(considerHiddenLabels, "Consider alternative Labels",
 									"<html>if enabled, the algorithm will also check existing alternative identifiers<br>" +
 														"for the matching operation."),
+							new BooleanParameter(ignoreCase, "Ignore Case",
+									"<html>if enabled, the algorithm will be case insensitive"),
 							new MultiFileSelectionParameter(urls, "Table Files", "Select the list of mapping table files to be used",
 												OpenExcelFileDialogService.EXCELFILE_EXTENSIONS, OpenExcelFileDialogService.SPREADSHEET_DESCRIPTION, true) };
 	}
@@ -107,6 +111,8 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 		ignoreFirstRow = ((BooleanParameter) params[i++]).getBoolean();
 		removeallhiddenlabels = ((BooleanParameter) params[i++]).getBoolean();
 		considerHiddenLabels = ((BooleanParameter) params[i++]).getBoolean();
+		ignoreCase = ((BooleanParameter) params[i++]).getBoolean();
+		
 		urls = ((MultiFileSelectionParameter) params[i++]).getFileList();
 	}
 	
@@ -128,6 +134,8 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 				
 				for (int row = startRow; row <= myData.getMaximumRow(); row++) {
 					String currentName = myData.getUnicodeStringCellData(1, row);
+					if(ignoreCase)
+						currentName = currentName.toUpperCase();
 					int cntCols = 2;
 					String cell = myData.getUnicodeStringCellData(cntCols, row);
 					while (cell != null) {
@@ -142,37 +150,46 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 			boolean tooManyAnnotations = false;
 			int addedCnt = 0, deletedCnt = 0, graphelementcnt = 0;
 			for (GraphElement ge : getSelectedOrAllGraphElements()) {
-				if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR && ge instanceof Edge)
-					continue;
+				
+				boolean match = false;
 				boolean doBreakFuzzy = false;
 				// get fuzzy label, which contains a set of the original label + label without HTML
-				HashSet<String> fuzzyLabels = AttributeHelper.getFuzzyLabels(AttributeHelper.getLabel(ge, null));
+				String label2 = AttributeHelper.getLabel(ge, null);
+				if(ignoreCase)
+					label2 = label2.toUpperCase();
+				HashSet<String> fuzzyLabels = AttributeHelper.getFuzzyLabels(label2);
+				
 				// add all the alternative identifiers, if selected as parameter, but without fuzz.
 				if(considerHiddenLabels) {
 					for(String altLabel : AttributeHelper.getLabels(ge))
-						if(altLabel != null && ! altLabel.isEmpty())
-							fuzzyLabels.add(altLabel.trim().toUpperCase());
+						if(altLabel != null && ! altLabel.isEmpty()) {
+							if(ignoreCase)
+								altLabel = altLabel.trim().toUpperCase();
+							fuzzyLabels.add(altLabel);
+						}
+				}
+				if (removeallhiddenlabels) {
+					for (int k = 1; k < 100; k++)
+						if (AttributeHelper.hasAttribute(ge, GraphicAttributeConstants.LABELGRAPHICS + String.valueOf(k))) {
+							ge.removeAttribute(GraphicAttributeConstants.LABELGRAPHICS + String.valueOf(k));
+							deletedCnt++;
+						}
 				}
 				fuzzy: for (String label : fuzzyLabels) {
 					if (id2alternatives.containsKey(label)) {
-						if (removeallhiddenlabels) {
-							for (int k = 1; k < 100; k++)
-								if (AttributeHelper.hasAttribute(ge, GraphicAttributeConstants.LABELGRAPHICS + String.valueOf(k))) {
-									ge.removeAttribute(GraphicAttributeConstants.LABELGRAPHICS + String.valueOf(k));
-									deletedCnt++;
-								}
-						}
+						match = true;
+						/*
+						 * labels are not necessarily adjacent. skip filled slots
+						 */
 						int k = 1;
 						while (AttributeHelper.hasAttribute(ge, GraphicAttributeConstants.LABELGRAPHICS + String.valueOf(k)))
 							k++;
 						
 						if (ge instanceof Edge) {
 							AttributeHelper.setLabel(ge, id2alternatives.get(label).get(0));
-							graphelementcnt++;
 							break fuzzy;
 						} else {
 							if (id2alternatives.get(label).size() > 0)
-								graphelementcnt++;
 							for (String s : id2alternatives.get(label)) {
 								if (k > 99) {
 									tooManyAnnotations = true;
@@ -180,13 +197,16 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 								}
 								AttributeHelper.setLabel(k++, ge, s, null, AlignmentSetting.HIDDEN.toGMLstring());
 								addedCnt++;
-								doBreakFuzzy = true;
+//								doBreakFuzzy = true;
 							}
 						}
 					}
-					if (doBreakFuzzy)
-						break fuzzy;
+//					if (doBreakFuzzy)
+//						break fuzzy;
 				}
+				if(match)
+					graphelementcnt++;
+				
 			}
 			if (tooManyAnnotations)
 				MainFrame.showMessageDialog("<html>Some labels were skipped, as it is not allowed to<br>" +
