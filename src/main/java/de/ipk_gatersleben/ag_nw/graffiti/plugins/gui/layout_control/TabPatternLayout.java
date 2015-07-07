@@ -6,13 +6,18 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
+import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
@@ -20,6 +25,8 @@ import javax.swing.event.ChangeListener;
 
 import org.AttributeHelper;
 import org.JMButton;
+import org.OpenFileDialogService;
+import org.graffiti.core.GenericFileFilter;
 import org.graffiti.core.StringBundle;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
@@ -29,7 +36,12 @@ import org.graffiti.event.AttributeEvent;
 import org.graffiti.event.TransactionEvent;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
+import org.graffiti.managers.IOManager;
+import org.graffiti.managers.MyInputStreamCreator;
+import org.graffiti.managers.ViewManager;
 import org.graffiti.plugin.inspector.InspectorTab;
+import org.graffiti.plugin.io.InputSerializer;
+import org.graffiti.plugin.io.ParserException;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
 import org.graffiti.plugins.views.defaults.GraffitiView;
@@ -76,6 +88,17 @@ public class TabPatternLayout extends InspectorTab {
 	private JCheckBox jAllowOverlap;
 	private JButton jButtonCopyLayout;;
 	
+	private MainFrame mainframe;
+	
+	/** DOCUMENT ME! */
+	private IOManager ioManager;
+	
+	/** DOCUMENT ME! */
+	private StringBundle sBundle;
+	
+	/** DOCUMENT ME! */
+	private ViewManager viewManager;
+
 	private void initComponents() {
 		
 		jPanelButtons = new javax.swing.JPanel();
@@ -284,41 +307,98 @@ public class TabPatternLayout extends InspectorTab {
 	}
 	
 	void jButtonLoadActionPerformed(java.awt.event.ActionEvent evt) {
-		GravistoService gs = GravistoService.getInstance();
-		FileOpenAction oa =
-							new FileOpenAction(gs.getMainFrame());
+//		GravistoService gs = GravistoService.getInstance();
+//		FileOpenAction oa =
+//							new FileOpenAction(gs.getMainFrame());
+//		
+//		JScrollPane sp = oa.loadFile(evt); // null
+//		
+//		if (sp == null)
+//			return;
+		JFileChooser fc = ioManager.createOpenFileChooser();
 		
-		JScrollPane sp = oa.loadFile(evt); // null
+		OpenFileDialogService.setActiveDirectoryFor(fc);
 		
-		if (sp == null)
-			return;
+		int returnVal = fc.showDialog(MainFrame.getInstance(),
+				sBundle.getString("menu.file.open"));
 		
-		GraffitiView gf =
-							(GraffitiView) ((JViewport) sp.getComponent(0)).getComponent(0);
+		OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
 		
-		// Search session which belongs to the view gf
-		Iterator<?> searchSessions =
-							gs.getMainFrame()
-												.getSessionsIterator();
-		while (searchSessions.hasNext()) {
-			Session sessionTemp = (Session) searchSessions.next();
-			List<?> tempViews = sessionTemp.getViews();
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fc.getSelectedFile();
+			String fileName = file.getName();
 			
-			for (int i = 0; i < tempViews.size(); i++) {
-				if (tempViews.get(i) == gf) {
-					GravistoService.getInstance().addPatternSession(
-										sessionTemp);
+			// System.err.println(fileName);
+			if (fileName.indexOf(".") == -1) {
+				fileName = file.getName() +
+						((GenericFileFilter) fc.getFileFilter()).getExtension();
+			}
+			
+			// System.err.println(fileName);
+			String ext = fileName.substring(fileName.lastIndexOf("."));
+			
+			try {
+				
+				try {
+					MyInputStreamCreator ic = new MyInputStreamCreator(file);
+					InputSerializer is = ioManager.createInputSerializer(ic.getNewInputStream(), ext);
+					
+					Graph g = null;
+					g = is.read(ic.getNewInputStream());
+					
+					EditorSession es = new EditorSession(g);
+					es.setFileName(file.getAbsolutePath());
+					String[] fileTypeDescriptions = is.getFileTypeDescriptions();
+					if (fileTypeDescriptions != null && fileTypeDescriptions.length > 0)
+						es.setFileTypeDescription(fileTypeDescriptions[0]);
+					JScrollPane sp = mainframe.showViewChooserDialog(es, true, evt);
+					
+					GravistoService.getInstance().addPatternSession(es);
+					
+					jTabbedPane1.add(
+							"Network "
+												+ new Integer(jTabbedPane1.getComponentCount() + 1).toString(),
+							sp);
+					
+				} catch (ParserException pe) {
+					showError(pe.getLocalizedMessage());
+				} catch (IOException ioe) {
+					showError(ioe.getLocalizedMessage());
 				}
+			} catch (IllegalAccessException iae) {
+				iae.printStackTrace(System.err);
+				showError(iae.getLocalizedMessage());
+			} catch (InstantiationException ie) {
+				ie.printStackTrace(System.err);
+				showError(ie.getLocalizedMessage());
 			}
 		}
+		
+		
+//		GraffitiView gf =
+//							(GraffitiView) ((JViewport) sp.getComponent(0)).getComponent(0);
+//
+		
+//		// Search session which belongs to the view gf
+//		Iterator<?> searchSessions =
+//							gs.getMainFrame()
+//												.getSessionsIterator();
+//		while (searchSessions.hasNext()) {
+//			Session sessionTemp = (Session) searchSessions.next();
+//			List<?> tempViews = sessionTemp.getViews();
+//			
+//			for (int i = 0; i < tempViews.size(); i++) {
+//				if (tempViews.get(i) == gf) {
+//					GravistoService.getInstance().addPatternSession(
+//										sessionTemp);
+//				}
+//			}
+//		}
 		/*
 		 * ((JViewport) sp.getComponent(0)).getComponent(0).setBackground(
 		 * new Color(230, 240, 230));
 		 */
-		jTabbedPane1.add(
-							"Network "
-												+ new Integer(jTabbedPane1.getComponentCount() + 1).toString(),
-							sp);
+
 	}
 	
 	void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {
@@ -349,7 +429,8 @@ public class TabPatternLayout extends InspectorTab {
 		// removePattern
 		
 		List<?> sessions = GravistoService.getInstance().getPatternSessionList();
-		
+		if(sessions.isEmpty())
+			return;
 		if (jTabbedPane1.getComponentCount() > 0) {
 			if (jTabbedPane1.getSelectedIndex() >= 0) {
 				sessions.remove(jTabbedPane1.getSelectedIndex());
@@ -426,6 +507,12 @@ public class TabPatternLayout extends InspectorTab {
 	public TabPatternLayout() {
 		super();
 		this.title = "Search Motifs";
+		this.mainframe = MainFrame.getInstance();
+		this.ioManager = mainframe.getIoManager();
+		this.viewManager = mainframe.getViewManager();
+		this.sBundle = StringBundle.getInstance();
+
+		
 		initComponents();
 	}
 	
@@ -536,5 +623,9 @@ public class TabPatternLayout extends InspectorTab {
 		return InspectorTab.TAB_TRAILING;
 	}
 	
-	
+	protected void showError(String msg) {
+		JOptionPane.showMessageDialog(mainframe, msg,
+							StringBundle.getInstance().getString("message.dialog.title"),
+							JOptionPane.ERROR_MESSAGE);
+	}
 }
