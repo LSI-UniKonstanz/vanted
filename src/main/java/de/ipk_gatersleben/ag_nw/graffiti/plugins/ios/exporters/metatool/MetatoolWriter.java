@@ -28,6 +28,11 @@ public class MetatoolWriter implements OutputSerializer {
 	}
 	
 	@Override
+	public boolean validFor(Graph g) {
+		return true;
+	}
+	
+	@Override
 	public void write(OutputStream stream, Graph g) throws IOException {
 		
 		// get enzymes of reactions

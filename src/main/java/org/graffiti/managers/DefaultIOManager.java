@@ -27,6 +27,7 @@ import org.ErrorMsg;
 import org.Release;
 import org.ReleaseInfo;
 import org.graffiti.core.GenericFileFilter;
+import org.graffiti.graph.Graph;
 import org.graffiti.managers.pluginmgr.PluginDescription;
 import org.graffiti.plugin.GenericPlugin;
 import org.graffiti.plugin.io.InputSerializer;
@@ -292,10 +293,17 @@ public class DefaultIOManager implements IOManager {
 		return null;
 	}
 	
+	
+	
+	@Override
+	public JFileChooser createSaveFileChooser() {
+		return createSaveFileChooser(null);
+	}
+
 	/*
 	 * @see org.graffiti.managers.IOManager#createSaveFileChooser()
 	 */
-	public JFileChooser createSaveFileChooser() {
+	public JFileChooser createSaveFileChooser(Graph g) {
 		fc = getFileChooser();
 		String defaultExt = ".gml";
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
@@ -304,8 +312,14 @@ public class DefaultIOManager implements IOManager {
 		fc.resetChoosableFileFilters();
 		fc.setAcceptAllFileFilterUsed(false);
 		// Set<String> knownExt = new TreeSet<String>();
-		for (Iterator<OutputSerializer> itr = outputSerializer.iterator(); itr.hasNext();) {
-			OutputSerializer os = itr.next();
+		for (OutputSerializer os : outputSerializer) {
+			/*
+			 * if the given graph cannot be serialized with the current 
+			 * output serializer, skip it 
+			 */
+			if(g != null && ! os.validFor(g))
+				continue;
+				
 			String[] ext = os.getExtensions();
 			String[] desc = os.getFileTypeDescriptions();
 			if (ext.length != desc.length) {

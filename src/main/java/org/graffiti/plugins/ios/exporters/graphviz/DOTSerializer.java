@@ -71,6 +71,12 @@ public class DOTSerializer
 		return new String[] { "DOT" };
 	}
 	
+	
+	@Override
+	public boolean validFor(Graph g) {
+		return true;
+	}
+
 	/*
 	 * @see org.graffiti.plugin.io.OutputSerializer#write(java.io.OutputStream,
 	 * org.graffiti.graph.Graph)
