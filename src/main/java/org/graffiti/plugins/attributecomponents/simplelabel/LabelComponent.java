@@ -67,6 +67,8 @@ import org.graffiti.plugin.view.ShapeNotFoundException;
 import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.util.Pair;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.label_alignment.LabelAlignmentAttribute;
+
 /**
  * This component represents a label for a node or an edge.
  * 
@@ -142,6 +144,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	@Override
 	public void highlight(boolean value, MouseEvent e) {
 		super.highlight(value, e);
+		// if (label != null)
 		label.highlight(value);
 	}
 	
@@ -167,6 +170,30 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	 */
 	@Override
 	public void attributeChanged(Attribute attr) {
+		// if (label == null)
+		// recreate();
+		// else {
+		
+		String alignment2 = labelAttr.getAlignment();
+		String alignment3 = "";
+		if (attr instanceof LabelAlignmentAttribute) {
+			alignment3 = ((LabelAlignmentAttribute) attr).getValue().toString();
+			// if (alignment3.equals(AlignmentSetting.HIDDEN.toGMLstring())) {
+			// removeAll();
+			// label.setText("");
+			adjustComponentSize();
+			validate();
+			return;
+			// }
+		}
+		// if (labelAttr.getAlignment() != null)
+		// if (labelAttr.getAlignment().equals(AlignmentSetting.HIDDEN.toGMLstring())) {
+		// removeAll();
+		// label.setText("");
+		// adjustComponentSize();
+		// validate();
+		// return;
+		// }
 		if (attr.getPath().startsWith(Attribute.SEPARATOR + GRAPHICS + Attribute.SEPARATOR + COORDINATE)) {
 			setLocation((int) (loc.getX() + shift.getX()), (int) (loc.getY() + shift.getY())); // -1
 			return;
@@ -236,8 +263,10 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			}
 			
 		}
-		// repaint();
 	}
+	
+	// repaint();
+	// }
 	
 	/**
 	 * Used when the shape changed in the datastructure. Makes the painter
@@ -248,7 +277,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	 */
 	@Override
 	public void recreate() {
-		// System.out.println("recreating Label " + this);
+		System.out.println("recreating Label " + this);
 		removeAll();
 		if (labelAttr == null)
 			ErrorMsg.addErrorMessage("LabelComponent: labelAttr == null!");
@@ -477,7 +506,12 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	@Override
 	public void adjustComponentSize() {
 		try {
-			Dimension preferredSize = label.getPreferredSize();
+			Dimension preferredSize;
+			String alignment2 = labelAttr.getAlignment();
+			if (alignment2.equals(AlignmentSetting.HIDDEN.toGMLstring()))
+				preferredSize = new Dimension(1, 1);
+			else
+				preferredSize = label.getPreferredSize();
 			int h = preferredSize.height + 1;
 			int w = preferredSize.width + 1;
 			// System.out.println(h+" "+w+" "+this.hashCode()+" "+frame);
