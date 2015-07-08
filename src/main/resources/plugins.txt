@@ -65,7 +65,6 @@ C:\Users\matthiak\Projects\Vanted\SourceCode\vanted\src\main\java\de\ipk_gatersl
 C:\Users\matthiak\Projects\Vanted\SourceCode\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\layouters\random\plugin.xml
 C:\Users\matthiak\Projects\Vanted\SourceCode\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\layouters\resize_and_grid_layout\plugin.xml
 C:\Users\matthiak\Projects\Vanted\SourceCode\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\layouters\rt_tree\plugin.xml
-C:\Users\matthiak\Projects\Vanted\SourceCode\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\layouters\shortest_path\plugin.xml
 C:\Users\matthiak\Projects\Vanted\SourceCode\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\layouters\springembedder_1\plugin.xml
 C:\Users\matthiak\Projects\Vanted\SourceCode\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\layouters\tree_simple\plugin.xml
 C:\Users\matthiak\Projects\Vanted\SourceCode\vanted\src\main\java\de\ipk_gatersleben\ag_nw\graffiti\plugins\misc\add_attributes\plugin.xml
