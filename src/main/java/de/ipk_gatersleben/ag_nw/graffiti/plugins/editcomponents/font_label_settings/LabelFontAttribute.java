@@ -48,7 +48,8 @@ public class LabelFontAttribute extends StringAttribute {
 		assert o != null;
 		
 		try {
-			setString((String) o);
+			// setString((String) o);
+			this.value = (String) o;
 		} catch (ClassCastException cce) {
 			throw new IllegalArgumentException("Invalid value type.");
 		}
