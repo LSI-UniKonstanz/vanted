@@ -55,6 +55,7 @@ import org.graffiti.graphics.EdgeLabelAttribute;
 import org.graffiti.graphics.EdgeLabelPositionAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.graphics.LabelAttribute;
+import org.graffiti.graphics.NodeGraphicAttribute;
 import org.graffiti.graphics.NodeLabelAttribute;
 import org.graffiti.graphics.NodeLabelPositionAttribute;
 import org.graffiti.options.PreferencesInterface;
@@ -170,35 +171,19 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	 */
 	@Override
 	public void attributeChanged(Attribute attr) {
-		// if (label == null)
-		// recreate();
-		// else {
 		
-		String alignment2 = labelAttr.getAlignment();
-		String alignment3 = "";
-		if (attr instanceof LabelAlignmentAttribute) {
-			alignment3 = ((LabelAlignmentAttribute) attr).getValue().toString();
-			// if (alignment3.equals(AlignmentSetting.HIDDEN.toGMLstring())) {
-			// removeAll();
-			// label.setText("");
+		if (attr instanceof LabelAlignmentAttribute || attr instanceof NodeGraphicAttribute) {
+			
 			adjustComponentSize();
 			validate();
 			return;
-			// }
 		}
-		// if (labelAttr.getAlignment() != null)
-		// if (labelAttr.getAlignment().equals(AlignmentSetting.HIDDEN.toGMLstring())) {
-		// removeAll();
-		// label.setText("");
-		// adjustComponentSize();
-		// validate();
-		// return;
-		// }
+		
 		if (attr.getPath().startsWith(Attribute.SEPARATOR + GRAPHICS + Attribute.SEPARATOR + COORDINATE)) {
 			setLocation((int) (loc.getX() + shift.getX()), (int) (loc.getY() + shift.getY())); // -1
 			return;
 		} else {
-			// recreate();
+			recreate();
 			frame = labelAttr.getLabelFrameSetting();
 			
 			double strokeWidth = 1d;
@@ -218,7 +203,6 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				}
 				
 			} catch (Exception err) {
-				//
 			}
 			
 			boolean needToAdjust = false;
