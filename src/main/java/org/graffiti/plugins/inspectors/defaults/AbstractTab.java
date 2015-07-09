@@ -46,58 +46,57 @@ import org.graffiti.session.Session;
 import org.graffiti.session.SessionListener;
 import org.graffiti.util.DelayThread;
 
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.network.TabNetworkAlgorithms;
-
 /**
  * Represents an inspector tab.
  * 
  * @version $Revision: 1.21 $
  */
 public abstract class AbstractTab
-extends InspectorTab
-implements SessionListener, SelectionListener, AttributeListener {
+		extends InspectorTab
+		implements SessionListener, SelectionListener, AttributeListener {
 	// ~ Instance fields ========================================================
-
+	
 	private static Logger logger = Logger.getLogger(AbstractTab.class);
-	static{
+	static {
 		logger.setLevel(Level.INFO);
 	}
-
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	/** The attribute used to display the tree. */
 	protected Attribute collAttr;
-
+	
 	/** The root node of the displayed tree. */
 	protected DefaultMutableTreeNode rootNode;
-
+	
 	/** The elements that are displayed by this tab. */
 	protected Collection<? extends Attributable> attributables;
-
+	
 	private TreeSelectionListener myTreeSelectionListener = new MyTreeSelectionListener();
-
+	
 	/**
 	 * Avoids duplicate updates
 	 */
-
+	
 	private DelayThread delayThreadAttributeChanged;
-
+	
 	private DelayThread delayThreadAttributeAddedRemoved;
-
+	
 	AbstractTab instance;
+	
 	/**
 	 * Creates a new AbstractTab object.
 	 */
 	public AbstractTab() {
 		super();
 		instance = this;
-
+		
 		delayThreadAttributeChanged = new DelayThread(new DelayThread.DelayedCallback() {
 			
 			@Override
 			public void call(AttributeEvent e) {
 				logger.debug("editPanel.updateTable");
-				if(e != null)
+				if (e != null)
 					/*
 					 * until i find a better solution, this will be it.
 					 * The problem is, that recreating a ChartAttribute (through rebuildTreeAction)
@@ -106,46 +105,47 @@ implements SessionListener, SelectionListener, AttributeListener {
 					 * This doesn't happen when we only update the table
 					 * But.. Node and Edgetabs don't work properly when we only update the table
 					 * especially labels will not change, if updated using the LabelEditor dialog
-					 * So. for now.. we check, which tab acutally this is (Node/Edge/Graph tab are children of 
+					 * So. for now.. we check, which tab acutally this is (Node/Edge/Graph tab are children of
 					 * Abstracttab) and trigger the action appropriately
 					 */
-					if(instance instanceof GraphTab)
+					if (instance instanceof GraphTab)
 						editPanel.updateTable(e.getAttribute());
 					else
 						rebuildTreeAction();
 			}
 		});
-		delayThreadAttributeChanged.setName(getClass().getName().substring(getClass().getName().lastIndexOf(".")+1)+": DelayThread Attribute Changes");
+		delayThreadAttributeChanged.setName(getClass().getName().substring(getClass().getName().lastIndexOf(".") + 1) + ": DelayThread Attribute Changes");
 		delayThreadAttributeChanged.start();
-
+		
 		delayThreadAttributeAddedRemoved = new DelayThread(new DelayThread.DelayedCallback() {
-
+			
 			@Override
 			public void call(AttributeEvent e) {
 				logger.debug("rebuildTreeAction");
 				rebuildTreeAction();
 			}
 		});
-		delayThreadAttributeAddedRemoved.setName(getClass().getName().substring(getClass().getName().lastIndexOf(".")+1)+": DelayThread for Added/Removed Attribute");
+		delayThreadAttributeAddedRemoved.setName(getClass().getName().substring(getClass().getName().lastIndexOf(".") + 1)
+				+ ": DelayThread for Added/Removed Attribute");
 		delayThreadAttributeAddedRemoved.start();
-
+		
 		setLayout(TableLayout.getLayout(TableLayoutConstants.FILL, TableLayoutConstants.FILL));
 		editPanel = new DefaultEditPanel(getEmptyDescription());
 		editPanel.setOpaque(false);
 		add(editPanel, "0,0");
 		validate();
 	}
-
+	
 	public String getEmptyDescription() {
 		return "Properties of active selection/session are editable at this place.";
 	}
-
+	
 	public String getTabNameForAttributeDescription() {
 		return getTitle();
 	}
-
+	
 	// ~ Methods ================================================================
-
+	
 	/**
 	 * Called after an attribute has been added.
 	 * 
@@ -153,17 +153,17 @@ implements SessionListener, SelectionListener, AttributeListener {
 	 *           the AttributeEvent detailing the changes.
 	 */
 	public void postAttributeAdded(AttributeEvent e) {
-		if( ! isShowing())
+		if (!isShowing())
 			return;
-
+		
 		if (attributables != null)
 			if (attributables.contains(e.getAttribute().getAttributable())) {
-				//				startRebuildTreeActionThread();
+				// startRebuildTreeActionThread();
 				delayThreadAttributeAddedRemoved.setAttributeEvent(e);
-
+				
 			}
 	}
-
+	
 	/**
 	 * Called after an attribute has been changed.
 	 * 
@@ -171,15 +171,15 @@ implements SessionListener, SelectionListener, AttributeListener {
 	 *           the AttributeEvent detailing the changes.
 	 */
 	public void postAttributeChanged(AttributeEvent e) {
-		if( ! isShowing())
+		if (!isShowing())
 			return;
-		logger.setLevel(Level.DEBUG);
+		// logger.setLevel(Level.DEBUG);
 		logger.debug("postAttributeChanged");
 		if (attributables != null && attributables.contains(e.getAttribute().getAttributable())) {
 			delayThreadAttributeChanged.setAttributeEvent(e);
 		}
 	}
-
+	
 	/**
 	 * Called after an attribute has been removed.
 	 * 
@@ -187,15 +187,15 @@ implements SessionListener, SelectionListener, AttributeListener {
 	 *           the AttributeEvent detailing the changes.
 	 */
 	public void postAttributeRemoved(AttributeEvent e) {
-		if( ! isShowing())
+		if (!isShowing())
 			return;
 		if (attributables != null)
 			if (attributables.contains(e.getAttribute().getAttributable())) {
-				//				startRebuildTreeActionThread();
+				// startRebuildTreeActionThread();
 				delayThreadAttributeAddedRemoved.setAttributeEvent(e);
 			}
 	}
-
+	
 	/**
 	 * Called just before an attribute is added.
 	 * 
@@ -204,7 +204,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 	 */
 	public void preAttributeAdded(AttributeEvent e) {
 	}
-
+	
 	/**
 	 * Called before a change of an attribute takes place.
 	 * 
@@ -213,7 +213,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 	 */
 	public void preAttributeChanged(AttributeEvent e) {
 	}
-
+	
 	/**
 	 * Called just before an attribute is removed.
 	 * 
@@ -222,21 +222,19 @@ implements SessionListener, SelectionListener, AttributeListener {
 	 */
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
-
-
+	
 	protected void rebuildTreeAction() {
-
 		
 		/** The tree view of the attribute hierarchy. */
-		logger.debug("classname: "+this.getClass().getName());
+		logger.debug("classname: " + this.getClass().getName());
 		JTree attributeTree;
-
+		
 		// save current selection
 		String oldMarkedPath = null;
-
+		
 		// start new tree with given attribute at root
 		Attribute newAttr = collAttr;
-
+		
 		if (attributables != null && !attributables.isEmpty()) {
 			newAttr = (attributables.iterator().next()).getAttributes();
 			this.collAttr = newAttr;
@@ -251,10 +249,10 @@ implements SessionListener, SelectionListener, AttributeListener {
 			attributeTree.putClientProperty("JTree.lineStyle", "Angled");
 			attributeTree.getSelectionModel().setSelectionMode(
 					TreeSelectionModel.SINGLE_TREE_SELECTION);
-
+			
 			/*
 			 * build attribute hierarchy of newAttr starting at root and
-			 * mark oldMarkedPath 
+			 * mark oldMarkedPath
 			 */
 			TreePath selectedTreePath = null;
 			DefaultMutableTreeNode selectedNode = fillNode(this.rootNode, newAttr,
@@ -272,37 +270,34 @@ implements SessionListener, SelectionListener, AttributeListener {
 			}
 			attributeTree.makeVisible(selectedTreePath);
 		}
-		//		}
-		//		rebuildActionNeeded = false;
+		// }
+		// rebuildActionNeeded = false;
 	}
-
-
-
+	
 	@Override
 	public void componentShown(ComponentEvent e) {
 		rebuildTreeAction();
 	}
-
-
+	
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {
-		if( ! isShowing())
+		if (!isShowing())
 			return;
 		logger.debug("transactionFinished");
 		delayThreadAttributeAddedRemoved.setAttributeEvent(null);
 	}
-
+	
 	@Override
 	public boolean isSelectionListener() {
 		return true;
 	}
-
+	
 	public void selectionChanged(SelectionEvent e) {
 		logger.debug("selectionChanged");
-		if( ! isShowing())
+		if (!isShowing())
 			return;
 		rebuildTreeAction();
 	}
-
+	
 	public void sessionChanged(Session s) {
 		if (s != null && s.getGraph() != null) {
 			editPanel.setListenerManager(s.getGraph().getListenerManager());
@@ -320,11 +315,11 @@ implements SessionListener, SelectionListener, AttributeListener {
 		}
 		rebuildTreeAction();
 	}
-
+	
 	public void sessionDataChanged(Session s) {
 		// empty
 	}
-
+	
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -335,7 +330,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 		attributables = graphElements;
 		rebuildTreeAction();
 	}
-
+	
 	/**
 	 * Builds a tree of the hierarchy starting at attr and appends it to
 	 * treeNode.
@@ -352,7 +347,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 			Collection<Attributable> graphElements) {
 		this.fillNode(treeNode, attr, graphElements, null);
 	}
-
+	
 	/**
 	 * Same as <code>fillNode(DefaultMutableTreeNode treeNode, Attribute attr)
 	 * </code> but additionally selects the given attribute at markedPath.
@@ -371,7 +366,7 @@ implements SessionListener, SelectionListener, AttributeListener {
 			Attribute attr, Collection<? extends Attributable> graphElements, String markedPath) {
 		DefaultMutableTreeNode returnTreeNode = null;
 		DefaultMutableTreeNode newNode;
-
+		
 		boolean allHave = true;
 		boolean allSameValue = true;
 		Collection<Attribute> attrs;
@@ -382,106 +377,106 @@ implements SessionListener, SelectionListener, AttributeListener {
 		} else
 			if (attr instanceof CompositeAttribute) {
 				attrs = new LinkedList<Attribute>();
-
+				
 				try {
 					attrs.add(((CompositeAttribute) attr).getAttributes());
 				} catch (RuntimeException e) {
 					Object attributeValue = attr.getValue();
-
+					
 					// check if present in all graph elements
 					if (graphElements.size() > 1) {
 						for (Iterator<? extends Attributable> geit = graphElements.iterator(); geit.hasNext();) {
 							try {
 								Attribute oAttr = ((Attributable) geit.next())
 										.getAttribute(attr.getPath().substring(1));
-
+								
 								if (!attributeValue.equals(oAttr.getValue())) {
 									allSameValue = false;
-
+									
 									break;
 								}
 							} catch (AttributeNotFoundException anfe) {
 								// found graph element that has no such attribute
 								allHave = false;
-
+								
 								break;
 							}
 						}
 					}
-
+					
 					if (allHave) {
 						newNode = new DefaultMutableTreeNode(new BooledAttribute(attr, allSameValue));
-
+						
 						// treeNode.add(newNode);
 						if (attr.getPath().equals(markedPath)) {
 							// returnTreePath = new TreePath(newNode.getPath());
 							returnTreeNode = newNode;
 						}
 					}
-
+					
 					return returnTreeNode;
 				}
 			} else {
 				allHave = true;
 				allSameValue = true;
-
+				
 				Attribute attribute = attr;
 				// System.out.println("AAA: "+attribute.getClass().getSimpleName());
 				Object attributeValue = attribute.getValue();
-
+				
 				// check if present in all graph elements
 				if (graphElements.size() > 1) {
 					for (Iterator<? extends Attributable> geit = graphElements.iterator(); geit.hasNext();) {
 						try {
 							Attribute oAttr = ((Attributable) geit.next())
 									.getAttribute(attribute.getPath().substring(1));
-
+							
 							if (!attributeValue.equals(oAttr.getValue())) {
 								allSameValue = false;
-
+								
 								break;
 							}
 						} catch (AttributeNotFoundException anfe) {
 							// found graph element that has no such attribute
 							allHave = false;
-
+							
 							break;
 						}
 					}
 				}
-
+				
 				if (allHave) {
 					newNode = new DefaultMutableTreeNode(new BooledAttribute(attribute,
 							allSameValue));
-
+					
 					// treeNode.add(newNode);
 					// if (attribute.getPath().equals(markedPath)) {
 					// returnTreePath = new TreePath(newNode.getPath());
 					// }
 				}
-
+				
 				return returnTreeNode;
 			}
-
+		
 		attrs = new ArrayList<Attribute>(attrs);
-
+		
 		for (Iterator<Attribute> it = attrs.iterator(); it.hasNext();) {
 			allHave = true;
 			allSameValue = true;
-
+			
 			Attribute attribute = (Attribute) it.next();
 			Object attributeValue = attribute.getValue();
-
+			
 			// check if present in all graph elements
 			if (graphElements.size() > 1) {
 				for (Iterator<? extends Attributable> geit = graphElements.iterator(); geit.hasNext();) {
 					try {
 						Attribute oAttr = ((Attributable) geit.next())
 								.getAttribute(attribute.getPath().substring(1));
-
+						
 						if (allSameValue && !attributeValue.equals(oAttr.getValue())) {
 							allSameValue = false;
-
+							
 							// break;
 						}
 					} catch (AttributeNotFoundException anfe) {
@@ -495,32 +490,32 @@ implements SessionListener, SelectionListener, AttributeListener {
 					}
 				}
 			}
-
+			
 			if (allHave) {
 				newNode = new DefaultMutableTreeNode(new BooledAttribute(attribute,
 						allSameValue));
-
+				
 				if (returnTreeNode == null) {
 					returnTreeNode = fillNode(newNode, attribute, graphElements,
 							markedPath);
 				} else {
 					fillNode(newNode, attribute, graphElements, null);
 				}
-
+				
 				treeNode.add(newNode);
-
+				
 				if (attribute.getPath().equals(markedPath)) {
 					returnTreeNode = newNode;
 				}
 			}
 		}
-
+		
 		// if (attr.getPath().equals(markedPath)) {
 		// returnTreePath = new TreePath(treeNode.getPath());
 		// }
 		return returnTreeNode;
 	}
-
+	
 	// ~ Inner Classes ==========================================================
 	/**
 	 * Implements valueChanged method that updates the table according to the
@@ -535,120 +530,120 @@ implements SessionListener, SelectionListener, AttributeListener {
 		 */
 		public void valueChanged(TreeSelectionEvent e) {
 			TreePath treePath = e.getNewLeadSelectionPath();
-
+			
 			if (treePath != null) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath
 						.getLastPathComponent();
-
+				
 				if (node == null)
 					return;
-
+				
 				// Attribute attr = (Attribute)node.getUserObject();
 				editPanel.buildTable(node, attributables, getTabNameForAttributeDescription());
 			}
 		}
 	}
-
+	
 	@Override
 	public boolean visibleForView(View v) {
 		return v != null && (v instanceof GraphView);
 	}
-
+	
 	public void selectionListChanged(SelectionEvent e) {
 		// empty
 	}
-
+	
 	public void transactionStarted(TransactionEvent e) {
 		// empty
 	}
-
-//	/**
-//	 * This delay thread will help prevent too many calls in short time
-//	 * by catching the calls and only giving the last stored event after
-//	 * a short period of time to the actual event handler using a
-//	 * callback mechanism
-//	 * 
-//	 * If it has delivered the event it will trigger "wait" and halt the thread
-//	 * A new event will then wake up the thread.
-//	 * @author matthiak
-//	 *
-//	 */
-//	class DelayThread extends Thread {
-//		private Logger logger = Logger.getLogger(instance.getClass());
-//
-//		static final int MAX_COUNT = 5;
-//		int counter;
-//		DelayedCallback callback;
-//		AttributeEvent e;
-//		/**
-//		 * 
-//		 */
-//		public DelayThread(DelayedCallback callback) {
-//			this.callback = callback;
-////			logger.setLevel(Level.INFO);
-//		}
-//		@Override
-//		public void run() {
-//			while(true){
-//				try {
-//					Thread.sleep(100);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//				increment();
-//				if(counter > MAX_COUNT){
-//					SwingUtilities.invokeLater(new Runnable() {
-//
-//						@Override
-//						public void run() {
-//							logger.debug("invoking callback");
-//							callback.call(e);
-//						}
-//					});
-//
-//					hibernate();
-//				}
-//			}
-//		}
-//
-//		public synchronized void setAttributeEvent(AttributeEvent e) {
-//			logger.debug("setting attribute");
-//			notify();
-//			this.e = e;
-//			reset();
-//		}		
-//
-//		private void reset() {
-//			logger.debug("resetting counter");
-//			counter = 0;
-//		}
-//
-//		private void increment() {
-//			logger.debug("incrementing");
-//			counter++;
-//		}
-//
-//		private synchronized void hibernate() {
-//			logger.debug("going to hibernate");
-//			try {
-//				wait();
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//			logger.debug("got wakeup call");
-//		}
-//
-//	}
-//
-//	/**
-//	 * This callback interface is used by the DelayThread
-//	 * Implementing classes can set the method to be called
-//	 * @author matthiak
-//	 *
-//	 */
-//	interface DelayedCallback {
-//		public void call(AttributeEvent e);
-//	}
+	
+	// /**
+	// * This delay thread will help prevent too many calls in short time
+	// * by catching the calls and only giving the last stored event after
+	// * a short period of time to the actual event handler using a
+	// * callback mechanism
+	// *
+	// * If it has delivered the event it will trigger "wait" and halt the thread
+	// * A new event will then wake up the thread.
+	// * @author matthiak
+	// *
+	// */
+	// class DelayThread extends Thread {
+	// private Logger logger = Logger.getLogger(instance.getClass());
+	//
+	// static final int MAX_COUNT = 5;
+	// int counter;
+	// DelayedCallback callback;
+	// AttributeEvent e;
+	// /**
+	// *
+	// */
+	// public DelayThread(DelayedCallback callback) {
+	// this.callback = callback;
+	// // logger.setLevel(Level.INFO);
+	// }
+	// @Override
+	// public void run() {
+	// while(true){
+	// try {
+	// Thread.sleep(100);
+	// } catch (InterruptedException e) {
+	// e.printStackTrace();
+	// }
+	// increment();
+	// if(counter > MAX_COUNT){
+	// SwingUtilities.invokeLater(new Runnable() {
+	//
+	// @Override
+	// public void run() {
+	// logger.debug("invoking callback");
+	// callback.call(e);
+	// }
+	// });
+	//
+	// hibernate();
+	// }
+	// }
+	// }
+	//
+	// public synchronized void setAttributeEvent(AttributeEvent e) {
+	// logger.debug("setting attribute");
+	// notify();
+	// this.e = e;
+	// reset();
+	// }
+	//
+	// private void reset() {
+	// logger.debug("resetting counter");
+	// counter = 0;
+	// }
+	//
+	// private void increment() {
+	// logger.debug("incrementing");
+	// counter++;
+	// }
+	//
+	// private synchronized void hibernate() {
+	// logger.debug("going to hibernate");
+	// try {
+	// wait();
+	// } catch (InterruptedException e) {
+	// e.printStackTrace();
+	// }
+	// logger.debug("got wakeup call");
+	// }
+	//
+	// }
+	//
+	// /**
+	// * This callback interface is used by the DelayThread
+	// * Implementing classes can set the method to be called
+	// * @author matthiak
+	// *
+	// */
+	// interface DelayedCallback {
+	// public void call(AttributeEvent e);
+	// }
 }
 
 // ------------------------------------------------------------------------------
