@@ -111,7 +111,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 	}
 	
 	public void installDragNDropForAnnotationFiles(final JButton target, final JButton addIdentifiers) {
-		target.setToolTipText("Drag & Drop supported");
+		target.setToolTipText(target.getToolTipText() + "<br/>Drag & Drop supported");
 		final String title = target.getText();
 		FileDrop.Listener fdl = new FileDrop.Listener() {
 			public void filesDropped(File[] files) {
@@ -145,7 +145,8 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 	}
 	
 	public void installDragNDropForArrayFiles(final JButton target, final JButton addIdentifiers) {
-		target.setToolTipText("Drag & Drop supported");
+		
+		target.setToolTipText(target.getToolTipText() + "<br/>Drag & Drop supported");
 		final String title = target.getText();
 		FileDrop.Listener fdl = new FileDrop.Listener() {
 			public void filesDropped(File[] files) {
