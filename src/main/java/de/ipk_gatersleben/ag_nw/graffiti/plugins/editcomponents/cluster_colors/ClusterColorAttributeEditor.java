@@ -39,7 +39,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
  *         (c) 2004 IPK-Gatersleben
  */
 public class ClusterColorAttributeEditor
-					extends AbstractValueEditComponent {
+		extends AbstractValueEditComponent {
 	private JPanel jpanel;
 	
 	private int barCount = -1;
@@ -162,7 +162,7 @@ public class ClusterColorAttributeEditor
 			Object o = jpanel.getComponent(i);
 			if (o instanceof JLabel) {
 				JLabel jb = (JLabel) o;
-				if (jb.getText().equals(EMPTY_STRING))
+				if (jb.getText().equals(EMPTY_STRING) || jb.getText().equals("no cluster-info"))
 					continue;
 				Boolean bar = (Boolean) jb.getClientProperty("isBar");
 				Integer barIndex = (Integer) jb.getClientProperty("barIndex");

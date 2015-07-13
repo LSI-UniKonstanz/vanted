@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.Colors;
-import org.ErrorMsg;
 import org.graffiti.attributes.StringAttribute;
 import org.graffiti.event.AttributeEvent;
 
@@ -39,7 +38,6 @@ public class ClusterColorAttribute extends StringAttribute {
 	public static String desc = "<html>Modify the color (fill/first row and outline/second row)<br>of the nodes with cluster information and the color of the nodes in the cluster-graph";
 	
 	private String notSet = "undefined"; // "0,0,0,255:255,255,255,255;255,0,0,255:0,255,255,255;50,50,0,255:255,55,55,255";
-	
 	
 	private ArrayList<String> listClusterNames;
 	private ArrayList<Color> listClusterColors;
@@ -72,9 +70,9 @@ public class ClusterColorAttribute extends StringAttribute {
 	@Override
 	public void setDefaultValue() {
 		value = notSet;
-		listClusterColors = new  ArrayList<Color>();
+		listClusterColors = new ArrayList<Color>();
 		listClusterNames = new ArrayList<String>();
-		listOutlineColors = new  ArrayList<Color>();
+		listOutlineColors = new ArrayList<Color>();
 		
 	}
 	
@@ -141,7 +139,6 @@ public class ClusterColorAttribute extends StringAttribute {
 	 * That method must be called when the value is set.
 	 * The value is a String object and needs to be parsed and
 	 * put into the designated lists that keep the colors
-	 * 
 	 * Those colors are not yet connected to clusters, since the original
 	 * implementation only used a simple index, for which cluster color to use.
 	 */
@@ -150,13 +147,11 @@ public class ClusterColorAttribute extends StringAttribute {
 		listOutlineColors = interpreteColorString(INDEX_CLUSTEROUTLINECOLOR);
 	}
 	
-
-	
 	private void convertColorArrayToString() {
 		value = notSet;
 		ensureMinimumColorSelection(listClusterColors.size());
 		
-		for(int clusterID = 0; clusterID < listClusterColors.size(); clusterID++ ) {
+		for (int clusterID = 0; clusterID < listClusterColors.size(); clusterID++) {
 			setColorString(INDEX_CLUSTERCOLOR, clusterID, listClusterColors.get(clusterID));
 			setColorString(INDEX_CLUSTEROUTLINECOLOR, clusterID, listOutlineColors.get(clusterID));
 		}
@@ -245,8 +240,6 @@ public class ClusterColorAttribute extends StringAttribute {
 		}
 	}
 	
-
-	
 	private void ensureMinimumColorSelection(int clusterCount) {
 		if (value.equals(notSet)) {
 			value = "null:null";
@@ -259,44 +252,48 @@ public class ClusterColorAttribute extends StringAttribute {
 	
 	/**
 	 * Must be called on an existing ClusterColorAttribute to update the cluster information.
-	 * Existing clusters not found in clusterNames will be deleted 
+	 * Existing clusters not found in clusterNames will be deleted
 	 * clusterNames not found in the Attribute Object will be added
-	 * 
 	 * Nothing is changed, if the clusterlists are the same
+	 * 
 	 * @param clusterNames
 	 */
-	public void updateClusterList(Collection<String> clusterNames )
+	public void updateClusterList(Collection<String> clusterNames)
 	{
+		if (clusterNames == null || clusterNames.isEmpty()) {
+			setDefaultValue();
+			return;
+		}
+		
 		/*
 		 * If this attribute is created, only colors are known, since clusternames
 		 * are not stored in GML or when this stringattriute is read.. Compatibiliy
 		 * Sooo. we just need to connect names, to already set colors.
 		 */
-		if(listClusterNames.isEmpty()) {
+		if (listClusterNames.isEmpty()) {
 			/*
 			 * if graph is copied or the cluster color attribute was not updated
 			 * the number of clustercolors can diverge from the actual present clusters, since
-			 * clustercolors is a graph attribute .. 
+			 * clustercolors is a graph attribute ..
 			 * e.g. copying from graph with two clusters.. copy one node (one cluster member)
 			 * insert to new graph.. graph attribute still has two colors colors but only one cluster
-			 * 
-			 *  By calling updateClusterList again with the actuall number of present clusters
-			 *  the clustercolors graph attribute gets updated.
+			 * By calling updateClusterList again with the actuall number of present clusters
+			 * the clustercolors graph attribute gets updated.
 			 */
 			listClusterNames.addAll(clusterNames);
 			updateClusterList(clusterNames);
 		} else {
-
+			
 			Color[] colors = Colors.getColors(clusterNames.size() * 2); //get some colors that won't match the existing ones
 			int colorIdx = clusterNames.size() * 2 - 1;
 			ArrayList<Color> newListClusterColors = new ArrayList<Color>();
 			ArrayList<Color> newListOutlineColors = new ArrayList<Color>();
 			ArrayList<String> newListClusterNames = new ArrayList<String>();
 			int foundIdx;
-			for(String curClusterName : clusterNames) {
+			for (String curClusterName : clusterNames) {
 				foundIdx = -1;
-				for(int i = 0; i < listClusterNames.size(); i++) {
-					if(curClusterName.equals(listClusterNames.get(i))){
+				for (int i = 0; i < listClusterNames.size(); i++) {
+					if (curClusterName.equals(listClusterNames.get(i))) {
 						foundIdx = i;
 					}
 				}
@@ -307,10 +304,10 @@ public class ClusterColorAttribute extends StringAttribute {
 				 * See comment above.
 				 * In that case, act like this is a new color.
 				 */
-				if(foundIdx >= listClusterColors.size())
+				if (foundIdx >= listClusterColors.size())
 					foundIdx = -1;
 				
-				if(foundIdx >= 0 ) {
+				if (foundIdx >= 0) {
 					newListClusterColors.add(listClusterColors.get(foundIdx));
 					newListOutlineColors.add(listOutlineColors.get(foundIdx));
 					newListClusterNames.add(listClusterNames.get(foundIdx));
@@ -322,12 +319,13 @@ public class ClusterColorAttribute extends StringAttribute {
 					colorIdx--;
 				}
 			}
-
+			
 			listClusterColors = newListClusterColors;
 			listOutlineColors = newListOutlineColors;
 			listClusterNames = newListClusterNames;
 		}
 	}
+	
 	@Override
 	protected void doSetValue(Object o) throws IllegalArgumentException {
 		assert o != null;
@@ -343,10 +341,14 @@ public class ClusterColorAttribute extends StringAttribute {
 	}
 	
 	public int getDefinedClusterColorCount() {
-		if (value == null || value.equals(notSet))
-			return 0;
-		else
-			return value.length() - value.replaceAll(";", "").length() + 1;
+		/*
+		 * if (value == null || value.equals(notSet))
+		 * return 0;
+		 * else
+		 * return value.length() - value.replaceAll(";", "").length() + 1;
+		 */
+		return listClusterColors.size();
+		
 	}
 	
 	public void setClusterColor(int clusterID, Color color) {
