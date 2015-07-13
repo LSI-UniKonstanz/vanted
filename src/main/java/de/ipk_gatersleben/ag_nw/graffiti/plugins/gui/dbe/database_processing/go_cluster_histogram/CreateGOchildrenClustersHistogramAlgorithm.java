@@ -39,8 +39,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  *         (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class CreateGOchildrenClustersHistogramAlgorithm
-					extends AbstractAlgorithm
-					implements AlgorithmWithComponentDescription {
+		extends AbstractAlgorithm
+		implements AlgorithmWithComponentDescription {
 	
 	private boolean setLabel = true;
 	private boolean removeExistingDatamapping = true;
@@ -59,7 +59,6 @@ public class CreateGOchildrenClustersHistogramAlgorithm
 		return "Hierarchy";
 	}
 	
-	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
@@ -71,24 +70,22 @@ public class CreateGOchildrenClustersHistogramAlgorithm
 				Category.CLUSTER
 				));
 	}
-
-
 	
 	@Override
 	public String getDescription() {
 		return "<html>" +
-							"This command enumerates all<br>" +
-							"leaf nodes with mapping data, connected<br>" +
-							"to a given Hierarchy-Node.<br>" +
-							"A histogram of the number of <br>" +
-							"occurrences of a specific cluster <br>" +
-							"ID is created. A data mapping<br>" +
-							"representing this data is created <br>" +
-							"and shown as a bar-chart.<br><br>" +
-							"A similar command which processes<br>" +
-							"the cluster distribution of neighbour-<br>" +
-							"nodes of nodes with mapping-data is<br>" +
-							"available from the &quot;Analysis&quot; menu.";
+				"This command enumerates all<br>" +
+				"leaf nodes with mapping data, connected<br>" +
+				"to a given Hierarchy-Node.<br>" +
+				"A histogram of the number of <br>" +
+				"occurrences of a specific cluster <br>" +
+				"ID is created. A data mapping<br>" +
+				"representing this data is created <br>" +
+				"and shown as a bar-chart.<br><br>" +
+				"A similar command which processes<br>" +
+				"the cluster distribution of neighbour-<br>" +
+				"nodes of nodes with mapping-data is<br>" +
+				"available from the &quot;Analysis&quot; menu.";
 	}
 	
 	public JComponent getDescriptionComponent() {
@@ -101,12 +98,12 @@ public class CreateGOchildrenClustersHistogramAlgorithm
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
-							new BooleanParameter(setLabel, "Show Frequency Information", "If enabled, the frequency information will be added to the node labels."),
-							new BooleanParameter(removeExistingDatamapping, "Remove existing data",
-												"If disabled, a additional mapping is performed, existing data is not removed."),
-							new BooleanParameter(processUpstreamOfSelection, "Process upstream",
-												"If enabled, not only the selection is processed, but also all nodes upstream.")
-
+				new BooleanParameter(setLabel, "Show Frequency Information", "If enabled, the frequency information will be added to the node labels."),
+				new BooleanParameter(removeExistingDatamapping, "Remove existing data",
+						"If disabled, a additional mapping is performed, existing data is not removed."),
+				new BooleanParameter(processUpstreamOfSelection, "Process upstream",
+						"If enabled, not only the selection is processed, but also all nodes upstream.")
+		
 		};
 	}
 	
@@ -124,7 +121,7 @@ public class CreateGOchildrenClustersHistogramAlgorithm
 	 */
 	public void execute() {
 		try {
-			graph.getListenerManager().transactionStarted(this);
+//			graph.getListenerManager().transactionStarted(this);
 			Collection<Node> workingSet = getSelectedOrAllNodes();
 			final TreeSet<String> knownClusterIDs = new TreeSet<String>();
 			HashSet<Node> processedNodes = new HashSet<Node>();
@@ -172,12 +169,12 @@ public class CreateGOchildrenClustersHistogramAlgorithm
 				}
 			}
 		} finally {
-			graph.getListenerManager().transactionFinished(this);
+//			graph.getListenerManager().transactionFinished(this);
 		}
 	}
 	
 	private void processNode(NodeHelper nh, TreeSet<String> knownClusterIDs, boolean setLabel, boolean removeExistingDataMapping,
-						boolean specialModeUpstreamProcessing, HashSet<Node> specialModeValidLeafNodes) {
+			boolean specialModeUpstreamProcessing, HashSet<Node> specialModeValidLeafNodes) {
 		HashSet<Node> childNodes = nh.getAllOutChildNodes();
 		
 		if (specialModeUpstreamProcessing) {
@@ -242,14 +239,14 @@ public class CreateGOchildrenClustersHistogramAlgorithm
 			nh.setLabel(lbl);
 		}
 		nh.memAddDataMapping("Cluster Distribution for " + nh.getLabel(),
-							"cluster frequency", null, "calculated analysis", "system", "Frequency of clusters in child nodes of a GO-Term-Hierarchy-Node", "");
+				"cluster frequency", null, "calculated analysis", "system", "Frequency of clusters in child nodes of a GO-Term-Hierarchy-Node", "");
 		
 		nh.setChartType(GraffitiCharts.PIE);
 	}
 	
 	public static Collection<String> getLeafNodesClusterIDs(
-						HashSet<Node> processedNodes,
-						NodeHelper nh) {
+			HashSet<Node> processedNodes,
+			NodeHelper nh) {
 		Collection<String> result = new ArrayList<String>();
 		if (!processedNodes.contains(nh.getGraphNode())) {
 			processedNodes.add(nh.getGraphNode());
