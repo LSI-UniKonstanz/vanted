@@ -50,7 +50,7 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 				Category.DATA
 				));
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
@@ -59,7 +59,7 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 		// graph.getListenerManager().transactionStarted(this);
 		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
 		final BackgroundTaskStatusProviderSupportingExternalCall status =
-							new BackgroundTaskStatusProviderSupportingExternalCallImpl("Initialize...", "");
+				new BackgroundTaskStatusProviderSupportingExternalCallImpl("Initialize...", "");
 		if (workNodes.size() > 0)
 			BackgroundTaskHelper.issueSimpleTask(getName(), "Initialize...", new Runnable() {
 				public void run() {
@@ -82,9 +82,9 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 								geh.getDataMappings().clear();
 								if (ge.getGraph() == null)
 									continue;
-								removeMappingDataFrom(ge);
 								AttributeHelper.setToolTipText(ge, "");
 							}
+							removeMappingDataFrom(ge);
 						}
 						status.setCurrentStatusValue(-1);
 					} finally {
@@ -111,6 +111,12 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 			n.removeAttribute("mapping");
 		} catch (AttributeNotFoundException anfe) {
 			// empty
+		}
+		try {
+			n.removeAttribute("graphics.component");
+		} catch (AttributeNotFoundException anfe) {
+			// empty
+			System.out.println("attribute not found");
 		}
 	}
 	
