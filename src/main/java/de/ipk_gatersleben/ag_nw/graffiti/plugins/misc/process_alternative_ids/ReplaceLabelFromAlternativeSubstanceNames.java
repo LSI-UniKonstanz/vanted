@@ -47,9 +47,8 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "Data.Alternate identifiers";
+		return "Mapping.Alternate identifiers";
 	}
-	
 	
 	@Override
 	public Set<Category> getSetCategory() {
@@ -59,7 +58,7 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 				Category.CLUSTER
 				));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
@@ -70,7 +69,7 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 		int maxID = 0;
 		HashMap<Integer, String> exampleValues = new HashMap<Integer, String>();
 		maxID = enumerateExistingAlternativeSubstanceIDsAndTheirExamples(getSelectedOrAllGraphElements(), maxID,
-							exampleValues);
+				exampleValues);
 		if (maxID < 0) {
 			errors.add("No data mapping with defined alternative identifiers found!");
 		}
@@ -83,10 +82,10 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 	@Override
 	public String getDescription() {
 		return "<html>" + "If only a single data annotation index is selected, the main ID<br>"
-							+ "for each mapping is updated with this information.<br>"
-							+ "Additionally the node label or cluster ID may be modified with<br>"
-							+ "this command. Please specify the modes of operation and select<br>"
-							+ "the data annotation idices to be processed:";
+				+ "for each mapping is updated with this information.<br>"
+				+ "Additionally the node label or cluster ID may be modified with<br>"
+				+ "this command. Please specify the modes of operation and select<br>"
+				+ "the data annotation idices to be processed:";
 	}
 	
 	@Override
@@ -94,7 +93,7 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 		int maxID = 0;
 		HashMap<Integer, String> exampleValues = new HashMap<Integer, String>();
 		maxID = enumerateExistingAlternativeSubstanceIDsAndTheirExamples(getSelectedOrAllGraphElements(), maxID,
-							exampleValues);
+				exampleValues);
 		ArrayList<String> selvals = new ArrayList<String>();
 		for (int i = 0; i <= maxID; i++) {
 			String s = "" + i;
@@ -104,16 +103,16 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 			selvals.add(s);
 		}
 		return getParameters(new ObjectListParameter(modeOfOperation, "<html><b>Mode of Operation", null,
-							SetLabelModeOfOperation.values()), new StringParameter(modeOfOperationDividerForMappings,
-							"<html><b>Divider for multiple mappings", null), new StringParameter(
-								modeOfOperationDividerForSingleMapping, "<html><b>Divider for annotation list", null),
-								new BooleanParameter(modeOfOperationIncludeEmptyValues, "<html><b>Include empty values", null),
-								new BooleanParameter(modeOfOperationSetLabel, "<html><b>Result: Set Label", null), new BooleanParameter(
-													modeOfOperationSetClusterID, "<html><b>Result: Set Cluster ID", null), selvals);
+				SetLabelModeOfOperation.values()), new StringParameter(modeOfOperationDividerForMappings,
+				"<html><b>Divider for multiple mappings", null), new StringParameter(
+				modeOfOperationDividerForSingleMapping, "<html><b>Divider for annotation list", null),
+				new BooleanParameter(modeOfOperationIncludeEmptyValues, "<html><b>Include empty values", null),
+				new BooleanParameter(modeOfOperationSetLabel, "<html><b>Result: Set Label", null), new BooleanParameter(
+						modeOfOperationSetClusterID, "<html><b>Result: Set Cluster ID", null), selvals);
 	}
 	
 	private Parameter[] getParameters(Parameter p1, Parameter p2, Parameter p3, Parameter p4, Parameter p5,
-						Parameter p6, ArrayList<String> selvals) {
+			Parameter p6, ArrayList<String> selvals) {
 		ArrayList<Parameter> result = new ArrayList<Parameter>();
 		result.add(p1);
 		result.add(p2);
@@ -156,7 +155,7 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 	public void execute() {
 		if (parametersToBeConsidered.size() <= 0) {
 			MainFrame.showMessageDialog("No alternative identifier index has been selected in the parameter dialog.",
-								"Information");
+					"Information");
 		}
 		int workCnt = 0;
 		graph.getListenerManager().transactionStarted(this);
@@ -222,23 +221,23 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 			if (divider2.contains("<") && divider2.contains(">"))
 				htmlLabel = true;
 			if (modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableCreateColumns
-								|| modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableCreateRows
-								|| modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableUseExistingLabelAsTableHeaderCreateColumns
-								|| modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableUseExistingLabelAsTableHeaderCreateRows) {
+					|| modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableCreateRows
+					|| modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableUseExistingLabelAsTableHeaderCreateColumns
+					|| modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableUseExistingLabelAsTableHeaderCreateRows) {
 				htmlLabel = true;
 				result.append("<table border=\"1\">");
 				if (modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableUseExistingLabelAsTableHeaderCreateColumns
-									|| modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableUseExistingLabelAsTableHeaderCreateRows)
+						|| modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableUseExistingLabelAsTableHeaderCreateRows)
 					result.append("<tr><th colspan=\"" + mappingStrings.size() + "\">" + currentLabel + "</th></tr>");
 				if (modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableCreateColumns
-									|| modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableUseExistingLabelAsTableHeaderCreateColumns) {
+						|| modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableUseExistingLabelAsTableHeaderCreateColumns) {
 					// add information as table columns
 					result.append("<tr>");
 					result.append(getMultipleListValues("<td>", "</td>", mappingStrings, divider2));
 					result.append("</tr>");
 				}
 				if (modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableCreateRows
-									|| modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableUseExistingLabelAsTableHeaderCreateRows) {
+						|| modeOfOperation == SetLabelModeOfOperation.setLabelCreateTableUseExistingLabelAsTableHeaderCreateRows) {
 					// add information as table rows
 					result.append(getMultipleListValues("<tr><td>", "</td></tr>", mappingStrings, divider2));
 				}
@@ -259,7 +258,7 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 	}
 	
 	private String getMultipleListValues(String preMap, String postMap, ArrayList<ArrayList<String>> mappingStrings,
-						String dividerInList) {
+			String dividerInList) {
 		StringBuilder result = new StringBuilder();
 		for (ArrayList<String> v : mappingStrings) {
 			result.append(preMap);
@@ -281,7 +280,7 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 	}
 	
 	public static int enumerateExistingAlternativeSubstanceIDsAndTheirExamples(Collection<GraphElement> graphElements,
-						int maxID, HashMap<Integer, String> exampleValues) {
+			int maxID, HashMap<Integer, String> exampleValues) {
 		for (GraphElement ge : graphElements) {
 			GraphElementHelper geh = new GraphElementHelper(ge);
 			for (SubstanceInterface md : geh.getDataMappings()) {

@@ -57,7 +57,7 @@ public class AddDiagramLegendAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Data";
+		return "Mapping";
 	}
 	
 	@Override
@@ -68,6 +68,7 @@ public class AddDiagramLegendAlgorithm extends AbstractAlgorithm {
 				Category.CHART
 				));
 	}
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
@@ -82,14 +83,14 @@ public class AddDiagramLegendAlgorithm extends AbstractAlgorithm {
 	public String getDescription() {
 		if (AttributeHelper.hasAttribute(graph, "hm_gamma"))
 			return "<html>" +
-								"This command creates a color-scale legend for the<br>" +
-								"heatmap (color-coding) diagrams of the current graph.<br>" +
-								"The heatmap color-selection and boundary specification<br>" +
-								"is available from the network tab, but only in case<br>" +
-								"the heatmap diagram style has been activated before<br>" +
-								"from the node or edge tab.<br>" +
-								"You may specify here, how many different colors should<br>" +
-								"be processed, and how large the legend should be.";
+					"This command creates a color-scale legend for the<br>" +
+					"heatmap (color-coding) diagrams of the current graph.<br>" +
+					"The heatmap color-selection and boundary specification<br>" +
+					"is available from the network tab, but only in case<br>" +
+					"the heatmap diagram style has been activated before<br>" +
+					"from the node or edge tab.<br>" +
+					"You may specify here, how many different colors should<br>" +
+					"be processed, and how large the legend should be.";
 		else
 			return null;
 	}

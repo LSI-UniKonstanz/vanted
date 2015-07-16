@@ -45,9 +45,8 @@ public class CombineMappingData extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Data";
+		return "Mapping";
 	}
-	
 	
 	@Override
 	public Set<Category> getSetCategory() {
@@ -57,7 +56,6 @@ public class CombineMappingData extends AbstractAlgorithm {
 				Category.COMPUTATION
 				));
 	}
-
 	
 	@Override
 	public String getDescription() {
@@ -84,7 +82,7 @@ public class CombineMappingData extends AbstractAlgorithm {
 		mergeMultipleMappingsIntoSingleMapping(workNodes);
 		graph.getListenerManager().transactionFinished(this);
 		MainFrame.showMessage("Merged multiple data mappings into a single data mapping for the selected nodes ("
-							+ workNodes.size() + ")", MessageType.INFO);
+				+ workNodes.size() + ")", MessageType.INFO);
 		GraphHelper.issueCompleteRedrawForActiveView();
 	}
 	

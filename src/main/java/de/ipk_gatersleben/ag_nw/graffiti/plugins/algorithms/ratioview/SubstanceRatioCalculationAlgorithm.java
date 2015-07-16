@@ -45,7 +45,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  *         10.7.2006
  */
 public class SubstanceRatioCalculationAlgorithm
-					extends AbstractAlgorithm implements AlgorithmWithComponentDescription {
+		extends AbstractAlgorithm implements AlgorithmWithComponentDescription {
 	
 	public static int ratioCalculationCount = 0;
 	
@@ -57,7 +57,7 @@ public class SubstanceRatioCalculationAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "Data";
+		return "Mapping";
 	}
 	
 	@Override
@@ -68,14 +68,15 @@ public class SubstanceRatioCalculationAlgorithm
 				Category.COMPUTATION
 				));
 	}
+	
 	@Override
 	public String getDescription() {
 		return "<html>Calculates the ratio between any two substances.<br>" +
-							"<br>" +
-							"<small>For the example three substances where selected. The<br>" +
-							"resulting new graph view contains a n*n matrix which shows<br>" +
-							"the ratio for the example time series data.<br><br>" +
-							"<br>";
+				"<br>" +
+				"<small>For the example three substances where selected. The<br>" +
+				"resulting new graph view contains a n*n matrix which shows<br>" +
+				"the ratio for the example time series data.<br><br>" +
+				"<br>";
 	}
 	
 	@Override
@@ -103,7 +104,7 @@ public class SubstanceRatioCalculationAlgorithm
 	
 	public void execute() {
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl status =
-							new BackgroundTaskStatusProviderSupportingExternalCallImpl("Create Substance-Ratio View", "Please wait...");
+				new BackgroundTaskStatusProviderSupportingExternalCallImpl("Create Substance-Ratio View", "Please wait...");
 		
 		final List<NodeHelper> workNodes;
 		if (MainFrame.getInstance().getActiveEditorSession().getGraph() == graph)
@@ -111,13 +112,13 @@ public class SubstanceRatioCalculationAlgorithm
 		else
 			workNodes = GraphHelper.getHelperNodes(graph);
 		BackgroundTaskHelper.issueSimpleTask("Substance-Ratio View",
-							"Calculate substance ratios",
-							new Runnable() {
-								public void run() {
-									createRatioView(status, workNodes, graph, useAverageValues, getActionEvent(), false);
-								}
-							},
-							null, status);
+				"Calculate substance ratios",
+				new Runnable() {
+					public void run() {
+						createRatioView(status, workNodes, graph, useAverageValues, getActionEvent(), false);
+					}
+				},
+				null, status);
 	}
 	
 	public Graph executeAndReturnGraph(BackgroundTaskStatusProviderSupportingExternalCall status) {
@@ -126,12 +127,12 @@ public class SubstanceRatioCalculationAlgorithm
 	}
 	
 	private static Graph createRatioView(
-						BackgroundTaskStatusProviderSupportingExternalCall status,
-						List<NodeHelper> workNodes,
-						Graph graph,
-						boolean useAverageValues,
-						final ActionEvent ae,
-						boolean returnResultDontShow) {
+			BackgroundTaskStatusProviderSupportingExternalCall status,
+			List<NodeHelper> workNodes,
+			Graph graph,
+			boolean useAverageValues,
+			final ActionEvent ae,
+			boolean returnResultDontShow) {
 		
 		Integer overrideReplicateId = null;
 		if (useAverageValues)
@@ -200,23 +201,23 @@ public class SubstanceRatioCalculationAlgorithm
 						double avgB = sum2 / vl2.size();
 						double v = avgA / avgB;
 						int plantID = ratioNodeHelper.memGetPlantID(
-											id.getSpecies(),
-											id.getGenoType(),
-											null, null, null);
+								id.getSpecies(),
+								id.getGenoType(),
+								null, null, null);
 						added++;
 						ratioNodeHelper.memSample(
-											v, id.getReplicateId(),
-											plantID,
-											"ratio",
-											id.getTimeUnit(),
-											id.getTimePoint());
+								v, id.getReplicateId(),
+								plantID,
+								"ratio",
+								id.getTimeUnit(),
+								id.getTimePoint());
 					}
 				}
 				
 				if (added > 0)
 					ratioNodeHelper.memAddDataMapping(
-										"<html>" + nh1.getLabel() + "<hr>" + nh2.getLabel(),
-										"ratio", AttributeHelper.getDateString(new Date()), "Ration View", "auto generated", "", "");
+							"<html>" + nh1.getLabel() + "<hr>" + nh2.getLabel(),
+							"ratio", AttributeHelper.getDateString(new Date()), "Ration View", "auto generated", "", "");
 				ratioNodeHelper.setLabel("<html><center>" + nh1.getLabel() + "<hr>" + nh2.getLabel());
 				processNodeDesign(ratioGraph, nh1, nh2, ratioNodeHelper, nHeight, nWidth);
 			}
@@ -263,10 +264,10 @@ public class SubstanceRatioCalculationAlgorithm
 	}
 	
 	private static void processNodeDesign(Graph ratioGraph,
-						NodeHelper nh1,
-						NodeHelper nh2,
-						NodeHelper ratioNodeHelper,
-						double nodeHeight, double nodeWidth) {
+			NodeHelper nh1,
+			NodeHelper nh2,
+			NodeHelper ratioNodeHelper,
+			double nodeHeight, double nodeWidth) {
 		ratioNodeHelper.setClusterID(nh1.getClusterID("") + "/" + nh2.getClusterID(""));
 		ratioNodeHelper.setBorderWidth(1);
 		ratioNodeHelper.setRounding(5);
@@ -288,9 +289,9 @@ public class SubstanceRatioCalculationAlgorithm
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new BooleanParameter(useAverageValues, " Use Average Values for Ratio-Calculation",
-							"<html>" +
-												"If selected, the average value for each sample will be used for the calculation<br>" +
-												"of the ratio, instead of calculating the replicate rations (and displaying the average of them).") };
+				"<html>" +
+						"If selected, the average value for each sample will be used for the calculation<br>" +
+						"of the ratio, instead of calculating the replicate rations (and displaying the average of them).") };
 	}
 	
 	@Override

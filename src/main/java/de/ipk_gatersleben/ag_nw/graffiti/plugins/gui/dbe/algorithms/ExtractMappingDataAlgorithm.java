@@ -49,9 +49,8 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Data";
+		return "Mapping";
 	}
-	
 	
 	@Override
 	public Set<Category> getSetCategory() {
@@ -61,13 +60,13 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 				Category.EXPORT
 				));
 	}
-
+	
 	private boolean onlyOne = false;
 	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new BooleanParameter(onlyOne, "Extract single experiment",
-							"<html>If enabled, all experiments will be merged together") };
+				"<html>If enabled, all experiments will be merged together") };
 	}
 	
 	@Override
@@ -84,7 +83,7 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 		// graph.getListenerManager().transactionStarted(this);
 		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
 		final BackgroundTaskStatusProviderSupportingExternalCall status =
-							new BackgroundTaskStatusProviderSupportingExternalCallImpl("Initialize...", "");
+				new BackgroundTaskStatusProviderSupportingExternalCallImpl("Initialize...", "");
 		if (workNodes.size() > 0)
 			BackgroundTaskHelper.issueSimpleTask(getName(), "Initialize...", new Runnable() {
 				public void run() {

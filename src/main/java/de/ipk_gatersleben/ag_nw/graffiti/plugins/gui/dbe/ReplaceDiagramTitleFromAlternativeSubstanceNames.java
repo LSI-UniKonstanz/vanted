@@ -34,9 +34,8 @@ public class ReplaceDiagramTitleFromAlternativeSubstanceNames extends AbstractAl
 	
 	@Override
 	public String getCategory() {
-		return "Data.Alternate identifiers";
+		return "Mapping.Alternate identifiers";
 	}
-	
 	
 	@Override
 	public Set<Category> getSetCategory() {
@@ -46,7 +45,7 @@ public class ReplaceDiagramTitleFromAlternativeSubstanceNames extends AbstractAl
 				Category.VISUAL
 				));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
@@ -64,7 +63,7 @@ public class ReplaceDiagramTitleFromAlternativeSubstanceNames extends AbstractAl
 		int maxID = 0;
 		HashMap<Integer, String> exampleValues = new HashMap<Integer, String>();
 		maxID = ReplaceLabelFromAlternativeSubstanceNames.enumerateExistingAlternativeSubstanceIDsAndTheirExamples(
-							getSelectedOrAllGraphElements(), maxID, exampleValues);
+				getSelectedOrAllGraphElements(), maxID, exampleValues);
 		if (maxID < 0) {
 			MainFrame.showMessageDialog("No alternative identifiers available!", "No data available");
 		} else {
@@ -79,10 +78,10 @@ public class ReplaceDiagramTitleFromAlternativeSubstanceNames extends AbstractAl
 				selvals.add(s);
 			}
 			Object result = JOptionPane.showInputDialog(MainFrame.getInstance(),
-								"<html>Select the alternative identifier index which will be used to set the<br>"
-													+ "diagram title of the data charts (0 is the default value from the input form).<br>"
-													+ "You may also select &quot;Show All&quot; to displa all identifiers.:", "Select Identifier",
-								JOptionPane.QUESTION_MESSAGE, null, selvals.toArray(), null);
+					"<html>Select the alternative identifier index which will be used to set the<br>"
+							+ "diagram title of the data charts (0 is the default value from the input form).<br>"
+							+ "You may also select &quot;Show All&quot; to displa all identifiers.:", "Select Identifier",
+					JOptionPane.QUESTION_MESSAGE, null, selvals.toArray(), null);
 			if (result == null) {
 				MainFrame.showMessageDialog("No value selected, substance ids remain unchanged.", "Information");
 			} else {

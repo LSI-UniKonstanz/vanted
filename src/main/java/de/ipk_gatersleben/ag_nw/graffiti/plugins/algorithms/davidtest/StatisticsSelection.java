@@ -32,13 +32,12 @@ public class StatisticsSelection extends LaunchGui implements Algorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Data";
+		return "Mapping";
 	}
-
+	
 	@Override
 	public Set<Category> getSetCategory() {
 		return null;
 	}
-	
 	
 }
