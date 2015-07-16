@@ -75,6 +75,11 @@ public class Addon {
 		this.icon = icon;
 	}
 	
+	/**
+	 * Tests, if this addon is compatible with the currently running version of VANTED
+	 * 
+	 * @return
+	 */
 	public boolean isTestedWithRunningVersion() {
 		// 1.8,2.1, //// 1.8,
 		StringTokenizer tok = new StringTokenizer(description.getCompatibleVersion(), ",");
@@ -91,36 +96,36 @@ public class Addon {
 		long[] longArrMainVersion = new long[strSplitMainversion.length];
 		long[] longArrMinVersion = new long[strSplitMainversion.length];
 		
-		for(int i = 0; i < strSplitMainversion.length; i++) {
+		for (int i = 0; i < strSplitMainversion.length; i++) {
 			longArrMainVersion[i] = Long.parseLong(strSplitMainversion[i]);
 			longArrMinVersion[i] = Long.parseLong(strSplitMinCompVersion[i]);
 		}
 		
-		
-		while(tok.hasMoreTokens()) {
+		while (tok.hasMoreTokens()) {
 			String[] strSplitAddonVersion = tok.nextToken().split("\\.");
 			
-			for(int i = 0; i < strSplitMainversion.length; i++) {
+			for (int i = 0; i < strSplitMainversion.length; i++) {
 				long longPartVersion = Long.parseLong(strSplitAddonVersion[i]);
 				/*
 				 * if the main / sub version is definitely larger then the min-main/sub version
 				 * we don't need to check further.
 				 */
-				if(longArrMinVersion[i] < longPartVersion 
+				if (longArrMinVersion[i] < longPartVersion
 						&& longPartVersion <= longArrMainVersion[i]) {
 					return true;
-
-				} 
+					
+				}
 				/*
 				 * But if it is equal to some minimum value we need to check the next part of the version
 				 * as well
 				 */
-				else if(longArrMinVersion[i] <= longPartVersion )
-					iscompatible = true;
-				else {
-					iscompatible = false;
-					break;
-				}
+				else
+					if (longArrMinVersion[i] <= longPartVersion)
+						iscompatible = true;
+					else {
+						iscompatible = false;
+						break;
+					}
 			}
 		}
 		return iscompatible;
