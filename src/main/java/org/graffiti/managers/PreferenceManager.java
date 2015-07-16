@@ -26,7 +26,6 @@ import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.tool.Tool;
 import org.graffiti.plugin.view.AttributeComponent;
-import org.graffiti.util.InstanceCreationException;
 import org.graffiti.util.InstanceLoader;
 
 public class PreferenceManager
@@ -124,8 +123,7 @@ public class PreferenceManager
 		for (String viewname : plugin.getViews()) {
 			try {
 				
-				Object createInstance = InstanceLoader.createInstance(viewname);
-				Class<?> forName = createInstance.getClass();
+				Class<?> forName = InstanceLoader.getCurrentLoader().loadClass(viewname);
 				
 				logger.debug("view name: " + forName.getName());
 				
@@ -149,8 +147,8 @@ public class PreferenceManager
 				}
 			} catch (SecurityException e) {
 				e.printStackTrace();
-			} catch (InstanceCreationException e) {
-				e.printStackTrace();
+			} catch (ClassNotFoundException e1) {
+				e1.printStackTrace();
 			}
 			
 		}
