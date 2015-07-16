@@ -474,7 +474,8 @@ public class ManageAddonDialog extends JDialog {
 				buttondownload.setOpaque(false);
 				buttondownload.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						close();
+						setModal(false);
+//						close();
 						
 						final RSSFeedManager rfm = RSSFeedManager.getInstance();
 						rfm.loadRegisteredFeeds();
