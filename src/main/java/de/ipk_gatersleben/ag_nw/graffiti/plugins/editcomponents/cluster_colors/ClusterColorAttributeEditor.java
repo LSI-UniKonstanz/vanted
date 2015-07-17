@@ -184,7 +184,7 @@ public class ClusterColorAttributeEditor
 			Object o = jpanel.getComponent(i);
 			if (o instanceof JLabel) {
 				JLabel jb = (JLabel) o;
-				if (jb.getText().equals(EMPTY_STRING))
+				if (jb.getText().equals(EMPTY_STRING) || jb.getText().equals("no cluster-info"))
 					continue;
 				Boolean bar = (Boolean) jb.getClientProperty("isBar");
 				Integer barIndex = (Integer) jb.getClientProperty("barIndex");
