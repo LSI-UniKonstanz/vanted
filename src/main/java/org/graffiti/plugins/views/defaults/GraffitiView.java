@@ -141,10 +141,8 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 * components can use this variable to check, if this view is currently
 	 * finishing a transaction and thus can behave differently as ususal
 	 * Currently it is used to selectively NOT update dependent components on each node
-	 * 
 	 */
 	public boolean isFinishingTransacation;
-	
 	
 	public GraffitiView() {
 		setLayout(null);
@@ -371,7 +369,6 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		long nna;
 		long nne;
 		nna = System.currentTimeMillis();
-		int nsc = 0;
 		for (Node n : currentGraph.getNodes()) {
 			NodeComponent nc = createNodeComponent(getGraphElementComponentMap(), n);
 			if (nc == null)
@@ -384,14 +381,12 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 						"statusbar.error.graphelement.ShapeNotFoundException",
 						MessageType.ERROR);
 			}
-			nsc++;
 		}
 		
 		nne = System.currentTimeMillis();
 		if (nne == nna)
 			nne += 1;
 		long eea = System.currentTimeMillis();
-		int esc = 0;
 		for (Edge e : currentGraph.getEdges()) {
 			EdgeComponent ec = createEdgeComponent(getGraphElementComponentMap(), e);
 			if (ec == null)
@@ -404,7 +399,6 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 						"statusbar.error.graphelement.ShapeNotFoundException",
 						MessageType.ERROR);
 			}
-			esc++;
 		}
 		
 		long eee = System.currentTimeMillis();
@@ -651,12 +645,9 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 			if (!(s instanceof EditorSession))
 				continue;
 			EditorSession es = (EditorSession) s;
-			if (s != null && es.getSelectionModel() != null)
+			if (s != null && es.getSelectionModel() != null && es.getGraph() == currentGraph)
 				es.getSelectionModel().selectionChanged();
 		}
-		
-		// if (isVisible())
-		// repaint();
 		
 		long bbbb = System.currentTimeMillis();
 		if (bbbb == startTime)
@@ -951,11 +942,11 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		EdgeComponent ec = (EdgeComponent) getGraphElementComponent(edge);
 		
 		NodeComponent dependentNode;
-		dependentNode = (NodeComponent)getGraphElementComponent(edge.getSource());
-		if(dependentNode != null)
+		dependentNode = (NodeComponent) getGraphElementComponent(edge.getSource());
+		if (dependentNode != null)
 			dependentNode.removeDependentComponent(ec);
-		dependentNode = (NodeComponent)getGraphElementComponent(edge.getTarget());
-		if(dependentNode != null)
+		dependentNode = (NodeComponent) getGraphElementComponent(edge.getTarget());
+		if (dependentNode != null)
 			dependentNode.removeDependentComponent(ec);
 		removeGraphElementComponent(edge);
 		if (ec != null) {
@@ -1223,13 +1214,12 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 *           the EdgeEvent detailing the changes.
 	 */
 	@Override
-	@SuppressWarnings("unchecked")
 	public synchronized void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		
 		isFinishingTransacation = true;
 //		getActiveTransactions()--;
 		// System.out.println("EVENT DISPATCH THREAD? "+SwingUtilities.isEventDispatchThread());
-
+		
 		// checkGraphSize();
 		
 		blockAdjust = true;
@@ -1272,12 +1262,11 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 			if (status != null)
 				status.setCurrentStatusValueFine(100d * idx / maxIdx);
 			
-			if(idx % 500 == 0) {
+			if (idx % 500 == 0) {
 				long period = System.currentTimeMillis() - time1;
-				logger.debug("time for changing 500 objects "+period+"ms");
+				logger.debug("time for changing 500 objects " + period + "ms");
 				time1 = System.currentTimeMillis();
 			}
-			
 			
 			Attributable atbl = null;
 			// System.out.println("Changed: "+obj);
@@ -1340,22 +1329,22 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 										 */
 									}
 									if (gec != null) {
-										if (obj instanceof Attribute) 
+										if (obj instanceof Attribute)
 											gec.attributeChanged((Attribute) obj);
 										else {
 											gec.attributeChanged(atbl.getAttribute("graphics"));
 											gec.attributeChanged(atbl.getAttribute(""));
 										}
 										
-										if(gec instanceof AbstractGraphElementComponent) {
-											setDependendComponents.addAll(((AbstractGraphElementComponent)gec).getDependentGraphElementComponents());
+										if (gec instanceof AbstractGraphElementComponent) {
+											setDependendComponents.addAll(((AbstractGraphElementComponent) gec).getDependentGraphElementComponents());
 										}
 									}
 								}
 							} else {
 								// graph element has been ADDED
 								if (atbl instanceof Node) {
-										setPostAddedNodes.add((Node)atbl);
+									setPostAddedNodes.add((Node) atbl);
 //									postNodeAdded(new GraphEvent((Node) atbl));
 								} else {
 									if (atbl instanceof Edge) {
@@ -1365,8 +1354,6 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 							}
 						}
 					} else {
-						// TODO check: an Attributable that is neither a Graph
-						// nor a GraphElement; that should not be possible
 						blockAdjust = false;
 						requestCompleteRedraw = true;
 						break;
@@ -1380,38 +1367,38 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		}
 		
 //		logger.debug("in transaction: updating "+setDependendComponents.size()+" dependend components");
-		long size = setDependendComponents.size();
+//		long size = setDependendComponents.size();
 		long counter = 0;
-		for(GraphElementComponent gec : setDependendComponents) {
+		for (GraphElementComponent gec : setDependendComponents) {
 			
-			if(++counter % 1000 == 0) {
+			if (++counter % 1000 == 0) {
 				System.out.print(".");
 			}
 			
 			try {
-				if(gec instanceof EdgeComponent)
-					((EdgeComponent)gec).updateShape();
+				if (gec instanceof EdgeComponent)
+					((EdgeComponent) gec).updateShape();
 				else
-					((AbstractGraphElementComponent)gec).createNewShape(CoordinateSystem.XY);
+					((AbstractGraphElementComponent) gec).createNewShape(CoordinateSystem.XY);
 			} catch (ShapeNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
-
+		
 		/*
 		 * add nodes and edges from transaction in one go
 		 */
-		if(! setPostAddedNodes.isEmpty() || ! edgesToAdd.isEmpty()) {
+		if (!setPostAddedNodes.isEmpty() || !edgesToAdd.isEmpty()) {
 			setVisible(false); //disable layout-trigger for each added component
-			for(GraphElement atbl : setPostAddedNodes) {
+			for (GraphElement atbl : setPostAddedNodes) {
 				postNodeAdded(new GraphEvent((Node) atbl));
 			}
 			// add pending edges
-			for (Iterator iter = edgesToAdd.iterator(); iter.hasNext();) {
+			for (Iterator<Edge> iter = edgesToAdd.iterator(); iter.hasNext();) {
 				idx++;
 				if (status != null)
 					status.setCurrentStatusValueFine(100d * idx / maxIdx);
-				postEdgeAdded(new GraphEvent((Edge) iter.next()));
+				postEdgeAdded(new GraphEvent(iter.next()));
 			}
 			setVisible(true); //layout components trigger
 		}
@@ -1451,7 +1438,6 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 			status.setCurrentStatusValueFine(s3);
 		}
 		
-
 		// ToolButton.requestToolButtonFocus();
 		isFinishingTransacation = false;
 	}
@@ -1971,11 +1957,10 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		this.drawMode = dm;
 		repaint();
 	}
-
+	
 	public DrawMode getDrawMode() {
 		return drawMode;
 	}
-	
 	
 }
 
