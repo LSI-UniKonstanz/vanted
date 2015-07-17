@@ -18,7 +18,7 @@ import org.graffiti.selection.SelectionEvent;
  * @version $Revision: 1.9 $
  */
 public class NodeTab
-					extends AbstractTab {
+		extends AbstractTab {
 	// ~ Constructors ===========================================================
 	
 	private static final long serialVersionUID = 1L;
@@ -45,10 +45,7 @@ public class NodeTab
 	
 	public void selectionChanged(SelectionEvent e) {
 		attributables = e.getSelection().getNodes();
-		if( ! isShowing())
-			return;
-		rebuildTreeAction();
-		
+		super.selectionChanged(e);
 	}
 	
 	@Override
@@ -60,7 +57,7 @@ public class NodeTab
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_LEADING;
 	}
-
+	
 }
 
 // ------------------------------------------------------------------------------

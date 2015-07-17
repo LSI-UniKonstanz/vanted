@@ -11,8 +11,6 @@ package org.graffiti.plugins.inspectors.defaults;
 
 import java.util.ArrayList;
 
-import javax.swing.SwingUtilities;
-
 import org.graffiti.attributes.Attributable;
 import org.graffiti.event.AttributeEvent;
 import org.graffiti.plugin.inspector.InspectorTab;
@@ -26,7 +24,7 @@ import org.graffiti.session.Session;
  * @version $Revision: 1.11 $
  */
 public class GraphTab
-					extends AbstractTab {
+		extends AbstractTab {
 	// ~ Instance fields ========================================================
 	
 	private static final long serialVersionUID = 1L;
@@ -81,28 +79,14 @@ public class GraphTab
 			ge.add(s.getGraph());
 		attributables = ge;
 		super.sessionChanged(s);
-//		rebuildTree(ge);
 		
-//		final Session fs = s;
-//		SwingUtilities.invokeLater(new Runnable() {
-//			
-//			@Override
-//			public void run() {
-//				ArrayList<Attributable> ge = new ArrayList<Attributable>();
-//				
-//				if (fs != null)
-//					ge.add(fs.getGraph());
-//				rebuildTree(ge);
-//			}
-//		});
 	}
 	
-
 	@Override
 	public String getTabParentPath() {
 		return "Attributes";
 	}
-
+	
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_LEADING;

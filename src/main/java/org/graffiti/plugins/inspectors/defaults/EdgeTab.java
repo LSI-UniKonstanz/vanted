@@ -21,7 +21,7 @@ import org.graffiti.session.Session;
  * @version $Revision: 1.10 $
  */
 public class EdgeTab
-					extends AbstractTab {
+		extends AbstractTab {
 	// ~ Constructors ===========================================================
 	
 	private static final long serialVersionUID = 1L;
@@ -48,17 +48,13 @@ public class EdgeTab
 	@SuppressWarnings("unchecked")
 	public void selectionChanged(SelectionEvent e) {
 		attributables = e.getSelection().getEdges();
-		if( ! isShowing())
-			return;
-		rebuildTreeAction();
-		
+		super.selectionChanged(e);
 	}
-
-
+	
 	@Override
 	public void sessionChanged(Session s) {
 		super.sessionChanged(s);
-
+		
 		EditorSession editorSession = null;
 		
 		try {
@@ -70,9 +66,8 @@ public class EdgeTab
 		
 		setEditPanelGraphElementMap(editorSession != null ? editorSession.getGraphElementsMap() : null);
 		
-
 	}
-
+	
 	@Override
 	public void sessionDataChanged(Session s) {
 		super.sessionDataChanged(s);
@@ -86,19 +81,18 @@ public class EdgeTab
 		}
 		
 		setEditPanelGraphElementMap(editorSession != null ? editorSession.getGraphElementsMap() : null);
-
+		
 	}
-
+	
 	@Override
 	public String getTabParentPath() {
 		return "Attributes";
 	}
-
+	
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_LEADING;
 	}
-	
 	
 }
 

@@ -226,7 +226,7 @@ public abstract class AbstractTab
 	protected void rebuildTreeAction() {
 		
 		/** The tree view of the attribute hierarchy. */
-		logger.debug("classname: " + this.getClass().getName());
+		logger.debug("rebuildtree for classname: " + this.getClass().getName());
 		JTree attributeTree;
 		
 		// save current selection
@@ -300,11 +300,17 @@ public abstract class AbstractTab
 	
 	public void sessionChanged(Session s) {
 		if (s != null && s.getGraph() != null) {
+			logger.debug("session changed sessionname: " + s.getGraph().getName());
+			if ("org.graffiti.plugins.inspectors.defaults.EdgeTab".equals(getClass().getName()))
+				logger.debug("for edgetab");
 			editPanel.setListenerManager(s.getGraph().getListenerManager());
 			s.getGraph().getListenerManager().addDelayedAttributeListener(this);
 			if (s instanceof EditorSession) {
 				EditorSession es = (EditorSession) s;
 				editPanel.setGraphElementMap(es.getGraphElementsMap());
+				/*
+				 * attributables will be set during a following selectionChanged event
+				 */
 			}
 		} else {
 			this.attributables = null;
@@ -557,93 +563,6 @@ public abstract class AbstractTab
 		// empty
 	}
 	
-	// /**
-	// * This delay thread will help prevent too many calls in short time
-	// * by catching the calls and only giving the last stored event after
-	// * a short period of time to the actual event handler using a
-	// * callback mechanism
-	// *
-	// * If it has delivered the event it will trigger "wait" and halt the thread
-	// * A new event will then wake up the thread.
-	// * @author matthiak
-	// *
-	// */
-	// class DelayThread extends Thread {
-	// private Logger logger = Logger.getLogger(instance.getClass());
-	//
-	// static final int MAX_COUNT = 5;
-	// int counter;
-	// DelayedCallback callback;
-	// AttributeEvent e;
-	// /**
-	// *
-	// */
-	// public DelayThread(DelayedCallback callback) {
-	// this.callback = callback;
-	// // logger.setLevel(Level.INFO);
-	// }
-	// @Override
-	// public void run() {
-	// while(true){
-	// try {
-	// Thread.sleep(100);
-	// } catch (InterruptedException e) {
-	// e.printStackTrace();
-	// }
-	// increment();
-	// if(counter > MAX_COUNT){
-	// SwingUtilities.invokeLater(new Runnable() {
-	//
-	// @Override
-	// public void run() {
-	// logger.debug("invoking callback");
-	// callback.call(e);
-	// }
-	// });
-	//
-	// hibernate();
-	// }
-	// }
-	// }
-	//
-	// public synchronized void setAttributeEvent(AttributeEvent e) {
-	// logger.debug("setting attribute");
-	// notify();
-	// this.e = e;
-	// reset();
-	// }
-	//
-	// private void reset() {
-	// logger.debug("resetting counter");
-	// counter = 0;
-	// }
-	//
-	// private void increment() {
-	// logger.debug("incrementing");
-	// counter++;
-	// }
-	//
-	// private synchronized void hibernate() {
-	// logger.debug("going to hibernate");
-	// try {
-	// wait();
-	// } catch (InterruptedException e) {
-	// e.printStackTrace();
-	// }
-	// logger.debug("got wakeup call");
-	// }
-	//
-	// }
-	//
-	// /**
-	// * This callback interface is used by the DelayThread
-	// * Implementing classes can set the method to be called
-	// * @author matthiak
-	// *
-	// */
-	// interface DelayedCallback {
-	// public void call(AttributeEvent e);
-	// }
 }
 
 // ------------------------------------------------------------------------------
