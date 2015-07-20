@@ -163,6 +163,8 @@ public class SubstanceRatioCalculationAlgorithm
 		double workLoad = workNodes.size();
 		
 		for (NodeHelper nh1 : workNodes) {
+			if (!nh1.hasDataMapping())
+				continue;
 			// workGraph = nh1.getGraph();
 			TreeMap<DataMappingId, Stack<Double>> id2value_n1 = nh1.getIdsAndValues(overrideReplicateId);
 			if (status != null) {
@@ -173,6 +175,8 @@ public class SubstanceRatioCalculationAlgorithm
 			columnPosition = columnPositionInit;
 			
 			for (NodeHelper nh2 : workNodes) {
+				if (!nh2.hasDataMapping())
+					continue;
 				if (status != null && status.wantsToStop()) {
 					break;
 				}
