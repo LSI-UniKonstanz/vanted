@@ -15,7 +15,6 @@ public class DavidTestPlugin
 	public DavidTestPlugin() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.STATISTIC_FUNCTIONS))
 			this.algorithms = new Algorithm[] {
-					//								new StatisticsSelection(),
 					new ColorizeAlgorithm(),
 					new DavidTestAlgorithm(),
 					new GrubbsTestAlgorithm(),
