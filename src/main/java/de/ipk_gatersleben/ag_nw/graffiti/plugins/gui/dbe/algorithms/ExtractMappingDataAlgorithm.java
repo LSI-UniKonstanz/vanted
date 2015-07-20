@@ -20,6 +20,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
+import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
@@ -91,7 +92,7 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 					status.setCurrentStatusText1("Extracting mapped data...");
 					status.setCurrentStatusText2("");
 					Graph g = workNodes.iterator().next().getGraph();
-					g.getListenerManager().transactionStarted(ExtractMappingDataAlgorithm.this);
+//					g.getListenerManager().transactionStarted(ExtractMappingDataAlgorithm.this);
 					try {
 						status.setCurrentStatusText2("Getting mapped data from elements");
 						status.setCurrentStatusValue(0);
@@ -107,7 +108,7 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 						
 						status.setCurrentStatusValue(-1);
 					} finally {
-						g.getListenerManager().transactionFinished(ExtractMappingDataAlgorithm.this, false, status);
+//						g.getListenerManager().transactionFinished(ExtractMappingDataAlgorithm.this, false, status);
 						status.setCurrentStatusValue(100);
 					}
 					if (status.wantsToStop())
@@ -121,10 +122,22 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 		
 	}
 	
+	@Override
+	public void check() throws PreconditionException {
+		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
+		for (GraphElement element : workNodes) {
+			if (GraphElementHelper.hasDataMapping(element))
+				return;
+		}
+		throw new PreconditionException("Network does not contain any experimental data.");
+	}
+	
 	public static Collection<ExperimentInterface> getExperiments(Collection<GraphElement> workNodes, boolean onlyOne,
 			BackgroundTaskStatusProviderSupportingExternalCall status) {
 		HashMap<String, ExperimentInterface> allData = new HashMap<String, ExperimentInterface>();
 		for (GraphElement ge : workNodes) {
+			if (!GraphElementHelper.hasDataMapping(ge))
+				continue;
 			if (status != null && status.wantsToStop())
 				break;
 			GraphElementHelper geh = new GraphElementHelper(ge);
