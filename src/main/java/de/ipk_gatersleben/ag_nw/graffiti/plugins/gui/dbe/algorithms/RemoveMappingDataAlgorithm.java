@@ -116,7 +116,11 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 			n.removeAttribute("graphics.component");
 		} catch (AttributeNotFoundException anfe) {
 			// empty
-			System.out.println("attribute not found");
+		}
+		try {
+			n.removeAttribute("charting");
+		} catch (AttributeNotFoundException anfe) {
+			// empty
 		}
 	}
 	
