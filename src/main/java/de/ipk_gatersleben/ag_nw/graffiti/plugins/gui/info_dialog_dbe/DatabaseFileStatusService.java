@@ -15,7 +15,7 @@ import org.ReleaseInfo;
 import org.graffiti.editor.MainFrame;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.FileDownloadStatusInformationProvider;
-//import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundService;
+// import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.CompoundService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.transpath.TranspathService;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
@@ -30,23 +30,23 @@ public class DatabaseFileStatusService implements HelperClass {
 		final FolderPanel exp = new FolderPanel("");
 		
 		ArrayList<FileDownloadStatusInformationProvider> statusProviders =
-							new ArrayList<FileDownloadStatusInformationProvider>();
+				new ArrayList<FileDownloadStatusInformationProvider>();
 		
 		statusProviders.add(new EnzymeService());
-//TODO Torsten: Tobias hier m�sste die Abfrage f�r die Datenbank erfolgen.
-//		statusProviders.add(new CompoundService());
-		// if (ReleaseInfo.getRunningReleaseStatus()!=Release.KGML_EDITOR)
+		
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.DEBUG)
 			statusProviders.add(new TranspathService());
 		
 		exp.setFrameColor(null, null, 0, 0);
 		exp.addGuiComponentRow(null, new JLabel(
-							"<html>&nbsp;&nbsp;<font color='#BB22222'>Important: Evaluate license before downloading database files."), false);
+				"<html>&nbsp;&nbsp;<font color='#BB22222'>Important: Evaluate license before downloading database files."), false);
 		final int b = 5; // border
 		for (FileDownloadStatusInformationProvider sp : statusProviders) {
 			final GuiRow guiRow = new GuiRow(new JLabel(sp.getDescription()),
-								FolderPanel.getBorderedComponent(sp.getStatusPane(true), b, b, b, b));
+					FolderPanel.getBorderedComponent(sp.getStatusPane(true), b, b, b, b));
+			
 			exp.addGuiComponentRow(guiRow, true);
+			
 			final FileDownloadStatusInformationProvider spf = sp;
 			Runnable r = new Runnable() {
 				public void run() {
@@ -56,8 +56,8 @@ public class DatabaseFileStatusService implements HelperClass {
 						// empty
 					}
 					exp.exchangeGuiComponentRow(guiRow, new GuiRow(new JLabel(spf.getDescription()),
-										FolderPanel.getBorderedComponent(spf.getStatusPane(false), b, b, b, b)),
-										true);
+							FolderPanel.getBorderedComponent(spf.getStatusPane(false), b, b, b, b)),
+							true);
 					exp.dialogSizeUpdate();
 				}
 			};

@@ -41,9 +41,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.GUIhelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 public class EnzymeService extends MemoryHog
-					implements
-					BackgroundTaskStatusProvider,
-					FileDownloadStatusInformationProvider, HelperClass {
+		implements
+		BackgroundTaskStatusProvider,
+		FileDownloadStatusInformationProvider, HelperClass {
 	// Enzyme Class related variables
 	private static boolean read_enzclass_txt = false;
 	
@@ -65,6 +65,10 @@ public class EnzymeService extends MemoryHog
 	private static String status2;
 	private static int statusVal = -1;
 	
+	private FolderPanel res;
+	private JLabel labelStatus1;
+	private JLabel labelStatus2;
+	
 	public synchronized void finishedNewDownload() {
 		read_enzclass_txt = false;
 		enzymeRelease = "unknown version";
@@ -74,6 +78,9 @@ public class EnzymeService extends MemoryHog
 		status1 = null;
 		status2 = null;
 		statusVal = -1;
+		
+		updateDatabaseStatus(labelStatus1, labelStatus2, false);
+		
 	}
 	
 	/**
@@ -97,20 +104,20 @@ public class EnzymeService extends MemoryHog
 				read_enzyme_DB_txt = true;
 				final EnzymeService enzS = new EnzymeService();
 				BackgroundTaskHelper bth = new BackgroundTaskHelper(
-									new Runnable() {
-										public void run() {
-											statusVal = -1;
-											if (todoReadEnzClass)
-												readEnzymeClasses();
-											if (todoReadDB)
-												readEnzymeDB();
-											statusVal = 100;
-										}
-									},
-									enzS,
-									"Enzyme Database",
-									"Enzyme Database Service",
-									true, false);
+						new Runnable() {
+							public void run() {
+								statusVal = -1;
+								if (todoReadEnzClass)
+									readEnzymeClasses();
+								if (todoReadDB)
+									readEnzymeDB();
+								statusVal = 100;
+							}
+						},
+						enzS,
+						"Enzyme Database",
+						"Enzyme Database Service",
+						true, false);
 				bth.startWork(MainFrame.getInstance());
 			}
 		} else {
@@ -244,7 +251,7 @@ public class EnzymeService extends MemoryHog
 								if (line.startsWith("ID"))
 									line += ".";
 								while (!line.endsWith(".") && !line.contains("//")
-													&& !endTagFound) {
+										&& !endTagFound) {
 									String rl = input.readLine();
 									// System.err.println(rl);
 									if (rl.endsWith("//")) {
@@ -271,17 +278,17 @@ public class EnzymeService extends MemoryHog
 						if (eze.isValid()) {
 							enzymeEntries.put(eze.getID(), eze);
 							knownEnzymeAlternativeNamesEntries.put(eze.getDE()
-												.toUpperCase(), eze);
+									.toUpperCase(), eze);
 							for (Iterator<String> it = eze.getAN().iterator(); it.hasNext();)
 								knownEnzymeAlternativeNamesEntries.put(
-													it.next().toUpperCase(), eze);
+										it.next().toUpperCase(), eze);
 							status1 = "Read Enzyme Names and IDs (" + enzymeEntries.size() + ")";
 						}
 					} else {
 						// check for release info
 						if (line.contains(relTagDB)) {
 							line = line.substring(line.indexOf(relTagDB)
-												+ new String("CC").length());
+									+ new String("CC").length());
 							line = line.trim();
 							enzymeDBrelease = line;
 							status2 = enzymeDBrelease;
@@ -306,8 +313,8 @@ public class EnzymeService extends MemoryHog
 		try {
 			return new BufferedReader(new FileReader(ReleaseInfo.getAppFolderWithFinalSep() + fileName));
 		} catch (Exception e) {
-				MainFrame.showMessage("<html><b>Click Help/Database Status</b> for help on downloading enzyme data", MessageType.INFO);
-				return null;
+			MainFrame.showMessage("<html><b>Click Help/Database Status</b> for help on downloading enzyme data", MessageType.INFO);
+			return null;
 		}
 	}
 	
@@ -321,7 +328,9 @@ public class EnzymeService extends MemoryHog
 				return isr.ready();
 			} else {
 				FileReader fr = new FileReader(ReleaseInfo.getAppFolderWithFinalSep() + fileName);
-				return fr.ready();
+				boolean ready = fr.ready();
+				fr.close();
+				return ready;
 			}
 		} catch (Exception e) {
 			return false;
@@ -403,16 +412,16 @@ public class EnzymeService extends MemoryHog
 			ec_or_synonyme = StringManipulationTools.stringReplace(ec_or_synonyme, "<br>", "");
 			ec_or_synonyme = StringManipulationTools.stringReplace(ec_or_synonyme, "<br/>", "");
 			result = knownEnzymeAlternativeNamesEntries.get(ec_or_synonyme
-								.toUpperCase());
+					.toUpperCase());
 		}
 		return result;
 	}
 	
 	static Pattern pattern = Pattern.compile("\\d{1,2}(\\.(\\-|\\d{1,2})){3}");
-
+	
 	public static String extractECId(String ecString) {
 		Matcher matcher = pattern.matcher(ecString);
-		if(matcher.find())
+		if (matcher.find())
 			return matcher.group();
 		else
 			return null;
@@ -522,8 +531,12 @@ public class EnzymeService extends MemoryHog
 	}
 	
 	public JComponent getStatusPane(boolean showEmpty) {
-		FolderPanel res = new FolderPanel("<html>SIB Enzyme Database<br><small>" +
-							"(contains information about enzyme IDs, names and synonyms)");
+		res = new FolderPanel("<html>SIB Enzyme Database<br><small>" +
+				"(contains information about enzyme IDs, names and synonyms)");
+		
+		labelStatus1 = new JLabel();
+		labelStatus2 = new JLabel();
+		
 		res.setFrameColor(Color.LIGHT_GRAY, null, 1, 5);
 		
 		int b = 5; // normal border
@@ -533,7 +546,52 @@ public class EnzymeService extends MemoryHog
 			initService(false);
 		
 		boolean internalAvailable = isDatabaseAvailable(true);
+		
+		updateDatabaseStatus(labelStatus1, labelStatus2, showEmpty);
+		
+		if (internalAvailable) {
+//			labelStatus1.setText(status1);
+			res.addGuiComponentRow(
+					new JLabel("<html>" +
+							"Embedded Files:&nbsp;<br><small>" +
+							"(this database file is automatically provided,<br>" +
+							"you may download a updated file and save it<br>" +
+							"in the file system of your hard drive)"),
+					FolderPanel.getBorderedComponent(
+							labelStatus1, b, b, b, b),
+					false);
+		}
+		
+//		labelStatus2.setText(status2);
+		res.addGuiComponentRow(
+				new JLabel("<html>" +
+						"Downloaded Files:&nbsp;"),
+				FolderPanel.getBorderedComponent(
+						labelStatus2, b, b, b, b),
+				false);
+		
+		ArrayList<JComponent> actionButtons = new ArrayList<JComponent>();
+		if (!showEmpty) {
+			actionButtons.add(getWebsiteButton());
+			actionButtons.add(getLicenseButton());
+			actionButtons.add(getDownloadButton());
+		}
+		pretifyButtons(actionButtons);
+		
+		res.addGuiComponentRow(
+				new JLabel("<html>" +
+						"Visit Website(s)"),
+				TableLayout.getMultiSplit(actionButtons, TableLayout.PREFERRED, bB, bB, bB, bB),
+				false);
+		
+		res.layoutRows();
+		return res;
+	}
+	
+	protected void updateDatabaseStatus(JLabel labelStatus1, JLabel labelStatus2, boolean showEmpty) {
+		boolean internalAvailable = isDatabaseAvailable(true);
 		boolean externalAvailable = isDatabaseAvailable(false);
+		
 		String status1 = "";
 		String status2 = "";
 		if (internalAvailable)
@@ -552,21 +610,21 @@ public class EnzymeService extends MemoryHog
 				status2 += "<br>";
 				
 				String modifiedTime = GravistoService.getFileModificationDateAndTime(getFile("enzyme.dat"),
-									"unknown version (file not found)");
+						"unknown version (file not found)");
 				File f = getFile("enzyme.dat");
 				if (f.exists()) {
 					status2 += "&nbsp;&nbsp;database download: " + modifiedTime + "<br>";
 				} else
 					status2 += "&nbsp;&nbsp;" + modifiedTime + "<br>";
 				status2 +=
-									// "&nbsp;&nbsp;enzclass.txt: "+getReleaseVersionForEnzymeClasses()+"<br>" +
-									"&nbsp;&nbsp;enzyme.dat: " + getReleaseVersionForEnzymeInformation() + "<br>" +
-														"&nbsp;&nbsp;enzymes: " + enzymeEntries.size();
+						// "&nbsp;&nbsp;enzclass.txt: "+getReleaseVersionForEnzymeClasses()+"<br>" +
+						"&nbsp;&nbsp;enzyme.dat: " + getReleaseVersionForEnzymeInformation() + "<br>" +
+								"&nbsp;&nbsp;enzymes: " + enzymeEntries.size();
 			} else
 				status1 += "<br>" +
-									// "&nbsp;&nbsp;enzclass.txt: "+getReleaseVersionForEnzymeClasses()+"<br>" +
+						// "&nbsp;&nbsp;enzclass.txt: "+getReleaseVersionForEnzymeClasses()+"<br>" +
 						"&nbsp;&nbsp;enzyme.dat: " + getReleaseVersionForEnzymeInformation() + "<br>" +
-									"&nbsp;&nbsp;enzymes: " + enzymeEntries.size();
+						"&nbsp;&nbsp;enzymes: " + enzymeEntries.size();
 		}
 		
 		if (internalAvailable) {
@@ -603,39 +661,8 @@ public class EnzymeService extends MemoryHog
 		if (showEmpty)
 			status2 = "<html><b>Bringing database online...</b><br>Please wait a few moments.";
 		
-		if (internalAvailable)
-			res.addGuiComponentRow(
-								new JLabel("<html>" +
-													"Embedded Files:&nbsp;<br><small>" +
-													"(this database file is automatically provided,<br>" +
-													"you may download a updated file and save it<br>" +
-													"in the file system of your hard drive)"),
-								FolderPanel.getBorderedComponent(
-													new JLabel(status1), b, b, b, b),
-								false);
-		res.addGuiComponentRow(
-							new JLabel("<html>" +
-												"Downloaded Files:&nbsp;"),
-							FolderPanel.getBorderedComponent(
-												new JLabel(status2), b, b, b, b),
-							false);
-		
-		ArrayList<JComponent> actionButtons = new ArrayList<JComponent>();
-		if (!showEmpty) {
-			actionButtons.add(getWebsiteButton());
-			actionButtons.add(getLicenseButton());
-			actionButtons.add(getDownloadButton());
-		}
-		pretifyButtons(actionButtons);
-		
-		res.addGuiComponentRow(
-							new JLabel("<html>" +
-												"Visit Website(s)"),
-							TableLayout.getMultiSplit(actionButtons, TableLayout.PREFERRED, bB, bB, bB, bB),
-							false);
-		
-		res.layoutRows();
-		return res;
+		labelStatus1.setText(status1);
+		labelStatus2.setText(status2);
 	}
 	
 	public static File getFile(String fileName) {
@@ -644,35 +671,35 @@ public class EnzymeService extends MemoryHog
 	
 	private JComponent getDownloadButton() {
 		return GUIhelper.getWebsiteDownloadButton(
-							"Download",
-							"ftp://ftp.expasy.org/databases/enzyme",
-							ReleaseInfo.getAppFolderWithFinalSep(),
-							"<html>" +
-												"The following URL and the target folder will be automatically opened in a few seconds:<br><br>" +
-												"<code><b>ftp://ftp.expasy.org/databases/enzyme</b></code><br><br>" +
-												"Please download the following files:<br>" +
-												"<ul>" +
-												"	<li>enzclass.txt" +
-												"	<li>enzyme.dat" +
-												"</ul>" +
-												"After downloading them, please move these files to the following location:<br><br>" +
-												"<code><b>" + ReleaseInfo.getAppFolder() + "</b></code><br><br>" +
-												"After closing and re-opening this application, the Enzyme database will be<br>" +
-												"available to the system.",
-							new String[] {
-												"ftp://ftp.expasy.org/databases/enzyme/enzclass.txt",
-												"ftp://ftp.expasy.org/databases/enzyme/enzyme.dat"
+				"Download",
+				"ftp://ftp.expasy.org/databases/enzyme",
+				ReleaseInfo.getAppFolderWithFinalSep(),
+				"<html>" +
+						"The following URL and the target folder will be automatically opened in a few seconds:<br><br>" +
+						"<code><b>ftp://ftp.expasy.org/databases/enzyme</b></code><br><br>" +
+						"Please download the following files:<br>" +
+						"<ul>" +
+						"	<li>enzclass.txt" +
+						"	<li>enzyme.dat" +
+						"</ul>" +
+						"After downloading them, please move these files to the following location:<br><br>" +
+						"<code><b>" + ReleaseInfo.getAppFolder() + "</b></code><br><br>" +
+						"After closing and re-opening this application, the Enzyme database will be<br>" +
+						"available to the system.",
+				new String[] {
+						"ftp://ftp.expasy.org/databases/enzyme/enzclass.txt",
+						"ftp://ftp.expasy.org/databases/enzyme/enzyme.dat"
 				},
-							"Manual download instructions (automatic download failure)",
-							this);
+				"Manual download instructions (automatic download failure)",
+				this);
 	}
 	
 	private JComponent getLicenseButton() {
-		return GUIhelper.getWebsiteButton("License", "http://www.expasy.org/cgi-bin/lists?enzyme.get", null, null, null);
+		return GUIhelper.getWebsiteButton("License", "http://enzyme.expasy.org/enzyme.get", null, null, null);
 	}
 	
 	private JComponent getWebsiteButton() {
-		return GUIhelper.getWebsiteButton("Website", "http://www.expasy.org/enzyme", null, null, null);
+		return GUIhelper.getWebsiteButton("Website", "http://enzyme.expasy.org/", null, null, null);
 	}
 	
 	private void pretifyButtons(ArrayList<JComponent> actionButtons) {
