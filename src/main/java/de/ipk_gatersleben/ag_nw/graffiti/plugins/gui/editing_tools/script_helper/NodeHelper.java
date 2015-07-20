@@ -91,7 +91,7 @@ public class NodeHelper implements Node, HelperClass {
 	private ArrayList<MemPlant> memPlants = null;
 	
 	public boolean memSample(double value, int replicate, int plantID, String unit, String optTimeUnit,
-						Integer optTimeValueForComparision) {
+			Integer optTimeValueForComparision) {
 		if (memSamples == null)
 			memSamples = new ArrayList<MemSample>();
 		memSamples.add(new MemSample(value, replicate, plantID, unit, optTimeUnit, optTimeValueForComparision));
@@ -99,7 +99,7 @@ public class NodeHelper implements Node, HelperClass {
 	}
 	
 	public int memGetPlantID(String species, String genotype, String optVariety, String optGrowthConditions,
-						String optTreatment) {
+			String optTreatment) {
 		if (memPlants == null)
 			memPlants = new ArrayList<MemPlant>();
 		int idx = 0;
@@ -114,7 +114,7 @@ public class NodeHelper implements Node, HelperClass {
 	}
 	
 	public boolean memAddDataMapping(String substanceName, String measurementUnit, String experimentStart,
-						String experimentName, String coordinator, String optRemark, String optSequence) {
+			String experimentName, String coordinator, String optRemark, String optSequence) {
 		if (memPlants == null || memPlants.size() <= 0) {
 			ErrorMsg.addErrorMessage("No plants defined (use memGetPlantID), can not create and add mapping data!");
 			return false;
@@ -124,7 +124,7 @@ public class NodeHelper implements Node, HelperClass {
 			return false;
 		}
 		ExperimentInterface d = getMappingDataDocument(substanceName, measurementUnit, experimentStart, experimentName,
-							coordinator, optRemark, optSequence);
+				coordinator, optRemark, optSequence);
 		if (d != null) {
 			for (SubstanceInterface m : d)
 				Experiment2GraphHelper.addMappingData2Node(m, getGraphNode());
@@ -165,9 +165,9 @@ public class NodeHelper implements Node, HelperClass {
 	}
 	
 	public ExperimentInterface getMappingDataDocument(String substanceName, String measurementUnit,
-						String experimentStart, String experimentName, String coordinator, String optRemark, String optSequence) {
+			String experimentStart, String experimentName, String coordinator, String optRemark, String optSequence) {
 		ExperimentInterface d = ExperimentConstructor.processData(substanceName, measurementUnit, memSamples, memPlants,
-							experimentStart, experimentName, coordinator, optRemark, optSequence);
+				experimentStart, experimentName, coordinator, optRemark, optSequence);
 		return d;
 	}
 	
@@ -686,47 +686,47 @@ public class NodeHelper implements Node, HelperClass {
 	}
 	
 	public synchronized void addAttribute(Attribute attr, String path) throws AttributeExistsException,
-						NoCollectionAttributeException, FieldAlreadySetException {
+			NoCollectionAttributeException, FieldAlreadySetException {
 		n.addAttribute(attr, path);
 	}
 	
 	public synchronized void addBoolean(String path, String id, boolean value) throws NoCollectionAttributeException,
-						AttributeExistsException, FieldAlreadySetException {
+			AttributeExistsException, FieldAlreadySetException {
 		n.addBoolean(path, id, value);
 	}
 	
 	public synchronized void addByte(String path, String id, byte value) throws NoCollectionAttributeException,
-						AttributeExistsException, FieldAlreadySetException {
+			AttributeExistsException, FieldAlreadySetException {
 		n.addByte(path, id, value);
 	}
 	
 	public synchronized void addDouble(String path, String id, double value) throws NoCollectionAttributeException,
-						AttributeExistsException, FieldAlreadySetException {
+			AttributeExistsException, FieldAlreadySetException {
 		n.addDouble(path, id, value);
 	}
 	
 	public synchronized void addFloat(String path, String id, float value) throws NoCollectionAttributeException,
-						AttributeExistsException, FieldAlreadySetException {
+			AttributeExistsException, FieldAlreadySetException {
 		n.addFloat(path, id, value);
 	}
 	
 	public synchronized void addInteger(String path, String id, int value) throws NoCollectionAttributeException,
-						AttributeExistsException, FieldAlreadySetException {
+			AttributeExistsException, FieldAlreadySetException {
 		n.addInteger(path, id, value);
 	}
 	
 	public synchronized void addLong(String path, String id, long value) throws NoCollectionAttributeException,
-						AttributeExistsException, FieldAlreadySetException {
+			AttributeExistsException, FieldAlreadySetException {
 		n.addLong(path, id, value);
 	}
 	
 	public synchronized void addShort(String path, String id, short value) throws NoCollectionAttributeException,
-						AttributeExistsException, FieldAlreadySetException {
+			AttributeExistsException, FieldAlreadySetException {
 		n.addShort(path, id, value);
 	}
 	
 	public synchronized void addString(String path, String id, String value) throws NoCollectionAttributeException,
-						AttributeExistsException, FieldAlreadySetException {
+			AttributeExistsException, FieldAlreadySetException {
 		n.addString(path, id, value);
 	}
 	
@@ -775,8 +775,10 @@ public class NodeHelper implements Node, HelperClass {
 	}
 	
 	public void mergeMultipleMappings() {
+		
 		ExperimentInterface mappingList = Experiment2GraphHelper.getMappedDataListFromGraphElement(n);
 		if (mappingList != null) {
+			String nodeComponentType = NodeTools.getNodeComponentType(n);
 			SubstanceInterface mapping1 = mappingList.iterator().next();
 			for (SubstanceInterface m : mappingList) {
 				if (m == mapping1)
@@ -786,6 +788,12 @@ public class NodeHelper implements Node, HelperClass {
 			removeDataMapping();
 			addDataMapping(mapping1);
 			AttributeHelper.deleteAttribute(n, "charting", "diagramtitle*");
+			
+			/*
+			 * the data mapping procedure for the merged diagrams sets the new diagram type automatically..
+			 * we need to reset it to the diagram style it was before
+			 */
+			NodeTools.setNodeComponentType(n, nodeComponentType);
 		}
 	}
 	
@@ -881,8 +889,8 @@ public class NodeHelper implements Node, HelperClass {
 					// String measUnit = spd.getUnit();
 					for (NumericMeasurementInterface m : spd) {
 						dst.addRow(getRowLabel(row++, 5), checkFormat(experimentName), checkFormat(substanceName), mapping,
-											checkFormat(species), checkFormat(genotype), checkFormat(treatment), seriesId, timeS,
-											checkStringFormat(timeUnit), m.getReplicateID(), m.getValue(), checkFormat(m.getUnit()));
+								checkFormat(species), checkFormat(genotype), checkFormat(treatment), seriesId, timeS,
+								checkStringFormat(timeUnit), m.getReplicateID(), m.getValue(), checkFormat(m.getUnit()));
 					}
 				}
 			}
@@ -907,7 +915,7 @@ public class NodeHelper implements Node, HelperClass {
 	public boolean hasDataMapping() {
 		try {
 			Attribute a = n.getAttribute(Experiment2GraphHelper.mapFolder + Attribute.SEPARATOR
-								+ Experiment2GraphHelper.mapVarName);
+					+ Experiment2GraphHelper.mapVarName);
 			return a != null;
 		} catch (AttributeNotFoundException anfe) {
 			return false;
