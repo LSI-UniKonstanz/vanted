@@ -201,7 +201,6 @@ import org.graffiti.util.InstanceCreationException;
 import org.vanted.VantedPreferences;
 
 import scenario.ScenarioService;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.CloseAllWindows;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.navigation.NavigationComponentView;
 
 /**
@@ -305,8 +304,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	
 	/** The programs preferences */
 	private GraffitiAction editPreferences;
-
-
 	
 	/** The main frame's static actions */
 	public GraffitiAction fileClose;
@@ -404,12 +401,12 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	/** The main frame's status bar. */
 	private StatusBar statusBar;
 	
-	/** the main panel for the inspector tabs
-	 *  This will be set by pluginAdded where one of the plugins
-	 *  should be the Inspector Plugin
+	/**
+	 * the main panel for the inspector tabs
+	 * This will be set by pluginAdded where one of the plugins
+	 * should be the Inspector Plugin
 	 */
 	private InspectorPlugin inspectorPlugin = null;
-
 	
 	/**
 	 * The default view type, that will be always displayed if the user
@@ -450,7 +447,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	private RecentEntry[] recentfileslist;
 	private Component enclosingseparator;
 	private final File recentlist = new File(ReleaseInfo.getAppFolderWithFinalSep() + "recentfiles.txt");
-
+	
 	private PreferenceManager preferenceManager;
 	
 	// private FrameTabbedPane jtp;
@@ -511,7 +508,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		urlAttributeActionManager = new DefaultURLattributeActionManager();
 		preferenceManager = PreferenceManager.getInstance();
 		
-		
 		pluginmgr.addPluginManagerListener(this);
 		pluginmgr.addPluginManagerListener(viewManager);
 		pluginmgr.addPluginManagerListener(toolManager);
@@ -570,8 +566,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		navigationView.setMinimumSize(new Dimension(0, 100));
 		addSessionListener(navigationView);
 		guiMap.put(navigationView.getId(), navigationView);
-		
-		
 		
 		UIManager.put("SplitPaneDivider.border", new EmptyBorder(0, 0, 0, 0));
 		
@@ -1189,7 +1183,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				placeViewInContainer(view, null, j);
 			
 			frame.pack();
-
+			
 			GravistoService.getInstance().framesDeselect();
 			
 			if (!returnGraffitiFrame) {
@@ -1218,7 +1212,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					}
 				}
 			});
-
+			
 			viewFrameMapper.put(view, frame);
 			activeFrames.add(frame);
 		}
@@ -1469,7 +1463,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				}
 			}
 			final EditorSession fesf = esf;
-			if (!windowCheck(fesf, file.getAbsolutePath(), autoSwitch)){
+			if (!windowCheck(fesf, file.getAbsolutePath(), autoSwitch)) {
 				filesToBeIgnored.add(file);
 			}
 		}
@@ -1480,7 +1474,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				files.add(f);
 			}
 		}
-		
 		
 		if (files.size() > 0)
 			loader.submit(new Runnable() {
@@ -1804,7 +1797,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		updateActions();
 	}
 	
-	
 	/**
 	 * Called by the plugin manager, iff a plugin has been added.
 	 * 
@@ -1870,10 +1862,10 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				/*
 				 * check, if the Tab has a Preference and a bool setting 'show'
 				 */
-				if(it instanceof PreferencesInterface &&
-					 ! PreferenceManager.getPreferenceForClass(it.getClass()).getBoolean(InspectorTab.PREFERENCE_TAB_SHOW, true))
-						return;
-
+				if (it instanceof PreferencesInterface &&
+						!PreferenceManager.getPreferenceForClass(it.getClass()).getBoolean(InspectorTab.PREFERENCE_TAB_SHOW, true))
+					return;
+				
 				if (inspectorPlugin == null) {
 					// ErrorMsg.addErrorMessage("Inspector Plugin not available. Can't add side-panel tabs.");
 				} else {
@@ -1994,12 +1986,11 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			/*
 			 * check, if the preference are set to show or hide special algorithms
 			 */
-			boolean showHiddenAlgorithms = PreferenceManager.getPreferenceForClass(VantedPreferences.class).getBoolean(VantedPreferences.PREFERENCE_SHOWALL_ALGORITHMS, false);
+			boolean showHiddenAlgorithms = PreferenceManager.getPreferenceForClass(VantedPreferences.class).getBoolean(
+					VantedPreferences.PREFERENCE_SHOWALL_ALGORITHMS, false);
 			Set<Category> setCategory = a.getSetCategory();
-			if(setCategory != null && setCategory.contains(Category.HIDDEN) && ! showHiddenAlgorithms)
+			if (setCategory != null && setCategory.contains(Category.HIDDEN) && !showHiddenAlgorithms)
 				continue;
-
-			
 			
 			if (a != null && a.getName() != null && a.getMenuCategory() != null) {
 				if (a.isLayoutAlgorithm()) {
@@ -2093,7 +2084,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	 * Adds a menu item to the menu given a category
 	 * The menuitem's action should be a GraffitiAction with the implemented Action that
 	 * is called, when the user clicks on that menu item
-	 * 
 	 * The category string defines the place, where this item is places
 	 * The category string is a '.'-separated string, where each token represents
 	 * a parental level of the items path
@@ -2130,53 +2120,52 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				addAfter = pmp.intValue();
 			targetNativeMenu.add(item, addAfter);
 			result = targetNativeMenu;
-		} else 
+		} else
 		{
-			/* the category is not under the root entry
+			/*
+			 * the category is not under the root entry
 			 * so create or find the hierarchy to put the given 'item' into
 			 */
 			JComponent curMenuComponent = getJMenuBar();
 			JMenu targetMenu;
 			
-			StringTokenizer tokenizer = new StringTokenizer(cat,".");
+			StringTokenizer tokenizer = new StringTokenizer(cat, ".");
 			StringBuffer catStringPath = new StringBuffer();
 			JMenu newCatMenu = null;
-			while(tokenizer.hasMoreTokens()) {
+			while (tokenizer.hasMoreTokens()) {
 				String curMenuName = tokenizer.nextToken();
-				if(catStringPath.length() > 0)
+				if (catStringPath.length() > 0)
 					catStringPath.append(".");
 				catStringPath.append(curMenuName);
-				if ( categoriesForAlgorithms.get(catStringPath.toString().toLowerCase()) == null) {
+				if (categoriesForAlgorithms.get(catStringPath.toString().toLowerCase()) == null) {
 					
-					
-						newCatMenu = new JMenu(curMenuName);
-						/*
-						 * only add placeholder icon to non menubar root entries, since they create empy space in the
-						 * menubar.
-						 * This placeholder icon is anyway only there because some look and feels disalign menuitems
-						 * that have no icon
-						 */
-						if( ! (curMenuComponent instanceof JMenuBar) )
-							newCatMenu.setIcon(iBundle.getImageIcon("menu.file.exit.icon")); //placeholder icon resolving alignment issues on some LaF
+					newCatMenu = new JMenu(curMenuName);
+					/*
+					 * only add placeholder icon to non menubar root entries, since they create empy space in the
+					 * menubar.
+					 * This placeholder icon is anyway only there because some look and feels disalign menuitems
+					 * that have no icon
+					 */
+					if (!(curMenuComponent instanceof JMenuBar))
+						newCatMenu.setIcon(iBundle.getImageIcon("menu.file.exit.icon")); //placeholder icon resolving alignment issues on some LaF
 						
+					if (curMenuComponent instanceof JMenuBar)
+						curMenuComponent.add(newCatMenu, getTargetMenuPosition((JMenuBar) curMenuComponent, newCatMenu.getText())); // add
+					else {
 						
-						if(curMenuComponent instanceof JMenuBar)
-							curMenuComponent.add(newCatMenu, getTargetMenuPosition((JMenuBar)curMenuComponent, newCatMenu.getText())); // add
-						else {
-							
-							Integer pluginMenuPosition = null;
-							if((pluginMenuPosition = (Integer) curMenuComponent.getClientProperty("pluginMenuPosition")) != null) {
-								curMenuComponent.add(newCatMenu, pluginMenuPosition.intValue());
-							} else {
-								curMenuComponent.add(newCatMenu);
-								sortMenuItems((JMenu)curMenuComponent, 0);
-							}
-							
+						Integer pluginMenuPosition = null;
+						if ((pluginMenuPosition = (Integer) curMenuComponent.getClientProperty("pluginMenuPosition")) != null) {
+							curMenuComponent.add(newCatMenu, pluginMenuPosition.intValue());
+						} else {
+							curMenuComponent.add(newCatMenu);
+							sortMenuItems((JMenu) curMenuComponent, 0);
 						}
 						
-						categoriesForAlgorithms.put(catStringPath.toString().toLowerCase(), newCatMenu);
-						
-						curMenuComponent = newCatMenu;
+					}
+					
+					categoriesForAlgorithms.put(catStringPath.toString().toLowerCase(), newCatMenu);
+					
+					curMenuComponent = newCatMenu;
 				} else {
 					curMenuComponent = categoriesForAlgorithms.get(catStringPath.toString().toLowerCase());
 				}
@@ -2185,7 +2174,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			targetMenu = (JMenu) categoriesForAlgorithms.get(cat.toLowerCase());
 			
 			Integer pluginMenuPosition = null;
-			if((pluginMenuPosition = (Integer) targetMenu.getClientProperty("pluginMenuPosition")) != null) {
+			if ((pluginMenuPosition = (Integer) targetMenu.getClientProperty("pluginMenuPosition")) != null) {
 				targetMenu.add(item, pluginMenuPosition);
 			} else {
 				targetMenu.add(item);
@@ -2329,7 +2318,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					+ session.getGraph().getEdges().size() + " edge(s)!", sBundle.getString("frame.close_save_title"),
 					JOptionPane.YES_NO_CANCEL_OPTION);
 			
-			if( res == JOptionPane.CANCEL_OPTION)
+			if (res == JOptionPane.CANCEL_OPTION)
 				return false;
 			if (res == JOptionPane.YES_OPTION) {
 				// save current graph
@@ -2345,18 +2334,18 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 //			}
 //			MainFrame.getInstance().setActiveSession(session, null);
 //			MainFrame.getInstance().setActiveSession(as, av);
-
+			
 			/*
-			if (res == JOptionPane.CANCEL_OPTION) {
-				final Graph gg = new AdjListGraph(new ListenerManager());
-				gg.addGraph(session.getGraph());
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						MainFrame.getInstance().showGraph(gg, null);
-					}
-				});
-			}
-			*/
+			 * if (res == JOptionPane.CANCEL_OPTION) {
+			 * final Graph gg = new AdjListGraph(new ListenerManager());
+			 * gg.addGraph(session.getGraph());
+			 * SwingUtilities.invokeLater(new Runnable() {
+			 * public void run() {
+			 * MainFrame.getInstance().showGraph(gg, null);
+			 * }
+			 * });
+			 * }
+			 */
 			// continue, close view/session
 		}
 		
@@ -2398,7 +2387,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				((SessionListenerExt) sl).sessionClosed(session);
 		}
 		//make random next session active session
-		if(! sessions.isEmpty())
+		if (!sessions.isEmpty())
 			MainFrame.getInstance().setActiveSession(sessions.iterator().next(), null);
 		else
 			MainFrame.getInstance().setActiveSession(null, null);
@@ -2933,7 +2922,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	 */
 	private JMenu createMenu(String name) {
 		String title = sBundle.getString("menu." + name);
-		if(title == null)
+		if (title == null)
 			title = name;
 		JMenu menu = new JMenu(title);
 		
@@ -2978,7 +2967,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		categoriesForAlgorithms.put("file.new", menu_new);
 		menu_new.add(createMenuItem(newGraph));
 		fileMenu.add(menu_new);
-		
 		
 		fileMenu.add(createMenuItem(viewNew));
 		fileMenu.add(createMenuItem(fileOpen));
@@ -3078,7 +3066,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		selectCmd.setIcon(iBundle.getImageIcon("menu.file.exit.icon"));
 		editMenu.add(selectCmd);
 		editMenu.addSeparator();
-		editMenu.add(createMenuItem(editPreferences)); 
+		editMenu.add(createMenuItem(editPreferences));
 		// JMenuItem redrawCmd = createMenuItem(redrawView);
 		// redrawCmd.setIcon(iBundle.getImageIcon("menu.file.exit.icon"));
 		// editMenu.add(redrawCmd);
@@ -3637,7 +3625,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				 * check, if user canceled closing operation when being asked to save
 				 */
 				boolean closeOK = MainFrame.getInstance().getSessionManager().closeSession(s);
-				if( ! closeOK )
+				if (!closeOK)
 					return;
 			}
 //			String names = "";
@@ -3649,16 +3637,16 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 //							+ " graph(s) not saved", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 //			if (res == JOptionPane.YES_OPTION) {
 //				saveActiveFile();
-				
-				/*
-				 * for (Iterator it = l.iterator(); it.hasNext();) {
-				 * removeSession((Session) it.next()); } savePreferences();
-				 */
-				// HomeFolder.deleteTemporaryFolder();
-				if (!ReleaseInfo.isRunningAsApplet())
-					System.exit(0);
-				else
-					setVisible(false);
+			
+			/*
+			 * for (Iterator it = l.iterator(); it.hasNext();) {
+			 * removeSession((Session) it.next()); } savePreferences();
+			 */
+			// HomeFolder.deleteTemporaryFolder();
+			if (!ReleaseInfo.isRunningAsApplet())
+				System.exit(0);
+			else
+				setVisible(false);
 //			}
 		} else {
 			// HomeFolder.deleteTemporaryFolder();
@@ -3843,7 +3831,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	ArrayList<GraffitiFrame> detachedFrames = new ArrayList<GraffitiFrame>();
 	
 	private boolean graphLoadingInProgress;
-
 	
 	// public JSplitPane getAttributePanel() {
 	// return jSplitPane_pluginPanelAndProgressView;
@@ -3935,10 +3922,10 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			}
 		}
 		@SuppressWarnings("unchecked")
-		List<File> data = (List<File>)data0;
+		List<File> data = (List<File>) data0;
 		
 		if (data != null)
-			for (File file :  data) {
+			for (File file : data) {
 				
 				if (file.isDirectory())
 					MainFrame.showMessageDialog("Drag & Drop is only supported for files, not folders!", "Error");
@@ -4198,12 +4185,11 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				found = true;
 			} else {
 				if (it instanceof SubtabHostTab) {
-					SubtabHostTab sh = (SubtabHostTab) it;
-					for (InspectorTab it2 : sh.getTabs()) {
-						if (it2.getTitle().equals(title)) {
-							it.focusAndHighlight(it2, true, cycle);
-							found = true;
-						}
+					Component retDirectChildComponent;
+					if ((retDirectChildComponent = recurseTabsAndHighlight((SubtabHostTab) it, title)) != null) {
+						((SubtabHostTab) it).getTabbedPane().setSelectedComponent(retDirectChildComponent);
+						getInspectorPlugin().setSelectedTab(it);
+						return;
 					}
 				} else {
 					if (it instanceof ContainsTabbedPane) {
@@ -4222,6 +4208,23 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		}
 		if (!found)
 			System.err.println("Internal Error: side panel " + title + " not found!");
+	}
+	
+	private Component recurseTabsAndHighlight(SubtabHostTab parent, String title) {
+		Component retDirectChildComponent;
+		for (InspectorTab it2 : parent.getTabs()) {
+			if (it2 instanceof SubtabHostTab)
+				if ((retDirectChildComponent = recurseTabsAndHighlight((SubtabHostTab) it2, title)) != null) {
+					((SubtabHostTab) it2).getTabbedPane().setSelectedComponent(retDirectChildComponent);
+					return it2;
+				}
+			if (it2.getTitle().equals(title)) {
+//				((Inspec) it2).getTabbedPane().setSelectedComponent(it2);
+				it2.focusAndHighlight(it2, true, true);
+				return it2;
+			}
+		}
+		return null;
 	}
 	
 	public void setSidePanel(JToolBar component, int width) {
