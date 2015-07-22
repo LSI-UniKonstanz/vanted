@@ -229,13 +229,13 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 		saveXMLdoc.setOpaque(false);
 		saveXMLdoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				File xmlFile = OpenFileDialogService.getSaveFile(new String[] { "xls", "bin", "xml" }, "Experiment-Data (*.xls, *.bin, *.xml)");
+				File xmlFile = OpenFileDialogService.getSaveFile(new String[] { "xlsx", "xml" }, "Experiment-Data (*.xlsx, *.xml)");
 				if (xmlFile != null) {
 					
-					if (xmlFile.getName().toLowerCase().endsWith(".xls"))
+					if (xmlFile.getName().toLowerCase().endsWith(".xlsx"))
 						ExperimentDataFileWriter.writeExcel(xmlFile, md);
 					else
-						if (xmlFile.getName().toLowerCase().endsWith(".bin") || xmlFile.getName().toLowerCase().endsWith(".xml")) {
+						if (xmlFile.getName().toLowerCase().endsWith(".xml")) {
 							// XMLOutputter out = new XMLOutputter();
 							// OutputStream stream;
 							try {
@@ -250,7 +250,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 								ErrorMsg.addErrorMessage(err);
 							}
 						} else
-							MainFrame.showMessageDialog("Wrong file type chosen. Please save as *.xml, *.bin or *.xls", "Export Error");
+							MainFrame.showMessageDialog("Wrong file type chosen. Please save as *.xlsx or *.xml", "Export Error");
 				}
 			}
 		});

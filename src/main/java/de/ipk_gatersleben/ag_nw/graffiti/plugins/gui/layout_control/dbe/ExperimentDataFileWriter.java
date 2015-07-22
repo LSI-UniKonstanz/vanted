@@ -13,15 +13,14 @@ import java.util.TreeSet;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
-import org.apache.poi.ss.usermodel.CreationHelper;
-import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFCreationHelper;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.graffiti.editor.MainFrame;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.ConditionInterface;
@@ -33,16 +32,16 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 
 public class ExperimentDataFileWriter {
 	
-	private HSSFWorkbook workbook;
-	private HSSFSheet worksheet;
-	private CreationHelper createHelper;
+	private XSSFWorkbook xssfWorkbook;
+	private XSSFSheet xssfWorksheet;
+	private XSSFCreationHelper xssfCreationHelper;
 	
-	private HSSFFont font;
-	private HSSFCellStyle cellStyleHeadline;
-	private HSSFCellStyle cellStyleGrey;
+	private XSSFCellStyle cellStyleHeadline;
+	// private XSSFCellStyle cellStyleGrey;
+	// private XSSFCellStyle cellStyleYellow;
+	// private XSSFCellStyle cellStyleTurquoise;
 	
-	private HSSFCellStyle cellStyleBigHeadline;
-	private HSSFCellStyle cellStyleData;
+	private XSSFCellStyle cellStyleData;
 	private int rowStart;
 	
 	private ExperimentDataFileWriter() {
@@ -55,167 +54,123 @@ public class ExperimentDataFileWriter {
 	 * Creates global objects for excel-java interaction, for instance cell styling: color, font.
 	 */
 	private void initHSSFObjects() {
-		workbook = new HSSFWorkbook();
-		worksheet = workbook.createSheet("POI Worksheet");
-		createHelper = workbook.getCreationHelper();
 		
-		// headline style
-		cellStyleHeadline = workbook.createCellStyle();
-		cellStyleHeadline.setFillPattern(HSSFCellStyle.BIG_SPOTS);
-		cellStyleHeadline.setFillBackgroundColor(HSSFColor.GREY_25_PERCENT.index);
-		cellStyleHeadline.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		xssfWorkbook = new XSSFWorkbook();
+		xssfWorksheet = xssfWorkbook.createSheet("Experiment");
+		xssfCreationHelper = xssfWorkbook.getCreationHelper();
 		
-		cellStyleGrey = workbook.createCellStyle();
-		cellStyleGrey.setFillPattern(HSSFCellStyle.BIG_SPOTS);
-		cellStyleGrey.setFillBackgroundColor(HSSFColor.GREY_25_PERCENT.index);
+		// cellStyleGrey = xssfWorkbook.createCellStyle();
+		// fill pattern should be "1" but it doesn't work
+		// XSSFCellStyle.SOLID_FOREGROUND is set to "1" but this seems to be wrong
+		// cellStyleGrey.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
+		// cellStyleGrey.setFillPattern((short) 1);
+		// cellStyleGrey.setFillBackgroundColor(new XSSFColor(new Color(228, 228, 228)));
+		
+		// cellStyleYellow = xssfWorkbook.createCellStyle();
+		// fill pattern should be "1" but it doesn't work
+		// XSSFCellStyle.SOLID_FOREGROUND is set to "1" but this seems to be wrong
+		// cellStyleYellow.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
+		// cellStyleYellow.setFillPattern((short) 1);
+		// cellStyleGrey.setFillBackgroundColor(new XSSFColor(new Color(255, 255, 204)));
+		
+		// cellStyleTurquoise = xssfWorkbook.createCellStyle();
+		// fill pattern should be "1" but it doesn't work
+		// XSSFCellStyle.SOLID_FOREGROUND is set to "1" but this seems to be wrong
+		// cellStyleTurquoise.setFillPattern(XSSFCellStyle.SOLID_FOREGROUND);
+		// cellStyleTurquoise.setFillPattern((short) 1);
+		// cellStyleGrey.setFillBackgroundColor(new XSSFColor(new Color(204, 255, 255)));
+		
+		cellStyleHeadline = xssfWorkbook.createCellStyle();
+		cellStyleHeadline.setAlignment(XSSFCellStyle.ALIGN_CENTER);
+		XSSFFont font = xssfWorkbook.createFont();
+		font.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD);
+		cellStyleHeadline.setFont(font);
 		
 		// data style
+		cellStyleData = xssfWorkbook.createCellStyle();
+		cellStyleData.setAlignment(XSSFCellStyle.ALIGN_CENTER);
 		
-		cellStyleData = workbook.createCellStyle();
-		cellStyleData.setAlignment(HSSFCellStyle.ALIGN_CENTER);
-		
-		font = workbook.createFont();
-		font.setFontHeightInPoints((short) 12);
-		font.setBoldweight(Font.BOLDWEIGHT_BOLD);
-		font.setFontName(HSSFFont.FONT_ARIAL);
-		
-		// big headline style
-		cellStyleBigHeadline = workbook.createCellStyle();
-		cellStyleBigHeadline.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
-		cellStyleBigHeadline.setFillBackgroundColor(new HSSFColor.BLUE().getIndex());
-		cellStyleBigHeadline.setFont(font);
+		CellRangeAddress cellRangeAddress = new CellRangeAddress(0, 0, 0, 2);
+		xssfWorksheet.addMergedRegion(cellRangeAddress);
 		
 	}
 	
 	private void autoFitCells() {
 		// fit the content to cell size
-		for (int i = 0; i < 4; i++)
-			worksheet.autoSizeColumn(i);
+		xssfWorksheet.autoSizeColumn(0);
+		for (int i = 1; i < 5; i++)
+			xssfWorksheet.setColumnWidth(i, 12 * 256);
 	}
 	
-	public void addHeader(ExperimentInterface md) {
+	private void addHeader(ExperimentInterface md) {
 		ExperimentHeaderInterface header = md.getHeader();
 		
-		HSSFRow row1 = worksheet.createRow((short) 0);
-		HSSFCell cellA1 = row1.createCell(0, HSSFCell.CELL_TYPE_STRING);
-		
-		String name = "";
+		String title = "";
 		if (MainFrame.getInstance() != null)
-			name = " by " + MainFrame.getInstance().getTitle();
+			title = " by " + MainFrame.getInstance().getTitle();
+		XSSFRow row1 = xssfWorksheet.createRow((short) 0);
+		XSSFCell cellA1 = row1.createCell(0, XSSFCell.CELL_TYPE_STRING);
+		cellA1.setCellValue("Exported" + title + " on " + AttributeHelper.getDateString(new Date()));
 		
-		cellA1.setCellValue("Exported" + name + " on " + AttributeHelper.getDateString(new Date()));
-		
-		// fix
-		createHeadline(2, 0, "Experiment:");
+		createHeadline(2, 0, "Experiment");
 		
 		// Start of Experiment
-		createCellIfNotExistsAndSet(3, 0, "Start of Experiment (Date):", cellStyleGrey);
+		// createCellIfNotExistsAndSet(3, 0, "Start of Experiment (Date)", cellStyleGrey);
+		createCellIfNotExistsAndSet(3, 0, "Start of Experiment (Date)", null);
 		
-		HSSFCell cell2 = createCellIfNotExists(3, 1);
+		XSSFCell cell2 = createCellIfNotExists(3, 1);
 		
-		HSSFCellStyle cellStyle = workbook.createCellStyle();
-		cellStyle.setDataFormat(
-				createHelper.createDataFormat().getFormat("m/d/yy"));
-		cellStyle.setAlignment(HSSFCellStyle.ALIGN_LEFT);
-		// cellStyle.setFillBackgroundColor(HSSFColor.GOLD.index);
-		// cellStyle.setFillPattern(HSSFCellStyle.BIG_SPOTS);
+		XSSFCellStyle cellStyle = xssfWorkbook.createCellStyle();
+		cellStyle.setDataFormat(xssfCreationHelper.createDataFormat().getFormat("m/d/yy"));
+		cellStyle.setAlignment(XSSFCellStyle.ALIGN_LEFT);
+		// cellStyle.setFillBackgroundColor(XSSFColor.GOLD.index);
 		cell2.setCellValue(header.getStartdate() == null ? new Date() : header.getStartdate());
 		cell2.setCellStyle(cellStyle);
 		
-		/*
-		 * HSSFCellStyle cellStyleYellow = workbook.createCellStyle();
-		 * cellStyleYellow.setFillBackgroundColor(HSSFColor.LIGHT_YELLOW.index);
-		 * cellStyleYellow.setFillPattern(HSSFCellStyle.BIG_SPOTS);
-		 */
-
 		// Remark*
-		createKeyValuePairStyled(4, 0, "Remark*", header.getRemark(), cellStyleHeadline);
-		createKeyValuePairStyled(5, 0, "ExperimentName (ID)", header.getExperimentname(), cellStyleHeadline);
+		// createKeyValuePairStyled(4, 0, "Remark*", header.getRemark(), cellStyleGrey);
+		createKeyValuePairStyled(4, 0, "Remark*", header.getRemark(), null);
+		// createKeyValuePairStyled(5, 0, "ExperimentName (ID)", header.getExperimentname(), cellStyleGrey);
+		createKeyValuePairStyled(5, 0, "ExperimentName (ID)", header.getExperimentname(), null);
 		// Coordinator
-		createKeyValuePairStyled(6, 0, "Coordinator", header.getCoordinator(), cellStyleHeadline);
+		// createKeyValuePairStyled(6, 0, "Coordinator", header.getCoordinator(), cellStyleGrey);
+		createKeyValuePairStyled(6, 0, "Coordinator", header.getCoordinator(), null);
 		// Sequence-Name*
-		createKeyValuePairStyled(7, 0, "Sequence-Name*", header.getSequence(), cellStyleHeadline);
+		// createKeyValuePairStyled(7, 0, "Sequence-Name*", header.getSequence(), cellStyleGrey);
+		createKeyValuePairStyled(7, 0, "Sequence-Name*", header.getSequence(), null);
 		autoFitCells();
 	}
 	
 	private void addImportInfo() {
 		createHeadline(2, 4, "Help");
-		createCellIfNotExistsAndSet(3, 4, "- Fields with a * are optional", cellStyleGrey);
-		createCellIfNotExistsAndSet(4, 4, "** These cells must contain numbers as 1, 2, 3, ...", cellStyleGrey);
-		createCellIfNotExistsAndSet(5, 4, "*** These cells must correlate to the numbers in **", cellStyleGrey);
-		createCellIfNotExistsAndSet(6, 4,
-				"- Using \"NaN\" instead of a blank input value makes sure, that the number of bars in the display is equal for all substances, gaps will be left",
-				cellStyleGrey);
-		createCellIfNotExistsAndSet(7, 4,
-				"- If input values are left blank, the number of replicates is decreased for the sample, if no value is available for ", cellStyleGrey);
-		
-		createCellIfNotExistsAndSet(3, 5, "", cellStyleGrey);
-		createCellIfNotExistsAndSet(3, 6, "", cellStyleGrey);
-		createCellIfNotExistsAndSet(3, 7, "", cellStyleGrey);
-		createCellIfNotExistsAndSet(4, 5, "", cellStyleGrey);
-		createCellIfNotExistsAndSet(4, 6, "", cellStyleGrey);
-		createCellIfNotExistsAndSet(4, 7, "", cellStyleGrey);
-		createCellIfNotExistsAndSet(5, 5, "", cellStyleGrey);
-		createCellIfNotExistsAndSet(5, 6, "", cellStyleGrey);
-		createCellIfNotExistsAndSet(5, 7, "", cellStyleGrey);
-		createCellIfNotExistsAndSet(6, 5, "", cellStyleGrey);
-		createCellIfNotExistsAndSet(6, 6, "", cellStyleGrey);
-		createCellIfNotExistsAndSet(6, 7, "", cellStyleGrey);
-		createCellIfNotExistsAndSet(7, 5, "", cellStyleGrey);
-		createCellIfNotExistsAndSet(7, 6, "", cellStyleGrey);
-		createCellIfNotExistsAndSet(7, 7, "", cellStyleGrey);
-		
+		// createCellIfNotExistsAndSet(3, 4, "- Fields with a * are optional", cellStyleGrey);
+		// createCellIfNotExistsAndSet(4, 4, "** These cells must contain numbers as 1, 2, 3, ...", cellStyleGrey);
+		// createCellIfNotExistsAndSet(5, 4, "*** These cells must correlate to the numbers in **", cellStyleGrey);
+		createCellIfNotExistsAndSet(3, 4, "- Fields with a * are optional", null);
+		createCellIfNotExistsAndSet(4, 4, "** These cells must contain numbers as 1, 2, 3, ...", null);
+		createCellIfNotExistsAndSet(5, 4, "*** These cells must correlate to the numbers in **", null);
 		autoFitCells();
 	}
 	
 	private void addInternalInfo(ExperimentInterface md) {
 		createHeadline(2, 10, "Internal Info");
-		createOrdinaryCell(3, 10, "V1.1");
-		
-		// HSSFCellStyle cellUnderlinedBold = workbook.createCellStyle();
-		// font = workbook.createFont();
-		// font.setFontHeightInPoints((short) 12);
-		// font.setBoldweight(Font.BOLDWEIGHT_BOLD);
-		// font.setUnderline(Font.U_SINGLE);
-		// cellUnderlinedBold.setFont(font);
-		// createCellIfNotExistsAndSet(4, 10, "known Substances: ", cellUnderlinedBold);
-		// createCellIfNotExistsAndSet(5, 10, "known Units: ", cellUnderlinedBold);
-		// HashSet<String> uniqueSubstances = new HashSet<String>();
-		// HashSet<String> uniqueUnits = new HashSet<String>();
-		//		
-		// for (SubstanceInterface substance : md) {
-		// for (ConditionInterface series : substance) {
-		// uniqueSubstances.add(substance.getName());
-		// for (SampleInterface sample : series) {
-		// for (NumericMeasurementInterface meas : sample) {
-		// uniqueUnits.add(meas.getUnit());
-		//						
-		// }
-		// }
-		// }
-		// }
-		// int i = 0;
-		// for (String unitName : uniqueUnits) {
-		// createOrdinaryCell(4, 11 + i, unitName);
-		// i++;
-		// }
-		// i = 0;
-		// for (String substanceName : uniqueSubstances) {
-		// createOrdinaryCell(5, 11 + i, substanceName);
-		// i++;
-		// }
-		
+		createOrdinaryCell(3, 10, "V1.2");
 	}
 	
-	public void addSpeciesInformation(ExperimentInterface md) {
+	private void addSpeciesInformation(ExperimentInterface md) {
 		// fix headline
 		createHeadline(rowStart, 0, "Plants/Genotypes**");
 		
-		createCellIfNotExistsAndSet((rowStart + 1), 0, "Species", cellStyleHeadline);
-		createCellIfNotExistsAndSet((rowStart + 2), 0, "Variety*", cellStyleHeadline);
-		createCellIfNotExistsAndSet((rowStart + 3), 0, "Genotype", cellStyleHeadline);
-		createCellIfNotExistsAndSet((rowStart + 4), 0, "Growth conditions*", cellStyleHeadline);
-		createCellIfNotExistsAndSet((rowStart + 5), 0, "Treatment*", cellStyleHeadline);
+		// createCellIfNotExistsAndSet((rowStart + 1), 0, "Species", cellStyleGrey);
+		// createCellIfNotExistsAndSet((rowStart + 2), 0, "Variety*", cellStyleGrey);
+		// createCellIfNotExistsAndSet((rowStart + 3), 0, "Genotype", cellStyleGrey);
+		// createCellIfNotExistsAndSet((rowStart + 4), 0, "Growth conditions*", cellStyleGrey);
+		// createCellIfNotExistsAndSet((rowStart + 5), 0, "Treatment*", cellStyleGrey);
+		createCellIfNotExistsAndSet((rowStart + 1), 0, "Species", null);
+		createCellIfNotExistsAndSet((rowStart + 2), 0, "Variety*", null);
+		createCellIfNotExistsAndSet((rowStart + 3), 0, "Genotype", null);
+		createCellIfNotExistsAndSet((rowStart + 4), 0, "Growth conditions*", null);
+		createCellIfNotExistsAndSet((rowStart + 5), 0, "Treatment*", null);
 		
 		int actualRow = this.rowStart;
 		int actualSubstance = 1;
@@ -225,7 +180,6 @@ public class ExperimentDataFileWriter {
 			for (ConditionInterface condition : substance) {
 				if (!treesetOfConditions.contains(condition)) {
 					treesetOfConditions.add(condition);
-					// System.out.println("RowID:" + condition.getRowId());
 					createCellIfNotExistsAndSet(actualRow, actualSubstance, condition.getRowId(), cellStyleData);
 					createCellIfNotExistsAndSet(actualRow + 1, actualSubstance, condition.getSpecies(), cellStyleData);
 					createCellIfNotExistsAndSet(actualRow + 2, actualSubstance, condition.getVariety(), cellStyleData);
@@ -248,17 +202,17 @@ public class ExperimentDataFileWriter {
 	 * 
 	 * @param md
 	 */
-	public void addGenoType(ExperimentInterface md) {
+	private void addGenoType(ExperimentInterface md) {
 		final int ROW_TO_START = rowStart;
 		
 		// fix headlines
 		createCellIfNotExistsAndSet(rowStart, 4, "Substance", cellStyleHeadline);
-		createCellIfNotExistsAndSet((rowStart + 1), 4, "Measur-Tool", cellStyleHeadline);
+		createCellIfNotExistsAndSet((rowStart + 1), 4, "Meas.-Tool*", cellStyleHeadline);
 		createCellIfNotExistsAndSet((rowStart + 2), 4, "Unit", cellStyleHeadline);
 		
 		createCellIfNotExistsAndSet((rowStart + 2), 0, "Plant/Genotype***", cellStyleHeadline);
-		createCellIfNotExistsAndSet((rowStart + 2), 1, "ReplicateID: ", cellStyleHeadline);
-		createCellIfNotExistsAndSet((rowStart + 2), 2, "Time: ", cellStyleHeadline);
+		createCellIfNotExistsAndSet((rowStart + 2), 1, "Replicate #", cellStyleHeadline);
+		createCellIfNotExistsAndSet((rowStart + 2), 2, "Time", cellStyleHeadline);
 		createCellIfNotExistsAndSet((rowStart + 2), 3, "Unit (Time)", cellStyleHeadline);
 		// big headline
 		createHeadline(ROW_TO_START, 0, "Measurements");
@@ -272,8 +226,8 @@ public class ExperimentDataFileWriter {
 		
 		if (substances.size() > 245) {
 			MainFrame.showMessageDialog("<html>There are more than 245 substances available in this dataset.<br>" +
-														"As the excel export is experimental at the moment, only the first<br>" +
-														"245 substances will be written to the spreadsheet.", "Warning");
+					"As the excel export is experimental at the moment, only the first<br>" +
+					"245 substances will be written to the spreadsheet.", "Warning");
 			for (int i = md.size() - 1; i >= 245; i--)
 				substances.remove(i);
 		}
@@ -285,7 +239,7 @@ public class ExperimentDataFileWriter {
 			
 			// because of start column = 4
 			
-			createCellIfNotExistsAndSet(rowStart, acutal_substance_column + acutal_substance, substance.getName(), cellStyleData);
+			createCellIfNotExistsAndSet(rowStart, acutal_substance_column + acutal_substance, substance.getName(), cellStyleHeadline);
 			
 			for (ConditionInterface series : substance) {
 				for (SampleInterface sample : series) {
@@ -306,12 +260,12 @@ public class ExperimentDataFileWriter {
 						}
 						createCellIfNotExistsAndSet((rowStart + 1), acutal_substance_column + acutal_substance, sample.getMeasurementtool(), cellStyleData);
 						createCellIfNotExistsAndSet((rowStart + 2), acutal_substance_column + acutal_substance, meas.getUnit(), cellStyleData);
+						xssfWorksheet.autoSizeColumn(acutal_substance_column + acutal_substance);
 					}
 				}
 			}
 			// next substance - in excel worksheet next column
 			++acutal_substance;
-			// System.out.println("Substance: " + substance.getName() + " no.: " + acutal_substance);
 		}
 		
 		Collections.sort(orderedList, new Comparator<DataRowExcelExport>() {
@@ -346,8 +300,12 @@ public class ExperimentDataFileWriter {
 				
 				String measureBySubstance = values.get(substance.getName());
 				// if measure value for these substance is null - do not write any measure value in these column
-				if (null != measureBySubstance) {
-					createCellIfNotExistsAndSet((acual_mesurment + ROW_TO_START + 3), acutal_substance_column + acutal_substance, measureBySubstance, cellStyleData);
+				if (measureBySubstance != null) {
+					// createCellIfNotExistsAndSet((acual_mesurment + ROW_TO_START + 3), acutal_substance_column + acutal_substance, measureBySubstance,
+					// cellStyleData);
+					createCellIfNotExistsAndSet((acual_mesurment + ROW_TO_START + 3), acutal_substance_column + acutal_substance,
+							Double.parseDouble(measureBySubstance), cellStyleData);
+					xssfWorksheet.autoSizeColumn(acutal_substance_column + acutal_substance);
 					acutal_substance++;
 				} else
 					acutal_substance++;
@@ -364,10 +322,10 @@ public class ExperimentDataFileWriter {
 	 * @param rowIndex
 	 * @return
 	 */
-	private HSSFRow createRowIfNotExists(int rowIndex) {
-		HSSFRow row = worksheet.getRow(rowIndex);
+	private XSSFRow createRowIfNotExists(int rowIndex) {
+		XSSFRow row = xssfWorksheet.getRow(rowIndex);
 		if (null == row)
-			row = worksheet.createRow(rowIndex);
+			row = xssfWorksheet.createRow(rowIndex);
 		return row;
 	}
 	
@@ -378,9 +336,9 @@ public class ExperimentDataFileWriter {
 	 * @param columnIndex
 	 * @return
 	 */
-	private HSSFCell createCellIfNotExists(int rowIndex, int columnIndex) {
-		HSSFRow row = createRowIfNotExists(rowIndex);
-		HSSFCell cell = row.getCell(columnIndex);
+	private XSSFCell createCellIfNotExists(int rowIndex, int columnIndex) {
+		XSSFRow row = createRowIfNotExists(rowIndex);
+		XSSFCell cell = row.getCell(columnIndex);
 		if (null == cell)
 			cell = row.createCell(columnIndex);
 		return cell;
@@ -395,10 +353,10 @@ public class ExperimentDataFileWriter {
 	 * @param text
 	 *           - Text of cell
 	 * @param style
-	 *           - HSSFCellStyle - if null - default style.
+	 *           - CellStyle - if null - default style.
 	 */
-	private void createCellIfNotExistsAndSet(int rowIndex, int columnIndex, String text, HSSFCellStyle style) {
-		HSSFCell cell = createCellIfNotExists(rowIndex, columnIndex);
+	private void createCellIfNotExistsAndSet(int rowIndex, int columnIndex, String text, XSSFCellStyle style) {
+		XSSFCell cell = createCellIfNotExists(rowIndex, columnIndex);
 		cell.setCellValue(text);
 		if (style != null)
 			cell.setCellStyle(style);
@@ -414,10 +372,10 @@ public class ExperimentDataFileWriter {
 	 * @param text
 	 *           - Text of cell
 	 * @param style
-	 *           - HSSFCellStyle - if null - default style.
+	 *           - CellStyle - if null - default style.
 	 */
-	private void createCellIfNotExistsAndSet(int rowIndex, int columnIndex, Integer text, HSSFCellStyle style) {
-		HSSFCell cell = createCellIfNotExists(rowIndex, columnIndex);
+	private void createCellIfNotExistsAndSet(int rowIndex, int columnIndex, Integer text, XSSFCellStyle style) {
+		XSSFCell cell = createCellIfNotExists(rowIndex, columnIndex);
 		cell.setCellValue(text);
 		if (style != null)
 			cell.setCellStyle(style);
@@ -432,10 +390,10 @@ public class ExperimentDataFileWriter {
 	 * @param text
 	 *           - Text of cell
 	 * @param style
-	 *           - HSSFCellStyle - if null - default style.
+	 *           - CellStyle - if null - default style.
 	 */
-	private void createCellIfNotExistsAndSet(int rowIndex, int columnIndex, Double text, HSSFCellStyle style) {
-		HSSFCell cell = createCellIfNotExists(rowIndex, columnIndex);
+	private void createCellIfNotExistsAndSet(int rowIndex, int columnIndex, Double text, XSSFCellStyle style) {
+		XSSFCell cell = createCellIfNotExists(rowIndex, columnIndex);
 		cell.setCellValue(text);
 		if (style != null)
 			cell.setCellStyle(style);
@@ -450,7 +408,7 @@ public class ExperimentDataFileWriter {
 	 *           - Text of cell
 	 */
 	private void createOrdinaryCell(int rowIndex, int columnIndex, String text) {
-		HSSFCell cell = createCellIfNotExists(rowIndex, columnIndex);
+		XSSFCell cell = createCellIfNotExists(rowIndex, columnIndex);
 		cell.setCellValue(text);
 	}
 	
@@ -463,11 +421,11 @@ public class ExperimentDataFileWriter {
 	 * @param value
 	 * @param cellStyle
 	 */
-	private void createKeyValuePairStyled(int rowIndex, int columnIndex, String key, String value, HSSFCellStyle cellStyle) {
-		HSSFCell cell = createCellIfNotExists(rowIndex, columnIndex);
+	private void createKeyValuePairStyled(int rowIndex, int columnIndex, String key, String value, XSSFCellStyle cellStyle) {
+		XSSFCell cell = createCellIfNotExists(rowIndex, columnIndex);
 		cell.setCellValue(key);
 		
-		HSSFCell cell2 = createCellIfNotExists(rowIndex, columnIndex + 1);
+		XSSFCell cell2 = createCellIfNotExists(rowIndex, columnIndex + 1);
 		cell2.setCellValue(value);
 		if (null != cellStyle)
 			cell.setCellStyle(cellStyle);
@@ -482,13 +440,13 @@ public class ExperimentDataFileWriter {
 	 * @param text
 	 */
 	private void createHeadline(int rowIndex, int columnIndex, String text) {
-		HSSFCell cell = createCellIfNotExists(rowIndex, columnIndex);
+		XSSFCell cell = createCellIfNotExists(rowIndex, columnIndex);
 		cell.setCellValue(text);
-		HSSFCellStyle cellStyle = workbook.createCellStyle();
-		Font font = workbook.createFont();
+		XSSFCellStyle cellStyle = xssfWorkbook.createCellStyle();
+		XSSFFont font = xssfWorkbook.createFont();
 		font.setFontHeightInPoints((short) 12);
 		font.setFontName("Gothic L");
-		font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		font.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD);
 		cellStyle.setFont(font);
 		cell.setCellStyle(cellStyle);
 		autoFitCells();
@@ -565,7 +523,7 @@ public class ExperimentDataFileWriter {
 	private void write(File excelfile) throws Exception {
 		BufferedOutputStream outStream = new BufferedOutputStream(new FileOutputStream(excelfile));
 		try {
-			workbook.write(outStream);
+			xssfWorkbook.write(outStream);
 			outStream.flush();
 		} finally {
 			outStream.close();
@@ -575,26 +533,26 @@ public class ExperimentDataFileWriter {
 	private TableData getTableData() {
 		TableData td = new TableData();
 		
-		for (int row = worksheet.getFirstRowNum(); row < worksheet.getLastRowNum(); row++) {
-			HSSFRow r = worksheet.getRow(row);
+		for (int row = xssfWorksheet.getFirstRowNum(); row < xssfWorksheet.getLastRowNum(); row++) {
+			XSSFRow r = xssfWorksheet.getRow(row);
 			if (r != null)
 				for (int cell = r.getFirstCellNum(); cell < r.getLastCellNum(); cell++) {
-					HSSFCell c = r.getCell(cell);
+					XSSFCell c = r.getCell(cell);
 					if (c != null) {
 						int cellType = c.getCellType();
-						if (cellType == HSSFCell.CELL_TYPE_STRING)
+						if (cellType == XSSFCell.CELL_TYPE_STRING)
 							td.addCellData(cell, row, c.getStringCellValue());
 						else
-							if (cellType == HSSFCell.CELL_TYPE_NUMERIC)
+							if (cellType == XSSFCell.CELL_TYPE_NUMERIC)
 								td.addCellData(cell, row, c.getNumericCellValue());
 							else
-								if (cellType == HSSFCell.CELL_TYPE_FORMULA)
+								if (cellType == XSSFCell.CELL_TYPE_FORMULA)
 									td.addCellData(cell, row, c.getCellFormula());
 								else
-									if (cellType == HSSFCell.CELL_TYPE_ERROR)
+									if (cellType == XSSFCell.CELL_TYPE_ERROR)
 										td.addCellData(cell, row, c.getErrorCellValue());
 									else
-										if (cellType == HSSFCell.CELL_TYPE_BOOLEAN)
+										if (cellType == XSSFCell.CELL_TYPE_BOOLEAN)
 											td.addCellData(cell, row, c.getBooleanCellValue());
 					}
 				}
