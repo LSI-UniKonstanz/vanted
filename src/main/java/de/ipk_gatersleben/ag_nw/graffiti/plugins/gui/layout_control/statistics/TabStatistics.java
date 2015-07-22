@@ -39,10 +39,12 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
@@ -207,10 +209,18 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		// VTextIcon.ROTATE_RIGHT), getInteractiveAnalysisPanel());
 		// stat.addTab(null, new VTextIcon(stat, "Correlate n:n",
 		// VTextIcon.ROTATE_RIGHT), getAnalysisPanel());
+		
 		stat.addTab("<html><small>Compare Samples", getStudentPanel());
-		stat.addTab("<html><small>Scatter Matrix", getPlotPanel());
-		stat.addTab("<html><small>Correlate 1:n", getAnalysisPanelOneToN());
-		stat.addTab("<html><small>Correlate n:n", getAnalysisPanel());
+		// stat.addTab("<html><small>Scatter Matrix", getPlotPanel());
+		stat.addTab("<html><small>Scatter Matrix", new JScrollPane(getPlotPanel(),
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+		// stat.addTab("<html><small>Correlate 1:n", getAnalysisPanelOneToN());
+		stat.addTab("<html><small>Correlate 1:n", new JScrollPane(getAnalysisPanelOneToN(),
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+		// stat.addTab("<html><small>Correlate n:n", getAnalysisPanel());
+		stat.addTab("<html><small>Correlate n:n", new JScrollPane(getAnalysisPanel(),
+				ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED));
+		
 		stat.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				refreshEditComponents();
@@ -247,18 +257,18 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		selectCorrelationEdges.setOpaque(false);
 		
 		result.add(TableLayout.getSplit(findCorrButton, TableLayout.getSplitVertical(removeCorrelationEdges,
-							selectCorrelationEdges, TableLayout.PREFERRED, TableLayout.PREFERRED), TableLayout.FILL,
-							TableLayout.PREFERRED), "1,1");
+				selectCorrelationEdges, TableLayout.PREFERRED, TableLayout.PREFERRED), TableLayout.FILL,
+				TableLayout.PREFERRED), "1,1");
 		
 		FolderPanel fp = new FolderPanel("Calculation Settings", false, true, false, JLabelJavaHelpLink
-							.getHelpActionListener("stat_corr"));
+				.getHelpActionListener("stat_corr"));
 		fp.setBackground(null);
 		fp.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 0);
 		fp.setEmptyBorderWidth(0);
 		
 		checkBoxPlotAverage1 = new JCheckBox(
-							"<html>Use average values<br><small>(recommended for time series data with few replicates per time point)",
-							plotAverage);
+				"<html>Use average values<br><small>(recommended for time series data with few replicates per time point)",
+				plotAverage);
 		checkBoxPlotAverage1.setOpaque(false);
 		checkBoxPlotAverage1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -270,7 +280,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		JComponent mergeOptionEditor = getMergeOptionEditor(1);
 		
 		final JCheckBox checkBoxFindTimeShifts = new JCheckBox("Find time-shifted (index -3..3) correlations",
-							considerTimeShifts);
+				considerTimeShifts);
 		checkBoxFindTimeShifts.setOpaque(false);
 		checkBoxFindTimeShifts.setSelected(considerTimeShifts);
 		checkBoxFindTimeShifts.addActionListener(new ActionListener() {
@@ -342,7 +352,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 		});
 		fp2.addComp(TableLayout.get3Split(addStatusText2, new JLabel(""), clearStatus, TableLayout.FILL, 5,
-							TableLayout.PREFERRED));
+				TableLayout.PREFERRED));
 		
 		onlyUpdateExistingEdges.setOpaque(false);
 		onlyUpdateExistingEdges.addActionListener(new ActionListener() {
@@ -412,7 +422,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		});
 		
 		JComponent resultPanel = TableLayout.getSplitVertical(completeButton, individualButton, TableLayout.PREFERRED,
-							TableLayout.PREFERRED);
+				TableLayout.PREFERRED);
 		
 		resultPanel.setOpaque(false);
 		resultPanel.setBorder(BorderFactory.createTitledBorder("Correlate"));
@@ -474,11 +484,11 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		});
 		
 		JComponent resultPanel = TableLayout.getSplitVertical(TableLayout.getSplitVertical(pearsonButton, spearmanButton,
-							TableLayout.PREFERRED, TableLayout.PREFERRED),
-							/*
-							 * TableLayout.getSplitVertical( quadrantButton, kendallButton,
-							 * TableLayout.PREFERRED, TableLayout.PREFERRED)
-							 */null, TableLayout.PREFERRED, TableLayout.PREFERRED);
+				TableLayout.PREFERRED, TableLayout.PREFERRED),
+				/*
+				 * TableLayout.getSplitVertical( quadrantButton, kendallButton,
+				 * TableLayout.PREFERRED, TableLayout.PREFERRED)
+				 */null, TableLayout.PREFERRED, TableLayout.PREFERRED);
 		
 		resultPanel.setOpaque(false);
 		resultPanel.setBorder(BorderFactory.createTitledBorder("Calculate"));
@@ -507,8 +517,8 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		c2.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
 		
 		return TableLayout.getSplitVertical(rank, TableLayout.getSplit(c2, TableLayout.getSplitVertical(l3,
-							textFieldMinR, TableLayout.FILL, TableLayout.FILL), TableLayout.FILL, TableLayout.FILL),
-							TableLayout.PREFERRED, TableLayout.PREFERRED);
+				textFieldMinR, TableLayout.FILL, TableLayout.FILL), TableLayout.FILL, TableLayout.FILL),
+				TableLayout.PREFERRED, TableLayout.PREFERRED);
 	}
 	
 	private JComponent getAnalysisPanelOneToN() {
@@ -528,16 +538,16 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		resetColorAndBorder.setOpaque(false);
 		
 		result.add(TableLayout.getSplit(visCorrButton, resetColorAndBorder, TableLayout.FILL, TableLayout.PREFERRED),
-							"1,1");
+				"1,1");
 		
 		FolderPanel fp = new FolderPanel("Calculation Settings", false, true, false, JLabelJavaHelpLink
-							.getHelpActionListener("stat_vis"));
+				.getHelpActionListener("stat_vis"));
 		fp.setBackground(null);
 		fp.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 0);
 		fp.setEmptyBorderWidth(0);
 		
 		checkBoxPlotAverage2 = new JCheckBox("<html>Use average values<br>"
-							+ "<small>(recommended for time series data with few replicates per time point)", plotAverage);
+				+ "<small>(recommended for time series data with few replicates per time point)", plotAverage);
 		checkBoxPlotAverage2.setOpaque(false);
 		checkBoxPlotAverage2.setSelected(plotAverage);
 		checkBoxPlotAverage2.addActionListener(new ActionListener() {
@@ -550,7 +560,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		JComponent mergeEditor = getMergeOptionEditor(2);
 		
 		fp.addComp(TableLayout.getSplitVertical(checkBoxPlotAverage2, mergeEditor, TableLayout.PREFERRED,
-							TableLayout.PREFERRED));
+				TableLayout.PREFERRED));
 		jTextFieldProb2visCorr = new JTextField(new Double(prob).toString());
 		jTextFieldMinR2 = new JTextField(new Double(minimumR).toString());
 		JComponent corrType = getCorrelationTypeEditor(2);
@@ -586,7 +596,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 		});
 		fp2.addComp(TableLayout.get3Split(addStatusText3, new JLabel(""), clearStatus, TableLayout.FILL, 5,
-							TableLayout.PREFERRED));
+				TableLayout.PREFERRED));
 		
 		fp2.addComp(getNewColorPanel());
 		JLabel descGammaLabel = new JLabel();
@@ -629,8 +639,8 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	private JComponent getNewColorPanel() {
 		double border2 = 0;
 		double[][] size2 = {
-							{ border2, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, TableLayoutConstants.FILL,
-												TableLayoutConstants.FILL, border2 }, // Columns
+				{ border2, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, TableLayoutConstants.FILL,
+						TableLayoutConstants.FILL, border2 }, // Columns
 				{ border2, TableLayout.PREFERRED, border2 } }; // Rows
 		
 		JPanel colorPanel = new JPanel();
@@ -696,9 +706,9 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		result.setOpaque(false);
 		double border = 5;
 		double[][] size = {
-							{ border, TableLayoutConstants.FILL, border }, // Columns
+				{ border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayoutConstants.FILL,
-												border } }; // Rows
+						border } }; // Rows
 		result.setLayout(new TableLayout(size));
 		
 		doScatterPlotButton = new JMButton("(Re)Create Scatter-Plot Matrix");
@@ -709,7 +719,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		result.add(lastScatterPlot, "1,4");
 		
 		FolderPanel fp = new FolderPanel("Calculation Settings", false, true, false, JLabelJavaHelpLink
-							.getHelpActionListener("stat_scatter"));
+				.getHelpActionListener("stat_scatter"));
 		fp.setBackground(null);
 		fp.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 0);
 		fp.setEmptyBorderWidth(0);
@@ -720,7 +730,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		fp2.setEmptyBorderWidth(0);
 		
 		checkBoxPlotAverage3 = new JCheckBox("<html>Plot average values<br>"
-							+ "<small>(recommended for time series data with few replicates per time point)", plotAverage);
+				+ "<small>(recommended for time series data with few replicates per time point)", plotAverage);
 		checkBoxPlotAverage3.setOpaque(false);
 		checkBoxPlotAverage3.setSelected(plotAverage);
 		checkBoxPlotAverage3.addActionListener(new ActionListener() {
@@ -808,9 +818,9 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		
 		double border = 5;
 		double[][] size = {
-							{ border, TableLayoutConstants.FILL, border }, // Columns
+				{ border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayout.PREFERRED, TableLayout.PREFERRED, 5, TableLayout.PREFERRED, TableLayout.PREFERRED,
-												TableLayoutConstants.FILL, border } }; // Rows
+						TableLayoutConstants.FILL, border } }; // Rows
 		result.setLayout(new TableLayout(size));
 		result.setOpaque(false);
 		
@@ -832,15 +842,15 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		result.add(doTest, "1,2");
 		
 		final JRadioButton ttestSel = new JRadioButton("<html>Unpaired T-Test<br>"
-							+ "<small>StdDev is unknown but expected to be equal (homoscedastic), "
-							+ "assuming a normal distribution of independent samples");
+				+ "<small>StdDev is unknown but expected to be equal (homoscedastic), "
+				+ "assuming a normal distribution of independent samples");
 		final JRadioButton welchSel = new JRadioButton("<html>Welch-Satterthwaite T-Test<br>"
-							+ "<small>StdDev is unknown (heteroscedastic), " + "assuming a normal distribution of independent samples");
+				+ "<small>StdDev is unknown (heteroscedastic), " + "assuming a normal distribution of independent samples");
 		final JRadioButton wilcoxonSel = new JRadioButton("<html>Wilcoxon, Mann-Whitney U-Test<br>"
-							+ "<small>Rank sum test for two independent samples");
+				+ "<small>Rank sum test for two independent samples");
 		
 		final JRadioButton ratioSel = new JRadioButton("<html>Ratio Difference<br>"
-							+ "<small>Check if the ratio of the mean values is above or below the specified threshold");
+				+ "<small>Check if the ratio of the mean values is above or below the specified threshold");
 		
 		ttestSel.setSelected(sampleCalcType_2doublet_3welch_4wilcoxon_5ratio == 2);
 		ttestSel.setOpaque(false);
@@ -897,14 +907,14 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		});
 		
 		JComponent calcTypePanel = TableLayout.get3SplitVertical(ttestSel, TableLayout.getSplitVertical(welchSel,
-							wilcoxonSel, TableLayout.PREFERRED, TableLayout.PREFERRED), ratioSel, TableLayout.PREFERRED,
-							TableLayout.PREFERRED, TableLayout.PREFERRED);
+				wilcoxonSel, TableLayout.PREFERRED, TableLayout.PREFERRED), ratioSel, TableLayout.PREFERRED,
+				TableLayout.PREFERRED, TableLayout.PREFERRED);
 		
 		calcTypePanel.setOpaque(false);
 		calcTypePanel.setBorder(BorderFactory.createTitledBorder("Type of test"));
 		
 		FolderPanel fp = new FolderPanel("Calculation Settings", false, true, false, JLabelJavaHelpLink
-							.getHelpActionListener("stat_ttest"));
+				.getHelpActionListener("stat_ttest"));
 		fp.setBackground(null);
 		fp.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 0);
 		fp.setEmptyBorderWidth(0);
@@ -933,11 +943,11 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 		});
 		JComponent panelProb = TableLayout.getSplit(specifyAlpha, jTextFieldAlpha, TableLayout.PREFERRED,
-							TableLayout.FILL);
+				TableLayout.FILL);
 		fp.addComp(panelProb);
 		
 		fp.addComp(TableLayout.get3Split(new JLabel("<html>Ratio (Lower / Upper limit): "), minRatio, maxRatio,
-							TableLayout.FILL, 50, 50));
+				TableLayout.FILL, 50, 50));
 		
 		fp.layoutRows();
 		
@@ -961,7 +971,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 			graph = session.getGraph();
 			curVal = ((Double) AttributeHelper.getAttributeValue(graph, "", AttributeHelper.id_ttestCircleSize,
-								new Double(10.0d), new Double(10.0d))).doubleValue();
+					new Double(10.0d), new Double(10.0d))).doubleValue();
 		} catch (Exception e) {
 			// empty
 		}
@@ -973,7 +983,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 					EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 					Graph g = session.getGraph();
 					AttributeHelper.setAttribute(g, "", AttributeHelper.id_ttestCircleSize, new Double(numberModel
-										.getNumber().doubleValue()));
+							.getNumber().doubleValue()));
 				} catch (Exception err) {
 					// empty
 				}
@@ -982,7 +992,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		JSpinner circleSize = new JSpinner(numberModel);
 		
 		fp2.addComp(TableLayout.get3Split(ttestCircleSize, new JLabel(""), circleSize, TableLayout.PREFERRED, 3,
-							TableLayout.FILL));
+				TableLayout.FILL));
 		
 		addStatusText1.setOpaque(false);
 		addStatusText1.setSelected(showStatusResult);
@@ -1008,7 +1018,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 		});
 		fp2.addComp(TableLayout.get3Split(addStatusText1, new JLabel(""), clearStatus, TableLayout.FILL, 5,
-							TableLayout.PREFERRED));
+				TableLayout.PREFERRED));
 		
 		fp2.layoutRows();
 		result.add(fp2.getBorderedComponent(5, 0, 0, 0), "1,5");
@@ -1098,7 +1108,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 			if (nodes == null || nodes.size() < 2) {
 				MainFrame.showMessageDialog("Please select at least two nodes which have experimental data assigned.",
-									"More than one node needs to be selected");
+						"More than one node needs to be selected");
 			} else {
 				findCorrelations(nodes, graph, session);
 			}
@@ -1109,7 +1119,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				graphElements = selection.getElements();
 			if (graphElements == null || graphElements.size() != 1) {
 				MainFrame.showMessageDialog("Please select a single node or edge which has experimental data assigned.",
-									"One element needs to be selected");
+						"One element needs to be selected");
 			} else
 				visualiseCorrelation(graphElements.iterator().next(), graph);
 		}
@@ -1137,22 +1147,22 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				graphElements = selection.getElements();
 			if (graphElements == null || graphElements.size() < 2) {
 				MainFrame.showMessageDialog(
-									"Please select at least two nodes or edges which have experimental data assigned.",
-									"More than one node needs to be selected");
+						"Please select at least two nodes or edges which have experimental data assigned.",
+						"More than one node needs to be selected");
 			} else
 				createScatterPlotBlock(plotAverage, tickMarksVisible, showRangeAxis, showLegend, minimumR,
-									outlineBorderWidth, mergeDataset, prob, rankOrder, currGammaValue, colR_1, colR0, colR1,
-									graphElements, graph, false, lastScatterPlot, placeForScatter);
+						outlineBorderWidth, mergeDataset, prob, rankOrder, currGammaValue, colR_1, colR0, colR1,
+						graphElements, graph, false, lastScatterPlot, placeForScatter);
 		}
 		if (e.getSource() == doTest) {
 			refreshReferenceInfo(GraphHelper.getSelectedOrAllNodes(selection, graph));
 			doTtest(GraphHelper.getSelectedOrAllGraphElements(selection, graph),
-								sampleCalcType_2doublet_3welch_4wilcoxon_5ratio, graph, showStatusResult);
+					sampleCalcType_2doublet_3welch_4wilcoxon_5ratio, graph, showStatusResult);
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static JComponent getScatterPlot(Graph graph) {
+	public JComponent getScatterPlot(Graph graph) {
 		Collection<GraphElement> graphElements = (Collection) graph.getNodes();
 		
 		boolean plotAverage = false;
@@ -1175,8 +1185,8 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		double minimumR = 0;
 		
 		return createScatterPlotBlock(plotAverage, tickMarksVisible, showRangeAxis, showLegend, minimumR,
-							outlineBorderWidth, mergeDataset, prob, rankOrder, currGammaValue, colR_1, colR0, colR1, graphElements,
-							graph, true, null, null);
+				outlineBorderWidth, mergeDataset, prob, rankOrder, currGammaValue, colR_1, colR0, colR1, graphElements,
+				graph, true, null, null);
 	}
 	
 	// private double findR(int n, double alpha, double a, double b) {
@@ -1295,7 +1305,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			params.add("");
 			JCheckBox bp = new JCheckBox(c, true);
 			bp
-								.setToolTipText("If selected, the reference dataset samples will be compared with samples from this condition.");
+					.setToolTipText("If selected, the reference dataset samples will be compared with samples from this condition.");
 			params.add(bp);
 			
 			bpl.add(bp);
@@ -1317,8 +1327,8 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		jc.addActionListener(all);
 		
 		Object[] res = MyInputHelper.getInput("<html>"
-							+ "Please select the reference dataset and the conditions.<br><br>", "Select Reference Dataset", params
-							.toArray());
+				+ "Please select the reference dataset and the conditions.<br><br>", "Select Reference Dataset", params
+				.toArray());
 		
 		if (res == null) {
 			referenceSelection = null;
@@ -1336,14 +1346,14 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	}
 	
 	private void doTtest(Collection<GraphElement> graphElements, int type_2doublet_3welch_4wilcoxon, Graph g,
-						boolean addStatusMessage) {
+			boolean addStatusMessage) {
 		String referenceMeasurement = referenceSelection;
 		if (referenceMeasurement == null)
 			MainFrame.showMessageDialog("Please select a reference measurement.", "No reference dataset selected");
 		else
 			if (validConditions == null || validConditions.size() < 1) {
 				MainFrame.showMessageDialog("<html>" + "At least two conditions (reference and one additional condition)<br>"
-									+ "need to be selected.", "No reference dataset selected");
+						+ "need to be selected.", "No reference dataset selected");
 			} else {
 				String referenceLineDesc = referenceMeasurement;
 				for (GraphElement ge : graphElements) {
@@ -1358,7 +1368,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 						}
 						for (SampleInterface s : samplesInNode) {
 							timeAndConditionNames2sample.put(s.getSampleTime() + "/"
-												+ s.getParentCondition().getExpAndConditionName(), s);
+									+ s.getParentCondition().getExpAndConditionName(), s);
 						}
 					}
 					String testDesc = "";
@@ -1371,8 +1381,8 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 					if (type_2doublet_3welch_4wilcoxon == 5)
 						testDesc = "Ratio Check";
 					String statusLineText = "<html>[Press <b>F2</b> if text does not completely fit into view]<br>" + "<b>"
-										+ testDesc + ", reference: " + referenceLineDesc + "</b>, " + "alpha (two sided): " + alpha
-										+ "<br><small>" + "<table border=\"1\">" + "<tr>";
+							+ testDesc + ", reference: " + referenceLineDesc + "</b>, " + "alpha (two sided): " + alpha
+							+ "<br><small>" + "<table border=\"1\">" + "<tr>";
 					// now all samples for the current node are gathered
 					// if the sample is not a reference measurement, do t-test
 					// calculation
@@ -1388,20 +1398,20 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 								// search reference sample with the same time value
 								String compareTime = sampleNode.getSampleTime();
 								SampleInterface refSampleNode = timeAndConditionNames2sample.get(compareTime + "/"
-													+ referenceMeasurement);
+										+ referenceMeasurement);
 								if (refSampleNode == null) {
 									statusLineText += "<td>No reference sample to compare sample with time point \"" + compareTime
-														+ "\" and<br>" + "line name \"" + line + "\" found!</td>";
+											+ "\" and<br>" + "line name \"" + line + "\" found!</td>";
 									sampleNode.setSampleTtestInfo(TtestInfo.H0);
 								} else {
 									// do t-test and add result to node
 									statusLineText += "<td>" + line + (compareTime.length() > 0 ? " [" + compareTime + "]" : "")
-														+ "<br><small>";
+											+ "<br><small>";
 									StringBuilder statusResult = new StringBuilder();
 									
 									if (type_2doublet_3welch_4wilcoxon == 2) {
 										if (calcuteTtest(refSampleNode.getDataList(), sampleNode.getDataList(), alpha, statusResult,
-															sampleIdx))
+												sampleIdx))
 											sampleNode.setSampleTtestInfo(TtestInfo.H1);
 										else
 											sampleNode.setSampleTtestInfo(TtestInfo.H0);
@@ -1409,21 +1419,21 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 										if (type_2doublet_3welch_4wilcoxon == 3) {
 											boolean useApache = true;
 											if (calcuteTestVonWelch(refSampleNode.getDataList(), sampleNode.getDataList(), alpha,
-																useApache, statusResult, sampleIdx))
+													useApache, statusResult, sampleIdx))
 												sampleNode.setSampleTtestInfo(TtestInfo.H1);
 											else
 												sampleNode.setSampleTtestInfo(TtestInfo.H0);
 										} else
 											if (type_2doublet_3welch_4wilcoxon == 4) {
 												if (calcuteWilcoxonTest(refSampleNode.getDataList(), sampleNode.getDataList(), alpha,
-																	statusResult, sampleIdx))
+														statusResult, sampleIdx))
 													sampleNode.setSampleTtestInfo(TtestInfo.H1);
 												else
 													sampleNode.setSampleTtestInfo(TtestInfo.H0);
 											} else
 												if (type_2doublet_3welch_4wilcoxon == 5) {
 													if (calcuteRatioTest(refSampleNode.getDataList(), sampleNode.getDataList(), ratioL, ratioU,
-																		statusResult, sampleIdx))
+															statusResult, sampleIdx))
 														sampleNode.setSampleTtestInfo(TtestInfo.H1);
 													else
 														sampleNode.setSampleTtestInfo(TtestInfo.H0);
@@ -1460,7 +1470,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		} catch (Exception me) {
 			ErrorMsg.addErrorMessage("Statistical calculation failed: " + me.getMessage());
 			statusResult.append("<b>Sample " + sampleIdx + " : Calculation Error: " + me.getLocalizedMessage()
-								+ "</b><br>");
+					+ "</b><br>");
 			res1 = null;
 		}
 		/*
@@ -1476,20 +1486,20 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		double s2_2 = getStd(Y, y_);
 		
 		Math.sqrt(((n1 - 1) * s2_1 + (n2 - 1) * s2_2) /
-							// -----------------------------
+				// -----------------------------
 				(n1 + n2 - 2));
 		
 		double d_ = Math.abs(x_ - y_);
 		statusResult.append("n A= " + n1 + ", " + "n B= " + n2 + ", " + "avg SAMPLE A= "
-							+ AttributeHelper.formatNumber(x_, "#.###") + ", " + "avg SAMPLE B="
-							+ AttributeHelper.formatNumber(y_, "#.###") + ", " + "variance A="
-							+ AttributeHelper.formatNumber(s2_1, "#.###") + ", " + "variance B="
-							+ AttributeHelper.formatNumber(s2_2, "#.###") + ", " + "|avg A - avg B|="
-							+ AttributeHelper.formatNumber(d_, "#.###") + ", " + "df=" + (n1 + n2 - 2) + "<br>");
+				+ AttributeHelper.formatNumber(x_, "#.###") + ", " + "avg SAMPLE B="
+				+ AttributeHelper.formatNumber(y_, "#.###") + ", " + "variance A="
+				+ AttributeHelper.formatNumber(s2_1, "#.###") + ", " + "variance B="
+				+ AttributeHelper.formatNumber(s2_2, "#.###") + ", " + "|avg A - avg B|="
+				+ AttributeHelper.formatNumber(d_, "#.###") + ", " + "df=" + (n1 + n2 - 2) + "<br>");
 		try {
 			statusResult.append("<b>P [" + AttributeHelper.formatNumber(ttest.homoscedasticTTest(xd, yd), "#.###")
-								+ "] &lt; alpha [" + AttributeHelper.formatNumber(alpha, "#.###") + "]? "
-								+ (res1 != null && res1 ? "YES" : "NO") + " : Sample " + sampleIdx + "</b>");
+					+ "] &lt; alpha [" + AttributeHelper.formatNumber(alpha, "#.###") + "]? "
+					+ (res1 != null && res1 ? "YES" : "NO") + " : Sample " + sampleIdx + "</b>");
 		} catch (IllegalArgumentException e) {
 			// empty
 		} catch (MathException e) {
@@ -1503,7 +1513,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	}
 	
 	private boolean calcuteTestVonWelch(Double[] X, Double[] Y, double alpha, boolean useApache,
-						StringBuilder statusResult, int sampleIdx) {
+			StringBuilder statusResult, int sampleIdx) {
 		Boolean res1, res2;
 		
 		DescriptiveStatistics.newInstance();
@@ -1521,7 +1531,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		} catch (Exception me) {
 			ErrorMsg.addErrorMessage(me);
 			statusResult.append("<b>Sample " + sampleIdx + " : Calculation Error: " + me.getLocalizedMessage()
-								+ "</b><br>");
+					+ "</b><br>");
 			res1 = null;
 		}
 		
@@ -1534,7 +1544,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		double s2_2 = getStd(Y, y_);
 		
 		double u = (s2_1 / n1) /
-							// -------------------------
+				// -------------------------
 				(s2_1 / n1 + s2_2 / n2);
 		
 		double v = 1 / (u * u / (n1 - 1) + (1 - u) * (1 - u) / (n2 - 1));
@@ -1547,15 +1557,15 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			// "CHECK");
 		}
 		statusResult.append("n A= " + n1 + ", " + "n B= " + n2 + ", " + "avg SAMPLE A= "
-							+ AttributeHelper.formatNumber(x_, "#.###") + ", " + "avg SAMPLE B="
-							+ AttributeHelper.formatNumber(y_, "#.###") + ", " + "variance A="
-							+ AttributeHelper.formatNumber(s2_1, "#.###") + ", " + "variance B="
-							+ AttributeHelper.formatNumber(s2_2, "#.###") + ", " + "|avg A - avg B|="
-							+ AttributeHelper.formatNumber(d_, "#.###") + ", " + "df=" + (n1 + n2 - 2) + "<br>");
+				+ AttributeHelper.formatNumber(x_, "#.###") + ", " + "avg SAMPLE B="
+				+ AttributeHelper.formatNumber(y_, "#.###") + ", " + "variance A="
+				+ AttributeHelper.formatNumber(s2_1, "#.###") + ", " + "variance B="
+				+ AttributeHelper.formatNumber(s2_2, "#.###") + ", " + "|avg A - avg B|="
+				+ AttributeHelper.formatNumber(d_, "#.###") + ", " + "df=" + (n1 + n2 - 2) + "<br>");
 		try {
 			statusResult.append("<b>P [" + AttributeHelper.formatNumber(ttest.tTest(xd, yd), "#.###") + "] &lt; alpha ["
-								+ AttributeHelper.formatNumber(alpha, "#.###") + "]? " + (res1 != null && res1 ? "YES" : "NO")
-								+ " : Sample " + sampleIdx + "</b>");
+					+ AttributeHelper.formatNumber(alpha, "#.###") + "]? " + (res1 != null && res1 ? "YES" : "NO")
+					+ " : Sample " + sampleIdx + "</b>");
 		} catch (IllegalArgumentException e) {
 			// empty
 		} catch (MathException e) {
@@ -1611,13 +1621,13 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		
 		double U = PG;
 		statusResult.append("PG=" + U + ", U1=" + U1 + ", U2=" + U2 + ", m=" + m + ", n=" + n + ", R1=" + R1 + ", R2="
-							+ R2 + "<br>");
+				+ R2 + "<br>");
 		double epsilon = 0.0000001d;
 		if (Math.abs((U1 + U2) - (m * n)) > epsilon) {
 			ErrorMsg.addErrorMessage("Sample " + sampleIdx
-								+ " : Internal Error, Wilcoxon Test might be calculated incorrectly!");
+					+ " : Internal Error, Wilcoxon Test might be calculated incorrectly!");
 			statusResult.append("Sample " + sampleIdx
-								+ " : Internal Error, Wilcoxon Test might be calculated incorrectly!");
+					+ " : Internal Error, Wilcoxon Test might be calculated incorrectly!");
 		}
 		
 		ArrayList<Tie> bindungen = ermittleBindungen(ranks);
@@ -1634,7 +1644,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			double t_i = b.getVielfachheit();
 			special_sum += t_i * t_i * t_i - t_i;
 			statusResult.append("TIE " + (bi++) + " " + t_i + " times value " + b.getValue() + " with rank "
-								+ b.getRankValue() + "<br>");
+					+ b.getRankValue() + "<br>");
 		}
 		// if (Math.abs(special_sum)>epsilon)
 		// ErrorMsg.addErrorMessage("Some Ties: "+special_sum);
@@ -1642,7 +1652,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		
 		double z_ = Math.abs(U - m * n / 2d) / Math.sqrt((m * n / (S * (S - 1))) * ((S * S * S - S) / 12d - special_sum));
 		statusResult.append("TIE CORRECTION=" + special_sum + ", " + "z [" + AttributeHelper.formatNumber(z_, "#.###")
-							+ "]");
+				+ "]");
 		double compare_z;
 		try {
 			compare_z = normalDistribution.inverseCumulativeProbability(1 - alpha / 2);
@@ -1657,7 +1667,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	}
 	
 	private boolean calcuteRatioTest(Double[] X, Double[] Y, double belowThisRatio, double overThisRatio,
-						StringBuilder statusResult, int sampleIdx) {
+			StringBuilder statusResult, int sampleIdx) {
 		double avgA, avgB;
 		double sum = 0;
 		for (double xv : X)
@@ -1677,7 +1687,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			result = true;
 		
 		statusResult.append("Ratio = " + ratio + " (avg Y/avg X: " + avgB + "/" + avgA + ") : Sample " + sampleIdx
-							+ " : " + (ratio < 0 ? "-" : "+") + "<br>");
+				+ " : " + (ratio < 0 ? "-" : "+") + "<br>");
 		
 		return result;
 	}
@@ -1839,11 +1849,11 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 							// ? "NORMALVERTEILT" : "Nicht normalverteilt!"));
 							if (!inRange)
 								resultForNode = resultForNode
-													+ "// "
-													+ ("Time=" + timePoint + ", Series=" + serie + " (" + "PG="
-																		+ AttributeHelper.formatNumber(pg, "#.##") + ", " + "r="
-																		+ AttributeHelper.formatNumber(r, "#.##") + ", " + "s="
-																		+ AttributeHelper.formatNumber(stdDev, "#.##") + ", " + "n=" + n + ")");
+										+ "// "
+										+ ("Time=" + timePoint + ", Series=" + serie + " (" + "PG="
+												+ AttributeHelper.formatNumber(pg, "#.##") + ", " + "r="
+												+ AttributeHelper.formatNumber(r, "#.##") + ", " + "s="
+												+ AttributeHelper.formatNumber(stdDev, "#.##") + ", " + "n=" + n + ")");
 							if (!inRange)
 								allInRange = false;
 						}
@@ -1869,44 +1879,44 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	public static boolean inDavidRange(double pg, int n, int columnIdx123_5_1_01percent) {
 		if (columnIdx123_5_1_01percent < 0 || columnIdx123_5_1_01percent > 2) {
 			ErrorMsg
-								.addErrorMessage("Invalid column index! Use 0 for 5 percent, 1 for 1 percent and 2 for 0.1 percent probability!");
+					.addErrorMessage("Invalid column index! Use 0 for 5 percent, 1 for 1 percent and 2 for 0.1 percent probability!");
 			return false;
 		}
 		if (n > 500) {
 			ErrorMsg
-								.addErrorMessage("Too many datapoints (more than 500) for this implementation of the David et. al. normality test.");
+					.addErrorMessage("Too many datapoints (more than 500) for this implementation of the David et. al. normality test.");
 			return false;
 		}
 		double[][] davidTable = {
-							// n lower bound upper bound
+				// n lower bound upper bound
 				// 5% 1% 0.1% 5% 1% 0.1%
 				{ 5, 2.15, 2.02, 1.83, 2.83, 2.80, 2.80 }, { 6, 2.28, 2.15, 1.83, 3.16, 3.16, 3.10 },
-							{ 7, 2.40, 2.26, 1.87, 3.46, 3.46, 3.34 }, { 8, 2.50, 2.35, 1.87, 3.74, 3.74, 3.54 },
-							{ 9, 2.59, 2.44, 1.90, 4.00, 4.00, 3.72 }, { 10, 2.67, 2.51, 1.90, 4.24, 4.24, 3.88 },
-
-							{ 11, 2.74, 2.58, 1.92, 4.47, 4.01, 3.80 }, { 12, 2.80, 2.64, 1.92, 4.69, 4.13, 3.91 },
-							{ 13, 2.85, 2.70, 1.93, 4.90, 4.24, 4.00 }, { 14, 2.92, 2.75, 1.93, 5.10, 4.34, 4.09 },
-							{ 15, 2.97, 2.80, 1.94, 5.29, 4.44, 4.17 },
-
-							{ 16, 3.01, 2.84, 1.94, 5.48, 4.52, 4.24 }, { 17, 3.05, 2.88, 1.94, 5.65, 4.60, 4.31 },
-							{ 18, 3.10, 2.92, 1.94, 5.83, 4.67, 4.37 }, { 19, 3.14, 2.96, 1.95, 6.00, 4.74, 4.43 },
-							{ 20, 3.18, 2.99, 1.95, 6.16, 4.80, 4.49 },
-
-							{ 25, 3.34, 3.15, 1.96, 6.93, 5.06, 4.71 }, { 30, 3.47, 3.27, 1.97, 7.62, 5.26, 4.89 },
-							{ 35, 3.58, 3.38, 1.97, 8.25, 5.42, 5.04 }, { 40, 3.67, 3.47, 1.98, 8.83, 5.56, 5.16 },
-							{ 45, 3.75, 3.55, 1.98, 9.38, 5.67, 5.26 },
-
-							{ 50, 3.83, 3.62, 1.98, 9.90, 5.77, 5.35 }, { 55, 3.90, 3.69, 1.98, 10.39, 5.86, 5.43 },
-							{ 60, 3.96, 3.75, 1.98, 10.86, 5.94, 5.51 }, { 65, 4.01, 3.80, 1.98, 11.31, 6.01, 5.57 },
-							{ 70, 4.06, 3.85, 1.99, 11.75, 6.07, 5.63 },
-
-							{ 75, 4.11, 3.90, 1.99, 12.17, 6.13, 5.68 }, { 80, 4.16, 3.94, 1.99, 12.57, 6.18, 5.73 },
-							{ 85, 4.20, 3.99, 1.99, 12.96, 6.23, 5.78 }, { 90, 4.24, 4.02, 1.99, 13.34, 6.27, 5.82 },
-							{ 95, 4.27, 4.06, 1.99, 13.71, 6.32, 5.86 },
-
-							{ 100, 4.31, 4.10, 1.99, 14.07, 6.36, 5.90 }, { 150, 4.59, 4.38, 1.99, 17.26, 6.64, 6.18 },
-							{ 200, 4.78, 4.59, 2.00, 19.95, 6.84, 6.39 }, { 500, 5.37, 5.13, 2.00, 31.59, 7.42, 6.94 }
-
+				{ 7, 2.40, 2.26, 1.87, 3.46, 3.46, 3.34 }, { 8, 2.50, 2.35, 1.87, 3.74, 3.74, 3.54 },
+				{ 9, 2.59, 2.44, 1.90, 4.00, 4.00, 3.72 }, { 10, 2.67, 2.51, 1.90, 4.24, 4.24, 3.88 },
+				
+				{ 11, 2.74, 2.58, 1.92, 4.47, 4.01, 3.80 }, { 12, 2.80, 2.64, 1.92, 4.69, 4.13, 3.91 },
+				{ 13, 2.85, 2.70, 1.93, 4.90, 4.24, 4.00 }, { 14, 2.92, 2.75, 1.93, 5.10, 4.34, 4.09 },
+				{ 15, 2.97, 2.80, 1.94, 5.29, 4.44, 4.17 },
+				
+				{ 16, 3.01, 2.84, 1.94, 5.48, 4.52, 4.24 }, { 17, 3.05, 2.88, 1.94, 5.65, 4.60, 4.31 },
+				{ 18, 3.10, 2.92, 1.94, 5.83, 4.67, 4.37 }, { 19, 3.14, 2.96, 1.95, 6.00, 4.74, 4.43 },
+				{ 20, 3.18, 2.99, 1.95, 6.16, 4.80, 4.49 },
+				
+				{ 25, 3.34, 3.15, 1.96, 6.93, 5.06, 4.71 }, { 30, 3.47, 3.27, 1.97, 7.62, 5.26, 4.89 },
+				{ 35, 3.58, 3.38, 1.97, 8.25, 5.42, 5.04 }, { 40, 3.67, 3.47, 1.98, 8.83, 5.56, 5.16 },
+				{ 45, 3.75, 3.55, 1.98, 9.38, 5.67, 5.26 },
+				
+				{ 50, 3.83, 3.62, 1.98, 9.90, 5.77, 5.35 }, { 55, 3.90, 3.69, 1.98, 10.39, 5.86, 5.43 },
+				{ 60, 3.96, 3.75, 1.98, 10.86, 5.94, 5.51 }, { 65, 4.01, 3.80, 1.98, 11.31, 6.01, 5.57 },
+				{ 70, 4.06, 3.85, 1.99, 11.75, 6.07, 5.63 },
+				
+				{ 75, 4.11, 3.90, 1.99, 12.17, 6.13, 5.68 }, { 80, 4.16, 3.94, 1.99, 12.57, 6.18, 5.73 },
+				{ 85, 4.20, 3.99, 1.99, 12.96, 6.23, 5.78 }, { 90, 4.24, 4.02, 1.99, 13.34, 6.27, 5.82 },
+				{ 95, 4.27, 4.06, 1.99, 13.71, 6.32, 5.86 },
+				
+				{ 100, 4.31, 4.10, 1.99, 14.07, 6.36, 5.90 }, { 150, 4.59, 4.38, 1.99, 17.26, 6.64, 6.18 },
+				{ 200, 4.78, 4.59, 2.00, 19.95, 6.84, 6.39 }, { 500, 5.37, 5.13, 2.00, 31.59, 7.42, 6.94 }
+		
 		};
 		int row = 0;
 		for (int i = 0; i < davidTable.length && n > davidTable[i][0]; i++) {
@@ -1945,14 +1955,14 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	
 	private void findCorrelations(final Collection<Node> nodes, final Graph graph, final EditorSession session) {
 		MyCorrlationFinder cf = new MyCorrlationFinder(nodes, graph, session, considerTimeShifts, mergeDataset,
-							colorCodeEdgesWithCorrelationValue, minimumR, currGammaValue, colR_1, colR0, colR1, correlationEdges, prob,
-							plotAverage, rankOrder, showStatusResult, dontAddNewEdgesUpdateOld);
+				colorCodeEdgesWithCorrelationValue, minimumR, currGammaValue, colR_1, colR0, colR1, correlationEdges, prob,
+				plotAverage, rankOrder, showStatusResult, dontAddNewEdgesUpdateOld);
 		BackgroundTaskHelper bth = new BackgroundTaskHelper(cf, cf, "Find Correlations", "Find Correlations", true, false);
 		bth.startWork(this);
 	}
 	
 	public static CorrelationResult calculateCorrelation(MyXML_XYDataset dataset, String dataset1, String dataset2,
-						boolean mergeDataset, int dataset2offset, double prob, boolean rankOrder) {
+			boolean mergeDataset, int dataset2offset, double prob, boolean rankOrder) {
 		CorrelationResult corrRes = new CorrelationResult(dataset1, dataset2);
 		StringBuilder calculationHistory = new StringBuilder();
 		double sum_x = 0;
@@ -1963,10 +1973,10 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		String mergedSeries = "Series: ";
 		int n = 0;
 		String initString = "<html>Highest significant (>=" + (prob * 100) + "%) correlation"
-							+ (dataset2offset == 0 ? "" : " (timeshift=" + dataset2offset + ")") + ":<br>"
-							+ "<!-- optstart --><small><small><table border=\"1\"><tr><td><b>Series</b></td><td><b>Index " + dataset1
-							+ "</b></td><td><b>Index " + dataset2 + "</b></td><td><b>Value " + dataset1 + "</b></td><td><b>Value "
-							+ dataset2 + "</b></td></tr>\n";
+				+ (dataset2offset == 0 ? "" : " (timeshift=" + dataset2offset + ")") + ":<br>"
+				+ "<!-- optstart --><small><small><table border=\"1\"><tr><td><b>Series</b></td><td><b>Index " + dataset1
+				+ "</b></td><td><b>Index " + dataset2 + "</b></td><td><b>Value " + dataset1 + "</b></td><td><b>Value "
+				+ dataset2 + "</b></td></tr>\n";
 		int maxROW = 1000;
 		calculationHistory.append(initString);
 		int rowDescription = 0;
@@ -2006,13 +2016,13 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 					else {
 						if (rowDescription < maxROW)
 							calculationHistory.append("<tr><td>" + dataset.getSeriesName(series) + "</td><td>" + item + " ("
-												+ dataset.getXsrcValue(series, item).timeUnitAndTime + ") </td><td>"
-												+ (item + dataset2offset) + " ("
-												+ dataset.getYsrcValue(series, item + dataset2offset).timeUnitAndTime + ")" + "</td>"
-												+ "<td>" + (rankOrder ? AttributeHelper.formatNumber(x_not_ranked, "#.###") + " -> " : "")
-												+ AttributeHelper.formatNumber(x, "#.###") + "</td>" + "<td>"
-												+ (rankOrder ? AttributeHelper.formatNumber(y_not_ranked, "#.###") + " -> " : "")
-												+ AttributeHelper.formatNumber(y, "#.###") + "</td></tr>\n");
+									+ dataset.getXsrcValue(series, item).timeUnitAndTime + ") </td><td>"
+									+ (item + dataset2offset) + " ("
+									+ dataset.getYsrcValue(series, item + dataset2offset).timeUnitAndTime + ")" + "</td>"
+									+ "<td>" + (rankOrder ? AttributeHelper.formatNumber(x_not_ranked, "#.###") + " -> " : "")
+									+ AttributeHelper.formatNumber(x, "#.###") + "</td>" + "<td>"
+									+ (rankOrder ? AttributeHelper.formatNumber(y_not_ranked, "#.###") + " -> " : "")
+									+ AttributeHelper.formatNumber(y, "#.###") + "</td></tr>\n");
 						rowDescription++;
 						sum_x += x;
 						sum_y += y;
@@ -2028,17 +2038,17 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			if (!mergeDataset) {
 				if (n - 2 < 1) {
 					ErrorMsg.addErrorMessage("Number of degrees of freedom is too low (DF=" + (n - 2)
-										+ "; to few datapoints+" + (mergeDataset ? "!" : "with matching replicate index!")
-										+ "+).<br>Correlation between " + dataset1 + " and " + dataset2 + " not calcualted!");
+							+ "; to few datapoints+" + (mergeDataset ? "!" : "with matching replicate index!")
+							+ "+).<br>Correlation between " + dataset1 + " and " + dataset2 + " not calcualted!");
 				} else {
 					calcAndAddResult(dataset2offset, prob, corrRes, calculationHistory, sum_x, sum_y, sum_x_x, sum_y_y,
-										sum_x_y, mergedSeries, n, maxROW, rowDescription, rankOrder);
+							sum_x_y, mergedSeries, n, maxROW, rowDescription, rankOrder);
 				}
 			}
 		}
 		if (mergeDataset) {
 			calcAndAddResult(dataset2offset, prob, corrRes, calculationHistory, sum_x, sum_y, sum_x_x, sum_y_y, sum_x_y,
-								mergedSeries, n, maxROW, rowDescription, rankOrder);
+					mergedSeries, n, maxROW, rowDescription, rankOrder);
 		}
 		// System.out.println("N="+n+" (off="+dataset2offset+")");
 		return corrRes;
@@ -2050,8 +2060,8 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	// factory.createNormalDistribution();
 	
 	private static void calcAndAddResult(int dataset2offset, double prob, CorrelationResult corrRes,
-						StringBuilder calculationHistory, double sum_x, double sum_y, double sum_x_x, double sum_y_y, double sum_x_y,
-						String mergedSeries, int n, int maxROW, int rowDescription, boolean spearMan) {
+			StringBuilder calculationHistory, double sum_x, double sum_y, double sum_x_x, double sum_y_y, double sum_x_y,
+			String mergedSeries, int n, int maxROW, int rowDescription, boolean spearMan) {
 		double sum_d_xx = sum_x_x - sum_x * sum_x / n;
 		double sum_d_yy = sum_y_y - sum_y * sum_y / n;
 		double sum_dx_dy = sum_x_y - sum_x * sum_y / n;
@@ -2106,16 +2116,16 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			myp = 2 * (1 - p2);
 		} catch (IllegalArgumentException iae) {
 			calculationHistory.append("<tr><td colspan=\"5\">CALCULATION (to few datapoints): "
-								+ iae.getLocalizedMessage() + "</td></tr>\n");
+					+ iae.getLocalizedMessage() + "</td></tr>\n");
 		} catch (MathException e) {
 			calculationHistory.append("<tr><td colspan=\"5\">CALCULATION ERROR: " + e.getLocalizedMessage()
-								+ "</td></tr>\n");
+					+ "</td></tr>\n");
 			ErrorMsg.addErrorMessage(e);
 		}
 		
 		if (rowDescription > maxROW) {
 			calculationHistory.append("<tr><td colspan=\"5\">(" + (rowDescription - maxROW)
-								+ " more rows omitted)</td></tr>\n");
+					+ " more rows omitted)</td></tr>\n");
 		}
 		String warningHeading = "";
 		String warningText = "";
@@ -2124,29 +2134,29 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			warningText = "<small>P value might be imprecise for n&lt;10,<br>it is calculated with an approximation to the t-distribution.";
 		}
 		calculationHistory
-							.append("</table><!-- optend --><br>" + "<table border=\"1\">" + "<tr>" + "<td><b>n</b></td>" + "<td><b>"
-												+ (spearMan ? "rs" : "r")
-												+ "</b></td>"
-												+
-												// "<td><b>r-tab</b></td>" +
-									(spearMan ?
-																	// "<td><b>~z</b> = rs<*(n-1)^0.5</td>"
-																	"<td><b>~t</b> = |rs|/((1-rs^2)/df)^0.5</td>"
-																	: "<td><b>~t</b> = r/((1-r^2)/df)^0.5</td>")
-												+ "<td><b>df</b></td>"
-												+ (spearMan ? "<td><b>Probability (non-directional)</b><br><small><small>(approximated to t-distribution)</small><small></td>"
-																	: "<td><b>Probability (non-directional)</b><br><small><small>(approximated to t-distribution)</small><small></td>")
-												+ warningHeading + "</tr>" + "<tr>" + "<td>" + n
-												+ "</td>"
-												+ "<td>"
-												+ AttributeHelper.formatNumber(r, "#.######")
-												+ "</td>"
-												+
-												// "<td>"+AttributeHelper.formatNumber(rtab, "#.###")+"</td>"
-									// +
-									"<td>" + AttributeHelper.formatNumber(t_or_z, "#.######") + "</td>" + "<td>" + (n - 2) + "</td>"
-												+ "<td>" + AttributeHelper.formatNumber(myp, "#.######") + "</td>" + warningText + "</tr>"
-												+ "</table>");
+				.append("</table><!-- optend --><br>" + "<table border=\"1\">" + "<tr>" + "<td><b>n</b></td>" + "<td><b>"
+						+ (spearMan ? "rs" : "r")
+						+ "</b></td>"
+						+
+						// "<td><b>r-tab</b></td>" +
+						(spearMan ?
+								// "<td><b>~z</b> = rs<*(n-1)^0.5</td>"
+								"<td><b>~t</b> = |rs|/((1-rs^2)/df)^0.5</td>"
+								: "<td><b>~t</b> = r/((1-r^2)/df)^0.5</td>")
+						+ "<td><b>df</b></td>"
+						+ (spearMan ? "<td><b>Probability (non-directional)</b><br><small><small>(approximated to t-distribution)</small><small></td>"
+								: "<td><b>Probability (non-directional)</b><br><small><small>(approximated to t-distribution)</small><small></td>")
+						+ warningHeading + "</tr>" + "<tr>" + "<td>" + n
+						+ "</td>"
+						+ "<td>"
+						+ AttributeHelper.formatNumber(r, "#.######")
+						+ "</td>"
+						+
+						// "<td>"+AttributeHelper.formatNumber(rtab, "#.###")+"</td>"
+						// +
+						"<td>" + AttributeHelper.formatNumber(t_or_z, "#.######") + "</td>" + "<td>" + (n - 2) + "</td>"
+						+ "<td>" + AttributeHelper.formatNumber(myp, "#.######") + "</td>" + warningText + "</tr>"
+						+ "</table>");
 		corrRes.addR(r, prob, dataset2offset, calculationHistory.toString(), mergedSeries, 1 - myp);
 	}
 	
@@ -2181,13 +2191,13 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				}
 				if (ge1 != ge2) {
 					CorrelationResult cr = calculateCorrelation(dataset, node2desc, node1desc, mergeDataset, 0, prob,
-										rankOrder);
+							rankOrder);
 					if (showStatusResult)
 						AttributeHelper.setToolTipText(ge2, cr.getRlist());
 					float r = cr.getMaxR();
 					AttributeHelper.setAttribute(ge2, "statistics", "correlation_r", r);
-
-					if(cr.getMaxTrueCorrProb() > Double.NEGATIVE_INFINITY)
+					
+					if (cr.getMaxTrueCorrProb() > Double.NEGATIVE_INFINITY)
 					{
 						double prob = 1d - cr.getMaxTrueCorrProb();
 						AttributeHelper.setAttribute(ge2, "statistics", "correlation_prob", prob);
@@ -2210,11 +2220,11 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		// GraphHelper.issueCompleteRedrawForGraph(graph);
 	}
 	
-	public static JComponent createScatterPlotBlock(boolean plotAverage, boolean tickMarksVisible,
-						boolean showRangeAxis, boolean showLegend, double minimumR, float outlineBorderWidth, boolean mergeDataset,
-						double prob, boolean rankOrder, double currGammaValue, Color colR_1, Color colR0, Color colR1,
-						Collection<GraphElement> gEe, Graph graph, boolean returnResult, Component lastScatterPlot,
-						JComponent placeForScatter) {
+	public JComponent createScatterPlotBlock(boolean plotAverage, boolean tickMarksVisible,
+			boolean showRangeAxis, boolean showLegend, double minimumR, float outlineBorderWidth, boolean mergeDataset,
+			double prob, boolean rankOrder, double currGammaValue, Color colR_1, Color colR0, Color colR1,
+			Collection<GraphElement> gEe, Graph graph, boolean returnResult, Component lastScatterPlot,
+			JComponent placeForScatter) {
 		int x = 0;
 		
 		ArrayList<GraphElement> graphElements = new ArrayList<GraphElement>();
@@ -2225,7 +2235,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		}
 		
 		int axisFontSize = ((Integer) AttributeHelper.getAttributeValue(graph, "", "node_plotAxisFontSize", new Integer(
-							10), new Integer(10))).intValue();
+				10), new Integer(10))).intValue();
 		
 		MyScatterBlock scatterBlock = new MyScatterBlock(true, axisFontSize);
 		for (Iterator<GraphElement> it1 = graphElements.iterator(); it1.hasNext();) {
@@ -2237,7 +2247,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			else {
 				Edge nge1 = (Edge) ge1;
 				node1desc = AttributeHelper.getLabel(ge1, AttributeHelper.getLabel(nge1.getSource(), "?")
-									+ (nge1.isDirected() ? "->" : "--") + AttributeHelper.getLabel(nge1.getTarget(), "?"));
+						+ (nge1.isDirected() ? "->" : "--") + AttributeHelper.getLabel(nge1.getTarget(), "?"));
 			}
 			Iterable<SubstanceInterface> mappedDataList1 = Experiment2GraphHelper.getMappedDataListFromGraphElement(ge1);
 			int y = 0;
@@ -2269,14 +2279,14 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 						// do not include axis labels in case only two
 						// substances are compares
 						chart = createScatterChart(dataset, null, null, null, graph, tickMarksVisible, showRangeAxis,
-											showLegend, outlineBorderWidth);
+								showLegend, outlineBorderWidth);
 					} else {
 						chart = createScatterChart(dataset, null, node2desc, node1desc, graph, tickMarksVisible,
-											showRangeAxis, showLegend, outlineBorderWidth);
+								showRangeAxis, showLegend, outlineBorderWidth);
 					}
 					
 					Font af = new Font(Axis.DEFAULT_AXIS_LABEL_FONT.getFontName(), Axis.DEFAULT_AXIS_LABEL_FONT.getStyle(),
-										axisFontSize);
+							axisFontSize);
 					chart.getXYPlot().getRangeAxis().setTickLabelFont(af);
 					chart.getXYPlot().getDomainAxis().setTickLabelFont(af);
 					chart.getXYPlot().getDomainAxis().setLabelFont(af);
@@ -2286,7 +2296,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 					
 					if (ge1 != ge2) {
 						final CorrelationResult cr = calculateCorrelation(dataset, node2desc, node1desc, mergeDataset, 0,
-											prob, rankOrder);
+								prob, rankOrder);
 						// chartPanel.setToolTipText("Mouse-Click for Details");
 						chartPanel.addMouseListener(new MouseListener() {
 							public void mouseClicked(MouseEvent e) {
@@ -2316,11 +2326,11 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 						});
 						if (cr.isAnyOneSignificant(minimumR))
 							chartPanel.setBorder(BorderFactory.createLineBorder(getRcolor(cr.getMaxR(), currGammaValue,
-												colR_1, colR0, colR1), 3));
+									colR_1, colR0, colR1), 3));
 						
 						else
 							chartPanel.setBorder(BorderFactory.createLineBorder(getRcolor(cr.getMaxR(), currGammaValue,
-												colR_1, colR0, colR1), 1));
+									colR_1, colR0, colR1), 1));
 					}
 					scatterBlock.addChartPanel(chartPanel, x, y, node1desc, node2desc);
 				}
@@ -2337,8 +2347,8 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			placeForScatter.remove(lastScatterPlot);
 		}
 		
-		lastScatterPlot = scatterBlock.getChartPanel();
-		placeForScatter.add(lastScatterPlot, "1,4");
+		this.lastScatterPlot = scatterBlock.getChartPanel();
+		placeForScatter.add(this.lastScatterPlot, "1,4");
 		placeForScatter.validate();
 		
 		return null;
@@ -2392,7 +2402,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	// }
 	
 	private static JFreeChart createScatterChart(MyXML_XYDataset dataset, String title, String labelX, String labelY,
-						Graph graph, boolean tickMarksVisible, boolean showRangeAxis, boolean showLegend, float outlineBorderWidth) {
+			Graph graph, boolean tickMarksVisible, boolean showRangeAxis, boolean showLegend, float outlineBorderWidth) {
 		
 		// ChartColorAttribute cca = (ChartColorAttribute) AttributeHelper
 		// .getAttributeValue(graph, ChartColorAttribute.attributeFolder,
@@ -2422,7 +2432,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		chart.setAntiAlias(IPKGraffitiView.getUseAntialiasingSetting());
 		if (p.getRenderer() instanceof CategoryItemRenderer)
 			XmlDataChartComponent.setSeriesColorsAndStroke((CategoryItemRenderer) p.getRenderer(), outlineBorderWidth,
-								graph); // seriesColors, seriesOutlineColors
+					graph); // seriesColors, seriesOutlineColors
 		return chart;
 	}
 	
@@ -2456,15 +2466,14 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		return v != null && v instanceof GraphView;
 	}
 	
-
 	@Override
 	public String getTabParentPath() {
 		return "Analysis.Data";
 	}
-
+	
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_LEADING;
 	}
-
+	
 }
