@@ -55,7 +55,6 @@ import org.graffiti.graphics.EdgeLabelAttribute;
 import org.graffiti.graphics.EdgeLabelPositionAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.graphics.LabelAttribute;
-import org.graffiti.graphics.NodeGraphicAttribute;
 import org.graffiti.graphics.NodeLabelAttribute;
 import org.graffiti.graphics.NodeLabelPositionAttribute;
 import org.graffiti.options.PreferencesInterface;
@@ -172,7 +171,12 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	@Override
 	public void attributeChanged(Attribute attr) {
 		
-		if (attr instanceof LabelAlignmentAttribute || attr instanceof NodeGraphicAttribute) {
+		/*
+		 * NodeGraphicAttribute is also sent if more than one attribute per component was changed
+		 * See TransactionHashMap... meeh
+		 * Sooooo...
+		 */
+		if (attr instanceof LabelAlignmentAttribute/* || attr instanceof NodeGraphicAttribute */) {
 			
 			adjustComponentSize();
 			validate();
@@ -183,7 +187,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			setLocation((int) (loc.getX() + shift.getX()), (int) (loc.getY() + shift.getY())); // -1
 			return;
 		} else {
-			recreate();
+//			recreate();
 			frame = labelAttr.getLabelFrameSetting();
 			
 			double strokeWidth = 1d;

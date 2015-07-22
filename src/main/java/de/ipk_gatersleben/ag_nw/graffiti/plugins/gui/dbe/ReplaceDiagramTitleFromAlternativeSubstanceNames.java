@@ -68,8 +68,8 @@ public class ReplaceDiagramTitleFromAlternativeSubstanceNames extends AbstractAl
 			MainFrame.showMessageDialog("No alternative identifiers available!", "No data available");
 		} else {
 			ArrayList<String> selvals = new ArrayList<String>();
-			selvals.add("-2 Show All Identifiers (comma delimited)");
-			selvals.add("-1 Show All Identifiers (line break)");
+			selvals.add("-1 Show All Identifiers (comma delimited)");
+//			selvals.add("-1 Show All Identifiers (line break)");
 			for (int i = 0; i <= maxID; i++) {
 				String s = "" + i;
 				String example = exampleValues.get(new Integer(i));
@@ -111,18 +111,18 @@ public class ReplaceDiagramTitleFromAlternativeSubstanceNames extends AbstractAl
 							if (oMain != null && allNames.size() > 0) {
 								newName = "";
 								for (int i = 0; i < allNames.size(); i++) {
-									if (idx == -2)
+									if (idx == -1)
 										newName = newName + allNames.get(i) + ", ";
-									else
-										newName = newName + allNames.get(i) + "<br>";
+//									else
+//										newName = newName + allNames.get(i) + "\n";// + "<br>";
 								}
-								if (newName.endsWith("<br>"))
-									newName = newName.substring(0, newName.length() - "<br>".length());
+								if (newName.endsWith("\n"))
+									newName = newName.substring(0, newName.length() - "\n".length());
 								if (newName.endsWith(", "))
 									newName = newName.substring(0, newName.length() - ", ".length());
 							}
-							if (idx == -1 && !newName.startsWith("<html>"))
-								newName = "<html>" + newName;
+//							if (idx == -1 && !newName.startsWith("<html>"))
+//								newName = "<html>" + newName;
 						} else {
 							String oAlternative = md.getSynonyme(idx);
 							if (oMain != null && oAlternative != null) {

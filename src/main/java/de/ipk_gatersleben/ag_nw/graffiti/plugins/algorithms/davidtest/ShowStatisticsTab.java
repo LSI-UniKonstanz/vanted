@@ -12,13 +12,17 @@ import org.graffiti.plugin.algorithm.Category;
 public class ShowStatisticsTab extends AbstractAlgorithm implements Algorithm {
 	
 	public void execute() {
-		MainFrame.getInstance().showAndHighlightSidePanelTab("Statistics", true);
+		MainFrame.getInstance().showAndHighlightSidePanelTab("Statistics", false);
+	}
+	
+	@Override
+	public String getCategory() {
+		return "Mapping.Statistical Analysis";
 	}
 	
 	public String getName() {
-		return "Correlation analysis, compare sample averages (e.g. t-Test)";
+		return "Data.Correlation analysis, compare sample averages (e.g. t-Test)";
 	}
-
 	
 	@Override
 	public Set<Category> getSetCategory() {

@@ -110,6 +110,11 @@ public enum GraffitiCharts implements ChartComponent {
 		return c != AUTOMATIC && c != HIDDEN;
 	}
 	
+	public static boolean isHide(String diagramStyle) {
+		GraffitiCharts c = getChartStyleFromString(diagramStyle);
+		return c == HIDDEN;
+	}
+	
 	public static boolean isNotHeatmap(String diagramStyle) {
 		return getChartStyleFromString(diagramStyle) != HEATMAP;
 	}

@@ -30,6 +30,19 @@ public class GraphElementHelper implements HelperClass {
 		return AttributeHelper.getLabel(ge, null);
 	}
 	
+	public static boolean hasDataMapping(GraphElement ge) {
+		try {
+			CollectionAttribute ca = (CollectionAttribute) ge.getAttribute(Experiment2GraphHelper.mapFolder);
+			XMLAttribute xa = (XMLAttribute) ca.getAttribute(Experiment2GraphHelper.mapVarName);
+			if (xa != null)
+				return true;
+			else
+				return false;
+		} catch (AttributeNotFoundException e) {
+			return false;
+		}
+	}
+	
 	/**
 	 * @return The Experiment (will never be null)
 	 */
