@@ -9,6 +9,7 @@ import info.clearthought.layout.TableLayoutConstants;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -2348,8 +2349,10 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		}
 		
 		this.lastScatterPlot = scatterBlock.getChartPanel();
+		this.lastScatterPlot.setPreferredSize(new Dimension(this.getSize().width, this.getSize().width));
 		placeForScatter.add(this.lastScatterPlot, "1,4");
 		placeForScatter.validate();
+		this.validate();
 		
 		return null;
 	}
