@@ -156,6 +156,8 @@ public class ManageAddonDialog extends JDialog {
 			
 			addKeys();
 			
+			getContentPane().removeAll();
+			
 			TableLayout thisLayout = new TableLayout(new double[][] {
 					// spalten
 					{ 5.0, TableLayoutConstants.FILL, 80, 10.0, 85.0, 80, 0.0, 10.0, TableLayoutConstants.FILL, TableLayoutConstants.FILL, 5.0 },
@@ -456,6 +458,7 @@ public class ManageAddonDialog extends JDialog {
 						if (returnVal == JFileChooser.APPROVE_OPTION) {
 							try {
 								AddonManagerPlugin.getInstance().installAddon(fc.getCurrentDirectory().toString(), fc.getSelectedFile().getName());
+								initGUI();
 							} catch (FileNotFoundException e1) {
 								ErrorMsg.addErrorMessage(e1);
 							} catch (IOException e1) {
