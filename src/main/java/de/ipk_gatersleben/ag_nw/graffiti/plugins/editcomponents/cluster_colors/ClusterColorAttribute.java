@@ -365,6 +365,17 @@ public class ClusterColorAttribute extends StringAttribute {
 //		setColorString(1, clusterID, color);
 	}
 	
+	public static ClusterColorAttribute getDefaultValue(int clusterSize) {
+		ClusterColorAttribute cca = new ClusterColorAttribute(attributeName);
+		Color[] defCols = Colors.getColors(clusterSize);
+		
+		for (int i = 0; i < defCols.length; i++) {
+			cca.listClusterColors.add(defCols[i]);
+			cca.listOutlineColors.add(Color.BLACK);
+		}
+		return cca;
+	}
+	
 	public static ClusterColorAttribute getDefaultValue(Collection<String> clusterNames) {
 		ClusterColorAttribute cca = new ClusterColorAttribute(attributeName);
 //		cca.ensureMinimumColorSelection(clusterNames.size());
