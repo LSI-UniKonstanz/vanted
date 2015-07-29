@@ -959,7 +959,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 //			validate();
 			
 			// adjustPreferredSize();
-//			repaint();
+			repaintGraphElementComponent(ec);
 		}
 		if (getGraph() != null)
 			getGraph().setModified(true);
@@ -1057,7 +1057,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		processNodeRemoval(node);
 		// if (getActiveTransactions() <= 0) {
 		// adjustPreferredSize();
-		// repaint();
+//		repaint();
 		// }
 		if (getGraph() != null)
 			getGraph().setModified(true);
@@ -1077,6 +1077,8 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 			remove(nc);
 		}
 		removeGraphElementComponent(node);
+		
+		repaintGraphElementComponent(nc);
 	}
 	
 	@Override
@@ -1903,8 +1905,20 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 * @see org.graffiti.plugin.view.View#repaint(org.graffiti.graph.GraphElement)
 	 */
 	public void repaint(GraphElement ge) {
-		
 		repaint();
+	}
+	
+	public void repaintGraphElementComponent(GraphElementComponent gec) {
+		logger.debug("repainting Graph Element Compoment");
+		double zoomx = getZoom() == null ? 1 : getZoom().getScaleX();
+		double zoomy = getZoom() == null ? 1 : getZoom().getScaleY();
+		double newx = (double) (gec.getX()) * zoomx;
+		double newy = (double) (gec.getY()) * zoomy;
+		double newwidth = (double) (gec.getWidth()) * zoomx;
+		double newheight = (double) (gec.getHeight()) * zoomy;
+		int delta = 10; //10 pixels in rescaled (zoomed) space
+		repaint(0, (int) newx, (int) newy, (int) newwidth + delta, (int) newheight + delta);
+		
 	}
 	
 	public GraffitiFrame[] getDetachedFrames() {
