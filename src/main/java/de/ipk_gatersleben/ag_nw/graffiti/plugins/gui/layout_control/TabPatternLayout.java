@@ -6,12 +6,10 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
-import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -19,7 +17,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -44,14 +41,12 @@ import org.graffiti.plugin.io.InputSerializer;
 import org.graffiti.plugin.io.ParserException;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
-import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.EditorSession;
 import org.graffiti.session.Session;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.naive_pattern_finder.NaivePatternFinderAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.naive_pattern_finder.PatternAttributeUtils;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.FileOpenAction;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.copy_pattern_layout.CopyPatternLayoutAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.LogicConnection;
@@ -98,7 +93,7 @@ public class TabPatternLayout extends InspectorTab {
 	
 	/** DOCUMENT ME! */
 	private ViewManager viewManager;
-
+	
 	private void initComponents() {
 		
 		jPanelButtons = new javax.swing.JPanel();
@@ -127,7 +122,6 @@ public class TabPatternLayout extends InspectorTab {
 		jAllowOverlap.setOpaque(false);
 		jAllowOverlap.setSelected(true);
 		
-		
 		jButtonCopyLayout = new JMButton("Apply Layout");
 		
 		jPanelPattern = new javax.swing.JPanel();
@@ -142,15 +136,15 @@ public class TabPatternLayout extends InspectorTab {
 				System.out.println("Tab changed state");
 				
 				List<?> sessions =
-									GravistoService.getInstance().getPatternSessionList();
+						GravistoService.getInstance().getPatternSessionList();
 				
 				GravistoService.getInstance().framesDeselect();
 				
 				MainFrame mf = GravistoService.getInstance().getMainFrame();
 				if (jTabbedPane1.getSelectedIndex() >= 0) {
 					mf.fireSessionChanged(
-										(Session) sessions.get(
-															jTabbedPane1.getSelectedIndex()));
+							(Session) sessions.get(
+									jTabbedPane1.getSelectedIndex()));
 				} else {
 					// mf.fireSessionChanged(null);
 				}
@@ -159,13 +153,13 @@ public class TabPatternLayout extends InspectorTab {
 		
 		jPanelButtons.setLayout(new java.awt.GridLayout(5, 2));
 		
-		jButtonAddPattern.setText("Add Search-Graph");
+		jButtonAddPattern.setText("Add Search-Network");
 		jButtonAddPattern
-							.addActionListener(new java.awt.event.ActionListener() {
-								public void actionPerformed(java.awt.event.ActionEvent evt) {
-									jButtonAddPatternActionPerformed(evt);
-								}
-							});
+				.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						jButtonAddPatternActionPerformed(evt);
+					}
+				});
 		
 		jPanelButtons.add(jButtonAddPattern);
 		
@@ -173,22 +167,22 @@ public class TabPatternLayout extends InspectorTab {
 		// boolean ipkEditToolsLoaded = te.getDescription().getAuthor().toUpperCase().indexOf("IPK")>=0;
 		boolean ipkEditToolsLoaded = false;
 		if (!ipkEditToolsLoaded) {
-			jButtonEdit.setText("Edit Search-Graph");
+			jButtonEdit.setText("Edit Search-Network");
 			jButtonEdit.addActionListener(new ActionListener() {
 				
 				public void actionPerformed(ActionEvent e) {
 					if (GravistoService.getInstance().isEditorFrameSelected()) {
-						MainFrame.showMessage("You may now edit the Search-Graph", MessageType.INFO);
+						MainFrame.showMessage("You may now edit the Search-Network", MessageType.INFO);
 						List<?> sessions =
-											GravistoService.getInstance().getPatternSessionList();
+								GravistoService.getInstance().getPatternSessionList();
 						
 						GravistoService.getInstance().framesDeselect();
 						
 						MainFrame mf = GravistoService.getInstance().getMainFrame();
 						if (jTabbedPane1.getSelectedIndex() >= 0) {
 							mf.fireSessionChanged(
-												(Session) sessions.get(
-																	jTabbedPane1.getSelectedIndex()));
+									(Session) sessions.get(
+											jTabbedPane1.getSelectedIndex()));
 						} else {
 							// mf.fireSessionChanged(null);
 						}
@@ -200,7 +194,7 @@ public class TabPatternLayout extends InspectorTab {
 		}
 		jPanelButtons.add(jButtonRemovePattern);
 		
-		jButtonSave.setText("Save Search-Graph");
+		jButtonSave.setText("Save Search-Network");
 		jButtonSave.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButtonSaveActionPerformed(evt);
@@ -209,7 +203,7 @@ public class TabPatternLayout extends InspectorTab {
 		
 		jPanelButtons.add(jButtonSave);
 		
-		jButtonLoad.setText("Load Search-Graph");
+		jButtonLoad.setText("Load Search-Network");
 		jButtonLoad.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButtonLoadActionPerformed(evt);
@@ -217,13 +211,13 @@ public class TabPatternLayout extends InspectorTab {
 		});
 		jPanelButtons.add(jButtonLoad);
 		
-		jButtonRemovePattern.setText("Remove Search-Graph");
+		jButtonRemovePattern.setText("Remove Search-Network");
 		jButtonRemovePattern
-							.addActionListener(new java.awt.event.ActionListener() {
-								public void actionPerformed(java.awt.event.ActionEvent evt) {
-									jButtonRemovePatternActionPerformed(evt);
-								}
-							});
+				.addActionListener(new java.awt.event.ActionListener() {
+					public void actionPerformed(java.awt.event.ActionEvent evt) {
+						jButtonRemovePatternActionPerformed(evt);
+					}
+				});
 		
 		jButtonCopyLayout = new JMButton("Apply Layout (right to left)");
 		jButtonCopyLayout.addActionListener(new ActionListener() {
@@ -236,7 +230,7 @@ public class TabPatternLayout extends InspectorTab {
 				}
 				if (graph != null)
 					GravistoService.getInstance().runPlugin(new CopyPatternLayoutAlgorithm().getName(),
-										graph, null);
+							graph, null);
 			}
 		});
 		jPanelButtons.add(jButtonCopyLayout);
@@ -260,8 +254,8 @@ public class TabPatternLayout extends InspectorTab {
 				alg.setAllowOverlap(jAllowOverlap.isSelected());
 				GravistoService.getInstance().runAlgorithm(alg, graph, new Selection("empty"), null);
 				SearchOption[] so = new SearchOption[] { new SearchOption(LogicConnection.OR, NodeOrEdge.Nodes,
-									".AGNW.PATTERN.PATTERN_1", "PATTERN_NAME", "", 0, 0.0, false,
-									SearchType.searchString, SearchLogic.searchMatched, SearchOperation.include) };
+						".AGNW.PATTERN.PATTERN_1", "PATTERN_NAME", "", 0, 0.0, false,
+						SearchType.searchString, SearchLogic.searchMatched, SearchOperation.include) };
 				SearchDialog.doSearch(so);
 			}
 		});
@@ -273,8 +267,8 @@ public class TabPatternLayout extends InspectorTab {
 			
 			public void actionPerformed(ActionEvent e) {
 				SearchOption[] so = new SearchOption[] { new SearchOption(LogicConnection.OR, NodeOrEdge.Nodes,
-									".AGNW.PATTERN.PATTERN_1", "PATTERN_NAME", "", 0, 0.0, false,
-									SearchType.searchString, SearchLogic.searchMatched, SearchOperation.include) };
+						".AGNW.PATTERN.PATTERN_1", "PATTERN_NAME", "", 0, 0.0, false,
+						SearchType.searchString, SearchLogic.searchMatched, SearchOperation.include) };
 				SearchDialog.doSearch(so);
 			}
 		});
@@ -290,7 +284,7 @@ public class TabPatternLayout extends InspectorTab {
 		double size[][] =
 		{ { border, TableLayoutConstants.FILL, border }, // Columns
 				{
-												border, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, border }
+						border, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, border }
 		}; // Rows
 		
 		this.setBounds(10, 10, 100, 100);
@@ -357,7 +351,7 @@ public class TabPatternLayout extends InspectorTab {
 					
 					jTabbedPane1.add(
 							"Network "
-												+ new Integer(jTabbedPane1.getComponentCount() + 1).toString(),
+									+ new Integer(jTabbedPane1.getComponentCount() + 1).toString(),
 							sp);
 					
 				} catch (ParserException pe) {
@@ -373,7 +367,6 @@ public class TabPatternLayout extends InspectorTab {
 				showError(ie.getLocalizedMessage());
 			}
 		}
-		
 		
 //		GraffitiView gf =
 //							(GraffitiView) ((JViewport) sp.getComponent(0)).getComponent(0);
@@ -398,7 +391,7 @@ public class TabPatternLayout extends InspectorTab {
 		 * ((JViewport) sp.getComponent(0)).getComponent(0).setBackground(
 		 * new Color(230, 240, 230));
 		 */
-
+		
 	}
 	
 	void jButtonSaveActionPerformed(java.awt.event.ActionEvent evt) {
@@ -411,17 +404,17 @@ public class TabPatternLayout extends InspectorTab {
 		}
 		if (sessionList == null || !sessionList.contains(s)) {
 			MainFrame.showMessageDialog("<html>" +
-								"Please activate at first the desired search graph to be saved!<br>" +
-								"Use the command <b>Edit Search-Graph</b> to activate the search-graph editor session.", "Error");
+					"Please activate at first the desired search graph to be saved!<br>" +
+					"Use the command <b>Edit Search-Graph</b> to activate the search-graph editor session.", "Error");
 			return;
 		}
 		GravistoService gs = GravistoService.getInstance();
 		FileSaveAsAction sa =
-							new FileSaveAsAction(
-												GravistoService.getInstance().getMainFrame(),
-												gs.getMainFrame().getIoManager(),
-												gs.getMainFrame().getSessionManager(),
-												StringBundle.getInstance());
+				new FileSaveAsAction(
+						GravistoService.getInstance().getMainFrame(),
+						gs.getMainFrame().getIoManager(),
+						gs.getMainFrame().getSessionManager(),
+						StringBundle.getInstance());
 		sa.actionPerformed(evt);
 	}
 	
@@ -429,7 +422,7 @@ public class TabPatternLayout extends InspectorTab {
 		// removePattern
 		
 		List<?> sessions = GravistoService.getInstance().getPatternSessionList();
-		if(sessions.isEmpty())
+		if (sessions.isEmpty())
 			return;
 		if (jTabbedPane1.getComponentCount() > 0) {
 			if (jTabbedPane1.getSelectedIndex() >= 0) {
@@ -437,7 +430,7 @@ public class TabPatternLayout extends InspectorTab {
 				jTabbedPane1.remove(jTabbedPane1.getSelectedIndex());
 			} else {
 				GravistoService.getInstance().getPatternSessionList().remove(
-									sessions.get(0));
+						sessions.get(0));
 				sessions.remove(0);
 				jTabbedPane1.remove(0);
 			}
@@ -471,9 +464,9 @@ public class TabPatternLayout extends InspectorTab {
 		JScrollPane sp = mf.showViewChooserDialog(newSession, true, null);
 		
 		jTabbedPane1.add(
-							"Network "
-												+ new Integer(jTabbedPane1.getComponentCount() + 1).toString(),
-							sp);
+				"Network "
+						+ new Integer(jTabbedPane1.getComponentCount() + 1).toString(),
+				sp);
 		GravistoService.getInstance().framesDeselect();
 	}
 	
@@ -496,9 +489,9 @@ public class TabPatternLayout extends InspectorTab {
 		JScrollPane sp = mf.showViewChooserDialog(newSession, true, null);
 		
 		jTabbedPane1.add(
-							"Network "
-												+ new Integer(jTabbedPane1.getComponentCount() + 1).toString(),
-							sp);
+				"Network "
+						+ new Integer(jTabbedPane1.getComponentCount() + 1).toString(),
+				sp);
 	}
 	
 	/**
@@ -506,12 +499,11 @@ public class TabPatternLayout extends InspectorTab {
 	 */
 	public TabPatternLayout() {
 		super();
-		this.title = "Search Motifs";
+		this.title = "Search Subnetworks";
 		this.mainframe = MainFrame.getInstance();
 		this.ioManager = mainframe.getIoManager();
 		this.viewManager = mainframe.getViewManager();
 		this.sBundle = StringBundle.getInstance();
-
 		
 		initComponents();
 	}
@@ -612,12 +604,12 @@ public class TabPatternLayout extends InspectorTab {
 		else
 			return v != null && (v instanceof GraphView);
 	}
-
+	
 	@Override
 	public String getTabParentPath() {
 		return "Analysis.Network";
 	}
-
+	
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_TRAILING;
@@ -625,7 +617,7 @@ public class TabPatternLayout extends InspectorTab {
 	
 	protected void showError(String msg) {
 		JOptionPane.showMessageDialog(mainframe, msg,
-							StringBundle.getInstance().getString("message.dialog.title"),
-							JOptionPane.ERROR_MESSAGE);
+				StringBundle.getInstance().getString("message.dialog.title"),
+				JOptionPane.ERROR_MESSAGE);
 	}
 }
