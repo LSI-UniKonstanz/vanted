@@ -104,8 +104,13 @@ public class Addon {
 		while (tok.hasMoreTokens()) {
 			String[] strSplitAddonVersion = tok.nextToken().split("\\.");
 			
-			for (int i = 0; i < strSplitMainversion.length; i++) {
-				long longPartVersion = Long.parseLong(strSplitAddonVersion[i]);
+			for (int i = 0; i < strSplitAddonVersion.length; i++) {
+				long longPartVersion;
+				try {
+					longPartVersion = Long.parseLong(strSplitAddonVersion[i]);
+				} catch (NumberFormatException e) {
+					longPartVersion = longArrMainVersion[i];
+				}
 				/*
 				 * if the main / sub version is definitely larger then the min-main/sub version
 				 * we don't need to check further.
