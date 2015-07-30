@@ -278,7 +278,7 @@ public class IPKGraffitiView
 	
 	@Override
 	public void repaint() {
-		logger.debug("issuing repaint");
+//		logger.debug("issuing repaint");
 		super.repaint();
 		
 	}

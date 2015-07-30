@@ -6,6 +6,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.naive_pattern_finde
 
 import java.util.HashSet;
 
+import org.AttributeHelper;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.graph.Node;
@@ -66,7 +67,7 @@ class Matcher {
 	 *           the name of the pattern
 	 */
 	public void match(State state, PatternVisitor visitor,
-						PatternVisitor optVisitor2, HashSet<Node> resultNodes, String patternName, boolean allowOverlap) {
+			PatternVisitor optVisitor2, HashSet<Node> resultNodes, String patternName, boolean allowOverlap) {
 		match2(state, visitor, optVisitor2, resultNodes, patternName, allowOverlap);
 	}
 	
@@ -97,11 +98,10 @@ class Matcher {
 		return numberOfMatchingNodes;
 	}
 	
-	
 	public boolean isAllowOverlap() {
 		return allowOverlap;
 	}
-
+	
 	/**
 	 * Recursive implementation of the matching function.
 	 * 
@@ -131,7 +131,7 @@ class Matcher {
 			n2 = state.getNextNodeOfTarget();
 			
 			if (state.isFeasiblePair(n1, n2)) {
-				State nextState = (UllmannSubgraphIsomState) state.clone();
+				State nextState = (UllmannSubraphIsomAdjMatrixState) state.clone();
 				
 				nextState.addPair(n1, n2);
 				found = match2(nextState);
@@ -155,9 +155,27 @@ class Matcher {
 	 */
 	
 	private boolean match2(State state, PatternVisitor visitor, PatternVisitor optVisitor2,
-						HashSet<Node> resultNodes,
-						String additionalInformation, boolean allowOverlap) {
-		logger.debug("--> Entering Level: " + ((UllmannSubgraphIsomState)state).currentRecursionLevel);
+			HashSet<Node> resultNodes,
+			String additionalInformation, boolean allowOverlap) {
+		logger.setLevel(Level.DEBUG);
+		logger.debug("--> Entering Level: " + ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel);
+		if (logger.getLevel() == Level.DEBUG) {
+			System.out.print("matching pattern nodes: ");
+			for (int i = 0; i < ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel; i++) {
+				Node n = state.getMatchingNodesOfPattern()[i];
+				if (n != null)
+					System.out.print(AttributeHelper.getLabel(n, Long.toString(n.getID())) + " ");
+			}
+			System.out.println();
+			System.out.print("matching Target  nodes: ");
+			for (int i = 0; i < ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel; i++) {
+				Node n = state.getMatchingNodesOfTarget()[i];
+				if (n != null)
+					System.out.print(AttributeHelper.getLabel(n, Long.toString(n.getID())) + " ");
+			}
+			System.out.println();
+		}
+		
 		if (state.isGoal()) {
 			logger.debug("Pattern found: marking and returning");
 			numberOfMatchingNodes = state.getCoreLength();
@@ -168,17 +186,19 @@ class Matcher {
 					resultNodes.add(n);
 			if (optVisitor2 != null)
 				optVisitor2.visitPattern(numberOfMatchingNodes,
-									matchingNodesOfPattern,
-									matchingNodesOfTarget,
-									additionalInformation, allowOverlap);
+						matchingNodesOfPattern,
+						matchingNodesOfTarget,
+						additionalInformation, allowOverlap);
 			return visitor.visitPattern(numberOfMatchingNodes,
-								matchingNodesOfPattern,
-								matchingNodesOfTarget,
-								additionalInformation, allowOverlap);
+					matchingNodesOfPattern,
+					matchingNodesOfTarget,
+					additionalInformation, allowOverlap);
 		}
 		
 		if (state.isDead()) {
-			logger.debug("<-- Leaving Level: " + ((UllmannSubgraphIsomState)state).currentRecursionLevel + ": isDead:");
+			logger.debug("<-- Leaving Level: " + ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel + ": isDead:");
+//			if (logger.getLevel() == Level.DEBUG)
+//				((UllmannSubraphIsomAdjMatrixState) state).printCompatibilityMatrix();
 			return false;
 		}
 		
@@ -186,30 +206,30 @@ class Matcher {
 		int nodeOfTarget = State.NULL_NODE;
 		
 		while (state.computeNextPair(nodeOfPattern, nodeOfTarget)) {
-			logger.debug("level[" + + ((UllmannSubgraphIsomState)state).currentRecursionLevel + "] while.computeNextPair");
-			logger.debug("computednextpair for prev: " + nodeOfPattern + " " + nodeOfTarget);
+			logger.debug("level[" + +((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel + "] while.computeNextPair");
+			logger.debug("previous pair: " + nodeOfPattern + " " + nodeOfTarget);
 			nodeOfPattern = state.getNextNodeOfPattern();
 			nodeOfTarget = state.getNextNodeOfTarget();
-			logger.debug("                   result: " + nodeOfPattern + " " + nodeOfTarget);
+			logger.debug("    next pair: " + nodeOfPattern + " " + nodeOfTarget);
 			if (state.isFeasiblePair(nodeOfPattern, nodeOfTarget)) {
-				State nextState = (UllmannSubgraphIsomState) state.clone();
+				State nextState = (UllmannSubraphIsomAdjMatrixState) state.clone();
 				
-				logger.debug("matrix before addPair---");
-				if(logger.getLevel() == Level.DEBUG)
-					((UllmannSubgraphIsomState)state).printCompatibilityMatrix();
+//				logger.debug("matrix before addPair---");
+//				if (logger.getLevel() == Level.DEBUG)
+//					((UllmannSubraphIsomAdjMatrixState) state).printCompatibilityMatrix();
 				
 				nextState.addPair(nodeOfPattern, nodeOfTarget);
 				
 				logger.debug("matrix after addPair---");
-				if(logger.getLevel() == Level.DEBUG)
-					((UllmannSubgraphIsomState)nextState).printCompatibilityMatrix();
+				if (logger.getLevel() == Level.DEBUG)
+					((UllmannSubraphIsomAdjMatrixState) nextState).printCompatibilityMatrix();
 				
-				((UllmannSubgraphIsomState)nextState).currentRecursionLevel++;
+				((UllmannSubraphIsomAdjMatrixState) nextState).currentRecursionLevel++;
 				
 				if (match2(nextState, visitor, optVisitor2, resultNodes, additionalInformation, allowOverlap)) {
 					nextState.backtrack();
-					logger.debug("<-- Leaving Level: " + ((UllmannSubgraphIsomState)nextState).currentRecursionLevel);
-
+					logger.debug("<-- Leaving Level: " + ((UllmannSubraphIsomAdjMatrixState) nextState).currentRecursionLevel);
+					
 					return true;
 				} else {
 					nextState.backtrack();
@@ -217,7 +237,7 @@ class Matcher {
 			}
 		}
 		
-		logger.debug("<-- Leaving Level: " + ((UllmannSubgraphIsomState)state).currentRecursionLevel);
+		logger.debug("<-- Leaving Level: " + ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel);
 		return false;
 	}
 }

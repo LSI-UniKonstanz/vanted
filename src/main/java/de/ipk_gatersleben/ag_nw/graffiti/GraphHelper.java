@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
@@ -1070,7 +1071,7 @@ public class GraphHelper implements HelperClass {
 	
 	public static void selectGraphElements(boolean clearBefore, Collection<? extends GraphElement> elements) {
 		try {
-			EditorSession es = findSession( elements);
+			EditorSession es = findSession(elements);
 			if (clearBefore)
 				es.getSelectionModel().getActiveSelection().clear();
 			es.getSelectionModel().getActiveSelection().addAll(elements);
@@ -2139,8 +2140,8 @@ public class GraphHelper implements HelperClass {
 						newEdges.add(newEdge);
 					}
 					GraphHelper.unselectGraphElements(edges);
-					myGraph.deleteAll( edges);
-					GraphHelper.selectGraphElements( newEdges);
+					myGraph.deleteAll(edges);
+					GraphHelper.selectGraphElements(newEdges);
 					if (missing > 0)
 						MainFrame.showMessageDialog("<html>In the meantime " + missing
 								+ " edges have been removed from the graph.", "Processing incomplete");
@@ -2194,10 +2195,10 @@ public class GraphHelper implements HelperClass {
 						}
 						edges.add(newEdge);
 					}
-					GraphHelper.unselectGraphElements( newEdges);
-					myGraph.deleteAll( newEdges);
+					GraphHelper.unselectGraphElements(newEdges);
+					myGraph.deleteAll(newEdges);
 					newEdges.clear();
-					GraphHelper.selectGraphElements( edges);
+					GraphHelper.selectGraphElements(edges);
 					if (missing > 0)
 						MainFrame.showMessageDialog("<html>In the meantime " + missing
 								+ " edges have been removed from the graph.", "Processing incomplete");
@@ -2292,4 +2293,41 @@ public class GraphHelper implements HelperClass {
 			return new Double(result);
 		}
 	}
+	
+	/**
+	 * Creates the adjacency matrix for a given graph.
+	 * It will also consider if the graph is directed.
+	 * The order of the nodes in the array are the same as in the
+	 * Node list of the given Graph.
+	 * 
+	 * @param g
+	 * @param directed
+	 */
+	public static byte[][] createAdjacencyMatrix(Graph g, boolean directed) {
+		int numNodes = g.getNodes().size();
+		
+		Map<Node, Integer> mapNodesToIdx = new HashMap<>();
+		int i = 0;
+		for (Node curNode : g.getNodes())
+			mapNodesToIdx.put(curNode, i++);
+		
+		byte adjMatrix[][] = new byte[numNodes][];
+		
+		for (i = 0; i < numNodes; i++)
+			adjMatrix[i] = new byte[numNodes];
+		
+		for (Node nodeY : g.getNodes())
+			if (directed) {
+				for (Node nodeX : nodeY.getOutNeighbors()) {
+					adjMatrix[mapNodesToIdx.get(nodeY)][mapNodesToIdx.get(nodeX)] = 1;
+				}
+			} else {
+				for (Node nodeX : nodeY.getNeighbors()) {
+					adjMatrix[mapNodesToIdx.get(nodeY)][mapNodesToIdx.get(nodeX)] = 1;
+				}
+			}
+		
+		return adjMatrix;
+	}
+	
 }
