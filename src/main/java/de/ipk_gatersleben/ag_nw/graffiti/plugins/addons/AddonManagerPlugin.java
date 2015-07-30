@@ -20,6 +20,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.ApplicationStatus;
@@ -319,7 +320,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 				
 				boolean incompatibleDeactivated = false;
 				
- 				if (onStartup && ReleaseInfo.isUpdated() == UpdateInfoResult.UPDATED
+				if (onStartup && ReleaseInfo.isUpdated() == UpdateInfoResult.UPDATED
 						&& !new Addon(f, xmlURL, pd, isactive, getInactiveIcon()).isTestedWithRunningVersion()) {
 					isactive = false;
 					incompatibleDeactivated = true;
@@ -600,22 +601,24 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 					case InstalledAndActive:
 						hideNewComponents();
 						
-						showManageAddonDialog("<html>Addon \"" + jarname
-								+ "\" was correctly installed and may be used.", false);
+						JOptionPane.showMessageDialog(MainFrame.getInstance(), "<html>Addon \"" + jarname
+								+ "\" was correctly installed and may be used.", "Install", JOptionPane.INFORMATION_MESSAGE);
+//						showManageAddonDialog("<html>Addon \"" + jarname
+//								+ "\" was correctly installed and may be used.", false);
 						return true;
 					case Updated:
-						showManageAddonDialog("<html>Addon \"" + jarname
-								+ "\" will be updated when application is restarted.", false);
+						JOptionPane.showMessageDialog(MainFrame.getInstance(), "<html>Addon \"" + jarname
+								+ "\" will be updated when application is restarted.", "Update", JOptionPane.INFORMATION_MESSAGE);
 						return true;
 					case InstalledAndIncompatible:
-						showManageAddonDialog("<html>Addon \"" + jarname
-								+ "\" is installed but is deactivated (compatibility error).", false);
+						JOptionPane.showMessageDialog(MainFrame.getInstance(), "<html>Addon \"" + jarname
+								+ "\" is installed but is deactivated (compatibility error).", "Incompatible", JOptionPane.INFORMATION_MESSAGE);
 						return true;
 					case NotAnAddon:
 						return false;
 					case Error:
-						showManageAddonDialog("<html>Addon \"" + jarname
-								+ "\" could not be installed.", false);
+						JOptionPane.showMessageDialog(MainFrame.getInstance(), "<html>Addon \"" + jarname
+								+ "\" could not be installed.", "Error", JOptionPane.ERROR_MESSAGE);
 						return false;
 				}
 				
