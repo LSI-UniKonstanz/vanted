@@ -255,22 +255,23 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			}
 		});
 		
-		JButton showTableData = new JMButton("<html><small><center>Show<br>Input-Form");
-		if (SystemInfo.isMac()) {
-			showTableData.putClientProperty("JComponent.sizeVariant", "mini");
-		}
+//		JButton showTableData = new JMButton("<html><small><center>Show<br>Input-Form");
+//		if (SystemInfo.isMac()) {
+//			showTableData.putClientProperty("JComponent.sizeVariant", "mini");
+//		}
 		
-		showTableData.setOpaque(false);
-		showTableData.setEnabled(td != null);
-		showTableData.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				td.showDataDialog();
-			}
-		});
+//		showTableData.setOpaque(false);
+//		showTableData.setEnabled(td != null);
+//		showTableData.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				td.showDataDialog();
+//			}
+//		});
 		
 		if (doc == null) {
-			this.add(TableLayout.get3Split(closeTab, new JLabel(), showTableData, TableLayout.PREFERRED, TableLayout.FILL,
-					TableLayout.PREFERRED), "0,0");
+//			this.add(TableLayout.get3Split(closeTab, new JLabel(), showTableData, TableLayout.PREFERRED, TableLayout.FILL,
+//					TableLayout.PREFERRED), "0,0");
+			this.add(TableLayout.getSplit(closeTab, new JLabel(), TableLayout.PREFERRED, TableLayout.FILL), "0,0");
 			this
 					.add(
 							new JLabel(
@@ -373,9 +374,11 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			fp5.addComp(hierarchyWizard, 5);
 			fp5.layoutRows();
 			
-			this.add(TableLayout.get3Split(TableLayout.getSplit(new JLabel(), closeTab, TableLayout.FILL,
-					TableLayout.PREFERRED), saveXMLdoc, showTableData, TableLayout.FILL, TableLayout.PREFERRED,
+			this.add(TableLayout.get3Split(closeTab, new JLabel(), saveXMLdoc, TableLayout.PREFERRED, TableLayout.FILL,
 					TableLayout.PREFERRED), "0,0");
+//			this.add(TableLayout.getSplit(TableLayout.getSplit(new JLabel(), closeTab, TableLayout.FILL,
+//					TableLayout.PREFERRED), saveXMLdoc, TableLayout.FILL, TableLayout.PREFERRED
+//					), "0,0");
 			
 			this.add(TableLayout.get3SplitVertical(null, getActionCommandGUI(), null, 4, TableLayout.PREFERRED, 4), "0,1");
 			
