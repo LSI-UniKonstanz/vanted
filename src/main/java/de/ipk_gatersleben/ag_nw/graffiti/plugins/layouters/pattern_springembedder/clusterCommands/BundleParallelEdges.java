@@ -52,28 +52,27 @@ public class BundleParallelEdges extends AbstractAlgorithm {
 				Category.LAYOUT
 				));
 	}
-
 	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-
+	
 	@Override
 	public String getDescription() {
-		return "<html>Will introduce bends to the selected egdes<br>" +
-							"in order to bundle them. This will highlight the<br>" +
-							"general edge direction, without loosing single edges";
+		return "<html>This algorithm will bundle edges that connect nodes belonging"
+				+ "to different classes. The definition of the classes can be taken from"
+				+ "the node's cluster name or a slected node attribute.";
 	}
 	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
-							new DoubleParameter(scalingFactor, "Edge distance", "Indicates the distance between edges when bundled"),
-							new ObjectListParameter(shape, "Edge Shape", "", Shapes.values()),
-							new ObjectListParameter(source, "Source of Cluster Information",
-												"Determines, which attribute will be used for the node clustering information", new String[] { "Cluster ID",
-																	"Source Attribut" }) };
+				new DoubleParameter(scalingFactor, "Edge distance", "Indicates the distance between edges when bundled"),
+				new ObjectListParameter(shape, "Edge Shape", "", Shapes.values()),
+				new ObjectListParameter(source, "Source of class Information",
+						"Determines, which attribute will be used for the definition of classes", new String[] { "Cluster ID",
+								"Source Attribut" }) };
 	}
 	
 	@Override
@@ -108,7 +107,7 @@ public class BundleParallelEdges extends AbstractAlgorithm {
 			for (Edge ed : selectedOrAllEdges) {
 				Node ndt = ed.getTarget();
 				String clusterid1 = source.equals("Cluster ID") ? NodeTools.getClusterID(ndt, null) : (String) AttributeHelper.getAttributeValue(ndt, "src",
-									"fileName", null, "");
+						"fileName", null, "");
 				if (clusterid1 != null) {
 					if (!nodescluster.containsKey(clusterid1))
 						nodescluster.put(clusterid1, new HashSet<Node>());
@@ -116,7 +115,7 @@ public class BundleParallelEdges extends AbstractAlgorithm {
 				}
 				ndt = ed.getSource();
 				String clusterid2 = source.equals("Cluster ID") ? NodeTools.getClusterID(ndt, null) : (String) AttributeHelper.getAttributeValue(ndt, "src",
-									"fileName", null, "");
+						"fileName", null, "");
 				if (clusterid2 != null) {
 					if (!nodescluster.containsKey(clusterid2))
 						nodescluster.put(clusterid2, new HashSet<Node>());
@@ -257,7 +256,7 @@ public class BundleParallelEdges extends AbstractAlgorithm {
 	 */
 	private Vector2d getCorrectlySortedBendpoint(Node nd) {
 		return sourcePos.distance(AttributeHelper.getPositionVec2d(nd)) < targetPos.distance(AttributeHelper.getPositionVec2d(nd)) ?
-							onethird : twothird;
+				onethird : twothird;
 	}
 	
 	private void adjustEdge(Edge edge, Vector2d pos) {
@@ -272,7 +271,7 @@ public class BundleParallelEdges extends AbstractAlgorithm {
 	
 	public enum Shapes {
 		SMOOTH("org.graffiti.plugins.views.defaults.SmoothLineEdgeShape", "Smooth Line"), LINE("org.graffiti.plugins.views.defaults.PolyLineEdgeShape",
-							"Segmented Line");
+				"Segmented Line");
 		
 		private final String shape;
 		private final String name;
