@@ -153,7 +153,7 @@ public class TabPatternLayout extends InspectorTab {
 		
 		jPanelButtons.setLayout(new java.awt.GridLayout(5, 2));
 		
-		jButtonAddPattern.setText("Add Search-Network");
+		jButtonAddPattern.setText("Add Network");
 		jButtonAddPattern
 				.addActionListener(new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -167,12 +167,12 @@ public class TabPatternLayout extends InspectorTab {
 		// boolean ipkEditToolsLoaded = te.getDescription().getAuthor().toUpperCase().indexOf("IPK")>=0;
 		boolean ipkEditToolsLoaded = false;
 		if (!ipkEditToolsLoaded) {
-			jButtonEdit.setText("Edit Search-Network");
+			jButtonEdit.setText("Edit Network");
 			jButtonEdit.addActionListener(new ActionListener() {
 				
 				public void actionPerformed(ActionEvent e) {
 					if (GravistoService.getInstance().isEditorFrameSelected()) {
-						MainFrame.showMessage("You may now edit the Search-Network", MessageType.INFO);
+						MainFrame.showMessage("You may now edit the Network", MessageType.INFO);
 						List<?> sessions =
 								GravistoService.getInstance().getPatternSessionList();
 						
@@ -194,7 +194,7 @@ public class TabPatternLayout extends InspectorTab {
 		}
 		jPanelButtons.add(jButtonRemovePattern);
 		
-		jButtonSave.setText("Save Search-Network");
+		jButtonSave.setText("Save Network");
 		jButtonSave.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButtonSaveActionPerformed(evt);
@@ -203,7 +203,7 @@ public class TabPatternLayout extends InspectorTab {
 		
 		jPanelButtons.add(jButtonSave);
 		
-		jButtonLoad.setText("Load Search-Network");
+		jButtonLoad.setText("Load Network");
 		jButtonLoad.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
 				jButtonLoadActionPerformed(evt);
@@ -211,7 +211,7 @@ public class TabPatternLayout extends InspectorTab {
 		});
 		jPanelButtons.add(jButtonLoad);
 		
-		jButtonRemovePattern.setText("Remove Search-Network");
+		jButtonRemovePattern.setText("Remove Network");
 		jButtonRemovePattern
 				.addActionListener(new java.awt.event.ActionListener() {
 					public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -422,7 +422,8 @@ public class TabPatternLayout extends InspectorTab {
 		// removePattern
 		
 		List<?> sessions = GravistoService.getInstance().getPatternSessionList();
-		if (sessions.isEmpty())
+		
+		if (sessions == null || sessions.isEmpty())
 			return;
 		if (jTabbedPane1.getComponentCount() > 0) {
 			if (jTabbedPane1.getSelectedIndex() >= 0) {
@@ -467,6 +468,7 @@ public class TabPatternLayout extends InspectorTab {
 				"Network "
 						+ new Integer(jTabbedPane1.getComponentCount() + 1).toString(),
 				sp);
+		jTabbedPane1.setSelectedIndex(jTabbedPane1.getComponentCount() - 1);
 		GravistoService.getInstance().framesDeselect();
 	}
 	

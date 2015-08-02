@@ -12,10 +12,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
  * @author Christian Klukas
  */
 public class StartLayoutPlugin
-					extends IPK_PluginAdapter {
+		extends IPK_PluginAdapter {
 	public StartLayoutPlugin() {
 		this.algorithms = new Algorithm[] {
-							new StartLayoutAlgorithm()
+				new StartLayoutAlgorithm()
 		};
 	}
 }

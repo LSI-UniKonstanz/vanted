@@ -41,8 +41,8 @@ import org.graffiti.session.EditorSession;
  * labels.
  */
 public class RemoveSelectedNodesPreserveEdgesAlgorithm
-					extends AbstractAlgorithm
-					implements AlgorithmWithComponentDescription {
+		extends AbstractAlgorithm
+		implements AlgorithmWithComponentDescription {
 	
 	Selection selection;
 	
@@ -54,7 +54,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new BooleanParameter(ignoreDirection, "Preserve Connectivity",
-							"Prevent connectivity loss because of edge-direction - ignore edge directions") };
+				"Prevent connectivity loss because of edge-direction - ignore edge directions") };
 	}
 	
 	public JComponent getDescriptionComponent() {
@@ -69,12 +69,12 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 		super.check();
 		if (selection == null) {
 			EditorSession session = MainFrame.getInstance()
-								.getActiveEditorSession();
+					.getActiveEditorSession();
 			selection = session.getSelectionModel().getActiveSelection();
 		}
 		if (selection.getNodes().size() <= 0)
 			throw new PreconditionException(
-								"Please select a number of nodes which will be removed from the network.<br>The result is a <b>folded network</b>, edges are preserved.");
+					"Please select a number of nodes which will be removed from the network.<br>The result is a <b>folded network</b>, edges are preserved.");
 	}
 	
 	/**
@@ -91,7 +91,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	 */
 	public void execute() {
 		EditorSession session = MainFrame.getInstance()
-							.getActiveEditorSession();
+				.getActiveEditorSession();
 		if (selection == null)
 			selection = session.getSelectionModel().getActiveSelection();
 		
@@ -106,8 +106,8 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	}
 	
 	public static int removeNodesPreserveEdges(ArrayList<Node> workNodes,
-						Graph graph, boolean ignoreDirection,
-						BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
+			Graph graph, boolean ignoreDirection,
+			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
 		Stack<Node> toBeDeleted = new Stack<Node>();
 		int workCount = 0;
 		toBeDeleted.addAll(workNodes);
@@ -241,7 +241,6 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 		return "Network.Nodes";
 	}
 	
-	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
@@ -249,15 +248,16 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 				Category.COMPUTATION
 				));
 	}
-
 	
 	@Override
 	public String getDescription() {
 		return "<html>" +
-							"With this command, the selected nodes (round nodes<br>" +
-							"in the example) are removed from a network. <br>" +
-							"The connectivity of the resulting network is influenced<br>" +
-							"by the corresponding setting as shown in the image.";
+				"With this command you can remove nodes, that do connect<br/>"
+				+ "other nodes inbetween without loosing the overall connectivity<br/>"
+				+ "of the network. The selected nodes (round nodes<br>" +
+				"in the example) are removed from a network. <br>" +
+				"The connectivity of the resulting network is influenced<br>" +
+				"by the corresponding setting as shown in the image.";
 	}
 	
 	/**

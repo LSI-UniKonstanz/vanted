@@ -11,11 +11,11 @@ import org.graffiti.plugin.algorithm.Algorithm;
  * @author Christian Klukas
  */
 public class ApplyGraphLayoutPlugin
-					extends GenericPluginAdapter {
+		extends GenericPluginAdapter {
 	public ApplyGraphLayoutPlugin() {
 		this.algorithms = new Algorithm[] {
-							new ApplyGraphLayout(),
-							new ShowLayoutTab()
+				new ApplyGraphLayout(),
+				//							new ShowLayoutTab()
 		};
 	}
 }
