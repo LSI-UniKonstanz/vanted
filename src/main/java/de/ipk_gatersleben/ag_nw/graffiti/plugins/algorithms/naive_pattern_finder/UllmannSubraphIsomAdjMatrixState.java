@@ -290,12 +290,8 @@ public class UllmannSubraphIsomAdjMatrixState
 	
 	@Override
 	public Node[] getMatchingNodesOfPattern() {
-		Node[] matchingNodesOfPattern = new Node[lenArrayNodesPattern];
-		int j = 0;
-		for (int i = 0; i < lenArrayNodesPattern; i++)
-			if (getMatchNodesInPatternForGraph()[i] != State.NULL_NODE)
-				matchingNodesOfPattern[j++] = getArrayNodesPattern()[i];
-		return matchingNodesOfPattern;
+		
+		return getArrayNodesPattern();
 	}
 	
 	@Override

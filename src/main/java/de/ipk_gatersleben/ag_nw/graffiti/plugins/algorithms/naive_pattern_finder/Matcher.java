@@ -161,17 +161,25 @@ class Matcher {
 		logger.debug("--> Entering Level: " + ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel);
 		if (logger.getLevel() == Level.DEBUG) {
 			System.out.print("matching pattern nodes: ");
-			for (int i = 0; i < ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel; i++) {
+			int numFound = 0;
+			for (int i = 0; i < ((UllmannSubraphIsomAdjMatrixState) state).getMatchingNodesOfPattern().length
+					&& numFound < ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel; i++) {
 				Node n = state.getMatchingNodesOfPattern()[i];
-				if (n != null)
+				if (n != null) {
+					numFound++;
 					System.out.print(AttributeHelper.getLabel(n, Long.toString(n.getID())) + " ");
+				}
 			}
 			System.out.println();
 			System.out.print("matching Target  nodes: ");
-			for (int i = 0; i < ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel; i++) {
+			numFound = 0;
+			for (int i = 0; i < ((UllmannSubraphIsomAdjMatrixState) state).getMatchingNodesOfTarget().length
+					&& numFound < ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel; i++) {
 				Node n = state.getMatchingNodesOfTarget()[i];
-				if (n != null)
+				if (n != null) {
+					numFound++;
 					System.out.print(AttributeHelper.getLabel(n, Long.toString(n.getID())) + " ");
+				}
 			}
 			System.out.println();
 		}
@@ -180,6 +188,7 @@ class Matcher {
 			logger.debug("Pattern found: marking and returning");
 			numberOfMatchingNodes = state.getCoreLength();
 			matchingNodesOfPattern = state.getMatchingNodesOfPattern();
+			
 			matchingNodesOfTarget = state.getMatchingNodesOfTarget();
 			if (resultNodes != null)
 				for (Node n : matchingNodesOfTarget)
