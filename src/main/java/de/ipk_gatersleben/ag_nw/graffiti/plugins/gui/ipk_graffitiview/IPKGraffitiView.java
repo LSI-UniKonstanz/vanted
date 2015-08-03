@@ -21,7 +21,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.event.MouseEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
@@ -40,6 +39,7 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.Release;
 import org.ReleaseInfo;
 import org.Vector2df;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
@@ -75,7 +75,11 @@ public class IPKGraffitiView
 	
 	private static final long serialVersionUID = 1L;
 	
-	Logger logger = Logger.getLogger(IPKGraffitiView.class);
+	private static Logger logger = Logger.getLogger(IPKGraffitiView.class);
+	
+	static {
+		logger.setLevel(Level.INFO);
+	}
 	
 	ClusterBackgroundDraw gcbd = new ClusterBackgroundDraw();
 	boolean dirty = true;
@@ -99,8 +103,6 @@ public class IPKGraffitiView
 	public static String PARAM_DRAW_GRID = "Draw Grid";
 	private static boolean PARAMDEFVAL_DRAW_GRID = false;
 	private static boolean DRAW_GRID;
-	
-	MouseEvent me;
 	
 	public IPKGraffitiView() {
 		super();
@@ -140,7 +142,6 @@ public class IPKGraffitiView
 	
 	@Override
 	public String getPreferencesAlternativeName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
@@ -233,9 +234,7 @@ public class IPKGraffitiView
 	 * @param g
 	 */
 	private void drawGrid(Graphics g) {
-		int width = getWidth();
-		int height = getHeight();
-//		logger.debug("ipkgraffitiview: w:"+width+", h: "+height);
+		logger.debug("ipkgraffitiview: w:" + getWidth() + ", h: " + getHeight());
 		
 		Rectangle visibleRect = getVisibleRect();
 		logger.debug("physical pixel area visible x: " + visibleRect.getX() + " y: " + visibleRect.getY() + " w: " + visibleRect.getWidth() + " h: "
@@ -253,7 +252,7 @@ public class IPKGraffitiView
 		int zoomedwidth = (int) ((visibleRect.getX() + visibleRect.getWidth()) * 1 / getZoom().getScaleX());
 		int zoomedheight = (int) ((visibleRect.getY() + visibleRect.getHeight()) * 1 / getZoom().getScaleX());
 		logger.debug("zoomedwidth " + zoomedwidth + " zoomedheight " + zoomedheight);
-		for (int i = 0; curX < zoomedwidth; i++) {
+		while (curX < zoomedwidth) {
 			
 			g.drawLine(curX, 0, curX, zoomedheight);
 			
@@ -263,7 +262,7 @@ public class IPKGraffitiView
 			
 			curX += STEP;
 		}
-		for (int i = 0; curY < zoomedheight; i++) {
+		while (curY < zoomedheight) {
 			
 			g.drawLine(0, curY, zoomedwidth, curY);
 			
