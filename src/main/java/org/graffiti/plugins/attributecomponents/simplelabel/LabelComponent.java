@@ -265,7 +265,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	 */
 	@Override
 	public void recreate() {
-		System.out.println("recreating Label " + this);
+//		System.out.println("recreating Label " + this);
 		removeAll();
 		if (labelAttr == null)
 			ErrorMsg.addErrorMessage("LabelComponent: labelAttr == null!");

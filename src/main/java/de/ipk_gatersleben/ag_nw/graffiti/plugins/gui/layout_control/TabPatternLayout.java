@@ -120,7 +120,7 @@ public class TabPatternLayout extends InspectorTab {
 		
 		jAllowOverlap = new JCheckBox("allow overlap");
 		jAllowOverlap.setOpaque(false);
-		jAllowOverlap.setSelected(true);
+		jAllowOverlap.setSelected(false);
 		
 		jButtonCopyLayout = new JMButton("Apply Layout");
 		
@@ -234,6 +234,22 @@ public class TabPatternLayout extends InspectorTab {
 			}
 		});
 		jPanelButtons.add(jButtonCopyLayout);
+		
+		/*
+		 * apply layout should only be possible with non-overlapping subnetworks, because else
+		 * there would be conflicts and the algorithm wouldn't work properly.
+		 * So we disable this button, if overlap is enabled
+		 */
+		jAllowOverlap.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (jAllowOverlap.isSelected())
+					jButtonCopyLayout.setEnabled(false);
+				else
+					jButtonCopyLayout.setEnabled(true);
+			}
+		});
 		
 		jButtonSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
