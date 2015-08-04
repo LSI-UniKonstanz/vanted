@@ -66,13 +66,14 @@ public class UllmannSubraphIsomAdjMatrixState
 		this.lenArrayNodesGraph = targetGraph.getNodes().size();
 		this.lenArrayNodesPattern = patternGraph.getNodes().size();
 		
-		logger.setLevel(Level.DEBUG);
+//		logger.setLevel(Level.DEBUG);
 	}
 	
 	public byte[][] getAdjMatrixPattern() {
 		if (adjMatrixPattern == null) {
 			adjMatrixPattern = GraphHelper.createAdjacencyMatrix(getPatternGraph(), !ignoreEdgeDirection);
-			TestAdjGraphMatrix.printAdjacencyMatrix(getArrayNodesPattern(), adjMatrixPattern);
+			if (logger.getLevel() == Level.DEBUG)
+				TestAdjGraphMatrix.printAdjacencyMatrix(getArrayNodesPattern(), adjMatrixPattern);
 		}
 		return adjMatrixPattern;
 	}
@@ -80,7 +81,8 @@ public class UllmannSubraphIsomAdjMatrixState
 	public byte[][] getAdjMatrixGraph() {
 		if (adjMatrixGraph == null) {
 			adjMatrixGraph = GraphHelper.createAdjacencyMatrix(getTargetGraph(), !ignoreEdgeDirection);
-			TestAdjGraphMatrix.printAdjacencyMatrix(getArrayNodesGraph(), adjMatrixGraph);
+			if (logger.getLevel() == Level.DEBUG)
+				TestAdjGraphMatrix.printAdjacencyMatrix(getArrayNodesGraph(), adjMatrixGraph);
 		}
 		return adjMatrixGraph;
 	}

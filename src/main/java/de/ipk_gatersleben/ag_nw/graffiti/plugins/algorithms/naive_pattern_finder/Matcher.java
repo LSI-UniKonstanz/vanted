@@ -157,7 +157,7 @@ class Matcher {
 	private boolean match2(State state, PatternVisitor visitor, PatternVisitor optVisitor2,
 			HashSet<Node> resultNodes,
 			String additionalInformation, boolean allowOverlap) {
-		logger.setLevel(Level.DEBUG);
+//		logger.setLevel(Level.DEBUG);
 		logger.debug("--> Entering Level: " + ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel);
 		if (logger.getLevel() == Level.DEBUG) {
 			System.out.print("matching pattern nodes: ");
