@@ -298,6 +298,18 @@ public class GraphHelper implements HelperClass {
 		removeBends(g, g.getEdges(), enableUndo);
 	}
 	
+	public static void removeBendsBetweenSelectedNodes(Collection<Node> nodes, boolean enableUndo) {
+		if (nodes == null || nodes.isEmpty())
+			return;
+		Graph g = nodes.iterator().next().getGraph();
+		Set<Edge> setEdges = new HashSet<>();
+		for (Node n : nodes) {
+			setEdges.addAll(n.getAllOutEdges());
+		}
+		removeBends(g, setEdges, enableUndo);
+		
+	}
+	
 	public static void removeBends(final Graph graph, final Collection<Edge> edges, boolean enableUndo) {
 		if (graph == null || edges == null || edges.size() <= 0)
 			return;
