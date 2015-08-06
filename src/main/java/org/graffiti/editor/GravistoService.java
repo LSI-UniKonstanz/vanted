@@ -506,14 +506,15 @@ public class GravistoService implements HelperClass {
 			boolean enableMultipleSessionProcessing, ActionEvent event) {
 		algorithm.attach(graph, selection);
 		algorithm.setActionEvent(event);
-		try {
-			algorithm.check();
-		} catch (PreconditionException e) {
-			StringBuilder sb = new StringBuilder();
-			processError(algorithm, graph, sb, e);
-			MainFrame.showMessageDialog("<html>" + sb.toString(), "Execution Error");
-			return;
-		}
+//		try {
+//			if (!true)
+//				algorithm.check();
+//		} catch (PreconditionException e) {
+//			StringBuilder sb = new StringBuilder();
+//			processError(algorithm, graph, sb, e);
+//			MainFrame.showMessageDialog("<html>" + sb.toString(), "Execution Error");
+//			return;
+//		}
 		Parameter[] parameters = algorithm.getParameters();
 		ThreadSafeOptions tsoParamDialogReturn = new ThreadSafeOptions();
 		if ((parameters != null) && (parameters.length != 0)
@@ -551,13 +552,18 @@ public class GravistoService implements HelperClass {
 				multiGraphExecution(algorithm, graph, selection, event, paramDialog, params, errors);
 			} else {
 				algorithm.setParameters(params);
-				algorithm.execute();
-				ScenarioService.postWorkflowStep(algorithm, params);
-				if (algorithm instanceof CalculatingAlgorithm) {
-					JOptionPane.showMessageDialog(null, "<html>Result of algorithm:<p>"
-							+ ((CalculatingAlgorithm) algorithm).getResult().toString());
+				try {
+					algorithm.check();
+					algorithm.execute();
+					ScenarioService.postWorkflowStep(algorithm, params);
+					if (algorithm instanceof CalculatingAlgorithm) {
+						JOptionPane.showMessageDialog(null, "<html>Result of algorithm:<p>"
+								+ ((CalculatingAlgorithm) algorithm).getResult().toString());
+					}
+					algorithm.reset();
+				} catch (PreconditionException e) {
+					e.printStackTrace();
 				}
-				algorithm.reset();
 			}
 			
 		}
