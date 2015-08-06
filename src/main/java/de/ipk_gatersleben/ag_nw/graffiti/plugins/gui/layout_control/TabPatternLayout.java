@@ -81,6 +81,7 @@ public class TabPatternLayout extends InspectorTab {
 	private JButton jButtonSearch;
 	private JCheckBox jDirectedSearch;
 	private JCheckBox jAllowOverlap;
+	private JCheckBox jClearPrevSelection;
 	private JButton jButtonCopyLayout;;
 	
 	private MainFrame mainframe;
@@ -122,6 +123,10 @@ public class TabPatternLayout extends InspectorTab {
 		jAllowOverlap.setOpaque(false);
 		jAllowOverlap.setSelected(false);
 		
+		jClearPrevSelection = new JCheckBox("clear previous selection");
+		jClearPrevSelection.setOpaque(false);
+		jClearPrevSelection.setSelected(false);
+		
 		jButtonCopyLayout = new JMButton("Apply Layout");
 		
 		jPanelPattern = new javax.swing.JPanel();
@@ -151,7 +156,7 @@ public class TabPatternLayout extends InspectorTab {
 			}
 		});
 		
-		jPanelButtons.setLayout(new java.awt.GridLayout(5, 2));
+		jPanelButtons.setLayout(new java.awt.GridLayout(6, 2));
 		
 		jButtonAddPattern.setText("Add Network");
 		jButtonAddPattern
@@ -260,6 +265,11 @@ public class TabPatternLayout extends InspectorTab {
 					MainFrame.showMessageDialog("No active graph editor window found!", "Error");
 					return;
 				}
+				
+				if (jClearPrevSelection.isSelected()) {
+					MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection().clear();
+				}
+				
 				if (graph != null && graph.getGraphElements().size() > 0) {
 					for (GraphElement ge : graph.getGraphElements()) {
 						AttributeHelper.deleteAttribute(ge, PatternAttributeUtils.PATTERN_PATH, PatternAttributeUtils.PATTERN_RECORD_PREFIX + "*");
@@ -292,6 +302,7 @@ public class TabPatternLayout extends InspectorTab {
 		
 		jPanelButtons.add(jDirectedSearch);
 		jPanelButtons.add(jAllowOverlap);
+		jPanelButtons.add(jClearPrevSelection);
 		
 		jPanelPattern.setLayout(new java.awt.GridLayout(1, 1));
 		jPanelPattern.add(jTabbedPane1);
