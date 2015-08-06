@@ -206,7 +206,7 @@ public class UllmannSubraphIsomAdjMatrixState
 	
 	@Override
 	public boolean isFeasiblePair(int node1, int node2) {
-		return getCompatibilityMatrix()[node1][node2];
+		return getCompatibilityMatrix()[node1][node2] && checkForVincinity();
 	}
 	
 	@Override
