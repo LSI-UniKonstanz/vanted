@@ -237,7 +237,7 @@ public class NaivePatternFinderAlgorithm
 				continue;
 			}
 			
-			State state = new UllmannSubgraphIsomState(currentPattern, graph, ignoreEdgeDirection, resultNodes);
+			State state = new UllmannSubraphIsomAdjMatrixState(currentPattern, graph, ignoreEdgeDirection);
 			Matcher matcher = new Matcher();
 			PatternVisitor pv = new MarkingPatternVisitor(ignoreEdgeDirection);
 			
