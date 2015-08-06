@@ -14,7 +14,6 @@ import java.util.Set;
 
 import org.AttributeHelper;
 import org.Vector2d;
-import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
@@ -190,13 +189,14 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		
 		workNodes = GraphHelper.getVisibleNodes(workNodes);
 		
-		Set<Edge> setEdges = new HashSet<>();
-		for (Node n : workNodes) {
-			setEdges.addAll(n.getAllOutEdges());
-		}
-		for (Edge e : setEdges)
-			AttributeHelper.removeEdgeBends(e);
-		
+//		Set<Edge> setEdges = new HashSet<>();
+//		for (Node n : workNodes) {
+//			setEdges.addAll(n.getAllOutEdges());
+//		}
+//		for (Edge e : setEdges)
+//			AttributeHelper.removeEdgeBends(e);
+//		
+		GraphHelper.removeBendsBetweenSelectedNodes(workNodes, false);
 		int numberOfNodes = workNodes.size();
 		if (numberOfNodes < 2)
 			return;
