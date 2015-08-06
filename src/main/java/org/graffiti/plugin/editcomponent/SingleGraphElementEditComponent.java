@@ -31,7 +31,7 @@ import org.graffiti.plugin.Displayable;
  * @see org.graffiti.graph.GraphElement
  */
 public abstract class SingleGraphElementEditComponent
-					extends GraphComponentEditComponent {
+		extends GraphComponentEditComponent {
 	
 	class MyGraphElementForComboBox {
 		String title;
@@ -89,7 +89,7 @@ public abstract class SingleGraphElementEditComponent
 		if (pw > 100)
 			pw = 100;
 		comboBox.setPreferredSize(new Dimension(pw, comboBox.getPreferredSize().height));
-		comboBox.setSelectedItem(disp.getValue());
+//		comboBox.setSelectedItem(disp.getValue());
 		
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent src) {
