@@ -503,10 +503,10 @@ public class PreferencesDialog extends JDialog
 	}
 	
 	void runAlgorithm(final Algorithm alg, Graph graph, Selection selection) {
-		ScenarioService.postWorkflowStep(alg, alg.getParameters());
-		alg.attach(graph, selection);
-		alg.execute();
 		alg.reset();
+		alg.attach(graph, selection);
+		ScenarioService.postWorkflowStep(alg, alg.getParameters());
+		alg.execute();
 	}
 	
 	/*
