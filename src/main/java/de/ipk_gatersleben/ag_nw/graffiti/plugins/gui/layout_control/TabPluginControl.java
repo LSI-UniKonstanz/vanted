@@ -10,12 +10,17 @@ import info.clearthought.layout.TableLayoutConstants;
 import javax.swing.JPanel;
 
 import org.graffiti.editor.GravistoService;
+import org.graffiti.editor.MainFrame;
 import org.graffiti.event.AttributeEvent;
 import org.graffiti.event.TransactionEvent;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
+import org.graffiti.selection.SelectionEvent;
+import org.graffiti.selection.SelectionListener;
+import org.graffiti.session.EditorSession;
 import org.graffiti.session.Session;
+import org.graffiti.session.SessionListener;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.PreferencesDialog;
 
@@ -26,13 +31,15 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.Preferences
  * @version $Revision$
  */
 public class TabPluginControl
-					extends InspectorTab {
+		extends InspectorTab
+		implements SelectionListener, SessionListener {
 	
 	private static final long serialVersionUID = 1L;
 	/**
 	 * DOCUMENT ME!
 	 */
 //	JComboBox pluginSelection;
+	private PreferencesDialog pd;
 	
 	/**
 	 * DOCUMENT ME!
@@ -49,12 +56,12 @@ public class TabPluginControl
 		double border = 2;
 		double[][] size =
 		{
-							{ border, TableLayoutConstants.FILL, border }, // Columns
+				{ border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.FILL, border }
 		}; // Rows
 		this.setLayout(new TableLayout(size));
 		
-		PreferencesDialog pd = new PreferencesDialog();
+		pd = new PreferencesDialog();
 		GravistoService.getInstance().getMainFrame().getPluginManager().addPluginManagerListener(pd);
 		JPanel newPanel = new JPanel();
 		pd.initializeGUIforGivenContainer(newPanel, null, true, false, true, false, true, false, true, null, null, null, false);
@@ -133,7 +140,9 @@ public class TabPluginControl
 	 */
 	public void sessionChanged(Session s) {
 		//
-		
+		if (isVisible() && pd.selectedAlgorithm != null) {
+			pd.initAlgorithmPreferencesPanel(null, pd.selectedAlgorithm, s.getGraph(), ((EditorSession) s).getSelectionModel().getActiveSelection(), null, false);
+		}
 	}
 	
 	/*
@@ -146,9 +155,20 @@ public class TabPluginControl
 	}
 	
 	@Override
+	public void selectionChanged(SelectionEvent arg0) {
+		if (isVisible() && pd.selectedAlgorithm != null) {
+			pd.initAlgorithmPreferencesPanel(null, pd.selectedAlgorithm, MainFrame.getInstance().getActiveSession().getGraph(), arg0.getSelection(), null, false);
+		}
+		
+	}
+	
+	@Override
+	public void selectionListChanged(SelectionEvent e) {
+	}
+	
+	@Override
 	public boolean visibleForView(View v) {
 		return v != null && v instanceof GraphView;
 	}
-
 	
 }
