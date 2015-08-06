@@ -147,7 +147,7 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 		}
 		try {
 			QPRectanglePlacement rp = new QPRectanglePlacement(true, false, false,
-								false, spaceX, spaceY, false);
+					false, spaceX, spaceY, false);
 			rp.place(myRectangles);
 			
 			HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
@@ -181,9 +181,12 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 			return null;
 		DoubleParameter spaceParamX = new DoubleParameter(spaceX, "Gap between Nodes (X)", "Specify the minimum horizontal space between all nodes");
 		DoubleParameter spaceParamY = new DoubleParameter(spaceY, "Gap between Nodes (Y)", "Specify the minimum vertical space between all nodes");
-		BooleanParameter considerView = new BooleanParameter(considerGraphViewComponents, "Consider View Components",
-							"If enabled, graphical annotations, like the node labels will be considered and processed - Enable");
-		return new Parameter[] { spaceParamX, spaceParamY, considerView };
+		BooleanParameter considerView = new BooleanParameter(considerGraphViewComponents, "Also consider size node-dependent view-elements",
+				"If enabled, graphical annotations, like the node labels will be considered and processed - Enable");
+		return new Parameter[] {
+				spaceParamX,
+				spaceParamY,
+				considerView };
 	}
 	
 	/**
@@ -211,7 +214,6 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 	public String getCategory() {
 		return "Layout";
 	}
-
 	
 	@Override
 	public Set<Category> getSetCategory() {
@@ -220,7 +222,7 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 				Category.LAYOUT
 				));
 	}
-
+	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;
