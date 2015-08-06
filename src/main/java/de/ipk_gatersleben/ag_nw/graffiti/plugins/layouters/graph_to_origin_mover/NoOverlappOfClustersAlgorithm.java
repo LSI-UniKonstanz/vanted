@@ -24,19 +24,18 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  *         (c) 2006 IPK-Gatersleben
  */
 public class NoOverlappOfClustersAlgorithm
-					extends AbstractAlgorithm {
+		extends AbstractAlgorithm {
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
 			return "Remove Cluster Overlaps";
 		else
-			return "Separate Pathway-Subgraphs";
+			return "Separate Pathway-Subnetworks";
 	}
 	
 	@Override
 	public String getCategory() {
 		return "Network.Cluster";
 	}
-
 	
 	@Override
 	public Set<Category> getSetCategory() {
@@ -49,7 +48,7 @@ public class NoOverlappOfClustersAlgorithm
 	
 	@Override
 	public void check()
-						throws PreconditionException {
+			throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
 		
 		if (graph == null) {
