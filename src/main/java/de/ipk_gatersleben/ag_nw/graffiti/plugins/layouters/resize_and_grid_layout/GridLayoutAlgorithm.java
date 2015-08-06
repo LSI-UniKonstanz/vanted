@@ -36,7 +36,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover
  */
 
 public class GridLayoutAlgorithm
-					extends AbstractAlgorithm {
+		extends AbstractAlgorithm {
 	private double xDistance = 130;
 	private double yDistance = 130;
 	
@@ -60,7 +60,6 @@ public class GridLayoutAlgorithm
 		return "Nodes";
 	}
 	
-	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
@@ -68,10 +67,10 @@ public class GridLayoutAlgorithm
 				Category.LAYOUT
 				));
 	}
-
+	
 	@Override
 	public void check()
-						throws PreconditionException {
+			throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
 		
 		if (graph == null)
@@ -108,7 +107,7 @@ public class GridLayoutAlgorithm
 			return;
 		int numberOfNodes = nodes.size();
 		int nodesOnLine = (int) (Math.sqrt(numberOfNodes));
-	
+		
 		int column = 0;
 		int row = 0;
 		
@@ -124,7 +123,7 @@ public class GridLayoutAlgorithm
 		double yStart = center.y - yDistance * (rows / 2d) + yDistance / 2d;
 		
 		MainFrame.showMessage("Grid-Layout: columns: " + nodesOnLine + ", rows: " + rows + ", inital avergage node position (x/y): " + center.x + " / "
-							+ center.y, MessageType.INFO);
+				+ center.y, MessageType.INFO);
 		HashMap<Node, Vector2d> nodes2newPosition = new HashMap<Node, Vector2d>();
 		HashMap<Node, Vector2d> nodes2newSize = new HashMap<Node, Vector2d>();
 		for (Node n : nodes) {
@@ -146,7 +145,7 @@ public class GridLayoutAlgorithm
 		sel.addAll(nodes);
 		if (moveToTop)
 			GravistoService.getInstance().runAlgorithm(
-								new CenterLayouterAlgorithm(), graph, sel, getActionEvent());
+					new CenterLayouterAlgorithm(), graph, sel, getActionEvent());
 	}
 	
 	/**
@@ -170,11 +169,10 @@ public class GridLayoutAlgorithm
 			return;
 		int nodesOnLine = (int) (Math.sqrt(--numberOfNodes));
 		int nodeLines = (int) (Math.sqrt(numberOfNodes));
-
 		
 		if (setWidth)
 			nodesOnLine = maxX;
-	
+		
 		/*
 		 * Computes the number of nodes on each grid line under
 		 * consideration of the given width/heigth ratio
@@ -209,7 +207,7 @@ public class GridLayoutAlgorithm
 				maxHeightInRow.put(j, sz.y);
 			
 			i++;
-			if (i > nodesOnLine) {
+			if (i >= nodesOnLine) {
 				j++;
 				i = 0;
 			}
@@ -236,7 +234,7 @@ public class GridLayoutAlgorithm
 			nodes2newPositions.put(n, new Vector2d(newX, newY));
 			
 			i++;
-			if (i > nodesOnLine) {
+			if (i >= nodesOnLine) {
 				j++;
 				i = 0;
 			}
@@ -250,32 +248,32 @@ public class GridLayoutAlgorithm
 	public Parameter[] getParameters() {
 		
 		DoubleParameter widthHeightRatioParam =
-							new DoubleParameter("width/heigt ratio",
-												"The ratio between the width and the height of the layout.");
+				new DoubleParameter("width/heigt ratio",
+						"The ratio between the width and the height of the layout.");
 		
 		widthHeightRatioParam.setDouble(widthHeightRatio);
 		
 		DoubleParameter xDistanceParam =
-							new DoubleParameter("Horizonzal space",
-												"The distance between nodes in horizontal direction.");
+				new DoubleParameter("Horizonzal space",
+						"The distance between nodes in horizontal direction.");
 		
 		DoubleParameter yDistanceParam =
-							new DoubleParameter("Vertical space",
-												"The distance between nodes in vertical direction.");
+				new DoubleParameter("Vertical space",
+						"The distance between nodes in vertical direction.");
 		
 		DoubleParameter widthParam =
-							new DoubleParameter("Node width",
-												"The new width of the selected (or all) nodes.");
+				new DoubleParameter("Node width",
+						"The new width of the selected (or all) nodes.");
 		
 		DoubleParameter heightParam =
-							new DoubleParameter("Node height",
-												"The new height.");
+				new DoubleParameter("Node height",
+						"The new height.");
 		
 		BooleanParameter limitXparameter =
-							new BooleanParameter(setWidth, "Consider Max Nodes Horizontally", "If selected, the 'Max Nodes horizontally' parameter will be used");
+				new BooleanParameter(setWidth, "Consider Max Nodes Horizontally", "If selected, the 'Max Nodes horizontally' parameter will be used");
 		
 		IntegerParameter widthParameter =
-							new IntegerParameter(maxX, "Max Nodes horizontally", "The height of the grid depends on the number of nodes and the grid width");
+				new IntegerParameter(maxX, "Max Nodes horizontally", "The height of the grid depends on the number of nodes and the grid width");
 		
 //		BooleanParameter moveToTopParameter =
 //							new BooleanParameter(moveToTop, "Finish: Move to Upper-Left", "Move all network elements to the upper left");
@@ -287,15 +285,15 @@ public class GridLayoutAlgorithm
 		heightParam.setDouble(targetSizeY);
 		
 		return new Parameter[] {
-							new BooleanParameter(resize, "Resize Nodes", "If checked, the nodes will be resized when layouting"),
-							xDistanceParam,
-							yDistanceParam,
-							widthParam,
-							heightParam,
-							limitXparameter,
-							widthParameter,
-//							moveToTopParameter,
-							widthHeightRatioParam, };
+				new BooleanParameter(resize, "Resize Nodes", "If checked, the nodes will be resized when layouting"),
+				xDistanceParam,
+				yDistanceParam,
+				widthParam,
+				heightParam,
+				limitXparameter,
+				widthParameter,
+				//							moveToTopParameter,
+				widthHeightRatioParam, };
 	}
 	
 	@Override
