@@ -550,7 +550,7 @@ public class IPKGraffitiView
 		return "Network View (default)";
 	}
 	
-	private boolean printInProgress = false;
+	public boolean printInProgress = false;
 	
 	/*
 	 * (non-Javadoc)

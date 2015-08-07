@@ -25,6 +25,8 @@ import org.graffiti.plugin.view.ShapeNotFoundException;
 import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffitiView;
+
 /**
  * This component represents a <code>org.graffiti.attributes.Attribute</code>.
  * 
@@ -51,7 +53,6 @@ public abstract class AbstractAttributeComponent
 	
 	protected Point loc = new Point();
 
-	private boolean isPrinting;
 	
 	// ~ Constructors ===========================================================
 	
@@ -158,8 +159,10 @@ public abstract class AbstractAttributeComponent
 		/* 
 		 * only draw component, if printing is in progress, it is graphically visible or not FAST mode enabled
 		 */
-		if(isPrinting)
+		if(getParent() instanceof IPKGraffitiView && 
+			((IPKGraffitiView)getParent()).printInProgress) {
 			return true;
+		}
 		if(getParent() instanceof GraffitiView){
 			GraffitiView view = (GraffitiView)getParent();
 			if(view.getDrawMode() == DrawMode.FAST)
@@ -185,12 +188,6 @@ public abstract class AbstractAttributeComponent
 		
 	}
 
-	@Override
-	public void print(Graphics g) {
-		isPrinting = true;
-		super.print(g);
-		isPrinting = false;
-	}
 
 	protected DrawMode getDrawingModeOfView() {
 		if(getParent() instanceof GraffitiView){
