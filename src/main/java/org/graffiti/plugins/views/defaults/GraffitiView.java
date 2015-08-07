@@ -53,6 +53,7 @@ import org.AttributeHelper;
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
 import org.ObjectRef;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.color.ColorUtil;
 import org.graffiti.attributes.Attributable;
@@ -106,17 +107,19 @@ import org.graffiti.session.Session;
 public class GraffitiView extends AbstractView implements View2D, GraphView,
 		GraphListener, AttributeListener, NodeListener,
 		EdgeListener, TransactionListener {
-	// ~ Instance fields ========================================================
 	
-	Logger logger = Logger.getLogger(GraffitiView.class);
+	private static final Logger logger = Logger.getLogger(GraffitiView.class);
+	
+	static {
+		logger.setLevel(Level.INFO);
+	}
+	
+	// ~ Instance fields ========================================================
 	
 	private static final long serialVersionUID = 3257849887318882097L;
 	
 	/** The <code>StringBundle</code> of the exceptions. */
 	protected StringBundle sBundle = StringBundle.getInstance();
-	
-	/** Count active transactions like ListenerManager does */
-//	private int getActiveTransactions() = 0;
 	
 	protected int maxNodeCnt = Integer.MAX_VALUE; // 5000
 	
@@ -1373,10 +1376,11 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		long counter = 0;
 		for (GraphElementComponent gec : setDependendComponents) {
 			
-			if (++counter % 1000 == 0) {
-				System.out.print(".");
+			if (logger.getLevel() == Level.DEBUG) {
+				if (++counter % 1000 == 0) {
+					System.out.print(".");
+				}
 			}
-			
 			try {
 				if (gec instanceof EdgeComponent)
 					((EdgeComponent) gec).updateShape();
