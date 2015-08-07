@@ -140,7 +140,7 @@ public class TabPluginControl
 	 */
 	public void sessionChanged(Session s) {
 		//
-		if (isVisible() && pd.selectedAlgorithm != null) {
+		if (isVisible() && s != null && pd.selectedAlgorithm != null) {
 			pd.initAlgorithmPreferencesPanel(null, pd.selectedAlgorithm, s.getGraph(), ((EditorSession) s).getSelectionModel().getActiveSelection(), null, false);
 		}
 	}
@@ -156,7 +156,7 @@ public class TabPluginControl
 	
 	@Override
 	public void selectionChanged(SelectionEvent arg0) {
-		if (isVisible() && pd.selectedAlgorithm != null) {
+		if (isVisible() && arg0 != null && pd.selectedAlgorithm != null) {
 			pd.initAlgorithmPreferencesPanel(null, pd.selectedAlgorithm, MainFrame.getInstance().getActiveSession().getGraph(), arg0.getSelection(), null, false);
 		}
 		
