@@ -43,6 +43,9 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 	private double spaceX = 10, spaceY = 10;
 	private boolean doNotAskForParameters = false;
 	private boolean considerGraphViewComponents = true;
+	private DoubleParameter spaceParamX;
+	private DoubleParameter spaceParamY;
+	private BooleanParameter considerView;
 	
 	public NoOverlappLayoutAlgorithmAS() {
 		super();
@@ -179,10 +182,12 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 	public Parameter[] getParameters() {
 		if (doNotAskForParameters)
 			return null;
-		DoubleParameter spaceParamX = new DoubleParameter(spaceX, "Gap between Nodes (X)", "Specify the minimum horizontal space between all nodes");
-		DoubleParameter spaceParamY = new DoubleParameter(spaceY, "Gap between Nodes (Y)", "Specify the minimum vertical space between all nodes");
-		BooleanParameter considerView = new BooleanParameter(considerGraphViewComponents, "Also consider size node-dependent view-elements",
-				"If enabled, graphical annotations, like the node labels will be considered and processed - Enable");
+		if (spaceParamX == null) {
+			spaceParamX = new DoubleParameter(spaceX, "Gap between Nodes (X)", "Specify the minimum horizontal space between all nodes");
+			spaceParamY = new DoubleParameter(spaceY, "Gap between Nodes (Y)", "Specify the minimum vertical space between all nodes");
+			considerView = new BooleanParameter(considerGraphViewComponents, "Also consider size node-dependent view-elements",
+					"If enabled, graphical annotations, like the node labels will be considered and processed - Enable");
+		}
 		return new Parameter[] {
 				spaceParamX,
 				spaceParamY,

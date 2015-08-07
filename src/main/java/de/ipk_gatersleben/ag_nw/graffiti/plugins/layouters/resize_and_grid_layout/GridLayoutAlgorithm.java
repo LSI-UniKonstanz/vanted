@@ -50,6 +50,13 @@ public class GridLayoutAlgorithm
 	
 	private double widthHeightRatio = 1;
 	private boolean resize = false;
+	private DoubleParameter widthHeightRatioParam;
+	private DoubleParameter xDistanceParam;
+	private DoubleParameter yDistanceParam;
+	private DoubleParameter widthParam;
+	private DoubleParameter heightParam;
+	private BooleanParameter limitXparameter;
+	private IntegerParameter widthParameter;
 	
 	public String getName() {
 		return "Grid Layout";
@@ -247,43 +254,37 @@ public class GridLayoutAlgorithm
 	@Override
 	public Parameter[] getParameters() {
 		
-		DoubleParameter widthHeightRatioParam =
-				new DoubleParameter("width/heigt ratio",
-						"The ratio between the width and the height of the layout.");
-		
-		widthHeightRatioParam.setDouble(widthHeightRatio);
-		
-		DoubleParameter xDistanceParam =
-				new DoubleParameter("Horizonzal space",
-						"The distance between nodes in horizontal direction.");
-		
-		DoubleParameter yDistanceParam =
-				new DoubleParameter("Vertical space",
-						"The distance between nodes in vertical direction.");
-		
-		DoubleParameter widthParam =
-				new DoubleParameter("Node width",
-						"The new width of the selected (or all) nodes.");
-		
-		DoubleParameter heightParam =
-				new DoubleParameter("Node height",
-						"The new height.");
-		
-		BooleanParameter limitXparameter =
-				new BooleanParameter(setWidth, "Consider Max Nodes Horizontally", "If selected, the 'Max Nodes horizontally' parameter will be used");
-		
-		IntegerParameter widthParameter =
-				new IntegerParameter(maxX, "Max Nodes horizontally", "The height of the grid depends on the number of nodes and the grid width");
-		
+		if (widthHeightRatioParam == null) {
+			widthHeightRatioParam = new DoubleParameter("width/heigt ratio",
+					"The ratio between the width and the height of the layout.");
+			
+			widthHeightRatioParam.setDouble(widthHeightRatio);
+			
+			xDistanceParam = new DoubleParameter("Horizonzal space",
+					"The distance between nodes in horizontal direction.");
+			
+			yDistanceParam = new DoubleParameter("Vertical space",
+					"The distance between nodes in vertical direction.");
+			
+			widthParam = new DoubleParameter("Node width",
+					"The new width of the selected (or all) nodes.");
+			
+			heightParam = new DoubleParameter("Node height",
+					"The new height.");
+			
+			limitXparameter = new BooleanParameter(setWidth, "Consider Max Nodes Horizontally", "If selected, the 'Max Nodes horizontally' parameter will be used");
+			
+			widthParameter = new IntegerParameter(maxX, "Max Nodes horizontally", "The height of the grid depends on the number of nodes and the grid width");
+			
 //		BooleanParameter moveToTopParameter =
 //							new BooleanParameter(moveToTop, "Finish: Move to Upper-Left", "Move all network elements to the upper left");
-		
-		xDistanceParam.setDouble(xDistance - targetSizeX);
-		yDistanceParam.setDouble(yDistance - targetSizeY);
-		
-		widthParam.setDouble(targetSizeX);
-		heightParam.setDouble(targetSizeY);
-		
+			
+			xDistanceParam.setDouble(xDistance - targetSizeX);
+			yDistanceParam.setDouble(yDistance - targetSizeY);
+			
+			widthParam.setDouble(targetSizeX);
+			heightParam.setDouble(targetSizeY);
+		}
 		return new Parameter[] {
 				new BooleanParameter(resize, "Resize Nodes", "If checked, the nodes will be resized when layouting"),
 				xDistanceParam,

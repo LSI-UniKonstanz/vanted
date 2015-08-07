@@ -41,7 +41,6 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 	
 	private double defaultRadius = defaultCircleRadius;
 	private boolean minimzeCrossings;
-//	private boolean useSelection;
 	private boolean equalize = true;
 	private boolean averageCenterLength = true;
 	private boolean sortbycluster = false;
@@ -373,31 +372,25 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 	 */
 	@Override
 	public Parameter[] getParameters() {
-		// if (defaultRadius == -1) {
-		DoubleParameter radiusParam = new DoubleParameter("Radius",
-				"The radius of the circle.");
 		
-		radiusParam.setDouble(defaultCircleRadius);
-		
-//		BooleanParameter useSelectionParam = new BooleanParameter(useSelection,
-//				"Work on Selection", "Do the layout for the selected nodes");
-		
-		BooleanParameter equalizeParam = new BooleanParameter(true, "Equalize", "Equalize distance between nodes on the circle");
-		BooleanParameter avgDistBoolean = new BooleanParameter(false, "Average Radius",
-				"This parameter overrules the 'Radius' parameter. It calculates the center of all nodes, \n" +
-						"selected for layout and calculates then the average distance to every node,\n" +
-						"which is then taken as final radius for the circle");
-		BooleanParameter sortbycluster = new BooleanParameter(true, "Sort by cluster", "Sort elements by their clusterID");
-		// BooleanParameter useSelectionParam = new BooleanParameter(useSelection,
-		// "Work on Selection", "Do the layout for the selected nodes");
-		//
+		if (radiusParam == null) {
+			radiusParam = new DoubleParameter(defaultCircleRadius, "Radius",
+					"The radius of the circle.");
+			
+			equalizeParam = new BooleanParameter(true, "Equalize", "Equalize distance between nodes on the circle");
+			avgDistBoolean = new BooleanParameter(false, "Average Radius",
+					"This parameter overrules the 'Radius' parameter. It calculates the center of all nodes, \n" +
+							"selected for layout and calculates then the average distance to every node,\n" +
+							"which is then taken as final radius for the circle");
+			sortbyclusterParam = new BooleanParameter(true, "Sort by cluster", "Sort elements by their clusterID");
+			minimzeCrossingsParam = new BooleanParameter(minimzeCrossings, "Minimize Crossings", "If checked, the edge crossings will be minimzed");
+		}
 		return new Parameter[] {
 				radiusParam,
-				//				useSelectionParam,
-				new BooleanParameter(minimzeCrossings, "Minimize Crossings", "If checked, the edge crossings will be minimzed"),
 				equalizeParam,
 				avgDistBoolean,
-				sortbycluster };
+				minimzeCrossingsParam,
+				sortbyclusterParam };
 	}
 	
 	/**
@@ -413,7 +406,6 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		this.parameters = params;
 		
 		defaultRadius = ((DoubleParameter) params[i++]).getDouble().doubleValue();
-//		useSelection = ((BooleanParameter) params[1]).getBoolean();
 		minimzeCrossings = ((BooleanParameter) params[i++]).getBoolean();
 		equalize = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		averageCenterLength = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
@@ -443,6 +435,16 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 	}
 	
 	private double patternNodeDistance = 50;
+	
+	private DoubleParameter radiusParam;
+	
+	private BooleanParameter equalizeParam;
+	
+	private BooleanParameter avgDistBoolean;
+	
+	private BooleanParameter sortbyclusterParam;
+	
+	private BooleanParameter minimzeCrossingsParam;
 	
 	public double getPatternNodeDistance() {
 		return patternNodeDistance;

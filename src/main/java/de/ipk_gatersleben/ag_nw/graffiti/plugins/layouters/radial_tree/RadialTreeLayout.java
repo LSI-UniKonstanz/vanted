@@ -160,6 +160,13 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 * y coordinate of start point
 	 */
 	private double yStartParam = 100;
+	private DoubleParameter distanceParam;
+	private DoubleParameter xStartParam2;
+	private DoubleParameter yStartParam2;
+	private BooleanParameter horizontalParam;
+	private BooleanParameter removeBendParam;
+	private BooleanParameter markedSourceNodeParam;
+	private ObjectListParameter treeDirectionParam;
 	
 	/*************************************************************/
 	/* Declarations of methods */
@@ -250,56 +257,49 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 		
 		NodeParameter nodeParam = new NodeParameter(graph, initNode, "<html>Start-Node<br/>(from list or selected)",
 				"Tree layouter will start only with a selected node.");
-		
-		DoubleParameter distanceParam =
-				new DoubleParameter(
-						"Node Radius",
-						"The distance from the center of each node");
-		
-		DoubleParameter xStartParam =
-				new DoubleParameter(
-						"X base",
-						"The x coordinate of the starting point of the grid horizontal direction.");
-		
-		DoubleParameter yStartParam =
-				new DoubleParameter(
-						"Y base",
-						"The y coordinate of the starting point of the grid horizontal direction.");
-		
-		BooleanParameter horizontalParam =
-				new BooleanParameter(
-						horizontalLayout,
-						"Place Trees in a Row",
-						"Place all trees in a row");
-		
-		BooleanParameter removeBendParam =
-				new BooleanParameter(
-						doRemoveBends,
-						"Remove Bends",
-						"Remove all bends in the forest");
-		
-		BooleanParameter markedSourceNodeParam =
-				new BooleanParameter(
-						doMarkSourceNode,
-						"Mark Start-Node",
-						"Mark each source Node");
-		
-		ObjectListParameter treeDirectionParam =
-				new ObjectListParameter(
-						treeDirectionParameter[0],
-						"Tree Direction (degree)",
-						"Move all trees in 0, 90, 180 or 270 degree",
-						treeDirectionParameter);
-		
-		distanceParam.setDouble(nodeDistance);
-		xStartParam.setDouble(this.xStartParam);
-		yStartParam.setDouble(this.yStartParam);
-		
+		if (distanceParam == null) {
+			distanceParam = new DoubleParameter(
+					"Node Radius",
+					"The distance from the center of each node");
+			
+			xStartParam2 = new DoubleParameter(
+					"X base",
+					"The x coordinate of the starting point of the grid horizontal direction.");
+			
+			yStartParam2 = new DoubleParameter(
+					"Y base",
+					"The y coordinate of the starting point of the grid horizontal direction.");
+			
+			horizontalParam = new BooleanParameter(
+					horizontalLayout,
+					"Place Trees in a Row",
+					"Place all trees in a row");
+			
+			removeBendParam = new BooleanParameter(
+					doRemoveBends,
+					"Remove Bends",
+					"Remove all bends in the forest");
+			
+			markedSourceNodeParam = new BooleanParameter(
+					doMarkSourceNode,
+					"Mark Start-Node",
+					"Mark each source Node");
+			
+			treeDirectionParam = new ObjectListParameter(
+					treeDirectionParameter[0],
+					"Tree Direction (degree)",
+					"Move all trees in 0, 90, 180 or 270 degree",
+					treeDirectionParameter);
+			
+			distanceParam.setDouble(nodeDistance);
+			xStartParam2.setDouble(this.xStartParam);
+			yStartParam2.setDouble(this.yStartParam);
+		}
 		return new Parameter[] {
 				nodeParam,
 				distanceParam,
-				xStartParam,
-				yStartParam,
+				xStartParam2,
+				yStartParam2,
 				horizontalParam,
 				removeBendParam,
 				markedSourceNodeParam,
@@ -316,7 +316,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 		Node n = ((NodeParameter) params[i++]).getNode();
 		selection.clear();
 		selection.add(n);
-		System.out.println("Node: " + AttributeHelper.getLabel(n, "- unnamed -"));
+//		System.out.println("Node: " + AttributeHelper.getLabel(n, "- unnamed -"));
 		
 		nodeDistance = ((DoubleParameter) params[i++]).getDouble().doubleValue();
 		xStart = ((DoubleParameter) params[i++]).getDouble().doubleValue();

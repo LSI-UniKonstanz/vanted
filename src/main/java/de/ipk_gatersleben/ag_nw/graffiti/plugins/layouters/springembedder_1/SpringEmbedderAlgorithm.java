@@ -88,9 +88,23 @@ public class SpringEmbedderAlgorithm extends AbstractAlgorithm {
 	public boolean moveAll = true;
 	
 	private final String COORDSTR =
-						GraphicAttributeConstants.GRAPHICS
-											+ Attribute.SEPARATOR
-											+ GraphicAttributeConstants.COORDINATE;
+			GraphicAttributeConstants.GRAPHICS
+					+ Attribute.SEPARATOR
+					+ GraphicAttributeConstants.COORDINATE;
+	
+	private DoubleParameter k1Param;
+	
+	private DoubleParameter k2Param;
+	
+	private DoubleParameter nat_l_Param;
+	
+	private BooleanParameter borderForce_Param;
+	
+	private DoubleParameter borderWidth_Param;
+	
+	private DoubleParameter randForce_Param;
+	
+	private BooleanParameter redraw_Param;
 	
 	/**
 	 * Sets Menu Command Title
@@ -99,7 +113,6 @@ public class SpringEmbedderAlgorithm extends AbstractAlgorithm {
 		// return "Springembedder 1";
 		return null; // avoids listing in the plugin menu
 	}
-	
 	
 	@Override
 	public Set<Category> getSetCategory() {
@@ -138,8 +151,8 @@ public class SpringEmbedderAlgorithm extends AbstractAlgorithm {
 		CoordinateAttribute coB = (CoordinateAttribute) b.getAttribute(COORDSTR);
 		
 		return Math.sqrt(
-							Math.pow(coA.getX() - coB.getX(), 2)
-												+ Math.pow(coA.getY() - coB.getY(), 2));
+				Math.pow(coA.getX() - coB.getX(), 2)
+						+ Math.pow(coA.getY() - coB.getY(), 2));
 	}
 	
 	private double getDiffX(Node a, Node b) {
@@ -171,8 +184,8 @@ public class SpringEmbedderAlgorithm extends AbstractAlgorithm {
 	}
 	
 	private void doSpringEmbedder(
-						int n,
-						Vector<Node> graphNodes, // <Node>
+			int n,
+			Vector<Node> graphNodes, // <Node>
 			ArrayList<Vector2d> energyForNodes) { // <Vector2d>
 	
 		energyForNodes.clear();
@@ -209,17 +222,17 @@ public class SpringEmbedderAlgorithm extends AbstractAlgorithm {
 				for (i2 = 0; i2 < graphNodes.size(); i2++) {
 					if (i2 != i) {
 						distance =
-											getDistance(
-																(Node) graphNodes.get(i),
-																(Node) graphNodes.get(i2));
+								getDistance(
+										(Node) graphNodes.get(i),
+										(Node) graphNodes.get(i2));
 						distanceX =
-											getDiffX(
-																(Node) graphNodes.get(i),
-																(Node) graphNodes.get(i2));
+								getDiffX(
+										(Node) graphNodes.get(i),
+										(Node) graphNodes.get(i2));
 						distanceY =
-											getDiffY(
-																(Node) graphNodes.get(i),
-																(Node) graphNodes.get(i2));
+								getDiffY(
+										(Node) graphNodes.get(i),
+										(Node) graphNodes.get(i2));
 						if (distance > 0) {
 							forceX += k2 / distance / distance * distanceX / distance;
 							forceY += k2 / distance / distance * distanceY / distance;
@@ -232,17 +245,17 @@ public class SpringEmbedderAlgorithm extends AbstractAlgorithm {
 			if (!connectedNodes.isEmpty()) {
 				for (i2 = 0; i2 < connectedNodes.size(); i2++) {
 					distance =
-										getDistance(
-															(Node) graphNodes.get(i),
-															(Node) connectedNodes.get(i2));
+							getDistance(
+									(Node) graphNodes.get(i),
+									(Node) connectedNodes.get(i2));
 					distanceX =
-										getDiffX(
-															(Node) graphNodes.get(i),
-															(Node) connectedNodes.get(i2));
+							getDiffX(
+									(Node) graphNodes.get(i),
+									(Node) connectedNodes.get(i2));
 					distanceY =
-										getDiffY(
-															(Node) graphNodes.get(i),
-															(Node) connectedNodes.get(i2));
+							getDiffY(
+									(Node) graphNodes.get(i),
+									(Node) connectedNodes.get(i2));
 					
 					if (distance > 0) {
 						forceX += k1 * (distance - nat_l) * distanceX / distance;
@@ -317,15 +330,15 @@ public class SpringEmbedderAlgorithm extends AbstractAlgorithm {
 	}
 	
 	private void moveNode(
-						double temperature_max_move,
-						ArrayList<Vector2d> energyForNodes,
-						Vector<Node> myNodes,
-						int i) {
+			double temperature_max_move,
+			ArrayList<Vector2d> energyForNodes,
+			Vector<Node> myNodes,
+			int i) {
 		Vector2d moveVec = (Vector2d) energyForNodes.get(i);
 		
 		CoordinateAttribute cn =
-							(CoordinateAttribute) ((Node) myNodes.get(i)).getAttribute(
-												COORDSTR);
+				(CoordinateAttribute) ((Node) myNodes.get(i)).getAttribute(
+						COORDSTR);
 		
 		double l = Math.sqrt(moveVec.x * moveVec.x + moveVec.y * moveVec.y);
 		
@@ -340,54 +353,46 @@ public class SpringEmbedderAlgorithm extends AbstractAlgorithm {
 	@Override
 	public Parameter[] getParameters() {
 		
-		// UserPrefs mySettings=new UserPrefs("SpringEmbedderPlugin");
-		DoubleParameter k1Param =
-							new DoubleParameter(
-												"k1_1",
-												"Stiffness of spring between two connected nodes");
-		// k1=mySettings.getDouble(Sk1);
-		k1Param.setDouble(k1);
-		
-		DoubleParameter k2Param =
-							new DoubleParameter(
-												"k2_-90.000",
-												"Strength of the electrical repulsion between all nodes");
-		
-		// k2=mySettings.getDouble(Sk2);
-		k2Param.setDouble(k2);
-		
-		DoubleParameter nat_l_Param =
-							new DoubleParameter(
-												"Ziel-Kantenl�nge_100",
-												"Natural (zero energy) length of spring between two connected nodes");
-		// nat_l=mySettings.getDouble(Snat_l);
-		nat_l_Param.setDouble(nat_l);
-		
-		BooleanParameter borderForce_Param =
-							new BooleanParameter(borderForce, "Rand-Absto�ung_true", "");
-		
-		DoubleParameter borderWidth_Param =
-							new DoubleParameter("Rand-Abstand_150", "Einflu�bereich des Randes");
-		// borderWidth=mySettings.getDouble(SborderWidth);
-		borderWidth_Param.setDouble(borderWidth);
-		
-		DoubleParameter randForce_Param =
-							new DoubleParameter("Rand-Kraft_100", "Abso�ungskraft direkt am Rand");
-		// maxBorderForce=mySettings.getDouble(SmaxBorderForce);
-		randForce_Param.setDouble(maxBorderForce);
-		
-		BooleanParameter redraw_Param =
-							new BooleanParameter(redraw, "Redraw_true", "");
-		// redraw=mySettings.getBool(Sredraw);
-		
+		if (k1Param == null) {
+			k1Param = new DoubleParameter(
+					"k1_1",
+					"Stiffness of spring between two connected nodes");
+			// k1=mySettings.getDouble(Sk1);
+			k1Param.setDouble(k1);
+			
+			k2Param = new DoubleParameter(
+					"k2_-90.000",
+					"Strength of the electrical repulsion between all nodes");
+			
+			// k2=mySettings.getDouble(Sk2);
+			k2Param.setDouble(k2);
+			
+			nat_l_Param = new DoubleParameter(
+					"Ziel-Kantenl�nge_100",
+					"Natural (zero energy) length of spring between two connected nodes");
+			// nat_l=mySettings.getDouble(Snat_l);
+			nat_l_Param.setDouble(nat_l);
+			
+			borderForce_Param = new BooleanParameter(borderForce, "Rand-Absto�ung_true", "");
+			
+			borderWidth_Param = new DoubleParameter("Rand-Abstand_150", "Einflu�bereich des Randes");
+			// borderWidth=mySettings.getDouble(SborderWidth);
+			borderWidth_Param.setDouble(borderWidth);
+			
+			randForce_Param = new DoubleParameter("Rand-Kraft_100", "Abso�ungskraft direkt am Rand");
+			// maxBorderForce=mySettings.getDouble(SmaxBorderForce);
+			randForce_Param.setDouble(maxBorderForce);
+			
+			redraw_Param = new BooleanParameter(redraw, "Redraw_true", "");
+		}
 		return new Parameter[] {
-							k1Param,
-							k2Param,
-							nat_l_Param,
-							borderForce_Param,
-							borderWidth_Param,
-							randForce_Param,
-							redraw_Param };
+				k1Param,
+				k2Param,
+				nat_l_Param,
+				borderForce_Param,
+				borderWidth_Param,
+				randForce_Param,
+				redraw_Param };
 	}
 	
 	@Override
@@ -403,8 +408,8 @@ public class SpringEmbedderAlgorithm extends AbstractAlgorithm {
 		nat_l = ((DoubleParameter) params[2]).getDouble().doubleValue();
 		// mySettings.setPref(Snat_l, new Double(nat_l).toString());
 		borderForce =
-							new Boolean(((BooleanParameter) params[3]).getValue().toString())
-												.booleanValue();
+				new Boolean(((BooleanParameter) params[3]).getValue().toString())
+						.booleanValue();
 		// mySettings.setPref(SborderForce, new Boolean(borderForce).toString());
 		
 		borderWidth = ((DoubleParameter) params[4]).getDouble().doubleValue();
@@ -415,8 +420,8 @@ public class SpringEmbedderAlgorithm extends AbstractAlgorithm {
 		// new Double(maxBorderForce).toString());
 		
 		redraw =
-							new Boolean(((BooleanParameter) params[6]).getValue().toString())
-												.booleanValue();
+				new Boolean(((BooleanParameter) params[6]).getValue().toString())
+						.booleanValue();
 		// mySettings.setPref(Sredraw,
 		// new Boolean(redraw).toString());
 	}
