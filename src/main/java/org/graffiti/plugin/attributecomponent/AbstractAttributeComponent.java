@@ -12,6 +12,7 @@
  */
 package org.graffiti.plugin.attributecomponent;
 
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 
@@ -49,6 +50,8 @@ public abstract class AbstractAttributeComponent
 	protected Point shift;
 	
 	protected Point loc = new Point();
+
+	private boolean isPrinting;
 	
 	// ~ Constructors ===========================================================
 	
@@ -153,8 +156,10 @@ public abstract class AbstractAttributeComponent
 	 */
 	public boolean checkVisibility(int minimumComponentSize) {
 		/* 
-		 * only draw component, if it is graphically visible or not FAST mode enabled
+		 * only draw component, if printing is in progress, it is graphically visible or not FAST mode enabled
 		 */
+		if(isPrinting)
+			return true;
 		if(getParent() instanceof GraffitiView){
 			GraffitiView view = (GraffitiView)getParent();
 			if(view.getDrawMode() == DrawMode.FAST)
@@ -172,6 +177,21 @@ public abstract class AbstractAttributeComponent
 			return true;
 	}
 	
+	
+	
+	@Override
+	public void adjustComponentSize() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void print(Graphics g) {
+		isPrinting = true;
+		super.print(g);
+		isPrinting = false;
+	}
+
 	protected DrawMode getDrawingModeOfView() {
 		if(getParent() instanceof GraffitiView){
 			GraffitiView view = (GraffitiView)getParent();
