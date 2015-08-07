@@ -392,6 +392,7 @@ public class PreferencesDialog extends JDialog
 			final boolean executeMoveToTopAfterwards) {
 		// settingsPanel.add(new JLabel("Algorithm selection: "+alg.getName()));
 		settingsPanel.removeAll();
+		
 		JPanel progressAndStatus = new JPanel();
 		double border = 5;
 		double[][] size =
@@ -495,7 +496,11 @@ public class PreferencesDialog extends JDialog
 		progressAndStatus.add(runButton, "1,1");
 		
 		progressAndStatus.validate();
-		settingsPanel.add(progressAndStatus);
+		
+		JScrollPane sp = new JScrollPane(progressAndStatus);
+		sp.setBorder(null);
+		
+		settingsPanel.add(sp);
 		settingsPanel.validate();
 	}
 	
