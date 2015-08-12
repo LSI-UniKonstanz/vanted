@@ -76,7 +76,7 @@ public class ConnectedComponentLayout extends AbstractAlgorithm {
 		// preprocessing
 		
 		// get node sets
-		Set<Set<Node>> nodeSetSet = ConnectedComponentLayout.getConnectedComponents(graph);
+		Set<Set<Node>> nodeSetSet = GraphHelper.getConnectedComponents(graph.getNodes());
 		
 		if (nodeSetSet.size() <= 1)
 			return;
@@ -165,56 +165,6 @@ public class ConnectedComponentLayout extends AbstractAlgorithm {
 		
 	}
 	
-	public static Set<Set<Node>> getConnectedComponents(Graph graph) {
-		Set<Set<Node>> nodeSetSet = new HashSet<Set<Node>>();
-		
-		// get all RefSets
-		Set<Node> allNodes = new HashSet<Node>(graph.getNodes());
-		
-		Set<Node> alreadyContainedNodes = new HashSet<Node>();
-		
-		for (Node refSet : allNodes) {
-			if (alreadyContainedNodes.contains(refSet))
-				// already in a labeled connected component
-				continue;
-			
-			// ##########################################################################
-			// new cc
-			
-			// #########################################
-			// set of unlabeled nodes
-			Set<Node> ccNodeSet = new HashSet<Node>();
-			nodeSetSet.add(ccNodeSet);
-			
-			// Set of unlabeled refSets to visit
-			Stack<Node> ccNodesToProcess = new Stack<Node>();
-			ccNodesToProcess.push(refSet);
-			
-			// #########################################
-			// find and add all connected refSets
-			while (!ccNodesToProcess.isEmpty()) {
-				Node actNodeToProcess = ccNodesToProcess.pop();
-				
-				// add new refSet
-				ccNodeSet.add(actNodeToProcess);
-				
-				// get all adjacent nodes
-				Set<Node> actNodeNeighbours = actNodeToProcess.getNeighbors();
-				
-				// add all new refSets
-				for (Node actRefSetNeighbour : actNodeNeighbours)
-					if (!ccNodeSet.contains(actRefSetNeighbour) && !ccNodesToProcess.contains(actRefSetNeighbour))
-						// new neighbour found
-						ccNodesToProcess.push(actRefSetNeighbour);
-			}
-			
-			// #########################################
-			// register all new refSets
-			alreadyContainedNodes.addAll(ccNodeSet);
-		}
-		
-		return nodeSetSet;
-	}
 	
 	/**
 	 * @param nodeList
