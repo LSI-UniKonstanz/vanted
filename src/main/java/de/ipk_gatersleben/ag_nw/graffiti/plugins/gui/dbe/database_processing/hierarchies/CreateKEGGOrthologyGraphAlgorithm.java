@@ -321,7 +321,7 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 							Parameter[] parameters2 = tree.getParameters();
 							for(Parameter curParam : parameters2) {
 								if(curParam.getName().equals("Tree Direction (0,90,180,270)")) {
-									((IntegerParameter)curParam).setValue(0);
+									((ObjectListParameter)curParam).setValue(0);
 								}
 							}
 							tree.setParameters(parameters2);

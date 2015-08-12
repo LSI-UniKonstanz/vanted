@@ -33,6 +33,7 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
+import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
@@ -265,7 +266,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 			Parameter[] parameters2 = tree.getParameters();
 			for(Parameter curParam : parameters2) {
 				if(curParam.getName().equals("Tree Direction (0,90,180,270)")) {
-					((IntegerParameter)curParam).setValue(0);
+					((ObjectListParameter)curParam).setValue(0);
 				}
 			}
 			tree.setParameters(parameters2);
