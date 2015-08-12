@@ -79,7 +79,7 @@ public class MultiTreeLayout extends AbstractAlgorithm {
 		graphCopy.addGraph(graph);
 		Integer resultType = new Integer(0);
 		double maxXallGraphs = 0;
-		for (Graph cc : GraphHelper.getConnectedComponents(graphCopy)) {
+		for (Graph cc : GraphHelper.getConnectedComponentsAsCopy(graphCopy)) {
 			double maxXthisGraph = 0;
 			Algorithm layout = new RTTreeLayout();
 			layout.attach(cc, new Selection());
