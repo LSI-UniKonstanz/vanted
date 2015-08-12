@@ -555,23 +555,23 @@ public abstract class LineEdgeShape implements EdgeShape {
 							double xexcess = 0;
 							double yexcess = 0;
 							// fix 12/08/2015
-							// use the shape rectangle when docking coordinate (px or py) > 1 or docking coordinate (px or py) < -1
-							// otherwise use the node size in the according dimension
+							// use the rectangle size when docking coordinate (px or py) > 1 or docking coordinate (px or py) < -1
+							// use the node size otherwise in the according dimension
 							double width = sRect.getWidth();
 							double height = sRect.getHeight();
-							Vector2d sizeNode = AttributeHelper.getSize(node);
+							Vector2d nodeSize = AttributeHelper.getSize(node);
 							if (px > 1 || px < -1) {
 								xexcess = px;
 								px = px > 0 ? 1 : -1;
 							}
 							else
-								width = sizeNode.x;
+								width = nodeSize.x;
 							if (py > 1 || py < -1) {
 								yexcess = py;
 								py = py > 0 ? 1 : -1;
 							}
 							else
-								height = sizeNode.y;
+								height = nodeSize.y;
 							// point = new Point2Dfix(
 							// xexcess + sRect.getCenterX() + ((px * sRect.getWidth()) / 2d),
 							// yexcess + sRect.getCenterY() + ((py * sRect.getHeight()) / 2d));
