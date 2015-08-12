@@ -25,14 +25,14 @@ public class CircleLayouterPlugin
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.RELEASE_PUBLIC) {
 			this.algorithms = new Algorithm[] {
 					new CircleLayouterAlgorithm(),
-					//								new NullLayoutAlgorithm(),
+					new NullLayoutAlgorithm(),
 					new DotLayoutAlgorithm(),
 					// new CircleLayouterWithMinimumCrossingsAlgorithm()
 			};
 		} else {
 			this.algorithms = new Algorithm[] {
 					new CircleLayouterAlgorithm(),
-					//								new NullLayoutAlgorithm(),
+					new NullLayoutAlgorithm(),
 					new DotLayoutAlgorithm(),
 					// new CircleLayouterWithMinimumCrossingsAlgorithm()
 			};
