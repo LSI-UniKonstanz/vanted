@@ -262,16 +262,19 @@ public class GraphHelper implements HelperClass {
 	 *           the graph to use
 	 * @return a collection with all connected components as separate graphs
 	 */
-	public static Collection<Graph> getConnectedComponents(Graph graph) {
+	public static Collection<Graph> getConnectedComponentsAsCopy(Graph graph) {
 		if (graph.getNumberOfNodes() <= 0)
 			return new ArrayList<Graph>();
 		
-		ArrayList<Graph> graphList = new ArrayList<Graph>();
+		return getConnectedComponentsAsCopy(graph.getNodes());
 		
-		List<Node> nodesToProcess = graph.getNodes();
+	}
+	
+	public static Collection<Graph> getConnectedComponentsAsCopy(List<Node> nodes) {
+		ArrayList<Graph> graphList = new ArrayList<Graph>();
 		HashMap<Node, Node> sourceGraphNode2connectedGraphNode = new LinkedHashMap<Node, Node>();
-		while (!nodesToProcess.isEmpty()) {
-			Node startNode = nodesToProcess.get(0);
+		while (!nodes.isEmpty()) {
+			Node startNode = nodes.get(0);
 			Set<Node> connectedNodes = getConnectedNodes(startNode);
 			Graph connectedComponentGraph = new AdjListGraph();
 			for (Node n : connectedNodes) {
@@ -286,10 +289,62 @@ public class GraphHelper implements HelperClass {
 				}
 			}
 			graphList.add(connectedComponentGraph);
-			nodesToProcess.removeAll(getConnectedNodes(startNode));
+			nodes.removeAll(connectedNodes);
 		}
 		return graphList;
 	}
+	
+	public static Set<Set<Node>> getConnectedComponents(Collection<Node> nodes) {
+		Set<Set<Node>> nodeSetSet = new HashSet<Set<Node>>();
+		
+		// get all RefSets
+		Set<Node> allNodes = new HashSet<Node>(nodes);
+		
+		Set<Node> alreadyContainedNodes = new HashSet<Node>();
+		
+		for (Node refSet : allNodes) {
+			if (alreadyContainedNodes.contains(refSet))
+				// already in a labeled connected component
+				continue;
+			
+			// ##########################################################################
+			// new cc
+			
+			// #########################################
+			// set of unlabeled nodes
+			Set<Node> ccNodeSet = new HashSet<Node>();
+			nodeSetSet.add(ccNodeSet);
+			
+			// Set of unlabeled refSets to visit
+			Stack<Node> ccNodesToProcess = new Stack<Node>();
+			ccNodesToProcess.push(refSet);
+			
+			// #########################################
+			// find and add all connected refSets
+			while (!ccNodesToProcess.isEmpty()) {
+				Node actNodeToProcess = ccNodesToProcess.pop();
+				
+				// add new refSet
+				ccNodeSet.add(actNodeToProcess);
+				
+				// get all adjacent nodes
+				Set<Node> actNodeNeighbours = actNodeToProcess.getNeighbors();
+				
+				// add all new refSets
+				for (Node actRefSetNeighbour : actNodeNeighbours)
+					if (!ccNodeSet.contains(actRefSetNeighbour) && !ccNodesToProcess.contains(actRefSetNeighbour))
+						// new neighbour found
+						ccNodesToProcess.push(actRefSetNeighbour);
+			}
+			
+			// #########################################
+			// register all new refSets
+			alreadyContainedNodes.addAll(ccNodeSet);
+		}
+		
+		return nodeSetSet;
+	}
+	
 	
 	/**
 	 * Remove all bends from a graph
@@ -301,10 +356,13 @@ public class GraphHelper implements HelperClass {
 	public static void removeBendsBetweenSelectedNodes(Collection<Node> nodes, boolean enableUndo) {
 		if (nodes == null || nodes.isEmpty())
 			return;
+		Set<Node> setNodes = new HashSet<Node>(nodes);
 		Graph g = nodes.iterator().next().getGraph();
 		Set<Edge> setEdges = new HashSet<>();
 		for (Node n : nodes) {
-			setEdges.addAll(n.getAllOutEdges());
+			for(Edge outEdge : n.getAllOutEdges())
+				if(setNodes.contains(outEdge.getSource()) && setNodes.contains(outEdge.getTarget()))
+					setEdges.add(outEdge);
 		}
 		removeBends(g, setEdges, enableUndo);
 		
@@ -2049,6 +2107,20 @@ public class GraphHelper implements HelperClass {
 	public static void moveGraph(Graph graph, double offX, double offY) {
 		CenterLayouterAlgorithm.moveGraph(graph, "graph movement (" + (int) offX + "/" + (int) offY + ")", false, offX,
 				offY);
+	}
+	
+	/**
+	 * Moves given nodes by the given delta coordinates
+	 * @param nodes
+	 * @param deltaX
+	 * @param deltaY
+	 */
+	public static void moveNodes(Collection<Node> nodes, double deltaX, double deltaY) {
+		for(Node n : nodes) {
+			Point2D position = AttributeHelper.getPosition(n);
+			position.setLocation(position.getX() + deltaX, position.getY() + deltaY);
+			AttributeHelper.setPosition(n, position);
+		}
 	}
 	
 	public static void getShortestDistances(HashMap<Node, Integer> result, HashSet<Node> from, boolean directed,
