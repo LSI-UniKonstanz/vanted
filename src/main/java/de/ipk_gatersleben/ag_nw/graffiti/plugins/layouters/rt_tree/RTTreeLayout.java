@@ -5,6 +5,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.rt_tree;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -526,19 +527,21 @@ public class RTTreeLayout extends AbstractAlgorithm {
 		
 		ArrayList<Node> selNodes = new ArrayList<Node>(getSelectedOrAllNodes());
 		
-		if (selNodes.size() <= 0 || graph.getNodes().size() == selNodes.size()) {
-			selNodes.clear();
-			int minDegree = Integer.MAX_VALUE;
-			for (Node n : graph.getNodes()) {
-				if (n.getInDegree() <= minDegree) {
-					if (n.getInDegree() < minDegree)
-						selNodes.clear();
-					selNodes.add(n);
-					minDegree = n.getInDegree();
+
+		Set<Set<Node>> connectedComponents = GraphHelper.getConnectedComponents(selNodes);
+		selNodes.clear();
+		for(Set<Node> g : connectedComponents) {
+			int inDegree = Integer.MAX_VALUE;
+			Node minDegreeNode = null;
+			for(Node n : g) {
+				if(n.getInDegree() < inDegree) {
+					inDegree = n.getInDegree();
+					minDegreeNode = n;
 				}
 			}
+			if(minDegreeNode != null)
+				selNodes.add(minDegreeNode);
 		}
-		
 		for (Node n : selNodes) {
 			forest.put(n, null);
 		}
