@@ -17,8 +17,8 @@ public class AlternativeIdentifiersPlugin extends IPK_PluginAdapter {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
 			this.algorithms = new Algorithm[] {
 								new AdditionalIdentifiersAlgorithm(),
-								new ReplaceDiagramTitleFromAlternativeSubstanceNames(),
-								new ReplaceLabelFromAlternativeSubstanceNames()
+								new ReplaceDiagramTitleFromAlternativeSubstanceNames()
+//								new ReplaceLabelFromAlternativeSubstanceNames()
 			};
 	}
 }

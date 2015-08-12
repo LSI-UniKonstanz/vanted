@@ -53,7 +53,7 @@ public class PluginPatternSpringembedder
 							new BringToFrontOrBackAlgorithm(false),
 							new BringToFrontOrBackAlgorithm(true),
 							new RandomLayouterAlgorithm(),
-							new PatternSpringembedder3d(),
+//							new PatternSpringembedder3d(),
 							new RemoveBendsAlgorithm(),
 							new IntroduceSelfEdgeBends(),
 							new IntroduceBendsAlgorithm()
