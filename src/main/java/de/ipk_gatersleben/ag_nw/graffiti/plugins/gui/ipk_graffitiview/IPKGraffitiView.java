@@ -288,9 +288,10 @@ public class IPKGraffitiView
 	 * @param g
 	 */
 	private void setRenderingHints(Graphics g) {
-		if (printInProgress && drawMode == DrawMode.NORMAL
+		if (printInProgress || (drawMode == DrawMode.NORMAL
 				&& getGraph().getNumberOfNodes() < MAX_NODES
-				&& getGraph().getNumberOfEdges() < MAX_EDGES) {
+				&& getGraph().getNumberOfEdges() < MAX_EDGES )
+				) {
 			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 			// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
