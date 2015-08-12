@@ -25,8 +25,8 @@ public class ResizeAndGridLayoutPlugin
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
 			this.algorithms = new Algorithm[] {
 								new GridLayoutAlgorithm(),
-								new ResizeFromMappingCountLayoutAlgorithm(),
-								new ArrayLayout()
+								new ResizeFromMappingCountLayoutAlgorithm()
+//								new ArrayLayout()
 			};
 	}
 }
