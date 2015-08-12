@@ -944,7 +944,10 @@ public class DefaultEditPanel extends EditPanel {
 	// ~ Inner Classes ==========================================================
 	
 	private void applyChanges() {
-		
+		if(listenerManager == null) {
+			System.err.println("DefaultEditPanel (applyChanges): Listener Manager null");
+			return;
+		}
 		listenerManager.transactionStarted(this);
 		try {
 			HashMap<Displayable, Object> attributeToOldValueMap = new LinkedHashMap<Displayable, Object>();

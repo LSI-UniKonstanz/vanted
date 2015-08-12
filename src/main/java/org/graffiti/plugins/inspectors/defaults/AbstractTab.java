@@ -299,6 +299,8 @@ public abstract class AbstractTab
 	}
 	
 	public void sessionChanged(Session s) {
+		if (!isShowing())
+			return;
 		if (s != null && s.getGraph() != null) {
 			logger.debug("session changed sessionname: " + s.getGraph().getName());
 			if ("org.graffiti.plugins.inspectors.defaults.EdgeTab".equals(getClass().getName()))
