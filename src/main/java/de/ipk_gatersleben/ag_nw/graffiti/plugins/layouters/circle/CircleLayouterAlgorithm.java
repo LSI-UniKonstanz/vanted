@@ -109,6 +109,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 	 * Performs the layout.
 	 */
 	public void execute() {
+		
 		if (!minimzeCrossings)
 			withoutMinimizingCrossings();
 		else
@@ -123,7 +124,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 			workNodes.addAll(selection.getNodes());
 		else
 			workNodes.addAll(graph.getNodes());
-		
+		GraphHelper.removeBendsBetweenSelectedNodes(workNodes, false);
 		layoutOnCircles(workNodes, defaultRadius, getName());
 	}
 	
@@ -136,7 +137,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 			workNodes.addAll(graph.getNodes());
 		else
 			workNodes.addAll(selection.getNodes());
-		
+		GraphHelper.removeBendsBetweenSelectedNodes(workNodes, false);
 		final Vector2d ctr = NodeTools.getCenter(workNodes);
 		
 		int numberOfNodes = workNodes.size();
@@ -195,7 +196,6 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 //		for (Edge e : setEdges)
 //			AttributeHelper.removeEdgeBends(e);
 //		
-		GraphHelper.removeBendsBetweenSelectedNodes(workNodes, false);
 		int numberOfNodes = workNodes.size();
 		if (numberOfNodes < 2)
 			return;
@@ -382,8 +382,8 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 					"This parameter overrules the 'Radius' parameter. It calculates the center of all nodes, \n" +
 							"selected for layout and calculates then the average distance to every node,\n" +
 							"which is then taken as final radius for the circle");
-			sortbyclusterParam = new BooleanParameter(true, "Sort by cluster", "Sort elements by their clusterID");
 			minimzeCrossingsParam = new BooleanParameter(minimzeCrossings, "Minimize Crossings", "If checked, the edge crossings will be minimzed");
+			sortbyclusterParam = new BooleanParameter(true, "Sort by cluster", "Sort elements by their clusterID");
 		}
 		return new Parameter[] {
 				radiusParam,
@@ -406,9 +406,9 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		this.parameters = params;
 		
 		defaultRadius = ((DoubleParameter) params[i++]).getDouble().doubleValue();
-		minimzeCrossings = ((BooleanParameter) params[i++]).getBoolean();
 		equalize = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		averageCenterLength = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
+		minimzeCrossings = ((BooleanParameter) params[i++]).getBoolean();
 		sortbycluster = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 	}
 	
