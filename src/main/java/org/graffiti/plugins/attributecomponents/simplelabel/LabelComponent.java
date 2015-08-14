@@ -31,6 +31,7 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,6 +47,8 @@ import org.ErrorMsg;
 import org.LabelFrameSetting;
 import org.StringManipulationTools;
 import org.Vector2d;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.Edge;
@@ -78,6 +81,12 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		GraphicAttributeConstants, PreferencesInterface {
 	// ~ Instance fields ========================================================
 	
+	private static final Logger logger = Logger.getLogger(LabelComponent.class);
+	
+	static {
+		logger.setLevel(Level.INFO);
+	}
+	
 	private static final long serialVersionUID = 1L;
 	
 	private static int MINSIZE_VISIBILITY;
@@ -108,6 +117,8 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	protected int offy = 0;
 	
 	protected int corrX = 0;
+	
+	BufferedImage bufferedImage;
 	
 	// ~ Constructors ===========================================================
 	
@@ -253,8 +264,6 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		}
 	}
 	
-	// repaint();
-	// }
 	
 	/**
 	 * Used when the shape changed in the datastructure. Makes the painter
@@ -347,6 +356,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			else
 				validateTree();
 		}
+		recreateBufferedImage();
 	}
 	
 	private void updateBorderOrShadow(double strokeWidth) {
@@ -428,15 +438,32 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	public void paint(Graphics g) {
 		if (label.getText().isEmpty() || fontSize <= 0)
 			return;
-		if (checkVisibility(MINSIZE_VISIBILITY))
+		
+		boolean isVisible = checkVisibility(MINSIZE_VISIBILITY);
+		
+		if(getDrawingModeOfView() == DrawMode.REDUCED && bufferedImage != null && isVisible) {
+			logger.debug("drawing image");
+			g.drawImage(bufferedImage, 0, 0, null);
+		
+		} else  if (isVisible) {
+			logger.debug("drawing normal");
 			super.paint(g);
-		else
-			if (DRAWRECT_MINSIZE && !(getDrawingModeOfView() == DrawMode.FAST)) {
-				g.setColor(new Color(200, 200, 200));
-				int height = getHeight();
-				int width = getWidth();
-				((Graphics2D) g).fillRect(0, height / 4, width, height / 2);
-			}
+		} else if (DRAWRECT_MINSIZE && !(getDrawingModeOfView() == DrawMode.FAST)) {
+			logger.debug("drawing rectangle");
+			g.setColor(new Color(200, 200, 200));
+			int height = getHeight();
+			int width = getWidth();
+			((Graphics2D) g).fillRect(0, height / 4, width, height / 2);
+		}
+	}
+	
+	private void recreateBufferedImage() {
+		if(getWidth() > 0 && getHeight() > 0) {
+			logger.debug("recreating buffered image");
+			bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+			super.paint(bufferedImage.getGraphics());
+		}
+
 	}
 	
 	private static final HashMap<TextAttribute, Object> fontAttributes = getFontAttributes();
@@ -512,9 +539,12 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			labelAttr.setLastComponentWidth(w);
 			labelAttr.setLastComponentHeight(h);
 			labelAttr.setLastLabel(label);
+
+			recreateBufferedImage();
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
 		}
+		
 	}
 	
 	@Override
