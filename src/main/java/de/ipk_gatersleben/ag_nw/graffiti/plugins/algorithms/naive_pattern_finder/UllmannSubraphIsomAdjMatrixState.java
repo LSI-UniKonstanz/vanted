@@ -10,7 +10,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
-import edu.monash.vanted.test.graph.TestAdjGraphMatrix;
+//import edu.monash.vanted.test.graph.TestAdjGraphMatrix;
 
 /**
  * @author matthiak
@@ -73,7 +73,7 @@ public class UllmannSubraphIsomAdjMatrixState
 		if (adjMatrixPattern == null) {
 			adjMatrixPattern = GraphHelper.createAdjacencyMatrix(getPatternGraph(), !ignoreEdgeDirection);
 			if (logger.getLevel() == Level.DEBUG)
-				TestAdjGraphMatrix.printAdjacencyMatrix(getArrayNodesPattern(), adjMatrixPattern);
+				printAdjacencyMatrix(getArrayNodesPattern(), adjMatrixPattern);
 		}
 		return adjMatrixPattern;
 	}
@@ -82,7 +82,7 @@ public class UllmannSubraphIsomAdjMatrixState
 		if (adjMatrixGraph == null) {
 			adjMatrixGraph = GraphHelper.createAdjacencyMatrix(getTargetGraph(), !ignoreEdgeDirection);
 			if (logger.getLevel() == Level.DEBUG)
-				TestAdjGraphMatrix.printAdjacencyMatrix(getArrayNodesGraph(), adjMatrixGraph);
+				printAdjacencyMatrix(getArrayNodesGraph(), adjMatrixGraph);
 		}
 		return adjMatrixGraph;
 	}
@@ -367,6 +367,21 @@ public class UllmannSubraphIsomAdjMatrixState
 			System.out.print("\t" + AttributeHelper.getLabel(arrayNodesPattern[y], arrayNodesPattern[y].toString()) + "\t\t");
 			for (int x = 0; x < arrayNodesGraph.length; x++) {
 				System.out.print(compatibilityMatrix[y][x] + "\t");
+			}
+			System.out.println();
+		}
+		
+	}
+	
+	public static void printAdjacencyMatrix(Node[] nodes, byte[][] createAdjacencyMatrix) {
+		System.out.print("patNode\\targetNode\t");
+		for (Node n : nodes)
+			System.out.print(AttributeHelper.getLabel(n, n.toString()) + "\t");
+		System.out.println();
+		for (int y = 0; y < nodes.length; y++) {
+			System.out.print("\t" + AttributeHelper.getLabel(nodes[y], nodes[y].toString()) + "\t\t");
+			for (int x = 0; x < nodes.length; x++) {
+				System.out.print(createAdjacencyMatrix[y][x] + "\t");
 			}
 			System.out.println();
 		}
