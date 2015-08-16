@@ -36,10 +36,15 @@ import org.graffiti.plugins.views.defaults.NodeComponent;
 public class AdaptagramsRouting {
 	
 	/**
+	 * Defines a ShapeRef for a node.
+	 * 
 	 * @param router
+	 *           the router
 	 * @param view
+	 *           the current view
 	 * @param node
-	 * @return
+	 *           the node
+	 * @return Adaptagrams shape (<code>ShapeRef</code>)
 	 */
 	public static ShapeRef defineShapeRef(Router router, View view, Node node) {
 		
@@ -53,11 +58,18 @@ public class AdaptagramsRouting {
 	}
 	
 	/**
+	 * Defines a ConnRef for an edge. Start point is either the position of the source node or the docking position at the source
+	 * node, end point is either the position of the target node or the docking position at the target node.
+	 * 
 	 * @param router
+	 *           the router
 	 * @param view
+	 *           the current view
 	 * @param edge
+	 *           the edge
 	 * @param routingType
-	 * @return
+	 *           routing type (<code>ConnType.ConnType_PolyLine</code> or <code>ConnType.ConnType_Orthogonal</code>)
+	 * @return Adaptagrams connector (<code>ConnRef</code>)
 	 */
 	public static ConnRef defineConnRef(Router router, View view, Edge edge, int routingType) {
 		
@@ -66,12 +78,20 @@ public class AdaptagramsRouting {
 	}
 	
 	/**
+	 * Defines a ConnRef for an edge. Start point is either the position of the source node or the docking position at the source
+	 * node, end point is either the position of the target node or the docking position at the target node.
+	 * 
 	 * @param router
+	 *           the router
 	 * @param view
+	 *           the current view
 	 * @param edge
+	 *           the edge
 	 * @param routingType
+	 *           routing type (<code>ConnType.ConnType_PolyLine</code> or <code>ConnType.ConnType_Orthogonal</code>)
 	 * @param avoidCheckpoints
-	 * @return
+	 *           Adaptagrams checkpoints (<code>AvoidCheckpoints</code>), list of checkpoints the connector (the edge) has to pass
+	 * @return Adaptagrams connector (<code>ConnRef</code>)
 	 */
 	public static ConnRef defineConnRef(Router router, View view, Edge edge, int routingType, AvoidCheckpoints avoidCheckpoints) {
 		
@@ -82,14 +102,26 @@ public class AdaptagramsRouting {
 	}
 	
 	/**
+	 * Defines a ConnRef for an edge. Start point is either the position of the source node or the docking position at the source
+	 * node, end point is either the position of the target node or the docking position at the target node.
+	 * 
 	 * @param router
+	 *           the router
 	 * @param view
+	 *           the current view
 	 * @param edge
+	 *           the edge
 	 * @param srcConnDirFlag
+	 *           edge direction at source node (<code>ConnDirFlag.ConnDirAll</code>, <code>ConnDirFlag.ConnDirUp</code>, <code>ConnDirFlag.ConnDirRight</code>,
+	 *           <code>ConnDirFlag.ConnDirDown</code>, <code>ConnDirFlag.ConnDirLeft</code> or <code>ConnDirFlag.ConnDirNone</code>)
 	 * @param tgtConnDirFlag
+	 *           edge direction at target node (<code>ConnDirFlag.ConnDirAll</code>, <code>ConnDirFlag.ConnDirUp</code>, <code>ConnDirFlag.ConnDirRight</code>,
+	 *           <code>ConnDirFlag.ConnDirDown</code>, <code>ConnDirFlag.ConnDirLeft</code> or <code>ConnDirFlag.ConnDirNone</code>)
 	 * @param routingType
+	 *           routing type (<code>ConnType.ConnType_PolyLine</code> or <code>ConnType.ConnType_Orthogonal</code>)
 	 * @param avoidCheckpoints
-	 * @return
+	 *           Adaptagrams checkpoints (<code>AvoidCheckpoints</code>), list of checkpoints the connector (the edge) has to pass
+	 * @return Adaptagrams connector (<code>ConnRef</code>)
 	 */
 	public static ConnRef defineConnRef(Router router, View view, Edge edge, int srcConnDirFlag, int tgtConnDirFlag, int routingType,
 			AvoidCheckpoints avoidCheckpoints) {
@@ -111,14 +143,14 @@ public class AdaptagramsRouting {
 	 * @param edge
 	 *           the edge
 	 * @param srcConnDirFlag
-	 *           edge direction at source node (ConnDirFlag.ConnDirAll, ConnDirFlag.ConnDirUp, ConnDirFlag.ConnDirRight, ConnDirFlag.ConnDirDown,
-	 *           ConnDirFlag.ConnDirLeft or ConnDirFlag.ConnDirNone)
+	 *           edge direction at source node (<code>ConnDirFlag.ConnDirAll</code>, <code>ConnDirFlag.ConnDirUp</code>, <code>ConnDirFlag.ConnDirRight</code>,
+	 *           <code>ConnDirFlag.ConnDirDown</code>, <code>ConnDirFlag.ConnDirLeft</code> or <code>ConnDirFlag.ConnDirNone</code>)
 	 * @param tgtConnDirFlag
-	 *           edge direction at target node (ConnDirFlag.ConnDirAll, ConnDirFlag.ConnDirUp, ConnDirFlag.ConnDirRight, ConnDirFlag.ConnDirDown,
-	 *           ConnDirFlag.ConnDirLeft or ConnDirFlag.ConnDirNone)
+	 *           edge direction at target node (<code>ConnDirFlag.ConnDirAll</code>, <code>ConnDirFlag.ConnDirUp</code>, <code>ConnDirFlag.ConnDirRight</code>,
+	 *           <code>ConnDirFlag.ConnDirDown</code>, <code>ConnDirFlag.ConnDirLeft</code> or <code>ConnDirFlag.ConnDirNone</code>)
 	 * @param routingType
-	 *           routing type (ConnType.ConnType_PolyLine or ConnType.ConnType_Orthogonal)
-	 * @return ConnRef
+	 *           routing type (<code>ConnType.ConnType_PolyLine</code> or <code>ConnType.ConnType_Orthogonal</code>
+	 * @return Adaptagrams connector (<code>ConnRef</code>)
 	 */
 	public static ConnRef defineConnRef(Router router, View view, Edge edge, int srcConnDirFlag, int tgtConnDirFlag, int routingType) {
 		
@@ -157,6 +189,8 @@ public class AdaptagramsRouting {
 	}
 	
 	/**
+	 * Calculates the docking point of an edge at a node if a docking is defined for the edge.
+	 * 
 	 * @param docking
 	 *           docking position at the node
 	 * @param rectangle2D
@@ -197,8 +231,11 @@ public class AdaptagramsRouting {
 	}
 	
 	/**
+	 * Returns the edge bend points for a connector.
+	 * 
 	 * @param connRef
-	 * @return
+	 *           Adaptagrams connector (<code>ConnRef</code>)
+	 * @return <code>ArrayList</code> of bend points
 	 */
 	public static ArrayList<Vector2d> getEdgeBends(ConnRef connRef) {
 		
@@ -208,9 +245,13 @@ public class AdaptagramsRouting {
 	}
 	
 	/**
+	 * Returns the edge bend points for a connector.
+	 * 
 	 * @param connRef
+	 *           Adaptagrams connector (<code>ConnRef</code>)
 	 * @param radius
-	 * @return
+	 *           bend radius
+	 * @return <code>ArrayList</code> of bend points
 	 */
 	public static ArrayList<Vector2d> getEdgeBends(ConnRef connRef, double radius) {
 		
@@ -220,8 +261,11 @@ public class AdaptagramsRouting {
 	}
 	
 	/**
+	 * Returns the edge bend points for a polygon (from a connector).
+	 * 
 	 * @param polygon
-	 * @return
+	 *           Adaptagrams polygon (<code>Polygon</code>)
+	 * @return <code>ArrayList</code> of bend points
 	 */
 	private static ArrayList<Vector2d> getEdgeBends(Polygon polygon) {
 		
@@ -235,9 +279,13 @@ public class AdaptagramsRouting {
 	}
 	
 	/**
+	 * Returns the node shape.
+	 * 
 	 * @param view
+	 *           the current view
 	 * @param node
-	 * @return
+	 *           the node
+	 * @return node shape
 	 */
 	private static NodeShape getNodeShape(View view, Node node) {
 		
@@ -254,10 +302,16 @@ public class AdaptagramsRouting {
 	}
 	
 	/**
+	 * Adds an edge bend point for the node position.
+	 * 
 	 * @param edgeBends
+	 *           <code>ArrayList</code> of bend points
 	 * @param compareIndex
+	 *           compare the node position with bend point at this index
 	 * @param addIndex
+	 *           add a bend point for the node position at this index
 	 * @param nodePos
+	 *           node position
 	 */
 	public static void addBendPointForNodePosition(ArrayList<Vector2d> edgeBends, int compareIndex, int addIndex, Vector2d nodePos) {
 		
@@ -269,9 +323,14 @@ public class AdaptagramsRouting {
 	}
 	
 	/**
+	 * Fixes the edge bend points at the source node. Only edge bend points outside the node are kept.
+	 * 
 	 * @param edgeBends
+	 *           <code>ArrayList</code> of bend points
 	 * @param view
+	 *           the current view
 	 * @param node
+	 *           the node
 	 */
 	public static void fixSourceBendPoints(ArrayList<Vector2d> edgeBends, View view, Node node) {
 		
@@ -297,9 +356,14 @@ public class AdaptagramsRouting {
 	}
 	
 	/**
+	 * Fixes the edge bend points at the target node. Only edge bend points outside the node are kept.
+	 * 
 	 * @param edgeBends
+	 *           <code>ArrayList</code> of bend points
 	 * @param view
+	 *           the current view
 	 * @param node
+	 *           the node
 	 */
 	public static void fixTargetBendPoints(ArrayList<Vector2d> edgeBends, View view, Node node) {
 		
@@ -326,14 +390,20 @@ public class AdaptagramsRouting {
 	}
 	
 	/**
-	 * @param pos
+	 * Calculates (corrects) the first/last edge bend point outside the node based on the intersection point between edge and node. This bend point cannot be
+	 * identical with the intersection point. During drawing Vanted considers edge bend points on the node border (the intersection points) as being within the
+	 * node. Edges are therefore drawn within the node. To avoid this the first/last bend point needs to be corrected.
+	 * 
+	 * @param innerBendPoint
+	 *           bend point within node
 	 * @param intersectionPoint
-	 * @return
+	 *           intersection point between edge and node
+	 * @return bend point
 	 */
-	private static Vector2d calculateBendPoint(Vector2d pos, Point2D intersectionPoint) {
+	private static Vector2d calculateBendPoint(Vector2d innerBendPoint, Point2D intersectionPoint) {
 		
-		double deltaX = intersectionPoint.getX() - pos.x;
-		double deltaY = intersectionPoint.getY() - pos.y;
+		double deltaX = intersectionPoint.getX() - innerBendPoint.x;
+		double deltaY = intersectionPoint.getY() - innerBendPoint.y;
 		if (Math.abs(deltaX) > Math.abs(deltaY))
 			deltaY = 0;
 		else
