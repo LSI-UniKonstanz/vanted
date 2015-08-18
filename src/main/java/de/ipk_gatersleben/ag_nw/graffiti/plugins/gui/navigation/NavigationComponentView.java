@@ -362,7 +362,7 @@ AdjustmentListener, GraphListener, SessionListener
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			((GraffitiView)viewcomponent).setDrawMode(DrawMode.FAST);
+			((GraffitiView)viewcomponent).setDrawMode(DrawMode.REDUCED);
 			handleMouseEvent(e);
 		}
 

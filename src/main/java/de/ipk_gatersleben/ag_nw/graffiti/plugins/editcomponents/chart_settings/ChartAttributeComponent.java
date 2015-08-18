@@ -245,12 +245,10 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 //				g.drawRect(0, 0, getWidth()-1, getHeight()-1);
 //			}
 			
-			if(getParent() instanceof GraffitiView) {
-				if ( ((GraffitiView)getParent()).getDrawMode() == DrawMode.REDUCED) {
-					g.drawImage(bufferedImage, 0, 0, null);
-				}  else
-					super.paint(g);
-			}
+			if (getDrawingModeOfView() == DrawMode.REDUCED) {
+				g.drawImage(bufferedImage, 0, 0, null);
+			}  else
+				super.paint(g);
 		}
 		
 	}
