@@ -4,7 +4,8 @@
  */
 package org.vanted.plugins.layout.adaptagrams.edgerouting;
 
-import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import org.ReleaseInfo;
 import org.graffiti.plugin.GenericPluginAdapter;
@@ -30,12 +31,16 @@ public class EdgeRoutingPlugin extends GenericPluginAdapter {
 		
 		// initial step to use the Adaptagrams libraries in Vanted
 		// search the adaptagrams.jar
-		String classPath = System.getProperty("java.class.path");
-		String[] classPathEntries = classPath.split(File.pathSeparator);
 		String jarFileName = null;
-		for (String entry : classPathEntries)
-			if (entry.contains("adaptagrams.jar"))
-				jarFileName = entry;
+		// String classPath = System.getProperty("java.class.path");
+		// String[] classPathEntries = classPath.split(File.pathSeparator);
+		// for (String entry : classPathEntries)
+		// if (entry.contains("adaptagrams.jar"))
+		// jarFileName = entry;
+		URL[] urls = ((URLClassLoader) this.getClass().getClassLoader()).getURLs();
+		for (URL url : urls)
+			if (url.toString().contains("adaptagrams.jar"))
+				jarFileName = url.toString();
 		String sourceFolder = "libs";
 		String targetFolder = ReleaseInfo.getAppSubdirFolderWithFinalSep("plugins", "Adaptagrams");
 		String[] libNames = AdaptagramsLibrary.getLibraryNames();

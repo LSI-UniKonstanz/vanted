@@ -171,6 +171,16 @@ public class FileHelper implements HelperClass {
 	 */
 	public static void copyFilesFromJar(final String jarFileName, String sourceFolder, final String targetFolder, final String[] fileNames) {
 		
+		final String _jarFileName;
+		// check for leading "jar:file:/"
+		// on Windows replace "\" by "/"
+		if (jarFileName.startsWith("jar:file:/"))
+			_jarFileName = jarFileName.replace("\\", "/");
+		else
+			if (jarFileName.startsWith("file:/"))
+				_jarFileName = "jar:" + jarFileName.replace("\\", "/");
+			else
+				_jarFileName = "jar:file:/" + jarFileName.replace("\\", "/");
 		final String _sourceFolder;
 		// check for leading and trailing "/"
 		if (!sourceFolder.startsWith("/") && !sourceFolder.endsWith("/"))
@@ -189,8 +199,7 @@ public class FileHelper implements HelperClass {
 			@Override
 			public void run() {
 				
-				// on Windows replace "\" by "/"
-				URI uri = URI.create("jar:file:/" + jarFileName.replace("\\", "/"));
+				URI uri = URI.create(_jarFileName);
 				Map<String, String> env = new HashMap<>();
 				try (FileSystem fileSystem = FileSystems.newFileSystem(uri, env)) {
 					for (String fileName : fileNames) {
