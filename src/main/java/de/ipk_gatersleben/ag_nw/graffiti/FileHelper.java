@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -23,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.FileTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -319,8 +321,25 @@ public class FileHelper implements HelperClass {
 				Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
 				if (sourceLastModifiedTime != null)
 					Files.setAttribute(targetPath, "creationTime", FileTime.from(sourceLastModifiedTime.to(TimeUnit.SECONDS), TimeUnit.SECONDS));
-			} catch (IOException e) {
-				ErrorMsg.addErrorMessage(e);
+			} catch (Exception exception) {
+				if (exception instanceof AccessDeniedException) {
+					try {
+						Map<String, Object> targetMap = Files.readAttributes(targetPath, "lastAccessTime");
+						FileTime targetLastAccessTime = (FileTime) targetMap.get("lastAccessTime");
+						Date now = new Date();
+						// last access within the last four hours?
+						// most likely the file is currently being accessed by another process
+						if (now.getTime() - targetLastAccessTime.toMillis() < 1000 * 60 * 60 * 4)
+							ErrorMsg.addErrorMessage("<html>Could not copy " + sourcePath.getFileName()
+									+ "!<br>Most likely the file is currently being accessed by another process.");
+						else
+							ErrorMsg.addErrorMessage(exception);
+					} catch (IOException e) {
+						ErrorMsg.addErrorMessage(e);
+					}
+				}
+				else
+					ErrorMsg.addErrorMessage(exception);
 			}
 		
 	}
