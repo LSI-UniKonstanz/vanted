@@ -330,8 +330,8 @@ public class FileHelper implements HelperClass {
 						// last access within the last four hours?
 						// most likely the file is currently being accessed by another process
 						if (now.getTime() - targetLastAccessTime.toMillis() < 1000 * 60 * 60 * 4)
-							ErrorMsg.addErrorMessage("<html>Could not copy " + sourcePath.getFileName()
-									+ "!<br>Most likely the file is currently being accessed by another process.");
+							ErrorMsg.addErrorMessage("<html>Could not copy " + targetPath.getFileName() + "!<br>" +
+									"Most likely the file is currently being accessed by another process.");
 						else
 							ErrorMsg.addErrorMessage(exception);
 					} catch (IOException e) {
