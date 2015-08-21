@@ -101,11 +101,18 @@ java-cup-v11a-runtime.jar
 
 -----------------------------------------------------------------
 
-
+Apache Commons
+Apache License 2.0
+http://commons.apache.org/proper/commons-daemon/license.html
 
 jaxen-full.jar
 jaxrpc.jar
+
+-----------------------------------------------------------------
+
+
 jcommon-0.9.5.jar
+
 jdom.jar
 jersey-client-1.18.jar
 jersey-core-1.18.jar
