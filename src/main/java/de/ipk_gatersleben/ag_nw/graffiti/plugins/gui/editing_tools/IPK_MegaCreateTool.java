@@ -29,8 +29,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeCompon
  * @author Christian Klukas
  */
 public class IPK_MegaCreateTool
-					extends MegaCreateTool
-					implements MouseWheelListener {
+		extends MegaCreateTool
+		implements MouseWheelListener {
 	
 	/**
 	 * Instance of DefaultContextMenuManager
@@ -42,7 +42,7 @@ public class IPK_MegaCreateTool
 	@Override
 	public void activate() {
 		if (session == null || session.getActiveView() == null || session.getActiveView().getViewComponent() == null
-							|| (!(session.getActiveView() instanceof GraffitiView))) {
+				|| (!(session.getActiveView() instanceof GraffitiView))) {
 			return;
 		}
 		super.activate();
@@ -56,7 +56,7 @@ public class IPK_MegaCreateTool
 		// }
 		//
 		if (MainFrame.getInstance().getActiveSession() != null &&
-							(MainFrame.getInstance().getActiveSession().getActiveView() instanceof GraffitiView)) {
+				(MainFrame.getInstance().getActiveSession().getActiveView() instanceof GraffitiView)) {
 			GraffitiView gv = (GraffitiView) MainFrame.getInstance().getActiveSession().getActiveView();
 			if (gv != null) {
 				mouseWheelComponent = gv.getViewComponent();
@@ -117,12 +117,13 @@ public class IPK_MegaCreateTool
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		super.mouseClicked(e);
-		if(!MegaTools.wasScrollPaneMovement() && SwingUtilities.isRightMouseButton(e)) {
+		if (!MegaTools.wasScrollPaneMovement() && SwingUtilities.isRightMouseButton(e) && !creatingEdge) {
 			View activeView = MainFrame.getInstance().getActiveEditorSession().getActiveView();
-			if(activeView instanceof IPKGraffitiView) {
-				JPopupMenu	popupmenu = new DefaultContextMenuManager().getContextMenu(
-							MegaTools.getLastMouseE());
-				popupmenu.show(activeView.getViewComponent(), (int)(e.getX()*activeView.getZoom().getScaleX()), (int)(e.getY()*activeView.getZoom().getScaleY()));
+			if (activeView instanceof IPKGraffitiView) {
+				JPopupMenu popupmenu = new DefaultContextMenuManager().getContextMenu(
+						MegaTools.getLastMouseE());
+				popupmenu.show(activeView.getViewComponent(), (int) (e.getX() * activeView.getZoom().getScaleX()), (int) (e.getY() * activeView.getZoom()
+						.getScaleY()));
 			}
 		}
 	}
