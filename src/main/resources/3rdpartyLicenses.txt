@@ -1,0 +1,146 @@
+List of 3rd party licenses applied for 3rd party JARs
+
+
+GNU LESSER GENERAL PUBLIC LICENSE 
+adaptagrams.jar
+
+-----------------------------------------------------------------
+
+Apache Axis
+Apache License 2.0
+
+axis.jar
+
+-----------------------------------------------------------------
+
+
+The Apache Batik Project
+Apache License 2.0
+https://xmlgraphics.apache.org/batik/license.html
+
+batik-anim.jar
+batik-awt-util.jar
+batik-bridge.jar
+batik-css.jar
+batik-dom.jar
+batik-ext.jar
+batik-gvt.jar
+batik-parser.jar
+batik-rasterizer.jar
+batik-script.jar
+batik-svg-dom.jar
+batik-svggen.jar
+batik-transcoder.jar
+batik-util.jar
+batik-xml.jar
+
+-----------------------------------------------------------------
+
+BioJava3 
+http://biojava.org/wiki/BioJava3_license
+
+biojava3-ontology-3.1.0.jar
+bytecode-1.8.1.jar
+core-1.8.1.jar
+
+
+-----------------------------------------------------------------
+
+BioModels Web Services
+https://www.ebi.ac.uk/biomodels-main/webservices
+GNU LESSER GENERAL PUBLIC LICENSE 
+
+biomodels-wslib-1.21.jar
+
+-----------------------------------------------------------------
+
+BeanShell 
+http://www.beanshell.org/license.html
+Dual Licensing: Sun Public License / Gnu Lesser Public License
+
+bsh-2.0b4.jar
+
+-----------------------------------------------------------------
+
+Apache Commons
+Apache License 2.0
+http://commons.apache.org/proper/commons-daemon/license.html
+
+commons-beanutils.jar
+commons-cli-1.0.jar
+commons-collections-3.1.jar
+commons-dbcp-1.2.2.jar
+commons-digester.jar
+commons-discovery.jar
+commons-logging-1.1.jar
+commons-math-1.0.jar
+commons-net-2.0.jar
+commons-net-ftp-2.0.jar
+commons-pool-1.3.jar
+
+-----------------------------------------------------------------
+
+
+DOM4J
+Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
+dom4j-1.6.1.jar
+
+
+-----------------------------------------------------------------
+
+iText®, a JAVA PDF library
+Affero GNU Public License
+itext-1.4.5.jar
+
+-----------------------------------------------------------------
+
+CUP Parser Generator for Java
+Copyright 1996-1999 by Scott Hudson, Frank Flannery, C. Scott Ananian
+https://www.cs.princeton.edu/~appel/modern/java/CUP/#LICENSE
+java-cup-v11a-runtime.jar
+
+-----------------------------------------------------------------
+
+
+
+jaxen-full.jar
+jaxrpc.jar
+jcommon-0.9.5.jar
+jdom.jar
+jersey-client-1.18.jar
+jersey-core-1.18.jar
+jh.jar
+jigsaw-2.2.6.jar
+jigsaw-dateParser.jar
+jlex_java_cup.jar
+jruby.jar
+jsbml-1.0.jar
+junit-4.8.jar
+keggapi.jar
+log4j-1.2.13.jar
+mail.jar
+paxtools-4.1.1-no-jena.jar
+pdf-transcoder.jar
+
+poi-3.7-20101029.jar
+poi-examples-3.7-20101029.jar
+poi-ooxml-3.7-20101029.jar
+poi-ooxml-schemas-3.7-20101029.jar
+poi-scratchpad-3.7-20101029.jar
+
+rome-0.8.jar
+saaj.jar
+saxpath.jar
+secondstring-20030401.jar
+soap.jar
+spi-full-0.2.4.jar
+stax2-api-3.0.3.jar
+stax-api-1.0.1.jar
+staxmate-2.0.0.jar
+vecmath1.2-1.14.jar
+woodstox-core-lgpl-4.0.9.jar
+wsdl4j.jar
+xbean.jar
+xercesImpl.jar
+xpp3_min-1.1.4c.jar
+xstream-1.3.1.jar
