@@ -333,6 +333,7 @@ public class MegaCreateTool
 		lastMouseEventTime = e.getWhen();
 		
 		if (!SwingUtilities.isLeftMouseButton(e)) {
+			reset();
 			return;
 		}
 		
@@ -755,7 +756,7 @@ public class MegaCreateTool
 		Preferences da = prefs.node("dashArray");
 		String[] daEntries;
 //		daEntries = da.keys();
-		daEntries = new String[]{};
+		daEntries = new String[] {};
 		// no dashArray exists
 		if (daEntries.length == 0) {
 			graphics.getLineMode().setDashArray(null);
