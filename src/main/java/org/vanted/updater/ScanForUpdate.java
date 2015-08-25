@@ -22,6 +22,7 @@ import java.util.prefs.Preferences;
 import javax.swing.JOptionPane;
 
 import org.ApplicationStatus;
+import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
 import org.ReleaseInfo;
 import org.apache.commons.lang.time.DateUtils;
@@ -35,6 +36,8 @@ import org.graffiti.plugin.parameter.StringParameter;
 
 import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 /**
  * @author matthiak
@@ -46,7 +49,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
  *         lib: lib-name.jar
  *         // # end of update entry
  */
-public class ScanForUpdate implements PreferencesInterface {
+public class ScanForUpdate implements PreferencesInterface, Runnable {
 	
 	private static final Logger logger = Logger.getLogger(ScanForUpdate.class);
 	
@@ -78,6 +81,29 @@ public class ScanForUpdate implements PreferencesInterface {
 	private static final String DESTUPDATEFILE = DESTPATHUPDATEDIR + "do-vanted-update";
 	private static final String VANTEDUPDATEOKFILE = DESTPATHUPDATEDIR + "vanted-update-ok";
 	
+	BackgroundTaskStatusProviderSupportingExternalCall backgroundTaskStatusProvider;
+	
+	/**
+	 * 
+	 */
+	public ScanForUpdate() {
+		backgroundTaskStatusProvider =
+				new BackgroundTaskStatusProviderSupportingExternalCallImpl("", "");
+	}
+	
+	public void run() {
+		
+		try {
+			doScan();
+		} catch (IOException e) {
+			if (Logger.getRootLogger().getLevel() == Level.DEBUG)
+				e.printStackTrace();
+			System.out.println("cannot scan for updates: " + e.getMessage());
+		}
+		
+		backgroundTaskStatusProvider.setCurrentStatusText1("Download finished");
+	}
+	
 	public static void scanAfterStartup() {
 		new Thread(new Runnable() {
 			
@@ -91,18 +117,16 @@ public class ScanForUpdate implements PreferencesInterface {
 						e.printStackTrace();
 					}
 				}
-				try {
-					doScan();
-				} catch (IOException e) {
-					if (Logger.getRootLogger().getLevel() == Level.DEBUG)
-						e.printStackTrace();
-					System.out.println("cannot scan for updates: " + e.getMessage());
-				}
+				logger.debug("starting update scan task");
+				ScanForUpdate scanForUpdate = new ScanForUpdate();
+				BackgroundTaskHelper.issueSimpleTask(
+						"Downloading Updates",
+						"...", scanForUpdate, null, scanForUpdate.backgroundTaskStatusProvider, 0);
 			}
 		}).start();
 	}
 	
-	public static void doScan() throws IOException {
+	private void doScan() throws IOException {
 		logger.debug("doing update scan at: " + URL_UPDATE_FILESTRING);
 		cleanPreviousUpdate();
 		
@@ -217,12 +241,14 @@ public class ScanForUpdate implements PreferencesInterface {
 		writer.write(VERSIONSTRING + ":" + version);
 		writer.newLine();
 		if (strCoreProgramRelativePath != null) {
+			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(strCoreProgramRelativePath));
 			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + strCoreProgramRelativePath), DESTPATHUPDATEDIR, extractFileName(strCoreProgramRelativePath));
 			writer.write(CORESTRING + ":" + strCoreProgramRelativePath);
 			writer.newLine();
 		}
 		
 		for (String libPath : listStrCoreLibsRelativePaths) {
+			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(libPath));
 			
 			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + libPath), DESTPATHUPDATEDIR, extractFileName(libPath));
 			writer.write(LIBSTRING + ":" + libPath);
@@ -232,7 +258,7 @@ public class ScanForUpdate implements PreferencesInterface {
 		writer.close();
 		// bootstrap will look for that file and does his work 
 		// 
-		
+//		ErrorMsg.setStatusMessage("Downloading Updates Finished");
 	}
 	
 	private static String extractFileName(String path) {
