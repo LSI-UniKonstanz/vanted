@@ -42,11 +42,21 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
 /**
  * @author matthiak
  *         Update file has very simple format:
- *         left type of file, right hand side url to file
+ *         first line: version:<version> //x.x.x
+ *         <+|-><type>:<filename>
+ *         ..
+ *         //
+ *         + = add the file
+ *         - = remove the file
+ *         type = type of file (core, lib)
+ *         filename = url to file
  *         # comment line
+ *         e.g.:
+ *         # some comment
  *         version: 2.5.0
- *         core: vanted-core.jar
- *         lib: lib-name.jar
+ *         +core: vanted-core.jar
+ *         +lib: lib-name.jar
+ *         -lib: lib-name2.jar
  *         // # end of update entry
  */
 public class ScanForUpdate implements PreferencesInterface, Runnable {
@@ -135,8 +145,10 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		String version = null;
 		boolean prepareUpdate = false;
 		
-		String strCoreProgramRelativePath = null;
-		List<String> listStrCoreLibsRelativePaths = new ArrayList<String>();
+		List<String> listAddCoreJarRelativePath = new ArrayList<String>();
+		List<String> listRemoveCoreJarRelativePath = new ArrayList<String>();
+		List<String> listAddLibsJarRelativePaths = new ArrayList<String>();
+		List<String> listRemoveLibsJarRelativePaths = new ArrayList<String>();
 		
 		InputStream inputstreamURL = null;
 		
@@ -160,22 +172,43 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 				version = line.substring(VERSIONSTRING.length() + 1).trim();
 				prepareUpdate = updateIsNewer(version);
 			}
-			if (line.toLowerCase().startsWith(CORESTRING)) {
-				strCoreProgramRelativePath = line.substring(CORESTRING.length() + 1).trim();
-			}
-			if (line.toLowerCase().startsWith(LIBSTRING)) {
-				listStrCoreLibsRelativePaths.add(line.substring(LIBSTRING.length() + 1).trim());
-			}
-			
+			// look for jars to add
+			if (line.toLowerCase().startsWith("+")) {
+				line = line.substring(1);
+				if (line.toLowerCase().startsWith(CORESTRING)) {
+					listAddCoreJarRelativePath.add(line.substring(CORESTRING.length() + 1).trim());
+				}
+				if (line.toLowerCase().startsWith(LIBSTRING)) {
+					listAddLibsJarRelativePaths.add(line.substring(LIBSTRING.length() + 1).trim());
+				}
+			} else
+				if (line.toLowerCase().startsWith("-")) {
+					line = line.substring(1);
+					if (line.toLowerCase().startsWith(CORESTRING)) {
+						listRemoveCoreJarRelativePath.add(line.substring(CORESTRING.length() + 1).trim());
+					}
+					if (line.toLowerCase().startsWith(LIBSTRING)) {
+						listRemoveLibsJarRelativePaths.add(line.substring(LIBSTRING.length() + 1).trim());
+					}
+				}
 		}
 		
 		inputstreamURL.close();
 		
 		if (Logger.getRootLogger().getLevel() == Level.DEBUG) {
 			logger.debug("We found an update.. printing locations:");
-			System.out.println("Core: " + strCoreProgramRelativePath);
-			for (String libPath : listStrCoreLibsRelativePaths) {
-				System.out.println(" lib: " + libPath);
+			for (String libPath : listAddCoreJarRelativePath) {
+				System.out.println(" adding core-jar: " + libPath);
+			}
+			for (String libPath : listAddLibsJarRelativePaths) {
+				System.out.println("  adding lib-jar: " + libPath);
+			}
+			System.out.println("----------");
+			for (String libPath : listRemoveCoreJarRelativePath) {
+				System.out.println(" removing core-jar: " + libPath);
+			}
+			for (String libPath : listRemoveLibsJarRelativePaths) {
+				System.out.println("  removing lib-jar: " + libPath);
 			}
 		}
 		
@@ -240,25 +273,35 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		
 		writer.write(VERSIONSTRING + ":" + version);
 		writer.newLine();
-		if (strCoreProgramRelativePath != null) {
-			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(strCoreProgramRelativePath));
-			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + strCoreProgramRelativePath), DESTPATHUPDATEDIR, extractFileName(strCoreProgramRelativePath));
-			writer.write(CORESTRING + ":" + strCoreProgramRelativePath);
+		// download new jars or jars to replace
+		for (String corePath : listAddCoreJarRelativePath) {
+			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(corePath));
+			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + corePath), DESTPATHUPDATEDIR, extractFileName(corePath));
+			writer.write("+" + CORESTRING + ":" + corePath);
 			writer.newLine();
 		}
-		
-		for (String libPath : listStrCoreLibsRelativePaths) {
+		for (String libPath : listAddLibsJarRelativePaths) {
 			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(libPath));
 			
 			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + libPath), DESTPATHUPDATEDIR, extractFileName(libPath));
-			writer.write(LIBSTRING + ":" + libPath);
+			writer.write("+" + LIBSTRING + ":" + libPath);
+			writer.newLine();
+		}
+		
+		// add list of entries for jars to be removed
+		for (String corePath : listRemoveCoreJarRelativePath) {
+			writer.write("-" + CORESTRING + ":" + corePath);
+			writer.newLine();
+		}
+		
+		for (String libPath : listRemoveLibsJarRelativePaths) {
+			writer.write("-" + LIBSTRING + ":" + libPath);
 			writer.newLine();
 		}
 		
 		writer.close();
 		// bootstrap will look for that file and does his work 
 		// 
-//		ErrorMsg.setStatusMessage("Downloading Updates Finished");
 	}
 	
 	private static String extractFileName(String path) {
