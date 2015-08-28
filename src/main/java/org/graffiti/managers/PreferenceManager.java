@@ -14,7 +14,6 @@ import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 
 import org.ReleaseInfo;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.managers.pluginmgr.PluginDescription;
 import org.graffiti.managers.pluginmgr.PluginManagerListener;
@@ -37,7 +36,8 @@ public class PreferenceManager
 	static Logger logger = Logger.getLogger(PreferenceManager.class);
 	
 	static {
-		logger.setLevel(Level.INFO);
+//		logger.setLevel(Level.INFO);
+		getInstance();
 	}
 	
 	/**
@@ -49,8 +49,8 @@ public class PreferenceManager
 	private static PreferenceManager instance;
 	
 	private PreferenceManager() {
-		
 		try {
+			logger.debug("loading preferences from settings.xml file");
 			Preferences.importPreferences(new FileInputStream(new File(ReleaseInfo.getAppFolder() + "/settings.xml")));
 		} catch (FileNotFoundException e) {
 			logger.debug("no preference file found " + e.getMessage());

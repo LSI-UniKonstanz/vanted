@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
+import java.net.URL;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
@@ -344,4 +345,34 @@ public class FileHelper implements HelperClass {
 		
 	}
 	
+	/**
+	 * Downloads a file from the web to a local folder.
+	 * 
+	 * @param urlFile
+	 * @param destPath
+	 * @param localFilename
+	 * @return
+	 * @throws IOException
+	 */
+	public static boolean downloadFile(URL urlFile, String destPath, String localFilename) throws IOException {
+		if (urlFile == null || destPath == null || localFilename == null)
+			return false;
+		
+		InputStream openStream = urlFile.openStream();
+		
+		File destDir = new File(destPath);
+		if (!destDir.exists())
+			destDir.mkdirs();
+		
+		File destFile = new File(destPath + "/" + localFilename);
+		FileOutputStream fos = new FileOutputStream(destFile);
+		
+		byte[] buffer = new byte[1024];
+		while (openStream.read(buffer) != -1)
+			fos.write(buffer);
+		
+		fos.close();
+		openStream.close();
+		return true;
+	}
 }
