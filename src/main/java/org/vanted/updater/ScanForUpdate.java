@@ -142,6 +142,27 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		
 		Date currentDate = new Date();
 		
+		// if there is preference entry for reminder time..  check
+		boolean timeout = false;
+		Preferences preferenceForClass = PreferenceManager.getPreferenceForClass(ScanForUpdate.class);
+		String strReminderDate = preferenceForClass.get(REMINDER_DATE, null);
+		if (strReminderDate != null) {
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+			try {
+				Date storedDate = dateFormat.parse(strReminderDate);
+				
+				if (currentDate.after(storedDate))
+					timeout = true;
+			} catch (ParseException e) {
+				if (Logger.getRootLogger().getLevel() == Level.DEBUG)
+					e.printStackTrace();
+				timeout = true;
+			}
+			// if we're still not after the X days of reminder.. don't ask the user
+			if (!timeout)
+				return;
+		}
+		
 		String version = null;
 		boolean prepareUpdate = false;
 		
@@ -196,50 +217,33 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		inputstreamURL.close();
 		
 		if (Logger.getRootLogger().getLevel() == Level.DEBUG) {
-			logger.debug("We found an update.. printing locations:");
-			for (String libPath : listAddCoreJarRelativePath) {
-				System.out.println(" adding core-jar: " + libPath);
-			}
-			for (String libPath : listAddLibsJarRelativePaths) {
-				System.out.println("  adding lib-jar: " + libPath);
-			}
-			System.out.println("----------");
-			for (String libPath : listRemoveCoreJarRelativePath) {
-				System.out.println(" removing core-jar: " + libPath);
-			}
-			for (String libPath : listRemoveLibsJarRelativePaths) {
-				System.out.println("  removing lib-jar: " + libPath);
-			}
+			if (prepareUpdate) {
+				logger.debug("We found an update.. printing locations:");
+				for (String libPath : listAddCoreJarRelativePath) {
+					System.out.println(" adding core-jar: " + libPath);
+				}
+				for (String libPath : listAddLibsJarRelativePaths) {
+					System.out.println("  adding lib-jar: " + libPath);
+				}
+				System.out.println("----------");
+				for (String libPath : listRemoveCoreJarRelativePath) {
+					System.out.println(" removing core-jar: " + libPath);
+				}
+				for (String libPath : listRemoveLibsJarRelativePaths) {
+					System.out.println("  removing lib-jar: " + libPath);
+				}
+			} else
+				logger.debug("We found update file, but version is not newer");
 		}
 		
 		// the update we found is not newer
 		if (!prepareUpdate)
 			return;
 		
-		// if there is preference entry for reminder time..  check
-		boolean timeout = false;
-		Preferences preferenceForClass = PreferenceManager.getPreferenceForClass(ScanForUpdate.class);
-		String strReminderDate = preferenceForClass.get(REMINDER_DATE, null);
-		if (strReminderDate != null) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-			try {
-				Date storedDate = dateFormat.parse(strReminderDate);
-				
-				if (currentDate.after(storedDate))
-					timeout = true;
-			} catch (ParseException e) {
-				if (Logger.getRootLogger().getLevel() == Level.DEBUG)
-					e.printStackTrace();
-				timeout = true;
-			}
-			// if we're still not after the X days of reminder.. don't ask the user
-			if (!timeout)
-				return;
-		}
 		// popup dialog telling user, there is a new version
 		// download now or later
 		// or go to website (short version)
-		Object dialogAskUpdate = JOptionPane.showOptionDialog(MainFrame.getInstance(),
+		int dialogAskUpdate = JOptionPane.showOptionDialog(MainFrame.getInstance(),
 				"<html>A new update to VANTED " + version + " is available<br/><br/>"
 						+ "You can download it now or be reminded later.<br/><br/>"
 						+ "The update will be installed during the next startup.",
@@ -250,11 +254,15 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 				arrDialogOptions,
 				arrDialogOptions[0]);
 		
+		if (dialogAskUpdate == JOptionPane.CANCEL_OPTION)
+			return;
+		
 		//later - create entry in preferences for reminder date
-		if (dialogAskUpdate == null || (dialogAskUpdate != null && arrDialogOptions[1].equals(dialogAskUpdate))) {
+		if (dialogAskUpdate == 1) {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 			Date addDays = DateUtils.addDays(currentDate, TIME_REMINDER_DAYS);
 			preferenceForClass.put(REMINDER_DATE, dateFormat.format(addDays));
+			PreferenceManager.storePreferences();
 			return;
 		}
 		
@@ -358,6 +366,9 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 	public List<Parameter> getDefaultParameters() {
 		List<Parameter> params = new ArrayList<Parameter>();
 		params.add(new StringParameter(URL_UPDATE_BASESTRING, "Update URL", "Location of the URL to look for updates"));
+		
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		params.add(new StringParameter(simpleDateFormat.format(new Date()), REMINDER_DATE, "Date for the next reminder (DD-MM-YYYY)"));
 		return params;
 	}
 	
@@ -366,6 +377,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		URL_UPDATE_BASESTRING = preferences.get("Update URL", URL_UPDATE_BASESTRING);
 		
 		URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "vanted-update";
+		
 	}
 	
 	@Override
