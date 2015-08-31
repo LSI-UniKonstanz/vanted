@@ -330,6 +330,16 @@ public class ReleaseInfo implements HelperClass {
 			return UpdateInfoResult.NOT_UPDATED;
 	}
 	
+	public static boolean isRunningAsWebstart() {
+		try {
+			Class.forName("javax.jnlp.ServiceManager");
+		} catch (ClassNotFoundException e) {
+//			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * @param currentVersion
 	 * @return null, if not updated / "", if updated but old version is unknown

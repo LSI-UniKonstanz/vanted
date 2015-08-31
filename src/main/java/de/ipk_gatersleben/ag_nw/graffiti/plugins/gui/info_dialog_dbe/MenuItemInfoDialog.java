@@ -622,7 +622,6 @@ public class MenuItemInfoDialog
 				ScanForUpdate.issueScan();
 			}
 		});
-		
 		int pos = 1;
 		insert(error, pos++);
 		insert(examplesItem, pos++);
@@ -638,7 +637,10 @@ public class MenuItemInfoDialog
 			insert(jMenuItemReleaseInfo, pos++);
 		insert(database, pos++);
 		insert(feedback, pos++);
-		insert(scanUpdate, pos++);
+		
+		if (!ReleaseInfo.isRunningAsWebstart()) {
+			insert(scanUpdate, pos++);
+		}
 		// if (ReleaseInfo.getRunningReleaseStatus()==Release.KGML_EDITOR ||
 		// ReleaseInfo.getRunningReleaseStatus()==Release.RELEASE_PUBLIC)
 		// insert(cite, pos++);

@@ -178,6 +178,12 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 	}
 	
 	protected void doScan(boolean ignoreDate) throws IOException {
+		
+		if (ReleaseInfo.isRunningAsWebstart()) {
+			logger.debug("Running as applet..no update check");
+			return;
+		}
+		
 		logger.debug("doing update scan at: " + URL_UPDATE_FILESTRING);
 		cleanPreviousUpdate();
 		
