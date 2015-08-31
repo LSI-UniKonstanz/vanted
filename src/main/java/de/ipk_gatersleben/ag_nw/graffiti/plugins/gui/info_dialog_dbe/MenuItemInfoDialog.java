@@ -62,6 +62,7 @@ import org.graffiti.editor.actions.ClipboardService;
 import org.graffiti.plugin.gui.GraffitiContainer;
 import org.graffiti.plugin.gui.GraffitiMenu;
 import org.vanted.osx.OSXSupport;
+import org.vanted.updater.ScanForUpdate;
 
 import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
@@ -613,6 +614,15 @@ public class MenuItemInfoDialog
 			}
 		});
 		
+		JMenuItem scanUpdate = new JMenuItem("Scan for updates");
+		scanUpdate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ScanForUpdate.scanAfterStartup();
+			}
+		});
+		
 		int pos = 1;
 		insert(error, pos++);
 		insert(examplesItem, pos++);
@@ -628,7 +638,7 @@ public class MenuItemInfoDialog
 			insert(jMenuItemReleaseInfo, pos++);
 		insert(database, pos++);
 		insert(feedback, pos++);
-		
+		insert(scanUpdate, pos++);
 		// if (ReleaseInfo.getRunningReleaseStatus()==Release.KGML_EDITOR ||
 		// ReleaseInfo.getRunningReleaseStatus()==Release.RELEASE_PUBLIC)
 		// insert(cite, pos++);

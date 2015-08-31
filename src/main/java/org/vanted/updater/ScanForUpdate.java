@@ -237,8 +237,10 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		}
 		
 		// the update we found is not newer
-		if (!prepareUpdate)
+		if (!prepareUpdate) {
+			backgroundTaskStatusProvider.setCurrentStatusText1("No updates found");
 			return;
+		}
 		
 		// popup dialog telling user, there is a new version
 		// download now or later
