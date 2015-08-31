@@ -619,7 +619,7 @@ public class MenuItemInfoDialog
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ScanForUpdate.scanAfterStartup();
+				ScanForUpdate.issueScan();
 			}
 		});
 		

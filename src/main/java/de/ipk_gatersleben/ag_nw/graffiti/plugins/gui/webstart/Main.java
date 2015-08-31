@@ -213,7 +213,7 @@ public class Main {
 		
 		PreferenceManager.getInstance().addPreferencingClass(ScanForUpdate.class);
 		
-		ScanForUpdate.scanAfterStartup();
+		ScanForUpdate.issueScanAfterStartup();
 		
 		if (SystemInfo.isMac()) {
 			try {

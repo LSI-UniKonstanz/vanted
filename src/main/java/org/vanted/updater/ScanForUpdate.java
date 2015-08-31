@@ -84,7 +84,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 	private static final String CORESTRING = "core";
 	private static final String LIBSTRING = "lib";
 	
-	private static String URL_UPDATE_BASESTRING = "https://immersive-analytics.infotech.monash.edu/vanted-new2.5/release/updates/";
+	private static String URL_UPDATE_BASESTRING = "https://immersive-analytics.infotech.monash.edu/vanted/release/updates/";
 	private static String URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "vanted-update";
 	
 	private static final String DESTPATHUPDATEDIR = ReleaseInfo.getAppFolderWithFinalSep() + "update/";
@@ -104,7 +104,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 	public void run() {
 		
 		try {
-			doScan();
+			doScan(false); //scan and don't ignore scan-date
 		} catch (IOException e) {
 			if (Logger.getRootLogger().getLevel() == Level.DEBUG)
 				e.printStackTrace();
@@ -114,7 +114,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		backgroundTaskStatusProvider.setCurrentStatusText1("Download finished");
 	}
 	
-	public static void scanAfterStartup() {
+	public static void issueScanAfterStartup() {
 		new Thread(new Runnable() {
 			
 			@Override
@@ -128,41 +128,83 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 					}
 				}
 				logger.debug("starting update scan task");
-				ScanForUpdate scanForUpdate = new ScanForUpdate();
+				final ScanForUpdate scanForUpdate = new ScanForUpdate();
 				BackgroundTaskHelper.issueSimpleTask(
 						"Downloading Updates",
-						"...", scanForUpdate, null, scanForUpdate.backgroundTaskStatusProvider, 0);
+						"...",
+						new Runnable() {
+							
+							@Override
+							public void run() {
+								try {
+									scanForUpdate.doScan(false);
+								} catch (IOException e) {
+									if (Logger.getRootLogger().getLevel() == Level.DEBUG)
+										e.printStackTrace();
+									System.out.println("cannot scan for updates: " + e.getMessage());
+								}
+								scanForUpdate.backgroundTaskStatusProvider.setCurrentStatusText1("Download finished");
+							}
+						},
+						null,
+						scanForUpdate.backgroundTaskStatusProvider, 0);
 			}
 		}).start();
 	}
 	
-	private void doScan() throws IOException {
+	public static void issueScan() {
+		logger.debug("starting update scan task");
+		final ScanForUpdate scanForUpdate = new ScanForUpdate();
+		
+		BackgroundTaskHelper.issueSimpleTask(
+				"Downloading Updates",
+				"...",
+				new Runnable() {
+					
+					@Override
+					public void run() {
+						try {
+							scanForUpdate.doScan(true);
+						} catch (IOException e) {
+							if (Logger.getRootLogger().getLevel() == Level.DEBUG)
+								e.printStackTrace();
+							System.out.println("cannot scan for updates: " + e.getMessage());
+						}
+						scanForUpdate.backgroundTaskStatusProvider.setCurrentStatusText1("Download finished");
+					}
+				},
+				null,
+				scanForUpdate.backgroundTaskStatusProvider, 0);
+	}
+	
+	protected void doScan(boolean ignoreDate) throws IOException {
 		logger.debug("doing update scan at: " + URL_UPDATE_FILESTRING);
 		cleanPreviousUpdate();
 		
 		Date currentDate = new Date();
-		
-		// if there is preference entry for reminder time..  check
-		boolean timeout = false;
 		Preferences preferenceForClass = PreferenceManager.getPreferenceForClass(ScanForUpdate.class);
-		String strReminderDate = preferenceForClass.get(REMINDER_DATE, null);
-		if (strReminderDate != null) {
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-			try {
-				Date storedDate = dateFormat.parse(strReminderDate);
-				
-				if (currentDate.after(storedDate))
-					timeout = true;
-			} catch (ParseException e) {
-				if (Logger.getRootLogger().getLevel() == Level.DEBUG)
-					e.printStackTrace();
-				timeout = true;
-			}
-			// if we're still not after the X days of reminder.. don't ask the user
-			if (!timeout)
-				return;
-		}
 		
+		if (!ignoreDate) {
+			// if there is preference entry for reminder time..  check
+			boolean timeout = false;
+			String strReminderDate = preferenceForClass.get(REMINDER_DATE, null);
+			if (strReminderDate != null) {
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+				try {
+					Date storedDate = dateFormat.parse(strReminderDate);
+					
+					if (currentDate.after(storedDate))
+						timeout = true;
+				} catch (ParseException e) {
+					if (Logger.getRootLogger().getLevel() == Level.DEBUG)
+						e.printStackTrace();
+					timeout = true;
+				}
+				// if we're still not after the X days of reminder.. don't ask the user
+				if (!timeout)
+					return;
+			}
+		}
 		String version = null;
 		boolean prepareUpdate = false;
 		
