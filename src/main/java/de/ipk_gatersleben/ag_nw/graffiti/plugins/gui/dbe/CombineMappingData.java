@@ -8,12 +8,16 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 
@@ -45,6 +49,15 @@ public class CombineMappingData extends AbstractAlgorithm {
 	}
 	
 	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.DATA,
+				Category.MAPPING,
+				Category.COMPUTATION
+				));
+	}
+	
+	@Override
 	public String getDescription() {
 		return null;
 	}
@@ -69,7 +82,7 @@ public class CombineMappingData extends AbstractAlgorithm {
 		mergeMultipleMappingsIntoSingleMapping(workNodes);
 		graph.getListenerManager().transactionFinished(this);
 		MainFrame.showMessage("Merged multiple data mappings into a single data mapping for the selected nodes ("
-							+ workNodes.size() + ")", MessageType.INFO);
+				+ workNodes.size() + ")", MessageType.INFO);
 		GraphHelper.issueCompleteRedrawForActiveView();
 	}
 	

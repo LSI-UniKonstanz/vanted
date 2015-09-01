@@ -57,9 +57,9 @@ public class ChartColorAttribute extends StringAttribute {
 	
 	public static ChartColorAttribute getAttribute(Graph graph) {
 		ChartColorAttribute chartColorAttribute = (ChartColorAttribute) AttributeHelper.getAttributeValue(
-							graph, ChartColorAttribute.attributeFolder,
-							ChartColorAttribute.attributeName,
-							new ChartColorAttribute(), new ChartColorAttribute(), false);
+				graph, ChartColorAttribute.attributeFolder,
+				ChartColorAttribute.attributeName,
+				new ChartColorAttribute(), new ChartColorAttribute(), false);
 		return chartColorAttribute;
 	}
 	
@@ -103,6 +103,8 @@ public class ChartColorAttribute extends StringAttribute {
 	}
 	
 	public ArrayList<Color> getSeriesColors(Collection<String> idList) {
+		if (idList == null || idList.isEmpty())
+			return new ArrayList<Color>();
 		return getSeriesOrOutlineColors(idList, 0);
 	}
 	

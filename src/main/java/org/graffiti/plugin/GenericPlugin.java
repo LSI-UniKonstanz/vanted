@@ -9,10 +9,12 @@
 
 package org.graffiti.plugin;
 
+import java.util.prefs.Preferences;
+
 import javax.swing.ImageIcon;
 
+import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.AttributeDescription;
-import org.graffiti.options.GravistoPreferences;
 import org.graffiti.plugin.actions.URLattributeAction;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.extension.Extension;
@@ -52,8 +54,8 @@ public interface GenericPlugin {
 	 * 
 	 * @return the attribute types provided by this plugin.
 	 */
-	@SuppressWarnings("unchecked")
-	public Class[] getAttributes();
+//	@SuppressWarnings("unchecked")
+	public Class<? extends Attribute>[] getAttributes();
 	
 	public AttributeDescription[] getAttributeDescriptions();
 	
@@ -124,7 +126,7 @@ public interface GenericPlugin {
 	 * @param prefs
 	 *           the 'plugins' preferences node.
 	 */
-	public void configure(GravistoPreferences prefs);
+	public void configure(Preferences prefs);
 	
 	/**
 	 * The routines to perform before the editor will exit.

@@ -6,7 +6,9 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe;
 
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
+import info.clearthought.layout.TableLayoutConstraints;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -26,7 +28,10 @@ import java.util.ArrayList;
 import javax.help.CSH;
 import javax.help.HelpBroker;
 import javax.help.HelpSet;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
@@ -49,17 +54,20 @@ import org.Release;
 import org.ReleaseInfo;
 import org.StringManipulationTools;
 import org.SystemInfo;
+import org.apache.log4j.Logger;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.editor.actions.ClipboardService;
 import org.graffiti.plugin.gui.GraffitiContainer;
 import org.graffiti.plugin.gui.GraffitiMenu;
+import org.vanted.osx.OSXSupport;
+import org.vanted.updater.ScanForUpdate;
 
-import apple.dts.samplecode.osxadapter.OSXAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.plugin_info.PluginInfoHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.TabExampleFiles;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.WorkflowHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.threading.SystemAnalysis;
 import de.ipk_gatersleben.ag_nw.graffiti.services.GUIhelper;
@@ -75,6 +83,8 @@ public class MenuItemInfoDialog
 		extends GraffitiMenu
 		implements GraffitiContainer {
 	// to avoid collisions let ID be package name + menu + name of the menu
+	
+	private static final Logger logger = Logger.getLogger(MenuItemInfoDialog.class.getName());
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -92,21 +102,25 @@ public class MenuItemInfoDialog
 	
 	final JMenuItem info;
 	
+	private JDialog dialogExamples;
+	
+	private JDialog dialogWorkflow;
+	
 	/**
 	 * Create Menu.
 	 */
 	public MenuItemInfoDialog() {
 		super();
 		setName("ipk.help");
-		setText("Help");
-		setMnemonic('H');
+		setText("?");
+		setMnemonic('?');
 		setEnabled(true);
 		
 		info = new JMenuItem("About " + DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT);
 		
 		ClassLoader cl = this.getClass().getClassLoader();
-		String path = this.getClass().getPackage().getName().replace('.', '/');
-		ImageIcon icon = new ImageIcon(cl.getResource(path + "/dbe_logo_16x16.png"));
+//		String path = this.getClass().getPackage().getName().replace('.', '/');
+		ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash_16x16.png"));
 		info.setIcon(icon);
 		KeyStroke f1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
 		info.setAccelerator(f1);
@@ -116,8 +130,8 @@ public class MenuItemInfoDialog
 			{
 				Runtime r = Runtime.getRuntime();
 				r.gc();
-				ClassLoader cl = this.getClass().getClassLoader();
-				String path = this.getClass().getPackage().getName().replace('.', '/');
+//				ClassLoader cl = this.getClass().getClassLoader();
+//				String path = this.getClass().getPackage().getName().replace('.', '/');
 //				ImageIcon icon = new ImageIcon(cl.getResource(path + "/pattern_graffiti_logo.png"));
 				int divisor = 1024;
 				
@@ -143,7 +157,7 @@ public class MenuItemInfoDialog
 				else
 					copyR = "&copy; 2003-2014 IPK Gatersleben";
 				
-				copyRMonash = "&copy; 2014 Monash University";
+				copyRMonash = "&copy; 2014-2015 Monash University";
 				
 				int num = 0;
 				num = MainFrame.getInstance().getPluginManager().getPluginEntries().size();
@@ -175,31 +189,8 @@ public class MenuItemInfoDialog
 										"<br>the \"Foreign Copyrights\" button."
 										+
 										"<p><p>"
-										+
-										(DBEgravistoHelper.DBE_INFORMATIONSYSTEM_NAME.length() > 0 ? DBEgravistoHelper.DBE_GRAVISTO_NAME
-												.replaceAll("<br>",
-														"")
-												+
-												" is part of the " +
-												DBEgravistoHelper.DBE_INFORMATIONSYSTEM_NAME
-												+ "<br>- <b>developed by Christian Klukas, Plant Bioinformatics Group<p><br>"
-												:
-												"<b>Development</b>"
-														+
-														"<br><br>"
-														+
-														"Application design and implementation by "
-														+
-														"members of the IPK working groups<br>"
-														+
-														"Image Analysis and Plant Bioinformatics - http://bioinformatics.ipk-gatersleben.de<br>"
-														+
-														"<br>Initial Gravisto library development at University of Passau.<br>" +
-														otherParties +
-														(otherParties2.length() > 0 ?
-																"<br><br><b>Information</b><br><br>" : "") +
-														otherParties2) +
-										"<small><small><small><br><font color=\"gray\"><br>System-Info: " +
+										
+										+ "<small><small><small><br><font color=\"gray\"><br>System-Info: " +
 										Java_1_5_compatibility.getJavaVersion() + ", " +
 										SystemAnalysis.getNumberOfCPUs() + " CPU" + (SystemAnalysis.getNumberOfCPUs() > 1 ? "s, " : ", ")
 										+ "<br>used/free/max memory: " +
@@ -275,9 +266,63 @@ public class MenuItemInfoDialog
 		
 		if (SystemInfo.isMac() && !ReleaseInfo.isRunningAsApplet()) {
 			try {
-				OSXAdapter.setAboutHandler(this, getClass().getDeclaredMethod("showAbout", (Class[]) null));
-				OSXAdapter.setQuitHandler(this, getClass().getDeclaredMethod("doQuit", (Class[]) null));
-				OSXAdapter.setPreferencesHandler(this, getClass().getDeclaredMethod("showPreferences", (Class[]) null));
+				// old code using class OSXAdapter from package apple.dts.samplecode.osxadapter
+				// classes with similar functionality are now part of the JDK/JRE
+				// OSXAdapter.setAboutHandler(this, getClass().getDeclaredMethod("showAbout", (Class[]) null));
+				// OSXAdapter.setQuitHandler(this, getClass().getDeclaredMethod("doQuit", (Class[]) null));
+				// OSXAdapter.setPreferencesHandler(this, getClass().getDeclaredMethod("showPreferences", (Class[]) null));
+				
+				Action aboutAction = new AbstractAction() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						logger.debug("about action emtpy");
+						showAbout();
+					}
+				};
+				OSXSupport.addOSXHandler("com.apple.eawt.AboutHandler",
+						OSXSupport.HANDLE_ABOUT,
+						"setAboutHandler",
+						aboutAction);
+				
+				// implement About menu specific for Mac OS in the top menu bar
+//				macApplication.setAboutHandler(new AboutHandler() {
+//					
+//					@Override
+//					public void handleAbout(AboutEvent ae) {
+//						
+//						showAbout();
+//						
+//					}
+//					
+//				});
+//				// implement Preferences menu specific for Mac OS in the top menu bar
+//				macApplication.setPreferencesHandler(new PreferencesHandler() {
+//					
+//					@Override
+//					public void handlePreferences(PreferencesEvent pe) {
+//						
+//						// the showPreferences method from this class doesn't work anymore since the Preferences have been removed from the side panel 
+//						// showPreferences();
+//						ShowPreferencesAction showPreferencesAction = new ShowPreferencesAction(MainFrame.getInstance());
+//						showPreferencesAction.actionPerformed(null);
+//						
+//					}
+//				});
+//				// implement Quit menu specific for Mac OS in the top menu bar
+//				macApplication.setQuitHandler(new QuitHandler() {
+//					
+//					@Override
+//					public void handleQuitRequestWith(QuitEvent qe, QuitResponse qr) {
+//						
+//						// default behavior
+//						// qr.performQuit();
+//						// Vanted Quit method
+//						doQuit();
+//						
+//					}
+//				});
 			} catch (Exception e) {
 				ErrorMsg.addErrorMessage(e);
 			}
@@ -351,34 +396,13 @@ public class MenuItemInfoDialog
 			}
 		});
 		
-		JMenuItem helpText = new JMenuItem("Video Tutorials");
-		helpText.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent arg0) {
-				String url = "http://pgrc-16.ipk-gatersleben.de/~klukas/expdat/gravisto/demo/demos.html";
-				AttributeHelper.showInBrowser(url);
-				// JFrame w = new JFrame("Help / Tutorial");
-				// double border = 0;
-				// double[][] size =
-				// { { border, TableLayoutConstants.FILL, border }, // Columns
-				// { border, TableLayoutConstants.FILL, border }
-				// }; // Rows
-				// w.setLayout(new TableLayout(size));
-				// w.add(
-				// getWebPane("http://pgrc-16.ipk-gatersleben.de/~klukas/expdat/gravisto/dbe-gravisto.html"),
-				// "1,1");
-				// w.setSize(640,480);
-				// w.setVisible(true);
-			}
-		});
-		
 		JMenuItem jMenuItemReleaseInfo = new JMenuItem("Release Info");
 		jMenuItemReleaseInfo.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent arg0) {
 				boolean ext = true;
 				if (ext) {
-					AttributeHelper.showInBrowser("http://vanted.ipk-gatersleben.de/index.php?file=doc139.html");
+					AttributeHelper.showInBrowser("https://immersive-analytics.infotech.monash.edu/vanted/index.php?file=doc139.html");
 					return;
 				}
 				JFrame w = new JFrame("Release Information");
@@ -388,10 +412,8 @@ public class MenuItemInfoDialog
 						{ border, TableLayoutConstants.FILL, border }
 				}; // Rows
 				w.setLayout(new TableLayout(size));
-				// http://vanted/index.php?file=doc139.html
-				// http://pgrc-16.ipk-gatersleben.de/~klukas/expdat/gravisto/release.html
 				w.add(
-						getWebPane("http://vanted.ipk-gatersleben.de/index.php?file=doc139.html"),
+						getWebPane("https://immersive-analytics.infotech.monash.edu/vanted/index.php?file=doc139.html"),
 						"1,1");
 				w.setSize(640, 480);
 				w.setVisible(true);
@@ -491,13 +513,6 @@ public class MenuItemInfoDialog
 			}
 		});
 		
-		JMenuItem preferences = new JMenuItem("Preferences");
-		preferences.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				showPreferences();
-			}
-		});
-		
 		final JMenuItem error = new JMenuItem(errorMessagesMenuTitle);
 		error.setMnemonic('E');
 		error.addActionListener(new ActionListener() {
@@ -549,18 +564,18 @@ public class MenuItemInfoDialog
 							scp, "Send E-Mail to help fixing these bugs?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
 						ClipboardService.writeToClipboardAsText(errorLogShort.toString());
 						MainFrame.showMessageDialog("<html>" +
-											"As you press OK your default email application should be automatically opened.<br>" +
-											"If the subject or email body is not automatically filled with the error log information,<br>" +
-											"please choose the menu command Edit/Paste to fill the email body with the relevant information<br>" +
-											"(the error log information has been copied to the clipboard).<br><br>" +
-											"<br>" +
-											"By sending this error log information you help improving the system, eventually<br>" +
-											"the bugs you just experienced will be fixed very soon!<br>" +
-											"If you have general suggestions for improvement, use the Send feedback command<br>" +
-											"from the Help menu!",
-											"Information");
+								"As you press OK your default email application should be automatically opened.<br>" +
+								"If the subject or email body is not automatically filled with the error log information,<br>" +
+								"please choose the menu command Edit/Paste to fill the email body with the relevant information<br>" +
+								"(the error log information has been copied to the clipboard).<br><br>" +
+								"<br>" +
+								"By sending this error log information you help improving the system, eventually<br>" +
+								"the bugs you just experienced will be fixed very soon!<br>" +
+								"If you have general suggestions for improvement, use the Send feedback command<br>" +
+								"from the Help menu!",
+								"Information");
 						AttributeHelper.showInBrowser("mailto:feedback@vanted.org?subject=" + DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT +
-											"%20errorlog&body=" + errorLogShort.toString());
+								"%20errorlog&body=" + errorLogShort.toString());
 					}
 				} else {
 					MainFrame.showMessageDialog("No error messages logged!", "Information");
@@ -569,21 +584,63 @@ public class MenuItemInfoDialog
 			}
 		});
 		
+//		JMenuItem newsitem = new JMenuItem("News");
+//		newsitem.addActionListener(new ShowNewsAction());
+		
+		JMenuItem examplesItem = new JMenuItem("Examples");
+		examplesItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if (dialogExamples == null)
+					createExamplesDialog();
+				dialogExamples.setVisible(true);
+				dialogExamples.toFront();
+			}
+		});
+		
+		JMenuItem workflowItem = new JMenuItem("Workflow Tutorial");
+		workflowItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if (dialogWorkflow == null)
+					createWorkflowDialog();
+				dialogWorkflow.setVisible(true);
+				dialogWorkflow.toFront();
+				
+			}
+		});
+		
+		JMenuItem scanUpdate = new JMenuItem("Scan for updates");
+		scanUpdate.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ScanForUpdate.issueScan();
+			}
+		});
 		int pos = 1;
 		insert(error, pos++);
+		insert(examplesItem, pos++);
+		insert(workflowItem, pos++);
+		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.GravistoJavaHelp))
 			insert(jMenuItemJavaHelp, pos++);
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.GravistoJavaHelp))
 			insert(jMenuItemJavaHelpPDF, pos++);
-		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.URL_HELPTEXT))
-			insert(helpText, pos++);
+//		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.URL_HELPTEXT))
+//			insert(helpText, pos++);
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.URL_RELEASEINFO))
 			insert(jMenuItemReleaseInfo, pos++);
 		insert(database, pos++);
-		if (!SystemInfo.isMac())
-			insert(preferences, pos++);
 		insert(feedback, pos++);
 		
+		if (!ReleaseInfo.isRunningAsWebstart()) {
+			insert(scanUpdate, pos++);
+		}
 		// if (ReleaseInfo.getRunningReleaseStatus()==Release.KGML_EDITOR ||
 		// ReleaseInfo.getRunningReleaseStatus()==Release.RELEASE_PUBLIC)
 		// insert(cite, pos++);
@@ -642,6 +699,57 @@ public class MenuItemInfoDialog
 	 */
 	public void doQuit() {
 		MainFrame.getInstance().closeGravisto();
+	}
+	
+	protected void createExamplesDialog() {
+		dialogExamples = new JDialog(MainFrame.getInstance());
+		dialogExamples.setTitle("Examples");
+		dialogExamples.setModal(false);
+		dialogExamples.setPreferredSize(new Dimension(300, 300));
+//		JScrollPane scrollpane = new JScrollPane();
+		dialogExamples.getContentPane().setLayout(new BorderLayout());
+		dialogExamples.getContentPane().add(new TabExampleFiles(), BorderLayout.CENTER);
+		dialogExamples.pack();
+		dialogExamples.setLocationRelativeTo(MainFrame.getInstance());
+		
+	}
+	
+	protected void createWorkflowDialog() {
+		final JPanel workFlowHelp = WorkflowHelper.getWorkFlowHelp();
+		
+		double border = 5;
+		
+		final JPanel myPanel = new JPanel();
+		myPanel.setLayout(new TableLayout(new double[][] {
+				{ border, 300, border }, // Columns
+				{ TableLayoutConstraints.PREFERRED }
+		}));
+		
+		myPanel.add(workFlowHelp, "1,0");
+		
+		dialogWorkflow = new JDialog(MainFrame.getInstance());
+		dialogWorkflow.setTitle("Workflow Tutorial");
+		dialogWorkflow.setModal(false);
+		dialogWorkflow.setSize(new Dimension(350, 600));
+		
+		JScrollPane scrollpane = new JScrollPane(myPanel);
+		scrollpane.setPreferredSize(new Dimension(350, 600));
+		
+		dialogWorkflow.getContentPane().setLayout(new BorderLayout());
+		dialogWorkflow.getContentPane().add(scrollpane, BorderLayout.CENTER);
+//		dialogWorkflow.pack();
+		dialogWorkflow.setLocationRelativeTo(MainFrame.getInstance());
+		
+		/*
+		 * dialogframe.setSize(new Dimension(350, 600));
+		 * dialogframe.getContentPane().setLayout(new BorderLayout());
+		 * JScrollPane scrollpane = new JScrollPane(myPanel);
+		 * scrollpane.setPreferredSize(new Dimension(350, 600));
+		 * dialogframe.getContentPane().add(scrollpane, BorderLayout.CENTER);
+		 * // dialogframe.pack();
+		 * dialogframe.setLocationRelativeTo(MainFrame.getInstance());
+		 * dialogframe.setVisible(true);
+		 */
 	}
 	
 	public void showPreferences() {
@@ -923,12 +1031,12 @@ public class MenuItemInfoDialog
 			// res += "<br><small><font color=\"blue\">"+url+"</font></small>";
 			res += "<br><small><a href=\"" + url + "\">" + url + "</a></small>";
 		}
-		String res2 = "**" + lib + "**\n\n" + desc + "\n\n**" + licenseDesc + "**";
-		for (String url : licenseTextURLS) {
-			if (!knownUrls.contains(url))
-				knownUrls.add(url);
-			res2 += "\n\n[[" + url + "|" + url + "]]\n\n";
-		}
+//		String res2 = "**" + lib + "**\n\n" + desc + "\n\n**" + licenseDesc + "**";
+//		for (String url : licenseTextURLS) {
+//			if (!knownUrls.contains(url))
+//				knownUrls.add(url);
+//			res2 += "\n\n[[" + url + "|" + url + "]]\n\n";
+//		}
 		// System.out.println(res2);
 		return res;
 	}

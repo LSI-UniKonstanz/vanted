@@ -367,7 +367,7 @@ public interface Graph extends Attributable, DeepCopy {
 	 */
 	public boolean removeAttributeConsumer(AttributeConsumer attConsumer);
 	
-	public void deleteAll(Collection<GraphElement> graphelements);
+	public void deleteAll(Collection<? extends GraphElement> graphelements);
 	
 	/**
 	 * The name can be retrieved with the method <code>getName</code>.

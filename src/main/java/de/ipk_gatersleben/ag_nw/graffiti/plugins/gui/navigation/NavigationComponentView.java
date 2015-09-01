@@ -11,6 +11,8 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Rectangle2D;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
@@ -27,6 +29,8 @@ import org.graffiti.event.TransactionEvent;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.gui.AbstractGraffitiContainer;
 import org.graffiti.plugin.view.View;
+import org.graffiti.plugins.views.defaults.DrawMode;
+import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.session.Session;
 import org.graffiti.session.SessionListener;
 
@@ -214,64 +218,43 @@ AdjustmentListener, GraphListener, SessionListener
 		/*
 		 * draw miniture graph
 		 */
-		if(view.getGraph() != null && view.getGraph().getNodes() != null){
-			for(Node n : view.getGraph().getNodes()){
-				
-				/*
-				 * normalize the coordinates within 0..1
-				 */
-				double normWidth = AttributeHelper.getWidth(n) / viewcomponent.getWidth() * view.getZoom().getScaleX();
-				double normHeight = AttributeHelper.getHeight(n) / viewcomponent.getHeight() * view.getZoom().getScaleY();
-				double normX = AttributeHelper.getPositionX(n) / viewcomponent.getWidth() * view.getZoom().getScaleX() - normWidth/2;
-				double normY = AttributeHelper.getPositionY(n) / viewcomponent.getHeight() * view.getZoom().getScaleY() - normHeight/2;
-//				if(AttributeHelper.getLabel(n, "").equals("cytosol")){
-//					logger.debug("zoom (scaneXY): "+view.getZoom().getScaleX()+" "+view.getZoom().getScaleY());
-//					logger.debug("viewmaxX: "+view.getViewComponent().getWidth()+" viewmaxY: "+view.getViewComponent().getHeight());
-////					logger.debug("scrollpane viewportsize w h: "+ scrollpane.getViewport().getWidth()+ " " + scrollpane.getViewport().getHeight());
-//					logger.debug("normX normY normW normH: "+normX+" "+normY+" "+normWidth+" "+normHeight);
-//					logger.debug("node x y: "+ AttributeHelper.getPositionX(n) + " "+ AttributeHelper.getPositionY(n));
-//					logger.debug("view x y w h" +(int)(normX*w)+" "+ (int)(normY * h)+" "+ (int)(normWidth * w)+" "+ (int)(normHeight * h));
-//				}
+		if(view.getGraph() != null ) {
+			List<Node> nodes = Collections.synchronizedList(view.getGraph().getNodes());
+			synchronized(nodes) {
 
-				String shape = AttributeHelper.getShape(n).toLowerCase();
-					
-				
-				//			try {
-				//				ColorAttribute colorAtt = null;
-				//				colorAtt = (ColorAttribute) n.getAttribute(GraphicAttributeConstants.FILLCOLOR_PATH);
-				//				g.setColor(colorAtt.getColor());
-				//			} catch (Exception ex) {
-				//				g.setColor(Color.black);
-				////				logger.debug("using black");
-				//			}
-				//			g.fillRect((int)(normX*w), (int)(normY * h), (int)(normWidth * w), (int)(normHeight * h));
+				for(Node n : nodes){
 
-				//				try {
-				//					ColorAttribute colorAtt = null;
-				//
-				//					if (AttributeHelper.hasAttribute(n, GraphicAttributeConstants.FRAMECOLOR)) {
-				//						colorAtt = (ColorAttribute) n.getAttribute(GraphicAttributeConstants.FRAMECOLOR);
-				//					} else {
-				//						colorAtt = (ColorAttribute) n.getAttribute(GraphicAttributeConstants.OUTLINE_PATH);
-				//
-				//					}
-				//					g.setColor(colorAtt.getColor());
-				//				} catch (Exception ex) {
-				//					g.setColor(Color.lightGray);
-				//
-				//				}		
-				
-				/*
-				 * use normalizes coordinates to set element in overview view
-				 */
-				g.setColor(Color.lightGray);
-				if(shape != null && (shape.contains("circle") || shape.contains("oval")))
-					g.drawOval((int)(normX*w), (int)(normY * h), (int)(normWidth * w), (int)(normHeight * h));
-				else
-					g.drawRect((int)(normX*w), (int)(normY * h), (int)(normWidth * w), (int)(normHeight * h));
+					/*
+					 * normalize the coordinates within 0..1
+					 */
+					double normWidth = AttributeHelper.getWidth(n) / viewcomponent.getWidth() * view.getZoom().getScaleX();
+					double normHeight = AttributeHelper.getHeight(n) / viewcomponent.getHeight() * view.getZoom().getScaleY();
+					double normX = AttributeHelper.getPositionX(n) / viewcomponent.getWidth() * view.getZoom().getScaleX() - normWidth/2;
+					double normY = AttributeHelper.getPositionY(n) / viewcomponent.getHeight() * view.getZoom().getScaleY() - normHeight/2;
+					//				if(AttributeHelper.getLabel(n, "").equals("cytosol")){
+					//					logger.debug("zoom (scaneXY): "+view.getZoom().getScaleX()+" "+view.getZoom().getScaleY());
+					//					logger.debug("viewmaxX: "+view.getViewComponent().getWidth()+" viewmaxY: "+view.getViewComponent().getHeight());
+					////					logger.debug("scrollpane viewportsize w h: "+ scrollpane.getViewport().getWidth()+ " " + scrollpane.getViewport().getHeight());
+					//					logger.debug("normX normY normW normH: "+normX+" "+normY+" "+normWidth+" "+normHeight);
+					//					logger.debug("node x y: "+ AttributeHelper.getPositionX(n) + " "+ AttributeHelper.getPositionY(n));
+					//					logger.debug("view x y w h" +(int)(normX*w)+" "+ (int)(normY * h)+" "+ (int)(normWidth * w)+" "+ (int)(normHeight * h));
+					//				}
+
+					String shape = AttributeHelper.getShape(n).toLowerCase();
+
+
+					/*
+					 * use normalizes coordinates to set element in overview view
+					 */
+					g.setColor(Color.lightGray);
+					if(shape != null && (shape.contains("circle") || shape.contains("oval")))
+						g.drawOval((int)(normX*w), (int)(normY * h), (int)(normWidth * w), (int)(normHeight * h));
+					else
+						g.drawRect((int)(normX*w), (int)(normY * h), (int)(normWidth * w), (int)(normHeight * h));
+				}
 			}
 		}
-
+	
 		/*
 		 * draw visible rectangle which represents the region, that the graph viewcomponent shows
 		 */
@@ -335,7 +318,7 @@ AdjustmentListener, GraphListener, SessionListener
 			return;
 		if(view == null || scrollpane == null)
 			return;
-		logger.debug("mouse event");
+//		logger.debug("mouse event");
 		double normX = (double)e.getX() / (double)w;
 		double normY = (double)e.getY() / (double)h;
 
@@ -365,6 +348,8 @@ AdjustmentListener, GraphListener, SessionListener
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
+			((GraffitiView)viewcomponent).setDrawMode(DrawMode.NORMAL);
+
 		}
 
 		@Override
@@ -377,6 +362,7 @@ AdjustmentListener, GraphListener, SessionListener
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
+			((GraffitiView)viewcomponent).setDrawMode(DrawMode.REDUCED);
 			handleMouseEvent(e);
 		}
 

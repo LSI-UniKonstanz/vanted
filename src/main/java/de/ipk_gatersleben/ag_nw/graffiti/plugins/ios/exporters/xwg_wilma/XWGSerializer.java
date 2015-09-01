@@ -25,7 +25,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 
 public class XWGSerializer
-					extends AbstractOutputSerializer {
+		extends AbstractOutputSerializer {
 	
 	public String[] getExtensions() {
 		return new String[] { ".xwg" };
@@ -37,6 +37,11 @@ public class XWGSerializer
 	 */
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "XWG Wilmascope" };
+	}
+	
+	@Override
+	public boolean validFor(Graph g) {
+		return false;
 	}
 	
 	public void write(OutputStream out, Graph g) {

@@ -4,8 +4,11 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.KeyStroke;
 
@@ -15,6 +18,7 @@ import org.SystemInfo;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.jdom.Document;
 
@@ -46,6 +50,15 @@ public class EvaluateKGML extends AbstractAlgorithm {
 		return "menu.window";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION
+				));
+	}
+
 	@Override
 	public void check() throws PreconditionException {
 		super.check();

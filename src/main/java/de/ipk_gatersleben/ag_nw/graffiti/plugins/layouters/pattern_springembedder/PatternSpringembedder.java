@@ -20,10 +20,13 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -56,11 +59,14 @@ import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.CoordinateAttribute;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.algorithm.ThreadSafeAlgorithm;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
+import org.graffiti.plugins.views.defaults.DrawMode;
+import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.EditorSession;
 
@@ -787,6 +793,8 @@ public class PatternSpringembedder
 			public void actionPerformed(ActionEvent e) {
 				if (startStopButton.getText().equalsIgnoreCase("Layout Network")) {
 					try {
+
+						
 						final EditorSession es = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 						final Graph ggg = GravistoService.getInstance().getMainFrame().getActiveSession().getGraph();
 						startStopButton.setText("Stop Layouter");
@@ -799,8 +807,11 @@ public class PatternSpringembedder
 								options.setSelection(selection);
 								executeThreadSafe(options);
 							}
-						}) {
-											};
+						}) {};
+						if(es.getActiveView() instanceof GraffitiView)
+							((GraffitiView)es.getActiveView()).setDrawMode(DrawMode.FAST);
+						
+											
 						newBackgroundThread.setName("SpringEmbedderLayout");
 						newBackgroundThread.setPriority(Thread.MIN_PRIORITY);
 						newBackgroundThread.start();
@@ -812,6 +823,9 @@ public class PatternSpringembedder
 					}
 				} else {
 					options.setAbortWanted(true);
+					EditorSession es = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
+					if(es.getActiveView() instanceof GraffitiView)
+						((GraffitiView)es.getActiveView()).setDrawMode(DrawMode.NORMAL);
 					// startStopButton.setIcon(null);
 				}
 			}
@@ -1695,6 +1709,10 @@ public class PatternSpringembedder
 		
 		MainFrame.showMessage("Main layout loop finished after " + timeDesc + ", apply result (please wait)", MessageType.PERMANENT_INFO);
 		
+		EditorSession es = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
+		if(es.getActiveView() instanceof GraffitiView)
+			((GraffitiView)es.getActiveView()).setDrawMode(DrawMode.NORMAL);
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			public void run() {
@@ -1843,6 +1861,19 @@ public class PatternSpringembedder
 		return "Layout";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.LAYOUT,
+				Category.GRAPH
+				));
+	}
+	
+	@Override
+	public String getMenuCategory() {
+		return null;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.algorithm.Algorithm#isLayoutAlgorithm()

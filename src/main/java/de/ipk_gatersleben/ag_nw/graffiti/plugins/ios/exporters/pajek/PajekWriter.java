@@ -16,7 +16,12 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.io.AbstractOutputSerializer;
 
 public class PajekWriter
-					extends AbstractOutputSerializer {
+		extends AbstractOutputSerializer {
+	
+	@Override
+	public boolean validFor(Graph g) {
+		return true;
+	}
 	
 	public void write(OutputStream out, Graph g) throws IOException {
 		PrintStream stream = new PrintStream(out);

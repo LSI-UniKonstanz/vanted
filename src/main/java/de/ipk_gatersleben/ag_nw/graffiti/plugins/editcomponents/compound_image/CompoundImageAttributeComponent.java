@@ -5,6 +5,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.compound_image;
 
 import info.clearthought.layout.SingleFiledLayout;
 
+import java.awt.Graphics;
 import java.awt.Point;
 import java.io.File;
 
@@ -175,6 +176,14 @@ public class CompoundImageAttributeComponent extends AbstractAttributeComponent
 		}
 	}
 	
+	
+	
+	@Override
+	public void paint(Graphics g) {
+		if(checkVisibility(10))
+			super.paint(g);
+	}
+
 	public static String checkAndChangePath(String imgName, Attribute a) {
 		File imgfile = new File(imgName);
 		if (!imgfile.exists()) {

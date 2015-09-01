@@ -137,7 +137,22 @@ public class NodeComponent
 				attrComp.setGraphElementShape(shape);
 				attrComp.attributeChanged(attr);
 			}
-			updateRelatedEdgeComponents();
+
+			/* only update dependend component if we're not finishing a transaction
+			 * Because during a transaction it happens, that each node will update
+			 * its dep. components, which can easily result in multiple recreation
+			 * of dep. components (like edges). This slows transaction very much down.
+			 * 
+			 *  This new approach goes that the View will collect all depenend components
+			 *  once and update them in one go.
+			 */
+			if(getParent() != null && getParent() instanceof GraffitiView) {
+				if( ! ((GraffitiView)getParent()).isFinishingTransacation)
+					updateRelatedEdgeComponents();
+					
+			} else {
+				updateRelatedEdgeComponents();
+			}
 		}
 	}
 	
@@ -150,6 +165,9 @@ public class NodeComponent
 	 */
 	@Override
 	protected void drawShape(Graphics g) {
+		
+		
+//		logger.debug("graph id " + getGraphElement().getGraph().getName() + ", node id:" + getGraphElement().getID() + ", border:" + getBorder().toString());
 		// super.drawShape(g);
 		Graphics2D drawArea = (Graphics2D) g;
 		
@@ -170,7 +188,9 @@ public class NodeComponent
 									nodeAttr.getLineMode().getDashArray(),
 									nodeAttr.getLineMode().getDashPhase());
 			}
-			drawArea.setStroke(stroke);
+			if(getViewDrawMode() == DrawMode.NORMAL) {
+				drawArea.setStroke(stroke);
+			}
 		}
 		
 		// draw background image
@@ -211,27 +231,29 @@ public class NodeComponent
 			drawArea.setPaint(framePaint);
 			drawArea.draw(shape);
 		}
-		if (shape instanceof PolygonalNodeShape) {
-			PolygonalNodeShape pp = (PolygonalNodeShape) shape;
-			if (pp.ignorePoints != null && pp.ignorePoints.size() > 0) {
-				drawArea.setPaint(framePaint);
-				drawArea.fillPolygon(pp.getIgnorePolygon());
+		
+		if(getViewDrawMode() == DrawMode.NORMAL) {
+			if (shape instanceof PolygonalNodeShape) {
+				PolygonalNodeShape pp = (PolygonalNodeShape) shape;
+				if (pp.ignorePoints != null && pp.ignorePoints.size() > 0) {
+					drawArea.setPaint(framePaint);
+					drawArea.fillPolygon(pp.getIgnorePolygon());
+				}
+			}
+
+			if (shape instanceof ProvidesAdditonalDrawingShapes) {
+				Collection<Shape> postShapes = ((ProvidesAdditonalDrawingShapes) shape).getPostBorderShapes();
+				if (postShapes != null)
+					for (Shape s : postShapes) {
+						drawArea.setPaint(fillPaint);
+						drawArea.fill(s);
+						if (drawFrame) {
+							drawArea.setPaint(framePaint);
+							drawArea.draw(s);
+						}
+					}
 			}
 		}
-		
-		if (shape instanceof ProvidesAdditonalDrawingShapes) {
-			Collection<Shape> postShapes = ((ProvidesAdditonalDrawingShapes) shape).getPostBorderShapes();
-			if (postShapes != null)
-				for (Shape s : postShapes) {
-					drawArea.setPaint(fillPaint);
-					drawArea.fill(s);
-					if (drawFrame) {
-						drawArea.setPaint(framePaint);
-						drawArea.draw(s);
-					}
-				}
-		}
-		
 		drawArea.translate(-1 - shape.getXexcess(), -1 - shape.getYexcess());
 	}
 	
@@ -318,6 +340,7 @@ public class NodeComponent
 	 *            DOCUMENT ME!
 	 */
 	protected void updateRelatedEdgeComponents() {
+
 		synchronized (dependentComponents) {
 			for (Iterator<?> it = dependentComponents.iterator(); it.hasNext();) {
 				EdgeComponent ec = null;
@@ -332,8 +355,10 @@ public class NodeComponent
 				}
 			}
 		}
+		
 	}
 	
+
 	@Override
 	public String getToolTipText() {
 		try {

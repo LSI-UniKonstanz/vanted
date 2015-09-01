@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.prefs.Preferences;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
@@ -29,10 +30,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.MouseInputAdapter;
 
 import org.AttributeHelper;
+import org.apache.log4j.Logger;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
-import org.graffiti.options.GravistoPreferences;
 import org.graffiti.plugin.gui.ToolButton;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.EdgeComponentInterface;
@@ -60,6 +61,8 @@ public abstract class AbstractTool
 					implements Tool, SessionListener, SelectionListener {
 	// ~ Instance fields ========================================================
 	
+	static final Logger logger = Logger.getLogger(AbstractTool.class);
+	
 	protected JComponent mouseComp = null;
 	
 	/** DOCUMENT ME! */
@@ -73,7 +76,7 @@ public abstract class AbstractTool
 	// private Graph graph;
 	
 	/** The preferences of this tool. */
-	protected GravistoPreferences prefs;
+	protected Preferences prefs;
 	
 	/** The current selection that this tool should work on / with. */
 	protected Selection selection;
@@ -294,6 +297,10 @@ public abstract class AbstractTool
 	 *           DOCUMENT ME!
 	 */
 	public void displayAsMarked(NodeComponentInterface comp) {
+		
+//		if(session != null && selection != null)
+//			logger.debug("displayAsMarked- Session: " + session.getGraph().getName() + "SelectionHash: " + selection.hashCode() + " node " + comp.getGraphElement().getID());
+
 		if (comp != null) {
 			((JComponent) comp).setBorder(border);
 			((JComponent) comp).repaint();
@@ -360,8 +367,8 @@ public abstract class AbstractTool
 				}
 			} else
 				((JComponent) comp).setBorder(tempBorder);
-			if (((JComponent) comp).getParent() != null)
-				((JComponent) comp).getParent().repaint();
+//			if (((JComponent) comp).getParent() != null)
+//				((JComponent) comp).getParent().repaint();
 		}
 		if (!processed) {
 			try {
@@ -382,7 +389,14 @@ public abstract class AbstractTool
 	public void selectionChanged(SelectionEvent e) {
 		Selection sel = e.getSelection();
 		
+		if(session == null || sel.hashCode() != (session.getSelectionModel().getActiveSelection().hashCode()))
+			return;
 		if (this.isActive()) {
+			
+//			if(session != null && selection != null)
+//				logger.debug("selectionChanged- Session: " + session.getGraph().getName() + "SessionSelectionHash: " + session.getSelectionModel().getActiveSelection().hashCode() + " selectionEventHash: " + sel.hashCode());
+
+			
 			if (!sel.equals(this.selection) ||
 								(sel.getNewUnmarked().isEmpty() &&
 								sel.getNewMarked().isEmpty())) {
@@ -418,6 +432,7 @@ public abstract class AbstractTool
 		}
 		
 		this.selection = sel;
+//		logger.debug("selectionChanged: Tool selection is now: " + selection.hashCode());
 	}
 	
 	/**
@@ -431,6 +446,7 @@ public abstract class AbstractTool
 	 */
 	public void sessionChanged(Session s) {
 		session = (EditorSession) s;
+		
 	}
 	
 	/**
@@ -465,10 +481,13 @@ public abstract class AbstractTool
 	 *           DOCUMENT ME!
 	 */
 	private void unDisplayAsMarked(NodeComponentInterface comp) {
+//		if(session != null && selection != null)
+//			logger.debug("unDisplayAsMarked- Session: " + session.getGraph().getName() + "SelectionHash: " + selection.hashCode() + " node " + comp.getGraphElement().getID());
+
 		if (comp != null && ((JComponent) comp).getBorder() != empty) {
 			((JComponent) comp).setBorder(empty);
-			if (((JComponent) comp).getParent() != null)
-				((JComponent) comp).getParent().repaint();
+//			if (((JComponent) comp).getParent() != null)
+//				((JComponent) comp).getParent().repaint();
 		}
 	}
 	
@@ -481,8 +500,8 @@ public abstract class AbstractTool
 	private void unDisplayAsMarked(EdgeComponentInterface comp) {
 		if (comp != null && ((JComponent) comp).getBorder() != empty) {
 			((JComponent) comp).setBorder(empty);
-			if (((JComponent) comp).getParent() != null)
-				((JComponent) comp).getParent().repaint();
+//			if (((JComponent) comp).getParent() != null)
+//				((JComponent) comp).getParent().repaint();
 		}
 	}
 	
@@ -591,7 +610,7 @@ public abstract class AbstractTool
 			return new LinkedList<GraphElementComponent>();
 	}
 	
-	public void setPrefs(GravistoPreferences p) {
+	public void setPrefs(Preferences p) {
 		prefs = p;
 	}
 }

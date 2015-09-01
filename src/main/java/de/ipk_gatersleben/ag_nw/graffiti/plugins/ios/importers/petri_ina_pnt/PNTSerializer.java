@@ -27,7 +27,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  *         7.12.2006
  */
 public class PNTSerializer
-					extends AbstractOutputSerializer {
+		extends AbstractOutputSerializer {
 	/*
 	 * @see org.graffiti.plugin.io.Serializer#getExtensions()
 	 */
@@ -41,6 +41,11 @@ public class PNTSerializer
 	 */
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "INA PNT" };
+	}
+	
+	@Override
+	public boolean validFor(Graph g) {
+		return true;
 	}
 	
 	/*
@@ -147,14 +152,14 @@ public class PNTSerializer
 		}
 		if (invalidNodes.size() > 0) {
 			MainFrame.showMessageDialog(
-								"<html>" +
-													"A number of invalid transitions have been found.<br>" +
-													"Edges, connected to these transitions do not have a<br>" +
-													"uniform setting for the specification of a reversible<br>" +
-													"or irreversible reaction.<br>" +
-													"<b>The written PNT file might therefore be not error-free.</b><br>" +
-													"The invalid nodes have been selected.",
-								"Invalid Transitions (reversible/irreversible)");
+					"<html>" +
+							"A number of invalid transitions have been found.<br>" +
+							"Edges, connected to these transitions do not have a<br>" +
+							"uniform setting for the specification of a reversible<br>" +
+							"or irreversible reaction.<br>" +
+							"<b>The written PNT file might therefore be not error-free.</b><br>" +
+							"The invalid nodes have been selected.",
+					"Invalid Transitions (reversible/irreversible)");
 			GraphHelper.selectNodes(invalidNodes);
 		}
 	}
@@ -209,7 +214,7 @@ public class PNTSerializer
 				try {
 					double t = Double.parseDouble(edgeLabel);
 					freq = (int) t;
-					ErrorMsg.addErrorMessage("Warning: non-Integer value " + edgeLabel + " has been interpreted as value " + freq + ", for PNT export!");
+					// ErrorMsg.addErrorMessage("Warning: non-Integer value " + edgeLabel + " has been interpreted as value " + freq + ", for PNT export!");
 				} catch (NumberFormatException nfe2) {
 					ErrorMsg.addErrorMessage(nfe);
 				}

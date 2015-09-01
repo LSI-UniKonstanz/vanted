@@ -13,7 +13,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.io.IOException;
 
-import javax.swing.JComponent;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 
@@ -87,24 +86,8 @@ public class OverviewOptionPane
 	public String getOptionName() {
 		return "Default Option";
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.options.OptionPane#init(javax.swing.JComponent)
-	 */
-	public void init(JComponent options) {
-		//
-		
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.options.OptionPane#save(javax.swing.JComponent)
-	 */
-	public void save(JComponent options) {
-		//
-		
-	}
+
+
 }
 
 // ------------------------------------------------------------------------------

@@ -1,8 +1,10 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
 
@@ -13,10 +15,9 @@ import org.StringManipulationTools;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.editor.actions.ClipboardService;
-import org.graffiti.graph.Edge;
-import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
@@ -283,4 +284,14 @@ public class CopyDataTableAlgorithm extends AbstractAlgorithm {
 	public String getCategory() {
 		return "menu.edit";
 	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.DATA,
+				Category.EXPORT
+				));
+	}
+
 }

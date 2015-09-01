@@ -1,11 +1,16 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.label_editing;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.AttributeHelper;
 import org.Release;
 import org.ReleaseInfo;
 import org.StringManipulationTools;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
 
@@ -58,6 +63,20 @@ public class RemoveParenthesisLabels extends AbstractAlgorithm {
 		else
 			return null;// "Elements";
 	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.ANNOTATION
+				));
+	}
+	
+	@Override
+	public String getMenuCategory() {
+		return "edit.Change Label";
+	}
+
 	
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)

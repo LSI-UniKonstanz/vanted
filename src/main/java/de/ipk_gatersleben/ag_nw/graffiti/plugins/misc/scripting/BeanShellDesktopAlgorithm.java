@@ -4,9 +4,14 @@
 
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.scripting;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.ErrorMsg;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.EditorSession;
@@ -42,6 +47,17 @@ public class BeanShellDesktopAlgorithm
 	public String getCategory() {
 		return "menu.window";
 	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION,
+				Category.DATA,
+				Category.ANNOTATION
+				));
+	}
+
 	
 	/**
 	 * No special checks implemented.

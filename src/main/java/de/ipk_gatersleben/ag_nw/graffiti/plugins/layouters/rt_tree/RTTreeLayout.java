@@ -4,10 +4,14 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.rt_tree;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
@@ -21,11 +25,14 @@ import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.graphics.DimensionAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
-import org.graffiti.plugin.parameter.IntegerParameter;
+import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
+
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 /**
  * An implementation of a tree layout algorithm.
@@ -125,6 +132,7 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	/**
 	 * Move all tree in the right direction either 0, 90, 180 or 270 degree
 	 */
+	private Integer[] treeDirectionParameter = { 0, 90, 180, 270 };
 	private int treeDirection = 270;
 	
 	/**
@@ -192,6 +200,14 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	 * adjusts the successors.
 	 */
 	private HashMap cumulModifier = new LinkedHashMap();
+	private DoubleParameter xDistanceParam;
+	private DoubleParameter yDistanceParam;
+	private DoubleParameter xStartParam;
+	private DoubleParameter yStartParam;
+	private BooleanParameter horizontalParam;
+	private ObjectListParameter treeDirectionParam;
+	private BooleanParameter removeBendParam;
+	private BooleanParameter busLayoutParam;
 	
 	/*************************************************************/
 	/* Declarations of methods */
@@ -299,59 +315,47 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	 */
 	@Override
 	public Parameter[] getParameters() {
-		/*
-		 * SelectionParameter selParam =
-		 * new SelectionParameter(
-		 * "Start node",
-		 * "Tree layouter will start only with a selected node.");
-		 */
-		DoubleParameter xDistanceParam =
-				new DoubleParameter(
-						"X distance",
-						"The distance between nodes in horizontal direction.");
-		
-		DoubleParameter yDistanceParam =
-				new DoubleParameter(
-						"Y distance",
-						"The distance between nodes in vertical direction.");
-		
-		DoubleParameter xStartParam =
-				new DoubleParameter(100,
-						"X base",
-						"The x coordinate of the starting point of the grid horizontal direction.");
-		
-		DoubleParameter yStartParam =
-				new DoubleParameter(100,
-						"Y base",
-						"The y coordinate of the starting point of the grid horizontal direction.");
-		
-		BooleanParameter horizontalParam =
-				new BooleanParameter(
-						horizontalLayout,
-						"Place Trees in a Row",
-						"Place all trees in a row");
-		
-		IntegerParameter treeDirectionParam =
-				new IntegerParameter(
-						treeDirection,
-						"Tree Direction (0,90,180,270)",
-						"Move all trees in 0, 90, 180 or 270 degree");
-		
-		BooleanParameter removeBendParam =
-				new BooleanParameter(
-						isRemoveBends,
-						"Remove Bends",
-						"Remove all bends in the forest");
-		
-		BooleanParameter busLayoutParam =
-				new BooleanParameter(
-						isBusLayout,
-						"Bus Layout",
-						"Layout the trees in bus format");
-		
-		xDistanceParam.setDouble(xNodeDistance);
-		yDistanceParam.setDouble(yNodeDistance);
-		
+		if (xDistanceParam == null) {
+			xDistanceParam = new DoubleParameter(
+					"X distance",
+					"The distance between nodes in horizontal direction.");
+			
+			yDistanceParam = new DoubleParameter(
+					"Y distance",
+					"The distance between nodes in vertical direction.");
+			
+			xStartParam = new DoubleParameter(100,
+					"X base",
+					"The x coordinate of the starting point of the grid horizontal direction.");
+			
+			yStartParam = new DoubleParameter(100,
+					"Y base",
+					"The y coordinate of the starting point of the grid horizontal direction.");
+			
+			horizontalParam = new BooleanParameter(
+					horizontalLayout,
+					"Place Trees in a Row",
+					"Place all trees in a row");
+			
+			treeDirectionParam = new ObjectListParameter(
+					treeDirectionParameter[0],
+					"Tree Direction (0,90,180,270)",
+					"Move all trees in 0, 90, 180 or 270 degree",
+					treeDirectionParameter);
+			
+			removeBendParam = new BooleanParameter(
+					isRemoveBends,
+					"Remove Bends",
+					"Remove all bends in the forest");
+			
+			busLayoutParam = new BooleanParameter(
+					isBusLayout,
+					"Bus Layout",
+					"Layout the trees in bus format");
+			
+			xDistanceParam.setDouble(xNodeDistance);
+			yDistanceParam.setDouble(yNodeDistance);
+		}
 		return new Parameter[] {
 				xDistanceParam,
 				yDistanceParam,
@@ -382,10 +386,10 @@ public class RTTreeLayout extends AbstractAlgorithm {
 				((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		isBusLayout =
 				((BooleanParameter) params[i++]).getBoolean().booleanValue();
-		treeDirection = ((IntegerParameter) params[i++]).getInteger().intValue();
-		if (!((treeDirection == 0) || (treeDirection == 180) || (treeDirection == 270) || (treeDirection == 90))) {
-			treeDirection = 0;
-		}
+		treeDirection = (Integer) ((ObjectListParameter) params[i++]).getValue();
+//		if (!((treeDirection == 0) || (treeDirection == 180) || (treeDirection == 270) || (treeDirection == 90))) {
+//			treeDirection = 0;
+//		}
 	}
 	
 	/**
@@ -523,19 +527,21 @@ public class RTTreeLayout extends AbstractAlgorithm {
 		
 		ArrayList<Node> selNodes = new ArrayList<Node>(getSelectedOrAllNodes());
 		
-		if (selNodes.size() <= 0 || graph.getNodes().size() == selNodes.size()) {
-			selNodes.clear();
-			int minDegree = Integer.MAX_VALUE;
-			for (Node n : graph.getNodes()) {
-				if (n.getInDegree() <= minDegree) {
-					if (n.getInDegree() < minDegree)
-						selNodes.clear();
-					selNodes.add(n);
-					minDegree = n.getInDegree();
+
+		Set<Set<Node>> connectedComponents = GraphHelper.getConnectedComponents(selNodes);
+		selNodes.clear();
+		for(Set<Node> g : connectedComponents) {
+			int inDegree = Integer.MAX_VALUE;
+			Node minDegreeNode = null;
+			for(Node n : g) {
+				if(n.getInDegree() < inDegree) {
+					inDegree = n.getInDegree();
+					minDegreeNode = n;
 				}
 			}
+			if(minDegreeNode != null)
+				selNodes.add(minDegreeNode);
 		}
-		
 		for (Node n : selNodes) {
 			forest.put(n, null);
 		}
@@ -606,10 +612,13 @@ public class RTTreeLayout extends AbstractAlgorithm {
 		try {
 			graph.getListenerManager().transactionStarted(this);
 			
-			if (isRemoveBends) {
-				for (Edge edge : graph.getEdges())
-					AttributeHelper.removeEdgeBends(edge);
-			}
+//			if (isRemoveBends) {
+//				for (Edge edge : graph.getEdges())
+//					AttributeHelper.removeEdgeBends(edge);
+//			}
+//					
+			if (isRemoveBends)
+				GraphHelper.removeBendsBetweenSelectedNodes(selNodes, false);
 			
 			for (Node sourceNode : sourceNodes.keySet()) {
 				treeMap = sourceNodes.get(sourceNode).getTreeMap();
@@ -1202,6 +1211,14 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	@Override
 	public String getCategory() {
 		return "Layout";
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
 	}
 	
 	@Override

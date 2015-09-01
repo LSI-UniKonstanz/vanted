@@ -62,3 +62,6 @@
 "./de/ipk_gatersleben/ag_nw/graffiti/plugins/ios/exporters/matrix/plugin.xml" 
 "./de/ipk_gatersleben/ag_nw/graffiti/plugins/algorithms/collapsed_graph_producer/plugin.xml" 
 "./log4j.xml" 
+"./de/ipk_gatersleben/ag_nw/graffiti/plugins/algorithms/som/plugin.xml" 
+"./de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/startlayout/plugin.xml"
+"./de/ipk_gatersleben/ag_nw/graffiti/plugins/layouters/fd_edge_routing/plugin.xml"

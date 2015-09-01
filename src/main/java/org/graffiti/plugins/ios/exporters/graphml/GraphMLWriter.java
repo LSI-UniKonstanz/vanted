@@ -58,20 +58,20 @@ import org.w3c.dom.Text;
  * @author ruediger
  */
 public class GraphMLWriter
-					extends AbstractOutputSerializer {
+		extends AbstractOutputSerializer {
 	// ~ Static fields/initializers =============================================
 	
 	/** The default namespace that will be used in the graphML file. */
 	private static final String GRAPHML_ROOT = "http://graphml.graphdrawing" +
-						".org/xmlns/graphml";
+			".org/xmlns/graphml";
 	
 	/** The W3C schema instance namespace. */
 	private static final String SCHEMA_INSTANCE = "http://www.w3.org/2001/" +
-						"XMLSchema-instance";
+			"XMLSchema-instance";
 	
 	/** The location of the schema the written graphML file shall conform to. */
 	private static final String SCHEMA_LOCATION = GRAPHML_ROOT + " " +
-						GRAPHML_ROOT + "/graphml-structure-1.0rc.xsd";
+			GRAPHML_ROOT + "/graphml-structure-1.0rc.xsd";
 	
 	/** The logger for this class. */
 	private static final Logger logger = Logger.getLogger(GraphMLWriter.class.getName());
@@ -117,11 +117,16 @@ public class GraphMLWriter
 		return new String[] { "GraphML" /* , "GraphXML" */};
 	}
 	
+	@Override
+	public boolean validFor(Graph g) {
+		return true;
+	}
+	
 	/*
 	 *
 	 */
 	public void write(OutputStream stream, Graph g)
-						throws IOException {
+			throws IOException {
 		// create a new document
 		Document doc;
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -147,7 +152,7 @@ public class GraphMLWriter
 		// create a comment
 		Date date = new Date();
 		Comment comment = doc.createComment(" Created by the Gravisto/" + ReleaseInfo.getRunningReleaseStatus().toString() + " " +
-							"graphML writer plugin on " + date.toString() + ". ");
+				"graphML writer plugin on " + date.toString() + ". ");
 		doc.appendChild(comment);
 		
 		Node rootNode = doc.appendChild(root);
@@ -168,7 +173,7 @@ public class GraphMLWriter
 		// graph attributes
 		Map<?, String> gAttributes = new Hashtable<Object, String>();
 		createDataDeclarationsMap(g.getAttributes(), graphAttr, "ga",
-							gAttributes, "");
+				gAttributes, "");
 		
 		// create the key elements for graph attributes
 		appendKeyDeclarations(graphAttr, "graph", doc, root);
@@ -192,7 +197,7 @@ public class GraphMLWriter
 			
 			// add node attributes
 			createDataDeclarationsMap(n.getAttributes(), nodeAttr, "na",
-								nAttributes, "");
+					nAttributes, "");
 			appendDataDeclarations(nAttributes, doc, node);
 			
 			if (n.getViewID() != 0)
@@ -227,7 +232,7 @@ public class GraphMLWriter
 			
 			// add edge attributes
 			createDataDeclarationsMap(e.getAttributes(), edgeAttr, "ea",
-								eAttributes, "");
+					eAttributes, "");
 			appendDataDeclarations(eAttributes, doc, edge);
 			
 			if (e.getViewID() != 0)
@@ -291,7 +296,7 @@ public class GraphMLWriter
 	 *           method creates.
 	 */
 	private void appendDataDeclarations(Map<?, String> gAttributes, Document doc,
-						Element parent) {
+			Element parent) {
 		for (Iterator<?> itr = gAttributes.keySet().iterator(); itr.hasNext();) {
 			String id = (String) itr.next();
 			String data = (String) gAttributes.get(id);
@@ -320,7 +325,7 @@ public class GraphMLWriter
 	 *           as child node.
 	 */
 	private void appendKeyDeclarations(KeyMap km, String forAttr, Document doc,
-						Element root) {
+			Element root) {
 		String[] paths = km.getPaths();
 		
 		// iterate over all possible attribute paths
@@ -332,7 +337,7 @@ public class GraphMLWriter
 			for (int k = 0; k < kd.length; ++k) {
 				Element key = doc.createElement("key");
 				key.setAttribute("id",
-									forAttr.substring(0, 1) + "a" + kd[k].getId());
+						forAttr.substring(0, 1) + "a" + kd[k].getId());
 				assert !forAttr.equals("");
 				key.setAttribute("for", forAttr);
 				
@@ -371,7 +376,7 @@ public class GraphMLWriter
 	 */
 	@SuppressWarnings("unchecked")
 	private void createDataDeclarationsMap(CollectionAttribute ca, KeyMap km,
-						String suffix, Map data, String parent) {
+			String suffix, Map data, String parent) {
 		for (Iterator itr = ca.getCollection().keySet().iterator(); itr.hasNext();) {
 			String id = (String) itr.next();
 			Attribute attr = ca.getAttribute(id);
@@ -397,7 +402,7 @@ public class GraphMLWriter
 				// TODO this might be modified once the attributes work as
 				// expected.
 				if (attr instanceof LineModeAttribute &&
-									attr.getPath().equals(".graphics.linemode")) {
+						attr.getPath().equals(".graphics.linemode")) {
 					text = handleLineMode(attr);
 				}
 				// special case when writing an image attribute
@@ -416,7 +421,7 @@ public class GraphMLWriter
 	
 	private String handleImageAttribute(Attribute attr, String text) {
 		logger.fine("writing AWTImageAttribute at path " +
-							attr.getPath());
+				attr.getPath());
 		
 		AWTImageAttribute iAttr = (AWTImageAttribute) attr;
 		Image image = iAttr.getImage();
@@ -430,10 +435,10 @@ public class GraphMLWriter
 			assert writerFound : "no image writer was found.";
 			
 			text = Base64.encodeBytes(output.toByteArray(),
-								Base64.DONT_BREAK_LINES);
+					Base64.DONT_BREAK_LINES);
 		} catch (IOException e) {
 			logger.warning("could not writer AWTImageAttribute " +
-								"at path " + iAttr.getPath() + ".");
+					"at path " + iAttr.getPath() + ".");
 			text = "";
 		}
 		return text;
@@ -448,7 +453,7 @@ public class GraphMLWriter
 		text = GMLWriter.getValues(dashArray, " ") + " " + dashPhase;
 		
 		logger.fine("writing attribute .graphics.linemode with " +
-							"value " + text + ".");
+				"value " + text + ".");
 		return text;
 	}
 }

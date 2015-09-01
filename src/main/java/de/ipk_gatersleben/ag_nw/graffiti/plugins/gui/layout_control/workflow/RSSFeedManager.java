@@ -89,15 +89,20 @@ public class RSSFeedManager implements HelperClass {
 				text = "Development Notes" + System.getProperty("line.separator") +
 									url2 + System.getProperty("line.separator");
 		}
-		String url3 = "http://vanted.ipk-gatersleben.de/literature.xml";
-		if (text.indexOf(url3) <= 0)
-			text += "Publications" + System.getProperty("line.separator") +
-								url3 + System.getProperty("line.separator");
+		/*
+		 * no further support for literature feed
+		 */
+//		String url3 = "https://immersive-analytics.infotech.monash.edu/vanted/literature.xml";
+//		if (text.indexOf(url3) <= 0)
+//			text += "Publications" + System.getProperty("line.separator") +
+//								url3 + System.getProperty("line.separator");
 		
 		return text;
 	}
 	
 	public static RSSFeedManager getInstance() {
+		if(instance == null)
+			instance = new RSSFeedManager(5);
 		return instance;
 	}
 	

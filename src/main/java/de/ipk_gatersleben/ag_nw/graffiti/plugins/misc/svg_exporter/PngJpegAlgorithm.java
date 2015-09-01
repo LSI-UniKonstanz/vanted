@@ -24,8 +24,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -55,6 +58,7 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
 import org.ObjectRef;
 import org.StringManipulationTools;
+import org.UNCFileLocationCheck;
 import org.Vector2d;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.editor.ConfigureViewAction;
@@ -67,6 +71,7 @@ import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.plugin.parameter.BooleanParameter;
@@ -104,6 +109,23 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 	
 	private PngJpegAlgorithmParams parameter = null;
 	
+	String targetString = null;
+	
+	ActionEvent lastEvent = null;
+	String lastFolder = null;
+	
+	private boolean askBeforeOverwrite = true;
+	
+	private boolean processMultipleViews;
+	
+	public Collection<String> lastLinks;
+	
+	public Collection<String> storedLinks;
+	
+	private de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.svg_exporter.LinkProcessor linkProcessor;
+	
+	private boolean saveScripts;
+	
 	public PngJpegAlgorithm(boolean jpg) {
 		super();
 		parameter = new PngJpegAlgorithmParams();
@@ -122,6 +144,15 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 		return "menu.file";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.EXPORT,
+				Category.IMAGING
+				));
+	}
+
 	@Override
 	public void check() throws PreconditionException {
 		PngJpegAlgorithm.checkZoom();
@@ -406,22 +437,7 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 	// PngJpegAlgorithm.createPNGimageFromGraph(g);
 	// }
 	
-	String targetString = null;
-	
-	ActionEvent lastEvent = null;
-	String lastFolder = null;
-	
-	private boolean askBeforeOverwrite = true;
-	
-	private boolean processMultipleViews;
-	
-	public Collection<String> lastLinks;
-	
-	public Collection<String> storedLinks;
-	
-	private de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.svg_exporter.LinkProcessor linkProcessor;
-	
-	private boolean saveScripts;
+
 	
 	public static void createPNGimageFromGraph(Graph g) {
 		PngJpegAlgorithm a = new PngJpegAlgorithm(false);
@@ -958,9 +974,12 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 				}
 			}
 		}
+		
 		if (f == null || !new File((String) lastFolder.getObject()).exists()) {
+		
 			f = FileHelper.getFileName(extension, "Image File", PngJpegAlgorithm
 					.replaceExtension(graph.getName(false), extension));
+				
 		}
 		
 		try {

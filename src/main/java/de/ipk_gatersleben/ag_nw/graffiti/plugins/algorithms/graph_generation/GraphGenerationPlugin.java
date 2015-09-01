@@ -10,7 +10,9 @@ public class GraphGenerationPlugin extends IPK_PluginAdapter {
 	public GraphGenerationPlugin() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
 			this.algorithms = new Algorithm[] {
-								new GenerateGraphAlgorithmSelectionGUI()
+//								new GenerateGraphAlgorithmSelectionGUI()
+				new ErdosRenyiGraphGenerator(),
+				new WattsStrogatzGraphGenerator()
 			};
 	}
 }

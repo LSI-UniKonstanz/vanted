@@ -10,6 +10,7 @@ public enum LabelFrameSetting {
 	CAPSULE,
 	RECTANGLE_BOTTOM_ROUND, RECTANGLE_ROUNDED, RECTANGLE_CORNER_CUT,
 	CIRCLE_HALF_FILLED, CIRCLE_FILLED, CIRCLE,
+	HEXAGON,
 	PIN,
 	SIDE_LINES;
 	
@@ -36,6 +37,8 @@ public enum LabelFrameSetting {
 				return "circle filled frame";
 			case CIRCLE:
 				return "circle frame";
+			case HEXAGON:
+				return "hexagon";
 			case PIN:
 				return "pin";
 			case SIDE_LINES:
@@ -67,6 +70,8 @@ public enum LabelFrameSetting {
 				return "fcircle";
 			case CIRCLE:
 				return "circle";
+			case HEXAGON:
+				return "hexagon";
 			case PIN:
 				return "pin";
 			case SIDE_LINES:

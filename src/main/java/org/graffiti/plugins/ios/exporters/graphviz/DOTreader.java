@@ -293,7 +293,7 @@ public class DOTreader
 			ErrorMsg.addErrorMessage("Text in line [" + line + "] is not properly quotet (missing &quot;).");
 			return restOfLine;
 		} else {
-			String del1 = ", ";
+			String del1 = ",";
 			String del2 = "]";
 			if (restOfLine.indexOf(del1) >= 0) {
 				return restOfLine.substring(0, restOfLine.indexOf(del1));

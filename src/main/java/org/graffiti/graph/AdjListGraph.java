@@ -467,7 +467,7 @@ public class AdjListGraph extends AbstractGraph implements Graph {
 	 * (non-Javadoc)
 	 * @see org.graffiti.graph.Graph#deleteAll(java.util.List)
 	 */
-	public void deleteAll(Collection<GraphElement> graphelements) {
+	public void deleteAll(Collection<? extends GraphElement> graphelements) {
 		for (GraphElement ge : graphelements) {
 			if ((ge instanceof Edge) && containsEdge((Edge) ge)) {
 				deleteEdge((Edge) ge);

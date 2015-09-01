@@ -169,6 +169,7 @@ public class SmoothLineEdgeShape
 			
 			this.linePath = new GeneralPath(new Line2D.Double(start, end));
 		} else {
+			this.linePath.reset();
 			// have some bend(s)
 			Iterator<Object> it = this.bends.iterator();
 			Point2D bend = ((CoordinateAttribute) it.next()).getCoordinate();

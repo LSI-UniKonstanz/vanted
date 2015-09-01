@@ -31,8 +31,6 @@ import javax.swing.JDialog;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
-import org.Release;
-import org.ReleaseInfo;
 import org.StringManipulationTools;
 import org.Vector2d;
 import org.graffiti.editor.MainFrame;

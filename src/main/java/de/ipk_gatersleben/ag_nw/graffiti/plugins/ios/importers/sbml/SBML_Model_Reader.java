@@ -126,13 +126,16 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 				readEvent.addEvents(model.getListOfEvents(), g);
 			}
 			
+			List<String> listCompartmentNames = new ArrayList<String>();
+			for(Compartment compartment : document.getModel().getListOfCompartments()) {
+				listCompartmentNames.add(compartment.getName());
+			}
 			// sets background-color for compartments
 			AttributeHelper.setAttribute(
 					g,
 					"",
 					ClusterColorAttribute.attributeName,
-					ClusterColorAttribute.getDefaultValue(document.getModel()
-							.getListOfCompartments().size()));
+					ClusterColorAttribute.getDefaultValue(listCompartmentNames));
 			AttributeHelper.setAttribute(g, "", "background_coloring",
 					new Boolean(true));
 			

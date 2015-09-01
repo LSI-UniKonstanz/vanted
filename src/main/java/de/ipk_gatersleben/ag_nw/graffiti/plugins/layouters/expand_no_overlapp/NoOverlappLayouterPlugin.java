@@ -11,10 +11,10 @@ import org.graffiti.plugin.algorithm.Algorithm;
  * @author Christian Klukas
  */
 public class NoOverlappLayouterPlugin
-					extends GenericPluginAdapter {
+		extends GenericPluginAdapter {
 	public NoOverlappLayouterPlugin() {
 		this.algorithms = new Algorithm[] {
-							new NoOverlappLayoutAlgorithm()
-		};
+				//							new NoOverlappLayoutAlgorithm()
+				};
 	}
 }

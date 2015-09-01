@@ -27,7 +27,7 @@ public class ViewLabel extends JLabel {
 	
 	private Color shadowColor;
 	
-	private final Color borderColor;
+	private Color borderColor;
 	
 	private int offShadowX;
 	private int offShadowY;
@@ -144,6 +144,45 @@ public class ViewLabel extends JLabel {
 	public void highlight(boolean highlight) {
 		this.highlight = highlight;
 	}
+
+	public LabelFrameSetting getFrame() {
+		return frame;
+	}
+
+	public void setFrame(LabelFrameSetting frame) {
+		this.frame = frame;
+	}
+
+	public double getStrokeWidth() {
+		return strokeWidth;
+	}
+
+	public void setStrokeWidth(double strokeWidth) {
+		this.strokeWidth = strokeWidth;
+	}
+
+	public boolean isHighlight() {
+		return highlight;
+	}
+
+	public void setHighlight(boolean highlight) {
+		this.highlight = highlight;
+	}
+
+	public Color getShadowColor() {
+		return shadowColor;
+	}
+
+	public Color getBorderColor() {
+		return borderColor;
+	}
+
+	public void setBorderColor(Color borderColor) {
+		this.borderColor = borderColor;
+	}
+	
+	
+	
 	
 	// public double offX() {
 	// return -5; // -super.getPreferredSize().getWidth()*0.1d;

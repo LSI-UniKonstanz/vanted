@@ -1,0 +1,6 @@
+#Vanted version and build information. ONLY EDIT THE VANTED VERSION PROPERTY!
+#Mon, 30 Mar 2015 15:50:08 +1100
+build.number=32
+build.date=20150330
+vanted.version.number=2.5.0
+vanted.min.compatibility=2.5.0

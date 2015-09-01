@@ -27,6 +27,7 @@ import org.ErrorMsg;
 import org.Release;
 import org.ReleaseInfo;
 import org.graffiti.core.GenericFileFilter;
+import org.graffiti.graph.Graph;
 import org.graffiti.managers.pluginmgr.PluginDescription;
 import org.graffiti.plugin.GenericPlugin;
 import org.graffiti.plugin.io.InputSerializer;
@@ -114,13 +115,27 @@ public class DefaultIOManager implements IOManager {
 		outputSerializer = new ArrayList<OutputSerializer>();
 		listeners = new LinkedList<IOManagerListener>();
 		try {
-			fc = new JFileChooser();
+			/*
+			 * there might be a problem, when starting vanted, because if network drives are mapped
+			 * (on windows) but the server is not reachable, the JFileChooser constructor stops
+			 * This also means Vanted doesn't boot up.. 
+			 * To prevent this, a getter method was implemented so that the startup is garuanteed
+			 */
+//			fc = new JFileChooser();
+//			System.out.println("created filechooser");
 		} catch (AccessControlException ace) {
 			// ErrorMsg.addErrorMessage(ace);
 		}
 	}
 	
 	// ~ Methods ================================================================
+	
+	public JFileChooser getFileChooser() {
+		if(fc == null)
+			fc = new JFileChooser();
+		
+		return fc;
+	}
 	
 	/*
 	 * @see
@@ -213,6 +228,7 @@ public class DefaultIOManager implements IOManager {
 	 * @see org.graffiti.managers.IOManager#createOpenFileChooser()
 	 */
 	public JFileChooser createOpenFileChooser() {
+		fc = getFileChooser();
 		fc.resetChoosableFileFilters();
 		// Set<String> knownExt = new TreeSet<String>();
 		for (Iterator<InputSerializer> itr = inputSerializer.iterator(); itr.hasNext();) {
@@ -277,10 +293,18 @@ public class DefaultIOManager implements IOManager {
 		return null;
 	}
 	
+	
+	
+	@Override
+	public JFileChooser createSaveFileChooser() {
+		return createSaveFileChooser(null);
+	}
+
 	/*
 	 * @see org.graffiti.managers.IOManager#createSaveFileChooser()
 	 */
-	public JFileChooser createSaveFileChooser() {
+	public JFileChooser createSaveFileChooser(Graph g) {
+		fc = getFileChooser();
 		String defaultExt = ".gml";
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			defaultExt = ".xml";
@@ -288,8 +312,14 @@ public class DefaultIOManager implements IOManager {
 		fc.resetChoosableFileFilters();
 		fc.setAcceptAllFileFilterUsed(false);
 		// Set<String> knownExt = new TreeSet<String>();
-		for (Iterator<OutputSerializer> itr = outputSerializer.iterator(); itr.hasNext();) {
-			OutputSerializer os = itr.next();
+		for (OutputSerializer os : outputSerializer) {
+			/*
+			 * if the given graph cannot be serialized with the current 
+			 * output serializer, skip it 
+			 */
+			if(g != null && ! os.validFor(g))
+				continue;
+				
 			String[] ext = os.getExtensions();
 			String[] desc = os.getFileTypeDescriptions();
 			if (ext.length != desc.length) {

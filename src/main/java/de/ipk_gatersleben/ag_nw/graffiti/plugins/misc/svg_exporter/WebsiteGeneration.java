@@ -14,6 +14,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,6 +34,7 @@ import org.color.ColorUtil;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.view.View;
 import org.graffiti.session.EditorSession;
 
@@ -82,7 +84,7 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 			paramsA.add("<h1>My Pathway Website</h1>");
 			paramsB.add("Website-Description//");
 			paramsB
-								.add("VANTED graph to website export. VANTED is available at <a href=\"http://vanted.ipk-gatersleben.de\" target=\"_blank\">http://vanted.ipk-gatersleben.de</a>.");
+								.add("VANTED graph to website export. VANTED is available at <a href=\"https://immersive-analytics.infotech.monash.edu/vanted/\" target=\"_blank\">https://immersive-analytics.infotech.monash.edu/vanted/</a>.");
 			paramsC.add("Footer//");
 			paramsC.add("<small>Copyright (c) " + (new Date().getYear() + 1900)
 					+ " by NAME OF INSTITUTION.</small>");
@@ -753,14 +755,22 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Create Website...";
+		return "Network as Website";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "menu.file";
+		return "File.Export";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.EXPORT
+				));
+	}
+
 	@Override
 	public ImageIcon getIcon() {
 		String path = this.getClass().getPackage().getName().replace('.', '/');

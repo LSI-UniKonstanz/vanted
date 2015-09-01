@@ -3,6 +3,7 @@
  *******************************************************************************/
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -15,6 +16,7 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
@@ -46,6 +48,15 @@ public class SetClusterInfoFromSubgraphAlgorithm extends AbstractAlgorithm {
 	@Override
 	public String getCategory() {
 		return "Elements"; // "menu.edit";
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.ANNOTATION,
+				Category.CLUSTER
+				));
 	}
 	
 	@Override

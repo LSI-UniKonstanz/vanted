@@ -13,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.prefs.Preferences;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -22,7 +24,10 @@ import javax.swing.JLabel;
 import org.ErrorMsg;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
+import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.inspector.InspectorTab;
+import org.graffiti.plugin.parameter.BooleanParameter;
+import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
 
@@ -31,7 +36,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.JLabelHTMLlink;
 /**
  * @author klukas
  */
-public class RimasTab extends InspectorTab {
+public class RimasTab extends InspectorTab implements PreferencesInterface{
 	private static final long serialVersionUID = 1L;
 	
 	/*
@@ -76,6 +81,26 @@ public class RimasTab extends InspectorTab {
 		add(getRIMASdownloadGUI(), "1,8");
 	}
 	
+	
+	
+	@Override
+	public List<Parameter> getDefaultParameters() {
+		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
+		arrayList.add(new BooleanParameter(true, PREFERENCE_TAB_SHOW, "Enable/Disable this option to show/hide the RIMAS Tab"));
+		return arrayList;
+	}
+
+
+	@Override
+	public void updatePreferences(Preferences preferences) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public String getPreferencesAlternativeName() {
+		// TODO Auto-generated method stub
+		return "Rimas";
+	}
 	private JComponent getRIMASdownloadGUI() {
 		String i = "<font color='gray'>@";
 		ArrayList<JComponent> pathways = new ArrayList<JComponent>();
@@ -150,4 +175,14 @@ public class RimasTab extends InspectorTab {
 		return "RIMAS";
 	}
 	
+
+	@Override
+	public String getTabParentPath() {
+		return "Pathways";
+	}
+
+	@Override
+	public int getPreferredTabPosition() {
+		return InspectorTab.TAB_LEADING;
+	}
 }

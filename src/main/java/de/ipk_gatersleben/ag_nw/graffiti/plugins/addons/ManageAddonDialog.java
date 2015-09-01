@@ -95,7 +95,8 @@ public class ManageAddonDialog extends JDialog {
 		// this.manager = addonManager;
 		JButton jb = initGUI();
 		setTopText(msg);
-		
+		//TODO: TEST THIS
+		setModal(true);
 		setVisible(true);
 		installDragNDrop(jb);
 	}
@@ -154,6 +155,8 @@ public class ManageAddonDialog extends JDialog {
 		try {
 			
 			addKeys();
+			
+			getContentPane().removeAll();
 			
 			TableLayout thisLayout = new TableLayout(new double[][] {
 					// spalten
@@ -455,6 +458,7 @@ public class ManageAddonDialog extends JDialog {
 						if (returnVal == JFileChooser.APPROVE_OPTION) {
 							try {
 								AddonManagerPlugin.getInstance().installAddon(fc.getCurrentDirectory().toString(), fc.getSelectedFile().getName());
+								initGUI();
 							} catch (FileNotFoundException e1) {
 								ErrorMsg.addErrorMessage(e1);
 							} catch (IOException e1) {
@@ -469,17 +473,31 @@ public class ManageAddonDialog extends JDialog {
 				
 				findUpdatesMarker = new MarkComponent(buttondownload, false, TableLayout.PREFERRED, false, TableLayout.FILL);
 				
+				/*
+				 * small wait loop thing for the download button
+				 */
+				final WaitAnimationButton waitAnimationButton = new WaitAnimationButton(buttondownload);
+				final Thread t = new Thread(waitAnimationButton);
+				
 				buttondownload.setText("Find Add-ons/Updates");
 				buttondownload.setOpaque(false);
 				buttondownload.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						close();
+						setModal(false);
+//						close();
+						buttondownload.setEnabled(false);
+						
+						t.start();
 						
 						final RSSFeedManager rfm = RSSFeedManager.getInstance();
 						rfm.loadRegisteredFeeds();
 						rfm.setWordWrap(60);
 						NewsHelper.refreshNews(rfm, new Runnable() {
 							public void run() {
+								
+								waitAnimationButton.stop();
+								buttondownload.setEnabled(true);
+								
 								ArrayList<Object> res = new ArrayList<Object>();
 								boolean found = false;
 								for (JComponent jc : rfm.getNewsComponents()) {
@@ -647,6 +665,41 @@ public class ManageAddonDialog extends JDialog {
 		setVisible(false);
 		AddonManagerPlugin p = AddonManagerPlugin.getInstance();
 		p.showManageAddonDialog(msg, highlightfind);
+	}
+	
+}
+
+class WaitAnimationButton implements Runnable {
+	
+	JButton waitButton;
+	boolean exit = false;
+	
+	/**
+	 * 
+	 */
+	public WaitAnimationButton(JButton waitButton) {
+		this.waitButton = waitButton;
+	}
+	
+	@Override
+	public void run() {
+		String saveText = waitButton.getText();
+		char[] waitchars = { '-', '\\', '|', '/' };
+		int i = 0;
+		while (!exit) {
+			i++;
+			waitButton.setText(waitchars[i % 4] + " " + waitchars[i % 4] + " " + saveText + " " + waitchars[i % 4] + " " + waitchars[i % 4]);
+			try {
+				Thread.sleep(750);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		waitButton.setText(saveText);
+	}
+	
+	public void stop() {
+		exit = true;
 	}
 	
 }

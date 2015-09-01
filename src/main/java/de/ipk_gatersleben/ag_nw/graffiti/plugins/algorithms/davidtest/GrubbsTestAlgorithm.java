@@ -5,8 +5,10 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.davidtest;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
@@ -19,6 +21,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -43,7 +46,7 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Analysis";
+		return "Mapping.Statistical Analysis";
 	}
 	
 	@Override
@@ -51,11 +54,20 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 		return "Grubbs' Test for the identification of outliers";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.DATA,
+				Category.ANALYSIS,
+				Category.STATISTICS
+				));
+	}
+	
 	public void execute() {
 		graph.getListenerManager().transactionStarted(this);
 		
 		Selection sel = new Selection("id", doGrubbsTest(GraphHelper.getSelectedOrAllNodes(selection, graph), graph, alphavalue,
-												doRemoveOutliers));
+				doRemoveOutliers));
 		
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(sel);
 		
@@ -69,9 +81,9 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 		if (alphavalue < 0 || alphavalue > 1)
 			alphavalue = 0.05d;
 		return new Parameter[] {
-							new DoubleParameter(alphavalue, "alpha", "Use any alpha value, e.g. 0.05"),
-							new BooleanParameter(doRemoveOutliers, "Remove Outliers",
-												"If selected, all identified outliers will be removed from the dataset.") };
+				new DoubleParameter(alphavalue, "alpha", "Use any alpha value, e.g. 0.05"),
+				new BooleanParameter(doRemoveOutliers, "Remove Outliers",
+						"If selected, all identified outliers will be removed from the dataset.") };
 	}
 	
 	private static DistributionFactoryImpl distFact = new DistributionFactoryImpl();
@@ -183,7 +195,7 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 	}
 	
 	private static List<MyComparableDataPoint> getValidValues(List<MyComparableDataPoint> valuesForSeries,
-						String timePoint) {
+			String timePoint) {
 		List<MyComparableDataPoint> values = new ArrayList<MyComparableDataPoint>();
 		for (MyComparableDataPoint mcdp : valuesForSeries) {
 			if (mcdp.timeUnitAndTime.equals(timePoint) && !mcdp.isOutlier())

@@ -25,7 +25,7 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
 public class KeggRelationSubTypeAttributeEditor
 					extends AbstractValueEditComponent {
 	
-	protected ArrayList<JLabel> keggRelationSubTypeSelection = new ArrayList<JLabel>();
+	protected ArrayList<? super JComponent> keggRelationSubTypeSelection = new ArrayList<>();
 	
 	public KeggRelationSubTypeAttributeEditor(final Displayable disp) {
 		super(disp);
@@ -43,15 +43,15 @@ public class KeggRelationSubTypeAttributeEditor
 	
 	@SuppressWarnings("unchecked")
 	public JComponent getComponent() {
-		JComponent res = TableLayout.getMultiSplit((ArrayList) keggRelationSubTypeSelection);
+		JComponent res = TableLayout.getMultiSplit((ArrayList<JComponent>) keggRelationSubTypeSelection);
 		res.setOpaque(false);
 		return res;
 	}
 	
 	public void setEditFieldValue() {
 		if (showEmpty) {
-			for (JLabel jcb : keggRelationSubTypeSelection) {
-				jcb.setText(EMPTY_STRING);
+			for (Object jcb : keggRelationSubTypeSelection) {
+				((JLabel)jcb).setText(EMPTY_STRING);
 			}
 		} else {
 			keggRelationSubTypeSelection.clear();
@@ -69,14 +69,14 @@ public class KeggRelationSubTypeAttributeEditor
 	
 	public void setValue() {
 		boolean isOneEmpty = false;
-		for (JLabel jcb : keggRelationSubTypeSelection) {
-			if (jcb.getText().equals(EMPTY_STRING))
+		for (Object jcb : keggRelationSubTypeSelection) {
+			if (((JLabel)jcb).getText().equals(EMPTY_STRING))
 				isOneEmpty = true;
 		}
 		if (!isOneEmpty) {
 			String rval = "";
-			for (JLabel jcb : keggRelationSubTypeSelection) {
-				rval = rval + jcb.getText() + ";";
+			for (Object jcb : keggRelationSubTypeSelection) {
+				rval = rval + ((JLabel)jcb).getText() + ";";
 			}
 			if (rval.endsWith(";"))
 				rval = rval.substring(0, rval.length() - 1);

@@ -4,11 +4,15 @@
 
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.davidtest;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
@@ -18,7 +22,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.statistics.TabStatistics;
 
 public class DavidTestAlgorithm
-					extends AbstractAlgorithm {
+		extends AbstractAlgorithm {
 	
 	private int probab_123 = 1;
 	
@@ -28,16 +32,25 @@ public class DavidTestAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "Analysis";
+		return "Mapping.Statistical Analysis";
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.DATA,
+				Category.ANALYSIS,
+				Category.STATISTICS
+				));
 	}
 	
 	@Override
 	public String getDescription() {
 		return "<html><b>David et al. Quicktest for normality distribution.</b><br>" +
-							"All nodes which contain samples which are <b>not</b><br>" +
-							"normally distributed, will be <b>selected</b>.<br>" +
-							"<small>Each sample needs to contain at least 5 values<br>" +
-							"and at most 500 values!</small><br><br>Specify the alpha value (P):";
+				"All nodes which contain samples which are <b>not</b><br>" +
+				"normally distributed, will be <b>selected</b>.<br>" +
+				"<small>Each sample needs to contain at least 5 values<br>" +
+				"and at most 500 values!</small><br><br>Specify the alpha value (P):";
 	}
 	
 	public void execute() {
@@ -45,14 +58,14 @@ public class DavidTestAlgorithm
 		Selection sel = new Selection("id");
 		
 		List<Node> notNormalyDistributedNodes = TabStatistics.doDavidSchnellTest(
-							GraphHelper.getSelectedOrAllNodes(selection, graph), graph, probab_123);
+				GraphHelper.getSelectedOrAllNodes(selection, graph), graph, probab_123);
 		
 		sel.addAll(notNormalyDistributedNodes);
 		
 		graph.getListenerManager().transactionStarted(this);
 		
 		MainFrame.getInstance().getActiveEditorSession().
-							getSelectionModel().setActiveSelection(sel);
+				getSelectionModel().setActiveSelection(sel);
 		
 		graph.getListenerManager().transactionFinished(this);
 	}
@@ -62,7 +75,7 @@ public class DavidTestAlgorithm
 		if (probab_123 < 1 || probab_123 > 3)
 			probab_123 = 1;
 		return new Parameter[] { new IntegerParameter(probab_123, "P (1=5%, 2=1%, 3=0.1%)",
-							"Select one of the significance levels (0/1/2)") };
+				"Select one of the significance levels (0/1/2)") };
 	}
 	
 	@Override

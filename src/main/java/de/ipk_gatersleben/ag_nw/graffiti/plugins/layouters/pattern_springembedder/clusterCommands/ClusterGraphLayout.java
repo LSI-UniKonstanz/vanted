@@ -8,6 +8,8 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedd
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -23,6 +25,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.AlgorithmWithComponentDescription;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 
@@ -111,6 +114,18 @@ public class ClusterGraphLayout extends AbstractAlgorithm
 		return "Cluster";
 	}
 	
+	@Override
+	public String getMenuCategory() {
+		return "Network.Cluster.Process Cluster Overview-Graph";
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.CLUSTER,
+				Category.GRAPH
+				));
+	}
 	@Override
 	public void check() throws PreconditionException {
 		super.check();

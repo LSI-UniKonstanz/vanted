@@ -12,15 +12,13 @@ package org.graffiti.plugins.inspectors.defaults;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import javax.swing.JTree;
-import javax.swing.Timer;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -28,6 +26,8 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.AttributeNotFoundException;
@@ -44,6 +44,7 @@ import org.graffiti.selection.SelectionListener;
 import org.graffiti.session.EditorSession;
 import org.graffiti.session.Session;
 import org.graffiti.session.SessionListener;
+import org.graffiti.util.DelayThread;
 
 /**
  * Represents an inspector tab.
@@ -51,9 +52,14 @@ import org.graffiti.session.SessionListener;
  * @version $Revision: 1.21 $
  */
 public abstract class AbstractTab
-					extends InspectorTab
-					implements SessionListener, SelectionListener, AttributeListener {
+		extends InspectorTab
+		implements SessionListener, SelectionListener, AttributeListener {
 	// ~ Instance fields ========================================================
+	
+	private static Logger logger = Logger.getLogger(AbstractTab.class);
+	static {
+		logger.setLevel(Level.INFO);
+	}
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -64,21 +70,65 @@ public abstract class AbstractTab
 	protected DefaultMutableTreeNode rootNode;
 	
 	/** The elements that are displayed by this tab. */
-	protected Collection<Attributable> attributables;
+	protected Collection<? extends Attributable> attributables;
 	
 	private TreeSelectionListener myTreeSelectionListener = new MyTreeSelectionListener();
 	
 	/**
 	 * Avoids duplicate updates
 	 */
-	private boolean rebuildActionNeeded = false;
-	private Timer timerRebuildTree = null;
+	
+	private DelayThread delayThreadAttributeChanged;
+	
+	private DelayThread delayThreadAttributeAddedRemoved;
+	
+	AbstractTab instance;
 	
 	/**
 	 * Creates a new AbstractTab object.
 	 */
 	public AbstractTab() {
 		super();
+		instance = this;
+		
+		delayThreadAttributeChanged = new DelayThread(new DelayThread.DelayedCallback() {
+			
+			@Override
+			public void call(AttributeEvent e) {
+				logger.debug("editPanel.updateTable");
+				if (e != null)
+					/*
+					 * until i find a better solution, this will be it.
+					 * The problem is, that recreating a ChartAttribute (through rebuildTreeAction)
+					 * triggers an attributechanged event.. that will trigger again this update
+					 * and so we get an infinite update loop
+					 * This doesn't happen when we only update the table
+					 * But.. Node and Edgetabs don't work properly when we only update the table
+					 * especially labels will not change, if updated using the LabelEditor dialog
+					 * So. for now.. we check, which tab acutally this is (Node/Edge/Graph tab are children of
+					 * Abstracttab) and trigger the action appropriately
+					 */
+					if (instance instanceof GraphTab)
+						editPanel.updateTable(e.getAttribute());
+					else
+						rebuildTreeAction();
+			}
+		});
+		delayThreadAttributeChanged.setName(getClass().getName().substring(getClass().getName().lastIndexOf(".") + 1) + ": DelayThread Attribute Changes");
+		delayThreadAttributeChanged.start();
+		
+		delayThreadAttributeAddedRemoved = new DelayThread(new DelayThread.DelayedCallback() {
+			
+			@Override
+			public void call(AttributeEvent e) {
+				logger.debug("rebuildTreeAction");
+				rebuildTreeAction();
+			}
+		});
+		delayThreadAttributeAddedRemoved.setName(getClass().getName().substring(getClass().getName().lastIndexOf(".") + 1)
+				+ ": DelayThread for Added/Removed Attribute");
+		delayThreadAttributeAddedRemoved.start();
+		
 		setLayout(TableLayout.getLayout(TableLayoutConstants.FILL, TableLayoutConstants.FILL));
 		editPanel = new DefaultEditPanel(getEmptyDescription());
 		editPanel.setOpaque(false);
@@ -103,9 +153,14 @@ public abstract class AbstractTab
 	 *           the AttributeEvent detailing the changes.
 	 */
 	public void postAttributeAdded(AttributeEvent e) {
+		if (!isShowing())
+			return;
+		
 		if (attributables != null)
 			if (attributables.contains(e.getAttribute().getAttributable())) {
-				rebuildTree();
+				// startRebuildTreeActionThread();
+				delayThreadAttributeAddedRemoved.setAttributeEvent(e);
+				
 			}
 	}
 	
@@ -116,8 +171,12 @@ public abstract class AbstractTab
 	 *           the AttributeEvent detailing the changes.
 	 */
 	public void postAttributeChanged(AttributeEvent e) {
+		if (!isShowing())
+			return;
+		// logger.setLevel(Level.DEBUG);
+		logger.debug("postAttributeChanged");
 		if (attributables != null && attributables.contains(e.getAttribute().getAttributable())) {
-			editPanel.updateTable(e.getAttribute());
+			delayThreadAttributeChanged.setAttributeEvent(e);
 		}
 	}
 	
@@ -128,9 +187,12 @@ public abstract class AbstractTab
 	 *           the AttributeEvent detailing the changes.
 	 */
 	public void postAttributeRemoved(AttributeEvent e) {
+		if (!isShowing())
+			return;
 		if (attributables != null)
 			if (attributables.contains(e.getAttribute().getAttributable())) {
-				rebuildTree();
+				// startRebuildTreeActionThread();
+				delayThreadAttributeAddedRemoved.setAttributeEvent(e);
 			}
 	}
 	
@@ -161,32 +223,32 @@ public abstract class AbstractTab
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
 	
-	private void rebuildTreeAction() {
-		if (rebuildActionNeeded) {
-			/** The tree view of the attribute hierarchy. */
-			// System.out.println("R: "+this.getClass().getName());
-			JTree attributeTree;
-			
-			// save current selection
-			String oldMarkedPath = null;
-			
-			// start new tree with given attribute at root
-			Attribute newAttr = collAttr;
-			
-			if (attributables != null && !attributables.isEmpty()) {
-				newAttr = (attributables.iterator().next()).getAttributes();
-				this.collAttr = newAttr;
-			} else {
-				newAttr = null;
-				collAttr = null;
-			}
-			
-			this.rootNode = new DefaultMutableTreeNode(new BooledAttribute(
-								newAttr, true));
+	protected void rebuildTreeAction() {
+		
+		/** The tree view of the attribute hierarchy. */
+		logger.debug("rebuildtree for classname: " + this.getClass().getName());
+		JTree attributeTree;
+		
+		// save current selection
+		String oldMarkedPath = null;
+		
+		// start new tree with given attribute at root
+		Attribute newAttr = collAttr;
+		
+		if (attributables != null && !attributables.isEmpty()) {
+			newAttr = (attributables.iterator().next()).getAttributes();
+			this.collAttr = newAttr;
+		} else {
+			newAttr = null;
+			collAttr = null;
+		}
+		this.rootNode = new DefaultMutableTreeNode(new BooledAttribute(
+				newAttr, true));
+		synchronized (this.rootNode) {
 			attributeTree = new JTree(this.rootNode);
 			attributeTree.putClientProperty("JTree.lineStyle", "Angled");
 			attributeTree.getSelectionModel().setSelectionMode(
-								TreeSelectionModel.SINGLE_TREE_SELECTION);
+					TreeSelectionModel.SINGLE_TREE_SELECTION);
 			
 			/*
 			 * build attribute hierarchy of newAttr starting at root and
@@ -194,14 +256,11 @@ public abstract class AbstractTab
 			 */
 			TreePath selectedTreePath = null;
 			DefaultMutableTreeNode selectedNode = fillNode(this.rootNode, newAttr,
-								attributables, oldMarkedPath);
-			
+					attributables, oldMarkedPath);
 			if (selectedNode != null) {
 				selectedTreePath = new TreePath(selectedNode.getPath());
 			}
-			
 			attributeTree.addTreeSelectionListener(myTreeSelectionListener);
-			
 			if (selectedTreePath == null) {
 				attributeTree.setSelectionRow(0);
 				attributeTree.expandRow(0);
@@ -211,32 +270,20 @@ public abstract class AbstractTab
 			}
 			attributeTree.makeVisible(selectedTreePath);
 		}
-		rebuildActionNeeded = false;
+		// }
+		// rebuildActionNeeded = false;
 	}
 	
-	/**
-	 * Calls <code>buildTree</code> using the set attribute.
-	 */
-	public void rebuildTree() {
-		if (rebuildActionNeeded)
-			return;
-		if (timerRebuildTree != null && timerRebuildTree.isRunning())
-			return;
-		rebuildActionNeeded = true;
-		timerRebuildTree = new Timer(100, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!isShowing())
-					return;
-				
-				rebuildTreeAction();
-				timerRebuildTree.stop();
-			}
-		});
-		timerRebuildTree.start();
+	@Override
+	public void componentShown(ComponentEvent e) {
+		rebuildTreeAction();
 	}
 	
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {
-		rebuildTree();
+		if (!isShowing())
+			return;
+		logger.debug("transactionFinished");
+		delayThreadAttributeAddedRemoved.setAttributeEvent(null);
 	}
 	
 	@Override
@@ -245,26 +292,39 @@ public abstract class AbstractTab
 	}
 	
 	public void selectionChanged(SelectionEvent e) {
-		//
-		
+		logger.debug("selectionChanged");
+		if (!isShowing())
+			return;
+		rebuildTreeAction();
 	}
 	
 	public void sessionChanged(Session s) {
+
 		if (s != null && s.getGraph() != null) {
+			logger.debug("session changed sessionname: " + s.getGraph().getName());
+			if ("org.graffiti.plugins.inspectors.defaults.EdgeTab".equals(getClass().getName()))
+				logger.debug("for edgetab");
 			editPanel.setListenerManager(s.getGraph().getListenerManager());
 			s.getGraph().getListenerManager().addDelayedAttributeListener(this);
 			if (s instanceof EditorSession) {
 				EditorSession es = (EditorSession) s;
 				editPanel.setGraphElementMap(es.getGraphElementsMap());
+				/*
+				 * attributables will be set during a following selectionChanged event
+				 */
 			}
 		} else {
 			this.attributables = null;
 			this.collAttr = null;
 			this.rootNode = null;
-			editPanel.setListenerManager(null);
+//			s.getGraph().getListenerManager().removeAttributeListener(this);
 			editPanel.showEmpty();
 		}
-		rebuildTree();
+		
+		if (!isShowing())
+			return;
+		
+		rebuildTreeAction();
 	}
 	
 	public void sessionDataChanged(Session s) {
@@ -277,9 +337,9 @@ public abstract class AbstractTab
 	 * @param graphElements
 	 *           DOCUMENT ME!
 	 */
-	protected void rebuildTree(Collection<Attributable> graphElements) {
+	protected void rebuildTree(Collection<? extends Attributable> graphElements) {
 		attributables = graphElements;
-		rebuildTree();
+		rebuildTreeAction();
 	}
 	
 	/**
@@ -295,7 +355,7 @@ public abstract class AbstractTab
 	 */
 	@SuppressWarnings("unused")
 	private void fillNode(DefaultMutableTreeNode treeNode, Attribute attr,
-						Collection<Attributable> graphElements) {
+			Collection<Attributable> graphElements) {
 		this.fillNode(treeNode, attr, graphElements, null);
 	}
 	
@@ -314,7 +374,7 @@ public abstract class AbstractTab
 	 * @return DOCUMENT ME!
 	 */
 	private DefaultMutableTreeNode fillNode(DefaultMutableTreeNode treeNode,
-						Attribute attr, Collection<Attributable> graphElements, String markedPath) {
+			Attribute attr, Collection<? extends Attributable> graphElements, String markedPath) {
 		DefaultMutableTreeNode returnTreeNode = null;
 		DefaultMutableTreeNode newNode;
 		
@@ -336,10 +396,10 @@ public abstract class AbstractTab
 					
 					// check if present in all graph elements
 					if (graphElements.size() > 1) {
-						for (Iterator<Attributable> geit = graphElements.iterator(); geit.hasNext();) {
+						for (Iterator<? extends Attributable> geit = graphElements.iterator(); geit.hasNext();) {
 							try {
 								Attribute oAttr = ((Attributable) geit.next())
-													.getAttribute(attr.getPath().substring(1));
+										.getAttribute(attr.getPath().substring(1));
 								
 								if (!attributeValue.equals(oAttr.getValue())) {
 									allSameValue = false;
@@ -377,10 +437,10 @@ public abstract class AbstractTab
 				
 				// check if present in all graph elements
 				if (graphElements.size() > 1) {
-					for (Iterator<Attributable> geit = graphElements.iterator(); geit.hasNext();) {
+					for (Iterator<? extends Attributable> geit = graphElements.iterator(); geit.hasNext();) {
 						try {
 							Attribute oAttr = ((Attributable) geit.next())
-												.getAttribute(attribute.getPath().substring(1));
+									.getAttribute(attribute.getPath().substring(1));
 							
 							if (!attributeValue.equals(oAttr.getValue())) {
 								allSameValue = false;
@@ -398,7 +458,7 @@ public abstract class AbstractTab
 				
 				if (allHave) {
 					newNode = new DefaultMutableTreeNode(new BooledAttribute(attribute,
-										allSameValue));
+							allSameValue));
 					
 					// treeNode.add(newNode);
 					// if (attribute.getPath().equals(markedPath)) {
@@ -420,10 +480,10 @@ public abstract class AbstractTab
 			
 			// check if present in all graph elements
 			if (graphElements.size() > 1) {
-				for (Iterator<Attributable> geit = graphElements.iterator(); geit.hasNext();) {
+				for (Iterator<? extends Attributable> geit = graphElements.iterator(); geit.hasNext();) {
 					try {
 						Attribute oAttr = ((Attributable) geit.next())
-											.getAttribute(attribute.getPath().substring(1));
+								.getAttribute(attribute.getPath().substring(1));
 						
 						if (allSameValue && !attributeValue.equals(oAttr.getValue())) {
 							allSameValue = false;
@@ -444,11 +504,11 @@ public abstract class AbstractTab
 			
 			if (allHave) {
 				newNode = new DefaultMutableTreeNode(new BooledAttribute(attribute,
-									allSameValue));
+						allSameValue));
 				
 				if (returnTreeNode == null) {
 					returnTreeNode = fillNode(newNode, attribute, graphElements,
-										markedPath);
+							markedPath);
 				} else {
 					fillNode(newNode, attribute, graphElements, null);
 				}
@@ -484,7 +544,7 @@ public abstract class AbstractTab
 			
 			if (treePath != null) {
 				DefaultMutableTreeNode node = (DefaultMutableTreeNode) treePath
-									.getLastPathComponent();
+						.getLastPathComponent();
 				
 				if (node == null)
 					return;
@@ -507,6 +567,7 @@ public abstract class AbstractTab
 	public void transactionStarted(TransactionEvent e) {
 		// empty
 	}
+	
 }
 
 // ------------------------------------------------------------------------------

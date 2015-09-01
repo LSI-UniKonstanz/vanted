@@ -15,6 +15,7 @@ import info.clearthought.layout.TableLayoutConstants;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -30,7 +31,11 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.prefs.Preferences;
 
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -42,6 +47,8 @@ import org.ErrorMsg;
 import org.LabelFrameSetting;
 import org.StringManipulationTools;
 import org.Vector2d;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.Edge;
@@ -53,10 +60,17 @@ import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.graphics.LabelAttribute;
 import org.graffiti.graphics.NodeLabelAttribute;
 import org.graffiti.graphics.NodeLabelPositionAttribute;
+import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.attributecomponent.AbstractAttributeComponent;
+import org.graffiti.plugin.parameter.BooleanParameter;
+import org.graffiti.plugin.parameter.IntegerParameter;
+import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.NodeShape;
 import org.graffiti.plugin.view.ShapeNotFoundException;
+import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.util.Pair;
+
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.label_alignment.LabelAlignmentAttribute;
 
 /**
  * This component represents a label for a node or an edge.
@@ -64,10 +78,22 @@ import org.graffiti.util.Pair;
  * @version $Revision: 1.59 $
  */
 public class LabelComponent extends AbstractAttributeComponent implements
-					GraphicAttributeConstants {
+		GraphicAttributeConstants, PreferencesInterface {
 	// ~ Instance fields ========================================================
 	
+	private static final Logger logger = Logger.getLogger(LabelComponent.class);
+	
+	static {
+		logger.setLevel(Level.INFO);
+	}
+	
 	private static final long serialVersionUID = 1L;
+	
+	private static int MINSIZE_VISIBILITY;
+	public static String PREF_MINSIZE_VISIBILITY = "min-size visibility";
+	
+	private static boolean DRAWRECT_MINSIZE;
+	public static String PREF_DRAWRECT_MINSIZE = "small rectangle when too small";
 	
 	/**
 	 * Flatness value used for the <code>PathIterator</code> used to place
@@ -92,7 +118,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	
 	protected int corrX = 0;
 	
-	Point loc = new Point();
+	BufferedImage bufferedImage;
 	
 	// ~ Constructors ===========================================================
 	
@@ -107,8 +133,29 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	// ~ Methods ================================================================
 	
 	@Override
+	public List<Parameter> getDefaultParameters() {
+		List<Parameter> params = new ArrayList<Parameter>();
+		params.add(new IntegerParameter(10, PREF_MINSIZE_VISIBILITY, "<html>Minimum size (width/height) where this label<br/>ist still visible"));
+		params.add(new BooleanParameter(true, PREF_DRAWRECT_MINSIZE, "<html>Draw a rectangle instead of the label, <br/>if the label is too small"));
+		return params;
+	}
+	
+	@Override
+	public void updatePreferences(Preferences preferences) {
+		MINSIZE_VISIBILITY = preferences.getInt(PREF_MINSIZE_VISIBILITY, 10);
+		DRAWRECT_MINSIZE = preferences.getBoolean(PREF_DRAWRECT_MINSIZE, true);
+	}
+	
+	@Override
+	public String getPreferencesAlternativeName() {
+		// TODO Auto-generated method stub
+		return "Labels";
+	}
+	
+	@Override
 	public void highlight(boolean value, MouseEvent e) {
 		super.highlight(value, e);
+		// if (label != null)
 		label.highlight(value);
 	}
 	
@@ -134,13 +181,89 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	 */
 	@Override
 	public void attributeChanged(Attribute attr) {
+		
+		/*
+		 * NodeGraphicAttribute is also sent if more than one attribute per component was changed
+		 * See TransactionHashMap... meeh
+		 * Sooooo...
+		 */
+		if (attr instanceof LabelAlignmentAttribute/* || attr instanceof NodeGraphicAttribute */) {
+			
+			adjustComponentSize();
+			validate();
+			return;
+		}
+		
 		if (attr.getPath().startsWith(Attribute.SEPARATOR + GRAPHICS + Attribute.SEPARATOR + COORDINATE)) {
 			setLocation((int) (loc.getX() + shift.getX()), (int) (loc.getY() + shift.getY())); // -1
 			return;
-		} else
-			recreate();
-		repaint();
+		} else {
+//			recreate();
+			frame = labelAttr.getLabelFrameSetting();
+			
+			double strokeWidth = 1d;
+			
+			Color borderColor = Color.BLACK;
+			
+			try {
+				if (attr.getAttributable() instanceof Node) {
+					strokeWidth = attr.getAttributable().getDouble("graphics.frameThickness");
+					String al = labelAttr.getAlignment();
+					if (al != null && al.length() == 3 && al.startsWith("b"))
+						borderColor = AttributeHelper.getOutlineColor(attr.getAttributable());
+				}
+				if (attr.getAttributable() instanceof Edge) {
+					strokeWidth = attr.getAttributable().getDouble("graphics.frameThickness");
+					borderColor = AttributeHelper.getOutlineColor(attr.getAttributable());
+				}
+				
+			} catch (Exception err) {
+			}
+			
+			boolean needToAdjust = false;
+			
+			if (!label.getText().equals(labelAttr.getLabel()))
+				needToAdjust = true;
+			if (!label.getFrame().equals(frame))
+				needToAdjust = true;
+			if (label.getStrokeWidth() != strokeWidth)
+				needToAdjust = true;
+			if (!label.getBorderColor().equals(borderColor))
+				needToAdjust = true;
+			if (!label.getForeground().equals(labelAttr.getTextcolor()))
+				needToAdjust = true;
+			
+			if (!fontName.equals(labelAttr.getFontName()))
+				needToAdjust = true;
+			if (fontStyleInt != labelAttr.getFontStyleJava())
+				needToAdjust = true;
+			if (fontSize != labelAttr.getFontSize())
+				needToAdjust = true;
+			
+			if (needToAdjust) {
+				updateBorderOrShadow(strokeWidth);
+				
+				labelAttr.setLastLabel(label);
+				label.setText(labelAttr.getLabel());
+				label.setFrame(frame);
+				label.setStrokeWidth(strokeWidth);
+				label.setBorderColor(borderColor);
+				
+				setLabelSettings(label, labelAttr.getTextcolor());
+				adjustComponentSize();
+			} else {
+				
+				/*
+				 * shortened code copied from adjustComponentSize, that does NOT recalculate the size of the component
+				 * if the text didn't change at all it is all just a position update
+				 */
+				updateLabelPosition();
+				
+			}
+			
+		}
 	}
+	
 	
 	/**
 	 * Used when the shape changed in the datastructure. Makes the painter
@@ -151,7 +274,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	 */
 	@Override
 	public void recreate() {
-		// System.out.println("recreating Label " + this);
+//		System.out.println("recreating Label " + this);
 		removeAll();
 		if (labelAttr == null)
 			ErrorMsg.addErrorMessage("LabelComponent: labelAttr == null!");
@@ -187,7 +310,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			//
 		}
 		
-		dropShadow = labelAttr.getUseDropShadow();
+		// dropShadow = labelAttr.getUseDropShadow();
 		
 		dropShadow = false;
 		
@@ -233,6 +356,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			else
 				validateTree();
 		}
+		recreateBufferedImage();
 	}
 	
 	private void updateBorderOrShadow(double strokeWidth) {
@@ -312,24 +436,57 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	
 	@Override
 	public void paint(Graphics g) {
-		super.paint(g);
+		if (label.getText().isEmpty() || fontSize <= 0)
+			return;
+		
+		boolean isVisible = checkVisibility(MINSIZE_VISIBILITY);
+		
+		if(getDrawingModeOfView() == DrawMode.REDUCED && bufferedImage != null && isVisible) {
+			logger.debug("drawing image");
+			g.drawImage(bufferedImage, 0, 0, null);
+		
+		} else  if (isVisible) {
+			logger.debug("drawing normal");
+			super.paint(g);
+		} else if (DRAWRECT_MINSIZE && !(getDrawingModeOfView() == DrawMode.FAST)) {
+			logger.debug("drawing rectangle");
+			g.setColor(new Color(200, 200, 200));
+			int height = getHeight();
+			int width = getWidth();
+			((Graphics2D) g).fillRect(0, height / 4, width, height / 2);
+		}
+	}
+	
+	private void recreateBufferedImage() {
+		if(getWidth() > 0 && getHeight() > 0) {
+			logger.debug("recreating buffered image");
+			bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+			super.paint(bufferedImage.getGraphics());
+		}
+
 	}
 	
 	private static final HashMap<TextAttribute, Object> fontAttributes = getFontAttributes();
 	
 	private void setLabelSettings(JLabel label, Color c) {
 		label.setForeground(c);
-		String fontName = labelAttr.getFontName();
-		int fontStyleInt = labelAttr.getFontStyleJava();
-		int fontSize = labelAttr.getFontSize();
+		fontName = labelAttr.getFontName();
+		fontStyleInt = labelAttr.getFontStyleJava();
+		fontSize = labelAttr.getFontSize();
 		
 		setCachedFont(label, fontName, fontStyleInt, fontSize);
 		label.setOpaque(false);
-		label.setSize((int) label.getPreferredSize().getWidth(), (int) label
-				.getPreferredSize().getHeight());
+		Dimension preferredSize = label.getPreferredSize();
+		label.setSize((int) preferredSize.getWidth(), (int) preferredSize.getHeight());
 	}
 	
 	private static final HashMap<String, Font> knownFontSettings = new HashMap<String, Font>();
+	
+	private String fontName;
+	
+	private int fontStyleInt;
+	
+	private int fontSize;
 	
 	private void setCachedFont(JLabel label, String fontName, int fontStyleInt,
 			int fontSize) {
@@ -364,8 +521,14 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	@Override
 	public void adjustComponentSize() {
 		try {
-			int h = label.getPreferredSize().height + 1;
-			int w = label.getPreferredSize().width + 1;
+			Dimension preferredSize;
+			String alignment2 = labelAttr.getAlignment();
+			if (alignment2.equals(AlignmentSetting.HIDDEN.toGMLstring()))
+				preferredSize = new Dimension(1, 1);
+			else
+				preferredSize = label.getPreferredSize();
+			int h = preferredSize.height + 1;
+			int w = preferredSize.width + 1;
 			// System.out.println(h+" "+w+" "+this.hashCode()+" "+frame);
 			// if (dropShadow) {
 			// h+=offx*2;
@@ -376,9 +539,17 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			labelAttr.setLastComponentWidth(w);
 			labelAttr.setLastComponentHeight(h);
 			labelAttr.setLastLabel(label);
+
+			recreateBufferedImage();
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
 		}
+		
+	}
+	
+	@Override
+	public void adjustComponentPosition() {
+		updateLabelPosition();
 	}
 	
 	/**
@@ -1102,10 +1273,8 @@ public class LabelComponent extends AbstractAttributeComponent implements
 					cutrect.closePath();
 					if (fill)
 						g2d.fill(cutrect);
-					else {
+					else
 						g2d.draw(cutrect);
-						g2d.draw(cutrect);
-					}
 				} else
 					if (frame == LabelFrameSetting.RECTANGLE_ROUNDED) {
 						double mwh = (width < height ? width * 0.5 : height * 0.5);
@@ -1150,10 +1319,8 @@ public class LabelComponent extends AbstractAttributeComponent implements
 							gp.closePath();
 							if (fill)
 								g2d.fill(gp);
-							else {
+							else
 								g2d.draw(gp);
-								g2d.draw(gp);
-							}
 						} else
 							if (frame == LabelFrameSetting.CAPSULE) {
 								double mwh = (width < height ? width : height);
@@ -1236,7 +1403,24 @@ public class LabelComponent extends AbstractAttributeComponent implements
 													g2d.draw(new Ellipse2D.Double(x + offX, y + offY, minR, minR));
 											}
 										}
-								}
+								} else
+									if (frame == LabelFrameSetting.HEXAGON) {
+										GeneralPath gp = new GeneralPath();
+										double offA = 0.25;
+										double offB = 0.75;
+										gp.moveTo(x, y);
+										gp.lineTo(x + width, y);
+										gp.lineTo(x + width * offB, y + height * 0.5);
+										gp.lineTo(x + width, y + height);
+										gp.lineTo(x, y + height);
+										gp.lineTo(x + width * offA, y + height * 0.5);
+										gp.lineTo(x, y);
+										gp.closePath();
+										if (fill)
+											g2d.fill(gp);
+										else
+											g2d.draw(gp);
+									}
 		g2d.setColor(oc);
 	}
 	

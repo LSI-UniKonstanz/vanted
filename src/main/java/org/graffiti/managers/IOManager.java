@@ -15,6 +15,7 @@ import java.util.Set;
 
 import javax.swing.JFileChooser;
 
+import org.graffiti.graph.Graph;
 import org.graffiti.managers.pluginmgr.PluginManagerListener;
 import org.graffiti.plugin.io.InputSerializer;
 import org.graffiti.plugin.io.OutputSerializer;
@@ -90,10 +91,21 @@ public interface IOManager
 	/**
 	 * Creates and returns a file open chooser dialog with the registered file
 	 * extensions from the output serializers.
-	 * 
+	 * Returns all available output serializers, not checking, if output serializer is
+	 * capable of writing the graph
 	 * @return DOCUMENT ME!
 	 */
 	JFileChooser createSaveFileChooser();
+	
+	
+	/**
+	 * Creates and returns a file open chooser dialog with the registered file
+	 * extensions from the output serializers and checking, if output serializer is
+	 * capable of writing the graph.
+	 * @param g The graph to test for output serializer compatibility
+	 * @return the FilechooserDialog object
+	 */
+	JFileChooser createSaveFileChooser(Graph g);
 	
 	/**
 	 * Returns <code>true</code>, if the io manager has a registered input

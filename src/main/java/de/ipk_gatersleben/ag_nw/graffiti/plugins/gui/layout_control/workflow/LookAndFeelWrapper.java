@@ -34,20 +34,12 @@ public class LookAndFeelWrapper {
 		return false;
 	}
 	
-	public void activateTheme() {
-		if (info instanceof ThemedLookAndFeelInfo)
-			((ThemedLookAndFeelInfo) info).activateTheme();
-	}
-	
 	// public LookAndFeelInfo getLookAndFeelInfo() {
 	// return info;
 	// }
 	
 	public String getClassName() {
-		if (info instanceof ThemedLookAndFeelInfo) {
-			return info.getClassName();
-		} else
-			return info.getClassName();
+		return info.getClassName();
 	}
 	
 }

@@ -93,6 +93,7 @@ public class QuadCurveEdgeShape
 			
 			this.linePath = new GeneralPath(new Line2D.Double(start, end));
 		} else {
+			this.linePath.reset();
 			// have some bend(s)
 			Iterator<?> it = this.bends.iterator();
 			Point2D bend = ((CoordinateAttribute) it.next()).getCoordinate();

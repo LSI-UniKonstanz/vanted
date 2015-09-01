@@ -26,7 +26,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -44,6 +43,7 @@ import javax.swing.Timer;
 import org.AttributeHelper;
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.core.StringBundle;
 import org.graffiti.event.GraphEvent;
@@ -79,7 +79,11 @@ extends JPanel
 implements SessionListener, SelectionListener, GraphListener {
 	// ~ Static fields/initializers =============================================
 
-	Logger logger = Logger.getLogger(StatusBar.class);
+	static final Logger logger = Logger.getLogger(StatusBar.class);
+	
+	static {
+		logger.setLevel(Level.ERROR);
+	}
 	
 	private static final long serialVersionUID = 1L;
 
@@ -427,8 +431,12 @@ implements SessionListener, SelectionListener, GraphListener {
 	 */
 	@Override
 	public void selectionChanged(SelectionEvent e) {
-		activeSelection = e.getSelection();
-		updateGraphInfo();
+		logger.debug("selectionChanged");
+//		activeSelection = e.getSelection();
+		if(currentSession != null) {
+			activeSelection = ((EditorSession) currentSession).getSelectionModel().getActiveSelection();
+			updateGraphInfo();
+		}
 	}
 
 	/**
@@ -436,8 +444,12 @@ implements SessionListener, SelectionListener, GraphListener {
 	 */
 	@Override
 	public void selectionListChanged(SelectionEvent e) {
-		activeSelection = e.getSelection();
-		updateGraphInfo();
+		logger.debug("selectionListChanged");
+//		activeSelection = e.getSelection();
+		if(currentSession != null) {
+			activeSelection = ((EditorSession) currentSession).getSelectionModel().getActiveSelection();
+			updateGraphInfo();
+		}
 	}
 
 	/**
@@ -445,6 +457,7 @@ implements SessionListener, SelectionListener, GraphListener {
 	 */
 	@Override
 	public void sessionChanged(Session session) {
+		logger.debug("sessionChanged");
 		ListenerManager lm = null;
 
 		if (currentSession != null) {
@@ -651,6 +664,9 @@ implements SessionListener, SelectionListener, GraphListener {
 			return;
 		}
 
+		if(activeSelection != null)
+			logger.debug("Session: " + currentSession.getGraph().getName() + "SelectionHash: " + activeSelection.hashCode() + " Number sel Nodes=" + activeSelection.getNodes().size() + " , sel Edges=" + activeSelection.getEdges().size());
+		
 		boolean changed = false;
 		ArrayList<Node> nl = new ArrayList<Node>();
 		if (activeSelection != null)
@@ -665,7 +681,7 @@ implements SessionListener, SelectionListener, GraphListener {
 		int nodeCnt2 = activeSelection != null ? activeSelection.getNumberOfNodes() : 0;
 		changed = nodeCnt1 != nodeCnt2;
 		if (changed) {
-			((EditorSession) currentSession).getSelectionModel().selectionChanged();
+//			((EditorSession) currentSession).getSelectionModel().selectionChanged();
 		}
 		
 		initScrolling(activeSelection);

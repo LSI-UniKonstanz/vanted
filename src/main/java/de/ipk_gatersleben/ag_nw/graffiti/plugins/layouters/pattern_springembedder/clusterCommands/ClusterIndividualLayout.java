@@ -10,7 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
@@ -30,6 +32,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
@@ -56,7 +59,7 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return "Layout Pathway-Subgraphs";
 		else
-			return "Layout Subgraphs";
+			return "Layout Cluster";
 	}
 	
 	@Override
@@ -64,6 +67,16 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 		return "Cluster Layout Parameters";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT,
+				Category.CLUSTER
+				));
+	}
+
 	@Override
 	public Parameter[] getParameters() {
 		BooleanParameter showClusterGraphs =
@@ -101,7 +114,7 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 	 */
 	@Override
 	public String getCategory() {
-		return "Cluster";
+		return "Network.Cluster";
 	}
 	
 	@Override

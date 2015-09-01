@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.AttributeHelper;
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.event.ListenerManager;
 import org.graffiti.event.NodeEvent;
@@ -355,7 +356,11 @@ public class AdjListNode
 	
 	@Override
 	public String toString() {
-		return "Node ID=" + getID();
+		String ret = "Node ID=" + getID();
+		String label = null;
+		if((label = AttributeHelper.getLabel(this, null)) != null)
+			ret = ret + ", " + label;
+		return ret;
 	}
 	
 	public int getDegree() {

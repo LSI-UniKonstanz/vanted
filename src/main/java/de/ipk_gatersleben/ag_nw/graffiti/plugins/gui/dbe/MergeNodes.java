@@ -8,10 +8,12 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
@@ -22,6 +24,7 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.Parameter;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
@@ -37,13 +40,23 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
 public class MergeNodes extends AbstractAlgorithm {
 	
 	public String getName() {
-		return "Merge Nodes...";
+		return "Merge Nodes";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Nodes";
+		return "Network.Nodes";
 	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION
+				));
+	}
+
 	
 	@Override
 	public String getDescription() {

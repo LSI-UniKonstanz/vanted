@@ -69,6 +69,7 @@ import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.attributes.CompositeAttribute;
 import org.graffiti.attributes.StringAttribute;
 import org.graffiti.editor.MainFrame;
+import org.graffiti.editor.actions.PasteAction;
 import org.graffiti.event.ListenerManager;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
@@ -97,7 +98,7 @@ public class DefaultEditPanel extends EditPanel {
 	
 	/** The logger for the current class. */
 	static final Logger logger = Logger.getLogger(DefaultEditPanel.class
-						.getName());
+			.getName());
 	
 	// ~ Instance fields ========================================================
 	
@@ -119,7 +120,7 @@ public class DefaultEditPanel extends EditPanel {
 	
 	List<ValueEditComponent> displayedValueEditComponents;
 	
-	private Collection<Attributable> graphElements;
+	private Collection<? extends Attributable> graphElements;
 	
 	/** Holds the ListenerManager where the panel is registered. */
 	ListenerManager listenerManager;
@@ -141,56 +142,59 @@ public class DefaultEditPanel extends EditPanel {
 		this.emptyMessage = emptyMessage;
 		if (discardedRowIDs == null || discardedRowIDs.size() <= 0) {
 			discardedRowIDs = new HashSet<String>();
-			// discardedRowIDs.add("linemode");
-			discardedRowIDs.add("image");
-			discardedRowIDs.add("tiled");
-			discardedRowIDs.add("maximize");
-			discardedRowIDs.add("refrence");
-			discardedRowIDs.add("linetype");
-			discardedRowIDs.add("image");
-			discardedRowIDs.add("titled");
-			discardedRowIDs.add("maximize");
-			discardedRowIDs.add("reference");
-			
-			// discardedRowIDs.add("target");
-			// discardedRowIDs.add("source");
-			
-			// discardedRowIDs.add("arrowhead");
-			// discardedRowIDs.add("arrowtail");
-			discardedRowIDs.add("data");
-			// discardedRowIDs.add("fontSize");
-			// discardedRowIDs.add("fontStyle");
-			
-			discardedRowIDs.add("alignment");
-			discardedRowIDs.add("relVert");
-			discardedRowIDs.add("relHor");
-			discardedRowIDs.add("absVert");
-			discardedRowIDs.add("absHor");
-			discardedRowIDs.add("relAlign");
-			discardedRowIDs.add("alignSegment");
-			discardedRowIDs.add("localAlign");
-			
-			discardedRowIDs.add("type");
-			discardedRowIDs.add("Edge:anchor");
-			discardedRowIDs.add("Edge:rounding");
-			discardedRowIDs.add("data");
-			
-			if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR) {
-				addDiscarded(discardedRowIDs, new String[] {
-									"frameThickness", "linemode", "rounding", "Edge:fill", "Edge:color", "Edge:text",
-									"shape", "fontName", "fontSize", "anchor",
-									"clustergraph", "fontStyle", "thickness", "relVert", "relHor", "alignSegment",
-									"outline", "directed", "empty_border_width", "empty_border_width_vert", "arrowhead", "arrowtail",
-									"gradient",
-									"background_coloring",
-									"clusterbackground_fill_outer_region",
-									"clusterbackground_space_fill",
-									"clusterbackground_radius",
-									"clusterbackground_low_alpha",
-									"clusterbackground_grid" });
-			}
-			
 		}
+		// discardedRowIDs.add("linemode");
+		discardedRowIDs.add("image");
+		discardedRowIDs.add("tiled");
+		discardedRowIDs.add("maximize");
+		discardedRowIDs.add("refrence");
+		discardedRowIDs.add("linetype");
+		discardedRowIDs.add("image");
+		discardedRowIDs.add("titled");
+		discardedRowIDs.add("maximize");
+		discardedRowIDs.add("reference");
+		
+		// discardedRowIDs.add("target");
+		// discardedRowIDs.add("source");
+		
+		// discardedRowIDs.add("arrowhead");
+		// discardedRowIDs.add("arrowtail");
+		discardedRowIDs.add("data");
+		// discardedRowIDs.add("fontSize");
+		// discardedRowIDs.add("fontStyle");
+		
+		discardedRowIDs.add("alignment");
+		discardedRowIDs.add("relVert");
+		discardedRowIDs.add("relHor");
+		discardedRowIDs.add("absVert");
+		discardedRowIDs.add("absHor");
+		discardedRowIDs.add("relAlign");
+		discardedRowIDs.add("alignSegment");
+		discardedRowIDs.add("localAlign");
+		
+		discardedRowIDs.add("type");
+		discardedRowIDs.add("Edge:anchor");
+		discardedRowIDs.add("Edge:rounding");
+		discardedRowIDs.add("data");
+		
+		discardedRowIDs.add(PasteAction.PASTED_NODE);
+		
+		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR) {
+			addDiscarded(discardedRowIDs, new String[] {
+					"frameThickness", "linemode", "rounding", "Edge:fill", "Edge:color", "Edge:text",
+					"shape", "fontName", "fontSize", "anchor",
+					"clustergraph", "fontStyle", "thickness", "relVert", "relHor", "alignSegment",
+					"outline", "directed", "empty_border_width", "empty_border_width_vert", "arrowhead", "arrowtail",
+					"gradient",
+					"background_coloring",
+					"clusterbackground_fill_outer_region",
+					"clusterbackground_space_fill",
+					"clusterbackground_radius",
+					"clusterbackground_low_alpha",
+					"clusterbackground_grid" });
+		}
+		
+//		}
 		displayedValueEditComponents = new LinkedList<ValueEditComponent>();
 		
 		// this.attributeTypeMap = new HashMap();
@@ -202,7 +206,7 @@ public class DefaultEditPanel extends EditPanel {
 		
 		applyButton = new JMButton("Apply Changes");
 		applyButton
-							.setToolTipText("<html>Apply changes to graph.<br>If results get not visible use the button \"Apply & Redraw\" instead.<br>Hint: After changing a setting you may press [Enter] to apply the changes");
+				.setToolTipText("<html>Apply changes to graph.<br>If results get not visible use the button \"Apply & Redraw\" instead.<br>Hint: After changing a setting you may press [Enter] to apply the changes");
 		applyButton.setDefaultCapable(true);
 		applyButton.setMnemonic(1);
 		applyAction = new AbstractAction() {
@@ -227,22 +231,22 @@ public class DefaultEditPanel extends EditPanel {
 					return;
 				applyChanges();
 				issueCompleteRedrawForView(
-									MainFrame.getInstance().getActiveEditorSession().getActiveView(),
-									MainFrame.getInstance().getActiveEditorSession().getGraph());
+						MainFrame.getInstance().getActiveEditorSession().getActiveView(),
+						MainFrame.getInstance().getActiveEditorSession().getGraph());
 			}
 		}
-							);
+				);
 		
 		attributeScrollPanel = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		attributeScrollPanel.getViewport().setOpaque(false);
 		attributeScrollPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		
+		attributeScrollPanel.getVerticalScrollBar().setUnitIncrement(20);
 		// applyButtonPanel.add(applyButton, BorderLayout.WEST);
 		// applyButtonPanel.add(applyRedrawButton, BorderLayout.EAST);
 		
 		double[][] size = new double[][] {
-							new double[] { TableLayout.FILL },
-							new double[] { TableLayout.PREFERRED, TableLayout.FILL }
+				new double[] { TableLayout.FILL },
+				new double[] { TableLayout.PREFERRED, TableLayout.FILL }
 		};
 		setLayout(new TableLayout(size));
 		
@@ -256,8 +260,8 @@ public class DefaultEditPanel extends EditPanel {
 		
 		// call apply when user hits enter
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
-							KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0),
-							"apply");
+				KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0),
+				"apply");
 		getActionMap().put("apply", applyAction);
 	}
 	
@@ -330,11 +334,11 @@ public class DefaultEditPanel extends EditPanel {
 	 *           DOCUMENT ME!
 	 */
 	@Override
-	public void buildTable(DefaultMutableTreeNode treeNode, Collection<Attributable> graphElements, String tabName) {
+	public void buildTable(DefaultMutableTreeNode treeNode, Collection<? extends Attributable> graphElements, String tabName) {
 		// rootNode = treeNode;
 		
 		Attribute collAttr = ((BooledAttribute) treeNode.getUserObject())
-							.getAttribute();
+				.getAttribute();
 		
 		displayedAttr = collAttr;
 		this.graphElements = graphElements;
@@ -431,7 +435,7 @@ public class DefaultEditPanel extends EditPanel {
 			
 			String helpTopic = AttributeHelper.getHelpTopicFor(tabName, groupMatch);
 			FolderPanel myPanel = new FolderPanel("<html><b>&nbsp;" + groupMatch, true,
-								JLabelJavaHelpLink.getHelpActionListener(helpTopic), helpTopic);
+					JLabelJavaHelpLink.getHelpActionListener(helpTopic), helpTopic);
 			
 			ArrayList<GuiRow> myRows = hashGroup2GuiRows.get(groupMatch);
 			if (myRows != null) {
@@ -517,7 +521,7 @@ public class DefaultEditPanel extends EditPanel {
 	 *            DOCUMENT ME!
 	 */
 	private Collection<JComponent> getRow(final Attribute attribute, Class ecClass, boolean showValue,
-						String tabName) {
+			String tabName) {
 		Collection<JComponent> result = new ArrayList<JComponent>();
 		String id = attribute.getId();
 		
@@ -548,7 +552,7 @@ public class DefaultEditPanel extends EditPanel {
 		
 		if (attribute.getDescription() != null && !attribute.getDescription().equals("")) {
 			tttext = "<html>" + tttext + ":<p>" + attribute.getDescription()
-								+ "</html>";
+					+ "</html>";
 		}
 		
 		textField.setToolTipText(tttext);
@@ -562,7 +566,7 @@ public class DefaultEditPanel extends EditPanel {
 		try {
 			// editComp = (ValueEditComponent)ecClass.newInstance();
 			editComponent = (ValueEditComponent) InstanceLoader.createInstance(
-								ecClass, "org.graffiti.plugin.Displayable", attribute);
+					ecClass, "org.graffiti.plugin.Displayable", attribute);
 			
 			JComponent addToolTipTo = editComponent.getComponent();
 			ToolTipHelper.addToolTip(addToolTipTo, tttext);
@@ -575,15 +579,16 @@ public class DefaultEditPanel extends EditPanel {
 		
 		JComponent editComponentViewComponent = editComponent.getComponent();
 		
-		textField.setMinimumSize(new Dimension(0, editComponentViewComponent
-							.getMinimumSize().height));
-		textField.setMaximumSize(new Dimension(textField.getMaximumSize().width,
-							editComponentViewComponent.getMaximumSize().height));
-		// textField.setPreferredSize(new Dimension(
-		// textField.getPreferredSize().width, editComponentViewComponent
-		// .getPreferredSize().height));
-		// textField.setSize(new Dimension(textField.getSize().width,
-		// editComponentViewComponent.getSize().height));
+//		textField.setMinimumSize(new Dimension(0, editComponentViewComponent
+//							.getMinimumSize().height));
+//		textField.setMaximumSize(new Dimension(textField.getMaximumSize().width,
+//							editComponentViewComponent.getMaximumSize().height));
+		textField.setPreferredSize(new Dimension(
+				textField.getPreferredSize().width, editComponentViewComponent
+						.getPreferredSize().height));
+		textField.setSize(new Dimension(textField.getSize().width,
+				editComponentViewComponent.getSize().height));
+		
 		result.add(textField);
 		result.add(editComponentViewComponent);
 		synchronized (displayedValueEditComponents) {
@@ -612,16 +617,16 @@ public class DefaultEditPanel extends EditPanel {
 		}
 		
 		inputComp.getInputMap(WHEN_IN_FOCUSED_WINDOW).put(
-							KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0),
-							"apply");
+				KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0),
+				"apply");
 		inputComp.getActionMap().put("apply", applyAction);
 		inputComp.getInputMap(WHEN_FOCUSED).put(
-							KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0),
-							"apply");
+				KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0),
+				"apply");
 		inputComp.getActionMap().put("apply", applyAction);
 		inputComp.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
-							KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0),
-							"apply");
+				KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0),
+				"apply");
 		inputComp.getActionMap().put("apply", applyAction);
 		
 		// save which attributes are dependent on this vec
@@ -643,8 +648,8 @@ public class DefaultEditPanel extends EditPanel {
 		AbstractUndoableEdit delAttrCmd = new AbstractUndoableEdit() {
 			private static final long serialVersionUID = 1L;
 			
-			private HashMap<Attributable, ArrayList<Attribute>> deletedAttributes = new HashMap<Attributable, ArrayList<Attribute>>();
-			final Collection<Attributable> attributables = graphElements;
+			private Map<Attributable, ArrayList<Attribute>> deletedAttributes = new HashMap<>();
+			final Collection<? extends Attributable> attributables = graphElements;
 			
 			@Override
 			public String getPresentationName() {
@@ -663,7 +668,7 @@ public class DefaultEditPanel extends EditPanel {
 			
 			@Override
 			public void redo() throws CannotRedoException {
-				deletedAttributes = new LinkedHashMap<Attributable, ArrayList<Attribute>>();
+				deletedAttributes = new LinkedHashMap<>();
 				for (Attributable ge : attributables)
 					for (String del : StringManipulationTools.splitSafe(delPath, "$")) {
 						try {
@@ -718,7 +723,7 @@ public class DefaultEditPanel extends EditPanel {
 	 *           DOCUMENT ME!
 	 */
 	private Collection<JComponent> getStandardRow(Attribute attr, boolean showValue,
-						String tabName) {
+			String tabName) {
 		Collection<JComponent> result = new ArrayList<JComponent>();
 		ValueEditComponent standardVEC = new StandardValueEditComponent(attr);
 		standardVEC.setDisplayable(attr);
@@ -741,9 +746,9 @@ public class DefaultEditPanel extends EditPanel {
 		// textField.setEditable(false);
 		
 		textField.setMinimumSize(new Dimension(0,
-							editComponent.getMinimumSize().height));
+				editComponent.getMinimumSize().height));
 		textField.setMaximumSize(new Dimension(textField.getMaximumSize().width,
-							editComponent.getMaximumSize().height));
+				editComponent.getMaximumSize().height));
 		// textField.setPreferredSize(new Dimension(
 		// textField.getPreferredSize().width, editComponent
 		// .getPreferredSize().height));
@@ -819,7 +824,7 @@ public class DefaultEditPanel extends EditPanel {
 				 * collection and check if these attributes have a registered
 				 * component
 				 */
-
+				
 				DefaultMutableTreeNode child;
 				BooledAttribute booledChild;
 				
@@ -830,7 +835,7 @@ public class DefaultEditPanel extends EditPanel {
 					Attribute attribute = booledChild.getAttribute();
 					
 					ecClass = (Class) this.editComponentsMap.get(attribute
-										.getClass());
+							.getClass());
 					
 					if (ecClass != null) {
 						// if we have a registered component, add it
@@ -847,7 +852,7 @@ public class DefaultEditPanel extends EditPanel {
 				 * nearly the same for CompositeAttributes. Check is a component
 				 * is registered. If not, recursive call with its hierarchy form.
 				 */
-
+				
 				Class ecClass = (Class) this.editComponentsMap.get(attr.getClass());
 				
 				if (ecClass != null) {
@@ -858,7 +863,7 @@ public class DefaultEditPanel extends EditPanel {
 					
 					if (treeNode.getChildCount() == 0) {
 						result.addAll(getStandardRow(attr, booledAttr
-											.getBool(), tabName));
+								.getBool(), tabName));
 					} else {
 						for (int i = 0; i < treeNode.getChildCount(); i++) {
 							child = (DefaultMutableTreeNode) treeNode.getChildAt(i);
@@ -867,7 +872,7 @@ public class DefaultEditPanel extends EditPanel {
 							Attribute attribute = booledChild.getAttribute();
 							
 							ecClass = (Class) this.editComponentsMap.get(attribute
-												.getClass());
+									.getClass());
 							if (ecClass != null) {
 								// if we have a registered component, add it
 								result.addAll(getRow(attribute, ecClass, booledChild.getBool(), tabName));
@@ -939,7 +944,10 @@ public class DefaultEditPanel extends EditPanel {
 	// ~ Inner Classes ==========================================================
 	
 	private void applyChanges() {
-		
+		if(listenerManager == null) {
+			System.err.println("DefaultEditPanel (applyChanges): Listener Manager null");
+			return;
+		}
 		listenerManager.transactionStarted(this);
 		try {
 			HashMap<Displayable, Object> attributeToOldValueMap = new LinkedHashMap<Displayable, Object>();
@@ -961,8 +969,8 @@ public class DefaultEditPanel extends EditPanel {
 			assert (geMap != null);
 			
 			ChangeAttributesEdit aEdit = new ChangeAttributesEdit(
-								MainFrame.getInstance().getActiveEditorSession().getGraph(),
-								attributeToOldValueMap, geMap);
+					MainFrame.getInstance().getActiveEditorSession().getGraph(),
+					attributeToOldValueMap, geMap);
 			MainFrame.getInstance().getUndoSupport().postEdit(aEdit);
 		} finally {
 			listenerManager.transactionFinished(this);
@@ -970,6 +978,9 @@ public class DefaultEditPanel extends EditPanel {
 	}
 	
 	public static void setDiscardedRowIDs(HashSet<String> discardedRowIDs) {
+		if (DefaultEditPanel.discardedRowIDs != null)
+			DefaultEditPanel.discardedRowIDs.addAll(discardedRowIDs);
+		
 		DefaultEditPanel.discardedRowIDs = discardedRowIDs;
 	}
 	
@@ -988,12 +999,12 @@ public class DefaultEditPanel extends EditPanel {
 		public void actionPerformed(ActionEvent e) {
 			if (!(displayedAttr instanceof CollectionAttribute)) {
 				JOptionPane.showMessageDialog(DefaultEditPanel.this,
-									"Can't add a sub attribute to a non "
-														+ "CollectionAttribute like " + displayedAttr, "Error",
-									JOptionPane.OK_OPTION);
+						"Can't add a sub attribute to a non "
+								+ "CollectionAttribute like " + displayedAttr, "Error",
+						JOptionPane.OK_OPTION);
 			} else {
 				AttributeSelector attrSelector = new AttributeSelector(null,
-									displayedAttr.getName());
+						displayedAttr.getName());
 				String attrName = attrSelector.getAttributeLabel();
 				String typeName = attrSelector.getAttributeClassname();
 				
@@ -1012,14 +1023,14 @@ public class DefaultEditPanel extends EditPanel {
 					if (typeName.indexOf(".") == -1) {
 						try {
 							Attribute newAttr = (Attribute) InstanceLoader
-												.createInstance("org.graffiti.graphics." + typeName,
-																	attrName);
+									.createInstance("org.graffiti.graphics." + typeName,
+											attrName);
 							
 							String path = (displayedAttr.getPath() + " ").substring(1)
-												.trim();
+									.trim();
 							
 							for (Iterator geit = graphElements.iterator(); geit
-												.hasNext();) {
+									.hasNext();) {
 								Attributable atbl = (Attributable) geit.next();
 								atbl.addAttribute((Attribute) newAttr.copy(), path);
 							}
@@ -1028,14 +1039,14 @@ public class DefaultEditPanel extends EditPanel {
 						} catch (InstanceCreationException ice) {
 							try {
 								Attribute newAttr = (Attribute) InstanceLoader
-													.createInstance("org.graffiti.attributes."
-																		+ typeName, attrName);
+										.createInstance("org.graffiti.attributes."
+												+ typeName, attrName);
 								
 								String path = (displayedAttr.getPath() + " ")
-													.substring(1).trim();
+										.substring(1).trim();
 								
 								for (Iterator geit = graphElements.iterator(); geit
-													.hasNext();) {
+										.hasNext();) {
 									Attributable atbl = (Attributable) geit.next();
 									atbl.addAttribute((Attribute) newAttr.copy(), path);
 								}
@@ -1043,8 +1054,8 @@ public class DefaultEditPanel extends EditPanel {
 								// ((CollectionAttribute) displayedAttr).add(newAttr);
 							} catch (InstanceCreationException ice2) {
 								JOptionPane.showMessageDialog(DefaultEditPanel.this,
-													"Could not instantiate class: " + ice2, "Error!",
-													JOptionPane.OK_OPTION);
+										"Could not instantiate class: " + ice2, "Error!",
+										JOptionPane.OK_OPTION);
 							}
 						}
 					} else {
@@ -1052,17 +1063,17 @@ public class DefaultEditPanel extends EditPanel {
 							Attribute newAttr;
 							if (typeName.equals(StringAttribute.class.getName())) {
 								newAttr = StringAttribute
-													.getTypedStringAttribute(attrName);
+										.getTypedStringAttribute(attrName);
 							} else {
 								newAttr = (Attribute) InstanceLoader.createInstance(
-													typeName, attrName);
+										typeName, attrName);
 							}
 							
 							String path = (displayedAttr.getPath() + " ").substring(1)
-												.trim();
+									.trim();
 							
 							for (Iterator geit = graphElements.iterator(); geit
-												.hasNext();) {
+									.hasNext();) {
 								Attributable atbl = (Attributable) geit.next();
 								atbl.addAttribute((Attribute) newAttr.copy(), path);
 							}
@@ -1070,10 +1081,10 @@ public class DefaultEditPanel extends EditPanel {
 							// ((CollectionAttribute) displayedAttr).add(newAttr);
 						} catch (InstanceCreationException ice) {
 							JOptionPane
-												.showMessageDialog(
-																	DefaultEditPanel.this,
-																	"Attribute could not be created. Check Attribute-Type.",
-																	"Error", JOptionPane.OK_OPTION);
+									.showMessageDialog(
+											DefaultEditPanel.this,
+											"Attribute could not be created. Check Attribute-Type.",
+											"Error", JOptionPane.OK_OPTION);
 						}
 					}
 					
@@ -1135,18 +1146,18 @@ public class DefaultEditPanel extends EditPanel {
 				super(frame, "Attribute creation", true);
 				
 				selectALNText = new JLabel(
-									"<html>Please enter a <i>name (label)</i> for the new "
-														+ "attribute:</html>");
+						"<html>Please enter a <i>name (label)</i> for the new "
+								+ "attribute:</html>");
 				
 				labelTextField = new JTextField();
 				
 				selectACNText = new JLabel(
-									"<html>Please enter or select an <i>attribute class "
-														+ "name</i> (type of the attribute, e.g. Double, Boolean, String).");
+						"<html>Please enter or select an <i>attribute class "
+								+ "name</i> (type of the attribute, e.g. Double, Boolean, String).");
 				String labelText2;
 				if (parentAttrName != null && parentAttrName.length() > 0)
 					labelText2 = "<html>It will be added to \"<i>" + parentAttrName
-										+ "</i>\":";
+							+ "</i>\":";
 				else
 					labelText2 = "";
 				selectACNText2 = new JLabel(labelText2);
@@ -1211,12 +1222,11 @@ public class DefaultEditPanel extends EditPanel {
 			}
 			
 			private String[] getAttributeList() {
-				List r = PluginHelper.getAvailableAttributes();
+				List<Class<? extends Attribute>> r = PluginHelper.getAvailableAttributes();
 				String[] result = new String[r.size()];
 				int i = 0;
-				for (Iterator it = r.iterator(); it.hasNext();) {
-					Class c = (Class) it.next();
-					result[i++] = c.getName();
+				for (Class<? extends Attribute> classAttribute : r) {
+					result[i++] = classAttribute.getName();
 				}
 				return result;
 			}
@@ -1259,9 +1269,9 @@ public class DefaultEditPanel extends EditPanel {
 		 */
 		public void actionPerformed(ActionEvent e) {
 			if (JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(
-								DefaultEditPanel.this, "Attribute that will be removed: \""
-													+ displayedAttr.getPath() + "\"", "Remove an attribute",
-								JOptionPane.YES_NO_OPTION)) {
+					DefaultEditPanel.this, "Attribute that will be removed: \""
+							+ displayedAttr.getPath() + "\"", "Remove an attribute",
+					JOptionPane.YES_NO_OPTION)) {
 				Attributable attributable = displayedAttr.getAttributable();
 				Graph graph = null;
 				
@@ -1275,7 +1285,7 @@ public class DefaultEditPanel extends EditPanel {
 				
 				try {
 					String attrPath = (displayedAttr.getPath() + " ").substring(1)
-										.trim();
+							.trim();
 					
 					for (Iterator geit = graphElements.iterator(); geit.hasNext();) {
 						Attributable atbl = (Attributable) geit.next();
@@ -1287,8 +1297,8 @@ public class DefaultEditPanel extends EditPanel {
 					throw new RuntimeException("Impossible:" + anfe);
 				} catch (NullPointerException nully) {
 					JOptionPane.showMessageDialog(DefaultEditPanel.this,
-										"Can't remove root attribute!", "Error!",
-										JOptionPane.OK_OPTION);
+							"Can't remove root attribute!", "Error!",
+							JOptionPane.OK_OPTION);
 					
 					return;
 				} finally {
@@ -1306,7 +1316,7 @@ public class DefaultEditPanel extends EditPanel {
 	public void showEmpty() {
 		this.displayedAttr = null;
 		this.displayedValueEditComponents = null;
-		this.editComponentsMap = null;
+//		this.editComponentsMap = null;
 		this.graphElements = null;
 		this.mapValueEditComponent2AttributeList = null;
 		

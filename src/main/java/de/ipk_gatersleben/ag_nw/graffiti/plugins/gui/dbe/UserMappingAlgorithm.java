@@ -9,9 +9,12 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -21,6 +24,7 @@ import org.Release;
 import org.ReleaseInfo;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import com.wcohen.secondstring.Levenstein;
 
@@ -54,6 +58,14 @@ public class UserMappingAlgorithm extends AbstractAlgorithm {
 		return "Analysis";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION,
+				Category.DATA
+				));
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()

@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 import javax.swing.KeyStroke;
@@ -36,6 +38,7 @@ import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.ColorAttribute;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.graffiti.plugins.inspectors.defaults.DefaultEditPanel;
@@ -162,7 +165,7 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 	}
 	
 	public static void enumerateAttributes(
-						ArrayList<AttributePathNameSearchType> possibleAttributes,
+			ArrayList<AttributePathNameSearchType> possibleAttributes,
 						Attributable attr, HashSet<SearchType> validSearchTypes) {
 		CollectionAttribute ca = attr.getAttributes();
 		Stack<CollectionAttribute> catts = new Stack<CollectionAttribute>();
@@ -220,7 +223,7 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 	}
 	
 	private static boolean listContains(
-						ArrayList<AttributePathNameSearchType> possibleAttributes,
+			ArrayList<AttributePathNameSearchType> possibleAttributes,
 						String desc, boolean inNode, boolean inEdge) {
 		boolean result = false;
 		for (AttributePathNameSearchType a : possibleAttributes) {
@@ -249,7 +252,7 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Search...";
+		return "Search";
 	}
 	
 	@Override
@@ -257,6 +260,13 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 		return "menu.edit";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.SELECTION
+				));
+	}
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 

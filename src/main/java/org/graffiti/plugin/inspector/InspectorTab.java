@@ -10,6 +10,8 @@
 package org.graffiti.plugin.inspector;
 
 import java.awt.Color;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -19,6 +21,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.Border;
 
 import org.ErrorMsg;
+import org.apache.log4j.Logger;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.view.View;
 import org.graffiti.selection.SelectionListener;
@@ -30,7 +33,20 @@ import org.graffiti.selection.SelectionListener;
  * @see InspectorPlugin
  */
 public abstract class InspectorTab
-					extends JComponent {
+		extends JComponent implements ComponentListener {
+	
+	private static Logger logger = Logger.getLogger(InspectorTab.class);
+	
+	public static final int TAB_LEADING = Integer.MIN_VALUE;
+	public static final int TAB_TRAILING = Integer.MAX_VALUE;
+	public static final int TAB_RANDOM = 0;
+	
+	/*
+	 * a list of standard preference keys for use with preferences
+	 * standard naming
+	 */
+	public static final String PREFERENCE_TAB_SHOW = "Show";
+	
 	// ~ Instance fields ========================================================
 	
 	/**
@@ -52,7 +68,16 @@ public abstract class InspectorTab
 	
 	private ImageIcon icon;
 	
+	private int preferredTabPosition = 0;
+	
 	// ~ Methods ================================================================
+	
+	/**
+	 * 
+	 */
+	public InspectorTab() {
+		addComponentListener(this);
+	}
 	
 	/**
 	 * Returns the EditPanel of this tab.
@@ -86,9 +111,10 @@ public abstract class InspectorTab
 		if (currentlyHighlight)
 			return;
 		currentlyHighlight = true;
-		JTabbedPane tp = (JTabbedPane) getParent();
-		if (tp != null) {
-			tp.setSelectedComponent(this);
+		
+		if (getParent() != null) {
+			((JTabbedPane) getParent()).setSelectedComponent(this);
+			
 			final Border oldB = getBorder();
 			final InspectorTab fit = this;
 			if (whenFinishedHighlight != null)
@@ -113,14 +139,14 @@ public abstract class InspectorTab
 								ContainsTabbedPane sh = (ContainsTabbedPane) whenFinishedHighlight;
 								if (cycleChildren) {
 									cycleHighlight(whenFinishedHighlight,
-														highlight, oldB, sh);
+											highlight, oldB, sh);
 								}
 							}
 						} else {
 							if (cycleChildren && fit instanceof SubtabHostTab) {
 								SubtabHostTab sh = (SubtabHostTab) fit;
 								cycleHighlight(sh,
-													highlight, oldB, sh);
+										highlight, oldB, sh);
 							}
 						}
 					} finally {
@@ -129,9 +155,9 @@ public abstract class InspectorTab
 				}
 				
 				private void cycleHighlight(
-									final InspectorTab tab,
-									final boolean highlight, final Border oldB,
-									ContainsTabbedPane sh) {
+						final InspectorTab tab,
+						final boolean highlight, final Border oldB,
+						ContainsTabbedPane sh) {
 					if (highlight)
 						tab.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.RED, 4), tab.getTitle()));
 					tab.repaint();
@@ -158,7 +184,7 @@ public abstract class InspectorTab
 	}
 	
 	public static void focusAndHighlightComponent(final JComponent thisss, final String title, final InspectorTab whenFinishedHighlight,
-						final boolean highlight, final boolean cycleChildren) {
+			final boolean highlight, final boolean cycleChildren) {
 		final int time = 800;
 		JTabbedPane tp = (JTabbedPane) thisss.getParent();
 		if (tp != null) {
@@ -186,22 +212,22 @@ public abstract class InspectorTab
 							ContainsTabbedPane sh = (ContainsTabbedPane) whenFinishedHighlight;
 							if (cycleChildren) {
 								cycleHighlight(whenFinishedHighlight,
-													highlight, oldB, sh);
+										highlight, oldB, sh);
 							}
 						}
 					} else {
 						if (cycleChildren && thisss instanceof SubtabHostTab) {
 							SubtabHostTab sh = (SubtabHostTab) thisss;
 							cycleHighlight(sh,
-												highlight, oldB, sh);
+									highlight, oldB, sh);
 						}
 					}
 				}
 				
 				private void cycleHighlight(
-									final InspectorTab tab,
-									final boolean highlight, final Border oldB,
-									ContainsTabbedPane sh) {
+						final InspectorTab tab,
+						final boolean highlight, final Border oldB,
+						ContainsTabbedPane sh) {
 					if (highlight)
 						tab.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.RED, 4), tab.getTitle()));
 					tab.repaint();
@@ -228,10 +254,22 @@ public abstract class InspectorTab
 	}
 	
 	public void setEditPanelInformation(
-						Map<?, ?> valueEditComponents,
-						Map<GraphElement, GraphElement> map) {
+			Map<?, ?> valueEditComponents,
+			Map<GraphElement, GraphElement> map) {
 		if (getEditPanel() != null) {
 			getEditPanel().setEditComponentMap(valueEditComponents);
+			getEditPanel().setGraphElementMap(map);
+		}
+	}
+	
+	public void setEditPanelComponentMap(Map<?, ?> valueEditComponents) {
+		if (getEditPanel() != null) {
+			getEditPanel().setEditComponentMap(valueEditComponents);
+		}
+	}
+	
+	public void setEditPanelGraphElementMap(Map<GraphElement, GraphElement> map) {
+		if (getEditPanel() != null) {
 			getEditPanel().setGraphElementMap(map);
 		}
 	}
@@ -244,9 +282,60 @@ public abstract class InspectorTab
 		return icon;
 	}
 	
+	/**
+	 * returns a path string, that tells Vanted, where to put this tab. It is a dot-delimited string
+	 * if it is not overridden, it'll return null and Vanted will put this tab
+	 * on the root level
+	 * If the path is not empty, Vanted puts this tab as child in the given tab hierarchy
+	 * Example: return 'Network' and this tab is put as child in the Network Tab
+	 * If the parent tab does not exist, it will be created
+	 * 
+	 * @return
+	 */
+	public String getTabParentPath() {
+		return null;
+	}
+	
+	/**
+	 * Returns the preferred tab position in its parent tab.
+	 * It can be InspectorTab.{LEADING,TRAILING,RANDOM,POSNUM} where POSNUM is the absolute positionnumber
+	 * This gives more control about the layout of subtabs
+	 * 
+	 * @return
+	 */
+	public int getPreferredTabPosition() {
+		return preferredTabPosition;
+	}
+	
+	public void setPreferredTabPosition(int preferredTabPosition) {
+		this.preferredTabPosition = preferredTabPosition;
+	}
+	
 	public boolean isSelectionListener() {
 		return (this instanceof SelectionListener);
 	}
+	
+	/**
+	 * override this method to trigger any action to be done, if this tab
+	 * gains visibility
+	 */
+	@Override
+	public void componentShown(ComponentEvent e) {
+//		logger.debug("Showing "+ getTitle());
+	}
+	
+	@Override
+	public void componentResized(ComponentEvent e) {
+	}
+	
+	@Override
+	public void componentMoved(ComponentEvent e) {
+	}
+	
+	@Override
+	public void componentHidden(ComponentEvent e) {
+	}
+	
 }
 
 // ------------------------------------------------------------------------------

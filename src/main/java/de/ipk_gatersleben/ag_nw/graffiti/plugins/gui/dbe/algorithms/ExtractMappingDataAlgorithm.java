@@ -8,14 +8,19 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.algorithms;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
+import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
@@ -48,12 +53,21 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 		return "Mapping";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.DATA,
+				Category.UI,
+				Category.EXPORT
+				));
+	}
+	
 	private boolean onlyOne = false;
 	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new BooleanParameter(onlyOne, "Extract single experiment",
-							"<html>If enabled, all experiments will be merged together") };
+				"<html>If enabled, all experiments will be merged together") };
 	}
 	
 	@Override
@@ -70,7 +84,7 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 		// graph.getListenerManager().transactionStarted(this);
 		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
 		final BackgroundTaskStatusProviderSupportingExternalCall status =
-							new BackgroundTaskStatusProviderSupportingExternalCallImpl("Initialize...", "");
+				new BackgroundTaskStatusProviderSupportingExternalCallImpl("Initialize...", "");
 		if (workNodes.size() > 0)
 			BackgroundTaskHelper.issueSimpleTask(getName(), "Initialize...", new Runnable() {
 				public void run() {
@@ -78,7 +92,7 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 					status.setCurrentStatusText1("Extracting mapped data...");
 					status.setCurrentStatusText2("");
 					Graph g = workNodes.iterator().next().getGraph();
-					g.getListenerManager().transactionStarted(ExtractMappingDataAlgorithm.this);
+//					g.getListenerManager().transactionStarted(ExtractMappingDataAlgorithm.this);
 					try {
 						status.setCurrentStatusText2("Getting mapped data from elements");
 						status.setCurrentStatusValue(0);
@@ -94,7 +108,7 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 						
 						status.setCurrentStatusValue(-1);
 					} finally {
-						g.getListenerManager().transactionFinished(ExtractMappingDataAlgorithm.this, false, status);
+//						g.getListenerManager().transactionFinished(ExtractMappingDataAlgorithm.this, false, status);
 						status.setCurrentStatusValue(100);
 					}
 					if (status.wantsToStop())
@@ -108,10 +122,22 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 		
 	}
 	
+	@Override
+	public void check() throws PreconditionException {
+		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
+		for (GraphElement element : workNodes) {
+			if (GraphElementHelper.hasDataMapping(element))
+				return;
+		}
+		throw new PreconditionException("Network does not contain any experimental data.");
+	}
+	
 	public static Collection<ExperimentInterface> getExperiments(Collection<GraphElement> workNodes, boolean onlyOne,
 			BackgroundTaskStatusProviderSupportingExternalCall status) {
 		HashMap<String, ExperimentInterface> allData = new HashMap<String, ExperimentInterface>();
 		for (GraphElement ge : workNodes) {
+			if (!GraphElementHelper.hasDataMapping(ge))
+				continue;
 			if (status != null && status.wantsToStop())
 				break;
 			GraphElementHelper geh = new GraphElementHelper(ge);

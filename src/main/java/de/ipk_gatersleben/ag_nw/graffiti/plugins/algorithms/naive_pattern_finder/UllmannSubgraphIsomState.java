@@ -11,6 +11,9 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.AttributeHelper;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
@@ -25,8 +28,17 @@ import org.graffiti.graphics.NodeLabelAttribute;
  * @author Dirk Koschützki, some performance optimization by Christian Klukas
  */
 class UllmannSubgraphIsomState
-					implements State {
+		implements State {
 	
+	private static final Logger logger = Logger.getLogger(UllmannSubgraphIsomState.class);
+	
+	static {
+		logger.setLevel(Level.INFO);
+	}
+	/*
+	 * for debugging
+	 */
+	public int currentRecursionLevel = 0;
 	/**
 	 * The graph we are searching within.
 	 */
@@ -98,7 +110,7 @@ class UllmannSubgraphIsomState
 	 */
 	private UllmannSubgraphIsomState(boolean ignoreEdgeDirection) {
 		this.ignoreEdgeDirection = ignoreEdgeDirection;
-		
+//		logger.setLevel(Level.DEBUG);
 		node2neighbour.clear();
 		patNode2neighbour.clear();
 	}
@@ -170,40 +182,40 @@ class UllmannSubgraphIsomState
 					 * - and if the labels are compatible to each other.
 					 */
 					int nodeOfTargetGraphInDegree =
-										nodeOfTargetGraph.getInDegree();
+							nodeOfTargetGraph.getInDegree();
 					int nodeOfTargetGraphOutDegree =
-										nodeOfTargetGraph.getOutDegree();
+							nodeOfTargetGraph.getOutDegree();
 					
 					int nodeOfPatternGraphInDegree =
-										nodeOfPatternGraph.getInDegree();
+							nodeOfPatternGraph.getInDegree();
 					int nodeOfPatternGraphOutDegree =
-										nodeOfPatternGraph.getOutDegree();
+							nodeOfPatternGraph.getOutDegree();
 					
 					int patternGraphMinAddIn =
-										PatternAttributeUtils.getMinAddIncEdges(nodeOfPatternGraph);
+							PatternAttributeUtils.getMinAddIncEdges(nodeOfPatternGraph);
 					int patternGraphMaxAddIn =
-										PatternAttributeUtils.getMaxAddIncEdges(nodeOfPatternGraph);
+							PatternAttributeUtils.getMaxAddIncEdges(nodeOfPatternGraph);
 					
 					int patternGraphMinAddOut =
-										PatternAttributeUtils.getMinAddOutEdges(nodeOfPatternGraph);
+							PatternAttributeUtils.getMinAddOutEdges(nodeOfPatternGraph);
 					int patternGraphMaxAddOut =
-										PatternAttributeUtils.getMaxAddOutEdges(nodeOfPatternGraph);
+							PatternAttributeUtils.getMaxAddOutEdges(nodeOfPatternGraph);
 					
 					boolean compatibleInDegree =
-										((nodeOfPatternGraphInDegree + patternGraphMinAddIn) <= nodeOfTargetGraphInDegree)
-															&& (nodeOfTargetGraphInDegree <= (nodeOfPatternGraphInDegree
-															+ patternGraphMaxAddIn));
+							((nodeOfPatternGraphInDegree + patternGraphMinAddIn) <= nodeOfTargetGraphInDegree)
+									&& (nodeOfTargetGraphInDegree <= (nodeOfPatternGraphInDegree
+									+ patternGraphMaxAddIn));
 					
 					boolean compatibleOutDegree =
-										((nodeOfPatternGraphOutDegree + patternGraphMinAddOut) <= nodeOfTargetGraphOutDegree)
-															&& (nodeOfTargetGraphOutDegree <= (nodeOfPatternGraphOutDegree
-															+ patternGraphMaxAddOut));
+							((nodeOfPatternGraphOutDegree + patternGraphMinAddOut) <= nodeOfTargetGraphOutDegree)
+									&& (nodeOfTargetGraphOutDegree <= (nodeOfPatternGraphOutDegree
+									+ patternGraphMaxAddOut));
 					
 					boolean compatibleLabels =
-										isCompatibleNode(nodeOfPatternGraph, nodeOfTargetGraph);
-					
+							isCompatibleNode(nodeOfPatternGraph, nodeOfTargetGraph);
+//					compatibleLabels = true;
 					compatibilityMatrix[i][j] = compatibleInDegree && compatibleOutDegree
-										&& compatibleLabels;
+							&& compatibleLabels;
 				} else {
 					/*
 					 * Two nodes are compatible, if
@@ -212,22 +224,22 @@ class UllmannSubgraphIsomState
 					 * - and if the labels are compatible to each other.
 					 */
 					int nodeOfTargetGraphDegree =
-										nodeOfTargetGraph.getDegree();
+							nodeOfTargetGraph.getDegree();
 					
 					int nodeOfPatternGraphDegree =
-										nodeOfPatternGraph.getDegree();
+							nodeOfPatternGraph.getDegree();
 					
 					int patternGraphMinAdd =
-										PatternAttributeUtils.getMinAddIncEdges(nodeOfPatternGraph);
+							PatternAttributeUtils.getMinAddIncEdges(nodeOfPatternGraph);
 					int patternGraphMaxAdd =
-										PatternAttributeUtils.getMaxAddIncEdges(nodeOfPatternGraph);
+							PatternAttributeUtils.getMaxAddIncEdges(nodeOfPatternGraph);
 					
 					boolean compatibleDegree =
-										((nodeOfPatternGraphDegree + patternGraphMinAdd) <= nodeOfTargetGraphDegree)
-															&& (nodeOfTargetGraphDegree <= (nodeOfPatternGraphDegree + patternGraphMaxAdd));
+							((nodeOfPatternGraphDegree + patternGraphMinAdd) <= nodeOfTargetGraphDegree)
+									&& (nodeOfTargetGraphDegree <= (nodeOfPatternGraphDegree + patternGraphMaxAdd));
 					
 					boolean compatibleLabels =
-										isCompatibleNode(nodeOfPatternGraph, nodeOfTargetGraph);
+							isCompatibleNode(nodeOfPatternGraph, nodeOfTargetGraph);
 					
 					compatibilityMatrix[i][j] = compatibleDegree && compatibleLabels;
 					
@@ -268,7 +280,7 @@ class UllmannSubgraphIsomState
 			return false;
 		}
 		while (prevTargetNodeID < numberOfNodesInTargetGraph
-							&& !compatibilityMatrix[prevPatternNodeID][prevTargetNodeID]) {
+				&& !compatibilityMatrix[prevPatternNodeID][prevTargetNodeID]) {
 			prevTargetNodeID++;
 		}
 		
@@ -335,7 +347,36 @@ class UllmannSubgraphIsomState
 			compatibilityMatrix[k][nodeOfTargetGraph] = false;
 		}
 		
-		refine();
+		/*
+		 * if (logger.getLevel() == Level.DEBUG) {
+		 * logger.debug("matrix after setting elements in compatibilityMatrix to false:");
+		 * printCompatibilityMatrix();
+		 * }
+		 * // refine();
+		 * if (logger.getLevel() == Level.DEBUG) {
+		 * logger.debug("matrix after refine");
+		 * printCompatibilityMatrix();
+		 * }
+		 */
+		if (logger.getLevel() == Level.DEBUG) {
+			
+			System.out.print("coreSetOfPatternGraph patterIds -> targetIds: ");
+			for (int i = 0; i < coreSetOfPatternGraph.length; i++)
+				if (coreSetOfPatternGraph[i] >= 0)
+					System.out.print(
+							AttributeHelper.getLabel(numberedNodesInPatternGraph[i], Integer.toString(i)) + " -> "
+									+ AttributeHelper.getLabel(numberedNodesInTargetGraph[coreSetOfPatternGraph[i]], Integer.toString(i)) + ", ");
+			System.out.println();
+			
+			System.out.print(" coreSetOfTargetGraph targetIds -> patterIds: ");
+			for (int i = 0; i < coreSetOfTargetGraph.length; i++)
+				if (coreSetOfTargetGraph[i] >= 0)
+					System.out.print(
+							AttributeHelper.getLabel(numberedNodesInTargetGraph[i], Integer.toString(i)) + " -> "
+									+ AttributeHelper.getLabel(numberedNodesInPatternGraph[coreSetOfTargetGraph[i]], Integer.toString(i)) + ", ");
+			System.out.println();
+			
+		}
 	}
 	
 	/**
@@ -424,9 +465,9 @@ class UllmannSubgraphIsomState
 	 */
 	public Node[] getMatchingNodesOfTarget() {
 		int sizeOfArray =
-							numberOfNodesInPatternGraph <= numberOfNodesInTargetGraph
-												? numberOfNodesInPatternGraph
-												: numberOfNodesInTargetGraph;
+				numberOfNodesInPatternGraph <= numberOfNodesInTargetGraph
+						? numberOfNodesInPatternGraph
+						: numberOfNodesInTargetGraph;
 		
 		int[] resultNodeIds = new int[sizeOfArray];
 		int i;
@@ -449,9 +490,9 @@ class UllmannSubgraphIsomState
 	 */
 	public Node[] getMatchingNodesOfPattern() {
 		int sizeOfArray =
-							numberOfNodesInPatternGraph <= numberOfNodesInTargetGraph
-												? numberOfNodesInPatternGraph
-												: numberOfNodesInTargetGraph;
+				numberOfNodesInPatternGraph <= numberOfNodesInTargetGraph
+						? numberOfNodesInPatternGraph
+						: numberOfNodesInTargetGraph;
 		
 		int[] resultNodeIds = new int[sizeOfArray];
 		int i;
@@ -475,17 +516,17 @@ class UllmannSubgraphIsomState
 	@Override
 	public Object clone() {
 		UllmannSubgraphIsomState newState = new UllmannSubgraphIsomState(ignoreEdgeDirection);
-		
+		newState.currentRecursionLevel = this.currentRecursionLevel;
 		newState.patternGraph = this.patternGraph;
 		newState.targetGraph = this.targetGraph;
 		
 		newState.numberOfNodesInTargetGraph = this.numberOfNodesInTargetGraph;
 		newState.numberOfNodesInPatternGraph =
-							this.numberOfNodesInPatternGraph;
+				this.numberOfNodesInPatternGraph;
 		
 		newState.numberedNodesInTargetGraph = this.numberedNodesInTargetGraph;
 		newState.numberedNodesInPatternGraph =
-							this.numberedNodesInPatternGraph;
+				this.numberedNodesInPatternGraph;
 		
 		newState.node2neighbour = this.node2neighbour;
 		newState.patNode2neighbour = this.patNode2neighbour;
@@ -496,9 +537,9 @@ class UllmannSubgraphIsomState
 		newState.currentLengthOfCore = this.currentLengthOfCore;
 		
 		newState.coreSetOfTargetGraph =
-							new int[this.numberOfNodesInTargetGraph];
+				new int[this.numberOfNodesInTargetGraph];
 		newState.coreSetOfPatternGraph =
-							new int[this.numberOfNodesInPatternGraph];
+				new int[this.numberOfNodesInPatternGraph];
 		
 		for (int i = 0; i < this.numberOfNodesInTargetGraph; i++) {
 			newState.coreSetOfTargetGraph[i] = this.coreSetOfTargetGraph[i];
@@ -509,17 +550,17 @@ class UllmannSubgraphIsomState
 		}
 		
 		newState.compatibilityMatrix =
-							new boolean[this.numberOfNodesInPatternGraph][];
+				new boolean[this.numberOfNodesInPatternGraph][];
 		
 		for (int i = 0; i < this.numberOfNodesInPatternGraph; i++) {
 			newState.compatibilityMatrix[i] =
-								new boolean[this.numberOfNodesInTargetGraph];
+					new boolean[this.numberOfNodesInTargetGraph];
 		}
 		
 		for (int i = 0; i < this.numberOfNodesInPatternGraph; i++) {
 			for (int j = 0; j < this.numberOfNodesInTargetGraph; j++) {
 				newState.compatibilityMatrix[i][j] =
-									this.compatibilityMatrix[i][j];
+						this.compatibilityMatrix[i][j];
 			}
 		}
 		
@@ -536,7 +577,7 @@ class UllmannSubgraphIsomState
 	 */
 	@Override
 	protected void finalize()
-						throws Throwable {
+			throws Throwable {
 		coreSetOfPatternGraph = null;
 		coreSetOfTargetGraph = null;
 		
@@ -587,53 +628,114 @@ class UllmannSubgraphIsomState
 			
 			if (neighboursOfPatN1 == null) {
 				for (Node n : numberedNodesInPatternGraph) {
-					if (ignoreEdgeDirection)
-						patNode2neighbour.put(n, new HashSet<Node>(n.getNeighbors()));
-					else
-						patNode2neighbour.put(n, new HashSet<Node>(n.getOutNeighbors()));
+					if (ignoreEdgeDirection) {
+						HashSet<Node> hashSet = new HashSet<Node>(n.getNeighbors());
+						/*
+						 * remove self loops (edges to the same node)
+						 */
+						hashSet.remove(n);
+						patNode2neighbour.put(n, hashSet);
+					}
+					else {
+						HashSet<Node> hashSet = new HashSet<Node>(n.getOutNeighbors());
+						/*
+						 * remove self loops (edges to the same node)
+						 */
+						hashSet.remove(n);
+						
+						patNode2neighbour.put(n, hashSet);
+					}
 				}
 				neighboursOfPatN1 = patNode2neighbour.get(patternNode1);
 			}
-			
-			for (targetN1 = 0; targetN1 < numberOfNodesInTargetGraph; targetN1++) {
+			if (logger.getLevel() == Level.DEBUG) {
+				System.out.print("Pattern[" + patN1 + "] ");
+				printNeighbours(patternNode1, neighboursOfPatN1);
+			}
+			//changed start from 0 to currentLengthOfCore
+			for (targetN1 = currentLengthOfCore; targetN1 < numberOfNodesInTargetGraph; targetN1++) {
 				targetNode1 = numberedNodesInTargetGraph[targetN1];
 				
 				HashSet<Node> neighboursOfTargetN1 = node2neighbour.get(targetNode1);
 				if (neighboursOfTargetN1 == null) {
 					for (Node n : numberedNodesInTargetGraph) {
-						if (ignoreEdgeDirection)
-							node2neighbour.put(n, new HashSet<Node>(n.getNeighbors()));
-						else
-							node2neighbour.put(n, new HashSet<Node>(n.getOutNeighbors()));
+						if (ignoreEdgeDirection) {
+							HashSet<Node> hashSet = new HashSet<Node>(n.getNeighbors());
+							/*
+							 * remove self loops (edges to the same node)
+							 */
+							hashSet.remove(n);
+							node2neighbour.put(n, hashSet);
+						}
+						else {
+							HashSet<Node> hashSet = new HashSet<Node>(n.getOutNeighbors());
+							/*
+							 * remove self loops (edges to the same node)
+							 */
+							hashSet.remove(n);
+							
+							node2neighbour.put(n, hashSet);
+						}
 					}
 					neighboursOfTargetN1 = node2neighbour.get(targetNode1);
 				}
-				
+				if (logger.getLevel() == Level.DEBUG) {
+					System.out.print("Target[" + targetN1 + "] ");
+					printNeighbours(targetNode1, neighboursOfTargetN1);
+				}
 				if (compatibilityMatrix[patN1][targetN1]) {
+					logger.debug("compatibilityMatrix[" + patN1 + "][" + targetN1 + "] == true");
 					for (patN2 = currentLengthOfCore - 1; patN2 < currentLengthOfCore; patN2++) {
 						targetN2 = coreSetOfPatternGraph[patN2];
 						patternNode2 = numberedNodesInPatternGraph[patN2];
 						targetNode2 = numberedNodesInTargetGraph[targetN2];
-						
+						if (logger.getLevel() == Level.DEBUG) {
+							System.out.println("checking edge (PNode[" + patN1 + "]-PNode[" + patN2 + "]): "
+									+ AttributeHelper.getLabel(patternNode1, patternNode1.toString())
+									+ " - " + AttributeHelper.getLabel(patternNode2, patternNode2.toString()));
+							System.out.println("checking edge (TNode[" + targetN1 + "]-TNode[" + targetN2 + "]): "
+									+ AttributeHelper.getLabel(targetNode1, targetNode1.toString())
+									+ " - " + AttributeHelper.getLabel(targetNode2, targetNode2.toString()));
+						}
 						if (!ignoreEdgeDirection) {
-							edge_exists_pn12 = neighboursOfPatN1.contains(patternNode2);
-							edge_exists_pn21 = patNode2neighbour.get(patternNode2).contains(patternNode1);
-							edge_exists_tn12 = neighboursOfTargetN1.contains(targetNode2);
-							edge_exists_tn21 = node2neighbour.get(targetNode2).contains(targetNode1);
+							if (neighboursOfPatN1 != null)
+								edge_exists_pn12 = neighboursOfPatN1.contains(patternNode2);
+							else
+								edge_exists_pn12 = false;
+							if (patNode2neighbour.get(patternNode2) != null)
+								edge_exists_pn21 = patNode2neighbour.get(patternNode2).contains(patternNode1);
+							else
+								edge_exists_pn21 = false;
+							
+							if (neighboursOfTargetN1 != null)
+								edge_exists_tn12 = neighboursOfTargetN1.contains(targetNode2);
+							else
+								edge_exists_tn12 = false;
+							
+							if (node2neighbour.get(targetNode2) != null)
+								edge_exists_tn21 = node2neighbour.get(targetNode2).contains(targetNode1);
+							else
+								edge_exists_tn21 = false;
 							
 							if (edge_exists_pn12 != edge_exists_tn12 || edge_exists_pn21 != edge_exists_tn21) {
+								if (logger.getLevel() == Level.DEBUG)
+									System.out.println("compatibilityMatrix: setting pat[" + patN1 + "]:target[" + targetN1 + "] to false");
 								compatibilityMatrix[patN1][targetN1] = false;
 								break;
 							} else
 								if (edge_exists_pn12
-													&& !compatibleEdgeExists(patternNode1, patternNode2,
-																		targetNode1, targetNode2)) {
+										&& !compatibleEdgeExists(patternNode1, patternNode2,
+												targetNode1, targetNode2)) {
+									if (logger.getLevel() == Level.DEBUG)
+										System.out.println("compatibilityMatrix: setting pat[" + patN1 + "]:target[" + targetN1 + "] to false");
 									compatibilityMatrix[patN1][targetN1] = false;
 									break;
 								} else
 									if (edge_exists_pn21
-														&& !compatibleEdgeExists(patternNode2, patternNode1,
-																			targetNode2, targetNode1)) {
+											&& !compatibleEdgeExists(patternNode2, patternNode1,
+													targetNode2, targetNode1)) {
+										if (logger.getLevel() == Level.DEBUG)
+											System.out.println("compatibilityMatrix: setting pat[" + patN1 + "]:target[" + targetN1 + "] to false");
 										compatibilityMatrix[patN1][targetN1] = false;
 										break;
 									}
@@ -646,18 +748,22 @@ class UllmannSubgraphIsomState
 								break;
 							} else
 								if (edge_exists_pn12
-													&& !compatibleEdgeExists(patternNode1, patternNode2,
-																		targetNode1, targetNode2)
-													&& !compatibleEdgeExists(patternNode2, patternNode1,
-																		targetNode1, targetNode2)
-													&& !compatibleEdgeExists(patternNode1, patternNode2,
-																		targetNode2, targetNode1)
-															&& !compatibleEdgeExists(patternNode2, patternNode1,
-																				targetNode2, targetNode1)) {
+										&& !compatibleEdgeExists(patternNode1, patternNode2,
+												targetNode1, targetNode2)
+										&& !compatibleEdgeExists(patternNode2, patternNode1,
+												targetNode1, targetNode2)
+										&& !compatibleEdgeExists(patternNode1, patternNode2,
+												targetNode2, targetNode1)
+										&& !compatibleEdgeExists(patternNode2, patternNode1,
+												targetNode2, targetNode1)) {
 									compatibilityMatrix[patN1][targetN1] = false;
 									break;
 								}
 						}
+					}
+				} else {
+					if (logger.getLevel() == Level.DEBUG) {
+						System.out.println("compatibilityMatrix[" + patN1 + "][" + targetN1 + "] == false");
 					}
 				}
 			}
@@ -675,13 +781,13 @@ class UllmannSubgraphIsomState
 	 * @return true, if the labels are compatible
 	 */
 	private boolean isCompatibleNode(Node nodeOfPatternGraph,
-						Node nodeOfTargetGraph) {
+			Node nodeOfTargetGraph) {
 		NodeLabelAttribute patternNodeLabel;
 		NodeLabelAttribute targetNodeLabel;
 		
 		try {
 			patternNodeLabel =
-								(NodeLabelAttribute) nodeOfPatternGraph.getAttribute("label");
+					(NodeLabelAttribute) nodeOfPatternGraph.getAttribute("label");
 		} catch (AttributeNotFoundException e) {
 			/* The pattern graph has no label, therefore everything is a match */
 			return true;
@@ -689,16 +795,16 @@ class UllmannSubgraphIsomState
 		
 		try {
 			targetNodeLabel =
-								(NodeLabelAttribute) nodeOfTargetGraph.getAttribute("label");
+					(NodeLabelAttribute) nodeOfTargetGraph.getAttribute("label");
 		} catch (AttributeNotFoundException e) {
 			targetNodeLabel = null;
 		}
 		
 		String patternLabel = patternNodeLabel.getLabel();
 		String targetLabel =
-							targetNodeLabel != null
-												? targetNodeLabel.getLabel()
-												: "";
+				targetNodeLabel != null
+						? targetNodeLabel.getLabel()
+						: "";
 		
 		Pattern patternRegExp = Pattern.compile(patternLabel);
 		
@@ -722,9 +828,9 @@ class UllmannSubgraphIsomState
 	 * @return true, if the edges are compatible
 	 */
 	private boolean compatibleEdgeExists(Node sourceNodeOfPatternGraph,
-						Node targetNodeOfPatternGraph,
-						Node sourceNodeOfTargetGraph,
-						Node targetNodeOfTargetGraph) {
+			Node targetNodeOfPatternGraph,
+			Node sourceNodeOfTargetGraph,
+			Node targetNodeOfTargetGraph) {
 		Collection<Edge> allEdgesFromPatternGraph = new HashSet<Edge>();
 		allEdgesFromPatternGraph.addAll(sourceNodeOfPatternGraph.getEdges());
 		allEdgesFromPatternGraph.addAll(targetNodeOfPatternGraph.getEdges());
@@ -741,11 +847,11 @@ class UllmannSubgraphIsomState
 		for (Edge edgeFromPatternGraph : allEdgesFromPatternGraph) {
 			
 			if (edgeFromPatternGraph.getSource() == sourceNodeOfPatternGraph
-								&& edgeFromPatternGraph.getTarget() == targetNodeOfPatternGraph) {
+					&& edgeFromPatternGraph.getTarget() == targetNodeOfPatternGraph) {
 				/* This edge of the pattern graph has to be checked. */
 				for (Edge edgeFromTargetGraph : allEdgesFromTargetGraph) {
 					if (edgeFromTargetGraph.getSource() == sourceNodeOfTargetGraph
-										&& edgeFromTargetGraph.getTarget() == targetNodeOfTargetGraph) {
+							&& edgeFromTargetGraph.getTarget() == targetNodeOfTargetGraph) {
 						edgeFound = true;
 						
 						/* This edge of the target graph has to be checked, too */
@@ -754,33 +860,33 @@ class UllmannSubgraphIsomState
 						
 						try {
 							labelFromPatternGraph =
-												(EdgeLabelAttribute) edgeFromPatternGraph
-																	.getAttribute("label");
+									(EdgeLabelAttribute) edgeFromPatternGraph
+											.getAttribute("label");
 						} catch (AttributeNotFoundException e) {
 							labelFromPatternGraph = null;
 						}
 						
 						try {
 							labelFromTargetGraph =
-												(EdgeLabelAttribute) edgeFromTargetGraph
-																	.getAttribute("label");
+									(EdgeLabelAttribute) edgeFromTargetGraph
+											.getAttribute("label");
 						} catch (AttributeNotFoundException e) {
 							labelFromTargetGraph = null;
 						}
 						
 						String patternLabel =
-											labelFromPatternGraph != null
-																? labelFromPatternGraph.getLabel()
-																: ".*";
+								labelFromPatternGraph != null
+										? labelFromPatternGraph.getLabel()
+										: ".*";
 						String targetLabel =
-											labelFromTargetGraph != null
-																? labelFromTargetGraph.getLabel()
-																: "";
+								labelFromTargetGraph != null
+										? labelFromTargetGraph.getLabel()
+										: "";
 						
 						Pattern patternRegExp = Pattern.compile(patternLabel);
 						
 						Matcher patternMatcher =
-											patternRegExp.matcher(targetLabel);
+								patternRegExp.matcher(targetLabel);
 						
 						compatible = compatible && patternMatcher.matches();
 					}
@@ -831,5 +937,27 @@ class UllmannSubgraphIsomState
 		}
 		
 		return resultNodes;
+	}
+	
+	public void printCompatibilityMatrix() {
+		System.out.print("patNode\\targetNode\t");
+		for (Node n : numberedNodesInTargetGraph)
+			System.out.print(AttributeHelper.getLabel(n, n.toString()) + "\t");
+		System.out.println();
+		for (int y = 0; y < numberedNodesInPatternGraph.length; y++) {
+			System.out.print("\t" + AttributeHelper.getLabel(numberedNodesInPatternGraph[y], numberedNodesInPatternGraph[y].toString()) + "\t\t");
+			for (int x = 0; x < numberedNodesInTargetGraph.length; x++) {
+				System.out.print(compatibilityMatrix[y][x] + "\t");
+			}
+			System.out.println();
+		}
+		
+	}
+	
+	public void printNeighbours(Node source, Collection<Node> neighbours) {
+		System.out.print("Neighbours of '" + AttributeHelper.getLabel(source, source.toString()) + "' -> ");
+		for (Node n : neighbours)
+			System.out.print(AttributeHelper.getLabel(n, n.toString()) + ", ");
+		System.out.println();
 	}
 }

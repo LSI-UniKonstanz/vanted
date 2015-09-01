@@ -5,13 +5,17 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.Vector2d;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -81,7 +85,7 @@ public class CircleLayouterWithMinimumCrossingsAlgorithm extends
 		PreconditionException errors = new PreconditionException();
 		
 		if (graph == null) {
-			errors.add("No graph available!");
+			errors.add("No network available!");
 		}
 		
 		// if (defaultRadius < 0) {
@@ -92,7 +96,7 @@ public class CircleLayouterWithMinimumCrossingsAlgorithm extends
 			throw errors;
 		}
 		if (graph.getNumberOfNodes() <= 0) {
-			throw new PreconditionException("The graph is empty. Cannot run layouter.");
+			throw new PreconditionException("The network is empty. Cannot run layouter.");
 		}
 		
 	}
@@ -196,6 +200,16 @@ public class CircleLayouterWithMinimumCrossingsAlgorithm extends
 	public String getCategory() {
 		return "Layout";
 	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
+	}
+
 	
 	@Override
 	public boolean isLayoutAlgorithm() {

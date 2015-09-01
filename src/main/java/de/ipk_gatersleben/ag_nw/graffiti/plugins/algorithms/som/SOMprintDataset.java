@@ -6,9 +6,14 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.som;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.Release;
 import org.ReleaseInfo;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
@@ -63,6 +68,13 @@ public class SOMprintDataset extends AbstractAlgorithm {
 		return "Analysis";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.DATA,
+				Category.EXPORT
+				));
+	}
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {

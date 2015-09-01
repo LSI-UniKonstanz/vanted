@@ -22,6 +22,7 @@ import javax.swing.Timer;
 
 import org.AttributeHelper;
 import org.Vector2d;
+import org.apache.log4j.Logger;
 import org.graffiti.editor.GraffitiFrame;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
@@ -48,6 +49,9 @@ import org.graffiti.session.Session;
  * @version $Revision: 1.35.6.1 $
  */
 public abstract class MegaTools extends AbstractUndoableTool {
+	
+	static final Logger logger = Logger.getLogger(MegaTools.class);
+	
 	// ~ Instance fields ========================================================
 	
 	// protected EditorSession session;
@@ -130,12 +134,10 @@ public abstract class MegaTools extends AbstractUndoableTool {
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// MainFrame.showMesssage(e.getX()+" - "+e.getY(), MessageType.PERMANENT_INFO);
-		// System.out.println(e.getSource().toString());
+//		 MainFrame.showMesssage(e.getX()+" - "+e.getY(), MessageType.PERMANENT_INFO);
+//		System.out.println(e.getSource().toString());
 		setFoundComponent(findComponentAt(e, e.getX(), e.getY()));
-		
 		setLastMouseComponent(e, foundComponent);
-		
 		informAttributeComponentsAboutMouseEvents(e, foundComponent);
 		
 		boolean useNodeCursor = foundComponent instanceof NodeComponent;
@@ -178,9 +180,9 @@ public abstract class MegaTools extends AbstractUndoableTool {
 					break;
 				}
 				// }
-				if (lastSelectedComp != null && lastSelectedComp.getParent() != null) {
-					lastSelectedComp.getParent().repaint();
-				}
+//				if (lastSelectedComp != null && lastSelectedComp.getParent() != null) {
+//					lastSelectedComp.getParent().repaint();
+//				}
 			}
 		} else {
 			if (lastSelectedComp instanceof GraphElementComponent) {
@@ -358,6 +360,7 @@ public abstract class MegaTools extends AbstractUndoableTool {
 			AttributeComponent ac = (AttributeComponent) c;
 			return view.getComponentForElement((GraphElement) ac.getAttribute().getAttributable());
 		}
+
 		return c;
 	}
 	
@@ -402,7 +405,6 @@ public abstract class MegaTools extends AbstractUndoableTool {
 				Node n = (Node) ge;
 				gelist = findContainingNodes(n);
 			}
-			
 			if (selection.getNodes().contains(ge)
 								|| selection.getEdges().contains(ge)) {
 				if (ctrlPressed) {
@@ -435,7 +437,6 @@ public abstract class MegaTools extends AbstractUndoableTool {
 				if (!ctrlPressed) {
 					// unselect all previously selected and create new selection
 					caller.unDisplayAsMarked(getAllMarkedComps());
-					
 					// selection = new Selection(ACTIVE);
 					// // resetSelectedComps();
 					// selectionModel.add(selection);
@@ -455,7 +456,6 @@ public abstract class MegaTools extends AbstractUndoableTool {
 						}
 					}
 				}
-				
 				if (issueSelectionEventIfSelectionChanged) {
 					fireSelectionChanged();
 				} else {
@@ -543,7 +543,7 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		if (gec != null) {
 			try {
 				GraphElement ge = ((GraphElementComponent) gec).getGraphElement();
-				
+//				logger.debug("selectedContain with selection hash " + selection.hashCode());
 				if (selection.getNodes().contains(ge)
 									|| selection.getEdges().contains(ge)) {
 					return true;

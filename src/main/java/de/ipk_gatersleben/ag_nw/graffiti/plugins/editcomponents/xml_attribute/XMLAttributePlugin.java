@@ -6,11 +6,15 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.xml_attribute;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.StringAttribute;
+import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.EditorPlugin;
+import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.mode.Mode;
 import org.graffiti.plugin.tool.Tool;
+import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiShape;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
@@ -19,8 +23,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
 public class XMLAttributePlugin
 					extends IPK_PluginAdapter
 					implements EditorPlugin {
-	private HashMap<Class<XMLAttribute>, Class<XMLAttributeEditor>> valueEditComponents;
-	private HashMap<?, ?> attributeComponents;
+	private HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
+	private Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
 	
 	public XMLAttributePlugin() {
 		this.attributes = new Class[1];
@@ -28,8 +32,8 @@ public class XMLAttributePlugin
 		
 		StringAttribute.putAttributeType(Experiment2GraphHelper.mapVarName, XMLAttribute.class);
 		
-		valueEditComponents = new HashMap<Class<XMLAttribute>, Class<XMLAttributeEditor>>();
-		attributeComponents = new HashMap<Object, Object>();
+		valueEditComponents = new HashMap<>();
+		attributeComponents = new HashMap<>();
 		
 		valueEditComponents.put(
 							XMLAttribute.class,
@@ -40,7 +44,7 @@ public class XMLAttributePlugin
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.EditorPlugin#getAttributeComponents()
 	 */
-	public Map<?, ?> getAttributeComponents() {
+	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
 	
@@ -80,7 +84,7 @@ public class XMLAttributePlugin
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.EditorPlugin#getValueEditComponents()
 	 */
-	public Map<Class<XMLAttribute>, Class<XMLAttributeEditor>> getValueEditComponents() {
+	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}
 }

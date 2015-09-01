@@ -6,6 +6,9 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.naive_pattern_finde
 
 import java.util.HashSet;
 
+import org.AttributeHelper;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.graffiti.graph.Node;
 
 /**
@@ -14,7 +17,11 @@ import org.graffiti.graph.Node;
  * @author Dirk Koschützki
  */
 class Matcher {
+	private static final Logger logger = Logger.getLogger(Matcher.class);
 	
+	static {
+		logger.setLevel(Level.INFO);
+	}
 	/**
 	 * The matching nodes from the pattern graph.
 	 */
@@ -29,6 +36,8 @@ class Matcher {
 	 * Number of nodes in this special match.
 	 */
 	private int numberOfMatchingNodes;
+	
+	private boolean allowOverlap;
 	
 	/**
 	 * Finds a matching between two graph, if it exists, given the initial
@@ -58,8 +67,8 @@ class Matcher {
 	 *           the name of the pattern
 	 */
 	public void match(State state, PatternVisitor visitor,
-						PatternVisitor optVisitor2, HashSet<Node> resultNodes, String patternName) {
-		match2(state, visitor, optVisitor2, resultNodes, patternName);
+			PatternVisitor optVisitor2, HashSet<Node> resultNodes, String patternName, boolean allowOverlap) {
+		match2(state, visitor, optVisitor2, resultNodes, patternName, allowOverlap);
 	}
 	
 	/**
@@ -89,6 +98,10 @@ class Matcher {
 		return numberOfMatchingNodes;
 	}
 	
+	public boolean isAllowOverlap() {
+		return allowOverlap;
+	}
+	
 	/**
 	 * Recursive implementation of the matching function.
 	 * 
@@ -113,10 +126,12 @@ class Matcher {
 		boolean found = false;
 		
 		while (!found && state.computeNextPair(n1, n2)) {
+			
 			n1 = state.getNextNodeOfPattern();
 			n2 = state.getNextNodeOfTarget();
+			
 			if (state.isFeasiblePair(n1, n2)) {
-				State nextState = (UllmannSubgraphIsomState) state.clone();
+				State nextState = (UllmannSubraphIsomAdjMatrixState) state.clone();
 				
 				nextState.addPair(n1, n2);
 				found = match2(nextState);
@@ -138,28 +153,61 @@ class Matcher {
 	 *           the name of the pattern
 	 * @return true, if a match was found
 	 */
+	
 	private boolean match2(State state, PatternVisitor visitor, PatternVisitor optVisitor2,
-						HashSet<Node> resultNodes,
-						String additionalInformation) {
+			HashSet<Node> resultNodes,
+			String additionalInformation, boolean allowOverlap) {
+//		logger.setLevel(Level.DEBUG);
+		logger.debug("--> Entering Level: " + ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel);
+		if (logger.getLevel() == Level.DEBUG) {
+			System.out.print("matching pattern nodes: ");
+			int numFound = 0;
+			for (int i = 0; i < ((UllmannSubraphIsomAdjMatrixState) state).getMatchingNodesOfPattern().length
+					&& numFound < ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel; i++) {
+				Node n = state.getMatchingNodesOfPattern()[i];
+				if (n != null) {
+					numFound++;
+					System.out.print(AttributeHelper.getLabel(n, Long.toString(n.getID())) + " ");
+				}
+			}
+			System.out.println();
+			System.out.print("matching Target  nodes: ");
+			numFound = 0;
+			for (int i = 0; i < ((UllmannSubraphIsomAdjMatrixState) state).getMatchingNodesOfTarget().length
+					&& numFound < ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel; i++) {
+				Node n = state.getMatchingNodesOfTarget()[i];
+				if (n != null) {
+					numFound++;
+					System.out.print(AttributeHelper.getLabel(n, Long.toString(n.getID())) + " ");
+				}
+			}
+			System.out.println();
+		}
+		
 		if (state.isGoal()) {
+			logger.debug("Pattern found: marking and returning");
 			numberOfMatchingNodes = state.getCoreLength();
 			matchingNodesOfPattern = state.getMatchingNodesOfPattern();
+			
 			matchingNodesOfTarget = state.getMatchingNodesOfTarget();
 			if (resultNodes != null)
 				for (Node n : matchingNodesOfTarget)
 					resultNodes.add(n);
 			if (optVisitor2 != null)
 				optVisitor2.visitPattern(numberOfMatchingNodes,
-									matchingNodesOfPattern,
-									matchingNodesOfTarget,
-									additionalInformation);
+						matchingNodesOfPattern,
+						matchingNodesOfTarget,
+						additionalInformation, allowOverlap);
 			return visitor.visitPattern(numberOfMatchingNodes,
-								matchingNodesOfPattern,
-								matchingNodesOfTarget,
-								additionalInformation);
+					matchingNodesOfPattern,
+					matchingNodesOfTarget,
+					additionalInformation, allowOverlap);
 		}
 		
 		if (state.isDead()) {
+			logger.debug("<-- Leaving Level: " + ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel + ": isDead:");
+//			if (logger.getLevel() == Level.DEBUG)
+//				((UllmannSubraphIsomAdjMatrixState) state).printCompatibilityMatrix();
 			return false;
 		}
 		
@@ -167,15 +215,30 @@ class Matcher {
 		int nodeOfTarget = State.NULL_NODE;
 		
 		while (state.computeNextPair(nodeOfPattern, nodeOfTarget)) {
+			logger.debug("level[" + +((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel + "] while.computeNextPair");
+			logger.debug("previous pair: " + nodeOfPattern + " " + nodeOfTarget);
 			nodeOfPattern = state.getNextNodeOfPattern();
 			nodeOfTarget = state.getNextNodeOfTarget();
+			logger.debug("    next pair: " + nodeOfPattern + " " + nodeOfTarget);
 			if (state.isFeasiblePair(nodeOfPattern, nodeOfTarget)) {
-				State nextState = (UllmannSubgraphIsomState) state.clone();
+				State nextState = (UllmannSubraphIsomAdjMatrixState) state.clone();
+				
+//				logger.debug("matrix before addPair---");
+//				if (logger.getLevel() == Level.DEBUG)
+//					((UllmannSubraphIsomAdjMatrixState) state).printCompatibilityMatrix();
 				
 				nextState.addPair(nodeOfPattern, nodeOfTarget);
 				
-				if (match2(nextState, visitor, optVisitor2, resultNodes, additionalInformation)) {
+				logger.debug("matrix after addPair---");
+				if (logger.getLevel() == Level.DEBUG)
+					((UllmannSubraphIsomAdjMatrixState) nextState).printCompatibilityMatrix();
+				
+				((UllmannSubraphIsomAdjMatrixState) nextState).currentRecursionLevel++;
+				
+				if (match2(nextState, visitor, optVisitor2, resultNodes, additionalInformation, allowOverlap)) {
 					nextState.backtrack();
+					logger.debug("<-- Leaving Level: " + ((UllmannSubraphIsomAdjMatrixState) nextState).currentRecursionLevel);
+					
 					return true;
 				} else {
 					nextState.backtrack();
@@ -183,6 +246,7 @@ class Matcher {
 			}
 		}
 		
+		logger.debug("<-- Leaving Level: " + ((UllmannSubraphIsomAdjMatrixState) state).currentRecursionLevel);
 		return false;
 	}
 }

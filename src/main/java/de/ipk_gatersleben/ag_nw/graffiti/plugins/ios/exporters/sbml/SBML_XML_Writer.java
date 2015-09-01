@@ -7,10 +7,13 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 
+import org.AttributeHelper;
 import org.graffiti.graph.Graph;
 import org.graffiti.plugin.io.AbstractOutputSerializer;
 import org.graffiti.plugin.io.OutputSerializer;
 import org.graffiti.plugin.io.SupportsWriterOutput;
+
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_XML_Writer extends AbstractOutputSerializer implements OutputSerializer, SupportsWriterOutput {
 	
@@ -41,6 +44,12 @@ public class SBML_XML_Writer extends AbstractOutputSerializer implements OutputS
 	 */
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "SBML", "SBML" };
+	}
+	
+	@Override
+	public boolean validFor(Graph g) {
+		return AttributeHelper.hasAttribute(g, SBML_Constants.SBML,
+				SBML_Constants.LEVEL);
 	}
 	
 	/**

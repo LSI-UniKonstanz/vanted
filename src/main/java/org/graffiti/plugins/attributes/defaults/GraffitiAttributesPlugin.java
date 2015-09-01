@@ -30,27 +30,26 @@ public class GraffitiAttributesPlugin
 					extends GenericPluginAdapter {
 	// ~ Static fields/initializers =============================================
 	
-	/** The number of attributes provided by default. */
-	private static final int NUMBER_OF_ATTRIBUTES = 10;
-	
 	// ~ Constructors ===========================================================
 	
 	/**
 	 * Constructs a new <code>GraffitiAttributesPlugin</code>.
 	 */
+	@SuppressWarnings("unchecked")
 	public GraffitiAttributesPlugin() {
 		super();
-		this.attributes = new Class[NUMBER_OF_ATTRIBUTES];
-		attributes[0] = BooleanAttribute.class;
-		attributes[1] = ByteAttribute.class;
-		attributes[2] = DoubleAttribute.class;
-		attributes[3] = FloatAttribute.class;
-		attributes[4] = HashMapAttribute.class;
-		attributes[5] = IntegerAttribute.class;
-		attributes[6] = LongAttribute.class;
-		attributes[7] = ShortAttribute.class;
-		attributes[8] = StringAttribute.class;
-		attributes[9] = LinkedHashMapAttribute.class;
+		this.attributes = new Class[] {
+		BooleanAttribute.class,
+		ByteAttribute.class,
+		DoubleAttribute.class,
+		FloatAttribute.class,
+		HashMapAttribute.class,
+		IntegerAttribute.class,
+		LongAttribute.class,
+		ShortAttribute.class,
+		StringAttribute.class,
+		LinkedHashMapAttribute.class
+		};
 		
 		StringAttribute.putAttributeType("reversible", BooleanAttribute.class);
 		StringAttribute.putAttributeType(GraphicAttributeConstants.ARROWHEAD, ArrowShapeAttribute.class);

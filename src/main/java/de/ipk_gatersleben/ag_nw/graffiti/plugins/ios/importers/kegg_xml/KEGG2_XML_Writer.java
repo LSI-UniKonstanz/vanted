@@ -24,6 +24,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Pathway;
 public class KEGG2_XML_Writer implements OutputSerializer {
 	private String fileNameExt = ".xml";
 	
+	@Override
+	public boolean validFor(Graph g) {
+		return true;
+	}
+	
 	public void write(OutputStream stream, Graph g) throws IOException {
 		Collection<Gml2PathwayWarningInformation> warnings = new ArrayList<Gml2PathwayWarningInformation>();
 		Collection<Gml2PathwayErrorInformation> errors = new ArrayList<Gml2PathwayErrorInformation>();

@@ -7,6 +7,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -17,11 +18,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EmptyBorder;
 
 import net.iharder.dnd.FileDrop;
 
@@ -31,6 +37,7 @@ import org.FolderPanel;
 import org.JLabelJavaHelpLink;
 import org.JMButton;
 import org.ReleaseInfo;
+import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.event.AttributeEvent;
@@ -50,19 +57,21 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private static List<String> projectList = new ArrayList<String>();
+	private List<String> projectList = new ArrayList<String>();
 	
-	private static List<ExperimentDataInfoPane> shownExpPanes = new ArrayList<ExperimentDataInfoPane>();
+	private List<ExperimentDataInfoPane> shownExpPanes = new ArrayList<ExperimentDataInfoPane>();
 	
-	static JTabbedPane jTabbedPaneExperimentPanels = new javax.swing.JTabbedPane();
+	private JTabbedPane jTabbedPaneExperimentPanels;
 	
 	final String noNode = "no node is selected.";
 	
 	final static String NO_EXPERIMENT = "";
 	
-	private static boolean initPerformed = false;
+	private boolean initPerformed = false;
 	
-	private static TabDBE tabDbeInstance = null;
+	private JScrollPane scrollpane;
+	
+	private static TabDBE instance = null;
 	
 	/**
 	 * Initialize GUI
@@ -74,25 +83,37 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		}
 		initPerformed = true;
 		
-		tabDbeInstance = this;
+		instance = this;
 		
+		JPanel contentpane = new JPanel();
+		scrollpane = new JScrollPane(contentpane);
+		scrollpane.setBorder(new EmptyBorder(0, 0, 0, 0));
+		scrollpane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollpane.getVerticalScrollBar().setUnitIncrement(20);
+		
+		this.setBorder(new EmptyBorder(0, 0, 0, 0));
+		this.setLayout(new BorderLayout());
+		this.add(scrollpane, BorderLayout.CENTER);
+		
+		jTabbedPaneExperimentPanels = new javax.swing.JTabbedPane();
 		jTabbedPaneExperimentPanels.setOpaque(false);
 		jTabbedPaneExperimentPanels.setBackground(null);
 		
 		double border = 5;
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border,
-												TableLayout.PREFERRED, // buttonPanelDBE
+						TableLayout.PREFERRED, // buttonPanelDBE
 						5,
-												TableLayout.PREFERRED, // buttonPanelFile
+						TableLayout.PREFERRED, // buttonPanelFile
 						3,
-												TableLayoutConstants.FILL, // experimentInfoPane
+						TableLayoutConstants.FILL, // experimentInfoPane
 						border } }; // Rows
 		
 		size[1][1] = TableLayout.PREFERRED;
-		this.setLayout(new TableLayout(size));
-		this.add(jTabbedPaneExperimentPanels, "1,5");
 		
+		contentpane.setLayout(new TableLayout(size));
+		contentpane.add(jTabbedPaneExperimentPanels, "1,5");
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');
 		
@@ -111,7 +132,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		}
 		
 		FolderPanel buttonPanelFile =
-							new FolderPanel("Load Input File", false, true, false, o1);
+				new FolderPanel("Load Input File", false, true, false, o1);
 		buttonPanelFile.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 5);
 		buttonPanelFile.setBackground(null);
 		
@@ -129,9 +150,9 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		
 		buttonPanelFile.addGuiComponentRow(null, loadInputForm, false);
 		buttonPanelFile.addGuiComponentRow(null,
-							new JLabel("<html><font color=\"gray\"><small>Supported formats: " +
-												"templates 1 and 2, VANTED binary (xml), KEGG Expression, text/csv files"),
-							false);
+				new JLabel("<html><font color=\"gray\"><small>Supported formats: " +
+						"templates 1 and 2, <br/> VANTED binary (xml), KEGG Expression, text/csv files"),
+				false);
 		
 		/*
 		 * buttonPanelFile.addGuiComponentRow(null,
@@ -142,15 +163,15 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		buttonPanelFile.layoutRows();
 		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DBE_ACCESS) ||
-							ReleaseInfo.getIsAllowedFeature(FeatureSet.FLAREX_ACCESS) ||
-							ReleaseInfo.getIsAllowedFeature(FeatureSet.METHOUSE_ACCESS)) {
-			this.add(new JLabel(""),
-								"1,1");
+				ReleaseInfo.getIsAllowedFeature(FeatureSet.FLAREX_ACCESS) ||
+				ReleaseInfo.getIsAllowedFeature(FeatureSet.METHOUSE_ACCESS)) {
+			contentpane.add(new JLabel(""),
+					"1,1");
 		} else
-			this.add(TemplateFileManager.getInstance().getTemplateFolderPanel(), "1,1");
-		this.add(buttonPanelFile, "1,3");
+			contentpane.add(TemplateFileManager.getInstance().getTemplateFolderPanel(), "1,1");
+		contentpane.add(buttonPanelFile, "1,3");
 		
-		this.validate();
+//		this.validate();
 	}
 	
 	private ActionListener getLoadMAGElistener() {
@@ -161,7 +182,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 				} catch (Exception err) {
 					ErrorMsg.addErrorMessage(err);
 					MainFrame.showMessageDialog("Error: Could not open MAGE-ML: " + err.getLocalizedMessage(),
-										"File could not be processed");
+							"File could not be processed");
 				}
 			}
 		};
@@ -211,7 +232,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 	}
 	
 	public static List<String> getProjectList() {
-		return new ArrayList<String>(projectList);
+		return new ArrayList<String>(instance.projectList);
 	}
 	
 	/**
@@ -236,7 +257,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 			
 			public boolean process(List<File> files) {
 				// GravistoMainHelper.processDroppedFiles(files.toArray(new File[]{}), false, (Class)PutIntoSidePanel.class);
-				ExperimentLoader.loadFile(files, receiver != null ? receiver : tabDbeInstance);
+				ExperimentLoader.loadFile(files, receiver != null ? receiver : instance);
 				return true;
 			}
 			
@@ -376,14 +397,14 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 	
 	public synchronized static List<ProjectEntity> getLoadedProjectEntities() {
 		List<ProjectEntity> loadedProjects = new ArrayList<ProjectEntity>();
-		for (ExperimentDataInfoPane edip : shownExpPanes) {
+		for (ExperimentDataInfoPane edip : instance.shownExpPanes) {
 			loadedProjects.add(new ProjectEntity(edip.getExperimentName(), edip.getDocumentData()));
 		}
 		return loadedProjects;
 	}
 	
 	public synchronized static void addOrUpdateExperimentPane(ProjectEntity pe) {
-		for (ExperimentDataInfoPane expPane : shownExpPanes) {
+		for (ExperimentDataInfoPane expPane : instance.shownExpPanes) {
 			if (
 			// expPane.getDocument()==pe.getDocument() ||
 			expPane.getExperimentName().equals(pe.getExperimentName())) {
@@ -391,7 +412,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 				return;
 			}
 		}
-		tabDbeInstance.processReceivedData(null, pe.getExperimentName(), pe.getDocumentData(), pe.getGUI());
+		instance.processReceivedData(null, pe.getExperimentName(), pe.getDocumentData(), pe.getGUI());
 	}
 	
 	/*
@@ -423,8 +444,8 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		shownExpPanes.add(expPane);
 		
 		Component c = jTabbedPaneExperimentPanels.add("<html>&nbsp;&nbsp;"
-							+ experimentName,
-							expPane);
+				+ experimentName,
+				expPane);
 		MainFrame.getInstance().getInspectorPlugin().setSelectedTab(this);
 		try {
 			jTabbedPaneExperimentPanels.setSelectedComponent(c);
@@ -433,6 +454,15 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		}
 		MainFrame.showMessage("Load project data: Finished", MessageType.INFO, 3000);
 		MainFrame.getInstance().updateActions();
+	}
+	
+	@Override
+	public ImageIcon getIcon() {
+		URL url = getClass().getResource("Database-Table-icon.png");
+		if (url != null)
+			return new ImageIcon(GravistoService.getScaledImage(new ImageIcon(url).getImage(), 16, 16));
+		else
+			return super.getIcon();
 	}
 	
 }

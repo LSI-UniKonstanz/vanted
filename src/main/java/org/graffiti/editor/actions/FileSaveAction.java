@@ -141,7 +141,7 @@ public class FileSaveAction
 			if (session != null && session.getUndoManager() != null)
 				session.getUndoManager().discardAllEdits();
 		} catch (Exception err) {
-			MainFrame.showMessageDialog("Could not save graph.", "Error");
+			MainFrame.showMessageDialog("Could not save network.", "Error");
 			ErrorMsg.addErrorMessage(err);
 			return;
 		}
@@ -160,7 +160,7 @@ public class FileSaveAction
 					FileHandlingManager.getInstance().throwFileSaved(file, ext, getGraph());
 					getGraph().setModified(false);
 					long fs = file.length();
-					MainFrame.showMessage("Graph saved to file " + file.getAbsolutePath() + " (" + (fs / 1024) + "KB)", MessageType.INFO);
+					MainFrame.showMessage("Network saved to file " + file.getAbsolutePath() + " (" + (fs / 1024) + "KB)", MessageType.INFO);
 					// a recent menu entry will be already built, if a graph is loaded or "saved as"... so we dont need to add a menu entry here
 					// MainFrame.getInstance().addNewRecentFileMenuItem(file);
 				}
@@ -171,7 +171,7 @@ public class FileSaveAction
 			
 			mainFrame.fireSessionDataChanged(session);
 		} else {
-			MainFrame.showMessageDialog("<html>Error: Graph could not be saved (file not writeable).", "Error");
+			MainFrame.showMessageDialog("<html>Error: Network could not be saved (file not writeable).", "Error");
 			System.err.println("Error: file not writable. (FileSave-Action).");
 		}
 	}

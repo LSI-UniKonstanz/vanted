@@ -34,9 +34,9 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -955,7 +955,8 @@ public class AttributeHelper implements HelperClass {
 		}
 		for (int idx = 1; idx <= 99/* graphElement.getAttributes().size() */; idx++) {
 			String lbl = getLabel(idx, graphElement, null);
-			result.add(lbl);
+			if(lbl != null)
+				result.add(lbl);
 		}
 		
 		return result;

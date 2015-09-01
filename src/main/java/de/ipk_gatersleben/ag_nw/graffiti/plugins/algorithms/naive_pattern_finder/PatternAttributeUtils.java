@@ -203,6 +203,8 @@ public class PatternAttributeUtils {
 	 */
 	public static boolean checkExistenceAGNWContainer(Edge e) {
 		try {
+			if(e == null)
+				return false;
 			@SuppressWarnings("unused")
 			Attribute tempA = e.getAttribute(AttributeConstants.AGNW_PATH);
 			
@@ -344,6 +346,8 @@ public class PatternAttributeUtils {
 	 *           an edge
 	 */
 	public static void addAGNWContainer(Edge e) {
+		if(e == null)
+			return;
 		e.addAttribute(new HashMapAttribute(AttributeConstants.AGNW_PATH),
 							"");
 	}
@@ -791,6 +795,8 @@ public class PatternAttributeUtils {
 						String patternName,
 						Integer patternIndex,
 						Integer edgeIndex) {
+		if(e == null)
+			return;
 		String patternPositionString =
 							PATTERN_PATH + Attribute.SEPARATOR + PATTERN_RECORD_PREFIX
 												+ position;

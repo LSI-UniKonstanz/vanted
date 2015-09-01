@@ -6,6 +6,9 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.set_background_color;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -19,6 +22,7 @@ import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.algorithm.ProvidesGeneralContextMenu;
 import org.graffiti.plugins.views.defaults.GraffitiView;
@@ -35,7 +39,7 @@ public class WindowSettings
 	JMenuItem myMenuItem, showAllElements, showElements, hideElements;
 	
 	public String getName() {
-		return "Show/Hide Graph Edges";
+		return "Show/Hide network Edges";
 	}
 	
 	@Override
@@ -43,6 +47,12 @@ public class WindowSettings
 		return "menu.window";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.EDGE
+				));
+	}
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		// normally SystemInfo.getAccelModifier() is used

@@ -8,8 +8,11 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.OpenFileDialogService;
 import org.PositionGridGenerator;
@@ -17,6 +20,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
@@ -40,13 +44,24 @@ public class CreateGOtreeAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Hierarchy";
+		return "Network.Hierarchy.Extra";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.HIDDEN,
+				Category.HIERARCHY,
+				Category.LAYOUT
+				));
+	}
+
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
-			throw new PreconditionException("No active graph window");
+			throw new PreconditionException("No active network window");
 		super.check();
 	}
 	

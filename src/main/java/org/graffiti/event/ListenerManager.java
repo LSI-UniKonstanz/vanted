@@ -1885,6 +1885,13 @@ public class ListenerManager {
 			((TransactionListener) mIter.next()).transactionStarted(event);
 		}
 	}
+
+	public int getNumTransactionsActive() {
+		return transactionsActive;
+	}
+	
+	
+	
 }
 
 // ------------------------------------------------------------------------------

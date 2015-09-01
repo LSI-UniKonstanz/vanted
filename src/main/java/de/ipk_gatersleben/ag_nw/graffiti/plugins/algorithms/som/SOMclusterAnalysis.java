@@ -6,7 +6,12 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.som;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -23,7 +28,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 public class SOMclusterAnalysis extends AbstractAlgorithm {
 	int numberOfNeuronsParm = 6;
 	int widthOfSOMparm = 0; // 0=quadratic
-	double maxNeighbourHoodParm = 10;
+	double maxNeighbourHoodParm = 5;
 	int decreaseNeighbourhoodAfterXiterationsParam = 10; // 0=off
 	int typeOfNeighbourhoodFunctionParam = 2;
 	int numberLearnIterationsParam = 100;
@@ -39,7 +44,17 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Step 1: Analyse mapping-data and calculate centroids";
+		return "Step 1: Train the SOM network";
+	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.ANALYSIS,
+				Category.CLUSTER
+				));
 	}
 	
 	@Override
@@ -58,13 +73,13 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 	@Override
 	public Parameter[] getParameters() {
 		IntegerParameter numberOfNeurons = new IntegerParameter(new Integer(numberOfNeuronsParm), new Integer(1),
-							new Integer(Integer.MAX_VALUE), "Neurons", "Number of neurons");
+							new Integer(Integer.MAX_VALUE), "Neurons", "Number of target clusters (neurons)");
 		
 		/**
 		 * Width of the SOM, 0 means quadratic (9 nodes, width=0 ==> width=3)
 		 */
 		IntegerParameter widthOfSOM = new IntegerParameter(new Integer(widthOfSOMparm), new Integer(0), new Integer(
-							Integer.MAX_VALUE), "Map width", "SOM width, 0=quadratic (neuron cnt^0.5)");
+							Integer.MAX_VALUE), "Number of horizontal neurons", "SOM neurons are initially layouted on a grid\nThis number sets the number of horizontal neurons\nIf 0, a quadratic grid is created");
 		
 		/**
 		 * Maximum of considered neighbourhood. "<0" means without limit (whole
@@ -97,17 +112,17 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 		/**
 		 * Beta, default=0.1
 		 */
-		DoubleParameter beta = new DoubleParameter(betaParam, "Beta", "beta");
+//		DoubleParameter beta = new DoubleParameter(betaParam, "Beta", "beta");
 		// double betaInit = new Double(betaS).doubleValue();
 		
 		/**
 		 * Gamma, default=2
 		 */
-		DoubleParameter gamma = new DoubleParameter(gammaParam, "Gamma", "gamma");
+//		DoubleParameter gamma = new DoubleParameter(gammaParam, "Gamma", "gamma");
 		
 		BooleanParameter disableInterpolation = new BooleanParameter(
 							returnNaN,
-							"Disable Interpolation",
+							"Interpolate missing time series values",
 							"If selected, measurement values from missing time points are not interpolated with the measurement value, from the preceding time point.");
 		
 		return new Parameter[] {
@@ -117,15 +132,16 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 							decreaseNeighbourHoodAfterXiterations,
 							repeatLearnCount,
 							typeOfNeighbourHoodFunction,
-							beta,
-							gamma,
+//							beta,
+//							gamma,
 							disableInterpolation,
 							new BooleanParameter(
 												useSampleAverages,
 												"Use Average Sample Values",
-												"<html>If enabled (default), the average sample values are used as datapoints,<br>otherwise the replicate values are used."),
-							new BooleanParameter(addCentroidNodes, "Add Centroid Nodes",
-												"If enabled (default), new graph nodes, containing a data-mapping of the centroid-dataset are created.") };
+												"<html>If enabled (default), the average sample values are used as datapoints,<br>otherwise the replicate values are used.")
+//							new BooleanParameter(addCentroidNodes, "Add Centroid Nodes",
+//												"If enabled (default), new graph nodes, containing a data-mapping of the centroid-dataset are created.")
+							};
 	}
 	
 	@Override
@@ -140,11 +156,11 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 		decreaseNeighbourhoodAfterXiterationsParam = ((IntegerParameter) params[i++]).getInteger().intValue();
 		numberLearnIterationsParam = ((IntegerParameter) params[i++]).getInteger().intValue();
 		typeOfNeighbourhoodFunctionParam = ((IntegerParameter) params[i++]).getInteger().intValue();
-		betaParam = ((DoubleParameter) params[i++]).getDouble().doubleValue();
-		gammaParam = ((DoubleParameter) params[i++]).getDouble().doubleValue();
+//		betaParam = ((DoubleParameter) params[i++]).getDouble().doubleValue();
+//		gammaParam = ((DoubleParameter) params[i++]).getDouble().doubleValue();
 		returnNaN = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		useSampleAverages = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
-		addCentroidNodes = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
+//		addCentroidNodes = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 	}
 	
 	/*

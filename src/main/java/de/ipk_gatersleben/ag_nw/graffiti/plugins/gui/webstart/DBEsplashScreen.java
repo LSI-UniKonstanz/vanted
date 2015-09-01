@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -45,7 +46,7 @@ public class DBEsplashScreen implements SplashScreenInterface {
 	public static ImageIcon getStartLogo() {
 		ClassLoader cl = DBEsplashScreen.class.getClassLoader();
 		String path = DBEsplashScreen.class.getPackage().getName().replace('.', '/');
-		ImageIcon icon = new ImageIcon(cl.getResource(path + "/pattern_graffiti_logo.png"));
+		ImageIcon icon = new ImageIcon(cl.getResource(path + "/vanted_logo_splash.jpg"));
 		return icon;
 	}
 	
@@ -65,7 +66,9 @@ public class DBEsplashScreen implements SplashScreenInterface {
 		} catch (Exception e) {
 			path = "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart".replace('.', '/');
 		}
-		ImageIcon icon = new ImageIcon(cl.getResource(path + "/pattern_graffiti_logo.png"));
+//		ImageIcon icon = new ImageIcon(cl.getResource(path + "/vanted_logo_splash.jpg"));
+		URL resource = cl.getResource("images/vanted_logo_splash.jpg");
+		ImageIcon icon = new ImageIcon(resource);
 		
 		infoLabel = new JLabel(getSplashScreenlabel(applicationName, -1));
 		infoLabel.setVerticalTextPosition(SwingConstants.CENTER);
@@ -81,7 +84,7 @@ public class DBEsplashScreen implements SplashScreenInterface {
 		
 		border = 2;
 		double sizeParent[][] =
-		{ { border, 240, TableLayoutConstants.PREFERRED, border },
+		{ { border, 180, TableLayoutConstants.PREFERRED, border },
 							{ border, TableLayoutConstants.PREFERRED, border }
 		}; // Rows
 		
@@ -136,30 +139,7 @@ public class DBEsplashScreen implements SplashScreenInterface {
 		splash.add(parent, "1,1");
 		splash.validate();
 		
-		// GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		// GraphicsDevice gd = ge.getDefaultScreenDevice();
-		// Rectangle virtualBounds = new Rectangle();
-		// GraphicsConfiguration[] gc = gd.getConfigurations();
-		// virtualBounds = virtualBounds.union(gc[0].getBounds());
-		// int w, h;
-		// int xoff = 0;
-		// int yoff = 0;
-		// try {
-		// w = gc[0].getDevice().getDisplayMode().getWidth();
-		// h = gc[0].getDevice().getDisplayMode().getHeight();
-		// xoff = virtualBounds.x;
-		// yoff = virtualBounds.y;
-		// } catch(NullPointerException npe) {
-		// w = 800;
-		// h = 600;
-		// }
-		// // Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
-		// // int xpos = (virtualBounds.width / 2) - (splash.getWidth() / 2);
-		// // int ypos = (virtualBounds.height / 2) - (splash.getHeight() / 2);
-		// int xpos = (w / 2) - (splash.getWidth() / 2)+xoff;
-		// int ypos = (h / 2) - (splash.getHeight() / 2)+yoff;
-		
-		// splash.setLocation(xpos, ypos);
+
 		
 		Point p = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
 		p.x = p.x - splash.getWidth() / 2;

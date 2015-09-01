@@ -570,7 +570,7 @@ public class SBMLHelper {
 				int scale = unit.getScale();
 				Double exponent = unit.getExponent();
 				if (exponent.equals(Double.NaN)) {
-					ErrorMsg.addErrorMessage("Attribute exponent of unit definition "
+					SBML_Logger.addErrorMessage("Attribute exponent of unit definition "
 							+ subUnitCount
 							+ " sub unit "
 							+ subUnitCount
@@ -580,7 +580,7 @@ public class SBMLHelper {
 				}
 				Double multiplier = unit.getMultiplier();
 				if (multiplier.equals(Double.NaN)) {
-					ErrorMsg.addErrorMessage("Attribute multiplier of unit definition "
+					SBML_Logger.addErrorMessage("Attribute multiplier of unit definition "
 							+ subUnitCount
 							+ " sub unit "
 							+ subUnitCount
@@ -624,7 +624,7 @@ public class SBMLHelper {
 		int scale = unit.getScale();
 		Double exponent = unit.getExponent();
 		if (exponent.equals(Double.NaN)) {
-			ErrorMsg.addErrorMessage("Attribute exponent of unit definition "
+			SBML_Logger.addErrorMessage("Attribute exponent of unit definition "
 					+ getSubUnitCount(g, headline)
 					+ " sub unit "
 					+ getSubUnitCount(g, headline)
@@ -632,7 +632,7 @@ public class SBMLHelper {
 		}
 		Double multiplier = unit.getMultiplier();
 		if (multiplier.equals(Double.NaN)) {
-			ErrorMsg.addErrorMessage("Attribute multiplier of unit definition "
+			SBML_Logger.addErrorMessage("Attribute multiplier of unit definition "
 					+ getSubUnitCount(g, headline)
 					+ " sub unit "
 					+ getSubUnitCount(g, headline)
@@ -5673,7 +5673,7 @@ public class SBMLHelper {
 		Node reactantNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 		String stoichiometry = Double.toString(ref.getStoichiometry());
 		if (ref.getStoichiometry() == Double.NaN) {
-			ErrorMsg.addErrorMessage("Attribute stochiometry of reaction "
+			SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
 					+ getReactionID(node) + " species " + ref.getSpecies()
 					+ " is not a valid double value.");
 		}
@@ -5750,7 +5750,7 @@ public class SBMLHelper {
 			AttributeHelper.setArrowtail(newReactionEdge, true);
 		}
 		if (ref.getStoichiometry() == Double.NaN) {
-			ErrorMsg.addErrorMessage("Attribute stochiometry of reaction "
+			SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
 					+ getReactionID(node) + " species " + ref.getSpecies()
 					+ " is not a valid double value.");
 		}
@@ -5802,7 +5802,7 @@ public class SBMLHelper {
 			Node reactantNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 			String stoichiometry = Double.toString(ref.getStoichiometry());
 			if (ref.getStoichiometry() == Double.NaN) {
-				ErrorMsg.addErrorMessage("Attribute stochiometry of reaction "
+				SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
 						+ reaction.getId() + " species " + ref.getSpecies()
 						+ " is not a valid double value.");
 			}
@@ -5838,7 +5838,7 @@ public class SBMLHelper {
 				AttributeHelper.setArrowtail(newReactionEdge, true);
 			}
 			if (ref.getStoichiometry() == Double.NaN) {
-				ErrorMsg.addErrorMessage("Attribute stochiometry of reaction "
+				SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
 						+ reaction.getId() + " species " + ref.getSpecies()
 						+ " is not a valid double value.");
 			}
@@ -5925,7 +5925,7 @@ public class SBMLHelper {
 					Double value = localParameter.getValue();
 					if (value.equals(Double.NaN)) {
 						
-						ErrorMsg.addErrorMessage("Attribute value of reaction "
+						SBML_Logger.addErrorMessage("Attribute value of reaction "
 								+ reaction.getId()
 								+ " "
 								+ presentedAttributeName

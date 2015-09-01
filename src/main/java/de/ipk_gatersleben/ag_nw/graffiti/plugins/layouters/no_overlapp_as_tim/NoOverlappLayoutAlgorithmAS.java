@@ -7,9 +7,11 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.no_overlapp_as_tim;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JComponent;
 
@@ -19,6 +21,7 @@ import org.Vector2d;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -40,6 +43,9 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 	private double spaceX = 10, spaceY = 10;
 	private boolean doNotAskForParameters = false;
 	private boolean considerGraphViewComponents = true;
+	private DoubleParameter spaceParamX;
+	private DoubleParameter spaceParamY;
+	private BooleanParameter considerView;
 	
 	public NoOverlappLayoutAlgorithmAS() {
 		super();
@@ -144,7 +150,7 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 		}
 		try {
 			QPRectanglePlacement rp = new QPRectanglePlacement(true, false, false,
-								false, spaceX, spaceY, false);
+					false, spaceX, spaceY, false);
 			rp.place(myRectangles);
 			
 			HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
@@ -176,11 +182,16 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 	public Parameter[] getParameters() {
 		if (doNotAskForParameters)
 			return null;
-		DoubleParameter spaceParamX = new DoubleParameter(spaceX, "Gap between Nodes (X)", "Specify the minimum horizontal space between all nodes");
-		DoubleParameter spaceParamY = new DoubleParameter(spaceY, "Gap between Nodes (Y)", "Specify the minimum vertical space between all nodes");
-		BooleanParameter considerView = new BooleanParameter(considerGraphViewComponents, "Consider View Components",
-							"If enabled, graphical annotations, like the node labels will be considered and processed - Enable");
-		return new Parameter[] { spaceParamX, spaceParamY, considerView };
+		if (spaceParamX == null) {
+			spaceParamX = new DoubleParameter(spaceX, "Gap between Nodes (X)", "Specify the minimum horizontal space between all nodes");
+			spaceParamY = new DoubleParameter(spaceY, "Gap between Nodes (Y)", "Specify the minimum vertical space between all nodes");
+			considerView = new BooleanParameter(considerGraphViewComponents, "Also consider size node-dependent view-elements",
+					"If enabled, graphical annotations, like the node labels will be considered and processed - Enable");
+		}
+		return new Parameter[] {
+				spaceParamX,
+				spaceParamY,
+				considerView };
 	}
 	
 	/**
@@ -207,6 +218,14 @@ public class NoOverlappLayoutAlgorithmAS extends AbstractAlgorithm {
 	@Override
 	public String getCategory() {
 		return "Layout";
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
 	}
 	
 	@Override

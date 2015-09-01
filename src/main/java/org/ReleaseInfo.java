@@ -65,34 +65,34 @@ public class ReleaseInfo implements HelperClass {
 				else
 					return true;
 			case KEGG_ACCESS:
-				if ((new File(getAppFolderWithFinalSep() + "license_kegg_accepted")).exists())
-					return true;
-				else
-					return false;
+//				if ((new File(getAppFolderWithFinalSep() + "license_kegg_accepted")).exists())
+				return true;
+//				else
+//					return false;
 			case KEGG_ACCESS_ENH:
 				if (!(currentRelease == Release.RELEASE_PUBLIC
-									|| currentRelease == Release.KGML_EDITOR || currentRelease == Release.DEBUG))
+						|| currentRelease == Release.KGML_EDITOR || currentRelease == Release.DEBUG))
 					return false;
-				if ((new File(getAppFolderWithFinalSep() + "license_kegg_accepted"))
-									.exists())
-					return true;
-				else
-					return false;
+//				if ((new File(getAppFolderWithFinalSep() + "license_kegg_accepted"))
+//									.exists())
+				return true;
+//				else
+//					return false;
 			case TRANSPATH_ACCESS:
 				if (currentRelease == Release.DEBUG
-									|| currentRelease == Release.RELEASE_IPK)
+						|| currentRelease == Release.RELEASE_IPK)
 					return true;
 				else
 					return false;
 			case URL_HELPTEXT:
 				if (currentRelease == Release.DEBUG
-									|| currentRelease == Release.RELEASE_IPK)
+						|| currentRelease == Release.RELEASE_IPK)
 					return true;
 				else
 					return false;
 			case URL_RELEASEINFO:
 				if (currentRelease == Release.DEBUG
-									|| currentRelease == Release.RELEASE_IPK)
+						|| currentRelease == Release.RELEASE_IPK)
 					return true;
 				else
 					return false;
@@ -141,7 +141,7 @@ public class ReleaseInfo implements HelperClass {
 				// currentRelease==Release.DEBUG )
 				// return true;
 				// break;
-				return false;
+				return true;
 			case TAB_PATTERNSEARCH:
 				return false;
 			case DATAMAPPING:
@@ -151,14 +151,12 @@ public class ReleaseInfo implements HelperClass {
 				// return true;
 			case AGLET_NETWORK:
 				if (currentRelease != Release.RELEASE_CLUSTERVIS
-									&& currentRelease != Release.KGML_EDITOR)
+						&& currentRelease != Release.KGML_EDITOR)
 					return true;
 				else
 					return true;
 			case FUNCAT_ACCESS:
 				return true;
-			case SBGN:
-				return false;
 			case URL_NODE_ANNOTATION:
 				if (currentRelease == Release.KGML_EDITOR)
 					return false;
@@ -213,13 +211,13 @@ public class ReleaseInfo implements HelperClass {
 					boolean success = src.renameTo(tgt);
 					if (success) {
 						System.out.println("Moved user preferences from "
-											+ oldStyle + " to " + newStyle + "!");
+								+ oldStyle + " to " + newStyle + "!");
 						JOptionPane.showMessageDialog(null, "<html>"
-											+ "<h3>New Preferences Folder</h3>"
-											+ "User preferences have been moved:<br>"
-											+ "<ul>" + "<li>Old: " + oldStyle + ""
-											+ "<li>New: " + newStyle + "</ul>",
-											"Information", JOptionPane.INFORMATION_MESSAGE);
+								+ "<h3>New Preferences Folder</h3>"
+								+ "User preferences have been moved:<br>"
+								+ "<ul>" + "<li>Old: " + oldStyle + ""
+								+ "<li>New: " + newStyle + "</ul>",
+								"Information", JOptionPane.INFORMATION_MESSAGE);
 						
 					}
 				}
@@ -237,12 +235,12 @@ public class ReleaseInfo implements HelperClass {
 		boolean windows = false;
 		if (SystemInfo.isMac())
 			home = home + getFileSeparator() + "Library" + getFileSeparator()
-								+ "Preferences";
+					+ "Preferences";
 		else {
 			if (new File(home + getFileSeparator() + "AppData"
-								+ getFileSeparator() + "Roaming").isDirectory()) {
+					+ getFileSeparator() + "Roaming").isDirectory()) {
 				home = home + getFileSeparator() + "AppData"
-									+ getFileSeparator() + "Roaming";
+						+ getFileSeparator() + "Roaming";
 				windows = true;
 			} else {
 				String hhh = System.getenv("APPDATA");
@@ -285,10 +283,7 @@ public class ReleaseInfo implements HelperClass {
 	}
 	
 	public static String getAppWebURL() {
-		if (getRunningReleaseStatus() == Release.KGML_EDITOR)
-			return "http://kgml-ed.ipk-gatersleben.de";
-		else
-			return "http://vanted.ipk-gatersleben.de";
+		return "https://immersive-analytics.infotech.monash.edu/vanted";
 	}
 	
 	private static String helpIntro = "";
@@ -335,13 +330,23 @@ public class ReleaseInfo implements HelperClass {
 			return UpdateInfoResult.NOT_UPDATED;
 	}
 	
+	public static boolean isRunningAsWebstart() {
+		try {
+			Class.forName("javax.jnlp.ServiceManager");
+		} catch (ClassNotFoundException e) {
+//			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
 	/**
 	 * @param currentVersion
 	 * @return null, if not updated / "", if updated but old version is unknown
 	 *         / old version string, if updated.
 	 */
 	public static synchronized String getOldVersionIfAppHasBeenUpdated(
-						String currentVersion) {
+			String currentVersion) {
 		synchronized (ReleaseInfo.class) {
 			if (updateCheckRun) {
 				return lastVersion;
@@ -363,7 +368,7 @@ public class ReleaseInfo implements HelperClass {
 				ErrorMsg.addErrorMessage("Warning: could not save current version information.");
 			}
 			if (oldVersion != null && oldVersion.length() > 0
-								&& !oldVersion.equalsIgnoreCase(currentVersion))
+					&& !oldVersion.equalsIgnoreCase(currentVersion))
 				lastVersion = oldVersion;
 			else
 				lastVersion = null;
@@ -413,7 +418,7 @@ public class ReleaseInfo implements HelperClass {
 	}
 	
 	public static String getAppSubdirFolderWithFinalSep(String folderName,
-						String folderName2) {
+			String folderName2) {
 		return getAppSubdirFolder(folderName, folderName2) + getFileSeparator();
 	}
 	

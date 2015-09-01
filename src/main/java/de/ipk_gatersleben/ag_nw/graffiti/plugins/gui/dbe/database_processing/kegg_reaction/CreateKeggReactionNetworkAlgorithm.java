@@ -8,8 +8,11 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.kegg_reaction;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
@@ -18,6 +21,7 @@ import org.ReleaseInfo;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg_reaction.ReactionEntry;
@@ -58,6 +62,18 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 		return "KEGG";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT,
+				Category.COMPUTATION,
+				Category.HIDDEN
+				));
+	}
+
+	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
@@ -82,7 +98,7 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 				if (sp.wantsToStop())
 					sp.setCurrentStatusText2("Processing aborted");
 				else {
-					sp.setCurrentStatusText2("Create graph...");
+					sp.setCurrentStatusText2("Create network...");
 					Pathway p = new Pathway(
 										new KeggId("map00000"),
 										new MapOrg("map"),
@@ -94,8 +110,8 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 										reactions,
 										relations);
 					final Graph g = p.getGraph();
-					System.out.println("Graph: " + g.getNumberOfNodes() + " nodes, " + g.getNumberOfEdges() + " edges. Create view...");
-					sp.setCurrentStatusText2("Create graph view...");
+					System.out.println("Network: " + g.getNumberOfNodes() + " nodes, " + g.getNumberOfEdges() + " edges. Create view...");
+					sp.setCurrentStatusText2("Create network view...");
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
 							MainFrame.getInstance().showGraph(g, getActionEvent());

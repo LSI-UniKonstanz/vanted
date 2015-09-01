@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
@@ -261,16 +262,19 @@ public class GraphHelper implements HelperClass {
 	 *           the graph to use
 	 * @return a collection with all connected components as separate graphs
 	 */
-	public static Collection<Graph> getConnectedComponents(Graph graph) {
+	public static Collection<Graph> getConnectedComponentsAsCopy(Graph graph) {
 		if (graph.getNumberOfNodes() <= 0)
 			return new ArrayList<Graph>();
 		
-		ArrayList<Graph> graphList = new ArrayList<Graph>();
+		return getConnectedComponentsAsCopy(graph.getNodes());
 		
-		List<Node> nodesToProcess = graph.getNodes();
+	}
+	
+	public static Collection<Graph> getConnectedComponentsAsCopy(List<Node> nodes) {
+		ArrayList<Graph> graphList = new ArrayList<Graph>();
 		HashMap<Node, Node> sourceGraphNode2connectedGraphNode = new LinkedHashMap<Node, Node>();
-		while (!nodesToProcess.isEmpty()) {
-			Node startNode = nodesToProcess.get(0);
+		while (!nodes.isEmpty()) {
+			Node startNode = nodes.get(0);
 			Set<Node> connectedNodes = getConnectedNodes(startNode);
 			Graph connectedComponentGraph = new AdjListGraph();
 			for (Node n : connectedNodes) {
@@ -285,16 +289,83 @@ public class GraphHelper implements HelperClass {
 				}
 			}
 			graphList.add(connectedComponentGraph);
-			nodesToProcess.removeAll(getConnectedNodes(startNode));
+			nodes.removeAll(connectedNodes);
 		}
 		return graphList;
 	}
+	
+	public static Set<Set<Node>> getConnectedComponents(Collection<Node> nodes) {
+		Set<Set<Node>> nodeSetSet = new HashSet<Set<Node>>();
+		
+		// get all RefSets
+		Set<Node> allNodes = new HashSet<Node>(nodes);
+		
+		Set<Node> alreadyContainedNodes = new HashSet<Node>();
+		
+		for (Node refSet : allNodes) {
+			if (alreadyContainedNodes.contains(refSet))
+				// already in a labeled connected component
+				continue;
+			
+			// ##########################################################################
+			// new cc
+			
+			// #########################################
+			// set of unlabeled nodes
+			Set<Node> ccNodeSet = new HashSet<Node>();
+			nodeSetSet.add(ccNodeSet);
+			
+			// Set of unlabeled refSets to visit
+			Stack<Node> ccNodesToProcess = new Stack<Node>();
+			ccNodesToProcess.push(refSet);
+			
+			// #########################################
+			// find and add all connected refSets
+			while (!ccNodesToProcess.isEmpty()) {
+				Node actNodeToProcess = ccNodesToProcess.pop();
+				
+				// add new refSet
+				ccNodeSet.add(actNodeToProcess);
+				
+				// get all adjacent nodes
+				Set<Node> actNodeNeighbours = actNodeToProcess.getNeighbors();
+				
+				// add all new refSets
+				for (Node actRefSetNeighbour : actNodeNeighbours)
+					if (!ccNodeSet.contains(actRefSetNeighbour) && !ccNodesToProcess.contains(actRefSetNeighbour))
+						// new neighbour found
+						ccNodesToProcess.push(actRefSetNeighbour);
+			}
+			
+			// #########################################
+			// register all new refSets
+			alreadyContainedNodes.addAll(ccNodeSet);
+		}
+		
+		return nodeSetSet;
+	}
+	
 	
 	/**
 	 * Remove all bends from a graph
 	 */
 	public static void removeAllBends(Graph g, boolean enableUndo) {
 		removeBends(g, g.getEdges(), enableUndo);
+	}
+	
+	public static void removeBendsBetweenSelectedNodes(Collection<Node> nodes, boolean enableUndo) {
+		if (nodes == null || nodes.isEmpty())
+			return;
+		Set<Node> setNodes = new HashSet<Node>(nodes);
+		Graph g = nodes.iterator().next().getGraph();
+		Set<Edge> setEdges = new HashSet<>();
+		for (Node n : nodes) {
+			for(Edge outEdge : n.getAllOutEdges())
+				if(setNodes.contains(outEdge.getSource()) && setNodes.contains(outEdge.getTarget()))
+					setEdges.add(outEdge);
+		}
+		removeBends(g, setEdges, enableUndo);
+		
 	}
 	
 	public static void removeBends(final Graph graph, final Collection<Edge> edges, boolean enableUndo) {
@@ -1058,10 +1129,9 @@ public class GraphHelper implements HelperClass {
 		return sortedNodes;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static void selectGraphElements(Collection<GraphElement> elements) {
+	public static void selectGraphElements(Collection<? extends GraphElement> elements) {
 		try {
-			EditorSession es = findSession((Collection) elements);
+			EditorSession es = findSession(elements);
 			es.getSelectionModel().getActiveSelection().addAll(elements);
 			es.getSelectionModel().selectionChanged();
 		} catch (Exception e) {
@@ -1069,10 +1139,9 @@ public class GraphHelper implements HelperClass {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static void selectGraphElements(boolean clearBefore, Collection<GraphElement> elements) {
+	public static void selectGraphElements(boolean clearBefore, Collection<? extends GraphElement> elements) {
 		try {
-			EditorSession es = findSession((Collection) elements);
+			EditorSession es = findSession(elements);
 			if (clearBefore)
 				es.getSelectionModel().getActiveSelection().clear();
 			es.getSelectionModel().getActiveSelection().addAll(elements);
@@ -1082,7 +1151,7 @@ public class GraphHelper implements HelperClass {
 		}
 	}
 	
-	private static EditorSession findSession(Collection<Attributable> elements) {
+	private static EditorSession findSession(Collection<? extends Attributable> elements) {
 		if (elements == null || elements.size() == 0)
 			return null;
 		else {
@@ -1118,10 +1187,9 @@ public class GraphHelper implements HelperClass {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static void unselectGraphElements(Collection<GraphElement> elements) {
+	public static void unselectGraphElements(Collection<? extends GraphElement> elements) {
 		try {
-			EditorSession es = findSession((Collection) elements);
+			EditorSession es = findSession(elements);
 			es.getSelectionModel().getActiveSelection().removeAll(elements);
 			es.getSelectionModel().selectionChanged();
 		} catch (Exception e) {
@@ -1168,14 +1236,12 @@ public class GraphHelper implements HelperClass {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static void selectNodes(Collection<Node> nodes) {
-		selectGraphElements((Collection) nodes);
+		selectGraphElements(nodes);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static void selectNodes(boolean clearBefore, Collection<Node> nodes) {
-		selectGraphElements(clearBefore, (Collection) nodes);
+		selectGraphElements(clearBefore, nodes);
 	}
 	
 	public static Collection<GraphElement> getSelectedOrAllGraphElements(Graph graph) {
@@ -2043,6 +2109,20 @@ public class GraphHelper implements HelperClass {
 				offY);
 	}
 	
+	/**
+	 * Moves given nodes by the given delta coordinates
+	 * @param nodes
+	 * @param deltaX
+	 * @param deltaY
+	 */
+	public static void moveNodes(Collection<Node> nodes, double deltaX, double deltaY) {
+		for(Node n : nodes) {
+			Point2D position = AttributeHelper.getPosition(n);
+			position.setLocation(position.getX() + deltaX, position.getY() + deltaY);
+			AttributeHelper.setPosition(n, position);
+		}
+	}
+	
 	public static void getShortestDistances(HashMap<Node, Integer> result, HashSet<Node> from, boolean directed,
 			int currentDistance) {
 		HashSet<Node> todo = new HashSet<Node>();
@@ -2102,7 +2182,6 @@ public class GraphHelper implements HelperClass {
 				newEdges.clear();
 			}
 			
-			@SuppressWarnings("unchecked")
 			@Override
 			public void redo() throws CannotRedoException {
 				Graph myGraph = null;
@@ -2144,9 +2223,9 @@ public class GraphHelper implements HelperClass {
 						}
 						newEdges.add(newEdge);
 					}
-					GraphHelper.unselectGraphElements((Collection) edges);
-					myGraph.deleteAll((Collection) edges);
-					GraphHelper.selectGraphElements((Collection) newEdges);
+					GraphHelper.unselectGraphElements(edges);
+					myGraph.deleteAll(edges);
+					GraphHelper.selectGraphElements(newEdges);
 					if (missing > 0)
 						MainFrame.showMessageDialog("<html>In the meantime " + missing
 								+ " edges have been removed from the graph.", "Processing incomplete");
@@ -2156,7 +2235,6 @@ public class GraphHelper implements HelperClass {
 				}
 			}
 			
-			@SuppressWarnings("unchecked")
 			@Override
 			public void undo() throws CannotUndoException {
 				Graph myGraph = null;
@@ -2201,10 +2279,10 @@ public class GraphHelper implements HelperClass {
 						}
 						edges.add(newEdge);
 					}
-					GraphHelper.unselectGraphElements((Collection) newEdges);
-					myGraph.deleteAll((Collection) newEdges);
+					GraphHelper.unselectGraphElements(newEdges);
+					myGraph.deleteAll(newEdges);
 					newEdges.clear();
-					GraphHelper.selectGraphElements((Collection) edges);
+					GraphHelper.selectGraphElements(edges);
 					if (missing > 0)
 						MainFrame.showMessageDialog("<html>In the meantime " + missing
 								+ " edges have been removed from the graph.", "Processing incomplete");
@@ -2299,4 +2377,41 @@ public class GraphHelper implements HelperClass {
 			return new Double(result);
 		}
 	}
+	
+	/**
+	 * Creates the adjacency matrix for a given graph.
+	 * It will also consider if the graph is directed.
+	 * The order of the nodes in the array are the same as in the
+	 * Node list of the given Graph.
+	 * 
+	 * @param g
+	 * @param directed
+	 */
+	public static byte[][] createAdjacencyMatrix(Graph g, boolean directed) {
+		int numNodes = g.getNodes().size();
+		
+		Map<Node, Integer> mapNodesToIdx = new HashMap<>();
+		int i = 0;
+		for (Node curNode : g.getNodes())
+			mapNodesToIdx.put(curNode, i++);
+		
+		byte adjMatrix[][] = new byte[numNodes][];
+		
+		for (i = 0; i < numNodes; i++)
+			adjMatrix[i] = new byte[numNodes];
+		
+		for (Node nodeY : g.getNodes())
+			if (directed) {
+				for (Node nodeX : nodeY.getOutNeighbors()) {
+					adjMatrix[mapNodesToIdx.get(nodeY)][mapNodesToIdx.get(nodeX)] = 1;
+				}
+			} else {
+				for (Node nodeX : nodeY.getNeighbors()) {
+					adjMatrix[mapNodesToIdx.get(nodeY)][mapNodesToIdx.get(nodeX)] = 1;
+				}
+			}
+		
+		return adjMatrix;
+	}
+	
 }

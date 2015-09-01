@@ -48,7 +48,7 @@ import org.graffiti.plugin.io.OutputSerializer;
  */
 @SuppressWarnings("unchecked")
 public class GMLXMLWriter
-					implements OutputSerializer {
+		implements OutputSerializer {
 	// ~ Static fields/initializers =============================================
 	
 	/** Prepresents a tabulator. */
@@ -140,6 +140,11 @@ public class GMLXMLWriter
 		return new String[] { "GraphXML" };
 	}
 	
+	@Override
+	public boolean validFor(Graph g) {
+		return true;
+	}
+	
 	/**
 	 * @see org.graffiti.plugin.io.OutputSerializer#write(OutputStream, Graph)
 	 */
@@ -198,7 +203,7 @@ public class GMLXMLWriter
 			if (c instanceof LabelAttribute) {
 				try {
 					sb.append(createTabs(level) + "label \"" +
-										((LabelAttribute) c).getLabel() + "\"");
+							((LabelAttribute) c).getLabel() + "\"");
 					sb.append(eol);
 				} catch (AttributeNotFoundException anfe) {
 					warning(anfe.getMessage());
@@ -218,7 +223,7 @@ public class GMLXMLWriter
 				if ("graphics".equals(c.getId())) {
 					try {
 						sb.append(createTabs(level + 1) + "x " +
-											c.getAttribute("coordinate.x").getValue());
+								c.getAttribute("coordinate.x").getValue());
 						sb.append(eol);
 					} catch (AttributeNotFoundException anfe) {
 						// warning(anfe.getMessage());
@@ -226,7 +231,7 @@ public class GMLXMLWriter
 					
 					try {
 						sb.append(createTabs(level + 1) + "y " +
-											c.getAttribute("coordinate.y").getValue());
+								c.getAttribute("coordinate.y").getValue());
 						sb.append(eol);
 					} catch (AttributeNotFoundException anfe) {
 						// warning(anfe.getMessage());
@@ -234,7 +239,7 @@ public class GMLXMLWriter
 					
 					try {
 						sb.append(createTabs(level + 1) + "w " +
-											c.getAttribute("dimension.width").getValue());
+								c.getAttribute("dimension.width").getValue());
 						sb.append(eol);
 					} catch (AttributeNotFoundException anfe) {
 						// warning(anfe.getMessage());
@@ -242,7 +247,7 @@ public class GMLXMLWriter
 					
 					try {
 						sb.append(createTabs(level + 1) + "h " +
-											c.getAttribute("dimension.height").getValue());
+								c.getAttribute("dimension.height").getValue());
 						sb.append(eol);
 					} catch (AttributeNotFoundException anfe) {
 						// warning(anfe.getMessage());
@@ -250,9 +255,9 @@ public class GMLXMLWriter
 					
 					try {
 						sb.append(createTabs(level + 1) + "fill \"" +
-											colToHex(c.getAttribute(
-																GraphicAttributeConstants.FILLCOLOR)) +
-											"\"");
+								colToHex(c.getAttribute(
+										GraphicAttributeConstants.FILLCOLOR)) +
+								"\"");
 						sb.append(eol);
 					} catch (AttributeNotFoundException anfe) {
 						// warning(anfe.getMessage());
@@ -260,9 +265,9 @@ public class GMLXMLWriter
 					
 					try {
 						sb.append(createTabs(level + 1) + "outline \"" +
-											colToHex(c.getAttribute(
-																GraphicAttributeConstants.FRAMECOLOR)) +
-											"\"");
+								colToHex(c.getAttribute(
+										GraphicAttributeConstants.FRAMECOLOR)) +
+								"\"");
 						sb.append(eol);
 					} catch (AttributeNotFoundException anfe) {
 						// warning(anfe.getMessage());
@@ -270,19 +275,19 @@ public class GMLXMLWriter
 					
 					try {
 						SortedCollectionAttribute bends = (SortedCollectionAttribute) c.getAttribute(
-											"bends");
+								"bends");
 						
 						if (!bends.isEmpty()) {
 							sb.append(createTabs(level + 1) + "Line [" + eol);
 							sb.append(createTabs(level + 2) +
-												"point [ x 0.0 y 0.0 ]" + eol);
+									"point [ x 0.0 y 0.0 ]" + eol);
 							
 							for (Iterator iter = bends.getCollection().values()
-												.iterator(); iter.hasNext();) {
+									.iterator(); iter.hasNext();) {
 								try {
 									CoordinateAttribute coord = (CoordinateAttribute) iter.next();
 									sb.append(createTabs(level + 2) +
-														"point [ x ");
+											"point [ x ");
 									sb.append(coord.getX());
 									sb.append(" y ");
 									sb.append(coord.getY());
@@ -294,7 +299,7 @@ public class GMLXMLWriter
 							}
 							
 							sb.append(createTabs(level + 2) +
-												"point [ x 0.0 y 0.0 ]" + eol);
+									"point [ x 0.0 y 0.0 ]" + eol);
 							sb.append(createTabs(level + 1) + "]" + eol);
 						}
 					} catch (AttributeNotFoundException anfe) {
@@ -324,7 +329,7 @@ public class GMLXMLWriter
 					for (Iterator i = m.values().iterator(); i.hasNext();) {
 						Attribute subCol = (Attribute) i.next();
 						sub.append(getWrittenAttributeHierarchy(subCol,
-											level + 1));
+								level + 1));
 					}
 					
 					if (!"".equals(sub.toString())) {
@@ -352,27 +357,27 @@ public class GMLXMLWriter
 						// }
 						// else
 						if ("org.graffiti.plugins.views.defaults.SmoothLineEdgeShape".equals(
-											a.getValue())) {
+								a.getValue())) {
 							sb.append(createTabs(level) + "smooth 1" + eol);
 						} else {
 							if ("org.graffiti.plugins.views.defaults.RectangleNodeShape".equals(
-												a.getValue())) {
+									a.getValue())) {
 								sb.append(createTabs(level) +
-													attMapping.get(a.getId()) + " ");
+										attMapping.get(a.getId()) + " ");
 								sb.append("\"rectangle\"");
 								sb.append(eol);
 							} else
 								if ("org.graffiti.plugins.views.defaults.CircleNodeShape".equals(
-													a.getValue())) {
+										a.getValue())) {
 									sb.append(createTabs(level) +
-														attMapping.get(a.getId()) + " ");
+											attMapping.get(a.getId()) + " ");
 									sb.append("\"oval\"");
 									sb.append(eol);
 								} else
 									if ("org.graffiti.plugins.views.defaults.EllipseNodeShape".equals(
-														a.getValue())) {
+											a.getValue())) {
 										sb.append(createTabs(level) +
-															attMapping.get(a.getId()) + " ");
+												attMapping.get(a.getId()) + " ");
 										sb.append("\"oval\"");
 										sb.append(eol);
 									}
@@ -384,7 +389,7 @@ public class GMLXMLWriter
 								
 								try {
 									if (((StringAttribute) a.getParent().getAttribute(GraphicAttributeConstants.ARROWTAIL)).getString()
-														.equals("")) {
+											.equals("")) {
 										sb.append("arrow \"last\"");
 										sb.append(eol);
 									} else {
@@ -398,7 +403,7 @@ public class GMLXMLWriter
 							} else {
 								try {
 									if (((StringAttribute) a.getParent().getAttribute(GraphicAttributeConstants.ARROWTAIL)).getString()
-														.equals("")) {
+											.equals("")) {
 										sb.append(createTabs(level));
 										if (graph.isDirected()) {
 											sb.append("arrow \"last\"");
@@ -422,7 +427,7 @@ public class GMLXMLWriter
 								if (!a.getValue().equals("")) {
 									try {
 										if (((StringAttribute) a.getParent().getAttribute(GraphicAttributeConstants.ARROWHEAD)).getString()
-															.equals("")) {
+												.equals("")) {
 											sb.append(createTabs(level));
 											sb.append("arrow \"first\"");
 											sb.append(eol);
@@ -459,23 +464,23 @@ public class GMLXMLWriter
 					if (a instanceof BooleanAttribute) {
 						sb.append(createTabs(level));
 						sb.append(a.getId() + " " +
-											(((BooleanAttribute) a).getBoolean() ? 1 : 0));
+								(((BooleanAttribute) a).getBoolean() ? 1 : 0));
 						sb.append(eol);
 					} else
 						if (a instanceof ByteAttribute ||
-											a instanceof IntegerAttribute || a instanceof LongAttribute ||
-											a instanceof ShortAttribute) {
+								a instanceof IntegerAttribute || a instanceof LongAttribute ||
+								a instanceof ShortAttribute) {
 							sb.append(createTabs(level));
 							sb.append(a.getId() + " " + a.getValue().toString());
 							sb.append(eol);
 						} else
 							if (a instanceof DoubleAttribute ||
-												a instanceof FloatAttribute) {
+									a instanceof FloatAttribute) {
 								sb.append(createTabs(level));
 								
 								String val = a.getValue().toString();
 								sb.append(a.getId() + " " +
-													val.substring(0, Math.min(17, val.length())));
+										val.substring(0, Math.min(17, val.length())));
 								sb.append(eol);
 							} else {
 								sb.append(createTabs(level));
@@ -601,10 +606,10 @@ public class GMLXMLWriter
 			p.println(createTabs(2) + "id " + edgeIds.indexOf(e));
 			
 			p.println(createTabs(2) + "source " +
-								nodeIds.indexOf(e.getSource()));
+					nodeIds.indexOf(e.getSource()));
 			
 			p.println(createTabs(2) + "target " +
-								nodeIds.indexOf(e.getTarget()));
+					nodeIds.indexOf(e.getTarget()));
 			
 			writeAttributable(p, e, 1);
 			

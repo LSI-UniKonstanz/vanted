@@ -5,8 +5,11 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.resize_and_grid_layout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.FeatureSet;
 import org.ReleaseInfo;
@@ -16,10 +19,10 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
-import org.graffiti.selection.Selection;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
@@ -49,6 +52,14 @@ public class ArrayLayout extends AbstractAlgorithm {
 		return "Nodes";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
+	}
+
 	@Override
 	public String getDescription() {
 		return "<html>Places nodes according to the X/Y position info, contained in KEGG Expression dataset files.";

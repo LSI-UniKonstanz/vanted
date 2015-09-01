@@ -4,12 +4,14 @@
 
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover;
 
-import javax.swing.KeyStroke;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.Release;
 import org.ReleaseInfo;
-import org.SystemInfo;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.expand_no_overlapp.NoOverlappLayoutAlgorithm;
@@ -22,27 +24,31 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  *         (c) 2006 IPK-Gatersleben
  */
 public class NoOverlappOfClustersAlgorithm
-					extends AbstractAlgorithm {
+		extends AbstractAlgorithm {
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
-			return "Remove Overlaps";
+			return "Remove Cluster Overlaps";
 		else
-			return "Separate Pathway-Subgraphs";
+			return "Separate Pathway-Subnetworks";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Cluster";
+		return "Network.Cluster";
 	}
 	
 	@Override
-	public KeyStroke getAcceleratorKeyStroke() {
-		return KeyStroke.getKeyStroke('U', SystemInfo.getAccelModifier());
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT,
+				Category.CLUSTER
+				));
 	}
 	
 	@Override
 	public void check()
-						throws PreconditionException {
+			throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
 		
 		if (graph == null) {

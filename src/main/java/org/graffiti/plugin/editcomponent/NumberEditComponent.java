@@ -59,7 +59,7 @@ public abstract class NumberEditComponent
 	public JComponent getComponent() {
 		// System.out.println(displayable.getName());
 		JComponent defaultResult = spinnerEditComponent.getComponent();
-		if (displayable.getIcon() != null) {
+		if (displayable != null && displayable.getIcon() != null) {
 			JComponent jc = displayable.getIcon();
 			if (defaultResult != null)
 				defaultResult.setPreferredSize(new Dimension(defaultResult.getMinimumSize().width, defaultResult.getPreferredSize().height));

@@ -9,6 +9,8 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,6 +25,7 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
 import org.OpenFileDialogService;
 import org.PositionGridGenerator;
+import org.Vector2d;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
@@ -30,12 +33,17 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
+import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeEntry;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.KeggAPIServiceHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.KoEntry;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.grid.GridLayouterAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.rt_tree.RTTreeLayout;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.RemoveSelectedNodesPreserveEdgesAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
@@ -56,12 +64,12 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Create Data-Specific Gene Ontology Network";
+		return "Create Gene Ontology Tree";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Hierarchy";
+		return "Network.Hierarchy";
 	}
 	
 	@Override
@@ -131,21 +139,28 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 								public void run() {
 									fgraph.getListenerManager().transactionStarted(this);
 									interpreteGO(fgraph, workNodes, sp);
-									fgraph.getListenerManager().transactionFinished(this);
+									
 								}
 							},
-							null, sp);
+							new Runnable() {
+								
+								@Override
+								public void run() {
+									fgraph.getListenerManager().transactionFinished(this);
+								}
+							}, sp);
 	}
 	
 	private void interpreteGO(Graph graph, List<NodeHelper> workNodes, BackgroundTaskStatusProviderSupportingExternalCall sp) {
 		HashMap<String, Node> goTerm2goNode = new HashMap<String, Node>();
 		HashSet<Node> knownNodes = new HashSet<Node>();
-		sp.setCurrentStatusText1("Process graph nodes...");
+		sp.setCurrentStatusText1("Process network nodes...");
 		sp.setCurrentStatusText1("Enumerate existing GO-Term nodes...");
+		
 		for (Node n : graph.getNodes()) {
 			knownNodes.add(n);
-			NodeHelper nh = new NodeHelper(n);
-			String goLabel = (String) nh.getAttributeValue("go", "term", null, "");
+//			NodeHelper nh = new NodeHelper(n);
+			String goLabel = (String) AttributeHelper.getAttributeValue(n, "go", "term", null, "");
 			if (goLabel != null) {
 				goTerm2goNode.put(goLabel, n);
 			}
@@ -155,15 +170,20 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 		double current = 0;
 		double workload = workNodes.size();
 		for (NodeHelper nh : workNodes) {
-			Collection<String> ids = nh.getAlternativeIDs();
-			ids.add(nh.getLabel());
+//			Collection<String> ids = nh.getAlternativeIDs();
+			ArrayList<String> ids = AttributeHelper.getLabels(nh.getGraphNode(), true);
+//			ids.add(nh.getLabel());
+			
 			HashSet<String> goTerms = new HashSet<String>();
-			String lbl = nh.getLabel();
-			if (lbl != null && lbl.toUpperCase().startsWith("GO:"))
-				goTerms.add(lbl);
+			
+//			String lbl = nh.getLabel();
+//			if (lbl != null && lbl.toUpperCase().startsWith("GO:"))
+//				goTerms.add(lbl);
+			
 			for (String test : ids) {
-				if (test.toUpperCase().startsWith("GO:"))
-					goTerms.add(test.toUpperCase());
+				test = test.toUpperCase();
+				if (test.startsWith("GO:"))
+					goTerms.add(test);
 				else {
 					boolean valid = false;
 					try {
@@ -173,6 +193,30 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 						valid = true;
 					} catch (Exception e) {
 						// empty
+					}
+					if (!valid) {
+//						EnzymeEntry eze = EnzymeService.getEnzymeInformation(test, false);
+						String extractECId = EnzymeService.extractECId(test);
+						
+						if (extractECId != null) {
+							
+							for (KoEntry koe : KeggAPIServiceHelper.getInstance().getEntriesByEC(extractECId)) {
+								for (String goID : koe.getKoDbLinks("GO")) {
+									goTerms.add("GO:" + goID);
+								}
+							}
+						} else {
+							/*
+							 * for now only support KO ids as label
+							 */
+							if(test.startsWith("K")) {
+								for (KoEntry koe : KeggAPIServiceHelper.getInstance().getEntriesByKO(test)) {
+									for (String goID : koe.getKoDbLinks("GO")) {
+										goTerms.add("GO:" + goID);
+									}
+								}
+							}
+						}
 					}
 				}
 			}
@@ -211,6 +255,49 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 								toBeDeleted, graph, false, sp);
 			sp.setCurrentStatusText2("Created GO hiearchy with a maximum depth of " + maxDepth + " (removed " + cnt + " GO term nodes)");
 		}
+		
+		/*
+		 * layout
+		 */
+		Collection<Node> newNodes = goTerm2goNode.values();
+		if (newNodes.size() > 0) {
+			// layout new nodes using tree layout
+			RTTreeLayout tree = new RTTreeLayout();
+			Parameter[] parameters2 = tree.getParameters();
+			for(Parameter curParam : parameters2) {
+				if(curParam.getName().equals("Tree Direction (0,90,180,270)")) {
+					((ObjectListParameter)curParam).setValue(0);
+				}
+			}
+			tree.setParameters(parameters2);
+
+			tree.attach(graph, new Selection(newNodes));
+			tree.execute();
+			
+			double minX = Double.MAX_VALUE;
+			double maxX = Double.MIN_VALUE;
+			double maxY = Double.MIN_VALUE;
+			for(Node curNode : newNodes) {
+				Point2D position = AttributeHelper.getPosition(curNode);
+				Vector2d size = AttributeHelper.getSize(curNode);
+				if(position.getX() < minX)
+					minX = position.getX();
+				if(position.getX() > maxX)
+					maxX = position.getX();
+				if(size.y + position.getY() > maxY)
+					maxY = size.y + position.getY();
+			}
+			GridLayouterAlgorithm.layoutOnGrid(knownNodes, 1, 20, 20, 30, new Point((int)minX, (int)maxY + 50));
+//			GraphHelper.moveGraph(fgraph, offX, offY);
+			CenterLayouterAlgorithm.moveGraph(graph, getName(), true, 50, 50);
+			// layout gene nodes using grid layout (no resize)
+//			Collection<Node> geneNodes = new ArrayList<Node>(workNodes);
+//			geneNodes.removeAll(newNodes);
+//			GridLayouterAlgorithm.layoutOnGrid(geneNodes, 1, 20, 20);
+//			
+//			CenterLayouterAlgorithm.moveGraph(graph, getName(), true, 50, 50);
+		}
+		
 		sp.setCurrentStatusText1("Processing completed");
 		if (maxDepth <= 0)
 			sp.setCurrentStatusText2("Created (unlimited) GO hiearchy");

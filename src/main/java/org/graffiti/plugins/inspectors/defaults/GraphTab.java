@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import org.graffiti.attributes.Attributable;
 import org.graffiti.event.AttributeEvent;
+import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.selection.SelectionEvent;
 import org.graffiti.session.Session;
 
@@ -23,7 +24,7 @@ import org.graffiti.session.Session;
  * @version $Revision: 1.11 $
  */
 public class GraphTab
-					extends AbstractTab {
+		extends AbstractTab {
 	// ~ Instance fields ========================================================
 	
 	private static final long serialVersionUID = 1L;
@@ -36,7 +37,7 @@ public class GraphTab
 	 * Constructs a <code>GraphTab</code> and sets the title.
 	 */
 	public GraphTab() {
-		this.title = "Graph";
+		this.title = "Network";
 		instance = this;
 	}
 	
@@ -73,12 +74,24 @@ public class GraphTab
 	
 	@Override
 	public void sessionChanged(Session s) {
-		super.sessionChanged(s);
 		ArrayList<Attributable> ge = new ArrayList<Attributable>();
 		if (s != null)
 			ge.add(s.getGraph());
-		rebuildTree(ge);
+		attributables = ge;
+		super.sessionChanged(s);
+		
 	}
+	
+	@Override
+	public String getTabParentPath() {
+		return "Attributes";
+	}
+	
+	@Override
+	public int getPreferredTabPosition() {
+		return InspectorTab.TAB_LEADING;
+	}
+	
 }
 
 // ------------------------------------------------------------------------------

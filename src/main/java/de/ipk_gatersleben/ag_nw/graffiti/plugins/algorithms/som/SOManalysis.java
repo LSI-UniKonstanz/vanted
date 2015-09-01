@@ -2,11 +2,13 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.som;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 import org.FeatureSet;
 import org.Release;
 import org.ReleaseInfo;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.NoOverlappOfClustersAlgorithm;
@@ -28,7 +30,6 @@ public class SOManalysis extends LaunchGui implements Algorithm {
 			res.add(new SOMclusterAnalysisDoCluster());
 			res.add(null);
 			res.add(new SOMprintDataset());
-			res.add(new SOMautoCluster());
 			res.add(new MultiDataView());
 		} else
 			if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING)) {
@@ -37,7 +38,7 @@ public class SOManalysis extends LaunchGui implements Algorithm {
 			}
 		res.add(null);
 		res.add(new PajekClusterColor());
-		res.add(new NoOverlappOfClustersAlgorithm());
+//		res.add(new NoOverlappOfClustersAlgorithm());
 		return res;
 	}
 	
@@ -52,6 +53,12 @@ public class SOManalysis extends LaunchGui implements Algorithm {
 			return "Self-Organizing Map (SOM)...";
 		else
 			return null;
+	}
+	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return null;
 	}
 	
 	@Override
@@ -78,7 +85,7 @@ public class SOManalysis extends LaunchGui implements Algorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Mapping";
+		return "Network.Cluster";
 	}
 	
 }

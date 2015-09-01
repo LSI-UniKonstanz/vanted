@@ -17,7 +17,6 @@ import java.util.Collection;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.xml.rpc.ServiceException;
 
@@ -27,15 +26,11 @@ import keggapi.KEGGPortType;
 import keggapi.PathwayElement;
 
 import org.AttributeHelper;
-import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
 import org.HelperClass;
 import org.StringManipulationTools;
 import org.apache.axis.AxisFault;
-import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Node;
-
-import de.ipk_gatersleben.ag_nw.graffiti.JLabelHTMLlink;
 
 /**
  * HTML Parser

@@ -42,6 +42,11 @@ public class SIFWriter extends AbstractOutputSerializer {
 	}
 	
 	@Override
+	public boolean validFor(Graph g) {
+		return true;
+	}
+	
+	@Override
 	public void write(OutputStream out, Graph g) throws IOException {
 		g.numberGraphElements();
 		PrintStream stream = new PrintStream(out);

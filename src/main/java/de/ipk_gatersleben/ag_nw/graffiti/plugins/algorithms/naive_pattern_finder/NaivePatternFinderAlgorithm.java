@@ -5,15 +5,19 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.naive_pattern_finder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.StringManipulationTools;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
@@ -22,6 +26,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 /**
@@ -30,7 +35,14 @@ import org.graffiti.plugin.algorithm.PreconditionException;
  * @author Dirk Kosch�tzki, Christian Klukas: extended to support undirected graphs and to optionally ignore the edge direction
  */
 public class NaivePatternFinderAlgorithm
-					extends AbstractAlgorithm {
+		extends AbstractAlgorithm {
+	
+	private static Logger logger = Logger.getLogger(NaivePatternFinderAlgorithm.class);
+	
+	static {
+		logger.setLevel(Level.INFO);
+	}
+	
 	/*************************************************************/
 	/* Member variables */
 	/*************************************************************/
@@ -41,6 +53,8 @@ public class NaivePatternFinderAlgorithm
 	private ArrayList<Graph> listOfPatterns;
 	
 	private boolean ignoreEdgeDirection = false;
+	
+	private boolean allowOverlap = true;
 	
 	/**
 	 * Creates a new NaivePatternFinderAlgorithm object.
@@ -67,6 +81,15 @@ public class NaivePatternFinderAlgorithm
 		return "Analysis";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.SEARCH,
+				Category.ANALYSIS
+				));
+	}
+	
 	/**
 	 * Checks the preconditions of the algorithm. These are: non empty target
 	 * graph, directed target graph, no multiple edges in the target graph,
@@ -78,7 +101,7 @@ public class NaivePatternFinderAlgorithm
 	 */
 	@Override
 	public void check()
-						throws PreconditionException {
+			throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
 		
 		if (graph == null) {
@@ -124,8 +147,9 @@ public class NaivePatternFinderAlgorithm
 	 * Performs the matching of the target graph with all pattern graphs.
 	 */
 	public void execute() {
-		System.err.println("There are " + listOfPatterns.size()
-							+ " patterns in the list.");
+		
+		logger.debug("There are " + listOfPatterns.size()
+				+ " patterns in the list.");
 		
 		Iterator<Graph> i = listOfPatterns.iterator();
 		int j = 1;
@@ -133,21 +157,22 @@ public class NaivePatternFinderAlgorithm
 		while (i.hasNext()) {
 			Graph currentPattern = (Graph) i.next();
 			
-			System.err.println("This pattern has "
-								+ currentPattern.getNumberOfNodes()
-								+ " nodes and "
-								+ currentPattern.getNumberOfEdges() + " edges.");
+			logger.debug("This pattern has "
+					+ currentPattern.getNumberOfNodes()
+					+ " nodes and "
+					+ currentPattern.getNumberOfEdges() + " edges.");
 			
 			if (currentPattern.getNumberOfNodes() == 0) {
-				System.err.println("Pattern has no nodes, skipping...");
+				logger.debug("Pattern has no nodes, skipping...");
 				continue;
 			}
 			
-			State state = new UllmannSubgraphIsomState(currentPattern, graph, ignoreEdgeDirection, null);
+			State state = new UllmannSubraphIsomAdjMatrixState(currentPattern, graph, ignoreEdgeDirection);
+//			State state = new UllmannSubgraphIsomAdj(currentPattern, graph, ignoreEdgeDirection, null);
 			Matcher matcher = new Matcher();
 			PatternVisitor pv = new MarkingPatternVisitor(ignoreEdgeDirection);
 			
-			matcher.match(state, pv, null, null, "Pattern_" + j);
+			matcher.match(state, pv, null, null, "Pattern_" + j, allowOverlap);
 			j++;
 		}
 		MainFrame.showMessage("Pattern finder finished", MessageType.INFO);
@@ -162,13 +187,14 @@ public class NaivePatternFinderAlgorithm
 	 * @param ignoreEdgeDirection
 	 */
 	public static void searchPatterns(
-						Graph graph,
-						List<Graph> patterns,
-						Algorithm optLayoutAlgorithm,
-						boolean ignoreEdgeDirection,
-						final boolean startWithLargestCircle,
-						BackgroundTaskStatusProviderSupportingExternalCall status) {
-		System.err.println("There are " + patterns.size() + " patterns in the list.");
+			Graph graph,
+			List<Graph> patterns,
+			Algorithm optLayoutAlgorithm,
+			boolean ignoreEdgeDirection,
+			final boolean startWithLargestCircle,
+			boolean allowOverlap,
+			BackgroundTaskStatusProviderSupportingExternalCall status) {
+		logger.debug("There are " + patterns.size() + " patterns in the list.");
 		
 		int j = 1;
 		Collections.sort(patterns, new Comparator<Graph>() {
@@ -197,20 +223,21 @@ public class NaivePatternFinderAlgorithm
 			status.setCurrentStatusValueFine(i / (double) maxI * 100d);
 			status.setCurrentStatusText1("Process pattern " + processName(currentPattern.getName()));
 			status.setCurrentStatusText2("Size: " + currentPattern.getNumberOfNodes()
-								+ " nodes and "
-								+ currentPattern.getNumberOfEdges() + " edges");
+					+ " nodes and "
+					+ currentPattern.getNumberOfEdges() + " edges");
 			i++;
-			System.err.println("This pattern has "
-								+ currentPattern.getNumberOfNodes()
-								+ " nodes and "
-								+ currentPattern.getNumberOfEdges() + " edges.");
+			
+			logger.debug("This pattern has "
+					+ currentPattern.getNumberOfNodes()
+					+ " nodes and "
+					+ currentPattern.getNumberOfEdges() + " edges.");
 			
 			if (currentPattern.getNumberOfNodes() == 0) {
-				System.err.println("Pattern has no nodes, skipping...");
+				logger.debug("Pattern has no nodes, skipping...");
 				continue;
 			}
 			
-			State state = new UllmannSubgraphIsomState(currentPattern, graph, ignoreEdgeDirection, resultNodes);
+			State state = new UllmannSubraphIsomAdjMatrixState(currentPattern, graph, ignoreEdgeDirection);
 			Matcher matcher = new Matcher();
 			PatternVisitor pv = new MarkingPatternVisitor(ignoreEdgeDirection);
 			
@@ -221,7 +248,7 @@ public class NaivePatternFinderAlgorithm
 			} else
 				layoutVisitor = new SelectResultsVisitor();
 			
-			matcher.match(state, pv, layoutVisitor, resultNodes, "Pattern_" + processName(currentPattern.getName() + "_" + j));
+			matcher.match(state, pv, layoutVisitor, resultNodes, "Pattern_" + processName(currentPattern.getName() + "_" + j), allowOverlap);
 			j++;
 		}
 		status.setCurrentStatusValueFine(100d);
@@ -258,7 +285,7 @@ public class NaivePatternFinderAlgorithm
 				 * therefore we have to do it manually.
 				 */
 				Collection<?> relevantEdges =
-									graph.getEdges(aSourceNode, aTargetNode);
+						graph.getEdges(aSourceNode, aTargetNode);
 				Iterator<?> relevantEdgesIterator = relevantEdges.iterator();
 				boolean edgeSeenBefore = false;
 				
@@ -266,7 +293,7 @@ public class NaivePatternFinderAlgorithm
 					Edge anEdge = (Edge) (relevantEdgesIterator.next());
 					
 					if ((anEdge.getSource() == aSourceNode)
-										&& (anEdge.getTarget() == aTargetNode)) {
+							&& (anEdge.getTarget() == aTargetNode)) {
 						if (edgeSeenBefore) {
 							return true;
 						} else {
@@ -283,4 +310,9 @@ public class NaivePatternFinderAlgorithm
 	public void setIgnoreEdgeDirection(boolean ignoreEdgeDirection) {
 		this.ignoreEdgeDirection = ignoreEdgeDirection;
 	}
+	
+	public void setAllowOverlap(boolean allowOverlap) {
+		this.allowOverlap = allowOverlap;
+	}
+	
 }

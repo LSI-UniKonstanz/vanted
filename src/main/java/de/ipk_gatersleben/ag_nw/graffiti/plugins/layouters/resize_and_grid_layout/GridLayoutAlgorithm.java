@@ -4,8 +4,11 @@
 
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.resize_and_grid_layout;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.Vector2d;
@@ -14,6 +17,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -32,7 +36,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover
  */
 
 public class GridLayoutAlgorithm
-					extends AbstractAlgorithm {
+		extends AbstractAlgorithm {
 	private double xDistance = 130;
 	private double yDistance = 130;
 	
@@ -45,7 +49,14 @@ public class GridLayoutAlgorithm
 	private int maxX = 1;
 	
 	private double widthHeightRatio = 1;
-	private boolean resize = true;
+	private boolean resize = false;
+	private DoubleParameter widthHeightRatioParam;
+	private DoubleParameter xDistanceParam;
+	private DoubleParameter yDistanceParam;
+	private DoubleParameter widthParam;
+	private DoubleParameter heightParam;
+	private BooleanParameter limitXparameter;
+	private IntegerParameter widthParameter;
 	
 	public String getName() {
 		return "Grid Layout";
@@ -57,8 +68,16 @@ public class GridLayoutAlgorithm
 	}
 	
 	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
+	}
+	
+	@Override
 	public void check()
-						throws PreconditionException {
+			throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
 		
 		if (graph == null)
@@ -95,8 +114,6 @@ public class GridLayoutAlgorithm
 			return;
 		int numberOfNodes = nodes.size();
 		int nodesOnLine = (int) (Math.sqrt(numberOfNodes));
-		if (setWidth)
-			nodesOnLine = maxX;
 		
 		int column = 0;
 		int row = 0;
@@ -113,7 +130,7 @@ public class GridLayoutAlgorithm
 		double yStart = center.y - yDistance * (rows / 2d) + yDistance / 2d;
 		
 		MainFrame.showMessage("Grid-Layout: columns: " + nodesOnLine + ", rows: " + rows + ", inital avergage node position (x/y): " + center.x + " / "
-							+ center.y, MessageType.INFO);
+				+ center.y, MessageType.INFO);
 		HashMap<Node, Vector2d> nodes2newPosition = new HashMap<Node, Vector2d>();
 		HashMap<Node, Vector2d> nodes2newSize = new HashMap<Node, Vector2d>();
 		for (Node n : nodes) {
@@ -135,7 +152,7 @@ public class GridLayoutAlgorithm
 		sel.addAll(nodes);
 		if (moveToTop)
 			GravistoService.getInstance().runAlgorithm(
-								new CenterLayouterAlgorithm(), graph, sel, getActionEvent());
+					new CenterLayouterAlgorithm(), graph, sel, getActionEvent());
 	}
 	
 	/**
@@ -152,13 +169,16 @@ public class GridLayoutAlgorithm
 		}
 	}
 	
-	public static void layoutOnGrid(Collection<Node> workNodes, double widthHeightRatio, double xDistance, double yDistance) {
+	public void layoutOnGrid(Collection<Node> workNodes, double widthHeightRatio, double xDistance, double yDistance) {
 		workNodes = GraphHelper.getVisibleNodes(workNodes);
 		int numberOfNodes = workNodes.size();
 		if (numberOfNodes <= 0)
 			return;
 		int nodesOnLine = (int) (Math.sqrt(--numberOfNodes));
 		int nodeLines = (int) (Math.sqrt(numberOfNodes));
+		
+		if (setWidth)
+			nodesOnLine = maxX;
 		
 		/*
 		 * Computes the number of nodes on each grid line under
@@ -194,7 +214,7 @@ public class GridLayoutAlgorithm
 				maxHeightInRow.put(j, sz.y);
 			
 			i++;
-			if (i > nodesOnLine) {
+			if (i >= nodesOnLine) {
 				j++;
 				i = 0;
 			}
@@ -221,65 +241,60 @@ public class GridLayoutAlgorithm
 			nodes2newPositions.put(n, new Vector2d(newX, newY));
 			
 			i++;
-			if (i > nodesOnLine) {
+			if (i >= nodesOnLine) {
 				j++;
 				i = 0;
 			}
 		}
 		
 		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, "Grid Layout");
+		
 	}
 	
 	@Override
 	public Parameter[] getParameters() {
 		
-		DoubleParameter widthHeightRatioParam =
-							new DoubleParameter("width/heigt ratio",
-												"The ratio between the width and the height of the layout.");
-		
-		widthHeightRatioParam.setDouble(widthHeightRatio);
-		
-		DoubleParameter xDistanceParam =
-							new DoubleParameter("Horizonzal space",
-												"The distance between nodes in horizontal direction.");
-		
-		DoubleParameter yDistanceParam =
-							new DoubleParameter("Vertical space",
-												"The distance between nodes in vertical direction.");
-		
-		DoubleParameter widthParam =
-							new DoubleParameter("Node width",
-												"The new width of the selected (or all) nodes.");
-		
-		DoubleParameter heightParam =
-							new DoubleParameter("Node height",
-												"The new height.");
-		
-		BooleanParameter limitXparameter =
-							new BooleanParameter(setWidth, "Non-rectangular grid", "If selected, the Width parameter will be used to create a non-rectangular grid");
-		
-		IntegerParameter widthParameter =
-							new IntegerParameter(maxX, "Grid-Width", "The height of the grid depends on the number of nodes and the grid width");
-		
-		BooleanParameter moveToTopParameter =
-							new BooleanParameter(moveToTop, "Finish: Move to Upper-Left", "Move all network elements to the upper left");
-		
-		xDistanceParam.setDouble(xDistance - targetSizeX);
-		yDistanceParam.setDouble(yDistance - targetSizeY);
-		
-		widthParam.setDouble(targetSizeX);
-		heightParam.setDouble(targetSizeY);
-		
+		if (widthHeightRatioParam == null) {
+			widthHeightRatioParam = new DoubleParameter("width/heigt ratio",
+					"The ratio between the width and the height of the layout.");
+			
+			widthHeightRatioParam.setDouble(widthHeightRatio);
+			
+			xDistanceParam = new DoubleParameter("Horizonzal space",
+					"The distance between nodes in horizontal direction.");
+			
+			yDistanceParam = new DoubleParameter("Vertical space",
+					"The distance between nodes in vertical direction.");
+			
+			widthParam = new DoubleParameter("Node width",
+					"The new width of the selected (or all) nodes.");
+			
+			heightParam = new DoubleParameter("Node height",
+					"The new height.");
+			
+			limitXparameter = new BooleanParameter(setWidth, "Consider Max Nodes Horizontally", "If selected, the 'Max Nodes horizontally' parameter will be used");
+			
+			widthParameter = new IntegerParameter(maxX, "Max Nodes horizontally", "The height of the grid depends on the number of nodes and the grid width");
+			
+//		BooleanParameter moveToTopParameter =
+//							new BooleanParameter(moveToTop, "Finish: Move to Upper-Left", "Move all network elements to the upper left");
+			
+			xDistanceParam.setDouble(xDistance - targetSizeX);
+			yDistanceParam.setDouble(yDistance - targetSizeY);
+			
+			widthParam.setDouble(targetSizeX);
+			heightParam.setDouble(targetSizeY);
+		}
 		return new Parameter[] {
-							new BooleanParameter(resize, "Resize Nodes", "If checked, the nodes will be resized when layouting"),
-							xDistanceParam,
-							yDistanceParam,
-							widthParam,
-							heightParam,
-							limitXparameter,
-							widthParameter,
-							moveToTopParameter,
-							widthHeightRatioParam, };
+				new BooleanParameter(resize, "Resize Nodes", "If checked, the nodes will be resized when layouting"),
+				xDistanceParam,
+				yDistanceParam,
+				widthParam,
+				heightParam,
+				limitXparameter,
+				widthParameter,
+				//							moveToTopParameter,
+				widthHeightRatioParam, };
 	}
 	
 	@Override
@@ -295,7 +310,7 @@ public class GridLayoutAlgorithm
 		yDistance = p_yDistance + targetSizeY;
 		setWidth = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		maxX = ((IntegerParameter) params[i++]).getInteger().intValue();
-		moveToTop = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
+//		moveToTop = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		widthHeightRatio = ((DoubleParameter) params[i++]).getDouble().doubleValue();
 	}
 	

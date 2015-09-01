@@ -1,19 +1,25 @@
 /*******************************************************************************
- * Copyright (c) 2003-2007 Network Analysis Group, IPK Gatersleben
+ * Copyright (c) 2003-2014 IPK Gatersleben, Germany
+ * Copyright (c) 2014-2015 Monash University, Australia
  *******************************************************************************/
-/*
- * Created on 12.04.2006 by Christian Klukas
+
+/**
+ * @author Christian Klukas, Tobias Czauderna
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes;
 
 public enum EntryType {
-	ortholog, enzyme, gene, genes, group, compound, map, unspecified, undefined, hiddenCompound, other;
+	
+	ortholog, enzyme, reaction, gene, genes, group, compound, map, unspecified, undefined, hiddenCompound, other;
 	
 	public static EntryType getEntryType(String entryType) {
+		
 		if (entryType.equals("ortholog"))
 			return EntryType.ortholog;
 		if (entryType.equals("enzyme"))
 			return EntryType.enzyme;
+		if (entryType.equals("reaction"))
+			return EntryType.reaction;
 		if (entryType.equals("gene"))
 			return EntryType.gene;
 		if (entryType.equals("genes"))
@@ -40,10 +46,12 @@ public enum EntryType {
 			if (et.getDescription().equals(entryType))
 				return et;
 		return null;
+		
 	}
 	
 	@Override
 	public String toString() {
+		
 		switch (this) {
 			case hiddenCompound:
 				return "hidden compound";
@@ -51,9 +59,11 @@ public enum EntryType {
 				return "";
 		}
 		return super.toString();
+		
 	}
 	
 	public String getDescription() {
+		
 		switch (this) {
 			case unspecified:
 				return "- unspecified -";
@@ -62,4 +72,5 @@ public enum EntryType {
 		}
 		return toString();
 	}
+	
 }

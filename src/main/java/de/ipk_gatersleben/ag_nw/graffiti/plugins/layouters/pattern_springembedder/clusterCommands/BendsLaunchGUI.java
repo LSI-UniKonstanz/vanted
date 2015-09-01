@@ -2,11 +2,14 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedd
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 
+@Deprecated
 public class BendsLaunchGUI extends LaunchGui {
 	
 	@Override
@@ -22,12 +25,18 @@ public class BendsLaunchGUI extends LaunchGui {
 	
 	@Override
 	public String getName() {
-		return "Bends...";
+		return "Bends";
 	}
 	
 	@Override
 	public String getCategory() {
 		return "Edges";
 	}
+
+	@Override
+	public Set<Category> getSetCategory() {
+		return null;
+	}
 	
+
 }

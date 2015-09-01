@@ -56,10 +56,9 @@ public class StringAttribute
 		super();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static Attribute getTypedStringAttribute(String id) {
 		Attribute newInstance = null;
-		Class ct = typedAttributesID2TypeForNodes.get(id);
+		Class<? extends Attribute> ct = typedAttributesID2TypeForNodes.get(id);
 		if (ct != null) {
 			try {
 				newInstance = (Attribute) ct.newInstance();
@@ -75,10 +74,9 @@ public class StringAttribute
 		return newInstance;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static Attribute getTypedStringAttribute(String id, String value) {
 		Attribute newInstance = null;
-		Class ct = typedAttributesID2TypeForNodes.get(id);
+		Class<? extends Attribute> ct = typedAttributesID2TypeForNodes.get(id);
 		if (ct != null) {
 			try {
 				Object res = ct.newInstance();
@@ -144,13 +142,12 @@ public class StringAttribute
 	 * 
 	 * @return a deep copy of this instance.
 	 */
-	@SuppressWarnings("unchecked")
 	public Object copy() {
 		if (this.getClass() == StringAttribute.class)
 			return new StringAttribute(getId(), value);
 		else {
 			try {
-				Constructor con = this.getClass().getConstructor(new Class[] { String.class, String.class });
+				Constructor<? extends Attribute> con = this.getClass().getConstructor(new Class[] { String.class, String.class });
 				StringAttribute result = (StringAttribute) con.newInstance(new Object[] { getId(), value });
 				return result;
 			} catch (Exception e) {
@@ -200,8 +197,7 @@ public class StringAttribute
 	/**
 	 * @author klukas
 	 */
-	@SuppressWarnings("unchecked")
-	public static void putAttributeType(String id, Class attributeType) {
+	public static void putAttributeType(String id, Class<? extends Attribute> attributeType) {
 		if (typedAttributesID2TypeForNodes.containsKey(id))
 			typedAttributesID2TypeForNodes.remove(id);
 		typedAttributesID2TypeForNodes.put(id, attributeType);

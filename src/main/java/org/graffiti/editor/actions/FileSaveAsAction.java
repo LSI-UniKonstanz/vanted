@@ -25,6 +25,7 @@ import javax.swing.filechooser.FileFilter;
 import org.ErrorMsg;
 import org.OpenFileDialogService;
 import org.StringManipulationTools;
+import org.UNCFileLocationCheck;
 import org.graffiti.core.GenericFileFilter;
 import org.graffiti.core.StringBundle;
 import org.graffiti.editor.MainFrame;
@@ -106,7 +107,8 @@ public class FileSaveAsAction
 	 *           DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
-		JFileChooser fc = ioManager.createSaveFileChooser();
+		
+		JFileChooser fc = ioManager.createSaveFileChooser(getGraph());
 		
 		OpenFileDialogService.setActiveDirectoryFor(fc);
 		
@@ -149,6 +151,7 @@ public class FileSaveAsAction
 					String fileName = FileSaveAsAction.this.jTextFieldFileName.getText();
 					if (fileName != null && fileName.length() > 0) {
 						String path = fileChooser.getCurrentDirectory().getAbsolutePath();
+						
 						// try to remove old file extension from file name
 						String oldFileExtension = ((GenericFileFilter) propertyChangeEvent.getOldValue()).getExtension();
 						if (fileName.endsWith(oldFileExtension))
@@ -208,6 +211,10 @@ public class FileSaveAsAction
 				}
 				
 				File file = fc.getSelectedFile();
+				
+				if (UNCFileLocationCheck.showUNCPathConfirmDialogForPath(file) != UNCFileLocationCheck.CONFIRM)
+					continue;
+				
 				String ext = ((GenericFileFilter) fc.getFileFilter()).getExtension();
 				String description = ((GenericFileFilter) fc.getFileFilter()).getDescription();
 				description = description.substring(0, description.lastIndexOf("(") - 1);
@@ -295,13 +302,13 @@ public class FileSaveAsAction
 				if (os == null)
 					MainFrame.getInstance().showMessageDialog("Output serializer unknown for file extension '" + ext + "'.");
 				else {
-					MainFrame.showMessage("Save graph to file " + file.getAbsolutePath() + "...", MessageType.PERMANENT_INFO);
+					MainFrame.showMessage("Save network to file " + file.getAbsolutePath() + "...", MessageType.PERMANENT_INFO);
 					os.write(new FileOutputStream(file), graph);
 					graph.setModified(false);
 					graph.setName(file.getAbsolutePath());
 					graph.setFileTypeDescription(fileTypeDescription);
 					long fs = file.length();
-					MainFrame.showMessage("Graph saved to file " + file.getAbsolutePath() + " (" + (fs / 1024) + "KB)", MessageType.INFO);
+					MainFrame.showMessage("Network saved to file " + file.getAbsolutePath() + " (" + (fs / 1024) + "KB)", MessageType.INFO);
 					MainFrame.getInstance().addNewRecentFileMenuItem(file);
 				}
 			} catch (Exception ioe) {

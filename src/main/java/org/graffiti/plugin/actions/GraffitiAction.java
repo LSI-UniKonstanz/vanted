@@ -27,7 +27,7 @@ import org.graffiti.help.HelpContext;
  * @version $Revision: 1.9 $
  */
 public abstract class GraffitiAction
-					extends AbstractAction {
+		extends AbstractAction {
 	// ~ Instance fields ========================================================
 	
 	/**
@@ -148,8 +148,8 @@ public abstract class GraffitiAction
 	 */
 	protected void showError(String msg) {
 		JOptionPane.showMessageDialog(mainFrame, msg,
-							StringBundle.getInstance().getString("message.dialog.title"),
-							JOptionPane.ERROR_MESSAGE);
+				StringBundle.getInstance().getString("message.dialog.title"),
+				JOptionPane.ERROR_MESSAGE);
 	}
 	
 	/**
@@ -160,15 +160,19 @@ public abstract class GraffitiAction
 	 */
 	protected void showWarning(String msg) {
 		JOptionPane.showMessageDialog(mainFrame, msg,
-							StringBundle.getInstance().getString("message.dialog.title"),
-							JOptionPane.WARNING_MESSAGE);
+				StringBundle.getInstance().getString("message.dialog.title"),
+				JOptionPane.WARNING_MESSAGE);
 	}
 	
 	public static void updateAllActions() {
 		if (MainFrame.blockUpdates)
 			return;
 		ArrayList<GraffitiAction> ka = new ArrayList<GraffitiAction>();
-		ka.addAll(knownActions);
+		synchronized (knownActions) {
+			
+			ka.addAll(knownActions);
+		}
+		
 		for (GraffitiAction ga : ka) {
 			ga.update();
 		}

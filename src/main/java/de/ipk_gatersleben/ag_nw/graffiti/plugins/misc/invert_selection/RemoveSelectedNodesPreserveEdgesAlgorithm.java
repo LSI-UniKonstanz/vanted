@@ -8,6 +8,9 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Stack;
 
 import javax.swing.ImageIcon;
@@ -26,6 +29,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.AlgorithmWithComponentDescription;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
@@ -37,8 +41,8 @@ import org.graffiti.session.EditorSession;
  * labels.
  */
 public class RemoveSelectedNodesPreserveEdgesAlgorithm
-					extends AbstractAlgorithm
-					implements AlgorithmWithComponentDescription {
+		extends AbstractAlgorithm
+		implements AlgorithmWithComponentDescription {
 	
 	Selection selection;
 	
@@ -50,7 +54,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new BooleanParameter(ignoreDirection, "Preserve Connectivity",
-							"Prevent connectivity loss because of edge-direction - ignore edge directions") };
+				"Prevent connectivity loss because of edge-direction - ignore edge directions") };
 	}
 	
 	public JComponent getDescriptionComponent() {
@@ -65,12 +69,12 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 		super.check();
 		if (selection == null) {
 			EditorSession session = MainFrame.getInstance()
-								.getActiveEditorSession();
+					.getActiveEditorSession();
 			selection = session.getSelectionModel().getActiveSelection();
 		}
 		if (selection.getNodes().size() <= 0)
 			throw new PreconditionException(
-								"Please select a number of nodes which will be removed from the network.<br>The result is a <b>folded network</b>, edges are preserved.");
+					"Please select a number of nodes which will be removed from the network.<br>The result is a <b>folded network</b>, edges are preserved.");
 	}
 	
 	/**
@@ -87,7 +91,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	 */
 	public void execute() {
 		EditorSession session = MainFrame.getInstance()
-							.getActiveEditorSession();
+				.getActiveEditorSession();
 		if (selection == null)
 			selection = session.getSelectionModel().getActiveSelection();
 		
@@ -102,8 +106,8 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	}
 	
 	public static int removeNodesPreserveEdges(ArrayList<Node> workNodes,
-						Graph graph, boolean ignoreDirection,
-						BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
+			Graph graph, boolean ignoreDirection,
+			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
 		Stack<Node> toBeDeleted = new Stack<Node>();
 		int workCount = 0;
 		toBeDeleted.addAll(workNodes);
@@ -227,23 +231,33 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	 */
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
-			return "Remove Nodes...";
+			return "Remove Nodes";
 		else
 			return null;
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Nodes";
+		return "Network.Nodes";
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.NODE,
+				Category.COMPUTATION
+				));
 	}
 	
 	@Override
 	public String getDescription() {
 		return "<html>" +
-							"With this command, the selected nodes (round nodes<br>" +
-							"in the example) are removed from a network. <br>" +
-							"The connectivity of the resulting network is influenced<br>" +
-							"by the corresponding setting as shown in the image.";
+				"With this command you can remove nodes, that do connect<br/>"
+				+ "other nodes inbetween without loosing the overall connectivity<br/>"
+				+ "of the network. The selected nodes (round nodes<br>" +
+				"in the example) are removed from a network. <br>" +
+				"The connectivity of the resulting network is influenced<br>" +
+				"by the corresponding setting as shown in the image.";
 	}
 	
 	/**

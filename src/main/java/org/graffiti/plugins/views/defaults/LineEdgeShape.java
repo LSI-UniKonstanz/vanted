@@ -22,6 +22,7 @@ import java.util.HashMap;
 
 import org.AttributeHelper;
 import org.StringManipulationTools;
+import org.Vector2d;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.CoordinateAttribute;
@@ -75,6 +76,8 @@ public abstract class LineEdgeShape implements EdgeShape {
 	
 	/** The shape of the arrow on the source side. */
 	protected Shape headArrow;
+	
+	private ArrowShape headShape;
 	
 	/** The shape of the arrow on the source side. */
 	protected Shape tailArrow;
@@ -412,7 +415,7 @@ public abstract class LineEdgeShape implements EdgeShape {
 			return other;
 		
 		Point2D newTarget = target;
-		ArrowShape tailShape = null;
+		// tailShape = null;
 		
 		String shapeClass = edgeAttr.getArrowtail();
 		
@@ -420,7 +423,8 @@ public abstract class LineEdgeShape implements EdgeShape {
 			hollowSourceArrowShape = shapeClass.contains("Thin");
 			try {
 				shapeClass = StringManipulationTools.stringReplace(shapeClass, "Thin", "");
-				tailShape = (ArrowShape) InstanceLoader.createInstance(shapeClass);
+				if (!(tailShape != null) || !(tailShape.getClass().equals(shapeClass)))
+					tailShape = (ArrowShape) InstanceLoader.createInstance(shapeClass);
 			} catch (InstanceCreationException ie) {
 				throw new ShapeNotFoundException(ie.toString());
 			}
@@ -470,7 +474,7 @@ public abstract class LineEdgeShape implements EdgeShape {
 			return other;
 		
 		Point2D newTarget = target;
-		ArrowShape headShape = null;
+		// headShape = null;
 		
 		String shapeClass = edgeAttr.getArrowhead();
 		
@@ -478,7 +482,8 @@ public abstract class LineEdgeShape implements EdgeShape {
 			hollowTargetArrowShape = shapeClass.contains("Thin");
 			try {
 				shapeClass = StringManipulationTools.stringReplace(shapeClass, "Thin", "");
-				headShape = (ArrowShape) InstanceLoader.createInstance(shapeClass);
+				if (!(headShape != null) || !(headShape.getClass().getName().equals(shapeClass)))
+					headShape = (ArrowShape) InstanceLoader.createInstance(shapeClass);
 			} catch (InstanceCreationException ie) {
 				throw new ShapeNotFoundException(ie.toString());
 			}
@@ -496,6 +501,7 @@ public abstract class LineEdgeShape implements EdgeShape {
 	}
 	
 	private static HashMap<String, Point2D> defaultPorts = getDefaultPorts();
+	private ArrowShape tailShape;
 	
 	/**
 	 * Returns the coordinates of the port named <code>portName</code>.
@@ -537,8 +543,8 @@ public abstract class LineEdgeShape implements EdgeShape {
 					double py = point.getY();
 					
 					point = new Point2Dfix(
-										sRect.getCenterX() + (px * sRect.getWidth() / 2d),
-										sRect.getCenterY() + (py * sRect.getHeight() / 2d));
+							sRect.getCenterX() + (px * sRect.getWidth() / 2d),
+							sRect.getCenterY() + (py * sRect.getHeight() / 2d));
 				} else {
 					if (portName != null && portName.indexOf(";") > 0) {
 						try {
@@ -548,17 +554,30 @@ public abstract class LineEdgeShape implements EdgeShape {
 							double py = Double.parseDouble(b);
 							double xexcess = 0;
 							double yexcess = 0;
+							// fix 12/08/2015
+							// use the rectangle size when docking coordinate (px or py) > 1 or docking coordinate (px or py) < -1
+							// use the node size otherwise in the according dimension
+							double width = sRect.getWidth();
+							double height = sRect.getHeight();
+							Vector2d nodeSize = AttributeHelper.getSize(node);
 							if (px > 1 || px < -1) {
 								xexcess = px;
 								px = px > 0 ? 1 : -1;
 							}
+							else
+								width = nodeSize.x;
 							if (py > 1 || py < -1) {
 								yexcess = py;
 								py = py > 0 ? 1 : -1;
 							}
+							else
+								height = nodeSize.y;
+							// point = new Point2Dfix(
+							// xexcess + sRect.getCenterX() + ((px * sRect.getWidth()) / 2d),
+							// yexcess + sRect.getCenterY() + ((py * sRect.getHeight()) / 2d));
 							point = new Point2Dfix(
-												xexcess + sRect.getCenterX() + ((px * sRect.getWidth()) / 2d),
-												yexcess + sRect.getCenterY() + ((py * sRect.getHeight()) / 2d));
+									xexcess + sRect.getCenterX() + ((px * width) / 2d),
+									yexcess + sRect.getCenterY() + ((py * height) / 2d));
 						} catch (Exception e) {
 							point = calculateDefaultDocking(nodeAttr, shape);
 						}
@@ -568,7 +587,7 @@ public abstract class LineEdgeShape implements EdgeShape {
 			} else {
 				CoordinateAttribute coords = port.getCoordinate();
 				point.setLocation(sRect.getCenterX() + ((coords.getX() * sRect.getWidth()) / 2d), sRect.getCenterY()
-									+ ((coords.getY() * sRect.getHeight()) / 2d));
+						+ ((coords.getY() * sRect.getHeight()) / 2d));
 				point = new Point2Dfix(point.getX(), point.getY());
 			}
 		}

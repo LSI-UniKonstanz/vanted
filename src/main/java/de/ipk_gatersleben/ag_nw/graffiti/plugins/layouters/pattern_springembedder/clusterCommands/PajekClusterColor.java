@@ -8,6 +8,8 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -19,6 +21,7 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
@@ -51,14 +54,24 @@ public class PajekClusterColor extends AbstractAlgorithm {
 			return "Color Clusters";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.VISUAL,
+				Category.CLUSTER
+				));
+	}
+	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No graph available!");
 		Set<String> clusters = new TreeSet<String>();
 		for (GraphElement n : graph.getGraphElements()) {
-			String clusterId = NodeTools.getClusterID(n, "");
-			if (!clusterId.equals(""))
+			String clusterId = NodeTools.getClusterID(n, null);
+			if (clusterId != null)
 				clusters.add(clusterId);
 		}
 		if (clusters.size() <= 0)
@@ -71,22 +84,23 @@ public class PajekClusterColor extends AbstractAlgorithm {
 		Graph g = graph;
 		Set<String> clusters = new TreeSet<String>();
 		for (GraphElement n : g.getGraphElements()) {
-			String clusterId = NodeTools.getClusterID(n, "");
-			if (!clusterId.equals(""))
+			String clusterId = NodeTools.getClusterID(n, null);
+			if (clusterId != null)
 				clusters.add(clusterId);
 		}
 		
 		ClusterColorAttribute cca = (ClusterColorAttribute) AttributeHelper
 							.getAttributeValue(g, ClusterColorAttribute.attributeFolder,
 												ClusterColorAttribute.attributeName, ClusterColorAttribute
-																	.getDefaultValue(clusters.size()),
+																	.getDefaultValue(clusters),
 												new ClusterColorAttribute("resulttype"), false);
 		
-		if (cca.getClusterColors() != null && cca.getClusterColors().size() > clusters.size()) {
-			cca.trimColorSelection(clusters.size());
-		}
+//		if (cca.getClusterColors() != null && cca.getClusterColors().size() > clusters.size()) {
+//			cca.trimColorSelection(clusters.size());
+//		}
 		
-		cca.ensureMinimumColorSelection(clusters.size());
+//		cca.ensureMinimumColorSelection(clusters.size());
+		cca.updateClusterList(clusters);
 		ClusterColorAttribute cca_new = new ClusterColorAttribute(
 							ClusterColorAttribute.attributeName, cca.getString());
 		ClusterColorParameter op = new ClusterColorParameter(cca_new, "Cluster-Colors", ClusterColorAttribute.desc);
@@ -122,10 +136,7 @@ public class PajekClusterColor extends AbstractAlgorithm {
 	 */
 	@Override
 	public String getCategory() {
-		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
-			return "Nodes";
-		else
-			return "Cluster";
+			return "Network.Cluster";
 	}
 	
 	@Override
@@ -146,12 +157,19 @@ public class PajekClusterColor extends AbstractAlgorithm {
 	public void execute() {
 		Graph g = graph;
 		try {
+			Set<String> clusters = new TreeSet<String>();
+			for (GraphElement ge : g.getGraphElements()) {
+				String clusterId = NodeTools.getClusterID(ge, "");
+				if (!clusterId.equals(""))
+					clusters.add(clusterId);
+			}
+			
 			g.getListenerManager().transactionStarted(this);
 			ClusterColorAttribute cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(g, ClusterColorAttribute.attributeFolder,
-								ClusterColorAttribute.attributeName, ClusterColorAttribute.getDefaultValue(1), new ClusterColorAttribute("resulttype"));
+								ClusterColorAttribute.attributeName, ClusterColorAttribute.getDefaultValue(clusters), new ClusterColorAttribute("resulttype"));
 			
 			if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR || modeOfOperation.equals(modeNode))
-				executeClusterColoringOnGraph(g, cca);
+				executeClusterColoringOnGraph(g, clusters, cca);
 			if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR
 								&& modeOfOperation.equals(modeSurr)) {
 				AttributeHelper.setAttribute(graph, "", "background_coloring", new Boolean(true));
@@ -164,7 +182,7 @@ public class PajekClusterColor extends AbstractAlgorithm {
 			Graph emptyGraph = new AdjListGraph();
 			Graph clusterGraph = (Graph) AttributeHelper.getAttributeValue(g, "cluster", "clustergraph", emptyGraph, new AdjListGraph(), false);
 			if (clusterGraph != emptyGraph) {
-				executeClusterColoringOnGraph(clusterGraph, cca);
+				executeClusterColoringOnGraph(clusterGraph, clusters, cca);
 			}
 		} finally {
 			g.getListenerManager().transactionFinished(this);
@@ -178,7 +196,13 @@ public class PajekClusterColor extends AbstractAlgorithm {
 			if (!clusterId.equals(""))
 				clusters.add(clusterId);
 		}
-		cca.ensureMinimumColorSelection(clusters.size());
+		executeClusterColoringOnGraph(g, clusters, cca);
+	}
+	
+	public static void executeClusterColoringOnGraph(Graph g, Set<String> clusters, ClusterColorAttribute cca) {
+		
+//		cca.ensureMinimumColorSelection(clusters.size());
+		cca.updateClusterList(clusters);
 		String[] clusterValues = clusters.toArray(new String[0]);
 		g.getListenerManager().transactionStarted(g);
 		try {

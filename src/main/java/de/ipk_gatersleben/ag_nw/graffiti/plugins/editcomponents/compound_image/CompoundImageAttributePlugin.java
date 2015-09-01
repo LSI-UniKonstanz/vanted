@@ -6,14 +6,18 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.compound_image;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.AttributeDescription;
 import org.graffiti.attributes.DoubleAttribute;
 import org.graffiti.attributes.StringAttribute;
+import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.EditorPlugin;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.mode.Mode;
 import org.graffiti.plugin.tool.Tool;
+import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiShape;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
@@ -21,8 +25,16 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 public class CompoundImageAttributePlugin
 					extends IPK_PluginAdapter
 					implements EditorPlugin {
-	private HashMap<Class<?>, Class<?>> valueEditComponents;
-	private HashMap<Class<?>, Class<CompoundImageAttributeComponent>> attributeComponents;
+	
+	/**
+	 * Maps from an attribute class to an AttributeComponent class. old
+	 * comment: A <code>java.util.Map</code> from <code>Attribute</code> to
+	 * the corresponding <code>LabelValueRow</code>-instance.
+	 */
+	protected Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
+	
+	/** The mapping between attribute classes and attributeComponent classes. */
+	protected HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
 	
 	@SuppressWarnings("unchecked")
 	public CompoundImageAttributePlugin() {
@@ -36,8 +48,8 @@ public class CompoundImageAttributePlugin
 		StringAttribute.putAttributeType("image_url", CompoundAttribute.class);
 		StringAttribute.putAttributeType("image_position", CompoundPositionAttribute.class);
 		
-		valueEditComponents = new HashMap();
-		attributeComponents = new HashMap();
+		valueEditComponents = new HashMap<>();
+		attributeComponents = new HashMap<>();
 		
 		valueEditComponents.put(
 							CompoundAttribute.class,
@@ -59,7 +71,7 @@ public class CompoundImageAttributePlugin
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.EditorPlugin#getAttributeComponents()
 	 */
-	public Map<Class<?>, Class<CompoundImageAttributeComponent>> getAttributeComponents() {
+	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
 	
@@ -99,7 +111,7 @@ public class CompoundImageAttributePlugin
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.EditorPlugin#getValueEditComponents()
 	 */
-	public Map<Class<?>, Class<?>> getValueEditComponents() {
+	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}
 }

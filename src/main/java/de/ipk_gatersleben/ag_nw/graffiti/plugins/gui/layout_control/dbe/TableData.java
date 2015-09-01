@@ -676,7 +676,8 @@ public class TableData {
 	}
 	
 	public void processGOanno(String splitChar, String preString, int minNumericLength) {
-		int offRow = 0;
+
+		
 		for (int row = 1; row <= getMaximumRow(); row++) {
 			ArrayList<Object> valuesInRow = new ArrayList<Object>();
 			for (int col = 1; col <= getMaximumCol(); col++) {
@@ -734,7 +735,6 @@ public class TableData {
 						addCellData(col - 1, row - 1, valuesInRow.get(col - 1));
 				}
 			} else {
-				offRow--;
 				clearRow(row);
 			}
 		}
@@ -905,9 +905,8 @@ public class TableData {
 		return columnsToIgnoreColumns;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public String getSampleValues(boolean headerRow, int col, int maxValues, String div, String ifNoValues) {
-		LinkedHashSet<String> values = new LinkedHashSet();
+		LinkedHashSet<String> values = new LinkedHashSet<>();
 		int startRow = headerRow ? 2 : 1;
 		for (int row = startRow; row < getMaximumRow(); row++) {
 			if (values.size() > maxValues)
@@ -918,7 +917,7 @@ public class TableData {
 		if (values.size() == 0)
 			return ifNoValues;
 		else {
-			ArrayList varr = new ArrayList(values);
+			ArrayList<String> varr = new ArrayList<>(values);
 			if (varr.size() > maxValues) {
 				varr.remove(varr.size() - 1);
 				varr.add("...");

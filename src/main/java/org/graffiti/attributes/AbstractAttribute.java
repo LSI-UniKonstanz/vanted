@@ -31,10 +31,10 @@ import org.graffiti.plugin.XMLHelper;
  */
 public abstract class AbstractAttribute
 					implements Attribute {
-	@SuppressWarnings("unchecked")
-	protected static HashMap<String, Class> typedAttributesID2TypeForNodes = getDefaultNodeTypedAttributes();
-	@SuppressWarnings("unchecked")
-	protected static HashMap<String, Class> typedAttributesID2TypeForEdges = getDefaultEdgeTypedAttributes();
+
+	protected static HashMap<String, Class<? extends Attribute>> typedAttributesID2TypeForNodes = getDefaultNodeTypedAttributes();
+
+	protected static HashMap<String, Class<? extends Attribute>> typedAttributesID2TypeForEdges = getDefaultEdgeTypedAttributes();
 	
 	public void setId(String id) {
 		if (id == null)
@@ -46,28 +46,27 @@ public abstract class AbstractAttribute
 		}
 	}
 	
-	public static void addNodeAttributeType(String id, Class<?> type) {
+	public static void addNodeAttributeType(String id, Class<? extends Attribute> type) {
 		if (typedAttributesID2TypeForNodes.containsKey(id)) {
 			// System.out.println("Information: overwriting previous attribute class mapping for id "+id+"");
 		}
 		typedAttributesID2TypeForNodes.put(id, type);
 	}
 	
-	public static void addEdgeAttributeType(String id, Class<?> type) {
+	public static void addEdgeAttributeType(String id, Class<? extends Attribute> type) {
 		if (typedAttributesID2TypeForEdges.containsKey(id)) {
 			// System.out.println("Information: overwriting previous attribute class mapping for id "+id+"");
 		}
 		typedAttributesID2TypeForEdges.put(id, type);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static Attribute getTypedAttribute(String id, boolean isNodeTrue_isEdgeFalse) {
-		Class c;
+		Class<? extends Attribute> c;
 		if (isNodeTrue_isEdgeFalse)
 			c = typedAttributesID2TypeForNodes.get(id);
 		else
 			c = typedAttributesID2TypeForEdges.get(id);
-		Constructor con;
+		Constructor<? extends Attribute> con;
 		try {
 			con = c.getConstructor(new Class[] { String.class });
 			Attribute ta = (Attribute) con.newInstance(new Object[] { id });
@@ -77,9 +76,8 @@ public abstract class AbstractAttribute
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	private static HashMap<String, Class> getDefaultNodeTypedAttributes() {
-		HashMap<String, Class> result = new HashMap<String, Class>();
+	private static HashMap<String, Class<? extends Attribute>> getDefaultNodeTypedAttributes() {
+		HashMap<String, Class<? extends Attribute>> result = new HashMap<String, Class<? extends Attribute>>();
 		result.put("labelgraphics", NodeLabelAttribute.class);
 		for (int i = 0; i <= 99; i++) {
 			result.put("labelgraphics" + i, NodeLabelAttribute.class);
@@ -87,9 +85,8 @@ public abstract class AbstractAttribute
 		return result;
 	}
 	
-	@SuppressWarnings("unchecked")
-	private static HashMap<String, Class> getDefaultEdgeTypedAttributes() {
-		HashMap<String, Class> result = new HashMap<String, Class>();
+	private static HashMap<String, Class<? extends Attribute>> getDefaultEdgeTypedAttributes() {
+		HashMap<String, Class<? extends Attribute>> result = new HashMap<String, Class<? extends Attribute>>();
 		// result.put("color", ColorAttribute.class);
 		result.put("labelgraphics", EdgeLabelAttribute.class);
 		result.put("srcLabel", EdgeLabelAttribute.class);

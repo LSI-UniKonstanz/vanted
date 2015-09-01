@@ -1,13 +1,16 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.database_processing.go_cluster_histogram;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.util.Queue;
 
 public class PruneTreeAlgorithm extends AbstractAlgorithm {
@@ -57,9 +60,19 @@ public class PruneTreeAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return null;// "Hierarchy";
+		return "Network.Hierarchy";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.HIDDEN,
+				Category.HIERARCHY
+				));
+	}
+
 	@Override
 	public String getDescription() {
 		return "<html>" +

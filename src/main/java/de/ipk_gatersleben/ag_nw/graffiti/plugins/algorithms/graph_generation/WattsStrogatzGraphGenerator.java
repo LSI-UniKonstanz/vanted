@@ -3,6 +3,9 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.graph_generation;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
@@ -15,6 +18,7 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -31,9 +35,16 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 	
 	@Override
 	public String getCategory() {
-		return "Elements";
+		return "File.New.Random Network";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION
+				));
+	}
 	private int numberOfNodes = 5;
 	private int initDegree = 4;
 	private double p = 0.5;
@@ -73,19 +84,19 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 	
 	@Override
 	public String getName() {
-		return "Generate Watts and Strogatz random graph";
+		return "Generate Watts and Strogatz random network";
 	}
 	
 	@Override
 	public String getDescription() {
 		return "<html>" +
-				"Create small-world random graph according to Watts and Strogatz model.";
+				"Create small-world random network according to Watts and Strogatz model.";
 	}
 	
 	@Override
 	public void execute() {
 		
-		BackgroundTaskHelper.issueSimpleTask("Generating random graph", "Generating random graph", new Runnable() {
+		BackgroundTaskHelper.issueSimpleTask("Generating random network", "Generating random network", new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -100,7 +111,7 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 				} catch (Exception e) {
 					ErrorMsg.addErrorMessage(e);
 				} catch (OutOfMemoryError e) {
-					ErrorMsg.addErrorMessage("Out of memory! Please choose to create a smaller graph or increase memory of Java VM!");
+					ErrorMsg.addErrorMessage("Out of memory! Please choose to create a smaller network or increase memory of Java VM!");
 				}
 			}
 		}, null);
@@ -164,4 +175,11 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 		}
 		return rdg;
 	}
+
+	@Override
+	public boolean isAlwaysExecutable() {
+		return true;
+	}
+	
+	
 }

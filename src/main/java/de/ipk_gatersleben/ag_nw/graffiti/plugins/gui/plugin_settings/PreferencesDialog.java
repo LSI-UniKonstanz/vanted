@@ -71,7 +71,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover
 import de.ipk_gatersleben.ag_nw.graffiti.services.HandlesAlgorithmData;
 
 public class PreferencesDialog extends JDialog
-					implements PluginManagerListener {
+		implements PluginManagerListener {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -96,6 +96,8 @@ public class PreferencesDialog extends JDialog
 	private boolean showThreadSafeLayoutAlgorithms;
 	
 	public ThreadSafeOptions optionsForPlugin = null;
+	
+	public Algorithm selectedAlgorithm;
 	
 	/*
 	 * (non-Javadoc)
@@ -122,10 +124,10 @@ public class PreferencesDialog extends JDialog
 		Container cp = this.getContentPane();
 		
 		initializeGUIforGivenContainer(cp, this, false, true, true, true, true, true, false,
-							null,
-							null,
-							null,
-							false);
+				null,
+				null,
+				null,
+				false);
 		
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		
@@ -167,15 +169,15 @@ public class PreferencesDialog extends JDialog
 	 * @param setAlgorithmDataObject
 	 */
 	public void initializeGUIforGivenContainer(Container cp, final JDialog thisDialog,
-						boolean vertical, boolean showCloseButton,
-						boolean showAlgorithms,
-						boolean showSettings,
-						boolean showInteractiveAlgorithms,
-						boolean showScripts,
-						boolean showOnlyLayoutAlgorithms,
-						final Graph graph, final Selection selection,
-						final HandlesAlgorithmData setAlgorithmDataObject,
-						final boolean executeMoveToTopAfterwards) {
+			boolean vertical, boolean showCloseButton,
+			boolean showAlgorithms,
+			boolean showSettings,
+			boolean showInteractiveAlgorithms,
+			boolean showScripts,
+			boolean showOnlyLayoutAlgorithms,
+			final Graph graph, final Selection selection,
+			final HandlesAlgorithmData setAlgorithmDataObject,
+			final boolean executeMoveToTopAfterwards) {
 		
 		if (showScripts && !ReleaseInfo.getIsAllowedFeature(FeatureSet.SCRIPT_ACCESS))
 			showScripts = false;
@@ -201,6 +203,7 @@ public class PreferencesDialog extends JDialog
 		myTree.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent e) {
 				processTreeSelectionEvent(e);
+				
 			}
 			
 			/**
@@ -221,6 +224,7 @@ public class PreferencesDialog extends JDialog
 				if (mt instanceof MyPluginTreeNode) {
 					MyPluginTreeNode mpt = (MyPluginTreeNode) mt;
 					Object data = mpt.getUserObject();
+					
 					settingsPanel.removeAll();
 					settingsPanel.repaint();
 					if (mpt.getClassType() == BSHscriptMenuEntry.class) {
@@ -252,10 +256,10 @@ public class PreferencesDialog extends JDialog
 									ThreadSafeAlgorithm alg = (ThreadSafeAlgorithm) data;
 									JPanel pluginContent = new JPanel();
 									optionsForPlugin =
-														new ThreadSafeOptions();
+											new ThreadSafeOptions();
 									
 									if (alg.setControlInterface(optionsForPlugin,
-														pluginContent)) {
+											pluginContent)) {
 										JScrollPane sp = new JScrollPane(pluginContent);
 										sp.setBorder(null);
 										settingsPanel.add(sp);
@@ -264,7 +268,9 @@ public class PreferencesDialog extends JDialog
 								} else
 									if (mpt.getClassType() == Algorithm.class) {
 										Algorithm alg = (Algorithm) data;
-										initAlgorithmPreferencesPanel(alg, graph, selection, setAlgorithmDataObject, executeMoveToTopAfterwards);
+										selectedAlgorithm = alg;
+										
+										initAlgorithmPreferencesPanel(thisDialog, alg, graph, selection, setAlgorithmDataObject, executeMoveToTopAfterwards);
 									} else
 										if (mpt.getClassType() == OptionPane.class) {
 											if (data instanceof OptionPane) {
@@ -278,119 +284,6 @@ public class PreferencesDialog extends JDialog
 			
 			private JComponent getDependencyPanel(Dependency dep) {
 				return new JLabel(dep.getName() + " (" + dep.getMain() + ")");
-			}
-			
-			private void initAlgorithmPreferencesPanel(final Algorithm alg,
-								final Graph graph, Selection sele,
-								final HandlesAlgorithmData setAlgorithmDataObject,
-								final boolean executeMoveToTopAfterwards) {
-				// settingsPanel.add(new JLabel("Algorithm selection: "+alg.getName()));
-				
-				JPanel progressAndStatus = new JPanel();
-				double border = 5;
-				double[][] size =
-				{
-									{ border, TableLayoutConstants.FILL, border }, // Columns
-						{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, border }
-				}; // Rows
-				
-				progressAndStatus.setLayout(new TableLayout(size));
-				
-				String desc = alg.getDescription();
-				JLabel info = new JLabel(desc);
-				info.setBorder(BorderFactory.createLoweredBevelBorder());
-				info.setOpaque(false);
-				if (desc != null && desc.length() > 0)
-					progressAndStatus.add(info, "1,3");
-				EditComponentManager editComponentManager = MainFrame.getInstance().getEditComponentManager();
-				
-				ParameterEditPanel paramPanel = null;
-				alg.attach(graph, selection);
-				boolean canNotStart = false;
-				try {
-					Graph workgraph = graph;
-					try {
-						if (workgraph == null) {
-							workgraph = MainFrame.getInstance().getActiveEditorSession().getGraph();
-							sele = MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection();
-							if (sele == null)
-								sele = new Selection("");
-						}
-					} catch (NullPointerException npe) {
-						// empty
-					}
-					alg.attach(workgraph, sele);
-					alg.check();
-				} catch (PreconditionException e1) {
-					canNotStart = true;
-					JLabel hint = new JLabel("<html>Algorithm can not be used at the moment:<br>" + e1.getLocalizedMessage());
-					progressAndStatus.add(hint, "1,2");
-					paramPanel = null;
-				}
-				if (!canNotStart)
-					if (alg.getParameters() != null) {
-						paramPanel = new ParameterEditPanel(alg.getParameters(),
-											editComponentManager.getEditComponents(), sele, alg.getName(), true, alg.getName());
-						if (paramPanel != null) {
-							JScrollPane sp = new JScrollPane(paramPanel);
-							sp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-							sp.setOpaque(false);
-							sp.setBackground(null);
-							progressAndStatus.add(sp, "1,2");
-						}
-					}
-				final ParameterEditPanel finalParamPanel = paramPanel;
-				JButton runButton = new JMButton("Layout Network");
-				PreferencesDialog.activeStartLayoutButton = runButton;
-				if (setAlgorithmDataObject != null)
-					runButton.setText("Select Layouter");
-				if (canNotStart)
-					runButton.setEnabled(false);
-				final Selection selectionF = sele;
-				runButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						Graph workgraph = graph;
-						if (workgraph == null) {
-							try {
-								workgraph = GravistoService.getInstance().getMainFrame().getActiveSession().getGraph();
-							} catch (Exception err) {
-								MainFrame.showMessageDialog("No active graph!", "Error");
-								return;
-							}
-						}
-						if (finalParamPanel != null)
-							alg.setParameters(finalParamPanel.getUpdatedParameters());
-						if (setAlgorithmDataObject != null) {
-							setAlgorithmDataObject.setAlgorithm(alg);
-							if (thisDialog != null)
-								thisDialog.setVisible(false);
-						} else {
-							Selection selection = selectionF;
-							try {
-								workgraph = MainFrame.getInstance().getActiveEditorSession().getGraph();
-								selection = MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection();
-								if (selection == null)
-									selection = new Selection("");
-							} catch (NullPointerException npe) {
-								// empty
-							}
-							runAlgorithm(alg, workgraph, selection);
-							if (executeMoveToTopAfterwards) {
-								CenterLayouterAlgorithm ca = new CenterLayouterAlgorithm();
-								ca.attach(workgraph, selection);
-								runAlgorithm(ca, workgraph, selection);
-							}
-							if (thisDialog != null)
-								thisDialog.setVisible(false);
-						}
-					}
-				});
-				runButton.setMinimumSize(new Dimension(10, 10));
-				progressAndStatus.add(runButton, "1,1");
-				
-				progressAndStatus.validate();
-				settingsPanel.add(progressAndStatus);
-				settingsPanel.validate();
 			}
 		});
 		
@@ -450,14 +343,14 @@ public class PreferencesDialog extends JDialog
 						if (comps[i] instanceof BSHscriptMenuEntry) {
 							BSHscriptMenuEntry sme = (BSHscriptMenuEntry) comps[i];
 							rootNodeScripts.add(
-												new MyPluginTreeNode(sme.getText(),
-																	comps[i], BSHscriptMenuEntry.class));
+									new MyPluginTreeNode(sme.getText(),
+											comps[i], BSHscriptMenuEntry.class));
 						}
 						if (comps[i] instanceof RubyScriptMenuEntry) {
 							RubyScriptMenuEntry sme = (RubyScriptMenuEntry) comps[i];
 							rootNodeScripts.add(
-												new MyPluginTreeNode(sme.getText(),
-																	comps[i], RubyScriptMenuEntry.class));
+									new MyPluginTreeNode(sme.getText(),
+											comps[i], RubyScriptMenuEntry.class));
 						}
 					}
 				}
@@ -493,6 +386,124 @@ public class PreferencesDialog extends JDialog
 		}
 	}
 	
+	public void initAlgorithmPreferencesPanel(final JDialog thisDialog, final Algorithm alg,
+			final Graph graph, Selection sele,
+			final HandlesAlgorithmData setAlgorithmDataObject,
+			final boolean executeMoveToTopAfterwards) {
+		// settingsPanel.add(new JLabel("Algorithm selection: "+alg.getName()));
+		settingsPanel.removeAll();
+		
+		JPanel progressAndStatus = new JPanel();
+		double border = 5;
+		double[][] size =
+		{
+				{ border, TableLayoutConstants.FILL, border }, // Columns
+				{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, border }
+		}; // Rows
+		
+		progressAndStatus.setLayout(new TableLayout(size));
+		
+		String desc = alg.getDescription();
+		JLabel info = new JLabel(desc);
+		info.setBorder(BorderFactory.createLoweredBevelBorder());
+		info.setOpaque(false);
+		if (desc != null && desc.length() > 0)
+			progressAndStatus.add(info, "1,3");
+		EditComponentManager editComponentManager = MainFrame.getInstance().getEditComponentManager();
+		
+		ParameterEditPanel paramPanel = null;
+		alg.attach(graph, sele);
+		boolean canNotStart = false;
+		try {
+			Graph workgraph = graph;
+			try {
+				if (workgraph == null) {
+					workgraph = MainFrame.getInstance().getActiveEditorSession().getGraph();
+					sele = MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection();
+					if (sele == null)
+						sele = new Selection("");
+				}
+			} catch (NullPointerException npe) {
+				// empty
+			}
+			alg.attach(workgraph, sele);
+			alg.check();
+		} catch (PreconditionException e1) {
+			canNotStart = true;
+			JLabel hint = new JLabel("<html>Algorithm can not be used at the moment:<br>" + e1.getLocalizedMessage());
+			progressAndStatus.add(hint, "1,2");
+			paramPanel = null;
+		}
+		if (!canNotStart)
+			if (alg.getParameters() != null) {
+				paramPanel = new ParameterEditPanel(alg.getParameters(),
+						editComponentManager.getEditComponents(), sele, alg.getName(), true, alg.getName());
+				if (paramPanel != null) {
+					JScrollPane sp = new JScrollPane(paramPanel);
+					sp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+					sp.setOpaque(false);
+					sp.setBackground(null);
+					progressAndStatus.add(sp, "1,2");
+				}
+			}
+		final ParameterEditPanel finalParamPanel = paramPanel;
+		JButton runButton = new JMButton("Layout Network");
+		PreferencesDialog.activeStartLayoutButton = runButton;
+		if (setAlgorithmDataObject != null)
+			runButton.setText("Select Layouter");
+		if (canNotStart)
+			runButton.setEnabled(false);
+		final Selection selectionF = sele;
+		runButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Graph workgraph = graph;
+				if (workgraph == null) {
+					try {
+						workgraph = GravistoService.getInstance().getMainFrame().getActiveSession().getGraph();
+					} catch (Exception err) {
+						MainFrame.showMessageDialog("No active graph!", "Error");
+						return;
+					}
+				}
+				if (finalParamPanel != null)
+					alg.setParameters(finalParamPanel.getUpdatedParameters());
+				if (setAlgorithmDataObject != null) {
+					setAlgorithmDataObject.setAlgorithm(alg);
+					if (thisDialog != null)
+						thisDialog.setVisible(false);
+				} else {
+					Selection selection = selectionF;
+					try {
+						workgraph = MainFrame.getInstance().getActiveEditorSession().getGraph();
+						selection = MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection();
+						if (selection == null)
+							selection = new Selection("");
+					} catch (NullPointerException npe) {
+						// empty
+					}
+					runAlgorithm(alg, workgraph, selection);
+					if (executeMoveToTopAfterwards) {
+						CenterLayouterAlgorithm ca = new CenterLayouterAlgorithm();
+						ca.attach(workgraph, selection);
+						runAlgorithm(ca, workgraph, selection);
+					}
+					if (thisDialog != null)
+						thisDialog.setVisible(false);
+				}
+			}
+		});
+		runButton.setMinimumSize(new Dimension(10, 10));
+		progressAndStatus.add(runButton, "1,1");
+		
+		progressAndStatus.validate();
+		
+		JScrollPane sp = new JScrollPane(progressAndStatus);
+		sp.setBorder(null);
+		
+		settingsPanel.add(sp);
+		settingsPanel.validate();
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see java.awt.Dialog#getTitle()
@@ -503,10 +514,10 @@ public class PreferencesDialog extends JDialog
 	}
 	
 	void runAlgorithm(final Algorithm alg, Graph graph, Selection selection) {
-		ScenarioService.postWorkflowStep(alg, alg.getParameters());
-		alg.attach(graph, selection);
-		alg.execute();
 		alg.reset();
+		alg.attach(graph, selection);
+		ScenarioService.postWorkflowStep(alg, alg.getParameters());
+		alg.execute();
 	}
 	
 	/*
@@ -548,7 +559,11 @@ public class PreferencesDialog extends JDialog
 		
 		addSettings();
 		
-		SortJTree.sortJTree(rootNode, true);
+		synchronized (rootNode) {
+			
+			SortJTree.sortJTree(rootNode, true);
+		}
+		
 		myTree.expandRow(0);
 		try {
 			myTree.updateUI();
@@ -564,7 +579,7 @@ public class PreferencesDialog extends JDialog
 	 */
 	private void addDependencies(final String todoReplaceString, PluginEntry pluginEntry, MyPluginTreeNode newNode) {
 		MyPluginTreeNode depsNode = new MyPluginTreeNode("Dependencies",
-							pluginEntry.getDescription().getDependencies(), Dependency.class);
+				pluginEntry.getDescription().getDependencies(), Dependency.class);
 		
 		List<?> deps = pluginEntry.getDescription().getDependencies();
 		if (!deps.isEmpty()) {
@@ -594,8 +609,8 @@ public class PreferencesDialog extends JDialog
 			for (Iterator<?> it = options.iterator(); it.hasNext();) {
 				OptionPane op = (OptionPane) it.next();
 				rootNodeSettings.add(
-									new MyPluginTreeNode(
-														op.getCategory() + "/" + op.getOptionName(), op, OptionPane.class));
+						new MyPluginTreeNode(
+								op.getCategory() + "/" + op.getOptionName(), op, OptionPane.class));
 			}
 		}
 	}

@@ -9,7 +9,10 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.algorithms;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.AlignmentSetting;
 import org.AttributeHelper;
@@ -18,6 +21,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
@@ -57,6 +61,15 @@ public class AddDiagramLegendAlgorithm extends AbstractAlgorithm {
 	}
 	
 	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.VISUAL,
+				Category.CHART
+				));
+	}
+	
+	@Override
 	public void check() throws PreconditionException {
 		super.check();
 		if (!ChartColorAttribute.hasAttribute(graph) && !AttributeHelper.hasAttribute(graph, "hm_gamma"))
@@ -70,14 +83,14 @@ public class AddDiagramLegendAlgorithm extends AbstractAlgorithm {
 	public String getDescription() {
 		if (AttributeHelper.hasAttribute(graph, "hm_gamma"))
 			return "<html>" +
-								"This command creates a color-scale legend for the<br>" +
-								"heatmap (color-coding) diagrams of the current graph.<br>" +
-								"The heatmap color-selection and boundary specification<br>" +
-								"is available from the network tab, but only in case<br>" +
-								"the heatmap diagram style has been activated before<br>" +
-								"from the node or edge tab.<br>" +
-								"You may specify here, how many different colors should<br>" +
-								"be processed, and how large the legend should be.";
+					"This command creates a color-scale legend for the<br>" +
+					"heatmap (color-coding) diagrams of the current graph.<br>" +
+					"The heatmap color-selection and boundary specification<br>" +
+					"is available from the network tab, but only in case<br>" +
+					"the heatmap diagram style has been activated before<br>" +
+					"from the node or edge tab.<br>" +
+					"You may specify here, how many different colors should<br>" +
+					"be processed, and how large the legend should be.";
 		else
 			return null;
 	}

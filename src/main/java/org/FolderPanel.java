@@ -281,6 +281,7 @@ public class FolderPanel extends JComponent {
 			removeAll();
 			
 			rowPanel.removeAll();
+			
 			ArrayList<GuiRow> guiComponentRowsForCurrentPage = new ArrayList<GuiRow>();
 			guiComponentRowsForCurrentPage
 								.addAll(getFilteredList(guiComponentRows));
@@ -370,7 +371,6 @@ public class FolderPanel extends JComponent {
 			else {
 				rowPanel.setOpaque(false);
 			}
-			rowPanel.validate();
 			
 			if (!ReleaseInfo.getIsAllowedFeature(FeatureSet.GravistoJavaHelp))
 				showHelpButton = false;
@@ -433,7 +433,10 @@ public class FolderPanel extends JComponent {
 			}
 			add(rowPanel, "1,2");
 			
-			validate();
+			revalidate();
+//			validate();
+//			rowPanel.validate();
+
 			repaint();
 			
 			if (!hideSearch && lastSearchText.length() > 0 && currentSearchInputField != null) {

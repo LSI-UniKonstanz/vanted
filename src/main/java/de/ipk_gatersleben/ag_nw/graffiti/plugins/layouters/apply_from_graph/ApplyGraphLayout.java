@@ -9,10 +9,12 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.apply_from_graph;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.KeyStroke;
 
@@ -26,6 +28,7 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
@@ -40,7 +43,7 @@ public class ApplyGraphLayout implements Algorithm {
 	Selection s;
 	
 	public String getName() {
-		return "Apply from Layouted File...";
+		return "Apply from Layouted File";
 	}
 	
 	public void setParameters(Parameter[] params) {
@@ -277,11 +280,23 @@ public class ApplyGraphLayout implements Algorithm {
 	}
 	
 	public String getCategory() {
-		return "Layout";
+		return null;
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.LAYOUT
+				));
+	}
+
+	@Override
+	public String getMenuCategory() {
+		return null;
+	}
+
 	public boolean isLayoutAlgorithm() {
-		return false;
+		return true;
 	}
 	
 	public boolean showMenuIcon() {

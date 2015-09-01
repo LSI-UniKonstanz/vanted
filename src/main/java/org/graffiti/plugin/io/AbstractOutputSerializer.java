@@ -20,7 +20,7 @@ import org.graffiti.graph.Graph;
  * @version $Revision: 1.4 $
  */
 public abstract class AbstractOutputSerializer
-					implements OutputSerializer {
+		implements OutputSerializer {
 	// ~ Methods ================================================================
 	
 	/**
@@ -34,9 +34,19 @@ public abstract class AbstractOutputSerializer
 	 *               If an IO error occurs.
 	 */
 	public void write(Graph g, String filename)
-						throws IOException {
+			throws IOException {
 		write(new FileOutputStream(filename), g);
 	}
+	
+	/**
+	 * As standard, an output serializer will be valid writer for
+	 * any type of graph
+	 */
+	@Override
+	public boolean validFor(Graph g) {
+		return true;
+	}
+	
 }
 
 // ------------------------------------------------------------------------------

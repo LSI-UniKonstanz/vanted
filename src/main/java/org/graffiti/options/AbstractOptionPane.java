@@ -186,21 +186,27 @@ public abstract class AbstractOptionPane
 	 * This method is called every time this option pane is displayed. The <code>AbstractOptionPane</code> class uses this to create the option
 	 * pane's GUI only when needed.
 	 */
-	public void init() {
+	public void init(JComponent comp) {
 		if (!initialized) {
 			initialized = true;
 			initDefault();
 		}
 	}
 	
+	
+	@Override
+	public void save(JComponent options) {
+		if (initialized) {
+			saveDefault();
+		}
+	}
+
 	/**
 	 * Called when the options dialog's "ok" button is clicked. This should
 	 * save any properties being edited in this option pane.
 	 */
 	public void save() {
-		if (initialized) {
-			saveDefault();
-		}
+		
 	}
 	
 	/**

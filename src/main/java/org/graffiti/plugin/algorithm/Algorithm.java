@@ -10,6 +10,9 @@
 package org.graffiti.plugin.algorithm;
 
 import java.awt.event.ActionEvent;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.KeyStroke;
 
@@ -84,9 +87,37 @@ public interface Algorithm {
 	 * Return NULL if the algorithm should be sorted directly
 	 * in the plugin menu.
 	 * 
+	 * This method is deprecated, please use getSetCategory()
+	 * To put this algorithm into a menu, please use getMenuCategory()
+	 * 
 	 * @return The category an algorithm should assigned to.
 	 */
+	@Deprecated
 	public String getCategory();
+	
+	/**
+	 * Returns a set of categories to classify this algorithm .
+	 * e.g.
+	 *  return new HashSet<Category>(Arrays.asList(
+	 *			Category.GRAPH,
+	 *			Category.NODE
+	 *	));
+	 * is an algorithm, working on graphs and more specific on nodes
+	 * @return Set of Category Enums that classify this algorithm.
+	 */
+	public Set<Category> getSetCategory();	
+	/**
+	 * Returns a path to a menu category.
+	 * This is s '.' separated string which reflects the position of this
+	 * Algorithm in the Menu Hierachy
+	 * e.g. "Network.Layout" would put this algorithm in the menu 'Network' and its submenu 'Layout'
+	 * 
+	 * If this menu is not existent it will be created
+	 * 
+	 * If this method returns 'null' the algorithm will not appear in the menu
+	 * @return
+	 */
+	public String getMenuCategory();
 	
 	/**
 	 * A Layoutalgorithm should return true. All other types of algorithms should return false.
@@ -118,6 +149,7 @@ public interface Algorithm {
 	public ActionEvent getActionEvent();
 	
 	public boolean mayWorkOnMultipleGraphs();
+
 }
 
 // ------------------------------------------------------------------------------

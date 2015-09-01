@@ -23,11 +23,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 
 import org.ErrorMsg;
 import org.ReleaseInfo;
 import org.graffiti.core.StringBundle;
-import org.graffiti.options.GravistoPreferences;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.GenericPlugin;
 import org.graffiti.util.InstanceCreationException;
 import org.graffiti.util.InstanceLoader;
@@ -41,8 +42,10 @@ import org.graffiti.util.StringSplitter;
  * @version $Revision: 1.31 $
  */
 public class DefaultPluginManager
-					implements PluginManager {
+		implements PluginManager {
 	// ~ Static fields/initializers =============================================
+	
+	Object loadPluginLock;
 	
 	public static DefaultPluginManager lastInstance = null;
 	
@@ -70,7 +73,7 @@ public class DefaultPluginManager
 	private final List<PluginManagerListener> pluginManagerListeners;
 	
 	/** The preferences of the plugin manager. */
-	private final GravistoPreferences prefs;
+	private final Preferences prefs;
 	
 	// ~ Constructors ===========================================================
 	
@@ -81,7 +84,8 @@ public class DefaultPluginManager
 	 *           the preferences, which contain information about what to
 	 *           load during the instanciation of the plugin manager.
 	 */
-	public DefaultPluginManager(GravistoPreferences prefs) {
+	public DefaultPluginManager(Preferences prefs) {
+		loadPluginLock = new Object();
 		this.prefs = prefs;
 		this.pluginEntries = new Hashtable<String, PluginEntry>();
 		this.pluginManagerListeners = new LinkedList<PluginManagerListener>();
@@ -171,7 +175,7 @@ public class DefaultPluginManager
 	 *               instantiating the plugin.
 	 */
 	public GenericPlugin createInstance(URL pluginLocation)
-						throws PluginManagerException {
+			throws PluginManagerException {
 		return createInstance(pluginLocation, null);
 	}
 	
@@ -189,12 +193,12 @@ public class DefaultPluginManager
 	 *               instantiating the plugin.
 	 */
 	public GenericPlugin createInstance(URL pluginLocation,
-						ProgressViewer progressViewer)
-						throws PluginManagerException {
+			ProgressViewer progressViewer)
+			throws PluginManagerException {
 		PluginDescription description = PluginHelper.readPluginDescription(pluginLocation);
 		
 		GenericPlugin pluginInstance = createInstance(description,
-							progressViewer);
+				progressViewer);
 		
 		// // add the plugin to the list of instanciated plugins.
 		// addPlugin(description, pluginInstance, pluginLocation, Boolean.TRUE);
@@ -219,8 +223,8 @@ public class DefaultPluginManager
 	 *               instantiating the plugin.
 	 */
 	public void loadPlugin(PluginDescription description, URL pluginLocation,
-						Boolean loadOnStartup)
-						throws PluginManagerException {
+			Boolean loadOnStartup)
+			throws PluginManagerException {
 		loadPlugins(new PluginEntry[] { new DefaultPluginEntry(pluginLocation.toString(), description) });
 	}
 	
@@ -234,7 +238,7 @@ public class DefaultPluginManager
 	 *               instantiating the plugin.
 	 */
 	public void loadPlugins(PluginEntry[] plugins)
-						throws PluginManagerException {
+			throws PluginManagerException {
 		loadPlugins(plugins, null);
 	}
 	
@@ -255,10 +259,10 @@ public class DefaultPluginManager
 	 *               instantiating the plugin.
 	 */
 	public void loadPlugins(
-						final PluginEntry[] plugins,
-						final ProgressViewer progressViewer,
-						final boolean doAutomatic)
-						throws PluginManagerException {
+			final PluginEntry[] plugins,
+			final ProgressViewer progressViewer,
+			final boolean doAutomatic)
+			throws PluginManagerException {
 		if (progressViewer != null)
 			progressViewer.setText("Analyze plugin dependencies...");
 		
@@ -340,12 +344,12 @@ public class DefaultPluginManager
 			for (String s : loading)
 				System.err.println("Loading of plugin " + s + " not finished (time-out).");
 		}
-		savePrefs();
+//		savePrefs();
 	}
 	
 	private void loadSetOfPlugins(final PluginEntry[] plugins,
-						final ProgressViewer progressViewer, ExecutorService run,
-						final HashSet<String> loading, boolean loadPriorityPlugins) {
+			final ProgressViewer progressViewer, ExecutorService run,
+			final HashSet<String> loading, boolean loadPriorityPlugins) {
 		for (PluginEntry plugin : plugins) {
 			final URL pluginUrl;
 			try {
@@ -422,7 +426,7 @@ public class DefaultPluginManager
 	 * @throws PluginManagerException
 	 */
 	private boolean loadPlugin(URL pluginUrl, PluginDescription desc,
-						ProgressViewer progressViewer) throws PluginManagerException {
+			ProgressViewer progressViewer) throws PluginManagerException {
 		
 		if (desc == null)
 			return true;
@@ -464,7 +468,7 @@ public class DefaultPluginManager
 	 *               of the plugins.
 	 */
 	public void loadStartupPlugins()
-						throws PluginManagerException {
+			throws PluginManagerException {
 		loadStartupPlugins(null);
 	}
 	
@@ -478,8 +482,15 @@ public class DefaultPluginManager
 	 *               if an error occurred while loading one
 	 *               of the plugins.
 	 */
+	/*
+	 * this method cannot work properly anymore with the new preferences implementation
+	 * (non-Javadoc)
+	 * @see org.graffiti.managers.pluginmgr.PluginManager#loadStartupPlugins(org.graffiti.util.ProgressViewer)
+	 */
+	@Deprecated
 	public void loadStartupPlugins(ProgressViewer progressViewer)
-						throws PluginManagerException {
+			throws PluginManagerException {
+		
 		// load the user's standard plugins
 		int numberOfPlugins = prefs.getInt("numberOfPlugins", 0);
 		
@@ -501,7 +512,7 @@ public class DefaultPluginManager
 					URL pluginUrl = new URL(pluginLocation);
 					PluginDescription desc = PluginHelper.readPluginDescription(pluginUrl);
 					pluginEntries[cnt++] = new DefaultPluginEntry(pluginLocation,
-										desc);
+							desc);
 				} catch (MalformedURLException mue) {
 					System.err.println(mue.getLocalizedMessage());
 					messages.add(mue.getMessage());
@@ -524,7 +535,7 @@ public class DefaultPluginManager
 			}
 			
 			throw new PluginManagerException("exception.loadStartup\n",
-								msg.trim());
+					msg.trim());
 		}
 	}
 	
@@ -540,7 +551,7 @@ public class DefaultPluginManager
 			
 			if (!success) {
 				logger.warning("trying to remove a non existing" +
-									" plugin manager listener");
+						" plugin manager listener");
 			}
 		}
 	}
@@ -553,7 +564,7 @@ public class DefaultPluginManager
 	 *               preferences.
 	 */
 	public void savePrefs()
-						throws PluginManagerException {
+			throws PluginManagerException {
 		if (prefs == null)
 			return;
 		try {
@@ -583,7 +594,7 @@ public class DefaultPluginManager
 			}
 		} catch (Exception e) {
 			throw new PluginManagerException("exception.SavePrefs",
-								e.getMessage());
+					e.getMessage());
 		}
 	}
 	
@@ -604,7 +615,7 @@ public class DefaultPluginManager
 	 *            DOCUMENT ME!
 	 */
 	private boolean addPlugin(PluginDescription description,
-						URL pluginLocation, Boolean loadOnStartup, ProgressViewer progressViewer) throws PluginManagerException {
+			URL pluginLocation, Boolean loadOnStartup, ProgressViewer progressViewer) throws PluginManagerException {
 		// assert plugin != null;
 		assert description != null;
 		
@@ -637,13 +648,15 @@ public class DefaultPluginManager
 		
 		synchronized (pluginEntries) {
 			pluginEntries.put(description.getName(),
-								new DefaultPluginEntry(description, plugin, loadOnStartup,
-													pluginLocation));
+					new DefaultPluginEntry(description, plugin, loadOnStartup,
+							pluginLocation));
 			// inform all listeners about the new plugin.
-			if (!description.isOptional() || new org.SettingsHelperDefaultIsTrue().isEnabled(description.getName()))
-				firePluginAdded(plugin, description);
 		}
-		
+		synchronized (loadPluginLock) {
+			if (!description.isOptional() || new org.SettingsHelperDefaultIsTrue().isEnabled(description.getName())) {
+				firePluginAdded(plugin, description);
+			}
+		}
 		// construct the path for the plugin in the preferences
 		// e.g. org.graffiti.plugins.io.graphviz.DOTSerializerPlugin becomes
 		// org/graffiti/plugins/io/graphviz/DOTSerializerPlugin
@@ -659,8 +672,9 @@ public class DefaultPluginManager
 		}
 		
 		if (prefs != null) {
-			GravistoPreferences pluginPrefs = prefs.node("pluginPrefs/" +
-								pluginNode.toString());
+			Preferences pluginPrefs;
+//			pluginPrefs = prefs.node("pluginPrefs/" + pluginNode.toString());
+			pluginPrefs = PreferenceManager.getPreferenceForClass(plugin.getClass());
 			
 			// configure the plugin's preferences
 			if (plugin != null)
@@ -683,8 +697,8 @@ public class DefaultPluginManager
 	 *               instantiating the plugin.
 	 */
 	private GenericPlugin createInstance(PluginDescription description,
-						ProgressViewer progressViewer)
-						throws PluginManagerException {
+			ProgressViewer progressViewer)
+			throws PluginManagerException {
 		
 		if (description == null) {
 			return null;
@@ -714,11 +728,11 @@ public class DefaultPluginManager
 		} catch (InstanceCreationException ice) {
 			System.out.println("Instance Creation Exception: " + description.getMain());
 			throw new PluginManagerException(ice.getMessage() + " (cause: " + ice.getCause().getMessage() + ") ",
-								description.toString());
+					description.toString());
 		} catch (NoClassDefFoundError nce) {
 			System.out.println("No Class Definition Found: " + description.getMain());
 			throw new PluginManagerException(nce.getMessage() + " (cause: " + nce.getCause().getMessage() + ") ",
-								description.toString());
+					description.toString());
 		}
 		
 		// update status (if available).

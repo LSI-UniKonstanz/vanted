@@ -10,6 +10,7 @@
 package org.graffiti.plugin.io;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.graffiti.graph.Graph;
@@ -34,6 +35,13 @@ public interface OutputSerializer
 	 */
 	public void write(OutputStream stream, Graph g)
 						throws IOException;
+	
+	/**
+	 * @param g
+	 *           The graph to be serialized
+	 * @return
+	 */
+	public boolean validFor(Graph g);
 }
 
 // ------------------------------------------------------------------------------

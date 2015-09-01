@@ -3,17 +3,17 @@
  *******************************************************************************/
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.radial_tree;
 
-import java.awt.Color;
+import java.awt.geom.Point2D;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
 import org.graffiti.attributes.Attribute;
-import org.graffiti.attributes.AttributeNotFoundException;
-import org.graffiti.attributes.LinkedHashMapAttribute;
-import org.graffiti.editor.GravistoService;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
@@ -21,13 +21,15 @@ import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.graphics.DimensionAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
-import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.NodeParameter;
+import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.rt_tree.TreeContainer;
 
 /**
@@ -37,7 +39,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.rt_tree.TreeContainer
  */
 
 /* TODO: Layout of non-horizontal/vertical grids */
-@SuppressWarnings("unchecked")
 public class RadialTreeLayout extends AbstractAlgorithm {
 	
 	/*************************************************************/
@@ -45,27 +46,20 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	/*************************************************************/
 	
 	/**
-	 * Dynamical defined edge bend attribute.
-	 */
-	private final String BENDS =
-						GraphicAttributeConstants.GRAPHICS
-											+ Attribute.SEPARATOR
-											+ GraphicAttributeConstants.BENDS;
-	/**
 	 * Dynamical defined node coordinate attribute.
 	 */
 	private final String COORDSTR =
-						GraphicAttributeConstants.GRAPHICS
-											+ Attribute.SEPARATOR
-											+ GraphicAttributeConstants.COORDINATE;
+			GraphicAttributeConstants.GRAPHICS
+					+ Attribute.SEPARATOR
+					+ GraphicAttributeConstants.COORDINATE;
 	
 	/**
 	 * Dynamical defined node dimension attribute.
 	 */
 	private final String DIMENSIONSTR =
-						GraphicAttributeConstants.GRAPHICS
-											+ Attribute.SEPARATOR
-											+ GraphicAttributeConstants.DIMENSION;
+			GraphicAttributeConstants.GRAPHICS
+					+ Attribute.SEPARATOR
+					+ GraphicAttributeConstants.DIMENSION;
 	
 	/**
 	 * Distance of each node from the center
@@ -85,7 +79,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	/**
 	 * The maximum y dimension for each node.
 	 */
-	private HashMap maxNodeHeight = new HashMap();
+	private HashMap<Integer, Double> maxNodeHeight = new HashMap<>();
 	
 	/**
 	 * Put all trees in a row
@@ -95,7 +89,8 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	/**
 	 * Move all tree in the right direction either 0, 90, 180 or 270 degree
 	 */
-	private int treeDirection = 0;
+	private Integer[] treeDirectionParameter = { 0, 90, 180, 270 };
+	private int treeDirection;
 	
 	/**
 	 * Remove all bends
@@ -105,7 +100,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	/**
 	 * Activate source node red backround
 	 */
-	private boolean doMarkSourceNode = true;
+//	private boolean doMarkSourceNode = true;
 	
 	/**
 	 * x coordinate of start point
@@ -120,42 +115,49 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	/**
 	 * All trees are initialized by this variable.
 	 */
-	private HashMap forest;
+	private Set<Node> graphNodes;
 	
 	/**
 	 * The roots in the forest.
 	 */
-	private HashMap sourceNodes = new HashMap();
+	private HashMap<Node, TreeContainer> forrest = new HashMap<>();
 	
 	/**
 	 * The root node of the tree.
 	 */
-	private Node sourceNode = null;
+	private Node selectedNode = null;
 	
 	/**
 	 * The depth for each node .
 	 */
-	private HashMap bfsNum = new HashMap();
+	private HashMap<Node, Integer> bfsMapNodeToIndex = new HashMap<>();
 	
 	/**
 	 * If there are a circle edges, save them here
 	 */
-	private LinkedList tempEdges = new LinkedList();
+	private LinkedList<Edge> tempEdges = new LinkedList<>();
 	
 	/**
 	 * Sum of all children
 	 */
-	private HashMap magnitude = new HashMap();
+	private HashMap<Node, Integer> magnitude = new HashMap<>();
 	
 	/**
 	 * x coordinate of start point
 	 */
-	private double xStartParam = 100;
+//	private double xStartParam = 100;
 	
 	/**
 	 * y coordinate of start point
 	 */
-	private double yStartParam = 100;
+//	private double yStartParam = 100;
+	private DoubleParameter distanceParam;
+//	private DoubleParameter xStartParam2;
+//	private DoubleParameter yStartParam2;
+//	private BooleanParameter horizontalParam;
+	private BooleanParameter removeBendParam;
+//	private BooleanParameter markedSourceNodeParam;
+	private ObjectListParameter treeDirectionParam;
 	
 	/*************************************************************/
 	/* Declarations of methods */
@@ -186,8 +188,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	public boolean rootedTree(Node rootNode) {
 		
 		int roots = 0;
-		for (Iterator iterator = bfsNum.keySet().iterator(); iterator.hasNext();) {
-			Node node = (Node) iterator.next();
+		for (Node node : bfsMapNodeToIndex.keySet()) {
 			/* maybe there is a second */
 			if ((node.getInDegree() == 0) && (node.getOutDegree() > 0)) {
 				if (roots == 0) {
@@ -197,9 +198,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 				}
 			}
 			int ancestors = 0;
-			for (Iterator neighbourEdges = node.getEdgesIterator(); neighbourEdges.hasNext();) {
-				
-				Edge neighbourEdge = (Edge) neighbourEdges.next();
+			for(Edge neighbourEdge : node.getEdges()){
 				Node neighbour = null;
 				if (neighbourEdge.getSource() == node) {
 					neighbour = neighbourEdge.getTarget();
@@ -208,7 +207,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 				}
 				
 				/* any links from upper level nodes more than once ? */
-				if (((Integer) bfsNum.get(node)).intValue() > ((Integer) bfsNum.get(neighbour)).intValue()) {
+				if (((Integer) bfsMapNodeToIndex.get(node)).intValue() > ((Integer) bfsMapNodeToIndex.get(neighbour)).intValue()) {
 					ancestors++;
 					if (ancestors > 1) {
 						tempEdges.add(neighbourEdge);
@@ -216,7 +215,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 					}
 				}
 				/* any links from same level nodes ? */
-				if (((Integer) bfsNum.get(node)).intValue() == ((Integer) bfsNum.get(neighbour)).intValue()) {
+				if (((Integer) bfsMapNodeToIndex.get(node)).intValue() == ((Integer) bfsMapNodeToIndex.get(neighbour)).intValue()) {
 					
 					tempEdges.add(neighbourEdge);
 					graph.deleteEdge(neighbourEdge);
@@ -244,61 +243,55 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 		else
 			initNode = graph.getNodes().iterator().next();
 		
-		NodeParameter nodeParam = new NodeParameter(graph, initNode, "Start-Node",
-							"Tree layouter will start only with a selected node.");
-		
-		DoubleParameter distanceParam =
-							new DoubleParameter(
-												"Node Radius",
-												"The distance from the center of each node");
-		
-		DoubleParameter xStartParam =
-							new DoubleParameter(
-												"X base",
-												"The x coordinate of the starting point of the grid horizontal direction.");
-		
-		DoubleParameter yStartParam =
-							new DoubleParameter(
-												"Y base",
-												"The y coordinate of the starting point of the grid horizontal direction.");
-		
-		BooleanParameter horizontalParam =
-							new BooleanParameter(
-												horizontalLayout,
-												"Place Trees in a Row",
-												"Place all trees in a row");
-		
-		BooleanParameter removeBendParam =
-							new BooleanParameter(
-												doRemoveBends,
-												"Remove Bends",
-												"Remove all bends in the forest");
-		
-		BooleanParameter markedSourceNodeParam =
-							new BooleanParameter(
-												doMarkSourceNode,
-												"Mark Start-Node",
-												"Mark each source Node");
-		
-		IntegerParameter treeDirectionParam =
-							new IntegerParameter(
-												treeDirection,
-												"Tree Direction (0,90,180,270)",
-												"Move all trees in 0, 90, 180 or 270 degree");
-		
-		distanceParam.setDouble(nodeDistance);
-		xStartParam.setDouble(this.xStartParam);
-		yStartParam.setDouble(this.yStartParam);
-		
+		NodeParameter nodeParam = new NodeParameter(graph, initNode, "<html>Start-Node<br/>(from list or selected)",
+				"Tree layouter will start only with a selected node.");
+		if (distanceParam == null) {
+			distanceParam = new DoubleParameter(
+					"Node Radius",
+					"The distance from the center of each node");
+			
+//			xStartParam2 = new DoubleParameter(
+//					"X base",
+//					"The x coordinate of the starting point of the grid horizontal direction.");
+//			
+//			yStartParam2 = new DoubleParameter(
+//					"Y base",
+//					"The y coordinate of the starting point of the grid horizontal direction.");
+//			
+//			horizontalParam = new BooleanParameter(
+//					horizontalLayout,
+//					"Place Trees in a Row",
+//					"Place all trees in a row");
+			
+			removeBendParam = new BooleanParameter(
+					doRemoveBends,
+					"Remove Bends",
+					"Remove all bends in the forest");
+			
+//			markedSourceNodeParam = new BooleanParameter(
+//					doMarkSourceNode,
+//					"Mark Start-Node",
+//					"Mark each source Node");
+			
+			treeDirectionParam = new ObjectListParameter(
+					treeDirectionParameter[0],
+					"Tree Direction (degree)",
+					"Move all trees in 0, 90, 180 or 270 degree",
+					treeDirectionParameter);
+			
+			distanceParam.setDouble(nodeDistance);
+//			xStartParam2.setDouble(this.xStartParam);
+//			yStartParam2.setDouble(this.yStartParam);
+		}
 		return new Parameter[] {
-							nodeParam,
-							distanceParam,
-							xStartParam,
-							yStartParam,
-							horizontalParam,
-							removeBendParam,
-							markedSourceNodeParam,
-							treeDirectionParam };
+				nodeParam,
+				distanceParam,
+//				xStartParam2,
+//				yStartParam2,
+//				horizontalParam,
+				removeBendParam,
+//				markedSourceNodeParam,
+				treeDirectionParam };
 	}
 	
 	/**
@@ -307,28 +300,27 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	@Override
 	public void setParameters(Parameter[] params) {
 		this.parameters = params;
+		int i = 0;
+		if(selection.getNodes().isEmpty()){
+			selection.add(((NodeParameter) params[i++]).getNode());
+		} else
+			i++; // skip parameter
+//		System.out.println("Node: " + AttributeHelper.getLabel(n, "- unnamed -"));
 		
-		Node n = ((NodeParameter) params[0]).getNode();
-		selection.clear();
-		selection.add(n);
-		System.out.println("Node: " + AttributeHelper.getLabel(n, "- unnamed -"));
-		
-		nodeDistance = ((DoubleParameter) params[1]).getDouble().doubleValue();
-		xStart = ((DoubleParameter) params[2]).getDouble().doubleValue();
-		yStart = ((DoubleParameter) params[3]).getDouble().doubleValue();
-		xStartParam = ((DoubleParameter) params[2]).getDouble().doubleValue();
-		yStartParam = ((DoubleParameter) params[3]).getDouble().doubleValue();
-		horizontalLayout =
-							((BooleanParameter) params[4]).getBoolean().booleanValue();
+		nodeDistance = ((DoubleParameter) params[i++]).getDouble().doubleValue();
+//		xStart = ((DoubleParameter) params[i++]).getDouble().doubleValue();
+//		yStart = ((DoubleParameter) params[i++]).getDouble().doubleValue();
+//		xStartParam = xStart;
+//		yStartParam = yStart;
+//		horizontalLayout =
+//				((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		doRemoveBends =
-							((BooleanParameter) params[5]).getBoolean().booleanValue();
-		doMarkSourceNode =
-							((BooleanParameter) params[6]).getBoolean().booleanValue();
-		treeDirection =
-							((IntegerParameter) params[7]).getInteger().intValue();
-		if (!((treeDirection == 0) || (treeDirection == 180) || (treeDirection == 270) || (treeDirection == 90))) {
-			treeDirection = 0;
-		}
+				((BooleanParameter) params[i++]).getBoolean().booleanValue();
+//		doMarkSourceNode =
+//				((BooleanParameter) params[i++]).getBoolean().booleanValue();
+		treeDirection = (Integer)
+				((ObjectListParameter) params[i++]).getValue();
+		
 	}
 	
 	/**
@@ -337,8 +329,8 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 * @param root
 	 * @return a postordered tree
 	 */
-	private LinkedList postorder(Node root) {
-		LinkedList result = new LinkedList();
+	private LinkedList<Node> postorder(Node root) {
+		LinkedList<Node> result = new LinkedList<>();
 		postorderTraverse(null, root, result);
 		return result;
 	}
@@ -349,12 +341,13 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 * @param root
 	 * @return a preordered tree
 	 */
-	private LinkedList preorder(Node root) {
-		LinkedList result = new LinkedList();
+/*	
+	private LinkedList<Node> preorder(Node root) {
+		LinkedList<Node> result = new LinkedList<>();
 		preorderTraverse(null, root, result);
 		return result;
 	}
-	
+*/	
 	/**
 	 * Traverse the tree in postorder
 	 * 
@@ -365,9 +358,8 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 * @param lq
 	 *           - result is a LinkedList
 	 */
-	private void postorderTraverse(Node ancestor, Node node, LinkedList lq) {
-		for (Iterator neighbors = node.getNeighborsIterator(); neighbors.hasNext();) {
-			Node neighbor = (Node) neighbors.next();
+	private void postorderTraverse(Node ancestor, Node node, LinkedList<Node> lq) {
+		for(Node neighbor : node.getNeighbors()){
 			if (neighbor != ancestor) {
 				postorderTraverse(node, neighbor, lq);
 			}
@@ -385,33 +377,33 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 * @param lq
 	 *           - result is a LinkedList
 	 */
-	private void preorderTraverse(Node ancestor, Node node, LinkedList lq) {
+/*	
+	private void preorderTraverse(Node ancestor, Node node, LinkedList<Node> lq) {
 		lq.addLast(node);
-		for (Iterator neighbors = node.getNeighborsIterator(); neighbors.hasNext();) {
-			Node neighbor = (Node) neighbors.next();
+		for(Node neighbor : node.getNeighbors()){
 			if (neighbor != ancestor) {
 				preorderTraverse(node, neighbor, lq);
 			}
 		}
 		
 	}
-	
+*/	
 	/**
 	 * Get the successors of the given node
 	 * 
 	 * @param node
 	 * @return
 	 */
-	private Iterator getSuccessors(Node node) {
-		LinkedList result = new LinkedList();
+	private LinkedList<Node> getSuccessors(Node node) {
+		LinkedList<Node> result = new LinkedList<>();
 		
-		for (Iterator neighbors = node.getNeighborsIterator(); neighbors.hasNext();) {
+		for (Iterator<Node> neighbors = node.getNeighborsIterator(); neighbors.hasNext();) {
 			Node neighbor = (Node) neighbors.next();
-			if (((Integer) bfsNum.get(node)).intValue() < ((Integer) bfsNum.get(neighbor)).intValue()) {
+			if (((Integer) bfsMapNodeToIndex.get(node)).intValue() < ((Integer) bfsMapNodeToIndex.get(neighbor)).intValue()) {
 				result.add(neighbor);
 			}
 		}
-		return result.iterator();
+		return result;
 	}
 	
 	/**
@@ -420,27 +412,26 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 * @param node
 	 * @return
 	 */
-	private Iterator getPredecessors(Node node) {
-		LinkedList result = new LinkedList();
+	private LinkedList<Node> getPredecessors(Node node) {
+		LinkedList<Node> result = new LinkedList<>();
 		
-		for (Iterator neighbors = node.getNeighborsIterator(); neighbors.hasNext();) {
+		for (Iterator<Node> neighbors = node.getNeighborsIterator(); neighbors.hasNext();) {
 			Node neighbor = (Node) neighbors.next();
-			if (((Integer) bfsNum.get(node)).intValue() > ((Integer) bfsNum.get(neighbor)).intValue()) {
+			if (((Integer) bfsMapNodeToIndex.get(node)).intValue() > ((Integer) bfsMapNodeToIndex.get(neighbor)).intValue()) {
 				result.add(neighbor);
 			}
 		}
-		return result.iterator();
+		return result;
 	}
 	
 	/**
 	 * Init for each node the sum of all children and sub children
 	 */
 	protected void initMagnitude() {
-		magnitude = new HashMap();
+		magnitude = new HashMap<>();
 		
-		for (Iterator it = postorder(sourceNode).iterator(); it.hasNext();) {
+		for (Node node : postorder(selectedNode)) {
 			
-			Node node = (Node) it.next();
 			int nodeValue = 1;
 			if (magnitude.get(node) != null) {
 				nodeValue = ((Integer) magnitude.get(node)).intValue();
@@ -448,8 +439,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 				magnitude.put(node, new Integer(1));
 			}
 			
-			for (Iterator it2 = getPredecessors(node)/* node.getInNeighborsIterator() */; it2.hasNext();) {
-				Node neighbour = (Node) it2.next();
+			for (Node neighbour : getPredecessors(node)) {
 				int sum = nodeValue;
 				if (magnitude.get(neighbour) != null) {
 					sum += ((Integer) magnitude.get(neighbour)).intValue();
@@ -466,99 +456,106 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 *      The given graph must have at least one node.
 	 */
 	public void execute() {
-		GravistoService.getInstance().algorithmAttachData(this);
+//		GravistoService.getInstance().algorithmAttachData(this);
 		
-		tempEdges = new LinkedList();
+		tempEdges = new LinkedList<Edge>();
 		
-		sourceNodes = new HashMap();
+		forrest = new HashMap<>();
 		
-		forest = new HashMap();
-		for (Iterator iterator = graph.getNodesIterator(); iterator.hasNext();) {
-			forest.put(iterator.next(), null);
-		}
+		graphNodes = new HashSet<>();
+		graphNodes.addAll(graph.getNodes());
+//		for (Iterator iterator = graph.getNodesIterator(); iterator.hasNext();) {
+//			forest.put(iterator.next(), null);
+//		}
 		
 		/* check all trees with selected nodes, whether they have one root */
-
-		for (Iterator iterator = selection.getNodes().iterator(); iterator.hasNext();) {
+		
+		for (Iterator<Node> iterator = selection.getNodes().iterator(); iterator.hasNext();) {
 			
-			sourceNode = (Node) iterator.next();
+			selectedNode = iterator.next();
 			
 			/* ignore multiple selection */
-			if (forest.containsKey(sourceNode)) {
+			if (graphNodes.contains(selectedNode)) {
 				/* check circle connection by using the depth of each node */
-				computeDepth(sourceNode);
-				sourceNodes.put(
-									sourceNode,
-									new TreeContainer(
-														bfsNum,
-														maxNodeHeight));
+				computeDepth(selectedNode);
+				forrest.put(
+						selectedNode,
+						new TreeContainer(
+								bfsMapNodeToIndex,
+								maxNodeHeight));
 				
-				if (!rootedTree(sourceNode)) {
+				if (!rootedTree(selectedNode)) {
 					ErrorMsg.addErrorMessage("The given graph is not a tree.");
 				}
 			}
 		}
 		
 		/* check the trees whether they have one root */
-		while (forest.keySet().iterator().hasNext()) {
+		/*
+		while (graphNodes.iterator().hasNext()) {
 			
-			sourceNode = (Node) forest.keySet().iterator().next();
+			selectedNode = (Node) graphNodes.iterator().next();
 			
-			/* check circle connection by using the depth of each node */
-			computeDepth(sourceNode);
-			sourceNodes.put(
-								sourceNode,
-								new TreeContainer(
-													bfsNum, maxNodeHeight));
+			/* check circle connection by using the depth of each node 
+			 */
+		/*
+			computeDepth(selectedNode);
+			forrest.put(
+					selectedNode,
+					new TreeContainer(
+							bfsMapNodeToIndex, maxNodeHeight));
 			
-			if (!rootedTree(sourceNode)) {
-				for (Iterator it = tempEdges.iterator(); it.hasNext();) {
-					Edge edge = (Edge) it.next();
+			if (!rootedTree(selectedNode)) {
+				for (Edge edge : tempEdges) {
 					graph.addEdgeCopy(edge, edge.getSource(), edge.getTarget());
 				}
 				ErrorMsg.addErrorMessage("The given graph has trees with multiple roots.");
 			}
 			
-			/* in case of arrows, try to find the root */
+			/* in case of arrows, try to find the root 
+			 */
+		/*
 			Node node = null;
-			for (Iterator iterator = preorder(sourceNode).iterator(); iterator.hasNext();) {
+			for (Iterator iterator = preorder(selectedNode).iterator(); iterator.hasNext();) {
 				node = (Node) iterator.next();
 				if ((node.getInDegree() == 0) && (node.getOutDegree() > 0)) {
 					
-					sourceNodes.remove(sourceNode);
+					forrest.remove(selectedNode);
 					
-					sourceNode = node;
+					selectedNode = node;
 					
-					computeDepth(sourceNode);
+					computeDepth(selectedNode);
 					
-					sourceNodes.put(
-										sourceNode,
-										new TreeContainer(
-															bfsNum, maxNodeHeight));
+					forrest.put(
+							selectedNode,
+							new TreeContainer(
+									bfsMapNodeToIndex, maxNodeHeight));
 					
 					break;
 				}
 			}
 			
 		}
-		
+		*/
 		graph.getListenerManager().transactionStarted(this);
 		
-		if (doRemoveBends) {
-			removeAllBends();
-		}
+
 		
-		for (Iterator iterator = sourceNodes.keySet().iterator(); iterator.hasNext();) {
+		for (Iterator<Node> iterator = forrest.keySet().iterator(); iterator.hasNext();) {
 			
-			sourceNode = (Node) iterator.next();
+			selectedNode = iterator.next();
 			
-			if (doMarkSourceNode)
-				AttributeHelper.setFillColor(sourceNode, Color.RED);
+			Point2D position = AttributeHelper.getPosition(selectedNode);
+			xStart = position.getX();
+			yStart = position.getY();
 			
-			bfsNum = ((TreeContainer) sourceNodes.get(sourceNode)).getBfsNum();
+//			if (doMarkSourceNode)
+//				AttributeHelper.setFillColor(sourceNode, Color.RED);
+//			
+			bfsMapNodeToIndex = ((TreeContainer) forrest.get(selectedNode)).getBfsNum();
 			maxNodeHeight =
-								((TreeContainer) sourceNodes.get(sourceNode))
-													.getMaxNodeHeight();
+					((TreeContainer) forrest.get(selectedNode))
+							.getMaxNodeHeight();
 			
 			/* compute segments of the tree */
 			initMagnitude();
@@ -580,86 +577,67 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 					xStart += maxNodeHeight.size() * nodeDistance * 2 + xDistance;
 				}
 			}
+
 			
+			if (doRemoveBends) {
+				GraphHelper.removeBendsBetweenSelectedNodes(bfsMapNodeToIndex.keySet(), false);
+			}
+			Point2D newPosition = AttributeHelper.getPosition(selectedNode);
+			GraphHelper.moveNodes(bfsMapNodeToIndex.keySet(), position.getX() - newPosition.getX(), position.getY() - newPosition.getY());
 		}
-		for (Iterator iterator = tempEdges.iterator(); iterator.hasNext();) {
-			Edge edge = (Edge) iterator.next();
+		for (Edge edge: tempEdges) {
 			graph.addEdgeCopy(edge, edge.getSource(), edge.getTarget());
 		}
 		
 		graph.getListenerManager().transactionFinished(this);
 	}
-	
-	/**
-	 * Remove all bends
-	 */
-	private void removeAllBends() {
-		for (Iterator iterator = graph.getEdgesIterator(); iterator.hasNext();) {
-			try {
-				((LinkedHashMapAttribute) ((Edge) iterator.next()).getAttribute(BENDS)).setCollection(
-									new HashMap());
-			} catch (AttributeNotFoundException anfe) {
-			};
-		}
-		
-		for (Iterator iterator = tempEdges.iterator(); iterator.hasNext();) {
-			try {
-				((LinkedHashMapAttribute) ((Edge) iterator.next()).getAttribute(
-									BENDS)).setCollection(
-										new HashMap());
-			} catch (AttributeNotFoundException anfe) {
-			};
-		}
-		
-	}
+
 	
 	/**
 	 * Initialize the level of each node
 	 */
 	private void computeDepth(Node startNode) {
 		
-		LinkedList queue = new LinkedList();
+		LinkedList<Node> queue = new LinkedList<>();
 		
-		maxNodeHeight = new HashMap();
+		maxNodeHeight = new HashMap<>();
 		
-		bfsNum = new HashMap();
+		bfsMapNodeToIndex = new HashMap<>();
 		
 		queue.addLast(startNode);
-		bfsNum.put(startNode, new Integer(0));
-		forest.remove(startNode);
+		bfsMapNodeToIndex.put(startNode, new Integer(0));
+		graphNodes.remove(startNode);
 		
 		/* BreadthFirstSearch algorithm which calculates the depth of the tree */
 		while (!queue.isEmpty()) {
 			
 			Node v = (Node) queue.removeFirst();
 			/* Walk through all neighbours of the last node */
-			for (Iterator neighbours = v.getNeighborsIterator(); neighbours.hasNext();) {
-				
-				Node neighbour = (Node) neighbours.next();
+			for (Node neighbour : v.getNeighbors()) {
 				
 				/* Not all neighbours, just the neighbours not visited yet */
-				if (!bfsNum.containsKey(neighbour)) {
+				if (!bfsMapNodeToIndex.containsKey(neighbour)) {
 					Integer depth =
-										new Integer(((Integer) bfsNum.get(v)).intValue() + 1);
+							new Integer(((Integer) bfsMapNodeToIndex.get(v)).intValue() + 1);
 					
 					double nodeHeight = getNodeHeight(neighbour);
 					
 					/* Compute the maximum height of nodes in each level of the tree */
 					Double maxNodeHeightValue =
-										(Double) maxNodeHeight.get(depth);
+							(Double) maxNodeHeight.get(depth);
 					if (maxNodeHeightValue != null) {
 						maxNodeHeight.put(
-											depth,
-											new Double(
-																Math.max(
-																					maxNodeHeightValue.doubleValue(),
-																					nodeHeight)));
+								depth,
+								new Double(
+										Math.max(
+												maxNodeHeightValue.doubleValue(),
+												nodeHeight)));
 					} else {
 						maxNodeHeight.put(depth, new Double(nodeHeight));
 					}
 					
-					forest.remove(neighbour);
-					bfsNum.put(neighbour, depth);
+					graphNodes.remove(neighbour);
+					bfsMapNodeToIndex.put(neighbour, depth);
 					queue.addFirst(neighbour);
 				}
 			}
@@ -680,16 +658,14 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 		double nodeCoordX = polarToCartesianX(rho, (alpha1 + alpha2) / 2);
 		double nodeCoordY = polarToCartesianY(rho, (alpha1 + alpha2) / 2);
 		
-		setX(sourceNode, nodeCoordX);
-		setY(sourceNode, nodeCoordY);
+		setX(selectedNode, nodeCoordX);
+		setY(selectedNode, nodeCoordY);
 		
 		/* give every kid a sector proportional to its width / width of the whole subtree */
-		double rootWidth = magnitude(sourceNode);
+		double rootWidth = magnitude(selectedNode);
 		rho++;
-		Iterator succIterator = getSuccessors(sourceNode);
 		/* launch the RadialSubtree method on its leaves */
-		while (succIterator.hasNext()) {
-			Node successor = (Node) succIterator.next();
+		for(Node successor : getSuccessors(selectedNode)) {
 			double succWidth = magnitude(successor);
 			
 			alpha2 = alpha1 + (2 * Math.PI * succWidth / rootWidth);
@@ -708,13 +684,13 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 */
 	protected double polarToCartesianX(double rho, double alpha) {
 		double result = xStart
-							+ rho * Math.cos(alpha) * nodeDistance +
-							maxNodeHeight.size() * nodeDistance;
+				+ rho * Math.cos(alpha) * nodeDistance +
+				maxNodeHeight.size() * nodeDistance;
 		
 		if (treeDirection == 270) {
 			result = xStart -
-								rho * Math.cos(alpha) * nodeDistance +
-								maxNodeHeight.size() * nodeDistance;
+					rho * Math.cos(alpha) * nodeDistance +
+					maxNodeHeight.size() * nodeDistance;
 		}
 		
 		return result;
@@ -729,13 +705,13 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 */
 	protected double polarToCartesianY(double rho, double alpha) {
 		double result = yStart
-							+ rho * Math.sin(alpha) * nodeDistance +
-							maxNodeHeight.size() * nodeDistance;
+				+ rho * Math.sin(alpha) * nodeDistance +
+				maxNodeHeight.size() * nodeDistance;
 		
 		if (treeDirection == 180) {
 			result = yStart -
-								rho * Math.sin(alpha) * nodeDistance +
-								maxNodeHeight.size() * nodeDistance;
+					rho * Math.sin(alpha) * nodeDistance +
+					maxNodeHeight.size() * nodeDistance;
 		}
 		
 		return result;
@@ -751,11 +727,11 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 * @param alpha2
 	 */
 	protected void radialSubTree(
-						Node node,
-						double width,
-						double rho,
-						double alpha1,
-						double alpha2) {
+			Node node,
+			double width,
+			double rho,
+			double alpha1,
+			double alpha2) {
 		
 		/* compute the coordinates (alpha1 + alpha2) / 2 */
 		double nodeCoordX = polarToCartesianX(rho, (alpha1 + alpha2) / 2);
@@ -774,18 +750,17 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 			alpha = alpha1;
 			s = (alpha2 - alpha1) / width;
 		}
-		Iterator succIterator = getSuccessors(node);
 		/* launch the RadialSubtree method on its leaves */
-		while (succIterator.hasNext()) {
-			Node successor = (Node) succIterator.next();
+		for(Node successor  : getSuccessors(node)) {
+
 			double succWidth = magnitude(successor);
 			
 			radialSubTree(
-								successor,
-								succWidth,
-								rho + 1,
-								alpha,
-								alpha += s * succWidth);
+					successor,
+					succWidth,
+					rho + 1,
+					alpha,
+					alpha += s * succWidth);
 		}
 	}
 	
@@ -809,7 +784,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 */
 	private double getNodeHeight(Node n) {
 		DimensionAttribute dimAttr =
-							(DimensionAttribute) n.getAttribute(DIMENSIONSTR);
+				(DimensionAttribute) n.getAttribute(DIMENSIONSTR);
 		
 		double result = 0.0;
 		
@@ -832,7 +807,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 */
 	private void setX(Node n, double x) {
 		CoordinateAttribute coordAttr =
-							(CoordinateAttribute) n.getAttribute(COORDSTR);
+				(CoordinateAttribute) n.getAttribute(COORDSTR);
 		
 		if (coordAttr != null) {
 			if ((treeDirection == 90) || (treeDirection == 270)) {
@@ -853,7 +828,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 */
 	private void setY(Node n, double y) {
 		CoordinateAttribute coordAttr =
-							(CoordinateAttribute) n.getAttribute(COORDSTR);
+				(CoordinateAttribute) n.getAttribute(COORDSTR);
 		
 		if (coordAttr != null) {
 			if ((treeDirection == 90) || (treeDirection == 270)) {
@@ -868,13 +843,21 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return null;
-		// return "Radial Tree";
+//		return null;
+		return "Radial Tree";
 	}
 	
 	@Override
 	public String getCategory() {
 		return "Layout";
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
 	}
 	
 	@Override

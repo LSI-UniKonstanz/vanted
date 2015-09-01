@@ -12,7 +12,9 @@
  */
 package org.graffiti.plugin.attributecomponent;
 
+import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 
 import org.graffiti.attributes.Attribute;
 import org.graffiti.plugin.view.AttributeComponent;
@@ -20,6 +22,10 @@ import org.graffiti.plugin.view.CoordinateSystem;
 import org.graffiti.plugin.view.GraffitiViewComponent;
 import org.graffiti.plugin.view.GraphElementShape;
 import org.graffiti.plugin.view.ShapeNotFoundException;
+import org.graffiti.plugins.views.defaults.DrawMode;
+import org.graffiti.plugins.views.defaults.GraffitiView;
+
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffitiView;
 
 /**
  * This component represents a <code>org.graffiti.attributes.Attribute</code>.
@@ -44,6 +50,9 @@ public abstract class AbstractAttributeComponent
 	
 	/** DOCUMENT ME! */
 	protected Point shift;
+	
+	protected Point loc = new Point();
+
 	
 	// ~ Constructors ===========================================================
 	
@@ -98,6 +107,12 @@ public abstract class AbstractAttributeComponent
 		this.shift = shift;
 	}
 	
+
+	
+	@Override
+	public void adjustComponentPosition() {
+	}
+
 	/**
 	 * Called when a graphics attribute of the attribute represented by this
 	 * component has changed.
@@ -129,6 +144,59 @@ public abstract class AbstractAttributeComponent
 	@Override
 	public abstract void recreate()
 						throws ShapeNotFoundException;
+	
+	
+	/**
+	 * Attribute components can use this method to check if they are
+	 * or should be visible in the view.
+	 * Currently there is hard coded variables defining visibility such as
+	 * presumed size of the component and the current drawing mode
+	 * Future implementation should parameterize this. 
+	 * @param minimumComponentSize TODO
+	 * @return
+	 */
+	public boolean checkVisibility(int minimumComponentSize) {
+		/* 
+		 * only draw component, if printing is in progress, it is graphically visible or not FAST mode enabled
+		 */
+		if(getParent() instanceof IPKGraffitiView && 
+			((IPKGraffitiView)getParent()).printInProgress) {
+			return true;
+		}
+		if(getParent() instanceof GraffitiView){
+			GraffitiView view = (GraffitiView)getParent();
+			if(view.getDrawMode() == DrawMode.FAST)
+				return false;
+			AffineTransform zoom = view.getZoom();
+			//TODO: parameterize those constants..
+			if(getHeight() * zoom.getScaleX() < minimumComponentSize 
+					|| getWidth() * zoom.getScaleY() < minimumComponentSize)
+				return false;
+			else
+				return true;
+				
+		}
+		else
+			return true;
+	}
+	
+	
+	
+	@Override
+	public void adjustComponentSize() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	protected DrawMode getDrawingModeOfView() {
+		if(getParent() instanceof GraffitiView){
+			GraffitiView view = (GraffitiView)getParent();
+			return view.getDrawMode();
+		}
+		else
+			return DrawMode.NORMAL;
+	}
 }
 
 // ------------------------------------------------------------------------------

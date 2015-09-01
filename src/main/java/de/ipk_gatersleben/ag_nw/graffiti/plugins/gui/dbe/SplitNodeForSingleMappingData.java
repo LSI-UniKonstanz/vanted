@@ -8,7 +8,10 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.graffiti.editor.MainFrame;
@@ -17,6 +20,7 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
@@ -53,14 +57,22 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Split Nodes...";
+		return "Split Nodes";
 	}
 	
 	@Override
 	public String getCategory() {
-		return "Nodes";
+		return "Network.Nodes";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.NODE,
+				Category.LAYOUT,
+				Category.MAPPING
+				));
+	}
 	@Override
 	public String getDescription() {
 		return "<html>" + "With this command nodes may be split into several nodes. In both modes all valid<br>"
@@ -112,8 +124,8 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 	 */
 	public void execute() {
 		
-		if (mCurrentMode == option2 && mMinimumDegree <= 1) {
-			MainFrame.showMessageDialog("<html>Cannot split nodes!<br>Please specify a node degree > 1.", "Error");
+		if (mCurrentMode == option2 && mMinimumDegree < 1) {
+			MainFrame.showMessageDialog("<html>Cannot split nodes!<br>Please specify a threshold over 0.", "Error");
 			return;
 		}
 		
@@ -158,7 +170,7 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 				}
 			}
 			if (mCurrentMode.equalsIgnoreCase(option2)) {
-				SplitResult res = splitNodes(graphNode, mMinimumDegree, graph, mProcessSelfLoops, mRepositionOfNodes);
+				SplitResult res = splitNodes(graphNode, mMinimumDegree + 1, graph, mProcessSelfLoops, mRepositionOfNodes);
 				newNodes = res.newNodes;
 				newEdges = res.newEdges;
 				removedNodes = res.removedNodes;

@@ -7,7 +7,10 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.algorithms;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
@@ -15,6 +18,7 @@ import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.GraphElementHelper;
@@ -40,6 +44,13 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 		return "Mapping";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.DATA
+				));
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
@@ -48,7 +59,7 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 		// graph.getListenerManager().transactionStarted(this);
 		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
 		final BackgroundTaskStatusProviderSupportingExternalCall status =
-							new BackgroundTaskStatusProviderSupportingExternalCallImpl("Initialize...", "");
+				new BackgroundTaskStatusProviderSupportingExternalCallImpl("Initialize...", "");
 		if (workNodes.size() > 0)
 			BackgroundTaskHelper.issueSimpleTask(getName(), "Initialize...", new Runnable() {
 				public void run() {
@@ -71,9 +82,9 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 								geh.getDataMappings().clear();
 								if (ge.getGraph() == null)
 									continue;
-								removeMappingDataFrom(ge);
 								AttributeHelper.setToolTipText(ge, "");
 							}
+							removeMappingDataFrom(ge);
 						}
 						status.setCurrentStatusValue(-1);
 					} finally {
@@ -98,6 +109,16 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 		}
 		try {
 			n.removeAttribute("mapping");
+		} catch (AttributeNotFoundException anfe) {
+			// empty
+		}
+		try {
+			n.removeAttribute("graphics.component");
+		} catch (AttributeNotFoundException anfe) {
+			// empty
+		}
+		try {
+			n.removeAttribute("charting");
 		} catch (AttributeNotFoundException anfe) {
 			// empty
 		}

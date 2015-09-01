@@ -11,12 +11,7 @@ package org.graffiti.plugins.modes.defaults;
 
 import java.util.prefs.Preferences;
 
-import org.graffiti.attributes.AttributeDescription;
-import org.graffiti.attributes.AttributeManager;
-import org.graffiti.attributes.BooleanAttribute;
 import org.graffiti.core.ImageBundle;
-import org.graffiti.editor.actions.PasteAction;
-import org.graffiti.options.GravistoPreferences;
 import org.graffiti.plugin.EditorPluginAdapter;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.gui.ToolButton;
@@ -80,12 +75,6 @@ public class StandardTools
 		guiComponents[1] = megaMoveButton;
 		// guiComponents[2] = labelButton;
 		
-		AttributeManager.getInstance().addUnwrittenAttribute("." + PasteAction.pastedNodeID);
-		
-		this.attributeDescriptions = new AttributeDescription[] {
-							new AttributeDescription(PasteAction.pastedNodeID, BooleanAttribute.class, "is pasted", true, false, null)
-		};
-		
 	}
 	
 	// ~ Methods ================================================================
@@ -98,7 +87,7 @@ public class StandardTools
 	 * @see org.graffiti.plugin.GenericPlugin#configure(Preferences)
 	 */
 	@Override
-	public void configure(GravistoPreferences prefs) {
+	public void configure(Preferences prefs) {
 		super.configure(prefs);
 		megaCreate.setPrefs(this.prefs.node("megaCreateTool"));
 		megaMove.setPrefs(this.prefs.node("megaMoveTool"));

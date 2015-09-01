@@ -7,8 +7,11 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.grid_placement;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JMenuItem;
 
@@ -19,6 +22,7 @@ import org.Vector2d;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.algorithm.ProvidesNodeContextMenu;
 import org.graffiti.plugin.parameter.DoubleParameter;
@@ -47,12 +51,21 @@ public class GridPlacementAlgorithm
 	
 	@Override
 	public String getCategory() {
-		return "Layout";
+		return "Network";
 	}
 	
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.LAYOUT
+				));
+	}
+
 	@Override
 	public boolean isLayoutAlgorithm() {
-		return false;
+		return true;
 	}
 	
 	/**

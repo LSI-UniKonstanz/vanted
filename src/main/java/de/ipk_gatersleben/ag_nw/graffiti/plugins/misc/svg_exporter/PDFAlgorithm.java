@@ -5,6 +5,9 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.svg_exporter;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.BackgroundTaskStatusProvider;
 import org.ErrorMsg;
@@ -19,6 +22,7 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Graph;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
@@ -76,6 +80,15 @@ public class PDFAlgorithm
 		return "menu.file";
 	}
 	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.EXPORT,
+				Category.IMAGING
+				));
+	}
+
 	/**
 	 * Unused for this plugin.
 	 * 

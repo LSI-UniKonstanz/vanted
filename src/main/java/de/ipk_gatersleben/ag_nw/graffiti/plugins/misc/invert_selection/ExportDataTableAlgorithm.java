@@ -1,18 +1,22 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
 import org.FeatureSet;
 import org.OpenFileDialogService;
 import org.ReleaseInfo;
+import org.UNCFileLocationCheck;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
@@ -97,7 +101,8 @@ public class ExportDataTableAlgorithm extends AbstractEditorAlgorithm {
 				}
 			}
 			
-			File f = OpenFileDialogService.getSaveFile(new String[] { "txt" }, "tab-delimited Text file (*.txt)");
+			File f = null;
+			f = OpenFileDialogService.getSaveFile(new String[] { "txt" }, "tab-delimited Text file (*.txt)");
 			if (f != null)
 				TextFile.write(f.getAbsolutePath(), result.toString());
 		} catch (Exception e) {
@@ -107,14 +112,14 @@ public class ExportDataTableAlgorithm extends AbstractEditorAlgorithm {
 	
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
-			return "Export Data...";
+			return "Calculated Data";
 		else
 			return null;
 	}
 	
 	@Override
 	public String getCategory() {
-		return "menu.file";
+		return "file.Export";
 	}
 	
 	private enum ExportType {
@@ -165,4 +170,12 @@ public class ExportDataTableAlgorithm extends AbstractEditorAlgorithm {
 		
 	}
 	
+
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.EXPORT,
+				Category.COMPUTATION
+				));
+	}
 }

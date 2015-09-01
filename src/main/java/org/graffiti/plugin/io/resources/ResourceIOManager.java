@@ -15,6 +15,7 @@ public class ResourceIOManager {
 			instance = new ResourceIOManager();
 			registerIOHandler(new FileSystemHandler());
 			registerIOHandler(new HTTPhandler());
+			registerIOHandler(new HTTPShandler());
 			registerIOHandler(new FTPhandler());
 		}
 		return instance;

@@ -16,6 +16,7 @@ import org.sbml.jsbml.Parameter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLParameter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLParameterHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
 public class SBML_Parameter_Reader {
 	
@@ -67,7 +68,7 @@ public class SBML_Parameter_Reader {
 			}
 			if (!Parameter.isValidId(parameterID, parameter.getLevel(),
 					parameter.getVersion())) {
-				ErrorMsg.addErrorMessage("ID of parameter " + parameterCount
+				SBML_Logger.addErrorMessage("ID of parameter " + parameterCount
 						+ " is not valid.");
 			}
 			if (parameter.isSetName()) {

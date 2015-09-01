@@ -10,19 +10,17 @@
 package org.graffiti.plugins.inspectors.defaults;
 
 import java.awt.Component;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
 
 import org.ErrorMsg;
 import org.graffiti.editor.MainFrame;
+import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.EditorPluginAdapter;
 import org.graffiti.plugin.editcomponent.NeedEditComponents;
+import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.inspector.InspectorPlugin;
 import org.graffiti.plugin.inspector.InspectorTab;
-import org.graffiti.plugin.inspector.SubtabHostTab;
 import org.graffiti.plugin.view.View;
 import org.graffiti.plugin.view.ViewListener;
 import org.graffiti.selection.SelectionEvent;
@@ -48,14 +46,12 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 	/** DOCUMENT ME! */
 	private final InspectorContainer container;
 	
-	private final HashMap<String, InspectorTab> rememberedTabs = new HashMap<String, InspectorTab>();
+//	private final HashMap<String, InspectorTab> rememberedTabs = new HashMap<String, InspectorTab>();
 	
-	private final LinkedHashSet<InspectorTab> hiddenTabs = new LinkedHashSet<InspectorTab>();
 	
 	/** DOCUMENT ME! */
 	private Session activeSession;
 	
-	private String oldviewname = "null1";
 	
 	// ~ Constructors ===========================================================
 	
@@ -72,14 +68,20 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 		this.guiComponents = new GraffitiComponent[] {
 							container
 		};
+		
+		tabs = new InspectorTab[] {
+				new EdgeTab(),
+				new NodeTab(),
+				new GraphTab()
+		};
 	}
 	
 	// ~ Methods ================================================================
 	
 	/**
-	 * @see org.graffiti.plugin.editcomponent.NeedEditComponents#setEditComponentMap(java.util.Map)
+	 * @see org.graffiti.plugin.editcomponent.NeedEditComponents#setEditComponentMap(Map)
 	 */
-	public void setEditComponentMap(Map<?, ?> ecMap) {
+	public void setEditComponentMap(Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> ecMap) {
 		this.valueEditComponents = ecMap;
 	}
 	
@@ -147,6 +149,7 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 			return;
 		}
 		
+
 		EditorSession editorSession = null;
 		
 		try {
@@ -159,6 +162,17 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 		tab.setEditPanelInformation(valueEditComponents, editorSession != null ? editorSession.getGraphElementsMap() : null);
 		
 		if (!container.getTabs().contains(tab)) {
+			/*
+			switch(tab.getPreferredTabPosition()) {
+
+			case InspectorTab.TAB_LEADING:
+				container.insertTab(tab.getTitle(), null, tab, null, 0);
+				break;
+			case InspectorTab.TAB_TRAILING:
+			default:
+				container.addTab(tab.getTitle(), null, tab);
+			}
+*/
 			container.addTab(tab, tab.getIcon());
 		}
 		
@@ -243,39 +257,19 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 			}
 		}
 	}
-	
-	/**
-	 *
-	 */
-	private void removeTab(InspectorTab tab) {
-		container.removeTab(tab);
-	}
+
 	
 	public void viewChanged(View newView) {
 		
-		InspectorTab selTab = getSelectedTab();
-		
-		// System.out.println("STO "+oldviewname+" /// "+selTab.getTitle()+" NEW VIEW: "+
-		// (newView!=null ? newView.getViewName() :" NULL"));
-		rememberedTabs.put(oldviewname, selTab);
-		
-		LinkedHashSet<InspectorTab> allTabs = new LinkedHashSet<InspectorTab>();
-		for (InspectorTab tab : getTabs())
-			allTabs.add(tab);
-		allTabs.addAll(hiddenTabs);
-		
-		ArrayList<InspectorTab> added = new ArrayList<InspectorTab>();
-		for (InspectorTab tab : allTabs) {
+		for (InspectorTab tab : container.getTabs()) {
 			if (!tab.visibleForView(newView) || (newView != null && !newView.worksWithTab(tab))) {
-				removeTab(tab);
-				hiddenTabs.add(tab);
+				container.hideTab(tab);
+				
 			} else {
-				if (hiddenTabs.contains(tab)) {
-					addTab(tab);
-					added.add(tab);
-				}
+				container.showTab(tab);
 			}
 		}
+		
 		
 		for (InspectorTab tab : getTabs()) {
 			if (tab instanceof ViewListener) {
@@ -283,28 +277,10 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 				sl.viewChanged(newView);
 			}
 		}
-		if (newView == null)
-			for (InspectorTab tab : hiddenTabs) {
-				if (tab instanceof ViewListener) {
-					ViewListener sl = (ViewListener) tab;
-					sl.viewChanged(newView);
-				}
-			}
+
 		
-		if (newView != null) {
-			setSelectedTab(rememberedTabs.get(newView.getClass().getName()));
-			oldviewname = newView.getClass().getName();
-		}
 	}
 	
-	@Override
-	public synchronized InspectorTab[] getInspectorTabs() {
-		return new InspectorTab[] { new SubtabHostTab("Network", new InspectorTab[] {
-							new GraphTab(),
-							new NodeTab(),
-							new EdgeTab()
-				}) };
-	}
 	
 	public void setSelectedTab(InspectorTab tab) {
 		if (tab != null && container != null && container.getTabs() != null && container.getTabs().contains(tab))
@@ -318,6 +294,24 @@ public class Inspector extends EditorPluginAdapter implements InspectorPlugin,
 		} else
 			return null;
 	}
+	
+	
+	/** 
+	 * gets called each time a tab is added, to figure out the 
+	 * order of tab layout as given by their preferredTab Position parameter in InspectorTab
+	 */
+//	private void sortTabs() {
+//		Collections.sort(container.getTabs(), new Comparator<InspectorTab>() {
+//
+//			@Override
+//			public int compare(InspectorTab o1, InspectorTab o2) {
+//				if(o1.getPreferredTabPosition() == o2.getPreferredTabPosition())
+//					return 0;
+//				else return o1.getPreferredTabPosition() < o2.getPreferredTabPosition() ? -1 : 1;
+//			}
+//			
+//		});
+//	}
 }
 
 // ------------------------------------------------------------------------------

@@ -111,7 +111,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 	}
 	
 	public void installDragNDropForAnnotationFiles(final JButton target, final JButton addIdentifiers) {
-		target.setToolTipText("Drag & Drop supported");
+		target.setToolTipText(target.getToolTipText() + "<br/>Drag & Drop supported");
 		final String title = target.getText();
 		FileDrop.Listener fdl = new FileDrop.Listener() {
 			public void filesDropped(File[] files) {
@@ -145,7 +145,8 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 	}
 	
 	public void installDragNDropForArrayFiles(final JButton target, final JButton addIdentifiers) {
-		target.setToolTipText("Drag & Drop supported");
+		
+		target.setToolTipText(target.getToolTipText() + "<br/>Drag & Drop supported");
 		final String title = target.getText();
 		FileDrop.Listener fdl = new FileDrop.Listener() {
 			public void filesDropped(File[] files) {
@@ -228,13 +229,13 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 		saveXMLdoc.setOpaque(false);
 		saveXMLdoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				File xmlFile = OpenFileDialogService.getSaveFile(new String[] { "xls", "bin", "xml" }, "Experiment-Data (*.xls, *.bin, *.xml)");
+				File xmlFile = OpenFileDialogService.getSaveFile(new String[] { "xlsx", "xml" }, "Experiment-Data (*.xlsx, *.xml)");
 				if (xmlFile != null) {
 					
-					if (xmlFile.getName().toLowerCase().endsWith(".xls"))
+					if (xmlFile.getName().toLowerCase().endsWith(".xlsx"))
 						ExperimentDataFileWriter.writeExcel(xmlFile, md);
 					else
-						if (xmlFile.getName().toLowerCase().endsWith(".bin") || xmlFile.getName().toLowerCase().endsWith(".xml")) {
+						if (xmlFile.getName().toLowerCase().endsWith(".xml")) {
 							// XMLOutputter out = new XMLOutputter();
 							// OutputStream stream;
 							try {
@@ -249,27 +250,28 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 								ErrorMsg.addErrorMessage(err);
 							}
 						} else
-							MainFrame.showMessageDialog("Wrong file type chosen. Please save as *.xml, *.bin or *.xls", "Export Error");
+							MainFrame.showMessageDialog("Wrong file type chosen. Please save as *.xlsx or *.xml", "Export Error");
 				}
 			}
 		});
 		
-		JButton showTableData = new JMButton("<html><small><center>Show<br>Input-Form");
-		if (SystemInfo.isMac()) {
-			showTableData.putClientProperty("JComponent.sizeVariant", "mini");
-		}
+//		JButton showTableData = new JMButton("<html><small><center>Show<br>Input-Form");
+//		if (SystemInfo.isMac()) {
+//			showTableData.putClientProperty("JComponent.sizeVariant", "mini");
+//		}
 		
-		showTableData.setOpaque(false);
-		showTableData.setEnabled(td != null);
-		showTableData.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				td.showDataDialog();
-			}
-		});
+//		showTableData.setOpaque(false);
+//		showTableData.setEnabled(td != null);
+//		showTableData.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				td.showDataDialog();
+//			}
+//		});
 		
 		if (doc == null) {
-			this.add(TableLayout.get3Split(closeTab, new JLabel(), showTableData, TableLayout.PREFERRED, TableLayout.FILL,
-					TableLayout.PREFERRED), "0,0");
+//			this.add(TableLayout.get3Split(closeTab, new JLabel(), showTableData, TableLayout.PREFERRED, TableLayout.FILL,
+//					TableLayout.PREFERRED), "0,0");
+			this.add(TableLayout.getSplit(closeTab, new JLabel(), TableLayout.PREFERRED, TableLayout.FILL), "0,0");
 			this
 					.add(
 							new JLabel(
@@ -310,13 +312,13 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			// bridgeDB.setOpaque(false);
 			// bridgeDB.addActionListener(getAddAlternativeIdentifiersIdsCommandBRIDGEDB(addIdentifiers));
 			
-			final JButton addAffyIdentifiers = new JMButton("Load Array-Annotation");
-			addAffyIdentifiers.setToolTipText("<html>" + "Load Affymetrix or Agilent Annotation File<br>"
-					+ "Processed are Entrez Gene IDs.");
-			
-			addAffyIdentifiers.setOpaque(false);
-			addAffyIdentifiers.addActionListener(getAddAffyIdentifiersCommand(addIdentifiers));
-			
+			/*
+			 * final JButton addAffyIdentifiers = new JMButton("Load Array-Annotation");
+			 * addAffyIdentifiers.setToolTipText("<html>" + "Load Affymetrix or Agilent Annotation File<br>"
+			 * + "Processed are Entrez Gene IDs.");
+			 * addAffyIdentifiers.setOpaque(false);
+			 * addAffyIdentifiers.addActionListener(getAddAffyIdentifiersCommand(addIdentifiers));
+			 */
 			JButton removeIdentifiers = new JMButton("Remove IDs");
 			
 			removeIdentifiers.setOpaque(false);
@@ -355,16 +357,21 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			});
 			
 			fpDataAnnotation.addComp(alternativeIDCount);
-			fpDataAnnotation.addComp(TableLayout.get3Split(TableLayout.get3SplitVertical(addIdentifiers,
-					addAffyIdentifiers, TableLayout.getMultiSplitVertical(getAnnotationProviderButtons(doc), 0),
-					TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED), new JLabel(""),
-					TableLayout.getSplitVertical(replaceIDs, removeIdentifiers, TableLayout.PREFERRED, TableLayout.PREFERRED),
-					TableLayout.FILL, 5, TableLayout.PREFERRED), 5);
+			fpDataAnnotation.addComp(
+					TableLayout.get3Split(
+							TableLayout.get3SplitVertical(
+									addIdentifiers,
+									removeIdentifiers,
+									TableLayout.getMultiSplitVertical(getAnnotationProviderButtons(doc), 0),
+									
+									TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED), new JLabel(""),
+							TableLayout.getSplitVertical(replaceIDs, new JLabel(), TableLayout.PREFERRED, TableLayout.PREFERRED),
+							TableLayout.FILL, 5, TableLayout.PREFERRED), 5);
 			fpDataAnnotation.layoutRows();
 			
 			installDragNDropForAnnotationFiles(addIdentifiers, addIdentifiers);
 			
-			installDragNDropForArrayFiles(addAffyIdentifiers, addAffyIdentifiers);
+//			installDragNDropForArrayFiles(addAffyIdentifiers, addAffyIdentifiers);
 			
 			FolderPanel fp5 = new FolderPanel("Analysis Pipeline", true, true, false, null);
 			JButton hierarchyWizard = new JMButton("Hierarchy Wizard");
@@ -372,9 +379,11 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			fp5.addComp(hierarchyWizard, 5);
 			fp5.layoutRows();
 			
-			this.add(TableLayout.get3Split(TableLayout.getSplit(new JLabel(), closeTab, TableLayout.FILL,
-					TableLayout.PREFERRED), saveXMLdoc, showTableData, TableLayout.FILL, TableLayout.PREFERRED,
+			this.add(TableLayout.get3Split(closeTab, new JLabel(), saveXMLdoc, TableLayout.PREFERRED, TableLayout.FILL,
 					TableLayout.PREFERRED), "0,0");
+//			this.add(TableLayout.getSplit(TableLayout.getSplit(new JLabel(), closeTab, TableLayout.FILL,
+//					TableLayout.PREFERRED), saveXMLdoc, TableLayout.FILL, TableLayout.PREFERRED
+//					), "0,0");
 			
 			this.add(TableLayout.get3SplitVertical(null, getActionCommandGUI(), null, 4, TableLayout.PREFERRED, 4), "0,1");
 			

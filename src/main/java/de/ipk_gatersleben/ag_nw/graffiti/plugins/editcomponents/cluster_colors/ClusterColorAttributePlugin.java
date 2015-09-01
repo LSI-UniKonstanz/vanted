@@ -6,11 +6,15 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.StringAttribute;
+import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.EditorPlugin;
+import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.gui.GraffitiComponent;
 import org.graffiti.plugin.mode.Mode;
 import org.graffiti.plugin.tool.Tool;
+import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiShape;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
@@ -18,8 +22,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 public class ClusterColorAttributePlugin
 					extends IPK_PluginAdapter
 					implements EditorPlugin {
-	private HashMap<Class<?>, Class<ClusterColorAttributeEditor>> valueEditComponents;
-	private HashMap<?, ?> attributeComponents;
+	
+	private HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
+	private Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
 	
 	public ClusterColorAttributePlugin() {
 		this.attributes = new Class[1];
@@ -27,7 +32,7 @@ public class ClusterColorAttributePlugin
 		
 		StringAttribute.putAttributeType(ClusterColorAttribute.attributeName, ClusterColorAttribute.class);
 		
-		valueEditComponents = new HashMap<Class<?>, Class<ClusterColorAttributeEditor>>();
+		valueEditComponents = new HashMap<>();
 		valueEditComponents.put(
 							ClusterColorAttribute.class,
 							ClusterColorAttributeEditor.class);
@@ -40,7 +45,7 @@ public class ClusterColorAttributePlugin
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.EditorPlugin#getAttributeComponents()
 	 */
-	public Map<?, ?> getAttributeComponents() {
+	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
 	
@@ -80,7 +85,7 @@ public class ClusterColorAttributePlugin
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.EditorPlugin#getValueEditComponents()
 	 */
-	public Map<Class<?>, Class<ClusterColorAttributeEditor>> getValueEditComponents() {
+	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}
 }

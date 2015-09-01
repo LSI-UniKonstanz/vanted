@@ -11,9 +11,11 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.TreeMap;
 
 import javax.swing.JLabel;
@@ -28,6 +30,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
@@ -58,6 +61,16 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 	public String getCategory() {
 		return "menu.window";
 	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.COMPUTATION,
+				Category.MAPPING
+				));
+	}
+
 	
 	@Override
 	public boolean isLayoutAlgorithm() {
@@ -394,9 +407,6 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 			for (Node n : workingset) {
 				String lbl = AttributeHelper.getLabel(n, null);
 				if (lbl == null || lbl.length() == 0)
-					continue;
-				
-				if (AttributeHelper.getAttributeValue(n, "sbgn", "role", "", "").equals("COMPARTMENT"))
 					continue;
 				
 				String tn = KeggGmlHelper.getKeggType(n);

@@ -9,11 +9,13 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.shortest_paths;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Set;
 
 import javax.swing.KeyStroke;
 
@@ -24,6 +26,7 @@ import org.apache.commons.collections.set.ListOrderedSet;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
+import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
@@ -38,9 +41,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchTyp
  * @author klukas
  */
 public class WeightedShortestPathSelectionAlgorithm
-					extends AbstractAlgorithm {
+		extends AbstractAlgorithm {
 	
-	Selection selection;
+//	Selection selection;
 	
 	private boolean settingDirected = true;
 	private boolean considerEdgeWeight = true;
@@ -58,7 +61,7 @@ public class WeightedShortestPathSelectionAlgorithm
 	
 	@Override
 	public void check() throws PreconditionException {
-		super.check();
+//		super.check();
 		if (selection == null || selection.getNumberOfNodes() < 2)
 			throw new PreconditionException("at least one start and one end node has to be selected");
 	}
@@ -71,19 +74,19 @@ public class WeightedShortestPathSelectionAlgorithm
 		ArrayList<AttributePathNameSearchType> possibleAttributes = new ArrayList<AttributePathNameSearchType>();
 		SearchAndSelecAlgorithm.enumerateAllAttributes(possibleAttributes, graph, SearchType.getSetOfNumericSearchTypes());
 		return new Parameter[] {
-							new BooleanParameter(settingDirected, "Consider Edge Direction", "If selected, the direction of a path is considered."),
-							new BooleanParameter(considerNodeWeight, "Consider Node Weight",
-												"If selected, the specified attribute will be evaluated during the processing."),
-							new BooleanParameter(considerEdgeWeight, "Consider Edge Weight",
-												"If selected, the specified attribute will be evaluated during the processing."),
-							new ObjectListParameter(null, "Weight-Attribute", "The value of this attribute influences the weight of a path", possibleAttributes),
-							new BooleanParameter(putWeightOnEdges, "Put Weight on Edges", "<html>" +
-												"If no attribute value should be considered, the weight of a path may<br>" +
-												"either be based on the number of edges or on the number of nodes."),
-							new BooleanParameter(setAttribute, "Add Distance Attribute",
-												"If enabled, a attribute will be added, which contains calculated distance information."),
-							new BooleanParameter(setLabel, "Replace Label with Distance",
-												"If enabled, edge and node labels will show calculated distance information."), };
+				new BooleanParameter(settingDirected, "Consider Edge Direction", "If selected, the direction of a path is considered."),
+				new BooleanParameter(considerNodeWeight, "Consider Node Weight",
+						"If selected, the specified attribute will be evaluated during the processing."),
+				new BooleanParameter(considerEdgeWeight, "Consider Edge Weight",
+						"If selected, the specified attribute will be evaluated during the processing."),
+				new ObjectListParameter(null, "Weight-Attribute", "The value of this attribute influences the weight of a path", possibleAttributes),
+				new BooleanParameter(putWeightOnEdges, "Put Weight on Edges", "<html>" +
+						"If no attribute value should be considered, the weight of a path may<br>" +
+						"either be based on the number of edges or on the number of nodes."),
+				new BooleanParameter(setAttribute, "Add Distance Attribute",
+						"If enabled, a attribute will be added, which contains calculated distance information."),
+				new BooleanParameter(setLabel, "Replace Label with Distance",
+						"If enabled, edge and node labels will show calculated distance information."), };
 	}
 	
 	/**
@@ -118,17 +121,17 @@ public class WeightedShortestPathSelectionAlgorithm
 		}
 		for (GraphElement ge : currentSelElements) {
 			Collection<GraphElement> shortestPathNodesAndEdges = getShortestPathElements(
-								graph.getGraphElements(),
-								ge,
-								targetGraphElementsToBeProcessed,
-								settingDirected,
-								considerNodeWeight,
-								considerEdgeWeight,
-								Double.MAX_VALUE,
-								weightattribute,
-								putWeightOnEdges,
-								setAttribute,
-								setLabel);
+					graph.getGraphElements(),
+					ge,
+					targetGraphElementsToBeProcessed,
+					settingDirected,
+					considerNodeWeight,
+					considerEdgeWeight,
+					Double.MAX_VALUE,
+					weightattribute,
+					putWeightOnEdges,
+					setAttribute,
+					setLabel);
 			sel.addAll(shortestPathNodesAndEdges);
 			if (!settingDirected)
 				targetGraphElementsToBeProcessed.remove(ge);
@@ -139,17 +142,17 @@ public class WeightedShortestPathSelectionAlgorithm
 	
 	@SuppressWarnings("unchecked")
 	public static Collection<GraphElement> getShortestPathElements(
-						Collection<GraphElement> validGraphElements,
-						GraphElement startGraphElement,
-						ListOrderedSet targetGraphElements,
-						boolean directed,
-						boolean considerNodeWeight,
-						boolean considerEdgeWeight,
-						double maxDistance,
-						AttributePathNameSearchType weightattribute,
-						boolean putWeightOnEdges,
-						boolean setAttribute,
-						boolean setLabel) {
+			Collection<GraphElement> validGraphElements,
+			GraphElement startGraphElement,
+			ListOrderedSet targetGraphElements,
+			boolean directed,
+			boolean considerNodeWeight,
+			boolean considerEdgeWeight,
+			double maxDistance,
+			AttributePathNameSearchType weightattribute,
+			boolean putWeightOnEdges,
+			boolean setAttribute,
+			boolean setLabel) {
 		
 		Queue<GraphElement> findTheseGraphElements = new LinkedList<GraphElement>();
 		findTheseGraphElements.addAll(targetGraphElements);
@@ -161,8 +164,8 @@ public class WeightedShortestPathSelectionAlgorithm
 		HashMap<GraphElement, WeightedDistanceInfo> node2distanceinfo = new HashMap<GraphElement, WeightedDistanceInfo>();
 		
 		WeightedDistanceInfo di = new WeightedDistanceInfo(
-							0, startGraphElement, startGraphElement, considerNodeWeight, considerEdgeWeight,
-							weightattribute, putWeightOnEdges, setAttribute);
+				0, startGraphElement, startGraphElement, considerNodeWeight, considerEdgeWeight,
+				weightattribute, putWeightOnEdges, setAttribute);
 		toDo.add(di);
 		node2distanceinfo.put(startGraphElement, di);
 		
@@ -180,14 +183,14 @@ public class WeightedShortestPathSelectionAlgorithm
 					neighbourProcessingUnit.checkDistanceAndMemorizePossibleSourceElement(currentGraphElement, currentProcessingUnit.getMinDistance());
 				} else {
 					WeightedDistanceInfo newInfo = new WeightedDistanceInfo(
-										currentProcessingUnit.getMinDistance(),
-										currentGraphElement,
-										neighbour,
-										considerNodeWeight,
-										considerEdgeWeight,
-										weightattribute,
-										putWeightOnEdges,
-										setAttribute);
+							currentProcessingUnit.getMinDistance(),
+							currentGraphElement,
+							neighbour,
+							considerNodeWeight,
+							considerEdgeWeight,
+							weightattribute,
+							putWeightOnEdges,
+							setAttribute);
 					if (newInfo.getMinDistance() <= maxDistance)
 						toDo.add(newInfo);
 					node2distanceinfo.put(neighbour, newInfo);
@@ -217,22 +220,22 @@ public class WeightedShortestPathSelectionAlgorithm
 			if (node2distanceinfo.containsKey(targetNode)) {
 				WeightedDistanceInfo distInfo = node2distanceinfo.get(targetNode);
 				processDistanceInfoFromTargetToSource(
-									node2distanceinfo,
-									elementsOfShortestPaths,
-									distInfo,
-									directed,
-									weightattribute);
+						node2distanceinfo,
+						elementsOfShortestPaths,
+						distInfo,
+						directed,
+						weightattribute);
 			}
 		}
 		return elementsOfShortestPaths;
 	}
 	
 	private static void processDistanceInfoFromTargetToSource(
-						HashMap<GraphElement, WeightedDistanceInfo> node2distanceinfo,
-						HashSet<GraphElement> elementsOfShortestPath,
-						WeightedDistanceInfo distInfo,
-						boolean directed,
-						AttributePathNameSearchType weightAttribute) {
+			HashMap<GraphElement, WeightedDistanceInfo> node2distanceinfo,
+			HashSet<GraphElement> elementsOfShortestPath,
+			WeightedDistanceInfo distInfo,
+			boolean directed,
+			AttributePathNameSearchType weightAttribute) {
 		elementsOfShortestPath.add(distInfo.getGraphElement());
 		Collection<GraphElement> graphElementsWithMinimalDistance = distInfo.getSourceGraphElementsWithMinimalDistance();
 		for (GraphElement sourceElement : graphElementsWithMinimalDistance) {
@@ -244,11 +247,11 @@ public class WeightedShortestPathSelectionAlgorithm
 					WeightedDistanceInfo distanceInfoForSourceElement = node2distanceinfo.get(sourceElement); // process distance
 					// recursively visit source elements from target to source
 					processDistanceInfoFromTargetToSource(
-										node2distanceinfo,
-										elementsOfShortestPath,
-										distanceInfoForSourceElement,
-										directed,
-										weightAttribute);
+							node2distanceinfo,
+							elementsOfShortestPath,
+							distanceInfoForSourceElement,
+							directed,
+							weightAttribute);
 				}
 		}
 	}
@@ -265,17 +268,17 @@ public class WeightedShortestPathSelectionAlgorithm
 	@Override
 	public String getDescription() {
 		return "<html>" +
-							"Use this command, to find the shortest path(s) between any<br>" +
-							"selected graph elements (Nodes or Edges).<br><br>" +
-							"If enabled, the &quot;weight&quot; of edges and nodes is considered.<br><br>" +
-							"<small>" +
-							"If neither node nor edge weight attribute values should be evaluated, each edge<br>" +
-							"adds a weight of 1 to the path, if the setting &quot;Put Weight on Edges&quot;<br>" +
-							"is selected. If this setting is unselected, each node in the path adds a weight<br>" +
-							" of 1. Use the &quot;Add Attribute&quot; or &quot;Set Label&quot; settings, to enable a<br>" +
-							"review of the calculated distances.<br><br>" +
-							"Hint: Use the simpler shortest path selection command to select nodes or edges,<br>" +
-							"for situations where graph element attribute values should not be considered.";
+				"Use this command to find the shortest path(s) between any<br>" +
+				"selected graph elements (Nodes or Edges).<br><br>" +
+				"If enabled, the &quot;weight&quot; of edges and nodes is considered.<br><br>" +
+				"<small>" +
+				"If neither node nor edge weight attribute values should be evaluated, each edge<br>" +
+				"adds a weight of 1 to the path, if the setting &quot;Put Weight on Edges&quot;<br>" +
+				"is selected. If this setting is unselected, each node in the path adds a weight<br>" +
+				" of 1. Use the &quot;Add Attribute&quot; or &quot;Set Label&quot; settings, to enable a<br>" +
+				"review of the calculated distances.<br><br>" +
+				"Hint: Use the simpler shortest path selection command to select nodes or edges,<br>" +
+				"for situations where graph element attribute values should not be considered.";
 	}
 	
 	/**
@@ -283,7 +286,7 @@ public class WeightedShortestPathSelectionAlgorithm
 	 */
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
-			return "Find Weighted Shortest Path...";
+			return "Find Weighted Shortest Paths";
 		else
 			return null;
 	}
@@ -295,10 +298,21 @@ public class WeightedShortestPathSelectionAlgorithm
 	
 	@Override
 	public String getCategory() {
-		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
-			return "menu.edit";
-		else
-			return "Analysis";
+		return "Network.Analysis";
+	}
+	
+	@Override
+	public Set<Category> getSetCategory() {
+		return new HashSet<Category>(Arrays.asList(
+				Category.GRAPH,
+				Category.ANALYSIS,
+				Category.SELECTION
+				));
+	}
+	
+	@Override
+	public String getMenuCategory() {
+		return null; //we don't want to appear in the menu
 	}
 	
 	public void setSelection(Selection selection) {

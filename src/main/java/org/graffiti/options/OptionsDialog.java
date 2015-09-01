@@ -10,8 +10,6 @@
 package org.graffiti.options;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Frame;
@@ -19,8 +17,11 @@ import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.prefs.Preferences;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -42,8 +43,18 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
+import org.apache.commons.collections15.map.HashedMap;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.graffiti.core.ImageBundle;
 import org.graffiti.core.StringBundle;
+import org.graffiti.managers.PreferenceManager;
+import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.inspector.InspectorTab;
+import org.graffiti.plugin.parameter.Parameter;
+import org.graffiti.plugin.tool.Tool;
+import org.graffiti.plugin.view.AttributeComponent;
+import org.graffiti.plugin.view.View;
 
 /**
  * Represents the options dialog.
@@ -54,6 +65,19 @@ public class OptionsDialog
 					extends JDialog
 					implements ActionListener, TreeSelectionListener {
 	// ~ Static fields/initializers =============================================
+	
+	private static Logger logger = Logger.getLogger(OptionsDialog.class);
+	
+	static {
+		logger.setLevel(Level.INFO);
+	}
+	
+	public static final String CAT_VIEWS = "Views";
+	public static final String CAT_ALGORITHMS = "Algorithms";
+	public static final String CAT_TABS = "Tabs";
+	public static final String CAT_GENERAL = "General";
+	public static final String CAT_TOOLS = "Tools";
+	public static final String CAT_ATTR_COMP = "Visualisation";
 	
 	/**
 	 * 
@@ -84,7 +108,7 @@ public class OptionsDialog
 	private JLabel currentLabel;
 	
 	/** DOCUMENT ME! */
-	private JPanel cardPanel;
+//	private JPanel cardPanel;
 	
 	/** DOCUMENT ME! */
 	private JTree paneTree;
@@ -93,8 +117,11 @@ public class OptionsDialog
 	// private OptionGroup editGroup;
 	
 	/** DOCUMENT ME! */
-	private OptionGroup pluginsGroup;
+//	private OptionGroup pluginsGroup;
+	private Map<String, OptionGroup> mapCategories;
 	
+	
+	JScrollPane optionPaneContainer;
 	// ~ Constructors ===========================================================
 	
 	/**
@@ -125,13 +152,18 @@ public class OptionsDialog
 		 */
 		currentLabel = new JLabel();
 		currentLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		currentLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
-							Color.black));
+//		currentLabel.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
+//							Color.black));
 		stage.add(currentLabel, BorderLayout.NORTH);
 		
-		cardPanel = new JPanel(new CardLayout());
-		cardPanel.setBorder(new EmptyBorder(5, 0, 0, 0));
-		stage.add(cardPanel, BorderLayout.CENTER);
+//		cardPanel = new JPanel(new CardLayout());
+//		cardPanel.setBorder(new EmptyBorder(5, 0, 0, 0));
+		OverviewOptionPane overviewOptionPane = new OverviewOptionPane();
+		overviewOptionPane.init(null);
+		optionPaneContainer = new JScrollPane(overviewOptionPane);
+//		optionPaneContainer.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1,
+//							Color.blue));
+		stage.add(optionPaneContainer, BorderLayout.CENTER);
 		
 		paneTree = new JTree(createOptionTreeModel());
 		
@@ -173,17 +205,128 @@ public class OptionsDialog
 		// first selected OptionPane is displayed on startup.
 		paneTree.getSelectionModel().addTreeSelectionListener(this);
 		
+		
+		
 		// paneTree.expandPath(new TreePath( TODO
 		// new Object[] { paneTree.getModel().getRoot(), editGroup }));
 		paneTree.setSelectionRow(0);
 		
+		
+		
 		// parent.hideWaitCursor(); TODO
-		pack();
+//		pack();
+		setSize(600, 400);
 		setLocationRelativeTo(parent);
 		setVisible(true);
 	}
 	
 	// ~ Methods ================================================================
+	
+	
+	private void prepareTree(OptionGroup parent) {
+		Set<Class<? extends PreferencesInterface>> preferencingClasses = PreferenceManager.getInstance().getPreferencingClasses();
+		
+		mapCategories = new HashedMap<>();
+		
+		OptionGroup categoryNode;
+		
+		//get all the interfaces and their classnames (simpleName) and sort them by
+		// view, algorithm, tool, tab superclasses/interfaces
+		
+		for(Class<? extends PreferencesInterface> preferencesClass : preferencingClasses) {
+			try {
+				PreferencesInterface instance = (PreferencesInterface)preferencesClass.newInstance();
+				List<Parameter> defaultParameters = instance.getDefaultParameters();
+				if(defaultParameters == null)
+					continue;
+				
+				if(instance instanceof View) {
+					categoryNode = getCategoryNode(CAT_VIEWS);
+					addOptionGroup(categoryNode, parent);
+					logger.debug("added new view category");
+					
+				} else if (instance instanceof InspectorTab) {
+					categoryNode = getCategoryNode(CAT_TABS);
+					addOptionGroup(categoryNode, parent);
+					logger.debug("added new tabs category");
+				} else if (instance instanceof Algorithm) {
+					categoryNode = getCategoryNode(CAT_ALGORITHMS);
+					addOptionGroup(categoryNode, parent);
+					logger.debug("added new algorithm category");
+				} else if (instance instanceof Tool) {
+					categoryNode = getCategoryNode(CAT_TOOLS);
+					addOptionGroup(categoryNode, parent);
+					logger.debug("added new Tool category");
+				} else if(instance instanceof AttributeComponent) {
+					categoryNode = getCategoryNode(CAT_ATTR_COMP);
+					addOptionGroup(categoryNode, parent);
+				}
+				else {
+					categoryNode = getCategoryNode(CAT_GENERAL);
+					addOptionGroup(categoryNode, parent);
+					logger.debug("added new general category");
+				}
+			
+				logger.debug("added new category");
+
+				
+				Preferences preferences = PreferenceManager.getPreferenceForClass(instance.getClass());
+				
+				for(Parameter param : defaultParameters) {
+					Object value = preferences.get(param.getName(), null);
+					if(value != null) {
+						param.setValue(value);
+					}
+				}
+				
+				String name = instance.getPreferencesAlternativeName();
+				if(name == null)
+					name = instance.getClass().getSimpleName();
+				addOptionPane(getParameterOptionPane(name, defaultParameters, instance.getClass()), categoryNode);
+				
+			} catch (InstantiationException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+//		DefaultMutableTreeNode classnode = new DefaultMutableTreeNode();
+		
+		//create tree entry for each class
+		
+		//create subtree entry for possible nodes beneath that class
+		
+		// get the parameters from the preferences of that class or subnode
+		
+		// copy the attributes or use the default ones and set the value from
+		// the preferences object of that class or subnode
+		
+		// the parameter will be the data object of that treenode
+		// the name of the treenode will be the name of the class or the name of the
+		// subnode of that class
+		// for each click on a tree node load the 
+		// parameters panel that dispalys the editviewcomponents
+		// on save, store the parameter in the preferences
+		// maybe we can reuse the panel that creates the panel with the components for the 
+		// algorithms
+	}
+
+	private OptionPane getParameterOptionPane(String name, List<Parameter> defaultParameters, Class<? extends PreferencesInterface> clazz) {
+
+		ParameterOptionPane paramOptionPane = new ParameterOptionPane(name, defaultParameters, clazz);
+		
+		
+		return paramOptionPane;
+	}
+
+	private OptionGroup getCategoryNode(String cat) {
+		OptionGroup categoryNode;
+		if((categoryNode = mapCategories.get(cat)) == null) {
+			categoryNode = new OptionGroup(cat);
+			mapCategories.put(cat, categoryNode);
+		}
+		return categoryNode;
+	}
 	
 	/**
 	 * Called, if a button in the dialog is pressed.
@@ -211,9 +354,9 @@ public class OptionsDialog
 	 * @param group
 	 *           the option group to add.
 	 */
-	public void addOptionGroup(OptionGroup group) {
-		addOptionGroup(group, pluginsGroup);
-	}
+//	public void addOptionGroup(OptionGroup group) {
+//		addOptionGroup(group, pluginsGroup);
+//	}
 	
 	/**
 	 * Adds the given option pane to the list of option panes.
@@ -221,9 +364,9 @@ public class OptionsDialog
 	 * @param pane
 	 *           the option pane to add to the list.
 	 */
-	public void addOptionPane(OptionPane pane) {
-		addOptionPane(pane, pluginsGroup);
-	}
+//	public void addOptionPane(OptionPane pane) {
+//		addOptionPane(pane, pluginsGroup);
+//	}
 	
 	/**
 	 * Handles the &quot;cancel&quot; button.
@@ -255,8 +398,12 @@ public class OptionsDialog
 		// Save settings to disk
 		// editor.prefs.sync(); TODO
 		// get rid of this dialog if necessary
+		
+		PreferenceManager.storePreferences();
+		
 		if (dispose) {
 			dispose();
+//			setVisible(false);
 		}
 	}
 	
@@ -274,15 +421,9 @@ public class OptionsDialog
 			return;
 		}
 		
-		Object[] nodes = path.getPath();
+		OptionPane optionPane = (OptionPane)path.getLastPathComponent();
 		
-		StringBuffer buf = new StringBuffer();
-		
-		OptionPane optionPane = null;
-		String name = null;
-		
-		int lastIdx = nodes.length - 1;
-		
+		/*
 		for (int i = paneTree.isRootVisible() ? 0 : 1; i <= lastIdx; i++) {
 			if (nodes[i] instanceof OptionPane) {
 				optionPane = (OptionPane) nodes[i];
@@ -309,13 +450,20 @@ public class OptionsDialog
 			}
 		}
 		
-		currentLabel.setText(buf.toString());
+		 */
+		currentLabel.setText(optionPane.getName());
 		
 		optionPane.init(null);
 		
-		pack();
+		optionPaneContainer.setViewportView(optionPane.getOptionDialogComponent());
+		invalidate();
+//		revalidate();
+//		pack();
 		
-		((CardLayout) cardPanel.getLayout()).show(cardPanel, name);
+		
+//		((CardLayout) cardPanel.getLayout()).show(cardPanel, name);
+		
+		
 	}
 	
 	/**
@@ -352,13 +500,16 @@ public class OptionsDialog
 	 *           the parent option group of the give option pane.
 	 */
 	private void addOptionPane(OptionPane pane, OptionGroup parent) {
-		String name = pane.getName();
-		cardPanel.add(pane.getOptionDialogComponent(), name);
+//		String name = pane.getName();
+//		cardPanel.add(pane.getOptionDialogComponent(), name);
 		parent.addOptionPane(pane);
 	}
 	
 	/**
-	 * DOCUMENT ME!
+	 * creates the optiontreemodel.
+	 * IMPORTANT! It uses an own overlay model, which will only be created and 
+	 * visualized if treenodes are added in here.
+	 * Later changes to the model will not be visible to the Dialog
 	 * 
 	 * @return DOCUMENT ME!
 	 */
@@ -368,35 +519,12 @@ public class OptionsDialog
 		
 		addOptionPane(new OverviewOptionPane(), rootGroup);
 		
-		// initialize the jEdit branch of the options tree
-		// editGroup = new OptionGroup("editor");
-		// addOptionPane(new LoadSaveOptionPane(), editGroup);
+		prepareTree(rootGroup);
 		
-		/* add other default option panes above this line. */
-
-		// OptionGroup browserGroup = new OptionGroup("browser");
-		// addOptionPane(new BrowserOptionPane(), browserGroup);
-		// addOptionPane(new BrowserColorsOptionPane(), browserGroup);
-		// addOptionGroup(browserGroup, editGroup);
-		// addOptionGroup(editGroup, rootGroup);
-		// initialize the Plugins branch of the options tree
-		// pluginsGroup = new OptionGroup("plugins");
-		// Query plugins for option panes
-		// GenericPlugin[] plugins = editor.pluginManager.getPlugins();
-		// for(int i = 0; i < plugins.length; i++) {
-		// GenericPlugin ep = plugins[i];
-		// try {
-		// ep.createOptionPanes(this);
-		// } catch(Throwable t){
-		// Log.log(Log.ERROR, ep,
-		// "Error creating option pane");
-		// Log.log(Log.ERROR, ep, t);
-		// }
-		// }
-		// only add the Plugins branch if there are OptionPanes
-		// if (pluginsGroup.getMemberCount() > 0) {
-		// addOptionGroup(pluginsGroup, rootGroup);
-		// }
+		AddonsOptionsPane addonsPane = new AddonsOptionsPane();
+		addOptionPane(addonsPane, rootGroup);
+		
+		
 		return paneTreeModel;
 	}
 	

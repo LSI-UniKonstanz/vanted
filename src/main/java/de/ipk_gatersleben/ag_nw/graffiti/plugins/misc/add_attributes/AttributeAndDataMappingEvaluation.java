@@ -11,7 +11,7 @@ public class AttributeAndDataMappingEvaluation extends IPK_PluginAdapter {
 	public AttributeAndDataMappingEvaluation() {
 		algorithms = new Algorithm[] {
 							new AddInterestingAttributes(),
-							new ComputeAttributesAlgorithm()
+//							new ComputeAttributesAlgorithm()
 		};
 	}
 }

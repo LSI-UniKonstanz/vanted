@@ -549,7 +549,6 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements
 	 * @param parameters
 	 * @return The return value depends on the selected button (OK/Cancel).
 	 */
-	@SuppressWarnings("unchecked")
 	public static Object[] getInput(Object description, String title,
 						Object... parameters) {
 		

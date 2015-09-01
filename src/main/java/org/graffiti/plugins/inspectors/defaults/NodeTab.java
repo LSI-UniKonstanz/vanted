@@ -9,8 +9,7 @@
 
 package org.graffiti.plugins.inspectors.defaults;
 
-import java.util.Collection;
-
+import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.selection.SelectionEvent;
 
 /**
@@ -19,7 +18,7 @@ import org.graffiti.selection.SelectionEvent;
  * @version $Revision: 1.9 $
  */
 public class NodeTab
-					extends AbstractTab {
+		extends AbstractTab {
 	// ~ Constructors ===========================================================
 	
 	private static final long serialVersionUID = 1L;
@@ -30,7 +29,7 @@ public class NodeTab
 	 * Constructs a <code>NodeTab</code> and sets the title.
 	 */
 	public NodeTab() {
-		super();
+//		super();
 		this.title = "Node";
 		NodeTab.instance = this;
 	}
@@ -44,10 +43,21 @@ public class NodeTab
 		return instance;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void selectionChanged(SelectionEvent e) {
-		rebuildTree((Collection) e.getSelection().getNodes());
+		attributables = e.getSelection().getNodes();
+		super.selectionChanged(e);
 	}
+	
+	@Override
+	public String getTabParentPath() {
+		return "Attributes";
+	}
+	
+	@Override
+	public int getPreferredTabPosition() {
+		return InspectorTab.TAB_LEADING;
+	}
+	
 }
 
 // ------------------------------------------------------------------------------
