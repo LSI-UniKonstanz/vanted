@@ -267,7 +267,6 @@ public class SBML_Species_Reader {
 					}
 					this.speciesHelper.addCloneToList(speciesID, _speciesNode);
 					AttributeHelper.setAttribute(_speciesNode, SBML_Constants.SBML, SBML_Constants.SPECIES_GLYPH_ID, speciesGlyph.getId());
-					AttributeHelper.setSize(_speciesNode, 27, 27);
 					BoundingBox boundingBox = speciesGlyph.getBoundingBox();
 					if (boundingBox != null) {
 						Dimensions dimensions = boundingBox.getDimensions();

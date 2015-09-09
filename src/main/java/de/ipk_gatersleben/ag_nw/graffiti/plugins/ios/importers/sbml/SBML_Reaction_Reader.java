@@ -407,7 +407,6 @@ public class SBML_Reaction_Reader {
 				ReactionGlyph reactionGlyph = reactionGlyphListIt.next();
 				if (reactionGlyph.getReaction().equals(reactionID)) {
 					AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_GLYPH_ID, reactionGlyph.getId());
-					AttributeHelper.setSize(reactionNode, 40, 40);
 					BoundingBox boundingBox = reactionGlyph.getBoundingBox();
 					if (boundingBox != null) {
 						Dimensions dimensions = boundingBox.getDimensions();
