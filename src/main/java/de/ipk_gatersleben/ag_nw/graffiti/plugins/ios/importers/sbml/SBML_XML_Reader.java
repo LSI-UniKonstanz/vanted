@@ -74,9 +74,13 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 			
 			boolean readIn = false;
 			URL url = new URL("http://sbml.org/Facilities/Validator/");
-			URLConnection connection = url.openConnection();
+			// URLConnection connection = url.openConnection();
+			URLConnection connection;
 			InputStream is = null;
 			try {
+				connection = url.openConnection();
+				connection.setConnectTimeout(15000);
+				connection.setReadTimeout(15000);
 				is = connection.getInputStream();
 			} catch (Exception e) {
 				// SBML_Logger.addErrorMessage("No internet connection");
@@ -134,6 +138,8 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 				if (validate == 1) {
 					readIn = true;
 				}
+				
+				is.close();
 			} else {
 				readIn = true;
 				JOptionPane.showMessageDialog(null,
