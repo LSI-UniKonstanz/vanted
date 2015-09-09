@@ -155,8 +155,11 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 			}
 			if (SBML_Constants.isLayoutActive) {
 				// addAdditionalEdges(g, model, speciesHelper, reactionHelper);
-				reassignEdges(model, speciesHelper);
-				computeReactionNodePosition(g);
+				LayoutModelPlugin layoutModel = (LayoutModelPlugin) model.getExtension(SBMLHelper.SBML_LAYOUT_EXTENSION_NAMESPACE);
+				if (layoutModel != null) {
+					reassignEdges(model, speciesHelper);
+					computeReactionNodePosition(g);
+				}
 			}
 		}
 	}
