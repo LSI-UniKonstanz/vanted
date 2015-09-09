@@ -249,23 +249,23 @@ public class SBML_Species_Reader {
 	//
 	// }
 	
-	private void processLayoutInformation(Graph g, Species speciesJSBML, Node speciesNode) {
+	private void processLayoutInformation(Graph g, Species species, Node speciesNode) {
 		
 		Node _speciesNode = speciesNode;
-		LayoutModelPlugin layoutModel = (LayoutModelPlugin) speciesJSBML.getModel().getExtension(SBMLHelper.SBML_LAYOUT_EXTENSION_NAMESPACE);
+		LayoutModelPlugin layoutModel = (LayoutModelPlugin) species.getModel().getExtension(SBMLHelper.SBML_LAYOUT_EXTENSION_NAMESPACE);
 		if (layoutModel != null) {
 			Layout layout = layoutModel.getListOfLayouts().iterator().next();
 			Iterator<SpeciesGlyph> speciesGlyphListIt = layout.getListOfSpeciesGlyphs().iterator();
-			String id = speciesJSBML.getId();
+			String speciesID = species.getId();
 			int i = 0;
 			while (speciesGlyphListIt.hasNext()) {
 				SpeciesGlyph speciesGlyph = speciesGlyphListIt.next();
-				if (speciesGlyph.getSpecies().equals(id)) {
+				if (speciesGlyph.getSpecies().equals(speciesID)) {
 					if (i >= 1) {
 						Node speciesNodeClone = g.addNodeCopy(_speciesNode);
 						_speciesNode = speciesNodeClone;
 					}
-					this.speciesHelper.addCloneToList(id, _speciesNode);
+					this.speciesHelper.addCloneToList(speciesID, _speciesNode);
 					AttributeHelper.setAttribute(_speciesNode, SBML_Constants.SBML, SBML_Constants.SPECIES_GLYPH_ID, speciesGlyph.getId());
 					AttributeHelper.setSize(_speciesNode, 27, 27);
 					BoundingBox boundingBox = speciesGlyph.getBoundingBox();
@@ -281,7 +281,7 @@ public class SBML_Species_Reader {
 							double x = position.getX();
 							double y = position.getY();
 							AttributeHelper.setPosition(_speciesNode, x, y);
-							// TODO: set a dummy layout ID to have a SBML layout attribute on the node
+							// set a dummy layout ID to have a SBML layout attribute on the node
 							// to be able checking whether layout information has been available or not
 							AttributeHelper.setAttribute(_speciesNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, "dummyLayoutID");
 						} else
