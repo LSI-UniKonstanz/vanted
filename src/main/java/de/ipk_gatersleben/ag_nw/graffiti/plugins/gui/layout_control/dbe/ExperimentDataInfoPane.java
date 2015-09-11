@@ -312,13 +312,13 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			// bridgeDB.setOpaque(false);
 			// bridgeDB.addActionListener(getAddAlternativeIdentifiersIdsCommandBRIDGEDB(addIdentifiers));
 			
-			final JButton addAffyIdentifiers = new JMButton("Load Array-Annotation");
-			addAffyIdentifiers.setToolTipText("<html>" + "Load Affymetrix or Agilent Annotation File<br>"
-					+ "Processed are Entrez Gene IDs.");
-			
-			addAffyIdentifiers.setOpaque(false);
-			addAffyIdentifiers.addActionListener(getAddAffyIdentifiersCommand(addIdentifiers));
-			
+			/*
+			 * final JButton addAffyIdentifiers = new JMButton("Load Array-Annotation");
+			 * addAffyIdentifiers.setToolTipText("<html>" + "Load Affymetrix or Agilent Annotation File<br>"
+			 * + "Processed are Entrez Gene IDs.");
+			 * addAffyIdentifiers.setOpaque(false);
+			 * addAffyIdentifiers.addActionListener(getAddAffyIdentifiersCommand(addIdentifiers));
+			 */
 			JButton removeIdentifiers = new JMButton("Remove IDs");
 			
 			removeIdentifiers.setOpaque(false);
@@ -357,16 +357,21 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			});
 			
 			fpDataAnnotation.addComp(alternativeIDCount);
-			fpDataAnnotation.addComp(TableLayout.get3Split(TableLayout.get3SplitVertical(addIdentifiers,
-					addAffyIdentifiers, TableLayout.getMultiSplitVertical(getAnnotationProviderButtons(doc), 0),
-					TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED), new JLabel(""),
-					TableLayout.getSplitVertical(replaceIDs, removeIdentifiers, TableLayout.PREFERRED, TableLayout.PREFERRED),
-					TableLayout.FILL, 5, TableLayout.PREFERRED), 5);
+			fpDataAnnotation.addComp(
+					TableLayout.get3Split(
+							TableLayout.get3SplitVertical(
+									addIdentifiers,
+									removeIdentifiers,
+									TableLayout.getMultiSplitVertical(getAnnotationProviderButtons(doc), 0),
+									
+									TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED), new JLabel(""),
+							TableLayout.getSplitVertical(replaceIDs, new JLabel(), TableLayout.PREFERRED, TableLayout.PREFERRED),
+							TableLayout.FILL, 5, TableLayout.PREFERRED), 5);
 			fpDataAnnotation.layoutRows();
 			
 			installDragNDropForAnnotationFiles(addIdentifiers, addIdentifiers);
 			
-			installDragNDropForArrayFiles(addAffyIdentifiers, addAffyIdentifiers);
+//			installDragNDropForArrayFiles(addAffyIdentifiers, addAffyIdentifiers);
 			
 			FolderPanel fp5 = new FolderPanel("Analysis Pipeline", true, true, false, null);
 			JButton hierarchyWizard = new JMButton("Hierarchy Wizard");

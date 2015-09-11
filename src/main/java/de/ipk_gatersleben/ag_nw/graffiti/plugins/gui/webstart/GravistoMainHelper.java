@@ -447,49 +447,48 @@ public class GravistoMainHelper implements HelperClass {
 		GravistoService.loadFiles();
 		
 		if (ReleaseInfo.isFirstRun()) {
-
+			
 			/*
 			 * no database download window. the links don't work anyway anymore since kegg changed
 			 */
 /*
- 			Runnable r = new Runnable() {
-				public void run() {
-					try {
-						Thread.sleep(5000);
-					} catch (InterruptedException e) {
-						ErrorMsg.addErrorMessage(e);
-					}
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							int res = JOptionPane
-									.showConfirmDialog(
-											mainFrame,
-											"<html>"
-													+ "Some of the commands contained in this application require access to certain databases.<br>"
-													+ "Database files are required for commands related to database identifier handling.<br>"
-													+ "For example to exchange compound IDs with compound names (menu command<br>"
-													+ "'Nodes/Interpret Database-Identifiers') and for synonyme processing during<br>"
-													+ "data mapping.<br><br>"
-													+ "Click 'Yes' to open the download command window. You may use the menu command<br>"
-													+ "'Help/Database Status' at a later time to download or update the database files.",
-											"Show database download window?", JOptionPane.YES_NO_OPTION);
-							if (res == 0) {
-								DatabaseFileStatusService.showStatusDialog();
-							}
-						}
-					});
-				}
-				
-			};
-			Thread tt = new Thread(r);
-			tt.setName("Ask for database download");
-			tt.start();
-*/			
+ * Runnable r = new Runnable() {
+ * public void run() {
+ * try {
+ * Thread.sleep(5000);
+ * } catch (InterruptedException e) {
+ * ErrorMsg.addErrorMessage(e);
+ * }
+ * SwingUtilities.invokeLater(new Runnable() {
+ * public void run() {
+ * int res = JOptionPane
+ * .showConfirmDialog(
+ * mainFrame,
+ * "<html>"
+ * + "Some of the commands contained in this application require access to certain databases.<br>"
+ * + "Database files are required for commands related to database identifier handling.<br>"
+ * + "For example to exchange compound IDs with compound names (menu command<br>"
+ * + "'Nodes/Interpret Database-Identifiers') and for synonyme processing during<br>"
+ * + "data mapping.<br><br>"
+ * + "Click 'Yes' to open the download command window. You may use the menu command<br>"
+ * + "'Help/Database Status' at a later time to download or update the database files.",
+ * "Show database download window?", JOptionPane.YES_NO_OPTION);
+ * if (res == 0) {
+ * DatabaseFileStatusService.showStatusDialog();
+ * }
+ * }
+ * });
+ * }
+ * };
+ * Thread tt = new Thread(r);
+ * tt.setName("Ask for database download");
+ * tt.start();
+ */
 			/*
-			 * display the dialog box to inform the user that we changed the info.plist file with optimal 
+			 * display the dialog box to inform the user that we changed the info.plist file with optimal
 			 * RAM settings
 			 */
-			if(AttributeHelper.macOSrunning()) {
+			if (AttributeHelper.macOSrunning()) {
 				new Thread(new Runnable() {
 					
 					@Override
@@ -502,13 +501,12 @@ public class GravistoMainHelper implements HelperClass {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-						} while ( ! mainFrame.getInstance().isVisible());
+						} while (!mainFrame.getInstance().isVisible());
 						SetJavaMemoryMacOS.showDialog();
 						
 					}
 				}).start();
 			}
-			
 			
 		} else {
 			final String lastVersion = ReleaseInfo
@@ -531,7 +529,7 @@ public class GravistoMainHelper implements HelperClass {
 									JOptionPane.showMessageDialog(mainFrame, "<html>" + "<h3>Application has been updated!</h3>"
 											+ "Previous installation of " + lastVersion + " is replaced by "
 											+ DBEgravistoHelper.DBE_GRAVISTO_VERSION + ".<br><br>"
-											+ "Side panel 'Help'/'News' contains information about updates.", "Information",
+											, "Information",
 											JOptionPane.INFORMATION_MESSAGE);
 							}
 						});

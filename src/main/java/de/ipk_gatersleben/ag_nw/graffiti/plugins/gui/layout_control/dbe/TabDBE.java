@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -36,6 +37,7 @@ import org.FolderPanel;
 import org.JLabelJavaHelpLink;
 import org.JMButton;
 import org.ReleaseInfo;
+import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.event.AttributeEvent;
@@ -452,6 +454,15 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 		}
 		MainFrame.showMessage("Load project data: Finished", MessageType.INFO, 3000);
 		MainFrame.getInstance().updateActions();
+	}
+	
+	@Override
+	public ImageIcon getIcon() {
+		URL url = getClass().getResource("Database-Table-icon.png");
+		if (url != null)
+			return new ImageIcon(GravistoService.getScaledImage(new ImageIcon(url).getImage(), 16, 16));
+		else
+			return super.getIcon();
 	}
 	
 }

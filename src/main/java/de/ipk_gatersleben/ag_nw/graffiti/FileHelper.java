@@ -11,8 +11,13 @@ package de.ipk_gatersleben.ag_nw.graffiti;
  * @author Tobias Czauderna
  */
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
+import java.net.URL;
+import java.nio.file.AccessDeniedException;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
@@ -20,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.FileTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -36,6 +42,7 @@ import org.graffiti.editor.GravistoService;
 
 @SuppressWarnings("nls")
 public class FileHelper implements HelperClass {
+	
 	public static String getFileName(final String defaultExt,
 			final String description, String defaultFileName) {
 		JFileChooser fc = new JFileChooser();
@@ -142,8 +149,8 @@ public class FileHelper implements HelperClass {
 	/**
 	 * Copy file from jar to file system.
 	 * 
-	 * @param jarFileName
-	 *           the jar file including path on the file system
+	 * @param uri
+	 *           URI for the jar file
 	 * @param sourceFolder
 	 *           folder within the jar file
 	 * @param targetFolder
@@ -151,17 +158,17 @@ public class FileHelper implements HelperClass {
 	 * @param fileName
 	 *           file to copy
 	 */
-	public static void copyFileFromJar(String jarFileName, String sourceFolder, String targetFolder, String fileName) {
+	public static void copyFileFromJar(URI uri, String sourceFolder, String targetFolder, String fileName) {
 		
-		copyFilesFromJar(jarFileName, sourceFolder, targetFolder, new String[] { fileName });
+		copyFilesFromJar(uri, sourceFolder, targetFolder, new String[] { fileName });
 		
 	}
 	
 	/**
 	 * Copy files from jar to file system.
 	 * 
-	 * @param jarFileName
-	 *           the jar file including path on the file system
+	 * @param uri
+	 *           URI for the jar file
 	 * @param sourceFolder
 	 *           folder within the jar file
 	 * @param targetFolder
@@ -169,49 +176,67 @@ public class FileHelper implements HelperClass {
 	 * @param fileNames
 	 *           files to copy
 	 */
-	public static void copyFilesFromJar(final String jarFileName, String sourceFolder, final String targetFolder, final String[] fileNames) {
-		
-		final String _jarFileName;
-		// check for leading "jar:file:/"
-		// on Windows replace "\" by "/"
-		if (jarFileName.startsWith("jar:file:/"))
-			_jarFileName = jarFileName.replace("\\", "/");
-		else
-			if (jarFileName.startsWith("file:/"))
-				_jarFileName = "jar:" + jarFileName.replace("\\", "/");
-			else
-				_jarFileName = "jar:file:/" + jarFileName.replace("\\", "/");
-		final String _sourceFolder;
-		// check for leading and trailing "/"
-		if (!sourceFolder.startsWith("/") && !sourceFolder.endsWith("/"))
-			_sourceFolder = "/" + sourceFolder + "/";
-		else
-			if (!sourceFolder.startsWith("/"))
-				_sourceFolder = "/" + sourceFolder;
-			else
-				if (!sourceFolder.endsWith("/"))
-					_sourceFolder = sourceFolder + "/";
-				else
-					_sourceFolder = sourceFolder;
+	public static void copyFilesFromJar(final URI uri, final String sourceFolder, final String targetFolder, final String[] fileNames) {
 		
 		Runnable runnable = new Runnable() {
 			
 			@Override
 			public void run() {
 				
-				URI uri = URI.create(_jarFileName);
 				Map<String, String> env = new HashMap<>();
 				try (FileSystem fileSystem = FileSystems.newFileSystem(uri, env)) {
 					for (String fileName : fileNames) {
-						Path sourcePath = fileSystem.getPath(_sourceFolder + fileName);
+						Path sourcePath = fileSystem.getPath("/" + sourceFolder + "/" + fileName);
 						Path targetPath = Paths.get(targetFolder, fileName);
 						if (Files.exists(sourcePath))
 							compareAndCopyFile(sourcePath, targetPath);
 					}
-				} catch (IOException e) {
+				} catch (Exception e) {
 					ErrorMsg.addErrorMessage(e);
 				}
 				
+			}
+			
+		};
+		Thread t = new Thread(runnable);
+		t.start();
+		
+	}
+	
+	/**
+	 * Copy file from resource (as stream) to file system.
+	 * 
+	 * @param sourceFolder
+	 *           folder on the resource to copy the files from
+	 * @param targetFolder
+	 *           folder on the file system to copy the files to
+	 * @param fileName
+	 *           file to copy
+	 */
+	public static void copyFileFromStream(final String sourceFolder, final String targetFolder, final String fileName) {
+		
+		Runnable runnable = new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				try (InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream(sourceFolder + "/" + fileName)) {
+					int index = fileName.lastIndexOf(".");
+					Path tempPath = Files.createTempFile(fileName.substring(0, index), fileName.substring(index));
+					try (OutputStream outputStream = new FileOutputStream(tempPath.toFile())) {
+						byte buffer[] = new byte[1024];
+						int length;
+						while ((length = inputStream.read(buffer)) != -1)
+							outputStream.write(buffer, 0, length);
+						outputStream.close();
+						inputStream.close();
+						if (Files.exists(tempPath))
+							FileHelper.compareAndCopyFile(tempPath, Paths.get(targetFolder, fileName));
+						Files.deleteIfExists(tempPath);
+					}
+				} catch (IOException e) {
+					ErrorMsg.addErrorMessage(e);
+				}
 			}
 			
 		};
@@ -297,10 +322,57 @@ public class FileHelper implements HelperClass {
 				Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);
 				if (sourceLastModifiedTime != null)
 					Files.setAttribute(targetPath, "creationTime", FileTime.from(sourceLastModifiedTime.to(TimeUnit.SECONDS), TimeUnit.SECONDS));
-			} catch (IOException e) {
-				ErrorMsg.addErrorMessage(e);
+			} catch (Exception exception) {
+				if (exception instanceof AccessDeniedException) {
+					try {
+						Map<String, Object> targetMap = Files.readAttributes(targetPath, "lastAccessTime");
+						FileTime targetLastAccessTime = (FileTime) targetMap.get("lastAccessTime");
+						Date now = new Date();
+						// last access within the last four hours?
+						// most likely the file is currently being accessed by another process
+						if (now.getTime() - targetLastAccessTime.toMillis() < 1000 * 60 * 60 * 4)
+							ErrorMsg.addErrorMessage("<html>Could not copy " + targetPath.getFileName() + "!<br>" +
+									"Most likely the file is currently being accessed by another process.");
+						else
+							ErrorMsg.addErrorMessage(exception);
+					} catch (IOException e) {
+						ErrorMsg.addErrorMessage(e);
+					}
+				}
+				else
+					ErrorMsg.addErrorMessage(exception);
 			}
 		
 	}
 	
+	/**
+	 * Downloads a file from the web to a local folder.
+	 * 
+	 * @param urlFile
+	 * @param destPath
+	 * @param localFilename
+	 * @return
+	 * @throws IOException
+	 */
+	public static boolean downloadFile(URL urlFile, String destPath, String localFilename) throws IOException {
+		if (urlFile == null || destPath == null || localFilename == null)
+			return false;
+		
+		InputStream openStream = urlFile.openStream();
+		
+		File destDir = new File(destPath);
+		if (!destDir.exists())
+			destDir.mkdirs();
+		
+		File destFile = new File(destPath + "/" + localFilename);
+		FileOutputStream fos = new FileOutputStream(destFile);
+		
+		byte[] buffer = new byte[1024];
+		while (openStream.read(buffer) != -1)
+			fos.write(buffer);
+		
+		fos.close();
+		openStream.close();
+		return true;
+	}
 }

@@ -97,7 +97,8 @@ public class PreferencesDialog extends JDialog
 	
 	public ThreadSafeOptions optionsForPlugin = null;
 	
-	public Algorithm selectedAlgorithm;
+//	public Algorithm selectedAlgorithm;
+	private MyPluginTreeNode lastSelectedMpt;
 	
 	/*
 	 * (non-Javadoc)
@@ -201,6 +202,7 @@ public class PreferencesDialog extends JDialog
 		this.showOnlyLayoutAlgorithms = showOnlyLayoutAlgorithms;
 		this.showThreadSafeLayoutAlgorithms = showInteractiveAlgorithms;
 		myTree.addTreeSelectionListener(new TreeSelectionListener() {
+			
 			public void valueChanged(TreeSelectionEvent e) {
 				processTreeSelectionEvent(e);
 				
@@ -222,69 +224,15 @@ public class PreferencesDialog extends JDialog
 				
 				MutableTreeNode mt = (MutableTreeNode) e.getNewLeadSelectionPath().getLastPathComponent();
 				if (mt instanceof MyPluginTreeNode) {
-					MyPluginTreeNode mpt = (MyPluginTreeNode) mt;
-					Object data = mpt.getUserObject();
+					lastSelectedMpt = (MyPluginTreeNode) mt;
 					
-					settingsPanel.removeAll();
-					settingsPanel.repaint();
-					if (mpt.getClassType() == BSHscriptMenuEntry.class) {
-						final BSHscriptMenuEntry sm = (BSHscriptMenuEntry) mpt.getUserObject();
-						settingsPanel.add(new JLabel("Script file: " + sm.getCmdFile()));
-						JButton startButton = new JButton(sm.getText());
-						startButton.addActionListener(new ActionListener() {
-							public void actionPerformed(ActionEvent arg0) {
-								ActionListener al = sm.getActionListeners()[0];
-								al.actionPerformed(new ActionEvent(sm, 0, ""));
-							}
-						});
-						settingsPanel.add(startButton);
-						settingsPanel.validate();
-					} else
-						if (mpt.getClassType() == Dependency.class) {
-							List<?> deps = (List<?>) mpt.getUserObject();
-							for (Iterator<?> it = deps.iterator(); it.hasNext();) {
-								settingsPanel.add(getDependencyPanel((Dependency) it.next()));
-							}
-							settingsPanel.validate();
-						} else
-							if (mpt.getClassType() == PluginEntry.class) {
-								PluginEntry de = (PluginEntry) data;
-								settingsPanel.add(new JLabel("Plugin selection: " + de.getDescription().getName()));
-								settingsPanel.validate();
-							} else
-								if (mpt.getClassType() == ThreadSafeAlgorithm.class) {
-									ThreadSafeAlgorithm alg = (ThreadSafeAlgorithm) data;
-									JPanel pluginContent = new JPanel();
-									optionsForPlugin =
-											new ThreadSafeOptions();
-									
-									if (alg.setControlInterface(optionsForPlugin,
-											pluginContent)) {
-										JScrollPane sp = new JScrollPane(pluginContent);
-										sp.setBorder(null);
-										settingsPanel.add(sp);
-										settingsPanel.validate();
-									}
-								} else
-									if (mpt.getClassType() == Algorithm.class) {
-										Algorithm alg = (Algorithm) data;
-										selectedAlgorithm = alg;
-										
-										initAlgorithmPreferencesPanel(thisDialog, alg, graph, selection, setAlgorithmDataObject, executeMoveToTopAfterwards);
-									} else
-										if (mpt.getClassType() == OptionPane.class) {
-											if (data instanceof OptionPane) {
-												OptionPane op = (OptionPane) data;
-												settingsPanel.add(new OptionSetter(op));
-											}
-											settingsPanel.validate();
-										}
+					updateSettingsPanel(thisDialog,
+							graph, selection,
+							setAlgorithmDataObject,
+							executeMoveToTopAfterwards);
 				}
 			}
 			
-			private JComponent getDependencyPanel(Dependency dep) {
-				return new JLabel(dep.getName() + " (" + dep.getMain() + ")");
-			}
 		});
 		
 		JSplitPane mainComp;
@@ -384,6 +332,79 @@ public class PreferencesDialog extends JDialog
 				pluginAdded(p.getPlugin(), p.getDescription());
 			}
 		}
+	}
+	
+	private JComponent getDependencyPanel(Dependency dep) {
+		return new JLabel(dep.getName() + " (" + dep.getMain() + ")");
+	}
+	
+	public void updateSettingsPanel(
+			final JDialog thisDialog,
+			final Graph graph,
+			final Selection selection,
+			final HandlesAlgorithmData setAlgorithmDataObject,
+			final boolean executeMoveToTopAfterwards) {
+		
+		if (lastSelectedMpt == null)
+			return;
+		
+		Object data = lastSelectedMpt.getUserObject();
+		
+		settingsPanel.removeAll();
+		settingsPanel.repaint();
+		if (lastSelectedMpt.getClassType() == BSHscriptMenuEntry.class) {
+			final BSHscriptMenuEntry sm = (BSHscriptMenuEntry) lastSelectedMpt.getUserObject();
+			settingsPanel.add(new JLabel("Script file: " + sm.getCmdFile()));
+			JButton startButton = new JButton(sm.getText());
+			startButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					ActionListener al = sm.getActionListeners()[0];
+					al.actionPerformed(new ActionEvent(sm, 0, ""));
+				}
+			});
+			settingsPanel.add(startButton);
+			settingsPanel.validate();
+		} else
+			if (lastSelectedMpt.getClassType() == Dependency.class) {
+				List<?> deps = (List<?>) lastSelectedMpt.getUserObject();
+				for (Iterator<?> it = deps.iterator(); it.hasNext();) {
+					settingsPanel.add(getDependencyPanel((Dependency) it.next()));
+				}
+				settingsPanel.validate();
+			} else
+				if (lastSelectedMpt.getClassType() == PluginEntry.class) {
+					PluginEntry de = (PluginEntry) data;
+					settingsPanel.add(new JLabel("Plugin selection: " + de.getDescription().getName()));
+					settingsPanel.validate();
+				} else
+					if (lastSelectedMpt.getClassType() == ThreadSafeAlgorithm.class) {
+						ThreadSafeAlgorithm alg = (ThreadSafeAlgorithm) data;
+						JPanel pluginContent = new JPanel();
+						optionsForPlugin =
+								new ThreadSafeOptions();
+						
+						if (alg.setControlInterface(optionsForPlugin,
+								pluginContent)) {
+							JScrollPane sp = new JScrollPane(pluginContent);
+							sp.setBorder(null);
+							settingsPanel.add(sp);
+							settingsPanel.validate();
+						}
+					} else
+						if (lastSelectedMpt.getClassType() == Algorithm.class) {
+							Algorithm alg = (Algorithm) data;
+//							selectedAlgorithm = alg;
+							
+							initAlgorithmPreferencesPanel(thisDialog, alg, graph, selection, setAlgorithmDataObject, executeMoveToTopAfterwards);
+						} else
+							if (lastSelectedMpt.getClassType() == OptionPane.class) {
+								if (data instanceof OptionPane) {
+									OptionPane op = (OptionPane) data;
+									settingsPanel.add(new OptionSetter(op));
+								}
+								settingsPanel.validate();
+							}
+		
 	}
 	
 	public void initAlgorithmPreferencesPanel(final JDialog thisDialog, final Algorithm alg,

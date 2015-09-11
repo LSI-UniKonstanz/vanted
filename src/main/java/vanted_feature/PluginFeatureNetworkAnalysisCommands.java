@@ -15,14 +15,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.circle_search.CircleSearchAndLayoutAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.shortest_paths.AllPathsSelectionAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.shortest_paths.ShortestPathSelectionAlgorithm;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.shortest_paths.WeightedShortestPathSelectionAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.RemoveSelectedNodesPreserveEdgesAlgorithm;
 
 /**
  * @author Christian Klukas
  */
 public class PluginFeatureNetworkAnalysisCommands
-					extends IPK_PluginAdapter {
+		extends IPK_PluginAdapter {
 	
 	public PluginFeatureNetworkAnalysisCommands() {
 		
@@ -31,11 +30,11 @@ public class PluginFeatureNetworkAnalysisCommands
 				ReleaseInfo.enableFeature(FeatureSet.TAB_PATTERNSEARCH);
 			
 			this.algorithms = new Algorithm[] {
-								new ShortestPathSelectionAlgorithm(),
-								new WeightedShortestPathSelectionAlgorithm(),
-								new AllPathsSelectionAlgorithm(),
-								new CircleSearchAndLayoutAlgorithm(),
-								new RemoveSelectedNodesPreserveEdgesAlgorithm()
+					new ShortestPathSelectionAlgorithm(),
+					//								new WeightedShortestPathSelectionAlgorithm(),
+					new AllPathsSelectionAlgorithm(),
+					new CircleSearchAndLayoutAlgorithm(),
+					new RemoveSelectedNodesPreserveEdgesAlgorithm()
 			};
 		}
 	}

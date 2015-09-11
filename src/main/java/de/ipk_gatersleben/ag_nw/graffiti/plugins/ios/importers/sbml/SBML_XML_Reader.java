@@ -57,6 +57,7 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 	public static boolean isValidatingSBMLOnLoad() {
 		return doValidate;
 	}
+	
 	/**
 	 * Method controls the import of the SBML document.
 	 * 
@@ -291,6 +292,19 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 				e.printStackTrace();
 			}
 			error.printStackTrace();
+			/*
+			 * due to a bug in the vanted boot process the SBML reader is broken
+			 * and throws classcast exceptions.. reason yet unknown
+			 * This will catch it and ask for an update
+			 * The boot process has been fixed but the true reason is still unknown
+			 */
+		} catch (ClassCastException cce) {
+			JOptionPane.showMessageDialog(MainFrame.getInstance(), "<html>Due to a bug in the VANTED start process<br/>"
+					+ "the loading of SBML documents is broken.<br/>"
+					+ "Please go to the <strong>vanted.org</strong> website and download<br/>"
+					+ "and install the fixed version.",
+					"VANTED Bug", JOptionPane.ERROR_MESSAGE);
+			
 		}
 		try {
 			in.close();
