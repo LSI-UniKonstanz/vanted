@@ -57,7 +57,7 @@ public class Main {
 	/** The editor's main frame. */
 
 	// ~ Constructors ===========================================================
-
+	
 	public Main(final boolean showMainFrame, String applicationName, String[] args, String addon) {
 		this(showMainFrame, applicationName, args, new String[] { addon });
 	}

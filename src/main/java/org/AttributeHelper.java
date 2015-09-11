@@ -2895,7 +2895,7 @@ public class AttributeHelper implements HelperClass {
 				result.add(ca);
 			}
 		} catch (Exception e) {
-			// ingore here
+			// ignore here
 		}
 		return result;
 	}
@@ -3020,7 +3020,8 @@ public class AttributeHelper implements HelperClass {
 				setPosition(node, 0, 0);
 				setPositionZ(node, 0);
 			}
-			return new Vector3d(0, 0, 0);
+			return new Vector3d(0
+					, 0, 0);
 		}
 	}
 	

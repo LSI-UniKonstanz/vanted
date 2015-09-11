@@ -18,10 +18,10 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
+import org.vanted.animation.Animator;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
-
 public class MultiTreeLayout extends AbstractAlgorithm {
 	
 	public String getName() {
@@ -103,5 +103,4 @@ public class MultiTreeLayout extends AbstractAlgorithm {
 			maxXallGraphs += maxXthisGraph + 20;
 		}
 	}
-	
 }
