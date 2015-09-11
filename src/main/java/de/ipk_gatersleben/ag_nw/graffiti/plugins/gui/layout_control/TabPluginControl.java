@@ -9,6 +9,7 @@ import info.clearthought.layout.TableLayoutConstants;
 
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.event.AttributeEvent;
@@ -34,6 +35,7 @@ public class TabPluginControl
 		extends InspectorTab
 		implements SelectionListener, SessionListener {
 	
+	private static final Logger logger = Logger.getLogger(TabPluginControl.class);
 	private static final long serialVersionUID = 1L;
 	/**
 	 * DOCUMENT ME!
@@ -140,8 +142,8 @@ public class TabPluginControl
 	 */
 	public void sessionChanged(Session s) {
 		//
-		if (isVisible() && s != null && pd.selectedAlgorithm != null) {
-			pd.initAlgorithmPreferencesPanel(null, pd.selectedAlgorithm, s.getGraph(), ((EditorSession) s).getSelectionModel().getActiveSelection(), null, false);
+		if (isVisible() && s != null) {
+			pd.updateSettingsPanel(null, s.getGraph(), ((EditorSession) s).getSelectionModel().getActiveSelection(), null, false);
 		}
 	}
 	
@@ -156,8 +158,8 @@ public class TabPluginControl
 	
 	@Override
 	public void selectionChanged(SelectionEvent arg0) {
-		if (isVisible() && arg0 != null && pd.selectedAlgorithm != null) {
-			pd.initAlgorithmPreferencesPanel(null, pd.selectedAlgorithm, MainFrame.getInstance().getActiveSession().getGraph(), arg0.getSelection(), null, false);
+		if (isVisible() && arg0 != null) {
+			pd.updateSettingsPanel(null, MainFrame.getInstance().getActiveSession().getGraph(), arg0.getSelection(), null, false);
 		}
 		
 	}
