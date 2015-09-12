@@ -58,7 +58,6 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
 import org.ObjectRef;
 import org.StringManipulationTools;
-import org.UNCFileLocationCheck;
 import org.Vector2d;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.editor.ConfigureViewAction;
@@ -152,7 +151,7 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 				Category.IMAGING
 				));
 	}
-
+	
 	@Override
 	public void check() throws PreconditionException {
 		PngJpegAlgorithm.checkZoom();
@@ -436,8 +435,6 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 	// g.addEdge(n1, n2, true);
 	// PngJpegAlgorithm.createPNGimageFromGraph(g);
 	// }
-	
-
 	
 	public static void createPNGimageFromGraph(Graph g) {
 		PngJpegAlgorithm a = new PngJpegAlgorithm(false);
@@ -976,10 +973,10 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 		}
 		
 		if (f == null || !new File((String) lastFolder.getObject()).exists()) {
-		
+			
 			f = FileHelper.getFileName(extension, "Image File", PngJpegAlgorithm
 					.replaceExtension(graph.getName(false), extension));
-				
+			
 		}
 		
 		try {
@@ -1275,9 +1272,13 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 			Rectangle ob = viewerComponent.getBounds();
 			viewerComponent.setBounds(0, 0, (int) dimSrc.x, (int) dimSrc.y);
 			// viewerComponent.print(g);
+			if (viewerComponent instanceof IPKGraffitiView)
+				((IPKGraffitiView) viewerComponent).printInProgress = true;
 			viewerComponent.paint(g);
 			viewerComponent.setBounds(ob);
 			setDoubleBuffered(viewerComponent, true);
+			if (viewerComponent instanceof IPKGraffitiView)
+				((IPKGraffitiView) viewerComponent).printInProgress = false;
 			// viewerComponent.setOpaque(isOp);
 			// setDoubleBuffered(viewerComponent, true);
 			
