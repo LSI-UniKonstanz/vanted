@@ -1,18 +1,14 @@
-package org.vanted.animation.interpolators;
-import java.awt.Color;
-import java.awt.geom.Point2D;
-
-import org.vanted.animation.data.TimePoint;
+package org.vanted.animation.interpolators; 
+import org.vanted.animation.LoopType; 
 /**
  * 
  * @author - Patrick Shaw
  * 
  */
 public class CubicHermiteInterpolator extends Interpolator{
-	public CubicHermiteInterpolator(boolean isLooping) {
-		super(isLooping);
+	public CubicHermiteInterpolator(LoopType loopType) {
+		super(loopType);
 	}
-
 	@Override
 	public double interpolate(double x, double...y)
 	{	    
@@ -24,13 +20,14 @@ public class CubicHermiteInterpolator extends Interpolator{
 	}
 	
 	@Override
-	protected TimePoint[] getPointsUsed(double time, TimePoint[] dataPoints, int previousIndex) {
-		return getPointsUsed(time,dataPoints,previousIndex,0, 3);
+	protected int getPointsBefore()
+	{
+		return 0;
 	}
-
 	@Override
-	protected double getNormalizedTime(double time, double duration, TimePoint[] pointsUsed) {
-		return getNormalizedTime(time, duration, pointsUsed[0], pointsUsed[1]);
+	protected int getPointsAfter()
+	{
+		return 3;
 	}
 	
 	@Override

@@ -1,26 +1,24 @@
 package org.vanted.animation.interpolators;
-import java.awt.Color;
-
-import org.vanted.animation.data.TimePoint;
+import org.vanted.animation.LoopType;
 /**
  * 
  * @author - Patrick Shaw
  * 
  */
 public class CosignInterpolator extends Interpolator{
-	public CosignInterpolator(boolean isCircularData)
+	public CosignInterpolator(LoopType loopType)
 	{
-		super(isCircularData);
+		super(loopType);
 	}
-	
 	@Override
-	protected TimePoint[] getPointsUsed(double time, TimePoint[] dataPoints, int previousIndex) {
-		return getPointsUsed(time,dataPoints,previousIndex,0,1);
+	protected int getPointsBefore()
+	{
+		return 0; 
 	}
-
-	@Override
-	protected double getNormalizedTime(double time, double duration, TimePoint[] pointsUsed) {
-		return getNormalizedTime(time, duration,pointsUsed[0], pointsUsed[1]);
+	@Override 
+	protected int getPointsAfter()
+	{
+		return 1;
 	}
 	
 	@Override

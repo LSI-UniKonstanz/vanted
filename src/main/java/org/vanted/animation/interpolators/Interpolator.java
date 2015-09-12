@@ -1,12 +1,17 @@
 package org.vanted.animation.interpolators;
 import java.awt.Color;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
+import org.vanted.animation.LoopType;
 import org.vanted.animation.data.ColourPoint;
 import org.vanted.animation.data.DoublePoint;
 import org.vanted.animation.data.Point2DPoint;
 import org.vanted.animation.data.TimePoint;
+import org.vanted.animation.data.VectorPoint;
 /**
  * 
  * @author - Patrick Shaw
@@ -14,16 +19,18 @@ import org.vanted.animation.data.TimePoint;
  */
 public abstract class Interpolator
 {
-	private boolean isCircularData;
+	private LoopType loopType;
 	/**
 	 * 
 	 * @param isCircularData
 	 * See {@link #setIsCircularData(boolean) setIsCircularData(boolean)}
 	 */
-	public Interpolator(boolean isCircularData)
+	public Interpolator(LoopType loopType)
 	{
-		setIsCircularData(isCircularData);
+		setLoopType(loopType);
 	}
+	protected abstract int getPointsBefore();
+	protected abstract int getPointsAfter();
 	/**
 	 * @param time
 	 * @param dataPoints
@@ -36,31 +43,40 @@ public abstract class Interpolator
 	 * @return
 	 * Returns a set of indexes relative to the {@code previousIndex}.
 	 */
-		protected int[] getPointIndexes(double time, TimePoint dataPoints[], int previousIndex, int pointsBefore, int pointsAfter)
+		protected <DataPointType,T extends TimePoint<DataPointType>>int[] getPointIndexes(List<T> dataPoints, int previousIndex)
 		{
-			int indexes[] = new int[pointsBefore + 1 + pointsAfter];
-			
+			int indexes[] = new int[getPointsBefore() + 1 + getPointsAfter()];
 			int k = previousIndex;
-			for(int i = 0 ; i < pointsBefore;i++)
-					{
-				k --;
-				if(k < 0)
+			for(int i = 0; i < getPointsBefore();i++)
+			{
+				k--;
+				switch(loopType)
 				{
-					k = isCircularData ? dataPoints.length - 1 : 0;
+				// TODO: Do something for 'reverse'
+				case reverse:
+				case none:
+					indexes[i] = k < 0 ? 0 : k;
+					break;
+				case forward:
+					indexes[i] = k < 0 ? dataPoints.size() + (k) : k;
+					break;
 				}
-				indexes[pointsBefore - (i+1)] = k;
-					}
+			}
+			indexes[getPointsBefore()] = previousIndex;
 			int j = previousIndex;
-			for(int i = 0 ; i < pointsAfter;i++)
+			for(int i = 0; i  < getPointsAfter();i++)
 			{
 				j++;
-				if(j >= dataPoints.length)
+				switch(loopType)
 				{
-					j = isCircularData ? 0 : dataPoints.length - 1;
+				// TODO: Figure something out for 'reverse'
+				case reverse:
+				case none:
+					indexes[getPointsBefore()+1+i] = j >= dataPoints.size() ? dataPoints.size() - 1 : j;
+				case forward:
+					indexes[getPointsBefore()+1+i] = j % dataPoints.size();
 				}
-				indexes[pointsBefore + (i + 1)] = j;
 			}
-			indexes[pointsBefore] = previousIndex;
 			return indexes;
 		}
 		/** 
@@ -110,14 +126,13 @@ public abstract class Interpolator
 		 * @returns
 		 * An interpolated value.
 		 */
-		protected abstract TimePoint[] getPointsUsed(double time,TimePoint dataPoints[],int previousIndex);
-		protected TimePoint[] getPointsUsed(double time, TimePoint dataPoints[],int previousIndex, int pointsBefore, int pointsAfter)
+		protected <DataValueType,T extends TimePoint<DataValueType>>List<T> getPointsUsed(List<T> dataPoints,int previousIndex)
 		{
-			int[] indexes = getPointIndexes(time,dataPoints, previousIndex,pointsBefore,pointsAfter);
-			TimePoint points[] = new TimePoint[indexes.length];
+			int[] indexes = getPointIndexes(dataPoints, previousIndex);
+			List<T> points = new ArrayList<T>();
 			for(int i = 0; i < indexes.length;i++)
 			{
-				points[i] = dataPoints[indexes[i]];
+				points.add(dataPoints.get(indexes[i]));
 			}
 			return points;
 		}
@@ -135,7 +150,10 @@ public abstract class Interpolator
 		 * @return
 		 * A value between 0 and 1.
 		 */
-		protected abstract double getNormalizedTime(double time,double duration, TimePoint pointsUsed[]);
+		protected <DataValueType,T extends TimePoint<DataValueType>> double getNormalizedTime(double time,double duration, List<T> pointsUsed)
+		{
+			return getNormalizedTime(time,duration,pointsUsed.get(getPointsBefore()), pointsUsed.get(getPointsBefore() + 1));
+		}
 		/**
 		 * Implement your interpolation in this algorithm
 		 * @param x
@@ -146,134 +164,37 @@ public abstract class Interpolator
 		 * The y values that you need interpolate between.
 		 * @return
 		 */
-		protected abstract double interpolate(double x, double...y);
-		public double interpolate(double time, double duration, int previousIndex, DoublePoint dataPoints[])
+		protected abstract double interpolate(double x, double...y);	
+		public <ReturnType,DataPointType extends TimePoint<ReturnType>> ReturnType interpolate(double time, double duration,
+				int previousIndex, List<DataPointType> dataPoints)
 		{
+			List<DataPointType> pointsUsed = getPointsUsed(dataPoints,previousIndex);
+			double normalizedTime = getNormalizedTime(time,duration,pointsUsed);
 
-			TimePoint timePoints[] = getPointsUsed(time, dataPoints,previousIndex);
-			DoublePoint pointsUsed[] = new DoublePoint[timePoints.length];
-			for(int i = 0; i < timePoints.length;i++)
-			{
-				pointsUsed[i] = (DoublePoint)timePoints[i];
-			}
-			double normalizedTime = getNormalizedTime(time,duration,pointsUsed);
-			return interpolate(normalizedTime, pointsUsed);
+			return (ReturnType) interpolate(normalizedTime,pointsUsed);
 		}
-		
-		public Color interpolate(double time, double duration, int previousIndex, ColourPoint dataPoints[])
+		public <ReturnType,DataPointType extends TimePoint<ReturnType>> ReturnType interpolate(double x, List<DataPointType> y)
 		{
-			TimePoint timePoints[] = getPointsUsed(time, dataPoints,previousIndex);
-			ColourPoint pointsUsed[] = new ColourPoint[timePoints.length];
-			for(int i = 0; i < timePoints.length;i++)
+			DataPointType firstPoint = y.get(0);
+			double firstValues[] = firstPoint.getDoubleValues();
+			double interpolationStructure[][] = new double[firstValues.length][];
+			for(int q = 0; q < firstValues.length;q++)
 			{
-				pointsUsed[i] = (ColourPoint)timePoints[i];
-			}
-			double normalizedTime = getNormalizedTime(time,duration,pointsUsed);
-			return interpolate(normalizedTime, pointsUsed);
-		}
-		
-		public Point2D interpolate(double time, double duration, int previousIndex, Point2DPoint dataPoints[])
-		{
-			TimePoint timePoints[] = getPointsUsed(time, dataPoints,previousIndex);
-			Point2DPoint pointsUsed[] = new Point2DPoint[timePoints.length];
-			for(int i = 0; i < timePoints.length;i++)
+				interpolationStructure[q] = new double[y.size()];
+				interpolationStructure[q][0] = firstValues[q];
+			} 
+			for(int i = 1; i <y.size();i++)
 			{
-				pointsUsed[i] = (Point2DPoint)timePoints[i];
+				double values[] = y.get(i).getDoubleValues();
+				for(int q = 0;q < values.length;q++)
+					interpolationStructure[q][i] = values[q];
 			}
-			double normalizedTime = getNormalizedTime(time,duration,pointsUsed);
-			return interpolate(normalizedTime, pointsUsed);
-		}
-		/**
-		 * This method exists so that you do not have to specify how the interpolator
-		 * interpolates colors.
-		 * Note: It is recommended that you override this method for performance reasons.
-		 * @param time
-		 * The time that has elapsed since the start of the animation.
-		 * @param duration
-		 * Total duration of the animation
-		 * @param previousIndex
-		 * @param dataPoints
-		 * @return
-		 * An interpolated colour value.
-		 */
-		protected Color interpolate(double x, ColourPoint...y)
-		{
-			double rValues[] = new double[y.length];
-			double gValues[] = new double[y.length];
-			double bValues[] = new double[y.length];
-			for(int i = 0; i < y.length;i++)
+			double newValues[] = new double[firstValues.length];
+			for(int q = 0; q < firstValues.length;q++)
 			{
-				Color colour = y[i].getColour();
-				rValues[i] = colour.getRed();
-				gValues[i] = colour.getGreen();
-				bValues[i] = colour.getBlue();
+				newValues[q] = interpolate(x, interpolationStructure[q]);
 			}
-			double nR = Math.max(Math.min(interpolate(x,rValues),255),0);
-			double nG = Math.max(Math.min(interpolate(x,gValues),255),0);
-			double nB = Math.max(Math.min(interpolate(x,bValues),255),0);
-			return new Color((int)nR, (int)nG, (int) nB);
-		}
-		/*
-		protected Vector<T extends Number> interpolate(double x, Vector<? extends Number>...y)
-		{
-			double values[][] = new double[y.length][];
-			for(int i = 0 ; i < values.length;i++)
-			{
-				values[i] = new double[y[i].size()];
-				for(int q = 0; q < values[i].length;q++)
-				{
-					values[i][q] = y[i].elementAt(q);		
-				}
-			}
-		}*/
-		/**
-		 * This method exists so that you do not have to specify how the interpolator
-		 * interpolates 2D Points.
-		 * Note: It is recommended that you override this method for performance reasons.
-		 * @param time
-		 * The time that has elapsed since the start of the animation.
-		 * @param duration
-		 * Total duration of the animation
-		 * @param previousIndex
-		 * @param dataPoints
-		 * @return
-		 * An interpolated Point2D value.
-		 */
-		protected Point2D interpolate(double x, Point2DPoint...y)
-		{
-			double xValues[] = new double[y.length];
-			double yValues[] = new double[y.length];
-			for(int i = 0; i < y.length;i++)
-			{
-				Point2D point = y[i].getPoint();
-				xValues[i] = point.getX();
-				yValues[i] = point.getY();
-			}
-			double nX = interpolate(x,xValues);
-			double nY = interpolate(x,yValues);
-			return new Point2D.Double(nX, nY);
-		}
-		/**
-		 * This method exists so that you do not have to specify how the interpolator
-		 * interpolates double values.
-		 * Note: It is recommended that you override this method for performance reasons.
-		 * @param time
-		 * The time that has elapsed since the start of the animation.
-		 * @param duration
-		 * Total duration of the animation
-		 * @param previousIndex
-		 * @param dataPoints
-		 * @return
-		 * An interpolated d value.
-		 */
-		protected double interpolate(double x, DoublePoint...y)
-		{
-			double values[] = new double[y.length];
-			for(int i = 0; i < y.length;i++)
-			{
-				values[i] = y[i].getValue();
-			}
-			return interpolate(x,values);
+			return firstPoint.toDataValue(newValues);
 		}
 		/**
 		 * @param isCircularData
@@ -284,12 +205,12 @@ public abstract class Interpolator
 		 * will interpolate between the end and the end of the dataPoints array
 		 * (Creates an abrupt change when the animation restarts)
 		 */
-		public void setIsCircularData(boolean isCircularData)
+		public void setLoopType(LoopType loopType)
 		{
-			this.isCircularData = isCircularData;
+			this.loopType = loopType;
 		}
-		public boolean getIsCircularData()
+		public LoopType getLoopType()
 		{
-			return this.isCircularData;
+			return this.loopType;
 		}
 	}

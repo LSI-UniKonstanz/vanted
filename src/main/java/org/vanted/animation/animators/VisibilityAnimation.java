@@ -1,5 +1,7 @@
 package org.vanted.animation.animators;
 
+import java.util.List;
+
 import org.AttributeHelper;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.graph.GraphElement;
@@ -10,8 +12,7 @@ import org.vanted.animation.data.BooleanPoint;
  * @author - Patrick Shaw
  * 
  */
-public class VisibilityAnimation extends Animation{
-	BooleanPoint dataPoints[];
+public class VisibilityAnimation extends Animation<BooleanPoint>{
 	/**
 	 * 
 	 * @param attributable
@@ -20,18 +21,17 @@ public class VisibilityAnimation extends Animation{
 	 * True = Hidden
 	 * False = Visible
 	 */
-	public VisibilityAnimation(Attributable attributable, double duration, BooleanPoint dataPoints[]) {
-		super(attributable, duration);
-		this.dataPoints = dataPoints;
+	public VisibilityAnimation(Attributable attributable, double duration, List<BooleanPoint> dataPoints) {
+		super(attributable, duration,dataPoints);
 	}
 
 	@Override
 	public void animate(double time) {
 		int oldIndex = previousIndex;
-		recalcPreviousIndex(time, dataPoints);
+		recalcPreviousIndex(time);
 		if(oldIndex != previousIndex)
 		{
-			AttributeHelper.setHidden(dataPoints[previousIndex].getValue(), (GraphElement)attributable);
+			AttributeHelper.setHidden(dataPoints.get(previousIndex).getDataValue(), (GraphElement)attributable);
 		}
 	}
 	

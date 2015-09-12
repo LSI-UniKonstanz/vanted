@@ -27,7 +27,7 @@ import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 import org.vanted.animation.Animator;
-import org.vanted.animation.animators.PositionAnimation;
+import org.vanted.animation.animators.Position2DAnimation;
 import org.vanted.animation.data.Point2DPoint;
 import org.vanted.animation.interpolators.LinearInterpolator;
 
@@ -114,7 +114,7 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 							GraphHelper.issueCompleteRedrawForActiveView();
 						}
 					});
-					animator = new Animator(rdg,true);
+					animator = new Animator(rdg,1);
 				} catch (Exception e) {
 					ErrorMsg.addErrorMessage(e);
 				} catch (OutOfMemoryError e) {

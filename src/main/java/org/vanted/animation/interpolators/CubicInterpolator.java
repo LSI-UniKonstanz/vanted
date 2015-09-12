@@ -1,17 +1,25 @@
 package org.vanted.animation.interpolators;
-import java.awt.Color;
-import java.awt.geom.Point2D;
-
-import org.vanted.animation.data.TimePoint;
+import org.vanted.animation.LoopType;
 /**
  * 
  * @author - Patrick Shaw
  * 
  */
 public class CubicInterpolator extends Interpolator {
-	public CubicInterpolator(boolean isLooping)
+	public CubicInterpolator(LoopType loopType)
 	{
-		super(isLooping);
+		super(loopType);
+	}
+	
+	@Override
+	protected int getPointsBefore()
+	{
+		return 1;
+	}
+	@Override
+	protected int getPointsAfter()
+	{
+		return 2;
 	}
 	
 	@Override
@@ -23,16 +31,6 @@ public class CubicInterpolator extends Interpolator {
 		double a3 = y[1];
 		return (a0 * x * x2 + a1 * x2 + a2 *x + a3);
 	}
-
-	@Override
-	protected TimePoint[] getPointsUsed(double time, TimePoint[] dataPoints, int previousIndex) {
-		return getPointsUsed(time, dataPoints, previousIndex, 1, 2);
-	}
-
-	@Override
-	protected double getNormalizedTime(double time, double duration, TimePoint[] pointsUsed) {
-		return getNormalizedTime(time, duration, pointsUsed[1], pointsUsed[2]);
-	}
 	
 	@Override
 	public String toString()
@@ -40,3 +38,5 @@ public class CubicInterpolator extends Interpolator {
 		return "Cubic Interpolator";
 	}
 }
+
+
