@@ -46,6 +46,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NeedsSwingThread;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.fast_view.FastView;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffitiView;
 
 /**
  * The print algorithm.
@@ -54,8 +55,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.fast_view.FastView;
  * @version $Revision$
  */
 public class SVGAlgorithm
-					extends AbstractAlgorithm
-					implements NeedsSwingThread {
+		extends AbstractAlgorithm
+		implements NeedsSwingThread {
 	private static int border = 0;
 	private static String filename;
 	
@@ -98,7 +99,7 @@ public class SVGAlgorithm
 				Category.IMAGING
 				));
 	}
-
+	
 	@Override
 	public void setParameters(Parameter[] params) {
 		int idx = 0;
@@ -108,9 +109,9 @@ public class SVGAlgorithm
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new IntegerParameter(
-						border,
-						"Add image border (pixel)",
-						"<html>Adds free space to the right and lower border of the image.") };
+				border,
+				"Add image border (pixel)",
+				"<html>Adds free space to the right and lower border of the image.") };
 	}
 	
 	/**
@@ -145,6 +146,10 @@ public class SVGAlgorithm
 		
 		SVGGraphics2D svgGenerator = null;
 		Exception last = null;
+		
+		if (viewerComponent instanceof IPKGraffitiView)
+			((IPKGraffitiView) viewerComponent).printInProgress = true;
+		
 		for (int i = 1; i <= 5; i++) {
 			try {
 				svgGenerator = paintSVG(theView, viewerComponent);
@@ -155,6 +160,10 @@ public class SVGAlgorithm
 				e.printStackTrace();
 			}
 		}
+		
+		if (viewerComponent instanceof IPKGraffitiView)
+			((IPKGraffitiView) viewerComponent).printInProgress = false;
+		
 		if (svgGenerator == null) {
 			MainFrame.showMessageDialog("SVG file could not be created", "Error");
 			if (last != null)
@@ -216,7 +225,7 @@ public class SVGAlgorithm
 			
 			g2d.setClip(0, 0, r.width, r.height);
 			Point2D newDimP = g2d.getTransform().transform(
-								new Point2D.Double(r.getMaxX() + border, r.getMaxY() + border), null);
+					new Point2D.Double(r.getMaxX() + border, r.getMaxY() + border), null);
 			dim = new Vector2d(newDimP.getX(), newDimP.getY());
 		} else {
 			if (theView instanceof FastView) {
@@ -226,16 +235,16 @@ public class SVGAlgorithm
 				dim = new Vector2d(w, h);
 			} else {
 				dim = NodeTools.getMaximumXY(graph.getNodes(),
-									1.1,
-									-10,
-									-10, true);
+						1.1,
+						-10,
+						-10, true);
 			}
 		}
 		
 		svgGenerator.setSVGCanvasSize(new Dimension((int) dim.x, (int) dim.y));
 		
 		AbstractView view =
-							(AbstractView) MainFrame.getInstance().getActiveSession().getActiveView();
+				(AbstractView) MainFrame.getInstance().getActiveSession().getActiveView();
 		Container v = view.getParent();
 		Color backCol = v.getBackground();
 		if (backCol.getRGB() != -1) {

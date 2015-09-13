@@ -249,8 +249,19 @@ public class IPKGraffitiView
 		int curY = starty;
 		
 		g.setColor(Color.LIGHT_GRAY);
-		int zoomedwidth = (int) ((visibleRect.getX() + visibleRect.getWidth()) * 1 / getZoom().getScaleX());
-		int zoomedheight = (int) ((visibleRect.getY() + visibleRect.getHeight()) * 1 / getZoom().getScaleX());
+		int zoomedwidth;
+		int zoomedheight;
+		/*
+		 * if we print the document, we don't only want to print the grid for the
+		 * currently visible area but for the whole document
+		 */
+		if (printInProgress) {
+			zoomedwidth = getWidth();
+			zoomedheight = getHeight();
+		} else {
+			zoomedwidth = (int) ((visibleRect.getX() + visibleRect.getWidth()) * 1 / getZoom().getScaleX());
+			zoomedheight = (int) ((visibleRect.getY() + visibleRect.getHeight()) * 1 / getZoom().getScaleX());
+		}
 		logger.debug("zoomedwidth " + zoomedwidth + " zoomedheight " + zoomedheight);
 		while (curX < zoomedwidth) {
 			
@@ -290,8 +301,7 @@ public class IPKGraffitiView
 	private void setRenderingHints(Graphics g) {
 		if (printInProgress || (drawMode == DrawMode.NORMAL
 				&& getGraph().getNumberOfNodes() < MAX_NODES
-				&& getGraph().getNumberOfEdges() < MAX_EDGES )
-				) {
+				&& getGraph().getNumberOfEdges() < MAX_EDGES)) {
 			((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 			// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,

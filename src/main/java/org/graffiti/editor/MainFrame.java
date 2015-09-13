@@ -1476,7 +1476,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		}
 		
 		if (files.size() > 0)
-			loader.submit(new Runnable() {
+			new Thread(new Runnable() {
 				public void run() {
 					int i = 1;
 					StringBuilder errors = new StringBuilder();
@@ -1487,6 +1487,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 							Graph graph = null;
 							IOurl url = null;
 							if (file.exists()) {
+								System.out.println("Read file: " + file.getAbsolutePath());
 								logger.debug("Read file: " + file.getAbsolutePath());
 								final String fileName = file.getName();
 								showMessage("Loading graph file (" + fileName + ")... [" + i + "/" + files.size() + "]",
@@ -1512,7 +1513,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 							final String fileNameX = url != null ? url.getFileNameDecoded() : file.getAbsolutePath();
 							final Graph newGraph = graph;
 							System.out.println("Graph file processed: " + graph.getName());
-							SwingUtilities.invokeAndWait(new Runnable() {
+							SwingUtilities.invokeLater(new Runnable() {
 								public void run() {
 									showMessage("Graph file is loaded. Create view... (please wait)", MessageType.PERMANENT_INFO);
 									System.out.println("Create view for file: " + fileNameX);
@@ -1539,7 +1540,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					if (errcnt > 0)
 						showMessageDialogWithScrollBars(errors.toString(), "File(s) could not be loaded");
 				}
-			});
+			}).start();
 	}
 	
 	public void addNewRecentFileMenuItem(final File file) {
