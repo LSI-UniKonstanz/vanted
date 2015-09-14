@@ -299,7 +299,7 @@ public abstract class AbstractTab
 	}
 	
 	public void sessionChanged(Session s) {
-
+		
 		if (s != null && s.getGraph() != null) {
 			logger.debug("session changed sessionname: " + s.getGraph().getName());
 			if ("org.graffiti.plugins.inspectors.defaults.EdgeTab".equals(getClass().getName()))
@@ -380,6 +380,7 @@ public abstract class AbstractTab
 		
 		boolean allHave = true;
 		boolean allSameValue = true;
+		boolean allChildrenSameValue = true;
 		Collection<Attribute> attrs;
 		if (attr == null)
 			return null;
@@ -515,11 +516,21 @@ public abstract class AbstractTab
 				
 				treeNode.add(newNode);
 				
+				if (!((BooledAttribute) newNode.getUserObject()).getBool())
+					allChildrenSameValue = false;
+				
 				if (attribute.getPath().equals(markedPath)) {
 					returnTreeNode = newNode;
 				}
 			}
 		}
+		
+		/*
+		 * if the children have the same value, set the bool variable accordingly for the parent one
+		 * Important for component attributes, where the parent is a Map or collection which is compared as object not identical
+		 */
+		if (allChildrenSameValue)
+			((BooledAttribute) treeNode.getUserObject()).setBool(allChildrenSameValue);
 		
 		// if (attr.getPath().equals(markedPath)) {
 		// returnTreePath = new TreePath(treeNode.getPath());
