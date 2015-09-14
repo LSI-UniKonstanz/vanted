@@ -98,7 +98,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 	private static final String MESSAGE_END = "}}";
 	
 	private static String URL_UPDATE_BASESTRING = "https://immersive-analytics.infotech.monash.edu/vanted/release/updates/";
-	private static String URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "vanted-update";
+	private static String URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-update";
 	
 	private static final String DESTPATHUPDATEDIR = ReleaseInfo.getAppFolderWithFinalSep() + "update/";
 	private static final String DESTUPDATEFILE = DESTPATHUPDATEDIR + "do-vanted-update";
@@ -241,7 +241,9 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		try {
 			inputstreamURL = updateURL.openStream();
 		} catch (FileNotFoundException e1) {
-			System.out.println("no updates available");
+			if (Logger.getRootLogger().getLevel() == Level.DEBUG)
+				e1.printStackTrace();
+			System.out.println("update file not found at location: " + e1.getMessage());
 			return;
 		}
 		
@@ -505,7 +507,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 	public void updatePreferences(Preferences preferences) {
 		URL_UPDATE_BASESTRING = preferences.get("Update URL", URL_UPDATE_BASESTRING);
 		
-		URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "vanted-update";
+		URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-update";
 		
 	}
 	
