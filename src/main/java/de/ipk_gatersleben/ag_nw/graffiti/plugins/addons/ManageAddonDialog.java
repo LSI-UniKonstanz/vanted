@@ -169,269 +169,12 @@ public class ManageAddonDialog extends JDialog {
 			this.setMinimumSize(new java.awt.Dimension(700, 400));
 			this.setTitle("Add-on Manager");
 			
-			// setModal(true);
+			setModal(true);
 			// setAlwaysOnTop(true);
 			setLocationRelativeTo(MainFrame.getInstance());
 			
-			{
-				textContact = new JLabelHTMLlink("", "", null, true) {
-					private static final long serialVersionUID = 1L;
-					
-					@Override
-					public String getToolTipText() {
-						if (getText().length() > 0)
-							return super.getToolTipText();
-						else
-							return null;
-					}
-					
-					@Override
-					public Cursor getCursor() {
-						if (getText().length() > 0)
-							return super.getCursor();
-						else
-							return Cursor.getDefaultCursor();
-					}
-				};
-				
-				textContact.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-				textContact.setOpaque(true);
-				JComponent jc = TableLayout.getSplit(textContact, null, TableLayout.FILL, 0);
-				jc.setBorder(BorderFactory.createTitledBorder("Availability"));
-				getContentPane().add(jc, "8, 4, 9, 4");
-			}
-			{
-				textDescription = new JTextArea() {
-					private static final long serialVersionUID = 1L;
-					
-					@Override
-					public String getToolTipText() {
-						if (getText().length() > 0)
-							return super.getToolTipText();
-						else
-							return null;
-					}
-					
-					@Override
-					public Cursor getCursor() {
-						if (getText().length() > 0)
-							return super.getCursor();
-						else
-							return Cursor.getDefaultCursor();
-					}
-				};
-				// textDescription.setFont(new JLabel().getFont().deriveFont(Font.NORMAL));
-				// Font.NORMAL from package com.lowagie.text.Font
-				// needs itext-1.4.5.jar (size 1.9 MB!)
-				// here is the only place where this jar is used
-				// Font.PLAIN from package java.awt.Font gives the same result
-				textDescription.setFont(new JLabel().getFont().deriveFont(Font.PLAIN));
-				textDescription.setEditable(false);
-				textDescription.setLineWrap(true);
-				textDescription.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
-				textDescription.setWrapStyleWord(true);
-				textDescription.setBackground(null);
-				textDescription.setOpaque(false);
-				Cursor c = new Cursor(Cursor.HAND_CURSOR);
-				textDescription.setCursor(c);
-				textDescription.addMouseListener(new MouseListener() {
-					public void mouseClicked(MouseEvent e) {
-						// AttributeHelper.showInBrowser(urlLink);
-						if (currentDPE != null) {
-							boolean found = false;
-							for (PluginEntry pe : MainFrame.getInstance().getPluginManager().getPluginEntries()) {
-								if (pe.getDescription().getName().equals(currentDPE.getName())) {
-									MainFrame.showMessageDialog(
-											"<html>" + PluginInfoHelper.getPluginDescriptionTable(pe),
-											"Add-on features (" + currentDPE.getName() + ")");
-									found = true;
-									break;
-								}
-							}
-							if (!found) {
-								MainFrame.showMessageDialog(
-										"<html>Add-on is not loaded. Plugin-features can't be determined.",
-										"Information");
-							}
-						}
-					}
-					
-					public void mousePressed(MouseEvent e) {
-					}
-					
-					public void mouseReleased(MouseEvent e) {
-					}
-					
-					Color oldColor;
-					boolean oldOpaque;
-					
-					public void mouseEntered(MouseEvent e) {
-						if (textDescription.getText().length() <= 0)
-							return;
-						oldOpaque = textDescription.isOpaque();
-						textDescription.setOpaque(true);
-						oldColor = textDescription.getBackground();
-						textDescription.setBackground(new Color(240, 240, 255));
-					}
-					
-					public void mouseExited(MouseEvent e) {
-						textDescription.setOpaque(oldOpaque);
-						textDescription.setBackground(oldColor);
-					}
-				});
-				textDescription.setToolTipText("Show list of add-on features");
-				JComponent jc = TableLayout.getSplit(textDescription, null, TableLayout.FILL, 0);
-				jc.setOpaque(false);
-				jc.setBorder(BorderFactory.createTitledBorder("Description"));
-				getContentPane().add(jc, "8, 6, 9, 11");
-			}
-			{
-				textVersion = new JTextArea();
-				getContentPane().add(textVersion, "8, 12, 9, 15");
-				textVersion.setBackground(this.getBackground());
-				textVersion.setEditable(false);
-				textVersion.setBorder(BorderFactory.createTitledBorder("Compatibility"));
-				textVersion.setOpaque(false);
-			}
-			{
-				tableaddons = new JTable(new AddonTableModel());
-				tableaddons.setOpaque(false);
-				tableaddons.setGridColor(new Color(230, 230, 230));
-				tableaddons.setRowHeight(35);
-				tableaddons.getTableHeader().setReorderingAllowed(false);
-				tableaddons.getColumn("Active").setMaxWidth(50);
-				tableaddons.getColumn("Active").setMinWidth(50);
-				tableaddons.getColumn("").setMaxWidth(35);
-				tableaddons.getColumn("").setMinWidth(35);
-				tableaddons.getModel().addTableModelListener(new TableModelListener() {
-					public void tableChanged(TableModelEvent e) {
-						if (tableaddons.getSelectedColumn() == checkcolumn) {
-							BackgroundTaskHelper.executeLaterOnSwingTask(10, new Runnable() {
-								public void run() {
-									if (!AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow()).isActive()) {
-										if (AddonManagerPlugin.getInstance().activateAddon(tableaddons.getSelectedRow()))
-											setTopText("<html><b>Add-on \"" + AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow()).getName()
-													+ "\" is active");
-										else
-											setTopText("<html><b>Add-on \"" + AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow()).getName()
-													+ "\" is not activated");
-									} else {
-										AddonManagerPlugin.getInstance().deactivateAddon(tableaddons.getSelectedRow());
-										setTopText("<html><b>Deactivation of Add-on \""
-												+ AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow()).getName() + "\" needs restart");
-									}
-								}
-							});
-							// tableaddons.repaint();
-						}
-					}
-				});
-				tableaddons.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				// tableaddons.setR AutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-				tableaddons.setPreferredSize(new java.awt.Dimension(228, 190));
-				tableaddons.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-					public void valueChanged(ListSelectionEvent e) {
-						if (e.getValueIsAdjusting() == false) {
-							// textAuthor.setText(addons.getDescription(tableaddons.getSelectedRow()).getAuthor());
-							Addon a = AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow());
-							textContact.setText("<html><code>" + a.getDescription().getAvailable());
-							textContact.setUrl(a.getDescription().getAvailable());
-							currentDPE = a.getDescription();
-							textDescription.setText(
-									pretifyAddonDesc(
-									AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow()).getDescription().getDescription()
-									)
-									);
-							String vvv = a.getDescription().getCompatibleVersion();
-							if (vvv == null || vvv.equalsIgnoreCase("null"))
-								vvv = "";
-							String mmm;
-							
-							if (vvv == null || vvv.length() == 0)
-								textVersion.setText(" No compatiblity information specified");
-							else {
-								if (vvv.contains(","))
-									mmm = "s ";
-								else
-									mmm = " ";
-								
-								textVersion.setText(" " + DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT + " Version" + mmm + vvv);
-							}
-							
-						}
-					}
-					
-					private String pretifyAddonDesc(String d) {
-						if (d == null || d.trim().length() <= 0)
-							return "- no plugin description defined -";
-						d = StringManipulationTools.stringReplace(d, "\n", "");
-						d = StringManipulationTools.stringReplace(d, "\t", "");
-						return d;
-					}
-				});
-				if (tableaddons.getRowCount() > 0)
-					tableaddons.getSelectionModel().setSelectionInterval(0, 0);
-				
-				tableaddons.addMouseListener(new MouseListener() {
-					public void mouseReleased(MouseEvent e) {
-						Point p = e.getPoint();
-						int rowNumber = tableaddons.rowAtPoint(p);
-						tableaddons.getSelectionModel().setSelectionInterval(rowNumber, rowNumber);
-						
-						if (tableaddons.getSelectedRow() > -1 && (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
-							final Addon addon = AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow());
-							final boolean wasActive = addon.isActive();
-							JPopupMenu menu = new JPopupMenu();
-							JMenuItem item = new JMenuItem("Uninstall " + addon.getDescription().getName());
-							item.addActionListener(new ActionListener() {
-								public void actionPerformed(ActionEvent arg0) {
-									try {
-										AddonManagerPlugin.getInstance().removeAddon(addon.getJarFile());
-										
-										String msg = "<html><b>\"" + addon.getDescription().getName() + "\" has been uninstalled." +
-												(wasActive ? "<br>Deactivation requires restart of the program." : "");
-										if (AttributeHelper.windowsRunning())
-											msg = "<html><b>\""
-													+ addon.getDescription().getName()
-													+ "\" has been marked for removal."
-													+
-													(wasActive ? "<br>Deactivation and complete uninstallation requires restart of the program."
-															: "Completion of the deinstallation requires restart of the program.");
-										
-										rebuild(msg, false);
-									} catch (Exception e) {
-										ErrorMsg.addErrorMessage(e);
-									}
-								}
-							});
-							menu.add(item);
-							menu.show(tableaddons, e.getX(), e.getY());
-						}
-					}
-					
-					public void mousePressed(MouseEvent e) {
-					}
-					
-					public void mouseExited(MouseEvent e) {
-					}
-					
-					public void mouseEntered(MouseEvent e) {
-					}
-					
-					public void mouseClicked(MouseEvent e) {
-					}
-					
-				});
-				
-				JComponent ttt = TableLayout.getSplitVertical(
-						tableaddons.getTableHeader(),
-						tableaddons,
-						TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
-				ttt.setBorder(BorderFactory.createEtchedBorder());
-				getContentPane().add(
-						ttt
-						, "1, 4, 6, 15");
-			}
+			initAddonTable();
+			
 			{
 				buttoninstall = new JButton();
 				buttoninstall.setText("Install Add-on");
@@ -483,7 +226,7 @@ public class ManageAddonDialog extends JDialog {
 				buttondownload.setOpaque(false);
 				buttondownload.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						setModal(false);
+//						setModal(false);
 //						close();
 						buttondownload.setEnabled(false);
 						
@@ -524,7 +267,8 @@ public class ManageAddonDialog extends JDialog {
 													"Currently, there is no new or additional " +
 													"Add-on available for direct download."));
 								}
-								MyInputHelper.getInput("[OK]", "Direct Add-on Download", res.toArray());
+								Object[] input = MyInputHelper.getInput("[OK]", "Direct Add-on Download", res.toArray());
+								initAddonTable();
 							}
 							
 							private SearchFilter getSearchFilter() {
@@ -598,6 +342,271 @@ public class ManageAddonDialog extends JDialog {
 		validate();
 		pack();
 		return buttoninstall;
+	}
+	
+	/**
+	 * 
+	 */
+	private void initAddonTable() {
+		{
+			textContact = new JLabelHTMLlink("", "", null, true) {
+				private static final long serialVersionUID = 1L;
+				
+				@Override
+				public String getToolTipText() {
+					if (getText().length() > 0)
+						return super.getToolTipText();
+					else
+						return null;
+				}
+				
+				@Override
+				public Cursor getCursor() {
+					if (getText().length() > 0)
+						return super.getCursor();
+					else
+						return Cursor.getDefaultCursor();
+				}
+			};
+			
+			textContact.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+			textContact.setOpaque(true);
+			JComponent jc = TableLayout.getSplit(textContact, null, TableLayout.FILL, 0);
+			jc.setBorder(BorderFactory.createTitledBorder("Availability"));
+			getContentPane().add(jc, "8, 4, 9, 4");
+		}
+		{
+			textDescription = new JTextArea() {
+				private static final long serialVersionUID = 1L;
+				
+				@Override
+				public String getToolTipText() {
+					if (getText().length() > 0)
+						return super.getToolTipText();
+					else
+						return null;
+				}
+				
+				@Override
+				public Cursor getCursor() {
+					if (getText().length() > 0)
+						return super.getCursor();
+					else
+						return Cursor.getDefaultCursor();
+				}
+			};
+			// textDescription.setFont(new JLabel().getFont().deriveFont(Font.NORMAL));
+			// Font.NORMAL from package com.lowagie.text.Font
+			// needs itext-1.4.5.jar (size 1.9 MB!)
+			// here is the only place where this jar is used
+			// Font.PLAIN from package java.awt.Font gives the same result
+			textDescription.setFont(new JLabel().getFont().deriveFont(Font.PLAIN));
+			textDescription.setEditable(false);
+			textDescription.setLineWrap(true);
+			textDescription.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
+			textDescription.setWrapStyleWord(true);
+			textDescription.setBackground(null);
+			textDescription.setOpaque(false);
+			Cursor c = new Cursor(Cursor.HAND_CURSOR);
+			textDescription.setCursor(c);
+			textDescription.addMouseListener(new MouseListener() {
+				public void mouseClicked(MouseEvent e) {
+					// AttributeHelper.showInBrowser(urlLink);
+					if (currentDPE != null) {
+						boolean found = false;
+						for (PluginEntry pe : MainFrame.getInstance().getPluginManager().getPluginEntries()) {
+							if (pe.getDescription().getName().equals(currentDPE.getName())) {
+								MainFrame.showMessageDialog(
+										"<html>" + PluginInfoHelper.getPluginDescriptionTable(pe),
+										"Add-on features (" + currentDPE.getName() + ")");
+								found = true;
+								break;
+							}
+						}
+						if (!found) {
+							MainFrame.showMessageDialog(
+									"<html>Add-on is not loaded. Plugin-features can't be determined.",
+									"Information");
+						}
+					}
+				}
+				
+				public void mousePressed(MouseEvent e) {
+				}
+				
+				public void mouseReleased(MouseEvent e) {
+				}
+				
+				Color oldColor;
+				boolean oldOpaque;
+				
+				public void mouseEntered(MouseEvent e) {
+					if (textDescription.getText().length() <= 0)
+						return;
+					oldOpaque = textDescription.isOpaque();
+					textDescription.setOpaque(true);
+					oldColor = textDescription.getBackground();
+					textDescription.setBackground(new Color(240, 240, 255));
+				}
+				
+				public void mouseExited(MouseEvent e) {
+					textDescription.setOpaque(oldOpaque);
+					textDescription.setBackground(oldColor);
+				}
+			});
+			textDescription.setToolTipText("Show list of add-on features");
+			JComponent jc = TableLayout.getSplit(textDescription, null, TableLayout.FILL, 0);
+			jc.setOpaque(false);
+			jc.setBorder(BorderFactory.createTitledBorder("Description"));
+			getContentPane().add(jc, "8, 6, 9, 11");
+		}
+		{
+			textVersion = new JTextArea();
+			getContentPane().add(textVersion, "8, 12, 9, 15");
+			textVersion.setBackground(this.getBackground());
+			textVersion.setEditable(false);
+			textVersion.setBorder(BorderFactory.createTitledBorder("Compatibility"));
+			textVersion.setOpaque(false);
+		}
+		{
+			tableaddons = new JTable(new AddonTableModel());
+			tableaddons.setOpaque(false);
+			tableaddons.setGridColor(new Color(230, 230, 230));
+			tableaddons.setRowHeight(35);
+			tableaddons.getTableHeader().setReorderingAllowed(false);
+			tableaddons.getColumn("Active").setMaxWidth(50);
+			tableaddons.getColumn("Active").setMinWidth(50);
+			tableaddons.getColumn("").setMaxWidth(35);
+			tableaddons.getColumn("").setMinWidth(35);
+			tableaddons.getModel().addTableModelListener(new TableModelListener() {
+				public void tableChanged(TableModelEvent e) {
+					if (tableaddons.getSelectedColumn() == checkcolumn) {
+						BackgroundTaskHelper.executeLaterOnSwingTask(10, new Runnable() {
+							public void run() {
+								if (!AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow()).isActive()) {
+									if (AddonManagerPlugin.getInstance().activateAddon(tableaddons.getSelectedRow()))
+										setTopText("<html><b>Add-on \"" + AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow()).getName()
+												+ "\" is active");
+									else
+										setTopText("<html><b>Add-on \"" + AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow()).getName()
+												+ "\" is not activated");
+								} else {
+									AddonManagerPlugin.getInstance().deactivateAddon(tableaddons.getSelectedRow());
+									setTopText("<html><b>Deactivation of Add-on \""
+											+ AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow()).getName() + "\" needs restart");
+								}
+							}
+						});
+						// tableaddons.repaint();
+					}
+				}
+			});
+			tableaddons.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			// tableaddons.setR AutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+			tableaddons.setPreferredSize(new java.awt.Dimension(228, 190));
+			tableaddons.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+				public void valueChanged(ListSelectionEvent e) {
+					if (e.getValueIsAdjusting() == false) {
+						// textAuthor.setText(addons.getDescription(tableaddons.getSelectedRow()).getAuthor());
+						Addon a = AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow());
+						textContact.setText("<html><code>" + a.getDescription().getAvailable());
+						textContact.setUrl(a.getDescription().getAvailable());
+						currentDPE = a.getDescription();
+						textDescription.setText(
+								pretifyAddonDesc(
+								AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow()).getDescription().getDescription()
+								)
+								);
+						String vvv = a.getDescription().getCompatibleVersion();
+						if (vvv == null || vvv.equalsIgnoreCase("null"))
+							vvv = "";
+						String mmm;
+						
+						if (vvv == null || vvv.length() == 0)
+							textVersion.setText(" No compatiblity information specified");
+						else {
+							if (vvv.contains(","))
+								mmm = "s ";
+							else
+								mmm = " ";
+							
+							textVersion.setText(" " + DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT + " Version" + mmm + vvv);
+						}
+						
+					}
+				}
+				
+				private String pretifyAddonDesc(String d) {
+					if (d == null || d.trim().length() <= 0)
+						return "- no plugin description defined -";
+					d = StringManipulationTools.stringReplace(d, "\n", "");
+					d = StringManipulationTools.stringReplace(d, "\t", "");
+					return d;
+				}
+			});
+			if (tableaddons.getRowCount() > 0)
+				tableaddons.getSelectionModel().setSelectionInterval(0, 0);
+			
+			tableaddons.addMouseListener(new MouseListener() {
+				public void mouseReleased(MouseEvent e) {
+					Point p = e.getPoint();
+					int rowNumber = tableaddons.rowAtPoint(p);
+					tableaddons.getSelectionModel().setSelectionInterval(rowNumber, rowNumber);
+					
+					if (tableaddons.getSelectedRow() > -1 && (e.isPopupTrigger() || e.getButton() == MouseEvent.BUTTON3)) {
+						final Addon addon = AddonManagerPlugin.getInstance().getAddon(tableaddons.getSelectedRow());
+						final boolean wasActive = addon.isActive();
+						JPopupMenu menu = new JPopupMenu();
+						JMenuItem item = new JMenuItem("Uninstall " + addon.getDescription().getName());
+						item.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								try {
+									AddonManagerPlugin.getInstance().removeAddon(addon.getJarFile());
+									
+									String msg = "<html><b>\"" + addon.getDescription().getName() + "\" has been uninstalled." +
+											(wasActive ? "<br>Deactivation requires restart of the program." : "");
+									if (AttributeHelper.windowsRunning())
+										msg = "<html><b>\""
+												+ addon.getDescription().getName()
+												+ "\" has been marked for removal."
+												+
+												(wasActive ? "<br>Deactivation and complete uninstallation requires restart of the program."
+														: "Completion of the deinstallation requires restart of the program.");
+									
+									rebuild(msg, false);
+								} catch (Exception e) {
+									ErrorMsg.addErrorMessage(e);
+								}
+							}
+						});
+						menu.add(item);
+						menu.show(tableaddons, e.getX(), e.getY());
+					}
+				}
+				
+				public void mousePressed(MouseEvent e) {
+				}
+				
+				public void mouseExited(MouseEvent e) {
+				}
+				
+				public void mouseEntered(MouseEvent e) {
+				}
+				
+				public void mouseClicked(MouseEvent e) {
+				}
+				
+			});
+			
+			JComponent ttt = TableLayout.getSplitVertical(
+					tableaddons.getTableHeader(),
+					tableaddons,
+					TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
+			ttt.setBorder(BorderFactory.createEtchedBorder());
+			getContentPane().add(
+					ttt
+					, "1, 4, 6, 15");
+		}
 	}
 	
 	private void addKeys() {
