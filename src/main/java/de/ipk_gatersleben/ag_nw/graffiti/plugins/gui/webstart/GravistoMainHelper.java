@@ -32,7 +32,6 @@ import net.iharder.dnd.FileDrop;
 import org.ApplicationStatus;
 import org.AttributeHelper;
 import org.ErrorMsg;
-import org.FeatureSet;
 import org.HelperClass;
 import org.ReleaseInfo;
 import org.StringManipulationTools;
@@ -54,7 +53,6 @@ import org.graffiti.util.PluginHelper;
 import org.graffiti.util.ProgressViewer;
 
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.addons.AddonManagerPlugin;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.BSHinfo;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.BSHscriptMenuEntry;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.DefaultContextMenuManager;
@@ -509,37 +507,35 @@ public class GravistoMainHelper implements HelperClass {
 			}
 			
 		} else {
-			final String lastVersion = ReleaseInfo
-					.getOldVersionIfAppHasBeenUpdated(DBEgravistoHelper.DBE_GRAVISTO_VERSION);
-			if (lastVersion != null) {
-				Runnable r = new Runnable() {
-					public void run() {
-						try {
-							Thread.sleep(2000);
-						} catch (InterruptedException e) {
-							ErrorMsg.addErrorMessage(e);
-						}
-						SwingUtilities.invokeLater(new Runnable() {
-							public void run() {
-								if (!ReleaseInfo.getIsAllowedFeature(FeatureSet.ADDON_LOADING))
-									return;
-								if (AddonManagerPlugin.getInstance() == null
-										|| AddonManagerPlugin.getInstance().getAddons().size() <= 0) // &&
-									// AddonManagerPlugin.getInstance().getDeactivatedAddons().size()<=0)
-									JOptionPane.showMessageDialog(mainFrame, "<html>" + "<h3>Application has been updated!</h3>"
-											+ "Previous installation of " + lastVersion + " is replaced by "
-											+ DBEgravistoHelper.DBE_GRAVISTO_VERSION + ".<br><br>"
-											, "Information",
-											JOptionPane.INFORMATION_MESSAGE);
-							}
-						});
-					}
-					
-				};
-				Thread tt = new Thread(r);
-				tt.setName("Ask for database download");
-				tt.start();
-			}
+//			final String lastVersion = ReleaseInfo
+//					.getOldVersionIfAppHasBeenUpdated(DBEgravistoHelper.DBE_GRAVISTO_VERSION);
+//			if (lastVersion != null) {
+//				Runnable r = new Runnable() {
+//					public void run() {
+//						try {
+//							Thread.sleep(2000);
+//						} catch (InterruptedException e) {
+//							ErrorMsg.addErrorMessage(e);
+//						}
+//						SwingUtilities.invokeLater(new Runnable() {
+//							public void run() {
+//								if (AddonManagerPlugin.getInstance() == null
+//										|| AddonManagerPlugin.getInstance().getAddons().size() <= 0) // &&
+// 									AddonManagerPlugin.getInstance().getDeactivatedAddons().size()<=0)
+//									JOptionPane.showMessageDialog(mainFrame, "<html>" + "<h3>Application has been updated!</h3>"
+//											+ "Previous installation of " + lastVersion + " is replaced by "
+//											+ DBEgravistoHelper.DBE_GRAVISTO_VERSION + ".<br><br>"
+//											, "Information",
+//											JOptionPane.INFORMATION_MESSAGE);
+//							}
+//						});
+//					}
+//					
+//				};
+//				Thread tt = new Thread(r);
+//				tt.setName("Ask for database download");
+//				tt.start();
+//			}
 		}
 		
 		return mainFrame;
