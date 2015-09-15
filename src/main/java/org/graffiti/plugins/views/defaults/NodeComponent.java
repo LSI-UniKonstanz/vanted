@@ -124,11 +124,19 @@ public class NodeComponent
 								// evtl nur einzelne Kanten updaten?
 								// this.updateDependentComponents();
 							} else
-								if ((id.equals(LINEMODE) || id.equals(FRAMECOLOR) ||
-										id.equals(FILLCOLOR) || id.equals(ROUNDING) || id.equals(SHAPE) || id.equals(GRAPHICS))) {
-									createNewShape(coordinateSystem);
+								if (id.equals(LINEMODE)) {
+									updateStroke();
 									adjustComponentSize();
-								}
+									
+								} else
+									if (id.equals(FRAMECOLOR) || id.equals(FILLCOLOR)) {
+										
+										adjustComponentSize();
+									} else
+										if (id.equals(ROUNDING) || id.equals(SHAPE) || id.equals(GRAPHICS)) {
+											createNewShape(coordinateSystem);
+											adjustComponentSize();
+										}
 			
 			// update attribute components like labels:
 			for (GraffitiViewComponent gvc : attributeComponents.values()) {
@@ -178,17 +186,17 @@ public class NodeComponent
 		
 		// outline
 		// Stroke backupStroke = drawArea.getStroke();
-		float frameThickness = (float) nodeAttr.getFrameThickness();
-		if (frameThickness > 0) {
-			lastStrokeWidth = frameThickness;
-			stroke = new BasicStroke(lastStrokeWidth,
-					DEFAULT_CAP_R, DEFAULT_JOIN, DEFAULT_MITER,
-					nodeAttr.getLineMode().getDashArray(),
-					nodeAttr.getLineMode().getDashPhase());
-			if (getViewDrawMode() == DrawMode.NORMAL) {
-				drawArea.setStroke(stroke);
-			}
-		}
+//		float frameThickness = (float) nodeAttr.getFrameThickness();
+//		if (frameThickness > 0) {
+//			lastStrokeWidth = frameThickness;
+//			stroke = new BasicStroke(lastStrokeWidth,
+//					DEFAULT_CAP_R, DEFAULT_JOIN, DEFAULT_MITER,
+//					nodeAttr.getLineMode().getDashArray(),
+//					nodeAttr.getLineMode().getDashPhase());
+//			if (getViewDrawMode() == DrawMode.NORMAL) {
+		drawArea.setStroke(stroke);
+//			}
+//		}
 		
 		// draw background image
 		// fill the shape
@@ -315,12 +323,18 @@ public class NodeComponent
 				} else
 					rgp = null;
 		
+		updateStroke();
+	}
+	
+	private void updateStroke() {
 		float frameThickness = (float) nodeAttr.getFrameThickness();
-		lastStrokeWidth = frameThickness;
-		stroke = new BasicStroke(lastStrokeWidth,
-				DEFAULT_CAP_R, DEFAULT_JOIN, DEFAULT_MITER,
-				nodeAttr.getLineMode().getDashArray(),
-				nodeAttr.getLineMode().getDashPhase());
+		if (frameThickness > 0) {
+			lastStrokeWidth = frameThickness;
+			stroke = new BasicStroke(lastStrokeWidth,
+					DEFAULT_CAP_R, DEFAULT_JOIN, DEFAULT_MITER,
+					nodeAttr.getLineMode().getDashArray(),
+					nodeAttr.getLineMode().getDashPhase());
+		}
 	}
 	
 	/**

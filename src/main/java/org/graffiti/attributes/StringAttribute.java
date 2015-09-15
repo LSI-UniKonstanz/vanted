@@ -20,7 +20,7 @@ import org.graffiti.event.AttributeEvent;
  * @version $Revision: 1.8 $
  */
 public class StringAttribute
-					extends AbstractAttribute {
+		extends AbstractAttribute {
 	// ~ Instance fields ========================================================
 	
 	/** The value of this <code>StringAttribute</code>. */
@@ -112,6 +112,8 @@ public class StringAttribute
 	 */
 	public void setString(String value) {
 		// assert value != null;
+		if (this.value != null && this.value.equals(value))
+			return;
 		
 		AttributeEvent ae = new AttributeEvent(this);
 		callPreAttributeChanged(ae);
@@ -176,7 +178,7 @@ public class StringAttribute
 	 */
 	@Override
 	protected void doSetValue(Object o)
-						throws IllegalArgumentException {
+			throws IllegalArgumentException {
 		assert o != null;
 		
 		try {

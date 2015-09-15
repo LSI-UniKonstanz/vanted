@@ -7,8 +7,6 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.chart_colors;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -66,11 +64,7 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 		};
 		guiComp.setRenderer(new LineModeCellRenderer());
 		guiComp.setOpaque(false);
-		guiComp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				changed = true;
-			}
-		});
+		
 	}
 	
 	private LineModeSetting[] getLineModes() {
@@ -112,6 +106,20 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 	
 	public void setValue() {
 		LineModeAttribute lma = (LineModeAttribute) getDisplayable();
+		// check, if attribute value is different from this selected linemodeentry
+		// before firing costly transaction changes
+		float[] attrDashArray = lma.getDashArray();
+		float[] currentDashArray = getCurrentDashArray();
+		changed = false;
+		if (attrDashArray != null && currentDashArray != null && attrDashArray.length == currentDashArray.length) {
+			for (int i = 0; i < attrDashArray.length; i++)
+				if (attrDashArray[i] != currentDashArray[i])
+					changed = true;
+		}
+		else {
+			changed = true;
+		}
+		
 		if (changed && getActiveLineMode() != null && !getActiveLineMode().isEmptyValue()) {
 			lma.setDashArray(getCurrentDashArray());
 			lma.setValue(lma.getValue());
