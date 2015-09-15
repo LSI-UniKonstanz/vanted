@@ -110,15 +110,25 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 		// before firing costly transaction changes
 		float[] attrDashArray = lma.getDashArray();
 		float[] currentDashArray = getCurrentDashArray();
+		
+		// catch the case, where multiple edges/nodes are selected with different 
+		// linemodes and it wasn't changed 
+		// the special listitem '~' returns null and means the user didn't change it
 		changed = false;
-		if (attrDashArray != null && currentDashArray != null && attrDashArray.length == currentDashArray.length) {
-			for (int i = 0; i < attrDashArray.length; i++)
-				if (attrDashArray[i] != currentDashArray[i])
+		if (currentDashArray == null && attrDashArray == null) {
+			changed = false;
+		} else
+			if (currentDashArray == null && attrDashArray != null) {
+				changed = true;
+			} else
+				if (attrDashArray != null && currentDashArray != null && attrDashArray.length == currentDashArray.length) {
+					for (int i = 0; i < attrDashArray.length; i++)
+						if (attrDashArray[i] != currentDashArray[i])
+							changed = true;
+				}
+				else {
 					changed = true;
-		}
-		else {
-			changed = true;
-		}
+				}
 		
 		if (changed && getActiveLineMode() != null && !getActiveLineMode().isEmptyValue()) {
 			lma.setDashArray(getCurrentDashArray());
@@ -134,6 +144,8 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 	}
 	
 	private float[] getCurrentDashArray() {
+		if (getActiveLineMode() == null)
+			return null;
 		return getActiveLineMode().getDashArray();
 	}
 }

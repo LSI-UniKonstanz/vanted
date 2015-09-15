@@ -28,7 +28,6 @@ import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.ColorAttribute;
-import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.graphics.NodeGraphicAttribute;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiViewComponent;
@@ -104,39 +103,14 @@ public class NodeComponent
 			throws ShapeNotFoundException {
 		if (attr != null) {
 			String id = attr.getId();
-			if (id.equals(COORDINATE)) {
-				this.adjustComponentSize();
+			if (id.equals(ROUNDING) || id.equals(SHAPE) || id.equals(GRAPHICS) || id.equals(GRADIENT)) {
+				createNewShape(coordinateSystem);
 			} else
-				if (id.equals(FRAMETHICKNESS)) {
-					this.adjustComponentSize();
-				} else
-					if (attr.getPath().startsWith(Attribute.SEPARATOR + GRAPHICS +
-							Attribute.SEPARATOR + COORDINATE)) {
-						adjustComponentSize();
-					} else
-						if (id.equals(DIMENSION) || id.equals(GraphicAttributeConstants.HEIGHT) || id.equals(GraphicAttributeConstants.WIDTH)) {
-							((NodeShape) this.shape).buildShape(
-									(NodeGraphicAttribute) attr.getAttributable().getAttribute(GRAPHICS));
-							this.adjustComponentSize();
-						} else
-							if (attr.getPath().startsWith(GRAPHICS + Attribute.SEPARATOR + PORTS)) {
-								// ??? TODO (are ports diplayed? ???
-								// evtl nur einzelne Kanten updaten?
-								// this.updateDependentComponents();
-							} else
-								if (id.equals(LINEMODE)) {
-									updateStroke();
-									adjustComponentSize();
-									
-								} else
-									if (id.equals(FRAMECOLOR) || id.equals(FILLCOLOR)) {
-										
-										adjustComponentSize();
-									} else
-										if (id.equals(ROUNDING) || id.equals(SHAPE) || id.equals(GRAPHICS)) {
-											createNewShape(coordinateSystem);
-											adjustComponentSize();
-										}
+				if (id.equals(LINEMODE)) {
+					updateStroke();
+					
+				}
+			adjustComponentSize();
 			
 			// update attribute components like labels:
 			for (GraffitiViewComponent gvc : attributeComponents.values()) {
