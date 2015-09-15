@@ -22,7 +22,7 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
  *         (c) 2004 IPK-Gatersleben
  */
 public class LineModeAttributeEditor extends AbstractValueEditComponent {
-	private JComboBox guiComp;
+	private JComboBox<LineModeSetting> guiComp;
 	
 	private boolean changed = false;
 	
@@ -35,19 +35,19 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 	
 	private LineModeSetting[] getPossibleLineModes() {
 		return new LineModeSetting[] {
-							null,
-							new LineModeSetting(0, 0),
-							new LineModeSetting(5, 5),
-							new LineModeSetting(10, 10),
-							new LineModeSetting(20, 20),
-							new LineModeSetting(10, 5),
-							new LineModeSetting(5, 10),
-							new LineModeSetting(20, 10),
-							new LineModeSetting(10, 20) };
+				null,
+				new LineModeSetting(0, 0),
+				new LineModeSetting(5, 5),
+				new LineModeSetting(10, 10),
+				new LineModeSetting(20, 20),
+				new LineModeSetting(10, 5),
+				new LineModeSetting(5, 10),
+				new LineModeSetting(20, 10),
+				new LineModeSetting(10, 20) };
 	}
 	
 	private void setGUI(LineModeAttribute lma, boolean showEmpty) {
-		guiComp = new JComboBox(getLineModes()) {
+		guiComp = new JComboBox<LineModeSetting>(getLineModes()) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
@@ -64,7 +64,6 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 				return res;
 			}
 		};
-		
 		guiComp.setRenderer(new LineModeCellRenderer());
 		guiComp.setOpaque(false);
 		guiComp.addActionListener(new ActionListener() {
@@ -74,7 +73,7 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 		});
 	}
 	
-	private Object[] getLineModes() {
+	private LineModeSetting[] getLineModes() {
 		return knownLineModes;
 	}
 	
@@ -88,7 +87,7 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 		if (matching != null)
 			guiComp.setSelectedItem(matching);
 		else
-			guiComp.setSelectedIndex(0);
+			guiComp.setSelectedIndex(1);
 	}
 	
 	private LineModeSetting getMatchingLineMode(LineModeAttribute lma) {
@@ -115,6 +114,7 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 		LineModeAttribute lma = (LineModeAttribute) getDisplayable();
 		if (changed && getActiveLineMode() != null && !getActiveLineMode().isEmptyValue()) {
 			lma.setDashArray(getCurrentDashArray());
+			lma.setValue(lma.getValue());
 		}
 	}
 	

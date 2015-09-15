@@ -419,9 +419,7 @@ public abstract class AbstractTab
 					if (allHave) {
 						newNode = new DefaultMutableTreeNode(new BooledAttribute(attr, allSameValue));
 						
-						// treeNode.add(newNode);
 						if (attr.getPath().equals(markedPath)) {
-							// returnTreePath = new TreePath(newNode.getPath());
 							returnTreeNode = newNode;
 						}
 					}
@@ -438,10 +436,9 @@ public abstract class AbstractTab
 				
 				// check if present in all graph elements
 				if (graphElements.size() > 1) {
-					for (Iterator<? extends Attributable> geit = graphElements.iterator(); geit.hasNext();) {
+					for (Attributable geit : graphElements) {
 						try {
-							Attribute oAttr = ((Attributable) geit.next())
-									.getAttribute(attribute.getPath().substring(1));
+							Attribute oAttr = geit.getAttribute(attribute.getPath().substring(1));
 							
 							if (!attributeValue.equals(oAttr.getValue())) {
 								allSameValue = false;
@@ -453,6 +450,7 @@ public abstract class AbstractTab
 							allHave = false;
 							
 							break;
+							
 						}
 					}
 				}
@@ -461,10 +459,6 @@ public abstract class AbstractTab
 					newNode = new DefaultMutableTreeNode(new BooledAttribute(attribute,
 							allSameValue));
 					
-					// treeNode.add(newNode);
-					// if (attribute.getPath().equals(markedPath)) {
-					// returnTreePath = new TreePath(newNode.getPath());
-					// }
 				}
 				
 				return returnTreeNode;
@@ -494,10 +488,12 @@ public abstract class AbstractTab
 					} catch (AttributeNotFoundException anfe) {
 						// found graph element that has no such attribute
 						allHave = false;
+						allChildrenSameValue = false;
 						break;
 					} catch (NullPointerException e) {
 						// found graph element that has no such attribute
 						allHave = false;
+						allChildrenSameValue = false;
 						break;
 					}
 				}

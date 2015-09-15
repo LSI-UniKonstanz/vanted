@@ -112,7 +112,9 @@ public class GradientFillAttributeEditor extends AbstractValueEditComponent {
 			if (selitem.equals(EMPTY_STRING))
 				return;
 			double value = getAttributeValue((NodeGradientModes) selitem, ((Double) spinner.getValue()));
-			((Attribute) getDisplayable()).setValue(value);
+			double attrValue = (double) ((Attribute) getDisplayable()).getValue();
+			if (Math.abs(attrValue - value) > Double.MIN_NORMAL)
+				((Attribute) getDisplayable()).setValue(value);
 		}
 	}
 	
