@@ -218,6 +218,13 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 				} catch (ParseException e) {
 					if (Logger.getRootLogger().getLevel() == Level.DEBUG)
 						e.printStackTrace();
+					
+					/*
+					 * if someone put in a wrong formatted dat in the preferences
+					 * replace it with the current date
+					 */
+					preferenceForClass.put(REMINDER_DATE, dateFormat.format(currentDate));
+					
 					timeout = true;
 				}
 				// if we're still not after the X days of reminder.. don't ask the user
