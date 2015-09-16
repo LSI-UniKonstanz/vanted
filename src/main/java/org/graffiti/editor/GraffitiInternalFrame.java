@@ -30,7 +30,7 @@ import org.graffiti.session.EditorSession;
  * @see MainFrame
  */
 public class GraffitiInternalFrame
-					extends JInternalFrame // MaximizeFrame
+		extends JInternalFrame // MaximizeFrame
 {
 	// ~ Instance fields ========================================================
 	
@@ -147,7 +147,7 @@ public class GraffitiInternalFrame
 			}
 			
 			public void internalFrameClosing(InternalFrameEvent e) {
-				
+//				MainFrame.getInstance().frameClosing(session, view);
 			}
 			
 			public void internalFrameClosed(InternalFrameEvent e) {
