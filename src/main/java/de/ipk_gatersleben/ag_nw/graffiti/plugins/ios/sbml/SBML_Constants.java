@@ -30,7 +30,7 @@ public class SBML_Constants {
 	public static final String ROLE_PRODUCT = "product";
 	public static final String ROLE_MODIFIER = "modifier";
 	public static final String ROLE_SPECIES = "species";
-	public static final Object ROLE_REACTION = "reaction";
+	public static final String ROLE_REACTION = "reaction";
 	public static final String SBML_ROLE = "sbmlRole";
 	
 	public static final String SBOTERM = "_sboterm";
