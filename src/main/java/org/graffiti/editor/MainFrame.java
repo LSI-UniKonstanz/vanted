@@ -1121,6 +1121,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		if (!returnScrollPane) {
 			frame = new GraffitiInternalFrame(session, view, newFrameTitle, otherViewWillBeClosed);
 			frame.addInternalFrameListener(graffitiFrameListener);
+			frame.setDefaultCloseOperation(GraffitiInternalFrame.DO_NOTHING_ON_CLOSE);
 		}
 		
 		ListenerManager lm = session.getGraph().getListenerManager();
@@ -2324,30 +2325,9 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			if (res == JOptionPane.YES_OPTION) {
 				// save current graph
 				logger.debug("closeSession: saving graph");
-				fileSaveAs.actionPerformed(new ActionEvent(this, 0, null));
+				fileSave.actionPerformed(new ActionEvent(this, 0, null));
 			}
-//			Session as = MainFrame.getInstance().getActiveSession();
-//			View av;
-//			try {
-//				av = MainFrame.getInstance().getActiveEditorSession().getActiveView();
-//			} catch (Exception e) {
-//				av = null;
-//			}
-//			MainFrame.getInstance().setActiveSession(session, null);
-//			MainFrame.getInstance().setActiveSession(as, av);
 			
-			/*
-			 * if (res == JOptionPane.CANCEL_OPTION) {
-			 * final Graph gg = new AdjListGraph(new ListenerManager());
-			 * gg.addGraph(session.getGraph());
-			 * SwingUtilities.invokeLater(new Runnable() {
-			 * public void run() {
-			 * MainFrame.getInstance().showGraph(gg, null);
-			 * }
-			 * });
-			 * }
-			 */
-			// continue, close view/session
 		}
 		
 		List<View> views = new LinkedList<View>();
@@ -3529,12 +3509,30 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			
 			EditorSession session = ((GraffitiInternalFrame) e.getInternalFrame()).getSession();
 			
+			if (session.getGraph().isModified()) {
+				String graphName = session.getGraph().getName();
+				if (graphName == null)
+					graphName = "[" + session.getGraph().getName() + "]";
+				int res = JOptionPane.showConfirmDialog(MainFrame.getInstance(), "<html>" + sBundle.getString("frame.close_save") + "<p>"
+						+ "Graph " + graphName + " contains<br>" + session.getGraph().getNodes().size() + " node(s) and "
+						+ session.getGraph().getEdges().size() + " edge(s)!", sBundle.getString("frame.close_save_title"),
+						JOptionPane.YES_NO_CANCEL_OPTION);
+				
+				if (res == JOptionPane.CANCEL_OPTION || res == JOptionPane.DEFAULT_OPTION)
+					return;
+				if (res == JOptionPane.YES_OPTION) {
+					// save current graph
+					logger.debug("closeSession: saving graph");
+					fileSave.actionPerformed(new ActionEvent(this, 0, null));
+				}
+			}
 			if (session.getViews().size() >= 2) {
 				detachedFrames.remove(f);
 			}
 			
 			View view = f.getView();
 			view.closing(e);
+			f.dispose();
 		}
 		
 		public void windowActivated(WindowEvent e) {

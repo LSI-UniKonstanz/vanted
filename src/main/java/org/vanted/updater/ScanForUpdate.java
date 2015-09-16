@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -42,9 +43,15 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
 /**
  * @author matthiak
  *         Update file has very simple format:
+ *         For the message string.. it only has to be surrounded by '{{' and '}}'
+ *         and can go over many lines
  *         first line: version:<version> //x.x.x
  *         <+|-><type>:<filename>
  *         ..
+ *         message:{{<MESSAGESTRING>
+ *         <MESSAGESTRING>
+ *         <MESSAGESTRING>
+ *         }}
  *         //
  *         + = add the file
  *         - = remove the file
@@ -57,6 +64,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  *         +core: vanted-core.jar
  *         +lib: lib-name.jar
  *         -lib: lib-name2.jar
+ *         message:{{
+ *         some text message
+ *         }}
  *         // # end of update entry
  */
 public class ScanForUpdate implements PreferencesInterface, Runnable {
@@ -83,9 +93,12 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 	private static final String VERSIONSTRING = "version";
 	private static final String CORESTRING = "core";
 	private static final String LIBSTRING = "lib";
+	private static final String MESSAGE = "message";
+	private static final String MESSAGE_START = "{{";
+	private static final String MESSAGE_END = "}}";
 	
 	private static String URL_UPDATE_BASESTRING = "https://immersive-analytics.infotech.monash.edu/vanted/release/updates/";
-	private static String URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "vanted-update";
+	private static String URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-update";
 	
 	private static final String DESTPATHUPDATEDIR = ReleaseInfo.getAppFolderWithFinalSep() + "update/";
 	private static final String DESTUPDATEFILE = DESTPATHUPDATEDIR + "do-vanted-update";
@@ -185,7 +198,8 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		}
 		
 		logger.debug("doing update scan at: " + URL_UPDATE_FILESTRING);
-		cleanPreviousUpdate();
+		
+		finishPreviousUpdate();
 		
 		Date currentDate = new Date();
 		Preferences preferenceForClass = PreferenceManager.getPreferenceForClass(ScanForUpdate.class);
@@ -204,6 +218,13 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 				} catch (ParseException e) {
 					if (Logger.getRootLogger().getLevel() == Level.DEBUG)
 						e.printStackTrace();
+					
+					/*
+					 * if someone put in a wrong formatted dat in the preferences
+					 * replace it with the current date
+					 */
+					preferenceForClass.put(REMINDER_DATE, dateFormat.format(currentDate));
+					
 					timeout = true;
 				}
 				// if we're still not after the X days of reminder.. don't ask the user
@@ -219,24 +240,65 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		List<String> listAddLibsJarRelativePaths = new ArrayList<String>();
 		List<String> listRemoveLibsJarRelativePaths = new ArrayList<String>();
 		
-		InputStream inputstreamURL = null;
+		StringBuffer msgbuffer = new StringBuffer();
 		
+		InputStream inputstreamURL = null;
 		URL updateURL = new URL(URL_UPDATE_FILESTRING);
 		
 		try {
 			inputstreamURL = updateURL.openStream();
 		} catch (FileNotFoundException e1) {
-			System.out.println("no updates available");
+			if (Logger.getRootLogger().getLevel() == Level.DEBUG)
+				e1.printStackTrace();
+			System.out.println("update file not found at location: " + e1.getMessage());
 			return;
 		}
 		
+		StringBuffer updFileBuffer = new StringBuffer();
+		
+		boolean readingMessageAttribute = false;
 		BufferedReader reader = new BufferedReader(new InputStreamReader(inputstreamURL));
 		String line;
+		
 		while ((line = reader.readLine()) != null) {
+			updFileBuffer.append(line);
+			updFileBuffer.append("\n");
+			
 			if (line.equals("//"))
 				break;
 			if (line.startsWith("#"))
 				continue;
+			
+			/*
+			 * reading message part.
+			 * must be done first to make sure, we don't accidently
+			 * read another attribute which might be part of the message
+			 */
+			if (line.startsWith(MESSAGE) && !readingMessageAttribute) {
+				readingMessageAttribute = true;
+				// catch newline after message-start
+				if (!line.endsWith(MESSAGE_START)) {
+					int idx = line.indexOf(MESSAGE_START) + MESSAGE_START.length();
+					msgbuffer.append(line.substring(idx));
+				}
+				continue;
+			}
+			/*
+			 * we already started reading a message and we will read lines
+			 * as long as we don't find the message-end tag
+			 */
+			if (readingMessageAttribute) {
+				msgbuffer.append("\n");
+				int idx = line.indexOf(MESSAGE_END);
+				if (idx >= 0) {
+					msgbuffer.append(line.substring(0, line.indexOf(MESSAGE_END)));
+					readingMessageAttribute = false;
+				} else {
+					msgbuffer.append(line);
+				}
+				continue;
+			}
+			
 			if (line.toLowerCase().startsWith(VERSIONSTRING)) {
 				version = line.substring(VERSIONSTRING.length() + 1).trim();
 				prepareUpdate = updateIsNewer(version);
@@ -280,6 +342,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 				for (String libPath : listRemoveLibsJarRelativePaths) {
 					System.out.println("  removing lib-jar: " + libPath);
 				}
+				System.out.println("Update-message: " + msgbuffer.toString());
 			} else
 				logger.debug("We found update file, but version is not newer");
 		}
@@ -287,9 +350,9 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		// the update we found is not newer
 		if (!prepareUpdate) {
 			backgroundTaskStatusProvider.setCurrentStatusText1("No updates found");
+			//we have written the file but it wasn't necessary.. delete it
 			return;
 		}
-		
 		// popup dialog telling user, there is a new version
 		// download now or later
 		// or go to website (short version)
@@ -304,8 +367,9 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 				arrDialogOptions,
 				arrDialogOptions[0]);
 		
-		if (dialogAskUpdate == JOptionPane.CANCEL_OPTION)
+		if (dialogAskUpdate == JOptionPane.CANCEL_OPTION || dialogAskUpdate == JOptionPane.DEFAULT_OPTION) {
 			return;
+		}
 		
 		//later - create entry in preferences for reminder date
 		if (dialogAskUpdate == 1) {
@@ -316,50 +380,24 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 			return;
 		}
 		
-		// if ok.. download files
-		// create directories and 
-		File updateDir = new File(DESTPATHUPDATEDIR);
-		if (!updateDir.exists())
-			updateDir.mkdirs();
+		for (String corePath : listAddCoreJarRelativePath) {
+			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(corePath));
+			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + "/" + corePath), DESTPATHUPDATEDIR, extractFileName(corePath));
+		}
+		for (String libPath : listAddLibsJarRelativePaths) {
+			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(libPath));
+			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + "/" + libPath), DESTPATHUPDATEDIR, extractFileName(libPath));
+		}
 		
 		// create a copy file for the bootstrap program
 		// that will put the files to the right place
 		// .. the next thing is for the bootstrap
-		
 		File updateFile = new File(DESTUPDATEFILE);
 		BufferedWriter writer = new BufferedWriter(new FileWriter(updateFile));
-		
-		writer.write(VERSIONSTRING + ":" + version);
-		writer.newLine();
-		// download new jars or jars to replace
-		for (String corePath : listAddCoreJarRelativePath) {
-			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(corePath));
-			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + corePath), DESTPATHUPDATEDIR, extractFileName(corePath));
-			writer.write("+" + CORESTRING + ":" + corePath);
-			writer.newLine();
-		}
-		for (String libPath : listAddLibsJarRelativePaths) {
-			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(libPath));
-			
-			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + libPath), DESTPATHUPDATEDIR, extractFileName(libPath));
-			writer.write("+" + LIBSTRING + ":" + libPath);
-			writer.newLine();
-		}
-		
-		// add list of entries for jars to be removed
-		for (String corePath : listRemoveCoreJarRelativePath) {
-			writer.write("-" + CORESTRING + ":" + corePath);
-			writer.newLine();
-		}
-		
-		for (String libPath : listRemoveLibsJarRelativePaths) {
-			writer.write("-" + LIBSTRING + ":" + libPath);
-			writer.newLine();
-		}
-		
+		writer.write(updFileBuffer.toString());
 		writer.close();
+		
 		// bootstrap will look for that file and does his work 
-		// 
 	}
 	
 	private static String extractFileName(String path) {
@@ -374,10 +412,67 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 	 * And by deleting the update folder (including this file) we also tell the bootstrap
 	 * that we successfully loaded
 	 */
-	private static void cleanPreviousUpdate() {
+	private static void finishPreviousUpdate() throws IOException {
 		File checkfile = new File(VANTEDUPDATEOKFILE);
-		if (checkfile.exists())
+		if (checkfile.exists()) {
+			
+			String updateMessage = "<html>" + "<h3>Application has been updated to " + DBEgravistoHelper.DBE_GRAVISTO_VERSION + "!</h3>";
+			
+			File updateFile = new File(DESTUPDATEFILE);
+			if (updateFile.exists()) {
+				
+				boolean readingMessageAttribute = false;
+				StringBuffer msgbuffer = new StringBuffer();
+				
+				BufferedReader breader = new BufferedReader(new FileReader(updateFile));
+				String line;
+				while ((line = breader.readLine()) != null) {
+					/*
+					 * reading message part.
+					 * must be done first to make sure, we don't accidently
+					 * read another attribute which might be part of the message
+					 */
+					if (line.startsWith(MESSAGE) && !readingMessageAttribute) {
+						readingMessageAttribute = true;
+						// catch newline after message-start
+						if (!line.endsWith(MESSAGE_START)) {
+							int idx = line.indexOf(MESSAGE_START) + MESSAGE_START.length();
+							msgbuffer.append(line.substring(idx));
+						}
+						continue;
+					}
+					/*
+					 * we already started reading a message and we will read lines
+					 * as long as we don't find the message-end tag
+					 */
+					if (readingMessageAttribute) {
+						int idx = line.indexOf(MESSAGE_END);
+						if (idx >= 0) {
+							msgbuffer.append(line.substring(0, line.indexOf(MESSAGE_END)));
+							readingMessageAttribute = false;
+						} else {
+							msgbuffer.append(line);
+						}
+						continue;
+					}
+				}
+				breader.close();
+				
+				if (msgbuffer.length() > 0) {
+					updateMessage += "Details:<br>";
+					updateMessage += msgbuffer.toString();
+				}
+				
+			}
+			
+			JOptionPane.showMessageDialog(MainFrame.getInstance()
+					, updateMessage
+					, "Information",
+					JOptionPane.INFORMATION_MESSAGE);
+			
 			FileHelper.deleteDirRecursively(new File(DESTPATHUPDATEDIR));
+			
+		}
 	}
 	
 	private static boolean updateIsNewer(String remoteVersion) {
@@ -426,7 +521,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 	public void updatePreferences(Preferences preferences) {
 		URL_UPDATE_BASESTRING = preferences.get("Update URL", URL_UPDATE_BASESTRING);
 		
-		URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "vanted-update";
+		URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-update";
 		
 	}
 	

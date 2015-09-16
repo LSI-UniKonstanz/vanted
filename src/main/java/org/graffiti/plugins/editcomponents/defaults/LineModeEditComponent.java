@@ -22,7 +22,7 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
  * Used to edit the values of a <code>Dash</code>.
  */
 public class LineModeEditComponent
-					extends AbstractValueEditComponent {
+		extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
 	
 	/** Panel used to group the different entries for "phase" and dash array. */
@@ -52,7 +52,7 @@ public class LineModeEditComponent
 		LineModeAttribute lmAttr = (LineModeAttribute) displayable;
 		
 		JComponent phaseComp = (new FloatEditComponent(new FloatAttribute(
-							"phase", lmAttr.getDashPhase()))).getComponent();
+				"phase", lmAttr.getDashPhase()))).getComponent();
 		this.panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		this.panel.add(phaseComp);
 		
@@ -63,7 +63,7 @@ public class LineModeEditComponent
 			
 			for (int i = 0; i < dashs.length; i++) {
 				dashComp = new FloatEditComponent(new FloatAttribute("dash" +
-									i, dashs[i])).getComponent();
+						i, dashs[i])).getComponent();
 				this.panel.add(dashComp);
 			}
 		}
