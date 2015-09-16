@@ -375,11 +375,11 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		
 		for (String corePath : listAddCoreJarRelativePath) {
 			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(corePath));
-			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + corePath), DESTPATHUPDATEDIR, extractFileName(corePath));
+			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + "/" + corePath), DESTPATHUPDATEDIR, extractFileName(corePath));
 		}
 		for (String libPath : listAddLibsJarRelativePaths) {
 			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(libPath));
-			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + libPath), DESTPATHUPDATEDIR, extractFileName(libPath));
+			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + "/" + libPath), DESTPATHUPDATEDIR, extractFileName(libPath));
 		}
 		
 		// create a copy file for the bootstrap program
@@ -391,7 +391,6 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		writer.close();
 		
 		// bootstrap will look for that file and does his work 
-		// 
 	}
 	
 	private static String extractFileName(String path) {
