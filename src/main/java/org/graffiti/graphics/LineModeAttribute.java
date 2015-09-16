@@ -24,7 +24,7 @@ import org.graffiti.attributes.HashMapAttribute;
  * @version $Revision: 1.7 $
  */
 public class LineModeAttribute
-					extends CompositeAttribute {
+		extends CompositeAttribute {
 	// ~ Instance fields ========================================================
 	
 	/** The encapsulated object. */
@@ -53,6 +53,8 @@ public class LineModeAttribute
 	public LineModeAttribute(String id, Dash d) {
 		super(id);
 		this.dash = d;
+		float[] dashArray = this.dash.getDashArray();
+		
 	}
 	
 	// ~ Methods ================================================================
@@ -62,7 +64,7 @@ public class LineModeAttribute
 	 */
 	@Override
 	public void setAttribute(String id, Attribute att)
-						throws AttributeNotFoundException, IllegalArgumentException {
+			throws AttributeNotFoundException, IllegalArgumentException {
 		throw new UnsupportedOperationException("TODO!");
 	}
 	
@@ -80,7 +82,7 @@ public class LineModeAttribute
 		}
 		
 		FloatAttribute dp =
-							new FloatAttribute("dashphase", this.dash.getDashPhase());
+				new FloatAttribute("dashphase", this.dash.getDashPhase());
 		
 		ret.add(da);
 		ret.add(dp);
@@ -110,6 +112,7 @@ public class LineModeAttribute
 			else
 				setDefaultValue();
 		}
+		
 	}
 	
 	/**
@@ -129,6 +132,7 @@ public class LineModeAttribute
 	 */
 	public void setDashPhase(float dp) {
 		this.dash.setDashPhase(dp);
+		
 	}
 	
 	/**
@@ -177,7 +181,7 @@ public class LineModeAttribute
 			}
 			
 			return new LineModeAttribute(idd,
-								new Dash(newDA, dash.getDashPhase()));
+					new Dash(newDA, dash.getDashPhase()));
 		}
 	}
 	
@@ -186,7 +190,7 @@ public class LineModeAttribute
 	 */
 	@Override
 	protected void doSetValue(Object v)
-						throws IllegalArgumentException {
+			throws IllegalArgumentException {
 		try {
 			if (v instanceof String) {
 				String val = (String) v;

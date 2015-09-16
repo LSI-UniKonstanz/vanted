@@ -360,7 +360,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 				arrDialogOptions,
 				arrDialogOptions[0]);
 		
-		if (dialogAskUpdate == JOptionPane.CANCEL_OPTION || dialogAskUpdate == -1) {
+		if (dialogAskUpdate == JOptionPane.CANCEL_OPTION || dialogAskUpdate == JOptionPane.DEFAULT_OPTION) {
 			return;
 		}
 		
@@ -373,6 +373,15 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 			return;
 		}
 		
+		for (String corePath : listAddCoreJarRelativePath) {
+			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(corePath));
+			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + "/" + corePath), DESTPATHUPDATEDIR, extractFileName(corePath));
+		}
+		for (String libPath : listAddLibsJarRelativePaths) {
+			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(libPath));
+			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + "/" + libPath), DESTPATHUPDATEDIR, extractFileName(libPath));
+		}
+		
 		// create a copy file for the bootstrap program
 		// that will put the files to the right place
 		// .. the next thing is for the bootstrap
@@ -382,7 +391,6 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		writer.close();
 		
 		// bootstrap will look for that file and does his work 
-		// 
 	}
 	
 	private static String extractFileName(String path) {
@@ -401,8 +409,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		File checkfile = new File(VANTEDUPDATEOKFILE);
 		if (checkfile.exists()) {
 			
-			String updateMessage = "<html>" + "<h3>Application has been updated to " + DBEgravistoHelper.DBE_GRAVISTO_VERSION + "!</h3>"
-					+ "<br>";
+			String updateMessage = "<html>" + "<h3>Application has been updated to " + DBEgravistoHelper.DBE_GRAVISTO_VERSION + "!</h3>";
 			
 			File updateFile = new File(DESTUPDATEFILE);
 			if (updateFile.exists()) {
@@ -445,7 +452,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 				breader.close();
 				
 				if (msgbuffer.length() > 0) {
-					updateMessage += "<br>Details:<br>";
+					updateMessage += "Details:<br>";
 					updateMessage += msgbuffer.toString();
 				}
 				
