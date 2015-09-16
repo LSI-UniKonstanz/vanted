@@ -360,7 +360,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 				arrDialogOptions,
 				arrDialogOptions[0]);
 		
-		if (dialogAskUpdate == JOptionPane.CANCEL_OPTION || dialogAskUpdate == -1) {
+		if (dialogAskUpdate == JOptionPane.CANCEL_OPTION || dialogAskUpdate == JOptionPane.DEFAULT_OPTION) {
 			return;
 		}
 		
@@ -410,8 +410,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		File checkfile = new File(VANTEDUPDATEOKFILE);
 		if (checkfile.exists()) {
 			
-			String updateMessage = "<html>" + "<h3>Application has been updated to " + DBEgravistoHelper.DBE_GRAVISTO_VERSION + "!</h3>"
-					+ "<br>";
+			String updateMessage = "<html>" + "<h3>Application has been updated to " + DBEgravistoHelper.DBE_GRAVISTO_VERSION + "!</h3>";
 			
 			File updateFile = new File(DESTUPDATEFILE);
 			if (updateFile.exists()) {
@@ -454,7 +453,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 				breader.close();
 				
 				if (msgbuffer.length() > 0) {
-					updateMessage += "<br>Details:<br>";
+					updateMessage += "Details:<br>";
 					updateMessage += msgbuffer.toString();
 				}
 				
