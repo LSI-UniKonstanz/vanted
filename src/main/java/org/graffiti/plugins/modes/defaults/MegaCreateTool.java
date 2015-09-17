@@ -333,7 +333,7 @@ public class MegaCreateTool
 		lastMouseEventTime = e.getWhen();
 		
 		if (!SwingUtilities.isLeftMouseButton(e)) {
-			reset();
+//			reset();
 			return;
 		}
 		
@@ -821,6 +821,7 @@ public class MegaCreateTool
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (!SwingUtilities.isLeftMouseButton(e)) {
+			reset();
 			return;
 		}
 		

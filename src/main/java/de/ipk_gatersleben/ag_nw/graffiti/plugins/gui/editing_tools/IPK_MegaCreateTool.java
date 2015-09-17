@@ -114,9 +114,8 @@ public class IPK_MegaCreateTool
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		super.mouseClicked(e);
 		if (!MegaTools.wasScrollPaneMovement() && SwingUtilities.isRightMouseButton(e) && !creatingEdge) {
 			View activeView = MainFrame.getInstance().getActiveEditorSession().getActiveView();
 			if (activeView instanceof IPKGraffitiView) {
@@ -126,6 +125,8 @@ public class IPK_MegaCreateTool
 						.getScaleY()));
 			}
 		}
+		super.mouseReleased(e);
+		
 	}
 	
 	@Override
