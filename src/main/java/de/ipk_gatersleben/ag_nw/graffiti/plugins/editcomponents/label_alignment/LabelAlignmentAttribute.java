@@ -4,10 +4,9 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.label_alignment;
 
 import org.graffiti.attributes.StringAttribute;
-import org.graffiti.event.AttributeEvent;
 
 public class LabelAlignmentAttribute extends StringAttribute {
-	private String myValue;
+//	private String myValue;
 	
 	public LabelAlignmentAttribute() {
 		super();
@@ -25,23 +24,24 @@ public class LabelAlignmentAttribute extends StringAttribute {
 	
 	@Override
 	public void setDefaultValue() {
-		myValue = null;
+		value = null;
 	}
 	
-	@Override
-	public void setString(String value) {
-		assert value != null;
-		
-		AttributeEvent ae = new AttributeEvent(this);
-		callPreAttributeChanged(ae);
-		myValue = value;
-		callPostAttributeChanged(ae);
-	}
+//	@Override
+//	public void setString(String value) {
+//		assert value != null;
+//		if (getString().equals(value))
+//			return;
+//		AttributeEvent ae = new AttributeEvent(this);
+//		callPreAttributeChanged(ae);
+//		myValue = value;
+//		callPostAttributeChanged(ae);
+//	}
 	
-	@Override
-	public String getString() {
-		return myValue;
-	}
+//	@Override
+//	public String getString() {
+//		return myValue;
+//	}
 	
 	@Override
 	public Object getValue() {
