@@ -2325,7 +2325,11 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			if (res == JOptionPane.YES_OPTION) {
 				// save current graph
 				logger.debug("closeSession: saving graph");
-				fileSave.actionPerformed(new ActionEvent(this, 0, null));
+				if (session.getGraph().getName().contains("not saved")) {
+					fileSaveAs.actionPerformed(new ActionEvent(this, 0, null));
+				} else {
+					fileSave.actionPerformed(new ActionEvent(this, 0, null));
+				}
 			}
 			
 		}
@@ -3523,7 +3527,11 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				if (res == JOptionPane.YES_OPTION) {
 					// save current graph
 					logger.debug("closeSession: saving graph");
-					fileSave.actionPerformed(new ActionEvent(this, 0, null));
+					if (session.getGraph().getName().contains("not saved")) {
+						fileSaveAs.actionPerformed(new ActionEvent(this, 0, null));
+					} else {
+						fileSave.actionPerformed(new ActionEvent(this, 0, null));
+					}
 				}
 			}
 			if (session.getViews().size() >= 2) {
@@ -3532,7 +3540,15 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			
 			View view = f.getView();
 			view.closing(e);
+			/*
+			 * we need to fire the propertychange event for the internal frame
+			 * to trigger automatic selection of another internal frame
+			 * Copied code from JInternalFrame.doDefaultCloseAction()
+			 */
+			f.firePropertyChange(JInternalFrame.IS_CLOSED_PROPERTY, Boolean.FALSE,
+					Boolean.TRUE);
 			f.dispose();
+			
 		}
 		
 		public void windowActivated(WindowEvent e) {
@@ -3541,6 +3557,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		}
 		
 		private void graffitiFrameActivated(EditorSession session, View view) {
+			
 			// if (session != activeSession) {
 			// setActiveSession(session, view);
 			// } else {
