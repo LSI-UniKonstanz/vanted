@@ -158,19 +158,8 @@ public class NodeComponent
 		if (nodeAttr == null)
 			nodeAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
 		
-		// outline
-		// Stroke backupStroke = drawArea.getStroke();
-//		float frameThickness = (float) nodeAttr.getFrameThickness();
-//		if (frameThickness > 0) {
-//			lastStrokeWidth = frameThickness;
-//			stroke = new BasicStroke(lastStrokeWidth,
-//					DEFAULT_CAP_R, DEFAULT_JOIN, DEFAULT_MITER,
-//					nodeAttr.getLineMode().getDashArray(),
-//					nodeAttr.getLineMode().getDashPhase());
-//			if (getViewDrawMode() == DrawMode.NORMAL) {
-		drawArea.setStroke(stroke);
-//			}
-//		}
+		if (stroke != null)
+			drawArea.setStroke(stroke);
 		
 		// draw background image
 		// fill the shape
