@@ -20,8 +20,6 @@ import javax.swing.JLabel;
 import org.AttributeHelper;
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.FolderPanel;
-import org.Release;
-import org.ReleaseInfo;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Edge;
@@ -230,10 +228,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
-			return "Remove Nodes";
-		else
-			return null;
+		return "Remove Connecting Nodes";
 	}
 	
 	@Override
