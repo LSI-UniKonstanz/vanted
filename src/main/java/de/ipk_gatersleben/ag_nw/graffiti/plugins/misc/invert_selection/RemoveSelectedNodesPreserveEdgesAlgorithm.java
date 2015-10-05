@@ -49,14 +49,14 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	
 	Selection selection;
 	
-	private boolean ignoreDirection = true;
+	private boolean ignoreDirection = false;
 	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
 	@Override
 	public Parameter[] getParameters() {
-		return new Parameter[] { new BooleanParameter(ignoreDirection, "Preserve Connectivity",
+		return new Parameter[] { new BooleanParameter(ignoreDirection, "Ignore Edge Direction",
 				"Prevent connectivity loss because of edge-direction - ignore edge directions") };
 	}
 	
