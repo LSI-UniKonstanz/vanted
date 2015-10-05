@@ -389,7 +389,8 @@ public abstract class AbstractTool
 	public void selectionChanged(SelectionEvent e) {
 		Selection sel = e.getSelection();
 		
-		if ((session == null && session.getSelectionModel() != null) || sel.hashCode() != (session.getSelectionModel().getActiveSelection().hashCode()))
+		if (session == null || session.getSelectionModel() == null || session.getSelectionModel().getActiveSelection() == null
+				|| sel.hashCode() != (session.getSelectionModel().getActiveSelection().hashCode()))
 			return;
 		if (this.isActive()) {
 			
