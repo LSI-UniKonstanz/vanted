@@ -582,7 +582,8 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		// MainFrame.getInstance().getActiveEditorSession().getActiveView()
 		// .getViewComponent().repaint();
 		unDisplayAsMarked(getAllMarkedComps());
-		selection.clear();
+		if (selection != null)
+			selection.clear();
 	}
 	
 	public static MouseEvent getLastMouseE() {
