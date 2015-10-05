@@ -39,6 +39,8 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.EditorSession;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.IntroduceParallelEdgeBends;
+
 /**
  * Labels all selected nodes with unique numbers. Does not touch existing
  * labels.
@@ -51,13 +53,17 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	
 	private boolean ignoreDirection = false;
 	
+	private boolean layoutParallelEdges = true;
+	
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new BooleanParameter(ignoreDirection, "Ignore Edge Direction",
-				"Prevent connectivity loss because of edge-direction - ignore edge directions") };
+				"Prevent connectivity loss because of edge-direction - ignore edge directions"),
+				new BooleanParameter(layoutParallelEdges, "Layout Parallel Edges",
+						"In case multiple types of edges are created between two nodes, edge bends are introduces.") };
 	}
 	
 	public JComponent getDescriptionComponent() {
@@ -87,6 +93,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	public void setParameters(Parameter[] params) {
 		int i = 0;
 		ignoreDirection = ((BooleanParameter) params[i++]).getBoolean();
+		layoutParallelEdges = ((BooleanParameter) params[i++]).getBoolean();
 	}
 	
 	/**
@@ -102,14 +109,14 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 		try {
 			ArrayList<Node> workNodes = new ArrayList<Node>();
 			workNodes.addAll(selection.getNodes());
-			removeNodesPreserveEdges(workNodes, graph, ignoreDirection, null);
+			removeNodesPreserveEdges(workNodes, graph, ignoreDirection, layoutParallelEdges, null);
 		} finally {
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
 	
 	public static int removeNodesPreserveEdges(ArrayList<Node> workNodes,
-			Graph graph, boolean ignoreDirection,
+			Graph graph, boolean ignoreDirection, boolean layoutParallelEdges,
 			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
 		Stack<Node> toBeDeleted = new Stack<Node>();
 		int workCount = 0;
@@ -155,7 +162,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 					}
 				}
 			} else {
-				removeNodes(workNodes);
+				removeNodes(workNodes, layoutParallelEdges);
 			}
 			/*
 			{
@@ -257,7 +264,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	 * 
 	 * @param workNodes
 	 */
-	private static void removeNodes(ArrayList<Node> workNodes) {
+	private static void removeNodes(ArrayList<Node> workNodes, boolean layoutParallelEdges) {
 		
 		Map<Node, Map<Node, Set<EdgeType>>> mapInEdgeOutEdgeToFoldedEdge = new HashMap<Node, Map<Node, Set<EdgeType>>>();
 		
@@ -338,6 +345,8 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 		for (Edge edge : setRemoveEdges)
 			edge.getGraph().deleteEdge(edge);
 		
+		Set<Edge> newEdges = new HashSet<Edge>();
+		
 		for (Node sourceNode : mapInEdgeOutEdgeToFoldedEdge.keySet()) {
 			Map<Node, Set<EdgeType>> mapTargetEdgeType = mapInEdgeOutEdgeToFoldedEdge.get(sourceNode);
 			for (Node targetNode : mapTargetEdgeType.keySet()) {
@@ -345,7 +354,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 				for (EdgeType newEdgeType : set) {
 					Graph g = sourceNode.getGraph();
 					
-					Edge foldedEdge;
+					Edge foldedEdge = null;
 					
 					switch (newEdgeType) {
 						case IN_EDGE:
@@ -375,11 +384,17 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 							AttributeHelper.setArrowhead(foldedEdge, false);
 							break;
 					}
+					newEdges.add(foldedEdge);
 				}
 				
 			}
 		}
 		
+		if (layoutParallelEdges && !newEdges.isEmpty()) {
+			IntroduceParallelEdgeBends edgebendsAlgo = new IntroduceParallelEdgeBends();
+			edgebendsAlgo.attach(workNodes.get(0).getGraph(), new Selection(newEdges));
+			edgebendsAlgo.execute();
+		}
 	}
 	
 	/**
