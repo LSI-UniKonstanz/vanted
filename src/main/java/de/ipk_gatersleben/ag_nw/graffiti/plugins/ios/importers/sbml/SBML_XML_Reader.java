@@ -45,6 +45,8 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 	
 	static boolean doValidate = false;
 	
+	private static boolean fixPath2Models = false;
+	
 	public SBML_XML_Reader() {
 		// System.out.println("SBML_XML_Reader with layout constructor");
 		// TODO Auto-generated constructor stub
@@ -56,6 +58,18 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 	
 	public static boolean isValidatingSBMLOnLoad() {
 		return doValidate;
+	}
+	
+	public static void setFixPath2Models(boolean fix) {
+		
+		fixPath2Models = fix;
+		
+	}
+	
+	public static boolean isFixPath2Models() {
+		
+		return fixPath2Models;
+		
 	}
 	
 	/**
