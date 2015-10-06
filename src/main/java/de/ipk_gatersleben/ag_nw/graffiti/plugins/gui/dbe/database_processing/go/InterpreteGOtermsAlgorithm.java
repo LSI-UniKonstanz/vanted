@@ -75,33 +75,33 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 	@Override
 	public String getDescription() {
 		return "<html>" +
-							"This command creates a node- and data-specific GO hierarchy network.<br>" +
-							"The node labels and the alternative data identifiers of mapped data<br>" +
-							"(if available) are processed. In case a GO term is identified, it is<br>" +
-							"directly processed. In case KO term (also EC and Gene Identifiers, related<br>" +
-							"to a specific KO entry are recognized) is identified, the corresponding GO<br>" +
-							"annotation (if available) is processed.<br>" +
-							"<br>" +
-							"You may limit the maximum distance from the (virtual) GO root node to the<br>" +
-							"working set of nodes. In this case, the nodes will be connected to more general<br>" +
-							"GO terms, instead of a particular defined GO term.<br>" +
-							"<br>" +
-							"For layouting the resulting network, the DOT layout most times gives good results.";
+				"This command creates a node- and data-specific GO hierarchy network.<br>" +
+				"The node labels and the alternative data identifiers of mapped data<br>" +
+				"(if available) are processed. In case a GO term is identified, it is<br>" +
+				"directly processed. In case KO term (also EC and Gene Identifiers, related<br>" +
+				"to a specific KO entry are recognized) is identified, the corresponding GO<br>" +
+				"annotation (if available) is processed.<br>" +
+				"<br>" +
+				"You may limit the maximum distance from the (virtual) GO root node to the<br>" +
+				"working set of nodes. In this case, the nodes will be connected to more general<br>" +
+				"GO terms, instead of a particular defined GO term.<br>" +
+				"<br>" +
+				"For layouting the resulting network, the DOT layout most times gives good results.";
 	}
 	
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
-							new IntegerParameter(maxDepth,
-												"Max. distance from root-node (0=unlimited)",
-												"<html>" +
-																	"If set to a value larger than 0, the maximum distance from the virtual root node may <br>" +
-																	"be specified with this parameter"),
-							new BooleanParameter(useMinDistance,
-												"Consider Minimum Distance",
-												"<html>" +
-																	"If selected, the minimum distance will be considered for maximum depth of hierarchy,<br>" +
-																	"otherwise, the maximum distance.") };
+				new IntegerParameter(maxDepth,
+						"Max. distance from root-node (0=unlimited)",
+						"<html>" +
+								"If set to a value larger than 0, the maximum distance from the virtual root node may <br>" +
+								"be specified with this parameter"),
+				new BooleanParameter(useMinDistance,
+						"Consider Minimum Distance",
+						"<html>" +
+								"If selected, the minimum distance will be considered for maximum depth of hierarchy,<br>" +
+								"otherwise, the maximum distance.") };
 	}
 	
 	@Override
@@ -135,20 +135,20 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl sp = new BackgroundTaskStatusProviderSupportingExternalCallImpl("Initialize...", "");
 		final Graph fgraph = graph;
 		BackgroundTaskHelper.issueSimpleTask("Interpret GO - IDs", "Initialize...",
-							new Runnable() {
-								public void run() {
-									fgraph.getListenerManager().transactionStarted(this);
-									interpreteGO(fgraph, workNodes, sp);
-									
-								}
-							},
-							new Runnable() {
-								
-								@Override
-								public void run() {
-									fgraph.getListenerManager().transactionFinished(this);
-								}
-							}, sp);
+				new Runnable() {
+					public void run() {
+						fgraph.getListenerManager().transactionStarted(this);
+						interpreteGO(fgraph, workNodes, sp);
+						
+					}
+				},
+				new Runnable() {
+					
+					@Override
+					public void run() {
+						fgraph.getListenerManager().transactionFinished(this);
+					}
+				}, sp);
 	}
 	
 	private void interpreteGO(Graph graph, List<NodeHelper> workNodes, BackgroundTaskStatusProviderSupportingExternalCall sp) {
@@ -209,7 +209,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 							/*
 							 * for now only support KO ids as label
 							 */
-							if(test.startsWith("K")) {
+							if (test.startsWith("K")) {
 								for (KoEntry koe : KeggAPIServiceHelper.getInstance().getEntriesByKO(test)) {
 									for (String goID : koe.getKoDbLinks("GO")) {
 										goTerms.add("GO:" + goID);
@@ -226,10 +226,10 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 			if (goTerms.size() > 0) {
 				for (String goTerm : correctedGoTerms) {
 					connectNodeWithNodes(
-										nh.getGraphNode(),
-										processGoHierarchy(
-															pgg, goTerm2goNode, gp, goTerm, nh.getGraphNode().getGraph()),
-										"annotation");
+							nh.getGraphNode(),
+							processGoHierarchy(
+									pgg, goTerm2goNode, gp, goTerm, nh.getGraphNode().getGraph()),
+							"annotation");
 				}
 			}
 			current += 1;
@@ -252,7 +252,7 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 			}
 			sp.setCurrentStatusText2("Remove deeper GO - Levels (" + toBeDeleted + " nodes)");
 			int cnt = RemoveSelectedNodesPreserveEdgesAlgorithm.removeNodesPreserveEdges(
-								toBeDeleted, graph, false, sp);
+					toBeDeleted, graph, false, true, sp);
 			sp.setCurrentStatusText2("Created GO hiearchy with a maximum depth of " + maxDepth + " (removed " + cnt + " GO term nodes)");
 		}
 		
@@ -264,30 +264,30 @@ public class InterpreteGOtermsAlgorithm extends AbstractAlgorithm {
 			// layout new nodes using tree layout
 			RTTreeLayout tree = new RTTreeLayout();
 			Parameter[] parameters2 = tree.getParameters();
-			for(Parameter curParam : parameters2) {
-				if(curParam.getName().equals("Tree Direction (0,90,180,270)")) {
-					((ObjectListParameter)curParam).setValue(0);
+			for (Parameter curParam : parameters2) {
+				if (curParam.getName().equals("Tree Direction (0,90,180,270)")) {
+					((ObjectListParameter) curParam).setValue(0);
 				}
 			}
 			tree.setParameters(parameters2);
-
+			
 			tree.attach(graph, new Selection(newNodes));
 			tree.execute();
 			
 			double minX = Double.MAX_VALUE;
 			double maxX = Double.MIN_VALUE;
 			double maxY = Double.MIN_VALUE;
-			for(Node curNode : newNodes) {
+			for (Node curNode : newNodes) {
 				Point2D position = AttributeHelper.getPosition(curNode);
 				Vector2d size = AttributeHelper.getSize(curNode);
-				if(position.getX() < minX)
+				if (position.getX() < minX)
 					minX = position.getX();
-				if(position.getX() > maxX)
+				if (position.getX() > maxX)
 					maxX = position.getX();
-				if(size.y + position.getY() > maxY)
+				if (size.y + position.getY() > maxY)
 					maxY = size.y + position.getY();
 			}
-			GridLayouterAlgorithm.layoutOnGrid(knownNodes, 1, 20, 20, 30, new Point((int)minX, (int)maxY + 50));
+			GridLayouterAlgorithm.layoutOnGrid(knownNodes, 1, 20, 20, 30, new Point((int) minX, (int) maxY + 50));
 //			GraphHelper.moveGraph(fgraph, offX, offY);
 			CenterLayouterAlgorithm.moveGraph(graph, getName(), true, 50, 50);
 			// layout gene nodes using grid layout (no resize)

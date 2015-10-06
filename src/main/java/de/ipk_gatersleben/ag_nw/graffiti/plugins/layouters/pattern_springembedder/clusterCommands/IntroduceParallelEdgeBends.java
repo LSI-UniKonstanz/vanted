@@ -32,7 +32,6 @@ public class IntroduceParallelEdgeBends extends AbstractAlgorithm {
 		return "Network.Edges.Bends";
 	}
 	
-	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
@@ -41,7 +40,7 @@ public class IntroduceParallelEdgeBends extends AbstractAlgorithm {
 				Category.VISUAL
 				));
 	}
-
+	
 	@Override
 	public String getDescription() {
 		return null;
@@ -67,11 +66,13 @@ public class IntroduceParallelEdgeBends extends AbstractAlgorithm {
 	public void execute() {
 		this.graph.getListenerManager().transactionStarted(this);
 		try {
-
 			
-			if(selection.getNodes().size() == 0) {
-
-				parallelEdgesFromEdgeSelection(graph.getEdges());
+			if (selection.getNodes().size() == 0) {
+				
+				if (selection.getEdges().size() == 0)
+					parallelEdgesFromEdgeSelection(graph.getEdges());
+				else
+					parallelEdgesFromEdgeSelection(selection.getEdges());
 				
 			} else {
 				
@@ -79,7 +80,6 @@ public class IntroduceParallelEdgeBends extends AbstractAlgorithm {
 			}
 //			HashSet<Edge> changed = new HashSet<Edge>();
 			
-
 //			MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(new Selection("changed edges", changed));
 //			MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 			
@@ -88,7 +88,6 @@ public class IntroduceParallelEdgeBends extends AbstractAlgorithm {
 			this.graph.getListenerManager().transactionFinished(this);
 		}
 	}
-	
 	
 	private void parallelEdgesFromNodeSelection(List<Node> nodes) {
 		for (int s = 0; s < nodes.size(); s++) {
@@ -111,7 +110,7 @@ public class IntroduceParallelEdgeBends extends AbstractAlgorithm {
 		
 		Map<String, List<Edge>> mapCombinedNodeIdToEdgeList = new HashMap<String, List<Edge>>();
 		
-		for(Edge curEdge : edges) {
+		for (Edge curEdge : edges) {
 			Node sourceNode = curEdge.getSource();
 			Node targetNode = curEdge.getTarget();
 			
@@ -122,17 +121,17 @@ public class IntroduceParallelEdgeBends extends AbstractAlgorithm {
 			
 			List<Edge> listEdges;
 			
-			if((listEdges = mapCombinedNodeIdToEdgeList.get(combinedIdForward)) == null) {
-				if((listEdges = mapCombinedNodeIdToEdgeList.get(combinedIdBackward)) == null) {
+			if ((listEdges = mapCombinedNodeIdToEdgeList.get(combinedIdForward)) == null) {
+				if ((listEdges = mapCombinedNodeIdToEdgeList.get(combinedIdBackward)) == null) {
 					listEdges = new ArrayList<Edge>();
 					mapCombinedNodeIdToEdgeList.put(combinedIdForward, listEdges);
 				}
 			}
 			listEdges.add(curEdge);
-				
+			
 		}
 		
-		for(String key : mapCombinedNodeIdToEdgeList.keySet()) {
+		for (String key : mapCombinedNodeIdToEdgeList.keySet()) {
 			List<Edge> curListEdges = mapCombinedNodeIdToEdgeList.get(key);
 			introduceOrthogonalBends(curListEdges.toArray(new Edge[curListEdges.size()]));
 		}

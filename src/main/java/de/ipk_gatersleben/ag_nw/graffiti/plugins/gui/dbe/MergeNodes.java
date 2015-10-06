@@ -18,16 +18,15 @@ import java.util.Set;
 import org.AttributeHelper;
 import org.ErrorMsg;
 import org.Vector2d;
-import org.graffiti.editor.MainFrame;
-import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
+import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
-import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelperBio;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.algorithms.RemoveMappingDataAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.SubstanceInterface;
@@ -39,6 +38,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
  */
 public class MergeNodes extends AbstractAlgorithm {
 	
+	private boolean considerSameLabel;
+	private boolean considerCluster;
+	
 	public String getName() {
 		return "Merge Nodes";
 	}
@@ -48,7 +50,6 @@ public class MergeNodes extends AbstractAlgorithm {
 		return "Network.Nodes";
 	}
 	
-	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
@@ -56,36 +57,52 @@ public class MergeNodes extends AbstractAlgorithm {
 				Category.COMPUTATION
 				));
 	}
-
 	
 	@Override
 	public String getDescription() {
-		return "<html>Hint: If you would like to merge frequently occuring nodes, which are recognized by<br>"
-							+ "their identical labels, then this command is not suitable for this task.<br>"
-							+ "Please use the node-processing commands from the 'Tools' tab, instead.<br>"
-							+ "There you will find a node merge-command which processes the edge-connections<br>"
-							+ "and occurrence of nodes with the same label.<br><br>"
-							+ "With this command you may merge nodes into a single node (processing<br>"
-							+ "connections to other nodes and node data-mappings)";
+		return null;
+//		"<html>Hint: If you would like to merge frequently occuring nodes, which are recognized by<br>"
+//							+ "their identical labels, then this command is not suitable for this task.<br>"
+//							+ "Please use the node-processing commands from the 'Tools' tab, instead.<br>"
+//							+ "There you will find a node merge-command which processes the edge-connections<br>"
+//							+ "and occurrence of nodes with the same label.<br><br>"
+//							+ "With this command you may merge nodes into a single node (processing<br>"
+//							+ "connections to other nodes and node data-mappings)";
 	}
 	
 	@Override
 	public Parameter[] getParameters() {
-		return null;
+		Parameter[] params = new Parameter[] {
+				new BooleanParameter(true, "Only with same label", "Consider same label when merging nodes."),
+				new BooleanParameter(false, "Consider Cluster", "Consider cluster inforamtion when merging nodes.")
+		};
+		
+		return params;
 	}
 	
 	@Override
 	public void setParameters(Parameter[] params) {
-		
+		if (params == null) {
+			considerSameLabel = true;
+			considerCluster = false;
+		} else {
+			int i = 0;
+			considerSameLabel = ((BooleanParameter) params[i++]).getBoolean();
+			considerCluster = ((BooleanParameter) params[i++]).getBoolean();
+		}
 	}
 	
 	public void execute() {
-		Collection<Node> workNodes = new ArrayList<Node>(getSelectedOrAllNodes());
+		List<Node> workNodes = new ArrayList<Node>(getSelectedOrAllNodes());
 		graph.getListenerManager().transactionStarted(this);
-		mergeNodesIntoSingleNode(graph, workNodes);
-		graph.getListenerManager().transactionFinished(this, true);
-		GraphHelper.issueCompleteRedrawForGraph(graph);
-		MainFrame.showMessage("Merged " + workNodes.size() + " nodes", MessageType.INFO);
+		
+		if (considerSameLabel) {
+			GraphHelperBio.mergeNodesWithSameLabel(workNodes, false, false, considerCluster);
+		} else {
+			mergeNodesIntoSingleNode(graph, workNodes);
+		}
+		
+		graph.getListenerManager().transactionFinished(this);
 	}
 	
 	public static void mergeNodesIntoSingleNode(Graph graph, Collection<Node> workNodes) {
@@ -130,7 +147,7 @@ public class MergeNodes extends AbstractAlgorithm {
 	}
 	
 	private static void applyDataMappingInformation(List<SubstanceInterface> targetMappingList, Node node,
-						HashMap<SubstanceInterface, String> mapping2chartTitle) {
+			HashMap<SubstanceInterface, String> mapping2chartTitle) {
 		RemoveMappingDataAlgorithm.removeMappingDataFrom(node);
 		int idx = 0;
 		HashSet<String> titles = new HashSet<String>();
@@ -147,13 +164,13 @@ public class MergeNodes extends AbstractAlgorithm {
 	}
 	
 	private static void extractDataMappingInformation(List<SubstanceInterface> targetMappingList,
-						HashMap<SubstanceInterface, String> mapping2chartTitle, Node node) {
+			HashMap<SubstanceInterface, String> mapping2chartTitle, Node node) {
 		Iterable<SubstanceInterface> mappingList = Experiment2GraphHelper.getMappedDataListFromGraphElement(node);
 		if (mappingList != null) {
 			int idx = 0;
 			for (SubstanceInterface mapping : mappingList) {
 				String chartTitle = (String) AttributeHelper.getAttributeValue(node, "charting", "chartTitle" + (++idx),
-									"", "");
+						"", "");
 				if (chartTitle == null || chartTitle.length() <= 0) {
 					chartTitle = AttributeHelper.getLabel(node, null);
 				} else {
@@ -186,14 +203,14 @@ public class MergeNodes extends AbstractAlgorithm {
 			extractDataMappingInformation(targetMappingList, mapping2chartTitle, checkNode);
 			for (Edge undirEdge : checkNode.getUndirectedEdges()) {
 				if (undirEdge.getSource() == checkNode
-									&& !mergedNode.getUndirectedNeighbors().contains(undirEdge.getTarget())) {
+						&& !mergedNode.getUndirectedNeighbors().contains(undirEdge.getTarget())) {
 					if (undirEdge.getTarget() != checkNode)
 						graph.addEdgeCopy(undirEdge, mergedNode, undirEdge.getTarget());
 					else
 						graph.addEdgeCopy(undirEdge, mergedNode, mergedNode);
 				}
 				if (undirEdge.getTarget() == checkNode
-									&& !mergedNode.getUndirectedNeighbors().contains(undirEdge.getSource())) {
+						&& !mergedNode.getUndirectedNeighbors().contains(undirEdge.getSource())) {
 					if (undirEdge.getSource() != checkNode)
 						graph.addEdgeCopy(undirEdge, undirEdge.getSource(), mergedNode);
 					else

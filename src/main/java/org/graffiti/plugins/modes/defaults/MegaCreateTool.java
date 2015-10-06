@@ -333,7 +333,7 @@ public class MegaCreateTool
 		lastMouseEventTime = e.getWhen();
 		
 		if (!SwingUtilities.isLeftMouseButton(e)) {
-			reset();
+//			reset();
 			return;
 		}
 		
@@ -821,6 +821,7 @@ public class MegaCreateTool
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (!SwingUtilities.isLeftMouseButton(e)) {
+			reset();
 			return;
 		}
 		
@@ -854,9 +855,15 @@ public class MegaCreateTool
 		dummyEdge = null;
 		
 		// lastSelectedComp = null;
-		creatingEdge = false;
-		numOfBends = 0;
-		bends = new LinkedHashMapAttribute(GraphicAttributeConstants.BENDS);
+		if (creatingEdge) {
+			creatingEdge = false;
+			numOfBends = 0;
+			bends = new LinkedHashMapAttribute(GraphicAttributeConstants.BENDS);
+		} else {
+			unmarkAll();
+			fireSelectionChanged();
+		}
+		
 	}
 	
 	/**
