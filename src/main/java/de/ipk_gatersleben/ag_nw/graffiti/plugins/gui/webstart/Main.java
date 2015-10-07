@@ -213,7 +213,10 @@ public class Main {
 		
 		PreferenceManager.getInstance().addPreferencingClass(ScanForUpdate.class);
 		
-		ScanForUpdate.issueScanAfterStartup();
+		/*
+		 * no update scan for the Garuda version
+		 */
+//		ScanForUpdate.issueScanAfterStartup();
 		
 		if (SystemInfo.isMac()) {
 			try {
@@ -338,7 +341,7 @@ public class Main {
 		DBEgravistoHelper.DBE_GRAVISTO_NAME = stS + "VANTED" + stE + "&nbsp;-&nbsp;"
 				+ stS + "V" + stE + "isualization&nbsp;and&nbsp;" + stS + "A" + stE + "nalysis&nbsp;of&nbsp;" + stS + "N" + stE + "e" + stS + "t" + stE
 				+ "works&nbsp;<br>containing&nbsp;" + stS + "E" + stE + "xperimental&nbsp;" + stS + "D" + stE + "ata<br>";
-		DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT = "VANTED";
+		DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT = "VANTED for Garuda";
 		DBEgravistoHelper.DBE_INFORMATIONSYSTEM_NAME = "";
 		
 		AttributeHelper.setMacOSsettings(DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT);

@@ -80,5 +80,7 @@
 	<classpathentry exported="true" kind="lib" path="/vanted-lib-repository/jsbml-1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="/vanted-lib-repository/biomodels-wslib-1.21.jar"/>
 	<classpathentry kind="lib" path="/vanted-lib-repository/adaptagrams.jar"/>
+	<classpathentry kind="lib" path="/vanted-lib-repository/GarudaSDK2.0src.jar"/>
+	<classpathentry kind="lib" path="/vanted-lib-repository/jackson-all-1.8.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

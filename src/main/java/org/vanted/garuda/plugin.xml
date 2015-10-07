@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE plugin
+  PUBLIC "-//GRAFFITI/DTD Plugin Descriptin 1.0//EN"
+   "http://vanted.ipk-gatersleben.de/dtd/1.0/plugin.dtd">
+
+<plugin>
+	<author>Matthias Klapperstueck</author>
+	<description>Garuda Extension</description>
+
+	<plugindesc>
+	    <name>Garuda Extension</name>
+        <main>org.vanted.garuda.GarudaPlugin</main>
+        <version>0.1</version>
+        <available>This plugin is part of the graffiti distribution and the Garuda extension.</available>
+    </plugindesc>
+</plugin>
