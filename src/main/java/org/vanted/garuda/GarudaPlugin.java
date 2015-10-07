@@ -1,15 +1,19 @@
 package org.vanted.garuda;
 
-import org.graffiti.plugin.GenericPluginAdapter;
-import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.gui.GraffitiComponent;
 
-public class GarudaPlugin extends GenericPluginAdapter {
+import de.ipk_gatersleben.ag_nw.graffiti.IPK_EditorPluginAdapter;
+
+public class GarudaPlugin extends IPK_EditorPluginAdapter {
 
 	public GarudaPlugin() {
 	
-		this.algorithms = new Algorithm[]{
-				new VantedGarudaExtension()
+//		this.algorithms = new Algorithm[]{
+//				new VantedGarudaExtension()
+//		};
+
+		this.guiComponents = new GraffitiComponent[] {
+				new GarudaToolbar("defaultToolbar")
 		};
-		
 	}
 }

@@ -37,7 +37,8 @@ public class VantedGarudaExtension extends AbstractEditorAlgorithm{
 	GarudaBackend garudaBackend;
 	
 //	private static final String GRAUDA_UUID = "a80b506b-bd15-4c0a-9bc5-061f55e3a360";
-	private static final String GRAUDA_UUID = "a7d0f916-ecd4-4a98-8732-e857f60cbd7b";
+//	private static final String GRAUDA_UUID = "4d62b271-d81d-43fb-849f-65063f2e449c";
+	private static final String GRAUDA_UUID = "a7d0f916-ecd4-4a98-8732-e857f60cbd7b"; //working ID in Garuda
 	
 	private static VantedGarudaExtension instance;
 	
