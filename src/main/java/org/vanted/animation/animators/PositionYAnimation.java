@@ -7,20 +7,20 @@ import org.AttributeHelper;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.graph.Node;
 import org.vanted.animation.ContinuousAnimation;
+import org.vanted.animation.LoopType;
 import org.vanted.animation.data.DoublePoint;
 import org.vanted.animation.interpolators.Interpolator;
 
 public class PositionYAnimation extends ContinuousAnimation<DoublePoint> {
 
-	public PositionYAnimation(Attributable attributable, double duration, Interpolator interpolator, List<DoublePoint> dataPoints) {
-		super(attributable, duration, interpolator, dataPoints);
+	public PositionYAnimation(Attributable attributable, double duration, Interpolator interpolator, List<DoublePoint> dataPoints,
+			int noLoops,LoopType loopType) {
+		super(attributable, duration, interpolator, dataPoints,noLoops,loopType);
 	}
 
 	@Override
-	public void animate(double time) {
-		recalcPreviousIndex(time);
-		double newY = interpolator.interpolate(time, duration, previousIndex, dataPoints);
-		AttributeHelper.setPosition((Node)attributable, new Point2D.Double(AttributeHelper.getPositionX((Node)attributable),newY));
+	protected <T> void animate(double time,T interpolatedValue) {
+		AttributeHelper.setPosition((Node)attributable, new Point2D.Double(AttributeHelper.getPositionX((Node)attributable),(double)interpolatedValue));
 	}
 
 }

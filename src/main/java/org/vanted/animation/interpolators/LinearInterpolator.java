@@ -9,9 +9,8 @@ import org.vanted.animation.data.TimePoint;
  * 
  */
 public class LinearInterpolator extends Interpolator {
-	public LinearInterpolator(LoopType loopType)
-	{
-		super(loopType);
+	public LinearInterpolator()
+	{ 
 	}
 	@Override
 	protected double interpolate(double x, double...y)

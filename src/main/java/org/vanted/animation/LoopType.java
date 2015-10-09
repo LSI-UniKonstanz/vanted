@@ -19,5 +19,5 @@ public enum LoopType {
 	 * Interpolates between the last data points and the points before it.
 	 * Creates a reverse-like a effect, the animation will begin to go backward.
 	 */
-	reverse 
+	swing 
 }

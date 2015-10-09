@@ -6,9 +6,8 @@ import org.vanted.animation.LoopType;
  * 
  */
 public class CubicInterpolator extends Interpolator {
-	public CubicInterpolator(LoopType loopType)
-	{
-		super(loopType);
+	public CubicInterpolator()
+	{ 
 	}
 	
 	@Override

@@ -12,11 +12,11 @@ public abstract class TimePoint<DataValue>
 	{
 		this.time = time;
 		this.dataValue = dataValue;
-	}
+	} 
 	public double getTime()
 	{
 		return time;
-	}
+	} 
 	public void setTime(double time) 
 	{
 		this.time = time;

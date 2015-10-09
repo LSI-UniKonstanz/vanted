@@ -10,7 +10,7 @@ import org.vanted.animation.interpolators.Interpolator;
  * @author - Patrick Shaw
  * 
  */
-public abstract class ContinuousAnimation<DataPointClass extends TimePoint> extends Animation<DataPointClass>
+public abstract class ContinuousAnimation<DataPointType extends TimePoint> extends Animation<DataPointType>
 {
 	protected Interpolator interpolator;
 	/**
@@ -19,20 +19,30 @@ public abstract class ContinuousAnimation<DataPointClass extends TimePoint> exte
 	 * @param duration
 	 * The total duration of the animation.
 	 */
-	public ContinuousAnimation(Attributable attributable,double duration,Interpolator interpolator, List<DataPointClass> dataPoints)
+	public ContinuousAnimation(Attributable attributable,double duration,
+			Interpolator interpolator, List<DataPointType> dataPoints,int noLoops, LoopType loopType)
 	{
-		super(attributable,duration,dataPoints);
+		super(attributable,duration,dataPoints,noLoops,loopType);
 		this.interpolator = interpolator;
 	}
-	/**
-	 * 
-	 */
-	public void setIsCircularData(LoopType loopType)
+	@Override
+	public void update(double time)
 	{
-		interpolator.setLoopType(loopType);
+		if(isFinished(time)){onFinish();return;}
+		if (startTime > time){return;}
+		updateLoopNumber(time);
+		time = getTimeSinceStartOfLoop(time);
+		recalcPreviousIndex(time);
+		animate(time);
 	}
-	public LoopType getIsCircularData()
+	@Override
+	protected void animate(double time)
 	{
-		return interpolator.getLoopType();
+		animate(time,getInterpolatedValue(time));
 	}
+	protected <T> T getInterpolatedValue(double time)
+	{
+		return (T)interpolator.interpolate(time, duration, previousIndex, dataPoints,loopType);
+	}
+	protected abstract <T> void animate(double time, T interpolatedValue); 
 }

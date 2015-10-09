@@ -5,9 +5,8 @@ import org.vanted.animation.LoopType;
  * @author - Patrick Shaw
  * 
  */
-public class CubicHermiteInterpolator extends Interpolator{
-	public CubicHermiteInterpolator(LoopType loopType) {
-		super(loopType);
+public class SmoothCubicInterpolator extends Interpolator{
+	public SmoothCubicInterpolator() { 
 	}
 	@Override
 	public double interpolate(double x, double...y)
@@ -35,4 +34,4 @@ public class CubicHermiteInterpolator extends Interpolator{
 	{
 		return "Cubic Hermite Interpolation";
 	}
-}
+} 

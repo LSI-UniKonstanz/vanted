@@ -6,6 +6,7 @@ import org.AttributeHelper;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.graph.GraphElement;
 import org.vanted.animation.Animation;
+import org.vanted.animation.LoopType;
 import org.vanted.animation.data.BooleanPoint;
 /**
  * 
@@ -21,18 +22,14 @@ public class VisibilityAnimation extends Animation<BooleanPoint>{
 	 * True = Hidden
 	 * False = Visible
 	 */
-	public VisibilityAnimation(Attributable attributable, double duration, List<BooleanPoint> dataPoints) {
-		super(attributable, duration,dataPoints);
+	public VisibilityAnimation(Attributable attributable, double duration, List<BooleanPoint> dataPoints,
+			int noLoops,LoopType loopType) {
+		super(attributable, duration,dataPoints,noLoops,loopType);
 	}
 
 	@Override
 	public void animate(double time) {
-		int oldIndex = previousIndex;
-		recalcPreviousIndex(time);
-		if(oldIndex != previousIndex)
-		{
 			AttributeHelper.setHidden(dataPoints.get(previousIndex).getDataValue(), (GraphElement)attributable);
-		}
 	}
 	
 }

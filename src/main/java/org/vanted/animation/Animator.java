@@ -1,5 +1,6 @@
 package org.vanted.animation;
 import java.awt.Color;
+import java.awt.color.ColorSpace;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,19 +15,19 @@ import org.Vector2d;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
-import org.vanted.animation.animators.FillColourAnimation;
+import org.vanted.animation.animators.FillColorAnimation;
 import org.vanted.animation.animators.FrameThicknessAnimation;
-import org.vanted.animation.animators.LabelColourAnimation;
-import org.vanted.animation.animators.OutlineColourAnimation;
+import org.vanted.animation.animators.LabelColorAnimation;
+import org.vanted.animation.animators.OutlineColorAnimation;
 import org.vanted.animation.animators.Position2DAnimation;
 import org.vanted.animation.animators.SizeAnimation;
 import org.vanted.animation.animators.TestRainbowAlgorithm;
+import org.vanted.animation.data.ColourMode;
 import org.vanted.animation.data.ColourPoint;
 import org.vanted.animation.data.DoublePoint;
 import org.vanted.animation.data.Point2DPoint;
 import org.vanted.animation.data.TimePoint;
-import org.vanted.animation.interpolators.CosignInterpolator;
-import org.vanted.animation.interpolators.CubicHermiteInterpolator;
+import org.vanted.animation.interpolators.CosineInterpolator; 
 import org.vanted.animation.interpolators.CubicInterpolator;
 import org.vanted.animation.interpolators.Interpolator;
 import org.vanted.animation.interpolators.LinearInterpolator;
@@ -36,31 +37,61 @@ import org.vanted.animation.interpolators.SigmoidInterpolator;
  * @author - Patrick Shaw
  * 
  */
-public class Animator {
-	private double endTime = 56;
-	private double currentTime =0;
-	private double speedFactor = 1;
-	private int noLoops = -1;
+public class Animator { 
+	private int fps = 60; // FPS 
+	private int updateRate = (int)Math.ceil(1000.0/(double)fps);
+	private double endTime = 56; // The total amount of time that it takes for the next loop to start in milliseconds
+	private double currentTime =0; // The time elapsed since the animator started animating
+	private double speedFactor = 1; // How fast the animations go.
+	private int noLoops = -1; // Number of loops
+	private int currentLoop = 0;
 	private List<Animation<TimePoint>> animations = new ArrayList<Animation<TimePoint>>();
 	private Graph graph;
 	public Animator(Graph graph, int noLoops)
 	{
 		this.graph = graph;
 		this.noLoops = noLoops;
-		startAnimation();
 	}
-	public int getIsLooping()
+	public void setFPS(int fps)
+	{
+		this.fps = fps;
+		updateRate = (int)((double)TimeUnit.SECONDS.toMillis(1)/(double)fps);
+	}
+	public int getFPS()
+	{
+		return fps;
+	}
+	public double getEndTime()
+	{
+		return endTime;
+	}
+	public void setEndTime(long time,TimeUnit timeUnit)
+	{
+		endTime =   timeUnit.toMillis(time);
+	}
+	public int getNoLoops()
 	{
 		return this.noLoops;
 	}
-	public void setIsLooping(int noLoops)
+	/**
+	 * 
+	 * @param noLoops
+	 * -1 = Infinite loop<br>
+	 * 0 = Doesn't do anything<br>
+	 * 1 = Will do the animation once<Br>
+	 * 2 = Will do the animation twice
+	 */
+	public void setNoLoops(int noLoops)
 	{
 		this.noLoops = noLoops;
 	}
+	/**
+	 * Creates Patrick's test data for a rainbow animation effect.
+	 */
 	public void initialliseTestAnimation()
 	{
 		List<Node> nodes = graph.getNodes();
-		endTime = 56 * nodes.size();
+		endTime = TimeUnit.SECONDS.toMillis(1 * nodes.size());
 		// 0 -> 2
 		// 2 -> 4
 		// 4 -> 1
@@ -93,10 +124,11 @@ public class Animator {
 				Point2D nextPos = AttributeHelper.getPosition(nextNode);
 				double percentageTime = ((double)(q)) / ((double)nodes.size());
 				pointsArray[q] = (new Point2DPoint(percentageTime*endTime,nextPos.getX(),nextPos.getY()));
-				fillArray[q] = new ColourPoint(percentageTime * endTime,TestRainbowAlgorithm.CalcRainbowColour(input));
+				Color fillColour = TestRainbowAlgorithm.CalcRainbowColour(input);
+				fillArray[q] = new ColourPoint(percentageTime * endTime,fillColour);
 				Color outlineColour = TestRainbowAlgorithm.CalcRainbowColour(outlineInput);
 				outlineColour = new Color(outlineColour.getRed() / 2, outlineColour.getGreen() / 2, outlineColour.getBlue() / 2);
-				outlineArray[q] = new ColourPoint(percentageTime * endTime, outlineColour );
+				outlineArray[q] = new ColourPoint(percentageTime * endTime, outlineColour);
 				int shade = (int)(123 + 122*Math.sin(sinX));
 				labelColourArray[q] = new ColourPoint(percentageTime * endTime, new Color(shade,shade,shade));
 				Vector2d size = AttributeHelper.getSize(node);
@@ -109,20 +141,21 @@ public class Animator {
 				input += colourChangeRate;
 				outlineInput-=colourChangeRate;
 				}
-			Position2DAnimation  posAnim = new Position2DAnimation(node,endTime,new CubicInterpolator(LoopType.forward),Arrays.asList(pointsArray));
-			FillColourAnimation fillAnim = new FillColourAnimation(node,endTime,new LinearInterpolator(LoopType.forward), Arrays.asList(fillArray));
-			SizeAnimation sizeAnim = new SizeAnimation(node,endTime, new CubicInterpolator(LoopType.forward), Arrays.asList(sizeArray));
-			OutlineColourAnimation outlineColourAnim = new OutlineColourAnimation(node,endTime,new LinearInterpolator(LoopType.forward), Arrays.asList(outlineArray));
-			LabelColourAnimation labelColourAnim = new LabelColourAnimation(node,endTime,new LinearInterpolator(LoopType.forward),Arrays.asList(labelColourArray),-1);
-			FrameThicknessAnimation thicknessAnim = new FrameThicknessAnimation(node,endTime,new LinearInterpolator(LoopType.forward),Arrays.asList(thicknessArray));
+			Position2DAnimation  posAnim = new Position2DAnimation(node,endTime,new CubicInterpolator(),Arrays.asList(pointsArray), -1, LoopType.forward);
+			FillColorAnimation fillAnim = new FillColorAnimation(node,endTime,new LinearInterpolator(), Arrays.asList(fillArray), -1, LoopType.swing, ColourMode.rgb);
+			SizeAnimation sizeAnim = new SizeAnimation(node,endTime, new CubicInterpolator(), Arrays.asList(sizeArray), -1, LoopType.swing);
+			OutlineColorAnimation outlineColourAnim = new OutlineColorAnimation(node,endTime,new LinearInterpolator(), Arrays.asList(outlineArray), -1, LoopType.swing, ColourMode.rgb);
+			LabelColorAnimation labelColourAnim = new LabelColorAnimation(node,endTime,new LinearInterpolator(),Arrays.asList(labelColourArray),-1, -1, LoopType.swing,ColourMode.hsb);
+			FrameThicknessAnimation thicknessAnim = new FrameThicknessAnimation(node,endTime,new LinearInterpolator(),Arrays.asList(thicknessArray), -1, LoopType.swing);
 			//System.out.println(posAnim.toString());
 			addAnimation(posAnim);
-			addAnimation(fillAnim);
+			//addAnimation(fillAnim);
 			//addAnimation(sizeAnim);
-			addAnimation(outlineColourAnim);
-			addAnimation(labelColourAnim);
+			//addAnimation(outlineColourAnim);
+			//addAnimation(labelColourAnim);
 			//addAnimation(thicknessAnim);
 		}
+		
 		List<Edge> edges = (List<Edge>) graph.getEdges();
 		double colourPointsPerEdge = 1*colourPointsPerNode * (double)nodes.size() / (double)edges.size();
 		for(int i = 0; i<edges.size();i++)
@@ -139,34 +172,28 @@ public class Animator {
 				time+=56;
 				input1 += colourChangeRate;
 			}
-			OutlineColourAnimation outlineColourAnim = new OutlineColourAnimation(edge,endTime,new LinearInterpolator(LoopType.forward),Arrays.asList(colours));
-			FrameThicknessAnimation thicknessAnim = new FrameThicknessAnimation(edge,endTime,new CosignInterpolator(LoopType.forward), Arrays.asList(thickness));
+			OutlineColorAnimation outlineColourAnim = new OutlineColorAnimation(edge,endTime,new LinearInterpolator(),Arrays.asList(colours), -1, LoopType.swing,ColourMode.rgb);
+			FrameThicknessAnimation thicknessAnim = new FrameThicknessAnimation(edge,endTime,new CosineInterpolator(), Arrays.asList(thickness), - 1, LoopType.swing);
 			//addAnimation(thicknessAnim);
-			addAnimation(outlineColourAnim);
+			//addAnimation(outlineColourAnim);
 		}
 	}
-	private boolean notInit = true;
 	private final ScheduledExecutorService scheduler =
 		     Executors.newScheduledThreadPool(1);
 
-		   public void startAnimation() {
+		   public void start() {
 		     final Runnable animatorService = new Runnable() {
 		       public void run()
 		       { 
 			    	   update(); 
-		    	 if(currentTime == 20 && notInit)
-		    	 {
-		    		 initialliseTestAnimation();
-		    		 notInit = false;
-		    	 }
 		       }
 		     };
 		     final ScheduledFuture<?> animatorHandle =
-		       scheduler.scheduleAtFixedRate(animatorService, 10, 17, TimeUnit.MILLISECONDS);
+		       scheduler.scheduleAtFixedRate(animatorService, 0, updateRate, TimeUnit.MILLISECONDS);
 		   }
 	/**
-	 * Call this method any time you want to add an animation.
-	 * Can be called while animations are taking place.
+	 * Call this method any time you want to add an animation.<br>
+	 * Can be called while animations are taking place.<br>
 	 * Call it whenever you want.
 	 */
 	public void addAnimation(Animation animation)
@@ -174,9 +201,9 @@ public class Animator {
 		animations.add(animation);
 	}
 	/**
-	 * Call this method any time you want to remove an animation.
-	 * Can be called while animations are taking place. However,
-	 * the attribute will not reset to it's original value prior
+	 * Call this method any time you want to remove an animation.<br>
+	 * Can be called while animations are taking place. However,<br>
+	 * the attribute will not reset to it's original value prior<br>
 	 * to the animation if removed.
 	 */
 	public void removeAnimation(Animation animation)
@@ -185,22 +212,46 @@ public class Animator {
 	}
 	private void update()
 	{
-		graph.getListenerManager().transactionStarted(this);
-		Iterator<Animation<TimePoint>> animIterator = animations.iterator();
-		while(animIterator.hasNext())
-		{
-			animIterator.next().animate(currentTime);
-		}
-		graph.getListenerManager().transactionFinished(this);
-		currentTime += 1 * speedFactor;
-		double oldTime = currentTime;
-		currentTime %= endTime;
-		if(oldTime != currentTime)
-		{
-			for(int i = 0 ; i < animations.size();i++)
+			// Render graph...
+			graph.getListenerManager().transactionStarted(this);
+			Iterator<Animation<TimePoint>> animIterator = animations.iterator();
+			while(animIterator.hasNext())
 			{
-				animations.get(i).reset();
+				animIterator.next().update(currentTime);
 			}
-		}
+			graph.getListenerManager().transactionFinished(this);
+			// Increase the time
+			currentTime += updateRate * speedFactor;
+			// Check if the current loop has finished
+			double oldTime = currentTime; 
+			currentTime %= endTime; 
+			if(oldTime != currentTime)
+			{ 
+				currentTime = 0;
+				currentLoop++;
+			}
+			// Check if we have looped enough time
+			if(noLoops != -1)
+			{
+				if(noLoops < currentLoop)
+				{
+					stop();
+				}
+			}
+	}
+	public void stop()
+	{
+		scheduler.shutdown();
+	}
+	public void restart()
+	{
+		currentTime = 0;
+		currentLoop = 0;
+		start();
+	}
+	public void reset()
+	{
+		restart();
+		stop();
 	}
 }

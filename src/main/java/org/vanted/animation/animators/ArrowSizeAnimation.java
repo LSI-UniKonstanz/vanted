@@ -4,6 +4,7 @@ import java.util.List;
 import org.AttributeHelper;
 import org.graffiti.graph.Edge;
 import org.vanted.animation.ContinuousAnimation;
+import org.vanted.animation.LoopType;
 import org.vanted.animation.data.DoublePoint;
 import org.vanted.animation.interpolators.Interpolator;
 /**
@@ -12,15 +13,14 @@ import org.vanted.animation.interpolators.Interpolator;
  * 
  */
 public class ArrowSizeAnimation extends ContinuousAnimation<DoublePoint> {
-	public ArrowSizeAnimation(Edge edge,double duration,Interpolator interpolator,List<DoublePoint> dataPoints) {
-		super(edge,duration,interpolator,dataPoints);
+	public ArrowSizeAnimation(Edge edge,double duration,Interpolator interpolator,List<DoublePoint> dataPoints,
+			int noLoops,LoopType loopType) {
+		super(edge,duration,interpolator,dataPoints,noLoops,loopType);
 	}
 
 	@Override
-	public void animate(double time) {
-		recalcPreviousIndex(time);
-		double newSize = interpolator.interpolate(time, duration, previousIndex, dataPoints);
-		AttributeHelper.setArrowSize((Edge)attributable,newSize);
+	protected <T> void animate(double time, T interpolatedValue) {
+		AttributeHelper.setArrowSize((Edge)attributable,(double)interpolatedValue);
 	}
 
 }

@@ -6,21 +6,17 @@ import org.AttributeHelper;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.graph.Edge;
 import org.vanted.animation.Animation;
+import org.vanted.animation.LoopType;
 import org.vanted.animation.data.StringPoint;
 
 public class LabelTextAnimation extends Animation<StringPoint> {
-	public LabelTextAnimation(Attributable attributable, double duration, List<StringPoint> dataPoints) {
-		super(attributable, duration,dataPoints);
+	public LabelTextAnimation(Attributable attributable, double duration, List<StringPoint> dataPoints,
+			int noLoops,LoopType loopType) {
+		super(attributable, duration,dataPoints,noLoops,loopType);
 	}
 
 	@Override
-	public void animate(double time) {
-		int oldIndex = previousIndex;
-		recalcPreviousIndex(time);
-		if(oldIndex == previousIndex)
-		{
+	protected void animate(double time) {
 			AttributeHelper.setLabel((Edge)attributable, dataPoints.get(previousIndex).getValue());
-		}
 	}
-
 }
