@@ -28,7 +28,6 @@ import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.ColorAttribute;
-import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.graphics.NodeGraphicAttribute;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiViewComponent;
@@ -45,8 +44,8 @@ import org.graffiti.util.InstanceLoader;
  * @version $Revision: 1.27 $
  */
 public class NodeComponent
-					extends AbstractGraphElementComponent
-					implements NodeComponentInterface {
+		extends AbstractGraphElementComponent
+		implements NodeComponentInterface {
 	// ~ Constructors ===========================================================
 	private static final long serialVersionUID = -303544019220632035L;
 	
@@ -86,7 +85,7 @@ public class NodeComponent
 			adjustComponentSize();
 		} catch (ShapeNotFoundException e) {
 			throw new RuntimeException("this should never happen since the " +
-								"standard node shape should always " + "exist." + e);
+					"standard node shape should always " + "exist." + e);
 		}
 	}
 	
@@ -101,34 +100,17 @@ public class NodeComponent
 	 */
 	@Override
 	public synchronized void graphicAttributeChanged(Attribute attr)
-						throws ShapeNotFoundException {
+			throws ShapeNotFoundException {
 		if (attr != null) {
 			String id = attr.getId();
-			if (id.equals(COORDINATE)) {
-				this.adjustComponentSize();
+			if (id.equals(ROUNDING) || id.equals(SHAPE) || id.equals(GRAPHICS) || id.equals(GRADIENT)) {
+				createNewShape(coordinateSystem);
 			} else
-				if (id.equals(FRAMETHICKNESS)) {
-					this.adjustComponentSize();
-				} else
-					if (attr.getPath().startsWith(Attribute.SEPARATOR + GRAPHICS +
-										Attribute.SEPARATOR + COORDINATE)) {
-						adjustComponentSize();
-					} else
-						if (id.equals(DIMENSION) || id.equals(GraphicAttributeConstants.HEIGHT) || id.equals(GraphicAttributeConstants.WIDTH)) {
-							((NodeShape) this.shape).buildShape(
-												(NodeGraphicAttribute) attr.getAttributable().getAttribute(GRAPHICS));
-							this.adjustComponentSize();
-						} else
-							if (attr.getPath().startsWith(GRAPHICS + Attribute.SEPARATOR + PORTS)) {
-								// ??? TODO (are ports diplayed? ???
-								// evtl nur einzelne Kanten updaten?
-								// this.updateDependentComponents();
-							} else
-								if ((id.equals(LINEMODE) || id.equals(FRAMECOLOR) ||
-													id.equals(FILLCOLOR) || id.equals(ROUNDING) || id.equals(SHAPE) || id.equals(GRAPHICS))) {
-									createNewShape(coordinateSystem);
-									adjustComponentSize();
-								}
+				if (id.equals(LINEMODE)) {
+					updateStroke();
+					
+				}
+			adjustComponentSize();
 			
 			// update attribute components like labels:
 			for (GraffitiViewComponent gvc : attributeComponents.values()) {
@@ -137,19 +119,19 @@ public class NodeComponent
 				attrComp.setGraphElementShape(shape);
 				attrComp.attributeChanged(attr);
 			}
-
-			/* only update dependend component if we're not finishing a transaction
+			
+			/*
+			 * only update dependend component if we're not finishing a transaction
 			 * Because during a transaction it happens, that each node will update
 			 * its dep. components, which can easily result in multiple recreation
 			 * of dep. components (like edges). This slows transaction very much down.
-			 * 
-			 *  This new approach goes that the View will collect all depenend components
-			 *  once and update them in one go.
+			 * This new approach goes that the View will collect all depenend components
+			 * once and update them in one go.
 			 */
-			if(getParent() != null && getParent() instanceof GraffitiView) {
-				if( ! ((GraffitiView)getParent()).isFinishingTransacation)
+			if (getParent() != null && getParent() instanceof GraffitiView) {
+				if (!((GraffitiView) getParent()).isFinishingTransacation)
 					updateRelatedEdgeComponents();
-					
+				
 			} else {
 				updateRelatedEdgeComponents();
 			}
@@ -166,7 +148,6 @@ public class NodeComponent
 	@Override
 	protected void drawShape(Graphics g) {
 		
-		
 //		logger.debug("graph id " + getGraphElement().getGraph().getName() + ", node id:" + getGraphElement().getID() + ", border:" + getBorder().toString());
 		// super.drawShape(g);
 		Graphics2D drawArea = (Graphics2D) g;
@@ -177,21 +158,8 @@ public class NodeComponent
 		if (nodeAttr == null)
 			nodeAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
 		
-		// outline
-		// Stroke backupStroke = drawArea.getStroke();
-		float frameThickness = (float) nodeAttr.getFrameThickness();
-		if (frameThickness > 0) {
-			if (stroke == null || (Math.abs((lastStrokeWidth - frameThickness)) > 0.0001)) {
-				lastStrokeWidth = frameThickness;
-				stroke = new BasicStroke(lastStrokeWidth,
-									DEFAULT_CAP_R, DEFAULT_JOIN, DEFAULT_MITER,
-									nodeAttr.getLineMode().getDashArray(),
-									nodeAttr.getLineMode().getDashPhase());
-			}
-			if(getViewDrawMode() == DrawMode.NORMAL) {
-				drawArea.setStroke(stroke);
-			}
-		}
+		if (stroke != null)
+			drawArea.setStroke(stroke);
 		
 		// draw background image
 		// fill the shape
@@ -226,13 +194,13 @@ public class NodeComponent
 		 * must not be transparent because otherwise would lead to
 		 * problems with overlapping fill and frame
 		 */
-
+		
 		if (drawFrame) {
 			drawArea.setPaint(framePaint);
 			drawArea.draw(shape);
 		}
 		
-		if(getViewDrawMode() == DrawMode.NORMAL) {
+		if (getViewDrawMode() == DrawMode.NORMAL) {
 			if (shape instanceof PolygonalNodeShape) {
 				PolygonalNodeShape pp = (PolygonalNodeShape) shape;
 				if (pp.ignorePoints != null && pp.ignorePoints.size() > 0) {
@@ -240,7 +208,7 @@ public class NodeComponent
 					drawArea.fillPolygon(pp.getIgnorePolygon());
 				}
 			}
-
+			
 			if (shape instanceof ProvidesAdditonalDrawingShapes) {
 				Collection<Shape> postShapes = ((ProvidesAdditonalDrawingShapes) shape).getPostBorderShapes();
 				if (postShapes != null)
@@ -265,7 +233,7 @@ public class NodeComponent
 	 */
 	@Override
 	protected void recreate()
-						throws ShapeNotFoundException {
+			throws ShapeNotFoundException {
 		if (!this.graphElement.getAttributes().getCollection().containsKey(GRAPHICS)) {
 			Node n = (Node) graphElement;
 			AttributeHelper.setDefaultGraphicsAttribute(n, 100, 100);
@@ -289,6 +257,7 @@ public class NodeComponent
 		newShape.setCoordinateSystem(coordinateSystem);
 		newShape.buildShape(geAttr);
 		this.shape = newShape;
+		
 		this.adjustComponentSize();
 		
 		int maxR = getHeight() > getWidth() ? getHeight() : getWidth();
@@ -299,7 +268,7 @@ public class NodeComponent
 		double epsilon = 0.0001;
 		if (nodeAttr.getUseGradient() > epsilon)
 			rgp = new RoundGradientPaint(nodeAttr.getDimension().getWidth() * nodeAttr.getUseGradient(), nodeAttr.getDimension().getHeight()
-								* nodeAttr.getUseGradient(), nodeAttr.getFillcolor().getColor(), new Point2D.Double(0, maxR), nodeAttr.getFramecolor().getColor());
+					* nodeAttr.getUseGradient(), nodeAttr.getFillcolor().getColor(), new Point2D.Double(0, maxR), nodeAttr.getFramecolor().getColor());
 		else
 			if (nodeAttr.getUseGradient() < -1) {
 				Point2D p1 = new Point2D.Double(0, nodeAttr.getDimension().getHeight() * (1 + 1 + nodeAttr.getUseGradient()));
@@ -316,6 +285,19 @@ public class NodeComponent
 					rgp = new GradientPaint(p1, c1, p2, c2);
 				} else
 					rgp = null;
+		
+		updateStroke();
+	}
+	
+	private void updateStroke() {
+		float frameThickness = (float) nodeAttr.getFrameThickness();
+		if (frameThickness > 0) {
+			lastStrokeWidth = frameThickness;
+			stroke = new BasicStroke(lastStrokeWidth,
+					DEFAULT_CAP_R, DEFAULT_JOIN, DEFAULT_MITER,
+					nodeAttr.getLineMode().getDashArray(),
+					nodeAttr.getLineMode().getDashPhase());
+		}
 	}
 	
 	/**
@@ -329,7 +311,7 @@ public class NodeComponent
 		double xE = shape.getXexcess();
 		double yE = shape.getYexcess();
 		setBounds((int) (bounds.getX() + offA - xE), (int) (bounds.getY() + offA - yE),
-							(int) (bounds.getWidth() + offB + xE * 2d), (int) (bounds.getHeight() + offB + yE * 2d));
+				(int) (bounds.getWidth() + offB + xE * 2d), (int) (bounds.getHeight() + offB + yE * 2d));
 		
 	}
 	
@@ -340,7 +322,7 @@ public class NodeComponent
 	 *            DOCUMENT ME!
 	 */
 	protected void updateRelatedEdgeComponents() {
-
+		
 		synchronized (dependentComponents) {
 			for (Iterator<?> it = dependentComponents.iterator(); it.hasNext();) {
 				EdgeComponent ec = null;
@@ -350,15 +332,14 @@ public class NodeComponent
 					ec.updateShape();
 				} catch (ClassCastException cce) {
 					ErrorMsg.addErrorMessage(
-										"Only EdgeComponents should be registered as dependent components. " +
-															"Others should probably be attributeComponents!" + cce);
+							"Only EdgeComponents should be registered as dependent components. " +
+									"Others should probably be attributeComponents!" + cce);
 				}
 			}
 		}
 		
 	}
 	
-
 	@Override
 	public String getToolTipText() {
 		try {

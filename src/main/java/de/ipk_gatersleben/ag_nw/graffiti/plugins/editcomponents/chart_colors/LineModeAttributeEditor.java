@@ -7,8 +7,6 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.chart_colors;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -22,7 +20,7 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
  *         (c) 2004 IPK-Gatersleben
  */
 public class LineModeAttributeEditor extends AbstractValueEditComponent {
-	private JComboBox guiComp;
+	private JComboBox<LineModeSetting> guiComp;
 	
 	private boolean changed = false;
 	
@@ -35,19 +33,19 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 	
 	private LineModeSetting[] getPossibleLineModes() {
 		return new LineModeSetting[] {
-							null,
-							new LineModeSetting(0, 0),
-							new LineModeSetting(5, 5),
-							new LineModeSetting(10, 10),
-							new LineModeSetting(20, 20),
-							new LineModeSetting(10, 5),
-							new LineModeSetting(5, 10),
-							new LineModeSetting(20, 10),
-							new LineModeSetting(10, 20) };
+				null,
+				new LineModeSetting(0, 0),
+				new LineModeSetting(5, 5),
+				new LineModeSetting(10, 10),
+				new LineModeSetting(20, 20),
+				new LineModeSetting(10, 5),
+				new LineModeSetting(5, 10),
+				new LineModeSetting(20, 10),
+				new LineModeSetting(10, 20) };
 	}
 	
 	private void setGUI(LineModeAttribute lma, boolean showEmpty) {
-		guiComp = new JComboBox(getLineModes()) {
+		guiComp = new JComboBox<LineModeSetting>(getLineModes()) {
 			private static final long serialVersionUID = 1L;
 			
 			@Override
@@ -64,17 +62,12 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 				return res;
 			}
 		};
-		
 		guiComp.setRenderer(new LineModeCellRenderer());
 		guiComp.setOpaque(false);
-		guiComp.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				changed = true;
-			}
-		});
+		
 	}
 	
-	private Object[] getLineModes() {
+	private LineModeSetting[] getLineModes() {
 		return knownLineModes;
 	}
 	
@@ -88,7 +81,7 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 		if (matching != null)
 			guiComp.setSelectedItem(matching);
 		else
-			guiComp.setSelectedIndex(0);
+			guiComp.setSelectedIndex(1);
 	}
 	
 	private LineModeSetting getMatchingLineMode(LineModeAttribute lma) {
@@ -113,8 +106,33 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 	
 	public void setValue() {
 		LineModeAttribute lma = (LineModeAttribute) getDisplayable();
+		// check, if attribute value is different from this selected linemodeentry
+		// before firing costly transaction changes
+		float[] attrDashArray = lma.getDashArray();
+		float[] currentDashArray = getCurrentDashArray();
+		
+		// catch the case, where multiple edges/nodes are selected with different 
+		// linemodes and it wasn't changed 
+		// the special listitem '~' returns null and means the user didn't change it
+		changed = false;
+		if (currentDashArray == null && attrDashArray == null) {
+			changed = false;
+		} else
+			if (currentDashArray == null && attrDashArray != null) {
+				changed = true;
+			} else
+				if (attrDashArray != null && currentDashArray != null && attrDashArray.length == currentDashArray.length) {
+					for (int i = 0; i < attrDashArray.length; i++)
+						if (attrDashArray[i] != currentDashArray[i])
+							changed = true;
+				}
+				else {
+					changed = true;
+				}
+		
 		if (changed && getActiveLineMode() != null && !getActiveLineMode().isEmptyValue()) {
 			lma.setDashArray(getCurrentDashArray());
+			lma.setValue(lma.getValue());
 		}
 	}
 	
@@ -126,6 +144,8 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 	}
 	
 	private float[] getCurrentDashArray() {
+		if (getActiveLineMode() == null)
+			return null;
 		return getActiveLineMode().getDashArray();
 	}
 }

@@ -1444,6 +1444,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 			status.setCurrentStatusValueFine(s3);
 		}
 		
+		getGraph().setModified(true);
 		// ToolButton.requestToolButtonFocus();
 		isFinishingTransacation = false;
 	}

@@ -91,6 +91,26 @@ public class Dash {
 	public float getDashPhase() {
 		return dashPhase;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Dash otherDash = (Dash) obj;
+		if (Math.abs(otherDash.dashPhase - dashPhase) > Double.MIN_NORMAL)
+			return false;
+		
+		if (otherDash.dashArray == null && dashArray == null)
+			return true;
+		
+		if (otherDash.dashArray != null && dashArray != null && otherDash.dashArray.length == dashArray.length) {
+			for (int i = 0; i < dashArray.length; i++) {
+				if (Math.abs(otherDash.dashArray[i] - dashArray[i]) > Double.MIN_NORMAL)
+					return false;
+			}
+			return true;
+		} else
+			return false;
+	}
+	
 }
 
 // ------------------------------------------------------------------------------
