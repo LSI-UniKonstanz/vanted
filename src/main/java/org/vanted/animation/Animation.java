@@ -38,12 +38,12 @@ public abstract class Animation<DataPointClass extends TimePoint> {
 			double duration, List<DataPointClass> dataPoints, 
 			int noLoops, LoopType loopType) {
 		this.attributable = attributable;
-		this.setDuration(duration); 
+		this.setLoopDuration(duration); 
 		this.setDataPoints(dataPoints);
 		this.setNoLoops(noLoops);
 		this.setLoopType(loopType);
 	}
-	public void setDuration(double duration)
+	public void setLoopDuration(double duration)
 	{
 		this.loopDuration = duration;
 		updateEndTime();
@@ -52,6 +52,10 @@ public abstract class Animation<DataPointClass extends TimePoint> {
 	{
 		this.loopDuration = timeUnit.toMillis(duration);
 		updateEndTime();
+	}
+	public double getLoopDuration()
+	{
+		return this.loopDuration;
 	}
 	public void setNoLoops(int noLoops)
 	{
@@ -83,10 +87,6 @@ public abstract class Animation<DataPointClass extends TimePoint> {
 	protected void onFinish()
 	{
 		
-	}
-	public double getLoopDuration()
-	{
-		return this.loopDuration;
 	}
 	public double getEndTime()
 	{
