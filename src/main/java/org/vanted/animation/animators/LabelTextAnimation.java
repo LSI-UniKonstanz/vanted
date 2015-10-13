@@ -10,9 +10,9 @@ import org.vanted.animation.LoopType;
 import org.vanted.animation.data.StringPoint;
 
 public class LabelTextAnimation extends Animation<StringPoint> {
-	public LabelTextAnimation(Attributable attributable, double duration, List<StringPoint> dataPoints,
+	public LabelTextAnimation(Attributable attributable,double startTime, double duration, List<StringPoint> dataPoints,
 			int noLoops,LoopType loopType) {
-		super(attributable, duration,dataPoints,noLoops,loopType);
+		super(attributable,startTime, duration,dataPoints,noLoops,loopType);
 	}
 
 	@Override

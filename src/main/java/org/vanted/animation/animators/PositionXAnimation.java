@@ -10,9 +10,9 @@ import org.vanted.animation.data.DoublePoint;
 import org.vanted.animation.interpolators.Interpolator;
 public class PositionXAnimation extends ContinuousAnimation<DoublePoint> {
 
-	public PositionXAnimation(Node attributable, double duration,Interpolator interpolator, List<DoublePoint> dataPoints,
+	public PositionXAnimation(Node attributable,double startTime, double duration,Interpolator interpolator, List<DoublePoint> dataPoints,
 			int noLoops,LoopType loopType) {
-		super(attributable, duration,interpolator, dataPoints,noLoops,loopType);
+		super(attributable,startTime, duration,interpolator, dataPoints,noLoops,loopType);
 	}
 
 	@Override

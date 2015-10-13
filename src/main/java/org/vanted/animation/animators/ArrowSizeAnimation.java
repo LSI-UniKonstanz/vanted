@@ -13,9 +13,9 @@ import org.vanted.animation.interpolators.Interpolator;
  * 
  */
 public class ArrowSizeAnimation extends ContinuousAnimation<DoublePoint> {
-	public ArrowSizeAnimation(Edge edge,double duration,Interpolator interpolator,List<DoublePoint> dataPoints,
+	public ArrowSizeAnimation(Edge edge,double startTime,double duration,Interpolator interpolator,List<DoublePoint> dataPoints,
 			int noLoops,LoopType loopType) {
-		super(edge,duration,interpolator,dataPoints,noLoops,loopType);
+		super(edge,startTime,duration,interpolator,dataPoints,noLoops,loopType);
 	}
 
 	@Override

@@ -16,10 +16,10 @@ import org.vanted.animation.interpolators.Interpolator;
  */
 public class Position2DAnimation extends ContinuousAnimation<Point2DPoint>
 {
-	public Position2DAnimation(Node node,double duration,Interpolator interpolator, List<Point2DPoint> dataPoints,
+	public Position2DAnimation(Node node,double startTime,double duration,Interpolator interpolator, List<Point2DPoint> dataPoints,
 			int noLoops,LoopType loopType)
 	{
-		super(node,duration,interpolator,dataPoints,noLoops,loopType);
+		super(node,startTime,duration,interpolator,dataPoints,noLoops,loopType);
 	}
 	@Override
 	protected <T>void animate(double time,T interpolatedValue)

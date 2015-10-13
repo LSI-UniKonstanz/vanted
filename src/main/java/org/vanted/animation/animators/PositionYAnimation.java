@@ -13,9 +13,9 @@ import org.vanted.animation.interpolators.Interpolator;
 
 public class PositionYAnimation extends ContinuousAnimation<DoublePoint> {
 
-	public PositionYAnimation(Attributable attributable, double duration, Interpolator interpolator, List<DoublePoint> dataPoints,
+	public PositionYAnimation(Attributable attributable,double startTime, double duration, Interpolator interpolator, List<DoublePoint> dataPoints,
 			int noLoops,LoopType loopType) {
-		super(attributable, duration, interpolator, dataPoints,noLoops,loopType);
+		super(attributable,startTime, duration, interpolator, dataPoints,noLoops,loopType);
 	}
 
 	@Override

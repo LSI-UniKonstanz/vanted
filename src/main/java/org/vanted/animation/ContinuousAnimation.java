@@ -19,10 +19,10 @@ public abstract class ContinuousAnimation<DataPointType extends TimePoint> exten
 	 * @param duration
 	 * The total duration of the animation.
 	 */
-	public ContinuousAnimation(Attributable attributable,double duration,
+	public ContinuousAnimation(Attributable attributable,double startTime,double duration,
 			Interpolator interpolator, List<DataPointType> dataPoints,int noLoops, LoopType loopType)
 	{
-		super(attributable,duration,dataPoints,noLoops,loopType);
+		super(attributable,startTime,duration,dataPoints,noLoops,loopType);
 		this.interpolator = interpolator;
 	}
 	@Override
@@ -32,6 +32,8 @@ public abstract class ContinuousAnimation<DataPointType extends TimePoint> exten
 		if (startTime > time){return;}
 		updateLoopNumber(time);
 		time = getTimeSinceStartOfLoop(time);
+
+		//System.out.println(time);
 		recalcPreviousIndex(time);
 		animate(time);
 	}
@@ -42,7 +44,7 @@ public abstract class ContinuousAnimation<DataPointType extends TimePoint> exten
 	}
 	protected <T> T getInterpolatedValue(double time)
 	{
-		return (T)interpolator.interpolate(time, duration, previousIndex, dataPoints,loopType);
+		return (T)interpolator.interpolate(time, loopDuration, previousIndex, dataPoints,loopType);
 	}
 	protected abstract <T> void animate(double time, T interpolatedValue); 
 }

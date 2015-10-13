@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Vector;
 
 import org.vanted.animation.LoopType;
-import org.vanted.animation.data.ColourMode;
-import org.vanted.animation.data.ColourPoint;
+import org.vanted.animation.data.ColorMode;
+import org.vanted.animation.data.ColorPoint;
 import org.vanted.animation.data.DoublePoint;
 import org.vanted.animation.data.Point2DPoint;
 import org.vanted.animation.data.TimePoint;
@@ -42,6 +42,7 @@ public abstract class Interpolator
 	 * @return
 	 * Returns a set of indexes relative to the {@code previousIndex}.
 	 */
+	static String oldString = "";
 		protected <DataPointType,T extends TimePoint<DataPointType>>int[] getPointIndexes(List<T> dataPoints, int previousIndex, LoopType loopType)
 		{
 			int pointsBefore = getPointsBefore();
@@ -78,6 +79,10 @@ public abstract class Interpolator
 					break;
 				}
 			}
+			//String newString =Arrays.toString(indexes);
+			//if (newString.equals(oldString) == false){
+			//System.out.println(newString);}
+			//oldString = newString;
 			return indexes;
 		}
 		/** 
@@ -157,11 +162,11 @@ public abstract class Interpolator
 			return getNormalizedTime(time,duration,pointsUsed.get(getPointsBefore()), pointsUsed.get(getPointsBefore() + 1));
 		}
 		
-		public Color interpolateColour(double time, double duration, int previousIndex,
-				List<ColourPoint> dataPoints, LoopType loopType, ColourMode transitionMode)
+		public Color interpolateColor(double time, double duration, int previousIndex,
+				List<ColorPoint> dataPoints, LoopType loopType, ColorMode transitionMode)
 		{
-			List<ColourPoint> pointsUsed = getPointsUsed(dataPoints,previousIndex,loopType);
-			ColourPoint firstPoint = pointsUsed.get(0);
+			List<ColorPoint> pointsUsed = getPointsUsed(dataPoints,previousIndex,loopType);
+			ColorPoint firstPoint = pointsUsed.get(0);
 			double normalizedTime = getNormalizedTime(time,duration,pointsUsed);
 			double[][] interpolationStructure = toDataValues(pointsUsed); 
 			double firstValues[] = firstPoint.getDoubleValues(); 
@@ -231,7 +236,7 @@ public abstract class Interpolator
 			double normalizedTime = getNormalizedTime(time,duration,pointsUsed);
 			return (ReturnType) interpolate(normalizedTime,pointsUsed);
 		}
-		private <ReturnType,DataPointType extends TimePoint<ReturnType>> ReturnType interpolate(double x, List<DataPointType> y)
+		protected <ReturnType,DataPointType extends TimePoint<ReturnType>> ReturnType interpolate(double t, List<DataPointType> y)
 		{
 			DataPointType firstPoint = y.get(0);
 			double firstValues[] = firstPoint.getDoubleValues();
@@ -239,7 +244,7 @@ public abstract class Interpolator
 			double newValues[] = new double[firstValues.length];
 			for(int q = 0; q < firstValues.length;q++)
 			{
-				newValues[q] = interpolate(x, interpolationStructure[q]);
+				newValues[q] = interpolate(t, interpolationStructure[q]);
 			}
 			return firstPoint.toDataValue(newValues);
 		}

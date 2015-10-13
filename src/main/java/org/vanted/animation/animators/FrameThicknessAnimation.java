@@ -13,9 +13,9 @@ import org.vanted.animation.interpolators.Interpolator;
  * 
  */
 public class FrameThicknessAnimation extends ContinuousAnimation<DoublePoint> {
-	public FrameThicknessAnimation(GraphElement attributable,double duration,Interpolator interpolator, List<DoublePoint> dataPoints,
+	public FrameThicknessAnimation(GraphElement attributable,double startTime,double duration,Interpolator interpolator, List<DoublePoint> dataPoints,
 			int noLoops,LoopType loopType) {
-		super(attributable,duration,interpolator,dataPoints,noLoops,loopType);
+		super(attributable,startTime,duration,interpolator,dataPoints,noLoops,loopType);
 	}
 	
 	@Override

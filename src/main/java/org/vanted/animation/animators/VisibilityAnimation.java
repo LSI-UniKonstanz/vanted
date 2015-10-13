@@ -22,9 +22,9 @@ public class VisibilityAnimation extends Animation<BooleanPoint>{
 	 * True = Hidden
 	 * False = Visible
 	 */
-	public VisibilityAnimation(Attributable attributable, double duration, List<BooleanPoint> dataPoints,
+	public VisibilityAnimation(Attributable attributable,double startTime, double duration, List<BooleanPoint> dataPoints,
 			int noLoops,LoopType loopType) {
-		super(attributable, duration,dataPoints,noLoops,loopType);
+		super(attributable,startTime, duration,dataPoints,noLoops,loopType);
 	}
 
 	@Override

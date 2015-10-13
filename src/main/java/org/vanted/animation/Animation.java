@@ -1,5 +1,7 @@
 package org.vanted.animation;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -13,11 +15,11 @@ import org.vanted.animation.data.TimePoint;
  */
 public abstract class Animation<DataPointClass extends TimePoint> {
 	protected int previousIndex = 0; 
-	protected double duration; 
+	protected double loopDuration; 
 	protected int noLoops; 
 	protected double startTime;
 	protected Attributable attributable; 
-	protected List<DataPointClass> dataPoints;
+	protected List<DataPointClass> dataPoints; 
 	protected double originalPointTimes[];
 	protected double endTime;
 	protected int currentLoopNumber;
@@ -31,8 +33,10 @@ public abstract class Animation<DataPointClass extends TimePoint> {
 	 * @param duration
 	 * @param dataPoints
 	 */
-	public Animation(Attributable attributable, double startTime,
-			double duration, List<DataPointClass> dataPoints, int noLoops, LoopType loopType) {
+	public Animation(
+			Attributable attributable, double startTime,
+			double duration, List<DataPointClass> dataPoints, 
+			int noLoops, LoopType loopType) {
 		this.attributable = attributable;
 		this.setDuration(duration); 
 		this.setDataPoints(dataPoints);
@@ -41,7 +45,12 @@ public abstract class Animation<DataPointClass extends TimePoint> {
 	}
 	public void setDuration(double duration)
 	{
-		this.duration = duration;
+		this.loopDuration = duration;
+		updateEndTime();
+	}
+	public void setLoopDuration(long duration, TimeUnit timeUnit)
+	{
+		this.loopDuration = timeUnit.toMillis(duration);
 		updateEndTime();
 	}
 	public void setNoLoops(int noLoops)
@@ -51,12 +60,21 @@ public abstract class Animation<DataPointClass extends TimePoint> {
 	}
 	protected void updateEndTime()
 	{
-		this.endTime = startTime + noLoops * duration;
+		this.endTime = startTime + noLoops * loopDuration;
 	}
 	protected void updateLoopNumber(double time)
 	{
-		int oldLoopNumber = currentLoopNumber;
-		currentLoopNumber = (int)((time - startTime) % duration);
+		int oldLoopNumber = currentLoopNumber; 
+		currentLoopNumber = (int)((time - startTime) / loopDuration);
+		if(oldLoopNumber != currentLoopNumber)
+		{
+			previousIndex = 0;
+			if(loopType == LoopType.swing)
+			{ 
+				reverseDataPointTimes();
+			}
+			onNextLoop();
+		}
 	}
 	protected void onNextLoop()
 	{
@@ -66,9 +84,9 @@ public abstract class Animation<DataPointClass extends TimePoint> {
 	{
 		
 	}
-	public double getDuration()
+	public double getLoopDuration()
 	{
-		return this.duration;
+		return this.loopDuration;
 	}
 	public double getEndTime()
 	{
@@ -81,20 +99,21 @@ public abstract class Animation<DataPointClass extends TimePoint> {
 	
 	public void setDataPoints(List<DataPointClass> dataPoints)
 	{
-		this.dataPoints = dataPoints; 
+		this.dataPoints = new ArrayList<DataPointClass>();
+		Iterator<DataPointClass> iterator = dataPoints.iterator();
+		while(iterator.hasNext())
+		{
+			this.dataPoints.add(iterator.next());
+		}
 		originalPointTimes = new double[dataPoints.size()];
 		for(int i =0; i < originalPointTimes.length; i++)
 		{
 			originalPointTimes[i] = dataPoints.get(i).getTime();
 		}
 	} 
-	public void setDuration(long duration, TimeUnit timeUnit)
-	{
-		this.duration = timeUnit.toMillis(duration);
-	}
 	public long getDuration(TimeUnit timeUnit)
 	{
-		return TimeUnit.MILLISECONDS.convert((long)duration, timeUnit);
+		return TimeUnit.MILLISECONDS.convert((long)loopDuration, timeUnit);
 	}
 	public void setStartTime(long startTime, TimeUnit timeUnit)
 	{
@@ -102,7 +121,7 @@ public abstract class Animation<DataPointClass extends TimePoint> {
 	}
 	public long getStartTime(TimeUnit timeUnit)
 	{
-		return TimeUnit.MILLISECONDS.convert((long)duration, timeUnit);
+		return TimeUnit.MILLISECONDS.convert((long)loopDuration, timeUnit);
 	}
 	public boolean isFinished(double time)
 	{
@@ -137,13 +156,14 @@ public abstract class Animation<DataPointClass extends TimePoint> {
 			d1.setTime(d2.getTime());
 			d2.setTime(temp);
 		}
+		Collections.reverse(dataPoints);
 	}
 	/*
 	 * Calculates the time since the start of the loop
 	 */
 	protected double getTimeSinceStartOfLoop(double time)
 	{ 
-		return (time - startTime) % duration;
+		return (time - startTime) % loopDuration;
 	}
 	protected abstract void animate(double time);
 	protected void recalcPreviousIndex(double time)
