@@ -145,7 +145,7 @@ public class VantedPreferences implements PreferencesInterface {
 		ObjectListParameter objectlistparam;
 		Object[] possibleValues;
 		
-		String canonicalName = null;
+		String canonicalName = UIManager.getLookAndFeel().getClass().getCanonicalName();
 		
 		// check if this is the first start and there is no preference.. then set the default look and feel accordingly
 		if (PreferenceManager.getPreferenceForClass(VantedPreferences.class).get(PREFERENCE_LOOKANDFEEL, null) == null) {
@@ -153,8 +153,7 @@ public class VantedPreferences implements PreferencesInterface {
 			if (os != null && !os.toUpperCase().contains("LINUX") && !os.toUpperCase().contains("SUN") && !os.toUpperCase().contains("MAC"))
 				if (!ReleaseInfo.isRunningAsApplet())
 					canonicalName = UIManager.getSystemLookAndFeelClassName();
-		} else
-			canonicalName = UIManager.getLookAndFeel().getClass().getCanonicalName();
+		}
 		
 		// temp variable to add the active LAF to the beginning of the objectlistparameter variable
 		LookAndFeelNameAndClass avtiveLaF = null;

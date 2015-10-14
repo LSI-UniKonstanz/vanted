@@ -298,7 +298,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			
 			public void actionPerformed(ActionEvent arg0) {
 				unmarkAll();
-				
+				fireSelectionChanged();
 			}
 		};
 	}

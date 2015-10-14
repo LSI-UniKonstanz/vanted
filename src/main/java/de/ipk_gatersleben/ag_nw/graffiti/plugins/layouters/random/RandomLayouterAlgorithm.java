@@ -90,9 +90,23 @@ public class RandomLayouterAlgorithm
 		}
 	}
 	
+	private void setDefaultParameters() {
+		selectedRandomizeOptions = randomizeOptions[0];
+	}
+	
+	private void checkParameters() {
+		if (selectedRandomizeOptions == null)
+			setDefaultParameters();
+	}
+	
 	@Override
 	public void setParameters(Parameter[] params) {
-		selectedRandomizeOptions = (String) params[0].getValue();
+		
+		if (params == null) {
+			setDefaultParameters();
+		} else {
+			selectedRandomizeOptions = (String) params[0].getValue();
+		}
 	}
 	
 	@Override
@@ -116,6 +130,8 @@ public class RandomLayouterAlgorithm
 		Vector2d max = null;
 		
 		Collection<Node> work = getSelectedOrAllNodes();
+		
+		checkParameters();
 		
 		if (selectedRandomizeOptions.equals(randomizeOptions[0])) {
 			EditorSession session =

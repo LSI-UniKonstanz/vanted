@@ -1914,6 +1914,8 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	}
 	
 	public void repaintGraphElementComponent(GraphElementComponent gec) {
+		if(gec == null)
+			return;
 		logger.debug("repainting Graph Element Compoment");
 		double zoomx = getZoom() == null ? 1 : getZoom().getScaleX();
 		double zoomy = getZoom() == null ? 1 : getZoom().getScaleY();
