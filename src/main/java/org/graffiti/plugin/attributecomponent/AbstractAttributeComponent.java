@@ -94,7 +94,6 @@ public abstract class AbstractAttributeComponent
 	
 	protected void setupOpacity(double opacity) {
 		
-		System.out.println("abstract attr comp opacity " + opacity);
 		if (opacity > 1.0)
 			opacity = 1.0;
 		if (opacity < 0)
@@ -104,11 +103,9 @@ public abstract class AbstractAttributeComponent
 			float alpha = ((float) opacity);
 			composite = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha);
 			
-//			opacityRenderImage = getGraphicsConfiguration().createCompatibleImage(getWidth(), getHeight());
 		} else {
 			
 			composite = null;
-//			opacityRenderImage = null;
 		}
 		
 	}

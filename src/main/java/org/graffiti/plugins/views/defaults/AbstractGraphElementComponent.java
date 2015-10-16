@@ -338,7 +338,6 @@ public abstract class AbstractGraphElementComponent
 	
 	protected void setupOpacity(double opacity) {
 		
-		System.out.println("opacity " + opacity);
 		if (opacity > 1.0)
 			opacity = 1.0;
 		if (opacity < 0)

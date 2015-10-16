@@ -440,7 +440,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		logger.debug("paint");
 		if (label.getText().isEmpty() || fontSize <= 0)
 			return;
-		logger.setLevel(Level.DEBUG);
+//		logger.setLevel(Level.DEBUG);
 		boolean isVisible = checkVisibility(MINSIZE_VISIBILITY);
 		if (getDrawingModeOfView() == DrawMode.REDUCED && bufferedImage != null && isVisible) {
 			logger.debug("drawing image");

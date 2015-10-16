@@ -59,7 +59,6 @@ public class ViewLabel extends JLabel {
 	
 	@Override
 	public void paint(Graphics g) {
-		System.out.println("jhere");
 		
 		if (mouseoverActivated && !highlight)
 			return;
