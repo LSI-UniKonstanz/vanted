@@ -59,6 +59,8 @@ public class ViewLabel extends JLabel {
 	
 	@Override
 	public void paint(Graphics g) {
+		System.out.println("jhere");
+		
 		if (mouseoverActivated && !highlight)
 			return;
 		boolean emptyText = getText() == null || getText().trim().length() == 0;
@@ -124,7 +126,7 @@ public class ViewLabel extends JLabel {
 	public Dimension getPreferredSize() {
 		Dimension d = super.getPreferredSize();
 		d.setSize(strokeWidth / 1 + d.width + 8 + (offShadowX > 0 ? offShadowX : -offShadowX), strokeWidth / 1 + d.height
-							+ (offShadowY > 0 ? offShadowY : -offShadowY));
+				+ (offShadowY > 0 ? offShadowY : -offShadowY));
 		return d;
 	}
 	
@@ -144,45 +146,42 @@ public class ViewLabel extends JLabel {
 	public void highlight(boolean highlight) {
 		this.highlight = highlight;
 	}
-
+	
 	public LabelFrameSetting getFrame() {
 		return frame;
 	}
-
+	
 	public void setFrame(LabelFrameSetting frame) {
 		this.frame = frame;
 	}
-
+	
 	public double getStrokeWidth() {
 		return strokeWidth;
 	}
-
+	
 	public void setStrokeWidth(double strokeWidth) {
 		this.strokeWidth = strokeWidth;
 	}
-
+	
 	public boolean isHighlight() {
 		return highlight;
 	}
-
+	
 	public void setHighlight(boolean highlight) {
 		this.highlight = highlight;
 	}
-
+	
 	public Color getShadowColor() {
 		return shadowColor;
 	}
-
+	
 	public Color getBorderColor() {
 		return borderColor;
 	}
-
+	
 	public void setBorderColor(Color borderColor) {
 		this.borderColor = borderColor;
 	}
-	
-	
-	
 	
 	// public double offX() {
 	// return -5; // -super.getPreferredSize().getWidth()*0.1d;

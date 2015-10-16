@@ -12,11 +12,16 @@
  */
 package org.graffiti.plugin.attributecomponent;
 
+import java.awt.AlphaComposite;
+import java.awt.Composite;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 
+import org.AttributeHelper;
 import org.graffiti.attributes.Attribute;
+import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.CoordinateSystem;
 import org.graffiti.plugin.view.GraffitiViewComponent;
@@ -33,8 +38,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffit
  * @version $Revision: 1.9 $
  */
 public abstract class AbstractAttributeComponent
-					extends AttributeComponent
-					implements GraffitiViewComponent {
+		extends AttributeComponent
+		implements GraffitiViewComponent {
 	// ~ Instance fields ========================================================
 	
 	/**
@@ -52,7 +57,8 @@ public abstract class AbstractAttributeComponent
 	protected Point shift;
 	
 	protected Point loc = new Point();
-
+	
+	protected Composite composite;
 	
 	// ~ Constructors ===========================================================
 	
@@ -61,6 +67,7 @@ public abstract class AbstractAttributeComponent
 	 */
 	public AbstractAttributeComponent() {
 		super();
+		
 	}
 	
 	// ~ Methods ================================================================
@@ -73,6 +80,37 @@ public abstract class AbstractAttributeComponent
 	@Override
 	public void setAttribute(Attribute attr) {
 		this.attr = attr;
+		/*
+		 * new graphelement transparency attribute 
+		 */
+		double opacity = (double) AttributeHelper.getAttributeValue(attr.getAttributable(), GraphicAttributeConstants.GRAPHICS, GraphicAttributeConstants.OPAC,
+				1.0, new Double(1));
+		setupOpacity(opacity);
+	}
+	
+	public void setComposite(Composite composite) {
+		this.composite = composite;
+	}
+	
+	protected void setupOpacity(double opacity) {
+		
+		System.out.println("abstract attr comp opacity " + opacity);
+		if (opacity > 1.0)
+			opacity = 1.0;
+		if (opacity < 0)
+			return;
+		if (opacity < 1.0) {
+			setOpaque(false);
+			float alpha = ((float) opacity);
+			composite = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha);
+			
+//			opacityRenderImage = getGraphicsConfiguration().createCompatibleImage(getWidth(), getHeight());
+		} else {
+			
+			composite = null;
+//			opacityRenderImage = null;
+		}
+		
 	}
 	
 	/**
@@ -107,12 +145,10 @@ public abstract class AbstractAttributeComponent
 		this.shift = shift;
 	}
 	
-
-	
 	@Override
 	public void adjustComponentPosition() {
 	}
-
+	
 	/**
 	 * Called when a graphics attribute of the attribute represented by this
 	 * component has changed.
@@ -122,7 +158,7 @@ public abstract class AbstractAttributeComponent
 	 */
 	@Override
 	public abstract void attributeChanged(Attribute attr)
-						throws ShapeNotFoundException;
+			throws ShapeNotFoundException;
 	
 	/**
 	 * Called to initialise the component of this attribute correctly. Also
@@ -133,7 +169,7 @@ public abstract class AbstractAttributeComponent
 	 *               resolved.
 	 */
 	public void createNewShape(CoordinateSystem coordSys)
-						throws ShapeNotFoundException {
+			throws ShapeNotFoundException {
 		this.recreate();
 	}
 	
@@ -143,55 +179,73 @@ public abstract class AbstractAttributeComponent
 	 */
 	@Override
 	public abstract void recreate()
-						throws ShapeNotFoundException;
-	
+			throws ShapeNotFoundException;
 	
 	/**
 	 * Attribute components can use this method to check if they are
 	 * or should be visible in the view.
 	 * Currently there is hard coded variables defining visibility such as
 	 * presumed size of the component and the current drawing mode
-	 * Future implementation should parameterize this. 
-	 * @param minimumComponentSize TODO
+	 * Future implementation should parameterize this.
+	 * 
+	 * @param minimumComponentSize
+	 *           TODO
 	 * @return
 	 */
 	public boolean checkVisibility(int minimumComponentSize) {
 		/* 
 		 * only draw component, if printing is in progress, it is graphically visible or not FAST mode enabled
 		 */
-		if(getParent() instanceof IPKGraffitiView && 
-			((IPKGraffitiView)getParent()).printInProgress) {
+		if (getParent() instanceof IPKGraffitiView &&
+				((IPKGraffitiView) getParent()).printInProgress) {
 			return true;
 		}
-		if(getParent() instanceof GraffitiView){
-			GraffitiView view = (GraffitiView)getParent();
-			if(view.getDrawMode() == DrawMode.FAST)
+		if (getParent() instanceof GraffitiView) {
+			GraffitiView view = (GraffitiView) getParent();
+			if (view.getDrawMode() == DrawMode.FAST)
 				return false;
 			AffineTransform zoom = view.getZoom();
 			//TODO: parameterize those constants..
-			if(getHeight() * zoom.getScaleX() < minimumComponentSize 
+			if (getHeight() * zoom.getScaleX() < minimumComponentSize
 					|| getWidth() * zoom.getScaleY() < minimumComponentSize)
 				return false;
 			else
 				return true;
-				
+			
 		}
 		else
 			return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
+	@Override
+	public void paintComponent(Graphics g) {
+		if (composite != null)
+			((Graphics2D) g).setComposite(composite);
+		super.paintComponent(g);
+	}
 	
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
+	 */
+	@Override
+	public void paint(Graphics g) {
+		if (composite != null)
+			((Graphics2D) g).setComposite(composite);
+		super.paint(g);
+	}
 	
 	@Override
 	public void adjustComponentSize() {
 		// TODO Auto-generated method stub
 		
 	}
-
-
+	
 	protected DrawMode getDrawingModeOfView() {
-		if(getParent() instanceof GraffitiView){
-			GraffitiView view = (GraffitiView)getParent();
+		if (getParent() instanceof GraffitiView) {
+			GraffitiView view = (GraffitiView) getParent();
 			return view.getDrawMode();
 		}
 		else

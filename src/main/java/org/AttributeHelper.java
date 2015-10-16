@@ -157,11 +157,11 @@ public class AttributeHelper implements HelperClass {
 						r.exec(new String[] { cmd, par });
 					} catch (Exception e4) {
 						JOptionPane.showMessageDialog(
-											null,
-											"<html>Error executing command. Error Messages:<p>" + e.getLocalizedMessage()
-																+ " (Windows File Open)<p>" + e2.getLocalizedMessage() + " (gnome File Open)<p>"
-																+ e3.getLocalizedMessage() + " (Mac OS X File Open)<p>" + e4.getLocalizedMessage()
-																+ " (KDE File Open)</html>", "Error opening file", JOptionPane.WARNING_MESSAGE);
+								null,
+								"<html>Error executing command. Error Messages:<p>" + e.getLocalizedMessage()
+										+ " (Windows File Open)<p>" + e2.getLocalizedMessage() + " (gnome File Open)<p>"
+										+ e3.getLocalizedMessage() + " (Mac OS X File Open)<p>" + e4.getLocalizedMessage()
+										+ " (KDE File Open)</html>", "Error opening file", JOptionPane.WARNING_MESSAGE);
 					}
 				}
 			}
@@ -252,17 +252,17 @@ public class AttributeHelper implements HelperClass {
 				endS = StringManipulationTools.stringReplace(endS, " ", "&nbsp;");
 				if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 					result = result.substring(0, idx) + " (list):" + "<html><!-- " + endNumber + " -->"
-										+ StringManipulationTools.stringReplace(endS, "<html>", "");
+							+ StringManipulationTools.stringReplace(endS, "<html>", "");
 				else {
 					if (result.substring(0, idx).length() > 0)
 						result = result.substring(0, idx) + ":" + "<html><!-- " + endNumber + " -->"
-											+ StringManipulationTools.stringReplace(endS, "<html>", "");
+								+ StringManipulationTools.stringReplace(endS, "<html>", "");
 					else
 						result = "<html><!-- "
-											+ endNumber
-											+ " -->"
-											+ StringManipulationTools.stringReplace(
-																StringManipulationTools.stringReplace(endS, "&nbsp;", " "), "<html>", "").trim();
+								+ endNumber
+								+ " -->"
+								+ StringManipulationTools.stringReplace(
+										StringManipulationTools.stringReplace(endS, "&nbsp;", " "), "<html>", "").trim();
 				}
 			}
 		}
@@ -410,6 +410,7 @@ public class AttributeHelper implements HelperClass {
 		idToNiceId.put("depth_", "Depth");
 		idToNiceId.put("mol", "Molecule Structure:3D MOL View");
 		idToNiceId.put("rounding", "Shape: Rounded Corners");
+		idToNiceId.put("opacity", "Shape: Opacity");
 		idToNiceId.put("Edge:shape", "Shape");
 		idToNiceId.put("Node:shape", "Shape: Shape");
 		idToNiceId.put("Node:fill", "Shape: Fill-Color");
@@ -417,9 +418,9 @@ public class AttributeHelper implements HelperClass {
 		
 		idToNiceId.put("useCustomRange", chartSelN + ":<html>&nbsp;Range Axis: <br>&nbsp;&nbsp;&nbsp;<small>Custom Min/Max");
 		idToNiceId.put("useCustomRangeSteps", chartSelN
-							+ ":<html>&nbsp;Range Axis: <br>&nbsp;&nbsp;&nbsp;<small><!--A-->Custom Step Size");
+				+ ":<html>&nbsp;Range Axis: <br>&nbsp;&nbsp;&nbsp;<small><!--A-->Custom Step Size");
 		idToNiceId.put("rangeStepSize", chartSelN
-							+ ":<html>&nbsp;Range Axis:  <br>&nbsp;&nbsp;&nbsp;<small><!--A-->Step Size");
+				+ ":<html>&nbsp;Range Axis:  <br>&nbsp;&nbsp;&nbsp;<small><!--A-->Step Size");
 		
 		idToNiceId.put("max_charts_in_column", chartSelN + ": Number of Charts in a Row");
 		
@@ -430,7 +431,7 @@ public class AttributeHelper implements HelperClass {
 		idToNiceId.put("Edge:outline", "Color");
 		idToNiceId.put("show_legend", chartSelN + ": Show Legend");
 		idToNiceId.put("background_color", chartSelN
-							+ ":<html>&nbsp;Background-Color<br>&nbsp;<small><font color=\"gray\">(black=translucent)");
+				+ ":<html>&nbsp;Background-Color<br>&nbsp;<small><font color=\"gray\">(black=translucent)");
 		// for (int i = 0; i < 100; i++)
 		// idToNiceId.put("background_color" + i, "Mapping-Background " +
 		// chartSelN
@@ -452,12 +453,12 @@ public class AttributeHelper implements HelperClass {
 		
 		idToNiceId.put("node_categoryBackgroundColorA", chartDiagram + ":<html>&nbsp;Background Color left of A");
 		idToNiceId.put("node_categoryBackgroundColorB", chartDiagram
-							+ ":<html>&nbsp;Background Color<br>&nbsp;<small><font color=\"gray\">(black=translucent)");
+				+ ":<html>&nbsp;Background Color<br>&nbsp;<small><font color=\"gray\">(black=translucent)");
 		idToNiceId.put("node_categoryBackgroundColorC", chartDiagram + ":<html>&nbsp;Background Color right of B");
 		idToNiceId.put("node_categoryBackgroundColorIndexA", chartDiagram
-							+ ":<html>&nbsp;Time A<br>&nbsp;<small><font color=\"gray\">(-1 = disabled, 0...x enabled)");
+				+ ":<html>&nbsp;Time A<br>&nbsp;<small><font color=\"gray\">(-1 = disabled, 0...x enabled)");
 		idToNiceId.put("node_categoryBackgroundColorIndexC", chartDiagram
-							+ ":<html>&nbsp;Time B<br>&nbsp;<small><font color=\"gray\">(-1 = disabled, 0...x enabled)");
+				+ ":<html>&nbsp;Time B<br>&nbsp;<small><font color=\"gray\">(-1 = disabled, 0...x enabled)");
 		
 		idToNiceId.put(GraphicAttributeConstants.HEATMAP_LOWER_COL, chartHeatMap + ": Lower Color");
 		idToNiceId.put(GraphicAttributeConstants.HEATMAP_UPPER_COL, chartHeatMap + ": Upper Color");
@@ -955,7 +956,7 @@ public class AttributeHelper implements HelperClass {
 		}
 		for (int idx = 1; idx <= 99/* graphElement.getAttributes().size() */; idx++) {
 			String lbl = getLabel(idx, graphElement, null);
-			if(lbl != null)
+			if (lbl != null)
 				result.add(lbl);
 		}
 		
@@ -1014,7 +1015,7 @@ public class AttributeHelper implements HelperClass {
 				System.err.println("hasAttribute Function called with Null argument for attributeName!");
 			if (n != null && attributeName != null)
 				System.err.println("hasAttribute Function received exception while retreiving attribute! ("
-									+ err2.getMessage() + ")");
+						+ err2.getMessage() + ")");
 			return false;
 		}
 	}
@@ -1383,7 +1384,7 @@ public class AttributeHelper implements HelperClass {
 		if (attributeValue instanceof Boolean) {
 			try {
 				attributable.setBoolean(path + attributeSeparator + attributeName,
-									((Boolean) attributeValue).booleanValue());
+						((Boolean) attributeValue).booleanValue());
 				return;
 			} catch (Exception e) {
 				
@@ -1465,7 +1466,7 @@ public class AttributeHelper implements HelperClass {
 	 * @author Christian Klukas
 	 */
 	public static void setAttributeTextField(Attributable attributable, String path, String attributeName,
-						Object attributeValue) {
+			Object attributeValue) {
 		if (!hasAttribute(attributable, path)) {
 			addAttributeFolder(attributable, path);
 		}
@@ -1487,7 +1488,7 @@ public class AttributeHelper implements HelperClass {
 	}
 	
 	public static Set<Object> getAttributeValueSet(Collection<Attributable> attributables, String path,
-						String attributeName, Object defaultValue, Object resultType, boolean setDefaultIfMissing) {
+			String attributeName, Object defaultValue, Object resultType, boolean setDefaultIfMissing) {
 		HashSet<Object> values = new HashSet<Object>();
 		for (Attributable a : attributables) {
 			Object o = getAttributeValue(a, path, attributeName, defaultValue, resultType, setDefaultIfMissing);
@@ -1497,7 +1498,7 @@ public class AttributeHelper implements HelperClass {
 	}
 	
 	public static Object getAttributeValue(Attributable attributable, String path, String attributeName,
-						Object defaultValue, Object resultType) {
+			Object defaultValue, Object resultType) {
 		return getAttributeValue(attributable, path, attributeName, defaultValue, resultType, true);
 	}
 	
@@ -1505,7 +1506,7 @@ public class AttributeHelper implements HelperClass {
 	 * Return a Attribute value, if not present it returns the defaultValue.
 	 */
 	public static Object getAttributeValue(Attributable attributable, String path, String attributeName,
-						Object defaultValue, Object resultType, boolean setDefaultIfMissing) {
+			Object defaultValue, Object resultType, boolean setDefaultIfMissing) {
 		
 		try {
 			HashMapAttribute a = (HashMapAttribute) getAttribute(attributable, path);
@@ -1562,7 +1563,7 @@ public class AttributeHelper implements HelperClass {
 						return rr;
 					} else {
 						ErrorMsg.addErrorMessage("Attribute Type Invalid, is not the same as expected: "
-											+ res.getClass().getSimpleName() + " *#* " + resultType.getClass().getSimpleName());
+								+ res.getClass().getSimpleName() + " *#* " + resultType.getClass().getSimpleName());
 						if (defaultValue != null)
 							setAttribute(attributable, path, attributeName, defaultValue);
 					}
@@ -1628,7 +1629,7 @@ public class AttributeHelper implements HelperClass {
 		try {
 			DoubleAttribute dblAtt = null;
 			dblAtt = (DoubleAttribute) ge.getAttribute(GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR
-								+ GraphicAttributeConstants.FRAMETHICKNESS);
+					+ GraphicAttributeConstants.FRAMETHICKNESS);
 			
 			return dblAtt.getDouble();
 		} catch (Exception ex) {
@@ -1640,7 +1641,7 @@ public class AttributeHelper implements HelperClass {
 		try {
 			DoubleAttribute dblAtt = null;
 			dblAtt = (DoubleAttribute) ge.getAttribute(GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR
-								+ GraphicAttributeConstants.FRAMETHICKNESS);
+					+ GraphicAttributeConstants.FRAMETHICKNESS);
 			
 			dblAtt.setDouble(frameThinkness);
 		} catch (Exception ex) {
@@ -1668,7 +1669,7 @@ public class AttributeHelper implements HelperClass {
 	 * @param col
 	 */
 	public static void setNodeGraphicsAttribute(double posx, double posy, double frameThickness_3, double width_25,
-						double height_25, Color frameColor_0_0_0_255, Color fillColor_0_100_250_100, CollectionAttribute col) {
+			double height_25, Color frameColor_0_0_0_255, Color fillColor_0_100_250_100, CollectionAttribute col) {
 		NodeGraphicAttribute graphics = new NodeGraphicAttribute();
 		CoordinateAttribute cooAtt = graphics.getCoordinate();
 		Point2D pos = new Point2D.Double();
@@ -1684,7 +1685,7 @@ public class AttributeHelper implements HelperClass {
 		double height = height_25;
 		double width = width_25;
 		graphics.getDimension().setDimension(
-							new Dimension((int) java.lang.Math.round(width), (int) java.lang.Math.round(height)));
+				new Dimension((int) java.lang.Math.round(width), (int) java.lang.Math.round(height)));
 		// setting the framecolor
 		if (frameColor_0_0_0_255 == null)
 			graphics.getFramecolor().setColor(new Color(0, 0, 0, 255));
@@ -1840,7 +1841,7 @@ public class AttributeHelper implements HelperClass {
 		EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		if (ega == null)
 			edge.addAttribute(getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, edge.isDirected()),
-								GraphicAttributeConstants.GRAPHICS);
+					GraphicAttributeConstants.GRAPHICS);
 		ega.setFrameThickness(frameThickness);
 	}
 	
@@ -1848,7 +1849,7 @@ public class AttributeHelper implements HelperClass {
 		EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		if (ega == null)
 			edge.addAttribute(getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, edge.isDirected()),
-								GraphicAttributeConstants.GRAPHICS);
+					GraphicAttributeConstants.GRAPHICS);
 		ega.setThickness(arrowSize);
 	}
 	
@@ -1856,7 +1857,7 @@ public class AttributeHelper implements HelperClass {
 		EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		if (ega == null)
 			edge.addAttribute(getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, edge.isDirected()),
-								GraphicAttributeConstants.GRAPHICS);
+					GraphicAttributeConstants.GRAPHICS);
 		return ega.getThickness();
 	}
 	
@@ -2456,9 +2457,9 @@ public class AttributeHelper implements HelperClass {
 		helpTopics.put("NETWORK: GRAPH", "panel_graph_graph");
 		helpTopics.put("NETWORK: NETWORK ATTRIBUTES", "panel_graph_graph");
 		helpTopics
-							.put("NETWORK: CHARTING <SMALL><FONT COLOR=\"GRAY\">(ALL NODES)</FONT></SMALL>", "panel_graph_charting");
+				.put("NETWORK: CHARTING <SMALL><FONT COLOR=\"GRAY\">(ALL NODES)</FONT></SMALL>", "panel_graph_charting");
 		helpTopics.put("NETWORK: CHARTING <SMALL><FONT COLOR=\"GRAY\">(ALL LINE-CHARTS)</FONT></SMALL>",
-							"panel_graph_chartinglines");
+				"panel_graph_chartinglines");
 		helpTopics.put("NETWORK: SCATTER-PLOT", "panel_graph_scatterplot");
 		helpTopics.put("NETWORK: KEGG", "panel_graph_kegg");
 		
@@ -2466,7 +2467,7 @@ public class AttributeHelper implements HelperClass {
 		helpTopics.put("NODE: KEGG", "panel_node_kegg");
 		helpTopics.put("NODE: NODE ATTRIBUTES", "panel_node_node");
 		helpTopics.put("NODE: CHARTING <SMALL><FONT COLOR=\"GRAY\">(SELECTED NODES)</FONT></SMALL>",
-							"panel_node_charting");
+				"panel_node_charting");
 		
 		helpTopics.put("EDGE: EDGE ATTRIBUTES", "panel_edge_edge");
 		helpTopics.put("EDGE: KEGG", "panel_edge_kegg");
@@ -2490,7 +2491,7 @@ public class AttributeHelper implements HelperClass {
 	}
 	
 	public static void copyReplaceStringAttribute(Attributable a, String path, String name, String copyTo,
-						String searchString, String replaceString) {
+			String searchString, String replaceString) {
 		if (hasAttribute(a, path, name)) {
 			String attVal = (String) getAttributeValue(a, path, name, "", "", false);
 			if (attVal.length() > 0) {
@@ -2503,11 +2504,10 @@ public class AttributeHelper implements HelperClass {
 	public static void setLabel(GraphElement ge, String label) {
 		if (ge instanceof Node)
 			setLabel((Node) ge, label);
+		else if (ge instanceof Edge)
+			setLabel((Edge) ge, label);
 		else
-			if (ge instanceof Edge)
-				setLabel((Edge) ge, label);
-			else
-				ErrorMsg.addErrorMessage("Set Label only works on Node or Edge! (internal error)");
+			ErrorMsg.addErrorMessage("Set Label only works on Node or Edge! (internal error)");
 	}
 	
 	public static String getLabelPosition(Attributable attributable) {
@@ -2559,7 +2559,7 @@ public class AttributeHelper implements HelperClass {
 			if (index < 0)
 				idx = "";
 			NodeLabelAttribute labelAttr = (NodeLabelAttribute) node.getAttribute(GraphicAttributeConstants.LABELGRAPHICS
-								+ idx);
+					+ idx);
 			return labelAttr;
 		} catch (Exception ex) {
 			return null;
@@ -2583,7 +2583,7 @@ public class AttributeHelper implements HelperClass {
 			if (index < 0)
 				idx = "";
 			EdgeLabelAttribute labelAttr = (EdgeLabelAttribute) edge.getAttribute(GraphicAttributeConstants.LABELGRAPHICS
-								+ idx);
+					+ idx);
 			return labelAttr;
 		} catch (Exception ex) {
 			return null;
@@ -2601,13 +2601,11 @@ public class AttributeHelper implements HelperClass {
 					continue;
 				if (currentStyle.contains(lfs.toGMLstring() + ",")) {
 					currentStyle = StringManipulationTools.stringReplace(currentStyle, lfs.toGMLstring() + ",", "");
-				} else
-					if (currentStyle.contains("," + lfs.toGMLstring())) {
-						currentStyle = StringManipulationTools.stringReplace(currentStyle, "," + lfs.toGMLstring(), "");
-					} else
-						if (currentStyle.equals(lfs.toGMLstring())) {
-							currentStyle = "";;
-						}
+				} else if (currentStyle.contains("," + lfs.toGMLstring())) {
+					currentStyle = StringManipulationTools.stringReplace(currentStyle, "," + lfs.toGMLstring(), "");
+				} else if (currentStyle.equals(lfs.toGMLstring())) {
+					currentStyle = "";;
+				}
 			}
 			if (setting != LabelFrameSetting.NO_FRAME) {
 				if (currentStyle.length() > 0)
@@ -2677,7 +2675,7 @@ public class AttributeHelper implements HelperClass {
 		EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		if (ega == null) {
 			edge.addAttribute(getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, edge.isDirected()),
-								GraphicAttributeConstants.GRAPHICS);
+					GraphicAttributeConstants.GRAPHICS);
 			ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		}
 		if (show)
@@ -2690,7 +2688,7 @@ public class AttributeHelper implements HelperClass {
 		EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		if (ega == null) {
 			edge.addAttribute(getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, edge.isDirected()),
-								GraphicAttributeConstants.GRAPHICS);
+					GraphicAttributeConstants.GRAPHICS);
 			ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		}
 		if (show)
@@ -2703,7 +2701,7 @@ public class AttributeHelper implements HelperClass {
 		EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		if (ega == null) {
 			edge.addAttribute(getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, edge.isDirected()),
-								GraphicAttributeConstants.GRAPHICS);
+					GraphicAttributeConstants.GRAPHICS);
 			ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		}
 		return ega.getArrowhead();
@@ -2713,7 +2711,7 @@ public class AttributeHelper implements HelperClass {
 		EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		if (ega == null) {
 			edge.addAttribute(getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, edge.isDirected()),
-								GraphicAttributeConstants.GRAPHICS);
+					GraphicAttributeConstants.GRAPHICS);
 			ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		}
 		return ega.getArrowtail();
@@ -2723,7 +2721,7 @@ public class AttributeHelper implements HelperClass {
 		EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		if (ega == null) {
 			edge.addAttribute(getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, edge.isDirected()),
-								GraphicAttributeConstants.GRAPHICS);
+					GraphicAttributeConstants.GRAPHICS);
 			ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		}
 		if (ega != null)
@@ -2734,7 +2732,7 @@ public class AttributeHelper implements HelperClass {
 		EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		if (ega == null) {
 			edge.addAttribute(getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, edge.isDirected()),
-								GraphicAttributeConstants.GRAPHICS);
+					GraphicAttributeConstants.GRAPHICS);
 			ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		}
 		if (ega != null)
@@ -2785,13 +2783,13 @@ public class AttributeHelper implements HelperClass {
 			idx = "";
 		try {
 			HashMapAttribute l = (HashMapAttribute) ge.getAttribute(GraphicAttributeConstants.LABEL_ATTRIBUTE_PATH + "."
-								+ GraphicAttributeConstants.LABELGRAPHICS + idx);
+					+ GraphicAttributeConstants.LABELGRAPHICS + idx);
 			StringAttribute o = (StringAttribute) l.getAttribute("color");
 			o.setString(ColorUtil.getHexFromColor(color));
 		} catch (AttributeNotFoundException e) {
 			setLabel(index, ge, getLabel(index, ge, ""), null, null);
 			HashMapAttribute l = (HashMapAttribute) ge.getAttribute(GraphicAttributeConstants.LABEL_ATTRIBUTE_PATH + "."
-								+ GraphicAttributeConstants.LABELGRAPHICS + idx);
+					+ GraphicAttributeConstants.LABELGRAPHICS + idx);
 			StringAttribute o = (StringAttribute) l.getAttribute("color");
 			o.setString(ColorUtil.getHexFromColor(color));
 		}
@@ -2800,7 +2798,7 @@ public class AttributeHelper implements HelperClass {
 	public static Color getLabelColor(Node n) {
 		try {
 			HashMapAttribute l = (HashMapAttribute) n.getAttribute(NodeLabelAttribute.LABEL_ATTRIBUTE_PATH + "."
-								+ NodeLabelAttribute.LABELGRAPHICS);
+					+ NodeLabelAttribute.LABELGRAPHICS);
 			StringAttribute o = (StringAttribute) l.getAttribute("color");
 			return ColorUtil.getColorFromHex(o.getString());
 		} catch (Exception e) {
@@ -2989,8 +2987,8 @@ public class AttributeHelper implements HelperClass {
 		if (ge instanceof Edge) {
 			Edge e = (Edge) ge;
 			return AttributeHelper.getLabel(e,
-								AttributeHelper.getLabel(e.getSource(), nodeLabelIfMissing) + (e.isDirected() ? "->" : "--")
-													+ AttributeHelper.getLabel(e.getTarget(), nodeLabelIfMissing));
+					AttributeHelper.getLabel(e.getSource(), nodeLabelIfMissing) + (e.isDirected() ? "->" : "--")
+							+ AttributeHelper.getLabel(e.getTarget(), nodeLabelIfMissing));
 		} else
 			return getLabel(ge, nodeLabelIfMissing);
 	}
@@ -3156,7 +3154,7 @@ public class AttributeHelper implements HelperClass {
 	}
 	
 	public static void setHidden(boolean doHide, Node n, boolean processOutEdges, boolean processInEdges,
-						boolean processUndirEdges) {
+			boolean processUndirEdges) {
 		setHidden(doHide, n);
 		if (processOutEdges)
 			for (Edge e : n.getAllOutEdges())
@@ -3303,11 +3301,10 @@ public class AttributeHelper implements HelperClass {
 		String os = (String) p.get("os.name");
 		if (os != null && os.toUpperCase().contains("LINUX")) {
 			return true;
+		} else if (os != null && os.toUpperCase().contains("UNIX")) {
+			return true;
 		} else
-			if (os != null && os.toUpperCase().contains("UNIX")) {
-				return true;
-			} else
-				return false;
+			return false;
 	}
 	
 	public static boolean windowsRunning() {
@@ -3380,10 +3377,10 @@ public class AttributeHelper implements HelperClass {
 	
 	public static String[] getShapeDescritions() {
 		return new String[] { "Rectangle", "Circle", "Ellipse", "Rhombus", "Tag (right)", "Tag (left)", "Tag (up)",
-							"Tag (down)", "Observable", "Pertubation", "Complex", "Skewed Rect (right)", "Skewed Rect (left)",
-							"Receptor (down)", "Receptor (up)", "Receptor (left)", "Receptor (right)", "Nucleic Acid Feature",
-							"Truncated Protein", "Source or Sink", "Transition", "Multi Nucleic Acid Feature", "Multi Rectangle",
-							"Multi Oval", "Double Oval", "Paper", "Multi Complex" };
+				"Tag (down)", "Observable", "Pertubation", "Complex", "Skewed Rect (right)", "Skewed Rect (left)",
+				"Receptor (down)", "Receptor (up)", "Receptor (left)", "Receptor (right)", "Nucleic Acid Feature",
+				"Truncated Protein", "Source or Sink", "Transition", "Multi Nucleic Acid Feature", "Multi Rectangle",
+				"Multi Oval", "Double Oval", "Paper", "Multi Complex" };
 	}
 	
 	public static String getShapeClassFromDescription(String desc) {
@@ -3398,9 +3395,9 @@ public class AttributeHelper implements HelperClass {
 	
 	public static String[] getShapeClasses() {
 		return new String[] { "rectangle", "circle", "oval", "diamond", "tag", "tagl", "tagu", "tagd", "observable",
-							"pertubation", "complex", "skewrectr", "skewrectl", "receptord", "receptoru", "receptorl", "receptorr",
-							"nucleic", "truncprotein", "sourcesink", "transition", "multinucleic", "multirectangle", "mulitoval",
-							"doubleoval", "paper", "multicomplex" };
+				"pertubation", "complex", "skewrectr", "skewrectl", "receptord", "receptoru", "receptorl", "receptorr",
+				"nucleic", "truncprotein", "sourcesink", "transition", "multinucleic", "multirectangle", "mulitoval",
+				"doubleoval", "paper", "multicomplex" };
 	}
 	
 	public static String getLabelConsumption(Edge e, String returnIfNull) {
@@ -3514,7 +3511,7 @@ public class AttributeHelper implements HelperClass {
 	
 	public static Color getColorFromAttribute(Attributable attr, String path, String name, Color defaultValue) {
 		return ColorUtil.getColorFromHex((String) getAttributeValue(attr, path, name,
-							ColorUtil.getHexFromColor(defaultValue), "", false));
+				ColorUtil.getHexFromColor(defaultValue), "", false));
 	}
 	
 	public static void setColorFromAttribute(Attributable attr, String path, String name, Color value) {

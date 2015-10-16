@@ -20,8 +20,8 @@ import org.graffiti.attributes.StringAttribute;
  * @version $Revision: 1.5 $
  */
 public abstract class GraphElementGraphicAttribute
-					extends HashMapAttribute
-					implements GraphicAttributeConstants {
+		extends HashMapAttribute
+		implements GraphicAttributeConstants {
 	// ~ Constructors ===========================================================
 	
 	/**
@@ -31,7 +31,7 @@ public abstract class GraphElementGraphicAttribute
 	 * @throws IllegalIdException
 	 */
 	public GraphElementGraphicAttribute(String id)
-						throws IllegalIdException {
+			throws IllegalIdException {
 		super(id);
 		// add(new ImageAttribute(BGIMAGE), false);
 		add(new ColorAttribute(FRAMECOLOR, java.awt.Color.BLACK), false);
@@ -40,6 +40,7 @@ public abstract class GraphElementGraphicAttribute
 		add(new DoubleAttribute(ROUNDING, 5), false);
 		add(new GradientFillAttribute(GRADIENT, 0), false);
 		add(new LineModeAttribute(LINEMODE), false);
+		add(new DoubleAttribute(OPAC, 1.0), false);
 	}
 	
 	/**
@@ -64,9 +65,9 @@ public abstract class GraphElementGraphicAttribute
 	 * @throws IllegalIdException
 	 */
 	public GraphElementGraphicAttribute(String id, ImageAttribute i,
-						ColorAttribute frc, ColorAttribute fic, LabelAttribute l,
-						DoubleAttribute ft, LineModeAttribute lm, StringAttribute s)
-						throws IllegalIdException {
+			ColorAttribute frc, ColorAttribute fic, LabelAttribute l,
+			DoubleAttribute ft, LineModeAttribute lm, StringAttribute s)
+			throws IllegalIdException {
 		super(id);
 		// add(new ImageAttribute(BGIMAGE, i.getTiled(), i.getMaximize(), i.getImage(), i.getReference()), false);
 		add(new ColorAttribute(FRAMECOLOR, frc), false);
@@ -75,6 +76,7 @@ public abstract class GraphElementGraphicAttribute
 		add(new DoubleAttribute(FRAMETHICKNESS, 5), false);
 		add(new LineModeAttribute(LINEMODE, (Dash) lm.getValue()), false);
 		add(new GradientFillAttribute(GRADIENT, 0), false);
+		add(new DoubleAttribute(OPAC, 1.0), false);
 	}
 	
 	/**
@@ -99,9 +101,9 @@ public abstract class GraphElementGraphicAttribute
 	 * @throws IllegalIdException
 	 */
 	public GraphElementGraphicAttribute(String id, java.awt.Image i,
-						java.awt.Color frc, java.awt.Color fic, LabelAttribute l, double ft,
-						LineModeAttribute lm, String s)
-						throws IllegalIdException {
+			java.awt.Color frc, java.awt.Color fic, LabelAttribute l, double ft,
+			LineModeAttribute lm, String s)
+			throws IllegalIdException {
 		super(id);
 		// add(new ImageAttribute(BGIMAGE, false, false, i, ""), false);
 		add(new ColorAttribute(FRAMECOLOR, frc), false);
@@ -110,6 +112,7 @@ public abstract class GraphElementGraphicAttribute
 		add(new DoubleAttribute(FRAMETHICKNESS, 5), false);
 		add(new LineModeAttribute(LINEMODE, (Dash) lm.getValue()), false);
 		add(new GradientFillAttribute(GRADIENT, 0), false);
+		add(new DoubleAttribute(OPAC, 1.0), false);
 	}
 	
 	// ~ Methods ================================================================
