@@ -855,9 +855,15 @@ public class MegaCreateTool
 		dummyEdge = null;
 		
 		// lastSelectedComp = null;
-		creatingEdge = false;
-		numOfBends = 0;
-		bends = new LinkedHashMapAttribute(GraphicAttributeConstants.BENDS);
+		if (creatingEdge) {
+			creatingEdge = false;
+			numOfBends = 0;
+			bends = new LinkedHashMapAttribute(GraphicAttributeConstants.BENDS);
+		} else {
+			unmarkAll();
+			fireSelectionChanged();
+		}
+		
 	}
 	
 	/**

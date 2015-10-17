@@ -298,7 +298,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			
 			public void actionPerformed(ActionEvent arg0) {
 				unmarkAll();
-				
+				fireSelectionChanged();
 			}
 		};
 	}
@@ -601,15 +601,14 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		
 		if (e.isAltDown()) {
 			view = session.getActiveView();
-		} else
-			if (e.getComponent() instanceof GraffitiInternalFrame) {
-				view = ((GraffitiInternalFrame) e.getComponent()).getView();
-			} else {
-				if (e.getComponent() instanceof View) {
-					view = (View) e.getComponent();
-				} else
-					view = findView(e.getComponent());
-			}
+		} else if (e.getComponent() instanceof GraffitiInternalFrame) {
+			view = ((GraffitiInternalFrame) e.getComponent()).getView();
+		} else {
+			if (e.getComponent() instanceof View) {
+				view = (View) e.getComponent();
+			} else
+				view = findView(e.getComponent());
+		}
 		if (SwingUtilities.isRightMouseButton(e)) {
 			if (selectedView == null)
 				if (view != null)
@@ -667,12 +666,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					EdgeComponent ec = (EdgeComponent) c;
 					Edge edge = (Edge) ec.getGraphElement();
 					AttributeHelper.setEdgeBendStyle(edge, "org.graffiti.plugins.views.defaults.PolyLineEdgeShape");
-				} else
-					if (e.isControlDown() && !e.isShiftDown()) {
-						EdgeComponent ec = (EdgeComponent) c;
-						Edge edge = (Edge) ec.getGraphElement();
-						AttributeHelper.setEdgeBendStyle(edge, "org.graffiti.plugins.views.defaults.SmoothLineEdgeShape");
-					}
+				} else if (e.isControlDown() && !e.isShiftDown()) {
+					EdgeComponent ec = (EdgeComponent) c;
+					Edge edge = (Edge) ec.getGraphElement();
+					AttributeHelper.setEdgeBendStyle(edge, "org.graffiti.plugins.views.defaults.SmoothLineEdgeShape");
+				}
 			}
 			
 			lastBendHit.setCoordinate(new Point2D.Double(newX, newY));
@@ -699,25 +697,24 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			view.autoscroll(new Point((int) lastPressedPoint2.getX(),
 					(int) lastPressedPoint2.getY()));
 			view.getViewComponent().repaint();
-		} else
-			if (lastPressed instanceof NodeComponent || lastPressed == null) {
-				if (selection.isEmpty())
-					return;
-				if (isControlDown(e)) {
-					dragged = true;
-					
-					return;
-				}
-				if (!dragged)
-					mouseDraggedFirstCallStoreCoordinatesForUndoSupport();
+		} else if (lastPressed instanceof NodeComponent || lastPressed == null) {
+			if (selection.isEmpty())
+				return;
+			if (isControlDown(e)) {
+				dragged = true;
 				
-				Vector2d delta = mouseDraggedCalculatedXYmovementValues(e);
-				
-				if ((int) delta.x == 0 && (int) delta.y == 0)
-					return;
-				
-				mouseDraggedToMoveNodesAndEdgeBends(e, view, delta.x, delta.y);
+				return;
 			}
+			if (!dragged)
+				mouseDraggedFirstCallStoreCoordinatesForUndoSupport();
+			
+			Vector2d delta = mouseDraggedCalculatedXYmovementValues(e);
+			
+			if ((int) delta.x == 0 && (int) delta.y == 0)
+				return;
+			
+			mouseDraggedToMoveNodesAndEdgeBends(e, view, delta.x, delta.y);
+		}
 		
 		dragged = true;
 		
@@ -1297,95 +1294,92 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			
 			lastPressedPoint = e.getPoint();
 			logger.debug("2");
-		} else
-			if (src instanceof NodeComponent) {
-				NodeComponent nodeComp = (NodeComponent) src;
+		} else if (src instanceof NodeComponent) {
+			NodeComponent nodeComp = (NodeComponent) src;
+			
+			if (e.getClickCount() > 1 && e.isShiftDown()) {
+				LinkedHashSet<Node> nodes = new LinkedHashSet<Node>();
+				Node node = (Node) nodeComp.getGraphElement();
+				nodes.add(node);
+				nodes.addAll(MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection().getNodes());
+				AttributeHelper.switchVisibilityOfChildElements(nodes);
+				postProcessVisibilityChange(node);
+			} else if (e.getClickCount() > 1) {
+				AdvancedLabelTool.processLabelEdit(nodeComp);
+				return;
+			}
+			
+			checkResizeHit(e.getX(), e.getY(), nodeComp);
+			
+			// if (!selection.contains(nodeComp.getGraphElement()) || isInnerNode(nodeComp.getGraphElement()))
+			boolean mid = SwingUtilities.isMiddleMouseButton(e);
+			
+			// if (!isInnerNode(nodeComp.getGraphElement()))
+			mid = !mid;
+			mark(nodeComp,
+					(!resizeHit && !mid),
+					isControlDown(e) || (e.getClickCount() == 1 && e.isShiftDown()), this, true);
+			if (resizeHit) {
+				lastPressedMousePointRel = new Point2D.Double(
+						e.getPoint().getX(),
+						e.getPoint().getY());
+				Dimension size = ((DimensionAttribute) (nodeComp
+						.getGraphElement().getAttribute(GraphicAttributeConstants.DIM_PATH)))
+						.getDimension();
+				resizeStartDimW = size.width;
+				resizeStartDimH = size.height;
+			} else {
+				// move hit
+				lastPressedMousePointRel = new Point2D.Double(
+						getTransformersX(nodeComp.getGraphElement()) - e.getPoint().getX(),
+						getTransformersY(nodeComp.getGraphElement()) - e.getPoint().getY());
+				moveStartX = (int) getTransformersX(nodeComp.getGraphElement());
+				moveStartY = (int) getTransformersY(nodeComp.getGraphElement());
+			}
+			
+			lastPressedPoint = null;
+			lastPressed = nodeComp;
+			lastBendHit = null;
+			
+		} else if (src instanceof EdgeComponent) {
+			
+			EdgeComponent edgeComp = (EdgeComponent) src;
+			
+			if (e.getClickCount() > 1) {
+				AdvancedLabelTool.processLabelEdit(edgeComp);
+				return;
+			}
+			
+			mark((EdgeComponent) src, SwingUtilities.isMiddleMouseButton(e), isControlDown(e) || (e.getClickCount() == 1 && e.isShiftDown()), this, true);
+			lastPressedPoint = null;
+			lastPressed = src;
+			
+			Edge edge = (Edge) edgeComp.getGraphElement();
+			SortedCollectionAttribute bendsColl = (SortedCollectionAttribute) edge
+					.getAttribute(GraphicAttributeConstants.BENDS_PATH);
+			Collection<?> bends = bendsColl.getCollection().values();
+			Point2D coord;
+			CoordinateAttribute coordAttr;
+			lastBendHit = null;
+			
+			for (Iterator<?> it = bends.iterator(); it.hasNext();) {
+				coordAttr = (CoordinateAttribute) it.next();
+				coord = coordAttr.getCoordinate();
 				
-				if (e.getClickCount() > 1 && e.isShiftDown()) {
-					LinkedHashSet<Node> nodes = new LinkedHashSet<Node>();
-					Node node = (Node) nodeComp.getGraphElement();
-					nodes.add(node);
-					nodes.addAll(MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection().getNodes());
-					AttributeHelper.switchVisibilityOfChildElements(nodes);
-					postProcessVisibilityChange(node);
-				} else
-					if (e.getClickCount() > 1) {
-						AdvancedLabelTool.processLabelEdit(nodeComp);
-						return;
-					}
-				
-				checkResizeHit(e.getX(), e.getY(), nodeComp);
-				
-				// if (!selection.contains(nodeComp.getGraphElement()) || isInnerNode(nodeComp.getGraphElement()))
-				boolean mid = SwingUtilities.isMiddleMouseButton(e);
-				
-				// if (!isInnerNode(nodeComp.getGraphElement()))
-				mid = !mid;
-				mark(nodeComp,
-						(!resizeHit && !mid),
-						isControlDown(e) || (e.getClickCount() == 1 && e.isShiftDown()), this, true);
-				if (resizeHit) {
-					lastPressedMousePointRel = new Point2D.Double(
-							e.getPoint().getX(),
-							e.getPoint().getY());
-					Dimension size = ((DimensionAttribute) (nodeComp
-							.getGraphElement().getAttribute(GraphicAttributeConstants.DIM_PATH)))
-							.getDimension();
-					resizeStartDimW = size.width;
-					resizeStartDimH = size.height;
-				} else {
-					// move hit
-					lastPressedMousePointRel = new Point2D.Double(
-							getTransformersX(nodeComp.getGraphElement()) - e.getPoint().getX(),
-							getTransformersY(nodeComp.getGraphElement()) - e.getPoint().getY());
-					moveStartX = (int) getTransformersX(nodeComp.getGraphElement());
-					moveStartY = (int) getTransformersY(nodeComp.getGraphElement());
+				if (hit(e.getPoint(), coord)) {
+					lastBendHit = coordAttr;
+					lastPressedMousePointRel = new Point2D.Double(coord.getX()
+							- e.getPoint().getX(), coord.getY()
+							- e.getPoint().getY());
+					
+					break;
 				}
-				
-				lastPressedPoint = null;
-				lastPressed = nodeComp;
-				lastBendHit = null;
-				
-			} else
-				if (src instanceof EdgeComponent) {
-					
-					EdgeComponent edgeComp = (EdgeComponent) src;
-					
-					if (e.getClickCount() > 1) {
-						AdvancedLabelTool.processLabelEdit(edgeComp);
-						return;
-					}
-					
-					mark((EdgeComponent) src, SwingUtilities.isMiddleMouseButton(e), isControlDown(e) || (e.getClickCount() == 1 && e.isShiftDown()), this, true);
-					lastPressedPoint = null;
-					lastPressed = src;
-					
-					Edge edge = (Edge) edgeComp.getGraphElement();
-					SortedCollectionAttribute bendsColl = (SortedCollectionAttribute) edge
-							.getAttribute(GraphicAttributeConstants.BENDS_PATH);
-					Collection<?> bends = bendsColl.getCollection().values();
-					Point2D coord;
-					CoordinateAttribute coordAttr;
-					lastBendHit = null;
-					
-					for (Iterator<?> it = bends.iterator(); it.hasNext();) {
-						coordAttr = (CoordinateAttribute) it.next();
-						coord = coordAttr.getCoordinate();
-						
-						if (hit(e.getPoint(), coord)) {
-							lastBendHit = coordAttr;
-							lastPressedMousePointRel = new Point2D.Double(coord.getX()
-									- e.getPoint().getX(), coord.getY()
-									- e.getPoint().getY());
-							
-							break;
-						}
-					}
-				} /*
-					 * else
-					 * if (src!=null)
-					 * System.out.println("SRC: "+src.getClass().getSimpleName());
-					 */
+			}
+		} /*
+			 * else
+			 * if (src!=null)
+			 * System.out.println("SRC: "+src.getClass().getSimpleName());
+			 */
 	}
 	
 	protected void postProcessVisibilityChange(GraphElement sourceElementGUIinteraction) {
@@ -1457,9 +1451,9 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			// ((Container) e.getSource()).repaint();
 		}
 		
-		if (resizeHit && selection.getElements().size() == 1) {
-			unmarkAll();
-		}
+//		if (resizeHit && selection.getElements().size() == 1) {
+//			unmarkAll();
+//		}
 		
 		if (lastBendHit != null && lastBendHit.getAttributable() instanceof Edge) {
 			MainFrame.showMessage("Hint: Move edge bend inside source or target node to delete selected edge bend.", MessageType.INFO);
@@ -1474,18 +1468,17 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			if (sp.distance(bp) < r1 || tp.distance(bp) < r2) {
 				lastBendHit.getParent().remove(lastBendHit);
 				MainFrame.showMessage("Edge bend moved to src/tgt --> removed!", MessageType.INFO);
-			} else
-				if (lastBendAdded != null && e.getWhen() - lastBendAddedTime < 1000) {
-					double ddd = distance(lastBendAddedInitX, lastBendAddedInitY, e.getX(), e.getY());
-					// System.out.println("UP "+lastBendAddedInitX+" / "+lastBendAddedInitY+" <--> "+e.getX()+" / "+e.getY());
-					if (ddd <= 20) {
-						lastBendHit.getParent().remove(lastBendHit);
-						MainFrame.showMessage("New bend not or only slightly (d=" + (int) ddd + ") moved --> removed!", MessageType.INFO);
-					} else {
-						// System.out.println("lastBendAdded!=null, d="+ddd);
-						lastBendAdded = null;
-					}
-				} // else System.out.println("lastBendAdded==null");
+			} else if (lastBendAdded != null && e.getWhen() - lastBendAddedTime < 1000) {
+				double ddd = distance(lastBendAddedInitX, lastBendAddedInitY, e.getX(), e.getY());
+				// System.out.println("UP "+lastBendAddedInitX+" / "+lastBendAddedInitY+" <--> "+e.getX()+" / "+e.getY());
+				if (ddd <= 20) {
+					lastBendHit.getParent().remove(lastBendHit);
+					MainFrame.showMessage("New bend not or only slightly (d=" + (int) ddd + ") moved --> removed!", MessageType.INFO);
+				} else {
+					// System.out.println("lastBendAdded!=null, d="+ddd);
+					lastBendAdded = null;
+				}
+			} // else System.out.println("lastBendAdded==null");
 		}
 		
 		originalCoordinates = null;
@@ -1591,21 +1584,20 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				}
 			}
 			
-		} else
-			if (me.isShiftDown())
-				for (int i = 0; i < allComps.length; i++) {
-					if (selRect.intersects(allComps[i].getBounds())
-							&& allComps[i] instanceof GraphElementComponent) {
-						mark((GraphElementComponent) allComps[i], false, true, this, false);
-					}
+		} else if (me.isShiftDown())
+			for (int i = 0; i < allComps.length; i++) {
+				if (selRect.intersects(allComps[i].getBounds())
+						&& allComps[i] instanceof GraphElementComponent) {
+					mark((GraphElementComponent) allComps[i], false, true, this, false);
 				}
-			else
-				for (int i = 0; i < allComps.length; i++) {
-					if (selRect.contains(allComps[i].getBounds())
-							&& allComps[i] instanceof GraphElementComponent) {
-						mark((GraphElementComponent) allComps[i], false, true, this, false);
-					}
+			}
+		else
+			for (int i = 0; i < allComps.length; i++) {
+				if (selRect.contains(allComps[i].getBounds())
+						&& allComps[i] instanceof GraphElementComponent) {
+					mark((GraphElementComponent) allComps[i], false, true, this, false);
 				}
+			}
 	}
 	
 	/**

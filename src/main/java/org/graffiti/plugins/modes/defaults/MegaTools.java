@@ -93,7 +93,7 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		if (selectionModel != null)
 			selectionModel.selectionChanged();
 		else
-			System.out.println("SEL MODEL NULL");
+			logger.debug("SEL MODEL NULL");
 	}
 	
 	private static String desiredStatusMessage = null;
@@ -200,37 +200,36 @@ public abstract class MegaTools extends AbstractUndoableTool {
 					gf.setCursor(getNodeCursor());
 				// Component src2 = getComponentAt(e);
 				// src2.setCursor(getNodeCursor());
-			} else
-				if (useEdgeCursor) {
-					// System.out.println("EdgeCursor!");
-					GraffitiFrame gf = MainFrame.getInstance().getActiveDetachedFrame();
-					AttributeComponent ac = getAttributeComponentAt(e);
-					if (ac != null) {
-						// MainFrame.showMessage("Info: Edge Attribute Component Hit", MessageType.INFO);
-						if (foundComponent != null && foundComponent.getParent() != null)
-							if (gf == null)
-								foundComponent.getParent().setCursor(myMoveCursor);
-							else
-								gf.setCursor(myMoveCursor);
-					} else {
-						if (foundComponent != null && foundComponent.getParent() != null)
-							foundComponent.getParent().setCursor(getEdgeCursor());
-						if (gf != null)
-							gf.setCursor(getEdgeCursor());
-					}
-					
-					// Component src2 = getComponentAt(e);
-					// src2.setCursor(getEdgeCursor());
-				} else {
-					// System.out.println("NormCursor!");
-					GraffitiFrame gf = MainFrame.getInstance().getActiveDetachedFrame();
+			} else if (useEdgeCursor) {
+				// System.out.println("EdgeCursor!");
+				GraffitiFrame gf = MainFrame.getInstance().getActiveDetachedFrame();
+				AttributeComponent ac = getAttributeComponentAt(e);
+				if (ac != null) {
+					// MainFrame.showMessage("Info: Edge Attribute Component Hit", MessageType.INFO);
 					if (foundComponent != null && foundComponent.getParent() != null)
-						foundComponent.setCursor(getNormCursor());
+						if (gf == null)
+							foundComponent.getParent().setCursor(myMoveCursor);
+						else
+							gf.setCursor(myMoveCursor);
+				} else {
+					if (foundComponent != null && foundComponent.getParent() != null)
+						foundComponent.getParent().setCursor(getEdgeCursor());
 					if (gf != null)
-						gf.setCursor(getNormCursor());
-					// Component src2 = getComponentAt(e);
-					// src2.setCursor(getNormCursor());
+						gf.setCursor(getEdgeCursor());
 				}
+				
+				// Component src2 = getComponentAt(e);
+				// src2.setCursor(getEdgeCursor());
+			} else {
+				// System.out.println("NormCursor!");
+				GraffitiFrame gf = MainFrame.getInstance().getActiveDetachedFrame();
+				if (foundComponent != null && foundComponent.getParent() != null)
+					foundComponent.setCursor(getNormCursor());
+				if (gf != null)
+					gf.setCursor(getNormCursor());
+				// Component src2 = getComponentAt(e);
+				// src2.setCursor(getNormCursor());
+			}
 		}
 		
 		//move the screen if no component is selected
@@ -582,7 +581,11 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		// MainFrame.getInstance().getActiveEditorSession().getActiveView()
 		// .getViewComponent().repaint();
 		unDisplayAsMarked(getAllMarkedComps());
-		selection.clear();
+		if (selection != null) {
+			selection.clear();
+			fireSelectionChanged();
+		}
+		
 	}
 	
 	public static MouseEvent getLastMouseE() {
