@@ -64,6 +64,7 @@ import org.graffiti.graphics.DockingAttribute;
 import org.graffiti.graphics.EdgeGraphicAttribute;
 import org.graffiti.graphics.EdgeLabelAttribute;
 import org.graffiti.graphics.EdgeLabelPositionAttribute;
+import org.graffiti.graphics.GraphElementGraphicAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.graphics.LabelAttribute;
 import org.graffiti.graphics.LineModeAttribute;
@@ -1355,6 +1356,34 @@ public class AttributeHelper implements HelperClass {
 			ErrorMsg.addErrorMessage("Set-OutlineColor-Failure: " + ex.getLocalizedMessage());
 			return null;
 		}
+	}
+	
+	/**
+	 * Sets the opacity of a given graph element
+	 * This value will also influence the opacity of dependent
+	 * Graph Attribute Components (Labels, Charts, etc)
+	 * 
+	 * @param ge
+	 *           graph element
+	 * @param opacity
+	 *           a value between 0.0 (transparent) and 1.0 (opaque)
+	 */
+	public static void setOpacity(GraphElement ge, double opacity) {
+		GraphElementGraphicAttribute gattr = (GraphElementGraphicAttribute) ge.getAttribute(GraphicAttributeConstants.GRAPHICS);
+		gattr.setOpacity(opacity);
+	}
+	
+	/**
+	 * Gets the opacity of a given graph element
+	 * 
+	 * @param ge
+	 *           graph element
+	 * @param opacity
+	 *           a value between 0.0 (transparent) and 1.0 (opaque)
+	 */
+	public static double getOpacity(GraphElement ge) {
+		GraphElementGraphicAttribute gattr = (GraphElementGraphicAttribute) ge.getAttribute(GraphicAttributeConstants.GRAPHICS);
+		return gattr.getOpacity();
 	}
 	
 	/**

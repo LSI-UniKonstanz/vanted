@@ -258,6 +258,28 @@ public abstract class GraphElementGraphicAttribute
 	public String getShape() {
 		return ((StringAttribute) attributes.get(SHAPE)).getString();
 	}
+	
+	/**
+	 * Sets the opacity of a graph element (node or edge)
+	 * This value will also influence the opacity of all
+	 * dependent graph attribute components.
+	 * Only values between 0.0 (transparent) and 1.0 (opaque) are
+	 * allowed
+	 */
+	public void setOpacity(double value) {
+		if (value < 0.0 || value > 1.0)
+			return;
+		((DoubleAttribute) attributes.get(OPAC)).setValue(new Double(value));
+	}
+	
+	/**
+	 * Returns the current opacity of this graph element
+	 * 
+	 * @return opacity between 0.0 and 1.0
+	 */
+	public double getOpacity() {
+		return ((DoubleAttribute) attributes.get(OPAC)).value;
+	}
 }
 
 // ------------------------------------------------------------------------------
