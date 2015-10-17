@@ -6,9 +6,9 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.chart_settings;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -27,15 +27,12 @@ import org.graffiti.graph.Node;
 import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.graphics.DimensionAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
-import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.attributecomponent.AbstractAttributeComponent;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.ShapeNotFoundException;
 import org.graffiti.plugins.views.defaults.DrawMode;
-import org.graffiti.plugins.views.defaults.GraffitiView;
-import org.vanted.VantedPreferences;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.viewcomponents.EdgeComponentHelper;
 
@@ -46,8 +43,7 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 	static Logger logger = Logger.getLogger(ChartAttributeComponent.class);
 	
 	private static int MINSIZE_VISIBILITY;
-	public static String PREF_MINSIZE_VISIBILITY="min-size visibility";
-	
+	public static String PREF_MINSIZE_VISIBILITY = "min-size visibility";
 	
 	/**
 	 * Flatness value used for the <code>PathIterator</code> used to place
@@ -58,26 +54,25 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 	
 	BufferedImage bufferedImage;
 	
-	
-	
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		List<Parameter> params = new ArrayList<Parameter>();
-		params.add(new IntegerParameter(10, PREF_MINSIZE_VISIBILITY, "<html>Minimum size of width/height, that this <br/>component will be visible during painting"));
+		params.add(new IntegerParameter(10, PREF_MINSIZE_VISIBILITY,
+				"<html>Minimum size of width/height, that this <br/>component will be visible during painting"));
 		return params;
 	}
-
+	
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		MINSIZE_VISIBILITY = preferences.getInt(PREF_MINSIZE_VISIBILITY, 10);
 	}
-
+	
 	@Override
 	public String getPreferencesAlternativeName() {
 		// TODO Auto-generated method stub
 		return "Charts";
 	}
-
+	
 	@Override
 	public void attributeChanged(Attribute attr) throws ShapeNotFoundException {
 		GraphElement ge = (GraphElement) this.attr.getAttributable();
@@ -85,22 +80,19 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 			Node n = (Node) ge;
 			if (attr.getPath().startsWith(Attribute.SEPARATOR + GRAPHICS + Attribute.SEPARATOR + COORDINATE)) {
 				setLocation(shift.x, shift.y + getCurrentLabelShift());
-			} else
-				if (attr instanceof CollectionAttribute) {
-					if (attr.getPath().equals("")) {
-						changeParameters(((CollectionAttribute) attr).getCollection().get(GRAPHICS), n);
-					} else
-						if (attr.getPath().equals(GRAPHICS)) {
-							changeParameters(attr, n);
-						} else {
-							recreate();
-						}
-				} else
-					if (attr.getId().equals("component")) {
-						recreate();
-					} else {
-						recreate();
-					}
+			} else if (attr instanceof CollectionAttribute) {
+				if (attr.getPath().equals("")) {
+					changeParameters(((CollectionAttribute) attr).getCollection().get(GRAPHICS), n);
+				} else if (attr.getPath().equals(GRAPHICS)) {
+					changeParameters(attr, n);
+				} else {
+					recreate();
+				}
+			} else if (attr.getId().equals("component")) {
+				recreate();
+			} else {
+				recreate();
+			}
 		} else {
 			// System.out.println("TODO: Process Attribute Change: "+attr.getPath()+attr.getName());
 		}
@@ -123,7 +115,7 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 		setLayout(new TableLayout(size));
 		
 		String ct = (String) attr.getValue();
-		if(ct.equals("hidden"))
+		if (ct.equals("hidden"))
 			setVisible(false);
 		else
 			setVisible(true);
@@ -159,11 +151,11 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 				validateTree();
 		}
 		
-		if(getWidth() > 0 && getHeight() > 0) {
+		if (getWidth() > 0 && getHeight() > 0) {
 //			logger.debug("recreating chartimage with w h" + getWidth()+" "+getHeight());
 			bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 		}
-		if(bufferedImage != null) {
+		if (bufferedImage != null) {
 			Graphics graphics2 = bufferedImage.getGraphics();
 			super.print(graphics2);
 		}
@@ -232,11 +224,12 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 	
 	@Override
 	public void paint(Graphics g) {
-		if(isPaintingForPrint()) {
+		if (isPaintingForPrint()) {
 //			logger.debug("paint for bufferedimage");
 			super.paint(g);
-		} else if(checkVisibility(MINSIZE_VISIBILITY)) {
-
+		} else if (checkVisibility(MINSIZE_VISIBILITY)) {
+			if (composite != null)
+				((Graphics2D) g).setComposite(composite);
 			/*
 			 * Only for debugging
 			 */
@@ -246,9 +239,12 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 //			}
 			
 			if (getDrawingModeOfView() == DrawMode.REDUCED) {
+				// for testing
+				logger.debug("drawing chart from imagebuffer");
 				g.drawImage(bufferedImage, 0, 0, null);
-			}  else
+			} else {
 				super.paint(g);
+			}
 		}
 		
 	}

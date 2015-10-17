@@ -158,7 +158,7 @@ public class TabPluginControl
 	
 	@Override
 	public void selectionChanged(SelectionEvent arg0) {
-		if (isVisible() && arg0 != null) {
+		if (isVisible() && arg0 != null && MainFrame.getInstance().getActiveSession() != null) {
 			pd.updateSettingsPanel(null, MainFrame.getInstance().getActiveSession().getGraph(), arg0.getSelection(), null, false);
 		}
 		
