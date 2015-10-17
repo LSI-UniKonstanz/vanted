@@ -2,8 +2,8 @@ package org.vanted.animation.data;
 
 import java.util.Vector;
 
-public class VectorPoint<DimensionType extends Number> extends TimePoint<Vector<DimensionType>> {
-	public VectorPoint(double time, Vector<DimensionType> dataValue) {
+public class VectorTimePoint<T extends Number> extends TimePoint<Vector<T>> {
+	public VectorTimePoint(double time, Vector<T> dataValue) {
 		super(time,dataValue);
 	}
 	@Override
@@ -15,10 +15,10 @@ public class VectorPoint<DimensionType extends Number> extends TimePoint<Vector<
 	}
 
 	@Override
-	public Vector<DimensionType> toDataValue(double[] doubleValues) {
+	public Vector<T> toDataValue(double[] doubleValues) {
 		Vector<Number> vector = new Vector<Number>();
 		for(int i =0;i< doubleValues.length;i++)
 			vector.addElement(doubleValues[i]);
-		return (Vector<DimensionType>)vector;
+		return (Vector<T>)vector;
 	}
 }

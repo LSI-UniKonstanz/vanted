@@ -1,6 +1,4 @@
 package org.vanted.animation.interpolators;
-
-import org.vanted.animation.LoopType;
 import org.vanted.animation.data.TimePoint;
 
 /**
@@ -13,9 +11,9 @@ public class LinearInterpolator extends Interpolator {
 	{ 
 	}
 	@Override
-	protected double interpolate(double x, double...y)
+	protected double interpolate(double t, double...y)
 	{
-		return linearInterpolation(x,y[0],y[1]);
+		return linearInterpolation(t,y[0],y[1]);
 	}
 	@Override
 	protected int getPointsBefore()

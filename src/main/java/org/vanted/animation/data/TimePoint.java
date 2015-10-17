@@ -4,11 +4,11 @@ package org.vanted.animation.data;
  * @author - Patrick Shaw
  * 
  */
-public abstract class TimePoint<DataValue>
+public abstract class TimePoint<T>
 {
-	protected DataValue dataValue;
+	protected T dataValue;
 	protected double time;
-	public TimePoint(double time, DataValue dataValue)
+	public TimePoint(double time, T dataValue)
 	{
 		this.time = time;
 		this.dataValue = dataValue;
@@ -22,11 +22,11 @@ public abstract class TimePoint<DataValue>
 		this.time = time;
 	}
 	public abstract double[] getDoubleValues();
-	public abstract DataValue toDataValue(double[] doubleValues);
-	public DataValue getDataValue() {
+	public abstract T toDataValue(double[] doubleValues);
+	public T getDataValue() {
 		return dataValue;
 	}
-	public void setDataValue(DataValue dataValue) {
+	public void setDataValue(T dataValue) {
 		this.dataValue = dataValue;
 	}
 	@Override

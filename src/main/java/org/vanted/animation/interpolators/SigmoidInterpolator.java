@@ -1,5 +1,4 @@
-package org.vanted.animation.interpolators;
-import org.vanted.animation.LoopType;
+package org.vanted.animation.interpolators; 
 /**
  * 
  * @author - Patrick Shaw
@@ -23,8 +22,8 @@ public class SigmoidInterpolator extends Interpolator {
 	}
 	
 	@Override
-	protected double interpolate(double x, double... y) {
-		double x2 = 1 / (1 + Math.exp(-(12*(x-0.5d))));
+	protected double interpolate(double t, double... y) {
+		double x2 = 1 / (1 + Math.exp(-(12*(t-0.5d))));
 		return linearInterpolation(x2,y[0],y[1]);
 	}
 	

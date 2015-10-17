@@ -1,5 +1,4 @@
-package org.vanted.animation.animators;
-
+package org.vanted.animation.animations;
 import java.awt.Color;
 /**
  * 

@@ -2,12 +2,12 @@ package org.vanted.animation.data;
 
 import java.awt.geom.Point2D;
 
-public class Point2DPoint extends TimePoint<Point2D> {
-	 public Point2DPoint(double time,double x, double y)
+public class Point2DTimePoint extends TimePoint<Point2D> {
+	 public Point2DTimePoint(double time,double x, double y)
 	 {
 		 super(time, new Point2D.Double(x,y));
 	 }
-	 public Point2DPoint(double time, Point2D point)
+	 public Point2DTimePoint(double time, Point2D point)
 	 {
 		 super(time, point);
 	 }
