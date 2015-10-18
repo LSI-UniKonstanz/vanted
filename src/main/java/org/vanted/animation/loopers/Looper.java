@@ -36,7 +36,7 @@ public abstract class Looper {
 			j++; 
 			indexes[pointsBefore+1+i] = getIndexAfterPreviousPoint(j,dataPoints.size(), pointsBefore, pointsAfter);
 		}
-		System.out.println(Arrays.toString(indexes));
+		//System.out.println(Arrays.toString(indexes));
 		return indexes;
 	}
 	/**
@@ -74,9 +74,13 @@ public abstract class Looper {
 				break;
 			}
 		}
+		
 		return newPreviousIndex;
 	}
-
+	public <V,T extends TimePoint<V>> int getNextLoopPreviousIndex(List<T> dataPoints,int newLoopNumber)
+	{
+		return 0;
+	}
 	/*
 	 * Calculates the time since the start of the loop
 	 */

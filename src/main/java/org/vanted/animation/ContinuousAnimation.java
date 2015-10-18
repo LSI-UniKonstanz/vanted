@@ -40,7 +40,7 @@ public abstract class ContinuousAnimation<T extends TimePoint> extends Animation
 		}
 		updateLoopNumber(time);
 		time = looper.getTimeSinceStartOfLoop(currentLoopNumber, startTime, loopDuration, time);
-		System.out.println(time); 
+		//System.out.println(time); 
 		previousIndex = looper.findPreviousIndex(dataPoints, previousIndex,currentLoopNumber, time);
 		animate(time);
 	}

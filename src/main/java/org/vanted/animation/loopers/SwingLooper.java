@@ -11,6 +11,8 @@ public class SwingLooper extends Looper {
 	@Override
 	protected int getIndexBeforePreviousPoint(int kthIndex, int dataPointsSize, int pointsBefore, int pointsAfter)
 	{
+		return kthIndex < 0 ? dataPointsSize + (kthIndex) : kthIndex;
+		/*
 		int theIndex = pointsBefore;
 		boolean goingBackward = true;
 		for(int j = pointsBefore; j>kthIndex; j--)
@@ -35,11 +37,13 @@ public class SwingLooper extends Looper {
 				theIndex++;
 			}
 		}
-		return theIndex;
+		return theIndex;*/
 	}
 	@Override
 	protected int getIndexAfterPreviousPoint(int kthIndex, int dataPointsSize, int pointsBefore, int pointsAfter)
 	{
+		return kthIndex =  kthIndex >= dataPointsSize ? dataPointsSize - 1 : kthIndex;
+		/*
 		int theIndex = pointsBefore;
 		boolean goingBackward = false;
 		for(int j = pointsBefore; j<kthIndex; j++)
@@ -64,7 +68,7 @@ public class SwingLooper extends Looper {
 				theIndex++;
 			}
 		}
-		return theIndex;
+		return theIndex;*/
 	} 
 	@Override
 	public <V, T extends TimePoint<V>> int findPreviousIndex(List<T> dataPoints, int oldPreviousIndex, int currentLoopNumber, double time)
@@ -88,13 +92,13 @@ public class SwingLooper extends Looper {
 				}
 			}
 		}
-		System.out.println(newPreviousIndex); 
+		//System.out.println(newPreviousIndex); 
 		return newPreviousIndex;
 	}
 	@Override
 	public double getTimeSinceStartOfLoop(int currentLoopNumber,double startTime, double loopDuration, double time)
 	{ 
-		System.out.println(currentLoopNumber); 
+		//System.out.println(currentLoopNumber); 
 		if(currentLoopNumber % 2 == 0)
 		{
 			return super.getTimeSinceStartOfLoop(currentLoopNumber, startTime, loopDuration, time);
@@ -103,5 +107,10 @@ public class SwingLooper extends Looper {
 		{
 			return loopDuration - super.getTimeSinceStartOfLoop(currentLoopNumber, startTime, loopDuration, time);
 		}
+	}
+	@Override
+	public <V,T extends TimePoint<V>> int getNextLoopPreviousIndex(List<T> dataPoints,int newLoopNumber)
+	{
+		return newLoopNumber % 2 == 0? 0 : dataPoints.size() - 1;
 	}
 }

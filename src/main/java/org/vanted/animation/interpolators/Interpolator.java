@@ -29,37 +29,6 @@ public abstract class Interpolator
 	}
 	protected abstract int getPointsBefore();
 	protected abstract int getPointsAfter(); 
-		/** 
-		 * @param time
-		 * The amount of time that has elapsed in the animation.
-		 * @param duration
-		 * The total time of the animation
-		 * @param previousPoint
-		 * The data point closest to {@code time} where {@code previousPoint.getTime() <= time}.
-		 * @param nextPoint
-		 * The data point closest to {@code time} where {@code previousPoint.getTime() > time}.
-		 * @returns
-		 * A value between 1 and 0.
-		 * Eg.
-		 * Where previousPoint's time = 3
-		 * Where nextPoint's time = 5
-		 * Where time = 3.2
-		 * Returns 0.1
-		 */
-		protected <V> double getNormalizedTime(double time,double duration, 
-				TimePoint<V> previousPoint, TimePoint<V> nextPoint)
-		{
-			double normalizedTime = 0;
-			if(previousPoint.getTime() > nextPoint.getTime())
-			{
-				double totalTime = duration - previousPoint.getTime();
-				totalTime += nextPoint.getTime();
-				normalizedTime = (time - previousPoint.getTime())/ totalTime;
-			}
-			normalizedTime =  (time - previousPoint.getTime()) / (nextPoint.getTime() - previousPoint.getTime());
-			System.out.println(normalizedTime);
-			return Double.isInfinite(normalizedTime) ? 0 : Math.abs(normalizedTime);
-		}
 		/**
 		 * In the event that you need to perform linear interpolation, you can call this method to
 		 * save some time.
@@ -82,9 +51,32 @@ public abstract class Interpolator
 		 * @return
 		 * A value between 0 and 1.
 		 */
-		protected <V,T extends TimePoint<V>> double getNormalizedTime(double time,double duration, List<T> pointsUsed)
+		protected <V,T extends TimePoint<V>> double getNormalizedTime(double time,double loopDuration, List<T> dataPoints, List<T> pointsUsed)
 		{
-			return getNormalizedTime(time,duration,pointsUsed.get(getPointsBefore()), pointsUsed.get(getPointsBefore() + 1));
+			double normalizedTime = 0;
+			T previousPoint = pointsUsed.get(getPointsBefore());
+			T nextPoint = pointsUsed.get(getPointsAfter());
+			// TODO: Find a better way to identify the points
+			if(dataPoints.get(dataPoints.size() - 1).getTime() == previousPoint.getTime() && dataPoints.get(0).getTime() == nextPoint.getTime())
+			{
+				double totalTime = loopDuration - previousPoint.getTime();
+				totalTime += nextPoint.getTime();
+				normalizedTime = (time - previousPoint.getTime()) / totalTime;
+			}
+			else
+			{
+				normalizedTime =  (time - previousPoint.getTime()) / (nextPoint.getTime() - previousPoint.getTime());
+			}
+			//System.out.println("Prev("+Double.toString(previousPoint.getTime())+") - Next("+Double.toString(nextPoint.getTime())+") - Norm("+Double.toString(normalizedTime)+")");
+			if (Double.isInfinite(normalizedTime) || Double.isNaN(normalizedTime))
+			{
+					normalizedTime = 0;
+			}
+			if (normalizedTime < 0)
+			{
+				normalizedTime += 1;
+			}
+			return normalizedTime;
 		}
 		
 		public Color interpolateColor(double time, double duration, int previousIndex,
@@ -92,7 +84,7 @@ public abstract class Interpolator
 		{
 			List<ColorTimePoint> pointsUsed = looper.getPointsUsed(dataPoints,previousIndex,getPointsBefore(),getPointsAfter());
 			ColorTimePoint firstPoint = pointsUsed.get(0);
-			double normalizedTime = getNormalizedTime(time,duration,pointsUsed);
+			double normalizedTime = getNormalizedTime(time,duration, dataPoints, pointsUsed);
 			double[][] interpolationStructure = toDataValues(pointsUsed); 
 			double firstValues[] = firstPoint.getDoubleValues(); 
 			for(int q = 0; q < firstValues.length;q++)
@@ -160,7 +152,7 @@ public abstract class Interpolator
 				int previousIndex, List<T> dataPoints, Looper looper)
 		{
 			List<T> pointsUsed = looper.getPointsUsed(dataPoints,previousIndex, getPointsBefore(), getPointsAfter());
-			double normalizedTime = getNormalizedTime(time,duration,pointsUsed);
+			double normalizedTime = getNormalizedTime(time, duration, dataPoints, pointsUsed);
 			return (V) interpolate(normalizedTime,pointsUsed);
 		}
 		protected <V,T extends TimePoint<V>> V interpolate(double t, List<T> y)

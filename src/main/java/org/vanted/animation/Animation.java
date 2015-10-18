@@ -74,7 +74,7 @@ public abstract class Animation<T extends TimePoint> {
 		currentLoopNumber = (int)((time - startTime) / loopDuration);
 		if(oldLoopNumber != currentLoopNumber)
 		{
-			previousIndex = 0;
+			previousIndex = looper.getNextLoopPreviousIndex(dataPoints,currentLoopNumber);
 			onNextLoop();
 		}
 	}
@@ -156,9 +156,7 @@ public abstract class Animation<T extends TimePoint> {
 	protected abstract void animate(double time);
 	public void reset()
 	{ 
-		for(int i = 0; i< dataPoints.size();i++)
-		{
-			dataPoints.get(i).setTime(originalPointTimes[i]);
-		}
+		previousIndex = 0;
+		currentLoopNumber = 0;
 	}
 }

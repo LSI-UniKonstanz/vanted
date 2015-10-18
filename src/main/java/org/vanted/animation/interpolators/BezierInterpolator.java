@@ -76,7 +76,7 @@ public class BezierInterpolator extends Interpolator {
 			int previousIndex, List<T> dataPoints, Looper looper)
 	{
 		List<T> pointsUsed = looper.getPointsUsed(dataPoints,previousIndex, getPointsBefore(), getPointsAfter());
-		double normalizedTime = getNormalizedTime(time,duration,pointsUsed); 
+		double normalizedTime = getNormalizedTime(time,duration, dataPoints,pointsUsed); 
 		double tPerPoint = (1/(double)dataPoints.size());
 		double t = tPerPoint * previousIndex + normalizedTime * tPerPoint;	
 		//System.out.println(t);
