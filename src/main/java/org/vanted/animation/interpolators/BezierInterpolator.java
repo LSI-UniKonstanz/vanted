@@ -2,11 +2,21 @@ package org.vanted.animation.interpolators;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List; 
+import java.util.List;
+
+import org.vanted.animation.data.InterpolatableTimePoint;
 import org.vanted.animation.data.TimePoint;
 import org.vanted.animation.loopers.Looper;
-
+/**
+ * Interpolates the data values as if it were drawing a Bézier Curve.
+ * @see <a href="https://en.wikipedia.org/wiki/B%C3%A9zier_curve">https://en.wikipedia.org/wiki/B%C3%A9zier_curve</a>
+ * @author - Patrick Shaw
+ */
 public class BezierInterpolator extends Interpolator {
+	/**
+	 * Represents pascal's triangle.
+	 * @see <a href="https://en.wikipedia.org/wiki/Pascal%27s_triangle">https://en.wikipedia.org/wiki/Pascal%27s_triangle</a>
+	 */
 	private static List<Long[]> polynomialConstantsList = 
 			Arrays.asList(
 					new Long[]{1L},
@@ -43,6 +53,11 @@ public class BezierInterpolator extends Interpolator {
 					new Long[]{1L,31L,465L,4495L,31465L,169911L,736281L,2629575L,7888725L,20160075L,44352165L,84672315L,141120525L,206253075L,265182525L,300540195L,300540195L,265182525L,206253075L,141120525L,84672315L,44352165L,20160075L,7888725L,2629575L,736281L,169911L,31465L,4495L,465L,31L,1L},
 					new Long[]{1L,32L,496L,4960L,35960L,201376L,906192L,3365856L,10518300L,28048800L,64512240L,129024480L,225792840L,347373600L,471435600L,565722720L,601080390L,565722720L,471435600L,347373600L,225792840L,129024480L,64512240L,28048800L,10518300L,3365856L,906192L,201376L,35960L,4960L,496L,32L,1L}
 					);
+	/**
+	 * Gets the polynomial constants for an expanded polynomial equation.
+	 * @param polynomialOrder
+	 * Specifies the order of constants that you are trying to retrieve.
+	 */
 	private static Long[] getPolynomialConstants(int polynomialOrder)
 	{
 		assert polynomialOrder >= 1;
@@ -62,17 +77,15 @@ public class BezierInterpolator extends Interpolator {
 	} 
 	@Override
 	protected int getPointsBefore() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	protected int getPointsAfter() {
-		// TODO Auto-generated method stub
 		return 1;
 	} 
 	@Override
-	public <V,T extends TimePoint<V>> V interpolate(double time, double duration,
+	public <V,T extends InterpolatableTimePoint<V>> V interpolate(double time, double duration,
 			int previousIndex, List<T> dataPoints, Looper looper)
 	{
 		List<T> pointsUsed = looper.getPointsUsed(dataPoints,previousIndex, getPointsBefore(), getPointsAfter());

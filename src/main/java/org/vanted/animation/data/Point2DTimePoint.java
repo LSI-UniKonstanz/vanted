@@ -1,8 +1,11 @@
 package org.vanted.animation.data;
-
 import java.awt.geom.Point2D;
-
-public class Point2DTimePoint extends TimePoint<Point2D> {
+/**
+ * 
+ * @author - Patrick Shaw
+ * 
+ */
+public class Point2DTimePoint extends InterpolatableTimePoint<Point2D> {
 	 public Point2DTimePoint(double time,double x, double y)
 	 {
 		 super(time, new Point2D.Double(x,y));

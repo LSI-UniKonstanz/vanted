@@ -17,6 +17,6 @@ public class LabelTextAnimation extends Animation<StringTimePoint> {
 
 	@Override
 	protected void animate(double time) {
-			AttributeHelper.setLabel((Edge)attributable, dataPoints.get(previousIndex).getValue());
+			AttributeHelper.setLabel((Edge)attributable, dataPoints.get(previousIndex).getDataValue());
 	}
 }

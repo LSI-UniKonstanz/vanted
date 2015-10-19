@@ -44,13 +44,11 @@ import org.vanted.animation.loopers.ForwardLooper;
 public class Animator { 
 	private int fps = 60; // FPS 
 	private int updateRate = (int)Math.ceil(1000.0/(double)fps);
-	private double loopDuration = 56; // The total amount of time that it takes for the next loop to start in milliseconds
+	private double loopDuration = -1; // The total amount of time that it takes for the next loop to start in milliseconds
 	private double currentTime =0; // The time elapsed since the animator started animating
 	private double speedFactor = 1; // How fast the animations go.
 	private int noLoops = -1; // Number of loops
-	private int currentLoopNumber = 0;
-	private int startTimeOfUpdate = 0;
-	private int endTimeOfUpdate = 0;
+	private int currentLoopNumber = 0; 
 	private List<Animation<TimePoint>> animations = new ArrayList<Animation<TimePoint>>();
 	private Graph graph;
 	public Animator(Graph graph, int noLoops)
@@ -133,7 +131,7 @@ public class Animator {
 				Node nextNode = nodes.get(nextNodeIndex);
 				Point2D nextPos = AttributeHelper.getPosition(nextNode);
 				double percentageTime = ((double)(q)) / ((double)nodes.size());
-				pointsArray[q] = (new Point2DTimePoint(percentageTime*animationDuration,nextPos.getX()*(Math.random() * 0.2+0.8),nextPos.getY()*(Math.random() * 0.2+0.8)));
+				pointsArray[q] = (new Point2DTimePoint(percentageTime*animationDuration,nextPos.getX()*(Math.random() * 0+1),nextPos.getY()*(Math.random() * 0+1)));
 				Color fillColour = TestRainbowAlgorithm.CalcRainbowColour(input);
 				fillArray[q] = new ColorTimePoint(percentageTime * animationDuration,fillColour);
 				Color outlineColour = TestRainbowAlgorithm.CalcRainbowColour(outlineInput);
@@ -151,7 +149,7 @@ public class Animator {
 				input += colourChangeRate;
 				outlineInput-=colourChangeRate;
 				}
-			Position2DAnimation  posAnim = new Position2DAnimation(node,0,animationDuration ,new CubicInterpolator(),Arrays.asList(pointsArray), -1, new ForwardLooper());
+			Position2DAnimation  posAnim = new Position2DAnimation(node,0,animationDuration ,new CubicInterpolator(),Arrays.asList(pointsArray), 2, new ForwardLooper());
 			FillColorAnimation fillAnim = new FillColorAnimation(node,0,animationDuration ,new BezierInterpolator(), Arrays.asList(fillArray), -1, new ForwardLooper(), ColorMode.RGB);
 			SizeAnimation sizeAnim = new SizeAnimation(node,0,animationDuration, new CubicInterpolator(), Arrays.asList(sizeArray), -1, new ForwardLooper());
 			OutlineColorAnimation outlineColourAnim = new OutlineColorAnimation(node,0,animationDuration,new LinearInterpolator(), Arrays.asList(outlineArray), -1, new ForwardLooper(), ColorMode.RGB);

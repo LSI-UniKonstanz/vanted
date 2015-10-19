@@ -3,6 +3,7 @@ import java.util.List;
 
 import org.graffiti.attributes.Attributable;
 import org.graffiti.graph.Node;
+import org.vanted.animation.data.InterpolatableTimePoint;
 import org.vanted.animation.data.TimePoint;
 import org.vanted.animation.interpolators.Interpolator;
 import org.vanted.animation.loopers.Looper;
@@ -11,7 +12,7 @@ import org.vanted.animation.loopers.Looper;
  * @author - Patrick Shaw
  * 
  */
-public abstract class ContinuousAnimation<T extends TimePoint> extends Animation<T>
+public abstract class ContinuousAnimation<T extends InterpolatableTimePoint> extends Animation<T>
 {
 	protected Interpolator interpolator;
 	/**
@@ -31,6 +32,8 @@ public abstract class ContinuousAnimation<T extends TimePoint> extends Animation
 	{
 		if(isFinished(time))
 		{
+			time = loopDuration;
+			animate(time);
 			onFinish();
 			return;
 		}
