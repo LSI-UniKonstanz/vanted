@@ -19,9 +19,14 @@ public class SineInterpolator extends Interpolator {
 	}
 
 	@Override
-	protected double interpolate(double x, double... y) { 
-		double x2 = (1-Math.sin(x * Math.PI ))*0.5;
+	protected double interpolate(double t, double... y) { 
+		double x2 = (1-Math.sin(t * Math.PI ))*0.5;
 		return linearInterpolation(x2,y[0],y[1]);
 	}
 
+	@Override
+	public String toString()
+	{
+		return "Sine Interpolator";
+	}
 }

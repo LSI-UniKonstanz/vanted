@@ -2,10 +2,9 @@ package org.vanted.animation.interpolators;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-import org.vanted.animation.LoopType;
+import java.util.List; 
 import org.vanted.animation.data.TimePoint;
+import org.vanted.animation.loopers.Looper;
 
 public class BezierInterpolator extends Interpolator {
 	private static List<Long[]> polynomialConstantsList = 
@@ -73,15 +72,15 @@ public class BezierInterpolator extends Interpolator {
 		return 1;
 	} 
 	@Override
-	public <ReturnType,DataPointType extends TimePoint<ReturnType>> ReturnType interpolate(double time, double duration,
-			int previousIndex, List<DataPointType> dataPoints, LoopType loopType)
+	public <V,T extends TimePoint<V>> V interpolate(double time, double duration,
+			int previousIndex, List<T> dataPoints, Looper looper)
 	{
-		List<DataPointType> pointsUsed = getPointsUsed(dataPoints,previousIndex, loopType);
-		double normalizedTime = getNormalizedTime(time,duration,pointsUsed); 
-		double xPerPoint = (1/(double)dataPoints.size());
-		double t = xPerPoint * previousIndex + normalizedTime * xPerPoint;	
+		List<T> pointsUsed = looper.getPointsUsed(dataPoints,previousIndex, getPointsBefore(), getPointsAfter());
+		double normalizedTime = getNormalizedTime(time,duration, dataPoints,pointsUsed); 
+		double tPerPoint = (1/(double)dataPoints.size());
+		double t = tPerPoint * previousIndex + normalizedTime * tPerPoint;	
 		//System.out.println(t);
-		return (ReturnType) interpolate(t,dataPoints);
+		return (V) interpolate(t,dataPoints);
 	}
 	@Override
 	protected double interpolate(double t, double... y) { 

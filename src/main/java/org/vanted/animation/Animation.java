@@ -1,29 +1,29 @@
 package org.vanted.animation;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.ArrayList; 
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.graffiti.attributes.Attributable;
 import org.vanted.animation.data.TimePoint;
+import org.vanted.animation.loopers.Looper;
 /**
  * 
  * @author - Patrick Shaw
  * 
  */
-public abstract class Animation<DataPointClass extends TimePoint> {
+public abstract class Animation<T extends TimePoint> {
 	protected int previousIndex = 0; 
 	protected double loopDuration; 
 	protected int noLoops; 
 	protected double startTime;
 	protected Attributable attributable; 
-	protected List<DataPointClass> dataPoints; 
+	protected List<T> dataPoints; 
 	protected double originalPointTimes[];
 	protected double endTime;
 	protected int currentLoopNumber;
-	protected LoopType loopType;
+	protected Looper looper;
 	/**
 	 * 
 	 * @param attributable
@@ -35,14 +35,16 @@ public abstract class Animation<DataPointClass extends TimePoint> {
 	 */
 	public Animation(
 			Attributable attributable, double startTime,
-			double duration, List<DataPointClass> dataPoints, 
-			int noLoops, LoopType loopType) {
+			double duration, List<T> dataPoints, 
+			int noLoops, Looper looper
+			) 
+	{
 		this.attributable = attributable;
 		this.setLoopDuration(duration); 
 		this.setDataPoints(dataPoints);
 		this.setNoLoops(noLoops);
-		this.setLoopType(loopType);
-	}
+		this.setLooper(looper);
+	}  
 	public void setLoopDuration(double duration)
 	{
 		this.loopDuration = duration;
@@ -72,11 +74,7 @@ public abstract class Animation<DataPointClass extends TimePoint> {
 		currentLoopNumber = (int)((time - startTime) / loopDuration);
 		if(oldLoopNumber != currentLoopNumber)
 		{
-			previousIndex = 0;
-			if(loopType == LoopType.swing)
-			{ 
-				reverseDataPointTimes();
-			}
+			previousIndex = looper.getNextLoopPreviousIndex(dataPoints,currentLoopNumber);
 			onNextLoop();
 		}
 	}
@@ -92,15 +90,15 @@ public abstract class Animation<DataPointClass extends TimePoint> {
 	{
 		return endTime;
 	}
-	public void setLoopType(LoopType loopType)
+	public void setLooper(Looper looper)
 	{
-		this.loopType = loopType;  
+		this.looper = looper;  
 	}
 	
-	public void setDataPoints(List<DataPointClass> dataPoints)
+	public void setDataPoints(List<T> dataPoints)
 	{
-		this.dataPoints = new ArrayList<DataPointClass>();
-		Iterator<DataPointClass> iterator = dataPoints.iterator();
+		this.dataPoints = new ArrayList<T>();
+		Iterator<T> iterator = dataPoints.iterator();
 		while(iterator.hasNext())
 		{
 			this.dataPoints.add(iterator.next());
@@ -136,55 +134,29 @@ public abstract class Animation<DataPointClass extends TimePoint> {
 	 */
 	public void update(double time)
 	{
-		if(isFinished(time)){onFinish();return;}
-		if (startTime > time){return;}
+		if(isFinished(time))
+		{
+			onFinish();
+			return;
+		}
+		if (startTime > time)
+		{
+			return;
+		}
 		updateLoopNumber(time);
-		time = getTimeSinceStartOfLoop(time);
-		
+		time = looper.getTimeSinceStartOfLoop(currentLoopNumber, startTime, loopDuration, time);
+
 		int oldIndex = previousIndex;
-		recalcPreviousIndex(time);
+		previousIndex = looper.findPreviousIndex(dataPoints, previousIndex,currentLoopNumber, time);
 		if(previousIndex != oldIndex)
+		{
 			animate(time);
-	}
-	private void reverseDataPointTimes()
-	{
-		for(int i =0 ; i < dataPoints.size() / 2; i++)
-		{
-			DataPointClass d1 = dataPoints.get(i);
-			DataPointClass d2 = dataPoints.get(dataPoints.size() - (i+1));
-			double temp = d1.getTime();
-			d1.setTime(d2.getTime());
-			d2.setTime(temp);
 		}
-		Collections.reverse(dataPoints);
-	}
-	/*
-	 * Calculates the time since the start of the loop
-	 */
-	protected double getTimeSinceStartOfLoop(double time)
-	{ 
-		return (time - startTime) % loopDuration;
-	}
+	} 
 	protected abstract void animate(double time);
-	protected void recalcPreviousIndex(double time)
-	{
-		for(int nextIndex = previousIndex + 1; nextIndex < dataPoints.size();nextIndex++)
-		{
-			if(dataPoints.get(nextIndex).getTime() < time)
-			{
-				previousIndex = nextIndex;
-			}
-			else
-			{
-				break;
-			}
-		}
-	}
 	public void reset()
 	{ 
-		for(int i = 0; i< dataPoints.size();i++)
-		{
-			dataPoints.get(i).setTime(originalPointTimes[i]);
-		}
+		previousIndex = 0;
+		currentLoopNumber = 0;
 	}
 }

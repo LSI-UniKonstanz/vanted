@@ -1,5 +1,4 @@
-package org.vanted.animation.interpolators; 
-import org.vanted.animation.LoopType; 
+package org.vanted.animation.interpolators;  
 /**
  * 
  * @author - Patrick Shaw
@@ -9,13 +8,13 @@ public class SmoothCubicInterpolator extends Interpolator{
 	public SmoothCubicInterpolator() { 
 	}
 	@Override
-	public double interpolate(double x, double...y)
+	public double interpolate(double t, double...y)
 	{	    
 		double c0 = y[1];
 		double c1 = 0.5 * (y[2] - y[0]);
 		double c2 = y[0] - (2.5 * y[1]) + (2 * y[2]) - (0.5 * y[3]);
 		double c3 = (0.5 * (y[3] - y[0])) + (1.5 * (y[1] - y[2]));
-		return (((((c3 * x) + c2) * x) + c1) * x) + c0;
+		return (((((c3 * t) + c2) * t) + c1) * t) + c0;
 	}
 	
 	@Override
@@ -32,6 +31,6 @@ public class SmoothCubicInterpolator extends Interpolator{
 	@Override
 	public String toString()
 	{
-		return "Cubic Hermite Interpolation";
+		return "Smooth Cubic Interpolator";
 	}
 } 

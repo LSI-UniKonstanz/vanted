@@ -1,5 +1,4 @@
-package org.vanted.animation.interpolators;
-import org.vanted.animation.LoopType;
+package org.vanted.animation.interpolators; 
 /**
  * 
  * @author - Patrick Shaw
@@ -9,7 +8,6 @@ public class CubicInterpolator extends Interpolator {
 	public CubicInterpolator()
 	{ 
 	}
-	
 	@Override
 	protected int getPointsBefore()
 	{
@@ -22,13 +20,13 @@ public class CubicInterpolator extends Interpolator {
 	}
 	
 	@Override
-	protected double interpolate(double x, double... y) {
-		double x2 = x * x;
+	protected double interpolate(double t, double... y) {
+		double x2 = t * t;
 		double a0 = (y[3] - y[2]) - (y[0] - y[1]);
 		double a1 = (y[0] - y[1]) - a0;
 		double a2 = y[2] - y[0];
 		double a3 = y[1];
-		return (a0 * x * x2 + a1 * x2 + a2 *x + a3);
+		return (a0 * t * x2 + a1 * x2 + a2 *t + a3);
 	}
 	
 	@Override

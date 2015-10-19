@@ -1,8 +1,8 @@
 package org.vanted.animation.data;
 
-public class StringPoint extends TimePoint<String> {
+public class StringTimePoint extends TimePoint<String> {
 	String value;
-	public StringPoint(double time, String value) {
+	public StringTimePoint(double time, String value) {
 		super(time,value);
 	}
 	public String getValue()
