@@ -21,8 +21,6 @@ public abstract class TimePoint<T>
 	{
 		this.time = time;
 	}
-	public abstract double[] getDoubleValues();
-	public abstract T toDataValue(double[] doubleValues);
 	public T getDataValue() {
 		return dataValue;
 	}

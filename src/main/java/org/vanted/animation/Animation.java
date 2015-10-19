@@ -136,6 +136,8 @@ public abstract class Animation<T extends TimePoint> {
 	{
 		if(isFinished(time))
 		{
+			time = loopDuration;
+			animate(time);
 			onFinish();
 			return;
 		}

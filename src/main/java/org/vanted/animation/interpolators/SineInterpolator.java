@@ -1,5 +1,9 @@
 package org.vanted.animation.interpolators;
-
+/**
+ * 
+ * @author - Patrick Shaw
+ *
+ */
 public class SineInterpolator extends Interpolator {
 
 	public SineInterpolator() {

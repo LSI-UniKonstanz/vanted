@@ -1,8 +1,11 @@
 package org.vanted.animation.data;
-
 import java.util.Vector;
-
-public class VectorTimePoint<T extends Number> extends TimePoint<Vector<T>> {
+/**
+ * 
+ * @author - Patrick Shaw
+ * 
+ */
+public class VectorTimePoint<T extends Number> extends InterpolatableTimePoint<Vector<T>> {
 	public VectorTimePoint(double time, Vector<T> dataValue) {
 		super(time,dataValue);
 	}

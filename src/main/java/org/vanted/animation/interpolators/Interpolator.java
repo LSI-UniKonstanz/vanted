@@ -8,6 +8,7 @@ import java.util.Vector;
 import org.vanted.animation.data.ColorMode;
 import org.vanted.animation.data.ColorTimePoint;
 import org.vanted.animation.data.DoubleTimePoint;
+import org.vanted.animation.data.InterpolatableTimePoint;
 import org.vanted.animation.data.Point2DTimePoint;
 import org.vanted.animation.data.TimePoint;
 import org.vanted.animation.data.VectorTimePoint;
@@ -21,43 +22,57 @@ public abstract class Interpolator
 { 
 	/**
 	 * 
-	 * @param isCircularData
-	 * See {@link #setIsCircularData(boolean) setIsCircularData(boolean)}
+	 * Interpolator classes specify how data is interpolated between datapoints.
+	 * 
 	 */
 	public Interpolator()
 	{ 
 	}
+	/**
+	 * Specifies the number of points to retrieve before the previous-index point
+	 * Typically overridden to return a constant value.
+	 */
 	protected abstract int getPointsBefore();
+	/**
+	 * Specifies the number of points to retrieve after the previous-index point
+	 * Typically overridden to return a constant value.
+	 */
 	protected abstract int getPointsAfter(); 
 		/**
-		 * In the event that you need to perform linear interpolation, you can call this method to
-		 * save some time.
+		 * In the event that you need to perform linear interpolation,
+		 * you can call this method to save you from implementing the method yourself
 		 */
 		protected double linearInterpolation(double x,double y1, double y2)
 		{
 			return y1 + (y2 - y1) * x;
 		}
 		/**
-		 * Should call {@link #getNormalizedTime(double, double, TimePoint, TimePoint) getNormalizedTime(double,TimePoint,TimePoint)}
-		 * This method exists to specify which two points should be used to get the normalized time.
-		 * Eg. If there are 4 points with times: 3,6,7,9 and {@code time} = 6.5 then this method should call
-		 * getNormalizedTime(time,duration,dataPoints[1],dataPoints[2])
+		 * Calculates how far the {@code time} is from the next data point as a percentage.
+		 * <br>
+		 * Eg. If there are 4 points with times: 3,6,7,9 and {@code time} = 6.5 
+		 * then this method will return 0.5 because 6.5-6/7-6 = 0.5
+		 * @param <V>
+		 * The type of data value that the data point holds
+		 * @param <T>
+		 * The type of data point that the interpolator is interpolating for
 		 * @param time
 		 * The time has elapsed since the start of the animation.
-		 * @param duration
-		 * The duration of the animation being interpolated.
+		 * @param loopDuration
+		 * How long each loop takes in milliseconds
+		 * @param dataPoints
+		 * All the dataPoints that the interpolator needs to interpolate between
 		 * @param pointsUsed
-		 * The points being used for the interpolation.
+		 * The points being used for the interpolation. 
 		 * @return
 		 * A value between 0 and 1.
 		 */
-		protected <V,T extends TimePoint<V>> double getNormalizedTime(double time,double loopDuration, List<T> dataPoints, List<T> pointsUsed)
+		protected <V,T extends InterpolatableTimePoint<V>> double getNormalizedTime(
+				double time,double loopDuration, List<T> dataPoints, List<T> pointsUsed)
 		{
 			double normalizedTime = 0;
 			T previousPoint = pointsUsed.get(getPointsBefore());
 			T nextPoint = pointsUsed.get(getPointsAfter());
-			// TODO: Find a better way to identify the points
-			if(dataPoints.get(dataPoints.size() - 1).getTime() == previousPoint.getTime() && dataPoints.get(0).getTime() == nextPoint.getTime())
+			if(dataPoints.get(dataPoints.size() - 1).getTime() <= time)
 			{
 				double totalTime = loopDuration - previousPoint.getTime();
 				totalTime += nextPoint.getTime();
@@ -67,24 +82,47 @@ public abstract class Interpolator
 			{
 				normalizedTime =  (time - previousPoint.getTime()) / (nextPoint.getTime() - previousPoint.getTime());
 			}
-			//System.out.println("Prev("+Double.toString(previousPoint.getTime())+") - Next("+Double.toString(nextPoint.getTime())+") - Norm("+Double.toString(normalizedTime)+")");
+			// If you get rid of this the StandardLooper will act strange when the 
+			// time value is larger than the last point's time value
 			if (Double.isInfinite(normalizedTime) || Double.isNaN(normalizedTime))
 			{
 					normalizedTime = 0;
 			}
+			// If you get rid of this the SwingLooper (or any looper that goes backward)
+			// will behave strangely
 			if (normalizedTime < 0)
 			{
 				normalizedTime += 1;
 			}
 			return normalizedTime;
 		}
-		
-		public Color interpolateColor(double time, double duration, int previousIndex,
+		/**
+		 * Colors can interpolate in special ways.<br>
+		 * It is recommended that you call this method instead of interpolate() 
+		 * to interpolate between values.
+		 * @param <V>
+		 * The type of data value that the data point holds.
+		 * @param <T>
+		 * The type of data point that the interpolator is interpolating for.
+		 * @param time
+		 * The time that has elapsed since the start of the animation.
+		 * @param loopDuration
+		 * How long each loop takes in milliseconds.
+		 * @param dataPoints
+		 * All the dataPoints that the interpolator needs to interpolate between.
+		 * @param looper
+		 * Used to figure out which points are needed at a particular time for interpolation.
+		 * @param transitionMode
+		 * Specifies what kind of the color interpolation the interpolator is using.
+		 * @return
+		 * The interpolated color.
+		 */
+		public Color interpolateColor(double time, double loopDuration, int previousIndex,
 				List<ColorTimePoint> dataPoints, Looper looper, ColorMode transitionMode)
 		{
 			List<ColorTimePoint> pointsUsed = looper.getPointsUsed(dataPoints,previousIndex,getPointsBefore(),getPointsAfter());
 			ColorTimePoint firstPoint = pointsUsed.get(0);
-			double normalizedTime = getNormalizedTime(time,duration, dataPoints, pointsUsed);
+			double normalizedTime = getNormalizedTime(time,loopDuration, dataPoints, pointsUsed);
 			double[][] interpolationStructure = toDataValues(pointsUsed); 
 			double firstValues[] = firstPoint.getDoubleValues(); 
 			for(int q = 0; q < firstValues.length;q++)
@@ -108,9 +146,8 @@ public abstract class Interpolator
 				for(int i = 0; i < interpolationStructure[0].length - 1;i++)
 				{
 					interpolationStructure[0][i+1] += (int)interpolationStructure[0][i]/1;
-					//System.out.println((int)interpolationStructure[0][i]);
+					// Calculate hue difference
 					double hD = interpolationStructure[0][i+1]-interpolationStructure[0][i];
-					//System.out.println(hD);
 					if(hD > 0.5)
 					{
 						interpolationStructure[0][i+1] -= 1;
@@ -130,36 +167,55 @@ public abstract class Interpolator
 				break;
 			default:
 				for(int q = 0; q < firstValues.length;q++)
-			{
-				newValues[q] = interpolate(normalizedTime, interpolationStructure[q]);
-			}
+				{
+					newValues[q] = interpolate(normalizedTime, interpolationStructure[q]);
+				}
 			break;
 			}
 			return firstPoint.toDataValue(newValues);
 		}
 		/**
-		 * Implement your interpolation in this algorithm
+		 * Override this method with an interpolation algorithm.
 		 * @param t
-		 * A value between 0 and 1. Typically represents how close you are to a given point.
-		 * 1 Means the x value matches the x value of the previous data point.
-		 * 0 Means the x value matches the x value of the next data point.
+		 * A value between 0 and 1. Typically represents how close you are to a given point 
+		 * with respect to time.<br>
+		 * t=0 Means the elapsed time value is equal to the time value of the previous data point. <br>
+		 * t=1 Means the elapsed time value is equal the time value of the next data point. <br>
 		 * @param y
 		 * The y values that you need interpolate between.
 		 * @return
+		 * An interpolated value.
 		 */
 		protected abstract double interpolate(double t, double...y);	
-		public <V,T extends TimePoint<V>> V interpolate(double time, double duration,
+		public <V,T extends InterpolatableTimePoint<V>> V interpolate(double time, double duration,
 				int previousIndex, List<T> dataPoints, Looper looper)
 		{
 			List<T> pointsUsed = looper.getPointsUsed(dataPoints,previousIndex, getPointsBefore(), getPointsAfter());
 			double normalizedTime = getNormalizedTime(time, duration, dataPoints, pointsUsed);
 			return (V) interpolate(normalizedTime,pointsUsed);
 		}
-		protected <V,T extends TimePoint<V>> V interpolate(double t, List<T> y)
+		/**
+		 * This method calls {@link #interpolate(double, double...)} for each array in the 
+		 * interpolation structure
+		 * @param <V>
+		 * The type of data value that the data point holds.
+		 * @param <T>
+		 * The type of data point that the interpolator is interpolating for.
+		 * @param t
+		 * A value between 0 and 1. Typically represents how close you are to a given point 
+		 * with respect to time.<br>
+		 * t=0 Means the elapsed time value is equal to the time value of the previous data point. <br>
+		 * t=1 Means the elapsed time value is equal the time value of the next data point. <br>
+		 * @param pointsUsed
+		 * The data points being used for interpolation at this instance in time.
+		 * @return
+		 * An interpolated value.
+		 */
+		protected <V,T extends InterpolatableTimePoint<V>> V interpolate(double t, List<T> pointsUsed)
 		{
-			T firstPoint = y.get(0);
+			T firstPoint = pointsUsed.get(0);
 			double firstValues[] = firstPoint.getDoubleValues();
-			double interpolationStructure[][] = toDataValues(y);
+			double interpolationStructure[][] = toDataValues(pointsUsed);
 			double newValues[] = new double[firstValues.length];
 			for(int q = 0; q < firstValues.length;q++)
 			{
@@ -167,7 +223,22 @@ public abstract class Interpolator
 			}
 			return firstPoint.toDataValue(newValues);
 		}
-		private <V,T extends TimePoint<V>> double[][] toDataValues(List<T> y)
+		/**
+		 * 
+		 * @param <V>
+		 * The type of data value that the data point holds.
+		 * @param <T>
+		 * The type of data point that the interpolator is interpolating for.
+		 * @param y
+		 * A list of data points that the interpolator needs to interpolate between
+		 * @return
+		 * A 2D array:<br>
+		 * Each array accessed in the first dimension represents an individual set of
+		 * data values to interpolate between.<br>
+		 * Eg. If we are interpolating RGB color values. array[0] would be all the 
+		 * red values, array[1] would be all the blue values, etc<br>
+		 */
+		private <V,T extends InterpolatableTimePoint<V>> double[][] toDataValues(List<T> y)
 		{
 			T firstPoint = y.get(0);
 			double firstValues[] = firstPoint.getDoubleValues();

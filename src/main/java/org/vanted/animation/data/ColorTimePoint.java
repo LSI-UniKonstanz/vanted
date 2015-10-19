@@ -7,7 +7,7 @@ import java.util.Arrays;
  * @author - Patrick Shaw
  * 
  */
-public class ColorTimePoint extends TimePoint<Color> {
+public class ColorTimePoint extends InterpolatableTimePoint<Color> {
 	public ColorTimePoint(double time, Color color)
 	{
 		super(time,color);
@@ -20,13 +20,13 @@ public class ColorTimePoint extends TimePoint<Color> {
 	{
 		setDataValue(color);
 	}
-	@Override
-	public double[] getDoubleValues() {
-		return new double[]{dataValue.getRed(), dataValue.getGreen(),dataValue.getBlue(),dataValue.getAlpha()};
-	}
 	public int validateRGB(double colorValue)
 	{
 		return (int) ((255 < colorValue) ? 255 : (0 > colorValue) ? 0 : colorValue); 
+	}
+	@Override
+	public double[] getDoubleValues() {
+		return new double[]{dataValue.getRed(), dataValue.getGreen(),dataValue.getBlue(),dataValue.getAlpha()};
 	}
 	@Override
 	public Color toDataValue(double[] doubleValues) {
