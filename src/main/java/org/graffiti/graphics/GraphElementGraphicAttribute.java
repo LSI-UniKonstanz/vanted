@@ -265,10 +265,13 @@ public abstract class GraphElementGraphicAttribute
 	 * dependent graph attribute components.
 	 * Only values between 0.0 (transparent) and 1.0 (opaque) are
 	 * allowed
+	 * Values outside the allowed range are capped
 	 */
 	public void setOpacity(double value) {
-		if (value < 0.0 || value > 1.0)
-			return;
+		if (value < 0.0)
+			value = 0.0;
+		if (value > 1.0)
+			value = 1.0;
 		((DoubleAttribute) attributes.get(OPAC)).setValue(new Double(value));
 	}
 	
