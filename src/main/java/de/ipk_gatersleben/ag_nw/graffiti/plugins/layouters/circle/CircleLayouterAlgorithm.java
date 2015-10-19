@@ -27,10 +27,10 @@ import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.animation.Animator;
-import org.vanted.animation.LoopType;
-import org.vanted.animation.animators.Position2DAnimation;
-import org.vanted.animation.data.Point2DPoint;
+import org.vanted.animation.animations.Position2DAnimation;
+import org.vanted.animation.data.Point2DTimePoint;
 import org.vanted.animation.interpolators.CosineInterpolator;
+import org.vanted.animation.loopers.StandardLooper;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
@@ -284,16 +284,16 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 			animator.setLoopDuration(500, TimeUnit.MILLISECONDS);
 			for (Node curNode : workNodes) {
 				
-				Point2DPoint startPosition = new Point2DPoint(0, AttributeHelper.getPosition(curNode));
+				Point2DTimePoint startPosition = new Point2DTimePoint(0, AttributeHelper.getPosition(curNode));
 				Vector2d vector2d = nodes2newPositions.get(curNode);
-				Point2DPoint endPosition = new Point2DPoint(500, vector2d.x, vector2d.y);
-				List<Point2DPoint> dataPoints = new ArrayList<Point2DPoint>();
+				Point2DTimePoint endPosition = new Point2DTimePoint(400, vector2d.x, vector2d.y);
+				List<Point2DTimePoint> dataPoints = new ArrayList<Point2DTimePoint>();
 				dataPoints.add(startPosition);
-//				dataPoints.add(new Point2DPoint(1000, 20, 20));
+//				dataPoints.add(new Point2DTimePoint(1000, 20, 20));
 				
 				dataPoints.add(endPosition);
 				Position2DAnimation posAnimation = new Position2DAnimation(curNode, 0, 500, new CosineInterpolator(), dataPoints, 1,
-						LoopType.forward);
+						new StandardLooper());
 				animator.addAnimation(posAnimation);
 			}
 			SwingUtilities.invokeLater(new Runnable() {
