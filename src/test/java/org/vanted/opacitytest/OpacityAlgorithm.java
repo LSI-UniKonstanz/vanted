@@ -7,6 +7,7 @@ import org.AttributeHelper;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 import org.graffiti.plugin.view.View;
+import org.vanted.animation.Animator;
 
 /**
  * @author matthiak
@@ -30,14 +31,20 @@ public class OpacityAlgorithm extends AbstractEditorAlgorithm {
 	
 	@Override
 	public void execute() {
-		graph.getListenerManager().transactionStarted(this);
+		Animator animator = new Animator(graph, 1000);
 		for (GraphElement ge : getSelectedOrAllGraphElements()) {
-			double opac = AttributeHelper.getOpacity(ge);
-			if (opac < 1.0)
-				AttributeHelper.setOpacity(ge, 1.0);
-			else
-				AttributeHelper.setOpacity(ge, 0.4);
+			/*
+			 * handle faded elements (faded element to hidden state)
+			 */
+			if (AttributeHelper.isHiddenGraphElement(ge)) {
+				
+				if (AttributeHelper.getOpacity(ge) <= 0.0) {
+					
+				}
+			} else {
+				
+			}
+			
 		}
-		graph.getListenerManager().transactionFinished(this);
 	}
 }
