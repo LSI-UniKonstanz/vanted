@@ -18,7 +18,7 @@ import org.graffiti.plugin.view.View;
 import org.vanted.animation.Animator;
 import org.vanted.animation.animations.HideAnimation;
 import org.vanted.animation.data.DoubleTimePoint;
-import org.vanted.animation.interpolators.CosineInterpolator;
+import org.vanted.animation.interpolators.LinearInterpolator;
 import org.vanted.animation.loopers.StandardLooper;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
@@ -45,8 +45,9 @@ public class OpacityAlgorithm extends AbstractEditorAlgorithm {
 	
 	@Override
 	public void execute() {
-		Animator animator = new Animator(graph, 1);
-		animator.setLoopDuration(1000, TimeUnit.MILLISECONDS);
+		int duration = 1000;
+		Animator animator = new Animator(graph, 0);
+		animator.setLoopDuration(duration, TimeUnit.MILLISECONDS);
 		Set<GraphElement> nodesAndEdges = new HashSet<GraphElement>();
 		if (selection.isEmpty())
 			nodesAndEdges.addAll(graph.getNodes());
@@ -86,8 +87,8 @@ public class OpacityAlgorithm extends AbstractEditorAlgorithm {
 //				if (opacity <= 0.0) {
 				List<DoubleTimePoint> listTP = new ArrayList<DoubleTimePoint>();
 				listTP.add(new DoubleTimePoint(0, opacity));
-				listTP.add(new DoubleTimePoint(950, 1.1));
-				HideAnimation opacAnim = new HideAnimation(ge, 0, 1000, new CosineInterpolator(), listTP, 1, new StandardLooper());
+				listTP.add(new DoubleTimePoint(duration, 1.0));
+				HideAnimation opacAnim = new HideAnimation(ge, 0, duration, new LinearInterpolator(), listTP, 1, new StandardLooper());
 				
 				animator.addAnimation(opacAnim);
 				
@@ -95,8 +96,8 @@ public class OpacityAlgorithm extends AbstractEditorAlgorithm {
 			} else {
 				List<DoubleTimePoint> listTP = new ArrayList<DoubleTimePoint>();
 				listTP.add(new DoubleTimePoint(0, opacity));
-				listTP.add(new DoubleTimePoint(950, -0.1));
-				HideAnimation opacAnim = new HideAnimation(ge, 0, 1000, new CosineInterpolator(), listTP, 1, new StandardLooper());
+				listTP.add(new DoubleTimePoint(duration, 0.0));
+				HideAnimation opacAnim = new HideAnimation(ge, 0, duration, new LinearInterpolator(), listTP, 1, new StandardLooper());
 				animator.addAnimation(opacAnim);
 				
 			}

@@ -18,7 +18,8 @@ public class TestOpacity extends EditorPluginAdapter {
 	 */
 	public TestOpacity() {
 		algorithms = new Algorithm[] {
-				new OpacityAlgorithm()
+				new OpacityAlgorithm(),
+				new MotionTest()
 		};
 	}
 	
