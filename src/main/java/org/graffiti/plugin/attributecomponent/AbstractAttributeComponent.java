@@ -13,7 +13,7 @@
 package org.graffiti.plugin.attributecomponent;
 
 import java.awt.AlphaComposite;
-import java.awt.Composite;
+import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -58,8 +58,6 @@ public abstract class AbstractAttributeComponent
 	
 	protected Point loc = new Point();
 	
-	protected Composite composite;
-	
 	// ~ Constructors ===========================================================
 	
 	/**
@@ -86,10 +84,6 @@ public abstract class AbstractAttributeComponent
 		double opacity = (double) AttributeHelper.getAttributeValue(attr.getAttributable(), GraphicAttributeConstants.GRAPHICS, GraphicAttributeConstants.OPAC,
 				1.0, new Double(1));
 		setupOpacity(opacity);
-	}
-	
-	public void setComposite(Composite composite) {
-		this.composite = composite;
 	}
 	
 	protected void setupOpacity(double opacity) {
@@ -193,12 +187,13 @@ public abstract class AbstractAttributeComponent
 		/* 
 		 * only draw component, if printing is in progress, it is graphically visible or not FAST mode enabled
 		 */
-		if (getParent() instanceof IPKGraffitiView &&
+		Container parent = getParent();
+		if (parent instanceof IPKGraffitiView &&
 				((IPKGraffitiView) getParent()).printInProgress) {
 			return true;
 		}
-		if (getParent() instanceof GraffitiView) {
-			GraffitiView view = (GraffitiView) getParent();
+		if (parent instanceof GraffitiView) {
+			GraffitiView view = (GraffitiView) parent;
 			if (view.getDrawMode() == DrawMode.FAST)
 				return false;
 			AffineTransform zoom = view.getZoom();
@@ -219,6 +214,8 @@ public abstract class AbstractAttributeComponent
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
+		if (hidden)
+			return;
 		if (composite != null)
 			((Graphics2D) g).setComposite(composite);
 		super.paintComponent(g);
@@ -229,6 +226,8 @@ public abstract class AbstractAttributeComponent
 	 */
 	@Override
 	public void paint(Graphics g) {
+		if (hidden)
+			return;
 		if (composite != null)
 			((Graphics2D) g).setComposite(composite);
 		super.paint(g);

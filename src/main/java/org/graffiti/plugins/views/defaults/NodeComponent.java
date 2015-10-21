@@ -110,13 +110,14 @@ public class NodeComponent
 				
 			}
 			adjustComponentSize();
-			
 			// update attribute components like labels:
+			boolean hidden = AttributeHelper.isHiddenGraphElement(graphElement);
 			for (GraffitiViewComponent gvc : attributeComponents.values()) {
 				AttributeComponent attrComp = (AttributeComponent) gvc;
 				attrComp.setShift(getLocation());
 				attrComp.setGraphElementShape(shape);
 				attrComp.attributeChanged(attr);
+				attrComp.setHidden(hidden);
 			}
 			
 			/*
