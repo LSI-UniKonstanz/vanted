@@ -462,14 +462,14 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		if (composite != null)
 			((Graphics2D) g).setComposite(composite);
 		
-		if (isVisible) {
-//			logger.debug("drawing normal");
-			super.paint(g);
-		} else if (getDrawingModeOfView() == DrawMode.REDUCED && bufferedImage != null && isVisible) {
+		if (getDrawingModeOfView() == DrawMode.REDUCED && bufferedImage != null && isVisible) {
 			
 //			logger.debug("drawing image");
 			g.drawImage(bufferedImage, 0, 0, null);
 			
+		} else if (isVisible) {
+//			logger.debug("drawing normal");
+			super.paint(g);
 		} else if (DRAWRECT_MINSIZE && !(getDrawingModeOfView() == DrawMode.FAST)) {
 //			logger.debug("drawing rectangle");
 			g.setColor(new Color(200, 200, 200));
