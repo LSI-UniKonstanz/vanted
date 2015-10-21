@@ -930,6 +930,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		// first call to mouseDragged
 		// save changed (Coordinate/Bends Attributes) for undo edit
 		List<GraphElement> selElements = selection.getElements();
+		Set<Node> selNodes = new HashSet<Node>(selection.getNodes());
 		
 		originalCoordinates = new HashMap<Attribute, Object>();
 		
@@ -957,21 +958,6 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			} else {
 				lastTimeForEdge = System.currentTimeMillis();
 				// for edges, add the coordinates of their bends
-				Set<Node> selNodes = new HashSet<Node>(selection.getNodes());
-				
-//				for (Node node : selNodes) {
-//					for (Edge edge : node.getEdges()) {
-//						if (selNodes.contains(edge.getSource())
-//								&& selNodes.contains(edge.getTarget())) {
-//							SortedCollectionAttribute bends = (SortedCollectionAttribute) edge
-//									.getAttribute(GraphicAttributeConstants.GRAPHICS
-//											+ Attribute.SEPARATOR
-//											+ GraphicAttributeConstants.BENDS);
-//							
-//							originalCoordinates.put(bends, ((Attribute) bends.copy()).getValue());
-//						}
-//					}
-//				}
 				
 				Edge curSelEdge = (Edge) ge;
 				if (selNodes.contains(curSelEdge.getSource())
