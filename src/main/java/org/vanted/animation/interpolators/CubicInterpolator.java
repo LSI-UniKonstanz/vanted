@@ -1,6 +1,8 @@
 package org.vanted.animation.interpolators; 
-/**
- * 
+/** 
+ * Provides true continuity throughout the animation. <br>
+ * Note: Cubic interpolations can 'overshoot' in terms of their interpolated value. <br>
+ * Note: This is not a cubic spline interpolation.
  * @author - Patrick Shaw
  * 
  */

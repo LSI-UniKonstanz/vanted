@@ -2,6 +2,9 @@ package org.vanted.animation.interpolators;
 /**
  * 
  * @author - Patrick Shaw
+ * Interpolates data between -6 and 6 on a basic sigmoid function.<br>
+ * In position animations, it will cause the animation to start off slow,
+ * speed up and slow down again as it goes from one data point to another.<br>
  * 
  */
 public class SigmoidInterpolator extends Interpolator {

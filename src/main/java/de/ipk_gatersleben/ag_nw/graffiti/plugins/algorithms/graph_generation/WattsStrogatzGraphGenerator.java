@@ -112,9 +112,6 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 						public void run() {
 							MainFrame.getInstance().showGraph(rdg, new ActionEvent(this, 1, getName()));
 							GraphHelper.issueCompleteRedrawForActiveView();
-							Animator anim = new Animator(rdg,4);
-							anim.initialliseTestAnimation();
-							anim.start();
 						}
 					});
 				} catch (Exception e) {

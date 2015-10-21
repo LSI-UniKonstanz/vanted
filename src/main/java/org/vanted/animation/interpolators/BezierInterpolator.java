@@ -8,7 +8,9 @@ import org.vanted.animation.data.InterpolatableTimePoint;
 import org.vanted.animation.data.TimePoint;
 import org.vanted.animation.loopers.Looper;
 /**
- * Interpolates the data values as if it were drawing a Bézier Curve.
+ * Interpolates the data values as if it were drawing a Bézier Curve.<br>
+ * Note: Bézier interpolation will cause dramatic performance hits
+ * at large data point sizes.
  * @see <a href="https://en.wikipedia.org/wiki/B%C3%A9zier_curve">https://en.wikipedia.org/wiki/B%C3%A9zier_curve</a>
  * @author - Patrick Shaw
  */
@@ -89,7 +91,7 @@ public class BezierInterpolator extends Interpolator {
 			int previousIndex, List<T> dataPoints, Looper looper)
 	{
 		List<T> pointsUsed = looper.getPointsUsed(dataPoints,previousIndex, getPointsBefore(), getPointsAfter());
-		double normalizedTime = getNormalizedTime(time,duration, dataPoints,pointsUsed); 
+		double normalizedTime = getNormalizedTime(time,duration, dataPoints,pointsUsed,looper); 
 		double tPerPoint = (1/(double)dataPoints.size());
 		double t = tPerPoint * previousIndex + normalizedTime * tPerPoint;	
 		//System.out.println(t);

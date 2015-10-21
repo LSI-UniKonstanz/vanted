@@ -13,8 +13,6 @@ import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 import org.graffiti.plugin.view.View;
-import org.sbml.jsbml.SBMLDocument;
-import org.sbml.jsbml.ext.SBasePlugin;
 import org.vanted.animation.Animator;
 import org.vanted.animation.animations.Position2DAnimation;
 import org.vanted.animation.data.Point2DTimePoint;
@@ -43,21 +41,20 @@ public class MotionTest extends AbstractEditorAlgorithm {
 	
 	@Override
 	public void execute() {
-		SBMLDocument doc = new SBMLDocument();
-		SBasePlugin sbase = doc.getExtension("comp");
 		int duration = 1000;
-		Animator animator = new Animator(graph, 0);
-		animator.setLoopDuration(duration, TimeUnit.MILLISECONDS);
+		Animator animator = new Animator(graph, 2);
 		for (GraphElement ge : getSelectedOrAllNodes()) {
 			List<Point2DTimePoint> listP2dTP = new ArrayList<>();
 			Point2D position = AttributeHelper.getPosition((Node) ge);
 			listP2dTP.add(new Point2DTimePoint(0, position));
 			Point2D newPosition = new Point2D.Double(position.getX() + 100, position.getY() + 100);
 			listP2dTP.add(new Point2DTimePoint(1000, newPosition));
-			Position2DAnimation posAnim = new Position2DAnimation((Node) ge, 0, duration, new CosineInterpolator(), listP2dTP, 1, new StandardLooper());
+			Position2DAnimation posAnim = new Position2DAnimation((Node) ge, listP2dTP, duration);
 			
 			animator.addAnimation(posAnim);
 		}
+
 		animator.start();
 	}
+	
 }

@@ -1,18 +1,46 @@
 package org.vanted.animation.animations;
-
 import java.awt.geom.Point2D;
 import java.util.List;
 import org.AttributeHelper;
+import org.graffiti.attributes.Attributable;
 import org.graffiti.graph.Node;
 import org.vanted.animation.ContinuousAnimation; 
 import org.vanted.animation.data.DoubleTimePoint;
 import org.vanted.animation.interpolators.Interpolator;
 import org.vanted.animation.loopers.Looper;
+/**
+ * 
+ * Animates the x coordinate of a Node object.
+ * @author - Patrick Shaw
+ * 
+ */
 public class PositionXAnimation extends ContinuousAnimation<DoubleTimePoint> {
 
-	public PositionXAnimation(Node attributable,double startTime, double duration,Interpolator interpolator, List<DoubleTimePoint> dataPoints,
-			int noLoops,Looper looper) {
-		super(attributable,startTime, duration,interpolator, dataPoints,noLoops,looper);
+
+	public PositionXAnimation(Attributable attributable, List<DoubleTimePoint> dataPoints, double loopDuration, double startTime, int noLoops, Looper looper,
+			Interpolator interpolator) {
+		super(attributable, dataPoints, loopDuration, startTime, noLoops, looper, interpolator);
+		// TODO Auto-generated constructor stub
+	}
+
+	public PositionXAnimation(Attributable attributable, List<DoubleTimePoint> dataPoints, double loopDuration, double startTime, int noLoops, Looper looper) {
+		super(attributable, dataPoints, loopDuration, startTime, noLoops, looper);
+		// TODO Auto-generated constructor stub
+	}
+
+	public PositionXAnimation(Attributable attributable, List<DoubleTimePoint> dataPoints, double loopDuration, double startTime, int noLoops) {
+		super(attributable, dataPoints, loopDuration, startTime, noLoops);
+		// TODO Auto-generated constructor stub
+	}
+
+	public PositionXAnimation(Attributable attributable, List<DoubleTimePoint> dataPoints, double loopDuration, double startTime) {
+		super(attributable, dataPoints, loopDuration, startTime);
+		// TODO Auto-generated constructor stub
+	}
+
+	public PositionXAnimation(Attributable attributable, List<DoubleTimePoint> dataPoints, double loopDuration) {
+		super(attributable, dataPoints, loopDuration);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override

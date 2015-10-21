@@ -1,9 +1,16 @@
 package org.vanted.animation.loopers;
-
 import java.util.List;
 
 import org.vanted.animation.data.TimePoint;
-
+/**
+ * 
+ * Reverses the animation after it goes forward. 
+ * (Reverses when the loop number is an odd number)<br>
+ * TODO: The SwingLooper only behaves properly for loop durations that are longer than 
+ * the largest time value in the animation's data point list.
+ * @author - Patrick Shaw
+ *
+ */
 public class SwingLooper extends Looper {
 
 	public SwingLooper() {
