@@ -6,6 +6,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.chart_settings;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
+import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -224,9 +225,17 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 	
 	@Override
 	public void paint(Graphics g) {
+		if (hidden)
+			return;
+		
 		if (isPaintingForPrint()) {
+			
 //			logger.debug("paint for bufferedimage");
+			// work around to trigger paint without composite
+			Composite temp = composite;
+			composite = null;
 			super.paint(g);
+			composite = temp;
 		} else if (checkVisibility(MINSIZE_VISIBILITY)) {
 			if (composite != null)
 				((Graphics2D) g).setComposite(composite);
@@ -239,11 +248,14 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 //			}
 			
 			if (getDrawingModeOfView() == DrawMode.REDUCED) {
+				if (composite != null)
+					((Graphics2D) g).setComposite(composite);
 				// for testing
-				logger.debug("drawing chart from imagebuffer");
+//				logger.debug("drawing chart from imagebuffer");
 				g.drawImage(bufferedImage, 0, 0, null);
 			} else {
 				super.paint(g);
+				logger.debug("composite: " + ((Graphics2D) g).getComposite().toString());
 			}
 		}
 		
