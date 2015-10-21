@@ -47,14 +47,15 @@ public abstract class Interpolator
 			return y1 + (y2 - y1) * x;
 		}
 		/**
-		 * Calculates how far the {@code time} is from the next data point as a percentage.
+		 * Calculates how far the {@code time} is from the next data point relative to the previous pooint
+		 * as a percentage.
 		 * <br>
 		 * Eg. If there are 4 points with times: 3,6,7,9 and {@code time} = 6.5 
 		 * then this method will return 0.5 because 6.5-6/7-6 = 0.5
 		 * @param <V>
-		 * The type of data value that the data point holds
+		 * The type of data value that the data point holds.
 		 * @param <T>
-		 * The type of data point that the interpolator is interpolating for
+		 * The type of data point that the interpolator is interpolating for.
 		 * @param time
 		 * The time has elapsed since the start of the animation.
 		 * @param loopDuration
@@ -67,34 +68,10 @@ public abstract class Interpolator
 		 * A value between 0 and 1.
 		 */
 		protected <V,T extends InterpolatableTimePoint<V>> double getNormalizedTime(
-				double time,double loopDuration, List<T> dataPoints, List<T> pointsUsed)
+				double time,double loopDuration, List<T> dataPoints, List<T> pointsUsed, Looper looper)
 		{
-			double normalizedTime = 0;
-			T previousPoint = pointsUsed.get(getPointsBefore());
-			T nextPoint = pointsUsed.get(getPointsAfter());
-			if(dataPoints.get(dataPoints.size() - 1).getTime() <= time)
-			{
-				double totalTime = loopDuration - previousPoint.getTime();
-				totalTime += nextPoint.getTime();
-				normalizedTime = (time - previousPoint.getTime()) / totalTime;
-			}
-			else
-			{
-				normalizedTime =  (time - previousPoint.getTime()) / (nextPoint.getTime() - previousPoint.getTime());
-			}
-			// If you get rid of this the StandardLooper will act strange when the 
-			// time value is larger than the last point's time value
-			if (Double.isInfinite(normalizedTime) || Double.isNaN(normalizedTime))
-			{
-					normalizedTime = 0;
-			}
-			// If you get rid of this the SwingLooper (or any looper that goes backward)
-			// will behave strangely
-			if (normalizedTime < 0)
-			{
-				normalizedTime += 1;
-			}
-			return normalizedTime;
+			return looper.getNormalizedTime(time, loopDuration, dataPoints, pointsUsed,
+					pointsUsed.get(getPointsBefore()), pointsUsed.get(getPointsBefore() + 1));
 		}
 		/**
 		 * Colors can interpolate in special ways.<br>
@@ -122,7 +99,7 @@ public abstract class Interpolator
 		{
 			List<ColorTimePoint> pointsUsed = looper.getPointsUsed(dataPoints,previousIndex,getPointsBefore(),getPointsAfter());
 			ColorTimePoint firstPoint = pointsUsed.get(0);
-			double normalizedTime = getNormalizedTime(time,loopDuration, dataPoints, pointsUsed);
+			double normalizedTime = getNormalizedTime(time,loopDuration, dataPoints, pointsUsed, looper);
 			double[][] interpolationStructure = toDataValues(pointsUsed); 
 			double firstValues[] = firstPoint.getDoubleValues(); 
 			for(int q = 0; q < firstValues.length;q++)
@@ -191,7 +168,7 @@ public abstract class Interpolator
 				int previousIndex, List<T> dataPoints, Looper looper)
 		{
 			List<T> pointsUsed = looper.getPointsUsed(dataPoints,previousIndex, getPointsBefore(), getPointsAfter());
-			double normalizedTime = getNormalizedTime(time, duration, dataPoints, pointsUsed);
+			double normalizedTime = getNormalizedTime(time, duration, dataPoints, pointsUsed, looper);
 			return (V) interpolate(normalizedTime,pointsUsed);
 		}
 		/**

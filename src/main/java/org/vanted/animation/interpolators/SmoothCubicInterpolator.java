@@ -1,6 +1,9 @@
 package org.vanted.animation.interpolators;  
 /**
  * 
+ * Uses the same mathematical equation as a CubicInterpolator but with different 
+ * constants. This provides a smoother interpolation and lessens the 'overshooting' 
+ * effect that is apparent with the CubicInterpolator.
  * @author - Patrick Shaw
  * 
  */
