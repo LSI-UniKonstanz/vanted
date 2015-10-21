@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -929,15 +930,21 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		// first call to mouseDragged
 		// save changed (Coordinate/Bends Attributes) for undo edit
 		List<GraphElement> selElements = selection.getElements();
+		Set<Node> selNodes = new HashSet<Node>(selection.getNodes());
 		
 		originalCoordinates = new HashMap<Attribute, Object>();
 		
-		ChangeAttributesEdit edit;
+		String attrPath = GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR + GraphicAttributeConstants.BENDS;
 		
+		ChangeAttributesEdit edit;
+		long timeForNodes = 0;
+		long timeForEdges = 0;
+		long lastTimeForNode = System.currentTimeMillis();
+		long lastTimeForEdge = System.currentTimeMillis();
 		for (GraphElement ge : selElements) {
 			if (ge instanceof Node) {
 				// for nodes, add their coordinates
-				
+				lastTimeForNode = System.currentTimeMillis();
 				if (resizeHit) {
 					Attribute dimAttr = ge.getAttribute(GraphicAttributeConstants.DIM_PATH);
 					originalCoordinates.put(dimAttr, ((Attribute) dimAttr.copy()).getValue());
@@ -945,26 +952,29 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					Attribute coAttr = ge.getAttribute(GraphicAttributeConstants.COORD_PATH);
 					originalCoordinates.put(coAttr, ((Attribute) coAttr.copy()).getValue());
 				}
+				long now = System.currentTimeMillis();
+				timeForNodes += now - lastTimeForNode;
+				lastTimeForNode = now;
 			} else {
+				lastTimeForEdge = System.currentTimeMillis();
 				// for edges, add the coordinates of their bends
-				Collection<Node> selNodes = selection.getNodes();
 				
-				for (Node node : selNodes) {
-					for (Edge edge : node.getEdges()) {
-						if (selNodes.contains(edge.getSource())
-								&& selNodes.contains(edge.getTarget())) {
-							SortedCollectionAttribute bends = (SortedCollectionAttribute) edge
-									.getAttribute(GraphicAttributeConstants.GRAPHICS
-											+ Attribute.SEPARATOR
-											+ GraphicAttributeConstants.BENDS);
-							
-							originalCoordinates.put(bends, ((Attribute) bends.copy()).getValue());
-						}
-					}
+				Edge curSelEdge = (Edge) ge;
+				if (selNodes.contains(curSelEdge.getSource())
+						&& selNodes.contains(curSelEdge.getTarget())) {
+					SortedCollectionAttribute bends = (SortedCollectionAttribute) curSelEdge
+							.getAttribute(attrPath);
+					Object value = bends.getValue();
+					if (!((LinkedHashMap) value).isEmpty())
+						originalCoordinates.put(bends, ((Attribute) bends.copy()).getValue());
 				}
+				
+				long now = System.currentTimeMillis();
+				timeForEdges += now - lastTimeForEdge;
+				lastTimeForEdge = now;
 			}
 		}
-		
+		System.out.println("MegaMoveTool: mouseDraggedFirstCallStoreCoordinatesForUndoSupport(). timeNodes:" + timeForNodes + ", timeEdges: " + timeForEdges);
 		edit = new ChangeAttributesEdit(session.getGraph(), originalCoordinates, geMap);
 		undoSupport.postEdit(edit);
 	}

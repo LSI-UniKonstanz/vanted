@@ -437,19 +437,16 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	
 	@Override
 	public void paint(Graphics g) {
-		logger.debug("paint");
+//		logger.debug("paint");
 		if (label.getText().isEmpty() || fontSize <= 0)
 			return;
 //		logger.setLevel(Level.DEBUG);
 		boolean isVisible = checkVisibility(MINSIZE_VISIBILITY);
-		if (getDrawingModeOfView() == DrawMode.REDUCED && bufferedImage != null && isVisible) {
-			logger.debug("drawing image");
-			if (composite != null)
-				((Graphics2D) g).setComposite(composite); // for testing
-			g.drawImage(bufferedImage, 0, 0, null);
-			
-		} else if (isCreatingBufferedImage) {
-			logger.debug("isCreatingBufferedImage");
+		if (hidden)
+			return;
+		
+		if (isCreatingBufferedImage) {
+//			logger.debug("isCreatingBufferedImage");
 			/*
 			 * we need to trigger the paint pipeline to create the buffered image
 			 * But we MUST clear the composite. It will mess up
@@ -459,11 +456,22 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			composite = null;
 			super.paint(g);
 			composite = temp;
+			return;
+		}
+		
+		if (composite != null)
+			((Graphics2D) g).setComposite(composite);
+		
+		if (getDrawingModeOfView() == DrawMode.REDUCED && bufferedImage != null && isVisible) {
+			
+//			logger.debug("drawing image");
+			g.drawImage(bufferedImage, 0, 0, null);
+			
 		} else if (isVisible) {
-			logger.debug("drawing normal");
+//			logger.debug("drawing normal");
 			super.paint(g);
 		} else if (DRAWRECT_MINSIZE && !(getDrawingModeOfView() == DrawMode.FAST)) {
-			logger.debug("drawing rectangle");
+//			logger.debug("drawing rectangle");
 			g.setColor(new Color(200, 200, 200));
 			int height = getHeight();
 			int width = getWidth();

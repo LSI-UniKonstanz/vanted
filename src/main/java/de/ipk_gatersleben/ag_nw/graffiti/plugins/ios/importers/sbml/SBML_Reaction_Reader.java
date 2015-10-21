@@ -5,14 +5,18 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.xml.stream.XMLStreamException;
 
 import org.AlignmentSetting;
 import org.AttributeHelper;
-import org.ErrorMsg;
 import org.PositionGridGenerator;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
@@ -31,6 +35,9 @@ import org.sbml.jsbml.ext.layout.Layout;
 import org.sbml.jsbml.ext.layout.LayoutModelPlugin;
 import org.sbml.jsbml.ext.layout.Point;
 import org.sbml.jsbml.ext.layout.ReactionGlyph;
+import org.sbml.jsbml.ext.layout.SpeciesGlyph;
+import org.sbml.jsbml.ext.layout.SpeciesReferenceGlyph;
+import org.sbml.jsbml.ext.layout.SpeciesReferenceRole;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.KineticLawHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLHelper;
@@ -40,6 +47,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLSpeciesHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
+@SuppressWarnings("nls")
 public class SBML_Reaction_Reader {
 	
 	/**
@@ -322,76 +330,318 @@ public class SBML_Reaction_Reader {
 					AlignmentSetting.HIDDEN.toGMLstring());
 			
 			if (SBML_Constants.isLayoutActive) {
-				processLayoutInformation(g, reaction, reactionHelper, reactionNode);
+				processLayoutInformation(reaction, reactionNode);
 			}
 			
 		}
 	}
 	
-	private void processLayoutInformation(Graph g, Reaction reaction, SBMLReactionHelper reactionHelper, Node reactionNode) {
+	// old code, has been replaced by new code below on 09/09/2015
+	//
+	// private void processLayoutInformation(Graph g, Reaction reaction, SBMLReactionHelper reactionHelper, Node reactionNode) {
+	// LayoutModelPlugin layoutModel = (LayoutModelPlugin) reaction.getModel().getExtension(SBMLHelper.SBML_LAYOUT_EXTENSION_NAMESPACE);
+	// if (layoutModel != null) {
+	//
+	// Layout layout = layoutModel.getListOfLayouts().iterator().next();
+	// ListOf<ReactionGlyph> currentReactionGlyphs = new ListOf<ReactionGlyph>();
+	// currentReactionGlyphs.setLevel(layout.getLevel());
+	// currentReactionGlyphs.setVersion(layout.getVersion());
+	// Iterator<ReactionGlyph> reactionGlyphListIt = layout.getListOfReactionGlyphs().iterator();
+	// String reactionID = reaction.getId();
+	// while (reactionGlyphListIt.hasNext()) {
+	// ReactionGlyph nextReactionGlyph = reactionGlyphListIt.next();
+	// if (nextReactionGlyph.getReaction().equals(reactionID)) {
+	// currentReactionGlyphs.add(nextReactionGlyph);
+	// }
+	// }
+	// // for (int i = 0; i < currentReactionGlyphs.size(); i++) {
+	// for (int i = 0; i < 1; i++) {
+	// ReactionGlyph reactionGlyph = currentReactionGlyphs.get(i);
+	// if (i == 0) {
+	// reactionHelper.addReactionCloneToList(reactionID, reactionNode);
+	// }
+	// if (i >= 1) {
+	// Node reactionNodeClone = g.addNodeCopy(reactionNode);
+	// reactionHelper.addReactionCloneToList(reactionID, reactionNodeClone);
+	// reactionNode = reactionNodeClone;
+	// }
+	//
+	// AttributeHelper.setSize(reactionNode, 40, 40);
+	// BoundingBox boundingBox = null;
+	// if (reactionGlyph != null)
+	// boundingBox = reactionGlyph.getBoundingBox();
+	// if (boundingBox != null) {
+	// Dimensions dimensions = boundingBox.getDimensions();
+	// if (dimensions != null) {
+	// double width = dimensions.getWidth();
+	// double height = dimensions.getHeight();
+	// AttributeHelper.setSize(reactionNode, width, height);
+	//
+	// if (layout.getId() != null) {
+	// AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, layout.getId());
+	// }
+	// else {
+	// AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, SBML_Constants.EMPTY);
+	// }
+	//
+	// } else
+	// {
+	// AttributeHelper.setSize(reactionNode, 34, 34);
+	// // System.out.println("reaction id '" + reactionID + "' has no width/height information.");
+	// }
+	// Point position = boundingBox.getPosition();
+	// if (position != null) {
+	// double x = position.getX();
+	// double y = position.getY();
+	// AttributeHelper.setPosition(reactionNode, x, y);
+	// // TODO layout id might be set twice
+	// AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, layout.getId());
+	// } else {
+	// System.out.println("species id '" + reactionID + "' has no x/y information.");
+	// }
+	// }
+	// }
+	// }
+	// }
+	
+	private static void processLayoutInformation(Reaction reaction, Node reactionNode) {
+		
 		LayoutModelPlugin layoutModel = (LayoutModelPlugin) reaction.getModel().getExtension(SBMLHelper.SBML_LAYOUT_EXTENSION_NAMESPACE);
 		if (layoutModel != null) {
-			
 			Layout layout = layoutModel.getListOfLayouts().iterator().next();
-			ListOf<ReactionGlyph> currentReactionGlyphs = new ListOf<ReactionGlyph>();
-			currentReactionGlyphs.setLevel(layout.getLevel());
-			currentReactionGlyphs.setVersion(layout.getVersion());
 			Iterator<ReactionGlyph> reactionGlyphListIt = layout.getListOfReactionGlyphs().iterator();
 			String reactionID = reaction.getId();
+			
+			ArrayList<ReactionGlyph> reactionGlyphsToBeAdded = new ArrayList<>();
+			
 			while (reactionGlyphListIt.hasNext()) {
-				ReactionGlyph nextReactionGlyph = reactionGlyphListIt.next();
-				if (nextReactionGlyph.getReaction().equals(reactionID)) {
-					currentReactionGlyphs.add(nextReactionGlyph);
+				ReactionGlyph reactionGlyph = reactionGlyphListIt.next();
+				if (reactionGlyph.getReaction().equals(reactionID)) {
+					AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.REACTION_GLYPH_ID, reactionGlyph.getId());
+					BoundingBox boundingBox = reactionGlyph.getBoundingBox();
+					if (boundingBox != null) {
+						Dimensions dimensions = boundingBox.getDimensions();
+						if (dimensions != null) {
+							double width = dimensions.getWidth();
+							double height = dimensions.getHeight();
+							AttributeHelper.setSize(reactionNode, width, height);
+						}
+						Point position = boundingBox.getPosition();
+						if (position != null) {
+							double x = position.getX();
+							double y = position.getY();
+							AttributeHelper.setPosition(reactionNode, x, y);
+							// set a dummy layout ID to have a SBML layout attribute on the node
+							// to be able checking whether layout information has been available or not
+							AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, "dummyLayoutID");
+						} else
+							if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID))
+								AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID);
+					}
+					
+					if (SBML_XML_Reader.isFixPath2Models())
+						reactionGlyphsToBeAdded = fixPath2ModelsSBMLLayout(reaction, reactionNode, reactionGlyph);
+					
 				}
 			}
-			// for (int i = 0; i < currentReactionGlyphs.size(); i++) {
-			for (int i = 0; i < 1; i++) {
-				ReactionGlyph reactionGlyph = currentReactionGlyphs.get(i);
-				if (i == 0) {
-					reactionHelper.addReactionCloneToList(reactionID, reactionNode);
+			
+			if (reactionGlyphsToBeAdded.size() > 0)
+				layout.getListOfReactionGlyphs().addAll(reactionGlyphsToBeAdded);
+			
+		}
+	}
+	
+	private static ArrayList<ReactionGlyph> fixPath2ModelsSBMLLayout(Reaction reaction, Node reactionNode, ReactionGlyph reactionGlyph) {
+		
+		// we have a problem with the Path2Models sbml files
+		// reactions which should have two reaction glyphs are not stored correctly in the layout section of the sbml files
+		// each reaction has just one reaction glyph and all species glyphs exists twice in its definition
+		// TODO: currently only one clone of the reaction node and reaction glyph is created
+		
+		ArrayList<ReactionGlyph> reactionGlyphsToBeAdded = new ArrayList<>();
+		ListOf<SpeciesReferenceGlyph> speciesReferenceGlyphs = reactionGlyph.getListOfSpeciesReferenceGlyphs();
+		
+		// for each species store it's number of and a list of according species glyphs in the definition of the reaction glyph
+		HashMap<String, Integer> hmSpecies = new HashMap<>();
+		HashMap<String, ArrayList<SpeciesReferenceGlyph>> hmSpeciesReferenceGlyphs = new HashMap<>();
+		for (SpeciesReferenceGlyph speciesReferenceGlyph : speciesReferenceGlyphs) {
+			SpeciesGlyph speciesGlyph = speciesReferenceGlyph.getSpeciesGlyphInstance();
+			String speciesID = speciesGlyph.getSpecies();
+			String speciesRole = speciesReferenceGlyph.getSpeciesReferenceRole().toString();
+			if (reaction.isReversible() &&
+					(speciesRole.equals(SpeciesReferenceRole.SUBSTRATE.toString()) || speciesRole.equals(SpeciesReferenceRole.PRODUCT.toString())))
+				speciesRole = SpeciesReferenceRole.SUBSTRATE.toString() + "_" + SpeciesReferenceRole.PRODUCT.toString();
+			Integer numberOf = new Integer(1);
+			if (hmSpecies.get(speciesRole + "_" + speciesID) != null)
+				numberOf = new Integer(hmSpecies.get(speciesRole + "_" + speciesID).intValue() + 1);
+			hmSpecies.put(speciesRole + "_" + speciesID, numberOf);
+			ArrayList<SpeciesReferenceGlyph> _speciesReferenceGlyphs = new ArrayList<>();
+			if (hmSpeciesReferenceGlyphs.get(speciesRole + "_" + speciesID) != null)
+				_speciesReferenceGlyphs = hmSpeciesReferenceGlyphs.get(speciesRole + "_" + speciesID);
+			_speciesReferenceGlyphs.add(speciesReferenceGlyph);
+			hmSpeciesReferenceGlyphs.put(speciesRole + "_" + speciesID, _speciesReferenceGlyphs);
+		}
+		
+		// reaction node and reaction glyph have to be cloned if all species have two or more according species glyphs
+		// and the number of species glyphs is the same for all species
+		boolean toBeCloned = true;
+		if (hmSpecies.size() > 0) {
+			ArrayList<Integer> numberOf = new ArrayList<>(hmSpecies.values());
+			// set number of species glyphs for first species as reference
+			int reference = numberOf.get(0).intValue();
+			if (reference < 2)
+				// number of species glyphs < 2, no cloning necessary
+				toBeCloned = false;
+			else
+				// compare reference with number of species glyphs for all other species
+				for (int k = 1; k < numberOf.size(); k++)
+					if (numberOf.get(k).intValue() != reference) {
+						// number of species glyphs for this species != reference, no cloning
+						toBeCloned = false;
+						break;
+					}
+		}
+		else
+			toBeCloned = false;
+		
+		// clone the reaction node and the reaction glyph
+		if (toBeCloned) {
+			// clone the reaction node and reassign edges
+			Graph graph = reactionNode.getGraph();
+			Node clonedReactionNode = graph.addNodeCopy(reactionNode);
+			String reactionGlyphID = reactionGlyph.getId();
+			int idxClone = 1;
+			AttributeHelper.setAttribute(clonedReactionNode, SBML_Constants.SBML, "reactionGlyphID", reactionGlyphID + "_clone_" + idxClone);
+			if (AttributeHelper.hasAttribute(clonedReactionNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID))
+				AttributeHelper.deleteAttribute(clonedReactionNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID);
+			// TODO: check whether this correct!!! probably not
+			for (Edge edge : reactionNode.getEdges())
+				if (reactionNode.equals(edge.getSource()))
+					graph.addEdgeCopy(edge, clonedReactionNode, edge.getTarget());
+				else
+					graph.addEdgeCopy(edge, edge.getSource(), clonedReactionNode);
+			
+			// clone the reaction glyph and reassign species glyphs
+			// TODO: maybe distance is not the right measure for the decision to reassign a species glyph
+			// what should be done if no position is available (see KEGG overview maps, this should be carefully debugged)
+			// clone the reaction glyph
+			ReactionGlyph clonedReactionGlyph = new ReactionGlyph();
+			clonedReactionGlyph.setId(reactionGlyphID + "_clone_" + idxClone);
+			clonedReactionGlyph.setVersion(reactionGlyph.getVersion());
+			clonedReactionGlyph.setNamedSBase(reactionGlyph.getNamedSBaseInstance());
+			clonedReactionGlyph.setLevel(reactionGlyph.getLevel());
+			clonedReactionGlyph.setVersion(reactionGlyph.getVersion());
+			
+			Point reactionGlyphPos = null;
+			if (reactionGlyph.getBoundingBox() != null)
+				reactionGlyphPos = reactionGlyph.getBoundingBox().getPosition();
+			ArrayList<Point> positions = new ArrayList<>();
+			// get all positions from all species glyphs, ignore double occurance
+			for (ArrayList<SpeciesReferenceGlyph> _speciesReferenceGlyphs : hmSpeciesReferenceGlyphs.values()) {
+				ArrayList<SpeciesGlyph> alreadyProcessed = new ArrayList<>();
+				for (SpeciesReferenceGlyph speciesReferenceGlyph : _speciesReferenceGlyphs) {
+					SpeciesGlyph speciesGlyph = speciesReferenceGlyph.getSpeciesGlyphInstance();
+					if (!alreadyProcessed.contains(speciesGlyph) &&
+							speciesGlyph.getBoundingBox() != null && speciesGlyph.getBoundingBox().getPosition() != null) {
+						positions.add(speciesGlyph.getBoundingBox().getPosition());
+						alreadyProcessed.add(speciesGlyph);
+					}
 				}
-				if (i >= 1) {
-					Node reactionNodeClone = g.addNodeCopy(reactionNode);
-					reactionHelper.addReactionCloneToList(reactionID, reactionNodeClone);
-					reactionNode = reactionNodeClone;
+			}
+			
+			// use the stored positions for k-means clustering
+			Point oldCentre1 = new Point(0, 0, 0);
+			Point newCentre1 = new Point(0, 0, 0);
+			if (reactionGlyphPos != null) {
+				oldCentre1 = reactionGlyphPos;
+				newCentre1 = reactionGlyphPos;
+			}
+			
+			Point oldCentre2 = new Point(0, 0, 0);
+			Point newCentre2 = new Point(0, 0, 0);
+			
+			SortedMap<Double, Point> sortedPositions = new TreeMap<>();
+			if (reactionGlyphPos != null)
+				for (Point position : positions)
+					sortedPositions.put(
+							new Double(Math.hypot(position.getX() - reactionGlyphPos.getX(), position.getY() - reactionGlyphPos.getY())), position);
+			
+			if (positions.size() >= 2) {
+				Random random = new Random();
+				int idxRandom1 = -1;
+				if (reactionGlyphPos == null) {
+					idxRandom1 = random.nextInt(positions.size());
+					newCentre1 = positions.get(idxRandom1);
+					int idxRandom2 = idxRandom1;
+					while (idxRandom2 == idxRandom1)
+						idxRandom2 = random.nextInt(positions.size());
+					newCentre2 = positions.get(idxRandom2);
+				} else
+					newCentre2 = sortedPositions.get(sortedPositions.lastKey());
+			}
+			
+			while (((Math.abs(newCentre1.getX() - oldCentre1.getX()) > 0.001 && Math.abs(newCentre1.getY() - oldCentre1.getY()) > 0.001) ||
+					reactionGlyphPos != null) &&
+					(Math.abs(newCentre2.getX() - oldCentre2.getX()) > 0.001 && Math.abs(newCentre2.getY() - oldCentre2.getY()) > 0.001)) {
+				ArrayList<Point> positions1 = new ArrayList<>();
+				ArrayList<Point> positions2 = new ArrayList<>();
+				for (Point point : positions)
+					if (Math.hypot(point.getX() - newCentre1.getX(), point.getY() - newCentre1.getY()) < Math.hypot(point.getX() - newCentre2.getX(),
+							point.getY() - newCentre2.getY()))
+						positions1.add(point);
+					else
+						positions2.add(point);
+				
+				if (reactionGlyphPos == null) {
+					oldCentre1 = newCentre1;
+					newCentre1 = calculateCentre(positions1);
 				}
 				
-				AttributeHelper.setSize(reactionNode, 40, 40);
-				BoundingBox boundingBox = null;
-				if (reactionGlyph != null)
-					boundingBox = reactionGlyph.getBoundingBox();
-				if (boundingBox != null) {
-					Dimensions dimensions = boundingBox.getDimensions();
-					if (dimensions != null) {
-						double width = dimensions.getWidth();
-						double height = dimensions.getHeight();
-						AttributeHelper.setSize(reactionNode, width, height);
-						
-						if (layout.getId() != null) {
-							AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, layout.getId());
-						}
-						else {
-							AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, SBML_Constants.EMPTY);
-						}
-						
-					} else
-					{
-						AttributeHelper.setSize(reactionNode, 34, 34);
-						// System.out.println("reaction id '" + reactionID + "' has no width/height information.");
-					}
-					Point position = boundingBox.getPosition();
-					if (position != null) {
-						double x = position.getX();
-						double y = position.getY();
-						AttributeHelper.setPosition(reactionNode, x, y);
-						// TODO layout id might be set twice
-						AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, layout.getId());
-					} else {
-						System.out.println("species id '" + reactionID + "' has no x/y information.");
-					}
-				}
+				oldCentre2 = newCentre2;
+				newCentre2 = calculateCentre(positions2);
 			}
+			
+			Point clonedReactionGlyphPos = null;
+			if (newCentre2.getX() > 0.001 && newCentre2.getY() > 0.001) {
+				clonedReactionGlyphPos = newCentre2;
+				AttributeHelper.setPosition(clonedReactionNode, clonedReactionGlyphPos.getX(), clonedReactionGlyphPos.getY());
+			}
+			
+			// reassign species glyphs based on their distance to the reaction glyph
+			if (clonedReactionGlyphPos != null && reactionGlyphPos != null)
+				for (ArrayList<SpeciesReferenceGlyph> _speciesReferenceGlyphs : hmSpeciesReferenceGlyphs.values())
+					for (SpeciesReferenceGlyph speciesReferenceGlyph : _speciesReferenceGlyphs) {
+						SpeciesGlyph speciesGlyph = speciesReferenceGlyph.getSpeciesGlyphInstance();
+						if (speciesGlyph.getBoundingBox() != null && speciesGlyph.getBoundingBox().getPosition() != null) {
+							Point speciesGlyphPos = speciesGlyph.getBoundingBox().getPosition();
+							if (Math.hypot(clonedReactionGlyphPos.getX() - speciesGlyphPos.getX(), clonedReactionGlyphPos.getY() - speciesGlyphPos.getY()) < Math
+									.hypot(reactionGlyphPos.getX() - speciesGlyphPos.getX(), reactionGlyphPos.getY() - speciesGlyphPos.getY())) {
+								speciesReferenceGlyphs.remove(speciesReferenceGlyph);
+								clonedReactionGlyph.addSpeciesReferenceGlyph(speciesReferenceGlyph);
+							}
+						}
+					}
+			
+			reactionGlyphsToBeAdded.add(clonedReactionGlyph);
 		}
+		
+		return reactionGlyphsToBeAdded;
+		
+	}
+	
+	private static Point calculateCentre(ArrayList<Point> positions) {
+		
+		Point centre = new Point(0, 0, 0);
+		double x = 0;
+		double y = 0;
+		for (Point position : positions) {
+			x = x + position.getX();
+			y = y + position.getY();
+		}
+		centre.setX(x / positions.size());
+		centre.setY(y / positions.size());
+		return centre;
+		
 	}
 	
 	/**
@@ -629,12 +879,6 @@ public class SBML_Reaction_Reader {
 			ref = it.next();
 			productNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 			stoichiometry = Double.toString(ref.getStoichiometry());
-			if (reactionNode == null || productNode == null) {
-				System.out.println(AttributeHelper.getPositionVec2d(productNode));
-				System.out.println(AttributeHelper.getPositionVec2d(reactionNode));
-			}
-			if (AttributeHelper.getPositionVec2d(productNode).equals(AttributeHelper.getPositionVec2d(reactionNode)))
-				System.out.println("same");
 			newReactionEdge = g.addEdge(reactionNode, productNode, true,
 					AttributeHelper.getDefaultGraphicsAttributeForEdge(
 							Color.BLACK, Color.BLACK, true));

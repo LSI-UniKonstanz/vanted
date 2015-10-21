@@ -341,7 +341,7 @@ public abstract class AbstractGraphElementComponent
 		if (opacity > 1.0)
 			opacity = 1.0;
 		if (opacity < 0)
-			return;
+			opacity = 0.0;
 		if (opacity < 1.0) {
 			setOpaque(false);
 			float alpha = ((float) opacity);

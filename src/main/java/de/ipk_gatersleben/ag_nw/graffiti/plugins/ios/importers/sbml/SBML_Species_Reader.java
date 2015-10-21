@@ -12,7 +12,6 @@ import java.util.TreeMap;
 import javax.xml.stream.XMLStreamException;
 
 import org.AttributeHelper;
-import org.ErrorMsg;
 import org.PositionGridGenerator;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.CollectionAttribute;
@@ -34,6 +33,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLSpeciesHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
+@SuppressWarnings("nls")
 public class SBML_Species_Reader {
 	
 	/**
@@ -46,11 +46,11 @@ public class SBML_Species_Reader {
 	 * method adds species to the graph and to the node tab
 	 * 
 	 * @param g
-	 *        the data structure for reading in the information
+	 *           the data structure for reading in the information
 	 * @param speciesList
-	 *        contains the species for the import
+	 *           contains the species for the import
 	 * @param pgg
-	 *        is needed for drawing the graph
+	 *           is needed for drawing the graph
 	 */
 	public void addSpecies(Graph g, ListOf<Species> speciesList,
 			PositionGridGenerator pgg, SBMLSpeciesHelper specieshelper) {
@@ -140,10 +140,10 @@ public class SBML_Species_Reader {
 					speciesHelper.setHasOnlySubstanceUnits(speciesNode,
 							hasOnlySubstanceUnits);
 				}
-//				if (speciesJSBML.isSetBoundaryCondition()) {
-					speciesHelper.setBoundaryConsition(speciesNode,
-							boundaryCondition);
-//				}
+				// if (speciesJSBML.isSetBoundaryCondition()) {
+				speciesHelper.setBoundaryConsition(speciesNode,
+						boundaryCondition);
+				// }
 				if (speciesJSBML.isSetConstant()) {
 					speciesHelper.setConstant(speciesNode, constant);
 				}
@@ -184,63 +184,110 @@ public class SBML_Species_Reader {
 		}
 	}
 	
-	private void processLayoutInformation(Graph g, Species speciesJSBML, Node speciesNode) {
-		String id = speciesJSBML.getId();
-		LayoutModelPlugin layoutModel = (LayoutModelPlugin) speciesJSBML.getModel().getExtension(SBMLHelper.SBML_LAYOUT_EXTENSION_NAMESPACE);
+	// old code, has been replaced by new code below on 09/09/2015
+	//
+	// private void processLayoutInformation(Graph g, Species speciesJSBML, Node speciesNode) {
+	// String id = speciesJSBML.getId();
+	// LayoutModelPlugin layoutModel = (LayoutModelPlugin) speciesJSBML.getModel().getExtension(SBMLHelper.SBML_LAYOUT_EXTENSION_NAMESPACE);
+	// if (layoutModel != null) {
+	// Layout layout = layoutModel.getListOfLayouts().iterator().next();
+	// ListOf<SpeciesGlyph> currentSpeciesGlyphs = new ListOf<SpeciesGlyph>();
+	// currentSpeciesGlyphs.setLevel(layout.getLevel());
+	// currentSpeciesGlyphs.setVersion(layout.getVersion());
+	// Iterator<SpeciesGlyph> speciesGlyphListIt = layout.getListOfSpeciesGlyphs().iterator();
+	// while (speciesGlyphListIt.hasNext()) {
+	// SpeciesGlyph nextSpeciesGlyph = speciesGlyphListIt.next();
+	// if (nextSpeciesGlyph.getSpecies().equals(id)) {
+	// nextSpeciesGlyph.setVersion(1);
+	// currentSpeciesGlyphs.add(nextSpeciesGlyph);
+	//
+	// }
+	// }
+	// for (int i = 0; i < currentSpeciesGlyphs.size(); i++) {
+	// SpeciesGlyph speciesGlyph = currentSpeciesGlyphs.get(i);
+	//
+	// if (i == 0) {
+	// speciesHelper.addCloneToList(id, speciesNode);
+	// }
+	// if (i >= 1) {
+	// Node speciesNodeClone = g.addNodeCopy(speciesNode);
+	// speciesHelper.addCloneToList(id, speciesNodeClone);
+	// speciesNode = speciesNodeClone;
+	// }
+	//
+	// AttributeHelper.setSize(speciesNode, 27, 27);
+	// // SpeciesGlyph speciesGlyph = speciesGlyphs.get(i);
+	// BoundingBox boundingBox = speciesGlyph.getBoundingBox();
+	// if (boundingBox != null) {
+	// Dimensions dimensions = boundingBox.getDimensions();
+	// if (dimensions != null) {
+	// double width = dimensions.getWidth();
+	// double height = dimensions.getHeight();
+	// AttributeHelper.setSize(speciesNode, width, height);
+	//
+	// if (layout.getId() != null) {
+	// AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, layout.getId());
+	// }
+	// else {
+	// AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, SBML_Constants.EMPTY);
+	// }
+	// } else
+	// {
+	// AttributeHelper.setSize(speciesNode, 27, 27);
+	// }
+	// Point position = boundingBox.getPosition();
+	// if (position != null) {
+	// double x = position.getX();
+	// double y = position.getY();
+	// AttributeHelper.setPosition(speciesNode, x, y);
+	// // TODO layout id might be set twice
+	// AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, layout.getId());
+	// }
+	// }
+	// }
+	// }
+	//
+	// }
+	
+	private void processLayoutInformation(Graph g, Species species, Node speciesNode) {
+		
+		Node _speciesNode = speciesNode;
+		LayoutModelPlugin layoutModel = (LayoutModelPlugin) species.getModel().getExtension(SBMLHelper.SBML_LAYOUT_EXTENSION_NAMESPACE);
 		if (layoutModel != null) {
 			Layout layout = layoutModel.getListOfLayouts().iterator().next();
-			ListOf<SpeciesGlyph> currentSpeciesGlyphs = new ListOf<SpeciesGlyph>();
-			currentSpeciesGlyphs.setLevel(layout.getLevel());
-			currentSpeciesGlyphs.setVersion(layout.getVersion());
 			Iterator<SpeciesGlyph> speciesGlyphListIt = layout.getListOfSpeciesGlyphs().iterator();
+			String speciesID = species.getId();
+			int i = 0;
 			while (speciesGlyphListIt.hasNext()) {
-				SpeciesGlyph nextSpeciesGlyph = speciesGlyphListIt.next();
-				if (nextSpeciesGlyph.getSpecies().equals(id)) {
-					nextSpeciesGlyph.setVersion(1);
-					currentSpeciesGlyphs.add(nextSpeciesGlyph);
-					
-				}
-			}
-			for (int i = 0; i < currentSpeciesGlyphs.size(); i++) {
-				SpeciesGlyph speciesGlyph = currentSpeciesGlyphs.get(i);
-				
-				if (i == 0) {
-					speciesHelper.addCloneToList(id, speciesNode);
-				}
-				if (i >= 1) {
-					Node speciesNodeClone = g.addNodeCopy(speciesNode);
-					speciesHelper.addCloneToList(id, speciesNodeClone);
-					speciesNode = speciesNodeClone;
-				}
-				
-				AttributeHelper.setSize(speciesNode, 27, 27);
-				// SpeciesGlyph speciesGlyph = speciesGlyphs.get(i);
-				BoundingBox boundingBox = speciesGlyph.getBoundingBox();
-				if (boundingBox != null) {
-					Dimensions dimensions = boundingBox.getDimensions();
-					if (dimensions != null) {
-						double width = dimensions.getWidth();
-						double height = dimensions.getHeight();
-						AttributeHelper.setSize(speciesNode, width, height);
-						
-						if (layout.getId() != null) {
-							AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, layout.getId());
-						}
-						else {
-							AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, SBML_Constants.EMPTY);
-						}
-					} else
-					{
-						AttributeHelper.setSize(speciesNode, 27, 27);
+				SpeciesGlyph speciesGlyph = speciesGlyphListIt.next();
+				if (speciesGlyph.getSpecies().equals(speciesID)) {
+					if (i >= 1) {
+						Node speciesNodeClone = g.addNodeCopy(_speciesNode);
+						_speciesNode = speciesNodeClone;
 					}
-					Point position = boundingBox.getPosition();
-					if (position != null) {
-						double x = position.getX();
-						double y = position.getY();
-						AttributeHelper.setPosition(speciesNode, x, y);
-						// TODO layout id might be set twice
-						AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, layout.getId());
+					this.speciesHelper.addCloneToList(speciesID, _speciesNode);
+					AttributeHelper.setAttribute(_speciesNode, SBML_Constants.SBML, SBML_Constants.SPECIES_GLYPH_ID, speciesGlyph.getId());
+					BoundingBox boundingBox = speciesGlyph.getBoundingBox();
+					if (boundingBox != null) {
+						Dimensions dimensions = boundingBox.getDimensions();
+						if (dimensions != null) {
+							double width = dimensions.getWidth();
+							double height = dimensions.getHeight();
+							AttributeHelper.setSize(_speciesNode, width, height);
+						}
+						Point position = boundingBox.getPosition();
+						if (position != null) {
+							double x = position.getX();
+							double y = position.getY();
+							AttributeHelper.setPosition(_speciesNode, x, y);
+							// set a dummy layout ID to have a SBML layout attribute on the node
+							// to be able checking whether layout information has been available or not
+							AttributeHelper.setAttribute(_speciesNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, "dummyLayoutID");
+						} else
+							if (AttributeHelper.hasAttribute(_speciesNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID))
+								AttributeHelper.deleteAttribute(_speciesNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID);
 					}
+					i++;
 				}
 			}
 		}
