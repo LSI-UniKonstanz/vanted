@@ -9,6 +9,7 @@
 
 package org.graffiti.plugin.view;
 
+import java.awt.Composite;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
@@ -22,14 +23,18 @@ import org.graffiti.attributes.Attribute;
  * @version $Revision: 1.9 $
  */
 public abstract class AttributeComponent
-					extends JComponent
-					implements GraffitiViewComponent {
+		extends JComponent
+		implements GraffitiViewComponent {
 	// ~ Methods ================================================================
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	protected Composite composite;
+	
+	protected boolean hidden;
 	
 	/**
 	 * Sets an instance of attribute which this component displays.
@@ -53,12 +58,10 @@ public abstract class AttributeComponent
 	 */
 	public abstract void setGraphElementShape(GraphElementShape geShape);
 	
-	
 	/**
 	 * adjust the component size and position
 	 */
 	public abstract void adjustComponentSize();
-	
 	
 	/**
 	 * adjust the component position only
@@ -81,17 +84,25 @@ public abstract class AttributeComponent
 	 *           the attribute that has triggered the event.
 	 */
 	public abstract void attributeChanged(Attribute attr)
-						throws ShapeNotFoundException;
+			throws ShapeNotFoundException;
 	
 	/**
 	 * Used when the shape changed in the datastructure. Makes the painter to
 	 * create a new shape.
 	 */
 	public abstract void recreate()
-						throws ShapeNotFoundException;
+			throws ShapeNotFoundException;
 	
 	public void highlight(boolean value, MouseEvent e) {
 		
+	}
+	
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
+	
+	public void setComposite(Composite composite) {
+		this.composite = composite;
 	}
 }
 

@@ -105,19 +105,19 @@ public class NodeComponent
 			String id = attr.getId();
 			if (id.equals(ROUNDING) || id.equals(SHAPE) || id.equals(GRAPHICS) || id.equals(GRADIENT)) {
 				createNewShape(coordinateSystem);
-			} else
-				if (id.equals(LINEMODE)) {
-					updateStroke();
-					
-				}
+			} else if (id.equals(LINEMODE)) {
+				updateStroke();
+				
+			}
 			adjustComponentSize();
-			
 			// update attribute components like labels:
+			boolean hidden = AttributeHelper.isHiddenGraphElement(graphElement);
 			for (GraffitiViewComponent gvc : attributeComponents.values()) {
 				AttributeComponent attrComp = (AttributeComponent) gvc;
 				attrComp.setShift(getLocation());
 				attrComp.setGraphElementShape(shape);
 				attrComp.attributeChanged(attr);
+				attrComp.setHidden(hidden);
 			}
 			
 			/*
@@ -269,24 +269,23 @@ public class NodeComponent
 		if (nodeAttr.getUseGradient() > epsilon)
 			rgp = new RoundGradientPaint(nodeAttr.getDimension().getWidth() * nodeAttr.getUseGradient(), nodeAttr.getDimension().getHeight()
 					* nodeAttr.getUseGradient(), nodeAttr.getFillcolor().getColor(), new Point2D.Double(0, maxR), nodeAttr.getFramecolor().getColor());
-		else
-			if (nodeAttr.getUseGradient() < -1) {
-				Point2D p1 = new Point2D.Double(0, nodeAttr.getDimension().getHeight() * (1 + 1 + nodeAttr.getUseGradient()));
-				Point2D p2 = new Point2D.Double(0, nodeAttr.getDimension().getHeight()); // *(1+epsilon+nodeAttr.getUseGradient()));
-				Color c1 = nodeAttr.getFillcolor().getColor();
-				Color c2 = nodeAttr.getFramecolor().getColor();
-				rgp = new GradientPaint(p1, c1, p2, c2);
-			} else
-				if (nodeAttr.getUseGradient() < -epsilon) {
-					Point2D p1 = new Point2D.Double(0, nodeAttr.getDimension().getHeight() * (1 + nodeAttr.getUseGradient()));
-					Point2D p2 = new Point2D.Double(0, nodeAttr.getDimension().getHeight() * (1 + epsilon + nodeAttr.getUseGradient()));
-					Color c1 = nodeAttr.getFillcolor().getColor();
-					Color c2 = nodeAttr.getFramecolor().getColor();
-					rgp = new GradientPaint(p1, c1, p2, c2);
-				} else
-					rgp = null;
+		else if (nodeAttr.getUseGradient() < -1) {
+			Point2D p1 = new Point2D.Double(0, nodeAttr.getDimension().getHeight() * (1 + 1 + nodeAttr.getUseGradient()));
+			Point2D p2 = new Point2D.Double(0, nodeAttr.getDimension().getHeight()); // *(1+epsilon+nodeAttr.getUseGradient()));
+			Color c1 = nodeAttr.getFillcolor().getColor();
+			Color c2 = nodeAttr.getFramecolor().getColor();
+			rgp = new GradientPaint(p1, c1, p2, c2);
+		} else if (nodeAttr.getUseGradient() < -epsilon) {
+			Point2D p1 = new Point2D.Double(0, nodeAttr.getDimension().getHeight() * (1 + nodeAttr.getUseGradient()));
+			Point2D p2 = new Point2D.Double(0, nodeAttr.getDimension().getHeight() * (1 + epsilon + nodeAttr.getUseGradient()));
+			Color c1 = nodeAttr.getFillcolor().getColor();
+			Color c2 = nodeAttr.getFramecolor().getColor();
+			rgp = new GradientPaint(p1, c1, p2, c2);
+		} else
+			rgp = null;
 		
 		updateStroke();
+		
 	}
 	
 	private void updateStroke() {

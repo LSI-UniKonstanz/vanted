@@ -53,7 +53,7 @@ public interface GraphicAttributeConstants {
 	public static final String RED = "red";
 	public static final String GREEN = "green";
 	public static final String BLUE = "blue";
-	public static final String OPAC = "transparency";
+	public static final String OPAC = "opacity";
 	public static final String X = "x";
 	public static final String Y = "y";
 	public static final String HEIGHT = "height";
@@ -185,58 +185,58 @@ public interface GraphicAttributeConstants {
 	
 	/** Path to x-coordinate attribute */
 	public static final String COORDX_PATH = COORD_PATH + Attribute.SEPARATOR +
-						X;
+			X;
 	
 	/** Path to y-coordinate attribute */
 	public static final String COORDY_PATH = COORD_PATH + Attribute.SEPARATOR +
-						Y;
+			Y;
 	
 	/** Path to dimension attribute */
 	public static final String DIM_PATH = GRAPHICS + Attribute.SEPARATOR + DIMENSION;
 	
 	/** Path to width attribute */
 	public static final String DIMW_PATH = DIM_PATH + Attribute.SEPARATOR +
-						WIDTH;
+			WIDTH;
 	
 	/** Path to height attribute */
 	public static final String DIMH_PATH = DIM_PATH + Attribute.SEPARATOR +
-						HEIGHT;
+			HEIGHT;
 	
 	/** Path to fill color attribute */
 	public static final String FILLCOLOR_PATH = GRAPHICS + Attribute.SEPARATOR +
-						FILLCOLOR;
+			FILLCOLOR;
 	
 	/** Path to outline color attribute */
 	public static final String OUTLINE_PATH = GRAPHICS + Attribute.SEPARATOR +
-						FRAMECOLOR;
+			FRAMECOLOR;
 	
 	/** Path to line width attribute */
 	public static final String LINEWIDTH_PATH = GRAPHICS + Attribute.SEPARATOR +
-						FRAMETHICKNESS;
+			FRAMETHICKNESS;
 	
 	/** Path to shape attribute */
 	public static final String SHAPE_PATH = GRAPHICS + Attribute.SEPARATOR +
-						SHAPE;
+			SHAPE;
 	
 	/** Path to shape description attribute */
 	public static final String SHAPE_DESC_PATH = GRAPHICS +
-						Attribute.SEPARATOR + SHAPEDESCRIPTION;
+			Attribute.SEPARATOR + SHAPEDESCRIPTION;
 	
 	/** Path to bends attribute */
 	public static final String BENDS_PATH = GRAPHICS + Attribute.SEPARATOR +
-						BENDS;
+			BENDS;
 	
 	/** Path to ports attribute */
 	public static final String PORTS_PATH = GRAPHICS + Attribute.SEPARATOR +
-						PORTS;
+			PORTS;
 	
 	/** Path to docking attribute */
 	public static final String DOCKING_PATH = GRAPHICS + Attribute.SEPARATOR +
-						DOCKING;
+			DOCKING;
 	
 	/** Path to frame thickness attribute */
 	public static final String FRAMETHICKNESS_PATH = GRAPHICS +
-						Attribute.SEPARATOR + FRAMETHICKNESS;
+			Attribute.SEPARATOR + FRAMETHICKNESS;
 	
 	/** rectangle node shape class name */
 	public static final String RECTANGLE_CLASSNAME = "org.graffiti.plugins.views.defaults.RectangleNodeShape";
