@@ -26,9 +26,13 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
+import org.vanted.animation.Animation;
 import org.vanted.animation.Animator;
+import org.vanted.animation.AnimatorData;
+import org.vanted.animation.AnimatorListener;
 import org.vanted.animation.animations.Position2DAnimation;
 import org.vanted.animation.data.Point2DTimePoint;
+import org.vanted.animation.data.TimePoint;
 import org.vanted.animation.interpolators.CosineInterpolator;
 import org.vanted.animation.loopers.StandardLooper;
 
@@ -280,20 +284,51 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 			}
 		}
 		if (animate) {
-			final Animator animator = new Animator(graph, 0);
-			animator.setLoopDuration(500, TimeUnit.MILLISECONDS);
+			int duration = 200;
+			final Animator animator = new Animator(graph, 1);
+			animator.addListener(new AnimatorListener() {
+				
+				@Override
+				public void onNewAnimatorLoop(AnimatorData data) {
+				}
+				
+				@Override
+				public void onAnimatorStop(AnimatorData data) {
+					System.out.println("Animator stopped");
+				}
+				
+				@Override
+				public void onAnimatorStart(AnimatorData data) {
+				}
+				
+				@Override
+				public void onAnimatorRestart(AnimatorData data) {
+				}
+				
+				@Override
+				public void onAnimatorReset(AnimatorData data) {
+				}
+				
+				@Override
+				public void onAnimatorFinished(AnimatorData data) {
+				}
+				
+				@Override
+				public void onAnimationFinished(AnimatorData data, Animation<TimePoint> anim) {
+				}
+			});
+			animator.setLoopDuration(duration, TimeUnit.MILLISECONDS);
 			for (Node curNode : workNodes) {
 				
 				Point2DTimePoint startPosition = new Point2DTimePoint(0, AttributeHelper.getPosition(curNode));
 				Vector2d vector2d = nodes2newPositions.get(curNode);
-				Point2DTimePoint endPosition = new Point2DTimePoint(400, vector2d.x, vector2d.y);
+				Point2DTimePoint endPosition = new Point2DTimePoint(duration, vector2d.x, vector2d.y);
 				List<Point2DTimePoint> dataPoints = new ArrayList<Point2DTimePoint>();
 				dataPoints.add(startPosition);
 //				dataPoints.add(new Point2DTimePoint(1000, 20, 20));
 				
 				dataPoints.add(endPosition);
-				Position2DAnimation posAnimation = new Position2DAnimation(curNode, 0, 500, new CosineInterpolator(), dataPoints, 1,
-						new StandardLooper());
+				Position2DAnimation posAnimation = new Position2DAnimation(curNode, dataPoints, duration, 0, 1, new StandardLooper(), new CosineInterpolator());
 				animator.addAnimation(posAnimation);
 			}
 			SwingUtilities.invokeLater(new Runnable() {

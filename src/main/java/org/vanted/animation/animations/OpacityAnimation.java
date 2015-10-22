@@ -21,7 +21,7 @@ public class OpacityAnimation extends ContinuousAnimation<DoubleTimePoint> {
 	public OpacityAnimation(Attributable attributable, double startTime, double duration,
 			Interpolator interpolator, List<DoubleTimePoint> dataPoints, int noLoops, Looper looper)
 	{
-		super(attributable, startTime, duration, interpolator, dataPoints, noLoops, looper);
+		super(attributable, dataPoints, duration, startTime, noLoops, looper, interpolator);
 	}
 	
 	@Override
