@@ -6,7 +6,6 @@ package org.vanted.opacitytest;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.AttributeHelper;
 import org.graffiti.graph.GraphElement;
@@ -16,8 +15,6 @@ import org.graffiti.plugin.view.View;
 import org.vanted.animation.Animator;
 import org.vanted.animation.animations.Position2DAnimation;
 import org.vanted.animation.data.Point2DTimePoint;
-import org.vanted.animation.interpolators.CosineInterpolator;
-import org.vanted.animation.loopers.StandardLooper;
 
 /**
  * @author matthiak
@@ -42,7 +39,7 @@ public class MotionTest extends AbstractEditorAlgorithm {
 	@Override
 	public void execute() {
 		int duration = 1000;
-		Animator animator = new Animator(graph, 2);
+		Animator animator = new Animator(graph, 1);
 		for (GraphElement ge : getSelectedOrAllNodes()) {
 			List<Point2DTimePoint> listP2dTP = new ArrayList<>();
 			Point2D position = AttributeHelper.getPosition((Node) ge);
@@ -53,7 +50,7 @@ public class MotionTest extends AbstractEditorAlgorithm {
 			
 			animator.addAnimation(posAnim);
 		}
-
+		
 		animator.start();
 	}
 	

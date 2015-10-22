@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 
 import org.AttributeHelper;
 import org.Vector2d;
+import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
@@ -26,6 +27,8 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
+import org.graffiti.plugins.views.defaults.DrawMode;
+import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.vanted.animation.Animation;
 import org.vanted.animation.Animator;
 import org.vanted.animation.AnimatorData;
@@ -284,7 +287,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 			}
 		}
 		if (animate) {
-			int duration = 200;
+			int duration = 1000;
 			final Animator animator = new Animator(graph, 1);
 			animator.addListener(new AnimatorListener() {
 				
@@ -311,10 +314,13 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 				
 				@Override
 				public void onAnimatorFinished(AnimatorData data) {
+					((GraffitiView) MainFrame.getInstance().getActiveSession().getActiveView()).setDrawMode(DrawMode.NORMAL);
+					System.out.println("onAnimatorFinished");
 				}
 				
 				@Override
 				public void onAnimationFinished(AnimatorData data, Animation<TimePoint> anim) {
+					System.out.println("onAnimationFinished");
 				}
 			});
 			animator.setLoopDuration(duration, TimeUnit.MILLISECONDS);
@@ -335,6 +341,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 				
 				@Override
 				public void run() {
+					((GraffitiView) MainFrame.getInstance().getActiveSession().getActiveView()).setDrawMode(DrawMode.REDUCED);
 					animator.start();
 				}
 			});
