@@ -22,8 +22,6 @@ public abstract class Animation<T extends TimePoint> {
 	protected double startTime;
 	protected Attributable attributable; 
 	protected List<T> dataPoints; 
-	protected double originalPointTimes[];
-	protected double endTime;
 	protected int currentLoopNumber;
 	protected Looper looper;
 	/**
@@ -137,7 +135,6 @@ public Animation(
 	public void setLoopDuration(double duration)
 	{
 		this.loopDuration = duration;
-		updateEndTime();
 	}
 	/**
 	 * Sets the duration of a loop.
@@ -145,7 +142,6 @@ public Animation(
 	public void setLoopDuration(LoopDuration duration)
 	{
 		this.loopDuration = duration.getValue();
-		updateEndTime();
 	}
 	/**
 	 * Sets the duration of a loop.
@@ -157,7 +153,6 @@ public Animation(
 	public void setLoopDuration(long duration, TimeUnit timeUnit)
 	{
 		this.loopDuration = timeUnit.toMillis(duration);
-		updateEndTime();
 	}
 	/**
 	 * Get's the loop duration of the animation.
@@ -179,7 +174,6 @@ public Animation(
 	public void setNoLoops(int noLoops)
 	{
 		this.noLoops = noLoops;
-		updateEndTime();
 	}
 	/**
 	 * Sets the number of times that the animation will perform the animation before stopping.
@@ -187,11 +181,6 @@ public Animation(
 	public void setNoLoops(NumberOfLoops noLoops)
 	{
 		this.noLoops = noLoops.getValue();
-		updateEndTime();
-	}
-	protected void updateEndTime()
-	{
-		this.endTime = startTime + noLoops * loopDuration;
 	}
 	protected void updateLoopNumber(double time)
 	{
@@ -208,7 +197,7 @@ public Animation(
 	 */
 	public double getEndTime()
 	{
-		return endTime;
+		return startTime + noLoops * loopDuration;
 	}
 	/**
 	 * Sets the looper of the animation: How the animation handles looping.
@@ -231,11 +220,6 @@ public Animation(
 		while(iterator.hasNext())
 		{
 			this.dataPoints.add(iterator.next());
-		}
-		originalPointTimes = new double[dataPoints.size()];
-		for(int i =0; i < originalPointTimes.length; i++)
-		{
-			originalPointTimes[i] = dataPoints.get(i).getTime();
 		}
 	}
 	/**
@@ -280,7 +264,7 @@ public Animation(
 	public boolean isFinished(double time)
 	{
 		if (noLoops == -1){return false;}
-		if (this.endTime > time){return false;}
+		if (getEndTime() > time){return false;}
 		return true;
 	}
 	/**
@@ -317,6 +301,7 @@ public Animation(
 		if(previousIndex != oldIndex)
 		{
 			animate(time);
+			
 		}
 	} 
 	/**
@@ -331,7 +316,7 @@ public Animation(
 	 */
 	public void reset()
 	{ 
-		previousIndex = 0;
 		currentLoopNumber = 0;
+		previousIndex = looper.getNextLoopPreviousIndex(dataPoints, currentLoopNumber);
 	}
 }

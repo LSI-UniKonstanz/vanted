@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.swing.SwingUtilities;
+
 import org.AttributeHelper;
 import org.Vector2d;
 import org.graffiti.graph.Edge; 
@@ -32,7 +34,8 @@ import org.vanted.animation.interpolators.BezierInterpolator;
 import org.vanted.animation.interpolators.CosineInterpolator;
 import org.vanted.animation.interpolators.CubicInterpolator;
 import org.vanted.animation.interpolators.LinearInterpolator;
-import org.vanted.animation.loopers.ForwardLooper; 
+import org.vanted.animation.loopers.ForwardLooper;
+import org.vanted.animation.loopers.StandardLooper; 
 
 /**
  * 
@@ -58,11 +61,11 @@ public class RainbowSwappingTest extends AbstractEditorAlgorithm {
 	
 	@Override
 	public void execute() {
-		Animator animator = new Animator(graph, 1);
 		List<Node> nodes = new ArrayList<Node>();
 		for(Node node : getSelectedOrAllNodes())
 			nodes.add(node);
 		double animationDuration = TimeUnit.SECONDS.toMillis(1 * nodes.size());
+		final Animator animator = new Animator(graph, 1);
 		double inputRate = 0.1;
 		double colourPointsPerNode =  1785.0 / (double)nodes.size();
 		double colourChangeRate =  colourPointsPerNode;
@@ -108,12 +111,12 @@ public class RainbowSwappingTest extends AbstractEditorAlgorithm {
 				input += colourChangeRate;
 				outlineInput-=colourChangeRate;
 				}
-			Position2DAnimation  posAnim = new Position2DAnimation(node,Arrays.asList(pointsArray),animationDuration, 0, 2, new ForwardLooper(),new CubicInterpolator());
-			FillColorAnimation fillAnim = new FillColorAnimation(node,Arrays.asList(fillArray), animationDuration, 0, 2, new ForwardLooper());
-			SizeAnimation sizeAnim = new SizeAnimation(node, Arrays.asList(sizeArray), animationDuration, 0, 2, new ForwardLooper(), new CubicInterpolator());
-			OutlineColorAnimation outlineColourAnim = new OutlineColorAnimation(node, Arrays.asList(outlineArray), animationDuration, 0, 2, new ForwardLooper());
-			LabelColorAnimation labelColourAnim = new LabelColorAnimation(node,Arrays.asList(labelColourArray), animationDuration, 0, 2, new ForwardLooper(), new LinearInterpolator(), ColorMode.HSB, 1);
-			FrameThicknessAnimation thicknessAnim = new FrameThicknessAnimation(node, Arrays.asList(thicknessArray), animationDuration, 0, 2, new ForwardLooper());
+			Position2DAnimation  posAnim = new Position2DAnimation(node,Arrays.asList(pointsArray),animationDuration, 0, 1, new StandardLooper(), new CubicInterpolator());
+			FillColorAnimation fillAnim = new FillColorAnimation(node,Arrays.asList(fillArray), animationDuration, 0, 1, new ForwardLooper());
+			SizeAnimation sizeAnim = new SizeAnimation(node, Arrays.asList(sizeArray), animationDuration, 0, 0, new ForwardLooper(), new CubicInterpolator());
+			OutlineColorAnimation outlineColourAnim = new OutlineColorAnimation(node, Arrays.asList(outlineArray), animationDuration, 0, 1, new ForwardLooper());
+			LabelColorAnimation labelColourAnim = new LabelColorAnimation(node,Arrays.asList(labelColourArray), animationDuration, 0, 1, new ForwardLooper(), new LinearInterpolator(), ColorMode.HSB, 1);
+			FrameThicknessAnimation thicknessAnim = new FrameThicknessAnimation(node, Arrays.asList(thicknessArray), animationDuration, 0, 1, new ForwardLooper());
 			//System.out.println(posAnim.toString());
 			animator.addAnimation(posAnim);
 			animator.addAnimation(fillAnim);
@@ -140,11 +143,11 @@ public class RainbowSwappingTest extends AbstractEditorAlgorithm {
 				time+=56;
 				input1 += colourChangeRate;
 			}
-			OutlineColorAnimation outlineColourAnim = new OutlineColorAnimation(edge,Arrays.asList(colours), animationDuration, 0, 2, new ForwardLooper());
-			FrameThicknessAnimation thicknessAnim = new FrameThicknessAnimation(edge,Arrays.asList(thickness), animationDuration, 0, 2, new ForwardLooper());
+			OutlineColorAnimation outlineColourAnim = new OutlineColorAnimation(edge,Arrays.asList(colours), animationDuration, 0, 1, new ForwardLooper());
+			FrameThicknessAnimation thicknessAnim = new FrameThicknessAnimation(edge,Arrays.asList(thickness), animationDuration, 0, 1, new ForwardLooper());
 			//animator.addAnimation(thicknessAnim);
 			//animator.addAnimation(outlineColourAnim);
-		}
+		}			
 		animator.start();
 	}
 	

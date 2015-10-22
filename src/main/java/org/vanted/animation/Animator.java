@@ -319,8 +319,13 @@ public class Animator {
 	private void updateLoopNumber(double time)
 	{
 		boolean isLastLoop = isOnLastLoop();
+		if(loopDuration == -1)
+		{ 
+			currentLoopNumber = 0; 
+			return;
+			}
 		int oldLoopNumber = currentLoopNumber;
-		currentLoopNumber = (int) (time/Math.abs(loopDuration));
+		currentLoopNumber = (int) (time/ Math.abs(loopDuration));
 		if(oldLoopNumber != currentLoopNumber)
 		{  
 			OnNextLoop(); 
@@ -328,7 +333,9 @@ public class Animator {
 			{
 				unfinishedAnimations.clear();
 				for(Animation animation:animations)
+				{
 					unfinishedAnimations.add(animation);
+				}
 			}
 		}
 	}
@@ -340,12 +347,12 @@ public class Animator {
 	 */
 	private void onAnimationFinished(Animation finishedAnimation)
 	{
-		unfinishedAnimations.remove(finishedAnimation);
 		Iterator<AnimatorListener> i = listeners.iterator();
 		while(i.hasNext())
 		{
 			i.next().onAnimationFinished(toAnimatorData(), finishedAnimation);
 		}
+		unfinishedAnimations.remove(finishedAnimation);
 	}
 	/**
 	 * Calls listeners onAnimatorFinished
@@ -417,12 +424,18 @@ public class Animator {
 		{
 			Animation anim = animIterator.next();
 			anim.update(timeUsedForAnimations, false);
-			if (anim.isFinished(timeUsedForAnimations))
-			{
-				onAnimationFinished(anim);
-			}
 		} 
 		graph.getListenerManager().transactionFinished(this);
+		animIterator = unfinishedAnimations.iterator();
+		//System.out.println(currentTime);
+		for(int i = unfinishedAnimations.size() - 1; i >= 0;i--)
+		{
+			Animation animation = unfinishedAnimations.get(i);
+			if (animation.isFinished(timeUsedForAnimations))
+			{
+				onAnimationFinished(animation);
+			}
+		}
 		// Check if the current loop has finished 
 		updateLoopNumber(currentTime); 
 		// Check if we have looped enough time  
@@ -430,7 +443,7 @@ public class Animator {
 		{
 			if(currentLoopNumber >= noLoops)
 			{
-				onAnimatorFinished();
+				//System.out.println(currentLoopNumber);
 				// One last check to ensure we reach the end of the animation
 				graph.getListenerManager().transactionStarted(this);
 				for(Animation<TimePoint> animation:unfinishedAnimations)
@@ -438,7 +451,8 @@ public class Animator {
 					animation.update(loopDuration, true);
 					}
 				graph.getListenerManager().transactionFinished(this);
-				stop(true);
+				stop(false);
+				onAnimatorFinished();
 			}
 		}
 		// Increase the time
@@ -451,6 +465,7 @@ public class Animator {
 	 */
 	private void start(boolean activateListeners) {
 		Iterator<Animation<TimePoint>> animIterator = animations.iterator();
+		unfinishedAnimations.clear();
 		while(animIterator.hasNext())
 		{
 			unfinishedAnimations.add(animIterator.next());
