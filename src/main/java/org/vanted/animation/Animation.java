@@ -298,7 +298,7 @@ public Animation(
 		}
 		int oldIndex = previousIndex;
 		previousIndex = looper.findPreviousIndex(dataPoints, previousIndex,currentLoopNumber, time);
-		if(previousIndex != oldIndex)
+		if(previousIndex != oldIndex || time == 0)
 		{
 			animate(time);
 			
