@@ -24,6 +24,7 @@ import org.ErrorMsg;
 import org.Release;
 import org.ReleaseInfo;
 import org.Vector2d;
+import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.GraphElement;
@@ -48,6 +49,8 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	// ~ Instance fields
 	// ========================================================
 	private static final long serialVersionUID = 3256442525387600951L;
+	
+	private static Logger logger = Logger.getLogger(EdgeComponent.class);
 	
 	/** The component of the source node of this edge. */
 	private NodeComponentInterface sourceComp;

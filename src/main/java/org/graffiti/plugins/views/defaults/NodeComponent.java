@@ -129,7 +129,8 @@ public class NodeComponent
 			 * once and update them in one go.
 			 */
 			if (getParent() != null && getParent() instanceof GraffitiView) {
-				if (!((GraffitiView) getParent()).isFinishingTransacation)
+				boolean isFinishingTransacation = ((GraffitiView) getParent()).isFinishingTransacation;
+				if (!isFinishingTransacation)
 					updateRelatedEdgeComponents();
 				
 			} else {
