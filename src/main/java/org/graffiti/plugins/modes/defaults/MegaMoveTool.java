@@ -480,7 +480,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		logger.debug("begin mouseMoved");
+//		logger.debug("begin mouseMoved");
 		super.mouseMoved(e);
 		Component src;
 		if (SwingUtilities.isMiddleMouseButton(e))
@@ -591,7 +591,9 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
-//		logger.debug("MOUSE DRAGGED");
+		logger.setLevel(Level.DEBUG);
+		long starttime = System.currentTimeMillis();
+		logger.debug("MOUSE DRAGGED");
 		if (e.getSource() instanceof GraffitiView)
 			((GraffitiView) e.getSource()).setDrawMode(DrawMode.REDUCED);
 		
@@ -675,9 +677,9 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			}
 			
 			lastBendHit.setCoordinate(new Point2D.Double(newX, newY));
-			e.getComponent().repaint();
-			for (View v : MainFrame.getInstance().getActiveEditorSession().getViews())
-				v.repaint(null);
+//			e.getComponent().repaint();
+//			for (View v : MainFrame.getInstance().getActiveEditorSession().getViews())
+//				v.repaint(null);
 			dragged = true;
 			
 			view.getViewComponent().setCursor(myMoveCursor);
@@ -713,7 +715,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			
 			if ((int) delta.x == 0 && (int) delta.y == 0)
 				return;
-			
+			logger.debug("time mousedragged til movement call: " + (System.currentTimeMillis() - starttime));
 			mouseDraggedToMoveNodesAndEdgeBends(e, view, delta.x, delta.y);
 		}
 		
@@ -842,7 +844,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 						curPosX = curPosX - (curPosX % grid);
 						curPosY = curPosY - (curPosY % grid);
 					}
-					setTransformersXY(nodecomp.getGraphElement(), curPosX, curPosY);
+//					setTransformersXY(nodecomp.getGraphElement(), curPosX, curPosY);
 				}
 				delta.x = mouse.getPoint().getX();
 				delta.y = mouse.getPoint().getY();
@@ -981,6 +983,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	
 	private void mouseDraggedToMoveNodesAndEdgeBends(MouseEvent e, View view,
 			double deltaX, double deltaY) {
+		long starttime = System.currentTimeMillis();
 		try {
 			getGraph().getListenerManager().transactionStarted(this);
 			
@@ -1095,18 +1098,18 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			
 			if (!resizeHit) {
 				Set<CoordinateAttribute> bendsCoordsSet = new HashSet<CoordinateAttribute>();
-				Collection<Node> selNodes = selection.getNodes();
-				
+				Set<Node> selNodes = new HashSet<>(selection.getNodes());
+				Set<Edge> setEdges = new HashSet<>();
 				// update all bends of all edges where source AND target node
 				// is in the selection
 				for (Node node : selNodes) {
-					for (Edge edge : node.getEdges()) {
-						if (selNodes.contains(edge.getSource()) && selNodes.contains(edge.getTarget())) {
-							addBends(bendsCoordsSet, edge);
-						}
+					setEdges.addAll(node.getEdges());
+				}
+				for (Edge edge : setEdges) {
+					if (selNodes.contains(edge.getSource()) && selNodes.contains(edge.getTarget())) {
+						addBends(bendsCoordsSet, edge);
 					}
 				}
-				
 				for (CoordinateAttribute coord : bendsCoordsSet) {
 					Point2D coordPt = coord.getCoordinate();
 					double newX = coordPt.getX() + deltaX;
@@ -1129,6 +1132,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 						maxY = newY;
 				}
 			}
+			
 			// update view scrolling
 			if (e.getID() != -1) {
 				view.autoscroll(e.getPoint());
@@ -1136,8 +1140,10 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				//e.getComponent().repaint();
 			}
 		} finally {
+			logger.debug("time in updateposition: " + (System.currentTimeMillis() - starttime));
 			getGraph().getListenerManager().transactionFinished(this);
 		}
+		
 	}
 	
 	public static int getGrid(double sz) {

@@ -51,7 +51,7 @@ public abstract class AbstractGraphElementComponent
 		extends GraphElementComponent
 		implements GraffitiViewComponent, GraphicAttributeConstants {
 	
-	Logger logger = Logger.getLogger(AbstractGraphElementComponent.class);
+	private static Logger logger = Logger.getLogger(AbstractGraphElementComponent.class);
 	
 	// ~ Instance fields ========================================================
 	private static final long serialVersionUID = 1L;
