@@ -46,7 +46,7 @@ public class OpacityAlgorithm extends AbstractEditorAlgorithm {
 	@Override
 	public void execute() {
 		int duration = 1000;
-		Animator animator = new Animator(graph, 0);
+		Animator animator = new Animator(graph, 1);
 		animator.setLoopDuration(duration, TimeUnit.MILLISECONDS);
 		Set<GraphElement> nodesAndEdges = new HashSet<GraphElement>();
 		if (selection.isEmpty())
