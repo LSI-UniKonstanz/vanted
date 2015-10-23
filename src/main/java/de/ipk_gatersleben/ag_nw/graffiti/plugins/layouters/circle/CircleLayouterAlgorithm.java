@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.SwingUtilities;
-
 import org.AttributeHelper;
 import org.Vector2d;
 import org.graffiti.editor.MainFrame;
@@ -320,7 +318,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 				
 				@Override
 				public void onAnimationFinished(AnimatorData data, Animation<TimePoint> anim) {
-					System.out.println("onAnimationFinished");
+//					System.out.println("onAnimationFinished");
 				}
 			});
 			animator.setLoopDuration(duration, TimeUnit.MILLISECONDS);
@@ -337,14 +335,14 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 				Position2DAnimation posAnimation = new Position2DAnimation(curNode, dataPoints, duration, 0, 1, new StandardLooper(), new CosineInterpolator());
 				animator.addAnimation(posAnimation);
 			}
-			SwingUtilities.invokeLater(new Runnable() {
-				
-				@Override
-				public void run() {
-					((GraffitiView) MainFrame.getInstance().getActiveSession().getActiveView()).setDrawMode(DrawMode.REDUCED);
-					animator.start();
-				}
-			});
+//			SwingUtilities.invokeLater(new Runnable() {
+			
+//				@Override
+//				public void run() {
+			((GraffitiView) MainFrame.getInstance().getActiveSession().getActiveView()).setDrawMode(DrawMode.REDUCED);
+			animator.start();
+//				}
+//			});
 		} else {
 			GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions,
 					getName());
