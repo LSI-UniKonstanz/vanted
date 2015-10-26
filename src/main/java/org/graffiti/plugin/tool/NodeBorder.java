@@ -26,7 +26,7 @@ import javax.swing.border.AbstractBorder;
  * @version $Revision: 1.6.4.1 $ Provides a border used to mark selected nodes.
  */
 public class NodeBorder
-					extends AbstractBorder {
+		extends AbstractBorder {
 	// ~ Instance fields ========================================================
 	
 	/**
@@ -124,7 +124,7 @@ public class NodeBorder
 	 */
 	@Override
 	public void paintBorder(Component c, Graphics g, int x, int y, int width,
-						int height) {
+			int height) {
 		int zoomedBorderWidth;
 		AffineTransform at = ((Graphics2D) c.getParent().getGraphics()).getTransform();
 		Point pWH = new Point(borderWidth, borderWidth);
@@ -134,7 +134,7 @@ public class NodeBorder
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		double factor = (double)pWH.x / (double)borderWidth;
+		double factor = (double) pWH.x / (double) borderWidth;
 		
 //		if ((c.getX() % 2) == 1) {
 //			((Graphics2D) g).translate(at.getTranslateX() - 1,
@@ -151,13 +151,13 @@ public class NodeBorder
 		Color oldColor = g.getColor();
 		g.translate(x, y);
 		g.setColor(this.color);
-		zoomedBorderWidth = (int)(factor * (double)borderWidth);
+		zoomedBorderWidth = (int) (factor * (double) borderWidth);
 		
-		if(zoomedBorderWidth <= 1)
+		if (zoomedBorderWidth <= 1)
 			zoomedBorderWidth = 1;
-		if(zoomedBorderWidth >= 15)
+		if (zoomedBorderWidth >= 15)
 			zoomedBorderWidth = 15;
-
+		
 		// Paint top left and right
 		Graphics cg;
 		cg = g.create();
@@ -170,21 +170,21 @@ public class NodeBorder
 //		cg.fillRect(width - insets.right, 0, zoomedBorderWidth, zoomedBorderWidth);
 		cg.fillRect(width - zoomedBorderWidth, 1, zoomedBorderWidth, zoomedBorderWidth);
 		
-		cg.dispose();
+//		cg.dispose();
 		
 		// Paint bottom left and right
-		cg = g.create();
+//		cg = g.create();
 		
 		// int h_ib = (int)Math.ceil(height/((Graphics2D)cg).getTransform().getScaleY() - insets.bottom);
 		// cg.setClip(0, h_ib, width, insets.bottom);
 		// Point p = new Point(0, h_ib);
 		cg.fillRect(1, height - zoomedBorderWidth, zoomedBorderWidth,
-							zoomedBorderWidth);
+				zoomedBorderWidth);
 		
 		// p = new Point((int)Math.ceil(width/((Graphics2D)cg).getTransform().getScaleX() - insets.right),
 		// (int)Math.ceil(height/((Graphics2D)cg).getTransform().getScaleY() - insets.bottom));
 		cg.fillRect(width - zoomedBorderWidth, height - zoomedBorderWidth,
-							zoomedBorderWidth, zoomedBorderWidth);
+				zoomedBorderWidth, zoomedBorderWidth);
 		
 		cg.dispose();
 		

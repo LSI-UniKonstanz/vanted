@@ -28,6 +28,7 @@ import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.plugin.view.EdgeComponentInterface;
 import org.graffiti.plugin.view.GraphElementShape;
+import org.graffiti.plugins.views.defaults.StraightLineEdgeShape;
 
 /**
  * DOCUMENT ME!
@@ -35,7 +36,7 @@ import org.graffiti.plugin.view.GraphElementShape;
  * @version $Revision: 1.7.2.1 $ Provides a border used to mark selected nodes.
  */
 public class EdgeBorder
-					extends AbstractBorder {
+		extends AbstractBorder {
 	// ~ Instance fields ========================================================
 	
 	/**
@@ -149,8 +150,7 @@ public class EdgeBorder
 	 */
 	@Override
 	public void paintBorder(Component c, Graphics g, int bx, int by, int width,
-						int height) {
-		
+			int height) {
 		AffineTransform at = ((Graphics2D) c.getParent().getGraphics()).getTransform();
 		Point pWH = new Point(bulletSize, bulletSize);
 		try {
@@ -159,15 +159,14 @@ public class EdgeBorder
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		double factor = (double)pWH.x / (double)bulletSize;
+		double factor = (double) pWH.x / (double) bulletSize;
 		
-		
-		int bulletSize = (int)(factor * (double)this.bulletSize);
-		if(bulletSize <= 1)
+		int bulletSize = (int) (factor * (double) this.bulletSize);
+		if (bulletSize <= 1)
 			bulletSize = 1;
-		if(bulletSize >= 15)
+		if (bulletSize >= 15)
 			bulletSize = 15;
-
+		
 		double bulletSizeHalf = bulletSize / 2d;
 		
 		Graphics cg;
@@ -175,96 +174,107 @@ public class EdgeBorder
 		cg.translate(bx, by);
 		cg.setColor(this.color);
 		
-		if (showBends) {
-			Color lightColor = this.color.darker().darker();
-			cg.setColor(lightColor);
-			
-			int bendBulletSize = (int) (bulletSize );
-			
-			if (bendBulletSize == 0) {
-				bendBulletSize = 1;
-			}
-			
-			SortedCollectionAttribute bends = (SortedCollectionAttribute) ((EdgeComponentInterface) c).getGraphElement()
-								.getAttribute(GraphicAttributeConstants.BENDS_PATH);
-			
-			for (Iterator<?> it = bends.getCollection().values().iterator(); it.hasNext();) {
-				CoordinateAttribute bendCoord = (CoordinateAttribute) it.next();
-				
-				// cg.setClip(0, 0, width, height);
-				// cg.fillOval((int)bendCoord.getX()-(c.getBounds().x),
-				// (int)bendCoord.getY()-(c.getBounds().y),
-				// 2*bulletSize, 2*bulletSize);
-				cg.fillOval((int) (bendCoord.getX() - c.getX() -
-									(bendBulletSize / 2d)),
-									(int) (bendCoord.getY() - c.getY() - (bendBulletSize / 2d)),
-									bendBulletSize, bendBulletSize);
-				
-				// cg.fillOval((int) (bendCoord.getX() - c.getX() -
-				// (bendBulletSize / 2d)),
-				// (int) (bendCoord.getY() - c.getY() - (bendBulletSize / 2d)),
-				// bendBulletSize, bendBulletSize);
-			}
-			
-			cg.setColor(this.color);
-		}
-		
 		GraphElementShape grShape = ((EdgeComponentInterface) c).getShape();
-		
-		// GeneralPath grPath = new GeneralPath(grShape);
-		PathIterator pi = grShape.getPathIterator(null);
-		double[] seg = new double[6];
-		int type;
-		double x = 0;
-		double y = 0;
-		
-		try {
-			type = pi.currentSegment(seg);
-			x = seg[0];
-			y = seg[1];
-			cg.fillRect((int) (x - bulletSizeHalf), (int) (y - bulletSizeHalf),
-								bulletSize, bulletSize);
+		if (grShape instanceof StraightLineEdgeShape) {
+			PathIterator pi = grShape.getPathIterator(null);
+			float[] coords = new float[2];
 			
-			// cg.fillOval((int)x-2, (int)y-2, bulletSize, bulletSize);
-			while (!pi.isDone()) {
-				pi.next();
-				type = pi.currentSegment(seg);
+			pi.currentSegment(coords);
+			cg.fillRect((int) (coords[0]), (int) (coords[1]),
+					bulletSize, bulletSize);
+			pi.next();
+			pi.currentSegment(coords);
+			cg.fillRect((int) (coords[0] - bulletSizeHalf), (int) (coords[1] - bulletSizeHalf), bulletSize, bulletSize);
+		} else {
+			
+			if (showBends) {
+				Color lightColor = this.color.darker().darker();
+				cg.setColor(lightColor);
 				
-				switch (type) {
-					case java.awt.geom.PathIterator.SEG_MOVETO:
-
-						// x = seg[0];
-						// y = seg[1];
-						break;
-					
-					case java.awt.geom.PathIterator.SEG_LINETO:
-						x = seg[0];
-						y = seg[1];
-						
-						break;
-					
-					case java.awt.geom.PathIterator.SEG_QUADTO:
-						x = seg[2];
-						y = seg[3];
-						
-						break;
-					
-					case java.awt.geom.PathIterator.SEG_CUBICTO:
-						x = seg[4];
-						y = seg[5];
-						
-						break;
+				int bendBulletSize = (int) (bulletSize);
+				
+				if (bendBulletSize == 0) {
+					bendBulletSize = 1;
 				}
 				
-				// cg.fillOval((int)x-2, (int)y-2, bulletSize, bulletSize);
-				cg.fillRect((int) (x - bulletSizeHalf),
-									(int) (y - bulletSizeHalf), bulletSize, bulletSize);
+				SortedCollectionAttribute bends = (SortedCollectionAttribute) ((EdgeComponentInterface) c).getGraphElement()
+						.getAttribute(GraphicAttributeConstants.BENDS_PATH);
+				
+				for (Iterator<?> it = bends.getCollection().values().iterator(); it.hasNext();) {
+					CoordinateAttribute bendCoord = (CoordinateAttribute) it.next();
+					
+					// cg.setClip(0, 0, width, height);
+					// cg.fillOval((int)bendCoord.getX()-(c.getBounds().x),
+					// (int)bendCoord.getY()-(c.getBounds().y),
+					// 2*bulletSize, 2*bulletSize);
+					cg.fillOval((int) (bendCoord.getX() - c.getX() -
+							(bendBulletSize / 2d)),
+							(int) (bendCoord.getY() - c.getY() - (bendBulletSize / 2d)),
+							bendBulletSize, bendBulletSize);
+					
+					// cg.fillOval((int) (bendCoord.getX() - c.getX() -
+					// (bendBulletSize / 2d)),
+					// (int) (bendCoord.getY() - c.getY() - (bendBulletSize / 2d)),
+					// bendBulletSize, bendBulletSize);
+				}
+				
+				cg.setColor(this.color);
 			}
-		} catch (java.util.NoSuchElementException e) {
-		} catch (ArrayIndexOutOfBoundsException e) {
-			// why does this happen?!?
+			
+			// GeneralPath grPath = new GeneralPath(grShape);
+			PathIterator pi = grShape.getPathIterator(null);
+			double[] seg = new double[6];
+			int type;
+			double x = 0;
+			double y = 0;
+			
+			try {
+				type = pi.currentSegment(seg);
+				x = seg[0];
+				y = seg[1];
+				cg.fillRect((int) (x - bulletSizeHalf), (int) (y - bulletSizeHalf),
+						bulletSize, bulletSize);
+				
+				// cg.fillOval((int)x-2, (int)y-2, bulletSize, bulletSize);
+				while (!pi.isDone()) {
+					pi.next();
+					type = pi.currentSegment(seg);
+					
+					switch (type) {
+						case java.awt.geom.PathIterator.SEG_MOVETO:
+							
+							// x = seg[0];
+							// y = seg[1];
+							break;
+						
+						case java.awt.geom.PathIterator.SEG_LINETO:
+							x = seg[0];
+							y = seg[1];
+							
+							break;
+						
+						case java.awt.geom.PathIterator.SEG_QUADTO:
+							x = seg[2];
+							y = seg[3];
+							
+							break;
+						
+						case java.awt.geom.PathIterator.SEG_CUBICTO:
+							x = seg[4];
+							y = seg[5];
+							
+							break;
+					}
+					
+					// cg.fillOval((int)x-2, (int)y-2, bulletSize, bulletSize);
+					cg.fillRect((int) (x - bulletSizeHalf),
+							(int) (y - bulletSizeHalf), bulletSize, bulletSize);
+				}
+			} catch (java.util.NoSuchElementException e) {
+			} catch (ArrayIndexOutOfBoundsException e) {
+				// why does this happen?!?
+			}
 		}
-		
 		cg.dispose();
 	}
 }
