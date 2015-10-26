@@ -191,9 +191,10 @@ public class GridLayoutAlgorithm
 		int i = 0;
 		int j = 0;
 		
-		Vector2d ctr = NodeTools.getCenter(workNodes);
-		double xStart = ctr.x - (nodesOnLine * xDistance / 2d);
-		double yStart = ctr.y - (nodeLines * yDistance / 2d);
+		Vector2d ctr = NodeTools.getMinimumXY(workNodes, 1, 0, 0, false);;//NodeTools.getCenter(workNodes);
+		
+		double xStart = ctr.x;// - (nodesOnLine * xDistance / 2d);
+		double yStart = ctr.y;// - (nodeLines * yDistance / 2d);
 		
 		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
 		
@@ -279,8 +280,8 @@ public class GridLayoutAlgorithm
 //		BooleanParameter moveToTopParameter =
 //							new BooleanParameter(moveToTop, "Finish: Move to Upper-Left", "Move all network elements to the upper left");
 			
-			xDistanceParam.setDouble(xDistance - targetSizeX);
-			yDistanceParam.setDouble(yDistance - targetSizeY);
+			xDistanceParam.setDouble(xDistance);
+			yDistanceParam.setDouble(yDistance);
 			
 			widthParam.setDouble(targetSizeX);
 			heightParam.setDouble(targetSizeY);
@@ -302,12 +303,14 @@ public class GridLayoutAlgorithm
 		this.parameters = params;
 		int i = 0;
 		resize = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
-		double p_xDistance = ((DoubleParameter) params[i++]).getDouble().doubleValue();
-		double p_yDistance = ((DoubleParameter) params[i++]).getDouble().doubleValue();
+		xDistance = ((DoubleParameter) params[i++]).getDouble().doubleValue();
+		yDistance = ((DoubleParameter) params[i++]).getDouble().doubleValue();
 		targetSizeX = ((DoubleParameter) params[i++]).getDouble().doubleValue();
 		targetSizeY = ((DoubleParameter) params[i++]).getDouble().doubleValue();
-		xDistance = p_xDistance + targetSizeX;
-		yDistance = p_yDistance + targetSizeY;
+		if(resize) {
+			xDistance += targetSizeX;
+			yDistance += targetSizeY;
+		}
 		setWidth = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		maxX = ((IntegerParameter) params[i++]).getInteger().intValue();
 //		moveToTop = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
