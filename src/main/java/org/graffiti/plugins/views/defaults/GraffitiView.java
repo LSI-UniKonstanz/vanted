@@ -1230,6 +1230,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 					
 					@Override
 					public void run() {
+						logger.debug("calling transactionFinishedOnSwingThread() from NON-Event dispatch thread");
 						transactionFinishedOnSwingThread(fevent, fstatus);
 					}
 				});

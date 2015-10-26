@@ -56,6 +56,8 @@ public class NodeComponent
 	
 	private Paint rgp = null;
 	
+	private String currentShapeClass;
+	
 	/**
 	 * Constructor for NodeComponent.
 	 * 
@@ -82,7 +84,7 @@ public class NodeComponent
 		try {
 			newShape.buildShape(nodeAttr);
 			shape = newShape;
-			adjustComponentSize();
+			adjustComponentSizeAndPosition();
 		} catch (ShapeNotFoundException e) {
 			throw new RuntimeException("this should never happen since the " +
 					"standard node shape should always " + "exist." + e);
@@ -103,13 +105,16 @@ public class NodeComponent
 			throws ShapeNotFoundException {
 		if (attr != null) {
 			String id = attr.getId();
-			if (id.equals(ROUNDING) || id.equals(SHAPE) || id.equals(GRAPHICS) || id.equals(GRADIENT)) {
-				createNewShape(coordinateSystem);
-			} else if (id.equals(LINEMODE)) {
-				updateStroke();
-				
+			if (!id.equals(COORDINATE)) {
+				if (id.equals(LINEMODE)) {
+					updateStroke();
+					
+				} else {
+					createNewShape(coordinateSystem);
+				}
+			} else {
+				adjustComponentSizeAndPosition();
 			}
-			adjustComponentSize();
 			// update attribute components like labels:
 			boolean hidden = AttributeHelper.isHiddenGraphElement(graphElement);
 			for (GraffitiViewComponent gvc : attributeComponents.values()) {
@@ -244,22 +249,23 @@ public class NodeComponent
 		NodeGraphicAttribute geAttr = (NodeGraphicAttribute) obj;
 		
 		// get classname of the shape to use and instantiate this
-		String shapeClass = geAttr.getShape();
-		shapeClass = AttributeHelper.getShapeClassFromShapeName(shapeClass);
-		NodeShape newShape = null;
-		
-		try {
-			newShape = (NodeShape) InstanceLoader.createInstance(shapeClass);
-		} catch (InstanceCreationException ie) {
-			throw new ShapeNotFoundException(ie.toString());
+		String newShapeClass = geAttr.getShape();
+		if (!newShapeClass.equals(currentShapeClass)) {
+			currentShapeClass = AttributeHelper.getShapeClassFromShapeName(newShapeClass);
+			NodeShape newShape = null;
+			
+			try {
+				newShape = (NodeShape) InstanceLoader.createInstance(currentShapeClass);
+			} catch (InstanceCreationException ie) {
+				throw new ShapeNotFoundException(ie.toString());
+			}
+			this.shape = newShape;
 		}
-		
 		// get graphic attribute and pass it to the shape
-		newShape.setCoordinateSystem(coordinateSystem);
-		newShape.buildShape(geAttr);
-		this.shape = newShape;
+		this.shape.setCoordinateSystem(coordinateSystem);
+		((NodeShape) this.shape).buildShape(geAttr);
 		
-		this.adjustComponentSize();
+		this.adjustComponentSizeAndPosition();
 		
 		int maxR = getHeight() > getWidth() ? getHeight() : getWidth();
 		// maxR = maxR / 2;
@@ -303,9 +309,8 @@ public class NodeComponent
 	/**
 	 * Called whenever the size of the shape within this component has changed.
 	 */
-	protected void adjustComponentSize() {
+	protected void adjustComponentSizeAndPosition() {
 		Rectangle2D bounds = shape.getRealBounds2D();
-		
 		double offA = -0.5d;
 		double offB = 2d;
 		double xE = shape.getXexcess();
