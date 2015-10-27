@@ -163,12 +163,7 @@ public abstract class AbstractGraphElementComponent
 	 */
 	public void attributeChanged(Attribute attr)
 			throws ShapeNotFoundException {
-		
-		if (attr.getId().equals(GraphicAttributeConstants.OPAC)) {
-			double opacity = ((DoubleAttribute) attr).value;
-			setupOpacity(opacity);
-			
-		}
+
 		
 		if (attr.getPath().equals(Attribute.SEPARATOR + GraphicAttributeConstants.GRAPHICS)) {
 			Attribute attribute = ((GraphElementGraphicAttribute) attr).getAttribute(OPAC);
