@@ -112,7 +112,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	private static final Logger logger = Logger.getLogger(GraffitiView.class);
 	
 	static {
-		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.INFO);
 	}
 	
 	// ~ Instance fields ========================================================
