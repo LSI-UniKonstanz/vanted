@@ -164,6 +164,14 @@ public abstract class AbstractGraphElementComponent
 	public void attributeChanged(Attribute attr)
 			throws ShapeNotFoundException {
 
+
+		/* check if attribute is for opacity AND double
+		 * because for color transparency it's also called opacity but integer
+		 */
+		if(attr.getId().equals(GraphicAttributeConstants.OPAC) && attr instanceof DoubleAttribute) {
+			double opacity = ((DoubleAttribute) attr).value;
+			setupOpacity(opacity);
+		}
 		
 		if (attr.getPath().equals(Attribute.SEPARATOR + GraphicAttributeConstants.GRAPHICS)) {
 			Attribute attribute = ((GraphElementGraphicAttribute) attr).getAttribute(OPAC);
