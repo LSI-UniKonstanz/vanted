@@ -255,7 +255,7 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 				g.drawImage(bufferedImage, 0, 0, null);
 			} else {
 				super.paint(g);
-				logger.debug("composite: " + ((Graphics2D) g).getComposite().toString());
+//				logger.debug("composite: " + ((Graphics2D) g).getComposite().toString());
 			}
 		}
 		
