@@ -58,7 +58,7 @@ public class Animator {
 	 * The ExecuterService that calls update() on fixed intervals.
 	 */
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-	private boolean isStopping;
+	private boolean isInTransaction;
 	/**
 	 * Creates an animator will perform a single loop forever.
 	 */
@@ -421,12 +421,14 @@ public class Animator {
 		Iterator<Animation<TimePoint>> animIterator = unfinishedAnimations.iterator();
 		// Render graph...
 		graph.getListenerManager().transactionStarted(this);
+		isInTransaction = true;
 		while(animIterator.hasNext())
 		{
 			Animation anim = animIterator.next();
 			anim.update(timeUsedForAnimations, false);
 		} 
 		graph.getListenerManager().transactionFinished(this);
+		isInTransaction = false;
 		animIterator = unfinishedAnimations.iterator();
 		//System.out.println(currentTime);
 		for(int i = unfinishedAnimations.size() - 1; i >= 0;i--)
@@ -447,11 +449,13 @@ public class Animator {
 				//System.out.println(currentLoopNumber);
 				// One last check to ensure we reach the end of the animation
 				graph.getListenerManager().transactionStarted(this);
+				isInTransaction = true;
 				for(Animation<TimePoint> animation:unfinishedAnimations)
 					{
 					animation.update(loopDuration, true);
 					}
 				graph.getListenerManager().transactionFinished(this);
+				isInTransaction = false;
 				stop(false);
 				onAnimatorFinished();
 			}
@@ -509,7 +513,8 @@ public class Animator {
 		unfinishedAnimations.clear();
 
 		//in case the scheduler is stopped during a transaction
-		graph.getListenerManager().transactionFinished(this);
+		if(isInTransaction)
+			graph.getListenerManager().transactionFinished(this);
 
 		scheduler.shutdown();
 		if(activateListeners)
