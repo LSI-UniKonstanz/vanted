@@ -58,6 +58,7 @@ public class Animator {
 	 * The ExecuterService that calls update() on fixed intervals.
 	 */
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+	private boolean isStopping;
 	/**
 	 * Creates an animator will perform a single loop forever.
 	 */
@@ -506,6 +507,10 @@ public class Animator {
 	private void stop(boolean activateListeners)
 	{
 		unfinishedAnimations.clear();
+
+		//in case the scheduler is stopped during a transaction
+		graph.getListenerManager().transactionFinished(this);
+
 		scheduler.shutdown();
 		if(activateListeners)
 		{
