@@ -24,13 +24,13 @@ implements ActionListener, GraffitiComponent, ViewListener, SessionListener
 
 	String preferedComponent;
 	
-	VantedGarudaExtension garudaExtension;
+	GarudaBackendConnector garudaExtension;
 
 	private JButton buttonGaruda;
 	
 	public GarudaToolbar(String preferedComponent) {
 		this.preferedComponent = preferedComponent;
-		garudaExtension = new VantedGarudaExtension();
+		garudaExtension = new GarudaBackendConnector();
 
 		ImageIcon icon = new ImageIcon(getClass().getResource("garudaDiscoverIcon.png"));
 		buttonGaruda = new JButton(icon);

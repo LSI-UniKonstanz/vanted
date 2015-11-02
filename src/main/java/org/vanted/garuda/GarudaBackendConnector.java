@@ -1,7 +1,6 @@
 package org.vanted.garuda;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
@@ -28,147 +27,143 @@ import org.graffiti.plugin.view.View;
 import org.graffiti.session.EditorSession;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
-public class VantedGarudaExtension extends AbstractEditorAlgorithm{
-
+public class GarudaBackendConnector extends AbstractEditorAlgorithm {
 	
 	GarudaBackend garudaBackend;
 	
 //	private static final String GRAUDA_UUID = "a80b506b-bd15-4c0a-9bc5-061f55e3a360";
 //	private static final String GRAUDA_UUID = "4d62b271-d81d-43fb-849f-65063f2e449c";
-	private static final String GRAUDA_UUID = "a7d0f916-ecd4-4a98-8732-e857f60cbd7b"; //working ID in Garuda
+	private static final String GRAUDA_UUID = "6daf2625-44e7-4dcc-945a-492d36163272"; //official VANTED ID in Garuda
 	
-	private static VantedGarudaExtension instance;
+	private static GarudaBackendConnector instance;
 	
-	public VantedGarudaExtension(){
-			try {
-				garudaBackend = new GarudaBackend(GRAUDA_UUID, DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT, MainFrame.getInstance());
-				garudaBackend.activateGadget();
+	public GarudaBackendConnector() {
+		try {
+			garudaBackend = new GarudaBackend(GRAUDA_UUID, DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT, MainFrame.getInstance());
+			garudaBackend.activateGadget();
+			
+			garudaBackend.addGarudaGlassPanel(MainFrame.getInstance(), null);
+			
+			MainFrame.getInstance().setGlassPane(garudaBackend.getGarudaGlassPanel());
+			
+			garudaBackend.getIncomingResponseHandler().addActivateGadgetResponseActionListener(new ActivateGadgetResponseAdapter() {
 				
-				garudaBackend.addGarudaGlassPanel(MainFrame.getInstance(), null);
+				@Override
+				public void gadgetActivationFailed(GarudaResponseCode arg0) {
+					// TODO Auto-generated method stub
+					JOptionPane.showMessageDialog(MainFrame.getInstance(), "Could not connect to Garuda", "Garuda Connenction error", JOptionPane.ERROR_MESSAGE);
+				}
+			});
+			
+			garudaBackend.getIncomingResponseHandler().addGetCompatibleGadgetListResponseActionListener(new GetCompatibleGadgetListResponseAdapter() {
 				
-				MainFrame.getInstance().setGlassPane(garudaBackend.getGarudaGlassPanel());
-
-				garudaBackend.getIncomingResponseHandler().addActivateGadgetResponseActionListener( new ActivateGadgetResponseAdapter() {
+				@Override
+				public void gotCompatibleGadgetList(List<CompatibleGadgetDetails> arg0) {
+					garudaBackend.getGarudaGlassPanel().showPanel(arg0);
+				}
+				
+				@Override
+				public void fileNotInOutBoundList(GarudaResponseCode arg0) {
+					// TODO Auto-generated method stub
+					JOptionPane.showMessageDialog(MainFrame.getInstance(), "Requested file not in outbound list", "Garuda error", JOptionPane.ERROR_MESSAGE);
+				}
+			});
+			
+			garudaBackend.getIncomingRequestHandler().addLoadDataRequestActionListener(new LoadDataRequestAdapter() {
+				
+				@Override
+				public void loadDataRequestReceivedAsFile(File file, String senderId,
+						String senderName) {
+					MainFrame.getInstance().loadGraph(file);
 					
-					@Override
-					public void gadgetActivationFailed(GarudaResponseCode arg0) {
-						// TODO Auto-generated method stub
-						JOptionPane.showMessageDialog(MainFrame.getInstance(), "Could not connect to Garuda" , "Garuda Connenction error" , JOptionPane.ERROR_MESSAGE);
-					}
-				}) ;
-				
-				garudaBackend.getIncomingResponseHandler().addGetCompatibleGadgetListResponseActionListener( new GetCompatibleGadgetListResponseAdapter() {
-					
-					@Override
-					public void gotCompatibleGadgetList(List<CompatibleGadgetDetails> arg0) {
-						garudaBackend.getGarudaGlassPanel().showPanel(arg0);
-					}
-					
-					@Override
-					public void fileNotInOutBoundList(GarudaResponseCode arg0) {	
-						// TODO Auto-generated method stub
-						JOptionPane.showMessageDialog(MainFrame.getInstance(), "Requested file not in outbound list" , "Garuda error" , JOptionPane.ERROR_MESSAGE);
-					}
-				}) ;
-				
-				garudaBackend.getIncomingRequestHandler().addLoadDataRequestActionListener( new LoadDataRequestAdapter() {
-					
-					@Override
-					public void loadDataRequestReceivedAsFile(File file, String senderId,
-							String senderName) {
-							MainFrame.getInstance().loadGraph(file);
-						
-					}
-				}) ;
-				
-				
-			} catch (GarudaConnectionNotInitializedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NetworkConnectionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				}
+			});
+			
+		} catch (GarudaConnectionNotInitializedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NetworkConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	public static VantedGarudaExtension getInstance() {
+	public static GarudaBackendConnector getInstance() {
 		return instance;
 	}
-
+	
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
 		return "Discover";
 	}
-
+	
 	@Override
 	public void execute() {
-		if(garudaBackend == null)
+		if (garudaBackend == null)
 			return;
 		
 		EditorSession activeEditorSession = MainFrame.getInstance().getActiveEditorSession();
 		Graph graph = activeEditorSession.getGraph();
-		if(graph.isModified())
+		if (graph.isModified())
 			MainFrame.getInstance().saveActiveFileAs();
 		
 		String fileNameFull = activeEditorSession.getFileNameFull();
 		String fileExtension = graph.getName().substring(graph.getName().lastIndexOf(".") + 1);
-		if(fileExtension.equals("xml")) {
-			if(AttributeHelper.hasAttribute(graph, SBML_Constants.SBML,
+		if (fileExtension.equals("xml")) {
+			if (AttributeHelper.hasAttribute(graph, SBML_Constants.SBML,
 					SBML_Constants.MODEL_ID))
 				garudaBackend.getCompatibleGadgetList(new File(fileNameFull), "SBML");
 			else {
-			Attribute attribute;
-			try {
-				attribute = graph.getAttribute("BioPax");
-				garudaBackend.getCompatibleGadgetList(new File(fileNameFull), "biopax");
-			} catch (AttributeNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				Attribute attribute;
+				try {
+					attribute = graph.getAttribute("BioPax");
+					garudaBackend.getCompatibleGadgetList(new File(fileNameFull), "biopax");
+				} catch (AttributeNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		} else
 		{
 			garudaBackend.getCompatibleGadgetList(new File(fileNameFull), fileExtension);
 		}
 	}
-
+	
 	@Override
 	public String getDescription() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
+	
 	@Override
 	public String getCategory() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public String getMenuCategory() {
 		// TODO Auto-generated method stub
 		return "Garuda";
 	}
-
+	
 	@Override
 	public boolean activeForView(View v) {
-		if(v != null)
+		if (v != null)
 			return true;
-		else return false;
+		else
+			return false;
 	}
-
 	
 	@Override
 	public boolean showMenuIcon() {
 		// TODO Auto-generated method stub
 		return true;
 	}
-
+	
 	@Override
 	public ImageIcon getIcon() {
 		URL url = getClass().getResource("garuda-icon.png");
@@ -177,7 +172,5 @@ public class VantedGarudaExtension extends AbstractEditorAlgorithm{
 		else
 			return super.getIcon();
 	}
-
-	
 	
 }
