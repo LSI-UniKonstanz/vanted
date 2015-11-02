@@ -26,7 +26,9 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -123,6 +125,13 @@ public class StatusBar
 	
 	/** The number of nodes. */
 	private int nodes;
+	
+	/**
+	 * the current set of Nodes and Edges of the current active session
+	 * (performance reasons)
+	 */
+	Set<Edge> setGraphEdges;
+	Set<Node> setGraphNodes;
 	
 	private int ignoreUpdate = 0;
 	
@@ -494,6 +503,7 @@ public class StatusBar
 			}
 			nodes = currentSession.getGraph().getNumberOfNodes();
 			edges = currentSession.getGraph().getNumberOfEdges();
+			
 //			bSelNodePrev.setVisible(true);
 			nodesLabel.setVisible(true);
 //			bSelNodeNext.setVisible(true);
@@ -673,21 +683,26 @@ public class StatusBar
 		 * this will take care that the selection object is updated and the status display
 		 * displays the correct numbers
 		 */
+		
 		if (activeSelection != null && currentSession != null && currentSession instanceof EditorSession) {
-			ArrayList<Node> copyActSelectedNodes = new ArrayList<>();
-			copyActSelectedNodes.addAll(activeSelection.getNodes());
-			for (Node node : copyActSelectedNodes) {
-				if (node.getGraph() == null || !currentSession.getGraph().containsNode(node)) {
-					activeSelection.remove(node);
+			setGraphNodes = new HashSet<Node>(currentSession.getGraph().getNodes());
+			setGraphEdges = new HashSet<Edge>(currentSession.getGraph().getEdges());
+			ArrayList<GraphElement> listGEToRemoveFromActiveSelection = new ArrayList<>();
+			for (GraphElement element : activeSelection.getNodes()) {
+				if (element.getGraph() == null || !setGraphNodes.contains(element)) {
+					listGEToRemoveFromActiveSelection.add(element);
 				}
 			}
-			ArrayList<Edge> copyActSelectedEdges = new ArrayList<>();
-			copyActSelectedEdges.addAll(activeSelection.getEdges());
-			for (Edge edge : copyActSelectedEdges) {
-				if (edge.getGraph() == null || !currentSession.getGraph().containsEdge(edge)) {
-					activeSelection.remove(edge);
+			for (GraphElement element : activeSelection.getEdges()) {
+				if (element.getGraph() == null || !setGraphEdges.contains(element)) {
+					listGEToRemoveFromActiveSelection.add(element);
 				}
 			}
+			
+			for (GraphElement ge : listGEToRemoveFromActiveSelection) {
+				activeSelection.remove(ge);
+			}
+			
 		}
 		
 		List<Edge> actSelEdges = new ArrayList<Edge>();
@@ -719,19 +734,17 @@ public class StatusBar
 		String edgeText = "";
 		if (nodes == 1)
 			nodeText = "<html>" + selInfo1 + nodes + "<br><small>node" + selInfo2;
+		else if (nodes == 0)
+			nodeText = "<html><small><br>no nodes";
 		else
-			if (nodes == 0)
-				nodeText = "<html><small><br>no nodes";
-			else
-				nodeText = "<html>" + selInfo1 + nodes + "<small>" + br + "nodes" + selInfo2;
+			nodeText = "<html>" + selInfo1 + nodes + "<small>" + br + "nodes" + selInfo2;
 		
 		if (edges == 1)
 			edgeText = "<html>" + selInfoE1 + edges + "<small>" + br + "edge" + selInfoE2;
+		else if (edges == 0)
+			edgeText = "<html><small><br>no edges";
 		else
-			if (edges == 0)
-				edgeText = "<html><small><br>no edges";
-			else
-				edgeText = "<html>" + selInfoE1 + edges + "<small>" + br + "edges" + selInfoE2;
+			edgeText = "<html>" + selInfoE1 + edges + "<small>" + br + "edges" + selInfoE2;
 		nodeText = nodeText.replaceAll("all 1<br>", "1 ");
 		nodeText = nodeText.replaceAll("all 1<small>", "1");
 		nodeText = nodeText.replaceAll(" ", "&nbsp;");
@@ -1088,9 +1101,8 @@ public class StatusBar
 			if ((gvc == null || ra) && (ge instanceof Node)) {
 				if (!AttributeHelper.isHiddenGraphElement(ge))
 					r = AttributeHelper.getNodeRectangleAWT((Node) ge);
-			} else
-				if (!ra && gvc != null)
-					r = gvc.getBounds();
+			} else if (!ra && gvc != null)
+				r = gvc.getBounds();
 			if (r == null)
 				continue;
 			if (viewRect == null)

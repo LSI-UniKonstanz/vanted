@@ -27,8 +27,8 @@ import org.graffiti.plugin.view.NodeShape;
  * An implementation of <code>NodeShape</code> representing rectangular shapes.
  */
 public abstract class RectangularNodeShape
-					extends AbstractArrowShape
-					implements NodeShape {
+		extends AbstractArrowShape
+		implements NodeShape {
 	// ~ Instance fields ========================================================
 	
 	/** The standard height of the recangular shape. */
@@ -42,7 +42,7 @@ public abstract class RectangularNodeShape
 	
 	/** The bounds including frameThickness. */
 	protected Shape thickShape = new RoundRectangle2D.Double(0, 0, DEFAULT_WIDTH,
-						DEFAULT_HEIGHT, 0, 0);
+			DEFAULT_HEIGHT, 0, 0);
 	
 	private CoordinateSystem coordinateSystem = CoordinateSystem.XY;
 	
@@ -94,6 +94,7 @@ public abstract class RectangularNodeShape
 	public Rectangle2D getRealBounds2D() {
 		Point2D coord = this.nodeAttr.getCoordinate().getCoordinate();
 		Rectangle2D rect = this.getBounds2D();
+		
 		double w = rect.getWidth();
 		double h = rect.getHeight();
 		

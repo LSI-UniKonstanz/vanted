@@ -13,7 +13,7 @@ public class SBML_Constants {
 	/**
 	 * switch, to activate readout of layout information
 	 */
-	public static final boolean isLayoutActive = false;
+	public static final boolean isLayoutActive = true;
 	
 	// Helpful constants
 	public static final String EMPTY = "";
@@ -21,6 +21,8 @@ public class SBML_Constants {
 	private static final String ATT = AttributeHelper.attributeSeparator;
 	
 	public static final String SBML_LAYOUT_ID = "sbml_layout_id";
+	public static final String SPECIES_GLYPH_ID = "speciesGlyphID";
+	public static final String REACTION_GLYPH_ID = "reactionGlyphID";
 	
 	public static final String LOCALPARAMETER_HEADLINE = "Local Parameter ";
 	public static final String COMARTMENT_HEADLINE = "SBML Compartment ";

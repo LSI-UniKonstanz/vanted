@@ -24,6 +24,7 @@ import org.ErrorMsg;
 import org.Release;
 import org.ReleaseInfo;
 import org.Vector2d;
+import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.GraphElement;
@@ -44,10 +45,12 @@ import org.graffiti.util.InstanceLoader;
  * @version $Revision: 1.18 $
  */
 public class EdgeComponent extends AbstractGraphElementComponent implements
-					EdgeComponentInterface {
+		EdgeComponentInterface {
 	// ~ Instance fields
 	// ========================================================
 	private static final long serialVersionUID = 3256442525387600951L;
+	
+	private static Logger logger = Logger.getLogger(EdgeComponent.class);
 	
 	/** The component of the source node of this edge. */
 	private NodeComponentInterface sourceComp;
@@ -77,7 +80,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	 *           edge.
 	 */
 	public EdgeComponent(GraphElement ge, NodeComponent source,
-						NodeComponent target) {
+			NodeComponent target) {
 		super(ge);
 		this.sourceComp = source;
 		this.targetComp = target;
@@ -120,15 +123,15 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		EdgeShape newShape = new StraightLineEdgeShape();
 		if (edgeAttr == null)
 			edgeAttr = (EdgeGraphicAttribute) ((Edge) graphElement)
-								.getAttribute(GRAPHICS);
+					.getAttribute(GRAPHICS);
 		
 		try {
 			newShape.buildShape(edgeAttr,
-								(NodeShape) this.sourceComp.getShape(),
-								(NodeShape) this.targetComp.getShape());
+					(NodeShape) this.sourceComp.getShape(),
+					(NodeShape) this.targetComp.getShape());
 		} catch (ShapeNotFoundException e) {
 			throw new RuntimeException("this should never happen since the "
-								+ "standard edge shape should always " + "exist." + e);
+					+ "standard edge shape should always " + "exist." + e);
 		}
 		
 		this.shape = newShape;
@@ -153,7 +156,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		
 		if (edgeAttr == null)
 			edgeAttr = (EdgeGraphicAttribute) ((Edge) graphElement)
-								.getAttribute(GRAPHICS);
+					.getAttribute(GRAPHICS);
 		
 		if (edgeAttr.getFrameThickness() < 0) {
 			try {
@@ -170,14 +173,14 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		if (stroke == null) {
 			if (edgeShape.getFrameThickness() <= 1)
 				stroke = new BasicStroke((float) edgeShape.getFrameThickness(),
-									DEFAULT_CAP_R, DEFAULT_JOIN, DEFAULT_MITER, edgeAttr
-														.getLineMode().getDashArray(), edgeAttr
-														.getLineMode().getDashPhase());
+						DEFAULT_CAP_R, DEFAULT_JOIN, DEFAULT_MITER, edgeAttr
+								.getLineMode().getDashArray(), edgeAttr
+								.getLineMode().getDashPhase());
 			else
 				stroke = new BasicStroke((float) edgeShape.getFrameThickness(),
-									DEFAULT_CAP_B, DEFAULT_JOIN, DEFAULT_MITER, edgeAttr
-														.getLineMode().getDashArray(), edgeAttr
-														.getLineMode().getDashPhase());
+						DEFAULT_CAP_B, DEFAULT_JOIN, DEFAULT_MITER, edgeAttr
+								.getLineMode().getDashArray(), edgeAttr
+								.getLineMode().getDashPhase());
 		}
 		
 		Shape hArrow = edgeShape.getHeadArrow();
@@ -190,10 +193,10 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		// Color(frameColor.getRed(),
 		// frameColor.getGreen(),
 		// frameColor.getBlue());
-
+		
 		g2d.setPaint(frameColorOpaque);
-
-		if(getViewDrawMode() == DrawMode.NORMAL) {
+		
+		if (getViewDrawMode() == DrawMode.NORMAL) {
 			g2d.setStroke(stroke);
 			if (edgeAttr.getUseGradient() > 0)
 				g2d.setPaint(gp);
@@ -204,7 +207,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		
 		g2d.draw(shape);
 		
-		if(getViewDrawMode() == DrawMode.NORMAL) {
+		if (getViewDrawMode() == DrawMode.NORMAL) {
 			if (hArrow != null) {
 				if (((LineEdgeShape) shape).hollowTargetArrowShape) {
 					g2d.setPaint(Color.WHITE);
@@ -216,7 +219,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 					g2d.fill(hArrow);
 				}
 			}
-
+			
 			Shape tArrow = edgeShape.getTailArrow();
 			if (tArrow != null) {
 				if (((LineEdgeShape) shape).hollowSourceArrowShape) {
@@ -243,7 +246,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	 */
 	@Override
 	public void graphicAttributeChanged(Attribute attr)
-						throws ShapeNotFoundException {
+			throws ShapeNotFoundException {
 		/*
 		 * if the type of the shape or the size changed then we have to rebuild
 		 * the shape
@@ -251,20 +254,19 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		String id = attr.getId();
 		
 		if (id.equals(LINEMODE) || id.equals(FRAMETHICKNESS)
-							|| id.equals(FRAMECOLOR)
-							) {
+				|| id.equals(FRAMECOLOR)) {
 			repaint();
-		} else
-			if (id.equals(DOCKING)) {
-				((EdgeShape) this.shape).buildShape((EdgeGraphicAttribute) attr,
-									(NodeShape) sourceComp.getShape(), (NodeShape) targetComp
-														.getShape());
-			} if(id.startsWith("bend")) {
-				updateShape();
-			}
-			else {
-				createNewShape(coordinateSystem);
-			}
+		} else if (id.equals(DOCKING)) {
+			((EdgeShape) this.shape).buildShape((EdgeGraphicAttribute) attr,
+					(NodeShape) sourceComp.getShape(), (NodeShape) targetComp
+							.getShape());
+		}
+		if (id.startsWith("bend")) {
+			updateShape();
+		}
+		else {
+			createNewShape(coordinateSystem);
+		}
 		
 	}
 	
@@ -273,27 +275,29 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	 */
 	public void updateShape() {
 //		nodeComponentChanged();
-
+		
 		EdgeGraphicAttribute geAttr;
 		geAttr = (EdgeGraphicAttribute) this.graphElement
 				.getAttribute(GRAPHICS);
-		try {			
-			((EdgeShape)this.shape).buildShape(geAttr,
+		try {
+			((EdgeShape) this.shape).buildShape(geAttr,
 					(sourceComp != null ? (NodeShape) this.sourceComp.getShape()
 							: null),
-							(targetComp != null ? (NodeShape) this.targetComp.getShape()
-									: null));
+					(targetComp != null ? (NodeShape) this.targetComp.getShape()
+							: null));
 		} catch (ShapeNotFoundException e) {
 			e.printStackTrace();
 		}
-
+		
 		this.adjustComponentSize();
-
+		
+		boolean hidden = AttributeHelper.isHiddenGraphElement(graphElement);
 		for (Iterator<?> it = this.attributeComponents.values().iterator(); it
 				.hasNext();) {
 			AttributeComponent attrComp = (AttributeComponent) it.next();
 			attrComp.setShift(this.getLocation());
 			attrComp.adjustComponentPosition();
+			attrComp.setHidden(hidden);
 //			attrComp.adjustComponentSize();
 		}
 		
@@ -311,13 +315,13 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		stroke = null;
 		EdgeGraphicAttribute geAttr;
 		if (!this.graphElement.getAttributes().getCollection().containsKey(
-							GRAPHICS)) {
+				GRAPHICS)) {
 			graphElement.addAttribute(AttributeHelper
-								.getNewEdgeGraphicsAttribute(Color.BLACK, Color.BLACK,
-													((Edge) graphElement).isDirected()), "");
+					.getNewEdgeGraphicsAttribute(Color.BLACK, Color.BLACK,
+							((Edge) graphElement).isDirected()), "");
 		}
 		geAttr = (EdgeGraphicAttribute) this.graphElement
-							.getAttribute(GRAPHICS);
+				.getAttribute(GRAPHICS);
 		
 		String shapeClass = geAttr.getShape();
 //		String curShapeNameClassName = null;
@@ -328,26 +332,26 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 //			curShapeNameClassName = this.shape.getClass().getName();
 //		
 //		if( ! shapeClass.equals(curShapeNameClassName)) {
-			try {
-				newShape = (EdgeShape) InstanceLoader.createInstance(shapeClass);
-				this.shape = newShape;
-			} catch (InstanceCreationException ie) {
-				throw new ShapeNotFoundException(ie.toString());
-			}
+		try {
+			newShape = (EdgeShape) InstanceLoader.createInstance(shapeClass);
+			this.shape = newShape;
+		} catch (InstanceCreationException ie) {
+			throw new ShapeNotFoundException(ie.toString());
+		}
 //		} else
 //			newShape = (EdgeShape)this.shape;
 //		
 		// get graphic attribute and pass it to the shape
 		newShape.buildShape(geAttr,
-							(sourceComp != null ? (NodeShape) this.sourceComp.getShape()
-												: null),
-							(targetComp != null ? (NodeShape) this.targetComp.getShape()
-												: null));
+				(sourceComp != null ? (NodeShape) this.sourceComp.getShape()
+						: null),
+				(targetComp != null ? (NodeShape) this.targetComp.getShape()
+						: null));
 		this.shape = newShape;
 		this.adjustComponentSize();
 		
 		for (Iterator<?> it = this.attributeComponents.values().iterator(); it
-							.hasNext();) {
+				.hasNext();) {
 			AttributeComponent attrComp = (AttributeComponent) it.next();
 			attrComp.setShift(this.getLocation());
 			attrComp.setGraphElementShape(this.shape);
@@ -382,8 +386,8 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 			}
 			
 			gp = new GradientPaint(a.getPoint2D(), geAttr.getFillcolor()
-								.getColor(), b.getPoint2D(), geAttr.getFramecolor()
-								.getColor(), false);
+					.getColor(), b.getPoint2D(), geAttr.getFramecolor()
+					.getColor(), false);
 		} else
 			gp = null;
 	}
@@ -410,9 +414,9 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		
 		Rectangle2D bounds = shape.getRealBounds2D();
 		setBounds((int) Math.floor(bounds.getX()) - 1,
-							(int) Math.floor(bounds.getY()) - 1,
-							(int) (Math.ceil(bounds.getWidth())) + 2,
-							(int) (Math.ceil(bounds.getHeight())) + 2);
+				(int) Math.floor(bounds.getY()) - 1,
+				(int) (Math.ceil(bounds.getWidth())) + 2,
+				(int) (Math.ceil(bounds.getHeight())) + 2);
 //		for (GraffitiViewComponent ac : attributeComponents.values()) {
 //			if (ac instanceof AttributeComponent) {
 //				AttributeComponent acc = (AttributeComponent) ac;
@@ -432,20 +436,20 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		}
 		try {
 			String lblA = AttributeHelper.getLabel(((Edge) graphElement)
-								.getSource(), null);
+					.getSource(), null);
 			String lblB = AttributeHelper.getLabel(((Edge) graphElement)
-								.getTarget(), null);
+					.getTarget(), null);
 			Edge e = (Edge) graphElement;
 			if (lblA == null || lblB == null)
 				return (e.isDirected() ? "<html>" + doubleClickHelp(e)
-									+ "? --&gt; ?" : "<html>" + doubleClickHelp(e)
-									+ "? &lt;--&gt; ?");
+						+ "? --&gt; ?" : "<html>" + doubleClickHelp(e)
+						+ "? &lt;--&gt; ?");
 			if (e.isDirected())
 				return "<html>" + doubleClickHelp(e) + "" + lblA + " --&gt; "
-									+ lblB;
+						+ lblB;
 			else
 				return "<html>" + doubleClickHelp(e) + "" + lblA
-									+ " &lt;--&gt; " + lblB;
+						+ " &lt;--&gt; " + lblB;
 		} catch (Exception e) {
 			// empty
 		}

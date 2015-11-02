@@ -37,7 +37,7 @@ import org.graffiti.plugin.parameter.ColorParameter;
  * @see org.graffiti.graphics.ColorAttribute
  */
 public class ColorChooserEditComponent
-					extends AbstractValueEditComponent {
+		extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
 	
 	/** DOCUMENT ME! */
@@ -94,18 +94,18 @@ public class ColorChooserEditComponent
 			public void actionPerformed(ActionEvent arg0) {
 				final JColorChooser colorChooser = new JColorChooser(button.getBackground());
 				dialog = JColorChooser.createDialog(ColorChooserEditComponent.this.button,
-									"Select the " + disp.getName(), true, colorChooser, new ActionListener() {
-										public void actionPerformed(ActionEvent arg0) {
-											Color col = colorChooser.getColor();
-											buttonText = "<html>" + AttributeHelper.getColorName(col);
-											button.setText(buttonText);
-											button.setBackground(col);
-											mc.setMarkColor(col, col);
-											
-											updateTooltip();
-											// button.setForeground(Colors.getOppositeColor(col));
-										}
-									}, null);
+						"Select the " + disp.getName(), true, colorChooser, new ActionListener() {
+							public void actionPerformed(ActionEvent arg0) {
+								Color col = colorChooser.getColor();
+								buttonText = "<html>" + AttributeHelper.getColorName(col);
+								button.setText(buttonText);
+								button.setBackground(col);
+								mc.setMarkColor(col, col);
+								
+								updateTooltip();
+								// button.setForeground(Colors.getOppositeColor(col));
+							}
+						}, null);
 				dialog.setVisible(true);
 			}
 		});
@@ -153,7 +153,7 @@ public class ColorChooserEditComponent
 			
 			// use opaque color for button
 			Color newColor = new Color(attrColor.getRed(),
-								attrColor.getGreen(), attrColor.getBlue());
+					attrColor.getGreen(), attrColor.getBlue(), opacity);
 			
 			button.setBackground(newColor);
 			mc.setMarkColor(newColor, newColor);
@@ -178,9 +178,11 @@ public class ColorChooserEditComponent
 			else
 				displColor = ((ColorSetAndGetSupport) this.displayable).getColor();
 			if (!displColor.equals(buttonColor)) {
+				int alpha = buttonColor.getAlpha();
+//				int transparency = buttonColor.getTransparency();
 				Color newColor = new Color(buttonColor.getRed(),
-									buttonColor.getGreen(), buttonColor.getBlue(),
-									this.opacity);
+						buttonColor.getGreen(), buttonColor.getBlue(),
+						alpha);
 				
 				// ((ColorAttribute)this.displayable)
 				// .setColor(this.button.getBackground());

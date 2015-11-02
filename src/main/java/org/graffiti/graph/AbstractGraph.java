@@ -490,7 +490,9 @@ public abstract class AbstractGraph extends AbstractAttributable implements
 	 */
 	public Edge addEdge(Node source, Node target, boolean directed,
 						CollectionAttribute col) throws GraphElementNotFoundException {
-		assert (source != null) && (target != null) && (col != null);
+		assert ((source != null) && (target != null) && (col != null));
+		if(source == null || target == null || col == null)
+			return null;
 		// logger.info("adding a new edge with collection attributes to the graph");
 		
 		source.setGraph(this); // CK
