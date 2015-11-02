@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
 import org.AttributeHelper;
 import org.Vector2d;
 import org.graffiti.graph.Edge;
@@ -59,6 +60,7 @@ public class Animator {
 	 */
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	private boolean isInTransaction;
+	private boolean isStopRequest;
 	/**
 	 * Creates an animator will perform a single loop forever.
 	 */
@@ -299,7 +301,7 @@ public class Animator {
 		}
 		catch(Exception ex)
 		{
-			
+
 		}
 		tryAutoCalculateLoopDuration();
 	}
@@ -324,7 +326,7 @@ public class Animator {
 		{ 
 			currentLoopNumber = 0; 
 			return;
-			}
+		}
 		int oldLoopNumber = currentLoopNumber;
 		currentLoopNumber = (int) (time/ Math.abs(loopDuration));
 		if(oldLoopNumber != currentLoopNumber)
@@ -410,13 +412,13 @@ public class Animator {
 		{
 			if(!isOnLastLoop())
 			{
-			timeUsedForAnimations = currentTime % loopDuration;
+				timeUsedForAnimations = currentTime % loopDuration;
 			}
 			else
 			{ 
 				timeUsedForAnimations = currentTime - (loopDuration * (noLoops - 1));
 			}
-			
+
 		}
 		Iterator<Animation<TimePoint>> animIterator = unfinishedAnimations.iterator();
 		// Render graph...
@@ -427,8 +429,8 @@ public class Animator {
 			Animation anim = animIterator.next();
 			anim.update(timeUsedForAnimations, false);
 		} 
-		graph.getListenerManager().transactionFinished(this);
 		isInTransaction = false;
+		graph.getListenerManager().transactionFinished(this);
 		animIterator = unfinishedAnimations.iterator();
 		//System.out.println(currentTime);
 		for(int i = unfinishedAnimations.size() - 1; i >= 0;i--)
@@ -450,12 +452,11 @@ public class Animator {
 				// One last check to ensure we reach the end of the animation
 				graph.getListenerManager().transactionStarted(this);
 				isInTransaction = true;
-				for(Animation<TimePoint> animation:unfinishedAnimations)
-					{
+				for(Animation<TimePoint> animation:unfinishedAnimations){
 					animation.update(loopDuration, true);
-					}
-				graph.getListenerManager().transactionFinished(this);
+				}
 				isInTransaction = false;
+				graph.getListenerManager().transactionFinished(this);
 				stop(false);
 				onAnimatorFinished();
 			}
@@ -469,25 +470,26 @@ public class Animator {
 	 * Specifies whether to activate the onAnimatorStart callback.
 	 */
 	private void start(boolean activateListeners) {
+
 		Iterator<Animation<TimePoint>> animIterator = animations.iterator();
 		unfinishedAnimations.clear();
 		while(animIterator.hasNext())
 		{
 			unfinishedAnimations.add(animIterator.next());
 		}
-	     final Runnable animatorService = new Runnable() {
-		       public void run()
-		       {  
-			    	  update(); 
-		       }
-		     };
-		     final ScheduledFuture<?> animatorHandle =
-		       scheduler.scheduleAtFixedRate(animatorService, 0, updateRate, TimeUnit.MILLISECONDS);
-		   Iterator<AnimatorListener> i = listeners.iterator();
-		   while(i.hasNext())
-		   {
-		   	i.next().onAnimatorStart(toAnimatorData());
-		   }
+		final Runnable animatorService = new Runnable() {
+			public void run()
+			{  
+				update(); 
+			}
+		};
+		final ScheduledFuture<?> animatorHandle =
+				scheduler.scheduleAtFixedRate(animatorService, 0, updateRate, TimeUnit.MILLISECONDS);
+		Iterator<AnimatorListener> i = listeners.iterator();
+		while(i.hasNext())
+		{
+			i.next().onAnimatorStart(toAnimatorData());
+		}
 	}
 	/**
 	 * Starts the animator
@@ -513,9 +515,10 @@ public class Animator {
 		unfinishedAnimations.clear();
 
 		//in case the scheduler is stopped during a transaction
-		if(isInTransaction)
+		if(isInTransaction) {
+//			System.out.println("finishing transaction in stop()");
 			graph.getListenerManager().transactionFinished(this);
-
+		}
 		scheduler.shutdown();
 		if(activateListeners)
 		{
