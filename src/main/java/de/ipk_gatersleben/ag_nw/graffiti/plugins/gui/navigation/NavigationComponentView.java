@@ -348,7 +348,8 @@ AdjustmentListener, GraphListener, SessionListener
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			((GraffitiView)viewcomponent).setDrawMode(DrawMode.NORMAL);
+			if(viewcomponent != null)
+				((GraffitiView)viewcomponent).setDrawMode(DrawMode.NORMAL);
 
 		}
 
@@ -362,6 +363,7 @@ AdjustmentListener, GraphListener, SessionListener
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
+			if(viewcomponent != null)
 			((GraffitiView)viewcomponent).setDrawMode(DrawMode.REDUCED);
 			handleMouseEvent(e);
 		}
