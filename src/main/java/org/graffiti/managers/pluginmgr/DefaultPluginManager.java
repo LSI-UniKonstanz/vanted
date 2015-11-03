@@ -283,8 +283,12 @@ public class DefaultPluginManager
 			if (deps != null && deps.size() > 0) {
 				for (PluginDependency dep : deps) {
 					PluginEntry pe = name2plugin.get(dep.getName());
-					if (pe == null)
+					final String depName = dep.getName();
+					final String pluginName = plugin.getFileName();
+					if (pe == null) {
+						ErrorMsg.addErrorMessage("<html>Please install " + depName + "<br> (required by " + pluginName + ")");	
 						System.err.println("Plugin " + dep.getName() + " is unknown! (required by " + plugin.getFileName() + ")");
+					}
 					else {
 						if (pe.getDescription() == null)
 							System.err.println("Plugin definition " + pe.getFileName() + " provides no description!");
