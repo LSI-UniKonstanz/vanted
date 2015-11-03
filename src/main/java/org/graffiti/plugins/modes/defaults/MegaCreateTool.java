@@ -146,7 +146,8 @@ public class MegaCreateTool
 			
 			public void actionPerformed(ActionEvent e)
 			{
-				reset();
+				unmarkAll();
+				fireSelectionChanged();
 			}
 		};
 		
@@ -859,9 +860,6 @@ public class MegaCreateTool
 			creatingEdge = false;
 			numOfBends = 0;
 			bends = new LinkedHashMapAttribute(GraphicAttributeConstants.BENDS);
-		} else {
-			unmarkAll();
-			fireSelectionChanged();
 		}
 		
 	}
