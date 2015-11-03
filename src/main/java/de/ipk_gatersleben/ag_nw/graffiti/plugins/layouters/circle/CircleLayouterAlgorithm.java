@@ -9,11 +9,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import org.AttributeHelper;
 import org.Vector2d;
+import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
@@ -22,6 +25,17 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
+import org.graffiti.plugins.views.defaults.DrawMode;
+import org.graffiti.plugins.views.defaults.GraffitiView;
+import org.vanted.animation.Animation;
+import org.vanted.animation.Animator;
+import org.vanted.animation.AnimatorData;
+import org.vanted.animation.AnimatorListener;
+import org.vanted.animation.animations.Position2DAnimation;
+import org.vanted.animation.data.Point2DTimePoint;
+import org.vanted.animation.data.TimePoint;
+import org.vanted.animation.interpolators.CosineInterpolator;
+import org.vanted.animation.loopers.StandardLooper;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
@@ -44,6 +58,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 	private boolean equalize = true;
 	private boolean averageCenterLength = true;
 	private boolean sortbycluster = false;
+	private boolean animate = false;
 	
 	/**
 	 * Creates a new CircleLayouterAlgorithm object.
@@ -269,8 +284,69 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 				
 			}
 		}
-		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions,
-				getName());
+		if (animate) {
+			int duration = 1000;
+			final Animator animator = new Animator(graph, 1);
+			animator.addListener(new AnimatorListener() {
+				
+				@Override
+				public void onNewAnimatorLoop(AnimatorData data) {
+				}
+				
+				@Override
+				public void onAnimatorStop(AnimatorData data) {
+					System.out.println("Animator stopped");
+				}
+				
+				@Override
+				public void onAnimatorStart(AnimatorData data) {
+				}
+				
+				@Override
+				public void onAnimatorRestart(AnimatorData data) {
+				}
+				
+				@Override
+				public void onAnimatorReset(AnimatorData data) {
+				}
+				
+				@Override
+				public void onAnimatorFinished(AnimatorData data) {
+					((GraffitiView) MainFrame.getInstance().getActiveSession().getActiveView()).setDrawMode(DrawMode.NORMAL);
+					System.out.println("onAnimatorFinished");
+				}
+				
+				@Override
+				public void onAnimationFinished(AnimatorData data, Animation<TimePoint> anim) {
+//					System.out.println("onAnimationFinished");
+				}
+			});
+			animator.setLoopDuration(duration, TimeUnit.MILLISECONDS);
+			for (Node curNode : workNodes) {
+				
+				Point2DTimePoint startPosition = new Point2DTimePoint(0, AttributeHelper.getPosition(curNode));
+				Vector2d vector2d = nodes2newPositions.get(curNode);
+				Point2DTimePoint endPosition = new Point2DTimePoint(duration, vector2d.x, vector2d.y);
+				List<Point2DTimePoint> dataPoints = new ArrayList<Point2DTimePoint>();
+				dataPoints.add(startPosition);
+//				dataPoints.add(new Point2DTimePoint(1000, 20, 20));
+				
+				dataPoints.add(endPosition);
+				Position2DAnimation posAnimation = new Position2DAnimation(curNode, dataPoints, duration, 0, 1, new StandardLooper(), new CosineInterpolator());
+				animator.addAnimation(posAnimation);
+			}
+//			SwingUtilities.invokeLater(new Runnable() {
+			
+//				@Override
+//				public void run() {
+			((GraffitiView) MainFrame.getInstance().getActiveSession().getActiveView()).setDrawMode(DrawMode.REDUCED);
+			animator.start();
+//				}
+//			});
+		} else {
+			GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions,
+					getName());
+		}
 	}
 	
 	/**
@@ -384,13 +460,15 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 							"which is then taken as final radius for the circle");
 			minimzeCrossingsParam = new BooleanParameter(minimzeCrossings, "Minimize Crossings", "If checked, the edge crossings will be minimzed");
 			sortbyclusterParam = new BooleanParameter(true, "Sort by cluster", "Sort elements by their clusterID");
+			animateParam = new BooleanParameter(animate, "Animate layout", "Shows animation on where the nodes move.");
 		}
 		return new Parameter[] {
 				radiusParam,
 				equalizeParam,
 				avgDistBoolean,
 				minimzeCrossingsParam,
-				sortbyclusterParam };
+				sortbyclusterParam,
+				animateParam };
 	}
 	
 	/**
@@ -410,6 +488,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		averageCenterLength = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		minimzeCrossings = ((BooleanParameter) params[i++]).getBoolean();
 		sortbycluster = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
+		animate = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 	}
 	
 	/*
@@ -443,6 +522,8 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 	private BooleanParameter avgDistBoolean;
 	
 	private BooleanParameter sortbyclusterParam;
+	
+	private BooleanParameter animateParam;
 	
 	private BooleanParameter minimzeCrossingsParam;
 	

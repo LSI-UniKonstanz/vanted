@@ -1823,12 +1823,15 @@ public class ListenerManager {
 	
 	public void transactionFinished(Object source, boolean forgetChanges, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		postDebugTransactionFinished(source);
-		this.transactionsActive--;
-		assert this.transactionsActive >= 0;
+		if (this.transactionsActive > 0) 
+			this.transactionsActive--;
 		
+		assert this.transactionsActive >= 0;
+//		if(transactionsActive < 0)
+//			System.out.println();
 		if (forgetChanges)
 			this.changedObjects = new TransactionHashMap();
-		
+//		System.out.println("transactionFinished: " + this.transactionsActive);
 		if (transactionsActive > 0)
 			return;
 		TransactionEvent event = new TransactionEvent(source, changedObjects);
@@ -1870,7 +1873,8 @@ public class ListenerManager {
 		postDebugTransactionStarted(source);
 		TransactionEvent event = new TransactionEvent(source);
 		this.transactionsActive++;
-		
+//		System.out.println("transactionStarted: " + this.transactionsActive);
+
 		Iterator<?> mIter = new MultipleIterator(new Iterator[] {
 							delayedNodeListenerList.iterator(),
 							delayedEdgeListenerList.iterator(),

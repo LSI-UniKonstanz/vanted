@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.SwingUtilities;
@@ -25,6 +26,10 @@ import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
+import org.vanted.animation.Animator;
+import org.vanted.animation.animations.Position2DAnimation;
+import org.vanted.animation.data.Point2DTimePoint;
+import org.vanted.animation.interpolators.LinearInterpolator;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.CircleLayouterAlgorithm;
@@ -91,8 +96,8 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 	public String getDescription() {
 		return "<html>" +
 				"Create small-world random network according to Watts and Strogatz model.";
-	}
-	
+	} 
+	Animator animator;
 	@Override
 	public void execute() {
 		
@@ -101,6 +106,7 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 			public void run() {
 				try {
 					final Graph rdg = createGraph(numberOfNodes, label, initDegree, p);
+
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
@@ -115,9 +121,7 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 				}
 			}
 		}, null);
-		
 	}
-	
 	public static Graph createGraph(int numberOfNodes, boolean label, int initDegree, double p) {
 		Graph rdg = new AdjListGraph();
 		
@@ -172,7 +176,7 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 			ctr.execute();
 		} finally {
 			rdg.getListenerManager().transactionFinished(rdg);
-		}
+		} 
 		return rdg;
 	}
 
