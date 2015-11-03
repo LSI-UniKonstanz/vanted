@@ -5,7 +5,7 @@
 	<description>Testing</description>
 	<plugindesc>
 		<name>OpacityTest</name>
-		<main>org.vanted.opacitytest.TestOpacity</main>
+		<main>org.vanted.animation.tests.TestOpacity</main>
 		<version>1.0</version>
 		<available>http://www.vanted.org</available>
 	</plugindesc>

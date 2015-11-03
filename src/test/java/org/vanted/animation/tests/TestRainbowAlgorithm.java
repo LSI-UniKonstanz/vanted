@@ -1,4 +1,4 @@
-package org.vanted.opacitytest;
+package org.vanted.animation.tests;
 import java.awt.Color;
 /**
  * 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.vanted.opacitytest;
+package org.vanted.animation.tests;
 
 import java.awt.Color;
 import java.awt.geom.Point2D;

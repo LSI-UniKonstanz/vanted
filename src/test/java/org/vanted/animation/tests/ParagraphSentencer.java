@@ -1,4 +1,4 @@
-package org.vanted.opacitytest;
+package org.vanted.animation.tests;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;

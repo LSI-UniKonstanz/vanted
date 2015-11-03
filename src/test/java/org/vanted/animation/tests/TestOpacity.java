@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.vanted.opacitytest;
+package org.vanted.animation.tests;
 
 import org.graffiti.plugin.EditorPluginAdapter;
 import org.graffiti.plugin.algorithm.Algorithm;
@@ -18,7 +18,7 @@ public class TestOpacity extends EditorPluginAdapter {
 	 */
 	public TestOpacity() {
 		algorithms = new Algorithm[] {
-				new MotionTest(),
+				new AnimatorTestSuit(),
 				new RainbowSwappingTest(),
 				new VantedSentenceTest(),
 				new OpacityAlgorithm()
@@ -29,7 +29,7 @@ public class TestOpacity extends EditorPluginAdapter {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Main.startVanted(args, "org/vanted/opacitytest/TestOpacity.xml");
+		Main.startVanted(args, "org/vanted/animation/tests/TestOpacity.xml");
 	}
 	
 }

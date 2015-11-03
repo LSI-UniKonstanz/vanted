@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.vanted.opacitytest;
+package org.vanted.animation.tests;
 
 import java.util.ArrayList;
 import java.util.HashSet;

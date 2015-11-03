@@ -1,9 +1,6 @@
 package org.vanted.animation;
-import java.awt.Color;
-import java.awt.color.ColorSpace;
-import java.awt.geom.Point2D;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -11,49 +8,24 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import org.AttributeHelper;
-import org.Vector2d;
-import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
-import org.graffiti.graph.Node;
-import org.vanted.animation.animations.FillColorAnimation;
-import org.vanted.animation.animations.FrameThicknessAnimation;
-import org.vanted.animation.animations.LabelColorAnimation;
-import org.vanted.animation.animations.OutlineColorAnimation;
-import org.vanted.animation.animations.Position2DAnimation;
-import org.vanted.animation.animations.SizeAnimation;
-import org.vanted.animation.data.ColorMode;
-import org.vanted.animation.data.ColorTimePoint;
-import org.vanted.animation.data.DoubleTimePoint;
-import org.vanted.animation.data.Point2DTimePoint;
 import org.vanted.animation.data.TimePoint;
-import org.vanted.animation.interpolators.BezierInterpolator;
-import org.vanted.animation.interpolators.CosineInterpolator; 
-import org.vanted.animation.interpolators.CubicInterpolator; 
-import org.vanted.animation.interpolators.LinearInterpolator;
-import org.vanted.animation.interpolators.SigmoidInterpolator;
-import org.vanted.animation.loopers.ForwardLooper;
-import org.vanted.animation.loopers.StandardLooper;
-import org.vanted.opacitytest.TestRainbowAlgorithm;
-import org.vanted.animation.loopers.ForwardLooper;
-import org.vanted.animation.loopers.ForwardLooper;
+
 /**
- * 
  * @author - Patrick Shaw
- * 
  */
-public class Animator { 
+public class Animator {
 	private Graph graph;
 	private List<Animation<TimePoint>> animations = new ArrayList<Animation<TimePoint>>();
 	private List<Animation<TimePoint>> unfinishedAnimations = new ArrayList<Animation<TimePoint>>();
 	private List<AnimatorListener> listeners = new ArrayList<AnimatorListener>();
 	private int fps = 60; // FPS 
-	private int updateRate = (int)Math.ceil(1000.0/(double)fps);
+	private int updateRate = (int) Math.ceil(1000.0 / (double) fps);
 	private double loopDuration = -1; // The total amount of time that it takes for the next loop to start in milliseconds
-	private double currentTime =0; // The time elapsed since the animator started animating
+	private double currentTime = 0; // The time elapsed since the animator started animating
 	private double speedFactor = 1; // How fast the animations go.
 	private int noLoops = -1; // Number of loops
-	private int currentLoopNumber = 0; 
+	private int currentLoopNumber = 0;
 	private boolean isAutoLoopDuration;
 	/**
 	 * The ExecuterService that calls update() on fixed intervals.
@@ -61,6 +33,7 @@ public class Animator {
 	private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 	private boolean isInTransaction;
 	private boolean isStopRequest;
+	
 	/**
 	 * Creates an animator will perform a single loop forever.
 	 */
@@ -71,23 +44,27 @@ public class Animator {
 		setLoopDuration(LoopDuration.INFINITY);
 		setIsAutoLoopDuration(false);
 	}
+	
 	/**
 	 * Creates an animator that will automatically calculate the loop duration to be the same
 	 * as the animation who's loop duration is largest
+	 * 
 	 * @param noLoops
-	 * The number of times the animator will perform.
+	 *           The number of times the animator will perform.
 	 */
-	public Animator(Graph graph,int noLoops)
+	public Animator(Graph graph, int noLoops)
 	{
 		setGraph(graph);
 		setNoLoops(noLoops);
 		setIsAutoLoopDuration(true);
-	}	
+	}
+	
 	/**
 	 * Creates an animator that will automatically calculate the loop duration to be the same
 	 * as the animation who's loop duration is largest
+	 * 
 	 * @param noLoops
-	 * The number of times the animator will perform.
+	 *           The number of times the animator will perform.
 	 */
 	public Animator(Graph graph, NumberOfLoops noLoops)
 	{
@@ -95,12 +72,14 @@ public class Animator {
 		setNoLoops(noLoops);
 		setIsAutoLoopDuration(true);
 	}
+	
 	/**
 	 * Creates an animator that needs to have its loop duration manually specified.
+	 * 
 	 * @param noLoops
-	 * The number of times the animator will perform.
+	 *           The number of times the animator will perform.
 	 * @param loopDuration
-	 * How long each loop in the animator will last.
+	 *           How long each loop in the animator will last.
 	 */
 	public Animator(Graph graph, int noLoops, double loopDuration)
 	{
@@ -109,14 +88,16 @@ public class Animator {
 		setLoopDuration(loopDuration);
 		setIsAutoLoopDuration(false);
 	}
+	
 	/**
 	 * Creates an animator that needs to have its loop duration manually specified.
+	 * 
 	 * @param noLoops
-	 * The number of times the animator will perform.
+	 *           The number of times the animator will perform.
 	 * @param loopDuration
-	 * The magnitude of the loop duration.
+	 *           The magnitude of the loop duration.
 	 * @param timeUnit
-	 * The time unit of the loop duration.
+	 *           The time unit of the loop duration.
 	 */
 	public Animator(Graph graph, int noLoops, int loopDuration, TimeUnit timeUnit)
 	{
@@ -125,12 +106,14 @@ public class Animator {
 		setLoopDuration(loopDuration, timeUnit);
 		setIsAutoLoopDuration(false);
 	}
+	
 	/**
 	 * Creates an animator that needs to have its loop duration manually specified.
+	 * 
 	 * @param noLoops
-	 * The number of times the animator will perform.
+	 *           The number of times the animator will perform.
 	 * @param loopDuration
-	 * How long each loop in the animator will last.
+	 *           How long each loop in the animator will last.
 	 */
 	public Animator(Graph graph, int noLoops, LoopDuration loopDuration)
 	{
@@ -139,29 +122,34 @@ public class Animator {
 		setLoopDuration(loopDuration);
 		setIsAutoLoopDuration(false);
 	}
+	
 	/**
 	 * Sets whether the animator is automatically calculating the animator loop duration.
+	 * 
 	 * @param isAutoCalculatingLoopDuration
-	 * If True: The animator will always calculate the loop duration to be the same value
-	 * as the animation who's loop duration is the largest.<br>
-	 * If False: The animator loop duration needs to be set manually.
+	 *           If True: The animator will always calculate the loop duration to be the same value
+	 *           as the animation who's loop duration is the largest.<br>
+	 *           If False: The animator loop duration needs to be set manually.
 	 */
 	public void setIsAutoLoopDuration(boolean isAutoCalculatingLoopDuration)
 	{
 		isAutoLoopDuration = isAutoCalculatingLoopDuration;
 		tryAutoCalculateLoopDuration();
 	}
+	
 	/**
 	 * Sets whether the animator is automatically calculating the animator loop duration.
+	 * 
 	 * @return
-	 * If True: The animator will always calculate the loop duration to be the same value
-	 * as the animation who's loop duration is the largest.<br>
-	 * If False: The animator loop duration needs to be set manually.
+	 *         If True: The animator will always calculate the loop duration to be the same value
+	 *         as the animation who's loop duration is the largest.<br>
+	 *         If False: The animator loop duration needs to be set manually.
 	 */
 	public boolean getIsAutoLoopDuration()
 	{
 		return isAutoLoopDuration;
 	}
+	
 	/**
 	 * Sets the animator graph
 	 */
@@ -169,58 +157,70 @@ public class Animator {
 	{
 		this.graph = graph;
 	}
+	
 	/**
 	 * Auto calculates the loop duration to be the same value is the data point
 	 * who's time value is the largest.
 	 */
 	public void tryAutoCalculateLoopDuration()
 	{
-		if(!isAutoLoopDuration){return;}
+		if (!isAutoLoopDuration) {
+			return;
+		}
 		double maximum = 0;
 		Iterator<Animation<TimePoint>> i = animations.iterator();
-		while(i.hasNext())
+		while (i.hasNext())
 		{
 			double animationLoopDuration = i.next().loopDuration;
 			maximum = maximum < animationLoopDuration ? animationLoopDuration : maximum;
 		}
 	}
+	
 	/**
 	 * Sets the number of times animations are updated per second.
+	 * 
 	 * @param fps
 	 */
 	public void setFPS(int fps)
 	{
 		stop();
 		this.fps = fps;
-		updateRate = (int)((double)TimeUnit.SECONDS.toMillis(1)/(double)fps);
+		updateRate = (int) ((double) TimeUnit.SECONDS.toMillis(1) / (double) fps);
 		start();
 	}
+	
 	/**
 	 * Gets the number of times animations are updated per second.
+	 * 
 	 * @param fps
 	 */
 	public int getFPS()
 	{
 		return fps;
 	}
+	
 	/**
 	 * Get's the loop duration of the animation.
+	 * 
 	 * @return
-	 * The duration of the loop in milliseconds.
+	 *         The duration of the loop in milliseconds.
 	 */
 	public double getLoopDuration()
 	{
 		return loopDuration;
 	}
+	
 	/**
 	 * Sets the duration of a loop.
+	 * 
 	 * @param duration
-	 * The loop duration in milliseconds.
+	 *           The loop duration in milliseconds.
 	 */
 	public void setLoopDuration(double loopDuration)
 	{
 		this.loopDuration = loopDuration;
 	}
+	
 	/**
 	 * Sets the duration of a loop.
 	 */
@@ -228,41 +228,48 @@ public class Animator {
 	{
 		this.loopDuration = loopDuration.getValue();
 	}
+	
 	/**
 	 * Sets the duration of a loop.
+	 * 
 	 * @param duration
-	 * The time magnitude.
-	 * @param
-	 * The unit of time being used.
+	 *           The time magnitude.
+	 * @param The
+	 *           unit of time being used.
 	 */
-	public void setLoopDuration(long time,TimeUnit timeUnit)
+	public void setLoopDuration(long time, TimeUnit timeUnit)
 	{
-		loopDuration =   timeUnit.toMillis(time);
-	} 
+		loopDuration = timeUnit.toMillis(time);
+	}
+	
 	/**
 	 * Gets the number of times the animator will perform a loop.
+	 * 
 	 * @param noLoops
-	 * -1 = Infinite loop<br>
-	 * 0 = Doesn't do anything<br>
-	 * 1 = Will do the animation once<Br>
-	 * 2 = Will do the animation twice
+	 *           -1 = Infinite loop<br>
+	 *           0 = Doesn't do anything<br>
+	 *           1 = Will do the animation once<Br>
+	 *           2 = Will do the animation twice
 	 */
 	public int getNoLoops()
 	{
 		return this.noLoops;
 	}
+	
 	/**
 	 * Sets the number of times the animator will perform a loop.
+	 * 
 	 * @param noLoops
-	 * -1 = Infinite loop<br>
-	 * 0 = Doesn't do anything<br>
-	 * 1 = Will do the animation once<Br>
-	 * 2 = Will do the animation twice
+	 *           -1 = Infinite loop<br>
+	 *           0 = Doesn't do anything<br>
+	 *           1 = Will do the animation once<Br>
+	 *           2 = Will do the animation twice
 	 */
 	public void setNoLoops(int noLoops)
 	{
 		this.noLoops = noLoops;
 	}
+	
 	/**
 	 * The number of times the animator will perform a loop.
 	 */
@@ -270,6 +277,7 @@ public class Animator {
 	{
 		this.noLoops = noLoops.getValue();
 	}
+	
 	/**
 	 * Call this method any time you want to add an animation.<br>
 	 * Can be called while animations are taking place.<br>
@@ -278,7 +286,7 @@ public class Animator {
 	public void addAnimation(Animation animation)
 	{
 		animations.add(animation);
-		if(!scheduler.isShutdown())
+		if (!scheduler.isShutdown())
 		{
 			unfinishedAnimations.add(animation);
 		}
@@ -287,6 +295,7 @@ public class Animator {
 			loopDuration = loopDuration < animation.getLoopDuration() ? animation.getLoopDuration() : loopDuration;
 		}
 	}
+	
 	/**
 	 * Call this method any time you want to remove an animation.<br>
 	 * Can be called while animations are taking place. However,<br>
@@ -296,78 +305,85 @@ public class Animator {
 	public void removeAnimation(Animation animation)
 	{
 		animations.remove(animation);
-		try{
+		try {
 			unfinishedAnimations.remove(animation);
-		}
-		catch(Exception ex)
+		} catch (Exception ex)
 		{
-
+			
 		}
 		tryAutoCalculateLoopDuration();
 	}
+	
 	public void addListener(AnimatorListener listener)
 	{
 		listeners.add(listener);
 	}
+	
 	public void removeListener(AnimatorListener listener)
 	{
 		listeners.remove(listener);
 	}
+	
 	/**
 	 * Recalculates the currentLoopNumber
+	 * 
 	 * @param time
-	 * The total amount of time that has elapsed since the animator first started.
-	 * without being reset.
+	 *           The total amount of time that has elapsed since the animator first started.
+	 *           without being reset.
 	 */
 	private void updateLoopNumber(double time)
 	{
 		boolean isLastLoop = isOnLastLoop();
-		if(loopDuration == -1)
-		{ 
-			currentLoopNumber = 0; 
+		if (loopDuration == -1)
+		{
+			currentLoopNumber = 0;
 			return;
 		}
 		int oldLoopNumber = currentLoopNumber;
-		currentLoopNumber = (int) (time/ Math.abs(loopDuration));
-		if(oldLoopNumber != currentLoopNumber)
-		{  
-			OnNextLoop(); 
-			if(!isLastLoop)
+		currentLoopNumber = (int) (time / Math.abs(loopDuration));
+		if (oldLoopNumber != currentLoopNumber)
+		{
+			OnNextLoop();
+			if (!isLastLoop)
 			{
 				unfinishedAnimations.clear();
-				for(Animation animation:animations)
+				for (Animation animation : animations)
 				{
 					unfinishedAnimations.add(animation);
 				}
 			}
 		}
 	}
+	
 	/**
 	 * Calls listeners onAnimationFinished and
 	 * removes the animation from the list of animations to update
+	 * 
 	 * @param finishedAnimation
-	 * The animation that just finished
+	 *           The animation that just finished
 	 */
 	private void onAnimationFinished(Animation finishedAnimation)
 	{
 		Iterator<AnimatorListener> i = listeners.iterator();
-		while(i.hasNext())
+		while (i.hasNext())
 		{
 			i.next().onAnimationFinished(toAnimatorData(), finishedAnimation);
 		}
 		unfinishedAnimations.remove(finishedAnimation);
 	}
+	
 	/**
 	 * Calls listeners onAnimatorFinished
 	 */
 	private void onAnimatorFinished()
 	{
 		Iterator<AnimatorListener> i = listeners.iterator();
-		while(i.hasNext())
+		while (i.hasNext())
 		{
 			i.next().onAnimatorFinished(toAnimatorData());
 		}
 	}
+	
 	/**
 	 * Calls listeners onNewAnimatorLoop
 	 */
@@ -375,65 +391,71 @@ public class Animator {
 	{
 		Iterator<AnimatorListener> i = listeners.iterator();
 		AnimatorData animatorData = this.toAnimatorData();
-		while(i.hasNext())
+		while (i.hasNext())
 		{
 			i.next().onNewAnimatorLoop(animatorData);
 		}
 	}
+	
 	/**
 	 * Creates an AnimatorData object out of the animator's own information.
+	 * 
 	 * @return
-	 * The animator data.
+	 *         The animator data.
 	 */
 	private AnimatorData toAnimatorData()
 	{
 		return new AnimatorData(currentTime, currentLoopNumber, loopDuration, noLoops, isAutoLoopDuration);
 	}
+	
 	/**
 	 * @return
-	 * Whether this is the last loop before the animator stops.
+	 *         Whether this is the last loop before the animator stops.
 	 */
 	private boolean isOnLastLoop()
 	{
-		if (noLoops == -1){return false;}
+		if (noLoops == -1) {
+			return false;
+		}
 		return currentLoopNumber >= noLoops - 1;
 	}
+	
 	/**
 	 * The method that is called on fixed intervals.
 	 */
 	private void update()
 	{
-		double timeUsedForAnimations = Double.NaN; 
-		if(loopDuration == -1)
+		double timeUsedForAnimations = Double.NaN;
+		if (loopDuration == -1)
 		{
-			timeUsedForAnimations = currentTime ; 
+			timeUsedForAnimations = currentTime;
 		}
 		else
 		{
-			if(!isOnLastLoop())
+			if (!isOnLastLoop())
 			{
 				timeUsedForAnimations = currentTime % loopDuration;
 			}
 			else
-			{ 
+			{
 				timeUsedForAnimations = currentTime - (loopDuration * (noLoops - 1));
 			}
-
+			
 		}
 		Iterator<Animation<TimePoint>> animIterator = unfinishedAnimations.iterator();
 		// Render graph...
 		graph.getListenerManager().transactionStarted(this);
 		isInTransaction = true;
-		while(animIterator.hasNext())
+		while (animIterator.hasNext())
 		{
 			Animation anim = animIterator.next();
 			anim.update(timeUsedForAnimations, false);
-		} 
+		}
 		isInTransaction = false;
 		graph.getListenerManager().transactionFinished(this);
 		animIterator = unfinishedAnimations.iterator();
 		//System.out.println(currentTime);
-		for(int i = unfinishedAnimations.size() - 1; i >= 0;i--)
+		for (int i = unfinishedAnimations.size() - 1; i >= 0; i--)
 		{
 			Animation animation = unfinishedAnimations.get(i);
 			if (animation.isFinished(timeUsedForAnimations))
@@ -442,17 +464,17 @@ public class Animator {
 			}
 		}
 		// Check if the current loop has finished 
-		updateLoopNumber(currentTime); 
+		updateLoopNumber(currentTime);
 		// Check if we have looped enough time  
-		if(noLoops != -1)
+		if (noLoops != -1)
 		{
-			if(currentLoopNumber >= noLoops)
+			if (currentLoopNumber >= noLoops)
 			{
 				//System.out.println(currentLoopNumber);
 				// One last check to ensure we reach the end of the animation
 				graph.getListenerManager().transactionStarted(this);
 				isInTransaction = true;
-				for(Animation<TimePoint> animation:unfinishedAnimations){
+				for (Animation<TimePoint> animation : unfinishedAnimations) {
 					animation.update(loopDuration, true);
 				}
 				isInTransaction = false;
@@ -462,42 +484,46 @@ public class Animator {
 			}
 		}
 		// Increase the time
-		currentTime += (updateRate) * speedFactor; 
+		currentTime += (updateRate) * speedFactor;
 	}
+	
 	/**
 	 * Starts the animator.
+	 * 
 	 * @param activateListener
-	 * Specifies whether to activate the onAnimatorStart callback.
+	 *           Specifies whether to activate the onAnimatorStart callback.
 	 */
 	private void start(boolean activateListeners) {
-
+		
 		Iterator<Animation<TimePoint>> animIterator = animations.iterator();
 		unfinishedAnimations.clear();
-		while(animIterator.hasNext())
+		while (animIterator.hasNext())
 		{
 			unfinishedAnimations.add(animIterator.next());
 		}
 		final Runnable animatorService = new Runnable() {
 			public void run()
-			{  
-				update(); 
+			{
+				update();
 			}
 		};
 		final ScheduledFuture<?> animatorHandle =
 				scheduler.scheduleAtFixedRate(animatorService, 0, updateRate, TimeUnit.MILLISECONDS);
 		Iterator<AnimatorListener> i = listeners.iterator();
-		while(i.hasNext())
+		while (i.hasNext())
 		{
 			i.next().onAnimatorStart(toAnimatorData());
 		}
 	}
+	
 	/**
 	 * Starts the animator
 	 */
 	public void start()
-	{ 
+	{
 		start(true);
 	}
+	
 	/**
 	 * Stops the animator.
 	 */
@@ -505,30 +531,33 @@ public class Animator {
 	{
 		stop(true);
 	}
+	
 	/**
 	 * Stops the animation
+	 * 
 	 * @param activateListeners
-	 * If true, the onAnimatorStop method will be called.
+	 *           If true, the onAnimatorStop method will be called.
 	 */
 	private void stop(boolean activateListeners)
 	{
 		unfinishedAnimations.clear();
-
+		
 		//in case the scheduler is stopped during a transaction
-		if(isInTransaction) {
+		if (isInTransaction) {
 //			System.out.println("finishing transaction in stop()");
 			graph.getListenerManager().transactionFinished(this);
 		}
 		scheduler.shutdown();
-		if(activateListeners)
+		if (activateListeners)
 		{
 			Iterator<AnimatorListener> i = listeners.iterator();
-			while(i.hasNext())
+			while (i.hasNext())
 			{
 				i.next().onAnimatorStop(toAnimatorData());
 			}
 		}
 	}
+	
 	/**
 	 * Resets the animation and starts it again.
 	 */
@@ -536,12 +565,13 @@ public class Animator {
 	{
 		reset(false);
 		Iterator<AnimatorListener> i = listeners.iterator();
-		while(i.hasNext())
+		while (i.hasNext())
 		{
 			i.next().onAnimatorRestart(toAnimatorData());
 		}
 		start(false);
 	}
+	
 	/**
 	 * Stops the animation and rests it.
 	 */
@@ -549,24 +579,26 @@ public class Animator {
 	{
 		reset(true);
 	}
+	
 	/**
 	 * Stops the animation and resets it.
+	 * 
 	 * @param activateListeners
-	 * Specifies whether to activate the onAnimatorReset callback
+	 *           Specifies whether to activate the onAnimatorReset callback
 	 */
 	private void reset(boolean activateListeners)
 	{
 		stop(false);
 		currentTime = 0;
 		currentLoopNumber = 0;
-		for(int i = 0; i < animations.size();i++)
+		for (int i = 0; i < animations.size(); i++)
 		{
 			animations.get(i).reset();
 		}
-		if(activateListeners)
+		if (activateListeners)
 		{
 			Iterator<AnimatorListener> i = listeners.iterator();
-			while(i.hasNext())
+			while (i.hasNext())
 			{
 				i.next().onAnimatorReset(toAnimatorData());
 			}
