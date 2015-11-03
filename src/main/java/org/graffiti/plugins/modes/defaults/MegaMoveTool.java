@@ -591,7 +591,6 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		logger.setLevel(Level.DEBUG);
 		long starttime = System.currentTimeMillis();
 		logger.debug("MOUSE DRAGGED");
 		if (e.getSource() instanceof GraffitiView)
@@ -976,7 +975,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				lastTimeForEdge = now;
 			}
 		}
-		System.out.println("MegaMoveTool: mouseDraggedFirstCallStoreCoordinatesForUndoSupport(). timeNodes:" + timeForNodes + ", timeEdges: " + timeForEdges);
+		logger.debug("MegaMoveTool: mouseDraggedFirstCallStoreCoordinatesForUndoSupport(). timeNodes:" + timeForNodes + ", timeEdges: " + timeForEdges);
 		edit = new ChangeAttributesEdit(session.getGraph(), originalCoordinates, geMap);
 		undoSupport.postEdit(edit);
 	}
