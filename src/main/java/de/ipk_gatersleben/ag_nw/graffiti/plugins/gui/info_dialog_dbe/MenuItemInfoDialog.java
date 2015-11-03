@@ -73,6 +73,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.threading.SystemAnalysis;
 import de.ipk_gatersleben.ag_nw.graffiti.services.GUIhelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.PatchedHTMLEditorKit;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskPanelEntry;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 /**
  * Shows the info dialog for PatternGraffiti
@@ -669,17 +671,45 @@ public class MenuItemInfoDialog
 				}
 				if (errorMsg != null) {
 					if (errorMsg.length > lastErrorCount && !MainFrame.getInstance().isTaskPanelVisible("Error Watch")) {
+						
+						String string = ErrorMsg.getErrorMessages()[errorMsg.length - 1];
+						String header;
+						int indexOf = string.indexOf("<br");
+						if(indexOf >= 0)
+							header = "<html>" + string.substring(0,indexOf);
+						else
+							header = string;
+						
+						BackgroundTaskPanelEntry backgroundTaskPanelEntry = new BackgroundTaskPanelEntry(false);
+						
+						BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
+								header, "<html><small>Click 'Help/Error Messages' for more details.");
+						
+						status.setCurrentStatusValue(100);
+						backgroundTaskPanelEntry.setStatusProvider(status, "Error", "Error");
+						backgroundTaskPanelEntry.setTaskFinished(false, 0);
+						
+						MainFrame.getInstance().addStatusPanel(backgroundTaskPanelEntry);
+						
 						// BackgroundTaskHelper.isTaskWithGivenReferenceRunning()
+						/*
 						BackgroundTaskHelper.issueSimpleTask("Error Watch",
 								ErrorMsg.getErrorMessages()[errorMsg.length - 1],
 								"<html><small>Click 'Help/Error Messages' for more details.",
 								new Runnable() {
 									public void run() {
+										try {
+											Thread.sleep(2000);
+										} catch (InterruptedException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
 									}
 								}, new Runnable() {
 									public void run() {
 									}
 								}, false);
+						*/
 					}
 					// if (!MainFrame.getInstance().isTaskPanelVisible("Error Watch"))
 					lastErrorCount = errorMsg.length;
