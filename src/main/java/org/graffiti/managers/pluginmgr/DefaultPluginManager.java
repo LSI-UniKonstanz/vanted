@@ -282,7 +282,10 @@ public class DefaultPluginManager
 			List<PluginDependency> deps = plugin.getDescription().getDependencies();
 			if (deps != null && deps.size() > 0) {
 				for (PluginDependency dep : deps) {
-					PluginEntry pe = name2plugin.get(dep.getName());
+					PluginEntry pe;
+					pe = name2plugin.get(dep.getName());
+					if(pe == null)
+						pe = pluginEntries.get(dep.getName());
 					final String depName = dep.getName();
 					final String pluginName = plugin.getFileName();
 					if (pe == null) {
@@ -370,7 +373,12 @@ public class DefaultPluginManager
 					run.submit(new Runnable() {
 						public void run() {
 							try {
-								if (desc.getDependencies().size() > 0)
+								/*
+								 * only don't load the plugin if it's plugin loading time
+								 * For addons with dependcies the order of loading has already
+								 * been figured out and also the plugins.array size is 1 for loading addons 
+								 */
+								if (desc.getDependencies().size() > 0 && plugins.length > 1)
 									return;
 								
 								synchronized (loading) {

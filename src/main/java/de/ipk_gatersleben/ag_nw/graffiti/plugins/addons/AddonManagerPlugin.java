@@ -13,15 +13,20 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.tree.DefaultTreeModel;
 
 import org.ApplicationStatus;
 import org.ErrorMsg;
@@ -32,6 +37,7 @@ import org.ReleaseInfo;
 import org.StringManipulationTools;
 import org.UpdateInfoResult;
 import org.graffiti.editor.MainFrame;
+import org.graffiti.managers.pluginmgr.PluginDependency;
 import org.graffiti.managers.pluginmgr.PluginDescription;
 import org.graffiti.managers.pluginmgr.PluginManagerException;
 import org.graffiti.managers.pluginmgr.PluginXMLParser;
@@ -39,6 +45,8 @@ import org.graffiti.plugin.GenericPluginAdapter;
 import org.graffiti.plugins.inspectors.defaults.Inspector;
 import org.graffiti.session.Session;
 import org.graffiti.util.InstanceLoader;
+
+import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_EditorPluginAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
@@ -135,6 +143,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 	/**
 	 * Load addons on startup.
 	 */
+
 	private synchronized void loadAddonsOnStartup() {
 		long time = System.currentTimeMillis();
 		
@@ -169,8 +178,45 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 			
 			System.out.println("Trying to load Add-ons... ");
 			
-			for (File toBeActivatedAddon : getJarFileList(addonDirFile))
-				addAddon(toBeActivatedAddon, true);
+			/*
+			 * try to figure out the order of loading depending on addon dependencies
+			 * we also need to memorize the classloader before loading addons, since the URL classloaders
+			 * are a hierarchy as well and if dependend addons are loaded in wrong order th class loader will
+			 * not find the classes for the depending addons
+			 */
+			ClassLoader oldLoader = InstanceLoader.getCurrentLoader();
+			
+			final Map<PluginDescription, File> mapPlugDescToFile = new HashMap<PluginDescription, File>();
+			for (File toBeActivatedAddon : getJarFileList(addonDirFile)) {
+				mapPlugDescToFile.put(loadAddonFromFile(toBeActivatedAddon), toBeActivatedAddon);
+			}
+			
+			final List<PluginDescription> orderedList = getOrderedDependencyList(mapPlugDescToFile.keySet());
+
+			/*
+			 *  forget the addon classpaths because we need to add the addons to the classpath
+			 *  in the correct order
+			 */
+			
+			InstanceLoader.setClassLoader(oldLoader);
+			for(PluginDescription curPluginDesc : orderedList) {
+				try {
+					loadAddonFromFile(mapPlugDescToFile.get(curPluginDesc));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			if (!SwingUtilities.isEventDispatchThread()) {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					public void run() {						
+							for(PluginDescription curPluginDesc : orderedList) {
+								addAddon(curPluginDesc, mapPlugDescToFile.get(curPluginDesc), true);
+							}
+					}
+				});
+			}
 			
 			if (getJarFileList(addonDirFile).length > 0)
 				System.out.println("Add-ons loaded in " + (System.currentTimeMillis() - time) + "ms");
@@ -184,6 +230,48 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		}
 	}
 	
+	private List<PluginDescription> getOrderedDependencyList(Collection<PluginDescription> coll) {
+		int size = coll.size();
+		
+		PluginDescription[] array = new PluginDescription[size];
+		Iterator<PluginDescription> iterator = coll.iterator();
+		
+		System.out.println("before");
+
+		for(int i = 0; i < size; i++) {
+			array[i] = iterator.next();
+			System.out.println(array[i].getName());
+		}
+		
+		for(int cnt = 0; cnt < size; cnt ++)
+			for(int i = 0; i < size - 1; i++) {
+				PluginDescription pluginDescription = array[i];
+				int maxIdx = i;
+				for(PluginDependency depPluginDesc : pluginDescription.getDependencies()) {
+					for(int j = i + 1; j < size; j++) {
+						if(depPluginDesc.getMain().equals(array[j].getMain()) && j > maxIdx)
+							maxIdx = j;
+					}
+				}
+				
+				/* 
+				 * if we found an addon we're depending on then we put us on the
+				 * position of that addon and move everything one position ahead
+				 */
+				if(maxIdx > i) {
+					for(int moveIdx = 0; moveIdx < maxIdx - i; moveIdx++) {
+						array[i + moveIdx] = array[i + moveIdx + 1];
+					}
+					array[maxIdx] = pluginDescription;
+				}
+				
+			}
+		System.out.println("after");
+		for(int i = 0; i < size; i++) {
+			System.out.println(array[i].getName());
+		}
+		return Arrays.asList(array);
+	}
 	// public void loadInitAddons() {
 	// long time = System.currentTimeMillis();
 	// // get the vanted-home-folder
@@ -290,32 +378,42 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		InstanceLoader.overrideLoader(loader);
 	}
 	
+	private PluginDescription loadAddonFromFile(File f) throws IOException{
+		expandClasspathByJarfile(Addon.getURLfromJarfile(f));
+		
+		// load plugindescriptions and the addons
+		final URL xmlURL = Addon.getXMLURL(InstanceLoader.getCurrentLoader(), f);
+		
+		// get rid of empty or otherwise wrong jars (without correct
+		// xml-files in root-dir)
+		if (xmlURL != null) {
+			// if the addon is not active still get all information but
+			// don't load it
+			URLConnection juc = xmlURL.openConnection();
+			is = juc.getInputStream();
+			final PluginDescription pd = p.parse(is);
+			pd.setAddon(true);
+			return pd;
+		}
+		return null;
+	}
+	
 	/**
 	 * Adds the addon to Vanted.
 	 * 
 	 * @param f
 	 *           The Add-on-Jar-File.
 	 */
-	public AddOnInstallResult addAddon(final File f, boolean onStartup) {
+	public AddOnInstallResult addAddon(final PluginDescription pd, File f, boolean onStartup) {
 		
 		try {
 			// extend the system-classloader by the jar-url and set as
 			// default-system classloader
-			expandClasspathByJarfile(Addon.getURLfromJarfile(f));
 			
-			// load plugindescriptions and the addons
-			final URL xmlURL = Addon.getXMLURL(InstanceLoader.getCurrentLoader(), f);
 			
-			// get rid of empty or otherwise wrong jars (without correct
-			// xml-files in root-dir)
-			if (xmlURL != null) {
-				// if the addon is not active still get all information but
-				// don't load it
-				URLConnection juc = xmlURL.openConnection();
-				is = juc.getInputStream();
-				final PluginDescription pd = p.parse(is);
-				pd.setAddon(true);
-				
+			if(pd != null) {
+				final URL xmlURL = Addon.getXMLURL(InstanceLoader.getCurrentLoader(), f);
+			
 				boolean isactive = !isDeactivated(f.getName().toLowerCase().replaceAll(".jar", ""));
 				
 				boolean incompatibleDeactivated = false;
@@ -376,8 +474,10 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 					} else
 						return AddOnInstallResult.Updated;
 				}
-			} else
+			} else {
+				System.err.println(f.getName() + " is not an Addon");
 				return AddOnInstallResult.NotAnAddon;
+			}
 		} catch (Exception e) {
 			System.out.println("Add-on " + f.getName() + " could not be loaded into VANTED!");
 			return AddOnInstallResult.Error;
@@ -594,7 +694,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 				} else {
 					File addonCopyDestination = new File(ADDON_DIRECTORY + jarname);
 					HomeFolder.copyFile(toBeInstalledAddonJarfile, addonCopyDestination);
-					result = addAddon(addonCopyDestination, false);
+					result = addAddon(loadAddonFromFile(addonCopyDestination), addonCopyDestination, false);
 				}
 				
 				switch (result) {

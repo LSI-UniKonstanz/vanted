@@ -57,6 +57,10 @@ public class InstanceLoader {
 		Policy.setPolicy(allRight); // :-D
 	}
 	
+	public static synchronized void setClassLoader(ClassLoader newClassloader) {
+		storedLoader = newClassloader;
+	}
+	
 	public static synchronized ClassLoader getCurrentLoader() {
 		return storedLoader;
 	}
