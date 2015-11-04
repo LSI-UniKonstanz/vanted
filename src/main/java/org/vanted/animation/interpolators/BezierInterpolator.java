@@ -8,8 +8,8 @@ import org.vanted.animation.data.InterpolatableTimePoint;
 import org.vanted.animation.data.TimePoint;
 import org.vanted.animation.loopers.Looper;
 /**
- * Interpolates the data values as if it were drawing a Bézier Curve.<br>
- * Note: Bézier interpolation will cause dramatic performance hits
+ * Interpolates the data values as if it were drawing a Bezier Curve.<br>
+ * Note: Bezier interpolation will cause dramatic performance hits
  * at large data point sizes.
  * @see <a href="https://en.wikipedia.org/wiki/B%C3%A9zier_curve">https://en.wikipedia.org/wiki/B%C3%A9zier_curve</a>
  * @author - Patrick Shaw

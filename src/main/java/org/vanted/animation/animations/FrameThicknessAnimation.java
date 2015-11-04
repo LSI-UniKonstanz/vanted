@@ -43,7 +43,7 @@ public class FrameThicknessAnimation extends ContinuousAnimation<DoubleTimePoint
 
 	@Override
 	protected <T> void animate(double time, T interpolatedValue) {
-		AttributeHelper.setFrameThickNess((GraphElement)attributable, (double)interpolatedValue);
+		AttributeHelper.setFrameThickNess((GraphElement)attributable, (Double)interpolatedValue);
 	}
 
 }

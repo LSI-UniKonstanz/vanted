@@ -45,7 +45,7 @@ public class PositionXAnimation extends ContinuousAnimation<DoubleTimePoint> {
 
 	@Override
 	protected <T> void animate(double time, T interpolatedValue) {
-		AttributeHelper.setPosition((Node)attributable, new Point2D.Double((double)interpolatedValue,AttributeHelper.getPositionY((Node)attributable)));
+		AttributeHelper.setPosition((Node)attributable, new Point2D.Double((Double)interpolatedValue,AttributeHelper.getPositionY((Node)attributable)));
 	}
 
 }

@@ -26,7 +26,7 @@ public class OpacityAnimation extends ContinuousAnimation<DoubleTimePoint> {
 	
 	@Override
 	protected <T> void animate(double time, T interpolatedValue) {
-		AttributeHelper.setOpacity((GraphElement) attributable, (double) interpolatedValue);
+		AttributeHelper.setOpacity((GraphElement) attributable, (Double) interpolatedValue);
 	}
 	
 }

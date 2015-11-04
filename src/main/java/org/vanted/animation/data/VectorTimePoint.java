@@ -13,7 +13,7 @@ public class VectorTimePoint<T extends Number> extends InterpolatableTimePoint<V
 	public double[] getDoubleValues() {
 		double values[] = new double[dataValue.size()];
 		for(int i = 0 ;i < values.length;i++)
-			values[i] = (double) dataValue.elementAt(i);
+			values[i] = (Double) dataValue.elementAt(i);
 		return values;
 	}
 

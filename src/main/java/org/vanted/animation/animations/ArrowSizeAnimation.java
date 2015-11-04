@@ -43,7 +43,7 @@ public class ArrowSizeAnimation extends ContinuousAnimation<DoubleTimePoint> {
 
 	@Override
 	protected <T> void animate(double time, T interpolatedValue) {
-		AttributeHelper.setArrowSize((Edge)attributable,(double)interpolatedValue);
+		AttributeHelper.setArrowSize((Edge)attributable,(Double)interpolatedValue);
 	}
 
 }
