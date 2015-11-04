@@ -476,6 +476,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 	}
 	
 	private static boolean updateIsNewer(String remoteVersion) {
+		boolean isGreater = false;
 		
 		String[] strSplitMainversion = DBEgravistoHelper.DBE_GRAVISTO_VERSION_CODE.split("\\.");
 		
@@ -497,14 +498,15 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 			 * if the main / sub version is definitely larger then the min-main/sub version
 			 * we don't need to check further.
 			 */
-			if (longPartVersion > longArrMainVersion[i]) {
-				return true;
-				
-			}
+			if (longPartVersion < longArrMainVersion[i]) {
+				isGreater = true;
+			} 
 			
 		}
-		
-		return false;
+		if(isGreater)
+			return false;
+		else
+			return true;
 	}
 	
 	@Override
