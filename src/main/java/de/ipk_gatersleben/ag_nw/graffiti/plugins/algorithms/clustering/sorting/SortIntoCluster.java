@@ -28,6 +28,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.AttributePathNameSearchType;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchAndSelecAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchType;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
  * Sorts graph elements into cluster.
@@ -121,54 +122,57 @@ public class SortIntoCluster extends AbstractAlgorithm {
 		/*
 		 * get attribute type, where the clustering depends on
 		 */
-		
-		Object attrValue = null;
-		attrType = null;
-		
-		List<Node> nodesWithSelectedAttribute = new ArrayList<>();
-		for (Node curNode : selectedOrAllNodes) {
-			if ((attrValue = AttributeHelper.getAttributeValue(curNode, selAttrPath, selAttrName, null, null)) != null) {
-				nodesWithSelectedAttribute.add(curNode);
-			}
-		}
-		
-		if (nodesWithSelectedAttribute.isEmpty())
-			return;
-		
-		//attrValue should still be set with the last value of the last checked node
-		if (attrValue instanceof String) {
-			attrType = EnumAttrType.STRING;
-			
-		}
-		else
-			if (attrValue instanceof Long ||
-					attrValue instanceof Integer ||
-					attrValue instanceof Double ||
-					attrValue instanceof Float) {
-				attrType = EnumAttrType.NUMERIC;
-				
-			}
-			else {
-				/*
-				 * we only support string and numberic values
-				 */
-				JOptionPane.showMessageDialog(MainFrame.getInstance(), "The Clustering only works with String or Numeric Values", "Communication Error",
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-		logger.debug(attrType);
-		
-		switch (attrType) {
-			case STRING:
-				JOptionPane.showMessageDialog(MainFrame.getInstance(),
-						"<html>Creating cluster from selected String attribute.<br/>Nodes with the same string value will be put<br?> into the same cluster",
-						"Cluster Creation", JOptionPane.INFORMATION_MESSAGE);
-				clusterByString(nodesWithSelectedAttribute);
-				break;
-			case NUMERIC:
-				
-				clusterByValue(nodesWithSelectedAttribute);
-		}
+
+						// TODO Auto-generated method stub
+						Object attrValue = null;
+						attrType = null;
+						
+						List<Node> nodesWithSelectedAttribute = new ArrayList<>();
+						for (Node curNode : selectedOrAllNodes) {
+							if ((attrValue = AttributeHelper.getAttributeValue(curNode, selAttrPath, selAttrName, null, null)) != null) {
+								nodesWithSelectedAttribute.add(curNode);
+							}
+						}
+						
+						if (nodesWithSelectedAttribute.isEmpty())
+							return;
+						
+						//attrValue should still be set with the last value of the last checked node
+						if (attrValue instanceof String) {
+							attrType = EnumAttrType.STRING;
+							
+						}
+						else
+							if (attrValue instanceof Long ||
+									attrValue instanceof Integer ||
+									attrValue instanceof Double ||
+									attrValue instanceof Float) {
+								attrType = EnumAttrType.NUMERIC;
+								
+							}
+							else {
+								/*
+								 * we only support string and numberic values
+								 */
+								JOptionPane.showMessageDialog(MainFrame.getInstance(), "The Clustering only works with String or Numeric Values", "Communication Error",
+										JOptionPane.ERROR_MESSAGE);
+								return;
+							}
+						logger.debug(attrType);
+						
+						switch (attrType) {
+							case STRING:
+								JOptionPane.showMessageDialog(MainFrame.getInstance(),
+										"<html>Creating cluster from selected String attribute.<br/>Nodes with the same string value will be put<br?> into the same cluster",
+										"Cluster Creation", JOptionPane.INFORMATION_MESSAGE);
+								clusterByString(nodesWithSelectedAttribute);
+								break;
+							case NUMERIC:
+								
+								clusterByValue(nodesWithSelectedAttribute);
+						}
+							
+
 		
 	}
 	
@@ -190,7 +194,7 @@ public class SortIntoCluster extends AbstractAlgorithm {
 	 * We calculate two
 	 * Min / Max/ 0
 	 */
-	private void clusterByValue(List<Node> nodesWithSelectedAttribute) {
+	private void clusterByValue(final List<Node> nodesWithSelectedAttribute) {
 		
 		double min = Double.MAX_VALUE;
 		double max = Double.MIN_VALUE;
@@ -237,14 +241,14 @@ public class SortIntoCluster extends AbstractAlgorithm {
 		}
 		Parameter[] editedParameters = paramDialog.getEditedParameters();
 		
-		double[] limits = new double[numClusters];
+		final double[] limits = new double[numClusters];
 		
 		for (int i = 0; i < numClusters - 1; i++) {
 			limits[i] = ((DoubleParameter) editedParameters[i]).getDouble();
 		}
 		limits[numClusters - 1] = max; //last limit is the maximum (which should never be exceeded)
 		
-		String[] clusterNames = new String[numClusters];
+		final String[] clusterNames = new String[numClusters];
 		
 		int i = 0;
 		clusterNames[i] = "Cluster between " + min + " and " + limits[i];
@@ -252,25 +256,31 @@ public class SortIntoCluster extends AbstractAlgorithm {
 		for (; i < numClusters; i++)
 			clusterNames[i] = "Cluster between " + limits[i - 1] + " and " + limits[i];
 		
-		for (Node curNode : nodesWithSelectedAttribute) {
-			Object attributeValue = AttributeHelper.getAttributeValue(curNode, selAttrPath, selAttrName, null, null);
+		BackgroundTaskHelper.issueSimpleTask("Sorting into Clusters", null, 
+				new Runnable() {
 			
-			double value = 0;
-			if (attributeValue instanceof Number)
-				value = ((Number) attributeValue).doubleValue();
-			else
-				continue;
-			
-			int curIdx = 0;
-			double result;
-			while ((result = value - limits[curIdx++]) > 0) {
-				System.out.println();
+			@Override
+			public void run() {
+						for (Node curNode : nodesWithSelectedAttribute) {
+							Object attributeValue = AttributeHelper.getAttributeValue(curNode, selAttrPath, selAttrName, null, null);
+							
+							double value = 0;
+							if (attributeValue instanceof Number)
+								value = ((Number) attributeValue).doubleValue();
+							else
+								continue;
+							
+							int curIdx = 0;
+							double result;
+							while ((result = value - limits[curIdx++]) > 0) {
+//				System.out.println();
+							}
+							
+							NodeTools.setClusterID(curNode, clusterNames[curIdx - 1]); // +2 because undo the decrement (+1) and the splitpoint cluster name is splitpoint + 1 (+1)
+							
+						}
 			}
-			
-			NodeTools.setClusterID(curNode, clusterNames[curIdx - 1]); // +2 because undo the decrement (+1) and the splitpoint cluster name is splitpoint + 1 (+1)
-			
-		}
-		
+	}, null);
 	}
 	
 	/**
