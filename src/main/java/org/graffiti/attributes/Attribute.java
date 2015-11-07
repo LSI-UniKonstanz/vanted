@@ -27,6 +27,7 @@ public interface Attribute
 	/** The path seperator for the attributes hierarchy. */
 	public static final String SEPARATOR = ".";
 	
+
 	// ~ Methods ================================================================
 	
 	/**
@@ -114,6 +115,10 @@ public interface Attribute
 	 * @return DOCUMENT ME!
 	 */
 	public String toString(int n);
+	
+	public boolean isDeleted();
+	
+	public void setDeleted(boolean deleted);
 }
 
 // ------------------------------------------------------------------------------

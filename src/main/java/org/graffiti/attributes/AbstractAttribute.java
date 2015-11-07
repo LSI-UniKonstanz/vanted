@@ -36,6 +36,8 @@ public abstract class AbstractAttribute
 
 	protected static HashMap<String, Class<? extends Attribute>> typedAttributesID2TypeForEdges = getDefaultEdgeTypedAttributes();
 	
+	protected boolean deleted = false;
+	
 	public void setId(String id) {
 		if (id == null)
 			return;
@@ -500,6 +502,20 @@ public abstract class AbstractAttribute
 		else
 			return null;
 	}
+
+	@Override
+	public boolean isDeleted() {
+		// TODO Auto-generated method stub
+		return deleted;
+	}
+
+	@Override
+	public void setDeleted(boolean deleted) {
+		// TODO Auto-generated method stub
+		this.deleted = deleted;
+	}
+
+	
 }
 
 // ------------------------------------------------------------------------------

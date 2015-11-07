@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.Set;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
+import org.graffiti.event.AbstractEvent.EVENTTYPE;
 import org.graffiti.util.MultipleIterator;
 
 /**
@@ -295,7 +296,7 @@ public class ListenerManager {
 	public void postAttributeAdded(AttributeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.CREATED);
 		if (transactionsActive == 0) {
 			Collection<AttributeListener> list = new ArrayList<AttributeListener>(delayedAttributeListenerList);
 			for (AttributeListener al : list) {
@@ -320,7 +321,7 @@ public class ListenerManager {
 	public void postAttributeChanged(AttributeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.UPDATED);
 		if (transactionsActive == 0) {
 			Set<AttributeListener> copy1 = new HashSet<AttributeListener>(delayedAttributeListenerList);
 			for (AttributeListener al : copy1) {
@@ -345,7 +346,8 @@ public class ListenerManager {
 	public void postAttributeRemoved(AttributeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.DELETED);
+
 		if (transactionsActive == 0) {
 			for (AttributeListener al : delayedAttributeListenerList) {
 				al.postAttributeRemoved(event);
@@ -370,7 +372,8 @@ public class ListenerManager {
 	public void postDirectedChanged(EdgeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.UPDATED);
+
 		if (transactionsActive == 0) {
 			Iterator<EdgeListener> it = delayedEdgeListenerList.iterator();
 			
@@ -407,7 +410,8 @@ public class ListenerManager {
 	public void postEdgeAdded(GraphEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.CREATED);
+
 		if (transactionsActive == 0) {
 			Iterator<GraphListener> it = delayedGraphListenerList.iterator();
 			
@@ -453,7 +457,8 @@ public class ListenerManager {
 	public void postEdgeRemoved(GraphEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.DELETED);
+
 		if (transactionsActive == 0) {
 			Iterator<GraphListener> it = delayedGraphListenerList.iterator();
 			
@@ -499,7 +504,7 @@ public class ListenerManager {
 	public void postEdgeReversed(EdgeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.UPDATED);
 		if (transactionsActive == 0) {
 			Iterator<EdgeListener> it = delayedEdgeListenerList.iterator();
 			
@@ -662,7 +667,8 @@ public class ListenerManager {
 	public void postNodeAdded(GraphEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.CREATED);
+
 		if (transactionsActive == 0) {
 			Iterator<GraphListener> it = delayedGraphListenerList.iterator();
 			
@@ -708,7 +714,8 @@ public class ListenerManager {
 	public void postNodeRemoved(GraphEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.DELETED);
+
 		if (transactionsActive == 0) {
 			Iterator<GraphListener> it = delayedGraphListenerList.iterator();
 			
@@ -834,7 +841,7 @@ public class ListenerManager {
 	public void postSourceNodeChanged(EdgeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.UPDATED);
 		if (transactionsActive == 0) {
 			Iterator<EdgeListener> it = delayedEdgeListenerList.iterator();
 			
@@ -871,7 +878,7 @@ public class ListenerManager {
 	public void postTargetNodeChanged(EdgeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.UPDATED);
 		if (transactionsActive == 0) {
 			Iterator<EdgeListener> it = delayedEdgeListenerList.iterator();
 			
@@ -909,7 +916,8 @@ public class ListenerManager {
 	public void postUndirectedEdgeAdded(NodeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.CREATED);
+
 		if (transactionsActive == 0) {
 			Iterator<NodeListener> it = delayedNodeListenerList.iterator();
 			
@@ -950,7 +958,8 @@ public class ListenerManager {
 	public void postUndirectedEdgeRemoved(NodeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.DELETED);
+
 		if (transactionsActive == 0) {
 			Iterator<NodeListener> it = delayedNodeListenerList.iterator();
 			
@@ -989,7 +998,8 @@ public class ListenerManager {
 	public void preAttributeAdded(AttributeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.CREATED);
+
 		if (transactionsActive == 0) {
 			LinkedList<AttributeListener> ll = new LinkedList<AttributeListener>();
 			ll.addAll(delayedAttributeListenerList);
@@ -1027,7 +1037,7 @@ public class ListenerManager {
 	public void preAttributeChanged(AttributeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.UPDATED);
 		if (transactionsActive == 0) {
 			Iterator<AttributeListener> it = delayedAttributeListenerList.iterator();
 			
@@ -1063,7 +1073,8 @@ public class ListenerManager {
 	public void preAttributeRemoved(AttributeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.DELETED);
+
 		if (transactionsActive == 0) {
 			Iterator<AttributeListener> it = delayedAttributeListenerList.iterator();
 			
@@ -1100,7 +1111,7 @@ public class ListenerManager {
 	public void preDirectedChanged(EdgeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.UPDATED);
 		if (transactionsActive == 0) {
 			Iterator<EdgeListener> it = delayedEdgeListenerList.iterator();
 			
@@ -1137,7 +1148,8 @@ public class ListenerManager {
 	public void preEdgeAdded(GraphEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.CREATED);
+
 		if (transactionsActive == 0) {
 			Iterator<GraphListener> it = delayedGraphListenerList.iterator();
 			
@@ -1183,7 +1195,8 @@ public class ListenerManager {
 	public void preEdgeRemoved(GraphEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.DELETED);
+
 		if (transactionsActive == 0) {
 			Iterator<GraphListener> it = delayedGraphListenerList.iterator();
 			
@@ -1229,7 +1242,7 @@ public class ListenerManager {
 	public void preEdgeReversed(EdgeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.UPDATED);
 		if (transactionsActive == 0) {
 			Iterator<EdgeListener> it = delayedEdgeListenerList.iterator();
 			
@@ -1392,7 +1405,8 @@ public class ListenerManager {
 	public void preNodeAdded(GraphEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.CREATED);
+
 		if (transactionsActive == 0) {
 			Iterator<GraphListener> it = delayedGraphListenerList.iterator();
 			
@@ -1438,7 +1452,8 @@ public class ListenerManager {
 	public void preNodeRemoved(GraphEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.DELETED);
+
 		if (transactionsActive == 0) {
 			Iterator<GraphListener> it = delayedGraphListenerList.iterator();
 			
@@ -1564,7 +1579,7 @@ public class ListenerManager {
 	public void preSourceNodeChanged(EdgeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.UPDATED);
 		if (transactionsActive == 0) {
 			Iterator<EdgeListener> it = delayedEdgeListenerList.iterator();
 			
@@ -1601,7 +1616,7 @@ public class ListenerManager {
 	public void preTargetNodeChanged(EdgeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.UPDATED);
 		if (transactionsActive == 0) {
 			Iterator<EdgeListener> it = delayedEdgeListenerList.iterator();
 			
@@ -1639,7 +1654,8 @@ public class ListenerManager {
 	public void preUndirectedEdgeAdded(NodeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.CREATED);
+
 		if (transactionsActive == 0) {
 			Iterator<NodeListener> it = delayedNodeListenerList.iterator();
 			
@@ -1680,7 +1696,8 @@ public class ListenerManager {
 	public void preUndirectedEdgeRemoved(NodeEvent event) {
 		if (event == null)
 			throw new IllegalArgumentException("The argument " + "may not be null");
-		
+		event.setEventType(EVENTTYPE.DELETED);
+
 		if (transactionsActive == 0) {
 			Iterator<NodeListener> it = delayedNodeListenerList.iterator();
 			

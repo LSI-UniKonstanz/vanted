@@ -35,7 +35,6 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.graffiti.session.EditorSession;
 
-import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.shortest_paths.WeightedShortestPathSelectionAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.chart_settings.ChartComponent;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.chart_settings.ChartComponentManager;
@@ -467,9 +466,9 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 		} catch (NullPointerException e) {
 			ErrorMsg.addErrorMessage(e);
 		} finally {
-			workGraph.getListenerManager().transactionFinished(this, true);
-			if (showResult() != ShowMappingResults.MAP_WITHOUT_VIEW)
-				GraphHelper.issueCompleteRedrawForGraph(workGraph);
+			workGraph.getListenerManager().transactionFinished(this);
+//			if (showResult() != ShowMappingResults.MAP_WITHOUT_VIEW)
+//				GraphHelper.issueCompleteRedrawForGraph(workGraph);
 		}
 		processDataResult();
 	}

@@ -304,6 +304,7 @@ public abstract class AbstractCollectionAttribute extends AbstractAttribute
 	public void remove(Attribute attr) throws AttributeNotFoundException {
 		assert attr != null;
 		
+		attr.setDeleted(true);
 		CollectionAttribute parent = attr.getParent();
 		
 		if (parent == null) {

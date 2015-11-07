@@ -121,7 +121,7 @@ public class CreateGOchildrenClustersHistogramAlgorithm
 	 */
 	public void execute() {
 		try {
-//			graph.getListenerManager().transactionStarted(this);
+			graph.getListenerManager().transactionStarted(this);
 			Collection<Node> workingSet = getSelectedOrAllNodes();
 			final TreeSet<String> knownClusterIDs = new TreeSet<String>();
 			HashSet<Node> processedNodes = new HashSet<Node>();
@@ -169,7 +169,7 @@ public class CreateGOchildrenClustersHistogramAlgorithm
 				}
 			}
 		} finally {
-//			graph.getListenerManager().transactionFinished(this);
+			graph.getListenerManager().transactionFinished(this);
 		}
 	}
 	

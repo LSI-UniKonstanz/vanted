@@ -27,6 +27,13 @@ public abstract class AbstractEvent
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	public enum EVENTTYPE {
+		CREATED,
+		UPDATED,
+		DELETED
+	};
+
+	private EVENTTYPE eventType;
 	/**
 	 * Constructs an AbstractEvent with object o as source.
 	 * 
@@ -36,6 +43,17 @@ public abstract class AbstractEvent
 	public AbstractEvent(Object o) {
 		super(o);
 	}
+	
+	
+	
+	public EVENTTYPE getEventType() {
+		return eventType;
+	}
+
+	public void setEventType(EVENTTYPE eventType) {
+		this.eventType = eventType;
+	}
+
 }
 
 // ------------------------------------------------------------------------------

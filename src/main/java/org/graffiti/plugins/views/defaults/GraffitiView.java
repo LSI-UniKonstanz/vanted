@@ -76,6 +76,7 @@ import org.graffiti.event.GraphListener;
 import org.graffiti.event.NodeListener;
 import org.graffiti.event.TransactionEvent;
 import org.graffiti.event.TransactionListener;
+import org.graffiti.graph.AdjListNode;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
@@ -112,7 +113,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	private static final Logger logger = Logger.getLogger(GraffitiView.class);
 	
 	static {
-		logger.setLevel(Level.INFO);
+		logger.setLevel(Level.DEBUG);
 	}
 	
 	// ~ Instance fields ========================================================
@@ -623,7 +624,9 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 				break;
 			}
 			if (jc != null && jc != finishElement) {
-				add(jc, 0);
+				add(jc,0);
+				listCopyComponents.add(0, jc);
+
 			}
 			if (jc == finishElement)
 				break;
@@ -828,16 +831,19 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		Attribute attr = e.getAttribute();
 		Attributable attributable = attr.getAttributable();
 		AttributeComponent ac = null;
-		if (attr.getAttributable() instanceof Graph && attr.getName().equals("graphbackgroundcolor") && attr instanceof StringAttribute) {
-			attr.getParent().remove(attr);
-			setBackground(Color.white);
-		}
+		
 		if (!(attributable instanceof GraphElement))
 			return;
 		GraphElementComponent gec = getGraphElementComponent((GraphElement) attributable);
 		if (gec == null)
-			return;
+			return;		
 		ac = gec.getAttributeComponent(attr);
+		
+		if (attr.getAttributable() instanceof Graph && attr.getName().equals("graphbackgroundcolor") && attr instanceof StringAttribute) {
+			attr.getParent().remove(attr);
+			setBackground(Color.white);
+		}
+
 		gec.removeAttributeComponent(attr);
 		
 		try {
@@ -851,6 +857,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		
 		if (ac != null) {
 			this.remove(ac);
+			listCopyComponents.remove(ac);
 			this.revalidate();
 		}
 		
@@ -917,6 +924,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		// nc.addDependentComponent(component);
 		// addLabelComponent(edge, component, 0);
 		add(component, 0);
+		listCopyComponents.add(0, component);
 		addAttributeComponents(edge, component);
 		
 //		validate();
@@ -955,11 +963,14 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		removeGraphElementComponent(edge);
 		if (ec != null) {
 			for (Iterator<?> it = ec.getAttributeComponentIterator(); it.hasNext();) {
-				remove((Component) it.next());
+				Object next = it.next();
+				remove((Component) next);
+				listCopyComponents.remove((Component) next);
 			}
 			ec.clearAttributeComponentList();
 			
 			remove(ec);
+			listCopyComponents.remove(ec);
 //			validate();
 			
 			// adjustPreferredSize();
@@ -1035,6 +1046,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		}
 		
 		add(component, 0);
+		listCopyComponents.add(0, component);
 		addAttributeComponents(node, component);
 		
 //		validate();
@@ -1074,11 +1086,16 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		// remove attributeComponents (like label)
 		if (nc != null) {
 			for (Iterator<?> it = nc.getAttributeComponentIterator(); it.hasNext();) {
-				remove((Component) it.next());
+				 Object next = it.next();
+				remove((Component) next);
+				
+				listCopyComponents.remove((Component) next);
 			}
 			
 			nc.clearAttributeComponentList();
 			remove(nc);
+			listCopyComponents.remove(nc);
+
 		}
 		removeGraphElementComponent(node);
 		
@@ -1220,7 +1237,8 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 	 *           the EdgeEvent detailing the changes.
 	 */
 	@Override
-	public void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
+	public synchronized void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
+		logger.setLevel(Level.INFO);
 		final TransactionEvent fevent = event;
 		final BackgroundTaskStatusProviderSupportingExternalCall fstatus = status;
 		
@@ -1242,14 +1260,12 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		}
 	}
 	
-	private synchronized void transactionFinishedOnSwingThread(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
+	private void transactionFinishedOnSwingThread(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		long startTimeTransFinished = System.currentTimeMillis();
 		isFinishingTransacation = true;
-//		getActiveTransactions()--;
 		
 		logger.debug("transactionFinishedOnSwingThread() --------------- EVENT DISPATCH THREAD? " + SwingUtilities.isEventDispatchThread());
 		
-		// checkGraphSize();
 		
 		blockAdjust = true;
 		
@@ -1263,7 +1279,9 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		// must add edges AFTER nodes ...
 		Set<Edge> edgesToAdd = new HashSet<Edge>();
 		
-		Collection<Object> changed = event != null ? new ArrayList<Object>(event.getChangedObjects().values()) : new ArrayList<Object>();
+//		Collection<Object> changed = event != null ? new ArrayList<Object>(event.getChangedObjects().values()) : new ArrayList<Object>();
+		
+		Set<Object> changed = event.getChangedObjects().keySet();
 		String s1 = null, s2 = null;
 		if (status != null)
 			s1 = status.getCurrentStatusMessage1();
@@ -1281,7 +1299,11 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 		long time1;
 		
 		time1 = System.currentTimeMillis();
-		for (Object obj : changed) {
+		Iterator<Object> iterator = changed.iterator();
+		
+		while (iterator.hasNext()) {
+			Object key = iterator.next();
+			Object obj = event.getChangedObjects().get(key);
 			if (status != null)
 				if (status.wantsToStop())
 					break;
@@ -1318,11 +1340,13 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 				// attributables.add(atbl);
 				
 				if (atbl instanceof Graph) {
-					// information not helpful
-					blockAdjust = false;
-					completeRedraw();
-					return; // completeRedraw should be complete?!
-				}
+					if(!((Attribute) obj).getName().equals("background_coloring")) {
+						// information not helpful
+						blockAdjust = false;
+						completeRedraw();
+						return; // completeRedraw should be complete?!
+					}
+				} else 
 				
 				try {
 					if (atbl instanceof GraphElement) {
@@ -1342,10 +1366,21 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 								boolean process = true;
 								String id = null;
 								if (obj instanceof Attribute) {
-									id = ((Attribute) obj).getId();
-									if (id != null && id.equals("tooltip"))
-										process = false;
-								}
+									if(((Attribute)obj).isDeleted()) {
+										postAttributeRemoved(new AttributeEvent((Attribute)obj));
+									} else {
+										id = ((Attribute) obj).getId();
+										if (id != null && id.equals("tooltip"))
+											process = false;
+									}
+								} else if(obj instanceof AdjListNode) {
+									// if a mapping occured then the whole node is part of the transaction
+									// and calling this method is just a shortcut and will take care
+									// of creating all necessary attribute components for this node
+									recurseAttributes(((GraphElement) atbl).getAttributes(), gec);
+									gec.attributeChanged(atbl.getAttribute(""));
+									
+								} 
 								if (process) {
 									if (obj instanceof Attribute) {
 										if (id != null && (id.equals("width") || id.equals("frameThickness"))) {
@@ -1357,12 +1392,14 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 											*/
 									}
 									if (gec != null) {
+//										if (obj instanceof Attribute && ae.getEventType() == EVENTTYPE.DELETED )
+//											postAttributeRemoved(ae);
 										if (obj instanceof Attribute)
 											gec.attributeChanged((Attribute) obj);
 										else {
 											gec.attributeChanged(atbl.getAttribute("graphics"));
 //											gec.attributeChanged(atbl.getAttribute(""));
-										}
+										} 
 										
 										if (gec instanceof AbstractGraphElementComponent) {
 											setDependendComponents.addAll(((AbstractGraphElementComponent) gec).getDependentGraphElementComponents());
@@ -1791,8 +1828,11 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 					graphElementAttributeComponents.put(gec.getGraphElement(), new HashSet<AttributeComponent>());
 				graphElementAttributeComponents.get(gec.getGraphElement()).add(attrComp);
 			}
-			if (attrComp != null)
-				this.add(attrComp, 0); // , 0);
+			if (attrComp != null) {
+				int indexOf = listCopyComponents.indexOf(gec);
+				this.add(attrComp, indexOf); // , 0);
+				listCopyComponents.add(indexOf, attrComp);
+			}
 			return true;
 		} catch (AttributeComponentNotFoundException acnfe) {
 			return false;
