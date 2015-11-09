@@ -1548,6 +1548,7 @@ public class AttributeHelper implements HelperClass {
 //							a.remove(attributeName);
 							Object inst = resultType.getClass().newInstance();
 							((StringAttribute) inst).setString((String) res);
+							((StringAttribute) inst).setParent(a);
 //							a.add((Attribute) inst, true);
 							return inst;
 						}
@@ -1556,6 +1557,7 @@ public class AttributeHelper implements HelperClass {
 //						a.remove(attributeName);
 						ObjectAttribute myNewAttribute = new ObjectAttribute(attributeName);
 						myNewAttribute.setValue(res);
+						myNewAttribute.setParent(a);
 //						a.add(myNewAttribute, true);
 					}
 				} else {
@@ -1563,6 +1565,7 @@ public class AttributeHelper implements HelperClass {
 						float r = ((Float) res).floatValue();
 //						a.remove(attributeName);
 						Double rr = new Double(r);
+						
 //						setAttribute(attributable, path, attributeName, rr);
 						return rr;
 					}
