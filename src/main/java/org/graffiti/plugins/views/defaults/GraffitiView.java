@@ -1340,7 +1340,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView,
 				// attributables.add(atbl);
 				
 				if (atbl instanceof Graph) {
-					if(!((Attribute) obj).getName().equals("background_coloring")) {
+					if(obj instanceof Attribute && !((Attribute) obj).getName().equals("background_coloring")) {
 						// information not helpful
 						blockAdjust = false;
 						completeRedraw();
