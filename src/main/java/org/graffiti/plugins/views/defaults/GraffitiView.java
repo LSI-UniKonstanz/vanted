@@ -1278,9 +1278,9 @@ EdgeListener, TransactionListener {
 		// must add edges AFTER nodes ...
 		Set<Edge> edgesToAdd = new HashSet<Edge>();
 
-		//		Collection<Object> changed = event != null ? new ArrayList<Object>(event.getChangedObjects().values()) : new ArrayList<Object>();
+		Collection<Object> changed = event != null ? new ArrayList<Object>(event.getChangedObjects().values()) : new ArrayList<Object>();
 
-		Set<Object> changed = event.getChangedObjects().keySet();
+//		Set<Object> changed = event.getChangedObjects().keySet();
 		String s1 = null, s2 = null;
 		if (status != null)
 			s1 = status.getCurrentStatusMessage1();
@@ -1301,8 +1301,9 @@ EdgeListener, TransactionListener {
 		Iterator<Object> iterator = changed.iterator();
 
 		while (iterator.hasNext()) {
-			Object key = iterator.next();
-			Object obj = event.getChangedObjects().get(key);
+//			Object key = iterator.next();
+//			Object obj = event.getChangedObjects().get(key);
+			Object obj = iterator.next();
 			if (status != null)
 				if (status.wantsToStop())
 					break;
@@ -2057,8 +2058,7 @@ EdgeListener, TransactionListener {
 					result.add(gc);
 			}
 			GraphElementComponent gc = gecm.get(ge);
-			if (drawMode != DrawMode.REDUCED)
-				createAttributeComponents(result, ge.getAttributes(), gc);
+			createAttributeComponents(result, ge.getAttributes(), gc);
 		}
 		return curr;
 	}
