@@ -89,10 +89,10 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 				} else {
 					recreate();
 				}
-			} else if (attr.getId().equals("component")) {
+			} else if (attr.getId().equals("component") || attr.getId().equals("max_charts_in_column")) {
 				recreate();
 			} else {
-				recreate();
+//				recreate();
 			}
 		} else {
 			// System.out.println("TODO: Process Attribute Change: "+attr.getPath()+attr.getName());

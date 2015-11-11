@@ -23,7 +23,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -98,6 +97,8 @@ import org.graffiti.plugins.modes.defaults.MegaMoveTool;
 import org.graffiti.session.EditorSession;
 import org.graffiti.session.Session;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.threading.SystemAnalysis;
+
 /**
  * An implementation of <code>org.graffiti.plugin.view.View2D</code>, that
  * displays a graph. Since it also shows changes in the graph it listens for
@@ -113,7 +114,7 @@ EdgeListener, TransactionListener {
 	private static final Logger logger = Logger.getLogger(GraffitiView.class);
 
 	static {
-		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.INFO);
 	}
 
 	// ~ Instance fields ========================================================
@@ -1240,13 +1241,13 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public  void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
-		logger.setLevel(Level.INFO);
+		logger.setLevel(Level.DEBUG);
 		final TransactionEvent fevent = event;
 		final BackgroundTaskStatusProviderSupportingExternalCall fstatus = status;
 		synchronized(redrawLock) {
 			if (!SwingUtilities.isEventDispatchThread()) {
-				try {
-					SwingUtilities.invokeAndWait(new Runnable() {
+//				try {
+					SwingUtilities.invokeLater(new Runnable() {
 
 						@Override
 						public void run() {
@@ -1254,9 +1255,9 @@ EdgeListener, TransactionListener {
 							transactionFinishedOnSwingThread(fevent, fstatus);
 						}
 					});
-				} catch (InvocationTargetException | InterruptedException e) {
-					e.printStackTrace();
-				}
+//				} catch (InvocationTargetException | InterruptedException e) {
+//					e.printStackTrace();
+//				}
 			} else {
 				transactionFinishedOnSwingThread(fevent, fstatus);
 			}
@@ -1280,7 +1281,6 @@ EdgeListener, TransactionListener {
 
 		Collection<Object> changed = event != null ? new ArrayList<Object>(event.getChangedObjects().values()) : new ArrayList<Object>();
 
-//		Set<Object> changed = event.getChangedObjects().keySet();
 		String s1 = null, s2 = null;
 		if (status != null)
 			s1 = status.getCurrentStatusMessage1();
@@ -1301,8 +1301,6 @@ EdgeListener, TransactionListener {
 		Iterator<Object> iterator = changed.iterator();
 
 		while (iterator.hasNext()) {
-//			Object key = iterator.next();
-//			Object obj = event.getChangedObjects().get(key);
 			Object obj = iterator.next();
 			if (status != null)
 				if (status.wantsToStop())
@@ -1434,7 +1432,7 @@ EdgeListener, TransactionListener {
 		long counter = 0;
 		final int numDepComp = setDependendComponents.size();
 		if (numDepComp > 1000) {
-			final int numThreads = 4;
+			final int numThreads = SystemAnalysis.getNumberOfCPUs();
 			final int numElemPerThread = numDepComp / numThreads;
 			ExecutorService executor = Executors.newFixedThreadPool(numThreads);
 			final GraphElementComponent arrayGEC[] = setDependendComponents.toArray(new GraphElementComponent[numDepComp]);
