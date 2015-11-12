@@ -795,7 +795,7 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public void postAttributeChanged(AttributeEvent e) {
-		if (getActiveTransactions() > 0)
+		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
 			return;
 
 		Attribute attr = e.getAttribute();
@@ -877,7 +877,7 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public void postDirectedChanged(EdgeEvent e) {
-		if (getActiveTransactions() > 0)
+		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -897,7 +897,7 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public void postEdgeAdded(GraphEvent e) {
-		if (getActiveTransactions() > 0)
+		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -944,7 +944,7 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public void postEdgeRemoved(GraphEvent e) {
-		if (getActiveTransactions() > 0)
+		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -991,7 +991,7 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public void postEdgeReversed(EdgeEvent e) {
-		if (getActiveTransactions() > 0)
+		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -1011,7 +1011,7 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public void postGraphCleared(GraphEvent e) {
-		if (getActiveTransactions() > 0)
+		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
 			return;
 
 		clearGraphElementComponentMap();
@@ -1029,7 +1029,7 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public void postNodeAdded(GraphEvent e) {
-		if (getActiveTransactions() > 0)
+		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
 			return;
 
 		Node node = e.getNode();
@@ -1068,7 +1068,7 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public void postNodeRemoved(GraphEvent e) {
-		if (getActiveTransactions() > 0)
+		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
 			return;
 
 		Node node = e.getNode();
@@ -1121,7 +1121,7 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public void postSourceNodeChanged(EdgeEvent e) {
-		if (getActiveTransactions() > 0)
+		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -1144,7 +1144,7 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public void postTargetNodeChanged(EdgeEvent e) {
-		if (getActiveTransactions() > 0)
+		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -1167,7 +1167,7 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public void preSourceNodeChanged(EdgeEvent e) {
-		if (getActiveTransactions() > 0)
+		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -1185,7 +1185,7 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public void preTargetNodeChanged(EdgeEvent e) {
-		if (getActiveTransactions() > 0)
+		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -1495,10 +1495,12 @@ EdgeListener, TransactionListener {
 		 */
 		if (!setPostAddedNodes.isEmpty() || !edgesToAdd.isEmpty()) {
 			setVisible(false); //disable layout-trigger for each added component
+			logger.debug("creating " + setPostAddedNodes.size() + " new nodes");
 			for (GraphElement atbl : setPostAddedNodes) {
 				postNodeAdded(new GraphEvent((Node) atbl));
 			}
 			// add pending edges
+			logger.debug("creating " + edgesToAdd.size() + " new edges");
 			for (Iterator<Edge> iter = edgesToAdd.iterator(); iter.hasNext();) {
 				idx++;
 				if (status != null)
