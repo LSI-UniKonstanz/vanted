@@ -15,14 +15,14 @@ package org.graffiti.util;
  * @author Paul
  * @version $Revision: 1.4 $
  */
-public class Pair {
+public class Pair<T,V> {
 	// ~ Instance fields ========================================================
 	
 	/** DOCUMENT ME! */
-	private Object val1;
+	private T val1;
 	
 	/** DOCUMENT ME! */
-	private Object val2;
+	private V val2;
 	
 	// ~ Constructors ===========================================================
 	
@@ -34,7 +34,7 @@ public class Pair {
 	 * @param val2
 	 *           DOCUMENT ME!
 	 */
-	public Pair(Object val1, Object val2) {
+	public Pair(T val1, V val2) {
 		this.val1 = val1;
 		this.val2 = val2;
 	}
@@ -46,7 +46,7 @@ public class Pair {
 	 * 
 	 * @return DOCUMENT ME!
 	 */
-	public Object getFst() {
+	public T getFst() {
 		return val1;
 	}
 	
@@ -55,7 +55,7 @@ public class Pair {
 	 * 
 	 * @return DOCUMENT ME!
 	 */
-	public Object getSnd() {
+	public V getSnd() {
 		return val2;
 	}
 }
