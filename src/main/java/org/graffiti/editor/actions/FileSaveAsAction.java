@@ -296,6 +296,9 @@ public class FileSaveAsAction
 		}
 		
 		if (!needFile) {
+			// store current graph name and file type description
+			String currentGraphName = graph.getName();
+			String currentFileTypeDescription = graph.getFileTypeDescription();
 			try {
 				IOManager ioManager = MainFrame.getInstance().getIoManager();
 				OutputSerializer os = ioManager.createOutputSerializer(ext, fileTypeDescription);
@@ -303,15 +306,23 @@ public class FileSaveAsAction
 					MainFrame.getInstance().showMessageDialog("Output serializer unknown for file extension '" + ext + "'.");
 				else {
 					MainFrame.showMessage("Save network to file " + file.getAbsolutePath() + "...", MessageType.PERMANENT_INFO);
-					os.write(new FileOutputStream(file), graph);
-					graph.setModified(false);
+					// revision 12/11/2015
+					// graph name and file type description should be set before the writer is called
+					// a writer might need the graph name and file type description
 					graph.setName(file.getAbsolutePath());
 					graph.setFileTypeDescription(fileTypeDescription);
+					os.write(new FileOutputStream(file), graph);
+					graph.setModified(false);
+					// graph.setName(file.getAbsolutePath());
+					// graph.setFileTypeDescription(fileTypeDescription);
 					long fs = file.length();
 					MainFrame.showMessage("Network saved to file " + file.getAbsolutePath() + " (" + (fs / 1024) + "KB)", MessageType.INFO);
 					MainFrame.getInstance().addNewRecentFileMenuItem(file);
 				}
 			} catch (Exception ioe) {
+				// in case the writer fails restore graph name and file type description
+				graph.setName(currentGraphName);
+				graph.setFileTypeDescription(currentFileTypeDescription);
 				ErrorMsg.addErrorMessage(ioe);
 				MainFrame.getInstance().warnUserAboutFileSaveProblem(ioe);
 			}
