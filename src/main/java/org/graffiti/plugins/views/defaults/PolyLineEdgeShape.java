@@ -107,7 +107,8 @@ public class PolyLineEdgeShape
 			start = attachSourceArrow(edgeAttr, start, end);
 			end = attachTargetArrow(edgeAttr, end, start);
 			
-			this.linePath = new GeneralPath(new Line2D.Double(start, end));
+			this.line2D.setLine(start, end);
+			this.linePath = new GeneralPath(this.line2D);
 		} else {
 			this.linePath.reset();
 			// have some bend(s)
@@ -190,7 +191,16 @@ public class PolyLineEdgeShape
 		at.setToTranslation(-realBounds.getX(), -realBounds.getY());
 		this.headArrow = at.createTransformedShape(this.headArrow);
 		this.tailArrow = at.createTransformedShape(this.tailArrow);
-		this.linePath = new GeneralPath(this.linePath.createTransformedShape(at));
+		// we need to transform it to relative coordinates
+		// because we nee line2D if the polyline has no bends and 
+		// we just use the lineContains method
+		if(this.bends.isEmpty()) {
+			this.line2D.setLine(at.transform(start, null), at.transform(end, null));
+			this.linePath = new GeneralPath(this.line2D);
+		} else {
+			this.linePath = new GeneralPath(this.linePath.createTransformedShape(at));
+		
+		}
 	}
 	
 	/**
@@ -277,6 +287,10 @@ public class PolyLineEdgeShape
 	 * @return true is point is near to the <code>path</code> object
 	 */
 	protected boolean pathContains(GeneralPath path, double x, double y) {
+		
+		if(this.bends.isEmpty())
+			return lineContains(this.line2D, x, y);
+		
 		// System.out.println("pc----------------------------");
 		PathIterator pi = path.getPathIterator(null, 10d);
 		double[] seg = new double[6];

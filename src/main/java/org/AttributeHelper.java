@@ -2933,7 +2933,8 @@ public class AttributeHelper implements HelperClass {
 	@SuppressWarnings("unchecked")
 	public static void removeEdgeBends(Edge edge) {
 		try {
-			((LinkedHashMapAttribute) edge.getAttribute("graphics.bends")).setCollection(new HashMap());
+			((LinkedHashMapAttribute)edge.getAttribute("graphics.bends")).setValue(new HashMap());
+			
 		} catch (AttributeNotFoundException nfe) {
 			// empty
 		}
