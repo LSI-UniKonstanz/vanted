@@ -339,6 +339,8 @@ public class MegaCreateTool
 		}
 		
 		Component src = getFoundComponent();
+		if(e.isShiftDown() && e.isControlDown())
+			src = src.getParent();
 		
 		boolean doubleClickOK = false; // disable double click editing
 		
