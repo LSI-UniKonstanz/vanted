@@ -45,6 +45,7 @@ import org.color.ColorUtil;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.AttributeNotFoundException;
+import org.graffiti.attributes.BooleanAttribute;
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.attributes.DoubleAttribute;
 import org.graffiti.attributes.HashMapAttribute;
@@ -1545,35 +1546,40 @@ public class AttributeHelper implements HelperClass {
 					res = ObjectAttributeService.createAndInitObjectFromString((String) res);
 					if (res == null || !res.getClass().equals(resultType.getClass())) {
 						if ((res != null) && (res instanceof String) && resultType instanceof StringAttribute) {
-//							a.remove(attributeName);
 							Object inst = resultType.getClass().newInstance();
 							((StringAttribute) inst).setString((String) res);
 							((StringAttribute) inst).setParent(a);
-//							a.add((Attribute) inst, true);
 							return inst;
 						}
 						return defaultValue;
 					} else {
-//						a.remove(attributeName);
+						a.remove(attributeName);
 						ObjectAttribute myNewAttribute = new ObjectAttribute(attributeName);
 						myNewAttribute.setValue(res);
 						myNewAttribute.setParent(a);
-//						a.add(myNewAttribute, true);
+						a.add(myNewAttribute, false);
 					}
 				} else {
 					if (res instanceof Float && resultType instanceof Double) {
 						float r = ((Float) res).floatValue();
-//						a.remove(attributeName);
 						Double rr = new Double(r);
-						
-//						setAttribute(attributable, path, attributeName, rr);
+						Attribute attribute = a.getAttribute(attributeName);
+						if( ! (attribute instanceof DoubleAttribute)) {
+							a.remove(attributeName);
+							a.add(new DoubleAttribute(attribute.getName(), rr), false);
+						}
+
 						return rr;
 					}
 					if (res instanceof Integer && resultType instanceof Boolean) {
 						int r = ((Integer) res).intValue();
-//						a.remove(attributeName);
 						Boolean rr = new Boolean(r != 0);
-//						setAttribute(attributable, path, attributeName, rr);
+						Attribute attribute = a.getAttribute(attributeName);
+						if( ! (attribute instanceof BooleanAttribute)) {
+							a.remove(attributeName);
+							a.add(new BooleanAttribute(attribute.getName(), rr), false);
+						}
+
 						return rr;
 					}
 					if (res instanceof Integer && resultType instanceof Double) {
@@ -1589,9 +1595,12 @@ public class AttributeHelper implements HelperClass {
 					}
 					if (res instanceof String && resultType instanceof Boolean) {
 						String s = (String) res;
-//						a.remove(attributeName);
 						Boolean rr = new Boolean(s.equalsIgnoreCase("TRUE") || s.equalsIgnoreCase("1"));
-//						setAttribute(attributable, path, attributeName, rr);
+						Attribute attribute = a.getAttribute(attributeName);
+						if( ! (attribute instanceof BooleanAttribute)) {
+							a.remove(attributeName);
+							a.add(new BooleanAttribute(attribute.getName(), rr), false);
+						}
 						return rr;
 					} else {
 						ErrorMsg.addErrorMessage("Attribute Type Invalid, is not the same as expected: "
