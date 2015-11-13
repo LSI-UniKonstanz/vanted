@@ -328,39 +328,18 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 				if (parseline.toLowerCase().startsWith(CORESTRING)) {
 					
 					parseline = parseline.substring(CORESTRING.length() + 1).trim();
-//					if(parseline.indexOf(":") > 0) {
-//						String[] split = parseline.split(":");
-//
-//						if( ! mapJarMd5PairsInstalledCore.get(split[0].trim()).equals(split[1].trim())){
-//							listAddCoreJarRelativePath.add(split[0].trim());
-//							updFileBuffer.append(line.substring(0, line.lastIndexOf(":")));	
-//						}
-//						
-//					}
 					// compare both md5 sums (remote and local
-					if( ! mapJarMd5PairsInstalled.get(parseline).equals(mapMd5FromUpdateLocation.get(parseline))) {
+					if( mapJarMd5PairsInstalled.get(parseline) == null  // new remote jar 
+							|| ! mapJarMd5PairsInstalled.get(parseline).equals(mapMd5FromUpdateLocation.get(parseline))) {
 						listAddCoreJarRelativePath.add(parseline);
-//						updFileBuffer.append(line + "\n");
-						
 					}
 				}
 				if (parseline.toLowerCase().startsWith(LIBSTRING)) {
 					parseline = parseline.substring(LIBSTRING.length() + 1).trim();
-//					if(parseline.indexOf(":") > 0) {
-//						String[] split = parseline.split(":");
-//						
-//						if( ! mapJarMd5PairsInstalledLib.get(split[0].trim()).equals(split[1].trim())){
-//							listAddLibsJarRelativePaths.add(split[0].trim());
-//							updFileBuffer.append(line.substring(0, line.lastIndexOf(":")));	
-//						}
-//						
-//						
-//					}
-					if( ! mapJarMd5PairsInstalled.get(parseline).equals(mapMd5FromUpdateLocation.get(parseline))) {
-						listAddLibsJarRelativePaths.add(parseline);
-//						updFileBuffer.append(line + "\n");
 
-						
+					if(  mapJarMd5PairsInstalled.get(parseline) == null // new remote jar 
+							|| ! mapJarMd5PairsInstalled.get(parseline).equals(mapMd5FromUpdateLocation.get(parseline))) {
+						listAddLibsJarRelativePaths.add(parseline);
 					}
 				}
 			} else
@@ -369,7 +348,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 					if (parseline.toLowerCase().startsWith(CORESTRING)) {
 						listRemoveCoreJarRelativePath.add(parseline.substring(CORESTRING.length() + 1).trim());
 					}
-					if (line.toLowerCase().startsWith(LIBSTRING)) {
+					if (parseline.toLowerCase().startsWith(LIBSTRING)) {
 						listRemoveLibsJarRelativePaths.add(parseline.substring(LIBSTRING.length() + 1).trim());
 					}
 				}
