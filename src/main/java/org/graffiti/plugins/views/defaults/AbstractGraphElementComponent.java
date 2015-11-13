@@ -178,41 +178,22 @@ public abstract class AbstractGraphElementComponent
 			double opacity = ((DoubleAttribute) attribute).value;
 			setupOpacity(opacity);
 		}
-		if (attr.getPath().startsWith(Attribute.SEPARATOR + GraphicAttributeConstants.GRAPHICS)) {
+		if (attr.getPath().startsWith(Attribute.SEPARATOR + GraphicAttributeConstants.GRAPHICS)
+			
+			) {
 			if (!attr.getId().equals("cluster")) {
 				graphicAttributeChanged(attr);
 			}
+		} else if(attr.getName().equals("max_charts_in_column")){
+			/*
+			 * a hack due to old implementation where adding another experiment
+			 *	just fires a max_charts_per_row attribute change event
+			 *  but we need to re-adjust the graphics for that as well to make it visible 
+			 */
+			graphicAttributeChanged(attr);
 		} else
 			nonGraphicAttributeChanged(attr);
-		
-		// if (!attr.getId().equals("cluster"))
-		// graphicAttributeChanged(attr);
-		// if(!attr.getPath().startsWith(Attribute.SEPARATOR + GraphicAttributeConstants.GRAPHICS))
-		// nonGraphicAttributeChanged(attr);
-		
-		/*
-		 * if(attr==null || "".equals(attr.getPath()))
-		 * {
-		 * graphicAttributeChanged(attr);
-		 * nonGraphicAttributeChanged(attr);
-		 * } else {
-		 * if(attr.getPath().startsWith(Attribute.SEPARATOR +
-		 * GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR) ||
-		 * attr.getPath().equals(GraphicAttributeConstants.GRAPHICS) ||
-		 * attr.getPath().startsWith(".srcLabel") ||
-		 * attr.getPath().startsWith(".tgtLabel") ||
-		 * attr.getPath().startsWith(".mapping"))
-		 * {
-		 * // System.out.println("GA: "+attr.getPath());
-		 * graphicAttributeChanged(attr);
-		 * }
-		 * else
-		 * {
-		 * // System.out.println("NGA: "+attr.getPath());
-		 * nonGraphicAttributeChanged(attr);
-		 * }
-		 * }
-		 */
+
 	}
 	
 	/**

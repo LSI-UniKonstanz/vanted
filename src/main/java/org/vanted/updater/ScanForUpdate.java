@@ -17,7 +17,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.prefs.Preferences;
 
 import javax.swing.JOptionPane;
@@ -34,6 +38,7 @@ import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
+import org.graffiti.util.Pair;
 
 import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
@@ -99,6 +104,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 	
 	private static String URL_UPDATE_BASESTRING = "https://immersive-analytics.infotech.monash.edu/vanted/release/updates/";
 	private static String URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-update";
+	private static String URL_UPDATEMD5_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-files-md5";
 	
 	private static final String DESTPATHUPDATEDIR = ReleaseInfo.getAppFolderWithFinalSep() + "update/";
 	private static final String DESTUPDATEFILE = DESTPATHUPDATEDIR + "do-vanted-update";
@@ -199,6 +205,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		
 		logger.debug("doing update scan at: " + URL_UPDATE_FILESTRING);
 		
+		
 		finishPreviousUpdate();
 		
 		Date currentDate = new Date();
@@ -235,10 +242,32 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		String version = null;
 		boolean prepareUpdate = false;
 		
-		List<String> listAddCoreJarRelativePath = new ArrayList<String>();
-		List<String> listRemoveCoreJarRelativePath = new ArrayList<String>();
-		List<String> listAddLibsJarRelativePaths = new ArrayList<String>();
-		List<String> listRemoveLibsJarRelativePaths = new ArrayList<String>();
+		
+		Set<String> listAddCoreJarRelativePath = new HashSet<String>();
+		Set<String> listRemoveCoreJarRelativePath = new HashSet<String>();
+		Set<String> listAddLibsJarRelativePaths = new HashSet<String>();
+		Set<String> listRemoveLibsJarRelativePaths = new HashSet<String>();
+
+		// get a list of all paths to the jars in the classpath and their md5
+		List<Pair<String,String>> jarMd5Pairs = CalcClassPathJarsMd5.getJarMd5Pairs();
+		
+		Map<String, String> mapMd5FromUpdateLocation = getMd5FromUpdateLocation(new URL(URL_UPDATEMD5_FILESTRING));
+		//now sort them into core and lib jars
+		Map<String,String> mapJarMd5PairsInstalledCore = new HashMap<String, String>();
+		Map<String,String> mapJarMd5PairsInstalledLibs = new HashMap<String, String>();
+		for(Pair<String,String> curPair : jarMd5Pairs) {
+			//create new pair that contains only the jar filename and the md5
+			if(curPair.getFst().contains("vanted-core")) {
+				mapJarMd5PairsInstalledCore.put(curPair.getFst().substring(curPair.getFst().lastIndexOf("/") + 1), curPair.getSnd());
+			}
+			else {
+				mapJarMd5PairsInstalledLibs.put(curPair.getFst().substring(curPair.getFst().lastIndexOf("/") + 1), curPair.getSnd());
+			}
+				
+		}
+
+		
+		
 		
 		StringBuffer msgbuffer = new StringBuffer();
 		
@@ -261,13 +290,15 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		String line;
 		
 		while ((line = reader.readLine()) != null) {
+			line = line.trim();
+			if (line.equals("//")) {
+				break;
+			}
+			if (line.startsWith("#")) {
+				continue;
+			}
 			updFileBuffer.append(line);
 			updFileBuffer.append("\n");
-			
-			if (line.equals("//"))
-				break;
-			if (line.startsWith("#"))
-				continue;
 			
 			/*
 			 * reading message part.
@@ -301,31 +332,63 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 			
 			if (line.toLowerCase().startsWith(VERSIONSTRING)) {
 				version = line.substring(VERSIONSTRING.length() + 1).trim();
-				prepareUpdate = updateIsNewer(version);
 			}
 			// look for jars to add
 			if (line.toLowerCase().startsWith("+")) {
-				line = line.substring(1);
-				if (line.toLowerCase().startsWith(CORESTRING)) {
-					listAddCoreJarRelativePath.add(line.substring(CORESTRING.length() + 1).trim());
+				String parseline = line.substring(1);
+				if (parseline.toLowerCase().startsWith(CORESTRING)) {
+					
+					parseline = parseline.substring(CORESTRING.length() + 1).trim();
+					// compare both md5 sums (remote and local
+					if( mapJarMd5PairsInstalledCore.get(parseline) == null  // new remote jar 
+							|| ! mapJarMd5PairsInstalledCore.get(parseline).equals(mapMd5FromUpdateLocation.get(parseline))) {
+						listAddCoreJarRelativePath.add(parseline);
+					}
 				}
-				if (line.toLowerCase().startsWith(LIBSTRING)) {
-					listAddLibsJarRelativePaths.add(line.substring(LIBSTRING.length() + 1).trim());
+				if (parseline.toLowerCase().startsWith(LIBSTRING)) {
+					parseline = parseline.substring(LIBSTRING.length() + 1).trim();
+
+					if(  mapJarMd5PairsInstalledLibs.get(parseline) == null // new remote jar 
+							|| ! mapJarMd5PairsInstalledLibs.get(parseline).equals(mapMd5FromUpdateLocation.get(parseline))) {
+						listAddLibsJarRelativePaths.add(parseline);
+					}
 				}
 			} else
 				if (line.toLowerCase().startsWith("-")) {
-					line = line.substring(1);
-					if (line.toLowerCase().startsWith(CORESTRING)) {
-						listRemoveCoreJarRelativePath.add(line.substring(CORESTRING.length() + 1).trim());
+					String parseline = line.substring(1);
+					if (parseline.toLowerCase().startsWith(CORESTRING)) {
+						listRemoveCoreJarRelativePath.add(parseline.substring(CORESTRING.length() + 1).trim());
 					}
-					if (line.toLowerCase().startsWith(LIBSTRING)) {
-						listRemoveLibsJarRelativePaths.add(line.substring(LIBSTRING.length() + 1).trim());
+					if (parseline.toLowerCase().startsWith(LIBSTRING)) {
+						listRemoveLibsJarRelativePaths.add(parseline.substring(LIBSTRING.length() + 1).trim());
 					}
 				}
 		}
 		
 		inputstreamURL.close();
+
+		/*
+		 * add changed jars as well, that do not appear in the update file
+		 */
+		for(String curJar : mapJarMd5PairsInstalledCore.keySet()) {
+			if(mapMd5FromUpdateLocation.get(curJar) != null 
+					&& ! mapMd5FromUpdateLocation.get(curJar).equals(mapJarMd5PairsInstalledCore.get(curJar))){
+				listAddCoreJarRelativePath.add(curJar);
+				updFileBuffer.append("+core:" + curJar);
+				updFileBuffer.append("\n");
+			}
+		}
+		for(String curJar : mapJarMd5PairsInstalledLibs.keySet()) {
+			if(mapMd5FromUpdateLocation.get(curJar) != null 
+					&& ! mapMd5FromUpdateLocation.get(curJar).equals(mapJarMd5PairsInstalledLibs.get(curJar))){
+				listAddLibsJarRelativePaths.add(curJar);
+				updFileBuffer.append("+lib:" + curJar);
+				updFileBuffer.append("\n");
+			}
+		}
 		
+		if(updateIsNewer(version) || ! listAddCoreJarRelativePath.isEmpty() || ! listAddLibsJarRelativePaths.isEmpty())
+			prepareUpdate = true;
 		if (Logger.getRootLogger().getLevel() == Level.DEBUG) {
 			if (prepareUpdate) {
 				logger.debug("We found an update.. printing locations:");
@@ -349,6 +412,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		
 		// the update we found is not newer
 		if (!prepareUpdate) {
+			logger.debug("no update found");
 			backgroundTaskStatusProvider.setCurrentStatusText1("No updates found");
 			//we have written the file but it wasn't necessary.. delete it
 			return;
@@ -509,6 +573,33 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 			return true;
 	}
 	
+	/**
+	 * reads a file located at the given URL.
+	 * This file contains lines with filename-md5 pairs.
+	 * Each line is the output of 'md5sum' tool:
+	 * e.g.
+	 * a384114157486d24ed3a83798d21e60a *./vanted-core.jar
+	 * 
+	 * @param md5fileurl
+	 * @return Map with key:jar file name -> value: md5sum
+	 * @throws IOException
+	 */
+	private static Map<String,String> getMd5FromUpdateLocation(URL md5fileurl) throws IOException {
+		Map<String,String> map = new HashMap<String, String>();
+		
+		InputStream openStream = md5fileurl.openStream();
+		BufferedReader reader = new BufferedReader(new InputStreamReader(openStream));
+		String line;
+		while((line = reader.readLine()) != null) {
+			if(line.indexOf("*") > 0) {
+				String[] split = line.trim().split("\\*");
+				
+				map.put(split[1].substring(split[1].lastIndexOf("/") + 1), split[0].trim());
+			}
+		}
+		return map;
+	}
+	
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		List<Parameter> params = new ArrayList<Parameter>();
@@ -524,7 +615,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		URL_UPDATE_BASESTRING = preferences.get("Update URL", URL_UPDATE_BASESTRING);
 		
 		URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-update";
-		
+		URL_UPDATEMD5_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-files-md5";
 	}
 	
 	@Override

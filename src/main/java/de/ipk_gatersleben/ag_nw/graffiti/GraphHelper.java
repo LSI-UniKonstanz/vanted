@@ -389,8 +389,8 @@ public class GraphHelper implements HelperClass {
 				for (Edge edge : edges)
 					AttributeHelper.removeEdgeBends(edge);
 			} finally {
-				graph.getListenerManager().transactionFinished(graph, true);
-				GraphHelper.issueCompleteRedrawForGraph(graph);
+				graph.getListenerManager().transactionFinished(graph);
+//				GraphHelper.issueCompleteRedrawForGraph(graph);
 			}
 			return;
 		}
@@ -432,8 +432,8 @@ public class GraphHelper implements HelperClass {
 						AttributeHelper.removeEdgeBends(e);
 					}
 				} finally {
-					graph.getListenerManager().transactionFinished(this, true);
-					GraphHelper.issueCompleteRedrawForGraph(graph);
+					graph.getListenerManager().transactionFinished(this);
+//					GraphHelper.issueCompleteRedrawForGraph(graph);
 				}
 			}
 			

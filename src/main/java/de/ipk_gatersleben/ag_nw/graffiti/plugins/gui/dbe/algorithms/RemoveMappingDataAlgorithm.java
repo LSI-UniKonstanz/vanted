@@ -20,7 +20,6 @@ import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
 
-import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.GraphElementHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
@@ -90,7 +89,7 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 					} finally {
 						g.getListenerManager().transactionFinished(this, false, status);
 						status.setCurrentStatusValue(100);
-						GraphHelper.issueCompleteRedrawForGraph(g);
+//						GraphHelper.issueCompleteRedrawForGraph(g);
 					}
 					if (status.wantsToStop())
 						status.setCurrentStatusText1("Processing aborted");
@@ -112,13 +111,14 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 		} catch (AttributeNotFoundException anfe) {
 			// empty
 		}
+
 		try {
-			n.removeAttribute("graphics.component");
+			n.removeAttribute("charting");
 		} catch (AttributeNotFoundException anfe) {
 			// empty
 		}
 		try {
-			n.removeAttribute("charting");
+			n.removeAttribute("graphics.component");
 		} catch (AttributeNotFoundException anfe) {
 			// empty
 		}

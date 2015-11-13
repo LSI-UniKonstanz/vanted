@@ -260,12 +260,16 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 			((EdgeShape) this.shape).buildShape((EdgeGraphicAttribute) attr,
 					(NodeShape) sourceComp.getShape(), (NodeShape) targetComp
 							.getShape());
-		}
+		} else
 		if (id.startsWith("bend")) {
-			updateShape();
+			synchronized(this) {
+				updateShape();
+			}
 		}
 		else {
-			createNewShape(coordinateSystem);
+			synchronized(this) {
+				createNewShape(coordinateSystem);
+			}
 		}
 		
 	}
@@ -275,6 +279,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	 */
 	public void updateShape() {
 //		nodeComponentChanged();
+//		logger.debug("update shape");
 		
 		EdgeGraphicAttribute geAttr;
 		geAttr = (EdgeGraphicAttribute) this.graphElement
@@ -312,6 +317,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	 */
 	@Override
 	protected void recreate() throws ShapeNotFoundException {
+//		logger.debug("recreate shape");
 		stroke = null;
 		EdgeGraphicAttribute geAttr;
 		if (!this.graphElement.getAttributes().getCollection().containsKey(
@@ -324,30 +330,31 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 				.getAttribute(GRAPHICS);
 		
 		String shapeClass = geAttr.getShape();
-//		String curShapeNameClassName = null;
+		String curShapeNameClassName = null;
 		
 		EdgeShape newShape = null;
 		
-//		if(this.shape != null)
-//			curShapeNameClassName = this.shape.getClass().getName();
-//		
-//		if( ! shapeClass.equals(curShapeNameClassName)) {
-		try {
-			newShape = (EdgeShape) InstanceLoader.createInstance(shapeClass);
-			this.shape = newShape;
-		} catch (InstanceCreationException ie) {
-			throw new ShapeNotFoundException(ie.toString());
+		if(this.shape != null)
+			curShapeNameClassName = this.shape.getClass().getName();
+		
+		if( ! shapeClass.equals(curShapeNameClassName)) {
+			try {
+				newShape = (EdgeShape) InstanceLoader.createInstance(shapeClass);
+				this.shape = newShape;
+			} catch (InstanceCreationException ie) {
+				throw new ShapeNotFoundException(ie.toString());
+			}
 		}
 //		} else
 //			newShape = (EdgeShape)this.shape;
 //		
 		// get graphic attribute and pass it to the shape
-		newShape.buildShape(geAttr,
+		((EdgeShape)this.shape).buildShape(geAttr,
 				(sourceComp != null ? (NodeShape) this.sourceComp.getShape()
 						: null),
 				(targetComp != null ? (NodeShape) this.targetComp.getShape()
 						: null));
-		this.shape = newShape;
+//		this.shape = newShape;
 		this.adjustComponentSize();
 		
 		for (Iterator<?> it = this.attributeComponents.values().iterator(); it

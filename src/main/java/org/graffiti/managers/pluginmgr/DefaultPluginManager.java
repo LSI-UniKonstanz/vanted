@@ -22,11 +22,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
 import org.ErrorMsg;
 import org.ReleaseInfo;
+import org.apache.log4j.Logger;
 import org.graffiti.core.StringBundle;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.GenericPlugin;
@@ -393,6 +393,7 @@ public class DefaultPluginManager
 									}
 									loadChilds(desc);
 								}
+								logger.debug("Added Plugin: " + desc.getName());
 								
 							} catch (PluginAlreadyLoadedException info) {
 								System.out.println(info.getMessage());
@@ -562,7 +563,7 @@ public class DefaultPluginManager
 			boolean success = pluginManagerListeners.remove(listener);
 			
 			if (!success) {
-				logger.warning("trying to remove a non existing" +
+				logger.warn("trying to remove a non existing" +
 						" plugin manager listener");
 			}
 		}

@@ -368,8 +368,9 @@ public class FileHelper implements HelperClass {
 		FileOutputStream fos = new FileOutputStream(destFile);
 		
 		byte[] buffer = new byte[1024];
-		while (openStream.read(buffer) != -1)
-			fos.write(buffer);
+		int len;
+		while ((len = openStream.read(buffer)) != -1)
+			fos.write(buffer, 0, len);
 		
 		fos.close();
 		openStream.close();

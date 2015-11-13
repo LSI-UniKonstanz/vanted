@@ -28,6 +28,7 @@ public class AttributeEvent
 	/** The path that has been assigned to the attribute by the event. */
 	private String path;
 	
+
 	// ~ Constructors ===========================================================
 	
 	/**
@@ -56,6 +57,9 @@ public class AttributeEvent
 	
 	// ~ Methods ================================================================
 	
+	
+	
+	
 	/**
 	 * Returns the attribute that has been changed by this event.
 	 * 
@@ -64,7 +68,7 @@ public class AttributeEvent
 	public Attribute getAttribute() {
 		return (Attribute) getSource();
 	}
-	
+
 	/**
 	 * Returns the path to the attribute that has been changed by this event.
 	 * 

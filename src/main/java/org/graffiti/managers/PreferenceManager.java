@@ -14,6 +14,7 @@ import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 
 import org.ReleaseInfo;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.managers.pluginmgr.PluginDescription;
 import org.graffiti.managers.pluginmgr.PluginManagerListener;
@@ -36,7 +37,7 @@ public class PreferenceManager
 	static Logger logger = Logger.getLogger(PreferenceManager.class);
 	
 	static {
-//		logger.setLevel(Level.INFO);
+		logger.setLevel(Level.INFO);
 		getInstance();
 	}
 	
