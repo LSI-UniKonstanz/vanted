@@ -146,6 +146,7 @@ public class MegaCreateTool
 			
 			public void actionPerformed(ActionEvent e)
 			{
+				reset();
 				unmarkAll();
 				fireSelectionChanged();
 			}
