@@ -96,7 +96,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	static final Logger logger = Logger.getLogger(MegaMoveTool.class);
 	
 	static {
-		logger.setLevel(Level.INFO);
+		logger.setLevel(Level.DEBUG);
 	}
 	// ~ Instance fields ========================================================
 	
@@ -1222,13 +1222,15 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		
 		Component src;
 		/*
-		 * if user presses alt while left-click, then
+		 * if user presses ctrl+shift while left-click, then
 		 * node selection is disabled to be able to always
 		 * draw a selection rectangle since the src
 		 * will be the viewcomponent
 		 */
 		src = getFoundComponent();
-		
+		if(e.isShiftDown() && e.isControlDown())
+			if( ! (src instanceof View))
+				src = src.getParent();
 		/*
 		 * init stuff for view scrolling
 		 */
@@ -1251,7 +1253,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		
 //		selection = session.getSelectionModel().getActiveSelection();
 		
-		logger.debug("1");
+//		logger.debug("1");
 		
 		resizeHit = false;
 		resizeHitTl = false;
