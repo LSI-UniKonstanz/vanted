@@ -23,6 +23,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -1246,8 +1247,8 @@ EdgeListener, TransactionListener {
 		final BackgroundTaskStatusProviderSupportingExternalCall fstatus = status;
 		synchronized(redrawLock) {
 			if (!SwingUtilities.isEventDispatchThread()) {
-//				try {
-					SwingUtilities.invokeLater(new Runnable() {
+				try {
+					SwingUtilities.invokeAndWait(new Runnable() {
 
 						@Override
 						public void run() {
@@ -1255,9 +1256,9 @@ EdgeListener, TransactionListener {
 							transactionFinishedOnSwingThread(fevent, fstatus);
 						}
 					});
-//				} catch (InvocationTargetException | InterruptedException e) {
-//					e.printStackTrace();
-//				}
+				} catch (InvocationTargetException | InterruptedException e) {
+					e.printStackTrace();
+				}
 			} else {
 				transactionFinishedOnSwingThread(fevent, fstatus);
 			}
@@ -1265,6 +1266,7 @@ EdgeListener, TransactionListener {
 	}
 
 	private synchronized void transactionFinishedOnSwingThread(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
+//		logger.setLevel(Level.DEBUG);
 		long startTimeTransFinished = System.currentTimeMillis();
 		isFinishingTransacation = true;
 
