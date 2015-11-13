@@ -18,8 +18,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.prefs.Preferences;
 
 import javax.swing.JOptionPane;
@@ -241,22 +243,31 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		boolean prepareUpdate = false;
 		
 		
+		Set<String> listAddCoreJarRelativePath = new HashSet<String>();
+		Set<String> listRemoveCoreJarRelativePath = new HashSet<String>();
+		Set<String> listAddLibsJarRelativePaths = new HashSet<String>();
+		Set<String> listRemoveLibsJarRelativePaths = new HashSet<String>();
+
 		// get a list of all paths to the jars in the classpath and their md5
 		List<Pair<String,String>> jarMd5Pairs = CalcClassPathJarsMd5.getJarMd5Pairs();
 		
 		Map<String, String> mapMd5FromUpdateLocation = getMd5FromUpdateLocation(new URL(URL_UPDATEMD5_FILESTRING));
 		//now sort them into core and lib jars
-		Map<String,String> mapJarMd5PairsInstalled = new HashMap<String, String>();
+		Map<String,String> mapJarMd5PairsInstalledCore = new HashMap<String, String>();
+		Map<String,String> mapJarMd5PairsInstalledLibs = new HashMap<String, String>();
 		for(Pair<String,String> curPair : jarMd5Pairs) {
 			//create new pair that contains only the jar filename and the md5
-				mapJarMd5PairsInstalled.put(curPair.getFst().substring(curPair.getFst().lastIndexOf("/") + 1), curPair.getSnd());
+			if(curPair.getFst().contains("vanted-core")) {
+				mapJarMd5PairsInstalledCore.put(curPair.getFst().substring(curPair.getFst().lastIndexOf("/") + 1), curPair.getSnd());
+			}
+			else {
+				mapJarMd5PairsInstalledLibs.put(curPair.getFst().substring(curPair.getFst().lastIndexOf("/") + 1), curPair.getSnd());
+			}
+				
 		}
+
 		
 		
-		List<String> listAddCoreJarRelativePath = new ArrayList<String>();
-		List<String> listRemoveCoreJarRelativePath = new ArrayList<String>();
-		List<String> listAddLibsJarRelativePaths = new ArrayList<String>();
-		List<String> listRemoveLibsJarRelativePaths = new ArrayList<String>();
 		
 		StringBuffer msgbuffer = new StringBuffer();
 		
@@ -280,14 +291,14 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		
 		while ((line = reader.readLine()) != null) {
 			line = line.trim();
-			updFileBuffer.append(line);
-			updFileBuffer.append("\n");
 			if (line.equals("//")) {
 				break;
 			}
 			if (line.startsWith("#")) {
 				continue;
 			}
+			updFileBuffer.append(line);
+			updFileBuffer.append("\n");
 			
 			/*
 			 * reading message part.
@@ -329,16 +340,16 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 					
 					parseline = parseline.substring(CORESTRING.length() + 1).trim();
 					// compare both md5 sums (remote and local
-					if( mapJarMd5PairsInstalled.get(parseline) == null  // new remote jar 
-							|| ! mapJarMd5PairsInstalled.get(parseline).equals(mapMd5FromUpdateLocation.get(parseline))) {
+					if( mapJarMd5PairsInstalledCore.get(parseline) == null  // new remote jar 
+							|| ! mapJarMd5PairsInstalledCore.get(parseline).equals(mapMd5FromUpdateLocation.get(parseline))) {
 						listAddCoreJarRelativePath.add(parseline);
 					}
 				}
 				if (parseline.toLowerCase().startsWith(LIBSTRING)) {
 					parseline = parseline.substring(LIBSTRING.length() + 1).trim();
 
-					if(  mapJarMd5PairsInstalled.get(parseline) == null // new remote jar 
-							|| ! mapJarMd5PairsInstalled.get(parseline).equals(mapMd5FromUpdateLocation.get(parseline))) {
+					if(  mapJarMd5PairsInstalledLibs.get(parseline) == null // new remote jar 
+							|| ! mapJarMd5PairsInstalledLibs.get(parseline).equals(mapMd5FromUpdateLocation.get(parseline))) {
 						listAddLibsJarRelativePaths.add(parseline);
 					}
 				}
@@ -355,6 +366,26 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		}
 		
 		inputstreamURL.close();
+
+		/*
+		 * add changed jars as well, that do not appear in the update file
+		 */
+		for(String curJar : mapJarMd5PairsInstalledCore.keySet()) {
+			if(mapMd5FromUpdateLocation.get(curJar) != null 
+					&& ! mapMd5FromUpdateLocation.get(curJar).equals(mapJarMd5PairsInstalledCore.get(curJar))){
+				listAddCoreJarRelativePath.add(curJar);
+				updFileBuffer.append("+core:" + curJar);
+				updFileBuffer.append("\n");
+			}
+		}
+		for(String curJar : mapJarMd5PairsInstalledLibs.keySet()) {
+			if(mapMd5FromUpdateLocation.get(curJar) != null 
+					&& ! mapMd5FromUpdateLocation.get(curJar).equals(mapJarMd5PairsInstalledLibs.get(curJar))){
+				listAddLibsJarRelativePaths.add(curJar);
+				updFileBuffer.append("+lib:" + curJar);
+				updFileBuffer.append("\n");
+			}
+		}
 		
 		if(updateIsNewer(version) || ! listAddCoreJarRelativePath.isEmpty() || ! listAddLibsJarRelativePaths.isEmpty())
 			prepareUpdate = true;
