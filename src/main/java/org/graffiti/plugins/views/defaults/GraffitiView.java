@@ -1242,7 +1242,6 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public  void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
-		logger.setLevel(Level.DEBUG);
 		final TransactionEvent fevent = event;
 		final BackgroundTaskStatusProviderSupportingExternalCall fstatus = status;
 		synchronized(redrawLock) {
@@ -1337,7 +1336,9 @@ EdgeListener, TransactionListener {
 			}
 
 			if (atbl instanceof Graph) {
-				if(obj instanceof Attribute && !((Attribute) obj).getName().equals("background_coloring")) {
+				if(obj instanceof Graph 
+						|| obj instanceof Attribute && !((Attribute) obj).getName().equals("background_coloring")
+						) {
 					// information not helpful
 					blockAdjust = false;
 					completeRedraw();

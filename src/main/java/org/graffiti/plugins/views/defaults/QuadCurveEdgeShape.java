@@ -202,7 +202,16 @@ public class QuadCurveEdgeShape
 		at.setToTranslation(-realBounds.getX(), -realBounds.getY());
 		this.headArrow = at.createTransformedShape(this.headArrow);
 		this.tailArrow = at.createTransformedShape(this.tailArrow);
-		this.linePath = new GeneralPath(this.linePath.createTransformedShape(at));
+		// we need to transform it to relative coordinates
+		// because we nee line2D if the polyline has no bends and 
+		// we just use the lineContains method
+		if(this.bends.isEmpty()) {
+			this.line2D.setLine(at.transform(start, null), at.transform(end, null));
+			this.linePath = new GeneralPath(this.line2D);
+		} else {
+			this.linePath = new GeneralPath(this.linePath.createTransformedShape(at));
+		
+		}
 	}
 	
 	/**
