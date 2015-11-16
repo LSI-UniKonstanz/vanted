@@ -443,13 +443,20 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 			//we have written the file but it wasn't necessary.. delete it
 			return;
 		}
+		
+		String updateMessage = msgbuffer.toString();
+		if(updateMessage.toLowerCase().contains("<html>"))
+				updateMessage = updateMessage.substring(updateMessage.indexOf("<html>") + 6);
+		updateMessage = updateMessage.replace("\n",  "");
 		// popup dialog telling user, there is a new version
 		// download now or later
 		// or go to website (short version)
+		String msg = "<html>A new update to VANTED " + version + " is available<br/><br/>"
+				+ "You can download it now or be reminded later.<br/><br/>"
+				+ "The update will be installed during the next startup.<br/>"
+				+ updateMessage;
 		int dialogAskUpdate = JOptionPane.showOptionDialog(MainFrame.getInstance(),
-				"<html>A new update to VANTED " + version + " is available<br/><br/>"
-						+ "You can download it now or be reminded later.<br/><br/>"
-						+ "The update will be installed during the next startup.",
+				msg,
 				"Update available",
 				JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE,
@@ -566,7 +573,6 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 	}
 	
 	private static boolean updateIsNewer(String remoteVersion) {
-		boolean isGreater = false;
 		
 		String[] strSplitMainversion = DBEgravistoHelper.DBE_GRAVISTO_VERSION_CODE.split("\\.");
 		
@@ -575,30 +581,26 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		for (int i = 0; i < strSplitMainversion.length; i++) {
 			longArrMainVersion[i] = Long.parseLong(strSplitMainversion[i]);
 		}
+		String concatVersionWithPadding = String.format("%d%03d%03d", longArrMainVersion[0], longArrMainVersion[1], longArrMainVersion[2]); 
+		long longVersionWithPadding = Long.parseLong(concatVersionWithPadding);
+				
 		
 		String[] strSplitRemoteVersion = remoteVersion.split("\\.");
+		long[] longRemoteVersion = new long[strSplitRemoteVersion.length];
+		
 		for (int i = 0; i < strSplitRemoteVersion.length; i++) {
-			long longPartVersion;
-			try {
-				longPartVersion = Long.parseLong(strSplitRemoteVersion[i]);
-			} catch (NumberFormatException e) {
-				longPartVersion = longArrMainVersion[i];
-			};
-			/*
-			 * if the main / sub version is definitely larger then the min-main/sub version
-			 * we don't need to check further.
-			 */
-			if (longPartVersion <= longArrMainVersion[i]) {
-				isGreater = true;
-			} 
-			
+			longRemoteVersion[i] = Long.parseLong(strSplitRemoteVersion[i]);
 		}
-		if(isGreater)
-			return false;
-		else
+		String concatRemoteVersionWithPadding = String.format("%d%03d%03d", longRemoteVersion[0], longRemoteVersion[1], longRemoteVersion[2]); 
+		long longRemoteVersionWithPadding = Long.parseLong(concatRemoteVersionWithPadding);
+		
+		if(longVersionWithPadding< longRemoteVersionWithPadding)
 			return true;
-	}
-	
+		else
+			return false;
+		
+		
+	}	
 	/**
 	 * reads a file located at the given URL.
 	 * This file contains lines with filename-md5 pairs.
@@ -648,5 +650,5 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 	public String getPreferencesAlternativeName() {
 		return "Update";
 	}
-	
+
 }
