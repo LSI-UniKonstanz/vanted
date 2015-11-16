@@ -588,7 +588,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 			 * if the main / sub version is definitely larger then the min-main/sub version
 			 * we don't need to check further.
 			 */
-			if (longPartVersion < longArrMainVersion[i]) {
+			if (longPartVersion <= longArrMainVersion[i]) {
 				isGreater = true;
 			} 
 			
