@@ -297,9 +297,6 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 			if (line.startsWith("#")) {
 				continue;
 			}
-			updFileBuffer.append(line);
-			updFileBuffer.append("\n");
-			
 			/*
 			 * reading message part.
 			 * must be done first to make sure, we don't accidently
@@ -312,8 +309,10 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 					int idx = line.indexOf(MESSAGE_START) + MESSAGE_START.length();
 					msgbuffer.append(line.substring(idx));
 				}
+				updFileBuffer.append(line);
+				updFileBuffer.append("\n");
 				continue;
-			}
+			} else
 			/*
 			 * we already started reading a message and we will read lines
 			 * as long as we don't find the message-end tag
@@ -327,11 +326,16 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 				} else {
 					msgbuffer.append(line);
 				}
+				updFileBuffer.append(line);
+				updFileBuffer.append("\n");
 				continue;
 			}
 			
 			if (line.toLowerCase().startsWith(VERSIONSTRING)) {
 				version = line.substring(VERSIONSTRING.length() + 1).trim();
+				updFileBuffer.append(line);
+				updFileBuffer.append("\n");
+				continue;
 			}
 			// look for jars to add
 			if (line.toLowerCase().startsWith("+")) {
@@ -343,17 +347,21 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 					if( mapJarMd5PairsInstalledCore.get(parseline) == null  // new remote jar 
 							|| ! mapJarMd5PairsInstalledCore.get(parseline).equals(mapMd5FromUpdateLocation.get(parseline))) {
 						listAddCoreJarRelativePath.add(parseline);
-					}
+						continue;
+					} 
 				}
 				if (parseline.toLowerCase().startsWith(LIBSTRING)) {
 					parseline = parseline.substring(LIBSTRING.length() + 1).trim();
 
+					String md5local = mapJarMd5PairsInstalledLibs.get(parseline);
+					String md5remote = mapMd5FromUpdateLocation.get(parseline);
 					if(  mapJarMd5PairsInstalledLibs.get(parseline) == null // new remote jar 
-							|| ! mapJarMd5PairsInstalledLibs.get(parseline).equals(mapMd5FromUpdateLocation.get(parseline))) {
+							|| ! md5local.equals(md5remote)) {
 						listAddLibsJarRelativePaths.add(parseline);
-					}
+						continue;
+					} 
 				}
-			} else
+			} else 
 				if (line.toLowerCase().startsWith("-")) {
 					String parseline = line.substring(1);
 					if (parseline.toLowerCase().startsWith(CORESTRING)) {
@@ -362,7 +370,11 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 					if (parseline.toLowerCase().startsWith(LIBSTRING)) {
 						listRemoveLibsJarRelativePaths.add(parseline.substring(LIBSTRING.length() + 1).trim());
 					}
+					updFileBuffer.append(line);
+					updFileBuffer.append("\n");
 				}
+				
+
 		}
 		
 		inputstreamURL.close();
@@ -371,20 +383,34 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 		 * add changed jars as well, that do not appear in the update file
 		 */
 		for(String curJar : mapJarMd5PairsInstalledCore.keySet()) {
+			String md5remote = mapMd5FromUpdateLocation.get(curJar);
+			String md5local = mapJarMd5PairsInstalledCore.get(curJar);
 			if(mapMd5FromUpdateLocation.get(curJar) != null 
-					&& ! mapMd5FromUpdateLocation.get(curJar).equals(mapJarMd5PairsInstalledCore.get(curJar))){
+					&& ! md5remote.equals(md5local)){
 				listAddCoreJarRelativePath.add(curJar);
-				updFileBuffer.append("+core:" + curJar);
-				updFileBuffer.append("\n");
+
 			}
 		}
 		for(String curJar : mapJarMd5PairsInstalledLibs.keySet()) {
+			String md5remote = mapMd5FromUpdateLocation.get(curJar);
+			String md5local = mapJarMd5PairsInstalledLibs.get(curJar);
 			if(mapMd5FromUpdateLocation.get(curJar) != null 
-					&& ! mapMd5FromUpdateLocation.get(curJar).equals(mapJarMd5PairsInstalledLibs.get(curJar))){
+					&& ! md5remote.equals(md5local)){
 				listAddLibsJarRelativePaths.add(curJar);
-				updFileBuffer.append("+lib:" + curJar);
-				updFileBuffer.append("\n");
 			}
+		}
+		
+		/*
+		 * write the set of jars to add to the update file
+		 */
+		for(String curCorJar : listAddCoreJarRelativePath) {
+			updFileBuffer.append("+core:" + curCorJar);
+			updFileBuffer.append("\n");
+		}
+		
+		for(String curLibJar : listAddLibsJarRelativePaths) {
+			updFileBuffer.append("+lib:" + curLibJar);
+			updFileBuffer.append("\n");
 		}
 		
 		if(updateIsNewer(version) || ! listAddCoreJarRelativePath.isEmpty() || ! listAddLibsJarRelativePaths.isEmpty())
