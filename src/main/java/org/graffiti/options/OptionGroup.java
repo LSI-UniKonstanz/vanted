@@ -9,6 +9,8 @@
 
 package org.graffiti.options;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Vector;
 
@@ -97,12 +99,27 @@ public class OptionGroup {
 	 * @param group
 	 *           the option group to add.
 	 */
+	@SuppressWarnings("unchecked")
 	public void addOptionGroup(OptionGroup group) {
 		if (members.indexOf(group) != -1) {
 			return;
 		}
 		
 		members.addElement(group);
+		Collections.sort(members, new Comparator() {
+
+			@Override
+			public int compare(Object o1, Object o2) {
+				if(o1 instanceof OverviewOptionPane)
+					return -1;
+				if(o2 instanceof OverviewOptionPane)
+					return 1;
+				String sO1 = (o1 instanceof OptionGroup) ? ((OptionGroup)o1).getName() : ((OptionPane)o1).getName();
+				String sO2 = (o2 instanceof OptionGroup) ? ((OptionGroup)o2).getName() : ((OptionPane)o2).getName();
+				return sO1.compareTo(sO2);
+			}
+			
+		});
 	}
 	
 	/**
@@ -111,12 +128,27 @@ public class OptionGroup {
 	 * @param pane
 	 *           the option pane to add.
 	 */
+	@SuppressWarnings("unchecked")
 	public void addOptionPane(OptionPane pane) {
 		if (members.indexOf(pane) != -1) {
 			return;
 		}
 		
 		members.addElement(pane);
+		Collections.sort(members, new Comparator() {
+
+			@Override
+			public int compare(Object o1, Object o2) {
+				if(o1 instanceof OverviewOptionPane)
+					return -1;
+				if(o2 instanceof OverviewOptionPane)
+					return 1;
+				String sO1 = (o1 instanceof OptionPane) ? ((OptionPane)o1).getName() : ((OptionGroup)o1).getName();
+				String sO2 = (o2 instanceof OptionPane) ? ((OptionPane)o2).getName() : ((OptionGroup)o2).getName();
+				return sO1.compareTo(sO2);
+			}
+			
+		});
 	}
 	
 	/**

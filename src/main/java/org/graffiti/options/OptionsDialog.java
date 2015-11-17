@@ -57,7 +57,8 @@ import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.View;
 
 /**
- * Represents the options dialog.
+ * Represents the Preference Dialog that shows
+ * all the settings / preferences for Vanted
  * 
  * @version $Revision: 1.6 $
  */
