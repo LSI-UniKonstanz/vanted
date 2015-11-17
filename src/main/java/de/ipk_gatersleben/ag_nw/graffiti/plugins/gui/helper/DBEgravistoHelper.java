@@ -10,6 +10,9 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 import org.HelperClass;
@@ -29,6 +32,7 @@ public class DBEgravistoHelper implements HelperClass {
 	public static String DBE_MIN_COMPATIBILITY_VERSION;
 	public static String VANTED_BUILD;
 	public static String VANTED_BUILDDATE;
+	public static String VANTED_BUILDDATE_TEXTFORMAT;
 	static {
 		
 		InputStream resourceAsStream = DBEgravistoHelper.class.getClassLoader().getResourceAsStream("build.number");
@@ -45,9 +49,17 @@ public class DBEgravistoHelper implements HelperClass {
 			e.printStackTrace();
 		}
 		
+		SimpleDateFormat s = new SimpleDateFormat("yyyyMMdd");
+		try {
+			Date d = s.parse(VANTED_BUILDDATE);
+			VANTED_BUILDDATE_TEXTFORMAT = new SimpleDateFormat("MMMM yyyy").format(d);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	public static String DBE_GRAVISTO_VERSION_CODE_SUBVERSION = "release September 2015"; // "DBE-Visualisation and Analysis V1.1";
+	public static String DBE_GRAVISTO_VERSION_CODE_SUBVERSION = "release " + VANTED_BUILDDATE_TEXTFORMAT; // "DBE-Visualisation and Analysis V1.1";
 	public static String DBE_GRAVISTO_VERSION = "DBE-Gravisto V" + DBE_GRAVISTO_VERSION_CODE; // "DBE-Visualisation and Analysis V1.1";
 	public static String DBE_GRAVISTO_NAME = "DBE-Gravisto";
 	public static String DBE_INFORMATIONSYSTEM_NAME = "DBE Information System";
