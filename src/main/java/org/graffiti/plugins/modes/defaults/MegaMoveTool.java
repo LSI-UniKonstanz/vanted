@@ -96,7 +96,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	static final Logger logger = Logger.getLogger(MegaMoveTool.class);
 	
 	static {
-		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.INFO);
 	}
 	// ~ Instance fields ========================================================
 	
