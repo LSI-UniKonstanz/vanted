@@ -26,6 +26,7 @@ import java.util.prefs.Preferences;
 
 import org.ErrorMsg;
 import org.ReleaseInfo;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.core.StringBundle;
 import org.graffiti.managers.PreferenceManager;
@@ -51,6 +52,10 @@ public class DefaultPluginManager
 	
 	/** The logger for the current class. */
 	private static final Logger logger = Logger.getLogger(DefaultPluginManager.class.getName());
+
+	static {
+		logger.setLevel(Level.INFO);
+	}
 	
 	// ~ Instance fields ========================================================
 	
@@ -378,8 +383,10 @@ public class DefaultPluginManager
 								 * For addons with dependcies the order of loading has already
 								 * been figured out and also the plugins.array size is 1 for loading addons 
 								 */
-								if (desc.getDependencies().size() > 0 && plugins.length > 1)
+								if (desc.getDependencies().size() > 0 && plugins.length > 1) {
+									logger.debug("[" + desc.getName() + "] plugin with dependencies found.. not loading now");
 									return;
+								}
 								
 								synchronized (loading) {
 									loading.add(desc.getName());
@@ -391,6 +398,7 @@ public class DefaultPluginManager
 									synchronized (loading) {
 										loading.remove(desc.getName());
 									}
+									logger.debug("[" + desc.getName() + "] loading children");
 									loadChilds(desc);
 								}
 								logger.debug("Added Plugin: " + desc.getName());
@@ -466,7 +474,12 @@ public class DefaultPluginManager
 			}
 			
 			if (satisfied) {
-				return addPlugin(desc, pluginUrl, Boolean.TRUE, progressViewer);
+				boolean success = addPlugin(desc, pluginUrl, Boolean.TRUE, progressViewer);
+				if(success)
+					logger.debug("[" + desc.getName() + "] successfully loaded");
+				else
+					logger.error("[" + desc.getName() + "] un-successfully loaded");
+				return success; 
 			} else {
 				return false;
 			}
