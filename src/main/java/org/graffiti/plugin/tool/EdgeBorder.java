@@ -9,6 +9,7 @@
 
 package org.graffiti.plugin.tool;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -169,8 +170,9 @@ public class EdgeBorder
 		
 		double bulletSizeHalf = bulletSize / 2d;
 		
-		Graphics cg;
-		cg = g.create();
+		Graphics2D cg = (Graphics2D) g.create();
+		cg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+
 		cg.translate(bx, by);
 		cg.setColor(this.color);
 		
@@ -180,11 +182,11 @@ public class EdgeBorder
 			float[] coords = new float[2];
 			
 			pi.currentSegment(coords);
-			cg.fillRect((int) (coords[0]), (int) (coords[1]),
+			cg.fillRect((int) (coords[0]), (int) (coords[1] - bulletSize/2),
 					bulletSize, bulletSize);
 			pi.next();
 			pi.currentSegment(coords);
-			cg.fillRect((int) (coords[0] - bulletSizeHalf), (int) (coords[1] - bulletSizeHalf), bulletSize, bulletSize);
+			cg.fillRect((int) (coords[0] - factor), (int) (coords[1] - factor), bulletSize, bulletSize);
 		} else {
 			
 			if (showBends) {
@@ -232,8 +234,8 @@ public class EdgeBorder
 				type = pi.currentSegment(seg);
 				x = seg[0];
 				y = seg[1];
-				cg.fillRect((int) (x - bulletSizeHalf), (int) (y - bulletSizeHalf),
-						bulletSize, bulletSize);
+				cg.fillRect((int) (x ), (int) (y),
+						bulletSize,bulletSize);
 				
 				// cg.fillOval((int)x-2, (int)y-2, bulletSize, bulletSize);
 				while (!pi.isDone()) {
@@ -243,8 +245,8 @@ public class EdgeBorder
 					switch (type) {
 						case java.awt.geom.PathIterator.SEG_MOVETO:
 							
-							// x = seg[0];
-							// y = seg[1];
+//							 x = seg[0];
+//							 y = seg[1];
 							break;
 						
 						case java.awt.geom.PathIterator.SEG_LINETO:

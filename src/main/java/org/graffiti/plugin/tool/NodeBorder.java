@@ -9,6 +9,7 @@
 
 package org.graffiti.plugin.tool;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -125,6 +126,9 @@ public class NodeBorder
 	@Override
 	public void paintBorder(Component c, Graphics g, int x, int y, int width,
 			int height) {
+		
+		
+		
 		int zoomedBorderWidth;
 		AffineTransform at = ((Graphics2D) c.getParent().getGraphics()).getTransform();
 		Point pWH = new Point(borderWidth, borderWidth);
@@ -159,8 +163,8 @@ public class NodeBorder
 			zoomedBorderWidth = 15;
 		
 		// Paint top left and right
-		Graphics cg;
-		cg = g.create();
+		Graphics2D cg = (Graphics2D) g.create();
+		cg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 		
 		// cg.setClip(0, 0, 2*width, insets.top);
 		cg.fillRect(1, 1, zoomedBorderWidth, zoomedBorderWidth);
