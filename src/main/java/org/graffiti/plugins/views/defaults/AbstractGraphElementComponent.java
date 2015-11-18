@@ -10,8 +10,10 @@
 package org.graffiti.plugins.views.defaults;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -26,12 +28,14 @@ import java.util.Map;
 import javax.swing.JComponent;
 
 import org.AttributeHelper;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.DoubleAttribute;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graphics.GraphElementGraphicAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.attributecomponent.AbstractAttributeComponent;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.CoordinateSystem;
@@ -41,6 +45,7 @@ import org.graffiti.plugin.view.GraphElementShape;
 import org.graffiti.plugin.view.ShapeNotFoundException;
 import org.graffiti.plugin.view.View;
 import org.graffiti.plugin.view.Zoomable;
+import org.vanted.VantedPreferences;
 
 /**
  * Class that shares common members for all GraphElementComponents.
@@ -385,10 +390,31 @@ public abstract class AbstractGraphElementComponent
 		/*
 		 * Only for debugging
 		 */
-//		if(PreferenceManager.getPreferenceForClass(VantedPreferences.class).getBoolean(VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES, false)) {
-//			g.drawRect(0, 0, getWidth()-1, getHeight()-1);
-//		}
-		drawShape(g);
+		if(Logger.getRootLogger().getLevel() == Level.DEBUG) {
+			boolean drawFrames = PreferenceManager.getPreferenceForClass(VantedPreferences.class).getBoolean(VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES, false); 
+			// draw frame, indicating the panel-bounds
+			if(drawFrames) {
+				g.setColor(Color.GRAY);
+				g.drawRect(0, 0, getWidth(), getHeight());
+			} 
+			
+			// draw original shape
+			drawShape(g);
+			
+			// overlap shape with position info
+			if(drawFrames) {
+				g.setFont(new Font(g.getFont().getFontName(), 0, 3));
+				g.setColor(Color.WHITE);
+				g.fillRect(5, 2, 40, 6);
+				g.setColor(Color.BLUE);
+				String bounds = "[" + getBounds().getX() + ", " + getBounds().getY() + ", " + (getBounds().getX() + getBounds().getWidth()) + ", " + (getBounds().getY() + getBounds().getHeight()) + "]";
+				g.drawString(bounds, 5, 5);
+				bounds = "[" + getBounds().getX() + ", " + getBounds().getY() + ", " + getBounds().getWidth() + ", " + getBounds().getHeight() + "]";
+				g.drawString(bounds, 5, 8);
+			}
+		} else {
+			drawShape(g);
+		}
 	}
 	
 	/**

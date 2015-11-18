@@ -54,7 +54,7 @@ public class DefaultPluginManager
 	private static final Logger logger = Logger.getLogger(DefaultPluginManager.class.getName());
 
 	static {
-		logger.setLevel(Level.INFO);
+		logger.setLevel(Level.DEBUG);
 	}
 	
 	// ~ Instance fields ========================================================

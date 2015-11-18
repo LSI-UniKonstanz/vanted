@@ -13,6 +13,8 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import org.ReleaseInfo;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.PreferencesInterface;
@@ -60,7 +62,8 @@ public class VantedPreferences implements PreferencesInterface {
 		params.add(new IntegerParameter(0, PREFERENCE_PROXYPORT, "Port number of the proxy"));
 		params.add(new BooleanParameter(false, PREFERENCE_SHOWALL_ALGORITHMS,
 				"Show algorithms, that are not shown normally as they might confuse users with their sole functionality"));
-		params.add(new BooleanParameter(false, PREFERENCE_DEBUG_SHOWPANELFRAMES, "For debugging purposes, show frames from each graph and attribute component."));
+		if(Logger.getRootLogger().getLevel() == Level.DEBUG)
+			params.add(new BooleanParameter(false, PREFERENCE_DEBUG_SHOWPANELFRAMES, "For debugging purposes, show frames from each graph and attribute component."));
 		return params;
 	}
 	
