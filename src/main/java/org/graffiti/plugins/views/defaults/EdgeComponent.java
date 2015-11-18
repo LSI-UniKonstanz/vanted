@@ -420,10 +420,10 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	protected void adjustComponentSize() {
 		
 		Rectangle2D bounds = shape.getRealBounds2D();
-		setBounds((int) Math.floor(bounds.getX()) - 1,
-				(int) Math.floor(bounds.getY()) - 1,
-				(int) (Math.ceil(bounds.getWidth())) + 2,
-				(int) (Math.ceil(bounds.getHeight())) + 2);
+		setBounds((int) Math.floor(bounds.getX() - 1),
+				(int) Math.floor(bounds.getY() - 1),
+				(int) (Math.floor(bounds.getWidth() + 1)),
+				(int) (Math.floor(bounds.getHeight() + 1)));
 //		for (GraffitiViewComponent ac : attributeComponents.values()) {
 //			if (ac instanceof AttributeComponent) {
 //				AttributeComponent acc = (AttributeComponent) ac;
