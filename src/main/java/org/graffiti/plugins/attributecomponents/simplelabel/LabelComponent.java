@@ -472,10 +472,12 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			super.paint(g);
 		} else if (DRAWRECT_MINSIZE && !(getDrawingModeOfView() == DrawMode.FAST)) {
 //			logger.debug("drawing rectangle");
-			g.setColor(new Color(200, 200, 200));
-			int height = getHeight();
-			int width = getWidth();
-			((Graphics2D) g).fillRect(0, height / 4, width, height / 2);
+			if(checkVisibility(3)) {
+				g.setColor(new Color(200, 200, 200));
+				int height = getHeight();
+				int width = getWidth();
+				((Graphics2D) g).fillRect(0, height / 4, width, height / 2);
+			}
 		}
 	}
 	
