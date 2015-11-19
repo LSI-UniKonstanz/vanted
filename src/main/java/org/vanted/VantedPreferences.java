@@ -3,6 +3,7 @@ package org.vanted;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.prefs.Preferences;
 
 import javax.swing.DefaultListCellRenderer;
@@ -43,6 +44,8 @@ public class VantedPreferences implements PreferencesInterface {
 	public static final String PREFERENCE_SHOWALL_ALGORITHMS = "Show all (hidden) algortihms";
 	
 	public static final String PREFERENCE_DEBUG_SHOWPANELFRAMES = "Debug: Show GraphElement Panels";
+
+	public static final String PREFERENCE_STANDARD_SAVE_FILEFORMAT = "Standard save file format";
 	
 	private static VantedPreferences instance;
 	
@@ -62,6 +65,16 @@ public class VantedPreferences implements PreferencesInterface {
 		params.add(new IntegerParameter(0, PREFERENCE_PROXYPORT, "Port number of the proxy"));
 		params.add(new BooleanParameter(false, PREFERENCE_SHOWALL_ALGORITHMS,
 				"Show algorithms, that are not shown normally as they might confuse users with their sole functionality"));
+
+		/*
+		 * this only works if vanted has been started and all output fileformats have been made available
+		 */
+		if(MainFrame.getInstance() != null) {
+			Set<String> graphFileExtensions = MainFrame.getInstance().getIoManager().getGraphFileExtensions();
+			String[] possibleValues = graphFileExtensions.toArray(new String[graphFileExtensions.size()]);
+			params.add(new ObjectListParameter("", PREFERENCE_STANDARD_SAVE_FILEFORMAT, "Standard file format, that is selected for file saving", possibleValues));
+		}
+		
 		if(Logger.getRootLogger().getLevel() == Level.DEBUG)
 			params.add(new BooleanParameter(false, PREFERENCE_DEBUG_SHOWPANELFRAMES, "For debugging purposes, show frames from each graph and attribute component."));
 		return params;

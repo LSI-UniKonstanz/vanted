@@ -33,11 +33,13 @@ import org.graffiti.editor.MessageType;
 import org.graffiti.graph.Graph;
 import org.graffiti.help.HelpContext;
 import org.graffiti.managers.IOManager;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.actions.GraffitiAction;
 import org.graffiti.plugin.io.OutputSerializer;
 import org.graffiti.plugin.view.SuppressSaveActionsView;
 import org.graffiti.session.EditorSession;
 import org.graffiti.session.SessionManager;
+import org.vanted.VantedPreferences;
 
 /**
  * The action for saving a graph to a named file.
@@ -133,12 +135,28 @@ public class FileSaveAsAction
 								break;
 							}
 					}
-					else
+					else {
+						boolean foundFileFilter = false;
 						for (FileFilter filterFilter : fileChooser.getChoosableFileFilters())
 							if (fileName.endsWith(((GenericFileFilter) filterFilter).getExtension())) {
 								fileChooser.setFileFilter(filterFilter);
+								foundFileFilter = true;
 								break;
 							}
+						
+						// if new graph has no extension and we can't find one
+						// use the standard one from the preferences
+						if( ! foundFileFilter) {
+							FileFilter defaultFileFilterFound = fileChooser.getChoosableFileFilters()[0];
+							String prefExtension = PreferenceManager.getPreferenceForClass(VantedPreferences.class).get(VantedPreferences.PREFERENCE_STANDARD_SAVE_FILEFORMAT, ((GenericFileFilter) defaultFileFilterFound).getExtension());
+							for (FileFilter filterFilter : fileChooser.getChoosableFileFilters()) {
+								if (prefExtension.endsWith(((GenericFileFilter) filterFilter).getExtension())) {
+									fileChooser.setFileFilter(filterFilter);
+									break;
+								}
+							}
+						}
+					}
 					// try to find file name text field in file save as dialog
 					FileSaveAsAction.this.jTextFieldFileName = getTextFieldFileName(fileChooser.getComponents(), fileName);
 					FileSaveAsAction.this.isTextFieldFileNameSearchDone = true;
