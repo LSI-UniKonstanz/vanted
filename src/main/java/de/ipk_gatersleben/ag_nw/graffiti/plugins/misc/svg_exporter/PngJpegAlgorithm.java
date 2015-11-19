@@ -59,6 +59,8 @@ import org.ErrorMsg;
 import org.ObjectRef;
 import org.StringManipulationTools;
 import org.Vector2d;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.editor.ConfigureViewAction;
 import org.graffiti.editor.GravistoService;
@@ -1240,7 +1242,19 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 			dimSrc.y = scaleClip * dimSrc.y;
 		}
 		
-		BufferedImage bi = new BufferedImage((int) dim.x, (int) dim.y, imageType);
+		BufferedImage bi;
+		try {
+			bi = new BufferedImage((int) dim.x, (int) dim.y, imageType);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			if(Logger.getRootLogger().getLevel() == Level.DEBUG)
+				e.printStackTrace();
+			ErrorMsg.addErrorMessage("<html>Cannot create canvase<br/>" + e.getLocalizedMessage());
+			if( view instanceof PaintStatusSupport) {
+				((PaintStatusSupport) view).setStatusProvider(null);
+			}
+			return null;
+		}
 		Graphics2D g = bi.createGraphics();
 		
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
