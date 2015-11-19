@@ -22,6 +22,7 @@ import javax.swing.Timer;
 
 import org.AttributeHelper;
 import org.Vector2d;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.editor.GraffitiFrame;
 import org.graffiti.editor.MainFrame;
@@ -51,7 +52,10 @@ import org.graffiti.session.Session;
 public abstract class MegaTools extends AbstractUndoableTool {
 	
 	static final Logger logger = Logger.getLogger(MegaTools.class);
-	
+	static {
+		logger.setLevel(Level.INFO);
+	}
+
 	// ~ Instance fields ========================================================
 	
 	// protected EditorSession session;
@@ -145,9 +149,10 @@ public abstract class MegaTools extends AbstractUndoableTool {
 			statusCallTimer.start();
 		}
 		
+		boolean selectedContain = selectedContain(lastSelectedComp);
 		// System.out.println("SRC: "+src.toString());
 		if (foundComponent != null && !foundComponent.equals(lastSelectedComp)) {
-			if ((lastSelectedComp != null) && !selectedContain(lastSelectedComp)) {
+			if ((lastSelectedComp != null) && !selectedContain) {
 				if (lastSelectedComp instanceof GraphElementComponent)
 					for (GraphElementComponent c : getCompsForElem(((GraphElementComponent) lastSelectedComp).getGraphElement()))
 						unDisplayAsMarked(c);
@@ -155,7 +160,7 @@ public abstract class MegaTools extends AbstractUndoableTool {
 				desiredStatusMessage = null;
 				desiredSince = Integer.MIN_VALUE;
 			}
-			if ((lastSelectedComp != null) && selectedContain(lastSelectedComp)) {
+			if ((lastSelectedComp != null) && selectedContain) {
 				if (lastSelectedComp instanceof GraphElementComponent)
 					for (GraphElementComponent c : getCompsForElem(((GraphElementComponent) lastSelectedComp).getGraphElement())) {
 						displayAsMarked(c);
@@ -170,12 +175,12 @@ public abstract class MegaTools extends AbstractUndoableTool {
 			} else {
 				lastSelectedComp = foundComponent;
 				
-				// if (!selectedContain(lastSelectedComp)) {
-				for (Component c : getCompsForElem(((GraphElementComponent) lastSelectedComp).getGraphElement())) {
-					highlight(c, e);
-					break;
+				if (!selectedContain(lastSelectedComp)) {
+					for (Component c : getCompsForElem(((GraphElementComponent) lastSelectedComp).getGraphElement())) {
+						highlight(c, e);
+						break;
+					}
 				}
-				// }
 //				if (lastSelectedComp != null && lastSelectedComp.getParent() != null) {
 //					lastSelectedComp.getParent().repaint();
 //				}
