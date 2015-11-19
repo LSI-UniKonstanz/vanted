@@ -24,6 +24,8 @@ import java.util.Iterator;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
@@ -35,6 +37,7 @@ import org.graffiti.plugin.view.NodeComponentInterface;
 import org.graffiti.plugin.view.NodeShape;
 import org.graffiti.plugin.view.ProvidesAdditonalDrawingShapes;
 import org.graffiti.plugin.view.ShapeNotFoundException;
+import org.graffiti.plugin.view.Zoomable;
 import org.graffiti.util.InstanceCreationException;
 import org.graffiti.util.InstanceLoader;
 
@@ -49,6 +52,12 @@ public class NodeComponent
 	// ~ Constructors ===========================================================
 	private static final long serialVersionUID = -303544019220632035L;
 	
+	private static final Logger logger = Logger.getLogger(NodeComponent.class);
+	
+	static {
+		logger.setLevel(Level.INFO);
+	}
+	
 	private Stroke stroke = null;
 	
 	private NodeGraphicAttribute nodeAttr = null;
@@ -57,6 +66,16 @@ public class NodeComponent
 	private Paint rgp = null;
 	
 	private String currentShapeClass;
+
+	private Paint fillPaint;
+
+	private Paint framePaint;
+
+	private boolean drawFrame;
+	
+	Zoomable zommableView = null;
+
+	private double zoomfactor = 1.0d;
 	
 	/**
 	 * Constructor for NodeComponent.
@@ -65,6 +84,7 @@ public class NodeComponent
 	 */
 	public NodeComponent(GraphElement ge) {
 		super(ge);
+
 	}
 	
 	// ~ Methods ================================================================
@@ -103,6 +123,7 @@ public class NodeComponent
 	@Override
 	public synchronized void graphicAttributeChanged(Attribute attr)
 			throws ShapeNotFoundException {
+		logger.debug("graphicAttributeChanged for node id:" + getGraphElement().getID() + " attribute " + attr.getName());
 		if (attr != null) {
 			String id = attr.getId();
 			if (!id.equals(COORDINATE)) {
@@ -112,7 +133,9 @@ public class NodeComponent
 				} else {
 					createNewShape(coordinateSystem);
 				}
+				updateGraphicsFields();
 			} else {
+				
 				adjustComponentSizeAndPosition();
 			}
 			// update attribute components like labels:
@@ -144,6 +167,25 @@ public class NodeComponent
 		}
 	}
 	
+	private void updateGraphicsFields() {
+		logger.debug("updateGraphicsFields for node id:" + getGraphElement().getID());
+		
+		if (nodeAttr == null)
+			nodeAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
+
+		ColorAttribute color = nodeAttr.getFillcolor();
+		fillPaint = color.getColor();
+		
+		double epsilon = 0.0001;
+		if (rgp != null && Math.abs(nodeAttr.getUseGradient()) > epsilon) {
+			fillPaint = rgp;
+		}
+
+		drawFrame = (nodeAttr.getFrameThickness() > epsilon);
+
+		framePaint = nodeAttr.getFramecolor().getColor();
+		
+	}
 	/**
 	 * Draws the shape of the node contained in this component according to the
 	 * graphic attributes of the node.
@@ -153,30 +195,40 @@ public class NodeComponent
 	 */
 	@Override
 	protected void drawShape(Graphics g) {
-		
+		logger.debug("drawShape for node id:" + getGraphElement().getID());
 //		logger.debug("graph id " + getGraphElement().getGraph().getName() + ", node id:" + getGraphElement().getID() + ", border:" + getBorder().toString());
 		// super.drawShape(g);
 		Graphics2D drawArea = (Graphics2D) g;
+		if(getParent() instanceof Zoomable) {
+			zommableView = (Zoomable)getParent();
+			zoomfactor = zommableView.getZoom().getScaleX();
+		}
+		if(getWidth() * zoomfactor < 5 || getHeight() * zoomfactor < 5) {
+			
+			if (drawFrame) {
+				drawArea.setPaint(framePaint);
+				drawArea.fillRect(0, 0, getWidth(), getHeight());
+			}
+
+			drawArea.setPaint(fillPaint);
+			drawArea.drawRect(0, 0, getWidth(), getHeight());
+			
+			return;
+		}
+			
 		
 		drawArea.translate(shape.getXexcess(), shape.getYexcess());
 		
 		// set method of drawing according to attributes of node
-		if (nodeAttr == null)
-			nodeAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
 		
 		if (stroke != null)
 			drawArea.setStroke(stroke);
 		
 		// draw background image
 		// fill the shape
-		ColorAttribute color = nodeAttr.getFillcolor();
-		Paint fillPaint = color.getColor();
-		double epsilon = 0.0001;
-		if (rgp != null && Math.abs(nodeAttr.getUseGradient()) > epsilon) {
-			fillPaint = rgp;
-		}
-		Paint framePaint = nodeAttr.getFramecolor().getColor();
-		boolean drawFrame = (nodeAttr.getFrameThickness() > epsilon);
+
+
+
 		if (shape instanceof ProvidesAdditonalDrawingShapes) {
 			Collection<Shape> preShapes = ((ProvidesAdditonalDrawingShapes) shape).getPreBorderShapes();
 			if (preShapes != null)
@@ -228,7 +280,7 @@ public class NodeComponent
 					}
 			}
 		}
-		drawArea.translate(-1 - shape.getXexcess(), -1 - shape.getYexcess());
+//		drawArea.translate(-1 - shape.getXexcess(), -1 - shape.getYexcess());
 	}
 	
 	/**
@@ -240,6 +292,9 @@ public class NodeComponent
 	@Override
 	protected void recreate()
 			throws ShapeNotFoundException {
+		logger.debug("recreate for node id:" + getGraphElement().getID());
+		
+		
 		if (!this.graphElement.getAttributes().getCollection().containsKey(GRAPHICS)) {
 			Node n = (Node) graphElement;
 			AttributeHelper.setDefaultGraphicsAttribute(n, 100, 100);
@@ -292,7 +347,7 @@ public class NodeComponent
 			rgp = null;
 		
 		updateStroke();
-		
+		updateGraphicsFields();
 	}
 	
 	private void updateStroke() {
@@ -310,6 +365,8 @@ public class NodeComponent
 	 * Called whenever the size of the shape within this component has changed.
 	 */
 	protected void adjustComponentSizeAndPosition() {
+		logger.debug("adjustComponentSizeAndPosition for node id:" + getGraphElement().getID());
+		
 		Rectangle2D bounds = shape.getRealBounds2D();
 		double offA = -0.5d;
 		double offB = 0d;//2d;
@@ -327,6 +384,7 @@ public class NodeComponent
 	 *            DOCUMENT ME!
 	 */
 	protected void updateRelatedEdgeComponents() {
+		logger.debug("updateRelatedEdgeComponents for node id:" + getGraphElement().getID());
 		
 		synchronized (dependentComponents) {
 			for (Iterator<?> it = dependentComponents.iterator(); it.hasNext();) {
