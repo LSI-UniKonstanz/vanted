@@ -53,6 +53,7 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 	private boolean taskFinished = false;
 	
 	private boolean inWindow = false;
+	private Timer updateCheck;
 	
 	public BackgroundTaskPanelEntry(boolean inWindow) {
 		
@@ -249,6 +250,12 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 		}
 	}
 	
+	public void removeStatusPanel() {
+		updateCheck.stop();
+		setVisible(false);
+		ToolButton.requestToolButtonFocus();
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskGUIprovider#setStatusProvider(de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider,
@@ -267,7 +274,7 @@ public class BackgroundTaskPanelEntry extends JPanel implements BackgroundTaskGU
 			}
 		}
 		final ProgressStatusService statusService = new ProgressStatusService();
-		final Timer updateCheck = new Timer(100, new ActionListener() {
+		updateCheck = new Timer(100, new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if (SystemInfo.isMac()) {
