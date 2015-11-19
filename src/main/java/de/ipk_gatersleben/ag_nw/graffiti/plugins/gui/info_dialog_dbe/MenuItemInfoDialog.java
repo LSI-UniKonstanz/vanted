@@ -72,7 +72,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.Wor
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.threading.SystemAnalysis;
 import de.ipk_gatersleben.ag_nw.graffiti.services.GUIhelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.PatchedHTMLEditorKit;
-import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskPanelEntry;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
@@ -621,7 +620,7 @@ public class MenuItemInfoDialog
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ScanForUpdate.issueScan();
+				ScanForUpdate.issueScanAfterStartup();
 			}
 		});
 		int pos = 1;

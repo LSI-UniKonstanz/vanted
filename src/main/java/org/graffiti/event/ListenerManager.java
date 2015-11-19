@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.Set;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
+import org.apache.log4j.Logger;
 import org.graffiti.event.AbstractEvent.EVENTTYPE;
 import org.graffiti.util.MultipleIterator;
 
@@ -37,7 +38,7 @@ import org.graffiti.util.MultipleIterator;
  */
 public class ListenerManager {
 	// ~ Instance fields ========================================================
-	
+	private static final Logger logger = Logger.getLogger(ListenerManager.class);
 	/**
 	 * Holds the list of registered NodeListeners that receive events even if a
 	 * transaction is active.
@@ -1839,6 +1840,7 @@ public class ListenerManager {
 	}
 	
 	public void transactionFinished(Object source, boolean forgetChanges, BackgroundTaskStatusProviderSupportingExternalCall status) {
+		logger.debug("transaction finished. source: " + source.toString());
 		postDebugTransactionFinished(source);
 		if (this.transactionsActive > 0) 
 			this.transactionsActive--;
@@ -1870,6 +1872,7 @@ public class ListenerManager {
 			TransactionListener l = (TransactionListener) mIter.next();
 			if (status != null)
 				status.setCurrentStatusText2("Inform listener " + l.getClass().getSimpleName());
+			logger.debug("informing transaction listener: " + l.toString());
 			l.transactionFinished(event, status);
 		}
 		if (status != null)

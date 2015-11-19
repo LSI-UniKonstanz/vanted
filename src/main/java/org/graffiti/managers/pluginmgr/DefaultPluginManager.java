@@ -26,7 +26,6 @@ import java.util.prefs.Preferences;
 
 import org.ErrorMsg;
 import org.ReleaseInfo;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.core.StringBundle;
 import org.graffiti.managers.PreferenceManager;
@@ -54,7 +53,7 @@ public class DefaultPluginManager
 	private static final Logger logger = Logger.getLogger(DefaultPluginManager.class.getName());
 
 	static {
-		logger.setLevel(Level.DEBUG);
+//		logger.setLevel(Level.INFO);
 	}
 	
 	// ~ Instance fields ========================================================

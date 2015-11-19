@@ -30,6 +30,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.MouseInputAdapter;
 
 import org.AttributeHelper;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
@@ -62,7 +63,10 @@ public abstract class AbstractTool
 	// ~ Instance fields ========================================================
 	
 	static final Logger logger = Logger.getLogger(AbstractTool.class);
-	
+	static {
+		logger.setLevel(Level.INFO);
+	}
+
 	protected JComponent mouseComp = null;
 	
 	/** DOCUMENT ME! */

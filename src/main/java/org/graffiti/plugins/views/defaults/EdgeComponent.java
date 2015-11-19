@@ -24,6 +24,7 @@ import org.ErrorMsg;
 import org.Release;
 import org.ReleaseInfo;
 import org.Vector2d;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.Edge;
@@ -51,6 +52,9 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	private static final long serialVersionUID = 3256442525387600951L;
 	
 	private static Logger logger = Logger.getLogger(EdgeComponent.class);
+	static {
+		logger.setLevel(Level.INFO);
+	}
 	
 	/** The component of the source node of this edge. */
 	private NodeComponentInterface sourceComp;
@@ -120,6 +124,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	 */
 	@Override
 	public void createStandardShape() {
+		logger.debug("createStandardShape for edge id:" + getGraphElement().getID());
 		EdgeShape newShape = new StraightLineEdgeShape();
 		if (edgeAttr == null)
 			edgeAttr = (EdgeGraphicAttribute) ((Edge) graphElement)
@@ -151,6 +156,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	@Override
 	public void drawShape(Graphics g) {
 		// super.drawShape(g);
+		logger.debug("drawShape for edge id:" + getGraphElement().getID());
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
@@ -247,6 +253,8 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	@Override
 	public void graphicAttributeChanged(Attribute attr)
 			throws ShapeNotFoundException {
+		logger.debug("graphicAttributeChanged for edge id:" + getGraphElement().getID() + " attribute " + attr.getName());
+
 		/*
 		 * if the type of the shape or the size changed then we have to rebuild
 		 * the shape
@@ -278,8 +286,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	 * Calls buildShape if no NodeShapes have changed.
 	 */
 	public void updateShape() {
-//		nodeComponentChanged();
-//		logger.debug("update shape");
+		logger.debug("updateShape for edge id:" + getGraphElement().getID());
 		
 		EdgeGraphicAttribute geAttr;
 		geAttr = (EdgeGraphicAttribute) this.graphElement
@@ -317,7 +324,8 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	 */
 	@Override
 	protected void recreate() throws ShapeNotFoundException {
-//		logger.debug("recreate shape");
+		logger.debug("recreate for edge id:" + getGraphElement().getID());
+		
 		stroke = null;
 		EdgeGraphicAttribute geAttr;
 		if (!this.graphElement.getAttributes().getCollection().containsKey(
