@@ -74,7 +74,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  *         }}
  *         // # end of update entry
  */
-public class ScanForUpdate implements PreferencesInterface, Runnable {
+public class ScanForUpdate implements PreferencesInterface//, Runnable 
+{
 	
 	private static final Logger logger = Logger.getLogger(ScanForUpdate.class);
 	
@@ -120,19 +121,23 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 				new BackgroundTaskStatusProviderSupportingExternalCallImpl("", "");
 	}
 	
-	public void run() {
-		
-		try {
-			doScan(false); //scan and don't ignore scan-date
-		} catch (IOException e) {
-			if (Logger.getRootLogger().getLevel() == Level.DEBUG)
-				e.printStackTrace();
-			System.out.println("cannot scan for updates: " + e.getMessage());
-		}
-		
-		backgroundTaskStatusProvider.setCurrentStatusText1("Download finished");
-	}
-	
+//	public void run() {
+//		
+//		try {
+//			doScan(false); //scan and don't ignore scan-date
+//		} catch (IOException e) {
+//			if (Logger.getRootLogger().getLevel() == Level.DEBUG)
+//				e.printStackTrace();
+//			System.out.println("cannot scan for updates: " + e.getMessage());
+//		}
+//		
+//		backgroundTaskStatusProvider.setCurrentStatusText1("Download finished");
+//	}
+	/*
+	 * Starts scan for updates.
+	 * Scan will only start after application and addons have been loaded
+	 * This method runs asynchronous to not block the start up process
+	 */
 	public static void issueScanAfterStartup() {
 		new Thread(new Runnable() {
 			
@@ -156,6 +161,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 							@Override
 							public void run() {
 								try {
+									new ScanForAddonUpdates().hasUpdates();
 									scanForUpdate.doScan(false);
 								} catch (IOException e) {
 									if (Logger.getRootLogger().getLevel() == Level.DEBUG)
@@ -170,7 +176,8 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 			}
 		}).start();
 	}
-	
+
+	/*
 	public static void issueScan() {
 		logger.debug("starting update scan task");
 		final ScanForUpdate scanForUpdate = new ScanForUpdate();
@@ -195,7 +202,7 @@ public class ScanForUpdate implements PreferencesInterface, Runnable {
 				null,
 				scanForUpdate.backgroundTaskStatusProvider, 0);
 	}
-	
+	*/
 	protected void doScan(boolean ignoreDate) throws IOException {
 		
 		if (ReleaseInfo.isRunningAsWebstart()) {
