@@ -287,7 +287,6 @@ public class PolyLineEdgeShape
 	 * @return true is point is near to the <code>path</code> object
 	 */
 	protected boolean pathContains(GeneralPath path, double x, double y) {
-		
 		if(this.bends.isEmpty())
 			return lineContains(this.line2D, x, y);
 		
@@ -300,7 +299,6 @@ public class PolyLineEdgeShape
 		
 		Point2D start = veryfirst;
 		Point2D end = null;
-		
 		// GeneralPath newGP = new GeneralPath(path);
 		try {
 			while (!pi.isDone()) {
@@ -353,11 +351,8 @@ public class PolyLineEdgeShape
 	}
 	
 	public int getIndexOfPathWhichContains(double x, double y) {
-		
+
 		GeneralPath path = linePath;
-		
-		x -= realBounds.getX();
-		y -= realBounds.getY();
 		
 		// System.out.println("pc----------------------------");
 		PathIterator pi = path.getPathIterator(null, 10d);

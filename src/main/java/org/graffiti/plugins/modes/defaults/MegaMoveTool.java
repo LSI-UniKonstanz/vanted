@@ -171,6 +171,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	
 	private JComponent selRectComp;
 	
+	private Component lastPressedComponent;
+	
 	private CoordinateAttribute lastBendAdded;
 	private double lastBendAddedInitX, lastBendAddedInitY;
 	private long lastBendAddedTime = 0;
@@ -635,10 +637,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 //				x = lastClickPoint.x;
 //				y = lastClickPoint.y;
 //			}
-			Component c = getFoundComponent();
+			Component c = lastPressedComponent;
 			if (c instanceof EdgeComponent) {
 				// break!
-				processBendCreation(e, c);
+				MouseEvent me = new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(), e.getModifiers(), prevPosX, prevPosY, e.getClickCount(), e.isPopupTrigger());
+				processBendCreation(me, c);
 				return;
 			}
 		}
@@ -754,19 +757,22 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				bendedEdge = (Edge) ec.getGraphElement();
 				boolean added = false;
 				lastBendAdded = null;
+				int idx = -1;
 				if (ec.getShape() != null && ec.getShape() instanceof PolyLineEdgeShape) {
 					PolyLineEdgeShape ls = (PolyLineEdgeShape) ec.getShape();
-					int idx = ls.getIndexOfPathWhichContains(e.getX(), e.getY());
-					bendsBeforeBending = AttributeHelper.getEdgeBendCoordinateAttributes(bendedEdge);
-					if (bendsBeforeBending.size() >= idx && idx >= 0) {
-						AttributeHelper.removeEdgeBends(bendedEdge);
-						for (int i = 0; i < bendsBeforeBending.size(); i++) {
-							if (i == idx) {
-								// introduce a bend between bends i and i+1 (and not at the end)
-								lastBendAdded = AttributeHelper.addEdgeBend(bendedEdge, e.getX(), e.getY(), true);
-								added = true;
+					idx = ls.getIndexOfPathWhichContains(e.getX() - ec.getX() + 1, e.getY() - ec.getY() + 1); // same formula as in GraffitiView.myFindComponent(...)
+					if(idx != -1) {
+						bendsBeforeBending = AttributeHelper.getEdgeBendCoordinateAttributes(bendedEdge);
+						if (bendsBeforeBending.size() >= idx && idx >= 0) {
+							AttributeHelper.removeEdgeBends(bendedEdge);
+							for (int i = 0; i < bendsBeforeBending.size(); i++) {
+								if (i == idx) {
+									// introduce a bend between bends i and i+1 (and not at the end)
+									lastBendAdded = AttributeHelper.addEdgeBend(bendedEdge, e.getX(), e.getY(), true);
+									added = true;
+								}
+								AttributeHelper.addEdgeBend(bendedEdge, bendsBeforeBending.get(i).getX(), bendsBeforeBending.get(i).getY(), true);
 							}
-							AttributeHelper.addEdgeBend(bendedEdge, bendsBeforeBending.get(i).getX(), bendsBeforeBending.get(i).getY(), true);
 						}
 					}
 				}
@@ -1228,6 +1234,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		 * will be the viewcomponent
 		 */
 		src = getFoundComponent();
+		lastPressedComponent = src;
 		if(e.isShiftDown() && e.isControlDown())
 			if( ! (src instanceof View))
 				src = src.getParent();
@@ -1236,7 +1243,6 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		 */
 		prevPosX = e.getX();
 		prevPosY = e.getY();
-//		System.out.println("selected view: "+src.toString());
 		if (src instanceof View)
 			selectedView = src;
 		else
