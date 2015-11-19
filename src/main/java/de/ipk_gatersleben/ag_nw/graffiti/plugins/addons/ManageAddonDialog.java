@@ -220,7 +220,7 @@ public class ManageAddonDialog extends JDialog {
 				 * small wait loop thing for the download button
 				 */
 				final WaitAnimationButton waitAnimationButton = new WaitAnimationButton(buttondownload);
-				final Thread t = new Thread(waitAnimationButton);
+				final Thread waitAnimationThread = new Thread(waitAnimationButton);
 				
 				buttondownload.setText("Find Add-ons/Updates");
 				buttondownload.setOpaque(false);
@@ -230,7 +230,7 @@ public class ManageAddonDialog extends JDialog {
 //						close();
 						buttondownload.setEnabled(false);
 						
-						t.start();
+						waitAnimationThread.start();
 						
 						final RSSFeedManager rfm = RSSFeedManager.getInstance();
 						rfm.loadRegisteredFeeds();
@@ -267,6 +267,7 @@ public class ManageAddonDialog extends JDialog {
 													"Currently, there is no new or additional " +
 													"Add-on available for direct download."));
 								}
+								
 								Object[] input = MyInputHelper.getInput("[OK]", "Direct Add-on Download", res.toArray());
 								initAddonTable();
 							}
@@ -282,7 +283,11 @@ public class ManageAddonDialog extends JDialog {
 											String oldVersion = "";
 											if (addOnProperty != null && addOnProperty.length() > 0 && addOnProperty.contains("/v")) {
 												// "vanted3d/v0.4"
-												String addOnName = addOnProperty.substring(0, addOnProperty.indexOf("/v"));
+												String addOnName;
+												if(addOnProperty.contains("/req"))
+													addOnName = addOnProperty.substring(0, addOnProperty.indexOf("/req"));
+												else
+													addOnName = addOnProperty.substring(0, addOnProperty.indexOf("/v"));
 												String addOnVersion = addOnProperty.substring(addOnProperty.indexOf("/v") + "/v".length());
 												for (Addon a : AddonManagerPlugin.getInstance().getAddons()) {
 													if (a.getDescription() != null) {
@@ -679,17 +684,17 @@ public class ManageAddonDialog extends JDialog {
 }
 
 class WaitAnimationButton implements Runnable {
-	
+
 	JButton waitButton;
 	boolean exit = false;
-	
+
 	/**
 	 * 
 	 */
 	public WaitAnimationButton(JButton waitButton) {
 		this.waitButton = waitButton;
 	}
-	
+
 	@Override
 	public void run() {
 		String saveText = waitButton.getText();
@@ -706,7 +711,7 @@ class WaitAnimationButton implements Runnable {
 		}
 		waitButton.setText(saveText);
 	}
-	
+
 	public void stop() {
 		exit = true;
 	}
