@@ -73,6 +73,10 @@ public class VantedPreferences implements PreferencesInterface {
 			Set<String> graphFileExtensions = MainFrame.getInstance().getIoManager().getGraphFileExtensions();
 			String[] possibleValues = graphFileExtensions.toArray(new String[graphFileExtensions.size()]);
 			params.add(new ObjectListParameter("", PREFERENCE_STANDARD_SAVE_FILEFORMAT, "Standard file format, that is selected for file saving", possibleValues));
+		} else {
+			String[] possibleValues =  new String[]{""};
+			params.add(new ObjectListParameter("", PREFERENCE_STANDARD_SAVE_FILEFORMAT, "Standard file format, that is selected for file saving", possibleValues));
+
 		}
 		
 		if(Logger.getRootLogger().getLevel() == Level.DEBUG)

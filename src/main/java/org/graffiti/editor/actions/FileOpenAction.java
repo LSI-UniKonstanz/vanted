@@ -15,17 +15,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
 import org.ErrorMsg;
 import org.MultipleFileLoader;
 import org.OpenFileDialogService;
 import org.Release;
+import org.graffiti.core.GenericFileFilter;
 import org.graffiti.core.StringBundle;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.help.HelpContext;
 import org.graffiti.managers.IOManager;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.managers.ViewManager;
 import org.graffiti.plugin.actions.GraffitiAction;
+import org.vanted.VantedPreferences;
 
 /**
  * The action for the file open dialog.
@@ -95,6 +99,18 @@ public class FileOpenAction extends GraffitiAction {
 		JFileChooser fc = ioManager.createOpenFileChooser();
 		OpenFileDialogService.setActiveDirectoryFor(fc);
 		fc.setMultiSelectionEnabled(true);
+		
+		/*
+		 * set preferred file extension for opening dialog
+		 */
+		String prefExtension = PreferenceManager.getPreferenceForClass(VantedPreferences.class).get(VantedPreferences.PREFERENCE_STANDARD_SAVE_FILEFORMAT, "");
+		for (FileFilter filterFilter : fc.getChoosableFileFilters()) {
+			System.out.println(filterFilter.toString());
+			if (filterFilter instanceof GenericFileFilter && (((GenericFileFilter) filterFilter).getExtension()).endsWith(prefExtension)) {
+				fc.setFileFilter(filterFilter);
+				break;
+			}
+		}
 		// fc.resetChoosableFileFilters();
 		int returnVal = fc.showDialog(mainFrame, sBundle
 							.getString("menu.file.open"));
