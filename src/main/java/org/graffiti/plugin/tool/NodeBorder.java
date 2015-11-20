@@ -167,12 +167,12 @@ public class NodeBorder
 		cg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 		
 		// cg.setClip(0, 0, 2*width, insets.top);
-		cg.fillRect(1, 1, zoomedBorderWidth, zoomedBorderWidth);
+		cg.fillRect(0, 0, zoomedBorderWidth, zoomedBorderWidth);
 		
 		// Point p = new Point((int)Math.ceil(width/((Graphics2D)cg).getTransform().getScaleX() - insets.right), 0);
 		// cg.fillRect(p.x, p.y, zoomedBorderWidth, zoomedBorderWidth);
 //		cg.fillRect(width - insets.right, 0, zoomedBorderWidth, zoomedBorderWidth);
-		cg.fillRect(width - zoomedBorderWidth, 1, zoomedBorderWidth, zoomedBorderWidth);
+		cg.fillRect(width - zoomedBorderWidth, 0, zoomedBorderWidth, zoomedBorderWidth);
 		
 //		cg.dispose();
 		
@@ -182,7 +182,7 @@ public class NodeBorder
 		// int h_ib = (int)Math.ceil(height/((Graphics2D)cg).getTransform().getScaleY() - insets.bottom);
 		// cg.setClip(0, h_ib, width, insets.bottom);
 		// Point p = new Point(0, h_ib);
-		cg.fillRect(1, height - zoomedBorderWidth, zoomedBorderWidth,
+		cg.fillRect(0, height - zoomedBorderWidth, zoomedBorderWidth,
 				zoomedBorderWidth);
 		
 		// p = new Point((int)Math.ceil(width/((Graphics2D)cg).getTransform().getScaleX() - insets.right),

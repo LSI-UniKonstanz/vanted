@@ -368,8 +368,8 @@ public class NodeComponent
 		logger.debug("adjustComponentSizeAndPosition for node id:" + getGraphElement().getID());
 		
 		Rectangle2D bounds = shape.getRealBounds2D();
-		double offA = -0.5d;
-		double offB = 0d;//2d;
+		double offA = 0;//-2d;
+		double offB = 0;//2d;
 		double xE = shape.getXexcess();
 		double yE = shape.getYexcess();
 		setBounds((int) (bounds.getX() + offA - xE), (int) (bounds.getY() + offA - yE),
