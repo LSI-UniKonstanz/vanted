@@ -44,7 +44,7 @@ public class VantedPreferences implements PreferencesInterface {
 	public static final String PREFERENCE_SHOWALL_ALGORITHMS = "Show all (hidden) algortihms";
 	
 	public static final String PREFERENCE_DEBUG_SHOWPANELFRAMES = "Debug: Show GraphElement Panels";
-
+	public static boolean PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE;
 	public static final String PREFERENCE_STANDARD_SAVE_FILEFORMAT = "Standard save file format";
 	
 	private static VantedPreferences instance;
@@ -144,7 +144,8 @@ public class VantedPreferences implements PreferencesInterface {
 		} else {
 			System.setProperty("http.proxySet", "false");
 		}
-		
+	
+		PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE =  new Boolean(preferences.get(PREFERENCE_DEBUG_SHOWPANELFRAMES, "false"));
 	}
 	
 	@Override

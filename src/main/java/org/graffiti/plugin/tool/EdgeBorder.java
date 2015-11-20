@@ -171,8 +171,9 @@ public class EdgeBorder
 		double bulletSizeHalf = bulletSize / 2d;
 		
 		Graphics2D cg = (Graphics2D) g.create();
-		cg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
-
+		cg.setComposite(AlphaComposite.SrcOver);
+		
+		
 		cg.translate(bx, by);
 		cg.setColor(this.color);
 		

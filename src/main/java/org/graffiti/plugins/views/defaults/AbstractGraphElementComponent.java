@@ -35,7 +35,6 @@ import org.graffiti.attributes.DoubleAttribute;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graphics.GraphElementGraphicAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
-import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.attributecomponent.AbstractAttributeComponent;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.CoordinateSystem;
@@ -57,6 +56,8 @@ public abstract class AbstractGraphElementComponent
 		implements GraffitiViewComponent, GraphicAttributeConstants {
 	
 	private static Logger logger = Logger.getLogger(AbstractGraphElementComponent.class);
+	
+	private static boolean isDebuggingLevel = Logger.getRootLogger().getLevel() == Level.DEBUG;
 	
 	// ~ Instance fields ========================================================
 	private static final long serialVersionUID = 1L;
@@ -386,12 +387,13 @@ public abstract class AbstractGraphElementComponent
 		if (composite != null)
 			((Graphics2D) g).setComposite(composite);
 		
-		super.paintComponent(g);
+//		super.paintComponent(g);
 		/*
-		 * Only for debugging
+		 * Only for debugging 
 		 */
-		if(Logger.getRootLogger().getLevel() == Level.DEBUG) {
-			boolean drawFrames = PreferenceManager.getPreferenceForClass(VantedPreferences.class).getBoolean(VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES, false); 
+		if(isDebuggingLevel) {
+//			boolean drawFrames = PreferenceManager.getPreferenceForClass(VantedPreferences.class).getBoolean(VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES, false); 
+			boolean drawFrames = VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE; 
 			// draw frame, indicating the panel-bounds
 			if(drawFrames) {
 				g.setColor(Color.GRAY);
@@ -412,9 +414,8 @@ public abstract class AbstractGraphElementComponent
 				bounds = "[" + getBounds().getX() + ", " + getBounds().getY() + ", " + getBounds().getWidth() + ", " + getBounds().getHeight() + "]";
 				g.drawString(bounds, 5, 8);
 			}
-		} else {
+		} else
 			drawShape(g);
-		}
 	}
 	
 	/**
@@ -492,8 +493,8 @@ public abstract class AbstractGraphElementComponent
 		
 		Container parent = getParent();
 		if (parent != null && parent instanceof Zoomable) {
-			double zoomx = getZoom() == null ? 1 : getZoom().getScaleX();
-			double zoomy = getZoom() == null ? 1 : getZoom().getScaleY();
+			double zoomx = getZoom().getScaleX();
+			double zoomy = getZoom().getScaleY();
 			double newx = (double) (getX()) * zoomx;
 			double newy = (double) (getY()) * zoomy;
 			double newwidth = (double) (width) * zoomx;

@@ -195,7 +195,7 @@ public class NodeComponent
 	 */
 	@Override
 	protected void drawShape(Graphics g) {
-		logger.debug("drawShape for node id:" + getGraphElement().getID());
+//		logger.debug("drawShape for node id:" + getGraphElement().getID());
 //		logger.debug("graph id " + getGraphElement().getGraph().getName() + ", node id:" + getGraphElement().getID() + ", border:" + getBorder().toString());
 		// super.drawShape(g);
 		Graphics2D drawArea = (Graphics2D) g;
@@ -203,15 +203,17 @@ public class NodeComponent
 			zommableView = (Zoomable)getParent();
 			zoomfactor = zommableView.getZoom().getScaleX();
 		}
-		if(getWidth() * zoomfactor < 5 || getHeight() * zoomfactor < 5) {
+		int width = getWidth();
+		int height = getHeight();
+		if(width * zoomfactor < 4 || height * zoomfactor < 4) {
 			
 			if (drawFrame) {
 				drawArea.setPaint(framePaint);
-				drawArea.fillRect(0, 0, getWidth(), getHeight());
+				drawArea.fillRect(0, 0, width, height);
 			}
 
 			drawArea.setPaint(fillPaint);
-			drawArea.drawRect(0, 0, getWidth(), getHeight());
+			drawArea.drawRect(0, 0, width, height);
 			
 			return;
 		}

@@ -164,7 +164,7 @@ public class NodeBorder
 		
 		// Paint top left and right
 		Graphics2D cg = (Graphics2D) g.create();
-		cg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+		cg.setComposite(AlphaComposite.SrcOver);
 		
 		// cg.setClip(0, 0, 2*width, insets.top);
 		cg.fillRect(0, 0, zoomedBorderWidth, zoomedBorderWidth);
