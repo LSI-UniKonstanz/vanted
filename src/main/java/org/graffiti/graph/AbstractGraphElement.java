@@ -86,6 +86,7 @@ public abstract class AbstractGraphElement
 	public AbstractGraphElement(Graph graph) {
 		assert graph != null;
 		this.graph = graph;
+		setID(IdGenereator.getNextID());
 	}
 	
 	// ~ Methods ================================================================

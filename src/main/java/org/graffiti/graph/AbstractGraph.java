@@ -587,6 +587,8 @@ public abstract class AbstractGraph extends AbstractAttributable implements
 			if (newNode == null) {
 				ErrorMsg.addErrorMessage("Node is NULL");
 			}
+			// set the same node id as in the original graph
+			newNode.setID(oldNode.getID()); 
 			hm.put(oldNode, newNode);
 			newElements.add(newNode);
 		}
@@ -672,6 +674,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements
 	
 	/**
 	 * Adds a copy of the specified node to the graph and returns the copy.
+	 * The copy will NOT have the same id though!!!
 	 * Informs the ListenerManager about the newly added node in the same way
 	 * as if a completely new node was added. Also informs the ListenerManager
 	 * about the addition of attributes by using the <code>add(Attribute)</code> method of <code>CollectionAttribute</code>.
@@ -686,7 +689,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements
 		CollectionAttribute col = (CollectionAttribute) node.getAttributes()
 							.copy();
 		Node newNode = this.addNode(col);
-		newNode.setID(node.getID()); // copied nodes share the same ID
+//		newNode.setID(node.getID()); // copied nodes share the same ID
 		newNode.setViewID(node.getViewID());
 		newNode.setGraph(this);
 		return newNode;
