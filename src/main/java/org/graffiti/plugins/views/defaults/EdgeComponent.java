@@ -164,10 +164,6 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
-		if (edgeAttr == null)
-			edgeAttr = (EdgeGraphicAttribute) ((Edge) graphElement)
-					.getAttribute(GRAPHICS);
-		
 		if (edgeAttr.getFrameThickness() < 0) {
 			try {
 				recreate();
@@ -256,10 +252,10 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		 */
 		String id = attr.getId();
 		
-//		if (id.equals(LINEMODE) || id.equals(FRAMETHICKNESS)
-//				|| id.equals(FRAMECOLOR)) {
-//			repaint();
-//		} else 
+		if (id.equals(LINEMODE) || id.equals(FRAMETHICKNESS)
+				|| id.equals(FRAMECOLOR)) {
+			updateEdgeColors();
+		} else 
 		if (id.equals(DOCKING)) {
 			((EdgeShape) this.shape).buildShape((EdgeGraphicAttribute) attr,
 					(NodeShape) sourceComp.getShape(), (NodeShape) targetComp
@@ -321,6 +317,10 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	@Override
 	protected void recreate() throws ShapeNotFoundException {
 		logger.debug("recreate for edge id:" + getGraphElement().getID());
+		
+		if (edgeAttr == null)
+			edgeAttr = (EdgeGraphicAttribute) ((Edge) graphElement)
+					.getAttribute(GRAPHICS);
 		
 		stroke = null;
 		EdgeGraphicAttribute geAttr;
@@ -402,6 +402,10 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		} else
 			gp = null;
 		
+		updateEdgeColors();
+	}
+
+	private void updateEdgeColors() {
 		ColorAttribute fillColor = edgeAttr.getFillcolor();
 		fillColorOpaque = fillColor.getColor();
 		
