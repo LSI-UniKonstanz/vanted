@@ -1276,7 +1276,6 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 			}
 			g.setTransform(new AffineTransform(outputScale, 0, 0, outputScale, 0,
 					0));
-			
 			// paint graph
 			// boolean isOp = viewerComponent.isOpaque();
 			// viewerComponent.setOpaque(false);
@@ -1286,13 +1285,9 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 			Rectangle ob = viewerComponent.getBounds();
 			viewerComponent.setBounds(0, 0, (int) dimSrc.x, (int) dimSrc.y);
 			// viewerComponent.print(g);
-			if (viewerComponent instanceof IPKGraffitiView)
-				((IPKGraffitiView) viewerComponent).printInProgress = true;
 			viewerComponent.paint(g);
 			viewerComponent.setBounds(ob);
 			setDoubleBuffered(viewerComponent, true);
-			if (viewerComponent instanceof IPKGraffitiView)
-				((IPKGraffitiView) viewerComponent).printInProgress = false;
 			// viewerComponent.setOpaque(isOp);
 			// setDoubleBuffered(viewerComponent, true);
 			

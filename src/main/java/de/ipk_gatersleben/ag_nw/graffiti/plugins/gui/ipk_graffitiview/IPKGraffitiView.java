@@ -237,6 +237,7 @@ public class IPKGraffitiView
 		logger.debug("ipkgraffitiview: w:" + getWidth() + ", h: " + getHeight());
 		
 		Rectangle visibleRect = getVisibleRect();
+			
 		logger.debug("physical pixel area visible x: " + visibleRect.getX() + " y: " + visibleRect.getY() + " w: " + visibleRect.getWidth() + " h: "
 				+ visibleRect.getHeight());
 		/*
@@ -249,19 +250,9 @@ public class IPKGraffitiView
 		int curY = starty;
 		
 		g.setColor(Color.LIGHT_GRAY);
-		int zoomedwidth;
-		int zoomedheight;
-		/*
-		 * if we print the document, we don't only want to print the grid for the
-		 * currently visible area but for the whole document
-		 */
-		if (printInProgress) {
-			zoomedwidth = getWidth();
-			zoomedheight = getHeight();
-		} else {
-			zoomedwidth = (int) ((visibleRect.getX() + visibleRect.getWidth()) * 1 / getZoom().getScaleX());
-			zoomedheight = (int) ((visibleRect.getY() + visibleRect.getHeight()) * 1 / getZoom().getScaleX());
-		}
+
+		int zoomedwidth = (int) ((visibleRect.getX() + visibleRect.getWidth()) * 1 / getZoom().getScaleX());
+		int zoomedheight = (int) ((visibleRect.getY() + visibleRect.getHeight()) * 1 / getZoom().getScaleX());
 		logger.debug("zoomedwidth " + zoomedwidth + " zoomedheight " + zoomedheight);
 		while (curX < zoomedwidth) {
 			
