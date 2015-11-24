@@ -1436,7 +1436,7 @@ public class AttributeHelper implements HelperClass {
 		}
 		if (attributeValue instanceof Double) {
 			try {
-				if (((Double) attributeValue).doubleValue() == Double.NaN)
+				if (Double.isNaN(((Double)attributeValue).doubleValue()))
 					return;
 				attributable.setDouble(path + attributeSeparator + attributeName, ((Double) attributeValue).doubleValue());
 			} catch (IllegalArgumentException e) {
@@ -1448,7 +1448,7 @@ public class AttributeHelper implements HelperClass {
 			return;
 		}
 		if (attributeValue instanceof Float) {
-			if (((Float) attributeValue).floatValue() == Float.NaN)
+			if (Float.isNaN(((Float) attributeValue).floatValue()))
 				return;
 			attributable.setFloat(path + attributeSeparator + attributeName, ((Float) attributeValue).floatValue());
 			return;
@@ -1460,7 +1460,7 @@ public class AttributeHelper implements HelperClass {
 			return;
 		}
 		if (attributeValue instanceof Long) {
-			if (((Long) attributeValue).intValue() == Long.MAX_VALUE)
+			if (((Long) attributeValue).longValue() == Long.MAX_VALUE)
 				return;
 			attributable.setLong(path + attributeSeparator + attributeName, ((Long) attributeValue).longValue());
 			return;
@@ -1880,25 +1880,31 @@ public class AttributeHelper implements HelperClass {
 	
 	public static void setBorderWidth(Edge edge, double frameThickness) {
 		EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
-		if (ega == null)
+		if (ega == null) {
 			edge.addAttribute(getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, edge.isDirected()),
 					GraphicAttributeConstants.GRAPHICS);
+			ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
+		}
 		ega.setFrameThickness(frameThickness);
 	}
 	
 	public static void setArrowSize(Edge edge, double arrowSize) {
 		EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
-		if (ega == null)
+		if (ega == null) {
 			edge.addAttribute(getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, edge.isDirected()),
 					GraphicAttributeConstants.GRAPHICS);
+			ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
+		}
 		ega.setThickness(arrowSize);
 	}
 	
 	public static double getArrowSize(Edge edge) {
 		EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
-		if (ega == null)
+		if (ega == null) {
 			edge.addAttribute(getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, edge.isDirected()),
 					GraphicAttributeConstants.GRAPHICS);
+			ega = (EdgeGraphicAttribute) edge.getAttribute(GraphicAttributeConstants.GRAPHICS);
+		}
 		return ega.getThickness();
 	}
 	

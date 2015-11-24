@@ -29,7 +29,6 @@ import org.graffiti.selection.Selection;
 public class InvertSelectionAlgorithm
 					extends AbstractAlgorithm {
 	
-	Selection selection;
 	
 	/**
 	 * Constructs a new instance.

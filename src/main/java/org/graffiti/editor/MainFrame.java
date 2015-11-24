@@ -1457,7 +1457,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					EditorSession es = (EditorSession) s;
 					if (es.getFileNameFull() == null)
 						continue;
-					if (es.getFileNameFull().equals(file.toURI())) {
+					if (es.getFileNameFull().equals(file.toURI().toString())) {
 						esf = es;
 						break;
 					}
@@ -3534,9 +3534,10 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					}
 				}
 			}
-			if (session.getViews().size() >= 2) {
-				detachedFrames.remove(f);
-			}
+			//TODO: check, why code is here (found by matthiak)
+//			if (session.getViews().size() >= 2) {
+//					detachedFrames.remove(f);
+//			}
 			
 			View view = f.getView();
 			view.closing(e);

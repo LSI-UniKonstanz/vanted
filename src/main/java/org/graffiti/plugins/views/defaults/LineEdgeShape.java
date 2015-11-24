@@ -423,7 +423,7 @@ public abstract class LineEdgeShape implements EdgeShape {
 			hollowSourceArrowShape = shapeClass.contains("Thin");
 			try {
 				shapeClass = StringManipulationTools.stringReplace(shapeClass, "Thin", "");
-				if (!(tailShape != null) || !(tailShape.getClass().equals(shapeClass)))
+				if (!(tailShape != null) || !(tailShape.getClass().toString().equals(shapeClass)))
 					tailShape = (ArrowShape) InstanceLoader.createInstance(shapeClass);
 			} catch (InstanceCreationException ie) {
 				throw new ShapeNotFoundException(ie.toString());

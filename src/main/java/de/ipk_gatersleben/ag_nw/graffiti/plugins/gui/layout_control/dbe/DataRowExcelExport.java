@@ -52,7 +52,7 @@ public class DataRowExcelExport implements Comparable, Comparator {
 	}
 	
 	public String getValue(int i) {
-		return values.get(i);
+		return values.get(Integer.toString(i));
 	}
 	
 	public void addValue(String substanceName, double value) {

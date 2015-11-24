@@ -106,6 +106,7 @@ public class NaivePatternFinderAlgorithm
 		
 		if (graph == null) {
 			errors.add("The graph instance may not be null.");
+			return;
 		}
 		
 		if (!graph.isDirected() && !ignoreEdgeDirection) {

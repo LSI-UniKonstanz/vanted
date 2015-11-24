@@ -29,7 +29,13 @@ public class ChartComponentManager {
 	}
 	
 	public void removeChartComponent(ChartComponent chartComponent) {
-		chartComponents.remove(chartComponent.getName());
+		ChartComponent ccToRemove = null;
+		for(ChartComponent cc : chartComponents) {
+			if(cc.getName().equals(chartComponent.getName()))
+				ccToRemove = cc;
+		}
+		if(ccToRemove != null)
+			chartComponents.remove(ccToRemove);
 	}
 	
 	public JComponent getChartComponent(String ct, GraphElement ge) {

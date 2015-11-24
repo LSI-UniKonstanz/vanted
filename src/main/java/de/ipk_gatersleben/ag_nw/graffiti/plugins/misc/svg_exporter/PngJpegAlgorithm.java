@@ -982,15 +982,17 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 		}
 		
 		try {
-			lastEvent.setObject(algorithm.getActionEvent());
-			if (f != null)
-				lastFolder.setObject(new File(f).getParent());
-			
-			if (f != null
-					&& !f.endsWith(PngJpegAlgorithm.replaceExtension(graph
-							.getName(false), extension))) {
-				lastEvent.setObject(null);
-				lastFolder.setObject(null);
+			if(lastEvent != null) { 
+				lastEvent.setObject(algorithm.getActionEvent());
+				if (f != null)
+					lastFolder.setObject(new File(f).getParent());
+
+				if (f != null
+						&& !f.endsWith(PngJpegAlgorithm.replaceExtension(graph
+								.getName(false), extension))) {
+					lastEvent.setObject(null);
+					lastFolder.setObject(null);
+				}
 			}
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);

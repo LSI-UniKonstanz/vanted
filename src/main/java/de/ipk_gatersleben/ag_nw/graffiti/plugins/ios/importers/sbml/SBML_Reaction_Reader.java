@@ -264,7 +264,7 @@ public class SBML_Reaction_Reader {
 						id = localParameter.getId();
 						name = localParameter.getName();
 						value = localParameter.getValue();
-						if (value.equals(Double.NaN)) {
+						if (Double.isNaN(value)) {
 							SBML_Logger.addErrorMessage("Attribute value of reaction "
 									+ reactionID
 									+ " "
@@ -823,11 +823,6 @@ public class SBML_Reaction_Reader {
 			ref = it.next();
 			reactantNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 			stoichiometry = Double.toString(ref.getStoichiometry());
-			if (ref.getStoichiometry() == Double.NaN) {
-				SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
-						+ reactionID + " species " + ref.getSpecies()
-						+ " is not a valid double value.");
-			}
 			newReactionEdge = g.addEdge(reactantNode, reactionNode, true,
 					AttributeHelper.getDefaultGraphicsAttributeForEdge(
 							Color.BLACK, Color.BLACK, true));
@@ -836,8 +831,11 @@ public class SBML_Reaction_Reader {
 			if (reversible) {
 				AttributeHelper.setArrowtail(newReactionEdge, true);
 			}
-			
-			if (!stoichiometry.equals(Double.toString(Double.NaN))) {
+	        if (Double.isNaN(ref.getStoichiometry())) {
+	            SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
+	                    + reactionID + " species " + ref.getSpecies()
+	                    + " is not a valid double value.");
+	        } else {
 				AttributeHelper.setLabel(newReactionEdge, stoichiometry);
 				AttributeHelper.setAttribute(newReactionEdge, SBML_Constants.SBML,
 						SBML_Constants.STOICHIOMETRY, stoichiometry);
@@ -887,13 +885,12 @@ public class SBML_Reaction_Reader {
 			if (reversible) {
 				AttributeHelper.setArrowtail(newReactionEdge, true);
 			}
-			if (ref.getStoichiometry() == Double.NaN) {
-				SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
-						+ reactionID + " species " + ref.getSpecies()
-						+ " is not a valid double value.");
-			}
 			
-			if (!stoichiometry.equals(Double.toString(Double.NaN))) {
+	        if (Double.isNaN(ref.getStoichiometry())) {
+	            SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
+	                    + reactionID + " species " + ref.getSpecies()
+	                    + " is not a valid double value.");
+	        } else {
 				AttributeHelper.setLabel(newReactionEdge, stoichiometry);
 				AttributeHelper.setAttribute(newReactionEdge, SBML_Constants.SBML,
 						SBML_Constants.STOICHIOMETRY, stoichiometry);

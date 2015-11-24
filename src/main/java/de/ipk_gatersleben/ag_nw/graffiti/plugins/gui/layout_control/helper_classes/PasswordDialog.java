@@ -17,7 +17,7 @@ import javax.swing.SwingConstants;
 import org.ErrorMsg;
 
 public class PasswordDialog {
-	public String login, password, lastClearPass;
+	public String login = null, password = null, lastClearPass = null;
 	
 	private static Class<?> pdc = null;
 	private static Object pd = null;

@@ -75,6 +75,7 @@ public class GraphConstraintChecker
 	public GraphConstraintChecker(Graph g, ConstraintCheckerListener ccl) {
 		this.g = g;
 		this.ccl = ccl;
+		constraints = new HashSet<GraphConstraint>();
 	}
 	
 	// ~ Methods ================================================================
@@ -108,7 +109,7 @@ public class GraphConstraintChecker
 	 * Checks whether all constraints are satisfied on the specified graph.
 	 */
 	public void checkConstraints() {
-		if (constraints.isEmpty())
+		if (constraints != null && constraints.isEmpty())
 			return;
 		
 		String message = "";
@@ -121,7 +122,7 @@ public class GraphConstraintChecker
 			} catch (UnsatisfiedConstraintException e) {
 				// TODO save e.getMessage() together with other unsatisfied
 				// constraints
-				message.concat("\n" + e.getMessage());
+				System.err.println(message.concat("\n" + e.getMessage()));
 			}
 		}
 		

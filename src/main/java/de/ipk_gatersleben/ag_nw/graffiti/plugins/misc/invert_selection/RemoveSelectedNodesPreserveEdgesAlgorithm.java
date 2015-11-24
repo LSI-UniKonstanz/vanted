@@ -49,7 +49,6 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 		extends AbstractAlgorithm
 		implements AlgorithmWithComponentDescription {
 	
-	Selection selection;
 	
 	private boolean ignoreDirection = false;
 	

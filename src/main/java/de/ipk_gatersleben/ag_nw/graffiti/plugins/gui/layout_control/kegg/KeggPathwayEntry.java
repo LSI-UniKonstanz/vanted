@@ -214,10 +214,10 @@ public class KeggPathwayEntry implements Comparable<Object> {
 				lastDigit--;
 			if (!Character.isDigit(name[lastDigit]))
 				lastDigit++;
-			if (lastDigit < id.length()) {
-				id.substring(lastDigit);
+			if (lastDigit < id.length())
+				id = id.substring(lastDigit);
+			else	
 				id = id.substring(0, lastDigit);
-			}
 		}
 		return id;
 	}

@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.ErrorMsg;
 import org.graffiti.graph.Graph;
 import org.sbml.jsbml.ListOf;
 import org.sbml.jsbml.Unit;
@@ -110,7 +109,7 @@ public class SBML_UnitDefinition_Reader {
 					Unit unit = itUnit.next();
 					int scale = unit.getScale();
 					Double exponent = unit.getExponent();
-					if (exponent.equals(Double.NaN)) {
+					if (Double.isNaN(exponent)) {
 						SBML_Logger.addErrorMessage("Attribute exponent of unit definition "
 								+ unitCount
 								+ " sub unit "
@@ -120,7 +119,7 @@ public class SBML_UnitDefinition_Reader {
 								+ " is not a valid double value.");
 					}
 					Double multiplier = unit.getMultiplier();
-					if (multiplier.equals(Double.NaN)) {
+					if (Double.isNaN(multiplier)) {
 						SBML_Logger.addErrorMessage("Attribute multiplier of unit definition "
 								+ unitCount
 								+ " sub unit "

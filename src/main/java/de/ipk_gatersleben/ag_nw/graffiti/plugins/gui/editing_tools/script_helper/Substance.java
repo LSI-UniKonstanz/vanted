@@ -23,7 +23,7 @@ import org.w3c.dom.Document;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawComponent.MyComparableDataPoint;
 
-public class Substance implements SubstanceInterface {
+public class Substance implements SubstanceInterface, Cloneable {
 	
 	private String rowId, name, funcat, info, formula, substancegroup, cluster_id, spot, new_blast, new_blast_e_val,
 						new_blast_score, affy_hit, score, secure;

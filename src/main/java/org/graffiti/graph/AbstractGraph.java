@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -320,17 +319,6 @@ public abstract class AbstractGraph extends AbstractAttributable implements
 		return this.listenerManager;
 	}
 	
-	/**
-	 * Returns a list containing a copy of the node list of the graph.
-	 * Removing elements from this collection will have no effect on the graph
-	 * whereas nodes can be modified.
-	 * 
-	 * @return a new <code>java.util.List</code> containing all the nodes
-	 *         of the graph.
-	 */
-	public List<Node> getNodes() {
-		return new LinkedList<Node>(getNodes());
-	}
 	
 	/**
 	 * Returns the number of directed edges of the graph.

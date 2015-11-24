@@ -8,7 +8,6 @@ import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.ErrorMsg;
 import org.graffiti.graph.Graph;
 import org.sbml.jsbml.Compartment;
 import org.sbml.jsbml.ListOf;
@@ -83,7 +82,7 @@ public class SBML_Compartment_Reader {
 						SBML_Constants.COMARTMENT_HEADLINE).append(
 						compartmentCount).toString();
 			}
-			if (size.equals(Double.NaN) && compartment.isSetSize()) {
+			if (Double.isNaN(size) && compartment.isSetSize()) {
 				SBML_Logger.addErrorMessage("Attribute size of "
 						+ presentedHeadline + " is not a valid double value.");
 			}

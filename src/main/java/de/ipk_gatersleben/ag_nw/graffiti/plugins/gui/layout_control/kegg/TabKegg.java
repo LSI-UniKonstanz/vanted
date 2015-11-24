@@ -394,8 +394,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 								response = response.substring(response.indexOf("\n") + 1);
 								if (nextLine.startsWith("A")) {
 									nextLine = nextLine.substring(1);
-									nextLine.trim();
-									nodeA = new DefaultMutableTreeNode(nextLine);
+									nodeA = new DefaultMutableTreeNode(nextLine.trim());
 									allPathwayRootNode.add(nodeA);
 									
 								}

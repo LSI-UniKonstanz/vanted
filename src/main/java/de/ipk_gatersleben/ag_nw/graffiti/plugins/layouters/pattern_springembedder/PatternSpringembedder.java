@@ -783,7 +783,6 @@ public class PatternSpringembedder
 		SingleFiledLayout sfl = new SingleFiledLayout(SingleFiledLayout.COLUMN, SingleFiledLayout.FULL, 1);
 		jc.setLayout(sfl);
 		this.getClass().getClassLoader();
-		this.getClass().getPackage().getName().replace('.', '/');
 		// System.out.println("Image directory: " + path);
 		// progressImg = new ImageIcon(cl.getResource(path + "/" + "waitSlow.gif"));
 		// progressImgOK = new ImageIcon(cl.getResource(path + "/" + "waitOK.gif"));

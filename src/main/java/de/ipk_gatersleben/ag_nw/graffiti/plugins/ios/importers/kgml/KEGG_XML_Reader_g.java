@@ -145,14 +145,14 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			return;
 		}
 		if (attributeValue instanceof Double) {
-			if (((Double) attributeValue).doubleValue() == Double.NaN)
+			if (Double.isNaN(((Double)attributeValue)))
 				return;
 			attributable.setDouble(path + attributeSeparator + attributeName,
 								((Double) attributeValue).doubleValue());
 			return;
 		}
 		if (attributeValue instanceof Float) {
-			if (((Float) attributeValue).floatValue() == Float.NaN)
+			if (Float.isNaN(((Float) attributeValue).floatValue()))
 				return;
 			attributable.setFloat(path + attributeSeparator + attributeName,
 								((Float) attributeValue).floatValue());
@@ -166,7 +166,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			return;
 		}
 		if (attributeValue instanceof Long) {
-			if (((Long) attributeValue).intValue() == Long.MAX_VALUE)
+			if (((Long) attributeValue).longValue() == Long.MAX_VALUE)
 				return;
 			attributable.setLong(path + attributeSeparator + attributeName,
 								((Long) attributeValue).longValue());
@@ -631,8 +631,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 														"http://www.genome.jp/dbget-bin/www_bget?reaction+"
 																			+ reactionName.substring("rn:".length())));
 				processAttribute(reactionNode, entry, "type", "kegg_reaction_type");
-				reactionType
-									.equalsIgnoreCase("irreversible");
+
 				boolean reversible = reactionType.equalsIgnoreCase("reversible");
 				Color arrowColor = Color.BLACK;
 				List<?> substrates = entry.getChildren("substrate");

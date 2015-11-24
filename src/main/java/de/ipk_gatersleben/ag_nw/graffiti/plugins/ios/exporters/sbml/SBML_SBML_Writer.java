@@ -51,7 +51,7 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 		SBML_Constants.init();
 		PrintStream ps = null;
 		try {
-			ps = new PrintStream(stream, false, "iso-8859-1");
+			ps = new PrintStream(stream, false, "UTF-8");
 		} catch (UnsupportedEncodingException e1) {
 			e1.printStackTrace();
 		}

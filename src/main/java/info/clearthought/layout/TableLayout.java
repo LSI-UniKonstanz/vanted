@@ -1784,7 +1784,14 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
 	 */
 	
 	public void removeLayoutComponent(Component component) {
-		list.remove(component);
+
+		for(int i = 0; i < list.size(); i++) {
+			Entry e = list.get(i);
+			if(e.component.equals(component)) {
+				list.remove(e);
+				break;
+			}
+		}
 	}
 	
 	/**

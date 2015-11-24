@@ -191,7 +191,7 @@ public class XmlDataChartComponent extends JComponent {
 			jfChart.getTitle().setPaint(NodeTools.getChartTitleColor(ge));
 		}
 		JPanel chartPanel;
-		if (chartType.equals(GraffitiCharts.LEGEND_ONLY)) {
+		if (chartType.equals(GraffitiCharts.LEGEND_ONLY.toString())) {
 			Double scale = (Double) AttributeHelper.getAttributeValue(ge, "charting", "legend_scale", new Double(
 					1.0d), new Double(1.0d));
 			jfChart.getLegend().setAnchor(Legend.NORTH);

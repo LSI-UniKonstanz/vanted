@@ -704,24 +704,25 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 				updateView(components, timecomponents, onePlant);
 				status.setCurrentStatusText2("Get Sample Time Values...");
 				times = Experiment.getTimes(md);
-				jcbFilterTime = new JList(times == null ? new String[] { "Error" } : times);
-				jcbFilterTime.setSelectionInterval(0, times.length - 1);
-				jcbFilterTime.setVisibleRowCount(times.length > 5 ? 5 : times.length);
-				timecomponents.add(TableLayout.getSplitVertical(new JLabel("Time Points"), new JScrollPane(jcbFilterTime),
-						TableLayout.PREFERRED, jcbFilterTime.getPreferredScrollableViewportSize().getHeight() + 5));
-				updateView(components, timecomponents, onePlant);
+				if(times != null) { 
+					jcbFilterTime = new JList(times == null ? new String[] { "Error" } : times);
+					jcbFilterTime.setSelectionInterval(0, times.length - 1);
+					jcbFilterTime.setVisibleRowCount(times.length > 5 ? 5 : times.length);
+					timecomponents.add(TableLayout.getSplitVertical(new JLabel("Time Points"), new JScrollPane(jcbFilterTime),
+							TableLayout.PREFERRED, jcbFilterTime.getPreferredScrollableViewportSize().getHeight() + 5));
+					updateView(components, timecomponents, onePlant);
+				}
 				status.setCurrentStatusText2("Analyze Conditions...");
 				String[] plants = Experiment.getConditionsAsString(md);
-				
 				onePlant.add(plants != null && plants.length == 1);
-				
-				jcbFilterPlant = new JList(plants == null ? new String[] { "Error" } : plants);
-				jcbFilterPlant.setSelectionInterval(0, plants.length - 1);
-				jcbFilterPlant.setVisibleRowCount(plants.length > 5 ? 5 : plants.length);
-				timecomponents.add(TableLayout.getSplitVertical(new JLabel("Genotypes/Conditions"), new JScrollPane(
-						jcbFilterPlant), TableLayout.PREFERRED, jcbFilterPlant.getPreferredScrollableViewportSize()
-						.getHeight() + 5));
-				
+				if(plants != null) { 
+					jcbFilterPlant = new JList(plants == null ? new String[] { "Error" } : plants);
+					jcbFilterPlant.setSelectionInterval(0, plants.length - 1);
+					jcbFilterPlant.setVisibleRowCount(plants.length > 5 ? 5 : plants.length);
+					timecomponents.add(TableLayout.getSplitVertical(new JLabel("Genotypes/Conditions"), new JScrollPane(
+							jcbFilterPlant), TableLayout.PREFERRED, jcbFilterPlant.getPreferredScrollableViewportSize()
+							.getHeight() + 5));
+				}
 				status.setCurrentStatusText2("Looking for missing replicates...");
 				if (Experiment.isReplicateDataMissing(md))
 					timecomponents.add(TableLayout.getSplitVertical(new JLabel("Replicate data not available"),

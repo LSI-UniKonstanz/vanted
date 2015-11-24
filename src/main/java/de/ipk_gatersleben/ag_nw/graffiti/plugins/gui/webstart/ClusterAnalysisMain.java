@@ -241,8 +241,6 @@ public class ClusterAnalysisMain {
 		}
 		
 		ClusterAnalysisMain.class.getClassLoader();
-		ClusterAnalysisMain.class.getPackage().getName().replace(
-							'.', '/');
 		
 		// URL r1 = cl.getResource(path+"/jarprefs.xml");
 		// URL r2 = cl.getResource(path + "/default.gml");

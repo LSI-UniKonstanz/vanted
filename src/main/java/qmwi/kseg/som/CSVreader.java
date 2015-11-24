@@ -24,7 +24,7 @@ public class CSVreader {
 			mainData.setGroupDescription(reader.readLine());
 			
 			while ((currentLine = reader.readLine()) != null) {
-				currentLine.replace(',', '.');
+				currentLine = currentLine.replace(',', '.');
 				mainData.addEntry(currentLine);
 			}
 		} catch (FileNotFoundException e) {

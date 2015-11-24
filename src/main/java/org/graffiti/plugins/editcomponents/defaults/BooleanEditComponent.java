@@ -80,7 +80,7 @@ public class BooleanEditComponent
 		// emptyIcon = new ImageIcon(iBundle.getImage("bool.half.notselected"));
 		// defaultSelectedIcon = new ImageIcon(iBundle.getImage("bool.selected"));
 		
-		checkBox.setPressedIcon(emptyIcon);
+//		checkBox.setPressedIcon(emptyIcon);
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -148,13 +148,13 @@ public class BooleanEditComponent
 	 * corresponding <code>JComponent</code>.
 	 */
 	public void setEditFieldValue() {
-		if (showEmpty) {
-			checkBox.setSelectedIcon(emptyIcon);
-			checkBox.setIcon(emptyIcon);
-		} else {
-			checkBox.setSelectedIcon(defaultSelectedIcon);
-			checkBox.setIcon(defaultIcon);
-		}
+//		if (showEmpty) {
+//			checkBox.setSelectedIcon(emptyIcon);
+//			checkBox.setIcon(emptyIcon);
+//		} else {
+//			checkBox.setSelectedIcon(defaultSelectedIcon);
+//			checkBox.setIcon(defaultIcon);
+//		}
 		
 		checkBox.setSelected(((Boolean) this.displayable.getValue()).booleanValue());
 	}

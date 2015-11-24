@@ -192,7 +192,7 @@ public class RSSFeedManager implements HelperClass {
 		if (isnew) {
 			desc.add(description);
 			if (newURLstring.contains("feed://"))
-				newURLstring.replaceFirst("feed://", "http://");
+				newURLstring = newURLstring.replaceFirst("feed://", "http://");
 			urls.add(newURLstring);
 			date.add(null);
 			removeHTML.add(true);

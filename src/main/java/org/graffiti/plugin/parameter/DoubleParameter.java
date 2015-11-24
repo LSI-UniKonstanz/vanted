@@ -130,7 +130,7 @@ public class DoubleParameter
 			this.value = (Double) value;
 		if(value instanceof String){
 			try {
-				value = Double.parseDouble((String)value);
+				this.value = Double.parseDouble((String)value);
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

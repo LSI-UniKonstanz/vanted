@@ -340,7 +340,7 @@ public class KineticLawHelper implements AttributeListener {
 			
 			if (newValue instanceof XMLNode && isSetNotes(reactionNode)) {
 				XMLNode notes = (XMLNode) newValue;
-				if (attributeName.equals(SBML_Constants.KINETIC_LAW_NOTES) && notes.equals(SBML_Constants.EMPTY)) {
+				if (attributeName.equals(SBML_Constants.KINETIC_LAW_NOTES) && notes.getChildCount() != 0) {
 					deleteNotes(node);
 				} else
 					if (attributeName.equals(SBML_Constants.KINETIC_LAW_NOTES) && !getNotes(node).equals(notes)) {
@@ -350,7 +350,7 @@ public class KineticLawHelper implements AttributeListener {
 			}
 			if (newValue instanceof Annotation && isSetAnnotation(reactionNode)) {
 				Annotation annotation = (Annotation) newValue;
-				if (attributeName.equals(SBML_Constants.KINETIC_LAW_ANNOTATION) && annotation.equals(SBML_Constants.EMPTY)) {
+				if (attributeName.equals(SBML_Constants.KINETIC_LAW_ANNOTATION) && annotation.toString().equals(SBML_Constants.EMPTY)) {
 					deleteAnnotation(node);
 				} else
 					if (attributeName.equals(SBML_Constants.KINETIC_LAW_ANNOTATION) && !getAnnotation(node).equals(annotation)) {
@@ -405,7 +405,7 @@ public class KineticLawHelper implements AttributeListener {
 					String localParameterName = SBML_Constants.LOCAL_PARAMETER + count + SBML_Constants.LOCAL_PARAMETER_VALUE;
 					
 					Double value = (Double) newValue;
-					if (value.equals(SBML_Constants.EMPTY)) {
+					if (Double.isNaN(value)) {
 						SBMLHelper.deleteLocalParameterValue(node, SBMLHelper.getLocalParameterID(node, count));
 					}
 					else
@@ -463,7 +463,7 @@ public class KineticLawHelper implements AttributeListener {
 					
 					XMLNode notes = (XMLNode) newValue;
 					XMLNode notesOld = getNotes(node);
-					if (attributeName.equals(localParameterNote) && notes.equals(SBML_Constants.EMPTY)) {
+					if (attributeName.equals(localParameterNote) && notes.getChildCount() == 0) {
 						localParameter.deleteNotes(node);
 					}
 					else
@@ -478,7 +478,7 @@ public class KineticLawHelper implements AttributeListener {
 					
 					Annotation annotation = (Annotation) newValue;
 					Annotation oldAnnotation = getAnnotation(node);
-					if (attributeName.equals(localParameterAnnotation) && annotation.equals(SBML_Constants.EMPTY)) {
+					if (attributeName.equals(localParameterAnnotation) && annotation.getFullAnnotationString().isEmpty()) {
 						localParameter.deleteAnnotation(node);
 					}
 					else

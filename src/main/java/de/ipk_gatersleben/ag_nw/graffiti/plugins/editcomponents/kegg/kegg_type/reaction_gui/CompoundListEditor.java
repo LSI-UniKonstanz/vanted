@@ -91,7 +91,7 @@ public class CompoundListEditor extends JComponent {
 		if (entries != null)
 			for (Entry e : entries) {
 				EntryType et = e.getType();
-				if (et != EntryType.map && et != EntryType.unspecified && et != EntryType.group
+				if (et != EntryType.map && et != EntryType.unspecified
 									&& et != EntryType.group && et != EntryType.genes && et != EntryType.compound) {
 					result.add(e);
 				}
@@ -105,7 +105,7 @@ public class CompoundListEditor extends JComponent {
 		if (entries != null)
 			for (Entry e : entries) {
 				EntryType et = e.getType();
-				if (et != EntryType.map && et != EntryType.unspecified && et != EntryType.group
+				if (et != EntryType.map && et != EntryType.unspecified 
 									&& et != EntryType.group && et != EntryType.genes && et != EntryType.enzyme) {
 					if (!knownIds.contains(e.getName().getId())) {
 						knownIds.add(e.getName().getId());

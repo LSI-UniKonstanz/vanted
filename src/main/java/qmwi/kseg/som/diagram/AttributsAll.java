@@ -562,7 +562,7 @@ public class AttributsAll {
 				
 				String temp = (String) org.elementAt(org.size() - 1);
 				
-				temp.trim();
+				temp = temp.trim();
 				
 				org.setElementAt(temp, org.size() - 1);
 				

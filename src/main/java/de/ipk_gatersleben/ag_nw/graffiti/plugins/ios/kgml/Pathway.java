@@ -1131,7 +1131,7 @@ public class Pathway {
 		HashSet<Entry> validEntries = new HashSet<Entry>();
 		HashSet<String> done = new HashSet<String>();
 		for (Entry removeThisEntryIfPossible : removeMergeTheseEntries) {
-			if (validEntries.contains(removeMergeTheseEntries))
+			if (validEntries.contains(removeThisEntryIfPossible ))
 				continue;
 			for (String checkId : id2entryList.keySet()) {
 				if (done.contains(checkId))

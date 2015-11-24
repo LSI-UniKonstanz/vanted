@@ -90,14 +90,14 @@ public class SBMLEventHelper {
 	}
 
 	public void setUseValuesFromTriggerTime(Boolean useValuesFromTriggerTime) {
-		if (!useValuesFromTriggerTime.equals(null)) {
+//		if (!useValuesFromTriggerTime.equals(null)) {
 			AttributeHelper.setAttribute(
 					g,
 					internHeadline,
 					new StringBuffer(internHeadline).append(
 							SBML_Constants.USE_VALUES_FROM_TRIGGER_TIME)
 							.toString(), useValuesFromTriggerTime);
-		}
+//		}
 	}
 
 	public void setID(String ID) {
@@ -235,19 +235,19 @@ public class SBMLEventHelper {
 	}
 
 	public void setInitialValue(Boolean initialValue) {
-		if (!initialValue.equals(SBML_Constants.EMPTY)) {
+//		if (!initialValue.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.INITIAL_VALUE)
 					.toString(), initialValue);
-		}
+//		}
 	}
 
 	public void setPersistent(Boolean persistent) {
-		if (!persistent.equals(null)) {
+//		if (!persistent.equals(null)) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.PERSISTENT)
 					.toString(), persistent);
-		}
+//		}
 	}
 
 	public void setTriggerFunction(String function) {

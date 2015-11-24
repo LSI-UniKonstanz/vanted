@@ -770,8 +770,13 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 		progressValue = value;
 	}
 	
+	/**
+	 * not implemented because it's not supported
+	 * (non-Javadoc)
+	 * @see org.BackgroundTaskStatusProviderSupportingExternalCall#setCurrentStatusValueFine(double)
+	 */
 	public void setCurrentStatusValueFine(double value) {
-		setCurrentStatusValueFine(value);
+		
 	}
 	
 	public boolean wantsToStop() {

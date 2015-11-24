@@ -40,7 +40,6 @@ import org.graffiti.selection.Selection;
 public class FindReplaceDialog
 					extends AbstractAlgorithm {
 	
-	Selection selection;
 	private static ArrayList<String> discardedSearchIDs = getDiscardedSearchIDs();
 	
 	/**

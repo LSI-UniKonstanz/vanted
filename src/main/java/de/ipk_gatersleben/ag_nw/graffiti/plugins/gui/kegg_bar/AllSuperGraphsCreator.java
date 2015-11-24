@@ -92,7 +92,7 @@ public class AllSuperGraphsCreator implements BackgroundTaskStatusProvider,
 		try {
 			message1 = "SOAP: Get KEGG Organism-List";
 			if (orgs == null || orgs.length <= 0)
-				orgs = (OrganismEntry[]) kegg.getOrganisms().toArray();
+				orgs = kegg.getOrganisms().toArray(new OrganismEntry[kegg.getOrganisms().size()]);
 			double current = 0;
 			int max = orgs.length;
 			double step = 1d / orgs.length;

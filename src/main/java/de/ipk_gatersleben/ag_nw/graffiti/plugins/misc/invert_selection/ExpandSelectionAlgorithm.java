@@ -31,7 +31,6 @@ import org.graffiti.selection.Selection;
 public class ExpandSelectionAlgorithm
 					extends AbstractAlgorithm {
 	
-	Selection selection;
 	private boolean directed, inverseDirected;
 	
 	/**

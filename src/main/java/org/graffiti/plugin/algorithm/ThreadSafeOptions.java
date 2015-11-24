@@ -253,12 +253,12 @@ public class ThreadSafeOptions implements HelperClass {
 	 * Array for storing Double parameters
 	 */
 	public Double[] dValues = new Double[1];
-	
+	protected Object dValuesMonitor = new Object();
 	/**
 	 * Array for storing Boolean parameters
 	 */
 	public Boolean[] bValues = new Boolean[0];
-	
+	protected Object bValuesMonitor = new Object();
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -268,7 +268,7 @@ public class ThreadSafeOptions implements HelperClass {
 	 *           DOCUMENT ME!
 	 */
 	public void setDval(int index, double value) {
-		synchronized (dValues) {
+		synchronized (dValuesMonitor) {
 			if (index >= dValues.length) {
 				Double[] newDvalues = new Double[index + 1];
 				
@@ -290,7 +290,7 @@ public class ThreadSafeOptions implements HelperClass {
 	 * @return DOCUMENT ME!
 	 */
 	public double getDval(int index, double defaultValue) {
-		synchronized (dValues) {
+		synchronized (dValuesMonitor) {
 			if (index >= dValues.length) {
 				return defaultValue;
 			}
@@ -315,7 +315,7 @@ public class ThreadSafeOptions implements HelperClass {
 	 *           The new setting stored at index <code>index</code>.
 	 */
 	public void setBval(int index, boolean value) {
-		synchronized (bValues) {
+		synchronized (bValuesMonitor) {
 			if (index >= bValues.length) {
 				Boolean[] newBvalues = new Boolean[index + 1];
 				
@@ -339,7 +339,7 @@ public class ThreadSafeOptions implements HelperClass {
 	 * @return A boolean parameter value.
 	 */
 	public boolean getBval(int index, boolean defaultValue) {
-		synchronized (bValues) {
+		synchronized (bValuesMonitor) {
 			if (index >= bValues.length) {
 				return defaultValue;
 			}

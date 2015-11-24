@@ -161,7 +161,7 @@ public class SBML_SBase_Writer {
 					SBML_Constants.SBML_NOTES)) {
 				XMLNode notes = (XMLNode) getAttribute(g, SBML_Constants.SBML,
 						SBML_Constants.SBML_NOTES);
-				if (!SBML_Constants.EMPTY.equals(notes)) {
+				if (notes != null && notes.getChildCount() != 0) {
 					sbase.setNotes(notes);
 				}
 			}
@@ -190,7 +190,7 @@ public class SBML_SBase_Writer {
 					SBML_Constants.MODEL_NOTES)) {
 				XMLNode notes = (XMLNode) getAttribute(g, SBML_Constants.SBML,
 						SBML_Constants.MODEL_NOTES);
-				if (!SBML_Constants.EMPTY.equals(notes)) {
+				if (notes != null && notes.getChildCount() != 0) {
 					sbase.setNotes(notes);
 				}
 			}
@@ -349,7 +349,7 @@ public class SBML_SBase_Writer {
 				.append(SBML_Constants.NOTES).toString())) {
 			XMLNode notes = (XMLNode) getAttribute(g, niceID, new StringBuffer(
 					niceID).append(SBML_Constants.NOTES).toString());
-			if (!SBML_Constants.EMPTY.equals(notes)) {
+			if (notes != null && notes.getChildCount() != 0) {
 				sbase.appendNotes(notes);
 			}
 		}
@@ -387,7 +387,7 @@ public class SBML_SBase_Writer {
 				.append(SBML_Constants.NOTES).toString())) {
 			XMLNode notes = (XMLNode) getAttribute(g, niceID, new StringBuffer(
 					niceID).append(SBML_Constants.NOTES).toString());
-			if (!SBML_Constants.EMPTY.equals(notes)) {
+			if (notes != null && notes.getChildCount() != 0) {
 				sbase.appendNotes(notes);
 			}
 		}
@@ -423,7 +423,7 @@ public class SBML_SBase_Writer {
 				.append(SBML_Constants.NOTES).toString())) {
 			XMLNode notes = (XMLNode) getAttribute(g, niceID, new StringBuffer(
 					niceID).append(SBML_Constants.NOTES).toString());
-			if (!SBML_Constants.EMPTY.equals(notes)) {
+			if (notes != null && notes.getChildCount() != 0) {
 				sbase.appendNotes(notes);
 			}
 		}
@@ -460,7 +460,7 @@ public class SBML_SBase_Writer {
 				.append(SBML_Constants.NOTES).toString())) {
 			XMLNode notes = (XMLNode) getAttribute(g, niceID, new StringBuffer(
 					niceID).append(SBML_Constants.NOTES).toString());
-			if (!SBML_Constants.EMPTY.equals(notes)) {
+			if (notes != null && notes.getChildCount() != 0) {
 				sbase.appendNotes(notes);
 			}
 		}
@@ -497,7 +497,7 @@ public class SBML_SBase_Writer {
 				.append(SBML_Constants.NOTES).toString())) {
 			XMLNode notes = (XMLNode) getAttribute(g, niceID, new StringBuffer(
 					niceID).append(SBML_Constants.NOTES).toString());
-			if (!SBML_Constants.EMPTY.equals(notes)) {
+			if (notes != null && notes.getChildCount() != 0) {
 				sbase.appendNotes(notes);
 			}
 		}
@@ -534,7 +534,7 @@ public class SBML_SBase_Writer {
 				.append(SBML_Constants.NOTES).toString())) {
 			XMLNode notes = (XMLNode) getAttribute(g, niceID, new StringBuffer(
 					niceID).append(SBML_Constants.NOTES).toString());
-			if (!SBML_Constants.EMPTY.equals(notes)) {
+			if (notes != null && notes.getChildCount() != 0) {
 				sbase.appendNotes(notes);
 			}
 		}
@@ -571,7 +571,7 @@ public class SBML_SBase_Writer {
 				.append(SBML_Constants.NOTES).toString())) {
 			XMLNode notes = (XMLNode) getAttribute(g, niceID, new StringBuffer(
 					niceID).append(SBML_Constants.NOTES).toString());
-			if (!SBML_Constants.EMPTY.equals(notes)) {
+			if (notes != null && notes.getChildCount() != 0) {
 				sbase.appendNotes(notes);
 			}
 		}
@@ -609,7 +609,7 @@ public class SBML_SBase_Writer {
 				.append(SBML_Constants.NOTES).toString())) {
 			XMLNode notes = (XMLNode) getAttribute(g, niceID, new StringBuffer(
 					niceID).append(SBML_Constants.NOTES).toString());
-			if (!SBML_Constants.EMPTY.equals(notes)) {
+			if (notes != null && notes.getChildCount() != 0) {
 				sbase.appendNotes(notes);
 			}
 		}
@@ -647,7 +647,7 @@ public class SBML_SBase_Writer {
 					SBML_Constants.MODIFIER_NOTES)) {
 				XMLNode notes = (XMLNode) getAttribute(e, niceID,
 						SBML_Constants.MODIFIER_NOTES);
-				if (!SBML_Constants.EMPTY.equals(notes)) {
+				if (notes != null && notes.getChildCount() != 0) {
 					sbase.appendNotes(notes);
 				}
 			}
@@ -680,7 +680,7 @@ public class SBML_SBase_Writer {
 					SBML_Constants.REACTANT_NOTES)) {
 				XMLNode notes = (XMLNode) getAttribute(e, niceID,
 						SBML_Constants.REACTANT_NOTES);
-				if (!SBML_Constants.EMPTY.equals(notes)) {
+				if (notes != null && notes.getChildCount() != 0) {
 					sbase.appendNotes(notes);
 				}
 			}
@@ -713,7 +713,7 @@ public class SBML_SBase_Writer {
 					SBML_Constants.PRODUCT_NOTES)) {
 				XMLNode notes = (XMLNode) getAttribute(e, niceID,
 						SBML_Constants.PRODUCT_NOTES);
-				if (!SBML_Constants.EMPTY.equals(notes)) {
+				if (notes != null && notes.getChildCount() != 0) {
 					sbase.appendNotes(notes);
 				}
 			}
@@ -780,7 +780,7 @@ public class SBML_SBase_Writer {
 				.append(SBML_Constants.PRIORITY_NOTES).toString())) {
 			XMLNode notes = (XMLNode) getAttribute(g, niceID, new StringBuffer(
 					niceID).append(SBML_Constants.PRIORITY_NOTES).toString());
-			if (!SBML_Constants.EMPTY.equals(notes)) {
+			if (notes != null && notes.getChildCount() != 0) {
 				priority.appendNotes(notes);
 			}
 		}
@@ -830,7 +830,7 @@ public class SBML_SBase_Writer {
 				.append(SBML_Constants.DELAY_NOTES).toString())) {
 			XMLNode notes = (XMLNode) getAttribute(g, niceID, new StringBuffer(
 					niceID).append(SBML_Constants.DELAY_NOTES).toString());
-			if (!SBML_Constants.EMPTY.equals(notes)) {
+			if (notes != null && notes.getChildCount() != 0) {
 				delay.appendNotes(notes);
 			}
 		}
@@ -884,7 +884,7 @@ public class SBML_SBase_Writer {
 				.toString();
 		if (AttributeHelper.hasAttribute(g, niceID, ea_tooltip)) {
 			XMLNode notes = (XMLNode) getAttribute(g, niceID, ea_tooltip);
-			if (!SBML_Constants.EMPTY.equals(notes)) {
+			if (notes != null && notes.getChildCount() != 0) {
 				eventAssignment.appendNotes(notes);
 			}
 		}
@@ -932,7 +932,7 @@ public class SBML_SBase_Writer {
 				.toString();
 		if (AttributeHelper.hasAttribute(g, niceID, attributeName)) {
 			XMLNode note = (XMLNode) getAttribute(g, niceID, attributeName);
-			if (!SBML_Constants.EMPTY.equals(note)) {
+			if (note.getChildCount() != 0) {
 				unit.appendNotes(note);
 			}
 		}
@@ -1005,7 +1005,7 @@ public class SBML_SBase_Writer {
 			XMLNode notes = (XMLNode) getAttribute(node,
 					SBML_Constants.SBML_KINETIC_LAW,
 					SBML_Constants.KINETIC_LAW_NOTES);
-			if (!SBML_Constants.EMPTY.equals(notes)) {
+			if (notes != null && notes.getChildCount() != 0) {
 				sbase.appendNotes(notes);
 			}
 		}
@@ -1038,7 +1038,7 @@ public class SBML_SBase_Writer {
 				SBML_Constants.REACTION_NOTES)) {
 			XMLNode notes = (XMLNode) getAttribute(node, SBML_Constants.SBML,
 					SBML_Constants.REACTION_NOTES);
-			if (!SBML_Constants.EMPTY.equals(notes)) {
+			if (notes != null && notes.getChildCount() != 0) {
 				sbase.appendNotes(notes);
 			}
 		}
@@ -1071,7 +1071,7 @@ public class SBML_SBase_Writer {
 				SBML_Constants.SPECIES_NOTES)) {
 			XMLNode notes = (XMLNode) getAttribute(node, SBML_Constants.SBML,
 					SBML_Constants.SPECIES_NOTES);
-			if (!SBML_Constants.EMPTY.equals(notes)) {
+			if (notes != null && notes.getChildCount() != 0) {
 				sbase.appendNotes(notes);
 			}
 		}
@@ -1149,7 +1149,7 @@ public class SBML_SBase_Writer {
 					new StringBuffer(SBML_Constants.LOCAL_PARAMETER)
 							.append(localParameterCount)
 							.append(SBML_Constants.NOTES).toString());
-			if (!SBML_Constants.EMPTY.equals(ToolTip)) {
+			if (ToolTip.getChildCount() != 0) {
 				localParameter.appendNotes(ToolTip);
 			}
 		}

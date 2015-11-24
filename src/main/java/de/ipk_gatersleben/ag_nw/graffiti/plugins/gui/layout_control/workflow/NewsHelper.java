@@ -302,7 +302,7 @@ public class NewsHelper implements HelperClass {
 	private boolean urlError(String feeds) {
 		feeds = feeds.trim();
 		if (feeds.contains("|")) {
-			for (String url : feeds.split("|")) {
+			for (String url : feeds.split("\\|")) {
 				try {
 					URL u = new URL(url);
 					u.openConnection();

@@ -420,10 +420,10 @@ public class SBMLReactionHelper {
 	}
 	
 	public void setID(Edge reactionEdge, String ID) {
-		if (!reactionEdge.equals(SBML_Constants.EMPTY)) {
+//		if (!reactionEdge.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML,
 					SBML_Constants.SPECIES_REFERENCE_ID, ID);
-		}
+//		}
 	}
 	
 	public void setName(Edge reactionEdge, String name) {

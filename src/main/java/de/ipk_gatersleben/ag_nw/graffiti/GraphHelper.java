@@ -601,7 +601,7 @@ public class GraphHelper implements HelperClass {
 							.entrySet()) {
 						Collection<CoordinateAttribute> removeThese = entry.getValue();
 						for (CoordinateAttribute ca : removeThese)
-							entry.getKey().getCollectionNoClone().remove(ca);
+							entry.getKey().getCollectionNoClone().remove(ca.toString());
 					}
 				} finally {
 					graph.getListenerManager().transactionFinished(this);

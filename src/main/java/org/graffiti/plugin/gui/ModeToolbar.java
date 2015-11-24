@@ -87,7 +87,7 @@ public class ModeToolbar
 				ll.add(tb.getTool());
 			}
 		}
-		return (Tool[]) ll.toArray();
+		return (Tool[]) ll.toArray(new Tool[ll.size()]);
 	}
 	
 	/**

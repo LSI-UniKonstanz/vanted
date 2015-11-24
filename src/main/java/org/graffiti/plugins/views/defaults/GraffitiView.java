@@ -62,7 +62,6 @@ import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.attributes.SortedCollectionAttribute;
 import org.graffiti.attributes.StringAttribute;
-import org.graffiti.core.StringBundle;
 import org.graffiti.editor.AttributeComponentNotFoundException;
 import org.graffiti.editor.GraffitiFrame;
 import org.graffiti.editor.MainFrame;
@@ -121,9 +120,6 @@ EdgeListener, TransactionListener {
 	// ~ Instance fields ========================================================
 
 	private static final long serialVersionUID = 3257849887318882097L;
-
-	/** The <code>StringBundle</code> of the exceptions. */
-	protected StringBundle sBundle = StringBundle.getInstance();
 
 	protected int maxNodeCnt = Integer.MAX_VALUE; // 5000
 

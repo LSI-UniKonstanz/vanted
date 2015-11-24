@@ -45,10 +45,12 @@ public class GraphElementSelectionLabel extends JLabel {
 			} else
 				if (causingGraphElement instanceof Edge) {
 					e = (Edge) causingGraphElement;
-					String lblNs = AttributeHelper.getLabel(e.getSource(), "(unnamed node (" + n.getID() + ")");
-					String lblNt = AttributeHelper.getLabel(e.getTarget(), "(unnamed node (" + n.getID() + ")");
-					String lbl = AttributeHelper.getLabel(e, "");
-					setText("Edge: " + lblNs + " --> " + lblNt + (lbl.length() > 0 ? " (" + lbl + ")" : ""));
+					if(e != null) {
+						String lblNs = AttributeHelper.getLabel(e.getSource(), "(unnamed node (" + n.getID() + ")");
+						String lblNt = AttributeHelper.getLabel(e.getTarget(), "(unnamed node (" + n.getID() + ")");
+						String lbl = AttributeHelper.getLabel(e, "");
+						setText("Edge: " + lblNs + " --> " + lblNt + (lbl.length() > 0 ? " (" + lbl + ")" : ""));
+					}
 				}
 		setCursor(new Cursor(Cursor.HAND_CURSOR));
 		setForeground(Color.BLUE);

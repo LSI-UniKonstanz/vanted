@@ -36,8 +36,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 public class AllPathsSelectionAlgorithm
 					extends AbstractAlgorithm {
 	
-	Selection selection;
-	
 	private boolean settingIncludeInnerEdges = false;
 	private boolean settingDirected = true;
 	private boolean settingIncludeEdges = true;

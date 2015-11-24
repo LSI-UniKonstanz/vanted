@@ -12,7 +12,6 @@ import javax.xml.stream.XMLStreamException;
 
 import org.AlignmentSetting;
 import org.AttributeHelper;
-import org.ErrorMsg;
 import org.PositionGridGenerator;
 import org.Vector2d;
 import org.graffiti.graph.Edge;
@@ -569,7 +568,7 @@ public class SBMLHelper {
 				Unit unit = itUnit.next();
 				int scale = unit.getScale();
 				Double exponent = unit.getExponent();
-				if (exponent.equals(Double.NaN)) {
+				if (Double.isNaN(exponent)) {
 					SBML_Logger.addErrorMessage("Attribute exponent of unit definition "
 							+ subUnitCount
 							+ " sub unit "
@@ -579,7 +578,7 @@ public class SBMLHelper {
 							+ " is not a valid double value.");
 				}
 				Double multiplier = unit.getMultiplier();
-				if (multiplier.equals(Double.NaN)) {
+				if (Double.isNaN(multiplier)) {
 					SBML_Logger.addErrorMessage("Attribute multiplier of unit definition "
 							+ subUnitCount
 							+ " sub unit "
@@ -623,7 +622,7 @@ public class SBMLHelper {
 		
 		int scale = unit.getScale();
 		Double exponent = unit.getExponent();
-		if (exponent.equals(Double.NaN)) {
+		if (Double.isNaN(exponent)) {
 			SBML_Logger.addErrorMessage("Attribute exponent of unit definition "
 					+ getSubUnitCount(g, headline)
 					+ " sub unit "
@@ -631,7 +630,7 @@ public class SBMLHelper {
 					+ " is not a valid double value.");
 		}
 		Double multiplier = unit.getMultiplier();
-		if (multiplier.equals(Double.NaN)) {
+		if (Double.isNaN(multiplier)) {
 			SBML_Logger.addErrorMessage("Attribute multiplier of unit definition "
 					+ getSubUnitCount(g, headline)
 					+ " sub unit "
@@ -1689,11 +1688,11 @@ public class SBMLHelper {
 	 */
 	private static void setCompartmentSpatialDimensions(Graph g,
 			String internHeadline, Double spatialDimensions) {
-		if (!spatialDimensions.equals(null)) {
+//		if (!spatialDimensions.equals(null)) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.SPATIAL_DIMENSIONS)
 					.toString(), spatialDimensions);
-		}
+//		}
 	}
 	
 	/**
@@ -1708,11 +1707,11 @@ public class SBMLHelper {
 	 */
 	private static void setCompartmentSize(Graph g, String internHeadline,
 			Double size) {
-		if (!size.equals(null)) {
+//		if (!size.equals(null)) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.SIZE).toString(),
 					Double.toString(size));
-		}
+//		}
 	}
 	
 	/**
@@ -1746,11 +1745,11 @@ public class SBMLHelper {
 	 */
 	private static void setCompartmentConstant(Graph g, String internHeadline,
 			Boolean constant) {
-		if (!constant.equals(null)) {
+//		if (!constant.equals(null)) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.CONSTANT).toString(),
 					constant);
-		}
+//		}
 	}
 	
 	/**
@@ -2238,10 +2237,10 @@ public class SBMLHelper {
 	 */
 	public static void addSpeciesInitialAmount(Node speciesNode,
 			Double initialAmount) {
-		if (!initialAmount.equals(null)) {
+//		if (!initialAmount.equals(null)) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML,
 					SBML_Constants.INITIAL_AMOUNT, initialAmount);
-		}
+//		}
 	}
 	
 	/**
@@ -2254,10 +2253,10 @@ public class SBMLHelper {
 	 */
 	public static void addSpeciesInitialConcentration(Node speciesNode,
 			Double initialConcentration) {
-		if (!initialConcentration.equals(null)) {
+//		if (!initialConcentration.equals(null)) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML,
 					SBML_Constants.INITIAL_CONCENTRATION, initialConcentration);
-		}
+//		}
 	}
 	
 	/**
@@ -2286,11 +2285,11 @@ public class SBMLHelper {
 	 */
 	public static void addSpeciesHasOnlySubstanceUnits(Node speciesNode,
 			Boolean hasOnlySubstanceUnits) {
-		if (!hasOnlySubstanceUnits.equals(null)) {
+//		if (!hasOnlySubstanceUnits.equals(null)) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML,
 					SBML_Constants.HAS_ONLY_SUBSTANCE_UNITS,
 					hasOnlySubstanceUnits);
-		}
+//		}
 	}
 	
 	/**
@@ -2303,10 +2302,10 @@ public class SBMLHelper {
 	 */
 	public static void addSpeciesBoundaryConsition(Node speciesNode,
 			Boolean boundaryCondition) {
-		if (!boundaryCondition.equals(null)) {
+//		if (!boundaryCondition.equals(null)) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML,
 					SBML_Constants.BOUNDARY_CONDITION, boundaryCondition);
-		}
+//		}
 	}
 	
 	/**
@@ -2470,7 +2469,7 @@ public class SBMLHelper {
 		Node currentNode = null;
 		while (itNode.hasNext()) {
 			currentNode = itNode.next();
-			if (currentNode.equals(id)) {
+			if (Long.toString(currentNode.getID()).equals(id)) {
 				return currentNode;
 			}
 		}
@@ -3019,11 +3018,11 @@ public class SBMLHelper {
 	 */
 	private static void setParameterValue(Graph g, String internHeadline,
 			Double value) {
-		if (!value.equals(null)) {
+//		if (!value.equals(null)) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.VALUE).toString(),
 					value);
-		}
+//		}
 	}
 	
 	/**
@@ -3057,11 +3056,11 @@ public class SBMLHelper {
 	 */
 	private static void setParameterConstant(Graph g, String internHeadline,
 			Boolean constant) {
-		if (!constant.equals(null)) {
+//		if (!constant.equals(null)) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.PARAMETER_CONSTANT)
 					.toString(), constant);
-		}
+//		}
 	}
 	
 	/**
@@ -4739,10 +4738,10 @@ public class SBMLHelper {
 	 */
 	public static void setReactionReversible(Node reactionNode,
 			Boolean reversible) {
-		if (!reversible.equals(null)) {
+//		if (!reversible.equals(null)) {
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML,
 					SBML_Constants.REVERSIBLE, reversible);
-		}
+//		}
 	}
 	
 	public static void deleteReactionReversible(Node reactionNode) {
@@ -4759,10 +4758,10 @@ public class SBMLHelper {
 	 *           the value that will be set
 	 */
 	public static void setReactionFast(Node reactionNode, Boolean fast) {
-		if (!fast.equals(null)) {
+//		if (!fast.equals(null)) {
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML,
 					SBML_Constants.FAST, fast);
-		}
+//		}
 	}
 	
 	public static void deleteReactionFast(Node reactionNode) {
@@ -4818,10 +4817,10 @@ public class SBMLHelper {
 	 *           the value that will be read in
 	 */
 	public static void setReactionSpeciesID(Edge reactionEdge, String ID) {
-		if (!reactionEdge.equals(SBML_Constants.EMPTY)) {
+//		if (!reactionEdge.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML,
 					SBML_Constants.SPECIES_REFERENCE_ID, ID);
-		}
+//		}
 	}
 	
 	/**
@@ -5025,14 +5024,14 @@ public class SBMLHelper {
 	public static void setStoichiometry(Edge reactionEdge,
 			Double stoichiometry) {
 		if (!AttributeHelper.getSBMLrole(reactionEdge).equals("modifier")) {
-			if (!stoichiometry.equals(null)) {
+//			if (!stoichiometry.equals(null)) {
 				if (isSetStoichiometry(reactionEdge)) {
 					deleteStoichiometry(reactionEdge);
 				}
 				AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML,
 						SBML_Constants.STOICHIOMETRY, stoichiometry);
 				AttributeHelper.setLabel(reactionEdge, Double.toString(stoichiometry));
-			}
+//			}
 		}
 	}
 	
@@ -5118,10 +5117,10 @@ public class SBMLHelper {
 	 */
 	public static void setReactionConstant(Edge reactionEdge, Boolean constant) {
 		if (!AttributeHelper.getSBMLrole(reactionEdge).equals("modifier")) {
-			if (!constant.equals(null)) {
+//			if (!constant.equals(null)) {
 				AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML,
 						SBML_Constants.REACTION_CONSTANT, constant);
-			}
+//			}
 		}
 	}
 	
@@ -5254,14 +5253,14 @@ public class SBMLHelper {
 	 */
 	private static void setLocalParameterValue(Node reactionNode, Double value,
 			String internAttributeName) {
-		if (!value.equals(null)) {
+//		if (!value.equals(null)) {
 			AttributeHelper.setAttribute(
 					reactionNode,
 					SBML_Constants.SBML_KINETIC_LAW,
 					new StringBuffer(internAttributeName).append(
 							SBML_Constants.LOCAL_PARAMETER_VALUE).toString(),
 					value);
-		}
+//		}
 	}
 	
 	/**
@@ -5672,19 +5671,17 @@ public class SBMLHelper {
 		}
 		Node reactantNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 		String stoichiometry = Double.toString(ref.getStoichiometry());
-		if (ref.getStoichiometry() == Double.NaN) {
-			SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
-					+ getReactionID(node) + " species " + ref.getSpecies()
-					+ " is not a valid double value.");
-		}
 		Edge newReactionEdge = node.getGraph().addEdge(reactantNode, node, true,
 				AttributeHelper.getDefaultGraphicsAttributeForEdge(
 						Color.BLACK, Color.BLACK, true));
 		if (isReactionReversible(node)) {
 			AttributeHelper.setArrowtail(newReactionEdge, true);
 		}
-		
-		if (!stoichiometry.equals(Double.toString(Double.NaN))) {
+        if (Double.isNaN(ref.getStoichiometry())) {
+            SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
+                    + getReactionID(node) + " species " + ref.getSpecies()
+                    + " is not a valid double value.");
+        } else {
 			AttributeHelper.setLabel(newReactionEdge, stoichiometry);
 			AttributeHelper.setAttribute(newReactionEdge, SBML_Constants.SBML,
 					SBML_Constants.STOICHIOMETRY, stoichiometry);
@@ -5743,19 +5740,18 @@ public class SBMLHelper {
 		
 		Node productNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 		String stoichiometry = Double.toString(ref.getStoichiometry());
+
 		Edge newReactionEdge = node.getGraph().addEdge(node, productNode, true,
 				AttributeHelper.getDefaultGraphicsAttributeForEdge(
 						Color.BLACK, Color.BLACK, true));
 		if (isReactionReversible(node)) {
 			AttributeHelper.setArrowtail(newReactionEdge, true);
 		}
-		if (ref.getStoichiometry() == Double.NaN) {
-			SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
-					+ getReactionID(node) + " species " + ref.getSpecies()
-					+ " is not a valid double value.");
-		}
-		
-		if (!stoichiometry.equals(Double.toString(Double.NaN))) {
+        if (Double.isNaN(ref.getStoichiometry())) {
+            SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
+                    + getReactionID(node) + " species " + ref.getSpecies()
+                    + " is not a valid double value.");
+        } else {
 			AttributeHelper.setLabel(newReactionEdge, stoichiometry);
 			AttributeHelper.setAttribute(newReactionEdge, SBML_Constants.SBML,
 					SBML_Constants.STOICHIOMETRY, stoichiometry);
@@ -5801,19 +5797,18 @@ public class SBMLHelper {
 			SpeciesReference ref = it.next();
 			Node reactantNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 			String stoichiometry = Double.toString(ref.getStoichiometry());
-			if (ref.getStoichiometry() == Double.NaN) {
-				SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
-						+ reaction.getId() + " species " + ref.getSpecies()
-						+ " is not a valid double value.");
-			}
+
 			Edge newReactionEdge = g.addEdge(reactantNode, node, true,
 					AttributeHelper.getDefaultGraphicsAttributeForEdge(
 							Color.BLACK, Color.BLACK, true));
 			if (reaction.isReversible()) {
 				AttributeHelper.setArrowtail(newReactionEdge, true);
 			}
-			
-			if (!stoichiometry.equals(Double.toString(Double.NaN))) {
+	        if (Double.isNaN(ref.getStoichiometry())) {
+	            SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
+	                    + getReactionID(node) + " species " + ref.getSpecies()
+	                    + " is not a valid double value.");
+	        } else {
 				AttributeHelper.setLabel(newReactionEdge, stoichiometry);
 				AttributeHelper.setAttribute(newReactionEdge, SBML_Constants.SBML,
 						SBML_Constants.STOICHIOMETRY, stoichiometry);
@@ -5831,19 +5826,18 @@ public class SBMLHelper {
 			SpeciesReference ref = itProduct.next();
 			Node productNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 			String stoichiometry = Double.toString(ref.getStoichiometry());
+
 			Edge newReactionEdge = g.addEdge(node, productNode, true,
 					AttributeHelper.getDefaultGraphicsAttributeForEdge(
 							Color.BLACK, Color.BLACK, true));
 			if (reaction.isReversible()) {
 				AttributeHelper.setArrowtail(newReactionEdge, true);
 			}
-			if (ref.getStoichiometry() == Double.NaN) {
-				SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
-						+ reaction.getId() + " species " + ref.getSpecies()
-						+ " is not a valid double value.");
-			}
-			
-			if (!stoichiometry.equals(Double.toString(Double.NaN))) {
+	        if (Double.isNaN(ref.getStoichiometry())) {
+	            SBML_Logger.addErrorMessage("Attribute stochiometry of reaction "
+	                    + getReactionID(node) + " species " + ref.getSpecies()
+	                    + " is not a valid double value.");
+	        } else {
 				AttributeHelper.setLabel(newReactionEdge, stoichiometry);
 				AttributeHelper.setAttribute(newReactionEdge, SBML_Constants.SBML,
 						SBML_Constants.STOICHIOMETRY, stoichiometry);
@@ -5908,45 +5902,47 @@ public class SBMLHelper {
 								.getListOfParameters();
 					}
 				}
-				Iterator<LocalParameter> itLP = listLocalParameter.iterator();
-				int countLocalParameter = 1;
-				while (itLP.hasNext()) {
-					LocalParameter localParameter = itLP.next();
-					String internAttributeName = new StringBuffer(
-							SBML_Constants.LOCAL_PARAMETER).append(
-							countLocalParameter).toString();
-					String presentedAttributeName = new StringBuffer(
-							SBML_Constants.LOCALPARAMETER_HEADLINE).append(
-							countLocalParameter).toString();
-					initLocalParameterNideIDs(presentedAttributeName, internAttributeName, "Kinetic Law");
-					
-					String id = localParameter.getId();
-					String name = localParameter.getName();
-					Double value = localParameter.getValue();
-					if (value.equals(Double.NaN)) {
-						
-						SBML_Logger.addErrorMessage("Attribute value of reaction "
-								+ reaction.getId()
-								+ " "
-								+ presentedAttributeName
-								+ " is not a valid double value.");
-						
+				if(listLocalParameter != null){
+					Iterator<LocalParameter> itLP = listLocalParameter.iterator();
+					int countLocalParameter = 1;
+					while (itLP.hasNext()) {
+						LocalParameter localParameter = itLP.next();
+						String internAttributeName = new StringBuffer(
+								SBML_Constants.LOCAL_PARAMETER).append(
+										countLocalParameter).toString();
+						String presentedAttributeName = new StringBuffer(
+								SBML_Constants.LOCALPARAMETER_HEADLINE).append(
+										countLocalParameter).toString();
+						initLocalParameterNideIDs(presentedAttributeName, internAttributeName, "Kinetic Law");
+
+						String id = localParameter.getId();
+						String name = localParameter.getName();
+						Double value = localParameter.getValue();
+						if (Double.isNaN(value)) {
+
+							SBML_Logger.addErrorMessage("Attribute value of reaction "
+									+ reaction.getId()
+									+ " "
+									+ presentedAttributeName
+									+ " is not a valid double value.");
+
+						}
+						String unit = localParameter.getUnits();
+
+						if (localParameter.isSetId()) {
+							setLocalParameterID(node, localParameter.getId(), internAttributeName);
+						}
+						if (localParameter.isSetName()) {
+							setLocalParameterName(node, localParameter.getName(), internAttributeName);
+						}
+						if (localParameter.isSetValue()) {
+							setLocalParameterValue(node, localParameter.getValue(), internAttributeName);
+						}
+						if (localParameter.isSetUnits()) {
+							setLocalParameterUnits(node, localParameter.getUnits(), internAttributeName);
+						}
+						countLocalParameter++;
 					}
-					String unit = localParameter.getUnits();
-					
-					if (localParameter.isSetId()) {
-						setLocalParameterID(node, localParameter.getId(), internAttributeName);
-					}
-					if (localParameter.isSetName()) {
-						setLocalParameterName(node, localParameter.getName(), internAttributeName);
-					}
-					if (localParameter.isSetValue()) {
-						setLocalParameterValue(node, localParameter.getValue(), internAttributeName);
-					}
-					if (localParameter.isSetUnits()) {
-						setLocalParameterUnits(node, localParameter.getUnits(), internAttributeName);
-					}
-					countLocalParameter++;
 				}
 			}
 		}
@@ -6771,14 +6767,14 @@ public class SBMLHelper {
 	 */
 	private static void setEventUseValuesFromTriggerTime(Graph g,
 			String internHeadline, Boolean useValuesFromTriggerTime) {
-		if (!useValuesFromTriggerTime.equals(null)) {
+//		if (!useValuesFromTriggerTime.equals(null)) {
 			AttributeHelper.setAttribute(
 					g,
 					internHeadline,
 					new StringBuffer(internHeadline).append(
 							SBML_Constants.USE_VALUES_FROM_TRIGGER_TIME)
 							.toString(), useValuesFromTriggerTime);
-		}
+//		}
 	}
 	
 	/**
@@ -6954,11 +6950,11 @@ public class SBMLHelper {
 	 */
 	private static void setTriggerInitialValue(Graph g, String internHeadline,
 			Boolean initialValue) {
-		if (!initialValue.equals(SBML_Constants.EMPTY)) {
+//		if (!initialValue.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.INITIAL_VALUE)
 					.toString(), initialValue);
-		}
+//		}
 	}
 	
 	/**
@@ -6973,11 +6969,11 @@ public class SBMLHelper {
 	 */
 	private static void setTriggerPersistent(Graph g, String internHeadline,
 			Boolean persistent) {
-		if (!persistent.equals(null)) {
+//		if (!persistent.equals(null)) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.PERSISTENT)
 					.toString(), persistent);
-		}
+//		}
 	}
 	
 	/**

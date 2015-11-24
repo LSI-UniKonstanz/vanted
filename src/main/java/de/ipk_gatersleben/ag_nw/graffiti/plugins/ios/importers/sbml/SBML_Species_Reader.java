@@ -87,13 +87,13 @@ public class SBML_Species_Reader {
 				AttributeHelper.setBorderWidth(speciesNode, 1d);
 				compartment = speciesJSBML.getCompartment();
 				initialAmount = speciesJSBML.getInitialAmount();
-				if (initialAmount.equals(Double.NaN)) {
+				if (Double.isNaN(initialAmount)) {
 					SBML_Logger.addErrorMessage("Attribute initialAmount of species "
 							+ id
 							+ " is not a valid double value or it is coexistent with the initialConcentration value.");
 				}
 				initialConcentration = speciesJSBML.getInitialConcentration();
-				if (initialConcentration.equals(Double.NaN)
+				if (Double.isNaN(initialConcentration)
 						&& !(speciesJSBML.isSetInitialAmount())) {
 					SBML_Logger.addErrorMessage("Attribute initialConcentration of species "
 							+ id

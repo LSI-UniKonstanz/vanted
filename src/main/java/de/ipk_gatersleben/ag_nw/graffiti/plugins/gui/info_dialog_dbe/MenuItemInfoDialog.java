@@ -365,7 +365,6 @@ public class MenuItemInfoDialog
 					
 					ClassLoader cl = this.getClass().getClassLoader();
 					
-					this.getClass().getPackage().getName().replace('.', '/');
 					try {
 						FileOutputStream out = new FileOutputStream(temp);
 						InputStream inpS = cl.getResourceAsStream("doc.pdf");
