@@ -7,35 +7,31 @@ import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstraints;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
-import org.graffiti.editor.GravistoService;
 
 import uk.ac.ebi.biomodels.ws.BioModelsWSException;
 import uk.ac.ebi.biomodels.ws.SimpleModel;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter.BiomodelsLoaderCallback;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter.QueryType;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskPanelEntry;
 
 /**
  * @author matthiak
@@ -205,24 +201,26 @@ implements ActionListener, BiomodelsLoaderCallback, KeyListener{
 	
 	@Override
 	public void resultForSimpleModelQuery(QueryType type,
-			final List<SimpleModel> simpleModel) {
+			List<SimpleModel> simpleModel) {
 		
 //		progressBar.setIndeterminate(false);
 		
 		if(simpleModel == null){
 			logger.debug("no results");
-			return;
+			simpleModel = new ArrayList<SimpleModel>();
 		}
 		if(SwingUtilities.isEventDispatchThread())
 			listResults.setListData(simpleModel.toArray(new SimpleModel[simpleModel.size()]));
-		else
+		else {
+			final List<SimpleModel> simpleModelSwingThread = simpleModel;
 			SwingUtilities.invokeLater(new Runnable() {
 				
 				@Override
 				public void run() {
-					listResults.setListData(simpleModel.toArray(new SimpleModel[simpleModel.size()]));
+					listResults.setListData(simpleModelSwingThread.toArray(new SimpleModel[simpleModelSwingThread.size()]));
 				}
 			});
+		}
 		listResults.setEnabled(true);
 		loadSelectedModels.setEnabled(true);
 	}
