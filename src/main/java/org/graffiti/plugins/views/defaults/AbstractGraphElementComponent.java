@@ -384,7 +384,7 @@ public abstract class AbstractGraphElementComponent
 	@Override
 	public void paintComponent(Graphics g) {
 		
-		if (composite != null)
+		if (composite != null && ((GraffitiView)getParent()).getDrawMode() == DrawMode.NORMAL)
 			((Graphics2D) g).setComposite(composite);
 		
 //		super.paintComponent(g);
