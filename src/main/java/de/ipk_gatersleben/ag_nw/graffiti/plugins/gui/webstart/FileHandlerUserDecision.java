@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -49,6 +51,17 @@ public class FileHandlerUserDecision {
 			});
 			guiElements.add(jb);
 		}
+		Collections.sort(guiElements, new Comparator<JComponent>() {
+
+			@Override
+			public int compare(JComponent o1, JComponent o2) {
+				if(o1 instanceof JButton && o2 instanceof JButton) {
+					return ((JButton)o1).getText().compareTo(((JButton)o2).getText());
+				} else
+					return 0;
+			}
+			
+		});
 		fp.addGuiComponentRow(new JLabel("Load all as  "), TableLayout.getMultiSplit(guiElements), false, 2);
 	}
 	
