@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -80,7 +81,16 @@ public class FileHandlerUserDecision {
 			addSelectAllButtons();
 			selectallbuttonsadded = true;
 		}
-		JComboBox jc = new JComboBox(workingset.get(f).toArray());
+		List<DragAndDropHandler> ddhArray = new ArrayList<DragAndDropHandler>(workingset.get(f));
+		Collections.sort(ddhArray, new Comparator<DragAndDropHandler>() {
+
+			@Override
+			public int compare(DragAndDropHandler o1, DragAndDropHandler o2) {
+				return o1.toString().compareTo(o2.toString());
+			}
+			
+		});
+		JComboBox jc = new JComboBox(ddhArray.toArray());
 		file2result.put(f, jc);
 		if (workingset.get(f).size() != 1)
 			fp.addGuiComponentRow(new JLabel(f.getName() + "     "), jc, false, 2);
@@ -92,6 +102,7 @@ public class FileHandlerUserDecision {
 	}
 	
 	public Object getFolderPanel() {
+		
 		fp.setMaximumRowCount(20);
 		fp.layoutRows();
 		return fp;
