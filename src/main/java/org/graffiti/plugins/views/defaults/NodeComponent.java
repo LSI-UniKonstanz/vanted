@@ -167,6 +167,20 @@ public class NodeComponent
 		}
 	}
 	
+	
+	
+	@Override
+	public synchronized void nonGraphicAttributeChanged(Attribute attr)
+			throws ShapeNotFoundException {
+		// TODO Auto-generated method stub
+		super.nonGraphicAttributeChanged(attr);
+		// update attribute components like labels:
+		for (GraffitiViewComponent gvc : attributeComponents.values()) {
+			AttributeComponent attrComp = (AttributeComponent) gvc;
+			attrComp.attributeChanged(attr);
+		}
+	}
+
 	private void updateGraphicsFields() {
 		logger.debug("updateGraphicsFields for node id:" + getGraphElement().getID());
 		
@@ -205,7 +219,7 @@ public class NodeComponent
 		}
 		int width = getWidth();
 		int height = getHeight();
-		if(width * zoomfactor < 4 || height * zoomfactor < 4) {
+		if(width * zoomfactor < 5 || height * zoomfactor < 5) {
 			
 			if (drawFrame) {
 				drawArea.setPaint(framePaint);

@@ -47,15 +47,17 @@ public class CompoundImageAttributeComponent extends AbstractAttributeComponent
 		
 		if (ge instanceof Node) {
 			Node n = (Node) ge;
-			if (attr instanceof CollectionAttribute) {
-				// empty
+//			if (attr instanceof CollectionAttribute) {
+//				// empty
+//			} else
+			if (attr.getName().equals(COORDINATE)) {
+				updatePosition();
 			} else
 				if (attr instanceof CollectionAttribute) {
 					if (attr.getPath().equals("")) {
 						changeParameters(((CollectionAttribute) attr).getCollection()
 											.get(GRAPHICS), n);
-					} else
-						if (attr.getPath().equals(GRAPHICS)) {
+					} else if (attr.getPath().equals(GRAPHICS)) {
 							changeParameters(attr, n);
 						} else {
 							recreate();
