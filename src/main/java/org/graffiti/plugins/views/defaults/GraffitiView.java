@@ -1308,11 +1308,11 @@ EdgeListener, TransactionListener {
 			if (status != null)
 				status.setCurrentStatusValueFine(100d * idx / maxIdx);
 
-			if (idx % 500 == 0) {
-				long period = System.currentTimeMillis() - time1;
-				logger.debug("time for changing 500 objects " + period + "ms");
-				time1 = System.currentTimeMillis();
-			}
+//			if (idx % 500 == 0) {
+//				
+//				logger.debug("time for changing 500 objects " + period + "ms");
+//				time1 = System.currentTimeMillis();
+//			}
 
 			Attributable atbl = null;
 			// System.out.println("Changed: "+obj);
@@ -1424,14 +1424,17 @@ EdgeListener, TransactionListener {
 				}
 			}
 		}
-
+		logger.debug("time for changing " + changed.size() + "transaction elements "  + (System.currentTimeMillis() - time1) + "ms");
 		logger.debug("in transaction: updating " + setDependendComponents.size() + " dependend components");
 		//		long size = setDependendComponents.size();
 		long time = System.currentTimeMillis();
 		long counter = 0;
 		final int numDepComp = setDependendComponents.size();
-		if (numDepComp > 1000) {
-			final int numThreads = SystemAnalysis.getNumberOfCPUs();
+		if (numDepComp > 4000) {
+			int threads = SystemAnalysis.getNumberOfCPUs();
+			if(threads > 2 && numDepComp < 10000)
+				threads = 2;
+			final int numThreads = threads; 
 			final int numElemPerThread = numDepComp / numThreads;
 			ExecutorService executor = Executors.newFixedThreadPool(numThreads);
 			final GraphElementComponent arrayGEC[] = setDependendComponents.toArray(new GraphElementComponent[numDepComp]);
@@ -1467,16 +1470,11 @@ EdgeListener, TransactionListener {
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			logger.debug("time to update dep comp(thread): " + (System.currentTimeMillis() - time) + "ms");
+			logger.debug("time to update dep comp(threads): " + (System.currentTimeMillis() - time) + "ms");
 		} else {
 
 			for (GraphElementComponent gec : setDependendComponents) {
 
-				if (logger.getLevel() == Level.DEBUG) {
-					if (++counter % 1000 == 0) {
-						System.out.print(".");
-					}
-				}
 				try {
 					if (gec instanceof EdgeComponent)
 						((EdgeComponent) gec).updateShape();

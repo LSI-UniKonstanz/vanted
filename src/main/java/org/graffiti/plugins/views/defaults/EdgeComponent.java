@@ -279,12 +279,12 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	 */
 	public void updateShape() {
 		logger.debug("updateShape for edge id:" + getGraphElement().getID());
-		
-		EdgeGraphicAttribute geAttr;
-		geAttr = (EdgeGraphicAttribute) this.graphElement
-				.getAttribute(GRAPHICS);
+//		
+//		EdgeGraphicAttribute geAttr;
+//		geAttr = (EdgeGraphicAttribute) this.graphElement
+//				.getAttribute(GRAPHICS);
 		try {
-			((EdgeShape) this.shape).buildShape(geAttr,
+			((EdgeShape) this.shape).buildShape(edgeAttr,
 					(sourceComp != null ? (NodeShape) this.sourceComp.getShape()
 							: null),
 					(targetComp != null ? (NodeShape) this.targetComp.getShape()
