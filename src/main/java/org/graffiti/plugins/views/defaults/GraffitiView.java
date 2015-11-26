@@ -760,7 +760,7 @@ EdgeListener, TransactionListener {
 			// needs to be done
 			// -> new development: shows the backgroundcolor of the graph
 			Attributable a = attr.getAttributable();
-			if (a instanceof Graph && attr.getName().equals("graphbackgroundcolor") && attr instanceof StringAttribute) {
+			if (getParent() != null && a instanceof Graph && attr.getName().equals("graphbackgroundcolor") && attr instanceof StringAttribute) {
 				Color c = ColorUtil.getColorFromHex((String) attr.getValue());
 				getParent().setBackground(c);
 			}
@@ -799,7 +799,8 @@ EdgeListener, TransactionListener {
 
 		if (attr.getAttributable() instanceof Graph && attr.getName().equals("graphbackgroundcolor") && attr instanceof StringAttribute) {
 			Color c = ColorUtil.getColorFromHex((String) attr.getValue());
-			getParent().setBackground(c);
+			if(getParent() != null)
+				getParent().setBackground(c);
 		}
 
 		try {

@@ -145,9 +145,15 @@ public class IPKGraffitiView
 		return null;
 	}
 	
+	/**
+	 * This methods sets the graph and adds the background color attribute, since this
+	 * View supports background coloring
+	 */
 	@Override
 	public void setGraph(Graph g) {
 		super.setGraph(g);
+		if(g != null)
+			AttributeHelper.setColorFromAttribute(g, "", "graphbackgroundcolor", Color.white);
 		dirty = true;
 	}
 	
