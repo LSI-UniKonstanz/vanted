@@ -178,7 +178,6 @@ public class IPK_MegaMoveTool
 	public long lastMove = Integer.MIN_VALUE;
 	
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		
 		if (e.getWhen() <= lastMove)
 			return;
 		
@@ -188,7 +187,7 @@ public class IPK_MegaMoveTool
 		} else {
 			try {
 				if (e.getModifiersEx() != 64 && e.getModifiersEx() != 128) {
-					if (e.getWheelRotation() < 0){
+					if (e.getPreciseWheelRotation() < 0){
 //						ZoomFitChangeComponent.zoomIn();
 						ZoomFitChangeComponent.zoomToPoint(MainFrame.getInstance().getActiveEditorSession().getActiveView(), e.getPoint(), 0.1);
 					} else {
