@@ -9,8 +9,8 @@ package org.graffiti.graph;
  */
 public class IdGenereator {
 	private static int currentID = 0;
-	
-	public static synchronized int getNextID() {
-		return currentID++;
-	}
+//	
+//	public static synchronized int getNextID() {
+//		return currentID++;
+//	}
 }

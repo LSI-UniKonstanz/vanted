@@ -60,6 +60,8 @@ public abstract class AbstractGraph extends AbstractAttributable implements
 	
 	boolean isDirected = true;
 	
+	private long globalGraphElementIdGeneratorField;
+	
 	/**
 	 * The attribute, which will be (deep-)copied and added to every new edge.
 	 * This attribute is extended by the <code>addAttributeConsumer</code> method.
@@ -89,6 +91,8 @@ public abstract class AbstractGraph extends AbstractAttributable implements
 			setBoolean("directed", true);
 		else
 			a.setBoolean(true);
+		
+		globalGraphElementIdGeneratorField = 1;
 	}
 	
 	/**
@@ -219,6 +223,22 @@ public abstract class AbstractGraph extends AbstractAttributable implements
 			addEdgeCopy(e, e.getSource(), e.getTarget());
 	}
 	
+	
+	
+	
+	@Override
+	public long generateNextUniqueGraphElementId() {
+		// TODO Auto-generated method stub
+		return globalGraphElementIdGeneratorField++;
+	}
+
+	
+	@Override
+	public long getCurrentMaxGraphElementId() {
+		// TODO Auto-generated method stub
+		return globalGraphElementIdGeneratorField - 1;
+	}
+
 	/**
 	 * Returns a <code>java.util.Collection</code> containing all the edges of
 	 * the current graph.
@@ -535,7 +555,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements
 		CollectionAttribute col = (CollectionAttribute) edge.getAttributes()
 							.copy();
 		Edge newEdge = addEdge(source, target, edge.isDirected(), col);
-		newEdge.setID(edge.getID()); // copied edges share the same edge id
+//		newEdge.setID(edge.getID()); // copied edges share the same edge id
 		newEdge.setViewID(edge.getViewID());
 		newEdge.setGraph(this);
 		return newEdge;
@@ -575,8 +595,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements
 			if (newNode == null) {
 				ErrorMsg.addErrorMessage("Node is NULL");
 			}
-			// set the same node id as in the original graph
-			newNode.setID(oldNode.getID()); 
+//			newNode.setID(this.generateNextUniqueGraphElementId()); 
 			hm.put(oldNode, newNode);
 			newElements.add(newNode);
 		}
@@ -592,6 +611,7 @@ public abstract class AbstractGraph extends AbstractAttributable implements
 				try {
 					Edge newEdge = this.addEdge(source, target, oldEdge.isDirected(), col);
 					newEdge.setViewID(oldEdge.getViewID());
+//					newEdge.setID(this.generateNextUniqueGraphElementId());
 					newElements.add(newEdge);
 				} catch (Exception e) {
 					ErrorMsg.addErrorMessage(e);

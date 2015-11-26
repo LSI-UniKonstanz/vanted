@@ -45,7 +45,7 @@ public class AdjListGraph extends AbstractGraph implements Graph {
 	
 	private static int graphCount = 0;
 	
-	private static long maxGraphElementId = 0; // Long.MIN_VALUE;
+//	private static long maxGraphElementId = 0; // Long.MIN_VALUE;
 	
 	private String idName = null;
 	
@@ -514,16 +514,17 @@ public class AdjListGraph extends AbstractGraph implements Graph {
 		}
 	}
 	
-	/*
+	/**
+	 * Empty implementation, since we do not support this anymore
 	 * (non-Javadoc)
 	 * @see org.graffiti.graph.Graph#numberNodes()
 	 */
 	public void numberGraphElements() {
-		long startNumber = maxGraphElementId; // avoid recursive modification
-		for (Edge e : getEdges())
-			e.setID(++startNumber);
-		for (Node n : getNodes())
-			n.setID(++startNumber);
+//		long startNumber = maxGraphElementId; // avoid recursive modification
+//		for (Edge e : getEdges())
+//			e.setID(++startNumber);
+//		for (Node n : getNodes())
+//			n.setID(++startNumber);
 	}
 	
 	/*
@@ -531,8 +532,8 @@ public class AdjListGraph extends AbstractGraph implements Graph {
 	 * @see org.graffiti.graph.Graph#setMaxId(long)
 	 */
 	public void checkMaxGraphElementId(long id) {
-		if (id > maxGraphElementId)
-			maxGraphElementId = id;
+//		if (id > maxGraphElementId)
+//			maxGraphElementId = id;
 	}
 	
 	public void setListenerManager(ListenerManager l) {

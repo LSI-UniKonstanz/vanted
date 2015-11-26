@@ -291,8 +291,8 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 		} else {
 			status1 = "Set Node IDs for reference purposes...";
 			int refID = 0;
-			for (Node n : mainGraph.getNodes())
-				n.setID(refID++);
+//			for (Node n : mainGraph.getNodes())
+//				n.setID(refID++);
 			String cluster4 = "cluster";
 			if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 				cluster4 = "pathway";

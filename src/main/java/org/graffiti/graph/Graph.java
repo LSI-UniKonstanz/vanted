@@ -109,6 +109,19 @@ public interface Graph extends Attributable, DeepCopy {
 	 * @param adjustArrows
 	 */
 	public void setDirected(boolean directed, boolean adjustArrows);
+
+	/**
+	 * returns a unique id for a new graphelement added to this graph
+	 * @return
+	 */
+	public long generateNextUniqueGraphElementId();
+	
+	/**
+	 * returns current max id of the last added graph element without
+	 * incrementing it
+	 * @return
+	 */
+	public long getCurrentMaxGraphElementId();
 	
 	/**
 	 * Returns a <code>java.util.Collection</code> containing all the edges of

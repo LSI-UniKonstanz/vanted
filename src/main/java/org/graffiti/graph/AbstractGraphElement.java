@@ -73,7 +73,7 @@ public abstract class AbstractGraphElement
 		super(coll);
 		assert graph != null;
 		this.graph = graph;
-		setID(IdGenereator.getNextID());
+		setID(graph.generateNextUniqueGraphElementId());
 	}
 	
 	/**
@@ -86,7 +86,7 @@ public abstract class AbstractGraphElement
 	public AbstractGraphElement(Graph graph) {
 		assert graph != null;
 		this.graph = graph;
-		setID(IdGenereator.getNextID());
+		setID(graph.generateNextUniqueGraphElementId());
 	}
 	
 	// ~ Methods ================================================================
@@ -143,7 +143,7 @@ public abstract class AbstractGraphElement
 	 */
 	public void setID(long id) {
 		this.id = id;
-		getGraph().checkMaxGraphElementId(id);
+//		getGraph().checkMaxGraphElementId(id);
 	}
 	
 }

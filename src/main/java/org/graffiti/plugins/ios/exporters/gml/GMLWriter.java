@@ -169,7 +169,7 @@ public class GMLWriter
 		writeGraph(o, g);
 		
 		// write the nodes
-		HashMap<Node, Integer> node2id = writeNodes(o, g);
+		HashMap<Node, Long> node2id = writeNodes(o, g);
 		
 		// write the edges
 		writeEdges(o, g, node2id);
@@ -208,7 +208,7 @@ public class GMLWriter
 		writeGraph(p, g);
 		
 		// write the nodes
-		HashMap<Node, Integer> node2id = writeNodes(p, g);
+		HashMap<Node, Long> node2id = writeNodes(p, g);
 		
 		// write the edges
 		writeEdges(p, g, node2id);
@@ -801,7 +801,7 @@ public class GMLWriter
 	 * @param nodeIds
 	 *           the ordered list of node ids.
 	 */
-	private void writeEdges(PrintStream p, Graph g, HashMap<Node, Integer> node2id) {
+	private void writeEdges(PrintStream p, Graph g, HashMap<Node, Long> node2id) {
 		int idx = 1;
 		for (Edge e : g.getEdges()) {
 			if (e.getSource() == null || e.getTarget() == null ||
@@ -811,7 +811,7 @@ public class GMLWriter
 				continue;
 			}
 			p.println(createTabs(1) + "edge [");
-			p.println(createTabs(2) + "id " + idx);
+			p.println(createTabs(2) + "id " + e.getID());
 			
 			int viewID = e.getViewID();
 			if (viewID != 0) {
@@ -829,7 +829,7 @@ public class GMLWriter
 		}
 	}
 	
-	private void writeEdges(Writer o, Graph g, HashMap<Node, Integer> node2id) throws IOException {
+	private void writeEdges(Writer o, Graph g, HashMap<Node, Long> node2id) throws IOException {
 		int idx = 1;
 		for (Edge e : g.getEdges()) {
 			if (e.getSource() == null || e.getTarget() == null ||
@@ -839,7 +839,7 @@ public class GMLWriter
 				continue;
 			}
 			o.append(createTabs(1) + "edge [" + eol);
-			o.append(createTabs(2) + "id " + idx + eol);
+			o.append(createTabs(2) + "id " + e.getID() + eol);
 			
 			int viewID = e.getViewID();
 			if (viewID != 0) {
@@ -882,14 +882,14 @@ public class GMLWriter
 	 *           the graph to get the data from.
 	 * @return the ordered array list of nodes.
 	 */
-	private HashMap<Node, Integer> writeNodes(PrintStream p, Graph g) {
-		HashMap<Node, Integer> node2id = new HashMap<Node, Integer>();
+	private HashMap<Node, Long> writeNodes(PrintStream p, Graph g) {
+		HashMap<Node, Long> node2id = new HashMap<Node, Long>();
 		
 		int idx = 1;
 		for (Node n : g.getNodes()) {
-			node2id.put(n, idx);
+			node2id.put(n,  n.getID());
 			p.println(createTabs(1) + "node [");
-			p.println(createTabs(2) + "id " + idx);
+			p.println(createTabs(2) + "id " + n.getID());
 			int viewID = n.getViewID();
 			if (viewID != 0) {
 				p.println(createTabs(2) + "zlevel " + viewID + eol);
@@ -901,14 +901,14 @@ public class GMLWriter
 		return node2id;
 	}
 	
-	private HashMap<Node, Integer> writeNodes(Writer o, Graph g) throws IOException {
-		HashMap<Node, Integer> node2id = new HashMap<Node, Integer>();
+	private HashMap<Node, Long> writeNodes(Writer o, Graph g) throws IOException {
+		HashMap<Node, Long> node2id = new HashMap<Node, Long>();
 		
 		int idx = 1;
 		for (Node n : g.getNodes()) {
-			node2id.put(n, idx);
+			node2id.put(n, n.getID());
 			o.append(createTabs(1) + "node [" + eol);
-			o.append(createTabs(2) + "id " + idx + eol);
+			o.append(createTabs(2) + "id " + n.getID() + eol);
 			int viewID = n.getViewID();
 			if (viewID != 0) {
 				o.append(createTabs(2) + "zlevel " + viewID + eol);
