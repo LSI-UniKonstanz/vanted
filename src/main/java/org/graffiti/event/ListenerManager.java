@@ -1840,7 +1840,7 @@ public class ListenerManager {
 	}
 	
 	public void transactionFinished(Object source, boolean forgetChanges, BackgroundTaskStatusProviderSupportingExternalCall status) {
-		logger.debug("transaction finished. source: " + source.toString());
+//		logger.debug("transaction finished. source: " + source.toString());
 		postDebugTransactionFinished(source);
 		if (this.transactionsActive > 0) 
 			this.transactionsActive--;
@@ -1872,7 +1872,7 @@ public class ListenerManager {
 			TransactionListener l = (TransactionListener) mIter.next();
 			if (status != null)
 				status.setCurrentStatusText2("Inform listener " + l.getClass().getSimpleName());
-			logger.debug("informing transaction listener: " + l.toString());
+//			logger.debug("informing transaction listener: " + l.toString());
 			l.transactionFinished(event, status);
 		}
 		if (status != null)

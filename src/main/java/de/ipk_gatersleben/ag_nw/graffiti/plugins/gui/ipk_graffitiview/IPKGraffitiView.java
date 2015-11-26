@@ -152,8 +152,10 @@ public class IPKGraffitiView
 	@Override
 	public void setGraph(Graph g) {
 		super.setGraph(g);
-		if(g != null)
-			AttributeHelper.setColorFromAttribute(g, "", "graphbackgroundcolor", Color.white);
+		if(g != null) {
+			Color c = AttributeHelper.getColorFromAttribute(currentGraph, "", "graphbackgroundcolor", Color.white);
+			AttributeHelper.setColorFromAttribute(g, "", "graphbackgroundcolor", c);
+		}
 		dirty = true;
 	}
 	
