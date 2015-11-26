@@ -137,6 +137,38 @@ public class SearchDialog extends JDialog {
 				}
 			});
 		}
+		
+		final JButton extSearchButton = new JButton("<html>Extended<br/>Search");
+		extSearchButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SearchDialog.this.dispose();
+				final SearchDialog sd = new SearchDialog((Frame)getOwner(), SearchDialog.this.possibleAttributes, false);
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						sd.setLocationRelativeTo(MainFrame.getInstance());
+						sd.setVisible(true);
+					}
+				});
+			}
+		});
+		final JButton simpleSearchButton = new JButton("<html>Simple<br/>Search");
+		simpleSearchButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SearchDialog.this.dispose();
+				final SearchDialog sd = new SearchDialog((Frame)getOwner(), SearchDialog.this.possibleAttributes, true);
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						sd.setLocationRelativeTo(MainFrame.getInstance());
+						sd.setVisible(true);
+					}
+				});
+			}
+		});
+		
 		String description;
 		if (isFindReplaceDialog)
 			description = "Search text in the following attribute...";
@@ -314,7 +346,7 @@ public class SearchDialog extends JDialog {
 							isFindReplaceDialog ? TableLayout.get3Split(searchButton, null, okButton, TableLayout.PREFERRED, 5, TableLayout.PREFERRED) : okButton,
 							isFindReplaceDialog ? null : removeFromSelButton,
 								isFindReplaceDialog ? null : clearSelectionButton,
-										cancelButton,
+										TableLayout.getSplit(isFindReplaceDialog ? extSearchButton : simpleSearchButton, cancelButton,TableLayout.PREFERRED, TableLayout.PREFERRED),
 										TableLayout.PREFERRED,
 										5, 2);
 		
