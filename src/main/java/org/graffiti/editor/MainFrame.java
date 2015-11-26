@@ -32,6 +32,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -186,6 +187,8 @@ import org.graffiti.plugin.tool.Tool;
 import org.graffiti.plugin.view.View;
 import org.graffiti.plugin.view.ViewListener;
 import org.graffiti.plugin.view.ZoomListener;
+import org.graffiti.plugins.views.defaults.DrawMode;
+import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.selection.Selection;
 import org.graffiti.selection.SelectionEvent;
 import org.graffiti.selection.SelectionListener;
@@ -1159,12 +1162,33 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			selModel.setActiveSelection(sBundle.getString("activeSelection"));
 		}
 		
-		// this.addSession(session);
 		final JScrollPane scrollPane = new JScrollPane(view.getViewComponent(), ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		
+
+		/*
+		 * add support for reduced drawing, if view supports it
+		 */
+		final View finalView = view;
+		MouseListener ml = new MouseAdapter() {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				if(finalView instanceof GraffitiView)
+					((GraffitiView)finalView).setDrawMode(DrawMode.REDUCED);
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if(finalView instanceof GraffitiView)
+					((GraffitiView)finalView).setDrawMode(DrawMode.NORMAL);
+			}
+			
+		};
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(10);
+		scrollPane.getHorizontalScrollBar().addMouseListener(ml);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+		scrollPane.getVerticalScrollBar().addMouseListener(ml);
+		
 		scrollPane.getViewport().setBackground(Color.WHITE);
 		scrollPane.setWheelScrollingEnabled(true);
 		
