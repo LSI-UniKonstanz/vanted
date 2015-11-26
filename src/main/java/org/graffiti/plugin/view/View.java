@@ -17,6 +17,7 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 
+import org.graffiti.attributes.Attribute;
 import org.graffiti.event.AttributeListener;
 import org.graffiti.event.EdgeListener;
 import org.graffiti.event.GraphListener;
@@ -92,13 +93,14 @@ public interface View
 	
 	public boolean putInScrollPane();
 	
-	// /**
-	// * Returns the values for horizontal and vertical zoom encapsulated in a
-	// * Point2D object. A value of 1.0 means no zoom is applied.
-	// *
-	// * @return Point2D see method description
-	// */
-	// public Point2D getZoom();
+	/**
+	 * Called when a graphics attributes of the Graph represented by this
+	 * view has changed.
+	 * 
+	 * @param attr
+	 *           the attribute that has triggered the event.
+	 */
+	public void attributeChanged(Attribute attr);
 	
 	/**
 	 * Adds a message listener to the view. If the view have been started

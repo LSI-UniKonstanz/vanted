@@ -23,6 +23,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
+import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.AttributeConsumer;
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.event.AttributeEvent;
@@ -482,6 +483,13 @@ public class MatrixView
 		updateGUI();
 	}
 	
+	
+	@Override
+	public void attributeChanged(Attribute attr) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/**
 	 * Extracts the name of this view class. It has to be overridden by all
 	 * extended subclasses of this class.

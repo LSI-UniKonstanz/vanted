@@ -23,6 +23,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
+import org.graffiti.attributes.Attribute;
 import org.graffiti.event.AttributeEvent;
 import org.graffiti.event.EdgeEvent;
 import org.graffiti.event.GraphEvent;
@@ -299,4 +300,12 @@ public class NullView implements View {
 	public boolean redrawActive() {
 		return false;
 	}
+
+	@Override
+	public void attributeChanged(Attribute attr) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 }

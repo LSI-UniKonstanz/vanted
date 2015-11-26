@@ -42,6 +42,7 @@ import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.FolderPanel;
 import org.MarkComponent;
 import org.StringManipulationTools;
+import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.event.AttributeEvent;
@@ -828,4 +829,11 @@ public class FastView
 	public boolean redrawActive() {
 		return false;
 	}
+
+	@Override
+	public void attributeChanged(Attribute attr) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

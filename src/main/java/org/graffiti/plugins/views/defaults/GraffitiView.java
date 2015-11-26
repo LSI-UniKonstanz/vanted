@@ -794,15 +794,10 @@ EdgeListener, TransactionListener {
 	public void postAttributeChanged(AttributeEvent e) {
 		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
 			return;
-
+		
 		Attribute attr = e.getAttribute();
-
-		if (attr.getAttributable() instanceof Graph && attr.getName().equals("graphbackgroundcolor") && attr instanceof StringAttribute) {
-			Color c = ColorUtil.getColorFromHex((String) attr.getValue());
-			if(getParent() != null)
-				getParent().setBackground(c);
-		}
-
+		if(attr.getAttributable() != null && attr.getAttributable() instanceof Graph)
+			attributeChanged(attr);
 		try {
 			GraphElementComponent gec = null;
 			if (attr.getAttributable() instanceof GraphElement)
@@ -1333,13 +1328,19 @@ EdgeListener, TransactionListener {
 			}
 
 			if (atbl instanceof Graph) {
-				if(obj instanceof Graph 
-						|| obj instanceof Attribute && !((Attribute) obj).getName().equals("background_coloring")
-						) {
-					// information not helpful
-					blockAdjust = false;
-					completeRedraw();
-					return; // completeRedraw should be complete?!
+				if(obj instanceof Graph || obj instanceof Attribute) {
+					if( ((Attribute) obj).getName().equals("background_coloring")
+						|| ((Attribute) obj).getName().equals("graphbackgroundcolor"))
+					{
+						attributeChanged((Attribute) obj);
+						// we don't do anything if we match one of the attributes
+					}
+					else {
+						// information not helpful
+							blockAdjust = false;
+							completeRedraw();
+							return; // completeRedraw should be complete?!
+					}
 				}
 			} else {
 
@@ -1566,6 +1567,19 @@ EdgeListener, TransactionListener {
 	public void zoomChanged(AffineTransform newZoom) {
 		super.zoomChanged(newZoom);
 		adjustPreferredSize(true);
+	}
+
+	
+	
+	@Override
+	public void attributeChanged(Attribute attr) {
+
+		if (attr.getAttributable() instanceof Graph && attr.getName().equals("graphbackgroundcolor") && attr instanceof StringAttribute) {
+			Color c = ColorUtil.getColorFromHex((String) attr.getValue());
+			if(getParent() != null)
+				getParent().setBackground(c);
+		}
+
 	}
 
 	/**
