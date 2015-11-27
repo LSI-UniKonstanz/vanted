@@ -562,7 +562,10 @@ public class GravistoService implements HelperClass {
 					}
 					algorithm.reset();
 				} catch (PreconditionException e) {
-					e.printStackTrace();
+					if (MainFrame.getInstance() != null)
+						JOptionPane.showMessageDialog(MainFrame.getInstance(), "<html>" + e.getMessage(), "Algorithm check failed", JOptionPane.ERROR_MESSAGE);
+					else
+						e.printStackTrace();
 				}
 			}
 			
@@ -626,17 +629,16 @@ public class GravistoService implements HelperClass {
 			if (MainFrame.getSessions().size() == 1 || !algorithm.mayWorkOnMultipleGraphs()) {
 				if (MainFrame.getInstance().isSessionActive())
 					sessions.add(MainFrame.getInstance().getActiveSession());
-			} else
-				if (MainFrame.getSessions().size() > 1) {
-					Object[] options = { "Active Graph", "Open Graphs (" + MainFrame.getSessions().size() + ")" };
-					int res = JOptionPane.showOptionDialog(MainFrame.getInstance(), "Please select the working set.",
-							StringManipulationTools.removeHTMLtags(algorithm.getName()), JOptionPane.YES_NO_OPTION,
-							JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-					if (res == JOptionPane.YES_OPTION) {
-						sessions.add(MainFrame.getInstance().getActiveSession());
-					} else
-						sessions.addAll(MainFrame.getSessions());
-				}
+			} else if (MainFrame.getSessions().size() > 1) {
+				Object[] options = { "Active Graph", "Open Graphs (" + MainFrame.getSessions().size() + ")" };
+				int res = JOptionPane.showOptionDialog(MainFrame.getInstance(), "Please select the working set.",
+						StringManipulationTools.removeHTMLtags(algorithm.getName()), JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+				if (res == JOptionPane.YES_OPTION) {
+					sessions.add(MainFrame.getInstance().getActiveSession());
+				} else
+					sessions.addAll(MainFrame.getSessions());
+			}
 		}
 		boolean startLater = sessions.size() == 0;
 		boolean runnn = false;
