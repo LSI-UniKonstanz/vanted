@@ -155,6 +155,12 @@ public class IPKGraffitiView
 		if(g != null) {
 			Color c = AttributeHelper.getColorFromAttribute(currentGraph, "", "graphbackgroundcolor", Color.white);
 			AttributeHelper.setColorFromAttribute(g, "", "graphbackgroundcolor", c);
+			/*
+			 * in any case (background was (not) present before set 
+			 * the graph to not modified only, if the attribute changes
+			 * during the session
+			 */
+			g.setModified(false); 
 		}
 		dirty = true;
 	}

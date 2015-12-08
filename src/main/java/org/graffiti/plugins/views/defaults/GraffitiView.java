@@ -1578,8 +1578,10 @@ EdgeListener, TransactionListener {
 			Color c = ColorUtil.getColorFromHex((String) attr.getValue());
 			if(getParent() != null)
 				getParent().setBackground(c);
+			
+			getGraph().setModified(true);
 		}
-
+		
 	}
 
 	/**
