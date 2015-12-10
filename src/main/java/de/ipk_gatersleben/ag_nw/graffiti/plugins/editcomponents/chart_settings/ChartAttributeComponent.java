@@ -6,6 +6,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.chart_settings;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
 
+import java.awt.Component;
 import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -34,6 +35,7 @@ import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.ShapeNotFoundException;
 import org.graffiti.plugins.views.defaults.DrawMode;
+import org.jfree.chart.ChartPanel;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.viewcomponents.EdgeComponentHelper;
 
@@ -97,9 +99,13 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 		} else {
 			// System.out.println("TODO: Process Attribute Change: "+attr.getPath()+attr.getName());
 		}
+		alpha = (float)AttributeHelper.getOpacity(ge);
+		setChartTransparency(alpha);
 	}
 	
 	private static Integer defaultSizeForEdges = new Integer(80);
+
+	private JComponent chart;
 	
 	@Override
 	public synchronized void recreate() throws ShapeNotFoundException {
@@ -121,7 +127,7 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 		else
 			setVisible(true);
 		
-		JComponent chart = ChartComponentManager.getInstance().getChartComponent(ct, ge);
+		chart = ChartComponentManager.getInstance().getChartComponent(ct, ge);
 		if (chart != null)
 			add(chart, "1,1");
 		
@@ -145,6 +151,8 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 			setLocation((int) (loc.getX() + shift.getX()), (int) (loc.getY() + shift.getY()));
 		}
 		
+		setChartTransparency((float)AttributeHelper.getOpacity(ge));
+		
 		synchronized (getTreeLock()) {
 			if (isShowing())
 				validate();
@@ -161,6 +169,16 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 			super.print(graphics2);
 		}
 		
+	}
+
+	private void setChartTransparency(float alpha) {
+		try {
+			Component component2 = chart.getComponent(0);
+			if(component2 instanceof ChartPanel) {
+				((ChartPanel)component2).getChart().getPlot().setForegroundAlpha(alpha);
+			}
+		} catch (Exception e) {
+		}
 	}
 	
 	private boolean isLabelTop() {
@@ -229,16 +247,21 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 			return;
 		
 		if (isPaintingForPrint()) {
-			
+			setChartTransparency(1);
 //			logger.debug("paint for bufferedimage");
 			// work around to trigger paint without composite
 			Composite temp = composite;
 			composite = null;
 			super.paint(g);
 			composite = temp;
+			
+			setChartTransparency(alpha);
+
 		} else if (checkVisibility(MINSIZE_VISIBILITY)) {
-			if (composite != null)
+			if (composite != null) {
+				g = g.create();
 				((Graphics2D) g).setComposite(composite);
+			}
 			/*
 			 * Only for debugging
 			 */
@@ -248,8 +271,8 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 //			}
 			
 			if (getDrawingModeOfView() == DrawMode.REDUCED) {
-				if (composite != null)
-					((Graphics2D) g).setComposite(composite);
+//				if (composite != null)
+//					((Graphics2D) g).setComposite(composite);
 				// for testing
 //				logger.debug("drawing chart from imagebuffer");
 				g.drawImage(bufferedImage, 0, 0, null);

@@ -90,6 +90,8 @@ public abstract class AbstractGraphElementComponent
 	 * a composite field, which defines the transparency
 	 */
 	protected Composite composite;
+
+	protected float alpha;
 	
 //	protected BufferedImage opacityRenderImage;
 	
@@ -334,18 +336,21 @@ public abstract class AbstractGraphElementComponent
 			opacity = 0.0;
 		if (opacity < 1.0) {
 			setOpaque(false);
-			float alpha = ((float) opacity);
+			alpha = ((float) opacity);
 			composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
 			
 //			opacityRenderImage = getGraphicsConfiguration().createCompatibleImage(getWidth(), getHeight());
 		} else {
 			
 			composite = null;
+			setOpaque(true);
 //			opacityRenderImage = null;
 		}
 		for (GraffitiViewComponent viewComp : getAttributeComponents()) {
-			if (viewComp instanceof AbstractAttributeComponent)
-				((AbstractAttributeComponent) viewComp).setComposite(composite);
+			if (viewComp instanceof AbstractAttributeComponent) {
+				((AbstractAttributeComponent) viewComp).setOpaque(false);
+				((AbstractAttributeComponent) viewComp).setAlpha(alpha);
+			}
 		}
 		
 	}
