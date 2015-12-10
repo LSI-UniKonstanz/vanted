@@ -27,6 +27,7 @@ import org.Vector2d;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attribute;
+import org.graffiti.attributes.HashMapAttribute;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graphics.ColorAttribute;
@@ -130,9 +131,25 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	public void createStandardShape() {
 		logger.debug("createStandardShape for edge id:" + getGraphElement().getID());
 		EdgeShape newShape = new StraightLineEdgeShape();
-		if (edgeAttr == null)
-			edgeAttr = (EdgeGraphicAttribute) ((Edge) graphElement)
-					.getAttribute(GRAPHICS);
+		if (edgeAttr == null) {
+			Attribute gattr =  ((Edge) graphElement)
+					.getAttribute(GRAPHICS); 
+			/*
+			 * if someone creates an edge with graph.addedge(source, target, directed) without
+			 * giving standard edgegraphic attributes (different method) then the GRAPHICS attribute
+			 * will be a standard hashmapattribute and this leads to classcastexceptions
+			 */
+			if(gattr instanceof HashMapAttribute) {
+				edgeAttr = new EdgeGraphicAttribute();
+				if (((Edge) graphElement).getGraph().isDirected()) {
+					edgeAttr.setArrowhead("org.graffiti.plugins.views.defaults.StandardArrowShape");
+				}
+				
+				graphElement.getAttributes().remove(gattr);
+				graphElement.getAttributes().add(edgeAttr, false);
+			} else
+				edgeAttr =(EdgeGraphicAttribute) gattr;
+		}
 		
 		try {
 			newShape.buildShape(edgeAttr,
@@ -318,10 +335,25 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	protected void recreate() throws ShapeNotFoundException {
 		logger.debug("recreate for edge id:" + getGraphElement().getID());
 		
-		if (edgeAttr == null)
-			edgeAttr = (EdgeGraphicAttribute) ((Edge) graphElement)
-					.getAttribute(GRAPHICS);
-		
+		if (edgeAttr == null){
+			Attribute gattr =  ((Edge) graphElement)
+
+					.getAttribute(GRAPHICS); 
+			/*
+			 * if someone creates an edge with graph.addedge(source, target, directed) without
+			 * giving standard edgegraphic attributes (different method) then the GRAPHICS attribute
+			 * will be a standard hashmapattribute and this leads to classcastexceptions
+			 */
+			if(gattr instanceof HashMapAttribute) {
+				edgeAttr = new EdgeGraphicAttribute();
+				if (((Edge) graphElement).getGraph().isDirected()) {
+					edgeAttr.setArrowhead("org.graffiti.plugins.views.defaults.StandardArrowShape");
+				}
+				graphElement.getAttributes().remove(gattr);
+				graphElement.getAttributes().add(edgeAttr, false);
+			} else
+				edgeAttr =(EdgeGraphicAttribute) gattr;
+		}
 		stroke = null;
 		EdgeGraphicAttribute geAttr;
 		if (!this.graphElement.getAttributes().getCollection().containsKey(

@@ -924,7 +924,7 @@ EdgeListener, TransactionListener {
 		addAttributeComponents(edge, component);
 
 		//		validate();
-		// repaint(edge);
+		repaint(edge);
 		if (getGraph() != null)
 			getGraph().setModified(true);
 	}
