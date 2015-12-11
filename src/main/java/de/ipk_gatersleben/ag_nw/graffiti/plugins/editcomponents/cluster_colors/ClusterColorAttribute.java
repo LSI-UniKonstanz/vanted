@@ -153,7 +153,7 @@ public class ClusterColorAttribute extends StringAttribute {
 	
 	private void convertColorArrayToString() {
 		value = notSet;
-		
+		ensureMinimumColorSelection(listClusterColors.size());
 		for (int clusterID = 0; clusterID < listClusterColors.size(); clusterID++) {
 			setColorString(INDEX_CLUSTERCOLOR, clusterID, listClusterColors.get(clusterID));
 			setColorString(INDEX_CLUSTEROUTLINECOLOR, clusterID, listOutlineColors.get(clusterID));
