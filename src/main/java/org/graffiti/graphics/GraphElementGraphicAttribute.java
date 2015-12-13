@@ -36,7 +36,7 @@ public abstract class GraphElementGraphicAttribute
 		// add(new ImageAttribute(BGIMAGE), false);
 		add(new ColorAttribute(FRAMECOLOR, java.awt.Color.BLACK), false);
 		add(new ColorAttribute(FILLCOLOR), false);
-		add(new DoubleAttribute(FRAMETHICKNESS, 2), false);
+		add(new DoubleAttribute(FRAMETHICKNESS, 1), false);
 		add(new DoubleAttribute(ROUNDING, 5), false);
 		add(new GradientFillAttribute(GRADIENT, 0), false);
 		add(new LineModeAttribute(LINEMODE), false);
