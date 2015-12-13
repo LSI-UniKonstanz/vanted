@@ -1263,6 +1263,7 @@ EdgeListener, TransactionListener {
 
 		logger.debug("transactionFinishedOnSwingThread() --------------- EVENT DISPATCH THREAD? " + SwingUtilities.isEventDispatchThread());
 
+//		logger.debug("view contains " + getComponentCount() + " components");
 
 		blockAdjust = true;
 
@@ -1304,11 +1305,6 @@ EdgeListener, TransactionListener {
 			if (status != null)
 				status.setCurrentStatusValueFine(100d * idx / maxIdx);
 
-//			if (idx % 500 == 0) {
-//				
-//				logger.debug("time for changing 500 objects " + period + "ms");
-//				time1 = System.currentTimeMillis();
-//			}
 
 			Attributable atbl = null;
 			// System.out.println("Changed: "+obj);
@@ -1328,20 +1324,21 @@ EdgeListener, TransactionListener {
 			}
 
 			if (atbl instanceof Graph) {
-				if(obj instanceof Graph || obj instanceof Attribute) {
+				if(obj instanceof Attribute) {
 					if( ((Attribute) obj).getName().equals("background_coloring")
 						|| ((Attribute) obj).getName().equals("graphbackgroundcolor"))
 					{
 						attributeChanged((Attribute) obj);
 						// we don't do anything if we match one of the attributes
 					}
-					else {
+				}
+				else if (obj instanceof Graph){
 						// information not helpful
 							blockAdjust = false;
 							completeRedraw();
 							return; // completeRedraw should be complete?!
-					}
 				}
+				
 			} else {
 
 				try {
