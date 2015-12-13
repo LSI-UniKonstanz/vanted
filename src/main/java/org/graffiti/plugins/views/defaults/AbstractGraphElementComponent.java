@@ -334,21 +334,17 @@ public abstract class AbstractGraphElementComponent
 			opacity = 1.0;
 		if (opacity < 0)
 			opacity = 0.0;
+		alpha = ((float) opacity);
 		if (opacity < 1.0) {
 			setOpaque(false);
-			alpha = ((float) opacity);
 			composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
-			
-//			opacityRenderImage = getGraphicsConfiguration().createCompatibleImage(getWidth(), getHeight());
 		} else {
 			
 			composite = null;
 			setOpaque(true);
-//			opacityRenderImage = null;
 		}
 		for (GraffitiViewComponent viewComp : getAttributeComponents()) {
 			if (viewComp instanceof AbstractAttributeComponent) {
-				((AbstractAttributeComponent) viewComp).setOpaque(false);
 				((AbstractAttributeComponent) viewComp).setAlpha(alpha);
 			}
 		}
