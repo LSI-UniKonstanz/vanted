@@ -27,7 +27,6 @@ import org.Vector2d;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.graffiti.attributes.Attribute;
-import org.graffiti.attributes.HashMapAttribute;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graphics.ColorAttribute;
@@ -139,7 +138,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 			 * giving standard edgegraphic attributes (different method) then the GRAPHICS attribute
 			 * will be a standard hashmapattribute and this leads to classcastexceptions
 			 */
-			if(gattr instanceof HashMapAttribute) {
+			if(! (gattr instanceof EdgeGraphicAttribute)) {
 				edgeAttr = new EdgeGraphicAttribute();
 				if (((Edge) graphElement).getGraph().isDirected()) {
 					edgeAttr.setArrowhead("org.graffiti.plugins.views.defaults.StandardArrowShape");
@@ -344,7 +343,7 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 			 * giving standard edgegraphic attributes (different method) then the GRAPHICS attribute
 			 * will be a standard hashmapattribute and this leads to classcastexceptions
 			 */
-			if(gattr instanceof HashMapAttribute) {
+			if(! (gattr instanceof EdgeGraphicAttribute)) {
 				edgeAttr = new EdgeGraphicAttribute();
 				if (((Edge) graphElement).getGraph().isDirected()) {
 					edgeAttr.setArrowhead("org.graffiti.plugins.views.defaults.StandardArrowShape");
@@ -364,7 +363,6 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		}
 		geAttr = (EdgeGraphicAttribute) this.graphElement
 				.getAttribute(GRAPHICS);
-		
 		String shapeClass = geAttr.getShape();
 		String curShapeNameClassName = null;
 		
