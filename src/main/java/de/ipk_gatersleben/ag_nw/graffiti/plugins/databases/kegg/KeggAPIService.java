@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.RecursiveAction;
 
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.log4j.Logger;
-import org.w3c.www.http.HTTP;
 
 /**
  * A Kegg API REST accessor class
@@ -113,7 +113,7 @@ public class KeggAPIService {
 			try {
 				URL url = new URL(str.toString());
 				HttpURLConnection openConnection = (HttpURLConnection)url.openConnection();
-				if(openConnection.getResponseCode() == HTTP.OK) {
+				if(openConnection.getResponseCode() == HttpStatus.SC_OK) {
 					BufferedReader reader = new BufferedReader(new InputStreamReader(openConnection.getInputStream()));
 					String line;
 					while((line = reader.readLine()) != null) {

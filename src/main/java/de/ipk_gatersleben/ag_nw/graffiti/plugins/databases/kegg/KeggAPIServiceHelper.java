@@ -22,8 +22,8 @@ import java.util.concurrent.RecursiveAction;
 import javax.swing.JComponent;
 
 import org.HelperClass;
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.log4j.Logger;
-import org.w3c.www.http.HTTP;
 
 import sun.net.www.http.HttpClient;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.FileDownloadStatusInformationProvider;
@@ -303,7 +303,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 			try {
 				URL url = new URL(str.toString());
 				HttpURLConnection openConnection = (HttpURLConnection)url.openConnection();
-				if(openConnection.getResponseCode() == HTTP.OK) {
+				if(openConnection.getResponseCode() == HttpStatus.SC_OK) {
 					BufferedReader reader = new BufferedReader(new InputStreamReader(openConnection.getInputStream()));
 					String line;
 					while((line = reader.readLine()) != null) {
@@ -404,7 +404,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 			 */
 			try {
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-				if(conn.getResponseCode() == HTTP.OK) {
+				if(conn.getResponseCode() == HttpStatus.SC_OK) {
 					InputStream is = conn.getInputStream();
 					byte[] buffer = new byte[1000];
 					int len;
