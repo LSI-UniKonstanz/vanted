@@ -154,7 +154,6 @@ public class SBMLFunctionDefinition {
 						g,
 						internHeadline,
 						string);
-				System.out.println(string + "; " + string2);
 				return ASTNode.parseFormula(string2);
 			} catch (ParseException e) {
 				e.printStackTrace();
