@@ -86,11 +86,11 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 	}
 	
 	private void loadFile(String fileName, Graph g, Node initialMapNode, ActionEvent ae) {
-		if (fileName != null && fileName.startsWith(getPreIdentifyer()))
-			fileName = fileName.substring(getPreIdentifyer().length());
 		if (fileName == null || fileName.length() <= 0) {
 			MainFrame.showMessageDialog("No file name given! Can't load referenced network.", "Error");
 		}
+		if (fileName.startsWith(getPreIdentifyer()))
+			fileName = fileName.substring(getPreIdentifyer().length());
 		if (MainFrame.getInstance().lookUpAndSwitchToNamedSession(fileName))
 			return;
 		File file = checkFile(g, fileName);

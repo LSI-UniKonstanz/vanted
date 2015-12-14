@@ -251,8 +251,10 @@ public class SubstanceRatioCalculationAlgorithm
 			nh.setPosition(nh.getPosition().getX(), nh.getPosition().getY() - spY / 2);
 			nh.setSize(nh.getWidth(), nh.getHeight() + spY);
 		}
-		status.setCurrentStatusValue(100);
-		status.setCurrentStatusText2("Show Graph (please wait)...");
+		if (status != null) {
+			status.setCurrentStatusValue(100);
+			status.setCurrentStatusText2("Show Graph (please wait)...");
+		}
 		if (!returnResultDontShow) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {

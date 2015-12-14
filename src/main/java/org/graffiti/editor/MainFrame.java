@@ -3946,12 +3946,12 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			s0 = StringManipulationTools.stringReplace(s0, "" + "\n", "" + "\r");
 		}
 		final String s = s0;
-		
-		File f = new File(s);
-		if (f.exists() && f.canRead()) {
-			loadGraph(f);
+		if(s != null) {
+			File f = new File(s);
+			if (f.exists() && f.canRead()) {
+				loadGraph(f);
+			}
 		}
-		
 		Object data0 = null;
 		if (e.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 			try {

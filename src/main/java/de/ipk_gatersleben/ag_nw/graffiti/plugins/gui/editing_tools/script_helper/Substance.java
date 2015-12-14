@@ -253,17 +253,15 @@ public class Substance implements SubstanceInterface, Cloneable {
 	private static HashSet<Character> badChars = null;
 	
 	private static HashSet<Character> getBad() {
-		if (badChars != null)
-			return badChars;
-		else {
+		if (badChars == null) {
 			badChars = new HashSet<Character>();
 			badChars.add('<');
 			badChars.add('>');
 			badChars.add('\'');
 			badChars.add('"');
 			badChars.add('&');
-			return badChars;
 		}
+		return badChars;
 	}
 	
 	private void getSynonymsString(StringBuilder res) {

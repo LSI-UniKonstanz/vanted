@@ -302,14 +302,5 @@ public class ColorUtil {
 		return Math.sqrt(a * a + b * b + c * c) < allowedDistance;
 	}
 	
-	/**
-	 * Use {@link #getAverageColor(ArrayList)} instead.
-	 * 
-	 * @param cc
-	 * @return
-	 */
-	@Deprecated
-	public static Color getAvgColor(ArrayList<Color> cc) {
-		return getAvgColor(cc);
-	}
+
 }

@@ -119,7 +119,8 @@ public class ShortestPathSelectionAlgorithm
 						selection.add(e);
 				}
 			}
-		GraphHelper.selectElements((Collection) selection.getElements());
+		if(selection != null)
+			GraphHelper.selectElements((Collection) selection.getElements());
 	}
 	
 	/**

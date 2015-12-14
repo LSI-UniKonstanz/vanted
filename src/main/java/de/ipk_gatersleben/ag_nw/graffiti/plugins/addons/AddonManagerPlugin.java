@@ -26,7 +26,6 @@ import java.util.jar.JarFile;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import javax.swing.tree.DefaultTreeModel;
 
 import org.ApplicationStatus;
 import org.ErrorMsg;
@@ -45,8 +44,6 @@ import org.graffiti.plugin.GenericPluginAdapter;
 import org.graffiti.plugins.inspectors.defaults.Inspector;
 import org.graffiti.session.Session;
 import org.graffiti.util.InstanceLoader;
-
-import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_EditorPluginAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
@@ -235,12 +232,12 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		
 		PluginDescription[] array = new PluginDescription[size];
 		Iterator<PluginDescription> iterator = coll.iterator();
-		
-		System.out.println("before");
-
+		// debugging
+//		System.out.println("before");
+//
 		for(int i = 0; i < size; i++) {
 			array[i] = iterator.next();
-			System.out.println(array[i].getName());
+//			System.out.println(array[i].getName());
 		}
 		
 		for(int cnt = 0; cnt < size; cnt ++)
@@ -266,10 +263,11 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 				}
 				
 			}
-		System.out.println("after");
-		for(int i = 0; i < size; i++) {
-			System.out.println(array[i].getName());
-		}
+		// debugging		
+//		System.out.println("after");
+//		for(int i = 0; i < size; i++) {
+//			System.out.println(array[i].getName());
+//		}
 		return Arrays.asList(array);
 	}
 	// public void loadInitAddons() {
@@ -564,32 +562,34 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 				else
 					return false;
 			}
-			if (a != null && !a.isTestedWithRunningVersion()) {
-				String sup = addons.get(number).getDescription().getCompatibleVersion();
-				if (sup == null)
-					sup = "Add-on contains no compatibility information.<br>" +
-							"Check Add-on website for compatible program version(s).";
-				else
-					sup = "Incompatible with " + DBEgravistoHelper.DBE_GRAVISTO_VERSION + ",<br>but works with " + sup + ".";
-				Object[] res = MyInputHelper.getInput("" +
-						"[" +
-						"<html><center>Force Activation<br><small>(override version check);" +
-						"<html><center>Cancel<br><small>(use 'Find Update' button)]" +
-						StringManipulationTools.getWordWrap("This Add-on has not been tested with " + DBEgravistoHelper.DBE_GRAVISTO_VERSION + ". " +
-								"To ensure stable operation of the application and the Add-on functions, it is recommended " +
-								"to use the 'Find Updates' function to look for an updated version of this Add-on.", 45) + "<br><br>" +
-						StringManipulationTools.getWordWrap("You may also opt for downloading and installing an older version of this application:", 45) +
-						"<br><br>" + sup + "<br><br>",
-						"Add-on may be incompatible", new Object[] {});
-				if (res == null) {
-					return false;
+			if (a != null ){
+				if( !a.isTestedWithRunningVersion()) {
+					String sup = addons.get(number).getDescription().getCompatibleVersion();
+					if (sup == null)
+						sup = "Add-on contains no compatibility information.<br>" +
+								"Check Add-on website for compatible program version(s).";
+					else
+						sup = "Incompatible with " + DBEgravistoHelper.DBE_GRAVISTO_VERSION + ",<br>but works with " + sup + ".";
+					Object[] res = MyInputHelper.getInput("" +
+							"[" +
+							"<html><center>Force Activation<br><small>(override version check);" +
+							"<html><center>Cancel<br><small>(use 'Find Update' button)]" +
+							StringManipulationTools.getWordWrap("This Add-on has not been tested with " + DBEgravistoHelper.DBE_GRAVISTO_VERSION + ". " +
+									"To ensure stable operation of the application and the Add-on functions, it is recommended " +
+									"to use the 'Find Updates' function to look for an updated version of this Add-on.", 45) + "<br><br>" +
+									StringManipulationTools.getWordWrap("You may also opt for downloading and installing an older version of this application:", 45) +
+									"<br><br>" + sup + "<br><br>",
+									"Add-on may be incompatible", new Object[] {});
+					if (res == null) {
+						return false;
+					}
 				}
+
+				a.setIsActive(true);
+				PluginDescription desc = a.getDescription();
+				MainFrame.getInstance().getPluginManager().loadPlugin(desc, a.getXMLURL(), false);
+				a.setIcon(getIcon(desc));
 			}
-			
-			a.setIsActive(true);
-			PluginDescription desc = a.getDescription();
-			MainFrame.getInstance().getPluginManager().loadPlugin(desc, a.getXMLURL(), false);
-			a.setIcon(getIcon(desc));
 			
 			hideNewComponents();
 			

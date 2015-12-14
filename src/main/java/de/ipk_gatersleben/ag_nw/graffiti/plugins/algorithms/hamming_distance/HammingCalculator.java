@@ -381,7 +381,7 @@ public class HammingCalculator implements Runnable,
 		
 		StringBuffer result = new StringBuffer();
 		String home;
-		if (outputDir == null && !(new File(outputDir).isDirectory()))
+		if (outputDir == null || (outputDir != null && !(new File(outputDir).isDirectory())))
 			home = ReleaseInfo.getAppFolder();
 		else
 			home = outputDir;

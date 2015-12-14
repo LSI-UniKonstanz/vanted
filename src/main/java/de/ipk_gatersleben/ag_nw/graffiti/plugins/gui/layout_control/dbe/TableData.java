@@ -392,29 +392,38 @@ public class TableData {
 	public synchronized String getCellDataDate(int col, int row, String expectIfNULL) {
 		try {
 			Object o = getCellData(col, row, expectIfNULL);
-			if (o != null && (o instanceof Date))
-				return AttributeHelper.getDateString(((Date) o));
-			Date jd1 = HSSFDateUtil.getJavaDate((Double) o);
-			return AttributeHelper.getDateString(jd1);
+			if (o != null ){
+				if (o instanceof Date)
+					return AttributeHelper.getDateString(((Date) o));
+				else {
+					Date jd1 = HSSFDateUtil.getJavaDate((Double) o);
+					return AttributeHelper.getDateString(jd1);
+				}
+			}
 		} catch (ClassCastException cce) {
 			ErrorMsg.addErrorMessage("Could not return date data from column " + getExcelColumnName(col) + ", row " + row
 								+ " [cell=" + getCellData(col, row, expectIfNULL) + "]!");
-			return expectIfNULL;
 		}
+		return expectIfNULL;
 	}
 	
 	public synchronized Date getCellDataDateObject(int col, int row, Date expectIfNULL) {
 		try {
 			Object o = getCellData(col, row, expectIfNULL);
-			if (o != null && (o instanceof Date))
-				return ((Date) o);
-			Date jd1 = HSSFDateUtil.getJavaDate((Double) o);
-			return jd1;
+			if (o != null ){
+				if (o instanceof Date)
+					return ((Date) o);
+				else {
+					Date jd1 = HSSFDateUtil.getJavaDate((Double) o);
+					return jd1;
+				}
+			}
 		} catch (ClassCastException cce) {
 			ErrorMsg.addErrorMessage("Could not return date data from column " + getExcelColumnName(col) + ", row " + row
 								+ " [cell=" + getCellData(col, row, expectIfNULL) + "]!");
-			return expectIfNULL;
+//			return expectIfNULL;
 		}
+		return expectIfNULL;
 	}
 	
 	public synchronized String getUnicodeStringCellData(int col, int row) {

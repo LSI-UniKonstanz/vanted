@@ -519,18 +519,20 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 		for (Constraint c : constraints) {
 			p.addConstraint(c.left.name, c.right.name, c.separation);
 		}
-		System.out.println("   |C|=" + p.getConstraints().size());
-		try {
-			cost = p.solve();
-			// p = new MosekPlacement(p.getVariables(), p.getConstraints());
-			// float mcost = p.solve();
-			// assert (2 * Math.abs(cost - mcost) / (1 + mcost + cost) < 0.001) : "Solver did not find optimal solution!";
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		for (Chunk c : chunks) {
-			c.setMin(c.v.getPosition());
+		if(p != null) {
+			System.out.println("   |C|=" + p.getConstraints().size());
+			try {
+				cost = p.solve();
+				// p = new MosekPlacement(p.getVariables(), p.getConstraints());
+				// float mcost = p.solve();
+				// assert (2 * Math.abs(cost - mcost) / (1 + mcost + cost) < 0.001) : "Solver did not find optimal solution!";
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			for (Chunk c : chunks) {
+				c.setMin(c.v.getPosition());
+			}
 		}
 		return cost;
 	}

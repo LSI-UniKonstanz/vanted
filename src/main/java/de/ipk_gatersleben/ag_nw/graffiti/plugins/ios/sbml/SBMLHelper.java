@@ -2317,7 +2317,7 @@ public class SBMLHelper {
 	 *           the value that will be set
 	 */
 	public static void addSpeciesConstant(Node speciesNode, Boolean constant) {
-		if (!constant.equals(null)) {
+		if (constant != null) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML,
 					SBML_Constants.SPECIES_CONSTANT, constant);
 		}
