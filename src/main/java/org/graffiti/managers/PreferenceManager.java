@@ -37,7 +37,7 @@ public class PreferenceManager
 	static Logger logger = Logger.getLogger(PreferenceManager.class);
 	
 	static {
-		logger.setLevel(Level.INFO);
+		logger.setLevel(Level.DEBUG);
 		getInstance();
 	}
 	
@@ -196,7 +196,7 @@ public class PreferenceManager
 	 * gets deleted
 	 */
 	private Preferences checkExistingPreferences(Class<?> clazz, List<? extends Parameter> defaultPreferences) {
-		
+		logger.debug("checking Existing Preferences and collect keys that can be deleted");
 		/*
 		 * inheriting classes, where the superclass already implemented the defaultparameters
 		 * but the child class doesn't have default parameters needs to return null to
@@ -212,12 +212,16 @@ public class PreferenceManager
 			Set<String> prefKeysToDelete = new HashSet<>(Arrays.asList(defaultPrefs.keys()));
 			
 			for (Parameter defaultParameter : defaultPreferences) {
+				logger.debug("\tdefault-param: " + defaultParameter.getName() + " : " + defaultParameter.getValue().toString());
+				logger.debug("\t stored-param: " + defaultParameter.getName() + " : " + defaultPrefs.get(defaultParameter.getName(), ""));
 				if (!prefKeysToDelete.remove(defaultParameter.getName()))
 					defaultPrefs.put(defaultParameter.getName(), defaultParameter.getValue().toString());
 			}
 			
-			for (String key : prefKeysToDelete)
+			for (String key : prefKeysToDelete) {
+				logger.debug("\tremoving obsolete paramter: " + key);
 				defaultPrefs.remove(key); //removes key from preferences object
+			}
 		} catch (BackingStoreException e) {
 			e.printStackTrace();
 		}
