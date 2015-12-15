@@ -146,7 +146,7 @@ public class CopyPatternLayoutAlgorithm extends AbstractAlgorithm {
 	
 	@Override
 	public String toString() {
-		return null;
+		return "";
 	}
 	
 	/*

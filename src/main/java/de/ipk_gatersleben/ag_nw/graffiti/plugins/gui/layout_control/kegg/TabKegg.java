@@ -21,7 +21,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
@@ -658,14 +657,14 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 		
 	}
 	
-	public static OrganismEntry[] getKEGGorganismFromUser(final Collection<OrganismEntry> organisms) {
+	public static OrganismEntry[] getKEGGorganismFromUser(final List<OrganismEntry> organisms) {
 		final MutableList organismSelection = new MutableList(new DefaultListModel());
 		
 		organismSelection.setPrototypeCellValue("<html>ÄÖyz");
 		organismSelection.setFixedCellWidth(580);
 		organismSelection.setFixedCellHeight(new JLabel("<html>AyÖÄ").getPreferredSize().height);
 		
-		Collections.sort((List<OrganismEntry>) organisms,
+		Collections.sort(organisms,
 				new Comparator<OrganismEntry>() {
 					public int compare(final OrganismEntry arg0, OrganismEntry arg1) {
 						if (arg0.toString().contains("Reference"))

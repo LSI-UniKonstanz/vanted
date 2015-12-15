@@ -37,6 +37,7 @@ public class GraphTab
 	 * Constructs a <code>GraphTab</code> and sets the title.
 	 */
 	public GraphTab() {
+		super();
 		this.title = "Network";
 		instance = this;
 	}

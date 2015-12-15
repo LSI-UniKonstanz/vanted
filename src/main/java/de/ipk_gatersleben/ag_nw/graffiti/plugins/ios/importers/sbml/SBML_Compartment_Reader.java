@@ -94,7 +94,7 @@ public class SBML_Compartment_Reader {
 							compartment.getVersion())) {
 				compartmentHelper.setID(id);
 			}
-			if (compartment.isSetName() && (name != SBML_Constants.EMPTY)) {
+			if (compartment.isSetName() && (!name.isEmpty())) {
 				compartmentHelper.setName(name);
 			}
 			if (compartment.isSetSpatialDimensions()) {

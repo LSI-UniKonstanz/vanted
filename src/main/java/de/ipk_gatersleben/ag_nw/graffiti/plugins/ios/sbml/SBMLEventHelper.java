@@ -230,7 +230,7 @@ public class SBMLEventHelper {
 							SBML_Constants.USE_VALUES_FROM_TRIGGER_TIME)
 							.toString());
 		} else {
-			return null;
+			return false;
 		}
 	}
 
@@ -308,7 +308,7 @@ public class SBMLEventHelper {
 					new StringBuffer(internHeadline).append(
 							SBML_Constants.INITIAL_VALUE).toString());
 		} else {
-			return null;
+			return false;
 		}
 	}
 
@@ -320,7 +320,7 @@ public class SBMLEventHelper {
 					new StringBuffer(internHeadline).append(
 							SBML_Constants.PERSISTENT).toString());
 		} else {
-			return null;
+			return false;
 		}
 	}
 

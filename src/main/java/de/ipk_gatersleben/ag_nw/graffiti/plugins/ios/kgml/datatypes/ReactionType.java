@@ -27,6 +27,6 @@ public enum ReactionType {
 			case irreversible:
 				return "irreversible";
 		}
-		return null;
+		return "";
 	}
 }

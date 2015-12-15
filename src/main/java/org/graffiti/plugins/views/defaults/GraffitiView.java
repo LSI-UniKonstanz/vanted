@@ -1640,17 +1640,17 @@ EdgeListener, TransactionListener {
 
 		try {
 			invZoomedPoint = zoom.inverseTransform(e.getPoint(), null);
+			MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e
+					.getWhen(), e.getModifiers(), (int) (invZoomedPoint.getX()),
+					(int) (invZoomedPoint.getY()), e.getClickCount(), e
+					.isPopupTrigger());
+			
+			return newME;
 		} catch (NoninvertibleTransformException nite) {
 			// when setting the zoom, it must have been checked that
 			// the transform is invertible
+			return e;
 		}
-
-		MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e
-				.getWhen(), e.getModifiers(), (int) (invZoomedPoint.getX()),
-				(int) (invZoomedPoint.getY()), e.getClickCount(), e
-				.isPopupTrigger());
-
-		return newME;
 	}
 
 	/**
@@ -1665,17 +1665,18 @@ EdgeListener, TransactionListener {
 
 		try {
 			invZoomedPoint = zoom.inverseTransform(e.getPoint(), null);
+			MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e
+					.getWhen(), e.getModifiers(), (int) (invZoomedPoint.getX()),
+					(int) (invZoomedPoint.getY()), e.getClickCount(), e
+					.isPopupTrigger());
+			
+			return newME;
 		} catch (NoninvertibleTransformException nite) {
 			// when setting the zoom, it must have been checked that
 			// the transform is invertible
+			return e;
 		}
 
-		MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e
-				.getWhen(), e.getModifiers(), (int) (invZoomedPoint.getX()),
-				(int) (invZoomedPoint.getY()), e.getClickCount(), e
-				.isPopupTrigger());
-
-		return newME;
 	}
 
 	/**

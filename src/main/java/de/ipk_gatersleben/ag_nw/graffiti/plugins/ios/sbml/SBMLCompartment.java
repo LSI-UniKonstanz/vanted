@@ -269,7 +269,7 @@ public class SBMLCompartment {
 					new StringBuffer(internHeadline).append(
 							SBML_Constants.CONSTANT).toString());
 		} else {
-			return null;
+			return false;
 		}
 	}
 

@@ -9,8 +9,8 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.kegg_bar;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JFileChooser;
@@ -58,7 +58,7 @@ public class CreateOrgSpecificSuperGraphsAlgorithm extends AbstractAlgorithm {
 		organismSelection = null;
 		try {
 			KeggHelper kegg = new KeggHelper();
-			Collection<OrganismEntry> organisms = kegg.getOrganisms();
+			List<OrganismEntry> organisms = kegg.getOrganisms();
 			organismSelection = TabKegg.getKEGGorganismFromUser(organisms);
 		} catch (IOException e) {
 			ErrorMsg.addErrorMessage(e);

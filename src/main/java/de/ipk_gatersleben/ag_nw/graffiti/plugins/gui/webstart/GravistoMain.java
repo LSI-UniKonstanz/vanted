@@ -318,8 +318,6 @@ public class GravistoMain extends JApplet {
 		
 		String path = // this.getClass().getPackage().getName()
 		"de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart".replace('.', '/');
-		ImageIcon icon = new ImageIcon(cl.getResource(path
-				+ "/ipklogo16x16_5.png"));
 //		if (splashScreen instanceof DBEsplashScreen)
 //			((DBEsplashScreen) splashScreen).setIconImage(icon.getImage());
 		// splashScreen.setVisible(true);

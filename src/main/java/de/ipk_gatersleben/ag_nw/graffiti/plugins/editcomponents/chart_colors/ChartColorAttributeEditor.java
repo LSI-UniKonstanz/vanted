@@ -166,13 +166,9 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 			try {
 				barCols = cca.getSeriesColors(cca.getIdList(barCount));
 				barOutlineCols = cca.getSeriesOutlineColors(cca.getIdList(barCount));
-			} catch (Exception e) {
-				ErrorMsg.addErrorMessage(e);
-			}
-			for (int i = 0; i < barCount; i++) {
-				JLabel colButton = new JLabel();
-				JLabel colButtonOutline = new JLabel();
-				try {
+				for (int i = 0; i < barCount; i++) {
+					JLabel colButton = new JLabel();
+					JLabel colButtonOutline = new JLabel();
 					if (barCols != null && barCols.get(i) != null && !showEmpty) {
 						colButton.setBackground(barCols.get(i));
 						colButton.setForeground(barCols.get(i));
@@ -183,26 +179,27 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 					colButton.putClientProperty("isBar", new Boolean(true));
 					colButton.putClientProperty("barIndex", new Integer(i));
 					colButton.setToolTipText("Line/Bar-Color: " + cca.getIdList(barCount).get(i) + ": " + AttributeHelper.getColorName(barCols.get(i)));
-					
+
 					if (barOutlineCols != null && barOutlineCols.get(i) != null && !showEmpty) {
 						colButtonOutline.setBackground(barOutlineCols.get(i));
 						colButtonOutline.setForeground(barOutlineCols.get(i));
 						colButtonOutline.setText("#");
 					} else
 						colButtonOutline.setText(EMPTY_STRING);
-					
+
 					colButtonOutline.setToolTipText("Outline-Color: " + cca.getIdList(barCount).get(i) + ": " + AttributeHelper.getColorName(barOutlineCols.get(i)));
-					
+
 					addDefaultColorActionListenerAndAddBarInfo(colButtonOutline, false, cca.getIdList(barCount).get(i));
 					colButtonOutline.putClientProperty("isBar", new Boolean(false));
 					colButtonOutline.putClientProperty("barIndex", new Integer(i));
-				} catch (Exception e) {
-					ErrorMsg.addErrorMessage(e);
+					jpanel.add(colButton, i + ",0");
+					
+					jpanel.add(colButtonOutline, i + ",1");
 				}
-				jpanel.add(colButton, i + ",0");
-				
-				jpanel.add(colButtonOutline, i + ",1");
+			} catch (Exception e) {
+				ErrorMsg.addErrorMessage(e);
 			}
+			
 		}
 		// jpanel.setMaximumSize(new Dimension(2000, 40));
 		jpanel.validate();

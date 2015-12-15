@@ -164,7 +164,7 @@ public class CompoundImageAttributeComponent extends AbstractAttributeComponent
 			
 			Vector2d ns = AttributeHelper.getSize(n);
 			final Node nn = n;
-			boolean centerfitresize = (ns.x != imgWidth + 2 || ns.y != imgHeight + 2) && CompoundImagePositionAttributeEditor.isCenteredFitPosition(n);
+			boolean centerfitresize = (Double.compare(ns.x, imgWidth + 2) != 0 || Double.compare(ns.y, imgHeight + 2) != 0) && CompoundImagePositionAttributeEditor.isCenteredFitPosition(n);
 			boolean centerresize = (ns.x < imgWidth || ns.y < imgHeight) && CompoundImagePositionAttributeEditor.isCenteredPosition(n);
 			if (centerfitresize || centerresize) {
 				SwingUtilities.invokeLater(new Runnable() {

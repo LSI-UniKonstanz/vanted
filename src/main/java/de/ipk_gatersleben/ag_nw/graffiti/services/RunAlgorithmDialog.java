@@ -117,7 +117,7 @@ public class RunAlgorithmDialog extends JDialog
 	 * (non-Javadoc)
 	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.HandlesAlgorithmData#getAlgorithm()
 	 */
-	public Algorithm getAlgorithm() {
+	public synchronized Algorithm getAlgorithm() {
 		return algorithm;
 	}
 }

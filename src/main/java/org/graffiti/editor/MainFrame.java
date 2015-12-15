@@ -438,6 +438,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	// private JSplitPane jSplitPane_pluginPanelAndProgressView;
 	private JComponent jSplitPane_pluginPanelAndProgressView;
 	
+	private Object activeProgressPanelLock = new Object();
 	private ArrayList<JPanel> activeProgressPanels;
 	
 	private Timer timerCheckActiveProgressPanels;
@@ -2008,7 +2009,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		Algorithm[] algorithms = plugin.getAlgorithms();
 		for (int i = algorithms.length - 1; i >= 0; i--) {
 			Algorithm a = algorithms[i];
-			
+			if(a == null)
+				continue;
 			/*
 			 * check, if the preference are set to show or hide special algorithms
 			 */
@@ -2521,6 +2523,9 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	 */
 	public void sessionDataChanged(Session s) {
 		EditorSession es = (EditorSession) s;
+		if(es == null || es.getViews().isEmpty())
+			return;
+		
 		boolean oneModified = false;
 		for (Iterator<View> i = es.getViews().iterator(); i.hasNext();) {
 			View view = i.next();
@@ -3743,7 +3748,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			if (timerCheckActiveProgressPanels == null)
 				initProgressGuiTimer();
 			
-			synchronized (activeProgressPanels) {
+			synchronized (activeProgressPanelLock) {
 				if (panel != null)
 					activeProgressPanels.add(panel);
 			}
@@ -3768,7 +3773,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				redrawGUIcount++;
 				ArrayList<JPanel> toBeDeleted = new ArrayList<JPanel>();
 				boolean foundSomething = false;
-				synchronized (activeProgressPanels) {
+				synchronized (activeProgressPanelLock) {
 					for (JPanel jp : activeProgressPanels) {
 						if (!jp.isVisible()) {
 							toBeDeleted.add(jp);
@@ -3791,7 +3796,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	}
 	
 	private void updatePanelGUI() {
-		synchronized (activeProgressPanels) {
+		synchronized (activeProgressPanelLock) {
 			// int height = 0;
 			// for (JPanel jp : activeProgressPanels) {
 			// height += jp.getPreferredSize().height; // ??? -15 ????
@@ -4020,7 +4025,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	}
 	
 	public boolean isTaskPanelVisible(String string) {
-		synchronized (activeProgressPanels) {
+		synchronized (activeProgressPanelLock) {
 			for (JPanel jp : activeProgressPanels) {
 				String title = (String) jp.getClientProperty("title");
 				if (title != null && title.toUpperCase().contains(string.toUpperCase()))

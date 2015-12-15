@@ -170,7 +170,7 @@ public class SBMLParameter {
 					new StringBuffer(internHeadline).append(
 							SBML_Constants.PARAMETER_CONSTANT).toString());
 		} else {
-			return null;
+			return false;
 		}
 	}
 

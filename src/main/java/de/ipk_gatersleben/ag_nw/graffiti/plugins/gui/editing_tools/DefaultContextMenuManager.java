@@ -569,9 +569,10 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 			if (result.indexOf(matchFirst) < 0) {
 				result = in.readLine();
 			}
-			
-			result = result.replaceFirst("//", "");
-			result = result.trim();
+			if(result != null) {
+				result = result.replaceFirst("//", "");
+				result = result.trim();
+			}
 			in.close();
 			in = null;
 			return result;

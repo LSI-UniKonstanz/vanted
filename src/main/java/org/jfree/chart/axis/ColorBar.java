@@ -214,8 +214,8 @@ public class ColorBar implements Cloneable, Serializable {
 
 		// update, but dont draw tick marks (needed for stepped colors)
 		this.axis.refreshTicks(g2, new AxisState(), plotArea, colorBarArea, edge);
-
-		drawColorBar(g2, colorBarArea, edge);
+		if(colorBarArea != null)
+			drawColorBar(g2, colorBarArea, edge);
 
 		AxisState state = null;
 		if (edge == RectangleEdge.TOP) {

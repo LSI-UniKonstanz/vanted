@@ -229,6 +229,8 @@ public class ParameterEditPanel extends JPanel {
 	 *            DOCUMENT ME!
 	 */
 	private void addRow(FolderPanel myPanel, Parameter parameter, Class<?> ecClass) {
+		if(parameter == null || myPanel == null || ecClass == null)
+			return;
 		String name = parameter.getName();
 		boolean multiLine = false;
 		if (name != null && name.endsWith("//")) {

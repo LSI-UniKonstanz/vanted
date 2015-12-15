@@ -33,6 +33,6 @@ public enum kgmlGraphicsType {
 			case line:
 				return "line";
 		}
-		return null;
+		return "";
 	}
 }

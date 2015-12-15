@@ -29,7 +29,7 @@ public class NodeTab
 	 * Constructs a <code>NodeTab</code> and sets the title.
 	 */
 	public NodeTab() {
-//		super();
+		super();
 		this.title = "Node";
 		NodeTab.instance = this;
 	}

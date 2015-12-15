@@ -46,6 +46,9 @@ public class DataMappingId implements Comparable<DataMappingId> {
 	
 	@Override
 	public boolean equals(Object obj) {
+		if(obj == null)
+			return false;
+
 		return sid.equals(((DataMappingId) obj).sid);
 	}
 	

@@ -619,7 +619,7 @@ public class MenuItemInfoDialog
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ScanForUpdate.issueScanAfterStartup();
+				ScanForUpdate.issueScan(true); // issue scan and ignore date. so we always want to scan
 			}
 		});
 		int pos = 1;

@@ -28,11 +28,11 @@ public class BackgroundTaskStatusProviderSupportingExternalCallImpl implements
 		return stopRequested;
 	}
 	
-	public void setCurrentStatusText1(String status) {
+	public synchronized void setCurrentStatusText1(String status) {
 		status1 = status;
 	}
 	
-	public void setCurrentStatusText2(String status) {
+	public synchronized void setCurrentStatusText2(String status) {
 		status2 = status;
 	}
 	
@@ -40,23 +40,23 @@ public class BackgroundTaskStatusProviderSupportingExternalCallImpl implements
 		return (int) currentProgress;
 	}
 	
-	public void setCurrentStatusValue(int value) {
+	public synchronized void setCurrentStatusValue(int value) {
 		currentProgress = value;
 	}
 	
-	public double getCurrentStatusValueFine() {
+	public synchronized double getCurrentStatusValueFine() {
 		return currentProgress;
 	}
 	
-	public String getCurrentStatusMessage1() {
+	public synchronized String getCurrentStatusMessage1() {
 		return status1;
 	}
 	
-	public String getCurrentStatusMessage2() {
+	public synchronized String getCurrentStatusMessage2() {
 		return status2;
 	}
 	
-	public void pleaseStop() {
+	public synchronized void pleaseStop() {
 		stopRequested = true;
 	}
 	

@@ -103,7 +103,7 @@ public class ReactionEntry {
 				if (v.startsWith("G")) {
 					res.add("gl:" + v);
 				} else {
-					System.out.println("CHECK: " + va.toString());
+//					System.out.println("CHECK: " + va.toString());
 					res.add(v);
 				}
 		}

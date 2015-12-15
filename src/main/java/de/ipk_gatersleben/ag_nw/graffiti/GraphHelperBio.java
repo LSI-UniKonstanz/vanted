@@ -145,13 +145,15 @@ public class GraphHelperBio implements HelperClass {
 	public static Node addMapNode(Graph superGraph, KeggPathwayEntry kpe) {
 		Node newNode = superGraph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(100, 100));
 		String pathway = kpe.getPathwayName();
-		if (pathway != null && pathway.indexOf(" - ") > 0) {
-			pathway = pathway.substring(0, pathway.indexOf(" - "));
+		if (pathway != null){ 
+			if( pathway.indexOf(" - ") > 0) {
+				pathway = pathway.substring(0, pathway.indexOf(" - "));
+			}
+			AttributeHelper.setLabel(newNode, pathway);
+			// AttributeHelper.setFillColor(newNode, Color.WHITE);
+			if (pathway.startsWith("TITLE:") || pathway.startsWith("<html>TITLE:"))
+				AttributeHelper.setBorderWidth(newNode, 3d);
 		}
-		AttributeHelper.setLabel(newNode, pathway);
-		// AttributeHelper.setFillColor(newNode, Color.WHITE);
-		if (pathway.startsWith("TITLE:") || pathway.startsWith("<html>TITLE:"))
-			AttributeHelper.setBorderWidth(newNode, 3d);
 		
 		AttributeHelper.setAttribute(newNode, "kegg", "kegg_type", "map");
 		URLAttribute ua = new URLAttribute("kegg_map_link", "path:" + kpe.getMapName());

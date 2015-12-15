@@ -530,7 +530,7 @@ public abstract class LineEdgeShape implements EdgeShape {
 		
 		NodeGraphicAttribute nodeAttr = (NodeGraphicAttribute) node.getAttribute(GraphicAttributeConstants.GRAPHICS);
 		
-		if (portName.equals("")) {
+		if (portName == null || portName.equals("")) {
 			point = calculateDefaultDocking(nodeAttr, shape);
 		} else {
 			PortsAttribute ports = nodeAttr.getPorts();

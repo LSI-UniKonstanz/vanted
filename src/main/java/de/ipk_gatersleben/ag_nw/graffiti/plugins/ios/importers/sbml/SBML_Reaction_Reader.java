@@ -245,81 +245,82 @@ public class SBML_Reaction_Reader {
 					 * listLocalParameter =
 					 * kineticLaw.getListOfLocalParameters(); }
 					 */
-					
-					itLP = listLocalParameter.iterator();
-					countLocalParameter = 1;
-					while (itLP.hasNext()) {
-						localParameter = itLP.next();
-						internAttributeName = new StringBuffer(
-								SBML_Constants.LOCAL_PARAMETER).append(
-								countLocalParameter).toString();
-						presentedAttributeName = new StringBuffer(
-								SBML_Constants.LOCALPARAMETER_HEADLINE).append(
-								countLocalParameter).toString();
-						
-						localParameterHelper = kineticLawHelper
-								.addLocalParemeter(g, presentedAttributeName,
-										internAttributeName);
-						
-						id = localParameter.getId();
-						name = localParameter.getName();
-						value = localParameter.getValue();
-						if (Double.isNaN(value)) {
-							SBML_Logger.addErrorMessage("Attribute value of reaction "
-									+ reactionID
-									+ " "
-									+ presentedAttributeName
-									+ " is not a valid double value.");
-						}
-						unit = localParameter.getUnits();
-						
-						if (localParameter.isSetId()) {
-							localParameterHelper.setID(reactionNode, id);
-						}
-						if (localParameter.isSetName()) {
-							localParameterHelper.setName(reactionNode, name);
-						}
-						if (localParameter.isSetValue()) {
-							localParameterHelper.setValue(reactionNode, value);
-						}
-						if (localParameter.isSetUnits()) {
-							localParameterHelper.setUnits(reactionNode, unit);
-						}
-						if (localParameter.isSetMetaId()) {
-							localParameterHelper.setMetaID(reactionNode,
-									localParameter.getMetaId());
-						}
-						if (localParameter.isSetSBOTerm()) {
-							localParameterHelper.setSBOTerm(reactionNode,
-									localParameter.getSBOTermID());
-						}
-						if (localParameter.isSetNotes()) {
-							try {
-								localParameterHelper.setNotes(reactionNode,
-										localParameter.getNotesString(),
-										localParameter.getNotes());
-							} catch (XMLStreamException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+					if(listLocalParameter != null) {
+						itLP = listLocalParameter.iterator();
+						countLocalParameter = 1;
+						while (itLP.hasNext()) {
+							localParameter = itLP.next();
+							internAttributeName = new StringBuffer(
+									SBML_Constants.LOCAL_PARAMETER).append(
+											countLocalParameter).toString();
+							presentedAttributeName = new StringBuffer(
+									SBML_Constants.LOCALPARAMETER_HEADLINE).append(
+											countLocalParameter).toString();
+
+							localParameterHelper = kineticLawHelper
+									.addLocalParemeter(g, presentedAttributeName,
+											internAttributeName);
+
+							id = localParameter.getId();
+							name = localParameter.getName();
+							value = localParameter.getValue();
+							if (Double.isNaN(value)) {
+								SBML_Logger.addErrorMessage("Attribute value of reaction "
+										+ reactionID
+										+ " "
+										+ presentedAttributeName
+										+ " is not a valid double value.");
 							}
-						}
-						if (localParameter.isSetAnnotation()) {
-							if (localParameter.getAnnotation()
-									.isSetRDFannotation()) {
-								localParameterHelper.setAnnotation(
-										reactionNode,
-										localParameter.getAnnotation());
+							unit = localParameter.getUnits();
+
+							if (localParameter.isSetId()) {
+								localParameterHelper.setID(reactionNode, id);
 							}
-							if (localParameter.getAnnotation()
-									.isSetNonRDFannotation()) {
-								localParameterHelper.setNonRDFAnnotation(
-										reactionNode, localParameter
-												.getAnnotation()
-												.getNonRDFannotation());
+							if (localParameter.isSetName()) {
+								localParameterHelper.setName(reactionNode, name);
 							}
+							if (localParameter.isSetValue()) {
+								localParameterHelper.setValue(reactionNode, value);
+							}
+							if (localParameter.isSetUnits()) {
+								localParameterHelper.setUnits(reactionNode, unit);
+							}
+							if (localParameter.isSetMetaId()) {
+								localParameterHelper.setMetaID(reactionNode,
+										localParameter.getMetaId());
+							}
+							if (localParameter.isSetSBOTerm()) {
+								localParameterHelper.setSBOTerm(reactionNode,
+										localParameter.getSBOTermID());
+							}
+							if (localParameter.isSetNotes()) {
+								try {
+									localParameterHelper.setNotes(reactionNode,
+											localParameter.getNotesString(),
+											localParameter.getNotes());
+								} catch (XMLStreamException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+							if (localParameter.isSetAnnotation()) {
+								if (localParameter.getAnnotation()
+										.isSetRDFannotation()) {
+									localParameterHelper.setAnnotation(
+											reactionNode,
+											localParameter.getAnnotation());
+								}
+								if (localParameter.getAnnotation()
+										.isSetNonRDFannotation()) {
+									localParameterHelper.setNonRDFAnnotation(
+											reactionNode, localParameter
+											.getAnnotation()
+											.getNonRDFannotation());
+								}
+							}
+
+							countLocalParameter++;
 						}
-						
-						countLocalParameter++;
 					}
 					
 				}

@@ -621,7 +621,7 @@ public class NodeHelper implements Node, HelperClass {
 		n.setBoolean(path, value);
 	}
 	
-	public boolean getBoolean(String path) throws AttributeNotFoundException {
+	public synchronized boolean getBoolean(String path) throws AttributeNotFoundException {
 		return n.getBoolean(path);
 	}
 	
@@ -629,7 +629,7 @@ public class NodeHelper implements Node, HelperClass {
 		n.setByte(path, value);
 	}
 	
-	public byte getByte(String path) throws AttributeNotFoundException {
+	public synchronized byte getByte(String path) throws AttributeNotFoundException {
 		return n.getByte(path);
 	}
 	
@@ -637,7 +637,7 @@ public class NodeHelper implements Node, HelperClass {
 		n.setDouble(path, value);
 	}
 	
-	public double getDouble(String path) throws AttributeNotFoundException {
+	public synchronized double getDouble(String path) throws AttributeNotFoundException {
 		return n.getDouble(path);
 	}
 	
@@ -645,7 +645,7 @@ public class NodeHelper implements Node, HelperClass {
 		n.setFloat(path, value);
 	}
 	
-	public float getFloat(String path) throws AttributeNotFoundException {
+	public synchronized float getFloat(String path) throws AttributeNotFoundException {
 		return n.getFloat(path);
 	}
 	
@@ -653,7 +653,7 @@ public class NodeHelper implements Node, HelperClass {
 		n.setInteger(path, value);
 	}
 	
-	public int getInteger(String path) throws AttributeNotFoundException {
+	public synchronized int getInteger(String path) throws AttributeNotFoundException {
 		return n.getInteger(path);
 	}
 	
@@ -673,7 +673,7 @@ public class NodeHelper implements Node, HelperClass {
 		n.setShort(path, value);
 	}
 	
-	public short getShort(String path) throws AttributeNotFoundException {
+	public synchronized short getShort(String path) throws AttributeNotFoundException {
 		return n.getShort(path);
 	}
 	
@@ -681,7 +681,7 @@ public class NodeHelper implements Node, HelperClass {
 		n.setString(path, value);
 	}
 	
-	public String getString(String path) throws AttributeNotFoundException {
+	public synchronized String getString(String path) throws AttributeNotFoundException {
 		return n.getString(path);
 	}
 	

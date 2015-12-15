@@ -235,6 +235,8 @@ public class GMLWriter
 	 */
 	private StringBuffer getWrittenAttributeHierarchy(Attribute a, int level) {
 		StringBuffer sb = new StringBuffer();
+		if(a == null)
+			return sb;
 		if (a.getId().equalsIgnoreCase("directed"))
 			return sb;
 		

@@ -88,7 +88,7 @@ public enum AlignmentSetting {
 			case BORDER_LEFT_BOTTOM:
 				return "border, left-bottom";
 		}
-		return null;
+		return "";
 		
 	}
 	

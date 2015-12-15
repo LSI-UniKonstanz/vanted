@@ -34,9 +34,10 @@ public class ProgressManager {
 			}
 		});
 		String result = "DOREQUEST";
-		for (String fn : progressFiles) {
-			result = fn.substring(fn.indexOf(cacheFileNameWithoutPath) + ".progress.".length() + cacheFileNameWithoutPath.length());
-		}
+		if(progressFiles != null)
+			for (String fn : progressFiles) {
+				result = fn.substring(fn.indexOf(cacheFileNameWithoutPath) + ".progress.".length() + cacheFileNameWithoutPath.length());
+			}
 		result = StringManipulationTools.htmlToUnicode(result);
 		return result;
 	}

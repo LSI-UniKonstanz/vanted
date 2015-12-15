@@ -133,8 +133,13 @@ public class IntegerParameter
 		if ((min == null) && (max == null)) {
 			return true;
 		}
+		boolean valid = true;
+		if(min != null && min.compareTo(value) > 0)
+			valid = false;
+		if(max != null && max.compareTo(value) < 0)
+			valid = false;
 		
-		return ((min.compareTo(value) < 0) && (max.compareTo(value) > 0));
+		return valid;
 	}
 	
 	/**

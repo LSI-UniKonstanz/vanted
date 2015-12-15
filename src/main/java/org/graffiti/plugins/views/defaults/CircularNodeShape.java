@@ -113,7 +113,7 @@ public abstract class CircularNodeShape
 		double corwidth = w + ft;
 		double corheight = h + ft;
 		
-		if (Math.floor(offset) == offset) {
+		if (Double.compare(Math.floor(offset), offset) == 0) {
 			corwidth = w + ft + 1;
 			corheight = h + ft + 1;
 		}

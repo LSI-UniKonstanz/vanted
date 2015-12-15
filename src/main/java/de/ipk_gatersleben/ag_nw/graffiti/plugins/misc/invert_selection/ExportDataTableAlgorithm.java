@@ -10,7 +10,6 @@ import org.ErrorMsg;
 import org.FeatureSet;
 import org.OpenFileDialogService;
 import org.ReleaseInfo;
-import org.UNCFileLocationCheck;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
@@ -164,9 +163,19 @@ public class ExportDataTableAlgorithm extends AbstractEditorAlgorithm {
 		
 		@Override
 		public boolean equals(Object obj) {
+			if(obj == null)
+				return false;
+
 			return (nd1.equals(((NodePair) obj).nd1) && nd2.equals(((NodePair) obj).nd2)) ||
 					(nd1.equals(((NodePair) obj).nd2) && nd2.equals(((NodePair) obj).nd1));
 		}
+
+		@Override
+		public int hashCode() {
+			// TODO Auto-generated method stub
+			return (nd1.toString() + ";" + Double.toString(r) + ";" + nd2.toString() + ";" + Double.toString(p)).hashCode();
+		}
+	
 		
 	}
 	

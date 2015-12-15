@@ -1,17 +1,10 @@
 package org.vanted.animation.interpolators;
 import java.awt.Color;
-import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Vector; 
+
 import org.vanted.animation.data.ColorMode;
 import org.vanted.animation.data.ColorTimePoint;
-import org.vanted.animation.data.DoubleTimePoint;
 import org.vanted.animation.data.InterpolatableTimePoint;
-import org.vanted.animation.data.Point2DTimePoint;
-import org.vanted.animation.data.TimePoint;
-import org.vanted.animation.data.VectorTimePoint;
 import org.vanted.animation.loopers.Looper;
 /**
  * 
@@ -119,7 +112,6 @@ public abstract class Interpolator
 			switch(transitionMode)
 			{
 			case HSB:
-				double hsbValues[] = new double[interpolationStructure.length];
 				for(int i = 0; i < interpolationStructure[0].length - 1;i++)
 				{
 					interpolationStructure[0][i+1] += (int)interpolationStructure[0][i]/1;

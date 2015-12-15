@@ -202,16 +202,18 @@ public class ScenarioService implements HelperClass {
 		Collection<Scenario> result = new ArrayList<Scenario>();
 		String folder = ReleaseInfo.getAppFolderWithFinalSep();
 		File dir = new File(folder);
-		for (File f : dir.listFiles(new FileFilter() {
+		File[] listFiles = dir.listFiles(new FileFilter() {
 			public boolean accept(File pathname) {
 				return pathname.canRead() && pathname.getAbsolutePath().toLowerCase().endsWith(".bsh");
 			}
-		})) {
-			
-			Scenario s = new Scenario(f);
-			if (s.isValid())
-				result.add(s);
-		}
+		});
+		if(listFiles != null)
+			for (File f : listFiles) {
+
+				Scenario s = new Scenario(f);
+				if (s.isValid())
+					result.add(s);
+			}
 		return result;
 	}
 	

@@ -234,10 +234,10 @@ public class AdvancedLabelTool extends MegaTools {
 					AttributeHelper.setLabelFrameStyle(-1, n, style);
 					
 					String tt2 = (String) input[3];
-					if (tt2 != tooltip)
+					if (!tt2.equals(tooltip))
 						AttributeHelper.setToolTipText(n, tt2);
 					String uu2 = (String) input[4];
-					if (uu2 != url)
+					if (!uu2.equals(url))
 						AttributeHelper.setReferenceURL(n, uu2);
 					for (Integer i : index2alignmentSetting.keySet()) {
 						JTextField in = index2labelInput.get(i);

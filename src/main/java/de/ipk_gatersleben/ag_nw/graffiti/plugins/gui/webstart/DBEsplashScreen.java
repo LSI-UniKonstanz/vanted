@@ -212,16 +212,17 @@ public class DBEsplashScreen implements SplashScreenInterface {
 	 * @see org.graffiti.util.ProgressViewer#setValue(int)
 	 */
 	public void setValue(final int value) {
-		if (!infoLabel.isShowing()) {
-			if (value * 43 / getMaximum() > outputlen) {
-				System.out.print("#");
-				outputlen++;
-			}
-			
-		}
-		progressBar.setIndeterminate(false);
-		progressBar.setValue(value);
 		if (infoLabel != null) {
+			if (!infoLabel.isShowing()) {
+				if (value * 43 / getMaximum() > outputlen) {
+					System.out.print("#");
+					outputlen++;
+				}
+
+			}
+			progressBar.setIndeterminate(false);
+			progressBar.setValue(value);
+
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					infoLabel.setText(getSplashScreenlabel(applicationName, value));

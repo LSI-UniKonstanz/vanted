@@ -134,7 +134,7 @@ public class Animator {
 	public void setIsAutoLoopDuration(boolean isAutoCalculatingLoopDuration)
 	{
 		isAutoLoopDuration = isAutoCalculatingLoopDuration;
-		tryAutoCalculateLoopDuration();
+//		tryAutoCalculateLoopDuration();
 	}
 	
 	/**
@@ -162,6 +162,7 @@ public class Animator {
 	 * Auto calculates the loop duration to be the same value is the data point
 	 * who's time value is the largest.
 	 */
+	/*
 	public void tryAutoCalculateLoopDuration()
 	{
 		if (!isAutoLoopDuration) {
@@ -175,7 +176,7 @@ public class Animator {
 			maximum = maximum < animationLoopDuration ? animationLoopDuration : maximum;
 		}
 	}
-	
+	*/
 	/**
 	 * Sets the number of times animations are updated per second.
 	 * 
@@ -311,7 +312,7 @@ public class Animator {
 		{
 			
 		}
-		tryAutoCalculateLoopDuration();
+//		tryAutoCalculateLoopDuration();
 	}
 	
 	public void addListener(AnimatorListener listener)

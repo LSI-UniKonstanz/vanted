@@ -7,17 +7,10 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml;
 
 import java.awt.Color;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -66,22 +59,7 @@ public class Pathway {
 	private Collection<Reaction> reactions;
 	private Collection<Relation> relations;
 	
-	public static void testLoadView() {
-		File f = new File("/Users/klukas/kegg/map/vanted_cache_kegg_map00010.xml");
-		if (!f.exists())
-			f = new File("/home/klukas/kegg/map/vanted_cache_kegg_map04010dme.xml");
-		// f = new File("/home/klukas/kegg/map/vanted_cache_kegg_map00010.xml");
-		FileInputStream fis;
-		try {
-			fis = new FileInputStream(f);
-			Pathway p = getPathwayFromKGML(fis);
-			testShowPathwayInfo(p);
-			Graph g = p.getGraph();
-			MainFrame.getInstance().showGraph(g, null);
-		} catch (FileNotFoundException e) {
-			ErrorMsg.addErrorMessage(e);
-		}
-	}
+
 	
 	public KeggId getName() {
 		return name;
@@ -95,106 +73,6 @@ public class Pathway {
 		return title;
 	}
 	
-	public static void testLoadConvertAll() {
-		
-		// Tee standard output
-		PrintStream out, err;
-		try {
-			out = new PrintStream(new FileOutputStream("/home/klukas/kegg/batch_out.log"));
-			PrintStream tee1 = new TeeStream(System.out, out);
-			System.setOut(tee1);
-			err = new PrintStream(new FileOutputStream("/home/klukas/kegg/batch_err.log"));
-			PrintStream tee2 = new TeeStream(System.err, err);
-			System.setErr(tee2);
-			System.err.println("Pathway\tError-Sum\tDiff-Entries\tDiff-Reactions\tDiff-Relations\tErrors\tWarnings");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		
-		File d = new File("/home/klukas/kegg/61/map");
-		String[] files = d.list(new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".xml");
-			}
-		});
-		Arrays.sort(files);
-		for (String fn : files) {
-			File f = new File("/home/klukas/kegg/61/map/" + fn);
-			testFile2Pathway2GML2Pathway2GML(f);
-		}
-	}
-	
-	public static void testFile2Pathway2GML2Pathway2GML(File f) {
-		boolean batch = f != null;
-		if (f == null) {
-			f = new File("/home/klukas/kegg/61/map/map04010dme.xml");
-		}
-		if (f == null || !f.exists()) {
-			if (f != null)
-				System.err.println("FILE NOT FOUND: " + f.getAbsolutePath());
-			else
-				System.err.println("FILE NOT FOUND: (null)");
-			return;
-		}
-		if (batch) {
-			System.out.println("FILE: " + f.getAbsolutePath());
-		}
-		FileInputStream fis;
-		try {
-			fis = new FileInputStream(f);
-			Pathway p1;
-			try {
-				p1 = getPathwayFromKGML(fis);
-			} catch (Exception e) {
-				System.out.println("ERROR: " + e.getMessage());
-				return;
-			}
-			if (!batch) {
-				testShowPathwayInfo(p1);
-				System.out.println("RELATIONS A: " + p1.getRelations().size());
-			}
-			Graph g1 = p1.getGraph();
-			g1.setName(g1.getName() + " (file -> pathway -> gml)");
-			if (!batch)
-				MainFrame.getInstance().showGraph(g1, null);
-			Collection<Gml2PathwayWarningInformation> warnings = new ArrayList<Gml2PathwayWarningInformation>();
-			Collection<Gml2PathwayErrorInformation> errors = new ArrayList<Gml2PathwayErrorInformation>();
-			Pathway p2 = getPathwayFromGraph(g1, warnings, errors, null);
-			if (!batch) {
-				System.out.println("RELATIONS B: " + p2.getRelations().size());
-			}
-			for (Gml2PathwayErrorInformation error : errors)
-				System.out.println("ERROR: " + error.getError() + " Affected Graph Elements: " + error.getCausingGraphElements() + " Message: "
-						+ error.getDescription());
-			for (Gml2PathwayWarningInformation warning : warnings)
-				System.out.println("WARNING: " + warning.getWarning() + " Affected Graph Element: " + warning.getCausingGraphElement());
-			if (!batch)
-				testShowPathwayInfo(p2);
-			Graph g2 = p2.getGraph();
-			g2.setName(g2.getName() + " (file -> pathway -> gml --> pathway --> gml)");
-			if (!batch)
-				MainFrame.getInstance().showGraph(g2, null);
-			int result = testShowPathwayComparison(p1, p2, !batch);
-			int diffEntry = p2.getEntries().size() - p1.getEntries().size();
-			int diffReac = p2.getReactions().size() - p1.getReactions().size();
-			int diffRel = p2.getRelations().size() - p1.getRelations().size();
-			System.err.println(f.getName() + "\t" + result + "\t" + diffEntry + "\t" + diffReac + "\t" + diffRel + "\t" + errors.size() + "\t" + warnings.size());
-			boolean showRelationCSVinfo = false;
-			if (showRelationCSVinfo) {
-				// System.out.println("RELATIONS A: "+p1.getRelations().size());
-				// System.out.println("RELATIONS B: "+p2.getRelations().size());
-				System.out.println("------------ RELATIONS P1 ----------------");
-				for (Relation r : p1.getRelations())
-					System.out.println(r.getCSVline());
-				System.out.println("------------ RELATIONS P2 ----------------");
-				for (Relation r : p2.getRelations())
-					System.out.println(r.getCSVline());
-			}
-		} catch (Exception e) { // FileNotFoundException
-			System.err.println(f.getName() + "\t" + "" + "\t" + "" + "\t" + "" + "\t" + "" + "\t" + "" + "\t" + "" + "\tERROR:" + e.getMessage());
-			ErrorMsg.addErrorMessage(e);
-		}
-	}
 	
 	public static void testGML2Pathway2GML() {
 		Graph g = MainFrame.getInstance().getActiveEditorSession().getGraph();

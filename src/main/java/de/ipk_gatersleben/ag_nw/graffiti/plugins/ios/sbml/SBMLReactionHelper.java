@@ -197,7 +197,7 @@ public class SBMLReactionHelper {
 			return (Boolean) attWriter.getAttribute(reactionNode,
 					SBML_Constants.SBML, SBML_Constants.REVERSIBLE);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -206,7 +206,7 @@ public class SBMLReactionHelper {
 			return (Boolean) attWriter.getAttribute(reactionNode,
 					SBML_Constants.SBML, SBML_Constants.FAST);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -999,10 +999,10 @@ public class SBMLReactionHelper {
 				return (Boolean) attWriter.getAttribute(reactionEdge,
 						SBML_Constants.SBML, SBML_Constants.REACTION_CONSTANT);
 			} else {
-				return null;
+				return false;
 			}
 		} else {
-			return null;
+			return false;
 		}
 	}
 	

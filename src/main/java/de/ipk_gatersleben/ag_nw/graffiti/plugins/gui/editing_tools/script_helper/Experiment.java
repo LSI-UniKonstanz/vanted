@@ -382,7 +382,7 @@ public class Experiment implements ExperimentInterface {
 	}
 	
 	private static ExperimentHeaderInterface findHeader(ExperimentHeaderInterface suggestion, ExperimentInterface mappingDataList) {
-		if (mappingDataList.isEmpty()) {
+		if (mappingDataList == null || mappingDataList.isEmpty()) {
 			return new ExperimentHeader(suggestion);
 		} else {
 			for (SubstanceInterface s : mappingDataList)

@@ -79,6 +79,8 @@ public class FileSaveAction
 			// these commands fail if the session has not yet been saved to
 			// a file
 			session = (EditorSession) mainFrame.getActiveSession();
+			if(session == null)
+				return false;
 			fullName = session.getFileNameFull();
 			fileTypeDescription = session.getFileTypeDescription();
 		} catch (Exception e) {
@@ -136,6 +138,8 @@ public class FileSaveAction
 		
 		try {
 			session = (EditorSession) mainFrame.getActiveSession();
+			if(session == null)
+				throw new Exception("No active Session found");
 			fullName = session.getFileNameFull();
 			fileTypeDescription = session.getFileTypeDescription();
 			if (session != null && session.getUndoManager() != null)

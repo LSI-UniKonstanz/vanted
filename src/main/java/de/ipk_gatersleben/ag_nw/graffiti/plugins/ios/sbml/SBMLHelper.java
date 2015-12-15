@@ -643,7 +643,7 @@ public class SBMLHelper {
 		setComposedSubUnit(g, headline, composedSubUnit, getSubUnitCount(g, headline) + 1);
 		String composedUnit = getComposedUnit(g, headline);
 		String nextComposedUnit = "";
-		if (composedUnit != "") {
+		if (!composedUnit.isEmpty()) {
 			nextComposedUnit = composedUnit + " * " + composedSubUnit;
 		}
 		else {
@@ -665,7 +665,7 @@ public class SBMLHelper {
 		setComposedSubUnit(g, headline, composedSubUnit, getSubUnitCount(g, headline) + 1);
 		String composedUnit = getComposedUnit(g, headline);
 		String nextComposedUnit = "";
-		if (composedUnit != "") {
+		if (!composedUnit.isEmpty()) {
 			nextComposedUnit = composedUnit + " * " + composedSubUnit;
 		}
 		else {
@@ -1124,7 +1124,7 @@ public class SBMLHelper {
 						compartment.getVersion())) {
 			setCompartmentID(g, internHeadline, compartment.getId());
 		}
-		if (compartment.isSetName() && (compartment.getName() != SBML_Constants.EMPTY)) {
+		if (compartment.isSetName() && (!compartment.getName().isEmpty())) {
 			setCompartmentName(g, internHeadline, compartment.getName());
 		}
 		if (compartment.isSetSpatialDimensions()) {
@@ -1634,7 +1634,7 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(
 							SBML_Constants.CONSTANT).toString());
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -2094,7 +2094,7 @@ public class SBMLHelper {
 					SBML_Constants.SBML,
 					SBML_Constants.HAS_ONLY_SUBSTANCE_UNITS);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -2111,7 +2111,7 @@ public class SBMLHelper {
 			return (Boolean) attWriter.getAttribute(speciesNode,
 					SBML_Constants.SBML, SBML_Constants.BOUNDARY_CONDITION);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -2127,7 +2127,7 @@ public class SBMLHelper {
 			return (Boolean) attWriter.getAttribute(speciesNode,
 					SBML_Constants.SBML, SBML_Constants.SPECIES_CONSTANT);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -2157,21 +2157,21 @@ public class SBMLHelper {
 	 *           the id to set
 	 */
 	public static void addSpeciesID(Node speciesNode, String id) {
-		if (!id.equals(SBML_Constants.EMPTY)) {
+		if (!id.isEmpty()) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML,
 					SBML_Constants.SPECIES_ID, id);
 		}
 	}
 	
 	public static void addSpeciesName(Node speciesNode, String name) {
-		if (!name.equals(SBML_Constants.EMPTY)) {
+		if (!name.isEmpty()) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML,
 					SBML_Constants.SPECIES_NAME, name);
 		}
 	}
 	
 	public static void setSpeciesAttributes(Node sbmlNode, String niceID, Object value) {
-		if (!value.equals(SBML_Constants.EMPTY) && !(value == null)) {
+		if (value != null && !value.equals(SBML_Constants.EMPTY)) {
 			if (value instanceof Boolean) {
 				AttributeHelper.setAttribute(sbmlNode, SBML_Constants.SBML,
 						niceID, (Boolean) value);
@@ -2183,33 +2183,7 @@ public class SBMLHelper {
 		}
 	}
 	
-	/**
-	 * Sets the label of a node. The id string will be the label if name is not
-	 * set
-	 * 
-	 * @param speciesNode
-	 *           where the information should be read in
-	 * @param name
-	 *           the name to set
-	 * @param id
-	 *           will be set if name is empty
-	 * @param _pgg
-	 *           helps to set the position of the node
-	 */
-	private static void setSpeciesLabel(Node speciesNode, String name,
-			String id) {
-		String label = null;
-		if (!name.equals(SBML_Constants.EMPTY)) {
-			label = name;
-		} else {
-			label = id;
-		}
-		if (!label.equals(SBML_Constants.EMPTY)) {
-			attReader.setAttributes(speciesNode, Color.white, label,
-					_pgg.getNextPosition(), label.length() + 7);
-		}
-	}
-	
+
 	/**
 	 * Sets the compartment of a node
 	 * 
@@ -2559,7 +2533,7 @@ public class SBMLHelper {
 	 */
 	public static Node initSpeciesNode(Node n) {
 		String label = AttributeHelper.getLabel(n, SBML_Constants.EMPTY);
-		if (label == SBML_Constants.EMPTY) {
+		if (!label.isEmpty()) {
 			return null;
 		}
 		else {
@@ -2965,7 +2939,7 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(
 							SBML_Constants.PARAMETER_CONSTANT).toString());
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -4643,7 +4617,7 @@ public class SBMLHelper {
 			return (Boolean) attWriter.getAttribute(reactionNode,
 					SBML_Constants.SBML, SBML_Constants.REVERSIBLE);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -4659,7 +4633,7 @@ public class SBMLHelper {
 			return (Boolean) attWriter.getAttribute(reactionNode,
 					SBML_Constants.SBML, SBML_Constants.FAST);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -5006,10 +4980,10 @@ public class SBMLHelper {
 				return (Boolean) attWriter.getAttribute(reactionEdge,
 						SBML_Constants.SBML, SBML_Constants.REACTION_CONSTANT);
 			} else {
-				return null;
+				return false;
 			}
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -5555,7 +5529,7 @@ public class SBMLHelper {
 	
 	public static Node initReactionNode(Node n) {
 		String label = AttributeHelper.getLabel(n, SBML_Constants.EMPTY);
-		if (label == SBML_Constants.EMPTY) {
+		if (!label.isEmpty()) {
 			return null;
 		}
 		else {
@@ -5955,7 +5929,7 @@ public class SBMLHelper {
 	public static void addLocalParameterName(Node node, String lpID, String name) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
-			if (getLocalParameterID(node, i) == lpID) {
+			if (getLocalParameterID(node, i).equals(lpID)) {
 				String internAttributeName = new StringBuffer(
 						SBML_Constants.LOCAL_PARAMETER).append(
 						i).toString();
@@ -5972,7 +5946,7 @@ public class SBMLHelper {
 	public static boolean isSetLocalParameterName(Node node, String lpID) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
-			if (getLocalParameterID(node, i) == lpID) {
+			if (getLocalParameterID(node, i).equals(lpID)) {
 				if (isLocalParameterName(node, i)) {
 					return true;
 				}
@@ -5987,7 +5961,7 @@ public class SBMLHelper {
 	public static boolean isSetLocalParameterUnits(Node node, String lpID) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
-			if (getLocalParameterID(node, i) == lpID) {
+			if (getLocalParameterID(node, i).equals(lpID)) {
 				if (isLocalParameterUnits(node, i)) {
 					return true;
 				}
@@ -6002,7 +5976,7 @@ public class SBMLHelper {
 	public static boolean isSetLocalParameterValue(Node node, String lpID) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
-			if (getLocalParameterID(node, i) == lpID) {
+			if (getLocalParameterID(node, i).equals(lpID)) {
 				if (isLocalParameterValue(node, i)) {
 					return true;
 				}
@@ -6017,7 +5991,7 @@ public class SBMLHelper {
 	public static void deleteLocalParameterName(Node node, String lpID) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
-			if (getLocalParameterID(node, i) == lpID) {
+			if (getLocalParameterID(node, i).equals(lpID)) {
 				if (isLocalParameterName(node, i)) {
 					String internAttributeName = new StringBuffer(
 							SBML_Constants.LOCAL_PARAMETER).append(
@@ -6033,7 +6007,7 @@ public class SBMLHelper {
 	public static void deleteLocalParameterValue(Node node, String lpID) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
-			if (getLocalParameterID(node, i) == lpID) {
+			if (getLocalParameterID(node, i).equals(lpID)) {
 				if (isLocalParameterValue(node, i)) {
 					String internAttributeName = new StringBuffer(
 							SBML_Constants.LOCAL_PARAMETER).append(
@@ -6049,7 +6023,7 @@ public class SBMLHelper {
 	public static void deleteLocalParameterUnits(Node node, String lpID) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
-			if (getLocalParameterID(node, i) == lpID) {
+			if (getLocalParameterID(node, i).equals(lpID)) {
 				if (isLocalParameterUnits(node, i)) {
 					String internAttributeName = new StringBuffer(
 							SBML_Constants.LOCAL_PARAMETER).append(
@@ -6072,7 +6046,7 @@ public class SBMLHelper {
 	public static void deleteLocalParameterID(Node node, String lpID) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
-			if (getLocalParameterID(node, i) == lpID) {
+			if (getLocalParameterID(node, i).equals(lpID)) {
 				if (isLocalParameterID(node, i)) {
 					String internAttributeName = new StringBuffer(
 							SBML_Constants.LOCAL_PARAMETER).append(
@@ -6088,7 +6062,7 @@ public class SBMLHelper {
 	public static void addLocalParameterValue(Node node, String lpID, Double value) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
-			if (getLocalParameterID(node, i) == lpID) {
+			if (getLocalParameterID(node, i).equals(lpID)) {
 				String internAttributeName = new StringBuffer(
 						SBML_Constants.LOCAL_PARAMETER).append(
 						i).toString();
@@ -6105,7 +6079,7 @@ public class SBMLHelper {
 	public static void addLocalParameterUnits(Node node, String lpID, String units) {
 		int lpCount = localParameterCount(node);
 		for (int i = 1; i <= lpCount; i++) {
-			if (getLocalParameterID(node, i) == lpID) {
+			if (getLocalParameterID(node, i).equals(lpID)) {
 				String internAttributeName = new StringBuffer(
 						SBML_Constants.LOCAL_PARAMETER).append(
 						i).toString();
@@ -6648,7 +6622,7 @@ public class SBMLHelper {
 		String headline = returnEventWithID(g, id);
 		setTriggerInitialValue(g, headline, initialValue);
 		setTriggerPersistent(g, headline, persistent);
-		if (formula != "" && formula != null) {
+		if (formula != null && !formula.isEmpty()) {
 			setTriggerFunction(g, headline, formula);
 		}
 	}
@@ -6669,14 +6643,14 @@ public class SBMLHelper {
 	
 	public static void addPriorityToEvent(Graph g, String id, String function) {
 		String headline = returnEventWithID(g, id);
-		if (function != "" && function != null) {
+		if (function != null && !function.isEmpty()) {
 			setPriorityFunction(g, headline, function);
 		}
 	}
 	
 	public static void addDelayToEvent(Graph g, String id, String function) {
 		String headline = returnEventWithID(g, id);
-		if (function != "" && function != null) {
+		if (function != null && !function.isEmpty()) {
 			setDelayFunction(g, headline, function);
 		}
 	}
@@ -6692,7 +6666,7 @@ public class SBMLHelper {
 		if (variable != null) {
 			setEventAssignmentVariable(g, internHeadline, variable, eventAssignmentCount + 1);
 		}
-		if (function != null && function != "") {
+		if (function != null && !function.isEmpty()) {
 			setEventAssignmentFunction(g, internHeadline, function, eventAssignmentCount + 1);
 		}
 	}
@@ -6934,7 +6908,7 @@ public class SBMLHelper {
 							SBML_Constants.USE_VALUES_FROM_TRIGGER_TIME)
 							.toString());
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -7090,7 +7064,7 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(
 							SBML_Constants.INITIAL_VALUE).toString());
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -7111,7 +7085,7 @@ public class SBMLHelper {
 					new StringBuffer(internHeadline).append(
 							SBML_Constants.PERSISTENT).toString());
 		} else {
-			return null;
+			return false;
 		}
 	}
 	

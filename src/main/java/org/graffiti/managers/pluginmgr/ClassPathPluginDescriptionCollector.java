@@ -187,19 +187,19 @@ public class ClassPathPluginDescriptionCollector
 				
 				try {
 					jarFile = new JarFile(root);
+					
+					Enumeration<?> entries = jarFile.entries();
+					
+					while (entries.hasMoreElements()) {
+						JarEntry jarEntry = (JarEntry) entries.nextElement();
+						
+						if (isPluginDescription(jarEntry.getName())) {
+							acc.add("jar:file:" + classRoot.getAbsolutePath() +
+									"!/" + jarEntry.getName());
+						}
+					}
 				} catch (IOException e) {
 					System.out.println(e);
-				}
-				
-				Enumeration<?> entries = jarFile.entries();
-				
-				while (entries.hasMoreElements()) {
-					JarEntry jarEntry = (JarEntry) entries.nextElement();
-					
-					if (isPluginDescription(jarEntry.getName())) {
-						acc.add("jar:file:" + classRoot.getAbsolutePath() +
-											"!/" + jarEntry.getName());
-					}
 				}
 				
 				// the file is a plugin description. Add it to the list of

@@ -1,6 +1,5 @@
 package org.vanted.animation.loopers;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.vanted.animation.data.InterpolatableTimePoint;
@@ -190,7 +189,7 @@ public abstract class Looper {
 		double normalizedTime = 0;
 		if(dataPoints.get(dataPoints.size() - 1).getTime() <= time)
 		{
-			return normalizedTime = 1;
+			return 1; //normalizedTime = 1;
 		}
 		else
 		{

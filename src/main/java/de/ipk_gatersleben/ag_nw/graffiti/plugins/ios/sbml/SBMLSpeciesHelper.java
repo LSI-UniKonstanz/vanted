@@ -393,7 +393,7 @@ public class SBMLSpeciesHelper extends SBMLNodesNiceIdHelper {
 					SBML_Constants.SBML,
 					SBML_Constants.HAS_ONLY_SUBSTANCE_UNITS);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -410,7 +410,7 @@ public class SBMLSpeciesHelper extends SBMLNodesNiceIdHelper {
 			return (Boolean) attWriter.getAttribute(speciesNode,
 					SBML_Constants.SBML, SBML_Constants.BOUNDARY_CONDITION);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -426,7 +426,7 @@ public class SBMLSpeciesHelper extends SBMLNodesNiceIdHelper {
 			return (Boolean) attWriter.getAttribute(speciesNode,
 					SBML_Constants.SBML, SBML_Constants.SPECIES_CONSTANT);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
