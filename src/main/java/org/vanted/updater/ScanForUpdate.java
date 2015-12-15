@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,7 +81,7 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 	/**
 	 * 
 	 */
-	private static final int TIME_REMINDER_DAYS = 7;
+	protected static final int TIME_REMINDER_DAYS = 7;
 	
 	private static final String[] arrDialogOptions = {
 			"Download now",
@@ -92,7 +91,7 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 	/**
 	 * 
 	 */
-	private static final String REMINDER_DATE = "reminder-date";
+	protected static final String REMINDER_DATE = "reminder-date";
 	/**
 	 * 
 	 */
@@ -139,8 +138,20 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 	 * This method runs asynchronous to not block the start up process
 	 */
 	public static void issueScanAfterStartup() {
+		
+	}
+
+	public static void issueScan(final boolean ignoreDate) {
+		Date currentDate = new Date();
+		Preferences preferenceForClass = PreferenceManager.getPreferenceForClass(ScanForUpdate.class);
+
+		if (!ignoreDate) {
+			// if there is preference entry for reminder time..  check
+			if( ! CheckUpdateDate.isDateAfterUpdateDate(currentDate, preferenceForClass))
+				return;
+		}
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				logger.debug("waiting for update scan until app has started");
@@ -153,16 +164,17 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 				}
 				logger.debug("starting update scan task");
 				final ScanForUpdate scanForUpdate = new ScanForUpdate();
+				final ScanForAddonUpdates scanForAddonUpdates = new ScanForAddonUpdates();
 				BackgroundTaskHelper.issueSimpleTask(
 						"Downloading Updates",
 						"...",
 						new Runnable() {
-							
+
 							@Override
 							public void run() {
 								try {
-									new ScanForAddonUpdates().hasUpdates();
-									scanForUpdate.doScan(false);
+									scanForAddonUpdates.doScan(ignoreDate);
+									scanForUpdate.doScan(ignoreDate);
 								} catch (IOException e) {
 									if (Logger.getRootLogger().getLevel() == Level.DEBUG)
 										e.printStackTrace();
@@ -176,33 +188,7 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 			}
 		}).start();
 	}
-
-	/*
-	public static void issueScan() {
-		logger.debug("starting update scan task");
-		final ScanForUpdate scanForUpdate = new ScanForUpdate();
-		
-		BackgroundTaskHelper.issueSimpleTask(
-				"Downloading Updates",
-				"...",
-				new Runnable() {
-					
-					@Override
-					public void run() {
-						try {
-							scanForUpdate.doScan(true);
-						} catch (IOException e) {
-							if (Logger.getRootLogger().getLevel() == Level.DEBUG)
-								e.printStackTrace();
-							System.out.println("cannot scan for updates: " + e.getMessage());
-						}
-						scanForUpdate.backgroundTaskStatusProvider.setCurrentStatusText1("Download finished");
-					}
-				},
-				null,
-				scanForUpdate.backgroundTaskStatusProvider, 0);
-	}
-	*/
+	
 	protected void doScan(boolean ignoreDate) throws IOException {
 		
 		if (ReleaseInfo.isRunningAsWebstart()) {
@@ -217,34 +203,11 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 		
 		Date currentDate = new Date();
 		Preferences preferenceForClass = PreferenceManager.getPreferenceForClass(ScanForUpdate.class);
-		
+
 		if (!ignoreDate) {
 			// if there is preference entry for reminder time..  check
-			boolean timeout = false;
-			String strReminderDate = preferenceForClass.get(REMINDER_DATE, null);
-			if (strReminderDate != null) {
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-				try {
-					Date storedDate = dateFormat.parse(strReminderDate);
-					
-					if (currentDate.after(storedDate))
-						timeout = true;
-				} catch (ParseException e) {
-					if (Logger.getRootLogger().getLevel() == Level.DEBUG)
-						e.printStackTrace();
-					
-					/*
-					 * if someone put in a wrong formatted dat in the preferences
-					 * replace it with the current date
-					 */
-					preferenceForClass.put(REMINDER_DATE, dateFormat.format(currentDate));
-					
-					timeout = true;
-				}
-				// if we're still not after the X days of reminder.. don't ask the user
-				if (!timeout)
-					return;
-			}
+			if( ! CheckUpdateDate.isDateAfterUpdateDate(currentDate, preferenceForClass))
+				return;
 		}
 		String version = null;
 		boolean prepareUpdate = false;
@@ -460,8 +423,8 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 		// or go to website (short version)
 		String msg = "<html>A new update to VANTED " + version + " is available<br/><br/>"
 				+ "You can download it now or be reminded later.<br/><br/>"
-				+ "The update will be installed during the next startup.<br/>"
-				+ updateMessage;
+				+ updateMessage
+				+ "<br/><br/><strong>The update will be installed during the next startup</strong>.";
 		int dialogAskUpdate = JOptionPane.showOptionDialog(MainFrame.getInstance(),
 				msg,
 				"Update available",
