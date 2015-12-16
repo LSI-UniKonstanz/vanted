@@ -23,7 +23,7 @@ import org.graffiti.attributes.IntegerAttribute;
 import org.graffiti.attributes.LongAttribute;
 import org.graffiti.attributes.ShortAttribute;
 import org.graffiti.plugin.Displayable;
-import org.graffiti.plugin.parameter.IntegerParameter;
+import org.graffiti.plugin.parameter.AbstractLimitableParameter;
 
 /**
  * DOCUMENT ME!
@@ -54,16 +54,36 @@ public class SpinnerEditComponent
 		SpinnerNumberModel model;
 		
 		if (disp instanceof IntegerAttribute || disp instanceof ByteAttribute ||
-							disp instanceof LongAttribute || disp instanceof ShortAttribute ||
-							disp instanceof IntegerParameter) {
-			model = new SpinnerNumberModel(new Integer(0), null, null, new Integer(1));
-		} else {
-			model = new SpinnerNumberModel(new Double(0d), null, null,
-								DEFAULT_STEP);
+					disp instanceof LongAttribute || disp instanceof ShortAttribute
+					) {
+				model = new SpinnerNumberModel(new Integer(0), null, null, new Integer(1));
+			 
+		} else if( disp instanceof AbstractLimitableParameter) {
+				Comparable<?> min = ((AbstractLimitableParameter)disp).getMin();
+				Comparable<?> max = ((AbstractLimitableParameter)disp).getMax();
+				if(min instanceof Double) {
+					Double dMin = (Double)min;
+					Double dMax = (Double)max;
+					min = dMin.compareTo(Double.MIN_VALUE) == 0 ? null : min;
+					max = dMax.compareTo(Double.MAX_VALUE) == 0 ? null : max;
+					model = new SpinnerNumberModel((Double)disp.getValue(), min, max, new Double(1));
+				}
+				else if(min instanceof Float) {
+					Float fMin = (Float)min;
+					Float fMax = (Float)max;
+					model = new SpinnerNumberModel((Float)disp.getValue(), fMin.compareTo(Float.MIN_VALUE) == 0 ? null : min, fMax.compareTo(Float.MAX_VALUE) == 0 ? null : max, new Float(1));
+				}
+				else {
+					Integer iMin = (Integer)min;
+					Integer iMax = (Integer)max;
+					model = new SpinnerNumberModel((Integer)disp.getValue(), iMin.compareTo(Integer.MIN_VALUE) == 0 ? null : min, iMax.compareTo(Integer.MAX_VALUE) == 0 ? null : max, new Integer(1));
+				}
 		}
-		
+		else {
+			model = new SpinnerNumberModel(new Double(0d), null, null,
+					DEFAULT_STEP);
+		}
 		this.jSpinner = new JSpinner(model);
-		
 		// this.spinner = new JSpinner();
 		// this.spinner.setBorder(BorderFactory.createEmptyBorder());
 		

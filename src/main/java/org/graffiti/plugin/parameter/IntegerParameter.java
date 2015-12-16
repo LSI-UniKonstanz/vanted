@@ -105,8 +105,8 @@ public class IntegerParameter
 	 * @return the maximum of the intervall.
 	 */
 	@Override
-	public Comparable<?> getMax() {
-		return max;
+	public Comparable<Integer> getMax() {
+		return max == null ? Integer.MAX_VALUE : max;
 	}
 	
 	/**
@@ -115,8 +115,8 @@ public class IntegerParameter
 	 * @return the minimum of the intervall.
 	 */
 	@Override
-	public Comparable<?> getMin() {
-		return min;
+	public Comparable<Integer> getMin() {
+		return min == null ? Integer.MIN_VALUE : min;
 	}
 	
 	/**
