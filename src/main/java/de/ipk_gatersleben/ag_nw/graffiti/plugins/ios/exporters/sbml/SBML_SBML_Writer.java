@@ -55,13 +55,13 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 		int version = 1;
 		if (AttributeHelper.hasAttribute(g, SBML_Constants.SBML,
 				SBML_Constants.LEVEL)) {
-			level = (Integer) AttributeHelper.getAttributeValue(g,
-					SBML_Constants.SBML, SBML_Constants.LEVEL, null, null);
+			level = Integer.parseInt((String)AttributeHelper.getAttributeValue(g,
+					SBML_Constants.SBML, SBML_Constants.LEVEL, null, null));
 		}
 		if (AttributeHelper.hasAttribute(g, SBML_Constants.SBML,
 				SBML_Constants.VERSION)) {
-			version = (Integer) getAttribute(g, SBML_Constants.SBML,
-					SBML_Constants.VERSION);
+			version = Integer.parseInt((String)getAttribute(g, SBML_Constants.SBML,
+					SBML_Constants.VERSION));
 		}
 		// L3V1 is the current spec
 		if (level < 3) {
