@@ -37,7 +37,7 @@ public class PreferenceManager
 	static Logger logger = Logger.getLogger(PreferenceManager.class);
 	
 	static {
-		logger.setLevel(Level.DEBUG);
+		logger.setLevel(Level.INFO);
 		getInstance();
 	}
 	
