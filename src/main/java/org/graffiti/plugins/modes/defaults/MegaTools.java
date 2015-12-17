@@ -588,7 +588,6 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		unDisplayAsMarked(getAllMarkedComps());
 		if (selection != null) {
 			selection.clear();
-			fireSelectionChanged();
 		}
 		
 	}
