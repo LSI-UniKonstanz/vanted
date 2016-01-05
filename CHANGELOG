@@ -1,0 +1,36 @@
+<h3>Changelog</h3>
+
+<h4>VANTED v2.6.0 release (27/11/2015)</h4>
+Bugfixes:
+<ul>
+<li>Code clean-up and removal of bugs using bug-scanner tools
+<li>Cluster background was not exported to image
+<li>Introducing edge bends is now working properly
+<li>Sometimes specific changes didn't visually appear and a redraw had to be triggered
+</ul>
+Improvements:
+<ul>
+<li>Update scan improved to support md5-hash and includes add-ons as well
+<li>Performance improvement for larger networks (30k Nodes and more)
+<li>Support for the SBML-Layout extension
+<li>Added Animation Framework
+<li>Selection frames can now be drawn inside nodes using Ctrl+Shift
+<li>Nodes can be created inside other nodes using Ctrl+Shift
+</ul>
+
+<h4>VANTED v2.5.3 release (05/10/2015)</h4>
+Bugfixes:
+<ul>
+<li>start up problems, when no previous preferences were found to select LookAndFeel
+<li>several minor bugfixes found and fixed throughout heavy usage
+</ul>
+Improvements:
+<ul>
+<li>the "Remove Connecting Nodes" algorithm will now not only remove nodes and keep the overall connection of the network, but also respect the original direction
+<li>the ESC key will also deselect network elements
+
+</ul>
+<h4>VANTED v2.5.2 release (16/09/2015)</h4>
+This release contains only minor bugfixes which improve user experience and speed.
+
+
