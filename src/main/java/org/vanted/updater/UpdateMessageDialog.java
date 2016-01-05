@@ -62,8 +62,8 @@ public class UpdateMessageDialog extends JDialog {
 			}
 		});
 		
-//		setSize(width, height);
 		pack();
+		setLocationRelativeTo(MainFrame.getInstance());
 		setResizable(false);
 		setVisible(true);
 	}
@@ -110,7 +110,7 @@ public class UpdateMessageDialog extends JDialog {
 		JTextPane message2 = new JTextPane();
 		message2.setContentType("text/html");
 		message2.setEditable(false);
-		message2.setText(messageText);
+		message2.setText(messageText2);
 		JScrollPane spane2 = new JScrollPane(message2, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		spane2.setPreferredSize(new Dimension(300, 200));
 		

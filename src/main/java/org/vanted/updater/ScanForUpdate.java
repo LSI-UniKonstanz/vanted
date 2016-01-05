@@ -144,14 +144,7 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 	}
 	
 	public static void issueScan(final boolean ignoreDate) {
-		Date currentDate = new Date();
-		Preferences preferenceForClass = PreferenceManager.getPreferenceForClass(ScanForUpdate.class);
 		
-		if (!ignoreDate) {
-			// if there is preference entry for reminder time..  check
-			if (!CheckUpdateDate.isDateAfterUpdateDate(currentDate, preferenceForClass))
-				return;
-		}
 		new Thread(new Runnable() {
 			
 			@Override
@@ -166,6 +159,22 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 				}
 				logger.debug("starting update scan task");
 				final ScanForUpdate scanForUpdate = new ScanForUpdate();
+				// always try to finish an update
+				try {
+					finishPreviousUpdate();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				// only scan for new updates, if the date is right
+				if (!ignoreDate) {
+					Date currentDate = new Date();
+					Preferences preferenceForClass = PreferenceManager.getPreferenceForClass(ScanForUpdate.class);
+					// if there is preference entry for reminder time..  check
+					if (!CheckUpdateDate.isDateAfterUpdateDate(currentDate, preferenceForClass))
+						return;
+				}
+				
 				final ScanForAddonUpdates scanForAddonUpdates = new ScanForAddonUpdates();
 				BackgroundTaskHelper.issueSimpleTask(
 						"Downloading Updates",
@@ -199,8 +208,6 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 		}
 		
 		logger.debug("doing update scan at: " + URL_UPDATE_FILESTRING);
-		
-		finishPreviousUpdate();
 		
 		Date currentDate = new Date();
 		Preferences preferenceForClass = PreferenceManager.getPreferenceForClass(ScanForUpdate.class);
@@ -419,7 +426,8 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 		String msg = "<html>A new update to VANTED " + version + " is available<br/><br/>"
 				+ "You can download it now or be reminded later.<br/><br/>"
 				//				+ updateMessage
-				+ "<br/><br/><strong>The update will be installed during the next startup</strong>.";
+//				+ "<br/><br/>"
+				+ "<strong>The update will be installed during the next startup</strong>.";
 		int dialogAskUpdate = JOptionPane.showOptionDialog(MainFrame.getInstance(),
 				msg,
 				"Update available",
@@ -442,6 +450,10 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 			return;
 		}
 		
+		// download the changelog file from the server
+		// this will be presented in an update dialog after the startup next time
+		FileHelper.downloadFile(new URL(URL_CHANGELOG_FILESTRING), DESTPATHUPDATEDIR, "CHANGELOG");
+		
 		for (String corePath : listAddCoreJarRelativePath) {
 			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(corePath));
 			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + "/" + corePath), DESTPATHUPDATEDIR, extractFileName(corePath));
@@ -458,10 +470,6 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 		BufferedWriter writer = new BufferedWriter(new FileWriter(updateFile));
 		writer.write(updFileBuffer.toString());
 		writer.close();
-		
-		// download the changelog file from the server
-		// this will be presented in an update dialog after the startup next time
-		FileHelper.downloadFile(new URL(URL_CHANGELOG_FILESTRING), DESTPATHUPDATEDIR, "CHANGELOG");
 		
 		// bootstrap will look for that file and does his work 
 	}
@@ -551,11 +559,6 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 				
 			}
 			String footer = "";
-//			JOptionPane.showMessageDialog(MainFrame.getInstance()
-//					, updateMessage
-//					, "Information",
-//					JOptionPane.INFORMATION_MESSAGE);
-//			
 			
 			UpdateMessageDialog.showUpdateMessageDialog(header, details, changelog, footer);
 			
