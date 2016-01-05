@@ -51,6 +51,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 	
 	static int MAX_QUERY_SIZE = 10;
 	
+	private static final Object lock = new Object();
 	static KeggAPIServiceHelper instance;
 
 	/**
@@ -92,9 +93,11 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 	}
 	
 	public static KeggAPIServiceHelper getInstance() {
-		if(instance == null)
-			instance = new KeggAPIServiceHelper();
-		return instance;
+		synchronized (lock) {
+			if(instance == null)
+				instance = new KeggAPIServiceHelper();
+			return instance;
+		}
 	}
 	
 	/**

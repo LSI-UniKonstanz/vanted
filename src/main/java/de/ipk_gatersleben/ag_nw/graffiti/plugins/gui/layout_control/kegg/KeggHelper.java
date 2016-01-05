@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -247,9 +248,9 @@ public class KeggHelper implements HelperClass {
 		return result;
 	}
 	
-	private static Collection<OrganismEntry> cachedOrganismList = new ArrayList<OrganismEntry>();
+	private static List<OrganismEntry> cachedOrganismList = new ArrayList<OrganismEntry>();
 	
-	public synchronized Collection<OrganismEntry> getOrganisms()
+	public synchronized List<OrganismEntry> getOrganisms()
 						throws IOException, ServiceException {
 		if (cachedOrganismList.size() > 1) {
 			return cachedOrganismList;

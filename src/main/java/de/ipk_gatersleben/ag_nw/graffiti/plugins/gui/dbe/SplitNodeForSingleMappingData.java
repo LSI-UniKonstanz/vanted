@@ -124,7 +124,7 @@ public class SplitNodeForSingleMappingData extends AbstractAlgorithm {
 	 */
 	public void execute() {
 		
-		if (mCurrentMode == option2 && mMinimumDegree < 1) {
+		if (mCurrentMode.equals(option2) && mMinimumDegree < 1) {
 			MainFrame.showMessageDialog("<html>Cannot split nodes!<br>Please specify a threshold over 0.", "Error");
 			return;
 		}

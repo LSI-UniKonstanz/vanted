@@ -55,7 +55,7 @@ public class HammingCalculator implements Runnable,
 	private int validGraphIndex;
 	private String outputDir;
 	
-	private static Integer fileLoader = new Integer(0); // dummy variable for synchronized file loading (only one file-load at a time)
+	private static Object fileLoaderMonitor = new Object(); // dummy variable for synchronized file loading (only one file-load at a time)
 	
 	private static LinkedList<WorkTask> workQueue = new LinkedList<WorkTask>();
 	
@@ -305,7 +305,7 @@ public class HammingCalculator implements Runnable,
 		if (t == null)
 			return;
 		Graph graph2 = null;
-		synchronized (fileLoader) {
+		synchronized (fileLoaderMonitor) {
 			
 			if (MainFrame.getInstance() != null) {
 				try {
@@ -381,7 +381,7 @@ public class HammingCalculator implements Runnable,
 		
 		StringBuffer result = new StringBuffer();
 		String home;
-		if (outputDir == null && !(new File(outputDir).isDirectory()))
+		if (outputDir == null || (outputDir != null && !(new File(outputDir).isDirectory())))
 			home = ReleaseInfo.getAppFolder();
 		else
 			home = outputDir;

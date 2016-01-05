@@ -46,8 +46,8 @@ public class GraphElementSelectionLabel extends JLabel {
 				if (causingGraphElement instanceof Edge) {
 					e = (Edge) causingGraphElement;
 					if(e != null) {
-						String lblNs = AttributeHelper.getLabel(e.getSource(), "(unnamed node (" + n.getID() + ")");
-						String lblNt = AttributeHelper.getLabel(e.getTarget(), "(unnamed node (" + n.getID() + ")");
+						String lblNs = AttributeHelper.getLabel(e.getSource(), "(unnamed node (" + e.getSource().getID() + ")");
+						String lblNt = AttributeHelper.getLabel(e.getTarget(), "(unnamed node (" + e.getTarget().getID() + ")");
 						String lbl = AttributeHelper.getLabel(e, "");
 						setText("Edge: " + lblNs + " --> " + lblNt + (lbl.length() > 0 ? " (" + lbl + ")" : ""));
 					}

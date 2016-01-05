@@ -454,13 +454,13 @@ public abstract class AbstractTab
 						}
 					}
 				}
-				
-				if (allHave) {
-					newNode = new DefaultMutableTreeNode(new BooledAttribute(attribute,
-							allSameValue));
-					
-				}
-				
+//				
+//				if (allHave) {
+//					newNode = new DefaultMutableTreeNode(new BooledAttribute(attribute,
+//							allSameValue));
+//					
+//				}
+//				
 				return returnTreeNode;
 			}
 		

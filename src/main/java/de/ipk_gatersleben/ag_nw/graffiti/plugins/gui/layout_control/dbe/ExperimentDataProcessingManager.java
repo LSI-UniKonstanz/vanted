@@ -24,6 +24,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 public class ExperimentDataProcessingManager {
 	
 	private static ListOrderedSet processors = new ListOrderedSet();
+	private static Object lock = new Object();
 	private static ExperimentDataProcessingManager instance;
 	
 	public static void addExperimentDataProcessor(ExperimentDataProcessor edp) {
@@ -40,9 +41,11 @@ public class ExperimentDataProcessingManager {
 	}
 	
 	public static ExperimentDataProcessingManager getInstance() {
-		if (instance == null)
-			instance = new ExperimentDataProcessingManager();
-		return instance;
+		synchronized (lock) {
+			if (instance == null)
+				instance = new ExperimentDataProcessingManager();
+			return instance;
+		}
 	}
 	
 	public void processIncomingData(final ExperimentInterface mdsOrDocuments) {

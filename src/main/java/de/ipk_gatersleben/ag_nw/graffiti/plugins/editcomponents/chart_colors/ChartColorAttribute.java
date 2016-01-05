@@ -122,12 +122,14 @@ public class ChartColorAttribute extends StringAttribute {
 			}
 		
 		for (String o : idList) {
-			if (o != null && o.indexOf("§") > 0)
-				o = o.substring(0, o.lastIndexOf("§"));
-			String v = o;
-			if (v.length() > 0 && !innerIds.contains(v)) {
-				innerIds.add(v);
-				innerIdsAL.add(v);
+			if (o != null) { 
+				if( o.indexOf("§") > 0)
+					o = o.substring(0, o.lastIndexOf("§"));
+				String v = o;
+				if (v.length() > 0 && !innerIds.contains(v)) {
+					innerIds.add(v);
+					innerIdsAL.add(v);
+				}
 			}
 		}
 		ensureMinimumColorSelection(innerIds.size());

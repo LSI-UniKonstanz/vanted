@@ -350,9 +350,11 @@ public class GravistoService implements HelperClass {
 				for (int i = 0; i < myAlgos.length; i++) {
 					if (myAlgos[i] instanceof ProvidesGeneralContextMenu && myAlgos[i] instanceof RunAlgorithm) {
 						ProvidesGeneralContextMenu acm = (ProvidesGeneralContextMenu) myAlgos[i];
-						
-						if (acm.getCurrentContextMenuItem().toString().equalsIgnoreCase(name)
-								|| myAlgos[i].getName().equalsIgnoreCase(name)) {
+						boolean found = false;
+						for(int j = 0; j < acm.getCurrentContextMenuItem().length; j++)
+							if(acm.getCurrentContextMenuItem()[j].getText().equalsIgnoreCase(name))
+								found = true;
+						if (found || myAlgos[i].getName().equalsIgnoreCase(name)) {
 							return myAlgos[i];
 						}
 					}

@@ -49,24 +49,19 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 	 */
 	public void addSBML(OutputStream stream, Graph g) {
 		SBML_Constants.init();
-		PrintStream ps = null;
-		try {
-			ps = new PrintStream(stream, false, "UTF-8");
-		} catch (UnsupportedEncodingException e1) {
-			e1.printStackTrace();
-		}
+
 		SBMLWriter writer = new SBMLWriter();
 		int level = 0;
 		int version = 1;
 		if (AttributeHelper.hasAttribute(g, SBML_Constants.SBML,
 				SBML_Constants.LEVEL)) {
-			level = (Integer) AttributeHelper.getAttributeValue(g,
-					SBML_Constants.SBML, SBML_Constants.LEVEL, null, null);
+			level = Integer.parseInt((String)AttributeHelper.getAttributeValue(g,
+					SBML_Constants.SBML, SBML_Constants.LEVEL, null, null));
 		}
 		if (AttributeHelper.hasAttribute(g, SBML_Constants.SBML,
 				SBML_Constants.VERSION)) {
-			version = (Integer) getAttribute(g, SBML_Constants.SBML,
-					SBML_Constants.VERSION);
+			version = Integer.parseInt((String)getAttribute(g, SBML_Constants.SBML,
+					SBML_Constants.VERSION));
 		}
 		// L3V1 is the current spec
 		if (level < 3) {
@@ -286,16 +281,18 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //		}
-		
-		try {
+//		PrintStream ps = null;
+		try (PrintStream ps = new PrintStream(stream, false, "UTF-8")) {
 			writer.write(doc, ps);
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		} catch (SBMLException e) {
 			e.printStackTrace();
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-		ps.flush();
-		ps.close();
+
 	}
 	
 	private void createExtendedLayoutModel(Graph g) {

@@ -165,10 +165,12 @@ public class BooleanEditComponent
 	public void setValue() {
 		boolean bb = false;
 		
-		if (!(this.displayable.getValue() instanceof Boolean)) {
-			bb = new Boolean((String) this.displayable.getValue());
-		} else {
-			bb = (Boolean) this.displayable.getValue();
+		if (this.displayable != null) { 
+			if(!(this.displayable.getValue() instanceof Boolean)) {
+				bb = new Boolean((String) this.displayable.getValue());
+			} else {
+				bb = (Boolean) this.displayable.getValue();
+			}
 		}
 		if (!(bb == this.checkBox.isSelected())) {
 			displayable.setValue(new Boolean(checkBox.isSelected()));

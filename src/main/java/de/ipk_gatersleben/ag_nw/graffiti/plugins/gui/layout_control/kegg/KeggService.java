@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.swing.JOptionPane;
@@ -64,7 +63,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.Runnable
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.TabDBE;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.Experiment2GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.MapResult;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.TextFile;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.KeggGmlHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Pathway;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.NoOverlappOfClustersAlgorithm;
@@ -79,35 +77,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 	private String status2 = "";
 	
 	private boolean pleaseStop = false;
-	
-	public static void writeCompoundList(Collection<Node> nodeList) {
-		TextFile tf = new TextFile();
-		TreeMap<String, NodeHelper> id2nh = new TreeMap<String, NodeHelper>();
-		for (Node n : nodeList) {
-			NodeHelper nh = new NodeHelper(n);
-			String id = (String) nh.getAttributeValue("kegg", "kegg_name", "", "");
-			if (!id2nh.containsKey(id))
-				id2nh.put(id, nh);
-		}
-		tf.add("ROW" + "\t" + "ID" + "\t" + "MASS" + "\t" + "FORMULA" + "\t"
-							+ "NAME");
-		int row = 1;
-		for (String id : id2nh.keySet()) {
-			NodeHelper nh = id2nh.get(id);
-			String mass = (String) nh.getAttributeValue("kegg", "mass", "NA", "");
-			String formula = (String) nh.getAttributeValue("kegg", "formula",
-								"NA", "");
-			String name = nh.getLabel();
-			tf.add(getNumString("" + row++, 3) + "\t" + id + "\t" + mass + "\t"
-								+ formula + "\t" + name);
-		}
-		try {
-			tf.write("/home/klukas/steffen.txt");
-		} catch (IOException e) {
-			ErrorMsg.addErrorMessage(e);
-		}
-	}
-	
+
 	private static String getNumString(String s, int len) {
 		while (s.length() < len)
 			s = "0" + s;

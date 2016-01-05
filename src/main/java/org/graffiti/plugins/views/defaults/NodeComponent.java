@@ -123,8 +123,8 @@ public class NodeComponent
 	@Override
 	public synchronized void graphicAttributeChanged(Attribute attr)
 			throws ShapeNotFoundException {
-		logger.debug("graphicAttributeChanged for node id:" + getGraphElement().getID() + " attribute " + attr.getName());
 		if (attr != null) {
+			logger.debug("graphicAttributeChanged for node id:" + getGraphElement().getID() + " attribute " + attr.getName());
 			String id = attr.getId();
 			if (!id.equals(COORDINATE)) {
 				if (id.equals(LINEMODE)) {

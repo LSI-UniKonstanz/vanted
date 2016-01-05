@@ -49,6 +49,9 @@ public class NodeCombination implements Comparable<Object> {
 	
 	@Override
 	public boolean equals(Object obj) {
+		if(obj == null)
+			return false;
+
 		NodeCombination nc = (NodeCombination) obj;
 		if (nc.a == a && nc.b == b)
 			return true;

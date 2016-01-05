@@ -29,7 +29,7 @@ public enum TtestInfo {
 				return "H1";
 			default:
 				ErrorMsg.addErrorMessage("Internal Error: Unknown TtestInfo enum value");
-				return null;
+				return "";
 		}
 	}
 }

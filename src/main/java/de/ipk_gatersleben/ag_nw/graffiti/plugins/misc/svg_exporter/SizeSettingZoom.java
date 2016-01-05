@@ -38,7 +38,7 @@ public enum SizeSettingZoom {
 			case L500:
 				return "500%";
 			default:
-				return null;
+				return "";
 		}
 	}
 	

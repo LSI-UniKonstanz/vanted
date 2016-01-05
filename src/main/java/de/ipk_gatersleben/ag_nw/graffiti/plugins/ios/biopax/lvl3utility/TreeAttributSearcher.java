@@ -106,7 +106,8 @@ public class TreeAttributSearcher
 						mapPathToAttribute.put(listClone.toArray(new String[listClone.size()]), subAttr);
 					} else
 						// valid!
-						ErrorMsg.addErrorMessage("Unexpected attribute: " + st + ", " + subAttr + ", " + subAttr.getClass() + ", " + subAttr.getId());
+						if(subAttr != null)
+							ErrorMsg.addErrorMessage("Unexpected attribute: " + st + ", " + subAttr + ", " + subAttr.getClass() + ", " + subAttr.getId());
 				}
 			}
 		}
@@ -187,7 +188,8 @@ public class TreeAttributSearcher
 						mapPathToAttribute.put(listClone.toArray(new String[listClone.size()]), subAttr);
 					} else
 						// valid!
-						ErrorMsg.addErrorMessage("Unexpected attribute: " + st + ", " + subAttr + ", " + subAttr.getClass() + ", " + subAttr.getId());
+						if(subAttr != null)
+							ErrorMsg.addErrorMessage("Unexpected attribute: " + st + ", " + subAttr + ", " + subAttr.getClass() + ", " + subAttr.getId());
 				}
 			}
 		}

@@ -76,7 +76,7 @@ public class CircleNodeShape
 		
 		double corr = r + ft;
 		
-		if (Math.floor(offset) == offset) {
+		if (Double.compare(Math.floor(offset), offset) == 0) {
 			corr = r + ft + 1;
 		}
 		

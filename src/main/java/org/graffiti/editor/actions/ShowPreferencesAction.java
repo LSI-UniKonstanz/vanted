@@ -282,7 +282,7 @@ extends GraffitiAction
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							// TODO Auto-generated method stub
-							OptionsDialog od = new OptionsDialog(MainFrame.getInstance());
+							new OptionsDialog(MainFrame.getInstance());
 //							od.setVisible(true);
 //							new PreferencePanel();
 						}
@@ -389,8 +389,10 @@ extends GraffitiAction
 						return name.startsWith("feature_disabled") || name.startsWith("feature_enabled");
 					}
 				};
-				for (String settingsFile : new File(HomeFolder.getHomeFolder()).list(filter))
-					new File(HomeFolder.getHomeFolder() + "/" + settingsFile).delete();
+				String[] list = new File(HomeFolder.getHomeFolder()).list(filter);
+				if(list != null)
+					for (String settingsFile : list)
+						new File(HomeFolder.getHomeFolder() + "/" + settingsFile).delete();
 			}
 		});
 

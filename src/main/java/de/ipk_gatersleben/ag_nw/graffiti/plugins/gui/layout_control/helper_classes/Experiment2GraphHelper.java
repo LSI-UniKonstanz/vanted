@@ -199,7 +199,6 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 		HashMap<String, QuadNumber> id2quad = new HashMap<String, QuadNumber>();
 		
 		status2 = "";
-		status1 = "Get experiment name...";
 		status1 = "Start Data Mapping...";
 		Set<org.graffiti.graph.GraphElement> newNodesThatShouldNotAgainBeUsedForMapping = new HashSet<org.graffiti.graph.GraphElement>();
 		int msl = mappingData.size();
@@ -394,6 +393,10 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 	private void createAndAddExperimentalDataAttribute(MapResult mapResult, String diagramStyle, int diagramsPerRow,
 			SubstanceInterface xmlSubstanceNode, String substanceMainName,
 			HashSet<org.graffiti.graph.GraphElement> addMappingDataToTheseGraphElements) {
+		
+		if(addMappingDataToTheseGraphElements == null)
+			return;
+		
 		for (org.graffiti.graph.GraphElement targetGraphElement : addMappingDataToTheseGraphElements) {
 			status1 = "Map XML data for substance " + substanceMainName + " to graph element "
 					+ targetGraphElement.toString();

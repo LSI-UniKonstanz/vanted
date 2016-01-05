@@ -485,12 +485,14 @@ public class Entry {
 				errors.add(new Gml2PathwayErrorInformation(Gml2PathwayError.KEGG_REFERENCED_ID_MISSING, graphNode));
 			}
 			String typeValue = KeggGmlHelper.getKeggType(graphNode, ias.getIndex());
+			EntryType refMapType = null;
 			if (typeValue == null) {
 				errors.add(new Gml2PathwayErrorInformation(Gml2PathwayError.KEGG_REFERENCED_TYPE_MISSING, graphNode));
-			}
-			EntryType refMapType = EntryType.getEntryType(typeValue);
-			if (refMapType == null) {
-				errors.add(new Gml2PathwayErrorInformation(Gml2PathwayError.KEGG_REFERENCED_TYPE_INVALID, graphNode));
+			} else {
+				refMapType = EntryType.getEntryType(typeValue);
+				if (refMapType == null) {
+					errors.add(new Gml2PathwayErrorInformation(Gml2PathwayError.KEGG_REFERENCED_TYPE_INVALID, graphNode));
+				}
 			}
 			String refMapLinkValue = KeggGmlHelper.getKeggLinkUrl(graphNode, ias.getIndex());
 			Url refMapLink = null;

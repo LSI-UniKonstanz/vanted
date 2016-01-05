@@ -1356,7 +1356,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
 				while (iterator.hasNext()) {
 					Entry entry = iterator.next();
 					
-					if ((entry.row1 == counter) && (entry.row1 == counter)) {
+					if (entry.row1 == counter) {
 						Dimension p = (rowSpec[counter] == PREFERRED) ? entry.component.getPreferredSize() : entry.component
 											.getMinimumSize();
 						
@@ -1709,7 +1709,7 @@ public class TableLayout implements java.awt.LayoutManager2, java.io.Serializabl
 					while (iterator.hasNext()) {
 						Entry entry = iterator.next();
 						
-						if ((entry.row1 == counter) && (entry.row1 == counter)) {
+						if (entry.row1 == counter) {
 							Dimension p = (rowSpec[counter] == PREFERRED) ? entry.component.getPreferredSize() : entry.component
 												.getMinimumSize();
 							

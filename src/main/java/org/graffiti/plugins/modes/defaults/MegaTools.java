@@ -138,6 +138,12 @@ public abstract class MegaTools extends AbstractUndoableTool {
 //		 MainFrame.showMesssage(e.getX()+" - "+e.getY(), MessageType.PERMANENT_INFO);
 //		System.out.println(e.getSource().toString());
 		setFoundComponent(findComponentAt(e, e.getX(), e.getY()));
+		
+		if(getFoundComponent() != null && getFoundComponent() instanceof GraphElementComponent 
+				&& AttributeHelper.isHiddenGraphElement(((GraphElementComponent)getFoundComponent()).getGraphElement())){
+			setFoundComponent(getLastMouseSrc());
+		}
+		
 		setLastMouseComponent(e, foundComponent);
 		informAttributeComponentsAboutMouseEvents(e, foundComponent);
 		
@@ -588,7 +594,6 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		unDisplayAsMarked(getAllMarkedComps());
 		if (selection != null) {
 			selection.clear();
-			fireSelectionChanged();
 		}
 		
 	}

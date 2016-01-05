@@ -18,6 +18,11 @@ public class FloatParameter
 					extends AbstractLimitableParameter {
 	// ~ Instance fields ========================================================
 	
+	
+	private Float max = null;
+	
+	private Float min = null;
+	
 	/** The value of this parameter. */
 	private Float value = null;
 	
@@ -35,6 +40,16 @@ public class FloatParameter
 		super(name, description);
 	}
 	
+	public FloatParameter(Float value, String name, String description) {
+		super(name, description);
+		this.value = value;
+	}
+
+	public FloatParameter(Float value, Float min, Float max, String name, String description) {
+		this(value, name, description);
+		this.min = min;
+		this.max = max;
+	}
 	// ~ Methods ================================================================
 	
 	/**
@@ -52,8 +67,8 @@ public class FloatParameter
 	 * @return DOCUMENT ME!
 	 */
 	@Override
-	public Comparable<?> getMax() {
-		return null; // TODO
+	public Comparable<Float> getMax() {
+		return max == null ? Float.MAX_VALUE : max; 
 	}
 	
 	/**
@@ -62,8 +77,8 @@ public class FloatParameter
 	 * @return DOCUMENT ME!
 	 */
 	@Override
-	public Comparable<?> getMin() {
-		return null; // TODO
+	public Comparable<Float> getMin() {
+		return min == null ? Float.MIN_VALUE : min; 
 	}
 	
 	/**
@@ -73,7 +88,15 @@ public class FloatParameter
 	 */
 	@Override
 	public boolean isValid() {
-		return false; // TODO
+		boolean valid = true;
+		if(value == null)
+			return false;
+		
+		if(min != null && min.compareTo(value) > 0)
+			valid = false;
+		if(max != null && max.compareTo(value) < 0)
+			valid = false;
+		return valid;
 	}
 	
 	/**
@@ -87,6 +110,16 @@ public class FloatParameter
 		// TODO
 	}
 	
+	
+	
+	public void setMax(Float max) {
+		this.max = max;
+	}
+
+	public void setMin(Float min) {
+		this.min = min;
+	}
+
 	/**
 	 * Returns the value of this parameter.
 	 * 

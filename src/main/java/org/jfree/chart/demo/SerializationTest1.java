@@ -98,23 +98,23 @@ public class SerializationTest1 extends ApplicationFrame implements ActionListen
 								);
 			deserializedChart = (JFreeChart) in.readObject();
 			in.close();
+			final TimeSeriesCollection c = (TimeSeriesCollection) deserializedChart.getXYPlot().getDataset();
+			this.series = c.getSeries(0);
+			// FINISHED TEST
+			
+			final ChartPanel chartPanel = new ChartPanel(deserializedChart);
+			final JButton button = new JButton("Add New Data Item");
+			button.setActionCommand("ADD_DATA");
+			button.addActionListener(this);
+			
+			final JPanel content = new JPanel(new BorderLayout());
+			content.add(chartPanel);
+			content.add(button, BorderLayout.SOUTH);
+			chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+			setContentPane(content);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		final TimeSeriesCollection c = (TimeSeriesCollection) deserializedChart.getXYPlot().getDataset();
-		this.series = c.getSeries(0);
-		// FINISHED TEST
-
-		final ChartPanel chartPanel = new ChartPanel(deserializedChart);
-		final JButton button = new JButton("Add New Data Item");
-		button.setActionCommand("ADD_DATA");
-		button.addActionListener(this);
-
-		final JPanel content = new JPanel(new BorderLayout());
-		content.add(chartPanel);
-		content.add(button, BorderLayout.SOUTH);
-		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-		setContentPane(content);
 
 	}
 

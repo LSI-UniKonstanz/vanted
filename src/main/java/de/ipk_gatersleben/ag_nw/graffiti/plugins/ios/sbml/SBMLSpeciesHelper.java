@@ -393,7 +393,7 @@ public class SBMLSpeciesHelper extends SBMLNodesNiceIdHelper {
 					SBML_Constants.SBML,
 					SBML_Constants.HAS_ONLY_SUBSTANCE_UNITS);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -410,7 +410,7 @@ public class SBMLSpeciesHelper extends SBMLNodesNiceIdHelper {
 			return (Boolean) attWriter.getAttribute(speciesNode,
 					SBML_Constants.SBML, SBML_Constants.BOUNDARY_CONDITION);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -426,7 +426,7 @@ public class SBMLSpeciesHelper extends SBMLNodesNiceIdHelper {
 			return (Boolean) attWriter.getAttribute(speciesNode,
 					SBML_Constants.SBML, SBML_Constants.SPECIES_CONSTANT);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -523,7 +523,7 @@ public class SBMLSpeciesHelper extends SBMLNodesNiceIdHelper {
 	 *           the value that will be set
 	 */
 	public void setInitialAmount(Node speciesNode, Double initialAmount) {
-		if (!initialAmount.equals(null)) {
+		if (initialAmount != null) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML,
 					SBML_Constants.INITIAL_AMOUNT, initialAmount);
 		}
@@ -539,7 +539,7 @@ public class SBMLSpeciesHelper extends SBMLNodesNiceIdHelper {
 	 */
 	public void setInitialConcentration(Node speciesNode,
 			Double initialConcentration) {
-		if (!initialConcentration.equals(null)) {
+		if (initialConcentration != null) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML,
 					SBML_Constants.INITIAL_CONCENTRATION, initialConcentration);
 		}
@@ -570,7 +570,7 @@ public class SBMLSpeciesHelper extends SBMLNodesNiceIdHelper {
 	 */
 	public void setHasOnlySubstanceUnits(Node speciesNode,
 			Boolean hasOnlySubstanceUnits) {
-		if (!hasOnlySubstanceUnits.equals(null)) {
+		if (hasOnlySubstanceUnits != null) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML,
 					SBML_Constants.HAS_ONLY_SUBSTANCE_UNITS,
 					hasOnlySubstanceUnits);
@@ -586,7 +586,7 @@ public class SBMLSpeciesHelper extends SBMLNodesNiceIdHelper {
 	 *           the value that will be set
 	 */
 	public void setBoundaryConsition(Node speciesNode, Boolean boundaryCondition) {
-		if (!boundaryCondition.equals(null)) {
+		if (boundaryCondition != null) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML,
 					SBML_Constants.BOUNDARY_CONDITION, boundaryCondition);
 		}
@@ -601,7 +601,7 @@ public class SBMLSpeciesHelper extends SBMLNodesNiceIdHelper {
 	 *           the value that will be set
 	 */
 	public void setConstant(Node speciesNode, Boolean constant) {
-		if (!constant.equals(null)) {
+		if (constant != null) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML,
 					SBML_Constants.SPECIES_CONSTANT, constant);
 		}
@@ -616,7 +616,7 @@ public class SBMLSpeciesHelper extends SBMLNodesNiceIdHelper {
 	 *           the value that will be set
 	 */
 	public void setConversionFactor(Node speciesNode, String conversionFactor) {
-		if (!conversionFactor.equals(SBML_Constants.EMPTY)) {
+		if (!conversionFactor.isEmpty()) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML,
 					SBML_Constants.SPECIES_CONVERSION_FACTOR, conversionFactor);
 		}
@@ -631,7 +631,7 @@ public class SBMLSpeciesHelper extends SBMLNodesNiceIdHelper {
 	 *           the value that will be set
 	 */
 	public void setMetaID(Node speciesNode, String metaID) {
-		if (!metaID.equals(SBML_Constants.EMPTY)) {
+		if (!metaID.isEmpty()) {
 			AttributeHelper.setAttribute(speciesNode, SBML_Constants.SBML,
 					SBML_Constants.SPECIES_META_ID, metaID);
 		}

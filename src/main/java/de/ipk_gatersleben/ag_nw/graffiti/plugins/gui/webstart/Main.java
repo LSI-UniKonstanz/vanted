@@ -213,7 +213,7 @@ public class Main {
 		
 		PreferenceManager.getInstance().addPreferencingClass(ScanForUpdate.class);
 		
-		ScanForUpdate.issueScanAfterStartup();
+		ScanForUpdate.issueScan(false); // only check, if current date is after update-date
 		
 		if (SystemInfo.isMac()) {
 			try {

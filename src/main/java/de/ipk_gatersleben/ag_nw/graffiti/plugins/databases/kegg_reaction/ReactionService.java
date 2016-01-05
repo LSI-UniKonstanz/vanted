@@ -149,7 +149,8 @@ public class ReactionService
 					HashMap<String, ArrayList<String>> id2lines = new HashMap<String, ArrayList<String>>();
 					do {
 						String entryline = input.readLine();
-						endTagFound = entryline.startsWith(ReactionEntry.endTag_exists);
+						if(entryline != null)
+							endTagFound = entryline.startsWith(ReactionEntry.endTag_exists);
 						if (!endTagFound) {
 							if (entryline.length() >= "ENTRY       ".length()) {
 								String p1 = entryline.substring(0, "ENTRY       ".length()).trim();

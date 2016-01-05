@@ -15,6 +15,6 @@ public class StandardLooper extends Looper{
 	@Override
 	protected int getIndexAfterPreviousPoint(int kthIndex, int dataPointsSize, int pointsBefore, int pointsAfter)
 	{
-		return kthIndex =  kthIndex >= dataPointsSize ? dataPointsSize - 1 : kthIndex;
+		return (kthIndex >= dataPointsSize) ? dataPointsSize - 1 : kthIndex;
 	}
 }

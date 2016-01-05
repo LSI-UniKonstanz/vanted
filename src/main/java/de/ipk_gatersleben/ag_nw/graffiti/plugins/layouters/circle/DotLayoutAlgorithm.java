@@ -80,14 +80,16 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 					if (path != null && path.length() > 0) {
 						File f = new File(path);
 						if (f.exists()) {
-							for (String app : f.list()) {
-								if (app.startsWith("Graphviz")) {
-									String found = path + "\\" + app + "\\bin";
-									if (new File(found).exists()) {
-										return found + "\\";
+							String[] list = f.list();
+							if(list != null)
+								for (String app : list) {
+									if (app.startsWith("Graphviz")) {
+										String found = path + "\\" + app + "\\bin";
+										if (new File(found).exists()) {
+											return found + "\\";
+										}
 									}
 								}
-							}
 						}
 					}
 				}

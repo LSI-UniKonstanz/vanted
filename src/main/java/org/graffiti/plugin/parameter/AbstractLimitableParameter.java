@@ -41,29 +41,7 @@ public abstract class AbstractLimitableParameter
 	public String toXMLString() {
 		return getStandardXML(getValue().toString());
 	}
-	
-	/**
-	 * Returns the maximum of the intervall.
-	 * 
-	 * @return the maximum of the intervall.
-	 */
-	public abstract Comparable<?> getMax();
-	
-	/**
-	 * Returns the minimum of the intervall.
-	 * 
-	 * @return the minimum of the intervall.
-	 */
-	public abstract Comparable<?> getMin();
-	
-	/**
-	 * Returns <code>true</code> if the value is between the minimum and the
-	 * maximum, <code>false</code> otherwise.
-	 * 
-	 * @return <code>true</code> if the value is between the minimum and the
-	 *         maximum, <code>false</code> otherwise.
-	 */
-	public abstract boolean isValid();
+
 }
 
 // ------------------------------------------------------------------------------

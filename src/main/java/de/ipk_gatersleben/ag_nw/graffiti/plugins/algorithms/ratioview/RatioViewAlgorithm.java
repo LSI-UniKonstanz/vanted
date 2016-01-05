@@ -121,7 +121,7 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 		// sortCriteria.add(sortRatioMax);
 		Iterator<String> itSer = seriesNames.iterator();
 		String initSelSeries1 = selSeriesName1 != null || seriesNames.size() == 0 ? selSeriesName1 : itSer.next();
-		if (!seriesNames.contains(initSelSeries1) && seriesNames.size() > 0)
+		if (initSelSeries1 != null && !seriesNames.contains(initSelSeries1) && seriesNames.size() > 0)
 			initSelSeries1 = seriesNames.first();
 		ObjectListParameter olpSN1 = new ObjectListParameter(initSelSeries1, "Reference Series",
 				"Select the desired reference dataset.", seriesNames);
