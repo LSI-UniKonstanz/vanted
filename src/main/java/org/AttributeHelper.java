@@ -1695,7 +1695,7 @@ public class AttributeHelper implements HelperClass {
 	 */
 	public static void setDefaultGraphicsAttribute(Node node, double x, double y) {
 		setNodeGraphicsAttribute(x, y, 3, 20, 20, // 120, 120
-				new Color(0, 0, 0, 255), new Color(0, 255, 255, 255), // 100
+				new Color(0, 0, 0, 255), new Color(255, 255, 255, 255), // 100
 				node.getAttributes());
 	}
 	
@@ -1716,7 +1716,7 @@ public class AttributeHelper implements HelperClass {
 		Point2D pos = new Point2D.Double();
 		pos.setLocation(posx, posy);
 		cooAtt.setCoordinate(pos);
-		col.add(graphics, false);
+		
 		
 		// setting the graphic attributes to the default values stored
 		// in the preferences
@@ -1734,11 +1734,12 @@ public class AttributeHelper implements HelperClass {
 			graphics.getFramecolor().setColor(frameColor_0_0_0_255);
 		// setting the fillcolor
 		if (fillColor_0_100_250_100 == null)
-			graphics.getFillcolor().setColor(new Color(0, 100, 250, 100));
+			graphics.getFillcolor().setColor(new Color(0, 255, 255, 255));
 		else
 			graphics.getFillcolor().setColor(fillColor_0_100_250_100);
 		// setting the shape
 		graphics.setShape("org.graffiti.plugins.views.defaults.RectangleNodeShape");
+		col.add(graphics, false);
 	}
 	
 	/**

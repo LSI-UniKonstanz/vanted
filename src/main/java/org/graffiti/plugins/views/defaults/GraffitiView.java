@@ -59,6 +59,7 @@ import org.apache.log4j.Logger;
 import org.color.ColorUtil;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.attributes.Attribute;
+import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.attributes.SortedCollectionAttribute;
 import org.graffiti.attributes.StringAttribute;
@@ -942,6 +943,7 @@ EdgeListener, TransactionListener {
 
 		Edge edge = e.getEdge();
 		processEdgeRemoval(edge);
+		repaint(edge);
 		if (getGraph() != null)
 			getGraph().setModified(true);
 	}
@@ -1046,7 +1048,7 @@ EdgeListener, TransactionListener {
 		addAttributeComponents(node, component);
 
 		//		validate();
-		// repaint(node);
+		repaint(node);
 		if (getGraph() != null)
 			getGraph().setModified(true);
 	}
@@ -1071,6 +1073,7 @@ EdgeListener, TransactionListener {
 		// adjustPreferredSize();
 		//		repaint();
 		// }
+		repaint(node);
 		if (getGraph() != null)
 			getGraph().setModified(true);
 	}
@@ -2047,6 +2050,11 @@ EdgeListener, TransactionListener {
 	}
 
 	public boolean isHidden(GraphElement ge) {
+		try {
+			ge.getAttribute(GraphicAttributeConstants.GRAPHICS);
+		} catch (AttributeNotFoundException e) {
+			return false;
+		}
 		return AttributeHelper.isHiddenGraphElement(ge);
 	}
 

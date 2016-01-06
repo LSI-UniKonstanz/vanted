@@ -105,6 +105,7 @@ public class NodeComponent
 			newShape.buildShape(nodeAttr);
 			shape = newShape;
 			adjustComponentSizeAndPosition();
+			updateGraphicsFields();
 		} catch (ShapeNotFoundException e) {
 			throw new RuntimeException("this should never happen since the " +
 					"standard node shape should always " + "exist." + e);
@@ -311,8 +312,10 @@ public class NodeComponent
 		logger.debug("recreate for node id:" + getGraphElement().getID());
 		
 		
-		if (!this.graphElement.getAttributes().getCollection().containsKey(GRAPHICS)) {
+		if (!this.graphElement.getAttributes().getCollection().containsKey(GRAPHICS)
+				|| ! (graphElement.getAttribute(GRAPHICS) instanceof NodeGraphicAttribute)) {
 			Node n = (Node) graphElement;
+			n.removeAttribute(GRAPHICS);
 			AttributeHelper.setDefaultGraphicsAttribute(n, 100, 100);
 		}
 		Object obj = graphElement.getAttribute(GRAPHICS);
