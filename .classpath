@@ -69,8 +69,8 @@
 	<classpathentry exported="true" kind="lib" path="/vanted-lib-repository/xstream-1.3.1.jar"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="lib" path="/vanted-lib-repository/biomodels-wslib-1.21.jar"/>
-	<classpathentry kind="lib" path="/vanted-lib-repository/adaptagrams.jar"/>
-	<classpathentry kind="lib" path="/vanted-lib-repository/jsbml-1.1.jar"/>
-	<classpathentry kind="lib" path="/vanted-lib-repository/secondstring-20030401.jar"/>
+	<classpathentry exported="true" kind="lib" path="/vanted-lib-repository/adaptagrams.jar"/>
+	<classpathentry exported="true" kind="lib" path="/vanted-lib-repository/jsbml-1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="/vanted-lib-repository/secondstring-20030401.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
