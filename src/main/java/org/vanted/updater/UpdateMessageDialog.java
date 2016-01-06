@@ -100,13 +100,14 @@ public class UpdateMessageDialog extends JDialog {
 		header.setText("<html><strong>" + headerText);
 //		header.setSize(width, 50);
 		
+		/*
 		JTextPane message = new JTextPane();
 		message.setContentType("text/html");
 		message.setEditable(false);
 		message.setText(messageText);
 		JScrollPane spane = new JScrollPane(message, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		spane.setPreferredSize(new Dimension(300, 100));
-		
+		*/
 		JLabel msg = new JLabel();
 		msg.setText("<html>" + messageText);
 		
@@ -133,7 +134,8 @@ public class UpdateMessageDialog extends JDialog {
 		
 		panel.add(header, new TableLayoutConstraints(0, 0, 2, 0, TableLayoutConstraints.MAX_ALIGN, TableLayoutConstraints.MAX_ALIGN));
 		panel.add(msg, new TableLayoutConstraints(0, 2, 2, 2, TableLayoutConstraints.MAX_ALIGN, TableLayoutConstraints.MAX_ALIGN));
-		panel.add(spane2, new TableLayoutConstraints(0, 4, 2, 4, TableLayoutConstraints.MAX_ALIGN, TableLayoutConstraints.MAX_ALIGN));
+		if(messageText2 != null && !messageText2.isEmpty())
+			panel.add(spane2, new TableLayoutConstraints(0, 4, 2, 4, TableLayoutConstraints.MAX_ALIGN, TableLayoutConstraints.MAX_ALIGN));
 		panel.add(footer, new TableLayoutConstraints(0, 6, 2, 6, TableLayoutConstraints.MAX_ALIGN, TableLayoutConstraints.MAX_ALIGN));
 		panel.add(button, new TableLayoutConstraints(1, 8, 1, 8, TableLayoutConstraints.CENTER, TableLayoutConstraints.CENTER));
 		
