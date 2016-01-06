@@ -9,8 +9,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.util.Collection;
@@ -317,6 +315,7 @@ SelectionListener, ZoomListener {
 				Rectangle targetViewRect = scrollPane.getViewport().getViewRect();
 				if (e.getSource().equals(jbZoomRegion)) {
 					Rectangle selectionViewRect = getViewRectFromSelection(view, elements);
+
 					if (selectionViewRect == null)
 						return;
 					//				myZoomToView(view, scrollPane);
@@ -681,6 +680,10 @@ SelectionListener, ZoomListener {
 			logger.debug("-viewport width: " + spf.getViewport().getWidth() + " viewport height: " + spf.getViewport().getHeight());
 			logger.debug("-targetX : "  + targetX + " targetY: " + targetY );
 			//							spf.getVerticalScrollBar().setValue((int) targetY);
+			if(targetX < 0)
+				targetX = 0;
+			if(targetY < 0)
+				targetY = 0;
 			spf.getViewport().setViewPosition(new Point(targetX, (int)targetY));
 
 		} else {
@@ -690,6 +693,10 @@ SelectionListener, ZoomListener {
 			double targetX = middleX * zoomFaktor - spsf.getWidth()
 					/ 2;
 			//							spf.getHorizontalScrollBar().setValue((int) targetX);
+			if(targetX < 0)
+				targetX = 0;
+			if(targetY < 0)
+				targetY = 0;
 			logger.debug("-viewport width: " + spf.getViewport().getWidth() + " viewport height: " + spf.getViewport().getHeight());
 			logger.debug("-targetY : "  + targetY + " targetX: " + targetX);
 			spf.getViewport().setViewPosition(new Point((int)targetX, (int)targetY));
