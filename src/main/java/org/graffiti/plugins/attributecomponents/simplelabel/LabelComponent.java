@@ -557,9 +557,9 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		try {
 			Dimension preferredSize;
 			String alignment2 = labelAttr.getAlignment();
-			if (alignment2.equals(AlignmentSetting.HIDDEN.toGMLstring()))
-				preferredSize = new Dimension(1, 1);
-			else
+//			if (alignment2.equals(AlignmentSetting.HIDDEN.toGMLstring()))
+//				preferredSize = new Dimension(1, 1);
+//			else
 				preferredSize = label.getPreferredSize();
 			int h = preferredSize.height + 1;
 			int w = preferredSize.width + 1;
