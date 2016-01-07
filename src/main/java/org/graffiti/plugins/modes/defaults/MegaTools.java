@@ -456,13 +456,16 @@ public abstract class MegaTools extends AbstractUndoableTool {
 				
 				// add graphelement to selection
 				// selectedComps.add(geComp);
-				selection.add(ge);
+				if(!AttributeHelper.isHiddenGraphElement(ge))
+					selection.add(ge);
 				// caller.displayAsMarked(geComp);
 				if (gelist != null) {
 					for (Node n : gelist) {
-						selection.add(n);
-						for (GraphElementComponent gec : getCompsForElem(n)) {
-							caller.displayAsMarked(gec);
+						if(!AttributeHelper.isHiddenGraphElement(n)) {
+							selection.add(n);
+							for (GraphElementComponent gec : getCompsForElem(n)) {
+								caller.displayAsMarked(gec);
+							}
 						}
 					}
 				}
