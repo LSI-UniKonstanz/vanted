@@ -18,6 +18,7 @@ import javax.xml.parsers.SAXParser;
 
 import org.ErrorMsg;
 import org.graffiti.graph.Graph;
+import org.graffiti.plugins.ios.importers.TypedAttributeService;
 import org.graffiti.plugins.ios.importers.graphml.GraphMLException;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -145,6 +146,8 @@ public class GraphMLParser
         try
         {
             graphMLParser.parse(in);
+            TypedAttributeService.createTypedHashMapAttributes(g);
+
         }
         catch(SAXException se)
         {
