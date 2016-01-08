@@ -530,6 +530,7 @@ public class MenuItemInfoDialog
 							.append("<h2>Click &quot;Yes&quot; to send a short error log by mail to help fixing bugs. Click &quot;No&quot; to just close this dialog.</h2><hr>");
 					for (int i = 0; i < errorMsgs.length; i++) {
 						if (errorMsgs[i] != null) {
+							errorMsgs[i] = errorMsgs[i].replace("\n",  "<br/>");
 							err.append(errorMsgs[i] + "<p>");
 						}
 					}
@@ -542,7 +543,6 @@ public class MenuItemInfoDialog
 				} else {
 					err.append("<html><body><h2>No error messages available.</h2></body></html>");
 				}
-				ErrorMsg.clearErrorMessages();
 				// GraffitiSingleton.getInstance().getMainFrame().showMessageDialog(err);
 				JEditorPane errMsg = new JEditorPane("text/html", err.toString());
 				errMsg.setEditable(false);
@@ -562,7 +562,30 @@ public class MenuItemInfoDialog
 				if (errorMsgs.length > 0) {
 					if (JOptionPane.showConfirmDialog(GravistoService.getInstance().getMainFrame(),
 							scp, "Send E-Mail to help fixing these bugs?", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE) == JOptionPane.YES_OPTION) {
-						ClipboardService.writeToClipboardAsText(errorLogShort.toString());
+						
+						long divisor = 1024;
+						Runtime r = Runtime.getRuntime();
+						StringBuffer errorText = new StringBuffer();
+						errorText.append(DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT + " " + DBEgravistoHelper.DBE_GRAVISTO_VERSION_CODE);
+						errorText.append(System.getProperty("line.separator"));
+						
+						errorText.append("Java version: " + Java_1_5_compatibility.getJavaVersion());
+						errorText.append(System.getProperty("line.separator"));
+						
+						errorText.append("used/free/max memory: ");
+						errorText.append(((r.totalMemory() / divisor / divisor) - (r.freeMemory() / divisor / divisor)) + "" +
+								"/" + (r.freeMemory() / divisor / divisor) + "/"
+								+ (r.maxMemory() / divisor / divisor));
+						errorText.append(System.getProperty("line.separator"));
+						errorText.append(System.getProperty("line.separator"));
+						errorText.append("-- Error --");
+						errorText.append(System.getProperty("line.separator"));
+						for(String s : ErrorMsg.getErrors()) {
+							errorText.append(s);
+							errorText.append(System.getProperty("line.separator"));
+						}
+						System.out.println(errorText.toString());	
+						ClipboardService.writeToClipboardAsText(errorText.toString());
 						MainFrame.showMessageDialog("<html>" +
 								"As you press OK your default email application should be automatically opened.<br>" +
 								"If the subject or email body is not automatically filled with the error log information,<br>" +
@@ -574,13 +597,15 @@ public class MenuItemInfoDialog
 								"If you have general suggestions for improvement, use the Send feedback command<br>" +
 								"from the Help menu!",
 								"Information");
+						
 						AttributeHelper.showInBrowser("mailto:feedback@vanted.org?subject=" + DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT +
-								"%20errorlog&body=" + errorLogShort.toString());
+								"%20errorlog&body=" + errorText);
 					}
 				} else {
 					MainFrame.showMessageDialog("No error messages logged!", "Information");
 				}
-				
+				ErrorMsg.clearErrorMessages();
+
 			}
 		});
 		

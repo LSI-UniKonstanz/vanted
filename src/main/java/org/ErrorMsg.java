@@ -89,9 +89,35 @@ public class ErrorMsg implements HelperClass {
 				if (firstMethod.length() > 0)
 					firstMethod = ", " + firstMethod;
 				if (!errorMessagesShort.contains(errorMsg + firstMethod))
-					;
-				errorMessagesShort.add(errorMsg + firstMethod);
+					errorMessagesShort.add(errorMsg + firstMethod);
 			}
+		}
+	}
+	
+	public static void addErrorMessage(Thread t, StackTraceElement[] sf) {
+		String firstMethod = null;
+		StringBuffer buf = new StringBuffer();
+		buf.append("Thread: " + t.getName());
+		buf.append(System.getProperty("line.separator"));
+		for(StackTraceElement s : sf) {
+			if(s.getLineNumber() > 0 && firstMethod == null)
+				firstMethod = s.toString();
+			buf.append(s.toString());
+			buf.append(System.getProperty("line.separator"));
+		}
+		String err = buf.toString();
+//		System.out.println("--- Error ---\n" + buf.toString() + "---\n");
+		synchronized (errorMessages) {
+			if (!errorMessages.contains(err))
+				errorMessages.add(err);
+			
+		}
+		synchronized (errorMessagesShort) {
+			if (firstMethod.length() > 0)
+				firstMethod = ", " + firstMethod;
+			String shortMsg = t.getName() + " " + firstMethod;
+			if (!errorMessagesShort.contains(shortMsg))
+				errorMessagesShort.add(shortMsg);
 		}
 	}
 	
@@ -133,6 +159,16 @@ public class ErrorMsg implements HelperClass {
 				result[statusAvail + (i++)] = it.next();
 			}
 			return result;
+		}
+	}
+	
+	public static String[] getErrors() {
+		synchronized (errorMessages) {
+			String[] ret = new String[errorMessages.size()];
+			int i = 0;
+			for(String emsg : errorMessages)
+				ret[i++] = emsg;
+			return ret;
 		}
 	}
 	
@@ -307,8 +343,17 @@ public class ErrorMsg implements HelperClass {
 		if (rethrowErrorMessages)
 			throw new Error(e);
 		
-		addErrorMessage(e.getLocalizedMessage());
+//		addErrorMessage(e.getLocalizedMessage());
+		addErrorMessage(Thread.currentThread(), e.getStackTrace());
 		e.printStackTrace();
+	}
+	
+	public static void addErrorMessage(Throwable t) {
+		if (rethrowErrorMessages)
+			throw new Error(t);
+		
+		addErrorMessage(Thread.currentThread(), t.getStackTrace());
+		
 	}
 	
 	public static void addOnAddonLoadingFinishedAction(Runnable runnable) {

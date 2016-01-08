@@ -85,6 +85,20 @@ public class Main {
 		
 		setupLogger();
 		
+//		Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+//			
+//			@Override
+//			public void uncaughtException(Thread t, Throwable e) {
+//				StringBuffer buf = new StringBuffer();
+//				buf.append("Thread: " + t.getName() + "\n");
+//				for(StackTraceElement s : e.getStackTrace()) {
+//					buf.append(s.toString() + "\n");
+//				}
+//				System.err.println("--- Vanted exception ---\n" + buf.toString() + "---\n");
+//				ErrorMsg.addErrorMessage(e);
+//			}
+//		});
+		
 		final ThreadSafeOptions tso = new ThreadSafeOptions();
 		SplashScreenInterface splashScreen = new DBEsplashScreen(applicationName,
 				"", new Runnable() {
