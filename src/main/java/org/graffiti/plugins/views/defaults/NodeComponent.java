@@ -30,6 +30,7 @@ import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.ColorAttribute;
+import org.graffiti.graphics.DimensionAttribute;
 import org.graffiti.graphics.NodeGraphicAttribute;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiViewComponent;
@@ -210,7 +211,7 @@ public class NodeComponent
 	 */
 	@Override
 	protected void drawShape(Graphics g) {
-//		logger.debug("drawShape for node id:" + getGraphElement().getID());
+		logger.debug("drawShape for node id:" + getGraphElement().getID());
 //		logger.debug("graph id " + getGraphElement().getGraph().getName() + ", node id:" + getGraphElement().getID() + ", border:" + getBorder().toString());
 		// super.drawShape(g);
 		Graphics2D drawArea = (Graphics2D) g;
@@ -321,6 +322,10 @@ public class NodeComponent
 		Object obj = graphElement.getAttribute(GRAPHICS);
 		
 		NodeGraphicAttribute geAttr = (NodeGraphicAttribute) obj;
+
+		if (nodeAttr == null)
+			nodeAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
+
 		
 		// get classname of the shape to use and instantiate this
 		String newShapeClass = geAttr.getShape();
@@ -343,8 +348,6 @@ public class NodeComponent
 		
 		int maxR = getHeight() > getWidth() ? getHeight() : getWidth();
 		// maxR = maxR / 2;
-		if (nodeAttr == null)
-			nodeAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
 		
 		double epsilon = 0.0001;
 		if (nodeAttr.getUseGradient() > epsilon)
@@ -386,14 +389,19 @@ public class NodeComponent
 	protected void adjustComponentSizeAndPosition() {
 		logger.debug("adjustComponentSizeAndPosition for node id:" + getGraphElement().getID());
 		
-		Rectangle2D bounds = shape.getRealBounds2D();
-		double offA = 0;//-2d;
-		double offB = 0;//2d;
-		double xE = shape.getXexcess();
-		double yE = shape.getYexcess();
-		setBounds((int) (bounds.getX() + offA - xE), (int) (bounds.getY() + offA - yE),
-				(int) (bounds.getWidth() + offB + xE * 2d), (int) (bounds.getHeight() + offB + yE * 2d));
-		
+		DimensionAttribute dim = nodeAttr.getDimension();
+		// hidden graph element check
+		if(dim.getWidth() < 0 || dim.getHeight() < 0)
+			setSize((int)dim.getWidth(), (int)dim.getHeight());
+		else {
+			Rectangle2D bounds = shape.getRealBounds2D();
+			double offA = 0;//-2d;
+			double offB = 0;//2d;
+			double xE = shape.getXexcess();
+			double yE = shape.getYexcess();
+			setBounds((int) (bounds.getX() + offA - xE), (int) (bounds.getY() + offA - yE),
+					(int) (bounds.getWidth() + offB + xE * 2d), (int) (bounds.getHeight() + offB + yE * 2d));
+		}
 	}
 	
 	/**
