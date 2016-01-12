@@ -839,6 +839,11 @@ public class DefaultEditPanel extends EditPanel {
 					
 					Attribute attribute = booledChild.getAttribute();
 					
+					
+					if (discardedRowIDs.contains(attribute.getId()) || discardedRowIDs.contains(tabName + ":" + attribute.getId())) {
+						continue;
+					}
+					
 					ecClass = (Class) this.editComponentsMap.get(attribute
 							.getClass());
 					
@@ -985,8 +990,8 @@ public class DefaultEditPanel extends EditPanel {
 	public static void setDiscardedRowIDs(HashSet<String> discardedRowIDs) {
 		if (DefaultEditPanel.discardedRowIDs != null)
 			DefaultEditPanel.discardedRowIDs.addAll(discardedRowIDs);
-		
-		DefaultEditPanel.discardedRowIDs = discardedRowIDs;
+		else
+			DefaultEditPanel.discardedRowIDs = discardedRowIDs;
 	}
 	
 	public static Collection<String> getDiscardedRowIDs() {
