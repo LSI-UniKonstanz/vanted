@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
@@ -463,11 +464,18 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	 */
 	protected void adjustComponentSize() {
 		
-		Rectangle2D bounds = shape.getRealBounds2D();
-		setBounds((int) Math.floor(bounds.getX()),
-				(int) Math.floor(bounds.getY()),
-				(int) (Math.floor(bounds.getWidth() + 1)),
-				(int) (Math.floor(bounds.getHeight() + 1)));
+		// handle hidden graphelement state
+		if(edgeAttr.getFrameThickness() < 0) {
+			Rectangle bounds = getBounds();
+			setBounds(bounds.x, bounds.y, -bounds.width, -bounds.height);
+		} else {
+
+			Rectangle2D bounds = shape.getRealBounds2D();
+			setBounds((int) Math.floor(bounds.getX()),
+					(int) Math.floor(bounds.getY()),
+					(int) (Math.floor(bounds.getWidth() + 1)),
+					(int) (Math.floor(bounds.getHeight() + 1)));
+		}
 //		for (GraffitiViewComponent ac : attributeComponents.values()) {
 //			if (ac instanceof AttributeComponent) {
 //				AttributeComponent acc = (AttributeComponent) ac;
