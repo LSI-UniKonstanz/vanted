@@ -85,8 +85,9 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 				setLocation(shift.x, shift.y + getCurrentLabelShift());
 			} else if (attr instanceof CollectionAttribute) {
 				if (attr.getPath().equals("")) {
+					recreate();
 					changeParameters(((CollectionAttribute) attr).getCollection().get(GRAPHICS), n);
-				} else if (attr.getPath().equals(GRAPHICS)) {
+				} else if (attr.getId().equals(GRAPHICS)) {
 					changeParameters(attr, n);
 				} else {
 					recreate();
@@ -225,7 +226,7 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 			
 			if ((annotationObject != null)
 					&& (annotationObject instanceof ChartAttribute)) {
-				recreate();
+//				recreate();
 			}
 			
 			Object coordinateObject = cAttr.getCollection().get(COORDINATE);
