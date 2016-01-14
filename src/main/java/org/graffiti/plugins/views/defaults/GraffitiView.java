@@ -1207,28 +1207,6 @@ EdgeListener, TransactionListener {
 		this.messageListeners.remove(ml);
 	}
 
-	// /**
-	// * Repaints the given graph element
-	// *
-	// * @param ge the<code>GraphElement</code> to repaint.
-	// */
-	// public void repaint(GraphElement ge) {
-	// if (ge != null) {
-	// System.out.print("p+");
-	// GraphElementComponent gec = getGraphElementComponent(ge);
-	// gec.repaint();
-	// repaint(gec.getBounds());
-	// Point2D a, b;
-	// a=gec.getLocation();
-	// b=null;
-	// zoom.transform(a, b);
-	// repaint((int)b.getX(), (int)b.getY(), (int)(zoom.getScaleX()*gec.getWidth()), (int)(zoom.getScaleY()*gec.getHeight()));
-	// } else {
-	// System.out.print("p");
-	// repaint();
-	// }
-	// }
-
 	/**
 	 * Called when a transaction has stopped.
 	 * 
@@ -1239,27 +1217,27 @@ EdgeListener, TransactionListener {
 	public  void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		final TransactionEvent fevent = event;
 		final BackgroundTaskStatusProviderSupportingExternalCall fstatus = status;
-		synchronized(redrawLock) {
 			if (!SwingUtilities.isEventDispatchThread()) {
 				try {
-					SwingUtilities.invokeAndWait(new Runnable() {
+					synchronized(redrawLock) {
+						SwingUtilities.invokeAndWait(new Runnable() {
 
-						@Override
-						public void run() {
-							logger.debug("calling transactionFinishedOnSwingThread() from NON-Event dispatch thread");
-							transactionFinishedOnSwingThread(fevent, fstatus);
-						}
-					});
+							@Override
+							public void run() {
+								logger.debug("calling transactionFinishedOnSwingThread() from NON-Event dispatch thread");
+								transactionFinishedOnSwingThread(fevent, fstatus);
+							}
+						});
+					}
 				} catch (InvocationTargetException | InterruptedException e) {
 					e.printStackTrace();
 				}
 			} else {
 				transactionFinishedOnSwingThread(fevent, fstatus);
 			}
-		}
 	}
 
-	private synchronized void transactionFinishedOnSwingThread(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
+	private void transactionFinishedOnSwingThread(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
 //		logger.setLevel(Level.DEBUG);
 		long startTimeTransFinished = System.currentTimeMillis();
 		isFinishingTransacation = true;
