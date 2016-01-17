@@ -253,7 +253,7 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 		} catch (FileNotFoundException e1) {
 			if (Logger.getRootLogger().getLevel() == Level.DEBUG)
 				e1.printStackTrace();
-			System.out.println("update file not found at location: " + e1.getMessage());
+			System.err.println("update file not found at location: " + e1.getMessage());
 			return;
 		}
 		
@@ -420,13 +420,20 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 		if (updateMessage.toLowerCase().contains("<html>"))
 			updateMessage = updateMessage.substring(updateMessage.indexOf("<html>") + 6);
 		updateMessage = updateMessage.replace("\n", "");
-		// popup dialog telling user, there is a new version
-		// download now or later
-		// or go to website (short version)
-		String msg = "<html>A new update to VANTED " + version + " is available<br/><br/>"
-				+ "You can download it now or be reminded later.<br/><br/>"
-				//				+ updateMessage
-//				+ "<br/><br/>"
+		/* 
+		 * popup dialog telling user, there is a new version
+		 * download now or later
+		 * or go to website (short version)
+		 */ 
+		String msgUpdateType;
+		if(updateIsNewer(version))
+			msgUpdateType = "New VANTED version " + version;
+		else
+			msgUpdateType = "VANTED library updates";
+		
+		String msg = "<html>A new update for VANTED is available<br/><br/>"
+				+ "<strong>&rarr;</strong>&nbsp;&nbsp;" + msgUpdateType
+				+ "<br/><br/>You can download it now or be reminded later.<br/><br/>"
 				+ "<strong>The update will be installed during the next startup</strong>.";
 		int dialogAskUpdate = JOptionPane.showOptionDialog(MainFrame.getInstance(),
 				msg,
@@ -463,9 +470,11 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + "/" + libPath), DESTPATHUPDATEDIR, extractFileName(libPath));
 		}
 		
-		// create a copy file for the bootstrap program
-		// that will put the files to the right place
-		// .. the next thing is for the bootstrap
+		/* 
+		 * create a copy file for the bootstrap program
+		 *  that will put the files to the right place
+		 *   .. the next thing is for the bootstrap
+		 */
 		File updateFile = new File(DESTUPDATEFILE);
 		BufferedWriter writer = new BufferedWriter(new FileWriter(updateFile));
 		writer.write(updFileBuffer.toString());
