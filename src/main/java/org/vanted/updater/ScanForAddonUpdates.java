@@ -3,6 +3,8 @@ package org.vanted.updater;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.prefs.Preferences;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -13,6 +15,7 @@ import org.FolderPanel;
 import org.GuiRow;
 import org.SearchFilter;
 import org.graffiti.editor.MainFrame;
+import org.graffiti.managers.PreferenceManager;
 
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.addons.Addon;
@@ -30,7 +33,19 @@ public class ScanForAddonUpdates {
 	
 	private ArrayList<Object> res;
 	
-	public boolean hasUpdates() {
+	public void doScan(boolean ignoreDate) {
+		
+		Date currentDate = new Date();
+		Preferences preferenceForClass = PreferenceManager.getPreferenceForClass(ScanForUpdate.class);
+
+		if (!ignoreDate) {
+			// if there is preference entry for reminder time..  check
+			if( ! CheckUpdateDate.isDateAfterUpdateDate(currentDate, preferenceForClass))
+				return;
+		}
+	}
+	
+	private boolean hasUpdates() {
 		/*
 		 * refreshNews is normally asynchron.
 		 * we make it synchron with help of a monitor

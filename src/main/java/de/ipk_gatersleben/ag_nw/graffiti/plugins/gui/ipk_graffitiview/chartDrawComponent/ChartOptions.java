@@ -243,9 +243,9 @@ public class ChartOptions {
 		
 		plotAxisSteps = ((Double) AttributeHelper.getAttributeValue(graph, "", "node_plotAxisSteps", mOne, mOne))
 							.intValue();
-		
 		useCustomRangeSteps = ((Boolean) AttributeHelper.getAttributeValue(ge, "charting", "useCustomRangeSteps",
 							new Boolean(false), new Boolean(false))).booleanValue();
+		 
 		customRangeSteps = (Double) AttributeHelper.getAttributeValue(ge, "charting", "rangeStepSize", mNull, mNull);
 		
 		boolean useCustomRange = ((Boolean) AttributeHelper.getAttributeValue(ge, "charting", "useCustomRange",

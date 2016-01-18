@@ -25,6 +25,17 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawC
 
 public class Substance implements SubstanceInterface, Cloneable {
 	
+	private static HashSet<Character> badChars = null;
+	static{
+		badChars = new HashSet<Character>();
+		badChars.add('<');
+		badChars.add('>');
+		badChars.add('\'');
+		badChars.add('"');
+		badChars.add('&');
+	}
+	
+	
 	private String rowId, name, funcat, info, formula, substancegroup, cluster_id, spot, new_blast, new_blast_e_val,
 						new_blast_score, affy_hit, score, secure;
 	
@@ -246,25 +257,10 @@ public class Substance implements SubstanceInterface, Cloneable {
 	}
 	
 	private static String escapeBadCharacters(String value) {
-		String s = StringManipulationTools.UnicodeToHtml(value, getBad());// .replaceAll("&#", "~");
+		String s = StringManipulationTools.UnicodeToHtml(value, badChars);// .replaceAll("&#", "~");
 		return s;
 	}
 	
-	private static HashSet<Character> badChars = null;
-	
-	private static HashSet<Character> getBad() {
-		if (badChars != null)
-			return badChars;
-		else {
-			badChars = new HashSet<Character>();
-			badChars.add('<');
-			badChars.add('>');
-			badChars.add('\'');
-			badChars.add('"');
-			badChars.add('&');
-			return badChars;
-		}
-	}
 	
 	private void getSynonymsString(StringBuilder res) {
 		if (synonyms == null || synonyms.size() == 0)
@@ -333,6 +329,13 @@ public class Substance implements SubstanceInterface, Cloneable {
 				return false;
 			return sampleTime.equals(((SampleTimeAndUnit) obj).sampleTime);
 		}
+
+		@Override
+		public int hashCode() {
+			// TODO Auto-generated method stub
+			return (sampleTime + ";" + Integer.toString(time) + ";" + timeUnit).hashCode();
+		}
+		
 		
 	}
 	

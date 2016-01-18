@@ -197,7 +197,7 @@ public class SBMLReactionHelper {
 			return (Boolean) attWriter.getAttribute(reactionNode,
 					SBML_Constants.SBML, SBML_Constants.REVERSIBLE);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -206,7 +206,7 @@ public class SBMLReactionHelper {
 			return (Boolean) attWriter.getAttribute(reactionNode,
 					SBML_Constants.SBML, SBML_Constants.FAST);
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -236,21 +236,21 @@ public class SBMLReactionHelper {
 	}
 	
 	public void setReversible(Node reactionNode, Boolean reversible) {
-		if (!reversible.equals(null)) {
+		if (reversible != null) {
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML,
 					SBML_Constants.REVERSIBLE, reversible);
 		}
 	}
 	
 	public void setFast(Node reactionNode, Boolean fast) {
-		if (!fast.equals(null)) {
+		if (fast != null) {
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML,
 					SBML_Constants.FAST, fast);
 		}
 	}
 	
 	public void setCompartment(Node reactionNode, String compartment) {
-		if (!compartment.equals(SBML_Constants.EMPTY)) {
+		if (!compartment.isEmpty()) {
 			NodeTools.setClusterID(reactionNode, compartment);
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML,
 					SBML_Constants.COMPARTMENT, compartment);
@@ -258,7 +258,7 @@ public class SBMLReactionHelper {
 	}
 	
 	public void setMetaID(Node reactionNode, String metaID) {
-		if (!metaID.equals(SBML_Constants.EMPTY)) {
+		if (!metaID.isEmpty()) {
 			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML,
 					SBML_Constants.REACTION_META_ID, metaID);
 		}
@@ -999,10 +999,10 @@ public class SBMLReactionHelper {
 				return (Boolean) attWriter.getAttribute(reactionEdge,
 						SBML_Constants.SBML, SBML_Constants.REACTION_CONSTANT);
 			} else {
-				return null;
+				return false;
 			}
 		} else {
-			return null;
+			return false;
 		}
 	}
 	
@@ -1011,7 +1011,7 @@ public class SBMLReactionHelper {
 				SBML_Constants.SBML, SBML_Constants.SBML_ROLE,
 				SBML_Constants.EMPTY, SBML_Constants.EMPTY).equals(
 				SBML_Constants.ROLE_MODIFIER)) {
-			if (!stoichiometry.equals(null)) {
+			if (stoichiometry != null) {
 				AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML,
 						SBML_Constants.STOICHIOMETRY, stoichiometry);
 			}
@@ -1023,7 +1023,7 @@ public class SBMLReactionHelper {
 				SBML_Constants.SBML, SBML_Constants.SBML_ROLE,
 				SBML_Constants.EMPTY, SBML_Constants.EMPTY).equals(
 				SBML_Constants.ROLE_MODIFIER)) {
-			if (!constant.equals(null)) {
+			if (constant != null) {
 				AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML,
 						SBML_Constants.REACTION_CONSTANT, constant);
 			}

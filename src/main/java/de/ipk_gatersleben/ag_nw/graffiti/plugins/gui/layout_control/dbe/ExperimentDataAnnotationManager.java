@@ -22,6 +22,10 @@ public class ExperimentDataAnnotationManager {
 	public HashMap<File, ExperimentDataAnnotation> getExperimentAnnotation(
 						List<ExperimentDataProcessor> optUseTheseProcessors, Collection<File> files) {
 		HashMap<File, ExperimentDataAnnotation> res = new HashMap<File, ExperimentDataAnnotation>();
+		
+		if(files == null)
+			return res;
+		
 		Collection<ExperimentDataProcessor> processors = optUseTheseProcessors;
 		if (processors == null)
 			processors = ExperimentDataProcessingManager.getExperimentDataProcessors();

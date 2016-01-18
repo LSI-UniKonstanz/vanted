@@ -101,22 +101,24 @@ public class ExperimentData {
 			}
 			if (mes_val != null && mes_val instanceof String) {
 				String mes_val_s = myData.getUnicodeStringCellData(dch.getColumn(), row);
-				if (mes_val_s != null && mes_val_s.length() > 0
-									&& (mes_val_s.equalsIgnoreCase("-") || mes_val_s.equalsIgnoreCase("n/a") || mes_val_s.equalsIgnoreCase("na"))) {
-					ReplicateDouble rd = new ReplicateDouble(Double.NaN, new Integer(dch.getReplicateNumber()).toString(), null);
-					result.add(rd);
-				} else {
-					try {
-						int colPos = mes_val_s.indexOf(":");
-						String annotation = null;
-						if (colPos > 0) {
-							annotation = mes_val_s.substring(colPos + 1);
-							mes_val_s = mes_val_s.substring(0, colPos);
-						}
-						ReplicateDouble rd = new ReplicateDouble(Double.parseDouble(mes_val_s), new Integer(dch.getReplicateNumber()).toString(), annotation);
+				if (mes_val_s != null && mes_val_s.length() > 0){ 
+
+					if( (mes_val_s.equalsIgnoreCase("-") || mes_val_s.equalsIgnoreCase("n/a") || mes_val_s.equalsIgnoreCase("na"))) {
+						ReplicateDouble rd = new ReplicateDouble(Double.NaN, new Integer(dch.getReplicateNumber()).toString(), null);
 						result.add(rd);
-					} catch (NumberFormatException nfe) {
-						ErrorMsg.addErrorMessage("Number Format Exception in row " + row + ", column " + dch.getColumn() + ", value: " + mes_val_s);
+					} else {
+						try {
+							int colPos = mes_val_s.indexOf(":");
+							String annotation = null;
+							if (colPos > 0) {
+								annotation = mes_val_s.substring(colPos + 1);
+								mes_val_s = mes_val_s.substring(0, colPos);
+							}
+							ReplicateDouble rd = new ReplicateDouble(Double.parseDouble(mes_val_s), new Integer(dch.getReplicateNumber()).toString(), annotation);
+							result.add(rd);
+						} catch (NumberFormatException nfe) {
+							ErrorMsg.addErrorMessage("Number Format Exception in row " + row + ", column " + dch.getColumn() + ", value: " + mes_val_s);
+						}
 					}
 				}
 			}

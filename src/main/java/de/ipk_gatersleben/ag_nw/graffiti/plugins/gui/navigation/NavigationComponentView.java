@@ -22,6 +22,7 @@ import org.AttributeHelper;
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
 import org.apache.log4j.Logger;
+import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.event.GraphEvent;
 import org.graffiti.event.GraphListener;
 import org.graffiti.event.ListenerManager;
@@ -223,34 +224,39 @@ AdjustmentListener, GraphListener, SessionListener
 			synchronized(nodes) {
 
 				for(Node n : nodes){
+					
+					try {
+						/*
+						 * normalize the coordinates within 0..1
+						 */
+						double normWidth = AttributeHelper.getWidth(n) / viewcomponent.getWidth() * view.getZoom().getScaleX();
+						double normHeight = AttributeHelper.getHeight(n) / viewcomponent.getHeight() * view.getZoom().getScaleY();
+						double normX = AttributeHelper.getPositionX(n) / viewcomponent.getWidth() * view.getZoom().getScaleX() - normWidth/2;
+						double normY = AttributeHelper.getPositionY(n) / viewcomponent.getHeight() * view.getZoom().getScaleY() - normHeight/2;
+						//				if(AttributeHelper.getLabel(n, "").equals("cytosol")){
+						//					logger.debug("zoom (scaneXY): "+view.getZoom().getScaleX()+" "+view.getZoom().getScaleY());
+						//					logger.debug("viewmaxX: "+view.getViewComponent().getWidth()+" viewmaxY: "+view.getViewComponent().getHeight());
+						////					logger.debug("scrollpane viewportsize w h: "+ scrollpane.getViewport().getWidth()+ " " + scrollpane.getViewport().getHeight());
+						//					logger.debug("normX normY normW normH: "+normX+" "+normY+" "+normWidth+" "+normHeight);
+						//					logger.debug("node x y: "+ AttributeHelper.getPositionX(n) + " "+ AttributeHelper.getPositionY(n));
+						//					logger.debug("view x y w h" +(int)(normX*w)+" "+ (int)(normY * h)+" "+ (int)(normWidth * w)+" "+ (int)(normHeight * h));
+						//				}
 
-					/*
-					 * normalize the coordinates within 0..1
-					 */
-					double normWidth = AttributeHelper.getWidth(n) / viewcomponent.getWidth() * view.getZoom().getScaleX();
-					double normHeight = AttributeHelper.getHeight(n) / viewcomponent.getHeight() * view.getZoom().getScaleY();
-					double normX = AttributeHelper.getPositionX(n) / viewcomponent.getWidth() * view.getZoom().getScaleX() - normWidth/2;
-					double normY = AttributeHelper.getPositionY(n) / viewcomponent.getHeight() * view.getZoom().getScaleY() - normHeight/2;
-					//				if(AttributeHelper.getLabel(n, "").equals("cytosol")){
-					//					logger.debug("zoom (scaneXY): "+view.getZoom().getScaleX()+" "+view.getZoom().getScaleY());
-					//					logger.debug("viewmaxX: "+view.getViewComponent().getWidth()+" viewmaxY: "+view.getViewComponent().getHeight());
-					////					logger.debug("scrollpane viewportsize w h: "+ scrollpane.getViewport().getWidth()+ " " + scrollpane.getViewport().getHeight());
-					//					logger.debug("normX normY normW normH: "+normX+" "+normY+" "+normWidth+" "+normHeight);
-					//					logger.debug("node x y: "+ AttributeHelper.getPositionX(n) + " "+ AttributeHelper.getPositionY(n));
-					//					logger.debug("view x y w h" +(int)(normX*w)+" "+ (int)(normY * h)+" "+ (int)(normWidth * w)+" "+ (int)(normHeight * h));
-					//				}
-
-					String shape = AttributeHelper.getShape(n).toLowerCase();
+						String shape = AttributeHelper.getShape(n).toLowerCase();
 
 
-					/*
-					 * use normalizes coordinates to set element in overview view
-					 */
-					g.setColor(Color.lightGray);
-					if(shape != null && (shape.contains("circle") || shape.contains("oval")))
-						g.drawOval((int)(normX*w), (int)(normY * h), (int)(normWidth * w), (int)(normHeight * h));
-					else
-						g.drawRect((int)(normX*w), (int)(normY * h), (int)(normWidth * w), (int)(normHeight * h));
+						/*
+						 * use normalizes coordinates to set element in overview view
+						 */
+						g.setColor(Color.lightGray);
+						if(shape != null && (shape.contains("circle") || shape.contains("oval")))
+							g.drawOval((int)(normX*w), (int)(normY * h), (int)(normWidth * w), (int)(normHeight * h));
+						else
+							g.drawRect((int)(normX*w), (int)(normY * h), (int)(normWidth * w), (int)(normHeight * h));
+					} catch (AttributeNotFoundException e) {
+						// TODO Auto-generated catch block
+//						e.printStackTrace();
+					}
 				}
 			}
 		}

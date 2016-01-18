@@ -186,7 +186,7 @@ public class ColorizeAlgorithm extends AbstractAlgorithm {
 				}
 			}
 		}
-		if (minimum == Double.MAX_VALUE || maximum == Double.NEGATIVE_INFINITY) {
+		if (Double.compare(minimum, Double.MAX_VALUE) == 0 || Double.compare(maximum, Double.NEGATIVE_INFINITY) == 0) {
 			MainFrame.showMessageDialog("<html>Minimum and/or maximum average sample values could not be determined!<br>"
 								+ "Select graph nodes with mapped measurement data.", "Missing sample data");
 		}

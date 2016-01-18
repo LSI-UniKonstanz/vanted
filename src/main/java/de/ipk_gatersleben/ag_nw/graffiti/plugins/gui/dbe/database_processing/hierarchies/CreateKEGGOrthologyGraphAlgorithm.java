@@ -25,7 +25,6 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.parameter.BooleanParameter;
-import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
@@ -385,9 +384,9 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 			do {
 				
 				String hierarchyEntityName = hierarchyInformation.getName();
-				if(hierarchyEntityName.contains("KEGG Orthology")){
+//				if(hierarchyEntityName.contains("KEGG Orthology")){
 //					System.err.println();
-				}
+//				}
 //						for (String hierarchyEntityNameLE : graphH) {
 				if (!hierarchy_tree_itemName2node.containsKey(hierarchyEntityName)) {
 					// System.out.println("not found: "+hierarchyEntityName);

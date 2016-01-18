@@ -9,6 +9,7 @@
 
 package org.graffiti.plugin.view;
 
+import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -33,6 +34,9 @@ public abstract class AttributeComponent
 	private static final long serialVersionUID = 1L;
 	
 	protected Composite composite;
+	
+
+	protected float alpha;
 	
 	protected boolean hidden;
 	
@@ -101,8 +105,9 @@ public abstract class AttributeComponent
 		this.hidden = hidden;
 	}
 	
-	public void setComposite(Composite composite) {
-		this.composite = composite;
+	public void setAlpha(float alpha) {
+		this.alpha = alpha;
+		this.composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
 	}
 }
 

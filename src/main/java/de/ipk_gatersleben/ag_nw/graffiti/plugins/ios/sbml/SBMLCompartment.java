@@ -158,7 +158,7 @@ public class SBMLCompartment {
 	}
 
 	public void setSpatialDimensions(Double spatialDimensions) {
-		if (!spatialDimensions.equals(null)) {
+		if (spatialDimensions != null) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.SPATIAL_DIMENSIONS)
 					.toString(), spatialDimensions);
@@ -188,7 +188,7 @@ public class SBMLCompartment {
 	}
 
 	public void setSize(Double size) {
-		if (!size.equals(null)) {
+		if (size != null) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.SIZE).toString(),
 					Double.toString(size));
@@ -216,7 +216,7 @@ public class SBMLCompartment {
 	}
 
 	public void setUnits(String units) {
-		if (!units.equals(SBML_Constants.EMPTY)) {
+		if (!units.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.UNITS).toString(),
 					units);
@@ -245,7 +245,7 @@ public class SBMLCompartment {
 	}
 
 	public void setConstant(Boolean constant) {
-		if (!constant.equals(null)) {
+		if (constant != null) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.CONSTANT).toString(),
 					constant);
@@ -269,12 +269,12 @@ public class SBMLCompartment {
 					new StringBuffer(internHeadline).append(
 							SBML_Constants.CONSTANT).toString());
 		} else {
-			return null;
+			return false;
 		}
 	}
 
 	public void setMetaID(String metaID) {
-		if (!metaID.equals(SBML_Constants.EMPTY)) {
+		if (!metaID.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.META_ID).toString(),
 					metaID);
@@ -282,7 +282,7 @@ public class SBMLCompartment {
 	}
 
 	public void setSBOTerm(String sboTerm) {
-		if (!sboTerm.equals(SBML_Constants.EMPTY)) {
+		if (!sboTerm.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.SBOTERM).toString(),
 					sboTerm);
@@ -290,7 +290,7 @@ public class SBMLCompartment {
 	}
 
 	public void setOutside(String outside) {
-		if (!outside.equals(SBML_Constants.EMPTY)) {
+		if (!outside.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.OUTSIDE).toString(),
 					outside);
@@ -298,7 +298,7 @@ public class SBMLCompartment {
 	}
 
 	public void setNotes(String notes, XMLNode notesObj) {
-		if (!notes.equals(SBML_Constants.EMPTY)) {
+		if (!notes.isEmpty()) {
 			attReader.addNotes(
 					notesObj,
 					notes,

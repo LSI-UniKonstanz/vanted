@@ -59,6 +59,7 @@ import org.apache.log4j.Logger;
 import org.color.ColorUtil;
 import org.graffiti.attributes.Attributable;
 import org.graffiti.attributes.Attribute;
+import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.attributes.SortedCollectionAttribute;
 import org.graffiti.attributes.StringAttribute;
@@ -924,7 +925,7 @@ EdgeListener, TransactionListener {
 		addAttributeComponents(edge, component);
 
 		//		validate();
-		// repaint(edge);
+		repaint(edge);
 		if (getGraph() != null)
 			getGraph().setModified(true);
 	}
@@ -942,6 +943,7 @@ EdgeListener, TransactionListener {
 
 		Edge edge = e.getEdge();
 		processEdgeRemoval(edge);
+		repaint(edge);
 		if (getGraph() != null)
 			getGraph().setModified(true);
 	}
@@ -1046,7 +1048,7 @@ EdgeListener, TransactionListener {
 		addAttributeComponents(node, component);
 
 		//		validate();
-		// repaint(node);
+		repaint(node);
 		if (getGraph() != null)
 			getGraph().setModified(true);
 	}
@@ -1071,6 +1073,7 @@ EdgeListener, TransactionListener {
 		// adjustPreferredSize();
 		//		repaint();
 		// }
+		repaint(node);
 		if (getGraph() != null)
 			getGraph().setModified(true);
 	}
@@ -1204,28 +1207,6 @@ EdgeListener, TransactionListener {
 		this.messageListeners.remove(ml);
 	}
 
-	// /**
-	// * Repaints the given graph element
-	// *
-	// * @param ge the<code>GraphElement</code> to repaint.
-	// */
-	// public void repaint(GraphElement ge) {
-	// if (ge != null) {
-	// System.out.print("p+");
-	// GraphElementComponent gec = getGraphElementComponent(ge);
-	// gec.repaint();
-	// repaint(gec.getBounds());
-	// Point2D a, b;
-	// a=gec.getLocation();
-	// b=null;
-	// zoom.transform(a, b);
-	// repaint((int)b.getX(), (int)b.getY(), (int)(zoom.getScaleX()*gec.getWidth()), (int)(zoom.getScaleY()*gec.getHeight()));
-	// } else {
-	// System.out.print("p");
-	// repaint();
-	// }
-	// }
-
 	/**
 	 * Called when a transaction has stopped.
 	 * 
@@ -1236,33 +1217,34 @@ EdgeListener, TransactionListener {
 	public  void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		final TransactionEvent fevent = event;
 		final BackgroundTaskStatusProviderSupportingExternalCall fstatus = status;
-		synchronized(redrawLock) {
 			if (!SwingUtilities.isEventDispatchThread()) {
 				try {
-					SwingUtilities.invokeAndWait(new Runnable() {
+					synchronized(redrawLock) {
+						SwingUtilities.invokeAndWait(new Runnable() {
 
-						@Override
-						public void run() {
-							logger.debug("calling transactionFinishedOnSwingThread() from NON-Event dispatch thread");
-							transactionFinishedOnSwingThread(fevent, fstatus);
-						}
-					});
+							@Override
+							public void run() {
+								logger.debug("calling transactionFinishedOnSwingThread() from NON-Event dispatch thread");
+								transactionFinishedOnSwingThread(fevent, fstatus);
+							}
+						});
+					}
 				} catch (InvocationTargetException | InterruptedException e) {
 					e.printStackTrace();
 				}
 			} else {
 				transactionFinishedOnSwingThread(fevent, fstatus);
 			}
-		}
 	}
 
-	private synchronized void transactionFinishedOnSwingThread(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
+	private void transactionFinishedOnSwingThread(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
 //		logger.setLevel(Level.DEBUG);
 		long startTimeTransFinished = System.currentTimeMillis();
 		isFinishingTransacation = true;
 
 		logger.debug("transactionFinishedOnSwingThread() --------------- EVENT DISPATCH THREAD? " + SwingUtilities.isEventDispatchThread());
 
+//		logger.debug("view contains " + getComponentCount() + " components");
 
 		blockAdjust = true;
 
@@ -1304,11 +1286,6 @@ EdgeListener, TransactionListener {
 			if (status != null)
 				status.setCurrentStatusValueFine(100d * idx / maxIdx);
 
-//			if (idx % 500 == 0) {
-//				
-//				logger.debug("time for changing 500 objects " + period + "ms");
-//				time1 = System.currentTimeMillis();
-//			}
 
 			Attributable atbl = null;
 			// System.out.println("Changed: "+obj);
@@ -1328,20 +1305,21 @@ EdgeListener, TransactionListener {
 			}
 
 			if (atbl instanceof Graph) {
-				if(obj instanceof Graph || obj instanceof Attribute) {
+				if(obj instanceof Attribute) {
 					if( ((Attribute) obj).getName().equals("background_coloring")
 						|| ((Attribute) obj).getName().equals("graphbackgroundcolor"))
 					{
 						attributeChanged((Attribute) obj);
 						// we don't do anything if we match one of the attributes
 					}
-					else {
+				}
+				else if (obj instanceof Graph){
 						// information not helpful
 							blockAdjust = false;
 							completeRedraw();
 							return; // completeRedraw should be complete?!
-					}
 				}
+				
 			} else {
 
 				try {
@@ -1578,8 +1556,10 @@ EdgeListener, TransactionListener {
 			Color c = ColorUtil.getColorFromHex((String) attr.getValue());
 			if(getParent() != null)
 				getParent().setBackground(c);
+			
+			getGraph().setModified(true);
 		}
-
+		
 	}
 
 	/**
@@ -1641,17 +1621,17 @@ EdgeListener, TransactionListener {
 
 		try {
 			invZoomedPoint = zoom.inverseTransform(e.getPoint(), null);
+			MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e
+					.getWhen(), e.getModifiers(), (int) (invZoomedPoint.getX()),
+					(int) (invZoomedPoint.getY()), e.getClickCount(), e
+					.isPopupTrigger());
+			
+			return newME;
 		} catch (NoninvertibleTransformException nite) {
 			// when setting the zoom, it must have been checked that
 			// the transform is invertible
+			return e;
 		}
-
-		MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e
-				.getWhen(), e.getModifiers(), (int) (invZoomedPoint.getX()),
-				(int) (invZoomedPoint.getY()), e.getClickCount(), e
-				.isPopupTrigger());
-
-		return newME;
 	}
 
 	/**
@@ -1666,17 +1646,18 @@ EdgeListener, TransactionListener {
 
 		try {
 			invZoomedPoint = zoom.inverseTransform(e.getPoint(), null);
+			MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e
+					.getWhen(), e.getModifiers(), (int) (invZoomedPoint.getX()),
+					(int) (invZoomedPoint.getY()), e.getClickCount(), e
+					.isPopupTrigger());
+			
+			return newME;
 		} catch (NoninvertibleTransformException nite) {
 			// when setting the zoom, it must have been checked that
 			// the transform is invertible
+			return e;
 		}
 
-		MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e
-				.getWhen(), e.getModifiers(), (int) (invZoomedPoint.getX()),
-				(int) (invZoomedPoint.getY()), e.getClickCount(), e
-				.isPopupTrigger());
-
-		return newME;
 	}
 
 	/**
@@ -2047,6 +2028,11 @@ EdgeListener, TransactionListener {
 	}
 
 	public boolean isHidden(GraphElement ge) {
+		try {
+			ge.getAttribute(GraphicAttributeConstants.GRAPHICS);
+		} catch (AttributeNotFoundException e) {
+			return false;
+		}
 		return AttributeHelper.isHiddenGraphElement(ge);
 	}
 

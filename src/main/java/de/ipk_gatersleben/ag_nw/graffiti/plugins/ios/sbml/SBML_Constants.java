@@ -42,8 +42,8 @@ public class SBML_Constants {
 	public static final String NON_RDF_ANNOTATION = "_non_rdf_annotation";
 	
 	// SBML attribute constants
-	public static final String VERSION = "version";
-	public static final String LEVEL = "level";
+	public static final String VERSION = "sbml_version";
+	public static final String LEVEL = "sbml_level";
 	public static final String NAMESPACE = "namespace";
 	public static final String SBML = "sbml";
 	public static final String SBML_NOTES = "sbml_notes";

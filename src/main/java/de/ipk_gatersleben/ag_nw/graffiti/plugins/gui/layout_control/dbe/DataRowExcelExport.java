@@ -129,6 +129,9 @@ public class DataRowExcelExport implements Comparable, Comparator {
 	
 	@Override
 	public boolean equals(Object arg0) {
+		if(arg0 == null)
+			return false;
+
 		return this.compareTo(arg0) == 0;
 	}
 }

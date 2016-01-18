@@ -101,14 +101,14 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 				maxDistance = -1;
 			}
 			return new Parameter[] {
-								selection.isEmpty() ? null : new BooleanParameter(extendSelection, "Extend selection", "<html>" +
+								selection != null && selection.isEmpty() ? null : new BooleanParameter(extendSelection, "Extend selection", "<html>" +
 													"If selected, the selection will be extended,<br>" +
 													"leaving currently selected elements unaffected."),
 								new BooleanParameter(onlyWithMapping, "With mapping-data", ""),
 								new BooleanParameter(onlyWithoutMapping, "Without mapping-data", ""),
 								new IntegerParameter(-1, "Degree >", "Degree greater than (-1 means no limit)"),
 								new IntegerParameter(-1, "Degree <", "Degree smaller than (-1 means no limit)"),
-								selection.getEdges().isEmpty() ? null : new BooleanParameter(onlyConnectedToSelectedEdges, "Connected to sel. edges", ""),
+								selection != null && selection.getEdges().isEmpty() ? null : new BooleanParameter(onlyConnectedToSelectedEdges, "Connected to sel. edges", ""),
 								new BooleanParameter(onlyVisibleNodes, "Visible nodes", ""),
 								new BooleanParameter(onlyHiddenNodes, "Hidden nodes", ""),
 								distEvalOk ? new IntegerParameter(-1, "Distance to sel. >", "Distance to selection greater than (-1 means not considered)") : null,

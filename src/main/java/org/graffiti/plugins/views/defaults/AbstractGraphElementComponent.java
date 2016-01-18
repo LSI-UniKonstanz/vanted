@@ -90,6 +90,8 @@ public abstract class AbstractGraphElementComponent
 	 * a composite field, which defines the transparency
 	 */
 	protected Composite composite;
+
+	protected float alpha;
 	
 //	protected BufferedImage opacityRenderImage;
 	
@@ -332,20 +334,19 @@ public abstract class AbstractGraphElementComponent
 			opacity = 1.0;
 		if (opacity < 0)
 			opacity = 0.0;
+		alpha = ((float) opacity);
 		if (opacity < 1.0) {
 			setOpaque(false);
-			float alpha = ((float) opacity);
 			composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha);
-			
-//			opacityRenderImage = getGraphicsConfiguration().createCompatibleImage(getWidth(), getHeight());
 		} else {
 			
 			composite = null;
-//			opacityRenderImage = null;
+			setOpaque(true);
 		}
 		for (GraffitiViewComponent viewComp : getAttributeComponents()) {
-			if (viewComp instanceof AbstractAttributeComponent)
-				((AbstractAttributeComponent) viewComp).setComposite(composite);
+			if (viewComp instanceof AbstractAttributeComponent) {
+				((AbstractAttributeComponent) viewComp).setAlpha(alpha);
+			}
 		}
 		
 	}
@@ -384,7 +385,7 @@ public abstract class AbstractGraphElementComponent
 	@Override
 	public void paintComponent(Graphics g) {
 		
-		if (composite != null && ((GraffitiView)getParent()).getDrawMode() == DrawMode.NORMAL)
+		if (composite != null && ((GraffitiView)getParent()).getDrawMode() != DrawMode.FAST)
 			((Graphics2D) g).setComposite(composite);
 		
 //		super.paintComponent(g);
@@ -397,7 +398,7 @@ public abstract class AbstractGraphElementComponent
 			// draw frame, indicating the panel-bounds
 			if(drawFrames) {
 				g.setColor(Color.GRAY);
-				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+				g.drawRect(0, 0, getWidth(), getHeight());
 			} 
 			
 			// draw original shape

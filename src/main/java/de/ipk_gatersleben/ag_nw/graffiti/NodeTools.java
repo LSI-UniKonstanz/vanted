@@ -499,14 +499,15 @@ public class NodeTools {
 			String old_cbcp = "charting" + Attribute.SEPARATOR + "chart_background_color" + add;
 			try {
 				Attribute a = ge.getAttribute(old_cbcp);
-				if (a != null && a instanceof HashMapAttribute) {
-					HashMapAttribute ha = (HashMapAttribute) a;
-					a.getParent().remove(a.getId());
-					Attribute colAtt = StringAttribute.getTypedStringAttribute(
-										GraphicAttributeConstants.CHARTBACKGROUNDCOLOR + add, ColorUtil
-															.getHexFromColor(getColorFromHashMapAttribute(ha)));
-					ge.addAttribute(colAtt, "charting");
-				} else {
+				if (a != null) {
+					if( a instanceof HashMapAttribute) {
+						HashMapAttribute ha = (HashMapAttribute) a;
+						a.getParent().remove(a.getId());
+						Attribute colAtt = StringAttribute.getTypedStringAttribute(
+								GraphicAttributeConstants.CHARTBACKGROUNDCOLOR + add, ColorUtil
+								.getHexFromColor(getColorFromHashMapAttribute(ha)));
+						ge.addAttribute(colAtt, "charting");
+					} 
 					a.getParent().remove(a.getId());
 				}
 			} catch (AttributeNotFoundException err) {

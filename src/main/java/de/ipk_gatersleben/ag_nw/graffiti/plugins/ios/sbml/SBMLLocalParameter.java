@@ -87,7 +87,7 @@ public class SBMLLocalParameter {
 	}
 	
 	public void setValue(Node reactionNode, Double value) {
-		if (!value.equals(null)) {
+		if (value != null) {
 			AttributeHelper.setAttribute(
 					reactionNode,
 					SBML_Constants.SBML_KINETIC_LAW,

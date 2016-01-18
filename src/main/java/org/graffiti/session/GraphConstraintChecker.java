@@ -109,7 +109,7 @@ public class GraphConstraintChecker
 	 * Checks whether all constraints are satisfied on the specified graph.
 	 */
 	public void checkConstraints() {
-		if (constraints != null && constraints.isEmpty())
+		if (constraints == null || constraints.isEmpty())
 			return;
 		
 		String message = "";

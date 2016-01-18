@@ -6,14 +6,14 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 
-public class MutableList extends JList {
+public class MutableList<T> extends JList<T> {
 	private static final long serialVersionUID = 1L;
 	
-	public MutableList(DefaultListModel model) {
+	public MutableList(DefaultListModel<T> model) {
 		super(model);
 	}
 	
-	public DefaultListModel getContents() {
-		return (DefaultListModel) getModel();
+	public DefaultListModel<T> getContents() {
+		return (DefaultListModel<T>) getModel();
 	}
 }

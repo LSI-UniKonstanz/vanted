@@ -147,12 +147,14 @@ public class SBMLFunctionDefinition {
 	public ASTNode getFunction() {
 		if (isSetFunction()) {
 			try {
-				return ASTNode.parseFormula((String) attWriter.getAttribute(
+				String string = new StringBuffer(internHeadline).append(
+						SBML_Constants.FUNCTION_DEFINITION_FUNCTION)
+						.toString();
+				String string2 = (String) attWriter.getAttribute(
 						g,
 						internHeadline,
-						new StringBuffer(internHeadline).append(
-								SBML_Constants.FUNCTION_DEFINITION_FUNCTION)
-								.toString()));
+						string);
+				return ASTNode.parseFormula(string2);
 			} catch (ParseException e) {
 				e.printStackTrace();
 				return null;

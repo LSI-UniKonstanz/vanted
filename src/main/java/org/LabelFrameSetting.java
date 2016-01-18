@@ -44,7 +44,7 @@ public enum LabelFrameSetting {
 			case SIDE_LINES:
 				return "side lines frame";
 			default:
-				return null;
+				return "";
 		}
 	}
 	

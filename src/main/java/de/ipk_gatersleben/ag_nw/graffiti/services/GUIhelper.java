@@ -474,6 +474,9 @@ public class GUIhelper {
 		
 		final ObjectRef myoutputstream = new ObjectRef();
 		
+		if(ftp == null)
+			return false;
+		
 		ftp.addProtocolCommandListener(new ProtocolCommandListener() {
 			public void protocolCommandSent(ProtocolCommandEvent arg0) {
 				// System.out.print("out: " + arg0.getMessage());
@@ -592,7 +595,8 @@ public class GUIhelper {
 		password = "anonymous";
 		
 		final ObjectRef myoutputstream = new ObjectRef();
-		
+		if(ftp == null)
+			return new ArrayList<String>();
 		ftp.addProtocolCommandListener(new ProtocolCommandListener() {
 			public void protocolCommandSent(ProtocolCommandEvent arg0) {
 				status.setCurrentStatusText1("Command: " + arg0.getMessage());

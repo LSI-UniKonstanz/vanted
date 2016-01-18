@@ -233,7 +233,8 @@ public class SBML_SBase_Writer {
 				}
 				XMLNode node = (XMLNode) getAttribute(g, headline, nonRDFAttributeName);
 				try {
-					annotation.appendNoRDFAnnotation((String) node.toXMLString());
+//					System.out.println(" GIISSET-------------------\n\n" + (String) node.toXMLString());
+					annotation.appendNonRDFAnnotation((String) node.toXMLString());
 				} catch (XMLStreamException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -283,7 +284,8 @@ public class SBML_SBase_Writer {
 				}
 				XMLNode xmlnode = (XMLNode) getAttribute(element, headline, nonRDFAttributeName);
 				try {
-					annotation.appendNoRDFAnnotation((String) xmlnode.toXMLString());
+//					System.out.println(" GIIS not SET-------------------\n\n" + (String) xmlnode.toXMLString());
+					annotation.appendNonRDFAnnotation((String) xmlnode.toXMLString());
 				} catch (XMLStreamException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

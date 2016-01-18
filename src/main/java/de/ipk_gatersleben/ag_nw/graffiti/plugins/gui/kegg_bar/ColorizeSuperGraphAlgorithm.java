@@ -9,8 +9,8 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.kegg_bar;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.rpc.ServiceException;
@@ -98,7 +98,7 @@ public class ColorizeSuperGraphAlgorithm extends AbstractAlgorithm {
 	}
 	
 	public void execute() {
-		final Collection<OrganismEntry> organisms = new ArrayList<OrganismEntry>();
+		final List<OrganismEntry> organisms = new ArrayList<OrganismEntry>();
 		try {
 			KeggHelper h = new KeggHelper();
 			organisms.addAll(h.getOrganisms());

@@ -20,6 +20,8 @@ public class IdAndGraphNode {
 	public QuadNumber quadNumber;
 	
 	public IdAndGraphNode(String id2, org.graffiti.graph.Node graphNode) {
+		if( id2 == null)
+			return;
 		if (id2 != null)
 			id2 = id2.trim();
 		this.id = id2;

@@ -50,10 +50,12 @@ public class VantedPreferences implements PreferencesInterface {
 	private static VantedPreferences instance;
 	
 	public VantedPreferences() {
-		instance = this;
+		
 	}
 	
 	public static VantedPreferences getInstance() {
+		if(instance == null)
+			instance = new VantedPreferences();
 		return instance;
 	}
 	

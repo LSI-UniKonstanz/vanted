@@ -57,6 +57,7 @@ public abstract class AbstractAttributeComponent
 	protected Point shift;
 	
 	protected Point loc = new Point();
+
 	
 	// ~ Constructors ===========================================================
 	
@@ -65,7 +66,7 @@ public abstract class AbstractAttributeComponent
 	 */
 	public AbstractAttributeComponent() {
 		super();
-		
+//		setupOpacity(1);
 	}
 	
 	// ~ Methods ================================================================
@@ -92,9 +93,9 @@ public abstract class AbstractAttributeComponent
 			opacity = 1.0;
 		if (opacity < 0)
 			return;
+		alpha = ((float) opacity);
 		if (opacity < 1.0) {
 			setOpaque(false);
-			float alpha = ((float) opacity);
 			composite = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha);
 			
 		} else {
@@ -214,10 +215,12 @@ public abstract class AbstractAttributeComponent
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
-		if (hidden)
-			return;
-		if (composite != null)
-			((Graphics2D) g).setComposite(composite);
+//		if (hidden)
+//			return;
+//		if (composite != null) {
+//			g = g.create();
+//			((Graphics2D) g).setComposite(composite);
+//		}
 		super.paintComponent(g);
 	}
 	
@@ -228,8 +231,10 @@ public abstract class AbstractAttributeComponent
 	public void paint(Graphics g) {
 		if (hidden)
 			return;
-		if (composite != null)
+		if (composite != null) {
+			g = g.create();
 			((Graphics2D) g).setComposite(composite);
+		}
 		super.paint(g);
 	}
 	

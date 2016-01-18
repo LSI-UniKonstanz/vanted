@@ -73,8 +73,8 @@ public class SBML_SBML_Reader extends SBML_SBase_Reader {
 			}
 		}
 		AttributeHelper.setAttribute(g, SBML_Constants.SBML,
-				SBML_Constants.LEVEL, level);
+				SBML_Constants.LEVEL, Integer.toString(level));
 		AttributeHelper.setAttribute(g, SBML_Constants.SBML,
-				SBML_Constants.VERSION, version);
+				SBML_Constants.VERSION, Integer.toString(version));
 	}
 }

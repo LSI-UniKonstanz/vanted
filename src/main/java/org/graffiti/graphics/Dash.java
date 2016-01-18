@@ -94,6 +94,8 @@ public class Dash {
 	
 	@Override
 	public boolean equals(Object obj) {
+		if(! (obj instanceof Dash))
+			return false;
 		Dash otherDash = (Dash) obj;
 		if (Math.abs(otherDash.dashPhase - dashPhase) > Double.MIN_NORMAL)
 			return false;

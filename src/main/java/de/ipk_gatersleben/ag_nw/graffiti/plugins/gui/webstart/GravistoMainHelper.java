@@ -734,13 +734,16 @@ public class GravistoMainHelper implements HelperClass {
 	}
 	
 	private static HashSet<File> addFiles(HashSet<File> files, File dir) {
+		if(dir == null)
+			return files;
 		if (!dir.isDirectory()) {
 			files.add(dir);
 			return files;
 		}
-		
-		for (File file : dir.listFiles())
-			addFiles(files, file);
+		File[] listFiles = dir.listFiles();
+		if(listFiles != null)
+			for (File file : listFiles)
+				addFiles(files, file);
 		return files;
 	}
 	

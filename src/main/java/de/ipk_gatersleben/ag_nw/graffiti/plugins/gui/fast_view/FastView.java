@@ -278,7 +278,8 @@ public class FastView
 					boolean hasSelectionData = false;
 					if (showSelectionData.isSelected()) {
 						Collection<GraphElement> selectedOrAllGraphElements = GraphHelper.getSelectedOrAllGraphElements(getGraph());
-						hasSelectionData = selectedOrAllGraphElements.size() < getGraph().getNumberOfNodes() + getGraph().getNumberOfEdges();
+						if(selectedOrAllGraphElements != null)
+							hasSelectionData = selectedOrAllGraphElements.size() < getGraph().getNumberOfNodes() + getGraph().getNumberOfEdges();
 						if (selectedOrAllGraphElements != null && selectedOrAllGraphElements.size() > 0) {
 							ArrayList<GraphElement> processedElements = new ArrayList<GraphElement>();
 							double[] values = getValues(sel, selectedOrAllGraphElements, considerNodesAttribute.isSelected(), considerEdgesAttribute.isSelected(),

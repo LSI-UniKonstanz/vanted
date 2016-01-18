@@ -254,7 +254,7 @@ public class Base64
 
         // Check to see if it's gzip-compressed
         // GZIP Magic Two-Byte Number: 0x8b1f (35615)
-        if(bytes.length >= 2)
+        if(bytes != null && bytes.length >= 2)
         {
             int head = (bytes[0] & 0xff) | ((bytes[1] << 8) & 0xff00);
 

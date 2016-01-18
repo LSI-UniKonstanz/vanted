@@ -396,22 +396,22 @@ public class ThreadSafeOptions implements HelperClass {
 	}
 	
 	private double dv = 0;
-	private final Double dl = 0d;
+	private final Object monitor = new Object();
 	
 	public void addDouble(double d) {
-		synchronized (dl) {
+		synchronized (monitor) {
 			dv += d;
 		}
 	}
 	
 	public void setDouble(double d) {
-		synchronized (dl) {
+		synchronized (monitor) {
 			dv = d;
 		}
 	}
 	
 	public double getDouble() {
-		synchronized (dl) {
+		synchronized (monitor) {
 			return dv;
 		}
 	}

@@ -38,6 +38,8 @@ public class KoEntry implements Comparable<KoEntry> {
 	
 	@Override
 	public boolean equals(Object obj) {
+		if(obj == null)
+			return false;
 		KoEntry objKo = (KoEntry) obj;
 		return koentryID.equals(objKo.koentryID);
 	}

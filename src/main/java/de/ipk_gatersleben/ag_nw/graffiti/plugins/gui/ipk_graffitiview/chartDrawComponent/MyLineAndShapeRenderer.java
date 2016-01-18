@@ -189,15 +189,17 @@ public class MyLineAndShapeRenderer extends LineAndShapeRenderer {
 							lineB = new Line2D.Double(x0, y0 - yStdDev0, x1, y1
 												- yStdDev1);
 						}
-					GeneralPath gp = new GeneralPath();
-					gp.moveTo((float) lineA.getX1(), (float) lineA.getY1());
-					gp.lineTo((float) lineA.getX2(), (float) lineA.getY2());
-					gp.lineTo((float) lineB.getX2(), (float) lineB.getY2());
-					gp.lineTo((float) lineB.getX1(), (float) lineB.getY1());
-					gp.closePath();
-					// g2.draw(lineA);
-					// g2.draw(lineB);
-					g2.fill(gp);
+					if(lineA != null && lineB != null) {
+						GeneralPath gp = new GeneralPath();
+						gp.moveTo((float) lineA.getX1(), (float) lineA.getY1());
+						gp.lineTo((float) lineA.getX2(), (float) lineA.getY2());
+						gp.lineTo((float) lineB.getX2(), (float) lineB.getY2());
+						gp.lineTo((float) lineB.getX1(), (float) lineB.getY1());
+						gp.closePath();
+						// g2.draw(lineA);
+						// g2.draw(lineB);
+						g2.fill(gp);
+					}
 				} else {
 					int nextOffset = 0;
 					Number nextValue = null;

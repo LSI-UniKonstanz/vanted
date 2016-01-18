@@ -83,35 +83,37 @@ public class TableLayoutConstraints implements TableLayoutConstants {
 		} catch (NoSuchElementException error) {
 		} catch (NumberFormatException error) {
 			try {
-				// Check if token means horizontally justification the component
-				if (token.equalsIgnoreCase("L"))
-					hAlign = LEFT;
-				else
-					if (token.equalsIgnoreCase("C"))
-						hAlign = CENTER;
+				if(token != null) {
+					// Check if token means horizontally justification the component
+					if (token.equalsIgnoreCase("L"))
+						hAlign = LEFT;
 					else
-						if (token.equalsIgnoreCase("F"))
-							hAlign = FULL;
+						if (token.equalsIgnoreCase("C"))
+							hAlign = CENTER;
 						else
-							if (token.equalsIgnoreCase("R"))
-								hAlign = RIGHT;
-				
-				// There can be one more token for the vertical justification even
-				// if the horizontal justification is invalid
-				token = st.nextToken();
-				
-				// Check if token means horizontally justification the component
-				if (token.equalsIgnoreCase("T"))
-					vAlign = TOP;
-				else
-					if (token.equalsIgnoreCase("C"))
-						vAlign = CENTER;
+							if (token.equalsIgnoreCase("F"))
+								hAlign = FULL;
+							else
+								if (token.equalsIgnoreCase("R"))
+									hAlign = RIGHT;
+
+					// There can be one more token for the vertical justification even
+					// if the horizontal justification is invalid
+					token = st.nextToken();
+
+					// Check if token means horizontally justification the component
+					if (token.equalsIgnoreCase("T"))
+						vAlign = TOP;
 					else
-						if (token.equalsIgnoreCase("F"))
-							vAlign = FULL;
+						if (token.equalsIgnoreCase("C"))
+							vAlign = CENTER;
 						else
-							if (token.equalsIgnoreCase("B"))
-								vAlign = BOTTOM;
+							if (token.equalsIgnoreCase("F"))
+								vAlign = FULL;
+							else
+								if (token.equalsIgnoreCase("B"))
+									vAlign = BOTTOM;
+				}
 			} catch (NoSuchElementException error2) {
 			}
 		}

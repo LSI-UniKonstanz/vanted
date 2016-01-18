@@ -87,7 +87,7 @@ public class ProgressStatusService implements HelperClass {
 		int nn = 1;
 		String res[] = new String[2];
 		if (remainTimeYears > 1 && numberResults < nn)
-			if (remainTimeYears == 1)
+			if (Double.compare(remainTimeYears, 1.0) == 0)
 				res[numberResults++] = (int) remainTimeYears + "&nbsp;year";
 			else
 				res[numberResults++] = (int) remainTimeYears + "&nbsp;years";

@@ -213,10 +213,11 @@ public class HammingDistanceAlgorithm
 			}
 			File[] files = dir.listFiles();
 			ArrayList<File> filelist = new ArrayList<File>();
-			for (File file : files) {
-				if (file.getName().toUpperCase().endsWith(".GML"))
-					filelist.add(file);
-			}
+			if(files != null)
+				for (File file : files) {
+					if (file.getName().toUpperCase().endsWith(".GML"))
+						filelist.add(file);
+				}
 			files = filelist.toArray(new File[] {});
 			int fileCount = files.length;
 			if (index > files.length) {

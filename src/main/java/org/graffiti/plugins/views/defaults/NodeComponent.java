@@ -30,6 +30,7 @@ import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.ColorAttribute;
+import org.graffiti.graphics.DimensionAttribute;
 import org.graffiti.graphics.NodeGraphicAttribute;
 import org.graffiti.plugin.view.AttributeComponent;
 import org.graffiti.plugin.view.GraffitiViewComponent;
@@ -105,6 +106,7 @@ public class NodeComponent
 			newShape.buildShape(nodeAttr);
 			shape = newShape;
 			adjustComponentSizeAndPosition();
+			updateGraphicsFields();
 		} catch (ShapeNotFoundException e) {
 			throw new RuntimeException("this should never happen since the " +
 					"standard node shape should always " + "exist." + e);
@@ -123,8 +125,8 @@ public class NodeComponent
 	@Override
 	public synchronized void graphicAttributeChanged(Attribute attr)
 			throws ShapeNotFoundException {
-		logger.debug("graphicAttributeChanged for node id:" + getGraphElement().getID() + " attribute " + attr.getName());
 		if (attr != null) {
+			logger.debug("graphicAttributeChanged for node id:" + getGraphElement().getID() + " attribute " + attr.getName());
 			String id = attr.getId();
 			if (!id.equals(COORDINATE)) {
 				if (id.equals(LINEMODE)) {
@@ -209,7 +211,7 @@ public class NodeComponent
 	 */
 	@Override
 	protected void drawShape(Graphics g) {
-//		logger.debug("drawShape for node id:" + getGraphElement().getID());
+		logger.debug("drawShape for node id:" + getGraphElement().getID());
 //		logger.debug("graph id " + getGraphElement().getGraph().getName() + ", node id:" + getGraphElement().getID() + ", border:" + getBorder().toString());
 		// super.drawShape(g);
 		Graphics2D drawArea = (Graphics2D) g;
@@ -283,18 +285,18 @@ public class NodeComponent
 				}
 			}
 			
-			if (shape instanceof ProvidesAdditonalDrawingShapes) {
-				Collection<Shape> postShapes = ((ProvidesAdditonalDrawingShapes) shape).getPostBorderShapes();
-				if (postShapes != null)
-					for (Shape s : postShapes) {
-						drawArea.setPaint(fillPaint);
-						drawArea.fill(s);
-						if (drawFrame) {
-							drawArea.setPaint(framePaint);
-							drawArea.draw(s);
-						}
+		}
+		if (shape instanceof ProvidesAdditonalDrawingShapes) {
+			Collection<Shape> postShapes = ((ProvidesAdditonalDrawingShapes) shape).getPostBorderShapes();
+			if (postShapes != null)
+				for (Shape s : postShapes) {
+					drawArea.setPaint(fillPaint);
+					drawArea.fill(s);
+					if (drawFrame) {
+						drawArea.setPaint(framePaint);
+						drawArea.draw(s);
 					}
-			}
+				}
 		}
 //		drawArea.translate(-1 - shape.getXexcess(), -1 - shape.getYexcess());
 	}
@@ -311,13 +313,19 @@ public class NodeComponent
 		logger.debug("recreate for node id:" + getGraphElement().getID());
 		
 		
-		if (!this.graphElement.getAttributes().getCollection().containsKey(GRAPHICS)) {
+		if (!this.graphElement.getAttributes().getCollection().containsKey(GRAPHICS)
+				|| ! (graphElement.getAttribute(GRAPHICS) instanceof NodeGraphicAttribute)) {
 			Node n = (Node) graphElement;
+			n.removeAttribute(GRAPHICS);
 			AttributeHelper.setDefaultGraphicsAttribute(n, 100, 100);
 		}
 		Object obj = graphElement.getAttribute(GRAPHICS);
 		
 		NodeGraphicAttribute geAttr = (NodeGraphicAttribute) obj;
+
+		if (nodeAttr == null)
+			nodeAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
+
 		
 		// get classname of the shape to use and instantiate this
 		String newShapeClass = geAttr.getShape();
@@ -340,8 +348,6 @@ public class NodeComponent
 		
 		int maxR = getHeight() > getWidth() ? getHeight() : getWidth();
 		// maxR = maxR / 2;
-		if (nodeAttr == null)
-			nodeAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
 		
 		double epsilon = 0.0001;
 		if (nodeAttr.getUseGradient() > epsilon)
@@ -383,14 +389,19 @@ public class NodeComponent
 	protected void adjustComponentSizeAndPosition() {
 		logger.debug("adjustComponentSizeAndPosition for node id:" + getGraphElement().getID());
 		
-		Rectangle2D bounds = shape.getRealBounds2D();
-		double offA = 0;//-2d;
-		double offB = 0;//2d;
-		double xE = shape.getXexcess();
-		double yE = shape.getYexcess();
-		setBounds((int) (bounds.getX() + offA - xE), (int) (bounds.getY() + offA - yE),
-				(int) (bounds.getWidth() + offB + xE * 2d), (int) (bounds.getHeight() + offB + yE * 2d));
-		
+		DimensionAttribute dim = nodeAttr.getDimension();
+		// hidden graph element check
+		if(dim.getWidth() < 0 || dim.getHeight() < 0)
+			setSize((int)dim.getWidth(), (int)dim.getHeight());
+		else {
+			Rectangle2D bounds = shape.getRealBounds2D();
+			double offA = 0;//-2d;
+			double offB = 0;//2d;
+			double xE = shape.getXexcess();
+			double yE = shape.getYexcess();
+			setBounds((int) (bounds.getX() + offA - xE), (int) (bounds.getY() + offA - yE),
+					(int) (bounds.getWidth() + offB + xE * 2d), (int) (bounds.getHeight() + offB + yE * 2d));
+		}
 	}
 	
 	/**

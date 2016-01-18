@@ -138,6 +138,12 @@ public abstract class MegaTools extends AbstractUndoableTool {
 //		 MainFrame.showMesssage(e.getX()+" - "+e.getY(), MessageType.PERMANENT_INFO);
 //		System.out.println(e.getSource().toString());
 		setFoundComponent(findComponentAt(e, e.getX(), e.getY()));
+		
+		if(getFoundComponent() != null && getFoundComponent() instanceof GraphElementComponent 
+				&& AttributeHelper.isHiddenGraphElement(((GraphElementComponent)getFoundComponent()).getGraphElement())){
+			setFoundComponent(getLastMouseSrc());
+		}
+		
 		setLastMouseComponent(e, foundComponent);
 		informAttributeComponentsAboutMouseEvents(e, foundComponent);
 		
@@ -450,13 +456,16 @@ public abstract class MegaTools extends AbstractUndoableTool {
 				
 				// add graphelement to selection
 				// selectedComps.add(geComp);
-				selection.add(ge);
+				if(!AttributeHelper.isHiddenGraphElement(ge))
+					selection.add(ge);
 				// caller.displayAsMarked(geComp);
 				if (gelist != null) {
 					for (Node n : gelist) {
-						selection.add(n);
-						for (GraphElementComponent gec : getCompsForElem(n)) {
-							caller.displayAsMarked(gec);
+						if(!AttributeHelper.isHiddenGraphElement(n)) {
+							selection.add(n);
+							for (GraphElementComponent gec : getCompsForElem(n)) {
+								caller.displayAsMarked(gec);
+							}
 						}
 					}
 				}
@@ -588,7 +597,6 @@ public abstract class MegaTools extends AbstractUndoableTool {
 		unDisplayAsMarked(getAllMarkedComps());
 		if (selection != null) {
 			selection.clear();
-			fireSelectionChanged();
 		}
 		
 	}

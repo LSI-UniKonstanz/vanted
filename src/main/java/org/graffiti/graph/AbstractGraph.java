@@ -930,14 +930,14 @@ public abstract class AbstractGraph extends AbstractAttributable implements
 	 * 
 	 * @return the newly created node.
 	 */
-	abstract Node createNode();
+	protected abstract Node createNode();
 	
 	/**
 	 * Creates a new <code>Node</code> that is initialize with the given <code>CollectionAttribute</code>.
 	 * 
 	 * @return the newly created node.
 	 */
-	abstract Node createNode(CollectionAttribute col);
+	protected abstract Node createNode(CollectionAttribute col);
 	
 	/**
 	 * Tries to add the given attribute to every edge in this graph.

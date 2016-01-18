@@ -28,7 +28,7 @@ public class DelayThread extends Thread {
 	static {
 		logger.setLevel(Level.INFO);
 	}
-	static final int MAX_COUNT = 10;
+	static final int MAX_COUNT = 5;
 	int counter;
 	DelayedCallback callback;
 	AttributeEvent e;

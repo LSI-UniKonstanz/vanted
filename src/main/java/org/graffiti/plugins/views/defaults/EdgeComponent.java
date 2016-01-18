@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
@@ -130,9 +131,25 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	public void createStandardShape() {
 		logger.debug("createStandardShape for edge id:" + getGraphElement().getID());
 		EdgeShape newShape = new StraightLineEdgeShape();
-		if (edgeAttr == null)
-			edgeAttr = (EdgeGraphicAttribute) ((Edge) graphElement)
-					.getAttribute(GRAPHICS);
+		if (edgeAttr == null) {
+			Attribute gattr =  ((Edge) graphElement)
+					.getAttribute(GRAPHICS); 
+			/*
+			 * if someone creates an edge with graph.addedge(source, target, directed) without
+			 * giving standard edgegraphic attributes (different method) then the GRAPHICS attribute
+			 * will be a standard hashmapattribute and this leads to classcastexceptions
+			 */
+			if(! (gattr instanceof EdgeGraphicAttribute)) {
+				edgeAttr = new EdgeGraphicAttribute();
+				if (((Edge) graphElement).getGraph().isDirected()) {
+					edgeAttr.setArrowhead("org.graffiti.plugins.views.defaults.StandardArrowShape");
+				}
+				
+				graphElement.getAttributes().remove(gattr);
+				graphElement.getAttributes().add(edgeAttr, false);
+			} else
+				edgeAttr =(EdgeGraphicAttribute) gattr;
+		}
 		
 		try {
 			newShape.buildShape(edgeAttr,
@@ -318,10 +335,25 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	protected void recreate() throws ShapeNotFoundException {
 		logger.debug("recreate for edge id:" + getGraphElement().getID());
 		
-		if (edgeAttr == null)
-			edgeAttr = (EdgeGraphicAttribute) ((Edge) graphElement)
-					.getAttribute(GRAPHICS);
-		
+		if (edgeAttr == null){
+			Attribute gattr =  ((Edge) graphElement)
+
+					.getAttribute(GRAPHICS); 
+			/*
+			 * if someone creates an edge with graph.addedge(source, target, directed) without
+			 * giving standard edgegraphic attributes (different method) then the GRAPHICS attribute
+			 * will be a standard hashmapattribute and this leads to classcastexceptions
+			 */
+			if(! (gattr instanceof EdgeGraphicAttribute)) {
+				edgeAttr = new EdgeGraphicAttribute();
+				if (((Edge) graphElement).getGraph().isDirected()) {
+					edgeAttr.setArrowhead("org.graffiti.plugins.views.defaults.StandardArrowShape");
+				}
+				graphElement.getAttributes().remove(gattr);
+				graphElement.getAttributes().add(edgeAttr, false);
+			} else
+				edgeAttr =(EdgeGraphicAttribute) gattr;
+		}
 		stroke = null;
 		EdgeGraphicAttribute geAttr;
 		if (!this.graphElement.getAttributes().getCollection().containsKey(
@@ -332,7 +364,6 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 		}
 		geAttr = (EdgeGraphicAttribute) this.graphElement
 				.getAttribute(GRAPHICS);
-		
 		String shapeClass = geAttr.getShape();
 		String curShapeNameClassName = null;
 		
@@ -433,11 +464,18 @@ public class EdgeComponent extends AbstractGraphElementComponent implements
 	 */
 	protected void adjustComponentSize() {
 		
-		Rectangle2D bounds = shape.getRealBounds2D();
-		setBounds((int) Math.floor(bounds.getX()),
-				(int) Math.floor(bounds.getY()),
-				(int) (Math.floor(bounds.getWidth() + 1)),
-				(int) (Math.floor(bounds.getHeight() + 1)));
+		// handle hidden graphelement state
+		if(edgeAttr.getFrameThickness() < 0) {
+			Rectangle bounds = getBounds();
+			setBounds(bounds.x, bounds.y, -bounds.width, -bounds.height);
+		} else {
+
+			Rectangle2D bounds = shape.getRealBounds2D();
+			setBounds((int) Math.floor(bounds.getX()),
+					(int) Math.floor(bounds.getY()),
+					(int) (Math.floor(bounds.getWidth() + 1)),
+					(int) (Math.floor(bounds.getHeight() + 1)));
+		}
 //		for (GraffitiViewComponent ac : attributeComponents.values()) {
 //			if (ac instanceof AttributeComponent) {
 //				AttributeComponent acc = (AttributeComponent) ac;

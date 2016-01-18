@@ -35,14 +35,16 @@ public class EdgeComponentHelper implements HelperClass {
 		EdgeLabelPositionAttribute posAttr = null;
 		try {
 			CollectionAttribute ca = (CollectionAttribute) aaa.getAttributable().getAttribute(positionAttributePathAndName);
-			if (ca != null && (ca instanceof EdgeLabelPositionAttribute)) {
-				posAttr = (EdgeLabelPositionAttribute) ca;
-			} else {
-				posAttr = new EdgeLabelPositionAttribute(attributeName);
-				posAttr.setCollection(ca.getCollection());
-				CollectionAttribute parent = ca.getParent();
-				parent.remove(ca);
-				parent.add(posAttr, false);
+			if (ca != null){ 
+				if(ca instanceof EdgeLabelPositionAttribute) {
+					posAttr = (EdgeLabelPositionAttribute) ca;
+				} else {
+					posAttr = new EdgeLabelPositionAttribute(attributeName);
+					posAttr.setCollection(ca.getCollection());
+					CollectionAttribute parent = ca.getParent();
+					parent.remove(ca);
+					parent.add(posAttr, false);
+				}
 			}
 		} catch (Exception e) {
 			// ErrorMsg.addErrorMessage(e);

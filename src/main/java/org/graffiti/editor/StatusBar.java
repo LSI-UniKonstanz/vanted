@@ -547,6 +547,7 @@ public class StatusBar
 	 */
 	public synchronized void showError(final String val, int timeMillis) {
 		final String status;
+		
 		if (val == null)
 			status = "";
 		else
@@ -559,8 +560,8 @@ public class StatusBar
 					{
 						if (isShowing())
 						{
-							if (statusLine.getText() == null)
-								statusLine.setText("");
+//							if (statusLine.getText() == null)
+//								statusLine.setText("");
 							// FIXED, CK: This avoids flickering
 							if (status == null || statusLine == null || statusLine.getText().equals(status))
 								clear();
@@ -705,7 +706,6 @@ public class StatusBar
 			
 		}
 		
-		List<Edge> actSelEdges = new ArrayList<Edge>();
 		
 		initScrolling(activeSelection);
 		

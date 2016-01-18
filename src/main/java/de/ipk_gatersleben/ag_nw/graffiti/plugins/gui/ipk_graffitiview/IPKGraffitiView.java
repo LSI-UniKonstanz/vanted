@@ -45,6 +45,7 @@ import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 import org.graffiti.event.AttributeEvent;
+import org.graffiti.event.GraphEvent;
 import org.graffiti.event.TransactionEvent;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
@@ -155,6 +156,12 @@ public class IPKGraffitiView
 		if(g != null) {
 			Color c = AttributeHelper.getColorFromAttribute(currentGraph, "", "graphbackgroundcolor", Color.white);
 			AttributeHelper.setColorFromAttribute(g, "", "graphbackgroundcolor", c);
+			/*
+			 * in any case (background was (not) present before set 
+			 * the graph to not modified only, if the attribute changes
+			 * during the session
+			 */
+			g.setModified(false); 
 		}
 		dirty = true;
 	}
@@ -460,10 +467,24 @@ public class IPKGraffitiView
 		// dirty = true;
 	}
 	
+	
+	
+	@Override
+	public void postNodeAdded(GraphEvent e) {
+		dirty = true;
+		super.postNodeAdded(e);
+	}
+
+	@Override
+	public void postNodeRemoved(GraphEvent e) {
+		dirty = true;
+		super.postNodeRemoved(e);
+	}
+
 	@Override
 	public void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
-		super.transactionFinished(event, status);
 		dirty = true;
+		super.transactionFinished(event, status);
 	}
 	
 	@Override

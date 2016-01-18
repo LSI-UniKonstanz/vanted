@@ -445,8 +445,8 @@ public class NewsHelper implements HelperClass {
 					for (int a = 0; a < fpList.size(); a++) {
 						if (latestDates.get(a) != null && rfm.getDate(a) != null)
 							fpList.get(a).setCondensedState(
-												latestDates.get(a).toString().
-																	equalsIgnoreCase(rfm.getDate(a)));
+									latestDates.get(a).toString().
+									equalsIgnoreCase(rfm.getDate(a)));
 						else {
 							boolean auto = new SettingsHelperDefaultIsTrue().isEnabled("download_release_infos");
 							fpList.get(a).setCondensedState(auto);
@@ -454,13 +454,13 @@ public class NewsHelper implements HelperClass {
 						String title = fpList.get(a).getTitle();
 						if (title != null && title.length() > 0) {
 							title = StringManipulationTools.stringReplace(title, "<font color='gray'>", "");
-						}
-						
-						boolean already_numbered;
-						try {
-							Integer.parseInt(title.substring(title.lastIndexOf(" (") + 2, title.lastIndexOf(")")));
-							already_numbered = true;
-						}
+
+
+							boolean already_numbered;
+							try {
+								Integer.parseInt(title.substring(title.lastIndexOf(" (") + 2, title.lastIndexOf(")")));
+								already_numbered = true;
+							}
 							catch (Exception e) {
 								already_numbered = false;
 							}
@@ -468,13 +468,14 @@ public class NewsHelper implements HelperClass {
 								title = title.substring(0, title.lastIndexOf(" ("));
 							int cnt = idx2newsItems.get(a).size();
 							fpList.get(a).setTitle(title + " (" + cnt + ")");
-							if (latestDates.get(a) != null)
-								rfm.setDate(a, latestDates.get(a).toString());
 						}
-						status.setCurrentStatusValueFine(100);
-						status.setCurrentStatusText1("Access finished");
-						status.setCurrentStatusText2(news + " news item(s) found");
-					} catch (Exception e) {
+						if (latestDates.get(a) != null)
+							rfm.setDate(a, latestDates.get(a).toString());
+					}
+					status.setCurrentStatusValueFine(100);
+					status.setCurrentStatusText1("Access finished");
+					status.setCurrentStatusText2(news + " news item(s) found");
+				} catch (Exception e) {
 						ErrorMsg.addErrorMessage(e);
 					}
 					rfm.saveRegisteredFeeds();

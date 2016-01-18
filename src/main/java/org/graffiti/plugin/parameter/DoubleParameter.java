@@ -24,6 +24,10 @@ public class DoubleParameter
 					implements ProvidesScenarioSupportCommand {
 	// ~ Instance fields ========================================================
 	
+	private Double max = null;
+	
+	private Double min = null;
+	
 	/** The value of this parameter. */
 	private Double value = null;
 	
@@ -51,11 +55,17 @@ public class DoubleParameter
 	 * @param description
 	 *           the description of the parameter.
 	 */
-	public DoubleParameter(double val, String name, String description) {
+	public DoubleParameter(Number val, String name, String description) {
 		super(name, description);
-		value = new Double(val);
+		value = new Double(val.doubleValue());
 	}
 	
+	public DoubleParameter(Number val, Double min, Double max, String name, String description) {
+		this(val, name, description);
+		this.min = min;
+		this.max = max;
+	}
+
 	// ~ Methods ================================================================
 	
 	/**
@@ -93,8 +103,8 @@ public class DoubleParameter
 	 * @return DOCUMENT ME!
 	 */
 	@Override
-	public Comparable<?> getMax() {
-		return null; // TODO
+	public Comparable<Double> getMax() {
+		return max == null ? Double.MAX_VALUE : max; 
 	}
 	
 	/**
@@ -103,8 +113,8 @@ public class DoubleParameter
 	 * @return DOCUMENT ME!
 	 */
 	@Override
-	public Comparable<?> getMin() {
-		return null; // TODO
+	public Comparable<Double> getMin() {
+		return min == null ? Double.MIN_VALUE : min;
 	}
 	
 	/**
@@ -114,7 +124,15 @@ public class DoubleParameter
 	 */
 	@Override
 	public boolean isValid() {
-		return false; // TODO
+		boolean valid = true;
+		if(value == null)
+			return false;
+		
+		if(min != null && min.compareTo(value) > 0)
+			valid = false;
+		if(max != null && max.compareTo(value) < 0)
+			valid = false;
+		return valid;
 	}
 	
 	/**
@@ -148,6 +166,16 @@ public class DoubleParameter
 		return value;
 	}
 	
+	
+	
+	public void setMax(Double max) {
+		this.max = max;
+	}
+
+	public void setMin(Double min) {
+		this.min = min;
+	}
+
 	public String getScenarioCommand() {
 		return "new DoubleParameter(" +
 							getDouble() + ", \"" + getName() + "\", \"" + getDescription() + "\")";

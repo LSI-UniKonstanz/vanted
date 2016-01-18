@@ -60,8 +60,8 @@ public class AdjListGraph extends AbstractGraph implements Graph {
 	// ~ Instance fields ========================================================
 	
 	/** The list containing the nodes of the graph. */
-	private ArrayList<Node> nodes = new ArrayList<Node>();
-	private ArrayList<Edge> edges = new ArrayList<Edge>();
+	protected List<Node> nodes = new ArrayList<Node>();
+	protected List<Edge> edges = new ArrayList<Edge>();
 	
 	/**
 	 * set to True if graph has been modified.

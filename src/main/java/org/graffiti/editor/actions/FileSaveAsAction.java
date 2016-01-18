@@ -269,17 +269,18 @@ public class FileSaveAsAction
 				
 				if (!needFile) {
 					EditorSession session = (EditorSession) mainFrame.getActiveSession();
-					
-					if (!file.getName().endsWith(ext))
-						file = new File(file.getAbsolutePath() + ext);
-					session.setFileName(file.getAbsolutePath());
-					session.setFileTypeDescription(description);
-					
-					if (session != null && session.getUndoManager() != null)
-						session.getUndoManager().discardAllEdits();
-					
-					mainFrame.fireSessionDataChanged(session);
-					OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
+					if(session != null) {
+						if (!file.getName().endsWith(ext))
+							file = new File(file.getAbsolutePath() + ext);
+						session.setFileName(file.getAbsolutePath());
+						session.setFileTypeDescription(description);
+
+						if (session != null && session.getUndoManager() != null)
+							session.getUndoManager().discardAllEdits();
+
+						mainFrame.fireSessionDataChanged(session);
+						OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
+					}
 				}
 			} else {
 				// leave loop

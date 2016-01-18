@@ -41,11 +41,11 @@ public class OptAdjListGraph
 	
 	// ~ Instance fields ========================================================
 	
-	/** The list containing the edges of the graph. */
-	private List<Edge> edges;
-	
-	/** The list containing the nodes of the graph. */
-	private List<Node> nodes;
+//	/** The list containing the edges of the graph. */
+//	private List<Edge> edges;
+//	
+//	/** The list containing the nodes of the graph. */
+//	private List<Node> nodes;
 	
 	/** The number of directed edges. */
 	private int noDirectedEdges;

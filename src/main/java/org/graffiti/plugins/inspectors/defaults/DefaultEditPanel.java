@@ -130,6 +130,7 @@ public class DefaultEditPanel extends EditPanel {
 	
 	private final String emptyMessage;
 	
+	private static Object lock = new Object();
 	private static HashSet<String> discardedRowIDs = new HashSet<String>();
 	
 	// ~ Constructors ===========================================================
@@ -140,45 +141,49 @@ public class DefaultEditPanel extends EditPanel {
 	public DefaultEditPanel(String emptyMessage) {
 		super();
 		this.emptyMessage = emptyMessage;
-		if (discardedRowIDs == null || discardedRowIDs.size() <= 0) {
-			discardedRowIDs = new HashSet<String>();
+		synchronized (lock) {
+
+
+			if (discardedRowIDs == null || discardedRowIDs.size() <= 0) {
+				discardedRowIDs = new HashSet<String>();
+			}
+			// discardedRowIDs.add("linemode");
+			discardedRowIDs.add("image");
+			discardedRowIDs.add("tiled");
+			discardedRowIDs.add("maximize");
+			discardedRowIDs.add("refrence");
+			discardedRowIDs.add("linetype");
+			discardedRowIDs.add("image");
+			discardedRowIDs.add("titled");
+			discardedRowIDs.add("maximize");
+			discardedRowIDs.add("reference");
+
+			// discardedRowIDs.add("target");
+			// discardedRowIDs.add("source");
+
+			// discardedRowIDs.add("arrowhead");
+			// discardedRowIDs.add("arrowtail");
+			discardedRowIDs.add("data");
+			// discardedRowIDs.add("fontSize");
+			// discardedRowIDs.add("fontStyle");
+
+			discardedRowIDs.add("alignment");
+			discardedRowIDs.add("relVert");
+			discardedRowIDs.add("relHor");
+			discardedRowIDs.add("absVert");
+			discardedRowIDs.add("absHor");
+			discardedRowIDs.add("relAlign");
+			discardedRowIDs.add("alignSegment");
+			discardedRowIDs.add("localAlign");
+
+			discardedRowIDs.add("type");
+			discardedRowIDs.add("Edge:anchor");
+			discardedRowIDs.add("Edge:rounding");
+			discardedRowIDs.add("data");
+
+			discardedRowIDs.add(PasteAction.PASTED_NODE);
+
 		}
-		// discardedRowIDs.add("linemode");
-		discardedRowIDs.add("image");
-		discardedRowIDs.add("tiled");
-		discardedRowIDs.add("maximize");
-		discardedRowIDs.add("refrence");
-		discardedRowIDs.add("linetype");
-		discardedRowIDs.add("image");
-		discardedRowIDs.add("titled");
-		discardedRowIDs.add("maximize");
-		discardedRowIDs.add("reference");
-		
-		// discardedRowIDs.add("target");
-		// discardedRowIDs.add("source");
-		
-		// discardedRowIDs.add("arrowhead");
-		// discardedRowIDs.add("arrowtail");
-		discardedRowIDs.add("data");
-		// discardedRowIDs.add("fontSize");
-		// discardedRowIDs.add("fontStyle");
-		
-		discardedRowIDs.add("alignment");
-		discardedRowIDs.add("relVert");
-		discardedRowIDs.add("relHor");
-		discardedRowIDs.add("absVert");
-		discardedRowIDs.add("absHor");
-		discardedRowIDs.add("relAlign");
-		discardedRowIDs.add("alignSegment");
-		discardedRowIDs.add("localAlign");
-		
-		discardedRowIDs.add("type");
-		discardedRowIDs.add("Edge:anchor");
-		discardedRowIDs.add("Edge:rounding");
-		discardedRowIDs.add("data");
-		
-		discardedRowIDs.add(PasteAction.PASTED_NODE);
-		
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR) {
 			addDiscarded(discardedRowIDs, new String[] {
 					"frameThickness", "linemode", "rounding", "Edge:fill", "Edge:color", "Edge:text",
@@ -834,6 +839,11 @@ public class DefaultEditPanel extends EditPanel {
 					
 					Attribute attribute = booledChild.getAttribute();
 					
+					
+					if (discardedRowIDs.contains(attribute.getId()) || discardedRowIDs.contains(tabName + ":" + attribute.getId())) {
+						continue;
+					}
+					
 					ecClass = (Class) this.editComponentsMap.get(attribute
 							.getClass());
 					
@@ -911,9 +921,9 @@ public class DefaultEditPanel extends EditPanel {
 	 */
 	private void updateVECs(Attribute changedAttr) {
 		ArrayList<ValueEditComponent> dl;
+		if (displayedValueEditComponents == null || displayedValueEditComponents.size() == 0)
+			return;
 		synchronized (displayedValueEditComponents) {
-			if (displayedValueEditComponents == null || displayedValueEditComponents.size() == 0)
-				return;
 			dl = new ArrayList<ValueEditComponent>(displayedValueEditComponents);
 		}
 		for (ValueEditComponent vec : dl) {
@@ -980,8 +990,8 @@ public class DefaultEditPanel extends EditPanel {
 	public static void setDiscardedRowIDs(HashSet<String> discardedRowIDs) {
 		if (DefaultEditPanel.discardedRowIDs != null)
 			DefaultEditPanel.discardedRowIDs.addAll(discardedRowIDs);
-		
-		DefaultEditPanel.discardedRowIDs = discardedRowIDs;
+		else
+			DefaultEditPanel.discardedRowIDs = discardedRowIDs;
 	}
 	
 	public static Collection<String> getDiscardedRowIDs() {

@@ -68,6 +68,6 @@ public enum RelationType
 			case maplink:
 				return "maplink";
 		}
-		return null;
+		return "";
 	}
 }

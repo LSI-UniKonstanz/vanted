@@ -452,8 +452,10 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 											return name.startsWith("feature_disabled") || name.startsWith("feature_enabled");
 										}
 									};
-									for (String settingsFile : new File(HomeFolder.getHomeFolder()).list(filter))
-										new File(HomeFolder.getHomeFolder() + "/" + settingsFile).delete();
+									String[] list = new File(HomeFolder.getHomeFolder()).list(filter);
+									if(list != null)
+										for (String settingsFile : list)
+											new File(HomeFolder.getHomeFolder() + "/" + settingsFile).delete();
 								}
 							});
 		

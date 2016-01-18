@@ -79,6 +79,8 @@ public class PasteAction extends SelectionAction {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		String gml = ClipboardService.readFromClipboardAsText();
+		if(gml == null || gml.isEmpty())
+			return;
 		//remove leading comments
 		while (gml.startsWith("#") && gml.contains("\n"))
 			gml = gml.substring(gml.indexOf("\n") + "\n".length(), gml.length());

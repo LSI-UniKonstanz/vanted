@@ -17,8 +17,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.ReleaseInfo;
+import org.apache.commons.httpclient.HttpStatus;
 import org.apache.log4j.Logger;
-import org.w3c.www.http.HTTP;
 
 /**
  * Service class providing hierarchy information using the BRITE database from KEGG
@@ -219,7 +219,7 @@ public class KeggBriteService {
 
 			URL url = new URL(buf.toString());
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			if(conn.getResponseCode() == HTTP.OK) {
+			if(conn.getResponseCode() == HttpStatus.SC_OK) {
 				InputStream is = conn.getInputStream();
 				byte[] buffer = new byte[10000];
 				int len;

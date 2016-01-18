@@ -160,8 +160,11 @@ public class EnzymeService extends MemoryHog
 						line = line.trim();
 						if (EnzClassEntry.isValidEnzymeStart(line)) {
 							// probably a valid Enzyme Class information ...
-							while (!line.endsWith("."))
-								line += " " + input.readLine().trim();
+							while (!line.endsWith(".")) {
+								String readLine = input.readLine();
+								if(readLine != null)
+									line += " " + readLine.trim();
+							}
 							if (line.endsWith(".")) {
 								EnzClassEntry ece = EnzClassEntry.getEnzClassEntry(line);
 								if (ece != null)
@@ -254,15 +257,17 @@ public class EnzymeService extends MemoryHog
 										&& !endTagFound) {
 									String rl = input.readLine();
 									// System.err.println(rl);
-									if (rl.endsWith("//")) {
-										endTagFound = true;
-										rl = rl.substring(0, rl.length() - 2);
-									}
-									rl = EnzymeEntry.trimKnownPrefixes(rl);
-									if (line.endsWith("-"))
-										line += rl.trim();
-									else {
-										line += " " + rl.trim();
+									if(rl != null) {
+										if (rl.endsWith("//")) {
+											endTagFound = true;
+											rl = rl.substring(0, rl.length() - 2);
+										}
+										rl = EnzymeEntry.trimKnownPrefixes(rl);
+										if (line.endsWith("-"))
+											line += rl.trim();
+										else {
+											line += " " + rl.trim();
+										}
 									}
 								}
 								if (line.endsWith(".")) {
@@ -271,8 +276,8 @@ public class EnzymeService extends MemoryHog
 							}
 							if (!endTagFound) {
 								line = input.readLine();
-								// System.err.println(line);
-								line = line.trim();
+								if(line != null)
+									line = line.trim();
 							}
 						} while (!endTagFound);
 						if (eze.isValid()) {

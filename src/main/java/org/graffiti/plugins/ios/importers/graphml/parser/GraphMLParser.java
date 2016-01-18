@@ -146,7 +146,8 @@ public class GraphMLParser
         try
         {
             graphMLParser.parse(in);
-            g = TypedAttributeService.createTypedHashMapAttributes(g);
+            TypedAttributeService.createTypedHashMapAttributes(g);
+
         }
         catch(SAXException se)
         {

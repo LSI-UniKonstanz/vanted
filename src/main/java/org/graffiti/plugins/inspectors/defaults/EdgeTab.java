@@ -31,7 +31,7 @@ public class EdgeTab
 	 * Constructs a <code>EdgeTab</code> and sets the title.
 	 */
 	public EdgeTab() {
-//		super();
+		super();
 		this.title = "Edge";
 		EdgeTab.instance = this;
 	}

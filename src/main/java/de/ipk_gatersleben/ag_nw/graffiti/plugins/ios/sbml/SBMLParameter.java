@@ -170,12 +170,12 @@ public class SBMLParameter {
 					new StringBuffer(internHeadline).append(
 							SBML_Constants.PARAMETER_CONSTANT).toString());
 		} else {
-			return null;
+			return false;
 		}
 	}
 
 	public void setID(String ID) {
-		if (!ID.equals(SBML_Constants.EMPTY)) {
+		if (!ID.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.PARAMETER_ID)
 					.toString(), ID);
@@ -183,7 +183,7 @@ public class SBMLParameter {
 	}
 
 	public void setName(String name) {
-		if (!name.equals(SBML_Constants.EMPTY)) {
+		if (!name.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.PARAMETER_NAME)
 					.toString(), name);
@@ -191,7 +191,7 @@ public class SBMLParameter {
 	}
 
 	public void setValue(Double value) {
-		if (!value.equals(null)) {
+		if (value != null) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.VALUE).toString(),
 					value);
@@ -199,7 +199,7 @@ public class SBMLParameter {
 	}
 
 	public void setUnits(String units) {
-		if (!units.equals(SBML_Constants.EMPTY)) {
+		if (!units.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.PARAMETER_UNITS)
 					.toString(), units);
@@ -207,7 +207,7 @@ public class SBMLParameter {
 	}
 
 	public void setConstant(Boolean constant) {
-		if (!constant.equals(null)) {
+		if (constant != null) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.PARAMETER_CONSTANT)
 					.toString(), constant);
@@ -215,7 +215,7 @@ public class SBMLParameter {
 	}
 
 	public void setMetaID(String metaID) {
-		if (!metaID.equals(SBML_Constants.EMPTY)) {
+		if (!metaID.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.META_ID).toString(),
 					metaID);
@@ -223,7 +223,7 @@ public class SBMLParameter {
 	}
 
 	public void setSBOTerm(String sboTerm) {
-		if (!sboTerm.equals(SBML_Constants.EMPTY)) {
+		if (!sboTerm.isEmpty()) {
 			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
 					internHeadline).append(SBML_Constants.SBOTERM).toString(),
 					sboTerm);
@@ -231,7 +231,7 @@ public class SBMLParameter {
 	}
 
 	public void setNotes(String notes, XMLNode notesObj) {
-		if (!notes.equals(SBML_Constants.EMPTY)) {
+		if (!notes.isEmpty()) {
 			attReader.addNotes(
 					notesObj,
 					notes,

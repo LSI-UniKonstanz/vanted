@@ -57,7 +57,7 @@ public class TransactionHashMap extends HashMap<Object, Object> {
 				} else {
 					// TODO here we should handle attribute deletion events (value instanceof attribute)
 					if (value instanceof Attribute)
-						return super.put(key, value);
+						return super.put(key, key);
 				}
 			}
 		}

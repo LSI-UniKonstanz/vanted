@@ -143,14 +143,17 @@ public class ClusterColorAttribute extends StringAttribute {
 	 * implementation only used a simple index, for which cluster color to use.
 	 */
 	private void fillColorFields() {
-		listClusterColors = interpreteColorString(INDEX_CLUSTERCOLOR);
-		listOutlineColors = interpreteColorString(INDEX_CLUSTEROUTLINECOLOR);
+		ArrayList<Color> colorstringCluster = interpreteColorString(INDEX_CLUSTERCOLOR);
+		ArrayList<Color> colorstringOutline = interpreteColorString(INDEX_CLUSTEROUTLINECOLOR);
+		if(colorstringCluster != null)
+			listClusterColors = colorstringCluster; 
+		if(colorstringOutline != null)
+			listOutlineColors = colorstringOutline;
 	}
 	
 	private void convertColorArrayToString() {
 		value = notSet;
 		ensureMinimumColorSelection(listClusterColors.size());
-		
 		for (int clusterID = 0; clusterID < listClusterColors.size(); clusterID++) {
 			setColorString(INDEX_CLUSTERCOLOR, clusterID, listClusterColors.get(clusterID));
 			setColorString(INDEX_CLUSTEROUTLINECOLOR, clusterID, listOutlineColors.get(clusterID));
@@ -205,6 +208,8 @@ public class ClusterColorAttribute extends StringAttribute {
 					result.append(cols[i]);
 			} else {
 				String barCol_outCol = cols[series];
+				if(barCol_outCol.equals(notSet))
+					barCol_outCol = " : ";
 				if (result.length() > 0)
 					result.append(";");
 				if (idx0bar_1outline == 0)

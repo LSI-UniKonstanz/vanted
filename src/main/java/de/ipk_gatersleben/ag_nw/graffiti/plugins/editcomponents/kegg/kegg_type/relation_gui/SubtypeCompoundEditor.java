@@ -12,7 +12,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -55,12 +54,12 @@ public class SubtypeCompoundEditor extends JPanel {
 	public SubtypeCompoundEditor(
 						String title,
 						Relation initialRelation,
-						final Collection<Entry> entries,
+						final List<Entry> entries,
 						final HashMap<Entry, Node> entry2graphNode) {
 		this.currentRelation = initialRelation;
-		final MutableList entrySelection = new MutableList(new DefaultListModel());
-		Collections.sort((List) entries, new Comparator() {
-			public int compare(Object arg0, Object arg1) {
+		final MutableList<Entry> entrySelection = new MutableList<Entry>(new DefaultListModel<Entry>());
+		Collections.sort(entries, new Comparator<Entry>() {
+			public int compare(Entry arg0, Entry arg1) {
 				return arg0.toString().compareTo(arg1.toString());
 			}
 		});
@@ -76,8 +75,8 @@ public class SubtypeCompoundEditor extends JPanel {
 		entrySelectionScrollPane.setPreferredSize(new Dimension(300, 100));
 		
 		// ///////////
-		Collections.sort((List) entries, new Comparator() {
-			public int compare(Object arg0, Object arg1) {
+		Collections.sort(entries, new Comparator<Entry>() {
+			public int compare(Entry arg0, Entry arg1) {
 				return arg0.toString().compareTo(arg1.toString());
 			}
 		});

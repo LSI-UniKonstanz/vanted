@@ -626,7 +626,7 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements
 												}
 		}
 		boolean modal = true;
-		if (description != null && description != null && description instanceof String && ((String) description).startsWith("["))
+		if (description != null && description instanceof String && ((String) description).startsWith("["))
 			if (((String) description).indexOf("nonmodal,") > 0) {
 				modal = false;
 				description = StringManipulationTools.stringReplace((String) description, "nonmodal,", "");

@@ -98,7 +98,8 @@ public class ShortcutsOptionPane
 		 * @return the number of rows of this table.
 		 */
 		public int getRowCount() {
-			return bindings.size();
+			return 0;
+//			return bindings.size();
 		}
 		
 		/**

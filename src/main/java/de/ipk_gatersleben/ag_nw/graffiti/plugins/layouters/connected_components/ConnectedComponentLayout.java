@@ -4,7 +4,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Stack;
 
 import javax.vecmath.Vector2d;
 
@@ -34,7 +33,6 @@ public class ConnectedComponentLayout extends AbstractAlgorithm {
 		return "Layout unconnected subgraphs on Grid";
 	}
 	
-	
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(
@@ -42,7 +40,6 @@ public class ConnectedComponentLayout extends AbstractAlgorithm {
 				Category.LAYOUT
 				));
 	}
-
 	
 	@Override
 	public String getDescription() {
@@ -57,7 +54,7 @@ public class ConnectedComponentLayout extends AbstractAlgorithm {
 		} finally {
 			graph.getListenerManager().transactionFinished(this);
 		}
-		GraphHelper.issueCompleteRedrawForGraph(graph);
+		// GraphHelper.issueCompleteRedrawForGraph(graph);
 		
 	}
 	
@@ -87,7 +84,7 @@ public class ConnectedComponentLayout extends AbstractAlgorithm {
 		RectangleIn2dSpace[] nodeSetBoundsWithAnchor = new RectangleIn2dSpace[nodeSetArray.length];
 		for (int i = 0; i < nodeSetArray.length; i++)
 			nodeSetBoundsWithAnchor[i] = ConnectedComponentLayout.getBoundsOfNodes(nodeSetArray[i], nodeSpacingFactorX, nodeSpacingFactorY, nodeSpacingMinimumX,
-								nodeSpacingMinimumY);
+					nodeSpacingMinimumY);
 		
 		// bubble sort by node count
 		for (int i = 1; i < nodeSetArray.length; i++)
@@ -161,10 +158,9 @@ public class ConnectedComponentLayout extends AbstractAlgorithm {
 		// assign node position
 		for (int i = 0; i < nodeSetArray.length; i++)
 			ConnectedComponentLayout.moveNodes(nodeSetArray[i], bestNodeSetOffsets[i].x, bestNodeSetOffsets[i].y, nodeSpacingFactorX, nodeSpacingFactorY,
-								nodeSpacingMinimumX, nodeSpacingMinimumY);
+					nodeSpacingMinimumX, nodeSpacingMinimumY);
 		
 	}
-	
 	
 	/**
 	 * @param nodeList
@@ -175,7 +171,7 @@ public class ConnectedComponentLayout extends AbstractAlgorithm {
 	 * @return the wrapped bounds of the nodes with spacing
 	 */
 	private static RectangleIn2dSpace getBoundsOfNodes(Set<Node> nodeList, double xSpacingFactor, double ySpacingFactor, double xSpacingMinimum,
-						double ySpacingMinimum) {
+			double ySpacingMinimum) {
 		Rectangle2D.Double rect = ConnectedComponentLayout.getBoundsOfNodes(nodeList);
 		
 		double xSpacing = rect.width * xSpacingFactor;
@@ -238,7 +234,7 @@ public class ConnectedComponentLayout extends AbstractAlgorithm {
 	}
 	
 	private static void moveNodes(Set<Node> nodeList, double offsetX, double offsetY, double xSpacingFactor, double ySpacingFactor, double xSpacingMinimum,
-						double ySpacingMinimum) {
+			double ySpacingMinimum) {
 		RectangleIn2dSpace rect = ConnectedComponentLayout.getBoundsOfNodes(nodeList, xSpacingFactor, ySpacingFactor, xSpacingMinimum, ySpacingMinimum);
 		double shiftX = offsetX - rect.offsetX;
 		double shiftY = offsetY - rect.offsetY;
@@ -254,10 +250,10 @@ public class ConnectedComponentLayout extends AbstractAlgorithm {
 		public final double boundY;
 		
 		public RectangleIn2dSpace(
-							double offsetX,
-							double offsetY,
-							double boundX,
-							double boundY) {
+				double offsetX,
+				double offsetY,
+				double boundX,
+				double boundY) {
 			this.offsetX = offsetX;
 			this.offsetY = offsetY;
 			
