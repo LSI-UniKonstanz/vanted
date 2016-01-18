@@ -285,18 +285,18 @@ public class NodeComponent
 				}
 			}
 			
-			if (shape instanceof ProvidesAdditonalDrawingShapes) {
-				Collection<Shape> postShapes = ((ProvidesAdditonalDrawingShapes) shape).getPostBorderShapes();
-				if (postShapes != null)
-					for (Shape s : postShapes) {
-						drawArea.setPaint(fillPaint);
-						drawArea.fill(s);
-						if (drawFrame) {
-							drawArea.setPaint(framePaint);
-							drawArea.draw(s);
-						}
+		}
+		if (shape instanceof ProvidesAdditonalDrawingShapes) {
+			Collection<Shape> postShapes = ((ProvidesAdditonalDrawingShapes) shape).getPostBorderShapes();
+			if (postShapes != null)
+				for (Shape s : postShapes) {
+					drawArea.setPaint(fillPaint);
+					drawArea.fill(s);
+					if (drawFrame) {
+						drawArea.setPaint(framePaint);
+						drawArea.draw(s);
 					}
-			}
+				}
 		}
 //		drawArea.translate(-1 - shape.getXexcess(), -1 - shape.getYexcess());
 	}

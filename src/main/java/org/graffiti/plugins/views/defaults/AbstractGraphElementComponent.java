@@ -398,7 +398,7 @@ public abstract class AbstractGraphElementComponent
 			// draw frame, indicating the panel-bounds
 			if(drawFrames) {
 				g.setColor(Color.GRAY);
-				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+				g.drawRect(0, 0, getWidth(), getHeight());
 			} 
 			
 			// draw original shape
