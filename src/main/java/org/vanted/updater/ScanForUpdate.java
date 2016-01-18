@@ -467,7 +467,7 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 		}
 		for (String libPath : listAddLibsJarRelativePaths) {
 			backgroundTaskStatusProvider.setCurrentStatusText1("downloading: " + extractFileName(libPath));
-			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + "/" + libPath), DESTPATHUPDATEDIR, extractFileName(libPath));
+			FileHelper.downloadFile(new URL(URL_UPDATE_BASESTRING + "/libs/" + libPath), DESTPATHUPDATEDIR, extractFileName(libPath));
 		}
 		
 		/* 
