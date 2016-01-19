@@ -808,8 +808,8 @@ public class AttributeHelper implements HelperClass {
 			 * that is done during the file-writing process.
 			 * The GMLReader was adapted to take care for those quotation marks
 			 */
-//			if (label.contains("\""))
-//				label = label.replace("\"", "");
+			// if (label.contains("\""))
+			// label = label.replace("\"", "");
 			LabelAttribute labelAttr;
 			if (hasAttribute(ge, GraphicAttributeConstants.LABELGRAPHICS + index)) {
 				labelAttr = (LabelAttribute) ge.getAttribute(GraphicAttributeConstants.LABELGRAPHICS + index);
@@ -1436,7 +1436,7 @@ public class AttributeHelper implements HelperClass {
 		}
 		if (attributeValue instanceof Double) {
 			try {
-				if (Double.isNaN(((Double)attributeValue).doubleValue()))
+				if (Double.isNaN(((Double) attributeValue).doubleValue()))
 					return;
 				attributable.setDouble(path + attributeSeparator + attributeName, ((Double) attributeValue).doubleValue());
 			} catch (IllegalArgumentException e) {
@@ -1564,22 +1564,22 @@ public class AttributeHelper implements HelperClass {
 						float r = ((Float) res).floatValue();
 						Double rr = new Double(r);
 						Attribute attribute = a.getAttribute(attributeName);
-						if( ! (attribute instanceof DoubleAttribute)) {
+						if (!(attribute instanceof DoubleAttribute)) {
 							a.remove(attributeName);
 							a.add(new DoubleAttribute(attribute.getName(), rr), false);
 						}
-
+						
 						return rr;
 					}
 					if (res instanceof Integer && resultType instanceof Boolean) {
 						int r = ((Integer) res).intValue();
 						Boolean rr = new Boolean(r != 0);
 						Attribute attribute = a.getAttribute(attributeName);
-						if( ! (attribute instanceof BooleanAttribute)) {
+						if (!(attribute instanceof BooleanAttribute)) {
 							a.remove(attributeName);
 							a.add(new BooleanAttribute(attribute.getName(), rr), false);
 						}
-
+						
 						return rr;
 					}
 					if (res instanceof Integer && resultType instanceof Double) {
@@ -1597,7 +1597,7 @@ public class AttributeHelper implements HelperClass {
 						String s = (String) res;
 						Boolean rr = new Boolean(s.equalsIgnoreCase("TRUE") || s.equalsIgnoreCase("1"));
 						Attribute attribute = a.getAttribute(attributeName);
-						if( ! (attribute instanceof BooleanAttribute)) {
+						if (!(attribute instanceof BooleanAttribute)) {
 							a.remove(attributeName);
 							a.add(new BooleanAttribute(attribute.getName(), rr), false);
 						}
@@ -1716,7 +1716,6 @@ public class AttributeHelper implements HelperClass {
 		Point2D pos = new Point2D.Double();
 		pos.setLocation(posx, posy);
 		cooAtt.setCoordinate(pos);
-		
 		
 		// setting the graphic attributes to the default values stored
 		// in the preferences
@@ -2552,10 +2551,11 @@ public class AttributeHelper implements HelperClass {
 	public static void setLabel(GraphElement ge, String label) {
 		if (ge instanceof Node)
 			setLabel((Node) ge, label);
-		else if (ge instanceof Edge)
-			setLabel((Edge) ge, label);
 		else
-			ErrorMsg.addErrorMessage("Set Label only works on Node or Edge! (internal error)");
+			if (ge instanceof Edge)
+				setLabel((Edge) ge, label);
+			else
+				ErrorMsg.addErrorMessage("Set Label only works on Node or Edge! (internal error)");
 	}
 	
 	public static String getLabelPosition(Attributable attributable) {
@@ -2649,11 +2649,13 @@ public class AttributeHelper implements HelperClass {
 					continue;
 				if (currentStyle.contains(lfs.toGMLstring() + ",")) {
 					currentStyle = StringManipulationTools.stringReplace(currentStyle, lfs.toGMLstring() + ",", "");
-				} else if (currentStyle.contains("," + lfs.toGMLstring())) {
-					currentStyle = StringManipulationTools.stringReplace(currentStyle, "," + lfs.toGMLstring(), "");
-				} else if (currentStyle.equals(lfs.toGMLstring())) {
-					currentStyle = "";;
-				}
+				} else
+					if (currentStyle.contains("," + lfs.toGMLstring())) {
+						currentStyle = StringManipulationTools.stringReplace(currentStyle, "," + lfs.toGMLstring(), "");
+					} else
+						if (currentStyle.equals(lfs.toGMLstring())) {
+							currentStyle = "";;
+						}
 			}
 			if (setting != LabelFrameSetting.NO_FRAME) {
 				if (currentStyle.length() > 0)
@@ -2949,7 +2951,7 @@ public class AttributeHelper implements HelperClass {
 	@SuppressWarnings("unchecked")
 	public static void removeEdgeBends(Edge edge) {
 		try {
-			((LinkedHashMapAttribute)edge.getAttribute("graphics.bends")).setValue(new HashMap());
+			((LinkedHashMapAttribute) edge.getAttribute("graphics.bends")).setValue(new HashMap());
 			
 		} catch (AttributeNotFoundException nfe) {
 			// empty
@@ -3351,10 +3353,11 @@ public class AttributeHelper implements HelperClass {
 		String os = (String) p.get("os.name");
 		if (os != null && os.toUpperCase().contains("LINUX")) {
 			return true;
-		} else if (os != null && os.toUpperCase().contains("UNIX")) {
-			return true;
 		} else
-			return false;
+			if (os != null && os.toUpperCase().contains("UNIX")) {
+				return true;
+			} else
+				return false;
 	}
 	
 	public static boolean windowsRunning() {
@@ -3421,6 +3424,12 @@ public class AttributeHelper implements HelperClass {
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.PaperShape";
 		if (s.equals("multicomplex"))
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.MultiComplexShape";
+		if (s.equals("sbgnprocess"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.SBGNProcessShape";
+		if (s.equals("sbgncircle"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.SBGNCircleShape";
+		if (s.equals("sbgndissociation"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.SBGNDissociationShape";
 		
 		return s;
 	}
@@ -3430,7 +3439,7 @@ public class AttributeHelper implements HelperClass {
 				"Tag (down)", "Observable", "Pertubation", "Complex", "Skewed Rect (right)", "Skewed Rect (left)",
 				"Receptor (down)", "Receptor (up)", "Receptor (left)", "Receptor (right)", "Nucleic Acid Feature",
 				"Truncated Protein", "Source or Sink", "Transition", "Multi Nucleic Acid Feature", "Multi Rectangle",
-				"Multi Oval", "Double Oval", "Paper", "Multi Complex" };
+				"Multi Oval", "Double Oval", "Paper", "Multi Complex", "SBGN Process", "SBGN Circle", "SBGN Dissociation" };
 	}
 	
 	public static String getShapeClassFromDescription(String desc) {
@@ -3447,7 +3456,7 @@ public class AttributeHelper implements HelperClass {
 		return new String[] { "rectangle", "circle", "oval", "diamond", "tag", "tagl", "tagu", "tagd", "observable",
 				"pertubation", "complex", "skewrectr", "skewrectl", "receptord", "receptoru", "receptorl", "receptorr",
 				"nucleic", "truncprotein", "sourcesink", "transition", "multinucleic", "multirectangle", "mulitoval",
-				"doubleoval", "paper", "multicomplex" };
+				"doubleoval", "paper", "multicomplex", "sbgnprocess", "sbgncircle", "sbgndissociation" };
 	}
 	
 	public static String getLabelConsumption(Edge e, String returnIfNull) {
