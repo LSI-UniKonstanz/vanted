@@ -37,7 +37,7 @@ public abstract class RelativePolyShape extends PolygonalNodeShape {
 		
 		double ft = graphics.getFrameThickness();
 		double offset = ft / 2d;
-		int os = (int) Math.floor(offset);
+		int os = (int) Math.round(offset);
 		
 		Collection<Vector2d> relativePositions = getRelativePointPositions();
 		
@@ -48,17 +48,27 @@ public abstract class RelativePolyShape extends PolygonalNodeShape {
 		int i = 0;
 		for (Vector2d rp : relativePositions) {
 			if (rp.x > 0)
-				xcoord[i] = (int) (rp.x * w);
+				xcoord[i] = (int) Math.round((rp.x * w));
 			else
-				xcoord[i] = (int) (-rp.x * w);
+				xcoord[i] = (int) Math.round((-rp.x * w));
 			if (rp.y > 0)
-				ycoord[i] = (int) (rp.y * h);
+				ycoord[i] = (int) Math.round((rp.y * h));
 			else {
 				if (rp.y < -0.5)
-					ycoord[i] = (int) (h - (1 + rp.y) * w);
+					ycoord[i] = (int) Math.round((h - (1 + rp.y) * w));
 				else
-					ycoord[i] = (int) (-rp.y * w);
+					ycoord[i] = (int) Math.round((-rp.y * w));
 			}
+			
+//			if(xcoord[i] == 0)
+//				xcoord[i]++;
+//			if(xcoord[i] == w)
+//				xcoord[i]--;
+//			if(ycoord[i] == 0)
+//				ycoord[i]++;
+//			if(ycoord[i] == h)
+//				ycoord[i]--;
+			
 			i++;
 		}
 		
@@ -67,8 +77,17 @@ public abstract class RelativePolyShape extends PolygonalNodeShape {
 		
 		Rectangle bounds = polygon.getBounds();
 		
-		os = (int) Math.ceil(offset);
-		setThickShape(bounds.getWidth() + os + addSx + graphics.getFrameThickness() / 2, bounds.getHeight() + os + addSy + graphics.getFrameThickness() / 2);
+		if (Double.compare(Math.floor(offset), offset) == 0) {
+			w = w + ft + 1;
+			h = h + ft + 1;
+		} else {
+			w += ft;
+			h += ft;
+		}
+		
+//		setThickShape(bounds.getWidth() + os + addSx + graphics.getFrameThickness() / 2, bounds.getHeight() + os + addSy + graphics.getFrameThickness() / 2);
+//		setThickShape(bounds.getWidth() + os + addSx + Math.ceil(graphics.getFrameThickness() / 2), bounds.getHeight() + os + addSy + Math.ceil(graphics.getFrameThickness() / 2));
+		setThickShape(w + addSx, h + addSy);
 	}
 	
 	protected abstract Collection<Vector2d> getRelativePointPositions();
