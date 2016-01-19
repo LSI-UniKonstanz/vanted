@@ -2,7 +2,7 @@
 
 <h4>VANTED v2.6.1 release (19/01/2016)</h4>
 <ul>
-<li>Bugfixes including broken compatibility with SBML-Ed
+<li>Bugfixes including broken compatibility with SBGN-Ed
 <li>Update to new jsbml 1.1 library
 <li>Changes and bugfixes in APIs for Developers
 </ul>
