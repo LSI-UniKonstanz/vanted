@@ -28,13 +28,13 @@ import org.graffiti.util.GraphicHelper;
  * @version $Revision: 1.14 $
  */
 public class RectangleNodeShape
-					extends RectangularNodeShape {
+		extends RectangularNodeShape {
 	// ~ Instance fields ========================================================
 	
 	/**
 	 * The <code>Rectangle2D</code> that is represented by this <code>NodeShape</code>.
 	 */
-	private RectangularShape rect2D;
+	protected RectangularShape rect2D;
 	protected int offX = 0;
 	protected int offY = 0;
 	protected int addSx = 0;
@@ -69,7 +69,7 @@ public class RectangleNodeShape
 	}
 	
 	public static Point2D getIntersectionOfRoundRectangleAndLine(Line2D line,
-						Rectangle2D rect, double rounding) {
+			Rectangle2D rect, double rounding) {
 		
 		rounding = Math.abs(rounding);
 		
@@ -79,11 +79,11 @@ public class RectangleNodeShape
 		// the four corners of the encapsulated rectangle
 		Point2D upperLeft = new Point2D.Double(rect.getX(), rect.getY());
 		Point2D lowerLeft = new Point2D.Double(rect.getX(),
-							upperLeft.getY() + height);
+				upperLeft.getY() + height);
 		Point2D upperRight = new Point2D.Double(upperLeft.getX() + width,
-							rect.getY());
+				rect.getY());
 		Point2D lowerRight = new Point2D.Double(upperLeft.getX() + width,
-							upperLeft.getY() + height);
+				upperLeft.getY() + height);
 		
 		// turn the rectangle into 4 lines
 		// and test which one intersects with the given line
@@ -98,7 +98,7 @@ public class RectangleNodeShape
 			return checkEllipsesIntersections(GraphicHelper.getIntersection(left, line), line, Line.LEFT, rect, rounding);
 		} else
 			if (bottom.intersectsLine(line) &&
-								(bottom.getY1() != line.getY1())) {
+					(bottom.getY1() != line.getY1())) {
 				return checkEllipsesIntersections(GraphicHelper.getIntersection(bottom, line), line, Line.BOTTOM, rect, rounding);
 			} else
 				if (right.intersectsLine(line) && (right.getX1() != line.getX1())) {
@@ -245,8 +245,11 @@ public class RectangleNodeShape
 		
 		double ft = Math.floor(graphics.getFrameThickness());
 		double offset = ft / 2d;
-		double x = Math.floor(offset);
-		double y = Math.floor(offset);
+		// double x = Math.floor(offset);
+		// double y = Math.floor(offset);
+		// for a frame thickness of 1 it seems to be better to not floor the offset
+		double x = offset;
+		double y = offset;
 		
 		double rounding = getRounding();
 		if (Math.abs(rounding) > 0.0001 && !(rect2D instanceof RoundRectangle2D)) {
