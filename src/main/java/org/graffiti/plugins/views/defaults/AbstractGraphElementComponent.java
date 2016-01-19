@@ -396,13 +396,14 @@ public abstract class AbstractGraphElementComponent
 //			boolean drawFrames = PreferenceManager.getPreferenceForClass(VantedPreferences.class).getBoolean(VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES, false); 
 			boolean drawFrames = VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE; 
 			// draw frame, indicating the panel-bounds
+			
+			// draw original shape
+			drawShape(g);
+			
 			if(drawFrames) {
 				g.setColor(Color.GRAY);
 				g.drawRect(0, 0, getWidth(), getHeight());
 			} 
-			
-			// draw original shape
-			drawShape(g);
 			
 			// overlap shape with position info
 			if(drawFrames) {
