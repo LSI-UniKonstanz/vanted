@@ -64,6 +64,7 @@ import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.gui.ToolButton;
 import org.graffiti.plugin.parameter.BooleanParameter;
+import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.CoordinateSystem;
 import org.graffiti.plugin.view.EdgeComponentInterface;
@@ -89,6 +90,9 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 //	private static final String PREFERENCE_USE_MOUSE_WHEEL_TO_ZOOM = "Use Mouse-wheel To Zoom";
 	
 	private static final String PREFERENCE_SNAP_TO_GRID = "Snap to Grid";
+	private static final String PREFERENCE_GRID_SIZE = "Grid Size";
+	
+	private static final Integer PREFERENCE_DEFAULT_GRID_SIZE = 5;
 	
 	// ~ Static fields/initializers =============================================
 	private static String rkey = "selrect";
@@ -177,7 +181,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	private double lastBendAddedInitX, lastBendAddedInitY;
 	private long lastBendAddedTime = 0;
 	
-	public static int gridMovement = 10;
+	public static int gridMovement = PREFERENCE_DEFAULT_GRID_SIZE;
 	public static int gridResizeSmallNodes = 2;
 	public static int gridResizeNormalNodes = 5;
 	public static int gridResizeLargeNodes = 10;
@@ -310,12 +314,16 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
 		arrayList.add(new BooleanParameter(true, PREFERENCE_SNAP_TO_GRID, "Enable/Disable this option let nodes snap to the grid"));
+		arrayList.add(new IntegerParameter(PREFERENCE_DEFAULT_GRID_SIZE, PREFERENCE_GRID_SIZE, "Sets the size of the grid"));
 		return arrayList;
 	}
 	
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		gridEnabled = preferences.getBoolean(PREFERENCE_SNAP_TO_GRID, true);
+		gridMovement = preferences.getInt(PREFERENCE_GRID_SIZE, PREFERENCE_DEFAULT_GRID_SIZE);
+		if(gridMovement <= 0)
+			gridMovement = PREFERENCE_DEFAULT_GRID_SIZE;
 	}
 	
 	@Override
@@ -325,7 +333,6 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	}
 	
 	private void processMovement(int diffX, int diffY, ActionEvent actionEvent) {
-		System.out.print(".");
 		int xn = diffX;
 		int yn = diffY;
 		
