@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.vecmath.Vector2d;
 
+import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.GraphicAttributeConstants;
@@ -15,6 +16,7 @@ import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.EdgeHelper;
 
 public class ConnectedComponentLayout extends AbstractAlgorithm {
 	
@@ -156,9 +158,21 @@ public class ConnectedComponentLayout extends AbstractAlgorithm {
 		
 		// #######################################################################################
 		// assign node position
-		for (int i = 0; i < nodeSetArray.length; i++)
+		for (int i = 0; i < nodeSetArray.length; i++) {
+			//safe the bounding rectangle before it's changed by the moveNodes call
+			RectangleIn2dSpace rect = ConnectedComponentLayout.getBoundsOfNodes(nodeSetArray[i], nodeSpacingFactorX, nodeSpacingFactorY, nodeSpacingMinimumX, nodeSpacingMinimumY);
+			
 			ConnectedComponentLayout.moveNodes(nodeSetArray[i], bestNodeSetOffsets[i].x, bestNodeSetOffsets[i].y, nodeSpacingFactorX, nodeSpacingFactorY,
 					nodeSpacingMinimumX, nodeSpacingMinimumY);
+			// move edge bends
+			Set<Edge> conComponentEdges = new HashSet<Edge>();
+			for(Node n : nodeSetArray[i])
+				conComponentEdges.addAll(n.getEdges());
+			double shiftX = bestNodeSetOffsets[i].x - rect.offsetX;
+			double shiftY = bestNodeSetOffsets[i].y - rect.offsetY;
+			for(Edge e : conComponentEdges)
+				EdgeHelper.moveBends(e,  shiftX, shiftY);
+		}
 		
 	}
 	
