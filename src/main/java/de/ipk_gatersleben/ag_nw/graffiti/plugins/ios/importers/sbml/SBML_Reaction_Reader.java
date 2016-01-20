@@ -927,13 +927,13 @@ public class SBML_Reaction_Reader {
 			modifierNode = SBMLSpeciesHelper.getSpeciesNode(ref.getSpecies());
 			reactionEdge = g.addEdge(modifierNode, reactionNode, false,
 					AttributeHelper.getDefaultGraphicsAttributeForEdge(
-							Color.DARK_GRAY, Color.DARK_GRAY, true));
+							Color.GRAY, Color.GRAY, true));
 			
 			AttributeHelper.setAttribute(reactionEdge, SBML_Constants.SBML,
 					SBML_Constants.SBML_ROLE, SBML_Constants.ROLE_MODIFIER);
 			reactionHelper.addModifierCloneToList(reactionID, ref.getSpecies(), reactionEdge);
-			AttributeHelper.setDashInfo(reactionEdge, 5, 5);
-			AttributeHelper.setBorderWidth(reactionEdge, 1d);
+//			AttributeHelper.setDashInfo(reactionEdge, 5, 5);
+//			AttributeHelper.setBorderWidth(reactionEdge, 1d);
 			setSimpleSpeciesReferences(ref, reactionEdge, SBML_Constants.SBML,
 					reactionHelper);
 		}
