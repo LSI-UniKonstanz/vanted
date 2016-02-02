@@ -9,6 +9,7 @@
 
 package org.graffiti.plugins.inspectors.defaults;
 
+import org.graffiti.editor.MainFrame;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.selection.SelectionEvent;
 import org.graffiti.session.EditorSession;
@@ -47,7 +48,17 @@ public class EdgeTab
 	
 	@SuppressWarnings("unchecked")
 	public void selectionChanged(SelectionEvent e) {
+		/*
+		 * if selection contains no edges and nodes only
+		 * switch to nodetab
+		 */
 		attributables = e.getSelection().getEdges();
+		if(isShowing() && ! e.getSelection().isEmpty() && attributables.isEmpty()) {
+			NodeTab.getInstance().selectionChanged(e);
+			MainFrame.getInstance().showAndHighlightSidePanelTab("Node", false);
+			return;
+		}
+			
 		super.selectionChanged(e);
 	}
 	
