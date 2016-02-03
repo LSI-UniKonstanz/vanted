@@ -3481,10 +3481,6 @@ public class AttributeHelper implements HelperClass {
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.SBGNCircleShape";
 		if (s.equals("sbgndissociation"))
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.SBGNDissociationShape";
-		if (s.equals("testpapershape"))
-			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.TestPaperShape";
-		if (s.equals("sbgnstadiumshape"))
-			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.SBGNStadiumShape";
 		
 		return s;
 	}
@@ -3494,7 +3490,7 @@ public class AttributeHelper implements HelperClass {
 				"Tag (down)", "Observable", "Pertubation", "Complex", "Skewed Rect (right)", "Skewed Rect (left)",
 				"Receptor (down)", "Receptor (up)", "Receptor (left)", "Receptor (right)", "Nucleic Acid Feature",
 				"Truncated Protein", "Source or Sink", "Transition", "Multi Nucleic Acid Feature", "Multi Rectangle",
-				"Multi Oval", "Double Oval", "Paper", "Multi Complex", "SBGN Process", "SBGN Circle", "SBGN Dissociation", "TestPaperShape", "SBGNStadiumShape" };
+				"Multi Oval", "Double Oval", "Paper", "Multi Complex", "SBGN Process", "SBGN Circle", "SBGN Dissociation" };
 	}
 	
 	public static String getShapeClassFromDescription(String desc) {
@@ -3511,7 +3507,7 @@ public class AttributeHelper implements HelperClass {
 		return new String[] { "rectangle", "circle", "oval", "diamond", "tag", "tagl", "tagu", "tagd", "observable",
 				"pertubation", "complex", "skewrectr", "skewrectl", "receptord", "receptoru", "receptorl", "receptorr",
 				"nucleic", "truncprotein", "sourcesink", "transition", "multinucleic", "multirectangle", "mulitoval",
-				"doubleoval", "paper", "multicomplex", "sbgnprocess", "sbgncircle", "sbgndissociation", "testpapershape", "sbgnstadiumshape" };
+				"doubleoval", "paper", "multicomplex", "sbgnprocess", "sbgncircle", "sbgndissociation" };
 	}
 	
 	public static String getLabelConsumption(Edge e, String returnIfNull) {
