@@ -85,6 +85,15 @@ public abstract class RelativePolyShape extends PolygonalNodeShape {
 			h += ft;
 		}
 		
+		/*
+		 * if we don't increment the size if the framethickness
+		 * is smaller 2, somehow it's not completely drawn
+		 */
+		if (ft < 2.0) {
+			w++;
+			h++;
+		}
+		
 //		setThickShape(bounds.getWidth() + os + addSx + graphics.getFrameThickness() / 2, bounds.getHeight() + os + addSy + graphics.getFrameThickness() / 2);
 //		setThickShape(bounds.getWidth() + os + addSx + Math.ceil(graphics.getFrameThickness() / 2), bounds.getHeight() + os + addSy + Math.ceil(graphics.getFrameThickness() / 2));
 		setThickShape(w + addSx, h + addSy);
