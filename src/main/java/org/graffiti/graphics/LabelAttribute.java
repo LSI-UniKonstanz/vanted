@@ -132,8 +132,8 @@ public abstract class LabelAttribute extends HashMapAttribute implements
 		add(StringAttribute.getTypedStringAttribute(TEXTCOLOR, ColorUtil
 				.getHexFromColor(java.awt.Color.BLACK)), false);
 		add(new StringAttribute("type", "text"), false);
-		add(new CoordinateAttribute(LABELOFFSET, 0, 0)); // add coordinate attribute for relative offset of label position from center of a node
-																			// set default offset (0, 0)
+		add(new CoordinateAttribute(LABELOFFSET, 0, 0), false); // add coordinate attribute for relative offset of label position from center of a node
+		// set default offset (0, 0)
 	}
 	
 	@Override
@@ -429,6 +429,16 @@ public abstract class LabelAttribute extends HashMapAttribute implements
 	public Vector2d getLabelOffset() {
 		
 		CoordinateAttribute ca = (CoordinateAttribute) this.attributes.get(LABELOFFSET);
+		/*
+		 * it will be null, if an older VANTED GML is opened without the labeloffset attribute
+		 * It will be removed during conversion from untyped attribute (HashmapAttribute) to
+		 * typed Attribute (LabelAttribute) so in this case, the offset attribute gets lost
+		 * and we need to create it
+		 */
+		if (ca == null) {
+			ca = new CoordinateAttribute(LABELOFFSET, 0, 0);
+			add(ca, false);
+		}
 		return new Vector2d(ca.getX(), ca.getY());
 		
 	}

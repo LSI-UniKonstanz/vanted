@@ -323,17 +323,15 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		
 		if (align.indexOf("left") >= 0) {
 			label.setHorizontalAlignment(SwingConstants.LEFT);
-		} else
-			if (align.indexOf("center") >= 0) {
-				label.setHorizontalAlignment(SwingConstants.CENTER);
-				if (labelText.startsWith("<html>"))
-					labelText = StringManipulationTools.stringReplace(labelText, "<html>", "<html><center>");
-			} else
-				if (align.indexOf("right") >= 0) {
-					label.setHorizontalAlignment(SwingConstants.RIGHT);
-					if (labelText.startsWith("<html>"))
-						labelText = StringManipulationTools.stringReplace(labelText, "<html>", "<html><p align=\"right\">");
-				}
+		} else if (align.indexOf("center") >= 0) {
+			label.setHorizontalAlignment(SwingConstants.CENTER);
+			if (labelText.startsWith("<html>"))
+				labelText = StringManipulationTools.stringReplace(labelText, "<html>", "<html><center>");
+		} else if (align.indexOf("right") >= 0) {
+			label.setHorizontalAlignment(SwingConstants.RIGHT);
+			if (labelText.startsWith("<html>"))
+				labelText = StringManipulationTools.stringReplace(labelText, "<html>", "<html><p align=\"right\">");
+		}
 		
 		setLabelSettings(label, labelAttr.getTextcolor());
 		
@@ -469,20 +467,18 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			// logger.debug("drawing image");
 			g.drawImage(bufferedImage, 0, 0, null);
 			
-		} else
-			if (isVisible) {
-				// logger.debug("drawing normal");
-				super.paint(g);
-			} else
-				if (DRAWRECT_MINSIZE && !(getDrawingModeOfView() == DrawMode.FAST)) {
-					// logger.debug("drawing rectangle");
-					// if(checkVisibility(3)) {
-					g.setColor(new Color(200, 200, 200));
-					int height = getHeight();
-					int width = getWidth();
-					((Graphics2D) g).fillRect(0, height / 4, width, height / 2);
-					// }
-				}
+		} else if (isVisible) {
+			// logger.debug("drawing normal");
+			super.paint(g);
+		} else if (DRAWRECT_MINSIZE && !(getDrawingModeOfView() == DrawMode.FAST)) {
+			// logger.debug("drawing rectangle");
+			// if(checkVisibility(3)) {
+			g.setColor(new Color(200, 200, 200));
+			int height = getHeight();
+			int width = getWidth();
+			((Graphics2D) g).fillRect(0, height / 4, width, height / 2);
+			// }
+		}
 	}
 	
 	private void recreateBufferedImage() {
@@ -648,10 +644,9 @@ public class LabelComponent extends AbstractAttributeComponent implements
 									&& ((lasty - segStartPos.getY()) <= Double.MIN_VALUE)) {
 								foundStart = true;
 								segnrdist = 0;
-							} else
-								if (foundStart) {
-									segnrdist += diffdist;
-								}
+							} else if (foundStart) {
+								segnrdist += diffdist;
+							}
 							
 							if (((newx - segEndPos.getX()) <= Double.MIN_VALUE)
 									&& ((newy - segEndPos.getY()) <= Double.MIN_VALUE)) {
@@ -752,14 +747,20 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				centerY = (sizeY / 2d + geShape.getYexcess());
 			}
 			
-			// apply offset for label
+			// we need to call it to stay compatible with older VANTED version.. see method
 			Vector2d labelOffset = labelAttr.getLabelOffset();
-			coordX += labelOffset.x * (sizeX / 2d);
-			// offset for centerX not necessary since it's only used for the center position in combination with coordX
-			// offset is already covered by coordX
-			coordY += labelOffset.y * (sizeY / 2d);
-			centerY += labelOffset.y * (sizeY / 2d);
-			
+			/*
+			 * if the anchor is centered and we have an offset
+			 * only then apply the offset
+			 */
+			if (CENTERED.equals(align)) {
+				// apply offset for label
+				coordX += labelOffset.x * (sizeX / 2d);
+				// offset for centerX not necessary since it's only used for the center position in combination with coordX
+				// offset is already covered by coordX
+				coordY += labelOffset.y * (sizeY / 2d);
+				centerY += labelOffset.y * (sizeY / 2d);
+			}
 			align = processAutoAlignment(align);
 			label.setDefaultTextPositioning();
 			double cx = coordX + centerX - (labelWidth / 2.0d);
@@ -799,120 +800,103 @@ public class LabelComponent extends AbstractAttributeComponent implements
 									} else {
 										if (BORDER_TOP_CENTER.equals(align)) {
 											loc.setLocation(bordercx, bortopy);
-										} else
-											if (BORDER_TOP_LEFT.equals(align)) {
-												loc.setLocation(borderlx, bortopy);
-											} else
-												if (BORDER_TOP_RIGHT.equals(align)) {
-													loc.setLocation(borderrx, bortopy);
+										} else if (BORDER_TOP_LEFT.equals(align)) {
+											loc.setLocation(borderlx, bortopy);
+										} else if (BORDER_TOP_RIGHT.equals(align)) {
+											loc.setLocation(borderrx, bortopy);
+										} else {
+											if (INSIDEBOTTOM.equals(align)) {
+												loc.setLocation(cx, insbotty);
+											} else {
+												if (ABOVE.equals(align)) {
+													loc.setLocation(cx, abovey);
+												} else if (ABOVELEFT.equals(align)) {
+													loc.setLocation(leftx, abovey);
+												} else if (LEFT.equals(align)) {
+													loc.setLocation(leftx, cy);
+												} else if (BORDER_LEFT_TOP.equals(align)) {
+													loc.setLocation(coordX - labelWidth / 2d + borderWidth / 2d, centerY - (labelHeight / 2.0d) - sizeY
+															* (1d / 2d - 1d / 4d));
+												} else if (BORDER_LEFT_CENTER.equals(align)) {
+													loc.setLocation(coordX - labelWidth / 2d + borderWidth / 2d, cy);
+												} else if (BORDER_LEFT_BOTTOM.equals(align)) {
+													loc.setLocation(coordX - labelWidth / 2d + borderWidth / 2d, cy + sizeY
+															* (1d / 2d - 1d / 4d));
+												} else if (BORDER_RIGHT_TOP.equals(align)) {
+													loc.setLocation(coordX + sizeX - labelWidth / 2d - borderWidth / 2d, centerY
+															- (labelHeight / 2.0d) - sizeY * (1d / 2d - 1d / 4d));
+												} else if (BORDER_RIGHT_CENTER.equals(align)) {
+													loc.setLocation(coordX + sizeX - labelWidth / 2d - borderWidth / 2d, cy);
+												} else if (BORDER_RIGHT_BOTTOM.equals(align)) {
+													loc.setLocation(coordX + sizeX - labelWidth / 2d - borderWidth / 2d, cy + sizeY
+															* (1d / 2d - 1d / 4d));
+												} else if (ABOVERIGHT.equals(align)) {
+													loc.setLocation(rightx, abovey);
+												} else if (RIGHT.equals(align)) {
+													loc.setLocation(rightx, cy);
+												} else if (INSIDETOPLEFT.equals(align)) {
+													loc.setLocation(coordX + borderWidth / 2d, coordY
+															+ LABEL_DISTANCE + borderWidth);
 												} else {
-													if (INSIDEBOTTOM.equals(align)) {
-														loc.setLocation(cx, insbotty);
+													if (INSIDETOPRIGHT.equals(align)) {
+														loc.setLocation(insrx, coordY
+																+ LABEL_DISTANCE + borderWidth);
 													} else {
-														if (ABOVE.equals(align)) {
-															loc.setLocation(cx, abovey);
-														} else
-															if (ABOVELEFT.equals(align)) {
-																loc.setLocation(leftx, abovey);
-															} else
-																if (LEFT.equals(align)) {
-																	loc.setLocation(leftx, cy);
-																} else
-																	if (BORDER_LEFT_TOP.equals(align)) {
-																		loc.setLocation(coordX - labelWidth / 2d + borderWidth / 2d, centerY - (labelHeight / 2.0d) - sizeY
-																				* (1d / 2d - 1d / 4d));
-																	} else
-																		if (BORDER_LEFT_CENTER.equals(align)) {
-																			loc.setLocation(coordX - labelWidth / 2d + borderWidth / 2d, cy);
-																		} else
-																			if (BORDER_LEFT_BOTTOM.equals(align)) {
-																				loc.setLocation(coordX - labelWidth / 2d + borderWidth / 2d, cy + sizeY
-																						* (1d / 2d - 1d / 4d));
-																			} else
-																				if (BORDER_RIGHT_TOP.equals(align)) {
-																					loc.setLocation(coordX + sizeX - labelWidth / 2d - borderWidth / 2d, centerY
-																							- (labelHeight / 2.0d) - sizeY * (1d / 2d - 1d / 4d));
-																				} else
-																					if (BORDER_RIGHT_CENTER.equals(align)) {
-																						loc.setLocation(coordX + sizeX - labelWidth / 2d - borderWidth / 2d, cy);
-																					} else
-																						if (BORDER_RIGHT_BOTTOM.equals(align)) {
-																							loc.setLocation(coordX + sizeX - labelWidth / 2d - borderWidth / 2d, cy + sizeY
-																									* (1d / 2d - 1d / 4d));
-																						} else
-																							if (ABOVERIGHT.equals(align)) {
-																								loc.setLocation(rightx, abovey);
-																							} else
-																								if (RIGHT.equals(align)) {
-																									loc.setLocation(rightx, cy);
-																								} else
-																									if (INSIDETOPLEFT.equals(align)) {
-																										loc.setLocation(coordX + borderWidth / 2d, coordY
-																												+ LABEL_DISTANCE + borderWidth);
-																									} else {
-																										if (INSIDETOPRIGHT.equals(align)) {
-																											loc.setLocation(insrx, coordY
-																													+ LABEL_DISTANCE + borderWidth);
-																										} else {
-																											if (INSIDELEFT.equals(align)) {
-																												loc.setLocation(inslx, cy);
-																											} else
-																												if (INSIDERIGHT.equals(align)) {
-																													loc.setLocation(insrx, cy);
-																												} else
-																													if (INSIDEBOTTOMLEFT.equals(align)) {
-																														loc.setLocation(inslx,
-																																insbotty);
-																													} else
-																														if (INSIDEBOTTOMRIGHT.equals(align)) {
-																															loc.setLocation(insrx, insbotty);
-																														} else
-																															if (INSIDETOP.equals(align)) {
-																																loc.setLocation(cx, coordY
-																																		+ LABEL_DISTANCE
-																																		+ borderWidth);
-																															} else {
-																																// no supported alignment constant: try to parse 'align' as x-y
-																																// position
-																																String[] posarr = align.split(";");
-																																Vector2d pos = null;
-																																if (posarr.length == 2) {
-																																	try {
-																																		pos = new Vector2d(Double.parseDouble(posarr[0]),
-																																				Double.parseDouble(posarr[1]));
-																																	} catch (Exception err) {
-																																		pos = null;
-																																	}
-																																}
-																																if (pos != null) {
-																																	loc.setLocation(pos.x - (labelWidth / 2.0d), pos.y
-																																			- (labelHeight / 2.0d));
-																																} else {
-																																	// no supported alignment constant: use relative positions
-																																	try {
-																																		NodeLabelPositionAttribute posAttr = ((NodeLabelAttribute) this.labelAttr)
-																																				.getPosition();
-																																		
-																																		if (posAttr == null) {
-																																			posAttr = new NodeLabelPositionAttribute(POSITION);
-																																		}
-																																		
-																																		loc
-																																				.setLocation(
-																																						centerX
-																																								+ ((posAttr.getRelHor() * sizeX) / 2d)
-																																								+ ((posAttr.getLocalAlign() - 1d) * (labelWidth / 2d)),
-																																						(centerY + ((posAttr.getRelVert() * sizeY) / 2d))
-																																								- (labelHeight / 2d));
-																																	} catch (Exception err) {
-																																		loc.setLocation(centerX - (labelWidth / 2.0d), cy);
-																																	}
-																																}
-																															}
-																										}
-																									}
+														if (INSIDELEFT.equals(align)) {
+															loc.setLocation(inslx, cy);
+														} else if (INSIDERIGHT.equals(align)) {
+															loc.setLocation(insrx, cy);
+														} else if (INSIDEBOTTOMLEFT.equals(align)) {
+															loc.setLocation(inslx,
+																	insbotty);
+														} else if (INSIDEBOTTOMRIGHT.equals(align)) {
+															loc.setLocation(insrx, insbotty);
+														} else if (INSIDETOP.equals(align)) {
+															loc.setLocation(cx, coordY
+																	+ LABEL_DISTANCE
+																	+ borderWidth);
+														} else {
+															// no supported alignment constant: try to parse 'align' as x-y
+															// position
+															String[] posarr = align.split(";");
+															Vector2d pos = null;
+															if (posarr.length == 2) {
+																try {
+																	pos = new Vector2d(Double.parseDouble(posarr[0]),
+																			Double.parseDouble(posarr[1]));
+																} catch (Exception err) {
+																	pos = null;
+																}
+															}
+															if (pos != null) {
+																loc.setLocation(pos.x - (labelWidth / 2.0d), pos.y
+																		- (labelHeight / 2.0d));
+															} else {
+																// no supported alignment constant: use relative positions
+																try {
+																	NodeLabelPositionAttribute posAttr = ((NodeLabelAttribute) this.labelAttr)
+																			.getPosition();
+																	
+																	if (posAttr == null) {
+																		posAttr = new NodeLabelPositionAttribute(POSITION);
+																	}
+																	
+																	loc
+																			.setLocation(
+																					centerX
+																							+ ((posAttr.getRelHor() * sizeX) / 2d)
+																							+ ((posAttr.getLocalAlign() - 1d) * (labelWidth / 2d)),
+																					(centerY + ((posAttr.getRelVert() * sizeY) / 2d))
+																							- (labelHeight / 2d));
+																} catch (Exception err) {
+																	loc.setLocation(centerX - (labelWidth / 2.0d), cy);
+																}
+															}
+														}
 													}
 												}
+											}
+										}
 									}
 								}
 							}
@@ -1018,31 +1002,25 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		for (Node neighbour : n.getNeighbors()) {
 			if (getQuadrant(neighbour, n) == Quadrant.TOP)
 				isBadTop += 1;
-			else
-				if (getQuadrant(neighbour, n) == Quadrant.LEFT)
-					isBadLeft += 1;
-				else
-					if (getQuadrant(neighbour, n) == Quadrant.RIGHT)
-						isBadRight += 1;
-					else
-						if (getQuadrant(neighbour, n) == Quadrant.BOTTOM)
-							isBadBottom += 1;
+			else if (getQuadrant(neighbour, n) == Quadrant.LEFT)
+				isBadLeft += 1;
+			else if (getQuadrant(neighbour, n) == Quadrant.RIGHT)
+				isBadRight += 1;
+			else if (getQuadrant(neighbour, n) == Quadrant.BOTTOM)
+				isBadBottom += 1;
 		}
 		Quadrant lowestQuadrant;
 		
 		if (isBadTop <= isBadLeft && isBadTop <= isBadRight && isBadTop <= isBadBottom)
 			lowestQuadrant = Quadrant.TOP;
+		else if (isBadLeft <= isBadTop && isBadLeft < isBadRight && isBadTop <= isBadBottom)
+			lowestQuadrant = Quadrant.LEFT;
+		else if (isBadRight <= isBadTop && isBadRight <= isBadLeft && isBadTop <= isBadBottom)
+			lowestQuadrant = Quadrant.RIGHT;
+		else if (isBadBottom <= isBadTop && isBadTop <= isBadLeft && isBadTop <= isBadRight)
+			lowestQuadrant = Quadrant.BOTTOM;
 		else
-			if (isBadLeft <= isBadTop && isBadLeft < isBadRight && isBadTop <= isBadBottom)
-				lowestQuadrant = Quadrant.LEFT;
-			else
-				if (isBadRight <= isBadTop && isBadRight <= isBadLeft && isBadTop <= isBadBottom)
-					lowestQuadrant = Quadrant.RIGHT;
-				else
-					if (isBadBottom <= isBadTop && isBadTop <= isBadLeft && isBadTop <= isBadRight)
-						lowestQuadrant = Quadrant.BOTTOM;
-					else
-						lowestQuadrant = Quadrant.BOTTOM;
+			lowestQuadrant = Quadrant.BOTTOM;
 		return lowestQuadrant;
 	}
 	
@@ -1052,19 +1030,17 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		if (pRef.getX() < pNei.getX()) {
 			if (Math.abs(pNei.getY() - pRef.getY()) <= Math.abs(pNei.getX() - pRef.getX()))
 				return Quadrant.RIGHT;
+			else if (pNei.getY() >= pRef.getY())
+				return Quadrant.BOTTOM;
 			else
-				if (pNei.getY() >= pRef.getY())
-					return Quadrant.BOTTOM;
-				else
-					return Quadrant.TOP;
+				return Quadrant.TOP;
 		} else {
 			if (Math.abs(pNei.getY() - pRef.getY()) <= Math.abs(pNei.getX() - pRef.getX()))
 				return Quadrant.LEFT;
+			else if (pNei.getY() >= pRef.getY())
+				return Quadrant.BOTTOM;
 			else
-				if (pNei.getY() >= pRef.getY())
-					return Quadrant.BOTTOM;
-				else
-					return Quadrant.TOP;
+				return Quadrant.TOP;
 		}
 	}
 	
@@ -1289,184 +1265,176 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				g2d.fill(new Rectangle2D.Double(x, y, width, height));
 			else
 				g2d.draw(new Rectangle2D.Double(x, y, width, height));
-		} else
-			if (frame == LabelFrameSetting.SIDE_LINES) {
-				double off = 0;
-				double offH = 0;
-				if (emptyText) {
-					off = 5;
-					offH = 2;
+		} else if (frame == LabelFrameSetting.SIDE_LINES) {
+			double off = 0;
+			double offH = 0;
+			if (emptyText) {
+				off = 5;
+				offH = 2;
+			}
+			if (fill)
+				g2d.fill(new Rectangle2D.Double(x + off, y, width - off * 2, height - offH));
+			else {
+				g2d.draw(new Rectangle2D.Double(x + off, y, 0, height - offH));
+				g2d.draw(new Rectangle2D.Double(x - off + width, y, 0, height - offH));
+			}
+		} else if (frame == LabelFrameSetting.RECTANGLE_CORNER_CUT) {
+			GeneralPath cutrect = new GeneralPath();
+			float c = (width < height ? width * 0.25f : height * 0.25f);
+			cutrect.moveTo(x, y + c);
+			cutrect.lineTo(x + c, y);
+			cutrect.lineTo(x + width - c, y);
+			cutrect.lineTo(x + width, y + c);
+			cutrect.lineTo(x + width, y + height - c);
+			cutrect.lineTo(x + width - c, y + height);
+			cutrect.lineTo(x + c, y + height);
+			cutrect.lineTo(x, y + height - c);
+			cutrect.lineTo(x, y + c);
+			cutrect.closePath();
+			if (fill)
+				g2d.fill(cutrect);
+			else
+				g2d.draw(cutrect);
+		} else if (frame == LabelFrameSetting.RECTANGLE_ROUNDED) {
+			double mwh = (width < height ? width * 0.5 : height * 0.5);
+			if (fill)
+				g2d.fill(new RoundRectangle2D.Double(x, y, width, height, mwh, mwh));
+			else
+				g2d.draw(new RoundRectangle2D.Double(x, y, width, height, mwh, mwh));
+		} else if (frame == LabelFrameSetting.RECTANGLE_BOTTOM_ROUND) {
+			GeneralPath gp = new GeneralPath();
+			float c = (width < height ? width * 0.5f : height * 0.5f);
+			gp.moveTo(x, y);
+			gp.lineTo(x + width, y);
+			gp.lineTo(x + width, y + height - c);
+			// gp.quadTo(x + width, y + height, x + width - c, y + height);
+			
+			int roundingSimulationSteps = 10;
+			double xc = (x + width - c);
+			double yc = (y + height - c);
+			double singleStep = Math.PI / 2 / roundingSimulationSteps;
+			for (int k = 1; k < roundingSimulationSteps; k++) {
+				int step = roundingSimulationSteps - k;
+				double xp = xc - Math.sin(singleStep * step + Math.PI) * c;
+				double yp = yc - Math.cos(singleStep * step + Math.PI) * c;
+				gp.lineTo(xp, yp);
+			}
+			gp.lineTo(x + width - c, y + height);
+			
+			gp.lineTo(x + c, y + height);
+			// gp.quadTo(x, y + height, x, y + height - c);
+			
+			xc = (x + c);
+			yc = (y + height) - c;
+			for (int k = 1; k < roundingSimulationSteps; k++) {
+				int step = roundingSimulationSteps - k;
+				double xp = xc - Math.cos(singleStep * step) * c;
+				double yp = yc + Math.sin(singleStep * step) * c;
+				gp.lineTo(xp, yp);
+			}
+			
+			gp.lineTo(x, y);
+			gp.closePath();
+			if (fill)
+				g2d.fill(gp);
+			else
+				g2d.draw(gp);
+		} else if (frame == LabelFrameSetting.CAPSULE) {
+			double mwh = (width < height ? width : height);
+			if (fill)
+				g2d.fill(new RoundRectangle2D.Double(x, y, width, height, mwh, mwh));
+			else
+				g2d.draw(new RoundRectangle2D.Double(x, y, width, height, mwh, mwh));
+		} else if (frame == LabelFrameSetting.ELLIPSE || frame == LabelFrameSetting.CIRCLE ||
+				frame == LabelFrameSetting.CIRCLE_FILLED || frame == LabelFrameSetting.CIRCLE_HALF_FILLED ||
+				frame == LabelFrameSetting.PIN) {
+			if (frame == LabelFrameSetting.PIN) {
+				float minR = width < height ? width : height;
+				float offX = (width - minR) / 2f;
+				float offY = (height - minR) / 2f;
+				g2d.getColor();
+				g2d.draw(new Ellipse2D.Double(x + offX, y + offY, minR, minR));
+				if (fill) {
+					AffineTransform at = g2d.getTransform();
+					g2d.fill(new Ellipse2D.Double(x + offX, y + offY, minR, minR));
+					g2d.setPaint(borderColor);
+					
+					float dx = 0;
+					float dy = 0;
+					AffineTransform o = g2d.getTransform();
+					boolean nice = false;
+					if (nice) {
+						// draw "real pin"
+						at.rotate(-Math.PI / 4, -dx + x + offX + minR / 2, -dy + y + offY + minR / 2);
+						g2d.setTransform(at);
+						
+						g2d.fill(new Ellipse2D.Double(-dx + x + offX + minR / 3, -dy + y + offY + minR / 4 - minR / 8, minR / 3, minR / 12));
+						g2d.fill(new Ellipse2D.Double(-dx + x + offX + minR / 4, -dy + y + offY + minR / 2 - minR / 8, minR / 2, minR / 8));
+						g2d.fill(new Rectangle2D.Double(-dx + x + offX + minR / 2.5, -dy + y + offY + minR / 3.5 - minR / 8, minR / 5, minR / 4));
+						GeneralPath triangle = new GeneralPath();
+						triangle.moveTo(-dx + minR / 30f + x + offX + minR / 2.5f, -dy + y + offY + minR / 3.5f - minR / 8f + minR / 4f);
+						triangle
+								.lineTo(-dx - minR / 30f + x + offX + minR / 2.5f + minR / 5f, -dy + y + offY + minR / 3.5f - minR / 8f
+										+ minR / 4f);
+						triangle.lineTo(-dx + x + offX + minR / 2f, -dy + y + offY + minR / 1.2f);
+						triangle.closePath();
+						g2d.fill(triangle);
+					} else {
+						// draw "simplified pin" (two lines)
+						g2d.drawLine((int) (x + offX + minR / 8), (int) (y + offY + minR / 1.3), (int) (x + offX + minR * 0.75),
+								(int) (y + offY + minR * 0.12));
+						g2d.drawLine((int) (x + offX + minR / 2 - 1), (int) (y + offY + minR / 2 - 1), (int) (x + offX + minR * 0.82 + 1), (int) (y
+								+ offY + minR * 0.82 + 1));
+					}
+					g2d.setTransform(o);
 				}
-				if (fill)
-					g2d.fill(new Rectangle2D.Double(x + off, y, width - off * 2, height - offH));
-				else {
-					g2d.draw(new Rectangle2D.Double(x + off, y, 0, height - offH));
-					g2d.draw(new Rectangle2D.Double(x - off + width, y, 0, height - offH));
-				}
-			} else
-				if (frame == LabelFrameSetting.RECTANGLE_CORNER_CUT) {
-					GeneralPath cutrect = new GeneralPath();
-					float c = (width < height ? width * 0.25f : height * 0.25f);
-					cutrect.moveTo(x, y + c);
-					cutrect.lineTo(x + c, y);
-					cutrect.lineTo(x + width - c, y);
-					cutrect.lineTo(x + width, y + c);
-					cutrect.lineTo(x + width, y + height - c);
-					cutrect.lineTo(x + width - c, y + height);
-					cutrect.lineTo(x + c, y + height);
-					cutrect.lineTo(x, y + height - c);
-					cutrect.lineTo(x, y + c);
-					cutrect.closePath();
-					if (fill)
-						g2d.fill(cutrect);
-					else
-						g2d.draw(cutrect);
-				} else
-					if (frame == LabelFrameSetting.RECTANGLE_ROUNDED) {
-						double mwh = (width < height ? width * 0.5 : height * 0.5);
-						if (fill)
-							g2d.fill(new RoundRectangle2D.Double(x, y, width, height, mwh, mwh));
-						else
-							g2d.draw(new RoundRectangle2D.Double(x, y, width, height, mwh, mwh));
+			} else if (frame == LabelFrameSetting.ELLIPSE) {
+				if (!fill)
+					g2d.draw(new Ellipse2D.Double(x, y, width, height));
+				else
+					g2d.fill(new Ellipse2D.Double(x, y, width, height));
+			} else {
+				double minR = width < height ? width : height;
+				double offX = (width - minR) / 2;
+				double offY = (height - minR) / 2;
+				Color ccc = g2d.getColor();
+				int cc = ccc.getRed() + ccc.getGreen() + ccc.getBlue();
+				if (fill) {
+					g2d.fill(new Ellipse2D.Double(x + offX, y + offY, minR, minR));
+					if (frame == LabelFrameSetting.CIRCLE_HALF_FILLED) {
+						g2d.setPaint(borderColor);
+						g2d.fill(new Arc2D.Double(x + offX, y + offY, minR, minR, -90, 180, Arc2D.PIE));
+					}
+					if (frame == LabelFrameSetting.CIRCLE_FILLED) {
+						g2d.setPaint(borderColor);
+						g2d.fill(new Arc2D.Double(x + offX, y + offY, minR, minR, 0, 360, Arc2D.PIE));
+					}
+				} else {
+					if (cc == 255 + 255 + 255) {
+						g2d.setColor(Color.black);
+						g2d.draw(new Ellipse2D.Double(x + offX, y + offY, minR, minR));
+						g2d.setColor(Color.white);
 					} else
-						if (frame == LabelFrameSetting.RECTANGLE_BOTTOM_ROUND) {
-							GeneralPath gp = new GeneralPath();
-							float c = (width < height ? width * 0.5f : height * 0.5f);
-							gp.moveTo(x, y);
-							gp.lineTo(x + width, y);
-							gp.lineTo(x + width, y + height - c);
-							// gp.quadTo(x + width, y + height, x + width - c, y + height);
-							
-							int roundingSimulationSteps = 10;
-							double xc = (x + width - c);
-							double yc = (y + height - c);
-							double singleStep = Math.PI / 2 / roundingSimulationSteps;
-							for (int k = 1; k < roundingSimulationSteps; k++) {
-								int step = roundingSimulationSteps - k;
-								double xp = xc - Math.sin(singleStep * step + Math.PI) * c;
-								double yp = yc - Math.cos(singleStep * step + Math.PI) * c;
-								gp.lineTo(xp, yp);
-							}
-							gp.lineTo(x + width - c, y + height);
-							
-							gp.lineTo(x + c, y + height);
-							// gp.quadTo(x, y + height, x, y + height - c);
-							
-							xc = (x + c);
-							yc = (y + height) - c;
-							for (int k = 1; k < roundingSimulationSteps; k++) {
-								int step = roundingSimulationSteps - k;
-								double xp = xc - Math.cos(singleStep * step) * c;
-								double yp = yc + Math.sin(singleStep * step) * c;
-								gp.lineTo(xp, yp);
-							}
-							
-							gp.lineTo(x, y);
-							gp.closePath();
-							if (fill)
-								g2d.fill(gp);
-							else
-								g2d.draw(gp);
-						} else
-							if (frame == LabelFrameSetting.CAPSULE) {
-								double mwh = (width < height ? width : height);
-								if (fill)
-									g2d.fill(new RoundRectangle2D.Double(x, y, width, height, mwh, mwh));
-								else
-									g2d.draw(new RoundRectangle2D.Double(x, y, width, height, mwh, mwh));
-							} else
-								if (frame == LabelFrameSetting.ELLIPSE || frame == LabelFrameSetting.CIRCLE ||
-										frame == LabelFrameSetting.CIRCLE_FILLED || frame == LabelFrameSetting.CIRCLE_HALF_FILLED ||
-										frame == LabelFrameSetting.PIN) {
-									if (frame == LabelFrameSetting.PIN) {
-										float minR = width < height ? width : height;
-										float offX = (width - minR) / 2f;
-										float offY = (height - minR) / 2f;
-										g2d.getColor();
-										g2d.draw(new Ellipse2D.Double(x + offX, y + offY, minR, minR));
-										if (fill) {
-											AffineTransform at = g2d.getTransform();
-											g2d.fill(new Ellipse2D.Double(x + offX, y + offY, minR, minR));
-											g2d.setPaint(borderColor);
-											
-											float dx = 0;
-											float dy = 0;
-											AffineTransform o = g2d.getTransform();
-											boolean nice = false;
-											if (nice) {
-												// draw "real pin"
-												at.rotate(-Math.PI / 4, -dx + x + offX + minR / 2, -dy + y + offY + minR / 2);
-												g2d.setTransform(at);
-												
-												g2d.fill(new Ellipse2D.Double(-dx + x + offX + minR / 3, -dy + y + offY + minR / 4 - minR / 8, minR / 3, minR / 12));
-												g2d.fill(new Ellipse2D.Double(-dx + x + offX + minR / 4, -dy + y + offY + minR / 2 - minR / 8, minR / 2, minR / 8));
-												g2d.fill(new Rectangle2D.Double(-dx + x + offX + minR / 2.5, -dy + y + offY + minR / 3.5 - minR / 8, minR / 5, minR / 4));
-												GeneralPath triangle = new GeneralPath();
-												triangle.moveTo(-dx + minR / 30f + x + offX + minR / 2.5f, -dy + y + offY + minR / 3.5f - minR / 8f + minR / 4f);
-												triangle
-														.lineTo(-dx - minR / 30f + x + offX + minR / 2.5f + minR / 5f, -dy + y + offY + minR / 3.5f - minR / 8f
-																+ minR / 4f);
-												triangle.lineTo(-dx + x + offX + minR / 2f, -dy + y + offY + minR / 1.2f);
-												triangle.closePath();
-												g2d.fill(triangle);
-											} else {
-												// draw "simplified pin" (two lines)
-												g2d.drawLine((int) (x + offX + minR / 8), (int) (y + offY + minR / 1.3), (int) (x + offX + minR * 0.75),
-														(int) (y + offY + minR * 0.12));
-												g2d.drawLine((int) (x + offX + minR / 2 - 1), (int) (y + offY + minR / 2 - 1), (int) (x + offX + minR * 0.82 + 1), (int) (y
-														+ offY + minR * 0.82 + 1));
-											}
-											g2d.setTransform(o);
-										}
-									} else
-										if (frame == LabelFrameSetting.ELLIPSE) {
-											if (!fill)
-												g2d.draw(new Ellipse2D.Double(x, y, width, height));
-											else
-												g2d.fill(new Ellipse2D.Double(x, y, width, height));
-										} else {
-											double minR = width < height ? width : height;
-											double offX = (width - minR) / 2;
-											double offY = (height - minR) / 2;
-											Color ccc = g2d.getColor();
-											int cc = ccc.getRed() + ccc.getGreen() + ccc.getBlue();
-											if (fill) {
-												g2d.fill(new Ellipse2D.Double(x + offX, y + offY, minR, minR));
-												if (frame == LabelFrameSetting.CIRCLE_HALF_FILLED) {
-													g2d.setPaint(borderColor);
-													g2d.fill(new Arc2D.Double(x + offX, y + offY, minR, minR, -90, 180, Arc2D.PIE));
-												}
-												if (frame == LabelFrameSetting.CIRCLE_FILLED) {
-													g2d.setPaint(borderColor);
-													g2d.fill(new Arc2D.Double(x + offX, y + offY, minR, minR, 0, 360, Arc2D.PIE));
-												}
-											} else {
-												if (cc == 255 + 255 + 255) {
-													g2d.setColor(Color.black);
-													g2d.draw(new Ellipse2D.Double(x + offX, y + offY, minR, minR));
-													g2d.setColor(Color.white);
-												} else
-													g2d.draw(new Ellipse2D.Double(x + offX, y + offY, minR, minR));
-											}
-										}
-								} else
-									if (frame == LabelFrameSetting.HEXAGON) {
-										GeneralPath gp = new GeneralPath();
-										double offA = 0.25;
-										double offB = 0.75;
-										gp.moveTo(x, y);
-										gp.lineTo(x + width, y);
-										gp.lineTo(x + width * offB, y + height * 0.5);
-										gp.lineTo(x + width, y + height);
-										gp.lineTo(x, y + height);
-										gp.lineTo(x + width * offA, y + height * 0.5);
-										gp.lineTo(x, y);
-										gp.closePath();
-										if (fill)
-											g2d.fill(gp);
-										else
-											g2d.draw(gp);
-									}
+						g2d.draw(new Ellipse2D.Double(x + offX, y + offY, minR, minR));
+				}
+			}
+		} else if (frame == LabelFrameSetting.HEXAGON) {
+			GeneralPath gp = new GeneralPath();
+			double offA = 0.25;
+			double offB = 0.75;
+			gp.moveTo(x, y);
+			gp.lineTo(x + width, y);
+			gp.lineTo(x + width * offB, y + height * 0.5);
+			gp.lineTo(x + width, y + height);
+			gp.lineTo(x, y + height);
+			gp.lineTo(x + width * offA, y + height * 0.5);
+			gp.lineTo(x, y);
+			gp.closePath();
+			if (fill)
+				g2d.fill(gp);
+			else
+				g2d.draw(gp);
+		}
 		g2d.setColor(oc);
 	}
 	
