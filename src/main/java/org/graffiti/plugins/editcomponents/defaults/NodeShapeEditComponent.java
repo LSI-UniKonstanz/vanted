@@ -23,7 +23,7 @@ import org.graffiti.plugin.editcomponent.ComboBoxEditComponent;
  * @version $Revision: 1.11 $
  */
 public class NodeShapeEditComponent
-					extends ComboBoxEditComponent {
+		extends ComboBoxEditComponent {
 	// ~ Constructors ===========================================================
 	
 	/**
@@ -43,14 +43,14 @@ public class NodeShapeEditComponent
 			@Override
 			public Dimension getMinimumSize() {
 				Dimension res = super.getMinimumSize();
-				res.setSize(20, res.getHeight());
+				res.setSize(20, res.getHeight() + 2);
 				return res;
 			}
 			
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension res = super.getPreferredSize();
-				res.setSize(20, res.getHeight());
+				res.setSize(20, res.getHeight() + 2);
 				return res;
 			}
 		};
@@ -84,9 +84,9 @@ public class NodeShapeEditComponent
 	@Override
 	public void setValue() {
 		if (this.comboBox.getSelectedItem().equals(EMPTY_STRING)
-							||
-							(displayable.getValue() != null && ((String) this.displayable.getValue()).equalsIgnoreCase(AttributeHelper
-												.getShapeClassFromDescription((String) this.comboBox.getSelectedItem())))) {
+				||
+				(displayable.getValue() != null && ((String) this.displayable.getValue()).equalsIgnoreCase(AttributeHelper
+						.getShapeClassFromDescription((String) this.comboBox.getSelectedItem())))) {
 			return;
 		}
 		

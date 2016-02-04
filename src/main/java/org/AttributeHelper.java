@@ -3461,20 +3461,20 @@ public class AttributeHelper implements HelperClass {
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.TruncProteinShape";
 		if (s.equals("sourcesink"))
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.SourceSinkShape";
-		if (s.equals("transition"))
-			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.TransitionShape";
-		if (s.equals("multinucleic"))
-			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.MultiNucleicAcidFeatureShape";
 		if (s.equals("multirectangle"))
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.MultiRectangleShape";
 		if (s.equals("mulitoval"))
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.MultiEllipseShape";
+		if (s.equals("multinucleic"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.MultiNucleicAcidFeatureShape";
+		if (s.equals("multicomplex"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.MultiComplexShape";
 		if (s.equals("doubleoval"))
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.DoubleEllipseShape";
 		if (s.equals("paper"))
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.PaperShape";
-		if (s.equals("multicomplex"))
-			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.MultiComplexShape";
+		if (s.equals("sbgnstadium"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.SBGNStadiumShape";
 		if (s.equals("sbgnprocess"))
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.SBGNProcessShape";
 		if (s.equals("sbgncircle"))
@@ -3487,10 +3487,10 @@ public class AttributeHelper implements HelperClass {
 	
 	public static String[] getShapeDescritions() {
 		return new String[] { "Rectangle", "Circle", "Ellipse", "Rhombus", "Tag (right)", "Tag (left)", "Tag (up)",
-				"Tag (down)", "Observable", "Pertubation", "Complex", "Skewed Rect (right)", "Skewed Rect (left)",
+				"Tag (down)", "Phenotype", "Perturbation", "Complex", "Skewed Rect (right)", "Skewed Rect (left)",
 				"Receptor (down)", "Receptor (up)", "Receptor (left)", "Receptor (right)", "Nucleic Acid Feature",
-				"Truncated Protein", "Source or Sink", "Transition", "Multi Nucleic Acid Feature", "Multi Rectangle",
-				"Multi Oval", "Double Oval", "Paper", "Multi Complex", "SBGN Process", "SBGN Circle", "SBGN Dissociation" };
+				"Truncated Protein", "Empty Set", "Multi Rectangle", "Multi Oval", "Multi Nucleic Acid Feature",
+				"Multi Complex", "Double Oval", "Paper", "SBGN Stadium", "SBGN Process", "SBGN Circle", "SBGN Dissociation" };
 	}
 	
 	public static String getShapeClassFromDescription(String desc) {
@@ -3506,8 +3506,8 @@ public class AttributeHelper implements HelperClass {
 	public static String[] getShapeClasses() {
 		return new String[] { "rectangle", "circle", "oval", "diamond", "tag", "tagl", "tagu", "tagd", "observable",
 				"pertubation", "complex", "skewrectr", "skewrectl", "receptord", "receptoru", "receptorl", "receptorr",
-				"nucleic", "truncprotein", "sourcesink", "transition", "multinucleic", "multirectangle", "mulitoval",
-				"doubleoval", "paper", "multicomplex", "sbgnprocess", "sbgncircle", "sbgndissociation" };
+				"nucleic", "truncprotein", "sourcesink", "multirectangle", "mulitoval", "multinucleic",
+				"multicomplex", "doubleoval", "paper", "sbgnstadium", "sbgnprocess", "sbgncircle", "sbgndissociation" };
 	}
 	
 	public static String getLabelConsumption(Edge e, String returnIfNull) {
