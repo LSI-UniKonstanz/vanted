@@ -320,6 +320,8 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 		offsetXEditComponent.setValue();
 		offsetYEditComponent.setValue();
 		
+		labeloffsetAttribute = (CoordinateAttribute) ((Attribute) getDisplayable()).getParent().getAttribute(GraphicAttributeConstants.LABELOFFSET);
+		
 		labeloffsetAttribute.setX(offsetXAttribute.getDouble());
 		labeloffsetAttribute.setY(offsetYAttribute.getDouble());
 	}

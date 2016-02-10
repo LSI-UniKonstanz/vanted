@@ -408,7 +408,6 @@ public abstract class AbstractGraphElementComponent
 			
 			if (drawFrames) {
 				((Graphics2D) g).setStroke(BASIC_STROKE);
-				logger.debug("w-h : " + getWidth() + ", " + getHeight());
 				g.setColor(Color.GRAY);
 				/*
 				 * we have to set those quirky coordinates due to rounding problems in the graphics library, so the 
