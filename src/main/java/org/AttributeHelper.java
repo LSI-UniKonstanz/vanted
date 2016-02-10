@@ -3420,8 +3420,6 @@ public class AttributeHelper implements HelperClass {
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.MultiComplexShape";
 		if (s.equals("doubleoval"))
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.DoubleEllipseShape";
-		if (s.equals("paper"))
-			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.PaperShape";
 		if (s.equals("sbgnstadium"))
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.SBGNStadiumShape";
 		if (s.equals("sbgnprocess"))
@@ -3430,6 +3428,24 @@ public class AttributeHelper implements HelperClass {
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.SBGNCircleShape";
 		if (s.equals("sbgndissociation"))
 			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.SBGNDissociationShape";
+		if (s.equals("paper"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.PaperShape";
+		if (s.equals("papertopright"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.PaperShapeTopRight";
+		if (s.equals("paperrighttop"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.PaperShapeRightTop";
+		if (s.equals("paperrightbottom"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.PaperShapeRightBottom";
+		if (s.equals("paperbottomright"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.PaperShapeBottomRight";
+		if (s.equals("paperbottomleft"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.PaperShapeBottomLeft";
+		if (s.equals("paperleftbottom"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.PaperShapeLeftBottom";
+		if (s.equals("paperlefttop"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.PaperShapeLeftTop";
+		if (s.equals("papertopleft"))
+			return "de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes.PaperShapeTopLeft";
 		
 		return s;
 	}
@@ -3439,7 +3455,9 @@ public class AttributeHelper implements HelperClass {
 				"Tag (down)", "Phenotype", "Perturbation", "Complex", "Skewed Rect (right)", "Skewed Rect (left)",
 				"Receptor (down)", "Receptor (up)", "Receptor (left)", "Receptor (right)", "Nucleic Acid Feature",
 				"Truncated Protein", "Empty Set", "Multi Rectangle", "Multi Oval", "Multi Nucleic Acid Feature",
-				"Multi Complex", "Double Oval", "Paper", "SBGN Stadium", "SBGN Process", "SBGN Circle", "SBGN Dissociation" };
+				"Multi Complex", "Double Oval", "SBGN Stadium", "SBGN Process", "SBGN Circle", "SBGN Dissociation",
+				"Paper", "Paper (top-right)", "Paper (right-top)", "Paper (right-bottom)", "Paper (bottom-right)",
+				"Paper (bottom-left)", "Paper (left-bottom)", "Paper (left-top)", "Paper (top-left)" };
 	}
 	
 	public static String getShapeClassFromDescription(String desc) {
@@ -3456,7 +3474,9 @@ public class AttributeHelper implements HelperClass {
 		return new String[] { "rectangle", "circle", "oval", "diamond", "tag", "tagl", "tagu", "tagd", "observable",
 				"pertubation", "complex", "skewrectr", "skewrectl", "receptord", "receptoru", "receptorl", "receptorr",
 				"nucleic", "truncprotein", "sourcesink", "multirectangle", "mulitoval", "multinucleic",
-				"multicomplex", "doubleoval", "paper", "sbgnstadium", "sbgnprocess", "sbgncircle", "sbgndissociation" };
+				"multicomplex", "doubleoval", "sbgnstadium", "sbgnprocess", "sbgncircle", "sbgndissociation",
+				"paper", "papertopright", "paperrighttop", "paperrightbottom", "paperbottomright", "paperbottomleft",
+				"paperleftbottom", "paperlefttop", "papertopleft" };
 	}
 	
 	public static String getLabelConsumption(Edge e, String returnIfNull) {
