@@ -21,6 +21,7 @@ import org.AttributeHelper;
 import org.ErrorMsg;
 import org.LabelFrameSetting;
 import org.StringManipulationTools;
+import org.Vector2d;
 import org.color.ColorUtil;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.AttributeExistsException;
@@ -37,7 +38,7 @@ import org.graffiti.graph.Node;
  * @version $Revision: 1.19 $
  */
 public abstract class LabelAttribute extends HashMapAttribute implements
-					GraphicAttributeConstants {
+		GraphicAttributeConstants {
 	// ~ Instance fields
 	// ========================================================
 	
@@ -113,13 +114,13 @@ public abstract class LabelAttribute extends HashMapAttribute implements
 	public LabelAttribute(String id, String l) {
 		super(id);
 		StringAttribute alignment = (StringAttribute) StringAttribute
-							.getTypedStringAttribute(ANCHOR, "c");
+				.getTypedStringAttribute(ANCHOR, "c");
 		alignment.setDescription("A string constant describing "
-							+ "predefined positions of the label.");
+				+ "predefined positions of the label.");
 		add(alignment, false);
 		add(StringAttribute.getTypedStringAttribute(LABEL, l), false);
 		add(StringAttribute.getTypedStringAttribute(FONTNAME, defaultFont),
-							false);
+				false);
 		add(StringAttribute.getTypedStringAttribute(ALIGNMENT, "center"/*
 																							 * "left"
 																							 * right,center
@@ -129,13 +130,15 @@ public abstract class LabelAttribute extends HashMapAttribute implements
 																							 * italic,bold
 																							 */), false);
 		add(StringAttribute.getTypedStringAttribute(TEXTCOLOR, ColorUtil
-							.getHexFromColor(java.awt.Color.BLACK)), false);
+				.getHexFromColor(java.awt.Color.BLACK)), false);
 		add(new StringAttribute("type", "text"), false);
+		add(new CoordinateAttribute(LABELOFFSET, 0, 0), false); // add coordinate attribute for relative offset of label position from center of a node
+		// set default offset (0, 0)
 	}
 	
 	@Override
 	public void add(Attribute a, boolean inform)
-						throws AttributeExistsException, FieldAlreadySetException {
+			throws AttributeExistsException, FieldAlreadySetException {
 		if (attributes.containsKey(a.getId())) {
 			cacheSet(attributes.get(a.getId()), a.getValue());
 		} else
@@ -152,7 +155,7 @@ public abstract class LabelAttribute extends HashMapAttribute implements
 	
 	@Override
 	public void add(Attribute a) throws AttributeExistsException,
-						FieldAlreadySetException {
+			FieldAlreadySetException {
 		if (attributes.containsKey(a.getId())) {
 			cacheSet(attributes.get(a.getId()), a.getValue());
 		} else
@@ -345,26 +348,26 @@ public abstract class LabelAttribute extends HashMapAttribute implements
 		if (!attributes.containsKey(GraphicAttributeConstants.SHADOWOFFSET))
 			add(new IntegerAttribute(GraphicAttributeConstants.SHADOWOFFSET, 1));
 		return ((IntegerAttribute) attributes
-							.get(GraphicAttributeConstants.SHADOWOFFSET)).getInteger();
+				.get(GraphicAttributeConstants.SHADOWOFFSET)).getInteger();
 	}
 	
 	public int getShadowOffY() {
 		if (!attributes.containsKey(GraphicAttributeConstants.SHADOWOFFSET))
 			add(new IntegerAttribute(GraphicAttributeConstants.SHADOWOFFSET, 1));
 		return ((IntegerAttribute) attributes
-							.get(GraphicAttributeConstants.SHADOWOFFSET)).getInteger();
+				.get(GraphicAttributeConstants.SHADOWOFFSET)).getInteger();
 	}
 	
 	public Color getShadowTextColor() {
 		if (!attributes.containsKey(GraphicAttributeConstants.SHADOWCOLOR)) {
 			Attribute newAtt = StringAttribute.getTypedStringAttribute(
-								GraphicAttributeConstants.SHADOWCOLOR, ColorUtil
-													.getHexFromColor(Color.LIGHT_GRAY));
+					GraphicAttributeConstants.SHADOWCOLOR, ColorUtil
+							.getHexFromColor(Color.LIGHT_GRAY));
 			newAtt.setParent(this);
 			attributes.put(GraphicAttributeConstants.SHADOWCOLOR, newAtt);
 		}
 		ColorSetAndGetSupport colorAtt = (ColorSetAndGetSupport) attributes
-							.get(GraphicAttributeConstants.SHADOWCOLOR);
+				.get(GraphicAttributeConstants.SHADOWCOLOR);
 		Color resultCol = colorAtt.getColor();
 		return resultCol;
 	}
@@ -380,7 +383,7 @@ public abstract class LabelAttribute extends HashMapAttribute implements
 		
 		FontMetrics fm = lastLabel.getFontMetrics(lastLabel.getFont());
 		int containerWidth = (int) AttributeHelper
-							.getSize((Node) getAttributable()).x;
+				.getSize((Node) getAttributable()).x;
 		
 		BreakIterator boundary = BreakIterator.getWordInstance();
 		
@@ -391,15 +394,15 @@ public abstract class LabelAttribute extends HashMapAttribute implements
 		
 		int start = boundary.first();
 		for (int end = boundary.next(); end != BreakIterator.DONE; start = end, end = boundary
-							.next()) {
+				.next()) {
 			String word = getLabel(true).substring(start, end);
 			trial.append(word);
 			int trialWidth = SwingUtilities.computeStringWidth(fm, trial
-								.toString());
+					.toString());
 			if (trialWidth > containerWidth) {
 				trial = new StringBuffer(word);
 				if (word.length() > 2 && !real.toString().endsWith("-")
-									&& !real.toString().endsWith("("))
+						&& !real.toString().endsWith("("))
 					real.append("<br>");
 			}
 			real.append(word);
@@ -415,6 +418,58 @@ public abstract class LabelAttribute extends HashMapAttribute implements
 		}
 		setLabel(result);
 	}
+	
+	/**
+	 * Get the relative offset of label position from center of a node.
+	 * Offset is relative to node width/height; (0, 0) center of node, (-1, -1) top-left corner of node, (1, -1) top-right corner of node, (1, 1) bottom-right
+	 * corner of node, (-1, 1) bottom-left corner of node.
+	 * 
+	 * @return relative offset of label position from center of a node
+	 */
+	public Vector2d getLabelOffset() {
+		
+		CoordinateAttribute ca = (CoordinateAttribute) this.attributes.get(LABELOFFSET);
+		/*
+		 * it will be null, if an older VANTED GML is opened without the labeloffset attribute
+		 * It will be removed during conversion from untyped attribute (HashmapAttribute) to
+		 * typed Attribute (LabelAttribute) so in this case, the offset attribute gets lost
+		 * and we need to create it
+		 */
+		if (ca == null) {
+			ca = new CoordinateAttribute(LABELOFFSET, 0, 0);
+			add(ca, false);
+		}
+		return new Vector2d(ca.getX(), ca.getY());
+		
+	}
+	
+	/**
+	 * Set the relative offset of label position from center of a node.
+	 * Offset is relative to node width/height; (0, 0) center of node, (-1, -1) top-left corner of node, (1, -1) top-right corner of node, (1, 1) bottom-right
+	 * corner of node, (-1, 1) bottom-left corner of node.
+	 * 
+	 * @param offsetX
+	 *           horizontal offset of label position from center of a node
+	 * @param offsetY
+	 *           vertical offset of label position from center of a node
+	 */
+	public void setLabelOffset(double offsetX, double offsetY) {
+		
+		// set new attribute
+		if (!this.attributes.containsKey(GraphicAttributeConstants.LABELOFFSET)) {
+			Attribute attribute = new CoordinateAttribute(LABELOFFSET, offsetX, offsetY);
+			attribute.setParent(this);
+			this.attributes.put(GraphicAttributeConstants.LABELOFFSET, attribute);
+		}
+		// change attribute
+		else {
+			CoordinateAttribute coordinateAttribute = (CoordinateAttribute) this.attributes.get(LABELOFFSET);
+			coordinateAttribute.setX(offsetX);
+			coordinateAttribute.setY(offsetY);
+		}
+		
+	}
+	
 }
 
 // ------------------------------------------------------------------------------

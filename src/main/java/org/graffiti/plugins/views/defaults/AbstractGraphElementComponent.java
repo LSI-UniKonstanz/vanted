@@ -10,6 +10,7 @@
 package org.graffiti.plugins.views.defaults;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Container;
@@ -17,6 +18,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -55,6 +57,11 @@ public abstract class AbstractGraphElementComponent
 		extends GraphElementComponent
 		implements GraffitiViewComponent, GraphicAttributeConstants {
 	
+	/**
+	 * 
+	 */
+	private static final BasicStroke BASIC_STROKE = new BasicStroke();
+	
 	private static Logger logger = Logger.getLogger(AbstractGraphElementComponent.class);
 	
 	private static boolean isDebuggingLevel = Logger.getRootLogger().getLevel() == Level.DEBUG;
@@ -90,7 +97,7 @@ public abstract class AbstractGraphElementComponent
 	 * a composite field, which defines the transparency
 	 */
 	protected Composite composite;
-
+	
 	protected float alpha;
 	
 //	protected BufferedImage opacityRenderImage;
@@ -171,12 +178,11 @@ public abstract class AbstractGraphElementComponent
 	 */
 	public void attributeChanged(Attribute attr)
 			throws ShapeNotFoundException {
-
-
+		
 		/* check if attribute is for opacity AND double
 		 * because for color transparency it's also called opacity but integer
 		 */
-		if(attr.getId().equals(GraphicAttributeConstants.OPAC) && attr instanceof DoubleAttribute) {
+		if (attr.getId().equals(GraphicAttributeConstants.OPAC) && attr instanceof DoubleAttribute) {
 			double opacity = ((DoubleAttribute) attr).value;
 			setupOpacity(opacity);
 		}
@@ -187,12 +193,12 @@ public abstract class AbstractGraphElementComponent
 			setupOpacity(opacity);
 		}
 		if (attr.getPath().startsWith(Attribute.SEPARATOR + GraphicAttributeConstants.GRAPHICS)
-			
-			) {
+		
+		) {
 			if (!attr.getId().equals("cluster")) {
 				graphicAttributeChanged(attr);
 			}
-		} else if(attr.getName().equals("max_charts_in_column")){
+		} else if (attr.getName().equals("max_charts_in_column")) {
 			/*
 			 * a hack due to old implementation where adding another experiment
 			 *	just fires a max_charts_per_row attribute change event
@@ -201,7 +207,7 @@ public abstract class AbstractGraphElementComponent
 			graphicAttributeChanged(attr);
 		} else
 			nonGraphicAttributeChanged(attr);
-
+		
 	}
 	
 	/**
@@ -384,34 +390,42 @@ public abstract class AbstractGraphElementComponent
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
+//		super.paintComponent(g);
 		
-		if (composite != null && ((GraffitiView)getParent()).getDrawMode() != DrawMode.FAST)
+		if (composite != null && ((GraffitiView) getParent()).getDrawMode() != DrawMode.FAST)
 			((Graphics2D) g).setComposite(composite);
 		
-//		super.paintComponent(g);
 		/*
 		 * Only for debugging 
 		 */
-		if(isDebuggingLevel) {
+		if (isDebuggingLevel) {
 //			boolean drawFrames = PreferenceManager.getPreferenceForClass(VantedPreferences.class).getBoolean(VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES, false); 
-			boolean drawFrames = VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE; 
+			boolean drawFrames = VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE;
 			// draw frame, indicating the panel-bounds
 			
 			// draw original shape
 			drawShape(g);
 			
-			if(drawFrames) {
+			if (drawFrames) {
+				((Graphics2D) g).setStroke(BASIC_STROKE);
 				g.setColor(Color.GRAY);
-				g.drawRect(0, 0, getWidth(), getHeight());
-			} 
+				/*
+				 * we have to set those quirky coordinates due to rounding problems in the graphics library, so the 
+				 * the actual outline with height or height would not be drawn with zoom level 100%
+				 */
+				((Graphics2D) g).draw(new Rectangle2D.Double(0, 0, getWidth() - 0.5,
+						getHeight() - 0.5));
+				
+			}
 			
 			// overlap shape with position info
-			if(drawFrames) {
+			if (drawFrames) {
 				g.setFont(new Font(g.getFont().getFontName(), 0, 3));
 				g.setColor(Color.WHITE);
 				g.fillRect(5, 2, 40, 6);
 				g.setColor(Color.BLUE);
-				String bounds = "[" + getBounds().getX() + ", " + getBounds().getY() + ", " + (getBounds().getX() + getBounds().getWidth()) + ", " + (getBounds().getY() + getBounds().getHeight()) + "]";
+				String bounds = "[" + getBounds().getX() + ", " + getBounds().getY() + ", " + (getBounds().getX() + getBounds().getWidth()) + ", "
+						+ (getBounds().getY() + getBounds().getHeight()) + "]";
 				g.drawString(bounds, 5, 5);
 				bounds = "[" + getBounds().getX() + ", " + getBounds().getY() + ", " + getBounds().getWidth() + ", " + getBounds().getHeight() + "]";
 				g.drawString(bounds, 5, 8);

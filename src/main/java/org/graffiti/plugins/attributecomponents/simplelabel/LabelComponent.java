@@ -170,7 +170,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	@Override
 	public void setAttribute(Attribute attr) {
 		super.setAttribute(attr);
-//		this.attr = attr;
+		// this.attr = attr;
 		this.labelAttr = (LabelAttribute) attr;
 	}
 	
@@ -202,7 +202,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			setLocation((int) (loc.getX() + shift.getX()), (int) (loc.getY() + shift.getY())); // -1
 			return;
 		} else {
-//			recreate();
+			// recreate();
 			frame = labelAttr.getLabelFrameSetting();
 			
 			double strokeWidth = 1d;
@@ -277,7 +277,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	 */
 	@Override
 	public void recreate() {
-//		System.out.println("recreating Label " + this);
+		// System.out.println("recreating Label " + this);
 		removeAll();
 		if (labelAttr == null)
 			ErrorMsg.addErrorMessage("LabelComponent: labelAttr == null!");
@@ -437,16 +437,16 @@ public class LabelComponent extends AbstractAttributeComponent implements
 	
 	@Override
 	public void paint(Graphics g) {
-//		logger.debug("paint");
+		// logger.debug("paint");
 		if (label.getText().isEmpty() || fontSize <= 0)
 			return;
-//		logger.setLevel(Level.DEBUG);
+		// logger.setLevel(Level.DEBUG);
 		boolean isVisible = checkVisibility(MINSIZE_VISIBILITY);
 		if (hidden)
 			return;
 		
 		if (isCreatingBufferedImage) {
-//			logger.debug("isCreatingBufferedImage");
+			// logger.debug("isCreatingBufferedImage");
 			/*
 			 * we need to trigger the paint pipeline to create the buffered image
 			 * But we MUST clear the composite. It will mess up
@@ -464,20 +464,20 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		
 		if (getDrawingModeOfView() == DrawMode.REDUCED && bufferedImage != null && isVisible) {
 			
-//			logger.debug("drawing image");
+			// logger.debug("drawing image");
 			g.drawImage(bufferedImage, 0, 0, null);
 			
 		} else if (isVisible) {
-//			logger.debug("drawing normal");
+			// logger.debug("drawing normal");
 			super.paint(g);
 		} else if (DRAWRECT_MINSIZE && !(getDrawingModeOfView() == DrawMode.FAST)) {
-//			logger.debug("drawing rectangle");
-//			if(checkVisibility(3)) {
-				g.setColor(new Color(200, 200, 200));
-				int height = getHeight();
-				int width = getWidth();
-				((Graphics2D) g).fillRect(0, height / 4, width, height / 2);
-//			}
+			// logger.debug("drawing rectangle");
+			// if(checkVisibility(3)) {
+			g.setColor(new Color(200, 200, 200));
+			int height = getHeight();
+			int width = getWidth();
+			((Graphics2D) g).fillRect(0, height / 4, width, height / 2);
+			// }
 		}
 	}
 	
@@ -488,8 +488,8 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 			
 			Graphics graphics2 = bufferedImage.getGraphics();
-//			((Graphics2D) graphics2).setBackground(new Color(255, 255, 255, 255));
-//			graphics2.clearRect(0, 0, getWidth(), getHeight());
+			// ((Graphics2D) graphics2).setBackground(new Color(255, 255, 255, 255));
+			// graphics2.clearRect(0, 0, getWidth(), getHeight());
 			((Graphics2D) graphics2).setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
 			paint(graphics2);
@@ -557,10 +557,10 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		try {
 			Dimension preferredSize;
 			String alignment2 = labelAttr.getAlignment();
-//			if (alignment2.equals(AlignmentSetting.HIDDEN.toGMLstring()))
-//				preferredSize = new Dimension(1, 1);
-//			else
-				preferredSize = label.getPreferredSize();
+			// if (alignment2.equals(AlignmentSetting.HIDDEN.toGMLstring()))
+			// preferredSize = new Dimension(1, 1);
+			// else
+			preferredSize = label.getPreferredSize();
 			int h = preferredSize.height + 1;
 			int w = preferredSize.width + 1;
 			// System.out.println(h+" "+w+" "+this.hashCode()+" "+frame);
@@ -747,6 +747,20 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				centerY = (sizeY / 2d + geShape.getYexcess());
 			}
 			
+			// we need to call it to stay compatible with older VANTED version.. see method
+			Vector2d labelOffset = labelAttr.getLabelOffset();
+			/*
+			 * if the anchor is centered and we have an offset
+			 * only then apply the offset
+			 */
+			if (CENTERED.equals(align)) {
+				// apply offset for label
+				coordX += labelOffset.x * (sizeX / 2d);
+				// offset for centerX not necessary since it's only used for the center position in combination with coordX
+				// offset is already covered by coordX
+				coordY += labelOffset.y * (sizeY / 2d);
+				centerY += labelOffset.y * (sizeY / 2d);
+			}
 			align = processAutoAlignment(align);
 			label.setDefaultTextPositioning();
 			double cx = coordX + centerX - (labelWidth / 2.0d);

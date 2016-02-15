@@ -15,13 +15,17 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import org.AlignmentSetting;
 import org.graffiti.attributes.Attribute;
+import org.graffiti.attributes.DoubleAttribute;
 import org.graffiti.graph.Node;
+import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
+import org.graffiti.plugins.editcomponents.defaults.DoubleEditComponent;
 
 /**
  * @author Christian Klukas
@@ -30,17 +34,20 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
 public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 	
 	JComponent alignmentSelection;
+	
+	JComponent alignmentEditorComponent;
+	
 	PositionButton left, right, above, below, insideTop, insideTopLeft, insideTopRight, insideCenter, insideBottom, insideBottomLeft, insideBottomRight,
 			insideLeft, insideRight;
 	
 	PositionButton
-						leftBorderT, leftBorderC, leftBorderB,
-						topBorderL, topBorderC, topBorderR,
-						rightBorderT, rightBorderC, rightBorderB,
-						bottomBorderL, bottomBorderC, bottomBorderR;
+			leftBorderT, leftBorderC, leftBorderB,
+			topBorderL, topBorderC, topBorderR,
+			rightBorderT, rightBorderC, rightBorderB,
+			bottomBorderL, bottomBorderC, bottomBorderR;
 	
 	PositionButton
-						aboveLeft, aboveRight, belowLeft, belowRight;
+			aboveLeft, aboveRight, belowLeft, belowRight;
 	
 	private static final String NOT_SET = "[not set]";
 	
@@ -50,6 +57,25 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 	
 	int www = 11;
 	int hhh = 11;
+	
+	/*
+	 * Implementation addition to support relative offsets
+	 */
+	private CoordinateAttribute labeloffsetAttribute;
+	
+	/*
+	 * Variables, that hold the relative offset for the label
+	 * This is the new method, compared to the fixed positions 
+	 * using the AlignmentSettings positions
+	 *  
+	 */
+	DoubleAttribute offsetXAttribute;
+	DoubleAttribute offsetYAttribute;
+	
+	DoubleEditComponent offsetXEditComponent;
+	DoubleEditComponent offsetYEditComponent;
+	
+	private JPanel panelOffsetAttrEditor;
 	
 	public LabelAlignmentAttributeEditor(final Displayable disp) {
 		super(disp);
@@ -86,6 +112,12 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 		belowLeft = new PositionButton(this, AlignmentSetting.BELOWLEFT, "Below, left", false);
 		belowRight = new PositionButton(this, AlignmentSetting.BELOWRIGHT, "Below, right", false);
 		
+		offsetXAttribute = new DoubleAttribute("x-offset", 0.0);
+		offsetYAttribute = new DoubleAttribute("y-offset", 0.0);
+		
+		offsetXEditComponent = new DoubleEditComponent(offsetXAttribute);
+		offsetYEditComponent = new DoubleEditComponent(offsetYAttribute);
+		
 		int h = left.getPreferredSize().height;
 		
 		ArrayList<JComponent> buttonsLeft = new ArrayList<JComponent>();
@@ -113,22 +145,22 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 		ArrayList<JComponent> buttonsCenterCol = new ArrayList<JComponent>();
 		if (isNodeEditor)
 			buttonsCenterCol.add(TableLayout.get3Split(getFillerN(h), check(above, h), getFillerN(h), TableLayoutConstants.PREFERRED,
-								TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
+					TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
 		buttonsCenterCol.add(TableLayout.get3Split(topBorderL, topBorderC, topBorderR, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED,
-							TableLayoutConstants.PREFERRED));
+				TableLayoutConstants.PREFERRED));
 		buttonsCenterCol.add(TableLayout.get3Split(check(insideTopLeft, h), check(insideTop, h), check(insideTopRight, h), TableLayoutConstants.PREFERRED,
-							TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
+				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
 		buttonsCenterCol.add(TableLayout.get3Split(check(insideLeft, h), insideCenter, check(insideRight, h), TableLayoutConstants.PREFERRED,
 				TableLayoutConstants.PREFERRED,
-							TableLayoutConstants.PREFERRED));
+				TableLayoutConstants.PREFERRED));
 		buttonsCenterCol.add(TableLayout.get3Split(check(insideBottomLeft, h), check(insideBottom, h), check(insideBottomRight, h),
 				TableLayoutConstants.PREFERRED,
-							TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
+				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
 		buttonsCenterCol.add(TableLayout.get3Split(bottomBorderL, bottomBorderC, bottomBorderR, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED,
-							TableLayoutConstants.PREFERRED));
+				TableLayoutConstants.PREFERRED));
 		if (isNodeEditor)
 			buttonsCenterCol.add(TableLayout.get3Split(getFillerN(h), check(below, h), getFillerN(h), TableLayoutConstants.PREFERRED,
-								TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
+					TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
 		JComponent colMiddle = TableLayout.getMultiSplitVertical(buttonsCenterCol);
 		
 		ArrayList<JComponent> buttonsBorderRight = new ArrayList<JComponent>();
@@ -165,10 +197,21 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 			columns.add(colRight);
 		
 		alignmentSelection = TableLayout.get3Split(new JLabel(), TableLayout.getMultiSplit(columns, TableLayoutConstants.PREFERRED, 0, 0, 0, 0),
-							new JLabel(), 2, TableLayoutConstants.PREFERRED, 2);
+				new JLabel(), 2, TableLayoutConstants.PREFERRED, 2);
 		alignmentSelection.setBackground(Color.WHITE);
 		alignmentSelection.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 		currentSelection = ((LabelAlignmentAttribute) getDisplayable()).getString();
+		
+		panelOffsetAttrEditor = TableLayout.getSplitVertical(
+				TableLayout.get3Split(new JLabel(offsetXAttribute.getName()), null, offsetXEditComponent.getComponent(), TableLayoutConstants.PREFERRED, 5,
+						TableLayoutConstants.PREFERRED),
+				TableLayout.get3Split(new JLabel(offsetYAttribute.getName()), null, offsetYEditComponent.getComponent(), TableLayoutConstants.PREFERRED, 5,
+						TableLayoutConstants.PREFERRED),
+				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
+		panelOffsetAttrEditor.setVisible(false);
+		
+		alignmentEditorComponent = TableLayout.get3Split(alignmentSelection, null, panelOffsetAttrEditor, TableLayoutConstants.PREFERRED, 10,
+				TableLayoutConstants.PREFERRED);
 		
 		updateButtonState();
 	}
@@ -212,13 +255,13 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 	
 	void updateButtonState() {
 		for (PositionButton button : new PositionButton[] {
-							left, right, above, below, insideTop, insideCenter, insideBottom,
-							insideTopLeft, insideTopRight, insideLeft, insideRight, insideBottomLeft, insideBottomRight,
-							aboveLeft, aboveRight, belowLeft, belowRight,
-							topBorderL, topBorderC, topBorderR,
-							leftBorderT, leftBorderC, leftBorderB,
-							rightBorderT, rightBorderC, rightBorderB,
-							bottomBorderL, bottomBorderC, bottomBorderR }) {
+				left, right, above, below, insideTop, insideCenter, insideBottom,
+				insideTopLeft, insideTopRight, insideLeft, insideRight, insideBottomLeft, insideBottomRight,
+				aboveLeft, aboveRight, belowLeft, belowRight,
+				topBorderL, topBorderC, topBorderR,
+				leftBorderT, leftBorderC, leftBorderB,
+				rightBorderT, rightBorderC, rightBorderB,
+				bottomBorderL, bottomBorderC, bottomBorderR }) {
 			if (!showEmpty) {
 				if (currentSelection.equals(button.getAlignmentSetting())) {
 					button.setSelected(true);
@@ -239,14 +282,34 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 			}
 		} else
 			insideCenter.setText("<html><small>~");
+		
+		/*
+		 * the offset parameters should only be visible if the center location is selected
+		 */
+		if (currentSelection.equals(GraphicAttributeConstants.CENTERED))
+			panelOffsetAttrEditor.setVisible(true);
+		else
+			panelOffsetAttrEditor.setVisible(false);
+		
 	}
 	
 	public JComponent getComponent() {
-		return alignmentSelection;
+		return alignmentEditorComponent;
 	}
 	
 	public void setEditFieldValue() {
 		currentSelection = ((LabelAlignmentAttribute) getDisplayable()).getString();
+		
+		/*
+		 * set offset positions from offset attribute
+		 */
+		
+		labeloffsetAttribute = (CoordinateAttribute) ((Attribute) getDisplayable()).getParent().getAttribute(GraphicAttributeConstants.LABELOFFSET);
+		offsetXAttribute.setDouble(labeloffsetAttribute.getX());
+		offsetYAttribute.setDouble(labeloffsetAttribute.getY());
+		offsetXEditComponent.setEditFieldValue();
+		offsetYEditComponent.setEditFieldValue();
+		
 		updateButtonState();
 	}
 	
@@ -254,5 +317,12 @@ public class LabelAlignmentAttributeEditor extends AbstractValueEditComponent {
 		String bs = currentSelection;
 		if (!showEmpty)
 			((LabelAlignmentAttribute) displayable).setString(bs);
+		offsetXEditComponent.setValue();
+		offsetYEditComponent.setValue();
+		
+		labeloffsetAttribute = (CoordinateAttribute) ((Attribute) getDisplayable()).getParent().getAttribute(GraphicAttributeConstants.LABELOFFSET);
+		
+		labeloffsetAttribute.setX(offsetXAttribute.getDouble());
+		labeloffsetAttribute.setY(offsetYAttribute.getDouble());
 	}
 }

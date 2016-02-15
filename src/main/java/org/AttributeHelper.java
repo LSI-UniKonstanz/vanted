@@ -2588,6 +2588,57 @@ public class AttributeHelper implements HelperClass {
 		} catch (Exception ex) {
 			ErrorMsg.addErrorMessage(ex);
 		}
+		
+	}
+	
+	/**
+	 * Get the relative offset of label position from center of a node.
+	 * Offset is relative to node width/height; (0, 0) center of node, (-1, -1) top-left corner of node, (1, -1) top-right corner of node, (1, 1) bottom-right
+	 * corner of node, (-1, 1) bottom-left corner of node.
+	 * 
+	 * @param attributable
+	 *           currently only a node
+	 * @return relative offset of label position from center of a node, default return (0, 0)
+	 */
+	public Vector2d getLabelOffset(Attributable attributable) {
+		
+		try {
+			LabelAttribute labelAttribute;
+			if (hasAttribute(attributable, GraphicAttributeConstants.LABELGRAPHICS)) {
+				labelAttribute = (LabelAttribute) attributable.getAttribute(GraphicAttributeConstants.LABELGRAPHICS);
+				return labelAttribute.getLabelOffset();
+			}
+		} catch (Exception exception) {
+			ErrorMsg.addErrorMessage(exception);
+		}
+		return new Vector2d(0, 0);
+		
+	}
+	
+	/**
+	 * Set the relative offset of label position from center of a node.
+	 * Offset is relative to node width/height; (0, 0) center of node, (-1, -1) top-left corner of node, (1, -1) top-right corner of node, (1, 1) bottom-right
+	 * corner of node, (-1, 1) bottom-left corner of node.
+	 * 
+	 * @param attributable
+	 *           currently only a node
+	 * @param offsetX
+	 *           horizontal offset of label position from center of a node
+	 * @param offsetY
+	 *           vertical offset of label position from center of a node
+	 */
+	public static void setLabelOffset(Attributable attributable, double offsetX, double offsetY) {
+		
+		try {
+			LabelAttribute labelAttribute;
+			if (hasAttribute(attributable, GraphicAttributeConstants.LABELGRAPHICS)) {
+				labelAttribute = (LabelAttribute) attributable.getAttribute(GraphicAttributeConstants.LABELGRAPHICS);
+				labelAttribute.setLabelOffset(offsetX, offsetY);
+			}
+		} catch (Exception exception) {
+			ErrorMsg.addErrorMessage(exception);
+		}
+		
 	}
 	
 	/**

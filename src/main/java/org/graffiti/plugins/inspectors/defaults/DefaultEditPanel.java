@@ -73,6 +73,7 @@ import org.graffiti.editor.actions.PasteAction;
 import org.graffiti.event.ListenerManager;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
+import org.graffiti.graphics.GraphicAttributeConstants;
 import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.ToolTipHelper;
 import org.graffiti.plugin.editcomponent.StandardValueEditComponent;
@@ -142,8 +143,7 @@ public class DefaultEditPanel extends EditPanel {
 		super();
 		this.emptyMessage = emptyMessage;
 		synchronized (lock) {
-
-
+			
 			if (discardedRowIDs == null || discardedRowIDs.size() <= 0) {
 				discardedRowIDs = new HashSet<String>();
 			}
@@ -157,16 +157,16 @@ public class DefaultEditPanel extends EditPanel {
 			discardedRowIDs.add("titled");
 			discardedRowIDs.add("maximize");
 			discardedRowIDs.add("reference");
-
+			
 			// discardedRowIDs.add("target");
 			// discardedRowIDs.add("source");
-
+			
 			// discardedRowIDs.add("arrowhead");
 			// discardedRowIDs.add("arrowtail");
 			discardedRowIDs.add("data");
 			// discardedRowIDs.add("fontSize");
 			// discardedRowIDs.add("fontStyle");
-
+			
 			discardedRowIDs.add("alignment");
 			discardedRowIDs.add("relVert");
 			discardedRowIDs.add("relHor");
@@ -175,14 +175,16 @@ public class DefaultEditPanel extends EditPanel {
 			discardedRowIDs.add("relAlign");
 			discardedRowIDs.add("alignSegment");
 			discardedRowIDs.add("localAlign");
-
+			
 			discardedRowIDs.add("type");
 			discardedRowIDs.add("Edge:anchor");
 			discardedRowIDs.add("Edge:rounding");
-			discardedRowIDs.add("data");
-
+//			discardedRowIDs.add("data");
+			
+			discardedRowIDs.add(GraphicAttributeConstants.LABELOFFSET);
+			
 			discardedRowIDs.add(PasteAction.PASTED_NODE);
-
+			
 		}
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR) {
 			addDiscarded(discardedRowIDs, new String[] {
@@ -839,7 +841,6 @@ public class DefaultEditPanel extends EditPanel {
 					
 					Attribute attribute = booledChild.getAttribute();
 					
-					
 					if (discardedRowIDs.contains(attribute.getId()) || discardedRowIDs.contains(tabName + ":" + attribute.getId())) {
 						continue;
 					}
@@ -856,60 +857,59 @@ public class DefaultEditPanel extends EditPanel {
 					}
 				}
 			}
-		} else
-			if (attr instanceof CompositeAttribute) {
-				/*
-				 * nearly the same for CompositeAttributes. Check is a component
-				 * is registered. If not, recursive call with its hierarchy form.
-				 */
+		} else if (attr instanceof CompositeAttribute) {
+			/*
+			 * nearly the same for CompositeAttributes. Check is a component
+			 * is registered. If not, recursive call with its hierarchy form.
+			 */
+			
+			Class ecClass = (Class) this.editComponentsMap.get(attr.getClass());
+			
+			if (ecClass != null) {
+				result.addAll(getRow(attr, ecClass, booledAttr.getBool(), tabName));
+			} else {
+				DefaultMutableTreeNode child;
+				BooledAttribute booledChild;
 				
-				Class ecClass = (Class) this.editComponentsMap.get(attr.getClass());
-				
-				if (ecClass != null) {
-					result.addAll(getRow(attr, ecClass, booledAttr.getBool(), tabName));
+				if (treeNode.getChildCount() == 0) {
+					result.addAll(getStandardRow(attr, booledAttr
+							.getBool(), tabName));
 				} else {
-					DefaultMutableTreeNode child;
-					BooledAttribute booledChild;
-					
-					if (treeNode.getChildCount() == 0) {
-						result.addAll(getStandardRow(attr, booledAttr
-								.getBool(), tabName));
-					} else {
-						for (int i = 0; i < treeNode.getChildCount(); i++) {
-							child = (DefaultMutableTreeNode) treeNode.getChildAt(i);
-							booledChild = (BooledAttribute) child.getUserObject();
-							
-							Attribute attribute = booledChild.getAttribute();
-							
-							ecClass = (Class) this.editComponentsMap.get(attribute
-									.getClass());
-							if (ecClass != null) {
-								// if we have a registered component, add it
-								result.addAll(getRow(attribute, ecClass, booledChild.getBool(), tabName));
-							} else {
-								// recursive call if no special component is registered
-								result.addAll(getValueEditComponents(child, tabName));
-							}
+					for (int i = 0; i < treeNode.getChildCount(); i++) {
+						child = (DefaultMutableTreeNode) treeNode.getChildAt(i);
+						booledChild = (BooledAttribute) child.getUserObject();
+						
+						Attribute attribute = booledChild.getAttribute();
+						
+						ecClass = (Class) this.editComponentsMap.get(attribute
+								.getClass());
+						if (ecClass != null) {
+							// if we have a registered component, add it
+							result.addAll(getRow(attribute, ecClass, booledChild.getBool(), tabName));
+						} else {
+							// recursive call if no special component is registered
+							result.addAll(getValueEditComponents(child, tabName));
 						}
 					}
 				}
-			} else {
-				/*
-				 * for non CollectionAttributes and non CompositeAttributes
-				 * check whether there exists a ValueEditComponent, if not use
-				 * standard edit component
-				 */
-				if (attr != null) {
-					Class ecClass = (Class) this.editComponentsMap.get(attr.getClass());
-					
-					if (ecClass != null) {
-						// if we have a registered component to display it, add it
-						result.addAll(getRow(attr, ecClass, booledAttr.getBool(), tabName));
-					} else {
-						result.addAll(getStandardRow(attr, booledAttr.getBool(), tabName));
-					}
+			}
+		} else {
+			/*
+			 * for non CollectionAttributes and non CompositeAttributes
+			 * check whether there exists a ValueEditComponent, if not use
+			 * standard edit component
+			 */
+			if (attr != null) {
+				Class ecClass = (Class) this.editComponentsMap.get(attr.getClass());
+				
+				if (ecClass != null) {
+					// if we have a registered component to display it, add it
+					result.addAll(getRow(attr, ecClass, booledAttr.getBool(), tabName));
+				} else {
+					result.addAll(getStandardRow(attr, booledAttr.getBool(), tabName));
 				}
 			}
+		}
 		return result;
 	}
 	
@@ -954,7 +954,7 @@ public class DefaultEditPanel extends EditPanel {
 	// ~ Inner Classes ==========================================================
 	
 	private void applyChanges() {
-		if(listenerManager == null) {
+		if (listenerManager == null) {
 			System.err.println("DefaultEditPanel (applyChanges): Listener Manager null");
 			return;
 		}

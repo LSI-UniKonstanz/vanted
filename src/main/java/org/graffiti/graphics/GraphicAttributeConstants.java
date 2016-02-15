@@ -85,6 +85,8 @@ public interface GraphicAttributeConstants {
 	public static final String RELVERT = "relVert";
 	public static final String RELHOR = "relHor";
 	public static final String LOCALALIGN = "localAlign";
+	// relative offset of label position from center of a node
+	public static final String LABELOFFSET = "labelOffset";
 	
 	// for EdgeLabelPosition:
 	public static final String RELALIGN = "relAlign";
