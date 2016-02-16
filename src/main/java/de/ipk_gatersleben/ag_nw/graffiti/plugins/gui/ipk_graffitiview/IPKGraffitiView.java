@@ -214,8 +214,6 @@ public class IPKGraffitiView
 		// ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
 		// RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 		// }
-		g.setColor(Color.GREEN);
-		g.drawRect(0, 0, getWidth(), getHeight());
 		super.paintComponent(g);
 //		}
 	}
