@@ -212,7 +212,7 @@ public class InspectorContainer
 	
 	public void showTab(InspectorTab tab) {
 		if (hiddenTabs.contains(tab)) {
-			addTab(tab.getTitle(), tab);
+			addTab(tab.getTitle(), tab.getIcon(), tab);
 			hiddenTabs.remove(tab);
 //			tab.setVisible(true);
 		}
