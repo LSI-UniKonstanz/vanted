@@ -399,6 +399,14 @@ public class NodeComponent
 			double offB = 0;//2d;
 			double xE = shape.getXexcess();
 			double yE = shape.getYexcess();
+			
+			// catch after decimal node sizes.
+			// we need to increase the bounds, to make sure, we display the whole shape
+			// (double to int problem)
+			if(Math.floor(bounds.getWidth()) != bounds.getWidth()
+					|| Math.floor(bounds.getHeight()) != bounds.getHeight())
+				offB++;
+			
 			setBounds((int) (bounds.getX() + offA - xE), (int) (bounds.getY() + offA - yE),
 					(int) (bounds.getWidth() + offB + xE * 2d), (int) (bounds.getHeight() + offB + yE * 2d));
 		}
