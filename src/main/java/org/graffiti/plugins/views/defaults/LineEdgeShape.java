@@ -436,7 +436,9 @@ public abstract class LineEdgeShape implements EdgeShape {
 			// glue arrow on the line at the correct spot and rotation
 			this.tailArrow = tailShape.affix(target, other, getEdgeThickness() + edgeAttr.getFrameThickness());
 			newTarget = tailShape.getAnchor();
-		}
+		} else
+			tailArrow = null;
+		
 		return newTarget;
 	}
 	
@@ -495,7 +497,8 @@ public abstract class LineEdgeShape implements EdgeShape {
 			// glue arrow on the line at the correct spot and rotation
 			headArrow = headShape.affix(target, other, getEdgeThickness() + getFrameThickness());
 			newTarget = headShape.getAnchor();
-		}
+		} else
+			headArrow = null;
 		
 		return newTarget;
 	}
