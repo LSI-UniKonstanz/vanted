@@ -8,6 +8,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.shapes;
 
 import java.awt.Shape;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import java.util.ArrayList;
@@ -55,6 +56,24 @@ public class SBGNProcessShape extends RectangleNodeShape implements ProvidesAddi
 		}
 		// set shape size including sticks
 		((RectangularShape) this.thickShape).setFrame(0, 0, correctedWidth + this.addSx, correctedHeight + this.addSy);
+		
+	}
+	
+	@Override
+	public Point2D getIntersection(Line2D line) {
+		
+		Rectangle2D rectangle = getRealBounds2D();
+		double x = rectangle.getX();
+		double y = rectangle.getY();
+		double width = rectangle.getWidth();
+		double height = rectangle.getHeight();
+		double rounding = getRounding() / 2;
+		// correct size to width == height, only the quadratic shape is considered for calculation of intersection
+		if (width > height)
+			rectangle = new Rectangle2D.Double((width - height) / 2d + x, y, height, height);
+		else
+			rectangle = new Rectangle2D.Double(x, (height - width) / 2d + y, width, width);
+		return getIntersectionOfRoundRectangleAndLine(line, rectangle, rounding);
 		
 	}
 	
