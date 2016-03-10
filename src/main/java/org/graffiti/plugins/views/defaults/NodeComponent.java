@@ -67,15 +67,15 @@ public class NodeComponent
 	private Paint rgp = null;
 	
 	private String currentShapeClass;
-
+	
 	private Paint fillPaint;
-
+	
 	private Paint framePaint;
-
+	
 	private boolean drawFrame;
 	
 	Zoomable zommableView = null;
-
+	
 	private double zoomfactor = 1.0d;
 	
 	/**
@@ -85,7 +85,7 @@ public class NodeComponent
 	 */
 	public NodeComponent(GraphElement ge) {
 		super(ge);
-
+		
 	}
 	
 	// ~ Methods ================================================================
@@ -169,8 +169,6 @@ public class NodeComponent
 		}
 	}
 	
-	
-	
 	@Override
 	public synchronized void nonGraphicAttributeChanged(Attribute attr)
 			throws ShapeNotFoundException {
@@ -182,13 +180,13 @@ public class NodeComponent
 			attrComp.attributeChanged(attr);
 		}
 	}
-
+	
 	private void updateGraphicsFields() {
 		logger.debug("updateGraphicsFields for node id:" + getGraphElement().getID());
 		
 		if (nodeAttr == null)
 			nodeAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
-
+		
 		ColorAttribute color = nodeAttr.getFillcolor();
 		fillPaint = color.getColor();
 		
@@ -196,12 +194,13 @@ public class NodeComponent
 		if (rgp != null && Math.abs(nodeAttr.getUseGradient()) > epsilon) {
 			fillPaint = rgp;
 		}
-
+		
 		drawFrame = (nodeAttr.getFrameThickness() > epsilon);
-
+		
 		framePaint = nodeAttr.getFramecolor().getColor();
 		
 	}
+	
 	/**
 	 * Draws the shape of the node contained in this component according to the
 	 * graphic attributes of the node.
@@ -215,25 +214,24 @@ public class NodeComponent
 //		logger.debug("graph id " + getGraphElement().getGraph().getName() + ", node id:" + getGraphElement().getID() + ", border:" + getBorder().toString());
 		// super.drawShape(g);
 		Graphics2D drawArea = (Graphics2D) g;
-		if(getParent() instanceof Zoomable) {
-			zommableView = (Zoomable)getParent();
+		if (getParent() instanceof Zoomable) {
+			zommableView = (Zoomable) getParent();
 			zoomfactor = zommableView.getZoom().getScaleX();
 		}
 		int width = getWidth();
 		int height = getHeight();
-		if(width * zoomfactor < 5 || height * zoomfactor < 5) {
+		if (width * zoomfactor < 5 || height * zoomfactor < 5) {
 			
 			if (drawFrame) {
 				drawArea.setPaint(framePaint);
 				drawArea.fillRect(0, 0, width, height);
 			}
-
+			
 			drawArea.setPaint(fillPaint);
 			drawArea.drawRect(0, 0, width, height);
 			
 			return;
 		}
-			
 		
 		drawArea.translate(shape.getXexcess(), shape.getYexcess());
 		
@@ -244,9 +242,7 @@ public class NodeComponent
 		
 		// draw background image
 		// fill the shape
-
-
-
+		
 		if (shape instanceof ProvidesAdditonalDrawingShapes) {
 			Collection<Shape> preShapes = ((ProvidesAdditonalDrawingShapes) shape).getPreBorderShapes();
 			if (preShapes != null)
@@ -312,9 +308,8 @@ public class NodeComponent
 			throws ShapeNotFoundException {
 		logger.debug("recreate for node id:" + getGraphElement().getID());
 		
-		
 		if (!this.graphElement.getAttributes().getCollection().containsKey(GRAPHICS)
-				|| ! (graphElement.getAttribute(GRAPHICS) instanceof NodeGraphicAttribute)) {
+				|| !(graphElement.getAttribute(GRAPHICS) instanceof NodeGraphicAttribute)) {
 			Node n = (Node) graphElement;
 			n.removeAttribute(GRAPHICS);
 			AttributeHelper.setDefaultGraphicsAttribute(n, 100, 100);
@@ -322,10 +317,9 @@ public class NodeComponent
 		Object obj = graphElement.getAttribute(GRAPHICS);
 		
 		NodeGraphicAttribute geAttr = (NodeGraphicAttribute) obj;
-
+		
 		if (nodeAttr == null)
 			nodeAttr = (NodeGraphicAttribute) ((Node) graphElement).getAttribute(GRAPHICS);
-
 		
 		// get classname of the shape to use and instantiate this
 		String newShapeClass = geAttr.getShape();
@@ -391,19 +385,19 @@ public class NodeComponent
 		
 		DimensionAttribute dim = nodeAttr.getDimension();
 		// hidden graph element check
-		if(dim.getWidth() < 0 || dim.getHeight() < 0)
-			setSize((int)dim.getWidth(), (int)dim.getHeight());
+		if (dim.getWidth() < 0 || dim.getHeight() < 0)
+			setSize((int) dim.getWidth(), (int) dim.getHeight());
 		else {
 			Rectangle2D bounds = shape.getRealBounds2D();
 			double offA = 0;//-2d;
-			double offB = 0;//2d;
+			double offB = 1;//2d;
 			double xE = shape.getXexcess();
 			double yE = shape.getYexcess();
 			
 			// catch after decimal node sizes.
 			// we need to increase the bounds, to make sure, we display the whole shape
 			// (double to int problem)
-			if(Math.floor(bounds.getWidth()) != bounds.getWidth()
+			if (Math.floor(bounds.getWidth()) != bounds.getWidth()
 					|| Math.floor(bounds.getHeight()) != bounds.getHeight())
 				offB++;
 			
