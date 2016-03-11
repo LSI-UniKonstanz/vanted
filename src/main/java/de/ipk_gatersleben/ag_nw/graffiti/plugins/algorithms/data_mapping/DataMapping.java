@@ -16,8 +16,6 @@ import javax.swing.SwingUtilities;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
-import org.FeatureSet;
-import org.ReleaseInfo;
 import org.apache.commons.collections.set.ListOrderedSet;
 import org.color.ColorUtil;
 import org.graffiti.attributes.Attribute;
@@ -138,15 +136,17 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 						"Hint: By selecting this option, only selected nodes are considered for mapping"));
 //			parameters.add(new BooleanParameter(true, "<html>Consider compound synonyms", null));
 			
-			parameters.add(new BooleanParameter(true, "<html>Consider enzyme synonyms", null));
+//			parameters.add(new BooleanParameter(true, "<html>Consider enzyme synonyms", null));
 			
+			/*
 			if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS)) {
-//				parameters.add(new BooleanParameter(false, "<html>Consider KO database IDs, Gene IDs", null));
+			//				parameters.add(new BooleanParameter(false, "<html>Consider KO database IDs, Gene IDs", null));
 				
 				parameters.add(new BooleanParameter(false, "<html>Map to KEGG map nodes (requires SOAP access)", "<html>"
 						+ "If enabled, KO, Compound and Enzyme elements of a map link node<br>"
 						+ "are retrieved via KEGG SOAP API, to enable mapping onto map nodes."));
 			}
+			*/
 		}
 		parameters.add(new IntegerParameter(0, "Minimum condition count", "<html>"
 				+ "Omit mapping in case minimum<br>condition count is not met."));
@@ -189,11 +189,10 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 			
 			if (times != null && times.length > 1)
 				initChartStyle = GraffitiCharts.LINE;
+			else if (times != null && times.length == 1 && plants != null && plants.length == 1)
+				initChartStyle = GraffitiCharts.HEATMAP;
 			else
-				if (times != null && times.length == 1 && plants != null && plants.length == 1)
-					initChartStyle = GraffitiCharts.HEATMAP;
-				else
-					initChartStyle = GraffitiCharts.BAR_FLAT;
+				initChartStyle = GraffitiCharts.BAR_FLAT;
 		}
 		
 		Collection<ChartComponent> cc = ChartComponentManager.getInstance().getChartComponents();
@@ -233,12 +232,12 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 		if (activeView != null) {
 			if (selection != null && !selection.getNodes().isEmpty())
 				considerOnlySelectedNodes = ((BooleanParameter) params[i++]).getBoolean();
-			considerEnzymeDb = ((BooleanParameter) params[i++]).getBoolean();
-			if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS)) {
-				considerMappingToKEGGmapNodes = ((BooleanParameter) params[i++]).getBoolean();
-			} else {
-				considerMappingToKEGGmapNodes = false;
-			}
+//			considerEnzymeDb = ((BooleanParameter) params[i++]).getBoolean();
+//			if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS)) {
+//				considerMappingToKEGGmapNodes = ((BooleanParameter) params[i++]).getBoolean();
+//			} else {
+			considerMappingToKEGGmapNodes = false;
+//			}
 		}
 		minimumLineCount = ((IntegerParameter) params[i++]).getInteger();
 		diagramStyleRef = (ChartComponent) ((ObjectListParameter) params[i++]).getValue();
