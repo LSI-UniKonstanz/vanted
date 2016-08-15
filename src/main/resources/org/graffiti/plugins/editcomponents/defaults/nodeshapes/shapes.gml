@@ -1,4 +1,4 @@
-# generated with VANTED V2.6.1 at Wed Feb 10 10:53:54 AEDT 2016
+# generated with VANTED V2.6.2 at Mon Aug 15 12:22:46 AEST 2016
 graph [
   graphbackgroundcolor "#999999"
   directed 1
@@ -692,6 +692,26 @@ graph [
       opacity 1.0
       rounding 5.0
       type "paperlefttop"
+    ]
+  ]
+  node [
+    id 39
+    zlevel -1
+
+    graphics [
+      x 249.5
+      y 510.5
+      w 30.0
+      h 17.0
+      fill "#FFFFFF"
+      outline "#000000"
+      frameThickness 1.0
+      gradient 0.0
+      offX 3
+      offY 3
+      opacity 1.0
+      rounding 5.0
+      type "sbgnmultistadium"
     ]
   ]
 ]
