@@ -71,6 +71,10 @@ public class SBGNMultiStadiumShape extends RectangleNodeShape implements Provide
 	@Override
 	public void buildShape(NodeGraphicAttribute graphics) {
 		
+		// correct width if necessary, width should be >= height
+		if (graphics.getDimension().getHeight() > graphics.getDimension().getWidth())
+			graphics.getDimension().setWidth(graphics.getDimension().getHeight());
+		
 		if (!graphics.getCollection().containsKey("offX"))
 			graphics.add(new IntegerAttribute("offX", this.iOffX), false);
 		this.iOffX = ((IntegerAttribute) graphics.getAttribute("offX")).getInteger();
