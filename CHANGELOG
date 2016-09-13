@@ -1,11 +1,12 @@
 <h3>Changelog</h3>
 
-<h4>VANTED v2.6.3 release (15/03/2016)</h4>
+<h4>VANTED v2.6.3 release (xx/xx/2016)</h4>
 <ul>
 <li>Fixed drawing problems of nodes with border size 1
 <li>Fixed GraphML reader. 
 <li>Added support for more SBGN shapes
 <li>Added BioModels backup webservice location
+<li>Changed MetaCrop maps to cupport new SBGN Shapes
 </ul>
 
 

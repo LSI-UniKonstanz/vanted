@@ -11,18 +11,24 @@ import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
+import org.graffiti.plugin.parameter.StringParameter;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
 
 @SuppressWarnings("nls")
-public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterface{
+public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterface {
 	
+	/**
+	 * 
+	 */
+	static final String METACROP_PATHWAY_URL_PARAM = "Metacrop Pathway URL";
+	static String METACROP_PATHWAY_URL_VALUE = "https://immersive-analytics.infotech.monash.edu/vanted/addons/metacrop/gml-newsbgnshapes/";
 	private static final long serialVersionUID = 1L;
-	
 	
 	public TabMetaCrop() {
 		
-		super("MetaCrop", "https://immersive-analytics.infotech.monash.edu/vanted/addons/metacrop/gml/", "pathways", "pathway", "http://metacrop.ipk-gatersleben.de/", false);
+		super("MetaCrop", METACROP_PATHWAY_URL_VALUE, "pathways", "pathway",
+				"http://metacrop.ipk-gatersleben.de/", false);
 		
 	}
 	
@@ -32,27 +38,28 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 		
 	}
 	
-	
-	
-	
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
 		arrayList.add(new BooleanParameter(true, PREFERENCE_TAB_SHOW, "Enable/Disable this option to show/hide the Metacrop Tab"));
+		arrayList.add(new StringParameter(METACROP_PATHWAY_URL_VALUE, METACROP_PATHWAY_URL_PARAM,
+				"<html>Set URL to MetaCrop pathway repository"));
 		return arrayList;
 	}
-
 	
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		// TODO Auto-generated method stub
-		
+		METACROP_PATHWAY_URL_VALUE = preferences.get(METACROP_PATHWAY_URL_PARAM, METACROP_PATHWAY_URL_VALUE);
+		setWebAddress(METACROP_PATHWAY_URL_VALUE);
 	}
+	
 	@Override
 	public String getPreferencesAlternativeName() {
 		// TODO Auto-generated method stub
 		return "MetaCrop";
 	}
+	
 	@Override
 	public void addAnnotationsToGraphElements(Graph graph) {
 		
@@ -177,13 +184,12 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 		return new String[] { ".gml", ".graphml" };
 		
 	}
-
-
+	
 	@Override
 	public String getTabParentPath() {
 		return "Pathways";
 	}
-
+	
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_LEADING;
