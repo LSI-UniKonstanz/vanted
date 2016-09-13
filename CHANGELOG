@@ -4,7 +4,8 @@
 <ul>
 <li>Fixed drawing problems of nodes with border size 1
 <li>Fixed GraphML reader. 
-
+<li>Added support for more SBGN shapes
+<li>Added BioModels backup webservice location
 </ul>
 
 
