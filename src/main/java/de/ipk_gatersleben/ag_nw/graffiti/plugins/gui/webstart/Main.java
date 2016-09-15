@@ -43,6 +43,7 @@ import org.vanted.updater.ScanForUpdate;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.MenuItemInfoDialog;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter;
 
 /**
  * Contains the graffiti editor.
@@ -226,6 +227,7 @@ public class Main {
 		PreferenceManager.getInstance().addPreferencingClass(VantedPreferences.class);
 		
 		PreferenceManager.getInstance().addPreferencingClass(ScanForUpdate.class);
+		PreferenceManager.getInstance().addPreferencingClass(BiomodelsAccessAdapter.class);
 		
 		ScanForUpdate.issueScan(false); // only check, if current date is after update-date
 		

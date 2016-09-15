@@ -37,7 +37,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
 
 public abstract class PathwayWebLinkTab extends InspectorTab {
 	private static final long serialVersionUID = -3026855152800218905L;
-	private final String title, webAddress, content, contentSingle, infoURL;
+	private String title, webAddress, content, contentSingle, infoURL;
 	protected PathwayWebLinkTreeNode myRootNode;
 	
 	private final HashMap<String, PathwayWebLinkTreeNode> group2treeNode = new HashMap<String, PathwayWebLinkTreeNode>();
@@ -47,12 +47,12 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 	private final String downloadButtonText;
 	
 	public PathwayWebLinkTab(String title, String url, String content, String contentSingle, String infoURL,
-						boolean ommitEmptyGroupItems) {
+			boolean ommitEmptyGroupItems) {
 		this(title, url, content, contentSingle, infoURL, ommitEmptyGroupItems, "<html>Download selected " + content);
 	}
 	
 	public PathwayWebLinkTab(String title, String url, String content, String contentSingle, String infoURL,
-						boolean ommitEmptyGroupItems, String downloadButtonText) {
+			boolean ommitEmptyGroupItems, String downloadButtonText) {
 		super();
 		this.title = title;
 		this.webAddress = url;
@@ -66,11 +66,12 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 	}
 	
 	protected void initComponents() {
+		removeAll();
 		double border = 5;
 		double[][] size = {
-							{ border, TableLayoutConstants.FILL, border }, // Columns
+				{ border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.PREFERRED, 3, TableLayoutConstants.PREFERRED, 5,
-												TableLayoutConstants.PREFERRED, 3, TableLayoutConstants.FILL, border } }; // Rows
+						TableLayoutConstants.PREFERRED, 3, TableLayoutConstants.FILL, border } }; // Rows
 		this.setLayout(new TableLayout(size));
 		
 		final JTree pathwayList = getPathwayList();
@@ -91,10 +92,10 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 		add(getLoadDataButton(pathwayList), "1,3");
 		
 		add(new JLabel("<html>Select " + content + " from the list and use the download button "
-							+ "to download and view " + title.toLowerCase() + " (" + infoURL + ")."), "1,5");
+				+ "to download and view " + title.toLowerCase() + " (" + infoURL + ")."), "1,5");
 		
 		add(new JScrollPane(pathwayList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-							ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED), "1,7");
+				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED), "1,7");
 		
 		validate();
 	}
@@ -113,11 +114,11 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 				final Collection<PathwayWebLinkItem> selection = getPathwaySelection(pathwayList);
 				if (selection.isEmpty()) {
 					MainFrame.showMessageDialog("<html>" + "Please select at least one " + contentSingle
-										+ " from the list.<br>" + "If the list is empty, please use the action command to fill the list.",
-										"Information");
+							+ " from the list.<br>" + "If the list is empty, please use the action command to fill the list.",
+							"Information");
 				}
 				final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
-									"Load Data...", "Initialize...");
+						"Load Data...", "Initialize...");
 				final Collection<Graph> graphs = new ArrayList<Graph>();
 				BackgroundTaskHelper.issueSimpleTask(title, "Load Data...", new Runnable() {
 					public void run() {
@@ -187,7 +188,7 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 				group2treeNode.clear();
 				try {
 					for (PathwayWebLinkItem i : WebDirectoryFileListAccess.getWebDirectoryFileListItems(webAddress,
-										getValidExtensions(), showGraphExtensions))
+							getValidExtensions(), showGraphExtensions))
 						addTreeChild(i);
 				} catch (IOException e) {
 					ErrorMsg.addErrorMessage(e);
@@ -327,6 +328,11 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 	
 	public void setShowGraphExtensions(boolean show) {
 		this.showGraphExtensions = show;
+	}
+	
+	protected void setWebAddress(String webAddress) {
+		this.webAddress = webAddress;
+		//initComponents();
 	}
 	
 }

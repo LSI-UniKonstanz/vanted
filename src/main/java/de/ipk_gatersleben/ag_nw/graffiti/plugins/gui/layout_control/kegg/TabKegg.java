@@ -552,7 +552,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 							}
 							// ignore path, rc, rp
 							for (String s : ids)
-								if (!s.startsWith("path") && !s.startsWith("rc") && !s.startsWith("rp")) {
+								if (!s.startsWith("path") && !s.startsWith("rc") && !s.startsWith("rp") && !s.equals("undefined")) {
 									labels += "+" + s;
 									count += ids.size();
 								}
