@@ -718,7 +718,7 @@ public class DefaultPluginManager
 	 *           the progress viewer that display the progress made
 	 * @return the instantiated plugin.
 	 * @exception PluginManagerException
-	 *               an error occurrs while loading or
+	 *               an error occurs while loading or
 	 *               instantiating the plugin.
 	 */
 	private GenericPlugin createInstance(PluginDescription description,
@@ -744,7 +744,7 @@ public class DefaultPluginManager
 		
 		GenericPlugin pluginInstance;
 		
-		try { // to instanciate the plugin's main class
+		try { // to instantiate the plugin's main class
 			if (!loaded)
 				pluginInstance = (GenericPlugin) InstanceLoader.createInstance(description.getMain());
 			else {

@@ -25,6 +25,8 @@ import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
 
+import com.sun.istack.NotNull;
+
 /**
  * Global Preference class for VANTED.
  * Every Preference regarding global settings of VANTED should be
@@ -83,12 +85,12 @@ public class VantedPreferences implements PreferencesInterface {
 		
 		if(Logger.getRootLogger().getLevel() == Level.DEBUG)
 			params.add(new BooleanParameter(false, PREFERENCE_DEBUG_SHOWPANELFRAMES, "For debugging purposes, show frames from each graph and attribute component."));
+
 		return params;
 	}
 	
 	@Override
-	public void updatePreferences(Preferences preferences) {
-		
+	public void updatePreferences(Preferences preferences) {	
 		/*
 		 * handle look and feel parameter
 		 */
@@ -179,27 +181,35 @@ public class VantedPreferences implements PreferencesInterface {
 		}
 		
 		// temp variable to add the active LAF to the beginning of the objectlistparameter variable
-		LookAndFeelNameAndClass avtiveLaF = null;
+		LookAndFeelNameAndClass activeLaF = null;
 		
 		List<LookAndFeelNameAndClass> listLAFs = new ArrayList<>();
 		
 		for (LookAndFeelInfo lafi : UIManager.getInstalledLookAndFeels()) {
 			LookAndFeelNameAndClass d = new LookAndFeelNameAndClass(lafi.getName(), lafi.getClassName());
 			if (d.toString().equals(canonicalName))
-				avtiveLaF = d;
+				activeLaF = d;
 			else
 				listLAFs.add(d);
-			
 		}
-		// add active LaF to the beginning of the List
-		listLAFs.add(0, avtiveLaF);
+		
+		//Check, because in add-ons a new skin could be used => NPE.
+		if(activeLaF != null)
+			listLAFs.add(0, activeLaF); // add active LaF to the beginning of the List 
+		else {
+			String activeLaF_Name = UIManager.getLookAndFeel().getName();
+			activeLaF = new LookAndFeelNameAndClass(activeLaF_Name, canonicalName);
+			listLAFs.add(0, activeLaF);
+			//Then install it, to enable resetting, later use
+			UIManager.installLookAndFeel(activeLaF_Name, canonicalName);
+		}
 		
 		possibleValues = listLAFs.toArray();
-		
+
 		objectlistparam = new ObjectListParameter(
-				avtiveLaF,
+				activeLaF,
 				PREFERENCE_LOOKANDFEEL,
-				"<html>Set the look and feel of the application<br/>Current: <b>" + avtiveLaF.name,
+				"<html>Set the look and feel of the application<br/>Current: <b>" + activeLaF.name,
 				possibleValues);
 		objectlistparam.setRenderer(new LookAndFeelWrapperListRenderer());
 		return objectlistparam;
@@ -207,7 +217,7 @@ public class VantedPreferences implements PreferencesInterface {
 	
 	/**
 	 * Custom list cell renderer, that will have the LookAndFeelNameAndClass as object
-	 * and displays the human readable name of the lookandfeel class name
+	 * and displays the human readable name of the LookAndFeel class name
 	 * 
 	 * @author matthiak
 	 */
@@ -239,7 +249,12 @@ public class VantedPreferences implements PreferencesInterface {
 		String name;
 		String className;
 		
-		public LookAndFeelNameAndClass(String name, String className) {
+		public LookAndFeelNameAndClass(@NotNull String name, @NotNull Class<?> className) {
+			this.name = name;
+			this.className = className.getCanonicalName();			
+		}
+		
+		public LookAndFeelNameAndClass(@NotNull String name, @NotNull String className) {
 			this.name = name;
 			this.className = className;
 		}

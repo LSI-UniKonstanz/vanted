@@ -195,7 +195,7 @@ public class PreferenceManager
 	 * part of the given preferences, the parameters in the preferences
 	 * gets deleted
 	 */
-	private Preferences checkExistingPreferences(Class<?> clazz, List<? extends Parameter> defaultPreferences) {
+	public Preferences checkExistingPreferences(Class<?> clazz, List<? extends Parameter> defaultPreferences) {
 		logger.debug("checking Existing Preferences and collect keys that can be deleted");
 		/*
 		 * inheriting classes, where the superclass already implemented the defaultparameters
@@ -236,7 +236,7 @@ public class PreferenceManager
 	 * 
 	 * @param prefInterface
 	 */
-	private void checkAddAndSetClassesPreferences(PreferencesInterface prefInterface) {
+	public void checkAddAndSetClassesPreferences(PreferencesInterface prefInterface) {
 		Preferences defaultPrefs = checkExistingPreferences(prefInterface.getClass(), ((PreferencesInterface) prefInterface).getDefaultParameters());
 		
 		if (defaultPrefs != null) {

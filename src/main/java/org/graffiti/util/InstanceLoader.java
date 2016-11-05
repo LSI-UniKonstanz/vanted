@@ -16,7 +16,7 @@ import java.security.Policy;
 import java.util.HashSet;
 
 /**
- * Represents an instance loader, which can be used to instanciate a class with
+ * Represents an instance loader, which can be used to instantiate a class with
  * the given name.
  * 
  * @version $Revision: 1.11 $
@@ -69,7 +69,7 @@ public class InstanceLoader {
 	 * Returns a new instance of the specified class.
 	 * 
 	 * @param theClass
-	 *           the class to instanciate.
+	 *           the class to instantiate.
 	 * @return DOCUMENT ME!
 	 * @throws InstanceCreationException
 	 *            DOCUMENT ME!
@@ -89,7 +89,7 @@ public class InstanceLoader {
 	 * Returns a new instance of the specified class.
 	 * 
 	 * @param name
-	 *           the name of the class to instanciate.
+	 *           the name of the class to instantiate.
 	 * @return DOCUMENT ME!
 	 * @throws InstanceCreationException
 	 *            DOCUMENT ME!
@@ -97,9 +97,11 @@ public class InstanceLoader {
 	public static synchronized Object createInstance(String name)
 						throws InstanceCreationException {
 		try {
-			Class c = storedLoader.loadClass(name);
+			Class<?> c = storedLoader.loadClass(name);
 			
 			return c.newInstance();
+			//It might be useful to print the Stacktraces too,
+			//since there some valuable information may be hiding itself *
 		} catch (NullPointerException npe) {
 			throw new InstanceCreationException(npe);
 		} catch (ClassNotFoundException cnfe) {
@@ -108,8 +110,11 @@ public class InstanceLoader {
 			throw new InstanceCreationException(ie);
 		} catch (IllegalAccessException iae) {
 			throw new InstanceCreationException(iae);
+		} catch (ClassCastException cce) {
+			cce.printStackTrace(); //As in here *
+			throw new InstanceCreationException(cce);
 		} catch (RuntimeException npe) {
-			throw new InstanceCreationException(npe);
+			throw new InstanceCreationException(npe);			
 		} catch (Exception e) {
 			System.err.println("Unhandled (ignored) exception: " + e.getLocalizedMessage());
 			e.printStackTrace();

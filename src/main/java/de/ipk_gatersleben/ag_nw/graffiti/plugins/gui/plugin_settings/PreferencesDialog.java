@@ -194,9 +194,21 @@ public class PreferencesDialog extends JDialog
 		myTree = new JTree(rootNode);
 		// setBackgroundNonSelectionColor()
 		
-		DefaultTreeCellRenderer tcr = (DefaultTreeCellRenderer) myTree.getCellRenderer();
-		tcr.setOpaque(true);
-		tcr.setBackgroundNonSelectionColor(Color.YELLOW);
+		//Here we can very well encounter an exception, so just in case to be on the safe side
+		try{
+			DefaultTreeCellRenderer tcr = (DefaultTreeCellRenderer) myTree.getCellRenderer();
+			tcr.setOpaque(true);
+			tcr.setBackgroundNonSelectionColor(Color.YELLOW);
+			//We keep the exception tight, we know what we are doing
+		} catch(ClassCastException cce) {
+			System.out.println("ClassCastException has occured.\n"
+					+ " javax.swing.tree.DefaultTreeCellRenderer loaded instead of"
+					+ myTree.getCellRenderer().toString() + ".");
+			DefaultTreeCellRenderer tcr = new DefaultTreeCellRenderer();
+			myTree.setCellRenderer(tcr);
+			tcr.setOpaque(true);
+			tcr.setBackgroundNonSelectionColor(Color.YELLOW);			
+		}
 		
 		knownNodes = new HashMap<String, MyPluginTreeNode>();
 		this.showOnlyLayoutAlgorithms = showOnlyLayoutAlgorithms;
