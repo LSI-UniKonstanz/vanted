@@ -39,7 +39,7 @@ public class WindowSettings
 	JMenuItem myMenuItem, showAllElements, showElements, hideElements;
 	
 	public String getName() {
-		return "Show/Hide network Edges";
+		return "Show/Hide Network Edges";
 	}
 	
 	@Override

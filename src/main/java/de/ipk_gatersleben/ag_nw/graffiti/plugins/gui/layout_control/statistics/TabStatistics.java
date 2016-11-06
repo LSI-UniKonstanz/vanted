@@ -48,6 +48,7 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -1034,7 +1035,14 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	public TabStatistics() {
 		super();
 		this.title = "Statistics";
-		initComponents();
+		//Tackles multithreading issue on Nimbus
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				initComponents();				
+			}
+		});
 	}
 	
 	public void postAttributeAdded(AttributeEvent e) {

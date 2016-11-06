@@ -196,7 +196,8 @@ public class GraffitiFrame
 														GraffitiInternalFrame.class);
 				if (gif != null) {
 					MainFrame.getInstance().createExternalFrame(
-										view.getClass().getCanonicalName(), es, true, fullscreen);
+										view.getClass().getCanonicalName(), es, true, fullscreen, 
+											gif.getX(), gif.getY(), gif.getWidth(), gif.getHeight());
 					gif.doDefaultCloseAction();
 				} else {
 					GraffitiFrame gf = (GraffitiFrame)

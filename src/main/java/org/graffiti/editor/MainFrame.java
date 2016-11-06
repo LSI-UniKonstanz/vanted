@@ -31,6 +31,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -69,6 +71,7 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 
+import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -87,6 +90,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.Popup;
@@ -4177,12 +4181,12 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	}
 	
 	public View createExternalFrame(String viewClassName, EditorSession session, boolean otherViewWillBeClosed,
-			boolean fullscreen) {
-		return createExternalFrame(viewClassName, null, session, otherViewWillBeClosed, fullscreen);
+			boolean fullscreen, int x, int y, int w, int h) {
+		return createExternalFrame(viewClassName, null, session, otherViewWillBeClosed, fullscreen, x, y, w, h);
 	}
 	
 	public View createExternalFrame(String viewClassName, String framename, EditorSession session,
-			boolean otherViewWillBeClosed, boolean fullscreen) {
+			boolean otherViewWillBeClosed, boolean fullscreen, int x, int y, int w, int h) {
 		GraffitiInternalFrame gif;
 		if (framename == null)
 			gif = (GraffitiInternalFrame) createInternalFrame(viewClassName, session.getGraph().getName(), session, false,
@@ -4190,10 +4194,30 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		else
 			gif = (GraffitiInternalFrame) createInternalFrame(viewClassName, framename, session, false, true,
 					otherViewWillBeClosed);
-		GraffitiFrame gf = new GraffitiFrame(gif, fullscreen);
+		final GraffitiFrame gf = new GraffitiFrame(gif, fullscreen);
 		gf.addWindowListener(graffitiFrameListener);
+		gf.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				gf.toFront();	
+			}
+		});
 		gf.setVisible(true);
+		/* Placement of newly detached window relatively below graph edit tools*/
+		int x0 = 75;
+		if (x >= 150)
+			x0 = x - 75;
+		if (y < 75) //to avoid covering edit tools on the left side
+			gf.setBounds(x0, y + 192, w, h);
+		else
+			gf.setBounds(x0, y + 105, w, h);
+		
 		MainFrame.getInstance().addDetachedFrame(gf);
+		
 		return gif.getView();
 	}
 	
