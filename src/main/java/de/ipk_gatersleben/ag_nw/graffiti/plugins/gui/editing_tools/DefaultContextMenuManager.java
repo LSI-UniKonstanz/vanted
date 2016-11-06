@@ -172,6 +172,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 			result.add(pluginEntries);
 		
 		windowEntries.add(getDetachWindowCommand());
+		windowEntries.add(getDetachedWindowSnapMode(e));
 		result.add(windowEntries);
 		
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.SCRIPT_ACCESS))
@@ -187,6 +188,49 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		return result;
 	}
 	
+	/**
+	 * This option enables convenient use of detached windows by regulating the
+	 * focus of the window. It should be intuitive, since it resides in the same
+	 * menu as its dependent neighbor-option 'Detach/Attach'. Also it is only
+	 * visible, once a window is detached to avoid overloading the context menu.
+	 * It is referred to as 'Snap mode'. <p>
+	 * 
+	 * @param mouseEvent to determine exact position
+	 * @return new JMenuItem
+	 */
+	private JMenuItem getDetachedWindowSnapMode(MouseEvent mouseEvent) {
+		JMenuItem mItem;
+		GraffitiFrame frame = null; //the detached source-frame
+		final Object _IPKgraffitiView = mouseEvent.getSource();
+		GraffitiFrame[] gframes = MainFrame.getInstance().getDetachedFrames();
+		
+		//There could be multiple detached frames at a time
+		for(GraffitiFrame gf: gframes) {
+			if (gf.getView().equals(_IPKgraffitiView))
+				frame = gf;
+		}
+		
+		if (frame == null || !frame.isAlwaysOnTop()) //lazy evaluation
+			mItem = new JMenuItem("Snap window to front");
+		else
+			mItem = new JMenuItem("Exit window snap mode");
+		
+		final GraffitiFrame gf = frame;
+		mItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gf.setAlwaysOnTop(!gf.isAlwaysOnTop());
+			}
+		});
+		
+		//all frames attached
+		if (gframes.length < 1)
+			mItem.setVisible(false);
+		
+		return mItem;
+	}
+
 	private JMenuItem getDetachWindowCommand() {
 		JMenuItem menu = new JMenuItem("Detach/Attach");
 		menu.addActionListener(new ActionListener() {
