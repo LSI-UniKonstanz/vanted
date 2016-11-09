@@ -71,7 +71,6 @@ import java.util.prefs.BackingStoreException;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
 
-import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -90,7 +89,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.Popup;
@@ -2345,7 +2343,9 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			String graphName = session.getGraph().getName();
 			if (graphName == null)
 				graphName = "[" + session.getGraph().getName() + "]";
-			int res = JOptionPane.showConfirmDialog(this, "<html>" + sBundle.getString("frame.close_save") + "<p>"
+			JDialog confirmDialog = new JDialog(this);
+			confirmDialog.setAlwaysOnTop(true);
+			int res = JOptionPane.showConfirmDialog(confirmDialog, "<html>" + sBundle.getString("frame.close_save") + "<p>"
 					+ "Graph " + graphName + " contains<br>" + session.getGraph().getNodes().size() + " node(s) and "
 					+ session.getGraph().getEdges().size() + " edge(s)!", sBundle.getString("frame.close_save_title"),
 					JOptionPane.YES_NO_CANCEL_OPTION);
