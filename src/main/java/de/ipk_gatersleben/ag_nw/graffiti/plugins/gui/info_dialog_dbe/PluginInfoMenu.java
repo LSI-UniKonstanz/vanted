@@ -12,6 +12,8 @@
 
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe;
 
+import javax.swing.SwingUtilities;
+
 import org.graffiti.editor.GraffitiInternalFrame;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.plugin.gui.GraffitiComponent;
@@ -25,7 +27,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
  * @author chris
  */
 public class PluginInfoMenu
-					extends DBE_EditorPluginAdapter {
+					extends DBE_EditorPluginAdapter {	
 	// ~ Constructors ===========================================================
 	
 	/**
@@ -44,8 +46,23 @@ public class PluginInfoMenu
 
 		this.guiComponents = new GraffitiComponent[1];
 		
+
+		//we use a holder to create the component on EDT
+		final MenuItemInfoDialog[] holder = {null};
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				holder[0] = new MenuItemInfoDialog();
+			}
+		});
+		
 		// menu example
-		this.guiComponents[0] = new MenuItemInfoDialog();
+		if (holder[0] != null)
+			this.guiComponents[0] = holder[0];
+		else
+			this.guiComponents[0] = new MenuItemInfoDialog();
 	}
 }
 
