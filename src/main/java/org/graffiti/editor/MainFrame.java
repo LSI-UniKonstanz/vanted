@@ -3610,27 +3610,12 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			
 			View view = f.getView();
 			
-			viewFrameMapper.remove(view);
-			zoomListeners.remove(view);
-			
-			ListenerManager lm = session.getGraph().getListenerManager();
-			try {
-				lm.removeAttributeListener(view);
-				lm.removeEdgeListener(view);
-				lm.removeNodeListener(view);
-				lm.removeGraphListener(view);
-			} catch (ListenerNotFoundException err) {
-				ErrorMsg.addErrorMessage(err);
-			}
-			
 			view.setGraph(null);
 			view.close();
-			
 			session.removeView(f.getView());
 			
 			setTitle(GraffitiInternalFrame.startTitle);
 			mainFrame.updateActions();
-			
 		}
 		
 		public void windowClosing(WindowEvent e) {
@@ -4215,7 +4200,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			gf.setBounds(x0, y + 192, w, h);
 		else
 			gf.setBounds(x0, y + 105, w, h);
-		
+
 		MainFrame.getInstance().addDetachedFrame(gf);
 		
 		return gif.getView();
