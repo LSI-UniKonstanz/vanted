@@ -115,7 +115,7 @@ public class MenuItemInfoDialog
 			public void actionPerformed(ActionEvent arg0) {
 				boolean ext = true;
 				if (ext) {
-					AttributeHelper.showInBrowser("https://immersive-analytics.infotech.monash.edu/vanted//index.php?file=doc139.html");
+					AttributeHelper.showInBrowser("http://kim25.wwwdns.kim.uni-konstanz.de/vanted/index.php?file=doc139.html");
 					return;
 				}
 				JFrame w = new JFrame("Release Information");
@@ -126,7 +126,7 @@ public class MenuItemInfoDialog
 				}; // Rows
 				w.setLayout(new TableLayout(size));
 				w.add(
-									getWebPane("https://immersive-analytics.infotech.monash.edu/vanted//index.php?file=doc139.html"),
+									getWebPane("http://kim25.wwwdns.kim.uni-konstanz.de/vanted/index.php?file=doc139.html"),
 									"1,1");
 				w.setSize(640, 480);
 				w.setVisible(true);

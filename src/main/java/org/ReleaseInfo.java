@@ -283,7 +283,7 @@ public class ReleaseInfo implements HelperClass {
 	}
 	
 	public static String getAppWebURL() {
-		return "https://immersive-analytics.infotech.monash.edu/vanted";
+		return "http://kim25.wwwdns.kim.uni-konstanz.de/vanted";
 	}
 	
 	private static String helpIntro = "";

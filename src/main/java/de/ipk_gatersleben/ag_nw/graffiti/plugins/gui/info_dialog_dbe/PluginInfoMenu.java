@@ -12,6 +12,8 @@
 
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe;
 
+import java.lang.reflect.InvocationTargetException;
+
 import javax.swing.SwingUtilities;
 
 import org.graffiti.editor.GraffitiInternalFrame;
@@ -50,13 +52,17 @@ public class PluginInfoMenu
 		//we use a holder to create the component on EDT
 		final MenuItemInfoDialog[] holder = {null};
 		
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				holder[0] = new MenuItemInfoDialog();
-			}
-		});
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				
+				@Override
+				public void run() {
+					holder[0] = new MenuItemInfoDialog();
+				}
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			e.printStackTrace();
+		}
 		
 		// menu example
 		if (holder[0] != null)

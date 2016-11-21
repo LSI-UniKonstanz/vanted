@@ -13,7 +13,7 @@ public class WebDirectoryFileListAccess {
 	
 	public static Collection<PathwayWebLinkItem> getMetaCropListItems() throws IOException {
 		ArrayList<PathwayWebLinkItem> result = new ArrayList<PathwayWebLinkItem>();
-		String address = "https://immersive-analytics.infotech.monash.edu/vanted/addons/metacrop/";
+		String address = "http://kim25.wwwdns.kim.uni-konstanz.de/vanted/addons/metacrop/";
 		String pref = address;
 		
 		// Create a URL for the desired page

@@ -94,6 +94,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	
 	private static final Integer PREFERENCE_DEFAULT_GRID_SIZE = 5;
 	
+	private static final double MINIMUM_COORD = 0.0;
 	// ~ Static fields/initializers =============================================
 	private static String rkey = "selrect";
 	
@@ -685,6 +686,14 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				}
 			}
 			
+			
+			//TODO: Check if implementing edge snap selection
+			//		would be a better alternative
+			if (newX < MINIMUM_COORD)
+				newX = MINIMUM_COORD;
+			if (newY < MINIMUM_COORD)
+				newY = MINIMUM_COORD;
+			
 			lastBendHit.setCoordinate(new Point2D.Double(newX, newY));
 //			e.getComponent().repaint();
 //			for (View v : MainFrame.getInstance().getActiveEditorSession().getViews())
@@ -1083,6 +1092,13 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					newY += dY;
 					newZ += dZ;
 					
+					//Do not allow negative coordinates. These are hidden and
+					//not accessible directly by the user
+					if (newX < MINIMUM_COORD)
+						newX = MINIMUM_COORD;
+					if (newY < MINIMUM_COORD)
+						newY = MINIMUM_COORD;
+					
 					if (!e.isShiftDown() && e.isAltDown()) {
 						int grid = getGrid(-1);
 						if (grid > 0) {
@@ -1134,7 +1150,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 							newY = newY - (newY % grid);
 						}
 					}
-					
+
 					coord.setCoordinate(new Point2D.Double(newX, newY));
 					
 					if (maxX < newX)

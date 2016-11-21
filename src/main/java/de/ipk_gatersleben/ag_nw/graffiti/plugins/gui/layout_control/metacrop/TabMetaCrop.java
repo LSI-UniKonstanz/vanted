@@ -22,7 +22,7 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 	 * 
 	 */
 	static final String METACROP_PATHWAY_URL_PARAM = "Metacrop Pathway URL";
-	static String METACROP_PATHWAY_URL_VALUE = "https://immersive-analytics.infotech.monash.edu/vanted/addons/metacrop/gml-newsbgnshapes/";
+	static String METACROP_PATHWAY_URL_VALUE = "http://kim25.wwwdns.kim.uni-konstanz.de/vanted/addons/metacrop/gml-newsbgnshapes/";
 	private static final long serialVersionUID = 1L;
 	
 	public TabMetaCrop() {

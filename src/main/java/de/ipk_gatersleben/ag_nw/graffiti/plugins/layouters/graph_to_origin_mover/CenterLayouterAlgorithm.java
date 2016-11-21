@@ -106,8 +106,7 @@ public class CenterLayouterAlgorithm
 		
 		moveGraph(graph, getName(), true, 50, 50);
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	public static void moveGraph(Graph graph, String nameOfOperation, boolean moveToTop, double offX, double offY) {
 		double minX = Double.MAX_VALUE;
 		double minY = Double.MAX_VALUE;
