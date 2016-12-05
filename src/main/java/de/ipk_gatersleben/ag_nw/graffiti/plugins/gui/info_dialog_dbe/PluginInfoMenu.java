@@ -61,7 +61,9 @@ public class PluginInfoMenu
 				}
 			});
 		} catch (InvocationTargetException | InterruptedException e) {
-			e.printStackTrace();
+			System.err.println("Exception " + e.toString() + " occurred caused by " + e.getCause().toString()
+					+ " (the underlying method in the try-clause). Worry not, we are safe."); //we recreate it little bit down below
+			//e.printStackTrace();
 		}
 		
 		// menu example

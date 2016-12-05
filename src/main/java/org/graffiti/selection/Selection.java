@@ -98,7 +98,6 @@ public class Selection {
 	 * @param name
 	 *           the name of this selection.
 	 */
-	@SuppressWarnings("unchecked")
 	public Selection(String name) {
 		this();
 		this.name = name;
