@@ -94,7 +94,6 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	
 	private static final Integer PREFERENCE_DEFAULT_GRID_SIZE = 5;
 	
-	private static final double MINIMUM_COORD = 0.0;
 	// ~ Static fields/initializers =============================================
 	private static String rkey = "selrect";
 	
@@ -653,6 +652,19 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				return;
 			}
 		}
+
+		/* Do not allow negative coordinates for the lastPressed element. Otherwise
+		 * this gets hidden out of view's bounds and is not directly accessible
+		 * for the user. 
+		 */
+		if (lastPressed instanceof EdgeComponent || lastPressed instanceof NodeComponent) {
+			double tX = e.getPoint().getX() + lastPressedMousePointRel.getX();
+			double tY = e.getPoint().getY() + lastPressedMousePointRel.getY();
+
+			if (tX < 0 || tY < 0)
+				return;
+		}
+		
 		
 		if (lastBendHit != null) {
 			// calculated moved distance
@@ -685,15 +697,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					AttributeHelper.setEdgeBendStyle(edge, "org.graffiti.plugins.views.defaults.SmoothLineEdgeShape");
 				}
 			}
-			
-			
-			//TODO: Check if implementing edge snap selection
-			//		would be a better alternative
-			if (newX < MINIMUM_COORD)
-				newX = MINIMUM_COORD;
-			if (newY < MINIMUM_COORD)
-				newY = MINIMUM_COORD;
-			
+
 			lastBendHit.setCoordinate(new Point2D.Double(newX, newY));
 //			e.getComponent().repaint();
 //			for (View v : MainFrame.getInstance().getActiveEditorSession().getViews())
@@ -1091,14 +1095,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					newX += dX;
 					newY += dY;
 					newZ += dZ;
-					
-					//Do not allow negative coordinates. These are hidden and
-					//not accessible directly by the user
-					if (newX < MINIMUM_COORD)
-						newX = MINIMUM_COORD;
-					if (newY < MINIMUM_COORD)
-						newY = MINIMUM_COORD;
-					
+									
 					if (!e.isShiftDown() && e.isAltDown()) {
 						int grid = getGrid(-1);
 						if (grid > 0) {
