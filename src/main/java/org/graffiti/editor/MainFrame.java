@@ -67,6 +67,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
@@ -1087,7 +1088,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	public Object createInternalFrame(String viewName, String newFrameTitle, EditorSession session,
 			boolean returnScrollPane, boolean returnGraffitiFrame, boolean otherViewWillBeClosed,
 			ConfigureViewAction configNewView, boolean addViewToEditorSession) {
-		
+
 		if (!returnGraffitiFrame && !returnScrollPane && MainFrame.getInstance() != null
 				&& !SwingUtilities.isEventDispatchThread()) {
 			ErrorMsg.addErrorMessage("Internal Error: Creating Frame in Background Thread");
@@ -1099,6 +1100,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				viewManager = new DefaultViewManager();
 			}
 			view = viewManager.createView(viewName);
+			if (view == null) System.out.println("viw is null");
 			if (configNewView != null) {
 				configNewView.storeView(view);
 				configNewView.run();
@@ -2326,20 +2328,32 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		fileSave.actionPerformed(new ActionEvent(this, 0, null));
 	}
 	
-	/**
-	 * Closes all views of the given session and removes the session from the
-	 * list of sessions.
+	/** Whether promptClosing() has already been called, i.e. a prompt has 
+	 * already been displayed => avoid double show & saveAction.<p>
 	 * 
-	 * @param session
-	 *           the session to be removed.
+	 *  <b>Thread-safe!</b> */
+	private AtomicBoolean called = new AtomicBoolean();
+	
+	/**
+	 * This delegates the session closing down below the method chain, given the user has not chosen 
+	 * 'Cancel'. In this case it simply returns. Used for processing the closing of the external
+	 * GraffitiFrame, encapsulating the above mentioned goals. <p>
+	 * 
+	 * Code originates from the closeSession() method. Now there is placed only
+	 * a method call instead.
+	 * @param session current active Session
+	 * @return <b>true</b> if the frame should be closed.
 	 */
-	public boolean closeSession(Session session) {
+	public boolean promptClosing(Session session) {
 		if (session == null)
 			return false;
-		// check if changes have been made
 		
+		//display prompt if graph's been modified		
 		boolean askForSave = true;
 		if (askForSave && session.getGraph().isModified()) {
+			
+			called.set(true);
+			
 			String graphName = session.getGraph().getName();
 			if (graphName == null)
 				graphName = "[" + session.getGraph().getName() + "]";
@@ -2363,6 +2377,24 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			}
 			
 		}
+		
+		return true;
+	}
+	
+	/**
+	 * Closes all views of the given session and removes the session from the
+	 * list of sessions.
+	 * 
+	 * @param session
+	 *           the session to be removed.
+	 *           
+	 * @return <b>true</b> if the session has been closed
+	 */
+	public boolean closeSession(Session session) {
+		
+		if (!called.compareAndSet(true, false))
+			if (!promptClosing(session))
+				return false;
 		
 		List<View> views = new LinkedList<View>();
 		
@@ -2395,17 +2427,19 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			
 			this.zoomListeners.remove(view);
 		}
+		
+		//make random next session active session
+		if (!sessions.isEmpty())
+			MainFrame.getInstance().setActiveSession(sessions.iterator().next(), null);
+		else
+			MainFrame.getInstance().setActiveSession(null, null);
+		
 		sessions.remove(session);
 		session.close();
 		for (SessionListener sl : sessionListeners) {
 			if (sl instanceof SessionListenerExt)
 				((SessionListenerExt) sl).sessionClosed(session);
 		}
-		//make random next session active session
-		if (!sessions.isEmpty())
-			MainFrame.getInstance().setActiveSession(sessions.iterator().next(), null);
-		else
-			MainFrame.getInstance().setActiveSession(null, null);
 		// session.getGraph().clear();
 		return true;
 	}
@@ -3610,6 +3644,31 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			
 			View view = f.getView();
 			
+			viewFrameMapper.remove(view);
+			zoomListeners.remove(view);
+	
+			ListenerManager lm = session.getGraph().getListenerManager();
+			
+			/* An exception occurs, but to keep consistent the list we have to remove them */
+			//do not output caught exception in each of the try-catch blocks below
+			//ErrorMsg.addErrorMessage(err);
+			
+			try {
+				lm.removeAttributeListener(view);
+			} catch (ListenerNotFoundException err) { }	
+			
+			try {
+				lm.removeEdgeListener(view);
+			} catch (ListenerNotFoundException err) { }
+			
+			try {
+				lm.removeNodeListener(view);
+			} catch (ListenerNotFoundException err) { }	
+			
+			try {
+				lm.removeGraphListener(view);
+			} catch (ListenerNotFoundException err) { }	
+			
 			view.setGraph(null);
 			view.close();
 			session.removeView(f.getView());
@@ -4107,8 +4166,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			
 		} else {
 			// remove the session if we are closing the last view
-			view.close();
 			MainFrame.getInstance().closeSession(session);
+			view.close();
 		}
 		// fireSessionChanged(null);
 		// activeSession = null;
@@ -4126,7 +4185,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				}
 			}
 		});
-		
+				
 	}
 	
 	@Override
@@ -4179,7 +4238,9 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		else
 			gif = (GraffitiInternalFrame) createInternalFrame(viewClassName, framename, session, false, true,
 					otherViewWillBeClosed);
-		final GraffitiFrame gf = new GraffitiFrame(gif, fullscreen);
+		
+		GraffitiFrame gf = new GraffitiFrame(gif, fullscreen);
+		final GraffitiFrame tgf = gf;
 		gf.addWindowListener(graffitiFrameListener);
 		gf.addFocusListener(new FocusListener() {
 			
@@ -4188,7 +4249,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 
 			@Override
 			public void focusGained(FocusEvent e) {
-				gf.toFront();	
+				tgf.toFront();	
 			}
 		});
 		gf.setVisible(true);
@@ -4200,7 +4261,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			gf.setBounds(x0, y + 192, w, h);
 		else
 			gf.setBounds(x0, y + 105, w, h);
-
+		
 		MainFrame.getInstance().addDetachedFrame(gf);
 		
 		return gif.getView();
@@ -4208,12 +4269,14 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	
 	public View createInternalFrame(String viewClassName, EditorSession session, boolean otherViewWillBeClosed) {
 		createInternalFrame(viewClassName, session.getGraph().getName(), session, false, false, otherViewWillBeClosed);
+		
 		return session.getActiveView();
 	}
 	
 	public View createInternalFrame(String viewClassName, String newFrameTitle, EditorSession session,
 			boolean otherViewWillBeClosed) {
 		createInternalFrame(viewClassName, newFrameTitle, session, false, false, otherViewWillBeClosed);
+		
 		return session.getActiveView();
 	}
 	

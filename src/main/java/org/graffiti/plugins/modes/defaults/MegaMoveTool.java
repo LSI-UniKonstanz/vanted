@@ -743,7 +743,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		
 		dragged = true;
 		
-		// else do nothing with labels and other attributecomponents
+		// else do nothing with labels and other attribute components
 	}
 	
 	public CoordinateAttribute processBendCreation(final MouseEvent e, final Component c) {
