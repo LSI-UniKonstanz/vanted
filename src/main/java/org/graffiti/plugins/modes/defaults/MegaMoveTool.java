@@ -109,7 +109,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	// ~ Instance fields ========================================================
 	
 	/**
-	 * Specifies if - when there is a selection - graphelements are highlighted
+	 * Specifies if - when there is a selection - graph elements are highlighted
 	 * only if the CTRL key is pressed.
 	 */
 	protected boolean onlyIfCtrl = false;
