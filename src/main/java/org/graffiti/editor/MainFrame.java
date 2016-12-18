@@ -1100,7 +1100,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				viewManager = new DefaultViewManager();
 			}
 			view = viewManager.createView(viewName);
-			if (view == null) System.out.println("viw is null");
 			if (configNewView != null) {
 				configNewView.storeView(view);
 				configNewView.run();
@@ -4413,10 +4412,17 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	public static void showWarningPopup(String text, int time) {
 		showWarningPopup(text, time, null);
 	}
+	/** Global variable <b>for showWarningPopup() only</b> to check global conditions. */
+	private static Thread show = null; //There is only one instance of MainFrame at a time so we are just fine.
 	
 	public static void showWarningPopup(final String text, final int time, final Collection<WarningButton> bts) {
 		
-		Thread show = new Thread(new Runnable() {
+		/** We forbid overlapping threads creation, i.e.
+		 *  first wait the last created to die and then create a new one. */
+		if (show != null && show.isAlive())
+			return;
+		
+		show = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				PopupFactory fac = new PopupFactory();
@@ -4496,7 +4502,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					pop.hide();
 				}
 			}
-		});
+		});		
 		show.start();
 		
 	}
