@@ -445,7 +445,7 @@ public class DefaultPluginManager
 	 * @param i
 	 * @throws PluginManagerException
 	 */
-	private boolean loadPlugin(URL pluginUrl, PluginDescription desc,
+	private synchronized boolean loadPlugin(URL pluginUrl, PluginDescription desc,
 			ProgressViewer progressViewer) throws PluginManagerException {
 		
 		if (desc == null)
@@ -585,7 +585,7 @@ public class DefaultPluginManager
 	 * Saves the plugin manager's prefs.
 	 * 
 	 * @exception PluginManagerException
-	 *               if an error occurrs while saving the
+	 *               if an error occurs while saving the
 	 *               preferences.
 	 */
 	public void savePrefs()

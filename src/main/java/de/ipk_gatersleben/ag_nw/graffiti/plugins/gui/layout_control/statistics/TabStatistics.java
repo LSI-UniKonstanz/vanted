@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -1035,14 +1036,19 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	public TabStatistics() {
 		super();
 		this.title = "Statistics";
-		//Tackles multithreading issue on Nimbus
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				initComponents();				
+		//Nimbus EDT Issue
+		if(!SwingUtilities.isEventDispatchThread())
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					
+					@Override
+					public void run() {
+						initComponents();				
+					}
+				});
+			} catch(InterruptedException | InvocationTargetException e) {
+				initComponents();
 			}
-		});
 	}
 	
 	public void postAttributeAdded(AttributeEvent e) {

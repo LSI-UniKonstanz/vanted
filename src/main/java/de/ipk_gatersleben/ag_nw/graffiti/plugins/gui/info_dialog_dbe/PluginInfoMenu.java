@@ -51,20 +51,20 @@ public class PluginInfoMenu
 
 		//we use a holder to create the component on EDT
 		final MenuItemInfoDialog[] holder = {null};
-		
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
+		if(!SwingUtilities.isEventDispatchThread())
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
 				
-				@Override
-				public void run() {
-					holder[0] = new MenuItemInfoDialog();
-				}
-			});
-		} catch (InvocationTargetException | InterruptedException e) {
-			System.err.println("Exception " + e.toString() + " occurred caused by " + e.getCause().toString()
-					+ " (the underlying method in the try-clause). Worry not, we are safe."); //we recreate it little bit down below
-			//e.printStackTrace();
-		}
+					@Override
+					public void run() {
+						holder[0] = new MenuItemInfoDialog();
+					}
+				});
+			} catch (InvocationTargetException | InterruptedException e) {
+				System.err.println("Exception " + e.toString() + " occurred caused by " + e.getCause().toString()
+						+ " (the underlying method in the try-clause). Worry not, we are safe."); //we recreate it little bit down below
+				//e.printStackTrace();
+			}
 		
 		// menu example
 		if (holder[0] != null)
