@@ -1198,7 +1198,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		if ((e.getPoint().getX() + lastPressedMousePointRel.getX() < 0 ||
 						e.getPoint().getY() + lastPressedMousePointRel.getY() < 0))
 				MainFrame.showWarningPopup("<html><strong>A cluster of graph elements is out of view frustum!</strong><br>"
-						+ "To bring back: Network &#10148; Move Graph to Top-Left (Ctrl+1).", 8000, wbts);
+						+ "To bring back: Network &#10148; Move Network to Top-Left (Ctrl+1).", 8000, wbts);
 	}
 	
 	public static int getGrid(double sz) {

@@ -1058,10 +1058,10 @@ public class PatternSpringembedder3d
 		});
 		jc.add(removeOverlapping);
 		
-		JCheckBox finishToTop = new JCheckBox("Finish: Move Network to Upper-Left",
+		JCheckBox finishToTop = new JCheckBox("Finish: Move Network to Top-Left",
 							options.doFinishMoveToTop);
 		finishToTop.setToolTipText(
-							"If selected, all network elements will be moved to the upper left of the view");
+							"If selected, all network elements will be moved to the top-left corner of the view");
 		finishToTop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				options.doFinishMoveToTop = ((JCheckBox) e.getSource())

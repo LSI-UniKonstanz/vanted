@@ -21,11 +21,12 @@ import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
+import org.graffiti.plugin.parameter.JComponentParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
-
-import com.sun.istack.NotNull;
+import org.vanted.scaling.ScaleCoordinator;
+import org.vanted.scaling.ScalingSlider;
 
 /**
  * Global Preference class for VANTED.
@@ -49,14 +50,19 @@ public class VantedPreferences implements PreferencesInterface {
 	public static boolean PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE;
 	public static final String PREFERENCE_STANDARD_SAVE_FILEFORMAT = "Standard save file format";
 	
-	private static VantedPreferences instance;
+	private static VantedPreferences instance;	
 	
 	public VantedPreferences() {
-		
+		/**
+		 * Re-scale the Start-splash.
+		 * 
+		 * Additionally, re-scale Metal L&F, which 
+		 * does not update Preferences on start-up.*/
+		splashScaling();
 	}
 	
 	public static VantedPreferences getInstance() {
-		if(instance == null)
+		if (instance == null)
 			instance = new VantedPreferences();
 		return instance;
 	}
@@ -65,15 +71,17 @@ public class VantedPreferences implements PreferencesInterface {
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> params = new ArrayList<>();
 		params.add(getLookAndFeelParameter());
+		//with default specifics
+		if (!UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK"))
+			params.add(new JComponentParameter(new ScalingSlider(), "", "<html>Hi-DPI Support<sup>BETA</sup></html>"));
 		params.add(new StringParameter("", PREFERENCE_PROXYHOST, "Name or IP  of the proxy host"));
 		params.add(new IntegerParameter(0, PREFERENCE_PROXYPORT, "Port number of the proxy"));
 		params.add(new BooleanParameter(false, PREFERENCE_SHOWALL_ALGORITHMS,
-				"Show algorithms, that are not shown normally as they might confuse users with their sole functionality"));
-
+				"Show algorithms, not normally shown, as they might confuse users with their sole functionality"));
 		/*
-		 * this only works if vanted has been started and all output fileformats have been made available
+		 * This only works, if Vanted has been started and all output file formats have been made available
 		 */
-		if(MainFrame.getInstance() != null) {
+		if (MainFrame.getInstance() != null) {
 			Set<String> graphFileExtensions = MainFrame.getInstance().getIoManager().getGraphFileExtensions();
 			String[] possibleValues = graphFileExtensions.toArray(new String[graphFileExtensions.size()]);
 			params.add(new ObjectListParameter("", PREFERENCE_STANDARD_SAVE_FILEFORMAT, "Standard file format, that is selected for file saving", possibleValues));
@@ -83,7 +91,7 @@ public class VantedPreferences implements PreferencesInterface {
 
 		}
 		
-		if(Logger.getRootLogger().getLevel() == Level.DEBUG)
+		if (Logger.getRootLogger().getLevel() == Level.DEBUG)
 			params.add(new BooleanParameter(false, PREFERENCE_DEBUG_SHOWPANELFRAMES, "For debugging purposes, show frames from each graph and attribute component."));
 
 		return params;
@@ -110,6 +118,8 @@ public class VantedPreferences implements PreferencesInterface {
 						e.printStackTrace();
 					}
 					
+					presetScaling();
+										
 					/*
 					 * show changes for current instance running
 					 * This will only be executed when the preferences are updated using
@@ -186,7 +196,7 @@ public class VantedPreferences implements PreferencesInterface {
 		List<LookAndFeelNameAndClass> listLAFs = new ArrayList<>();
 		
 		for (LookAndFeelInfo lafi : UIManager.getInstalledLookAndFeels()) {
-			LookAndFeelNameAndClass d = new LookAndFeelNameAndClass(lafi.getName(), lafi.getClassName());
+			LookAndFeelNameAndClass d = new LookAndFeelNameAndClass(lafi);
 			if (d.toString().equals(canonicalName))
 				activeLaF = d;
 			else
@@ -194,9 +204,9 @@ public class VantedPreferences implements PreferencesInterface {
 		}
 		
 		//Check, because in add-ons a new skin could be used => NPE.
-		if(activeLaF != null)
+		if(activeLaF != null) {
 			listLAFs.add(0, activeLaF); // add active LaF to the beginning of the List 
-		else {
+		} else {
 			String activeLaF_Name = UIManager.getLookAndFeel().getName();
 			activeLaF = new LookAndFeelNameAndClass(activeLaF_Name, canonicalName);
 			listLAFs.add(0, activeLaF);
@@ -206,13 +216,50 @@ public class VantedPreferences implements PreferencesInterface {
 		
 		possibleValues = listLAFs.toArray();
 
+		
+		
 		objectlistparam = new ObjectListParameter(
 				activeLaF,
 				PREFERENCE_LOOKANDFEEL,
-				"<html>Set the look and feel of the application<br/>Current: <b>" + activeLaF.name,
+				"<html>Set the look and feel of the application<br/>Current: <b>" + 
+				(activeLaF.name.equals("GTK+") ? activeLaF.name + " (No Hi-DPI)" : activeLaF.name),
 				possibleValues);
 		objectlistparam.setRenderer(new LookAndFeelWrapperListRenderer());
 		return objectlistparam;
+	}
+	
+	/**
+	 * With regards to the High-DPI Support. It does exactly what its name
+	 * suggests - it ventures preferences and scales according to the value.
+	 * Particularly on start up.
+	 * 
+	 * @author dim8
+	 */
+	private void presetScaling() {
+		//GTK-related L&Fs not supported, because by default non-re-scalable
+		if (UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK"))
+			return;
+		
+		int sValue = ScalingSlider.managePreferences(-1, true);
+		
+		new ScaleCoordinator(ScalingSlider.processSliderValue(sValue));
+	}
+	
+	/**
+	 * Scale the DBE Splash Screen to reflect DPI factor.
+	 * As a side effect, it fixes an issue with Metal L&F.
+	 * Metal does not call updatePreferences on startup and
+	 * therefore does not scale properly.
+	 * 
+	 * @author dim8
+	 */
+	private void splashScaling() {
+		//Ensures only once re-scaled, since there are 
+		//multiple VantedPreferences instances during a lifetime
+		if(ScalingSlider.START_UP) {
+			presetScaling();
+			ScalingSlider.START_UP = false;
+		}
 	}
 	
 	/**
@@ -223,16 +270,12 @@ public class VantedPreferences implements PreferencesInterface {
 	 */
 	class LookAndFeelWrapperListRenderer extends DefaultListCellRenderer {
 		
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 		
 		@Override
 		public Component getListCellRendererComponent(JList<?> list,
 				Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
-			// TODO Auto-generated method stub
 			super.getListCellRendererComponent(list, value, index, isSelected,
 					cellHasFocus);
 			
@@ -243,28 +286,5 @@ public class VantedPreferences implements PreferencesInterface {
 			return this;
 		}
 		
-	}
-	
-	class LookAndFeelNameAndClass {
-		String name;
-		String className;
-		
-		public LookAndFeelNameAndClass(@NotNull String name, @NotNull Class<?> className) {
-			this.name = name;
-			this.className = className.getCanonicalName();			
-		}
-		
-		public LookAndFeelNameAndClass(@NotNull String name, @NotNull String className) {
-			this.name = name;
-			this.className = className;
-		}
-		
-		public String getName() {
-			return name;
-		}
-		
-		public String toString() {
-			return className;
-		}
 	}
 }

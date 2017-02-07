@@ -686,7 +686,7 @@ public class PatternSpringembedder
 		jc.add(copyLayout, "1,12");
 		
 		JCheckBox finishToTop =
-							new JCheckBox("Finish: Move Graph to Top-Left",
+							new JCheckBox("Finish: Move Network to Top-Left",
 												options.doFinishMoveToTop);
 		
 		finishToTop.addActionListener(new ActionListener() {

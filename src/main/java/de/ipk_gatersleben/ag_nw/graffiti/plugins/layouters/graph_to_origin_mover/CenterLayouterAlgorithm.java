@@ -44,13 +44,18 @@ public class CenterLayouterAlgorithm
 					extends AbstractAlgorithm
 					implements ProvidesGeneralContextMenu, ActionListener {
 	
+	@Override
+	public String getDescription() {
+		return "Move all network elements to the top-left corner of the view";
+	}
+
 	/**
 	 * DOCTODO: Include method header
 	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public String getName() {
-		return "Move Network to Upper-Left";
+		return "Move Network to Top-Left";
 	}
 	
 	@Override
@@ -183,7 +188,7 @@ public class CenterLayouterAlgorithm
 	 * @see org.graffiti.plugin.ContextMenuPlugin#getCurrentContextMenuItem()
 	 */
 	public JMenuItem[] getCurrentContextMenuItem() {
-		JMenuItem myMenuItem = new JMenuItem("Move Graph to Top-Left");
+		JMenuItem myMenuItem = new JMenuItem("Move Network to Top-Left");
 		myMenuItem.addActionListener(this);
 		return new JMenuItem[] { myMenuItem };
 	}
