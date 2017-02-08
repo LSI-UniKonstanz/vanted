@@ -4,11 +4,6 @@ For installation, please visit the main web page at
 [vanted.org](http://vanted.org).
 Here, you find the most-recent version of the source code.
 
-## Contact ##
-
-If you have questions or suggestions regarding vanted, please contact us at:
-feedback@vanted.org
-
 ## Overview ##
 
 VANTED is a Java based extendable network visualisation and analysis tool with focus on applications in the life sciences.
@@ -20,6 +15,11 @@ The functionality of VANTED can be extended by installing one or more of the pro
 New Addons can be developed from scratch, using built-in APIs for manipulation of networks and data. A simple step-by-step guide for developing custom Addons can be found [here]).
 
 The development of VANTED is an ongoing process and we try to fix bugs and implement new features as soon as possible. Updates will be delivered on a regular basis.
+
+## Contact ##
+
+If you have questions or suggestions regarding vanted, please contact us at:
+[feedback@vanted.org](mailto:feedback@vanted.org)
 
 ## News ##
 
