@@ -1,7 +1,7 @@
 # VANTED #
 
 For installation, please visit the main web page at
-[vanted.org](http://vanted.org)
+[vanted.org](http://vanted.org).
 Here, you find the most-recent version of the source code.
 
 ## Overview ##
@@ -69,7 +69,7 @@ Improvements:
 ### VANTED v2.5.2 release (16/09/2015) ###
 This release contains only minor bugfixes which improve user experience and speed.
 
-You can download and install this version [here].
+You can download and install this version [here](http://vanted.org).
 
 ### VANTED v2.5.1 release (06/09/2015) ###
 Important !!!
@@ -78,7 +78,7 @@ Due to a bug in the loading process the SBML loader was broken.
 
 This has been fixed but you need to install the new release of VANTED using the installer. This bug will not be fixed using the automated VANTED update.
 
-You can download and install this version [here].
+You can download and install this version [here](http://vanted.org).
 
 Please excuse the inconvenience.
 
@@ -102,4 +102,4 @@ Changes are listed below:
     Updated support for new KEGG REST API
     bug fixes
 
-You can download and install this version [vanted.org](http://vanted.org).
+You can download and install this version [here](http://vanted.org).
