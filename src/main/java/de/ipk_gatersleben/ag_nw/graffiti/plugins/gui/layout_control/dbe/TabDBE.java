@@ -242,14 +242,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 	public TabDBE() {
 		super();
 		this.title = "Experiments";
-		if(!SwingUtilities.isEventDispatchThread())
-			SwingUtilities.invokeLater(new Runnable() {
-			
-				@Override
-				public void run() {
-					initComponents();				
-				}
-			});
+		initComponents();				
 	}
 	
 	public void installDragNDrop(final JButton target) {

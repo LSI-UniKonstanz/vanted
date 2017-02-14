@@ -445,9 +445,9 @@ public class DefaultPluginManager
 	 * @param i
 	 * @throws PluginManagerException
 	 */
-	private synchronized boolean loadPlugin(URL pluginUrl, PluginDescription desc,
+	private boolean loadPlugin(URL pluginUrl, PluginDescription desc,
 			ProgressViewer progressViewer) throws PluginManagerException {
-		
+
 		if (desc == null)
 			return true;
 		

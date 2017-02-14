@@ -277,14 +277,7 @@ public abstract class AbstractTab
 	
 	@Override
 	public void componentShown(ComponentEvent e) {
-		if(!SwingUtilities.isEventDispatchThread())
-			SwingUtilities.invokeLater(new Runnable() {
-			
-				@Override
-				public void run() {
-					rebuildTreeAction();				
-				}
-			});
+		rebuildTreeAction();				
 	}
 	
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {

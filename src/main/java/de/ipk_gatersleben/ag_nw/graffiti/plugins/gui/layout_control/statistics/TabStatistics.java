@@ -1036,19 +1036,14 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	public TabStatistics() {
 		super();
 		this.title = "Statistics";
-		//Nimbus EDT Issue
 		if(!SwingUtilities.isEventDispatchThread())
-			try {
-				SwingUtilities.invokeAndWait(new Runnable() {
+				SwingUtilities.invokeLater(new Runnable() {
 					
 					@Override
 					public void run() {
 						initComponents();				
 					}
 				});
-			} catch(InterruptedException | InvocationTargetException e) {
-				initComponents();
-			}
 	}
 	
 	public void postAttributeAdded(AttributeEvent e) {
