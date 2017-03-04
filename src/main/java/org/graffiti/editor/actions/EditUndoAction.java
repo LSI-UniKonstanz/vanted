@@ -101,8 +101,9 @@ public class EditUndoAction
 			putValue(SHORT_DESCRIPTION, getName());
 		}
 		
-		putValue(SMALL_ICON,
-							iBundle.getImageIcon("toolbar." + getName() + ".icon"));
+		//SMALL_ICON is for JMenuItem, but not for e.g. JButton, and distorts scaling
+		//putValue(SMALL_ICON,
+						//	iBundle.getImageIcon("toolbar." + getName() + ".icon"));
 	}
 }
 

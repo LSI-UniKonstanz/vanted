@@ -43,11 +43,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 public class CenterLayouterAlgorithm
 					extends AbstractAlgorithm
 					implements ProvidesGeneralContextMenu, ActionListener {
-	
-	@Override
-	public String getDescription() {
-		return "Move all network elements to the top-left corner of the view";
-	}
 
 	/**
 	 * DOCTODO: Include method header

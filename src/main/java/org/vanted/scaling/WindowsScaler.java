@@ -5,6 +5,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 
 import javax.swing.Icon;
+import javax.swing.plaf.InsetsUIResource;
 /**
  * Similar to the default scaler, with the only difference that
  * we have to adjust the requested scaling factor to the current.
@@ -43,7 +44,10 @@ public class WindowsScaler extends BasicScaler {
 	}
 	
 	@Override
-	public Insets modifyInsets(Object key, Insets original) {
-		return original;
+	public Insets modifyInsets(Insets original, InsetsUIResource original2) {
+		if (original != null)
+			return original;
+		else
+			return original2;
 	}
 }

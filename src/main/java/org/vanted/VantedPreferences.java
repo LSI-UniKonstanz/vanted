@@ -25,8 +25,9 @@ import org.graffiti.plugin.parameter.JComponentParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
-import org.vanted.scaling.ScaleCoordinator;
-import org.vanted.scaling.ScalingSlider;
+
+import org.vanted.scaling.ScalerLoader;
+import org.vanted.scaling.ScaleSlider;
 
 /**
  * Global Preference class for VANTED.
@@ -54,11 +55,11 @@ public class VantedPreferences implements PreferencesInterface {
 	
 	public VantedPreferences() {
 		/**
-		 * Re-scale the Start-splash.
-		 * 
 		 * Additionally, re-scale Metal L&F, which 
-		 * does not update Preferences on start-up.*/
-		splashScaling();
+		 * does not update Preferences on start-up.
+		 */
+		ScalerLoader.init(MainFrame.getInstance(), MainFrame.class);
+
 	}
 	
 	public static VantedPreferences getInstance() {
@@ -73,7 +74,8 @@ public class VantedPreferences implements PreferencesInterface {
 		params.add(getLookAndFeelParameter());
 		//with default specifics
 		if (!UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK"))
-			params.add(new JComponentParameter(new ScalingSlider(), "", "<html>Hi-DPI Support<sup>BETA</sup></html>"));
+			params.add(new JComponentParameter(new ScaleSlider(MainFrame.getInstance()),
+					"", "<html>Hi-DPI Support<sup>BETA</sup></html>"));
 		params.add(new StringParameter("", PREFERENCE_PROXYHOST, "Name or IP  of the proxy host"));
 		params.add(new IntegerParameter(0, PREFERENCE_PROXYPORT, "Port number of the proxy"));
 		params.add(new BooleanParameter(false, PREFERENCE_SHOWALL_ALGORITHMS,
@@ -114,11 +116,13 @@ public class VantedPreferences implements PreferencesInterface {
 					} catch (ClassNotFoundException | InstantiationException
 							| IllegalAccessException
 							| UnsupportedLookAndFeelException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					
-					presetScaling();
+					/**
+					 * Scale all components: LAF & non-LAF.
+					 */
+					ScalerLoader.doScaling(MainFrame.getInstance());
 										
 					/*
 					 * show changes for current instance running
@@ -151,7 +155,6 @@ public class VantedPreferences implements PreferencesInterface {
 				System.setProperty("http.proxyPort", proxyport);
 				
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
 				System.setProperty("http.proxySet", "false");
 				
 			}
@@ -164,7 +167,6 @@ public class VantedPreferences implements PreferencesInterface {
 	
 	@Override
 	public String getPreferencesAlternativeName() {
-		// TODO Auto-generated method stub
 		return "Vanted Preferences";
 	}
 	
@@ -203,6 +205,10 @@ public class VantedPreferences implements PreferencesInterface {
 				listLAFs.add(d);
 		}
 		
+		//Disable Nimbus (multithreading issues)
+		listLAFs.remove(new LookAndFeelNameAndClass("Nimbus",
+					"javax.swing.plaf.nimbus.NimbusLookAndFeel"));
+		
 		//Check, because in add-ons a new skin could be used => NPE.
 		if(activeLaF != null) {
 			listLAFs.add(0, activeLaF); // add active LaF to the beginning of the List 
@@ -226,40 +232,6 @@ public class VantedPreferences implements PreferencesInterface {
 				possibleValues);
 		objectlistparam.setRenderer(new LookAndFeelWrapperListRenderer());
 		return objectlistparam;
-	}
-	
-	/**
-	 * With regards to the High-DPI Support. It does exactly what its name
-	 * suggests - it ventures preferences and scales according to the value.
-	 * Particularly on start up.
-	 * 
-	 * @author dim8
-	 */
-	private void presetScaling() {
-		//GTK-related L&Fs not supported, because by default non-re-scalable
-		if (UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK"))
-			return;
-		
-		int sValue = ScalingSlider.managePreferences(-1, true);
-		
-		new ScaleCoordinator(ScalingSlider.processSliderValue(sValue));
-	}
-	
-	/**
-	 * Scale the DBE Splash Screen to reflect DPI factor.
-	 * As a side effect, it fixes an issue with Metal L&F.
-	 * Metal does not call updatePreferences on startup and
-	 * therefore does not scale properly.
-	 * 
-	 * @author dim8
-	 */
-	private void splashScaling() {
-		//Ensures only once re-scaled, since there are 
-		//multiple VantedPreferences instances during a lifetime
-		if(ScalingSlider.START_UP) {
-			presetScaling();
-			ScalingSlider.START_UP = false;
-		}
 	}
 	
 	/**

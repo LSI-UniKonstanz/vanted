@@ -1,5 +1,6 @@
 package org.vanted.scaling;
 
+import java.awt.Container;
 import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.prefs.Preferences;
@@ -14,6 +15,7 @@ import javax.swing.event.ChangeListener;
 
 import org.SystemInfo;
 import org.graffiti.managers.PreferenceManager;
+
 /**
  * The front-end of the provided scalers. Because of the
  * arithmetics and our goal, the user could decrease UIdefaults
@@ -23,10 +25,8 @@ import org.graffiti.managers.PreferenceManager;
  * @author dim8
  *
  */
-public class ScalingSlider extends JSlider 
+public class ScaleSlider extends JSlider 
 									implements ChangeListener, Serializable {
-	
-	public static boolean START_UP = true;
 	
 	private static final long serialVersionUID = 939020663044124704L;
 	
@@ -36,7 +36,10 @@ public class ScalingSlider extends JSlider
 	private static int STANDARD_DPI;
 	private static float MIN_DPI;
 	
-	private float prevFactor = 0f;
+	/** Used to store temporarily the previous factor for live re-scale
+	 *  operations. Ergo non-serializable! */
+	private transient float prevFactor = 0f;
+	private Container main;
 
 	/* Defaults */
 	@SuppressWarnings("unused") //it's used (potentially), see a bit down below
@@ -47,13 +50,32 @@ public class ScalingSlider extends JSlider
 	
 	private static int median = (min + max) / 2;
 	
-	public ScalingSlider() {
+	/**
+	 * Slider to allow live modifications to the scaling of components. It just
+	 * has to be initialized e.g. in Preferences.
+	 * 
+	 * @param mainContainer the applications main Container/Window/Frame
+	 */
+	public ScaleSlider(Container mainContainer) {
+		this.main = mainContainer;
+		
 		int prefsValue = managePreferences(-1, true);
 		
 		scalingSlider(prefsValue, extent, min, max);
 	}
-	
-	public ScalingSlider(int value, int extent, int min, int max) {
+	/**
+	 * Specify your own Slider model. Factors, however, are dependent on 
+	 * values.
+	 * 
+	 * @param value initial Slider's value
+	 * @param extent Slider's extent
+	 * @param min minimal Slider's value 
+	 * @param max maximal Slider's value
+	 * @param mainContainer the applications main Container/Window/Frame
+	 */
+	public ScaleSlider(int value, int extent, int min, int max, Container mainContainer) {
+		this.main = mainContainer;
+		
 		scalingSlider(value, extent, min, max);
 	}
 
@@ -66,8 +88,8 @@ public class ScalingSlider extends JSlider
 		
 		this.value = value; 
 		this.extent = extent;
-		ScalingSlider.min = min;
-		ScalingSlider.max = max;
+		ScaleSlider.min = min;
+		ScaleSlider.max = max;
 		
 		median = (min + max) / 2;
 		
@@ -146,12 +168,21 @@ public class ScalingSlider extends JSlider
 	    if (!source.getValueIsAdjusting()) {
 	        int dpi = source.getValue();
 	        //call the Coordinator to update LAF!
-	        new ScaleCoordinator(processFactor(dpi));
+	        new ScaleCoordinator(processFactor(dpi), main);
 	        
-	        managePreferences(dpi, false);
+	        managePreferences(dpi, false);      
+	        
+	        refresh();
 	        
 	        this.setToolTipText(String.valueOf(source.getValue()));
 	    }
+	}
+	
+	private void refresh() {
+        //refresh the slider-GUI
+        this.invalidate();
+        this.repaint();
+        this.revalidate();
 	}
 	/**
 	 * Here we process the DPI-Factor according to the Slider's
@@ -184,16 +215,25 @@ public class ScalingSlider extends JSlider
 	/**
 	 * This is a two-way intern method, used for all preferences-related
 	 * procedures. It handles both setting/putting and getting of values.
-	 * For latter you need to specify the <b>get</b> parameter. 
+	 * For the latter you need to specify the <b>get</b> parameter. 
 	 * @param val Our new ScalingSlider value.
 	 * Used only, when putting into (i.e. <b>get</b> is <b>false</b>).   
+	 * 
 	 * @param get When <b>true</b>, it returns the previously stored value.
+	 * 
 	 * @return Stored value under 'Scaling Preferences' or -1 for potential 
 	 * error checking, if <b>get</b> <b>false</b>.
 	 */
 	public static int managePreferences(int val, boolean get) {
 		final Preferences scalingPreferences = PreferenceManager
-								.getPreferenceForClass(ScalingSlider.class);
+								.getPreferenceForClass(ScaleSlider.class);
+		
+		/**
+		 * For internal use. Return old value or flag, indicating there are
+		 * no stored values, avoid scaling with identity factor.
+		 */
+		if (get && val == -2)
+			return scalingPreferences.getInt(PREFERENCE_SCALING, -2);
 		
 		//do not put new value
 		if(get)

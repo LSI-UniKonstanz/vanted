@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.Insets;
 
 import javax.swing.Icon;
+import javax.swing.plaf.InsetsUIResource;
 /**
  * All scalers should implement this interface. Alternatively, one could more
  * conveniently just extends the default scaler - {@link BasicScaler}. 
@@ -46,11 +47,11 @@ public interface Scaler {
 
 	/**
 	 * 
-	 * @param key UIDefaults key
-	 * @param original instance to be scaled
+	 * @param original Insets instance to be scaled
+	 * @param original InsetsUIResource instance to be scaled
 	 * 
 	 * @return newly scaled instance
 	 */
-	Insets modifyInsets(Object key, Insets original);
-
+	Insets modifyInsets(Insets original, InsetsUIResource original2);
+	
 }

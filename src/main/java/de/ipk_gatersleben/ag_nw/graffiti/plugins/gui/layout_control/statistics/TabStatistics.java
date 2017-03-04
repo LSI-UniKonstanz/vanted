@@ -1036,14 +1036,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	public TabStatistics() {
 		super();
 		this.title = "Statistics";
-		if(!SwingUtilities.isEventDispatchThread())
-				SwingUtilities.invokeLater(new Runnable() {
-					
-					@Override
-					public void run() {
-						initComponents();				
-					}
-				});
+		initComponents();				
 	}
 	
 	public void postAttributeAdded(AttributeEvent e) {
