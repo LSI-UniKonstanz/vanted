@@ -32,7 +32,20 @@ public class ScaleSlider extends JSlider
 	
 	private static final int MAJOR_TICK_SPACING = 25;
 	private static final int MINOR_TICK_SPACING = 10;
+	
+	
+	/*--------Scaling Preferences-------- */
 	private static final String PREFERENCE_SCALING = "Scaling Preferences";
+	/** Default value, when not setting any particular value. */
+	public static final int VALUE_DEFAULT = -1;
+	/** Internal value for checking if any values are stored. */
+	public static final int VALUE_UNSET = -2;
+	/** Specify when you get Preferences value. */
+	public static final boolean PREFERENCES_GET = true;
+	/** Specify when you set Preferences value. */
+	public static final boolean PREFERENCES_SET = false;
+	
+	
 	private static int STANDARD_DPI;
 	private static float MIN_DPI;
 	
@@ -59,7 +72,7 @@ public class ScaleSlider extends JSlider
 	public ScaleSlider(Container mainContainer) {
 		this.main = mainContainer;
 		
-		int prefsValue = managePreferences(-1, true);
+		int prefsValue = managePreferences(VALUE_DEFAULT, PREFERENCES_GET);
 		
 		scalingSlider(prefsValue, extent, min, max);
 	}
@@ -170,7 +183,7 @@ public class ScaleSlider extends JSlider
 	        //call the Coordinator to update LAF!
 	        new ScaleCoordinator(processFactor(dpi), main);
 	        
-	        managePreferences(dpi, false);      
+	        managePreferences(dpi, PREFERENCES_SET);      
 	        
 	        refresh();
 	        
@@ -198,10 +211,11 @@ public class ScaleSlider extends JSlider
 		if (prevFactor != 0.0)//0.0 is here not the min. value, but unset!
 			dpif /= prevFactor;
 		else {
-			float prefsPrevFactor = (managePreferences(-1, true) == (float) min)
-					? (min + 0.5f) / median
+			float prefsPrevFactor = (managePreferences(VALUE_DEFAULT, 
+					PREFERENCES_GET) == (float) min) ? (min + 0.5f) / median
 							/*1/2 for lowest mark, since 0 neutral */
-							: managePreferences(-1, true) / (float) median;
+							: managePreferences(VALUE_DEFAULT, PREFERENCES_GET)
+							/ (float) median;
 			dpif /=  prefsPrevFactor;
 		}
 		
@@ -215,14 +229,19 @@ public class ScaleSlider extends JSlider
 	/**
 	 * This is a two-way intern method, used for all preferences-related
 	 * procedures. It handles both setting/putting and getting of values.
-	 * For the latter you need to specify the <b>get</b> parameter. 
+	 * To set values use <code>ScalingSlider.PREFERENCES_SET</code> as <code>
+	 * get</code> parameter. To get: <code>ScalingSlider.PREFERENCES_GET</code>,
+	 * respectively. 
 	 * @param val Our new ScalingSlider value.
-	 * Used only, when putting into (i.e. <b>get</b> is <b>false</b>).   
+	 * Used only, when putting into (i.e. <b>get</b> is <b>false</b>). Meaning
+	 * when querying values, you could just use <code>
+	 * ScalingSlider.VALUE_DEFAULT</code>.
 	 * 
 	 * @param get When <b>true</b>, it returns the previously stored value.
 	 * 
-	 * @return Stored value under 'Scaling Preferences' or -1 for potential 
-	 * error checking, if <b>get</b> <b>false</b>.
+	 * @return Stored value under 'Scaling Preferences' or <code>
+	 * ScalingSlider.VALUE_DEFAULT</code> for potential error checking, if 
+	 * <b>get</b> is <b>false</b>.
 	 */
 	public static int managePreferences(int val, boolean get) {
 		final Preferences scalingPreferences = PreferenceManager
@@ -232,17 +251,16 @@ public class ScaleSlider extends JSlider
 		 * For internal use. Return old value or flag, indicating there are
 		 * no stored values, avoid scaling with identity factor.
 		 */
-		if (get && val == -2)
-			return scalingPreferences.getInt(PREFERENCE_SCALING, -2);
+		if (get && val == VALUE_UNSET)
+			return scalingPreferences.getInt(PREFERENCE_SCALING, VALUE_UNSET);
 		
 		//do not put new value
-		if(get)
+		if (get)
 			return scalingPreferences.getInt(PREFERENCE_SCALING, median);
 
 		scalingPreferences.putInt(PREFERENCE_SCALING, val);
 				
-		//default value, when used for setting not getting
-		return -1;
+		return VALUE_DEFAULT;
 	}
 	
 	/**

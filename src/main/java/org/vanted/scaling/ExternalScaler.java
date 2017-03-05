@@ -8,6 +8,8 @@ import javax.swing.AbstractButton;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 import javax.swing.JTabbedPane;
@@ -60,18 +62,18 @@ public class ExternalScaler extends BasicScaler {
 	public void doExternalScaling(Container c) {		
 		Container container;
 		
-		if (c instanceof Frame)
-			container = ((JRootPane) ((Frame) c).getComponents()[0])
-							.getContentPane();
+		if (c instanceof Frame) {
+			container = ((JRootPane) ((Frame) c).getComponents()[0]);
+		}
 		else
 			container = c;
 		
 		scaleComponentsOf(container);
 	}	
-	
-	private void scaleComponentsOf(Container container) {				
+
+	private void scaleComponentsOf(Container container) {
 		for (Component c : container.getComponents()) {
-			
+						
 			//delegate further extraction
 			if (c instanceof JComponent)
 				scaleExternalComponents((JComponent) c);
@@ -96,9 +98,17 @@ public class ExternalScaler extends BasicScaler {
 		//some common cases of JComponents not having Icon
 		//TODO
 		
-		if (component instanceof AbstractButton) {
-			AbstractButton a = (AbstractButton) component;
-			modifyExternalIcon(a, null, null);
+		
+		//TODO improve JMenuItem in modifyExternalIcon
+		if (component instanceof AbstractButton) {	
+			if (component instanceof JMenu) {
+				for (Component item: ((JMenu) component).getMenuComponents())
+					if (item instanceof AbstractButton)
+						modifyExternalIcon((AbstractButton) item, null, null);
+			} else {
+				AbstractButton a = (AbstractButton) component;
+				modifyExternalIcon(a, null, null);
+			}
 		} else if (component instanceof JLabel) {
 			JLabel b = (JLabel) component;
 			modifyExternalIcon(null, b, null);
@@ -130,7 +140,7 @@ public class ExternalScaler extends BasicScaler {
 	 * @param c JOptionPane
 	 */
 	private void modifyExternalIcon(AbstractButton a, JLabel b, JOptionPane c) {
-		//skip illegalAgrumentsException, since only for internal use
+		//skip illegalAgrumentsException, only for internal use
 				
 		Icon i; //any icon
 		
@@ -173,7 +183,11 @@ public class ExternalScaler extends BasicScaler {
 			if (pressed != null)
 				a.setPressedIcon(setModifiedIcon(null, pressed));
 
-			a.setIconTextGap((int) (a.getIconTextGap() * scaleFactor));	
+			if (a instanceof JMenuItem) {
+				//JMenuItem specifics come here
+			} else
+				//we do not scale menu gaps (some are unset)
+				a.setIconTextGap((int) (a.getIconTextGap() * scaleFactor));	
 			
 			a.validate();
 			

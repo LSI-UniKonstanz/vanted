@@ -45,7 +45,8 @@ public class BasicScaler implements Scaler {
 
 	@Override
 	public Font modifyFont(Object key, Font original) {
-		if (original instanceof FontUIResource && key.toString().endsWith(".font"))
+		if (original instanceof FontUIResource && 
+				lower(key.toString()).endsWith("font"))
 			return newScaledFontUIResource(original, scaleFactor);
 
 		return original;

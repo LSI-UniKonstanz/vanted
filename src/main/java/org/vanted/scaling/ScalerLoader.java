@@ -11,16 +11,20 @@ import javax.swing.UIManager;
  * perform/confirm the scaling operations. Although, the implemented slider
  * interface uses live update, it is needed to perform the scaling explicitly
  * on some occasions, such as - on start-up or on foreign components, not part
- * of the main frame.<p>
+ * of the main container. The most convenient way is simply calling {@link 
+ * ScalerLoader#init(Container, Class)}. As of the current implementation, this
+ * relies on a static <code>getInstance</code> method in your main container.
+ * For alternatives - read below.<p>
+ * 
+ * Additional usage:<p>
  * 
  * <b>Important</b>: Call<p> 
  * 
- * <code>ScalerLoader.signal()</code> <p>
+ * <code>{@link ScalerLoader#signal()}</code> <p>
  * 
  * in your main frame, after it has been initialized, to allow live startup 
  * scaling of its components. Then you could use the synchronized initial 
- * scaling {@link ScalerLoader.doSyncInitialScaling()}. <b>Alternatively</b>,
- * {@link ScalerLoader.waitMainFrame(Frame mainFrame)} could be used.
+ * scaling {@link ScalerLoader#doSyncInitialScaling()}.
  * 
  * @author dim8
  */
@@ -57,8 +61,12 @@ public final class ScalerLoader {
 		if (START_UP) {
 			
 			/**
+			 * Only for initial usage. */
+			START_UP = false;
+			
+			/**
 			 * Check, if scaling is necessary at all. */
-			if (isScalable())
+			if (isAvoidable())
 				return;
 			
 			/**
@@ -100,10 +108,6 @@ public final class ScalerLoader {
 				}
 			})
 			.start();
-	
-			/**
-			 * Disable further usage. */
-			START_UP = false;
 		}
 	}
 	
@@ -116,7 +120,8 @@ public final class ScalerLoader {
 		if (UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK"))
 			return;
 				
-		int sValue = ScaleSlider.managePreferences(-1, true);
+		int sValue = ScaleSlider.managePreferences(ScaleSlider.VALUE_DEFAULT,
+				ScaleSlider.PREFERENCES_GET);
 				
 		new ScaleCoordinator(ScaleSlider.processSliderValue(sValue), //factor
 							 c);
@@ -184,7 +189,8 @@ public final class ScalerLoader {
 			e.printStackTrace();
 		}
 		
-		int value = ScaleSlider.managePreferences(-1, true);
+		int value = ScaleSlider.managePreferences(ScaleSlider.VALUE_DEFAULT,
+				ScaleSlider.PREFERENCES_GET);
 		float scaleFactor = Toolkit.getDefaultToolkit().getScreenResolution() / 
 				ScaleSlider.processSliderValue(value);
 		
@@ -290,8 +296,14 @@ public final class ScalerLoader {
 		return holder.getContainer();
 	}
 	
-	private static boolean isScalable() {
-		int value = ScaleSlider.managePreferences(-2, true);
+	/**
+	 * Test whether scaling is currently necessary.
+	 * 
+	 * @return true if Scaling could be skipped.
+	 */
+	private static boolean isAvoidable() {
+		int value = ScaleSlider.managePreferences(ScaleSlider.VALUE_UNSET,
+				ScaleSlider.PREFERENCES_GET);
 		float factor = Toolkit.getDefaultToolkit().getScreenResolution() / 
 				ScaleSlider.processSliderValue(value);
 		
@@ -303,7 +315,7 @@ public final class ScalerLoader {
 		 * would also affect scaling. Additionally, if the factor is the
 		 * identity element, just avoid defaults & components iteration.
 		 */
-		if (value == -2 || factor == 1.0)
+		if (value == ScaleSlider.VALUE_UNSET || factor == 1.0)
 			return true;
 		
 		return false;
