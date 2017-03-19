@@ -207,7 +207,7 @@ public class ScaleSlider extends JSlider
 	 */
 	private float processFactor(int sliderValue) {
 		float dpif = processSliderValue(sliderValue);
-		
+
 		if (prevFactor != 0.0)//0.0 is here not the min. value, but unset!
 			dpif /= prevFactor;
 		else {
@@ -221,7 +221,7 @@ public class ScaleSlider extends JSlider
 		
 		//update next previous factor
 		prevFactor = (sliderValue == (float) min) ? (min + 0.5f) / median
-				: sliderValue / median;
+				: (float) sliderValue / median;
 		
 		return dpif;		
 	}

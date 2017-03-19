@@ -57,7 +57,7 @@ public final class ScalerLoader {
 	 * @see ExternalScaler#notifyListeners()
 	 * 
 	 */
-	public static void init(Container main, final Class<? extends Container>clazz) {
+	public static void init(Container main, final Class<? extends Container> clazz) {
 		if (START_UP) {
 			
 			/**
@@ -200,9 +200,6 @@ public final class ScalerLoader {
 		
 		//update GUI
 		ScaleCoordinator.refreshGUI(c);
-		
-		//collect trash
-		System.gc();
 	}
 	
 	/**

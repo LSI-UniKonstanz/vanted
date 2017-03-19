@@ -58,15 +58,6 @@ public class BasicScaler implements Scaler {
 		return new FontUIResource(original.getName(), original.getStyle(), newSize);
 	}
 
-	/** 
-	 * This modifies not all Icons, only those from LAF Defaults!
-	 */
-	//TODO: should be protected: use setModifiedIcon
-	@Override
-	public Icon modifyIcon(Object key, Icon original) {
-		return new IconUIResource(new ScaledIcon(original, scaleFactor));
-	}
-
 	@Override
 	public Integer modifyInteger(Object key, Integer original) {
 		if (!endsWithOneOf(lower(key), LOWER_SUFFIXES_INTEGERS))
@@ -74,9 +65,36 @@ public class BasicScaler implements Scaler {
 
 		return (int) (original * scaleFactor);
 	}
-	
+	/**
+	 * Interface method for {@link modifyInsets}, encapsulating the delegation
+	 * and performing the differentiating.
+	 * 
+	 * @param original an Insets instance to be scaled
+	 * @return a newly scaled instance or null
+	 */
 	@Override
-	public Insets modifyInsets(Insets original, InsetsUIResource original2)
+	public Insets getModifiedInsets(Insets original) {
+		if (original instanceof InsetsUIResource)
+			return modifyInsets(null, (InsetsUIResource) original);
+		
+		if (original instanceof Insets)
+			return modifyInsets((Insets) original, null);
+		
+		//sentinel for non-scalable value
+		return null;		
+	}
+	
+	/**
+	 * Internal worker for the actual scaling operations.
+	 * 
+	 * @param original an Insets instance
+	 * @param original2 an InsetsUIResource instance
+	 * 
+	 * @return the respective newly scaled Instance 
+	 * 
+	 * @throws IllegalArgumentException if arguments are wrongly set
+	 */
+	protected Insets modifyInsets(Insets original, InsetsUIResource original2)
 				throws IllegalArgumentException {
 		if ((original != null && original2 != null) || 
 				(original == null && original2 == null))
@@ -107,7 +125,8 @@ public class BasicScaler implements Scaler {
 	 * @return newly scaled instance of either {@link ImageIcon} or 
 	 * {@link IconUIResource}.
 	 */
-	public Icon setModifiedIcon(Object key, Icon icon) {
+	@Override
+	public Icon getModifiedIcon(Object key, Icon icon) {
 		if (icon == null)
 			return null;
 		
@@ -122,6 +141,14 @@ public class BasicScaler implements Scaler {
 			imageIcon = modifyImageIcon(icon);
 		
 		return (imageIcon != null) ? imageIcon : iconResource;
+	}
+	
+
+	/** 
+	 * This modifies not all Icons, only those from LAF Defaults!
+	 */
+	protected Icon modifyIcon(Object key, Icon original) {
+		return new IconUIResource(new ScaledIcon(original, scaleFactor));
 	}
 	
 	/**

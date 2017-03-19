@@ -10,7 +10,6 @@ import javax.swing.Icon;
 import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
-import javax.swing.plaf.InsetsUIResource;
 
 import org.ReleaseInfo;
 
@@ -43,9 +42,6 @@ public class ScaleCoordinator {
 		scaleDefaults(factor);
 		//update GUI
 		refreshGUI(main);
-		
-		//collect trash
-		System.gc();
 	}
 	
 	/**
@@ -64,9 +60,6 @@ public class ScaleCoordinator {
 		scaleDefaults(factor);
 		//update GUI
 		refreshGUI(main);
-		
-		//collect trash
-		System.gc();
 	}
 	
 	/**
@@ -144,16 +137,13 @@ public class ScaleCoordinator {
 			return delegate.modifyFont(key, (Font) original);
 
 		if (original instanceof Icon)
-			return delegate.modifyIcon(key, (Icon) original);
+			return delegate.getModifiedIcon(key, (Icon) original);
 		  
 		if (original instanceof Integer)
 			return delegate.modifyInteger(key, (Integer) original);
 		
-		if (original instanceof InsetsUIResource)
-			return delegate.modifyInsets(null, (InsetsUIResource) original);
-		
 		if (original instanceof Insets)
-			return delegate.modifyInsets((Insets) original, null);
+			return delegate.getModifiedInsets((Insets) original);
 		
 		//sentinel for non-scalable value
 		return null;
@@ -193,5 +183,8 @@ public class ScaleCoordinator {
 						
 				}
 			});
+		
+		//collect trash
+		System.gc();
 	}
 }

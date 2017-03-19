@@ -3,8 +3,10 @@ package org.vanted.scaling;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Frame;
+import java.awt.Insets;
 
 import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -13,6 +15,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
 import javax.swing.JTabbedPane;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 
 import org.graffiti.editor.MainFrame;
 
@@ -62,26 +66,71 @@ public class ExternalScaler extends BasicScaler {
 	public void doExternalScaling(Container c) {		
 		Container container;
 		
-		if (c instanceof Frame) {
+		if (c instanceof Frame)
 			container = ((JRootPane) ((Frame) c).getComponents()[0]);
-		}
 		else
 			container = c;
 		
 		scaleComponentsOf(container);
+		
+		//Update Listeners (app-specific)
+		notifyListeners();
 	}	
 
 	private void scaleComponentsOf(Container container) {
 		for (Component c : container.getComponents()) {
 						
 			//delegate further extraction
-			if (c instanceof JComponent)
-				scaleExternalComponents((JComponent) c);
+			if (c instanceof JComponent) {
+				//TODO order
+				
+				//Insets
+				scaleExternalInsets((JComponent) c);
+				
+				//Icons
+				scaleExternalIcons((JComponent) c);
+				
+			}
 			
 			//go further down recursively
 			if (c instanceof Container)
 				scaleComponentsOf((Container) c);
 		}
+	}
+	
+	/**
+	 * Modifies non-null Insets of JComponent.
+	 *  
+	 * @param component the JComponent, whose Insets are to be scaled
+	 *
+	 */
+	private void scaleExternalInsets(JComponent component) {
+		Insets old;
+		
+		if (component.getBorder() != null &&
+				!component.getBorder().getBorderInsets(component)
+					.equals(new Insets(0,0,0,0))) {
+			
+			old = component.getBorder().getBorderInsets(component);
+			
+			Insets newi = getModifiedInsets(old);
+			Border empty = BorderFactory.createEmptyBorder(
+					newi.top - old.top,
+					newi.left - old.left,
+					newi.bottom - old.bottom,
+					newi.right - old.right);
+			Border compound = BorderFactory.createCompoundBorder(empty,
+					component.getBorder());
+				
+			component.setBorder(compound);
+		} else if (!component.getInsets().equals(new Insets(0,0,0,0))) {
+			Insets newi = getModifiedInsets(component.getInsets());
+			Border empty = new EmptyBorder(newi);
+			//reset border to modify insets
+			component.setBorder(empty);
+		}
+		
+		//conditions not met --> exit.
 	}
 
 	/**
@@ -94,12 +143,7 @@ public class ExternalScaler extends BasicScaler {
 	 * 
 	 * @param component a possible Component containing Icon
 	 */
-	private void scaleExternalComponents(JComponent component) {
-		//some common cases of JComponents not having Icon
-		//TODO
-		
-		
-		//TODO improve JMenuItem in modifyExternalIcon
+	private void scaleExternalIcons(JComponent component) {		
 		if (component instanceof AbstractButton) {	
 			if (component instanceof JMenu) {
 				for (Component item: ((JMenu) component).getMenuComponents())
@@ -121,13 +165,10 @@ public class ExternalScaler extends BasicScaler {
 			int j = 0;
 			
 			while(d.getTabCount() > 0 && (i = d.getIconAt(j)) != null) {
-				d.setIconAt(j, setModifiedIcon(null, i));
+				d.setIconAt(j, getModifiedIcon(null, i));
 				j++;
 			}
 		}
-		
-		//Update Listeners (app-specific)
-		notifyListeners();
 	}
 	
 	/**
@@ -163,25 +204,25 @@ public class ExternalScaler extends BasicScaler {
 				pressed = i;
 			
 			if ((i = a.getIcon()) != null)
-				a.setIcon(setModifiedIcon(null, i));
+				a.setIcon(getModifiedIcon(null, i));
 			
 			if ((i = a.getRolloverIcon()) != null && !i.equals(a.getIcon()))
-				a.setRolloverIcon(setModifiedIcon(null, i));
+				a.setRolloverIcon(getModifiedIcon(null, i));
 			
 			if ((i = a.getRolloverSelectedIcon()) != null && !i.equals(a.getIcon()))
-				a.setRolloverSelectedIcon(setModifiedIcon(null, i));
+				a.setRolloverSelectedIcon(getModifiedIcon(null, i));
 			
 			if ((i = a.getSelectedIcon()) != null && !i.equals(a.getIcon()))
-				a.setSelectedIcon(setModifiedIcon(null, i));
+				a.setSelectedIcon(getModifiedIcon(null, i));
 			
 			if (disabled != null)
-				a.setDisabledIcon(setModifiedIcon(null, disabled));
+				a.setDisabledIcon(getModifiedIcon(null, disabled));
 			
 			if (disabledSelected != null)
-				a.setDisabledSelectedIcon(setModifiedIcon(null, disabledSelected));
+				a.setDisabledSelectedIcon(getModifiedIcon(null, disabledSelected));
 			
 			if (pressed != null)
-				a.setPressedIcon(setModifiedIcon(null, pressed));
+				a.setPressedIcon(getModifiedIcon(null, pressed));
 
 			if (a instanceof JMenuItem) {
 				//JMenuItem specifics come here
@@ -199,17 +240,17 @@ public class ExternalScaler extends BasicScaler {
 				disabled = i;
 			
 			if ((i = b.getIcon()) != null)
-				b.setIcon(setModifiedIcon(null, i));
+				b.setIcon(getModifiedIcon(null, i));
 			
 			if (disabled != null)
-				b.setDisabledIcon(setModifiedIcon(null, disabled));
+				b.setDisabledIcon(getModifiedIcon(null, disabled));
 			
 			b.setIconTextGap((int) (b.getIconTextGap() * scaleFactor));	
 			
 			b.validate();
 		} else { //c != null
 			if ((i = c.getIcon()) != null)
-				c.setIcon(setModifiedIcon(null, i));
+				c.setIcon(getModifiedIcon(null, i));
 			
 			c.validate();
 		}
