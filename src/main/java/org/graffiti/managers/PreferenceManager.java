@@ -1,10 +1,9 @@
 package org.graffiti.managers;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -54,18 +53,13 @@ public class PreferenceManager
 	private static PreferenceManager instance;
 	
 	private PreferenceManager() {
-		try {
+	    Path prefs = Paths.get(ReleaseInfo.getAppFolder(), SETTINGSFILENAME);
+	    
+		try (InputStream fis = new BufferedInputStream(Files.newInputStream(prefs))) {
 			logger.debug("loading preferences from settings.xml file");
-			Preferences.importPreferences(new FileInputStream(new File(ReleaseInfo.getAppFolder() + "/settings.xml")));
-		} catch (FileNotFoundException e) {
-			logger.debug("no preference file found " + e.getMessage());
-//			e.printStackTrace();
-		} catch (IOException e) {
+			Preferences.importPreferences(fis);
+		} catch (IOException | InvalidPreferencesFormatException e) {
 			logger.error(e.getMessage());
-//			e.printStackTrace();
-		} catch (InvalidPreferencesFormatException e) {
-			logger.error(e.getMessage());
-//			e.printStackTrace();
 		}
 		
 		setPreferencingObjects = new HashSet<>();
