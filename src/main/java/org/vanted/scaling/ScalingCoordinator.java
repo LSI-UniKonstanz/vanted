@@ -18,12 +18,12 @@ import org.ReleaseInfo;
  * the main types are ordered and then accordingly executed. Firstly, LAF-
  * Defaults are scaled, afterwards all user-set resizable components.  <p>
  * 
- * Big Scale Operations (e.g. DPI-Scale of 50) require additional heap space!
+ * Big Scale Operations (e.g. DPI-Scale factor of 50) require additional heap space!
  *   
  * @author dim8
  *
  */
-public class ScaleCoordinator {
+public class ScalingCoordinator {
 	
 	//for better refresh of Nimbus
 	private static boolean isNimbus = false;
@@ -36,7 +36,7 @@ public class ScaleCoordinator {
 	 * @param factor the processed Slider value
 	 * @param main the main container
 	 */
-	public ScaleCoordinator(float factor, Container main) {
+	public ScalingCoordinator(float factor, Container main) {
 		this.main = main;
 		//scale all defaults
 		scaleDefaults(factor);
@@ -50,11 +50,11 @@ public class ScaleCoordinator {
 	 * 
 	 * @param main the main container
 	 */
-	public ScaleCoordinator(Container main) {
+	public ScalingCoordinator(Container main) {
 		this.main = main;		
 		
-		int value = ScaleSlider.managePreferences(-1, true);
-		float factor = ScaleSlider.processSliderValue(value);
+		int value = ScalingSlider.managePreferences(-1, true);
+		float factor = ScalingSlider.processSliderValue(value);
 		
 		//scale all defaults
 		scaleDefaults(factor);
@@ -66,7 +66,7 @@ public class ScaleCoordinator {
 	 * You should supposedly collect your garbage yourself, unlike with the
 	 * other constructors.
 	 */
-	public ScaleCoordinator() {}
+	public ScalingCoordinator() {}
 	
 	/**
 	 * Scaling Look & Feel Defaults.

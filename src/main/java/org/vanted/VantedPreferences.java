@@ -27,7 +27,7 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
 
 import org.vanted.scaling.ScalerLoader;
-import org.vanted.scaling.ScaleSlider;
+import org.vanted.scaling.ScalingSlider;
 
 /**
  * Global Preference class for VANTED.
@@ -55,11 +55,12 @@ public class VantedPreferences implements PreferencesInterface {
 	
 	public VantedPreferences() {
 		/**
+		 * Scale starting splash banner.
+		 * 
 		 * Additionally, re-scale Metal L&F, which 
 		 * does not update Preferences on start-up.
 		 */
 		ScalerLoader.init(MainFrame.getInstance(), MainFrame.class);
-
 	}
 	
 	public static VantedPreferences getInstance() {
@@ -72,10 +73,6 @@ public class VantedPreferences implements PreferencesInterface {
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> params = new ArrayList<>();
 		params.add(getLookAndFeelParameter());
-		//with default specifics
-		if (!UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK"))
-			params.add(new JComponentParameter(new ScaleSlider(MainFrame.getInstance()),
-					"", "<html>Hi-DPI Support<sup>BETA</sup></html>"));
 		params.add(new StringParameter("", PREFERENCE_PROXYHOST, "Name or IP  of the proxy host"));
 		params.add(new IntegerParameter(0, PREFERENCE_PROXYPORT, "Port number of the proxy"));
 		params.add(new BooleanParameter(false, PREFERENCE_SHOWALL_ALGORITHMS,
@@ -100,10 +97,9 @@ public class VantedPreferences implements PreferencesInterface {
 	}
 	
 	@Override
-	public void updatePreferences(Preferences preferences) {	
-		/*
-		 * handle look and feel parameter
-		 */
+	public void updatePreferences(Preferences preferences) {			
+		/**
+		 * Handle look and feel parameter. */
 		final String lafName = preferences.get(PREFERENCE_LOOKANDFEEL, "");
 		String selLAF = UIManager.getLookAndFeel().getClass().getCanonicalName();
 		if (!selLAF.equals(lafName)) {
@@ -120,10 +116,10 @@ public class VantedPreferences implements PreferencesInterface {
 					}
 					
 					/**
-					 * Scale all components: LAF & non-LAF.
+					 * Scale all components: LAF & non-LAF on a LAF-change.
 					 */
 					ScalerLoader.doScaling(MainFrame.getInstance());
-										
+
 					/*
 					 * show changes for current instance running
 					 * This will only be executed when the preferences are updated using
@@ -141,9 +137,8 @@ public class VantedPreferences implements PreferencesInterface {
 			});
 		}
 		
-		/*
-		 * handle proxy parameter
-		 */
+		/**
+		 * Handle proxy parameter. */
 		String proxyhostname = preferences.get(PREFERENCE_PROXYHOST, null);
 		String proxyport = preferences.get(PREFERENCE_PROXYPORT, null);
 		if (proxyhostname != null && proxyport != null

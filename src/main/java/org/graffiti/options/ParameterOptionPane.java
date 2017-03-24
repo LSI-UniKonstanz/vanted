@@ -8,6 +8,7 @@ import java.util.prefs.Preferences;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.graffiti.editor.EditComponentNotFoundException;
@@ -17,6 +18,7 @@ import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.parameter.Parameter;
+import org.vanted.scaling.ScalingSlider;
 
 public class ParameterOptionPane extends AbstractOptionPane{
 
@@ -82,6 +84,12 @@ public class ParameterOptionPane extends AbstractOptionPane{
 				if(curParameter.getDescription() != null)
 					addComponent(new JLabel(curParameter.getDescription()));
 				addComponent(curParameter.getName(), valueEditComponent.getComponent());
+				
+				//insert the scaling slider right after the Look And Feel parameter
+				if (curParameter.getName().toLowerCase().contains("look and feel")) {
+					addScalingSlider();
+					logger.debug("added Scaling Slider AFTER " + curParameter.getName());
+				}
 				logger.debug("added "+curParameter.getName()+" as valueeditcomponent");
 			} catch (EditComponentNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -90,6 +98,23 @@ public class ParameterOptionPane extends AbstractOptionPane{
 		}
 	}
 
+	/**
+	 * We only need the GUI Component and not the actual preferences value.
+	 * This is stored separately and internally to the provided Slider. So,
+	 * to avoid the useless storing of the Slider itself, we add it directly
+	 * herein, right after the Look And Feel.
+	 */
+	private void addScalingSlider() {
+		if (!UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK")) {
+			String description = "<html>Hi-DPI Support<sup>BETA</sup></html>";
+			String name = "Emulated DPI";
+			//first we add the label
+			addComponent(new JLabel(description));
+			//afterwards - the actual component
+			addComponent(name, new ScalingSlider(MainFrame.getInstance()));
+		}
+	}
+	
 	@Override
 	protected void saveDefault() {
 		// TODO Auto-generated method stub

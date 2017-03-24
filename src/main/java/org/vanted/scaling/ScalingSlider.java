@@ -25,7 +25,7 @@ import org.graffiti.managers.PreferenceManager;
  * @author dim8
  *
  */
-public class ScaleSlider extends JSlider 
+public class ScalingSlider extends JSlider 
 									implements ChangeListener, Serializable {
 	
 	private static final long serialVersionUID = 939020663044124704L;
@@ -36,6 +36,8 @@ public class ScaleSlider extends JSlider
 	
 	/*--------Scaling Preferences-------- */
 	private static final String PREFERENCE_SCALING = "Scaling Preferences";
+	/** Standard value, when no scaling is to be performed. Useful for resetting.*/
+	public static final int STANDARD_VALUE = 50;
 	/** Default value, when not setting any particular value. */
 	public static final int VALUE_DEFAULT = -1;
 	/** Internal value for checking if any values are stored. */
@@ -69,7 +71,7 @@ public class ScaleSlider extends JSlider
 	 * 
 	 * @param mainContainer the applications main Container/Window/Frame
 	 */
-	public ScaleSlider(Container mainContainer) {
+	public ScalingSlider(Container mainContainer) {
 		this.main = mainContainer;
 		
 		int prefsValue = managePreferences(VALUE_DEFAULT, PREFERENCES_GET);
@@ -86,7 +88,7 @@ public class ScaleSlider extends JSlider
 	 * @param max maximal Slider's value
 	 * @param mainContainer the applications main Container/Window/Frame
 	 */
-	public ScaleSlider(int value, int extent, int min, int max, Container mainContainer) {
+	public ScalingSlider(int value, int extent, int min, int max, Container mainContainer) {
 		this.main = mainContainer;
 		
 		scalingSlider(value, extent, min, max);
@@ -101,8 +103,8 @@ public class ScaleSlider extends JSlider
 		
 		this.value = value; 
 		this.extent = extent;
-		ScaleSlider.min = min;
-		ScaleSlider.max = max;
+		ScalingSlider.min = min;
+		ScalingSlider.max = max;
 		
 		median = (min + max) / 2;
 		
@@ -181,7 +183,7 @@ public class ScaleSlider extends JSlider
 	    if (!source.getValueIsAdjusting()) {
 	        int dpi = source.getValue();
 	        //call the Coordinator to update LAF!
-	        new ScaleCoordinator(processFactor(dpi), main);
+	        new ScalingCoordinator(processFactor(dpi), main);
 	        
 	        managePreferences(dpi, PREFERENCES_SET);      
 	        
@@ -203,7 +205,7 @@ public class ScaleSlider extends JSlider
 	 * starting value by taking 'new/old' to reset the old one,
 	 * which is needed only at runtime.  
 	 * @param sliderValue the Slider's selected dpi value
-	 * @return the adjusted factor ready to be pass onto the ScaleCoordinator
+	 * @return the adjusted factor ready to be pass onto the ScalingCoordinator
 	 */
 	private float processFactor(int sliderValue) {
 		float dpif = processSliderValue(sliderValue);
@@ -245,7 +247,7 @@ public class ScaleSlider extends JSlider
 	 */
 	public static int managePreferences(int val, boolean get) {
 		final Preferences scalingPreferences = PreferenceManager
-								.getPreferenceForClass(ScaleSlider.class);
+								.getPreferenceForClass(ScalingSlider.class);
 		
 		/**
 		 * For internal use. Return old value or flag, indicating there are
@@ -265,7 +267,7 @@ public class ScaleSlider extends JSlider
 	
 	/**
 	 * Converts a slider value into DPI Factor to be passed on to the 
-	 * ScaleCoordinator. We firstly determine standard constants and 
+	 * ScalingCoordinator. We firstly determine standard constants and 
 	 * we use in the process the default slider values. For different
 	 * than default, one should initialize a ScalingSlider with such
 	 * new values.

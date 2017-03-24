@@ -23,7 +23,7 @@ import org.graffiti.editor.MainFrame;
 
 /**
  * <i>Notice:</i> it is advisable to not access it directly, but through
- * the provided {@link ScaleCoordinator}, because of factor conversions.
+ * the provided {@link ScalingCoordinator}, because of factor conversions.
  * 
  * This could be used for any user-related modifications
  * that are not LAF-related. For example, user-specified icons are outside

@@ -120,10 +120,10 @@ public final class ScalerLoader {
 		if (UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK"))
 			return;
 				
-		int sValue = ScaleSlider.managePreferences(ScaleSlider.VALUE_DEFAULT,
-				ScaleSlider.PREFERENCES_GET);
+		int sValue = ScalingSlider.managePreferences(ScalingSlider.VALUE_DEFAULT,
+				ScalingSlider.PREFERENCES_GET);
 				
-		new ScaleCoordinator(ScaleSlider.processSliderValue(sValue), //factor
+		new ScalingCoordinator(ScalingSlider.processSliderValue(sValue), //factor
 							 c);
 	}
 	
@@ -189,17 +189,17 @@ public final class ScalerLoader {
 			e.printStackTrace();
 		}
 		
-		int value = ScaleSlider.managePreferences(ScaleSlider.VALUE_DEFAULT,
-				ScaleSlider.PREFERENCES_GET);
+		int value = ScalingSlider.managePreferences(ScalingSlider.VALUE_DEFAULT,
+				ScalingSlider.PREFERENCES_GET);
 		float scaleFactor = Toolkit.getDefaultToolkit().getScreenResolution() / 
-				ScaleSlider.processSliderValue(value);
+				ScalingSlider.processSliderValue(value);
 		
-		ScaleCoordinator plainCoordinator = new ScaleCoordinator();
+		ScalingCoordinator plainCoordinator = new ScalingCoordinator();
 		//perform external scaling
 		plainCoordinator.adjustUserComponents(scaleFactor, c);
 		
 		//update GUI
-		ScaleCoordinator.refreshGUI(c);
+		ScalingCoordinator.refreshGUI(c);
 	}
 	
 	/**
@@ -299,20 +299,20 @@ public final class ScalerLoader {
 	 * @return true if Scaling could be skipped.
 	 */
 	private static boolean isAvoidable() {
-		int value = ScaleSlider.managePreferences(ScaleSlider.VALUE_UNSET,
-				ScaleSlider.PREFERENCES_GET);
+		int value = ScalingSlider.managePreferences(ScalingSlider.VALUE_UNSET,
+				ScalingSlider.PREFERENCES_GET);
 		float factor = Toolkit.getDefaultToolkit().getScreenResolution() / 
-				ScaleSlider.processSliderValue(value);
+				ScalingSlider.processSliderValue(value);
 		
 		/**
-		 * ScaleSlider.managePreferences() called with the above
+		 * ScalingSlider.managePreferences() called with the above
 		 * combination of parameters returns a flag value for checking,
 		 * if actually a value has ever been stored under the specified
 		 * preferences. If there is some writing error at the time, this 
 		 * would also affect scaling. Additionally, if the factor is the
 		 * identity element, just avoid defaults & components iteration.
 		 */
-		if (value == ScaleSlider.VALUE_UNSET || factor == 1.0)
+		if (value == ScalingSlider.VALUE_UNSET || factor == 1.0)
 			return true;
 		
 		return false;

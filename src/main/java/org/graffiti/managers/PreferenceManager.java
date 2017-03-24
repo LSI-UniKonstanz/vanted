@@ -1,10 +1,14 @@
 package org.graffiti.managers;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -111,7 +115,6 @@ public class PreferenceManager
 	 * @param plugin
 	 * @param desc
 	 */
-	@SuppressWarnings({ "unchecked" })
 	@Override
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
 		for (Algorithm algo : plugin.getAlgorithms()) {
@@ -237,7 +240,8 @@ public class PreferenceManager
 	 * @param prefInterface
 	 */
 	public void checkAddAndSetClassesPreferences(PreferencesInterface prefInterface) {
-		Preferences defaultPrefs = checkExistingPreferences(prefInterface.getClass(), ((PreferencesInterface) prefInterface).getDefaultParameters());
+		Preferences defaultPrefs = checkExistingPreferences(prefInterface.getClass(),
+				((PreferencesInterface) prefInterface).getDefaultParameters());
 		
 		if (defaultPrefs != null) {
 			setPreferencingObjects.add((Class<? extends PreferencesInterface>) prefInterface.getClass());
@@ -293,17 +297,18 @@ public class PreferenceManager
 	}
 	
 	/**
-	 * Stores the preferences in 'settings.xml' in the Vanted program directory
+	 * Stores the preferences in 'settings.xml' in the Vanted program directory.<p>
+	 * 
+	 * Improved to allow faster operations, also now closing the stream 
+	 * automatically, not waiting until GC.
 	 */
 	public static void storePreferences() {
-		try {
-			Preferences.userRoot().exportSubtree(new FileOutputStream(new File(ReleaseInfo.getAppFolder() + "/" + SETTINGSFILENAME)));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (BackingStoreException e) {
-			e.printStackTrace();
-		}
+	    Path prefs = Paths.get(ReleaseInfo.getAppFolder(), SETTINGSFILENAME);
+
+	    try (OutputStream fos = new BufferedOutputStream(Files.newOutputStream(prefs))) {
+	        Preferences.userRoot().exportSubtree(fos);
+	    } catch (IOException | BackingStoreException e) {
+	        e.printStackTrace();
+	    }
 	}
 }
