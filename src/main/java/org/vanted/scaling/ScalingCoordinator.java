@@ -128,7 +128,7 @@ public class ScalingCoordinator {
 	 * @param dpiRatio the scaling ratio from system DPI & requested DPI
 	 */
 	public void adjustUserComponents(float dpiRatio, Container main) {
-		ExternalScaler external = new ExternalScaler(dpiRatio);
+		XScaler external = new XScaler(dpiRatio);
 		external.init(main);
 	}
 	

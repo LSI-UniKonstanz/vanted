@@ -54,7 +54,7 @@ public final class ScalerLoader {
 	 * @param clazz the Class of this <b>main</b> Container, use:
 	 * <code>Classname.class</code>.
 	 * 
-	 * @see ExternalScaler#notifyListeners()
+	 * @see XScaler#notifyListeners()
 	 * 
 	 */
 	public static void init(Container main, final Class<? extends Container> clazz) {

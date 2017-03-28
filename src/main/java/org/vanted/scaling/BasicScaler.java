@@ -1,12 +1,10 @@
 package org.vanted.scaling;
 
-import java.awt.Component;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.function.Predicate;
@@ -19,6 +17,9 @@ import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.IconUIResource;
 import javax.swing.plaf.InsetsUIResource;
+
+import org.vanted.scaling.resources.ScaledFontUIResource;
+import org.vanted.scaling.resources.ScaledIcon;
 
 /**
  * This scales the following: all fonts, all integers specified in
@@ -36,6 +37,9 @@ public class BasicScaler implements Scaler {
 	private static final String[] LOWER_SUFFIXES_INTEGERS = 
 			new String[] { "width", "height", "indent", "size", "gap", "padding" };
 	
+	/**Constants for allowed minimal width and height. */
+	private static final int MIN_ICON_SIZE = 1;
+	
 	public BasicScaler(float scaleFactor) {
 		this.scaleFactor = scaleFactor;
 	}
@@ -45,17 +49,51 @@ public class BasicScaler implements Scaler {
 
 	@Override
 	public Font modifyFont(Object key, Font original) {
-		if (original instanceof FontUIResource && 
+		
+		//We have a non-LAF related call
+		if (key == null && original != null)
+			return newScaledFont(original, scaleFactor);
+		
+		if (original instanceof FontUIResource && key != null &&
 				lower(key.toString()).endsWith("font"))
 			return newScaledFontUIResource(original, scaleFactor);
 
 		return original;
 	}
 
-	protected static FontUIResource newScaledFontUIResource(Font original, float scale) {
-		int newSize = Math.round(original.getSize() * scale);
+	/**
+	 * Creates a new {@link ScaledFontUIResource} by modifying the size.
+	 * 
+	 * @param original 
+	 * @param factor the scale factor
+	 * 
+	 * @return a {@link ScaledFontUIResource} instance
+	 */
+	protected static ScaledFontUIResource newScaledFontUIResource(Font original, float factor) {
+		int newSize = Math.round(original.getSize() * factor);
+		ScaledFontUIResource newFont = 
+				new ScaledFontUIResource(original.getName(), original.getStyle(), newSize);
+		newFont.setDPI((int) (Toolkit.getDefaultToolkit().getScreenResolution() / factor));
 		
-		return new FontUIResource(original.getName(), original.getStyle(), newSize);
+		return newFont;
+	}
+	
+	/**
+	 * We scale a given {@link Font}, while preserving the type in the scope of Swing.
+	 * 
+	 * @param original
+	 * @param factor the scale factor
+	 * 
+	 * @return a {@link Font} instance
+	 */
+	protected static Font newScaledFont(Font original, float factor) {
+		int newSize = Math.round(original.getSize() * factor);
+		
+		//test for the sub-type
+		if (original instanceof FontUIResource)
+			return new FontUIResource(original.getName(), original.getStyle(), newSize);
+			
+		return new Font(original.getName(), original.getStyle(), newSize);
 	}
 
 	@Override
@@ -164,10 +202,15 @@ public class BasicScaler implements Scaler {
 	 */
 	protected ImageIcon modifyImageIcon(Icon icon) {
 		ImageIcon newIcon = (ImageIcon) icon;
-		BufferedImage newImage = new BufferedImage(
-				(int) (newIcon.getIconWidth() * scaleFactor),
-				(int) (newIcon.getIconHeight() * scaleFactor), 
-				BufferedImage.TYPE_INT_ARGB);
+		int width = 
+			((width = (int) (newIcon.getIconWidth() * scaleFactor)) < MIN_ICON_SIZE)
+				? MIN_ICON_SIZE : width;
+		int height = 
+				((height = (int) (newIcon.getIconHeight() * scaleFactor)) < MIN_ICON_SIZE)
+					? MIN_ICON_SIZE : height;
+		
+		BufferedImage newImage = new BufferedImage(width, height,
+											BufferedImage.TYPE_INT_ARGB);
 		
 		Graphics2D gfx = newImage.createGraphics();
 		gfx.setRenderingHint(RenderingHints.KEY_INTERPOLATION, 
@@ -199,56 +242,5 @@ public class BasicScaler implements Scaler {
 
 	private String lower(Object key) {
 		return (key instanceof String) ? ((String) key).toLowerCase() : "";
-	}
-	
-	private class ScaledIcon implements Icon {
-		
-		protected float _scalef;
-		protected Icon _icon;
-
-		/**
-		 * Calling this would initialize an Icon Object clone of the 
-		 * passed <code>oldIcon</code>, but painted in a scaled environment,
-		 * determined by the <code>scaleFactor</code>. For more information,
-		 * check out the {@link paintIcon()} method.
-		 * 
-		 * 
-		 * @param oldIcon icon to be scaled
-		 * @param scaleFactor the respective factor of scaling
-		 */
-		public ScaledIcon(Icon oldIcon, float scaleFactor) {
-			this._icon = oldIcon;
-			this._scalef = scaleFactor;			
-		}
-		
-		@Override
-		public void paintIcon(Component c, Graphics g, int x, int y) {
-			Graphics2D gfx = (Graphics2D) g;
-			AffineTransform oldTransf = gfx.getTransform();
-			RenderingHints oldHints = gfx.getRenderingHints();
-
-			gfx.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-			
-			gfx.scale(_scalef, _scalef);
-			
-			_icon.paintIcon(c, g, (int)(x/_scalef), (int)(y/_scalef));
-
-			gfx.setTransform(oldTransf);
-			gfx.setRenderingHints(oldHints);
-			
-			//do not dispose!
-			
-		}
-
-		@Override
-		public int getIconWidth() {
-			return Math.round(_icon.getIconWidth() * _scalef);
-		}
-
-		@Override
-		public int getIconHeight() {
-			return Math.round(_icon.getIconHeight() * _scalef);
-		}
 	}
 }
