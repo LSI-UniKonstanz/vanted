@@ -203,7 +203,12 @@ public class ScalingSlider extends JSlider
 	 * Here we process the DPI-Factor according to the Slider's
 	 * selected value. Furthermore, we have to re-adjust the 
 	 * starting value by taking 'new/old' to reset the old one,
-	 * which is needed only at runtime.  
+	 * which is needed only at runtime.<p>
+	 * 
+	 * Calling it twice consecutively, is as going back and forth
+	 * with the slider itself and thus giving a factor of 1.0 and
+	 * no change at all.
+	 * 
 	 * @param sliderValue the Slider's selected dpi value
 	 * @return the adjusted factor ready to be pass onto the ScalingCoordinator
 	 */

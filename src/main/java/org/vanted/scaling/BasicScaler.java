@@ -203,10 +203,10 @@ public class BasicScaler implements Scaler {
 	protected ImageIcon modifyImageIcon(Icon icon) {
 		ImageIcon newIcon = (ImageIcon) icon;
 		int width = 
-			((width = (int) (newIcon.getIconWidth() * scaleFactor)) < MIN_ICON_SIZE)
+			((width = Math.round((newIcon.getIconWidth() * scaleFactor))) < MIN_ICON_SIZE)
 				? MIN_ICON_SIZE : width;
 		int height = 
-				((height = (int) (newIcon.getIconHeight() * scaleFactor)) < MIN_ICON_SIZE)
+				((height = Math.round((newIcon.getIconHeight() * scaleFactor))) < MIN_ICON_SIZE)
 					? MIN_ICON_SIZE : height;
 		
 		BufferedImage newImage = new BufferedImage(width, height,
@@ -221,8 +221,8 @@ public class BasicScaler implements Scaler {
 		
 		
 		gfx.drawImage(newIcon.getImage(), 0, 0,
-				(int) (newIcon.getIconWidth() * scaleFactor),
-				(int) (newIcon.getIconHeight() * scaleFactor), null);
+				Math.round(newIcon.getIconWidth() * scaleFactor),
+				Math.round(newIcon.getIconHeight() * scaleFactor), null);
 		
 		gfx.dispose();
 		

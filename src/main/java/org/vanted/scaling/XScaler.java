@@ -171,73 +171,125 @@ public class XScaler extends BasicScaler {
 	
 	/**
 	 * More precisely handle <small> and <big> HTML tags. These are problematic,
-	 * because they do not respect a font change on its own. So we replaces them
-	 * and achieve a similar look by using &#60;font size="-1"> with accordingly 
-	 * processed value. Dynamic update is still TODO.
+	 * because they do not respect a font change on its own. So we replace them
+	 * and achieve a similar look using &#60;font size="-1"> with accordingly 
+	 * processed value. With the help of a {@link TextListener} we are able to
+	 * also detect dynamic changes.
 	 * 
 	 * @param component containing HTML-styled tags to scale
 	 * 
 	 * @see {@link XScaler#isHTMLStyled(String)}
 	 */
 	private void modifyHTMLFont(JComponent component) {
-		//the to be extracted text
+		//the Component's text
 		String t;
 		
 		if (component instanceof JLabel) {
 			JLabel label = (JLabel) component;
 			t = label.getText();
 
-			if (isHTMLStyled(t)) {
-				//save the initial tags for later
-				storeTags(label, t);
-				//convert tags to font size
-				t = parseHTMLtoFontSize(t, label);
-				
-				if (t.equals(label.getText()))
-					return;
-				//remove listener to avoid looping
-				handleTextListener(label, true);
-				label.setText(t);
-
-				//install listener for subsequent external to this method changes
-				handleTextListener(label, false);
-			}
+			processText(t, label);
 		} if (component instanceof AbstractButton) {
 			AbstractButton button = (AbstractButton) component;
 			t = button.getText();
 			
-			if (isHTMLStyled(t)) {
-				//save the initial tags for later
-				storeTags(button, t);
-				//convert tags to font size
-				t = parseHTMLtoFontSize(t, button);
-				
-				if (t.equals(button.getText()))
-					return;
-				//remove listener to avoid looping
-				handleTextListener(button, true);
-				button.setText(t);
-				//install listener for subsequent external to this method changes
-				handleTextListener(button, false);
-			}
+			processText(t, button);
 		} if (component instanceof JTextComponent) {
 			JTextComponent text = (JTextComponent) component;
 			t = text.getText();
 			
-			if (isHTMLStyled(t)) {
-				//save the initial tags for later
-				storeTags(text, t);
-				//convert tags to font size
-				t = parseHTMLtoFontSize(t, text);
-				
-				if (t.equals(text.getText()))
-						return;
-				//remove listener to avoid looping
-				handleTextListener(text, true);
-				text.setText(t);
-				//install listener for subsequent external to this method changes
-				handleTextListener(text, false);
-			}
+			processText(t, text);
+		}
+	}
+
+	/**
+	 * Worker method, overloaded for {@link JLabel}.
+	 * Processes the text, given it is HTML-styled, see 
+	 * {@link XScaler#isHTMLStyled(String)}, by performing 
+	 * parsing, substitution, removal and installation of {@link TextListener}
+	 * and text setting, if necessary.
+	 * 
+	 * @param t text
+	 * @param label JLabel
+	 */
+	private void processText(String t, JLabel label) {
+		if (isHTMLStyled(t)) {
+			//save the initial tags and their order for later 
+			storeTags(label, t);
+			//convert tags to font size tag
+			t = parseHTMLtoFontSize(t, label);
+			
+			if (t.equals(label.getText()))
+				return;
+			
+			//remove listener to avoid looping
+			handleTextListener(label, true);
+			
+			label.setText(t);
+
+			//install listener for subsequent dynamic changes
+			handleTextListener(label, false);
+		}
+
+	}
+	
+	/**
+	 * Worker method, overloaded for {@link AbstractButton}.
+	 * Processes the text, given it is HTML-styled, see 
+	 * {@link XScaler#isHTMLStyled(String)}, by performing 
+	 * parsing, substitution, removal and installation of {@link TextListener}
+	 * and text setting, if necessary.
+	 * 
+	 * @param t text
+	 * @param button AbstractButton
+	 */
+	private void processText(String t, AbstractButton button) {
+		if (isHTMLStyled(t)) {
+			//save the initial tags for later
+			storeTags(button, t);
+			//convert tags to font size
+			t = parseHTMLtoFontSize(t, button);
+			
+			if (t.equals(button.getText()))
+				return;
+			
+			//remove listener to avoid looping
+			handleTextListener(button, true);
+			
+			button.setText(t);
+			
+			//install listener for subsequent dynamic changes
+			handleTextListener(button, false);
+		}
+	}
+	
+	/**
+	 * Worker method, overloaded for {@link JTextComponent}.
+	 * Processes the text, given it is HTML-styled, see 
+	 * {@link XScaler#isHTMLStyled(String)}, by performing 
+	 * parsing, substitution, removal and installation of {@link TextListener}
+	 * and text setting, if necessary.
+	 * 
+	 * @param t text
+	 * @param text JTextComponent
+	 */
+	private void processText(String t, JTextComponent text) {
+		if (isHTMLStyled(t)) {
+			//save the initial tags for later
+			storeTags(text, t);
+			//convert tags to font size
+			t = parseHTMLtoFontSize(t, text);
+			
+			if (t.equals(text.getText()))
+					return;
+			
+			//remove listener to avoid looping
+			handleTextListener(text, true);
+			
+			text.setText(t);
+			
+			//install listener for subsequent dynamic changes
+			handleTextListener(text, false);
 		}
 	}
 	
@@ -250,7 +302,7 @@ public class XScaler extends BasicScaler {
 	 * @return true if styled with font-modifying tags
 	 */
 	private boolean isHTMLStyled(String text) {
-		//t lowered
+		//text, lowered
 		String tlow = (text == null) ? null : text.toLowerCase(Locale.ROOT);
 		String fontsize = "<font size=\"";
 		
@@ -263,10 +315,11 @@ public class XScaler extends BasicScaler {
 	}
 
 	/**
-	 * Stores all used tags of the form &#60;small> or &#big> while 
+	 * Stores all used tags of the form &#60;small> or &#big>, while 
 	 * preserving the order. The data structures that holds them is
-	 * {@link XScaler#tags}. As key is used the hash-code of the given
-	 * component, thus identifying it uniquely during each session.<p>
+	 * the field {@link XScaler#tags}. As key is used the hash-code
+	 * of the given component, thus identifying it uniquely during 
+	 * each working session.<p>
 	 * 
 	 * Example:<br><br>
 	 * &#60;html>&#60;big>3&#60;small>&#60;br>&nbsp;nodes<br>
@@ -276,7 +329,7 @@ public class XScaler extends BasicScaler {
 	 * @param text used to get the tags
 	 */
 	private void storeTags(JComponent component, String text) {
-		//t lowered
+		//text, lowered
 		String tlow = (text == null) ? null : text.toLowerCase(Locale.ROOT);
 		
 		if ((tlow.contains("<small>") || tlow.contains("<big>")) && 
@@ -286,6 +339,7 @@ public class XScaler extends BasicScaler {
 			String value = "";
 			
 			while (text.length() > 0) {
+				//test for 'small' before 'big' or 'small' all alone
 				if (text.indexOf("<small>") < text.indexOf("<big>") || 
 						(text.contains("<small>") && !text.contains("<big>"))) {
 					value += "<small>";
@@ -293,6 +347,7 @@ public class XScaler extends BasicScaler {
 					text = text.replaceFirst("<small>", "");
 				}
 				
+				//analogously
 				if (text.indexOf("<big>") < text.indexOf("<small>") || 
 						(text.contains("<big>") && !text.contains("<small>"))) {
 					value += "<big>";
@@ -300,11 +355,12 @@ public class XScaler extends BasicScaler {
 					text = text.replaceFirst("<big>", "");
 				}
 				
+				//stopping criterion
 				if (!text.contains("<small>") && !text.contains("<big>"))
 					break;
 			}
 			
-			/*---Insert pair---*/
+			/*---Insert kv-pair---*/
 			tags.put(component.hashCode(), value);
 		}
 	}
@@ -342,20 +398,18 @@ public class XScaler extends BasicScaler {
 			float f = font;
 			while (f > _DEFAULT_SIZE) {
 				f = f / 2.0f;
-				factor++;
+				factor += 1;
 			}
 		//higher emulated DPI => smaller font size
 		} else if (ratio < 1) {
 			sign = "-";
 			float f = font;
+			
+			//normalize the factor (no side effects)
+			factor = 1;
 			while (f < _DEFAULT_SIZE) {
-				f = 2*f;
-				/**
-				 * Scaler arithmetics are not proportional - bigger scaling 
-				 * factors are more easily reachable than smaller. Therefore
-				 * here we reflect this case.
-				 */
-				factor+=3;
+				f += 2;
+				factor += 1;
 			}
 		//no emulated DPI => no change
 		} else
@@ -371,7 +425,7 @@ public class XScaler extends BasicScaler {
 				String[] initialTags = parseTagValues(component);
 				for (int i = 0, j = 0; i < parts.length - 1; i += 2, j++) {
 					text = parts[i] + (j < initialTags.length ? initialTags[j]
-								: "");
+											: "");
 					
 					text = text + parts[i+1].replaceAll("^(-|\\+)*[1-9]{1}\">", "");
 				}
@@ -383,7 +437,7 @@ public class XScaler extends BasicScaler {
 		if (text.indexOf(pattern) == -1) {
 			//Replace all <small>, given any
 			text = text.replaceAll("<small>", pattern + sign + factor +"\">");
-			//Replace all <big>, given any and set factor accordingly
+			//Replace all <big>, given any and adjust factor accordingly
 			factor += 2;
 			text = text.replaceAll("<big>", pattern + sign + factor +"\">");			
 		} else {
@@ -452,7 +506,7 @@ public class XScaler extends BasicScaler {
 			
 		}
 		
-		//get the array
+		//construct the array
 		String[] array = new String[tagsList.size()];
 		int i = 0;
 		while (i < tagsList.size()) {
@@ -470,7 +524,7 @@ public class XScaler extends BasicScaler {
 	 *
 	 */
 	private void coscaleInsets(JComponent component) {
-		Insets old;
+		Insets old = null;
 		
 		if (component.getBorder() != null &&
 				!component.getBorder().getBorderInsets(component)
@@ -513,111 +567,125 @@ public class XScaler extends BasicScaler {
 			if (component instanceof JMenu) {
 				for (Component item: ((JMenu) component).getMenuComponents())
 					if (item instanceof AbstractButton)
-						modifySetIcon((AbstractButton) item, null, null);
-			} else {
-				AbstractButton a = (AbstractButton) component;
-				modifySetIcon(a, null, null);
-			}
-		} else if (component instanceof JLabel) {
-			JLabel b = (JLabel) component;
-			modifySetIcon(null, b, null);
-		} else if (component instanceof JOptionPane) {
-			JOptionPane c = (JOptionPane) component;
-			modifySetIcon(null, null, c);
-		} else if (component instanceof JTabbedPane) {
-			JTabbedPane d = (JTabbedPane) component;
-			Icon i;
-			int j = 0;
-			
-			while(d.getTabCount() > 0 && (i = d.getIconAt(j)) != null) {
-				d.setIconAt(j, getModifiedIcon(null, i));
-				j++;
-			}
-		}
+						modifySetIcon((AbstractButton) item);
+			} else
+				modifySetIcon((AbstractButton) component);
+		} else if (component instanceof JLabel)
+			modifySetIcon((JLabel) component);
+		else if (component instanceof JOptionPane)
+			modifySetIcon((JOptionPane) component);
+		else if (component instanceof JTabbedPane)
+			modifySetIcon((JTabbedPane) component);
 	}
 	
 	/**
-	 * Scales the already set icon(s) and icon-related attributes of the three 
-	 * icon-containing JComponents.<p>
+	 * Scales the already set icon(s) and icon-related attributes of the given
+	 * AbstractButton.
 	 * 
-	 * <b>Only one should be non-null!</b>
-	 * @param a AbstractButton
-	 * @param b JLabel
-	 * @param c JOptionPane
+	 * @param button AbstractButton
 	 */
-	private void modifySetIcon(AbstractButton a, JLabel b, JOptionPane c) {
-		//skip illegalAgrumentsException, only for internal use
-				
+	private void modifySetIcon(AbstractButton button) {
+		Icon i; //any icon
+		Icon disabled = null;
+		Icon disabledSelected = null;
+		Icon pressed = null;
+			
+		if ((i = button.getDisabledIcon()) != null && !i.equals(button.getIcon()))
+			//save it (setIcon nullifies disabledIcon)
+			disabled = i;
+			
+		if ((i = button.getDisabledSelectedIcon()) != null &&
+				!i.equals(button.getIcon()))
+			//again save it!
+			disabledSelected = i;
+			
+		if ((i = button.getPressedIcon()) != null && !i.equals(button.getIcon()))
+			//again save it!
+			pressed = i;
+			
+		if ((i = button.getIcon()) != null)
+			button.setIcon(getModifiedIcon(null, i));
+			
+		if ((i = button.getRolloverIcon()) != null && !i.equals(button.getIcon()))
+			button.setRolloverIcon(getModifiedIcon(null, i));
+			
+		if ((i = button.getRolloverSelectedIcon()) != null && !i.equals(button.getIcon()))
+			button.setRolloverSelectedIcon(getModifiedIcon(null, i));
+			
+		if ((i = button.getSelectedIcon()) != null && !i.equals(button.getIcon()))
+			button.setSelectedIcon(getModifiedIcon(null, i));
+			
+		if (disabled != null)
+			button.setDisabledIcon(getModifiedIcon(null, disabled));
+			
+		if (disabledSelected != null)
+			button.setDisabledSelectedIcon(getModifiedIcon(null, disabledSelected));
+			
+		if (pressed != null)
+			button.setPressedIcon(getModifiedIcon(null, pressed));
+
+		if (button instanceof JMenuItem) {
+			//JMenuItem specifics come here
+		} else
+			//we do not scale menu gaps (some are unset)
+			button.setIconTextGap((int) (button.getIconTextGap() * scaleFactor));	
+			
+		button.validate();
+	}
+	
+	/**
+	 * Scales the already set icon(s) and icon-related attributes of the given
+	 * JLabel.
+	 * 
+	 * @param label JLabel
+	 */
+	private void modifySetIcon(JLabel label) {
+		Icon i; //any icon
+		Icon disabled = null;
+			
+		if ((i = label.getDisabledIcon()) != null && !i.equals(label.getIcon()))
+			//see above
+			disabled = i;
+			
+		if ((i = label.getIcon()) != null)
+			label.setIcon(getModifiedIcon(null, i));
+			
+		if (disabled != null)
+			label.setDisabledIcon(getModifiedIcon(null, disabled));
+			
+		label.setIconTextGap((int) (label.getIconTextGap() * scaleFactor));	
+			
+		label.validate();
+	}
+	
+	/**
+	 * Scales the already set icon(s) and icon-related attributes of the given
+	 * JOptionPane.
+	 *
+	 * @param pane JOptionPane
+	 */
+	private void modifySetIcon(JOptionPane pane) {
 		Icon i; //any icon
 		
-		if (a != null) {
-			Icon disabled = null;
-			Icon disabledSelected = null;
-			Icon pressed = null;
+		if ((i = pane.getIcon()) != null)
+			pane.setIcon(getModifiedIcon(null, i));
 			
-			if ((i = a.getDisabledIcon()) != null && !i.equals(a.getIcon()))
-				//save it (setIcon nullifies disabledIcon)
-				disabled = i;
-			
-			if ((i = a.getDisabledSelectedIcon()) != null &&
-					!i.equals(a.getIcon()))
-				//again save it!
-				disabledSelected = i;
-			
-			if ((i = a.getPressedIcon()) != null && !i.equals(a.getIcon()))
-				//again save it!
-				pressed = i;
-			
-			if ((i = a.getIcon()) != null)
-				a.setIcon(getModifiedIcon(null, i));
-			
-			if ((i = a.getRolloverIcon()) != null && !i.equals(a.getIcon()))
-				a.setRolloverIcon(getModifiedIcon(null, i));
-			
-			if ((i = a.getRolloverSelectedIcon()) != null && !i.equals(a.getIcon()))
-				a.setRolloverSelectedIcon(getModifiedIcon(null, i));
-			
-			if ((i = a.getSelectedIcon()) != null && !i.equals(a.getIcon()))
-				a.setSelectedIcon(getModifiedIcon(null, i));
-			
-			if (disabled != null)
-				a.setDisabledIcon(getModifiedIcon(null, disabled));
-			
-			if (disabledSelected != null)
-				a.setDisabledSelectedIcon(getModifiedIcon(null, disabledSelected));
-			
-			if (pressed != null)
-				a.setPressedIcon(getModifiedIcon(null, pressed));
+		pane.validate();
+	}
 
-			if (a instanceof JMenuItem) {
-				//JMenuItem specifics come here
-			} else
-				//we do not scale menu gaps (some are unset)
-				a.setIconTextGap((int) (a.getIconTextGap() * scaleFactor));	
-			
-			a.validate();
-			
-		} else if (b != null) {
-			Icon disabled = null;
-			
-			if ((i = b.getDisabledIcon()) != null && !i.equals(b.getIcon()))
-				//see above
-				disabled = i;
-			
-			if ((i = b.getIcon()) != null)
-				b.setIcon(getModifiedIcon(null, i));
-			
-			if (disabled != null)
-				b.setDisabledIcon(getModifiedIcon(null, disabled));
-			
-			b.setIconTextGap((int) (b.getIconTextGap() * scaleFactor));	
-			
-			b.validate();
-		} else { //c != null
-			if ((i = c.getIcon()) != null)
-				c.setIcon(getModifiedIcon(null, i));
-			
-			c.validate();
+	/**
+	 * Scales the already set icon(s) and icon-related attributes of the given
+	 * JTabbedPane.
+	 *
+	 * @param pane JTabbedPane
+	 */
+	private void modifySetIcon(JTabbedPane pane) {
+		Icon i;
+		int j = 0;
+		
+		while(pane.getTabCount() > 0 && (i = pane.getIconAt(j)) != null) {
+			pane.setIconAt(j, getModifiedIcon(null, i));
+			j++;
 		}
 	}
 	
