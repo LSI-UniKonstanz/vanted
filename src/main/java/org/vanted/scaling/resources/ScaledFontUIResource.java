@@ -1,6 +1,8 @@
 package org.vanted.scaling.resources;
 
 
+import java.awt.Toolkit;
+
 import javax.swing.plaf.FontUIResource;
 
 /**
@@ -24,10 +26,23 @@ public class ScaledFontUIResource extends FontUIResource {
 	}
 	
 	/**
-	 * The corresponding DPI of the scaled resource.  
+	 * The corresponding DPI of the scaled resource.
+	 *   
 	 * @return current DPI or -1, if not set
 	 */
 	public int getDPI() {
 		return currentDPI;
+	}
+	
+	/**
+	 * Checks whether the resource has already been rescaled with the provided
+	 * scaling factor.
+	 * 
+	 * @param currentFactor factor for comparison
+	 * @return true if already rescaled
+	 */
+	public boolean isScaledWith(float currentFactor) {
+		return this.getDPI() == 
+				(Toolkit.getDefaultToolkit().getScreenResolution() / currentFactor);
 	}
 }

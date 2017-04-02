@@ -2,9 +2,9 @@ package org.vanted.scaling;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -158,13 +158,11 @@ public class XScaler extends BasicScaler {
 		 * processed. If not we compare the DPIs to make a conclusion.
 		 * Then we modify accordingly.
 		 */
-		if (!(component.getFont() instanceof ScaledFontUIResource) || 
-				(component.getFont() instanceof ScaledFontUIResource && 
-						((ScaledFontUIResource) component.getFont()).getDPI() != 
-						Toolkit.getDefaultToolkit().getScreenResolution() / scaleFactor)) {
-			
-			component.setFont(modifyFont(null, component.getFont()));
-		}
+		Font font = component.getFont();
+		
+		if (!(font instanceof ScaledFontUIResource) ||
+				!((ScaledFontUIResource) font).isScaledWith(scaleFactor))
+			component.setFont(modifyFont(null, font));
 		
 		modifyHTMLFont(component);
 	}
@@ -493,7 +491,7 @@ public class XScaler extends BasicScaler {
 		ArrayList<String> tagsList = new ArrayList<>();
 	
 		//iterate until all tags are place in the list
-		while(value.length() > 0) {
+		while (value.length() > 0) {
 			if (value.startsWith("<small>")) {
 				tagsList.add("<small>");
 				value = value.replaceFirst("<small>", "");
@@ -524,32 +522,31 @@ public class XScaler extends BasicScaler {
 	 *
 	 */
 	private void coscaleInsets(JComponent component) {
-		Insets old = null;
 		
-		if (component.getBorder() != null &&
-				!component.getBorder().getBorderInsets(component)
-					.equals(new Insets(0,0,0,0))) {
-			
+		/**Check if Insets need re-scaling. */
+		if (component.getInsets().hashCode() == 0)
+			return;
+		
+		Insets old;
+		
+		if (component.getBorder() != null) {			
 			old = component.getBorder().getBorderInsets(component);
-			
 			Insets newi = getModifiedInsets(old);
 			Border empty = BorderFactory.createEmptyBorder(
 					newi.top - old.top,
 					newi.left - old.left,
 					newi.bottom - old.bottom,
 					newi.right - old.right);
-			Border compound = BorderFactory.createCompoundBorder(empty,
-					component.getBorder());
-				
+			Border compound = BorderFactory.createCompoundBorder(
+					component.getBorder(), empty);
+			
 			component.setBorder(compound);
-		} else if (!component.getInsets().equals(new Insets(0,0,0,0))) {
+		} else {
 			Insets newi = getModifiedInsets(component.getInsets());
 			Border empty = new EmptyBorder(newi);
 			//reset border to modify insets
 			component.setBorder(empty);
 		}
-		
-		//conditions not met --> exit.
 	}
 
 	/**
