@@ -54,7 +54,7 @@ public class ScalingCoordinator {
 		this.main = main;		
 		
 		int value = ScalingSlider.managePreferences(-1, true);
-		float factor = ScalingSlider.processSliderValue(value);
+		float factor = ScalingSlider.processDPI(value);
 		
 		//scale all defaults
 		scaleDefaults(factor);

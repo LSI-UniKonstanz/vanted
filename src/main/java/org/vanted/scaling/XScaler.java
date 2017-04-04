@@ -126,8 +126,6 @@ public class XScaler extends BasicScaler {
 			//delegate further extraction
 			if (c instanceof JComponent) {
 				
-				//TODO order
-				
 				//Font
 				coscaleFont((JComponent) c);
 				
@@ -522,7 +520,6 @@ public class XScaler extends BasicScaler {
 	 *
 	 */
 	private void coscaleInsets(JComponent component) {
-		
 		/**Check if Insets need re-scaling. */
 		if (component.getInsets().hashCode() == 0)
 			return;

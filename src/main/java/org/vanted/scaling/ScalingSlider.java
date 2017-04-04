@@ -3,6 +3,7 @@ package org.vanted.scaling;
 import java.awt.Container;
 import java.io.Serializable;
 import java.util.Hashtable;
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 import javax.swing.DefaultBoundedRangeModel;
@@ -15,6 +16,8 @@ import javax.swing.event.ChangeListener;
 
 import org.SystemInfo;
 import org.graffiti.managers.PreferenceManager;
+
+//TODO remove PreferenceManager dependencies
 
 /**
  * The front-end of the provided scalers. Because of the
@@ -59,11 +62,14 @@ public class ScalingSlider extends JSlider
 	/* Defaults */
 	@SuppressWarnings("unused") //it's used (potentially), see a bit down below
 	private int value = 50;
-	private static int min = 0;
-	private static int max = 100;
+	public static int min = 0;
+	public static int max = 100;
 	private int extent = 0;
 	
 	private static int median = (min + max) / 2;
+	
+	private static final Preferences scalingPreferences = PreferenceManager
+			.getPreferenceForClass(ScalingSlider.class);
 	
 	/**
 	 * Slider to allow live modifications to the scaling of components. It just
@@ -145,6 +151,10 @@ public class ScalingSlider extends JSlider
 		this.setOrientation(SwingConstants.HORIZONTAL);
 		/* set up labels*/
 		insertLabels();
+		/*set initial TooltipText*/
+		int v = this.getValue();
+		this.setToolTipText(String.valueOf(v) + " (DPI: " + 
+									Math.round(processDPI(v)) + ")");
 	}
 
 	
@@ -181,15 +191,15 @@ public class ScalingSlider extends JSlider
 	    JSlider source = (JSlider) e.getSource();
 	    
 	    if (!source.getValueIsAdjusting()) {
-	        int dpi = source.getValue();
+	        int value = source.getValue();
 	        //call the Coordinator to update LAF!
-	        new ScalingCoordinator(processFactor(dpi), main);
+	        new ScalingCoordinator(processFactor(value), main);
 	        
-	        managePreferences(dpi, PREFERENCES_SET);      
+	        managePreferences(value, PREFERENCES_SET);      
 	        
 	        refresh();
 	        
-	        this.setToolTipText(String.valueOf(source.getValue()));
+	        this.setToolTipText(String.valueOf(value) + " (DPI: " + Math.round(processDPI(value)) + ")");
 	    }
 	}
 	
@@ -200,7 +210,7 @@ public class ScalingSlider extends JSlider
         this.revalidate();
 	}
 	/**
-	 * Here we process the DPI-Factor according to the Slider's
+	 * Here we process the DPI according to the Slider's
 	 * selected value. Furthermore, we have to re-adjust the 
 	 * starting value by taking 'new/old' to reset the old one,
 	 * which is needed only at runtime.<p>
@@ -213,7 +223,7 @@ public class ScalingSlider extends JSlider
 	 * @return the adjusted factor ready to be pass onto the ScalingCoordinator
 	 */
 	private float processFactor(int sliderValue) {
-		float dpif = processSliderValue(sliderValue);
+		float dpif = processDPI(sliderValue);
 
 		if (prevFactor != 0.0)//0.0 is here not the min. value, but unset!
 			dpif /= prevFactor;
@@ -250,10 +260,7 @@ public class ScalingSlider extends JSlider
 	 * ScalingSlider.VALUE_DEFAULT</code> for potential error checking, if 
 	 * <b>get</b> is <b>false</b>.
 	 */
-	public static int managePreferences(int val, boolean get) {
-		final Preferences scalingPreferences = PreferenceManager
-								.getPreferenceForClass(ScalingSlider.class);
-		
+	public static int managePreferences(int val, boolean get) {		
 		/**
 		 * For internal use. Return old value or flag, indicating there are
 		 * no stored values, avoid scaling with identity factor.
@@ -271,6 +278,16 @@ public class ScalingSlider extends JSlider
 	}
 	
 	/**
+	 * Write preferences to disk.
+	 * 
+	 * @throws BackingStoreException
+	 */
+	public static void flushPreferences() throws BackingStoreException {
+		scalingPreferences.flush();
+		PreferenceManager.storePreferences();
+	}
+	
+	/**
 	 * Converts a slider value into DPI Factor to be passed on to the 
 	 * ScalingCoordinator. We firstly determine standard constants and 
 	 * we use in the process the default slider values. For different
@@ -279,7 +296,7 @@ public class ScalingSlider extends JSlider
 	 * @param sValue sliderValue (get it from Preferences)
 	 * @return DPI Factor
 	 */
-	public static float processSliderValue(int sValue) {
+	public static float processDPI(int sValue) {
 		int standard = getStandard(); //also sets MIN_DPI for public use!
 		
 		//handling the artificial 0
