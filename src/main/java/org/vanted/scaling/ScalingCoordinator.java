@@ -53,8 +53,8 @@ public class ScalingCoordinator {
 	public ScalingCoordinator(Container main) {
 		this.main = main;		
 		
-		int value = ScalingSlider.managePreferences(-1, true);
-		float factor = ScalingSlider.processDPI(value);
+		int value = DPIManager.managePreferences(-1, true);
+		float factor = DPIManager.processDPI(value);
 		
 		//scale all defaults
 		scaleDefaults(factor);

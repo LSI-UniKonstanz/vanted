@@ -3,8 +3,6 @@ package org.vanted.scaling;
 import java.awt.Container;
 import java.io.Serializable;
 import java.util.Hashtable;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
 
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.JComponent;
@@ -15,7 +13,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.SystemInfo;
-import org.graffiti.managers.PreferenceManager;
 
 //TODO remove PreferenceManager dependencies
 
@@ -34,25 +31,10 @@ public class ScalingSlider extends JSlider
 	private static final long serialVersionUID = 939020663044124704L;
 	
 	private static final int MAJOR_TICK_SPACING = 25;
-	private static final int MINOR_TICK_SPACING = 10;
-	
-	
-	/*--------Scaling Preferences-------- */
-	private static final String PREFERENCE_SCALING = "Scaling Preferences";
-	/** Standard value, when no scaling is to be performed. Useful for resetting.*/
-	public static final int STANDARD_VALUE = 50;
-	/** Default value, when not setting any particular value. */
-	public static final int VALUE_DEFAULT = -1;
-	/** Internal value for checking if any values are stored. */
-	public static final int VALUE_UNSET = -2;
-	/** Specify when you get Preferences value. */
-	public static final boolean PREFERENCES_GET = true;
-	/** Specify when you set Preferences value. */
-	public static final boolean PREFERENCES_SET = false;
-	
+	private static final int MINOR_TICK_SPACING = 10;	
 	
 	private static int STANDARD_DPI;
-	private static float MIN_DPI;
+	static float MIN_DPI;
 	
 	/** Used to store temporarily the previous factor for live re-scale
 	 *  operations. Ergo non-serializable! */
@@ -62,14 +44,11 @@ public class ScalingSlider extends JSlider
 	/* Defaults */
 	@SuppressWarnings("unused") //it's used (potentially), see a bit down below
 	private int value = 50;
-	public static int min = 0;
-	public static int max = 100;
+	static int min = 0;
+	static int max = 100;
 	private int extent = 0;
 	
-	private static int median = (min + max) / 2;
-	
-	private static final Preferences scalingPreferences = PreferenceManager
-			.getPreferenceForClass(ScalingSlider.class);
+	static int median = (min + max) / 2;
 	
 	/**
 	 * Slider to allow live modifications to the scaling of components. It just
@@ -80,7 +59,8 @@ public class ScalingSlider extends JSlider
 	public ScalingSlider(Container mainContainer) {
 		this.main = mainContainer;
 		
-		int prefsValue = managePreferences(VALUE_DEFAULT, PREFERENCES_GET);
+		int prefsValue = DPIManager.managePreferences(DPIManager.VALUE_DEFAULT, 
+				DPIManager.PREFERENCES_GET);
 		
 		scalingSlider(prefsValue, extent, min, max);
 	}
@@ -154,7 +134,7 @@ public class ScalingSlider extends JSlider
 		/*set initial TooltipText*/
 		int v = this.getValue();
 		this.setToolTipText(String.valueOf(v) + " (DPI: " + 
-									Math.round(processDPI(v)) + ")");
+									Math.round(DPIManager.processDPI(v)) + ")");
 	}
 
 	
@@ -195,11 +175,11 @@ public class ScalingSlider extends JSlider
 	        //call the Coordinator to update LAF!
 	        new ScalingCoordinator(processFactor(value), main);
 	        
-	        managePreferences(value, PREFERENCES_SET);      
+	        DPIManager.managePreferences(value, DPIManager.PREFERENCES_SET);      
 	        
 	        refresh();
 	        
-	        this.setToolTipText(String.valueOf(value) + " (DPI: " + Math.round(processDPI(value)) + ")");
+	        this.setToolTipText(String.valueOf(value) + " (DPI: " + Math.round(DPIManager.processDPI(value)) + ")");
 	    }
 	}
 	
@@ -223,15 +203,16 @@ public class ScalingSlider extends JSlider
 	 * @return the adjusted factor ready to be pass onto the ScalingCoordinator
 	 */
 	private float processFactor(int sliderValue) {
-		float dpif = processDPI(sliderValue);
+		float dpif = DPIManager.processDPI(sliderValue);
 
 		if (prevFactor != 0.0)//0.0 is here not the min. value, but unset!
 			dpif /= prevFactor;
 		else {
-			float prefsPrevFactor = (managePreferences(VALUE_DEFAULT, 
-					PREFERENCES_GET) == (float) min) ? (min + 0.5f) / median
+			float prefsPrevFactor = (DPIManager.managePreferences(DPIManager.VALUE_DEFAULT, 
+					DPIManager.PREFERENCES_GET) == (float) min) ? (min + 0.5f) / median
 							/*1/2 for lowest mark, since 0 neutral */
-							: managePreferences(VALUE_DEFAULT, PREFERENCES_GET)
+							: DPIManager.managePreferences(
+									DPIManager.VALUE_DEFAULT, DPIManager.PREFERENCES_GET)
 							/ (float) median;
 			dpif /=  prefsPrevFactor;
 		}
@@ -241,67 +222,5 @@ public class ScalingSlider extends JSlider
 				: (float) sliderValue / median;
 		
 		return dpif;		
-	}
-	
-	/**
-	 * This is a two-way intern method, used for all preferences-related
-	 * procedures. It handles both setting/putting and getting of values.
-	 * To set values use <code>ScalingSlider.PREFERENCES_SET</code> as <code>
-	 * get</code> parameter. To get: <code>ScalingSlider.PREFERENCES_GET</code>,
-	 * respectively. 
-	 * @param val Our new ScalingSlider value.
-	 * Used only, when putting into (i.e. <b>get</b> is <b>false</b>). Meaning
-	 * when querying values, you could just use <code>
-	 * ScalingSlider.VALUE_DEFAULT</code>.
-	 * 
-	 * @param get When <b>true</b>, it returns the previously stored value.
-	 * 
-	 * @return Stored value under 'Scaling Preferences' or <code>
-	 * ScalingSlider.VALUE_DEFAULT</code> for potential error checking, if 
-	 * <b>get</b> is <b>false</b>.
-	 */
-	public static int managePreferences(int val, boolean get) {		
-		/**
-		 * For internal use. Return old value or flag, indicating there are
-		 * no stored values, avoid scaling with identity factor.
-		 */
-		if (get && val == VALUE_UNSET)
-			return scalingPreferences.getInt(PREFERENCE_SCALING, VALUE_UNSET);
-		
-		//do not put new value
-		if (get)
-			return scalingPreferences.getInt(PREFERENCE_SCALING, median);
-
-		scalingPreferences.putInt(PREFERENCE_SCALING, val);
-				
-		return VALUE_DEFAULT;
-	}
-	
-	/**
-	 * Write preferences to disk.
-	 * 
-	 * @throws BackingStoreException
-	 */
-	public static void flushPreferences() throws BackingStoreException {
-		scalingPreferences.flush();
-		PreferenceManager.storePreferences();
-	}
-	
-	/**
-	 * Converts a slider value into DPI Factor to be passed on to the 
-	 * ScalingCoordinator. We firstly determine standard constants and 
-	 * we use in the process the default slider values. For different
-	 * than default, one should initialize a ScalingSlider with such
-	 * new values.
-	 * @param sValue sliderValue (get it from Preferences)
-	 * @return DPI Factor
-	 */
-	public static float processDPI(int sValue) {
-		int standard = getStandard(); //also sets MIN_DPI for public use!
-		
-		//handling the artificial 0
-		return (sValue == min)
-				? MIN_DPI 
-				: standard * (sValue / (float) median);
 	}
 }

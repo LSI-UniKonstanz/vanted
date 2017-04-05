@@ -1,29 +1,11 @@
 package org.vanted.scaling;
 
 import java.awt.Container;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
 import java.util.concurrent.Semaphore;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
-
-import org.graffiti.managers.PreferenceManager;
 
 /**
  * A '<i>static</i>' Loader for scaling effects to take place. Use this to 
@@ -56,17 +38,6 @@ public final class ScalerLoader {
 	
 	private static boolean SYNC_UP = true;
 	
-	private static final String RESOURCE_PKG = "org.vanted.scaling.resources";
-	/**
-	 * A ratio between display height and emulated DPI. All values
-	 * below this threshold are safe in all cases, in sense of 
-	 * user-friendly (not too big/small UIDefaults size). */
-	private static final int USABILITY_THRESHOLD = 22;
-	
-	private static final String RESET_DIALOG_PREFS = "ResetDialogPreferences";
-	
-	private static Preferences resetDialogPreferences = null;
-	
 	/* Not publicly initialize-able!*/
 	private ScalerLoader() {};
 	
@@ -96,10 +67,15 @@ public final class ScalerLoader {
 			
 			/**
 			 * Check, if scaling is necessary at all. */
-			if (isAvoidable())
+			if (DPIManager.isAvoidable())
 				return;
 			
-			displayResetDialog();
+			/**Dispatch DPIManager. */
+			DPIManager manager = new DPIManager();
+			
+			/** This is a safeguard against incautiously set unsafe values.
+			 * It avoids need of hacky preferences resetting.*/
+			manager.displayResetter();
 			
 			/**
 			 * Straightaway try to scale all - LAF & non-LAF components,
@@ -152,10 +128,10 @@ public final class ScalerLoader {
 		if (UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK"))
 			return;
 				
-		int sValue = ScalingSlider.managePreferences(ScalingSlider.VALUE_DEFAULT,
-				ScalingSlider.PREFERENCES_GET);
+		int sValue = DPIManager.managePreferences(DPIManager.VALUE_DEFAULT,
+				DPIManager.PREFERENCES_GET);
 				
-		new ScalingCoordinator(ScalingSlider.processDPI(sValue), //factor
+		new ScalingCoordinator(DPIManager.processDPI(sValue), //factor
 							 c);
 	}
 	
@@ -221,10 +197,10 @@ public final class ScalerLoader {
 			e.printStackTrace();
 		}
 		
-		int value = ScalingSlider.managePreferences(ScalingSlider.VALUE_DEFAULT,
-				ScalingSlider.PREFERENCES_GET);
+		int value = DPIManager.managePreferences(DPIManager.VALUE_DEFAULT,
+				DPIManager.PREFERENCES_GET);
 		float scaleFactor = Toolkit.getDefaultToolkit().getScreenResolution() / 
-				ScalingSlider.processDPI(value);
+				DPIManager.processDPI(value);
 		
 		ScalingCoordinator plainCoordinator = new ScalingCoordinator();
 		//perform external scaling
@@ -323,150 +299,5 @@ public final class ScalerLoader {
 		}
 		
 		return holder.getContainer();
-	}
-	
-	/**
-	 * Test whether scaling is currently necessary.
-	 * 
-	 * @return true if Scaling could be skipped.
-	 */
-	private static boolean isAvoidable() {
-		int value = ScalingSlider.managePreferences(ScalingSlider.VALUE_UNSET,
-				ScalingSlider.PREFERENCES_GET);
-		float factor = Toolkit.getDefaultToolkit().getScreenResolution() / 
-				ScalingSlider.processDPI(value);
-		
-		/**
-		 * ScalingSlider.managePreferences() called with the above
-		 * combination of parameters returns a flag value for checking,
-		 * if actually a value has ever been stored under the specified
-		 * preferences. If there is some writing error at the time, this 
-		 * would also affect scaling. Additionally, if the factor is the
-		 * identity element, just avoid defaults & components iteration.
-		 */
-		if (value == ScalingSlider.VALUE_UNSET || factor == 1.0)
-			return true;
-		
-		return false;
-	}
-	
-/**
- * Checks, if the DPI is in the usability boundaries 
- * and whether resetting conditions should apply.
- * 
- * @param value current or last set slider value to check against
- * 
- * @return true if safe
- */
-	private static boolean isSafe(int value) {
-		int dpi = Math.round(ScalingSlider.processDPI(value));
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		float height = (float) gd.getDisplayMode().getHeight();
-		int usabilityRatio = Math.round(height/dpi);
-		
-		if (usabilityRatio < USABILITY_THRESHOLD && value < ScalingSlider.max)
-			return true;
-		
-		return false;
-	}
-	
-	private static void displayResetDialog() {
-		int value = ScalingSlider.managePreferences(ScalingSlider.VALUE_DEFAULT, true);
-		
-		if (isSafe(value))
-			return;
-		
-		if (hide())
-			return;
-		
-		ImageIcon lifesaver = new ImageIcon(
-				ScalerLoader.loadResource(ScalerLoader.class, "lifesaver.png"));
-		String title = "Reset DPI";
-		JFrame parent = new JFrame(title);
-		parent.setIconImage(lifesaver.getImage());
-	    parent.setUndecorated(true);
-	    parent.pack();
-		parent.setVisible(true);
-	    parent.setLocationRelativeTo(null);
-		int selection = JOptionPane.showConfirmDialog(parent, getContents(value),
-				title, JOptionPane.YES_NO_OPTION,
-				JOptionPane.PLAIN_MESSAGE, lifesaver);
-		
-		if (selection == JOptionPane.YES_OPTION) {
-			//write
-			ScalingSlider.managePreferences(50, false);
-			//& flush
-			try {
-				ScalingSlider.flushPreferences();
-			} catch (BackingStoreException e) {
-				e.printStackTrace();
-			}
-		}
-		parent.dispose();
-	}
-	
-	/**
-	 * Get the contents of the reset dialog ready.
-	 * 
-	 * @param value the ScalingSlider value, saved in Preferences
-	 *  
-	 * @return a JPanel, filled with all needed contents
-	 */
-	private static JPanel getContents(int value) {
-		int dpi = Math.round(ScalingSlider.processDPI(value));
-		JPanel contents = new JPanel();
-		contents.setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.gridx = 0;
-		c.gridy = 0;
-		
-		contents.add(new JLabel("<html>Emulated DPI is " + dpi + 
-				". This could render interaction impossible.<br><br>"
-				+ "Would you like to reset it?</html>"), c);
-		
-		JButton toDisable = new JButton("Disable");
-		c.fill = GridBagConstraints.HORIZONTAL;
-		c.ipady = 0;
-		c.weighty = 1.0;
-		c.anchor = GridBagConstraints.PAGE_END;
-		c.insets = new Insets(0, 0, 0, 10);
-		c.gridx = 1; c.gridy = 1;
-		toDisable.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				resetDialogPreferences.putBoolean(RESET_DIALOG_PREFS, true);
-			}
-		});
-		contents.add(toDisable, c);
-		
-		return contents;
-	}
-	
-	private static boolean hide() {
-		resetDialogPreferences = PreferenceManager
-								.getPreferenceForClass(ScalerLoader.class);
-		boolean hide = resetDialogPreferences.getBoolean(RESET_DIALOG_PREFS, false);
-		
-		return hide;
-	}
-	
-	/**
-	 * A resource loading utility method for resources placed in the resource package.
-	 * 
-	 * @param clazz delegates to the respective class loader
-	 * @param filename the resource name
-	 * 
-	 * @return the loaded resource
-	 * 
-	 * @see {@link ScalerLoader#RESOURCE_PKG} 
-	 * 
-	 */
-	public static URL loadResource(Class<?> clazz, String filename) {
-		ClassLoader cl = clazz.getClassLoader();
-		String path = RESOURCE_PKG.replace('.', '/');
-		
-		return	cl.getResource(path + "/" + filename);
 	}
 }
