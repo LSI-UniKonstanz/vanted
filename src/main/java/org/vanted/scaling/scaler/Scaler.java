@@ -1,4 +1,4 @@
-package org.vanted.scaling;
+package org.vanted.scaling.scaler;
 
 import java.awt.Font;
 import java.awt.Insets;
@@ -6,7 +6,7 @@ import java.awt.Insets;
 import javax.swing.Icon;
 /**
  * All scalers should implement this interface. Alternatively, one could more
- * conveniently just extends the default scaler - {@link BasicScaler}. 
+ * conveniently just extend the default scaler - {@link BasicScaler}. 
  * 
  * @author dim8
  *
@@ -14,10 +14,11 @@ import javax.swing.Icon;
 public interface Scaler {
 	
 	/**
-	 * Used for synchronized LAFs, where only one Font change is sufficient
+	 * Used for synchronized LAFs, where only one change (e.g. Font) is sufficient
 	 * (e.g. Nimbus). */
 	void initialScaling();
 	/**
+	 * Implement to modify Fonts.
 	 * 
 	 * @param key UIDefaults key
 	 * @param original instance to be scaled
@@ -27,15 +28,17 @@ public interface Scaler {
 	Font modifyFont(Object key, Font original);
 	
 	/**
+	 * Implement to modify Icons.
 	 * 
 	 * @param key UIDefaults key
 	 * @param original instance to be scaled
 	 * 
 	 * @return newly scaled instance
 	 */
-	Icon getModifiedIcon(Object key, Icon original);
+	Icon modifyIcon(Object key, Icon original);
 	
 	/**
+	 * Implement to modify Integers.
 	 * 
 	 * @param key UIDefaults key
 	 * @param original instance to be scaled
@@ -45,12 +48,13 @@ public interface Scaler {
 	Integer modifyInteger(Object key, Integer original);
 
 	/**
+	 * Implement to modify Insets.
 	 * 
 	 * @param original Insets instance to be scaled
 	 * @param original InsetsUIResource instance to be scaled
 	 * 
 	 * @return newly scaled instance
 	 */
-	Insets getModifiedInsets(Insets original);
+	Insets modifyInsets(Insets original);
 	
 }

@@ -14,8 +14,8 @@ import javax.swing.UIManager;
  * on some occasions, such as - on start-up or on foreign components, not part
  * of the main container. The most convenient way is simply calling {@link 
  * ScalerLoader#init(Container, Class)}. As of the current implementation, this
- * relies on a static <code>getInstance</code> method in your main container.
- * For alternatives - read below.<p>
+ * relies on a static <code>getInstance</code> method in your main container. This
+ * should be implemented accordingly there. For alternatives - read below.<p>
  * 
  * Additional usage:<p>
  * 
@@ -42,39 +42,30 @@ public final class ScalerLoader {
 	private ScalerLoader() {};
 	
 	/**
-	 * Global <code>init</code> for LAF and External scaling operations.
-	 * <p>
-	 * 
-	 * You should specify what listeners should be notified, given the 
-	 * respective components have been updated (<i>see also</i>).
+	 * Global <code>init</code> for LAF and External (Component) scaling operations.<p>
 	 * 
 	 * @param main the application's main container, frame, etc. Could be 
-	 * still uninitialized, but has to be in the process of being, or just 
+	 * still uninitialized, but has to be in the process of being, or right
 	 * before doing so! Its resizable components will then be resized.
 	 * 
 	 * @param clazz the Class of this <b>main</b> Container, use:
-	 * <code>Classname.class</code>.
-	 * 
-	 * @see XScaler#notifyListeners()
-	 * 
+	 * <code>Classname.class</code>. 
 	 */
 	public static void init(Container main, final Class<? extends Container> clazz) {
 		if (START_UP) {
 			
-			/**
-			 * Only for initial usage. */
+			/** Only for initial usage. */
 			START_UP = false;
 			
-			/**
-			 * Check, if scaling is necessary at all. */
-			if (DPIManager.isAvoidable())
+			/** Check, if scaling is necessary at all. */
+			if (DPIHelper.isAvoidable())
 				return;
 			
-			/**Dispatch DPIManager. */
-			DPIManager manager = new DPIManager();
+			/** Dispatch DPIHelper. */
+			DPIHelper manager = new DPIHelper();
 			
 			/** This is a safeguard against incautiously set unsafe values.
-			 * It avoids need of hacky preferences resetting.*/
+			 * It avoids need for hacky preferences resetting.*/
 			manager.displayResetter();
 			
 			/**
@@ -101,16 +92,17 @@ public final class ScalerLoader {
 					Container iContainer = awaitMainContainer(clazz);
 					
 					/**
-					 * Perform exclusively external scaling now, because 
-					 * initially only LAF-Defaults have been scaled before
-					 * the main container has been initialized. In worst case,
-					 * this would scale the user-defined & -maintained components
-					 * twice. in this case one should simply call the <code>
-					 * doScaling()</code> method instead. So to take effect, we
-					 * first wait (normally < 5000ms) until initialized, then we
-					 * call only the ExternalScaler. The ExternalScaler from 
-					 * <code>doScaling()</code>, simply returns, because the 
-					 * main container is null.
+					 * Perform exclusively external/component scaling now, 
+					 * because initially only LAF-Defaults have been scaled,
+					 * before the main container has been initialized. Worst
+					 * case scenario, this would scale the user-defined & 
+					 * -maintained components twice, although unlikely. In 
+					 * this case one should simply call the <code>doScaling()
+					 * </code> method instead. So to take effect, we first wait
+					 * until initialized, then we call only the ComponentRegulator,
+					 * which conducts the scaling to the respective ComponentScalers. 
+					 * The ComponentRegulator from <code>doScaling()</code>, simply
+					 * returns, because the main container is still null.
 					 */
 					doSyncExternalScaling(iContainer);
 				}
@@ -124,14 +116,14 @@ public final class ScalerLoader {
 	 * scales according to the value. Particularly on start up.
 	 */
 	public static void doScaling(Container c) {
-		//GTK-related L&Fs not supported, because by default non-re-scalable
+		//GTK-related L&Fs not supported, because by default not re-scalable
 		if (UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK"))
 			return;
 				
-		int sValue = DPIManager.managePreferences(DPIManager.VALUE_DEFAULT,
-				DPIManager.PREFERENCES_GET);
+		int sValue = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT,
+				DPIHelper.PREFERENCES_GET);
 				
-		new ScalingCoordinator(DPIManager.processDPI(sValue), //factor
+		new ScalingCoordinator(DPIHelper.processDPI(sValue), //factor
 							 c);
 	}
 	
@@ -144,7 +136,7 @@ public final class ScalerLoader {
 	public static void doInitialScaling(Container c) {
 		
 		/* Ensures only once re-scaled, since there are 
-		 * multiple VantedPreferences instances during a lifetime.
+		 * multiple Preferences instances during a lifetime.
 		 */
 		if (START_UP) {
 			doScaling(c);
@@ -157,6 +149,8 @@ public final class ScalerLoader {
 	 * in order to scale its components on initial basis. Should be signaled.<p>
 	 * 
 	 * <b>Synchronized with Main Frame/Container.</b>
+	 * 
+	 * @see {@linkplain ScalerLoader#signal()}
 	 */
 	public static void doSyncInitialScaling(final Container c) {
 		if (SYNC_UP) {
@@ -197,10 +191,10 @@ public final class ScalerLoader {
 			e.printStackTrace();
 		}
 		
-		int value = DPIManager.managePreferences(DPIManager.VALUE_DEFAULT,
-				DPIManager.PREFERENCES_GET);
+		int value = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT,
+				DPIHelper.PREFERENCES_GET);
 		float scaleFactor = Toolkit.getDefaultToolkit().getScreenResolution() / 
-				DPIManager.processDPI(value);
+				DPIHelper.processDPI(value);
 		
 		ScalingCoordinator plainCoordinator = new ScalingCoordinator();
 		//perform external scaling
@@ -228,7 +222,6 @@ public final class ScalerLoader {
 		 * To access the container.
 		 * 
 		 * @author dim8
-		 *
 		 */
 		class Holder {
 			private Container c = null;

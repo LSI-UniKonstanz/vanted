@@ -1,4 +1,4 @@
-package org.vanted.scaling;
+package org.vanted.scaling.scaler;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -7,6 +7,7 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.function.Predicate;
 import java.lang.IllegalArgumentException;
 
@@ -23,9 +24,9 @@ import org.vanted.scaling.resources.ScaledIcon;
 
 /**
  * This scales the following: all fonts, all integers specified in
- * {@code LOWER_SUFFIXES_INTEGERS}, all icons and all insets. For
- * specific LAF implementations consider {@link NimbusScaler} and
- * {@link WindowsScaler}.
+ * {@link BasicScaler#LOWER_SUFFIXES_INTEGERS}, all icons and all insets. 
+ * This might be later referred as the 4 specifics. For exact LAF 
+ * implementations consider {@link NimbusScaler} and {@link WindowsScaler}.
  * 
  * @author dim8
  *
@@ -79,7 +80,8 @@ public class BasicScaler implements Scaler {
 	}
 	
 	/**
-	 * We scale a given {@link Font}, while preserving the type in the scope of Swing.
+	 * We scale a given {@link Font}, while preserving the type in the scope of
+	 * Swing.
 	 * 
 	 * @param original
 	 * @param factor the scale factor
@@ -105,20 +107,20 @@ public class BasicScaler implements Scaler {
 	}
 	/**
 	 * Interface method for {@link modifyInsets}, encapsulating the delegation
-	 * and performing the differentiating.
+	 * and performing differentiating.
 	 * 
 	 * @param original an Insets instance to be scaled
 	 * @return a newly scaled instance or null
 	 */
 	@Override
-	public Insets getModifiedInsets(Insets original) {
+	public Insets modifyInsets(Insets original) {
 		if (original instanceof InsetsUIResource)
-			return modifyInsets(null, (InsetsUIResource) original);
+			return getModifiedInsets(null, (InsetsUIResource) original);
 		
 		if (original instanceof Insets)
-			return modifyInsets((Insets) original, null);
+			return getModifiedInsets((Insets) original, null);
 		
-		//sentinel for non-scalable value
+		//sentinel for a non-scalable value
 		return null;		
 	}
 	
@@ -132,7 +134,7 @@ public class BasicScaler implements Scaler {
 	 * 
 	 * @throws IllegalArgumentException if arguments are wrongly set
 	 */
-	protected Insets modifyInsets(Insets original, InsetsUIResource original2)
+	protected Insets getModifiedInsets(Insets original, InsetsUIResource original2)
 				throws IllegalArgumentException {
 		if ((original != null && original2 != null) || 
 				(original == null && original2 == null))
@@ -164,7 +166,7 @@ public class BasicScaler implements Scaler {
 	 * {@link IconUIResource}.
 	 */
 	@Override
-	public Icon getModifiedIcon(Object key, Icon icon) {
+	public Icon modifyIcon(Object key, Icon icon) {
 		if (icon == null)
 			return null;
 		
@@ -173,7 +175,7 @@ public class BasicScaler implements Scaler {
 		
 		if (icon instanceof IconUIResource)
 			//we are save to cast (see modifyIcon)
-			iconResource = (IconUIResource) modifyIcon(key, icon);
+			iconResource = (IconUIResource) modifyIconUIResource(key, icon);
 		
 		if (icon instanceof ImageIcon)
 			imageIcon = modifyImageIcon(icon);
@@ -185,16 +187,15 @@ public class BasicScaler implements Scaler {
 	/** 
 	 * This modifies not all Icons, only those from LAF Defaults!
 	 */
-	protected Icon modifyIcon(Object key, Icon original) {
+	protected Icon modifyIconUIResource(Object key, Icon original) {
 		return new IconUIResource(new ScaledIcon(original, scaleFactor));
 	}
 	
 	/**
-	 * Similar to {@link modifyIcon(Object key,  Icon original)}. However, here
-	 * we work most of the time with ImageIcons only, although the cast is 
-	 * inside the method. There is a difference between the LAF-version 
-	 * in regards the filter not being changed and the return instance, i.e.
-	 *  {@link IconUIResource}.
+	 * Similar to {@link BasicScaler#modifyIconUIResource(Object key,  Icon original)}.
+	 * However, here we work with ImageIcons only, although externally appearing
+	 * the same. There is a difference between the LAF-version in regards the
+	 * filter not being changed and the return instance, i.e. {@link IconUIResource}.
 	 * 
 	 * @param icon to be modified with the <code>scaleFactor</code> of 
 	 * {@link BasicScaler}.
@@ -229,6 +230,15 @@ public class BasicScaler implements Scaler {
 		return new ImageIcon(newImage);
 	}
 	
+	/**
+	 * Tests if the LAF-Default, given by the <code>text</code> parameter, should
+	 * be modified.
+	 *  
+	 * @param text the name of the LAF-Default
+	 * @param suffixes an array with all defaults that should be modified
+	 * 
+	 * @return true if the LAF-Default should be modified
+	 */
 	private boolean endsWithOneOf(String text, String[] suffixes) {
 		final String t = text;
 		
@@ -240,7 +250,16 @@ public class BasicScaler implements Scaler {
 		});
 	}
 
+	/**
+	 * Bridge method for lowering Strings.
+	 * 
+	 * @param key to be lowered
+	 * 
+	 * @return lower-case representation of the <code>key</code> argument,
+	 * or empty <code>String</code>, if <code>key</code> is not 
+	 * <code>String</code>.
+	 */
 	private String lower(Object key) {
-		return (key instanceof String) ? ((String) key).toLowerCase() : "";
+		return (key instanceof String) ? ((String) key).toLowerCase(Locale.ROOT) : "";
 	}
 }

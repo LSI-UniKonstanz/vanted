@@ -14,16 +14,14 @@ import javax.swing.event.ChangeListener;
 
 import org.SystemInfo;
 
-//TODO remove PreferenceManager dependencies
-
 /**
  * The front-end of the provided scalers. Because of the
- * arithmetics and our goal, the user could decrease UIdefaults
- * with the factor of 2 at most. On the contrary, one could 
- * increase with a factor of 100. This is overwritable.
+ * arithmetics and our goal (tackling issues on High DPI displays),
+ * the user could decrease UIdefaults with the factor of 2 at most.
+ * On the contrary, one could increase with a factor of 100. This is
+ * could be overwritten.
  * 
  * @author dim8
- *
  */
 public class ScalingSlider extends JSlider 
 									implements ChangeListener, Serializable {
@@ -42,7 +40,7 @@ public class ScalingSlider extends JSlider
 	private Container main;
 
 	/* Defaults */
-	@SuppressWarnings("unused") //it's used (potentially), see a bit down below
+	@SuppressWarnings("unused") //it's potentially used, see a bit down below.
 	private int value = 50;
 	static int min = 0;
 	static int max = 100;
@@ -52,15 +50,15 @@ public class ScalingSlider extends JSlider
 	
 	/**
 	 * Slider to allow live modifications to the scaling of components. It just
-	 * has to be initialized e.g. in Preferences.
+	 * has to be initialized e.g. in Preferences window.
 	 * 
 	 * @param mainContainer the applications main Container/Window/Frame
 	 */
 	public ScalingSlider(Container mainContainer) {
 		this.main = mainContainer;
 		
-		int prefsValue = DPIManager.managePreferences(DPIManager.VALUE_DEFAULT, 
-				DPIManager.PREFERENCES_GET);
+		int prefsValue = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT, 
+				DPIHelper.PREFERENCES_GET);
 		
 		scalingSlider(prefsValue, extent, min, max);
 	}
@@ -104,12 +102,13 @@ public class ScalingSlider extends JSlider
 	}
 	
 	/**
-	 * This determines what our standard DPI is. 
-	 * Basically, Macintosh uses 72 dpi, which is pretty neat, since then
-	 * dots and pixels to inch are literally the same (WYSIWYG principle). 
-	 * However, Windows is another story, to fix some of the 72 dpi problems,
-	 * it introduced a 33% bigger size - 96 dpi. As for Linux, we just assume 
-	 * the Gnome default 96 dpi, because otherwise it's just a mess.
+	 * This determines what our standard DPI is. <p.
+	 * 
+	 * Basically, Macintosh uses 72 DPI - pretty neat, since dots and pixels 
+	 * to inch are then literally the same (WYSIWYG principle). 
+	 * However, Windows is another story, to fix some of the 72-DPI-problems,
+	 * it introduced a 33% bigger size - 96 DPI. As for Linux, we just assume 
+	 * the Gnome default 96 DPI, because otherwise it's just a mess.
 	 */
 	public static int getStandard() {
 		STANDARD_DPI = SystemInfo.isMac() ? 72 : 96;
@@ -134,10 +133,8 @@ public class ScalingSlider extends JSlider
 		/*set initial TooltipText*/
 		int v = this.getValue();
 		this.setToolTipText(String.valueOf(v) + " (DPI: " + 
-									Math.round(DPIManager.processDPI(v)) + ")");
+									Math.round(DPIHelper.processDPI(v)) + ")");
 	}
-
-	
 	
 	/**
 	 * Insert the labels at the specified major ticks.
@@ -175,20 +172,23 @@ public class ScalingSlider extends JSlider
 	        //call the Coordinator to update LAF!
 	        new ScalingCoordinator(processFactor(value), main);
 	        
-	        DPIManager.managePreferences(value, DPIManager.PREFERENCES_SET);      
+	        DPIHelper.managePreferences(value, DPIHelper.PREFERENCES_SET);      
 	        
 	        refresh();
 	        
-	        this.setToolTipText(String.valueOf(value) + " (DPI: " + Math.round(DPIManager.processDPI(value)) + ")");
+	        this.setToolTipText(String.valueOf(value) + " (DPI: " + Math.round(DPIHelper.processDPI(value)) + ")");
 	    }
 	}
 	
+	/**
+	 * Refresh the slider-GUI.
+	 */
 	private void refresh() {
-        //refresh the slider-GUI
         this.invalidate();
         this.repaint();
         this.revalidate();
 	}
+	
 	/**
 	 * Here we process the DPI according to the Slider's
 	 * selected value. Furthermore, we have to re-adjust the 
@@ -199,20 +199,20 @@ public class ScalingSlider extends JSlider
 	 * with the slider itself and thus giving a factor of 1.0 and
 	 * no change at all.
 	 * 
-	 * @param sliderValue the Slider's selected dpi value
+	 * @param sliderValue the Slider's selected DPI value
 	 * @return the adjusted factor ready to be pass onto the ScalingCoordinator
 	 */
 	private float processFactor(int sliderValue) {
-		float dpif = DPIManager.processDPI(sliderValue);
+		float dpif = DPIHelper.processDPI(sliderValue);
 
 		if (prevFactor != 0.0)//0.0 is here not the min. value, but unset!
 			dpif /= prevFactor;
 		else {
-			float prefsPrevFactor = (DPIManager.managePreferences(DPIManager.VALUE_DEFAULT, 
-					DPIManager.PREFERENCES_GET) == (float) min) ? (min + 0.5f) / median
+			float prefsPrevFactor = (DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT, 
+					DPIHelper.PREFERENCES_GET) == (float) min) ? (min + 0.5f) / median
 							/*1/2 for lowest mark, since 0 neutral */
-							: DPIManager.managePreferences(
-									DPIManager.VALUE_DEFAULT, DPIManager.PREFERENCES_GET)
+							: DPIHelper.managePreferences(
+									DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET)
 							/ (float) median;
 			dpif /=  prefsPrevFactor;
 		}

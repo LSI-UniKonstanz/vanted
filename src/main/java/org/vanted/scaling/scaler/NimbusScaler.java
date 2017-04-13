@@ -1,14 +1,14 @@
-package org.vanted.scaling;
+package org.vanted.scaling.scaler;
 
 import java.awt.Font;
 
 import javax.swing.Icon;
 import javax.swing.plaf.FontUIResource;
+
 /**
  * It is sufficient enough to rescale only the default font,
- * this fire a property change and Nimbus does the rest of the 
- * work in that regard. Icons are sometimes shown with marks, so
- * we return them unchanged. 
+ * this fires a property change and Nimbus does the rest alone.
+ * Icons are sometimes shown with marks, so we return them unchanged. 
  * 
  * @author dim8
  *
@@ -29,13 +29,17 @@ public class NimbusScaler extends BasicScaler {
 							Math.round(font.getSize() * scaleFactor)));
 	}
 
-	//Nimbus scales the rest internally based on the above change
+	/**
+	 * Nimbus scales the rest internally based on the above change.
+	 */
 	public Font modifyFont(Object key, Font original) {
 		return original;
 	}
 
-	// Distortions & marks are visible, no modifications
-	public Icon modifyIcon(Object key, Icon original) {
+	/**
+	 * Distortions & marks are visible, ergo no modifications.
+	 */
+	public Icon modifyIconUIResource(Object key, Icon original) {
 		return original;
 	}
 }

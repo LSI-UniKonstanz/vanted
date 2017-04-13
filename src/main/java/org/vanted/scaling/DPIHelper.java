@@ -21,17 +21,21 @@ import javax.swing.JPanel;
 
 import org.graffiti.managers.PreferenceManager;
 
+//TODO remove PreferenceManager dependencies
+
 /**
- * An utility Manager that takes care of processing the DPI from a 
- * provided value (Slider value) among some other such functions.
+ * An utility helper that takes care of processing the DPI from a 
+ * provided value (Slider value) and is responsible for managing the
+ * scaling preferences among some other useful functions in hand.
  * 
  * @author dim8
  */
-public class DPIManager {
+public class DPIHelper {
 
-	private static DPIManager instance = null;
+	private static DPIHelper instance = null;
 	
 	private static final String RESOURCE_PKG = "org.vanted.scaling.resources";
+	
 	/**
 	 * A ratio between display height and emulated DPI. All values
 	 * below this threshold are safe in all cases, in sense of 
@@ -45,24 +49,24 @@ public class DPIManager {
 	/** Default value, when not setting any particular value. */
 	public static final int VALUE_DEFAULT = -1;
 	/** Internal value for checking if any values are stored. */
-	public static final int VALUE_UNSET = -2;
+	public static final int VALUE_UNSET_INTERNAL = -2;
 	/** Specify when you get Preferences value. */
 	public static final boolean PREFERENCES_GET = true;
 	/** Specify when you set Preferences value. */
 	public static final boolean PREFERENCES_SET = false;
 	
 	static final Preferences scalingPreferences = PreferenceManager
-			.getPreferenceForClass(DPIManager.class);
+			.getPreferenceForClass(DPIHelper.class);
 	
 	private static final String RESET_DIALOG_PREFS = "ResetDialogPreferences";
 	
-	public DPIManager() {
+	public DPIHelper() {
 		instance = this;
 	}
 	
-	public static DPIManager getInstance() {
+	public static DPIHelper getInstance() {
 		if (instance == null)
-			instance = new DPIManager();
+			instance = new DPIHelper();
 		
 		return instance;
 	}
@@ -75,7 +79,7 @@ public class DPIManager {
 	 * new values.
 	 * 
 	 * @param sValue sliderValue (get it from Preferences)
-	 * @return DPI Factor
+	 * @return float DPI Factor
 	 */
 	public static float processDPI(int sValue) {
 		int standard = ScalingSlider.getStandard(); //also sets MIN_DPI for public use!
@@ -92,26 +96,31 @@ public class DPIManager {
 	 * @return true if Scaling could be skipped.
 	 */
 	public static boolean isAvoidable() {
-		int value = DPIManager.managePreferences(VALUE_UNSET, PREFERENCES_GET);
+		int value = DPIHelper.managePreferences(VALUE_UNSET_INTERNAL, PREFERENCES_GET);
 		float factor = Toolkit.getDefaultToolkit().getScreenResolution() / 
-				DPIManager.processDPI(value);
+				DPIHelper.processDPI(value);
 		
 		/**
-		 * ScalingSlider.managePreferences() called with the above
-		 * combination of parameters returns a flag value for checking,
-		 * if actually a value has ever been stored under the specified
-		 * preferences. If there is some writing error at the time, this 
-		 * would also affect scaling. Additionally, if the factor is the
-		 * identity element, just avoid defaults & components iteration.
+		 * DPIHelper.managePreferences() called with the above combination of 
+		 * parameters returns a flag value for checking, if value has ever been
+		 * stored under the specified preferences. If there is some writing 
+		 * error at the time, this would also affect scaling. 
+		 * 
+		 * If the factor is the identity element, just avoid scaling altogether.
 		 */
-		if (value == VALUE_UNSET || factor == 1.0)
+		if (value == VALUE_UNSET_INTERNAL || factor == 1.0)
 			return true;
 		
 		return false;
 	}
 	
+	/**
+	 * Displays a reset dialog that prompts the user to reset the scaling or not,
+	 * when the previous setting has gone out of reasonable scaling bounds and 
+	 * proper viewing has become impossible. There is also a 'Disable' option.
+	 */
 	public void displayResetter() {
-		int value = DPIManager.managePreferences(VALUE_DEFAULT, true);
+		int value = DPIHelper.managePreferences(VALUE_DEFAULT, true);
 		
 		if (isSafe(value))
 			return;
@@ -120,7 +129,7 @@ public class DPIManager {
 			return;
 		
 		ImageIcon lifesaver = new ImageIcon(
-				DPIManager.loadResource(ScalerLoader.class, "lifesaver.png"));
+				DPIHelper.loadResource(ScalerLoader.class, "lifesaver.png"));
 		String title = "Reset DPI";
 		JFrame parent = new JFrame(title);
 		parent.setIconImage(lifesaver.getImage());
@@ -135,10 +144,10 @@ public class DPIManager {
 		
 		if (selection == JOptionPane.YES_OPTION) {
 			//write
-			DPIManager.managePreferences(50, false);
+			DPIHelper.managePreferences(50, false);
 			//& flush
 			try {
-				DPIManager.flushPreferences();
+				DPIHelper.flushPreferences();
 			} catch (BackingStoreException e) {
 				e.printStackTrace();
 			}
@@ -151,11 +160,10 @@ public class DPIManager {
 	 * Get the contents of the reset dialog ready.
 	 * 
 	 * @param value the ScalingSlider value, saved in Preferences
-	 *  
 	 * @return a JPanel, filled with all needed contents
 	 */
 	private JPanel getContents(int value) {
-		int dpi = Math.round(DPIManager.processDPI(value));
+		int dpi = Math.round(DPIHelper.processDPI(value));
 		JPanel contents = new JPanel();
 		contents.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -194,7 +202,7 @@ public class DPIManager {
 	 * @return true if set Slider value is in the defined usability boundaries 
 	 */
 	private static boolean isSafe(int value) {
-		int dpi = Math.round(DPIManager.processDPI(value));
+		int dpi = Math.round(DPIHelper.processDPI(value));
 		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		float height = (float) gd.getDisplayMode().getHeight();
 		int usabilityRatio = Math.round(height/dpi);
@@ -218,20 +226,20 @@ public class DPIManager {
 	}
 
 	/**
-	 * This is a two-way intern method, used for all preferences-related
+	 * This is a two-way internal method, used for all preferences-related
 	 * procedures. It handles both setting/putting and getting of values.
-	 * To set values use <code>ScalingSlider.PREFERENCES_SET</code> as <code>
-	 * get</code> parameter. To get: <code>ScalingSlider.PREFERENCES_GET</code>,
+	 * To set values use <code>DPIHelper.PREFERENCES_SET</code> as <code>
+	 * get</code> parameter. To get: <code>DPIHelper.PREFERENCES_GET</code>,
 	 * respectively. 
 	 * @param val Our new ScalingSlider value.
 	 * Used only, when putting into (i.e. <b>get</b> is <b>false</b>). Meaning
 	 * when querying values, you could just use <code>
-	 * ScalingSlider.VALUE_DEFAULT</code>.
+	 * DPIHelper.VALUE_DEFAULT</code>.
 	 * 
 	 * @param get When <b>true</b>, it returns the previously stored value.
 	 * 
 	 * @return Stored value under 'Scaling Preferences' or <code>
-	 * ScalingSlider.VALUE_DEFAULT</code> for potential error checking, if 
+	 * DPIHelper.VALUE_DEFAULT</code> for potential error checking, if 
 	 * <b>get</b> is <b>false</b>.
 	 */
 	public static int managePreferences(int val, boolean get) {		
@@ -239,8 +247,8 @@ public class DPIManager {
 		 * For internal use. Return old value or flag, indicating there are
 		 * no stored values, avoid scaling with identity factor.
 		 */
-		if (get && val == VALUE_UNSET)
-			return scalingPreferences.getInt(PREFERENCE_SCALING, VALUE_UNSET);
+		if (get && val == VALUE_UNSET_INTERNAL)
+			return scalingPreferences.getInt(PREFERENCE_SCALING, VALUE_UNSET_INTERNAL);
 		
 		//do not put new value
 		if (get)
@@ -270,7 +278,7 @@ public class DPIManager {
 	 * 
 	 * @return the loaded resource
 	 * 
-	 * @see {@link ScalerLoader#RESOURCE_PKG} 
+	 * @see {@link DPIHelper#RESOURCE_PKG} 
 	 * 
 	 */
 	public static URL loadResource(Class<?> clazz, String filename) {

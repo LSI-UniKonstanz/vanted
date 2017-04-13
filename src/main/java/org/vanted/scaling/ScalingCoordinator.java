@@ -12,11 +12,15 @@ import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 import org.ReleaseInfo;
+import org.vanted.scaling.scaler.BasicScaler;
+import org.vanted.scaling.scaler.NimbusScaler;
+import org.vanted.scaling.scaler.Scaler;
+import org.vanted.scaling.scaler.WindowsScaler;
 
 /**
- * It coordinates the scaling among the possible L&Fs. Through delegation
- * the main types are ordered and then accordingly executed. Firstly, LAF-
- * Defaults are scaled, afterwards all user-set resizable components.  <p>
+ * It coordinates the scaling among the possible L&Fs and initiates Components-
+ * scaling. Through delegation the main types are ordered and then accordingly
+ * scaled. First LAF-Defaults, afterwards all the user-set resizable components.<p>
  * 
  * Big Scale Operations (e.g. DPI-Scale factor of 50) require additional heap space!
  *   
@@ -53,8 +57,8 @@ public class ScalingCoordinator {
 	public ScalingCoordinator(Container main) {
 		this.main = main;		
 		
-		int value = DPIManager.managePreferences(-1, true);
-		float factor = DPIManager.processDPI(value);
+		int value = DPIHelper.managePreferences(-1, true);
+		float factor = DPIHelper.processDPI(value);
 		
 		//scale all defaults
 		scaleDefaults(factor);
@@ -128,24 +132,34 @@ public class ScalingCoordinator {
 	 * @param dpiRatio the scaling ratio from system DPI & requested DPI
 	 */
 	public void adjustUserComponents(float dpiRatio, Container main) {
-		XScaler external = new XScaler(dpiRatio);
-		external.init(main);
+		ComponentRegulator regulator = new ComponentRegulator(dpiRatio);
+		regulator.init(main);
 	}
 	
+	/**
+	 * Transforms the <code>original</code> LAf-Default using the dispatched
+	 * <code>delegate</code> Scaler.
+	 * 
+	 * @param delegate appropriate scaler
+	 * @param key the therewith associated defaults key
+	 * @param original to be scaled object
+	 * 
+	 * @return newly scaled LAF-Defaults Object
+	 */
 	private Object getScaledValue(Scaler delegate, Object key, Object original) {
 		if (original instanceof Font)
 			return delegate.modifyFont(key, (Font) original);
 
 		if (original instanceof Icon)
-			return delegate.getModifiedIcon(key, (Icon) original);
+			return delegate.modifyIcon(key, (Icon) original);
 		  
 		if (original instanceof Integer)
 			return delegate.modifyInteger(key, (Integer) original);
 		
 		if (original instanceof Insets)
-			return delegate.getModifiedInsets((Insets) original);
+			return delegate.modifyInsets((Insets) original);
 		
-		//sentinel for non-scalable value
+		//sentinel for non-scalable values
 		return null;
 	}
 	
