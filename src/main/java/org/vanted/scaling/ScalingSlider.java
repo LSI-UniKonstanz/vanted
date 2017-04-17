@@ -102,7 +102,7 @@ public class ScalingSlider extends JSlider
 	}
 	
 	/**
-	 * This determines what our standard DPI is. <p.
+	 * This determines what our standard DPI is. <p>.
 	 * 
 	 * Basically, Macintosh uses 72 DPI - pretty neat, since dots and pixels 
 	 * to inch are then literally the same (WYSIWYG principle). 

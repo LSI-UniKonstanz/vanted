@@ -50,7 +50,7 @@ public class BasicScaler implements Scaler {
 
 	@Override
 	public Font modifyFont(Object key, Font original) {
-		
+
 		//We have a non-LAF related call
 		if (key == null && original != null)
 			return newScaledFont(original, scaleFactor);
@@ -173,12 +173,12 @@ public class BasicScaler implements Scaler {
 		ImageIcon imageIcon = null;
 		IconUIResource iconResource = null;
 		
-		if (icon instanceof IconUIResource)
-			//we are save to cast (see modifyIcon)
-			iconResource = (IconUIResource) modifyIconUIResource(key, icon);
-		
 		if (icon instanceof ImageIcon)
 			imageIcon = modifyImageIcon(icon);
+		else
+			/* Rest implements either IconUIResource directly
+			 * or both Icon and UIResource separately. */
+			iconResource = modifyIconUIResource(key, icon);
 		
 		return (imageIcon != null) ? imageIcon : iconResource;
 	}
@@ -187,7 +187,7 @@ public class BasicScaler implements Scaler {
 	/** 
 	 * This modifies not all Icons, only those from LAF Defaults!
 	 */
-	protected Icon modifyIconUIResource(Object key, Icon original) {
+	protected IconUIResource modifyIconUIResource(Object key, Icon original) {
 		return new IconUIResource(new ScaledIcon(original, scaleFactor));
 	}
 	

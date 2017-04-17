@@ -116,7 +116,7 @@ public class ScalingCoordinator {
 		
 		delegate.initialScaling();
 
-		for (Object key: Collections.list(defaults.keys())) {
+		for (Object key : Collections.list(defaults.keys())) {
 			Object original = defaults.get(key);
 			Object newValue = getScaledValue(delegate, key, original);
 

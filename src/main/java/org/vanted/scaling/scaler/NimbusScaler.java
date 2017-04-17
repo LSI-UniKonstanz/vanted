@@ -19,6 +19,7 @@ public class NimbusScaler extends BasicScaler {
 		super(scaleFactor);
 	}
 
+	@Override
 	public void initialScaling() {
 		
 		Font font = uiDefaults.getFont("defaultFont");
@@ -32,6 +33,7 @@ public class NimbusScaler extends BasicScaler {
 	/**
 	 * Nimbus scales the rest internally based on the above change.
 	 */
+	@Override
 	public Font modifyFont(Object key, Font original) {
 		return original;
 	}
@@ -39,7 +41,8 @@ public class NimbusScaler extends BasicScaler {
 	/**
 	 * Distortions & marks are visible, ergo no modifications.
 	 */
-	public Icon modifyIconUIResource(Object key, Icon original) {
+	@Override
+	public Icon modifyIcon(Object key, Icon original) {
 		return original;
 	}
 }

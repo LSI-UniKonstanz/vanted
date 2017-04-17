@@ -13,5 +13,5 @@ import org.vanted.scaling.scaler.Scaler;
  */
 public interface HTMLScaler extends Scaler {
 
-	public void coscaleHTML(JComponent component);
+	void coscaleHTML(JComponent component);
 }

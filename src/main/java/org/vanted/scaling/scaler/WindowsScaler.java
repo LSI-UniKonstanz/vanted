@@ -16,7 +16,7 @@ public class WindowsScaler extends BasicScaler {
 	}
 
 	@Override
-	public Icon modifyIconUIResource(Object key, Icon original) {
+	public Icon modifyIcon(Object key, Icon original) {
 		return original;
 	}
 }
