@@ -32,18 +32,16 @@ public class ScalingCoordinator {
 	//for better refresh of Nimbus
 	private static boolean isNimbus = false;
 	
-	/** The main Container, containing all others. */
-	private Container main;
-	
 	/**
 	 * 
 	 * @param factor the processed Slider value
 	 * @param main the main container
 	 */
 	public ScalingCoordinator(float factor, Container main) {
-		this.main = main;
 		//scale all defaults
 		scaleDefaults(factor);
+		//scale all components
+		scaleComponents(factor, main);
 		//update GUI
 		refreshGUI(main);
 	}
@@ -55,20 +53,40 @@ public class ScalingCoordinator {
 	 * @param main the main container
 	 */
 	public ScalingCoordinator(Container main) {
-		this.main = main;		
-		
-		int value = DPIHelper.managePreferences(-1, true);
+		int value = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT,
+				DPIHelper.PREFERENCES_GET);
 		float factor = DPIHelper.processDPI(value);
 		
 		//scale all defaults
 		scaleDefaults(factor);
+		//scale all components
+		scaleComponents(factor, main);
 		//update GUI
 		refreshGUI(main);
 	}
 	
 	/**
-	 * You should supposedly collect your garbage yourself, unlike with the
-	 * other constructors.
+	 * 
+	 * @param main the main container
+	 * @param components <b>false</b>: scale LAF Defaults only
+	 */
+	public ScalingCoordinator(Container main, boolean components) {
+		int value = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT,
+				DPIHelper.PREFERENCES_GET);
+		float factor = DPIHelper.processDPI(value);
+		
+		//scale all defaults
+		scaleDefaults(factor);
+		
+		if (components)
+			scaleComponents(factor, main);
+		
+		//update GUI
+		refreshGUI(main);
+	}
+	
+	/**
+	 * Empty Coordinator. You should refresh the GUI thereafter alone.
 	 */
 	public ScalingCoordinator() {}
 	
@@ -80,11 +98,9 @@ public class ScalingCoordinator {
 	 */
 	public void scaleDefaults(float factor) {
 		float dpiRatio = Toolkit.getDefaultToolkit().getScreenResolution() / factor;
-		Scaler delegate = createScalerForCurrentLAF(dpiRatio);
-		  
-		adjustDefaults(delegate);
+		Scaler delegate = createScalerForCurrentLAF(dpiRatio);		  
 		
-		adjustUserComponents(dpiRatio, main);
+		adjustDefaults(delegate);
 	}
 	
 	/**
@@ -127,12 +143,14 @@ public class ScalingCoordinator {
 	}
 	
 	/**
-	 * Scaler for external, i.e. user-set, components.
+	 * Scales JComponents.
 	 * 
-	 * @param dpiRatio the scaling ratio from system DPI & requested DPI
+	 * @param factor the scaling ratio from system DPI & requested DPI
 	 */
-	public void adjustUserComponents(float dpiRatio, Container main) {
+	public void scaleComponents(float factor, Container main) {
+		float dpiRatio = Toolkit.getDefaultToolkit().getScreenResolution() / factor;
 		ComponentRegulator regulator = new ComponentRegulator(dpiRatio);
+		
 		regulator.init(main);
 	}
 	

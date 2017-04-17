@@ -5,6 +5,7 @@ import java.awt.Insets;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -59,13 +60,16 @@ public class ComponentScaler extends BasicScaler {
 	 *
 	 */
 	public void coscaleInsets(JComponent component) {
-		/**Check if Insets need re-scaling. */
-		if (component.getInsets().hashCode() == 0)
+		/** Check if Insets need re-scaling. */
+		if (component.getInsets().hashCode() == 0 ||
+				/** Motif doesn't react well to Insets scaling, because it 
+				 *  already uses overly big Insets. */
+				UIManager.getLookAndFeel().getName().equals("CDE/Motif"))
 			return;
 		
 		Insets old;
 		
-		if (component.getBorder() != null) {			
+		if (component.getBorder() != null) {
 			old = component.getBorder().getBorderInsets(component);
 			Insets newi = modifyInsets(old);
 			Border empty = BorderFactory.createEmptyBorder(

@@ -1,7 +1,6 @@
 package org.vanted.scaling;
 
 import java.awt.Container;
-import java.awt.Toolkit;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.Semaphore;
 
@@ -69,11 +68,10 @@ public final class ScalerLoader {
 			manager.displayResetter();
 			
 			/**
-			 * Straightaway try to scale all - LAF & non-LAF components,
-			 * and most probably succeed only in LAF-scaling, if main is
-			 * still uninitialized, together with its children.
+			 * Straightaway scale all LAF Defaults, since we don't
+			 * know, if main is initialized at this point.
 			 */
-			doScaling(main);
+			doScaling(false);
 			
 			/**
 			 * We use another Thread to avoid blocking EDT/Main Thread and then
@@ -114,22 +112,23 @@ public final class ScalerLoader {
 	/**
 	 * It does exactly what its name suggests - it ventures preferences and
 	 * scales according to the value. Particularly on start up.
+	 *
+	 * @param components <b>false</b>: scale LAF Defaults only,
+	 * @param parent <i><b>(one or none)</b>:</i> component to start from
 	 */
-	public static void doScaling(Container c) {
+	public static void doScaling(boolean components, Container... parent) {
 		//GTK-related L&Fs not supported, because by default not re-scalable
 		if (UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK"))
 			return;
-				
-		int sValue = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT,
-				DPIHelper.PREFERENCES_GET);
-				
-		new ScalingCoordinator(DPIHelper.processDPI(sValue), //factor
-							 c);
+		
+		Container main = (parent.length > 0) ? parent[0] : null;
+		
+		new ScalingCoordinator(main, components);
 	}
 	
 	/**
-	 * Scale the DBE Splash Screen to reflect the DPI factor.
-	 * As a side effect, it fixes an issue with Metal L&F.
+	 * Scale any loading banner to reflect the DPI factor.
+	 * As a side effect, it might fix an issue with Metal L&F.
 	 * Metal does not call updatePreferences on startup and
 	 * therefore does not scale properly.
 	 */
@@ -139,7 +138,7 @@ public final class ScalerLoader {
 		 * multiple Preferences instances during a lifetime.
 		 */
 		if (START_UP) {
-			doScaling(c);
+			doScaling(true, c);
 			START_UP = false;
 		}
 	}
@@ -160,7 +159,7 @@ public final class ScalerLoader {
 				public void run() {
 					try {
 						initialized.acquire();
-						doScaling(c);
+						doScaling(true, c);
 						SYNC_UP = false;
 					} catch (InterruptedException e) {
 						System.err.println("Interrupted during DOWN on semaphore!");
@@ -193,12 +192,11 @@ public final class ScalerLoader {
 		
 		int value = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT,
 				DPIHelper.PREFERENCES_GET);
-		float scaleFactor = Toolkit.getDefaultToolkit().getScreenResolution() / 
-				DPIHelper.processDPI(value);
+		float factor = DPIHelper.processDPI(value);
 		
 		ScalingCoordinator plainCoordinator = new ScalingCoordinator();
-		//perform external scaling
-		plainCoordinator.adjustUserComponents(scaleFactor, c);
+		//perform JComponents scaling
+		plainCoordinator.scaleComponents(factor, c);
 		
 		//update GUI
 		ScalingCoordinator.refreshGUI(c);

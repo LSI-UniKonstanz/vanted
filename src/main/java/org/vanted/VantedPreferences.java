@@ -21,13 +21,11 @@ import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
-import org.graffiti.plugin.parameter.JComponentParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
 
 import org.vanted.scaling.ScalerLoader;
-import org.vanted.scaling.ScalingSlider;
 
 /**
  * Global Preference class for VANTED.
@@ -116,9 +114,9 @@ public class VantedPreferences implements PreferencesInterface {
 					}
 					
 					/**
-					 * Scale all components: LAF & non-LAF on a LAF-change.
+					 * Scale only LAF Defaults again on a LAF-change.
 					 */
-					ScalerLoader.doScaling(MainFrame.getInstance());
+					ScalerLoader.doScaling(false);
 
 					/*
 					 * show changes for current instance running
