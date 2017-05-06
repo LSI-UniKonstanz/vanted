@@ -41,6 +41,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 
 import org.AttributeHelper;
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
@@ -92,12 +93,6 @@ public class StatusBar
 	
 	/** The time, a message is displayed in the status line. */
 	private static final int DELAY = 5000;
-	
-	/** The font, which is used to display an info message. */
-	private static final Font PLAIN_FONT = new Font("dialog", Font.PLAIN, 12);
-	
-	/** The font, which is used to display an error message. */
-	private static final Font BOLD_FONT = new Font("dialog", Font.BOLD, 12);
 	
 	// ~ Instance fields ========================================================
 	
@@ -568,8 +563,8 @@ public class StatusBar
 						}
 					}
 				});
-		
-		statusLine.setFont(BOLD_FONT);
+
+		statusLine.setFont(new Font("dialog", Font.BOLD, setStatuslineFontsize()));
 		statusLine.setForeground(Color.red);
 		statusLine.setText(status);
 		timer.setInitialDelay(timeMillis);
@@ -618,12 +613,27 @@ public class StatusBar
 					}
 				});
 		
-		statusLine.setFont(PLAIN_FONT);
+		statusLine.setFont(new Font("dialog", Font.PLAIN, setStatuslineFontsize()));
 		statusLine.setForeground(Color.black);
 		statusLine.setText(message);
 		timer.setInitialDelay(timeMillis);
 		timer.setRepeats(false);
 		timer.start();
+	}
+	
+	/**
+	 * Sets size by taking and adjusting the respective LAF default.
+	 * 
+	 * @return LAF-respecting font size
+	 * @author dim8
+	 * @since 2.6.4
+	 */
+	private int setStatuslineFontsize() {
+		int size = UIManager.getDefaults().getFont("Label.font").getSize();
+		if (size > (12 + size/6))
+			size -= size / 6;
+		
+		return size;
 	}
 	
 	/**
