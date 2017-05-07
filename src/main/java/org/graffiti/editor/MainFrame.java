@@ -68,6 +68,7 @@ import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
@@ -2332,6 +2333,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	 * 
 	 *  <b>Thread-safe!</b> */
 	private AtomicBoolean called = new AtomicBoolean();
+	/* Session ID */
+	private AtomicInteger sid = new AtomicInteger();
 	
 	/**
 	 * This delegates the session closing down below the method chain, given the user has not chosen 
@@ -2351,7 +2354,11 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		boolean askForSave = true;
 		if (askForSave && session.getGraph().isModified()) {
 			
-			called.set(true);
+			for (GraffitiFrame gf : getDetachedFrames())
+				if (gf.getSession() == session) {
+					called.set(true);
+					sid.set(session.hashCode());
+				}
 			
 			String graphName = session.getGraph().getName();
 			if (graphName == null)
@@ -2390,8 +2397,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	 * @return <b>true</b> if the session has been closed
 	 */
 	public boolean closeSession(Session session) {
-		
-		if (!called.compareAndSet(true, false))
+
+		if (!called.compareAndSet(true, false) || !(sid.get() == session.hashCode()))
 			if (!promptClosing(session))
 				return false;
 		
@@ -2428,9 +2435,10 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		}
 		
 		//make random next session active session
-		if (!sessions.isEmpty())
-			MainFrame.getInstance().setActiveSession(sessions.iterator().next(), null);
-		else
+		if (!sessions.isEmpty()) {
+			Session next = sessions.iterator().next();
+			MainFrame.getInstance().setActiveSession(next, next.getActiveView());
+		} else
 			MainFrame.getInstance().setActiveSession(null, null);
 		
 		sessions.remove(session);
