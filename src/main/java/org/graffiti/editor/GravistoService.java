@@ -929,8 +929,7 @@ public class GravistoService implements HelperClass {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static ImageIcon loadIcon(Class class1, String name) {
+	public static ImageIcon loadIcon(Class<?> class1, String name) {
 		URL url = getResource(class1, name);
 		if (url == null)
 			return null;
@@ -938,8 +937,7 @@ public class GravistoService implements HelperClass {
 			return new ImageIcon(url);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static ImageIcon loadIcon(Class class1, String name, int w, int h) {
+	public static ImageIcon loadIcon(Class<?> class1, String name, int w, int h) {
 		URL url = getResource(class1, name);
 		if (url == null)
 			return null;
@@ -947,13 +945,11 @@ public class GravistoService implements HelperClass {
 			return new ImageIcon(GravistoService.getScaledImage(new ImageIcon(url).getImage(), w, h));
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static URL getResource(Class class1, String name) {
+	public static URL getResource(Class<?> class1, String name) {
 		return getResource(class1, name, null);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static URL getResource(Class location, String filename, String optExt) {
+	public static URL getResource(Class<?> location, String filename, String optExt) {
 		ClassLoader cl = location.getClassLoader();
 		String path = location.getPackage().getName().replace('.', '/');
 		if (optExt == null)
@@ -1087,8 +1083,7 @@ public class GravistoService implements HelperClass {
 	/**
 	 * ToDo Test this method (untested copy).
 	 */
-	@SuppressWarnings("unchecked")
-	public static void saveRessource(Class reference, String folder, String fileName, String targetFileName)
+	public static void saveRessource(Class<?> reference, String folder, String fileName, String targetFileName)
 			throws IOException {
 		ClassLoader cl = reference.getClassLoader();
 		
