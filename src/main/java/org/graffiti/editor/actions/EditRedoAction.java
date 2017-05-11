@@ -93,7 +93,7 @@ public class EditRedoAction
 		} else {
 			setEnabled(false);
 			putValue(NAME, sBundle.getString("menu." + getName()));
-			putValue(SHORT_DESCRIPTION, getName());
+			putValue(SHORT_DESCRIPTION, sBundle.getString("toolbar." + getName() + ".tooltip"));
 		}
 		
 		//SMALL_ICON is for JMenuItem, but not for e.g. JButton, and distorts scaling
