@@ -5,7 +5,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -18,6 +17,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import org.graffiti.managers.PreferenceManager;
 
@@ -60,6 +61,10 @@ public class DPIHelper {
 	
 	private static final String RESET_DIALOG_PREFS = "ResetDialogPreferences";
 	
+	private static final String DISABLE_MAC_LAF = "DisableMacLAFSwapping";
+
+	private static final String METAL_LAF = "javax.swing.plaf.metal.MetalLookAndFeel";
+	
 	public DPIHelper() {
 		instance = this;
 	}
@@ -97,18 +102,18 @@ public class DPIHelper {
 	 */
 	public static boolean isAvoidable() {
 		int value = DPIHelper.managePreferences(VALUE_UNSET_INTERNAL, PREFERENCES_GET);
-		float factor = Toolkit.getDefaultToolkit().getScreenResolution() / 
-				DPIHelper.processDPI(value);
+		int standard = (int) DPIHelper.processDPI(value);
 		
 		/**
 		 * DPIHelper.managePreferences() called with the above combination of 
 		 * parameters returns a flag value for checking, if value has ever been
 		 * stored under the specified preferences. If there is some writing 
-		 * error at the time, this would also affect scaling. 
+		 * error at preferences flushing time, that would also affect scaling. 
 		 * 
-		 * If the factor is the identity element, just avoid scaling altogether.
+		 * If the slider set value is the standard, then do not apply ... scaling.
 		 */
-		if (value == VALUE_UNSET_INTERNAL || factor == 1.0)
+		//TODO is unset value standard slider value?
+		if (value == VALUE_UNSET_INTERNAL || standard == ScalingSlider.getStandard())
 			return true;
 		
 		return false;
@@ -286,5 +291,21 @@ public class DPIHelper {
 		String path = RESOURCE_PKG.replace('.', '/');
 		
 		return	cl.getResource(path + "/" + filename);
+	}
+	
+	public static boolean handleMacLAF() {
+		if (scalingPreferences.getBoolean(DISABLE_MAC_LAF, false))
+			return false;
+		
+		if (UIManager.getLookAndFeel().getName().equals("Mac OS X"))
+			try {
+				UIManager.setLookAndFeel(METAL_LAF);
+				return true;
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+					| UnsupportedLookAndFeelException e) {
+				e.printStackTrace();
+			}
+		
+		return false;
 	}
 }

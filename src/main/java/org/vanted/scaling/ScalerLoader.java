@@ -60,6 +60,12 @@ public final class ScalerLoader {
 			if (DPIHelper.isAvoidable())
 				return;
 			
+			/**
+			 * Mac OS X exclusive: Swap default Mac LAF with Metal, because there are scaling issues, since
+			 * some values are hard set and thus not changeable from LAF Defaults.
+			 */
+			//System.out.print(DPIHelper.handleMacLAF() ? "Set default VANTED LookAndFeel Metal.\n" : "");
+			
 			/** Dispatch DPIHelper. */
 			DPIHelper manager = new DPIHelper();
 			
