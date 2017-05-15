@@ -72,5 +72,6 @@
 	<classpathentry exported="true" kind="lib" path="/vanted-lib-repository/adaptagrams.jar"/>
 	<classpathentry exported="true" kind="lib" path="/vanted-lib-repository/jsbml-1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="/vanted-lib-repository/secondstring-20030401.jar"/>
+	<classpathentry exported="true" kind="lib" path="/vanted-lib-repository/quaqua.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

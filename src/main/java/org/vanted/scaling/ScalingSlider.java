@@ -13,17 +13,18 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.SystemInfo;
+import org.vanted.scaling.resources.ImmutableSlider;
 
 /**
  * The front-end of the provided scalers. Because of the
  * arithmetics and our goal (tackling issues on High DPI displays),
  * the user could decrease UIdefaults with the factor of 2 at most.
- * On the contrary, one could increase with a factor of 100. This is
- * could be overwritten.
+ * On the contrary, one could increase with a factor of 100. This
+ * could be overwritten though.
  * 
  * @author dim8
  */
-public class ScalingSlider extends JSlider 
+public class ScalingSlider extends ImmutableSlider 
 									implements ChangeListener, Serializable {
 	
 	private static final long serialVersionUID = 939020663044124704L;
@@ -161,7 +162,7 @@ public class ScalingSlider extends JSlider
 		setPaintLabels(true);
 		updateLabelUIs();
 	}
-	
+
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		// Standard implementation
@@ -174,19 +175,8 @@ public class ScalingSlider extends JSlider
 	        
 	        DPIHelper.managePreferences(value, DPIHelper.PREFERENCES_SET);      
 	        
-	        refresh();
-	        
 	        this.setToolTipText(String.valueOf(value) + " (DPI: " + Math.round(DPIHelper.processDPI(value)) + ")");
 	    }
-	}
-	
-	/**
-	 * Refresh the slider-GUI.
-	 */
-	private void refresh() {
-        this.invalidate();
-        this.repaint();
-        this.revalidate();
 	}
 	
 	/**

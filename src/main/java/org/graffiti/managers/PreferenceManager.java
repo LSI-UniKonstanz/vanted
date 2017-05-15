@@ -90,10 +90,8 @@ public class PreferenceManager
 			PreferencesInterface piClass = (PreferencesInterface) preferencingClass.newInstance();
 			checkAddAndSetClassesPreferences(piClass);
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -131,8 +129,6 @@ public class PreferenceManager
 						try {
 							
 							Object viewobject = forName.newInstance();
-							
-							PreferencesInterface pi = (PreferencesInterface) viewobject;
 							checkAddAndSetClassesPreferences((PreferencesInterface) viewobject);
 							
 						} catch (InstantiationException e) {
@@ -174,10 +170,8 @@ public class PreferenceManager
 						if (attrCompInstance instanceof PreferencesInterface)
 							checkAddAndSetClassesPreferences((PreferencesInterface) attrCompInstance);
 					} catch (InstantiationException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}

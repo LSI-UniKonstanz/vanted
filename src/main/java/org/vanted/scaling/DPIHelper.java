@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.net.URL;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
@@ -18,9 +20,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
+import org.graffiti.editor.MainFrame;
 import org.graffiti.managers.PreferenceManager;
+import org.graffiti.options.AbstractOptionPane;
+import org.vanted.scaling.resources.ImmutableCheckBox;
 
 //TODO remove PreferenceManager dependencies
 
@@ -56,14 +60,12 @@ public class DPIHelper {
 	/** Specify when you set Preferences value. */
 	public static final boolean PREFERENCES_SET = false;
 	
+	private static final String LIFESAVER_PARAM = "enable lifesaver";
+	
 	static final Preferences scalingPreferences = PreferenceManager
 			.getPreferenceForClass(DPIHelper.class);
 	
-	private static final String RESET_DIALOG_PREFS = "ResetDialogPreferences";
-	
-	private static final String DISABLE_MAC_LAF = "DisableMacLAFSwapping";
-
-	private static final String METAL_LAF = "javax.swing.plaf.metal.MetalLookAndFeel";
+	private static boolean lifesaver_enabled = scalingPreferences.getBoolean(LIFESAVER_PARAM, true);
 	
 	public DPIHelper() {
 		instance = this;
@@ -120,11 +122,40 @@ public class DPIHelper {
 	}
 	
 	/**
+	 * Insert the preferencing Components into the specified pane.
+	 * @param pane to add into
+	 */
+	public static void addScalingComponents(AbstractOptionPane pane) {
+		if (!UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK")) {
+			String name = "Emulated DPI";
+			//first we add the label
+			pane.addComponent(new JLabel(name));
+			//afterwards - the actual component
+			pane.addComponent("\t\t", new ScalingSlider(MainFrame.getInstance()));
+
+			final ImmutableCheckBox lifesaver = new ImmutableCheckBox();
+			lifesaver.setSelected(DPIHelper.getLifesaverBoolean());
+			lifesaver.addItemListener(new ItemListener() {
+				
+				@Override
+				public void itemStateChanged(ItemEvent e) {
+					if (e.getStateChange() == ItemEvent.DESELECTED)
+						DPIHelper.putLifesaverValue(false);
+					
+					if (e.getStateChange() == ItemEvent.SELECTED)
+						DPIHelper.putLifesaverValue(true);	
+				}
+			});
+			pane.addComponent("<html>Enable Lifesaver&emsp;&emsp;", lifesaver);
+		}
+	}
+	
+	/**
 	 * Displays a reset dialog that prompts the user to reset the scaling or not,
 	 * when the previous setting has gone out of reasonable scaling bounds and 
 	 * proper viewing has become impossible. There is also a 'Disable' option.
 	 */
-	public void displayResetter() {
+	public void displayLifesaver() {
 		int value = DPIHelper.managePreferences(VALUE_DEFAULT, true);
 		
 		if (isSafe(value))
@@ -180,7 +211,7 @@ public class DPIHelper {
 				". This could render interaction impossible.<br><br>"
 				+ "Would you like to reset it?</html>"), c);
 		
-		JButton toDisable = new JButton("Disable");
+		final JButton toDisable = new JButton("Disable");
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.ipady = 0;
 		c.weighty = 1.0;
@@ -191,7 +222,9 @@ public class DPIHelper {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				scalingPreferences.putBoolean(RESET_DIALOG_PREFS, true);
+				lifesaver_enabled = false;
+				scalingPreferences.putBoolean(LIFESAVER_PARAM, lifesaver_enabled);
+				toDisable.setEnabled(false);
 			}
 		});
 		contents.add(toDisable, c);
@@ -200,7 +233,7 @@ public class DPIHelper {
 	}
 	
 	/**
-	 * If unsafe, the Resetter is initiated, for the user to choose an option.
+	 * If unsafe, the Lifesaver is initiated, for the user to choose an option.
 	 * 
 	 * @param value value to check "safety" against
 	 * 
@@ -218,18 +251,24 @@ public class DPIHelper {
 		return false;
 	}
 	
+	public static boolean getLifesaverBoolean() {
+		return lifesaver_enabled;
+	}
+	
+	
+	public static void putLifesaverValue(boolean value) {
+		scalingPreferences.putBoolean(LIFESAVER_PARAM, value);
+	}
 	/**
 	 * Check, if the user has permanently disabled the resetter. If so - 
 	 * hide it.
 	 * 
-	 * @return true if Resetter has been disabled
+	 * @return true if Lifesaver has been disabled
 	 */
-	private static boolean hide() {
-		boolean hide = scalingPreferences.getBoolean(RESET_DIALOG_PREFS, false);
-		
-		return hide;
+	private static boolean hide() {		
+		return !scalingPreferences.getBoolean(LIFESAVER_PARAM, true);
 	}
-
+	
 	/**
 	 * This is a two-way internal method, used for all preferences-related
 	 * procedures. It handles both setting/putting and getting of values.
@@ -274,6 +313,12 @@ public class DPIHelper {
 		PreferenceManager.storePreferences();
 	}
 	
+	/**
+	 * Load the Preferences Pane.
+	 */
+	public static void loadPreferences() {
+		PreferenceManager.getInstance().addPreferencingClass(HighDPISupport.class);	
+	}
 	
 	/**
 	 * A resource loading utility method for resources placed in the resource package.
@@ -291,21 +336,5 @@ public class DPIHelper {
 		String path = RESOURCE_PKG.replace('.', '/');
 		
 		return	cl.getResource(path + "/" + filename);
-	}
-	
-	public static boolean handleMacLAF() {
-		if (scalingPreferences.getBoolean(DISABLE_MAC_LAF, false))
-			return false;
-		
-		if (UIManager.getLookAndFeel().getName().equals("Mac OS X"))
-			try {
-				UIManager.setLookAndFeel(METAL_LAF);
-				return true;
-			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-					| UnsupportedLookAndFeelException e) {
-				e.printStackTrace();
-			}
-		
-		return false;
 	}
 }

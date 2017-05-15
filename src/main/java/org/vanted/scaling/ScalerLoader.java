@@ -56,23 +56,27 @@ public final class ScalerLoader {
 			/** Only for initial usage. */
 			START_UP = false;
 			
-			/** Check, if scaling is necessary at all. */
-			if (DPIHelper.isAvoidable())
+			/** Check, if scaling is necessary at all.
+			 *  But still load the pane. */
+			if (DPIHelper.isAvoidable()) {
+				DPIHelper.loadPreferences();
 				return;
+			}
 			
 			/**
 			 * Mac OS X exclusive: Swap default Mac LAF with Metal, because there are scaling issues, since
 			 * some values are hard set and thus not changeable from LAF Defaults.
 			 */
-			//System.out.print(DPIHelper.handleMacLAF() ? "Set default VANTED LookAndFeel Metal.\n" : "");
+			//System.out.print(DPIHelper.handleMacLAF(true) ? "Set default VANTED LookAndFeel Metal.\n" : "");
 			
 			/** Dispatch DPIHelper. */
 			DPIHelper manager = new DPIHelper();
 			
-			/** This is a safeguard against incautiously set unsafe values.
-			 * It avoids need for hacky preferences resetting.*/
-			manager.displayResetter();
+			/** This is a safeguard against incautiously set unsafe values.*/
+			manager.displayLifesaver();
 			
+			/** Load Preferences Pane.*/
+			DPIHelper.loadPreferences();
 			/**
 			 * Straightaway scale all LAF Defaults, since we don't
 			 * know, if main is initialized at this point.
