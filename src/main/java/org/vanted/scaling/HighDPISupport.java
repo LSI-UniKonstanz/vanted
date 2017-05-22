@@ -1,7 +1,9 @@
 package org.vanted.scaling;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.prefs.Preferences;
 
 import javax.swing.JLabel;
@@ -12,25 +14,35 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import org.ReleaseInfo;
 import org.graffiti.editor.MainFrame;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.parameter.JComponentParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
+import org.vanted.VantedPreferences;
 
 public class HighDPISupport implements PreferencesInterface {
 
 	public static final String DESCRIPTION
 	= "<html>Emulate your desired DPI by moving the slider.<br>"
-			+ "<i>Lifesaver</i> saves you from incautiously setting unhealthy values. It acts on subsequent start-up.<br>"
+			+ "<i>Lifesaver</i> saves you from incautiously setting bad values. It acts on subsequent start-up.<br>"
 			+ "Mac OS X Look and Feel is very restrictive, so for better perfromance choose more tolerant<br>"
 			+ "alternative. Lastly, for optimal performance you could restart VANTED.<br><br>";
 	
 	private static final String PREFERENCES_MAC_LAF = "<html>Mac Look and Feel&emsp;";
 	
 	private static final String QUAQUA = "Quaqua Look and Feel";
+	private final LookAndFeel quaqua = ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel();
+	
+	private HashMap<String, String> lafmap = new HashMap<>();
+	
+	private Preferences general;
 	
 	
-	public HighDPISupport() {}
+	public HighDPISupport() {
+		general = PreferenceManager.getPreferenceForClass(VantedPreferences.class);
+		prepareLafMap();
+	}
 
 	@Override
 	public List<Parameter> getDefaultParameters() {
@@ -38,7 +50,7 @@ public class HighDPISupport implements PreferencesInterface {
 		
 		params.add(getInformation());
 		//here come the slider and lifesaver, added in ParameterOptionPane
-		params.add(getMaclaf());
+		params.add(getMacLaf());
 		
 		return params;
 	}
@@ -47,32 +59,13 @@ public class HighDPISupport implements PreferencesInterface {
 	public void updatePreferences(Preferences preferences) {
 		String laf = preferences.get(PREFERENCES_MAC_LAF, null);
 		if (laf != null) {
-			switch(laf) {
-				case QUAQUA:
-								setLAF(ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel());
-								break;
-				case "Mac OS X":
-								setLAF("apple.laf.AquaLookAndFeel");
-								break;
-				case "Windows":
-								setLAF("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-								break;
-				case "Metal":
-								setLAF("javax.swing.plaf.metal.MetalLookAndFeel");
-								break;
-				case "CDE/Motif":
-								setLAF("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-								break;
-				case "Windows Classic":
-								setLAF("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
-								break;
-				case "Nimbus":
-								setLAF("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-								break;
-				case "GTK+":
-								setLAF("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-								break;
-			}
+			if (laf.equals(QUAQUA))
+				setLAF(quaqua);
+			else
+				setLAF(queryLafMap(laf, true));
+			
+			general.put(VantedPreferences.PREFERENCE_LOOKANDFEEL, queryLafMap(laf, true));
+
 			if (MainFrame.getInstance() != null) {
 				if (ReleaseInfo.isRunningAsApplet())
 					SwingUtilities.updateComponentTreeUI(ReleaseInfo.getApplet());
@@ -115,15 +108,82 @@ public class HighDPISupport implements PreferencesInterface {
 		return information;
 	}
 	
-	private ObjectListParameter getMaclaf() {
+	private ObjectListParameter getMacLaf() {
 		String description = "<html><br><i>Please, use only on Mac!</i><br><br>";
-		LookAndFeel current = UIManager.getLookAndFeel();
+		String defaultval = general.get(VantedPreferences.PREFERENCE_LOOKANDFEEL, 
+				UIManager.getLookAndFeel().getClass().getName());
+		String name = "";
+		Object[] values = new Object[2];
 		
-		if (current != ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel())
-			return new ObjectListParameter(current, PREFERENCES_MAC_LAF, description,
-					new Object[] {current.getName(), QUAQUA});
+		if (UIManager.getLookAndFeel().getName().toLowerCase().contains("quaqua"))
+			name = QUAQUA;
+		
+		if (name.isEmpty())
+			if (lafmap.containsValue(defaultval))
+				name = queryLafMap(defaultval, false);
+			else {
+				name = defaultval.substring(defaultval.lastIndexOf('.') + 1);
+				name = splitAtUppercase(name, " ");				
+				lafmap.put(name, defaultval);
+			}
+			
+		
+		if (!name.equals(QUAQUA))
+			values = new Object[] {name, QUAQUA};
 		else
-			return new ObjectListParameter(current, PREFERENCES_MAC_LAF, description,
-					new Object[] {QUAQUA, UIManager.getSystemLookAndFeelClassName().getClass().getSimpleName()});
+			values = new Object[] {QUAQUA, getDefaultSystemLAFname()};
+		
+		return new ObjectListParameter(name, PREFERENCES_MAC_LAF, description,
+										values);
+	}
+	
+	private void prepareLafMap() {
+		lafmap.put(QUAQUA, "ch.randelshofer.quaqua.QuaquaLookAndFeel");
+		lafmap.put("Mac OS X", "apple.laf.AquaLookAndFeel");
+		lafmap.put("Windows", "com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		lafmap.put("Metal", "javax.swing.plaf.metal.MetalLookAndFeel");
+		lafmap.put("CDE/Motif", "com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+		lafmap.put("Windows Classic", "com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+		lafmap.put("Nimbus", "javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		lafmap.put("GTK+", "com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+	}
+	
+	private String queryLafMap(String param, boolean key) {
+		if (key) { //querying acc. to key, get value
+			return lafmap.get(param);
+		} else { //param is the value, get key
+			if (!lafmap.containsValue(param))
+				return null;
+			else {
+				for (Entry<String, String> entry : lafmap.entrySet())
+					if (entry.getValue().equals(param))
+						return entry.getKey();
+				
+				return null;
+			}
+		}
+	}
+	
+	private String getDefaultSystemLAFname() {
+		if (System.getProperty("os.name").toLowerCase().contains("mac"))
+			return "Mac OS X";
+		if (System.getProperty("os.name").toLowerCase().contains("windows"))
+			return "Windows";
+		else 
+			return "Metal";
+	}
+	
+	private String splitAtUppercase(String name, String delimeter) { 
+		String newName = "";
+		int j = 0;
+		for (int i = 1; i < name.length(); i++)
+			if (Character.isUpperCase(name.charAt(i))) {
+				newName += name.substring(j, i) + delimeter;
+				j = i;
+			}
+		
+		newName += name.substring(j);
+		
+		return newName;
 	}
 }
