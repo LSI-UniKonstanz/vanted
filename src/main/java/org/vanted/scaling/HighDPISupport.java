@@ -1,5 +1,6 @@
 package org.vanted.scaling;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,12 +23,20 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.VantedPreferences;
 
 public class HighDPISupport implements PreferencesInterface {
+	
+	private static final boolean IS_MAC = System.getProperty("os.name")
+			.toLowerCase().contains("mac");
+	private static final boolean DEV = System.getProperty("java.class.path")
+			.contains("target" + File.separator + "classes");
+	
+	private final static String macText = (IS_MAC || DEV) ? "Mac OS X Look and Feel is very restrictive,"
+			+ " so for superior performance choose a more tolerant<br> alternative." : "";
 
 	public static final String DESCRIPTION
 	= "<html>Emulate your desired DPI by moving the slider.<br>"
-			+ "<i>Lifesaver</i> saves you from incautiously setting bad values. It acts on subsequent start-up.<br>"
-			+ "Mac OS X Look and Feel is very restrictive, so for better perfromance choose more tolerant<br>"
-			+ "alternative. Lastly, for optimal performance you could restart VANTED.<br><br>";
+			+ "<i>Lifesaver</i> saves you when having set bad values. It acts upon subsequent start-up.<br>"
+			+  macText
+			+ " Lastly, for optimal performance you could restart VANTED.<br><br>";
 	
 	private static final String PREFERENCES_MAC_LAF = "<html>Mac Look and Feel&emsp;";
 	
@@ -49,8 +58,15 @@ public class HighDPISupport implements PreferencesInterface {
 		List<Parameter> params = new ArrayList<Parameter>();
 		
 		params.add(getInformation());
+
 		//here come the slider and lifesaver, added in ParameterOptionPane
-		params.add(getMacLaf());
+		
+		/**
+		 * We enable S-Quaqua only on Mac and while developing, because of copyright
+		 * reasons on behalf of Apple, Inc. 
+		 */
+		if (IS_MAC || DEV)
+			params.add(getMacLaf());
 		
 		return params;
 	}
@@ -109,7 +125,7 @@ public class HighDPISupport implements PreferencesInterface {
 	}
 	
 	private ObjectListParameter getMacLaf() {
-		String description = "<html><br><i>Please, use only on Mac!</i><br><br>";
+		String description = "  (Please, use only on Mac!)";
 		String defaultval = general.get(VantedPreferences.PREFERENCE_LOOKANDFEEL, 
 				UIManager.getLookAndFeel().getClass().getName());
 		String name = "";
@@ -129,11 +145,11 @@ public class HighDPISupport implements PreferencesInterface {
 			
 		
 		if (!name.equals(QUAQUA))
-			values = new Object[] {name, QUAQUA};
+			values = new Object[] {name, QUAQUA + description};
 		else
-			values = new Object[] {QUAQUA, getDefaultSystemLAFname()};
+			values = new Object[] {QUAQUA + description, getDefaultSystemLAFname()};
 		
-		return new ObjectListParameter(name, PREFERENCES_MAC_LAF, description,
+		return new ObjectListParameter(name, PREFERENCES_MAC_LAF, "",
 										values);
 	}
 	
@@ -165,7 +181,7 @@ public class HighDPISupport implements PreferencesInterface {
 	}
 	
 	private String getDefaultSystemLAFname() {
-		if (System.getProperty("os.name").toLowerCase().contains("mac"))
+		if (IS_MAC)
 			return "Mac OS X";
 		if (System.getProperty("os.name").toLowerCase().contains("windows"))
 			return "Windows";

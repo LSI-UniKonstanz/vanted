@@ -1,8 +1,8 @@
 package org.vanted.updater;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
@@ -31,16 +31,11 @@ public class PreferencesUpdater264 {
 	public static boolean checkAndUpdateMonashLink(Preferences preferences, 
 			String key, String updated) {
 		String version = "";
-		try (BufferedReader br = 
-				new BufferedReader(new FileReader(PreferencesUpdater264.class
-						.getClassLoader().getResource("build.number")
-								.getFile()))) {
-			while ((version = br.readLine()) != null) {
-				if (version.startsWith("vanted.version.number"))
-					break;
-				version = br.readLine();
-			}
-			version = version.substring(version.lastIndexOf('=') + 1).trim();						
+		try (InputStream stream = PreferencesUpdater264.class.getClassLoader()
+				.getResourceAsStream("build.number")) {
+			Properties build_props = new Properties();
+			build_props.load(stream);
+			version = build_props.getProperty("vanted.version.number");				
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
