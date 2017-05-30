@@ -59,7 +59,7 @@ public final class ScalerLoader {
 			/** Check, if scaling is necessary at all.
 			 *  But still load the pane. */
 			if (DPIHelper.isAvoidable()) {
-				DPIHelper.loadPreferences();
+				DPIHelper.loadPane();
 				return;
 			}
 			
@@ -76,7 +76,7 @@ public final class ScalerLoader {
 			manager.displayLifesaver();
 			
 			/** Load Preferences Pane.*/
-			DPIHelper.loadPreferences();
+			DPIHelper.loadPane();
 			/**
 			 * Straightaway scale all LAF Defaults, since we don't
 			 * know, if main is initialized at this point.

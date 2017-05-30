@@ -1,14 +1,15 @@
 package org.vanted.scaling;
 
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
+import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.File;
 import java.net.URL;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
@@ -19,9 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 
-import org.graffiti.editor.MainFrame;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.AbstractOptionPane;
 import org.vanted.scaling.resources.ImmutableCheckBox;
@@ -41,12 +40,6 @@ public class DPIHelper {
 	
 	private static final String RESOURCE_PKG = "org.vanted.scaling.resources";
 	
-	/**
-	 * A ratio between display height and emulated DPI. All values
-	 * below this threshold are safe in all cases, in sense of 
-	 * user-friendly (not too big/small UIDefaults size). */
-	private static final int USABILITY_THRESHOLD = 22;
-	
 	/*--------Scaling Preferences-------- */
 	static final String PREFERENCE_SCALING = "Scaling Preferences";
 	/** Standard value, when no scaling is to be performed. Useful for resetting.*/
@@ -62,8 +55,7 @@ public class DPIHelper {
 	
 	private static final String LIFESAVER_PARAM = "enable lifesaver";
 	
-	static final Preferences scalingPreferences = PreferenceManager
-			.getPreferenceForClass(DPIHelper.class);
+	static final Preferences scalingPreferences = DPIHelper.loadPreferences(DPIHelper.class);
 	
 	private static boolean lifesaver_enabled = scalingPreferences.getBoolean(LIFESAVER_PARAM, true);
 	
@@ -79,11 +71,11 @@ public class DPIHelper {
 	}
 	
 	/**
-	 * Converts a slider value into DPI Factor to be passed on to the 
-	 * ScalingCoordinator. We firstly determine standard constants and 
-	 * we use in the process the default slider values. For different
-	 * than default, one should initialize a ScalingSlider with such
-	 * new values.
+	 * Converts a slider value into DPI value to be passed on to the 
+	 * ScalingCoordinator, where a DPI ratio is applied. We firstly 
+	 * determine standard constants and we use in the process the 
+	 * default slider values. For different than default, one should 
+	 * initialize a ScalingSlider with such new values.
 	 * 
 	 * @param sValue sliderValue (get it from Preferences)
 	 * @return float DPI Factor
@@ -95,6 +87,20 @@ public class DPIHelper {
 		return (sValue == ScalingSlider.min)
 				? ScalingSlider.MIN_DPI 
 				: standard * (sValue / (float) ScalingSlider.median);
+	}
+	
+	/**
+	 * This is the scaling factor that could be passed onto a ComponentScaler
+	 * to directly scale an exception component, for example, without going
+	 * through the whole component tree, when using the ScalingCoordinator.
+	 * If the user hasn't performed any scaling operations so far, nothing will
+	 * happen.
+	 * @return a ready to use scaling factor to use directly with scalers
+	 */
+	public static float getDPIScalingRatio() {
+		return Toolkit.getDefaultToolkit().getScreenResolution() /
+				DPIHelper.processDPI(DPIHelper.managePreferences(
+						DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET));
 	}
 	
 	/**
@@ -125,13 +131,12 @@ public class DPIHelper {
 	 * Insert the preferencing Components into the specified pane.
 	 * @param pane to add into
 	 */
-	public static void addScalingComponents(AbstractOptionPane pane) {
-		if (!UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK")) {
+	public static void addScalingComponents(AbstractOptionPane pane, Container main) {		
 			String name = "Emulated DPI";
 			//first we add the label
 			pane.addComponent(new JLabel(name));
 			//afterwards - the actual component
-			pane.addComponent("\t\t", new ScalingSlider(MainFrame.getInstance()));
+			pane.addComponent("\t\t", new ScalingSlider(main));
 
 			final ImmutableCheckBox lifesaver = new ImmutableCheckBox();
 			lifesaver.setSelected(DPIHelper.getLifesaverBoolean());
@@ -146,8 +151,8 @@ public class DPIHelper {
 						DPIHelper.putLifesaverValue(true);	
 				}
 			});
+			
 			pane.addComponent("<html>Enable Lifesaver&emsp;&emsp;", lifesaver);
-		}
 	}
 	
 	/**
@@ -234,6 +239,8 @@ public class DPIHelper {
 	
 	/**
 	 * If unsafe, the Lifesaver is initiated, for the user to choose an option.
+	 * For simplicity, as unsafe values are regarded those having less than 
+	 * one third of the standard DPI.
 	 * 
 	 * @param value value to check "safety" against
 	 * 
@@ -241,11 +248,9 @@ public class DPIHelper {
 	 */
 	private static boolean isSafe(int value) {
 		int dpi = Math.round(DPIHelper.processDPI(value));
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		float height = (float) gd.getDisplayMode().getHeight();
-		int usabilityRatio = Math.round(height/dpi);
+		int limit = Math.round(ScalingSlider.getStandard() / 100f * 30);
 		
-		if (usabilityRatio < USABILITY_THRESHOLD && value < ScalingSlider.max)
+		if (dpi > limit)
 			return true;
 		
 		return false;
@@ -270,7 +275,7 @@ public class DPIHelper {
 	}
 	
 	/**
-	 * This is a two-way internal method, used for all preferences-related
+	 * This is a two-way internal method, used for all scaling-only preferences-related
 	 * procedures. It handles both setting/putting and getting of values.
 	 * To set values use <code>DPIHelper.PREFERENCES_SET</code> as <code>
 	 * get</code> parameter. To get: <code>DPIHelper.PREFERENCES_GET</code>,
@@ -316,8 +321,8 @@ public class DPIHelper {
 	/**
 	 * Load the Preferences Pane.
 	 */
-	public static void loadPreferences() {
-		PreferenceManager.getInstance().addPreferencingClass(HighDPISupport.class);	
+	public static void loadPane() {
+		PreferenceManager.getInstance().addPreferencingClass(HighDPISupport.class);
 	}
 	
 	/**
@@ -336,5 +341,18 @@ public class DPIHelper {
 		String path = RESOURCE_PKG.replace('.', '/');
 		
 		return	cl.getResource(path + "/" + filename);
+	}
+	
+	/**
+	 * Fetches the respective Preferences for <code>clazz</code>.
+	 * 
+	 * @param clazz
+	 * @return preferences instance
+	 */
+	public static Preferences loadPreferences(Class<?> clazz) {
+		//Modified code from PreferenceManager.getPreferenceForClass()
+		String pathName = clazz.getName().replace(".", File.separator);
+		
+		return Preferences.userRoot().node(pathName);
 	}
 }

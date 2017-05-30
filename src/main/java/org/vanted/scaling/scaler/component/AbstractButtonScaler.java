@@ -47,7 +47,13 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	@Override
 	public void coscaleHTML(JComponent component) {
 		AbstractButton button = (AbstractButton) component;
+		/** The order of the HTML texts is preserved and acts as second
+		 *  implicit key to allow mapping of multiple texts to a single component.
+		 *  
+		 *  Just implement and add your HTML-modification method below following
+		 *  the template. */
 		modifyHTML(button.getText(), button);
+		modifyHTMLTooltip(button.getToolTipText(), button);
 	}
 	
 	/**
@@ -132,6 +138,21 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 		button.setText(t);
 
 		//install listener for subsequent dynamic changes
+		HTMLSupport.handleTextListener(button, false);
+	}
+	
+	private void modifyHTMLTooltip(String tooltip, AbstractButton button) {
+		if (!HTMLSupport.isHTMLStyled(tooltip))
+			return;
+		
+		HTMLSupport.storeTags(button, tooltip);
+		
+		tooltip = HTMLSupport.parseHTMLtoFontSize(tooltip, button);
+		if (tooltip.equals(button.getToolTipText()))
+			return;
+		
+		HTMLSupport.handleTextListener(button, true);
+		button.setToolTipText(tooltip);
 		HTMLSupport.handleTextListener(button, false);
 	}
 }

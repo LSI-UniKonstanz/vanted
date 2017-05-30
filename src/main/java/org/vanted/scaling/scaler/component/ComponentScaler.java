@@ -17,6 +17,8 @@ import org.vanted.scaling.scaler.BasicScaler;
  * have been overwritten by design only, making sure LAF-Defaults are not scaled
  * again. So, it is a kind of co-scaler to any of the LAF-Scalers.<p>
  * 
+ * To obtain a scaling factor, you could call <code>DPIHelper.getDPIScalingRatio()</code>
+ * 
  * Current (default) subtypes:<br><br>
  * 
  * {@link AbstractButtonScaler}<br>

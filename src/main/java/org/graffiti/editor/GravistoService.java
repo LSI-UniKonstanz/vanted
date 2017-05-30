@@ -72,6 +72,9 @@ import org.graffiti.selection.Selection;
 import org.graffiti.session.EditorSession;
 import org.graffiti.session.Session;
 
+import org.vanted.scaling.DPIHelper;
+import org.vanted.scaling.scaler.component.JLabelScaler;
+
 import scenario.ScenarioService;
 
 /**
@@ -898,12 +901,15 @@ public class GravistoService implements HelperClass {
 			public void mouseReleased(MouseEvent e) {
 			}
 		});
+		final float factor = DPIHelper.getDPIScalingRatio();
 		Timer t = new Timer(1000, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				memLabel.setText(getCurrentMemoryInfo(shortInfo));
 				if (shortInfo)
 					memLabel.setToolTipText(getCurrentMemoryInfo(false).replaceFirst(":", " (click to garbage-collect):")
 							.replaceFirst("<font color='gray'>", ""));
+				JLabelScaler scaler = new JLabelScaler(factor);
+				scaler.coscaleHTML(memLabel);
 				memLabel.repaint(1000);
 			}
 		});

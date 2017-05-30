@@ -37,7 +37,13 @@ public class JLabelScaler extends ComponentScaler implements HTMLScaler {
 	@Override
 	public void coscaleHTML(JComponent component) {
 		JLabel label = (JLabel) component;
+		/** The order of the HTML texts is preserved and acts as second
+		 *  implicit key to allow mapping of multiple texts to a single component.
+		 *  
+		 *  Just implement and add your HTML-modification method below following
+		 *  the template. */
 		modifyHTML(label.getText(), label);
+		modifyHTMLTooltip(label.getToolTipText(), label);
 	}
 
 	/**
@@ -92,6 +98,22 @@ public class JLabelScaler extends ComponentScaler implements HTMLScaler {
 		label.setText(t);
 
 		//install listener for subsequent dynamic changes
+		HTMLSupport.handleTextListener(label, false);
+	}
+	
+	private void modifyHTMLTooltip(String tooltip, JLabel label) {
+		if (!HTMLSupport.isHTMLStyled(tooltip))
+			return;
+		
+		HTMLSupport.storeTags(label, tooltip);
+		
+		tooltip = HTMLSupport.parseHTMLtoFontSize(tooltip, label);
+		System.out.println(tooltip + "|" + label.getToolTipText());
+		if (tooltip.equals(label.getToolTipText()))
+			return;
+		
+		HTMLSupport.handleTextListener(label, true);
+		label.setToolTipText(tooltip);
 		HTMLSupport.handleTextListener(label, false);
 	}
 }

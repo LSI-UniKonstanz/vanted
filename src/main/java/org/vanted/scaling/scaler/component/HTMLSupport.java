@@ -4,6 +4,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 import javax.swing.JComponent;
@@ -31,7 +33,7 @@ class HTMLSupport {
 	/**Holding the native tags of the HTML-formatted texts.
 	 * The String is encoded with information regarding all
 	 * contained &#60;small> and &#60;big> tags. */
-	private static HashMap<Integer, String> tags = new HashMap<>();
+	private static HashMap<Integer, List<String>> tags = new HashMap<>();
 
 	private HTMLSupport() {}
 	
@@ -103,7 +105,11 @@ class HTMLSupport {
 			}
 			
 			/*---Insert kv-pair---*/
-			tags.put(component.hashCode(), value);
+			int key = component.hashCode();
+			List<String> list = 
+					tags.containsKey(key) ? tags.get(key) : new LinkedList<String>();
+			list.add(value);
+			tags.put(key, list);
 		}
 	}
 	
@@ -230,10 +236,10 @@ class HTMLSupport {
 	 * @return an array with the native tags in order of appearance
 	 */
 	static String[] parseTagValues(JComponent component) {
-		String value = tags.get(component.hashCode());
+		String value = tags.get(component.hashCode()).get(0);
 		ArrayList<String> tagsList = new ArrayList<>();
 	
-		//iterate until all tags are place in the list
+		//iterate until all tags are placed in the list
 		while (value.length() > 0) {
 			if (value.startsWith("<small>")) {
 				tagsList.add("<small>");
@@ -246,6 +252,8 @@ class HTMLSupport {
 			}
 			
 		}
+		//remove processed value from the list
+		tags.get(component.hashCode()).remove(0);
 		
 		//construct the array
 		String[] array = new String[tagsList.size()];

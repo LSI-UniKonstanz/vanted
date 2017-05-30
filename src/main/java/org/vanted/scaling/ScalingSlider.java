@@ -7,6 +7,7 @@ import java.util.Hashtable;
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
@@ -38,17 +39,16 @@ public class ScalingSlider extends ImmutableSlider
 	/** Used to store temporarily the previous factor for live re-scale
 	 *  operations. Ergo non-serializable! */
 	private transient float prevFactor = 0f;
+	private transient int prevValue;  //used when reverting
 	private Container main;
 
 	/* Defaults */
-	@SuppressWarnings("unused") //it's potentially used, see a bit down below.
 	private int value = 50;
 	static int min = 0;
 	static int max = 100;
 	private int extent = 0;
 	
 	static int median = (min + max) / 2;
-	
 	/**
 	 * Slider to allow live modifications to the scaling of components. It just
 	 * has to be initialized e.g. in Preferences window.
@@ -100,6 +100,8 @@ public class ScalingSlider extends ImmutableSlider
 		getStandard();
 		
 		setSpecifics();
+		
+		prevValue = this.value;
 	}
 	
 	/**
@@ -170,12 +172,20 @@ public class ScalingSlider extends ImmutableSlider
 	    
 	    if (!source.getValueIsAdjusting()) {
 	        int value = source.getValue();
-	        //call the Coordinator to update LAF!
+	        
+	        // Warn against too low DPI values out of memory considerations
+	        if (handleMemoryWarning(value))
+	        	return;  // Revert
+	        
+	        // Call the Coordinator to update LAF!
 	        new ScalingCoordinator(processFactor(value), main);
 	        
 	        DPIHelper.managePreferences(value, DPIHelper.PREFERENCES_SET);      
 	        
-	        this.setToolTipText(String.valueOf(value) + " (DPI: " + Math.round(DPIHelper.processDPI(value)) + ")");
+	        this.setToolTipText(String.valueOf(value) + " (DPI: " 
+	        		+ Math.round(DPIHelper.processDPI(value)) + ")");
+	        
+	        prevValue = value;
 	    }
 	}
 	
@@ -212,5 +222,33 @@ public class ScalingSlider extends ImmutableSlider
 				: (float) sliderValue / median;
 		
 		return dpif;		
+	}
+	
+	/**
+	 * Because scaling with very low DPI uses a lot of memory, especially for
+	 * the components, different from the default LookAndFeel ones, we issue
+	 * a warning to give the user an opportunity to decide whether he truly
+	 * needs and could support such low DPI scaling.
+	 * 
+	 * @param value
+	 */
+	private boolean handleMemoryWarning(int value) {
+		if (DPIHelper.processDPI(value) >= 8f)
+			return false;
+		
+		String message = "You are performing really low DPI emulation. "
+				+ "This might lead to excessive memory usage.\n\nDo you want to revert it?";
+		
+		int selection = JOptionPane.showConfirmDialog(main, message, "Memory Notice",
+				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		
+		if (selection == JOptionPane.YES_OPTION) {
+			this.setValue(prevValue);
+			this.repaint();
+			return true;
+		} else
+			return false;
+			
+			
 	}
 }

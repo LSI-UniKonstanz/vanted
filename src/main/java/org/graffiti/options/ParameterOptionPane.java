@@ -20,7 +20,7 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.scaling.DPIHelper;
 import org.vanted.scaling.HighDPISupport;
 
-public class ParameterOptionPane extends AbstractOptionPane{
+public class ParameterOptionPane extends AbstractOptionPane {
 
 	/**
 	 * 
@@ -92,7 +92,7 @@ public class ParameterOptionPane extends AbstractOptionPane{
 				 * flaw.
 				 */
 				if (curParameter.getDescription().equals(HighDPISupport.DESCRIPTION)) {
-					DPIHelper.addScalingComponents(this);
+					DPIHelper.addScalingComponents(this, MainFrame.getInstance());
 					logger.debug("added Scaling Components AFTER " + curParameter.getName());
 				}
 				logger.debug("added "+curParameter.getName()+" as valueeditcomponent");
