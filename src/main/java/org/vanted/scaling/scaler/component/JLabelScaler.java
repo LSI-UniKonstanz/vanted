@@ -108,7 +108,7 @@ public class JLabelScaler extends ComponentScaler implements HTMLScaler {
 		HTMLSupport.storeTags(label, tooltip);
 		
 		tooltip = HTMLSupport.parseHTMLtoFontSize(tooltip, label);
-		System.out.println(tooltip + "|" + label.getToolTipText());
+
 		if (tooltip.equals(label.getToolTipText()))
 			return;
 		

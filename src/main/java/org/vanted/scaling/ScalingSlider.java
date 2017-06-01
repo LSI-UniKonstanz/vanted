@@ -1,7 +1,10 @@
 package org.vanted.scaling;
 
 import java.awt.Container;
+import java.awt.Toolkit;
 import java.io.Serializable;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Hashtable;
 
 import javax.swing.DefaultBoundedRangeModel;
@@ -13,7 +16,6 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.SystemInfo;
 import org.vanted.scaling.resources.ImmutableSlider;
 
 /**
@@ -107,14 +109,16 @@ public class ScalingSlider extends ImmutableSlider
 	/**
 	 * This determines what our standard DPI is. <p>.
 	 * 
-	 * Basically, Macintosh uses 72 DPI - pretty neat, since dots and pixels 
-	 * to inch are then literally the same (WYSIWYG principle). 
+	 * Basically, Macintosh uses 72 DPI - pretty neat, since dots and pixels
+	 * to inch are then literally the same (WYSIWYG principle).
 	 * However, Windows is another story, to fix some of the 72-DPI-problems,
-	 * it introduced a 33% bigger size - 96 DPI. As for Linux, we just assume 
-	 * the Gnome default 96 DPI, because otherwise it's just a mess.
+	 * it introduced a 33% bigger size - 96 DPI. As for Linux, we could assume
+	 * the Gnome default 96 DPI, because otherwise it's just a mess. And then
+	 * come all the custom resolution size displays, e.g. through HDMI, so we
+	 * take as a standard the default main-monitor DPI resolution.  
 	 */
 	public static int getStandard() {
-		STANDARD_DPI = SystemInfo.isMac() ? 72 : 96;
+		STANDARD_DPI = Toolkit.getDefaultToolkit().getScreenResolution();
 		
 		MIN_DPI = STANDARD_DPI / (2f * median);
 		
@@ -144,13 +148,16 @@ public class ScalingSlider extends ImmutableSlider
 	 */
 	private void insertLabels() {
 		Hashtable<Integer, JComponent> labels = new Hashtable<Integer, JComponent>();
+		/* truncate float */
+		DecimalFormat df = new DecimalFormat("##.##");
+		df.setRoundingMode(RoundingMode.UP);
 		/* add elements */
 		float factor = 1f / max;
 		for (int i = min; i <= max; i += MAJOR_TICK_SPACING) {
 			float label = STANDARD_DPI * factor;
 
 			if (!Float.toString(label).endsWith(".0")) //show as float
-				labels.put(i + extent, new JLabel(Float.toString((STANDARD_DPI * factor))
+				labels.put(i + extent, new JLabel(df.format((STANDARD_DPI * factor))
 						+ " DPI"));
 			else //otherwise as int
 				labels.put(i + extent, new JLabel(Integer.toString((int)(label))
@@ -239,6 +246,7 @@ public class ScalingSlider extends ImmutableSlider
 		String message = "You are performing really low DPI emulation. "
 				+ "This might lead to excessive memory usage.\n\nDo you want to revert it?";
 		
+		//TODO on mac put dialog on top
 		int selection = JOptionPane.showConfirmDialog(main, message, "Memory Notice",
 				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 		

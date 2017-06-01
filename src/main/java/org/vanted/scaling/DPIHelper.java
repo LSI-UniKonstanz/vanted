@@ -16,10 +16,12 @@ import java.util.prefs.Preferences;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.AbstractOptionPane;
@@ -137,8 +139,9 @@ public class DPIHelper {
 			pane.addComponent(new JLabel(name));
 			//afterwards - the actual component
 			pane.addComponent("\t\t", new ScalingSlider(main));
-
-			final ImmutableCheckBox lifesaver = new ImmutableCheckBox();
+			final JCheckBox lifesaver = 
+					UIManager.getLookAndFeel().getName().toLowerCase().contains("mac") 
+						? new JCheckBox() : new ImmutableCheckBox();
 			lifesaver.setSelected(DPIHelper.getLifesaverBoolean());
 			lifesaver.addItemListener(new ItemListener() {
 				
@@ -265,7 +268,7 @@ public class DPIHelper {
 		scalingPreferences.putBoolean(LIFESAVER_PARAM, value);
 	}
 	/**
-	 * Check, if the user has permanently disabled the resetter. If so - 
+	 * Check, if the user has permanently disabled the Lifesaver (resetter). If so - 
 	 * hide it.
 	 * 
 	 * @return true if Lifesaver has been disabled
