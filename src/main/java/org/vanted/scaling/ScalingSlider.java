@@ -5,7 +5,10 @@ import java.awt.Toolkit;
 import java.io.Serializable;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.JComponent;
@@ -43,6 +46,8 @@ public class ScalingSlider extends ImmutableSlider
 	private transient float prevFactor = 0f;
 	private transient int prevValue;  //used when reverting
 	private Container main;
+	private static ScalingSlider instance;
+	private static List<ChangeListener> listeners;
 
 	/* Defaults */
 	private int value = 50;
@@ -104,6 +109,8 @@ public class ScalingSlider extends ImmutableSlider
 		setSpecifics();
 		
 		prevValue = this.value;
+		
+		instance = this;
 	}
 	
 	/**
@@ -123,6 +130,30 @@ public class ScalingSlider extends ImmutableSlider
 		MIN_DPI = STANDARD_DPI / (2f * median);
 		
 		return STANDARD_DPI;
+	}
+	
+	public static int getSliderValue() {
+		return instance.getValue();
+	}
+	
+	/**
+	 * This method could be used to add any number of ChangeListeners, 
+	 * so that you could synchronize any actions with the movement of
+	 * the slider, i.e. the live scaling itself.
+	 * @param changeListeners
+	 */
+	public static void registerChangeListeners(ChangeListener[] changeListeners) {
+		listeners = new LinkedList<ChangeListener>(Arrays.asList(changeListeners));
+	}
+	
+	private void addChangeListeners() {
+		if (listeners != null) {
+			for (int i = 0;i < listeners.size(); i++)
+				this.addChangeListener(listeners.get(i));
+			
+			listeners.clear();
+			listeners = null;
+		}
 	}
 	
 	/**
@@ -174,6 +205,9 @@ public class ScalingSlider extends ImmutableSlider
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
+		//Add any externally registered ChangeListeners
+		addChangeListeners();
+		
 		// Standard implementation
 	    JSlider source = (JSlider) e.getSource();
 	    

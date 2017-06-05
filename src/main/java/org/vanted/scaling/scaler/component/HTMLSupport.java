@@ -236,6 +236,16 @@ class HTMLSupport {
 	 * @return an array with the native tags in order of appearance
 	 */
 	static String[] parseTagValues(JComponent component) {
+		
+		/**
+		 * Some are externally modified, e.g. by a per component-deployed
+		 * ComponentScaler, and don't have their values stored here.
+		 * Those are later returned stripped off their tags, which is
+		 * of no importance, since their on-set scaler takes care.
+		 */
+		if (tags.get(component.hashCode()).isEmpty())
+			return new String[]{""};
+		
 		String value = tags.get(component.hashCode()).get(0);
 		ArrayList<String> tagsList = new ArrayList<>();
 	

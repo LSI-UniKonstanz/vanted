@@ -1,6 +1,7 @@
 package org.vanted.scaling;
 
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,10 +9,13 @@ import java.util.Map.Entry;
 import java.util.prefs.Preferences;
 
 import javax.swing.JLabel;
+import javax.swing.JSlider;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.ReleaseInfo;
 import org.graffiti.editor.MainFrame;
@@ -22,7 +26,9 @@ import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.VantedPreferences;
 
-public class HighDPISupport implements PreferencesInterface {
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeComponent;
+
+public class HighDPISupport implements PreferencesInterface, ChangeListener {
 	
 	private static final boolean IS_MAC = System.getProperty("os.name")
 			.toLowerCase().contains("mac");
@@ -51,6 +57,8 @@ public class HighDPISupport implements PreferencesInterface {
 	
 	private static String activeLaf;
 	
+	private static int oldValue;
+	
 	public HighDPISupport() {
 		general = PreferenceManager.getPreferenceForClass(VantedPreferences.class);
 		prepareLafMap();
@@ -77,11 +85,30 @@ public class HighDPISupport implements PreferencesInterface {
 		if (IS_MAC || DEV)
 			params.add(getMacLaf());
 		
+		//Add scaling of current active graph elements through zooming.
+		ScalingSlider.registerChangeListeners(new ChangeListener[] {this});
+
 		return params;
 	}
 
 	@Override
-	public void updatePreferences(Preferences preferences) {		
+	public void updatePreferences(Preferences preferences) {
+//		/**
+//		 * This is VANTED-native feature, so we implement it here.
+//		 * Zoom the current active Session graph elements regarding
+//		 * the new emulated DPI. */
+//		if (this.getZoomInstance() != null)
+//			processZooming();
+//		else
+//			oldValue = DPIHelper.managePreferences(
+//					DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET);
+		
+		if (this.getClassInstance(ZoomFitChangeComponent.class) == null)
+			oldValue = DPIHelper.managePreferences(
+					DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET);
+			
+		/**
+		 * Mac LAF update, if necessary. */
 		String laf = preferences.get(PREFERENCES_MAC_LAF, null);
 		
 		if (laf == null || laf.equals(activeLaf)) //no LAF change
@@ -109,6 +136,51 @@ public class HighDPISupport implements PreferencesInterface {
 	@Override
 	public String getPreferencesAlternativeName() {
 		return "<html>High DPI Support<sup>BETA</sup></html>";
+	}
+	
+	private void processZooming() {
+		int newValue = ScalingSlider.getSliderValue();
+		
+		System.out.println(newValue + "|" + oldValue);
+		
+		if (newValue == oldValue)
+			return;  //no scaling change!
+		
+		int diff = oldValue - newValue;
+		if (diff > 0) {  //lower DPI, bigger size
+			while (diff >= 0) {
+				ZoomFitChangeComponent.zoomIn();
+				diff--;
+			}
+		} else {  //higher DPI, smaller size
+			diff = Math.abs(diff);
+			while (diff >= 0) {
+				ZoomFitChangeComponent.zoomOut();
+				diff--;
+			}
+		}
+		
+		oldValue= newValue;
+	}
+	
+	/**
+	 * Through reflection we get an instance of the specified class, given
+	 * there is such static field defined.
+	 * @param clazz the Class to extract the instance from
+	 * @return a clazz instance
+	 */
+	private Object getClassInstance(Class <?> clazz) {
+		Object instance = null;
+		try {
+			Field f = clazz.getDeclaredField("instance");
+			f.setAccessible(true);
+			instance = f.get(null);
+		} catch (NoSuchFieldException | SecurityException |
+				IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		return instance;
 	}
 	
 	private void setLAF(LookAndFeel laf) {
@@ -237,5 +309,11 @@ public class HighDPISupport implements PreferencesInterface {
 		newName += name.substring(j);
 		
 		return newName;
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		if (!((JSlider) e.getSource()).getValueIsAdjusting())
+			processZooming();	
 	}
 }
