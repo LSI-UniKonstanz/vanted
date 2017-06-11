@@ -92,17 +92,7 @@ public class HighDPISupport implements PreferencesInterface, ChangeListener {
 	}
 
 	@Override
-	public void updatePreferences(Preferences preferences) {
-//		/**
-//		 * This is VANTED-native feature, so we implement it here.
-//		 * Zoom the current active Session graph elements regarding
-//		 * the new emulated DPI. */
-//		if (this.getZoomInstance() != null)
-//			processZooming();
-//		else
-//			oldValue = DPIHelper.managePreferences(
-//					DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET);
-		
+	public void updatePreferences(Preferences preferences) {	
 		if (this.getClassInstance(ZoomFitChangeComponent.class) == null)
 			oldValue = DPIHelper.managePreferences(
 					DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET);
@@ -140,8 +130,6 @@ public class HighDPISupport implements PreferencesInterface, ChangeListener {
 	
 	private void processZooming() {
 		int newValue = ScalingSlider.getSliderValue();
-		
-		System.out.println(newValue + "|" + oldValue);
 		
 		if (newValue == oldValue)
 			return;  //no scaling change!

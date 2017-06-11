@@ -15,7 +15,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSlider;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -165,7 +164,7 @@ public class ScalingSlider extends ImmutableSlider
 		this.setMinorTickSpacing(MINOR_TICK_SPACING);
 		this.setPaintTicks(true);
 		/* orientation */
-		this.setOrientation(SwingConstants.HORIZONTAL);
+		this.setOrientation(JSlider.HORIZONTAL);
 		/* set up labels*/
 		insertLabels();
 		/*set initial TooltipText*/
