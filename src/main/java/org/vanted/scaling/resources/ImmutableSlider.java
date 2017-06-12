@@ -107,7 +107,7 @@ public class ImmutableSlider extends JSlider {
 	 *
 	 */
 	protected static class PlainImmutableSliderUI extends BasicSliderUI {
-		
+
 		protected final float factor = DPIHelper.getDPIScalingRatio();
 		
 		private Dimension hsize;
@@ -128,6 +128,7 @@ public class ImmutableSlider extends JSlider {
 
 		@Override
 		public Dimension getPreferredHorizontalSize() {
+			hsize.height *= factor;
 			return hsize;
 		}
 
@@ -171,24 +172,37 @@ public class ImmutableSlider extends JSlider {
 	    private LinearGradientPaint p;
 		
 	    public ColoredImmutableSliderUI(JSlider slider) {
-	        super(slider);
+	        super(slider);	        
 	    }
-
-	    @Override
+	    
+		@Override
 		protected void calculateTrackRect() {
 			super.calculateTrackRect();
 
-	        trackRect.height *= factor;
+	        if (slider.getOrientation() == JSlider.HORIZONTAL)
+	        	trackRect.height *= factor;
+	        else
+	        	trackRect.width *= factor;
+
+	        //Here, before calculateThumbLocation(), to not distort the
+	        //additional to-value placing that is calculated there
 	        thumbRect.width *= factor;
 	        thumbRect.height *= factor;
-	        
+		}
+		
+		@Override
+		protected void calculateLabelRect() {
+			super.calculateLabelRect();
+			if (slider.getOrientation() == JSlider.HORIZONTAL)
+				labelRect.height *= factor;
+			else
+				labelRect.width *= factor;
 		}
 
 		@Override
 	    public void paintTrack(Graphics g) {
 	        Graphics2D g2d = (Graphics2D) g;
 	        Rectangle t = trackRect;
-	        System.out.println(t);
 	        Point2D start = new Point2D.Float(t.x, t.y);
 	        Point2D end = new Point2D.Float(t.x + t.width, t.y + t.height);
 	        Color[] colors = {Color.RED, Color.ORANGE, Color.YELLOW,
@@ -202,7 +216,7 @@ public class ImmutableSlider extends JSlider {
 	    }
 
 	    @Override
-	    public void paintThumb(Graphics g) {
+	    public void paintThumb(Graphics g) {	    	
 	        Graphics2D g2d = (Graphics2D) g;
 	        g2d.setRenderingHint(
 	            RenderingHints.KEY_ANTIALIASING,
@@ -212,21 +226,15 @@ public class ImmutableSlider extends JSlider {
 	        int tw2 = t.width / 2;
 	        int th2 = t.height / 2;
 	        if (slider.getOrientation() == JSlider.HORIZONTAL) {
-	        	g2d.drawLine(t.x, t.y, t.x + t.width - 1, t.y);
-	        	g2d.drawLine(t.x, t.y, t.x, th2);
-	        	g2d.drawLine(t.x + t.width - 1, t.y, t.x + t.width - 1, th2);
-	        	g2d.drawLine(t.x, th2, t.x + tw2, t.y + t.height);
-	        	g2d.drawLine(t.x + t.width - 1, th2, t.x + tw2, t.y + t.height);
+	        	g2d.drawLine(t.x + 1, t.y + th2/2 + th2/4, t.x + tw2, t.y + t.height - 1);
+	        	g2d.drawLine(t.x + t.width - 2, t.y + th2/2 + th2/4, t.x + tw2, t.y + t.height - 1);
 	        	g2d.fillRect(t.x, t.y, t.width, th2/2 + th2/4);
-	        	g2d.fillOval(t.x, t.y + th2/4, t.width, t.width);
+	        	g2d.fillOval(t.x, t.y + th2/4 + 1, t.width, t.width);
 	        } else {
-	        	g2d.drawLine(t.x, t.y, t.x, t.y + t.height - 1);
-	        	g2d.drawLine(t.x, t.y, t.x + tw2, t.y);
-	        	g2d.drawLine(t.x, t.y + t.height - 1, t.x + tw2, t.y + t.height - 1);
-	        	g2d.drawLine(t.x + tw2, t.y, t.x + t.width, t.y + th2);
-	        	g2d.drawLine(t.x + tw2, t.y + t.height - 1, t.x + t.width, t.y + th2);
-	        	g2d.drawRect(t.x, t.y, tw2/2 + tw2/4, t.height);
-	        	g2d.fillOval(t.x, t.y, t.height, t.height);
+	        	g2d.drawLine(t.x + tw2/2 + tw2/4, t.y + 1, t.x + t.width - 1, t.y + th2);
+	        	g2d.drawLine(t.x + tw2/2 + tw2/4, t.y + t.height - 2, t.x + t.width - 1, t.y + th2);
+	        	g2d.fillRect(t.x, t.y, tw2/2 + tw2/4, t.height);
+	        	g2d.fillOval(t.x + 1, t.y, t.height, t.height);
 	        }
 	    }
 	}

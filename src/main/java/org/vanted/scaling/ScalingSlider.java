@@ -185,9 +185,9 @@ public class ScalingSlider extends ImmutableSlider
 		float factor = 1f / max;
 		for (int i = min; i <= max; i += MAJOR_TICK_SPACING) {
 			float label = STANDARD_DPI * factor;
-
+			
 			if (!Float.toString(label).endsWith(".0")) //show as float
-				labels.put(i + extent, new JLabel(df.format((STANDARD_DPI * factor))
+				labels.put(i + extent, new JLabel(df.format((label))
 						+ " DPI"));
 			else //otherwise as int
 				labels.put(i + extent, new JLabel(Integer.toString((int)(label))
