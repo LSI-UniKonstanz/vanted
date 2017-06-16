@@ -1,6 +1,7 @@
 package org.vanted.scaling.scaler.component;
 
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.text.JTextComponent;
 
 /**
@@ -16,6 +17,20 @@ public class JTextComponentScaler extends ComponentScaler implements HTMLScaler 
 		super(scaleFactor);
 	}
 
+	/**
+	 * A method to be called when this {@linkplain JTextComponentScaler} has been
+	 * dispatched to some immediate Component to be scaled. This tackles the problem
+	 * that after a complete application scaling, through the ScalingSlider, further
+	 * components, initialized posterior, are not scaled. In order to do so, attach a
+	 * scaler and call this method upon initialization.
+	 *  
+	 * @param immediateComponent to be scaled
+	 */
+	public void scaleComponents(JComponent immediateComponent) {
+		this.coscaleFont(immediateComponent);
+		coscaleInsets(immediateComponent);
+	}
+	
 	@Override
 	public void coscaleFont(JComponent component) {
 		super.coscaleFont(component);
@@ -33,6 +48,11 @@ public class JTextComponentScaler extends ComponentScaler implements HTMLScaler 
 	@Override
 	public void coscaleHTML(JComponent component) {
 		JTextComponent text = (JTextComponent) component;
+		
+		/** Set the HTML, in our use-case, font size of the JEditorPane to the
+		 *  freshly scaled system LookAndFeel font size. */
+		alignJEP(text);
+		
 		/** The order of the HTML texts is preserved and acts as second
 		 *  implicit key to allow mapping of multiple texts to a single component.
 		 *  
@@ -85,5 +105,21 @@ public class JTextComponentScaler extends ComponentScaler implements HTMLScaler 
 		HTMLSupport.handleTextListener(text, true);
 		text.setToolTipText(tooltip);
 		HTMLSupport.handleTextListener(text, false);
+	}
+	
+	/**
+	 * JEditorPane has a couple of intrinsic properties, with
+	 * the help of which, one could control to a certain extent,
+	 * the layout (e.g. HTML) globally. These are 
+	 * <code>JEditorPane.HONOR_DISPLAY_PROPERTIES</code> and
+	 * <code>JEditorPane.W3C_LENGTH_UNITS</code>.
+	 * 
+	 * @param text JComponent to be checked, only JEditorPanes 
+	 * possess the system property to be set.
+	 */
+	private void alignJEP(JTextComponent text) {
+		if (text instanceof JEditorPane)
+			((JEditorPane) text).putClientProperty(
+					JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
 	}
 }

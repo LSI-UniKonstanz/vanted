@@ -20,6 +20,21 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 		super(scaleFactor);
 	}
 
+	/**
+	 * A method to be called when this {@linkplain JAbstractButtonScaler} has been
+	 * dispatched to some immediate Component to be scaled. This tackles the problem
+	 * that after a complete application scaling, through the ScalingSlider, further
+	 * components, initialized posterior, are not scaled. In order to do so, attach a
+	 * scaler and call this method upon initialization.
+	 *  
+	 * @param immediateComponent to be scaled
+	 */
+	public void scaleComponents(JComponent immediateComponent) {
+		this.coscaleFont(immediateComponent);
+		coscaleInsets(immediateComponent);
+		this.coscaleIcon(immediateComponent);
+	}
+	
 	@Override
 	public void coscaleFont(JComponent component) {
 		super.coscaleFont(component);
