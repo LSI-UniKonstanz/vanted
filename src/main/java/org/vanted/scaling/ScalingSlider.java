@@ -2,6 +2,8 @@ package org.vanted.scaling;
 
 import java.awt.Container;
 import java.awt.Toolkit;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.Serializable;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -18,6 +20,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.vanted.scaling.AutomatonBean.State;
 import org.vanted.scaling.resources.ImmutableSlider;
 
 /**
@@ -30,7 +33,7 @@ import org.vanted.scaling.resources.ImmutableSlider;
  * @author dim8
  */
 public class ScalingSlider extends ImmutableSlider 
-									implements ChangeListener, Serializable {
+									implements ChangeListener, FocusListener, Serializable {
 	
 	private static final long serialVersionUID = 939020663044124704L;
 	
@@ -40,10 +43,12 @@ public class ScalingSlider extends ImmutableSlider
 	private static int STANDARD_DPI;
 	static float MIN_DPI;
 	
+	/** The runtime internal ScalingSlider factor, used for computing the
+	 *  emulated DPI. 	 */
+	private transient float prevFactor = 0f;
 	/** Used to store temporarily the previous factor for live re-scale
 	 *  operations. Ergo non-serializable! */
-	private transient float prevFactor = 0f;
-	private transient int prevValue;  //used when reverting
+	private transient int oldValue;  //used when reverting
 	private Container main;
 	private static ScalingSlider instance;
 	private static List<ChangeListener> listeners;
@@ -91,6 +96,7 @@ public class ScalingSlider extends ImmutableSlider
 	private void scalingSlider(int value, int extent, int min, int max) {
 		
 		addChangeListener(this);
+		addFocusListener(this);
 		
 		this.value = value; 
 		this.extent = extent;
@@ -107,13 +113,13 @@ public class ScalingSlider extends ImmutableSlider
 		
 		setSpecifics();
 		
-		prevValue = this.value;
+		oldValue = this.value;
 		
 		instance = this;
 	}
 	
 	/**
-	 * This determines what our standard DPI is. <p>.
+	 * This determines what our standard DPI is. <p>
 	 * 
 	 * Basically, Macintosh uses 72 DPI - pretty neat, since dots and pixels
 	 * to inch are then literally the same (WYSIWYG principle).
@@ -142,12 +148,15 @@ public class ScalingSlider extends ImmutableSlider
 	 * @param changeListeners
 	 */
 	public static void registerChangeListeners(ChangeListener[] changeListeners) {
-		listeners = new LinkedList<ChangeListener>(Arrays.asList(changeListeners));
+		if (listeners != null)
+			listeners.addAll(Arrays.asList(changeListeners));
+		else
+			listeners = new LinkedList<ChangeListener>(Arrays.asList(changeListeners));
 	}
 	
 	private void addChangeListeners() {
 		if (listeners != null) {
-			for (int i = 0;i < listeners.size(); i++)
+			for (int i = 0; i < listeners.size(); i++)
 				this.addChangeListener(listeners.get(i));
 			
 			listeners.clear();
@@ -170,7 +179,11 @@ public class ScalingSlider extends ImmutableSlider
 		/*set initial TooltipText*/
 		int v = this.getValue();
 		this.setToolTipText(String.valueOf(v) + " (DPI: " + 
-									Math.round(DPIHelper.processDPI(v)) + ")");
+									Math.round(DPIHelper.processEmulatedDPIValue(v)) + ")");
+		
+		//When no startUp scaling has been done, state automaton is null
+		if (AutomatonBean.getInstance() == null)
+			new AutomatonBean();
 	}
 	
 	/**
@@ -210,7 +223,7 @@ public class ScalingSlider extends ImmutableSlider
 		// Standard implementation
 	    JSlider source = (JSlider) e.getSource();
 	    
-	    if (!source.getValueIsAdjusting()) {
+	    if (!source.getValueIsAdjusting()) {    	
 	        int value = source.getValue();
 	        
 	        // Warn against too low DPI values out of memory considerations
@@ -218,14 +231,17 @@ public class ScalingSlider extends ImmutableSlider
 	        	return;  // Revert
 	        
 	        // Call the Coordinator to update LAF!
-	        new ScalingCoordinator(processFactor(value), main);
+	        new ScalingCoordinator(computeCoordinatorFactor(value), main);
 	        
 	        DPIHelper.managePreferences(value, DPIHelper.PREFERENCES_SET);      
 	        
 	        this.setToolTipText(String.valueOf(value) + " (DPI: " 
-	        		+ Math.round(DPIHelper.processDPI(value)) + ")");
+	        		+ Math.round(DPIHelper.processEmulatedDPIValue(value)) + ")");
 	        
-	        prevValue = value;
+	        oldValue = value;
+	        
+	    	//set new scaling property
+	    	setScalingState();
 	    }
 	}
 	
@@ -233,19 +249,19 @@ public class ScalingSlider extends ImmutableSlider
 	 * Here we process the DPI according to the Slider's
 	 * selected value. Furthermore, we have to re-adjust the 
 	 * starting value by taking 'new/old' to reset the old one,
-	 * which is needed only at runtime.<p>
+	 * which is needed at runtime.<p>
 	 * 
 	 * Calling it twice consecutively, is as going back and forth
 	 * with the slider itself and thus giving a factor of 1.0 and
 	 * no change at all.
 	 * 
 	 * @param sliderValue the Slider's selected DPI value
-	 * @return the adjusted factor ready to be pass onto the ScalingCoordinator
+	 * @return the adjusted DPI factor ready to be pass onto the ScalingCoordinator
 	 */
-	private float processFactor(int sliderValue) {
-		float dpif = DPIHelper.processDPI(sliderValue);
+	private float computeCoordinatorFactor(int sliderValue) {
+		float dpif = DPIHelper.processEmulatedDPIValue(sliderValue);
 
-		if (prevFactor != 0.0)//0.0 is here not the min. value, but unset!
+		if (prevFactor != 0f)//0.0 is here not the min. value, but the unset!
 			dpif /= prevFactor;
 		else {
 			float prefsPrevFactor = (DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT, 
@@ -257,11 +273,11 @@ public class ScalingSlider extends ImmutableSlider
 			dpif /=  prefsPrevFactor;
 		}
 		
-		//update next previous factor
+		//update next previous DPI factor
 		prevFactor = (sliderValue == (float) min) ? (min + 0.5f) / median
 				: (float) sliderValue / median;
 		
-		return dpif;		
+		return dpif;
 	}
 	
 	/**
@@ -273,7 +289,7 @@ public class ScalingSlider extends ImmutableSlider
 	 * @param value
 	 */
 	private boolean handleMemoryWarning(int value) {
-		if (DPIHelper.processDPI(value) >= 8f)
+		if (DPIHelper.processEmulatedDPIValue(value) >= 8f)
 			return false;
 		
 		String message = "You are performing really low DPI emulation. "
@@ -284,12 +300,29 @@ public class ScalingSlider extends ImmutableSlider
 				JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 		
 		if (selection == JOptionPane.YES_OPTION) {
-			this.setValue(prevValue);
+			this.setValue(oldValue);
 			this.repaint();
 			return true;
 		} else
-			return false;
-			
-			
+			return false;		
+	}
+	
+	private void setScalingState() {
+		if (AutomatonBean.getState()
+				.equals(State.ON_SLIDER.toString()))
+			AutomatonBean.setState(State.RESCALED);
+		else
+			AutomatonBean.setState(State.ON_SLIDER);
+	}
+	
+	@Override
+	public void focusGained(FocusEvent e) {/* do nothing */}
+	
+	@Override
+	public void focusLost(FocusEvent e) {
+		String v = AutomatonBean.getState();
+		if (v.equals(State.ON_SLIDER.toString())
+				|| v.equals(State.RESCALED.toString()))
+			AutomatonBean.setState(State.IDLE);
 	}
 }

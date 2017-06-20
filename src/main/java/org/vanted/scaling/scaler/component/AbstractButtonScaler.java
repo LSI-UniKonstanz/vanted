@@ -21,7 +21,7 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	}
 
 	/**
-	 * A method to be called when this {@linkplain JAbstractButtonScaler} has been
+	 * A method to be called when this {@linkplain AbstractButtonScaler} has been
 	 * dispatched to some immediate Component to be scaled. This tackles the problem
 	 * that after a complete application scaling, through the ScalingSlider, further
 	 * components, initialized posterior, are not scaled. In order to do so, attach a
@@ -29,7 +29,7 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	 *  
 	 * @param immediateComponent to be scaled
 	 */
-	public void scaleComponents(JComponent immediateComponent) {
+	public void scaleComponent(JComponent immediateComponent) {
 		this.coscaleFont(immediateComponent);
 		coscaleInsets(immediateComponent);
 		this.coscaleIcon(immediateComponent);
@@ -54,9 +54,12 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	
 	/**
 	 * Interface method for 
-	 * {@link JTextComponentScaler#modifyHTML(String, AbstractButton)}. Part of the 
-	 * HTML-supporting interface contract.
+	 * {@link AbstractButtonScaler#modifyHTML(String, AbstractButton)}. Part of the 
+	 * HTML-supporting interface contract.<p>
 	 * 
+	 * Be careful to update the font too, because this is taken as basis and
+	 * thus the end HTML scaling depends on it.
+	 *
 	 * @param component
 	 */
 	@Override

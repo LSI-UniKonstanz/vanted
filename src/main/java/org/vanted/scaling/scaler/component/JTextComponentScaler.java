@@ -26,7 +26,7 @@ public class JTextComponentScaler extends ComponentScaler implements HTMLScaler 
 	 *  
 	 * @param immediateComponent to be scaled
 	 */
-	public void scaleComponents(JComponent immediateComponent) {
+	public void scaleComponent(JComponent immediateComponent) {
 		this.coscaleFont(immediateComponent);
 		coscaleInsets(immediateComponent);
 	}
@@ -41,7 +41,11 @@ public class JTextComponentScaler extends ComponentScaler implements HTMLScaler 
 	/**
 	 * Interface method for 
 	 * {@link JTextComponentScaler#modifyHTML(String, JTextComponent)}. Part of the 
-	 * HTML-supporting interface contract.
+	 * HTML-supporting interface contract.<p>
+	 * 
+	 * Be careful to update the font too, because this is taken as basis and
+	 * thus the end HTML scaling depends on it.
+	 *
 	 * 
 	 * @param component
 	 */

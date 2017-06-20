@@ -44,15 +44,20 @@ public class ComponentRegulator {
 
 	private float factor;
 
-	/**A set holding the hash-codes of the components with modified specific.*/
-	private HashSet<Integer> modified;
+	/**A set holding the hash-codes of the components with modified aspect.*/
+	private static HashSet<Integer> modified;
+	
+	/**The hash code of the modifed pool/set. */
+	private static int modifiedHash = 0;
+	/**The hash code of the pool right after an overall scaling.*/
+	private static int originalMomentHash;
 	
 	/**
 	 * This holds all relevant component classes (i.e. their superclasses up to 
 	 * JComponent) mapped to their respective scaler.
 	 * Default one is also included - last.
 	 */
-	private static LinkedHashMap<Class<?>, ComponentScaler> scalers = new LinkedHashMap<>();
+	private static LinkedHashMap<Class<?>, ComponentScaler> scalers = new LinkedHashMap<>(); //TODO better inferring
 	
 	/** 
 	 * Constructs a ComponentRegulator instance for upcoming component 
@@ -109,9 +114,13 @@ public class ComponentRegulator {
 		else
 			container = c;
 		
+		clearModifiedPool();
+		
 		registerScalers();
 		
-		scaleComponentsOf(container);		
+		scaleComponentsOf(container);
+		
+		originalMomentHash = modified.hashCode();
 	}
 	
 	/**
@@ -131,7 +140,7 @@ public class ComponentRegulator {
 		
 		//Prepare modification set
 		if (modified == null)
-			modified = new HashSet<Integer>();
+			modified = new HashSet<>();
 	}
 
 	/**
@@ -142,14 +151,42 @@ public class ComponentRegulator {
 	 */
 	public void scaleComponentsOf(Container container) {
 		for (Component c : container.getComponents()) {
-						
 			//delegate further extraction
-			if (c instanceof JComponent)
+			if (c instanceof JComponent) {
 				conduct((JComponent) c);
+				
+				//provide checking information
+				addScaledComponent((JComponent) c);
+			}
 			
 			//go further down recursively
 			if (c instanceof Container)
 				scaleComponentsOf((Container) c);
+		}
+	}
+	
+	/**
+	 *TODO
+	 */
+	public void scaleComponentsOf(Container container, boolean checkScaled, boolean markScaled) {
+		if (!checkScaled && markScaled)
+			scaleComponentsOf(container);
+		else {
+			for (Component c : container.getComponents()) {
+				//delegate further extraction
+				
+				boolean check = checkScaled ? !isScaled((JComponent) c): true;
+				if (c instanceof JComponent && check) {
+					conduct((JComponent) c);
+					
+					if (markScaled)
+						addScaledComponent((JComponent) c);
+				}
+
+				//go further down recursively
+				if (c instanceof Container)
+					scaleComponentsOf((Container) c);
+			}
 		}
 	}
 
@@ -167,9 +204,6 @@ public class ComponentRegulator {
 				scaler.coscaleFont(component);
 				scaler.coscaleInsets(component);
 				scaler.coscaleIcon(component);
-				
-				//provide checking information
-				addScaledComponent(component);
 				
 				break;
 			}
@@ -215,7 +249,7 @@ public class ComponentRegulator {
 
 	/**
 	 * Returns true given there is a match between component and therefore 
-	 * responsible scaler.Dynamic equivalent of a terraced 
+	 * responsible scaler. Dynamic equivalent of a terraced 
 	 * <code>instanceof</code> check. <p>
 	 * 
 	 * @param component the component being tested
@@ -245,7 +279,7 @@ public class ComponentRegulator {
 	 * 
 	 * @param component to be stored component
 	 */
-	private void addScaledComponent(JComponent component) {
+	public static void addScaledComponent(JComponent component) {
 		//Autoboxing comes into play
 		modified.add(component.hashCode());
 	}
@@ -269,6 +303,14 @@ public class ComponentRegulator {
 			
 		scalers.put(superclass, scaler);
 	}
+	
+	public void setFactor(float factor) {
+		this.factor = factor;
+	}
+	
+	public float getFactor() {
+		return factor;
+	}
 
 	/**
 	 * A rough measure to determine whether <code>component</code> had one of 
@@ -278,18 +320,52 @@ public class ComponentRegulator {
 	 * 
 	 * @return true if the component has been scaled
 	 */
-	public boolean isScaled(JComponent component) {
+	public static boolean isScaled(JComponent component) {
+		if (modified == null)
+			return false;
+		
 		return modified.contains(component.hashCode());
 	}
 	
 	/**
-	 * Reset the supporting data structures for reuse.
+	 * Reset the supporting data structure for reuse.
 	 */
-	public void clear() {
-		if (modified != null)
+	public void clearModifiedPool() {
+		if (modified != null) {
+			modifiedHash = modified.hashCode();
 			modified.clear();
+		}
+	}
 	
+	/**
+	 * Reset the supporting data structure for reuse.
+	 */
+	public void clearScalersMap() {
 		if (scalers != null)
 			scalers.clear();
-	}	
+	}
+	
+	/**
+	 * True, when the modified pool has been recently
+	 * cleared and re-created. Also tells us whether
+	 * a new scaling has been performed at runtime.<p>
+	 * 
+	 * Useful for reseting a DPI value that is being 
+	 * kept in the caller class.
+	 * 
+	 * @return true when the pool with scaled components
+	 * has been refilled. Once a pool has been refilled 
+	 * (i.e <b>true</b>), it changes its state effectively
+	 * to filled (i.e <b>false</b>). Not filled also returns
+	 * <b>false</b>.
+	 * 
+	 * @see Toolbox#wasScalingPerformed()
+	 */
+	public static boolean isModifiedPoolRefilled() {
+		if (modifiedHash != 0 && modifiedHash != originalMomentHash) {
+			modifiedHash = originalMomentHash;
+			return true;
+		} else 
+			return false;
+	}
 }

@@ -16,7 +16,7 @@ import java.io.IOException;
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 
-import org.vanted.scaling.DPIHelper;
+import org.vanted.scaling.Toolbox;
 import org.vanted.scaling.scaler.component.JTextComponentScaler;
 
 /**
@@ -51,10 +51,11 @@ public class OverviewOptionPane
 		
 		// add a JEditorPane, which contains an overview html page.
 		JEditorPane ep = new JEditorPane();
+		ep.setEditable(false);
 		
 		//scale the newly initialized component
-		JTextComponentScaler epScaler = new JTextComponentScaler(DPIHelper.getDPIScalingRatio());
-		epScaler.scaleComponents(ep);
+		JTextComponentScaler epScaler = new JTextComponentScaler(Toolbox.getDPIScalingRatio());
+		epScaler.scaleComponent(ep);
 		
 		try {
 			ep.setPage(sBundle.getRes("options.overview.html"));
@@ -62,7 +63,7 @@ public class OverviewOptionPane
 			ioe.printStackTrace();
 		}
 		ep.setBackground(new java.awt.Color(200,221,242)); //#C8DDF2
-		ep.setEditable(false);
+		
 		
 		JScrollPane scroller = new JScrollPane(ep);
 		scroller.setPreferredSize(new Dimension(400, 0));

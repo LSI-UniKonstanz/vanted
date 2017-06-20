@@ -78,7 +78,7 @@ class HTMLSupport {
 		
 		if ((tlow.contains("<small>") || tlow.contains("<big>")) && 
 				!tags.containsKey(component.hashCode())) {
-			
+
 			/*---Construct value---*/
 			String value = "";
 			
@@ -237,12 +237,6 @@ class HTMLSupport {
 	 */
 	static String[] parseTagValues(JComponent component) {
 		
-		/**
-		 * Some are externally modified, e.g. by a per component-deployed
-		 * ComponentScaler, and don't have their values stored here.
-		 * Those are later returned stripped off their tags, which is
-		 * of no importance, since their on-set scaler takes care.
-		 */
 		if (tags.get(component.hashCode()).isEmpty())
 			return new String[]{""};
 		

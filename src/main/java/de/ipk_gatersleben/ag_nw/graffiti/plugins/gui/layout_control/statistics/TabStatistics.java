@@ -15,7 +15,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.lang.reflect.InvocationTargetException;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -49,7 +50,6 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -88,6 +88,8 @@ import org.jfree.chart.axis.Axis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.CategoryItemRenderer;
+import org.vanted.scaling.Toolbox;
+import org.vanted.scaling.scaler.component.JTabbedPaneScaler;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
@@ -197,6 +199,8 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	private boolean showLegend = false;
 	private float outlineBorderWidth = 10f;
 	
+	private float oldRatio = 1f;
+	
 	/**
 	 * Initialize GUI
 	 */
@@ -235,8 +239,27 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		this.setLayout(new TableLayout(size));
 		this.add(stat, "1,1");
 		this.validate();
+		
+		//Scaling sync-up
+		Toolbox.addScalingListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if ((evt.getNewValue().equals(Toolbox.STATE_ON_SLIDER) 
+							|| evt.getNewValue().equals(Toolbox.STATE_RESCALED))
+						|| (evt.getOldValue().equals(Toolbox.STATE_ON_START)
+							&& evt.getNewValue().equals(Toolbox.STATE_IDLE)))
+					//if not part of the active component tree, then scale here
+					if (!MainFrame.getInstance().isSessionActive())
+						new JTabbedPaneScaler(Toolbox.getDPIScalingRatio() / oldRatio)
+							.coscaleFont(stat);
+
+				if (evt.getNewValue().equals(Toolbox.STATE_IDLE))
+					oldRatio = Toolbox.getDPIScalingRatio();
+				
+			}
+		});
 	}
-	
+
 	public JTabbedPane getTabbedPane() {
 		return stat;
 	}
@@ -1294,7 +1317,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 				}
 		}
 		
-		ArrayList params = new ArrayList();
+		ArrayList<Object> params = new ArrayList<>();
 		
 		params.add("Reference Dataset:");
 		final JComboBox jc = new JComboBox(conditions.toArray());

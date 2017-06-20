@@ -55,7 +55,7 @@ public class ScalingCoordinator {
 	public ScalingCoordinator(Container main) {
 		int value = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT,
 				DPIHelper.PREFERENCES_GET);
-		float factor = DPIHelper.processDPI(value);
+		float factor = DPIHelper.processEmulatedDPIValue(value);
 		
 		//scale all defaults
 		scaleDefaults(factor);
@@ -73,7 +73,7 @@ public class ScalingCoordinator {
 	public ScalingCoordinator(Container main, boolean components) {
 		int value = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT,
 				DPIHelper.PREFERENCES_GET);
-		float factor = DPIHelper.processDPI(value);
+		float factor = DPIHelper.processEmulatedDPIValue(value);
 		
 		//scale all defaults
 		scaleDefaults(factor);

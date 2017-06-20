@@ -35,6 +35,7 @@ import org.graffiti.selection.SelectionListener;
 public abstract class InspectorTab
 		extends JComponent implements ComponentListener {
 	
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger(InspectorTab.class);
 	
 	public static final int TAB_LEADING = Integer.MIN_VALUE;
@@ -78,7 +79,7 @@ public abstract class InspectorTab
 	public InspectorTab() {
 		addComponentListener(this);
 	}
-	
+
 	/**
 	 * Returns the EditPanel of this tab.
 	 * 

@@ -4,7 +4,6 @@ import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -73,16 +72,15 @@ public class DPIHelper {
 	}
 	
 	/**
-	 * Converts a slider value into DPI value to be passed on to the 
-	 * ScalingCoordinator, where a DPI ratio is applied. We firstly 
+	 * Converts a slider value into an Emulated DPI value. We firstly 
 	 * determine standard constants and we use in the process the 
 	 * default slider values. For different than default, one should 
 	 * initialize a ScalingSlider with such new values.
 	 * 
 	 * @param sValue sliderValue (get it from Preferences)
-	 * @return float DPI Factor
+	 * @return float DPI value
 	 */
-	public static float processDPI(int sValue) {
+	public static float processEmulatedDPIValue(int sValue) {
 		int standard = ScalingSlider.getStandard(); //also sets MIN_DPI for public use!
 		
 		//handling the artificial 0
@@ -92,27 +90,13 @@ public class DPIHelper {
 	}
 	
 	/**
-	 * This is the scaling factor that could be passed onto a ComponentScaler
-	 * to directly scale an exception component, for example, without going
-	 * through the whole component tree, when using the ScalingCoordinator.
-	 * If the user hasn't performed any scaling operations so far, nothing will
-	 * happen.
-	 * @return a ready to use scaling factor to use directly with scalers
-	 */
-	public static float getDPIScalingRatio() {
-		return Toolkit.getDefaultToolkit().getScreenResolution() /
-				DPIHelper.processDPI(DPIHelper.managePreferences(
-						DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET));
-	}
-	
-	/**
 	 * Test whether scaling is currently necessary.
 	 * 
 	 * @return true if Scaling could be skipped.
 	 */
 	public static boolean isAvoidable() {
 		int value = DPIHelper.managePreferences(VALUE_UNSET_INTERNAL, PREFERENCES_GET);
-		int standard = (int) DPIHelper.processDPI(value);
+		int standard = (int) DPIHelper.processEmulatedDPIValue(value);
 		
 		/**
 		 * DPIHelper.managePreferences() called with the above combination of 
@@ -207,7 +191,7 @@ public class DPIHelper {
 	 * @return a JPanel, filled with all needed contents
 	 */
 	private JPanel getContents(int value) {
-		int dpi = Math.round(DPIHelper.processDPI(value));
+		int dpi = Math.round(DPIHelper.processEmulatedDPIValue(value));
 		JPanel contents = new JPanel();
 		contents.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
@@ -250,7 +234,7 @@ public class DPIHelper {
 	 * @return true if set Slider value is in the defined usability boundaries 
 	 */
 	private static boolean isSafe(int value) {
-		int dpi = Math.round(DPIHelper.processDPI(value));
+		int dpi = Math.round(DPIHelper.processEmulatedDPIValue(value));
 		int limit = Math.round(ScalingSlider.getStandard() / 100f * 30);
 		
 		if (dpi > limit)

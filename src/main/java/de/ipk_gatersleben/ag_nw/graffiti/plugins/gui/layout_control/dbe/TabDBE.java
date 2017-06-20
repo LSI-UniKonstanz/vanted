@@ -27,7 +27,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import net.iharder.dnd.FileDrop;
@@ -224,7 +223,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 	/**
 	 * @param projects
 	 */
-	void loadProjectList(JComboBox projects) {
+	void loadProjectList(JComboBox<String> projects) {
 		
 		projects.removeAllItems();
 		projectList.clear();

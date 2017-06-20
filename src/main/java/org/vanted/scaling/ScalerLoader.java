@@ -6,6 +6,8 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.UIManager;
 
+import org.vanted.scaling.AutomatonBean.State;
+
 /**
  * A '<i>static</i>' Loader for scaling effects to take place. Use this to 
  * perform/confirm the scaling operations. Although, the implemented slider
@@ -63,28 +65,26 @@ public final class ScalerLoader {
 				return;
 			}
 			
-			/**
-			 * Mac OS X exclusive: Swap default Mac LAF with Metal, because there are scaling issues, since
-			 * some values are hard set and thus not changeable from LAF Defaults.
-			 */
-			//System.out.print(DPIHelper.handleMacLAF(true) ? "Set default VANTED LookAndFeel Metal.\n" : "");
-			
 			/** Dispatch DPIHelper. */
 			DPIHelper manager = new DPIHelper();
 			
-			/** This is a safeguard against incautiously set unsafe values.*/
+			/** This is a safeguard against incautiously set unsafe values. */
 			manager.displayLifesaver();
 			
-			/** Load Preferences Pane.*/
+			/** Load Preferences Pane. */
 			DPIHelper.loadPane();
 			/**
-			 * Straightaway scale all LAF Defaults, since we don't
+			 * Straight-away scale all LAF Defaults, since we don't
 			 * know, if main is initialized at this point.
 			 */
 			doScaling(false);
 			
 			/**
-			 * We use another Thread to avoid blocking EDT/Main Thread and then
+			 * Fire a property change: the onStart scaling is underway. */
+			AutomatonBean.setState(State.ON_START);
+			
+			/**
+			 * We use another thread to avoid blocking EDT/Main Thread and then
 			 * wait on it. Would be a whale of time..
 			 */
 			new Thread(new Runnable() {
@@ -113,6 +113,10 @@ public final class ScalerLoader {
 					 * returns, because the main container is still null.
 					 */
 					doSyncExternalScaling(iContainer);
+					
+					/**
+					 * we have finished with the scaling: go idle. */
+					AutomatonBean.setState(State.IDLE);
 				}
 			})
 			.start();
@@ -127,6 +131,9 @@ public final class ScalerLoader {
 	 * @param parent <i><b>(one or none)</b>:</i> component to start from
 	 */
 	public static void doScaling(boolean components, Container... parent) {
+		//Set the scaling state property with its default value - 'unscaled'
+		new AutomatonBean();
+		
 		//GTK-related L&Fs not supported, because by default not re-scalable
 		if (UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK"))
 			return;
@@ -202,7 +209,7 @@ public final class ScalerLoader {
 		
 		int value = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT,
 				DPIHelper.PREFERENCES_GET);
-		float factor = DPIHelper.processDPI(value);
+		float factor = DPIHelper.processEmulatedDPIValue(value);
 		
 		ScalingCoordinator plainCoordinator = new ScalingCoordinator();
 		//perform JComponents scaling

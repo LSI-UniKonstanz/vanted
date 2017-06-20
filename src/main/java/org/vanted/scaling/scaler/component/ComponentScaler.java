@@ -37,6 +37,21 @@ public class ComponentScaler extends BasicScaler {
 	}
 	
 	/**
+	 * A method to be called when this {@linkplain ComponentScaler} has been
+	 * dispatched to some immediate JComponent to be scaled. Reason, initialization
+	 * of new components with overwritten LAF Defaults, post-scaling. Attach a
+	 * scaler and call this method after done with initialization. For more
+	 * specific JComponents, see the direct known subclasses.
+	 *  
+	 * @param immediateComponent to be scaled
+	 */
+	public void scaleComponent(JComponent immediateComponent) {
+		coscaleFont(immediateComponent);
+		coscaleInsets(immediateComponent);
+		//icons left to respective sub-types
+	}
+	
+	/**
 	 * Scales all components that have their font not modified by the
 	 * LAF-Scalers for one reason or another up to this point.
 	 * 

@@ -30,7 +30,7 @@ public class JOptionPaneScaler extends ComponentScaler {
 	 *  
 	 * @param immediateComponent to be scaled
 	 */
-	public void scaleComponents(JComponent immediateComponent) {
+	public void scaleComponent(JComponent immediateComponent) {
 		coscaleFont(immediateComponent);
 		coscaleInsets(immediateComponent);
 		this.coscaleIcon(immediateComponent);
@@ -50,4 +50,6 @@ public class JOptionPaneScaler extends ComponentScaler {
 			
 		pane.validate();
 	}
+	
+	//TODO HTML scaling
 }

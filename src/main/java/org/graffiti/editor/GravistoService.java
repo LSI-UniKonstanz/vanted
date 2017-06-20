@@ -71,8 +71,7 @@ import org.graffiti.plugin.view.View;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.EditorSession;
 import org.graffiti.session.Session;
-
-import org.vanted.scaling.DPIHelper;
+import org.vanted.scaling.Toolbox;
 import org.vanted.scaling.scaler.component.JLabelScaler;
 
 import scenario.ScenarioService;
@@ -901,7 +900,7 @@ public class GravistoService implements HelperClass {
 			public void mouseReleased(MouseEvent e) {
 			}
 		});
-		final float factor = DPIHelper.getDPIScalingRatio();
+		final float factor = Toolbox.getDPIScalingRatio();
 		Timer t = new Timer(1000, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				memLabel.setText(getCurrentMemoryInfo(shortInfo));

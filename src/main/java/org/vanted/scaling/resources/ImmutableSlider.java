@@ -16,7 +16,7 @@ import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.basic.BasicSliderUI;
 
-import org.vanted.scaling.DPIHelper;
+import org.vanted.scaling.Toolbox;
 
 /**
  * A JSlider that remains unchanged regardless of the scaling. To change, 
@@ -108,7 +108,7 @@ public class ImmutableSlider extends JSlider {
 	 */
 	protected static class PlainImmutableSliderUI extends BasicSliderUI {
 
-		protected final float factor = DPIHelper.getDPIScalingRatio();
+		protected final float factor = Toolbox.getDPIScalingRatio();
 		
 		private Dimension hsize;
 		private Dimension vsize;
