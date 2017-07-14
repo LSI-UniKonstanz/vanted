@@ -29,6 +29,9 @@ public class Toolbox {
 	public static final String STATE_RESCALED = "RESCALED";
 	public static final String STATE_IDLE = "IDLE";
 	
+	private static final int prefsSliderValue = DPIHelper.managePreferences(
+			DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET);
+	
 	public Toolbox() {}
 	
 	/**
@@ -132,10 +135,17 @@ public class Toolbox {
 	 * happen.
 	 * @return a ready to use scaling factor to use directly with scalers
 	 */
-	public static float getDPIScalingRatio() {		
+	public static float getDPIScalingRatio() {
+		try {
+			if (ScalingSlider.getSliderValue() > 0)
+				return Toolkit.getDefaultToolkit().getScreenResolution() 
+						/ DPIHelper.processEmulatedDPIValue(ScalingSlider.getSliderValue());
+		} catch (NullPointerException e) {
+			//ok, go to next return
+		}
+		
 		return Toolkit.getDefaultToolkit().getScreenResolution() 
-				/ DPIHelper.processEmulatedDPIValue(DPIHelper.managePreferences(
-						DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET));
+				/ DPIHelper.processEmulatedDPIValue(prefsSliderValue);
 	
 	}
 	
@@ -180,7 +190,7 @@ public class Toolbox {
 			else
 				new ComponentRegulator(factor)
 					.scaleComponentsOf(component);
-		
+
 		//scale top-most component
 		if (check && Toolbox.isComponentScaled(component))
 			return;
@@ -200,7 +210,7 @@ public class Toolbox {
 		else if (component instanceof JTabbedPane)
 			new JTabbedPaneScaler(factor)
 			.scaleComponent(component);
-		else 
+		else
 			new ComponentScaler(factor)
 			.scaleComponent(component);
 		

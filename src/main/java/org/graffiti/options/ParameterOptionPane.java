@@ -18,7 +18,7 @@ import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.scaling.DPIHelper;
-import org.vanted.scaling.HighDPISupport;
+import org.vanted.scaling.vanted.HighDPISupport;
 
 public class ParameterOptionPane extends AbstractOptionPane {
 

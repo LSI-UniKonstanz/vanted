@@ -25,6 +25,7 @@ import javax.swing.UIManager;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.AbstractOptionPane;
 import org.vanted.scaling.resources.ImmutableCheckBox;
+import org.vanted.scaling.vanted.HighDPISupport;
 
 //TODO remove PreferenceManager dependencies
 

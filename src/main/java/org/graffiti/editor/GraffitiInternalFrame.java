@@ -13,6 +13,7 @@ import java.awt.ContainerOrderFocusTraversalPolicy;
 import java.awt.Dimension;
 import java.awt.event.ContainerEvent;
 
+import javax.swing.Icon;
 import javax.swing.JInternalFrame;
 import javax.swing.border.Border;
 import javax.swing.event.InternalFrameEvent;
@@ -52,6 +53,8 @@ public class GraffitiInternalFrame
 	
 	Border b = null;
 	
+	private static final Icon frameIcon = GravistoService.loadIcon(GraffitiInternalFrame.class, "images/frame_logo.png");
+	
 	// ~ Constructors ===========================================================
 	
 	/**
@@ -63,6 +66,8 @@ public class GraffitiInternalFrame
 		this.setClosable(true);
 		this.setResizable(true);
 		this.setIconifiable(true);
+		
+		this.setFrameIcon(frameIcon);
 		
 		// this.setFocusable(false);
 		setFocusTraversalPolicyProvider(true);

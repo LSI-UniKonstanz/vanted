@@ -178,7 +178,7 @@ public class GUIhelper {
 				if (target_dir_null_ask_user == null) {
 					File file = OpenFileDialogService
 										.getDirectoryFromUser("Select folder");
-					if (file == null)
+					if (file == null || file.getPath().equals("Cancel"))
 						return;
 					else
 						opt_local_folder = file.getAbsolutePath();

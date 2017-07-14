@@ -74,7 +74,7 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 		}
 		final File selPath = OpenFileDialogService
 							.getDirectoryFromUser("Select Output-Folder");
-		if (selPath != null && selPath.isDirectory()) {
+		if (selPath != null && !selPath.getPath().equals("Cancel") && selPath.isDirectory()) {
 			ArrayList<Object> paramsA = new ArrayList<Object>();
 			ArrayList<Object> paramsB = new ArrayList<Object>();
 			ArrayList<Object> paramsC = new ArrayList<Object>();
@@ -209,8 +209,9 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 									}, status);
 			}
 		} else {
-			MainFrame.showMessageDialog("Please select a valid output folder!",
-								"Error");
+			if (!selPath.getPath().equals("Cancel"))
+				MainFrame.showMessageDialog("Please select a valid output folder!",
+									"Error");
 		}
 	}
 	

@@ -1,4 +1,4 @@
-package org.vanted.scaling;
+package org.vanted.scaling.vanted;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -9,13 +9,10 @@ import java.util.Map.Entry;
 import java.util.prefs.Preferences;
 
 import javax.swing.JLabel;
-import javax.swing.JSlider;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.ReleaseInfo;
 import org.graffiti.editor.MainFrame;
@@ -25,10 +22,12 @@ import org.graffiti.plugin.parameter.JComponentParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.VantedPreferences;
+import org.vanted.scaling.DPIHelper;
+import org.vanted.scaling.ScalerLoader;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeComponent;
 
-public class HighDPISupport implements PreferencesInterface, ChangeListener {
+public class HighDPISupport implements PreferencesInterface {
 	
 	private static final boolean IS_MAC = System.getProperty("os.name")
 			.toLowerCase().contains("mac");
@@ -52,16 +51,13 @@ public class HighDPISupport implements PreferencesInterface, ChangeListener {
 	private final LookAndFeel quaqua = ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel();
 	
 	private HashMap<String, String> lafmap = new HashMap<>();
-	
 	private Preferences general;
-	
 	private static String activeLaf;
-	
-	private static int oldValue;
+//	private static boolean startup = true;
 	
 	public HighDPISupport() {
 		general = PreferenceManager.getPreferenceForClass(VantedPreferences.class);
-		prepareLafMap();
+		prepareLafMap();			
 	}
 
 	@Override
@@ -85,18 +81,20 @@ public class HighDPISupport implements PreferencesInterface, ChangeListener {
 		if (IS_MAC || DEV)
 			params.add(getMacLaf());
 		
-		//Add scaling of current active graph elements through zooming.
-		ScalingSlider.registerChangeListeners(new ChangeListener[] {this});
-
 		return params;
 	}
 
 	@Override
-	public void updatePreferences(Preferences preferences) {	
-		if (this.getClassInstance(ZoomFitChangeComponent.class) == null)
-			oldValue = DPIHelper.managePreferences(
-					DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET);
-			
+	public void updatePreferences(Preferences preferences) {
+		if (getClassInstance(ZoomFitChangeComponent.class) == null) {
+			GraphScaler.setOldValueZooming(DPIHelper.managePreferences(
+					DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET));
+			//load the zoomer once on initial update
+			new GraphScaler();
+		}
+		
+		GraphScaler.readdChangeListener();
+		
 		/**
 		 * Mac LAF update, if necessary. */
 		String laf = preferences.get(PREFERENCES_MAC_LAF, null);
@@ -128,36 +126,13 @@ public class HighDPISupport implements PreferencesInterface, ChangeListener {
 		return "<html>High DPI Support<sup>BETA</sup></html>";
 	}
 	
-	private void processZooming() {
-		int newValue = ScalingSlider.getSliderValue();
-		
-		if (newValue == oldValue)
-			return;  //no scaling change!
-		
-		int diff = oldValue - newValue;
-		if (diff > 0) {  //lower DPI, bigger size
-			while (diff >= 0) {
-				ZoomFitChangeComponent.zoomIn();
-				diff--;
-			}
-		} else {  //higher DPI, smaller size
-			diff = Math.abs(diff);
-			while (diff >= 0) {
-				ZoomFitChangeComponent.zoomOut();
-				diff--;
-			}
-		}
-		
-		oldValue= newValue;
-	}
-	
 	/**
 	 * Through reflection we get an instance of the specified class, given
 	 * there is such static field defined.
 	 * @param clazz the Class to extract the instance from
 	 * @return a clazz instance
 	 */
-	private Object getClassInstance(Class <?> clazz) {
+	public static Object getClassInstance(Class <?> clazz) {
 		Object instance = null;
 		try {
 			Field f = clazz.getDeclaredField("instance");
@@ -299,9 +274,16 @@ public class HighDPISupport implements PreferencesInterface, ChangeListener {
 		return newName;
 	}
 
-	@Override
-	public void stateChanged(ChangeEvent e) {
-		if (!((JSlider) e.getSource()).getValueIsAdjusting())
-			processZooming();	
-	}
+//	
+//	public static void loadWhitelistedContainers() {
+//		if (!startup) //ensures one-time only functionality
+//			return;
+//		
+//		startup = false;
+//		Collection<Class<? extends Container>> parents = new ArrayList<>();
+//
+//		//add here
+//		
+//		DPIHelper.setWhitelisted(parents);
+//	}
 }

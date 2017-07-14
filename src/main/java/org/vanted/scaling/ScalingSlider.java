@@ -154,6 +154,10 @@ public class ScalingSlider extends ImmutableSlider
 			listeners = new LinkedList<ChangeListener>(Arrays.asList(changeListeners));
 	}
 	
+	public static List<ChangeListener> getRegisteredChangeListeners() {
+		return listeners;
+	}
+	
 	private void addChangeListeners() {
 		if (listeners != null) {
 			for (int i = 0; i < listeners.size(); i++)

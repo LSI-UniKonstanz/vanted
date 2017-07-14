@@ -7,6 +7,7 @@ import java.util.concurrent.Semaphore;
 import javax.swing.UIManager;
 
 import org.vanted.scaling.AutomatonBean.State;
+import org.vanted.scaling.vanted.GraphScaler;
 
 /**
  * A '<i>static</i>' Loader for scaling effects to take place. Use this to 
@@ -61,6 +62,7 @@ public final class ScalerLoader {
 			/** Check, if scaling is necessary at all.
 			 *  But still load the pane. */
 			if (DPIHelper.isAvoidable()) {
+				GraphScaler.registerSessionListenerPostponed();
 				DPIHelper.loadPane();
 				return;
 			}
@@ -114,9 +116,7 @@ public final class ScalerLoader {
 					 */
 					doSyncExternalScaling(iContainer);
 					
-					/**
-					 * we have finished with the scaling: go idle. */
-					AutomatonBean.setState(State.IDLE);
+					GraphScaler.registerSessionListener();
 				}
 			})
 			.start();
@@ -157,6 +157,12 @@ public final class ScalerLoader {
 		if (START_UP) {
 			doScaling(true, c);
 			START_UP = false;
+			/**
+			 * we have finished with the scaling: go idle. */
+			AutomatonBean.setState(State.IDLE);
+			
+			//pass on the "relay" to other blocked threads
+			signal();
 		}
 	}
 	
@@ -178,6 +184,13 @@ public final class ScalerLoader {
 						initialized.acquire();
 						doScaling(true, c);
 						SYNC_UP = false;
+						
+						/**
+						 * we have finished with the scaling: go idle. */
+						AutomatonBean.setState(State.IDLE);
+						
+						//pass on the "relay" to other blocked threads
+						signal();
 					} catch (InterruptedException e) {
 						System.err.println("Interrupted during DOWN on semaphore!");
 						e.printStackTrace();
@@ -217,6 +230,13 @@ public final class ScalerLoader {
 		
 		//update GUI
 		ScalingCoordinator.refreshGUI(c);
+		
+		/**
+		 * we have finished with the scaling: go idle. */
+		AutomatonBean.setState(State.IDLE);
+		
+		//pass on the "relay" to other blocked threads
+		signal();
 	}
 	
 	/**
@@ -224,6 +244,10 @@ public final class ScalerLoader {
 	 */
 	public static void signal() {
 		initialized.release();
+	}
+	
+	public static void await() throws InterruptedException {
+		initialized.acquire();
 	}
 	
 	/**
