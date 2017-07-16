@@ -36,6 +36,8 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.selection.Selection;
+import org.vanted.scaling.Toolbox;
+import org.vanted.scaling.scaler.component.JLabelScaler;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.MyPluginTreeNode;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.PreferencesDialog;
@@ -46,6 +48,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.Preferences
 public class AlgorithmPanelFactory extends JPanel
 		implements TreeSelectionListener {
 	
+	private static final long serialVersionUID = 6550915952424474575L;
+
 	JTree myTree;
 	
 	DefaultMutableTreeNode rootNode;
@@ -163,6 +167,12 @@ public class AlgorithmPanelFactory extends JPanel
 		JLabel info = new JLabel(desc);
 		info.setBorder(BorderFactory.createLoweredBevelBorder());
 		info.setOpaque(false);
+		
+		//scaling
+		float factor = Toolbox.getDPIScalingRatio();
+		if (factor != 1f)
+			new JLabelScaler(factor).coscaleHTML(info);
+		
 		if (desc != null && desc.length() > 0)
 			progressAndStatus.add(info, "1,3");
 		EditComponentManager editComponentManager = MainFrame.getInstance().getEditComponentManager();

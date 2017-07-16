@@ -116,6 +116,9 @@ public final class ScalerLoader {
 					 */
 					doSyncExternalScaling(iContainer);
 					
+					/*Set Window decorations to LAF's.*/
+					DPIHelper.adjustWindowDecoratations();
+					
 					GraphScaler.registerSessionListener();
 				}
 			})

@@ -542,7 +542,12 @@ public class GravistoService implements HelperClass {
 		if (!(algorithm instanceof AlgorithmWithComponentDescription) && algorithm.getDescription() != null
 				&& algorithm.getDescription().trim().length() > 0 && (parameters == null || parameters.length <= 0)
 				&& SwingUtilities.isEventDispatchThread()) {
-			int res = JOptionPane.showConfirmDialog(MainFrame.getInstance(), algorithm.getDescription(),
+
+			//scaling
+			String desc = scaleDescription(algorithm.getDescription());
+			desc = (desc == null) ? algorithm.getDescription() : desc;
+			
+			int res = JOptionPane.showConfirmDialog(MainFrame.getInstance(), desc,
 					StringManipulationTools.removeHTMLtags(algorithm.getName()), JOptionPane.OK_CANCEL_OPTION,
 					JOptionPane.PLAIN_MESSAGE, null);
 			if (res == JOptionPane.CANCEL_OPTION) {
@@ -574,6 +579,21 @@ public class GravistoService implements HelperClass {
 			}
 			
 		}
+	}
+	
+	private static JLabel holder = new JLabel();
+	/**
+	 * Scales the HTML, if such, description of the respective algorithm.
+	 */
+	private static String scaleDescription(String desc) {
+		float factor = Toolbox.getDPIScalingRatio();
+		if (factor != 1f) {
+			holder.setText(desc);
+			new JLabelScaler(factor).coscaleHTML(holder);
+			return holder.getText();
+		}
+
+		return null;
 	}
 	
 	private boolean doThreadSafe(final Algorithm algorithm, final Selection selection,

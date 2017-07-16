@@ -175,8 +175,11 @@ public class ComponentRegulator {
 			for (Component c : container.getComponents()) {
 				//delegate further extraction
 				
+				if (!(c instanceof JComponent))
+					continue;
+				
 				boolean check = checkScaled ? !isScaled((JComponent) c): true;
-				if (c instanceof JComponent && check) {
+				if (check) {
 					conduct((JComponent) c);
 					
 					if (markScaled)
@@ -207,9 +210,9 @@ public class ComponentRegulator {
 				
 				break;
 			}
-		}		
+		}
 	}
-	
+
 	/**
 	 * Similar to {@linkplain ComponentRegulator#conduct(JComponent)}, but for
 	 * HTML scaling. It crawls the list of scalers and matches the parameter to 

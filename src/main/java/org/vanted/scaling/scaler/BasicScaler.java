@@ -32,7 +32,7 @@ import org.vanted.scaling.resources.ScaledIcon;
  *
  */
 public class BasicScaler implements Scaler {
-	protected final float scaleFactor;
+	protected float scaleFactor;
 	protected final UIDefaults uiDefaults = UIManager.getLookAndFeelDefaults();
 	
 	private static final String[] LOWER_SUFFIXES_INTEGERS = 
@@ -42,6 +42,24 @@ public class BasicScaler implements Scaler {
 	private static final int MIN_ICON_SIZE = 1;
 	
 	public BasicScaler(float scaleFactor) {
+		this.scaleFactor = scaleFactor;
+	}
+	
+	/**
+	 * The current scaling factor.
+	 * 
+	 * @return the scaleFactor
+	 */
+	public float getScaleFactor() {
+		return scaleFactor;
+	}
+
+	/**
+	 * Set new scaling factor.
+	 * 
+	 * @param scaleFactor the scaleFactor to set
+	 */
+	public void setScaleFactor(float scaleFactor) {
 		this.scaleFactor = scaleFactor;
 	}
 

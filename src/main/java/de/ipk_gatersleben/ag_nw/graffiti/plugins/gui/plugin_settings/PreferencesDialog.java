@@ -62,6 +62,8 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.algorithm.ThreadSafeAlgorithm;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.selection.Selection;
+import org.vanted.scaling.Toolbox;
+import org.vanted.scaling.scaler.component.JLabelScaler;
 
 import scenario.ScenarioService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.BSHscriptMenuEntry;
@@ -440,6 +442,12 @@ public class PreferencesDialog extends JDialog
 		JLabel info = new JLabel(desc);
 		info.setBorder(BorderFactory.createLoweredBevelBorder());
 		info.setOpaque(false);
+		
+		//scaling
+		float factor = Toolbox.getDPIScalingRatio();
+		if (factor != 1f)
+			new JLabelScaler(factor).coscaleHTML(info);
+		
 		if (desc != null && desc.length() > 0)
 			progressAndStatus.add(info, "1,3");
 		EditComponentManager editComponentManager = MainFrame.getInstance().getEditComponentManager();

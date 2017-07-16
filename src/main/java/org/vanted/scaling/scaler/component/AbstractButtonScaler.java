@@ -46,8 +46,11 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	public void coscaleIcon(JComponent component) {
 		if (component instanceof JMenu) {
 			for (Component item: ((JMenu) component).getMenuComponents())
-				if (item instanceof AbstractButton)
+				if (item instanceof AbstractButton) {
+					if (item instanceof JMenu)
+						coscaleIcon((JComponent) item);
 					modifyIcon((AbstractButton) item);
+				}
 		} else
 			modifyIcon((AbstractButton) component);
 	}

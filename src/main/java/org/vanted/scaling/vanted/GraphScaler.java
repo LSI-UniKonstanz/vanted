@@ -69,9 +69,14 @@ public class GraphScaler implements SessionListener, ChangeListener {
 					e.printStackTrace();
 				}
 				
-				handleZooming(0);	
-				
-				scaleGraphFrameIcon(s);
+				try {
+					handleZooming(0);
+					scaleGraphFrameIcon(s);
+				} catch (NullPointerException e) {
+					//have loaded a pretty big graph & 
+					//tried to zoom to early - go again.
+					this.run();
+				}
 			}
 		}).start();
 
@@ -138,12 +143,16 @@ public class GraphScaler implements SessionListener, ChangeListener {
 			@Override
 			public void run() {
 				try {
-					Thread.sleep(3000);
+					Thread.sleep(500);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				registerSessionListener();
 				
+				try {
+					registerSessionListener();
+				} catch (NullPointerException e) {
+					this.run();
+				}
 			}
 		}).start();
 	}

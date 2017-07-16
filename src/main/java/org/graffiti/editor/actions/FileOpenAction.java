@@ -105,7 +105,7 @@ public class FileOpenAction extends GraffitiAction {
 		 */
 		String prefExtension = PreferenceManager.getPreferenceForClass(VantedPreferences.class).get(VantedPreferences.PREFERENCE_STANDARD_SAVE_FILEFORMAT, "");
 		for (FileFilter filterFilter : fc.getChoosableFileFilters()) {
-			System.out.println(filterFilter.toString());
+			//System.out.println(filterFilter.toString());
 			if (filterFilter instanceof GenericFileFilter && (((GenericFileFilter) filterFilter).getExtension()).endsWith(prefExtension)) {
 				fc.setFileFilter(filterFilter);
 				break;

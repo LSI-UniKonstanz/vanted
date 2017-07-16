@@ -42,6 +42,8 @@ import javax.swing.event.ListSelectionListener;
 import org.FolderPanel;
 import org.graffiti.core.ImageBundle;
 import org.graffiti.core.StringBundle;
+import org.vanted.scaling.Toolbox;
+import org.vanted.scaling.scaler.component.JLabelScaler;
 
 /**
  * DOCUMENT ME!
@@ -114,6 +116,7 @@ public class ViewTypeChooser
 		cancel = new JButton(sBundle.getString("common.cancel"));
 		
 		description = new JLabel(sBundle.getString("viewTypeChooser.desc"));
+		new JLabelScaler(Toolbox.getDPIScalingRatio()).coscaleHTML(description);
 		
 		JPanel buttonsPanel = new JPanel();
 		

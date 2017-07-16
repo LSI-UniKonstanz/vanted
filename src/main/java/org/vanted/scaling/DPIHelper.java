@@ -16,6 +16,7 @@ import java.util.prefs.Preferences;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -204,7 +205,7 @@ public class DPIHelper {
 				". This could render interaction impossible.<br><br>"
 				+ "Would you like to reset it?</html>"), c);
 		
-		final JButton toDisable = new JButton("Disable");
+		final JButton toDisable = new JButton("Disable Lifesaver");
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.ipady = 0;
 		c.weighty = 1.0;
@@ -311,6 +312,16 @@ public class DPIHelper {
 	 */
 	public static void loadPane() {
 		PreferenceManager.getInstance().addPreferencingClass(HighDPISupport.class);
+	}
+	
+	/**
+	 * By transferring all Window decorations from OS to LookAndFeel, those
+	 * could be now scaled too. Should be called before initialization of any
+	 * JFrames or JDialogs, since it affects only subsequently created ones.
+	 */
+	public static void adjustWindowDecoratations() {
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		JDialog.setDefaultLookAndFeelDecorated(true);
 	}
 	
 	/**
