@@ -145,6 +145,7 @@ public class FolderPanel extends JComponent {
 		rowPanel = new JPanel();
 		setBorder(BorderFactory.createLineBorder(frameColor, frameWidth));
 		titleLabel = new JLabel(title);
+		new JLabelScaler(Toolbox.getDPIScalingRatio()).coscaleHTML(titleLabel);
 		titleLabel.setOpaque(true);
 		titleLabel.setBackground(frameColor);
 		titleLabel.setForeground(headingColor);

@@ -273,17 +273,4 @@ public class HighDPISupport implements PreferencesInterface {
 		
 		return newName;
 	}
-
-//	
-//	public static void loadWhitelistedContainers() {
-//		if (!startup) //ensures one-time only functionality
-//			return;
-//		
-//		startup = false;
-//		Collection<Class<? extends Container>> parents = new ArrayList<>();
-//
-//		//add here
-//		
-//		DPIHelper.setWhitelisted(parents);
-//	}
 }

@@ -2,24 +2,28 @@ package org.vanted.scaling.scaler.component;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import javax.swing.JComponent;
 
 import org.vanted.scaling.ComponentRegulator;
 
 /**
- * More precisely handles <small> and <big> HTML tags. These are problematic,
- * because they do not respect a font change on its own. So we replace them
- * and achieve a similar look using &#60;font size="-1"> with accordingly 
- * processed value. With the help of a {@link TextListener} we are able to
- * also detect dynamic changes.
- * 
- * @param component containing HTML-styled tags to scale
+ * It handles several HTML tags, see {@linkplain AwareTags#ALL} for detailed
+ * list. These are problematic, because they do not respect a font change on its
+ * own and are replaced by a calculated font size, e.g. &#60;font size="-1">.
+ * With the help of a {@link TextListener} we dynamic changes are tracked.
  * 
  * @see {@link ComponentRegulator#scaleHTML(JComponent)}
  * 
@@ -46,13 +50,8 @@ class HTMLSupport {
 	 * @return true if styled with font-modifying tags
 	 */
 	static boolean isHTMLStyled(String text) {
-		//text, lowered
-		String tlow = (text == null) ? null : text.toLowerCase(Locale.ROOT);
-		String fontsize = "<font size=\"";
-		
-		if (text != null && tlow.contains("<html>") && 
-				(tlow.contains("<small>") || tlow.contains("<big>") ||
-						tlow.contains(fontsize)))
+		if (text != null && text.toLowerCase(Locale.ROOT).contains("<html>") &&
+				AwareTags.ALL.isTagged(text))
 			return true;
 		
 		return false;
@@ -60,10 +59,10 @@ class HTMLSupport {
 
 	/**
 	 * Stores all used tags of the form &#60;small> or &#big>, while 
-	 * preserving the order. The data structures that holds them is
-	 * the field {@link HTMLSupport#tags}. As key is used the hash-code
-	 * of the given component, thus identifying it uniquely during 
-	 * each working session.<p>
+	 * preserving the order. Supporting data structure: {@link HTMLSupport#tags}.
+	 * As key is used the hash-code of the given component, thus identifying it
+	 * uniquely during a working session. It also supports more than one HTML
+	 * text per component.<p>
 	 * 
 	 * Example:<br><br>
 	 * &#60;html>&#60;big>3&#60;small>&#60;br>&nbsp;nodes<br>
@@ -72,36 +71,35 @@ class HTMLSupport {
 	 * @param component used to get the key
 	 * @param text used to get the tags
 	 */
-	static void storeTags(JComponent component, String text) {
-		//text, lowered
-		String tlow = (text == null) ? null : text.toLowerCase(Locale.ROOT);
-		
-		if ((tlow.contains("<small>") || tlow.contains("<big>")) && 
+	static void storeTags(JComponent component, String text) {		
+		if (AwareTags.SPECIAL.isTagged(text) && 
 				!tags.containsKey(component.hashCode())) {
 
 			/*---Construct value---*/
 			String value = "";
-			
-			while (text.length() > 0) {
-				//test for 'small' before 'big' or 'small' all alone
-				if (text.indexOf("<small>") < text.indexOf("<big>") || 
-						(text.contains("<small>") && !text.contains("<big>"))) {
-					value += "<small>";
-					text = text.substring(text.indexOf("<small>"));
-					text = text.replaceFirst("<small>", "");
+
+			Map<String, Integer> occurrenceIndexer = 
+					AwareTags.SPECIAL.putAllValues(new HashMap<String, Integer>(), -1);
+			boolean refresh = true;
+			text = text.toLowerCase(Locale.ROOT);
+			while (refresh) {
+				refresh = false;
+				for (String tag : occurrenceIndexer.keySet()) {
+					int i = text.indexOf(tag);
+					if (i < 0)
+						occurrenceIndexer.put(tag, Integer.MIN_VALUE);
+					else
+						occurrenceIndexer.put(tag, i);
+					
+					
+					refresh = (refresh == true) ? true : i != text.lastIndexOf(tag);
 				}
 				
-				//analogously
-				if (text.indexOf("<big>") < text.indexOf("<small>") || 
-						(text.contains("<big>") && !text.contains("<small>"))) {
-					value += "<big>";
-					text = text.substring(text.indexOf("<big>"));
-					text = text.replaceFirst("<big>", "");
-				}
+				String tag = getLeastValuedKey(occurrenceIndexer);
+				value += tag;
 				
-				//stopping criterion
-				if (!text.contains("<small>") && !text.contains("<big>"))
-					break;
+				text = text.substring(text.indexOf(tag));
+				text = text.replaceFirst(tag, "");
 			}
 			
 			/*---Insert kv-pair---*/
@@ -113,12 +111,26 @@ class HTMLSupport {
 		}
 	}
 	
+	private static String getLeastValuedKey(Map<String, Integer> map) {
+		String first = "";
+		int min = Integer.MAX_VALUE;
+		for (Entry<String, Integer> e : map.entrySet()) {
+			int v = e.getValue();
+			if (v >= 0 && v < min) {
+				min = v;
+				first = e.getKey();
+			}
+		}
+		
+		return first;
+			
+	}
+	
 	/**
-	 * This method replaces the tags <small> and <big> with a calculated
+	 * This method replaces the tags, or adds right after them, with a calculated
 	 * value according the current font size. If the font size is default,
 	 * no replacement takes place, even the opposite, if previously replaced,
-	 * they are now reset. This arises from the fact that the above mentioned 
-	 * tags do not respect a font change.<p>
+	 * they are now reset to reflect original look. <p>
 	 * 
 	 * Example(size is 6px):<br><br>
 	 * <code>&#60;html>&#60;small>A footnote</code><br>
@@ -133,71 +145,97 @@ class HTMLSupport {
 	 *  size tags
 	 */
 	static String parseHTMLtoFontSize(String text, JComponent component) {
-		float _DEFAULT_SIZE = 12f;
-		int font = component.getFont().getSize();
-		float ratio = font / _DEFAULT_SIZE;
-
-		String sign = "";
-		int factor = 0;
-		
-		//lower emulated DPI => bigger font size 
-		if (ratio > 1) {
-			sign = "+";
-			float f = font;
-			while (f > _DEFAULT_SIZE) {
-				f = f / 2.0f;
-				factor += 1;
-			}
-		//higher emulated DPI => smaller font size
-		} else if (ratio < 1) {
-			sign = "-";
-			float f = font;
-			
-			//normalize the factor (no side effects)
-			factor = 1;
-			while (f < _DEFAULT_SIZE) {
-				f += 2;
-				factor += 1;
-			}
-		//no emulated DPI => no change
-		} else
-			factor = -1;
-		
+		int factor = HTMLSupport.getFontFactor(component, 12f);
 		String pattern = "<FONT SIZE=\"";
-			
-		if (factor == -1) {
+		
+		//Restore initial tagging
+		if (factor == Integer.MAX_VALUE) {
 			if (text.indexOf(pattern) == -1)
 				return text;
 			else {
 				String[] parts = text.split(pattern);
-				String[] initialTags = parseTagValues(component);
-				for (int i = 0, j = 0; i < parts.length - 1; i += 2, j++) {
-					text = parts[i] + (j < initialTags.length ? initialTags[j]
-											: "");
+				String[] initialTags = restoreTags(component);
+				text = parts[0];
+				for (int i = 0, j = 0; i < parts.length - 1; i++, j++) {
+					boolean wasReplaced = j < initialTags.length &&
+							!AwareTags.ADDITIVE.values.contains(initialTags[j]);
 					
-					text = text + parts[i+1].replaceAll("^(-|\\+)*[1-9]{1}\">", "");
+					text += (wasReplaced ? initialTags[j] : "");
+					text += parts[i+1].replaceAll("^(-|\\+)*[1-9]+\">", "");
 				}
 
 				return text;
 			}
 		}
 		
-		if (text.indexOf(pattern) == -1) {
-			//Replace all <small>, given any
-			text = text.replaceAll("<small>", pattern + sign + factor +"\">");
-			//Replace all <big>, given any and adjust factor accordingly
-			factor += 2;
-			text = text.replaceAll("<big>", pattern + sign + factor +"\">");			
-		} else {
-			String[] parts = text.split(pattern);
-			for (int i = 0; i < parts.length - 1; i += 2) {
-				text = parts[i] + pattern;
-				text = text + sign + factor //for big, factor has already been set accordingly
-						+ parts[i+1].substring(parts[1].indexOf('\"'));
+		//Insert font modifiers accordingly
+		DecimalFormat df = new DecimalFormat("+#;-#");
+		if (text.indexOf(pattern) == -1) { //from standard to emulated
+			for (String tag : AwareTags.ALL.values) {
+				factor = getTagBias(tag, factor);
+				if (!AwareTags.ADDITIVE.values.contains(tag))
+					text = text.replaceAll(tag, pattern + df.format(factor) + "\">");
+				else
+					text = text.replaceAll(tag, tag + pattern + df.format(factor) + "\">");
 			}
+		} else { //from emulated to emulated
+			String[] parts = text.split(pattern + "(-|\\+)*[1-9]+");
+			text = "";
+			for (int i = 0; i < parts.length; i++)
+				text += parts[i] + pattern + df.format(factor);
 		}
 		
 		return text;
+	}
+	
+	private static int getTagBias(String tag, int factor) {
+		switch (tag) {
+		case "<big>":
+			return factor += 2;
+		
+		//add other biases here
+		}
+		
+		return factor;
+	}
+	
+	private static int getFontFactor(JComponent component, float anchorSize) {
+		int font = component.getFont().getSize();
+		float _DEFAULT_SIZE = anchorSize;
+		float ratio = font / _DEFAULT_SIZE;
+		
+		//no emulated DPI => no change
+		if (ratio == 1f)
+			return Integer.MAX_VALUE;
+		
+		boolean negative = false;
+		int factor = 0;
+
+		//lower emulated DPI => bigger font size 
+		if (ratio > 1) {
+			negative = false;
+			float f = font;
+			while (f > _DEFAULT_SIZE) {
+				f = f / 2.0f;
+				factor += 1;
+			}
+		//higher emulated DPI => smaller font size
+		} else {
+			negative = true;
+			float f = font;
+
+			factor = 1; //bias
+			while (f < _DEFAULT_SIZE) {
+				f += 2;
+				factor += 1;
+			}
+		}
+			
+		
+		if (negative)
+			factor *= -1;
+		
+		return factor;
 	}
 
 	/**
@@ -226,48 +264,32 @@ class HTMLSupport {
 	}
 	
 	/**
-	 * This method restores the previously stored tags, see also
-	 * {@link HTMLSupport#storeTags(JComponent, String)} for that, and
-	 * preserves their initial order. So a simple replacement therewith
-	 * may take place.
+	 * This method restores the previously stored tags in an array form,
+	 * see also {@link HTMLSupport#storeTags(JComponent, String)}, and
+	 * preserves their initial order.
 	 * 
 	 * @param component to get native tags back
 	 * 
 	 * @return an array with the native tags in order of appearance
 	 */
-	static String[] parseTagValues(JComponent component) {
+	static String[] restoreTags(JComponent component) {
 		
 		if (tags.get(component.hashCode()).isEmpty())
 			return new String[]{""};
 		
 		String value = tags.get(component.hashCode()).get(0);
-		ArrayList<String> tagsList = new ArrayList<>();
+		final String del = "<";
+		
+		ArrayList<String> tagslist = new ArrayList<>(Arrays.asList(value.split(del)));
+		tagslist.removeAll(Collections.singleton(""));
+		String[] result = tagslist.toArray(new String[tagslist.size()]);
+		for (int i = 0; i < result.length; i++)
+			result[i] = del + result[i];
 	
-		//iterate until all tags are placed in the list
-		while (value.length() > 0) {
-			if (value.startsWith("<small>")) {
-				tagsList.add("<small>");
-				value = value.replaceFirst("<small>", "");
-			}
-			
-			if (value.startsWith("<big>")) {
-				tagsList.add("<big>");
-				value = value.replaceFirst("<big>", "");
-			}
-			
-		}
-		//remove processed value from the list
+		//remove processed value from the map's list
 		tags.get(component.hashCode()).remove(0);
 		
-		//construct the array
-		String[] array = new String[tagsList.size()];
-		int i = 0;
-		while (i < tagsList.size()) {
-			array[i] = tagsList.get(i);
-			i++;
-		}
-			
-		return array;
+		return result;
 	}
 	
 	/**
@@ -286,5 +308,34 @@ class HTMLSupport {
 		}
 		
 	}
-
+	
+	public enum AwareTags {
+		ALL("ALL", "<small>", "<big>", "<font size=\"", "<code>"),
+		
+		SPECIAL("SPECIAL", "<small>", "<big>", "<code>"),
+		//we don't replace these tags, but add font modifier right after
+		ADDITIVE("ADDITIVE", "<code>");
+		
+		private final Set<String> values;
+		
+		private AwareTags(String type, String... values) {
+			this.values = Collections.unmodifiableSet(
+					new HashSet<String>(Arrays.asList(values)));
+		}
+		
+		public boolean isTagged(String text) {
+			for (String tag : values)
+				if (text.toLowerCase(Locale.ROOT).contains(tag))
+					return true;
+			
+			return false;
+		}
+		
+		public <T> Map<String, T> putAllValues(Map<String, T> map , T defaultValue) {
+			for (String s : values)
+				map.put(s, defaultValue);
+			
+			return map;
+		}
+	}
 }

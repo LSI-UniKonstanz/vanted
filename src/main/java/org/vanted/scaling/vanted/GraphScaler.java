@@ -74,7 +74,7 @@ public class GraphScaler implements SessionListener, ChangeListener {
 					scaleGraphFrameIcon(s);
 				} catch (NullPointerException e) {
 					//have loaded a pretty big graph & 
-					//tried to zoom to early - go again.
+					//tried to zoom too early - go again.
 					this.run();
 				}
 			}
