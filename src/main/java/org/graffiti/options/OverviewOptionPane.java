@@ -15,7 +15,10 @@ import java.io.IOException;
 
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 
+import org.vanted.scaling.DPIHelper;
 import org.vanted.scaling.Toolbox;
 import org.vanted.scaling.scaler.component.JTextComponentScaler;
 
@@ -51,11 +54,17 @@ public class OverviewOptionPane
 		
 		// add a JEditorPane, which contains an overview html page.
 		JEditorPane ep = new JEditorPane();
+		ep.setContentType("text/html");
 		ep.setEditable(false);
 		
 		//scale the newly initialized component
 		JTextComponentScaler epScaler = new JTextComponentScaler(Toolbox.getDPIScalingRatio());
 		epScaler.scaleComponent(ep);
+		
+		HTMLEditorKit ekit = (HTMLEditorKit) ep.getEditorKit();
+		StyleSheet stylesheet = ekit.getStyleSheet();
+		String pad = "padding:" + String.valueOf(DPIHelper.scaleCssPixels(12)) + "px;";
+		stylesheet.addRule("ul {list-style-type: none;" + pad + "}");
 		
 		try {
 			ep.setPage(sBundle.getRes("options.overview.html"));

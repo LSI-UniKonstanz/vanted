@@ -145,6 +145,18 @@ public class DPIHelper {
 	}
 	
 	/**
+	 * The CSS pixel <i>px</i> tries to match the reference pixel, which depends
+	 * on screen DPI and viewer distance from screen. Here we obtain DPPX - the
+	 * device pixel ratio. Thus we map pixels to provided number of pixels.
+	 *  
+	 * @param pixels
+	 * @return
+	 */
+	public static int scaleCssPixels(int pixels) {
+		return Math.round((pixels * Toolbox.getDPIScalingRatio()));
+	}
+	
+	/**
 	 * Displays a reset dialog that prompts the user to reset the scaling or not,
 	 * when the previous setting has gone out of reasonable scaling bounds and 
 	 * proper viewing has become impossible. There is also a 'Disable' option.
