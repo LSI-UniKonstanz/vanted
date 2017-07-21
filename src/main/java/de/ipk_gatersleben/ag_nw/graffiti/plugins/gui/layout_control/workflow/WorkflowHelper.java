@@ -64,6 +64,8 @@ import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
 import org.graffiti.plugins.modes.defaults.MegaMoveTool;
 import org.graffiti.plugins.modes.defaults.MegaTools;
+import org.vanted.scaling.Toolbox;
+import org.vanted.scaling.scaler.component.JLabelScaler;
 
 import scenario.Scenario;
 import scenario.ScenarioGui;
@@ -593,15 +595,15 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 		step2.addGuiComponentRow(
 							getCustomizedLabel(new JLabel(
 												"<html>Either create a graph from scratch"
-																	+ "<small><ul><li>Create a new file: Menu File/New"
-																	+ "<li>Add network nodes and edges, representing the desired entities like enzymes, compounds and reactions"
-																	+ "<li>Name the nodes with the same substance names like the names you use for your experimental data"
+																	+ "<small><ul style=\"list-style-type:none\"><li>&bull; Create a new file: Menu File/New"
+																	+ "<li>&bull; Add network nodes and edges, representing the desired entities like enzymes, compounds and reactions"
+																	+ "<li>&bull; Name the nodes with the same substance names like the names you use for your experimental data"
 																	+ "</ul>")),
 							FolderPanel.getHelpButton(JLabelJavaHelpLink.getHelpActionListener("editcommands"), Color.WHITE), false, 5);
-		step2.addGuiComponentRow(getCustomizedLabel(new JLabel("<html>Or use a existing network" + "<small><ul>"
-							+ "<li>Load a existing network file: Menu File/Open: "
+		step2.addGuiComponentRow(getCustomizedLabel(new JLabel("<html>Or use a existing network" + "<small><ul style=\"list-style-type:none\">"
+							+ "<li>&bull; Load a existing network file: Menu File/Open: "
 							+ "Supported file formats are GML (VANTED's native file format), SBML, Pajek and KGML files."
-							+ "<li>Use the side panel &quot;Pathways/KEGG&quot; to load (organism specific) pathways. "
+							+ "<li>&bull; Use the side panel &quot;Pathways/KEGG&quot; to load (organism specific) pathways. "
 							+ "Hint: Create the network with the new system KGML-ED (http://kgml-ed.ipk-gatersleben.de), "
 							+ "if you would like to perform advanced KEGG Pathway editing operations." + "</ul>")),
 							FolderPanel.getHelpButton(JLabelJavaHelpLink.getHelpActionListener("networkloading"), Color.WHITE), false,
@@ -610,10 +612,10 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 							.addGuiComponentRow(
 												getCustomizedLabel(new JLabel(
 																	"<html>Then modify the network"
-																						+ "<small><ul>"
-																						+ "<li>Change node titles, to fit your data naming conventions"
-																						+ "<li>Remove not needed nodes / edges, or add new ones"
-																						+ "<li>Change the drawing style (use the Network, Node and Edge side panels, to change the style of the selected graph elements)"
+																						+ "<small><ul style=\"list-style-type:none\">"
+																						+ "<li>&bull; Change node titles, to fit your data naming conventions"
+																						+ "<li>&bull; Remove not needed nodes / edges, or add new ones"
+																						+ "<li>&bull; Change the drawing style (use the Network, Node and Edge side panels, to change the style of the selected graph elements)"
 																						+ "</ul>"
 																						+ "Hint: You may also ommit this step and just perform the data mapping, without opening a graph window. All measurement data "
 																						+ "will be shown in a new graph window, using different newly created graph nodes or graph edges, displaying data for the measured substances. "
@@ -657,7 +659,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 							.addGuiComponentRow(
 												getCustomizedLabel(new JLabel(
 																	"<html>Identify outliers in the dataset"
-																						+ "<small><ul><li>The identification of outliers is a difficult task, which may only in some cases be performed automatically. "
+																						+ "<small><ul style=\"list-style-type:none\"><li>&bull; The identification of outliers is a difficult task, which may only in some cases be performed automatically. "
 																						+ "The more replikate measurements are done, the more easy it is to identify outliers. "
 																						+ "In case of more than about 10-30 replikates, the grubbs test from the Analysis menu may be used to "
 																						+ "automatically identify or remove outliers in the experimental data." + "</ul>")),
@@ -668,16 +670,16 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 							.addGuiComponentRow(
 												getCustomizedLabel(new JLabel(
 																	"<html>Recognize the sample data distribution"
-																						+ "<small><ul><li>The assumption of normal distribution of data samples is important for several analysis tasks. "
+																						+ "<small><ul style=\"list-style-type:none\"><li>&bull; The assumption of normal distribution of data samples is important for several analysis tasks. "
 																						+ "The so called &quot;David Quicktest&quot; may be used to identify not normally distributed data samples. "
 																						+ "But with few replikates, a sample data distribution is difficult to recognize." + "</ul>")),
 												FolderPanel.getHelpButton(JLabelJavaHelpLink.getHelpActionListener("analysismenu_david"), Color.WHITE),
 												false, 6);
 		
 		step5.addGuiComponentRow(getCustomizedLabel(new JLabel(
-							"<html>Use the &quot;Statistics&quot; side-panel to perform statistical analysis" + "<small><ul>"
-												+ "<li>For comparing different plant lines, a t-Test or U-Test may be performed"
-												+ "<li>Correlations between different substances may be found by using the "
+							"<html>Use the &quot;Statistics&quot; side-panel to perform statistical analysis" + "<small><ul style=\"list-style-type:none\">"
+												+ "<li>&bull; For comparing different plant lines, a t-Test or U-Test may be performed"
+												+ "<li>&bull; Correlations between different substances may be found by using the "
 												+ "correlation analysis commands. It is possible to either correlate a single "
 												+ "substance with the remaining ones (&quot;Correlate 1:n&quot;), or you may "
 												+ "correlate a number of selected substances against each other with a &quot;"
@@ -1004,6 +1006,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 	}
 	
 	public static JLabel getCustomizedLabel(JLabel label) {
+		new JLabelScaler(Toolbox.getDPIScalingRatio()).coscaleHTML(label);
 		label.setBackground(Color.WHITE);
 		return label;
 	}

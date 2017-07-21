@@ -192,6 +192,8 @@ class HTMLSupport {
 		switch (tag) {
 		case "<big>":
 			return factor += 2;
+		case "<small>":
+			return factor -= 2;
 		
 		//add other biases here
 		}

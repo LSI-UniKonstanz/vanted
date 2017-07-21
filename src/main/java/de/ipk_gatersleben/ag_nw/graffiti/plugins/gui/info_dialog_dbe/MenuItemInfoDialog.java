@@ -775,22 +775,24 @@ public class MenuItemInfoDialog
 		final JPanel workFlowHelp = WorkflowHelper.getWorkFlowHelp();
 		
 		double border = 5;
+		Dimension preferred = new Dimension(350, 600);
 		
 		final JPanel myPanel = new JPanel();
 		myPanel.setLayout(new TableLayout(new double[][] {
-				{ border, 300, border }, // Columns
+				{ border, TableLayoutConstraints.FILL, border }, // Columns
 				{ TableLayoutConstraints.PREFERRED }
 		}));
+		myPanel.setPreferredSize(preferred);
 		
 		myPanel.add(workFlowHelp, "1,0");
 		
 		dialogWorkflow = new JDialog(MainFrame.getInstance());
 		dialogWorkflow.setTitle("Workflow Tutorial");
-		dialogWorkflow.setModal(false);
-		dialogWorkflow.setSize(new Dimension(350, 600));
+		dialogWorkflow.setModalityType(JDialog.ModalityType.MODELESS);
+		dialogWorkflow.setSize(preferred);
 		
 		JScrollPane scrollpane = new JScrollPane(myPanel);
-		scrollpane.setPreferredSize(new Dimension(350, 600));
+		scrollpane.setPreferredSize(preferred);
 		
 		dialogWorkflow.getContentPane().setLayout(new BorderLayout());
 		dialogWorkflow.getContentPane().add(scrollpane, BorderLayout.CENTER);
