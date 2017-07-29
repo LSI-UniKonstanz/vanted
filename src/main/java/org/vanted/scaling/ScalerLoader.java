@@ -63,6 +63,7 @@ public final class ScalerLoader {
 			 *  But still load the pane. */
 			if (DPIHelper.isAvoidable()) {
 				GraphScaler.registerSessionListenerPostponed();
+				DPIHelper.initWindowResizer();
 				DPIHelper.loadPane();
 				return;
 			}
@@ -116,8 +117,9 @@ public final class ScalerLoader {
 					 */
 					doSyncExternalScaling(iContainer);
 					
-					/*Set Window decorations to LAF's.*/
+					/*Set Window scaling properties.*/
 					DPIHelper.adjustWindowDecoratations();
+					DPIHelper.initWindowResizer();
 					
 					GraphScaler.registerSessionListener();
 				}

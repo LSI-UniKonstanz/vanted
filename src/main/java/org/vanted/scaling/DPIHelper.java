@@ -26,6 +26,7 @@ import javax.swing.UIManager;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.AbstractOptionPane;
 import org.vanted.scaling.resources.ImmutableCheckBox;
+import org.vanted.scaling.scaler.component.WindowScaler;
 import org.vanted.scaling.vanted.HighDPISupport;
 
 //TODO remove PreferenceManager dependencies
@@ -144,6 +145,7 @@ public class DPIHelper {
 			pane.addComponent("<html>Enable Lifesaver&emsp;&emsp;", lifesaver);
 	}
 	
+	
 	/**
 	 * The CSS pixel <i>px</i> tries to match the reference pixel, which depends
 	 * on screen DPI and viewer distance from screen. Here we obtain DPPX - the
@@ -154,6 +156,15 @@ public class DPIHelper {
 	 */
 	public static int scaleCssPixels(int pixels) {
 		return Math.round((pixels * Toolbox.getDPIScalingRatio()));
+	}
+	
+	
+	/**
+	 * Attaches a WindowResizer listener that will resize any newly opened windows.
+	 * This does not resize any already visible windows.
+	 */
+	public static void initWindowResizer() {
+		WindowScaler.attachWindowResizer();
 	}
 	
 	/**

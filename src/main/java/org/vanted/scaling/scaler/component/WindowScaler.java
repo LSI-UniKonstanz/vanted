@@ -1,7 +1,13 @@
 package org.vanted.scaling.scaler.component;
 
+import java.awt.AWTEvent;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.AWTEventListener;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -9,6 +15,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import org.vanted.scaling.DPIHelper;
+import org.vanted.scaling.Toolbox;
 
 /**
  * Extension of {@linkplain ComponentScaler}, responsible for Window-derived
@@ -60,6 +67,55 @@ public class WindowScaler extends ComponentScaler {
 		}
 		
 		return li;
+	}
+	
+	
+	/**
+	 * Attach a WindowResizerListener to the default system window Toolkit.
+	 */
+	public static void attachWindowResizer() {
+		Toolkit.getDefaultToolkit().addAWTEventListener(new WindowResizerListener(), AWTEvent.WINDOW_EVENT_MASK);
+	}
+	
+	
+	/**
+	 * Specialized implementation of the {@linkplain AWTEventListener} that resizes any new window.
+	 * One notable exception are HeavyWeightWindows, whose scaling is part of the normal DPI emulating
+	 * cycle. 
+	 * 
+	 * @author dim
+	 *
+	 */
+	private static class WindowResizerListener implements AWTEventListener {
+		
+		@Override
+		public void eventDispatched(AWTEvent event) {
+			if (Toolbox.getDPIScalingRatio() == 1f)
+				return;
+			
+			switch (event.getID()) {
+				case WindowEvent.WINDOW_OPENED:
+					resizeWindow((Window) event.getSource());
+					break;
+				case WindowEvent.WINDOW_CLOSED:
+					//nothing
+					break;
+			}
+		}
+
+		private void resizeWindow(Window window) {
+			if (window.getClass().getSimpleName().endsWith("HeavyWeightWindow"))
+				return;
+			
+			Dimension size = window.getSize();
+			size.setSize(size.getWidth() * Toolbox.getDPIScalingRatio(),
+						size.getHeight() * Toolbox.getDPIScalingRatio());
+			window.setSize(size);
+			
+			window.invalidate();
+			window.repaint();
+		}
+		
 	}
 	
 }
