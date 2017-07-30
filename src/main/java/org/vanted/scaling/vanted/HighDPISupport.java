@@ -93,7 +93,7 @@ public class HighDPISupport implements PreferencesInterface {
 			new GraphScaler();
 		}
 		
-		GraphScaler.readdChangeListener();
+		GraphScaler.reAddChangeListener();
 		
 		/**
 		 * Mac LAF update, if necessary. */

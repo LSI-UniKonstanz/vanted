@@ -5,11 +5,14 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.AbstractButton;
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 
 import org.vanted.scaling.AutomatonBean.State;
 import org.vanted.scaling.scaler.component.*;
@@ -28,6 +31,11 @@ public class Toolbox {
 	public static final String STATE_ON_SLIDER = "ON_SLIDER";
 	public static final String STATE_RESCALED = "RESCALED";
 	public static final String STATE_IDLE = "IDLE";
+	
+	public static final int UL_TYPE_DISC = 100;
+	public static final int UL_TYPE_CIRCLE = 101;
+	public static final int UL_TYPE_SQUARE = 102;
+	public static final int UL_TYPE_EXTRA = 103;
 	
 	private static final int prefsSliderValue = DPIHelper.managePreferences(
 			DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET);
@@ -148,6 +156,53 @@ public class Toolbox {
 				/ DPIHelper.processEmulatedDPIValue(prefsSliderValue);
 	
 	}
+	
+	/**
+	 * Prepares an &lt;ul> by removing any style-type elements, such as
+	 * bullets, squares, circles or discs with none. Then the removed
+	 * character ought be added as part of the contents to simulate styling.
+	 * E.g.:<p>
+	 * 	&lt;li>&#x25CF; Fist item &lt;/li><br>
+	 *	&lt;li>&#x25CF; Second item &lt;/li><p>
+	 *
+	 * Additionally, the padding is adjusted as well.<p>
+	 * 
+	 * <b><i>Warning: </b></i> The JEditorPane should have as mime type "html".
+	 * 
+	 * @param ep
+	 * @param type one of the constant types
+	 * @param extra if some other specific type is necessary ({@linkplain Toolbox#UL_TYPE_EXTRA}) 
+	 */
+	public static void scaleJEditorPaneUnorderedLists(JEditorPane ep, int type, String extra) {
+		HTMLEditorKit ekit = (HTMLEditorKit) ep.getEditorKit();
+		StyleSheet stylesheet = ekit.getStyleSheet();
+		String pad = "padding:" + String.valueOf(DPIHelper.scaleCssPixels(12)) + "px;";
+		stylesheet.addRule("ul {list-style-type: none;" + pad + "}");
+		
+		String echar;
+		switch(type) {
+			case UL_TYPE_DISC: 
+				echar = "&#x25CF; ";
+				break;
+			case UL_TYPE_CIRCLE:
+				echar = "&#x25CB; ";
+				break;
+			case UL_TYPE_SQUARE:
+				echar = "&#x25A0; ";
+				break;
+			case UL_TYPE_EXTRA:
+				echar = extra + " ";
+				break;
+			default:
+				echar = "";
+		}
+		
+		String text = "";
+		for (String t : ep.getText().split("<li>"))
+			text += t + "<li>" + echar;
+		ep.setText(text);
+	}
+	
 	
 	/**
 	 * Reset the scaling of {@code component} and its children. This does count as

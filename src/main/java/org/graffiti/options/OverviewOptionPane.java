@@ -15,10 +15,7 @@ import java.io.IOException;
 
 import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
-import javax.swing.text.html.HTMLEditorKit;
-import javax.swing.text.html.StyleSheet;
 
-import org.vanted.scaling.DPIHelper;
 import org.vanted.scaling.Toolbox;
 import org.vanted.scaling.scaler.component.JTextComponentScaler;
 
@@ -61,16 +58,13 @@ public class OverviewOptionPane
 		JTextComponentScaler epScaler = new JTextComponentScaler(Toolbox.getDPIScalingRatio());
 		epScaler.scaleComponent(ep);
 		
-		HTMLEditorKit ekit = (HTMLEditorKit) ep.getEditorKit();
-		StyleSheet stylesheet = ekit.getStyleSheet();
-		String pad = "padding:" + String.valueOf(DPIHelper.scaleCssPixels(12)) + "px;";
-		stylesheet.addRule("ul {list-style-type: none;" + pad + "}");
-		
 		try {
 			ep.setPage(sBundle.getRes("options.overview.html"));
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
+		//take file escape chars without replacing, due to sync loading issues
+		Toolbox.scaleJEditorPaneUnorderedLists(ep, -1, null);
 		ep.setBackground(new java.awt.Color(200,221,242)); //#C8DDF2
 		
 		

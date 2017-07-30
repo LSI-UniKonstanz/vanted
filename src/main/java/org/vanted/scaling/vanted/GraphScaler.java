@@ -17,6 +17,7 @@ import org.vanted.scaling.DPIHelper;
 import org.vanted.scaling.ScalingSlider;
 import org.vanted.scaling.Toolbox;
 import org.vanted.scaling.scaler.BasicScaler;
+import org.vanted.scaling.scaler.component.WindowScaler;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeComponent;
 
@@ -174,21 +175,25 @@ public class GraphScaler implements SessionListener, ChangeListener {
 		BasicScaler s2 = new BasicScaler(Toolbox.getDPIScalingRatio());
 		if (session != null) { //we have new view only
 			for (JInternalFrame f : frames)
-				if (((GraffitiInternalFrame) f).getView().equals(session.getActiveView()))
+				if (((GraffitiInternalFrame) f).getView().equals(session.getActiveView())) {
 					f.setFrameIcon(scaler.modifyIcon(null, f.getFrameIcon()));
-			} else { //scale all, we have new DPI
-				for (JInternalFrame f : frames)
+					WindowScaler.resizeWindow(f);
+				}
+		} else { //scale all, we have new DPI
+				for (JInternalFrame f : frames) {
 					//reset and scale icon
 					f.setFrameIcon(s2.modifyIcon(null, scaler.modifyIcon(null, f.getFrameIcon())));
+					WindowScaler.resizeWindow(f);
+				}
 				
 				scaler = s2;
 		}
 	}
 	
 	/**
-	 * To subsequently new ScalingSlider instance. 
+	 * To subsequent new ScalingSlider instance. 
 	 */
-	public static void readdChangeListener() {
+	public static void reAddChangeListener() {
 		//re-register listener for next slider instance
 		if (ScalingSlider.getRegisteredChangeListeners() == null ||
 				!ScalingSlider.getRegisteredChangeListeners().contains(instance))

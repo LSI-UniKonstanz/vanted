@@ -121,7 +121,7 @@ public class JTextComponentScaler extends ComponentScaler implements HTMLScaler 
 	 * @param text JComponent to be checked, only JEditorPanes 
 	 * possess the system property to be set.
 	 */
-	private void alignJEP(JTextComponent text) {
+	public static void alignJEP(JTextComponent text) {
 		if (text instanceof JEditorPane)
 			((JEditorPane) text).putClientProperty(
 					JEditorPane.HONOR_DISPLAY_PROPERTIES, true);

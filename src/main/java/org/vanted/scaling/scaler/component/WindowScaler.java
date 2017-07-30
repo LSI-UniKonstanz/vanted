@@ -77,6 +77,18 @@ public class WindowScaler extends ComponentScaler {
 		Toolkit.getDefaultToolkit().addAWTEventListener(new WindowResizerListener(), AWTEvent.WINDOW_EVENT_MASK);
 	}
 	
+	public static void resizeWindow(Component window) {
+		if (window.getClass().getSimpleName().endsWith("HeavyWeightWindow"))
+			return;
+		
+		Dimension size = window.getSize();
+		size.setSize(size.getWidth() * Toolbox.getDPIScalingRatio(),
+					size.getHeight() * Toolbox.getDPIScalingRatio());
+		window.setSize(size);
+		
+		window.invalidate();
+		window.repaint();
+	}
 	
 	/**
 	 * Specialized implementation of the {@linkplain AWTEventListener} that resizes any new window.
@@ -102,20 +114,6 @@ public class WindowScaler extends ComponentScaler {
 					break;
 			}
 		}
-
-		private void resizeWindow(Window window) {
-			if (window.getClass().getSimpleName().endsWith("HeavyWeightWindow"))
-				return;
-			
-			Dimension size = window.getSize();
-			size.setSize(size.getWidth() * Toolbox.getDPIScalingRatio(),
-						size.getHeight() * Toolbox.getDPIScalingRatio());
-			window.setSize(size);
-			
-			window.invalidate();
-			window.repaint();
-		}
-		
 	}
 	
 }
