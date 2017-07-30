@@ -147,6 +147,10 @@ public class FileSaveAction
 		} catch (Exception err) {
 			MainFrame.showMessageDialog("Could not save network.", "Error");
 			ErrorMsg.addErrorMessage(err);
+			
+			//signal any graphs waiting on it to close
+			MainFrame.getInstance().cancelledSaveAction.set(true);
+			
 			return;
 		}
 		
@@ -171,10 +175,16 @@ public class FileSaveAction
 			} catch (Exception ioe) {
 				ErrorMsg.addErrorMessage(ioe);
 				MainFrame.getInstance().warnUserAboutFileSaveProblem(ioe);
+				
+				//signal any graphs waiting on it to close
+				MainFrame.getInstance().cancelledSaveAction.set(true);
 			}
 			
 			mainFrame.fireSessionDataChanged(session);
 		} else {
+			//signal any graphs waiting on it to close
+			MainFrame.getInstance().cancelledSaveAction.set(true);
+			
 			MainFrame.showMessageDialog("<html>Error: Network could not be saved (file not writeable).", "Error");
 			System.err.println("Error: file not writable. (FileSave-Action).");
 		}

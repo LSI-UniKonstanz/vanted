@@ -20,6 +20,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -73,7 +74,7 @@ public class GraffitiFrame
 			@Override
 			public final void windowClosing(final WindowEvent event) {
 				//If user has pressed 'Cancel' skip closing
-				if (MainFrame.getInstance().promptClosing(internalFrame.getSession())) {
+				if (MainFrame.getInstance().closeSession(internalFrame.getSession())) {
 					MainFrame.getInstance().frameClosing(internalFrame.getSession(), internalFrame.getView());
 					MainFrame.getInstance().removeDetachedFrame(thisFrame);
 					setVisible(false);
@@ -142,7 +143,7 @@ public class GraffitiFrame
 			add(view.getViewComponent(), "0,0");
 		}
 		
-		setIconImage(MainFrame.getInstance().getIconImage());
+		setIconImage(((ImageIcon)GraffitiInternalFrame.getIcon()).getImage());
 		
 		validate();
 		pack();

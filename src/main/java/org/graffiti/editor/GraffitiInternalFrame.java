@@ -266,6 +266,10 @@ public class GraffitiInternalFrame
 		this.session = s;
 		frameNumber = session.getViews().size();
 	}
+	
+	public static Icon getIcon() {
+		return frameIcon;
+	}
 }
 
 // ------------------------------------------------------------------------------

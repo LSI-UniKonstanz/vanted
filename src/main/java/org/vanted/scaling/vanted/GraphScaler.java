@@ -3,6 +3,7 @@ package org.vanted.scaling.vanted;
 import java.awt.Toolkit;
 import java.util.HashSet;
 
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
@@ -31,6 +32,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeCompon
 public class GraphScaler implements SessionListener, ChangeListener {
 
 	private static HashSet<Integer> scaledSessions = new HashSet<>();
+	private static HashSet<Integer> scaledDetachedFrames = new HashSet<>();
 	private static int oldValueZooming;
 	private static GraphScaler instance;
 	private BasicScaler scaler = new BasicScaler(Toolbox.getDPIScalingRatio());
@@ -42,6 +44,9 @@ public class GraphScaler implements SessionListener, ChangeListener {
 		
 		//Add scaling of current active graph elements through zooming.
 		ScalingSlider.registerChangeListeners(new ChangeListener[] {this});
+		
+		//default value
+		scaledDetachedFrames.add(0);
 	}
 
 	@Override
@@ -55,15 +60,30 @@ public class GraphScaler implements SessionListener, ChangeListener {
 	
 	@Override
 	public void sessionChanged(final Session s) {
-		if (s == null || scaledSessions.contains(s.hashCode()))
-			return; //already scaled (zoomed)
+		int dfCode = 0;
+		try {
+			dfCode = MainFrame.getInstance().getActiveDetachedFrame().hashCode();
+		} catch (NullPointerException e) {}
 		
-		scaledSessions.add(s.hashCode());
+		if (s == null || scaledSessions.contains(s.hashCode()))
+			if (scaledDetachedFrames.contains(dfCode))
+				return; //already scaled (zoomed)
+		
+		
+		if (dfCode != 0) {
+			if (scaledDetachedFrames.contains(dfCode))
+				return;
+			
+			scaledDetachedFrames.add(dfCode);
+			scaledSessions.remove(s.hashCode());
+		} else
+			scaledSessions.add(s.hashCode());
+		
 		new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
-				//postpone until completely loaded (probabilistically)
+				//postpone until completely loaded
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
@@ -72,7 +92,7 @@ public class GraphScaler implements SessionListener, ChangeListener {
 				
 				try {
 					handleZooming(0);
-					scaleGraphFrameIcon(s);
+					scaleGraphFrame(s);
 				} catch (NullPointerException e) {
 					//have loaded a pretty big graph & 
 					//tried to zoom too early - go again.
@@ -106,7 +126,7 @@ public class GraphScaler implements SessionListener, ChangeListener {
 			scaledSessions.add(session.hashCode());
 		}
 		
-		scaleGraphFrameIcon(null);
+		scaleGraphFrame(null);
 		
 		MainFrame.getInstance().setActiveSession(active, activeView);
 		oldValueZooming = newValue;
@@ -166,7 +186,7 @@ public class GraphScaler implements SessionListener, ChangeListener {
 		GraphScaler.oldValueZooming = oldValue;
 	}
 	
-	private void scaleGraphFrameIcon(Session session) {
+	private void scaleGraphFrame(Session session) {
 		float ratio = Toolbox.getDPIScalingRatio();
 		if (ratio == 1f)
 			return;
@@ -179,6 +199,10 @@ public class GraphScaler implements SessionListener, ChangeListener {
 					f.setFrameIcon(scaler.modifyIcon(null, f.getFrameIcon()));
 					WindowScaler.resizeWindow(f);
 				}
+			
+		if (MainFrame.getInstance().getActiveDetachedFrame() != null)
+			JFrame.setDefaultLookAndFeelDecorated(true);
+		
 		} else { //scale all, we have new DPI
 				for (JInternalFrame f : frames) {
 					//reset and scale icon

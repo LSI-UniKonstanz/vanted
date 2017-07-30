@@ -2335,6 +2335,8 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	private AtomicBoolean called = new AtomicBoolean();
 	/* Session ID */
 	private AtomicInteger sid = new AtomicInteger();
+	/** Set, when external dialog's been cancelled, to restore flow. */
+	public AtomicBoolean cancelledSaveAction = new AtomicBoolean();
 	
 	/**
 	 * This delegates the session closing down below the method chain, given the user has not chosen 
@@ -2350,38 +2352,41 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		if (session == null)
 			return false;
 		
-		//display prompt if graph's been modified		
-		boolean askForSave = true;
-		if (askForSave && session.getGraph().isModified()) {
+		if (!session.getGraph().isModified())
+			return true;
 			
-			for (GraffitiFrame gf : getDetachedFrames())
-				if (gf.getSession() == session) {
-					called.set(true);
-					sid.set(session.hashCode());
-				}
-			
-			String graphName = session.getGraph().getName();
-			if (graphName == null)
-				graphName = "[" + session.getGraph().getName() + "]";
-			JDialog confirmDialog = new JDialog(this);
-			confirmDialog.setAlwaysOnTop(true);
-			int res = JOptionPane.showConfirmDialog(confirmDialog, "<html>" + sBundle.getString("frame.close_save") + "<p>"
-					+ "Graph " + graphName + " contains<br>" + session.getGraph().getNodes().size() + " node(s) and "
-					+ session.getGraph().getEdges().size() + " edge(s)!", sBundle.getString("frame.close_save_title"),
-					JOptionPane.YES_NO_CANCEL_OPTION);
-			
-			if (res == JOptionPane.CANCEL_OPTION)
-				return false;
-			if (res == JOptionPane.YES_OPTION) {
-				// save current graph
-				logger.debug("closeSession: saving graph");
-				if (session.getGraph().getName().contains("not saved")) {
-					fileSaveAs.actionPerformed(new ActionEvent(this, 0, null));
-				} else {
-					fileSave.actionPerformed(new ActionEvent(this, 0, null));
-				}
+		for (GraffitiFrame gf : getDetachedFrames())
+			if (gf.getSession() == session) {
+				called.set(true);
+				sid.set(session.hashCode());
+			}
+
+		String graphName = session.getGraph().getName();
+		if (graphName == null)
+			graphName = "[" + session.getGraph().getName() + "]";
+		JDialog confirmDialog = new JDialog(this);
+		confirmDialog.setAlwaysOnTop(true);
+		int res = JOptionPane.showConfirmDialog(confirmDialog, "<html>" + sBundle.getString("frame.close_save") + "<p>"
+				+ "Graph " + graphName + " contains<br>" + session.getGraph().getNodes().size() + " node(s) and "
+				+ session.getGraph().getEdges().size() + " edge(s)!", sBundle.getString("frame.close_save_title"),
+				JOptionPane.YES_NO_CANCEL_OPTION);
+
+		if (res == JOptionPane.CANCEL_OPTION)
+			return false;
+		if (res == JOptionPane.YES_OPTION) {
+			// save current graph
+			logger.debug("closeSession: saving graph");
+			if (session.getGraph().getName().contains("not saved")) {
+				saveActiveFileAs();
+				if (cancelledSaveAction.compareAndSet(true, false))
+					return false;
+			} else {
+				saveActiveFile();
+				if (cancelledSaveAction.compareAndSet(true, false))
+					return false;
 			}
 			
+
 		}
 		
 		return true;
@@ -2399,8 +2404,10 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	public boolean closeSession(Session session) {
 
 		if (!called.compareAndSet(true, false) || !(sid.get() == session.hashCode()))
-			if (!promptClosing(session))
+			if (!promptClosing(session)) {
+				called.set(false); //Cancel's pressed, reset
 				return false;
+			}
 		
 		List<View> views = new LinkedList<View>();
 		
@@ -3603,8 +3610,12 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					logger.debug("closeSession: saving graph");
 					if (session.getGraph().getName().contains("not saved")) {
 						fileSaveAs.actionPerformed(new ActionEvent(this, 0, null));
+						if (cancelledSaveAction.compareAndSet(true, false))
+							return;
 					} else {
 						fileSave.actionPerformed(new ActionEvent(this, 0, null));
+						if (cancelledSaveAction.compareAndSet(true, false))
+							return;
 					}
 				}
 			}
@@ -4156,31 +4167,33 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		viewFrameMapper.remove(view);
 		zoomListeners.remove(view);
 		
-		ListenerManager lm = session.getGraph().getListenerManager();
-		try {
-			lm.removeAttributeListener(view);
-			lm.removeEdgeListener(view);
-			lm.removeNodeListener(view);
-			lm.removeGraphListener(view);
-		} catch (ListenerNotFoundException e) {
-			ErrorMsg.addErrorMessage(e);
-		}
-		
-		if (session.getViews().size() > 1) {
-			// System.out.println("CLOSE VIEW");
+		if (session == null) {
 			view.close();
-			session.removeView(view);
 			
 		} else {
-			// remove the session if we are closing the last view
-			MainFrame.getInstance().closeSession(session);
-			view.close();
+
+			ListenerManager lm = session.getGraph().getListenerManager();
+
+			try {
+				lm.removeAttributeListener(view);
+				lm.removeEdgeListener(view);
+				lm.removeNodeListener(view);
+				lm.removeGraphListener(view);
+			} catch (ListenerNotFoundException e) {
+				ErrorMsg.addErrorMessage(e);
+			}
+
+			if (session.getViews().size() > 1) {
+				view.close();
+				session.removeView(view);
+
+			} else {
+				// remove the session if we are closing the last view
+				MainFrame.getInstance().closeSession(session);
+				view.close();
+			}
 		}
-		// fireSessionChanged(null);
-		// activeSession = null;
-		
-		// updateActions();
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				if (desktop.getAllFrames() != null && desktop.getAllFrames().length > 0) {
@@ -4238,6 +4251,9 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	
 	public View createExternalFrame(String viewClassName, String framename, EditorSession session,
 			boolean otherViewWillBeClosed, boolean fullscreen, int x, int y, int w, int h) {
+		//turn off default decorations for detached windows
+		JFrame.setDefaultLookAndFeelDecorated(false);
+		
 		GraffitiInternalFrame gif;
 		if (framename == null)
 			gif = (GraffitiInternalFrame) createInternalFrame(viewClassName, session.getGraph().getName(), session, false,

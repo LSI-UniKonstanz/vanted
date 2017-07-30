@@ -283,6 +283,8 @@ public class FileSaveAsAction
 					}
 				}
 			} else {
+				//signal any graphs waiting on it to close
+				MainFrame.getInstance().cancelledSaveAction.set(true);
 				// leave loop
 				needFile = false;
 			}
