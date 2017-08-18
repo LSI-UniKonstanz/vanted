@@ -53,7 +53,11 @@ public class HighDPISupport implements PreferencesInterface {
 	private static final String description = "  (Please, use only on Mac!)";
 	private static final String QUAQUA = "Quaqua Look and Feel" + description;
 	
-	private final LookAndFeel quaqua = ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel();
+	
+	/*********************************************************************/
+	/*--------------------Disabled for version 2.6.4---------------------*/
+	/*********************************************************************/
+	private final LookAndFeel quaqua = null;//ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel();
 	
 	private HashMap<String, String> lafmap = new HashMap<>();
 	private Preferences general;
@@ -101,11 +105,16 @@ public class HighDPISupport implements PreferencesInterface {
 			new GraphScaler();
 		}
 		
+		
+		
 		GraphScaler.reAddChangeListener();
 		
+		/*********************************************************************/
+		/*--------------------Disabled for version 2.6.4---------------------*/
+		/*********************************************************************/
 		/**
 		 * Mac LAF update, if necessary. */
-		String laf = preferences.get(PREFERENCES_MAC_LAF, null);
+		String laf = null;//preferences.get(PREFERENCES_MAC_LAF, null);
 		
 		if (laf == null || laf.equals(activeLaf)) //no LAF change
 			return;
