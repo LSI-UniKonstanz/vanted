@@ -39,8 +39,13 @@ public class HighDPISupport implements PreferencesInterface {
 
 	public static final String DESCRIPTION
 	= "<html>&#10148; Emulate your desired DPI by moving the slider.<br>"
-			+ "&#10148; <i>Lifesaver</i> guards you against bad values. It acts upon subsequent start-up.<br>"
-			+ "&#10148; " + macText
+			+ "&#10148; <i>Lifesaver</i> guards you against bad values. It acts on next start-up.<br>"
+			
+			/*********************************************************************/
+			/*--------------------Disabled for version 2.6.4---------------------*/
+			/*********************************************************************/
+			//+ "&#10148; " + macText
+			
 			+ "&#10148; Lastly, for optimal performance you could restart VANTED.<br><br>";
 	
 	public static final String PREFERENCES_MAC_LAF = "<html>Mac Look and Feel&emsp;";
@@ -72,14 +77,17 @@ public class HighDPISupport implements PreferencesInterface {
 		
 		params.add(getInformation());
 
-		//here come the slider and lifesaver, added in ParameterOptionPane
+		//Here come the slider and lifesaver, added in ParameterOptionPane
 		
 		/**
 		 * We enable S-Quaqua only on Mac and, of course, while developing,
 		 * because of copyright reasons on behalf of Apple, Inc. 
 		 */
-		if (IS_MAC || DEV)
-			params.add(getMacLaf());
+		/*********************************************************************/
+		/*--------------------Disabled for version 2.6.4---------------------*/
+		/*********************************************************************/
+		//if (IS_MAC || DEV)
+			//params.add(getMacLaf());
 		
 		return params;
 	}
