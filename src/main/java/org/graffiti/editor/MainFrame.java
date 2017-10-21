@@ -191,6 +191,7 @@ import org.graffiti.plugin.tool.Tool;
 import org.graffiti.plugin.view.View;
 import org.graffiti.plugin.view.ViewListener;
 import org.graffiti.plugin.view.ZoomListener;
+import org.graffiti.plugins.ios.importers.PortableUrlService;
 import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.selection.Selection;
@@ -1474,10 +1475,9 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	final ExecutorService loader = Executors.newFixedThreadPool(1);
 	
 	public void loadGraphInBackground(File[] proposedFiles, final ActionEvent ae, boolean autoSwitch)
-			
 			throws IllegalAccessException, InstantiationException {
-		final ArrayList<File> files = new ArrayList<File>();
 		
+		final ArrayList<File> files = new ArrayList<File>();
 		HashSet<File> filesToBeIgnored = new HashSet<File>();
 		for (File file : proposedFiles) {
 			EditorSession esf = null;
@@ -1492,6 +1492,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					}
 				}
 			}
+			
 			final EditorSession fesf = esf;
 			if (!windowCheck(fesf, file.getAbsolutePath(), autoSwitch)) {
 				filesToBeIgnored.add(file);
@@ -1675,6 +1676,9 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				ext = fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".")) : "";
 				gz = true;
 			}
+			//jump usual control flow and pass the graph file's path
+			PortableUrlService.setGraphPath(file.getAbsolutePath());
+			
 			if (ext.equalsIgnoreCase(".net")) {
 				Graph tempGraph = new AdjListGraph(new ListenerManager());
 				InputSerializer is = ioManager.createInputSerializer(null, ext);
