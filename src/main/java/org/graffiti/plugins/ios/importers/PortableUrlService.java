@@ -71,7 +71,8 @@ public class PortableUrlService {
 					// double to escape it within RegEx 
 					? WINDOWS_SEP+WINDOWS_SEP 
 					: UNIX_SEP;
-			return url.replaceAll(sep, SEPARATOR);
+			return url.replaceAll(sep,
+					(sep.equals(UNIX_SEP) ? SEPARATOR+SEPARATOR : SEPARATOR));
 			
 		}
 		
