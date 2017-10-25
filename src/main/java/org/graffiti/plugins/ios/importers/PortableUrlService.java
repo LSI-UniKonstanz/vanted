@@ -105,7 +105,7 @@ public class PortableUrlService {
 		if (!new File(url).exists() && !new File(gPath + url).exists())
 			MainFrame.showMessageDialog("<html>The resource for attribute " + attr
 					+ " could not be found. Please, edit your graph file.<br/> <br/>"
-					+ "Faulty " + attr + "'s value &#10148; "
+					+ "Faulty " + attr + " value &#10148; "
 					+ (sepFlag ? url.substring(1) : url), "Check your graph");
 	}
 	
