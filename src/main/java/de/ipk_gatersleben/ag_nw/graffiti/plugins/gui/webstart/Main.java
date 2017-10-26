@@ -106,9 +106,7 @@ public class Main {
 					public void run() {
 						if (showMainFrame) {
 							ClassLoader cl = this.getClass().getClassLoader();
-							//							String path = this.getClass().getPackage().getName()
-							//									.replace('.', '/');
-							ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash.jpg"));
+							ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash_alpha.png"));
 							final MainFrame mainFrame = MainFrame.getInstance();
 							if (icon != null && mainFrame != null)
 								mainFrame.setIconImage(icon.getImage());
@@ -147,7 +145,7 @@ public class Main {
 		ClassLoader cl = this.getClass().getClassLoader();
 		//		String path = this.getClass().getPackage().getName()
 		//				.replace('.', '/');
-		ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash.jpg"));
+		ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash_alpha.png"));
 		((DBEsplashScreen) splashScreen).setIconImage(icon.getImage());
 		
 		splashScreen.setVisible(showMainFrame);
@@ -184,7 +182,7 @@ public class Main {
 								+
 								"For using VANTED you need also be aware of information about licenses and conditions for<br>"
 								+
-								"usage, listed at the program info dialog and the VANTED website (https://immersive-analytics.infotech.monash.edu/vanted).<br><br>"
+								"usage, listed at the program info dialog and the VANTED website (www.vanted.org).<br><br>"
 								+
 								"VANTED does not distribute information from KEGG but contains functionality for the online-access to <br>"
 								+

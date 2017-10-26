@@ -80,9 +80,9 @@ public class OpenFileDialogService implements HelperClass {
 			}
 		});
 		int option = openDialog.showDialog(null, selectButtonText);
-		if (option == JFileChooser.APPROVE_OPTION) {
+		if (option == JFileChooser.APPROVE_OPTION)
 			return openDialog.getSelectedFile();
-		} else
+		else
 			return null;
 	}
 	
@@ -198,9 +198,11 @@ public class OpenFileDialogService implements HelperClass {
 		// }
 		// });
 		int option = openDialog.showDialog(null, okButtonText);
-		if (option == JFileChooser.APPROVE_OPTION) {
+		if (option == JFileChooser.APPROVE_OPTION)
 			return openDialog.getSelectedFile();
-		} else
+		else if (option == JFileChooser.CANCEL_OPTION)
+			return new File("Cancel");
+		else
 			return null;
 	}
 }

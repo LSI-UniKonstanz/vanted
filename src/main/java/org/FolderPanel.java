@@ -22,6 +22,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -41,6 +43,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
+
+import org.graffiti.editor.MainFrame;
+import org.vanted.scaling.ComponentRegulator;
+import org.vanted.scaling.DPIHelper;
+import org.vanted.scaling.ScalingSlider;
+import org.vanted.scaling.Toolbox;
+import org.vanted.scaling.scaler.component.*;
 
 /**
  * @author Christian Klukas
@@ -96,6 +105,15 @@ public class FolderPanel extends JComponent {
 	private boolean lockRowCount;
 	private Iconsize bigIcons = Iconsize.SMALL;
 	private boolean hideSearch;
+
+	//scaling fields
+	private float initialDPIvalue = DPIHelper.processEmulatedDPIValue(
+			DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT,
+					DPIHelper.PREFERENCES_GET));
+	private float newInitial = initialDPIvalue;
+	private float newCurrent = -1f;
+	private HashMap<Integer, Float> baseDPIValues = new HashMap<>();
+	
 	
 	public void setIconSize(Iconsize bigIcons) {
 		this.bigIcons = bigIcons;
@@ -127,12 +145,14 @@ public class FolderPanel extends JComponent {
 		rowPanel = new JPanel();
 		setBorder(BorderFactory.createLineBorder(frameColor, frameWidth));
 		titleLabel = new JLabel(title);
+		new JLabelScaler(Toolbox.getDPIScalingRatio()).coscaleHTML(titleLabel);
 		titleLabel.setOpaque(true);
 		titleLabel.setBackground(frameColor);
 		titleLabel.setForeground(headingColor);
 		titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 0));
 		this.helpActionListener = helpActionListener;
 		this.showHelpButton = helpActionListener != null;
+		addScalingListener();
 	}
 	
 	public FolderPanel(String title, boolean sortRows,
@@ -338,8 +358,7 @@ public class FolderPanel extends JComponent {
 			}
 			
 			rowPanel.setLayout(new TableLayout(size));
-			
-			for (GuiRow gr : workSet) {
+			for (GuiRow gr : workSet) {				
 				if (rowSpacing > 0 || colSpacing > 0) {
 					if (gr.span) {
 						rowPanel.add(getBorderedComponent(gr.left, 0, 0, gr != workSet.get(workSet.size() - 1) ? rowSpacing : 0,
@@ -360,6 +379,10 @@ public class FolderPanel extends JComponent {
 					}
 				}
 				row++;
+				
+				//scaling procedure
+				adjustGuiRowScaling(gr);
+				
 				colorRow(firstColumn, gr.left, gr.right);
 				firstColumn = !firstColumn;
 			}
@@ -432,7 +455,6 @@ public class FolderPanel extends JComponent {
 				add(titleLabel, "1,1");
 			}
 			add(rowPanel, "1,2");
-			
 			revalidate();
 //			validate();
 //			rowPanel.validate();
@@ -490,15 +512,9 @@ public class FolderPanel extends JComponent {
 				}
 			}
 			
-			public void mousePressed(MouseEvent e) {
-				//
-				
-			}
+			public void mousePressed(MouseEvent e) {}
 			
-			public void mouseReleased(MouseEvent e) {
-				//
-				
-			}
+			public void mouseReleased(MouseEvent e) {}
 			
 			public void mouseEntered(MouseEvent e) {
 				// titleLabel.setBackground(frameColor.brighter());
@@ -509,11 +525,10 @@ public class FolderPanel extends JComponent {
 			}
 		});
 	}
-	
-	@SuppressWarnings("unchecked")
+
 	private ArrayList<GuiRow> getSortedRows(ArrayList<GuiRow> rows) {
 		GuiRow sorted[] = rows.toArray(new GuiRow[] {});
-		Arrays.sort(sorted, new Comparator() {
+		Arrays.sort(sorted, new Comparator<Object>() {
 			public int compare(Object o1, Object o2) {
 				GuiRow r1 = (GuiRow) o1;
 				GuiRow r2 = (GuiRow) o2;
@@ -591,6 +606,8 @@ public class FolderPanel extends JComponent {
 			cmdButton.setIcon(condensedIcon);
 		else
 			cmdButton.setIcon(uncondensedIcon);
+		
+		final AbstractButtonScaler scaler = new AbstractButtonScaler(Toolbox.getDPIScalingRatio());
 		cmdButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				condensedState = !condensedState;
@@ -607,6 +624,17 @@ public class FolderPanel extends JComponent {
 		});
 		int s = 0;
 		cmdButton.setMargin(new Insets(s, s, s, s));
+		
+		//scaling relevant
+		if (Toolbox.getDPIScalingRatio() == 1f && !MainFrame.getInstance().isShowing())
+			/*do nothing*/;
+		else {
+			final Color titleColor = new Color(184, 207, 229);
+			scaler.coscaleIcon(cmdButton);				
+			cmdButton.setBackground(titleColor);
+			titleLabel.setBackground(titleColor);
+		}
+		
 		tb.add(cmdButton, "0,0");
 		tb.validate();
 		return tb;
@@ -866,7 +894,7 @@ public class FolderPanel extends JComponent {
 			pt = "";
 		JLabel pageLabel = new JLabel(pt);
 		pageLabel.setBackground(frameColor);
-		pageLabel.setOpaque(true);
+		pageLabel.setOpaque(true);		
 		if (!lockRowCount) {
 			tb.add(cmdButtonReduceMaximumRowCount, "0,0");
 			tb.add(cmdButtonIncreaseMaximumRowCount, "1,0");
@@ -1288,5 +1316,96 @@ public class FolderPanel extends JComponent {
 			al.actionPerformed(new ActionEvent(this, condensedState ? 0 : 1, "collapseevent"));
 		
 		// all OK!
+	}
+	
+	transient float dpi;
+	transient boolean resize = false;
+	/**
+	 * Because when condensed, the JComponents representing
+	 * the {@linkplain GuiRow}s are actually removed from the
+	 * Component tree and thus not scaled. So we have to scale
+	 * them again on a new layout. 
+	 */
+	private void adjustGuiRowScaling(GuiRow gr) {
+		//scale re-added Components only post mainFrame init && a scaling change
+		if (MainFrame.getInstance().isShowing() &&
+				(initialDPIvalue != (dpi = DPIHelper.processEmulatedDPIValue(
+						DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT,
+								DPIHelper.PREFERENCES_GET)))
+				|| newInitial != initialDPIvalue || resize)) {
+			
+			//check for new initial DPI value
+			if (ComponentRegulator.isModifiedPoolRefilled()) {
+				newInitial = (newCurrent == -1f) ? dpi : newCurrent;
+				newCurrent = dpi;
+			}
+			//we have to differentiate, since not always sync-up
+			scaleComponent(gr.left);
+			scaleComponent(gr.right);
+		}
+	}
+	
+	/**
+	 * Worker method for {@linkplain FolderPanel#adjustGuiRowScaling(GuiRow)}.
+	 * 
+	 * @param column
+	 */
+	private void scaleComponent(JComponent column) {
+		if (Toolbox.isComponentScaled(column))
+			return;
+		
+		//get the respective set initialDPIvalue
+		float initialValue = setInitialDPIValue(column);
+		if (initialValue != ScalingSlider.getStandard()) {
+			//scale back to 1.0 to fix the mismatch between old & new DPI
+			Toolbox.resetScalingOf(column, initialValue);
+		}
+
+		Toolbox.scaleComponent(column, Toolbox.getDPIScalingRatio(), true);
+		ComponentRegulator.addScaledComponent(column);
+	}
+	
+	/**
+	 * Because there could be components with multiple initial DPI value,
+	 * when there have been multiple scalings done and only some components
+	 * have been adjusted. 
+	 * @param component whose initialDPIvalue will be set or returned
+	 * @return initialDPIValue or current, if no scaling change. Otherwise
+	 * the new initial DPI value.
+	 */
+	private float setInitialDPIValue(JComponent component) {
+		if (!baseDPIValues.containsKey(component.hashCode())) {
+			baseDPIValues.put(component.hashCode(), initialDPIvalue);
+			return initialDPIvalue;
+		} else {
+			float oldValue = baseDPIValues.get(component.hashCode());
+			if (oldValue != newInitial) {
+				baseDPIValues.put(component.hashCode(), newInitial);
+				return newInitial;
+			}
+			
+			return oldValue;
+		}
+	}
+	
+	private void addScalingListener() {
+		PropertyChangeListener sListener = new PropertyChangeListener() {
+			
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {		
+				String v = evt.getNewValue().toString();
+				if (v.equals(Toolbox.STATE_ON_SLIDER) || v.equals(Toolbox.STATE_RESCALED)) {
+					resize = true;
+					layoutRows();
+					resize = false;
+				}
+				
+				if (evt.getOldValue().toString().equals(Toolbox.STATE_ON_START)
+						&& v.equals(Toolbox.STATE_IDLE))
+					layoutRows();
+			}
+		};
+		
+		Toolbox.addScalingListener(sListener);
 	}
 }

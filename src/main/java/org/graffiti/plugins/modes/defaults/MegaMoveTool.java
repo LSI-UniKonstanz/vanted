@@ -20,6 +20,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -55,12 +56,14 @@ import org.graffiti.editor.GraffitiInternalFrame;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
+import org.graffiti.editor.WarningButton;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.graphics.DimensionAttribute;
 import org.graffiti.graphics.GraphicAttributeConstants;
+import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.PreferencesInterface;
 import org.graffiti.plugin.gui.ToolButton;
 import org.graffiti.plugin.parameter.BooleanParameter;
@@ -91,6 +94,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	
 	private static final String PREFERENCE_SNAP_TO_GRID = "Snap to Grid";
 	private static final String PREFERENCE_GRID_SIZE = "Grid Size";
+	private static final String PREFERENCE_SHOW_WARNING_POPUP = "Show OOB Warning";//OOB: OutOfBounds
 	
 	private static final Integer PREFERENCE_DEFAULT_GRID_SIZE = 5;
 	
@@ -105,7 +109,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	// ~ Instance fields ========================================================
 	
 	/**
-	 * Specifies if - when there is a selection - graphelements are highlighted
+	 * Specifies if - when there is a selection - graph elements are highlighted
 	 * only if the CTRL key is pressed.
 	 */
 	protected boolean onlyIfCtrl = false;
@@ -684,7 +688,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					AttributeHelper.setEdgeBendStyle(edge, "org.graffiti.plugins.views.defaults.SmoothLineEdgeShape");
 				}
 			}
-			
+
 			lastBendHit.setCoordinate(new Point2D.Double(newX, newY));
 //			e.getComponent().repaint();
 //			for (View v : MainFrame.getInstance().getActiveEditorSession().getViews())
@@ -730,7 +734,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		
 		dragged = true;
 		
-		// else do nothing with labels and other attributecomponents
+		// else do nothing with labels and other attribute components
 	}
 	
 	public CoordinateAttribute processBendCreation(final MouseEvent e, final Component c) {
@@ -1082,7 +1086,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					newX += dX;
 					newY += dY;
 					newZ += dZ;
-					
+									
 					if (!e.isShiftDown() && e.isAltDown()) {
 						int grid = getGrid(-1);
 						if (grid > 0) {
@@ -1105,7 +1109,9 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					String status = "Move: " + ppp + ": " + moveStartX + " / " + moveStartY + " --> " + (int) newX + " / " + (int) newY +
 							(e.isShiftDown() ? "" : " - press Shift to disable grid point movement, press Alt to move selection to grid points");
 					MainFrame.showMessage(status, MessageType.INFO);
-				}
+				}				
+				//display hideable warning to inform the user about the return commands
+				showOutOfBoundsWarning(e);
 			}
 			
 			if (!resizeHit) {
@@ -1134,7 +1140,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 							newY = newY - (newY % grid);
 						}
 					}
-					
+
 					coord.setCoordinate(new Point2D.Double(newX, newY));
 					
 					if (maxX < newX)
@@ -1156,6 +1162,43 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			getGraph().getListenerManager().transactionFinished(this);
 		}
 		
+	}
+
+	/**
+	 * Show the user information how to return from negative coordinates. Otherwise
+	 * this gets hidden out of view's bounds and is not directly accessible
+	 * for the user. We uses Preference to determine whether the user wants to see it 
+	 * again.
+	 *
+	 * @param e the mouse event - here, we use it to determine whether movement went out of bounds
+	 * 
+	 * @author dim8
+	 */
+	private void showOutOfBoundsWarning(MouseEvent e) {
+		//check if the user wants to see the pop-up
+		final Preferences warningPrefs = PreferenceManager.getPreferenceForClass(MegaMoveTool.class);
+		boolean show = warningPrefs.getBoolean(PREFERENCE_SHOW_WARNING_POPUP, true);
+		
+		//skip unnecessary calculations if no warning would be shown
+		if (!show)
+			return;
+		
+		WarningButton showbt = new WarningButton("Don't show again", new Runnable() {
+			
+			@Override
+			public void run() {
+				warningPrefs.putBoolean(PREFERENCE_SHOW_WARNING_POPUP, false);
+				
+			}
+		});
+		
+		Collection<WarningButton> wbts = new ArrayDeque<WarningButton>(1); //increase before adding more buttons!
+		wbts.add(showbt);
+		
+		if ((e.getPoint().getX() + lastPressedMousePointRel.getX() < 0 ||
+						e.getPoint().getY() + lastPressedMousePointRel.getY() < 0))
+				MainFrame.showWarningPopup("<html><strong>A cluster of graph elements is out of view frustum!</strong><br>"
+						+ "To bring back: Network &#10148; Move Network to Top-Left (Ctrl+1).", 8000, wbts);
 	}
 	
 	public static int getGrid(double sz) {

@@ -98,11 +98,12 @@ public class EditUndoAction
 		} else {
 			setEnabled(false);
 			putValue(NAME, sBundle.getString("menu." + getName()));
-			putValue(SHORT_DESCRIPTION, getName());
+			putValue(SHORT_DESCRIPTION, sBundle.getString("toolbar." + getName() + ".tooltip"));
 		}
 		
-		putValue(SMALL_ICON,
-							iBundle.getImageIcon("toolbar." + getName() + ".icon"));
+		//SMALL_ICON is for JMenuItem, but not for e.g. JButton, and distorts scaling
+		//putValue(SMALL_ICON,
+						//	iBundle.getImageIcon("toolbar." + getName() + ".icon"));
 	}
 }
 

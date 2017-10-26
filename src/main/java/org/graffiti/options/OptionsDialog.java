@@ -216,7 +216,8 @@ public class OptionsDialog
 		
 		// parent.hideWaitCursor(); TODO
 //		pack();
-		setSize(600, 400);
+		//increased width from 600 to 1000 to avoid horizontal scrolling
+		setSize(1000, 400);
 		setLocationRelativeTo(parent);
 		setVisible(true);
 	}

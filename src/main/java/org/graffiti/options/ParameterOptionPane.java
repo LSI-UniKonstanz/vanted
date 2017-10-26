@@ -17,8 +17,10 @@ import org.graffiti.managers.PreferenceManager;
 import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.ValueEditComponent;
 import org.graffiti.plugin.parameter.Parameter;
+import org.vanted.scaling.DPIHelper;
+import org.vanted.scaling.vanted.HighDPISupport;
 
-public class ParameterOptionPane extends AbstractOptionPane{
+public class ParameterOptionPane extends AbstractOptionPane {
 
 	/**
 	 * 
@@ -81,18 +83,27 @@ public class ParameterOptionPane extends AbstractOptionPane{
 				listValueEditComponents.add(valueEditComponent);
 				if(curParameter.getDescription() != null)
 					addComponent(new JLabel(curParameter.getDescription()));
+				
 				addComponent(curParameter.getName(), valueEditComponent.getComponent());
+				
+				/**
+				 * A bit hacky way of placing this components in the parametersPane, but so
+				 * we avoid writing to storage whole components and also enable two-way control
+				 * flaw.
+				 */
+				if (curParameter.getDescription().equals(HighDPISupport.DESCRIPTION)) {
+					DPIHelper.addScalingComponents(this, MainFrame.getInstance());
+					logger.debug("added Scaling Components AFTER " + curParameter.getName());
+				}
 				logger.debug("added "+curParameter.getName()+" as valueeditcomponent");
 			} catch (EditComponentNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
-
+	
 	@Override
 	protected void saveDefault() {
-		// TODO Auto-generated method stub
 		logger.debug("savedefault");
 		
 		Preferences preferenceForClass = PreferenceManager.getPreferenceForClass(clazz);

@@ -1243,10 +1243,10 @@ public class PatternSpringembedder
 			}
 		});
 		
-		JCheckBox finishToTop = new JCheckBox("Finish: Move Network to Upper-Left",
+		JCheckBox finishToTop = new JCheckBox("Finish: Move Network to Top-Left",
 							options.doFinishMoveToTop);
 		finishToTop.setToolTipText(
-							"If selected, all network elements will be moved to the upper left of the view");
+							"If selected, all network elements will be moved to the top-left corner of the view");
 		finishToTop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				options.doFinishMoveToTop = ((JCheckBox) e.getSource())
@@ -1729,7 +1729,7 @@ public class PatternSpringembedder
 										options.getSelection(), getActionEvent());
 				}
 				if (options.doFinishMoveToTop)
-					MainFrame.showMessage("Move graph to top-left", MessageType.PERMANENT_INFO);
+					MainFrame.showMessage("Move Network to Top-Left", MessageType.PERMANENT_INFO);
 				GravistoService.getInstance().runAlgorithm(
 									new CenterLayouterAlgorithm(),
 									options.getGraphInstance(),

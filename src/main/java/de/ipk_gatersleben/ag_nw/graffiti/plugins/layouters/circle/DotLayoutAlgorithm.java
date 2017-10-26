@@ -123,8 +123,8 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 							new StringParameter(installPath, "<html>" +
 												"Program path<br>" +
 												"(optional)", "The path, where the layout programs are installed"),
-								new BooleanParameter(true, "Move graph to top-left",
-													"<html>If set, the graph will be moved to top-left,<br>after layouting has been completed") };
+								new BooleanParameter(true, "Move Network to Top-Left",
+													"<html>If set, the network will be moved to top-left,<br>after layouting has been completed") };
 	}
 	
 	private Collection<String> getLayouts() {

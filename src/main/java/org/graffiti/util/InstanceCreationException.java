@@ -10,7 +10,7 @@
 package org.graffiti.util;
 
 /**
- * An exception, which is thrown, iff the instanciation of a given class fails.
+ * An exception, which is thrown, iff the instantiation of a given class fails.
  * 
  * @version $Revision: 1.5 $
  */

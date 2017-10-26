@@ -90,8 +90,8 @@ public class DBEsplashScreen implements SplashScreenInterface {
 		
 		border = 0;
 		double sizeGlobal[][] =
-		{ { border, TableLayoutConstants.PREFERRED, border }, // Columns
-				{ border, TableLayoutConstants.PREFERRED, border }
+		{ { border, TableLayoutConstants.FILL, border }, // Columns
+				{ border, TableLayoutConstants.FILL, border }
 		}; // Rows
 		
 		JPanel parent = new JPanel();

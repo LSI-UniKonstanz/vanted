@@ -31,6 +31,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -65,6 +67,8 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.InvalidPreferencesFormatException;
 import java.util.prefs.Preferences;
@@ -187,6 +191,7 @@ import org.graffiti.plugin.tool.Tool;
 import org.graffiti.plugin.view.View;
 import org.graffiti.plugin.view.ViewListener;
 import org.graffiti.plugin.view.ZoomListener;
+import org.graffiti.plugins.ios.importers.PortableUrlService;
 import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.selection.Selection;
@@ -1085,7 +1090,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	public Object createInternalFrame(String viewName, String newFrameTitle, EditorSession session,
 			boolean returnScrollPane, boolean returnGraffitiFrame, boolean otherViewWillBeClosed,
 			ConfigureViewAction configNewView, boolean addViewToEditorSession) {
-		
+
 		if (!returnGraffitiFrame && !returnScrollPane && MainFrame.getInstance() != null
 				&& !SwingUtilities.isEventDispatchThread()) {
 			ErrorMsg.addErrorMessage("Internal Error: Creating Frame in Background Thread");
@@ -1470,10 +1475,9 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	final ExecutorService loader = Executors.newFixedThreadPool(1);
 	
 	public void loadGraphInBackground(File[] proposedFiles, final ActionEvent ae, boolean autoSwitch)
-			
 			throws IllegalAccessException, InstantiationException {
-		final ArrayList<File> files = new ArrayList<File>();
 		
+		final ArrayList<File> files = new ArrayList<File>();
 		HashSet<File> filesToBeIgnored = new HashSet<File>();
 		for (File file : proposedFiles) {
 			EditorSession esf = null;
@@ -1488,6 +1492,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					}
 				}
 			}
+			
 			final EditorSession fesf = esf;
 			if (!windowCheck(fesf, file.getAbsolutePath(), autoSwitch)) {
 				filesToBeIgnored.add(file);
@@ -1671,6 +1676,9 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				ext = fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".")) : "";
 				gz = true;
 			}
+			//jump usual control flow and pass the graph file's path
+			PortableUrlService.setGraphPath(file.getAbsolutePath());
+			
 			if (ext.equalsIgnoreCase(".net")) {
 				Graph tempGraph = new AdjListGraph(new ListenerManager());
 				InputSerializer is = ioManager.createInputSerializer(null, ext);
@@ -2324,41 +2332,86 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		fileSave.actionPerformed(new ActionEvent(this, 0, null));
 	}
 	
+	/** Whether promptClosing() has already been called, i.e. a prompt has 
+	 * already been displayed => avoid double show & saveAction.<p>
+	 * 
+	 *  <b>Thread-safe!</b> */
+	private AtomicBoolean called = new AtomicBoolean();
+	/* Session ID */
+	private AtomicInteger sid = new AtomicInteger();
+	/** Set, when external dialog's been cancelled, to restore flow. */
+	public AtomicBoolean cancelledSaveAction = new AtomicBoolean();
+	
+	/**
+	 * This delegates the session closing down below the method chain, given the user has not chosen 
+	 * 'Cancel'. In this case it simply returns. Used for processing the closing of the external
+	 * GraffitiFrame, encapsulating the above mentioned goals. <p>
+	 * 
+	 * Code originates from the closeSession() method. Now there is placed only
+	 * a method call instead.
+	 * @param session current active Session
+	 * @return <b>true</b> if the frame should be closed.
+	 */
+	public boolean promptClosing(Session session) {
+		if (session == null)
+			return false;
+		
+		if (!session.getGraph().isModified())
+			return true;
+			
+		for (GraffitiFrame gf : getDetachedFrames())
+			if (gf.getSession() == session) {
+				called.set(true);
+				sid.set(session.hashCode());
+			}
+
+		String graphName = session.getGraph().getName();
+		if (graphName == null)
+			graphName = "[" + session.getGraph().getName() + "]";
+		JDialog confirmDialog = new JDialog(this);
+		confirmDialog.setAlwaysOnTop(true);
+		int res = JOptionPane.showConfirmDialog(confirmDialog, "<html>" + sBundle.getString("frame.close_save") + "<p>"
+				+ "Graph " + graphName + " contains<br>" + session.getGraph().getNodes().size() + " node(s) and "
+				+ session.getGraph().getEdges().size() + " edge(s)!", sBundle.getString("frame.close_save_title"),
+				JOptionPane.YES_NO_CANCEL_OPTION);
+
+		if (res == JOptionPane.CANCEL_OPTION)
+			return false;
+		if (res == JOptionPane.YES_OPTION) {
+			// save current graph
+			logger.debug("closeSession: saving graph");
+			if (session.getGraph().getName().contains("not saved")) {
+				saveActiveFileAs();
+				if (cancelledSaveAction.compareAndSet(true, false))
+					return false;
+			} else {
+				saveActiveFile();
+				if (cancelledSaveAction.compareAndSet(true, false))
+					return false;
+			}
+			
+
+		}
+		
+		return true;
+	}
+	
 	/**
 	 * Closes all views of the given session and removes the session from the
 	 * list of sessions.
 	 * 
 	 * @param session
 	 *           the session to be removed.
+	 *           
+	 * @return <b>true</b> if the session has been closed
 	 */
 	public boolean closeSession(Session session) {
-		if (session == null)
-			return false;
-		// check if changes have been made
-		
-		boolean askForSave = true;
-		if (askForSave && session.getGraph().isModified()) {
-			String graphName = session.getGraph().getName();
-			if (graphName == null)
-				graphName = "[" + session.getGraph().getName() + "]";
-			int res = JOptionPane.showConfirmDialog(this, "<html>" + sBundle.getString("frame.close_save") + "<p>"
-					+ "Graph " + graphName + " contains<br>" + session.getGraph().getNodes().size() + " node(s) and "
-					+ session.getGraph().getEdges().size() + " edge(s)!", sBundle.getString("frame.close_save_title"),
-					JOptionPane.YES_NO_CANCEL_OPTION);
-			
-			if (res == JOptionPane.CANCEL_OPTION)
+
+		if (!called.compareAndSet(true, false) || !(sid.get() == session.hashCode()))
+			if (!promptClosing(session)) {
+				called.set(false); //Cancel's pressed, reset
 				return false;
-			if (res == JOptionPane.YES_OPTION) {
-				// save current graph
-				logger.debug("closeSession: saving graph");
-				if (session.getGraph().getName().contains("not saved")) {
-					fileSaveAs.actionPerformed(new ActionEvent(this, 0, null));
-				} else {
-					fileSave.actionPerformed(new ActionEvent(this, 0, null));
-				}
 			}
-			
-		}
 		
 		List<View> views = new LinkedList<View>();
 		
@@ -2391,17 +2444,20 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			
 			this.zoomListeners.remove(view);
 		}
+		
+		//make random next session active session
+		if (!sessions.isEmpty()) {
+			Session next = sessions.iterator().next();
+			MainFrame.getInstance().setActiveSession(next, next.getActiveView());
+		} else
+			MainFrame.getInstance().setActiveSession(null, null);
+		
 		sessions.remove(session);
 		session.close();
 		for (SessionListener sl : sessionListeners) {
 			if (sl instanceof SessionListenerExt)
 				((SessionListenerExt) sl).sessionClosed(session);
 		}
-		//make random next session active session
-		if (!sessions.isEmpty())
-			MainFrame.getInstance().setActiveSession(sessions.iterator().next(), null);
-		else
-			MainFrame.getInstance().setActiveSession(null, null);
 		// session.getGraph().clear();
 		return true;
 	}
@@ -3558,8 +3614,12 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					logger.debug("closeSession: saving graph");
 					if (session.getGraph().getName().contains("not saved")) {
 						fileSaveAs.actionPerformed(new ActionEvent(this, 0, null));
+						if (cancelledSaveAction.compareAndSet(true, false))
+							return;
 					} else {
 						fileSave.actionPerformed(new ActionEvent(this, 0, null));
+						if (cancelledSaveAction.compareAndSet(true, false))
+							return;
 					}
 				}
 			}
@@ -3608,25 +3668,35 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			
 			viewFrameMapper.remove(view);
 			zoomListeners.remove(view);
-			
+	
 			ListenerManager lm = session.getGraph().getListenerManager();
+			
+			/* An exception occurs, but to keep consistent the list we have to remove them */
+			//do not output caught exception in each of the try-catch blocks below
+			//ErrorMsg.addErrorMessage(err);
+			
 			try {
 				lm.removeAttributeListener(view);
+			} catch (ListenerNotFoundException err) { }	
+			
+			try {
 				lm.removeEdgeListener(view);
+			} catch (ListenerNotFoundException err) { }
+			
+			try {
 				lm.removeNodeListener(view);
+			} catch (ListenerNotFoundException err) { }	
+			
+			try {
 				lm.removeGraphListener(view);
-			} catch (ListenerNotFoundException err) {
-				ErrorMsg.addErrorMessage(err);
-			}
+			} catch (ListenerNotFoundException err) { }	
 			
 			view.setGraph(null);
 			view.close();
-			
 			session.removeView(f.getView());
 			
 			setTitle(GraffitiInternalFrame.startTitle);
 			mainFrame.updateActions();
-			
 		}
 		
 		public void windowClosing(WindowEvent e) {
@@ -4101,31 +4171,33 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		viewFrameMapper.remove(view);
 		zoomListeners.remove(view);
 		
-		ListenerManager lm = session.getGraph().getListenerManager();
-		try {
-			lm.removeAttributeListener(view);
-			lm.removeEdgeListener(view);
-			lm.removeNodeListener(view);
-			lm.removeGraphListener(view);
-		} catch (ListenerNotFoundException e) {
-			ErrorMsg.addErrorMessage(e);
-		}
-		
-		if (session.getViews().size() > 1) {
-			// System.out.println("CLOSE VIEW");
+		if (session == null) {
 			view.close();
-			session.removeView(view);
 			
 		} else {
-			// remove the session if we are closing the last view
-			view.close();
-			MainFrame.getInstance().closeSession(session);
+
+			ListenerManager lm = session.getGraph().getListenerManager();
+
+			try {
+				lm.removeAttributeListener(view);
+				lm.removeEdgeListener(view);
+				lm.removeNodeListener(view);
+				lm.removeGraphListener(view);
+			} catch (ListenerNotFoundException e) {
+				ErrorMsg.addErrorMessage(e);
+			}
+
+			if (session.getViews().size() > 1) {
+				view.close();
+				session.removeView(view);
+
+			} else {
+				// remove the session if we are closing the last view
+				MainFrame.getInstance().closeSession(session);
+				view.close();
+			}
 		}
-		// fireSessionChanged(null);
-		// activeSession = null;
-		
-		// updateActions();
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				if (desktop.getAllFrames() != null && desktop.getAllFrames().length > 0) {
@@ -4137,7 +4209,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 				}
 			}
 		});
-		
+				
 	}
 	
 	@Override
@@ -4177,12 +4249,15 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	}
 	
 	public View createExternalFrame(String viewClassName, EditorSession session, boolean otherViewWillBeClosed,
-			boolean fullscreen) {
-		return createExternalFrame(viewClassName, null, session, otherViewWillBeClosed, fullscreen);
+			boolean fullscreen, int x, int y, int w, int h) {
+		return createExternalFrame(viewClassName, null, session, otherViewWillBeClosed, fullscreen, x, y, w, h);
 	}
 	
 	public View createExternalFrame(String viewClassName, String framename, EditorSession session,
-			boolean otherViewWillBeClosed, boolean fullscreen) {
+			boolean otherViewWillBeClosed, boolean fullscreen, int x, int y, int w, int h) {
+		//turn off default decorations for detached windows
+		JFrame.setDefaultLookAndFeelDecorated(false);
+		
 		GraffitiInternalFrame gif;
 		if (framename == null)
 			gif = (GraffitiInternalFrame) createInternalFrame(viewClassName, session.getGraph().getName(), session, false,
@@ -4190,21 +4265,45 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		else
 			gif = (GraffitiInternalFrame) createInternalFrame(viewClassName, framename, session, false, true,
 					otherViewWillBeClosed);
+		
 		GraffitiFrame gf = new GraffitiFrame(gif, fullscreen);
+		final GraffitiFrame tgf = gf;
 		gf.addWindowListener(graffitiFrameListener);
+		gf.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				tgf.toFront();	
+			}
+		});
 		gf.setVisible(true);
+		/* Placement of newly detached window relatively below graph edit tools*/
+		int x0 = 75;
+		if (x >= 150)
+			x0 = x - 75;
+		if (y < 75) //to avoid covering edit tools on the left side
+			gf.setBounds(x0, y + 192, w, h);
+		else
+			gf.setBounds(x0, y + 105, w, h);
+		
 		MainFrame.getInstance().addDetachedFrame(gf);
+		
 		return gif.getView();
 	}
 	
 	public View createInternalFrame(String viewClassName, EditorSession session, boolean otherViewWillBeClosed) {
 		createInternalFrame(viewClassName, session.getGraph().getName(), session, false, false, otherViewWillBeClosed);
+		
 		return session.getActiveView();
 	}
 	
 	public View createInternalFrame(String viewClassName, String newFrameTitle, EditorSession session,
 			boolean otherViewWillBeClosed) {
 		createInternalFrame(viewClassName, newFrameTitle, session, false, false, otherViewWillBeClosed);
+		
 		return session.getActiveView();
 	}
 	
@@ -4341,10 +4440,17 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	public static void showWarningPopup(String text, int time) {
 		showWarningPopup(text, time, null);
 	}
+	/** Global variable <b>for showWarningPopup() only</b> to check global conditions. */
+	private static Thread show = null; //There is only one instance of MainFrame at a time so we are just fine.
 	
 	public static void showWarningPopup(final String text, final int time, final Collection<WarningButton> bts) {
 		
-		Thread show = new Thread(new Runnable() {
+		/** We forbid overlapping threads creation, i.e.
+		 *  first wait the last created to die and then create a new one. */
+		if (show != null && show.isAlive())
+			return;
+		
+		show = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				PopupFactory fac = new PopupFactory();
@@ -4424,7 +4530,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 					pop.hide();
 				}
 			}
-		});
+		});		
 		show.start();
 		
 	}

@@ -25,6 +25,8 @@ import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
 
+import org.vanted.scaling.ScalerLoader;
+
 /**
  * Global Preference class for VANTED.
  * Every Preference regarding global settings of VANTED should be
@@ -47,14 +49,20 @@ public class VantedPreferences implements PreferencesInterface {
 	public static boolean PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE;
 	public static final String PREFERENCE_STANDARD_SAVE_FILEFORMAT = "Standard save file format";
 	
-	private static VantedPreferences instance;
+	private static VantedPreferences instance;	
 	
 	public VantedPreferences() {
-		
+		/**
+		 * Scale starting splash banner.
+		 * 
+		 * Additionally, re-scale Metal L&F, which 
+		 * does not update Preferences on start-up.
+		 */
+		ScalerLoader.init(MainFrame.getInstance(), MainFrame.class);
 	}
 	
 	public static VantedPreferences getInstance() {
-		if(instance == null)
+		if (instance == null)
 			instance = new VantedPreferences();
 		return instance;
 	}
@@ -66,12 +74,11 @@ public class VantedPreferences implements PreferencesInterface {
 		params.add(new StringParameter("", PREFERENCE_PROXYHOST, "Name or IP  of the proxy host"));
 		params.add(new IntegerParameter(0, PREFERENCE_PROXYPORT, "Port number of the proxy"));
 		params.add(new BooleanParameter(false, PREFERENCE_SHOWALL_ALGORITHMS,
-				"Show algorithms, that are not shown normally as they might confuse users with their sole functionality"));
-
+				"Show algorithms, not normally shown, as they might confuse users with their sole functionality"));
 		/*
-		 * this only works if vanted has been started and all output fileformats have been made available
+		 * This only works, if Vanted has been started and all output file formats have been made available
 		 */
-		if(MainFrame.getInstance() != null) {
+		if (MainFrame.getInstance() != null) {
 			Set<String> graphFileExtensions = MainFrame.getInstance().getIoManager().getGraphFileExtensions();
 			String[] possibleValues = graphFileExtensions.toArray(new String[graphFileExtensions.size()]);
 			params.add(new ObjectListParameter("", PREFERENCE_STANDARD_SAVE_FILEFORMAT, "Standard file format, that is selected for file saving", possibleValues));
@@ -81,17 +88,16 @@ public class VantedPreferences implements PreferencesInterface {
 
 		}
 		
-		if(Logger.getRootLogger().getLevel() == Level.DEBUG)
+		if (Logger.getRootLogger().getLevel() == Level.DEBUG)
 			params.add(new BooleanParameter(false, PREFERENCE_DEBUG_SHOWPANELFRAMES, "For debugging purposes, show frames from each graph and attribute component."));
+
 		return params;
 	}
 	
 	@Override
-	public void updatePreferences(Preferences preferences) {
-		
-		/*
-		 * handle look and feel parameter
-		 */
+	public void updatePreferences(Preferences preferences) {			
+		/**
+		 * Handle look and feel parameter. */
 		final String lafName = preferences.get(PREFERENCE_LOOKANDFEEL, "");
 		String selLAF = UIManager.getLookAndFeel().getClass().getCanonicalName();
 		if (!selLAF.equals(lafName)) {
@@ -104,10 +110,14 @@ public class VantedPreferences implements PreferencesInterface {
 					} catch (ClassNotFoundException | InstantiationException
 							| IllegalAccessException
 							| UnsupportedLookAndFeelException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					
+					/**
+					 * Scale only LAF Defaults again on a LAF-change.
+					 */
+					ScalerLoader.doScaling(false);
+
 					/*
 					 * show changes for current instance running
 					 * This will only be executed when the preferences are updated using
@@ -125,9 +135,8 @@ public class VantedPreferences implements PreferencesInterface {
 			});
 		}
 		
-		/*
-		 * handle proxy parameter
-		 */
+		/**
+		 * Handle proxy parameter. */
 		String proxyhostname = preferences.get(PREFERENCE_PROXYHOST, null);
 		String proxyport = preferences.get(PREFERENCE_PROXYPORT, null);
 		if (proxyhostname != null && proxyport != null
@@ -139,7 +148,6 @@ public class VantedPreferences implements PreferencesInterface {
 				System.setProperty("http.proxyPort", proxyport);
 				
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
 				System.setProperty("http.proxySet", "false");
 				
 			}
@@ -152,7 +160,6 @@ public class VantedPreferences implements PreferencesInterface {
 	
 	@Override
 	public String getPreferencesAlternativeName() {
-		// TODO Auto-generated method stub
 		return "Vanted Preferences";
 	}
 	
@@ -179,27 +186,42 @@ public class VantedPreferences implements PreferencesInterface {
 		}
 		
 		// temp variable to add the active LAF to the beginning of the objectlistparameter variable
-		LookAndFeelNameAndClass avtiveLaF = null;
+		LookAndFeelNameAndClass activeLaF = null;
 		
 		List<LookAndFeelNameAndClass> listLAFs = new ArrayList<>();
 		
 		for (LookAndFeelInfo lafi : UIManager.getInstalledLookAndFeels()) {
-			LookAndFeelNameAndClass d = new LookAndFeelNameAndClass(lafi.getName(), lafi.getClassName());
+			LookAndFeelNameAndClass d = new LookAndFeelNameAndClass(lafi);
 			if (d.toString().equals(canonicalName))
-				avtiveLaF = d;
+				activeLaF = d;
 			else
 				listLAFs.add(d);
-			
 		}
-		// add active LaF to the beginning of the List
-		listLAFs.add(0, avtiveLaF);
+		
+		//Disable Nimbus (multithreading issues)
+		listLAFs.remove(new LookAndFeelNameAndClass("Nimbus",
+					"javax.swing.plaf.nimbus.NimbusLookAndFeel"));
+		
+		//Check, because in add-ons a new skin could be used => NPE.
+		if(activeLaF != null) {
+			listLAFs.add(0, activeLaF); // add active LaF to the beginning of the List 
+		} else {
+			String activeLaF_Name = UIManager.getLookAndFeel().getName();
+			activeLaF = new LookAndFeelNameAndClass(activeLaF_Name, canonicalName);
+			listLAFs.add(0, activeLaF);
+			//Then install it, to enable resetting, later use
+			UIManager.installLookAndFeel(activeLaF_Name, canonicalName);
+		}
 		
 		possibleValues = listLAFs.toArray();
+
+		
 		
 		objectlistparam = new ObjectListParameter(
-				avtiveLaF,
+				activeLaF,
 				PREFERENCE_LOOKANDFEEL,
-				"<html>Set the look and feel of the application<br/>Current: <b>" + avtiveLaF.name,
+				"<html>Set the look and feel of the application<br/>Current: <b>" + 
+				(activeLaF.name.equals("GTK+") ? activeLaF.name + " (No Hi-DPI)" : activeLaF.name),
 				possibleValues);
 		objectlistparam.setRenderer(new LookAndFeelWrapperListRenderer());
 		return objectlistparam;
@@ -207,22 +229,18 @@ public class VantedPreferences implements PreferencesInterface {
 	
 	/**
 	 * Custom list cell renderer, that will have the LookAndFeelNameAndClass as object
-	 * and displays the human readable name of the lookandfeel class name
+	 * and displays the human readable name of the LookAndFeel class name
 	 * 
 	 * @author matthiak
 	 */
 	class LookAndFeelWrapperListRenderer extends DefaultListCellRenderer {
 		
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 		
 		@Override
 		public Component getListCellRendererComponent(JList<?> list,
 				Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
-			// TODO Auto-generated method stub
 			super.getListCellRendererComponent(list, value, index, isSelected,
 					cellHasFocus);
 			
@@ -233,23 +251,5 @@ public class VantedPreferences implements PreferencesInterface {
 			return this;
 		}
 		
-	}
-	
-	class LookAndFeelNameAndClass {
-		String name;
-		String className;
-		
-		public LookAndFeelNameAndClass(String name, String className) {
-			this.name = name;
-			this.className = className;
-		}
-		
-		public String getName() {
-			return name;
-		}
-		
-		public String toString() {
-			return className;
-		}
 	}
 }

@@ -57,7 +57,7 @@ public class DeleteNodesAlgorithm
 	public DeleteNodesAlgorithm() {
 		myMenu = new JMenu("Delete Nodes/Edges"); // /Bends
 		m1delSel = new JMenuItem("Delete selected subgraph");
-		m2delAllButSel = new JMenuItem("Delete all, but not the selected subgraph");
+		m2delAllButSel = new JMenuItem("Delete all, but the selected subgraph");
 		m1delSel.addActionListener(this);
 		m2delAllButSel.addActionListener(this);
 		

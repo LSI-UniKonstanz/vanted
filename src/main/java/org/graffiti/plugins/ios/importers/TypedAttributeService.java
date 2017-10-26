@@ -167,5 +167,8 @@ public class TypedAttributeService implements HelperClass {
 				ErrorMsg.addErrorMessage(e);
 			}
 		}
+
+		PortableUrlService.processUrlAttributes(attr);
 	}
+	
 }

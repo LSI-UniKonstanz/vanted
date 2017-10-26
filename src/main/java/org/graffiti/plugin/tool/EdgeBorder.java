@@ -69,14 +69,14 @@ public class EdgeBorder
 	// protected SortedCollectionAttribute bends;
 	
 	/**
-	 * Constructor for NodeBorder.
+	 * Constructor for EdgeBorder.
 	 * 
 	 * @param color
-	 *           DOCUMENT ME!
+	 *           The color of the edge border.
 	 * @param size
-	 *           DOCUMENT ME!
+	 *           Must be between 1 and 15.
 	 * @param showBends
-	 *           DOCUMENT ME!
+	 *           True to show bends.
 	 */
 	
 	// public EdgeBorder(Color color, int size, Edge edge) {
@@ -183,11 +183,19 @@ public class EdgeBorder
 			float[] coords = new float[2];
 			
 			pi.currentSegment(coords);
-			cg.fillRect((int) (coords[0]), (int) (coords[1] - bulletSize/2),
+			//save X-coordinates to differ edge direction
+			float srcCoordsX = coords[0];
+			
+			cg.fillRect((int) ((int) (coords[0]) - bulletSize*0.4), (int) (coords[1] - bulletSize/2),
 					bulletSize, bulletSize);
+			
 			pi.next();
 			pi.currentSegment(coords);
-			cg.fillRect((int) (coords[0] - factor), (int) (coords[1] - factor), bulletSize, bulletSize);
+
+			if (srcCoordsX > coords[0]) //going left
+				cg.fillRect((int) (coords[0] - factor), (int) (coords[1] - factor*4), (int) (bulletSize*0.5), (int) (bulletSize*0.7));
+			else //going right (or straight)	
+				cg.fillRect((int) (coords[0] - factor*4), (int) (coords[1] - factor), (int) (bulletSize*0.7), (int) (bulletSize*0.5));
 		} else {
 			
 			if (showBends) {

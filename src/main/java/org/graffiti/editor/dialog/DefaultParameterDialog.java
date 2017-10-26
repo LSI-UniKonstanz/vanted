@@ -62,6 +62,8 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.Session;
+import org.vanted.scaling.Toolbox;
+import org.vanted.scaling.scaler.component.JLabelScaler;
 
 /**
  * The default implementation of a parameter dialog.
@@ -554,6 +556,8 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements
 		
 		title = StringManipulationTools.removeHTMLtags(title);
 		
+		description = getScaledHTMLDescription(description);
+		
 		if (title != null && title.endsWith("..."))
 			title = title.substring(0, title.length() - "...".length());
 		
@@ -601,13 +605,13 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements
 									p[i] = ip;
 								} else
 									if (param instanceof List) {
-										List val = (List) param;
+										List<?> val = (List<?>) param;
 										String name = (String) desc;
 										ObjectListParameter ip = new ObjectListParameter(val.size() > 0 ? val.get(0) : null, name, name, val);
 										p[i] = ip;
 									} else
 										if (param instanceof Set) {
-											Set val = (Set) param;
+											Set<?> val = (Set<?>) param;
 											String name = (String) desc;
 											ObjectListParameter ip = new ObjectListParameter(val.size() > 0 ? val.iterator().next() : null, name, name, val);
 											p[i] = ip;
@@ -686,6 +690,20 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements
 			return null;
 	}
 	
+	/**
+	 * Scales the HTML given there is such, otherwise returns unchanged.
+	 */
+	private static Object getScaledHTMLDescription(Object description) {
+		if (description instanceof String) {
+			JLabel holder = new JLabel((String) description);
+			new JLabelScaler(Toolbox.getDPIScalingRatio()).coscaleHTML(holder);
+			
+			return holder.getText();
+		}
+		
+		return description;
+	}
+
 	private static boolean oneButtonDescription(Object description) {
 		if (description == null || !(description instanceof String))
 			return false;

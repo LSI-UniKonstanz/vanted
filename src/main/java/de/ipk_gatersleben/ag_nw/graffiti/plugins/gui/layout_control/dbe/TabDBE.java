@@ -223,7 +223,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 	/**
 	 * @param projects
 	 */
-	void loadProjectList(JComboBox projects) {
+	void loadProjectList(JComboBox<String> projects) {
 		
 		projects.removeAllItems();
 		projectList.clear();
@@ -241,7 +241,7 @@ public class TabDBE extends InspectorTab implements ExperimentDataPresenter {
 	public TabDBE() {
 		super();
 		this.title = "Experiments";
-		initComponents();
+		initComponents();				
 	}
 	
 	public void installDragNDrop(final JButton target) {

@@ -9,8 +9,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.metacrop.Pat
 public class TabExampleFiles extends PathwayWebLinkTab {
 	
 	public TabExampleFiles() {
-		super("Examples", "https://immersive-analytics.infotech.monash.edu/vanted/examplefiles/",
-							"example files", "example file", "https://immersive-analytics.infotech.monash.edu/vanted/", true);
+		super("Examples", "http://kim25.wwwdns.kim.uni-konstanz.de/vanted/examplefiles/",
+							"example files", "example file", "www.vanted.org", true);
 	}
 	
 	private static final long serialVersionUID = 1L;

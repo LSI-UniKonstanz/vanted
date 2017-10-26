@@ -102,7 +102,7 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 	private static final String MESSAGE_START = "{{";
 	private static final String MESSAGE_END = "}}";
 	
-	private static String URL_UPDATE_BASESTRING = "https://immersive-analytics.infotech.monash.edu/vanted/release/updates/";
+	private static String URL_UPDATE_BASESTRING = "http://kim25.wwwdns.kim.uni-konstanz.de/vanted/release/updates/";
 	private static String URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-update";
 	private static String URL_UPDATEMD5_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-files-md5";
 	private static String URL_CHANGELOG_FILESTRING = URL_UPDATE_BASESTRING + "/" + "CHANGELOG";

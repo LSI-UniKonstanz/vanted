@@ -447,7 +447,7 @@ public class DefaultPluginManager
 	 */
 	private boolean loadPlugin(URL pluginUrl, PluginDescription desc,
 			ProgressViewer progressViewer) throws PluginManagerException {
-		
+
 		if (desc == null)
 			return true;
 		
@@ -585,7 +585,7 @@ public class DefaultPluginManager
 	 * Saves the plugin manager's prefs.
 	 * 
 	 * @exception PluginManagerException
-	 *               if an error occurrs while saving the
+	 *               if an error occurs while saving the
 	 *               preferences.
 	 */
 	public void savePrefs()
@@ -718,7 +718,7 @@ public class DefaultPluginManager
 	 *           the progress viewer that display the progress made
 	 * @return the instantiated plugin.
 	 * @exception PluginManagerException
-	 *               an error occurrs while loading or
+	 *               an error occurs while loading or
 	 *               instantiating the plugin.
 	 */
 	private GenericPlugin createInstance(PluginDescription description,
@@ -744,7 +744,7 @@ public class DefaultPluginManager
 		
 		GenericPlugin pluginInstance;
 		
-		try { // to instanciate the plugin's main class
+		try { // to instantiate the plugin's main class
 			if (!loaded)
 				pluginInstance = (GenericPlugin) InstanceLoader.createInstance(description.getMain());
 			else {

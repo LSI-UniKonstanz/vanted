@@ -734,9 +734,10 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setModal(true);
 		if (organism != null && organism.toLowerCase().equals("ec"))
-			frame.setPreferredSize(new Dimension(344, 283));
+			frame.setPreferredSize(new Dimension(465, 285));
 		else
-			frame.setPreferredSize(new Dimension(279, 229));
+			frame.setPreferredSize(new Dimension(400, 230));
+
 		frame.setLocationRelativeTo(MainFrame.getInstance());
 		
 		JPanel panel = new JPanel(new GridBagLayout());

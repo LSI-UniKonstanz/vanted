@@ -14,6 +14,7 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
+import org.vanted.updater.PreferencesUpdater264;
 
 @SuppressWarnings("nls")
 public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterface {
@@ -22,7 +23,7 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 	 * 
 	 */
 	static final String METACROP_PATHWAY_URL_PARAM = "Metacrop Pathway URL";
-	static String METACROP_PATHWAY_URL_VALUE = "https://immersive-analytics.infotech.monash.edu/vanted/addons/metacrop/gml-newsbgnshapes/";
+	static String METACROP_PATHWAY_URL_VALUE = "http://kim25.wwwdns.kim.uni-konstanz.de/vanted/addons/metacrop/gml-newsbgnshapes/";
 	private static final long serialVersionUID = 1L;
 	
 	public TabMetaCrop() {
@@ -49,7 +50,8 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 	
 	@Override
 	public void updatePreferences(Preferences preferences) {
-		// TODO Auto-generated method stub
+		//update previously written sensitive preferences from version 2.6.3
+		PreferencesUpdater264.checkAndUpdateMonashLink(preferences, METACROP_PATHWAY_URL_PARAM, METACROP_PATHWAY_URL_VALUE);
 		METACROP_PATHWAY_URL_VALUE = preferences.get(METACROP_PATHWAY_URL_PARAM, METACROP_PATHWAY_URL_VALUE);
 		setWebAddress(METACROP_PATHWAY_URL_VALUE);
 	}

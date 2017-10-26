@@ -96,8 +96,13 @@ public class OSXSupport {
                   
             // Use the screen menu bar instead of the window menu bar
             System.setProperty("apple.laf.useScreenMenuBar", "true");
+            
+            //TODO Check it!
+            System.setProperty("com.apple.mrj.application.apple.menu.about.name", "VANTED");
+            System.setProperty("apple.awt.textantialiasing", "true");
   
             // Set the dock icon image
+            //TODO Deprecated/Not working
             if (iconImage != null) {
                 Object application = getOSXApplication();
                 Method setDockIconImageMethod = application.getClass().getMethod("setDockIconImage", Image.class);

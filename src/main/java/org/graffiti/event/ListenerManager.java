@@ -1763,9 +1763,9 @@ public class ListenerManager {
 								+ "to remove cannot be found.");
 		}
 	}
-	
+
 	/**
-	 * Unregisters GraphListener l by removing it from the list of nonstrict
+	 * Unregisters GraphListener l by removing it from the list of non-strict
 	 * and strict transaction GraphListeners.
 	 * 
 	 * @param l

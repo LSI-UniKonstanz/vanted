@@ -20,6 +20,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -72,10 +73,13 @@ public class GraffitiFrame
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public final void windowClosing(final WindowEvent event) {
-				MainFrame.getInstance().removeDetachedFrame(thisFrame);
-				setVisible(false);
-				MainFrame.getInstance().frameClosing(internalFrame.getSession(), internalFrame.getView());
-				dispose();
+				//If user has pressed 'Cancel' skip closing
+				if (MainFrame.getInstance().closeSession(internalFrame.getSession())) {
+					MainFrame.getInstance().frameClosing(internalFrame.getSession(), internalFrame.getView());
+					MainFrame.getInstance().removeDetachedFrame(thisFrame);
+					setVisible(false);
+					dispose();
+				}
 			}
 			
 			@Override
@@ -93,7 +97,6 @@ public class GraffitiFrame
 		
 		if (fullscreen) {
 			this.setUndecorated(true);
-			// setAlwaysOnTop(true);
 			this.addKeyListener(new KeyListener() {
 				public void keyTyped(KeyEvent e) {
 				}
@@ -140,7 +143,7 @@ public class GraffitiFrame
 			add(view.getViewComponent(), "0,0");
 		}
 		
-		setIconImage(MainFrame.getInstance().getIconImage());
+		setIconImage(((ImageIcon)GraffitiInternalFrame.getIcon()).getImage());
 		
 		validate();
 		pack();
@@ -177,8 +180,14 @@ public class GraffitiFrame
 	
 	@Override
 	public void setTitle(String title) {
+		/*	Occurs only on unnamed/unsaved views, so assure that's the case
+		 *	and trim any suffixes before setting to avoid doubly added ones.
+		 */
+		title = title.replaceAll("] - view \\d+", "]");
+		
 		this.initTitle = title;
 		String frameTitle = title + " - view " + frameNumber;
+		
 		super.setTitle(frameTitle);
 	}
 	
@@ -195,18 +204,26 @@ public class GraffitiFrame
 														view.getViewComponent(),
 														GraffitiInternalFrame.class);
 				if (gif != null) {
+					/* We need to save the state of the graph before creating the new frame */
+					boolean modified = MainFrame.getInstance().getActiveSession().getGraph().isModified();
+					
 					MainFrame.getInstance().createExternalFrame(
-										view.getClass().getCanonicalName(), es, true, fullscreen);
+										view.getClass().getCanonicalName(), es, true, fullscreen, 
+											gif.getX(), gif.getY(), gif.getWidth(), gif.getHeight());
 					gif.doDefaultCloseAction();
+					
+					es.getGraph().setModified(modified);
 				} else {
 					GraffitiFrame gf = (GraffitiFrame)
 										ErrorMsg.findParentComponent(
 															view.getViewComponent(),
-															GraffitiFrame.class);
+															GraffitiFrame.class);	
+					boolean modified = MainFrame.getInstance().getActiveSession().getGraph().isModified();					
 					gf.setVisible(false);
 					gf.dispose();
 					MainFrame.getInstance().createInternalFrame(
 										view.getClass().getCanonicalName(), es, true);
+					es.getGraph().setModified(modified);
 				}
 			} catch (Exception err) {
 				ErrorMsg.addErrorMessage(err);

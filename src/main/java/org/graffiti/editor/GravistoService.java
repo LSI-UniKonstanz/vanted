@@ -71,6 +71,8 @@ import org.graffiti.plugin.view.View;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.EditorSession;
 import org.graffiti.session.Session;
+import org.vanted.scaling.Toolbox;
+import org.vanted.scaling.scaler.component.JLabelScaler;
 
 import scenario.ScenarioService;
 
@@ -540,7 +542,12 @@ public class GravistoService implements HelperClass {
 		if (!(algorithm instanceof AlgorithmWithComponentDescription) && algorithm.getDescription() != null
 				&& algorithm.getDescription().trim().length() > 0 && (parameters == null || parameters.length <= 0)
 				&& SwingUtilities.isEventDispatchThread()) {
-			int res = JOptionPane.showConfirmDialog(MainFrame.getInstance(), algorithm.getDescription(),
+
+			//scaling
+			String desc = scaleDescription(algorithm.getDescription());
+			desc = (desc == null) ? algorithm.getDescription() : desc;
+			
+			int res = JOptionPane.showConfirmDialog(MainFrame.getInstance(), desc,
 					StringManipulationTools.removeHTMLtags(algorithm.getName()), JOptionPane.OK_CANCEL_OPTION,
 					JOptionPane.PLAIN_MESSAGE, null);
 			if (res == JOptionPane.CANCEL_OPTION) {
@@ -572,6 +579,21 @@ public class GravistoService implements HelperClass {
 			}
 			
 		}
+	}
+	
+	private static JLabel holder = new JLabel();
+	/**
+	 * Scales the HTML, if such, description of the respective algorithm.
+	 */
+	private static String scaleDescription(String desc) {
+		float factor = Toolbox.getDPIScalingRatio();
+		if (factor != 1f) {
+			holder.setText(desc);
+			new JLabelScaler(factor).coscaleHTML(holder);
+			return holder.getText();
+		}
+
+		return null;
 	}
 	
 	private boolean doThreadSafe(final Algorithm algorithm, final Selection selection,
@@ -898,12 +920,15 @@ public class GravistoService implements HelperClass {
 			public void mouseReleased(MouseEvent e) {
 			}
 		});
+		final float factor = Toolbox.getDPIScalingRatio();
 		Timer t = new Timer(1000, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				memLabel.setText(getCurrentMemoryInfo(shortInfo));
 				if (shortInfo)
 					memLabel.setToolTipText(getCurrentMemoryInfo(false).replaceFirst(":", " (click to garbage-collect):")
 							.replaceFirst("<font color='gray'>", ""));
+				JLabelScaler scaler = new JLabelScaler(factor);
+				scaler.coscaleHTML(memLabel);
 				memLabel.repaint(1000);
 			}
 		});
@@ -929,8 +954,7 @@ public class GravistoService implements HelperClass {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static ImageIcon loadIcon(Class class1, String name) {
+	public static ImageIcon loadIcon(Class<?> class1, String name) {
 		URL url = getResource(class1, name);
 		if (url == null)
 			return null;
@@ -938,8 +962,7 @@ public class GravistoService implements HelperClass {
 			return new ImageIcon(url);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static ImageIcon loadIcon(Class class1, String name, int w, int h) {
+	public static ImageIcon loadIcon(Class<?> class1, String name, int w, int h) {
 		URL url = getResource(class1, name);
 		if (url == null)
 			return null;
@@ -947,13 +970,11 @@ public class GravistoService implements HelperClass {
 			return new ImageIcon(GravistoService.getScaledImage(new ImageIcon(url).getImage(), w, h));
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static URL getResource(Class class1, String name) {
+	public static URL getResource(Class<?> class1, String name) {
 		return getResource(class1, name, null);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static URL getResource(Class location, String filename, String optExt) {
+	public static URL getResource(Class<?> location, String filename, String optExt) {
 		ClassLoader cl = location.getClassLoader();
 		String path = location.getPackage().getName().replace('.', '/');
 		if (optExt == null)
@@ -1087,8 +1108,7 @@ public class GravistoService implements HelperClass {
 	/**
 	 * ToDo Test this method (untested copy).
 	 */
-	@SuppressWarnings("unchecked")
-	public static void saveRessource(Class reference, String folder, String fileName, String targetFileName)
+	public static void saveRessource(Class<?> reference, String folder, String fileName, String targetFileName)
 			throws IOException {
 		ClassLoader cl = reference.getClassLoader();
 		

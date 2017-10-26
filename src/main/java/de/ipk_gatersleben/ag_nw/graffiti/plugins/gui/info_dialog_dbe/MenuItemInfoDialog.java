@@ -121,7 +121,7 @@ public class MenuItemInfoDialog
 		
 		ClassLoader cl = this.getClass().getClassLoader();
 //		String path = this.getClass().getPackage().getName().replace('.', '/');
-		ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash_16x16.png"));
+		ImageIcon icon = new ImageIcon(cl.getResource("images/vanted_logo_splash_alpha_16x16.png"));
 		info.setIcon(icon);
 		KeyStroke f1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
 		info.setAccelerator(f1);
@@ -136,7 +136,7 @@ public class MenuItemInfoDialog
 //				ImageIcon icon = new ImageIcon(cl.getResource(path + "/pattern_graffiti_logo.png"));
 				int divisor = 1024;
 				
-				String otherParties, otherParties2, copyR, copyRMonash;
+				String otherParties, otherParties2, copyR, copyRMonash, copyRKonstanz;
 				if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH)) {
 					// otherParties = "The node overlap removal algorithm is developed by Dr. Tim Dwyer.";
 				} else {
@@ -158,7 +158,9 @@ public class MenuItemInfoDialog
 				else
 					copyR = "&copy; 2003-2014 IPK Gatersleben";
 				
-				copyRMonash = "&copy; 2014-2015 Monash University";
+				copyRMonash = "&copy; 2014-2016 Monash University";
+				
+				copyRKonstanz = "&copy; 2016 Konstanz University";
 				
 				int num = 0;
 				num = MainFrame.getInstance().getPluginManager().getPluginEntries().size();
@@ -177,6 +179,8 @@ public class MenuItemInfoDialog
 										+ DBEgravistoHelper.DBE_GRAVISTO_NAME.replaceAll("<br>", "")
 										+
 										"<br><br><b>Copyrights</b><br><br>"
+										+ copyRKonstanz
+										+ "<br>"
 										+ copyRMonash
 										+ "<br>"
 										+ copyR
@@ -402,7 +406,7 @@ public class MenuItemInfoDialog
 			public void actionPerformed(ActionEvent arg0) {
 				boolean ext = true;
 				if (ext) {
-					AttributeHelper.showInBrowser("https://immersive-analytics.infotech.monash.edu/vanted/index.php?file=doc139.html");
+					AttributeHelper.showInBrowser("http://kim25.wwwdns.kim.uni-konstanz.de/vanted/index.php?file=doc139.html");
 					return;
 				}
 				JFrame w = new JFrame("Release Information");
@@ -413,7 +417,7 @@ public class MenuItemInfoDialog
 				}; // Rows
 				w.setLayout(new TableLayout(size));
 				w.add(
-						getWebPane("https://immersive-analytics.infotech.monash.edu/vanted/index.php?file=doc139.html"),
+						getWebPane("http://kim25.wwwdns.kim.uni-konstanz.de/vanted/index.php?file=doc139.html"),
 						"1,1");
 				w.setSize(640, 480);
 				w.setVisible(true);
@@ -771,22 +775,24 @@ public class MenuItemInfoDialog
 		final JPanel workFlowHelp = WorkflowHelper.getWorkFlowHelp();
 		
 		double border = 5;
+		Dimension preferred = new Dimension(350, 600);
 		
 		final JPanel myPanel = new JPanel();
 		myPanel.setLayout(new TableLayout(new double[][] {
-				{ border, 300, border }, // Columns
+				{ border, TableLayoutConstraints.FILL, border }, // Columns
 				{ TableLayoutConstraints.PREFERRED }
 		}));
+		myPanel.setPreferredSize(preferred);
 		
 		myPanel.add(workFlowHelp, "1,0");
 		
 		dialogWorkflow = new JDialog(MainFrame.getInstance());
 		dialogWorkflow.setTitle("Workflow Tutorial");
-		dialogWorkflow.setModal(false);
-		dialogWorkflow.setSize(new Dimension(350, 600));
+		dialogWorkflow.setModalityType(JDialog.ModalityType.MODELESS);
+		dialogWorkflow.setSize(preferred);
 		
 		JScrollPane scrollpane = new JScrollPane(myPanel);
-		scrollpane.setPreferredSize(new Dimension(350, 600));
+		scrollpane.setPreferredSize(preferred);
 		
 		dialogWorkflow.getContentPane().setLayout(new BorderLayout());
 		dialogWorkflow.getContentPane().add(scrollpane, BorderLayout.CENTER);

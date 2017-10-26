@@ -20,6 +20,8 @@ import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.EditorAlgorithm;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.kegg_bar.SelectWindowsAlgorithm;
+
 /**
  * Runs an algorithm.
  * 
@@ -82,9 +84,19 @@ public class RunAlgorithm
 			boolean alwaysExecutable = ((AbstractAlgorithm)algorithm).isAlwaysExecutable();
 			if(alwaysExecutable)
 				return true;
-			else
+			else {
+				/**
+				 * A special case, because this given algorithm is strictly dependent
+				 * on the #DesktopFrames. Thus, not entirely session-dependent and is
+				 * to be disabled, when e.g. one uses only detached frames.
+				 */
+				if (algorithm instanceof SelectWindowsAlgorithm &&
+						mainFrame.getDesktop().getAllFrames().length < 1)
+					return false;
+				
 				if (!mainFrame.isSessionActive())
 					return false;
+			}
 				return true;
 
 		} else {

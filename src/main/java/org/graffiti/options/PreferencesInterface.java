@@ -37,10 +37,10 @@ public interface PreferencesInterface {
 
 	
 	/**
-	 * this method will be called, when preferences for this class has changed
+	 * This method will be called, when preferences for this class have changed
 	 * and the implementing class gets the chance of setting class (static) variables
 	 * having the values of the parameters.
-	 * Setting static class variables will help increasing speed, when querying
+	 * Setting static class variables will help increase speed, when querying
 	 * the parameters. Direct variable access VS querying the Preferences Object for this class
 	 * @param preferences
 	 */

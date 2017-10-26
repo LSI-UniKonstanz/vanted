@@ -26,6 +26,15 @@ import org.graffiti.plugin.parameter.Parameter;
  */
 public class SelectWindowsAlgorithm extends AbstractAlgorithm {
 	
+	@Override
+	public boolean isAlwaysExecutable() {
+		//do not execute when no internal frames present
+		if (MainFrame.getInstance().getDesktop().getAllFrames().length < 1)
+			return false;
+		
+		return super.isAlwaysExecutable();
+	}
+
 	private JInternalFrame desiredWindow;
 	
 	public String getName() {

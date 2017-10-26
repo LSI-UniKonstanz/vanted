@@ -81,7 +81,7 @@ public class GraphHelper implements HelperClass {
 	 */
 	public static void diplayGraph(Graph g) {
 		EditorSession es = new EditorSession(g);
-		
+
 		GravistoService.getInstance().getMainFrame().showViewChooserDialog(es, false, null);
 	}
 	
@@ -919,6 +919,9 @@ public class GraphHelper implements HelperClass {
 	}
 	
 	public static void issueCompleteRedrawForActiveView() {
+		if (GravistoService.getInstance().getMainFrame().getActiveEditorSession() == null)
+			return;
+		
 		View activeView = GravistoService.getInstance().getMainFrame().getActiveEditorSession().getActiveView();
 		Graph activeGraph = GravistoService.getInstance().getMainFrame().getActiveEditorSession().getGraph();
 		issueCompleteRedrawForView(activeView, activeGraph);

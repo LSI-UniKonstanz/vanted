@@ -15,8 +15,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -67,7 +67,6 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 	 * (non-Javadoc)
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
-	@SuppressWarnings("deprecation")
 	public void execute() {
 		final ArrayList<EditorSession> ws = new ArrayList<EditorSession>();
 		for (EditorSession es : sortByFileName(MainFrame.getEditorSessions())) {
@@ -75,7 +74,7 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 		}
 		final File selPath = OpenFileDialogService
 							.getDirectoryFromUser("Select Output-Folder");
-		if (selPath != null && selPath.isDirectory()) {
+		if (selPath != null && !selPath.getPath().equals("Cancel") && selPath.isDirectory()) {
 			ArrayList<Object> paramsA = new ArrayList<Object>();
 			ArrayList<Object> paramsB = new ArrayList<Object>();
 			ArrayList<Object> paramsC = new ArrayList<Object>();
@@ -84,9 +83,9 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 			paramsA.add("<h1>My Pathway Website</h1>");
 			paramsB.add("Website-Description//");
 			paramsB
-								.add("VANTED graph to website export. VANTED is available at <a href=\"https://immersive-analytics.infotech.monash.edu/vanted/\" target=\"_blank\">https://immersive-analytics.infotech.monash.edu/vanted/</a>.");
+								.add("VANTED graph to website export. VANTED is available at <a href=\"http://kim25.wwwdns.kim.uni-konstanz.de/vanted/\" target=\"_blank\">http://kim25.wwwdns.kim.uni-konstanz.de/vanted/</a>.");
 			paramsC.add("Footer//");
-			paramsC.add("<small>Copyright (c) " + (new Date().getYear() + 1900)
+			paramsC.add("<small>Copyright (c) " + Calendar.getInstance().get(Calendar.YEAR)
 					+ " by NAME OF INSTITUTION.</small>");
 			paramsC.add("Feedback to//");
 			paramsC.add("address@institute.com");
@@ -210,8 +209,9 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 									}, status);
 			}
 		} else {
-			MainFrame.showMessageDialog("Please select a valid output folder!",
-								"Error");
+			if (!selPath.getPath().equals("Cancel"))
+				MainFrame.showMessageDialog("Please select a valid output folder!",
+									"Error");
 		}
 	}
 	

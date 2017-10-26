@@ -1,10 +1,13 @@
 package org.graffiti.managers;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -50,18 +53,13 @@ public class PreferenceManager
 	private static PreferenceManager instance;
 	
 	private PreferenceManager() {
-		try {
+	    Path prefs = Paths.get(ReleaseInfo.getAppFolder(), SETTINGSFILENAME);
+	    
+		try (InputStream fis = new BufferedInputStream(Files.newInputStream(prefs))) {
 			logger.debug("loading preferences from settings.xml file");
-			Preferences.importPreferences(new FileInputStream(new File(ReleaseInfo.getAppFolder() + "/settings.xml")));
-		} catch (FileNotFoundException e) {
-			logger.debug("no preference file found " + e.getMessage());
-//			e.printStackTrace();
-		} catch (IOException e) {
+			Preferences.importPreferences(fis);
+		} catch (IOException | InvalidPreferencesFormatException e) {
 			logger.error(e.getMessage());
-//			e.printStackTrace();
-		} catch (InvalidPreferencesFormatException e) {
-			logger.error(e.getMessage());
-//			e.printStackTrace();
 		}
 		
 		setPreferencingObjects = new HashSet<>();
@@ -92,10 +90,8 @@ public class PreferenceManager
 			PreferencesInterface piClass = (PreferencesInterface) preferencingClass.newInstance();
 			checkAddAndSetClassesPreferences(piClass);
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -111,7 +107,6 @@ public class PreferenceManager
 	 * @param plugin
 	 * @param desc
 	 */
-	@SuppressWarnings({ "unchecked" })
 	@Override
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
 		for (Algorithm algo : plugin.getAlgorithms()) {
@@ -134,8 +129,6 @@ public class PreferenceManager
 						try {
 							
 							Object viewobject = forName.newInstance();
-							
-							PreferencesInterface pi = (PreferencesInterface) viewobject;
 							checkAddAndSetClassesPreferences((PreferencesInterface) viewobject);
 							
 						} catch (InstantiationException e) {
@@ -177,10 +170,8 @@ public class PreferenceManager
 						if (attrCompInstance instanceof PreferencesInterface)
 							checkAddAndSetClassesPreferences((PreferencesInterface) attrCompInstance);
 					} catch (InstantiationException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					} catch (IllegalAccessException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
@@ -195,7 +186,7 @@ public class PreferenceManager
 	 * part of the given preferences, the parameters in the preferences
 	 * gets deleted
 	 */
-	private Preferences checkExistingPreferences(Class<?> clazz, List<? extends Parameter> defaultPreferences) {
+	public Preferences checkExistingPreferences(Class<?> clazz, List<? extends Parameter> defaultPreferences) {
 		logger.debug("checking Existing Preferences and collect keys that can be deleted");
 		/*
 		 * inheriting classes, where the superclass already implemented the defaultparameters
@@ -236,8 +227,9 @@ public class PreferenceManager
 	 * 
 	 * @param prefInterface
 	 */
-	private void checkAddAndSetClassesPreferences(PreferencesInterface prefInterface) {
-		Preferences defaultPrefs = checkExistingPreferences(prefInterface.getClass(), ((PreferencesInterface) prefInterface).getDefaultParameters());
+	public void checkAddAndSetClassesPreferences(PreferencesInterface prefInterface) {
+		Preferences defaultPrefs = checkExistingPreferences(prefInterface.getClass(),
+				((PreferencesInterface) prefInterface).getDefaultParameters());
 		
 		if (defaultPrefs != null) {
 			setPreferencingObjects.add((Class<? extends PreferencesInterface>) prefInterface.getClass());
@@ -293,17 +285,18 @@ public class PreferenceManager
 	}
 	
 	/**
-	 * Stores the preferences in 'settings.xml' in the Vanted program directory
+	 * Stores the preferences in 'settings.xml' in the Vanted program directory.<p>
+	 * 
+	 * Improved to allow faster operations, also now closing the stream 
+	 * automatically, not waiting until GC.
 	 */
 	public static void storePreferences() {
-		try {
-			Preferences.userRoot().exportSubtree(new FileOutputStream(new File(ReleaseInfo.getAppFolder() + "/" + SETTINGSFILENAME)));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (BackingStoreException e) {
-			e.printStackTrace();
-		}
+	    Path prefs = Paths.get(ReleaseInfo.getAppFolder(), SETTINGSFILENAME);
+
+	    try (OutputStream fos = new BufferedOutputStream(Files.newOutputStream(prefs))) {
+	        Preferences.userRoot().exportSubtree(fos);
+	    } catch (IOException | BackingStoreException e) {
+	        e.printStackTrace();
+	    }
 	}
 }
