@@ -30,7 +30,7 @@ public class TestPath2Models extends TestCase {
 	protected void setUp() throws Exception {
 		client = new BioModelsWSClient();
 		
-		logger.getRootLogger().setLevel(Level.INFO);
+		Logger.getRootLogger().setLevel(Level.INFO);
 	}
 	
 	@Test

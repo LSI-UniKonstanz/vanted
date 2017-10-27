@@ -60,7 +60,7 @@ public class PDFAlgorithm
 	
 	public PDFAlgorithm(int border) {
 		this();
-		this.border = border;
+		PDFAlgorithm.border = border;
 	}
 	
 	/**
