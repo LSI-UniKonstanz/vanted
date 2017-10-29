@@ -98,10 +98,8 @@ import javax.swing.PopupFactory;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.InternalFrameAdapter;
@@ -575,8 +573,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		navigationView.setMinimumSize(new Dimension(0, 100));
 		addSessionListener(navigationView);
 		guiMap.put(navigationView.getId(), navigationView);
-		
-		UIManager.put("SplitPaneDivider.border", new EmptyBorder(0, 0, 0, 0));
 		
 		if (progressPanel != null) {
 			jSplitPane_pluginPanelAndProgressView = TableLayout.getSplitVertical(navigationView, progressPanel,
