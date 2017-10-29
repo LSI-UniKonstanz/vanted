@@ -154,13 +154,13 @@ public class MenuItemInfoDialog
 				}
 				
 				if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
-					copyR = "&copy; 2003-2012 Leibniz Institute of Plant Genetics and Crop Plant Research (IPK)";
+					copyR = "&copy; 2003 - 2012 Leibniz Institute of Plant Genetics and Crop Plant Research (IPK)";
 				else
-					copyR = "&copy; 2003-2014 IPK Gatersleben";
+					copyR = "&copy; 2003 - 2014 IPK Gatersleben";
 				
-				copyRMonash = "&copy; 2014-2016 Monash University";
+				copyRMonash = "&copy; 2014 - 2016 Monash University";
 				
-				copyRKonstanz = "&copy; 2016 Konstanz University";
+				copyRKonstanz = "&copy; 2016 - 2017 Konstanz University";
 				
 				int num = 0;
 				num = MainFrame.getInstance().getPluginManager().getPluginEntries().size();
@@ -185,7 +185,7 @@ public class MenuItemInfoDialog
 										+ "<br>"
 										+ copyR
 										+ "<br>"
-										+ "- based on Gravisto (c) 2001-2004 University of Passau -<br>"
+										+ "- based on Gravisto (c) 2001 - 2004 University of Passau -<br>"
 										+
 										"Graph Visualization Toolkit (Gravisto) - http://gravisto.fim.uni-passau.de/"
 										+
