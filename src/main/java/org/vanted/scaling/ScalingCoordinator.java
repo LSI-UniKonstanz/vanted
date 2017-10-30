@@ -128,7 +128,10 @@ public class ScalingCoordinator {
 	 * @param delegate
 	 */
 	public void adjustDefaults(Scaler delegate) {
-		UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+		/*
+		 * getDefaults() instead of getLookAndFeelDefaults() to scale
+		 * any previously custom-set UIDefaults. */
+		UIDefaults defaults = UIManager.getDefaults();
 		
 		delegate.initialScaling();
 

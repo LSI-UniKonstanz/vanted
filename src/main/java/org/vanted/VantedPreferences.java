@@ -236,9 +236,9 @@ public class VantedPreferences implements PreferencesInterface {
 	/**
 	 * Modifications to the standard UI default values.
 	 */
-	public static void styleUIDefaults() {
+	private static void styleUIDefaults() {
 		UIManager.put("SplitPaneDivider.border", new EmptyBorder(0, 0, 0, 0));
-		UIManager.put("Tree.leafIcon", GravistoService.loadIcon(MainFrame.class, "images/node.png"));
+		UIManager.put("Tree.leafIcon", GravistoService.loadIcon(VantedPreferences.class, "images/node.png"));
 	}
 
 	/**
