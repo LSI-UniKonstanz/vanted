@@ -499,7 +499,7 @@ public class GravistoMainHelper implements HelperClass {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-						} while (!mainFrame.getInstance().isVisible());
+						} while (!MainFrame.getInstance().isVisible());
 						SetJavaMemoryMacOS.showDialog();
 						
 					}

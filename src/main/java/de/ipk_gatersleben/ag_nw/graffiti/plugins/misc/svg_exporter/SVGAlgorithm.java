@@ -71,7 +71,7 @@ public class SVGAlgorithm
 	public SVGAlgorithm(int border) {
 		// Do nothing than calling inherit contructor.
 		this();
-		this.border = border;
+		SVGAlgorithm.border = border;
 	}
 	
 	/**

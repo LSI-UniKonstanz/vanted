@@ -12,10 +12,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.border.EmptyBorder;
 
 import org.ReleaseInfo;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.PreferencesInterface;
@@ -52,6 +54,10 @@ public class VantedPreferences implements PreferencesInterface {
 	private static VantedPreferences instance;	
 	
 	public VantedPreferences() {
+		
+		/* Set any UI Constants before any scaling! */
+		VantedPreferences.styleUIDefaults();
+		
 		/**
 		 * Scale starting splash banner.
 		 * 
@@ -227,6 +233,14 @@ public class VantedPreferences implements PreferencesInterface {
 		return objectlistparam;
 	}
 	
+	/**
+	 * Modifications to the standard UI default values.
+	 */
+	private static void styleUIDefaults() {
+		UIManager.put("SplitPaneDivider.border", new EmptyBorder(0, 0, 0, 0));
+		UIManager.put("Tree.leafIcon", GravistoService.loadIcon(VantedPreferences.class, "images/node.png"));
+	}
+
 	/**
 	 * Custom list cell renderer, that will have the LookAndFeelNameAndClass as object
 	 * and displays the human readable name of the LookAndFeel class name
