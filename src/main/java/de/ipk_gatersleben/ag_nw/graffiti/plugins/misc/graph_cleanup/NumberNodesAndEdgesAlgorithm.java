@@ -47,8 +47,8 @@ public class NumberNodesAndEdgesAlgorithm extends AbstractAlgorithm
 	 * Constructs a new instance.
 	 */
 	public NumberNodesAndEdgesAlgorithm() {
-		numberNodes = new JMenuItem("Number Nodes");
-		numberEdges = new JMenuItem("Number Edges");
+		numberNodes = new JMenuItem("Number nodes");
+		numberEdges = new JMenuItem("Number edges");
 		numberNodes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int i = 1;

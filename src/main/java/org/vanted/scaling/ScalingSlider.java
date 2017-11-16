@@ -265,16 +265,15 @@ public class ScalingSlider extends ImmutableSlider
 	private float computeCoordinatorFactor(int sliderValue) {
 		float dpif = DPIHelper.processEmulatedDPIValue(sliderValue);
 
-		if (prevFactor != 0f)//0.0 is here not the min. value, but the unset!
+		if (prevFactor != 0f) //0.0 is here not the min. value, but the unset!
 			dpif /= prevFactor;
 		else {
-			float prefsPrevFactor = (DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT, 
-					DPIHelper.PREFERENCES_GET) == (float) min) ? (min + 0.5f) / median
+			int prefsSliderValue = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT, 
+					DPIHelper.PREFERENCES_GET);
+			float prefsPrevFactor = (prefsSliderValue == (float) min) ? (min + 0.5f) / median
 							/*1/2 for lowest mark, since 0 neutral */
-							: DPIHelper.managePreferences(
-									DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET)
-							/ (float) median;
-			dpif /=  prefsPrevFactor;
+							: prefsSliderValue / (float) median;
+			dpif /= prefsPrevFactor;
 		}
 		
 		//update next previous DPI factor
