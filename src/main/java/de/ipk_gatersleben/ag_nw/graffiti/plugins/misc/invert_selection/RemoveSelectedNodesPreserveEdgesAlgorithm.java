@@ -8,6 +8,7 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import java.util.Stack;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.KeyStroke;
 
 import org.AttributeHelper;
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
@@ -126,36 +128,34 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 		int i = 0;
 		for (Node n : workNodes) {
 			i++;
-			// process undirected edges as follows:
-			// all nodes that have a undirected connection to the node to be
-			// deleted
-			// will be connected by a new undirected edge to all neighbours of
-			// the
-			// node to be deleted
-			if (ignoreDirection) {
-				if (graph.isUndirected()) {
-					for (Edge e : n.getAllOutEdges()) {
-						e.setDirected(false);
-						AttributeHelper.setArrowhead(e, false);
-						AttributeHelper.setArrowtail(e, false);
-					}
-					for (Edge undirEdge : n.getUndirectedEdges()) {
-						Node srcN = undirEdge.getSource();
-						for (Node targetN : n.getUndirectedNeighbors()) {
-							if (srcN != targetN) {
-								if (!srcN.getNeighbors().contains(targetN)) {
-									graph.addEdgeCopy(undirEdge, srcN, targetN);
-									edgeCopies++;
-								}
+			/**
+			 * Process undirected edges as follows:
+			 * all nodes that have an undirected connection to the node, which
+			 * are to be deleted, will be connected by a new undirected edge
+			 * to all neighbours of the node, which is to be deleted.
+			 */
+			if (graph.isUndirected() || ignoreDirection) {
+				for (Edge e : n.getAllOutEdges()) {
+					e.setDirected(false);
+					AttributeHelper.setArrowhead(e, false);
+					AttributeHelper.setArrowtail(e, false);
+				}
+				for (Edge undirEdge : n.getUndirectedEdges()) {
+					Node srcN = undirEdge.getSource();
+					for (Node targetN : n.getUndirectedNeighbors()) {
+						if (srcN != targetN) {
+							if (!srcN.getNeighbors().contains(targetN)) {
+								graph.addEdgeCopy(undirEdge, srcN, targetN);
+								edgeCopies++;
 							}
 						}
-						srcN = undirEdge.getTarget();
-						for (Node targetN : n.getUndirectedNeighbors()) {
-							if (srcN != targetN) {
-								if (!srcN.getNeighbors().contains(targetN)) {
-									graph.addEdgeCopy(undirEdge, srcN, targetN);
-									edgeCopies++;
-								}
+					}
+					srcN = undirEdge.getTarget();
+					for (Node targetN : n.getUndirectedNeighbors()) {
+						if (srcN != targetN) {
+							if (!srcN.getNeighbors().contains(targetN)) {
+								graph.addEdgeCopy(undirEdge, srcN, targetN);
+								edgeCopies++;
 							}
 						}
 					}
@@ -282,39 +282,32 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 					Edge edge2 = edges[second];
 					
 					setRemoveEdges.add(edge2);
+					
 					// don't check an edge with itself
 					if (edge1.equals(edge2))
 						continue;
-					
+										
 					// get the nodes, that will be connected by the folded edge
-					Node sourceNode;
-					Node targetNode;
+					Node sourceNode = null;
+					Node targetNode = null;
+					
+					//determine edge1's other node role 
+					if (edge1.getSource().equals(curWorkNode))
+						targetNode = edge1.getTarget();
+					else if (edge1.getTarget().equals(curWorkNode)) 
+						sourceNode = edge1.getSource();
+					
+					//based on edge1's other node, set edge2's other node 
+					if (targetNode == null)
+						targetNode = edge2.getTarget();
+					else
+						sourceNode = edge2.getSource();
 					
 					edge1Type = testEdgeType(curWorkNode, edge1);
 					edge2Type = testEdgeType(curWorkNode, edge2);
 					
 					assert (edge1Type != null);
 					assert (edge2Type != null);
-					
-					//depending of the edge type, the source/target-node is set from edge-source or edge-target
-					switch (edge1Type) {
-						case IN_EDGE:
-						case IN_EDGE_BI:
-						case IN_EDGE_OUT:
-							sourceNode = edge1.getSource();
-							break;
-						default:
-							sourceNode = edge1.getTarget();
-					}
-					switch (edge2Type) {
-						case IN_EDGE:
-						case IN_EDGE_BI:
-						case IN_EDGE_OUT:
-							targetNode = edge2.getSource();
-							break;
-						default:
-							targetNode = edge2.getTarget();
-					}
 					
 					EdgeType resultEdge = getResultEdge(edge1Type, edge2Type);
 					
@@ -336,6 +329,11 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 						}
 						if (!allreadyThere)
 							setEdgeType.add(resultEdge);
+					} else {
+						if (!sourceNode.getNeighbors().contains(targetNode)) {
+							Graph g = sourceNode.getGraph();
+							g.addEdge(sourceNode, targetNode, false);
+						}
 					}
 				}
 			}
@@ -499,7 +497,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-		return "Remove Connecting Nodes";
+		return "Fold-Delete";
 	}
 	
 	@Override
@@ -517,15 +515,24 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	
 	@Override
 	public String getDescription() {
-		return "<html>" +
-				"With this command you can remove nodes, that do connect<br/>"
-				+ "other nodes inbetween without loosing the overall connectivity<br/>"
-				+ "of the network. The selected nodes (round nodes<br>" +
-				"in the example) are removed from a network. <br>" +
-				"The connectivity of the resulting network is influenced<br>" +
-				"by the corresponding setting as shown in the image.";
+		return "<html><br />"
+				+ "With this command you can delete intermediate nodes,<br />"
+				+ "while preserving overall neighbours connectedness.<br />"
+				+ "On the image, the selected round orange nodes are<br />"
+				+ "removed from the network. The resulting network<br />"
+				+ "connectivity is influenced by the direction of the<br />"
+				+ "flow of information. Thus, the \"Non-preserving\"<br />"
+				+ "outcome has been implemented.<br /><br />";
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.graffiti.plugin.algorithm.AbstractAlgorithm#getAcceleratorKeyStroke()
+	 */
+	@Override
+	public KeyStroke getAcceleratorKeyStroke() {
+		return KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, java.awt.event.InputEvent.CTRL_DOWN_MASK);
+	}
+
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 
