@@ -193,6 +193,9 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 				} catch (IOException e) {
 					ErrorMsg.addErrorMessage(e);
 					MainFrame.showMessageDialog("I/O-Exception: " + e.toString(), "Error");
+				} catch (NullPointerException npe) {
+					//NPE is result of connection error, already reported to
+					//the user, so do nothing, no change in the tree appearance
 				}
 				((DefaultTreeModel) pathwayTree.getModel()).reload();
 			}

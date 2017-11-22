@@ -6,6 +6,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels;
 import java.awt.BorderLayout;
 import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -88,7 +89,7 @@ implements BiomodelsLoaderCallback{
 							SBML_XML_Reader.doValidateSBMLOnLoad(saveReaderstate);
 						}
 						MainFrame.getInstance().showGraph(g, null);
-					} catch (Exception e) {
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
 

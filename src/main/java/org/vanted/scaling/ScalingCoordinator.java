@@ -86,7 +86,7 @@ public class ScalingCoordinator {
 	}
 	
 	/**
-	 * Empty Coordinator. You should refresh the GUI thereafter alone.
+	 * Empty Coordinator. You should refresh the GUI thereafter by yourself.
 	 */
 	public ScalingCoordinator() {}
 	
@@ -123,15 +123,19 @@ public class ScalingCoordinator {
 	}
 
 	/**
-	 * Scan Defaults and re-scale the appropriate values. 
+	 * Scan Defaults and re-scale the appropriate values.
+	 * 
+	 *  <b>Important Note:</b> To scale any added defaults, these must be
+	 *  added to the {@link UIManager#getLookAndFeelDefaults()}.
 	 * 
 	 * @param delegate
 	 */
 	public void adjustDefaults(Scaler delegate) {
 		/*
-		 * getDefaults() instead of getLookAndFeelDefaults() to scale
-		 * any previously custom-set UIDefaults. */
-		UIDefaults defaults = UIManager.getDefaults();
+		 * We use getLookAndFeelDefaults() instead of just getDefaults(),
+		 * because the developer defaults contain doubled references and
+		 * thus result in doubled scaling. */
+		UIDefaults defaults = UIManager.getLookAndFeelDefaults();
 		
 		delegate.initialScaling();
 

@@ -235,10 +235,11 @@ public class VantedPreferences implements PreferencesInterface {
 	
 	/**
 	 * Modifications to the standard UI default values.
+	 * Added to the LAF Defaults, so that they can be scaled, if necessary.
 	 */
 	private static void styleUIDefaults() {
-		UIManager.put("SplitPaneDivider.border", new EmptyBorder(0, 0, 0, 0));
-		UIManager.put("Tree.leafIcon", GravistoService.loadIcon(VantedPreferences.class, "images/node.png"));
+		UIManager.getLookAndFeelDefaults().put("SplitPaneDivider.border", new EmptyBorder(0, 0, 0, 0));
+		UIManager.getLookAndFeelDefaults().put("Tree.leafIcon", GravistoService.loadIcon(VantedPreferences.class, "images/node.png"));
 	}
 
 	/**
