@@ -546,4 +546,16 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
+
+	@Override
+	public boolean isLayoutAlgorithm() {
+			return false;
+	}
+
+	@Override
+	public boolean isAlwaysExecutable() {
+		return false;
+	}
+	
+	
 }
