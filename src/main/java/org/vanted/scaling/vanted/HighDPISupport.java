@@ -140,7 +140,7 @@ public class HighDPISupport implements PreferencesInterface {
 
 	@Override
 	public String getPreferencesAlternativeName() {
-		return "<html>High DPI Support<sup>BETA</sup></html>";
+		return "<html>High DPI Support</html>";
 	}
 	
 	/**

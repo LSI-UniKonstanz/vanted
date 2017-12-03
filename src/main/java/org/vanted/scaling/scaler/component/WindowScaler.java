@@ -8,6 +8,7 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.AWTEventListener;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -26,6 +27,8 @@ import org.vanted.scaling.Toolbox;
  */
 public class WindowScaler extends ComponentScaler {
 
+	private static final float INITIAL_UNSET = -1f;
+	
 	public WindowScaler(float scaleFactor) {
 		super(scaleFactor);
 	}
@@ -69,26 +72,8 @@ public class WindowScaler extends ComponentScaler {
 		return li;
 	}
 	
-	
-	/**
-	 * Attach a WindowResizerListener to the default system window Toolkit.
-	 */
-	public static void attachWindowResizer() {
-		Toolkit.getDefaultToolkit().addAWTEventListener(new WindowResizerListener(), AWTEvent.WINDOW_EVENT_MASK);
-	}
-	
-	public static void resizeWindow(Component window) {
-		if (window.getClass().getSimpleName().endsWith("HeavyWeightWindow"))
-			return;
-		
-		Dimension size = window.getSize();
-		size.setSize(size.getWidth() * Toolbox.getDPIScalingRatio(),
-					size.getHeight() * Toolbox.getDPIScalingRatio());
-		window.setSize(size);
-		
-		window.invalidate();
-		window.repaint();
-	}
+	private static float previousRatio = INITIAL_UNSET;
+	private static ArrayList<Integer> scaledWindows = new ArrayList<>();
 	
 	/**
 	 * Specialized implementation of the {@linkplain AWTEventListener} that resizes any new window.
@@ -102,12 +87,12 @@ public class WindowScaler extends ComponentScaler {
 		
 		@Override
 		public void eventDispatched(AWTEvent event) {
-			if (Toolbox.getDPIScalingRatio() == 1f)
+			if (Toolbox.getDPIScalingRatio() == 1f && WindowScaler.getPreviousRatio() == INITIAL_UNSET)
 				return;
 			
 			switch (event.getID()) {
 				case WindowEvent.WINDOW_OPENED:
-					resizeWindow((Window) event.getSource());
+					resizeWindow((Window) event.getSource(), false);
 					break;
 				case WindowEvent.WINDOW_CLOSED:
 					//nothing
@@ -116,4 +101,107 @@ public class WindowScaler extends ComponentScaler {
 		}
 	}
 	
+	/**
+	 * Attach a WindowResizerListener to the default system window Toolkit.
+	 */
+	public static void attachSystemWindowResizer() {
+		Toolkit.getDefaultToolkit().addAWTEventListener(new WindowResizerListener(), AWTEvent.WINDOW_EVENT_MASK);
+	}
+	
+	/**
+	 * Resizes window components. If the window is not scaling-persistent then
+	 * its actual scaled size is adjusted by scale-back value, meaning it is
+	 * scaled only up to a given percentage out of the full scaling factor.
+	 * Default system windows (through usage of 
+	 * {@link WindowScaler#attachSystemWindowResizer()}) are set to be impersistent,
+	 * e.g. dialogs.
+	 * 
+	 * @param window to be resized
+	 * @param isPersistent if the window instance would persist through and get rescaled
+	 */
+	public static void resizeWindow(Component window, boolean isPersistent) {
+		if (!isWindowScalable(window))
+			return;
+
+		float scalingFactor = Toolbox.getDPIScalingRatio();
+		if (previousRatio == INITIAL_UNSET)
+			previousRatio = Toolbox.getDPIScalingRatio();
+		//Window already scaled at least once (w/ previous factor)
+		else if (scaledWindows.contains(window.hashCode())
+				//and the new scaling factor hasn't been adjusted yet
+				&& (Toolbox.getDPIScalingRatio() / previousRatio != 1)) {
+			//if scaleback is used for re-scalable windows too, should be here
+			scalingFactor = Toolbox.getDPIScalingRatio() / previousRatio;
+			previousRatio = Toolbox.getDPIScalingRatio();
+		}
+		
+		float scaleback = (isPersistent) ? 1 :
+			getScalebackFactor(Toolbox.getDPIScalingRatio());
+		
+		
+		Dimension size = window.getSize();
+		size.setSize(
+				Math.round(((float) size.getWidth()) * (scalingFactor * scaleback)),
+				Math.round(((float) size.getHeight()) * (scalingFactor * scaleback)));
+		window.setSize(size);
+		
+		//avoid adding dialog pop-ups and duplicates
+		if (isPersistent && !scaledWindows.contains(window.hashCode()))
+			scaledWindows.add(window.hashCode());
+		
+		window.invalidate();
+		window.repaint();
+	}
+
+	/**
+	 * Certain windows do not tolerate resizing, therefore those remain
+	 * non-scaled.
+	 * 
+	 * @param window to check onto
+	 * @return true, if not a heavy weight window
+	 */
+	private static boolean isWindowScalable(Component window) {
+		return !window.getClass().getSimpleName().endsWith("HeavyWeightWindow");
+	}
+	
+	/**
+	 * @return last most recently used scaling ratio/factor.
+	 */
+	public static float getPreviousRatio() {
+		return previousRatio;
+	}
+	
+	/**
+	 * Returns suitable scaleback-value for window scaling.
+	 * Should be called once per overall scaling change, not per window.
+	 *  
+	 * @param ratio {@link Toolbox#getDPIScalingRatio()}
+	 * @return 1 or {@link WindowScaler#SCALEBACK_DECREASE}
+	 * 			 or {@link WindowScaler#SCALEBACK_INCREASE}
+	 */
+	private static float getScalebackFactor(float ratio) {
+		if (ratio == previousRatio) {
+			if (ratio > 1)
+				return SCALEBACK_DECREASE;
+			else if (ratio < 1)
+				return SCALEBACK_INCREASE;
+			else
+				return 1;
+		} else { //currently unused, because we scale back only impersistent windows (dialog-like)
+			if (ratio > previousRatio) {
+				previousRatio = ratio;
+				return SCALEBACK_DECREASE;
+			} else if (ratio < previousRatio) {
+				previousRatio = ratio;
+				return SCALEBACK_INCREASE;
+			} else
+				return 1;
+		}
+
+	}
+	
+	/** Used to scale windows' width and height back, since the actual scale by itself is too much. */
+	private static final float SCALEBACK_PERCENTAGE = .7f;// percentage to scale back with
+	private static final float SCALEBACK_DECREASE = SCALEBACK_PERCENTAGE; // higher scaling, ergo smaller scaleback
+	private static final float SCALEBACK_INCREASE = 1 / SCALEBACK_DECREASE; //lower scaling, ergo bigger scaleback		
 }

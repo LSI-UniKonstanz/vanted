@@ -47,7 +47,7 @@ public class DPIHelper {
 	/*--------Scaling Preferences-------- */
 	static final String PREFERENCE_SCALING = "Scaling Preferences";
 	/** Standard value, when no scaling is to be performed. Useful for resetting.*/
-	public static final int STANDARD_VALUE = 50;
+	public static final int STANDARD_VALUE = ScalingSlider.median;
 	/** Default value, when not setting any particular value. */
 	public static final int VALUE_DEFAULT = -1;
 	/** Internal value for checking if any values are stored. */
@@ -143,8 +143,42 @@ public class DPIHelper {
 			});
 			
 			pane.addComponent("<html>Enable Lifesaver&emsp;&emsp;", lifesaver);
+			
+			addEmptyLine(pane);
+			addEmptyLine(pane);
+			addEmptyLine(pane);
+			addEmptyLine(pane);
+			addEmptyLine(pane);
+
+			addResetter(pane);
 	}
 	
+	
+	private static void addEmptyLine(AbstractOptionPane pane) {
+		JLabel emptyLine = new JLabel("<html>");
+		pane.addComponent(emptyLine);
+	}
+	
+	/**
+	 * Builds and displays a reset button for user convenience.
+	 *  
+	 * @param pane onto which to display
+	 */
+	private static void addResetter(AbstractOptionPane pane) {
+		final JButton resetter = new JButton("Reset");
+		
+		resetter.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (ScalingSlider.getSliderValue() != STANDARD_VALUE)
+					ScalingSlider.setSliderValue(STANDARD_VALUE);
+			}
+		});
+		
+		pane.addComponent(resetter, GridBagConstraints.LINE_END);
+
+	}
 	
 	/**
 	 * The CSS pixel <i>px</i> tries to match the reference pixel, which depends
@@ -164,7 +198,7 @@ public class DPIHelper {
 	 * This does not resize any already visible windows.
 	 */
 	public static void initWindowResizer() {
-		WindowScaler.attachWindowResizer();
+		WindowScaler.attachSystemWindowResizer();
 	}
 	
 	/**
@@ -197,7 +231,7 @@ public class DPIHelper {
 		
 		if (selection == JOptionPane.YES_OPTION) {
 			//write
-			DPIHelper.managePreferences(50, false);
+			DPIHelper.managePreferences(STANDARD_VALUE, false);
 			//& flush
 			try {
 				DPIHelper.flushPreferences();
@@ -260,7 +294,7 @@ public class DPIHelper {
 	 */
 	private static boolean isSafe(int value) {
 		int dpi = Math.round(DPIHelper.processEmulatedDPIValue(value));
-		int limit = Math.round(ScalingSlider.getStandard() / 100f * 30);
+		int limit = Math.round(ScalingSlider.getStandard() / (float) ScalingSlider.max * 30);
 		
 		if (dpi > limit)
 			return true;
