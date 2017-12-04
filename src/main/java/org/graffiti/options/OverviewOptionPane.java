@@ -17,7 +17,7 @@ import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
 
 import org.vanted.scaling.Toolbox;
-import org.vanted.scaling.scaler.component.JTextComponentScaler;
+import org.vanted.scaling.scalers.component.JTextComponentScaler;
 
 /**
  * The overview pane for the options dialog.

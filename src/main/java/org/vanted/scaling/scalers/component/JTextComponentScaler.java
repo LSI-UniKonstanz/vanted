@@ -1,4 +1,4 @@
-package org.vanted.scaling.scaler.component;
+package org.vanted.scaling.scalers.component;
 
 import javax.swing.JComponent;
 import javax.swing.JEditorPane;

@@ -1,4 +1,4 @@
-package org.vanted.scaling.scaler.component;
+package org.vanted.scaling.scalers.component;
 
 import java.awt.AWTEvent;
 import java.awt.Component;
@@ -141,8 +141,8 @@ public class WindowScaler extends ComponentScaler {
 		
 		Dimension size = window.getSize();
 		size.setSize(
-				Math.round(((float) size.getWidth()) * (scalingFactor * scaleback)),
-				Math.round(((float) size.getHeight()) * (scalingFactor * scaleback)));
+				Math.round(size.width * (scalingFactor * scaleback)),
+				Math.round(size.height * (scalingFactor * scaleback)));
 		window.setSize(size);
 		
 		//avoid adding dialog pop-ups and duplicates

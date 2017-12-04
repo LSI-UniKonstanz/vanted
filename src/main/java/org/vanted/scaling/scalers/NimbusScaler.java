@@ -1,4 +1,4 @@
-package org.vanted.scaling.scaler;
+package org.vanted.scaling.scalers;
 
 import java.awt.Font;
 

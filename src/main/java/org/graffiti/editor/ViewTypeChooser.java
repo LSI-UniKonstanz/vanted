@@ -43,7 +43,7 @@ import org.FolderPanel;
 import org.graffiti.core.ImageBundle;
 import org.graffiti.core.StringBundle;
 import org.vanted.scaling.Toolbox;
-import org.vanted.scaling.scaler.component.JLabelScaler;
+import org.vanted.scaling.scalers.component.JLabelScaler;
 
 /**
  * DOCUMENT ME!

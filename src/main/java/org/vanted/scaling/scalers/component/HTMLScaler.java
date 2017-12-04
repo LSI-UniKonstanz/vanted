@@ -1,8 +1,8 @@
-package org.vanted.scaling.scaler.component;
+package org.vanted.scaling.scalers.component;
 
 import javax.swing.JComponent;
 
-import org.vanted.scaling.scaler.Scaler;
+import org.vanted.scaling.scalers.Scaler;
 
 /**
  * Implement this to make sure your HTML-styled component's text

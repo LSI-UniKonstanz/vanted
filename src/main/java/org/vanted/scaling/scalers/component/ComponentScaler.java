@@ -1,4 +1,4 @@
-package org.vanted.scaling.scaler.component;
+package org.vanted.scaling.scalers.component;
 
 import java.awt.Font;
 import java.awt.Insets;
@@ -9,8 +9,9 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import org.vanted.scaling.ComponentRegulator;
 import org.vanted.scaling.resources.ScaledFontUIResource;
-import org.vanted.scaling.scaler.BasicScaler;
+import org.vanted.scaling.scalers.BasicScaler;
 
 /**
  * Applicable to initiated Swing Components. It scales specifics that
@@ -24,6 +25,7 @@ import org.vanted.scaling.scaler.BasicScaler;
  * {@link AbstractButtonScaler}<br>
  * {@link JLabelScaler}<br>
  * {@link JOptionPaneScaler}<br>
+ * {@link JSplitPaneScaler}<br>
  * {@link JTabbedPaneScaler}<br>
  * {@link JTextComponentScaler}<br>
  * 
@@ -38,17 +40,20 @@ public class ComponentScaler extends BasicScaler {
 	
 	/**
 	 * A method to be called when this {@linkplain ComponentScaler} has been
-	 * dispatched to some immediate JComponent to be scaled. Reason, initialization
-	 * of new components with overwritten LAF Defaults, post-scaling. Attach a
-	 * scaler and call this method after done with initialization. For more
-	 * specific JComponents, see the direct known subclasses.
+	 * dispatched to some immediate JComponent to be scaled - both from the
+	 * central {@link ComponentRegulator} and on its own. A reason for a
+	 * call outside the usual scaling routine could be an initialization
+	 * of new components with overwritten, i.e custom-set, LAF Defaults,
+	 * post-scaling. Attach a scaler and call this method after done with the
+	 * initialization. For more specific JComponents, see the direct known
+	 * subclasses.
 	 *  
 	 * @param immediateComponent to be scaled
 	 */
 	public void scaleComponent(JComponent immediateComponent) {
 		coscaleFont(immediateComponent);
 		coscaleInsets(immediateComponent);
-		//icons left to respective sub-types
+		coscaleIcon(immediateComponent);
 	}
 	
 	/**

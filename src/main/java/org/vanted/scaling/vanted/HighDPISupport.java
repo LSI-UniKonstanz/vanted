@@ -81,7 +81,7 @@ public class HighDPISupport implements PreferencesInterface {
 		
 		params.add(getInformation());
 
-		//Here come the slider and lifesaver, added in ParameterOptionPane
+		//Here come the slider, lifesaver and reset button, added in ParameterOptionPane
 		
 		/**
 		 * We enable S-Quaqua only on Mac and, of course, while developing,

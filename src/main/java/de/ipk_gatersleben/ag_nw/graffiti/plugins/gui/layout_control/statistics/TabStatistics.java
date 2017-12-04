@@ -89,7 +89,7 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.CategoryItemRenderer;
 import org.vanted.scaling.Toolbox;
-import org.vanted.scaling.scaler.component.JTabbedPaneScaler;
+import org.vanted.scaling.scalers.component.JTabbedPaneScaler;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;

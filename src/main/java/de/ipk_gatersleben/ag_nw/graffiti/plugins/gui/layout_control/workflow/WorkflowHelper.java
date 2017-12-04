@@ -65,7 +65,7 @@ import org.graffiti.plugin.view.View;
 import org.graffiti.plugins.modes.defaults.MegaMoveTool;
 import org.graffiti.plugins.modes.defaults.MegaTools;
 import org.vanted.scaling.Toolbox;
-import org.vanted.scaling.scaler.component.JLabelScaler;
+import org.vanted.scaling.scalers.component.JLabelScaler;
 
 import scenario.Scenario;
 import scenario.ScenarioGui;

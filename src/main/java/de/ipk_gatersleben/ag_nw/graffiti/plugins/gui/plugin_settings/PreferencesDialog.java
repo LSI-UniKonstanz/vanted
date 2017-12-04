@@ -63,7 +63,7 @@ import org.graffiti.plugin.algorithm.ThreadSafeAlgorithm;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.selection.Selection;
 import org.vanted.scaling.Toolbox;
-import org.vanted.scaling.scaler.component.JLabelScaler;
+import org.vanted.scaling.scalers.component.JLabelScaler;
 
 import scenario.ScenarioService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.BSHscriptMenuEntry;

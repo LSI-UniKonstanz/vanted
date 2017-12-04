@@ -14,7 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import org.vanted.scaling.Toolbox;
-import org.vanted.scaling.scaler.component.JTextComponentScaler;
+import org.vanted.scaling.scalers.component.JTextComponentScaler;
 
 public class MyScrollLabel extends JPanel {
 	private static final long serialVersionUID = 1L;

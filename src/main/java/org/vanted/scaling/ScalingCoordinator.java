@@ -12,10 +12,10 @@ import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 import org.ReleaseInfo;
-import org.vanted.scaling.scaler.BasicScaler;
-import org.vanted.scaling.scaler.NimbusScaler;
-import org.vanted.scaling.scaler.Scaler;
-import org.vanted.scaling.scaler.WindowsScaler;
+import org.vanted.scaling.scalers.BasicScaler;
+import org.vanted.scaling.scalers.NimbusScaler;
+import org.vanted.scaling.scalers.Scaler;
+import org.vanted.scaling.scalers.WindowsScaler;
 
 /**
  * It coordinates the scaling among the possible L&Fs and initiates Components-

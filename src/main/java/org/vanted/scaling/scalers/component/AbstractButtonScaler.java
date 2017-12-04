@@ -1,4 +1,4 @@
-package org.vanted.scaling.scaler.component;
+package org.vanted.scaling.scalers.component;
 
 import java.awt.Component;
 
@@ -29,6 +29,7 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	 *  
 	 * @param immediateComponent to be scaled
 	 */
+	@Override
 	public void scaleComponent(JComponent immediateComponent) {
 		this.coscaleFont(immediateComponent);
 		coscaleInsets(immediateComponent);

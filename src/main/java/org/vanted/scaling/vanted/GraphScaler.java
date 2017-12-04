@@ -17,8 +17,8 @@ import org.graffiti.session.SessionListener;
 import org.vanted.scaling.DPIHelper;
 import org.vanted.scaling.ScalingSlider;
 import org.vanted.scaling.Toolbox;
-import org.vanted.scaling.scaler.BasicScaler;
-import org.vanted.scaling.scaler.component.WindowScaler;
+import org.vanted.scaling.scalers.BasicScaler;
+import org.vanted.scaling.scalers.component.WindowScaler;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeComponent;
 
