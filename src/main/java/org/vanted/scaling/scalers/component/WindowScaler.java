@@ -20,7 +20,7 @@ import org.vanted.scaling.Toolbox;
 
 /**
  * Extension of {@linkplain ComponentScaler}, responsible for Window-derived
- * components' decorations scaling. 
+ * components' decorations scaling.
  * 
  * @author dim8
  *
@@ -40,14 +40,24 @@ public class WindowScaler extends ComponentScaler {
 	 * <b>Note:</b> Use this only when JFrame or JDialog, are *not* LookAndFeel decorated.
 	 * Otherwise, this has no effect (Metal LookAndFeel tested).
 	 * 
+	 * Doesn't override {@link ComponentScaler#coscaleIcon(javax.swing.JComponent)}!
+	 * 
 	 * @see {@linkplain DPIHelper#adjustWindowDecoratations()}
 	 *  
 	 * @param immediateComponent to be scaled
 	 */
 	public void scaleComponent(Component immediateComponent) {
 		this.coscaleIcon(immediateComponent);
+		resizeWindow(immediateComponent);
 	}
 	
+	/**
+	 * Scales JFrame and JDialog icons.
+	 * 
+	 * Doesn't override {@link ComponentScaler#coscaleIcon(javax.swing.JComponent)}!
+	 * 
+	 * @param component
+	 */
 	public void coscaleIcon(Component component) {
 			if (component instanceof JFrame) {
 				JFrame frame = (JFrame) component;
@@ -60,6 +70,12 @@ public class WindowScaler extends ComponentScaler {
 			}
 	}
 
+	/**
+	 * Worker mehtod for {@link WindowScaler#coscaleIcon(Component)}.
+	 * 
+	 * @param li images list
+	 * @return list of newly scaled Image instances
+	 */
 	private List<Image> scaleIconImages(List<Image> li) {
 		final int size = li.size();
 		for (int i = 0; i < size; i++) {
@@ -80,7 +96,7 @@ public class WindowScaler extends ComponentScaler {
 	 * One notable exception are HeavyWeightWindows, whose scaling is part of the normal DPI emulating
 	 * cycle. 
 	 * 
-	 * @author dim
+	 * @author dim8
 	 *
 	 */
 	private static class WindowResizerListener implements AWTEventListener {
@@ -151,6 +167,26 @@ public class WindowScaler extends ComponentScaler {
 		
 		window.invalidate();
 		window.repaint();
+	}
+
+	/**
+	 * Resize children components of the main container, given there are some.
+	 * Currently not part of the central scaling routine.
+	 * 
+	 * @param window component to scaler
+	 */
+	private void resizeWindow(Component window) {
+		if (!isWindowScalable(window))
+			return;
+		
+		Dimension size = window.getSize();
+		size.setSize(
+				Math.round(size.width * scaleFactor),
+				Math.round(size.height * scaleFactor));
+		window.setSize(size);
+		
+		window.invalidate();
+		window.repaint();		
 	}
 
 	/**

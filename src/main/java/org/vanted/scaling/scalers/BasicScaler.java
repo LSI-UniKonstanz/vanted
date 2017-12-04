@@ -1,5 +1,6 @@
 package org.vanted.scaling.scalers;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -136,7 +137,7 @@ public class BasicScaler implements Scaler {
 	 * @param original the Integer/int to modify
 	 * @return newly scaled instance
 	 */
-	public Integer modifyInteger(Integer original) {
+	protected Integer modifyInteger(Integer original) {
 		return Math.round(original * scaleFactor);
 	}
 	
@@ -148,8 +149,18 @@ public class BasicScaler implements Scaler {
 	 * @param original the Integer/int to modify
 	 * @return newly scaled instance
 	 */
-	public Double modifyDouble(Double original) {
+	protected Double modifyDouble(Double original) {
 		return original * scaleFactor;
+	}
+	
+	/**
+	 * Utility modification method for lower-order subclass scalers.
+	 * 
+	 * @param size the Dimension to modify
+	 * @return newly scaled instance
+	 */
+	protected Dimension modifySize(Dimension size) {
+		return new Dimension(modifyInteger(size.width), modifyInteger(size.height));
 	}
 	
 	/**

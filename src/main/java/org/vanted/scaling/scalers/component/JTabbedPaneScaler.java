@@ -49,9 +49,7 @@ public class JTabbedPaneScaler extends ComponentScaler implements HTMLScaler{
 		for (int j = 0; j < pane.getTabCount(); j++)
 			if ((i = pane.getIconAt(j)) != null)
 				pane.setIconAt(j, modifyIcon(null, i));
-	}
-	
-	
+	}	
 
 	@Override
 	public void coscaleFont(JComponent component) {

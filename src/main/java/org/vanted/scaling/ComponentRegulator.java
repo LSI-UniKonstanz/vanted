@@ -29,7 +29,6 @@ import org.vanted.scaling.scalers.component.JSplitPaneScaler;
 import org.vanted.scaling.scalers.component.JTabbedPaneScaler;
 import org.vanted.scaling.scalers.component.JTextComponentScaler;
 
-
 /**
  * <i>Notice:</i> it is advisable to not access it directly, but through
  * the provided {@link ScalingCoordinator}, because of factor conversions.

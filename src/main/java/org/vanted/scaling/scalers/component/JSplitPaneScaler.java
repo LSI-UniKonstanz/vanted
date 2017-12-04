@@ -1,12 +1,17 @@
 package org.vanted.scaling.scalers.component;
 
 import java.awt.Component;
-import java.awt.Dimension;
 
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
 
-
+/**
+ * A {@linkplain JSplitPane}-specific extension of 
+ * {@link ComponentScaler}.
+ * 
+ * @author dim8
+ *
+ */
 public class JSplitPaneScaler extends ComponentScaler {
 
 	public JSplitPaneScaler(float scaleFactor) {
@@ -17,11 +22,16 @@ public class JSplitPaneScaler extends ComponentScaler {
 	public void scaleComponent(JComponent immediateComponent) {
 		super.scaleComponent(immediateComponent);
 		
-		
 		coscaleDividerLocation(immediateComponent);
 	}
 	
-	public void coscaleDividerLocation(JComponent component) {
+	/**
+	 * The divider location is indirectly "scaled", due to the scaling and packing
+	 * of its direct children.
+	 * 
+	 * @param component the JSplitPane, whose divider location should scale up
+	 */
+	private void coscaleDividerLocation(JComponent component) {
 		JSplitPane pane = (JSplitPane) component;
 		
 		//scale children
@@ -33,11 +43,4 @@ public class JSplitPaneScaler extends ComponentScaler {
 		//pack JSP according children's new preferred sizes
 		pane.resetToPreferredSizes();
 	}
-	
-	private Dimension modifySize(Dimension size) {
-		return new Dimension(modifyInteger(size.width), modifyInteger(size.height));
-	}
-	
-	
-
 }
