@@ -1,5 +1,6 @@
-package org.vanted.scaling.scaler;
+package org.vanted.scaling.scalers;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -116,13 +117,52 @@ public class BasicScaler implements Scaler {
 		return new Font(original.getName(), original.getStyle(), newSize);
 	}
 
+	/**
+	 * Modifies Integers defined in the LookAndFeel map of UIDefaults.
+	 */
 	@Override
 	public Integer modifyInteger(Object key, Integer original) {
 		if (!endsWithOneOf(lower(key), LOWER_SUFFIXES_INTEGERS))
 			return original;
 
-		return (int) (original * scaleFactor);
+		return Math.round(original * scaleFactor);
 	}
+	
+
+	/**
+	 * Shorthand for manual scaling and it should be always used
+	 * in any subclass implementation instead of manual modification,
+	 * due to its included accounting for past factors.
+	 * 
+	 * @param original the Integer/int to modify
+	 * @return newly scaled instance
+	 */
+	protected Integer modifyInteger(Integer original) {
+		return Math.round(original * scaleFactor);
+	}
+	
+	/**
+	 * Shorthand for manual scaling and it should be always used
+	 * in any subclass implementation instead of manual modification,
+	 * due to its included accounting for past factors.
+	 * 
+	 * @param original the Integer/int to modify
+	 * @return newly scaled instance
+	 */
+	protected Double modifyDouble(Double original) {
+		return original * scaleFactor;
+	}
+	
+	/**
+	 * Utility modification method for lower-order subclass scalers.
+	 * 
+	 * @param size the Dimension to modify
+	 * @return newly scaled instance
+	 */
+	protected Dimension modifySize(Dimension size) {
+		return new Dimension(modifyInteger(size.width), modifyInteger(size.height));
+	}
+	
 	/**
 	 * Interface method for {@link modifyInsets}, encapsulating the delegation
 	 * and performing differentiating.

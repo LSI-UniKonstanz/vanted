@@ -7,6 +7,7 @@ import java.awt.event.FocusListener;
 import java.io.Serializable;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -55,11 +56,11 @@ public class ScalingSlider extends ImmutableSlider
 
 	/* Defaults */
 	private int value = 50;
-	static int min = 0;
-	static int max = 100;
+	public static int min = 0;
+	public static int max = 100;
 	private int extent = 0;
 	
-	static int median = (min + max) / 2;
+	public static int median = (min + max) / 2;
 	/**
 	 * Slider to allow live modifications to the scaling of components. It just
 	 * has to be initialized e.g. in Preferences window.
@@ -96,6 +97,7 @@ public class ScalingSlider extends ImmutableSlider
 	private void scalingSlider(int value, int extent, int min, int max) {
 		
 		addChangeListener(this);
+		addChangeListeners();
 		addFocusListener(this);
 		
 		this.value = value; 
@@ -137,8 +139,31 @@ public class ScalingSlider extends ImmutableSlider
 		return STANDARD_DPI;
 	}
 	
+	/**
+	 * Get the slider value.
+	 * 
+	 * @return current slider value or most recent, if there is no active instance
+	 */
 	public static int getSliderValue() {
 		return instance.getValue();
+	}
+	
+	/**
+	 * Set the slider value.
+	 * 
+	 * @param value the value to set
+	 * @return true if within range and successfully set
+	 * @throws IllegalStateException if called without active instance
+	 */
+	public static boolean setSliderValue(int value) throws IllegalStateException {
+		if (!(value >= min && value <= max))
+			return false;
+		
+		if (instance == null)
+			throw new IllegalStateException();
+		
+		instance.setValue(value);
+		return true;
 	}
 	
 	/**
@@ -160,8 +185,13 @@ public class ScalingSlider extends ImmutableSlider
 	
 	private void addChangeListeners() {
 		if (listeners != null) {
-			for (int i = 0; i < listeners.size(); i++)
-				this.addChangeListener(listeners.get(i));
+			ArrayList<ChangeListener> sliderListeners = 
+					new ArrayList<>(Arrays.asList(this.getChangeListeners()));
+			for (int i = 0; i < listeners.size(); i++) {
+				ChangeListener l = listeners.get(i);
+				if (!sliderListeners.contains(l))
+					this.addChangeListener(l);
+			}
 			
 			listeners.clear();
 			listeners = null;
@@ -328,4 +358,7 @@ public class ScalingSlider extends ImmutableSlider
 				|| v.equals(State.RESCALED.toString()))
 			AutomatonBean.setState(State.IDLE);
 	}
+	
+	
+	
 }

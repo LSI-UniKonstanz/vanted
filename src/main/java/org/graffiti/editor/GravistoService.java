@@ -72,7 +72,7 @@ import org.graffiti.selection.Selection;
 import org.graffiti.session.EditorSession;
 import org.graffiti.session.Session;
 import org.vanted.scaling.Toolbox;
-import org.vanted.scaling.scaler.component.JLabelScaler;
+import org.vanted.scaling.scalers.component.JLabelScaler;
 
 import scenario.ScenarioService;
 

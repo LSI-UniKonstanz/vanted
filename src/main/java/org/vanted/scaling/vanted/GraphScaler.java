@@ -17,8 +17,8 @@ import org.graffiti.session.SessionListener;
 import org.vanted.scaling.DPIHelper;
 import org.vanted.scaling.ScalingSlider;
 import org.vanted.scaling.Toolbox;
-import org.vanted.scaling.scaler.BasicScaler;
-import org.vanted.scaling.scaler.component.WindowScaler;
+import org.vanted.scaling.scalers.BasicScaler;
+import org.vanted.scaling.scalers.component.WindowScaler;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeComponent;
 
@@ -133,10 +133,12 @@ public class GraphScaler implements SessionListener, ChangeListener {
 	}
 
 	private static void handleZooming(int newValue) {
-		if ((newValue == 0 || newValue == 50) && oldValueZooming == 50)
+		if ((newValue == ScalingSlider.min || newValue == ScalingSlider.median)
+				&& oldValueZooming == ScalingSlider.median)
 			return;  //no scaling change!
 
-		int diff = (newValue == 0) ? 50 - oldValueZooming : oldValueZooming - newValue;
+		int diff = (newValue == ScalingSlider.min) ? 
+				ScalingSlider.median - oldValueZooming : oldValueZooming - newValue;
 		if (diff == 0)
 			return;
 		
@@ -188,7 +190,7 @@ public class GraphScaler implements SessionListener, ChangeListener {
 	
 	private void scaleGraphFrame(Session session) {
 		float ratio = Toolbox.getDPIScalingRatio();
-		if (ratio == 1f)
+		if (ratio == 1f && WindowScaler.getPreviousRatio() == -1f)
 			return;
 		
 		JInternalFrame[] frames = MainFrame.getInstance().getDesktop().getAllFrames();
@@ -197,7 +199,7 @@ public class GraphScaler implements SessionListener, ChangeListener {
 			for (JInternalFrame f : frames)
 				if (((GraffitiInternalFrame) f).getView().equals(session.getActiveView())) {
 					f.setFrameIcon(scaler.modifyIcon(null, f.getFrameIcon()));
-					WindowScaler.resizeWindow(f);
+					WindowScaler.resizeWindow(f, true);
 				}
 			
 		if (MainFrame.getInstance().getActiveDetachedFrame() != null)
@@ -207,7 +209,7 @@ public class GraphScaler implements SessionListener, ChangeListener {
 				for (JInternalFrame f : frames) {
 					//reset and scale icon
 					f.setFrameIcon(s2.modifyIcon(null, scaler.modifyIcon(null, f.getFrameIcon())));
-					WindowScaler.resizeWindow(f);
+					WindowScaler.resizeWindow(f, true);
 				}
 				
 				scaler = s2;

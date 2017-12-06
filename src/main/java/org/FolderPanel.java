@@ -49,7 +49,7 @@ import org.vanted.scaling.ComponentRegulator;
 import org.vanted.scaling.DPIHelper;
 import org.vanted.scaling.ScalingSlider;
 import org.vanted.scaling.Toolbox;
-import org.vanted.scaling.scaler.component.*;
+import org.vanted.scaling.scalers.component.*;
 
 /**
  * @author Christian Klukas

@@ -16,17 +16,18 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRootPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.text.JTextComponent;
 
-import org.vanted.scaling.scaler.component.AbstractButtonScaler;
-import org.vanted.scaling.scaler.component.ComponentScaler;
-import org.vanted.scaling.scaler.component.HTMLScaler;
-import org.vanted.scaling.scaler.component.JLabelScaler;
-import org.vanted.scaling.scaler.component.JOptionPaneScaler;
-import org.vanted.scaling.scaler.component.JTabbedPaneScaler;
-import org.vanted.scaling.scaler.component.JTextComponentScaler;
-
+import org.vanted.scaling.scalers.component.AbstractButtonScaler;
+import org.vanted.scaling.scalers.component.ComponentScaler;
+import org.vanted.scaling.scalers.component.HTMLScaler;
+import org.vanted.scaling.scalers.component.JLabelScaler;
+import org.vanted.scaling.scalers.component.JOptionPaneScaler;
+import org.vanted.scaling.scalers.component.JSplitPaneScaler;
+import org.vanted.scaling.scalers.component.JTabbedPaneScaler;
+import org.vanted.scaling.scalers.component.JTextComponentScaler;
 
 /**
  * <i>Notice:</i> it is advisable to not access it directly, but through
@@ -134,6 +135,7 @@ public class ComponentRegulator {
 		scalers.put(JLabel.class, new JLabelScaler(factor));
 		scalers.put(JTextComponent.class, new JTextComponentScaler(factor));
 		scalers.put(JOptionPane.class, new JOptionPaneScaler(factor));
+		scalers.put(JSplitPane.class, new JSplitPaneScaler(factor));
 		scalers.put(JTabbedPane.class, new JTabbedPaneScaler(factor));
 		//default
 		scalers.put(JComponent.class, new ComponentScaler(factor));
@@ -166,7 +168,14 @@ public class ComponentRegulator {
 	}
 	
 	/**
-	 *TODO
+	 * Override of {@link ComponentRegulator#scaleComponentsOf(Container)}, allowing for
+	 * checking whether Containers components are scaled and only when those aren't then
+	 * scaling, and additionally marking them as such or not.
+	 * {@link ComponentRegulator#scaleComponentsOf(Container)} doesn't check and marks all.
+	 * 
+	 * @param container 
+	 * @param checkScaled true to check components for being scaled and avoid double scaling
+	 * @param markScaled true to mark any scaled components as such
 	 */
 	public void scaleComponentsOf(Container container, boolean checkScaled, boolean markScaled) {
 		if (!checkScaled && markScaled)
@@ -204,9 +213,7 @@ public class ComponentRegulator {
 		for (Entry<Class<?>, ComponentScaler> entry : scalers.entrySet()) {
 			if (matches(component, entry.getKey())) {
 				scaler = entry.getValue();
-				scaler.coscaleFont(component);
-				scaler.coscaleInsets(component);
-				scaler.coscaleIcon(component);
+				scaler.scaleComponent(component);
 				
 				break;
 			}
@@ -300,7 +307,7 @@ public class ComponentRegulator {
 	 * class for overriding purposes.
 	 * @param scaler the newly implemented ComponentScaler
 	 */
-	public void registerNewScaler(Class<?> superclass, ComponentScaler scaler) {
+	public static void registerNewScaler(Class<?> superclass, ComponentScaler scaler) {
 		if (scalers.containsKey(superclass))
 			return;
 			

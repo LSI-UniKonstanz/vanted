@@ -124,6 +124,21 @@ public class ImmutableSlider extends JSlider {
 			minVert = (Dimension) UIManager.get("Slider.minimumVerticalSize");
 			//No focusInsets, those are (0, 0, 0, 0)
 			tickLength *= factor;
+			/**
+			 * If no UIDefaults for the given names is found (looking at you, Nimbus),
+			 * resort to default values to display slider at all cases. */
+			setNullFields();
+		}
+
+		private void setNullFields() {
+			if (hsize == null)
+				hsize = new Dimension(200, 21);
+			if (vsize == null)
+				vsize = new Dimension(21, 200);
+			if (minHor == null)
+				minHor = new Dimension(36, 21);
+			if (minVert == null)
+				minVert = new Dimension(21, 36);
 		}
 
 		@Override

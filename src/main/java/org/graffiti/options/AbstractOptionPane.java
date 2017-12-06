@@ -146,6 +146,37 @@ public abstract class AbstractOptionPane
 	}
 	
 	/**
+	 * Adds a component according to an anchor. This allows for more 
+	 * flexible placement of Components over the pane. However, there
+	 * are still general constraints taking place, because of the
+	 * orientation, here horizontal, and display area. <p>
+	 * 
+	 * If the provided anchor argument doesn't match a GridBagConstraints
+	 * Anchor value, then the component is simply not added.
+	 * 
+	 * @param component the component
+	 * @param anchor GridBagConstraints anchor value
+	 */
+	public void addComponent(Component component, int anchor) {
+		if (!(anchor >= 10 && anchor <= 26))
+			if (!(anchor % 0x100 == 0 && anchor >= 0x100 && anchor <= 0x900))
+				return;
+		
+		GridBagConstraints constraint = new GridBagConstraints();
+		constraint.gridy = y++;
+		constraint.gridheight = 1;
+		constraint.gridwidth = GridBagConstraints.REMAINDER;
+		constraint.fill = GridBagConstraints.NONE;
+		constraint.anchor = anchor;
+		constraint.gridx = 0;
+		constraint.weightx = 1.0f;
+		constraint.insets = new Insets(1, 0, 1, 0);
+		
+		gridBag.setConstraints(component, constraint);
+		add(component);
+	}
+	
+	/**
 	 * Adds a separator to the option pane.
 	 * 
 	 * @param label

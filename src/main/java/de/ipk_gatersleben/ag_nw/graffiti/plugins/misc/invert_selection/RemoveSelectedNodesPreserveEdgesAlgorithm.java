@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -52,7 +51,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 		implements AlgorithmWithComponentDescription {
 	
 	
-	private boolean ignoreDirection = false;
+	private static boolean ignoreDirection = false;
 	
 	private boolean layoutParallelEdges = true;
 	
@@ -62,9 +61,9 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] { new BooleanParameter(ignoreDirection, "Ignore Edge Direction",
-				"Prevent connectivity loss because of edge-direction - ignore edge directions"),
+				"<html>Prevent any connectivity loss, execute <em>Preserving</em> scenario."),
 				new BooleanParameter(layoutParallelEdges, "Layout Parallel Edges",
-						"In case multiple types of edges are created between two nodes, edge bends are introduces.") };
+						"In case multiple types of edges are created between two nodes, edge bends are introduced.") };
 	}
 	
 	public JComponent getDescriptionComponent() {
@@ -110,10 +109,44 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 		try {
 			ArrayList<Node> workNodes = new ArrayList<Node>();
 			workNodes.addAll(selection.getNodes());
+			//chains are handled specially
+			boolean chaining = isChain(workNodes);
+			boolean reset = !ignoreDirection;
+			if (chaining)
+				ignoreDirection = !ignoreDirection;
 			removeNodesPreserveEdges(workNodes, graph, ignoreDirection, layoutParallelEdges, null);
+			if (chaining && reset)
+				ignoreDirection = !ignoreDirection;
+				
 		} finally {
 			graph.getListenerManager().transactionFinished(this);
 		}
+	}
+	
+	private boolean isChain(ArrayList<Node> selection) {
+		HashMap<Node, Node> pairs = new HashMap<>();
+		int actualPairs = 0; //because put() replaces some
+		for (Node node : selection) {
+			for (Node nn : selection) {
+				if (node.equals(nn))
+					continue;
+				
+				if (node.getNeighbors().contains(nn)) {
+					if (pairs.containsKey(node)) {
+						actualPairs++;						
+						pairs.put(nn, node);
+					} else {
+						actualPairs++;
+						pairs.put(node, nn);
+					}
+				}
+			}
+		}
+		if (actualPairs == (selection.size() - 1) * 2)
+			return true;
+		
+		return false;
+
 	}
 	
 	public static int removeNodesPreserveEdges(ArrayList<Node> workNodes,
@@ -133,85 +166,32 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 			 * all nodes that have an undirected connection to the node, which
 			 * are to be deleted, will be connected by a new undirected edge
 			 * to all neighbours of the node, which is to be deleted.
-			 */
-			if (graph.isUndirected() || ignoreDirection) {
-				for (Edge e : n.getAllOutEdges()) {
-					e.setDirected(false);
-					AttributeHelper.setArrowhead(e, false);
-					AttributeHelper.setArrowtail(e, false);
-				}
+			 */		
+			if (graph.isUndirected()) {
+				for (Edge e : n.getAllOutEdges())
+					undirectEdge(e);
+				
 				for (Edge undirEdge : n.getUndirectedEdges()) {
 					Node srcN = undirEdge.getSource();
-					for (Node targetN : n.getUndirectedNeighbors()) {
-						if (srcN != targetN) {
+					for (Node targetN : n.getUndirectedNeighbors())
+						if (srcN != targetN)
 							if (!srcN.getNeighbors().contains(targetN)) {
 								graph.addEdgeCopy(undirEdge, srcN, targetN);
 								edgeCopies++;
 							}
-						}
-					}
+
+
 					srcN = undirEdge.getTarget();
-					for (Node targetN : n.getUndirectedNeighbors()) {
-						if (srcN != targetN) {
+					for (Node targetN : n.getUndirectedNeighbors())
+						if (srcN != targetN)
 							if (!srcN.getNeighbors().contains(targetN)) {
 								graph.addEdgeCopy(undirEdge, srcN, targetN);
 								edgeCopies++;
 							}
-						}
-					}
 				}
 			} else {
 				removeNodes(workNodes, layoutParallelEdges);
 			}
-			/*
-			{
-			
-			
-				// process undirected edges as follows:
-				// all incoming neighbours need to be handled as follows:
-				// each incoming neighbour needs to be connected to all outgoing
-				// neighbours
-				// of the worknode
-				// the combination of undirected and directed edges around a node is
-				// not specially treated and is ignored
-				for (Edge incEdge : n.getDirectedInEdges()) {d
-					
-					Node srcN = incEdge.getSource();
-					for (Node targetN : n.getOutNeighbors()) {
-						// if (srcN != targetN) {
-						
-						if (!ignoreDirection && !srcN.getOutNeighbors().contains(targetN)) {
-							graph.addEdgeCopy(incEdge, srcN, targetN);
-							edgeCopies++;
-						} else
-							if (ignoreDirection && !srcN.getOutNeighbors().contains(targetN) && !srcN.getInNeighbors().contains(targetN)) {
-								Edge addEdgeCopy = graph.addEdgeCopy(incEdge, srcN, targetN);
-								AttributeHelper.setArrowhead(addEdgeCopy, true);
-								AttributeHelper.setArrowtail(addEdgeCopy, true);
-								edgeCopies++;
-							} else {
-								
-							}
-						if (srcN == targetN)
-							selfLoops++;
-						// }
-					}
-					if (ignoreDirection) {
-						for (Node targetN : n.getInNeighbors()) {
-							if (srcN != targetN) {
-								if (!srcN.getNeighbors().contains(targetN)) {
-									Edge ne = graph.addEdgeCopy(incEdge, srcN, targetN);
-									edgeCopies++;
-									ne.setDirected(false);
-									AttributeHelper.setArrowhead(ne, false);
-									AttributeHelper.setArrowtail(ne, false);
-								}
-							}
-						}
-					}
-				}
-			}
-			*/
 			
 			if (optStatus != null) {
 				if (selfLoops <= 0)
@@ -247,6 +227,163 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 		return workCount;
 	}
 	
+	/**
+	 * Deletes selected nodes (workNodes) and connects their adjacent nodes.
+	 * It will also keep the overall edge connection as well as the
+	 * head/tail arrow setting.
+	 * 
+	 * @param workNodes
+	 */
+	private static void removeNodes(ArrayList<Node> workNodes, boolean layoutParallelEdges) {
+
+		Set<Edge> setRemoveEdges = new HashSet<Edge>();
+		Set<Edge> newEdges = new HashSet<Edge>();
+		
+		for (Node curWorkNode : workNodes) {
+			Edge[] edges = curWorkNode.getEdges().toArray(new Edge[curWorkNode.getEdges().size()]);
+			
+			for (int first = 0; first < edges.length - 1; first++) {
+				Edge edge1 = edges[first];
+
+				setRemoveEdges.add(edge1);
+				
+				for (int second = first + 1; second < edges.length; second++) {
+					Edge edge2 = edges[second];
+					
+					// don't check an edge with itself
+					if (edge1.equals(edge2))
+						continue;
+
+					setRemoveEdges.add(edge2);
+					
+					Node sourceNode = null;
+					Node targetNode = null;
+										
+					// get the nodes, that will be connected by the folded edge
+					Node[] neighbours = getSourceAndTarget(curWorkNode, edge1, edge2);
+					if (neighbours != null) {
+						sourceNode = neighbours[0];
+						targetNode = neighbours[1];		
+					}
+
+					//undirected pair of edges in directed graph
+					if (sourceNode == null || targetNode == null) {
+						Graph g = curWorkNode.getGraph();
+						Node source = (!edge1.getSource().equals(curWorkNode)) ? edge1.getSource() : edge1.getTarget();
+						Node target = (!edge2.getSource().equals(curWorkNode)) ? edge2.getSource() : edge2.getTarget();
+						
+						if (!source.getNeighbors().contains(target)) {
+							Edge foldedEdge = g.addEdgeCopy(edge1, source, target); //both undirected (or direction ignored)
+							undirectEdge(foldedEdge);
+							newEdges.add(foldedEdge);
+						}
+					} else
+						//mixed types of edges
+						if (!sourceNode.getNeighbors().contains(targetNode)) {
+							Graph g = sourceNode.getGraph();
+							Edge foldedEdge = g.addEdge(sourceNode, targetNode, true, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
+							newEdges.add(foldedEdge);
+						}
+				}
+			}
+		}
+		
+		for (Edge edge : setRemoveEdges)
+			edge.getGraph().deleteEdge(edge);
+
+		if (layoutParallelEdges && !newEdges.isEmpty()) {
+			IntroduceParallelEdgeBends edgeBendsAlgo = new IntroduceParallelEdgeBends();
+			edgeBendsAlgo.attach(workNodes.get(0).getGraph(), new Selection(newEdges));
+			edgeBendsAlgo.execute();
+		}
+	}
+	
+	/**
+	 * Interface method for 
+	 * {@link RemoveSelectedNodesPreserveEdgesAlgorithm#getNeightbouringNodesOf(Node, Edge, Edge)}.
+	 * 
+	 * @param curWorkNode the node, whose neighbours are gotten
+	 * @param edge1 first incident edge
+	 * @param edge2 second incident edge
+	 * 
+	 * @return a 2-element array containing the new edge's {source, target}
+	 */
+	private static Node[] getSourceAndTarget(Node curWorkNode, Edge edge1, Edge edge2) {		
+		boolean isEdge_1_Directed = 
+				//semantically
+				edge1.isDirected() && 
+				//and visually
+				!(AttributeHelper.getArrowhead(edge1).equals("") && AttributeHelper.getArrowtail(edge1).equals(""));
+		boolean isEdge_2_Directed = 
+				//semantically
+				edge2.isDirected() &&
+				//and visually
+				!(AttributeHelper.getArrowhead(edge2).equals("") && AttributeHelper.getArrowtail(edge2).equals(""));
+		
+		if (isEdge_1_Directed && isEdge_2_Directed) {
+			/*
+			 * If in Preserving scenario (ignoreDirection is true) treat both as undirected (s. method's last else),
+			 * otherwise set for deletion. */
+			if (edge1.getSource().equals(curWorkNode) && edge2.getSource().equals(curWorkNode)) // <-- * --> 
+				return ignoreDirection ? null : new Node[] {curWorkNode, curWorkNode};
+			else if (edge1.getTarget().equals(curWorkNode) && edge2.getTarget().equals(curWorkNode)) // --> * <--
+				return ignoreDirection ? null : new Node[] {curWorkNode, curWorkNode};
+		}
+		
+		/* When both are directed and there is no change in direction,
+		 * otherwise take only the directed one as direction basis. */
+		if (isEdge_1_Directed)
+				return getNeightbouringNodesOf(curWorkNode, edge1, edge2);		
+		else if (isEdge_2_Directed)
+				return getNeightbouringNodesOf(curWorkNode, edge2, edge1);				
+		else //both undirected in generally directed graph, handled accordingly later
+			return null;
+	}
+	
+	/**
+	 * Below we consider only the non-preserving scenario (ignoreDirection is false).
+	 * 
+	 * It handles directed as well as directed-undirected edge pairs. A mixed pair
+	 * of edges is turned into one directed edge, whose new direction is set to be
+	 * the same, though setting of source and target nodes, as the directed edge of
+	 * the mixed pair.  
+	 * 
+	 * @param curWorkNode the node, whose neighbours are gotten
+	 * @param edge1 first incident edge
+	 * @param edge2 second incident edge
+	 * 
+	 * @return a 2-element array containing the new edge's {source, target}
+	 */
+	private static Node[] getNeightbouringNodesOf(Node curWorkNode, Edge edge1, Edge edge2) {
+		Node sourceNode = null, targetNode = null;
+		
+		//determine edge1's other incident node role
+		if (edge1.getSource().equals(curWorkNode))
+			targetNode = edge1.getTarget();
+		else if (edge1.getTarget().equals(curWorkNode))
+			sourceNode = edge1.getSource();
+
+		//based on edge1's other incident node, set edge2's other incident node 
+		if (targetNode == null)
+			targetNode = edge2.getTarget();
+		else
+			sourceNode = edge2.getSource();
+		
+		//assure we didn't grab the curWorkNode (directed & undirected edges mixed case)
+		if (sourceNode.equals(curWorkNode))
+			sourceNode = edge2.getTarget();
+		else if (targetNode.equals(curWorkNode))
+			targetNode = edge2.getSource();
+		
+		return new Node[] {sourceNode, targetNode};
+	}
+	
+	private static void undirectEdge(Edge e) {
+		e.setDirected(false);
+		AttributeHelper.setArrowhead(e, false);
+		AttributeHelper.setArrowtail(e, false);
+	}
+	
 	private enum EdgeType {
 		IN_EDGE, //normal incoming edge
 		IN_EDGE_OUT, //incoming edge but with tail-arrow and no head-arrow
@@ -255,145 +392,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 		OUT_EDGE_IN,
 		OUT_EDGE_BI
 	}
-	
-	/**
-	 * Deletes worknodes and connects the nodes connected to the worknodes.
-	 * It will also keep the overall edge connection as well as the
-	 * head/tail arrow setting
-	 * 
-	 * @param workNodes
-	 */
-	private static void removeNodes(ArrayList<Node> workNodes, boolean layoutParallelEdges) {
-		
-		Map<Node, Map<Node, Set<EdgeType>>> mapInEdgeOutEdgeToFoldedEdge = new HashMap<Node, Map<Node, Set<EdgeType>>>();
-		
-		EdgeType edge1Type;
-		EdgeType edge2Type;
-		
-		Set<Edge> setRemoveEdges = new HashSet<Edge>();
-		for (Node curWorkNode : workNodes) {
-			Edge[] edges = curWorkNode.getEdges().toArray(new Edge[curWorkNode.getEdges().size()]);
-			
-			for (int first = 0; first < edges.length - 1; first++) {
-				Edge edge1 = edges[first];
-				setRemoveEdges.add(edge1);
-				
-				for (int second = first + 1; second < edges.length; second++) {
-					Edge edge2 = edges[second];
-					
-					setRemoveEdges.add(edge2);
-					
-					// don't check an edge with itself
-					if (edge1.equals(edge2))
-						continue;
-										
-					// get the nodes, that will be connected by the folded edge
-					Node sourceNode = null;
-					Node targetNode = null;
-					
-					//determine edge1's other node role 
-					if (edge1.getSource().equals(curWorkNode))
-						targetNode = edge1.getTarget();
-					else if (edge1.getTarget().equals(curWorkNode)) 
-						sourceNode = edge1.getSource();
-					
-					//based on edge1's other node, set edge2's other node 
-					if (targetNode == null)
-						targetNode = edge2.getTarget();
-					else
-						sourceNode = edge2.getSource();
-					
-					edge1Type = testEdgeType(curWorkNode, edge1);
-					edge2Type = testEdgeType(curWorkNode, edge2);
-					
-					assert (edge1Type != null);
-					assert (edge2Type != null);
-					
-					EdgeType resultEdge = getResultEdge(edge1Type, edge2Type);
-					
-					if (resultEdge != null) {
-						Map<Node, Set<EdgeType>> mapTargetEdgeType = null;
-						if ((mapTargetEdgeType = mapInEdgeOutEdgeToFoldedEdge.get(sourceNode)) == null) {
-							mapInEdgeOutEdgeToFoldedEdge.put(sourceNode, new HashMap<Node, Set<EdgeType>>());
-							mapTargetEdgeType = mapInEdgeOutEdgeToFoldedEdge.get(sourceNode);
-						}
-						Set<EdgeType> setEdgeType;
-						if ((setEdgeType = mapTargetEdgeType.get(targetNode)) == null) {
-							mapTargetEdgeType.put(targetNode, new HashSet<EdgeType>());
-							setEdgeType = mapTargetEdgeType.get(targetNode);
-						}
-						boolean allreadyThere = false;
-						for (EdgeType type : setEdgeType) {
-							if (type == resultEdge)
-								allreadyThere = true;
-						}
-						if (!allreadyThere)
-							setEdgeType.add(resultEdge);
-					} else {
-						if (!sourceNode.getNeighbors().contains(targetNode)) {
-							Graph g = sourceNode.getGraph();
-							g.addEdge(sourceNode, targetNode, false);
-						}
-					}
-				}
-			}
-		}
-		
-		for (Edge edge : setRemoveEdges)
-			edge.getGraph().deleteEdge(edge);
-		
-		Set<Edge> newEdges = new HashSet<Edge>();
-		
-		for (Node sourceNode : mapInEdgeOutEdgeToFoldedEdge.keySet()) {
-			Map<Node, Set<EdgeType>> mapTargetEdgeType = mapInEdgeOutEdgeToFoldedEdge.get(sourceNode);
-			for (Node targetNode : mapTargetEdgeType.keySet()) {
-				Set<EdgeType> set = mapTargetEdgeType.get(targetNode);
-				for (EdgeType newEdgeType : set) {
-					Graph g = sourceNode.getGraph();
-					
-					Edge foldedEdge = null;
-					
-					switch (newEdgeType) {
-						case IN_EDGE:
-							
-							foldedEdge = g.addEdge(sourceNode, targetNode, true, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
-							break;
-						case IN_EDGE_BI:
-							foldedEdge = g.addEdge(sourceNode, targetNode, true, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
-							AttributeHelper.setArrowtail(foldedEdge, true);
-							break;
-						case IN_EDGE_OUT:
-							foldedEdge = g.addEdge(sourceNode, targetNode, true, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
-							AttributeHelper.setArrowtail(foldedEdge, true);
-							AttributeHelper.setArrowhead(foldedEdge, false);
-							break;
-						
-						case OUT_EDGE:
-							foldedEdge = g.addEdge(targetNode, sourceNode, true, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
-							break;
-						case OUT_EDGE_BI:
-							foldedEdge = g.addEdge(targetNode, sourceNode, true, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
-							AttributeHelper.setArrowtail(foldedEdge, true);
-							break;
-						case OUT_EDGE_IN:
-							foldedEdge = g.addEdge(targetNode, sourceNode, true, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
-							AttributeHelper.setArrowtail(foldedEdge, true);
-							AttributeHelper.setArrowhead(foldedEdge, false);
-							break;
-					}
-					newEdges.add(foldedEdge);
-				}
-				
-			}
-		}
-		
-		if (layoutParallelEdges && !newEdges.isEmpty()) {
-			IntroduceParallelEdgeBends edgebendsAlgo = new IntroduceParallelEdgeBends();
-			edgebendsAlgo.attach(workNodes.get(0).getGraph(), new Selection(newEdges));
-			edgebendsAlgo.execute();
-		}
-	}
-	
+
 	/**
 	 * returns the edge type depending on the given node (the node, that
 	 * will be deleted (see above)) and the edge to test
@@ -516,13 +515,13 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	@Override
 	public String getDescription() {
 		return "<html><br />"
-				+ "With this command you can delete intermediate nodes,<br />"
-				+ "while preserving overall neighbours connectedness.<br />"
-				+ "On the image, the selected round orange nodes are<br />"
-				+ "removed from the network. The resulting network<br />"
-				+ "connectivity is influenced by the direction of the<br />"
-				+ "flow of information. Thus, the \"Non-preserving\"<br />"
-				+ "outcome has been implemented.<br /><br />";
+				+ "This command helps you delete intermediate nodes,<br />"
+				+ "while preserving overall neighbours' connectedness,<br />"
+				+ "i.e. folds in nodes. The image depicts how selected<br />"
+				+ "nodes are removed from the network. The resulting<br />"
+				+ "network connectivity is influenced by the direction<br />"
+				+ "of information flow. To avoid any connectivity loss,<br />"
+				+ "use \"Ignore Edge Direction\".<br /><br />";
 	}
 	
 	/* (non-Javadoc)
@@ -547,4 +546,16 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
+
+	@Override
+	public boolean isLayoutAlgorithm() {
+			return false;
+	}
+
+	@Override
+	public boolean isAlwaysExecutable() {
+		return false;
+	}
+	
+	
 }

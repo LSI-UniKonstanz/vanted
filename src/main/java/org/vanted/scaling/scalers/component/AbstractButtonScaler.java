@@ -1,4 +1,4 @@
-package org.vanted.scaling.scaler.component;
+package org.vanted.scaling.scalers.component;
 
 import java.awt.Component;
 
@@ -29,6 +29,7 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	 *  
 	 * @param immediateComponent to be scaled
 	 */
+	@Override
 	public void scaleComponent(JComponent immediateComponent) {
 		this.coscaleFont(immediateComponent);
 		coscaleInsets(immediateComponent);
@@ -139,7 +140,7 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	 * plus text setting, if necessary.
 	 * 
 	 * @param t text
-	 * @param text JTextComponent
+	 * @param button AbstractButton
 	 */
 	private void modifyHTML(String t, AbstractButton button) {
 		if (!HTMLSupport.isHTMLStyled(t))
@@ -162,6 +163,13 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 		HTMLSupport.handleTextListener(button, false);
 	}
 	
+	/**
+	 * Similar to {@link AbstractButtonScaler#modifyHTML(String, AbstractButton)},
+	 * but for Tooltip texts.
+	 * 
+	 * @param tooltip text of the tooltip
+	 * @param button AbstractButton
+	 */
 	private void modifyHTMLTooltip(String tooltip, AbstractButton button) {
 		if (!HTMLSupport.isHTMLStyled(tooltip))
 			return;

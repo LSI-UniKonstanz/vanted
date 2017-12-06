@@ -15,7 +15,7 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
 
 import org.vanted.scaling.AutomatonBean.State;
-import org.vanted.scaling.scaler.component.*;
+import org.vanted.scaling.scalers.component.*;
 
 /**
  * An utility class holding some handy methods for tweaking the
@@ -41,6 +41,18 @@ public class Toolbox {
 			DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET);
 	
 	public Toolbox() {}
+	
+	/**
+	 * Adds a new component scaler to the automatic scaling routine.
+	 * 
+	 * @param jComponentSuperclass the super JComponent for which the scaler is
+	 * @param scaler newly implemented ComponentScaler sub-type 
+	 * 
+	 * @see ComponentRegulator#registerNewScaler(Class, ComponentScaler)
+	 */
+	public static void registerScaler(Class<?> jComponentSuperclass, ComponentScaler scaler) {
+		ComponentRegulator.registerNewScaler(jComponentSuperclass, scaler);
+	}
 	
 	/**
 	 * Add a PropertyChangeListener to be informed about the workflow of the

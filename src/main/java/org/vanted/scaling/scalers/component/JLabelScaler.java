@@ -1,4 +1,4 @@
-package org.vanted.scaling.scaler.component;
+package org.vanted.scaling.scalers.component;
 
 import javax.swing.Icon;
 import javax.swing.JComponent;
@@ -120,6 +120,13 @@ public class JLabelScaler extends ComponentScaler implements HTMLScaler {
 		HTMLSupport.handleTextListener(label, false);
 	}
 	
+	/**
+	 * Similar to {@link JLabelScaler#modifyHTML(String, JLabel)},
+	 * but for Tooltip texts.
+	 * 
+	 * @param tooltip text of the tooltip
+	 * @param label JLabel
+	 */
 	private void modifyHTMLTooltip(String tooltip, JLabel label) {
 		if (!HTMLSupport.isHTMLStyled(tooltip))
 			return;

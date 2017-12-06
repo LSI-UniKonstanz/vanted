@@ -63,7 +63,7 @@ import org.graffiti.plugin.parameter.StringParameter;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.Session;
 import org.vanted.scaling.Toolbox;
-import org.vanted.scaling.scaler.component.JLabelScaler;
+import org.vanted.scaling.scalers.component.JLabelScaler;
 
 /**
  * The default implementation of a parameter dialog.
