@@ -1,5 +1,19 @@
 <h3>Changelog</h3>
 
+<h4>VANTED v2.6.4 release (09/12/2017)</h4>
+<ul>
+<li><i>High DPI Support</i> feature</li>
+<li>Nimbus LookAndFeel is now disabled</li>
+<li>Edge selection positioning</li>
+<li>Metacrop stability improvements</li>
+<li>Detached mode update</li>
+<li>Node Functions enhancements</li>
+<li>Server update</li>
+<li>Windows Installer update</li>
+<li>Overall performance and stability improvements</li>
+<li>Minor bug fixes</li>
+</ul> 
+
 <h4>VANTED v2.6.3 release (16/09/2016)</h4>
 <ul>
 <li>Fixed drawing problems of nodes with border size 1
