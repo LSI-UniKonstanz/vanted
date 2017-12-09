@@ -23,6 +23,21 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
+### VANTED v2.6.4 release (09/12/2017) ### 
+
+    High DPI Support feature
+    Nimbus LookAndFeel is now disabled
+    Edge selection positioning
+    Metacrop stability improvements
+    Detached mode update
+    Node Functions enhancements
+    Server update
+    Windows Installer update
+    Overall performance and stability improvements
+    Minor bug fixes
+
+You can download and install this version [here](http://vanted.org/release/2.6.4).
+
 ### VANTED v2.6.3 release (16/09/2016) ###
 
     Fixed drawing problems of nodes with border size 1
