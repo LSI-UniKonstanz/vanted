@@ -76,6 +76,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
 public class ScanForUpdate implements PreferencesInterface//, Runnable 
 {
 	
+	private static final String UPDATE_URL_KEY = "Update URL";
+
 	private static final Logger logger = Logger.getLogger(ScanForUpdate.class);
 	
 	/**
@@ -634,7 +636,7 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		List<Parameter> params = new ArrayList<Parameter>();
-		params.add(new StringParameter(URL_UPDATE_BASESTRING, "Update URL", "Location of the URL to look for updates"));
+		params.add(new StringParameter(URL_UPDATE_BASESTRING, UPDATE_URL_KEY, "Location of the URL to look for updates"));
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		params.add(new StringParameter(simpleDateFormat.format(new Date()), REMINDER_DATE, "Date for the next reminder (DD-MM-YYYY)"));
@@ -643,11 +645,13 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 	
 	@Override
 	public void updatePreferences(Preferences preferences) {
-		URL_UPDATE_BASESTRING = preferences.get("Update URL", URL_UPDATE_BASESTRING);
+		//update server URL
+		PreferencesUpdater.checkAndUpdateMonashLink(preferences, UPDATE_URL_KEY, URL_UPDATE_BASESTRING);
+		URL_UPDATE_BASESTRING = preferences.get(UPDATE_URL_KEY, URL_UPDATE_BASESTRING);
 		
 		URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-update";
 		URL_UPDATEMD5_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-files-md5";
-		URL_CHANGELOG_FILESTRING = URL_UPDATE_BASESTRING + "/" + "CHANGELOG";
+		URL_CHANGELOG_FILESTRING = URL_UPDATE_BASESTRING + "/" + "CHANGELOG";		
 	}
 	
 	@Override
