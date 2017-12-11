@@ -6,6 +6,8 @@ import java.util.Properties;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
+import org.graffiti.managers.PreferenceManager;
+
 /**
  * Updates any previously stored old links from preferences. 
  * Only present for version 2.6.4 during the transition period
@@ -15,9 +17,11 @@ import java.util.prefs.Preferences;
  * @author dim8
  *
  */
-public class PreferencesUpdater264 {
+public class PreferencesUpdater {
+	
+	private static String version = "";
 
-	public PreferencesUpdater264() {
+	public PreferencesUpdater() {
 	}
 	
 	/**
@@ -29,21 +33,11 @@ public class PreferencesUpdater264 {
 	 * @return
 	 */
 	public static boolean checkAndUpdateMonashLink(Preferences preferences, 
-			String key, String updated) {
-		String version = "";
-		try (InputStream stream = PreferencesUpdater264.class.getClassLoader()
-				.getResourceAsStream("build.number")) {
-			Properties build_props = new Properties();
-			build_props.load(stream);
-			version = build_props.getProperty("vanted.version.number");				
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+			String key, String updated) {		
 		/**
 		 * Force such update only in version 2.6.4!
 		 */
-		if (!version.equals("2.6.4"))
+		if (!isVersion("2.6.4"))
 			return false;
 			
 		String old;
@@ -55,8 +49,34 @@ public class PreferencesUpdater264 {
 				} catch (BackingStoreException e) {
 					e.printStackTrace();
 				}
+				PreferenceManager.storePreferences();
 				return true;
 			}
+		
+		return false;
+	}
+	
+	/**
+	 * Check current version.
+	 * 
+	 * @param version to check
+	 * @return true if current equals version
+	 */
+	public static boolean isVersion(String version) {
+		if (PreferencesUpdater.version.equals(version))
+			return true;
+		
+		try (InputStream stream = PreferencesUpdater.class.getClassLoader()
+				.getResourceAsStream("build.number")) {
+			Properties build_props = new Properties();
+			build_props.load(stream);
+			PreferencesUpdater.version = build_props.getProperty("vanted.version.number");				
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		if (PreferencesUpdater.version.equals(version))
+			return true;
 		
 		return false;
 	}
