@@ -246,10 +246,10 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 						for (int i = 0; i < node.getChildCount(); i++) {
 							DefaultMutableTreeNode innerNode = (DefaultMutableTreeNode) node.getChildAt(i);
 							if (innerNode.getUserObject().toString().toLowerCase().indexOf(searchText.toLowerCase()) != -1 && innerNode.isLeaf()) {
-								@SuppressWarnings("unchecked")
-								Enumeration<DefaultMutableTreeNode> children = ((DefaultMutableTreeNode) tree.getModel().getRoot()).children();
+								Enumeration<TreeNode> children = ((DefaultMutableTreeNode) tree.getModel().getRoot()).children();
 								while (children.hasMoreElements())
-									tree.collapsePath(new TreePath(children.nextElement().getPath()));
+									tree.collapsePath(new TreePath(
+											((DefaultMutableTreeNode) children.nextElement()).getPath()));
 								TreePath path = new TreePath(innerNode.getPath());
 								tree.expandPath(path);
 								tree.setSelectionPath(path);
@@ -464,20 +464,18 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 											response = response.substring(response.indexOf("\n") + 1);
 										}
 										pathwayNameToPathway.put("[" + tmp[0] + "] " + tmp[1], tmp[0]);
-										@SuppressWarnings("unchecked")
-										Enumeration<DefaultMutableTreeNode> leafEnum = allPathwayRootNode.depthFirstEnumeration();
+										Enumeration<TreeNode> leafEnum = allPathwayRootNode.depthFirstEnumeration();
 										while (leafEnum.hasMoreElements()) {
-											DefaultMutableTreeNode leaf = leafEnum.nextElement();
+											DefaultMutableTreeNode leaf = (DefaultMutableTreeNode) leafEnum.nextElement();
 											if (leaf.isLeaf()) {
 												DefaultMutableTreeNode activeNode = pathwayRootNode;
 												if (tmp[1].equals(leaf.getUserObject().toString())) {
 													TreeNode[] path = leaf.getPath();
 													for (int i = 1; i < path.length - 2; i++) {
-														@SuppressWarnings("unchecked")
-														Enumeration<DefaultMutableTreeNode> children = activeNode.children();
+														Enumeration<TreeNode> children = activeNode.children();
 														boolean hasFound = false;
 														while (children.hasMoreElements()) {
-															DefaultMutableTreeNode child = children.nextElement();
+															DefaultMutableTreeNode child = (DefaultMutableTreeNode) children.nextElement();
 															if (child.getUserObject().toString().equals(((DefaultMutableTreeNode) path[i + 1]).getUserObject().toString())) {
 																activeNode = child;
 																hasFound = true;
@@ -658,7 +656,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 	}
 	
 	public static OrganismEntry[] getKEGGorganismFromUser(final List<OrganismEntry> organisms) {
-		final MutableList organismSelection = new MutableList(new DefaultListModel());
+		final MutableList<Object> organismSelection = new MutableList<Object>(new DefaultListModel<Object>());
 		
 		organismSelection.setPrototypeCellValue("<html>ÄÖyz");
 		organismSelection.setFixedCellWidth(580);
@@ -713,7 +711,7 @@ public class TabKegg extends InspectorTab implements ActionListener, BackgroundT
 				new Object[] { "Select Organisms", organismSelectionScrollPane, "Search", filter, "", searchResult }
 				);
 		if (result != null && organismSelection.getSelectedValue() != null) {
-			List ooo = organismSelection.getSelectedValuesList();
+			List<Object> ooo = organismSelection.getSelectedValuesList();
 			ArrayList<OrganismEntry> res = new ArrayList<OrganismEntry>();
 			for (Object o : ooo)
 				res.add((OrganismEntry) o);
