@@ -37,6 +37,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
 import javax.imageio.stream.ImageOutputStream;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -86,10 +87,6 @@ import org.graffiti.plugins.modes.defaults.MegaTools;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.session.EditorSession;
 import org.w3c.dom.NodeList;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
@@ -263,7 +260,8 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 		bg.add(radioFixed);
 		bg.add(radioDPI);
 		
-		final JComboBox zoomLevels = new JComboBox(SizeSettingZoom.values());
+		final JComboBox<SizeSettingZoom> zoomLevels =
+				new JComboBox<SizeSettingZoom>(SizeSettingZoom.values());
 		zoomLevels.setSelectedItem(parameter.getScaleZoomSetting());
 		zoomLevels.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -272,7 +270,7 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 			}
 		});
 		
-		final JComboBox widthOrHeight = new JComboBox(new String[] { "Width:",
+		final JComboBox<String> widthOrHeight = new JComboBox<String>(new String[] { "Width:",
 				"Height:" });
 		if (!parameter.isScaleFixedUseWidth())
 			widthOrHeight.setSelectedIndex(1);
@@ -311,8 +309,8 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 				parameter.setScaleDPIprintDPI((Integer) spinnerDPI.getValue());
 			}
 		});
-		final JComboBox dpiSizeMeasureCombo = new JComboBox(SizeSettingDPIunit
-				.values());
+		final JComboBox<SizeSettingDPIunit> dpiSizeMeasureCombo =
+				new JComboBox<SizeSettingDPIunit>(SizeSettingDPIunit.values());
 		dpiSizeMeasureCombo.setSelectedItem(parameter.getScaleDPIprintSizeUnit());
 		dpiSizeMeasureCombo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -363,7 +361,7 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 	
 	private void checkRadioState(final JRadioButton radioZoom,
 			final JRadioButton radioFixed, final JRadioButton radioDPI,
-			final JComboBox zoomLevels, final JComponent WxHsettings,
+			final JComboBox<?> zoomLevels, final JComponent WxHsettings,
 			final JComponent dpiSettings) {
 		zoomLevels.setVisible(radioZoom.isSelected());
 		WxHsettings.setVisible(radioFixed.isSelected());
@@ -756,34 +754,32 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 				
 				if (parameter.getScaleSetting() == SizeSetting.DPI) {
 					
-					if (parameter.isCreateJPG()) {
+					if (parameter.isCreateJPG()) {						
 						FileOutputStream os = new FileOutputStream(file);
-						JPEGImageEncoder jpegEncoder = JPEGCodec
-								.createJPEGEncoder(os);
-						JPEGEncodeParam jpegEncodeParam = jpegEncoder
-								.getDefaultJPEGEncodeParam(bi);
-						jpegEncodeParam
-								.setDensityUnit(JPEGEncodeParam.DENSITY_UNIT_DOTS_INCH);
-						jpegEncodeParam.setXDensity(parameter.getScaleDPIprintDPI());
-						jpegEncodeParam.setYDensity(parameter.getScaleDPIprintDPI());
-						jpegEncodeParam.setQuality(1f, false);
-						jpegEncoder.encode(bi, jpegEncodeParam);
+						
+						ImageWriter jpgWriter = ImageIO.getImageWritersBySuffix("jpg").next();
+						ImageOutputStream ios = ImageIO.createImageOutputStream(os);
+						jpgWriter.setOutput(ios);
+
+						JPEGImageWriteParam jpgParam = (JPEGImageWriteParam) jpgWriter.getDefaultWriteParam();
+						jpgParam.setCompressionMode(JPEGImageWriteParam.MODE_EXPLICIT);
+						jpgParam.setCompressionQuality(1);
+						ImageTypeSpecifier typeSpec = ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_INT_RGB);
+					    IIOMetadata metadata = jpgWriter.getDefaultImageMetadata(typeSpec, jpgParam);
+						setImageDPI(metadata, parameter.getScaleDPIprintDPI(), parameter.getScaleDPIprintDPI());
+					    jpgWriter.write(metadata, new IIOImage(bi, null, null), jpgParam);
+						
+						ios.close();
+						os.flush();
+						os.close();
+						jpgWriter.dispose();
+						
 					} else {
 						writePngFile(bi, file.getAbsolutePath(), parameter
 								.getScaleDPIprintDPI());
 					}
-				} else {
-					if (parameter.isCreateJPG()) {
-						FileOutputStream os = new FileOutputStream(file);
-						JPEGImageEncoder jpegEncoder = JPEGCodec
-								.createJPEGEncoder(os);
-						JPEGEncodeParam jpegEncodeParam = jpegEncoder
-								.getDefaultJPEGEncodeParam(bi);
-						jpegEncodeParam.setQuality(1f, false);
-						jpegEncoder.encode(bi, jpegEncodeParam);
-					} else
+				} else
 						ImageIO.write(bi, imageType, file);
-				}
 				
 				status.setCurrentStatusValueFine(100d);
 				status.setCurrentStatusText2("File has been created");
@@ -816,6 +812,42 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements
 			
 			this.lastLinks = links;
 		}
+	}
+	
+	/**
+	 * Sets the DPI of an image through its metadata. In place of the incompatible
+	 * 
+	 * com.sun.image.codec.jpeg.JPEGEncodeParam.setDensityUnit()<p>
+	 * com.sun.image.codec.jpeg.JPEGEncodeParam.setXDensity()<p>
+	 * com.sun.image.codec.jpeg.JPEGEncodeParam.setYDensity()<p>
+	 * 
+	 * @param metadata
+	 * @param xDPI
+	 * @param yDPI
+	 * @throws IOException
+	 */
+	private static void setImageDPI(IIOMetadata metadata, int xDPI, int yDPI) throws IOException {
+		final String DENSITY_UNITS_PIXELS_PER_INCH = "01";
+		final String METADATA_FORMAT = "javax_imageio_jpeg_image_1.0";
+		
+	    IIOMetadataNode root = new IIOMetadataNode(METADATA_FORMAT);
+	    IIOMetadataNode jpegVariety = new IIOMetadataNode("JPEGvariety");
+	    IIOMetadataNode markerSequence = new IIOMetadataNode("markerSequence");
+	    
+	    IIOMetadataNode app0JFIF = new IIOMetadataNode("app0JFIF");
+	    app0JFIF.setAttribute("majorVersion", "1");
+	    app0JFIF.setAttribute("minorVersion", "2");
+	    app0JFIF.setAttribute("thumbWidth", "0");
+	    app0JFIF.setAttribute("thumbHeight", "0");
+	    app0JFIF.setAttribute("resUnits", DENSITY_UNITS_PIXELS_PER_INCH);
+	    app0JFIF.setAttribute("Xdensity", String.valueOf(xDPI));
+	    app0JFIF.setAttribute("Ydensity", String.valueOf(yDPI));
+	    
+	    root.appendChild(jpegVariety);
+	    root.appendChild(markerSequence);
+	    jpegVariety.appendChild(app0JFIF);
+
+	    metadata.mergeTree(METADATA_FORMAT, root);
 	}
 	
 	private void createHTMLifRequested(String fileName, ObjectRef resultView,

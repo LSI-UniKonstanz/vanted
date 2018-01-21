@@ -62,6 +62,12 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.Iterator;
 
+import javax.imageio.IIOImage;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageWriter;
+import javax.imageio.plugins.jpeg.JPEGImageWriteParam;
+import javax.imageio.stream.ImageOutputStream;
+
 import org.jfree.chart.entity.ChartEntity;
 import org.jfree.chart.entity.EntityCollection;
 import org.jfree.chart.imagemap.OverLIBToolTipTagFragmentGenerator;
@@ -71,9 +77,6 @@ import org.jfree.chart.imagemap.ToolTipTagFragmentGenerator;
 import org.jfree.chart.imagemap.URLTagFragmentGenerator;
 
 import com.keypoint.PngEncoder;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 /**
  * A collection of utility methods for JFreeChart. Includes methods for converting charts to
@@ -646,12 +649,24 @@ public abstract class ChartUtilities {
 		if (image == null) {
 			throw new IllegalArgumentException("Null 'image' argument.");
 		}
-
-		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-		JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(image);
-		param.setQuality(quality, true);
-		encoder.encode(image, param);
-
+		
+		ImageWriter jpegWriter = ImageIO.getImageWritersBySuffix("jpeg").next();
+		ImageOutputStream ios = ImageIO.createImageOutputStream(out);
+		jpegWriter.setOutput(ios);
+		
+		JPEGImageWriteParam jpegParam = null;
+		if (quality >= 0 && quality <= 1) {
+			jpegParam = (JPEGImageWriteParam) jpegWriter.getDefaultWriteParam();
+			jpegParam.setCompressionMode(JPEGImageWriteParam.MODE_EXPLICIT);
+			jpegParam.setCompressionQuality(quality);
+		}
+		
+		jpegWriter.write(null, new IIOImage(image, null, null), jpegParam);
+		
+		ios.close();
+		out.flush();
+		out.close();
+		jpegWriter.dispose();
 	}
 
 	/**
@@ -857,9 +872,10 @@ public abstract class ChartUtilities {
 		sb.append(System.getProperty("line.separator"));
 		EntityCollection entities = info.getEntityCollection();
 		if (entities != null) {
-			Iterator iterator = entities.iterator();
+			@SuppressWarnings("unchecked") //else each entity should be casted individually...
+			Iterator<ChartEntity> iterator = entities.iterator();
 			while (iterator.hasNext()) {
-				ChartEntity entity = (ChartEntity) iterator.next();
+				ChartEntity entity = iterator.next();
 				String area = entity.getImageMapAreaTag(toolTipTagFragmentGenerator,
 																			urlTagFragmentGenerator);
 				if (area.length() > 0) {
