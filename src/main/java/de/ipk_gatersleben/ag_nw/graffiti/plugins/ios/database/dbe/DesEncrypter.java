@@ -6,6 +6,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.database.dbe;
 import java.io.UnsupportedEncodingException;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.KeySpec;
+import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -62,7 +63,7 @@ public class DesEncrypter {
 			byte[] enc = ecipher.doFinal(utf8);
 			
 			// Encode bytes to base64 to get a string
-			return new sun.misc.BASE64Encoder().encode(enc);
+			return Base64.getEncoder().encodeToString(enc);
 		} catch (javax.crypto.BadPaddingException e) {
 			ErrorMsg.addErrorMessage(e.getLocalizedMessage());
 		} catch (IllegalBlockSizeException e) {
@@ -76,7 +77,7 @@ public class DesEncrypter {
 	public String decrypt(String str) {
 		try {
 			// Decode base64 to get bytes
-			byte[] dec = new sun.misc.BASE64Decoder().decodeBuffer(str);
+			byte[] dec = Base64.getDecoder().decode(str);
 			
 			// Decrypt
 			byte[] utf8 = dcipher.doFinal(dec);
@@ -89,9 +90,8 @@ public class DesEncrypter {
 			ErrorMsg.addErrorMessage(e.getLocalizedMessage());
 		} catch (UnsupportedEncodingException e) {
 			ErrorMsg.addErrorMessage(e.getLocalizedMessage());
-		} catch (java.io.IOException e) {
-			ErrorMsg.addErrorMessage(e.getLocalizedMessage());
 		}
+		
 		return null;
 	}
 }
