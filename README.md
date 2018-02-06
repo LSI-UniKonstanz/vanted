@@ -23,6 +23,13 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
+### VANTED v2.6.5 release (TBD) ### 
+
+    Java 9 Update
+    Minor internal improvements
+    
+You can download and install this version [here](http://vanted.org/release/2.6.5).
+
 ### VANTED v2.6.4 release (09/12/2017) ### 
 
     High DPI Support feature

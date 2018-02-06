@@ -50,8 +50,6 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 	
 	@Override
 	public void updatePreferences(Preferences preferences) {
-		//update previously written sensitive preferences from version 2.6.3
-		PreferencesUpdater.checkAndUpdateMonashLink(preferences, METACROP_PATHWAY_URL_PARAM, METACROP_PATHWAY_URL_VALUE);
 		METACROP_PATHWAY_URL_VALUE = preferences.get(METACROP_PATHWAY_URL_PARAM, METACROP_PATHWAY_URL_VALUE);
 		setWebAddress(METACROP_PATHWAY_URL_VALUE);
 	}

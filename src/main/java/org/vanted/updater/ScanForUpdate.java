@@ -645,8 +645,6 @@ public class ScanForUpdate implements PreferencesInterface//, Runnable
 	
 	@Override
 	public void updatePreferences(Preferences preferences) {
-		//update server URL
-		PreferencesUpdater.checkAndUpdateMonashLink(preferences, UPDATE_URL_KEY, URL_UPDATE_BASESTRING);
 		URL_UPDATE_BASESTRING = preferences.get(UPDATE_URL_KEY, URL_UPDATE_BASESTRING);
 		
 		URL_UPDATE_FILESTRING = URL_UPDATE_BASESTRING + "/" + "vanted-update";
