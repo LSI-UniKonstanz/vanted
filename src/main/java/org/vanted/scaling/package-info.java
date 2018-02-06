@@ -1,5 +1,5 @@
 /**
- * High DPI (4K and above) Swing Support. GUI, helpers, controllers (loader, 
+ * High DPI (4K and above) Swing Support: GUI, helpers, controllers (loader, 
  * regulator, coordinator, etc.).
  * 
  * @since 2.6.4

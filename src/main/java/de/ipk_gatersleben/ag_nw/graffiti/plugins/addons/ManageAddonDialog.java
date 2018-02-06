@@ -54,7 +54,7 @@ import org.graffiti.managers.pluginmgr.PluginEntry;
 import de.ipk_gatersleben.ag_nw.graffiti.JLabelHTMLlink;
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.plugin_info.PluginInfoHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.PluginInfoHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.NewsHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.RSSFeedManager;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;

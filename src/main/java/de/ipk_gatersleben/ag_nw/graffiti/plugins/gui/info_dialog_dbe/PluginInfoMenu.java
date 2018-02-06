@@ -12,10 +12,6 @@
 
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe;
 
-import java.lang.reflect.InvocationTargetException;
-
-import javax.swing.SwingUtilities;
-
 import org.graffiti.editor.GraffitiInternalFrame;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.plugin.gui.GraffitiComponent;

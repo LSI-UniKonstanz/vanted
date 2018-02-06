@@ -1,5 +1,5 @@
 /**
- * High DPI (4K and above) Swing Support. Scaling-relevant resources.
+ * High DPI (4K and above) Swing Support: scaling-relevant resources.
  * 
  * @since 2.6.4
  * @author Dimitar Garkov (dim8)

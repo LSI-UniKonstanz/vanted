@@ -1,5 +1,5 @@
 /**
- * High DPI (4K and above) Swing Support. GUI Components scalers.
+ * High DPI (4K and above) Swing Support: GUI Components scalers.
  * 
  * Such as:<p/><ul>
  * 

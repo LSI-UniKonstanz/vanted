@@ -1,4 +1,4 @@
-package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.plugin_info;
+package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -423,7 +423,6 @@ public class PluginInfoHelper implements HelperClass {
 			return StringManipulationTools.removeHTMLtags(name);
 	}
 	
-	@SuppressWarnings("unchecked")
 	private static String pretifyList(List list) {
 		StringBuilder sb = new StringBuilder();
 		if (list != null)

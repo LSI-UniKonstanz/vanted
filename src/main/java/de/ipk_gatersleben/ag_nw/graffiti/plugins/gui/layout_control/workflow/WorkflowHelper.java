@@ -74,7 +74,7 @@ import bsh.Interpreter;
 import de.ipk_gatersleben.ag_nw.graffiti.JLabelHTMLlink;
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.addons.AddonManagerPlugin;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.plugin_info.PluginInfoHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.PluginInfoHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.Main;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.TextFile;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;

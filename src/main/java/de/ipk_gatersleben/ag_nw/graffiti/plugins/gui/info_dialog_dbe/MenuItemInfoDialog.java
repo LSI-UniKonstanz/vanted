@@ -66,7 +66,6 @@ import org.vanted.updater.ScanForUpdate;
 
 import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.plugin_info.PluginInfoHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.TabExampleFiles;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow.WorkflowHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.threading.SystemAnalysis;

@@ -1,6 +1,6 @@
 /**
- * High DPI (4K and above) Swing Support. Classes responsible for Vanted only
- * scaling and feature representation.
+ * High DPI (4K and above) Swing Support: Classes responsible for Vanted
+ * components scaling and feature integration.
  * 
  * @since 2.6.4
  * @author Dimitar Garkov (dim8)
