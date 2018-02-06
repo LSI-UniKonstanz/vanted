@@ -12,7 +12,7 @@ It allows users to create and edit networks, as well as mapping experimental dat
 
 The functionality of VANTED can be extended by installing one or more of the provided Addons using the built-in Addon Manager. For an overview see: [here](https://www.cls.uni-konstanz.de/vanted/vanted/add-ons/).
 
-New Addons can be developed from scratch, using built-in APIs for manipulation of networks and data. A simple step-by-step guide for developing custom Addons can be found [here](https://bitbucket.org/vanted-dev/vanted/wiki/Home).
+New Addons can be developed from scratch, using built-in [API](http://kim25.wwwdns.kim.uni-konstanz.de/vanted/javadoc/)s for manipulation of networks and data. A simple step-by-step guide for developing custom Addons can be found [here](https://bitbucket.org/vanted-dev/vanted/wiki/Home).
 
 The development of VANTED is an ongoing process and we try to fix bugs and implement new features as soon as possible. Updates will be delivered on a regular basis.
 
