@@ -32,6 +32,7 @@ public class PreferencesUpdater {
 	 * @param toUpdate the new value
 	 * @return true, if the link has been successfully updated
 	 */
+	@Deprecated
 	public static boolean checkAndUpdateMonashLink(Preferences preferences, 
 			String key, String toUpdate) {		
 		/**
