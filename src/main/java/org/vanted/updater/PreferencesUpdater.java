@@ -1,12 +1,10 @@
 package org.vanted.updater;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 import org.graffiti.managers.PreferenceManager;
+import org.vanted.BuildInfo;
 
 /**
  * Updates any previously stored old links from preferences. 
@@ -102,14 +100,7 @@ public class PreferencesUpdater {
 		if (PreferencesUpdater.version.equals(version))
 			return true;
 		
-		try (InputStream stream = PreferencesUpdater.class.getClassLoader()
-				.getResourceAsStream("build.number")) {
-			Properties built_props = new Properties();
-			built_props.load(stream);
-			PreferencesUpdater.version = built_props.getProperty("vanted.version.number");				
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		PreferencesUpdater.version = BuildInfo.getCurrentVersion();
 		
 		if (PreferencesUpdater.version.equals(version))
 			return true;
