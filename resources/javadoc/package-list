@@ -149,10 +149,6 @@ de.ipk_gatersleben.ag_nw.graffiti.services.task
 de.ipk_gatersleben.ag_nw.graffiti.services.web
 de.ipk_gatersleben.ag_pbi.datahandling
 de.java.print
-edu.monash.vanted.test.graph
-edu.monash.vanted.test.kegg
-edu.monash.vanted.test.path2models
-edu.monash.vanted.test.preferences
 info.clearthought.layout
 net.iharder.dnd
 org
@@ -236,7 +232,6 @@ org.vanted.animation.animations
 org.vanted.animation.data
 org.vanted.animation.interpolators
 org.vanted.animation.loopers
-org.vanted.animation.tests
 org.vanted.osx
 org.vanted.plugins.layout.adaptagrams
 org.vanted.plugins.layout.adaptagrams.edgerouting
@@ -247,7 +242,6 @@ org.vanted.scaling.scalers.component
 org.vanted.scaling.vanted
 org.vanted.updater
 placement
-playground
 qmwi.kseg.som
 qmwi.kseg.som.diagram
 scenario
