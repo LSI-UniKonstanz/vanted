@@ -36,7 +36,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.Bi
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
+ * This is the Biomodels tab panel.
+ * 
  * @author matthiak
+ * @vanted.revision 2.6.5
  */
 public class BiomodelsPanel extends JPanel
 		implements ActionListener, BiomodelsLoaderCallback, KeyListener {
@@ -54,13 +57,9 @@ public class BiomodelsPanel extends JPanel
 	
 	JButton searchButton;
 	
-//	JText infoField;
-	
 	JComboBox<BiomodelsAccessAdapter.QueryType> comboQueryType;
 	
 	JList<SimpleModel> listResults;
-	
-//	JProgressBar progressBar;
 	
 	JButton loadSelectedModels;
 	
@@ -77,18 +76,17 @@ public class BiomodelsPanel extends JPanel
 	private String connectivityString;
 	
 	/**
-	 * 
+	 * Populates the Biomodels tab panel.
 	 */
 	public BiomodelsPanel() {
 		adapter = new BiomodelsAccessAdapter();
 		adapter.addListener(this);
 		initGUI();
-//		setPreferredSize(new Dimension(300, 300));
 		checkConnection();
 	}
 	
 	/**
-	 * 
+	 * Checks connection and updates availability status.
 	 */
 	private void checkConnection() {
 		new Thread(new Runnable() {
@@ -108,11 +106,12 @@ public class BiomodelsPanel extends JPanel
 					public void run() {
 						
 						if (isServiceAvailable) {
-							connectivityString = "Biomodels DB available";
+							connectivityString = "OK";
 							labelServiceAvailable.setForeground(Color.GREEN.darker());
 							labelServiceAvailable.setText(connectivityString);
 						} else {
-							connectivityString = "<html>Biomodels DB not available.<br/><br/>Go to Preferences to change webservice endpoint.";
+							connectivityString = "<html>Offline?<br/><br/>"
+									+ "No, then change the webservice endpoint from Edit &rarr; Preferences.";
 							labelServiceAvailable.setForeground(Color.RED.darker());
 							labelServiceAvailable.setText(connectivityString);
 							
@@ -124,16 +123,26 @@ public class BiomodelsPanel extends JPanel
 		}).start();
 	}
 	
+	/**
+	 * Get the {@linkplain BiomodelsAccessAdapter}.
+	 *  
+	 * @return the active {@linkplain BiomodelsAccessAdapter}
+	 */
 	public BiomodelsAccessAdapter getAdapter() {
 		return adapter;
 	}
 	
+	/**
+	 * Set the {@linkplain BiomodelsAccessAdapter}.
+	 * 
+	 * @param adapter the new {@linkplain BiomodelsAccessAdapter}
+	 */
 	public void setAdapter(BiomodelsAccessAdapter adapter) {
 		this.adapter = adapter;
 	}
 	
 	/**
-	 * 
+	 * Sets up the GUI.
 	 */
 	private void initGUI() {
 		TableLayoutConstraints constraint;
@@ -177,12 +186,7 @@ public class BiomodelsPanel extends JPanel
 		searchButton.setIcon(new ImageIcon(getClass().getClassLoader().getResource("org/images/lupe.png")));
 		searchButton.addActionListener(this);
 		rootpanel.add(searchButton, "5,3");
-		
-//		constraint = new TableLayoutConstraints(1, 3, 3, 3, TableLayoutConstraints.CENTER, TableLayoutConstraints.CENTER);
-//		progressBar = new JProgressBar();
-//		progressBar.setPreferredSize(new Dimension(30, 10));
-//		rootpanel.add(progressBar, constraint);
-		
+
 		listResults = new JList<SimpleModel>();
 		listResults.addMouseListener(new ListMouseAdapapter());
 		listResults.setCellRenderer(new ListBiomodelsCellRenderer());
@@ -208,8 +212,6 @@ public class BiomodelsPanel extends JPanel
 		if (query == null || query.isEmpty())
 			return;
 		
-//		progressBar.setIndeterminate(true);
-		
 		if (callerThreadForSimpleModel != null && callerThreadForSimpleModel.isAlive())
 			callerThreadForSimpleModel.cancelRequest();
 		
@@ -218,34 +220,22 @@ public class BiomodelsPanel extends JPanel
 				"query result list",
 				new CallerThreadForSimpleModel(selItem, query),
 				null);
-//		callerThreadForSimpleModel = new CallerThreadForSimpleModel(selItem, query);
-//		callerThreadForSimpleModel.start();
 	}
 	
 	private void triggerLoadSBML(SimpleModel model) {
 		if (model == null)
 			return;
 		
-//		progressBar.setIndeterminate(true);
-		
-//		if(callerThreadForSBML != null && callerThreadForSBML.isAlive())
-//			callerThreadForSBML.cancelRequest();
-//			
-//		callerThreadForSBML = new CallerThreadForSBMLModel(model);
-//		callerThreadForSBML.start();
 		BackgroundTaskHelper.issueSimpleTask(
 				"Biomodels query task",
 				"query result list",
 				new CallerThreadForSBMLModel(model),
 				null);
-		
 	}
 	
 	@Override
 	public void resultForSimpleModelQuery(QueryType type,
 			List<SimpleModel> simpleModel) {
-		
-//		progressBar.setIndeterminate(false);
 		
 		if (simpleModel == null) {
 			logger.debug("no results");
@@ -270,16 +260,13 @@ public class BiomodelsPanel extends JPanel
 	@Override
 	public void resultForSBML(SimpleModel model, String modelstring) {
 		logger.debug("having result for SBML");
-//		progressBar.setIndeterminate(false);
 		
 		listResults.setEnabled(true);
 		loadSelectedModels.setEnabled(true);
 	}
 	
 	@Override
-	public void resultError(Exception e) {
-//		progressBar.setIndeterminate(false);
-		
+	public void resultError(Exception e) {		
 	}
 	
 	@Override

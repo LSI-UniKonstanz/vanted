@@ -19,7 +19,10 @@ import uk.ac.ebi.biomodels.ws.BioModelsWSException;
 import uk.ac.ebi.biomodels.ws.SimpleModel;
 
 /**
+ * Access adapter for the Biomodels Webservice client.
+ * 
  * @author matthiak
+ * @vanted.revision 2.6.5
  */
 public class BiomodelsAccessAdapter
 		implements PreferencesInterface {
@@ -34,6 +37,11 @@ public class BiomodelsAccessAdapter
 	
 	private BioModelsWSClient biomodelsClient;
 	
+	/**
+	 * Types of models to be queried.
+	 * 
+	 * @author matthiak
+	 */
 	public enum QueryType {
 		CHEBI("ChEBI"),
 		NAME("Model Name"),
@@ -76,13 +84,21 @@ public class BiomodelsAccessAdapter
 	boolean abort;
 	
 	/**
-	 * 
+	 * Default constructor.
 	 */
 	public BiomodelsAccessAdapter() {
 		abort = false;
 //		initSetStructures();
 	}
 	
+	/**
+	 * Queries simple models, {@linkplain SimpleModel}, by type
+	 * {@linkplain QueryType} and
+	 * @param type of models
+	 * @param query
+	 * @return list of {@linkplain SimpleModel}s of the given type
+	 * @throws BioModelsWSException unable to establish connection
+	 */
 	public List<SimpleModel> queryForSimpleModel(QueryType type, String query) throws BioModelsWSException {
 		abort = false;
 		BioModelsWSClient client = createClient();
@@ -123,7 +139,6 @@ public class BiomodelsAccessAdapter
 			if (!isAbort())
 				notifyResultSimpleModelListeners(type, resultSimpleModels);
 		} catch (BioModelsWSException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			notifyErrorListener(e);
 			throw e;
@@ -168,17 +183,11 @@ public class BiomodelsAccessAdapter
 	}
 	
 	public boolean isAvailable() throws BioModelsWSException {
-		
-		try {
-			return createClient().helloBioModels().equals("Hello BioModels");
-		} catch (BioModelsWSException e) {
-			e.printStackTrace();
-			//notifyErrorListener(e);
-			throw e;
-		}
+		return createClient().helloBioModels().equals("Hello BioModels");
+
 	}
 	
-	private BioModelsWSClient createClient() {
+	private BioModelsWSClient createClient() throws BioModelsWSException {
 		if (biomodelsClient == null) {
 			biomodelsClient = new BioModelsWSClient();
 			
@@ -193,12 +202,8 @@ public class BiomodelsAccessAdapter
 				 * if standard webservice endpoint doesn't work
 				 * automatically go to the known backup endpoint
 				 */
-				try {
-					if (!isAvailable())
-						biomodelsClient.setEndPoint("http://biomodels.caltech.edu/services/BioModelsWebServices");
-				} catch (BioModelsWSException e) {
-					e.printStackTrace();
-				}
+				if (!isAvailable())
+					biomodelsClient.setEndPoint("http://biomodels.caltech.edu/services/BioModelsWebServices");
 				
 			}
 		}
@@ -245,8 +250,10 @@ public class BiomodelsAccessAdapter
 	 * These identifiers are then used to indicate items in the result set, if they're
 	 * (non)curated
 	 * FUTURE IMPLEMENTATION
+	 * @throws BioModelsWSException 
 	 */
-	private void initSetStructures() {
+	@SuppressWarnings("unused")
+	private void initSetStructures() throws BioModelsWSException {
 		
 		final BioModelsWSClient client = createClient();
 		
