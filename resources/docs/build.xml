@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="vanted javadoc script" default="javadoc">
+
+	<property name="title" value="Vanted 2.6.5-SNAPSHOT"/>
+	<property name="java.compatibility" value="1.7"/>
+	<property name="java.api" value="http://docs.oracle.com/javase/7/docs/api/"/>
+
+	<property name="base.dir" location="../.."/>
+	<property name="dest.dir" location="./javadoc"/>
+	<property name="src.dir" location="${base.dir}/src/main/java"/>
+	<property name="libs.dir" location="${base.dir}/../vanted-lib-repository"/>
+	<property name="tags.file" value="./vanted.tags"/>
+	<target name="javadoc" depends="prepare">
+        	<javadoc 
+			access="public"
+			author="true"
+			classpath="${libs.dir}/*"
+			destdir="${dest.dir}"
+			doctitle="${title}"
+			windowTitle="${title} API"
+			nodeprecated="false"
+			nodeprecatedlist="false"
+			noindex="false"
+			nonavbar="false"
+			notree="false" 
+			source="${java.compatibility}"
+			sourcepath="${src.dir}"
+			splitindex="true"
+			use="true"
+			version="true">
+			<link href="${java.api}"/>
+			<tag file="${tags.file}"/>
+			<footer><![CDATA[<br/>Copyright &#169; 2016-2018 University of Konstanz, Germany]]></footer>
+		</javadoc>
+	</target>
+
+	<target name="prepare">
+		<delete failonerror="false">
+			<dirset dir="${dest.dir}" includes="**/*"/>
+			<fileset dir="${dest.dir}" includes="**/*"/>
+		</delete>
+		<mkdir dir="${dest.dir}"/>
+	</target>
+</project>
