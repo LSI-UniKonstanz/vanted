@@ -27,7 +27,7 @@ public interface Displayable {
 	public void setDescription(String desc);
 	
 	/**
-	 * Returns a short description of this object.
+	 * Returns the short description of this object.
 	 * 
 	 * @return String
 	 */
@@ -46,7 +46,7 @@ public interface Displayable {
 	 * @param val
 	 * @exception IllegalArgumentException
 	 *               thrown if val is not of the
-	 *               apropriate type.
+	 *               appropriate type.
 	 */
 	public void setValue(Object val)
 						throws IllegalArgumentException;

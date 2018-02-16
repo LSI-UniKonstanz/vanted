@@ -409,7 +409,8 @@ public class PreferencesDialog extends JDialog
 							Algorithm alg = (Algorithm) data;
 //							selectedAlgorithm = alg;
 							
-							initAlgorithmPreferencesPanel(thisDialog, alg, graph, selection, setAlgorithmDataObject, executeMoveToTopAfterwards);
+							initAlgorithmPreferencesPanel(thisDialog, alg, graph,
+									selection, setAlgorithmDataObject, executeMoveToTopAfterwards);
 						} else
 							if (lastSelectedMpt.getClassType() == OptionPane.class) {
 								if (data instanceof OptionPane) {

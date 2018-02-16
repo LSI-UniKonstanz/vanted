@@ -18,16 +18,14 @@ import java.util.List;
 
 /**
  * Throws in the context of precondition failures.
+ * @vanted.revision 2.6.5
  */
 public class PreconditionException
 					extends Exception {
 	// ~ Instance fields ========================================================
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	/** DOCUMENT ME! */
+	/** List of error entries. */
 	private List<Entry> errors;
 	
 	// ~ Constructors ===========================================================
@@ -35,8 +33,7 @@ public class PreconditionException
 	/**
 	 * Creates a new PreconditionException object.
 	 * 
-	 * @param msg
-	 *           DOCUMENT ME!
+	 * @param msg error entry describing the cause
 	 */
 	public PreconditionException(String msg) {
 		this();
@@ -53,17 +50,14 @@ public class PreconditionException
 	// ~ Methods ================================================================
 	
 	/**
-	 * DOCUMENT ME!
+	 * Checks, if this PreconditionException contains any error entries.
 	 * 
-	 * @return DOCUMENT ME!
+	 * @return true, when there haven't been added any messages
 	 */
 	public boolean isEmpty() {
 		return errors.isEmpty();
 	}
 	
-	/**
-	 * @see java.lang.Throwable#getMessage()
-	 */
 	@Override
 	public String getMessage() {
 		StringBuffer sb = new StringBuffer();
@@ -80,22 +74,19 @@ public class PreconditionException
 	}
 	
 	/**
-	 * DOCUMENT ME!
+	 * Adds a new cause message, together with the responsible source.
 	 * 
-	 * @param cause
-	 *           DOCUMENT ME!
-	 * @param source
-	 *           DOCUMENT ME!
+	 * @param cause message about the reason
+	 * @param source an Object from which it originated the exception
 	 */
 	public void add(String cause, Object source) {
 		errors.add(new Entry(cause, source));
 	}
 	
 	/**
-	 * DOCUMENT ME!
+	 * Adds a new cause message without a source.
 	 * 
-	 * @param cause
-	 *           DOCUMENT ME!
+	 * @param cause message about the reason
 	 */
 	public void add(String cause) {
 		errors.add(new Entry(cause, null));
@@ -113,24 +104,23 @@ public class PreconditionException
 	// ~ Inner Classes ==========================================================
 	
 	/**
-	 * Contains a cause and the source object (ie.: a Graph, Node or Edge).
+	 * Contains a cause and the source object (i.e.: a Graph, Node or Edge).
 	 * 
-	 * @version $Revision: 1.6 $
+	 * @version 1.6
+	 * @vanted.revision 2.6.5
 	 */
 	class Entry {
-		/** DOCUMENT ME! */
+		/** The source of the exception */
 		public Object source;
 		
-		/** DOCUMENT ME! */
+		/** String message about the reason. */
 		public String cause;
 		
 		/**
 		 * Creates a new Entry object.
 		 * 
-		 * @param cause
-		 *           DOCUMENT ME!
-		 * @param source
-		 *           DOCUMENT ME!
+		 * @param cause message about the reason
+		 * @param source an Object from which it originated the exception
 		 */
 		public Entry(String cause, Object source) {
 			this.cause = cause;

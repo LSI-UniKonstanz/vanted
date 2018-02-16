@@ -10,8 +10,6 @@
 package org.graffiti.plugin.algorithm;
 
 import java.awt.event.ActionEvent;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.KeyStroke;
@@ -21,8 +19,9 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
 /**
- * An <code>Algorithm</code> has to provide a function that returns an array of <code>Parameters</code> it needs, in order to give user interfaces the
- * possibility to provide the <code>Algorithm</code> with apropriate
+ * An <code>Algorithm</code> has to provide a function that returns an array of
+ * <code>Parameters</code> it needs, in order to give user interfaces the
+ * possibility to provide the <code>Algorithm</code> with appropriate.
  * parameters.
  * 
  * @version $Revision: 1.6 $
@@ -31,7 +30,7 @@ public interface Algorithm {
 	// ~ Methods ================================================================
 	
 	/**
-	 * Returns the name (id) of the algorithm.
+	 * Returns the name (ID) of the algorithm.
 	 * 
 	 * @return DOCUMENT ME!
 	 */
@@ -109,7 +108,7 @@ public interface Algorithm {
 	/**
 	 * Returns a path to a menu category.
 	 * This is s '.' separated string which reflects the position of this
-	 * Algorithm in the Menu Hierachy
+	 * Algorithm in the Menu Hierarchy
 	 * e.g. "Network.Layout" would put this algorithm in the menu 'Network' and its submenu 'Layout'
 	 * 
 	 * If this menu is not existent it will be created
@@ -120,7 +119,7 @@ public interface Algorithm {
 	public String getMenuCategory();
 	
 	/**
-	 * A Layoutalgorithm should return true. All other types of algorithms should return false.
+	 * A LayoutAlgorithm should return true. All other types of algorithms should return false.
 	 * 
 	 * @return
 	 */

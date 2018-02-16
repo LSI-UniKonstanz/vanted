@@ -31,7 +31,7 @@ public abstract class NumberEditComponent
 					extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
 	
-	/** The gui element of this component. */
+	/** The GUI element of this component. */
 	protected SpinnerEditComponent spinnerEditComponent;
 	
 	// ~ Constructors ===========================================================
@@ -39,8 +39,7 @@ public abstract class NumberEditComponent
 	/**
 	 * Constructs a new integer edit component.
 	 * 
-	 * @param disp
-	 *           DOCUMENT ME!
+	 * @param disp containing the attributes to be displayed
 	 */
 	protected NumberEditComponent(Displayable disp) {
 		super(disp);
@@ -57,15 +56,16 @@ public abstract class NumberEditComponent
 	 *         component.
 	 */
 	public JComponent getComponent() {
-		// System.out.println(displayable.getName());
 		JComponent defaultResult = spinnerEditComponent.getComponent();
 		if (displayable != null && displayable.getIcon() != null) {
 			JComponent jc = displayable.getIcon();
 			if (defaultResult != null)
-				defaultResult.setPreferredSize(new Dimension(defaultResult.getMinimumSize().width, defaultResult.getPreferredSize().height));
+				defaultResult.setPreferredSize(
+						new Dimension(defaultResult.getMinimumSize().width, defaultResult.getPreferredSize().height));
 			if (defaultResult != null)
 				defaultResult.setMinimumSize(new Dimension(0, defaultResult.getMinimumSize().height));
-			JPanel jp = (JPanel) TableLayout.getSplit(jc, defaultResult, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
+			JPanel jp = (JPanel) TableLayout.getSplit(jc, defaultResult,
+					TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
 			jp.setOpaque(false);
 			return jp;
 		} else
@@ -76,8 +76,7 @@ public abstract class NumberEditComponent
 	/**
 	 * Sets the displayable.
 	 * 
-	 * @param attr
-	 *           DOCUMENT ME!
+	 * @param attr new displayable
 	 */
 	@Override
 	public void setDisplayable(Displayable attr) {
@@ -93,18 +92,12 @@ public abstract class NumberEditComponent
 		spinnerEditComponent.setEditFieldValue();
 	}
 	
-	/*
-	 * @see org.graffiti.plugin.editcomponent.AbstractValueEditComponent#setEnabled(boolean)
-	 */
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		spinnerEditComponent.setEnabled(enabled);
 	}
 	
-	/*
-	 * @see org.graffiti.plugin.editcomponent.AbstractValueEditComponent#setShowEmpty(boolean)
-	 */
 	@Override
 	public void setShowEmpty(boolean showEmpty) {
 		super.setShowEmpty(showEmpty);
@@ -113,11 +106,11 @@ public abstract class NumberEditComponent
 	}
 	
 	/**
-	 * Sets the value of the displayable specified in the <code>JComponent</code>. Calls setAttribute in the associated spinner,
-	 * i.e. it only changes the value if it is different.
+	 * Sets the value of the displayable specified in the <code>JComponent</code>.
+	 * Calls setAttribute in the associated spinner, i.e. it only changes the
+	 * value if it is different.
 	 */
 	public void setValue() {
-		// System.out.println(spinnerEditComponent+"");
 		spinnerEditComponent.setValue();
 	}
 }

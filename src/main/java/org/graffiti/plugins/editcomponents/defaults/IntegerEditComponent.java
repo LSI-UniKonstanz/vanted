@@ -13,10 +13,11 @@ import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.NumberEditComponent;
 
 /**
- * Represents a gui component, which handles integer values. Can be empty since
+ * Represents a GUI component, which handles integer values. Can be empty since
  * superclass handles all primitive types.
  * 
  * @see NumberEditComponent
+ * @vanted.revision 2.6.5
  */
 public class IntegerEditComponent
 					extends NumberEditComponent {
@@ -25,8 +26,7 @@ public class IntegerEditComponent
 	/**
 	 * Creates a new IntegerEditComponent object.
 	 * 
-	 * @param disp
-	 *           DOCUMENT ME!
+	 * @param disp containing the attributes to be displayed
 	 */
 	public IntegerEditComponent(Displayable disp) {
 		super(disp);

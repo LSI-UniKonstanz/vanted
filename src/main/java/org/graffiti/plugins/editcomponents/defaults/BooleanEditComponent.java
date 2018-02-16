@@ -90,9 +90,6 @@ public class BooleanEditComponent
 		
 		checkBox.addActionListener(new AbstractAction()
 		{
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 			
 			public void actionPerformed(ActionEvent e)
@@ -167,13 +164,13 @@ public class BooleanEditComponent
 		
 		if (this.displayable != null) { 
 			if(!(this.displayable.getValue() instanceof Boolean)) {
-				bb = new Boolean((String) this.displayable.getValue());
+				bb = Boolean.valueOf((String) this.displayable.getValue());
 			} else {
 				bb = (Boolean) this.displayable.getValue();
 			}
 		}
 		if (!(bb == this.checkBox.isSelected())) {
-			displayable.setValue(new Boolean(checkBox.isSelected()));
+			displayable.setValue(Boolean.valueOf(checkBox.isSelected()));
 			
 			// check if this edit component is about to edit the graph attribute directed, if so, update graph
 			if (displayable != null && displayable instanceof BooleanAttribute && displayable.getName().equals("directed")) {

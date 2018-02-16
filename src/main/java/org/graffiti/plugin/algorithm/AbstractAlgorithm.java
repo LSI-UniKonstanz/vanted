@@ -41,8 +41,8 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	
 	// ~ Methods ================================================================
 	
-	/*
-	 * @see org.graffiti.plugin.algorithm.Algorithm#setParameters(org.graffiti.plugin.parameter.Parameter[])
+	/**
+	 * @param params Parameter array
 	 */
 	public void setParameters(Parameter[] params) {
 		this.parameters = params;
@@ -55,6 +55,11 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		return null;
 	}
 	
+	/**
+	 * The algorithm description.
+	 * 
+	 * @return String, could be HTML-styled.
+	 */
 	public String getDescription() {
 		return null;
 	}
@@ -80,16 +85,10 @@ public abstract class AbstractAlgorithm implements Algorithm {
 			return selection.getElements();
 	}
 	
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
-	 */
 	public Parameter[] getParameters() {
 		return this.parameters;
 	}
 	
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#attach(org.graffiti.graph.Graph)
-	 */
 	public void attach(Graph graph, Selection selection) {
 		this.graph = graph;
 		this.selection = selection;
@@ -97,7 +96,6 @@ public abstract class AbstractAlgorithm implements Algorithm {
 	
 	/**
 	 * @throws PreconditionException
-	 * @see org.graffiti.plugin.algorithm.Algorithm#check()
 	 */
 	public void check() throws PreconditionException {
 		boolean v = false;
@@ -109,8 +107,6 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		return null;
 	}
 
-	
-	
 	@Override
 	public Set<Category> getSetCategory() {
 		return null;
@@ -125,9 +121,6 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		return getCategory();
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
-	 */
 	public void reset() {
 		this.graph = null;
 		this.parameters = null;
@@ -151,10 +144,9 @@ public abstract class AbstractAlgorithm implements Algorithm {
 		return false;
 	}
 	
-	
 	/**
 	 * Indicates, if an algorithm is always executable - even without an active session
-	 * @return
+	 * @return true, when there are no preconditions
 	 */
 	public boolean isAlwaysExecutable() {
 		return false;

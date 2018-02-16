@@ -32,6 +32,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 /**
  * @author Christian Klukas
+ * @vanted.revision 2.6.5
  */
 public class GridPlacementAlgorithm
 					extends AbstractAlgorithm
@@ -43,7 +44,7 @@ public class GridPlacementAlgorithm
 	/**
 	 * Returns the name of the algorithm.
 	 * 
-	 * @return the name of the algorithm
+	 * @return Move Nodes to Grid-Points
 	 */
 	public String getName() {
 		return "Move Nodes to Grid-Points";
@@ -76,8 +77,7 @@ public class GridPlacementAlgorithm
 	 *            invocation
 	 */
 	@Override
-	public void check()
-						throws PreconditionException {
+	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
 		
 		if (graph == null) {
@@ -107,40 +107,27 @@ public class GridPlacementAlgorithm
 		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
-	 */
 	@Override
 	public Parameter[] getParameters() {
 		DoubleParameter xDistanceParam =
 							new DoubleParameter(
 												"Grid X",
 												"Modifies the node placement in horizontal direction.");
-		xDistanceParam.setValue(new Double(xgrid));
+		xDistanceParam.setValue(Double.valueOf(xgrid));
 		DoubleParameter yDistanceParam =
 							new DoubleParameter(
 												"Grid Y",
 												"Modifies the node placement in vertical direction.");
-		yDistanceParam.setValue(new Double(ygrid));
+		yDistanceParam.setValue(Double.valueOf(ygrid));
 		return new Parameter[] { xDistanceParam, yDistanceParam };
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.Algorithm#setParameters(org.graffiti.plugin.parameter.Parameter[])
-	 */
 	@Override
 	public void setParameters(Parameter[] params) {
 		xgrid = ((DoubleParameter) params[0]).getDouble().doubleValue();
 		ygrid = ((DoubleParameter) params[1]).getDouble().doubleValue();
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.AlgorithmWithNodeContextMenu#getCurrentNodeContextMenuItem(java.util.Collection)
-	 */
-	@SuppressWarnings("unchecked")
 	public JMenuItem[] getCurrentNodeContextMenuItem(Collection selectedNodes) {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.DEBUG) {
 			JMenuItem myMenuItem = new JMenuItem("Grid-Placement");
@@ -150,10 +137,6 @@ public class GridPlacementAlgorithm
 			return null;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	public void actionPerformed(ActionEvent e) {
 		GravistoService.getInstance().runPlugin(getName(), null, e);
 	}
