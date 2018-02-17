@@ -185,6 +185,8 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 															Cloneable,
 															Serializable {
 
+	private static final long serialVersionUID = 8566850564310187010L;
+
 	/** The default grid line stroke. */
 	public static final Stroke DEFAULT_GRIDLINE_STROKE = new BasicStroke(0.5f,
 						BasicStroke.CAP_BUTT,
@@ -293,19 +295,19 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 	private boolean rangeCrosshairLockedOnData = true;
 
 	/** A map of lists of foreground markers (optional) for the domain axes. */
-	private transient Map foregroundDomainMarkers;
+	private transient Map<Integer, Collection<Marker>> foregroundDomainMarkers;
 
 	/** A map of lists of background markers (optional) for the domain axes. */
-	private transient Map backgroundDomainMarkers;
+	private transient Map<Integer, Collection<Marker>> backgroundDomainMarkers;
 
 	/** A map of lists of foreground markers (optional) for the range axes. */
-	private transient Map foregroundRangeMarkers;
+	private transient Map<Integer, Collection<Marker>> foregroundRangeMarkers;
 
 	/** A map of lists of background markers (optional) for the range axes. */
-	private transient Map backgroundRangeMarkers;
+	private transient Map<Integer, Collection<Marker>> backgroundRangeMarkers;
 
 	/** A list of annotations (optional) for the plot. */
-	private List annotations;
+	private List<XYAnnotation> annotations;
 
 	/** The paint used for the domain tick bands (if any). */
 	private transient Paint domainTickBandPaint;
@@ -370,13 +372,13 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 		// allocate storage for datasets, axes and renderers (all optional)
 		this.domainAxes = new ObjectList();
 		this.domainAxisLocations = new ObjectList();
-		this.foregroundDomainMarkers = new HashMap();
-		this.backgroundDomainMarkers = new HashMap();
+		this.foregroundDomainMarkers = new HashMap<>();
+		this.backgroundDomainMarkers = new HashMap<>();
 
 		this.rangeAxes = new ObjectList();
 		this.rangeAxisLocations = new ObjectList();
-		this.foregroundRangeMarkers = new HashMap();
-		this.backgroundRangeMarkers = new HashMap();
+		this.foregroundRangeMarkers = new HashMap<>();
+		this.backgroundRangeMarkers = new HashMap<>();
 
 		this.datasets = new ObjectList();
 		this.renderers = new ObjectList();
@@ -971,10 +973,10 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 
 		// map dataset to main axis by default
 		if (index >= this.domainAxisMap.size()) {
-			this.domainAxisMap.set(index, new Integer(0));
+			this.domainAxisMap.set(index, Integer.valueOf(0));
 		}
 		if (index >= this.rangeAxisMap.size()) {
-			this.rangeAxisMap.set(index, new Integer(0));
+			this.rangeAxisMap.set(index, Integer.valueOf(0));
 		}
 
 		// send a dataset change event to self...
@@ -1019,7 +1021,7 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 	 *           the axis index.
 	 */
 	public void mapDatasetToDomainAxis(int index, int axisIndex) {
-		this.domainAxisMap.set(index, new Integer(axisIndex));
+		this.domainAxisMap.set(index, Integer.valueOf(axisIndex));
 		// fake a dataset change event to update axes...
 		datasetChanged(new DatasetChangeEvent(this, getDataset(index)));
 	}
@@ -1033,7 +1035,7 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 	 *           the axis index.
 	 */
 	public void mapDatasetToRangeAxis(int index, int axisIndex) {
-		this.rangeAxisMap.set(index, new Integer(axisIndex));
+		this.rangeAxisMap.set(index, Integer.valueOf(axisIndex));
 		// fake a dataset change event to update axes...
 		datasetChanged(new DatasetChangeEvent(this, getDataset(index)));
 	}
@@ -1450,20 +1452,20 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 	 *           the layer (foreground or background).
 	 */
 	public void addDomainMarker(int index, Marker marker, Layer layer) {
-		Collection markers;
+		Collection<Marker> markers;
 		if (layer == Layer.FOREGROUND) {
-			markers = (Collection) this.foregroundDomainMarkers.get(new Integer(index));
+			markers = (Collection<Marker>) this.foregroundDomainMarkers.get(Integer.valueOf(index));
 			if (markers == null) {
-				markers = new java.util.ArrayList();
-				this.foregroundDomainMarkers.put(new Integer(index), markers);
+				markers = new java.util.ArrayList<>();
+				this.foregroundDomainMarkers.put(Integer.valueOf(index), markers);
 			}
 			markers.add(marker);
 		} else
 			if (layer == Layer.BACKGROUND) {
-				markers = (Collection) this.backgroundDomainMarkers.get(new Integer(index));
+				markers = (Collection<Marker>) this.backgroundDomainMarkers.get(Integer.valueOf(index));
 				if (markers == null) {
-					markers = new java.util.ArrayList();
-					this.backgroundDomainMarkers.put(new Integer(index), markers);
+					markers = new java.util.ArrayList<>();
+					this.backgroundDomainMarkers.put(Integer.valueOf(index), markers);
 				}
 				markers.add(marker);
 			}
@@ -1525,20 +1527,20 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 	 *           the layer (foreground or background).
 	 */
 	public void addRangeMarker(int index, Marker marker, Layer layer) {
-		Collection markers;
+		Collection<Marker> markers;
 		if (layer == Layer.FOREGROUND) {
-			markers = (Collection) this.foregroundRangeMarkers.get(new Integer(index));
+			markers = (Collection<Marker>) this.foregroundRangeMarkers.get(Integer.valueOf(index));
 			if (markers == null) {
-				markers = new java.util.ArrayList();
-				this.foregroundRangeMarkers.put(new Integer(index), markers);
+				markers = new java.util.ArrayList<>();
+				this.foregroundRangeMarkers.put(Integer.valueOf(index), markers);
 			}
 			markers.add(marker);
 		} else
 			if (layer == Layer.BACKGROUND) {
-				markers = (Collection) this.backgroundRangeMarkers.get(new Integer(index));
+				markers = (Collection<Marker>) this.backgroundRangeMarkers.get(Integer.valueOf(index));
 				if (markers == null) {
-					markers = new java.util.ArrayList();
-					this.backgroundRangeMarkers.put(new Integer(index), markers);
+					markers = new java.util.ArrayList<>();
+					this.backgroundRangeMarkers.put(Integer.valueOf(index), markers);
 				}
 				markers.add(marker);
 			}
@@ -1552,15 +1554,15 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 	 *           the renderer index.
 	 */
 	public void clearRangeMarkers(int index) {
-		Integer key = new Integer(index);
+		Integer key = Integer.valueOf(index);
 		if (this.backgroundRangeMarkers != null) {
-			Collection markers = (Collection) this.backgroundRangeMarkers.get(key);
+			Collection<Marker> markers = (Collection<Marker>) this.backgroundRangeMarkers.get(key);
 			if (markers != null) {
 				markers.clear();
 			}
 		}
 		if (this.foregroundRangeMarkers != null) {
-			Collection markers = (Collection) this.foregroundRangeMarkers.get(key);
+			Collection<Marker> markers = (Collection<Marker>) this.foregroundRangeMarkers.get(key);
 			if (markers != null) {
 				markers.clear();
 			}
@@ -1580,7 +1582,7 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 			throw new IllegalArgumentException("Null 'annotation' argument.");
 		}
 		if (this.annotations == null) {
-			this.annotations = new java.util.ArrayList();
+			this.annotations = new java.util.ArrayList<>();
 		}
 		this.annotations.add(annotation);
 		notifyListeners(new PlotChangeEvent(this));
@@ -2048,16 +2050,16 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 	 * @param ticks
 	 *           the ticks.
 	 */
-	public void drawDomainTickBands(Graphics2D g2, Rectangle2D dataArea, List ticks) {
+	public void drawDomainTickBands(Graphics2D g2, Rectangle2D dataArea, List<ValueTick> ticks) {
 		// draw the domain tick bands, if any...
 		Paint bandPaint = getDomainTickBandPaint();
 		if (bandPaint != null) {
 			boolean fillBand = false;
 			final ValueAxis xAxis = getDomainAxis();
 			double previous = xAxis.getLowerBound();
-			Iterator iterator = ticks.iterator();
+			Iterator<ValueTick> iterator = ticks.iterator();
 			while (iterator.hasNext()) {
-				ValueTick tick = (ValueTick) iterator.next();
+				ValueTick tick = iterator.next();
 				double current = tick.getValue();
 				if (fillBand) {
 					getRenderer().fillDomainGridBand(g2, this, xAxis, dataArea, previous, current);
@@ -2082,7 +2084,7 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 	 * @param ticks
 	 *           the ticks.
 	 */
-	public void drawRangeTickBands(Graphics2D g2, Rectangle2D dataArea, List ticks) {
+	public void drawRangeTickBands(Graphics2D g2, Rectangle2D dataArea, List<ValueTick> ticks) {
 
 		// draw the range tick bands, if any...
 		Paint bandPaint = getRangeTickBandPaint();
@@ -2090,7 +2092,7 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 			boolean fillBand = false;
 			final ValueAxis axis = getRangeAxis();
 			double previous = axis.getLowerBound();
-			Iterator iterator = ticks.iterator();
+			Iterator<ValueTick> iterator = ticks.iterator();
 			while (iterator.hasNext()) {
 				ValueTick tick = (ValueTick) iterator.next();
 				double current = tick.getValue();
@@ -2147,7 +2149,7 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 
 		// draw the top axes
 		double cursor = dataArea.getMinY() - this.axisOffset.getTopSpace(dataArea.getHeight());
-		Iterator iterator = axisCollection.getAxesAtTop().iterator();
+		Iterator<Axis> iterator = axisCollection.getAxesAtTop().iterator();
 		while (iterator.hasNext()) {
 			ValueAxis axis = (ValueAxis) iterator.next();
 			AxisState info = axis.draw(
@@ -2499,13 +2501,13 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 			return;
 		}
 
-		Collection markers = getRangeMarkers(index, layer);
+		Collection<Marker> markers = getRangeMarkers(index, layer);
 		ValueAxis axis = getRangeAxis(index);
 		// TODO: get the axis that the renderer maps to
 		if (markers != null && axis != null) {
-			Iterator iterator = markers.iterator();
+			Iterator<Marker> iterator = markers.iterator();
 			while (iterator.hasNext()) {
-				Marker marker = (Marker) iterator.next();
+				Marker marker = iterator.next();
 				r.drawRangeMarker(g2, this, axis, marker, dataArea);
 			}
 		}
@@ -2545,7 +2547,7 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 	 */
 	public Collection getDomainMarkers(int index, Layer layer) {
 		Collection result = null;
-		Integer key = new Integer(index);
+		Integer key = Integer.valueOf(index);
 		if (layer == Layer.FOREGROUND) {
 			result = (Collection) this.foregroundDomainMarkers.get(key);
 		} else
@@ -2567,9 +2569,9 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 	 *           the layer.
 	 * @return A collection of markers (possibly <code>null</code>).
 	 */
-	public Collection getRangeMarkers(int index, Layer layer) {
-		Collection result = null;
-		Integer key = new Integer(index);
+	public Collection<Marker> getRangeMarkers(int index, Layer layer) {
+		Collection<Marker> result = null;
+		Integer key = Integer.valueOf(index);
 		if (layer == Layer.FOREGROUND) {
 			result = (Collection) this.foregroundRangeMarkers.get(key);
 		} else
@@ -2771,7 +2773,7 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 		int domainIndex = this.domainAxes.indexOf(axis);
 		if (domainIndex >= 0) {
 			isDomainAxis = true;
-			mappedDatasets.addAll(getDatasetsMappedToDomainAxis(new Integer(domainIndex)));
+			mappedDatasets.addAll(getDatasetsMappedToDomainAxis(Integer.valueOf(domainIndex)));
 		} else
 			if (axis == getDomainAxis()) {
 				isDomainAxis = true;
@@ -2782,11 +2784,11 @@ public class XYPlot extends Plot implements ValueAxisPlot,
 		int rangeIndex = this.rangeAxes.indexOf(axis);
 		if (rangeIndex >= 0) {
 			isDomainAxis = false;
-			mappedDatasets.addAll(getDatasetsMappedToRangeAxis(new Integer(rangeIndex)));
+			mappedDatasets.addAll(getDatasetsMappedToRangeAxis(Integer.valueOf(rangeIndex)));
 		} else
 			if (axis == getRangeAxis()) {
 				isDomainAxis = false;
-				mappedDatasets.addAll(getDatasetsMappedToRangeAxis(new Integer(0)));
+				mappedDatasets.addAll(getDatasetsMappedToRangeAxis(Integer.valueOf(0)));
 			}
 
 		// iterate through the datasets that map to the axis and get the union of the ranges.

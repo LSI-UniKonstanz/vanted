@@ -10,8 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import javax.swing.SwingUtilities;
-
 import org.AttributeHelper;
 import org.Vector2d;
 import org.graffiti.graph.Edge; 
@@ -19,7 +17,6 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 import org.graffiti.plugin.view.View;
 import org.vanted.animation.Animator;
-import org.vanted.animation.NumberOfLoops;
 import org.vanted.animation.animations.FillColorAnimation;
 import org.vanted.animation.animations.FrameThicknessAnimation;
 import org.vanted.animation.animations.LabelColorAnimation;
@@ -30,8 +27,6 @@ import org.vanted.animation.data.ColorMode;
 import org.vanted.animation.data.ColorTimePoint;
 import org.vanted.animation.data.DoubleTimePoint;
 import org.vanted.animation.data.Point2DTimePoint;
-import org.vanted.animation.interpolators.BezierInterpolator;
-import org.vanted.animation.interpolators.CosineInterpolator;
 import org.vanted.animation.interpolators.CubicInterpolator;
 import org.vanted.animation.interpolators.LinearInterpolator;
 import org.vanted.animation.loopers.ForwardLooper;
@@ -69,7 +64,7 @@ public class RainbowSwappingTest extends AbstractEditorAlgorithm {
 		double inputRate = 0.1;
 		double colourPointsPerNode =  1785.0 / (double)nodes.size();
 		double colourChangeRate =  colourPointsPerNode;
-		double labelColourPointsPerNode = 255.0/(double)nodes.size();
+		//double labelColourPointsPerNode = 255.0/(double)nodes.size();
 		int inputOffset = 512;
 		int pointSize = nodes.size();
 		for(int i = 0; i < nodes.size();i++)
@@ -129,9 +124,7 @@ public class RainbowSwappingTest extends AbstractEditorAlgorithm {
 		// This doesn't work
 		List<Edge> edges = (List<Edge>) graph.getEdges(); 
 		double colourPointsPerEdge = 1*colourPointsPerNode * (double)nodes.size() / (double)edges.size();
-		for(int i = 0; i<edges.size();i++)
-		{
-			Edge edge = edges.get(i);
+		for (int i = 0; i < edges.size(); i++) {
 			ColorTimePoint colours[] = new ColorTimePoint[nodes.size()];
 			DoubleTimePoint thickness[] = new DoubleTimePoint[nodes.size()];
 			int time = 0;
@@ -143,8 +136,9 @@ public class RainbowSwappingTest extends AbstractEditorAlgorithm {
 				time+=56;
 				input1 += colourChangeRate;
 			}
-			OutlineColorAnimation outlineColourAnim = new OutlineColorAnimation(edge,Arrays.asList(colours), animationDuration, 0, 1, new ForwardLooper());
-			FrameThicknessAnimation thicknessAnim = new FrameThicknessAnimation(edge,Arrays.asList(thickness), animationDuration, 0, 1, new ForwardLooper());
+			//Edge edge = edges.get(i);
+			//OutlineColorAnimation outlineColourAnim = new OutlineColorAnimation(edge,Arrays.asList(colours), animationDuration, 0, 1, new ForwardLooper());
+			//FrameThicknessAnimation thicknessAnim = new FrameThicknessAnimation(edge,Arrays.asList(thickness), animationDuration, 0, 1, new ForwardLooper());
 			//animator.addAnimation(thicknessAnim);
 			//animator.addAnimation(outlineColourAnim);
 		}			

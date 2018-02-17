@@ -2,12 +2,11 @@ package org.vanted.animation;
 import java.util.List;
 
 import org.graffiti.attributes.Attributable;
-import org.graffiti.graph.Node;
 import org.vanted.animation.data.InterpolatableTimePoint;
-import org.vanted.animation.data.TimePoint;
 import org.vanted.animation.interpolators.Interpolator;
 import org.vanted.animation.interpolators.LinearInterpolator;
 import org.vanted.animation.loopers.Looper;
+
 /**
  * 
  * Similar to a normal animation but contains an Interpolator so that the animation can

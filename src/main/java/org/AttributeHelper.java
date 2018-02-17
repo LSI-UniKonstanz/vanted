@@ -1546,7 +1546,7 @@ public class AttributeHelper implements HelperClass {
 					res = ObjectAttributeService.createAndInitObjectFromString((String) res);
 					if (res == null || !res.getClass().equals(resultType.getClass())) {
 						if ((res != null) && (res instanceof String) && resultType instanceof StringAttribute) {
-							Object inst = resultType.getClass().newInstance();
+							Object inst = resultType.getClass().getDeclaredConstructor().newInstance();
 							((StringAttribute) inst).setString((String) res);
 							((StringAttribute) inst).setParent(a);
 							return inst;
@@ -1562,7 +1562,7 @@ public class AttributeHelper implements HelperClass {
 				} else {
 					if (res instanceof Float && resultType instanceof Double) {
 						float r = ((Float) res).floatValue();
-						Double rr = new Double(r);
+						Double rr = Double.valueOf(r);
 						Attribute attribute = a.getAttribute(attributeName);
 						if (!(attribute instanceof DoubleAttribute)) {
 							a.remove(attributeName);
@@ -1573,7 +1573,7 @@ public class AttributeHelper implements HelperClass {
 					}
 					if (res instanceof Integer && resultType instanceof Boolean) {
 						int r = ((Integer) res).intValue();
-						Boolean rr = new Boolean(r != 0);
+						Boolean rr = Boolean.valueOf(r != 0);
 						Attribute attribute = a.getAttribute(attributeName);
 						if (!(attribute instanceof BooleanAttribute)) {
 							a.remove(attributeName);
@@ -1584,7 +1584,7 @@ public class AttributeHelper implements HelperClass {
 					}
 					if (res instanceof Integer && resultType instanceof Double) {
 						int r = ((Integer) res).intValue();
-						return new Double(r);
+						return Double.valueOf(r);
 					}
 					if (res instanceof LinkedHashMap<?, ?> && resultType instanceof Color) {
 						LinkedHashMap<?, ?> lhm = (LinkedHashMap<?, ?>) res;
@@ -1595,7 +1595,7 @@ public class AttributeHelper implements HelperClass {
 					}
 					if (res instanceof String && resultType instanceof Boolean) {
 						String s = (String) res;
-						Boolean rr = new Boolean(s.equalsIgnoreCase("TRUE") || s.equalsIgnoreCase("1"));
+						Boolean rr = Boolean.valueOf(s.equalsIgnoreCase("TRUE") || s.equalsIgnoreCase("1"));
 						Attribute attribute = a.getAttribute(attributeName);
 						if (!(attribute instanceof BooleanAttribute)) {
 							a.remove(attributeName);
@@ -1965,7 +1965,7 @@ public class AttributeHelper implements HelperClass {
 	public static boolean isSBMLreversibleReaction(GraphElement ge) {
 		if (!hasAttribute(ge, "sbml", "reversible"))
 			setAttribute(ge, "sbml", "reversible", true);
-		Boolean val = (Boolean) getAttributeValue(ge, "sbml", "reversible", true, new Boolean(true), false);
+		Boolean val = (Boolean) getAttributeValue(ge, "sbml", "reversible", true, Boolean.valueOf(true), false);
 		if (val == null || val.booleanValue())
 			return true;
 		else {
@@ -2999,7 +2999,6 @@ public class AttributeHelper implements HelperClass {
 		return result;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static void removeEdgeBends(Edge edge) {
 		try {
 			((LinkedHashMapAttribute) edge.getAttribute("graphics.bends")).setValue(new HashMap());
@@ -3137,12 +3136,14 @@ public class AttributeHelper implements HelperClass {
 	}
 	
 	public static double getPositionZ(Node node, boolean setDefault) {
-		double z = (Double) getAttributeValue(node, "graphics", "z_", new Double(0), new Double(0), setDefault);
+		double z = (Double) getAttributeValue(
+				node, "graphics", "z_", Double.valueOf(0), Double.valueOf(0), setDefault);
 		return z;
 	}
 	
 	public static double getPositionZ(Node node, double defaultReturn, boolean setDefault) {
-		double z = (Double) getAttributeValue(node, "graphics", "z_", defaultReturn, new Double(0), setDefault);
+		double z = (Double) getAttributeValue(
+				node, "graphics", "z_", defaultReturn, Double.valueOf(0), setDefault);
 		return z;
 	}
 	
@@ -3151,7 +3152,8 @@ public class AttributeHelper implements HelperClass {
 	}
 	
 	public static double getDepth(Node node, double defaultReturn, boolean setDefault) {
-		double z = (Double) getAttributeValue(node, "graphics", "depth_", defaultReturn, new Double(0), setDefault);
+		double z = (Double) getAttributeValue(
+				node, "graphics", "depth_", defaultReturn, Double.valueOf(0), setDefault);
 		return z;
 	}
 	
@@ -3308,7 +3310,6 @@ public class AttributeHelper implements HelperClass {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	public static String getStringList(Collection elements, String div) {
 		ArrayList<Object> al = new ArrayList<Object>();
 		for (Object o : elements)
@@ -3320,8 +3321,7 @@ public class AttributeHelper implements HelperClass {
 	 * @deprecated Use {@link StringManipulationTools#getStringList(ArrayList,String)} instead
 	 */
 	@Deprecated
-	@SuppressWarnings("unchecked")
-	public static String getStringList(ArrayList elements, String div) {
+	public static String getStringList(ArrayList<?> elements, String div) {
 		return StringManipulationTools.getStringList(elements, div);
 	}
 	
@@ -3368,19 +3368,23 @@ public class AttributeHelper implements HelperClass {
 	}
 	
 	public static double getHeatMapLowerBound(Graph graph) {
-		return ((Double) getAttributeValue(graph, "", "hm_lower_bound", new Double(-2), new Double(-2))).doubleValue();
+		return ((Double) getAttributeValue(
+				graph, "", "hm_lower_bound", Double.valueOf(-2), Double.valueOf(-2))).doubleValue();
 	}
 	
 	public static double getHeatMapMiddleBound(Graph graph) {
-		return ((Double) getAttributeValue(graph, "", "hm_middle_bound", new Double(0d), new Double(0))).doubleValue();
+		return ((Double) getAttributeValue(
+				graph, "", "hm_middle_bound", Double.valueOf(0d), Double.valueOf(0))).doubleValue();
 	}
 	
 	public static double getHeatMapUpperBound(Graph graph) {
-		return ((Double) getAttributeValue(graph, "", "hm_upper_bound", new Double(2d), new Double(2d))).doubleValue();
+		return ((Double) getAttributeValue(
+				graph, "", "hm_upper_bound", Double.valueOf(2d), Double.valueOf(2d))).doubleValue();
 	}
 	
 	public static double getHeatMapGamma(Graph graph) {
-		return ((Double) getAttributeValue(graph, "", "hm_gamma", new Double(1d), new Double(1))).doubleValue();
+		return ((Double) getAttributeValue(
+				graph, "", "hm_gamma", Double.valueOf(1d), Double.valueOf(1))).doubleValue();
 	}
 	
 	public static void moveGraph(Graph graph, int x, int y) {

@@ -19,7 +19,6 @@ public class ValueAndGraphElement {
 		return ge;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Comparable getValue() {
 		return value;
 	}

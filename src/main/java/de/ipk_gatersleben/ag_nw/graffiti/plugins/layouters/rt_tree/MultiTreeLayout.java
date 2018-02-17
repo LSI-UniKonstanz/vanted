@@ -18,7 +18,6 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
-import org.vanted.animation.Animator;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
@@ -72,12 +71,12 @@ public class MultiTreeLayout extends AbstractAlgorithm {
 		HashMap<Integer, NodeHelper> id2node = new LinkedHashMap<Integer, NodeHelper>();
 		for (Node n : graph.getNodes()) {
 			NodeHelper nh = new NodeHelper(n, false);
-			nh.setAttributeValue("temp", "iid", new Integer(i++));
-			id2node.put(new Integer(i - 1), nh);
+			nh.setAttributeValue("temp", "iid", Integer.valueOf(i++));
+			id2node.put(Integer.valueOf(i - 1), nh);
 		}
 		Graph graphCopy = new AdjListGraph();
 		graphCopy.addGraph(graph);
-		Integer resultType = new Integer(0);
+		Integer resultType = Integer.valueOf(0);
 		double maxXallGraphs = 0;
 		for (Graph cc : GraphHelper.getConnectedComponentsAsCopy(graphCopy)) {
 			double maxXthisGraph = 0;

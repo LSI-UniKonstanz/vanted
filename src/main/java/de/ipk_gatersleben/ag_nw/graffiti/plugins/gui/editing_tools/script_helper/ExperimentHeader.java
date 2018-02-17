@@ -14,7 +14,7 @@ public class ExperimentHeader implements ExperimentHeaderInterface {
 	private String experimentName, remark, coordinator, databaseId, importUserName, importUserGroup;
 	private Date importDate;
 	private Date startDate;
-	private Integer imageFiles = new Integer(0);
+	private Integer imageFiles = Integer.valueOf(0);
 	private String experimentType, sequence;
 	private long sizekb;
 	private int experimentID = -1;
@@ -163,7 +163,6 @@ public class ExperimentHeader implements ExperimentHeaderInterface {
 		r.append("</experiment>");
 	}
 	
-	@SuppressWarnings("unchecked")
 	public ExperimentHeader(Map map) {
 		this();
 		setExperimentname((String) map.get("experimentname"));
@@ -171,7 +170,7 @@ public class ExperimentHeader implements ExperimentHeaderInterface {
 			setExperimentname(ExperimentInterface.UNSPECIFIED_EXPERIMENTNAME);
 		setDatabase((String) map.get("database"));
 		setRemark((String) map.get("remark"));
-		setExcelfileid(map.get("_id").toString()); // (String)
+		setDatabaseId(map.get("_id").toString()); // (String)
 		// map.get("excelfileid"));
 		setCoordinator((String) map.get("coordinator"));
 		setExperimenttype((String) map.get("experimenttype"));

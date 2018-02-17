@@ -12,6 +12,8 @@ import org.graffiti.plugins.views.defaults.GraffitiView;
 public class TestViewWithPreferences extends GraffitiView
 implements PreferencesInterface{
 
+	private static final long serialVersionUID = -4521565999324787369L;
+	
 	Preferences preferences;
 	
 	public TestViewWithPreferences() {

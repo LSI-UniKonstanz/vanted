@@ -17,8 +17,6 @@ import java.util.Set;
 
 import org.AlignmentSetting;
 import org.AttributeHelper;
-import org.Release;
-import org.ReleaseInfo;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.GraphElement;
@@ -152,7 +150,7 @@ public class EnrichHiddenLabelsAlgorithm extends AbstractAlgorithm {
 			for (GraphElement ge : getSelectedOrAllGraphElements()) {
 				
 				boolean match = false;
-				boolean doBreakFuzzy = false;
+				//boolean doBreakFuzzy = false;
 				// get fuzzy label, which contains a set of the original label + label without HTML
 				String label2 = AttributeHelper.getLabel(ge, null);
 				if(ignoreCase)

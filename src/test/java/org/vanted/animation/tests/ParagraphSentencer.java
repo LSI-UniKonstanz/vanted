@@ -1,28 +1,21 @@
 package org.vanted.animation.tests;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
-import org.vanted.animation.*;
+import org.vanted.animation.Animation;
 import org.vanted.animation.animations.FillColorAnimation;
 import org.vanted.animation.animations.Position2DAnimation;
 import org.vanted.animation.animations.VisibilityAnimation;
 import org.vanted.animation.data.BooleanTimePoint;
 import org.vanted.animation.data.ColorTimePoint;
 import org.vanted.animation.data.Point2DTimePoint;
-import org.vanted.animation.data.TimePoint;
 import org.vanted.animation.interpolators.CosineInterpolator;
-import org.vanted.animation.interpolators.CubicInterpolator;
-import org.vanted.animation.interpolators.LinearInterpolator;
 import org.vanted.animation.interpolators.SigmoidInterpolator;
 import org.vanted.animation.loopers.StandardLooper;
 

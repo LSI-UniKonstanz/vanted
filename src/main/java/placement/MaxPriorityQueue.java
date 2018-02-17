@@ -2,8 +2,7 @@ package placement;
 
 import java.util.ArrayList;
 
-@SuppressWarnings("unchecked")
-public interface MaxPriorityQueue<T extends Comparable> {
+public interface MaxPriorityQueue<T extends Comparable<?>> {
 	public void add(T e);
 	
 	public T findMax();

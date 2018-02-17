@@ -11,11 +11,9 @@ import javax.swing.ListCellRenderer;
  */
 public class ObjectListParameter
 					extends AbstractSingleParameter {
-	@SuppressWarnings("unchecked")
 	private Collection possibleValues;
 	private ListCellRenderer renderer;
 	
-	@SuppressWarnings("unchecked")
 	public ObjectListParameter(Object val, String name, String description, Collection possibleValues) {
 		super(val, name, description);
 		this.possibleValues = possibleValues;

@@ -17,8 +17,11 @@ import org.graffiti.plugin.algorithm.Algorithm;
  * @author matthiak
  *
  */
-public class AlgorithmListCellRenderer 
-extends JLabel implements ListCellRenderer<Algorithm>{
+public class AlgorithmListCellRenderer extends JLabel
+							implements ListCellRenderer<Algorithm>{
+
+	private static final long serialVersionUID = -303781688423686382L;
+
 
 	private static final Color selectedColor = new Color(250,250,150);
 

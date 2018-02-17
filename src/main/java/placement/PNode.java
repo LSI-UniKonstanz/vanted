@@ -1,7 +1,6 @@
 package placement;
 
-@SuppressWarnings("unchecked")
-public class PNode<S extends Comparable> {
+public class PNode<S extends Comparable<?>> {
 	/**
 	 * Construct the PNode.
 	 * 

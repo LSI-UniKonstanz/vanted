@@ -3097,7 +3097,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		// plugin menu entries will be added after position 7
 		// the default commands like open file, save file etc. should be the first
 		// menu items
-		fileMenu.putClientProperty("pluginMenuPosition", new Integer(7));
+		fileMenu.putClientProperty("pluginMenuPosition", Integer.valueOf(7));
 		
 		// top level plugin menu entries (category menus) should be added
 		// after the file menu, and also after the edit menu, but
@@ -3105,19 +3105,19 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		// the plugin menu entries will be added alphabetically sorted between
 		// the menu items which have first the value true and later the value
 		// false
-		fileMenu.putClientProperty("pluginMenuAddAfter", new Boolean(true));
+		fileMenu.putClientProperty("pluginMenuAddAfter", Boolean.valueOf(true));
 		
 		// plugin menu entries should have empty space, where a icon could be
 		// displayed, this
 		// way the plugin menu items will be inline with the other menu items,
 		// which have a menu icon
-		fileMenu.putClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem", new Boolean(true));
+		fileMenu.putClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem", Boolean.valueOf(true));
 		
 		JMenu editMenu = createMenu("edit");
 		
 		categoriesForAlgorithms.put("edit", editMenu);
 		
-		editMenu.putClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem", new Boolean(true));
+		editMenu.putClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem", Boolean.valueOf(true));
 		menuBar.add(editMenu);
 		
 		editMenu.add(createMenuItem(editUndo));
@@ -3137,11 +3137,11 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		// redrawCmd.setIcon(iBundle.getImageIcon("menu.file.exit.icon"));
 		// editMenu.add(redrawCmd);
 		
-		editMenu.putClientProperty("pluginMenuPosition", new Integer(9));
-		editMenu.putClientProperty("pluginMenuAddAfter", new Boolean(true));
+		editMenu.putClientProperty("pluginMenuPosition", Integer.valueOf(9));
+		editMenu.putClientProperty("pluginMenuAddAfter", Boolean.valueOf(true));
 		
 		pluginMenu = createMenu("plugin");
-		pluginMenu.putClientProperty("pluginMenuAddAfter", new Boolean(true));
+		pluginMenu.putClientProperty("pluginMenuAddAfter", Boolean.valueOf(true));
 		
 		if (uiPrefs.get("showPluginMenu", "true").equalsIgnoreCase("true"))
 			menuBar.add(pluginMenu);
@@ -3206,12 +3206,12 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			
 			// ******************************************************************
 			pluginMenu.addSeparator();
-			pluginMenu.putClientProperty("pluginMenuPosition", new Integer(4));
+			pluginMenu.putClientProperty("pluginMenuPosition", Integer.valueOf(4));
 		} else
-			pluginMenu.putClientProperty("pluginMenuPosition", new Integer(0));
+			pluginMenu.putClientProperty("pluginMenuPosition", Integer.valueOf(0));
 		
-		windowMenu.putClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem", new Boolean(false));
-		windowMenu.putClientProperty("pluginMenuAddAfter", new Boolean(false));
+		windowMenu.putClientProperty("pluginMenuAddEmptySpaceInFrontOfMenuItem", Boolean.valueOf(false));
+		windowMenu.putClientProperty("pluginMenuAddAfter", Boolean.valueOf(false));
 		// windowMenu.add(redrawCmd);
 		menuBar.add(windowMenu);
 		
@@ -3485,7 +3485,7 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		// property
 		// instead of a constant, moreover is this string value not documented.ww
 		
-		button.putClientProperty("hideActionText", new Boolean(true));
+		button.putClientProperty("hideActionText", Boolean.valueOf(true));
 		
 		try {
 			String mnem = sBundle.getString("toolbar." + action.getName() + ".mnemonic");
@@ -3516,9 +3516,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			this.mainFrame = mainFrame;
 		}
 		
-		/**
-		 * @see javax.swing.event.InternalFrameListener#internalFrameActivated(InternalFrameEvent)
-		 */
 		@Override
 		public void internalFrameActivated(InternalFrameEvent e) {
 			super.internalFrameActivated(e);
@@ -3527,9 +3524,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			graffitiFrameActivated(iframe.getSession(), iframe.getView());
 		}
 		
-		/**
-		 * @see javax.swing.event.InternalFrameListener#internalFrameClosed(InternalFrameEvent)
-		 */
 		@Override
 		public void internalFrameClosed(InternalFrameEvent e) {
 			super.internalFrameClosed(e);
@@ -3573,7 +3567,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			if (session.getViews().size() == 0) {
 				undoSupport.removeUndoableEditListener((session).getUndoManager());
 				session.getUndoManager().discardAllEdits();
-				// session.getGraph().clear();
 				sessions.remove(session);
 				session.close();
 				for (SessionListener sl : sessionListeners) {
@@ -3584,7 +3577,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 			
 			if (getEditorSessions().size() == 0)
 				setActiveSession(null, null);
-			// System.out.println("Open sessions: "+getEditorSessions().size());
 		}
 		
 		@Override
@@ -3894,12 +3886,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.graffiti.selection.SelectionListener#selectionChanged(org.graffiti
-	 * .selection.SelectionEvent)
-	 */
 	public void selectionChanged(SelectionEvent e) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			repaint(100);
@@ -3943,10 +3929,6 @@ public class MainFrame extends JFrame implements SessionManager, SessionListener
 	ArrayList<GraffitiFrame> detachedFrames = new ArrayList<GraffitiFrame>();
 	
 	private boolean graphLoadingInProgress;
-	
-	// public JSplitPane getAttributePanel() {
-	// return jSplitPane_pluginPanelAndProgressView;
-	// }
 	
 	public GraffitiFrame[] getDetachedFrames() {
 		return detachedFrames.toArray(new GraffitiFrame[] {});

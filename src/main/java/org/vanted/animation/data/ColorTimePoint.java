@@ -1,7 +1,6 @@
 package org.vanted.animation.data;
+
 import java.awt.Color;
-import java.awt.color.ColorSpace;
-import java.util.Arrays;
 /**
  * 
  * @author - Patrick Shaw

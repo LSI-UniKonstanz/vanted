@@ -39,25 +39,25 @@ import org.jfree.ui.RectangleEdge;
 public class AxisCollection {
 
 	/** The axes that need to be drawn at the top of the plot area. */
-	private List axesAtTop;
+	private List<Axis> axesAtTop;
 
 	/** The axes that need to be drawn at the bottom of the plot area. */
-	private List axesAtBottom;
+	private List<Axis> axesAtBottom;
 
 	/** The axes that need to be drawn at the left of the plot area. */
-	private List axesAtLeft;
+	private List<Axis> axesAtLeft;
 
 	/** The axes that need to be drawn at the right of the plot area. */
-	private List axesAtRight;
+	private List<Axis> axesAtRight;
 
 	/**
 	 * Creates a new empty collection.
 	 */
 	public AxisCollection() {
-		this.axesAtTop = new java.util.ArrayList();
-		this.axesAtBottom = new java.util.ArrayList();
-		this.axesAtLeft = new java.util.ArrayList();
-		this.axesAtRight = new java.util.ArrayList();
+		this.axesAtTop = new java.util.ArrayList<>();
+		this.axesAtBottom = new java.util.ArrayList<>();
+		this.axesAtLeft = new java.util.ArrayList<>();
+		this.axesAtRight = new java.util.ArrayList<>();
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class AxisCollection {
 	 * 
 	 * @return A list of axes.
 	 */
-	public List getAxesAtTop() {
+	public List<Axis> getAxesAtTop() {
 		return this.axesAtTop;
 	}
 
@@ -74,7 +74,7 @@ public class AxisCollection {
 	 * 
 	 * @return A list of axes.
 	 */
-	public List getAxesAtBottom() {
+	public List<Axis> getAxesAtBottom() {
 		return this.axesAtBottom;
 	}
 
@@ -83,7 +83,7 @@ public class AxisCollection {
 	 * 
 	 * @return A list of axes.
 	 */
-	public List getAxesAtLeft() {
+	public List<Axis> getAxesAtLeft() {
 		return this.axesAtLeft;
 	}
 
@@ -92,7 +92,7 @@ public class AxisCollection {
 	 * 
 	 * @return A list of axes.
 	 */
-	public List getAxesAtRight() {
+	public List<Axis> getAxesAtRight() {
 		return this.axesAtRight;
 	}
 

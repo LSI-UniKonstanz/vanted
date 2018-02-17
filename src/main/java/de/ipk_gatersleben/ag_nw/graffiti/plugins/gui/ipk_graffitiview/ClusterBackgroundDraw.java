@@ -14,7 +14,6 @@ import java.util.TreeSet;
 
 import org.AttributeHelper;
 import org.Vector2df;
-import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.attributes.HashMapAttribute;
 import org.graffiti.graph.Graph;

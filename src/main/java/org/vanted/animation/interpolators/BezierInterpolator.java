@@ -1,12 +1,11 @@
 package org.vanted.animation.interpolators;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.vanted.animation.data.InterpolatableTimePoint;
-import org.vanted.animation.data.TimePoint;
 import org.vanted.animation.loopers.Looper;
+
 /**
  * Interpolates the data values as if it were drawing a Bezier Curve.<br>
  * Note: Bezier interpolation will cause dramatic performance hits

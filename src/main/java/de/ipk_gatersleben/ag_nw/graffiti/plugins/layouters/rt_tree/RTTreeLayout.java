@@ -5,7 +5,6 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.rt_tree;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -183,12 +182,12 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	/**
 	 * Relative coordinates computed in computeRelativeCoordinates
 	 */
-	private HashMap relativeCoords = new LinkedHashMap();
+	private HashMap<Node, Double> relativeCoords = new LinkedHashMap<>();
 	
 	/**
 	 * Modifier fields to apply to succesors
 	 */
-	private HashMap modifierField = new LinkedHashMap();
+	private HashMap<Node, Double> modifierField = new LinkedHashMap<>();
 	
 	/**
 	 * If there are a circle edges, save them here
@@ -199,7 +198,7 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	 * The sum of all modifiers fields of ancestors which
 	 * adjusts the successors.
 	 */
-	private HashMap cumulModifier = new LinkedHashMap();
+	private HashMap<Node, Double> cumulModifier = new LinkedHashMap<>();
 	private DoubleParameter xDistanceParam;
 	private DoubleParameter yDistanceParam;
 	private DoubleParameter xStartParam;
@@ -259,8 +258,8 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	public boolean rootedTree(Node rootNode) {
 		
 		int roots = 0;
-		for (Iterator iterator = bfsNum.keySet().iterator(); iterator.hasNext();) {
-			Node node = (Node) iterator.next();
+		for (Iterator<Node> iterator = bfsNum.keySet().iterator(); iterator.hasNext();) {
+			Node node = iterator.next();
 			/* maybe there is a second */
 			if ((node.getInDegree() == 0) && (node.getOutDegree() > 0)) {
 				if (roots == 0) {
@@ -271,9 +270,9 @@ public class RTTreeLayout extends AbstractAlgorithm {
 			}
 			
 			int ancestors = 0;
-			for (Iterator neighbourEdges = node.getEdgesIterator(); neighbourEdges.hasNext();) {
+			for (Iterator<Edge> neighbourEdges = node.getEdgesIterator(); neighbourEdges.hasNext();) {
 				
-				Edge neighbourEdge = (Edge) neighbourEdges.next();
+				Edge neighbourEdge = neighbourEdges.next();
 				Node neighbour = null;
 				if (neighbourEdge.getSource() == node) {
 					neighbour = neighbourEdge.getTarget();
@@ -310,9 +309,6 @@ public class RTTreeLayout extends AbstractAlgorithm {
 		return true;
 	}
 	
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
-	 */
 	@Override
 	public Parameter[] getParameters() {
 		if (xDistanceParam == null) {
@@ -367,9 +363,6 @@ public class RTTreeLayout extends AbstractAlgorithm {
 				treeDirectionParam };
 	}
 	
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm# setParameters(org.graffiti.plugin.algorithm.Parameter)
-	 */
 	@Override
 	public void setParameters(Parameter[] params) {
 		this.parameters = params;
@@ -398,9 +391,10 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	 * @param root
 	 * @return a postordered tree
 	 */
-	private LinkedList postorder(Node root) {
-		LinkedList result = new LinkedList();
+	private LinkedList<Node> postorder(Node root) {
+		LinkedList<Node> result = new LinkedList<>();
 		postorderTraverse(null, root, result);
+		
 		return result;
 	}
 	
@@ -410,9 +404,10 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	 * @param root
 	 * @return a preordered tree
 	 */
-	private LinkedList preorder(Node root) {
-		LinkedList result = new LinkedList();
+	private LinkedList<Node> preorder(Node root) {
+		LinkedList<Node> result = new LinkedList<>();
 		preorderTraverse(null, root, result);
+		
 		return result;
 	}
 	
@@ -426,9 +421,9 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	 * @param lq
 	 *           - result is a LinkedList
 	 */
-	private void postorderTraverse(Node ancestor, Node node, LinkedList lq) {
-		for (Iterator neighbors = node.getOutNeighborsIterator(); neighbors.hasNext();) {
-			Node neighbor = (Node) neighbors.next();
+	private void postorderTraverse(Node ancestor, Node node, LinkedList<Node> lq) {
+		for (Iterator<Node> neighbors = node.getOutNeighborsIterator(); neighbors.hasNext();) {
+			Node neighbor = neighbors.next();
 			if (neighbor != ancestor) {
 				postorderTraverse(node, neighbor, lq);
 			}
@@ -446,10 +441,10 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	 * @param lq
 	 *           - result is a LinkedList
 	 */
-	private void preorderTraverse(Node ancestor, Node node, LinkedList lq) {
+	private void preorderTraverse(Node ancestor, Node node, LinkedList<Node> lq) {
 		lq.addLast(node);
-		for (Iterator neighbors = node.getOutNeighborsIterator(); neighbors.hasNext();) {
-			Node neighbor = (Node) neighbors.next();
+		for (Iterator<Node> neighbors = node.getOutNeighborsIterator(); neighbors.hasNext();) {
+			Node neighbor = neighbors.next();
 			if (neighbor != ancestor) {
 				preorderTraverse(node, neighbor, lq);
 			}
@@ -466,8 +461,8 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	private Iterator<Node> getSuccessors(Node node) {
 		LinkedList<Node> result = new LinkedList<Node>();
 		
-		for (Iterator neighbors = node.getNeighborsIterator(); neighbors.hasNext();) {
-			Node neighbor = (Node) neighbors.next();
+		for (Iterator<Node> neighbors = node.getNeighborsIterator(); neighbors.hasNext();) {
+			Node neighbor = neighbors.next();
 			if (bfsNum.get(neighbor) != null)
 				if ((bfsNum.get(node)).intValue() < (bfsNum.get(neighbor)).intValue()) {
 					result.add(neighbor);
@@ -485,8 +480,8 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	private Iterator<Node> getPredecessors(Node node) {
 		LinkedList<Node> result = new LinkedList<Node>();
 		
-		for (Iterator neighbors = node.getNeighborsIterator(); neighbors.hasNext();) {
-			Node neighbor = (Node) neighbors.next();
+		for (Iterator<Node> neighbors = node.getNeighborsIterator(); neighbors.hasNext();) {
+			Node neighbor = neighbors.next();
 			if (bfsNum.get(neighbor) != null)
 				if ((bfsNum.get(node)).intValue() > (bfsNum.get(neighbor)).intValue()) {
 					result.add(neighbor);
@@ -586,8 +581,8 @@ public class RTTreeLayout extends AbstractAlgorithm {
 			
 			/* in case of arrows, try to find the root */
 			Node node = null;
-			for (Iterator iterator = preorder(sourceNode).iterator(); iterator.hasNext();) {
-				node = (Node) iterator.next();
+			for (Iterator<Node> iterator = preorder(sourceNode).iterator(); iterator.hasNext();) {
+				node = iterator.next();
 				if ((node.getInDegree() == 0) && (node.getOutDegree() > 0)) {
 					
 					sourceNodes.remove(sourceNode);
@@ -642,8 +637,8 @@ public class RTTreeLayout extends AbstractAlgorithm {
 				/* Adjust the start coordinates for each tree */
 				adjustCoordinates(sourceNode);
 				
-				for (Iterator nodesIterator = preorder(sourceNode).iterator(); nodesIterator.hasNext();) {
-					Node node = (Node) nodesIterator.next();
+				for (Iterator<Node> nodesIterator = preorder(sourceNode).iterator(); nodesIterator.hasNext();) {
+					Node node = nodesIterator.next();
 					if ((treeDirection == 180) || (treeDirection == 90)) {
 						setY(node, ySpanningMax + yStart * 2 - getY(node));
 					}
@@ -697,9 +692,9 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	 * Bus layout format
 	 */
 	private void formatBusLayout() {
-		for (Iterator iterator = graph.getEdgesIterator(); iterator.hasNext();) {
+		for (Iterator<Edge> iterator = graph.getEdgesIterator(); iterator.hasNext();) {
 			
-			Edge edge = ((Edge) iterator.next());
+			Edge edge = iterator.next();
 			
 			Node node1 = edge.getSource();
 			if (bfsNum.get(node1) != null) {
@@ -768,17 +763,17 @@ public class RTTreeLayout extends AbstractAlgorithm {
 		
 		treeMap.add(new LinkedList());
 		queue.addLast(startNode);
-		bfsNum.put(startNode, new Integer(0));
+		bfsNum.put(startNode, Integer.valueOf(0));
 		
 		forest.remove(startNode);
 		
 		/* Compute the maximum height of the root node */
 		depthOffsets.put(
-				new Integer(0),
-				new Double(getNodeHeight(startNode) / 2.0));
+				Integer.valueOf(0),
+				Double.valueOf(getNodeHeight(startNode) / 2.0));
 		maxNodeHeight.put(
-				new Integer(0),
-				new Double(getNodeHeight(startNode)));
+				Integer.valueOf(0),
+				Double.valueOf(getNodeHeight(startNode)));
 		
 		/* BreadthFirstSearch algorithm which calculates the depth of the tree */
 		while (!queue.isEmpty()) {
@@ -790,7 +785,7 @@ public class RTTreeLayout extends AbstractAlgorithm {
 				/* Not all neighbours, just the neighbours not visited yet */
 				if (!bfsNum.containsKey(neighbour)) {
 					Integer depth =
-							new Integer((bfsNum.get(v)).intValue() + 1);
+							Integer.valueOf((bfsNum.get(v)).intValue() + 1);
 					
 					double nodeHeight = getNodeHeight(neighbour);
 					
@@ -799,13 +794,12 @@ public class RTTreeLayout extends AbstractAlgorithm {
 							maxNodeHeight.get(depth);
 					if (maxNodeHeightValue != null) {
 						maxNodeHeight.put(
-								depth,
-								new Double(
+								depth, Double.valueOf(
 										Math.max(
 												maxNodeHeightValue.doubleValue(),
 												nodeHeight)));
 					} else {
-						maxNodeHeight.put(depth, new Double(nodeHeight));
+						maxNodeHeight.put(depth, Double.valueOf(nodeHeight));
 					}
 					
 					forest.remove(neighbour);
@@ -823,12 +817,12 @@ public class RTTreeLayout extends AbstractAlgorithm {
 		for (int depth = 1; depth < maxNodeHeight.size(); depth++) {
 			
 			double nodeHeight =
-					(maxNodeHeight.get(new Integer(depth))).doubleValue();
+					(maxNodeHeight.get(Integer.valueOf(depth))).doubleValue();
 			double nodeHeightAncestor =
-					(maxNodeHeight.get(new Integer(depth - 1)))
+					(maxNodeHeight.get(Integer.valueOf(depth - 1)))
 							.doubleValue();
 			double yOffsetAncestor =
-					(depthOffsets.get(new Integer(depth - 1)))
+					(depthOffsets.get(Integer.valueOf(depth - 1)))
 							.doubleValue();
 			double yOffset =
 					yOffsetAncestor
@@ -836,7 +830,7 @@ public class RTTreeLayout extends AbstractAlgorithm {
 							+ yNodeDistance
 							+ nodeHeightAncestor / 2.0;
 			
-			depthOffsets.put(new Integer(depth), new Double(yOffset));
+			depthOffsets.put(Integer.valueOf(depth), Double.valueOf(yOffset));
 		}
 		
 	}
@@ -847,8 +841,8 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	private void initTreeMap(Node sourceNode) {
 		
 		/* Initializing the treeMap */
-		for (Iterator postorder = postorder(sourceNode).iterator(); postorder.hasNext();) {
-			Node node = (Node) postorder.next();
+		for (Iterator<Node> postorder = postorder(sourceNode).iterator(); postorder.hasNext();) {
+			Node node = postorder.next();
 			int depth = (bfsNum.get(node)).intValue();
 			((LinkedList) treeMap.get(depth)).add(node);
 		}
@@ -859,8 +853,8 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	 * Compute the y coordinates by bfsNum
 	 */
 	private void setTreeYCoordinates(Node sourceNode) {
-		for (Iterator nodesIterator = postorder(sourceNode).iterator(); nodesIterator.hasNext();) {
-			Node n = (Node) nodesIterator.next();
+		for (Iterator<Node> nodesIterator = postorder(sourceNode).iterator(); nodesIterator.hasNext();) {
+			Node n = nodesIterator.next();
 			if (bfsNum.containsKey(n)) {
 				
 				int level = (bfsNum.get(n)).intValue();
@@ -868,20 +862,20 @@ public class RTTreeLayout extends AbstractAlgorithm {
 				ySpanningMax =
 						Math.max(
 								ySpanningMax,
-								(depthOffsets.get(new Integer(level))).doubleValue()
+								(depthOffsets.get(Integer.valueOf(level))).doubleValue()
 										+ getNodeHeight(n) / 2.0);
 				
 				ySpanningMin =
 						Math.min(
 								ySpanningMin,
-								(depthOffsets.get(new Integer(level)))
+								(depthOffsets.get(Integer.valueOf(level)))
 										.doubleValue()
 										- getNodeHeight(n) / 2.0);
 				
 				setY(
 						n,
 						yStart
-								+ (depthOffsets.get(new Integer(level)))
+								+ (depthOffsets.get(Integer.valueOf(level)))
 										.doubleValue());
 			}
 		}
@@ -893,8 +887,8 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	 */
 	private void adjustCoordinates(Node sourceNode) {
 		
-		for (Iterator nodesIterator = preorder(sourceNode).iterator(); nodesIterator.hasNext();) {
-			Node node = (Node) nodesIterator.next();
+		for (Iterator<Node> nodesIterator = preorder(sourceNode).iterator(); nodesIterator.hasNext();) {
+			Node node = nodesIterator.next();
 			setX(node, getX(node) + Math.abs(xSpanningMin));
 			setY(node, getY(node) + Math.abs(ySpanningMin));
 		}
@@ -909,17 +903,17 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	 */
 	private void computeRelativeCoordinates(Node sourceNode) {
 		
-		Iterator nodesIterator = postorder(sourceNode).iterator();
+		Iterator<Node> nodesIterator = postorder(sourceNode).iterator();
 		
-		modifierField = new LinkedHashMap();
-		cumulModifier = new LinkedHashMap();
-		relativeCoords = new LinkedHashMap();
+		modifierField = new LinkedHashMap<Node, Double>();
+		cumulModifier = new LinkedHashMap<Node, Double>();
+		relativeCoords = new LinkedHashMap<Node, Double>();
 		
 		while (nodesIterator.hasNext()) {
-			Node node = (Node) nodesIterator.next();
+			Node node = nodesIterator.next();
 			double modifier = 0.0;
 			double relativeCoord = 0.0;
-			Iterator nodeSuccessors = getSuccessors(node);
+			Iterator<Node> nodeSuccessors = getSuccessors(node);
 			
 			/* Is node a leaf ? */
 			if (!nodeSuccessors.hasNext()) {
@@ -990,10 +984,10 @@ public class RTTreeLayout extends AbstractAlgorithm {
 				/* no left brother, set relative coordinates to center of children's position, modifier 0 */
 			}
 			
-			modifierField.put(node, new Double(modifier));
+			modifierField.put(node, Double.valueOf(modifier));
 			/* initialization of cumulative modifier field needed for adjustRelativeCoordinates */
-			cumulModifier.put(node, new Double(0.0));
-			relativeCoords.put(node, new Double(relativeCoord));
+			cumulModifier.put(node, Double.valueOf(0.0));
+			relativeCoords.put(node, Double.valueOf(relativeCoord));
 		}
 		
 	}
@@ -1003,9 +997,9 @@ public class RTTreeLayout extends AbstractAlgorithm {
 	 */
 	private void adjustRelativeCoordinates(Node sourceNode) {
 		
-		Iterator nodesIterator = preorder(sourceNode).iterator();
+		Iterator<Node> nodesIterator = preorder(sourceNode).iterator();
 		while (nodesIterator.hasNext()) {
-			Node node = (Node) nodesIterator.next();
+			Node node = nodesIterator.next();
 			double nodeModif =
 					((Double) modifierField.get(node)).doubleValue();
 			double nodeCumulModif =
@@ -1025,13 +1019,13 @@ public class RTTreeLayout extends AbstractAlgorithm {
 			setX(node, nodeXCoord + xStart);
 			
 			/* Adjusting modifier fields for successors */
-			Iterator nodeSuccessors = getSuccessors(node);
+			Iterator<Node> nodeSuccessors = getSuccessors(node);
 			while (nodeSuccessors.hasNext()) {
-				Node succ = (Node) nodeSuccessors.next();
+				Node succ = nodeSuccessors.next();
 				((Double) cumulModifier.get(succ)).doubleValue();
 				cumulModifier.put(
 						succ,
-						new Double(nodeModif + nodeCumulModif));
+						Double.valueOf(nodeModif + nodeCumulModif));
 			}
 		}
 		
@@ -1050,9 +1044,9 @@ public class RTTreeLayout extends AbstractAlgorithm {
 		Node ancestor = node;
 		double nodeCoord = ((Double) relativeCoords.get(node)).doubleValue();
 		nodeCoord += ((Double) modifierField.get(node)).doubleValue();
-		Iterator predecessors = getPredecessors(ancestor);
+		Iterator<Node> predecessors = getPredecessors(ancestor);
 		while (predecessors.hasNext()) {
-			ancestor = (Node) predecessors.next();
+			ancestor = predecessors.next();
 			Double ancestorModField = ((Double) modifierField.get(ancestor));
 			if (ancestorModField == null) {
 				return nodeCoord;

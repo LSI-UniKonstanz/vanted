@@ -10,7 +10,6 @@ package qmwi.kseg.som.diagram;
  * @author:
  */
 public class AttributsAttribut {
-	@SuppressWarnings("unchecked")
 	public java.util.Vector valuesPercent;
 	public float average = 0;
 	public java.util.Vector<Integer> valuesCount;
@@ -18,7 +17,6 @@ public class AttributsAttribut {
 	/**
 	 * AttributsOneAttribut constructor comment.
 	 */
-	@SuppressWarnings("unchecked")
 	public AttributsAttribut() {
 		super();
 		valuesPercent = new java.util.Vector();
@@ -60,18 +58,9 @@ public class AttributsAttribut {
 	 * @param valuesIndex
 	 *           int
 	 */
-	public void initializeValueCount(int count) {
-		
-		// Aus.a("count",count);
-		
-		for (int i = 0; i < count; i++) {
-			
-			valuesCount.add(new Integer(0));
-			
-		}
-		
-		// Aus.a("valuesCount.size()",valuesCount.size());
-		
+	public void initializeValueCount(int count) {		
+		for (int i = 0; i < count; i++)
+			valuesCount.add(Integer.valueOf(0));		
 	}
 	
 	/**
@@ -83,25 +72,16 @@ public class AttributsAttribut {
 	 */
 	public void inkValueCount(int valuesIndex) {
 		
-		// Aus.a("valuesCount.size()",valuesCount.size());
-		
 		if (valuesIndex < valuesCount.size())
 			;
 		else {
 			
-			valuesCount.add(new Integer(0));
-			
-			// Aus.a("neuer Wert");
-			
+			valuesCount.add(Integer.valueOf(0));			
 		}
-		
-		// Aus.a("valuesIndex",valuesIndex);
-		
-		// Aus.a("valuesCount.size()",valuesCount.size());
 		
 		int count = ((Integer) valuesCount.elementAt(valuesIndex)).intValue() + 1;
 		
-		valuesCount.setElementAt(new Integer(count), valuesIndex);
+		valuesCount.setElementAt(Integer.valueOf(count), valuesIndex);
 		
 		/*
 		 * if (valuesCount.size()==0 || valuesCount.size()-1<valuesIndex) valuesCount.add(new Integer(1));

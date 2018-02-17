@@ -8,10 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.AttributeHelper;
-import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
-import org.graffiti.graphics.NodeLabelAttribute;
 
 /**
  * This pattern visitor marks all occurances of the matched pattern in the
@@ -105,6 +103,7 @@ class MarkingPatternVisitor
 	 * @param prefix
 	 *           a prefix used in the line
 	 */
+	@SuppressWarnings("unused")
 	private void printoutLabels(Node[] matchingNodes, String prefix) {
 		/* print out the labels from the graph! */
 		for (int i = 0; i < matchingNodes.length; i++) {
@@ -149,7 +148,7 @@ class MarkingPatternVisitor
 								patternPosition,
 								patternName,
 								patternOccurance,
-								new Integer(i + 1),
+								Integer.valueOf(i + 1),
 								matchInPattern[i]);
 		}
 	}
@@ -193,8 +192,7 @@ class MarkingPatternVisitor
 										patternPosition,
 										patternName,
 										patternOccurance,
-										new Integer(i
-															+ 1));
+										Integer.valueOf(i + 1));
 					
 				}
 			}
@@ -202,17 +200,17 @@ class MarkingPatternVisitor
 	}
 	
 	/**
-	 * Returns the max occurance value for the given pattern name.
+	 * Returns the max occurrence value for the given pattern name.
 	 * 
 	 * @param patternName
 	 *           the pattern name of interest
-	 * @return the max occurance value
+	 * @return the max occurrence value
 	 */
 	private Integer getMaxOccurance(String patternName) {
 		Object currentValue = maxOccurancePatternName.get(patternName);
 		
 		if (currentValue == null) {
-			Integer eins = new Integer(1);
+			Integer eins = Integer.valueOf(1);
 			
 			maxOccurancePatternName.put(patternName, eins);
 			return eins;
@@ -230,7 +228,7 @@ class MarkingPatternVisitor
 	private void incrMaxOccurance(String patternName) {
 		Integer currentValue =
 							(Integer) maxOccurancePatternName.get(patternName);
-		Integer newValue = new Integer(currentValue.intValue() + 1);
+		Integer newValue = Integer.valueOf(currentValue.intValue() + 1);
 		
 		maxOccurancePatternName.put(patternName, newValue);
 	}

@@ -1,5 +1,4 @@
 package org.vanted.animation.interpolators;
-import org.vanted.animation.data.TimePoint;
 
 /**
  * 

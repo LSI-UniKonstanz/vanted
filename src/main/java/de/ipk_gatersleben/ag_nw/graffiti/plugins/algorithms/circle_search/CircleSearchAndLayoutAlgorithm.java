@@ -80,9 +80,7 @@ public class CircleSearchAndLayoutAlgorithm extends AbstractAlgorithm {
 	public Parameter[] getParameters() {
 		int nNodes = graph.getNumberOfNodes();
 		
-		//lazy reset (only when necessary)
-		if (endNodeCount > startNodeCount)
-			endNodeCount = MIN_CIRCLE_SIZE;
+		ensureMinMaxHolds();
 		
 		return new Parameter[] {
 							new IntegerParameter((startNodeCount > nNodes) ? nNodes : startNodeCount,
@@ -94,6 +92,14 @@ public class CircleSearchAndLayoutAlgorithm extends AbstractAlgorithm {
 												"<html>If selected, the a circle layout is applied,<br>" +
 																	"if not selected, the circles are selected."),
 							new DoubleParameter(patternNodeDistance, "Approximate Node Distance", "") };
+	}
+
+	/**
+	 * When the user tries to run with min > max.
+	 */
+	private void ensureMinMaxHolds() {
+		if (endNodeCount > startNodeCount)
+			endNodeCount = MIN_CIRCLE_SIZE;
 	}
 	
 	@Override
@@ -113,12 +119,19 @@ public class CircleSearchAndLayoutAlgorithm extends AbstractAlgorithm {
 		if (graph.getNumberOfNodes() < MIN_CIRCLE_SIZE)
 			throw new PreconditionException("Network too small (less than 3 nodes)!");
 		
+		onGraphSelectionChange();			
+	}
+
+	/**
+	 * Update parameters, when new graph is selected.
+	 */
+	private void onGraphSelectionChange() {
 		//first or new graph -> set counts
 		if (currentGraphID != graph.hashCode()) {
 			startNodeCount = graph.getNumberOfNodes();
 			endNodeCount = MIN_CIRCLE_SIZE;
 			currentGraphID = graph.hashCode();
-		}			
+		}
 	}
 	
 	public void execute() {

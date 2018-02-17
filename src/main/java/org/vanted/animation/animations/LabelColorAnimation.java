@@ -3,7 +3,6 @@ import java.awt.Color;
 import java.util.List;
 
 import org.AttributeHelper;
-import org.graffiti.attributes.Attributable;
 import org.graffiti.graph.GraphElement; 
 import org.vanted.animation.data.ColorMode;
 import org.vanted.animation.data.ColorTimePoint;

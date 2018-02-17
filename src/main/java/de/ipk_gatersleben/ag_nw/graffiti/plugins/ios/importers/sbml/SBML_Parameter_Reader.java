@@ -8,7 +8,6 @@ import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.ErrorMsg;
 import org.graffiti.graph.Graph;
 import org.sbml.jsbml.ListOf;
 import org.sbml.jsbml.Parameter;

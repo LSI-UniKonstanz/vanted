@@ -13,7 +13,7 @@ public class ReplicateDouble {
 	
 	public ReplicateDouble(Object measurementValue, String replicateNumber, String optQualityAnnotation) {
 		if (measurementValue == null || (!(measurementValue instanceof Double)))
-			measurementValue = new Double(Double.NaN);
+			measurementValue = Double.valueOf(Double.NaN);
 		this.setMeasurementValue((Double) measurementValue);
 		this.setReplicateNumber(replicateNumber);
 	}
