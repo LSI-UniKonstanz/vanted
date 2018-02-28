@@ -23,7 +23,7 @@ public class IntegerEditComponent extends NumberEditComponent {
 	// ~ Constructors ===========================================================
 
 	/**
-	 * Creates a Integer.valueOfEditComponent object.
+	 * Creates a new IntegerEditComponent object.
 	 * 
 	 * @param disp
 	 *            containing the attributes to be displayed

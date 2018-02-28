@@ -288,7 +288,7 @@ GRAPH_ELEM   ::= NODE SBRACE N_ATTR:l
 
 G_ITEM	     ::= ID INTEGER:i
 		 {:
-		  RESULT = Integer.valueOfAttribute("id", i);
+		  RESULT = new IntegerAttribute("id", i);
 		  debug("graph: IntegerAttribute id: " + i + ".\n");
 		  :}
 	     |	 NAME STRING:s 
@@ -303,7 +303,7 @@ G_ITEM	     ::= ID INTEGER:i
 		  :}
 	     |	 VERSION INTEGER:i 
 		 {:
-		  RESULT = Integer.valueOfAttribute("version", i);
+		  RESULT = new IntegerAttribute("version", i);
 		  debug("graph: IntegerAttribute version: " + i + ".\n");
 		  :}
 	     |	 VERSION STRING:s 
@@ -581,7 +581,7 @@ E_STL_ITEM   ::= GRAPHICS_BACKGROUND STRING:s E_STL_ITEM
 
 N_ATTR	     ::= ID INTEGER:i N_ATTR:l
 		 {:
-		  l.add(Integer.valueOfAttribute("id", i));
+		  l.add(new IntegerAttribute("id", i));
 		  debug("node id " + i + " ... \n"); 
 		  RESULT = l;
 		  :}
@@ -838,20 +838,20 @@ N_GFX_ITEM   ::= GRAPHICS_X REAL:r N_GFX_ITEM:ngi
 
 E_ATTR	     ::= ID INTEGER:i E_ATTR:l
 		 {:
-		  //l.add(Integer.valueOfAttribute("id", i));
+		  //l.add(new IntegerAttribute("id", i));
 		  //debug("edge id " + i + " ... \n"); 
 		  debug("edge id ignored \n"); 
 		  RESULT = l;
 		  :}
              |   SOURCE INTEGER:i E_ATTR:l
 		 {:
-		  l.add(Integer.valueOfAttribute("source", i));
+		  l.add(new IntegerAttribute("source", i));
 		  debug("source with id " + i + " added.\n");
 		  RESULT = l;
 		  :}
 	     |	 TARGET INTEGER:i E_ATTR:l
 		 {:
-		  l.add(Integer.valueOfAttribute("target", i));
+		  l.add(new IntegerAttribute("target", i));
 		  debug("target with id " + i + " added.\n");
 		  RESULT = l;
 		  :}
@@ -1137,7 +1137,7 @@ E_GFX_ITEM   ::= GRAPHICS_X REAL:r E_GFX_ITEM:egi
 
 KEYVALUE     ::= KEY:k INTEGER:i 
 		 {:
-		  RESULT = Integer.valueOfAttribute(k, i);
+		  RESULT = new IntegerAttribute(k, i);
 		  debug("IntegerAttribute with id " + k + " and value "
 			+ i + " ... \n"); 
 		  :}
