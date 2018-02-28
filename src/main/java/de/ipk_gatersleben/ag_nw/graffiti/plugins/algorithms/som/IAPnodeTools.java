@@ -53,19 +53,19 @@ public class IAPnodeTools extends NodeTools {
 				}
 				if (mcdpResult == null) {
 					if (returnNaN)
-						dataPoints.add(new Double(Double.NaN)); // missing value
+						dataPoints.add(Double.valueOf(Double.NaN)); // missing value
 					else {
 						if (Double.isNaN(lastDataPoint))
 							missingDataPoints++;
 						else
-							dataPoints.add(new Double(lastDataPoint));
+							dataPoints.add(Double.valueOf(lastDataPoint));
 					}
 				} else {
 					while (missingDataPoints > 0) {
-						dataPoints.add(new Double(mcdpResult.mean));
+						dataPoints.add(Double.valueOf(mcdpResult.mean));
 						missingDataPoints--;
 					}
-					dataPoints.add(new Double(mcdpResult.mean));
+					dataPoints.add(Double.valueOf(mcdpResult.mean));
 					lastDataPoint = mcdpResult.mean;
 				}
 			}

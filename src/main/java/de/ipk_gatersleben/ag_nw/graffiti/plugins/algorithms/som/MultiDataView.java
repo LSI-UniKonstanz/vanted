@@ -84,7 +84,7 @@ public class MultiDataView extends AbstractAlgorithm {
 	public void execute() {
 
 		int axisRotation = ((Double) AttributeHelper.getAttributeValue(graph, "", "node_plotAxisRotation",
-				new Double(0d), new Double(0))).intValue();
+				Double.valueOf(0d), Double.valueOf(0))).intValue();
 
 		boolean plotHor = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_plotOrientationHor",
 				new Boolean(true), new Boolean(true))).booleanValue();
@@ -109,19 +109,19 @@ public class MultiDataView extends AbstractAlgorithm {
 		boolean showStdDevRangeLine = ((Boolean) AttributeHelper.getAttributeValue(graph, "",
 				"node_lineChartShowStdDevRangeLine", new Boolean(true), new Boolean(true))).booleanValue();
 
-		Double temp = (Double) AttributeHelper.getAttributeValue(graph, "", "node_outlineBorderWidth", new Double(4d),
-				new Double(4d));
+		Double temp = (Double) AttributeHelper.getAttributeValue(graph, "", "node_outlineBorderWidth", Double.valueOf(4d),
+				Double.valueOf(4d));
 		((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_halfErrorBar", new Boolean(false),
 				new Boolean(false))).booleanValue();
 
 		float outlineBorderWidth = temp.floatValue();
 
-		temp = (Double) AttributeHelper.getAttributeValue(graph, "", "node_chartShapeSize", new Double(6d),
-				new Double(6d));
+		temp = (Double) AttributeHelper.getAttributeValue(graph, "", "node_chartShapeSize", Double.valueOf(6d),
+				Double.valueOf(6d));
 		float shapeSize = temp.floatValue();
 
-		temp = (Double) AttributeHelper.getAttributeValue(graph, "", "node_chartStdDevLineWidth", new Double(4d),
-				new Double(4d));
+		temp = (Double) AttributeHelper.getAttributeValue(graph, "", "node_chartStdDevLineWidth", Double.valueOf(4d),
+				Double.valueOf(4d));
 		float stdDevLineWidth = temp.floatValue();
 
 		// ChartColorAttribute chartColorAttribute = (ChartColorAttribute)
@@ -239,7 +239,7 @@ public class MultiDataView extends AbstractAlgorithm {
 			boolean showOnlyHalfErrorBar) {
 
 		Double markerSize = (Double) AttributeHelper.getAttributeValue(g, "", AttributeHelper.id_ttestCircleSize,
-				new Double(10.0d), new Double(10.0d));
+				Double.valueOf(10.0d), Double.valueOf(10.0d));
 		boolean useStdErrInsteadOfStdDev = ((Boolean) AttributeHelper.getAttributeValue(g, "", "node_useStdErr",
 				new Boolean(false), new Boolean(false))).booleanValue();
 		BioStatisticalCategoryDataset dataset = new BioStatisticalCategoryDataset(markerSize.floatValue());

@@ -181,12 +181,12 @@ public class GraphHelper implements HelperClass {
 			Node n = (Node) it.next();
 			String clusterID = NodeTools.getClusterID(n, "");
 			if (clusterID.equals(validClusterID))
-				validNodeIDs.add(new Long(n.getID()));
+				validNodeIDs.add(Long.valueOf(n.getID()));
 		}
 
 		ArrayList<org.graffiti.graph.Node> toBeDeleted = new ArrayList<org.graffiti.graph.Node>();
 		for (org.graffiti.graph.Node n : clusterSubGraph.getNodes()) {
-			if (!validNodeIDs.contains(new Long(n.getID()))) {
+			if (!validNodeIDs.contains(Long.valueOf(n.getID()))) {
 				toBeDeleted.add(n);
 			}
 		}
@@ -1018,13 +1018,13 @@ public class GraphHelper implements HelperClass {
 				if (sortCommand == NodeSortCommand.sortLabelInverse)
 					return -o1.getLabel().compareToIgnoreCase(o2.getLabel());
 				if (sortCommand == NodeSortCommand.sortRatio) {
-					int r = new Double(o1.getAverage()).compareTo(o2.getAverage());
+					int r = Double.valueOf(o1.getAverage()).compareTo(o2.getAverage());
 					if (r == 0)
 						r = o1.getLabel().compareToIgnoreCase(o2.getLabel());
 					return r;
 				}
 				if (sortCommand == NodeSortCommand.sortRatioInverse) {
-					int r = -new Double(o1.getAverage()).compareTo(o2.getAverage());
+					int r = -Double.valueOf(o1.getAverage()).compareTo(o2.getAverage());
 					if (r == 0)
 						r = o2.getLabel().compareToIgnoreCase(o1.getLabel());
 					return r;
@@ -1081,9 +1081,9 @@ public class GraphHelper implements HelperClass {
 				if (sortCommand == NodeSortCommand.sortLabelInverse)
 					return -o1.getLabel().compareToIgnoreCase(o2.getLabel());
 				if (sortCommand == NodeSortCommand.sortRatio)
-					return new Double(o1.getAverage()).compareTo(o2.getAverage());
+					return Double.valueOf(o1.getAverage()).compareTo(o2.getAverage());
 				if (sortCommand == NodeSortCommand.sortRatioInverse)
-					return -new Double(o1.getAverage()).compareTo(o2.getAverage());
+					return -Double.valueOf(o1.getAverage()).compareTo(o2.getAverage());
 				return 0;
 			}
 		});
@@ -1121,9 +1121,9 @@ public class GraphHelper implements HelperClass {
 				if (sortCommand == NodeSortCommand.sortLabelInverse)
 					return -o1.getLabel().compareToIgnoreCase(o2.getLabel());
 				if (sortCommand == NodeSortCommand.sortRatio)
-					return new Double(o1.getAverage()).compareTo(o2.getAverage());
+					return Double.valueOf(o1.getAverage()).compareTo(o2.getAverage());
 				if (sortCommand == NodeSortCommand.sortRatioInverse)
-					return -new Double(o1.getAverage()).compareTo(o2.getAverage());
+					return -Double.valueOf(o1.getAverage()).compareTo(o2.getAverage());
 				return 0;
 			}
 		});
@@ -2357,7 +2357,7 @@ public class GraphHelper implements HelperClass {
 			}
 			edgesConnectingNeighbors = edgesConnectingNeighbors / 2;
 			double result = 2d * edgesConnectingNeighbors / neighbors / (neighbors - 1);
-			return new Double(result);
+			return Double.valueOf(result);
 		}
 	}
 
@@ -2383,7 +2383,7 @@ public class GraphHelper implements HelperClass {
 				}
 			}
 			double result = (double) edgesConnectingNeighbors / (double) neighbors / (neighbors - 1);
-			return new Double(result);
+			return Double.valueOf(result);
 		}
 	}
 

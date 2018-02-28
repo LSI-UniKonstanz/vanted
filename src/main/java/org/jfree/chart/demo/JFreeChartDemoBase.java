@@ -617,7 +617,7 @@ public class JFreeChartDemoBase {
 		final String subtitleStr = this.resources.getString("meter.thermo.subtitle");
 		final String units = this.resources.getString("meter.thermo.units");
 
-		final DefaultValueDataset data = new DefaultValueDataset(new Double(34.0));
+		final DefaultValueDataset data = new DefaultValueDataset(Double.valueOf(34.0));
 		final ThermometerPlot plot = new ThermometerPlot(data);
 		plot.setUnits(units);
 		final JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT, plot, false);
@@ -718,7 +718,7 @@ public class JFreeChartDemoBase {
 		// create a default chart based on some sample data...
 		final String title = this.resources.getString("meter.compass.title");
 		final String subtitleStr = this.resources.getString("meter.compass.subtitle");
-		final DefaultValueDataset data = new DefaultValueDataset(new Double(45.0));
+		final DefaultValueDataset data = new DefaultValueDataset(Double.valueOf(45.0));
 
 		final Plot plot = new CompassPlot(data);
 		final JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT, plot, false);

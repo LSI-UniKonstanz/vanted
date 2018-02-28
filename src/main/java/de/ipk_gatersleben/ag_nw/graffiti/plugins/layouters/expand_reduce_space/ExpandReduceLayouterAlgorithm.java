@@ -87,7 +87,7 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 				double factorY = factor;
 				Object[] result = MyInputHelper.getInput("Please enter the X and Y factors<br>for distortion:",
 						"Distortion Parameters",
-						new Object[] { "X-factor", new Double(factorX), "Y-factor", new Double(factorY), });
+						new Object[] { "X-factor", Double.valueOf(factorX), "Y-factor", Double.valueOf(factorY), });
 				if (result == null)
 					return;
 				doOperation(selectedNodesF, (Double) result[0], (Double) result[1], "X/Y transformation");

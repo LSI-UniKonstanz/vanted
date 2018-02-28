@@ -159,7 +159,7 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset implements 
 	 * @return the x-value.
 	 */
 	public Number getXValue(final int series, final int item) {
-		return new Long(((Date) this.dates.get(item)).getTime());
+		return Long.valueOf(((Date) this.dates.get(item)).getTime());
 	}
 
 	/**
@@ -190,7 +190,7 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset implements 
 	 * @return the y-value.
 	 */
 	public Number getYValue(final int series, final int item) {
-		return new Double(this.getMeanValue(series, item).doubleValue());
+		return Double.valueOf(this.getMeanValue(series, item).doubleValue());
 	}
 
 	/**

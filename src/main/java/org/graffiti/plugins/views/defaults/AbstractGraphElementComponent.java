@@ -120,7 +120,7 @@ public abstract class AbstractGraphElementComponent extends GraphElementComponen
 		 * new graphelement transparency attribute
 		 */
 		double opacity = (double) AttributeHelper.getAttributeValue(ge, GraphicAttributeConstants.GRAPHICS,
-				GraphicAttributeConstants.OPAC, 1.0, new Double(1));
+				GraphicAttributeConstants.OPAC, 1.0, Double.valueOf(1));
 		setupOpacity(opacity);
 	}
 

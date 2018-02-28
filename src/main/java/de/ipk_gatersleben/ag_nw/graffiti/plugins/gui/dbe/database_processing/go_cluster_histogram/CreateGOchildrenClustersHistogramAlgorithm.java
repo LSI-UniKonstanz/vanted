@@ -202,7 +202,7 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 			int plantID = nh.memGetPlantID(clusterID, "", "", "", "");
 			Integer value = cluster2frequency.get(clusterID);
 			if (value == null) {
-				nh.memSample(new Double(0), -1, plantID, "frequency", "-1", Integer.valueOf(-1));
+				nh.memSample(Double.valueOf(0), -1, plantID, "frequency", "-1", Integer.valueOf(-1));
 				if (sb != null) {
 					if (sb.length() > 0)
 						sb.append(", 0");
@@ -210,7 +210,7 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 						sb.append("0");
 				}
 			} else {
-				nh.memSample(new Double(value), -1, plantID, "frequency", "-1", Integer.valueOf(-1));
+				nh.memSample(Double.valueOf(value), -1, plantID, "frequency", "-1", Integer.valueOf(-1));
 				if (sb != null) {
 					if (sb.length() > 0)
 						sb.append(";" + (int) value);

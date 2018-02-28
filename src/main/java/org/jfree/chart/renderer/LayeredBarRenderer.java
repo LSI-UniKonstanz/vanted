@@ -441,7 +441,7 @@ public class LayeredBarRenderer extends BarRenderer {
 	 *            maximum).
 	 */
 	public void setSeriesBarWidth(int series, double width) {
-		this.seriesBarWidthList.set(series, new Double(width));
+		this.seriesBarWidthList.set(series, Double.valueOf(width));
 	}
 
 }

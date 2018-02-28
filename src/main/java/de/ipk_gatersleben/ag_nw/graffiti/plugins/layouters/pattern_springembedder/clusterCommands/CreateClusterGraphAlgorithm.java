@@ -226,7 +226,7 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 			} else
 				nodeSize = (minNodeSize + maxNodeSize) / 2;
 
-			if (new Double(nodeSize).isNaN() || new Double(nodeSize).isInfinite()) {
+			if (Double.valueOf(nodeSize).isNaN() || Double.valueOf(nodeSize).isInfinite()) {
 				AttributeHelper.setSize(n, minNodeSize, minNodeSize);
 			} else
 				AttributeHelper.setSize(n, nodeSize, nodeSize);

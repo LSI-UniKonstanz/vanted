@@ -62,7 +62,7 @@ public class DBEinputFileReader extends ExperimentDataFileReader {
 
 		// for all conditions set experimentstuff
 
-		progressDouble = new Double(100d);
+		progressDouble = Double.valueOf(100d);
 		return e;
 	}
 
@@ -218,7 +218,7 @@ public class DBEinputFileReader extends ExperimentDataFileReader {
 
 		// ADD SAMPLE ATTRIBUTES: ID, TIME, UNIT
 		s.setRowId(++sampleIDcount);
-		s.setTime(Integer.valueOf(processTimeData(new Double(sample.getTime()).toString())));
+		s.setTime(Integer.valueOf(processTimeData(Double.valueOf(sample.getTime()).toString())));
 		s.setTimeUnit(sample.getTimeUnit());
 		// ADD DATA ATTRIBUTE: MEASUREMENT TOOL
 		String mesTool = myData.getUnicodeStringCellData(sci.getFirstColumn(), 21);
@@ -232,10 +232,10 @@ public class DBEinputFileReader extends ExperimentDataFileReader {
 		// ADD AVERAGE ATTRIBUTES: UNIT, REPLICATES, MIN, MAX, STDDEV
 		sa.setUnit(sample.getMeasurementUnit());
 		sa.setReplicateId(Integer.valueOf(measurements.size()));
-		sa.setMin(new Double(sample.getMinimum()));
-		sa.setMax(new Double(sample.getMaximum()));
-		sa.setStddev(new Double(sample.getStddev()));
-		sa.setValue(new Double(sample.getAverage()));
+		sa.setMin(Double.valueOf(sample.getMinimum()));
+		sa.setMax(Double.valueOf(sample.getMaximum()));
+		sa.setStddev(Double.valueOf(sample.getStddev()));
+		sa.setValue(Double.valueOf(sample.getAverage()));
 		for (ReplicateDouble itMes : measurements) {
 			Double value = itMes.doubleValue();
 			// ADD DATA ENTRY

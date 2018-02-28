@@ -476,7 +476,7 @@ public class CyclicNumberAxis extends NumberAxis {
 				}
 			}
 
-			CycleBoundTick tick = new CycleBoundTick(this.boundMappedToLastCycle, new Double(currentTickValue),
+			CycleBoundTick tick = new CycleBoundTick(this.boundMappedToLastCycle, Double.valueOf(currentTickValue),
 					tickLabel, x, y, anchor, rotationAnchor, angle);
 			if (currentTickValue == cycleBound) {
 				this.internalMarkerCycleBoundTick = tick;
@@ -625,7 +625,7 @@ public class CyclicNumberAxis extends NumberAxis {
 				}
 			}
 
-			CycleBoundTick tick = new CycleBoundTick(this.boundMappedToLastCycle, new Double(currentTickValue),
+			CycleBoundTick tick = new CycleBoundTick(this.boundMappedToLastCycle, Double.valueOf(currentTickValue),
 					tickLabel, x, y, anchor, rotationAnchor, angle);
 			if (currentTickValue == cycleBound) {
 				this.internalMarkerCycleBoundTick = tick;

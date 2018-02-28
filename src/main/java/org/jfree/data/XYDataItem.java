@@ -70,7 +70,7 @@ public class XYDataItem implements Cloneable, Comparable, Serializable {
 	 *            the y-value.
 	 */
 	public XYDataItem(final double x, final double y) {
-		this(new Double(x), new Double(y));
+		this(Double.valueOf(x), Double.valueOf(y));
 	}
 
 	/**

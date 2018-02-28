@@ -116,7 +116,7 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 *            the name of the series to add the value.
 	 */
 	public void add(final RegularTimePeriod period, final double y, final String seriesName) {
-		add(period, new Double(y), seriesName, true);
+		add(period, Double.valueOf(y), seriesName, true);
 	}
 
 	/**
@@ -222,7 +222,7 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 */
 	public Number getXValue(final int series, final int item) {
 		final RegularTimePeriod period = (RegularTimePeriod) this.values.getRowKey(item);
-		return new Long(getX(period));
+		return Long.valueOf(getX(period));
 	}
 
 	/**
@@ -236,7 +236,7 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 */
 	public Number getStartXValue(final int series, final int item) {
 		final RegularTimePeriod period = (RegularTimePeriod) this.values.getRowKey(item);
-		return new Long(period.getFirstMillisecond(this.workingCalendar));
+		return Long.valueOf(period.getFirstMillisecond(this.workingCalendar));
 	}
 
 	/**
@@ -250,7 +250,7 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 */
 	public Number getEndXValue(final int series, final int item) {
 		final RegularTimePeriod period = (RegularTimePeriod) this.values.getRowKey(item);
-		return new Long(period.getLastMillisecond(this.workingCalendar));
+		return Long.valueOf(period.getLastMillisecond(this.workingCalendar));
 	}
 
 	/**
@@ -319,7 +319,7 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * @return The minimum value.
 	 */
 	public Number getMinimumDomainValue() {
-		return new Double(getDomainRange().getLowerBound());
+		return Double.valueOf(getDomainRange().getLowerBound());
 	}
 
 	/**
@@ -329,7 +329,7 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * @return The maximum value.
 	 */
 	public Number getMaximumDomainValue() {
-		return new Double(getDomainRange().getUpperBound());
+		return Double.valueOf(getDomainRange().getUpperBound());
 	}
 
 	/**

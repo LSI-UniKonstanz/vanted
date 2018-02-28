@@ -276,7 +276,7 @@ public class XPathHelper implements HelperClass {
 					return "- Error 2 -";
 				}
 			}
-			res = new Double(sum).toString();
+			res = Double.valueOf(sum).toString();
 			if (errCnt > 0) {
 				res = res + " (" + errCnt + " errors)";
 			}
@@ -303,7 +303,7 @@ public class XPathHelper implements HelperClass {
 			if (n.getNodeName().equalsIgnoreCase("data")) {
 				String ms = n.getFirstChild().getNodeValue();
 				double mesVal = Double.parseDouble(ms);
-				measureValues.add(new Double(mesVal));
+				measureValues.add(Double.valueOf(mesVal));
 			}
 			n = n.getNextSibling();
 		}

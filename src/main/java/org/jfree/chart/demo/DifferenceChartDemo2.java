@@ -95,7 +95,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 	 */
 	private Long time(final int hour, final int min) {
 		final Minute m = new Minute(min, hour, 1, 1, 1970);
-		return new Long(m.getFirstMillisecond());
+		return Long.valueOf(m.getFirstMillisecond());
 	}
 
 	/**

@@ -921,7 +921,7 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 		if (this.explodePercentages == null) {
 			this.explodePercentages = new ObjectList();
 		}
-		this.explodePercentages.set(section, new Double(percent));
+		this.explodePercentages.set(section, Double.valueOf(percent));
 		notifyListeners(new PlotChangeEvent(this));
 	}
 
@@ -1624,9 +1624,9 @@ public class PiePlot extends Plot implements Cloneable, Serializable {
 					double mid = this.startAngle
 							+ (this.direction.getFactor() * ((runningTotal1 - v / 2.0) * 360) / totalValue);
 					if (Math.cos(Math.toRadians(mid)) < 0.0) {
-						leftKeys.addValue(key, new Double(mid));
+						leftKeys.addValue(key, Double.valueOf(mid));
 					} else {
-						rightKeys.addValue(key, new Double(mid));
+						rightKeys.addValue(key, Double.valueOf(mid));
 					}
 				}
 			}

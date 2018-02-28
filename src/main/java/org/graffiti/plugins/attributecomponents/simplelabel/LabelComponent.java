@@ -922,7 +922,7 @@ public class LabelComponent extends AbstractAttributeComponent
 				double dist = (this.iterateTill(pi, null)).getX();
 
 				pi = geShape.getPathIterator(null, flatness);
-				labelLoc = this.iterateTill(pi, new Double(posAttr.getRelAlign() * dist));
+				labelLoc = this.iterateTill(pi, Double.valueOf(posAttr.getRelAlign() * dist));
 			} else {
 				// calc pos rel to spec seg
 				PathIterator pi = geShape.getPathIterator(null);
@@ -937,7 +937,7 @@ public class LabelComponent extends AbstractAttributeComponent
 					double dist = (this.iterateTill(pi, null)).getX();
 
 					pi = geShape.getPathIterator(null, flatness);
-					labelLoc = this.iterateTill(pi, new Double(posAttr.getRelAlign() * dist));
+					labelLoc = this.iterateTill(pi, Double.valueOf(posAttr.getRelAlign() * dist));
 				} else {
 					pi = geShape.getPathIterator(null, flatness);
 
@@ -946,7 +946,7 @@ public class LabelComponent extends AbstractAttributeComponent
 					// move along path till correct pos
 					pi = geShape.getPathIterator(null, flatness);
 					labelLoc = this.iterateTill(pi,
-							new Double((Double) dists.getFst() + (posAttr.getRelAlign() * (Double) dists.getSnd())));
+							Double.valueOf((Double) dists.getFst() + (posAttr.getRelAlign() * (Double) dists.getSnd())));
 				}
 			}
 

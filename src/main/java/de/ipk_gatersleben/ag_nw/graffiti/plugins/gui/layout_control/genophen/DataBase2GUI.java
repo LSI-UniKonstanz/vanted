@@ -135,7 +135,7 @@ public class DataBase2GUI {
 	// currentNode,
 	// "dbe",
 	// "avgMeasurement"+curID,
-	// new Double(
+	// Double.valueOf(
 	// DataExchange.getAverageMeasurement(
 	// experimentName,
 	// plantID,
@@ -144,7 +144,7 @@ public class DataBase2GUI {
 	// currentNode,
 	// "dbe",
 	// "stdDev"+curID,
-	// new Double(
+	// Double.valueOf(
 	// DataExchange.getStdDev(
 	// experimentName,
 	// plantID,
@@ -153,7 +153,7 @@ public class DataBase2GUI {
 	// currentNode,
 	// "dbe",
 	// "variance"+curID,
-	// new Double(
+	// Double.valueOf(
 	// DataExchange.getVariance(
 	// experimentName,
 	// plantID,
@@ -162,7 +162,7 @@ public class DataBase2GUI {
 	// currentNode,
 	// "dbe",
 	// "min"+curID,
-	// new Double(
+	// Double.valueOf(
 	// DataExchange.getMin(
 	// experimentName,
 	// plantID,
@@ -171,7 +171,7 @@ public class DataBase2GUI {
 	// currentNode,
 	// "dbe",
 	// "max"+curID,
-	// new Double(
+	// Double.valueOf(
 	// DataExchange.getMax(
 	// experimentName,
 	// plantID,

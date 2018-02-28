@@ -88,9 +88,9 @@ public class ExportDataTableAlgorithm extends AbstractEditorAlgorithm {
 					if (!(ed instanceof Edge))
 						continue;
 					Double valr = (Double) AttributeHelper.getAttributeValue(ed, "statistics", "correlation_r", null,
-							new Double(1d));
+							Double.valueOf(1d));
 					Double valp = (Double) AttributeHelper.getAttributeValue(ed, "statistics", "correlation_prob", null,
-							new Double(1d));
+							Double.valueOf(1d));
 					pairs.add(new NodePair(((Edge) ed).getSource(), ((Edge) ed).getTarget(), valr, valp));
 				}
 				for (NodePair np : pairs) {

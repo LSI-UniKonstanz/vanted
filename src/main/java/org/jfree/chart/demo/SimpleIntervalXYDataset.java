@@ -53,17 +53,17 @@ public class SimpleIntervalXYDataset extends AbstractIntervalXYDataset implement
 	 */
 	public SimpleIntervalXYDataset() {
 
-		this.xStart[0] = new Double(0.0);
-		this.xStart[1] = new Double(2.0);
-		this.xStart[2] = new Double(3.5);
+		this.xStart[0] = Double.valueOf(0.0);
+		this.xStart[1] = Double.valueOf(2.0);
+		this.xStart[2] = Double.valueOf(3.5);
 
-		this.xEnd[0] = new Double(2.0);
-		this.xEnd[1] = new Double(3.5);
-		this.xEnd[2] = new Double(4.0);
+		this.xEnd[0] = Double.valueOf(2.0);
+		this.xEnd[1] = Double.valueOf(3.5);
+		this.xEnd[2] = Double.valueOf(4.0);
 
-		this.yValues[0] = new Double(3.0);
-		this.yValues[1] = new Double(4.5);
-		this.yValues[2] = new Double(2.5);
+		this.yValues[0] = Double.valueOf(3.0);
+		this.yValues[1] = Double.valueOf(4.5);
+		this.yValues[2] = Double.valueOf(2.5);
 	}
 
 	/**

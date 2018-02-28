@@ -185,7 +185,7 @@ public class DefaultCategoryDataset extends AbstractDataset implements CategoryD
 	 *            the column key.
 	 */
 	public void addValue(final double value, final Comparable rowKey, final Comparable columnKey) {
-		addValue(new Double(value), rowKey, columnKey);
+		addValue(Double.valueOf(value), rowKey, columnKey);
 	}
 
 	/**
@@ -214,7 +214,7 @@ public class DefaultCategoryDataset extends AbstractDataset implements CategoryD
 	 *            the column key.
 	 */
 	public void setValue(final double value, final Comparable rowKey, final Comparable columnKey) {
-		setValue(new Double(value), rowKey, columnKey);
+		setValue(Double.valueOf(value), rowKey, columnKey);
 	}
 
 	/**

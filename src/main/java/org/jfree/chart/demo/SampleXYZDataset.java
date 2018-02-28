@@ -93,7 +93,7 @@ public class SampleXYZDataset extends AbstractXYZDataset implements XYZDataset {
 	 * @return the x-value.
 	 */
 	public Number getXValue(final int series, final int item) {
-		return new Double(this.xVal[item]);
+		return Double.valueOf(this.xVal[item]);
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class SampleXYZDataset extends AbstractXYZDataset implements XYZDataset {
 	 * @return the y-value.
 	 */
 	public Number getYValue(final int series, final int item) {
-		return new Double(this.yVal[item]);
+		return Double.valueOf(this.yVal[item]);
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class SampleXYZDataset extends AbstractXYZDataset implements XYZDataset {
 	 * @return the z-value for the specified series and item.
 	 */
 	public Number getZValue(final int series, final int item) {
-		return new Double(this.zVal[item]);
+		return Double.valueOf(this.zVal[item]);
 	}
 
 }

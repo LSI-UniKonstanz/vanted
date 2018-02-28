@@ -71,8 +71,8 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	public DefaultStatisticalCategoryDataset() {
 
 		this.data = new KeyedObjects2D();
-		this.minimumRangeValue = new Double(0.0);
-		this.maximumRangeValue = new Double(0.0);
+		this.minimumRangeValue = Double.valueOf(0.0);
+		this.maximumRangeValue = Double.valueOf(0.0);
 		this.valueRange = new Range(0.0, 0.0);
 
 	}
@@ -278,16 +278,16 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	public void add(final double mean, final double standardDeviation, final Comparable rowKey,
 			final Comparable columnKey, boolean showOnlyHalfErrorBar) {
 
-		final MeanAndStandardDeviation item = new MeanAndStandardDeviation(new Double(mean),
-				new Double(standardDeviation));
+		final MeanAndStandardDeviation item = new MeanAndStandardDeviation(Double.valueOf(mean),
+				Double.valueOf(standardDeviation));
 		addDataObject(item, rowKey, columnKey);
 		addStep2(mean, standardDeviation, rowKey, columnKey, showOnlyHalfErrorBar);
 	}
 
 	public void add(final double mean, final double standardDeviation, final Comparable rowKey,
 			final Comparable columnKey) {
-		final MeanAndStandardDeviation item = new MeanAndStandardDeviation(new Double(mean),
-				new Double(standardDeviation));
+		final MeanAndStandardDeviation item = new MeanAndStandardDeviation(Double.valueOf(mean),
+				Double.valueOf(standardDeviation));
 		addDataObject(item, rowKey, columnKey);
 		addStep2(mean, standardDeviation, rowKey, columnKey, false);
 	}
@@ -303,11 +303,11 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 		if (!Double.isInfinite(mean) && !Double.isInfinite(standardDeviation) && !Double.isNaN(mean)
 				&& !Double.isNaN(standardDeviation)) {
 			if ((mean + standardDeviation) > this.maximumRangeValue.doubleValue()) {
-				this.maximumRangeValue = new Double(mean + standardDeviation);
+				this.maximumRangeValue = Double.valueOf(mean + standardDeviation);
 				this.valueRange = new Range(this.minimumRangeValue.doubleValue(), this.maximumRangeValue.doubleValue());
 			}
 			if ((mean - standardDeviation) < this.minimumRangeValue.doubleValue()) {
-				this.minimumRangeValue = new Double(mean - (showOnlyHalfErrorBar ? 0 : standardDeviation));
+				this.minimumRangeValue = Double.valueOf(mean - (showOnlyHalfErrorBar ? 0 : standardDeviation));
 				this.valueRange = new Range(this.minimumRangeValue.doubleValue(), this.maximumRangeValue.doubleValue());
 			}
 			fireDatasetChanged();

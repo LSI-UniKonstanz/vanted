@@ -238,7 +238,7 @@ public class JDBCCategoryDataset extends DefaultCategoryDataset {
 					case Types.TIME:
 					case Types.TIMESTAMP: {
 						final Date date = (Date) resultSet.getObject(column);
-						final Number value = new Long(date.getTime());
+						final Number value = Long.valueOf(date.getTime());
 						if (this.transpose) {
 							setValue(value, columnKey, rowKey);
 						} else {

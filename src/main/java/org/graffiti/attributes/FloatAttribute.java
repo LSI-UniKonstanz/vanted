@@ -99,7 +99,7 @@ public class FloatAttribute extends AbstractAttribute {
 	 * @return the value of the attribute wrapped in an <code>Float</code> object.
 	 */
 	public Object getValue() {
-		return new Float(value);
+		return Float.valueOf(value);
 	}
 
 	/**

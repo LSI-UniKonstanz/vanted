@@ -209,7 +209,7 @@ public abstract class AbstractAttributable implements Attributable {
 	 */
 	public void setDouble(String path, double value) {
 		assert path != null;
-		doSet(path, new Double(value), DOUBLE_ATTRIBUTE);
+		doSet(path, Double.valueOf(value), DOUBLE_ATTRIBUTE);
 	}
 
 	/**
@@ -252,7 +252,7 @@ public abstract class AbstractAttributable implements Attributable {
 	 */
 	public void setFloat(String path, float value) {
 		assert path != null;
-		doSet(path, new Float(value), FLOAT_ATTRIBUTE);
+		doSet(path, Float.valueOf(value), FLOAT_ATTRIBUTE);
 	}
 
 	/**
@@ -338,7 +338,7 @@ public abstract class AbstractAttributable implements Attributable {
 	 */
 	public void setLong(String path, long value) {
 		assert path != null;
-		doSet(path, new Long(value), LONG_ATTRIBUTE);
+		doSet(path, Long.valueOf(value), LONG_ATTRIBUTE);
 	}
 
 	/**

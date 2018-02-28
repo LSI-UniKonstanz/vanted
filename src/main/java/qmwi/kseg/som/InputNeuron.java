@@ -29,7 +29,7 @@ class InputNeuron {
 	public void setDoubleInput(int column, String input) {
 		currentValue = input;
 		try {
-			currentDoubleValue = (new Double(currentValue)).doubleValue();
+			currentDoubleValue = (Double.valueOf(currentValue)).doubleValue();
 		} catch (NumberFormatException e) {
 			ErrorMsg.addErrorMessage(e);
 			currentDoubleValue = Double.NaN;
@@ -39,7 +39,7 @@ class InputNeuron {
 	public void setInput(int column, String input) {
 		currentValue = input;
 		try {
-			currentDoubleValue = (new Double(currentValue)).doubleValue();
+			currentDoubleValue = (Double.valueOf(currentValue)).doubleValue();
 		} catch (NumberFormatException e) {
 			ErrorMsg.addErrorMessage(e);
 			currentDoubleValue = GlobalLookUp.getEntry(column, input);

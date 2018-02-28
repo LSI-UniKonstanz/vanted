@@ -174,14 +174,14 @@ public class PolarPlot extends Plot implements ValueAxisPlot, RendererChangeList
 		}
 
 		this.angleTicks = new java.util.ArrayList();
-		this.angleTicks.add(new NumberTick(new Double(0.0), "0", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
-		this.angleTicks.add(new NumberTick(new Double(45.0), "45", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
-		this.angleTicks.add(new NumberTick(new Double(90.0), "90", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
-		this.angleTicks.add(new NumberTick(new Double(135.0), "135", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
-		this.angleTicks.add(new NumberTick(new Double(180.0), "180", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
-		this.angleTicks.add(new NumberTick(new Double(225.0), "225", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
-		this.angleTicks.add(new NumberTick(new Double(270.0), "270", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
-		this.angleTicks.add(new NumberTick(new Double(315.0), "315", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
+		this.angleTicks.add(new NumberTick(Double.valueOf(0.0), "0", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
+		this.angleTicks.add(new NumberTick(Double.valueOf(45.0), "45", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
+		this.angleTicks.add(new NumberTick(Double.valueOf(90.0), "90", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
+		this.angleTicks.add(new NumberTick(Double.valueOf(135.0), "135", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
+		this.angleTicks.add(new NumberTick(Double.valueOf(180.0), "180", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
+		this.angleTicks.add(new NumberTick(Double.valueOf(225.0), "225", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
+		this.angleTicks.add(new NumberTick(Double.valueOf(270.0), "270", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
+		this.angleTicks.add(new NumberTick(Double.valueOf(315.0), "315", TextAnchor.CENTER, TextAnchor.CENTER, 0.0));
 
 		this.radiusAxis = radiusAxis;
 		if (this.radiusAxis != null) {

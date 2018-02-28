@@ -130,9 +130,9 @@ public class CreateGOchildrenTtestHistogramAlgorithm extends AbstractAlgorithm
 			int plantID = nh.memGetPlantID(seriesName, "", "", "", "");
 			Integer value = significance2frequency.get(seriesNameAndTime);
 			if (value == null)
-				nh.memSample(new Double(0), -1, plantID, "frequency", timeUnit, timePoint);
+				nh.memSample(Double.valueOf(0), -1, plantID, "frequency", timeUnit, timePoint);
 			else
-				nh.memSample(new Double(value), -1, plantID, "frequency", timeUnit, timePoint);
+				nh.memSample(Double.valueOf(value), -1, plantID, "frequency", timeUnit, timePoint);
 		}
 		nh.memAddDataMapping("mapping", "significance frequency", null, "calculated analysis", "system",
 				"Frequency of significant differences for series in comparison to reference set in child nodes of a GO-Term-Hierarchy-Node",

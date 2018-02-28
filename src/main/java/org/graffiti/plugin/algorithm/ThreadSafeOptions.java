@@ -275,7 +275,7 @@ public class ThreadSafeOptions implements HelperClass {
 				dValues = newDvalues;
 			}
 
-			dValues[index] = new Double(value);
+			dValues[index] = Double.valueOf(value);
 		}
 	}
 

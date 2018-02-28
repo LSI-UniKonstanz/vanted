@@ -117,7 +117,7 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset implements XYD
 			for (int i = 0; i < itemCount; i++) {
 				final double x = Math.random() * xRange;
 				final double y = Math.random() * tabString.length;
-				this.xValues[s][i] = new Double(x);
+				this.xValues[s][i] = Double.valueOf(x);
 				this.yValues[s][i] = Integer.valueOf((int) y);
 			}
 		}

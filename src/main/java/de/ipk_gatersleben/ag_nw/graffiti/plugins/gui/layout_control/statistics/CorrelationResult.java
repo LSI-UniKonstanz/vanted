@@ -38,7 +38,7 @@ public class CorrelationResult {
 	public void addR(float r, double significantProbability, int dataset2offset, String calculationHistory,
 			String seriesName, double corrprobability) {
 		this.r.add(new FloatAndDesc(r, seriesName));
-		this.corrprobs.add(new Double(corrprobability));
+		this.corrprobs.add(Double.valueOf(corrprobability));
 		if (Math.abs(corrprobability) >= significantProbability) {
 			isAnyOneSignificant = true;
 		}

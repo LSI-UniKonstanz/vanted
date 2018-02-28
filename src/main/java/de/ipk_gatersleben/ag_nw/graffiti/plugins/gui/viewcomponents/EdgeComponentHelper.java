@@ -67,7 +67,7 @@ public class EdgeComponentHelper implements HelperClass {
 			double dist = (iterateTill(pi, null)).getX();
 
 			pi = geShape.getPathIterator(null, flatness);
-			labelLoc = iterateTill(pi, new Double(posAttr.getRelAlign() * dist));
+			labelLoc = iterateTill(pi, Double.valueOf(posAttr.getRelAlign() * dist));
 		} else {
 			// calc pos rel to spec seg
 			PathIterator pi = geShape.getPathIterator(null);
@@ -82,7 +82,7 @@ public class EdgeComponentHelper implements HelperClass {
 				double dist = (iterateTill(pi, null)).getX();
 
 				pi = geShape.getPathIterator(null, flatness);
-				labelLoc = iterateTill(pi, new Double(posAttr.getRelAlign() * dist));
+				labelLoc = iterateTill(pi, Double.valueOf(posAttr.getRelAlign() * dist));
 			} else {
 				pi = geShape.getPathIterator(null, flatness);
 
@@ -91,7 +91,7 @@ public class EdgeComponentHelper implements HelperClass {
 				// move along path till correct pos
 				pi = geShape.getPathIterator(null, flatness);
 				labelLoc = iterateTill(pi,
-						new Double((Double) dists.getFst() + (posAttr.getRelAlign() * (Double) dists.getSnd())));
+						Double.valueOf((Double) dists.getFst() + (posAttr.getRelAlign() * (Double) dists.getSnd())));
 			}
 		}
 		loc.setLocation(labelLoc.getX() - (width / 2.0d) + posAttr.getAbsHor(),

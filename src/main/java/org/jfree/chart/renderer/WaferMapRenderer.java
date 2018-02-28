@@ -349,7 +349,7 @@ public class WaferMapRenderer extends AbstractRenderer {
 				}
 			}
 		}
-		return new Double(minValue);
+		return Double.valueOf(minValue);
 	}
 
 	/**
@@ -369,7 +369,7 @@ public class WaferMapRenderer extends AbstractRenderer {
 				}
 			}
 		}
-		return new Double(maxValue);
+		return Double.valueOf(maxValue);
 	}
 
 } // end class wafermaprenderer

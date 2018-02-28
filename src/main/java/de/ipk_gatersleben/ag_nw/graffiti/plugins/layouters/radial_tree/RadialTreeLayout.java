@@ -582,9 +582,9 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 					/* Compute the maximum height of nodes in each level of the tree */
 					Double maxNodeHeightValue = (Double) maxNodeHeight.get(depth);
 					if (maxNodeHeightValue != null) {
-						maxNodeHeight.put(depth, new Double(Math.max(maxNodeHeightValue.doubleValue(), nodeHeight)));
+						maxNodeHeight.put(depth, Double.valueOf(Math.max(maxNodeHeightValue.doubleValue(), nodeHeight)));
 					} else {
-						maxNodeHeight.put(depth, new Double(nodeHeight));
+						maxNodeHeight.put(depth, Double.valueOf(nodeHeight));
 					}
 
 					graphNodes.remove(neighbour);

@@ -118,7 +118,7 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * @return the x-value.
 	 */
 	public Number getXValue(final int series, final int item) {
-		return new Long(this.date[item].getTime());
+		return Long.valueOf(this.date[item].getTime());
 	}
 
 	/**
@@ -341,7 +341,7 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 		final Number[] result = new Number[data.length];
 
 		for (int i = 0; i < data.length; i++) {
-			result[i] = new Double(data[i]);
+			result[i] = Double.valueOf(data[i]);
 		}
 
 		return result;

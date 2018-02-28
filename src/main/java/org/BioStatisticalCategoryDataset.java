@@ -73,8 +73,8 @@ public class BioStatisticalCategoryDataset extends DefaultStatisticalCategoryDat
 			final Comparable columnKey, boolean ttestIsRef, boolean ttestIsDiff, String unit, String timeunit,
 			boolean datasetWillBeShownWithStdDev, boolean showOnlyHalfErrorBar) {
 
-		final BioMeanAndStandardDeviation item = new BioMeanAndStandardDeviation(new Double(mean),
-				new Double(standardDeviation), ttestIsRef, ttestIsDiff);
+		final BioMeanAndStandardDeviation item = new BioMeanAndStandardDeviation(Double.valueOf(mean),
+				Double.valueOf(standardDeviation), ttestIsRef, ttestIsDiff);
 		addDataObject(item, rowKey, columnKey);
 
 		// if the standard deviation will be shown, it must be considered

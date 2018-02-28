@@ -79,7 +79,7 @@ public class TimeSeriesDemo5 extends ApplicationFrame {
 		for (int i = 0; i < 4000; i++) {
 			try {
 				value = value + Math.random() - 0.5;
-				series.add(current, new Double(value));
+				series.add(current, Double.valueOf(value));
 				current = (Day) current.next();
 			} catch (SeriesException e) {
 				System.err.println("Error adding to series");

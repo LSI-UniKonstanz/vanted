@@ -99,7 +99,7 @@ public class DoubleAttribute extends AbstractAttribute {
 	 * @return the value of the attribute.
 	 */
 	public Object getValue() {
-		return new Double(value);
+		return Double.valueOf(value);
 	}
 
 	/**

@@ -106,7 +106,7 @@ public class DefaultWindDataset extends AbstractXYDataset implements WindDataset
 					} else {
 						if (xObject instanceof Date) {
 							final Date xDate = (Date) xObject;
-							xNumber = new Long(xDate.getTime());
+							xNumber = Long.valueOf(xDate.getTime());
 						} else {
 							xNumber = Integer.valueOf(0);
 						}

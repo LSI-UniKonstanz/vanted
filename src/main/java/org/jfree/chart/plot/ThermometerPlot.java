@@ -1119,7 +1119,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	 * @return the minimum value in either the domain or the range.
 	 */
 	public Number getMinimumVerticalDataValue() {
-		return new Double(this.lowerBound);
+		return Double.valueOf(this.lowerBound);
 	}
 
 	/**
@@ -1130,7 +1130,7 @@ public class ThermometerPlot extends Plot implements ValueAxisPlot, Cloneable, S
 	 * @return the maximum value in either the domain or the range
 	 */
 	public Number getMaximumVerticalDataValue() {
-		return new Double(this.upperBound);
+		return Double.valueOf(this.upperBound);
 	}
 
 	/**

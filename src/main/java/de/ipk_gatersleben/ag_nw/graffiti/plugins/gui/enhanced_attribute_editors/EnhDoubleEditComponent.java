@@ -112,12 +112,12 @@ public class EnhDoubleEditComponent extends AbstractValueEditComponent implement
 			// else
 			if (disp.getValue() instanceof Double) {
 				if (nan.isSelected())
-					disp.setValue(new Double(Double.NaN));
+					disp.setValue(Double.valueOf(Double.NaN));
 				else {
 					try {
-						disp.setValue(new Double(spinner.getValue().toString()));
+						disp.setValue(Double.valueOf(spinner.getValue().toString()));
 					} catch (Exception e) {
-						disp.setValue(new Double(Double.NaN));
+						disp.setValue(Double.valueOf(Double.NaN));
 					}
 				}
 			} else
@@ -135,8 +135,8 @@ public class EnhDoubleEditComponent extends AbstractValueEditComponent implement
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == nan)
 			if (nan.isSelected()) {
-				// spinner.setValue(new Double(0));
-				// disp.setValue(new Double(Double.NaN));
+				// spinner.setValue(Double.valueOf(0));
+				// disp.setValue(Double.valueOf(Double.NaN));
 			}
 	}
 

@@ -68,7 +68,7 @@ public class BroadCastTask extends TimerTask {
 							synchronized (knownHostsAndTime) {
 								broadCastService.increaseInCount();
 								int cntBefore = knownHostsAndTime.size();
-								knownHostsAndTime.put(rec.sender, new Long(System.currentTimeMillis()));
+								knownHostsAndTime.put(rec.sender, Long.valueOf(System.currentTimeMillis()));
 								long currentTime = System.currentTimeMillis();
 								ArrayList toBeDeleted = new ArrayList();
 								for (Iterator it = knownHostsAndTime.keySet().iterator(); it.hasNext();) {

@@ -204,7 +204,7 @@ public class SearchOption {
 
 	private Double getDouble(Attributable attr) {
 		Object val = AttributeHelper.getAttributeValue(attr, searchAttributePath, searchAttributeName, null,
-				new Double(Double.NaN), false);
+				Double.valueOf(Double.NaN), false);
 		if (val == null || !(val instanceof Double))
 			return null;
 		else
@@ -223,11 +223,11 @@ public class SearchOption {
 		case equals:
 			return Math.abs(searchAttributeDouble - d.doubleValue()) < doubleEpsilon;
 		case startswith:
-			return stripEndNull(d.toString()).startsWith(stripEndNull(new Double(searchAttributeDouble).toString()));
+			return stripEndNull(d.toString()).startsWith(stripEndNull(Double.valueOf(searchAttributeDouble).toString()));
 		case endswith:
-			return stripEndNull(d.toString()).endsWith(stripEndNull(new Double(searchAttributeDouble).toString()));
+			return stripEndNull(d.toString()).endsWith(stripEndNull(Double.valueOf(searchAttributeDouble).toString()));
 		case include:
-			return stripEndNull(d.toString()).indexOf(stripEndNull(new Double(searchAttributeDouble).toString())) >= 0;
+			return stripEndNull(d.toString()).indexOf(stripEndNull(Double.valueOf(searchAttributeDouble).toString())) >= 0;
 		case regexpsearch:
 			ErrorMsg.addErrorMessage(
 					"Invalid Search-Option: Regular expression search on double values not supported!");

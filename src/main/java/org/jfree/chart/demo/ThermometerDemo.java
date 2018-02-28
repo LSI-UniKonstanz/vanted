@@ -221,7 +221,7 @@ public class ThermometerDemo extends JPanel {
 	 */
 	void jbInit() throws Exception {
 
-		// data.setRange(new Double(-20), new Double(20));
+		// data.setRange(Double.valueOf(-20), Double.valueOf(20));
 		this.thermo[0] = this.thermo1;
 		this.thermo[1] = this.thermo2;
 		this.thermo[2] = this.thermo3;
@@ -451,7 +451,7 @@ public class ThermometerDemo extends JPanel {
 			if (this.data.getValue() != null) {
 				newValue += this.data.getValue().doubleValue();
 			}
-			this.data.setValue(new Double(newValue));
+			this.data.setValue(Double.valueOf(newValue));
 		} catch (Exception ex) {
 			System.err.println(ex.getMessage());
 		}

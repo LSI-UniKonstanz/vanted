@@ -95,7 +95,7 @@ public final class DatasetUtilities {
 		final Number[] result = new Number[data.length];
 
 		for (int i = 0; i < data.length; i++) {
-			result[i] = new Double(data[i]);
+			result[i] = Double.valueOf(data[i]);
 		}
 
 		return result;
@@ -374,7 +374,7 @@ public final class DatasetUtilities {
 			if (minimum == Double.POSITIVE_INFINITY) {
 				return null;
 			} else {
-				return new Double(minimum);
+				return Double.valueOf(minimum);
 			}
 		}
 
@@ -439,7 +439,7 @@ public final class DatasetUtilities {
 			if (maximum == Double.NEGATIVE_INFINITY) {
 				return null;
 			} else {
-				return new Double(maximum);
+				return Double.valueOf(maximum);
 			}
 
 		} else {
@@ -498,7 +498,7 @@ public final class DatasetUtilities {
 			if (minimum == Double.POSITIVE_INFINITY) {
 				return null;
 			} else {
-				return new Double(minimum);
+				return Double.valueOf(minimum);
 			}
 
 		} else if (data instanceof XYDataset) {
@@ -530,7 +530,7 @@ public final class DatasetUtilities {
 			if (minimum == Double.POSITIVE_INFINITY) {
 				return null;
 			} else {
-				return new Double(minimum);
+				return Double.valueOf(minimum);
 			}
 
 		} else {
@@ -589,7 +589,7 @@ public final class DatasetUtilities {
 			if (maximum == Double.NEGATIVE_INFINITY) {
 				return null;
 			} else {
-				return new Double(maximum);
+				return Double.valueOf(maximum);
 			}
 
 		} else if (data instanceof XYDataset) {
@@ -618,7 +618,7 @@ public final class DatasetUtilities {
 			if (maximum == Double.NEGATIVE_INFINITY) {
 				return null;
 			} else {
-				return new Double(maximum);
+				return Double.valueOf(maximum);
 			}
 
 		} else {
@@ -867,7 +867,7 @@ public final class DatasetUtilities {
 
 			}
 
-			result = new Double(minimum);
+			result = Double.valueOf(minimum);
 
 		}
 
@@ -904,7 +904,7 @@ public final class DatasetUtilities {
 				}
 				maximum = Math.max(maximum, total);
 			}
-			result = new Double(maximum);
+			result = Double.valueOf(maximum);
 		}
 
 		return result;
@@ -979,7 +979,7 @@ public final class DatasetUtilities {
 			final String rowKey = rowKeyPrefix + (r + 1);
 			for (int c = 0; c < data[r].length; c++) {
 				final String columnKey = columnKeyPrefix + (c + 1);
-				result.addValue(new Double(data[r][c]), rowKey, columnKey);
+				result.addValue(Double.valueOf(data[r][c]), rowKey, columnKey);
 			}
 		}
 		return result;
@@ -1060,7 +1060,7 @@ public final class DatasetUtilities {
 			final String rowKey = rowKeys[r];
 			for (int c = 0; c < data[r].length; c++) {
 				final String columnKey = columnKeys[c];
-				result.addValue(new Double(data[r][c]), rowKey, columnKey);
+				result.addValue(Double.valueOf(data[r][c]), rowKey, columnKey);
 			}
 		}
 		return result;

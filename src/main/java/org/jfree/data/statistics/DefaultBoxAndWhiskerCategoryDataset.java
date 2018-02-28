@@ -377,15 +377,15 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 		final double maxval = item.getMaxOutlier().doubleValue();
 
 		if (this.maximumRangeValue == null) {
-			this.maximumRangeValue = new Double(maxval);
+			this.maximumRangeValue = Double.valueOf(maxval);
 		} else if (maxval > this.maximumRangeValue.doubleValue()) {
-			this.maximumRangeValue = new Double(maxval);
+			this.maximumRangeValue = Double.valueOf(maxval);
 		}
 
 		if (this.minimumRangeValue == null) {
-			this.minimumRangeValue = new Double(minval);
+			this.minimumRangeValue = Double.valueOf(minval);
 		} else if (minval < this.minimumRangeValue.doubleValue()) {
-			this.minimumRangeValue = new Double(minval);
+			this.minimumRangeValue = Double.valueOf(minval);
 		}
 
 		this.valueRange = new Range(this.minimumRangeValue.doubleValue(), this.maximumRangeValue.doubleValue());
@@ -429,7 +429,7 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	// QuartileCalculator qCalc = (QuartileCalculator) this.data.getObject(row,
 	// column);
 	// if (qCalc != null) {
-	// result = new Double(qCalc.getInterquartileRange());
+	// result = Double.valueOf(qCalc.getInterquartileRange());
 	// }
 	// return result;
 	//
@@ -442,7 +442,7 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	// QuartileCalculator qCalc = (QuartileCalculator) this.data.getObject(rowKey,
 	// columnKey);
 	// if (qCalc != null) {
-	// result = new Double(qCalc.getInterquartileRange());
+	// result = Double.valueOf(qCalc.getInterquartileRange());
 	// }
 	// return result;
 	//

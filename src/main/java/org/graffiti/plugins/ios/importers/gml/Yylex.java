@@ -728,7 +728,7 @@ class Yylex implements java_cup.runtime.Scanner {
 					case -10:
 						break;
 					case 10: {
-						return new Symbol(sym.REAL, new Double(yytext()));
+						return new Symbol(sym.REAL, Double.valueOf(yytext()));
 					}
 					case -11:
 						break;
@@ -1206,7 +1206,7 @@ class Yylex implements java_cup.runtime.Scanner {
 					case -93:
 						break;
 					case 94: {
-						return new Symbol(sym.REAL, new Double(yytext()));
+						return new Symbol(sym.REAL, Double.valueOf(yytext()));
 					}
 					case -94:
 						break;
@@ -1277,7 +1277,7 @@ class Yylex implements java_cup.runtime.Scanner {
 					case -107:
 						break;
 					case 109: {
-						return new Symbol(sym.REAL, new Double(yytext()));
+						return new Symbol(sym.REAL, Double.valueOf(yytext()));
 					}
 					case -108:
 						break;
@@ -1343,7 +1343,7 @@ class Yylex implements java_cup.runtime.Scanner {
 					case -120:
 						break;
 					case 123: {
-						return new Symbol(sym.REAL, new Double(yytext()));
+						return new Symbol(sym.REAL, Double.valueOf(yytext()));
 					}
 					case -121:
 						break;
@@ -1377,7 +1377,7 @@ class Yylex implements java_cup.runtime.Scanner {
 					case -127:
 						break;
 					case 131: {
-						return new Symbol(sym.REAL, new Double(yytext()));
+						return new Symbol(sym.REAL, Double.valueOf(yytext()));
 					}
 					case -128:
 						break;
@@ -1411,7 +1411,7 @@ class Yylex implements java_cup.runtime.Scanner {
 					case -134:
 						break;
 					case 139: {
-						return new Symbol(sym.REAL, new Double(yytext()));
+						return new Symbol(sym.REAL, Double.valueOf(yytext()));
 					}
 					case -135:
 						break;
@@ -1440,7 +1440,7 @@ class Yylex implements java_cup.runtime.Scanner {
 					case -140:
 						break;
 					case 146: {
-						return new Symbol(sym.REAL, new Double(yytext()));
+						return new Symbol(sym.REAL, Double.valueOf(yytext()));
 					}
 					case -141:
 						break;
@@ -1459,7 +1459,7 @@ class Yylex implements java_cup.runtime.Scanner {
 					case -144:
 						break;
 					case 151: {
-						return new Symbol(sym.REAL, new Double(yytext()));
+						return new Symbol(sym.REAL, Double.valueOf(yytext()));
 					}
 					case -145:
 						break;
@@ -1478,7 +1478,7 @@ class Yylex implements java_cup.runtime.Scanner {
 					case -148:
 						break;
 					case 156: {
-						return new Symbol(sym.REAL, new Double(yytext()));
+						return new Symbol(sym.REAL, Double.valueOf(yytext()));
 					}
 					case -149:
 						break;
@@ -1497,7 +1497,7 @@ class Yylex implements java_cup.runtime.Scanner {
 					case -152:
 						break;
 					case 160: {
-						return new Symbol(sym.REAL, new Double(yytext()));
+						return new Symbol(sym.REAL, Double.valueOf(yytext()));
 					}
 					case -153:
 						break;
@@ -1516,7 +1516,7 @@ class Yylex implements java_cup.runtime.Scanner {
 					case -156:
 						break;
 					case 164: {
-						return new Symbol(sym.REAL, new Double(yytext()));
+						return new Symbol(sym.REAL, Double.valueOf(yytext()));
 					}
 					case -157:
 						break;

@@ -427,7 +427,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 			public void processRecord(Record rec) {
 				NumberRecord recT = (NumberRecord) rec;
 				if (maximumRowToBeProcessed < 0 || recT.getRow() < maximumRowToBeProcessed)
-					myData.addCellData(recT.getColumn(), recT.getRow(), new Double(recT.getValue()));
+					myData.addCellData(recT.getColumn(), recT.getRow(), Double.valueOf(recT.getValue()));
 			}
 		}, NumberRecord.sid);
 
@@ -435,7 +435,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 			public void processRecord(Record rec) {
 				FormulaRecord recT = (FormulaRecord) rec;
 				if (maximumRowToBeProcessed < 0 || recT.getRow() < maximumRowToBeProcessed)
-					myData.addCellData(recT.getColumn(), recT.getRow(), new Double(recT.getValue()));
+					myData.addCellData(recT.getColumn(), recT.getRow(), Double.valueOf(recT.getValue()));
 			}
 		}, FormulaRecord.sid);
 
@@ -480,7 +480,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 						break;
 					case Cell.CELL_TYPE_NUMERIC:
 						myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(),
-								new Double(cell.getNumericCellValue()));
+								Double.valueOf(cell.getNumericCellValue()));
 						break;
 					case Cell.CELL_TYPE_BOOLEAN:
 						myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(),
@@ -604,7 +604,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 	}
 
 	public void setCurrentStatusValue(int value) {
-		progressDouble = new Double(value);
+		progressDouble = Double.valueOf(value);
 	}
 
 	public double getCurrentStatusValueFine() {

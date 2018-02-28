@@ -78,7 +78,7 @@ public class CSV_SOM_dataEntry implements SOMdataEntry {
 		if (getColumnData()[i] != null)
 			return getColumnData()[i];
 		else
-			return new Double(0).toString();
+			return Double.valueOf(0).toString();
 	}
 
 	/*

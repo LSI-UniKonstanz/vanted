@@ -318,8 +318,8 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			}
 		});
 
-		jTextFieldProb1findCorr = new JTextField(new Double(prob).toString());
-		jTextFieldMinR1 = new JTextField(new Double(minimumR).toString());
+		jTextFieldProb1findCorr = new JTextField(Double.valueOf(prob).toString());
+		jTextFieldMinR1 = new JTextField(Double.valueOf(minimumR).toString());
 
 		JComponent corrType = getCorrelationTypeEditor(1);
 
@@ -593,8 +593,8 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 
 		fp.addComp(TableLayout.getSplitVertical(checkBoxPlotAverage2, mergeEditor, TableLayout.PREFERRED,
 				TableLayout.PREFERRED));
-		jTextFieldProb2visCorr = new JTextField(new Double(prob).toString());
-		jTextFieldMinR2 = new JTextField(new Double(minimumR).toString());
+		jTextFieldProb2visCorr = new JTextField(Double.valueOf(prob).toString());
+		jTextFieldMinR2 = new JTextField(Double.valueOf(minimumR).toString());
 		JComponent corrType = getCorrelationTypeEditor(2);
 		JComponent panelProb = getProbabilitySettingPanel(jTextFieldProb2visCorr, jTextFieldMinR2, corrType);
 		fp.addComp(panelProb);
@@ -776,8 +776,8 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		fp.addComp(checkBoxPlotAverage3);
 		fp.addComp(mergeEditor);
 
-		jTextFieldProb3scatter = new JTextField(new Double(prob).toString());
-		jTextFieldMinR3 = new JTextField(new Double(minimumR).toString());
+		jTextFieldProb3scatter = new JTextField(Double.valueOf(prob).toString());
+		jTextFieldMinR3 = new JTextField(Double.valueOf(minimumR).toString());
 		JComponent corrType = getCorrelationTypeEditor(3);
 		Component panelProb = getProbabilitySettingPanel(jTextFieldProb3scatter, jTextFieldMinR3, corrType);
 
@@ -1002,7 +1002,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 			graph = session.getGraph();
 			curVal = ((Double) AttributeHelper.getAttributeValue(graph, "", AttributeHelper.id_ttestCircleSize,
-					new Double(10.0d), new Double(10.0d))).doubleValue();
+					Double.valueOf(10.0d), Double.valueOf(10.0d))).doubleValue();
 		} catch (Exception e) {
 			// empty
 		}
@@ -1014,7 +1014,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 					EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 					Graph g = session.getGraph();
 					AttributeHelper.setAttribute(g, "", AttributeHelper.id_ttestCircleSize,
-							new Double(numberModel.getNumber().doubleValue()));
+							Double.valueOf(numberModel.getNumber().doubleValue()));
 				} catch (Exception err) {
 					// empty
 				}
@@ -1118,7 +1118,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			// probability remains unchanged
 		}
 		if (e.getSource() == doTest && alphaSpecified)
-			jTextFieldAlpha.setText(new Double(alpha).toString());
+			jTextFieldAlpha.setText(Double.valueOf(alpha).toString());
 
 		EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 
@@ -1243,7 +1243,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		} catch (NumberFormatException nfe) {
 			// probability remains unchanged
 		}
-		textFieldProb.setText(new Double(prob).toString());
+		textFieldProb.setText(Double.valueOf(prob).toString());
 	}
 
 	private void checkRinput(JTextField textFieldR) {
@@ -1253,7 +1253,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		} catch (NumberFormatException nfe) {
 			// probability remains unchanged
 		}
-		textFieldR.setText(new Double(minimumR).toString());
+		textFieldR.setText(Double.valueOf(minimumR).toString());
 	}
 
 	private void removeCorrelationEdges(Graph graph) {
@@ -2460,13 +2460,13 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 
 	protected void refreshEditComponents() {
 		if (alphaSpecified)
-			jTextFieldAlpha.setText(new Double(alpha).toString());
-		jTextFieldProb1findCorr.setText(new Double(prob).toString());
-		jTextFieldProb2visCorr.setText(new Double(prob).toString());
-		jTextFieldProb3scatter.setText(new Double(prob).toString());
-		jTextFieldMinR1.setText(new Double(minimumR).toString());
-		jTextFieldMinR2.setText(new Double(minimumR).toString());
-		jTextFieldMinR3.setText(new Double(minimumR).toString());
+			jTextFieldAlpha.setText(Double.valueOf(alpha).toString());
+		jTextFieldProb1findCorr.setText(Double.valueOf(prob).toString());
+		jTextFieldProb2visCorr.setText(Double.valueOf(prob).toString());
+		jTextFieldProb3scatter.setText(Double.valueOf(prob).toString());
+		jTextFieldMinR1.setText(Double.valueOf(minimumR).toString());
+		jTextFieldMinR2.setText(Double.valueOf(minimumR).toString());
+		jTextFieldMinR3.setText(Double.valueOf(minimumR).toString());
 		gammaSlider1vis.setValue(currGammaValue);
 		gammaSlider2scatter.setValue(currGammaValue);
 		checkBoxPlotAverage1.setSelected(plotAverage);

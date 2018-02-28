@@ -128,7 +128,7 @@ public class XYBarDataset extends AbstractIntervalXYDataset implements IntervalX
 		Number result = null;
 		final Number xnum = this.underlying.getXValue(series, item);
 		if (xnum != null) {
-			result = new Double(xnum.doubleValue() - this.barWidth / 2.0);
+			result = Double.valueOf(xnum.doubleValue() - this.barWidth / 2.0);
 		}
 		return result;
 	}
@@ -146,7 +146,7 @@ public class XYBarDataset extends AbstractIntervalXYDataset implements IntervalX
 		Number result = null;
 		final Number xnum = this.underlying.getXValue(series, item);
 		if (xnum != null) {
-			result = new Double(xnum.doubleValue() + this.barWidth / 2.0);
+			result = Double.valueOf(xnum.doubleValue() + this.barWidth / 2.0);
 		}
 		return result;
 	}

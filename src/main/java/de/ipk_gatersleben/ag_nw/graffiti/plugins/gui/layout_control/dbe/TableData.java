@@ -550,7 +550,7 @@ public class TableData {
 		String plantIDandTime = plant + "$" + time + "$" + timeUnit;
 		if (!plant_time_timeunit.containsKey(plantIDandTime)) {
 			plant_time_timeunit.put(plantIDandTime, new ArrayList<ReplicateDouble>());
-			plant_time_timeunit2time.put(plantIDandTime, new Double(time));
+			plant_time_timeunit2time.put(plantIDandTime, Double.valueOf(time));
 			plant_time_timeunit2timeunit.put(plantIDandTime, timeUnit);
 			String mesUnit = getUnicodeStringCellData(column, 22);
 			if (mesUnit == null) {

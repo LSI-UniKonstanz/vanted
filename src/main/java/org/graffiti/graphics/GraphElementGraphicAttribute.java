@@ -264,7 +264,7 @@ public abstract class GraphElementGraphicAttribute extends HashMapAttribute impl
 			value = 0.0;
 		if (value > 1.0)
 			value = 1.0;
-		((DoubleAttribute) attributes.get(OPAC)).setValue(new Double(value));
+		((DoubleAttribute) attributes.get(OPAC)).setValue(Double.valueOf(value));
 	}
 
 	/**

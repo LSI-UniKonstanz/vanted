@@ -365,12 +365,12 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 		}
 
 		AttributeHelper.setAttribute(ratioGraph, "", "node_showRangeAxis", new Boolean(false));
-		AttributeHelper.setAttribute(ratioGraph, "", "node_outlineBorderWidth", new Double(1d));
+		AttributeHelper.setAttribute(ratioGraph, "", "node_outlineBorderWidth", Double.valueOf(1d));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_halfErrorBar", new Boolean(false));
-		AttributeHelper.setAttribute(ratioGraph, "", "node_chartStdDevLineWidth", new Double(0d));
+		AttributeHelper.setAttribute(ratioGraph, "", "node_chartStdDevLineWidth", Double.valueOf(0d));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_plotOrientationHor", new Boolean(false));
-		AttributeHelper.setAttribute(ratioGraph, "", "node_gridWidth", new Double(1d));
-		AttributeHelper.setAttribute(ratioGraph, "", "node_axisWidth", new Double(1d));
+		AttributeHelper.setAttribute(ratioGraph, "", "node_gridWidth", Double.valueOf(1d));
+		AttributeHelper.setAttribute(ratioGraph, "", "node_axisWidth", Double.valueOf(1d));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_plotAxisFontSize", Integer.valueOf(30));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_showGridRange", new Boolean(false));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_showGridCategory", new Boolean(false)); // showRangeAxisForNode1));
@@ -456,6 +456,6 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 		ratioNodeHelper.setAttributeValue("labelgraphics", "anchor", "w");
 		ratioNodeHelper.setAttributeValue("labelgraphics", "fontSize", Integer.valueOf(fontSize));
 		ratioNodeHelper.setAttributeValue("graphics", "component", "chart2d_type3");
-		ratioNodeHelper.setAttributeValue("charting", "empty_border_width", new Double(0d));
+		ratioNodeHelper.setAttributeValue("charting", "empty_border_width", Double.valueOf(0d));
 	}
 }

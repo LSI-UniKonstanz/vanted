@@ -40,7 +40,7 @@ public class Performance {
 	private double value = 2.0;
 
 	/** The number. */
-	private Double number = new Double(this.value);
+	private Double number = Double.valueOf(this.value);
 
 	/**
 	 * Default constructor.

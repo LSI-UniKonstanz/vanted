@@ -201,8 +201,8 @@ public class XmlDataChartComponent extends JComponent {
 		}
 		JPanel chartPanel;
 		if (chartType.equals(GraffitiCharts.LEGEND_ONLY.toString())) {
-			Double scale = (Double) AttributeHelper.getAttributeValue(ge, "charting", "legend_scale", new Double(1.0d),
-					new Double(1.0d));
+			Double scale = (Double) AttributeHelper.getAttributeValue(ge, "charting", "legend_scale", Double.valueOf(1.0d),
+					Double.valueOf(1.0d));
 			jfChart.getLegend().setAnchor(Legend.NORTH);
 			org.jfree.chart.StandardLegend sl = (StandardLegend) jfChart.getLegend();
 			sl.setBoundingBoxArcHeight(0);
@@ -587,10 +587,10 @@ public class XmlDataChartComponent extends JComponent {
 	// public static void setSeriesColorsAndStroke(XYItemRenderer renderer,
 	// float outlineBorderWidth, ArrayList<Paint> seriesColors,
 	// ArrayList<Paint> seriesOutlineColors) {
-	// /*Stroke myStroke = strokeCache.get(new Float(outlineBorderWidth));
+	// /*Stroke myStroke = strokeCache.get(Float.valueOf(outlineBorderWidth));
 	// if (myStroke==null) {
 	// myStroke = new BasicStroke(outlineBorderWidth);
-	// strokeCache.put(new Float(outlineBorderWidth), myStroke);
+	// strokeCache.put(Float.valueOf(outlineBorderWidth), myStroke);
 	// }*/
 	// // Shape s = renderer.getSeriesShape(1);
 	// // double ts = 1/s.getBounds().getWidth()*outlineBorderWidth;
@@ -746,7 +746,7 @@ public class XmlDataChartComponent extends JComponent {
 			boolean alsoUsedForPlottingStdDev, boolean showOnlyHalfErrorBar, boolean fillTimeGaps,
 			boolean removeEmptyConditions) {
 		Double markerSize = (Double) AttributeHelper.getAttributeValue(g, "", AttributeHelper.id_ttestCircleSize,
-				new Double(10.0d), new Double(10.0d));
+				Double.valueOf(10.0d), Double.valueOf(10.0d));
 		boolean useStdErrInsteadOfStdDev = ((Boolean) AttributeHelper.getAttributeValue(g, "", "node_useStdErr",
 				new Boolean(false), new Boolean(false))).booleanValue();
 		BioStatisticalCategoryDataset dataset = new BioStatisticalCategoryDataset(markerSize.floatValue());

@@ -155,7 +155,7 @@ public class PajekReader extends AbstractInputSerializer {
 	private void mode2dirEdge(Graph g, HashMap<Integer, Node> nodes, StringScanner s) {
 		Node node1 = nodes.get(Integer.valueOf(s.nextInt()));
 		Node node2 = nodes.get(Integer.valueOf(s.nextInt()));
-		Double weight = new Double(s.nextDouble());
+		Double weight = Double.valueOf(s.nextDouble());
 		if (weight != null && weight.isNaN())
 			weight = null;
 		Edge newEdge = g.addEdge(node1, node2, true);
@@ -167,7 +167,7 @@ public class PajekReader extends AbstractInputSerializer {
 	private void mode3undirEdge(Graph g, HashMap<Integer, Node> nodes, StringScanner s) {
 		Node node1 = nodes.get(Integer.valueOf(s.nextInt()));
 		Node node2 = nodes.get(Integer.valueOf(s.nextInt()));
-		Double weight = new Double(s.nextDouble());
+		Double weight = Double.valueOf(s.nextDouble());
 		if (weight != null && weight.isNaN())
 			weight = null;
 		Edge newEdge = g.addEdge(node1, node2, false);

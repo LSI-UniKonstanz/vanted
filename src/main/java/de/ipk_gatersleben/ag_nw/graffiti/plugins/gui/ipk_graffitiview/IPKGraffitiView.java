@@ -337,11 +337,11 @@ public class IPKGraffitiView extends GraffitiView
 					"clusterbackground_space_fill", new Boolean(true), new Boolean(true), true);
 			if (enablebackground) {
 				Double radius = (Double) AttributeHelper.getAttributeValue(getGraph(), "", "clusterbackground_radius",
-						new Double(200), new Double(200), true);
+						Double.valueOf(200), Double.valueOf(200), true);
 				Double alpha = (Double) AttributeHelper.getAttributeValue(getGraph(), "", "clusterbackground_low_alpha",
-						new Double(0.2), new Double(0.2), true);
+						Double.valueOf(0.2), Double.valueOf(0.2), true);
 				Double grid = (Double) AttributeHelper.getAttributeValue(getGraph(), "", "clusterbackground_grid",
-						new Double(50), new Double(50), true);
+						Double.valueOf(50), Double.valueOf(50), true);
 				drawClusterBackground(g, g.getClipBounds(), grid.intValue(), !clearOuter, radius.intValue(),
 						alpha.floatValue(), spaceFill);
 			}

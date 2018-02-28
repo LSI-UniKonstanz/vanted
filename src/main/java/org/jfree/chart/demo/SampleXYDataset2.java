@@ -120,7 +120,7 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, Do
 			for (int item = 0; item < itemCount; item++) {
 
 				final double x = (Math.random() - 0.5) * DEFAULT_RANGE;
-				this.xValues[series][item] = new Double(x);
+				this.xValues[series][item] = Double.valueOf(x);
 				if (x < minX) {
 					minX = x;
 				}
@@ -129,7 +129,7 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, Do
 				}
 
 				final double y = (Math.random() + 0.5) * 6 * x + x;
-				this.yValues[series][item] = new Double(y);
+				this.yValues[series][item] = Double.valueOf(y);
 				if (y < minY) {
 					minY = y;
 				}
@@ -140,12 +140,12 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, Do
 			}
 		}
 
-		this.domainMin = new Double(minX);
-		this.domainMax = new Double(maxX);
+		this.domainMin = Double.valueOf(minX);
+		this.domainMax = Double.valueOf(maxX);
 		this.domainRange = new Range(minX, maxX);
 
-		this.rangeMin = new Double(minY);
-		this.rangeMax = new Double(maxY);
+		this.rangeMin = Double.valueOf(minY);
+		this.rangeMax = Double.valueOf(maxY);
 		this.range = new Range(minY, maxY);
 
 	}

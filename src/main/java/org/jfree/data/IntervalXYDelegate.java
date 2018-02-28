@@ -209,7 +209,7 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 		Number startX = null;
 		final Number x = this.dataset.getXValue(series, item);
 		if (x != null) {
-			startX = new Double(x.doubleValue() - (getIntervalPositionFactor() * getIntervalWidth()));
+			startX = Double.valueOf(x.doubleValue() - (getIntervalPositionFactor() * getIntervalWidth()));
 		}
 		return startX;
 	}
@@ -229,7 +229,7 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 		Number endX = null;
 		final Number x = this.dataset.getXValue(series, item);
 		if (x != null) {
-			endX = new Double(x.doubleValue() + ((1.0 - getIntervalPositionFactor()) * getIntervalWidth()));
+			endX = Double.valueOf(x.doubleValue() + ((1.0 - getIntervalPositionFactor()) * getIntervalWidth()));
 		}
 		return endX;
 	}
@@ -260,7 +260,7 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 	 * @return The maximum domain value.
 	 */
 	public Number getMaximumDomainValue() {
-		return new Double(getDomainRange().getUpperBound());
+		return Double.valueOf(getDomainRange().getUpperBound());
 	}
 
 	/**
@@ -269,7 +269,7 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 	 * @return The minimum domain value.
 	 */
 	public Number getMinimumDomainValue() {
-		return new Double(getDomainRange().getLowerBound());
+		return Double.valueOf(getDomainRange().getLowerBound());
 	}
 
 	/**

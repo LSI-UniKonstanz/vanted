@@ -182,7 +182,7 @@ public class DefaultPieDataset extends AbstractDataset implements PieDataset, Cl
 	 */
 	public void setValue(final Comparable key, final double value) {
 
-		setValue(key, new Double(value));
+		setValue(key, Double.valueOf(value));
 
 	}
 

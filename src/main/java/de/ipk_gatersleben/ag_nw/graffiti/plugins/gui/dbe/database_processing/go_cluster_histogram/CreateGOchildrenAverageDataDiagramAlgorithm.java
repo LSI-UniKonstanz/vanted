@@ -116,7 +116,7 @@ public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorit
 			int plantID = nh.memGetPlantID(seriesName, "", "", "", "");
 			ArrayList<Double> values = seriesAndTime2mappedValues.get(seriesNameAndTime);
 			if (values == null || values.size() <= 0)
-				nh.memSample(new Double(Double.NaN), -1, plantID, "frequency", timeUnit, timePoint);
+				nh.memSample(Double.valueOf(Double.NaN), -1, plantID, "frequency", timeUnit, timePoint);
 			else {
 				boolean added = false;
 				for (Double val : values) {
@@ -129,7 +129,7 @@ public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorit
 					}
 				}
 				if (!added)
-					nh.memSample(new Double(Double.NaN), -1, plantID, "average of sample means", timeUnit, timePoint);
+					nh.memSample(Double.valueOf(Double.NaN), -1, plantID, "average of sample means", timeUnit, timePoint);
 			}
 		}
 		nh.memAddDataMapping("mapping", "average of sample means", null, "calculated analysis", "system",

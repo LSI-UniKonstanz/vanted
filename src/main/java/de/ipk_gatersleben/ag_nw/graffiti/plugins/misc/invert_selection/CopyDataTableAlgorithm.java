@@ -171,10 +171,10 @@ public class CopyDataTableAlgorithm extends AbstractAlgorithm {
 			}
 			if (correlation) {
 				Double val = (Double) AttributeHelper.getAttributeValue(n, "statistics", "correlation_r", null,
-						new Double(1d));
+						Double.valueOf(1d));
 				addCol(result, curRow, val == null ? null : val + "");
 				val = (Double) AttributeHelper.getAttributeValue(n, "statistics", "correlation_prob", null,
-						new Double(1d));
+						Double.valueOf(1d));
 				// reset val, if corr_prob attribute is not set during corr_analysis
 				if (val != null && val == Double.NEGATIVE_INFINITY)
 					val = null;

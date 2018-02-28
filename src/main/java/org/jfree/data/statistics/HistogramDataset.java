@@ -175,7 +175,7 @@ public class HistogramDataset extends AbstractIntervalXYDataset implements Inter
 		map.put("name", name);
 		map.put("bins", binList);
 		map.put("values.length", Integer.valueOf(values.length));
-		map.put("bin width", new Double(binWidth));
+		map.put("bin width", Double.valueOf(binWidth));
 		this.list.add(map);
 
 		return targetBins;
@@ -308,7 +308,7 @@ public class HistogramDataset extends AbstractIntervalXYDataset implements Inter
 		final List bins = getBins(series);
 		final HistogramBin bin = (HistogramBin) bins.get(item);
 		final double x = (bin.getStartBoundary() + bin.getEndBoundary()) / 2.;
-		return new Double(x);
+		return Double.valueOf(x);
 	}
 
 	/**
@@ -328,11 +328,11 @@ public class HistogramDataset extends AbstractIntervalXYDataset implements Inter
 		final double binWidth = getBinWidth(series);
 
 		if (this.type == HistogramType.FREQUENCY) {
-			return new Double(bin.getCount());
+			return Double.valueOf(bin.getCount());
 		} else if (this.type == HistogramType.RELATIVE_FREQUENCY) {
-			return new Double(bin.getCount() / total);
+			return Double.valueOf(bin.getCount() / total);
 		} else if (this.type == HistogramType.SCALE_AREA_TO_1) {
-			return new Double(bin.getCount() / (binWidth * total));
+			return Double.valueOf(bin.getCount() / (binWidth * total));
 		} else { // pretty sure this shouldn't ever happen
 			throw new IllegalStateException();
 		}
@@ -350,7 +350,7 @@ public class HistogramDataset extends AbstractIntervalXYDataset implements Inter
 	public Number getStartXValue(final int series, final int item) {
 		final List bins = getBins(series);
 		final HistogramBin bin = (HistogramBin) bins.get(item);
-		return new Double(bin.getStartBoundary());
+		return Double.valueOf(bin.getStartBoundary());
 	}
 
 	/**
@@ -365,7 +365,7 @@ public class HistogramDataset extends AbstractIntervalXYDataset implements Inter
 	public Number getEndXValue(final int series, final int item) {
 		final List bins = getBins(series);
 		final HistogramBin bin = (HistogramBin) bins.get(item);
-		return new Double(bin.getEndBoundary());
+		return Double.valueOf(bin.getEndBoundary());
 	}
 
 	/**

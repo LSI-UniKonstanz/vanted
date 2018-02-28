@@ -106,9 +106,9 @@ public class BoxAndWhiskerDemo extends ApplicationFrame {
 				// add some values...
 				for (int k = 0; k < entityCount; k++) {
 					final double value1 = 10.0 + Math.random() * 3;
-					list.add(new Double(value1));
+					list.add(Double.valueOf(value1));
 					final double value2 = 11.25 + Math.random(); // concentrate values in the middle
-					list.add(new Double(value2));
+					list.add(Double.valueOf(value2));
 				}
 				LOGGER.debug("Adding series " + i);
 				LOGGER.debug(list.toString());

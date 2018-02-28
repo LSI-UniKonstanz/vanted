@@ -85,7 +85,7 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 	 * Default constructor.
 	 */
 	public DefaultMeterDataset() {
-		this(new Double(0), new Double(0), null, null);
+		this(Double.valueOf(0), Double.valueOf(0), null, null);
 	}
 
 	/**
@@ -170,7 +170,7 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 	 *            the new value.
 	 */
 	public void setValue(final double value) {
-		setValue(new Double(value));
+		setValue(Double.valueOf(value));
 	}
 
 	/**
@@ -191,8 +191,8 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 		this.value = value;
 		if (value != null && this.min != null && this.max != null) {
 			if (this.min.doubleValue() == this.max.doubleValue()) {
-				this.min = new Double(value.doubleValue() - DEFAULT_ADJ);
-				this.max = new Double(value.doubleValue() + DEFAULT_ADJ);
+				this.min = Double.valueOf(value.doubleValue() - DEFAULT_ADJ);
+				this.max = Double.valueOf(value.doubleValue() + DEFAULT_ADJ);
 			}
 		}
 		fireDatasetChanged();
@@ -295,8 +295,8 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 
 		if (this.value != null) {
 			if (min.doubleValue() == max.doubleValue()) {
-				min = new Double(this.value.doubleValue() - DEFAULT_ADJ);
-				max = new Double(this.value.doubleValue() + DEFAULT_ADJ);
+				min = Double.valueOf(this.value.doubleValue() - DEFAULT_ADJ);
+				max = Double.valueOf(this.value.doubleValue() + DEFAULT_ADJ);
 			}
 		}
 		this.min = min;

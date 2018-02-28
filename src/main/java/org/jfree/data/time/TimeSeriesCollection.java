@@ -430,7 +430,7 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 		final TimeSeriesDataItem dp = ts.getDataItem(item);
 		final RegularTimePeriod period = dp.getPeriod();
 
-		return new Long(getX(period));
+		return Long.valueOf(getX(period));
 
 	}
 
@@ -496,7 +496,7 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 
 		final TimeSeries ts = (TimeSeries) this.data.get(series);
 		final TimeSeriesDataItem dp = ts.getDataItem(item);
-		return new Long(dp.getPeriod().getFirstMillisecond(this.workingCalendar));
+		return Long.valueOf(dp.getPeriod().getFirstMillisecond(this.workingCalendar));
 
 	}
 
@@ -513,7 +513,7 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 
 		final TimeSeries ts = (TimeSeries) this.data.get(series);
 		final TimeSeriesDataItem dp = ts.getDataItem(item);
-		return new Long(dp.getPeriod().getLastMillisecond(this.workingCalendar));
+		return Long.valueOf(dp.getPeriod().getLastMillisecond(this.workingCalendar));
 
 	}
 
@@ -569,7 +569,7 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	public Number getMinimumDomainValue() {
 
 		final Range r = getDomainRange();
-		return new Double(r.getLowerBound());
+		return Double.valueOf(r.getLowerBound());
 
 	}
 
@@ -582,7 +582,7 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	public Number getMaximumDomainValue() {
 
 		final Range r = getDomainRange();
-		return new Double(r.getUpperBound());
+		return Double.valueOf(r.getUpperBound());
 
 	}
 

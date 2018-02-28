@@ -72,10 +72,10 @@ public class CompassDemo extends JPanel {
 			"Arrow" };
 
 	/** Dataset 1. */
-	private DefaultValueDataset compassData = new DefaultValueDataset(new Double(0.0));
+	private DefaultValueDataset compassData = new DefaultValueDataset(Double.valueOf(0.0));
 
 	/** Dataset 2. */
-	private DefaultValueDataset shipData = new DefaultValueDataset(new Double(0.0));
+	private DefaultValueDataset shipData = new DefaultValueDataset(Double.valueOf(0.0));
 
 	/** The compass plot. */
 	private CompassPlot compassPlot = new CompassPlot(this.compassData);
@@ -201,7 +201,7 @@ public class CompassDemo extends JPanel {
 				}
 				final Spinner spinner = (Spinner) evt.getSource();
 				if (spinner.isEnabled()) {
-					shipData.setValue(new Double(spinner.getValue()));
+					shipData.setValue(Double.valueOf(spinner.getValue()));
 				}
 			}
 		});
@@ -213,7 +213,7 @@ public class CompassDemo extends JPanel {
 				}
 				final Spinner spinner = (Spinner) evt.getSource();
 				if (spinner.isEnabled()) {
-					compassData.setValue(new Double(spinner.getValue()));
+					compassData.setValue(Double.valueOf(spinner.getValue()));
 				}
 			}
 		});
@@ -318,7 +318,7 @@ public class CompassDemo extends JPanel {
 			newVal = 360;
 		}
 
-		this.compassData.setValue(new Double(newVal));
+		this.compassData.setValue(Double.valueOf(newVal));
 
 	}
 
@@ -338,7 +338,7 @@ public class CompassDemo extends JPanel {
 		} else {
 			// compassData.setValue((new
 			// Double(((Integer)spinWind.getValue()).intValue())));
-			this.compassData.setValue(new Double(this.spinWind.getValue()));
+			this.compassData.setValue(Double.valueOf(this.spinWind.getValue()));
 			this.spinWind.setEnabled(true);
 		}
 		if (CompassDemo.DEBUG) {
@@ -361,8 +361,8 @@ public class CompassDemo extends JPanel {
 			this.shipData.setValue(null);
 			this.spinShip.setEnabled(false);
 		} else {
-			// shipData.setValue((new Double(((Integer)spinShip.getValue()).intValue())));
-			this.shipData.setValue(new Double(this.spinShip.getValue()));
+			// shipData.setValue((Double.valueOf(((Integer)spinShip.getValue()).intValue())));
+			this.shipData.setValue(Double.valueOf(this.spinShip.getValue()));
 			this.spinShip.setEnabled(true);
 		}
 	}

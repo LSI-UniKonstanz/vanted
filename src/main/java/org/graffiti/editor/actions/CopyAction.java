@@ -105,11 +105,11 @@ public class CopyAction extends SelectionAction {
 				// remove all other nodes from copied graph
 				ArrayList<Long> validNodeIds = new ArrayList<Long>();
 				for (org.graffiti.graph.Node n : selection.getNodes())
-					validNodeIds.add(new Long(n.getID()));
+					validNodeIds.add(Long.valueOf(n.getID()));
 
 				ArrayList<org.graffiti.graph.Node> toBeDeleted = new ArrayList<org.graffiti.graph.Node>();
 				for (org.graffiti.graph.Node n : copyGraph.getNodes()) {
-					if (!validNodeIds.contains(new Long(n.getID()))) {
+					if (!validNodeIds.contains(Long.valueOf(n.getID()))) {
 						toBeDeleted.add(n);
 					}
 				}

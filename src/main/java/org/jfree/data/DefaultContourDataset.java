@@ -120,11 +120,11 @@ public class DefaultContourDataset extends AbstractXYZDataset implements Contour
 				} else if (xData[k] instanceof Date) {
 					this.dateAxis[0] = true;
 					final Date xDate = (Date) xData[k];
-					xNumber = new Long(xDate.getTime()); // store data as Long
+					xNumber = Long.valueOf(xDate.getTime()); // store data as Long
 				} else {
 					xNumber = Integer.valueOf(0);
 				}
-				this.xValues[k] = new Double(xNumber.doubleValue()); // store Number as Double
+				this.xValues[k] = Double.valueOf(xNumber.doubleValue()); // store Number as Double
 
 				// check if starting new column
 				if (x != this.xValues[k].doubleValue()) {
@@ -160,7 +160,7 @@ public class DefaultContourDataset extends AbstractXYZDataset implements Contour
 
 		for (int i = 0; i < object.length; i++) {
 			for (int j = 0; j < object[i].length; j++) {
-				object[i][j] = new Double(data[i][j]);
+				object[i][j] = Double.valueOf(data[i][j]);
 			}
 		}
 		return object;
@@ -177,7 +177,7 @@ public class DefaultContourDataset extends AbstractXYZDataset implements Contour
 
 		final Object[] object = new Double[data.length];
 		for (int i = 0; i < object.length; i++) {
-			object[i] = new Double(data[i]);
+			object[i] = Double.valueOf(data[i]);
 		}
 		return object;
 	}

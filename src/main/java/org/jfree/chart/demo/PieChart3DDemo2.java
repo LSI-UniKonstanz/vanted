@@ -62,11 +62,11 @@ public class PieChart3DDemo2 extends ApplicationFrame {
 
 		// create a dataset...
 		final DefaultPieDataset data = new DefaultPieDataset();
-		data.setValue("Java", new Double(43.2));
-		data.setValue("Visual Basic", new Double(10.0));
-		data.setValue("C/C++", new Double(17.5));
-		data.setValue("PHP", new Double(32.5));
-		data.setValue("Perl", new Double(12.5));
+		data.setValue("Java", Double.valueOf(43.2));
+		data.setValue("Visual Basic", Double.valueOf(10.0));
+		data.setValue("C/C++", Double.valueOf(17.5));
+		data.setValue("PHP", Double.valueOf(32.5));
+		data.setValue("Perl", Double.valueOf(12.5));
 
 		// create the chart...
 		final JFreeChart chart = ChartFactory.createPieChart3D("Pie Chart 3D Demo 2", // chart title

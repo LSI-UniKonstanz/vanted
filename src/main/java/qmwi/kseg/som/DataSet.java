@@ -74,7 +74,7 @@ public class DataSet {
 			if ((groups.elementAt(i)).equalsIgnoreCase(group)) {
 				for (int j = 0; j < thedata.size(); j++) {
 					try {
-						double dummy = (new Double(thedata.elementAt(j).getColumnData(i))).doubleValue();
+						double dummy = (Double.valueOf(thedata.elementAt(j).getColumnData(i))).doubleValue();
 						summe += dummy;
 						count++;
 					} catch (NumberFormatException e) {
@@ -134,7 +134,7 @@ public class DataSet {
 				// Skalierung der Eingabewerte auf den Bereich von -1..1
 				for (int j = 0; j < thedata.size(); j++) {
 					try {
-						(new Double((thedata.elementAt(j)).getColumnData(i))).doubleValue();
+						(Double.valueOf((thedata.elementAt(j)).getColumnData(i))).doubleValue();
 						zahlenEintraege++;
 					} catch (NumberFormatException e) {
 					}
@@ -232,7 +232,7 @@ public class DataSet {
 				max = 0;
 				for (int j = 0; j < thedata.size(); j++) {
 					try {
-						double dummy = (new Double((thedata.elementAt(j)).getColumnData(i))).doubleValue();
+						double dummy = (Double.valueOf((thedata.elementAt(j)).getColumnData(i))).doubleValue();
 						if (!Double.isNaN(dummy) && dummy > max)
 							max = dummy;
 					} catch (NumberFormatException e) {
@@ -253,7 +253,7 @@ public class DataSet {
 			if ((groups.elementAt(i)).equalsIgnoreCase(group)) {
 				for (int j = 0; j < thedata.size(); j++) {
 					try {
-						double dummy = (new Double((thedata.elementAt(j)).getColumnData(i))).doubleValue();
+						double dummy = (Double.valueOf((thedata.elementAt(j)).getColumnData(i))).doubleValue();
 						if (!Double.isNaN(dummy) && dummy < min)
 							min = dummy;
 					} catch (NumberFormatException e) {

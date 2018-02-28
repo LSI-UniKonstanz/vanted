@@ -137,7 +137,7 @@ public class Task {
 	 *            the percentage.
 	 */
 	public void setPercentComplete(final double percent) {
-		setPercentComplete(new Double(percent));
+		setPercentComplete(Double.valueOf(percent));
 	}
 
 	/**

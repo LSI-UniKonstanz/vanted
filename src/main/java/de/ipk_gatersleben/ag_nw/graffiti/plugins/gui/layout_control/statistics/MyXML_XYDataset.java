@@ -108,7 +108,7 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 		ArrayList<MyComparableDataPoint> serData = seriesData1.get(seriesName);
 		try {
 			MyComparableDataPoint mcdp = serData.get(item);
-			return new Double(mcdp.mean);
+			return Double.valueOf(mcdp.mean);
 		} catch (IndexOutOfBoundsException ioobe) {
 			return null;
 		}
@@ -133,7 +133,7 @@ public class MyXML_XYDataset extends AbstractXYDataset {
 	public Number getYValue(int series, int item) {
 		MyComparableDataPoint mcdp = (MyComparableDataPoint) ((ArrayList<?>) seriesData2.get(getSeriesName(series)))
 				.get(item);
-		return new Double(mcdp.mean);
+		return Double.valueOf(mcdp.mean);
 	}
 
 	public MyComparableDataPoint getYsrcValue(int series, int item) {

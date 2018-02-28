@@ -300,7 +300,7 @@ public class JDBCXYDataset extends AbstractXYDataset implements XYDataset, Table
 					case Types.DATE:
 					case Types.TIME:
 					case Types.TIMESTAMP:
-						newRow.add(new Long(((Date) xObject).getTime()));
+						newRow.add(Long.valueOf(((Date) xObject).getTime()));
 						break;
 					case Types.NULL:
 						break;
@@ -478,7 +478,7 @@ public class JDBCXYDataset extends AbstractXYDataset implements XYDataset, Table
 	 * @see RangeInfo
 	 */
 	public Number getMinimumRangeValue() {
-		return new Double(this.minValue);
+		return Double.valueOf(this.minValue);
 	}
 
 	/**
@@ -488,7 +488,7 @@ public class JDBCXYDataset extends AbstractXYDataset implements XYDataset, Table
 	 * @see RangeInfo
 	 */
 	public Number getMaximumRangeValue() {
-		return new Double(this.maxValue);
+		return Double.valueOf(this.maxValue);
 	}
 
 	/**

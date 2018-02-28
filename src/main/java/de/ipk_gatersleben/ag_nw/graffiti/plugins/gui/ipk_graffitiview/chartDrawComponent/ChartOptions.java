@@ -30,8 +30,8 @@ public class ChartOptions {
 	private static final Boolean mTrue = new Boolean(true);
 	private static final Boolean mFalse = new Boolean(false);
 
-	private static final Double mNull = new Double(0);
-	private static final Double mOne = new Double(1);
+	private static final Double mNull = Double.valueOf(0);
+	private static final Double mOne = Double.valueOf(1);
 	private static final Integer mim1 = Integer.valueOf(-1);
 
 	public Graph graph;
@@ -175,10 +175,10 @@ public class ChartOptions {
 		cpColBackground = NodeTools.getCategoryBackgroundColorB(graph, Color.BLACK);
 		cpColC = NodeTools.getCategoryBackgroundColorC(graph, new Color(c1, c1, c2));
 
-		gridWidth = ((Double) AttributeHelper.getAttributeValue(graph, "", "node_gridWidth", new Double(0.5d),
-				new Double(-1))).doubleValue();
+		gridWidth = ((Double) AttributeHelper.getAttributeValue(graph, "", "node_gridWidth", Double.valueOf(0.5d),
+				Double.valueOf(-1))).doubleValue();
 
-		axisWidth = ((Double) AttributeHelper.getAttributeValue(graph, "", "node_axisWidth", mOne, new Double(1)))
+		axisWidth = ((Double) AttributeHelper.getAttributeValue(graph, "", "node_axisWidth", mOne, Double.valueOf(1)))
 				.doubleValue();
 
 		gridColor = NodeTools.getGridColor(graph, (Color) CategoryPlot.DEFAULT_GRIDLINE_PAINT);
@@ -233,16 +233,16 @@ public class ChartOptions {
 			upperBound = Double.NaN;
 		}
 
-		Double temp = (Double) AttributeHelper.getAttributeValue(graph, "", "node_outlineBorderWidth", new Double(4d),
-				new Double(4d));
+		Double temp = (Double) AttributeHelper.getAttributeValue(graph, "", "node_outlineBorderWidth", Double.valueOf(4d),
+				Double.valueOf(4d));
 		outlineBorderWidth = temp.floatValue();
 
-		temp = (Double) AttributeHelper.getAttributeValue(graph, "", "node_chartShapeSize", new Double(6d),
-				new Double(6d));
+		temp = (Double) AttributeHelper.getAttributeValue(graph, "", "node_chartShapeSize", Double.valueOf(6d),
+				Double.valueOf(6d));
 		shapeSize = temp.floatValue();
 
-		temp = (Double) AttributeHelper.getAttributeValue(graph, "", "node_chartStdDevLineWidth", new Double(4d),
-				new Double(4d));
+		temp = (Double) AttributeHelper.getAttributeValue(graph, "", "node_chartStdDevLineWidth", Double.valueOf(4d),
+				Double.valueOf(4d));
 		stdDevLineWidth = temp.floatValue();
 
 		showOnlyHalfErrorBar = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_halfErrorBar", mFalse,
@@ -250,7 +250,7 @@ public class ChartOptions {
 		removeEmptyConditions = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_removeEmptyConditions",
 				mFalse, mFalse)).booleanValue();
 		stdDevTopWidth = (Double) AttributeHelper.getAttributeValue(graph, "", "node_chartStdDevTopWidth",
-				new Double(10d), new Double(10d));
+				Double.valueOf(10d), Double.valueOf(10d));
 
 		showLegend = ((Boolean) AttributeHelper.getAttributeValue(ge, "charting", "show_legend", new Boolean(false),
 				new Boolean(false))).booleanValue();
@@ -259,8 +259,8 @@ public class ChartOptions {
 
 	public int setLayoutOfChartComponent(GraphElement ge, JComponent chartcomponent, Integer mappedDataListSize) {
 
-		borderHor = ((Double) AttributeHelper.getAttributeValue(ge, "charting", "empty_border_width", new Double(2d),
-				new Double(2d))).doubleValue();
+		borderHor = ((Double) AttributeHelper.getAttributeValue(ge, "charting", "empty_border_width", Double.valueOf(2d),
+				Double.valueOf(2d))).doubleValue();
 		double borderVer = ((Double) AttributeHelper.getAttributeValue(ge, "charting", "empty_border_width_vert",
 				borderHor, borderHor)).doubleValue();
 

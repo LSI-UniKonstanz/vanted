@@ -35,7 +35,7 @@ public class PajekWriter extends AbstractOutputSerializer {
 		HashMap<Node, Long> node2pajekId = new HashMap<Node, Long>();
 		long pajekID = 1;
 		for (Node n : g.getNodes()) {
-			node2pajekId.put(n, new Long(pajekID++));
+			node2pajekId.put(n, Long.valueOf(pajekID++));
 		}
 		boolean doScale = true;
 		for (Node n : g.getNodes()) {

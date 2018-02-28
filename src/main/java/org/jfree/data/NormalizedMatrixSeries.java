@@ -86,7 +86,7 @@ public class NormalizedMatrixSeries extends MatrixSeries {
 		final int j = getItemColumn(itemIndex);
 
 		final double mij = get(i, j) * this.m_scaleFactor;
-		final Number n = new Double(mij / this.m_totalSum);
+		final Number n = Double.valueOf(mij / this.m_totalSum);
 
 		return n;
 	}

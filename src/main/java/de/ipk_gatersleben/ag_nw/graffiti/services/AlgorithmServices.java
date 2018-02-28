@@ -190,7 +190,7 @@ public class AlgorithmServices implements HelperClass {
 		}
 
 		private void setStatus1() {
-			String s = new Double(currIteration).toString();
+			String s = Double.valueOf(currIteration).toString();
 			s = StringManipulationTools.stringReplace(s, ".0", "");
 			status1 = "Iterate possibilities (" + s + "/" + maxIteration + ")";
 		}

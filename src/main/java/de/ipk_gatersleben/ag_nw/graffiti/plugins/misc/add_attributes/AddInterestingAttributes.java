@@ -433,7 +433,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		if (!(min < Double.MAX_VALUE))
 			min = Double.NaN;
-		setAttribute(ge, folder, "sample_values_min", new Double(min));
+		setAttribute(ge, folder, "sample_values_min", Double.valueOf(min));
 	}
 
 	private void processSampleAvgAndSumValueAttribute(String folder, GraphElement ge, boolean calc) {
@@ -458,8 +458,8 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			avg = Double.NaN;
 		else
 			avg = sum / cnt;
-		setAttribute(ge, folder, "sample_values_avg", new Double(avg));
-		setAttribute(ge, folder, "sample_values_sum", new Double(sum));
+		setAttribute(ge, folder, "sample_values_avg", Double.valueOf(avg));
+		setAttribute(ge, folder, "sample_values_sum", Double.valueOf(sum));
 	}
 
 	private void processSampleMaximumValueAttribute(String folder, GraphElement ge, boolean calc) {
@@ -479,7 +479,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		if (!(max > Double.NEGATIVE_INFINITY))
 			max = Double.NaN;
-		setAttribute(ge, folder, "sample_values_max", new Double(max));
+		setAttribute(ge, folder, "sample_values_max", Double.valueOf(max));
 	}
 
 	private void processSampleAvgStdDevValueAttribute(String folder, GraphElement ge, boolean calc) {
@@ -501,7 +501,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		double avg = Double.NaN;
 		if (cnt > 0)
 			avg = sum / cnt;
-		setAttribute(ge, folder, "sample_stddev_avg", new Double(avg));
+		setAttribute(ge, folder, "sample_stddev_avg", Double.valueOf(avg));
 	}
 
 	private void processSampleMinimumReplicateCountValueAttribute(String folder, GraphElement ge, boolean calc) {
@@ -563,7 +563,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		if (!(min < Double.MAX_VALUE))
 			min = Double.NaN;
-		setAttribute(ge, folder, "sample_replicate_values_min", new Double(min));
+		setAttribute(ge, folder, "sample_replicate_values_min", Double.valueOf(min));
 	}
 
 	private void processReplicatesMaximumValueAttribute(String folder, GraphElement ge, boolean calc) {
@@ -585,7 +585,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		if (!(max > Double.NEGATIVE_INFINITY))
 			max = Double.NaN;
-		setAttribute(ge, folder, "sample_replicate_values_max", new Double(max));
+		setAttribute(ge, folder, "sample_replicate_values_max", Double.valueOf(max));
 	}
 
 	private void processDifferentTimpointsCountAttribute(String folder, GraphElement ge, boolean calc) {
@@ -635,7 +635,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 					minAlpha = alpha;
 				if (alpha > maxAlpha)
 					maxAlpha = alpha;
-				setAttribute(ge, folder, "series_alpha_" + cnt, new Double(alpha));
+				setAttribute(ge, folder, "series_alpha_" + cnt, Double.valueOf(alpha));
 				sum += alpha;
 				cnt++;
 			}
@@ -647,11 +647,11 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			aa = sum / cnt;
 		if (cnt > 1) {
 			if (!Double.isNaN(aa))
-				AttributeHelper.setAttribute(ge, folder, "series_alpha_avg", new Double(aa));
+				AttributeHelper.setAttribute(ge, folder, "series_alpha_avg", Double.valueOf(aa));
 			if ((minAlpha < Double.MAX_VALUE))
-				AttributeHelper.setAttribute(ge, folder, "series_alpha_min", new Double(minAlpha));
+				AttributeHelper.setAttribute(ge, folder, "series_alpha_min", Double.valueOf(minAlpha));
 			if ((maxAlpha > Double.NEGATIVE_INFINITY))
-				AttributeHelper.setAttribute(ge, folder, "series_alpha_max", new Double(maxAlpha));
+				AttributeHelper.setAttribute(ge, folder, "series_alpha_max", Double.valueOf(maxAlpha));
 		}
 	}
 
@@ -672,7 +672,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 					minBeta = beta;
 				if (beta > maxBeta)
 					maxBeta = beta;
-				setAttribute(ge, folder, "series_beta_" + cnt, new Double(beta));
+				setAttribute(ge, folder, "series_beta_" + cnt, Double.valueOf(beta));
 				sum += beta;
 				cnt++;
 			}
@@ -684,11 +684,11 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			avgbeta = sum / cnt;
 		if (cnt > 0) {
 			if (!Double.isNaN(avgbeta))
-				AttributeHelper.setAttribute(ge, folder, "series_beta_avg", new Double(avgbeta));
+				AttributeHelper.setAttribute(ge, folder, "series_beta_avg", Double.valueOf(avgbeta));
 			if ((minBeta < Double.MAX_VALUE))
-				AttributeHelper.setAttribute(ge, folder, "series_beta_min", new Double(minBeta));
+				AttributeHelper.setAttribute(ge, folder, "series_beta_min", Double.valueOf(minBeta));
 			if ((maxBeta > Double.NEGATIVE_INFINITY))
-				AttributeHelper.setAttribute(ge, folder, "series_beta_max", new Double(maxBeta));
+				AttributeHelper.setAttribute(ge, folder, "series_beta_max", Double.valueOf(maxBeta));
 		}
 	}
 
@@ -736,19 +736,19 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 					maxRatio = ratio;
 				if (time.intValue() >= 0) {
 					String tt = getZeros(time.intValue(), 3);
-					setAttribute(ge, folder, "sample_ratio_" + tt, new Double(ratio));
+					setAttribute(ge, folder, "sample_ratio_" + tt, Double.valueOf(ratio));
 				} else
-					setAttribute(ge, folder, "sample_ratio_", new Double(ratio));
+					setAttribute(ge, folder, "sample_ratio_", Double.valueOf(ratio));
 				sum += ratio;
 				cnt++;
 			}
 		}
 		if (cnt > 0) {
-			setAttribute(ge, folder, "sample_ratio_avg", new Double(sum / cnt));
+			setAttribute(ge, folder, "sample_ratio_avg", Double.valueOf(sum / cnt));
 			if ((minRatio < Double.MAX_VALUE))
-				AttributeHelper.setAttribute(ge, folder, "sample_ratio_min", new Double(minRatio));
+				AttributeHelper.setAttribute(ge, folder, "sample_ratio_min", Double.valueOf(minRatio));
 			if ((maxRatio > Double.NEGATIVE_INFINITY))
-				AttributeHelper.setAttribute(ge, folder, "sample_ratio_max", new Double(maxRatio));
+				AttributeHelper.setAttribute(ge, folder, "sample_ratio_max", Double.valueOf(maxRatio));
 
 		}
 	}

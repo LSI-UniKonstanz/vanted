@@ -39,7 +39,7 @@ public class Performance2 {
 	private double primitive = 42.0;
 
 	/** A number object. */
-	private Number object = new Double(42.0);
+	private Number object = Double.valueOf(42.0);
 
 	/**
 	 * Default constructor.
@@ -64,7 +64,7 @@ public class Performance2 {
 	 * @return creates and returns a Number object.
 	 */
 	public Number getPrimitiveAsObject() {
-		return new Double(this.primitive);
+		return Double.valueOf(this.primitive);
 	}
 
 	/**

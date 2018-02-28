@@ -75,11 +75,11 @@ public class OHLCDataItem implements Comparable {
 	public OHLCDataItem(final Date date, final double open, final double high, final double low, final double close,
 			final double volume) {
 		this.date = date;
-		this.open = new Double(open);
-		this.high = new Double(high);
-		this.low = new Double(low);
-		this.close = new Double(close);
-		this.volume = new Double(volume);
+		this.open = Double.valueOf(open);
+		this.high = Double.valueOf(high);
+		this.low = Double.valueOf(low);
+		this.close = Double.valueOf(close);
+		this.volume = Double.valueOf(volume);
 	}
 
 	/**

@@ -101,9 +101,9 @@ public class RouterWithProgress extends Router {
 		int seconds = (int) Math.ceil(elapsedTime / 1000.0) - minutes * 60 - hours * 3600;
 		long milliseconds = elapsedTime - seconds * 1000 - minutes * 60000 - hours * 3600000;
 		String strElapsedTime = String.format("%02d:%02d:%02d.%03d", Integer.valueOf(hours), Integer.valueOf(minutes),
-				Integer.valueOf(seconds), new Long(milliseconds));
+				Integer.valueOf(seconds), Long.valueOf(milliseconds));
 		logger.info("Adaptagrams Edge Routing: running for " + strElapsedTime + ", phase " + phaseNumber + " of "
-				+ totalPhases + " ... " + String.format(Locale.ENGLISH, "%1$,.2f", new Double(proportion * 100.0))
+				+ totalPhases + " ... " + String.format(Locale.ENGLISH, "%1$,.2f", Double.valueOf(proportion * 100.0))
 				+ "%");
 		return true;
 

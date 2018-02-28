@@ -58,7 +58,7 @@ public class DefaultValueDataset extends AbstractDataset implements ValueDataset
 	 *            the value.
 	 */
 	public DefaultValueDataset(final double value) {
-		this(new Double(value));
+		this(Double.valueOf(value));
 	}
 
 	/**

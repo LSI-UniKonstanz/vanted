@@ -190,14 +190,14 @@ public class ZoomChangeComponent extends AbstractGraffitiComponent
 			AffineTransform at = (AffineTransform) newZoom;
 			double[] matrix = new double[6];
 			at.getMatrix(matrix);
-			m00.setValue(new Double(matrix[0]));
-			m10.setValue(new Double(matrix[1]));
-			m01.setValue(new Double(matrix[2]));
+			m00.setValue(Double.valueOf(matrix[0]));
+			m10.setValue(Double.valueOf(matrix[1]));
+			m01.setValue(Double.valueOf(matrix[2]));
 
-			m11.setValue(new Double(matrix[3]));
+			m11.setValue(Double.valueOf(matrix[3]));
 
-			// m02.setValue(new Double(matrix[4]));
-			// m12.setValue(new Double(matrix[5]));
+			// m02.setValue(Double.valueOf(matrix[4]));
+			// m12.setValue(Double.valueOf(matrix[5]));
 		}
 
 		// else

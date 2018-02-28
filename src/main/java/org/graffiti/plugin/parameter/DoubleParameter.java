@@ -55,7 +55,7 @@ public class DoubleParameter extends AbstractLimitableParameter implements Provi
 	 */
 	public DoubleParameter(Number val, String name, String description) {
 		super(name, description);
-		value = new Double(val.doubleValue());
+		value = Double.valueOf(val.doubleValue());
 	}
 
 	public DoubleParameter(Number val, Double min, Double max, String name, String description) {
@@ -83,7 +83,7 @@ public class DoubleParameter extends AbstractLimitableParameter implements Provi
 	 *            DOCUMENT ME!
 	 */
 	public void setDouble(double val) {
-		this.value = new Double(val);
+		this.value = Double.valueOf(val);
 	}
 
 	/**

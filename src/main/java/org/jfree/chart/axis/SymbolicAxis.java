@@ -504,7 +504,7 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 						rotationAnchor = TextAnchor.TOP_CENTER;
 					}
 				}
-				Tick tick = new NumberTick(new Double(currentTickValue), tickLabel, anchor, rotationAnchor, angle);
+				Tick tick = new NumberTick(Double.valueOf(currentTickValue), tickLabel, anchor, rotationAnchor, angle);
 				ticks.add(tick);
 			}
 		}
@@ -592,7 +592,7 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 						rotationAnchor = TextAnchor.CENTER_LEFT;
 					}
 				}
-				Tick tick = new NumberTick(new Double(currentTickValue), tickLabel, anchor, rotationAnchor, angle);
+				Tick tick = new NumberTick(Double.valueOf(currentTickValue), tickLabel, anchor, rotationAnchor, angle);
 				ticks.add(tick);
 			}
 		}

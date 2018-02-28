@@ -54,7 +54,7 @@ public class CompassDemo2 extends ApplicationFrame {
 
 		super(title);
 
-		final ValueDataset dataset = new DefaultValueDataset(new Double(45.0));
+		final ValueDataset dataset = new DefaultValueDataset(Double.valueOf(45.0));
 		final JFreeChart chart = createChart(dataset);
 
 		// add the chart to a panel...

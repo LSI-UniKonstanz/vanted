@@ -116,8 +116,8 @@ public class XYBoxAndWhiskerDemo extends ApplicationFrame {
 			final Date date = DateUtilities.createDate(2003, 7, i + 1, 12, 0);
 			final List values = new ArrayList();
 			for (int j = 0; j < 10; j++) {
-				values.add(new Double(10.0 + Math.random() * 10.0));
-				values.add(new Double(13.0 + Math.random() * 4.0));
+				values.add(Double.valueOf(10.0 + Math.random() * 10.0));
+				values.add(Double.valueOf(13.0 + Math.random() * 4.0));
 			}
 			dataset.add(date, BoxAndWhiskerCalculator.calculateBoxAndWhiskerStatistics(values));
 

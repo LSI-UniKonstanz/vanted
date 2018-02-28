@@ -334,8 +334,8 @@ public class CyclicXYItemRenderer extends StandardXYItemRenderer {
 			this.x = new Double[x.length];
 			this.y = new Double[y.length];
 			for (int i = 0; i < x.length; ++i) {
-				this.x[i] = new Double(x[i]);
-				this.y[i] = new Double(y[i]);
+				this.x[i] = Double.valueOf(x[i]);
+				this.y[i] = Double.valueOf(y[i]);
 			}
 		}
 

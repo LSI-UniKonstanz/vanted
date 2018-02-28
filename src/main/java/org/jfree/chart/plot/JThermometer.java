@@ -77,7 +77,7 @@ public class JThermometer extends JPanel implements Serializable {
 		super(new CardLayout());
 		this.plot.setInsets(new Insets(5, 5, 5, 5));
 		this.data = new DefaultValueDataset();
-		// data.setRange(new Double(-60000), new Double(60000));
+		// data.setRange(Double.valueOf(-60000), Double.valueOf(60000));
 		this.plot.setDataset(this.data);
 		this.chart = new JFreeChart(null, JFreeChart.DEFAULT_TITLE_FONT, this.plot, false);
 		this.panel = new ChartPanel(this.chart);
@@ -214,7 +214,7 @@ public class JThermometer extends JPanel implements Serializable {
 	 *            the value.
 	 */
 	public void setValue(double value) {
-		setValue(new Double(value));
+		setValue(Double.valueOf(value));
 	}
 
 	/**

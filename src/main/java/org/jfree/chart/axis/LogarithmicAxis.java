@@ -685,7 +685,7 @@ public class LogarithmicAxis extends NumberAxis {
 						}
 					}
 
-					Tick tick = new NumberTick(new Double(currentTickValue), tickLabel, anchor, rotationAnchor, angle);
+					Tick tick = new NumberTick(Double.valueOf(currentTickValue), tickLabel, anchor, rotationAnchor, angle);
 					ticks.add(tick);
 				}
 			}
@@ -841,7 +841,7 @@ public class LogarithmicAxis extends NumberAxis {
 						}
 					}
 					// create tick object and add to list:
-					ticks.add(new NumberTick(new Double(currentTickValue), tickLabel, anchor, rotationAnchor, angle));
+					ticks.add(new NumberTick(Double.valueOf(currentTickValue), tickLabel, anchor, rotationAnchor, angle));
 
 				}
 			}

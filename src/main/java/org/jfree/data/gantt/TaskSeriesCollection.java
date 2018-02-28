@@ -325,7 +325,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 		final int tasks = series.getItemCount();
 		if (column < tasks) {
 			final Task task = series.get(column);
-			result = new Long(task.getDuration().getStart().getTime());
+			result = Long.valueOf(task.getDuration().getStart().getTime());
 		}
 		return result;
 
@@ -362,7 +362,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 		final int tasks = series.getItemCount();
 		if (column < tasks) {
 			final Task task = series.get(column);
-			result = new Long(task.getDuration().getEnd().getTime());
+			result = Long.valueOf(task.getDuration().getEnd().getTime());
 		}
 		return result;
 
@@ -461,7 +461,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 		if (column < tasks) {
 			final Task task = series.get(column);
 			final Task subtask = task.getSubtask(subinterval);
-			result = new Long(subtask.getDuration().getStart().getTime());
+			result = Long.valueOf(subtask.getDuration().getStart().getTime());
 		}
 		return result;
 
@@ -505,7 +505,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset implements Gantt
 		if (column < tasks) {
 			final Task task = series.get(column);
 			final Task subtask = task.getSubtask(subinterval);
-			result = new Long(subtask.getDuration().getEnd().getTime());
+			result = Long.valueOf(subtask.getDuration().getEnd().getTime());
 		}
 		return result;
 

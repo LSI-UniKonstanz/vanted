@@ -191,7 +191,7 @@ public class DynamicTimeSeriesCollection extends AbstractIntervalXYDataset
 	// A single set of extrema covers the entire SeriesCollection
 
 	/** The minimum value. */
-	private Float minValue = new Float(0.0f);
+	private Float minValue = Float.valueOf(0.0f);
 
 	/** The maximum value. */
 	private Float maxValue = null;
@@ -326,8 +326,8 @@ public class DynamicTimeSeriesCollection extends AbstractIntervalXYDataset
 		} else {
 			endL = getNewestTime().getLastMillisecond(this.workingCalendar);
 		}
-		this.domainStart = new Long(startL);
-		this.domainEnd = new Long(endL);
+		this.domainStart = Long.valueOf(startL);
+		this.domainEnd = Long.valueOf(endL);
 		this.domainRange = new Range(startL, endL);
 
 	}
@@ -574,9 +574,9 @@ public class DynamicTimeSeriesCollection extends AbstractIntervalXYDataset
 		}
 		// Update the domain limits:
 		final long startL = this.domainStart.longValue(); // (time is kept in msec)
-		this.domainStart = new Long(startL + this.deltaTime);
+		this.domainStart = Long.valueOf(startL + this.deltaTime);
 		final long endL = this.domainEnd.longValue();
-		this.domainEnd = new Long(endL + this.deltaTime);
+		this.domainEnd = Long.valueOf(endL + this.deltaTime);
 		this.domainRange = new Range(startL, endL);
 		fireSeriesChanged();
 		return nextInstant;
@@ -717,7 +717,7 @@ public class DynamicTimeSeriesCollection extends AbstractIntervalXYDataset
 	// Don't synchronize this!! Instead, synchronize the loop that calls it.
 	public Number getXValue(final int series, final int item) {
 		final RegularTimePeriod tp = this.pointsInTime[translateGet(item)];
-		return new Long(getX(tp));
+		return Long.valueOf(getX(tp));
 	}
 
 	/**
@@ -758,7 +758,7 @@ public class DynamicTimeSeriesCollection extends AbstractIntervalXYDataset
 	 */
 	public Number getStartXValue(final int series, final int item) {
 		final RegularTimePeriod tp = this.pointsInTime[translateGet(item)];
-		return new Long(tp.getFirstMillisecond(this.workingCalendar));
+		return Long.valueOf(tp.getFirstMillisecond(this.workingCalendar));
 	}
 
 	/**

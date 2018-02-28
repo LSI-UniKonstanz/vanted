@@ -80,7 +80,7 @@ public abstract class AbstractAttributeComponent extends AttributeComponent impl
 		 * new graphelement transparency attribute
 		 */
 		double opacity = (double) AttributeHelper.getAttributeValue(attr.getAttributable(),
-				GraphicAttributeConstants.GRAPHICS, GraphicAttributeConstants.OPAC, 1.0, new Double(1));
+				GraphicAttributeConstants.GRAPHICS, GraphicAttributeConstants.OPAC, 1.0, Double.valueOf(1));
 		setupOpacity(opacity);
 	}
 

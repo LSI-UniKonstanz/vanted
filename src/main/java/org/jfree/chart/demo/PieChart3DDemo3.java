@@ -69,11 +69,11 @@ public class PieChart3DDemo3 extends ApplicationFrame {
 	private PieDataset createSampleDataset() {
 
 		final DefaultPieDataset result = new DefaultPieDataset();
-		result.setValue("Java", new Double(43.2));
-		result.setValue("Visual Basic", new Double(10.0));
-		result.setValue("C/C++", new Double(17.5));
-		result.setValue("PHP", new Double(32.5));
-		result.setValue("Perl", new Double(1.0));
+		result.setValue("Java", Double.valueOf(43.2));
+		result.setValue("Visual Basic", Double.valueOf(10.0));
+		result.setValue("C/C++", Double.valueOf(17.5));
+		result.setValue("PHP", Double.valueOf(32.5));
+		result.setValue("Perl", Double.valueOf(1.0));
 		return result;
 
 	}

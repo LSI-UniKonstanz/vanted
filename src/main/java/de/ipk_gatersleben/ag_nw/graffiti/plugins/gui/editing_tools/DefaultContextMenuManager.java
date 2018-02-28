@@ -507,8 +507,8 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 	// zoom.transform(srcp, dest);
 	//
 	// cm.show(src,
-	// new Double(dest.getX()).intValue(),
-	// new Double(dest.getY()).intValue());
+	// Double.valueOf(dest.getX()).intValue(),
+	// Double.valueOf(dest.getY()).intValue());
 	// cm.setVisible(true);
 	// cm.setFocusable(true);
 	// e.consume();

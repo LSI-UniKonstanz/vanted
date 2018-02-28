@@ -357,20 +357,20 @@ public class SpringEmbedderAlgorithm extends AbstractAlgorithm {
 		// UserPrefs mySettings=new UserPrefs(SappName);
 
 		k1 = ((DoubleParameter) params[0]).getDouble().doubleValue();
-		// mySettings.setPref(Sk1, new Double(k1).toString());
+		// mySettings.setPref(Sk1, Double.valueOf(k1).toString());
 		k2 = ((DoubleParameter) params[1]).getDouble().doubleValue();
-		// mySettings.setPref(Sk2, new Double(k2).toString());
+		// mySettings.setPref(Sk2, Double.valueOf(k2).toString());
 		nat_l = ((DoubleParameter) params[2]).getDouble().doubleValue();
-		// mySettings.setPref(Snat_l, new Double(nat_l).toString());
+		// mySettings.setPref(Snat_l, Double.valueOf(nat_l).toString());
 		borderForce = new Boolean(((BooleanParameter) params[3]).getValue().toString()).booleanValue();
 		// mySettings.setPref(SborderForce, new Boolean(borderForce).toString());
 
 		borderWidth = ((DoubleParameter) params[4]).getDouble().doubleValue();
-		// mySettings.setPref(SborderWidth, new Double(borderWidth).toString());
+		// mySettings.setPref(SborderWidth, Double.valueOf(borderWidth).toString());
 
 		maxBorderForce = ((DoubleParameter) params[5]).getDouble().doubleValue();
 		// mySettings.setPref(SmaxBorderForce,
-		// new Double(maxBorderForce).toString());
+		// Double.valueOf(maxBorderForce).toString());
 
 		redraw = new Boolean(((BooleanParameter) params[6]).getValue().toString()).booleanValue();
 		// mySettings.setPref(Sredraw,

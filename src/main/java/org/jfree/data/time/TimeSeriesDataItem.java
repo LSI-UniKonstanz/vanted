@@ -93,7 +93,7 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 	 *            the value associated with the time period.
 	 */
 	public TimeSeriesDataItem(final RegularTimePeriod period, final double value) {
-		this(period, new Double(value));
+		this(period, Double.valueOf(value));
 	}
 
 	/**

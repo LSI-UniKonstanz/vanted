@@ -563,7 +563,7 @@ public class TimeSeries extends Series implements Cloneable, Serializable {
 	 *         was overwritten.
 	 */
 	public TimeSeriesDataItem addOrUpdate(final RegularTimePeriod period, final double value) {
-		return this.addOrUpdate(period, new Double(value));
+		return this.addOrUpdate(period, Double.valueOf(value));
 	}
 
 	/**

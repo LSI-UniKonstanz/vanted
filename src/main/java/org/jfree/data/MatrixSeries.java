@@ -84,7 +84,7 @@ public class MatrixSeries extends Series implements Serializable {
 		final int i = getItemRow(itemIndex);
 		final int j = getItemColumn(itemIndex);
 
-		final Number n = new Double(get(i, j));
+		final Number n = Double.valueOf(get(i, j));
 
 		return n;
 	}

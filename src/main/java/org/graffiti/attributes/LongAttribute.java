@@ -78,7 +78,7 @@ public class LongAttribute extends AbstractAttribute {
 	 *            the new value for this object.
 	 */
 	public void setLong(long value) {
-		// setValue(new Long(value));
+		// setValue(Long.valueOf(value));
 		AttributeEvent ae = new AttributeEvent(this);
 		callPreAttributeChanged(ae);
 		this.value = value;
@@ -100,7 +100,7 @@ public class LongAttribute extends AbstractAttribute {
 	 * @return the value of the attribute wrapped in an <code>Long</code> object.
 	 */
 	public Object getValue() {
-		return new Long(value);
+		return Long.valueOf(value);
 	}
 
 	/**

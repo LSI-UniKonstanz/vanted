@@ -143,7 +143,7 @@ public class MeterChartDemo {
 			}
 		}
 		if (args.length > 1) {
-			val = new Double(args[1]).doubleValue();
+			val = Double.valueOf(args[1]).doubleValue();
 		}
 		h.displayMeterChart(val, dialShape);
 

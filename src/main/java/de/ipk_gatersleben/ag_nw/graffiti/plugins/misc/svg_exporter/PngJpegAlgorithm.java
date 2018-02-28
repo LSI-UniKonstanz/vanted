@@ -990,7 +990,7 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements NeedsSwingThr
 		// if (enablebackground) {
 		// Double radius =
 		// (Double)AttributeHelper.getAttributeValue(view.getGraph(), "",
-		// "clusterbackground_radius", new Double(200), new Double(200), true);
+		// "clusterbackground_radius", Double.valueOf(200), Double.valueOf(200), true);
 		// viewRect.add(viewRect.x+viewRect.width+radius,
 		// viewRect.y+viewRect.height+radius);
 		// }

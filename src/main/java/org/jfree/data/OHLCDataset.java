@@ -79,7 +79,7 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * @return the x-value.
 	 */
 	public Number getXValue(final int series, final int item) {
-		return new Long(this.data[item].getDate().getTime());
+		return Long.valueOf(this.data[item].getDate().getTime());
 	}
 
 	/**

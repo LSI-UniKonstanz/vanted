@@ -129,13 +129,13 @@ public class CompoundImageAttributeComponent extends AbstractAttributeComponent 
 					offY = -imgHeight - off;
 					if (labelAndImageAutoOutside)
 						offY -= (Double) AttributeHelper.getAttributeValue(getAttribute().getAttributable(),
-								"labelgraphics", "fontSize", new Double(12), new Double(12), false);
+								"labelgraphics", "fontSize", Double.valueOf(12), Double.valueOf(12), false);
 				} else if (position.equals(GraphicAttributeConstants.BELOW)) {
 					offX = (nodeSize.x - imgWidth) / 2;
 					offY = nodeSize.y + off;
 					if (labelAndImageAutoOutside)
 						offY += (Double) AttributeHelper.getAttributeValue(getAttribute().getAttributable(),
-								"labelgraphics", "fontSize", new Double(12), new Double(12), false);
+								"labelgraphics", "fontSize", Double.valueOf(12), Double.valueOf(12), false);
 				}
 			}
 			offX += border;
@@ -199,7 +199,7 @@ public class CompoundImageAttributeComponent extends AbstractAttributeComponent 
 		// setLocation((int)(shift.x-imgWidth/2d), (int)(shift.y-imgHeight/2d));
 		// setLocation(new
 		// Double(shift.x+AttributeHelper.getWidth((Node)getAttribute().getAttributable())).intValue()+5,
-		// new Double(shift.y-imgHeight/2).intValue());
+		// Double.valueOf(shift.y-imgHeight/2).intValue());
 	}
 
 	private void changeParameters(Object graphicsAttr, Node n) throws ShapeNotFoundException {

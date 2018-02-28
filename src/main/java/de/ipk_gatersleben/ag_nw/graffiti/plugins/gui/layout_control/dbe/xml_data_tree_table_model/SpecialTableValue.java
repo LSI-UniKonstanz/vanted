@@ -27,16 +27,16 @@ public class SpecialTableValue {
 
 	@Override
 	public String toString() {
-		if (new Double(doubleValue).isNaN()) {
+		if (Double.valueOf(doubleValue).isNaN()) {
 			if (otherValue != null)
 				return startString + otherValue.toString();
 			else
-				return startString + new Double(doubleValue).toString();
+				return startString + Double.valueOf(doubleValue).toString();
 		} else {
 			if (shiftRight)
 				return startString + Integer.valueOf((int) Math.round(doubleValue)).toString() + " ";
 			else
-				return startString + new Double(doubleValue).toString();
+				return startString + Double.valueOf(doubleValue).toString();
 		}
 	}
 
@@ -44,6 +44,6 @@ public class SpecialTableValue {
 	 * @return
 	 */
 	public boolean getIsDouble() {
-		return !new Double(doubleValue).isNaN();
+		return !Double.valueOf(doubleValue).isNaN();
 	}
 }

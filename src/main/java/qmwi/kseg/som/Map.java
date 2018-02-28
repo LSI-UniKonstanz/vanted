@@ -105,7 +105,7 @@ public class Map {
 			sumEuDist = 0;
 			// System.out.println("Centroid "+(j+1));
 			for (int i = 0; i < inputv.length; i++) {
-				if (!new Double(inputv[i]).isNaN()) {
+				if (!Double.valueOf(inputv[i]).isNaN()) {
 					sumEuDist += Math.pow(inputv[i] - weights[i][j], 2);
 				}
 			}
@@ -165,7 +165,7 @@ public class Map {
 	private void calcNewWeights(int time) {
 		for (int j = 0; j < nodes; j++) {
 			for (int inpL = 0; inpL < inputv.length; inpL++) {
-				if (!new Double(inputv[inpL]).isNaN())
+				if (!Double.valueOf(inputv[inpL]).isNaN())
 					weights[inpL][j] += lernrate * nachbar[j] * (inputv[inpL] - weights[inpL][j]);
 			}
 		}

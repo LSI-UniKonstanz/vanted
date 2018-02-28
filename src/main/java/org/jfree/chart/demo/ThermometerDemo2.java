@@ -56,7 +56,7 @@ public class ThermometerDemo2 extends ApplicationFrame {
 		super(title);
 
 		// create a dataset...
-		final DefaultValueDataset dataset = new DefaultValueDataset(new Double(43.0));
+		final DefaultValueDataset dataset = new DefaultValueDataset(Double.valueOf(43.0));
 
 		// create the chart...
 		final ThermometerPlot plot = new ThermometerPlot(dataset);

@@ -32,7 +32,7 @@ public class MemSample {
 	}
 
 	public Double getTime() {
-		return new Double(optTimeValueForComparison);
+		return Double.valueOf(optTimeValueForComparison);
 	}
 
 	public double getValue() {

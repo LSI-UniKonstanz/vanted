@@ -77,7 +77,7 @@ NOBRACES  = [^\]\[]
 
            {INTEGER}     { return new Symbol(sym.INTEGER, Integer.valueOf(yytext())); }
            
-           {REAL}        { return new Symbol(sym.REAL, new Double(yytext())); }
+           {REAL}        { return new Symbol(sym.REAL, Double.valueOf(yytext())); }
            {STRING}      { return new Symbol(sym.STRING, yytext().substring(1, yytext().length() - 1)); }
 
            "id"          { return new Symbol(sym.ID); }

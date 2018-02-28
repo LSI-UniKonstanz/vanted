@@ -105,9 +105,9 @@ public class CreateDirectChildrenClustersHistogramAlgorithm extends AbstractAlgo
 			int plantID = nh.memGetPlantID(clusterID, "", "", "", "");
 			Integer value = cluster2frequency.get(clusterID);
 			if (value == null)
-				nh.memSample(new Double(0), -1, plantID, "frequency", "-1", Integer.valueOf(-1));
+				nh.memSample(Double.valueOf(0), -1, plantID, "frequency", "-1", Integer.valueOf(-1));
 			else
-				nh.memSample(new Double(value), -1, plantID, "frequency", "-1", Integer.valueOf(-1));
+				nh.memSample(Double.valueOf(value), -1, plantID, "frequency", "-1", Integer.valueOf(-1));
 		}
 		nh.memAddDataMapping(substanceName, "cluster frequency", null, "calculated analysis", "system",
 				"Frequency of clusters in neighbour nodes", "");

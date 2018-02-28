@@ -231,10 +231,10 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 						else
 							averageEntry.setUnit("expression");
 						averageEntry.setReplicateId(Integer.valueOf(replicates.size()));
-						averageEntry.setMin(new Double(ExperimentData.getMinimum(measurements)));
-						averageEntry.setMax(new Double(ExperimentData.getMaximum(measurements)));
-						averageEntry.setStddev(new Double(ExperimentData.getStddev(measurements)));
-						averageEntry.setValue(new Double(ExperimentData.getAverage(measurements)));
+						averageEntry.setMin(Double.valueOf(ExperimentData.getMinimum(measurements)));
+						averageEntry.setMax(Double.valueOf(ExperimentData.getMaximum(measurements)));
+						averageEntry.setStddev(Double.valueOf(ExperimentData.getStddev(measurements)));
+						averageEntry.setValue(Double.valueOf(ExperimentData.getAverage(measurements)));
 						sampleEntry.setSampleAverage(averageEntry);
 
 						for (ReplicateDouble rd : measurements) {
@@ -258,11 +258,11 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 					}
 				}
 				double pv = (row - 1d) / (myData.getMaximumRow() - 1d) * 100d;
-				progressDouble = new Double(pv);
+				progressDouble = Double.valueOf(pv);
 			}
 		}
 		// measurementCountElement.setText(Integer.valueOf(dataCount).toString());
-		progressDouble = new Double(100d);
+		progressDouble = Double.valueOf(100d);
 		return e;
 	}
 

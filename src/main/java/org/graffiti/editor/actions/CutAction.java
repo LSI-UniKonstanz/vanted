@@ -89,11 +89,11 @@ public class CutAction extends SelectionAction {
 				// remove all other nodes from copied graph
 				ArrayList<Long> validNodeIds = new ArrayList<Long>();
 				for (org.graffiti.graph.Node n : selection.getNodes())
-					validNodeIds.add(new Long(n.getID()));
+					validNodeIds.add(Long.valueOf(n.getID()));
 
 				ArrayList<org.graffiti.graph.Node> toBeDeleted = new ArrayList<org.graffiti.graph.Node>();
 				for (org.graffiti.graph.Node n : copyGraph.getNodes()) {
-					if (!validNodeIds.contains(new Long(n.getID()))) {
+					if (!validNodeIds.contains(Long.valueOf(n.getID()))) {
 						toBeDeleted.add(n);
 					}
 				}
@@ -104,11 +104,11 @@ public class CutAction extends SelectionAction {
 				// remove all other edges from copied graph
 				ArrayList<Long> validEdgeIds = new ArrayList<Long>();
 				for (Edge curEdge : copyGraph.getEdges())
-					validEdgeIds.add(new Long(curEdge.getID()));
+					validEdgeIds.add(Long.valueOf(curEdge.getID()));
 
 				ArrayList<Edge> toBeDeletedEdges = new ArrayList<Edge>();
 				for (Edge curEdge : copyGraph.getEdges()) {
-					if (!validEdgeIds.contains(new Long(curEdge.getID()))) {
+					if (!validEdgeIds.contains(Long.valueOf(curEdge.getID()))) {
 						toBeDeletedEdges.add(curEdge);
 					}
 				}

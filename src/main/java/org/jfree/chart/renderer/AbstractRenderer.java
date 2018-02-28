@@ -91,7 +91,7 @@ import org.jfree.util.StrokeList;
 public abstract class AbstractRenderer implements Cloneable, Serializable {
 
 	/** A useful constant. */
-	public static final Double ZERO = new Double(0.0);
+	public static final Double ZERO = Double.valueOf(0.0);
 
 	/** The default paint. */
 	public static final Paint DEFAULT_PAINT = Color.blue;
@@ -2446,7 +2446,7 @@ public abstract class AbstractRenderer implements Cloneable, Serializable {
 		Number result = null;
 		ItemLabelPosition p = this.getSeriesPositiveItemLabelPosition(series);
 		if (p != null) {
-			result = new Double(p.getAngle());
+			result = Double.valueOf(p.getAngle());
 		}
 		return result;
 	}
@@ -2488,7 +2488,7 @@ public abstract class AbstractRenderer implements Cloneable, Serializable {
 		Number result = null;
 		ItemLabelPosition p = this.getBasePositiveItemLabelPosition();
 		if (p != null) {
-			result = new Double(p.getAngle());
+			result = Double.valueOf(p.getAngle());
 		}
 		return result;
 	}

@@ -109,7 +109,7 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 		 * Beta, default=0.1
 		 */
 		// DoubleParameter beta = new DoubleParameter(betaParam, "Beta", "beta");
-		// double betaInit = new Double(betaS).doubleValue();
+		// double betaInit = Double.valueOf(betaS).doubleValue();
 
 		/**
 		 * Gamma, default=2

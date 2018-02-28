@@ -552,7 +552,7 @@ public class SBML_Reaction_Reader {
 			SortedMap<Double, Point> sortedPositions = new TreeMap<>();
 			if (reactionGlyphPos != null)
 				for (Point position : positions)
-					sortedPositions.put(new Double(Math.hypot(position.getX() - reactionGlyphPos.getX(),
+					sortedPositions.put(Double.valueOf(Math.hypot(position.getX() - reactionGlyphPos.getX(),
 							position.getY() - reactionGlyphPos.getY())), position);
 
 			if (positions.size() >= 2) {

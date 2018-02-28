@@ -376,8 +376,8 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 
 				for (Graph clusterSubGraph : clusterGraphsToBeAnalyzed) {
 					for (Node n : clusterSubGraph.getNodes()) {
-						newCoordinates.put(new Long(n.getID()), AttributeHelper.getPosition(n));
-						newSizes.put(new Long(n.getID()), AttributeHelper.getSize(n));
+						newCoordinates.put(Long.valueOf(n.getID()), AttributeHelper.getPosition(n));
+						newSizes.put(Long.valueOf(n.getID()), AttributeHelper.getSize(n));
 					}
 				}
 
@@ -390,8 +390,8 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 				mainGraph.getListenerManager().transactionStarted(this);
 				statusInt = -1;
 				for (Node n : mainGraph.getNodes()) {
-					Point2D newPosition = newCoordinates.get(new Long(n.getID()));
-					Vector2d newSize = newSizes.get(new Long(n.getID()));
+					Point2D newPosition = newCoordinates.get(Long.valueOf(n.getID()));
+					Vector2d newSize = newSizes.get(Long.valueOf(n.getID()));
 					String clusterNumber = NodeTools.getClusterID(n, "");
 					if (clusterNumber.equals("")) {
 						// not a cluster node, ignore this node for layout

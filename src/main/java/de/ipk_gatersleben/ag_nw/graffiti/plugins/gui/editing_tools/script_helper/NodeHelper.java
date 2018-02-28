@@ -826,8 +826,8 @@ public class NodeHelper implements Node, HelperClass {
 	 * @param maxValue
 	 */
 	public void setChartRange(double minValue, double maxValue) {
-		setAttributeValue("charting", "minRange", new Double(minValue));
-		setAttributeValue("charting", "maxRange", new Double(maxValue));
+		setAttributeValue("charting", "minRange", Double.valueOf(minValue));
+		setAttributeValue("charting", "maxRange", Double.valueOf(maxValue));
 		setAttributeValue("charting", "useCustomRange", new Boolean(true));
 	}
 

@@ -530,7 +530,7 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 						try {
 							String label1 = AttributeHelper.getLabel(o1, "");
 							String label2 = AttributeHelper.getLabel(o2, "");
-							return new Double(label1).compareTo(new Double(label2));
+							return Double.valueOf(label1).compareTo(Double.valueOf(label2));
 						} catch (Exception err) {
 							String label1 = AttributeHelper.getLabel(o1, "");
 							String label2 = AttributeHelper.getLabel(o2, "");

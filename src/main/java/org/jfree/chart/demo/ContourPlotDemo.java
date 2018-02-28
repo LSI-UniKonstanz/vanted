@@ -238,14 +238,14 @@ public class ContourPlotDemo extends ApplicationFrame {
 			tmpDateX[k] = new Date((long) ((i + 100) * 1.e8));
 			tmpDoubleX[k] = i + 2;
 			tmpDoubleY[k] = zmult * (z++);
-			oDoubleX[k] = new Double(tmpDoubleX[k]);
-			oDoubleY[k] = new Double(tmpDoubleY[k]);
+			oDoubleX[k] = Double.valueOf(tmpDoubleX[k]);
+			oDoubleY[k] = Double.valueOf(tmpDoubleY[k]);
 			final double rad = Math.random();
 			if (makeHoles && (rad > 0.4 && rad < 0.6)) {
 				oDoubleZ[k] = null;
 			} else {
 				// tmpDoubleZ[k] = 3.0 * ((tmpDoubleX[k] + 1) * (tmpDoubleY[k] + 1) + 100);
-				oDoubleZ[k] = new Double(3.0 * ((tmpDoubleX[k] + 1) * (tmpDoubleY[k] + 1) + 100));
+				oDoubleZ[k] = Double.valueOf(3.0 * ((tmpDoubleX[k] + 1) * (tmpDoubleY[k] + 1) + 100));
 			}
 			j++;
 		}

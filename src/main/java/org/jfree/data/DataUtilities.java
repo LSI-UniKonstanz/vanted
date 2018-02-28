@@ -63,7 +63,7 @@ public abstract class DataUtilities {
 			if (v != null) {
 				runningTotal = runningTotal + v.doubleValue();
 			}
-			result.addValue(data.getKey(i), new Double(runningTotal / total));
+			result.addValue(data.getKey(i), Double.valueOf(runningTotal / total));
 		}
 
 		return result;

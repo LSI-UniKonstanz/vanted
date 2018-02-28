@@ -315,7 +315,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, 
 		Number y1 = dataset.getYValue(series, item);
 		boolean nullPoint = false;
 		if (y1 == null) {
-			y1 = new Double(0);
+			y1 = Double.valueOf(0);
 			nullPoint = true;
 		}
 

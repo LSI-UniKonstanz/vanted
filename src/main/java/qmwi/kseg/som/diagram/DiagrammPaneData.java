@@ -84,7 +84,7 @@ public class DiagrammPaneData extends javax.swing.table.AbstractTableModel {
 			 * getAttribut(column-extraColumns).average);
 			 */
 
-			// return new Float(aAll.getClass(row).getAttribut(column).values.size());
+			// return Float.valueOf(aAll.getClass(row).getAttribut(column).values.size());
 
 			return Integer.valueOf(0);
 		}
