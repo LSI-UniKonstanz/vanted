@@ -50,9 +50,9 @@ public class EmptyXYDataset extends AbstractXYDataset implements XYDataset {
 	 * Returns the x-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the x-value (always null for this class).
 	 */
 	public Number getXValue(final int series, final int item) {
@@ -63,9 +63,9 @@ public class EmptyXYDataset extends AbstractXYDataset implements XYDataset {
 	 * Returns the y-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the y-value (always null for this class).
 	 */
 	public Number getYValue(final int series, final int item) {
@@ -85,7 +85,7 @@ public class EmptyXYDataset extends AbstractXYDataset implements XYDataset {
 	 * Returns the name of the series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return the name of the series (always null in this class).
 	 */
 	public String getSeriesName(final int series) {
@@ -96,7 +96,7 @@ public class EmptyXYDataset extends AbstractXYDataset implements XYDataset {
 	 * Returns the number of items in the specified series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return the item count (always zero in this class).
 	 */
 	public int getItemCount(final int series) {

@@ -45,7 +45,9 @@ import java.awt.geom.Point2D;
  */
 public class DrawableLegendItem {
 
-	/** The legend item (encapsulates information about the label, color and shape). */
+	/**
+	 * The legend item (encapsulates information about the label, color and shape).
+	 */
 	private LegendItem item;
 
 	/** The x-coordinate for the item's location. */
@@ -69,7 +71,9 @@ public class DrawableLegendItem {
 	/** A line used to indicate the series stroke on the legend */
 	private Line2D line;
 
-	/** A stroke used to draw line used to indicate the series stroke on the legend */
+	/**
+	 * A stroke used to draw line used to indicate the series stroke on the legend
+	 */
 	private Stroke lineStroke;
 
 	/** The label position within the item. */
@@ -79,7 +83,7 @@ public class DrawableLegendItem {
 	 * Create a legend item.
 	 * 
 	 * @param item
-	 *           the legend item for display.
+	 *            the legend item for display.
 	 */
 	public DrawableLegendItem(LegendItem item) {
 		this.item = item;
@@ -107,7 +111,7 @@ public class DrawableLegendItem {
 	 * Set the x-coordinate for the item's location.
 	 * 
 	 * @param x
-	 *           the x-coordinate.
+	 *            the x-coordinate.
 	 */
 	public void setX(double x) {
 		this.x = x;
@@ -126,7 +130,7 @@ public class DrawableLegendItem {
 	 * Set the y-coordinate for the item's location.
 	 * 
 	 * @param y
-	 *           the y-coordinate.
+	 *            the y-coordinate.
 	 */
 	public void setY(double y) {
 		this.y = y;
@@ -185,7 +189,7 @@ public class DrawableLegendItem {
 	 * Set the marker.
 	 * 
 	 * @param marker
-	 *           a shape used to indicate color on the legend for this item.
+	 *            a shape used to indicate color on the legend for this item.
 	 */
 	public void setMarker(Shape marker) {
 		this.marker = marker;
@@ -204,7 +208,7 @@ public class DrawableLegendItem {
 	 * Sets a flag that controls whether or not the marker is filled.
 	 * 
 	 * @param filled
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setMarkerFilled(boolean filled) {
 		this.markerFilled = filled;
@@ -223,7 +227,7 @@ public class DrawableLegendItem {
 	 * Sets the line stroke used to render the line for this series.
 	 * 
 	 * @param s
-	 *           the new stroke to use.
+	 *            the new stroke to use.
 	 */
 	public void setLineStroke(Stroke s) {
 		this.lineStroke = s;
@@ -233,7 +237,7 @@ public class DrawableLegendItem {
 	 * Sets the line used to label this series.
 	 * 
 	 * @param l
-	 *           the new line to use.
+	 *            the new line to use.
 	 */
 	public void setLine(Line2D l) {
 		this.line = l;
@@ -261,7 +265,7 @@ public class DrawableLegendItem {
 	 * Sets the label position.
 	 * 
 	 * @param position
-	 *           the label position.
+	 *            the label position.
 	 */
 	public void setLabelPosition(Point2D position) {
 		this.labelPosition = position;
@@ -271,13 +275,13 @@ public class DrawableLegendItem {
 	 * Set the bounds of this item.
 	 * 
 	 * @param x
-	 *           x-coordinate for the item's location.
+	 *            x-coordinate for the item's location.
 	 * @param y
-	 *           y-coordinate for the item's location.
+	 *            y-coordinate for the item's location.
 	 * @param width
-	 *           the width of this item.
+	 *            the width of this item.
 	 * @param height
-	 *           the height of this item.
+	 *            the height of this item.
 	 */
 	public void setBounds(double x, double y, double width, double height) {
 		this.x = x;
@@ -290,11 +294,11 @@ public class DrawableLegendItem {
 	 * Draw the item. Currently it does nothing.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param xOffset
-	 *           offset for the x-coordinate.
+	 *            offset for the x-coordinate.
 	 * @param yOffset
-	 *           offset for the y-coordinate.
+	 *            offset for the y-coordinate.
 	 */
 	public void draw(Graphics2D g2, double xOffset, double yOffset) {
 		// set up a translation on g2

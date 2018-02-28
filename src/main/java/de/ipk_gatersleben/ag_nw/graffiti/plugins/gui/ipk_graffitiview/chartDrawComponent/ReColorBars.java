@@ -18,7 +18,7 @@ import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.data.CategoryDataset;
 
 public class ReColorBars {
-	
+
 	public static void checkComponent(Component comp) {
 		if (comp instanceof Container) {
 			Container c = (Container) comp;
@@ -57,7 +57,7 @@ public class ReColorBars {
 			System.out.println("Type: " + comp.getClass().getCanonicalName());
 		}
 	}
-	
+
 	public static void reColor() {
 		EditorSession es = MainFrame.getInstance().getActiveEditorSession();
 		Component[] ca = es.getActiveView().getViewComponent().getComponents();

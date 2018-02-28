@@ -59,8 +59,8 @@ import org.jfree.util.Log;
 import org.jfree.util.PrintStreamLogTarget;
 
 /**
- * A simple demonstration application showing how to create a bar chart with a custom item
- * label generator.
+ * A simple demonstration application showing how to create a bar chart with a
+ * custom item label generator.
  */
 public class BarChartDemo7 extends ApplicationFrame {
 
@@ -72,16 +72,14 @@ public class BarChartDemo7 extends ApplicationFrame {
 		 * Generates an item label.
 		 * 
 		 * @param dataset
-		 *           the dataset.
+		 *            the dataset.
 		 * @param series
-		 *           the series index.
+		 *            the series index.
 		 * @param category
-		 *           the category index.
+		 *            the category index.
 		 * @return the label.
 		 */
-		public String generateItemLabel(final CategoryDataset dataset,
-														final int series,
-														final int category) {
+		public String generateItemLabel(final CategoryDataset dataset, final int series, final int category) {
 			return dataset.getRowKey(series).toString();
 		}
 	}
@@ -90,7 +88,7 @@ public class BarChartDemo7 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public BarChartDemo7(final String title) {
 		super(title);
@@ -149,14 +147,13 @@ public class BarChartDemo7 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createBarChart(
-							"Bar Chart Demo 7", // chart title
+		final JFreeChart chart = ChartFactory.createBarChart("Bar Chart Demo 7", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
@@ -164,7 +161,7 @@ public class BarChartDemo7 extends ApplicationFrame {
 				false, // include legend
 				true, // tooltips?
 				false // URLs?
-				);
+		);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
@@ -195,34 +192,21 @@ public class BarChartDemo7 extends ApplicationFrame {
 		renderer.setItemMargin(0.10);
 
 		// set up gradient paints for series...
-		final GradientPaint gp0 = new GradientPaint(
-							0.0f, 0.0f, Color.blue,
-							0.0f, 0.0f, Color.lightGray
-							);
-		final GradientPaint gp1 = new GradientPaint(
-							0.0f, 0.0f, Color.green,
-							0.0f, 0.0f, Color.lightGray
-							);
-		final GradientPaint gp2 = new GradientPaint(
-							0.0f, 0.0f, Color.red,
-							0.0f, 0.0f, Color.lightGray
-							);
+		final GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 0.0f, 0.0f, Color.lightGray);
+		final GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, Color.lightGray);
+		final GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, Color.lightGray);
 		renderer.setSeriesPaint(0, gp0);
 		renderer.setSeriesPaint(1, gp1);
 		renderer.setSeriesPaint(2, gp2);
 
 		renderer.setLabelGenerator(new BarChartDemo7.LabelGenerator());
 		renderer.setItemLabelsVisible(true);
-		final ItemLabelPosition p = new ItemLabelPosition(
-							ItemLabelAnchor.INSIDE12, TextAnchor.CENTER_RIGHT,
-							TextAnchor.CENTER_RIGHT, -Math.PI / 2.0
-							);
+		final ItemLabelPosition p = new ItemLabelPosition(ItemLabelAnchor.INSIDE12, TextAnchor.CENTER_RIGHT,
+				TextAnchor.CENTER_RIGHT, -Math.PI / 2.0);
 		renderer.setPositiveItemLabelPosition(p);
 
-		final ItemLabelPosition p2 = new ItemLabelPosition(
-							ItemLabelAnchor.OUTSIDE12, TextAnchor.CENTER_LEFT,
-							TextAnchor.CENTER_LEFT, -Math.PI / 2.0
-							);
+		final ItemLabelPosition p2 = new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, TextAnchor.CENTER_LEFT,
+				TextAnchor.CENTER_LEFT, -Math.PI / 2.0);
 		renderer.setPositiveItemLabelPositionFallback(p2);
 		final CategoryAxis domainAxis = plot.getDomainAxis();
 		domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
@@ -247,7 +231,7 @@ public class BarChartDemo7 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

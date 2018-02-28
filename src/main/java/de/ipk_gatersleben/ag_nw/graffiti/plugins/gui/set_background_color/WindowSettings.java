@@ -32,27 +32,24 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 /**
  * DOCTODO: Include class header
  */
-public class WindowSettings
-					extends AbstractAlgorithm
-					implements ProvidesGeneralContextMenu, ActionListener {
-	
+public class WindowSettings extends AbstractAlgorithm implements ProvidesGeneralContextMenu, ActionListener {
+
 	JMenuItem myMenuItem, showAllElements, showElements, hideElements;
-	
+
 	public String getName() {
 		return "Show/Hide Network Edges";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "menu.window";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.EDGE
-				));
+		return new HashSet<Category>(Arrays.asList(Category.EDGE));
 	}
+
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		// normally SystemInfo.getAccelModifier() is used
@@ -60,27 +57,26 @@ public class WindowSettings
 		// therefore, here the Ctrl key is hard coded
 		return KeyStroke.getKeyStroke('H', ActionEvent.CTRL_MASK);
 	}
-	
+
 	/**
 	 * DOCTODO: Include method header
 	 * 
 	 * @throws PreconditionException
-	 *            DOCUMENT ME!
+	 *             DOCUMENT ME!
 	 */
 	@Override
-	public void check()
-						throws PreconditionException {
+	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-		
+
 		if (graph == null) {
 			errors.add("The graph instance may not be null.");
 		}
-		
+
 		if (!errors.isEmpty()) {
 			throw errors;
 		}
 	}
-	
+
 	public void execute() {
 		JComponent view = null;
 		try {
@@ -101,15 +97,16 @@ public class WindowSettings
 			MainFrame.showMessageDialog("Command can not be executed on this kind of view!", "Error");
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.ContextMenuPlugin#getCurrentContextMenuItem()
 	 */
 	public JMenuItem[] getCurrentContextMenuItem() {
 		myMenuItem = new JMenuItem("Show/hide graph edges (view setting)");
 		myMenuItem.addActionListener(this);
-		
+
 		showAllElements = new JMenuItem("Show all elements (undo hide)");
 		showAllElements.addActionListener(this);
 		showElements = new JMenuItem("Show selected elements (undo hide)");
@@ -126,10 +123,12 @@ public class WindowSettings
 			return new JMenuItem[] { myMenuItem };
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == myMenuItem) {
@@ -168,6 +167,6 @@ public class WindowSettings
 			graph.getListenerManager().transactionFinished(this);
 			GraphHelper.issueCompleteRedrawForGraph(graph);
 		}
-		
+
 	}
 }

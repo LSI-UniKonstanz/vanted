@@ -37,8 +37,7 @@ import org.jfree.data.IntervalXYDataset;
 /**
  * A quick and dirty sample dataset.
  */
-public class SimpleIntervalXYDataset extends AbstractIntervalXYDataset
-													implements IntervalXYDataset {
+public class SimpleIntervalXYDataset extends AbstractIntervalXYDataset implements IntervalXYDataset {
 
 	/** The start values. */
 	private Double[] xStart = new Double[3];
@@ -80,7 +79,7 @@ public class SimpleIntervalXYDataset extends AbstractIntervalXYDataset
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return the series name.
 	 */
 	public String getSeriesName(final int series) {
@@ -91,7 +90,7 @@ public class SimpleIntervalXYDataset extends AbstractIntervalXYDataset
 	 * Returns the number of items in a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return the number of items within a series.
 	 */
 	public int getItemCount(final int series) {
@@ -101,12 +100,13 @@ public class SimpleIntervalXYDataset extends AbstractIntervalXYDataset
 	/**
 	 * Returns the x-value for an item within a series.
 	 * <P>
-	 * The implementation is responsible for ensuring that the x-values are presented in ascending order.
+	 * The implementation is responsible for ensuring that the x-values are
+	 * presented in ascending order.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the x-value for an item within a series.
 	 */
 	public Number getXValue(final int series, final int item) {
@@ -117,9 +117,9 @@ public class SimpleIntervalXYDataset extends AbstractIntervalXYDataset
 	 * Returns the y-value for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the y-value for an item within a series.
 	 */
 	public Number getYValue(final int series, final int item) {
@@ -130,9 +130,9 @@ public class SimpleIntervalXYDataset extends AbstractIntervalXYDataset
 	 * Returns the starting X value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item within a series (zero-based index).
+	 *            the item within a series (zero-based index).
 	 * @return the start x value.
 	 */
 	public Number getStartXValue(final int series, final int item) {
@@ -143,9 +143,9 @@ public class SimpleIntervalXYDataset extends AbstractIntervalXYDataset
 	 * Returns the ending X value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item within a series (zero-based index).
+	 *            the item within a series (zero-based index).
 	 * @return the end x value.
 	 */
 	public Number getEndXValue(final int series, final int item) {
@@ -156,9 +156,9 @@ public class SimpleIntervalXYDataset extends AbstractIntervalXYDataset
 	 * Returns the starting Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item within a series (zero-based index).
+	 *            the item within a series (zero-based index).
 	 * @return the start y value.
 	 */
 	public Number getStartYValue(final int series, final int item) {
@@ -169,9 +169,9 @@ public class SimpleIntervalXYDataset extends AbstractIntervalXYDataset
 	 * Returns the ending Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item within a series (zero-based index).
+	 *            the item within a series (zero-based index).
 	 * @return the end y value.
 	 */
 	public Number getEndYValue(final int series, final int item) {
@@ -182,7 +182,7 @@ public class SimpleIntervalXYDataset extends AbstractIntervalXYDataset
 	 * Registers an object for notification of changes to the dataset.
 	 * 
 	 * @param listener
-	 *           the object to register.
+	 *            the object to register.
 	 */
 	public void addChangeListener(final DatasetChangeListener listener) {
 		// ignored
@@ -192,7 +192,7 @@ public class SimpleIntervalXYDataset extends AbstractIntervalXYDataset
 	 * Deregisters an object for notification of changes to the dataset.
 	 * 
 	 * @param listener
-	 *           the object to deregister.
+	 *            the object to deregister.
 	 */
 	public void removeChangeListener(final DatasetChangeListener listener) {
 		// ignored

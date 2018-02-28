@@ -22,63 +22,61 @@ import org.graffiti.util.InstanceCreationException;
 import org.graffiti.util.InstanceLoader;
 
 /**
- * Contains the mapping between attribute classes and their representation as <code>AttributeComponent</code> classes.
+ * Contains the mapping between attribute classes and their representation as
+ * <code>AttributeComponent</code> classes.
  * 
  * @author ph
  * @version $Revision: 1.6 $
  */
-public class AttributeComponentManager
-					implements PluginManagerListener {
+public class AttributeComponentManager implements PluginManagerListener {
 	// ~ Instance fields ========================================================
-	
+
 	/** Maps attribute classes to attributeComponent classes. */
 	@SuppressWarnings("unchecked")
 	private Map attributeComponents;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs an AttributeComponentManager.
 	 */
 	public AttributeComponentManager() {
 		this.attributeComponents = new HashMap<Object, Object>();
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	public boolean hasAttributeComponent(Class<?> aType) {
 		return attributeComponents.containsKey(aType);
 	}
-	
+
 	/**
-	 * Returns an instance of the AttributeComponent that is capable of drawing
-	 * the attribute with type <code>aType</code>.
+	 * Returns an instance of the AttributeComponent that is capable of drawing the
+	 * attribute with type <code>aType</code>.
 	 * 
 	 * @param aType
-	 *           the class of the attribute to retrieve a component for.
+	 *            the class of the attribute to retrieve a component for.
 	 * @return an instance of an AttributeComponent.
 	 * @throws AttributeComponentNotFoundException
-	 *            DOCUMENT ME!
+	 *             DOCUMENT ME!
 	 */
-	public AttributeComponent getAttributeComponent(Class<?> aType)
-						throws AttributeComponentNotFoundException {
+	public AttributeComponent getAttributeComponent(Class<?> aType) throws AttributeComponentNotFoundException {
 		if (!(attributeComponents.containsKey(aType))) {
 			throw new AttributeComponentNotFoundException(
-								"No registered GraffitiViewComponent for AttributeType " +
-													aType);
+					"No registered GraffitiViewComponent for AttributeType " + aType);
 		}
-		
+
 		Class<?> ac = (Class<?>) attributeComponents.get(aType);
-		
+
 		try {
 			AttributeComponent component = (AttributeComponent) InstanceLoader.createInstance(ac);
-			
+
 			return component;
 		} catch (InstanceCreationException ice) {
 			throw new AttributeComponentNotFoundException(ice.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Returns the map of attribute components.
 	 * 
@@ -87,14 +85,14 @@ public class AttributeComponentManager
 	public Map<?, ?> getAttributeComponents() {
 		return attributeComponents;
 	}
-	
+
 	/**
 	 * Called by the plugin manager, iff a plugin has been added.
 	 * 
 	 * @param plugin
-	 *           the added plugin.
+	 *            the added plugin.
 	 * @param desc
-	 *           the description of the new plugin.
+	 *            the description of the new plugin.
 	 */
 	@SuppressWarnings("unchecked")
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {

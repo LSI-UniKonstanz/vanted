@@ -9,14 +9,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.Template
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.TemplateFileManager;
 
 public class Template {
-	
+
 	private ArrayList<TemplateFile> templateFiles;
 	private TemplateLoader templateLoader;
 	private List<ChartComponent> templateComponents;
-	
+
 	public Template() {
 	}
-	
+
 	public void registerTemplate() {
 		if (templateFiles != null)
 			for (TemplateFile tf : templateFiles)
@@ -26,34 +26,35 @@ public class Template {
 		if (templateComponents != null && templateComponents.size() > 0)
 			for (ChartComponent cc : templateComponents)
 				ChartComponentManager.getInstance().registerChartComponent(cc);
-		
+
 	}
-	
+
 	public ArrayList<TemplateFile> getTemplateFile() {
 		return templateFiles;
 	}
-	
+
 	public TemplateLoader getTemplateLoader() {
 		return templateLoader;
 	}
-	
+
 	public void setTemplateLoader(TemplateLoader templateLoader) {
 		this.templateLoader = templateLoader;
 	}
-	
+
 	/**
-	 * Don't forget to register the created {@link TemplateFile} after creating this object.
+	 * Don't forget to register the created {@link TemplateFile} after creating this
+	 * object.
 	 */
 	public void addTemplateFile(TemplateFile templateFile) {
 		if (templateFiles == null)
 			templateFiles = new ArrayList<TemplateFile>();
 		templateFiles.add(templateFile);
 	}
-	
+
 	public void addTemplateChartComponent(ChartComponent templateComponent) {
 		if (this.templateComponents == null)
 			templateComponents = new ArrayList<ChartComponent>();
 		this.templateComponents.add(templateComponent);
 	}
-	
+
 }

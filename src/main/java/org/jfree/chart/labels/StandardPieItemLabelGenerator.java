@@ -50,15 +50,16 @@ import org.jfree.data.PieDataset;
 
 /**
  * <p>
- * A standard item label generator for plots that use data from a {@link PieDataset}.
+ * A standard item label generator for plots that use data from a
+ * {@link PieDataset}.
  * <p>
- * For the label format, use {0} where the pie section key should be inserted, {1} for the absolute section value and {2} for the percent amount of the pie
- * section, e.g. <code>"{0} = {1} ({2})"</code> will display as <code>apple = 120 (5%)</code>.
+ * For the label format, use {0} where the pie section key should be inserted,
+ * {1} for the absolute section value and {2} for the percent amount of the pie
+ * section, e.g. <code>"{0} = {1} ({2})"</code> will display as
+ * <code>apple = 120 (5%)</code>.
  */
-public class StandardPieItemLabelGenerator implements PieToolTipGenerator,
-																		PieSectionLabelGenerator,
-																		Cloneable,
-																		Serializable {
+public class StandardPieItemLabelGenerator
+		implements PieToolTipGenerator, PieSectionLabelGenerator, Cloneable, Serializable {
 
 	/** The default tooltip format. */
 	public static final String DEFAULT_TOOLTIP_FORMAT = "{0}: ({1}, {2})";
@@ -79,16 +80,14 @@ public class StandardPieItemLabelGenerator implements PieToolTipGenerator,
 	 * Creates an item label generator using default number formatters.
 	 */
 	public StandardPieItemLabelGenerator() {
-		this(
-							DEFAULT_SECTION_LABEL_FORMAT,
-							NumberFormat.getNumberInstance(), NumberFormat.getPercentInstance());
+		this(DEFAULT_SECTION_LABEL_FORMAT, NumberFormat.getNumberInstance(), NumberFormat.getPercentInstance());
 	}
 
 	/**
 	 * Creates an item label generator.
 	 * 
 	 * @param labelFormat
-	 *           the label format.
+	 *            the label format.
 	 */
 	public StandardPieItemLabelGenerator(String labelFormat) {
 		this(labelFormat, NumberFormat.getNumberInstance(), NumberFormat.getPercentInstance());
@@ -98,16 +97,15 @@ public class StandardPieItemLabelGenerator implements PieToolTipGenerator,
 	 * Creates an item label generator using the specified number formatters.
 	 * 
 	 * @param labelFormat
-	 *           the label format string (<code>null</code> not permitted).
+	 *            the label format string (<code>null</code> not permitted).
 	 * @param numberFormat
-	 *           the format object for the values (<code>null</code> not permitted).
+	 *            the format object for the values (<code>null</code> not
+	 *            permitted).
 	 * @param percentFormat
-	 *           the format object for the percentages (<code>null</code> not
-	 *           permitted).
+	 *            the format object for the percentages (<code>null</code> not
+	 *            permitted).
 	 */
-	public StandardPieItemLabelGenerator(String labelFormat,
-														NumberFormat numberFormat,
-														NumberFormat percentFormat) {
+	public StandardPieItemLabelGenerator(String labelFormat, NumberFormat numberFormat, NumberFormat percentFormat) {
 
 		if (labelFormat == null) {
 			throw new IllegalArgumentException("Null 'itemLabelFormat' argument.");
@@ -146,9 +144,9 @@ public class StandardPieItemLabelGenerator implements PieToolTipGenerator,
 	 * Generates a label for a pie section.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> not permitted).
+	 *            the dataset (<code>null</code> not permitted).
 	 * @param key
-	 *           the section key (<code>null</code> not permitted).
+	 *            the section key (<code>null</code> not permitted).
 	 * @return The label (possibly <code>null</code>).
 	 */
 	public String generateSectionLabel(PieDataset dataset, Comparable key) {
@@ -164,9 +162,9 @@ public class StandardPieItemLabelGenerator implements PieToolTipGenerator,
 	 * Generates a tool tip text item for one section in a pie chart.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> not permitted).
+	 *            the dataset (<code>null</code> not permitted).
 	 * @param key
-	 *           the section key (<code>null</code> not permitted).
+	 *            the section key (<code>null</code> not permitted).
 	 * @return The tool tip text (possibly <code>null</code>).
 	 */
 	public String generateToolTip(PieDataset dataset, Comparable key) {
@@ -174,13 +172,13 @@ public class StandardPieItemLabelGenerator implements PieToolTipGenerator,
 	}
 
 	/**
-	 * Creates the array of items that can be passed to the {@link MessageFormat} class
-	 * for creating labels.
+	 * Creates the array of items that can be passed to the {@link MessageFormat}
+	 * class for creating labels.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> not permitted).
+	 *            the dataset (<code>null</code> not permitted).
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @return The items (never <code>null</code>).
 	 */
 	protected Object[] createItemArray(PieDataset dataset, Comparable key) {
@@ -203,7 +201,7 @@ public class StandardPieItemLabelGenerator implements PieToolTipGenerator,
 	 * Tests the generator for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object to test against (<code>null</code> permitted).
+	 *            the object to test against (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -237,7 +235,7 @@ public class StandardPieItemLabelGenerator implements PieToolTipGenerator,
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            should not happen.
+	 *             should not happen.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 

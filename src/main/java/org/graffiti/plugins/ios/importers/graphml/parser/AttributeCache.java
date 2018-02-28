@@ -15,107 +15,102 @@ package org.graffiti.plugins.ios.importers.graphml.parser;
  *
  * @author ruediger
  */
-class AttributeCache
-{
-    //~ Static fields/initializers =============================================
+class AttributeCache {
+	// ~ Static fields/initializers =============================================
 
-    /** Indicates that no type has been assigned. */
-    static final int NOTYPE = 0;
+	/** Indicates that no type has been assigned. */
+	static final int NOTYPE = 0;
 
-    /** Represents a boolean type declaration. */
-    static final int BOOLEAN = 1;
+	/** Represents a boolean type declaration. */
+	static final int BOOLEAN = 1;
 
-    /** Represents an integer type declaration. */
-    static final int INT = 2;
+	/** Represents an integer type declaration. */
+	static final int INT = 2;
 
-    /** Represents a long type declaration. */
-    static final int LONG = 3;
+	/** Represents a long type declaration. */
+	static final int LONG = 3;
 
-    /** Represents a float type declaration. */
-    static final int FLOAT = 4;
+	/** Represents a float type declaration. */
+	static final int FLOAT = 4;
 
-    /** Represents a double type declaration. */
-    static final int DOUBLE = 5;
+	/** Represents a double type declaration. */
+	static final int DOUBLE = 5;
 
-    /** Represents a string type declaration. */
-    static final int STRING = 6;
+	/** Represents a string type declaration. */
+	static final int STRING = 6;
 
-    //~ Instance fields ========================================================
+	// ~ Instance fields ========================================================
 
-    /** The cached path. */
-    private String path;
+	/** The cached path. */
+	private String path;
 
-    /** The cached type. */
-    private int type;
+	/** The cached type. */
+	private int type;
 
-    //~ Constructors ===========================================================
+	// ~ Constructors ===========================================================
 
-    /**
-     * Constructs a new <code>AttributeCache</code>.
-     */
-    AttributeCache()
-    {
-        this.path = "";
-        this.type = NOTYPE;
-    }
+	/**
+	 * Constructs a new <code>AttributeCache</code>.
+	 */
+	AttributeCache() {
+		this.path = "";
+		this.type = NOTYPE;
+	}
 
-    //~ Methods ================================================================
+	// ~ Methods ================================================================
 
-    /**
-     * Returns the currently cached path.
-     *
-     * @return the currently cached path.
-     */
-    String getPath()
-    {
-        return this.path;
-    }
+	/**
+	 * Returns the currently cached path.
+	 *
+	 * @return the currently cached path.
+	 */
+	String getPath() {
+		return this.path;
+	}
 
-    /**
-     * Returns <code>true</code> if the attribute cache is reset,
-     * <code>false</code> otherwise.
-     *
-     * @return <code>true</code> if the attribute cache is reset,
-     *         <code>false</code> otherwise.
-     */
-    boolean isReset()
-    {
-        return this.path.equals("") && (this.type == NOTYPE);
-    }
+	/**
+	 * Returns <code>true</code> if the attribute cache is reset, <code>false</code>
+	 * otherwise.
+	 *
+	 * @return <code>true</code> if the attribute cache is reset, <code>false</code>
+	 *         otherwise.
+	 */
+	boolean isReset() {
+		return this.path.equals("") && (this.type == NOTYPE);
+	}
 
-    /**
-     * Returns the currently cached type.
-     *
-     * @return the currently cached type.
-     */
-    int getType()
-    {
-        return type;
-    }
+	/**
+	 * Returns the currently cached type.
+	 *
+	 * @return the currently cached type.
+	 */
+	int getType() {
+		return type;
+	}
 
-    /**
-     * Prepares the cache, i.e. sets a new path and a new type value.
-     *
-     * @param path the path name to be cached.
-     * @param type the type to be cached.
-     */
-    void prepare(String path, int type)
-    {
-        this.path = path;
-        this.type = type;
-    }
+	/**
+	 * Prepares the cache, i.e. sets a new path and a new type value.
+	 *
+	 * @param path
+	 *            the path name to be cached.
+	 * @param type
+	 *            the type to be cached.
+	 */
+	void prepare(String path, int type) {
+		this.path = path;
+		this.type = type;
+	}
 
-    /**
-     * Resets the cache. After executing this method <code>isReset()</code>
-     * will always return <code>true</code>.
-     */
-    void reset()
-    {
-        this.path = "";
-        this.type = NOTYPE;
-    }
+	/**
+	 * Resets the cache. After executing this method <code>isReset()</code> will
+	 * always return <code>true</code>.
+	 */
+	void reset() {
+		this.path = "";
+		this.type = NOTYPE;
+	}
 }
 
-//------------------------------------------------------------------------------
-//   end of file
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// end of file
+// ------------------------------------------------------------------------------

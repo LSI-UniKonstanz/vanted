@@ -54,8 +54,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.TextAnchor;
 
 /**
- * An extension of the {@link StackedBarRenderer} that can draw positive and negative totals at
- * the top and bottom of the stacked bars.
+ * An extension of the {@link StackedBarRenderer} that can draw positive and
+ * negative totals at the top and bottom of the stacked bars.
  */
 public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 
@@ -103,7 +103,7 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 	 * Sets the total formatter.
 	 * 
 	 * @param format
-	 *           the formatter (<code>null</code> not permitted).
+	 *            the formatter (<code>null</code> not permitted).
 	 */
 	public void setTotalFormatter(final NumberFormat format) {
 		if (format == null) {
@@ -116,33 +116,27 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 	 * Draws a stacked bar for a specific item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the plot area.
+	 *            the plot area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain (category) axis.
+	 *            the domain (category) axis.
 	 * @param rangeAxis
-	 *           the range (value) axis.
+	 *            the range (value) axis.
 	 * @param dataset
-	 *           the data.
+	 *            the data.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	public void drawItem(final Graphics2D g2,
-									final CategoryItemRendererState state,
-									final Rectangle2D dataArea,
-									final CategoryPlot plot,
-									final CategoryAxis domainAxis,
-									final ValueAxis rangeAxis,
-									final CategoryDataset dataset,
-									final int row,
-									final int column) {
+	public void drawItem(final Graphics2D g2, final CategoryItemRendererState state, final Rectangle2D dataArea,
+			final CategoryPlot plot, final CategoryAxis domainAxis, final ValueAxis rangeAxis,
+			final CategoryDataset dataset, final int row, final int column) {
 
 		// nothing is drawn for null values...
 		final Number dataValue = dataset.getValue(row, column);
@@ -153,9 +147,8 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 		final double value = dataValue.doubleValue();
 
 		final PlotOrientation orientation = plot.getOrientation();
-		final double barW0 = domainAxis.getCategoryMiddle(
-							column, getColumnCount(), dataArea, plot.getDomainAxisEdge()
-							) - state.getBarWidth() / 2.0;
+		final double barW0 = domainAxis.getCategoryMiddle(column, getColumnCount(), dataArea, plot.getDomainAxisEdge())
+				- state.getBarWidth() / 2.0;
 
 		double positiveBase = 0.0;
 		double negativeBase = 0.0;
@@ -183,8 +176,7 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 			translatedValue = rangeAxis.valueToJava2D(negativeBase + value, dataArea, location);
 		}
 		final double barL0 = Math.min(translatedBase, translatedValue);
-		final double barLength = Math.max(Math.abs(translatedValue - translatedBase),
-												getMinimumBarLength());
+		final double barLength = Math.max(Math.abs(translatedValue - translatedBase), getMinimumBarLength());
 
 		Rectangle2D bar = null;
 		if (orientation == PlotOrientation.HORIZONTAL) {
@@ -212,14 +204,8 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 					g2.setPaint(Color.black);
 					g2.setFont(this.totalLabelFont);
 					final double total = calculateSumOfPositiveValuesForCategory(dataset, column);
-					RefineryUtilities.drawRotatedString(
-										this.totalFormatter.format(total), g2,
-										(float) bar.getCenterX(),
-										(float) (bar.getMinY() - 4.0),
-										TextAnchor.BOTTOM_CENTER,
-										TextAnchor.BOTTOM_CENTER,
-										0.0
-										);
+					RefineryUtilities.drawRotatedString(this.totalFormatter.format(total), g2, (float) bar.getCenterX(),
+							(float) (bar.getMinY() - 4.0), TextAnchor.BOTTOM_CENTER, TextAnchor.BOTTOM_CENTER, 0.0);
 				}
 			}
 		} else {
@@ -228,14 +214,8 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 					g2.setPaint(Color.black);
 					g2.setFont(this.totalLabelFont);
 					final double total = calculateSumOfNegativeValuesForCategory(dataset, column);
-					RefineryUtilities.drawRotatedString(
-										String.valueOf(total), g2,
-										(float) bar.getCenterX(),
-										(float) (bar.getMaxY() + 4.0),
-										TextAnchor.TOP_CENTER,
-										TextAnchor.TOP_CENTER,
-										0.0
-										);
+					RefineryUtilities.drawRotatedString(String.valueOf(total), g2, (float) bar.getCenterX(),
+							(float) (bar.getMaxY() + 4.0), TextAnchor.TOP_CENTER, TextAnchor.TOP_CENTER, 0.0);
 				}
 			}
 		}
@@ -253,9 +233,8 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 				if (getItemURLGenerator(row, column) != null) {
 					url = getItemURLGenerator(row, column).generateURL(dataset, row, column);
 				}
-				final CategoryItemEntity entity = new CategoryItemEntity(
-									bar, tip, url, dataset, row, dataset.getColumnKey(column), column
-									);
+				final CategoryItemEntity entity = new CategoryItemEntity(bar, tip, url, dataset, row,
+						dataset.getColumnKey(column), column);
 				entities.addEntity(entity);
 			}
 		}
@@ -263,19 +242,18 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 	}
 
 	/**
-	 * Returns true if the specified item is the last positive value for that category.
+	 * Returns true if the specified item is the last positive value for that
+	 * category.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param row
-	 *           the row (series).
+	 *            the row (series).
 	 * @param column
-	 *           the column (category).
+	 *            the column (category).
 	 * @return a boolean.
 	 */
-	private boolean isLastPositiveItem(final CategoryDataset dataset,
-													final int row,
-													final int column) {
+	private boolean isLastPositiveItem(final CategoryDataset dataset, final int row, final int column) {
 		boolean result = true;
 		Number dataValue = dataset.getValue(row, column);
 		if (dataValue == null) {
@@ -291,19 +269,18 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 	}
 
 	/**
-	 * Returns true if the specified item is the last negative value for that category.
+	 * Returns true if the specified item is the last negative value for that
+	 * category.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param row
-	 *           the row (series).
+	 *            the row (series).
 	 * @param column
-	 *           the column (category).
+	 *            the column (category).
 	 * @return a boolean.
 	 */
-	private boolean isLastNegativeItem(final CategoryDataset dataset,
-													final int row,
-													final int column) {
+	private boolean isLastNegativeItem(final CategoryDataset dataset, final int row, final int column) {
 		boolean result = true;
 		Number dataValue = dataset.getValue(row, column);
 		if (dataValue == null) {
@@ -322,13 +299,12 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 	 * Calculates the sum of the positive values within a category.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param column
-	 *           the column (category).
+	 *            the column (category).
 	 * @return the sum of the positive values.
 	 */
-	private double calculateSumOfPositiveValuesForCategory(final CategoryDataset dataset,
-																				final int column) {
+	private double calculateSumOfPositiveValuesForCategory(final CategoryDataset dataset, final int column) {
 		double result = 0.0;
 		for (int r = 0; r < dataset.getRowCount(); r++) {
 			final Number dataValue = dataset.getValue(r, column);
@@ -346,13 +322,12 @@ public class ExtendedStackedBarRenderer extends StackedBarRenderer {
 	 * Calculates the sum of the negative values within a category.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param column
-	 *           the column (category).
+	 *            the column (category).
 	 * @return the sum of the negative values.
 	 */
-	private double calculateSumOfNegativeValuesForCategory(final CategoryDataset dataset,
-																				final int column) {
+	private double calculateSumOfNegativeValuesForCategory(final CategoryDataset dataset, final int column) {
 		double result = 0.0;
 		for (int r = 0; r < dataset.getRowCount(); r++) {
 			final Number dataValue = dataset.getValue(r, column);

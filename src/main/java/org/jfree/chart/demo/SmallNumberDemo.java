@@ -49,7 +49,7 @@ public class SmallNumberDemo extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public SmallNumberDemo(final String title) {
 
@@ -60,16 +60,8 @@ public class SmallNumberDemo extends ApplicationFrame {
 		series.add(17.3E-5, 5.0E-7);
 		series.add(21.2E-5, 9.0E-6);
 		final XYSeriesCollection data = new XYSeriesCollection(series);
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-							"Small Number Demo",
-							"X",
-							"Y",
-							data,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createXYLineChart("Small Number Demo", "X", "Y", data,
+				PlotOrientation.VERTICAL, true, true, false);
 		final XYPlot plot = chart.getXYPlot();
 		plot.getDomainAxis().setStandardTickUnits(new StandardTickUnitSource());
 		plot.getRangeAxis().setStandardTickUnits(new StandardTickUnitSource());
@@ -95,7 +87,7 @@ public class SmallNumberDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

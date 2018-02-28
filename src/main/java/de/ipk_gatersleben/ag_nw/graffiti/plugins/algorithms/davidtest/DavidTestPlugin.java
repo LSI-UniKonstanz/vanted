@@ -9,16 +9,14 @@ import org.graffiti.plugin.algorithm.Algorithm;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 
-public class DavidTestPlugin
-		extends IPK_PluginAdapter {
-	
+public class DavidTestPlugin extends IPK_PluginAdapter {
+
 	public DavidTestPlugin() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.STATISTIC_FUNCTIONS))
 			this.algorithms = new Algorithm[] {
-					//					new ColorizeAlgorithm(),
-					new DavidTestAlgorithm(),
-					new GrubbsTestAlgorithm(),
-					//					new ShowStatisticsTab()
+					// new ColorizeAlgorithm(),
+					new DavidTestAlgorithm(), new GrubbsTestAlgorithm(),
+					// new ShowStatisticsTab()
 			};
 	}
 }

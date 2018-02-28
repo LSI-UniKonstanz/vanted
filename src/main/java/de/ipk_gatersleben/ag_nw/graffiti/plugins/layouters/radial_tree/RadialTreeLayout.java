@@ -40,135 +40,131 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.rt_tree.TreeContainer
 
 /* TODO: Layout of non-horizontal/vertical grids */
 public class RadialTreeLayout extends AbstractAlgorithm {
-	
+
 	/*************************************************************/
 	/* Member variables */
 	/*************************************************************/
-	
+
 	/**
 	 * Dynamical defined node coordinate attribute.
 	 */
-	private final String COORDSTR =
-			GraphicAttributeConstants.GRAPHICS
-					+ Attribute.SEPARATOR
-					+ GraphicAttributeConstants.COORDINATE;
-	
+	private final String COORDSTR = GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR
+			+ GraphicAttributeConstants.COORDINATE;
+
 	/**
 	 * Dynamical defined node dimension attribute.
 	 */
-	private final String DIMENSIONSTR =
-			GraphicAttributeConstants.GRAPHICS
-					+ Attribute.SEPARATOR
-					+ GraphicAttributeConstants.DIMENSION;
-	
+	private final String DIMENSIONSTR = GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR
+			+ GraphicAttributeConstants.DIMENSION;
+
 	/**
 	 * Distance of each node from the center
 	 */
 	private double nodeDistance = 100;
-	
+
 	/**
 	 * Horizontal distance between trees
 	 */
 	private double xDistance = 30;
-	
+
 	/**
 	 * Vertical distance between trees
 	 */
 	private double yDistance = 30;
-	
+
 	/**
 	 * The maximum y dimension for each node.
 	 */
 	private HashMap<Integer, Double> maxNodeHeight = new HashMap<>();
-	
+
 	/**
 	 * Put all trees in a row
 	 */
 	private boolean horizontalLayout = true;
-	
+
 	/**
 	 * Move all tree in the right direction either 0, 90, 180 or 270 degree
 	 */
 	private Integer[] treeDirectionParameter = { 0, 90, 180, 270 };
 	private int treeDirection;
-	
+
 	/**
 	 * Remove all bends
 	 */
 	private boolean doRemoveBends = true;
-	
+
 	/**
 	 * Activate source node red backround
 	 */
-//	private boolean doMarkSourceNode = true;
-	
+	// private boolean doMarkSourceNode = true;
+
 	/**
 	 * x coordinate of start point
 	 */
 	private double xStart = 100;
-	
+
 	/**
 	 * y coordinate of start point
 	 */
 	private double yStart = 100;
-	
+
 	/**
 	 * All trees are initialized by this variable.
 	 */
 	private Set<Node> graphNodes;
-	
+
 	/**
 	 * The roots in the forest.
 	 */
 	private HashMap<Node, TreeContainer> forrest = new HashMap<>();
-	
+
 	/**
 	 * The root node of the tree.
 	 */
 	private Node selectedNode = null;
-	
+
 	/**
 	 * The depth for each node .
 	 */
 	private HashMap<Node, Integer> bfsMapNodeToIndex = new HashMap<>();
-	
+
 	/**
 	 * If there are a circle edges, save them here
 	 */
 	private LinkedList<Edge> tempEdges = new LinkedList<>();
-	
+
 	/**
 	 * Sum of all children
 	 */
 	private HashMap<Node, Integer> magnitude = new HashMap<>();
-	
+
 	/**
 	 * x coordinate of start point
 	 */
-//	private double xStartParam = 100;
-	
+	// private double xStartParam = 100;
+
 	/**
 	 * y coordinate of start point
 	 */
-//	private double yStartParam = 100;
+	// private double yStartParam = 100;
 	private DoubleParameter distanceParam;
-//	private DoubleParameter xStartParam2;
-//	private DoubleParameter yStartParam2;
-//	private BooleanParameter horizontalParam;
+	// private DoubleParameter xStartParam2;
+	// private DoubleParameter yStartParam2;
+	// private BooleanParameter horizontalParam;
 	private BooleanParameter removeBendParam;
-//	private BooleanParameter markedSourceNodeParam;
+	// private BooleanParameter markedSourceNodeParam;
 	private ObjectListParameter treeDirectionParam;
-	
+
 	/*************************************************************/
 	/* Declarations of methods */
 	/*************************************************************/
-	
+
 	/**
 	 * Construct a new RadialTreeLayout algorithm instance.
 	 */
 	public RadialTreeLayout() {
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#check()
 	 */
@@ -179,14 +175,14 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 		if (graph.getNumberOfNodes() <= 0) {
 			throw new PreconditionException("The graph is empty. Cannot run tree layouter.");
 		}
-		
+
 	}
-	
+
 	/**
 	 * Check whether the tree is rooted.
 	 */
 	public boolean rootedTree(Node rootNode) {
-		
+
 		int roots = 0;
 		for (Node node : bfsMapNodeToIndex.keySet()) {
 			/* maybe there is a second */
@@ -198,16 +194,17 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 				}
 			}
 			int ancestors = 0;
-			for(Edge neighbourEdge : node.getEdges()){
+			for (Edge neighbourEdge : node.getEdges()) {
 				Node neighbour = null;
 				if (neighbourEdge.getSource() == node) {
 					neighbour = neighbourEdge.getTarget();
 				} else {
 					neighbour = neighbourEdge.getSource();
 				}
-				
+
 				/* any links from upper level nodes more than once ? */
-				if (((Integer) bfsMapNodeToIndex.get(node)).intValue() > ((Integer) bfsMapNodeToIndex.get(neighbour)).intValue()) {
+				if (((Integer) bfsMapNodeToIndex.get(node)).intValue() > ((Integer) bfsMapNodeToIndex.get(neighbour))
+						.intValue()) {
 					ancestors++;
 					if (ancestors > 1) {
 						tempEdges.add(neighbourEdge);
@@ -215,23 +212,20 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 					}
 				}
 				/* any links from same level nodes ? */
-				if (((Integer) bfsMapNodeToIndex.get(node)).intValue() == ((Integer) bfsMapNodeToIndex.get(neighbour)).intValue()) {
-					
+				if (((Integer) bfsMapNodeToIndex.get(node)).intValue() == ((Integer) bfsMapNodeToIndex.get(neighbour))
+						.intValue()) {
+
 					tempEdges.add(neighbourEdge);
 					graph.deleteEdge(neighbourEdge);
 					/*
-					 * old rooted check routine
-					 * ancestors++;
-					 * if (ancestors > 1) {
-					 * return false;
-					 * }
+					 * old rooted check routine ancestors++; if (ancestors > 1) { return false; }
 					 */
 				}
 			}
 		}
 		return true;
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
@@ -242,87 +236,76 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 			initNode = selection.getNodes().iterator().next();
 		else
 			initNode = graph.getNodes().iterator().next();
-		
+
 		NodeParameter nodeParam = new NodeParameter(graph, initNode, "<html>Start-Node<br/>(from list or selected)",
 				"Tree layouter will start only with a selected node.");
 		if (distanceParam == null) {
-			distanceParam = new DoubleParameter(
-					"Node Radius",
-					"The distance from the center of each node");
-			
-//			xStartParam2 = new DoubleParameter(
-//					"X base",
-//					"The x coordinate of the starting point of the grid horizontal direction.");
-//			
-//			yStartParam2 = new DoubleParameter(
-//					"Y base",
-//					"The y coordinate of the starting point of the grid horizontal direction.");
-//			
-//			horizontalParam = new BooleanParameter(
-//					horizontalLayout,
-//					"Place Trees in a Row",
-//					"Place all trees in a row");
-			
-			removeBendParam = new BooleanParameter(
-					doRemoveBends,
-					"Remove Bends",
-					"Remove all bends in the forest");
-			
-//			markedSourceNodeParam = new BooleanParameter(
-//					doMarkSourceNode,
-//					"Mark Start-Node",
-//					"Mark each source Node");
-			
-			treeDirectionParam = new ObjectListParameter(
-					treeDirectionParameter[0],
-					"Tree Direction (degree)",
-					"Move all trees in 0, 90, 180 or 270 degree",
-					treeDirectionParameter);
-			
+			distanceParam = new DoubleParameter("Node Radius", "The distance from the center of each node");
+
+			// xStartParam2 = new DoubleParameter(
+			// "X base",
+			// "The x coordinate of the starting point of the grid horizontal direction.");
+			//
+			// yStartParam2 = new DoubleParameter(
+			// "Y base",
+			// "The y coordinate of the starting point of the grid horizontal direction.");
+			//
+			// horizontalParam = new BooleanParameter(
+			// horizontalLayout,
+			// "Place Trees in a Row",
+			// "Place all trees in a row");
+
+			removeBendParam = new BooleanParameter(doRemoveBends, "Remove Bends", "Remove all bends in the forest");
+
+			// markedSourceNodeParam = new BooleanParameter(
+			// doMarkSourceNode,
+			// "Mark Start-Node",
+			// "Mark each source Node");
+
+			treeDirectionParam = new ObjectListParameter(treeDirectionParameter[0], "Tree Direction (degree)",
+					"Move all trees in 0, 90, 180 or 270 degree", treeDirectionParameter);
+
 			distanceParam.setDouble(nodeDistance);
-//			xStartParam2.setDouble(this.xStartParam);
-//			yStartParam2.setDouble(this.yStartParam);
+			// xStartParam2.setDouble(this.xStartParam);
+			// yStartParam2.setDouble(this.yStartParam);
 		}
-		return new Parameter[] {
-				nodeParam,
-				distanceParam,
-//				xStartParam2,
-//				yStartParam2,
-//				horizontalParam,
+		return new Parameter[] { nodeParam, distanceParam,
+				// xStartParam2,
+				// yStartParam2,
+				// horizontalParam,
 				removeBendParam,
-//				markedSourceNodeParam,
+				// markedSourceNodeParam,
 				treeDirectionParam };
 	}
-	
+
 	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm# setParameters(org.graffiti.plugin.algorithm.Parameter)
+	 * @see org.graffiti.plugin.algorithm.Algorithm#
+	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
 		this.parameters = params;
 		int i = 0;
-		if(selection.getNodes().isEmpty()){
+		if (selection.getNodes().isEmpty()) {
 			selection.add(((NodeParameter) params[i++]).getNode());
 		} else
 			i++; // skip parameter
-//		System.out.println("Node: " + AttributeHelper.getLabel(n, "- unnamed -"));
-		
+		// System.out.println("Node: " + AttributeHelper.getLabel(n, "- unnamed -"));
+
 		nodeDistance = ((DoubleParameter) params[i++]).getDouble().doubleValue();
-//		xStart = ((DoubleParameter) params[i++]).getDouble().doubleValue();
-//		yStart = ((DoubleParameter) params[i++]).getDouble().doubleValue();
-//		xStartParam = xStart;
-//		yStartParam = yStart;
-//		horizontalLayout =
-//				((BooleanParameter) params[i++]).getBoolean().booleanValue();
-		doRemoveBends =
-				((BooleanParameter) params[i++]).getBoolean().booleanValue();
-//		doMarkSourceNode =
-//				((BooleanParameter) params[i++]).getBoolean().booleanValue();
-		treeDirection = (Integer)
-				((ObjectListParameter) params[i++]).getValue();
-		
+		// xStart = ((DoubleParameter) params[i++]).getDouble().doubleValue();
+		// yStart = ((DoubleParameter) params[i++]).getDouble().doubleValue();
+		// xStartParam = xStart;
+		// yStartParam = yStart;
+		// horizontalLayout =
+		// ((BooleanParameter) params[i++]).getBoolean().booleanValue();
+		doRemoveBends = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
+		// doMarkSourceNode =
+		// ((BooleanParameter) params[i++]).getBoolean().booleanValue();
+		treeDirection = (Integer) ((ObjectListParameter) params[i++]).getValue();
+
 	}
-	
+
 	/**
 	 * Return a postordered tree
 	 * 
@@ -334,60 +317,53 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 		postorderTraverse(null, root, result);
 		return result;
 	}
-	
+
 	/**
 	 * Return a postordered tree
 	 * 
 	 * @param root
 	 * @return a preordered tree
 	 */
-/*	
-	private LinkedList<Node> preorder(Node root) {
-		LinkedList<Node> result = new LinkedList<>();
-		preorderTraverse(null, root, result);
-		return result;
-	}
-*/	
+	/*
+	 * private LinkedList<Node> preorder(Node root) { LinkedList<Node> result = new
+	 * LinkedList<>(); preorderTraverse(null, root, result); return result; }
+	 */
 	/**
 	 * Traverse the tree in postorder
 	 * 
 	 * @param ancestor
-	 *           - from node
+	 *            - from node
 	 * @param node
-	 *           - start node
+	 *            - start node
 	 * @param lq
-	 *           - result is a LinkedList
+	 *            - result is a LinkedList
 	 */
 	private void postorderTraverse(Node ancestor, Node node, LinkedList<Node> lq) {
-		for(Node neighbor : node.getNeighbors()){
+		for (Node neighbor : node.getNeighbors()) {
 			if (neighbor != ancestor) {
 				postorderTraverse(node, neighbor, lq);
 			}
 		}
 		lq.addLast(node);
 	}
-	
+
 	/**
 	 * Traverse the tree in preorder
 	 * 
 	 * @param ancestor
-	 *           - from node
+	 *            - from node
 	 * @param node
-	 *           - start node
+	 *            - start node
 	 * @param lq
-	 *           - result is a LinkedList
+	 *            - result is a LinkedList
 	 */
-/*	
-	private void preorderTraverse(Node ancestor, Node node, LinkedList<Node> lq) {
-		lq.addLast(node);
-		for(Node neighbor : node.getNeighbors()){
-			if (neighbor != ancestor) {
-				preorderTraverse(node, neighbor, lq);
-			}
-		}
-		
-	}
-*/	
+	/*
+	 * private void preorderTraverse(Node ancestor, Node node, LinkedList<Node> lq)
+	 * { lq.addLast(node); for(Node neighbor : node.getNeighbors()){ if (neighbor !=
+	 * ancestor) { preorderTraverse(node, neighbor, lq); } }
+	 * 
+	 * }
+	 */
 	/**
 	 * Get the successors of the given node
 	 * 
@@ -396,16 +372,17 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 */
 	private LinkedList<Node> getSuccessors(Node node) {
 		LinkedList<Node> result = new LinkedList<>();
-		
+
 		for (Iterator<Node> neighbors = node.getNeighborsIterator(); neighbors.hasNext();) {
 			Node neighbor = (Node) neighbors.next();
-			if (((Integer) bfsMapNodeToIndex.get(node)).intValue() < ((Integer) bfsMapNodeToIndex.get(neighbor)).intValue()) {
+			if (((Integer) bfsMapNodeToIndex.get(node)).intValue() < ((Integer) bfsMapNodeToIndex.get(neighbor))
+					.intValue()) {
 				result.add(neighbor);
 			}
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Get the predecessors of the given node
 	 * 
@@ -414,155 +391,137 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 */
 	private LinkedList<Node> getPredecessors(Node node) {
 		LinkedList<Node> result = new LinkedList<>();
-		
+
 		for (Iterator<Node> neighbors = node.getNeighborsIterator(); neighbors.hasNext();) {
 			Node neighbor = (Node) neighbors.next();
-			if (((Integer) bfsMapNodeToIndex.get(node)).intValue() > ((Integer) bfsMapNodeToIndex.get(neighbor)).intValue()) {
+			if (((Integer) bfsMapNodeToIndex.get(node)).intValue() > ((Integer) bfsMapNodeToIndex.get(neighbor))
+					.intValue()) {
 				result.add(neighbor);
 			}
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Init for each node the sum of all children and sub children
 	 */
 	protected void initMagnitude() {
 		magnitude = new HashMap<>();
-		
+
 		for (Node node : postorder(selectedNode)) {
-			
+
 			int nodeValue = 1;
 			if (magnitude.get(node) != null) {
 				nodeValue = ((Integer) magnitude.get(node)).intValue();
 			} else {
 				magnitude.put(node, new Integer(1));
 			}
-			
+
 			for (Node neighbour : getPredecessors(node)) {
 				int sum = nodeValue;
 				if (magnitude.get(neighbour) != null) {
 					sum += ((Integer) magnitude.get(neighbour)).intValue();
 				}
-				
+
 				magnitude.put(neighbour, new Integer(sum));
 			}
-			
+
 		}
 	}
-	
+
 	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute(Graph)
-	 *      The given graph must have at least one node.
+	 * @see org.graffiti.plugin.algorithm.Algorithm#execute(Graph) The given graph
+	 *      must have at least one node.
 	 */
 	public void execute() {
-//		GravistoService.getInstance().algorithmAttachData(this);
-		
+		// GravistoService.getInstance().algorithmAttachData(this);
+
 		tempEdges = new LinkedList<Edge>();
-		
+
 		forrest = new HashMap<>();
-		
+
 		graphNodes = new HashSet<>();
 		graphNodes.addAll(graph.getNodes());
-//		for (Iterator iterator = graph.getNodesIterator(); iterator.hasNext();) {
-//			forest.put(iterator.next(), null);
-//		}
-		
+		// for (Iterator iterator = graph.getNodesIterator(); iterator.hasNext();) {
+		// forest.put(iterator.next(), null);
+		// }
+
 		/* check all trees with selected nodes, whether they have one root */
-		
+
 		for (Iterator<Node> iterator = selection.getNodes().iterator(); iterator.hasNext();) {
-			
+
 			selectedNode = iterator.next();
-			
+
 			/* ignore multiple selection */
 			if (graphNodes.contains(selectedNode)) {
 				/* check circle connection by using the depth of each node */
 				computeDepth(selectedNode);
-				forrest.put(
-						selectedNode,
-						new TreeContainer(
-								bfsMapNodeToIndex,
-								maxNodeHeight));
-				
+				forrest.put(selectedNode, new TreeContainer(bfsMapNodeToIndex, maxNodeHeight));
+
 				if (!rootedTree(selectedNode)) {
 					ErrorMsg.addErrorMessage("The given graph is not a tree.");
 				}
 			}
 		}
-		
+
 		/* check the trees whether they have one root */
 		/*
-		while (graphNodes.iterator().hasNext()) {
-			
-			selectedNode = (Node) graphNodes.iterator().next();
-			
-			/* check circle connection by using the depth of each node 
-			 */
+		 * while (graphNodes.iterator().hasNext()) {
+		 * 
+		 * selectedNode = (Node) graphNodes.iterator().next();
+		 * 
+		 * /* check circle connection by using the depth of each node
+		 */
 		/*
-			computeDepth(selectedNode);
-			forrest.put(
-					selectedNode,
-					new TreeContainer(
-							bfsMapNodeToIndex, maxNodeHeight));
-			
-			if (!rootedTree(selectedNode)) {
-				for (Edge edge : tempEdges) {
-					graph.addEdgeCopy(edge, edge.getSource(), edge.getTarget());
-				}
-				ErrorMsg.addErrorMessage("The given graph has trees with multiple roots.");
-			}
-			
-			/* in case of arrows, try to find the root 
-			 */
+		 * computeDepth(selectedNode); forrest.put( selectedNode, new TreeContainer(
+		 * bfsMapNodeToIndex, maxNodeHeight));
+		 * 
+		 * if (!rootedTree(selectedNode)) { for (Edge edge : tempEdges) {
+		 * graph.addEdgeCopy(edge, edge.getSource(), edge.getTarget()); }
+		 * ErrorMsg.addErrorMessage("The given graph has trees with multiple roots."); }
+		 * 
+		 * /* in case of arrows, try to find the root
+		 */
 		/*
-			Node node = null;
-			for (Iterator iterator = preorder(selectedNode).iterator(); iterator.hasNext();) {
-				node = (Node) iterator.next();
-				if ((node.getInDegree() == 0) && (node.getOutDegree() > 0)) {
-					
-					forrest.remove(selectedNode);
-					
-					selectedNode = node;
-					
-					computeDepth(selectedNode);
-					
-					forrest.put(
-							selectedNode,
-							new TreeContainer(
-									bfsMapNodeToIndex, maxNodeHeight));
-					
-					break;
-				}
-			}
-			
-		}
-		*/
+		 * Node node = null; for (Iterator iterator = preorder(selectedNode).iterator();
+		 * iterator.hasNext();) { node = (Node) iterator.next(); if ((node.getInDegree()
+		 * == 0) && (node.getOutDegree() > 0)) {
+		 * 
+		 * forrest.remove(selectedNode);
+		 * 
+		 * selectedNode = node;
+		 * 
+		 * computeDepth(selectedNode);
+		 * 
+		 * forrest.put( selectedNode, new TreeContainer( bfsMapNodeToIndex,
+		 * maxNodeHeight));
+		 * 
+		 * break; } }
+		 * 
+		 * }
+		 */
 		graph.getListenerManager().transactionStarted(this);
-		
 
-		
 		for (Iterator<Node> iterator = forrest.keySet().iterator(); iterator.hasNext();) {
-			
+
 			selectedNode = iterator.next();
-			
+
 			Point2D position = AttributeHelper.getPosition(selectedNode);
 			xStart = position.getX();
 			yStart = position.getY();
-			
-//			if (doMarkSourceNode)
-//				AttributeHelper.setFillColor(sourceNode, Color.RED);
-//			
+
+			// if (doMarkSourceNode)
+			// AttributeHelper.setFillColor(sourceNode, Color.RED);
+			//
 			bfsMapNodeToIndex = ((TreeContainer) forrest.get(selectedNode)).getBfsNum();
-			maxNodeHeight =
-					((TreeContainer) forrest.get(selectedNode))
-							.getMaxNodeHeight();
-			
+			maxNodeHeight = ((TreeContainer) forrest.get(selectedNode)).getMaxNodeHeight();
+
 			/* compute segments of the tree */
 			initMagnitude();
-			
+
 			/* compute positions */
 			computePositions();
-			
+
 			/* place the tree on its position */
 			if (horizontalLayout) {
 				if ((treeDirection == 180) || (treeDirection == 0)) {
@@ -578,103 +537,98 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 				}
 			}
 
-			
 			if (doRemoveBends) {
 				GraphHelper.removeBendsBetweenSelectedNodes(bfsMapNodeToIndex.keySet(), false);
 			}
 			Point2D newPosition = AttributeHelper.getPosition(selectedNode);
-			GraphHelper.moveNodes(bfsMapNodeToIndex.keySet(), position.getX() - newPosition.getX(), position.getY() - newPosition.getY());
+			GraphHelper.moveNodes(bfsMapNodeToIndex.keySet(), position.getX() - newPosition.getX(),
+					position.getY() - newPosition.getY());
 		}
-		for (Edge edge: tempEdges) {
+		for (Edge edge : tempEdges) {
 			graph.addEdgeCopy(edge, edge.getSource(), edge.getTarget());
 		}
-		
+
 		graph.getListenerManager().transactionFinished(this);
 	}
 
-	
 	/**
 	 * Initialize the level of each node
 	 */
 	private void computeDepth(Node startNode) {
-		
+
 		LinkedList<Node> queue = new LinkedList<>();
-		
+
 		maxNodeHeight = new HashMap<>();
-		
+
 		bfsMapNodeToIndex = new HashMap<>();
-		
+
 		queue.addLast(startNode);
 		bfsMapNodeToIndex.put(startNode, new Integer(0));
 		graphNodes.remove(startNode);
-		
+
 		/* BreadthFirstSearch algorithm which calculates the depth of the tree */
 		while (!queue.isEmpty()) {
-			
+
 			Node v = (Node) queue.removeFirst();
 			/* Walk through all neighbours of the last node */
 			for (Node neighbour : v.getNeighbors()) {
-				
+
 				/* Not all neighbours, just the neighbours not visited yet */
 				if (!bfsMapNodeToIndex.containsKey(neighbour)) {
-					Integer depth =
-							new Integer(((Integer) bfsMapNodeToIndex.get(v)).intValue() + 1);
-					
+					Integer depth = new Integer(((Integer) bfsMapNodeToIndex.get(v)).intValue() + 1);
+
 					double nodeHeight = getNodeHeight(neighbour);
-					
+
 					/* Compute the maximum height of nodes in each level of the tree */
-					Double maxNodeHeightValue =
-							(Double) maxNodeHeight.get(depth);
+					Double maxNodeHeightValue = (Double) maxNodeHeight.get(depth);
 					if (maxNodeHeightValue != null) {
-						maxNodeHeight.put(
-								depth,
-								new Double(
-										Math.max(
-												maxNodeHeightValue.doubleValue(),
-												nodeHeight)));
+						maxNodeHeight.put(depth, new Double(Math.max(maxNodeHeightValue.doubleValue(), nodeHeight)));
 					} else {
 						maxNodeHeight.put(depth, new Double(nodeHeight));
 					}
-					
+
 					graphNodes.remove(neighbour);
 					bfsMapNodeToIndex.put(neighbour, depth);
 					queue.addFirst(neighbour);
 				}
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Start computing the root
 	 */
 	protected void computePositions() {
-		
+
 		double rho = 0.0;
 		double alpha1 = 0.0;
 		double alpha2 = 2 * Math.PI;
-		
+
 		/* compute the coordinates (alpha1 + alpha2) / 2 */
 		double nodeCoordX = polarToCartesianX(rho, (alpha1 + alpha2) / 2);
 		double nodeCoordY = polarToCartesianY(rho, (alpha1 + alpha2) / 2);
-		
+
 		setX(selectedNode, nodeCoordX);
 		setY(selectedNode, nodeCoordY);
-		
-		/* give every kid a sector proportional to its width / width of the whole subtree */
+
+		/*
+		 * give every kid a sector proportional to its width / width of the whole
+		 * subtree
+		 */
 		double rootWidth = magnitude(selectedNode);
 		rho++;
 		/* launch the RadialSubtree method on its leaves */
-		for(Node successor : getSuccessors(selectedNode)) {
+		for (Node successor : getSuccessors(selectedNode)) {
 			double succWidth = magnitude(successor);
-			
+
 			alpha2 = alpha1 + (2 * Math.PI * succWidth / rootWidth);
 			/* start computing the children */
 			radialSubTree(successor, succWidth, rho, alpha1, alpha2);
 			alpha1 = alpha2;
 		}
 	}
-	
+
 	/**
 	 * Compute the x coordinate
 	 * 
@@ -683,19 +637,15 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 * @return
 	 */
 	protected double polarToCartesianX(double rho, double alpha) {
-		double result = xStart
-				+ rho * Math.cos(alpha) * nodeDistance +
-				maxNodeHeight.size() * nodeDistance;
-		
+		double result = xStart + rho * Math.cos(alpha) * nodeDistance + maxNodeHeight.size() * nodeDistance;
+
 		if (treeDirection == 270) {
-			result = xStart -
-					rho * Math.cos(alpha) * nodeDistance +
-					maxNodeHeight.size() * nodeDistance;
+			result = xStart - rho * Math.cos(alpha) * nodeDistance + maxNodeHeight.size() * nodeDistance;
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Compute the y coordinate
 	 * 
@@ -704,19 +654,15 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 * @return y coordinate
 	 */
 	protected double polarToCartesianY(double rho, double alpha) {
-		double result = yStart
-				+ rho * Math.sin(alpha) * nodeDistance +
-				maxNodeHeight.size() * nodeDistance;
-		
+		double result = yStart + rho * Math.sin(alpha) * nodeDistance + maxNodeHeight.size() * nodeDistance;
+
 		if (treeDirection == 180) {
-			result = yStart -
-					rho * Math.sin(alpha) * nodeDistance +
-					maxNodeHeight.size() * nodeDistance;
+			result = yStart - rho * Math.sin(alpha) * nodeDistance + maxNodeHeight.size() * nodeDistance;
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Compute all subtrees recursively
 	 * 
@@ -726,20 +672,15 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 * @param alpha1
 	 * @param alpha2
 	 */
-	protected void radialSubTree(
-			Node node,
-			double width,
-			double rho,
-			double alpha1,
-			double alpha2) {
-		
+	protected void radialSubTree(Node node, double width, double rho, double alpha1, double alpha2) {
+
 		/* compute the coordinates (alpha1 + alpha2) / 2 */
 		double nodeCoordX = polarToCartesianX(rho, (alpha1 + alpha2) / 2);
 		double nodeCoordY = polarToCartesianY(rho, (alpha1 + alpha2) / 2);
-		
+
 		setX(node, nodeCoordX);
 		setY(node, nodeCoordY);
-		
+
 		double tau = 2 * Math.acos(rho / (rho + 1));
 		double alpha = 0.0;
 		double s = 0.0;
@@ -751,19 +692,14 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 			s = (alpha2 - alpha1) / width;
 		}
 		/* launch the RadialSubtree method on its leaves */
-		for(Node successor  : getSuccessors(node)) {
+		for (Node successor : getSuccessors(node)) {
 
 			double succWidth = magnitude(successor);
-			
-			radialSubTree(
-					successor,
-					succWidth,
-					rho + 1,
-					alpha,
-					alpha += s * succWidth);
+
+			radialSubTree(successor, succWidth, rho + 1, alpha, alpha += s * succWidth);
 		}
 	}
-	
+
 	/**
 	 * Get the magnitude for the given node
 	 * 
@@ -771,44 +707,42 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 	 * @return the sum of all children and sub children
 	 */
 	protected double magnitude(Node node) {
-		
+
 		return ((Integer) magnitude.get(node)).intValue();
 	}
-	
+
 	/**
 	 * Return the height dimension of the given node n
 	 * 
 	 * @param n
-	 *           node
+	 *            node
 	 * @return
 	 */
 	private double getNodeHeight(Node n) {
-		DimensionAttribute dimAttr =
-				(DimensionAttribute) n.getAttribute(DIMENSIONSTR);
-		
+		DimensionAttribute dimAttr = (DimensionAttribute) n.getAttribute(DIMENSIONSTR);
+
 		double result = 0.0;
-		
+
 		if ((treeDirection == 90) || (treeDirection == 270)) {
 			result = dimAttr.getDimension().getWidth();
 		} else {
 			result = dimAttr.getDimension().getHeight();
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * Sets the x position of the given node n
 	 * 
 	 * @param n
-	 *           node
+	 *            node
 	 * @param x
-	 *           position
+	 *            position
 	 */
 	private void setX(Node n, double x) {
-		CoordinateAttribute coordAttr =
-				(CoordinateAttribute) n.getAttribute(COORDSTR);
-		
+		CoordinateAttribute coordAttr = (CoordinateAttribute) n.getAttribute(COORDSTR);
+
 		if (coordAttr != null) {
 			if ((treeDirection == 90) || (treeDirection == 270)) {
 				coordAttr.setY(x);
@@ -817,19 +751,18 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 			}
 		}
 	}
-	
+
 	/**
 	 * Set the y position of the given node n
 	 * 
 	 * @param n
-	 *           node
+	 *            node
 	 * @param y
-	 *           position
+	 *            position
 	 */
 	private void setY(Node n, double y) {
-		CoordinateAttribute coordAttr =
-				(CoordinateAttribute) n.getAttribute(COORDSTR);
-		
+		CoordinateAttribute coordAttr = (CoordinateAttribute) n.getAttribute(COORDSTR);
+
 		if (coordAttr != null) {
 			if ((treeDirection == 90) || (treeDirection == 270)) {
 				coordAttr.setX(y);
@@ -838,31 +771,28 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 			}
 		}
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
-//		return null;
+		// return null;
 		return "Radial Tree";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Layout";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.LAYOUT
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
-	
+
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;
 	}
-	
+
 }

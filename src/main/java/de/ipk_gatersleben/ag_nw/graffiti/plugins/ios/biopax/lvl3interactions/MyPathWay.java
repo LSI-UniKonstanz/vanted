@@ -13,64 +13,52 @@ import org.biopax.paxtools.model.level3.Process;
  * @author ricardo
  * 
  */
-public class MyPathWay
-{
+public class MyPathWay {
 	private String RDFId;
 	private String Name;
 	private boolean superPathWay;
 	private Set<MyPathWay> subPathWays;
 	private Set<Process> components;
 
-	public MyPathWay(Pathway p)
-	{
+	public MyPathWay(Pathway p) {
 		this.RDFId = p.getRDFId();
-		if (p.getDisplayName() != null)
-		{
+		if (p.getDisplayName() != null) {
 			this.Name = p.getDisplayName();
-		} else
-		{
+		} else {
 			this.Name = "";
 		}
 		this.components = new HashSet<Process>();
 		this.subPathWays = new HashSet<MyPathWay>();
-		for (Process process : p.getPathwayComponent())
-		{
-			if (process instanceof Pathway && !((Pathway) process).getPathwayComponent().isEmpty())
-			{
+		for (Process process : p.getPathwayComponent()) {
+			if (process instanceof Pathway && !((Pathway) process).getPathwayComponent().isEmpty()) {
 				// SuperPathWay
 				superPathWay = true;
 				MyPathWay MYP = new MyPathWay((Pathway) process);
 				subPathWays.add(MYP);
-			} else
-			{
+			} else {
 				// real component or blackboxpathway
 				components.add(process);
 			}
 		}
 	}
 
-	public Set<MyPathWay> getSubPathWays()
-	{
+	public Set<MyPathWay> getSubPathWays() {
 		return subPathWays;
 	}
 
-	public boolean isSuperPathWay()
-	{
+	public boolean isSuperPathWay() {
 		return superPathWay;
 	}
 
-	public String getRDFId()
-	{
+	public String getRDFId() {
 		return RDFId;
 	}
 
-	public String getDisplayName()
-	{
+	public String getDisplayName() {
 		return Name;
 	}
 
-	public Set<Process> getPathwayComponents()
-	{
+	public Set<Process> getPathwayComponents() {
 		return components;
 	}
 

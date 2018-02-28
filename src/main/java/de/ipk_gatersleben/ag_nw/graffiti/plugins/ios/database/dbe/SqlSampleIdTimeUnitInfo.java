@@ -7,7 +7,7 @@ public class SqlSampleIdTimeUnitInfo {
 	int sampleID;
 	int timeValue;
 	String timeUnit;
-	
+
 	public SqlSampleIdTimeUnitInfo(int sampleId, int timeValue, String timeUnit) {
 		this.sampleID = sampleId;
 		this.timeValue = timeValue;

@@ -52,7 +52,7 @@ public interface SeriesDataset extends Dataset {
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return the name of the series.
 	 */
 	public String getSeriesName(int series);

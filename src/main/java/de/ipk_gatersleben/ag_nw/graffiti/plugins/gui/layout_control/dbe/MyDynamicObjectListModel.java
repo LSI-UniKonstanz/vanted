@@ -13,26 +13,26 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 public class MyDynamicObjectListModel implements ListModel {
-	
+
 	private ArrayList<Object> items = new ArrayList<Object>();
 	ArrayList<ListDataListener> ll = new ArrayList<ListDataListener>();
-	
+
 	public int getSize() {
 		return items.size();
 	}
-	
+
 	public Object getElementAt(int index) {
 		return items.get(index);
 	}
-	
+
 	public void addListDataListener(ListDataListener l) {
 		ll.add(l);
 	}
-	
+
 	public void removeListDataListener(ListDataListener l) {
 		ll.remove(l);
 	}
-	
+
 	public void clearItems() {
 		items.clear();
 		ListDataEvent de = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, 0, 0);
@@ -40,5 +40,5 @@ public class MyDynamicObjectListModel implements ListModel {
 			dl.contentsChanged(de);
 		}
 	}
-	
+
 }

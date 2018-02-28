@@ -13,10 +13,10 @@ import org.graffiti.graph.GraphElement;
  * @author klukas
  */
 public interface ReceiveHighlightInfo {
-	
+
 	/**
 	 * @param n
 	 */
 	void isHighlighted(GraphElement n);
-	
+
 }

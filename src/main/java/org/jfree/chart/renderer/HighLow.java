@@ -80,11 +80,11 @@ public class HighLow {
 	 * colors.
 	 * 
 	 * @param x
-	 *           the x value.
+	 *            the x value.
 	 * @param high
-	 *           the high value.
+	 *            the high value.
 	 * @param low
-	 *           the low value.
+	 *            the low value.
 	 */
 	public HighLow(double x, double high, double low) {
 		this(x, high, low, high, low, new BasicStroke(), Color.blue);
@@ -94,15 +94,15 @@ public class HighLow {
 	 * Constructs a high-low item, with default values for the colors.
 	 * 
 	 * @param x
-	 *           the x value.
+	 *            the x value.
 	 * @param high
-	 *           the high value.
+	 *            the high value.
 	 * @param low
-	 *           the low value.
+	 *            the low value.
 	 * @param open
-	 *           the open value.
+	 *            the open value.
 	 * @param close
-	 *           the close value.
+	 *            the close value.
 	 */
 	public HighLow(double x, double high, double low, double open, double close) {
 		this(x, high, low, open, close, new BasicStroke(), Color.blue);
@@ -112,26 +112,24 @@ public class HighLow {
 	 * Constructs a high-low item.
 	 * 
 	 * @param x
-	 *           the x value.
+	 *            the x value.
 	 * @param high
-	 *           the high value.
+	 *            the high value.
 	 * @param low
-	 *           the low value.
+	 *            the low value.
 	 * @param open
-	 *           the open value.
+	 *            the open value.
 	 * @param close
-	 *           the close value.
+	 *            the close value.
 	 * @param stroke
-	 *           the stroke.
+	 *            the stroke.
 	 * @param paint
-	 *           the paint.
+	 *            the paint.
 	 */
-	public HighLow(double x, double high, double low, double open, double close,
-							Stroke stroke, Paint paint) {
+	public HighLow(double x, double high, double low, double open, double close, Stroke stroke, Paint paint) {
 
 		this.line = new Line2D.Double(x, high, x, low);
-		this.bounds = new Rectangle2D.Double(x - this.tickSize, high,
-																2 * this.tickSize, low - high);
+		this.bounds = new Rectangle2D.Double(x - this.tickSize, high, 2 * this.tickSize, low - high);
 		this.open = open;
 		this.close = close;
 		this.stroke = stroke;
@@ -143,7 +141,7 @@ public class HighLow {
 	 * Sets the width of the open/close tick.
 	 * 
 	 * @param newSize
-	 *           the new tick size.
+	 *            the new tick size.
 	 */
 	public void setTickSize(double newSize) {
 		this.tickSize = newSize;
@@ -180,7 +178,7 @@ public class HighLow {
 	 * Returns either OPEN or CLOSE value depending on the valueType.
 	 * 
 	 * @param valueType
-	 *           which value <code>{OPEN|CLOSE}</code>.
+	 *            which value <code>{OPEN|CLOSE}</code>.
 	 * @return the open value for valueType <code>OPEN</code>, the close value
 	 *         otherwise.
 	 */
@@ -196,9 +194,9 @@ public class HighLow {
 	 * Sets either OPEN or Close value depending on the valueType.
 	 * 
 	 * @param type
-	 *           the value type (OPEN or CLOSE).
+	 *            the value type (OPEN or CLOSE).
 	 * @param value
-	 *           the new value.
+	 *            the new value.
 	 */
 	public void setValue(int type, double value) {
 		if (type == OPEN) {
@@ -230,11 +228,11 @@ public class HighLow {
 	 * Helper to get the tickLine for the OPEN/CLOSE value.
 	 * 
 	 * @param x
-	 *           the X coordinate of the start point of the tick line.
+	 *            the X coordinate of the start point of the tick line.
 	 * @param value
-	 *           the OPEN or the CLOSE value.
+	 *            the OPEN or the CLOSE value.
 	 * @param width
-	 *           the width of the tickLine.
+	 *            the width of the tickLine.
 	 * @return a tickLine for the OPEN or the CLOSE value.
 	 */
 	private Line2D getTickLine(double x, double value, double width) {

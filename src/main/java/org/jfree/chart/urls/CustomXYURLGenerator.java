@@ -66,7 +66,7 @@ public class CustomXYURLGenerator implements XYURLGenerator, Serializable {
 	 * Returns the number of URLs in a given list.
 	 * 
 	 * @param list
-	 *           the list index (zero based).
+	 *            the list index (zero based).
 	 * @return The URL count.
 	 */
 	public int getURLCount(int list) {
@@ -83,9 +83,9 @@ public class CustomXYURLGenerator implements XYURLGenerator, Serializable {
 	 * Returns the URL for an item.
 	 * 
 	 * @param series
-	 *           the series index.
+	 *            the series index.
 	 * @param item
-	 *           the item index.
+	 *            the item index.
 	 * @return The URL.
 	 */
 	public String getURL(int series, int item) {
@@ -108,11 +108,11 @@ public class CustomXYURLGenerator implements XYURLGenerator, Serializable {
 	 * Generates a URL.
 	 * 
 	 * @param data
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return a string containing the URL.
 	 */
 	public String generateURL(XYDataset data, int series, int item) {
@@ -123,7 +123,7 @@ public class CustomXYURLGenerator implements XYURLGenerator, Serializable {
 	 * Adds a list of URLs.
 	 * 
 	 * @param urls
-	 *           the list of URLs.
+	 *            the list of URLs.
 	 */
 	public void addURLSeries(List urls) {
 		this.urlSeries.add(urls);
@@ -133,7 +133,7 @@ public class CustomXYURLGenerator implements XYURLGenerator, Serializable {
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {

@@ -30,8 +30,9 @@
 package org.jfree.data;
 
 /**
- * A simple data structure that holds a mean value and a standard deviation value. This
- * is used in the {@link org.jfree.data.statistics.DefaultStatisticalCategoryDataset} class.
+ * A simple data structure that holds a mean value and a standard deviation
+ * value. This is used in the
+ * {@link org.jfree.data.statistics.DefaultStatisticalCategoryDataset} class.
  */
 public class MeanAndStandardDeviation {
 
@@ -45,9 +46,9 @@ public class MeanAndStandardDeviation {
 	 * Creates a new mean and standard deviation record.
 	 * 
 	 * @param mean
-	 *           the mean.
+	 *            the mean.
 	 * @param standardDeviation
-	 *           the standard deviation.
+	 *            the standard deviation.
 	 */
 	public MeanAndStandardDeviation(final Number mean, final Number standardDeviation) {
 		this.mean = mean;

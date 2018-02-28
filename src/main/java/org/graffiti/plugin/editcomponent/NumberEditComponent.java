@@ -27,27 +27,27 @@ import org.graffiti.plugin.Displayable;
  * @see Number
  * @see javax.swing.JTextField
  */
-public abstract class NumberEditComponent
-					extends AbstractValueEditComponent {
+public abstract class NumberEditComponent extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
-	
+
 	/** The GUI element of this component. */
 	protected SpinnerEditComponent spinnerEditComponent;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new integer edit component.
 	 * 
-	 * @param disp containing the attributes to be displayed
+	 * @param disp
+	 *            containing the attributes to be displayed
 	 */
 	protected NumberEditComponent(Displayable disp) {
 		super(disp);
 		spinnerEditComponent = new SpinnerEditComponent(disp);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the <code>JComponent</code> associated with this value edit
 	 * component. In this case a JSpinner.
@@ -64,51 +64,52 @@ public abstract class NumberEditComponent
 						new Dimension(defaultResult.getMinimumSize().width, defaultResult.getPreferredSize().height));
 			if (defaultResult != null)
 				defaultResult.setMinimumSize(new Dimension(0, defaultResult.getMinimumSize().height));
-			JPanel jp = (JPanel) TableLayout.getSplit(jc, defaultResult,
-					TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
+			JPanel jp = (JPanel) TableLayout.getSplit(jc, defaultResult, TableLayoutConstants.PREFERRED,
+					TableLayoutConstants.FILL);
 			jp.setOpaque(false);
 			return jp;
 		} else
 			return defaultResult;
-		
+
 	}
-	
+
 	/**
 	 * Sets the displayable.
 	 * 
-	 * @param attr new displayable
+	 * @param attr
+	 *            new displayable
 	 */
 	@Override
 	public void setDisplayable(Displayable attr) {
 		this.displayable = attr;
 		spinnerEditComponent.setDisplayable(attr);
 	}
-	
+
 	/**
-	 * Sets the current value of the <code>Attribute</code> in the
-	 * corresponding <code>JComponent</code>.
+	 * Sets the current value of the <code>Attribute</code> in the corresponding
+	 * <code>JComponent</code>.
 	 */
 	public void setEditFieldValue() {
 		spinnerEditComponent.setEditFieldValue();
 	}
-	
+
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		spinnerEditComponent.setEnabled(enabled);
 	}
-	
+
 	@Override
 	public void setShowEmpty(boolean showEmpty) {
 		super.setShowEmpty(showEmpty);
 		this.showEmpty = showEmpty;
 		spinnerEditComponent.setShowEmpty(showEmpty);
 	}
-	
+
 	/**
 	 * Sets the value of the displayable specified in the <code>JComponent</code>.
-	 * Calls setAttribute in the associated spinner, i.e. it only changes the
-	 * value if it is different.
+	 * Calls setAttribute in the associated spinner, i.e. it only changes the value
+	 * if it is different.
 	 */
 	public void setValue() {
 		spinnerEditComponent.setValue();

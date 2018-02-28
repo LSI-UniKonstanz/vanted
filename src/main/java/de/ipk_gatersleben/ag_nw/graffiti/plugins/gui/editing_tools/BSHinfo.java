@@ -12,12 +12,12 @@ import org.graffiti.plugin.io.resources.IOurl;
  * @author klukas
  */
 public class BSHinfo {
-	
+
 	public String targetMenu;
 	public boolean nodeCommand;
 	String firstLine;
 	protected String cmdsrc;
-	
+
 	public BSHinfo(IOurl url) {
 		cmdsrc = DefaultContextMenuManager.getContent(url);
 		firstLine = DefaultContextMenuManager.getFirstOrSecondLine(url, "@");
@@ -37,5 +37,5 @@ public class BSHinfo {
 			nodeCommand = true;
 		}
 	}
-	
+
 }

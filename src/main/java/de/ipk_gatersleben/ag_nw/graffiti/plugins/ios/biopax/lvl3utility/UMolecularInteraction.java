@@ -12,11 +12,9 @@ import org.graffiti.graph.Node;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
-public class UMolecularInteraction extends UtilitySuperClassToGraph
-{
+public class UMolecularInteraction extends UtilitySuperClassToGraph {
 	/**
-	 * adds all information within the biopax class to the attribute set of the
-	 * node
+	 * adds all information within the biopax class to the attribute set of the node
 	 * 
 	 * @param elem
 	 * @param i
@@ -24,11 +22,12 @@ public class UMolecularInteraction extends UtilitySuperClassToGraph
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public static void addAttributesToNode(GraphElement elem, MolecularInteraction i) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
-	{
+	public static void addAttributesToNode(GraphElement elem, MolecularInteraction i)
+			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		// first set label to node
 		setLabels(elem, i);
-		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), Messages.getString("UtilitySuperClassToGraph.162")); //$NON-NLS-1$ //$NON-NLS-2$
+		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), //$NON-NLS-1$
+				Messages.getString("UtilitySuperClassToGraph.162")); //$NON-NLS-1$
 		// set attribute paths
 		setAvailability(elem, i.getAvailability());
 		setComment(elem, i.getComment());
@@ -41,8 +40,7 @@ public class UMolecularInteraction extends UtilitySuperClassToGraph
 		setXRef(elem, i.getXref());
 	}
 
-	public static void readAttributesFromNode(GraphElement node, Graph g, Model model)
-	{
+	public static void readAttributesFromNode(GraphElement node, Graph g, Model model) {
 		Node elem = (Node) node;
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 		MolecularInteraction interaction = model.addNew(MolecularInteraction.class, RDFID);
@@ -57,8 +55,7 @@ public class UMolecularInteraction extends UtilitySuperClassToGraph
 		UtilitySuperClassFromGraph.getStandardName(elem, interaction);
 		UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
 
-		for (Edge outgoing : elem.getAllOutEdges())
-		{
+		for (Edge outgoing : elem.getAllOutEdges()) {
 
 			Node out = outgoing.getTarget();
 

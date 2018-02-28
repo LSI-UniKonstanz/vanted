@@ -38,30 +38,28 @@ import org.graffiti.plugin.parameter.BooleanParameter;
  * 
  * @version $Revision: 1.12 $
  */
-public class BooleanEditComponent
-					extends AbstractValueEditComponent {
+public class BooleanEditComponent extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
-	
+
 	/** DOCUMENT ME! */
 	private Icon defaultIcon;
-	
+
 	/** DOCUMENT ME! */
 	private Icon defaultSelectedIcon;
-	
+
 	/** DOCUMENT ME! */
 	private Icon emptyIcon;
-	
+
 	/** The gui element of this component. */
 	private JCheckBox checkBox;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
-	 * Constructs a new boolean edit component, referencing the given
-	 * displayable.
+	 * Constructs a new boolean edit component, referencing the given displayable.
 	 * 
 	 * @param disp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public BooleanEditComponent(final Displayable disp) {
 		super(disp);
@@ -69,43 +67,40 @@ public class BooleanEditComponent
 		if (disp instanceof BooleanParameter && ((BooleanParameter) disp).isLeftAligned()) {
 			checkBox.setText(((BooleanParameter) disp).getName());
 		}
-		
+
 		checkBox.putClientProperty("displayable", disp);
-		
+
 		checkBox.setOpaque(false);
 		// this.checkBox.setAlignmentX(0.5f);
-		
+
 		// iBundle = org.graffiti.core.ImageBundle.getInstance();
 		// defaultIcon = new ImageIcon(iBundle.getImage("bool.notselected"));
 		// emptyIcon = new ImageIcon(iBundle.getImage("bool.half.notselected"));
 		// defaultSelectedIcon = new ImageIcon(iBundle.getImage("bool.selected"));
-		
-//		checkBox.setPressedIcon(emptyIcon);
-		
+
+		// checkBox.setPressedIcon(emptyIcon);
+
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				checkDependentParameters(disp);
 			}
 		});
-		
-		checkBox.addActionListener(new AbstractAction()
-		{
+
+		checkBox.addActionListener(new AbstractAction() {
 			private static final long serialVersionUID = 1L;
-			
-			public void actionPerformed(ActionEvent e)
-				{
-					if (showEmpty)
-					{
-						showEmpty = false;
-						setEditFieldValue();
-					}
-					checkDependentParameters(disp);
+
+			public void actionPerformed(ActionEvent e) {
+				if (showEmpty) {
+					showEmpty = false;
+					setEditFieldValue();
 				}
+				checkDependentParameters(disp);
+			}
 		});
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the <code>JComponent</code> for editing this edit component.
 	 * 
@@ -118,52 +113,55 @@ public class BooleanEditComponent
 				public void mouseClicked(MouseEvent e) {
 					checkBox.setSelected(!checkBox.isSelected());
 				}
-				
+
 				public void mousePressed(MouseEvent e) {
 				}
-				
+
 				public void mouseReleased(MouseEvent e) {
 				}
-				
+
 				public void mouseEntered(MouseEvent e) {
 				}
-				
+
 				public void mouseExited(MouseEvent e) {
 				}
 			});
 			if (checkBox != null)
-				checkBox.setPreferredSize(new Dimension(checkBox.getMinimumSize().width, checkBox.getPreferredSize().height));
-			JPanel jp = (JPanel) TableLayout.getSplit(checkBox, jc, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
+				checkBox.setPreferredSize(
+						new Dimension(checkBox.getMinimumSize().width, checkBox.getPreferredSize().height));
+			JPanel jp = (JPanel) TableLayout.getSplit(checkBox, jc, TableLayoutConstants.PREFERRED,
+					TableLayoutConstants.FILL);
 			jp.setOpaque(false);
 			return jp;
 		} else
 			return checkBox;
 	}
-	
+
 	/**
-	 * Sets the current value of the <code>Attribute</code> in the
-	 * corresponding <code>JComponent</code>.
+	 * Sets the current value of the <code>Attribute</code> in the corresponding
+	 * <code>JComponent</code>.
 	 */
 	public void setEditFieldValue() {
-//		if (showEmpty) {
-//			checkBox.setSelectedIcon(emptyIcon);
-//			checkBox.setIcon(emptyIcon);
-//		} else {
-//			checkBox.setSelectedIcon(defaultSelectedIcon);
-//			checkBox.setIcon(defaultIcon);
-//		}
-		
+		// if (showEmpty) {
+		// checkBox.setSelectedIcon(emptyIcon);
+		// checkBox.setIcon(emptyIcon);
+		// } else {
+		// checkBox.setSelectedIcon(defaultSelectedIcon);
+		// checkBox.setIcon(defaultIcon);
+		// }
+
 		checkBox.setSelected(((Boolean) this.displayable.getValue()).booleanValue());
 	}
-	
+
 	/**
-	 * Sets the value of the displayable specified in the <code>JComponent</code>. But only if it is different.
+	 * Sets the value of the displayable specified in the <code>JComponent</code>.
+	 * But only if it is different.
 	 */
 	public void setValue() {
 		boolean bb = false;
-		
-		if (this.displayable != null) { 
-			if(!(this.displayable.getValue() instanceof Boolean)) {
+
+		if (this.displayable != null) {
+			if (!(this.displayable.getValue() instanceof Boolean)) {
 				bb = Boolean.valueOf((String) this.displayable.getValue());
 			} else {
 				bb = (Boolean) this.displayable.getValue();
@@ -171,9 +169,11 @@ public class BooleanEditComponent
 		}
 		if (!(bb == this.checkBox.isSelected())) {
 			displayable.setValue(Boolean.valueOf(checkBox.isSelected()));
-			
-			// check if this edit component is about to edit the graph attribute directed, if so, update graph
-			if (displayable != null && displayable instanceof BooleanAttribute && displayable.getName().equals("directed")) {
+
+			// check if this edit component is about to edit the graph attribute directed,
+			// if so, update graph
+			if (displayable != null && displayable instanceof BooleanAttribute
+					&& displayable.getName().equals("directed")) {
 				BooleanAttribute ba = (BooleanAttribute) displayable;
 				if (ba.getAttributable() != null && (ba.getAttributable() instanceof Graph)) {
 					Graph gg = (Graph) ba.getAttributable();
@@ -182,7 +182,7 @@ public class BooleanEditComponent
 			}
 		}
 	}
-	
+
 	private void checkDependentParameters(final Displayable disp) {
 		if (disp instanceof BooleanParameter) {
 			BooleanParameter bp = (BooleanParameter) disp;

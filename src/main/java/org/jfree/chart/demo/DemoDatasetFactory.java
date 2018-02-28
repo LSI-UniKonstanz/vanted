@@ -66,7 +66,8 @@ import org.jfree.date.MonthConstants;
 /**
  * A utility class for generating sample datasets for the demos.
  * <p>
- * These datasets are hard-coded so that they are easily accessible for the demonstration applications. In a real application, you would create datasets
+ * These datasets are hard-coded so that they are easily accessible for the
+ * demonstration applications. In a real application, you would create datasets
  * dynamically by reading data from a file, a database, or some other source.
  */
 public abstract class DemoDatasetFactory {
@@ -78,38 +79,25 @@ public abstract class DemoDatasetFactory {
 	 */
 	public static CategoryDataset createCategoryDataset() {
 
-		final double[][] data = new double[][]
-				{ { 10.0, 4.0, 15.0, 14.0 },
-									{ -5.0, -7.0, 14.0, -3.0 },
-									{ 6.0, 17.0, -12.0, 7.0 },
-									{ 7.0, 15.0, 11.0, 0.0 },
-									{ -8.0, -6.0, 10.0, -9.0 },
-									{ 9.0, 8.0, 0.0, 6.0 },
-									{ -10.0, 9.0, 7.0, 7.0 },
-									{ 11.0, 13.0, 9.0, 9.0 },
-									{ -3.0, 7.0, 11.0, -10.0 } };
+		final double[][] data = new double[][] { { 10.0, 4.0, 15.0, 14.0 }, { -5.0, -7.0, 14.0, -3.0 },
+				{ 6.0, 17.0, -12.0, 7.0 }, { 7.0, 15.0, 11.0, 0.0 }, { -8.0, -6.0, 10.0, -9.0 }, { 9.0, 8.0, 0.0, 6.0 },
+				{ -10.0, 9.0, 7.0, 7.0 }, { 11.0, 13.0, 9.0, 9.0 }, { -3.0, 7.0, 11.0, -10.0 } };
 
 		return DatasetUtilities.createCategoryDataset("Series ", "Category ", data);
 
 	}
 
 	/**
-	 * Creates and returns a category dataset with JUST ONE CATEGORY for the demo charts.
+	 * Creates and returns a category dataset with JUST ONE CATEGORY for the demo
+	 * charts.
 	 * 
 	 * @return a sample category dataset.
 	 */
 	public static CategoryDataset createSingleCategoryDataset() {
 
-		final Number[][] data = new Integer[][]
-				{ { new Integer(10) },
-									{ new Integer(-5) },
-									{ new Integer(6) },
-									{ new Integer(7) },
-									{ new Integer(-8) },
-									{ new Integer(9) },
-									{ new Integer(-10) },
-									{ new Integer(11) },
-									{ new Integer(-3) } };
+		final Number[][] data = new Integer[][] { { new Integer(10) }, { new Integer(-5) }, { new Integer(6) },
+				{ new Integer(7) }, { new Integer(-8) }, { new Integer(9) }, { new Integer(-10) }, { new Integer(11) },
+				{ new Integer(-3) } };
 
 		return DatasetUtilities.createCategoryDataset("Series ", "Category ", data);
 
@@ -191,7 +179,8 @@ public abstract class DemoDatasetFactory {
 	}
 
 	/**
-	 * Creates a time series collection containing USD/GBP and EUR/GBP exchange rates.
+	 * Creates a time series collection containing USD/GBP and EUR/GBP exchange
+	 * rates.
 	 * 
 	 * @return a sample time series collection.
 	 */
@@ -211,8 +200,7 @@ public abstract class DemoDatasetFactory {
 	 */
 	public static TimeSeriesCollection createTimeSeriesCollection4() {
 
-		final TimeSeries t4 = new TimeSeries("Test",
-																	"Millisecond", "Value", FixedMillisecond.class);
+		final TimeSeries t4 = new TimeSeries("Test", "Millisecond", "Value", FixedMillisecond.class);
 		final Date now = new Date();
 		try {
 			t4.add(new FixedMillisecond(now.getTime() + 0), new Double(50.1));
@@ -236,10 +224,11 @@ public abstract class DemoDatasetFactory {
 	}
 
 	/**
-	 * Returns a time series of the daily USD/GBP exchange rates in 2001 (to date), for use in
-	 * the JFreeChart demonstration application.
+	 * Returns a time series of the daily USD/GBP exchange rates in 2001 (to date),
+	 * for use in the JFreeChart demonstration application.
 	 * <P>
-	 * You wouldn't normally create a time series in this way. Typically, values would be read from a database.
+	 * You wouldn't normally create a time series in this way. Typically, values
+	 * would be read from a database.
 	 * 
 	 * @return a time series.
 	 */
@@ -488,10 +477,11 @@ public abstract class DemoDatasetFactory {
 	}
 
 	/**
-	 * Returns a time series of the daily EUR/GBP exchange rates in 2001 (to date), for use in
-	 * the JFreeChart demonstration application.
+	 * Returns a time series of the daily EUR/GBP exchange rates in 2001 (to date),
+	 * for use in the JFreeChart demonstration application.
 	 * <P>
-	 * You wouldn't normally create a time series in this way. Typically, values would be read from a database.
+	 * You wouldn't normally create a time series in this way. Typically, values
+	 * would be read from a database.
 	 * 
 	 * @return a time series.
 	 */
@@ -740,10 +730,11 @@ public abstract class DemoDatasetFactory {
 	}
 
 	/**
-	 * Returns a time series of the daily EUR/GBP exchange rates in 2001 (to date), for use in
-	 * the JFreeChart demonstration application.
+	 * Returns a time series of the daily EUR/GBP exchange rates in 2001 (to date),
+	 * for use in the JFreeChart demonstration application.
 	 * <P>
-	 * You wouldn't normally create a time series in this way. Typically, values would be read from a database.
+	 * You wouldn't normally create a time series in this way. Typically, values
+	 * would be read from a database.
 	 * 
 	 * @return a sample time series.
 	 */
@@ -1354,116 +1345,65 @@ public abstract class DemoDatasetFactory {
 	 * Creates a sample high low dataset for a SegmentedTimeline
 	 * 
 	 * @param timeline
-	 *           SegmenteTimeline that will use this dataset.
+	 *            SegmenteTimeline that will use this dataset.
 	 * @param start
-	 *           Date from where the dataset will be generated. Actual dates will
-	 *           be generated dynamically based on the timeline.
+	 *            Date from where the dataset will be generated. Actual dates will
+	 *            be generated dynamically based on the timeline.
 	 * @return a sample high low dataset.
 	 */
-	public static HighLowDataset createSegmentedHighLowDataset(
-						final SegmentedTimeline timeline, final Date start) {
+	public static HighLowDataset createSegmentedHighLowDataset(final SegmentedTimeline timeline, final Date start) {
 
 		// some open-high-low-close data
-		final double[][] data =
-					{ { 248.1999, 249.3999, 247.0499, 247.6999 },
-										{ 247.4999, 250.6499, 246.7999, 249.3999 },
-										{ 249.5999, 249.7499, 247.4999, 248.5999 },
-										{ 248.5999, 251.5499, 248.4999, 248.6499 },
-										{ 248.8499, 249.4499, 247.8499, 248.7999 },
-										{ 249.1999, 250.5499, 248.4999, 248.7999 },
-										{ 249.2999, 251.1499, 248.9499, 249.1499 },
-										{ 248.1499, 249.8999, 247.2999, 249.0499 },
-										{ 248.5999, 248.8999, 246.2999, 246.9499 },
-										{ 247.1999, 248.3999, 246.6499, 248.3499 },
-										{ 246.0999, 246.5999, 244.4999, 244.5999 },
-										{ 243.1999, 243.3999, 240.9499, 242.3499 },
-										{ 243.5999, 243.5999, 242.2499, 242.8999 },
-										{ 242.4999, 243.1499, 241.5999, 242.8499 },
-										{ 244.1999, 247.0499, 243.7499, 246.9999 },
-										{ 246.9499, 247.6499, 245.2999, 246.0499 },
-										{ 245.5999, 248.0999, 245.1999, 247.8999 },
-										{ 247.9499, 247.9499, 243.8499, 243.9499 },
-										{ 242.1999, 245.9499, 242.1999, 244.7499 },
-										{ 244.6499, 246.5999, 244.4999, 245.5999 },
-										{ 245.4499, 249.1999, 245.0999, 249.0999 },
-										{ 249.0999, 250.2999, 248.4499, 249.2499 },
-										{ 249.4999, 249.8499, 246.7499, 246.8499 },
-										{ 246.8499, 247.6499, 245.8999, 246.8499 },
-										{ 247.6999, 250.7999, 247.6999, 250.6999 },
-										{ 250.8999, 251.4499, 249.0999, 249.4999 },
-										{ 249.6499, 252.4999, 249.5999, 251.6499 },
-										{ 251.9499, 252.2999, 249.4999, 250.0499 },
-										{ 251.2499, 251.6999, 248.7999, 248.9499 },
-										{ 249.0999, 250.2499, 247.9499, 249.7499 },
-										{ 250.0499, 251.1499, 249.4499, 249.9499 },
-										{ 250.0499, 251.1499, 249.4499, 249.9499 },
-										{ 249.9999, 250.3499, 246.5999, 246.9499 },
-										{ 247.0999, 249.6999, 246.8999, 249.2999 },
-										{ 249.8999, 252.9499, 249.8499, 252.3999 },
-										{ 252.7999, 253.3499, 251.1999, 251.6999 },
-										{ 250.4999, 251.2999, 248.9499, 249.8999 },
-										{ 250.6999, 253.4499, 250.6999, 253.1999 },
-										{ 252.9999, 253.8999, 252.2999, 253.2499 },
-										{ 253.6999, 255.1999, 253.4999, 253.9499 },
-										{ 253.4499, 254.7999, 252.7999, 254.3499 },
-										{ 253.4499, 254.5999, 252.4999, 254.2999 },
-										{ 253.5999, 253.8999, 251.6999, 251.7999 },
-										{ 252.3499, 253.6999, 251.7999, 253.5499 },
-										{ 253.5499, 254.2499, 251.1999, 251.3499 },
-										{ 251.2499, 251.9499, 249.9999, 251.5999 },
-										{ 251.9499, 252.5999, 250.2499, 251.9999 },
-										{ 251.2499, 252.7499, 251.0999, 252.1999 },
-										{ 251.6499, 252.5499, 248.8499, 248.9499 },
-										{ 249.6499, 249.8999, 248.5499, 249.0999 },
-										{ 249.3499, 250.4499, 248.9499, 250.0999 },
-										{ 249.5499, 252.1499, 249.2999, 252.0499 },
-										{ 252.1499, 252.1499, 250.2499, 250.8499 },
-										{ 251.2499, 254.9499, 250.9999, 254.4499 },
-										{ 254.0999, 255.1999, 253.4499, 254.5999 },
-										{ 254.4999, 254.9499, 252.3999, 252.8999 },
-										{ 253.2999, 253.6499, 252.1499, 252.8999 },
-										{ 253.4999, 254.1499, 251.8999, 252.0499 },
-										{ 252.3499, 254.4499, 252.3499, 254.2999 },
-										{ 254.6499, 255.7499, 251.4499, 251.6499 },
-										{ 254.6499, 255.7499, 251.4499, 251.6499 },
-										{ 252.2499, 253.1499, 251.5999, 252.9499 },
-										{ 253.4499, 253.9499, 251.0999, 251.4999 },
-										{ 251.7499, 251.8499, 249.4499, 251.0999 },
-										{ 250.8499, 251.7999, 249.9499, 251.5499 },
-										{ 251.5499, 252.1499, 250.3499, 251.5999 },
-										{ 252.9999, 254.9499, 252.7999, 254.8499 },
-										{ 254.6999, 255.4499, 253.8999, 255.3499 },
-										{ 254.9999, 256.9500, 254.9999, 256.0999 },
-										{ 256.4500, 258.2499, 255.3499, 258.1499 },
-										{ 257.4500, 258.6499, 257.2499, 257.9500 },
-										{ 257.7499, 259.1499, 257.2000, 258.7999 },
-										{ 257.8999, 258.2000, 256.7499, 257.7000 },
-										{ 257.9500, 260.2999, 257.5999, 259.9500 },
-										{ 259.2499, 260.4500, 258.8499, 259.4999 },
-										{ 259.4500, 260.2499, 259.1499, 259.5499 },
-										{ 260.0499, 260.3499, 257.4999, 257.8999 },
-										{ 257.8999, 261.9999, 257.3999, 261.8999 },
-										{ 261.8999, 262.5499, 259.8499, 261.6499 },
-										{ 261.5499, 263.3499, 261.0999, 263.0499 },
-										{ 263.1499, 264.4500, 262.3499, 263.9999 },
-										{ 264.1499, 264.2999, 261.8499, 262.7999 },
-										{ 262.6499, 263.2499, 261.5499, 262.9500 },
-										{ 263.2999, 264.9500, 262.6499, 263.9500 },
-										{ 263.5999, 264.8499, 263.4500, 264.5999 },
-										{ 264.7499, 268.0999, 264.7499, 267.2499 },
-										{ 266.3499, 267.7499, 265.7000, 266.8499 },
-										{ 267.0999, 267.6499, 266.6499, 266.8499 },
-										{ 266.6499, 267.0499, 264.7499, 265.7499 },
-										{ 265.4500, 265.7499, 264.2499, 264.8999 },
-										{ 265.3499, 266.4500, 265.2999, 265.5999 },
-										{ 263.8499, 264.0499, 262.8499, 263.9999 },
-										{ 263.9500, 264.5499, 262.9500, 264.2999 },
-										{ 264.5999, 265.5499, 262.7499, 262.7999 },
-										{ 263.3999, 263.5499, 261.3999, 261.8999 },
-										{ 262.2000, 262.2000, 260.8499, 261.7000 },
-										{ 260.2499, 263.8499, 260.0999, 263.7000 },
-										{ 263.2999, 266.0999, 263.2999, 265.8999 },
-										{ 266.2000, 266.9999, 264.8499, 266.6499 } };
+		final double[][] data = { { 248.1999, 249.3999, 247.0499, 247.6999 },
+				{ 247.4999, 250.6499, 246.7999, 249.3999 }, { 249.5999, 249.7499, 247.4999, 248.5999 },
+				{ 248.5999, 251.5499, 248.4999, 248.6499 }, { 248.8499, 249.4499, 247.8499, 248.7999 },
+				{ 249.1999, 250.5499, 248.4999, 248.7999 }, { 249.2999, 251.1499, 248.9499, 249.1499 },
+				{ 248.1499, 249.8999, 247.2999, 249.0499 }, { 248.5999, 248.8999, 246.2999, 246.9499 },
+				{ 247.1999, 248.3999, 246.6499, 248.3499 }, { 246.0999, 246.5999, 244.4999, 244.5999 },
+				{ 243.1999, 243.3999, 240.9499, 242.3499 }, { 243.5999, 243.5999, 242.2499, 242.8999 },
+				{ 242.4999, 243.1499, 241.5999, 242.8499 }, { 244.1999, 247.0499, 243.7499, 246.9999 },
+				{ 246.9499, 247.6499, 245.2999, 246.0499 }, { 245.5999, 248.0999, 245.1999, 247.8999 },
+				{ 247.9499, 247.9499, 243.8499, 243.9499 }, { 242.1999, 245.9499, 242.1999, 244.7499 },
+				{ 244.6499, 246.5999, 244.4999, 245.5999 }, { 245.4499, 249.1999, 245.0999, 249.0999 },
+				{ 249.0999, 250.2999, 248.4499, 249.2499 }, { 249.4999, 249.8499, 246.7499, 246.8499 },
+				{ 246.8499, 247.6499, 245.8999, 246.8499 }, { 247.6999, 250.7999, 247.6999, 250.6999 },
+				{ 250.8999, 251.4499, 249.0999, 249.4999 }, { 249.6499, 252.4999, 249.5999, 251.6499 },
+				{ 251.9499, 252.2999, 249.4999, 250.0499 }, { 251.2499, 251.6999, 248.7999, 248.9499 },
+				{ 249.0999, 250.2499, 247.9499, 249.7499 }, { 250.0499, 251.1499, 249.4499, 249.9499 },
+				{ 250.0499, 251.1499, 249.4499, 249.9499 }, { 249.9999, 250.3499, 246.5999, 246.9499 },
+				{ 247.0999, 249.6999, 246.8999, 249.2999 }, { 249.8999, 252.9499, 249.8499, 252.3999 },
+				{ 252.7999, 253.3499, 251.1999, 251.6999 }, { 250.4999, 251.2999, 248.9499, 249.8999 },
+				{ 250.6999, 253.4499, 250.6999, 253.1999 }, { 252.9999, 253.8999, 252.2999, 253.2499 },
+				{ 253.6999, 255.1999, 253.4999, 253.9499 }, { 253.4499, 254.7999, 252.7999, 254.3499 },
+				{ 253.4499, 254.5999, 252.4999, 254.2999 }, { 253.5999, 253.8999, 251.6999, 251.7999 },
+				{ 252.3499, 253.6999, 251.7999, 253.5499 }, { 253.5499, 254.2499, 251.1999, 251.3499 },
+				{ 251.2499, 251.9499, 249.9999, 251.5999 }, { 251.9499, 252.5999, 250.2499, 251.9999 },
+				{ 251.2499, 252.7499, 251.0999, 252.1999 }, { 251.6499, 252.5499, 248.8499, 248.9499 },
+				{ 249.6499, 249.8999, 248.5499, 249.0999 }, { 249.3499, 250.4499, 248.9499, 250.0999 },
+				{ 249.5499, 252.1499, 249.2999, 252.0499 }, { 252.1499, 252.1499, 250.2499, 250.8499 },
+				{ 251.2499, 254.9499, 250.9999, 254.4499 }, { 254.0999, 255.1999, 253.4499, 254.5999 },
+				{ 254.4999, 254.9499, 252.3999, 252.8999 }, { 253.2999, 253.6499, 252.1499, 252.8999 },
+				{ 253.4999, 254.1499, 251.8999, 252.0499 }, { 252.3499, 254.4499, 252.3499, 254.2999 },
+				{ 254.6499, 255.7499, 251.4499, 251.6499 }, { 254.6499, 255.7499, 251.4499, 251.6499 },
+				{ 252.2499, 253.1499, 251.5999, 252.9499 }, { 253.4499, 253.9499, 251.0999, 251.4999 },
+				{ 251.7499, 251.8499, 249.4499, 251.0999 }, { 250.8499, 251.7999, 249.9499, 251.5499 },
+				{ 251.5499, 252.1499, 250.3499, 251.5999 }, { 252.9999, 254.9499, 252.7999, 254.8499 },
+				{ 254.6999, 255.4499, 253.8999, 255.3499 }, { 254.9999, 256.9500, 254.9999, 256.0999 },
+				{ 256.4500, 258.2499, 255.3499, 258.1499 }, { 257.4500, 258.6499, 257.2499, 257.9500 },
+				{ 257.7499, 259.1499, 257.2000, 258.7999 }, { 257.8999, 258.2000, 256.7499, 257.7000 },
+				{ 257.9500, 260.2999, 257.5999, 259.9500 }, { 259.2499, 260.4500, 258.8499, 259.4999 },
+				{ 259.4500, 260.2499, 259.1499, 259.5499 }, { 260.0499, 260.3499, 257.4999, 257.8999 },
+				{ 257.8999, 261.9999, 257.3999, 261.8999 }, { 261.8999, 262.5499, 259.8499, 261.6499 },
+				{ 261.5499, 263.3499, 261.0999, 263.0499 }, { 263.1499, 264.4500, 262.3499, 263.9999 },
+				{ 264.1499, 264.2999, 261.8499, 262.7999 }, { 262.6499, 263.2499, 261.5499, 262.9500 },
+				{ 263.2999, 264.9500, 262.6499, 263.9500 }, { 263.5999, 264.8499, 263.4500, 264.5999 },
+				{ 264.7499, 268.0999, 264.7499, 267.2499 }, { 266.3499, 267.7499, 265.7000, 266.8499 },
+				{ 267.0999, 267.6499, 266.6499, 266.8499 }, { 266.6499, 267.0499, 264.7499, 265.7499 },
+				{ 265.4500, 265.7499, 264.2499, 264.8999 }, { 265.3499, 266.4500, 265.2999, 265.5999 },
+				{ 263.8499, 264.0499, 262.8499, 263.9999 }, { 263.9500, 264.5499, 262.9500, 264.2999 },
+				{ 264.5999, 265.5499, 262.7499, 262.7999 }, { 263.3999, 263.5499, 261.3999, 261.8999 },
+				{ 262.2000, 262.2000, 260.8499, 261.7000 }, { 260.2499, 263.8499, 260.0999, 263.7000 },
+				{ 263.2999, 266.0999, 263.2999, 265.8999 }, { 266.2000, 266.9999, 264.8499, 266.6499 } };
 
 		final int m = data.length;
 
@@ -1500,21 +1440,21 @@ public abstract class DemoDatasetFactory {
 	public static WindDataset createWindDataset1() {
 
 		final int jan = 1;
-		final Object[][][] data = new Object[][][] { {
-							{ DateUtilities.createDate(1999, jan, 3), new Double(0.0), new Double(10.0) },
-							{ DateUtilities.createDate(1999, jan, 4), new Double(1.0), new Double(8.5) },
-							{ DateUtilities.createDate(1999, jan, 5), new Double(2.0), new Double(10.0) },
-							{ DateUtilities.createDate(1999, jan, 6), new Double(3.0), new Double(10.0) },
-							{ DateUtilities.createDate(1999, jan, 7), new Double(4.0), new Double(7.0) },
-							{ DateUtilities.createDate(1999, jan, 8), new Double(5.0), new Double(10.0) },
-							{ DateUtilities.createDate(1999, jan, 9), new Double(6.0), new Double(8.0) },
-							{ DateUtilities.createDate(1999, jan, 10), new Double(7.0), new Double(11.0) },
-							{ DateUtilities.createDate(1999, jan, 11), new Double(8.0), new Double(10.0) },
-							{ DateUtilities.createDate(1999, jan, 12), new Double(9.0), new Double(11.0) },
-							{ DateUtilities.createDate(1999, jan, 13), new Double(10.0), new Double(3.0) },
-							{ DateUtilities.createDate(1999, jan, 14), new Double(11.0), new Double(9.0) },
-							{ DateUtilities.createDate(1999, jan, 15), new Double(12.0), new Double(11.0) },
-							{ DateUtilities.createDate(1999, jan, 16), new Double(0.0), new Double(0.0) } } };
+		final Object[][][] data = new Object[][][] {
+				{ { DateUtilities.createDate(1999, jan, 3), new Double(0.0), new Double(10.0) },
+						{ DateUtilities.createDate(1999, jan, 4), new Double(1.0), new Double(8.5) },
+						{ DateUtilities.createDate(1999, jan, 5), new Double(2.0), new Double(10.0) },
+						{ DateUtilities.createDate(1999, jan, 6), new Double(3.0), new Double(10.0) },
+						{ DateUtilities.createDate(1999, jan, 7), new Double(4.0), new Double(7.0) },
+						{ DateUtilities.createDate(1999, jan, 8), new Double(5.0), new Double(10.0) },
+						{ DateUtilities.createDate(1999, jan, 9), new Double(6.0), new Double(8.0) },
+						{ DateUtilities.createDate(1999, jan, 10), new Double(7.0), new Double(11.0) },
+						{ DateUtilities.createDate(1999, jan, 11), new Double(8.0), new Double(10.0) },
+						{ DateUtilities.createDate(1999, jan, 12), new Double(9.0), new Double(11.0) },
+						{ DateUtilities.createDate(1999, jan, 13), new Double(10.0), new Double(3.0) },
+						{ DateUtilities.createDate(1999, jan, 14), new Double(11.0), new Double(9.0) },
+						{ DateUtilities.createDate(1999, jan, 15), new Double(12.0), new Double(11.0) },
+						{ DateUtilities.createDate(1999, jan, 16), new Double(0.0), new Double(0.0) } } };
 
 		return new DefaultWindDataset(new String[] { "Wind!!" }, data);
 	}
@@ -1578,7 +1518,7 @@ public abstract class DemoDatasetFactory {
 	 * Creates a random wafermap dataset
 	 * 
 	 * @param values
-	 *           Maximum number of random values
+	 *            Maximum number of random values
 	 * @return a random wafermap dataset
 	 */
 	public static WaferMapDataset createRandomWaferMapDataset(final int values) {

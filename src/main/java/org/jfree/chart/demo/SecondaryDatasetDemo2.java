@@ -66,16 +66,14 @@ public class SecondaryDatasetDemo2 extends ApplicationFrame implements ActionLis
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public SecondaryDatasetDemo2(final String title) {
 
 		super(title);
 		final CategoryDataset dataset1 = createRandomDataset("Series 1");
-		final JFreeChart chart = ChartFactory.createLineChart(
-							"Secondary Dataset Demo 2", "Category", "Value",
-							dataset1, PlotOrientation.VERTICAL, true, true, false
-							);
+		final JFreeChart chart = ChartFactory.createLineChart("Secondary Dataset Demo 2", "Category", "Value", dataset1,
+				PlotOrientation.VERTICAL, true, true, false);
 		chart.setBackgroundPaint(Color.white);
 
 		this.plot = chart.getCategoryPlot();
@@ -114,7 +112,7 @@ public class SecondaryDatasetDemo2 extends ApplicationFrame implements ActionLis
 	 * Creates a random dataset.
 	 * 
 	 * @param name
-	 *           the series name.
+	 *            the series name.
 	 * @return A random dataset.
 	 */
 	private CategoryDataset createRandomDataset(final String name) {
@@ -143,29 +141,23 @@ public class SecondaryDatasetDemo2 extends ApplicationFrame implements ActionLis
 	 * Handles a click on the button by adding new (random) data.
 	 * 
 	 * @param e
-	 *           the action event.
+	 *            the action event.
 	 */
 	public void actionPerformed(final ActionEvent e) {
 
 		if (e.getActionCommand().equals("ADD_DATASET")) {
 			if (this.secondaryDatasetIndex < 20) {
 				this.secondaryDatasetIndex++;
-				this.plot.setDataset(
-									this.secondaryDatasetIndex,
-									createRandomDataset("S" + this.secondaryDatasetIndex)
-									);
-				this.plot.setRenderer(
-									this.secondaryDatasetIndex, new LineAndShapeRenderer(LineAndShapeRenderer.LINES)
-									);
+				this.plot.setDataset(this.secondaryDatasetIndex, createRandomDataset("S" + this.secondaryDatasetIndex));
+				this.plot.setRenderer(this.secondaryDatasetIndex, new LineAndShapeRenderer(LineAndShapeRenderer.LINES));
 			}
-		} else
-			if (e.getActionCommand().equals("REMOVE_DATASET")) {
-				if (this.secondaryDatasetIndex > 0) {
-					this.plot.setDataset(this.secondaryDatasetIndex, null);
-					this.plot.setRenderer(this.secondaryDatasetIndex, null);
-					this.secondaryDatasetIndex--;
-				}
+		} else if (e.getActionCommand().equals("REMOVE_DATASET")) {
+			if (this.secondaryDatasetIndex > 0) {
+				this.plot.setDataset(this.secondaryDatasetIndex, null);
+				this.plot.setRenderer(this.secondaryDatasetIndex, null);
+				this.secondaryDatasetIndex--;
 			}
+		}
 
 	}
 
@@ -173,7 +165,7 @@ public class SecondaryDatasetDemo2 extends ApplicationFrame implements ActionLis
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

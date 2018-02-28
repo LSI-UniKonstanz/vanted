@@ -89,11 +89,8 @@ import org.jfree.util.ObjectUtils;
  * 
  * @author David M. O'Donnell
  */
-public class ContourPlot extends Plot implements ContourValuePlot,
-																	ValueAxisPlot,
-																	PropertyChangeListener,
-																	Serializable,
-																	Cloneable {
+public class ContourPlot extends Plot
+		implements ContourValuePlot, ValueAxisPlot, PropertyChangeListener, Serializable, Cloneable {
 
 	/** The default insets. */
 	protected static final Insets DEFAULT_INSETS = new Insets(2, 2, 100, 10);
@@ -125,7 +122,10 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	/** The color used to draw the crosshair (if any). */
 	private transient Paint domainCrosshairPaint;
 
-	/** A flag that controls whether or not the crosshair locks onto actual data points. */
+	/**
+	 * A flag that controls whether or not the crosshair locks onto actual data
+	 * points.
+	 */
 	private boolean domainCrosshairLockedOnData = true;
 
 	/** A flag that controls whether or not a range crosshair is drawn.. */
@@ -140,7 +140,10 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	/** The color used to draw the crosshair (if any). */
 	private transient Paint rangeCrosshairPaint;
 
-	/** A flag that controls whether or not the crosshair locks onto actual data points. */
+	/**
+	 * A flag that controls whether or not the crosshair locks onto actual data
+	 * points.
+	 */
 	private boolean rangeCrosshairLockedOnData = true;
 
 	/** A list of markers (optional) for the domain axis. */
@@ -158,10 +161,15 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	/** The URL text generator. */
 	private XYURLGenerator urlGenerator;
 
-	/** Controls whether data are render as filled rectangles or rendered as points */
+	/**
+	 * Controls whether data are render as filled rectangles or rendered as points
+	 */
 	private boolean renderAsPoints = false;
 
-	/** Size of points rendered when renderAsPoints = true. Size is relative to dataArea */
+	/**
+	 * Size of points rendered when renderAsPoints = true. Size is relative to
+	 * dataArea
+	 */
 	private double ptSizePct = 0.05;
 
 	/** Contains the a ClipPath to "trim" the contours. */
@@ -171,23 +179,23 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	private transient Paint missingPaint = null;
 
 	/** The resourceBundle for the localization. */
-	protected static ResourceBundle localizationResources =
-						ResourceBundle.getBundle("org.jfree.chart.plot.LocalizationBundle");
+	protected static ResourceBundle localizationResources = ResourceBundle
+			.getBundle("org.jfree.chart.plot.LocalizationBundle");
 
 	/**
-	 * Constructs a contour plot with the specified axes (other attributes take default values).
+	 * Constructs a contour plot with the specified axes (other attributes take
+	 * default values).
 	 * 
 	 * @param dataset
-	 *           The dataset.
+	 *            The dataset.
 	 * @param domainAxis
-	 *           The domain axis.
+	 *            The domain axis.
 	 * @param rangeAxis
-	 *           The range axis.
+	 *            The range axis.
 	 * @param colorBar
-	 *           The z-axis axis.
+	 *            The z-axis axis.
 	 */
-	public ContourPlot(ContourDataset dataset,
-								ValueAxis domainAxis, ValueAxis rangeAxis, ColorBar colorBar) {
+	public ContourPlot(ContourDataset dataset, ValueAxis domainAxis, ValueAxis rangeAxis, ColorBar colorBar) {
 
 		super();
 
@@ -230,11 +238,11 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	}
 
 	/**
-	 * Sets the color bar location and sends a {@link PlotChangeEvent} to all registered
-	 * listeners.
+	 * Sets the color bar location and sends a {@link PlotChangeEvent} to all
+	 * registered listeners.
 	 * 
 	 * @param edge
-	 *           the location.
+	 *            the location.
 	 */
 	public void setColorBarLocation(RectangleEdge edge) {
 		this.colorBarLocation = edge;
@@ -251,14 +259,16 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	}
 
 	/**
-	 * Sets the dataset for the plot, replacing the existing dataset if there is one.
+	 * Sets the dataset for the plot, replacing the existing dataset if there is
+	 * one.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> permitted).
+	 *            the dataset (<code>null</code> permitted).
 	 */
 	public void setDataset(ContourDataset dataset) {
 
-		// if there is an existing dataset, remove the plot from the list of change listeners...
+		// if there is an existing dataset, remove the plot from the list of change
+		// listeners...
 		ContourDataset existing = this.dataset;
 		if (existing != null) {
 			existing.removeChangeListener(this);
@@ -278,7 +288,8 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	}
 
 	/**
-	 * A convenience method that returns the dataset for the plot, cast as a ContourDataset.
+	 * A convenience method that returns the dataset for the plot, cast as a
+	 * ContourDataset.
 	 * 
 	 * @return The dataset for the plot, cast as an ContourDataset.
 	 * @deprecated Use the getDataset() method instead.
@@ -301,11 +312,11 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	}
 
 	/**
-	 * Sets the domain axis for the plot (this must be compatible with the plot
-	 * type or an exception is thrown).
+	 * Sets the domain axis for the plot (this must be compatible with the plot type
+	 * or an exception is thrown).
 	 * 
 	 * @param axis
-	 *           The new axis.
+	 *            The new axis.
 	 */
 	public void setDomainAxis(ValueAxis axis) {
 
@@ -344,10 +355,11 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	/**
 	 * Sets the range axis for the plot.
 	 * <P>
-	 * An exception is thrown if the new axis and the plot are not mutually compatible.
+	 * An exception is thrown if the new axis and the plot are not mutually
+	 * compatible.
 	 * 
 	 * @param axis
-	 *           The new axis (null permitted).
+	 *            The new axis (null permitted).
 	 */
 	public void setRangeAxis(ValueAxis axis) {
 
@@ -370,7 +382,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Sets the colorbar for the plot.
 	 * 
 	 * @param axis
-	 *           The new axis (null permitted).
+	 *            The new axis (null permitted).
 	 */
 	public void setColorBarAxis(ColorBar axis) {
 
@@ -382,10 +394,11 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	/**
 	 * Adds a marker for the domain axis.
 	 * <P>
-	 * Typically a marker will be drawn by the renderer as a line perpendicular to the range axis, however this is entirely up to the renderer.
+	 * Typically a marker will be drawn by the renderer as a line perpendicular to
+	 * the range axis, however this is entirely up to the renderer.
 	 * 
 	 * @param marker
-	 *           the marker.
+	 *            the marker.
 	 */
 	public void addDomainMarker(Marker marker) {
 
@@ -410,10 +423,11 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	/**
 	 * Adds a marker for the range axis.
 	 * <P>
-	 * Typically a marker will be drawn by the renderer as a line perpendicular to the range axis, however this is entirely up to the renderer.
+	 * Typically a marker will be drawn by the renderer as a line perpendicular to
+	 * the range axis, however this is entirely up to the renderer.
 	 * 
 	 * @param marker
-	 *           The marker.
+	 *            The marker.
 	 */
 	public void addRangeMarker(Marker marker) {
 
@@ -439,7 +453,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Adds an annotation to the plot.
 	 * 
 	 * @param annotation
-	 *           the annotation.
+	 *            the annotation.
 	 */
 	public void addAnnotation(XYAnnotation annotation) {
 
@@ -466,7 +480,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * compatible with the plot, and false otherwise.
 	 * 
 	 * @param axis
-	 *           The proposed axis.
+	 *            The proposed axis.
 	 * @return <code>true</code> if the axis is compatible with the plot.
 	 */
 	public boolean isCompatibleDomainAxis(ValueAxis axis) {
@@ -476,22 +490,24 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	}
 
 	/**
-	 * Draws the plot on a Java 2D graphics device (such as the screen or a printer).
+	 * Draws the plot on a Java 2D graphics device (such as the screen or a
+	 * printer).
 	 * <P>
-	 * The optional <code>info</code> argument collects information about the rendering of the plot (dimensions, tooltip information etc). Just pass in
+	 * The optional <code>info</code> argument collects information about the
+	 * rendering of the plot (dimensions, tooltip information etc). Just pass in
 	 * <code>null</code> if you do not need this information.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plotArea
-	 *           the area within which the plot (including axis labels) should be drawn.
+	 *            the area within which the plot (including axis labels) should be
+	 *            drawn.
 	 * @param parentState
-	 *           the state from the parent plot, if there is one.
+	 *            the state from the parent plot, if there is one.
 	 * @param info
-	 *           collects chart drawing information (<code>null</code> permitted).
+	 *            collects chart drawing information (<code>null</code> permitted).
 	 */
-	public void draw(Graphics2D g2, Rectangle2D plotArea, PlotState parentState,
-							PlotRenderingInfo info) {
+	public void draw(Graphics2D g2, Rectangle2D plotArea, PlotState parentState, PlotRenderingInfo info) {
 
 		// if the plot area is too small, just return...
 		boolean b1 = (plotArea.getWidth() <= MINIMUM_WIDTH_TO_DRAW);
@@ -508,10 +524,9 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 		// adjust the drawing area for plot insets (if any)...
 		Insets insets = getInsets();
 		if (insets != null) {
-			plotArea.setRect(plotArea.getX() + insets.left,
-										plotArea.getY() + insets.top,
-										plotArea.getWidth() - insets.left - insets.right,
-										plotArea.getHeight() - insets.top - insets.bottom);
+			plotArea.setRect(plotArea.getX() + insets.left, plotArea.getY() + insets.top,
+					plotArea.getWidth() - insets.left - insets.right,
+					plotArea.getHeight() - insets.top - insets.bottom);
 		}
 
 		AxisSpace space = new AxisSpace();
@@ -522,8 +537,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 		Rectangle2D estimatedDataArea = space.shrink(plotArea, null);
 
 		AxisSpace space2 = new AxisSpace();
-		space2 = this.colorBar.reserveSpace(g2, this, plotArea, estimatedDataArea,
-															this.colorBarLocation, space2);
+		space2 = this.colorBar.reserveSpace(g2, this, plotArea, estimatedDataArea, this.colorBarLocation, space2);
 		Rectangle2D adjustedPlotArea = space2.shrink(plotArea, null);
 
 		Rectangle2D dataArea = space.shrink(adjustedPlotArea, null);
@@ -558,8 +572,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 				}
 			}
 
-			dataArea.setRect(tmpDataArea.getX() + tmpDataArea.getWidth() / 2 - w / 2,
-										tmpDataArea.getY(), w, h);
+			dataArea.setRect(tmpDataArea.getX() + tmpDataArea.getWidth() / 2 - w / 2, tmpDataArea.getY(), w, h);
 		}
 
 		if (info != null) {
@@ -574,30 +587,23 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 
 		double cursor = dataArea.getMaxY();
 		if (this.domainAxis != null) {
-			this.domainAxis.draw(
-								g2, cursor, adjustedPlotArea, dataArea, RectangleEdge.BOTTOM, info
-								);
+			this.domainAxis.draw(g2, cursor, adjustedPlotArea, dataArea, RectangleEdge.BOTTOM, info);
 		}
 
 		if (this.rangeAxis != null) {
 			cursor = dataArea.getMinX();
-			this.rangeAxis.draw(
-								g2, cursor, adjustedPlotArea, dataArea, RectangleEdge.LEFT, info
-								);
+			this.rangeAxis.draw(g2, cursor, adjustedPlotArea, dataArea, RectangleEdge.LEFT, info);
 		}
 
 		if (this.colorBar != null) {
 			cursor = 0.0;
-			cursor = this.colorBar.draw(g2, cursor,
-														adjustedPlotArea, dataArea, colorBarArea,
-														this.colorBarLocation);
+			cursor = this.colorBar.draw(g2, cursor, adjustedPlotArea, dataArea, colorBarArea, this.colorBarLocation);
 		}
 		Shape originalClip = g2.getClip();
 		Composite originalComposite = g2.getComposite();
 
 		g2.clip(dataArea);
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
-																	getForegroundAlpha()));
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getForegroundAlpha()));
 		render(g2, dataArea, info, crosshairState);
 
 		if (this.domainMarkers != null) {
@@ -616,7 +622,8 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 			}
 		}
 
-		// TO DO: these annotations only work with XYPlot, see if it is possible to make ContourPlot a
+		// TO DO: these annotations only work with XYPlot, see if it is possible to make
+		// ContourPlot a
 		// subclass of XYPlot (DG);
 
 		// // draw the annotations...
@@ -642,19 +649,19 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Draws a representation of the data within the dataArea region, using the
 	 * current renderer.
 	 * <P>
-	 * The <code>info</code> and <code>crosshairState</code> arguments may be <code>null</code>.
+	 * The <code>info</code> and <code>crosshairState</code> arguments may be
+	 * <code>null</code>.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the region in which the data is to be drawn.
+	 *            the region in which the data is to be drawn.
 	 * @param info
-	 *           an optional object for collection dimension information.
+	 *            an optional object for collection dimension information.
 	 * @param crosshairState
-	 *           an optional object for collecting crosshair info.
+	 *            an optional object for collecting crosshair info.
 	 */
-	public void render(Graphics2D g2, Rectangle2D dataArea,
-								PlotRenderingInfo info, CrosshairState crosshairState) {
+	public void render(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info, CrosshairState crosshairState) {
 
 		// now get the data and plot it (the visual representation will depend
 		// on the renderer that has been set)...
@@ -664,46 +671,35 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 			ColorBar zAxis = getColorBar();
 
 			if (this.clipPath != null) {
-				GeneralPath clipper = getClipPath().draw(
-									g2, dataArea, this.domainAxis, this.rangeAxis
-									);
+				GeneralPath clipper = getClipPath().draw(g2, dataArea, this.domainAxis, this.rangeAxis);
 				if (this.clipPath.isClip()) {
 					g2.clip(clipper);
 				}
 			}
 
 			if (this.renderAsPoints) {
-				pointRenderer(g2, dataArea, info, this,
-									this.domainAxis, this.rangeAxis, zAxis,
-										data, crosshairState);
+				pointRenderer(g2, dataArea, info, this, this.domainAxis, this.rangeAxis, zAxis, data, crosshairState);
 			} else {
-				contourRenderer(g2, dataArea, info, this,
-									this.domainAxis, this.rangeAxis, zAxis,
-											data, crosshairState);
+				contourRenderer(g2, dataArea, info, this, this.domainAxis, this.rangeAxis, zAxis, data, crosshairState);
 			}
 
 			// draw vertical crosshair if required...
 			setDomainCrosshairValue(crosshairState.getCrosshairX(), false);
 			if (isDomainCrosshairVisible()) {
-				drawVerticalLine(g2, dataArea,
-											getDomainCrosshairValue(),
-											getDomainCrosshairStroke(),
-											getDomainCrosshairPaint());
+				drawVerticalLine(g2, dataArea, getDomainCrosshairValue(), getDomainCrosshairStroke(),
+						getDomainCrosshairPaint());
 			}
 
 			// draw horizontal crosshair if required...
 			setRangeCrosshairValue(crosshairState.getCrosshairY(), false);
 			if (isRangeCrosshairVisible()) {
-				drawHorizontalLine(g2, dataArea,
-												getRangeCrosshairValue(),
-												getRangeCrosshairStroke(),
-												getRangeCrosshairPaint());
+				drawHorizontalLine(g2, dataArea, getRangeCrosshairValue(), getRangeCrosshairStroke(),
+						getRangeCrosshairPaint());
 			}
 
-		} else
-			if (this.clipPath != null) {
-				getClipPath().draw(g2, dataArea, this.domainAxis, this.rangeAxis);
-			}
+		} else if (this.clipPath != null) {
+			getClipPath().draw(g2, dataArea, this.domainAxis, this.rangeAxis);
+		}
 
 	}
 
@@ -711,33 +707,27 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Fills the plot.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the area within which the data is being drawn.
+	 *            the area within which the data is being drawn.
 	 * @param info
-	 *           collects information about the drawing.
+	 *            collects information about the drawing.
 	 * @param plot
-	 *           the plot (can be used to obtain standard color information etc).
+	 *            the plot (can be used to obtain standard color information etc).
 	 * @param horizontalAxis
-	 *           the domain (horizontal) axis.
+	 *            the domain (horizontal) axis.
 	 * @param verticalAxis
-	 *           the range (vertical) axis.
+	 *            the range (vertical) axis.
 	 * @param colorBar
-	 *           the color bar axis.
+	 *            the color bar axis.
 	 * @param data
-	 *           the dataset.
+	 *            the dataset.
 	 * @param crosshairState
-	 *           information about crosshairs on a plot.
+	 *            information about crosshairs on a plot.
 	 */
-	public void contourRenderer(Graphics2D g2,
-											Rectangle2D dataArea,
-											PlotRenderingInfo info,
-											ContourPlot plot,
-											ValueAxis horizontalAxis,
-											ValueAxis verticalAxis,
-											ColorBar colorBar,
-											ContourDataset data,
-											CrosshairState crosshairState) {
+	public void contourRenderer(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info, ContourPlot plot,
+			ValueAxis horizontalAxis, ValueAxis verticalAxis, ColorBar colorBar, ContourDataset data,
+			CrosshairState crosshairState) {
 
 		// setup for collecting optional entity info...
 		Rectangle2D.Double entityArea = null;
@@ -792,25 +782,21 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 				if (i == 0) {
 					transX = horizontalAxis.valueToJava2D(x[k], dataArea, RectangleEdge.BOTTOM);
 					transXm1 = transX;
-					transXp1 = horizontalAxis.valueToJava2D(x[indexX[i + 1]], dataArea,
-																				RectangleEdge.BOTTOM);
+					transXp1 = horizontalAxis.valueToJava2D(x[indexX[i + 1]], dataArea, RectangleEdge.BOTTOM);
 					transDXm1 = Math.abs(0.5 * (transX - transXm1));
 					transDXp1 = Math.abs(0.5 * (transX - transXp1));
-				} else
-					if (i == iMax) {
-						transX = horizontalAxis.valueToJava2D(x[k], dataArea, RectangleEdge.BOTTOM);
-						transXm1 = horizontalAxis.valueToJava2D(x[indexX[i - 1]], dataArea,
-																				RectangleEdge.BOTTOM);
-						transXp1 = transX;
-						transDXm1 = Math.abs(0.5 * (transX - transXm1));
-						transDXp1 = Math.abs(0.5 * (transX - transXp1));
-					} else {
-						transX = horizontalAxis.valueToJava2D(x[k], dataArea, RectangleEdge.BOTTOM);
-						transXp1 = horizontalAxis.valueToJava2D(x[indexX[i + 1]], dataArea,
-																				RectangleEdge.BOTTOM);
-						transDXm1 = transDXp1;
-						transDXp1 = Math.abs(0.5 * (transX - transXp1));
-					}
+				} else if (i == iMax) {
+					transX = horizontalAxis.valueToJava2D(x[k], dataArea, RectangleEdge.BOTTOM);
+					transXm1 = horizontalAxis.valueToJava2D(x[indexX[i - 1]], dataArea, RectangleEdge.BOTTOM);
+					transXp1 = transX;
+					transDXm1 = Math.abs(0.5 * (transX - transXm1));
+					transDXp1 = Math.abs(0.5 * (transX - transXp1));
+				} else {
+					transX = horizontalAxis.valueToJava2D(x[k], dataArea, RectangleEdge.BOTTOM);
+					transXp1 = horizontalAxis.valueToJava2D(x[indexX[i + 1]], dataArea, RectangleEdge.BOTTOM);
+					transDXm1 = transDXp1;
+					transDXp1 = Math.abs(0.5 * (transX - transXp1));
+				}
 
 				if (horizInverted) {
 					transX -= transDXp1;
@@ -828,20 +814,19 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 				transYp1 = verticalAxis.valueToJava2D(y[k + 1], dataArea, RectangleEdge.LEFT);
 				transDYm1 = Math.abs(0.5 * (transY - transYm1));
 				transDYp1 = Math.abs(0.5 * (transY - transYp1));
-			} else
-				if ((i < indexX.length - 1 && indexX[i + 1] - 1 == k) || k == x.length - 1) {
-					// end of column
-					transY = verticalAxis.valueToJava2D(y[k], dataArea, RectangleEdge.LEFT);
-					transYm1 = verticalAxis.valueToJava2D(y[k - 1], dataArea, RectangleEdge.LEFT);
-					transYp1 = transY;
-					transDYm1 = Math.abs(0.5 * (transY - transYm1));
-					transDYp1 = Math.abs(0.5 * (transY - transYp1));
-				} else {
-					transY = verticalAxis.valueToJava2D(y[k], dataArea, RectangleEdge.LEFT);
-					transYp1 = verticalAxis.valueToJava2D(y[k + 1], dataArea, RectangleEdge.LEFT);
-					transDYm1 = transDYp1;
-					transDYp1 = Math.abs(0.5 * (transY - transYp1));
-				}
+			} else if ((i < indexX.length - 1 && indexX[i + 1] - 1 == k) || k == x.length - 1) {
+				// end of column
+				transY = verticalAxis.valueToJava2D(y[k], dataArea, RectangleEdge.LEFT);
+				transYm1 = verticalAxis.valueToJava2D(y[k - 1], dataArea, RectangleEdge.LEFT);
+				transYp1 = transY;
+				transDYm1 = Math.abs(0.5 * (transY - transYm1));
+				transDYp1 = Math.abs(0.5 * (transY - transYp1));
+			} else {
+				transY = verticalAxis.valueToJava2D(y[k], dataArea, RectangleEdge.LEFT);
+				transYp1 = verticalAxis.valueToJava2D(y[k + 1], dataArea, RectangleEdge.LEFT);
+				transDYm1 = transDYp1;
+				transDYp1 = Math.abs(0.5 * (transY - transYp1));
+			}
 			if (vertInverted) {
 				transY -= transDYm1;
 			} else {
@@ -854,11 +839,10 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 			if (zNumber[k] != null) {
 				g2.setPaint(colorBar.getPaint(zNumber[k].doubleValue()));
 				g2.fill(rect);
-			} else
-				if (this.missingPaint != null) {
-					g2.setPaint(this.missingPaint);
-					g2.fill(rect);
-				}
+			} else if (this.missingPaint != null) {
+				g2.setPaint(this.missingPaint);
+				g2.fill(rect);
+			}
 
 			entityArea = rect;
 
@@ -875,8 +859,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 				// url = getURLGenerator().generateURL(data, series, item);
 				// }
 				// Unlike XYItemRenderer, we need to clone entityArea since it reused.
-				ContourEntity entity = new ContourEntity((Rectangle2D.Double) entityArea.clone(),
-																			tip, url);
+				ContourEntity entity = new ContourEntity((Rectangle2D.Double) entityArea.clone(), tip, url);
 				entity.setIndex(k);
 				entities.addEntity(entity);
 				// }
@@ -886,9 +869,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 			if (plot.isDomainCrosshairLockedOnData()) {
 				if (plot.isRangeCrosshairLockedOnData()) {
 					// both axes
-					crosshairState.updateCrosshairPoint(
-										x[k], y[k], transX, transY, PlotOrientation.VERTICAL
-										);
+					crosshairState.updateCrosshairPoint(x[k], y[k], transX, transY, PlotOrientation.VERTICAL);
 				} else {
 					// just the horizontal axis...
 					crosshairState.updateCrosshairX(transX);
@@ -911,33 +892,27 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the area within which the data is being drawn.
+	 *            the area within which the data is being drawn.
 	 * @param info
-	 *           collects information about the drawing.
+	 *            collects information about the drawing.
 	 * @param plot
-	 *           the plot (can be used to obtain standard color information etc).
+	 *            the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *           the domain (horizontal) axis.
+	 *            the domain (horizontal) axis.
 	 * @param rangeAxis
-	 *           the range (vertical) axis.
+	 *            the range (vertical) axis.
 	 * @param colorBar
-	 *           the color bar axis.
+	 *            the color bar axis.
 	 * @param data
-	 *           the dataset.
+	 *            the dataset.
 	 * @param crosshairState
-	 *           information about crosshairs on a plot.
+	 *            information about crosshairs on a plot.
 	 */
-	public void pointRenderer(Graphics2D g2,
-										Rectangle2D dataArea,
-										PlotRenderingInfo info,
-										ContourPlot plot,
-										ValueAxis domainAxis,
-										ValueAxis rangeAxis,
-										ColorBar colorBar,
-										ContourDataset data,
-										CrosshairState crosshairState) {
+	public void pointRenderer(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info, ContourPlot plot,
+			ValueAxis domainAxis, ValueAxis rangeAxis, ColorBar colorBar, ContourDataset data,
+			CrosshairState crosshairState) {
 
 		// setup for collecting optional entity info...
 		RectangularShape entityArea = null;
@@ -975,10 +950,8 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 		double size = dataArea.getWidth() * this.ptSizePct;
 		for (int k = 0; k < x.length; k++) {
 
-			transX = domainAxis.valueToJava2D(x[k], dataArea, RectangleEdge.BOTTOM)
-								- 0.5 * size;
-			transY = rangeAxis.valueToJava2D(y[k], dataArea, RectangleEdge.LEFT)
-								- 0.5 * size;
+			transX = domainAxis.valueToJava2D(x[k], dataArea, RectangleEdge.BOTTOM) - 0.5 * size;
+			transY = rangeAxis.valueToJava2D(y[k], dataArea, RectangleEdge.LEFT) - 0.5 * size;
 			transDX = size;
 			transDY = size;
 
@@ -987,11 +960,10 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 			if (zNumber[k] != null) {
 				g2.setPaint(colorBar.getPaint(zNumber[k].doubleValue()));
 				g2.fill(rect);
-			} else
-				if (this.missingPaint != null) {
-					g2.setPaint(this.missingPaint);
-					g2.fill(rect);
-				}
+			} else if (this.missingPaint != null) {
+				g2.setPaint(this.missingPaint);
+				g2.fill(rect);
+			}
 
 			entityArea = rect;
 
@@ -1006,8 +978,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 				// url = getURLGenerator().generateURL(data, series, item);
 				// }
 				// Unlike XYItemRenderer, we need to clone entityArea since it reused.
-				ContourEntity entity = new ContourEntity((RectangularShape) entityArea.clone(),
-																				tip, url);
+				ContourEntity entity = new ContourEntity((RectangularShape) entityArea.clone(), tip, url);
 				entity.setIndex(k);
 				entities.addEntity(entity);
 			}
@@ -1016,9 +987,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 			if (plot.isDomainCrosshairLockedOnData()) {
 				if (plot.isRangeCrosshairLockedOnData()) {
 					// both axes
-					crosshairState.updateCrosshairPoint(
-										x[k], y[k], transX, transY, PlotOrientation.VERTICAL
-										);
+					crosshairState.updateCrosshairPoint(x[k], y[k], transX, transY, PlotOrientation.VERTICAL);
 				} else {
 					// just the horizontal axis...
 					crosshairState.updateCrosshairX(transX);
@@ -1041,22 +1010,20 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Utility method for drawing a crosshair on the chart (if required).
 	 * 
 	 * @param g2
-	 *           The graphics device.
+	 *            The graphics device.
 	 * @param dataArea
-	 *           The data area.
+	 *            The data area.
 	 * @param value
-	 *           The coordinate, where to draw the line.
+	 *            The coordinate, where to draw the line.
 	 * @param stroke
-	 *           The stroke to use.
+	 *            The stroke to use.
 	 * @param paint
-	 *           The paint to use.
+	 *            The paint to use.
 	 */
-	protected void drawVerticalLine(Graphics2D g2, Rectangle2D dataArea,
-												double value, Stroke stroke, Paint paint) {
+	protected void drawVerticalLine(Graphics2D g2, Rectangle2D dataArea, double value, Stroke stroke, Paint paint) {
 
 		double xx = getDomainAxis().valueToJava2D(value, dataArea, RectangleEdge.BOTTOM);
-		Line2D line = new Line2D.Double(xx, dataArea.getMinY(),
-														xx, dataArea.getMaxY());
+		Line2D line = new Line2D.Double(xx, dataArea.getMinY(), xx, dataArea.getMaxY());
 		g2.setStroke(stroke);
 		g2.setPaint(paint);
 		g2.draw(line);
@@ -1067,22 +1034,20 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Utility method for drawing a crosshair on the chart (if required).
 	 * 
 	 * @param g2
-	 *           The graphics device.
+	 *            The graphics device.
 	 * @param dataArea
-	 *           The data area.
+	 *            The data area.
 	 * @param value
-	 *           The coordinate, where to draw the line.
+	 *            The coordinate, where to draw the line.
 	 * @param stroke
-	 *           The stroke to use.
+	 *            The stroke to use.
 	 * @param paint
-	 *           The paint to use.
+	 *            The paint to use.
 	 */
-	protected void drawHorizontalLine(Graphics2D g2, Rectangle2D dataArea,
-													double value, Stroke stroke, Paint paint) {
+	protected void drawHorizontalLine(Graphics2D g2, Rectangle2D dataArea, double value, Stroke stroke, Paint paint) {
 
 		double yy = getRangeAxis().valueToJava2D(value, dataArea, RectangleEdge.LEFT);
-		Line2D line = new Line2D.Double(dataArea.getMinX(), yy,
-														dataArea.getMaxX(), yy);
+		Line2D line = new Line2D.Double(dataArea.getMinX(), yy, dataArea.getMaxX(), yy);
 		g2.setStroke(stroke);
 		g2.setPaint(paint);
 		g2.draw(line);
@@ -1093,29 +1058,23 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Handles a 'click' on the plot by updating the anchor values...
 	 * 
 	 * @param x
-	 *           x-coordinate, where the click occured.
+	 *            x-coordinate, where the click occured.
 	 * @param y
-	 *           y-coordinate, where the click occured.
+	 *            y-coordinate, where the click occured.
 	 * @param info
-	 *           An object for collection dimension information.
+	 *            An object for collection dimension information.
 	 */
 	public void handleClick(int x, int y, PlotRenderingInfo info) {
 
 		/*
-		 * // set the anchor value for the horizontal axis...
-		 * ValueAxis hva = getDomainAxis();
-		 * if (hva != null) {
-		 * double hvalue = hva.translateJava2DtoValue((float) x, info.getDataArea());
-		 * hva.setAnchorValue(hvalue);
-		 * setDomainCrosshairValue(hvalue);
-		 * }
-		 * // set the anchor value for the vertical axis...
-		 * ValueAxis vva = this.getRangeAxis();
-		 * if (vva != null) {
-		 * double vvalue = vva.translateJava2DtoValue((float) y, info.getDataArea());
-		 * vva.setAnchorValue(vvalue);
-		 * setRangeCrosshairValue(vvalue);
-		 * }
+		 * // set the anchor value for the horizontal axis... ValueAxis hva =
+		 * getDomainAxis(); if (hva != null) { double hvalue =
+		 * hva.translateJava2DtoValue((float) x, info.getDataArea());
+		 * hva.setAnchorValue(hvalue); setDomainCrosshairValue(hvalue); } // set the
+		 * anchor value for the vertical axis... ValueAxis vva = this.getRangeAxis(); if
+		 * (vva != null) { double vvalue = vva.translateJava2DtoValue((float) y,
+		 * info.getDataArea()); vva.setAnchorValue(vvalue);
+		 * setRangeCrosshairValue(vvalue); }
 		 */
 	}
 
@@ -1123,7 +1082,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Zooms the axis ranges by the specified percentage about the anchor point.
 	 * 
 	 * @param percent
-	 *           The amount of the zoom.
+	 *            The amount of the zoom.
 	 */
 	public void zoom(double percent) {
 
@@ -1155,7 +1114,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Returns the range for an axis.
 	 * 
 	 * @param axis
-	 *           the axis.
+	 *            the axis.
 	 * @return The range for an axis.
 	 */
 	public Range getDataRange(ValueAxis axis) {
@@ -1168,10 +1127,9 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 
 		if (axis == getDomainAxis()) {
 			result = DatasetUtilities.getDomainExtent(this.dataset);
-		} else
-			if (axis == getRangeAxis()) {
-				result = DatasetUtilities.getRangeExtent(this.dataset);
-			}
+		} else if (axis == getRangeAxis()) {
+			result = DatasetUtilities.getRangeExtent(this.dataset);
+		}
 
 		return result;
 
@@ -1203,7 +1161,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * One source of property change events is the plot's renderer.
 	 * 
 	 * @param event
-	 *           Information about the property change.
+	 *            Information about the property change.
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
 		notifyListeners(new PlotChangeEvent(this));
@@ -1212,10 +1170,11 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	/**
 	 * Receives notification of a change to the plot's dataset.
 	 * <P>
-	 * The chart reacts by passing on a chart change event to all registered listeners.
+	 * The chart reacts by passing on a chart change event to all registered
+	 * listeners.
 	 * 
 	 * @param event
-	 *           Information about the event (not used here).
+	 *            Information about the event (not used here).
 	 */
 	public void datasetChanged(DatasetChangeEvent event) {
 
@@ -1257,7 +1216,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Sets the flag indicating whether or not the domain crosshair is visible.
 	 * 
 	 * @param flag
-	 *           the new value of the flag.
+	 *            the new value of the flag.
 	 */
 	public void setDomainCrosshairVisible(boolean flag) {
 
@@ -1269,8 +1228,8 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	}
 
 	/**
-	 * Returns a flag indicating whether or not the crosshair should "lock-on"
-	 * to actual data values.
+	 * Returns a flag indicating whether or not the crosshair should "lock-on" to
+	 * actual data values.
 	 * 
 	 * @return the flag.
 	 */
@@ -1283,7 +1242,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * to actual data values.
 	 * 
 	 * @param flag
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setDomainCrosshairLockedOnData(boolean flag) {
 
@@ -1306,10 +1265,11 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	/**
 	 * Sets the domain crosshair value.
 	 * <P>
-	 * Registered listeners are notified that the plot has been modified, but only if the crosshair is visible.
+	 * Registered listeners are notified that the plot has been modified, but only
+	 * if the crosshair is visible.
 	 * 
 	 * @param value
-	 *           the new value.
+	 *            the new value.
 	 */
 	public void setDomainCrosshairValue(double value) {
 
@@ -1320,12 +1280,13 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	/**
 	 * Sets the domain crosshair value.
 	 * <P>
-	 * Registered listeners are notified that the axis has been modified, but only if the crosshair is visible.
+	 * Registered listeners are notified that the axis has been modified, but only
+	 * if the crosshair is visible.
 	 * 
 	 * @param value
-	 *           the new value.
+	 *            the new value.
 	 * @param notify
-	 *           a flag that controls whether or not listeners are notified.
+	 *            a flag that controls whether or not listeners are notified.
 	 */
 	public void setDomainCrosshairValue(double value, boolean notify) {
 
@@ -1350,7 +1311,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * registered listeners that the axis has been modified.
 	 * 
 	 * @param stroke
-	 *           the new crosshair stroke.
+	 *            the new crosshair stroke.
 	 */
 	public void setDomainCrosshairStroke(Stroke stroke) {
 		this.domainCrosshairStroke = stroke;
@@ -1371,7 +1332,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * registered listeners that the axis has been modified.
 	 * 
 	 * @param paint
-	 *           the new crosshair paint.
+	 *            the new crosshair paint.
 	 */
 	public void setDomainCrosshairPaint(Paint paint) {
 		this.domainCrosshairPaint = paint;
@@ -1391,7 +1352,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Sets the flag indicating whether or not the range crosshair is visible.
 	 * 
 	 * @param flag
-	 *           the new value of the flag.
+	 *            the new value of the flag.
 	 */
 	public void setRangeCrosshairVisible(boolean flag) {
 
@@ -1403,8 +1364,8 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	}
 
 	/**
-	 * Returns a flag indicating whether or not the crosshair should "lock-on"
-	 * to actual data values.
+	 * Returns a flag indicating whether or not the crosshair should "lock-on" to
+	 * actual data values.
 	 * 
 	 * @return the flag.
 	 */
@@ -1417,7 +1378,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * to actual data values.
 	 * 
 	 * @param flag
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setRangeCrosshairLockedOnData(boolean flag) {
 
@@ -1440,10 +1401,11 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	/**
 	 * Sets the domain crosshair value.
 	 * <P>
-	 * Registered listeners are notified that the plot has been modified, but only if the crosshair is visible.
+	 * Registered listeners are notified that the plot has been modified, but only
+	 * if the crosshair is visible.
 	 * 
 	 * @param value
-	 *           the new value.
+	 *            the new value.
 	 */
 	public void setRangeCrosshairValue(double value) {
 
@@ -1454,12 +1416,13 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	/**
 	 * Sets the range crosshair value.
 	 * <P>
-	 * Registered listeners are notified that the axis has been modified, but only if the crosshair is visible.
+	 * Registered listeners are notified that the axis has been modified, but only
+	 * if the crosshair is visible.
 	 * 
 	 * @param value
-	 *           the new value.
+	 *            the new value.
 	 * @param notify
-	 *           a flag that controls whether or not listeners are notified.
+	 *            a flag that controls whether or not listeners are notified.
 	 */
 	public void setRangeCrosshairValue(double value, boolean notify) {
 
@@ -1484,7 +1447,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * registered listeners that the axis has been modified.
 	 * 
 	 * @param stroke
-	 *           the new crosshair stroke.
+	 *            the new crosshair stroke.
 	 */
 	public void setRangeCrosshairStroke(Stroke stroke) {
 		this.rangeCrosshairStroke = stroke;
@@ -1505,7 +1468,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * registered listeners that the axis has been modified.
 	 * 
 	 * @param paint
-	 *           the new crosshair paint.
+	 *            the new crosshair paint.
 	 */
 	public void setRangeCrosshairPaint(Paint paint) {
 		this.rangeCrosshairPaint = paint;
@@ -1525,7 +1488,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Sets the tool tip generator.
 	 * 
 	 * @param generator
-	 *           the tool tip generator (null permitted).
+	 *            the tool tip generator (null permitted).
 	 */
 	public void setToolTipGenerator(ContourToolTipGenerator generator) {
 
@@ -1547,7 +1510,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Sets the URL generator for HTML image maps.
 	 * 
 	 * @param urlGenerator
-	 *           the URL generator (null permitted).
+	 *            the URL generator (null permitted).
 	 */
 	public void setURLGenerator(XYURLGenerator urlGenerator) {
 
@@ -1560,21 +1523,18 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Draws a vertical line on the chart to represent a 'range marker'.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param marker
-	 *           the marker line.
+	 *            the marker line.
 	 * @param dataArea
-	 *           the axis data area.
+	 *            the axis data area.
 	 */
-	public void drawDomainMarker(Graphics2D g2,
-											ContourPlot plot,
-											ValueAxis domainAxis,
-											Marker marker,
-											Rectangle2D dataArea) {
+	public void drawDomainMarker(Graphics2D g2, ContourPlot plot, ValueAxis domainAxis, Marker marker,
+			Rectangle2D dataArea) {
 
 		if (marker instanceof ValueMarker) {
 			ValueMarker vm = (ValueMarker) marker;
@@ -1599,21 +1559,18 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Draws a horizontal line across the chart to represent a 'range marker'.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param marker
-	 *           the marker line.
+	 *            the marker line.
 	 * @param dataArea
-	 *           the axis data area.
+	 *            the axis data area.
 	 */
-	public void drawRangeMarker(Graphics2D g2,
-											ContourPlot plot,
-											ValueAxis rangeAxis,
-											Marker marker,
-											Rectangle2D dataArea) {
+	public void drawRangeMarker(Graphics2D g2, ContourPlot plot, ValueAxis rangeAxis, Marker marker,
+			Rectangle2D dataArea) {
 
 		if (marker instanceof ValueMarker) {
 			ValueMarker vm = (ValueMarker) marker;
@@ -1647,7 +1604,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Sets the clipPath.
 	 * 
 	 * @param clipPath
-	 *           The clipPath to set
+	 *            The clipPath to set
 	 */
 	public void setClipPath(ClipPath clipPath) {
 		this.clipPath = clipPath;
@@ -1675,7 +1632,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Sets the ptSizePct.
 	 * 
 	 * @param ptSizePct
-	 *           The ptSizePct to set
+	 *            The ptSizePct to set
 	 */
 	public void setPtSizePct(double ptSizePct) {
 		this.ptSizePct = ptSizePct;
@@ -1685,7 +1642,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Sets the renderAsPoints.
 	 * 
 	 * @param renderAsPoints
-	 *           The renderAsPoints to set
+	 *            The renderAsPoints to set
 	 */
 	public void setRenderAsPoints(boolean renderAsPoints) {
 		this.renderAsPoints = renderAsPoints;
@@ -1695,7 +1652,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Receives notification of a change to one of the plot's axes.
 	 * 
 	 * @param event
-	 *           information about the event.
+	 *            information about the event.
 	 */
 	public void axisChanged(AxisChangeEvent event) {
 		Object source = event.getSource();
@@ -1713,11 +1670,11 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Returns the visible z-range.
 	 * 
 	 * @param data
-	 *           the dataset.
+	 *            the dataset.
 	 * @param x
-	 *           the x range.
+	 *            the x range.
 	 * @param y
-	 *           the y range.
+	 *            the y range.
 	 * @return The range.
 	 */
 	public Range visibleRange(ContourDataset data, Range x, Range y) {
@@ -1739,7 +1696,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Sets the missingPaint.
 	 * 
 	 * @param missingPaint
-	 *           The missingPaint to set
+	 *            The missingPaint to set
 	 */
 	public void setMissingPaint(Paint missingPaint) {
 		this.missingPaint = missingPaint;
@@ -1749,7 +1706,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Multiplies the range on the horizontal axis/axes by the specified factor.
 	 * 
 	 * @param factor
-	 *           the zoom factor.
+	 *            the zoom factor.
 	 */
 	public void zoomHorizontalAxes(double factor) {
 		// zoom the domain axis
@@ -1759,9 +1716,9 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Zooms the horizontal axes (not yet implemented).
 	 * 
 	 * @param lowerPercent
-	 *           the new lower bound.
+	 *            the new lower bound.
 	 * @param upperPercent
-	 *           the new upper bound.
+	 *            the new upper bound.
 	 */
 	public void zoomHorizontalAxes(double lowerPercent, double upperPercent) {
 		// zoom the domain axis
@@ -1771,7 +1728,7 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Multiplies the range on the vertical axis/axes by the specified factor.
 	 * 
 	 * @param factor
-	 *           the zoom factor.
+	 *            the zoom factor.
 	 */
 	public void zoomVerticalAxes(double factor) {
 		// zoom the range axis
@@ -1782,9 +1739,9 @@ public class ContourPlot extends Plot implements ContourValuePlot,
 	 * Zooms the vertical axes (not yet implemented).
 	 * 
 	 * @param lowerPercent
-	 *           the new lower bound.
+	 *            the new lower bound.
 	 * @param upperPercent
-	 *           the new upper bound.
+	 *            the new upper bound.
 	 */
 	public void zoomVerticalAxes(double lowerPercent, double upperPercent) {
 		// zoom the domain axis

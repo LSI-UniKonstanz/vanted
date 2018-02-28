@@ -25,10 +25,8 @@ public class SBMLConstraintHelper {
 		return constraint;
 	}
 
-	public SBMLConstraint addConstraint(Graph g, String internHeadline,
-			String presentedHeadline) {
-		SBMLConstraint constraint = new SBMLConstraint(g, internHeadline,
-				presentedHeadline);
+	public SBMLConstraint addConstraint(Graph g, String internHeadline, String presentedHeadline) {
+		SBMLConstraint constraint = new SBMLConstraint(g, internHeadline, presentedHeadline);
 		constraintList.add(constraint);
 		return constraint;
 	}
@@ -38,8 +36,7 @@ public class SBMLConstraintHelper {
 		return writer.headlineHelper(g, SBML_Constants.SBML_CONSTRAINT);
 	}
 
-	public List<SBMLConstraint> addConstraints(Graph g,
-			List<String> internHeadlines) {
+	public List<SBMLConstraint> addConstraints(Graph g, List<String> internHeadlines) {
 		List<SBMLConstraint> returnList = new ArrayList<SBMLConstraint>();
 		Iterator<String> internHeadlineIt = internHeadlines.iterator();
 		while (internHeadlineIt.hasNext()) {

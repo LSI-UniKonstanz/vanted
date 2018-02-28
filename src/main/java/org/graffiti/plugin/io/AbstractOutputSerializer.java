@@ -19,34 +19,31 @@ import org.graffiti.graph.Graph;
  * 
  * @version $Revision: 1.4 $
  */
-public abstract class AbstractOutputSerializer
-		implements OutputSerializer {
+public abstract class AbstractOutputSerializer implements OutputSerializer {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Writes the contents of the given graph to a file.
 	 * 
 	 * @param g
-	 *           The graph to save.
+	 *            The graph to save.
 	 * @param filename
-	 *           The name of the file to save the graph to.
+	 *            The name of the file to save the graph to.
 	 * @exception IOException
-	 *               If an IO error occurs.
+	 *                If an IO error occurs.
 	 */
-	public void write(Graph g, String filename)
-			throws IOException {
+	public void write(Graph g, String filename) throws IOException {
 		write(new FileOutputStream(filename), g);
 	}
-	
+
 	/**
-	 * As standard, an output serializer will be valid writer for
-	 * any type of graph
+	 * As standard, an output serializer will be valid writer for any type of graph
 	 */
 	@Override
 	public boolean validFor(Graph g) {
 		return true;
 	}
-	
+
 }
 
 // ------------------------------------------------------------------------------

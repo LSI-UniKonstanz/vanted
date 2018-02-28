@@ -15,21 +15,20 @@ package org.graffiti.managers.pluginmgr;
  * @author flierl
  * @version $Revision: 1.5 $
  */
-public class Version
-					implements Comparable<Object> {
+public class Version implements Comparable<Object> {
 	// ~ Instance fields ========================================================
-	
+
 	/** The major version of the plugin. */
 	String versionMajor;
-	
+
 	/** The minor version of the plugin. */
 	String versionMinor;
-	
+
 	/** The release version of the plugin. */
 	String versionRelease;
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * @see java.lang.Comparable#compareTo(Object)
 	 */

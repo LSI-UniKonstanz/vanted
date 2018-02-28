@@ -56,27 +56,23 @@ public class WaferMapChartDemo extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public WaferMapChartDemo(final String title) {
 		super(title);
 		final WaferMapDataset dataset = DemoDatasetFactory.createRandomWaferMapDataset(5);
-		final JFreeChart chart = ChartFactory.createWaferMapChart(
-							"Wafer Map Demo", // title
+		final JFreeChart chart = ChartFactory.createWaferMapChart("Wafer Map Demo", // title
 				dataset, // wafermapdataset
 				PlotOrientation.VERTICAL, // vertical = notchdown
 				true, // legend
 				false, // tooltips
-				false
-							);
+				false);
 
 		final Legend legend = chart.getLegend();
 		legend.setAnchor(Legend.EAST);
 		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 0, 1000, Color.blue));
 
-		final TextTitle copyright = new TextTitle(
-							"JFreeChart WaferMapPlot", new Font("SansSerif", Font.PLAIN, 9)
-							);
+		final TextTitle copyright = new TextTitle("JFreeChart WaferMapPlot", new Font("SansSerif", Font.PLAIN, 9));
 		copyright.setPosition(RectangleEdge.BOTTOM);
 		copyright.setHorizontalAlignment(HorizontalAlignment.RIGHT);
 		chart.addSubtitle(copyright);
@@ -90,7 +86,7 @@ public class WaferMapChartDemo extends ApplicationFrame {
 	 * Starting point for the demo application.
 	 * 
 	 * @param args
-	 *           command line arguments (ignored).
+	 *            command line arguments (ignored).
 	 */
 	public static void main(final String[] args) {
 		final WaferMapChartDemo demo = new WaferMapChartDemo("Wafer Map Demo");

@@ -47,7 +47,7 @@ public class TitleChangeEvent extends ChartChangeEvent {
 	 * Default constructor.
 	 * 
 	 * @param title
-	 *           the chart title that generated the event.
+	 *            the chart title that generated the event.
 	 */
 	public TitleChangeEvent(Title title) {
 		super(title);

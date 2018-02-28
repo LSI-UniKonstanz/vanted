@@ -18,48 +18,47 @@ import org.graffiti.editor.MainFrame;
  * 
  * @version $Revision: 1.5 $
  */
-public abstract class AbstractGraffitiComponent
-					extends JPanel
-					implements GraffitiComponent {
+public abstract class AbstractGraffitiComponent extends JPanel implements GraffitiComponent {
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	/**
-	 * The component wherer the current <code>AbstractGraffitiContainer</code> prefers to be inserted.
+	 * The component wherer the current <code>AbstractGraffitiContainer</code>
+	 * prefers to be inserted.
 	 */
 	protected String preferredComponent;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new <code>AbstractGraffitiContainer</code>.
 	 */
 	protected AbstractGraffitiComponent() {
 		super();
 	}
-	
+
 	/**
 	 * Constructs a new <code>AbstractGraffitiContainer</code>.
 	 * 
 	 * @param prefComp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	protected AbstractGraffitiComponent(String prefComp) {
 		super();
 		this.preferredComponent = prefComp;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * @see org.graffiti.plugin.gui.GraffitiComponent#setMainFrame(org.graffiti.editor.MainFrame)
 	 */
 	public void setMainFrame(MainFrame mf) {
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 

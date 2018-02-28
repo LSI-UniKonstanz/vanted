@@ -46,8 +46,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demonstration application showing how to create a pie chart from data in an
- * XML file.
+ * A simple demonstration application showing how to create a pie chart from
+ * data in an XML file.
  */
 public class XMLPieChartDemo extends ApplicationFrame {
 
@@ -55,7 +55,7 @@ public class XMLPieChartDemo extends ApplicationFrame {
 	 * Default constructor.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XMLPieChartDemo(final String title) {
 
@@ -73,20 +73,16 @@ public class XMLPieChartDemo extends ApplicationFrame {
 		}
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createPieChart(
-							"Pie Chart Demo 1", // chart title
+		final JFreeChart chart = ChartFactory.createPieChart("Pie Chart Demo 1", // chart title
 				dataset, // data
 				true, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		// set the background color for the chart...
 		chart.setBackgroundPaint(Color.yellow);
 		final PiePlot plot = (PiePlot) chart.getPlot();
-		plot.setLabelGenerator(new StandardPieItemLabelGenerator(
-							"{0} = {2}", NumberFormat.getNumberInstance(), NumberFormat.getPercentInstance()
-							));
+		plot.setLabelGenerator(new StandardPieItemLabelGenerator("{0} = {2}", NumberFormat.getNumberInstance(),
+				NumberFormat.getPercentInstance()));
 		plot.setNoDataMessage("No data available");
 
 		// add the chart to a panel...
@@ -111,7 +107,7 @@ public class XMLPieChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

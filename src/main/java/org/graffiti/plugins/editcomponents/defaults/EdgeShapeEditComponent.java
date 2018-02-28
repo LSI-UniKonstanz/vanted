@@ -24,41 +24,40 @@ import org.graffiti.plugin.editcomponent.ComboBoxEditComponent;
  * 
  * @version $Revision: 1.8 $
  */
-public class EdgeShapeEditComponent
-					extends ComboBoxEditComponent {
+public class EdgeShapeEditComponent extends ComboBoxEditComponent {
 	// ~ Constructors ===========================================================
-	
+
 	/**
-	 * Constructor sets the correct entries for the combo box. And creates a
-	 * new combo box.
+	 * Constructor sets the correct entries for the combo box. And creates a new
+	 * combo box.
 	 * 
 	 * @param disp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public EdgeShapeEditComponent(Displayable disp) {
 		super(disp);
-		
+
 		HashMap<String, String> shapes = AttributeHelper.getEdgeShapes();
-		
+
 		comboText = new String[shapes.size()];
 		comboValue = new String[shapes.size()];
-		
+
 		int i = 0;
 		for (Entry<String, String> e : shapes.entrySet()) {
 			comboText[i] = e.getKey();
 			comboValue[i++] = e.getValue();
 		}
-		
+
 		comboBox = new JComboBox(this.comboText) {
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			public Dimension getMinimumSize() {
 				Dimension res = super.getMinimumSize();
 				res.setSize(20, res.getHeight());
 				return res;
 			}
-			
+
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension res = super.getPreferredSize();
@@ -66,7 +65,7 @@ public class EdgeShapeEditComponent
 				return res;
 			}
 		};
-		
+
 	}
 }
 

@@ -44,9 +44,9 @@ public class NormalDistributionFunction2D implements Function2D {
 	 * Constructs a new normal distribution function.
 	 * 
 	 * @param mean
-	 *           the mean.
+	 *            the mean.
 	 * @param std
-	 *           the standard deviation.
+	 *            the standard deviation.
 	 */
 	public NormalDistributionFunction2D(final double mean, final double std) {
 		this.mean = mean;
@@ -57,12 +57,12 @@ public class NormalDistributionFunction2D implements Function2D {
 	 * Returns the function value.
 	 * 
 	 * @param x
-	 *           the x-value.
+	 *            the x-value.
 	 * @return The value.
 	 */
 	public double getValue(final double x) {
 		return Math.exp(-1.0 * (x - this.mean) * (x - this.mean) / (2 * this.std * this.std))
-							/ Math.sqrt(2 * Math.PI * this.std * this.std);
+				/ Math.sqrt(2 * Math.PI * this.std * this.std);
 	}
 
 }

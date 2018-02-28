@@ -49,7 +49,7 @@ public class ScatterPlotDemo2 extends ApplicationFrame {
 	 * A demonstration application showing a scatter plot.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public ScatterPlotDemo2(final String title) {
 
@@ -81,18 +81,15 @@ public class ScatterPlotDemo2 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-		final JFreeChart chart = ChartFactory.createScatterPlot(
-							"Scatter Plot Demo",
-							"X", "Y", dataset,
-							PlotOrientation.HORIZONTAL,
-							true, // legend
+		final JFreeChart chart = ChartFactory.createScatterPlot("Scatter Plot Demo", "X", "Y", dataset,
+				PlotOrientation.HORIZONTAL, true, // legend
 				false, // tooltips
 				false // urls
-				);
+		);
 		final XYPlot plot = chart.getXYPlot();
 		plot.setRenderer(new XYDotRenderer());
 		final NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
@@ -104,7 +101,7 @@ public class ScatterPlotDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

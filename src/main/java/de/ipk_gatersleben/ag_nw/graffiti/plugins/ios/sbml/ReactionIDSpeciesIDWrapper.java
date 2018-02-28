@@ -3,29 +3,29 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml;
 public class ReactionIDSpeciesIDWrapper {
 	private String _reactionID;
 	private String _speciesID;
-	
+
 	public ReactionIDSpeciesIDWrapper(String reactionID, String speciesID) {
 		super();
 		_reactionID = reactionID;
 		_speciesID = speciesID;
 	}
-	
+
 	public String getReactionID() {
 		return _reactionID;
 	}
-	
+
 	public void setReactionID(String _reactionID) {
 		this._reactionID = _reactionID;
 	}
-	
+
 	public String getSpeciesID() {
 		return _speciesID;
 	}
-	
+
 	public void setSpeciesID(String _speciesID) {
 		this._speciesID = _speciesID;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -34,7 +34,7 @@ public class ReactionIDSpeciesIDWrapper {
 		result = prime * result + ((_speciesID == null) ? 0 : _speciesID.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -56,5 +56,5 @@ public class ReactionIDSpeciesIDWrapper {
 			return false;
 		return true;
 	}
-	
+
 }

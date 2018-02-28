@@ -22,39 +22,38 @@ import org.graffiti.session.EditorSession;
  * @author $Author: klukas $
  * @version $Revision: 1.6 $ $Date: 2010/12/22 13:05:58 $
  */
-public class SelectionChangeAction
-					extends GraffitiAction {
+public class SelectionChangeAction extends GraffitiAction {
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/** DOCUMENT ME! */
 	private EditorSession session;
-	
+
 	/** DOCUMENT ME! */
 	private Selection selection;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Creates a new SelectionChangeAction object.
 	 * 
 	 * @param sel
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param sess
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public SelectionChangeAction(Selection sel, EditorSession sess) {
 		super(sel.getName(), null, null);
 		this.session = sess;
 		this.selection = sel;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * @see javax.swing.Action#isEnabled()
 	 */
@@ -62,7 +61,7 @@ public class SelectionChangeAction
 	public boolean isEnabled() {
 		return super.enabled;
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -70,7 +69,7 @@ public class SelectionChangeAction
 	public HelpContext getHelpContext() {
 		return null;
 	}
-	
+
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */

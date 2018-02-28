@@ -32,22 +32,21 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 public class PluginInfoHelper implements HelperClass {
 	public static String pretifyPluginList(Collection<PluginEntry> pluginEntries) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("<html><font face='arial'>" +
-							"<h3><font face='arial'>" + pluginEntries.size() + "  plugins are loaded, content overview:</h3>");
-		
+		sb.append("<html><font face='arial'>" + "<h3><font face='arial'>" + pluginEntries.size()
+				+ "  plugins are loaded, content overview:</h3>");
+
 		sb.append(getPluginContentStatistics(pluginEntries));
-		
-		sb.append("<h3><font face='arial'>List of loaded plugins:</h3>" +
-							"<table border='1'>");
+
+		sb.append("<h3><font face='arial'>List of loaded plugins:</h3>" + "<table border='1'>");
 		getPluginDescriptionTableHeader(sb);
 		for (PluginEntry dpe : pluginEntries) {
 			getPluginDescriptionHTMLtableRow(sb, dpe);
 		}
 		sb.append("</table>");
-		
+
 		return sb.toString();
 	}
-	
+
 	public static String getPluginDescriptionTable(PluginEntry dpe) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<table border='1'>");
@@ -56,25 +55,22 @@ public class PluginInfoHelper implements HelperClass {
 		sb.append("</table>");
 		return sb.toString();
 	}
-	
+
 	private static void getPluginDescriptionTableHeader(StringBuilder sb) {
 		sb.append("<tr><th><font face='arial'>Name, Author, Package</th><th><font face='arial'>Content</th>");
 	}
-	
+
 	private static void getPluginDescriptionHTMLtableRow(StringBuilder sb, PluginEntry dpe) {
 		GenericPlugin gp = dpe.getPlugin();
 		PluginDescription pd = dpe.getDescription();
 		sb.append("<tr>");
-		sb.append("<td><font face='arial'>" + pd.getName() + "<br><small><br>" + pd.getAuthor() + "<br><br>" +
-							"" + pretifyPackageName(gp.getClass().getPackage().getName()) + "</small></td>");
-		sb.append("<td><font face='arial'>" +
-							getSummaryInfo(true, pd, gp) +
-							"</td>");
+		sb.append("<td><font face='arial'>" + pd.getName() + "<br><small><br>" + pd.getAuthor() + "<br><br>" + ""
+				+ pretifyPackageName(gp.getClass().getPackage().getName()) + "</small></td>");
+		sb.append("<td><font face='arial'>" + getSummaryInfo(true, pd, gp) + "</td>");
 		sb.append("</tr>");
 	}
-	
-	private static String getPluginContentStatistics(
-						Collection<PluginEntry> pluginEntries) {
+
+	private static String getPluginContentStatistics(Collection<PluginEntry> pluginEntries) {
 		StringBuilder result = new StringBuilder();
 		HashMap<String, ArrayList<PluginEntry>> pluginsByPackage = new HashMap<String, ArrayList<PluginEntry>>();
 		for (PluginEntry pe : pluginEntries) {
@@ -163,21 +159,19 @@ public class PluginInfoHelper implements HelperClass {
 		}
 		return result.toString();
 	}
-	
+
 	private static String getInfo(String pre, String check, String post) {
 		if (check == null || check.length() <= 0)
 			return "";
 		else
 			return pre + check + post;
 	}
-	
+
 	private static String pretifyPackageName(String name) {
 		return "" + StringManipulationTools.stringReplace(
-							StringManipulationTools.stringReplace(name,
-												".ag_nw.", ".<br>ag_nw."),
-							".plugins", ".<br>plugins") + "";
+				StringManipulationTools.stringReplace(name, ".ag_nw.", ".<br>ag_nw."), ".plugins", ".<br>plugins") + "";
 	}
-	
+
 	private static String getListenerList(GenericPlugin gp) {
 		ArrayList<String> l = new ArrayList<String>();
 		if (gp.isSelectionListener())
@@ -188,7 +182,7 @@ public class PluginInfoHelper implements HelperClass {
 			l.add("View");
 		return pretifyList(l);
 	}
-	
+
 	private static String getFeatures(String pre, GenericPlugin gp) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(pre);
@@ -200,7 +194,7 @@ public class PluginInfoHelper implements HelperClass {
 				sb.append("" + getCategoryDesc(a.getCategory(), " / ") + getAlgorithmName(a, a.getName()) + "");
 				sb.append(getAlgorithmSelectionInfo(a));
 				checkContextMenuProcessing(a, sb, "", "&nbsp;&nbsp;&nbsp;&nbsp;" + pre2);
-				
+
 				// sb.append(pre2);
 				// sb.append("Description: "+a.getDescription()+"<br>");
 			}
@@ -254,9 +248,9 @@ public class PluginInfoHelper implements HelperClass {
 			}
 			sb.append("<br>");
 		}
-		
+
 		checkContextMenuProcessing(gp, sb, "Other:<br>", pre2);
-		
+
 		if (gp instanceof EditorPlugin) {
 			sb.append("<br>EditorPlugin Features:<br>");
 			EditorPlugin ep = (EditorPlugin) gp;
@@ -272,7 +266,8 @@ public class PluginInfoHelper implements HelperClass {
 				sb.append(ep.getGUIComponents().length + " GUI Component(s):<br>");
 				for (GraffitiComponent gc : ep.getGUIComponents()) {
 					sb.append(pre2);
-					sb.append("" + lastElement(gc.getClass().getName(), ".") + " (target: " + gc.getPreferredComponent() + ")<br>");
+					sb.append("" + lastElement(gc.getClass().getName(), ".") + " (target: " + gc.getPreferredComponent()
+							+ ")<br>");
 				}
 				sb.append("<br>");
 			}
@@ -297,7 +292,8 @@ public class PluginInfoHelper implements HelperClass {
 				for (Object o : ep.getValueEditComponents().keySet()) {
 					sb.append(pre2);
 					try {
-						sb.append("" + lastElement(o.toString(), ".") + " -- " + lastElement(ep.getValueEditComponents().get(o).toString(), ".") + "<br>");
+						sb.append("" + lastElement(o.toString(), ".") + " -- "
+								+ lastElement(ep.getValueEditComponents().get(o).toString(), ".") + "<br>");
 					} catch (ClassCastException cce) {
 						ErrorMsg.addErrorMessage(cce);
 					}
@@ -315,7 +311,7 @@ public class PluginInfoHelper implements HelperClass {
 		}
 		return sb.toString();
 	}
-	
+
 	private static int getAddAlgNumber(GenericPlugin gp) {
 		int add = 0;
 		if (gp.getAlgorithms() != null && gp.getAlgorithms().length > 0) {
@@ -329,7 +325,7 @@ public class PluginInfoHelper implements HelperClass {
 		}
 		return add;
 	}
-	
+
 	private static String getAlgorithmSelectionInfo(Algorithm lga) {
 		StringBuilder res = new StringBuilder("");
 		String pre = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;";
@@ -338,23 +334,21 @@ public class PluginInfoHelper implements HelperClass {
 			if (lg.getAlgorithmList() != null)
 				for (Algorithm a : lg.getAlgorithmList())
 					if (a != null)
-						res.append(pre + getCategoryDesc(a.getCategory(), " / ") + getAlgorithmName(a, a.getName()) + "<br>");
+						res.append(pre + getCategoryDesc(a.getCategory(), " / ") + getAlgorithmName(a, a.getName())
+								+ "<br>");
 		}
 		if (res.length() > 0)
 			return " - algorithm provides access to:<br>" + res.toString();
 		else
 			return "<br>";
 	}
-	
-	private static void checkContextMenuProcessing(Object gp,
-						StringBuilder sb, String in, String pre2) {
-		if (gp instanceof ProvidesGeneralContextMenu
-							|| gp instanceof ProvidesNodeContextMenu
-							|| gp instanceof ProvidesEdgeContextMenu
-							|| gp instanceof ProvidesDirectMouseClickContextMenu) {
-			
+
+	private static void checkContextMenuProcessing(Object gp, StringBuilder sb, String in, String pre2) {
+		if (gp instanceof ProvidesGeneralContextMenu || gp instanceof ProvidesNodeContextMenu
+				|| gp instanceof ProvidesEdgeContextMenu || gp instanceof ProvidesDirectMouseClickContextMenu) {
+
 			sb.append(in);
-			
+
 			if (gp instanceof ProvidesGeneralContextMenu) {
 				sb.append(pre2);
 				sb.append("provides network context menu<br>");
@@ -374,31 +368,27 @@ public class PluginInfoHelper implements HelperClass {
 			sb.append("<br>");
 		}
 	}
-	
+
 	private static String lastElement(String val, String div) {
 		if (val.indexOf(".") >= 0)
 			return val.substring(val.lastIndexOf(".") + ".".length());
 		else
 			return val;
 	}
-	
+
 	private static String getCategoryDesc(String category, String post) {
 		/*
-		if (category != null && category.size() > 0){
-			StringBuffer buf = new StringBuffer();
-			for(Category cat : category)
-				buf.append(cat).append(" / ");
-			String catstring = buf.toString();
-			catstring = catstring.substring(0, catstring.length() - 1);
-			return catstring + post;
-		}
+		 * if (category != null && category.size() > 0){ StringBuffer buf = new
+		 * StringBuffer(); for(Category cat : category) buf.append(cat).append(" / ");
+		 * String catstring = buf.toString(); catstring = catstring.substring(0,
+		 * catstring.length() - 1); return catstring + post; }
 		 */
 		if (category != null && category.length() > 0)
 			return category + post;
 		else
 			return "";
 	}
-	
+
 	public static String getSummaryInfo(boolean includeVersionAndAvailability, PluginDescription pd, GenericPlugin gp) {
 		String ddd = pd.getDescription();
 		if (ddd != null) {
@@ -408,21 +398,21 @@ public class PluginInfoHelper implements HelperClass {
 			if (ddd.length() > 100)
 				ddd = StringManipulationTools.getWordWrap(ddd, 60);
 		}
-		return (includeVersionAndAvailability ? getInfo("Version: ", pd.getVersion(), "<br>") : "") +
-							(includeVersionAndAvailability ? getInfo("Availability: ", pd.getAvailable(), "<br>") : "") +
-							getInfo("Description: ", ddd, "<br>") +
-							getInfo("Depends on: ", pretifyList(pd.getDependencies()), "<br>") +
-							getInfo("Reacts on: ", getListenerList(gp), "<br>") +
-							getInfo("Plugin Features:<br>", getFeatures("", gp), "");
+		return (includeVersionAndAvailability ? getInfo("Version: ", pd.getVersion(), "<br>") : "")
+				+ (includeVersionAndAvailability ? getInfo("Availability: ", pd.getAvailable(), "<br>") : "")
+				+ getInfo("Description: ", ddd, "<br>")
+				+ getInfo("Depends on: ", pretifyList(pd.getDependencies()), "<br>")
+				+ getInfo("Reacts on: ", getListenerList(gp), "<br>")
+				+ getInfo("Plugin Features:<br>", getFeatures("", gp), "");
 	}
-	
+
 	private static String getAlgorithmName(Algorithm a, String name) {
 		if (name == null || name.length() <= 0)
 			return "(inactive: " + a.getClass().getSimpleName() + ")";
 		else
 			return StringManipulationTools.removeHTMLtags(name);
 	}
-	
+
 	private static String pretifyList(List list) {
 		StringBuilder sb = new StringBuilder();
 		if (list != null)
@@ -433,7 +423,7 @@ public class PluginInfoHelper implements HelperClass {
 			}
 		return sb.toString();
 	}
-	
+
 	private static String pretifyList(String[] list) {
 		StringBuilder sb = new StringBuilder();
 		if (list != null)

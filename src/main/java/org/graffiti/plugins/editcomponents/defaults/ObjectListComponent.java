@@ -20,16 +20,15 @@ import org.graffiti.plugin.parameter.ObjectListParameter;
  * 
  * @version $Revision: 1.5 $
  */
-public class ObjectListComponent
-					extends ComboBoxEditComponent {
+public class ObjectListComponent extends ComboBoxEditComponent {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor sets the correct entries of the combo box. And creates a new
 	 * combo box.
 	 * 
 	 * @param disp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public ObjectListComponent(Displayable disp) {
 		super(disp);

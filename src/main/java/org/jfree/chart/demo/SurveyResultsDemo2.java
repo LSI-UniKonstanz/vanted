@@ -58,7 +58,7 @@ public class SurveyResultsDemo2 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public SurveyResultsDemo2(final String title) {
 
@@ -94,21 +94,18 @@ public class SurveyResultsDemo2 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createBarChart(
-							null, // chart title
+		final JFreeChart chart = ChartFactory.createBarChart(null, // chart title
 				null, // domain axis label
 				null, // range axis label
 				dataset, // data
 				PlotOrientation.VERTICAL, // orientation
 				false, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		chart.setBackgroundPaint(Color.white);
 		chart.getPlot().setOutlinePaint(null);
@@ -139,9 +136,7 @@ public class SurveyResultsDemo2 extends ApplicationFrame {
 
 		renderer.setItemLabelsVisible(true);
 		renderer.setItemLabelFont(new Font("SansSerif", Font.PLAIN, 18));
-		final ItemLabelPosition position = new ItemLabelPosition(
-							ItemLabelAnchor.INSIDE12, TextAnchor.TOP_CENTER
-							);
+		final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.INSIDE12, TextAnchor.TOP_CENTER);
 		renderer.setPositiveItemLabelPosition(position);
 		renderer.setPositiveItemLabelPositionFallback(new ItemLabelPosition());
 
@@ -164,7 +159,7 @@ public class SurveyResultsDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

@@ -33,22 +33,22 @@
 package org.jfree.data;
 
 /**
- * An interface (optional) that can be implemented by a dataset to assist in determining the
- * minimum and maximum values.
+ * An interface (optional) that can be implemented by a dataset to assist in
+ * determining the minimum and maximum values.
  */
 public interface RangeInfo {
 
 	/**
-	 * Returns the minimum value in the dataset's range (or null if all the
-	 * values in the range are null).
+	 * Returns the minimum value in the dataset's range (or null if all the values
+	 * in the range are null).
 	 * 
 	 * @return the minimum value.
 	 */
 	public Number getMinimumRangeValue();
 
 	/**
-	 * Returns the maximum value in the dataset's range (or null if all the
-	 * values in the range are null).
+	 * Returns the maximum value in the dataset's range (or null if all the values
+	 * in the range are null).
 	 * 
 	 * @return the maximum value.
 	 */

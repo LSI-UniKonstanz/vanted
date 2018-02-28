@@ -65,12 +65,12 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A renderer that draws stacked area charts for a {@link org.jfree.chart.plot.CategoryPlot}.
+ * A renderer that draws stacked area charts for a
+ * {@link org.jfree.chart.plot.CategoryPlot}.
  * 
  * @author Dan Rivett
  */
-public class StackedAreaRenderer extends AreaRenderer
-											implements Cloneable, PublicCloneable, Serializable {
+public class StackedAreaRenderer extends AreaRenderer implements Cloneable, PublicCloneable, Serializable {
 
 	/**
 	 * Creates a new renderer.
@@ -80,12 +80,13 @@ public class StackedAreaRenderer extends AreaRenderer
 	}
 
 	/**
-	 * Returns the range of values the renderer requires to display all the items from the
-	 * specified dataset.
+	 * Returns the range of values the renderer requires to display all the items
+	 * from the specified dataset.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> permitted).
-	 * @return The range (or <code>null</code> if the dataset is <code>null</code> or empty).
+	 *            the dataset (<code>null</code> permitted).
+	 * @return The range (or <code>null</code> if the dataset is <code>null</code>
+	 *         or empty).
 	 */
 	public Range getRangeExtent(CategoryDataset dataset) {
 		return DatasetUtilities.getStackedRangeExtent(dataset);
@@ -95,33 +96,26 @@ public class StackedAreaRenderer extends AreaRenderer
 	 * Draw a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the data plot area.
+	 *            the data plot area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the data.
+	 *            the data.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	public void drawItem(Graphics2D g2,
-									CategoryItemRendererState state,
-									Rectangle2D dataArea,
-									CategoryPlot plot,
-									CategoryAxis domainAxis,
-									ValueAxis rangeAxis,
-									CategoryDataset dataset,
-									int row,
-									int column) {
+	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
+			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
 
 		// plot non-null values...
 		Number value = dataset.getValue(row, column);
@@ -131,9 +125,7 @@ public class StackedAreaRenderer extends AreaRenderer
 
 		// leave the y values (y1, y0) untranslated as it is going to be be stacked
 		// up later by previous series values, after this it will be translated.
-		double x1 = domainAxis.getCategoryMiddle(
-							column, getColumnCount(), dataArea, plot.getDomainAxisEdge()
-							);
+		double x1 = domainAxis.getCategoryMiddle(column, getColumnCount(), dataArea, plot.getDomainAxisEdge());
 		double y1 = 0.0; // calculate later
 		double y1Untranslated = value.doubleValue();
 
@@ -145,9 +137,8 @@ public class StackedAreaRenderer extends AreaRenderer
 			Number previousValue = dataset.getValue(row, column - 1);
 			if (previousValue != null) {
 
-				double x0 = domainAxis.getCategoryMiddle(
-									column - 1, getColumnCount(), dataArea, plot.getDomainAxisEdge()
-									);
+				double x0 = domainAxis.getCategoryMiddle(column - 1, getColumnCount(), dataArea,
+						plot.getDomainAxisEdge());
 				double y0Untranslated = previousValue.doubleValue();
 
 				// Get the previous height, but this will be different for both y0 and y1 as
@@ -161,12 +152,8 @@ public class StackedAreaRenderer extends AreaRenderer
 
 				// Now translate the previous heights
 				RectangleEdge location = plot.getRangeAxisEdge();
-				double previousHeightx0 = rangeAxis.valueToJava2D(
-									previousHeightx0Untranslated, dataArea, location
-									);
-				double previousHeightx1 = rangeAxis.valueToJava2D(
-									previousHeightx1Untranslated, dataArea, location
-									);
+				double previousHeightx0 = rangeAxis.valueToJava2D(previousHeightx0Untranslated, dataArea, location);
+				double previousHeightx1 = rangeAxis.valueToJava2D(previousHeightx1Untranslated, dataArea, location);
 
 				// Now translate the current y values.
 				double y0 = rangeAxis.valueToJava2D(y0Untranslated, dataArea, location);
@@ -180,14 +167,13 @@ public class StackedAreaRenderer extends AreaRenderer
 					p.addPoint((int) y1, (int) x1);
 					p.addPoint((int) previousHeightx1, (int) x1);
 					p.addPoint((int) previousHeightx0, (int) x0);
-				} else
-					if (orientation == PlotOrientation.VERTICAL) {
-						p = new Polygon();
-						p.addPoint((int) x0, (int) y0);
-						p.addPoint((int) x1, (int) y1);
-						p.addPoint((int) x1, (int) previousHeightx1);
-						p.addPoint((int) x0, (int) previousHeightx0);
-					}
+				} else if (orientation == PlotOrientation.VERTICAL) {
+					p = new Polygon();
+					p.addPoint((int) x0, (int) y0);
+					p.addPoint((int) x1, (int) y1);
+					p.addPoint((int) x1, (int) previousHeightx1);
+					p.addPoint((int) x0, (int) previousHeightx0);
+				}
 				g2.setPaint(getItemPaint(row, column));
 				g2.setStroke(getItemStroke(row, column));
 				g2.fill(p);
@@ -209,9 +195,8 @@ public class StackedAreaRenderer extends AreaRenderer
 				if (getItemURLGenerator(row, column) != null) {
 					url = getItemURLGenerator(row, column).generateURL(dataset, row, column);
 				}
-				CategoryItemEntity entity = new CategoryItemEntity(
-									shape, tip, url, dataset, row, dataset.getColumnKey(column), column
-									);
+				CategoryItemEntity entity = new CategoryItemEntity(shape, tip, url, dataset, row,
+						dataset.getColumnKey(column), column);
 				entities.addEntity(entity);
 			}
 		}
@@ -219,16 +204,18 @@ public class StackedAreaRenderer extends AreaRenderer
 	}
 
 	/**
-	 * Calculates the stacked value of the all series up to, but not including <code>series</code> for the specified category, <code>category</code>. It returns
-	 * 0.0 if <code>series</code> is the first series, i.e. 0.
+	 * Calculates the stacked value of the all series up to, but not including
+	 * <code>series</code> for the specified category, <code>category</code>. It
+	 * returns 0.0 if <code>series</code> is the first series, i.e. 0.
 	 * 
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @param series
-	 *           the series.
+	 *            the series.
 	 * @param category
-	 *           the category.
-	 * @return double returns a cumulative value for all series' values up to but excluding <code>series</code> for Object <code>category</code>.
+	 *            the category.
+	 * @return double returns a cumulative value for all series' values up to but
+	 *         excluding <code>series</code> for Object <code>category</code>.
 	 */
 	protected double getPreviousHeight(CategoryDataset data, int series, int category) {
 

@@ -16,26 +16,21 @@ import org.graffiti.selection.Selection;
  * @author matthiak
  *
  */
-public class ClearSelection extends AbstractAlgorithm{
+public class ClearSelection extends AbstractAlgorithm {
 	@Override
 	public String getName() {
 		return "Clear Selection";
 	}
 
-	
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.SELECTION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.SELECTION));
 	}
-	
+
 	@Override
 	public void execute() {
 		Selection selection = new Selection("cleared selection");
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(selection);
 	}
-	
-	
+
 }

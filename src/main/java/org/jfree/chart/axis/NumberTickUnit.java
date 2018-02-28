@@ -53,7 +53,7 @@ public class NumberTickUnit extends TickUnit implements Serializable {
 	 * Creates a new number tick unit.
 	 * 
 	 * @param size
-	 *           the size of the tick unit.
+	 *            the size of the tick unit.
 	 */
 	public NumberTickUnit(double size) {
 		this(size, defaultFormat);
@@ -74,9 +74,9 @@ public class NumberTickUnit extends TickUnit implements Serializable {
 	 * Creates a new number tick unit.
 	 * 
 	 * @param size
-	 *           the size of the tick unit.
+	 *            the size of the tick unit.
 	 * @param formatter
-	 *           a number formatter for the tick unit.
+	 *            a number formatter for the tick unit.
 	 */
 	public NumberTickUnit(double size, NumberFormat formatter) {
 		super(size);
@@ -87,17 +87,15 @@ public class NumberTickUnit extends TickUnit implements Serializable {
 	 * Converts a value to a string.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @return the formatted string.
 	 */
 	public String valueToString(double value) {
 		return formatter.format(value);/*
-												 * String res = this.defaultFormat.format(value);
-												 * res = ErrorMsg.stringReplace(res, ",", "");
-												 * if (res.startsWith("."))
-												 * return "0"+res;
-												 * return res;
-												 */
+										 * String res = this.defaultFormat.format(value); res =
+										 * ErrorMsg.stringReplace(res, ",", ""); if (res.startsWith(".")) return
+										 * "0"+res; return res;
+										 */
 	}
 
 }

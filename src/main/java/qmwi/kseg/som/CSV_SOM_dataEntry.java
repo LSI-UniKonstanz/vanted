@@ -12,11 +12,11 @@ public class CSV_SOM_dataEntry implements SOMdataEntry {
 	private Object userData;
 	private boolean isNormalizedDataset = false;
 	private ArrayList<Double> optDifferencesToCentroids;
-	
+
 	public CSV_SOM_dataEntry(int size) {
 		dataValues = new String[size];
 	}
-	
+
 	@Override
 	public String toString() {
 		String res = "[";
@@ -28,7 +28,7 @@ public class CSV_SOM_dataEntry implements SOMdataEntry {
 		res += "]";
 		return res;
 	}
-	
+
 	/**
 	 * @param columnCount
 	 * @param n
@@ -37,29 +37,30 @@ public class CSV_SOM_dataEntry implements SOMdataEntry {
 		this(columnCount);
 		this.userData = userData;
 	}
-	
+
 	public String[] getColumnData() {
 		return dataValues;
 	}
-	
+
 	public Object getUserData() {
 		return userData;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see qmwi.kseg.som.SOMdataEntry#setUserData(java.lang.Object)
 	 */
 	public void setUserData(Object data) {
 		this.userData = data;
 	}
-	
+
 	public SOMdataEntry addValues(String inputLine, boolean normalized) {
 		this.isNormalizedDataset = normalized;
 		addValues(inputLine);
 		return this;
 	}
-	
+
 	public SOMdataEntry addValues(String inputLine) {
 		if (!inputLine.endsWith(";"))
 			inputLine = inputLine + ";";
@@ -72,30 +73,31 @@ public class CSV_SOM_dataEntry implements SOMdataEntry {
 		}
 		return this;
 	}
-	
+
 	public String getColumnData(int i) {
 		if (getColumnData()[i] != null)
 			return getColumnData()[i];
 		else
 			return new Double(0).toString();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see qmwi.kseg.som.SOMdataEntry#isAlreadyNormalized()
 	 */
 	public boolean isAlreadyNormalized() {
 		return isNormalizedDataset;
 	}
-	
+
 	public ArrayList<Double> getDifferencesToCentroids() {
 		return optDifferencesToCentroids;
 	}
-	
+
 	public void setDifferences(ArrayList<Double> differences) {
 		optDifferencesToCentroids = differences;
 	}
-	
+
 	public double getMinDiff() {
 		double min = Double.MAX_VALUE;
 		for (double d : optDifferencesToCentroids) {

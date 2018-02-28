@@ -53,14 +53,13 @@ public class HistogramBin implements Cloneable, Serializable {
 	 * Creates a new bin.
 	 * 
 	 * @param startBoundary
-	 *           the start boundary.
+	 *            the start boundary.
 	 * @param endBoundary
-	 *           the end boundary.
+	 *            the end boundary.
 	 */
 	public HistogramBin(final double startBoundary, final double endBoundary) {
 		if (startBoundary > endBoundary) {
-			throw new IllegalArgumentException(
-								"HistogramBin(...):  startBoundary > endBoundary.");
+			throw new IllegalArgumentException("HistogramBin(...):  startBoundary > endBoundary.");
 		}
 		this.count = 0;
 		this.startBoundary = startBoundary;
@@ -114,7 +113,7 @@ public class HistogramBin implements Cloneable, Serializable {
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object to test against.
+	 *            the object to test against.
 	 * @return a boolean.
 	 */
 	public boolean equals(final Object obj) {
@@ -139,7 +138,7 @@ public class HistogramBin implements Cloneable, Serializable {
 	 * 
 	 * @return a clone.
 	 * @throws CloneNotSupportedException
-	 *            not thrown by this class.
+	 *             not thrown by this class.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

@@ -41,34 +41,32 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.GUIhelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 public class EnzymeService extends MemoryHog
-		implements
-		BackgroundTaskStatusProvider,
-		FileDownloadStatusInformationProvider, HelperClass {
+		implements BackgroundTaskStatusProvider, FileDownloadStatusInformationProvider, HelperClass {
 	// Enzyme Class related variables
 	private static boolean read_enzclass_txt = false;
-	
+
 	private static String enzymeRelease = "unknown version";
-	
+
 	private static String relTag = "Release:";
-	
+
 	private static List<EnzClassEntry> enzymeClassEntries = new Vector<EnzClassEntry>();
-	
+
 	// Enzyme Database related variables
 	private static boolean read_enzyme_DB_txt = false;
-	
+
 	private static String enzymeDBrelease = "unknown version";
-	
+
 	private static String relTagDB = "CC   Release ";
-	
+
 	// private boolean pleaseStop=false;
 	private static String status1;
 	private static String status2;
 	private static int statusVal = -1;
-	
+
 	private FolderPanel res;
 	private JLabel labelStatus1;
 	private JLabel labelStatus2;
-	
+
 	public synchronized void finishedNewDownload() {
 		read_enzclass_txt = false;
 		enzymeRelease = "unknown version";
@@ -78,23 +76,22 @@ public class EnzymeService extends MemoryHog
 		status1 = null;
 		status2 = null;
 		statusVal = -1;
-		
+
 		updateDatabaseStatus(labelStatus1, labelStatus2, false);
-		
+
 	}
-	
+
 	/**
-	 * Contains a mapping from the EC number (ID) to the corresponding enzyme
-	 * info
+	 * Contains a mapping from the EC number (ID) to the corresponding enzyme info
 	 */
 	private static HashMap<String, EnzymeEntry> enzymeEntries = new HashMap<String, EnzymeEntry>();
-	
+
 	/**
-	 * Contains a mapping from the uppercase synonyms to the corresponding
-	 * enzyme info
+	 * Contains a mapping from the uppercase synonyms to the corresponding enzyme
+	 * info
 	 */
 	private static HashMap<String, EnzymeEntry> knownEnzymeAlternativeNamesEntries = new HashMap<String, EnzymeEntry>();
-	
+
 	private synchronized static void initService(boolean initInBackground) {
 		if (initInBackground) {
 			if (!read_enzclass_txt || !read_enzyme_DB_txt) {
@@ -103,21 +100,16 @@ public class EnzymeService extends MemoryHog
 				read_enzclass_txt = true;
 				read_enzyme_DB_txt = true;
 				final EnzymeService enzS = new EnzymeService();
-				BackgroundTaskHelper bth = new BackgroundTaskHelper(
-						new Runnable() {
-							public void run() {
-								statusVal = -1;
-								if (todoReadEnzClass)
-									readEnzymeClasses();
-								if (todoReadDB)
-									readEnzymeDB();
-								statusVal = 100;
-							}
-						},
-						enzS,
-						"Enzyme Database",
-						"Enzyme Database Service",
-						true, false);
+				BackgroundTaskHelper bth = new BackgroundTaskHelper(new Runnable() {
+					public void run() {
+						statusVal = -1;
+						if (todoReadEnzClass)
+							readEnzymeClasses();
+						if (todoReadDB)
+							readEnzymeDB();
+						statusVal = 100;
+					}
+				}, enzS, "Enzyme Database", "Enzyme Database Service", true, false);
 				bth.startWork(MainFrame.getInstance());
 			}
 		} else {
@@ -132,11 +124,11 @@ public class EnzymeService extends MemoryHog
 		}
 		noteRequest();
 	}
-	
+
 	/**
 	 * Reads the file enzclass.txt. All methods depending on info from that file
-	 * should call <code>initService</code>, first. To ensure that this
-	 * service is available.
+	 * should call <code>initService</code>, first. To ensure that this service is
+	 * available.
 	 */
 	private static void readEnzymeClasses() {
 		// the enzclass.txt is formated like this:
@@ -162,7 +154,7 @@ public class EnzymeService extends MemoryHog
 							// probably a valid Enzyme Class information ...
 							while (!line.endsWith(".")) {
 								String readLine = input.readLine();
-								if(readLine != null)
+								if (readLine != null)
 									line += " " + readLine.trim();
 							}
 							if (line.endsWith(".")) {
@@ -196,11 +188,11 @@ public class EnzymeService extends MemoryHog
 		}
 		status1 = "Enzyme classes analysed";
 	}
-	
+
 	/**
 	 * Reads the file enzyme.dat. All methods depending on info from that file
-	 * should call <code>initService</code>, first. To ensure that this
-	 * service is available.
+	 * should call <code>initService</code>, first. To ensure that this service is
+	 * available.
 	 */
 	private static void readEnzymeDB() {
 		// the enzyme.dat is formated like this:
@@ -243,7 +235,7 @@ public class EnzymeService extends MemoryHog
 								endTagFound = true;
 								line = line.substring(0, line.length() - 2);
 							}
-							
+
 							if (line.startsWith("PR") || line.startsWith("DR")) {
 								// ignore these lines... they need also be
 								// treated different,
@@ -253,11 +245,10 @@ public class EnzymeService extends MemoryHog
 							} else {
 								if (line.startsWith("ID"))
 									line += ".";
-								while (!line.endsWith(".") && !line.contains("//")
-										&& !endTagFound) {
+								while (!line.endsWith(".") && !line.contains("//") && !endTagFound) {
 									String rl = input.readLine();
 									// System.err.println(rl);
-									if(rl != null) {
+									if (rl != null) {
 										if (rl.endsWith("//")) {
 											endTagFound = true;
 											rl = rl.substring(0, rl.length() - 2);
@@ -276,24 +267,21 @@ public class EnzymeService extends MemoryHog
 							}
 							if (!endTagFound) {
 								line = input.readLine();
-								if(line != null)
+								if (line != null)
 									line = line.trim();
 							}
 						} while (!endTagFound);
 						if (eze.isValid()) {
 							enzymeEntries.put(eze.getID(), eze);
-							knownEnzymeAlternativeNamesEntries.put(eze.getDE()
-									.toUpperCase(), eze);
+							knownEnzymeAlternativeNamesEntries.put(eze.getDE().toUpperCase(), eze);
 							for (Iterator<String> it = eze.getAN().iterator(); it.hasNext();)
-								knownEnzymeAlternativeNamesEntries.put(
-										it.next().toUpperCase(), eze);
+								knownEnzymeAlternativeNamesEntries.put(it.next().toUpperCase(), eze);
 							status1 = "Read Enzyme Names and IDs (" + enzymeEntries.size() + ")";
 						}
 					} else {
 						// check for release info
 						if (line.contains(relTagDB)) {
-							line = line.substring(line.indexOf(relTagDB)
-									+ new String("CC").length());
+							line = line.substring(line.indexOf(relTagDB) + new String("CC").length());
 							line = line.trim();
 							enzymeDBrelease = line;
 							status2 = enzymeDBrelease;
@@ -313,16 +301,17 @@ public class EnzymeService extends MemoryHog
 		}
 		status1 = "Enzyme Names analysed (" + enzymeEntries.size() + ")";
 	}
-	
+
 	private static BufferedReader getFileReader(String fileName) {
 		try {
 			return new BufferedReader(new FileReader(ReleaseInfo.getAppFolderWithFinalSep() + fileName));
 		} catch (Exception e) {
-			MainFrame.showMessage("<html><b>Click Help/Database Status</b> for help on downloading enzyme data", MessageType.INFO);
+			MainFrame.showMessage("<html><b>Click Help/Database Status</b> for help on downloading enzyme data",
+					MessageType.INFO);
 			return null;
 		}
 	}
-	
+
 	public static boolean isDatabaseAvailable(boolean checkInternal) {
 		noteRequest();
 		String fileName = "enzyme.dat";
@@ -341,33 +330,32 @@ public class EnzymeService extends MemoryHog
 			return false;
 		}
 	}
-	
+
 	/**
-	 * @return The release information from the enzyme-classes file
-	 *         (enzclass.txt).
+	 * @return The release information from the enzyme-classes file (enzclass.txt).
 	 */
 	public static String getReleaseVersionForEnzymeClasses() {
 		noteRequest();
 		initService(false);
 		return enzymeRelease;
 	}
-	
+
 	/**
 	 * Retuns all matches for the enzyme class. Example: "1.1.5.2" "1. -. -.-" ->
 	 * Oxidoreductases "1. 1. -.-" -> Acting on the CH-OH group of donors "1. 1.
 	 * 5.-" -> With a quinone or similar compound as acceptor. ==> RETURN: {
-	 * "Oxidoreductases", "Acting on the CH-OH group of donors", "With a quinone
-	 * or similar compound as acceptor" }
+	 * "Oxidoreductases", "Acting on the CH-OH group of donors", "With a quinone or
+	 * similar compound as acceptor" }
 	 * 
 	 * @param ec_number_or_synonyme
-	 *           A EC Number in the form "EC1.2.3.4" or "1.2.3.4" or " 1. 2. 3 .
-	 *           4" (space is ignored while matching) Also a synonym to a EC
-	 *           number can be used, in this case a lookup to the known
-	 *           synonyms is done to get the corresponding EC number.
+	 *            A EC Number in the form "EC1.2.3.4" or "1.2.3.4" or " 1. 2. 3 . 4"
+	 *            (space is ignored while matching) Also a synonym to a EC number
+	 *            can be used, in this case a lookup to the known synonyms is done
+	 *            to get the corresponding EC number.
 	 * @param lazy
-	 *           If lazy is TRUE, then the service is inited in background,
-	 *           this method will return immeadeately, but might not return reliable results
-	 *           until the database is inited.
+	 *            If lazy is TRUE, then the service is inited in background, this
+	 *            method will return immeadeately, but might not return reliable
+	 *            results until the database is inited.
 	 * @return A string array of all matching categories or descriptions.
 	 */
 	public static List<String> getEnzymeClasses(String ec_number_or_synonyme, boolean lazy) {
@@ -376,7 +364,7 @@ public class EnzymeService extends MemoryHog
 		if (ec_number_or_synonyme.toUpperCase().startsWith("EC:"))
 			ec_number_or_synonyme = ec_number_or_synonyme.substring("ec:".length());
 		List<String> classes = new ArrayList<String>();
-		
+
 		// check if the given parameter is a synonym
 		EnzymeEntry eze = getEnzymeInformation(ec_number_or_synonyme, lazy);
 		// if info is found, use this as the ID
@@ -395,12 +383,12 @@ public class EnzymeService extends MemoryHog
 		}
 		return classes;
 	}
-	
+
 	/**
 	 * Get a EnzymeEntry with the associated information.
 	 * 
 	 * @param ec_or_synonyme
-	 *           A EC number (1.2.3.4) or known synonyme.
+	 *            A EC number (1.2.3.4) or known synonyme.
 	 * @return NULL, if no info is found or a corresponding entry.
 	 */
 	public static EnzymeEntry getEnzymeInformation(String ec_or_synonyme, boolean lazy) {
@@ -416,14 +404,13 @@ public class EnzymeService extends MemoryHog
 			ec_or_synonyme = StringManipulationTools.stringReplace(ec_or_synonyme, "</html>", "");
 			ec_or_synonyme = StringManipulationTools.stringReplace(ec_or_synonyme, "<br>", "");
 			ec_or_synonyme = StringManipulationTools.stringReplace(ec_or_synonyme, "<br/>", "");
-			result = knownEnzymeAlternativeNamesEntries.get(ec_or_synonyme
-					.toUpperCase());
+			result = knownEnzymeAlternativeNamesEntries.get(ec_or_synonyme.toUpperCase());
 		}
 		return result;
 	}
-	
+
 	static Pattern pattern = Pattern.compile("\\d{1,2}(\\.(\\-|\\d{1,2})){3}");
-	
+
 	public static String extractECId(String ecString) {
 		Matcher matcher = pattern.matcher(ecString);
 		if (matcher.find())
@@ -431,7 +418,7 @@ public class EnzymeService extends MemoryHog
 		else
 			return null;
 	}
-	
+
 	/**
 	 * @return The release information of the enzyme.dat file.
 	 */
@@ -440,18 +427,18 @@ public class EnzymeService extends MemoryHog
 		initService(false);
 		return enzymeDBrelease;
 	}
-	
+
 	/**
-	 * Get the number of nodes in this graph which could possible be
-	 * valid EC numbers. It is not checked if the EC number is existent,
-	 * meaning a EC number like "6.6.6.666" which probably does not exist
-	 * would increase the number count.
+	 * Get the number of nodes in this graph which could possible be valid EC
+	 * numbers. It is not checked if the EC number is existent, meaning a EC number
+	 * like "6.6.6.666" which probably does not exist would increase the number
+	 * count.
 	 * 
 	 * @param graph
-	 *           All nodes from this graph will be checked
+	 *            All nodes from this graph will be checked
 	 * @return The number of nodes which have a <code>QuadNumber</code> valid
-	 *         structure, meaning, a name of substance name like a.b.c.d, where abcd are either
-	 *         numbers or "-".
+	 *         structure, meaning, a name of substance name like a.b.c.d, where abcd
+	 *         are either numbers or "-".
 	 */
 	public static int getNumberOfEnzymeNodes(Graph graph) {
 		int cnt = 0;
@@ -470,111 +457,123 @@ public class EnzymeService extends MemoryHog
 		}
 		return cnt;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#getCurrentStatusValue()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * getCurrentStatusValue()
 	 */
 	public int getCurrentStatusValue() {
 		return statusVal;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#getCurrentStatusValueFine()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * getCurrentStatusValueFine()
 	 */
 	public double getCurrentStatusValueFine() {
 		return getCurrentStatusValue();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#getCurrentStatusMessage1()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * getCurrentStatusMessage1()
 	 */
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#getCurrentStatusMessage2()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * getCurrentStatusMessage2()
 	 */
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#pleaseStop()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * pleaseStop()
 	 */
 	public void pleaseStop() {
 		// pleaseStop = true;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#pluginWaitsForUser()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * pluginWaitsForUser()
 	 */
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#pleaseContinueRun()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * pleaseContinueRun()
 	 */
 	public void pleaseContinueRun() {
 		// empty
 	}
-	
+
 	public void setCurrentStatusValue(int value) {
 		statusVal = value;
 	}
-	
+
 	public String getDescription() {
 		return "";
 	}
-	
+
 	public JComponent getStatusPane(boolean showEmpty) {
-		res = new FolderPanel("<html>SIB Enzyme Database<br><small>" +
-				"(contains information about enzyme IDs, names and synonyms)");
-		
+		res = new FolderPanel(
+				"<html>SIB Enzyme Database<br><small>" + "(contains information about enzyme IDs, names and synonyms)");
+
 		labelStatus1 = new JLabel();
 		labelStatus2 = new JLabel();
-		
+
 		res.setFrameColor(Color.LIGHT_GRAY, null, 1, 5);
-		
+
 		int b = 5; // normal border
 		int bB = 1; // border around action buttons
-		
+
 		if (!showEmpty)
 			initService(false);
-		
+
 		boolean internalAvailable = isDatabaseAvailable(true);
-		
+
 		updateDatabaseStatus(labelStatus1, labelStatus2, showEmpty);
-		
+
 		if (internalAvailable) {
-//			labelStatus1.setText(status1);
-			res.addGuiComponentRow(
-					new JLabel("<html>" +
-							"Embedded Files:&nbsp;<br><small>" +
-							"(this database file is automatically provided,<br>" +
-							"you may download a updated file and save it<br>" +
-							"in the file system of your hard drive)"),
-					FolderPanel.getBorderedComponent(
-							labelStatus1, b, b, b, b),
-					false);
+			// labelStatus1.setText(status1);
+			res.addGuiComponentRow(new JLabel("<html>" + "Embedded Files:&nbsp;<br><small>"
+					+ "(this database file is automatically provided,<br>"
+					+ "you may download a updated file and save it<br>" + "in the file system of your hard drive)"),
+					FolderPanel.getBorderedComponent(labelStatus1, b, b, b, b), false);
 		}
-		
-//		labelStatus2.setText(status2);
-		res.addGuiComponentRow(
-				new JLabel("<html>" +
-						"Downloaded Files:&nbsp;"),
-				FolderPanel.getBorderedComponent(
-						labelStatus2, b, b, b, b),
-				false);
-		
+
+		// labelStatus2.setText(status2);
+		res.addGuiComponentRow(new JLabel("<html>" + "Downloaded Files:&nbsp;"),
+				FolderPanel.getBorderedComponent(labelStatus2, b, b, b, b), false);
+
 		ArrayList<JComponent> actionButtons = new ArrayList<JComponent>();
 		if (!showEmpty) {
 			actionButtons.add(getWebsiteButton());
@@ -582,38 +581,35 @@ public class EnzymeService extends MemoryHog
 			actionButtons.add(getDownloadButton());
 		}
 		pretifyButtons(actionButtons);
-		
-		res.addGuiComponentRow(
-				new JLabel("<html>" +
-						"Visit Website(s)"),
-				TableLayout.getMultiSplit(actionButtons, TableLayout.PREFERRED, bB, bB, bB, bB),
-				false);
-		
+
+		res.addGuiComponentRow(new JLabel("<html>" + "Visit Website(s)"),
+				TableLayout.getMultiSplit(actionButtons, TableLayout.PREFERRED, bB, bB, bB, bB), false);
+
 		res.layoutRows();
 		return res;
 	}
-	
+
 	protected void updateDatabaseStatus(JLabel labelStatus1, JLabel labelStatus2, boolean showEmpty) {
 		boolean internalAvailable = isDatabaseAvailable(true);
 		boolean externalAvailable = isDatabaseAvailable(false);
-		
+
 		String status1 = "";
 		String status2 = "";
 		if (internalAvailable)
 			status1 = "<html><b>Database is online</b>";
 		else
 			status1 = "<html>Embedded database file not available";
-		
+
 		if (externalAvailable)
 			status2 = "<html><b>Database is online</b>";
 		else
 			status2 = "<html>Database file not available";
-		
+
 		if (externalAvailable || internalAvailable) {
 			if (externalAvailable) {
-				
+
 				status2 += "<br>";
-				
+
 				String modifiedTime = GravistoService.getFileModificationDateAndTime(getFile("enzyme.dat"),
 						"unknown version (file not found)");
 				File f = getFile("enzyme.dat");
@@ -623,15 +619,15 @@ public class EnzymeService extends MemoryHog
 					status2 += "&nbsp;&nbsp;" + modifiedTime + "<br>";
 				status2 +=
 						// "&nbsp;&nbsp;enzclass.txt: "+getReleaseVersionForEnzymeClasses()+"<br>" +
-						"&nbsp;&nbsp;enzyme.dat: " + getReleaseVersionForEnzymeInformation() + "<br>" +
-								"&nbsp;&nbsp;enzymes: " + enzymeEntries.size();
+						"&nbsp;&nbsp;enzyme.dat: " + getReleaseVersionForEnzymeInformation() + "<br>"
+								+ "&nbsp;&nbsp;enzymes: " + enzymeEntries.size();
 			} else
 				status1 += "<br>" +
-						// "&nbsp;&nbsp;enzclass.txt: "+getReleaseVersionForEnzymeClasses()+"<br>" +
-						"&nbsp;&nbsp;enzyme.dat: " + getReleaseVersionForEnzymeInformation() + "<br>" +
-						"&nbsp;&nbsp;enzymes: " + enzymeEntries.size();
+				// "&nbsp;&nbsp;enzclass.txt: "+getReleaseVersionForEnzymeClasses()+"<br>" +
+						"&nbsp;&nbsp;enzyme.dat: " + getReleaseVersionForEnzymeInformation() + "<br>"
+						+ "&nbsp;&nbsp;enzymes: " + enzymeEntries.size();
 		}
-		
+
 		if (internalAvailable) {
 			EnzymeService.getEnzymeInformation("dummy", false);
 			EnzymeService.getEnzymeClasses("dummy", false);
@@ -662,58 +658,50 @@ public class EnzymeService extends MemoryHog
 					status1 += "<br>&nbsp;&nbsp;problem identified: enzyme entry information could not be retrieved";
 			}
 		}
-		
+
 		if (showEmpty)
 			status2 = "<html><b>Bringing database online...</b><br>Please wait a few moments.";
-		
+
 		labelStatus1.setText(status1);
 		labelStatus2.setText(status2);
 	}
-	
+
 	public static File getFile(String fileName) {
 		return new File(ReleaseInfo.getAppFolderWithFinalSep() + fileName);
 	}
-	
+
 	private JComponent getDownloadButton() {
-		return GUIhelper.getWebsiteDownloadButton(
-				"Download",
-				"ftp://ftp.expasy.org/databases/enzyme",
-				ReleaseInfo.getAppFolderWithFinalSep(),
-				"<html>" +
-						"The following URL and the target folder will be automatically opened in a few seconds:<br><br>" +
-						"<code><b>ftp://ftp.expasy.org/databases/enzyme</b></code><br><br>" +
-						"Please download the following files:<br>" +
-						"<ul>" +
-						"	<li>enzclass.txt" +
-						"	<li>enzyme.dat" +
-						"</ul>" +
-						"After downloading them, please move these files to the following location:<br><br>" +
-						"<code><b>" + ReleaseInfo.getAppFolder() + "</b></code><br><br>" +
-						"After closing and re-opening this application, the Enzyme database will be<br>" +
-						"available to the system.",
-				new String[] {
-						"ftp://ftp.expasy.org/databases/enzyme/enzclass.txt",
-						"ftp://ftp.expasy.org/databases/enzyme/enzyme.dat"
-				},
-				"Manual download instructions (automatic download failure)",
-				this);
+		return GUIhelper.getWebsiteDownloadButton("Download", "ftp://ftp.expasy.org/databases/enzyme",
+				ReleaseInfo.getAppFolderWithFinalSep(), "<html>"
+						+ "The following URL and the target folder will be automatically opened in a few seconds:<br><br>"
+						+ "<code><b>ftp://ftp.expasy.org/databases/enzyme</b></code><br><br>"
+						+ "Please download the following files:<br>" + "<ul>" + "	<li>enzclass.txt"
+						+ "	<li>enzyme.dat" + "</ul>"
+						+ "After downloading them, please move these files to the following location:<br><br>"
+						+ "<code><b>" + ReleaseInfo.getAppFolder() + "</b></code><br><br>"
+						+ "After closing and re-opening this application, the Enzyme database will be<br>"
+						+ "available to the system.",
+				new String[] { "ftp://ftp.expasy.org/databases/enzyme/enzclass.txt",
+						"ftp://ftp.expasy.org/databases/enzyme/enzyme.dat" },
+				"Manual download instructions (automatic download failure)", this);
 	}
-	
+
 	private JComponent getLicenseButton() {
 		return GUIhelper.getWebsiteButton("License", "http://enzyme.expasy.org/enzyme.get", null, null, null);
 	}
-	
+
 	private JComponent getWebsiteButton() {
 		return GUIhelper.getWebsiteButton("Website", "http://enzyme.expasy.org/", null, null, null);
 	}
-	
+
 	private void pretifyButtons(ArrayList<JComponent> actionButtons) {
 		for (JComponent jc : actionButtons)
 			jc.setBackground(Color.white);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.editor.MemoryHog#freeMemory()
 	 */
 	public void freeMemory() {

@@ -10,23 +10,24 @@
 package org.graffiti.attributes;
 
 /**
- * The <code>FieldAlreadySetException</code> will be thrown if <code>setAttributable()</code> of <code>setParent()</code> is invoked on an
+ * The <code>FieldAlreadySetException</code> will be thrown if
+ * <code>setAttributable()</code> of <code>setParent()</code> is invoked on an
  * attribute where theses fields are not <tt>null</tt> anymore.
  * 
  * @version $Revision: 1.4 $
  */
-public class FieldAlreadySetException
-					extends RuntimeException {
+public class FieldAlreadySetException extends RuntimeException {
 	// ~ Constructors ===========================================================
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
-	 * Constructs an <code>FieldAlreadySetException</code> with the specified
-	 * detail message.
+	 * Constructs an <code>FieldAlreadySetException</code> with the specified detail
+	 * message.
 	 * 
 	 * @param msg
-	 *           The detail message which is saved for later retrieval by the <code>getMessage()</code> method.
+	 *            The detail message which is saved for later retrieval by the
+	 *            <code>getMessage()</code> method.
 	 */
 	public FieldAlreadySetException(String msg) {
 		super(msg);

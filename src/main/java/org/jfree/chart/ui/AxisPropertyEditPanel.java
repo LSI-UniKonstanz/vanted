@@ -84,16 +84,25 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 	/** The font for displaying tick labels on the axis. */
 	private Font tickLabelFont;
 
-	/** A field containing a description of the font for displaying tick labels on the axis. */
+	/**
+	 * A field containing a description of the font for displaying tick labels on
+	 * the axis.
+	 */
 	private JTextField tickLabelFontField;
 
 	/** The paint (color) for the tick labels. */
 	private PaintSample tickLabelPaintSample;
 
-	/** An empty sub-panel for extending the user interface to handle more complex axes. */
+	/**
+	 * An empty sub-panel for extending the user interface to handle more complex
+	 * axes.
+	 */
 	private JPanel slot1;
 
-	/** An empty sub-panel for extending the user interface to handle more complex axes. */
+	/**
+	 * An empty sub-panel for extending the user interface to handle more complex
+	 * axes.
+	 */
 	private JPanel slot2;
 
 	/** A flag that indicates whether or not the tick labels are visible. */
@@ -118,15 +127,14 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 	private JTabbedPane otherTabs;
 
 	/** The resourceBundle for the localization. */
-	protected static ResourceBundle localizationResources =
-						ResourceBundle.getBundle("org.jfree.chart.ui.LocalizationBundle");
+	protected static ResourceBundle localizationResources = ResourceBundle
+			.getBundle("org.jfree.chart.ui.LocalizationBundle");
 
 	/**
-	 * A static method that returns a panel that is appropriate for the axis
-	 * type.
+	 * A static method that returns a panel that is appropriate for the axis type.
 	 * 
 	 * @param axis
-	 *           the axis whose properties are to be displayed/edited in the panel.
+	 *            the axis whose properties are to be displayed/edited in the panel.
 	 * @return a panel or <code>null</code< if axis is <code>null</code>.
 	 */
 	public static AxisPropertyEditPanel getInstance(Axis axis) {
@@ -146,11 +154,11 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Standard constructor: builds a panel for displaying/editing the
-	 * properties of the specified axis.
+	 * Standard constructor: builds a panel for displaying/editing the properties of
+	 * the specified axis.
 	 * 
 	 * @param axis
-	 *           the axis whose properties are to be displayed/edited in the panel.
+	 *            the axis whose properties are to be displayed/edited in the panel.
 	 */
 	public AxisPropertyEditPanel(Axis axis) {
 
@@ -167,7 +175,7 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 
 		JPanel general = new JPanel(new BorderLayout());
 		general.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-																		localizationResources.getString("General")));
+				localizationResources.getString("General")));
 
 		JPanel interior = new JPanel(new LCBLayout(5));
 		interior.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
@@ -214,9 +222,8 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 		this.slot1 = new JPanel(new BorderLayout());
 
 		JPanel other = new JPanel(new BorderLayout());
-		other.setBorder(BorderFactory.createTitledBorder(
-										BorderFactory.createEtchedBorder(),
-										localizationResources.getString("Other")));
+		other.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+				localizationResources.getString("Other")));
 
 		this.otherTabs = new JTabbedPane();
 		this.otherTabs.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
@@ -224,9 +231,8 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 		JPanel ticks = new JPanel(new LCBLayout(3));
 		ticks.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
-		this.showTickLabelsCheckBox = new JCheckBox(
-							localizationResources.getString("Show_tick_labels"), axis.isTickLabelsVisible()
-							);
+		this.showTickLabelsCheckBox = new JCheckBox(localizationResources.getString("Show_tick_labels"),
+				axis.isTickLabelsVisible());
 		ticks.add(this.showTickLabelsCheckBox);
 		ticks.add(new JPanel());
 		ticks.add(new JPanel());
@@ -239,9 +245,8 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 		b.addActionListener(this);
 		ticks.add(b);
 
-		this.showTickMarksCheckBox = new JCheckBox(
-							localizationResources.getString("Show_tick_marks"), axis.isTickMarksVisible()
-							);
+		this.showTickMarksCheckBox = new JCheckBox(localizationResources.getString("Show_tick_marks"),
+				axis.isTickMarksVisible());
 		ticks.add(this.showTickMarksCheckBox);
 		ticks.add(new JPanel());
 		ticks.add(new JPanel());
@@ -313,8 +318,8 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Returns the current value of the flag that determines whether or not
-	 * tick marks are visible.
+	 * Returns the current value of the flag that determines whether or not tick
+	 * marks are visible.
 	 * 
 	 * @return <code>true</code> if tick marks are visible.
 	 */
@@ -328,9 +333,7 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 	 * @return the current tick label insets value.
 	 */
 	public Insets getTickLabelInsets() {
-		return (this.tickLabelInsets == null)
-							? new Insets(0, 0, 0, 0)
-							: this.tickLabelInsets;
+		return (this.tickLabelInsets == null) ? new Insets(0, 0, 0, 0) : this.tickLabelInsets;
 	}
 
 	/**
@@ -355,26 +358,22 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 	 * Handles user interaction with the property panel.
 	 * 
 	 * @param event
-	 *           Information about the event that triggered the call to
-	 *           this method.
+	 *            Information about the event that triggered the call to this
+	 *            method.
 	 */
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if (command.equals("SelectLabelFont")) {
 			attemptLabelFontSelection();
-		} else
-			if (command.equals("SelectLabelPaint")) {
-				attemptModifyLabelPaint();
-			} else
-				if (command.equals("SelectTickLabelFont")) {
-					attemptTickLabelFontSelection();
-				} else
-					if (command.equals("LabelInsets")) {
-						editLabelInsets();
-					} else
-						if (command.equals("TickLabelInsets")) {
-							editTickLabelInsets();
-						}
+		} else if (command.equals("SelectLabelPaint")) {
+			attemptModifyLabelPaint();
+		} else if (command.equals("SelectTickLabelFont")) {
+			attemptTickLabelFontSelection();
+		} else if (command.equals("LabelInsets")) {
+			editLabelInsets();
+		} else if (command.equals("TickLabelInsets")) {
+			editTickLabelInsets();
+		}
 	}
 
 	/**
@@ -383,15 +382,12 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 	private void attemptLabelFontSelection() {
 
 		FontChooserPanel panel = new FontChooserPanel(this.labelFont);
-		int result = JOptionPane.showConfirmDialog(this, panel,
-							localizationResources.getString("Font_Selection"),
-							JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(this, panel, localizationResources.getString("Font_Selection"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (result == JOptionPane.OK_OPTION) {
 			this.labelFont = panel.getSelectedFont();
-			this.labelFontField.setText(
-								this.labelFont.getFontName() + " " + this.labelFont.getSize()
-								);
+			this.labelFontField.setText(this.labelFont.getFontName() + " " + this.labelFont.getSize());
 		}
 
 	}
@@ -401,8 +397,7 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 	 */
 	private void attemptModifyLabelPaint() {
 		Color c;
-		c = JColorChooser.showDialog(this, localizationResources.getString("Label_Color"),
-													Color.blue);
+		c = JColorChooser.showDialog(this, localizationResources.getString("Label_Color"), Color.blue);
 		if (c != null) {
 			this.labelPaintSample.setPaint(c);
 		}
@@ -414,28 +409,24 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 	public void attemptTickLabelFontSelection() {
 
 		FontChooserPanel panel = new FontChooserPanel(this.tickLabelFont);
-		int result = JOptionPane.showConfirmDialog(this, panel,
-							localizationResources.getString("Font_Selection"),
-							JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(this, panel, localizationResources.getString("Font_Selection"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (result == JOptionPane.OK_OPTION) {
 			this.tickLabelFont = panel.getSelectedFont();
-			this.tickLabelFontField.setText(this.tickLabelFont.getFontName() + " "
-								+ this.tickLabelFont.getSize());
+			this.tickLabelFontField.setText(this.tickLabelFont.getFontName() + " " + this.tickLabelFont.getSize());
 		}
 
 	}
 
 	/**
-	 * Presents insets chooser panel allowing user to modify tick label's
-	 * individual insets values. Updates the current insets text field if edit
-	 * is accepted.
+	 * Presents insets chooser panel allowing user to modify tick label's individual
+	 * insets values. Updates the current insets text field if edit is accepted.
 	 */
 	private void editTickLabelInsets() {
 		InsetsChooserPanel panel = new InsetsChooserPanel(this.tickLabelInsets);
-		int result = JOptionPane.showConfirmDialog(this, panel,
-																		localizationResources.getString("Edit_Insets"),
-																		JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(this, panel, localizationResources.getString("Edit_Insets"),
+				JOptionPane.PLAIN_MESSAGE);
 
 		if (result == JOptionPane.OK_OPTION) {
 			this.tickLabelInsets = panel.getInsets();
@@ -444,15 +435,13 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Presents insets chooser panel allowing user to modify label's
-	 * individual insets values. Updates the current insets text field if edit
-	 * is accepted.
+	 * Presents insets chooser panel allowing user to modify label's individual
+	 * insets values. Updates the current insets text field if edit is accepted.
 	 */
 	private void editLabelInsets() {
 		InsetsChooserPanel panel = new InsetsChooserPanel(this.labelInsets);
-		int result = JOptionPane.showConfirmDialog(this, panel,
-																	localizationResources.getString("Edit_Insets"),
-																	JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(this, panel, localizationResources.getString("Edit_Insets"),
+				JOptionPane.PLAIN_MESSAGE);
 
 		if (result == JOptionPane.OK_OPTION) {
 			this.labelInsets = panel.getInsets();
@@ -461,11 +450,11 @@ public class AxisPropertyEditPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Sets the properties of the specified axis to match the properties
-	 * defined on this panel.
+	 * Sets the properties of the specified axis to match the properties defined on
+	 * this panel.
 	 * 
 	 * @param axis
-	 *           the axis.
+	 *            the axis.
 	 */
 	public void setAxisProperties(Axis axis) {
 		axis.setLabel(getLabel());

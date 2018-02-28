@@ -14,20 +14,15 @@ import org.graffiti.plugin.algorithm.Algorithm;
  * @author Joerg Bartelheimer
  */
 public class RTTreeLayoutPlugin extends GenericPluginAdapter {
-	
+
 	/**
 	 * Creates a new GraphTreeLayoutPlugin object.
 	 */
 	public RTTreeLayoutPlugin() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.DEBUG)
-			this.algorithms = new Algorithm[] {
-								new RTTreeLayout(),
-								new MultiTreeLayout()
-			};
+			this.algorithms = new Algorithm[] { new RTTreeLayout(), new MultiTreeLayout() };
 		else
-			this.algorithms = new Algorithm[] {
-								new RTTreeLayout()
-			};
+			this.algorithms = new Algorithm[] { new RTTreeLayout() };
 	}
-	
+
 }

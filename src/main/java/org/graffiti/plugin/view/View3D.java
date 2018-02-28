@@ -16,8 +16,8 @@ package org.graffiti.plugin.view;
  * @author $Author: morla $
  * @version $Revision: 1.3 $
  */
-public interface View3D
-					extends View {}
+public interface View3D extends View {
+}
 
 // ------------------------------------------------------------------------------
 // end of file

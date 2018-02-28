@@ -16,27 +16,22 @@ import org.graffiti.plugin.io.InputSerializer;
 import org.graffiti.plugin.io.OutputSerializer;
 
 /**
- * The plugin for reading and writing files from the Graphviz tools. Graphviz
- * - Graph Drawing Programs from AT&amp;T Research and Lucent Bell Labs.
+ * The plugin for reading and writing files from the Graphviz tools. Graphviz -
+ * Graph Drawing Programs from AT&amp;T Research and Lucent Bell Labs.
  * 
  * @version $Revision: 1.5 $
  */
-public class DOTSerializerPlugin
-					extends GenericPluginAdapter {
+public class DOTSerializerPlugin extends GenericPluginAdapter {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Creates a new DOTSerializerPlugin object.
 	 */
 	public DOTSerializerPlugin() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.EXTENDED_FILE_FORMAT)) {
-			this.outputSerializers = new OutputSerializer[] {
-								new DOTSerializer()
-			};
+			this.outputSerializers = new OutputSerializer[] { new DOTSerializer() };
 		}
-		this.inputSerializers = new InputSerializer[] {
-							new DOTreader()
-		};
+		this.inputSerializers = new InputSerializer[] { new DOTreader() };
 	}
 }
 

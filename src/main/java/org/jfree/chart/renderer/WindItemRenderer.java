@@ -64,10 +64,7 @@ import org.jfree.util.PublicCloneable;
  * @author Achilleus Mantzios
  */
 public class WindItemRenderer extends AbstractXYItemRenderer
-										implements XYItemRenderer,
-														Cloneable,
-														PublicCloneable,
-														Serializable {
+		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
 
 	/**
 	 * Creates a new renderer.
@@ -80,42 +77,33 @@ public class WindItemRenderer extends AbstractXYItemRenderer
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param plotArea
-	 *           the area within which the plot is being drawn.
+	 *            the area within which the plot is being drawn.
 	 * @param info
-	 *           optional information collection.
+	 *            optional information collection.
 	 * @param plot
-	 *           the plot (can be used to obtain standard color information etc).
+	 *            the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *           the horizontal axis.
+	 *            the horizontal axis.
 	 * @param rangeAxis
-	 *           the vertical axis.
+	 *            the vertical axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @param crosshairState
-	 *           crosshair information for the plot (<code>null</code> permitted).
+	 *            crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *           the pass index.
+	 *            the pass index.
 	 */
-	public void drawItem(Graphics2D g2,
-									XYItemRendererState state,
-									Rectangle2D plotArea,
-									PlotRenderingInfo info,
-									XYPlot plot,
-									ValueAxis domainAxis,
-									ValueAxis rangeAxis,
-									XYDataset dataset,
-									int series,
-									int item,
-									CrosshairState crosshairState,
-									int pass) {
+	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D plotArea, PlotRenderingInfo info,
+			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
+			CrosshairState crosshairState, int pass) {
 
 		WindDataset windData = (WindDataset) dataset;
 
@@ -190,7 +178,7 @@ public class WindItemRenderer extends AbstractXYItemRenderer
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the renderer cannot be cloned.
+	 *             if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

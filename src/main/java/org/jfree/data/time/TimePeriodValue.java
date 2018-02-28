@@ -46,9 +46,9 @@ public class TimePeriodValue implements Cloneable, Serializable {
 	 * Constructs a new data item.
 	 * 
 	 * @param period
-	 *           the time period.
+	 *            the time period.
 	 * @param value
-	 *           the value associated with the time period.
+	 *            the value associated with the time period.
 	 */
 	public TimePeriodValue(final TimePeriod period, final Number value) {
 
@@ -61,9 +61,9 @@ public class TimePeriodValue implements Cloneable, Serializable {
 	 * Constructs a new data pair.
 	 * 
 	 * @param period
-	 *           the time period.
+	 *            the time period.
 	 * @param value
-	 *           the value associated with the time period.
+	 *            the value associated with the time period.
 	 */
 	public TimePeriodValue(final TimePeriod period, final double value) {
 
@@ -93,7 +93,7 @@ public class TimePeriodValue implements Cloneable, Serializable {
 	 * Sets the value for this data item.
 	 * 
 	 * @param value
-	 *           the new value.
+	 *            the new value.
 	 */
 	public void setValue(final Number value) {
 		this.value = value;
@@ -103,7 +103,7 @@ public class TimePeriodValue implements Cloneable, Serializable {
 	 * Tests this object for equality with the target object.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
@@ -116,12 +116,10 @@ public class TimePeriodValue implements Cloneable, Serializable {
 
 		final TimePeriodValue timePeriodValue = (TimePeriodValue) o;
 
-		if (this.period != null ? !this.period.equals(timePeriodValue.period)
-							: timePeriodValue.period != null) {
+		if (this.period != null ? !this.period.equals(timePeriodValue.period) : timePeriodValue.period != null) {
 			return false;
 		}
-		if (this.value != null ? !this.value.equals(timePeriodValue.value)
-							: timePeriodValue.value != null) {
+		if (this.value != null ? !this.value.equals(timePeriodValue.value) : timePeriodValue.value != null) {
 			return false;
 		}
 
@@ -143,7 +141,8 @@ public class TimePeriodValue implements Cloneable, Serializable {
 	/**
 	 * Clones the data pair.
 	 * <P>
-	 * Notes: --> no need to clone the period or value since they are immutable classes.
+	 * Notes: --> no need to clone the period or value since they are immutable
+	 * classes.
 	 * 
 	 * @return a clone of this data pair.
 	 */

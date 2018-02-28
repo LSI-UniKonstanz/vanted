@@ -43,9 +43,11 @@ import org.jfree.chart.plot.FastScatterPlot;
 import org.jfree.chart.plot.Plot;
 
 /**
- * Draws a scatter plot over and over for 10 seconds. Reports on how many redraws were achieved.
+ * Draws a scatter plot over and over for 10 seconds. Reports on how many
+ * redraws were achieved.
  * <p>
- * On my PC (SuSE Linux 8.2, JDK 1.4, 256mb RAM, 2.66ghz Pentium) I get 31 charts per second.
+ * On my PC (SuSE Linux 8.2, JDK 1.4, 256mb RAM, 2.66ghz Pentium) I get 31
+ * charts per second.
  */
 public class ChartTiming4 implements ActionListener {
 
@@ -74,12 +76,7 @@ public class ChartTiming4 implements ActionListener {
 
 		// create a fast scatter chart...
 		final Plot plot = new FastScatterPlot(this.data, new NumberAxis("X"), new NumberAxis("Y"));
-		final JFreeChart chart = new JFreeChart(
-							"Fast Scatter Plot Timing",
-							JFreeChart.DEFAULT_TITLE_FONT,
-							plot,
-							true
-							);
+		final JFreeChart chart = new JFreeChart("Fast Scatter Plot Timing", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 
 		final BufferedImage image = new BufferedImage(400, 300, BufferedImage.TYPE_INT_RGB);
 		final Graphics2D g2 = image.createGraphics();
@@ -105,7 +102,7 @@ public class ChartTiming4 implements ActionListener {
 	 * Receives notification of action events (in this case, from the Timer).
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void actionPerformed(final ActionEvent event) {
 		this.finished = true;
@@ -129,7 +126,7 @@ public class ChartTiming4 implements ActionListener {
 	 * Starting point for the application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

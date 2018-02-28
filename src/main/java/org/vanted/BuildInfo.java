@@ -12,23 +12,22 @@ import java.util.Properties;
  */
 public class BuildInfo {
 
-	private BuildInfo() {}
-	
+	private BuildInfo() {
+	}
+
 	/**
-	 * Gets the current Vanted version, as specified in the
-	 * build file.
+	 * Gets the current Vanted version, as specified in the build file.
 	 * 
 	 * @return the version as String or just an empty String
 	 */
 	public static String getCurrentVersion() {
-		try (InputStream stream = BuildInfo.class.getClassLoader()
-				.getResourceAsStream("build.number")) {
+		try (InputStream stream = BuildInfo.class.getClassLoader().getResourceAsStream("build.number")) {
 			Properties built_props = new Properties();
 			built_props.load(stream);
-			return built_props.getProperty("vanted.version.number");				
+			return built_props.getProperty("vanted.version.number");
 		} catch (IOException e) {
 			e.printStackTrace();
-			
+
 			return "";
 		}
 	}

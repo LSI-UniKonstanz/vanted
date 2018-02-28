@@ -31,48 +31,48 @@ import java.util.logging.Logger;
 @SuppressWarnings("unchecked")
 abstract class Chunk<T extends Chunk> {
 	T conj;
-	
+
 	Rectangle2D rect;
-	
+
 	Variable v;
-	
+
 	Chunk leftNeighbour;
-	
+
 	Chunk rightNeighbour;
-	
+
 	ArrayList<Chunk> leftNeighbours = new ArrayList<Chunk>();
-	
+
 	ArrayList<Chunk> rightNeighbours = new ArrayList<Chunk>();
-	
+
 	abstract double getMax();
-	
+
 	abstract double getMin();
-	
+
 	abstract void setMin(double d);
-	
+
 	abstract double getLength();
-	
+
 	Chunk(Rectangle2D r) {
 		this.rect = r;
 	}
-	
+
 	Chunk(Rectangle2D r, T conjugate) {
 		this.rect = r;
 		this.conj = conjugate;
 	}
-	
+
 	void addLeftNeighbour(Chunk n) {
 		if (!leftNeighbours.contains(n)) {
 			leftNeighbours.add(n);
 		}
 	}
-	
+
 	void addRightNeighbour(Chunk n) {
 		if (!rightNeighbours.contains(n)) {
 			rightNeighbours.add(n);
 		}
 	}
-	
+
 	void setNeighbours(ArrayList<Chunk> leftv, ArrayList<Chunk> rightv) {
 		leftNeighbours = leftv;
 		for (Chunk u : leftv) {
@@ -83,7 +83,7 @@ abstract class Chunk<T extends Chunk> {
 			u.addLeftNeighbour(this);
 		}
 	}
-	
+
 	double overlap(Chunk b) {
 		assert (b.getClass() == this.getClass());
 		if (getMin() < b.getMin() && b.getMin() < getMax())
@@ -92,7 +92,7 @@ abstract class Chunk<T extends Chunk> {
 			return b.getMax() - getMin();
 		return 0;
 	}
-	
+
 	double conjugateOverlap(Chunk c) {
 		T a = conj;
 		T b = (T) c.conj;
@@ -103,7 +103,7 @@ abstract class Chunk<T extends Chunk> {
 			return b.getMax() - a.getMin();
 		return 0;
 	}
-	
+
 	static Comparator<Chunk> comparator = new Comparator<Chunk>() {
 		public int compare(Chunk a, Chunk b) {
 			if (a.getMin() > b.getMin())
@@ -119,7 +119,7 @@ abstract class Chunk<T extends Chunk> {
 			return 0;
 		}
 	};
-	
+
 	static Comparator<Chunk> conjComparator = new Comparator<Chunk>() {
 		public int compare(Chunk a, Chunk b) {
 			Chunk ac = a.conj;
@@ -135,7 +135,7 @@ abstract class Chunk<T extends Chunk> {
 			return 0;
 		}
 	};
-	
+
 	@Override
 	public String toString() {
 		return v.toString();
@@ -144,30 +144,30 @@ abstract class Chunk<T extends Chunk> {
 
 class YChunk extends Chunk<XChunk> {
 	static double g = 0;
-	
+
 	YChunk(Rectangle2D r, XChunk conjugate) {
 		super(r, conjugate);
 	}
-	
+
 	YChunk(Rectangle2D r) {
 		super(r);
 	}
-	
+
 	@Override
 	public double getMax() {
 		return rect.getMaxY() + g;
 	}
-	
+
 	@Override
 	public double getMin() {
 		return rect.getMinY();
 	}
-	
+
 	@Override
 	public double getLength() {
 		return rect.getHeight() + g;
 	}
-	
+
 	@Override
 	void setMin(double min) {
 		if (rect instanceof Rectangle) {
@@ -179,30 +179,30 @@ class YChunk extends Chunk<XChunk> {
 
 class XChunk extends Chunk<YChunk> {
 	static double g = 0;
-	
+
 	XChunk(Rectangle2D r, YChunk conjugate) {
 		super(r, conjugate);
 	}
-	
+
 	XChunk(Rectangle2D r) {
 		super(r);
 	}
-	
+
 	@Override
 	public double getMax() {
 		return rect.getMaxX() + g;
 	}
-	
+
 	@Override
 	public double getMin() {
 		return rect.getMinX();
 	}
-	
+
 	@Override
 	public double getLength() {
 		return rect.getWidth() + g;
 	}
-	
+
 	@Override
 	void setMin(double min) {
 		if (rect instanceof Rectangle) {
@@ -211,23 +211,23 @@ class XChunk extends Chunk<YChunk> {
 		}
 		rect.setRect(min, rect.getMinY(), rect.getWidth(), rect.getHeight());
 	}
-	
+
 }
 
 @SuppressWarnings("unchecked")
 class ChunkEdge implements Comparable<ChunkEdge> {
 	Chunk chunk;
-	
+
 	boolean isStart;
-	
+
 	double position;
-	
+
 	ChunkEdge(Chunk c, boolean s, double p) {
 		chunk = c;
 		isStart = s;
 		position = p;
 	}
-	
+
 	public int compareTo(ChunkEdge arg) {
 		if (this.position > arg.position)
 			return 1;
@@ -240,29 +240,29 @@ class ChunkEdge implements Comparable<ChunkEdge> {
 @SuppressWarnings("unchecked")
 public class QPRectanglePlacement extends Observable implements RectanglePlacement, Observer {
 	static Logger logger = Logger.getLogger(QPRectanglePlacement.class.getName());
-	
+
 	Constraints constraints;
-	
+
 	private boolean completeConstraints;
-	
+
 	private boolean mosekPlacement;
-	
+
 	private boolean animate;
-	
+
 	private Chunk[] chunks;
-	
+
 	private Hashtable<Rectangle2D, Color> rectangleColourMap;
-	
+
 	private boolean orthogonalOrdering;
-	
+
 	private boolean splitRefinement;
-	
+
 	/**
 	 * @param completeConstraints
 	 * @param animate
 	 */
 	public QPRectanglePlacement(boolean split, boolean completeConstraints, boolean orthogonalOrdering,
-						boolean mosekPlacement, double xgap, double ygap, boolean animate) {
+			boolean mosekPlacement, double xgap, double ygap, boolean animate) {
 		this.splitRefinement = split;
 		this.completeConstraints = completeConstraints;
 		this.mosekPlacement = mosekPlacement;
@@ -271,9 +271,8 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 		XChunk.g = xgap;
 		YChunk.g = ygap;
 	}
-	
-	void place(ArrayList<Rectangle2D> rectangles,
-						Hashtable<Rectangle2D, Color> colourMap) {
+
+	void place(ArrayList<Rectangle2D> rectangles, Hashtable<Rectangle2D, Color> colourMap) {
 		rectangleColourMap = colourMap;
 		XChunk[] xs = new XChunk[rectangles.size()];
 		logger.fine("*****************Placing X");
@@ -308,9 +307,9 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 		System.out.println("Place ver.: cost=" + cost + " time=" + (t6 - t5));
 		System.out.println("Total time=" + (t6 - t1));
 	}
-	
+
 	boolean allOverlaps;
-	
+
 	void initVarsAndConstraints(Chunk[] chunks) {
 		if (completeConstraints) {
 			initVarsAndConstraintsComplete(chunks);
@@ -323,7 +322,7 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 		setChanged();
 		notifyObservers();
 	}
-	
+
 	/**
 	 * Adds a zero-length constraint between each pair of adjacent chunks (after
 	 * sorting on position).
@@ -338,7 +337,7 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 			constraints.add(new Constraint(l.v, r.v, 0));
 		}
 	}
-	
+
 	// n^2 time and potentially n^2 constraints
 	void initVarsAndConstraintsComplete(Chunk[] chunks) {
 		Arrays.sort(chunks, Chunk.comparator);
@@ -361,16 +360,16 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 			}
 		}
 	}
-	
+
 	/**
-	 * Generate minimal set of separation constraints between blocks. Sweeps
-	 * through the conjugate dimension (eg, y if we're processing x separation
-	 * constraints) maintaining a set of open blocks sorted by x placement. For
-	 * each opening edge of a block x, we determine x's neighbours (l and r) and
-	 * if necessary, set x,l and r's neighbour pointers. When we process a
-	 * closing edge of a block x, we create 0,1 or 2 constraints between x and
-	 * it's neighbours, resetting the neighbours' neighbour pointers. Generates
-	 * up to 2n constraints, O(n log n) time.
+	 * Generate minimal set of separation constraints between blocks. Sweeps through
+	 * the conjugate dimension (eg, y if we're processing x separation constraints)
+	 * maintaining a set of open blocks sorted by x placement. For each opening edge
+	 * of a block x, we determine x's neighbours (l and r) and if necessary, set x,l
+	 * and r's neighbour pointers. When we process a closing edge of a block x, we
+	 * create 0,1 or 2 constraints between x and it's neighbours, resetting the
+	 * neighbours' neighbour pointers. Generates up to 2n constraints, O(n log n)
+	 * time.
 	 */
 	void initVarsAndConstraintsMinimalOld(Chunk[] chunks) {
 		// sort lexically, just makes variable naming easier to follow
@@ -424,7 +423,7 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 			}
 		}
 	}
-	
+
 	void initVarsAndConstraintsMinimal(Chunk[] chunks) {
 		// sort lexically, just makes variable naming easier to follow
 		Arrays.sort(chunks, Chunk.conjComparator);
@@ -445,17 +444,14 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 			Chunk v = e.chunk;
 			if (e.isStart) {
 				open.add(v);
-				v.setNeighbours(getLeftNeighbours(open, v), getRightNeighbours(
-									open, v));
+				v.setNeighbours(getLeftNeighbours(open, v), getRightNeighbours(open, v));
 			} else {
-				for (Iterator<Chunk> i = v.leftNeighbours.iterator(); i
-									.hasNext();) {
+				for (Iterator<Chunk> i = v.leftNeighbours.iterator(); i.hasNext();) {
 					Chunk u = i.next();
 					constraints.add(new Constraint(u.v, v.v, u.getLength()));
 					u.rightNeighbours.remove(v);
 				}
-				for (Iterator<Chunk> i = v.rightNeighbours.iterator(); i
-									.hasNext();) {
+				for (Iterator<Chunk> i = v.rightNeighbours.iterator(); i.hasNext();) {
 					Chunk u = i.next();
 					constraints.add(new Constraint(v.v, u.v, v.getLength()));
 					u.leftNeighbours.remove(v);
@@ -464,10 +460,9 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 			}
 		}
 	}
-	
+
 	ArrayList<Chunk> getLeftNeighbours(TreeSet<Chunk> scanLine, Chunk v) {
-		ArrayList<Chunk> lhs = new ArrayList<Chunk>(scanLine
-							.headSet(v));
+		ArrayList<Chunk> lhs = new ArrayList<Chunk>(scanLine.headSet(v));
 		ArrayList<Chunk> leftv = new ArrayList<Chunk>();
 		for (int i = lhs.size() - 1; i >= 0; i--) {
 			Chunk u = lhs.get(i);
@@ -481,10 +476,9 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 		}
 		return leftv;
 	}
-	
+
 	ArrayList<Chunk> getRightNeighbours(TreeSet<Chunk> scanLine, Chunk v) {
-		ArrayList<Chunk> rhs = new ArrayList<Chunk>(scanLine
-							.tailSet(v));
+		ArrayList<Chunk> rhs = new ArrayList<Chunk>(scanLine.tailSet(v));
 		ArrayList<Chunk> rightv = new ArrayList<Chunk>();
 		for (int i = 1; i < rhs.size(); i++) {
 			Chunk u = rhs.get(i);
@@ -498,7 +492,7 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 		}
 		return rightv;
 	}
-	
+
 	double placement() {
 		float cost = 0;
 		Variable[] vs = new Variable[chunks.length];
@@ -519,13 +513,14 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 		for (Constraint c : constraints) {
 			p.addConstraint(c.left.name, c.right.name, c.separation);
 		}
-		if(p != null) {
+		if (p != null) {
 			System.out.println("   |C|=" + p.getConstraints().size());
 			try {
 				cost = p.solve();
 				// p = new MosekPlacement(p.getVariables(), p.getConstraints());
 				// float mcost = p.solve();
-				// assert (2 * Math.abs(cost - mcost) / (1 + mcost + cost) < 0.001) : "Solver did not find optimal solution!";
+				// assert (2 * Math.abs(cost - mcost) / (1 + mcost + cost) < 0.001) : "Solver
+				// did not find optimal solution!";
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -536,30 +531,29 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 		}
 		return cost;
 	}
-	
+
 	@Override
 	public void addObserver(Observer o) {
 		super.addObserver(o);
 	}
-	
+
 	/**
-	 * test if there needs to be a constraint between l and r if: - we are
-	 * removing all overlaps and there is overlap in the conjugate axis - there
-	 * is overlap in the conjugate axis but not in this axis - there is overlap
-	 * in this axis and that overlap is less than that in the conjugate
+	 * test if there needs to be a constraint between l and r if: - we are removing
+	 * all overlaps and there is overlap in the conjugate axis - there is overlap in
+	 * the conjugate axis but not in this axis - there is overlap in this axis and
+	 * that overlap is less than that in the conjugate
 	 * 
 	 * @param l
-	 *           leftChunk
+	 *            leftChunk
 	 * @param r
-	 *           rightChunk
+	 *            rightChunk
 	 * @param all
-	 *           true if we need to remove all overlaps
+	 *            true if we need to remove all overlaps
 	 */
 	boolean needConstraint(Chunk l, Chunk r, boolean all) {
 		boolean overlap = l.overlap(r) > 0;
 		boolean conjOverlap = l.conjugateOverlap(r) > 0;
-		boolean conjOverlapGreaterThanThis = l.overlap(r) > 0
-							&& l.overlap(r) < l.conjugateOverlap(r);
+		boolean conjOverlapGreaterThanThis = l.overlap(r) > 0 && l.overlap(r) < l.conjugateOverlap(r);
 		if (all && conjOverlap)
 			return true;
 		if (conjOverlap && !overlap)
@@ -568,7 +562,7 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 			return true;
 		return false;
 	}
-	
+
 	public void update(Observable arg0, Object arg1) {
 		for (Chunk c : chunks) {
 			c.setMin(c.v.getPosition());
@@ -578,9 +572,9 @@ public class QPRectanglePlacement extends Observable implements RectanglePlaceme
 		setChanged();
 		notifyObservers();
 	}
-	
+
 	public void place(ArrayList<Rectangle2D> rectangles) {
 		place(rectangles, null);
 	}
-	
+
 }

@@ -43,12 +43,11 @@ import org.jfree.data.XYDataset;
 /**
  * Random data for a scatter plot demo.
  * <P>
- * Note that the aim of this class is to create a self-contained data source for demo purposes - it is NOT intended to show how you should go about writing your
- * own datasets.
+ * Note that the aim of this class is to create a self-contained data source for
+ * demo purposes - it is NOT intended to show how you should go about writing
+ * your own datasets.
  */
-public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset,
-																							DomainInfo,
-																							RangeInfo {
+public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset, DomainInfo, RangeInfo {
 
 	/** The series count. */
 	private static final int DEFAULT_SERIES_COUNT = 4;
@@ -90,8 +89,8 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset,
 	private Range range;
 
 	/**
-	 * Creates a sample dataset using default settings (4 series, 100 data items per series,
-	 * random data in the range 0 - 200).
+	 * Creates a sample dataset using default settings (4 series, 100 data items per
+	 * series, random data in the range 0 - 200).
 	 */
 	public SampleXYDataset2() {
 		this(DEFAULT_SERIES_COUNT, DEFAULT_ITEM_COUNT);
@@ -101,9 +100,9 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset,
 	 * Creates a sample dataset.
 	 * 
 	 * @param seriesCount
-	 *           the number of series.
+	 *            the number of series.
 	 * @param itemCount
-	 *           the number of items.
+	 *            the number of items.
 	 */
 	public SampleXYDataset2(final int seriesCount, final int itemCount) {
 
@@ -152,12 +151,13 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset,
 	}
 
 	/**
-	 * Returns the x-value for the specified series and item. Series are numbered 0, 1, ...
+	 * Returns the x-value for the specified series and item. Series are numbered 0,
+	 * 1, ...
 	 * 
 	 * @param series
-	 *           the index (zero-based) of the series.
+	 *            the index (zero-based) of the series.
 	 * @param item
-	 *           the index (zero-based) of the required item.
+	 *            the index (zero-based) of the required item.
 	 * @return the x-value for the specified series and item.
 	 */
 	public Number getXValue(final int series, final int item) {
@@ -165,12 +165,13 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset,
 	}
 
 	/**
-	 * Returns the y-value for the specified series and item. Series are numbered 0, 1, ...
+	 * Returns the y-value for the specified series and item. Series are numbered 0,
+	 * 1, ...
 	 * 
 	 * @param series
-	 *           the index (zero-based) of the series.
+	 *            the index (zero-based) of the series.
 	 * @param item
-	 *           the index (zero-based) of the required item.
+	 *            the index (zero-based) of the required item.
 	 * @return the y-value for the specified series and item.
 	 */
 	public Number getYValue(final int series, final int item) {
@@ -190,7 +191,7 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset,
 	 * Returns the name of the series.
 	 * 
 	 * @param series
-	 *           the index (zero-based) of the series.
+	 *            the index (zero-based) of the series.
 	 * @return the name of the series.
 	 */
 	public String getSeriesName(final int series) {
@@ -201,7 +202,7 @@ public class SampleXYDataset2 extends AbstractXYDataset implements XYDataset,
 	 * Returns the number of items in the specified series.
 	 * 
 	 * @param series
-	 *           the index (zero-based) of the series.
+	 *            the index (zero-based) of the series.
 	 * @return the number of items in the specified series.
 	 */
 	public int getItemCount(final int series) {

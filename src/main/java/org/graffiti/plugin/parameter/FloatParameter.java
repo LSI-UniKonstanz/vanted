@@ -14,32 +14,30 @@ package org.graffiti.plugin.parameter;
  * 
  * @version $Revision: 1.6 $
  */
-public class FloatParameter
-					extends AbstractLimitableParameter {
+public class FloatParameter extends AbstractLimitableParameter {
 	// ~ Instance fields ========================================================
-	
-	
+
 	private Float max = null;
-	
+
 	private Float min = null;
-	
+
 	/** The value of this parameter. */
 	private Float value = null;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new float parameter.
 	 * 
 	 * @param name
-	 *           the name of the parameter.
+	 *            the name of the parameter.
 	 * @param description
-	 *           the description of the parameter.
+	 *            the description of the parameter.
 	 */
 	public FloatParameter(String name, String description) {
 		super(name, description);
 	}
-	
+
 	public FloatParameter(Float value, String name, String description) {
 		super(name, description);
 		this.value = value;
@@ -51,7 +49,7 @@ public class FloatParameter
 		this.max = max;
 	}
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the value of this parameter as a <code>Float</code>.
 	 * 
@@ -60,7 +58,7 @@ public class FloatParameter
 	public Float getFloat() {
 		return value;
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -68,9 +66,9 @@ public class FloatParameter
 	 */
 	@Override
 	public Comparable<Float> getMax() {
-		return max == null ? Float.MAX_VALUE : max; 
+		return max == null ? Float.MAX_VALUE : max;
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -78,9 +76,9 @@ public class FloatParameter
 	 */
 	@Override
 	public Comparable<Float> getMin() {
-		return min == null ? Float.MIN_VALUE : min; 
+		return min == null ? Float.MIN_VALUE : min;
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -89,29 +87,27 @@ public class FloatParameter
 	@Override
 	public boolean isValid() {
 		boolean valid = true;
-		if(value == null)
+		if (value == null)
 			return false;
-		
-		if(min != null && min.compareTo(value) > 0)
+
+		if (min != null && min.compareTo(value) > 0)
 			valid = false;
-		if(max != null && max.compareTo(value) < 0)
+		if (max != null && max.compareTo(value) < 0)
 			valid = false;
 		return valid;
 	}
-	
+
 	/**
 	 * Sets the value of the <code>AttributeParameter</code>.
 	 * 
 	 * @param value
-	 *           the new value of the <code>AttributeParameter</code>.
+	 *            the new value of the <code>AttributeParameter</code>.
 	 */
 	@Override
 	public void setValue(Object value) {
 		// TODO
 	}
-	
-	
-	
+
 	public void setMax(Float max) {
 		this.max = max;
 	}

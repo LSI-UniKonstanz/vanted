@@ -46,8 +46,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A time series chart with all zero data. When the data range is zero, you may want to modify
- * the default behaviour of the range axis.
+ * A time series chart with all zero data. When the data range is zero, you may
+ * want to modify the default behaviour of the range axis.
  */
 public class TimeSeriesDemo6 extends ApplicationFrame {
 
@@ -55,7 +55,7 @@ public class TimeSeriesDemo6 extends ApplicationFrame {
 	 * Creates a new instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public TimeSeriesDemo6(final String title) {
 
@@ -72,20 +72,13 @@ public class TimeSeriesDemo6 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							"Time Series Demo 6",
-							"Date",
-							"Value",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Time Series Demo 6", "Date", "Value", dataset,
+				true, true, false);
 
 		final XYPlot plot = chart.getXYPlot();
 		final DateAxis axis = (DateAxis) plot.getDomainAxis();
@@ -146,7 +139,7 @@ public class TimeSeriesDemo6 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

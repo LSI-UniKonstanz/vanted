@@ -27,32 +27,27 @@ import org.graffiti.plugin.editcomponent.NumberEditComponent;
  * 
  * @see NumberEditComponent
  */
-public class EnhDoubleEditComponent
-					extends AbstractValueEditComponent
-					implements ActionListener {
+public class EnhDoubleEditComponent extends AbstractValueEditComponent implements ActionListener {
 	Displayable disp;
-	
+
 	JComponent viewComp;
 	JCheckBox nan;
 	JSpinner spinner;
-	
+
 	/**
 	 * @param disp
 	 */
 	public EnhDoubleEditComponent(Displayable disp) {
 		super(disp);
 		this.disp = disp;
-		
+
 		viewComp = new JPanel();
 		try {
 			double border = 0;
-			double[][] size =
-			{
-								{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, border }, // Columns
-					{ border, TableLayoutConstants.PREFERRED, border }
-			}; // Rows
+			double[][] size = { { border, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, border }, // Columns
+					{ border, TableLayoutConstants.PREFERRED, border } }; // Rows
 			viewComp.setLayout(new TableLayout(size));
-			
+
 			nan = new JCheckBox("NaN");
 			nan.addActionListener(this);
 			spinner = new JSpinner();
@@ -62,28 +57,22 @@ public class EnhDoubleEditComponent
 					System.out.println(disp.getName() + ": NULL");
 				else
 					System.out.println(disp.getName() + ": NaN");
-				nm = new SpinnerNumberModel(
-									0,
-									Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0.5);
+				nm = new SpinnerNumberModel(0, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0.5);
 				nan.setSelected(true);
 			} else {
 				System.out.println(disp.getName() + ": " + disp.getValue());
-				nm = new SpinnerNumberModel(
-									((Double) disp.getValue()).doubleValue(),
-									Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0.5);
+				nm = new SpinnerNumberModel(((Double) disp.getValue()).doubleValue(), Double.NEGATIVE_INFINITY,
+						Double.POSITIVE_INFINITY, 0.5);
 				nan.setSelected(false);
 			}
 			spinner.setModel(nm);
-			
+
 			viewComp.add(nan, "1,1");
 			viewComp.add(spinner, "2,1");
 		} catch (Exception e) {
 			double border = 0;
-			double[][] size =
-			{
-								{ border, TableLayoutConstants.FILL, border }, // Columns
-					{ border, TableLayoutConstants.PREFERRED, border }
-			}; // Rows
+			double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
+					{ border, TableLayoutConstants.PREFERRED, border } }; // Rows
 			viewComp.setLayout(new TableLayout(size));
 			viewComp.add(new JLabel("Error: " + e.getLocalizedMessage()), "1,1");
 		}
@@ -92,30 +81,34 @@ public class EnhDoubleEditComponent
 		viewComp.setMaximumSize(new Dimension(2000, 30));
 		viewComp.validate();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#getComponent()
 	 */
 	public JComponent getComponent() {
 		return viewComp;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#setEditFieldValue()
 	 */
 	public void setEditFieldValue() {
 		//
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#setValue()
 	 */
 	public void setValue() {
 		if (disp.getValue() != null) {
-			// if (disp.getValue() instanceof Integer) disp.setValue(new Integer(spinner.getValue().toString()));
+			// if (disp.getValue() instanceof Integer) disp.setValue(new
+			// Integer(spinner.getValue().toString()));
 			// else
 			if (disp.getValue() instanceof Double) {
 				if (nan.isSelected())
@@ -132,10 +125,12 @@ public class EnhDoubleEditComponent
 		} else
 			disp.setValue(spinner.getValue());
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == nan)
@@ -144,5 +139,5 @@ public class EnhDoubleEditComponent
 				// disp.setValue(new Double(Double.NaN));
 			}
 	}
-	
+
 }

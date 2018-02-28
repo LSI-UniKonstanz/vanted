@@ -9,8 +9,9 @@ import javax.swing.UIManager;
 import javax.swing.plaf.FontUIResource;
 
 /**
- * A JCheckBox that remains unchanged regardless of the scaling. To change, 
- * you have to re-instantiate it.<p>
+ * A JCheckBox that remains unchanged regardless of the scaling. To change, you
+ * have to re-instantiate it.
+ * <p>
  * 
  * Used for the HighDPISupport pane, where it is vital to preserve state, so
  * that the user can continue to work with its components.
@@ -24,15 +25,14 @@ public class ImmutableCheckBox extends JCheckBox {
 	private Dimension dimension;
 	private Icon icon;
 	private FontUIResource font;
-	
-	
+
 	public ImmutableCheckBox() {
 		super();
 		dimension = this.getSize();
 		icon = (Icon) UIManager.get("CheckBox.icon");
 		font = (FontUIResource) UIManager.get("CheckBox.font");
 	}
-	
+
 	@Override
 	public Font getFont() {
 		return font;
@@ -56,5 +56,5 @@ public class ImmutableCheckBox extends JCheckBox {
 	@Override
 	public Dimension getMinimumSize() {
 		return dimension;
-	}	
+	}
 }

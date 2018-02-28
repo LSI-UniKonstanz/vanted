@@ -46,8 +46,8 @@ import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.ui.RectangleEdge;
 
 /**
- * An axis that displays categories and has a 3D effect.
- * Used for bar charts and line charts.
+ * An axis that displays categories and has a 3D effect. Used for bar charts and
+ * line charts.
  * 
  * @author Klaus Rheinwald
  */
@@ -64,37 +64,34 @@ public class CategoryAxis3D extends CategoryAxis implements Cloneable, Serializa
 	 * Creates a new axis using default attribute values.
 	 * 
 	 * @param label
-	 *           the axis label (<code>null</code> permitted).
+	 *            the axis label (<code>null</code> permitted).
 	 */
 	public CategoryAxis3D(String label) {
 		super(label);
 	}
 
 	/**
-	 * Draws the axis on a Java 2D graphics device (such as the screen or a printer).
+	 * Draws the axis on a Java 2D graphics device (such as the screen or a
+	 * printer).
 	 * 
 	 * @param g2
-	 *           the graphics device (<code>null</code> not permitted).
+	 *            the graphics device (<code>null</code> not permitted).
 	 * @param cursor
-	 *           the cursor location.
+	 *            the cursor location.
 	 * @param plotArea
-	 *           the area within which the axis should be drawn (<code>null</code> not
-	 *           permitted).
+	 *            the area within which the axis should be drawn (<code>null</code>
+	 *            not permitted).
 	 * @param dataArea
-	 *           the area within which the plot is being drawn (<code>null</code> not
-	 *           permitted).
+	 *            the area within which the plot is being drawn (<code>null</code>
+	 *            not permitted).
 	 * @param edge
-	 *           the location of the axis (<code>null</code> not permitted).
+	 *            the location of the axis (<code>null</code> not permitted).
 	 * @param plotState
-	 *           collects information about the plot (<code>null</code> permitted).
+	 *            collects information about the plot (<code>null</code> permitted).
 	 * @return the axis state (never <code>null</code>).
 	 */
-	public AxisState draw(Graphics2D g2,
-									double cursor,
-									Rectangle2D plotArea,
-									Rectangle2D dataArea,
-									RectangleEdge edge,
-									PlotRenderingInfo plotState) {
+	public AxisState draw(Graphics2D g2, double cursor, Rectangle2D plotArea, Rectangle2D dataArea, RectangleEdge edge,
+			PlotRenderingInfo plotState) {
 
 		// if the axis is not visible, don't draw it...
 		if (!isVisible()) {
@@ -116,10 +113,9 @@ public class CategoryAxis3D extends CategoryAxis implements Cloneable, Serializa
 
 			if (edge == RectangleEdge.LEFT || edge == RectangleEdge.BOTTOM) {
 				adjustedY += e3D.getYOffset();
-			} else
-				if (edge == RectangleEdge.RIGHT || edge == RectangleEdge.TOP) {
-					adjustedX += e3D.getXOffset();
-				}
+			} else if (edge == RectangleEdge.RIGHT || edge == RectangleEdge.TOP) {
+				adjustedX += e3D.getXOffset();
+			}
 			adjustedDataArea.setRect(adjustedX, adjustedY, adjustedW, adjustedH);
 		} else {
 			adjustedDataArea.setRect(dataArea);
@@ -139,7 +135,7 @@ public class CategoryAxis3D extends CategoryAxis implements Cloneable, Serializa
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            If the axis is not cloneable for some reason.
+	 *             If the axis is not cloneable for some reason.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

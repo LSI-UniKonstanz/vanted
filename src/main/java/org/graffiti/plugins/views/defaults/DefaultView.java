@@ -16,10 +16,9 @@ import org.graffiti.plugin.EditorPluginAdapter;
  * 
  * @version $Revision: 1.4 $
  */
-public class DefaultView
-					extends EditorPluginAdapter {
+public class DefaultView extends EditorPluginAdapter {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor for DefaultView.
 	 */
@@ -28,7 +27,7 @@ public class DefaultView
 		this.views = new String[1];
 		this.views[0] = "org.graffiti.plugins.views.defaults.GraffitiView";
 	}
-	
+
 	// probably the method configure(Preferences pref) will be overridden.
 }
 

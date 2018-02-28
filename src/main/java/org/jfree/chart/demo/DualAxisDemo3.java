@@ -48,8 +48,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demonstration application showing how to create a dual axis chart based on data
- * from two {@link CategoryDataset} instances.
+ * A simple demonstration application showing how to create a dual axis chart
+ * based on data from two {@link CategoryDataset} instances.
  */
 public class DualAxisDemo3 extends ApplicationFrame {
 
@@ -57,7 +57,7 @@ public class DualAxisDemo3 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public DualAxisDemo3(final String title) {
 
@@ -66,16 +66,13 @@ public class DualAxisDemo3 extends ApplicationFrame {
 		final CategoryDataset dataset1 = createDataset1();
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createBarChart(
-							"Dual Axis Chart", // chart title
+		final JFreeChart chart = ChartFactory.createBarChart("Dual Axis Chart", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset1, // dataset
 				PlotOrientation.HORIZONTAL, // orientation
 				true, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
@@ -212,7 +209,7 @@ public class DualAxisDemo3 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

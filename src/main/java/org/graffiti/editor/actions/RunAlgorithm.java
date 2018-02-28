@@ -27,38 +27,37 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.kegg_bar.SelectWindowsAlgor
  * 
  * @version $Revision: 1.13 $
  */
-public class RunAlgorithm
-					extends GraffitiAction {
+public class RunAlgorithm extends GraffitiAction {
 	// ~ Instance fields ========================================================
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/** The class name of the algorithm to run. */
 	private final String algorithmClassName;
-	
+
 	private final Algorithm algorithm;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor for RunAlgorithm.
 	 * 
 	 * @param algorithmClassName
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param name
 	 * @param mainFrame
 	 * @param editComponentManager
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
-	public RunAlgorithm(String algorithmClassName, String name,
-						MainFrame mainFrame, EditComponentManager editComponentManager, Algorithm instance) {
+	public RunAlgorithm(String algorithmClassName, String name, MainFrame mainFrame,
+			EditComponentManager editComponentManager, Algorithm instance) {
 		super(name, mainFrame, null);
 		this.algorithmClassName = algorithmClassName;
 		this.algorithm = instance;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Get the name of the algorithm that this action will run.
 	 * 
@@ -67,7 +66,7 @@ public class RunAlgorithm
 	public String getAlgorithmClassName() {
 		return algorithmClassName;
 	}
-	
+
 	/**
 	 * @see javax.swing.Action#isEnabled()
 	 */
@@ -80,24 +79,23 @@ public class RunAlgorithm
 				return ea.activeForView(mainFrame.getActiveSession().getActiveView());
 			else
 				return ea.activeForView(null);
-		} else if (algorithm instanceof AbstractAlgorithm){
-			boolean alwaysExecutable = ((AbstractAlgorithm)algorithm).isAlwaysExecutable();
-			if(alwaysExecutable)
+		} else if (algorithm instanceof AbstractAlgorithm) {
+			boolean alwaysExecutable = ((AbstractAlgorithm) algorithm).isAlwaysExecutable();
+			if (alwaysExecutable)
 				return true;
 			else {
 				/**
-				 * A special case, because this given algorithm is strictly dependent
-				 * on the #DesktopFrames. Thus, not entirely session-dependent and is
-				 * to be disabled, when e.g. one uses only detached frames.
+				 * A special case, because this given algorithm is strictly dependent on the
+				 * #DesktopFrames. Thus, not entirely session-dependent and is to be disabled,
+				 * when e.g. one uses only detached frames.
 				 */
-				if (algorithm instanceof SelectWindowsAlgorithm &&
-						mainFrame.getDesktop().getAllFrames().length < 1)
+				if (algorithm instanceof SelectWindowsAlgorithm && mainFrame.getDesktop().getAllFrames().length < 1)
 					return false;
-				
+
 				if (!mainFrame.isSessionActive())
 					return false;
 			}
-				return true;
+			return true;
 
 		} else {
 			if (!mainFrame.isSessionActive())
@@ -105,7 +103,7 @@ public class RunAlgorithm
 			return true;
 		}
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -113,7 +111,7 @@ public class RunAlgorithm
 	public HelpContext getHelpContext() {
 		return null;
 	}
-	
+
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
 	 */

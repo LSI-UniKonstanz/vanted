@@ -4,7 +4,7 @@ import org.ErrorMsg;
 
 public enum TtestInfo {
 	EMPTY, REFERENCE, H0, H1;
-	
+
 	public static TtestInfo getValueFromString(String value) {
 		if (value == null || value.length() == 0)
 			return EMPTY;
@@ -16,20 +16,20 @@ public enum TtestInfo {
 			return H1;
 		return EMPTY;
 	}
-	
+
 	public String toString() {
 		switch (this) {
-			case EMPTY:
-				return "";
-			case REFERENCE:
-				return "reference";
-			case H0:
-				return "H0";
-			case H1:
-				return "H1";
-			default:
-				ErrorMsg.addErrorMessage("Internal Error: Unknown TtestInfo enum value");
-				return "";
+		case EMPTY:
+			return "";
+		case REFERENCE:
+			return "reference";
+		case H0:
+			return "H0";
+		case H1:
+			return "H1";
+		default:
+			ErrorMsg.addErrorMessage("Internal Error: Unknown TtestInfo enum value");
+			return "";
 		}
 	}
 }

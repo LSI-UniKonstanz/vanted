@@ -16,49 +16,43 @@ import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
 public class ResizeNodesDepDegreeAlgorithm extends AbstractAlgorithm {
-	
+
 	int maxNodeSize = 60;
 	int minNodeSize = 10;
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return null;
 		// return "Resize depending on Node-Degree";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Nodes";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.NODE,
-				Category.VISUAL,
-				Category.COMPUTATION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.VISUAL, Category.COMPUTATION));
 	}
 
 	@Override
 	public Parameter[] getParameters() {
-		return new Parameter[] {
-							new IntegerParameter(minNodeSize, "Min. Node-Size",
-												"The minimum size of a node"),
-							new IntegerParameter(maxNodeSize, "Max. Node-Size",
-												"The maximum size of a node") };
+		return new Parameter[] { new IntegerParameter(minNodeSize, "Min. Node-Size", "The minimum size of a node"),
+				new IntegerParameter(maxNodeSize, "Max. Node-Size", "The maximum size of a node") };
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
 		minNodeSize = ((IntegerParameter) params[i++]).getInteger().intValue();
 		maxNodeSize = ((IntegerParameter) params[i++]).getInteger().intValue();
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
@@ -66,9 +60,10 @@ public class ResizeNodesDepDegreeAlgorithm extends AbstractAlgorithm {
 		if (graph.getNodes().size() <= 0)
 			throw new PreconditionException("Graph is empty!");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
@@ -88,9 +83,7 @@ public class ResizeNodesDepDegreeAlgorithm extends AbstractAlgorithm {
 			if (minD == maxD) {
 				sz = (maxNodeSize + minNodeSize) / 2;
 			} else {
-				sz = (double) (deg - minD)
-									/ (double) (maxD - minD) * (maxNodeSize - minNodeSize)
-									+ minNodeSize;
+				sz = (double) (deg - minD) / (double) (maxD - minD) * (maxNodeSize - minNodeSize) + minNodeSize;
 			}
 			AttributeHelper.setSize(n, sz, sz);
 		}

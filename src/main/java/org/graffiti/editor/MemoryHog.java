@@ -16,10 +16,10 @@ import javax.swing.Timer;
  * @author klukas
  */
 public abstract class MemoryHog {
-	
+
 	public MemoryHog() {
 		GravistoService.addKnownMemoryHog(this);
-		
+
 		Timer t = new Timer(60000, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (doFreeMemory()) {
@@ -28,23 +28,23 @@ public abstract class MemoryHog {
 			}
 		});
 		t.setRepeats(true);
-		
+
 		boolean autofree = false;
-		
+
 		if (autofree)
 			t.start();
 	}
-	
+
 	static long lastUsageTime = 0;
-	
+
 	protected static boolean doFreeMemory() {
 		return System.currentTimeMillis() - lastUsageTime > 2000;
 	}
-	
+
 	protected static void noteRequest() {
 		lastUsageTime = System.currentTimeMillis();
 	}
-	
+
 	public abstract void freeMemory();
-	
+
 }

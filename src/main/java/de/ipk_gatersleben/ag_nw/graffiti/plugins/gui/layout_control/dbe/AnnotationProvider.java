@@ -19,13 +19,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  * @author klukas
  */
 public interface AnnotationProvider {
-	
+
 	String getTitle();
-	
+
 	LinkedHashMap<String, LinkedHashSet<String>> processWorkload(ArrayList<String> workload);
-	
+
 	boolean requestUserData(ExperimentInterface expdata);
-	
+
 	JButton getButton(ExperimentInterface md, ExperimentDataInfoPane resultPane);
-	
+
 }

@@ -19,11 +19,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 public class PutIntoSidePanel extends AbstractExperimentDataProcessor {
 	private ExperimentInterface md;
 	private JComponent optGui;
-	
+
 	public String getName() {
 		return "Put data in 'Experiments' tab";
 	}
-	
+
 	@Override
 	public void processData() {
 		String tabtitle;
@@ -34,34 +34,31 @@ public class PutIntoSidePanel extends AbstractExperimentDataProcessor {
 		}
 		if (tabtitle == null || tabtitle.equals(""))
 			tabtitle = ExperimentInterface.UNSPECIFIED_EXPERIMENTNAME;
-		
+
 		TabDBE.addOrUpdateExperimentPane(new ProjectEntity(tabtitle, md, optGui));
 	}
-	
+
 	public boolean activeForView(View v) {
 		return true;
 	}
-	
+
 	@Override
 	public void setExperimentData(ExperimentInterface md) {
 		this.md = md;
 	}
-	
+
 	@Override
 	public void setComponent(JComponent optSupplementaryPanel) {
 		this.optGui = optSupplementaryPanel;
 	}
-	
+
 	@Override
 	public ImageIcon getIcon() {
 		return new ImageIcon(GravistoService.getResource(getClass(), "putintosidepanel.png", null));
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.UI,
-				Category.COMPUTATION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.UI, Category.COMPUTATION));
 	}
 }

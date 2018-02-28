@@ -108,9 +108,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.threading.SystemAnalysis;
  * @see javax.swing.JPanel
  * @see org.graffiti.plugin.view.View2D
  */
-public class GraffitiView extends AbstractView implements View2D, GraphView,
-GraphListener, AttributeListener, NodeListener,
-EdgeListener, TransactionListener {
+public class GraffitiView extends AbstractView implements View2D, GraphView, GraphListener, AttributeListener,
+		NodeListener, EdgeListener, TransactionListener {
 
 	private static final Logger logger = Logger.getLogger(GraffitiView.class);
 
@@ -128,8 +127,7 @@ EdgeListener, TransactionListener {
 	private final Map<MouseListener, ZoomedMouseListener> zoomedMouseListeners = new LinkedHashMap<MouseListener, ZoomedMouseListener>();
 
 	/**
-	 * Maps MouseMotionListeners to their corresponding
-	 * ZoomedMouseMotionListeners
+	 * Maps MouseMotionListeners to their corresponding ZoomedMouseMotionListeners
 	 */
 	private final Map<MouseMotionListener, ZoomedMouseMotionListener> zoomedMouseMotionListeners = new LinkedHashMap<MouseMotionListener, ZoomedMouseMotionListener>();
 
@@ -143,13 +141,13 @@ EdgeListener, TransactionListener {
 
 	/**
 	 * components can use this variable to check, if this view is currently
-	 * finishing a transaction and thus can behave differently as ususal
-	 * Currently it is used to selectively NOT update dependent components on each node
+	 * finishing a transaction and thus can behave differently as ususal Currently
+	 * it is used to selectively NOT update dependent components on each node
 	 */
 	public boolean isFinishingTransacation;
 
 	Object redrawLock = new Object();
-	
+
 	public GraffitiView() {
 		setLayout(null);
 		isFinishingTransacation = false;
@@ -188,7 +186,7 @@ EdgeListener, TransactionListener {
 	 * Sets the graph this view displays.
 	 * 
 	 * @param g
-	 *           graph this view should display.
+	 *            graph this view should display.
 	 */
 	@Override
 	public void setGraph(Graph g) {
@@ -206,8 +204,7 @@ EdgeListener, TransactionListener {
 	 * Disable edge component creation.
 	 * 
 	 * @param block
-	 *           If true, no edges will be created upon next
-	 *           redraw.
+	 *            If true, no edges will be created upon next redraw.
 	 */
 	public void setBlockEdges(boolean block) {
 		this.blockEdges = block;
@@ -237,9 +234,9 @@ EdgeListener, TransactionListener {
 	 * Adds a message listener to the view.
 	 * 
 	 * @param ml
-	 *           a message listener
+	 *            a message listener
 	 * @throws IllegalArgumentException
-	 *            DOCUMENT ME!
+	 *             DOCUMENT ME!
 	 */
 	@Override
 	public void addMessageListener(MessageListener ml) {
@@ -272,8 +269,7 @@ EdgeListener, TransactionListener {
 	 */
 	@Override
 	public void addMouseMotionListener(MouseMotionListener l) {
-		ZoomedMouseMotionListener zoomedListener = new ZoomedMouseMotionListener(
-				l);
+		ZoomedMouseMotionListener zoomedListener = new ZoomedMouseMotionListener(l);
 		zoomedMouseMotionListeners.put(l, zoomedListener);
 		super.addMouseMotionListener(zoomedListener);
 	}
@@ -370,7 +366,8 @@ EdgeListener, TransactionListener {
 
 	}
 
-	private void optimizedGraphElementCreation(final boolean addShapesAndAttributeComponentsTogether, final long startTime) {
+	private void optimizedGraphElementCreation(final boolean addShapesAndAttributeComponentsTogether,
+			final long startTime) {
 		logger.debug("optimizedGraphElementCreation for graph : " + getGraph().getName());
 		long nna;
 		long nne;
@@ -383,9 +380,7 @@ EdgeListener, TransactionListener {
 				nc.createNewShape(coordinateSystem);
 			} catch (ShapeNotFoundException e) {
 				nc.createStandardShape();
-				informMessageListener(
-						"statusbar.error.graphelement.ShapeNotFoundException",
-						MessageType.ERROR);
+				informMessageListener("statusbar.error.graphelement.ShapeNotFoundException", MessageType.ERROR);
 			}
 		}
 
@@ -401,9 +396,7 @@ EdgeListener, TransactionListener {
 				ec.createNewShape(CoordinateSystem.XY);
 			} catch (ShapeNotFoundException snf) {
 				ec.createStandardShape();
-				informMessageListener(
-						"statusbar.error.graphelement.ShapeNotFoundException",
-						MessageType.ERROR);
+				informMessageListener("statusbar.error.graphelement.ShapeNotFoundException", MessageType.ERROR);
 			}
 		}
 
@@ -417,7 +410,8 @@ EdgeListener, TransactionListener {
 		long tttB = System.currentTimeMillis();
 		if (tttB == tttA)
 			tttB += 1;
-		// System.out.println("Z-Sort of graph element GUI components ("+ges.length+"): T="+(tttB-tttA)+" ms. "+(int)speedAB+" elements per second.");
+		// System.out.println("Z-Sort of graph element GUI components ("+ges.length+"):
+		// T="+(tttB-tttA)+" ms. "+(int)speedAB+" elements per second.");
 		if (getGraph() == null)
 			return;
 
@@ -453,16 +447,17 @@ EdgeListener, TransactionListener {
 						}
 					}
 					final int maxx = ges.length;
-					// if more than one thread is used, the resulting components are currently not created properly sorted
+					// if more than one thread is used, the resulting components are currently not
+					// created properly sorted
 					// thus, until the ordering is preserved, only one thread can be used
 					ExecutorService run = Executors.newFixedThreadPool(1, // Runtime.getRuntime().availableProcessors(),
 							new ThreadFactory() {
-						public Thread newThread(Runnable r) {
-							Thread t = new Thread(r);
-							t.setName("GEC creation thread for graph " + getGraph().getName(false));
-							return t;
-						}
-					});
+								public Thread newThread(Runnable r) {
+									Thread t = new Thread(r);
+									t.setName("GEC creation thread for graph " + getGraph().getName(false));
+									return t;
+								}
+							});
 					ArrayList<GraphElement> work = new ArrayList<GraphElement>();
 					GraphElement lastGe = null;
 					if (ges.length > 0)
@@ -483,14 +478,15 @@ EdgeListener, TransactionListener {
 								public void run() {
 									if (getGraph() == null)
 										return;
-									createGUIcomponentElements(
-											addShapesAndAttributeComponentsTogether, workF,
-											result, ttt, gecm);
+									createGUIcomponentElements(addShapesAndAttributeComponentsTogether, workF, result,
+											ttt, gecm);
 									curr.addInt(workF.size());
 									long ttt2 = System.currentTimeMillis();
 									if (ttt2 == ttt)
 										ttt2 += 1;
-									MainFrame.showMessage("Create view components... " + (int) (100d * curr.getInt() / maxx) + "%", MessageType.PERMANENT_INFO);// -
+									MainFrame.showMessage(
+											"Create view components... " + (int) (100d * curr.getInt() / maxx) + "%",
+											MessageType.PERMANENT_INFO);// -
 									// "+curr+"/"+maxx+"
 									// ("+(int)speed+"
 									// elements
@@ -510,7 +506,8 @@ EdgeListener, TransactionListener {
 					try {
 						run.shutdown();
 						run.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
-						JComponent sp2 = (JComponent) ErrorMsg.findParentComponent(getViewComponent(), JInternalFrame.class);
+						JComponent sp2 = (JComponent) ErrorMsg.findParentComponent(getViewComponent(),
+								JInternalFrame.class);
 						if (sp2 != null)
 							sp2.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 					} catch (InterruptedException e1) {
@@ -526,15 +523,25 @@ EdgeListener, TransactionListener {
 						if (isThreadedF)
 							SwingUtilities.invokeAndWait(new Runnable() {
 								public void run() {
-									MainFrame.showMessage("Creation of graph element attribute GUI components finished (" + ges.length + "): T=" + (ttt2f - tttf)
-											+ " ms. " + (int) speed + " elements per second. Add elements to view. Please wait.", MessageType.INFO);
-									// System.out.println("Creation of graph element attribute GUI components finished ("+ges.length+"): T="+(ttt2f-tttf)+" ms. "+(int)speed+" elements per second. Add elements to view. Please wait.");
+									MainFrame.showMessage(
+											"Creation of graph element attribute GUI components finished (" + ges.length
+													+ "): T=" + (ttt2f - tttf) + " ms. " + (int) speed
+													+ " elements per second. Add elements to view. Please wait.",
+											MessageType.INFO);
+									// System.out.println("Creation of graph element attribute GUI components
+									// finished ("+ges.length+"): T="+(ttt2f-tttf)+" ms. "+(int)speed+" elements per
+									// second. Add elements to view. Please wait.");
 								}
 							});
 						else {
-							MainFrame.showMessage("Creation of graph element attribute GUI components finished (" + ges.length + "): T=" + (ttt2f - tttf) + " ms. "
-									+ (int) speed + " elements per second. Add elements to view. Please wait.", MessageType.INFO);
-							// System.out.println("Creation of graph element attribute GUI components finished ("+ges.length+"): T="+(ttt2f-tttf)+" ms. "+(int)speed+" elements per second. Add elements to view. Please wait.");
+							MainFrame.showMessage(
+									"Creation of graph element attribute GUI components finished (" + ges.length
+											+ "): T=" + (ttt2f - tttf) + " ms. " + (int) speed
+											+ " elements per second. Add elements to view. Please wait.",
+									MessageType.INFO);
+							// System.out.println("Creation of graph element attribute GUI components
+							// finished ("+ges.length+"): T="+(ttt2f-tttf)+" ms. "+(int)speed+" elements per
+							// second. Add elements to view. Please wait.");
 						}
 
 					} catch (Exception e) {
@@ -605,10 +612,9 @@ EdgeListener, TransactionListener {
 		});
 	}
 
-	private void addElements(final BlockingQueue<JComponent> result,
-			final JComponent finishElement,
+	private void addElements(final BlockingQueue<JComponent> result, final JComponent finishElement,
 			final long startTime, boolean nonBlock) {
-		//		logger.debug("addElements for graph : " + getGraph().getName());
+		// logger.debug("addElements for graph : " + getGraph().getName());
 		JComponent sp = (JComponent) ErrorMsg.findParentComponent(this, JInternalFrame.class);
 		if (sp != null)
 			sp.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -625,7 +631,7 @@ EdgeListener, TransactionListener {
 				break;
 			}
 			if (jc != null && jc != finishElement) {
-				add(jc,0);
+				add(jc, 0);
 				listCopyComponents.add(0, jc);
 
 			}
@@ -669,15 +675,10 @@ EdgeListener, TransactionListener {
 	 * @see java.awt.Container#findComponentAt(int, int)
 	 */
 	@Override
-	public Component findComponentAt(
-			int x, int y) {
+	public Component findComponentAt(int x, int y) {
 		Component c = myFindComponent(x, y);
-		while (c != null && (c.getParent() != null) && (
-				!(
-						c instanceof AttributeComponent ||
-						c instanceof NodeComponent ||
-						c instanceof GraffitiView ||
-						c instanceof EdgeComponent))) {
+		while (c != null && (c.getParent() != null) && (!(c instanceof AttributeComponent || c instanceof NodeComponent
+				|| c instanceof GraffitiView || c instanceof EdgeComponent))) {
 			c = c.getParent();
 		}
 		return c;
@@ -690,8 +691,8 @@ EdgeListener, TransactionListener {
 			Component c = getComponent(i);
 			if (c.isVisible()) {
 				if (c instanceof NodeComponent)
-					if ((c.getWidth() < 50 && c.getHeight() < 50 && x >= c.getX()) && (y >= c.getY()) &&
-							(x <= (c.getX() + c.getWidth())) && (y <= (c.getY() + c.getHeight()))) {
+					if ((c.getWidth() < 50 && c.getHeight() < 50 && x >= c.getX()) && (y >= c.getY())
+							&& (x <= (c.getX() + c.getWidth())) && (y <= (c.getY() + c.getHeight()))) {
 						result = c;
 						break;
 					}
@@ -703,8 +704,8 @@ EdgeListener, TransactionListener {
 				if (c.isVisible()) {
 					if (c instanceof EdgeComponentInterface) {
 						EdgeComponent ec = (EdgeComponent) c;
-						if ((x >= c.getX()) && (y >= c.getY()) &&
-								(x <= (c.getX() + c.getWidth())) && (y <= (c.getY() + c.getHeight()))) {
+						if ((x >= c.getX()) && (y >= c.getY()) && (x <= (c.getX() + c.getWidth()))
+								&& (y <= (c.getY() + c.getHeight()))) {
 							if (ec.getShape().contains(x - c.getX(), y - c.getY())) {
 								result = c;
 								break;
@@ -713,7 +714,8 @@ EdgeListener, TransactionListener {
 							Point2D coord;
 							CoordinateAttribute coordAttr;
 							Edge edge = (Edge) ec.getGraphElement();
-							SortedCollectionAttribute bendsColl = (SortedCollectionAttribute) edge.getAttribute(GraphicAttributeConstants.BENDS_PATH);
+							SortedCollectionAttribute bendsColl = (SortedCollectionAttribute) edge
+									.getAttribute(GraphicAttributeConstants.BENDS_PATH);
 							Collection<?> bends = bendsColl.getCollection().values();
 							for (Iterator<?> it = bends.iterator(); it.hasNext();) {
 								coordAttr = (CoordinateAttribute) it.next();
@@ -730,8 +732,8 @@ EdgeListener, TransactionListener {
 							}
 						}
 					} else {
-						if ((x >= c.getX()) && (y >= c.getY()) &&
-								(x <= (c.getX() + c.getWidth())) && (y <= (c.getY() + c.getHeight()))) {
+						if ((x >= c.getX()) && (y >= c.getY()) && (x <= (c.getX() + c.getWidth()))
+								&& (y <= (c.getY() + c.getHeight()))) {
 							result = c;
 							break;
 						}
@@ -745,7 +747,7 @@ EdgeListener, TransactionListener {
 	 * Called after an attribute has been added.
 	 * 
 	 * @param e
-	 *           the AttributeEvent detailing the changes.
+	 *            the AttributeEvent detailing the changes.
 	 */
 	@Override
 	public void postAttributeAdded(AttributeEvent e) {
@@ -761,7 +763,8 @@ EdgeListener, TransactionListener {
 			// needs to be done
 			// -> new development: shows the backgroundcolor of the graph
 			Attributable a = attr.getAttributable();
-			if (getParent() != null && a instanceof Graph && attr.getName().equals("graphbackgroundcolor") && attr instanceof StringAttribute) {
+			if (getParent() != null && a instanceof Graph && attr.getName().equals("graphbackgroundcolor")
+					&& attr instanceof StringAttribute) {
 				Color c = ColorUtil.getColorFromHex((String) attr.getValue());
 				getParent().setBackground(c);
 			}
@@ -776,9 +779,7 @@ EdgeListener, TransactionListener {
 				// gec.invalidate();
 				// gec.validate();
 			} catch (ShapeNotFoundException snfe) {
-				informMessageListener(
-						"statusbar.error.attribute.ShapeNotFoundException",
-						MessageType.ERROR);
+				informMessageListener("statusbar.error.attribute.ShapeNotFoundException", MessageType.ERROR);
 			}
 		}
 		repaint();
@@ -789,15 +790,15 @@ EdgeListener, TransactionListener {
 	 * Called after an attribute has been changed.
 	 * 
 	 * @param e
-	 *           the AttributeEvent detailing the changes.
+	 *            the AttributeEvent detailing the changes.
 	 */
 	@Override
 	public void postAttributeChanged(AttributeEvent e) {
-		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
+		if (getActiveTransactions() > 0 && !isFinishingTransacation)
 			return;
-		
+
 		Attribute attr = e.getAttribute();
-		if(attr.getAttributable() != null && attr.getAttributable() instanceof Graph)
+		if (attr.getAttributable() != null && attr.getAttributable() instanceof Graph)
 			attributeChanged(attr);
 		try {
 			GraphElementComponent gec = null;
@@ -808,9 +809,7 @@ EdgeListener, TransactionListener {
 				gec.repaint();
 			}
 		} catch (ShapeNotFoundException snfe) {
-			informMessageListener(
-					"statusbar.error.attribute.ShapeNotFoundException",
-					MessageType.ERROR);
+			informMessageListener("statusbar.error.attribute.ShapeNotFoundException", MessageType.ERROR);
 		}
 		repaint();
 		if (getGraph() != null)
@@ -821,7 +820,7 @@ EdgeListener, TransactionListener {
 	 * Called after an attribute has been removed.
 	 * 
 	 * @param e
-	 *           the AttributeEvent detailing the changes.
+	 *            the AttributeEvent detailing the changes.
 	 */
 	@Override
 	public void postAttributeRemoved(AttributeEvent e) {
@@ -833,10 +832,11 @@ EdgeListener, TransactionListener {
 			return;
 		GraphElementComponent gec = getGraphElementComponent((GraphElement) attributable);
 		if (gec == null)
-			return;		
+			return;
 		ac = gec.getAttributeComponent(attr);
 
-		if (attr.getAttributable() instanceof Graph && attr.getName().equals("graphbackgroundcolor") && attr instanceof StringAttribute) {
+		if (attr.getAttributable() instanceof Graph && attr.getName().equals("graphbackgroundcolor")
+				&& attr instanceof StringAttribute) {
 			attr.getParent().remove(attr);
 			setBackground(Color.white);
 		}
@@ -847,9 +847,7 @@ EdgeListener, TransactionListener {
 			gec.attributeChanged(attr.getParent());
 			gec.invalidate();
 		} catch (ShapeNotFoundException snfe) {
-			informMessageListener(
-					"statusbar.error.attribute.ShapeNotFoundException",
-					MessageType.ERROR);
+			informMessageListener("statusbar.error.attribute.ShapeNotFoundException", MessageType.ERROR);
 		}
 
 		if (ac != null) {
@@ -867,11 +865,11 @@ EdgeListener, TransactionListener {
 	 * Called after the edge was set directed or undirected.
 	 * 
 	 * @param e
-	 *           the EdgeEvent detailing the changes.
+	 *            the EdgeEvent detailing the changes.
 	 */
 	@Override
 	public void postDirectedChanged(EdgeEvent e) {
-		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
+		if (getActiveTransactions() > 0 && !isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -887,11 +885,11 @@ EdgeListener, TransactionListener {
 	 * Called after an edge has been added to the graph.
 	 * 
 	 * @param e
-	 *           the GraphEvent detailing the changes.
+	 *            the GraphEvent detailing the changes.
 	 */
 	@Override
 	public void postEdgeAdded(GraphEvent e) {
-		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
+		if (getActiveTransactions() > 0 && !isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -899,8 +897,7 @@ EdgeListener, TransactionListener {
 		if (isHidden(edge))
 			return;
 
-		EdgeComponent component = createEdgeComponent(
-				getGraphElementComponentMap(), edge);
+		EdgeComponent component = createEdgeComponent(getGraphElementComponentMap(), edge);
 		if (component == null)
 			return;
 		// graphElementComponents.put(edge, component);
@@ -908,9 +905,7 @@ EdgeListener, TransactionListener {
 			component.createNewShape(CoordinateSystem.XY);
 		} catch (ShapeNotFoundException snfe) {
 			component.createStandardShape();
-			informMessageListener(
-					"statusbar.error.graphelement.ShapeNotFoundException",
-					MessageType.ERROR);
+			informMessageListener("statusbar.error.graphelement.ShapeNotFoundException", MessageType.ERROR);
 		}
 
 		// Node node1 = edge.getSource();
@@ -924,7 +919,7 @@ EdgeListener, TransactionListener {
 		listCopyComponents.add(0, component);
 		addAttributeComponents(edge, component);
 
-		//		validate();
+		// validate();
 		repaint(edge);
 		if (getGraph() != null)
 			getGraph().setModified(true);
@@ -934,11 +929,11 @@ EdgeListener, TransactionListener {
 	 * Called after an edge has been removed from the graph.
 	 * 
 	 * @param e
-	 *           the GraphEvent detailing the changes.
+	 *            the GraphEvent detailing the changes.
 	 */
 	@Override
 	public void postEdgeRemoved(GraphEvent e) {
-		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
+		if (getActiveTransactions() > 0 && !isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -969,7 +964,7 @@ EdgeListener, TransactionListener {
 
 			remove(ec);
 			listCopyComponents.remove(ec);
-			//			validate();
+			// validate();
 
 			// adjustPreferredSize();
 			repaintGraphElementComponent(ec);
@@ -982,11 +977,11 @@ EdgeListener, TransactionListener {
 	 * Called after the edge has been reversed.
 	 * 
 	 * @param e
-	 *           the EdgeEvent detailing the changes.
+	 *            the EdgeEvent detailing the changes.
 	 */
 	@Override
 	public void postEdgeReversed(EdgeEvent e) {
-		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
+		if (getActiveTransactions() > 0 && !isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -998,15 +993,15 @@ EdgeListener, TransactionListener {
 	}
 
 	/**
-	 * Called after method <code>clear()</code> has been called on a graph. No
-	 * other events (like remove events) are generated.
+	 * Called after method <code>clear()</code> has been called on a graph. No other
+	 * events (like remove events) are generated.
 	 * 
 	 * @param e
-	 *           the GraphEvent detailing the changes.
+	 *            the GraphEvent detailing the changes.
 	 */
 	@Override
 	public void postGraphCleared(GraphEvent e) {
-		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
+		if (getActiveTransactions() > 0 && !isFinishingTransacation)
 			return;
 
 		clearGraphElementComponentMap();
@@ -1020,11 +1015,11 @@ EdgeListener, TransactionListener {
 	 * Called after an edge has been added to the graph.
 	 * 
 	 * @param e
-	 *           the GraphEvent detailing the changes.
+	 *            the GraphEvent detailing the changes.
 	 */
 	@Override
 	public void postNodeAdded(GraphEvent e) {
-		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
+		if (getActiveTransactions() > 0 && !isFinishingTransacation)
 			return;
 
 		Node node = e.getNode();
@@ -1038,32 +1033,30 @@ EdgeListener, TransactionListener {
 			component.createNewShape(coordinateSystem);
 		} catch (ShapeNotFoundException snfe) {
 			component.createStandardShape();
-			informMessageListener(
-					"statusbar.error.graphelement.ShapeNotFoundException",
-					MessageType.ERROR);
+			informMessageListener("statusbar.error.graphelement.ShapeNotFoundException", MessageType.ERROR);
 		}
 
 		add(component, 0);
 		listCopyComponents.add(0, component);
 		addAttributeComponents(node, component);
 
-		//		validate();
+		// validate();
 		repaint(node);
 		if (getGraph() != null)
 			getGraph().setModified(true);
 	}
 
 	/**
-	 * Called after a node has been removed from the graph. All edges incident
-	 * to this node have already been removed (preEdgeRemoved and
-	 * postEdgeRemoved have been called).
+	 * Called after a node has been removed from the graph. All edges incident to
+	 * this node have already been removed (preEdgeRemoved and postEdgeRemoved have
+	 * been called).
 	 * 
 	 * @param e
-	 *           the GraphEvent detailing the changes.
+	 *            the GraphEvent detailing the changes.
 	 */
 	@Override
 	public void postNodeRemoved(GraphEvent e) {
-		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
+		if (getActiveTransactions() > 0 && !isFinishingTransacation)
 			return;
 
 		Node node = e.getNode();
@@ -1071,7 +1064,7 @@ EdgeListener, TransactionListener {
 		processNodeRemoval(node);
 		// if (getActiveTransactions() <= 0) {
 		// adjustPreferredSize();
-		//		repaint();
+		// repaint();
 		// }
 		repaint(node);
 		if (getGraph() != null)
@@ -1113,11 +1106,11 @@ EdgeListener, TransactionListener {
 	 * Called after the source node of an edge has changed.
 	 * 
 	 * @param e
-	 *           the EdgeEvent detailing the changes.
+	 *            the EdgeEvent detailing the changes.
 	 */
 	@Override
 	public void postSourceNodeChanged(EdgeEvent e) {
-		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
+		if (getActiveTransactions() > 0 && !isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -1136,11 +1129,11 @@ EdgeListener, TransactionListener {
 	 * Called after the target node of an edge has changed.
 	 * 
 	 * @param e
-	 *           the EdgeEvent detailing the changes.
+	 *            the EdgeEvent detailing the changes.
 	 */
 	@Override
 	public void postTargetNodeChanged(EdgeEvent e) {
-		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
+		if (getActiveTransactions() > 0 && !isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -1159,11 +1152,11 @@ EdgeListener, TransactionListener {
 	 * Called before a change of the source node of an edge takes place.
 	 * 
 	 * @param e
-	 *           the EdgeEvent detailing the changes.
+	 *            the EdgeEvent detailing the changes.
 	 */
 	@Override
 	public void preSourceNodeChanged(EdgeEvent e) {
-		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
+		if (getActiveTransactions() > 0 && !isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -1177,11 +1170,11 @@ EdgeListener, TransactionListener {
 	 * Called before a change of the target node of an edge takes place.
 	 * 
 	 * @param e
-	 *           the EdgeEvent detailing the changes.
+	 *            the EdgeEvent detailing the changes.
 	 */
 	@Override
 	public void preTargetNodeChanged(EdgeEvent e) {
-		if (getActiveTransactions() > 0 && ! isFinishingTransacation)
+		if (getActiveTransactions() > 0 && !isFinishingTransacation)
 			return;
 
 		Edge edge = e.getEdge();
@@ -1195,9 +1188,9 @@ EdgeListener, TransactionListener {
 	 * Removes a message listener from the view.
 	 * 
 	 * @param ml
-	 *           a message listener
+	 *            a message listener
 	 * @throws IllegalArgumentException
-	 *            DOCUMENT ME!
+	 *             DOCUMENT ME!
 	 */
 	@Override
 	public void removeMessageListener(MessageListener ml) {
@@ -1211,40 +1204,42 @@ EdgeListener, TransactionListener {
 	 * Called when a transaction has stopped.
 	 * 
 	 * @param event
-	 *           the EdgeEvent detailing the changes.
+	 *            the EdgeEvent detailing the changes.
 	 */
 	@Override
-	public  void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
+	public void transactionFinished(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		final TransactionEvent fevent = event;
 		final BackgroundTaskStatusProviderSupportingExternalCall fstatus = status;
-			if (!SwingUtilities.isEventDispatchThread()) {
-				try {
-					synchronized(redrawLock) {
-						SwingUtilities.invokeAndWait(new Runnable() {
+		if (!SwingUtilities.isEventDispatchThread()) {
+			try {
+				synchronized (redrawLock) {
+					SwingUtilities.invokeAndWait(new Runnable() {
 
-							@Override
-							public void run() {
-								logger.debug("calling transactionFinishedOnSwingThread() from NON-Event dispatch thread");
-								transactionFinishedOnSwingThread(fevent, fstatus);
-							}
-						});
-					}
-				} catch (InvocationTargetException | InterruptedException e) {
-					e.printStackTrace();
+						@Override
+						public void run() {
+							logger.debug("calling transactionFinishedOnSwingThread() from NON-Event dispatch thread");
+							transactionFinishedOnSwingThread(fevent, fstatus);
+						}
+					});
 				}
-			} else {
-				transactionFinishedOnSwingThread(fevent, fstatus);
+			} catch (InvocationTargetException | InterruptedException e) {
+				e.printStackTrace();
 			}
+		} else {
+			transactionFinishedOnSwingThread(fevent, fstatus);
+		}
 	}
 
-	private void transactionFinishedOnSwingThread(TransactionEvent event, BackgroundTaskStatusProviderSupportingExternalCall status) {
-//		logger.setLevel(Level.DEBUG);
+	private void transactionFinishedOnSwingThread(TransactionEvent event,
+			BackgroundTaskStatusProviderSupportingExternalCall status) {
+		// logger.setLevel(Level.DEBUG);
 		long startTimeTransFinished = System.currentTimeMillis();
 		isFinishingTransacation = true;
 
-		logger.debug("transactionFinishedOnSwingThread() --------------- EVENT DISPATCH THREAD? " + SwingUtilities.isEventDispatchThread());
+		logger.debug("transactionFinishedOnSwingThread() --------------- EVENT DISPATCH THREAD? "
+				+ SwingUtilities.isEventDispatchThread());
 
-//		logger.debug("view contains " + getComponentCount() + " components");
+		// logger.debug("view contains " + getComponentCount() + " components");
 
 		blockAdjust = true;
 
@@ -1254,7 +1249,8 @@ EdgeListener, TransactionListener {
 		// must add edges AFTER nodes ...
 		Set<Edge> edgesToAdd = new HashSet<Edge>();
 
-		Collection<Object> changed = event != null ? new ArrayList<Object>(event.getChangedObjects().values()) : new ArrayList<Object>();
+		Collection<Object> changed = event != null ? new ArrayList<Object>(event.getChangedObjects().values())
+				: new ArrayList<Object>();
 
 		String s1 = null, s2 = null;
 		if (status != null)
@@ -1286,7 +1282,6 @@ EdgeListener, TransactionListener {
 			if (status != null)
 				status.setCurrentStatusValueFine(100d * idx / maxIdx);
 
-
 			Attributable atbl = null;
 			// System.out.println("Changed: "+obj);
 			if (obj instanceof Attributable) {
@@ -1305,21 +1300,19 @@ EdgeListener, TransactionListener {
 			}
 
 			if (atbl instanceof Graph) {
-				if(obj instanceof Attribute) {
-					if( ((Attribute) obj).getName().equals("background_coloring")
-						|| ((Attribute) obj).getName().equals("graphbackgroundcolor"))
-					{
+				if (obj instanceof Attribute) {
+					if (((Attribute) obj).getName().equals("background_coloring")
+							|| ((Attribute) obj).getName().equals("graphbackgroundcolor")) {
 						attributeChanged((Attribute) obj);
 						// we don't do anything if we match one of the attributes
 					}
+				} else if (obj instanceof Graph) {
+					// information not helpful
+					blockAdjust = false;
+					completeRedraw();
+					return; // completeRedraw should be complete?!
 				}
-				else if (obj instanceof Graph){
-						// information not helpful
-							blockAdjust = false;
-							completeRedraw();
-							return; // completeRedraw should be complete?!
-				}
-				
+
 			} else {
 
 				try {
@@ -1340,43 +1333,43 @@ EdgeListener, TransactionListener {
 								boolean process = true;
 								String id = null;
 								if (obj instanceof Attribute) {
-									if(((Attribute)obj).isDeleted()) {
-										postAttributeRemoved(new AttributeEvent((Attribute)obj));
+									if (((Attribute) obj).isDeleted()) {
+										postAttributeRemoved(new AttributeEvent((Attribute) obj));
 									} else {
 										id = ((Attribute) obj).getId();
 										if (id != null && id.equals("tooltip"))
 											process = false;
 									}
-								} else if(obj instanceof AdjListNode) {
+								} else if (obj instanceof AdjListNode) {
 									// if a mapping occured then the whole node is part of the transaction
 									// and calling this method is just a shortcut and will take care
 									// of creating all necessary attribute components for this node
 									recurseAttributes(((GraphElement) atbl).getAttributes(), gec);
 									gec.attributeChanged(atbl.getAttribute(""));
 
-								} 
+								}
 								if (process) {
 									if (obj instanceof Attribute) {
 										if (id != null && (id.equals("width") || id.equals("frameThickness"))) {
 											checkHiddenStatus((GraphElement) atbl);
 											gec = getGraphElementComponent((GraphElement) atbl);
-										}/*
-										 * else
-										 * System.out.println("Attribute Change: "+id);
-										 */
+										} /*
+											 * else System.out.println("Attribute Change: "+id);
+											 */
 									}
 									if (gec != null) {
-										//										if (obj instanceof Attribute && ae.getEventType() == EVENTTYPE.DELETED )
-										//											postAttributeRemoved(ae);
+										// if (obj instanceof Attribute && ae.getEventType() == EVENTTYPE.DELETED )
+										// postAttributeRemoved(ae);
 										if (obj instanceof Attribute)
 											gec.attributeChanged((Attribute) obj);
 										else {
 											gec.attributeChanged(atbl.getAttribute("graphics"));
-											//											gec.attributeChanged(atbl.getAttribute(""));
-										} 
+											// gec.attributeChanged(atbl.getAttribute(""));
+										}
 
 										if (gec instanceof AbstractGraphElementComponent) {
-											setDependendComponents.addAll(((AbstractGraphElementComponent) gec).getDependentGraphElementComponents());
+											setDependendComponents.addAll(((AbstractGraphElementComponent) gec)
+													.getDependentGraphElementComponents());
 										}
 									}
 								}
@@ -1384,7 +1377,7 @@ EdgeListener, TransactionListener {
 								// graph element has been ADDED
 								if (atbl instanceof Node) {
 									setPostAddedNodes.add((Node) atbl);
-									//									postNodeAdded(new GraphEvent((Node) atbl));
+									// postNodeAdded(new GraphEvent((Node) atbl));
 								} else {
 									if (atbl instanceof Edge) {
 										edgesToAdd.add((Edge) atbl);
@@ -1398,26 +1391,26 @@ EdgeListener, TransactionListener {
 						break;
 					}
 				} catch (ShapeNotFoundException snfe) {
-					informMessageListener(
-							"statusbar.error.attribute.ShapeNotFoundException",
-							MessageType.ERROR);
+					informMessageListener("statusbar.error.attribute.ShapeNotFoundException", MessageType.ERROR);
 				}
 			}
 		}
-		logger.debug("time for changing " + changed.size() + "transaction elements "  + (System.currentTimeMillis() - time1) + "ms");
+		logger.debug("time for changing " + changed.size() + "transaction elements "
+				+ (System.currentTimeMillis() - time1) + "ms");
 		logger.debug("in transaction: updating " + setDependendComponents.size() + " dependend components");
-		//		long size = setDependendComponents.size();
+		// long size = setDependendComponents.size();
 		long time = System.currentTimeMillis();
 		long counter = 0;
 		final int numDepComp = setDependendComponents.size();
 		if (numDepComp > 4000) {
 			int threads = SystemAnalysis.getNumberOfCPUs();
-			if(threads > 2 && numDepComp < 10000)
+			if (threads > 2 && numDepComp < 10000)
 				threads = 2;
-			final int numThreads = threads; 
+			final int numThreads = threads;
 			final int numElemPerThread = numDepComp / numThreads;
 			ExecutorService executor = Executors.newFixedThreadPool(numThreads);
-			final GraphElementComponent arrayGEC[] = setDependendComponents.toArray(new GraphElementComponent[numDepComp]);
+			final GraphElementComponent arrayGEC[] = setDependendComponents
+					.toArray(new GraphElementComponent[numDepComp]);
 			for (int i = 0; i < numThreads; i++) {
 				final int startIdx = i;
 				executor.submit(new Runnable() {
@@ -1471,7 +1464,7 @@ EdgeListener, TransactionListener {
 		 * add nodes and edges from transaction in one go
 		 */
 		if (!setPostAddedNodes.isEmpty() || !edgesToAdd.isEmpty()) {
-			setVisible(false); //disable layout-trigger for each added component
+			setVisible(false); // disable layout-trigger for each added component
 			logger.debug("creating " + setPostAddedNodes.size() + " new nodes");
 			for (GraphElement atbl : setPostAddedNodes) {
 				postNodeAdded(new GraphEvent((Node) atbl));
@@ -1484,7 +1477,7 @@ EdgeListener, TransactionListener {
 					status.setCurrentStatusValueFine(100d * idx / maxIdx);
 				postEdgeAdded(new GraphEvent(iter.next()));
 			}
-			setVisible(true); //layout components trigger
+			setVisible(true); // layout components trigger
 		}
 
 		if (requestCompleteRedraw) {
@@ -1495,7 +1488,7 @@ EdgeListener, TransactionListener {
 			completeRedraw();
 			if (status != null)
 				status.setCurrentStatusText2("Complete recreation finished");
-		} 
+		}
 		blockAdjust = false;
 
 		adjustPreferredSize(false);
@@ -1533,7 +1526,7 @@ EdgeListener, TransactionListener {
 	@Override
 	public void transactionStarted(TransactionEvent e) {
 		super.transactionStarted(e);
-		//		getActiveTransactions()++;
+		// getActiveTransactions()++;
 		if (SwingUtilities.isEventDispatchThread())
 			repaint();
 	}
@@ -1547,40 +1540,40 @@ EdgeListener, TransactionListener {
 		adjustPreferredSize(true);
 	}
 
-	
-	
 	@Override
 	public void attributeChanged(Attribute attr) {
 
-		if (attr.getAttributable() instanceof Graph && attr.getName().equals("graphbackgroundcolor") && attr instanceof StringAttribute) {
+		if (attr.getAttributable() instanceof Graph && attr.getName().equals("graphbackgroundcolor")
+				&& attr instanceof StringAttribute) {
 			Color c = ColorUtil.getColorFromHex((String) attr.getValue());
-			if(getParent() != null)
+			if (getParent() != null)
 				getParent().setBackground(c);
-			
+
 			getGraph().setModified(true);
 		}
-		
+
 	}
 
 	/**
-	 * Creates a new <code>NodeComponent</code>. It first checks if the <code>graphElementComponents</code> map already (/ still) contains a
-	 * component for that very edge. If yes, this component is used.
-	 * Otherwise, a new component is created and entered into the given map.
-	 * The original map is not altered. Therefore, the caller is responsible
-	 * to use the gecMap correctly: Either provide the <code>graphElementComponents</code>, then everything is as expected. Or
-	 * provide a new map; then only the new map is updated. This is used for a
-	 * complete redraw. for example. There, it is not necessary to create new
-	 * components if a component already exists (in fact it would be dangerous
-	 * since the component might have changed, like a border added).
+	 * Creates a new <code>NodeComponent</code>. It first checks if the
+	 * <code>graphElementComponents</code> map already (/ still) contains a
+	 * component for that very edge. If yes, this component is used. Otherwise, a
+	 * new component is created and entered into the given map. The original map is
+	 * not altered. Therefore, the caller is responsible to use the gecMap
+	 * correctly: Either provide the <code>graphElementComponents</code>, then
+	 * everything is as expected. Or provide a new map; then only the new map is
+	 * updated. This is used for a complete redraw. for example. There, it is not
+	 * necessary to create new components if a component already exists (in fact it
+	 * would be dangerous since the component might have changed, like a border
+	 * added).
 	 * 
 	 * @param gecMap
 	 * @param node
-	 *           the node for which the component is built.
+	 *            the node for which the component is built.
 	 * @return DOCUMENT ME!
 	 * @see #completeRedraw() for an example.
 	 */
-	protected NodeComponent createNodeComponent(
-			Map<GraphElement, GraphElementComponent> gecMap, Node node) {
+	protected NodeComponent createNodeComponent(Map<GraphElement, GraphElementComponent> gecMap, Node node) {
 
 		NodeComponent nodeComponent = (NodeComponent) gecMap.get(node);
 
@@ -1606,8 +1599,8 @@ EdgeListener, TransactionListener {
 	}
 
 	/**
-	 * Extracts the name of this view class. It has to be overridden by all
-	 * extended subclasses of this class.
+	 * Extracts the name of this view class. It has to be overridden by all extended
+	 * subclasses of this class.
 	 * 
 	 * @return DOCUMENT ME!
 	 */
@@ -1621,11 +1614,10 @@ EdgeListener, TransactionListener {
 
 		try {
 			invZoomedPoint = zoom.inverseTransform(e.getPoint(), null);
-			MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e
-					.getWhen(), e.getModifiers(), (int) (invZoomedPoint.getX()),
-					(int) (invZoomedPoint.getY()), e.getClickCount(), e
-					.isPopupTrigger());
-			
+			MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiers(),
+					(int) (invZoomedPoint.getX()), (int) (invZoomedPoint.getY()), e.getClickCount(),
+					e.isPopupTrigger());
+
 			return newME;
 		} catch (NoninvertibleTransformException nite) {
 			// when setting the zoom, it must have been checked that
@@ -1638,7 +1630,7 @@ EdgeListener, TransactionListener {
 	 * DOCUMENT ME!
 	 * 
 	 * @param e
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	MouseEvent getZoomedEventDB(MouseEvent e) {
@@ -1646,11 +1638,10 @@ EdgeListener, TransactionListener {
 
 		try {
 			invZoomedPoint = zoom.inverseTransform(e.getPoint(), null);
-			MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e
-					.getWhen(), e.getModifiers(), (int) (invZoomedPoint.getX()),
-					(int) (invZoomedPoint.getY()), e.getClickCount(), e
-					.isPopupTrigger());
-			
+			MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiers(),
+					(int) (invZoomedPoint.getX()), (int) (invZoomedPoint.getY()), e.getClickCount(),
+					e.isPopupTrigger());
+
 			return newME;
 		} catch (NoninvertibleTransformException nite) {
 			// when setting the zoom, it must have been checked that
@@ -1666,8 +1657,7 @@ EdgeListener, TransactionListener {
 	 * @param ge
 	 * @param gec
 	 */
-	private void addAttributeComponents(GraphElement ge,
-			GraphElementComponent gec) {
+	private void addAttributeComponents(GraphElement ge, GraphElementComponent gec) {
 		recurseAttributes(ge.getAttributes(), gec);
 	}
 
@@ -1680,11 +1670,11 @@ EdgeListener, TransactionListener {
 	// }
 
 	/**
-	 * Adjusts the preferred size of the view, so that it covers all components
-	 * with the new preferred size - good for automatic scrolling capability.
+	 * Adjusts the preferred size of the view, so that it covers all components with
+	 * the new preferred size - good for automatic scrolling capability.
 	 * 
 	 * @param shrink
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	private void adjustPreferredSize(boolean shrink) {
 		if (blockAdjust)
@@ -1699,8 +1689,7 @@ EdgeListener, TransactionListener {
 			compDownRightX = (components[i].getX() + components[i].getWidth());
 
 			compDownRightY = (components[i].getY() + components[i].getHeight());
-			maxPos.setLocation(Math.max(compDownRightX, maxPos.x), Math.max(
-					compDownRightY, maxPos.y));
+			maxPos.setLocation(Math.max(compDownRightX, maxPos.x), Math.max(compDownRightY, maxPos.y));
 
 			// zoom.transform(maxPos, maxPos);
 		}
@@ -1708,8 +1697,7 @@ EdgeListener, TransactionListener {
 		if (shrink) {
 			// shrink if necessary
 			Point2D zoomedMax = zoom.transform(maxPos, null);
-			Dimension minSize = new Dimension((int) zoomedMax.getX(),
-					(int) zoomedMax.getY());
+			Dimension minSize = new Dimension((int) zoomedMax.getX(), (int) zoomedMax.getY());
 			this.setSize(minSize);
 			this.setPreferredSize(minSize);
 		}
@@ -1723,16 +1711,14 @@ EdgeListener, TransactionListener {
 	 * associated with this edge.
 	 * 
 	 * @param gecMap
-	 *           see createNodeComponent for its use
+	 *            see createNodeComponent for its use
 	 * @param edge
-	 *           an edge for which this component will be built.
-	 * @return an edge component with associated node components, which
-	 *         represent components of source and target of the contained
-	 *         edge.
+	 *            an edge for which this component will be built.
+	 * @return an edge component with associated node components, which represent
+	 *         components of source and target of the contained edge.
 	 * @see #completeRedraw() for an example.
 	 */
-	protected EdgeComponent createEdgeComponent(
-			Map<GraphElement, GraphElementComponent> gecMap, Edge edge) {
+	protected EdgeComponent createEdgeComponent(Map<GraphElement, GraphElementComponent> gecMap, Edge edge) {
 
 		if (blockEdges || gecMap == null)
 			return null;
@@ -1769,14 +1755,14 @@ EdgeListener, TransactionListener {
 
 	/**
 	 * If there is a registered <code>AttributeComponent</code> for the given
-	 * attribute, add it to the view. If not, do nothing. Returns <code>true</code> if a component was added, false otherwise.
+	 * attribute, add it to the view. If not, do nothing. Returns <code>true</code>
+	 * if a component was added, false otherwise.
 	 * 
 	 * @param attribute
 	 * @param gec
 	 * @return boolean
 	 */
-	private boolean maybeAddAttrComponent(Attribute attribute,
-			GraphElementComponent gec) {
+	private boolean maybeAddAttrComponent(Attribute attribute, GraphElementComponent gec) {
 		if (acm == null || !acm.hasAttributeComponent(attribute.getClass()))
 			return false;
 		try {
@@ -1797,8 +1783,7 @@ EdgeListener, TransactionListener {
 				attrComp.createNewShape(coordinateSystem);
 				attrComp.setShift(gec.getLocation());
 			} catch (ShapeNotFoundException snfe) {
-				throw new RuntimeException(
-						"Should not happen since no shape is used here" + snfe);
+				throw new RuntimeException("Should not happen since no shape is used here" + snfe);
 			}
 			if (gec.getGraphElement() != null && attrComp != null) {
 				if (!graphElementAttributeComponents.containsKey(gec.getGraphElement()))
@@ -1841,8 +1826,7 @@ EdgeListener, TransactionListener {
 				}
 				attrComp.setShift(gec.getLocation());
 			} catch (ShapeNotFoundException snfe) {
-				throw new RuntimeException(
-						"Should not happen since no shape is used here" + snfe);
+				throw new RuntimeException("Should not happen since no shape is used here" + snfe);
 			}
 			if (attrComp != null) {
 				GraphElement ge = gec.getGraphElement();
@@ -1909,7 +1893,7 @@ EdgeListener, TransactionListener {
 		 * Creates a new ZoomedMouseListener object.
 		 * 
 		 * @param l
-		 *           DOCUMENT ME!
+		 *            DOCUMENT ME!
 		 */
 		public ZoomedMouseListener(MouseListener l) {
 			this.listener = l;
@@ -1965,7 +1949,7 @@ EdgeListener, TransactionListener {
 		 * Creates a new ZoomedMouseMotionListener object.
 		 * 
 		 * @param l
-		 *           DOCUMENT ME!
+		 *            DOCUMENT ME!
 		 */
 		public ZoomedMouseMotionListener(MouseMotionListener l) {
 			this.listener = l;
@@ -1993,6 +1977,7 @@ EdgeListener, TransactionListener {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.view.View#repaint(org.graffiti.graph.GraphElement)
 	 */
 	public void repaint(GraphElement ge) {
@@ -2009,7 +1994,7 @@ EdgeListener, TransactionListener {
 		double newy = (double) (gec.getY()) * zoomy;
 		double newwidth = (double) (gec.getWidth()) * zoomx;
 		double newheight = (double) (gec.getHeight()) * zoomy;
-		int delta = 10; //10 pixels in rescaled (zoomed) space
+		int delta = 10; // 10 pixels in rescaled (zoomed) space
 		repaint(0, (int) newx, (int) newy, (int) newwidth + delta, (int) newheight + delta);
 
 	}
@@ -2040,10 +2025,9 @@ EdgeListener, TransactionListener {
 		return coordinateSystem;
 	}
 
-	private int createGUIcomponentElements(
-			final boolean addShapesAndAttributeComponentsTogether,
-			final Collection<GraphElement> ges, final BlockingQueue<JComponent> result,
-			long ttt, Map<GraphElement, GraphElementComponent> gecm) {
+	private int createGUIcomponentElements(final boolean addShapesAndAttributeComponentsTogether,
+			final Collection<GraphElement> ges, final BlockingQueue<JComponent> result, long ttt,
+			Map<GraphElement, GraphElementComponent> gecm) {
 
 		int curr = 0;
 

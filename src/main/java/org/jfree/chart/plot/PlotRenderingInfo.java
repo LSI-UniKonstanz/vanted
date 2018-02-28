@@ -62,7 +62,7 @@ public class PlotRenderingInfo implements Cloneable, Serializable {
 	 * Default constructor.
 	 * 
 	 * @param owner
-	 *           the owner.
+	 *            the owner.
 	 */
 	public PlotRenderingInfo(ChartRenderingInfo owner) {
 		this.owner = owner;
@@ -92,7 +92,7 @@ public class PlotRenderingInfo implements Cloneable, Serializable {
 	 * Sets the plot area.
 	 * 
 	 * @param area
-	 *           the plot area (in Java2D space)
+	 *            the plot area (in Java2D space)
 	 */
 	public void setPlotArea(Rectangle2D area) {
 		this.plotArea = area;
@@ -111,7 +111,7 @@ public class PlotRenderingInfo implements Cloneable, Serializable {
 	 * Sets the data area.
 	 * 
 	 * @param area
-	 *           the data area (in Java2D space).
+	 *            the data area (in Java2D space).
 	 */
 	public void setDataArea(Rectangle2D area) {
 		this.dataArea = area;
@@ -121,7 +121,7 @@ public class PlotRenderingInfo implements Cloneable, Serializable {
 	 * Adds the info for a subplot.
 	 * 
 	 * @param info
-	 *           the subplot info.
+	 *            the subplot info.
 	 */
 	public void addSubplotInfo(PlotRenderingInfo info) {
 		this.subplotInfo.add(info);
@@ -131,7 +131,7 @@ public class PlotRenderingInfo implements Cloneable, Serializable {
 	 * Returns the info for a subplot.
 	 * 
 	 * @param index
-	 *           the subplot index.
+	 *            the subplot index.
 	 * @return The info.
 	 */
 	public PlotRenderingInfo getSubplotInfo(int index) {
@@ -142,7 +142,7 @@ public class PlotRenderingInfo implements Cloneable, Serializable {
 	 * Tests this instance for equality against an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -173,7 +173,7 @@ public class PlotRenderingInfo implements Cloneable, Serializable {
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if there is a problem cloning.
+	 *             if there is a problem cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -183,9 +183,9 @@ public class PlotRenderingInfo implements Cloneable, Serializable {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the output stream.
+	 *            the output stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -197,11 +197,11 @@ public class PlotRenderingInfo implements Cloneable, Serializable {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the input stream.
+	 *            the input stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *            if there is a classpath problem.
+	 *             if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();

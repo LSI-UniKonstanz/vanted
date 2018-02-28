@@ -16,45 +16,45 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.KeggSer
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.TextFile;
 
 /**
- * @author Christian Klukas
- *         (c) 2004-2006 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004-2006 IPK-Gatersleben
  */
-public class KEGG_XML_Reader
-					extends AbstractInputSerializer {
-	
+public class KEGG_XML_Reader extends AbstractInputSerializer {
+
 	private String fileNameExt = ".xml";
-	
+
 	/**
 	 *
 	 */
 	public KEGG_XML_Reader() {
 		super();
 	}
-	
+
 	@Override
 	public void read(String filename, Graph g) throws IOException {
 		super.read(filename, g);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.io.AbstractInputSerializer#read(java.io.InputStream, org.graffiti.graph.Graph)
+	 * 
+	 * @see org.graffiti.plugin.io.AbstractInputSerializer#read(java.io.InputStream,
+	 * org.graffiti.graph.Graph)
 	 */
 	@Override
-	public void read(InputStream in, Graph g)
-						throws IOException {
+	public void read(InputStream in, Graph g) throws IOException {
 		KeggService.loadKeggPathwayIntoGraph(in, g, KeggService.getDefaultEnzymeColor());
 		in.close();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.io.Serializer#getExtensions()
 	 */
 	public String[] getExtensions() {
 		return new String[] { fileNameExt };
 	}
-	
+
 	@Override
 	public boolean validFor(InputStream reader) {
 		try {
@@ -72,15 +72,16 @@ public class KEGG_XML_Reader
 		}
 		return false;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
 	 */
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "KEGG XML Pathway" };
 	}
-	
+
 	public void read(Reader reader, Graph g) throws Exception {
 		MainFrame.showMessageDialog("Not implemented!", "Error");
 	}

@@ -56,8 +56,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.Spacer;
 
 /**
- * This demo shows two charts that use weekly data. A custom tick unit collection is defined to
- * control the domain axis formatting.
+ * This demo shows two charts that use weekly data. A custom tick unit
+ * collection is defined to control the domain axis formatting.
  */
 public class TimeSeriesDemo13 extends ApplicationFrame {
 
@@ -65,7 +65,7 @@ public class TimeSeriesDemo13 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public TimeSeriesDemo13(final String title) {
 
@@ -93,20 +93,13 @@ public class TimeSeriesDemo13 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           a dataset.
+	 *            a dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							"Weekly Data",
-							"Date",
-							"Value",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Weekly Data", "Date", "Value", dataset, true, true,
+				false);
 
 		chart.setBackgroundPaint(Color.white);
 
@@ -130,15 +123,9 @@ public class TimeSeriesDemo13 extends ApplicationFrame {
 
 		final DateAxis axis = (DateAxis) plot.getDomainAxis();
 		final TickUnits standardUnits = new TickUnits();
-		standardUnits.add(
-							new DateTickUnit(DateTickUnit.DAY, 1, new SimpleDateFormat("MMM dd ''yy"))
-							);
-		standardUnits.add(
-							new DateTickUnit(DateTickUnit.DAY, 7, new SimpleDateFormat("MMM dd ''yy"))
-							);
-		standardUnits.add(
-							new DateTickUnit(DateTickUnit.MONTH, 1, new SimpleDateFormat("MMM ''yy"))
-							);
+		standardUnits.add(new DateTickUnit(DateTickUnit.DAY, 1, new SimpleDateFormat("MMM dd ''yy")));
+		standardUnits.add(new DateTickUnit(DateTickUnit.DAY, 7, new SimpleDateFormat("MMM dd ''yy")));
+		standardUnits.add(new DateTickUnit(DateTickUnit.MONTH, 1, new SimpleDateFormat("MMM ''yy")));
 		axis.setStandardTickUnits(standardUnits);
 
 		return chart;
@@ -160,7 +147,7 @@ public class TimeSeriesDemo13 extends ApplicationFrame {
 	 * Creates a dataset containing random values at weekly intervals.
 	 * 
 	 * @param items
-	 *           the number of items in the dataset.
+	 *            the number of items in the dataset.
 	 * @return the dataset.
 	 */
 	private XYDataset createDataset(final int items) {
@@ -185,7 +172,7 @@ public class TimeSeriesDemo13 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

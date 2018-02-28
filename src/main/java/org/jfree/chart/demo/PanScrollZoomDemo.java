@@ -80,11 +80,7 @@ import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
  * A demo for panning, scrolling and zooming.
  */
 public class PanScrollZoomDemo extends JFrame
-											implements ActionListener,
-														ChangeListener,
-														ChartChangeListener,
-														MouseListener,
-														MouseMotionListener {
+		implements ActionListener, ChangeListener, ChartChangeListener, MouseListener, MouseMotionListener {
 
 	/** The panel that displays the chart. */
 	private ChartPanel chartPanel;
@@ -144,7 +140,7 @@ public class PanScrollZoomDemo extends JFrame
 	 * Creates a new demo instance.
 	 * 
 	 * @param frameTitle
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PanScrollZoomDemo(final String frameTitle) {
 
@@ -232,9 +228,7 @@ public class PanScrollZoomDemo extends JFrame
 		xyPlot.mapDatasetToRangeAxis(1, 1);
 		xyPlot.mapDatasetToDomainAxis(1, 1);
 
-		final XYItemRenderer y2Renderer = new StandardXYItemRenderer(
-							StandardXYItemRenderer.SHAPES_AND_LINES
-							);
+		final XYItemRenderer y2Renderer = new StandardXYItemRenderer(StandardXYItemRenderer.SHAPES_AND_LINES);
 		y2Renderer.setToolTipGenerator(new StandardXYToolTipGenerator());
 		xyPlot.setRenderer(1, y2Renderer);
 
@@ -258,9 +252,7 @@ public class PanScrollZoomDemo extends JFrame
 
 		final String title = "To pan in zoom mode hold right mouse pressed";
 		final JFreeChart ret = new JFreeChart(title, null, xyPlot, true);
-		final TextTitle textTitle = new TextTitle(
-							"(but you can only pan if the chart was zoomed before)"
-							);
+		final TextTitle textTitle = new TextTitle("(but you can only pan if the chart was zoomed before)");
 		ret.addSubtitle(textTitle);
 		return ret;
 	}
@@ -327,18 +319,16 @@ public class PanScrollZoomDemo extends JFrame
 	 * Prepares a button.
 	 * 
 	 * @param button
-	 *           the button.
+	 *            the button.
 	 * @param actionKey
-	 *           the action key.
+	 *            the action key.
 	 * @param buttonLabelText
-	 *           the button label.
+	 *            the button label.
 	 * @param toolTipText
-	 *           the tooltip text.
+	 *            the tooltip text.
 	 */
-	private void prepareButton(final AbstractButton button,
-											final String actionKey,
-											final String buttonLabelText,
-											final String toolTipText) {
+	private void prepareButton(final AbstractButton button, final String actionKey, final String buttonLabelText,
+			final String toolTipText) {
 		// todo
 		// as this action is empty and the button text is
 		// redefined later, it can be safely removed ...
@@ -358,7 +348,7 @@ public class PanScrollZoomDemo extends JFrame
 	 * Sets the pan mode.
 	 * 
 	 * @param val
-	 *           a boolean.
+	 *            a boolean.
 	 */
 	private void setPanMode(final boolean val) {
 
@@ -378,7 +368,7 @@ public class PanScrollZoomDemo extends JFrame
 	 * Handles an action event.
 	 * 
 	 * @param evt
-	 *           the event.
+	 *            the event.
 	 */
 	public void actionPerformed(final ActionEvent evt) {
 		try {
@@ -386,46 +376,42 @@ public class PanScrollZoomDemo extends JFrame
 
 			if (acmd.equals(ACTION_CMD_ZOOM_BOX)) {
 				setPanMode(false);
-			} else
-				if (acmd.equals(ACTION_CMD_PAN)) {
-					setPanMode(true);
-				} else
-					if (acmd.equals(ACTION_CMD_ZOOM_IN)) {
-						final ChartRenderingInfo info = this.chartPanel.getChartRenderingInfo();
-						final Rectangle2D rect = info.getPlotInfo().getDataArea();
-						zoomBoth(rect.getCenterX(), rect.getCenterY(), ZOOM_FACTOR);
-					} else
-						if (acmd.equals(ACTION_CMD_ZOOM_OUT)) {
-							final ChartRenderingInfo info = this.chartPanel.getChartRenderingInfo();
-							final Rectangle2D rect = info.getPlotInfo().getDataArea();
-							zoomBoth(rect.getCenterX(), rect.getCenterY(), 1 / ZOOM_FACTOR);
-						} else
-							if (acmd.equals(ACTION_CMD_ZOOM_TO_FIT)) {
+			} else if (acmd.equals(ACTION_CMD_PAN)) {
+				setPanMode(true);
+			} else if (acmd.equals(ACTION_CMD_ZOOM_IN)) {
+				final ChartRenderingInfo info = this.chartPanel.getChartRenderingInfo();
+				final Rectangle2D rect = info.getPlotInfo().getDataArea();
+				zoomBoth(rect.getCenterX(), rect.getCenterY(), ZOOM_FACTOR);
+			} else if (acmd.equals(ACTION_CMD_ZOOM_OUT)) {
+				final ChartRenderingInfo info = this.chartPanel.getChartRenderingInfo();
+				final Rectangle2D rect = info.getPlotInfo().getDataArea();
+				zoomBoth(rect.getCenterX(), rect.getCenterY(), 1 / ZOOM_FACTOR);
+			} else if (acmd.equals(ACTION_CMD_ZOOM_TO_FIT)) {
 
-								// X-axis (has no fixed borders)
-								this.chartPanel.autoRangeHorizontal();
+				// X-axis (has no fixed borders)
+				this.chartPanel.autoRangeHorizontal();
 
-								// Y-Axes) (autoRangeVertical
-								// not useful because of fixed borders
-								final Plot plot = this.chartPanel.getChart().getPlot();
-								if (plot instanceof ValueAxisPlot) {
+				// Y-Axes) (autoRangeVertical
+				// not useful because of fixed borders
+				final Plot plot = this.chartPanel.getChart().getPlot();
+				if (plot instanceof ValueAxisPlot) {
 
-									final XYPlot vvPlot = (XYPlot) plot;
-									ValueAxis axis = vvPlot.getRangeAxis();
-									if (axis != null) {
-										axis.setLowerBound(this.primYMinMax[0]);
-										axis.setUpperBound(this.primYMinMax[1]);
-									}
-									if (plot instanceof XYPlot) {
-										final XYPlot xyPlot = (XYPlot) plot;
-										axis = xyPlot.getRangeAxis(1);
-										if (axis != null) {
-											axis.setLowerBound(this.secondYMinMax[0]);
-											axis.setUpperBound(this.secondYMinMax[1]);
-										}
-									}
-								}
-							}
+					final XYPlot vvPlot = (XYPlot) plot;
+					ValueAxis axis = vvPlot.getRangeAxis();
+					if (axis != null) {
+						axis.setLowerBound(this.primYMinMax[0]);
+						axis.setUpperBound(this.primYMinMax[1]);
+					}
+					if (plot instanceof XYPlot) {
+						final XYPlot xyPlot = (XYPlot) plot;
+						axis = xyPlot.getRangeAxis(1);
+						if (axis != null) {
+							axis.setLowerBound(this.secondYMinMax[0]);
+							axis.setUpperBound(this.secondYMinMax[1]);
+						}
+					}
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -435,7 +421,7 @@ public class PanScrollZoomDemo extends JFrame
 	 * Handles a {@link ChangeEvent} (in this case, coming from the scrollbar).
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void stateChanged(final ChangeEvent event) {
 		try {
@@ -468,7 +454,7 @@ public class PanScrollZoomDemo extends JFrame
 	 * Handles a {@link ChartChangeEvent}.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void chartChanged(final ChartChangeEvent event) {
 		try {
@@ -514,7 +500,7 @@ public class PanScrollZoomDemo extends JFrame
 				ValueAxis yAxis = vvp.getRangeAxis();
 				if (yAxis != null) {
 					chartIsZoomed = yAxis.getLowerBound() > this.primYMinMax[0]
-										|| yAxis.getUpperBound() < this.primYMinMax[1];
+							|| yAxis.getUpperBound() < this.primYMinMax[1];
 
 					// right y-axis
 					if (!chartIsZoomed && plot instanceof XYPlot) {
@@ -522,7 +508,7 @@ public class PanScrollZoomDemo extends JFrame
 						yAxis = xyPlot.getRangeAxis(1);
 						if (yAxis != null) {
 							chartIsZoomed = yAxis.getLowerBound() > this.secondYMinMax[0]
-												|| yAxis.getUpperBound() < this.secondYMinMax[1];
+									|| yAxis.getUpperBound() < this.secondYMinMax[1];
 						}
 					}
 				}
@@ -549,13 +535,11 @@ public class PanScrollZoomDemo extends JFrame
 	 * Handles a mouse pressed event (to start panning).
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void mousePressed(final MouseEvent event) {
 		try {
-			if (this.panButton.isSelected()
-								|| this.panButton.isEnabled()
-								&& SwingUtilities.isRightMouseButton(event)) {
+			if (this.panButton.isSelected() || this.panButton.isEnabled() && SwingUtilities.isRightMouseButton(event)) {
 				final Rectangle2D dataArea = this.chartPanel.getScaledDataArea();
 				final Point2D point = event.getPoint();
 				if (dataArea.contains(point)) {
@@ -572,7 +556,7 @@ public class PanScrollZoomDemo extends JFrame
 	 * Handles a mouse released event (stops panning).
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void mouseReleased(final MouseEvent event) {
 		try {
@@ -589,21 +573,17 @@ public class PanScrollZoomDemo extends JFrame
 	 * Handles a mouse dragged event to perform panning.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void mouseDragged(final MouseEvent event) {
 		try {
 			if (this.panStartPoint != null) {
 				final Rectangle2D scaledDataArea = this.chartPanel.getScaledDataArea();
 
-				this.panStartPoint = RefineryUtilities.getPointInRectangle(
-									this.panStartPoint.getX(),
-									this.panStartPoint.getY(),
-									scaledDataArea
-									);
-				final Point2D panEndPoint = RefineryUtilities.getPointInRectangle(
-									event.getX(), event.getY(), scaledDataArea
-									);
+				this.panStartPoint = RefineryUtilities.getPointInRectangle(this.panStartPoint.getX(),
+						this.panStartPoint.getY(), scaledDataArea);
+				final Point2D panEndPoint = RefineryUtilities.getPointInRectangle(event.getX(), event.getY(),
+						scaledDataArea);
 
 				// horizontal pan
 
@@ -613,16 +593,10 @@ public class PanScrollZoomDemo extends JFrame
 					final ValueAxis xAxis = hvp.getDomainAxis();
 
 					if (xAxis != null) {
-						final double translatedStartPoint = xAxis.java2DToValue(
-											(float) this.panStartPoint.getX(),
-											scaledDataArea,
-											hvp.getDomainAxisEdge()
-											);
-						final double translatedEndPoint = xAxis.java2DToValue(
-											(float) panEndPoint.getX(),
-											scaledDataArea,
-											hvp.getDomainAxisEdge()
-											);
+						final double translatedStartPoint = xAxis.java2DToValue((float) this.panStartPoint.getX(),
+								scaledDataArea, hvp.getDomainAxisEdge());
+						final double translatedEndPoint = xAxis.java2DToValue((float) panEndPoint.getX(),
+								scaledDataArea, hvp.getDomainAxisEdge());
 						final double dX = translatedStartPoint - translatedEndPoint;
 
 						final double oldMin = xAxis.getLowerBound();
@@ -633,7 +607,7 @@ public class PanScrollZoomDemo extends JFrame
 
 						// do not pan out of range
 						if (newMin >= hvp.getDataRange(xAxis).getLowerBound()
-											&& newMax <= hvp.getDataRange(xAxis).getUpperBound()) {
+								&& newMax <= hvp.getDataRange(xAxis).getUpperBound()) {
 							xAxis.setLowerBound(newMin);
 							xAxis.setUpperBound(newMax);
 						}
@@ -647,16 +621,10 @@ public class PanScrollZoomDemo extends JFrame
 					final ValueAxis yAxis = vvp.getRangeAxis();
 
 					if (yAxis != null) {
-						final double translatedStartPoint = yAxis.java2DToValue(
-											(float) this.panStartPoint.getY(),
-											scaledDataArea,
-											vvp.getRangeAxisEdge()
-											);
-						final double translatedEndPoint = yAxis.java2DToValue(
-											(float) panEndPoint.getY(),
-											scaledDataArea,
-											vvp.getRangeAxisEdge()
-											);
+						final double translatedStartPoint = yAxis.java2DToValue((float) this.panStartPoint.getY(),
+								scaledDataArea, vvp.getRangeAxisEdge());
+						final double translatedEndPoint = yAxis.java2DToValue((float) panEndPoint.getY(),
+								scaledDataArea, vvp.getRangeAxisEdge());
 						final double dY = translatedStartPoint - translatedEndPoint;
 
 						final double oldMin = yAxis.getLowerBound();
@@ -680,16 +648,10 @@ public class PanScrollZoomDemo extends JFrame
 					final ValueAxis yAxis = xyPlot.getRangeAxis(1);
 
 					if (yAxis != null) {
-						final double translatedStartPoint = yAxis.java2DToValue(
-											(float) this.panStartPoint.getY(),
-											scaledDataArea,
-											xyPlot.getRangeAxisEdge(1)
-											);
-						final double translatedEndPoint = yAxis.java2DToValue(
-											(float) panEndPoint.getY(),
-											scaledDataArea,
-											xyPlot.getRangeAxisEdge(1)
-											);
+						final double translatedStartPoint = yAxis.java2DToValue((float) this.panStartPoint.getY(),
+								scaledDataArea, xyPlot.getRangeAxisEdge(1));
+						final double translatedEndPoint = yAxis.java2DToValue((float) panEndPoint.getY(),
+								scaledDataArea, xyPlot.getRangeAxisEdge(1));
 						final double dY = translatedStartPoint - translatedEndPoint;
 
 						final double oldMin = yAxis.getLowerBound();
@@ -717,7 +679,7 @@ public class PanScrollZoomDemo extends JFrame
 	 * Handles a mouse clicked event, in this case by ignoring it.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void mouseClicked(final MouseEvent event) {
 		// ignored
@@ -727,7 +689,7 @@ public class PanScrollZoomDemo extends JFrame
 	 * Handles a mouse moved event, in this case by ignoring it.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void mouseMoved(final MouseEvent event) {
 		// ignored
@@ -737,7 +699,7 @@ public class PanScrollZoomDemo extends JFrame
 	 * Handles a mouse entered event, in this case by ignoring it.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void mouseEntered(final MouseEvent event) {
 		// ignored
@@ -747,7 +709,7 @@ public class PanScrollZoomDemo extends JFrame
 	 * Handles a mouse exited event, in this case by ignoring it.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void mouseExited(final MouseEvent event) {
 		// ignored
@@ -757,7 +719,7 @@ public class PanScrollZoomDemo extends JFrame
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *           the command line arguments (ignored).
+	 *            the command line arguments (ignored).
 	 */
 	public static void main(final String[] args) {
 
@@ -780,7 +742,7 @@ public class PanScrollZoomDemo extends JFrame
 	 * Recalculates the scrollbar settings.
 	 * 
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 */
 	private void recalcScrollBar(final Plot plot) {
 		if (plot instanceof XYPlot) {
@@ -818,11 +780,11 @@ public class PanScrollZoomDemo extends JFrame
 	 * Zooms in on an anchor point (measured in Java2D coordinates).
 	 * 
 	 * @param x
-	 *           the x value.
+	 *            the x value.
 	 * @param y
-	 *           the y value.
+	 *            the y value.
 	 * @param zoomFactor
-	 *           the zoomFactor < 1 == zoom in; else out.
+	 *            the zoomFactor < 1 == zoom in; else out.
 	 */
 	private void zoomBoth(final double x, final double y, final double zoomFactor) {
 		zoomHorizontal(x, zoomFactor);
@@ -830,14 +792,15 @@ public class PanScrollZoomDemo extends JFrame
 	}
 
 	/**
-	 * Decreases the range on the horizontal axis, centered about a Java2D x coordinate.
+	 * Decreases the range on the horizontal axis, centered about a Java2D x
+	 * coordinate.
 	 * <P>
 	 * The range on the x axis is multiplied by zoomFactor
 	 * 
 	 * @param x
-	 *           the x coordinate in Java2D space.
+	 *            the x coordinate in Java2D space.
 	 * @param zoomFactor
-	 *           the zoomFactor < 1 == zoom in; else out.
+	 *            the zoomFactor < 1 == zoom in; else out.
 	 */
 	private void zoomHorizontal(final double x, final double zoomFactor) {
 
@@ -847,29 +810,28 @@ public class PanScrollZoomDemo extends JFrame
 			final XYPlot hvp = (XYPlot) chart.getPlot();
 			final ValueAxis axis = hvp.getDomainAxis();
 			if (axis != null) {
-				final double anchorValue = axis.java2DToValue(
-									(float) x, info.getPlotInfo().getDataArea(), hvp.getDomainAxisEdge()
-									);
+				final double anchorValue = axis.java2DToValue((float) x, info.getPlotInfo().getDataArea(),
+						hvp.getDomainAxisEdge());
 				if (zoomFactor < 1.0) {
 					axis.resizeRange(zoomFactor, anchorValue);
-				} else
-					if (zoomFactor > 1.0) {
-						final Range range = hvp.getDataRange(axis);
-						adjustRange(axis, range, zoomFactor, anchorValue);
-					}
+				} else if (zoomFactor > 1.0) {
+					final Range range = hvp.getDataRange(axis);
+					adjustRange(axis, range, zoomFactor, anchorValue);
+				}
 			}
 		}
 	}
 
 	/**
-	 * Decreases the range on the vertical axis, centered about a Java2D y coordinate.
+	 * Decreases the range on the vertical axis, centered about a Java2D y
+	 * coordinate.
 	 * <P>
 	 * The range on the y axis is multiplied by zoomFactor
 	 * 
 	 * @param y
-	 *           the y coordinate in Java2D space.
+	 *            the y coordinate in Java2D space.
 	 * @param zoomFactor
-	 *           the zoomFactor < 1 == zoom in; else out.
+	 *            the zoomFactor < 1 == zoom in; else out.
 	 */
 	private void zoomVertical(final double y, final double zoomFactor) {
 
@@ -882,20 +844,17 @@ public class PanScrollZoomDemo extends JFrame
 			final XYPlot vvp = (XYPlot) chart.getPlot();
 			final ValueAxis primYAxis = vvp.getRangeAxis();
 			if (primYAxis != null) {
-				final double anchorValue =
-									primYAxis.java2DToValue(
-														(float) y, info.getPlotInfo().getDataArea(), vvp.getRangeAxisEdge()
-														);
+				final double anchorValue = primYAxis.java2DToValue((float) y, info.getPlotInfo().getDataArea(),
+						vvp.getRangeAxisEdge());
 				if (zoomFactor < 1.0) {
 					// zoom in
 					primYAxis.resizeRange(zoomFactor, anchorValue);
 
-				} else
-					if (zoomFactor > 1.0) {
-						// zoom out
-						final Range range = new Range(this.primYMinMax[0], this.primYMinMax[1]);
-						adjustRange(primYAxis, range, zoomFactor, anchorValue);
-					}
+				} else if (zoomFactor > 1.0) {
+					// zoom out
+					final Range range = new Range(this.primYMinMax[0], this.primYMinMax[1]);
+					adjustRange(primYAxis, range, zoomFactor, anchorValue);
+				}
 			}
 
 			// 2. (right) Y-Axis
@@ -904,21 +863,17 @@ public class PanScrollZoomDemo extends JFrame
 				final XYPlot xyp = (XYPlot) chart.getPlot();
 				final ValueAxis secYAxis = xyp.getRangeAxis(1);
 				if (secYAxis != null) {
-					final double anchorValue =
-										secYAxis.java2DToValue(
-															(float) y,
-															info.getPlotInfo().getDataArea(),
-															xyp.getRangeAxisEdge(1));
+					final double anchorValue = secYAxis.java2DToValue((float) y, info.getPlotInfo().getDataArea(),
+							xyp.getRangeAxisEdge(1));
 					if (zoomFactor < 1.0) {
 						// zoom in
 						secYAxis.resizeRange(zoomFactor, anchorValue);
 
-					} else
-						if (zoomFactor > 1.0) {
-							// zoom out
-							final Range range = new Range(this.secondYMinMax[0], this.secondYMinMax[1]);
-							adjustRange(secYAxis, range, zoomFactor, anchorValue);
-						}
+					} else if (zoomFactor > 1.0) {
+						// zoom out
+						final Range range = new Range(this.secondYMinMax[0], this.secondYMinMax[1]);
+						adjustRange(secYAxis, range, zoomFactor, anchorValue);
+					}
 				}
 			}
 		}
@@ -928,25 +883,23 @@ public class PanScrollZoomDemo extends JFrame
 	 * used for zooming
 	 * 
 	 * @param axis
-	 *           the axis.
+	 *            the axis.
 	 * @param range
-	 *           the range.
+	 *            the range.
 	 * @param zoomFactor
-	 *           the zoom factor.
+	 *            the zoom factor.
 	 * @param anchorValue
-	 *           the anchor value.
+	 *            the anchor value.
 	 */
 	private void adjustRange(final ValueAxis axis, final Range range, final double zoomFactor,
-										final double anchorValue) {
+			final double anchorValue) {
 
 		if (axis == null || range == null) {
 			return;
 		}
 
-		final double rangeMinVal = range.getLowerBound()
-												- range.getLength() * axis.getLowerMargin();
-		final double rangeMaxVal = range.getUpperBound()
-												+ range.getLength() * axis.getUpperMargin();
+		final double rangeMinVal = range.getLowerBound() - range.getLength() * axis.getLowerMargin();
+		final double rangeMaxVal = range.getUpperBound() + range.getLength() * axis.getUpperMargin();
 		final double halfLength = axis.getRange().getLength() * zoomFactor / 2;
 		double zoomedMinVal = anchorValue - halfLength;
 		double zoomedMaxVal = anchorValue + halfLength;

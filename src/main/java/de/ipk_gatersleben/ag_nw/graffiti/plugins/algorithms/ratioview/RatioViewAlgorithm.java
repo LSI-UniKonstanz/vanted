@@ -52,39 +52,35 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
  */
 public class RatioViewAlgorithm extends AbstractAlgorithm {
 	private String selSeriesName1;
-	
+
 	private boolean sortConsiderClusters = true;
 	private boolean showRangeAxisForNode1 = false;
 	private boolean calcLog = true;
-	
+
 	private static int createdRatioGraph = 0;
-	
+
 	private NodeSortCommand sortCommand = NodeSortCommand.dontSort;
-	
+
 	public String getName() {
 		return "Condition-Ratio View";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Mapping";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.DATA,
-				Category.GRAPH,
-				Category.COMPUTATION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.DATA, Category.GRAPH, Category.COMPUTATION));
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return "<html>Creates a ratio view for a specified time point of the mapped data.<br>"
 				+ "This algorithm requires mapped data from at least two different lines.<br><br>";
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
@@ -102,13 +98,13 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 		if (!foundData)
 			throw new PreconditionException("Graph nodes have no data assigned");
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
 		List<NodeHelper> helperNodes = GraphHelper.getHelperNodes(graph);
 		SortedSet<Integer> timePoints = new TreeSet<Integer>();
 		SortedSet<String> seriesNames = new TreeSet<String>();
-		
+
 		for (NodeHelper nh : helperNodes) {
 			timePoints.addAll(nh.getMappedUniqueTimePoints());
 			seriesNames.addAll(nh.getMappedSeriesNames());
@@ -133,15 +129,15 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 				"If selected, the first node will have a visible range axis");
 		BooleanParameter bpCalcLog = new BooleanParameter(calcLog, "Log-Scale",
 				"If selected, the logarithm of the ratio will be calculated and shown");
-		
+
 		return new Parameter[] { olpSN1, olpSort, bpConsiderCluster, bpRangeAxisForNode1, bpCalcLog };
 	}
-	
+
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -156,11 +152,11 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 		BooleanParameter bpCalcLog = (BooleanParameter) params[i++];
 		calcLog = bpCalcLog.getBoolean().booleanValue();
 	}
-	
+
 	public void execute() {
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 				"Create Ratio View", "Please wait...");
-		
+
 		MainFrame.showMessage("Create ratio view for reference series " + selSeriesName1 + "...", MessageType.INFO);
 		final List<NodeHelper> workNodes;
 		if (MainFrame.getInstance().getActiveEditorSession().getGraph() == graph)
@@ -176,7 +172,7 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 			}
 		}, null, status);
 	}
-	
+
 	public Graph executeAndReturnGraph(BackgroundTaskStatusProviderSupportingExternalCall status,
 			boolean sortConsiderClusters, boolean showRangeAxisForNode1, boolean calcLog, NodeSortCommand sortCommand,
 			String selSeriesName1, String selSeriesName2, int selTimePoint) {
@@ -186,7 +182,7 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 				// selSeriesName2, selTimePoint,
 				true);
 	}
-	
+
 	private static Graph createRatioView(BackgroundTaskStatusProviderSupportingExternalCall status,
 			List<NodeHelper> workNodes, Graph graph, boolean sortConsiderClusters, boolean showRangeAxisForNode1,
 			boolean calcLog, NodeSortCommand sortCommand, String selSeriesName1,
@@ -207,21 +203,21 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 		SortedSet<String> sortedClusters = new TreeSet<String>();
 		for (String validCluster : clusters)
 			sortedClusters.add(validCluster);
-		
+
 		if (status != null) {
 			status.setCurrentStatusValueFine(0);
 			status.setCurrentStatusText2("Create Ratio Dataset...");
 		}
-		
+
 		Graph workGraph = graph;
-		
+
 		SortedSet<Integer> timePoints = new TreeSet<Integer>();
 		SortedSet<String> seriesNames = new TreeSet<String>();
 		for (NodeHelper nh : workNodes) {
 			timePoints.addAll(nh.getMappedUniqueTimePoints());
 			seriesNames.addAll(nh.getMappedSeriesNames());
 		}
-		
+
 		int row = 0;
 		int maxNodesPerRow = 0;
 		double workParts = (seriesNames.size() - 1) * timePoints.size();
@@ -230,24 +226,24 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 		mainloop: for (String selSeriesName2 : seriesNames) {
 			if (selSeriesName2.equals(selSeriesName1))
 				continue;
-			
+
 			String seriesInfo = selSeriesName1 + "<br>vs. " + selSeriesName2 + "<br>at ";
-			
+
 			row++;
 			int column = 0;
 			for (int selTimePoint : timePoints) {
 				int nidx = 0;
 				column++;
 				int nodesInCurrentSet = 0;
-				
+
 				String timeInfo = "";
-				
+
 				ArrayList<Node> createdNodesForThisBlock = new ArrayList<Node>();
-				
+
 				double workLoad = workNodes.size();
-				
+
 				workProgress++;
-				
+
 				for (String validCluster : sortedClusters) {
 					for (NodeHelper nh : workNodes) {
 						if (status != null && status.wantsToStop()) {
@@ -256,17 +252,17 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 						if (!nh.getClusterID("").equals(validCluster) || !nh.hasDataMapping())
 							continue;
 						if (status != null) {
-							status.setCurrentStatusValueFine(100d * (workProgress - 1d) / workParts + 1d / workParts
-									* (nidx / workLoad));
+							status.setCurrentStatusValueFine(
+									100d * (workProgress - 1d) / workParts + 1d / workParts * (nidx / workLoad));
 							status.setCurrentStatusText2("Process Node " + (nidx) + "/" + (int) workLoad + "...");
 						}
 						workGraph = nh.getGraph();
-						Node ratioNode = ratioGraph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(
-								Math.random() * 100d, Math.random() * 100d));
+						Node ratioNode = ratioGraph.addNode(AttributeHelper
+								.getDefaultGraphicsAttributeForNode(Math.random() * 100d, Math.random() * 100d));
 						NodeHelper ratioNodeHelper = new NodeHelper(ratioNode, false);
-						
+
 						createdNodesForThisBlock.add(ratioNodeHelper);
-						
+
 						ConditionInterface refDataSet = null;
 						for (ConditionInterface sd : nh.getMappedSeriesData()) {
 							if (sd.getConditionName().equals(selSeriesName1)) {
@@ -293,8 +289,8 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 										ArrayList<String> meanTimeUnits = sd.getMeanTimeUnits();
 										ArrayList<Double> meanValues = sd.getMeanValues();
 										int idx = meanTimePoints.indexOf(selTimePoint);
-										int plantID = ratioNodeHelper.memGetPlantID(sd.getSpecies(), sd.getGenotype(), null,
-												null, sd.getTreatment());
+										int plantID = ratioNodeHelper.memGetPlantID(sd.getSpecies(), sd.getGenotype(),
+												null, null, sd.getTreatment());
 										double value;
 										double thisVal = meanValues.get(idx);
 										if (thisVal >= refDataValue)
@@ -312,16 +308,17 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 												minValue = value;
 											if (value > maxValue)
 												maxValue = value;
-											ratioNodeHelper.memSample(value, 1, plantID, "ratio", meanTimeUnits.get(idx),
-													selTimePoint);
+											ratioNodeHelper.memSample(value, 1, plantID, "ratio",
+													meanTimeUnits.get(idx), selTimePoint);
 											added++;
 										}
 									}
 								}
 							}
 							if (added > 0)
-								ratioNodeHelper.memAddDataMapping(nh.getLabel(), "ratio", AttributeHelper.getDateString(new Date()), "Ratio View",
-										"auto generated", "", "");
+								ratioNodeHelper.memAddDataMapping(nh.getLabel(), "ratio",
+										AttributeHelper.getDateString(new Date()), "Ratio View", "auto generated", "",
+										"");
 						}
 						// if (added<=0)
 						// ratioGraph.deleteNode(ratioNode);
@@ -330,8 +327,8 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 						if (nodesInCurrentSet > maxNodesPerRow)
 							maxNodesPerRow = nodesInCurrentSet;
 						boolean setHeader = timeInfo.length() > 0 && !headerSet.contains(workProgress);
-						processNodeDesign(ratioGraph, nh, ratioNodeHelper, nodesInCurrentSet, column, row, maxNodesPerRow,
-								sortCommand, seriesInfo, timeInfo, setHeader);
+						processNodeDesign(ratioGraph, nh, ratioNodeHelper, nodesInCurrentSet, column, row,
+								maxNodesPerRow, sortCommand, seriesInfo, timeInfo, setHeader);
 						if (setHeader)
 							headerSet.add(workProgress);
 						// }
@@ -360,13 +357,13 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 				}
 			}
 		}
-		
+
 		if (status != null && status.wantsToStop()) {
 			status.setCurrentStatusText1("Processing incomplete");
 			status.setCurrentStatusText2("Aborting further processing");
 			return null;
 		}
-		
+
 		AttributeHelper.setAttribute(ratioGraph, "", "node_showRangeAxis", new Boolean(false));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_outlineBorderWidth", new Double(1d));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_halfErrorBar", new Boolean(false));
@@ -387,15 +384,15 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 		}
 		ratioGraph.setName("Ratio View " + (++createdRatioGraph));
 		ClusterColorAttribute cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(workGraph,
-				ClusterColorAttribute.attributeFolder, ClusterColorAttribute.attributeName, ClusterColorAttribute
-						.getDefaultValue(clusters), new ClusterColorAttribute("resulttype"), false);
-		
+				ClusterColorAttribute.attributeFolder, ClusterColorAttribute.attributeName,
+				ClusterColorAttribute.getDefaultValue(clusters), new ClusterColorAttribute("resulttype"), false);
+
 		ClusterColorAttribute cca2 = (ClusterColorAttribute) cca.copy();
 		ratioGraph.addAttribute(cca2, ClusterColorAttribute.attributeFolder);
 		if (status != null)
 			status.setCurrentStatusText2("Colorize Nodes...");
 		PajekClusterColor.executeClusterColoringOnGraph(ratioGraph, cca2);
-		
+
 		if (status != null) {
 			status.setCurrentStatusValue(100);
 			status.setCurrentStatusText2("Show Graph (please wait)...");
@@ -406,8 +403,8 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 					if (ratioGraph != null && ratioGraph.getNumberOfNodes() > 0)
 						MainFrame.getInstance().showGraph(ratioGraph, null);
 					else
-						MainFrame.getInstance().showMessageDialog(
-								"<html>" + "Ratio calculation found no valid data points.<br>"
+						MainFrame.getInstance()
+								.showMessageDialog("<html>" + "Ratio calculation found no valid data points.<br>"
 										+ "Please select a time point for which at least<br>"
 										+ "one substance has data points for both<br>" + "selected lines/conditions.");
 				}
@@ -417,10 +414,10 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 			return ratioGraph;
 		}
 	}
-	
+
 	// processNodeDesign(ratioGraph, nh, ratioNodeHelper, nodesInCurrentSet,
 	// column, row, maxNodesPerRow);
-	
+
 	private static void processNodeDesign(Graph ratioGraph, NodeHelper nh, NodeHelper ratioNodeHelper, int idx,
 			int column, int row, int maxNodesPerSet, NodeSortCommand sort, String seriesInfo, String timeInfo,
 			boolean setHeader) {
@@ -436,10 +433,11 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 		}
 		if (column == 1)
 			fontSize = 20;
-		
+
 		if (setHeader) {
-			Node header = ratioGraph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(350 + (column - 1)
-					* colwidth, -100 + 150 + (nodeHeight - 2d) + maxNodesPerSet * (row - 1) * nodeHeight + (row - 1) * 50d));
+			Node header = ratioGraph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(
+					350 + (column - 1) * colwidth,
+					-100 + 150 + (nodeHeight - 2d) + maxNodesPerSet * (row - 1) * nodeHeight + (row - 1) * 50d));
 			String lbl = "<html><center>" + seriesInfo + (timeInfo.length() > 0 ? "" + timeInfo : "");
 			lbl = StringManipulationTools.stringReplace(lbl, "(", "<br>(");
 			AttributeHelper.setLabel(header, lbl);
@@ -452,8 +450,8 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 		ratioNodeHelper.setFillColor(new Color(240, 240, 240));
 		ratioNodeHelper.setBorderWidth(0);
 		ratioNodeHelper.setSize(200d, nodeHeight);
-		ratioNodeHelper.setPosition(350 + (column - 1) * colwidth, 150 + (nodeHeight - 2d) * idx + maxNodesPerSet
-				* (row - 1) * nodeHeight + (row - 1) * 120d);
+		ratioNodeHelper.setPosition(350 + (column - 1) * colwidth,
+				150 + (nodeHeight - 2d) * idx + maxNodesPerSet * (row - 1) * nodeHeight + (row - 1) * 120d);
 		ratioNodeHelper.setAttributeValue("charting", "rangeAxis", "");
 		ratioNodeHelper.setAttributeValue("labelgraphics", "anchor", "w");
 		ratioNodeHelper.setAttributeValue("labelgraphics", "fontSize", new Integer(fontSize));

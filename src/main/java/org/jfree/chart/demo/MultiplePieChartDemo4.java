@@ -47,8 +47,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.TableOrder;
 
 /**
- * A simple demonstration application showing how to create a chart consisting of multiple
- * pie charts.
+ * A simple demonstration application showing how to create a chart consisting
+ * of multiple pie charts.
  */
 public class MultiplePieChartDemo4 extends ApplicationFrame {
 
@@ -56,7 +56,7 @@ public class MultiplePieChartDemo4 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public MultiplePieChartDemo4(final String title) {
 
@@ -131,13 +131,12 @@ public class MultiplePieChartDemo4 extends ApplicationFrame {
 	 * Creates a sample chart for the given dataset.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-		final JFreeChart chart = ChartFactory.createMultiplePieChart3D(
-							"Multiple Pie Chart Demo 4", dataset, TableOrder.BY_COLUMN, false, true, false
-							);
+		final JFreeChart chart = ChartFactory.createMultiplePieChart3D("Multiple Pie Chart Demo 4", dataset,
+				TableOrder.BY_COLUMN, false, true, false);
 		chart.setBackgroundPaint(new Color(216, 255, 216));
 		final MultiplePiePlot plot = (MultiplePiePlot) chart.getPlot();
 		final JFreeChart subchart = plot.getPieChart();
@@ -169,7 +168,7 @@ public class MultiplePieChartDemo4 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

@@ -38,12 +38,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.NeedsSwingThread;
  *         comment go to Window>Preferences>Java>Code Generation>Code and
  *         Comments
  */
-public class SetBackgroundColorAlgorithm
-					extends AbstractEditorAlgorithm
-					implements ProvidesGeneralContextMenu, ActionListener,
-					NeedsSwingThread {
+public class SetBackgroundColorAlgorithm extends AbstractEditorAlgorithm
+		implements ProvidesGeneralContextMenu, ActionListener, NeedsSwingThread {
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
@@ -52,61 +51,60 @@ public class SetBackgroundColorAlgorithm
 		else
 			return null;
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "menu.window"; // View
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.VISUAL
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.VISUAL));
 	}
-	
+
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke('B', InputEvent.ALT_MASK);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
 		Color oldC = AttributeHelper.getColorFromAttribute(graph, "", "graphbackgroundcolor", Color.white);
-		
-		Color newC = JColorChooser.showDialog(getMainFrame(),
-							"Select Background-Color",
-							oldC);
-		
+
+		Color newC = JColorChooser.showDialog(getMainFrame(), "Select Background-Color", oldC);
+
 		if (newC != null)
 			AttributeHelper.setColorFromAttribute(graph, "", "graphbackgroundcolor", newC);
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.AlgorithmWithContextMenu#getCurrentContextMenuItem()
+	 * 
+	 * @see org.graffiti.plugin.algorithm.AlgorithmWithContextMenu#
+	 * getCurrentContextMenuItem()
 	 */
 	public JMenuItem[] getCurrentContextMenuItem() {
 		return null; /*
 						 * JMenuItem menuItem = new JMenuItem(getName());
-						 * menuItem.addActionListener(this);
-						 * return new JMenuItem[] { menuItem };
+						 * menuItem.addActionListener(this); return new JMenuItem[] { menuItem };
 						 */
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
 		execute();
 	}
-	
+
 	public boolean activeForView(View v) {
 		return v != null;
 	}

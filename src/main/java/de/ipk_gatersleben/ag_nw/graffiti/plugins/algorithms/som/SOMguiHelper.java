@@ -52,31 +52,24 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.Replicat
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.statistics.MyScatterBlock;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SOMguiHelper implements HelperClass {
-	
-	public static void showSOMcentroidsAndClusterAssignmentSettings(
-						Map som,
-						String[] columns,
-						Graph optSrcGraph) {
-		
+
+	public static void showSOMcentroidsAndClusterAssignmentSettings(Map som, String[] columns, Graph optSrcGraph) {
+
 		// int[] groupCount = new int[result.length];
 		// for (int i=0; i<result.length; i++)
 		// groupCount[i] = result[i].size();
-		
+
 		som.getWeights();
-		
+
 		JComponent somPanel = getSOMpanel(som, columns, optSrcGraph);
 		JFrame newFrame = new JFrame("SOM Map");
 		newFrame.setSize(500, 500);
 		double border = 2;
-		double[][] size =
-		{ { border, TableLayoutConstants.FILL, border }, // Columns
-				{ border, TableLayoutConstants.PREFERRED,
-												TableLayoutConstants.FILL, border }
-		}; // Rows
+		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
+				{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, border } }; // Rows
 		newFrame.setLayout(new TableLayout(size));
 		newFrame.add(new JLabel("SOM Nodes / Prototypes; Select target cluster IDs:"), "1,1");
 		newFrame.add(somPanel, "1,2");
@@ -84,20 +77,21 @@ public class SOMguiHelper implements HelperClass {
 		newFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		newFrame.setVisible(true);
 	}
-	
+
 	private static JComponent getSOMpanel(Map som, final String[] columns, Graph srcGraph) {
 		MyScatterBlock scatterBlock = new MyScatterBlock(false, new JLabel().getFont().getSize());
 		int y = 0;
 		for (int nodeIndex = 0; nodeIndex < som.getNeuronNodeCount();) {
-			// List mappedDataList1 = Experiment2GraphHelper.getMappedDataListFromNode(node1);
+			// List mappedDataList1 =
+			// Experiment2GraphHelper.getMappedDataListFromNode(node1);
 			for (int x = 0; x < som.getSomWidth() && nodeIndex < som.getNeuronNodeCount(); x++) {
 				ObjectRef timePoints = new ObjectRef();
 				CategoryDataset dataset = getDataset(som, nodeIndex, columns, timePoints);
-				
+
 				JFreeChart chart = createChart(dataset,
-									"Centroid " + (nodeIndex + 1) + "-> Cluster ID " + (nodeIndex + 1),
-									PlotOrientation.VERTICAL, false, null, null, true, (Integer) timePoints.getObject() > 1, 3, (Integer) timePoints.getObject(),
-									srcGraph);
+						"Centroid " + (nodeIndex + 1) + "-> Cluster ID " + (nodeIndex + 1), PlotOrientation.VERTICAL,
+						false, null, null, true, (Integer) timePoints.getObject() > 1, 3,
+						(Integer) timePoints.getObject(), srcGraph);
 				ChartPanel chartPanel = new ChartPanel(chart, true, true, true, true, true);
 				chartPanel.setToolTipText("Click to get details on data ordering");
 				final Color selectedColor = new Color(200, 200, 220);
@@ -115,26 +109,28 @@ public class SOMguiHelper implements HelperClass {
 						colDesc = "<html>The X-Axis is is sorted as follows:<br>" + colDesc;
 						MainFrame.showMessageDialogWithScrollBars(colDesc, "X-Axis");
 					}
-					
+
 					public void mousePressed(MouseEvent e) {
 					}
-					
+
 					public void mouseReleased(MouseEvent e) {
 					}
-					
+
 					public void mouseEntered(MouseEvent e) {
 						// ChartPanel src = (ChartPanel) e.getSource();
 						// if (src.getBackground()!=selectedColor)
 						// src.setBackground(hoverColor);
 					}
-					
+
 					public void mouseExited(MouseEvent e) {
 						// ChartPanel src = (ChartPanel) e.getSource();
 						// if (src.getBackground()!=selectedColor)
 						// src.setBackground(unselectedColor);
 					}
 				});
-				scatterBlock.addChartPanel(getChartPanelWithCommandButton(chartPanel, nodeIndex, som.getNeuronNodeCount(), som), x + 1, y + 1, null, null);
+				scatterBlock.addChartPanel(
+						getChartPanelWithCommandButton(chartPanel, nodeIndex, som.getNeuronNodeCount(), som), x + 1,
+						y + 1, null, null);
 				nodeIndex++;
 				// System.out.println("Chart Panel: "+(x+1)+":"+(y+1));
 			}
@@ -142,18 +138,13 @@ public class SOMguiHelper implements HelperClass {
 		}
 		return scatterBlock.getChartPanel();
 	}
-	
-	private static JComponent getChartPanelWithCommandButton(
-						final ChartPanel chartPanel, final int nodeIndex, int maxIndex, final Map som) {
+
+	private static JComponent getChartPanelWithCommandButton(final ChartPanel chartPanel, final int nodeIndex,
+			int maxIndex, final Map som) {
 		JPanel resultPanel = new JPanel();
 		double border = 0;
-		double[][] size =
-		{ { border, TableLayoutConstants.FILL, border }, // Columns
-				{ border,
-												TableLayoutConstants.FILL,
-												TableLayoutConstants.PREFERRED,
-												border }
-		}; // Rows
+		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
+				{ border, TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED, border } }; // Rows
 		resultPanel.setLayout(new TableLayout(size));
 		resultPanel.add(chartPanel, "1,1");
 		final JComboBox selectClusterID = new JComboBox(getSelections(nodeIndex, maxIndex));
@@ -175,7 +166,7 @@ public class SOMguiHelper implements HelperClass {
 		resultPanel.add(selectClusterID, "1,2");
 		return resultPanel;
 	}
-	
+
 	private static String[] getSelections(int nodeIndex, int maxIndex) {
 		String[] result = new String[maxIndex + 1];
 		for (int i = 0; i < maxIndex; i++)
@@ -183,11 +174,10 @@ public class SOMguiHelper implements HelperClass {
 		result[maxIndex] = "-- do not consider";
 		return result;
 	}
-	
-	private static JFreeChart createChart(CategoryDataset dataset, String title,
-						PlotOrientation orientation, boolean showLegend, String domainAxis,
-						String rangeAxis, boolean showRangeAxis, boolean showCategoryAxis,
-						float outlineBorderWidth, int timePoints, Graph srcGraph) {
+
+	private static JFreeChart createChart(CategoryDataset dataset, String title, PlotOrientation orientation,
+			boolean showLegend, String domainAxis, String rangeAxis, boolean showRangeAxis, boolean showCategoryAxis,
+			float outlineBorderWidth, int timePoints, Graph srcGraph) {
 		final JFreeChart chart;
 		if (timePoints > 1) {
 			chart = ChartFactory.createLineChart(title, // chart
@@ -199,7 +189,7 @@ public class SOMguiHelper implements HelperClass {
 					showLegend, // include legend
 					false, // tooltips
 					false // urls
-					);
+			);
 		} else {
 			chart = ChartFactory.createBarChart(title, // chart
 					// title
@@ -210,10 +200,11 @@ public class SOMguiHelper implements HelperClass {
 					showLegend, // include legend
 					false, // tooltips
 					false // urls
-					);
+			);
 		}
 		if (srcGraph != null)
-			XmlDataChartComponent.setSeriesColorsAndStroke(chart.getCategoryPlot().getRenderer(), outlineBorderWidth, srcGraph);
+			XmlDataChartComponent.setSeriesColorsAndStroke(chart.getCategoryPlot().getRenderer(), outlineBorderWidth,
+					srcGraph);
 		CategoryPlot plot = chart.getCategoryPlot();
 		plot.setBackgroundPaint(null);
 		plot.getRangeAxis().setVisible(showRangeAxis);
@@ -221,11 +212,10 @@ public class SOMguiHelper implements HelperClass {
 		chart.setBackgroundPaint(null);
 		return chart;
 	}
-	
-	public static Graph createCentroidNodesGraph(Map som,
-						String[] columns) {
+
+	public static Graph createCentroidNodesGraph(Map som, String[] columns) {
 		Graph g = new AdjListGraph(new ListenerManager());
-		
+
 		double offX = 130;
 		double offY = 130;
 		double sx = 120;
@@ -234,7 +224,8 @@ public class SOMguiHelper implements HelperClass {
 		double sty = 100;
 		int y = 0;
 		for (int nodeIndex = 0; nodeIndex < som.getNeuronNodeCount();) {
-			// List mappedDataList1 = Experiment2GraphHelper.getMappedDataListFromNode(node1);
+			// List mappedDataList1 =
+			// Experiment2GraphHelper.getMappedDataListFromNode(node1);
 			for (int x = 0; x < som.getSomWidth() && nodeIndex < som.getNeuronNodeCount(); x++) {
 				ObjectRef timePoints = new ObjectRef();
 				getDataset(som, nodeIndex, columns, timePoints);
@@ -244,7 +235,7 @@ public class SOMguiHelper implements HelperClass {
 				AttributeHelper.setSize(n, sx, sy);
 				NodeHelper nh = new NodeHelper(n);
 				ArrayList<DataSetRow> datasetRows = getDatasetRows(som, nodeIndex, columns, timePoints);
-				
+
 				nh.setLabel("Centroid " + (nodeIndex + 1));
 				nh.setLabelAlignment(-1, AlignmentSetting.INSIDETOP);
 				nh.setAttributeValue("som", "x", x);
@@ -257,7 +248,7 @@ public class SOMguiHelper implements HelperClass {
 		}
 		return g;
 	}
-	
+
 	private static CategoryDataset getDataset(Map som, int nodeIndex, String[] columns, ObjectRef timeCount) {
 		BioStatisticalCategoryDataset dataset = new BioStatisticalCategoryDataset(10);
 		// scan columns and create dataset
@@ -272,7 +263,7 @@ public class SOMguiHelper implements HelperClass {
 			// column: series
 			String series = sat.substring(0, sat.indexOf("§"));
 			String time = sat.substring(sat.indexOf("§") + 1);
-			
+
 			ArrayList<Integer> columnsForThatSeriesAndTime = new ArrayList<Integer>();
 			for (int column = 0; column < som.getInputVectorSize(); column++) {
 				String desc = columns[column].substring(0, columns[column].lastIndexOf("§"));
@@ -288,7 +279,8 @@ public class SOMguiHelper implements HelperClass {
 			}
 			double mean = ExperimentData.getAverage(measurements);
 			double standardDeviation = ExperimentData.getStddev(measurements);
-			// return new String(serie + "§" + timeUnit + "§" + getZeros(timeValueForComparision, 9)+"§"+replicate);
+			// return new String(serie + "§" + timeUnit + "§" +
+			// getZeros(timeValueForComparision, 9)+"§"+replicate);
 			String timeVal = time.substring(time.indexOf("§") + 1, time.lastIndexOf("§"));
 			String timeUnit = time.substring(0, time.indexOf("§"));
 			int ttt;
@@ -300,12 +292,13 @@ public class SOMguiHelper implements HelperClass {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			// dataset.addValue(som.getWeights()[i][nodeIndex], "som-weights", columns[i].substring(0, columns[i].lastIndexOf("§")));
+			// dataset.addValue(som.getWeights()[i][nodeIndex], "som-weights",
+			// columns[i].substring(0, columns[i].lastIndexOf("§")));
 		}
 		timeCount.setObject(timeValues.size());
 		return dataset;
 	}
-	
+
 	private static ArrayList<DataSetRow> getDatasetRows(Map som, int nodeIndex, String[] columns, ObjectRef timeCount) {
 		System.out.println(DataSetRow.getHeading());
 		ArrayList<DataSetRow> dataset = new ArrayList<DataSetRow>();
@@ -322,7 +315,7 @@ public class SOMguiHelper implements HelperClass {
 			// column: series
 			String series = sat.substring(0, sat.indexOf("§"));
 			String time = sat.substring(sat.indexOf("§") + 1);
-			
+
 			ArrayList<Integer> columnsForThatSeriesAndTime = new ArrayList<Integer>();
 			for (int column = 0; column < som.getInputVectorSize(); column++) {
 				String desc = columns[column].substring(0, columns[column].lastIndexOf("§"));
@@ -349,8 +342,8 @@ public class SOMguiHelper implements HelperClass {
 				}
 				double value = som.getWeights()[column][nodeIndex];
 				// measurements.add(new ReplicateDouble(value, replId, null));
-				DataSetRow dsr = new DataSetRow("", "experiment", "Centroid " + (nodeIndex + 1), "1", species, genotype, "", seriesId, timeVal, timeUnit, replId,
-									value, "relative");
+				DataSetRow dsr = new DataSetRow("", "experiment", "Centroid " + (nodeIndex + 1), "1", species, genotype,
+						"", seriesId, timeVal, timeUnit, replId, value, "relative");
 				System.out.println(dsr.toString());
 				dataset.add(dsr);
 			}

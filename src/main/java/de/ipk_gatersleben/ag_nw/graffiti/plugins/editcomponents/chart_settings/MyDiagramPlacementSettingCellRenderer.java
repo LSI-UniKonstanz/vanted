@@ -16,22 +16,24 @@ import javax.swing.ListCellRenderer;
 import org.ErrorMsg;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class MyDiagramPlacementSettingCellRenderer implements ListCellRenderer {
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
+	 * 
+	 * @see
+	 * javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList,
+	 * java.lang.Object, int, boolean, boolean)
 	 */
-	public Component getListCellRendererComponent(JList list, Object value,
-						int index, boolean isSelected, boolean cellHasFocus) {
-		
+	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+			boolean cellHasFocus) {
+
 		JLabel result = new JLabel();
-		
+
 		result.setText(value + "");
-		
+
 		if (isSelected)
 			result.setBackground(list.getSelectionBackground());
 		else {
@@ -40,7 +42,7 @@ public class MyDiagramPlacementSettingCellRenderer implements ListCellRenderer {
 			else
 				result.setBackground(list.getBackground());
 		}
-		
+
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');
 		ImageIcon icon = null;
@@ -79,8 +81,8 @@ public class MyDiagramPlacementSettingCellRenderer implements ListCellRenderer {
 		}
 		if (icon != null)
 			result.setIcon(icon);
-		
+
 		return result;
 	}
-	
+
 }

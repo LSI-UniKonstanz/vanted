@@ -32,7 +32,8 @@ package org.jfree.chart.urls;
 import org.jfree.data.XYZDataset;
 
 /**
- * Interface for a URL generator for plots that uses data from an {@link XYZDataset}.
+ * Interface for a URL generator for plots that uses data from an
+ * {@link XYZDataset}.
  */
 public interface XYZURLGenerator extends XYURLGenerator {
 
@@ -40,11 +41,11 @@ public interface XYZURLGenerator extends XYURLGenerator {
 	 * Generates a URL for a particular item within a series.
 	 * 
 	 * @param data
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return a string containing the generated URL.
 	 */
 	public String generateURL(XYZDataset data, int series, int item);

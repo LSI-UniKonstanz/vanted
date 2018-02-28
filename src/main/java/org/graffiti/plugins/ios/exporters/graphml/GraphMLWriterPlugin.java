@@ -18,23 +18,18 @@ import org.graffiti.plugin.GenericPluginAdapter;
  * 
  * @author ruediger
  */
-public class GraphMLWriterPlugin
-					extends GenericPluginAdapter {
+public class GraphMLWriterPlugin extends GenericPluginAdapter {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new <code>GraphMLWriterPlugin</code>.
 	 */
 	public GraphMLWriterPlugin() {
 		super();
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.EXTENDED_FILE_FORMAT)) {
-			this.outputSerializers = new GraphMLWriter[] {
-								new GraphMLWriter(), new GraphMLgzWriter()
-			};
+			this.outputSerializers = new GraphMLWriter[] { new GraphMLWriter(), new GraphMLgzWriter() };
 		} else {
-			this.outputSerializers = new GraphMLWriter[] {
-								new GraphMLWriter()
-			};
+			this.outputSerializers = new GraphMLWriter[] { new GraphMLWriter() };
 		}
 	}
 }

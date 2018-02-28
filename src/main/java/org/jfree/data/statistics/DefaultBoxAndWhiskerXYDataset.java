@@ -51,9 +51,7 @@ import org.jfree.data.RangeInfo;
  * 
  * @author David Browning
  */
-public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
-															implements BoxAndWhiskerXYDataset,
-																		RangeInfo {
+public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset implements BoxAndWhiskerXYDataset, RangeInfo {
 
 	/** The series name. */
 	private String seriesName;
@@ -74,28 +72,29 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	private Range valueRange;
 
 	/**
-	 * The coefficient used to calculate outliers. Tukey's default value is 1.5 (see EDA)
-	 * Any value which is greater than Q3 + (interquartile range * outlier coefficient) is
-	 * considered to be an outlier.
-	 * Can be altered if the data is particularly skewed.
+	 * The coefficient used to calculate outliers. Tukey's default value is 1.5 (see
+	 * EDA) Any value which is greater than Q3 + (interquartile range * outlier
+	 * coefficient) is considered to be an outlier. Can be altered if the data is
+	 * particularly skewed.
 	 */
 	private double outlierCoefficient = 1.5;
 
 	/**
-	 * The coefficient used to calculate farouts. Tukey's default value is 2 (see EDA)
-	 * Any value which is greater than Q3 + (interquartile range * farout coefficient) is
-	 * considered to be a farout.
-	 * Can be altered if the data is particularly skewed.
+	 * The coefficient used to calculate farouts. Tukey's default value is 2 (see
+	 * EDA) Any value which is greater than Q3 + (interquartile range * farout
+	 * coefficient) is considered to be a farout. Can be altered if the data is
+	 * particularly skewed.
 	 */
 	private double faroutCoefficient = 2.0;
 
 	/**
 	 * Constructs a new box and whisker dataset.
 	 * <p>
-	 * The current implementation allows only one series in the dataset. This may be extended in a future version.
+	 * The current implementation allows only one series in the dataset. This may be
+	 * extended in a future version.
 	 * 
 	 * @param seriesName
-	 *           the name of the series.
+	 *            the name of the series.
 	 */
 	public DefaultBoxAndWhiskerXYDataset(final String seriesName) {
 
@@ -112,9 +111,9 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	 * Adds an item to the dataset.
 	 * 
 	 * @param date
-	 *           the date.
+	 *            the date.
 	 * @param item
-	 *           the item.
+	 *            the item.
 	 */
 	public void add(final Date date, final BoxAndWhiskerItem item) {
 		this.dates.add(date);
@@ -133,15 +132,14 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 				this.maximumRangeValue = item.getMaxRegularValue();
 			}
 		}
-		this.valueRange = new Range(this.minimumRangeValue.doubleValue(),
-												this.maximumRangeValue.doubleValue());
+		this.valueRange = new Range(this.minimumRangeValue.doubleValue(), this.maximumRangeValue.doubleValue());
 	}
 
 	/**
 	 * Returns the name of the series stored in this dataset.
 	 * 
 	 * @param i
-	 *           the index of the series. Currently ignored.
+	 *            the index of the series. Currently ignored.
 	 * @return the name of this series.
 	 */
 	public String getSeriesName(final int i) {
@@ -151,12 +149,13 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	/**
 	 * Returns the x-value for one item in a series.
 	 * <p>
-	 * The value returned is a Long object generated from the underlying Date object.
+	 * The value returned is a Long object generated from the underlying Date
+	 * object.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the x-value.
 	 */
 	public Number getXValue(final int series, final int item) {
@@ -169,9 +168,9 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	 * This method is provided for convenience only.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the x-value as a Date.
 	 */
 	public Date getXDate(final int series, final int item) {
@@ -181,12 +180,13 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	/**
 	 * Returns the y-value for one item in a series.
 	 * <p>
-	 * This method (from the XYDataset interface) is mapped to the getMaxNonOutlierValue(...) method.
+	 * This method (from the XYDataset interface) is mapped to the
+	 * getMaxNonOutlierValue(...) method.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the y-value.
 	 */
 	public Number getYValue(final int series, final int item) {
@@ -197,9 +197,9 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	 * Returns the mean for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the mean for the specified series and item.
 	 */
 	public Number getMeanValue(final int series, final int item) {
@@ -215,9 +215,9 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	 * Returns the median-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the median-value for the specified series and item.
 	 */
 	public Number getMedianValue(final int series, final int item) {
@@ -233,9 +233,9 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	 * Returns the Q1 median-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the Q1 median-value for the specified series and item.
 	 */
 	public Number getQ1Value(final int series, final int item) {
@@ -251,9 +251,9 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	 * Returns the Q3 median-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the Q3 median-value for the specified series and item.
 	 */
 	public Number getQ3Value(final int series, final int item) {
@@ -269,9 +269,9 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	 * Returns the min-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the min-value for the specified series and item.
 	 */
 	public Number getMinRegularValue(final int series, final int item) {
@@ -287,9 +287,9 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	 * Returns the max-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the max-value for the specified series and item.
 	 */
 	public Number getMaxRegularValue(final int series, final int item) {
@@ -305,9 +305,9 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	 * Returns the minimum value which is not a farout.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return a <code>Number</code> representing the maximum non-farout value.
 	 */
 	public Number getMinOutlier(final int series, final int item) {
@@ -320,13 +320,13 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	}
 
 	/**
-	 * Returns the maximum value which is not a farout, ie Q3 + (interquartile range * farout
-	 * coefficient).
+	 * Returns the maximum value which is not a farout, ie Q3 + (interquartile range
+	 * * farout coefficient).
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return a <code>Number</code> representing the maximum non-farout value.
 	 */
 	public Number getMaxOutlier(final int series, final int item) {
@@ -342,9 +342,9 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	 * Returns an array of outliers for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the array of outliers for the specified series and item.
 	 */
 	public List getOutliers(final int series, final int item) {
@@ -359,10 +359,12 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	/**
 	 * Returns the value used as the outlier coefficient. The outlier coefficient
 	 * gives an indication of the degree of certainty in an unskewed distribution.
-	 * Increasing the coefficient increases the number of values included.
-	 * Currently only used to ensure farout coefficient is greater than the outlier coefficient
+	 * Increasing the coefficient increases the number of values included. Currently
+	 * only used to ensure farout coefficient is greater than the outlier
+	 * coefficient
 	 * 
-	 * @return a <code>double</code> representing the value used to calculate outliers
+	 * @return a <code>double</code> representing the value used to calculate
+	 *         outliers
 	 */
 	public double getOutlierCoefficient() {
 		return this.outlierCoefficient;
@@ -372,7 +374,8 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	 * Returns the value used as the farout coefficient. The farout coefficient
 	 * allows the calculation of which values will be off the graph.
 	 * 
-	 * @return a <code>double</code> representing the value used to calculate farouts
+	 * @return a <code>double</code> representing the value used to calculate
+	 *         farouts
 	 */
 	public double getFaroutCoefficient() {
 		return this.faroutCoefficient;
@@ -393,7 +396,7 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	 * Returns the number of items in the specified series.
 	 * 
 	 * @param series
-	 *           the index (zero-based) of the series.
+	 *            the index (zero-based) of the series.
 	 * @return the number of items in the specified series.
 	 */
 	public int getItemCount(final int series) {
@@ -404,20 +407,20 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	 * Sets the value used as the outlier coefficient
 	 * 
 	 * @param outlierCoefficient
-	 *           being a <code>double</code> representing the value used to
-	 *           calculate outliers
+	 *            being a <code>double</code> representing the value used to
+	 *            calculate outliers
 	 */
 	public void setOutlierCoefficient(final double outlierCoefficient) {
 		this.outlierCoefficient = outlierCoefficient;
 	}
 
 	/**
-	 * Sets the value used as the farouts coefficient. The farout coefficient must b greater than
-	 * the outlier coefficient.
+	 * Sets the value used as the farouts coefficient. The farout coefficient must b
+	 * greater than the outlier coefficient.
 	 * 
 	 * @param faroutCoefficient
-	 *           being a <code>double</code> representing the value used to
-	 *           calculate farouts
+	 *            being a <code>double</code> representing the value used to
+	 *            calculate farouts
 	 */
 	public void setFaroutCoefficient(final double faroutCoefficient) {
 
@@ -425,14 +428,13 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 			this.faroutCoefficient = faroutCoefficient;
 		} else {
 			throw new IllegalArgumentException("Farout value must be greater "
-								+ "than the outlier value, which is currently set at: ("
-								+ getOutlierCoefficient() + ")");
+					+ "than the outlier value, which is currently set at: (" + getOutlierCoefficient() + ")");
 		}
 	}
 
 	/**
-	 * Returns the minimum value in the dataset's range (or null if all the
-	 * values in the range are null).
+	 * Returns the minimum value in the dataset's range (or null if all the values
+	 * in the range are null).
 	 * 
 	 * @return the minimum value.
 	 */
@@ -441,8 +443,8 @@ public class DefaultBoxAndWhiskerXYDataset extends AbstractXYDataset
 	}
 
 	/**
-	 * Returns the maximum value in the dataset's range (or null if all the
-	 * values in the range are null).
+	 * Returns the maximum value in the dataset's range (or null if all the values
+	 * in the range are null).
 	 * 
 	 * @return the maximum value.
 	 */

@@ -17,46 +17,47 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.InvertSel
 
 @Deprecated
 public class SelectAlgorithm extends LaunchGui {
-	
+
 	public SelectAlgorithm() {
 		super();
 		algBTsize = ButtonSize.DYNAMIC;
 		modal = false;
 	}
-	
+
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
-		
+
 		for (Algorithm a : PluginFeatureHierarchyCommands.getSelectionAlgorithms())
 			res.add(a);
-		
+
 		if (res.size() > 0)
 			res.add(null);
-		
+
 		res.add(new InvertSelectionAlgorithm());
-//		res.add(new ClearSelection());
-		
+		// res.add(new ClearSelection());
+
 		if (res.size() > 2)
 			res.add(null);
-		
+
 		if (PluginFeatureClusterCommands.getSelectClusterAlgorithm() != null)
 			res.add(PluginFeatureClusterCommands.getSelectClusterAlgorithm());
-		
+
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING)) {
 			res.add(new SelectNodesWithExperimentalDataAlgorithm());
 			res.add(new SelectEdgesAlgorithm());
 		}
-		
+
 		return res;
 	}
-	
+
 	@Override
 	public boolean closeDialogBeforeExecution(Algorithm algorithm) {
-		return false;// algorithm instanceof SelectClusterAlgorithm || algorithm instanceof SelectNodesWithExperimentalDataAlgorithm || algorithm instanceof
+		return false;// algorithm instanceof SelectClusterAlgorithm || algorithm instanceof
+						// SelectNodesWithExperimentalDataAlgorithm || algorithm instanceof
 		// SelectEdgesAlgorithm;
 	}
-	
+
 	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
@@ -64,7 +65,7 @@ public class SelectAlgorithm extends LaunchGui {
 		else
 			return null;
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "menu.edit";
@@ -74,6 +75,5 @@ public class SelectAlgorithm extends LaunchGui {
 	public Set<Category> getSetCategory() {
 		return null;
 	}
-	
-	
+
 }

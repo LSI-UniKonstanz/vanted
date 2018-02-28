@@ -56,7 +56,7 @@ public class CombinedXYPlotDemo1 extends ApplicationFrame {
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public CombinedXYPlotDemo1(final String title) {
 
@@ -105,8 +105,7 @@ public class CombinedXYPlotDemo1 extends ApplicationFrame {
 		plot.setOrientation(PlotOrientation.VERTICAL);
 
 		// return a new chart containing the overlaid plot...
-		return new JFreeChart("CombinedDomainXYPlot Demo",
-										JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+		return new JFreeChart("CombinedDomainXYPlot Demo", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 
 	}
 
@@ -203,7 +202,7 @@ public class CombinedXYPlotDemo1 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

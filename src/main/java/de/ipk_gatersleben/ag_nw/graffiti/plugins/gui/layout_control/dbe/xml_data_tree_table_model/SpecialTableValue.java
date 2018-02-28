@@ -7,8 +7,7 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.xml_data_tree_table_model;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SpecialTableValue {
 	public double doubleValue;
@@ -16,17 +15,16 @@ public class SpecialTableValue {
 	public boolean isWhiteCell;
 	public boolean shiftRight;
 	private String startString;
-	
-	public SpecialTableValue(double doubleValue, Object otherValue,
-						boolean isWhiteCell, boolean shiftRight,
-						String startString) {
+
+	public SpecialTableValue(double doubleValue, Object otherValue, boolean isWhiteCell, boolean shiftRight,
+			String startString) {
 		this.doubleValue = doubleValue;
 		this.otherValue = otherValue;
 		this.isWhiteCell = isWhiteCell;
 		this.shiftRight = shiftRight;
 		this.startString = startString;
 	}
-	
+
 	@Override
 	public String toString() {
 		if (new Double(doubleValue).isNaN()) {
@@ -41,7 +39,7 @@ public class SpecialTableValue {
 				return startString + new Double(doubleValue).toString();
 		}
 	}
-	
+
 	/**
 	 * @return
 	 */

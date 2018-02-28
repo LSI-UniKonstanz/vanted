@@ -64,7 +64,7 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 	 * Returns an object.
 	 * 
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return The object (<code>null</code> if the index is out of range).
 	 */
 	public Object getObject(final int item) {
@@ -82,7 +82,7 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 	 * Returns a key.
 	 * 
 	 * @param index
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return the row key.
 	 */
 	public Comparable getKey(final int index) {
@@ -103,7 +103,7 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 	 * Returns the index for a given key.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @return the index.
 	 */
 	public int getIndex(final Comparable key) {
@@ -144,11 +144,11 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 	}
 
 	/**
-	 * Returns the object for a given key. If the key is not recognised, the method should
-	 * return <code>null</code>.
+	 * Returns the object for a given key. If the key is not recognised, the method
+	 * should return <code>null</code>.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @return The object (possibly <code>null</code>).
 	 */
 	public Object getObject(final Comparable key) {
@@ -161,9 +161,9 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 	 * This is the same as the setObject(...) method.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @param object
-	 *           the object.
+	 *            the object.
 	 */
 	public void addObject(final Comparable key, final Object object) {
 		setObject(key, object);
@@ -175,9 +175,9 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 	 * This is the same as the addObject(...) method.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @param object
-	 *           the object.
+	 *            the object.
 	 */
 	public void setObject(final Comparable key, final Object object) {
 		final int keyIndex = getIndex(key);
@@ -194,7 +194,7 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 	 * Removes a value from the collection.
 	 * 
 	 * @param index
-	 *           the index of the item to remove.
+	 *            the index of the item to remove.
 	 */
 	public void removeValue(final int index) {
 		this.data.remove(index);
@@ -204,7 +204,7 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 	 * Removes a value from the collection.
 	 * 
 	 * @param key
-	 *           the key of the item to remove.
+	 *            the key of the item to remove.
 	 */
 	public void removeValue(final Comparable key) {
 		removeValue(getIndex(key));
@@ -215,7 +215,7 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if there is a problem cloning.
+	 *             if there is a problem cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		final KeyedObjects clone = (KeyedObjects) super.clone();
@@ -232,7 +232,7 @@ public class KeyedObjects implements Cloneable, PublicCloneable, Serializable {
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {

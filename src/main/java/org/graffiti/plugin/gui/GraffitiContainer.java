@@ -15,10 +15,9 @@ package org.graffiti.plugin.gui;
  * @author $Author: klukas $
  * @version $Revision: 1.4 $
  */
-public interface GraffitiContainer
-					extends GraffitiComponent {
+public interface GraffitiContainer extends GraffitiComponent {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns an unique identifier for this <code>GraffitiComponent</code>.
 	 * 

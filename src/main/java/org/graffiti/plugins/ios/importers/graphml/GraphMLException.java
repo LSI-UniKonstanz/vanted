@@ -16,27 +16,24 @@ import java.io.IOException;
  *
  * @author ruediger
  */
-public class GraphMLException
-    extends IOException
-{
-    //~ Constructors ===========================================================
+public class GraphMLException extends IOException {
+	// ~ Constructors ===========================================================
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Constructs a new <code>GraphMLException</code> from a given
-     * <code>Throwable</code>.
-     *
-     * @param cause the <code>Throwable</code> that caused the exception to be
-     *        thrown.
-     */
-    public GraphMLException(Throwable cause)
-    {
-        super(cause.getMessage());
-        this.initCause(cause);
-    }
+	/**
+	 * Constructs a new <code>GraphMLException</code> from a given
+	 * <code>Throwable</code>.
+	 *
+	 * @param cause
+	 *            the <code>Throwable</code> that caused the exception to be thrown.
+	 */
+	public GraphMLException(Throwable cause) {
+		super(cause.getMessage());
+		this.initCause(cause);
+	}
 }
 
-//------------------------------------------------------------------------------
-//   end of file
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// end of file
+// ------------------------------------------------------------------------------

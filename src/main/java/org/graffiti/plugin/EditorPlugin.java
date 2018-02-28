@@ -23,53 +23,49 @@ import org.graffiti.plugin.view.GraffitiShape;
 /**
  *
  */
-public interface EditorPlugin
-					extends GenericPlugin {
+public interface EditorPlugin extends GenericPlugin {
 	// ~ Methods ================================================================
-	
+
 	/**
-	 * Returns a mapping between attribute paths and attributeComponent
-	 * classes.
+	 * Returns a mapping between attribute paths and attributeComponent classes.
 	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents();
-	
+
 	/**
-	 * Returns the array of <code>GraffitiComponent</code>s the plugin
-	 * contains.
+	 * Returns the array of <code>GraffitiComponent</code>s the plugin contains.
 	 * 
-	 * @return the array of <code>GraffitiComponent</code>s the plugin
-	 *         contains.
+	 * @return the array of <code>GraffitiComponent</code>s the plugin contains.
 	 */
 	public GraffitiComponent[] getGUIComponents();
-	
+
 	/**
-	 * Returns the array of <code>org.graffiti.plugin.mode.Mode</code>s the
-	 * plugin contains.
-	 * 
-	 * @return the array of <code>org.graffiti.plugin.mode.Mode</code>s the
-	 *         plugin contains.
-	 */
-	public Mode[] getModes();
-	
-	/**
-	 * Returns the array of <code>org.graffiti.plugin.view.GraffitiShape</code>s the plugin
+	 * Returns the array of <code>org.graffiti.plugin.mode.Mode</code>s the plugin
 	 * contains.
 	 * 
-	 * @return the array of <code>org.graffiti.plugin.view.GraffitiShape</code>s the plugin
+	 * @return the array of <code>org.graffiti.plugin.mode.Mode</code>s the plugin
 	 *         contains.
 	 */
-	public GraffitiShape[] getShapes();
-	
+	public Mode[] getModes();
+
 	/**
-	 * Returns an array of <code>org.graffiti.plugin.mode.Tool</code>s the
-	 * plugin provides.
+	 * Returns the array of <code>org.graffiti.plugin.view.GraffitiShape</code>s the
+	 * plugin contains.
+	 * 
+	 * @return the array of <code>org.graffiti.plugin.view.GraffitiShape</code>s the
+	 *         plugin contains.
+	 */
+	public GraffitiShape[] getShapes();
+
+	/**
+	 * Returns an array of <code>org.graffiti.plugin.mode.Tool</code>s the plugin
+	 * provides.
 	 * 
 	 * @return an array of tools the plugin provides.
 	 */
 	public Tool[] getTools();
-	
+
 	/**
 	 * Returns a mapping between attribute classnames and attributeComponent
 	 * classes.
@@ -77,7 +73,7 @@ public interface EditorPlugin
 	 * @return DOCUMENT ME!
 	 */
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents();
-	
+
 	public InspectorTab[] getInspectorTabs();
 }
 

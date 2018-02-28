@@ -49,9 +49,11 @@ import org.jfree.util.ObjectUtils;
  * Base class representing a data series. Subclasses are left to implement the
  * actual data structures.
  * <P>
- * The series has two properties ("Name" and "Description") for which you can register a {@link PropertyChangeListener}.
+ * The series has two properties ("Name" and "Description") for which you can
+ * register a {@link PropertyChangeListener}.
  * <P>
- * You can also register a {@link SeriesChangeListener} to receive notification of changes to the series data.
+ * You can also register a {@link SeriesChangeListener} to receive notification
+ * of changes to the series data.
  */
 public class Series implements Cloneable, Serializable {
 
@@ -74,7 +76,7 @@ public class Series implements Cloneable, Serializable {
 	 * Creates a new series.
 	 * 
 	 * @param name
-	 *           the series name (<code>null</code> not permitted).
+	 *            the series name (<code>null</code> not permitted).
 	 */
 	protected Series(final String name) {
 		this(name, null);
@@ -84,9 +86,9 @@ public class Series implements Cloneable, Serializable {
 	 * Constructs a series.
 	 * 
 	 * @param name
-	 *           the series name (<code>null</code> NOT permitted).
+	 *            the series name (<code>null</code> NOT permitted).
 	 * @param description
-	 *           the series description (<code>null</code> permitted).
+	 *            the series description (<code>null</code> permitted).
 	 */
 	protected Series(final String name, final String description) {
 		if (name == null) {
@@ -113,7 +115,7 @@ public class Series implements Cloneable, Serializable {
 	 * Sets the name of the series.
 	 * 
 	 * @param name
-	 *           the name (<code>null</code> not permitted).
+	 *            the name (<code>null</code> not permitted).
 	 */
 	public void setName(final String name) {
 		if (name == null) {
@@ -138,7 +140,7 @@ public class Series implements Cloneable, Serializable {
 	 * Sets the description of the series.
 	 * 
 	 * @param description
-	 *           the description (<code>null</code> permitted).
+	 *            the description (<code>null</code> permitted).
 	 */
 	public void setDescription(final String description) {
 		final String old = this.description;
@@ -147,8 +149,8 @@ public class Series implements Cloneable, Serializable {
 	}
 
 	/**
-	 * Returns the flag that controls whether or not change events are sent to registered
-	 * listeners.
+	 * Returns the flag that controls whether or not change events are sent to
+	 * registered listeners.
 	 * 
 	 * @return a boolean.
 	 */
@@ -157,11 +159,11 @@ public class Series implements Cloneable, Serializable {
 	}
 
 	/**
-	 * Sets the flag that controls whether or not change events are sent to registered
-	 * listeners.
+	 * Sets the flag that controls whether or not change events are sent to
+	 * registered listeners.
 	 * 
 	 * @param notify
-	 *           the new value of the flag.
+	 *            the new value of the flag.
 	 */
 	public void setNotify(final boolean notify) {
 		if (this.notify != notify) {
@@ -173,12 +175,14 @@ public class Series implements Cloneable, Serializable {
 	/**
 	 * Returns a clone of the series.
 	 * <P>
-	 * Notes: 1. No need to clone the name or description, since String object is immutable. 2. We set the listener list to empty, since the listeners did not
-	 * register with the clone. 3. Same applies to the PropertyChangeSupport instance.
+	 * Notes: 1. No need to clone the name or description, since String object is
+	 * immutable. 2. We set the listener list to empty, since the listeners did not
+	 * register with the clone. 3. Same applies to the PropertyChangeSupport
+	 * instance.
 	 * 
 	 * @return a clone of the series.
 	 * @throws CloneNotSupportedException
-	 *            not thrown by this class, but subclasses may differ.
+	 *             not thrown by this class, but subclasses may differ.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 
@@ -196,7 +200,7 @@ public class Series implements Cloneable, Serializable {
 	 * Tests the series for equality with another object.
 	 * 
 	 * @param object
-	 *           the object.
+	 *            the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(final Object object) {
@@ -237,31 +241,33 @@ public class Series implements Cloneable, Serializable {
 	}
 
 	/**
-	 * Registers an object with this series, to receive notification whenever the series changes.
+	 * Registers an object with this series, to receive notification whenever the
+	 * series changes.
 	 * <P>
-	 * Objects being registered must implement the {@link SeriesChangeListener} interface.
+	 * Objects being registered must implement the {@link SeriesChangeListener}
+	 * interface.
 	 * 
 	 * @param listener
-	 *           the listener to register.
+	 *            the listener to register.
 	 */
 	public void addChangeListener(final SeriesChangeListener listener) {
 		this.listeners.add(SeriesChangeListener.class, listener);
 	}
 
 	/**
-	 * Deregisters an object, so that it not longer receives notification whenever the series
-	 * changes.
+	 * Deregisters an object, so that it not longer receives notification whenever
+	 * the series changes.
 	 * 
 	 * @param listener
-	 *           the listener to deregister.
+	 *            the listener to deregister.
 	 */
 	public void removeChangeListener(final SeriesChangeListener listener) {
 		this.listeners.remove(SeriesChangeListener.class, listener);
 	}
 
 	/**
-	 * General method for signalling to registered listeners that the series
-	 * has been changed.
+	 * General method for signalling to registered listeners that the series has
+	 * been changed.
 	 */
 	public void fireSeriesChanged() {
 		if (this.notify) {
@@ -273,7 +279,8 @@ public class Series implements Cloneable, Serializable {
 	 * Sends a change event to all registered listeners.
 	 * 
 	 * @param event
-	 *           Contains information about the event that triggered the notification.
+	 *            Contains information about the event that triggered the
+	 *            notification.
 	 */
 	protected void notifyListeners(final SeriesChangeEvent event) {
 
@@ -290,7 +297,7 @@ public class Series implements Cloneable, Serializable {
 	 * Adds a property change listener to the series.
 	 * 
 	 * @param listener
-	 *           The listener.
+	 *            The listener.
 	 */
 	public void addPropertyChangeListener(final PropertyChangeListener listener) {
 		this.propertyChangeSupport.addPropertyChangeListener(listener);
@@ -300,7 +307,7 @@ public class Series implements Cloneable, Serializable {
 	 * Removes a property change listener from the series.
 	 * 
 	 * @param listener
-	 *           The listener.
+	 *            The listener.
 	 */
 	public void removePropertyChangeListener(final PropertyChangeListener listener) {
 		this.propertyChangeSupport.removePropertyChangeListener(listener);
@@ -310,15 +317,13 @@ public class Series implements Cloneable, Serializable {
 	 * Fires a property change event.
 	 * 
 	 * @param property
-	 *           the property key.
+	 *            the property key.
 	 * @param oldValue
-	 *           the old value.
+	 *            the old value.
 	 * @param newValue
-	 *           the new value.
+	 *            the new value.
 	 */
-	protected void firePropertyChange(final String property,
-													final Object oldValue,
-													final Object newValue) {
+	protected void firePropertyChange(final String property, final Object oldValue, final Object newValue) {
 		this.propertyChangeSupport.firePropertyChange(property, oldValue, newValue);
 	}
 

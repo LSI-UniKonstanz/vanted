@@ -50,7 +50,8 @@ import java.util.TimeZone;
 /**
  * Represents a minute.
  * <P>
- * This class is immutable, which is a requirement for all {@link RegularTimePeriod} subclasses.
+ * This class is immutable, which is a requirement for all
+ * {@link RegularTimePeriod} subclasses.
  */
 public class Minute extends RegularTimePeriod implements Serializable {
 
@@ -79,9 +80,9 @@ public class Minute extends RegularTimePeriod implements Serializable {
 	 * Constructs a new Minute.
 	 * 
 	 * @param minute
-	 *           the minute (0 to 59).
+	 *            the minute (0 to 59).
 	 * @param hour
-	 *           the hour.
+	 *            the hour.
 	 */
 	public Minute(final int minute, final Hour hour) {
 
@@ -94,7 +95,7 @@ public class Minute extends RegularTimePeriod implements Serializable {
 	 * Constructs a new Minute, based on the supplied date/time.
 	 * 
 	 * @param time
-	 *           the time.
+	 *            the time.
 	 */
 	public Minute(final Date time) {
 		this(time, RegularTimePeriod.DEFAULT_TIME_ZONE);
@@ -104,9 +105,9 @@ public class Minute extends RegularTimePeriod implements Serializable {
 	 * Constructs a new Minute, based on the supplied date/time and timezone.
 	 * 
 	 * @param time
-	 *           the time.
+	 *            the time.
 	 * @param zone
-	 *           the time zone.
+	 *            the time zone.
 	 */
 	public Minute(final Date time, final TimeZone zone) {
 
@@ -122,21 +123,17 @@ public class Minute extends RegularTimePeriod implements Serializable {
 	 * Creates a new minute.
 	 * 
 	 * @param minute
-	 *           the minute (0-59).
+	 *            the minute (0-59).
 	 * @param hour
-	 *           the hour (0-23).
+	 *            the hour (0-23).
 	 * @param day
-	 *           the day (1-31).
+	 *            the day (1-31).
 	 * @param month
-	 *           the month (1-12).
+	 *            the month (1-12).
 	 * @param year
-	 *           the year (1900-9999).
+	 *            the year (1900-9999).
 	 */
-	public Minute(final int minute,
-						final int hour,
-						final int day,
-						final int month,
-						final int year) {
+	public Minute(final int minute, final int hour, final int day, final int month, final int year) {
 		this(minute, new Hour(hour, new Day(day, month, year)));
 	}
 
@@ -215,7 +212,7 @@ public class Minute extends RegularTimePeriod implements Serializable {
 	 * Returns the first millisecond of the minute.
 	 * 
 	 * @param calendar
-	 *           the calendar and timezone.
+	 *            the calendar and timezone.
 	 * @return the first millisecond.
 	 */
 	public long getFirstMillisecond(final Calendar calendar) {
@@ -236,7 +233,7 @@ public class Minute extends RegularTimePeriod implements Serializable {
 	 * Returns the last millisecond of the minute.
 	 * 
 	 * @param calendar
-	 *           the calendar and timezone.
+	 *            the calendar and timezone.
 	 * @return the last millisecond.
 	 */
 	public long getLastMillisecond(final Calendar calendar) {
@@ -256,12 +253,13 @@ public class Minute extends RegularTimePeriod implements Serializable {
 	/**
 	 * Tests the equality of this object against an arbitrary Object.
 	 * <P>
-	 * This method will return true ONLY if the object is a Minute object representing the same minute as this instance.
+	 * This method will return true ONLY if the object is a Minute object
+	 * representing the same minute as this instance.
 	 * 
 	 * @param object
-	 *           the object to compare.
-	 * @return <code>true</code> if the minute and hour value of this and the
-	 *         object are the same.
+	 *            the object to compare.
+	 * @return <code>true</code> if the minute and hour value of this and the object
+	 *         are the same.
 	 */
 	public boolean equals(final Object object) {
 		if (object instanceof Minute) {
@@ -275,7 +273,8 @@ public class Minute extends RegularTimePeriod implements Serializable {
 	/**
 	 * Returns a hash code for this object instance.
 	 * <p>
-	 * The approach described by Joshua Bloch in "Effective Java" has been used here:
+	 * The approach described by Joshua Bloch in "Effective Java" has been used
+	 * here:
 	 * <p>
 	 * <code>http://developer.java.sun.com/developer/Books/effectivejava/Chapter3.pdf</code>
 	 * 
@@ -289,12 +288,11 @@ public class Minute extends RegularTimePeriod implements Serializable {
 	}
 
 	/**
-	 * Returns an integer indicating the order of this Minute object relative
-	 * to the specified object:
-	 * negative == before, zero == same, positive == after.
+	 * Returns an integer indicating the order of this Minute object relative to the
+	 * specified object: negative == before, zero == same, positive == after.
 	 * 
 	 * @param o1
-	 *           object to compare.
+	 *            object to compare.
 	 * @return negative == before, zero == same, positive == after.
 	 */
 	public int compareTo(final Object o1) {
@@ -313,30 +311,28 @@ public class Minute extends RegularTimePeriod implements Serializable {
 
 		// CASE 2 : Comparing to another TimePeriod object
 		// -----------------------------------------------
-		else
-			if (o1 instanceof RegularTimePeriod) {
-				// more difficult case - evaluate later...
-				result = 0;
-			}
+		else if (o1 instanceof RegularTimePeriod) {
+			// more difficult case - evaluate later...
+			result = 0;
+		}
 
-			// CASE 3 : Comparing to a non-TimePeriod object
-			// ---------------------------------------------
-			else {
-				// consider time periods to be ordered after general objects
-				result = 1;
-			}
+		// CASE 3 : Comparing to a non-TimePeriod object
+		// ---------------------------------------------
+		else {
+			// consider time periods to be ordered after general objects
+			result = 1;
+		}
 
 		return result;
 
 	}
 
 	/**
-	 * Creates a Minute instance by parsing a string. The string is assumed to
-	 * be in the format "YYYY-MM-DD HH:MM", perhaps with leading or trailing
-	 * whitespace.
+	 * Creates a Minute instance by parsing a string. The string is assumed to be in
+	 * the format "YYYY-MM-DD HH:MM", perhaps with leading or trailing whitespace.
 	 * 
 	 * @param s
-	 *           the minute string to parse.
+	 *            the minute string to parse.
 	 * @return <code>null</code>, if the string is not parseable, the minute
 	 *         otherwise.
 	 */
@@ -355,9 +351,7 @@ public class Minute extends RegularTimePeriod implements Serializable {
 			final int hour = Integer.parseInt(hourstr);
 
 			if ((hour >= 0) && (hour <= 23)) {
-				final String minstr = hmstr.substring(
-									Math.min(hourstr.length() + 1, hmstr.length()), hmstr.length()
-									);
+				final String minstr = hmstr.substring(Math.min(hourstr.length() + 1, hmstr.length()), hmstr.length());
 				final int minute = Integer.parseInt(minstr);
 				if ((minute >= 0) && (minute <= 59)) {
 					result = new Minute(minute, new Hour(hour, day));

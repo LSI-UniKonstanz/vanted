@@ -19,43 +19,36 @@ import org.vanted.animation.Animator;
  * 
  */
 public class VantedSentenceTest extends AbstractEditorAlgorithm {
-	
+
 	@Override
 	public boolean activeForView(View v) {
 		return true;
 	}
-	
+
 	@Override
 	public String getName() {
 		return "Vanted Presentation";
 	}
-	
+
 	@Override
 	public String getMenuCategory() {
 		return "Network";
 	}
-	
+
 	@Override
 	public void execute() {
 		Animator animator = new Animator(graph);
 		ArrayList<Node> nodes = new ArrayList<Node>();
-		for(Node node : getSelectedOrAllNodes())
+		for (Node node : getSelectedOrAllNodes())
 			nodes.add(node);
-		List<Animation> animations = ParagraphSentencer.sentencesToNodeInfo(
-				graph, nodes,Arrays.asList(
-						new String[]
-								{
-										".","hi everyone my name is patrick.", "and this is vanted.",
-										"my project was...", "animated visualisation of dynamic graphs...",
-										"for life science applications.","one semester.", "this is what i ended up with."
-								}
-						)
-				);
-		for(int i =0; i < animations.size(); i++)
-		{
+		List<Animation> animations = ParagraphSentencer.sentencesToNodeInfo(graph, nodes,
+				Arrays.asList(new String[] { ".", "hi everyone my name is patrick.", "and this is vanted.",
+						"my project was...", "animated visualisation of dynamic graphs...",
+						"for life science applications.", "one semester.", "this is what i ended up with." }));
+		for (int i = 0; i < animations.size(); i++) {
 			animator.addAnimation(animations.get(i));
 		}
 		animator.start();
 	}
-	
+
 }

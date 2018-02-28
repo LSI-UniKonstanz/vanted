@@ -33,7 +33,8 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * Used to indicate the background shape for a {@link org.jfree.chart.plot.MeterPlot}.
+ * Used to indicate the background shape for a
+ * {@link org.jfree.chart.plot.MeterPlot}.
  */
 public final class DialShape implements Serializable {
 
@@ -53,7 +54,7 @@ public final class DialShape implements Serializable {
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *           the name.
+	 *            the name.
 	 */
 	private DialShape(String name) {
 		this.name = name;
@@ -69,10 +70,11 @@ public final class DialShape implements Serializable {
 	}
 
 	/**
-	 * Returns <code>true</code> if this object is equal to the specified object, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if this object is equal to the specified object,
+	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
@@ -98,18 +100,16 @@ public final class DialShape implements Serializable {
 	 * 
 	 * @return The object.
 	 * @throws ObjectStreamException
-	 *            if there is a problem.
+	 *             if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		if (this.equals(DialShape.CIRCLE)) {
 			return DialShape.CIRCLE;
-		} else
-			if (this.equals(DialShape.CHORD)) {
-				return DialShape.CHORD;
-			} else
-				if (this.equals(DialShape.PIE)) {
-					return DialShape.PIE;
-				}
+		} else if (this.equals(DialShape.CHORD)) {
+			return DialShape.CHORD;
+		} else if (this.equals(DialShape.PIE)) {
+			return DialShape.PIE;
+		}
 		return null;
 	}
 

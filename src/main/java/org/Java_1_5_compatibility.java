@@ -13,8 +13,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class Java_1_5_compatibility {
 	public static void setComponentZorder(JDesktopPane jDesktopPane, JInternalFrame jInternalFrame) {
@@ -24,7 +23,7 @@ public class Java_1_5_compatibility {
 			//
 		}
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -35,7 +34,7 @@ public class Java_1_5_compatibility {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * @param defaultGraph
 	 * @return
@@ -47,15 +46,13 @@ public class Java_1_5_compatibility {
 			return null;
 		}
 	}
-	
+
 	public static String getJavaVersion() {
 		return "Java " + System.getProperty("java.version");
 		/*
-		 * try {
-		 * return Java_1_5_compatibility_impl.myStringReplace("x", "x", "Java 1.5 or higher");
-		 * } catch(NoSuchMethodError nsme) {
-		 * return "Java 1.4 or lower";
-		 * }
+		 * try { return Java_1_5_compatibility_impl.myStringReplace("x", "x",
+		 * "Java 1.5 or higher"); } catch(NoSuchMethodError nsme) { return
+		 * "Java 1.4 or lower"; }
 		 */
 	}
 }

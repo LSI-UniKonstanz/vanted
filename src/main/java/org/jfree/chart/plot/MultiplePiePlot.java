@@ -56,7 +56,8 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.util.TableOrder;
 
 /**
- * A plot that displays multiple pie plots using data from a {@link CategoryDataset}.
+ * A plot that displays multiple pie plots using data from a
+ * {@link CategoryDataset}.
  */
 public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 
@@ -85,7 +86,7 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 	 * Creates a new plot.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> permitted).
+	 *            the dataset (<code>null</code> permitted).
 	 */
 	public MultiplePiePlot(CategoryDataset dataset) {
 		super();
@@ -112,7 +113,7 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 	 * Sets the chart that is used to draw the individual pie plots.
 	 * 
 	 * @param pieChart
-	 *           the pie chart.
+	 *            the pie chart.
 	 */
 	public void setPieChart(JFreeChart pieChart) {
 		this.pieChart = pieChart;
@@ -129,11 +130,11 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 	}
 
 	/**
-	 * Sets the data extract order (by row or by column) and sends a {@link PlotChangeEvent} to
-	 * all registered listeners.
+	 * Sets the data extract order (by row or by column) and sends a
+	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param order
-	 *           the order (<code>null</code> not permitted).
+	 *            the order (<code>null</code> not permitted).
 	 */
 	public void setDataExtractOrder(TableOrder order) {
 		if (order == null) {
@@ -144,7 +145,8 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 	}
 
 	/**
-	 * Returns the limit (as a percentage) below which small pie sections are aggregated.
+	 * Returns the limit (as a percentage) below which small pie sections are
+	 * aggregated.
 	 * 
 	 * @return The limit percentage.
 	 */
@@ -153,11 +155,11 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 	}
 
 	/**
-	 * Sets the limit below which pie sections are aggregated. Set this to 0.0 if you don't
-	 * want any aggregation to occur.
+	 * Sets the limit below which pie sections are aggregated. Set this to 0.0 if
+	 * you don't want any aggregation to occur.
 	 * 
 	 * @param limit
-	 *           the limit percent.
+	 *            the limit percent.
 	 */
 	public void setLimit(double limit) {
 		this.limit = limit;
@@ -178,30 +180,26 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 	}
 
 	/**
-	 * Draws the plot on a Java 2D graphics device (such as the screen or a printer).
+	 * Draws the plot on a Java 2D graphics device (such as the screen or a
+	 * printer).
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plotArea
-	 *           the area within which the plot should be drawn.
+	 *            the area within which the plot should be drawn.
 	 * @param parentState
-	 *           the state from the parent plot, if there is one.
+	 *            the state from the parent plot, if there is one.
 	 * @param info
-	 *           collects info about the drawing.
+	 *            collects info about the drawing.
 	 */
-	public void draw(Graphics2D g2,
-							Rectangle2D plotArea,
-							PlotState parentState,
-							PlotRenderingInfo info) {
+	public void draw(Graphics2D g2, Rectangle2D plotArea, PlotState parentState, PlotRenderingInfo info) {
 
 		// adjust the drawing area for the plot insets (if any)...
 		Insets insets = getInsets();
 		if (insets != null) {
-			plotArea.setRect(
-								plotArea.getX() + insets.left, plotArea.getY() + insets.top,
-								plotArea.getWidth() - insets.left - insets.right,
-								plotArea.getHeight() - insets.top - insets.bottom
-								);
+			plotArea.setRect(plotArea.getX() + insets.left, plotArea.getY() + insets.top,
+					plotArea.getWidth() - insets.left - insets.right,
+					plotArea.getHeight() - insets.top - insets.bottom);
 		}
 		drawBackground(g2, plotArea);
 		drawOutline(g2, plotArea);
@@ -272,10 +270,9 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 			if (!useSizeScaling)
 				scale = 1d;
 			scale = Math.sqrt(scale);
-			rect.setBounds(
-								x + xoffset + (width * column) + (int) (0.5d * width * (1d - scale)), y + (height * row) + (int) (0.5d * height * (1d - scale)),
-								(int) (width * scale), (int) (height * scale)
-								);
+			rect.setBounds(x + xoffset + (width * column) + (int) (0.5d * width * (1d - scale)),
+					y + (height * row) + (int) (0.5d * height * (1d - scale)), (int) (width * scale),
+					(int) (height * scale));
 
 			String title = null;
 			if (this.dataExtractOrder == TableOrder.BY_ROW) {
@@ -329,10 +326,9 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 
 			if (this.dataExtractOrder == TableOrder.BY_ROW) {
 				keys = this.dataset.getColumnKeys();
-			} else
-				if (this.dataExtractOrder == TableOrder.BY_COLUMN) {
-					keys = this.dataset.getRowKeys();
-				}
+			} else if (this.dataExtractOrder == TableOrder.BY_COLUMN) {
+				keys = this.dataset.getRowKeys();
+			}
 
 			if (keys != null) {
 				int section = 0;
@@ -346,9 +342,8 @@ public class MultiplePiePlot extends Plot implements Cloneable, Serializable {
 					Paint outlinePaint = plot.getSectionOutlinePaint(section);
 					Stroke stroke = plot.getSectionOutlineStroke(section);
 
-					LegendItem item = new LegendItem(
-										label, description, shape, true, paint, stroke, outlinePaint, stroke
-										);
+					LegendItem item = new LegendItem(label, description, shape, true, paint, stroke, outlinePaint,
+							stroke);
 
 					result.add(item);
 					section++;

@@ -58,7 +58,7 @@ public class XYBoxAndWhiskerDemo extends ApplicationFrame {
 	 * A demonstration application showing a box and whisker chart.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XYBoxAndWhiskerDemo(final String title) {
 
@@ -77,18 +77,13 @@ public class XYBoxAndWhiskerDemo extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The dataset.
 	 */
 	private JFreeChart createChart(final BoxAndWhiskerXYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createBoxAndWhiskerChart(
-							"Box-and-Whisker Demo",
-							"Time",
-							"Value",
-							dataset,
-							true
-							);
+		final JFreeChart chart = ChartFactory.createBoxAndWhiskerChart("Box-and-Whisker Demo", "Time", "Value", dataset,
+				true);
 		XYPlot plot = (XYPlot) chart.getPlot();
 		XYBoxAndWhiskerRenderer renderer = (XYBoxAndWhiskerRenderer) plot.getRenderer();
 		renderer.setFillBox(false);
@@ -135,7 +130,7 @@ public class XYBoxAndWhiskerDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

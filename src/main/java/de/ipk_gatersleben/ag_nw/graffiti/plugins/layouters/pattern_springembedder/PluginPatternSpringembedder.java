@@ -23,18 +23,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouter
 /**
  * @author Christian Klukas
  */
-public class PluginPatternSpringembedder
-					extends IPK_PluginAdapter {
-	
+public class PluginPatternSpringembedder extends IPK_PluginAdapter {
+
 	public PluginPatternSpringembedder() {
-		this.attributeDescriptions = new AttributeDescription[] {
-							new AttributeDescription("background_coloring",
-												BooleanAttribute.class, "Cluster-Coloring: Background-Coloring", true, true, null)
-		};
-		
-		this.algorithms = new Algorithm[] {
-							new PatternSpringembedder(),
-							// new CreateClusterGraphAlgorithm(),
+		this.attributeDescriptions = new AttributeDescription[] { new AttributeDescription("background_coloring",
+				BooleanAttribute.class, "Cluster-Coloring: Background-Coloring", true, true, null) };
+
+		this.algorithms = new Algorithm[] { new PatternSpringembedder(),
+				// new CreateClusterGraphAlgorithm(),
 				// new ShowClusterGraphAlgorithm(),
 				// new AddRandomClusterInformationAlgorithm(),
 				// new PajekClusterColor(),
@@ -43,25 +39,20 @@ public class PluginPatternSpringembedder
 				// new SelectClusterAlgorithm(),
 				//
 				// new SetCluster(),
-				
+
 				new ResizeNodesDepDegreeAlgorithm(),
-//							new BendsLaunchGUI(),
-							new BundleParallelEdges(),
-							new IntroduceParallelEdgeBends(),
-							// new ResetEdgeSourceOrTarget(),
-				new DuplicateEdge(),
-							new BringToFrontOrBackAlgorithm(false),
-							new BringToFrontOrBackAlgorithm(true),
-							new RandomLayouterAlgorithm(),
-//							new PatternSpringembedder3d(),
-							new RemoveBendsAlgorithm(),
-							new IntroduceSelfEdgeBends(),
-							new IntroduceBendsAlgorithm()
-		};
+				// new BendsLaunchGUI(),
+				new BundleParallelEdges(), new IntroduceParallelEdgeBends(),
+				// new ResetEdgeSourceOrTarget(),
+				new DuplicateEdge(), new BringToFrontOrBackAlgorithm(false), new BringToFrontOrBackAlgorithm(true),
+				new RandomLayouterAlgorithm(),
+				// new PatternSpringembedder3d(),
+				new RemoveBendsAlgorithm(), new IntroduceSelfEdgeBends(), new IntroduceBendsAlgorithm() };
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.GenericPlugin#configure(java.util.prefs.Preferences)
 	 */
 	@Override

@@ -19,12 +19,12 @@ import org.graffiti.plugin.Displayable;
  * @version $Revision: 1.4 $
  * @see org.graffiti.plugin.algorithm.Algorithm
  */
-public interface Parameter
-					extends Displayable {
+public interface Parameter extends Displayable {
 	// ~ Methods ================================================================
-	
+
 	/**
-	 * Returns an image representing the <code>Parameter</code>. May return <code>null</code> if there is no representing image.
+	 * Returns an image representing the <code>Parameter</code>. May return
+	 * <code>null</code> if there is no representing image.
 	 * 
 	 * @return an image representing the <code>Parameter</code>.
 	 */

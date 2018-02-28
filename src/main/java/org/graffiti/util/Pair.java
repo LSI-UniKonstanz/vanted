@@ -15,32 +15,32 @@ package org.graffiti.util;
  * @author Paul
  * @version $Revision: 1.4 $
  */
-public class Pair<T,V> {
+public class Pair<T, V> {
 	// ~ Instance fields ========================================================
-	
+
 	/** DOCUMENT ME! */
 	private T val1;
-	
+
 	/** DOCUMENT ME! */
 	private V val2;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Creates a new Pair object.
 	 * 
 	 * @param val1
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param val2
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public Pair(T val1, V val2) {
 		this.val1 = val1;
 		this.val2 = val2;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -49,7 +49,7 @@ public class Pair<T,V> {
 	public T getFst() {
 		return val1;
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 

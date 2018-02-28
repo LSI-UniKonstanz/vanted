@@ -28,14 +28,10 @@ public class MyRelationList extends JList {
 	JLabel relationDescription;
 	SubtypeCompoundEditor subtypeCompoundEditor;
 	SrcTargetEditor srcTargetEditor;
-	
-	public MyRelationList(
-						Object[] objects,
-						RelationTypeEditor relationTypeEditor,
-						SubComponentTypesEditor subComponentTypesEditor,
-						JLabel relationDescription,
-						SrcTargetEditor srcTargetEditor,
-						SubtypeCompoundEditor subtypeCompoundEditor) {
+
+	public MyRelationList(Object[] objects, RelationTypeEditor relationTypeEditor,
+			SubComponentTypesEditor subComponentTypesEditor, JLabel relationDescription,
+			SrcTargetEditor srcTargetEditor, SubtypeCompoundEditor subtypeCompoundEditor) {
 		super();
 		setModel(new DefaultListModel());
 		for (Object o : objects)
@@ -49,13 +45,13 @@ public class MyRelationList extends JList {
 		subComponentTypesEditor.setCallBack(this);
 		srcTargetEditor.setCallBack(this);
 		subtypeCompoundEditor.setCallBack(this);
-		
+
 		setCellRenderer(getRelationCellRenderer());
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	public void updateRelationInfo(Relation r) {
 		relationTypeEditor.updateRelationSelection(r);
 		subComponentTypesEditor.updateRelationSelection(r);
@@ -67,10 +63,11 @@ public class MyRelationList extends JList {
 		subtypeCompoundEditor.updateRelationSelection(r);
 		repaint();
 	}
-	
+
 	private ListCellRenderer getRelationCellRenderer() {
 		ListCellRenderer res = new ListCellRenderer() {
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
 				Relation r = (Relation) value;
 				JLabel res = new JLabel(r.toStringWithShortDesc(false));
 				res.setToolTipText(r.toStringWithShortDesc(true));

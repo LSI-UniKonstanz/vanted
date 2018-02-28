@@ -28,105 +28,103 @@ import org.vanted.scaling.ScalerLoader;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeComponent;
 
 public class HighDPISupport implements PreferencesInterface {
-	
-	private static final boolean IS_MAC = System.getProperty("os.name")
-			.toLowerCase().contains("mac");
+
+	private static final boolean IS_MAC = System.getProperty("os.name").toLowerCase().contains("mac");
 	private static final boolean DEV = System.getProperty("java.class.path")
 			.contains("target" + File.separator + "classes");
-	
-	private final static String macText = (IS_MAC || DEV) ? "Mac Look and Feel is restrictive,"
-			+ " so for superior performance choose more tolerant alternative.<br>" : "";
 
-	public static final String DESCRIPTION
-	= "<html>&#10148; Emulate your desired DPI by moving the slider.<br>"
+	private final static String macText = (IS_MAC || DEV)
+			? "Mac Look and Feel is restrictive," + " so for superior performance choose more tolerant alternative.<br>"
+			: "";
+
+	public static final String DESCRIPTION = "<html>&#10148; Emulate your desired DPI by moving the slider.<br>"
 			+ "&#10148; <i>Lifesaver</i> guards you against bad values. It acts on next start-up.<br>"
-			
+
 			/*********************************************************************/
 			/*--------------------Disabled for version 2.6.4---------------------*/
 			/*********************************************************************/
-			//+ "&#10148; " + macText
-			
+			// + "&#10148; " + macText
+
 			+ "&#10148; Lastly, for optimal performance you could restart VANTED.<br><br>";
-	
+
 	public static final String PREFERENCES_MAC_LAF = "<html>Mac Look and Feel&emsp;";
-	
+
 	private static final String description = "  (Please, use only on Mac!)";
 	private static final String QUAQUA = "Quaqua Look and Feel" + description;
-	
-	
+
 	/*********************************************************************/
 	/*--------------------Disabled for version 2.6.4---------------------*/
 	/*********************************************************************/
-	private final LookAndFeel quaqua = null;//ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel();
-	
+	private final LookAndFeel quaqua = null;// ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel();
+
 	private HashMap<String, String> lafmap = new HashMap<>();
 	private Preferences general;
 	private static String activeLaf;
-//	private static boolean startup = true;
-	
+	// private static boolean startup = true;
+
 	public HighDPISupport() {
 		general = PreferenceManager.getPreferenceForClass(VantedPreferences.class);
-		prepareLafMap();			
+		prepareLafMap();
 	}
 
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		List<Parameter> params = new ArrayList<Parameter>();
-		
+
 		if (UIManager.getLookAndFeel().getClass().getCanonicalName().contains("GTK")) {
 			params.add(getAlternativeInformation());
-			
+
 			return params;
 		}
-		
+
 		params.add(getInformation());
 
-		//Here come the slider, lifesaver and reset button, added in ParameterOptionPane
-		
+		// Here come the slider, lifesaver and reset button, added in
+		// ParameterOptionPane
+
 		/**
-		 * We enable S-Quaqua only on Mac and, of course, while developing,
-		 * because of copyright reasons on behalf of Apple, Inc. 
+		 * We enable S-Quaqua only on Mac and, of course, while developing, because of
+		 * copyright reasons on behalf of Apple, Inc.
 		 */
 		/*********************************************************************/
 		/*--------------------Disabled for version 2.6.4---------------------*/
 		/*********************************************************************/
-		//if (IS_MAC || DEV)
-			//params.add(getMacLaf());
-		
+		// if (IS_MAC || DEV)
+		// params.add(getMacLaf());
+
 		return params;
 	}
 
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		if (getClassInstance(ZoomFitChangeComponent.class) == null) {
-			GraphScaler.setOldValueZooming(DPIHelper.managePreferences(
-					DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET));
-			//load the zoomer once on initial update
+			GraphScaler.setOldValueZooming(
+					DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET));
+			// load the zoomer once on initial update
 			new GraphScaler();
 		}
-		
-		
-		
+
 		GraphScaler.reAddChangeListener();
-		
+
 		/*********************************************************************/
 		/*--------------------Disabled for version 2.6.4---------------------*/
 		/*********************************************************************/
 		/**
-		 * Mac LAF update, if necessary. */
-		String laf = null;//preferences.get(PREFERENCES_MAC_LAF, null);
-		
-		if (laf == null || laf.equals(activeLaf)) //no LAF change
+		 * Mac LAF update, if necessary.
+		 */
+		String laf = null;// preferences.get(PREFERENCES_MAC_LAF, null);
+
+		if (laf == null || laf.equals(activeLaf)) // no LAF change
 			return;
-		
+
 		if (laf.equals(QUAQUA))
 			setLAF(quaqua);
 		else
 			setLAF(queryLafMap(laf, true));
 
-		//update main preferences
+		// update main preferences
 		general.put(VantedPreferences.PREFERENCE_LOOKANDFEEL, queryLafMap(laf, true));
-		//scale new LAF
+		// scale new LAF
 		ScalerLoader.doScaling(false);
 
 		if (MainFrame.getInstance() != null) {
@@ -142,27 +140,28 @@ public class HighDPISupport implements PreferencesInterface {
 	public String getPreferencesAlternativeName() {
 		return "<html>High DPI Support</html>";
 	}
-	
+
 	/**
-	 * Through reflection we get an instance of the specified class, given
-	 * there is such static field defined.
-	 * @param clazz the Class to extract the instance from
+	 * Through reflection we get an instance of the specified class, given there is
+	 * such static field defined.
+	 * 
+	 * @param clazz
+	 *            the Class to extract the instance from
 	 * @return a clazz instance
 	 */
-	public static Object getClassInstance(Class <?> clazz) {
+	public static Object getClassInstance(Class<?> clazz) {
 		Object instance = null;
 		try {
 			Field f = clazz.getDeclaredField("instance");
 			f.setAccessible(true);
 			instance = f.get(null);
-		} catch (NoSuchFieldException | SecurityException |
-				IllegalArgumentException | IllegalAccessException e) {
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		
+
 		return instance;
 	}
-	
+
 	private void setLAF(LookAndFeel laf) {
 		try {
 			UIManager.setLookAndFeel(laf);
@@ -170,7 +169,7 @@ public class HighDPISupport implements PreferencesInterface {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void setLAF(String laf) {
 		try {
 			UIManager.setLookAndFeel(laf);
@@ -185,7 +184,7 @@ public class HighDPISupport implements PreferencesInterface {
 		text.setVisible(false);
 		JComponentParameter information = new JComponentParameter(text, "", DESCRIPTION);
 		information.setLeftAligned(true);
-		
+
 		return information;
 	}
 
@@ -193,39 +192,38 @@ public class HighDPISupport implements PreferencesInterface {
 		String disabled = UIManager.getLookAndFeel().getName();
 		JLabel text = new JLabel();
 		text.setVisible(false);
-		return new JComponentParameter(text, "", "<html>High DPI Support is not available for <b>" + disabled + "</b>!<br>"
-				+ "Please, consider switching to another look and feel to use this feature.");
+		return new JComponentParameter(text, "", "<html>High DPI Support is not available for <b>" + disabled
+				+ "</b>!<br>" + "Please, consider switching to another look and feel to use this feature.");
 	}
-	
+
 	private ObjectListParameter getMacLaf() {
-		String defaultval = general.get(VantedPreferences.PREFERENCE_LOOKANDFEEL, 
+		String defaultval = general.get(VantedPreferences.PREFERENCE_LOOKANDFEEL,
 				UIManager.getLookAndFeel().getClass().getName());
 		String name = "";
 		Object[] values = new Object[2];
-		
+
 		if (defaultval.toLowerCase().contains("quaqua")) {
 			name = QUAQUA;
-			values = new Object[] {QUAQUA, getDefaultSystemLAFname()};
+			values = new Object[] { QUAQUA, getDefaultSystemLAFname() };
 			activeLaf = QUAQUA;
 		} else {
 			Preferences prefs = DPIHelper.loadPreferences(this.getClass());
-			
+
 			if (lafmap.containsValue(defaultval))
 				name = queryLafMap(defaultval, false);
 			else {
-				name = mapLAFClassToName(defaultval);			
+				name = mapLAFClassToName(defaultval);
 				lafmap.put(name, defaultval);
 			}
-			
+
 			prefs.put(PREFERENCES_MAC_LAF, name);
-			values = new Object[] {name, QUAQUA};
+			values = new Object[] { name, QUAQUA };
 			activeLaf = name;
-		}	
-		
-		return new ObjectListParameter(name, PREFERENCES_MAC_LAF, "",
-										values);
+		}
+
+		return new ObjectListParameter(name, PREFERENCES_MAC_LAF, "", values);
 	}
-	
+
 	private void prepareLafMap() {
 		lafmap.put(QUAQUA, "ch.randelshofer.quaqua.QuaquaLookAndFeel");
 		lafmap.put("Mac OS X", "apple.laf.AquaLookAndFeel");
@@ -236,48 +234,48 @@ public class HighDPISupport implements PreferencesInterface {
 		lafmap.put("Nimbus", "javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		lafmap.put("GTK+", "com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 	}
-	
+
 	private String queryLafMap(String param, boolean key) {
-		if (key) { //querying acc. to key, get value
+		if (key) { // querying acc. to key, get value
 			return lafmap.get(param);
-		} else { //param is the value, get key
+		} else { // param is the value, get key
 			if (!lafmap.containsValue(param))
 				return null;
 			else {
 				for (Entry<String, String> entry : lafmap.entrySet())
 					if (entry.getValue().equals(param))
 						return entry.getKey();
-				
+
 				return null;
 			}
 		}
 	}
-	
+
 	private String getDefaultSystemLAFname() {
 		if (IS_MAC)
 			return "Mac OS X";
 		if (System.getProperty("os.name").toLowerCase().contains("windows"))
 			return "Windows";
-		else 
+		else
 			return "Metal";
 	}
-	
+
 	private String mapLAFClassToName(String clazz) {
 		String name = clazz.substring(clazz.lastIndexOf('.') + 1);
 		name = trimLAFEnding(name);
 		name = splitAtUppercase(name, " ");
-		
+
 		return name;
 	}
-	
+
 	private String trimLAFEnding(String clazz) {
 		if (clazz.endsWith("LookAndFeel"))
 			return clazz.replaceAll("LookAndFeel\\b", "");
 		else
 			return clazz;
 	}
-	
-	private String splitAtUppercase(String name, String delimeter) { 
+
+	private String splitAtUppercase(String name, String delimeter) {
 		String newName = "";
 		int j = 0;
 		for (int i = 1; i < name.length(); i++)
@@ -285,9 +283,9 @@ public class HighDPISupport implements PreferencesInterface {
 				newName += name.substring(j, i) + delimeter;
 				j = i;
 			}
-		
+
 		newName += name.substring(j);
-		
+
 		return newName;
 	}
 }

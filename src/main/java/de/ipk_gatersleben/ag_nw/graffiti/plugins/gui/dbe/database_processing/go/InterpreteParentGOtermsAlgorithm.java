@@ -35,41 +35,40 @@ import org.graffiti.plugin.algorithm.ProvidesNodeContextMenu;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 
 /**
- * @author Christian Klukas
- *         (c) 2006 IPK Gatersleben, Group Network Analysis
+ * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class InterpreteParentGOtermsAlgorithm extends AbstractAlgorithm implements ProvidesNodeContextMenu {
-	
+
 	private static GoProcessing gp = null;
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return null;
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
 	}
-	
-	public static Node processGoHierarchy(PositionGridGenerator pgg, HashMap<String, Node> goTerm2goNode, GoProcessing gp, String goTerm, Graph g) {
+
+	public static Node processGoHierarchy(PositionGridGenerator pgg, HashMap<String, Node> goTerm2goNode,
+			GoProcessing gp, String goTerm, Graph g) {
 		Node gn;
 		if (!goTerm2goNode.containsKey(goTerm)) {
-			gn = g.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(100d + Math.random() * 100d, 100d + Math.random() * 100d));
+			gn = g.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(100d + Math.random() * 100d,
+					100d + Math.random() * 100d));
 			NodeHelper gnh = new NodeHelper(gn);
 			GOinformation gi = gp.getGOinformation(goTerm);
 			String name = gi.getName();
@@ -89,7 +88,7 @@ public class InterpreteParentGOtermsAlgorithm extends AbstractAlgorithm implemen
 				System.out.println("Size:" + d.getWidth() + " x " + d.getHeight());
 			}
 			goTerm2goNode.put(goTerm, gn);
-			
+
 			Collection<String> parents = gi.getDirectParents();
 			for (String gt : parents)
 				connectNodeWithNodes(gn, processGoHierarchy(pgg, goTerm2goNode, gp, gt, g));
@@ -97,39 +96,41 @@ public class InterpreteParentGOtermsAlgorithm extends AbstractAlgorithm implemen
 		gn = goTerm2goNode.get(goTerm);
 		return gn;
 	}
-	
+
 	private static void connectNodeWithNodes(Node goNode, Node newGoNode) {
 		if (goNode == null || newGoNode == null)
 			return;
 		if (!goNode.getNeighbors().contains(newGoNode)) {
-			Edge e = goNode.getGraph().addEdge(newGoNode, goNode, true, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
+			Edge e = goNode.getGraph().addEdge(newGoNode, goNode, true,
+					AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
 			AttributeHelper.setBorderWidth(e, 3d);
 		}
 	}
-	
+
 	public JMenuItem[] getCurrentNodeContextMenuItem(final Collection<Node> selectedNodes) {
-		JMenuItem addParents =
-							new JMenuItem("Add GO-Term-Parent-Nodes");
-		JMenuItem addChildren =
-							new JMenuItem("Add GO-Term-Children-Nodes");
-		
+		JMenuItem addParents = new JMenuItem("Add GO-Term-Parent-Nodes");
+		JMenuItem addChildren = new JMenuItem("Add GO-Term-Children-Nodes");
+
 		addParents.addActionListener(getGoActionListener(selectedNodes, true));
 		addChildren.addActionListener(getGoActionListener(selectedNodes, false));
 		return new JMenuItem[] { addParents, addChildren };
 	}
-	
+
 	private ActionListener getGoActionListener(final Collection<Node> selectedNodes, boolean addParentNodes) {
 		ActionListener result = new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				if (gp == null) {
-					File obofile = OpenFileDialogService.getFile(new String[] { ".obo-xml" }, "Gene Ontology File (*.obo-xml)");
+					File obofile = OpenFileDialogService.getFile(new String[] { ".obo-xml" },
+							"Gene Ontology File (*.obo-xml)");
 					if (obofile == null)
 						return;
 					gp = new GoProcessing(obofile);
 					if (!gp.isValid()) {
 						gp = null;
-						MainFrame.showMessageDialog("The input file could not be loaded. It may not be a valid gene-ontology obo-xml file!", "Error");
+						MainFrame.showMessageDialog(
+								"The input file could not be loaded. It may not be a valid gene-ontology obo-xml file!",
+								"Error");
 						return;
 					}
 				}

@@ -69,17 +69,14 @@ import org.jfree.data.XYDataset;
 import org.jfree.util.PublicCloneable;
 
 /**
- * Area item renderer for an {@link XYPlot}. This class can draw (a) shapes at each
- * point, or (b) lines between points, or (c) both shapes and lines, or (d)
+ * Area item renderer for an {@link XYPlot}. This class can draw (a) shapes at
+ * each point, or (b) lines between points, or (c) both shapes and lines, or (d)
  * filled areas, or (e) filled areas and shapes.
  * 
  * @deprecated Use XYAreaRenderer.
  */
 public class AreaXYRenderer extends AbstractXYItemRenderer
-										implements XYItemRenderer,
-													Cloneable,
-													PublicCloneable,
-													Serializable {
+		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
 
 	/** Useful constant for specifying the type of rendering (shapes only). */
 	public static final int SHAPES = 1;
@@ -121,7 +118,7 @@ public class AreaXYRenderer extends AbstractXYItemRenderer
 	 * Constructs a new renderer.
 	 * 
 	 * @param type
-	 *           the type of the renderer.
+	 *            the type of the renderer.
 	 */
 	public AreaXYRenderer(int type) {
 		this(type, null, null);
@@ -130,17 +127,17 @@ public class AreaXYRenderer extends AbstractXYItemRenderer
 	/**
 	 * Constructs a new renderer.
 	 * <p>
-	 * To specify the type of renderer, use one of the constants: SHAPES, LINES, SHAPES_AND_LINES, AREA or AREA_AND_SHAPES.
+	 * To specify the type of renderer, use one of the constants: SHAPES, LINES,
+	 * SHAPES_AND_LINES, AREA or AREA_AND_SHAPES.
 	 * 
 	 * @param type
-	 *           the type of renderer.
+	 *            the type of renderer.
 	 * @param toolTipGenerator
-	 *           the tool tip generator to use. <code>null</code> is none.
+	 *            the tool tip generator to use. <code>null</code> is none.
 	 * @param urlGenerator
-	 *           the URL generator (null permitted).
+	 *            the URL generator (null permitted).
 	 */
-	public AreaXYRenderer(int type,
-									XYToolTipGenerator toolTipGenerator, XYURLGenerator urlGenerator) {
+	public AreaXYRenderer(int type, XYToolTipGenerator toolTipGenerator, XYURLGenerator urlGenerator) {
 
 		super();
 		setToolTipGenerator(toolTipGenerator);
@@ -180,7 +177,7 @@ public class AreaXYRenderer extends AbstractXYItemRenderer
 	 * Sets a flag that controls whether or not outlines of the areas are drawn.
 	 * 
 	 * @param show
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setOutline(boolean show) {
 		this.showOutline = show;
@@ -214,26 +211,24 @@ public class AreaXYRenderer extends AbstractXYItemRenderer
 	}
 
 	/**
-	 * Initialises the renderer and returns a state object that should be passed to all subsequent
-	 * calls to the drawItem(...) method.
+	 * Initialises the renderer and returns a state object that should be passed to
+	 * all subsequent calls to the drawItem(...) method.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the area inside the axes.
+	 *            the area inside the axes.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @param info
-	 *           an optional info collection object to return data back to the caller.
+	 *            an optional info collection object to return data back to the
+	 *            caller.
 	 * @return a state object for use by the renderer.
 	 */
-	public XYItemRendererState initialise(Graphics2D g2,
-														Rectangle2D dataArea,
-														XYPlot plot,
-														XYDataset data,
-														PlotRenderingInfo info) {
+	public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea, XYPlot plot, XYDataset data,
+			PlotRenderingInfo info) {
 		AreaXYItemRendererState state = new AreaXYItemRendererState(info);
 		return state;
 	}
@@ -242,42 +237,33 @@ public class AreaXYRenderer extends AbstractXYItemRenderer
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the area within which the data is being drawn.
+	 *            the area within which the data is being drawn.
 	 * @param info
-	 *           collects information about the drawing.
+	 *            collects information about the drawing.
 	 * @param plot
-	 *           the plot (can be used to obtain standard color information etc).
+	 *            the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @param crosshairState
-	 *           information about crosshairs on a plot.
+	 *            information about crosshairs on a plot.
 	 * @param pass
-	 *           the pass index.
+	 *            the pass index.
 	 */
-	public void drawItem(Graphics2D g2,
-									XYItemRendererState state,
-									Rectangle2D dataArea,
-									PlotRenderingInfo info,
-									XYPlot plot,
-									ValueAxis domainAxis,
-									ValueAxis rangeAxis,
-									XYDataset dataset,
-									int series,
-									int item,
-									CrosshairState crosshairState,
-									int pass) {
+	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
+			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
+			CrosshairState crosshairState, int pass) {
 
 		AreaXYItemRendererState areaState = (AreaXYItemRendererState) state;
 
@@ -288,12 +274,8 @@ public class AreaXYRenderer extends AbstractXYItemRenderer
 			y1 = AbstractRenderer.ZERO;
 		}
 
-		double transX1 = domainAxis.valueToJava2D(
-							x1.doubleValue(), dataArea, plot.getDomainAxisEdge()
-							);
-		double transY1 = rangeAxis.valueToJava2D(
-							y1.doubleValue(), dataArea, plot.getRangeAxisEdge()
-							);
+		double transX1 = domainAxis.valueToJava2D(x1.doubleValue(), dataArea, plot.getDomainAxisEdge());
+		double transY1 = rangeAxis.valueToJava2D(y1.doubleValue(), dataArea, plot.getRangeAxisEdge());
 
 		// get the previous point and the next point so we can calculate a "hot spot"
 		// for the area (used by the chart entity)...
@@ -303,24 +285,16 @@ public class AreaXYRenderer extends AbstractXYItemRenderer
 		if (y0 == null) {
 			y0 = AbstractRenderer.ZERO;
 		}
-		double transX0 = domainAxis.valueToJava2D(
-							x0.doubleValue(), dataArea, plot.getDomainAxisEdge()
-							);
-		double transY0 = rangeAxis.valueToJava2D(
-							y0.doubleValue(), dataArea, plot.getRangeAxisEdge()
-							);
+		double transX0 = domainAxis.valueToJava2D(x0.doubleValue(), dataArea, plot.getDomainAxisEdge());
+		double transY0 = rangeAxis.valueToJava2D(y0.doubleValue(), dataArea, plot.getRangeAxisEdge());
 
 		Number x2 = dataset.getXValue(series, Math.min(item + 1, itemCount - 1));
 		Number y2 = dataset.getYValue(series, Math.min(item + 1, itemCount - 1));
 		if (y2 == null) {
 			y2 = AbstractRenderer.ZERO;
 		}
-		double transX2 = domainAxis.valueToJava2D(
-							x2.doubleValue(), dataArea, plot.getDomainAxisEdge()
-							);
-		double transY2 = rangeAxis.valueToJava2D(
-							y2.doubleValue(), dataArea, plot.getRangeAxisEdge()
-							);
+		double transX2 = domainAxis.valueToJava2D(x2.doubleValue(), dataArea, plot.getDomainAxisEdge());
+		double transY2 = rangeAxis.valueToJava2D(y2.doubleValue(), dataArea, plot.getRangeAxisEdge());
 
 		double transZero = rangeAxis.valueToJava2D(0.0, dataArea, plot.getRangeAxisEdge());
 		Polygon hotspot = null;
@@ -346,19 +320,17 @@ public class AreaXYRenderer extends AbstractXYItemRenderer
 			double zero = rangeAxis.valueToJava2D(0.0, dataArea, plot.getRangeAxisEdge());
 			if (plot.getOrientation() == PlotOrientation.VERTICAL) {
 				areaState.area.addPoint((int) transX1, (int) zero);
-			} else
-				if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
-					areaState.area.addPoint((int) zero, (int) transX1);
-				}
+			} else if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
+				areaState.area.addPoint((int) zero, (int) transX1);
+			}
 		}
 
 		// Add each point to Area (x, y)
 		if (plot.getOrientation() == PlotOrientation.VERTICAL) {
 			areaState.area.addPoint((int) transX1, (int) transY1);
-		} else
-			if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
-				areaState.area.addPoint((int) transY1, (int) transX1);
-			}
+		} else if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
+			areaState.area.addPoint((int) transY1, (int) transX1);
+		}
 
 		Paint paint = getItemPaint(series, item);
 		Stroke stroke = getItemStroke(series, item);
@@ -370,10 +342,9 @@ public class AreaXYRenderer extends AbstractXYItemRenderer
 			shape = getItemShape(series, item);
 			if (plot.getOrientation() == PlotOrientation.VERTICAL) {
 				shape = createTransformedShape(shape, transX1, transY1);
-			} else
-				if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
-					shape = createTransformedShape(shape, transY1, transX1);
-				}
+			} else if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
+				shape = createTransformedShape(shape, transY1, transX1);
+			}
 			g2.draw(shape);
 		}
 
@@ -381,10 +352,9 @@ public class AreaXYRenderer extends AbstractXYItemRenderer
 			if (item > 0) {
 				if (plot.getOrientation() == PlotOrientation.VERTICAL) {
 					areaState.line.setLine(transX0, transY0, transX1, transY1);
-				} else
-					if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
-						areaState.line.setLine(transY0, transX0, transY1, transX1);
-					}
+				} else if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
+					areaState.line.setLine(transY0, transX0, transY1, transX1);
+				}
 				g2.draw(areaState.line);
 			}
 		}
@@ -396,11 +366,10 @@ public class AreaXYRenderer extends AbstractXYItemRenderer
 			if (plot.getOrientation() == PlotOrientation.VERTICAL) {
 				// Add the last point (x,0)
 				areaState.area.addPoint((int) transX1, (int) transZero);
-			} else
-				if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
-					// Add the last point (x,0)
-					areaState.area.addPoint((int) transZero, (int) transX1);
-				}
+			} else if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
+				// Add the last point (x,0)
+				areaState.area.addPoint((int) transZero, (int) transX1);
+			}
 
 			g2.fill(areaState.area);
 
@@ -412,9 +381,8 @@ public class AreaXYRenderer extends AbstractXYItemRenderer
 			}
 		}
 
-		updateCrosshairValues(
-							crosshairState, x1.doubleValue(), y1.doubleValue(), transX1, transY1,
-							plot.getOrientation());
+		updateCrosshairValues(crosshairState, x1.doubleValue(), y1.doubleValue(), transX1, transY1,
+				plot.getOrientation());
 
 		// collect entity and tool tip information...
 		if (state.getInfo() != null) {
@@ -441,7 +409,7 @@ public class AreaXYRenderer extends AbstractXYItemRenderer
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the renderer cannot be cloned.
+	 *             if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -450,11 +418,13 @@ public class AreaXYRenderer extends AbstractXYItemRenderer
 }
 
 /**
- * The state object used by the renderer for one chart drawing. The state is set-up by the
- * initialise() method, and the plot will pass this state object to each invocation of the
- * drawItem(...) method. At the end of drawing the chart, the state is discarded.
+ * The state object used by the renderer for one chart drawing. The state is
+ * set-up by the initialise() method, and the plot will pass this state object
+ * to each invocation of the drawItem(...) method. At the end of drawing the
+ * chart, the state is discarded.
  * <p>
- * If a chart is being drawn to several targets simultaneously, a different state instance will be used for each drawing.
+ * If a chart is being drawn to several targets simultaneously, a different
+ * state instance will be used for each drawing.
  */
 class AreaXYItemRendererState extends XYItemRendererState {
 
@@ -468,7 +438,7 @@ class AreaXYItemRendererState extends XYItemRendererState {
 	 * Creates a new state.
 	 * 
 	 * @param info
-	 *           the plot rendering info.
+	 *            the plot rendering info.
 	 */
 	public AreaXYItemRendererState(PlotRenderingInfo info) {
 		super(info);

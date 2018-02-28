@@ -70,13 +70,13 @@ import org.jfree.util.ObjectUtils;
 /**
  * A collection of time series objects.
  * <P>
- * This class implements the {@link org.jfree.data.XYDataset} interface, as well as the extended {@link IntervalXYDataset} interface. This makes it a convenient
- * dataset for use with the {@link org.jfree.chart.plot.XYPlot} class.
+ * This class implements the {@link org.jfree.data.XYDataset} interface, as well
+ * as the extended {@link IntervalXYDataset} interface. This makes it a
+ * convenient dataset for use with the {@link org.jfree.chart.plot.XYPlot}
+ * class.
  */
 public class TimeSeriesCollection extends AbstractIntervalXYDataset
-												implements IntervalXYDataset,
-															DomainInfo,
-															Serializable {
+		implements IntervalXYDataset, DomainInfo, Serializable {
 
 	/** Useful constant for controlling the x-value returned for a time period. */
 	public static final int START = 0;
@@ -94,16 +94,16 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	private Calendar workingCalendar;
 
 	/**
-	 * The point within each time period that is used for the X value when this collection is used
-	 * as an {@link org.jfree.data.XYDataset}. This can be the start, middle or end of the
-	 * time period.
+	 * The point within each time period that is used for the X value when this
+	 * collection is used as an {@link org.jfree.data.XYDataset}. This can be the
+	 * start, middle or end of the time period.
 	 */
 	private TimePeriodAnchor xPosition;
 
 	/**
-	 * A flag that indicates that the domain is 'points in time'. If this flag is true, only
-	 * the x-value is used to determine the range of values in the domain, the start and end
-	 * x-values are ignored.
+	 * A flag that indicates that the domain is 'points in time'. If this flag is
+	 * true, only the x-value is used to determine the range of values in the
+	 * domain, the start and end x-values are ignored.
 	 */
 	private boolean domainIsPointsInTime;
 
@@ -118,31 +118,31 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * Constructs an empty dataset, tied to a specific timezone.
 	 * 
 	 * @param zone
-	 *           the timezone.
+	 *            the timezone.
 	 */
 	public TimeSeriesCollection(final TimeZone zone) {
 		this(null, zone);
 	}
 
 	/**
-	 * Constructs a dataset containing a single series (more can be added),
-	 * tied to the default timezone.
+	 * Constructs a dataset containing a single series (more can be added), tied to
+	 * the default timezone.
 	 * 
 	 * @param series
-	 *           the series.
+	 *            the series.
 	 */
 	public TimeSeriesCollection(final TimeSeries series) {
 		this(series, TimeZone.getDefault());
 	}
 
 	/**
-	 * Constructs a dataset containing a single series (more can be added),
-	 * tied to a specific timezone.
+	 * Constructs a dataset containing a single series (more can be added), tied to
+	 * a specific timezone.
 	 * 
 	 * @param series
-	 *           the series.
+	 *            the series.
 	 * @param zone
-	 *           the timezone.
+	 *            the timezone.
 	 */
 	public TimeSeriesCollection(final TimeSeries series, final TimeZone zone) {
 
@@ -169,13 +169,11 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 		final TimePeriodAnchor anchor = getXPosition();
 		if (anchor == TimePeriodAnchor.START) {
 			result = START;
-		} else
-			if (anchor == TimePeriodAnchor.MIDDLE) {
-				result = MIDDLE;
-			} else
-				if (anchor == TimePeriodAnchor.END) {
-					result = END;
-				}
+		} else if (anchor == TimePeriodAnchor.MIDDLE) {
+			result = MIDDLE;
+		} else if (anchor == TimePeriodAnchor.END) {
+			result = END;
+		}
 		return result;
 	}
 
@@ -183,27 +181,26 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * Sets the position - this controls the x-value that is returned for a
 	 * particular time period.
 	 * <P>
-	 * Use the constants <code>START</code>, <code>MIDDLE</code> and <code>END</code>.
+	 * Use the constants <code>START</code>, <code>MIDDLE</code> and
+	 * <code>END</code>.
 	 * 
 	 * @param position
-	 *           the position.
+	 *            the position.
 	 * @deprecated Use setXPosition(...).
 	 */
 	public void setPosition(final int position) {
 		if (position == START) {
 			setXPosition(TimePeriodAnchor.START);
-		} else
-			if (position == MIDDLE) {
-				setXPosition(TimePeriodAnchor.MIDDLE);
-			} else
-				if (position == END) {
-					setXPosition(TimePeriodAnchor.END);
-				}
+		} else if (position == MIDDLE) {
+			setXPosition(TimePeriodAnchor.MIDDLE);
+		} else if (position == END) {
+			setXPosition(TimePeriodAnchor.END);
+		}
 	}
 
 	/**
-	 * Returns the position within each time period that is used for the X value when the collection
-	 * is used as an {@link org.jfree.data.XYDataset}.
+	 * Returns the position within each time period that is used for the X value
+	 * when the collection is used as an {@link org.jfree.data.XYDataset}.
 	 * 
 	 * @return The anchor position.
 	 */
@@ -212,12 +209,12 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	}
 
 	/**
-	 * Sets the position within each time period that is used for the X values when the collection
-	 * is used as an {@link org.jfree.data.XYDataset}. A {@link DatasetChangeEvent} is sent to
-	 * all registered listeners.
+	 * Sets the position within each time period that is used for the X values when
+	 * the collection is used as an {@link org.jfree.data.XYDataset}. A
+	 * {@link DatasetChangeEvent} is sent to all registered listeners.
 	 * 
 	 * @param anchor
-	 *           the anchor position.
+	 *            the anchor position.
 	 */
 	public void setXPosition(final TimePeriodAnchor anchor) {
 		this.xPosition = anchor;
@@ -225,9 +222,11 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	}
 
 	/**
-	 * Returns a flag that controls whether the domain is treated as 'points in time'.
+	 * Returns a flag that controls whether the domain is treated as 'points in
+	 * time'.
 	 * <P>
-	 * This flag is used when determining the max and min values for the domain. If true, then only the x-values are considered for the max and min values. If
+	 * This flag is used when determining the max and min values for the domain. If
+	 * true, then only the x-values are considered for the max and min values. If
 	 * false, then the start and end x-values will also be taken into consideration
 	 * 
 	 * @return the flag.
@@ -237,11 +236,11 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	}
 
 	/**
-	 * Sets a flag that controls whether the domain is treated as 'points in time', or time
-	 * periods.
+	 * Sets a flag that controls whether the domain is treated as 'points in time',
+	 * or time periods.
 	 * 
 	 * @param flag
-	 *           The new value of the flag.
+	 *            The new value of the flag.
 	 */
 	public void setDomainIsPointsInTime(final boolean flag) {
 		this.domainIsPointsInTime = flag;
@@ -269,15 +268,14 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns a series.
 	 * 
 	 * @param series
-	 *           The index of the series (zero-based).
+	 *            The index of the series (zero-based).
 	 * @return the series.
 	 */
 	public TimeSeries getSeries(final int series) {
 
 		// check arguments...
 		if ((series < 0) || (series > getSeriesCount())) {
-			throw new IllegalArgumentException(
-								"TimeSeriesDataset.getSeries(...): index outside valid range.");
+			throw new IllegalArgumentException("TimeSeriesDataset.getSeries(...): index outside valid range.");
 		}
 
 		// fetch the series...
@@ -287,10 +285,11 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	}
 
 	/**
-	 * Returns the series with the specified name, or <code>null</code> if there is no such series.
+	 * Returns the series with the specified name, or <code>null</code> if there is
+	 * no such series.
 	 * 
 	 * @param name
-	 *           the series name.
+	 *            the series name.
 	 * @return The series with the given name.
 	 */
 	public TimeSeries getSeries(final String name) {
@@ -314,7 +313,7 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * This method is provided for convenience.
 	 * 
 	 * @param series
-	 *           The index of the series (zero-based).
+	 *            The index of the series (zero-based).
 	 * @return the name of a series.
 	 */
 	public String getSeriesName(final int series) {
@@ -331,14 +330,13 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * Notifies all registered listeners that the dataset has changed.
 	 * 
 	 * @param series
-	 *           the time series.
+	 *            the time series.
 	 */
 	public void addSeries(final TimeSeries series) {
 
 		// check argument...
 		if (series == null) {
-			throw new IllegalArgumentException(
-								"TimeSeriesDataset.addSeries(...): cannot add null series.");
+			throw new IllegalArgumentException("TimeSeriesDataset.addSeries(...): cannot add null series.");
 		}
 
 		// add the series...
@@ -352,14 +350,13 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * Removes the specified series from the collection.
 	 * 
 	 * @param series
-	 *           the series to remove.
+	 *            the series to remove.
 	 */
 	public void removeSeries(final TimeSeries series) {
 
 		// check argument...
 		if (series == null) {
-			throw new IllegalArgumentException(
-								"TimeSeriesDataset.addSeries(...): cannot remove null series.");
+			throw new IllegalArgumentException("TimeSeriesDataset.addSeries(...): cannot remove null series.");
 		}
 
 		// remove the series...
@@ -373,7 +370,7 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * Removes a series from the collection.
 	 * 
 	 * @param index
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 */
 	public void removeSeries(final int index) {
 
@@ -390,7 +387,8 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 */
 	public void removeAllSeries() {
 
-		// deregister the collection as a change listener to each series in the collection
+		// deregister the collection as a change listener to each series in the
+		// collection
 		for (int i = 0; i < this.data.size(); i++) {
 			final TimeSeries series = (TimeSeries) this.data.get(i);
 			series.removeChangeListener(this);
@@ -408,7 +406,7 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * This method is provided for convenience.
 	 * 
 	 * @param series
-	 *           The index of the series of interest (zero-based).
+	 *            The index of the series of interest (zero-based).
 	 * @return the number of items in the specified series.
 	 */
 	public int getItemCount(final int series) {
@@ -421,9 +419,9 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the x-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           The series (zero-based index).
+	 *            The series (zero-based index).
 	 * @param item
-	 *           The item (zero-based index).
+	 *            The item (zero-based index).
 	 * @return the x-value for the specified series and item.
 	 */
 	public Number getXValue(final int series, final int item) {
@@ -437,13 +435,15 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	}
 
 	/**
-	 * Returns the indices of the two data items surrounding a particular millisecond value.
+	 * Returns the indices of the two data items surrounding a particular
+	 * millisecond value.
 	 * 
 	 * @param series
-	 *           the series index.
+	 *            the series index.
 	 * @param milliseconds
-	 *           the time.
-	 * @return An array containing the (two) indices of the items surrounding the time.
+	 *            the time.
+	 * @return An array containing the (two) indices of the items surrounding the
+	 *         time.
 	 */
 	public int[] getSurroundingItems(final int series, final long milliseconds) {
 		final int[] result = new int[] { -1, -1 };
@@ -466,7 +466,7 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the x-value for a time period.
 	 * 
 	 * @param period
-	 *           the time period.
+	 *            the time period.
 	 * @return the x-value.
 	 */
 	private long getX(final RegularTimePeriod period) {
@@ -474,13 +474,11 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 		long result = 0L;
 		if (this.xPosition == TimePeriodAnchor.START) {
 			result = period.getFirstMillisecond(this.workingCalendar);
-		} else
-			if (this.xPosition == TimePeriodAnchor.MIDDLE) {
-				result = period.getMiddleMillisecond(this.workingCalendar);
-			} else
-				if (this.xPosition == TimePeriodAnchor.END) {
-					result = period.getLastMillisecond(this.workingCalendar);
-				}
+		} else if (this.xPosition == TimePeriodAnchor.MIDDLE) {
+			result = period.getMiddleMillisecond(this.workingCalendar);
+		} else if (this.xPosition == TimePeriodAnchor.END) {
+			result = period.getLastMillisecond(this.workingCalendar);
+		}
 		return result;
 
 	}
@@ -489,9 +487,9 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the starting X value for the specified series and item.
 	 * 
 	 * @param series
-	 *           The series (zero-based index).
+	 *            The series (zero-based index).
 	 * @param item
-	 *           The item (zero-based index).
+	 *            The item (zero-based index).
 	 * @return the starting X value for the specified series and item.
 	 */
 	public Number getStartXValue(final int series, final int item) {
@@ -506,9 +504,9 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the ending X value for the specified series and item.
 	 * 
 	 * @param series
-	 *           The series (zero-based index).
+	 *            The series (zero-based index).
 	 * @param item
-	 *           The item (zero-based index).
+	 *            The item (zero-based index).
 	 * @return the ending X value for the specified series and item.
 	 */
 	public Number getEndXValue(final int series, final int item) {
@@ -523,9 +521,9 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the y-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           The series (zero-based index).
+	 *            The series (zero-based index).
 	 * @param item
-	 *           The item (zero-based index).
+	 *            The item (zero-based index).
 	 * @return the y-value for the specified series and item.
 	 */
 	public Number getYValue(final int series, final int item) {
@@ -540,9 +538,9 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the starting Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *           The series (zero-based index).
+	 *            The series (zero-based index).
 	 * @param item
-	 *           The item (zero-based index).
+	 *            The item (zero-based index).
 	 * @return the starting Y value for the specified series and item.
 	 */
 	public Number getStartYValue(final int series, final int item) {
@@ -553,9 +551,9 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the ending Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *           The series (zero-based index).
+	 *            The series (zero-based index).
 	 * @param item
-	 *           The item (zero-based index).
+	 *            The item (zero-based index).
 	 * @return the ending Y value for the specified series and item.
 	 */
 	public Number getEndYValue(final int series, final int item) {
@@ -563,8 +561,8 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	}
 
 	/**
-	 * Returns the minimum value in the dataset (or null if all the values in
-	 * the domain are null).
+	 * Returns the minimum value in the dataset (or null if all the values in the
+	 * domain are null).
 	 * 
 	 * @return the minimum value.
 	 */
@@ -576,8 +574,8 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	}
 
 	/**
-	 * Returns the maximum value in the dataset (or null if all the values in
-	 * the domain are null).
+	 * Returns the maximum value in the dataset (or null if all the values in the
+	 * domain are null).
 	 * 
 	 * @return the maximum value.
 	 */
@@ -606,10 +604,8 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 				if (this.domainIsPointsInTime) {
 					temp = new Range(getX(start), getX(end));
 				} else {
-					temp = new Range(
-										start.getFirstMillisecond(this.workingCalendar),
-										end.getLastMillisecond(this.workingCalendar)
-										);
+					temp = new Range(start.getFirstMillisecond(this.workingCalendar),
+							end.getLastMillisecond(this.workingCalendar));
 				}
 				result = Range.combine(result, temp);
 			}
@@ -621,7 +617,7 @@ public class TimeSeriesCollection extends AbstractIntervalXYDataset
 	 * Tests this time series collection for equality with another object.
 	 * 
 	 * @param obj
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object obj) {

@@ -26,16 +26,14 @@ import org.graffiti.selection.Selection;
  * Labels all selected nodes with unique numbers. Does not touch existing
  * labels.
  */
-public class InvertSelectionAlgorithm
-					extends AbstractAlgorithm {
-	
-	
+public class InvertSelectionAlgorithm extends AbstractAlgorithm {
+
 	/**
 	 * Constructs a new instance.
 	 */
 	public InvertSelectionAlgorithm() {
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
@@ -43,22 +41,22 @@ public class InvertSelectionAlgorithm
 	public Parameter[] getParameters() {
 		return null;
 	}
-	
+
 	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm# setParameters(org.graffiti.plugin.algorithm.Parameter)
+	 * @see org.graffiti.plugin.algorithm.Algorithm#
+	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
 		Selection sel = new Selection("id");
 		ArrayList<GraphElement> currentSelElements = new ArrayList<GraphElement>();
-		selection = MainFrame.getInstance().getActiveEditorSession().
-							getSelectionModel().getActiveSelection();
+		selection = MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection();
 		graph = MainFrame.getInstance().getActiveEditorSession().getGraph();
 		graph.getListenerManager().transactionStarted(this);
 		if (selection != null)
@@ -67,11 +65,10 @@ public class InvertSelectionAlgorithm
 			if (!currentSelElements.contains(ge))
 				sel.add(ge);
 		}
-		MainFrame.getInstance().getActiveEditorSession().
-							getSelectionModel().setActiveSelection(sel);
+		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(sel);
 		graph.getListenerManager().transactionFinished(this);
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
@@ -80,38 +77,34 @@ public class InvertSelectionAlgorithm
 		graph = null;
 		selection = null;
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Invert Selection";
 	}
-	
+
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke('I', SystemInfo.getAccelModifier());
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "edit.Selection";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.SELECTION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.SELECTION));
 	}
 
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 
 	 * @param selection
-	 *           the selection
+	 *            the selection
 	 */
 	public void setSelection(Selection selection) {
 		this.selection = selection;

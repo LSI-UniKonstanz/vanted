@@ -36,10 +36,10 @@ import java.util.List;
 
 /**
  * A collection of outlier lists for a box and whisker plot. Each collection is
- * associated with a single box and whisker entity.
- * Outliers are grouped in lists for each entity. Lists contain
- * one or more outliers, determined by whether overlaps have
- * occurred. Overlapping outliers are grouped in the same list.
+ * associated with a single box and whisker entity. Outliers are grouped in
+ * lists for each entity. Lists contain one or more outliers, determined by
+ * whether overlaps have occurred. Overlapping outliers are grouped in the same
+ * list.
  * 
  * @see org.jfree.chart.renderer.OutlierList
  * @author David Browning
@@ -50,13 +50,14 @@ public class OutlierListCollection {
 	private List outlierLists;
 
 	/**
-	 * Unbelievably, outliers which are more than 2 * interquartile range are
-	 * called far outs... See Tukey EDA (a classic one of a kind...)
+	 * Unbelievably, outliers which are more than 2 * interquartile range are called
+	 * far outs... See Tukey EDA (a classic one of a kind...)
 	 */
 	private boolean highFarOut = false;
 
 	/**
-	 * A flag that indicates whether or not the collection contains low far out values.
+	 * A flag that indicates whether or not the collection contains low far out
+	 * values.
 	 */
 	private boolean lowFarOut = false;
 
@@ -68,8 +69,8 @@ public class OutlierListCollection {
 	}
 
 	/**
-	 * A flag to indicate the presence of one or more far out values at the top end of the
-	 * range.
+	 * A flag to indicate the presence of one or more far out values at the top end
+	 * of the range.
 	 * 
 	 * @return A <code>boolean</code>.
 	 */
@@ -78,19 +79,19 @@ public class OutlierListCollection {
 	}
 
 	/**
-	 * Sets the flag that indicates the presence of one or more far out values at the top end
-	 * of the range.
+	 * Sets the flag that indicates the presence of one or more far out values at
+	 * the top end of the range.
 	 * 
 	 * @param farOut
-	 *           the flag.
+	 *            the flag.
 	 */
 	protected void setHighFarOut(boolean farOut) {
 		this.highFarOut = farOut;
 	}
 
 	/**
-	 * A flag to indicate the presence of one or more far out values at the bottom end of the
-	 * range.
+	 * A flag to indicate the presence of one or more far out values at the bottom
+	 * end of the range.
 	 * 
 	 * @return A <code>boolean</code>.
 	 */
@@ -99,24 +100,24 @@ public class OutlierListCollection {
 	}
 
 	/**
-	 * Sets the flag that indicates the presence of one or more far out values at the bottom end
-	 * of the range.
+	 * Sets the flag that indicates the presence of one or more far out values at
+	 * the bottom end of the range.
 	 * 
 	 * @param farOut
-	 *           the flag.
+	 *            the flag.
 	 */
 	protected void setLowFarOut(boolean farOut) {
 		this.lowFarOut = farOut;
 	}
 
 	/**
-	 * Appends the specified element as a new <code>OutlierList</code> to the
-	 * end of this list if it does not overlap an outlier in an existing list.
-	 * If it does overlap, it is appended to the outlier list which it overlaps
-	 * and that list is updated.
+	 * Appends the specified element as a new <code>OutlierList</code> to the end of
+	 * this list if it does not overlap an outlier in an existing list. If it does
+	 * overlap, it is appended to the outlier list which it overlaps and that list
+	 * is updated.
 	 * 
 	 * @param outlier
-	 *           element to be appended to this list.
+	 *            element to be appended to this list.
 	 * @return <tt>true</tt> (as per the general contract of Collection.add).
 	 */
 	public boolean add(Outlier outlier) {
@@ -155,9 +156,9 @@ public class OutlierListCollection {
 	 * outliers in the list.
 	 * 
 	 * @param list
-	 *           the outlier list to be updated.
+	 *            the outlier list to be updated.
 	 * @param outlier
-	 *           the outlier to be added
+	 *            the outlier to be added
 	 * @return <tt>true</tt> (as per the general contract of Collection.add).
 	 */
 	private boolean updateOutlierList(OutlierList list, Outlier outlier) {

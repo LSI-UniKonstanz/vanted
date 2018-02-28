@@ -29,63 +29,56 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
 
 public class ResizeFromMappingCountLayoutAlgorithm extends AbstractAlgorithm {
 	private double targetSizeX = 120;
-	
+
 	private double targetSizeY = 120;
-	
+
 	public String getName() {
 		return null; // "Resize Nodes dep. on attribute values";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Mapping";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.NODE,
-				Category.MAPPING,
-				Category.LAYOUT,
-				Category.VISUAL
-				));
+		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.MAPPING, Category.LAYOUT, Category.VISUAL));
 	}
 
 	/**
 	 * Checks parameters
 	 * 
 	 * @throws PreconditionException
-	 *            if xDistance, yDistance or
-	 *            widthHeightRatio is smaller than 0 or the graph does not
-	 *            exists
+	 *             if xDistance, yDistance or widthHeightRatio is smaller than 0 or
+	 *             the graph does not exists
 	 */
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-		
+
 		if (graph == null) {
 			errors.add("The graph instance may not be null.");
 		}
-		
+
 		if (!errors.isEmpty()) {
 			throw errors;
 		}
 	}
-	
+
 	/**
 	 * Computes node coordinates and sets these coordinates
 	 */
 	public void execute() {
 		List<Node> nodes = GraphHelper.getSelectedOrAllNodes(selection, graph);
-		
+
 		HashMap<Node, Vector2d> nodes2newNodeSize = new HashMap<Node, Vector2d>();
-		
+
 		for (Iterator<Node> it = nodes.iterator(); it.hasNext();) {
 			Node n = it.next();
-			
-			ExperimentInterface mappedDataList = Experiment2GraphHelper.
-								getMappedDataListFromGraphElement(n);
-			
+
+			ExperimentInterface mappedDataList = Experiment2GraphHelper.getMappedDataListFromGraphElement(n);
+
 			int mapCount = 0;
 			if (mappedDataList != null)
 				mapCount = mappedDataList.size();
@@ -94,7 +87,7 @@ public class ResizeFromMappingCountLayoutAlgorithm extends AbstractAlgorithm {
 		}
 		GraphHelper.applyUndoableNodeSizeUpdate(nodes2newNodeSize, getName());
 	}
-	
+
 	/**
 	 * Parameters
 	 * 
@@ -102,18 +95,16 @@ public class ResizeFromMappingCountLayoutAlgorithm extends AbstractAlgorithm {
 	 */
 	@Override
 	public Parameter[] getParameters() {
-		DoubleParameter widthParam = new DoubleParameter("Node width",
-							"The new width of the selected (or all) nodes.");
-		
-		DoubleParameter heightParam = new DoubleParameter("Node height",
-							"The new height.");
-		
+		DoubleParameter widthParam = new DoubleParameter("Node width", "The new width of the selected (or all) nodes.");
+
+		DoubleParameter heightParam = new DoubleParameter("Node height", "The new height.");
+
 		widthParam.setDouble(targetSizeX);
 		heightParam.setDouble(targetSizeY);
-		
+
 		return new Parameter[] { widthParam, heightParam };
 	}
-	
+
 	/**
 	 * Sets parameters
 	 * 
@@ -125,7 +116,7 @@ public class ResizeFromMappingCountLayoutAlgorithm extends AbstractAlgorithm {
 		targetSizeX = ((DoubleParameter) params[0]).getDouble().doubleValue();
 		targetSizeY = ((DoubleParameter) params[1]).getDouble().doubleValue();
 	}
-	
+
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;

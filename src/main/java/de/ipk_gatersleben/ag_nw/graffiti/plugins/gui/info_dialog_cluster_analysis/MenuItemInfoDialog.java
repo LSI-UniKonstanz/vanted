@@ -42,21 +42,18 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.threading.SystemAnalysis;
  * @author Christian Klukas
  */
 @Deprecated
-public class MenuItemInfoDialog
-					extends GraffitiMenu
-					implements GraffitiContainer {
+public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContainer {
 	// to avoid collisions let ID be package name + menu + name of the menu
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	public String errorMessagesMenuTitle = "Error Messages";
-	
+
 	/**
 	 * DOCUMENT ME!
 	 */
-	public static final String ID =
-						"de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.MenuItemInfoDialog";
-	
+	public static final String ID = "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.MenuItemInfoDialog";
+
 	/**
 	 * Create Menu.
 	 */
@@ -67,72 +64,63 @@ public class MenuItemInfoDialog
 		setMnemonic('H');
 		setEnabled(true);
 		final JMenuItem info = new JMenuItem("About " + DBEgravistoHelper.CLUSTER_ANALYSIS_NAME);
-		
+
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');
 		ImageIcon icon = new ImageIcon(cl.getResource(path + "/dbe_logo_16x16.png"));
 		info.setIcon(icon);
-		
+
 		info.setMnemonic('I');
 		info.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0)
-			{
+			public void actionPerformed(ActionEvent arg0) {
 				Runtime r = Runtime.getRuntime();
 				r.gc();
 				ClassLoader cl = this.getClass().getClassLoader();
 				String path = this.getClass().getPackage().getName().replace('.', '/');
 				ImageIcon icon = new ImageIcon(cl.getResource(path + "/pattern_graffiti_logo.png"));
 				int divisor = 1024;
-				JOptionPane.showOptionDialog(
-									GravistoService.getInstance().getMainFrame(),
-									"<html>" +
-														"<h2>" + DBEgravistoHelper.CLUSTER_ANALYSIS_VERSION + "</h2>" +
-														"<p>" + DBEgravistoHelper.CLUSTER_ANALYSIS_NAME + " (c) 2003-2007 IPK-Gatersleben" +
-														"<br>" + "- based on Gravisto (c) 2001-2004 University of Passau -" +
-														"<p><p>http://nwg.bic-gh.de<p>http://www.gravisto.org<p>"
-														+ "<br>- developed by Christian Klukas from the Network Analysis Group<p><br>"
-														+ "<small><small><small><font color=\"gray\">System-Info: " +
-														SystemAnalysis.getNumberOfCPUs() + " CPU" + (SystemAnalysis.getNumberOfCPUs() > 1 ? "s, " : ", ") +
-														// Java_1_5_compatibility.getJavaVersion()+
-											// ",<br>"+
-											"used/free/max memory: " +
-														((r.totalMemory() / divisor / divisor) - (r.freeMemory() / divisor / divisor)) + "" +
-														"/" + (r.freeMemory() / divisor / divisor) + "/"
-														+ (r.maxMemory() / divisor / divisor) + " MB"
-														+ "</font></small></small></small>",
-									// PatternGraffitiHelper.getPluginStatusText()
-						"Info about " + DBEgravistoHelper.CLUSTER_ANALYSIS_NAME,
-									JOptionPane.DEFAULT_OPTION,
-									JOptionPane.INFORMATION_MESSAGE,
-									icon, null, null);
+				JOptionPane.showOptionDialog(GravistoService.getInstance().getMainFrame(),
+						"<html>" + "<h2>" + DBEgravistoHelper.CLUSTER_ANALYSIS_VERSION + "</h2>" + "<p>"
+								+ DBEgravistoHelper.CLUSTER_ANALYSIS_NAME + " (c) 2003-2007 IPK-Gatersleben" + "<br>"
+								+ "- based on Gravisto (c) 2001-2004 University of Passau -"
+								+ "<p><p>http://nwg.bic-gh.de<p>http://www.gravisto.org<p>"
+								+ "<br>- developed by Christian Klukas from the Network Analysis Group<p><br>"
+								+ "<small><small><small><font color=\"gray\">System-Info: "
+								+ SystemAnalysis.getNumberOfCPUs() + " CPU"
+								+ (SystemAnalysis.getNumberOfCPUs() > 1 ? "s, " : ", ") +
+				// Java_1_5_compatibility.getJavaVersion()+
+				// ",<br>"+
+				"used/free/max memory: "
+								+ ((r.totalMemory() / divisor / divisor) - (r.freeMemory() / divisor / divisor)) + ""
+								+ "/" + (r.freeMemory() / divisor / divisor) + "/" + (r.maxMemory() / divisor / divisor)
+								+ " MB" + "</font></small></small></small>",
+						// PatternGraffitiHelper.getPluginStatusText()
+						"Info about " + DBEgravistoHelper.CLUSTER_ANALYSIS_NAME, JOptionPane.DEFAULT_OPTION,
+						JOptionPane.INFORMATION_MESSAGE, icon, null, null);
 			}
 		});
-		
 
 		JMenuItem jMenuItemReleaseInfo = new JMenuItem("Release Info");
 		jMenuItemReleaseInfo.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				boolean ext = true;
 				if (ext) {
-					AttributeHelper.showInBrowser("http://kim25.wwwdns.kim.uni-konstanz.de/vanted/index.php?file=doc139.html");
+					AttributeHelper
+							.showInBrowser("http://kim25.wwwdns.kim.uni-konstanz.de/vanted/index.php?file=doc139.html");
 					return;
 				}
 				JFrame w = new JFrame("Release Information");
 				double border = 0;
-				double[][] size =
-				{ { border, TableLayoutConstants.FILL, border }, // Columns
-						{ border, TableLayoutConstants.FILL, border }
-				}; // Rows
+				double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
+						{ border, TableLayoutConstants.FILL, border } }; // Rows
 				w.setLayout(new TableLayout(size));
-				w.add(
-									getWebPane("http://kim25.wwwdns.kim.uni-konstanz.de/vanted/index.php?file=doc139.html"),
-									"1,1");
+				w.add(getWebPane("http://kim25.wwwdns.kim.uni-konstanz.de/vanted/index.php?file=doc139.html"), "1,1");
 				w.setSize(640, 480);
 				w.setVisible(true);
 			}
 		});
-		
+
 		final JMenuItem error = new JMenuItem(errorMessagesMenuTitle);
 		error.setMnemonic('E');
 		error.addActionListener(new ActionListener() {
@@ -157,7 +145,7 @@ public class MenuItemInfoDialog
 				JEditorPane errMsg = new JEditorPane("text/html", err);
 				errMsg.setEditable(false);
 				errMsg.setAutoscrolls(false);
-				
+
 				final JScrollPane scp = new JScrollPane(errMsg);
 				scp.setMaximumSize(new Dimension(800, 600));
 				scp.setPreferredSize(new Dimension(800, 600));
@@ -169,23 +157,25 @@ public class MenuItemInfoDialog
 				});
 				t.setRepeats(false);
 				t.start();
-				JOptionPane.showMessageDialog(GravistoService.getInstance().getMainFrame(),
-									scp, "Error Messages", JOptionPane.ERROR_MESSAGE);
-				
+				JOptionPane.showMessageDialog(GravistoService.getInstance().getMainFrame(), scp, "Error Messages",
+						JOptionPane.ERROR_MESSAGE);
+
 			}
 		});
-		
+
 		insert(error, 1);
 		// insert(jMenuItemReleaseInfo, 3);
 		insert(info, 2);
-		
+
 		// mark Help Menu and Error menu item in case error messages are available
 		Timer t = new Timer(200, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String[] errorMsg = ErrorMsg.getErrorMessages();
 				if (errorMsg != null && errorMsg.length > 0) {
-					// error.setFont(new Font(error.getFont().getName(), Font.BOLD, error.getFont().getSize()));
-					// setFont(new Font(error.getFont().getName(), Font.BOLD, error.getFont().getSize()));
+					// error.setFont(new Font(error.getFont().getName(), Font.BOLD,
+					// error.getFont().getSize()));
+					// setFont(new Font(error.getFont().getName(), Font.BOLD,
+					// error.getFont().getSize()));
 					error.setForeground(new Color(170, 0, 0));
 					setForeground(new Color(170, 0, 0));
 					error.setText(errorMessagesMenuTitle + " (" + errorMsg.length + ")");
@@ -202,7 +192,7 @@ public class MenuItemInfoDialog
 		});
 		t.start();
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -211,7 +201,7 @@ public class MenuItemInfoDialog
 	public String getId() {
 		return ID;
 	}
-	
+
 	/**
 	 * @return A pane with info about the program
 	 */
@@ -220,21 +210,17 @@ public class MenuItemInfoDialog
 		JEditorPane editorPane = null;
 		try {
 			String url = urlText;
-			editorPane = new JEditorPane(
-								new URL(url));
+			editorPane = new JEditorPane(new URL(url));
 		} catch (Exception e) {
-			editorPane = new JEditorPane(
-								"",
-								"" +
-													"Could not show Help-Window!"
-													+ "Error-Message: " + e.getLocalizedMessage() + "");
+			editorPane = new JEditorPane("",
+					"" + "Could not show Help-Window!" + "Error-Message: " + e.getLocalizedMessage() + "");
 			ErrorMsg.addErrorMessage(e);
 		}
 		editorPane.setEditable(false);
 		editorPane.addHyperlinkListener(createHyperLinkListener(editorPane));
 		return new JScrollPane(editorPane);
 	}
-	
+
 	/**
 	 * @param editorPane
 	 * @return
@@ -244,8 +230,8 @@ public class MenuItemInfoDialog
 			public void hyperlinkUpdate(HyperlinkEvent e) {
 				if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 					if (e instanceof HTMLFrameHyperlinkEvent) {
-						((HTMLDocument) editorPane.getDocument()).processHTMLFrameHyperlinkEvent(
-											(HTMLFrameHyperlinkEvent) e);
+						((HTMLDocument) editorPane.getDocument())
+								.processHTMLFrameHyperlinkEvent((HTMLFrameHyperlinkEvent) e);
 					} else {
 						// System.out.println(e.getURL());
 						if (e.getURL().toString().indexOf("#close") > 0) { //$NON-NLS-1$
@@ -255,14 +241,13 @@ public class MenuItemInfoDialog
 								editorPane.setPage(e.getURL());
 							} catch (IOException ioe) {
 								ErrorMsg.addErrorMessage(
-													"IO Exception in HTML hyperlink event:" +
-																		ioe.getLocalizedMessage());
+										"IO Exception in HTML hyperlink event:" + ioe.getLocalizedMessage());
 							}
 						}
 					}
 				}
 			}
-			
+
 			private void closeHelp() {
 				// TODO
 			}

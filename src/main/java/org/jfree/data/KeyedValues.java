@@ -43,7 +43,7 @@ public interface KeyedValues extends Values {
 	 * Returns the key associated with an item (value).
 	 * 
 	 * @param index
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return the key.
 	 */
 	public Comparable getKey(int index);
@@ -52,15 +52,15 @@ public interface KeyedValues extends Values {
 	 * Returns the index for a given key.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @return the index (-1 indicates that the key is not in the collection).
 	 */
 	public int getIndex(Comparable key);
 
 	/**
-	 * Returns the keys for the values in the collection. Note that you can access the values in
-	 * this collection by key or by index. For this reason, the key order is important - this
-	 * method should return the keys in order.
+	 * Returns the keys for the values in the collection. Note that you can access
+	 * the values in this collection by key or by index. For this reason, the key
+	 * order is important - this method should return the keys in order.
 	 * 
 	 * @return The keys (never <code>null</code>).
 	 */
@@ -72,7 +72,7 @@ public interface KeyedValues extends Values {
 	 * If the key is not recognised, the method should return <code>null</code>.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @return the value.
 	 */
 	public Number getValue(Comparable key);

@@ -18,25 +18,20 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
  * @author ricardo
  * 
  */
-public class PathWayLoaderLvL3 extends HelperClass
-{
+public class PathWayLoaderLvL3 extends HelperClass {
 
-	public PathWayLoaderLvL3(Model model, Graph g)
-	{
+	public PathWayLoaderLvL3(Model model, Graph g) {
 		Set<Pathway> paths = model.getObjects(Pathway.class);
 		List<Node> nodes = g.getNodes();
-		for (Pathway pathway : paths)
-		{
-			for (Process p : pathway.getPathwayComponent())
-			{
+		for (Pathway pathway : paths) {
+			for (Process p : pathway.getPathwayComponent()) {
 				String processRDFId = p.getRDFId();
 
-				for (Node node : nodes)
-				{
+				for (Node node : nodes) {
 					String nodeRDFId = getAttributeSecure(node, Messages.getString("UtilitySuperClassToGraph.82"));
-					if (nodeRDFId.matches(processRDFId))
-					{
-						setAttributeSecure(node, Messages.getString("UtilityClassSelectorFromGraph.180"), pathway.getRDFId());
+					if (nodeRDFId.matches(processRDFId)) {
+						setAttributeSecure(node, Messages.getString("UtilityClassSelectorFromGraph.180"),
+								pathway.getRDFId());
 					}
 
 				}

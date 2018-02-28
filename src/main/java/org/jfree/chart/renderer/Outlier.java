@@ -48,14 +48,15 @@ public class Outlier implements Comparable {
 	private double radius;
 
 	/**
-	 * Constructs an outlier item consisting of a point and the radius of the outlier ellipse
+	 * Constructs an outlier item consisting of a point and the radius of the
+	 * outlier ellipse
 	 * 
 	 * @param xCoord
-	 *           the x coordinate of the point.
+	 *            the x coordinate of the point.
 	 * @param yCoord
-	 *           the y coordinate of the point.
+	 *            the y coordinate of the point.
 	 * @param radius
-	 *           the radius of the ellipse.
+	 *            the radius of the ellipse.
 	 */
 	public Outlier(double xCoord, double yCoord, double radius) {
 		this.point = new Point2D.Double(xCoord - radius, yCoord - radius);
@@ -63,7 +64,8 @@ public class Outlier implements Comparable {
 	}
 
 	/**
-	 * Returns the xy coordinates of the bounding box containing the outlier ellipse.
+	 * Returns the xy coordinates of the bounding box containing the outlier
+	 * ellipse.
 	 * 
 	 * @return The location of the outlier ellipse.
 	 */
@@ -75,7 +77,7 @@ public class Outlier implements Comparable {
 	 * Sets the xy coordinates of the bounding box containing the outlier ellipse.
 	 * 
 	 * @param point
-	 *           the location.
+	 *            the location.
 	 */
 	public void setPoint(Point2D point) {
 		this.point = point;
@@ -112,20 +114,20 @@ public class Outlier implements Comparable {
 	 * Sets the radius of the outlier ellipse.
 	 * 
 	 * @param radius
-	 *           the new radius.
+	 *            the new radius.
 	 */
 	public void setRadius(double radius) {
 		this.radius = radius;
 	}
 
 	/**
-	 * Compares this object with the specified object for order, based on
-	 * the outlier's point.
+	 * Compares this object with the specified object for order, based on the
+	 * outlier's point.
 	 * 
 	 * @param o
-	 *           the Object to be compared.
-	 * @return a negative integer, zero, or a positive integer as this object
-	 *         is less than, equal to, or greater than the specified object.
+	 *            the Object to be compared.
+	 * @return a negative integer, zero, or a positive integer as this object is
+	 *         less than, equal to, or greater than the specified object.
 	 */
 	public int compareTo(Object o) {
 		Outlier outlier = (Outlier) o;
@@ -133,27 +135,27 @@ public class Outlier implements Comparable {
 		Point2D p2 = outlier.getPoint();
 		if (p1.equals(p2)) {
 			return 0;
-		} else
-			if ((p1.getX() < p2.getX()) || (p1.getY() < p2.getY())) {
-				return -1;
-			} else {
-				return 1;
-			}
+		} else if ((p1.getX() < p2.getX()) || (p1.getY() < p2.getY())) {
+			return -1;
+		} else {
+			return 1;
+		}
 	}
 
 	/**
-	 * Returns a true if outlier is overlapped and false if it is not.
-	 * Overlapping is determined by the respective bounding boxes plus
-	 * a small margin.
+	 * Returns a true if outlier is overlapped and false if it is not. Overlapping
+	 * is determined by the respective bounding boxes plus a small margin.
 	 * 
 	 * @param other
-	 *           the other outlier.
-	 * @return A <code>boolean</code> indicating whether or not an overlap has occured.
+	 *            the other outlier.
+	 * @return A <code>boolean</code> indicating whether or not an overlap has
+	 *         occured.
 	 */
 	public boolean overlaps(Outlier other) {
 		return ((other.getX() >= this.getX() - (this.radius * 1.1))
-							&& (other.getX() <= this.getX() + (this.radius * 1.1))
-							&& (other.getY() >= this.getY() - (this.radius * 1.1)) && (other.getY() <= this.getY() + (this.radius * 1.1)));
+				&& (other.getX() <= this.getX() + (this.radius * 1.1))
+				&& (other.getY() >= this.getY() - (this.radius * 1.1))
+				&& (other.getY() <= this.getY() + (this.radius * 1.1)));
 	}
 
 	/**

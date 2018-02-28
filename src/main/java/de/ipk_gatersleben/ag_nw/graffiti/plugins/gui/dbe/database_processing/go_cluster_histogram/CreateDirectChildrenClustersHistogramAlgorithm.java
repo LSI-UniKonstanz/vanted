@@ -23,45 +23,41 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.chart_settings.G
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 
 /**
- * @author Christian Klukas
- *         (c) 2006 IPK Gatersleben, Group Network Analysis
+ * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class CreateDirectChildrenClustersHistogramAlgorithm extends AbstractAlgorithm {
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Add Neighbour-Node Cluster-Histogram";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Network.Hierarchy";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.ENRICHMENT,
-				Category.COMPUTATION,
-				Category.HIDDEN
-				));
+		return new HashSet<Category>(
+				Arrays.asList(Category.GRAPH, Category.ENRICHMENT, Category.COMPUTATION, Category.HIDDEN));
 	}
 
 	@Override
 	public String getDescription() {
-		return "<html>" +
-							"This command enumerates the neighbours of all or the selected nodes with mapping data.<br>" +
-							"A histogram of the number of occurrences of a specific cluster ID is created. A data mapping<br>" +
-							"representing this data is created and shown as a bar-chart.<br><br>" +
-							"A similar command which processes all leaf nodes in a hierarchy is available from the<br>" +
-							"&quot;Hierarchy&quot; menu.";
+		return "<html>" + "This command enumerates the neighbours of all or the selected nodes with mapping data.<br>"
+				+ "A histogram of the number of occurrences of a specific cluster ID is created. A data mapping<br>"
+				+ "representing this data is created and shown as a bar-chart.<br><br>"
+				+ "A similar command which processes all leaf nodes in a hierarchy is available from the<br>"
+				+ "&quot;Hierarchy&quot; menu.";
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
@@ -81,13 +77,13 @@ public class CreateDirectChildrenClustersHistogramAlgorithm extends AbstractAlgo
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-	
+
 	private void processNode(NodeHelper nh, TreeSet<String> knownClusterIDs) {
 		Collection<Node> workNodes = nh.getNeighbors();
 		TreeMap<String, Integer> cluster2frequency = new TreeMap<String, Integer>();
 		for (String ci : knownClusterIDs)
 			cluster2frequency.put(ci, new Integer(0));
-		
+
 		for (Node n : workNodes) {
 			NodeHelper nnh = new NodeHelper(n);
 			if (nnh.hasDataMapping()) {
@@ -113,14 +109,13 @@ public class CreateDirectChildrenClustersHistogramAlgorithm extends AbstractAlgo
 			else
 				nh.memSample(new Double(value), -1, plantID, "frequency", "-1", new Integer(-1));
 		}
-		nh.memAddDataMapping(substanceName, "cluster frequency", null, "calculated analysis", "system", "Frequency of clusters in neighbour nodes", "");
+		nh.memAddDataMapping(substanceName, "cluster frequency", null, "calculated analysis", "system",
+				"Frequency of clusters in neighbour nodes", "");
 		nh.setChartType(GraffitiCharts.BAR);
 	}
-	
-	private Collection<String> getChildNodeClusterIDs(
-						HashSet<Node> processedNodes,
-						NodeHelper nh,
-						Collection<String> knownClusterIDs) {
+
+	private Collection<String> getChildNodeClusterIDs(HashSet<Node> processedNodes, NodeHelper nh,
+			Collection<String> knownClusterIDs) {
 		Collection<String> result = new ArrayList<String>();
 		if (!processedNodes.contains(nh.getGraphNode())) {
 			processedNodes.add(nh.getGraphNode());

@@ -8,19 +8,19 @@ import org.graffiti.editor.GravistoService;
 
 public class MappingButton extends JMButton {
 	private static final long serialVersionUID = 2330434266087612795L;
-	
+
 	private AbstractExperimentDataProcessor p;
-	
+
 	public MappingButton(AbstractExperimentDataProcessor p) {
 		super("<html>" + p.getName());
 		setOpaque(false);
 		this.p = p;
 	}
-	
+
 	public AbstractExperimentDataProcessor getExperimentProcessor() {
 		return p;
 	}
-	
+
 	@Override
 	public Icon getIcon() {
 		ImageIcon i = p.getIcon();

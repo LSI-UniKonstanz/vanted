@@ -15,12 +15,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_EditorPluginAdapter;
  * @vanted.revision 2.6.5
  */
 public abstract class AddonAdapter extends IPK_EditorPluginAdapter {
-	
+
 	/**
 	 * Default constructor. Does initialization of the Add-on.
 	 * 
 	 * @throws AddonInstantiationRuntimeException
-	 * 			when Add-on couldn't be initialized
+	 *             when Add-on couldn't be initialized
 	 */
 	public AddonAdapter() throws AddonInstantiationRuntimeException {
 		super();
@@ -33,13 +33,13 @@ public abstract class AddonAdapter extends IPK_EditorPluginAdapter {
 			throw new AddonInstantiationRuntimeException(e);
 		}
 	}
-	
+
 	/**
-	 * Implement this inherited method to initialize the Add-on and possibly
-	 * any related components.
+	 * Implement this inherited method to initialize the Add-on and possibly any
+	 * related components.
 	 */
 	protected abstract void initializeAddon();
-	
+
 	/**
 	 * Override to add custom Add-on icon.
 	 */
@@ -48,11 +48,11 @@ public abstract class AddonAdapter extends IPK_EditorPluginAdapter {
 		try {
 			ImageIcon icon = new ImageIcon(
 					GravistoService.getResource(GenericPluginAdapter.class, "addon-icon", "png"));
-			
+
 			return icon;
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
-			
+
 			return super.getIcon();
 		}
 	}

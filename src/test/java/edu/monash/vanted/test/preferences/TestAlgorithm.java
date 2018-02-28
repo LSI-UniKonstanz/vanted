@@ -17,34 +17,33 @@ import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
-public class TestAlgorithm implements Algorithm, PreferencesInterface{
+public class TestAlgorithm implements Algorithm, PreferencesInterface {
 
-	
 	Preferences preferences;
-	
+
 	public TestAlgorithm() {
-		
+
 	}
-	
-	
+
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
 		arrayList.add(new IntegerParameter(100, "TestAlgo-speed", "testalgo integer speed parameter"));
 		return arrayList;
 	}
+
 	@Override
 	public String getPreferencesAlternativeName() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-//	@Override
-//	public Preferences getPreferences() {
-//		if(preferences == null)
-//			preferences = PreferenceManager.getPreferenceForClass(IPKGraffitiView.class);
-//		return preferences;
-//	}
-	
+	// @Override
+	// public Preferences getPreferences() {
+	// if(preferences == null)
+	// preferences = PreferenceManager.getPreferenceForClass(IPKGraffitiView.class);
+	// return preferences;
+	// }
+
 	@Override
 	public String getName() {
 		// TODO Auto-generated method stub
@@ -54,14 +53,13 @@ public class TestAlgorithm implements Algorithm, PreferencesInterface{
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	public void setParameters(Parameter[] params) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -73,25 +71,26 @@ public class TestAlgorithm implements Algorithm, PreferencesInterface{
 	@Override
 	public void attach(Graph g, Selection selection) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void check() throws PreconditionException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void execute() {
 		// TODO Auto-generated method stub
-//		System.out.println("algo exec: prefs int: "+getPreferences().getInt("Test2Algo-speed", -1));
+		// System.out.println("algo exec: prefs int:
+		// "+getPreferences().getInt("Test2Algo-speed", -1));
 	}
 
 	@Override
 	public void reset() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -139,7 +138,7 @@ public class TestAlgorithm implements Algorithm, PreferencesInterface{
 	@Override
 	public void setActionEvent(ActionEvent a) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -154,5 +153,4 @@ public class TestAlgorithm implements Algorithm, PreferencesInterface{
 		return false;
 	}
 
-	
 }

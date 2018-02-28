@@ -19,14 +19,14 @@ import org.graffiti.plugin.editcomponent.NumberEditComponent;
  * @see NumberEditComponent
  * @vanted.revision 2.6.5
  */
-public class IntegerEditComponent
-					extends NumberEditComponent {
+public class IntegerEditComponent extends NumberEditComponent {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Creates a new IntegerEditComponent object.
 	 * 
-	 * @param disp containing the attributes to be displayed
+	 * @param disp
+	 *            containing the attributes to be displayed
 	 */
 	public IntegerEditComponent(Displayable disp) {
 		super(disp);

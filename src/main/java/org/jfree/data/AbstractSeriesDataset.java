@@ -36,13 +36,11 @@ package org.jfree.data;
 import java.io.Serializable;
 
 /**
- * An abstract implementation of the {@link SeriesDataset} interface, containing a
- * mechanism for registering change listeners.
+ * An abstract implementation of the {@link SeriesDataset} interface, containing
+ * a mechanism for registering change listeners.
  */
 public abstract class AbstractSeriesDataset extends AbstractDataset
-															implements SeriesDataset,
-																			SeriesChangeListener,
-																			Serializable {
+		implements SeriesDataset, SeriesChangeListener, Serializable {
 
 	/**
 	 * Creates a new dataset.
@@ -62,7 +60,7 @@ public abstract class AbstractSeriesDataset extends AbstractDataset
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return The series name.
 	 */
 	public abstract String getSeriesName(int series);
@@ -71,7 +69,7 @@ public abstract class AbstractSeriesDataset extends AbstractDataset
 	 * Called when a series belonging to the dataset changes.
 	 * 
 	 * @param event
-	 *           information about the change.
+	 *            information about the change.
 	 */
 	public void seriesChanged(final SeriesChangeEvent event) {
 		fireDatasetChanged();

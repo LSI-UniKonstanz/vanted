@@ -30,43 +30,41 @@ import org.graffiti.session.SessionManager;
  * @version $Revision$
  */
 public class FileSaveAsAction extends GraffitiAction {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private org.graffiti.managers.IOManager ioManager;
-	
+
 	private StringBundle sBundle;
-	
+
 	private SessionManager sessionManager;
-	
+
 	// private JFileChooser fc;
-	
+
 	public FileSaveAsAction(MainFrame mainFrame, org.graffiti.managers.IOManager ioManager,
 			SessionManager sessionManager, StringBundle sBundle) {
-		
+
 		super("file.saveAs", mainFrame, "filemenu_saveas");
 		this.ioManager = ioManager;
 		this.sessionManager = sessionManager;
 		this.sBundle = sBundle;
-		
+
 		// fc = new JFileChooser();
 	}
-	
+
 	@Override
 	public boolean isEnabled() {
-		return ioManager.hasOutputSerializer() &&
-				sessionManager.isSessionActive();
+		return ioManager.hasOutputSerializer() && sessionManager.isSessionActive();
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser fc = ioManager.createSaveFileChooser();
-		
+
 		boolean needFile = true;
 		while (needFile) {
-			
-			int returnVal = fc.showDialog
-					(mainFrame, sBundle.getString("menu.file.saveAs"));
-			
+
+			int returnVal = fc.showDialog(mainFrame, sBundle.getString("menu.file.saveAs"));
+
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File file = fc.getSelectedFile();
 				String fileName = file.getName();
@@ -83,34 +81,31 @@ public class FileSaveAsAction extends GraffitiAction {
 					ext = FileSaveAction.getFileExt(fileName);
 				}
 				// System.err.println(fileName);
-				
+
 				if (file.exists()) {
 					if (JOptionPane.showConfirmDialog(mainFrame,
-							"<html>Do you want to overwrite the existing file <i>" +
-									fileName + "</i>?</html>",
-							"Overwrite File?",
-							JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+							"<html>Do you want to overwrite the existing file <i>" + fileName + "</i>?</html>",
+							"Overwrite File?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 						needFile = false;
 					}
 				} else {
 					needFile = false;
 				}
-				
+
 				if (!needFile) {
 					try {
-						OutputSerializer os =
-								ioManager.createOutputSerializer(ext, description);
-						
+						OutputSerializer os = ioManager.createOutputSerializer(ext, description);
+
 						os.write(new FileOutputStream(file), getGraph());
-						
+
 					} catch (Exception ioe) {
 						ErrorMsg.addErrorMessage(ioe);
 						MainFrame.getInstance().warnUserAboutFileSaveProblem(ioe);
 					}
-					
-					org.graffiti.session.EditorSession session =
-							(org.graffiti.session.EditorSession) mainFrame.getActiveSession();
-					
+
+					org.graffiti.session.EditorSession session = (org.graffiti.session.EditorSession) mainFrame
+							.getActiveSession();
+
 					session.setFileName(file.getAbsolutePath());
 					if (description != null)
 						session.setFileTypeDescription(description);
@@ -122,7 +117,7 @@ public class FileSaveAsAction extends GraffitiAction {
 			}
 		}
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -130,5 +125,5 @@ public class FileSaveAsAction extends GraffitiAction {
 	public HelpContext getHelpContext() {
 		return null;
 	}
-	
+
 }

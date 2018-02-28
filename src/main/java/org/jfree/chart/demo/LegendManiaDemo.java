@@ -73,7 +73,7 @@ public class LegendManiaDemo extends ApplicationFrame {
 	 * options.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public LegendManiaDemo(final String title) {
 		super(title);
@@ -127,14 +127,13 @@ public class LegendManiaDemo extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createBarChart(
-							CHART_TITLE, // chart title
+		final JFreeChart chart = ChartFactory.createBarChart(CHART_TITLE, // chart title
 				"Activity", // domain axis label
 				"Rate", // range axis label
 				dataset, // data
@@ -142,7 +141,7 @@ public class LegendManiaDemo extends ApplicationFrame {
 				true, // include legend
 				true, // tooltips?
 				false // URLs?
-				);
+		);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
@@ -164,8 +163,7 @@ public class LegendManiaDemo extends ApplicationFrame {
 		renderer.setDrawBarOutline(false);
 
 		final CategoryAxis domainAxis = plot.getDomainAxis();
-		domainAxis.setCategoryLabelPositions(
-							CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0));
+		domainAxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0));
 
 		final StandardLegend legend = (StandardLegend) chart.getLegend();
 		legend.setBackgroundPaint(Color.orange);
@@ -184,7 +182,7 @@ public class LegendManiaDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 		final LegendManiaDemo demo = new LegendManiaDemo(CHART_TITLE);
@@ -207,35 +205,13 @@ public class LegendManiaDemo extends ApplicationFrame {
 		 * @see java.lang.Runnable#run()
 		 */
 		public void run() {
-			final int[] anchors = {
-								Legend.NORTH_NORTHWEST,
-								Legend.NORTH,
-								Legend.NORTH_NORTHEAST,
-								Legend.EAST_NORTHEAST,
-								Legend.EAST,
-								Legend.EAST_SOUTHEAST,
-								Legend.SOUTH_SOUTHEAST,
-								Legend.SOUTH,
-								Legend.SOUTH_SOUTHWEST,
-								Legend.WEST_SOUTHWEST,
-								Legend.WEST,
-								Legend.WEST_NORTHWEST
-				};
+			final int[] anchors = { Legend.NORTH_NORTHWEST, Legend.NORTH, Legend.NORTH_NORTHEAST, Legend.EAST_NORTHEAST,
+					Legend.EAST, Legend.EAST_SOUTHEAST, Legend.SOUTH_SOUTHEAST, Legend.SOUTH, Legend.SOUTH_SOUTHWEST,
+					Legend.WEST_SOUTHWEST, Legend.WEST, Legend.WEST_NORTHWEST };
 
-			final String[] anchorNames = {
-								"NORTH_NORTHWEST",
-								"NORTH",
-								"NORTH_NORTHEAST",
-								"EAST_NORTHEAST",
-								"EAST",
-								"EAST_SOUTHEAST",
-								"SOUTH_SOUTHEAST",
-								"SOUTH",
-								"SOUTH_SOUTHWEST",
-								"WEST_SOUTHWEST",
-								"WEST",
-								"WEST_NORTHWEST"
-				};
+			final String[] anchorNames = { "NORTH_NORTHWEST", "NORTH", "NORTH_NORTHEAST", "EAST_NORTHEAST", "EAST",
+					"EAST_SOUTHEAST", "SOUTH_SOUTHEAST", "SOUTH", "SOUTH_SOUTHWEST", "WEST_SOUTHWEST", "WEST",
+					"WEST_NORTHWEST" };
 
 			setPriority(MIN_PRIORITY); // be nice
 			final StandardLegend legend = (StandardLegend) demoChart.getLegend();

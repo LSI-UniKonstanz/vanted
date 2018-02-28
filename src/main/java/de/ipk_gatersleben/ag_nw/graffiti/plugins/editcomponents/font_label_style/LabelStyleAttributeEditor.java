@@ -24,12 +24,10 @@ import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class LabelStyleAttributeEditor
-					extends AbstractValueEditComponent {
-	
+public class LabelStyleAttributeEditor extends AbstractValueEditComponent {
+
 	private static final String SHADOWSTRING = "<html>shadow";
 	private static final String MOUSEOVERSTRING = "<html>Mouse over";
 	private static final String ITALICSTRING = "<html><i>italic";
@@ -39,7 +37,7 @@ public class LabelStyleAttributeEditor
 	protected JCheckBox jFontStyleMouseOver;
 	protected JCheckBox jFontStyleShadow;
 	protected JComboBox jFontStyleFrame;
-	
+
 	public LabelStyleAttributeEditor(final Displayable disp) {
 		super(disp);
 		jFontStyleBold = new JCheckBox(BOLDSTRING);
@@ -47,13 +45,13 @@ public class LabelStyleAttributeEditor
 		jFontStyleMouseOver = new JCheckBox(MOUSEOVERSTRING);
 		jFontStyleShadow = new JCheckBox(SHADOWSTRING);
 		jFontStyleFrame = new JComboBox(LabelFrameSetting.values());
-		
+
 		jFontStyleBold.setOpaque(false);
 		jFontStyleItalic.setOpaque(false);
 		jFontStyleMouseOver.setOpaque(false);
 		jFontStyleShadow.setOpaque(false);
 		jFontStyleFrame.setOpaque(false);
-		
+
 		jFontStyleBold.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				jFontStyleBold.setText(BOLDSTRING);
@@ -95,7 +93,7 @@ public class LabelStyleAttributeEditor
 			}
 		});
 	}
-	
+
 	public JComponent getComponent() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR) {
 			ArrayList<JComponent> ll = new ArrayList<JComponent>();
@@ -106,10 +104,10 @@ public class LabelStyleAttributeEditor
 			ll.add(jFontStyleFrame);
 			return TableLayout.getMultiSplitVertical(ll);
 		} else
-			return TableLayout.get3SplitVertical(jFontStyleBold, jFontStyleItalic, jFontStyleMouseOver, TableLayoutConstants.PREFERRED,
-					TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
+			return TableLayout.get3SplitVertical(jFontStyleBold, jFontStyleItalic, jFontStyleMouseOver,
+					TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
 	}
-	
+
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			jFontStyleFrame.setSelectedItem(null);
@@ -130,7 +128,7 @@ public class LabelStyleAttributeEditor
 			jFontStyleFrame.setSelectedItem(LabelFrameSetting.getSettingFromString(sel));
 		}
 	}
-	
+
 	public void setValue() {
 		boolean isBold = jFontStyleBold.isSelected();
 		boolean isItalic = jFontStyleItalic.isSelected();
@@ -138,7 +136,8 @@ public class LabelStyleAttributeEditor
 		boolean isShadow = jFontStyleShadow.isSelected();
 		LabelFrameSetting frame = (LabelFrameSetting) jFontStyleFrame.getSelectedItem();
 		String xyz = jFontStyleFrame.getSelectedItem() == null ? "~" : "";
-		String ab = jFontStyleBold.getText() + jFontStyleItalic.getText() + jFontStyleShadow.getText() + jFontStyleMouseOver.getText() + xyz;
+		String ab = jFontStyleBold.getText() + jFontStyleItalic.getText() + jFontStyleShadow.getText()
+				+ jFontStyleMouseOver.getText() + xyz;
 		if (ab.indexOf("~") < 0) {
 			String style = "";
 			if (isBold || isItalic || isShadow || isMouseOver || frame != LabelFrameSetting.NO_FRAME) {

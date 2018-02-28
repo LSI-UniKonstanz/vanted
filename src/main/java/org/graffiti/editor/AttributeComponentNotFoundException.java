@@ -14,15 +14,14 @@ package org.graffiti.editor;
  * 
  * @author schoeffl
  */
-public class AttributeComponentNotFoundException
-					extends Exception {
+public class AttributeComponentNotFoundException extends Exception {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Comment for <code>serialVersionUID</code>
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Constructor for AttributeComponentNotFoundException.
 	 * 

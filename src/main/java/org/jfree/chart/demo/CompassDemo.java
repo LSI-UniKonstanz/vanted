@@ -68,7 +68,8 @@ public class CompassDemo extends JPanel {
 	public static final boolean DEBUG = true;
 
 	/** The available needle types. */
-	public static final String[] NEEDLE_TYPES = { "Arrow", "Line", "Long", "Pin", "Plum", "Pointer", "Ship", "Wind", "Arrow" };
+	public static final String[] NEEDLE_TYPES = { "Arrow", "Line", "Long", "Pin", "Plum", "Pointer", "Ship", "Wind",
+			"Arrow" };
 
 	/** Dataset 1. */
 	private DefaultValueDataset compassData = new DefaultValueDataset(new Double(0.0));
@@ -80,9 +81,8 @@ public class CompassDemo extends JPanel {
 	private CompassPlot compassPlot = new CompassPlot(this.compassData);
 
 	/** The chart. */
-	private JFreeChart compassChart = new JFreeChart("Compass Test",
-																		JFreeChart.DEFAULT_TITLE_FONT,
-																		this.compassPlot, false);
+	private JFreeChart compassChart = new JFreeChart("Compass Test", JFreeChart.DEFAULT_TITLE_FONT, this.compassPlot,
+			false);
 
 	/** The chart panel. */
 	private ChartPanel panelCompass = new ChartPanel(this.compassChart);
@@ -171,7 +171,7 @@ public class CompassDemo extends JPanel {
 	 * Initialises the user interface.
 	 * 
 	 * @throws Exception
-	 *            if there are any exceptions.
+	 *             if there are any exceptions.
 	 */
 	void jbInit() throws Exception {
 		this.titledBorder1 = new TitledBorder("");
@@ -239,49 +239,25 @@ public class CompassDemo extends JPanel {
 		this.panelCompassHolder.add(this.jPanel12, BorderLayout.SOUTH);
 		this.jPanel12.add(this.jPanel1, null);
 
-		this.jPanel1.add(this.pick1Pointer,
-							new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0,
-															GridBagConstraints.CENTER,
-															GridBagConstraints.HORIZONTAL,
-															new Insets(0, 0, 0, 0),
-															0, 0));
+		this.jPanel1.add(this.pick1Pointer, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 
-		this.jPanel1.add(this.windNullCheckBox,
-							new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-															GridBagConstraints.CENTER,
-															GridBagConstraints.NONE,
-															new Insets(0, 0, 0, 0),
-															0, 0));
+		this.jPanel1.add(this.windNullCheckBox, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 
-		this.jPanel1.add(this.spinWind,
-							new GridBagConstraints(2, 0, 1, 1, 1.0, 0.0,
-															GridBagConstraints.CENTER,
-															GridBagConstraints.BOTH,
-															new Insets(0, 0, 0, 0),
-															0, 0));
+		this.jPanel1.add(this.spinWind, new GridBagConstraints(2, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
 		this.jPanel12.add(this.jPanel2, null);
 
-		this.jPanel2.add(this.pick2Pointer,
-							new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0,
-															GridBagConstraints.CENTER,
-															GridBagConstraints.HORIZONTAL,
-															new Insets(0, 0, 0, 0),
-															0, 0));
+		this.jPanel2.add(this.pick2Pointer, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 
-		this.jPanel2.add(this.shipNullCheckBox,
-							new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-															GridBagConstraints.CENTER,
-															GridBagConstraints.NONE,
-															new Insets(0, 0, 0, 0),
-															0, 0));
+		this.jPanel2.add(this.shipNullCheckBox, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 
-		this.jPanel2.add(this.spinShip,
-							new GridBagConstraints(2, 0, 1, 1, 1.0, 0.0,
-												GridBagConstraints.CENTER,
-												GridBagConstraints.BOTH,
-												new Insets(0, 0, 0, 0),
-												0, 0));
+		this.jPanel2.add(this.spinShip, new GridBagConstraints(2, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
 		this.panelCompassHolder.add(this.panelCompass, BorderLayout.CENTER);
 
@@ -291,7 +267,7 @@ public class CompassDemo extends JPanel {
 	 * Entry point for the demo application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
@@ -304,8 +280,7 @@ public class CompassDemo extends JPanel {
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 		frame.setSize(700, 400);
 		final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		frame.setLocation((d.width - frame.getSize().width) / 2,
-									(d.height - frame.getSize().height) / 2);
+		frame.setLocation((d.width - frame.getSize().width) / 2, (d.height - frame.getSize().height) / 2);
 		frame.setVisible(true);
 	}
 
@@ -324,7 +299,7 @@ public class CompassDemo extends JPanel {
 	 * Updates the data.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public void adjustData(final double value) {
 
@@ -351,7 +326,7 @@ public class CompassDemo extends JPanel {
 	 * Handles an action event.
 	 * 
 	 * @param e
-	 *           the event.
+	 *            the event.
 	 */
 	void checkWindNullActionPerformed(final ActionEvent e) {
 		if (CompassDemo.DEBUG) {
@@ -361,7 +336,8 @@ public class CompassDemo extends JPanel {
 			this.compassData.setValue(null);
 			this.spinWind.setEnabled(false);
 		} else {
-			// compassData.setValue((new Double(((Integer)spinWind.getValue()).intValue())));
+			// compassData.setValue((new
+			// Double(((Integer)spinWind.getValue()).intValue())));
 			this.compassData.setValue(new Double(this.spinWind.getValue()));
 			this.spinWind.setEnabled(true);
 		}
@@ -375,7 +351,7 @@ public class CompassDemo extends JPanel {
 	 * Handles an action event.
 	 * 
 	 * @param e
-	 *           the event.
+	 *            the event.
 	 */
 	void checkShipNullActionPerformed(final ActionEvent e) {
 		if (CompassDemo.DEBUG) {
@@ -395,7 +371,7 @@ public class CompassDemo extends JPanel {
 	 * Handles an action event.
 	 * 
 	 * @param e
-	 *           the event.
+	 *            the event.
 	 */
 	void pick2PointerActionPerformed(final ActionEvent e) {
 		if (CompassDemo.DEBUG) {
@@ -410,7 +386,7 @@ public class CompassDemo extends JPanel {
 	 * Handles an action event.
 	 * 
 	 * @param e
-	 *           the event.
+	 *            the event.
 	 */
 	void pick1PointerActionPerformed(final ActionEvent e) {
 		if (CompassDemo.DEBUG) {

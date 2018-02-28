@@ -25,40 +25,35 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
  * @author Christian Klukas
  */
 public class SetClusterInfoFromSubgraphAlgorithm extends AbstractAlgorithm {
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
 		else
-			return "<html>" +
-								"Detect connected subgraphs and set<br>" +
-								"cluster ID to differentiate subgraphs";
+			return "<html>" + "Detect connected subgraphs and set<br>" + "cluster ID to differentiate subgraphs";
 	}
-	
+
 	@Override
 	public String getDescription() {
-		return "<html>" +
-							"About to use the information about connected subgraphs for the assignment of a cluster ID.<br>";
+		return "<html>"
+				+ "About to use the information about connected subgraphs for the assignment of a cluster ID.<br>";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Elements"; // "menu.edit";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.ANNOTATION,
-				Category.CLUSTER
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANNOTATION, Category.CLUSTER));
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
@@ -66,7 +61,7 @@ public class SetClusterInfoFromSubgraphAlgorithm extends AbstractAlgorithm {
 		if (graph.getNumberOfNodes() <= 0)
 			throw new PreconditionException("Graph contains no graph elements!");
 	}
-	
+
 	public void execute() {
 		HashMap<GraphElement, String> ge2newClusterID = new HashMap<GraphElement, String>();
 		int subgraphIndex = 1;
@@ -89,14 +84,17 @@ public class SetClusterInfoFromSubgraphAlgorithm extends AbstractAlgorithm {
 						}
 					}
 					subgraphIndex++;
-					System.out.println("Subgraph index: " + subgraphIndex + ", number of nodes: " + connectedNodes.size());
+					System.out.println(
+							"Subgraph index: " + subgraphIndex + ", number of nodes: " + connectedNodes.size());
 				}
 			}
 		}
 		GraphHelper.applyUndoableClusterIdAssignment(graph, ge2newClusterID, getName(), true);
-		MainFrame.showMessage(subgraphIndex + " subgraphs found, " + ge2newClusterID.size() + " nodes and edges elements processed", MessageType.INFO);
+		MainFrame.showMessage(
+				subgraphIndex + " subgraphs found, " + ge2newClusterID.size() + " nodes and edges elements processed",
+				MessageType.INFO);
 	}
-	
+
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}

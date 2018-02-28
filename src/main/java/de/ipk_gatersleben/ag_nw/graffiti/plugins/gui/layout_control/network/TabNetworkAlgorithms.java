@@ -29,12 +29,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.algorithms.SearchAlgorithms.Op
  * @author matthiak
  *
  */
-public class TabNetworkAlgorithms extends InspectorTab{
+public class TabNetworkAlgorithms extends InspectorTab {
 
 	static Logger logger = Logger.getLogger(TabNetworkAlgorithms.class);
 
 	private static String NAME = "Algorithms";
-
 
 	/**
 	 * 
@@ -56,11 +55,8 @@ public class TabNetworkAlgorithms extends InspectorTab{
 	 */
 	private void initNewDialog() {
 		double border = 2;
-		double[][] size =
-			{
-				{ border, TableLayoutConstants.FILL, border }, // Columns
-				{ border, TableLayoutConstants.FILL, border }
-			}; // Rows
+		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
+				{ border, TableLayoutConstants.FILL, border } }; // Rows
 		this.setLayout(new TableLayout(size));
 
 		JButton searchAlgo = new JButton("search algos");
@@ -69,36 +65,28 @@ public class TabNetworkAlgorithms extends InspectorTab{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				OperatorOnCategories[] opsOnCats = new OperatorOnCategories[]{
-						new OperatorOnCategories(
-								LogicalOp.OR, 
-								new Category[]{
-										Category.ANALYSIS, 
-										Category.DATA}),
-
+				OperatorOnCategories[] opsOnCats = new OperatorOnCategories[] {
+						new OperatorOnCategories(LogicalOp.OR, new Category[] { Category.ANALYSIS, Category.DATA }),
 
 				};
 
 				logger.debug("===== Found Algorithms =====");
 				List<Algorithm> searchAlgorithms = SearchAlgorithms.searchAlgorithms(opsOnCats);
-				for(Algorithm algo : searchAlgorithms) {
-					logger.debug("Name : "+algo.getName());
-					for(Category cat : algo.getSetCategory())
+				for (Algorithm algo : searchAlgorithms) {
+					logger.debug("Name : " + algo.getName());
+					for (Category cat : algo.getSetCategory())
 						logger.debug("   category: " + cat);
 				}
 
 			}
 		});
-//		add(searchAlgo, "1,1");
-		
-		JPanel algorithmspanel = AlgorithmPanelFactory.createForAlgorithms(
-				true, 
-				SearchAlgorithms.searchAlgorithms(
-						new Category[]{Category.ANALYSIS, Category.GRAPH}));
-		
+		// add(searchAlgo, "1,1");
+
+		JPanel algorithmspanel = AlgorithmPanelFactory.createForAlgorithms(true,
+				SearchAlgorithms.searchAlgorithms(new Category[] { Category.ANALYSIS, Category.GRAPH }));
+
 		add(algorithmspanel, "1,1");
 	}
-
 
 	@Override
 	public String getTitle() {
@@ -124,6 +112,5 @@ public class TabNetworkAlgorithms extends InspectorTab{
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_TRAILING;
 	}
-
 
 }

@@ -60,7 +60,7 @@ public class TimeSeriesDemo11 extends ApplicationFrame {
 	 * A demonstration application showing how to...
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public TimeSeriesDemo11(final String title) {
 
@@ -119,22 +119,14 @@ public class TimeSeriesDemo11 extends ApplicationFrame {
 	 * Creates the demo chart.
 	 * 
 	 * @param title
-	 *           the title.
+	 *            the title.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final String title, final XYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							title,
-							"Date",
-							"Price",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart(title, "Date", "Price", dataset, true, true, false);
 
 		chart.setBackgroundPaint(Color.white);
 		final XYPlot plot = chart.getXYPlot();
@@ -155,19 +147,17 @@ public class TimeSeriesDemo11 extends ApplicationFrame {
 	 * Creates a sample dataset.
 	 * 
 	 * @param name
-	 *           the dataset name.
+	 *            the dataset name.
 	 * @param base
-	 *           the starting value.
+	 *            the starting value.
 	 * @param start
-	 *           the starting period.
+	 *            the starting period.
 	 * @param count
-	 *           the number of values to generate.
+	 *            the number of values to generate.
 	 * @return The dataset.
 	 */
-	private XYDataset createDataset(final String name,
-												final double base,
-												final RegularTimePeriod start,
-												final int count) {
+	private XYDataset createDataset(final String name, final double base, final RegularTimePeriod start,
+			final int count) {
 
 		final TimeSeries series = new TimeSeries(name, start.getClass());
 		RegularTimePeriod period = start;
@@ -189,7 +179,7 @@ public class TimeSeriesDemo11 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

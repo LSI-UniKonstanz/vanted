@@ -31,46 +31,45 @@ import org.graffiti.graph.Node;
  * @version $Revision: 1.9 $
  */
 @SuppressWarnings("unchecked")
-public class GraphElementsDeletionEdit
-					extends GraphElementsEdit {
+public class GraphElementsDeletionEdit extends GraphElementsEdit {
 	// ~ Static fields/initializers =============================================
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/** The logger for the current class. */
 	private static final Logger logger = Logger.getLogger(GraphElementsDeletionEdit.class.getName());
-	
+
 	// ~ Instance fields ========================================================
-	
+
 	/**
-	 * this flag assures that execute method will be invoked before calling
-	 * undo or redo methods
+	 * this flag assures that execute method will be invoked before calling undo or
+	 * redo methods
 	 */
 	protected boolean executed = false;
-	
+
 	/** set of graph elements that were selected for deletion. */
 	private LinkedHashSet<GraphElement> graphElements;
-	
+
 	/**
-	 * temporary graph element set. It is necessary for update of graph
-	 * elements contained in the selection set.
+	 * temporary graph element set. It is necessary for update of graph elements
+	 * contained in the selection set.
 	 */
 	private Set<GraphElement> tempGraphElements;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * @see GraffitiAbstractUndoableEdit#GraffitiAbstractUndoableEdit(Map)
 	 */
 	public GraphElementsDeletionEdit(Collection<GraphElement> graphElemList, Graph graph,
-						Map<GraphElement, GraphElement> geMap) {
+			Map<GraphElement, GraphElement> geMap) {
 		super(graph, geMap);
 		this.graphElements = new LinkedHashSet<GraphElement>(graphElemList);
 		tempGraphElements = new HashSet<GraphElement>();
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Used to display the name for this edit.
 	 * 
@@ -80,22 +79,20 @@ public class GraphElementsDeletionEdit
 	@Override
 	public String getPresentationName() {
 		String name = "";
-		
+
 		if (graphElements.size() == 1) {
 			if (graphElements.iterator().next() instanceof Node) {
 				name = sBundle.getString("undo.deleteNode");
-			} else
-				if (graphElements.iterator().next() instanceof Edge) {
-					name = sBundle.getString("undo.deleteEdge");
-				}
-		} else
-			if (graphElements.size() > 1) {
-				name = sBundle.getString("undo.deleteGraphElements");
+			} else if (graphElements.iterator().next() instanceof Edge) {
+				name = sBundle.getString("undo.deleteEdge");
 			}
-		
+		} else if (graphElements.size() > 1) {
+			name = sBundle.getString("undo.deleteGraphElements");
+		}
+
 		return name;
 	}
-	
+
 	/**
 	 * Executes the deletion of selected grpah elements
 	 */
@@ -105,22 +102,22 @@ public class GraphElementsDeletionEdit
 		graph.getListenerManager().transactionStarted(this);
 		/* saves adjacent edges of nodes in the common graph elements set. */
 		Set<Edge> adjacentEdges = new HashSet<Edge>();
-		
+
 		for (Iterator iter = graphElements.iterator(); iter.hasNext();) {
 			GraphElement ge = (GraphElement) iter.next();
-			
+
 			if (ge instanceof Node) {
 				Collection<Edge> edgeList = ((Node) ge).getEdges();
 				adjacentEdges.addAll(edgeList);
 			}
 		}
-		
+
 		graphElements.addAll(adjacentEdges);
-		
+
 		/* deletes all nodes contained in the selection set then. */
 		for (Iterator iter = graphElements.iterator(); iter.hasNext();) {
 			GraphElement ge = (GraphElement) iter.next();
-			
+
 			if (ge instanceof Node) {
 				try {
 					graph.deleteNode((Node) ge);
@@ -129,37 +126,37 @@ public class GraphElementsDeletionEdit
 				}
 			}
 		}
-		
+
 		/* deletes all edges contained in the selection set firstly. */
 		for (Iterator iter = graphElements.iterator(); iter.hasNext();) {
 			GraphElement ge = (GraphElement) iter.next();
-			
+
 			if (ge instanceof Edge) {
 				if (ge.getGraph() != null)
 					graph.deleteEdge((Edge) ge);
 			}
 		}
-		
+
 		graph.getListenerManager().transactionFinished(this);
 	}
-	
+
 	/**
 	 * Deletes the GraphElements stored in this edit.
 	 */
 	@Override
 	public void redo() {
 		super.redo();
-		
+
 		if (!executed) {
 			logger.info("The execute method hasn't been invocated");
 			ErrorMsg.addErrorMessage("The execute method hasn't been invocated");
 			return;
 		}
-		
+
 		graph.getListenerManager().transactionStarted(this);
 		for (Iterator iter = graphElements.iterator(); iter.hasNext();) {
 			GraphElement ge = (GraphElement) iter.next();
-			
+
 			if (ge instanceof Edge) {
 				Edge newEdge = (Edge) ge; // (Edge) getNewGraphElement(ge);
 				newEdge.setGraph(graph);
@@ -167,10 +164,10 @@ public class GraphElementsDeletionEdit
 				graph.deleteEdge(newEdge);
 			}
 		}
-		
+
 		for (Iterator iter = graphElements.iterator(); iter.hasNext();) {
 			GraphElement ge = (GraphElement) iter.next();
-			
+
 			if (ge instanceof Node) {
 				Node newNode = (Node) ge; // (Node) getNewGraphElement(ge);
 				newNode.setGraph(graph);
@@ -178,24 +175,23 @@ public class GraphElementsDeletionEdit
 				graph.deleteNode(newNode);
 			}
 		}
-		
+
 		/*
-		 * updates all graph elements referencies in the set containing graph
-		 * elements.
+		 * updates all graph elements referencies in the set containing graph elements.
 		 */
 		graphElements.clear();
 		graphElements.addAll(tempGraphElements);
 		tempGraphElements.clear();
 		graph.getListenerManager().transactionFinished(this);
 	}
-	
+
 	/**
 	 * Adds the deleted GraphElements stored in this edit.
 	 */
 	@Override
 	public void undo() {
 		super.undo();
-		
+
 		if (!executed) {
 			logger.info("The execute method hasn't been invocated");
 			ErrorMsg.addErrorMessage("The execute method hasn't been invocated");
@@ -204,20 +200,20 @@ public class GraphElementsDeletionEdit
 		graph.getListenerManager().transactionStarted(this);
 		for (Iterator iter = graphElements.iterator(); iter.hasNext();) {
 			GraphElement ge = (GraphElement) iter.next();
-			
+
 			if (ge instanceof Node) {
 				Node newNode = graph.addNodeCopy((Node) ge);
 				newNode.setGraph(graph);
 				geMap.put(ge, newNode);
 			}
 		}
-		
+
 		for (Iterator iter = graphElements.iterator(); iter.hasNext();) {
 			GraphElement ge = (GraphElement) iter.next();
-			
+
 			if (ge instanceof Edge) {
 				// logger.info("undo the edge deleting");
-				
+
 				Edge oldEdge = (Edge) ge;
 				GraphElement newSource = getNewGraphElement(oldEdge.getSource());
 				GraphElement newTarget = getNewGraphElement(oldEdge.getTarget());

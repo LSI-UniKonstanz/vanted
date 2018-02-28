@@ -31,36 +31,32 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 public class ErdosRenyiGraphGenerator extends AbstractAlgorithm {
-	
+
 	@Override
 	public String getCategory() {
 		return "File.New.Random Network";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
 	}
-	
+
 	private int numberOfNodes = 5;
 	private double p = 0.5;
 	private boolean label = true;
 	private boolean directed = false;
 	private boolean selfLoops = false;
-	
+
 	@Override
 	public Parameter[] getParameters() {
-		return new Parameter[] {
-				new IntegerParameter(numberOfNodes, "Number of nodes", "Number of nodes"),
+		return new Parameter[] { new IntegerParameter(numberOfNodes, "Number of nodes", "Number of nodes"),
 				new DoubleParameter(p, "Edge probability", "Edge-creation probability"),
 				new BooleanParameter(label, "Add node label", "If enabled, each node will be labeld (1,2,3,...)"),
 				new BooleanParameter(directed, "Create directed graph", "If enabled, a directed network is created"),
 				new BooleanParameter(selfLoops, "Create self loops", "If enabled, self loops are created") };
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -70,7 +66,7 @@ public class ErdosRenyiGraphGenerator extends AbstractAlgorithm {
 		directed = ((BooleanParameter) params[i++]).getBoolean();
 		selfLoops = ((BooleanParameter) params[i++]).getBoolean();
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		if (numberOfNodes < 1)
@@ -80,19 +76,18 @@ public class ErdosRenyiGraphGenerator extends AbstractAlgorithm {
 		if (p > 1)
 			throw new PreconditionException("Edge-creation-probability greater than 1 (100%) is not supported");
 	}
-	
+
 	@Override
 	public String getName() {
 		return "Generate Erdős–Rényi random network";
 	}
-	
+
 	@Override
 	public String getDescription() {
-		return "<html>" +
-				"Using the G(n, p) model, a network of given size is constructed by connecting <br>" +
-				"its nodes randomly. Each edge is included in the network with probability p.";
+		return "<html>" + "Using the G(n, p) model, a network of given size is constructed by connecting <br>"
+				+ "its nodes randomly. Each edge is included in the network with probability p.";
 	}
-	
+
 	@Override
 	public void execute() {
 		BackgroundTaskHelper.issueSimpleTask("Generating random network", "Generating random network", new Runnable() {
@@ -110,16 +105,17 @@ public class ErdosRenyiGraphGenerator extends AbstractAlgorithm {
 				} catch (Exception e) {
 					ErrorMsg.addErrorMessage(e);
 				} catch (OutOfMemoryError e) {
-					ErrorMsg.addErrorMessage("Out of memory! Please choose to create a smaller network or increase memory of Java VM!");
+					ErrorMsg.addErrorMessage(
+							"Out of memory! Please choose to create a smaller network or increase memory of Java VM!");
 				}
 			}
 		}, null);
-		
+
 	}
-	
+
 	public static Graph createGraph(int numberOfNodes, boolean label, double p, boolean directed, boolean selfLoops) {
 		Graph rdg = new AdjListGraph();
-		
+
 		rdg.getListenerManager().transactionStarted(rdg);
 		try {
 			ArrayList<Node> nodes = new ArrayList<Node>();
@@ -128,7 +124,7 @@ public class ErdosRenyiGraphGenerator extends AbstractAlgorithm {
 				Node n = rdg.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(pgg.getNextPositionVec2d()));
 				AttributeHelper.setShapeEllipse(n);
 				nodes.add(n);
-				
+
 				if (label)
 					AttributeHelper.setLabel(n, "" + (i + 1));
 			}
@@ -163,6 +159,5 @@ public class ErdosRenyiGraphGenerator extends AbstractAlgorithm {
 	public boolean isAlwaysExecutable() {
 		return true;
 	}
-	
-	
+
 }

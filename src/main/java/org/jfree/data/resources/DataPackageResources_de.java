@@ -51,8 +51,7 @@ public class DataPackageResources_de extends ListResourceBundle {
 	/** The resources to be localised. */
 	private static final Object[][] CONTENTS = {
 
-	{ "series.default-prefix", "Reihen" },
-						{ "categories.default-prefix", "Kategorien" },
+			{ "series.default-prefix", "Reihen" }, { "categories.default-prefix", "Kategorien" },
 
 	};
 

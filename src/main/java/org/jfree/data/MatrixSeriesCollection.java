@@ -36,13 +36,13 @@ import java.util.List;
 import org.jfree.util.ObjectUtils;
 
 /**
- * Represents a collection of {@link MatrixSeries} that can be used as a dataset.
+ * Represents a collection of {@link MatrixSeries} that can be used as a
+ * dataset.
  * 
  * @author Barak Naveh
  * @see org.jfree.data.MatrixSeries
  */
-public class MatrixSeriesCollection extends AbstractXYZDataset
-												implements XYZDataset, Serializable {
+public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDataset, Serializable {
 
 	/** The series that are included in the collection. */
 	private List seriesList;
@@ -58,7 +58,7 @@ public class MatrixSeriesCollection extends AbstractXYZDataset
 	 * Constructs a dataset and populates it with a single matrix series.
 	 * 
 	 * @param series
-	 *           the time series.
+	 *            the time series.
 	 */
 	public MatrixSeriesCollection(final MatrixSeries series) {
 		this.seriesList = new java.util.ArrayList();
@@ -73,7 +73,7 @@ public class MatrixSeriesCollection extends AbstractXYZDataset
 	 * Returns the number of items in the specified series.
 	 * 
 	 * @param seriesIndex
-	 *           zero-based series index.
+	 *            zero-based series index.
 	 * @return the number of items in the specified series.
 	 */
 	public int getItemCount(final int seriesIndex) {
@@ -84,14 +84,13 @@ public class MatrixSeriesCollection extends AbstractXYZDataset
 	 * Returns the series having the specified index.
 	 * 
 	 * @param seriesIndex
-	 *           zero-based series index.
+	 *            zero-based series index.
 	 * @return The series.
 	 * @throws IllegalArgumentException
 	 */
 	public MatrixSeries getSeries(final int seriesIndex) {
 		if ((seriesIndex < 0) || (seriesIndex > getSeriesCount())) {
-			throw new IllegalArgumentException(
-								"MatrixSeriesCollection.getSeries(...): index outside valid range.");
+			throw new IllegalArgumentException("MatrixSeriesCollection.getSeries(...): index outside valid range.");
 		}
 
 		final MatrixSeries series = (MatrixSeries) this.seriesList.get(seriesIndex);
@@ -112,7 +111,7 @@ public class MatrixSeriesCollection extends AbstractXYZDataset
 	 * Returns the name of a series.
 	 * 
 	 * @param seriesIndex
-	 *           zero-based series index.
+	 *            zero-based series index.
 	 * @return the name of a series.
 	 */
 	public String getSeriesName(final int seriesIndex) {
@@ -120,13 +119,13 @@ public class MatrixSeriesCollection extends AbstractXYZDataset
 	}
 
 	/**
-	 * Returns the j index value of the specified Mij matrix item in the
-	 * specified matrix series.
+	 * Returns the j index value of the specified Mij matrix item in the specified
+	 * matrix series.
 	 * 
 	 * @param seriesIndex
-	 *           zero-based series index.
+	 *            zero-based series index.
 	 * @param itemIndex
-	 *           zero-based item index.
+	 *            zero-based item index.
 	 * @return the j index value for the specified matrix item.
 	 * @see org.jfree.data.XYDataset#getXValue(int, int)
 	 */
@@ -138,13 +137,13 @@ public class MatrixSeriesCollection extends AbstractXYZDataset
 	}
 
 	/**
-	 * Returns the i index value of the specified Mij matrix item in the
-	 * specified matrix series.
+	 * Returns the i index value of the specified Mij matrix item in the specified
+	 * matrix series.
 	 * 
 	 * @param seriesIndex
-	 *           zero-based series index.
+	 *            zero-based series index.
 	 * @param itemIndex
-	 *           zero-based item index.
+	 *            zero-based item index.
 	 * @return the i index value for the specified matrix item.
 	 * @see org.jfree.data.XYDataset#getYValue(int, int)
 	 */
@@ -156,13 +155,13 @@ public class MatrixSeriesCollection extends AbstractXYZDataset
 	}
 
 	/**
-	 * Returns the Mij item value of the specified Mij matrix item in the
-	 * specified matrix series.
+	 * Returns the Mij item value of the specified Mij matrix item in the specified
+	 * matrix series.
 	 * 
 	 * @param seriesIndex
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param itemIndex
-	 *           zero-based item index.
+	 *            zero-based item index.
 	 * @return the Mij item value for the specified matrix item.
 	 * @see org.jfree.data.XYZDataset#getZValue(int, int)
 	 */
@@ -180,14 +179,13 @@ public class MatrixSeriesCollection extends AbstractXYZDataset
 	 * </p>
 	 * 
 	 * @param series
-	 *           the series.
+	 *            the series.
 	 * @throws IllegalArgumentException
 	 */
 	public void addSeries(final MatrixSeries series) {
 		// check arguments...
 		if (series == null) {
-			throw new IllegalArgumentException(
-								"MatrixSeriesCollection.addSeries(...): cannot add null series.");
+			throw new IllegalArgumentException("MatrixSeriesCollection.addSeries(...): cannot add null series.");
 		}
 
 		// add the series...
@@ -200,7 +198,7 @@ public class MatrixSeriesCollection extends AbstractXYZDataset
 	 * Tests this collection for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object.
+	 *            the object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object obj) {
@@ -237,7 +235,8 @@ public class MatrixSeriesCollection extends AbstractXYZDataset
 	 * </p>
 	 */
 	public void removeAllSeries() {
-		// Unregister the collection as a change listener to each series inmthe collection.
+		// Unregister the collection as a change listener to each series inmthe
+		// collection.
 		for (int i = 0; i < this.seriesList.size(); i++) {
 			final MatrixSeries series = (MatrixSeries) this.seriesList.get(i);
 			series.removeChangeListener(this);
@@ -255,14 +254,13 @@ public class MatrixSeriesCollection extends AbstractXYZDataset
 	 * </p>
 	 * 
 	 * @param series
-	 *           the series.
+	 *            the series.
 	 * @throws IllegalArgumentException
 	 */
 	public void removeSeries(final MatrixSeries series) {
 		// check arguments...
 		if (series == null) {
-			throw new IllegalArgumentException(
-								"MatrixSeriesCollection.removeSeries(...): cannot remove null series.");
+			throw new IllegalArgumentException("MatrixSeriesCollection.removeSeries(...): cannot remove null series.");
 		}
 
 		// remove the series...
@@ -280,14 +278,13 @@ public class MatrixSeriesCollection extends AbstractXYZDataset
 	 * </p>
 	 * 
 	 * @param seriesIndex
-	 *           the series (zero based index).
+	 *            the series (zero based index).
 	 * @throws IllegalArgumentException
 	 */
 	public void removeSeries(final int seriesIndex) {
 		// check arguments...
 		if ((seriesIndex < 0) || (seriesIndex > getSeriesCount())) {
-			throw new IllegalArgumentException(
-								"MatrixSeriesCollection.removeSeries(...): index outside valid range.");
+			throw new IllegalArgumentException("MatrixSeriesCollection.removeSeries(...): index outside valid range.");
 		}
 
 		// fetch the series, remove the change listener, then remove the series.

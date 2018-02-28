@@ -23,60 +23,59 @@ import javax.swing.JDialog;
  * @see javax.swing.JDialog
  * @see ParameterDialog
  */
-public abstract class AbstractParameterDialog
-					extends JDialog
-					implements ParameterDialog {
+public abstract class AbstractParameterDialog extends JDialog implements ParameterDialog {
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	/** The <code>ValueEditContainer</code> for this dialog. */
 	protected ValueEditContainer valueEditContainer;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new abstract parameter dialog.
 	 * 
 	 * @param parent
-	 *           the parent frame.
+	 *            the parent frame.
 	 * @param modal
-	 *           <code>true</code>, if this dialog should be modal.
+	 *            <code>true</code>, if this dialog should be modal.
 	 */
 	public AbstractParameterDialog(Frame parent, boolean modal) {
 		super(parent, modal);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
-	 * Sets the <code>ValueEditContainer</code> of this <code>ParameterDialog</code> to the specified value.
+	 * Sets the <code>ValueEditContainer</code> of this <code>ParameterDialog</code>
+	 * to the specified value.
 	 * 
 	 * @param vec
-	 *           the <code>ValueEditContainer</code> to be set.
+	 *            the <code>ValueEditContainer</code> to be set.
 	 */
 	public void setValueEditContainer(ValueEditContainer vec) {
 		this.valueEditContainer = vec;
 	}
-	
+
 	/**
 	 * Checks if all the edit components have a syntactically correct input.
 	 * 
-	 * @return a <code>java.util.List</code> of <code>EditComponent</code>s
-	 *         which have a syntactically incorrect input.
+	 * @return a <code>java.util.List</code> of <code>EditComponent</code>s which
+	 *         have a syntactically incorrect input.
 	 */
 	public List<?> validateComponents() {
 		List<?> badComponents = new ArrayList<Object>();
-		
+
 		for (Iterator<?> i = valueEditContainer.getEditComponents().iterator(); i.hasNext();) {
 			// check each of the components
 			// e.g. by looking if an exception is thrown when settin the
 			// value
 			// create a list with all the components having bad entries
 		}
-		
+
 		return badComponents;
 	}
 }

@@ -48,8 +48,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * This demo shows a bar chart with time based data where the time periods are slightly
- * irregular.
+ * This demo shows a bar chart with time based data where the time periods are
+ * slightly irregular.
  */
 public class TimePeriodValuesDemo3 extends ApplicationFrame {
 
@@ -57,7 +57,7 @@ public class TimePeriodValuesDemo3 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public TimePeriodValuesDemo3(final String title) {
 
@@ -137,7 +137,7 @@ public class TimePeriodValuesDemo3 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

@@ -34,13 +34,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
  * @author Christian Klukas
  * @vanted.revision 2.6.5
  */
-public class GridPlacementAlgorithm
-					extends AbstractAlgorithm
-					implements ProvidesNodeContextMenu, ActionListener {
-	
+public class GridPlacementAlgorithm extends AbstractAlgorithm implements ProvidesNodeContextMenu, ActionListener {
+
 	private double xgrid = 10;
 	private double ygrid = 10;
-	
+
 	/**
 	 * Returns the name of the algorithm.
 	 * 
@@ -49,52 +47,47 @@ public class GridPlacementAlgorithm
 	public String getName() {
 		return "Move Nodes to Grid-Points";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Network";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.LAYOUT
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
 
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;
 	}
-	
+
 	/**
 	 * Checks, if a graph was given.
 	 * 
 	 * @throws PreconditionException
-	 *            if no graph was given during algorithm
-	 *            invocation
+	 *             if no graph was given during algorithm invocation
 	 */
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-		
+
 		if (graph == null) {
 			errors.add("No graph available!");
 			throw errors;
 		}
-		
+
 		if (!errors.isEmpty()) {
 			throw errors;
 		}
-		
+
 		if (graph.getNumberOfNodes() <= 0) {
 			throw new PreconditionException("The graph is empty. Cannot run layouter.");
 		}
-		
+
 	}
-	
+
 	/**
 	 * Performs the layout.
 	 */
@@ -106,28 +99,24 @@ public class GridPlacementAlgorithm
 		}
 		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
-		DoubleParameter xDistanceParam =
-							new DoubleParameter(
-												"Grid X",
-												"Modifies the node placement in horizontal direction.");
+		DoubleParameter xDistanceParam = new DoubleParameter("Grid X",
+				"Modifies the node placement in horizontal direction.");
 		xDistanceParam.setValue(Double.valueOf(xgrid));
-		DoubleParameter yDistanceParam =
-							new DoubleParameter(
-												"Grid Y",
-												"Modifies the node placement in vertical direction.");
+		DoubleParameter yDistanceParam = new DoubleParameter("Grid Y",
+				"Modifies the node placement in vertical direction.");
 		yDistanceParam.setValue(Double.valueOf(ygrid));
 		return new Parameter[] { xDistanceParam, yDistanceParam };
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		xgrid = ((DoubleParameter) params[0]).getDouble().doubleValue();
 		ygrid = ((DoubleParameter) params[1]).getDouble().doubleValue();
 	}
-	
+
 	public JMenuItem[] getCurrentNodeContextMenuItem(Collection selectedNodes) {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.DEBUG) {
 			JMenuItem myMenuItem = new JMenuItem("Grid-Placement");
@@ -136,7 +125,7 @@ public class GridPlacementAlgorithm
 		} else
 			return null;
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 		GravistoService.getInstance().runPlugin(getName(), null, e);
 	}

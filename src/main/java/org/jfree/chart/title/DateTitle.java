@@ -48,11 +48,14 @@ import org.jfree.ui.VerticalAlignment;
 /**
  * A chart title that displays the date.
  * <p>
- * Keep in mind that a chart can have several titles, and that they can appear at the top, left, right or bottom of the chart - a <code>DateTitle</code> will
- * commonly appear at the bottom of a chart, although you can place it anywhere.
+ * Keep in mind that a chart can have several titles, and that they can appear
+ * at the top, left, right or bottom of the chart - a <code>DateTitle</code>
+ * will commonly appear at the bottom of a chart, although you can place it
+ * anywhere.
  * <P>
- * By specifying the locale, dates are formatted to the correct standard for the given locale. For example, a date would appear as "January 17, 2000" in the US,
- * but "17 January 2000" in most European locales.
+ * By specifying the locale, dates are formatted to the correct standard for the
+ * given locale. For example, a date would appear as "January 17, 2000" in the
+ * US, but "17 January 2000" in most European locales.
  * 
  * @author David Berry
  */
@@ -62,7 +65,8 @@ public class DateTitle extends TextTitle {
 	 * Creates a new chart title that displays the current date in the default
 	 * (LONG) format for the locale, positioned to the bottom right of the chart.
 	 * <P>
-	 * The color will be black in 12 point, plain Helvetica font (maps to Arial on Win32 systems without Helvetica).
+	 * The color will be black in 12 point, plain Helvetica font (maps to Arial on
+	 * Win32 systems without Helvetica).
 	 */
 	public DateTitle() {
 
@@ -71,97 +75,97 @@ public class DateTitle extends TextTitle {
 	}
 
 	/**
-	 * Creates a new chart title that displays the current date with the specified style
-	 * (for the default locale).
+	 * Creates a new chart title that displays the current date with the specified
+	 * style (for the default locale).
 	 * <P>
-	 * The date style should be one of: <code>SHORT</code>, <code>MEDIUM</code>, <code>LONG</code> or <code>FULL</code> (defined in
+	 * The date style should be one of: <code>SHORT</code>, <code>MEDIUM</code>,
+	 * <code>LONG</code> or <code>FULL</code> (defined in
 	 * <code>java.util.DateFormat<code>).
 	 * 
 	 * @param style
-	 *           the date style.
+	 *            the date style.
 	 */
 	public DateTitle(int style) {
-		this(style, Locale.getDefault(),
-							new Font("Dialog", Font.PLAIN, 12), Color.black);
+		this(style, Locale.getDefault(), new Font("Dialog", Font.PLAIN, 12), Color.black);
 	}
 
 	/**
 	 * Creates a new chart title that displays the current date.
 	 * <p>
-	 * The date style should be one of: <code>SHORT</code>, <code>MEDIUM</code>, <code>LONG</code> or <code>FULL</code> (defined in
+	 * The date style should be one of: <code>SHORT</code>, <code>MEDIUM</code>,
+	 * <code>LONG</code> or <code>FULL</code> (defined in
 	 * <code>java.util.DateFormat<code>).
 	 * <P>
-	 * For the locale, you can use <code>Locale.getDefault()</code> for the default locale.
+	 * For the locale, you can use <code>Locale.getDefault()</code> for the default
+	 * locale.
 	 * 
 	 * @param style
-	 *           the date style.
+	 *            the date style.
 	 * @param locale
-	 *           the locale.
+	 *            the locale.
 	 * @param font
-	 *           the font.
+	 *            the font.
 	 * @param paint
-	 *           the text color.
+	 *            the text color.
 	 */
 	public DateTitle(int style, Locale locale, Font font, Paint paint) {
 
-		this(style, locale, font, paint,
-							RectangleEdge.BOTTOM,
-							HorizontalAlignment.RIGHT,
-							VerticalAlignment.CENTER,
-							Title.DEFAULT_SPACER);
+		this(style, locale, font, paint, RectangleEdge.BOTTOM, HorizontalAlignment.RIGHT, VerticalAlignment.CENTER,
+				Title.DEFAULT_SPACER);
 	}
 
 	/**
 	 * Creates a new chart title that displays the current date.
 	 * <p>
-	 * The date style should be one of: <code>SHORT</code>, <code>MEDIUM</code>, <code>LONG</code> or <code>FULL</code> (defined in
+	 * The date style should be one of: <code>SHORT</code>, <code>MEDIUM</code>,
+	 * <code>LONG</code> or <code>FULL</code> (defined in
 	 * <code>java.util.DateFormat<code>).
 	 * <P>
-	 * For the locale, you can use <code>Locale.getDefault()</code> for the default locale.
+	 * For the locale, you can use <code>Locale.getDefault()</code> for the default
+	 * locale.
 	 * 
 	 * @param style
-	 *           the date style.
+	 *            the date style.
 	 * @param locale
-	 *           the locale.
+	 *            the locale.
 	 * @param font
-	 *           the font (not null).
+	 *            the font (not null).
 	 * @param paint
-	 *           the text color (not null).
+	 *            the text color (not null).
 	 * @param position
-	 *           the relative location of this title (use constants in Title).
+	 *            the relative location of this title (use constants in Title).
 	 * @param horizontalAlignment
-	 *           the horizontal text alignment of this title (use constants
-	 *           in Title).
+	 *            the horizontal text alignment of this title (use constants in
+	 *            Title).
 	 * @param verticalAlignment
-	 *           the vertical text alignment of this title (use constants in
-	 *           Title).
+	 *            the vertical text alignment of this title (use constants in
+	 *            Title).
 	 * @param spacer
-	 *           determines the blank space around the outside of the title (not null).
+	 *            determines the blank space around the outside of the title (not
+	 *            null).
 	 */
-	public DateTitle(int style, Locale locale, Font font, Paint paint,
-							RectangleEdge position,
-							HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment,
-							Spacer spacer) {
+	public DateTitle(int style, Locale locale, Font font, Paint paint, RectangleEdge position,
+			HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Spacer spacer) {
 
-		super(DateFormat.getDateInstance(style, locale).format(new Date()),
-							font, paint,
-							position, horizontalAlignment, verticalAlignment,
-							spacer);
+		super(DateFormat.getDateInstance(style, locale).format(new Date()), font, paint, position, horizontalAlignment,
+				verticalAlignment, spacer);
 
 	}
 
 	/**
 	 * Set the format of the date.
 	 * <P>
-	 * The date style should be one of: <code>SHORT</code>, <code>MEDIUM</code>, <code>LONG</code> or <code>FULL</code> (defined in
+	 * The date style should be one of: <code>SHORT</code>, <code>MEDIUM</code>,
+	 * <code>LONG</code> or <code>FULL</code> (defined in
 	 * <code>java.util.DateFormat<code>).
 	 * <P>
-	 * For the locale, you can use <code>Locale.getDefault()</code> for the default locale.
+	 * For the locale, you can use <code>Locale.getDefault()</code> for the default
+	 * locale.
 	 * 
 	 * @param style
-	 *           the date style.
+	 *            the date style.
 	 * @param locale
-	 *           the locale.
+	 *            the locale.
 	 */
 	public void setDateFormat(int style, Locale locale) {
 

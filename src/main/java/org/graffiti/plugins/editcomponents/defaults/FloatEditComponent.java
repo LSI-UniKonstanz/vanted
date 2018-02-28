@@ -19,25 +19,24 @@ import org.graffiti.plugin.editcomponent.NumberEditComponent;
  * 
  * @see NumberEditComponent
  */
-public class FloatEditComponent
-					extends NumberEditComponent {
+public class FloatEditComponent extends NumberEditComponent {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new <code>FloatEditComponent</code>.
 	 * 
 	 * @param disp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public FloatEditComponent(Displayable disp) {
 		super(disp);
 	}
-	
+
 	/**
 	 * Constructs a new <code>FloatEditComponent</code>.
 	 * 
 	 * @param attr
-	 *           the <code>FloatAttribute</code> to be edited.
+	 *            the <code>FloatAttribute</code> to be edited.
 	 */
 	public FloatEditComponent(FloatAttribute attr) {
 		super(attr);

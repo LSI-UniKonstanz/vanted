@@ -25,40 +25,39 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 /**
- * @author Christian Klukas
- *         (c) 2005 IPK Gatersleben, Group Network Analysis
+ * @author Christian Klukas (c) 2005 IPK Gatersleben, Group Network Analysis
  */
 public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Remove Mapped Data";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Mapping";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.DATA
-				));
+		return new HashSet<Category>(Arrays.asList(Category.DATA));
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
 		// graph.getListenerManager().transactionStarted(this);
 		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
-		final BackgroundTaskStatusProviderSupportingExternalCall status =
-				new BackgroundTaskStatusProviderSupportingExternalCallImpl("Initialize...", "");
+		final BackgroundTaskStatusProviderSupportingExternalCall status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
+				"Initialize...", "");
 		if (workNodes.size() > 0)
 			BackgroundTaskHelper.issueSimpleTask(getName(), "Initialize...", new Runnable() {
 				public void run() {
@@ -89,7 +88,7 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 					} finally {
 						g.getListenerManager().transactionFinished(this, false, status);
 						status.setCurrentStatusValue(100);
-//						GraphHelper.issueCompleteRedrawForGraph(g);
+						// GraphHelper.issueCompleteRedrawForGraph(g);
 					}
 					if (status.wantsToStop())
 						status.setCurrentStatusText1("Processing aborted");
@@ -99,7 +98,7 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 				}
 			}, null, status);
 	}
-	
+
 	public synchronized static void removeMappingDataFrom(GraphElement n) {
 		try {
 			n.removeAttribute("dbe");
@@ -123,7 +122,7 @@ public class RemoveMappingDataAlgorithm extends AbstractAlgorithm {
 			// empty
 		}
 	}
-	
+
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}

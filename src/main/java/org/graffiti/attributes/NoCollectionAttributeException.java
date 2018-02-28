@@ -11,25 +11,26 @@ package org.graffiti.attributes;
 
 /**
  * The <code>NoCollectionAttributeException</code> will be thrown if a method
- * tries to add an attribute to an attribute which is no <code>CollectionAttribute</code>.
+ * tries to add an attribute to an attribute which is no
+ * <code>CollectionAttribute</code>.
  * 
  * @version $Revision: 1.5 $
  */
-public class NoCollectionAttributeException
-					extends RuntimeException {
+public class NoCollectionAttributeException extends RuntimeException {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
-	 * Constructs a <code>NoCollectionAttributeException</code> with the
-	 * specified detail message.
+	 * Constructs a <code>NoCollectionAttributeException</code> with the specified
+	 * detail message.
 	 * 
 	 * @param msg
-	 *           The detail message which is saved for later retrieval by the <code>getMessage()</code> method.
+	 *            The detail message which is saved for later retrieval by the
+	 *            <code>getMessage()</code> method.
 	 */
 	NoCollectionAttributeException(String msg) {
 		super(msg);

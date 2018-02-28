@@ -49,23 +49,15 @@ public class NormalDistributionDemo extends ApplicationFrame {
 	 * A demonstration application showing a normal distribution.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public NormalDistributionDemo(final String title) {
 
 		super(title);
 		Function2D normal = new NormalDistributionFunction2D(0.0, 1.0);
 		XYDataset dataset = DatasetUtilities.sampleFunction2D(normal, -5.0, 5.0, 100, "Normal");
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-							"XY Series Demo",
-							"X",
-							"Y",
-							dataset,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createXYLineChart("XY Series Demo", "X", "Y", dataset,
+				PlotOrientation.VERTICAL, true, true, false);
 
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
@@ -88,7 +80,7 @@ public class NormalDistributionDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

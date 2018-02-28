@@ -25,34 +25,33 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.database.dbe.DesEncrypter;
 import de.ipk_gatersleben.ag_nw.graffiti.services.network.BroadCastService;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 @SuppressWarnings("unchecked")
 public class BroadCastTask extends TimerTask {
-	
+
 	private static int timeOffline = 31000;
 	public static int timeDefaultBeatTime = 15000;
-	
+
 	BroadCastService broadCastService;
-	
+
 	private static String chatPass = "CHATSTATICENCRYPTION";
-	
+
 	// Create encrypter/decrypter class
 	private static DesEncrypter encrypter = new DesEncrypter(chatPass);
-	
+
 	/**
 	 * Contains byte[] arrays of data that was received.
 	 */
 	ArrayList<byte[]> inMessages = new ArrayList<byte[]>();
-	
+
 	HashMap knownHostsAndTime = new HashMap();
-	
+
 	/**
 	 * Contains byte[] arrays of data to be sent.
 	 */
 	private ArrayList<byte[]> outMessages = new ArrayList<byte[]>();
-	
+
 	BroadCastTask(final BroadCastService broadCastService, final Runnable receiver) {
 		this.broadCastService = broadCastService;
 		Thread receiveTask = new Thread(new Runnable() {
@@ -84,27 +83,26 @@ public class BroadCastTask extends TimerTask {
 								if (cntBefore != knownHostsAndTime.size())
 									SwingUtilities.invokeLater(receiver);
 							}
-						} else
-							if (msgString.startsWith("MSG:")) {
-								broadCastService.increaseInCount();
-								msgString = msgString.substring(4);
-								if (msgString.indexOf("§§§") > 0) {
-									msgString = msgString.substring(0, msgString.indexOf("§§§"));
-									// Decrypt
-									msgString = encrypter.decrypt(msgString);
-									Date dt = new GregorianCalendar().getTime();
-									if (msgString != null) {
-										synchronized (inMessages) {
-											inMessages.add(new String("[" + ensure00(dt.getHours()) + ":" + ensure00(dt.getMinutes()) +
-																"/" +
-																rec.getSenderHostNameOrIP() +
-																"]: " + msgString.trim()).getBytes("UTF-8"));
-										}
-										SwingUtilities.invokeLater(receiver);
-									} else
-										ErrorMsg.addErrorMessage("Emtpy String received.");
-								}
+						} else if (msgString.startsWith("MSG:")) {
+							broadCastService.increaseInCount();
+							msgString = msgString.substring(4);
+							if (msgString.indexOf("§§§") > 0) {
+								msgString = msgString.substring(0, msgString.indexOf("§§§"));
+								// Decrypt
+								msgString = encrypter.decrypt(msgString);
+								Date dt = new GregorianCalendar().getTime();
+								if (msgString != null) {
+									synchronized (inMessages) {
+										inMessages.add(new String(
+												"[" + ensure00(dt.getHours()) + ":" + ensure00(dt.getMinutes()) + "/"
+														+ rec.getSenderHostNameOrIP() + "]: " + msgString.trim())
+																.getBytes("UTF-8"));
+									}
+									SwingUtilities.invokeLater(receiver);
+								} else
+									ErrorMsg.addErrorMessage("Emtpy String received.");
 							}
+						}
 					} catch (IOException e) {
 						error = true;
 						ErrorMsg.addErrorMessage(e.getLocalizedMessage());
@@ -112,7 +110,7 @@ public class BroadCastTask extends TimerTask {
 				}
 				System.err.println("Aglet Receiver has ended.");
 			}
-			
+
 			private String ensure00(int value) {
 				String result = new Integer(value).toString();
 				if (result.length() < 2)
@@ -122,11 +120,11 @@ public class BroadCastTask extends TimerTask {
 		}, "Aglet Broadcast Receiver");
 		receiveTask.start();
 	}
-	
+
 	public void addMessageToBeSent(String message) {
 		// Encrypt
 		message = encrypter.encrypt(message);
-		
+
 		synchronized (outMessages) {
 			try {
 				outMessages.add(new String("MSG:" + message + "§§§").getBytes("UTF-8"));
@@ -136,7 +134,7 @@ public class BroadCastTask extends TimerTask {
 		}
 		sendOutMessages();
 	}
-	
+
 	private void sendOutMessages() {
 		try {
 			synchronized (outMessages) {
@@ -150,9 +148,10 @@ public class BroadCastTask extends TimerTask {
 			ErrorMsg.addErrorMessage("Broadcast failed: " + e.getLocalizedMessage());
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Runnable#run()
 	 */
 	@Override
@@ -165,7 +164,7 @@ public class BroadCastTask extends TimerTask {
 			ErrorMsg.addErrorMessage("Broadcast failed: " + e.getLocalizedMessage());
 		}
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -176,7 +175,7 @@ public class BroadCastTask extends TimerTask {
 			return result;
 		}
 	}
-	
+
 	public List getActiveHosts() {
 		synchronized (knownHostsAndTime) {
 			ArrayList result = new ArrayList(knownHostsAndTime.keySet());

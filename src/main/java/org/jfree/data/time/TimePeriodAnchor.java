@@ -34,7 +34,8 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * Used to indicate one of three positions in a time period: <code>START</code>, <code>MIDDLE</code> and <code>END</code>.
+ * Used to indicate one of three positions in a time period: <code>START</code>,
+ * <code>MIDDLE</code> and <code>END</code>.
  */
 public final class TimePeriodAnchor implements Serializable {
 
@@ -54,7 +55,7 @@ public final class TimePeriodAnchor implements Serializable {
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *           the name.
+	 *            the name.
 	 */
 	private TimePeriodAnchor(final String name) {
 		this.name = name;
@@ -70,10 +71,11 @@ public final class TimePeriodAnchor implements Serializable {
 	}
 
 	/**
-	 * Returns <code>true</code> if this object is equal to the specified object, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if this object is equal to the specified object,
+	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
@@ -107,18 +109,16 @@ public final class TimePeriodAnchor implements Serializable {
 	 * 
 	 * @return The object.
 	 * @throws ObjectStreamException
-	 *            if there is a problem.
+	 *             if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		if (this.equals(TimePeriodAnchor.START)) {
 			return TimePeriodAnchor.START;
-		} else
-			if (this.equals(TimePeriodAnchor.MIDDLE)) {
-				return TimePeriodAnchor.MIDDLE;
-			} else
-				if (this.equals(TimePeriodAnchor.END)) {
-					return TimePeriodAnchor.END;
-				}
+		} else if (this.equals(TimePeriodAnchor.MIDDLE)) {
+			return TimePeriodAnchor.MIDDLE;
+		} else if (this.equals(TimePeriodAnchor.END)) {
+			return TimePeriodAnchor.END;
+		}
 		return null;
 	}
 

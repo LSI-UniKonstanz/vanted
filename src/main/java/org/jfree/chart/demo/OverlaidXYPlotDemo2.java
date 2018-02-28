@@ -66,7 +66,7 @@ public class OverlaidXYPlotDemo2 extends ApplicationFrame {
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public OverlaidXYPlotDemo2(final String title) {
 
@@ -103,12 +103,8 @@ public class OverlaidXYPlotDemo2 extends ApplicationFrame {
 		// create plot...
 		final IntervalXYDataset data1 = createDataset1();
 		final XYItemRenderer renderer1 = new XYBarRenderer(0.20);
-		renderer1.setToolTipGenerator(
-							new StandardXYToolTipGenerator(
-												StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-												new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")
-							)
-							);
+		renderer1.setToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+				new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")));
 		final XYPlot plot = new XYPlot(data1, domainAxis, rangeAxis, renderer1);
 		final double x = new Day(9, SerialDate.MARCH, 2002).getMiddleMillisecond();
 		final XYTextAnnotation annotation = new XYTextAnnotation("Hello!", x, 10000.0);
@@ -121,12 +117,9 @@ public class OverlaidXYPlotDemo2 extends ApplicationFrame {
 		// create subplot 2...
 		final XYDataset data2A = createDataset2A();
 		final XYItemRenderer renderer2A = new StandardXYItemRenderer();
-		renderer2A.setToolTipGenerator(
-							new StandardXYToolTipGenerator(
-												StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-												new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")
-							)
-							);
+		renderer2A
+				.setToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+						new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")));
 		plot.setDataset(1, data2A);
 		plot.setRenderer(1, renderer2A);
 
@@ -239,7 +232,7 @@ public class OverlaidXYPlotDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

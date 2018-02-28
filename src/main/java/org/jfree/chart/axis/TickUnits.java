@@ -72,7 +72,7 @@ public class TickUnits implements TickUnitSource, Cloneable, Serializable {
 	 * The tick units are maintained in ascending order.
 	 * 
 	 * @param unit
-	 *           the tick unit to add.
+	 *            the tick unit to add.
 	 */
 	public void add(TickUnit unit) {
 
@@ -101,7 +101,7 @@ public class TickUnits implements TickUnitSource, Cloneable, Serializable {
 	 * This method is required for the XML writer.
 	 * 
 	 * @param pos
-	 *           the position in the list.
+	 *            the position in the list.
 	 * @return the tickunit.
 	 */
 	public TickUnit get(int pos) {
@@ -112,7 +112,7 @@ public class TickUnits implements TickUnitSource, Cloneable, Serializable {
 	 * Returns a tick unit that is larger than the supplied unit.
 	 * 
 	 * @param unit
-	 *           the unit.
+	 *            the unit.
 	 * @return a tick unit that is larger than the supplied unit.
 	 */
 	public TickUnit getLargerTickUnit(TickUnit unit) {
@@ -129,11 +129,11 @@ public class TickUnits implements TickUnitSource, Cloneable, Serializable {
 	}
 
 	/**
-	 * Returns the tick unit in the collection that is greater than or equal
-	 * to (in size) the specified unit.
+	 * Returns the tick unit in the collection that is greater than or equal to (in
+	 * size) the specified unit.
 	 * 
 	 * @param unit
-	 *           the unit.
+	 *            the unit.
 	 * @return a unit from the collection.
 	 */
 	public TickUnit getCeilingTickUnit(TickUnit unit) {
@@ -149,11 +149,11 @@ public class TickUnits implements TickUnitSource, Cloneable, Serializable {
 	}
 
 	/**
-	 * Returns the tick unit in the collection that is greater than or equal
-	 * to the specified size.
+	 * Returns the tick unit in the collection that is greater than or equal to the
+	 * specified size.
 	 * 
 	 * @param size
-	 *           the size.
+	 *            the size.
 	 * @return a unit from the collection.
 	 */
 	public TickUnit getCeilingTickUnit(double size) {
@@ -165,7 +165,8 @@ public class TickUnits implements TickUnitSource, Cloneable, Serializable {
 	/**
 	 * Creates the standard tick units.
 	 * <P>
-	 * If you don't like these defaults, create your own instance of TickUnits and then pass it to the setStandardTickUnits(...) method in the NumberAxis class.
+	 * If you don't like these defaults, create your own instance of TickUnits and
+	 * then pass it to the setStandardTickUnits(...) method in the NumberAxis class.
 	 * 
 	 * @return the standard tick units.
 	 * @deprecated this method has been moved to the NumberAxis class.
@@ -281,8 +282,8 @@ public class TickUnits implements TickUnitSource, Cloneable, Serializable {
 
 	/**
 	 * Replace occurrences of a substring.
-	 * http://ostermiller.org/utils/StringHelper.html
-	 * StringHelper.replace("1-2-3", "-", "|");<br>
+	 * http://ostermiller.org/utils/StringHelper.html StringHelper.replace("1-2-3",
+	 * "-", "|");<br>
 	 * result: "1|2|3"<br>
 	 * StringHelper.replace("-1--2-", "-", "|");<br>
 	 * result: "|1||2|"<br>
@@ -294,14 +295,14 @@ public class TickUnits implements TickUnitSource, Cloneable, Serializable {
 	 * result: "1-2----3------4"<br>
 	 * 
 	 * @param s
-	 *           String to be modified.
+	 *            String to be modified.
 	 * @param find
-	 *           String to find.
+	 *            String to find.
 	 * @param replace
-	 *           String to replace.
+	 *            String to replace.
 	 * @return a string with all the occurrences of the string to find replaced.
 	 * @throws NullPointerException
-	 *            if s is null.
+	 *             if s is null.
 	 */
 	public static String stringReplace(String s, String find, String replace) {
 		int findLength;
@@ -384,12 +385,14 @@ public class TickUnits implements TickUnitSource, Cloneable, Serializable {
 	}
 
 	/**
-	 * Creates the standard tick units, and uses a given Locale to create the DecimalFormats
+	 * Creates the standard tick units, and uses a given Locale to create the
+	 * DecimalFormats
 	 * <P>
-	 * If you don't like these defaults, create your own instance of TickUnits and then pass it to the setStandardTickUnits(...) method in the NumberAxis class.
+	 * If you don't like these defaults, create your own instance of TickUnits and
+	 * then pass it to the setStandardTickUnits(...) method in the NumberAxis class.
 	 * 
 	 * @param locale
-	 *           the locale to use to represent Numbers.
+	 *            the locale to use to represent Numbers.
 	 * @return the standard tick units.
 	 * @deprecated this method has been moved to the NumberAxis class.
 	 */
@@ -459,11 +462,11 @@ public class TickUnits implements TickUnitSource, Cloneable, Serializable {
 	}
 
 	/**
-	 * Returns a collection of tick units for integer values.
-	 * Uses a given Locale to create the DecimalFormats.
+	 * Returns a collection of tick units for integer values. Uses a given Locale to
+	 * create the DecimalFormats.
 	 * 
 	 * @param locale
-	 *           the locale to use to represent Numbers.
+	 *            the locale to use to represent Numbers.
 	 * @return a collection of tick units for integer values.
 	 * @deprecated this method has been moved to the NumberAxis class.
 	 */
@@ -514,7 +517,7 @@ public class TickUnits implements TickUnitSource, Cloneable, Serializable {
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if an item in the collection does not support cloning.
+	 *             if an item in the collection does not support cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		TickUnits clone = (TickUnits) super.clone();
@@ -526,7 +529,7 @@ public class TickUnits implements TickUnitSource, Cloneable, Serializable {
 	 * Tests an object for equality with this instance.
 	 * 
 	 * @param object
-	 *           the object to test.
+	 *            the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {

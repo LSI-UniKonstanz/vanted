@@ -34,8 +34,8 @@ import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
- * A source that can used by the {@link NumberAxis} class to obtain a
- * suitable {@link TickUnit}.
+ * A source that can used by the {@link NumberAxis} class to obtain a suitable
+ * {@link TickUnit}.
  */
 public class StandardTickUnitSource implements TickUnitSource {
 
@@ -46,7 +46,7 @@ public class StandardTickUnitSource implements TickUnitSource {
 	 * Returns a tick unit that is larger than the supplied unit.
 	 * 
 	 * @param unit
-	 *           the unit.
+	 *            the unit.
 	 * @return A tick unit that is larger than the supplied unit.
 	 */
 	public TickUnit getLargerTickUnit(TickUnit unit) {
@@ -58,8 +58,8 @@ public class StandardTickUnitSource implements TickUnitSource {
 
 	/**
 	 * Replace occurrences of a substring.
-	 * http://ostermiller.org/utils/StringHelper.html
-	 * StringHelper.replace("1-2-3", "-", "|");<br>
+	 * http://ostermiller.org/utils/StringHelper.html StringHelper.replace("1-2-3",
+	 * "-", "|");<br>
 	 * result: "1|2|3"<br>
 	 * StringHelper.replace("-1--2-", "-", "|");<br>
 	 * result: "|1||2|"<br>
@@ -71,14 +71,14 @@ public class StandardTickUnitSource implements TickUnitSource {
 	 * result: "1-2----3------4"<br>
 	 * 
 	 * @param s
-	 *           String to be modified.
+	 *            String to be modified.
 	 * @param find
-	 *           String to find.
+	 *            String to find.
 	 * @param replace
-	 *           String to replace.
+	 *            String to replace.
 	 * @return a string with all the occurrences of the string to find replaced.
 	 * @throws NullPointerException
-	 *            if s is null.
+	 *             if s is null.
 	 */
 	public static String stringReplace(String s, String find, String replace) {
 		int findLength;
@@ -161,11 +161,11 @@ public class StandardTickUnitSource implements TickUnitSource {
 	}
 
 	/**
-	 * Returns the tick unit in the collection that is greater than or equal
-	 * to (in size) the specified unit.
+	 * Returns the tick unit in the collection that is greater than or equal to (in
+	 * size) the specified unit.
 	 * 
 	 * @param unit
-	 *           the unit.
+	 *            the unit.
 	 * @return A unit from the collection.
 	 */
 	public TickUnit getCeilingTickUnit(TickUnit unit) {
@@ -173,11 +173,11 @@ public class StandardTickUnitSource implements TickUnitSource {
 	}
 
 	/**
-	 * Returns the tick unit in the collection that is greater than or equal
-	 * to the specified size.
+	 * Returns the tick unit in the collection that is greater than or equal to the
+	 * specified size.
 	 * 
 	 * @param size
-	 *           the size.
+	 *            the size.
 	 * @return A unit from the collection.
 	 */
 	public TickUnit getCeilingTickUnit(double size) {

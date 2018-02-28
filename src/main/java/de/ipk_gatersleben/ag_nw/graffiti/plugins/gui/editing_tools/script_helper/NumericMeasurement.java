@@ -14,11 +14,11 @@ public class NumericMeasurement implements NumericMeasurementInterface {
 	private SampleInterface parentSample;
 	private String unit;
 	private String quality;
-	
+
 	public NumericMeasurement(SampleInterface parent) {
 		this.parentSample = parent;
 	}
-	
+
 	public NumericMeasurement(SampleInterface parent, Map<?, ?> attributemap) {
 		this.parentSample = parent;
 		if (attributemap.containsKey("replicates"))
@@ -30,16 +30,16 @@ public class NumericMeasurement implements NumericMeasurementInterface {
 		if (attributemap.containsKey("quality"))
 			setQualityAnnotation((String) attributemap.get("quality"));
 	}
-	
+
 	/**
-	 * Builds up a new hierarchy for a newly created MeasurementData. Copies as
-	 * much as possible starting from the copyFrom Measurement to the top until
+	 * Builds up a new hierarchy for a newly created MeasurementData. Copies as much
+	 * as possible starting from the copyFrom Measurement to the top until
 	 * MeasurementData.
 	 */
 	public NumericMeasurement(Measurement copyFrom, String newSubstanceName, String optNewExperimentName) {
 		setValue(copyFrom.getValue());
 		setReplicateID(copyFrom.getReplicateID());
-		
+
 		SubstanceInterface md = copyFrom.getParentSample().getParentCondition().getParentSubstance().clone();
 		md.setName(newSubstanceName);
 		ConditionInterface series = copyFrom.getParentSample().getParentCondition().clone(md);
@@ -49,7 +49,7 @@ public class NumericMeasurement implements NumericMeasurementInterface {
 		parentSample = copyFrom.getParentSample().clone(series);
 		parentSample.setParent(series);
 	}
-	
+
 	public void getString(StringBuilder r) {
 		r.append("<data");
 		getXMLAttributeString(r);
@@ -57,35 +57,32 @@ public class NumericMeasurement implements NumericMeasurementInterface {
 		getStringOfChildren(r);
 		r.append("</data>");
 	}
-	
+
 	public void getXMLAttributeString(StringBuilder r) {
-		Substance.getAttributeString(r, new String[] {
-					"replicates", "unit", "quality"
-			}, new Object[] {
-					replicateID, unit, quality
-			});
+		Substance.getAttributeString(r, new String[] { "replicates", "unit", "quality" },
+				new Object[] { replicateID, unit, quality });
 	}
-	
+
 	public void getStringOfChildren(StringBuilder r) {
 		r.append(getValue());
 	}
-	
+
 	public double getValue() {
 		return value;
 	}
-	
+
 	public SampleInterface getParentSample() {
 		return parentSample;
 	}
-	
+
 	public String getUnit() {
 		return unit;
 	}
-	
+
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
-	
+
 	public boolean setData(Element averageElement) {
 		setValue(Double.NaN);
 		try {
@@ -94,7 +91,7 @@ public class NumericMeasurement implements NumericMeasurementInterface {
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
 		}
-		
+
 		List<?> attributeList = averageElement.getAttributes();
 		for (Object o : attributeList) {
 			if (o instanceof Attribute) {
@@ -106,12 +103,12 @@ public class NumericMeasurement implements NumericMeasurementInterface {
 		// no children
 		return true;
 	}
-	
+
 	public void setAttribute(Attribute attr) {
 		if (attr == null || attr.getValue() == null)
 			return;
 		attr.setValue(StringManipulationTools.htmlToUnicode(attr.getValue().replaceAll("~", "&#")));
-		
+
 		if (attr.getName().equals("replicates")) {
 			try {
 				if (attr.getValue().length() > 0)
@@ -121,60 +118,57 @@ public class NumericMeasurement implements NumericMeasurementInterface {
 			} catch (Exception e) {
 				ErrorMsg.addErrorMessage(e);
 			}
+		} else if (attr.getName().equals("unit")) {
+			try {
+				setUnit(attr.getValue());
+			} catch (Exception e) {
+				ErrorMsg.addErrorMessage(e);
+			}
+		} else if (attr.getName().equals("id")) {
+			// ignore ID
+		} else if (attr.getName().equals("quality")) {
+			setQualityAnnotation(attr.getValue());
 		} else
-			if (attr.getName().equals("unit")) {
-				try {
-					setUnit(attr.getValue());
-				} catch (Exception e) {
-					ErrorMsg.addErrorMessage(e);
-				}
-			} else
-				if (attr.getName().equals("id")) {
-					// ignore ID
-				} else
-					if (attr.getName().equals("quality")) {
-						setQualityAnnotation(attr.getValue());
-					} else
-						System.err.println("Internal Error: Unknown Data Attribute: " + attr.getName());
+			System.err.println("Internal Error: Unknown Data Attribute: " + attr.getName());
 	}
-	
+
 	public void setDataOfChildElement(Element childElement) {
 		// no children
 	}
-	
+
 	public void setValue(double value) {
 		this.value = value;
 	}
-	
+
 	public void setReplicateID(int replicateID) {
 		this.replicateID = replicateID;
 	}
-	
+
 	public int getReplicateID() {
 		return replicateID;
 	}
-	
+
 	@Override
 	public String getQualityAnnotation() {
 		return quality;
 	}
-	
+
 	@Override
 	public void setQualityAnnotation(String quality) {
 		this.quality = quality;
 	}
-	
+
 	public void setParentSample(SampleInterface sample) {
 		parentSample = sample;
 	}
-	
+
 	public void fillAttributeMap(Map<String, Object> attributes) {
 		attributes.put("replicates", getReplicateID());
 		attributes.put("unit", getUnit());
 		attributes.put("value", getValue());
 		attributes.put("quality", getQualityAnnotation());
 	}
-	
+
 	public NumericMeasurementInterface clone(SampleInterface parent) {
 		NumericMeasurementInterface m = Experiment.getTypeManager().getNewMeasurement(parent);
 		m.setValue(getValue());
@@ -183,5 +177,5 @@ public class NumericMeasurement implements NumericMeasurementInterface {
 		m.setQualityAnnotation(getQualityAnnotation());
 		return m;
 	}
-	
+
 }

@@ -63,14 +63,14 @@ public class GanttRenderer extends IntervalBarRenderer {
 	private Paint incompletePaint;
 
 	/**
-	 * Controls the starting edge of the progress indicator (expressed as a percentage of the
-	 * overall bar width).
+	 * Controls the starting edge of the progress indicator (expressed as a
+	 * percentage of the overall bar width).
 	 */
 	private double startPercent;
 
 	/**
-	 * Controls the ending edge of the progress indicator (expressed as a percentage of the
-	 * overall bar width).
+	 * Controls the ending edge of the progress indicator (expressed as a percentage
+	 * of the overall bar width).
 	 */
 	private double endPercent;
 
@@ -95,10 +95,11 @@ public class GanttRenderer extends IntervalBarRenderer {
 	}
 
 	/**
-	 * Sets the paint used to show the percentage complete and sends a {@link RendererChangeEvent} to all registered listeners.
+	 * Sets the paint used to show the percentage complete and sends a
+	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param paint
-	 *           the paint (<code>null</code> not permitted).
+	 *            the paint (<code>null</code> not permitted).
 	 */
 	public void setCompletePaint(Paint paint) {
 		if (paint == null) {
@@ -118,10 +119,11 @@ public class GanttRenderer extends IntervalBarRenderer {
 	}
 
 	/**
-	 * Sets the paint used to show the percentage incomplete and sends a {@link RendererChangeEvent} to all registered listeners.
+	 * Sets the paint used to show the percentage incomplete and sends a
+	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param paint
-	 *           the paint (<code>null</code> not permitted).
+	 *            the paint (<code>null</code> not permitted).
 	 */
 	public void setIncompletePaint(Paint paint) {
 		if (paint == null) {
@@ -132,8 +134,8 @@ public class GanttRenderer extends IntervalBarRenderer {
 	}
 
 	/**
-	 * Returns the position of the start of the progress indicator, as a percentage of the bar
-	 * width.
+	 * Returns the position of the start of the progress indicator, as a percentage
+	 * of the bar width.
 	 * 
 	 * @return The start percent.
 	 */
@@ -142,11 +144,11 @@ public class GanttRenderer extends IntervalBarRenderer {
 	}
 
 	/**
-	 * Sets the position of the start of the progress indicator, as a percentage of the bar
-	 * width.
+	 * Sets the position of the start of the progress indicator, as a percentage of
+	 * the bar width.
 	 * 
 	 * @param percent
-	 *           the percent.
+	 *            the percent.
 	 */
 	public void setStartPercent(double percent) {
 		this.startPercent = percent;
@@ -154,8 +156,8 @@ public class GanttRenderer extends IntervalBarRenderer {
 	}
 
 	/**
-	 * Returns the position of the end of the progress indicator, as a percentage of the bar
-	 * width.
+	 * Returns the position of the end of the progress indicator, as a percentage of
+	 * the bar width.
 	 * 
 	 * @return The end percent.
 	 */
@@ -164,11 +166,11 @@ public class GanttRenderer extends IntervalBarRenderer {
 	}
 
 	/**
-	 * Sets the position of the end of the progress indicator, as a percentage of the bar
-	 * width.
+	 * Sets the position of the end of the progress indicator, as a percentage of
+	 * the bar width.
 	 * 
 	 * @param percent
-	 *           the percent.
+	 *            the percent.
 	 */
 	public void setEndPercent(double percent) {
 		this.endPercent = percent;
@@ -179,33 +181,26 @@ public class GanttRenderer extends IntervalBarRenderer {
 	 * Draws the bar for a single (series, category) data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	public void drawItem(Graphics2D g2,
-									CategoryItemRendererState state,
-									Rectangle2D dataArea,
-									CategoryPlot plot,
-									CategoryAxis domainAxis,
-									ValueAxis rangeAxis,
-									CategoryDataset dataset,
-									int row,
-									int column) {
+	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
+			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
 
 		if (dataset instanceof GanttCategoryDataset) {
 			GanttCategoryDataset gcd = (GanttCategoryDataset) dataset;
@@ -220,33 +215,26 @@ public class GanttRenderer extends IntervalBarRenderer {
 	 * Draws the tasks/subtasks for one item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the data plot area.
+	 *            the data plot area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the data.
+	 *            the data.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	protected void drawTasks(Graphics2D g2,
-										CategoryItemRendererState state,
-										Rectangle2D dataArea,
-										CategoryPlot plot,
-										CategoryAxis domainAxis,
-										ValueAxis rangeAxis,
-										GanttCategoryDataset dataset,
-										int row,
-										int column) {
+	protected void drawTasks(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
+			CategoryAxis domainAxis, ValueAxis rangeAxis, GanttCategoryDataset dataset, int row, int column) {
 
 		int count = dataset.getSubIntervalCount(row, column);
 		if (count == 0) {
@@ -263,18 +251,14 @@ public class GanttRenderer extends IntervalBarRenderer {
 			if (value0 == null) {
 				return;
 			}
-			double translatedValue0 = rangeAxis.valueToJava2D(
-								value0.doubleValue(), dataArea, rangeAxisLocation
-								);
+			double translatedValue0 = rangeAxis.valueToJava2D(value0.doubleValue(), dataArea, rangeAxisLocation);
 
 			// value 1
 			Number value1 = dataset.getEndValue(row, column, subinterval);
 			if (value1 == null) {
 				return;
 			}
-			double translatedValue1 = rangeAxis.valueToJava2D(
-								value1.doubleValue(), dataArea, rangeAxisLocation
-								);
+			double translatedValue1 = rangeAxis.valueToJava2D(value1.doubleValue(), dataArea, rangeAxisLocation);
 
 			if (translatedValue1 < translatedValue0) {
 				double temp = translatedValue1;
@@ -283,14 +267,12 @@ public class GanttRenderer extends IntervalBarRenderer {
 			}
 
 			// rectStart
-			double rectStart = domainAxis.getCategoryStart(column, getColumnCount(), dataArea,
-																				domainAxisLocation);
+			double rectStart = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, domainAxisLocation);
 
 			int rows = getRowCount();
 			int columns = getColumnCount();
 			if (rows > 1) {
-				double seriesGap = dataArea.getHeight() * getItemMargin()
-												/ (columns * (rows - 1));
+				double seriesGap = dataArea.getHeight() * getItemMargin() / (columns * (rows - 1));
 				rectStart = rectStart + row * (state.getBarWidth() + seriesGap);
 			} else {
 				rectStart = rectStart + row * state.getBarWidth();
@@ -307,10 +289,9 @@ public class GanttRenderer extends IntervalBarRenderer {
 
 			if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
 				bar = new Rectangle2D.Double(translatedValue0, rectStart, rectLength, rectBreadth);
-			} else
-				if (plot.getOrientation() == PlotOrientation.VERTICAL) {
-					bar = new Rectangle2D.Double(rectStart, translatedValue0, rectBreadth, rectLength);
-				}
+			} else if (plot.getOrientation() == PlotOrientation.VERTICAL) {
+				bar = new Rectangle2D.Double(rectStart, translatedValue0, rectBreadth, rectLength);
+			}
 
 			Rectangle2D completeBar = null;
 			Rectangle2D incompleteBar = null;
@@ -320,33 +301,16 @@ public class GanttRenderer extends IntervalBarRenderer {
 			if (percent != null) {
 				double p = percent.doubleValue();
 				if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
-					completeBar = new Rectangle2D.Double(
-										translatedValue0,
-										rectStart + start * rectBreadth,
-										rectLength * p,
-										rectBreadth * (end - start)
-										);
-					incompleteBar = new Rectangle2D.Double(
-										translatedValue0 + rectLength * p,
-										rectStart + start * rectBreadth,
-										rectLength * (1 - p),
-										rectBreadth * (end - start)
-										);
-				} else
-					if (plot.getOrientation() == PlotOrientation.VERTICAL) {
-						completeBar = new Rectangle2D.Double(
-											rectStart + start * rectBreadth,
-											translatedValue0 + rectLength * (1 - p),
-											rectBreadth * (end - start),
-											rectLength * p
-											);
-						incompleteBar = new Rectangle2D.Double(
-											rectStart + start * rectBreadth,
-											translatedValue0,
-											rectBreadth * (end - start),
-											rectLength * (1 - p)
-											);
-					}
+					completeBar = new Rectangle2D.Double(translatedValue0, rectStart + start * rectBreadth,
+							rectLength * p, rectBreadth * (end - start));
+					incompleteBar = new Rectangle2D.Double(translatedValue0 + rectLength * p,
+							rectStart + start * rectBreadth, rectLength * (1 - p), rectBreadth * (end - start));
+				} else if (plot.getOrientation() == PlotOrientation.VERTICAL) {
+					completeBar = new Rectangle2D.Double(rectStart + start * rectBreadth,
+							translatedValue0 + rectLength * (1 - p), rectBreadth * (end - start), rectLength * p);
+					incompleteBar = new Rectangle2D.Double(rectStart + start * rectBreadth, translatedValue0,
+							rectBreadth * (end - start), rectLength * (1 - p));
+				}
 
 			}
 
@@ -373,17 +337,14 @@ public class GanttRenderer extends IntervalBarRenderer {
 				if (entities != null) {
 					String tip = null;
 					if (getToolTipGenerator(row, column) != null) {
-						tip = getToolTipGenerator(row, column).generateToolTip(
-											dataset, row, column
-											);
+						tip = getToolTipGenerator(row, column).generateToolTip(dataset, row, column);
 					}
 					String url = null;
 					if (getItemURLGenerator(row, column) != null) {
 						url = getItemURLGenerator(row, column).generateURL(dataset, row, column);
 					}
-					CategoryItemEntity entity = new CategoryItemEntity(
-										bar, tip, url, dataset, row, dataset.getColumnKey(column), column
-										);
+					CategoryItemEntity entity = new CategoryItemEntity(bar, tip, url, dataset, row,
+							dataset.getColumnKey(column), column);
 					entities.addEntity(entity);
 				}
 			}
@@ -394,33 +355,26 @@ public class GanttRenderer extends IntervalBarRenderer {
 	 * Draws a single task.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the data plot area.
+	 *            the data plot area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the data.
+	 *            the data.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	protected void drawTask(Graphics2D g2,
-										CategoryItemRendererState state,
-										Rectangle2D dataArea,
-										CategoryPlot plot,
-										CategoryAxis domainAxis,
-										ValueAxis rangeAxis,
-										GanttCategoryDataset dataset,
-										int row,
-										int column) {
+	protected void drawTask(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
+			CategoryAxis domainAxis, ValueAxis rangeAxis, GanttCategoryDataset dataset, int row, int column) {
 
 		int seriesCount = getRowCount();
 		int categoryCount = getColumnCount();
@@ -435,18 +389,14 @@ public class GanttRenderer extends IntervalBarRenderer {
 		if (value0 == null) {
 			return;
 		}
-		double java2dValue0 = rangeAxis.valueToJava2D(
-							value0.doubleValue(), dataArea, rangeAxisLocation
-							);
+		double java2dValue0 = rangeAxis.valueToJava2D(value0.doubleValue(), dataArea, rangeAxisLocation);
 
 		// Y1
 		Number value1 = dataset.getStartValue(row, column);
 		if (value1 == null) {
 			return;
 		}
-		double java2dValue1 = rangeAxis.valueToJava2D(
-							value1.doubleValue(), dataArea, rangeAxisLocation
-							);
+		double java2dValue1 = rangeAxis.valueToJava2D(value1.doubleValue(), dataArea, rangeAxisLocation);
 
 		if (java2dValue1 < java2dValue0) {
 			double temp = java2dValue1;
@@ -457,8 +407,7 @@ public class GanttRenderer extends IntervalBarRenderer {
 			value0 = tempNum;
 		}
 
-		double rectStart = domainAxis.getCategoryStart(column, getColumnCount(), dataArea,
-																			domainAxisLocation);
+		double rectStart = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, domainAxisLocation);
 
 		// BREADTH
 		double rectBreadth = state.getBarWidth();
@@ -469,24 +418,21 @@ public class GanttRenderer extends IntervalBarRenderer {
 		Rectangle2D bar = null;
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			if (seriesCount > 1) {
-				double seriesGap = dataArea.getHeight() * getItemMargin()
-												/ (categoryCount * (seriesCount - 1));
+				double seriesGap = dataArea.getHeight() * getItemMargin() / (categoryCount * (seriesCount - 1));
 				rectStart = rectStart + row * (state.getBarWidth() + seriesGap);
 			} else {
 				rectStart = rectStart + row * state.getBarWidth();
 			}
 			bar = new Rectangle2D.Double(java2dValue0, rectStart, rectLength, rectBreadth);
-		} else
-			if (orientation == PlotOrientation.VERTICAL) {
-				if (seriesCount > 1) {
-					double seriesGap = dataArea.getWidth() * getItemMargin()
-												/ (categoryCount * (seriesCount - 1));
-					rectStart = rectStart + row * (state.getBarWidth() + seriesGap);
-				} else {
-					rectStart = rectStart + row * state.getBarWidth();
-				}
-				bar = new Rectangle2D.Double(rectStart, java2dValue1, rectBreadth, rectLength);
+		} else if (orientation == PlotOrientation.VERTICAL) {
+			if (seriesCount > 1) {
+				double seriesGap = dataArea.getWidth() * getItemMargin() / (categoryCount * (seriesCount - 1));
+				rectStart = rectStart + row * (state.getBarWidth() + seriesGap);
+			} else {
+				rectStart = rectStart + row * state.getBarWidth();
 			}
+			bar = new Rectangle2D.Double(rectStart, java2dValue1, rectBreadth, rectLength);
+		}
 
 		Rectangle2D completeBar = null;
 		Rectangle2D incompleteBar = null;
@@ -496,33 +442,16 @@ public class GanttRenderer extends IntervalBarRenderer {
 		if (percent != null) {
 			double p = percent.doubleValue();
 			if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
-				completeBar = new Rectangle2D.Double(
-									java2dValue0,
-									rectStart + start * rectBreadth,
-									rectLength * p,
-									rectBreadth * (end - start)
-									);
-				incompleteBar = new Rectangle2D.Double(
-									java2dValue0 + rectLength * p,
-									rectStart + start * rectBreadth,
-									rectLength * (1 - p),
-									rectBreadth * (end - start)
-									);
-			} else
-				if (plot.getOrientation() == PlotOrientation.VERTICAL) {
-					completeBar = new Rectangle2D.Double(
-										rectStart + start * rectBreadth,
-										java2dValue1 + rectLength * (1 - p),
-										rectBreadth * (end - start),
-										rectLength * p
-										);
-					incompleteBar = new Rectangle2D.Double(
-										rectStart + start * rectBreadth,
-										java2dValue1,
-										rectBreadth * (end - start),
-										rectLength * (1 - p)
-										);
-				}
+				completeBar = new Rectangle2D.Double(java2dValue0, rectStart + start * rectBreadth, rectLength * p,
+						rectBreadth * (end - start));
+				incompleteBar = new Rectangle2D.Double(java2dValue0 + rectLength * p, rectStart + start * rectBreadth,
+						rectLength * (1 - p), rectBreadth * (end - start));
+			} else if (plot.getOrientation() == PlotOrientation.VERTICAL) {
+				completeBar = new Rectangle2D.Double(rectStart + start * rectBreadth,
+						java2dValue1 + rectLength * (1 - p), rectBreadth * (end - start), rectLength * p);
+				incompleteBar = new Rectangle2D.Double(rectStart + start * rectBreadth, java2dValue1,
+						rectBreadth * (end - start), rectLength * (1 - p));
+			}
 
 		}
 
@@ -568,9 +497,8 @@ public class GanttRenderer extends IntervalBarRenderer {
 				if (getItemURLGenerator(row, column) != null) {
 					url = getItemURLGenerator(row, column).generateURL(dataset, row, column);
 				}
-				CategoryItemEntity entity = new CategoryItemEntity(
-									bar, tip, url, dataset, row, dataset.getColumnKey(column), column
-									);
+				CategoryItemEntity entity = new CategoryItemEntity(bar, tip, url, dataset, row,
+						dataset.getColumnKey(column), column);
 				entities.addEntity(entity);
 			}
 		}

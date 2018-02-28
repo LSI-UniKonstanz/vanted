@@ -19,77 +19,74 @@ import scenario.ProvidesScenarioSupportCommand;
  * 
  * @version $Revision: 1.8 $
  */
-public class IntegerParameter
-					extends AbstractLimitableParameter
-					implements ProvidesScenarioSupportCommand {
+public class IntegerParameter extends AbstractLimitableParameter implements ProvidesScenarioSupportCommand {
 	// ~ Instance fields ========================================================
-	
+
 	/** The maximum valid value of this parameter. */
 	private Integer max = null;
-	
+
 	/** The minimum valid value of this parameter. */
 	private Integer min = null;
-	
+
 	/** The value of this parameter. */
 	private Integer value = null;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new integer parameter.
 	 * 
 	 * @param value
-	 *           the new integer value. May be null.
+	 *            the new integer value. May be null.
 	 * @param min
-	 *           the minimum value.
+	 *            the minimum value.
 	 * @param max
-	 *           the maximum value.
+	 *            the maximum value.
 	 * @param name
-	 *           the name of the parameter.
+	 *            the name of the parameter.
 	 * @param description
-	 *           the description of the parameter.
+	 *            the description of the parameter.
 	 */
-	public IntegerParameter(Integer value, Integer min, Integer max,
-						String name, String description) {
+	public IntegerParameter(Integer value, Integer min, Integer max, String name, String description) {
 		super(name, description);
-		
+
 		this.value = value;
 		this.min = min;
 		this.max = max;
 	}
-	
+
 	/**
 	 * Constructs a new integer parameter.
 	 * 
 	 * @param value
-	 *           the new integer value. May be null.
+	 *            the new integer value. May be null.
 	 * @param name
-	 *           the name of the parameter.
+	 *            the name of the parameter.
 	 * @param description
-	 *           the description of the parameter.
+	 *            the description of the parameter.
 	 */
 	public IntegerParameter(Integer value, String name, String description) {
 		super(name, description);
 		this.value = value;
 	}
-	
+
 	/**
 	 * Constructs a new integer parameter.
 	 * 
 	 * @param value
-	 *           the new integer value.
+	 *            the new integer value.
 	 * @param name
-	 *           the name of the parameter.
+	 *            the name of the parameter.
 	 * @param description
-	 *           the description of the parameter.
+	 *            the description of the parameter.
 	 */
 	public IntegerParameter(int value, String name, String description) {
 		super(name, description);
 		this.value = new Integer(value);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the value of this parameter as an <code>Integer</code>.
 	 * 
@@ -98,7 +95,7 @@ public class IntegerParameter
 	public Integer getInteger() {
 		return value;
 	}
-	
+
 	/**
 	 * Returns the maximum of the intervall.
 	 * 
@@ -108,7 +105,7 @@ public class IntegerParameter
 	public Comparable<Integer> getMax() {
 		return max == null ? Integer.MAX_VALUE : max;
 	}
-	
+
 	/**
 	 * Returns the minimum of the intervall.
 	 * 
@@ -118,7 +115,7 @@ public class IntegerParameter
 	public Comparable<Integer> getMin() {
 		return min == null ? Integer.MIN_VALUE : min;
 	}
-	
+
 	/**
 	 * Returns <code>true</code>, if the current value is valid.
 	 * 
@@ -129,42 +126,41 @@ public class IntegerParameter
 		if (value == null) {
 			return false;
 		}
-		
+
 		if ((min == null) && (max == null)) {
 			return true;
 		}
 		boolean valid = true;
-		if(min != null && min.compareTo(value) > 0)
+		if (min != null && min.compareTo(value) > 0)
 			valid = false;
-		if(max != null && max.compareTo(value) < 0)
+		if (max != null && max.compareTo(value) < 0)
 			valid = false;
-		
+
 		return valid;
 	}
-	
+
 	/**
 	 * Sets the value of the <code>AttributeParameter</code>.
 	 * 
 	 * @param value
-	 *           the new value of the <code>AttributeParameter</code>.
+	 *            the new value of the <code>AttributeParameter</code>.
 	 * @exception IllegalArgumentException
-	 *               thrown if <code>value</code> is not
-	 *               of the correct type.
+	 *                thrown if <code>value</code> is not of the correct type.
 	 */
 	@Override
 	public void setValue(Object value) {
-		if(value instanceof Integer)
+		if (value instanceof Integer)
 			this.value = (Integer) value;
-		else if(value instanceof String)
+		else if (value instanceof String)
 			try {
-				this.value = Integer.parseInt((String)value);
+				this.value = Integer.parseInt((String) value);
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
 				throw new IllegalArgumentException(e.getMessage());
-//				e.printStackTrace();
+				// e.printStackTrace();
 			}
 	}
-	
+
 	/**
 	 * Returns the value of this parameter.
 	 * 
@@ -174,12 +170,12 @@ public class IntegerParameter
 	public Object getValue() {
 		return value;
 	}
-	
+
 	public String getScenarioCommand() {
-		return "new IntegerParameter(" +
-							getInteger().intValue() + ", \"" + getName() + "\", \"" + getDescription() + "\")";
+		return "new IntegerParameter(" + getInteger().intValue() + ", \"" + getName() + "\", \"" + getDescription()
+				+ "\")";
 	}
-	
+
 	public Collection<String> getScenarioImports() {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add("import org.graffiti.plugin.parameter.IntegerParameter;");

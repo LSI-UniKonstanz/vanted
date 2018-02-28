@@ -47,29 +47,29 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover
  * @author Christian Klukas
  */
 public class DotLayoutAlgorithm extends AbstractAlgorithm {
-	
+
 	private String layoutCommand;
 	private boolean layoutEdges = false;
 	private int increaseSize = 0;
 	private String dotOrientation = "Left-Right";
 	private boolean sortChildren = false;
 	private boolean considerSameNodes = false;
-	
+
 	private String installPath = getInstallPath();
 	private boolean movetopleft;
-	
+
 	/**
 	 * Creates a new CircleLayouterAlgorithm object.
 	 */
 	public DotLayoutAlgorithm() {
 		super();
 	}
-	
+
 	public static boolean isInstalled() {
 		String path = getInstallPath();
 		return path != null && !path.equals("") && new File(path).exists();
 	}
-	
+
 	public static String getInstallPath() {
 		try {
 			if (!SystemInfo.isLinux() && !SystemInfo.isMac()) {
@@ -81,7 +81,7 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 						File f = new File(path);
 						if (f.exists()) {
 							String[] list = f.list();
-							if(list != null)
+							if (list != null)
 								for (String app : list) {
 									if (app.startsWith("Graphviz")) {
 										String found = path + "\\" + app + "\\bin";
@@ -105,28 +105,29 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 		}
 		return "";
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
-							new ObjectListParameter(getDOT(), "<html>" +
-												"Command",
-												"<html>DOT needs to be installed<br>" +
-																	"and needs to be available<br>" +
-																	"in the search path. See<br>" +
-																	"www.graphviz.org for details!", getLayouts()),
-							new IntegerParameter(increaseSize, "Increase Node Size", "If set, the node sizes will be increased (or decreased) for the layout"),
-							new BooleanParameter(layoutEdges, "Layout Edges", "If enabled, the edge routing is considered"),
-							new ObjectListParameter(dotOrientation, "Orientation (DOT)", "", new Object[] { "Left-Right", "Top-Down" }),
-							new BooleanParameter(sortChildren, "Sort Nodes", "If enabled, the ordering of nodes is determined by the ordering of their labels"),
-							new BooleanParameter(considerSameNodes, "Unify Subgraphs", "If enabled, subgraph nodes with the same labels are concurrently processed"),
-							new StringParameter(installPath, "<html>" +
-												"Program path<br>" +
-												"(optional)", "The path, where the layout programs are installed"),
-								new BooleanParameter(true, "Move Network to Top-Left",
-													"<html>If set, the network will be moved to top-left,<br>after layouting has been completed") };
+				new ObjectListParameter(getDOT(), "<html>" + "Command",
+						"<html>DOT needs to be installed<br>" + "and needs to be available<br>"
+								+ "in the search path. See<br>" + "www.graphviz.org for details!",
+						getLayouts()),
+				new IntegerParameter(increaseSize, "Increase Node Size",
+						"If set, the node sizes will be increased (or decreased) for the layout"),
+				new BooleanParameter(layoutEdges, "Layout Edges", "If enabled, the edge routing is considered"),
+				new ObjectListParameter(dotOrientation, "Orientation (DOT)", "",
+						new Object[] { "Left-Right", "Top-Down" }),
+				new BooleanParameter(sortChildren, "Sort Nodes",
+						"If enabled, the ordering of nodes is determined by the ordering of their labels"),
+				new BooleanParameter(considerSameNodes, "Unify Subgraphs",
+						"If enabled, subgraph nodes with the same labels are concurrently processed"),
+				new StringParameter(installPath, "<html>" + "Program path<br>" + "(optional)",
+						"The path, where the layout programs are installed"),
+				new BooleanParameter(true, "Move Network to Top-Left",
+						"<html>If set, the network will be moved to top-left,<br>after layouting has been completed") };
 	}
-	
+
 	private Collection<String> getLayouts() {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add(getDOT());
@@ -136,27 +137,27 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 		res.add(getFDP());
 		return res;
 	}
-	
+
 	private String getDOT() {
 		return "dot";
 	}
-	
+
 	private String getNeato() {
 		return "neato";
 	}
-	
+
 	private String getTWOPI() {
 		return "twopi";
 	}
-	
+
 	private String getCIRCO() {
 		return "circo";
 	}
-	
+
 	private String getFDP() {
 		return "fdp";
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -170,51 +171,44 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 		movetopleft = ((BooleanParameter) params[i++]).getBoolean();
 		super.setParameters(params);
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-		
+
 		if (graph == null) {
 			errors.add("No graph available!");
 		}
-		
+
 		if (!errors.isEmpty()) {
 			throw errors;
 		}
-		
+
 		if (graph.getNumberOfNodes() <= 0) {
 			throw new PreconditionException("The graph is empty. Cannot run layouter.");
 		}
 	}
-	
+
 	@Override
 	public String getDescription() {
-		return "<html>" +
-							"This layout command requires the following Graphviz " +
-							"command-line layout commands to be available in the " +
-							"search path:<br>" +
-							"<ul>" +
-							"<li>dot - layout directed acyclic graphs" +
-							"<li>neato - spring model Kamada and Kawai" +
-							"<li>twopi - radial layout" +
-							"<li>circo - circular layout" +
-							"<li>fdp - spring model Fruchterman and Reingold" +
-							"</ul>" +
-							"<small>See www.graphviz.org for further details.<br>" +
-							"Try 'dot -V' at the command line, to see if this layouter is " +
-							"correctly installed and included in the search path.<br><br>" +
-							"Remark: Edge Layout may not work correctly for undirected graphs. " +
-							"Use the network tab and temporarily change the 'directed edges' setting before layouting " +
-							"the network." +
-							"</small>";
+		return "<html>" + "This layout command requires the following Graphviz "
+				+ "command-line layout commands to be available in the " + "search path:<br>" + "<ul>"
+				+ "<li>dot - layout directed acyclic graphs" + "<li>neato - spring model Kamada and Kawai"
+				+ "<li>twopi - radial layout" + "<li>circo - circular layout"
+				+ "<li>fdp - spring model Fruchterman and Reingold" + "</ul>"
+				+ "<small>See www.graphviz.org for further details.<br>"
+				+ "Try 'dot -V' at the command line, to see if this layouter is "
+				+ "correctly installed and included in the search path.<br><br>"
+				+ "Remark: Edge Layout may not work correctly for undirected graphs. "
+				+ "Use the network tab and temporarily change the 'directed edges' setting before layouting "
+				+ "the network." + "</small>";
 	}
-	
+
 	@Override
 	public void reset() {
 		super.reset();
 	}
-	
+
 	/**
 	 * Returns the name of the algorithm.
 	 * 
@@ -223,7 +217,7 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		return "External Graphviz Layout";
 	}
-	
+
 	public void execute() {
 		try {
 			String fileName = ReleaseInfo.getAppFolderWithFinalSep() + "temp.dot";
@@ -232,11 +226,11 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 				new File(fileName).delete();
 			if (new File(fileName2).exists())
 				new File(fileName2).delete();
-			
+
 			if (considerSameNodes) {
 				createUnifiedGraph();
 			}
-			
+
 			HashMap<Node, String> node2oldLabel = new HashMap<Node, String>();
 			try {
 				int lblIdx = 1;
@@ -252,9 +246,9 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 					}
 					lblIdx++;
 				}
-				
+
 				DOTSerializer.setNextOrientationTopBottom(dotOrientation.contains("Top"));
-				
+
 				Vector2d center = null;
 				if (!movetopleft)
 					center = NodeTools.getCenter(getSelectedOrAllNodes(true));
@@ -278,13 +272,8 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 					if (layoutCommand.indexOf(" ") > 0)
 						llcc = layoutCommand.substring(0, layoutCommand.indexOf(" "));
 					String pp = llcc + " -Tdot '" + fileName + "' -o '" + fileName2 + "'";
-					Process p = Runtime.getRuntime().exec(new String[] {
-										installPath + llcc,
-										" -Tdot",
-										fileName,
-										"-o",
-										fileName2
-					});
+					Process p = Runtime.getRuntime()
+							.exec(new String[] { installPath + llcc, " -Tdot", fileName, "-o", fileName2 });
 					// Process p = Runtime.getRuntime().exec(pp);
 					p.waitFor();
 					System.out.println("Exec: " + pp);
@@ -293,14 +282,13 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 						Graph layoutedGraph = MainFrame.getInstance().getGraph(new File(fileName2));
 						if (!movetopleft)
 							NodeTools.setCenter(layoutedGraph.getNodes(), center);
-						ApplyGraphLayout.applyLayoutFromGraphToGraph(selection, graph, layoutedGraph, getName(), layoutEdges);
+						ApplyGraphLayout.applyLayoutFromGraphToGraph(selection, graph, layoutedGraph, getName(),
+								layoutEdges);
 					} else {
-						MainFrame.getInstance().showMessageDialog("<html>" +
-											"External call to DOT layout did not produce output (file " + fileName + ")" +
-											"<br><br>Eventually the DOT program is not available in the search path or is not installed at all.<br>" +
-											"<br>Tried to execute:<br>" +
-											"> " + pp + "<br>" +
-											"Return code: " + p.exitValue());
+						MainFrame.getInstance().showMessageDialog("<html>"
+								+ "External call to DOT layout did not produce output (file " + fileName + ")"
+								+ "<br><br>Eventually the DOT program is not available in the search path or is not installed at all.<br>"
+								+ "<br>Tried to execute:<br>" + "> " + pp + "<br>" + "Return code: " + p.exitValue());
 					}
 				} else {
 					ErrorMsg.addErrorMessage("Could not create or save DOT file: " + fileName);
@@ -310,18 +298,17 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 				String command = layoutCommand;
 				if (layoutCommand.indexOf(" ") >= 0)
 					command = layoutCommand.substring(0, layoutCommand.indexOf(" "));
-				MainFrame.showMessageDialog(
-									"<html>" +
-														"A I/O Error occurred. A possible source of the problem might be that the external layout program<br>" +
-														"could not be found. Please check if you are able to start the layout program &quot;" + command + "&quot;<br>" +
-														"from the command line of your operating system. This command line layout program needs to be<br>" +
-														"installed and needs to be included in the application search path.<br>" +
-														"Consult the www.graphviz.org website for information on how to download and install the layout<br>" +
-														"programs and consult web information ressources and operating system documentation for information<br>" +
-														"on how to include the installation path of the layouters in the search path of your operating system.<br>" +
-														"Further technical details of this error are available from the error-log (Help/Error Messages),<br>" +
-														"eventually other problem sources need to be considered.",
-									"Error");
+				MainFrame.showMessageDialog("<html>"
+						+ "A I/O Error occurred. A possible source of the problem might be that the external layout program<br>"
+						+ "could not be found. Please check if you are able to start the layout program &quot;"
+						+ command + "&quot;<br>"
+						+ "from the command line of your operating system. This command line layout program needs to be<br>"
+						+ "installed and needs to be included in the application search path.<br>"
+						+ "Consult the www.graphviz.org website for information on how to download and install the layout<br>"
+						+ "programs and consult web information ressources and operating system documentation for information<br>"
+						+ "on how to include the installation path of the layouters in the search path of your operating system.<br>"
+						+ "Further technical details of this error are available from the error-log (Help/Error Messages),<br>"
+						+ "eventually other problem sources need to be considered.", "Error");
 			} finally {
 				for (Node n : graph.getNodes()) {
 					if (!node2oldLabel.containsKey(n))
@@ -334,27 +321,27 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 						size.y -= increaseSize;
 						AttributeHelper.setSize(n, size);
 					}
-					
+
 				}
 				if (considerSameNodes) {
 					moveGraphsToUnifiedGraph();
 				}
 				if (movetopleft)
 					CenterLayouterAlgorithm.moveGraph(graph, getName(), true, 50, 50);
-				
+
 			}
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-	
+
 	private void saveGraphAsDot(Graph g, String fileName) throws Exception {
 		DOTSerializer ser = new DOTSerializer();
 		ser.write(g, fileName);
 	}
-	
+
 	double maxWidth, maxHeight;
-	
+
 	@SuppressWarnings("unchecked")
 	private void moveGraphsToUnifiedGraph() {
 		HashMap<String, Node> lbl2uniNode = new HashMap<String, Node>();
@@ -405,7 +392,7 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 				AttributeHelper.setLabel(n, ll);
 		}
 	}
-	
+
 	private String extractNumericDataFromStoredParenthesisData(Node n) {
 		String storedLabel = (String) AttributeHelper.getAttributeValue(n, "", "oldlabel", "", "");
 		if (storedLabel.indexOf("(") >= 0) {
@@ -420,11 +407,11 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 		} else
 			return "";
 	}
-	
+
 	private void createUnifiedGraph() {
 		maxWidth = 0;
 		maxHeight = 0;
-		
+
 		Set<String> clusters = new TreeSet<String>();
 		HashMap<String, ArrayList<Node>> cluster2nodes = new HashMap<String, ArrayList<Node>>();
 		for (Node ge : getSelectedOrAllNodes(true)) {
@@ -440,10 +427,11 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 			if (size.y > maxHeight)
 				maxHeight = size.y;
 		}
-		
+
 		HashSet<String> edgeList = new HashSet<String>();
 		for (Edge e : graph.getEdges()) {
-			if (!AttributeHelper.isHiddenGraphElement(e.getSource()) && !AttributeHelper.isHiddenGraphElement(e.getTarget())) {
+			if (!AttributeHelper.isHiddenGraphElement(e.getSource())
+					&& !AttributeHelper.isHiddenGraphElement(e.getTarget())) {
 				String lblA = upLabel(e.getSource());
 				String lblB = upLabel(e.getTarget());
 				if (lblA.length() > 0 && lblB.length() > 0) {
@@ -451,13 +439,13 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 				}
 			}
 		}
-		
+
 		maxWidth += 20;
 		maxHeight += 20;
-		
+
 		double targetWidth = clusters.size() * maxWidth;
 		double targetHeight = maxHeight;
-		
+
 		HashMap<String, Node> newNodes = new HashMap<String, Node>();
 		for (String edge : edgeList) {
 			String lA = edge.substring(0, edge.indexOf(">"));
@@ -485,13 +473,14 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 				newNode = true;
 			}
 			Node nB = newNodes.get(lB);
-			
+
 			if (newNode || !nA.getOutNeighbors().contains(nB)) {
-				graph.addEdge(nA, nB, true, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
+				graph.addEdge(nA, nB, true,
+						AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
 			}
 		}
 	}
-	
+
 	private String upLabel(Node source) {
 		String label = AttributeHelper.getLabel(source, "");
 		if (source.getInDegree() == 1) {
@@ -499,7 +488,7 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 		} else
 			return "/" + label;
 	}
-	
+
 	private String processUpLabelRevert(Node n) {
 		String label = AttributeHelper.getLabel(n, "");
 		if (label.indexOf("/") >= 0)
@@ -507,7 +496,7 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 		else
 			return label;
 	}
-	
+
 	private Collection<Node> getSelectedOrAllNodes(boolean filterNonVisible) {
 		if (!filterNonVisible)
 			return getSelectedOrAllNodes();
@@ -519,15 +508,17 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 			return result;
 		}
 	}
-	
+
 	private Collection<Node> getSelectedOrAllNodes(boolean filterNonVisible, boolean sortByLabel) {
 		if (sortByLabel) {
 			ArrayList<Node> result = new ArrayList<Node>(getSelectedOrAllNodes(filterNonVisible));
 			Collections.sort(result, new Comparator<Node>() {
 				public int compare(Node o1, Node o2) {
 					try {
-						Double v1 = (Double) AttributeHelper.getAttributeValue(o1, "properties", "sample_ratio_avg", Double.MAX_VALUE, 0d);
-						Double v2 = (Double) AttributeHelper.getAttributeValue(o2, "properties", "sample_ratio_avg", Double.MAX_VALUE, 0d);
+						Double v1 = (Double) AttributeHelper.getAttributeValue(o1, "properties", "sample_ratio_avg",
+								Double.MAX_VALUE, 0d);
+						Double v2 = (Double) AttributeHelper.getAttributeValue(o2, "properties", "sample_ratio_avg",
+								Double.MAX_VALUE, 0d);
 						int r = v1.compareTo(v2);
 						if (r == 0) {
 							String label1 = AttributeHelper.getLabel(o1, "");
@@ -547,37 +538,33 @@ public class DotLayoutAlgorithm extends AbstractAlgorithm {
 						}
 					}
 				}
-				
+
 			});
-			
+
 			return result;
 		} else {
 			return getSelectedOrAllNodes(filterNonVisible);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getCategory()
 	 */
 	@Override
 	public String getCategory() {
 		return "Layout";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.LAYOUT
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
 
-	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;
 	}
-	
+
 }

@@ -48,16 +48,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeCompon
  * @author Christian Klukas
  * @version $Revision$
  */
-public class IPK_MegaMoveTool
-					extends MegaMoveTool
-					implements MouseWheelListener {
-	
+public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener {
+
 	RotateAlgorithm ra = new RotateAlgorithm();
-	
+
 	public IPK_MegaMoveTool() {
 		super();
 		final Tool thisTool = this;
-		
+
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				thisTool.deactivateAll();
@@ -66,11 +64,10 @@ public class IPK_MegaMoveTool
 			}
 		});
 	}
-	
-	
+
 	/**
-	 * override this method, which is already implemented in the superclass
-	 * This must be done to clear the parameter list again, because this class would have
+	 * override this method, which is already implemented in the superclass This
+	 * must be done to clear the parameter list again, because this class would have
 	 * the same parameters than the super class but they wouldn't do anything here
 	 * and confuse the user
 	 */
@@ -80,44 +77,44 @@ public class IPK_MegaMoveTool
 		return null;
 	}
 
-
-
 	@Override
-	protected void postProcessVisibilityChange(
-						GraphElement sourceElementGUIinteraction) {
+	protected void postProcessVisibilityChange(GraphElement sourceElementGUIinteraction) {
 		super.postProcessVisibilityChange(sourceElementGUIinteraction);
 		if (sourceElementGUIinteraction == null)
 			return;
-		if (PreferencesDialog.activeStartLayoutButton != null &&
-							PreferencesDialog.activeStartLayoutButton.isEnabled()) {
-			
+		if (PreferencesDialog.activeStartLayoutButton != null
+				&& PreferencesDialog.activeStartLayoutButton.isEnabled()) {
+
 			Vector2d oldPosition = null;
 			if (sourceElementGUIinteraction instanceof Node)
 				oldPosition = AttributeHelper.getPositionVec2d((Node) sourceElementGUIinteraction);
-			
-			MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(new Selection("empty"));
+
+			MainFrame.getInstance().getActiveEditorSession().getSelectionModel()
+					.setActiveSelection(new Selection("empty"));
 			PreferencesDialog.activeStartLayoutButton.doClick(100);
-			
+
 			Vector2d newPosition = null;
 			if (sourceElementGUIinteraction instanceof Node) {
 				newPosition = AttributeHelper.getPositionVec2d((Node) sourceElementGUIinteraction);
-				GraphHelper.moveGraph(sourceElementGUIinteraction.getGraph(),
-									oldPosition.x - newPosition.x, oldPosition.y - newPosition.y);
+				GraphHelper.moveGraph(sourceElementGUIinteraction.getGraph(), oldPosition.x - newPosition.x,
+						oldPosition.y - newPosition.y);
 			}
-			
+
 			Selection ss = new Selection("selection");
 			ss.add(sourceElementGUIinteraction);
 			MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(ss);
 			MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
-			MainFrame.showMessage("Layout has been updated, select the Null-Layout to disable automatic re-layout", MessageType.INFO);
+			MainFrame.showMessage("Layout has been updated, select the Null-Layout to disable automatic re-layout",
+					MessageType.INFO);
 		}
-		
+
 	}
-	
+
 	private long lastClick_ipk = Long.MIN_VALUE;
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
 	@Override
@@ -131,19 +128,19 @@ public class IPK_MegaMoveTool
 			super.mousePressed(e);
 		}
 	}
-	
+
 	JComponent mouseWheelComponent = null;
-	
+
 	@Override
 	public void activate() {
 		if (session == null || session.getActiveView() == null || session.getActiveView().getViewComponent() == null
-							|| (!(session.getActiveView() instanceof GraffitiView))) {
+				|| (!(session.getActiveView() instanceof GraffitiView))) {
 			return;
 		}
 		super.activate();
 		// gif.addMouseWheelListener(this);
-		if (MainFrame.getInstance().getActiveSession() != null &&
-							(MainFrame.getInstance().getActiveSession().getActiveView() instanceof GraffitiView)) {
+		if (MainFrame.getInstance().getActiveSession() != null
+				&& (MainFrame.getInstance().getActiveSession().getActiveView() instanceof GraffitiView)) {
 			GraffitiView gv = (GraffitiView) MainFrame.getInstance().getActiveSession().getActiveView();
 			if (gv != null) {
 				mouseWheelComponent = gv.getViewComponent();
@@ -155,16 +152,17 @@ public class IPK_MegaMoveTool
 			}
 		}
 	}
-	
+
 	@Override
 	public void deactivate() {
 		super.deactivate();
 		if (mouseWheelComponent != null)
 			mouseWheelComponent.removeMouseWheelListener(this);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
 	 */
 	@Override
@@ -174,25 +172,27 @@ public class IPK_MegaMoveTool
 			super.mouseReleased(e);
 		}
 	}
-	
+
 	public long lastMove = Integer.MIN_VALUE;
-	
+
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		if (e.getWhen() <= lastMove)
 			return;
-		
+
 		lastMove = e.getWhen();
 		if (!MegaTools.MouseWheelZoomEnabled) {
 			processMouseWheelScrolling(e);
 		} else {
 			try {
 				if (e.getModifiersEx() != 64 && e.getModifiersEx() != 128) {
-					if (e.getPreciseWheelRotation() < 0){
-//						ZoomFitChangeComponent.zoomIn();
-						ZoomFitChangeComponent.zoomToPoint(MainFrame.getInstance().getActiveEditorSession().getActiveView(), e.getPoint(), 0.1);
+					if (e.getPreciseWheelRotation() < 0) {
+						// ZoomFitChangeComponent.zoomIn();
+						ZoomFitChangeComponent.zoomToPoint(
+								MainFrame.getInstance().getActiveEditorSession().getActiveView(), e.getPoint(), 0.1);
 					} else {
-//						ZoomFitChangeComponent.zoomOut();
-						ZoomFitChangeComponent.zoomToPoint(MainFrame.getInstance().getActiveEditorSession().getActiveView(), e.getPoint(), -0.1);
+						// ZoomFitChangeComponent.zoomOut();
+						ZoomFitChangeComponent.zoomToPoint(
+								MainFrame.getInstance().getActiveEditorSession().getActiveView(), e.getPoint(), -0.1);
 					}
 					e.consume();
 					return;
@@ -203,7 +203,7 @@ public class IPK_MegaMoveTool
 			}
 		}
 	}
-	
+
 	public static void processMouseWheelScrolling(MouseWheelEvent e) {
 		Object o = e.getSource();
 		if (o != null && o instanceof JComponent) {
@@ -225,7 +225,7 @@ public class IPK_MegaMoveTool
 			}
 		}
 	}
-	
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		super.mouseMoved(e);
@@ -246,21 +246,23 @@ public class IPK_MegaMoveTool
 					nodeCursor = myResize_BL_Cursor;
 			}
 		}
-		
+
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		super.mouseClicked(e);
-		if(!MegaTools.wasScrollPaneMovement() && SwingUtilities.isRightMouseButton(e)) {
+		if (!MegaTools.wasScrollPaneMovement() && SwingUtilities.isRightMouseButton(e)) {
 			View activeView = MainFrame.getInstance().getActiveEditorSession().getActiveView();
-			
-			if(activeView instanceof IPKGraffitiView) {
-				JPopupMenu	popupmenu = new DefaultContextMenuManager().getContextMenu(
-							MegaTools.getLastMouseE());
-//				System.out.println("mouse x/y"+e.getX()+"/"+e.getY()+" zoom: "+activeView.getZoom().getScaleX()+" zoomedmouse x/y"+(int)(e.getX() / zoom.getScaleX())+"/"+(int)(e.getY() / zoom.getScaleY()));
-				popupmenu.show(activeView.getViewComponent(), (int)(e.getX() * activeView.getZoom().getScaleX()), (int)(e.getY()*activeView.getZoom().getScaleY()));
+
+			if (activeView instanceof IPKGraffitiView) {
+				JPopupMenu popupmenu = new DefaultContextMenuManager().getContextMenu(MegaTools.getLastMouseE());
+				// System.out.println("mouse x/y"+e.getX()+"/"+e.getY()+" zoom:
+				// "+activeView.getZoom().getScaleX()+" zoomedmouse x/y"+(int)(e.getX() /
+				// zoom.getScaleX())+"/"+(int)(e.getY() / zoom.getScaleY()));
+				popupmenu.show(activeView.getViewComponent(), (int) (e.getX() * activeView.getZoom().getScaleX()),
+						(int) (e.getY() * activeView.getZoom().getScaleY()));
 			}
 		}
 	}

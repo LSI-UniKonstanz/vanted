@@ -16,9 +16,10 @@ package org.graffiti.attributes;
  * Interfaces an object, which depends on the presence of a set of attributes.
  * An attribute consumer specifies, which attributes should be available in a
  * node, edge and graph object. Each time, a node or an edge is created, the
- * specified attributes will be created by the graph instance. E.g.: a 2D
- * view depends on some graphics attributes (&quot;graphics&quot;) in every
- * node and edge object. It implements this interface and returns a <code>CollectionAttribute</code> of these attributes and their default
+ * specified attributes will be created by the graph instance. E.g.: a 2D view
+ * depends on some graphics attributes (&quot;graphics&quot;) in every node and
+ * edge object. It implements this interface and returns a
+ * <code>CollectionAttribute</code> of these attributes and their default
  * values:
  * 
  * <pre>
@@ -38,15 +39,15 @@ package org.graffiti.attributes;
  */
 public interface AttributeConsumer {
 	// ~ Methods ================================================================
-	
+
 	/**
-	 * Returns the attribute, which should be available in a edge object. May
-	 * return <code>null</code>.
+	 * Returns the attribute, which should be available in a edge object. May return
+	 * <code>null</code>.
 	 * 
 	 * @return DOCUMENT ME!
 	 */
 	CollectionAttribute getEdgeAttribute();
-	
+
 	/**
 	 * Returns the attribute, which should be available in a graph object. May
 	 * return <code>null</code>.
@@ -54,10 +55,10 @@ public interface AttributeConsumer {
 	 * @return DOCUMENT ME!
 	 */
 	CollectionAttribute getGraphAttribute();
-	
+
 	/**
-	 * Returns the attribute, which should be available in a node object. May
-	 * return <code>null</code>.
+	 * Returns the attribute, which should be available in a node object. May return
+	 * <code>null</code>.
 	 * 
 	 * @return DOCUMENT ME!
 	 */

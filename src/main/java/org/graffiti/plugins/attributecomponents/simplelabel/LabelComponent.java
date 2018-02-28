@@ -79,52 +79,51 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.label_alignment.
  * 
  * @version $Revision: 1.59 $
  */
-public class LabelComponent extends AbstractAttributeComponent implements
-		GraphicAttributeConstants, PreferencesInterface {
+public class LabelComponent extends AbstractAttributeComponent
+		implements GraphicAttributeConstants, PreferencesInterface {
 	// ~ Instance fields ========================================================
-	
+
 	private static final Logger logger = Logger.getLogger(LabelComponent.class);
-	
+
 	static {
 		logger.setLevel(Level.INFO);
 	}
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private static int MINSIZE_VISIBILITY;
 	public static String PREF_MINSIZE_VISIBILITY = "min-size visibility";
-	
+
 	private static boolean DRAWRECT_MINSIZE;
 	public static String PREF_DRAWRECT_MINSIZE = "small rectangle when too small";
-	
+
 	/**
-	 * Flatness value used for the <code>PathIterator</code> used to place
-	 * labels.
+	 * Flatness value used for the <code>PathIterator</code> used to place labels.
 	 */
 	protected final double flatness = 1.0d;
-	
+
 	/** Standard width of JTextField. */
 	protected final int DEFAULT_WIDTH = 20;
-	
+
 	/** The <code>JLabel</code> that represents the label text. */
 	protected ViewLabel label;
-	
+
 	/** The <code>LabelAttribute</code> that is displayed via this component. */
 	protected LabelAttribute labelAttr;
-	
+
 	protected boolean dropShadow = false;
 	protected LabelFrameSetting frame = LabelFrameSetting.NO_FRAME;
-	
+
 	protected int offx = 0;
 	protected int offy = 0;
-	
+
 	protected int corrX = 0;
-	
+
 	BufferedImage bufferedImage;
 	boolean isCreatingBufferedImage;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new <code>LabelComponent</code>
 	 */
@@ -132,36 +131,38 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		super();
 		this.shift = new Point();
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		List<Parameter> params = new ArrayList<Parameter>();
-		params.add(new IntegerParameter(10, PREF_MINSIZE_VISIBILITY, "<html>Minimum size (width/height) where this label<br/>ist still visible"));
-		params.add(new BooleanParameter(true, PREF_DRAWRECT_MINSIZE, "<html>Draw a rectangle instead of the label, <br/>if the label is too small"));
+		params.add(new IntegerParameter(10, PREF_MINSIZE_VISIBILITY,
+				"<html>Minimum size (width/height) where this label<br/>ist still visible"));
+		params.add(new BooleanParameter(true, PREF_DRAWRECT_MINSIZE,
+				"<html>Draw a rectangle instead of the label, <br/>if the label is too small"));
 		return params;
 	}
-	
+
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		MINSIZE_VISIBILITY = preferences.getInt(PREF_MINSIZE_VISIBILITY, 10);
 		DRAWRECT_MINSIZE = preferences.getBoolean(PREF_DRAWRECT_MINSIZE, true);
 	}
-	
+
 	@Override
 	public String getPreferencesAlternativeName() {
 		// TODO Auto-generated method stub
 		return "Labels";
 	}
-	
+
 	@Override
 	public void highlight(boolean value, MouseEvent e) {
 		super.highlight(value, e);
 		// if (label != null)
 		label.highlight(value);
 	}
-	
+
 	/**
 	 * obvious
 	 * 
@@ -173,42 +174,41 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		// this.attr = attr;
 		this.labelAttr = (LabelAttribute) attr;
 	}
-	
+
 	/**
-	 * Called when an attribute of the attribute represented by this component
-	 * has changed.
+	 * Called when an attribute of the attribute represented by this component has
+	 * changed.
 	 * 
 	 * @param attr
-	 *           the attribute that has triggered the event.
+	 *            the attribute that has triggered the event.
 	 * @throws ShapeNotFoundException
-	 *            DOCUMENT ME!
+	 *             DOCUMENT ME!
 	 */
 	@Override
 	public void attributeChanged(Attribute attr) {
-		
+
 		/*
-		 * NodeGraphicAttribute is also sent if more than one attribute per component was changed
-		 * See TransactionHashMap... meeh
-		 * Sooooo...
+		 * NodeGraphicAttribute is also sent if more than one attribute per component
+		 * was changed See TransactionHashMap... meeh Sooooo...
 		 */
 		if (attr instanceof LabelAlignmentAttribute/* || attr instanceof NodeGraphicAttribute */) {
-			
+
 			adjustComponentSize();
 			validate();
 			return;
 		}
-		
+
 		if (attr.getPath().startsWith(Attribute.SEPARATOR + GRAPHICS + Attribute.SEPARATOR + COORDINATE)) {
 			setLocation((int) (loc.getX() + shift.getX()), (int) (loc.getY() + shift.getY())); // -1
 			return;
 		} else {
 			// recreate();
 			frame = labelAttr.getLabelFrameSetting();
-			
+
 			double strokeWidth = 1d;
-			
+
 			Color borderColor = Color.BLACK;
-			
+
 			try {
 				if (attr.getAttributable() instanceof Node) {
 					strokeWidth = attr.getAttributable().getDouble("graphics.frameThickness");
@@ -220,12 +220,12 @@ public class LabelComponent extends AbstractAttributeComponent implements
 					strokeWidth = attr.getAttributable().getDouble("graphics.frameThickness");
 					borderColor = AttributeHelper.getOutlineColor(attr.getAttributable());
 				}
-				
+
 			} catch (Exception err) {
 			}
-			
+
 			boolean needToAdjust = false;
-			
+
 			if (!label.getText().equals(labelAttr.getLabel()))
 				needToAdjust = true;
 			if (!label.getFrame().equals(frame))
@@ -236,44 +236,45 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				needToAdjust = true;
 			if (!label.getForeground().equals(labelAttr.getTextcolor()))
 				needToAdjust = true;
-			
+
 			if (!fontName.equals(labelAttr.getFontName()))
 				needToAdjust = true;
 			if (fontStyleInt != labelAttr.getFontStyleJava())
 				needToAdjust = true;
 			if (fontSize != labelAttr.getFontSize())
 				needToAdjust = true;
-			
+
 			if (needToAdjust) {
 				updateBorderOrShadow(strokeWidth);
-				
+
 				labelAttr.setLastLabel(label);
 				label.setText(labelAttr.getLabel());
 				label.setFrame(frame);
 				label.setStrokeWidth(strokeWidth);
 				label.setBorderColor(borderColor);
-				
+
 				setLabelSettings(label, labelAttr.getTextcolor());
 				adjustComponentSize();
 			} else {
-				
+
 				/*
-				 * shortened code copied from adjustComponentSize, that does NOT recalculate the size of the component
-				 * if the text didn't change at all it is all just a position update
+				 * shortened code copied from adjustComponentSize, that does NOT recalculate the
+				 * size of the component if the text didn't change at all it is all just a
+				 * position update
 				 */
 				updateLabelPosition();
-				
+
 			}
-			
+
 		}
 	}
-	
+
 	/**
-	 * Used when the shape changed in the datastructure. Makes the painter
-	 * create a new shape.
+	 * Used when the shape changed in the datastructure. Makes the painter create a
+	 * new shape.
 	 * 
 	 * @throws ShapeNotFoundException
-	 *            DOCUMENT ME!
+	 *             DOCUMENT ME!
 	 */
 	@Override
 	public void recreate() {
@@ -290,13 +291,13 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			return;
 		}
 		String align = ""; // labelAttr.getAlignmentText();
-		
+
 		frame = labelAttr.getLabelFrameSetting();
-		
+
 		double strokeWidth = 1d;
-		
+
 		Color borderColor = Color.BLACK;
-		
+
 		try {
 			if (attr.getAttributable() instanceof Node) {
 				strokeWidth = attr.getAttributable().getDouble("graphics.frameThickness");
@@ -308,19 +309,19 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				strokeWidth = attr.getAttributable().getDouble("graphics.frameThickness");
 				borderColor = AttributeHelper.getOutlineColor(attr.getAttributable());
 			}
-			
+
 		} catch (Exception err) {
 			//
 		}
-		
+
 		// dropShadow = labelAttr.getUseDropShadow();
-		
+
 		dropShadow = false;
-		
+
 		label = new ViewLabel(labelText, frame, strokeWidth, false, dropShadow, borderColor);
-		
+
 		label.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		if (align.indexOf("left") >= 0) {
 			label.setHorizontalAlignment(SwingConstants.LEFT);
 		} else if (align.indexOf("center") >= 0) {
@@ -332,25 +333,23 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			if (labelText.startsWith("<html>"))
 				labelText = StringManipulationTools.stringReplace(labelText, "<html>", "<html><p align=\"right\">");
 		}
-		
+
 		setLabelSettings(label, labelAttr.getTextcolor());
-		
+
 		label.setShow(labelAttr.getFontStyle().contains("mouse"));
-		
-		setLayout(new TableLayout(
-				new double[][] {
-						new double[] { TableLayoutConstants.PREFERRED },
-						new double[] { TableLayoutConstants.PREFERRED } }));
-		
+
+		setLayout(new TableLayout(new double[][] { new double[] { TableLayoutConstants.PREFERRED },
+				new double[] { TableLayoutConstants.PREFERRED } }));
+
 		offx = 0;
 		offy = 0;
-		
+
 		updateBorderOrShadow(strokeWidth);
-		
+
 		adjustComponentSize();
-		
+
 		add(label, "0,0");
-		
+
 		synchronized (getTreeLock()) {
 			if (isShowing())
 				validate();
@@ -359,7 +358,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		}
 		recreateBufferedImage();
 	}
-	
+
 	private void updateBorderOrShadow(double strokeWidth) {
 		if (dropShadow) {
 			offx += labelAttr.getShadowOffX();
@@ -375,13 +374,13 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			}
 		}
 	}
-	
-	private Border getBoxBorder(final int xo, final int yo, final int wo, final int ho,
-			final LabelFrameSetting frame, final double strokeWidth, final boolean fill) {
+
+	private Border getBoxBorder(final int xo, final int yo, final int wo, final int ho, final LabelFrameSetting frame,
+			final double strokeWidth, final boolean fill) {
 		Border result = new Border() {
-			
+
 			boolean empty = false;
-			
+
 			public Insets getBorderInsets(Component c) {
 				if (frame == LabelFrameSetting.ELLIPSE || frame == LabelFrameSetting.CIRCLE
 						|| frame == LabelFrameSetting.CIRCLE_FILLED || frame == LabelFrameSetting.CIRCLE_HALF_FILLED) {
@@ -394,7 +393,8 @@ public class LabelComponent extends AbstractAttributeComponent implements
 					int sh = (int) Math.ceil(getEllipseHeightFromRectangle(prefW, prefH) / 4);
 					if (vl.getText().length() <= 0)
 						empty = true;
-					if (frame == LabelFrameSetting.CIRCLE || frame == LabelFrameSetting.CIRCLE_FILLED || frame == LabelFrameSetting.CIRCLE_HALF_FILLED) {
+					if (frame == LabelFrameSetting.CIRCLE || frame == LabelFrameSetting.CIRCLE_FILLED
+							|| frame == LabelFrameSetting.CIRCLE_HALF_FILLED) {
 						sh += Math.abs(prefW - prefH) / 2;
 						sw += Math.abs(prefW - prefH) / 2;
 						return new Insets(xo + sw, yo + sh, wo + sw, ho + sh);
@@ -403,7 +403,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				} else
 					return new Insets(1 + xo, 3 + yo, 1 + wo, 3 + ho);
 			}
-			
+
 			private double getEllipseHeightFromRectangle(double width, double height) {
 				double a = width / 2d;
 				double b = height / 2d;
@@ -411,7 +411,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				Double c1 = c * 2 / 3;
 				return c1 / 2;
 			}
-			
+
 			private double getEllipseWidthFromRectangle(double width, double height) {
 				double a = width / 2d;
 				double b = height / 2d;
@@ -419,22 +419,21 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				Double c2 = c * 3 / 2;
 				return c2 / 2;
 			}
-			
+
 			public boolean isBorderOpaque() {
 				return false;
 			}
-			
-			public void paintBorder(Component c, Graphics g, int x, int y,
-					int width, int height) {
+
+			public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
 				if (empty)
 					return;
 				// paintRectangleOrOval(frame, g, x, y, width, height, false, strokeWidth);
 			}
-			
+
 		};
 		return result;
 	}
-	
+
 	@Override
 	public void paint(Graphics g) {
 		// logger.debug("paint");
@@ -444,13 +443,13 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		boolean isVisible = checkVisibility(MINSIZE_VISIBILITY);
 		if (hidden)
 			return;
-		
+
 		if (isCreatingBufferedImage) {
 			// logger.debug("isCreatingBufferedImage");
 			/*
-			 * we need to trigger the paint pipeline to create the buffered image
-			 * But we MUST clear the composite. It will mess up
-			 * the buffer and then the content will be empty
+			 * we need to trigger the paint pipeline to create the buffered image But we
+			 * MUST clear the composite. It will mess up the buffer and then the content
+			 * will be empty
 			 */
 			Composite temp = composite;
 			composite = null;
@@ -458,15 +457,15 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			composite = temp;
 			return;
 		}
-		
+
 		if (composite != null)
 			((Graphics2D) g).setComposite(composite);
-		
+
 		if (getDrawingModeOfView() == DrawMode.REDUCED && bufferedImage != null && isVisible) {
-			
+
 			// logger.debug("drawing image");
 			g.drawImage(bufferedImage, 0, 0, null);
-			
+
 		} else if (isVisible) {
 			// logger.debug("drawing normal");
 			super.paint(g);
@@ -480,13 +479,13 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			// }
 		}
 	}
-	
+
 	private void recreateBufferedImage() {
 		if (getWidth() > 0 && getHeight() > 0) {
 			isCreatingBufferedImage = true;
 			logger.debug("recreating buffered image");
 			bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
-			
+
 			Graphics graphics2 = bufferedImage.getGraphics();
 			// ((Graphics2D) graphics2).setBackground(new Color(255, 255, 255, 255));
 			// graphics2.clearRect(0, 0, getWidth(), getHeight());
@@ -497,34 +496,33 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			isCreatingBufferedImage = false;
 			logger.debug("recreation done");
 		}
-		
+
 	}
-	
+
 	private static final HashMap<TextAttribute, Object> fontAttributes = getFontAttributes();
-	
+
 	private void setLabelSettings(JLabel label, Color c) {
 		label.setForeground(c);
 		fontName = labelAttr.getFontName();
 		fontStyleInt = labelAttr.getFontStyleJava();
 		fontSize = labelAttr.getFontSize();
-		
+
 		setCachedFont(label, fontName, fontStyleInt, fontSize);
 		label.setOpaque(false);
 		Dimension preferredSize = label.getPreferredSize();
 		label.setSize((int) preferredSize.getWidth(), (int) preferredSize.getHeight());
 	}
-	
+
 	private static final HashMap<String, Font> knownFontSettings = new HashMap<String, Font>();
-	
+
 	private String fontName;
-	
+
 	private int fontStyleInt;
-	
+
 	private int fontSize;
-	
-	private void setCachedFont(JLabel label, String fontName, int fontStyleInt,
-			int fontSize) {
-		
+
+	private void setCachedFont(JLabel label, String fontName, int fontStyleInt, int fontSize) {
+
 		String fontSettings = fontName + "/" + fontStyleInt + "/" + fontSize;
 		Font f = knownFontSettings.get(fontSettings);
 		if (f == null) {
@@ -534,7 +532,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		}
 		label.setFont(f);
 	}
-	
+
 	private static HashMap<TextAttribute, Object> getFontAttributes() {
 		HashMap<TextAttribute, Object> result = new HashMap<TextAttribute, Object>();
 		try {
@@ -546,12 +544,12 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		}
 		return result;
 	}
-	
+
 	private static void setFontAttributes(HashMap<TextAttribute, Object> result) {
 		result.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
 		result.put(TextAttribute.LIGATURES, TextAttribute.LIGATURES_ON);
 	}
-	
+
 	@Override
 	public void adjustComponentSize() {
 		try {
@@ -573,40 +571,39 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			labelAttr.setLastComponentWidth(w);
 			labelAttr.setLastComponentHeight(h);
 			labelAttr.setLastLabel(label);
-			
+
 			recreateBufferedImage();
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
 		}
-		
+
 	}
-	
+
 	@Override
 	public void adjustComponentPosition() {
 		updateLabelPosition();
 	}
-	
+
 	/**
 	 * Calculates a pair of two values: fst = sum of length of first (seg-1)
 	 * segments snd = length of segment number seg
 	 * 
 	 * @param pi
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param segStartPos
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param segEndPos
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
-	protected Pair calculateDists(PathIterator pi, Point2D segStartPos,
-			Point2D segEndPos) {
+	protected Pair calculateDists(PathIterator pi, Point2D segStartPos, Point2D segEndPos) {
 		double[] seg = new double[6];
-		
+
 		double dist = 0;
-		
+
 		// fst
 		double firstdist = 0;
-		
+
 		// snd
 		double segnrdist = 0;
 		double diffdist = 0;
@@ -618,126 +615,127 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		int segcnt = 0;
 		boolean haveFound = false;
 		boolean foundStart = false;
-		
+
 		try {
 			type = pi.currentSegment(seg);
 			lastx = seg[0];
 			lasty = seg[1];
-			
+
 			while (!pi.isDone() && !haveFound) {
 				segcnt++;
 				pi.next();
 				type = pi.currentSegment(seg);
-				
+
 				switch (type) {
-					case java.awt.geom.PathIterator.SEG_MOVETO:
-						
-						if (!pi.isDone()) {
-							diffdist = Point2D.distance(lastx, lasty, seg[0], seg[1]);
-							firstdist = dist;
-							dist += diffdist;
-							newx = seg[0];
-							newy = seg[1];
-							
-							if (!foundStart
-									&& ((lastx - segStartPos.getX()) <= Double.MIN_VALUE)
-									&& ((lasty - segStartPos.getY()) <= Double.MIN_VALUE)) {
-								foundStart = true;
-								segnrdist = 0;
-							} else if (foundStart) {
-								segnrdist += diffdist;
-							}
-							
-							if (((newx - segEndPos.getX()) <= Double.MIN_VALUE)
-									&& ((newy - segEndPos.getY()) <= Double.MIN_VALUE)) {
-								haveFound = true;
-							}
-						}
-						
-						break;
-					
-					case java.awt.geom.PathIterator.SEG_LINETO:
+				case java.awt.geom.PathIterator.SEG_MOVETO:
+
+					if (!pi.isDone()) {
+						diffdist = Point2D.distance(lastx, lasty, seg[0], seg[1]);
+						firstdist = dist;
+						dist += diffdist;
 						newx = seg[0];
 						newy = seg[1];
-						diffdist = Point2D.distance(lastx, lasty, newx, newy);
-						
-						// System.out.println("diffStart = (" + (lastx-segStartPos.getX()) + ", " + (lasty-segStartPos.getY()) + ")");
-						if (!foundStart
-								&& (Math.abs(lastx - segStartPos.getX()) <= Double.MIN_VALUE)
-								&& (Math.abs(lasty - segStartPos.getY()) <= Double.MIN_VALUE)) {
+
+						if (!foundStart && ((lastx - segStartPos.getX()) <= Double.MIN_VALUE)
+								&& ((lasty - segStartPos.getY()) <= Double.MIN_VALUE)) {
 							foundStart = true;
-							
-							// System.out.println("found start");
-							firstdist = dist;
 							segnrdist = 0;
-						}
-						
-						dist += diffdist;
-						
-						if (foundStart) {
+						} else if (foundStart) {
 							segnrdist += diffdist;
 						}
-						
-						// System.out.println("diffEnd = (" + (newx-segStartPos.getX()) + ", " + (newy-segStartPos.getY()) + ")");
-						if ((Math.abs(newx - segEndPos.getX()) <= Double.MIN_VALUE)
-								&& (Math.abs(newy - segEndPos.getY()) <= Double.MIN_VALUE)) {
-							// assert !foundStart :
+
+						if (((newx - segEndPos.getX()) <= Double.MIN_VALUE)
+								&& ((newy - segEndPos.getY()) <= Double.MIN_VALUE)) {
 							haveFound = true;
-							
-							// System.out.println("found end");
 						}
-						
-						break;
+					}
+
+					break;
+
+				case java.awt.geom.PathIterator.SEG_LINETO:
+					newx = seg[0];
+					newy = seg[1];
+					diffdist = Point2D.distance(lastx, lasty, newx, newy);
+
+					// System.out.println("diffStart = (" + (lastx-segStartPos.getX()) + ", " +
+					// (lasty-segStartPos.getY()) + ")");
+					if (!foundStart && (Math.abs(lastx - segStartPos.getX()) <= Double.MIN_VALUE)
+							&& (Math.abs(lasty - segStartPos.getY()) <= Double.MIN_VALUE)) {
+						foundStart = true;
+
+						// System.out.println("found start");
+						firstdist = dist;
+						segnrdist = 0;
+					}
+
+					dist += diffdist;
+
+					if (foundStart) {
+						segnrdist += diffdist;
+					}
+
+					// System.out.println("diffEnd = (" + (newx-segStartPos.getX()) + ", " +
+					// (newy-segStartPos.getY()) + ")");
+					if ((Math.abs(newx - segEndPos.getX()) <= Double.MIN_VALUE)
+							&& (Math.abs(newy - segEndPos.getY()) <= Double.MIN_VALUE)) {
+						// assert !foundStart :
+						haveFound = true;
+
+						// System.out.println("found end");
+					}
+
+					break;
 				}
-				
+
 				lastx = newx;
 				lasty = newy;
 			}
 		} catch (java.util.NoSuchElementException e) {
 		}
-		
-		// System.out.println("returning " + firstdist + "    " + segnrdist);
+
+		// System.out.println("returning " + firstdist + " " + segnrdist);
 		return new Pair(firstdist, segnrdist);
 	}
-	
+
 	/**
-	 * Using the information from the associated <code>LabelAttribute</code> and the shape and position of the <code>GraphElement</code> to
-	 * calculate and set the position of the label.
+	 * Using the information from the associated <code>LabelAttribute</code> and the
+	 * shape and position of the <code>GraphElement</code> to calculate and set the
+	 * position of the label.
 	 */
 	public void updateLabelPosition() {
 		// calculate position of label
 		double labelWidth = this.getWidth();
 		double labelHeight = this.getHeight();
 		// System.out.println("Update Label Position ["+labelWidth+"/"+labelHeight+"]");
-		
+
 		String align = labelAttr.getAlignment();
-		
+
 		if (align != null) {
 			if (align.equals(AlignmentSetting.HIDDEN.toGMLstring()))
 				setVisible(false);
 			else
 				setVisible(true);
 		}
-		
+
 		GraphElement ge = (GraphElement) this.attr.getAttributable();
-		
+
 		if (ge instanceof Node) {
 			double sizeX = geShape.getBounds2D().getWidth();
 			double sizeY = geShape.getBounds2D().getHeight();
-			
+
 			if (geShape instanceof NodeShape) {
 				sizeX += ((NodeShape) geShape).shapeWidthCorrection();
 				sizeY += ((NodeShape) geShape).shapeHeightCorrection();
 			}
-			
+
 			double borderWidth = AttributeHelper.getFrameThickNess(ge);
-			
+
 			// calculate position relative to this component ...
 			double coordX = 0; // top left
 			double coordY = 0; // bottom right
 			double centerX = (sizeX / 2d);
 			double centerY = sizeY / 2d;
-			
+
 			if (geShape.getXexcess() > 0) {
 				coordX += geShape.getXexcess();
 				centerX = (sizeX / 2d);
@@ -746,17 +744,17 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				coordY += geShape.getYexcess();
 				centerY = (sizeY / 2d + geShape.getYexcess());
 			}
-			
+
 			// we need to call it to stay compatible with older VANTED version.. see method
 			Vector2d labelOffset = labelAttr.getLabelOffset();
 			/*
-			 * if the anchor is centered and we have an offset
-			 * only then apply the offset
+			 * if the anchor is centered and we have an offset only then apply the offset
 			 */
 			if (CENTERED.equals(align)) {
 				// apply offset for label
 				coordX += labelOffset.x * (sizeX / 2d);
-				// offset for centerX not necessary since it's only used for the center position in combination with coordX
+				// offset for centerX not necessary since it's only used for the center position
+				// in combination with coordX
 				// offset is already covered by coordX
 				coordY += labelOffset.y * (sizeY / 2d);
 				centerY += labelOffset.y * (sizeY / 2d);
@@ -815,48 +813,47 @@ public class LabelComponent extends AbstractAttributeComponent implements
 												} else if (LEFT.equals(align)) {
 													loc.setLocation(leftx, cy);
 												} else if (BORDER_LEFT_TOP.equals(align)) {
-													loc.setLocation(coordX - labelWidth / 2d + borderWidth / 2d, centerY - (labelHeight / 2.0d) - sizeY
-															* (1d / 2d - 1d / 4d));
+													loc.setLocation(coordX - labelWidth / 2d + borderWidth / 2d, centerY
+															- (labelHeight / 2.0d) - sizeY * (1d / 2d - 1d / 4d));
 												} else if (BORDER_LEFT_CENTER.equals(align)) {
 													loc.setLocation(coordX - labelWidth / 2d + borderWidth / 2d, cy);
 												} else if (BORDER_LEFT_BOTTOM.equals(align)) {
-													loc.setLocation(coordX - labelWidth / 2d + borderWidth / 2d, cy + sizeY
-															* (1d / 2d - 1d / 4d));
+													loc.setLocation(coordX - labelWidth / 2d + borderWidth / 2d,
+															cy + sizeY * (1d / 2d - 1d / 4d));
 												} else if (BORDER_RIGHT_TOP.equals(align)) {
-													loc.setLocation(coordX + sizeX - labelWidth / 2d - borderWidth / 2d, centerY
-															- (labelHeight / 2.0d) - sizeY * (1d / 2d - 1d / 4d));
+													loc.setLocation(coordX + sizeX - labelWidth / 2d - borderWidth / 2d,
+															centerY - (labelHeight / 2.0d)
+																	- sizeY * (1d / 2d - 1d / 4d));
 												} else if (BORDER_RIGHT_CENTER.equals(align)) {
-													loc.setLocation(coordX + sizeX - labelWidth / 2d - borderWidth / 2d, cy);
+													loc.setLocation(coordX + sizeX - labelWidth / 2d - borderWidth / 2d,
+															cy);
 												} else if (BORDER_RIGHT_BOTTOM.equals(align)) {
-													loc.setLocation(coordX + sizeX - labelWidth / 2d - borderWidth / 2d, cy + sizeY
-															* (1d / 2d - 1d / 4d));
+													loc.setLocation(coordX + sizeX - labelWidth / 2d - borderWidth / 2d,
+															cy + sizeY * (1d / 2d - 1d / 4d));
 												} else if (ABOVERIGHT.equals(align)) {
 													loc.setLocation(rightx, abovey);
 												} else if (RIGHT.equals(align)) {
 													loc.setLocation(rightx, cy);
 												} else if (INSIDETOPLEFT.equals(align)) {
-													loc.setLocation(coordX + borderWidth / 2d, coordY
-															+ LABEL_DISTANCE + borderWidth);
+													loc.setLocation(coordX + borderWidth / 2d,
+															coordY + LABEL_DISTANCE + borderWidth);
 												} else {
 													if (INSIDETOPRIGHT.equals(align)) {
-														loc.setLocation(insrx, coordY
-																+ LABEL_DISTANCE + borderWidth);
+														loc.setLocation(insrx, coordY + LABEL_DISTANCE + borderWidth);
 													} else {
 														if (INSIDELEFT.equals(align)) {
 															loc.setLocation(inslx, cy);
 														} else if (INSIDERIGHT.equals(align)) {
 															loc.setLocation(insrx, cy);
 														} else if (INSIDEBOTTOMLEFT.equals(align)) {
-															loc.setLocation(inslx,
-																	insbotty);
+															loc.setLocation(inslx, insbotty);
 														} else if (INSIDEBOTTOMRIGHT.equals(align)) {
 															loc.setLocation(insrx, insbotty);
 														} else if (INSIDETOP.equals(align)) {
-															loc.setLocation(cx, coordY
-																	+ LABEL_DISTANCE
-																	+ borderWidth);
+															loc.setLocation(cx, coordY + LABEL_DISTANCE + borderWidth);
 														} else {
-															// no supported alignment constant: try to parse 'align' as x-y
+															// no supported alignment constant: try to parse 'align' as
+															// x-y
 															// position
 															String[] posarr = align.split(";");
 															Vector2d pos = null;
@@ -869,25 +866,26 @@ public class LabelComponent extends AbstractAttributeComponent implements
 																}
 															}
 															if (pos != null) {
-																loc.setLocation(pos.x - (labelWidth / 2.0d), pos.y
-																		- (labelHeight / 2.0d));
+																loc.setLocation(pos.x - (labelWidth / 2.0d),
+																		pos.y - (labelHeight / 2.0d));
 															} else {
-																// no supported alignment constant: use relative positions
+																// no supported alignment constant: use relative
+																// positions
 																try {
 																	NodeLabelPositionAttribute posAttr = ((NodeLabelAttribute) this.labelAttr)
 																			.getPosition();
-																	
+
 																	if (posAttr == null) {
-																		posAttr = new NodeLabelPositionAttribute(POSITION);
+																		posAttr = new NodeLabelPositionAttribute(
+																				POSITION);
 																	}
-																	
-																	loc
-																			.setLocation(
-																					centerX
-																							+ ((posAttr.getRelHor() * sizeX) / 2d)
-																							+ ((posAttr.getLocalAlign() - 1d) * (labelWidth / 2d)),
-																					(centerY + ((posAttr.getRelVert() * sizeY) / 2d))
-																							- (labelHeight / 2d));
+
+																	loc.setLocation(centerX
+																			+ ((posAttr.getRelHor() * sizeX) / 2d)
+																			+ ((posAttr.getLocalAlign() - 1d)
+																					* (labelWidth / 2d)),
+																			(centerY + ((posAttr.getRelVert() * sizeY)
+																					/ 2d)) - (labelHeight / 2d));
 																} catch (Exception err) {
 																	loc.setLocation(centerX - (labelWidth / 2.0d), cy);
 																}
@@ -907,66 +905,61 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		} else {
 			// System.out.println("recalculating edgelabel " + this);
 			// label is an edgelabel
-			EdgeLabelPositionAttribute posAttr = ((EdgeLabelAttribute) this.labelAttr)
-					.getPosition();
-			
+			EdgeLabelPositionAttribute posAttr = ((EdgeLabelAttribute) this.labelAttr).getPosition();
+
 			if (posAttr == null) {
 				posAttr = new EdgeLabelPositionAttribute(POSITION);
 			}
-			
+
 			// Edge edge = (Edge) ge;
-			// EdgeGraphicAttribute edgeAttr = (EdgeGraphicAttribute) edge.getAttribute(GRAPHICS);
+			// EdgeGraphicAttribute edgeAttr = (EdgeGraphicAttribute)
+			// edge.getAttribute(GRAPHICS);
 			Point2D labelLoc = null;
-			
+
 			if (posAttr.getAlignSegment() <= 0) {
 				// calc pos rel to whole edge
 				PathIterator pi = geShape.getPathIterator(null, flatness);
 				double dist = (this.iterateTill(pi, null)).getX();
-				
+
 				pi = geShape.getPathIterator(null, flatness);
-				labelLoc = this.iterateTill(pi, new Double(posAttr.getRelAlign()
-						* dist));
+				labelLoc = this.iterateTill(pi, new Double(posAttr.getRelAlign() * dist));
 			} else {
 				// calc pos rel to spec seg
 				PathIterator pi = geShape.getPathIterator(null);
-				
+
 				// fst = sum of length of first (alignSegment-1) segments
 				// snd = (length of segment number alignSegment)
 				PointPair segPos = calculateSegPos(pi, posAttr.getAlignSegment());
-				
+
 				if (segPos == null) {
 					pi = geShape.getPathIterator(null, flatness);
-					
+
 					double dist = (this.iterateTill(pi, null)).getX();
-					
+
 					pi = geShape.getPathIterator(null, flatness);
-					labelLoc = this.iterateTill(pi, new Double(posAttr.getRelAlign()
-							* dist));
+					labelLoc = this.iterateTill(pi, new Double(posAttr.getRelAlign() * dist));
 				} else {
 					pi = geShape.getPathIterator(null, flatness);
-					
-					Pair dists = this.calculateDists(pi, segPos.getFst(), segPos
-							.getSnd());
-					
+
+					Pair dists = this.calculateDists(pi, segPos.getFst(), segPos.getSnd());
+
 					// move along path till correct pos
 					pi = geShape.getPathIterator(null, flatness);
-					labelLoc = this.iterateTill(pi, new Double((Double) dists.getFst()
-							+ (posAttr.getRelAlign() * (Double) dists.getSnd())));
+					labelLoc = this.iterateTill(pi,
+							new Double((Double) dists.getFst() + (posAttr.getRelAlign() * (Double) dists.getSnd())));
 				}
 			}
-			
-			loc.setLocation(labelLoc.getX() - (labelWidth / 2.0d)
-					+ posAttr.getAbsHor(), labelLoc.getY() - (labelHeight / 2.0d)
-					+ posAttr.getAbsVert());
+
+			loc.setLocation(labelLoc.getX() - (labelWidth / 2.0d) + posAttr.getAbsHor(),
+					labelLoc.getY() - (labelHeight / 2.0d) + posAttr.getAbsVert());
 		}
-		setLocation((int) (loc.getX() + shift.getX()), (int) (loc.getY() + shift
-				.getY()));
-		
+		setLocation((int) (loc.getX() + shift.getX()), (int) (loc.getY() + shift.getY()));
+
 		// setLocation((int) loc.getX(), (int) loc.getY());
-		
+
 		repaint();
 	}
-	
+
 	private String processAutoAlignment(String alignment) {
 		if (alignment.equals(AUTO_OUTSIDE)) {
 			Attributable a = getAttribute().getAttributable();
@@ -978,7 +971,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		} else
 			return alignment;
 	}
-	
+
 	public static String getBestAutoOutsideSetting(Node n) {
 		if (n == null)
 			return ABOVE;
@@ -993,7 +986,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			return BELOW;
 		return BELOW;
 	}
-	
+
 	private static Quadrant getBestQuadrant(Node n) {
 		int isBadTop = 0;
 		int isBadLeft = 0;
@@ -1010,7 +1003,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				isBadBottom += 1;
 		}
 		Quadrant lowestQuadrant;
-		
+
 		if (isBadTop <= isBadLeft && isBadTop <= isBadRight && isBadTop <= isBadBottom)
 			lowestQuadrant = Quadrant.TOP;
 		else if (isBadLeft <= isBadTop && isBadLeft < isBadRight && isBadTop <= isBadBottom)
@@ -1023,7 +1016,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			lowestQuadrant = Quadrant.BOTTOM;
 		return lowestQuadrant;
 	}
-	
+
 	private static Quadrant getQuadrant(Node neighbour, Node refNode) {
 		Point2D pRef = AttributeHelper.getPosition(refNode);
 		Point2D pNei = AttributeHelper.getPosition(neighbour);
@@ -1043,223 +1036,224 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				return Quadrant.TOP;
 		}
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param pi
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param segnr
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	protected PointPair calculateSegPos(PathIterator pi, int segnr) {
 		// assert segnr>=0 :
 		double[] seg = new double[6];
-		
+
 		// double firstx = 0;
 		// double firsty = 0;
 		double lastx = 0;
 		double lasty = 0;
-		
+
 		double newx = 0;
 		double newy = 0;
-		
+
 		int type;
 		int segcnt = 0;
-		
+
 		PointPair pp = new PointPair();
-		
+
 		try {
 			type = pi.currentSegment(seg);
 			lastx = seg[0];
 			lasty = seg[1];
-			
+
 			// firstx = lastx;
 			// firsty = lasty;
 			while (!pi.isDone() && (segcnt < segnr)) {
 				segcnt++;
 				pi.next();
 				type = pi.currentSegment(seg);
-				
+
 				switch (type) {
-					case java.awt.geom.PathIterator.SEG_MOVETO:
-						
-						if (!pi.isDone()) {
-							newx = seg[0];
-							newy = seg[1];
-						} else {
-							return null;
-						}
-						
-						break;
-					
-					case java.awt.geom.PathIterator.SEG_LINETO:
+				case java.awt.geom.PathIterator.SEG_MOVETO:
+
+					if (!pi.isDone()) {
 						newx = seg[0];
 						newy = seg[1];
-						
-						break;
-					
-					case java.awt.geom.PathIterator.SEG_QUADTO:
-						newx = seg[2];
-						newy = seg[3];
-						
-						break;
-					
-					case java.awt.geom.PathIterator.SEG_CUBICTO:
-						newx = seg[4];
-						newy = seg[5];
-						
-						break;
+					} else {
+						return null;
+					}
+
+					break;
+
+				case java.awt.geom.PathIterator.SEG_LINETO:
+					newx = seg[0];
+					newy = seg[1];
+
+					break;
+
+				case java.awt.geom.PathIterator.SEG_QUADTO:
+					newx = seg[2];
+					newy = seg[3];
+
+					break;
+
+				case java.awt.geom.PathIterator.SEG_CUBICTO:
+					newx = seg[4];
+					newy = seg[5];
+
+					break;
 				}
-				
-				// System.out.println("now found segnr=" + segcnt + "; at (" + newx + ", " + newy + ")");
+
+				// System.out.println("now found segnr=" + segcnt + "; at (" + newx + ", " +
+				// newy + ")");
 				if (segcnt == segnr) {
-					// System.out.println("found segstartpospoint at (" + lastx + ", " + lasty + ")");
+					// System.out.println("found segstartpospoint at (" + lastx + ", " + lasty +
+					// ")");
 					pp.setFst(new Point2D.Double(lastx, lasty));
-					
+
 					// System.out.println("found segendpospoint at (" + newx + ", " + newy + ")");
 					pp.setSnd(new Point2D.Double(newx, newy));
 				}
-				
+
 				lastx = newx;
 				lasty = newy;
 			}
 		} catch (java.util.NoSuchElementException e) {
 			ErrorMsg.addErrorMessage(e);
 		}
-		
+
 		// pp.setSnd(new Point2D.Double(lastx, lasty));
 		if (segcnt < segnr) {
 			// System.out.println("segnr out of bounds");
 			pp = null;
 		}
-		
+
 		return pp;
 	}
-	
+
 	/**
-	 * If d == null then calculates length of path given by pi if d is a value
-	 * then calculates a position on the path near the distance given by this
-	 * parameter, measured from the start.
+	 * If d == null then calculates length of path given by pi if d is a value then
+	 * calculates a position on the path near the distance given by this parameter,
+	 * measured from the start.
 	 * 
 	 * @param pi
-	 *           <code>PathIterator</code> describing the path
+	 *            <code>PathIterator</code> describing the path
 	 * @param d
-	 *           null or distance
-	 * @return distance at first component of <code>Point2D</code> or the
-	 *         position wanted as <code>point2D</code> .
+	 *            null or distance
+	 * @return distance at first component of <code>Point2D</code> or the position
+	 *         wanted as <code>point2D</code> .
 	 */
 	protected Point2D iterateTill(PathIterator pi, Double d) {
 		double[] seg = new double[6];
 		double limitDist;
-		
+
 		if (d == null) {
 			limitDist = Double.POSITIVE_INFINITY;
 		} else {
 			limitDist = d.doubleValue();
 		}
-		
+
 		double dist = 0;
 		double lastx = 0;
 		double lasty = 0;
 		int type;
-		
+
 		try {
 			type = pi.currentSegment(seg);
 			lastx = seg[0];
 			lasty = seg[1];
-			
+
 			while (!pi.isDone() && (dist < limitDist)) {
 				pi.next();
 				type = pi.currentSegment(seg);
-				
+
 				switch (type) {
-					case java.awt.geom.PathIterator.SEG_MOVETO:
-						
-						if (!pi.isDone()) {
-							dist += Point2D.distance(lastx, lasty, seg[0], seg[1]);
-							lastx = seg[0];
-							lasty = seg[1];
-						}
-						
-						break;
-					
-					case java.awt.geom.PathIterator.SEG_LINETO:
+				case java.awt.geom.PathIterator.SEG_MOVETO:
+
+					if (!pi.isDone()) {
 						dist += Point2D.distance(lastx, lasty, seg[0], seg[1]);
-						
-						if ((d != null) && (dist >= limitDist)) {
-							// System.out.println(dist +"    "+ limitDist);
-							double diffx = seg[0] - lastx;
-							double diffy = seg[1] - lasty;
-							double diffsqr = Math.sqrt((diffx * diffx) + (diffy * diffy));
-							
-							// System.out.println("diffx
-							// lastx += Math.sqrt(diffsq - diffy*diffy);
-							// lasty += Math.sqrt(diffsq - diffx*diffx);
-							double factor = (diffsqr - dist + limitDist) / diffsqr;
-							lastx += (diffx * factor);
-							lasty += (diffy * factor);
-						} else {
-							lastx = seg[0];
-							lasty = seg[1];
-						}
-						
-						break;
-					
-					case java.awt.geom.PathIterator.SEG_QUADTO:
-						
-						// unnecessary since this approximation uses only lines
-						// System.out.println(" quad");
-						dist += Point2D.distance(lastx, lasty, seg[2], seg[3]);
-						lastx = seg[2];
-						lasty = seg[3];
-						
-						break;
-					
-					case java.awt.geom.PathIterator.SEG_CUBICTO:
-						
-						// unnecessary since this approximation uses only lines
-						// System.out.println(" cube");
-						dist += Point2D.distance(lastx, lasty, seg[4], seg[5]);
-						lastx = seg[4];
-						lasty = seg[5];
-						
-						break;
+						lastx = seg[0];
+						lasty = seg[1];
+					}
+
+					break;
+
+				case java.awt.geom.PathIterator.SEG_LINETO:
+					dist += Point2D.distance(lastx, lasty, seg[0], seg[1]);
+
+					if ((d != null) && (dist >= limitDist)) {
+						// System.out.println(dist +" "+ limitDist);
+						double diffx = seg[0] - lastx;
+						double diffy = seg[1] - lasty;
+						double diffsqr = Math.sqrt((diffx * diffx) + (diffy * diffy));
+
+						// System.out.println("diffx
+						// lastx += Math.sqrt(diffsq - diffy*diffy);
+						// lasty += Math.sqrt(diffsq - diffx*diffx);
+						double factor = (diffsqr - dist + limitDist) / diffsqr;
+						lastx += (diffx * factor);
+						lasty += (diffy * factor);
+					} else {
+						lastx = seg[0];
+						lasty = seg[1];
+					}
+
+					break;
+
+				case java.awt.geom.PathIterator.SEG_QUADTO:
+
+					// unnecessary since this approximation uses only lines
+					// System.out.println(" quad");
+					dist += Point2D.distance(lastx, lasty, seg[2], seg[3]);
+					lastx = seg[2];
+					lasty = seg[3];
+
+					break;
+
+				case java.awt.geom.PathIterator.SEG_CUBICTO:
+
+					// unnecessary since this approximation uses only lines
+					// System.out.println(" cube");
+					dist += Point2D.distance(lastx, lasty, seg[4], seg[5]);
+					lastx = seg[4];
+					lasty = seg[5];
+
+					break;
 				}
 			}
 		} catch (java.util.NoSuchElementException e) {
 		}
-		
+
 		if (d == null) {
 			return new Point2D.Double(dist, 0);
 		} else {
 			return new Point2D.Double(lastx, lasty);
 		}
 	}
-	
-	static void paintRectangleOrOval(LabelFrameSetting frame,
-			Graphics gg, float x, float y, float width, float height, boolean fill,
-			double strokeWidth, Color borderColor, boolean emptyText) {
-		
+
+	static void paintRectangleOrOval(LabelFrameSetting frame, Graphics gg, float x, float y, float width, float height,
+			boolean fill, double strokeWidth, Color borderColor, boolean emptyText) {
+
 		Graphics2D g2d = (Graphics2D) gg;
-		
+
 		// if (strokeWidth>3)
 		// strokeWidth = 1d;
-		
+
 		g2d.setStroke(new BasicStroke((float) strokeWidth));
 		strokeWidth += 1;
 		x += strokeWidth / 2d;
 		y += strokeWidth / 2d;
 		width -= strokeWidth;
 		height -= strokeWidth;
-		
+
 		Color oc = g2d.getColor();
 		if (fill)
 			g2d.setColor(Color.WHITE);
 		else
 			g2d.setColor(borderColor);
-		
+
 		if (frame == LabelFrameSetting.RECTANGLE) {
 			if (fill)
 				g2d.fill(new Rectangle2D.Double(x, y, width, height));
@@ -1308,7 +1302,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 			gp.lineTo(x + width, y);
 			gp.lineTo(x + width, y + height - c);
 			// gp.quadTo(x + width, y + height, x + width - c, y + height);
-			
+
 			int roundingSimulationSteps = 10;
 			double xc = (x + width - c);
 			double yc = (y + height - c);
@@ -1320,10 +1314,10 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				gp.lineTo(xp, yp);
 			}
 			gp.lineTo(x + width - c, y + height);
-			
+
 			gp.lineTo(x + c, y + height);
 			// gp.quadTo(x, y + height, x, y + height - c);
-			
+
 			xc = (x + c);
 			yc = (y + height) - c;
 			for (int k = 1; k < roundingSimulationSteps; k++) {
@@ -1332,7 +1326,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				double yp = yc + Math.sin(singleStep * step) * c;
 				gp.lineTo(xp, yp);
 			}
-			
+
 			gp.lineTo(x, y);
 			gp.closePath();
 			if (fill)
@@ -1345,9 +1339,9 @@ public class LabelComponent extends AbstractAttributeComponent implements
 				g2d.fill(new RoundRectangle2D.Double(x, y, width, height, mwh, mwh));
 			else
 				g2d.draw(new RoundRectangle2D.Double(x, y, width, height, mwh, mwh));
-		} else if (frame == LabelFrameSetting.ELLIPSE || frame == LabelFrameSetting.CIRCLE ||
-				frame == LabelFrameSetting.CIRCLE_FILLED || frame == LabelFrameSetting.CIRCLE_HALF_FILLED ||
-				frame == LabelFrameSetting.PIN) {
+		} else if (frame == LabelFrameSetting.ELLIPSE || frame == LabelFrameSetting.CIRCLE
+				|| frame == LabelFrameSetting.CIRCLE_FILLED || frame == LabelFrameSetting.CIRCLE_HALF_FILLED
+				|| frame == LabelFrameSetting.PIN) {
 			if (frame == LabelFrameSetting.PIN) {
 				float minR = width < height ? width : height;
 				float offX = (width - minR) / 2f;
@@ -1358,7 +1352,7 @@ public class LabelComponent extends AbstractAttributeComponent implements
 					AffineTransform at = g2d.getTransform();
 					g2d.fill(new Ellipse2D.Double(x + offX, y + offY, minR, minR));
 					g2d.setPaint(borderColor);
-					
+
 					float dx = 0;
 					float dy = 0;
 					AffineTransform o = g2d.getTransform();
@@ -1367,24 +1361,27 @@ public class LabelComponent extends AbstractAttributeComponent implements
 						// draw "real pin"
 						at.rotate(-Math.PI / 4, -dx + x + offX + minR / 2, -dy + y + offY + minR / 2);
 						g2d.setTransform(at);
-						
-						g2d.fill(new Ellipse2D.Double(-dx + x + offX + minR / 3, -dy + y + offY + minR / 4 - minR / 8, minR / 3, minR / 12));
-						g2d.fill(new Ellipse2D.Double(-dx + x + offX + minR / 4, -dy + y + offY + minR / 2 - minR / 8, minR / 2, minR / 8));
-						g2d.fill(new Rectangle2D.Double(-dx + x + offX + minR / 2.5, -dy + y + offY + minR / 3.5 - minR / 8, minR / 5, minR / 4));
+
+						g2d.fill(new Ellipse2D.Double(-dx + x + offX + minR / 3, -dy + y + offY + minR / 4 - minR / 8,
+								minR / 3, minR / 12));
+						g2d.fill(new Ellipse2D.Double(-dx + x + offX + minR / 4, -dy + y + offY + minR / 2 - minR / 8,
+								minR / 2, minR / 8));
+						g2d.fill(new Rectangle2D.Double(-dx + x + offX + minR / 2.5,
+								-dy + y + offY + minR / 3.5 - minR / 8, minR / 5, minR / 4));
 						GeneralPath triangle = new GeneralPath();
-						triangle.moveTo(-dx + minR / 30f + x + offX + minR / 2.5f, -dy + y + offY + minR / 3.5f - minR / 8f + minR / 4f);
-						triangle
-								.lineTo(-dx - minR / 30f + x + offX + minR / 2.5f + minR / 5f, -dy + y + offY + minR / 3.5f - minR / 8f
-										+ minR / 4f);
+						triangle.moveTo(-dx + minR / 30f + x + offX + minR / 2.5f,
+								-dy + y + offY + minR / 3.5f - minR / 8f + minR / 4f);
+						triangle.lineTo(-dx - minR / 30f + x + offX + minR / 2.5f + minR / 5f,
+								-dy + y + offY + minR / 3.5f - minR / 8f + minR / 4f);
 						triangle.lineTo(-dx + x + offX + minR / 2f, -dy + y + offY + minR / 1.2f);
 						triangle.closePath();
 						g2d.fill(triangle);
 					} else {
 						// draw "simplified pin" (two lines)
-						g2d.drawLine((int) (x + offX + minR / 8), (int) (y + offY + minR / 1.3), (int) (x + offX + minR * 0.75),
-								(int) (y + offY + minR * 0.12));
-						g2d.drawLine((int) (x + offX + minR / 2 - 1), (int) (y + offY + minR / 2 - 1), (int) (x + offX + minR * 0.82 + 1), (int) (y
-								+ offY + minR * 0.82 + 1));
+						g2d.drawLine((int) (x + offX + minR / 8), (int) (y + offY + minR / 1.3),
+								(int) (x + offX + minR * 0.75), (int) (y + offY + minR * 0.12));
+						g2d.drawLine((int) (x + offX + minR / 2 - 1), (int) (y + offY + minR / 2 - 1),
+								(int) (x + offX + minR * 0.82 + 1), (int) (y + offY + minR * 0.82 + 1));
 					}
 					g2d.setTransform(o);
 				}
@@ -1437,13 +1434,13 @@ public class LabelComponent extends AbstractAttributeComponent implements
 		}
 		g2d.setColor(oc);
 	}
-	
+
 	public LabelFrameSetting getLabelFrameSetting() {
-		
+
 		return frame;
-		
+
 	}
-	
+
 }
 
 // ------------------------------------------------------------------------------

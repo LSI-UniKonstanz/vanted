@@ -38,61 +38,58 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.hamming_distance.Ham
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.hamming_distance.WorkSettings;
 
 public class ApplyGraphLayout implements Algorithm {
-	
+
 	Graph g;
 	Selection s;
-	
+
 	public String getName() {
 		return "Apply from Layouted File";
 	}
-	
+
 	public void setParameters(Parameter[] params) {
 	}
-	
+
 	public Parameter[] getParameters() {
 		return null;
 	}
-	
+
 	public void attach(Graph g, Selection selection) {
 		this.g = g;
 		this.s = selection;
 	}
-	
+
 	public void check() throws PreconditionException {
 		if (g == null)
 			throw new PreconditionException("No active graph");
 		if (g.getNumberOfNodes() <= 0)
 			throw new PreconditionException("Graph contains no nodes!");
 	}
-	
+
 	public void execute() {
-		
-		MainFrame.showMessageDialog(
-							"<html>" +
-												"With this command you may apply the layout of another graph (file)<br>" +
-												"to the active graph.<br>" +
-												"A node matching is done on on the basis of node-labels. If a label in<br>" +
-												"graph A and B is equal, the node A of the source graph is repositioned<br>" +
-												"to the position of B.<br>" +
-												"If there are several possible positions for a node A, because the selected<br>" +
-												"graph file contains several nodes with the same label as A, a similarity<br>" +
-												"measure is calculated. For that the node degree difference and missing<br>" +
-												"neighbour nodes labels are considered.<br><br>" +
-												"Additionally this command makes it possible, to not only to supply a<br>" +
-												"specific graph (file) as the reference, but to supply a number of graphs.<br>" +
-												"For that, select several files in the appearing File-Open dialog.<br>" +
-												"The graph edit distances between the active graph and the selected graphs is<br>" +
-												"calculated. The most similar graph is solely considered.<br><br>" +
-												"Example Use-Case: Save a directed graph as a DOT file, and use the external<br>" +
-												"dot layouter to layout the graph. Apply that layout to the source graph.<br>" +
-												"(closing the source file and loading the DOT file would result in loss of<br>" +
-												"certain graphical aspects, supported by this application, but which are<br>" +
-												"not supported by the DOT format or by the DOT export/import - so this<br>" +
-												"is not a good choice for many cases)",
-							"Apply Layout");
-		
+
+		MainFrame.showMessageDialog("<html>" + "With this command you may apply the layout of another graph (file)<br>"
+				+ "to the active graph.<br>"
+				+ "A node matching is done on on the basis of node-labels. If a label in<br>"
+				+ "graph A and B is equal, the node A of the source graph is repositioned<br>"
+				+ "to the position of B.<br>"
+				+ "If there are several possible positions for a node A, because the selected<br>"
+				+ "graph file contains several nodes with the same label as A, a similarity<br>"
+				+ "measure is calculated. For that the node degree difference and missing<br>"
+				+ "neighbour nodes labels are considered.<br><br>"
+				+ "Additionally this command makes it possible, to not only to supply a<br>"
+				+ "specific graph (file) as the reference, but to supply a number of graphs.<br>"
+				+ "For that, select several files in the appearing File-Open dialog.<br>"
+				+ "The graph edit distances between the active graph and the selected graphs is<br>"
+				+ "calculated. The most similar graph is solely considered.<br><br>"
+				+ "Example Use-Case: Save a directed graph as a DOT file, and use the external<br>"
+				+ "dot layouter to layout the graph. Apply that layout to the source graph.<br>"
+				+ "(closing the source file and loading the DOT file would result in loss of<br>"
+				+ "certain graphical aspects, supported by this application, but which are<br>"
+				+ "not supported by the DOT format or by the DOT export/import - so this<br>"
+				+ "is not a good choice for many cases)", "Apply Layout");
+
 		WorkSettings hammingCalculationSettings = new WorkSettings(true, 1, true, false, 1, 0);
-		
+
 		Collection<File> files = FileOpenAction.getGraphFilesFromUser();
 		if (files != null) {
 			Graph withLowestDistance = null;
@@ -115,7 +112,8 @@ public class ApplyGraphLayout implements Algorithm {
 						if (lbl != null && lbl.length() > 0)
 							nodesIn1.add(lbl);
 					}
-					int dist = HammingCalculator.compareTwoGraphs(g, g2, nodesIn1, nodesIn2, hammingCalculationSettings);
+					int dist = HammingCalculator.compareTwoGraphs(g, g2, nodesIn1, nodesIn2,
+							hammingCalculationSettings);
 					if (dist < lowestDistance) {
 						withLowestDistance = g2;
 						lowestDistance = dist;
@@ -135,21 +133,23 @@ public class ApplyGraphLayout implements Algorithm {
 			if (nodesWithNoMatch.size() > 0) {
 				GraphHelper.clearSelection();
 				GraphHelper.selectNodes(nodesWithNoMatch);
-				MainFrame.showMessage("Best match found with selected graph " + withLowestDistance.getName() + " (Distance: " + lowestDistance + "), "
-									+ nodesWithNoMatch.size() +
-									" nodes could not be matched and are selected", MessageType.INFO);
+				MainFrame.showMessage("Best match found with selected graph " + withLowestDistance.getName()
+						+ " (Distance: " + lowestDistance + "), " + nodesWithNoMatch.size()
+						+ " nodes could not be matched and are selected", MessageType.INFO);
 			} else {
-				MainFrame.showMessage("Best match found with selected graph " + withLowestDistance.getName() + " (Distance: " + lowestDistance + ")",
-									MessageType.INFO);
+				MainFrame.showMessage("Best match found with selected graph " + withLowestDistance.getName()
+						+ " (Distance: " + lowestDistance + ")", MessageType.INFO);
 			}
 		}
 	}
-	
+
 	/**
 	 * @param layoutedGraph
-	 * @return Nodes which are not relayouted, because they could not be found in the layouted graph
+	 * @return Nodes which are not relayouted, because they could not be found in
+	 *         the layouted graph
 	 */
-	public static ArrayList<Node> applyLayoutFromGraphToGraph(Selection s, Graph g, Graph layoutedGraph, String commandName, boolean considerEdgeLayout) {
+	public static ArrayList<Node> applyLayoutFromGraphToGraph(Selection s, Graph g, Graph layoutedGraph,
+			String commandName, boolean considerEdgeLayout) {
 		HashMap<String, ArrayList<Vector2d>> label2position = new HashMap<String, ArrayList<Vector2d>>();
 		HashMap<String, ArrayList<Node>> label2otherNode = new HashMap<String, ArrayList<Node>>();
 		for (org.graffiti.graph.Node n : layoutedGraph.getNodes()) {
@@ -171,10 +171,10 @@ public class ApplyGraphLayout implements Algorithm {
 		else
 			workNodes.addAll(g.getNodes());
 		ArrayList<Node> nodesWithNoMatch = new ArrayList<Node>();
-		
+
 		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
 		HashMap<Node, Node> nodes2refNode = new HashMap<Node, Node>();
-		
+
 		for (Node n : workNodes) {
 			String lbl = AttributeHelper.getLabel(n, null);
 			if (lbl != null) {
@@ -183,28 +183,27 @@ public class ApplyGraphLayout implements Algorithm {
 				if (possiblePositions != null && possiblePositions.size() == 1) {
 					nodes2newPositions.put(n, possiblePositions.get(0));
 					nodes2refNode.put(n, possibleNodes.get(0));
-				} else
-					if (possiblePositions != null && possiblePositions.size() > 1) {
-						int idxWithLowestDistance = -1;
-						int lowestNodeDistance = Integer.MAX_VALUE;
-						
-						for (int i = 0; i < possiblePositions.size(); i++) {
-							Node layoutedNode = label2otherNode.get(lbl).get(i);
-							int dist = calcNodeDifferenceDistance(n, layoutedNode);
-							if (dist < lowestNodeDistance) {
-								lowestNodeDistance = dist;
-								idxWithLowestDistance = i;
-							}
+				} else if (possiblePositions != null && possiblePositions.size() > 1) {
+					int idxWithLowestDistance = -1;
+					int lowestNodeDistance = Integer.MAX_VALUE;
+
+					for (int i = 0; i < possiblePositions.size(); i++) {
+						Node layoutedNode = label2otherNode.get(lbl).get(i);
+						int dist = calcNodeDifferenceDistance(n, layoutedNode);
+						if (dist < lowestNodeDistance) {
+							lowestNodeDistance = dist;
+							idxWithLowestDistance = i;
 						}
-						
-						if (idxWithLowestDistance >= 0) {
-							nodes2newPositions.put(n, possiblePositions.get(idxWithLowestDistance));
-							nodes2refNode.put(n, possibleNodes.get(idxWithLowestDistance));
-							possiblePositions.remove(idxWithLowestDistance);
-						}
-					} else {
-						nodesWithNoMatch.add(n);
 					}
+
+					if (idxWithLowestDistance >= 0) {
+						nodes2newPositions.put(n, possiblePositions.get(idxWithLowestDistance));
+						nodes2refNode.put(n, possibleNodes.get(idxWithLowestDistance));
+						possiblePositions.remove(idxWithLowestDistance);
+					}
+				} else {
+					nodesWithNoMatch.add(n);
+				}
 			}
 		}
 		if (considerEdgeLayout) {
@@ -234,7 +233,7 @@ public class ApplyGraphLayout implements Algorithm {
 		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, commandName);
 		return nodesWithNoMatch;
 	}
-	
+
 	private static void copyBends(Edge e, Edge e2) {
 		ArrayList<Vector2d> eb = AttributeHelper.getEdgeBends(e);
 		AttributeHelper.removeEdgeBends(e2);
@@ -243,7 +242,7 @@ public class ApplyGraphLayout implements Algorithm {
 		}
 		AttributeHelper.setEdgeBendStyle(e2, AttributeHelper.getEdgeBendStyle(e));
 	}
-	
+
 	public static int calcNodeDifferenceDistance(Node n, Node layoutedNode) {
 		HashSet<String> surroundingLabelsA = new HashSet<String>();
 		for (Node nei : n.getNeighbors()) {
@@ -275,19 +274,17 @@ public class ApplyGraphLayout implements Algorithm {
 		differences += Math.abs(n.getDegree() - layoutedNode.getDegree());
 		return differences;
 	}
-	
+
 	public void reset() {
 	}
-	
+
 	public String getCategory() {
 		return null;
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.LAYOUT
-				));
+		return new HashSet<Category>(Arrays.asList(Category.LAYOUT));
 	}
 
 	@Override
@@ -298,27 +295,27 @@ public class ApplyGraphLayout implements Algorithm {
 	public boolean isLayoutAlgorithm() {
 		return true;
 	}
-	
+
 	public boolean showMenuIcon() {
 		return false;
 	}
-	
+
 	public KeyStroke getAcceleratorKeyStroke() {
 		return null;
 	}
-	
+
 	public String getDescription() {
 		return null;
 	}
-	
+
 	public ActionEvent getActionEvent() {
 		return null;
 	}
-	
+
 	public void setActionEvent(ActionEvent a) {
 		// empty
 	}
-	
+
 	public boolean mayWorkOnMultipleGraphs() {
 		return false;
 	}

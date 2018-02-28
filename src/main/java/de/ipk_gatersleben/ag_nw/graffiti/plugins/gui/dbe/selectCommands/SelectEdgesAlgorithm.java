@@ -30,14 +30,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.EdgeHelper;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SelectEdgesAlgorithm extends AbstractAlgorithm {
-	
+
 	private boolean selInnerClusterEdges = false;
 	private boolean selInterClusterEdges = false;
-	
+
 	private boolean selfLoops = false;
 	private boolean onlyWithMapping = false;
 	private boolean onlyWithoutMapping = false;
@@ -46,68 +45,66 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 	private boolean onlyAntiParallelEdges = false;
 	private boolean onlyVisibleEdges = false;
 	private boolean onlyNonVisibleEdges = false;
-	
+
 	private boolean extendSelection = true;
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Select Edges";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.EDGE,
-				Category.SELECTION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.EDGE, Category.SELECTION));
 	}
 
 	@Override
 	public String getDescription() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
-			return "<html><small>Select one of the checkboxes in order to limit the edge<br>" +
-								"selection to edges which meet all of the checked criteria.<br>" +
-								"<br>" +
-								"<b>Leave all checkboxes unchecked to select ALL edges.</b><br><br>";
+			return "<html><small>Select one of the checkboxes in order to limit the edge<br>"
+					+ "selection to edges which meet all of the checked criteria.<br>" + "<br>"
+					+ "<b>Leave all checkboxes unchecked to select ALL edges.</b><br><br>";
 		else
-			return "<html><small>" +
-								"Select one of the checkboxes in order to limit the edge selection to edges<br>" +
-								"inside the pathway-subgraphs or to edges connecting different pathway-subgraphs<br>" +
-								"- otherwise all edges will be selected.<br>" +
-								"You may also limit the selection to self-edges, where source and target<br>" +
-								"of the edge are the same node.";
+			return "<html><small>" + "Select one of the checkboxes in order to limit the edge selection to edges<br>"
+					+ "inside the pathway-subgraphs or to edges connecting different pathway-subgraphs<br>"
+					+ "- otherwise all edges will be selected.<br>"
+					+ "You may also limit the selection to self-edges, where source and target<br>"
+					+ "of the edge are the same node.";
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR) {
 			return new Parameter[] {
-								selection.isEmpty() ? null : new BooleanParameter(extendSelection, "Extend selection", "<html>" +
-													"If selected, the selection will be extended,<br>" +
-													"leaving currently selected elements unaffected."),
-								new BooleanParameter(selInnerClusterEdges, "Limit to edges inside the same cluster", ""),
-								new BooleanParameter(selInterClusterEdges, "Limit to edges connecting different clusters", ""),
-								new BooleanParameter(onlyWithMapping, "Limit to edges with mapping-data", ""),
-								new BooleanParameter(onlyWithoutMapping, "Limit to edges without mapping-data", ""),
-								new BooleanParameter(onlyConnectingSelectedNodes, "Limit to edges connecting already selected nodes", ""),
-								new BooleanParameter(selfLoops, "Limit to self-loops", ""),
-								new BooleanParameter(onlyParallelEdges, "Limit to parallel edges", ""),
-								new BooleanParameter(onlyAntiParallelEdges, "Limit to anti-parallel edges", ""),
-								new BooleanParameter(onlyVisibleEdges, "Limit to visible edges", ""),
-								new BooleanParameter(onlyNonVisibleEdges, "Limit to hidden edges", ""), };
+					selection.isEmpty() ? null
+							: new BooleanParameter(extendSelection, "Extend selection",
+									"<html>" + "If selected, the selection will be extended,<br>"
+											+ "leaving currently selected elements unaffected."),
+					new BooleanParameter(selInnerClusterEdges, "Limit to edges inside the same cluster", ""),
+					new BooleanParameter(selInterClusterEdges, "Limit to edges connecting different clusters", ""),
+					new BooleanParameter(onlyWithMapping, "Limit to edges with mapping-data", ""),
+					new BooleanParameter(onlyWithoutMapping, "Limit to edges without mapping-data", ""),
+					new BooleanParameter(onlyConnectingSelectedNodes,
+							"Limit to edges connecting already selected nodes", ""),
+					new BooleanParameter(selfLoops, "Limit to self-loops", ""),
+					new BooleanParameter(onlyParallelEdges, "Limit to parallel edges", ""),
+					new BooleanParameter(onlyAntiParallelEdges, "Limit to anti-parallel edges", ""),
+					new BooleanParameter(onlyVisibleEdges, "Limit to visible edges", ""),
+					new BooleanParameter(onlyNonVisibleEdges, "Limit to hidden edges", ""), };
 		} else {
 			return new Parameter[] {
-								new BooleanParameter(selInnerClusterEdges, "Select edges inside Pathway-Subgraphs", ""),
-								new BooleanParameter(selInterClusterEdges, "Select edges connecting different Pathway-Subgraphs", ""),
-								new BooleanParameter(selfLoops, "Limit to self-edges", ""),
-								new BooleanParameter(onlyConnectingSelectedNodes, "Limit to edges connecting already selected nodes", ""), };
+					new BooleanParameter(selInnerClusterEdges, "Select edges inside Pathway-Subgraphs", ""),
+					new BooleanParameter(selInterClusterEdges, "Select edges connecting different Pathway-Subgraphs",
+							""),
+					new BooleanParameter(selfLoops, "Limit to self-edges", ""), new BooleanParameter(
+							onlyConnectingSelectedNodes, "Limit to edges connecting already selected nodes", ""), };
 		}
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -131,48 +128,46 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 			onlyNonVisibleEdges = ((BooleanParameter) params[i++]).getBoolean();
 		}
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "edit.Selection";
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
-		
+
 		if (graph == null)
 			throw new PreconditionException("No active graph editor window found!");
-		
+
 		if (graph.getEdges().size() <= 0)
 			throw new PreconditionException("Current graph contains no edges which may be selected.");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
 		try {
 			graph.getListenerManager().transactionStarted(this);
-			
+
 			if (!extendSelection)
 				selection.clear();
-			
+
 			int cntA = selection.getEdges().size();
 			if (!selInnerClusterEdges && !selInterClusterEdges)
 				selection.addAll(limitByOptions(graph.getEdges()));
-			else
-				if (selInnerClusterEdges && selInterClusterEdges)
-					selection.addAll(limitByOptions(graph.getEdges()));
-				else
-					if (selInnerClusterEdges) {
-						selection.addAll(limitByOptions(getInnerClusterEdges(graph.getEdges())));
-					} else
-						if (selInterClusterEdges) {
-							selection.addAll(limitByOptions(getInterClusterEdges(graph.getEdges())));
-						} else
-							ErrorMsg.addErrorMessage("Internal Error: SelectEdgesAlgorithm");
+			else if (selInnerClusterEdges && selInterClusterEdges)
+				selection.addAll(limitByOptions(graph.getEdges()));
+			else if (selInnerClusterEdges) {
+				selection.addAll(limitByOptions(getInnerClusterEdges(graph.getEdges())));
+			} else if (selInterClusterEdges) {
+				selection.addAll(limitByOptions(getInterClusterEdges(graph.getEdges())));
+			} else
+				ErrorMsg.addErrorMessage("Internal Error: SelectEdgesAlgorithm");
 			int cntB = selection.getEdges().size();
 			int cnt = cntB - cntA;
 			if (!extendSelection)
@@ -184,7 +179,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-	
+
 	private Collection<Edge> limitByOptions(Collection<Edge> edges) {
 		ArrayList<Edge> result = new ArrayList<Edge>();
 		for (Edge e : edges) {
@@ -209,7 +204,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 		}
 		return result;
 	}
-	
+
 	private boolean parallelEdgeExists(Edge e) {
 		if (e.isDirected()) {
 			for (Edge e2 : e.getSource().getDirectedOutEdges()) {
@@ -231,7 +226,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 			return false;
 		}
 	}
-	
+
 	private boolean antiParallelEdgeExists(Edge e) {
 		if (e.isDirected()) {
 			for (Edge e2 : e.getTarget().getDirectedOutEdges()) {
@@ -245,7 +240,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 			return false;
 		}
 	}
-	
+
 	private boolean isParallelRegardlessOfDirection(Edge e1, Edge e2) {
 		if (e1.getSource() == e2.getSource() && e1.getTarget() == e2.getTarget())
 			return true;
@@ -253,11 +248,11 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 			return true;
 		return false;
 	}
-	
+
 	private boolean selectionContains(Node source, Node target) {
 		return selection.getNodes().contains(source) && selection.getNodes().contains(target);
 	}
-	
+
 	public static Collection<Edge> getInterClusterEdges(Collection<Edge> edges) {
 		ArrayList<Edge> result = new ArrayList<Edge>();
 		for (Edge e : edges) {
@@ -270,7 +265,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 		}
 		return result;
 	}
-	
+
 	public static Collection<Edge> getInnerClusterEdges(Collection<Edge> edges) {
 		ArrayList<Edge> result = new ArrayList<Edge>();
 		for (Edge e : edges) {
@@ -283,7 +278,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 		}
 		return result;
 	}
-	
+
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

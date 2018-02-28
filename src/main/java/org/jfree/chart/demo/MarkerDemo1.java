@@ -67,7 +67,7 @@ public class MarkerDemo1 extends ApplicationFrame {
 	 * Creates a new instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public MarkerDemo1(final String title) {
 
@@ -86,21 +86,13 @@ public class MarkerDemo1 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param data
-	 *           the sample data.
+	 *            the sample data.
 	 * @return A configured chart.
 	 */
 	private JFreeChart createChart(final XYDataset data) {
 
-		final JFreeChart chart = ChartFactory.createScatterPlot(
-							"Marker Demo 1",
-							"X",
-							"Y",
-							data,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createScatterPlot("Marker Demo 1", "X", "Y", data,
+				PlotOrientation.VERTICAL, true, true, false);
 		chart.getLegend().setAnchor(Legend.EAST);
 
 		// customise...
@@ -170,8 +162,7 @@ public class MarkerDemo1 extends ApplicationFrame {
 		final CircleDrawer cd = new CircleDrawer(Color.red, new BasicStroke(1.0f), null);
 		final XYAnnotation bestBid = new XYDrawableAnnotation(millis, 163.0, 11, 11, cd);
 		plot.addAnnotation(bestBid);
-		final XYPointerAnnotation pointer = new XYPointerAnnotation("Best Bid", millis, 163.0,
-																					3.0 * Math.PI / 4.0);
+		final XYPointerAnnotation pointer = new XYPointerAnnotation("Best Bid", millis, 163.0, 3.0 * Math.PI / 4.0);
 		pointer.setBaseRadius(35.0);
 		pointer.setTipRadius(10.0);
 		pointer.setFont(new Font("SansSerif", Font.PLAIN, 9));
@@ -244,7 +235,7 @@ public class MarkerDemo1 extends ApplicationFrame {
 	 * Starting point for the demo application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

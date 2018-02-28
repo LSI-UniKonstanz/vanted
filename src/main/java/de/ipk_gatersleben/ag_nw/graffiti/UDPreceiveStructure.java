@@ -9,14 +9,13 @@ package de.ipk_gatersleben.ag_nw.graffiti;
 import java.net.InetAddress;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class UDPreceiveStructure {
-	
+
 	public byte[] data;
 	public InetAddress sender;
-	
+
 	/**
 	 * @param address
 	 * @param data
@@ -25,7 +24,7 @@ public class UDPreceiveStructure {
 		this.data = data;
 		this.sender = address;
 	}
-	
+
 	public String getSenderHostNameOrIP() {
 		try {
 			InetAddress[] inetAdd = InetAddress.getAllByName(sender.toString().substring(1));

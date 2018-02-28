@@ -14,11 +14,9 @@ import org.graffiti.graph.Node;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
-public class UModulation extends UtilitySuperClassToGraph
-{
+public class UModulation extends UtilitySuperClassToGraph {
 	/**
-	 * adds all information within the biopax class to the attribute set of the
-	 * node
+	 * adds all information within the biopax class to the attribute set of the node
 	 * 
 	 * @param elem
 	 * @param i
@@ -26,12 +24,13 @@ public class UModulation extends UtilitySuperClassToGraph
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public static void addAttributesToNode(GraphElement elem, Modulation i) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
-	{
+	public static void addAttributesToNode(GraphElement elem, Modulation i)
+			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		// first set label to node
 		// first set label to node
 		setLabels(elem, i);
-		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), Messages.getString("UtilitySuperClassToGraph.135")); //$NON-NLS-1$ //$NON-NLS-2$
+		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), //$NON-NLS-1$
+				Messages.getString("UtilitySuperClassToGraph.135")); //$NON-NLS-1$
 		// set attribute paths
 		// set attribute paths
 		setAvailability(elem, i.getAvailability());
@@ -47,8 +46,7 @@ public class UModulation extends UtilitySuperClassToGraph
 
 	}
 
-	public static void readAttributesFromNode(GraphElement edge, Graph g, Model model)
-	{
+	public static void readAttributesFromNode(GraphElement edge, Graph g, Model model) {
 		Edge elem = (Edge) edge;
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 		Modulation interaction = model.addNew(Modulation.class, RDFID);
@@ -68,18 +66,16 @@ public class UModulation extends UtilitySuperClassToGraph
 		// f�ge bei gleicher RDFId die Controller und die Processes in eine
 		// Menge
 		// suche die entsprechenden CatalysenIds
-		for (Edge e : elem.getGraph().getEdges())
-		{
+		for (Edge e : elem.getGraph().getEdges()) {
 
-			if (AttributeHelper.hasAttribute(e, Messages.getString("UtilitySuperClassToGraph.82")))
-			{
+			if (AttributeHelper.hasAttribute(e, Messages.getString("UtilitySuperClassToGraph.82"))) {
 				String currentEdgeRDFId = getAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.82"));
 
-				if (currentEdgeRDFId.matches(RDFID))
-				{
+				if (currentEdgeRDFId.matches(RDFID)) {
 					Node controlNode = e.getSource();
 
-					String controlNodeRDFId = getAttributeSecure(controlNode, Messages.getString("UtilitySuperClassToGraph.82"));
+					String controlNodeRDFId = getAttributeSecure(controlNode,
+							Messages.getString("UtilitySuperClassToGraph.82"));
 					String processNodeRDFId = getAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.115"));
 
 					Controller control = (Controller) model.getByID(controlNodeRDFId);

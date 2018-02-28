@@ -61,7 +61,7 @@ public class TimePeriodValuesDemo extends ApplicationFrame {
 	 * A demonstration application showing how to....
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public TimePeriodValuesDemo(final String title) {
 
@@ -164,7 +164,7 @@ public class TimePeriodValuesDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

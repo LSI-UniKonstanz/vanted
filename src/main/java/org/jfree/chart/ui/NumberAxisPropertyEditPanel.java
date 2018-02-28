@@ -89,8 +89,7 @@ class NumberAxisPropertyEditPanel extends AxisPropertyEditPanel implements Focus
 	private JTextField maximumRangeValue;
 
 	/**
-	 * A checkbox that controls whether or not gridlines are showing for the
-	 * axis.
+	 * A checkbox that controls whether or not gridlines are showing for the axis.
 	 */
 	// private JCheckBox showGridLinesCheckBox;
 
@@ -101,20 +100,20 @@ class NumberAxisPropertyEditPanel extends AxisPropertyEditPanel implements Focus
 	private StrokeSample gridStrokeSample;
 
 	/**
-	 * An array of stroke samples to choose from (since I haven't written a
-	 * decent StrokeChooser component yet).
+	 * An array of stroke samples to choose from (since I haven't written a decent
+	 * StrokeChooser component yet).
 	 */
 	private StrokeSample[] availableStrokeSamples;
 
 	/** The resourceBundle for the localization. */
-	protected static ResourceBundle localizationResources =
-										ResourceBundle.getBundle("org.jfree.chart.ui.LocalizationBundle");
+	protected static ResourceBundle localizationResources = ResourceBundle
+			.getBundle("org.jfree.chart.ui.LocalizationBundle");
 
 	/**
 	 * Standard constructor: builds a property panel for the specified axis.
 	 * 
 	 * @param axis
-	 *           the axis, which should be changed.
+	 *            the axis, which should be changed.
 	 */
 	public NumberAxisPropertyEditPanel(NumberAxis axis) {
 
@@ -138,8 +137,7 @@ class NumberAxisPropertyEditPanel extends AxisPropertyEditPanel implements Focus
 		range.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
 		range.add(new JPanel());
-		this.autoRangeCheckBox = new JCheckBox(localizationResources.getString("Auto-adjust_range"),
-							this.autoRange);
+		this.autoRangeCheckBox = new JCheckBox(localizationResources.getString("Auto-adjust_range"), this.autoRange);
 		this.autoRangeCheckBox.setActionCommand("AutoRangeOnOff");
 		this.autoRangeCheckBox.addActionListener(this);
 		range.add(this.autoRangeCheckBox);
@@ -223,28 +221,24 @@ class NumberAxisPropertyEditPanel extends AxisPropertyEditPanel implements Focus
 	 * Handles actions from within the property panel.
 	 * 
 	 * @param event
-	 *           an event.
+	 *            an event.
 	 */
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if (command.equals("GridStroke")) {
 			attemptGridStrokeSelection();
-		} else
-			if (command.equals("GridPaint")) {
-				attemptGridPaintSelection();
-			} else
-				if (command.equals("AutoRangeOnOff")) {
-					toggleAutoRange();
-				} else
-					if (command.equals("MinimumRange")) {
-						validateMinimum();
-					} else
-						if (command.equals("MaximumRange")) {
-							validateMaximum();
-						} else {
-							// pass to the super-class for handling
-							super.actionPerformed(event);
-						}
+		} else if (command.equals("GridPaint")) {
+			attemptGridPaintSelection();
+		} else if (command.equals("AutoRangeOnOff")) {
+			toggleAutoRange();
+		} else if (command.equals("MinimumRange")) {
+			validateMinimum();
+		} else if (command.equals("MaximumRange")) {
+			validateMaximum();
+		} else {
+			// pass to the super-class for handling
+			super.actionPerformed(event);
+		}
 	}
 
 	/**
@@ -252,10 +246,8 @@ class NumberAxisPropertyEditPanel extends AxisPropertyEditPanel implements Focus
 	 */
 	private void attemptGridStrokeSelection() {
 		StrokeChooserPanel panel = new StrokeChooserPanel(null, this.availableStrokeSamples);
-		int result =
-							JOptionPane.showConfirmDialog(this, panel,
-														localizationResources.getString("Stroke_Selection"),
-														JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(this, panel, localizationResources.getString("Stroke_Selection"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (result == JOptionPane.OK_OPTION) {
 			this.gridStrokeSample.setStroke(panel.getSelectedStroke());
@@ -267,8 +259,7 @@ class NumberAxisPropertyEditPanel extends AxisPropertyEditPanel implements Focus
 	 */
 	private void attemptGridPaintSelection() {
 		Color c;
-		c = JColorChooser.showDialog(this, localizationResources.getString("Grid_Color"),
-													Color.blue);
+		c = JColorChooser.showDialog(this, localizationResources.getString("Grid_Color"), Color.blue);
 		if (c != null) {
 			this.gridPaintSample.setPaint(c);
 		}
@@ -278,7 +269,7 @@ class NumberAxisPropertyEditPanel extends AxisPropertyEditPanel implements Focus
 	 * Does nothing.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void focusGained(FocusEvent event) {
 		// don't need to do anything
@@ -288,15 +279,14 @@ class NumberAxisPropertyEditPanel extends AxisPropertyEditPanel implements Focus
 	 * Revalidates minimum/maximum range.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void focusLost(FocusEvent event) {
 		if (event.getSource() == this.minimumRangeValue) {
 			validateMinimum();
-		} else
-			if (event.getSource() == this.maximumRangeValue) {
-				validateMaximum();
-			}
+		} else if (event.getSource() == this.maximumRangeValue) {
+			validateMaximum();
+		}
 	}
 
 	/**
@@ -352,11 +342,11 @@ class NumberAxisPropertyEditPanel extends AxisPropertyEditPanel implements Focus
 	}
 
 	/**
-	 * Sets the properties of the specified axis to match the properties
-	 * defined on this panel.
+	 * Sets the properties of the specified axis to match the properties defined on
+	 * this panel.
 	 * 
 	 * @param axis
-	 *           the axis.
+	 *            the axis.
 	 */
 	public void setAxisProperties(Axis axis) {
 		super.setAxisProperties(axis);

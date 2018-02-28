@@ -13,39 +13,35 @@ import java.util.EventObject;
 
 /**
  * This class is merely meant to group all the Node-/Edge-/ etc. events. One
- * could imagine that common things could be added right there (for example
- * the timestamp of the event). Otherwise the class is empty.
+ * could imagine that common things could be added right there (for example the
+ * timestamp of the event). Otherwise the class is empty.
  * 
  * @version $Revision: 1.5 $
  */
-public abstract class AbstractEvent
-					extends EventObject {
+public abstract class AbstractEvent extends EventObject {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	public enum EVENTTYPE {
-		CREATED,
-		UPDATED,
-		DELETED
+		CREATED, UPDATED, DELETED
 	};
 
 	private EVENTTYPE eventType;
+
 	/**
 	 * Constructs an AbstractEvent with object o as source.
 	 * 
 	 * @param o
-	 *           the object that is considered as source of the event.
+	 *            the object that is considered as source of the event.
 	 */
 	public AbstractEvent(Object o) {
 		super(o);
 	}
-	
-	
-	
+
 	public EVENTTYPE getEventType() {
 		return eventType;
 	}

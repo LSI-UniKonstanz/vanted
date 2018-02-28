@@ -14,16 +14,13 @@ import org.graffiti.plugin.algorithm.Algorithm;
  * 
  * @author Falk Schreiber
  */
-public class HammingDistancePlugin
-					extends GenericPluginAdapter {
-	
+public class HammingDistancePlugin extends GenericPluginAdapter {
+
 	/**
 	 * Creates a new HammingDistancePlugin object.
 	 */
 	public HammingDistancePlugin() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.DEBUG)
-			this.algorithms = new Algorithm[] {
-								new HammingDistanceAlgorithm()
-			};
+			this.algorithms = new Algorithm[] { new HammingDistanceAlgorithm() };
 	}
 }

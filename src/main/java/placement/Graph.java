@@ -10,7 +10,7 @@ import java.util.Hashtable;
 class Edge {
 	Node start;
 	Node end;
-	
+
 	Edge(Node start, Node end) {
 		this.start = start;
 		this.end = end;
@@ -21,17 +21,17 @@ class Node {
 	Rectangle rectangle;
 	String id;
 	ArrayList<Edge> edges;
-	
+
 	Node(String id, int x, int y, int w, int h) {
 		rectangle = new Rectangle(x - w / 2, y - w / 2, w, h);
 		this.id = id;
 		edges = new ArrayList<Edge>();
 	}
-	
+
 	void addEdge(Edge e) {
 		edges.add(e);
 	}
-	
+
 	public Point2D getPos() {
 		Point2D p = rectangle.getLocation();
 		float x = rectangle.width / 2;
@@ -43,7 +43,7 @@ class Node {
 public class Graph {
 	Hashtable<String, Node> nodes = new Hashtable<String, Node>();
 	ArrayList<Edge> edges = new ArrayList<Edge>();
-	
+
 	public ArrayList<Rectangle2D> getRectangles() {
 		ArrayList<Rectangle2D> rectangles = new ArrayList<Rectangle2D>();
 		for (Node n : nodes.values()) {
@@ -51,7 +51,7 @@ public class Graph {
 		}
 		return rectangles;
 	}
-	
+
 	public ArrayList<Line2D> getLines() {
 		ArrayList<Line2D> lines = new ArrayList<Line2D>();
 		for (Edge e : edges) {
@@ -59,11 +59,11 @@ public class Graph {
 		}
 		return lines;
 	}
-	
+
 	public void addNode(String id, int x, int y, int w, int h) {
 		nodes.put(id, new Node(id, x, y, w, h));
 	}
-	
+
 	public void addEdge(String id1, String id2) {
 		edges.add(new Edge(nodes.get(id1), nodes.get(id2)));
 	}

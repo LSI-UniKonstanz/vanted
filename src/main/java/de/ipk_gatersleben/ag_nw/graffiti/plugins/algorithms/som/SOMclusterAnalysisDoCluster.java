@@ -29,38 +29,34 @@ import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SOMclusterAnalysisDoCluster extends AbstractAlgorithm {
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Step 2: Use trained SOM to classify data";
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.extension.Extension#getCategory()
 	 */
 	@Override
 	public String getCategory() {
 		return "Analysis";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION,
-				Category.CLUSTER
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.CLUSTER));
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
@@ -69,105 +65,112 @@ public class SOMclusterAnalysisDoCluster extends AbstractAlgorithm {
 		if (SOMplugin.getColumns() == null)
 			throw new PreconditionException("SOM has not yet been trained!");
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return "<html>" + "With this command, the trained SOM weight matrix is used for the<br>"
-							+ "assignment of cluster IDs. For each node or edge the data mapping is analysed<br>"
-							+ "and compared to the SOM centroids. The most similar centroid and the assignment<br>"
-							+ "of the cluster ID is determined and used to set the node or edge cluster ID.<br>"
-							+ "The result is not immediately visible (besides by looking at the graph elements<br>"
-							+ "attributes). You may make the node cluster distribution visible with the menu<br>"
-							+ "command Elements/Visualize Clusters";
+				+ "assignment of cluster IDs. For each node or edge the data mapping is analysed<br>"
+				+ "and compared to the SOM centroids. The most similar centroid and the assignment<br>"
+				+ "of the cluster ID is determined and used to set the node or edge cluster ID.<br>"
+				+ "The result is not immediately visible (besides by looking at the graph elements<br>"
+				+ "attributes). You may make the node cluster distribution visible with the menu<br>"
+				+ "command Elements/Visualize Clusters";
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
-		// new BooleanParameter(false, "Create Data Nodes",
-		// "If enabled, new nodes are created, containing all of the normalised data from the corresponding clusters.")
+				// new BooleanParameter(false, "Create Data Nodes",
+				// "If enabled, new nodes are created, containing all of the normalised data
+				// from the corresponding clusters.")
 		};
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		super.setParameters(params);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
 		SOMclusterService mcs = new SOMclusterService(getSelectedOrAllGraphElements());
-		
+
 		BackgroundTaskHelper bth = new BackgroundTaskHelper(mcs, mcs, "Clustering with trained SOM",
-							"Clustering with trained SOM", false, false);
+				"Clustering with trained SOM", false, false);
 		bth.startWork(this);
 	}
 }
 
-class SOMclusterService implements BackgroundTaskStatusProvider, BackgroundTaskStatusProviderSupportingExternalCall,
-					Runnable {
-	
+class SOMclusterService
+		implements BackgroundTaskStatusProvider, BackgroundTaskStatusProviderSupportingExternalCall, Runnable {
+
 	double statusDouble = -1d;
 	boolean pleaseStop = false;
 	String status1, status2;
-	
+
 	Collection<GraphElement> selection;
-	
+
 	SOMclusterService(Collection<GraphElement> selection) {
 		this.selection = selection;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @seede.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
 	 * getCurrentStatusValue()
 	 */
 	public int getCurrentStatusValue() {
 		return (int) statusDouble;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @seede.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
 	 * getCurrentStatusValueFine()
 	 */
 	public double getCurrentStatusValueFine() {
 		return statusDouble;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @seede.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
 	 * getCurrentStatusMessage1()
 	 */
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @seede.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
 	 * getCurrentStatusMessage2()
 	 */
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#pleaseStop
-	 * ()
+	 * de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#pleaseStop ()
 	 */
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
@@ -178,8 +181,8 @@ class SOMclusterService implements BackgroundTaskStatusProvider, BackgroundTaskS
 		DataSet mydataset = SOMplugin.getDataSet(false);
 		boolean returnNaN = mydataset.getTrainedWithReturnNaN();
 		String cols[] = SOMplugin.getColumns();
-		String[] groups = SOMplugin.initDataSetWithSelection(mydataset, selection, returnNaN, SOMplugin
-							.getLastUseAverageSetting());
+		String[] groups = SOMplugin.initDataSetWithSelection(mydataset, selection, returnNaN,
+				SOMplugin.getLastUseAverageSetting());
 		if (cols.length != groups.length) {
 			HashSet<String> g1 = new HashSet<String>();
 			for (String s : cols)
@@ -237,7 +240,7 @@ class SOMclusterService implements BackgroundTaskStatusProvider, BackgroundTaskS
 		if (checkStop())
 			return;
 	}
-	
+
 	private boolean checkStop() {
 		if (pleaseStop) {
 			status1 = "SOM-Analysis not complete: aborted";
@@ -246,9 +249,10 @@ class SOMclusterService implements BackgroundTaskStatusProvider, BackgroundTaskS
 		}
 		return pleaseStop;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see
 	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider
 	 * #pluginWaitsForUser()
@@ -256,9 +260,10 @@ class SOMclusterService implements BackgroundTaskStatusProvider, BackgroundTaskS
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see
 	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider
 	 * #pleaseContinueRun()
@@ -266,29 +271,30 @@ class SOMclusterService implements BackgroundTaskStatusProvider, BackgroundTaskS
 	public void pleaseContinueRun() {
 		// empty
 	}
-	
+
 	public void setCurrentStatusValue(int value) {
 		statusDouble = value;
 	}
-	
+
 	public void setCurrentStatusValueFine(double value) {
 		statusDouble = value;
 	}
-	
+
 	public boolean wantsToStop() {
 		return checkStop();
 	}
-	
+
 	public void setCurrentStatusText1(String status) {
 		status1 = status;
 	}
-	
+
 	public void setCurrentStatusText2(String status) {
 		status2 = status;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @seeorg.BackgroundTaskStatusProviderSupportingExternalCall#
 	 * setCurrentStatusValueFineAdd(double)
 	 */

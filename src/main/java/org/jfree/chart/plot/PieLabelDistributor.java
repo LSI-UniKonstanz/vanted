@@ -34,8 +34,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This class distributes the section labels for one side of a pie chart so that they do not
- * overlap.
+ * This class distributes the section labels for one side of a pie chart so that
+ * they do not overlap.
  */
 public class PieLabelDistributor {
 
@@ -49,7 +49,7 @@ public class PieLabelDistributor {
 	 * Creates a new distributor.
 	 * 
 	 * @param labelCount
-	 *           the number of labels.
+	 *            the number of labels.
 	 */
 	public PieLabelDistributor(int labelCount) {
 		this.labels = new ArrayList(labelCount);
@@ -59,7 +59,7 @@ public class PieLabelDistributor {
 	 * Returns a label record from the list.
 	 * 
 	 * @param index
-	 *           the index.
+	 *            the index.
 	 * @return the label record.
 	 */
 	public PieLabelRecord getPieLabelRecord(int index) {
@@ -70,7 +70,7 @@ public class PieLabelDistributor {
 	 * Adds a label record.
 	 * 
 	 * @param record
-	 *           the label record.
+	 *            the label record.
 	 */
 	public void addPieLabelRecord(PieLabelRecord record) {
 		this.labels.add(record);
@@ -89,9 +89,9 @@ public class PieLabelDistributor {
 	 * Distributes the labels.
 	 * 
 	 * @param minY
-	 *           the minimum y-coordinate in Java2D-space.
+	 *            the minimum y-coordinate in Java2D-space.
 	 * @param height
-	 *           the height.
+	 *            the height.
 	 */
 	public void distributeLabels(double minY, double height) {
 		sort();
@@ -115,7 +115,8 @@ public class PieLabelDistributor {
 	}
 
 	/**
-	 * Returns <code>true</code> if there are overlapping labels in the list, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if there are overlapping labels in the list, and
+	 * <code>false</code> otherwise.
 	 * 
 	 * @return A boolean.
 	 */
@@ -132,8 +133,8 @@ public class PieLabelDistributor {
 	}
 
 	/**
-	 * Adjusts the y-coordinate for the labels in towards the center in an attempt to fix
-	 * overlapping.
+	 * Adjusts the y-coordinate for the labels in towards the center in an attempt
+	 * to fix overlapping.
 	 */
 	protected void adjustInwards() {
 		int lower = 0;
@@ -159,12 +160,13 @@ public class PieLabelDistributor {
 	}
 
 	/**
-	 * Any labels that are overlapping are moved down in an attempt to eliminate the overlaps.
+	 * Any labels that are overlapping are moved down in an attempt to eliminate the
+	 * overlaps.
 	 * 
 	 * @param minY
-	 *           the minimum y value (in Java2D coordinate space).
+	 *            the minimum y value (in Java2D coordinate space).
 	 * @param height
-	 *           the height available for all labels.
+	 *            the height available for all labels.
 	 */
 	protected void adjustDownwards(double minY, double height) {
 		for (int i = 0; i < this.labels.size() - 1; i++) {
@@ -172,22 +174,19 @@ public class PieLabelDistributor {
 			PieLabelRecord record1 = getPieLabelRecord(i + 1);
 			if (record1.getLowerY() < record0.getUpperY()) {
 				record1.setAllocatedY(
-									Math.min(
-														minY + height,
-														record0.getUpperY() + this.minGap + record1.getLabelHeight() / 2.0
-														)
-									);
+						Math.min(minY + height, record0.getUpperY() + this.minGap + record1.getLabelHeight() / 2.0));
 			}
 		}
 	}
 
 	/**
-	 * Any labels that are overlapping are moved up in an attempt to eliminate the overlaps.
+	 * Any labels that are overlapping are moved up in an attempt to eliminate the
+	 * overlaps.
 	 * 
 	 * @param minY
-	 *           the minimum y value (in Java2D coordinate space).
+	 *            the minimum y value (in Java2D coordinate space).
 	 * @param height
-	 *           the height available for all labels.
+	 *            the height available for all labels.
 	 */
 	protected void adjustUpwards(double minY, double height) {
 		for (int i = this.labels.size() - 1; i > 0; i--) {
@@ -195,22 +194,19 @@ public class PieLabelDistributor {
 			PieLabelRecord record1 = getPieLabelRecord(i - 1);
 			if (record1.getUpperY() > record0.getLowerY()) {
 				record1.setAllocatedY(
-									Math.max(
-														minY,
-														record0.getLowerY() - this.minGap - record1.getLabelHeight() / 2.0
-														)
-									);
+						Math.max(minY, record0.getLowerY() - this.minGap - record1.getLabelHeight() / 2.0));
 			}
 		}
 	}
 
 	/**
-	 * Labels are spaced evenly in the available space in an attempt to eliminate the overlaps.
+	 * Labels are spaced evenly in the available space in an attempt to eliminate
+	 * the overlaps.
 	 * 
 	 * @param minY
-	 *           the minimum y value (in Java2D coordinate space).
+	 *            the minimum y value (in Java2D coordinate space).
 	 * @param height
-	 *           the height available for all labels.
+	 *            the height available for all labels.
 	 */
 	protected void spreadEvenly(double minY, double height) {
 		double y = minY;
@@ -238,7 +234,8 @@ public class PieLabelDistributor {
 	}
 
 	/**
-	 * Returns a string containing a description of the object for debugging purposes.
+	 * Returns a string containing a description of the object for debugging
+	 * purposes.
 	 * 
 	 * @return a string.
 	 */

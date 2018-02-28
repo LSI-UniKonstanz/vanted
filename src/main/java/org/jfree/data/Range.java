@@ -62,9 +62,9 @@ public strictfp class Range implements Serializable {
 	 * Creates a new range.
 	 * 
 	 * @param lower
-	 *           the lower bound (must be <= upper bound).
+	 *            the lower bound (must be <= upper bound).
 	 * @param upper
-	 *           the upper bound (must be >= lower bound).
+	 *            the upper bound (must be >= lower bound).
 	 */
 	public Range(final double lower, final double upper) {
 		if (lower > upper) {
@@ -111,10 +111,11 @@ public strictfp class Range implements Serializable {
 	}
 
 	/**
-	 * Returns <code>true</code> if the range contains the specified value and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the range contains the specified value and
+	 * <code>false</code> otherwise.
 	 * 
 	 * @param value
-	 *           the value to lookup.
+	 *            the value to lookup.
 	 * @return <code>true</code> if the range contains the specified value.
 	 */
 	public boolean contains(final double value) {
@@ -122,12 +123,13 @@ public strictfp class Range implements Serializable {
 	}
 
 	/**
-	 * Returns <code>true</code> if the range intersects with the specified range, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the range intersects with the specified range,
+	 * and <code>false</code> otherwise.
 	 * 
 	 * @param b0
-	 *           the lower bound.
+	 *            the lower bound.
 	 * @param b1
-	 *           the upper bound.
+	 *            the upper bound.
 	 * @return A boolean.
 	 */
 	public boolean intersects(final double b0, final double b1) {
@@ -142,7 +144,7 @@ public strictfp class Range implements Serializable {
 	 * Returns the value within the range that is closest to the specified value.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @return The constrained value.
 	 */
 	public double constrain(final double value) {
@@ -150,10 +152,9 @@ public strictfp class Range implements Serializable {
 		if (!contains(value)) {
 			if (value > this.upper) {
 				result = this.upper;
-			} else
-				if (value < this.lower) {
-					result = this.lower;
-				}
+			} else if (value < this.lower) {
+				result = this.lower;
+			}
 		}
 		return result;
 	}
@@ -163,14 +164,16 @@ public strictfp class Range implements Serializable {
 	 * <P>
 	 * Note that:
 	 * <ul>
-	 * <li>either range can be <code>null</code>, in which case the other range is returned;</li>
-	 * <li>if both ranges are <code>null</code> the return value is <code>null</code>.</li>
+	 * <li>either range can be <code>null</code>, in which case the other range is
+	 * returned;</li>
+	 * <li>if both ranges are <code>null</code> the return value is
+	 * <code>null</code>.</li>
 	 * </ul>
 	 * 
 	 * @param range1
-	 *           the first range (<code>null</code> permitted).
+	 *            the first range (<code>null</code> permitted).
 	 * @param range2
-	 *           the second range (<code>null</code> permitted).
+	 *            the second range (<code>null</code> permitted).
 	 * @return A new range (possibly <code>null</code>).
 	 */
 	public static Range combine(final Range range1, final Range range2) {
@@ -191,11 +194,11 @@ public strictfp class Range implements Serializable {
 	 * Creates a new range by adding margins to an existing range.
 	 * 
 	 * @param range
-	 *           the range (<code>null</code> not permitted).
+	 *            the range (<code>null</code> not permitted).
 	 * @param lowerMargin
-	 *           the lower margin (expressed as a percentage of the range length).
+	 *            the lower margin (expressed as a percentage of the range length).
 	 * @param upperMargin
-	 *           the upper margin (expressed as a percentage of the range length).
+	 *            the upper margin (expressed as a percentage of the range length).
 	 * @return The expanded range.
 	 */
 	public static Range expand(Range range, double lowerMargin, double upperMargin) {
@@ -212,7 +215,7 @@ public strictfp class Range implements Serializable {
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param object
-	 *           the object to test against (<code>null</code> permitted).
+	 *            the object to test against (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object object) {
@@ -247,7 +250,8 @@ public strictfp class Range implements Serializable {
 	/**
 	 * Returns a string representation of this Range.
 	 * 
-	 * @return A String "Range[lower,upper]" where lower=lower range and upper=upper range.
+	 * @return A String "Range[lower,upper]" where lower=lower range and upper=upper
+	 *         range.
 	 */
 	public String toString() {
 		return ("Range[" + this.lower + "," + this.upper + "]");

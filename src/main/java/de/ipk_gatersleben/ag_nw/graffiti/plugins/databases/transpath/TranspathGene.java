@@ -14,54 +14,43 @@ public class TranspathGene extends TranspathEntity {
 	public ArrayList<String> REFERENCES_ITEM = new ArrayList<String>();
 	public ArrayList<String> MEMBERS_ITEM = new ArrayList<String>();
 	public ArrayList<String> ACCNOS = new ArrayList<String>();
-	
+
 	public String getKey() {
 		return NAME; // e.g. TFPA36117
 	}
-	
+
 	public String getXMLstartEndEntity() {
 		return "Gene";
 	}
-	
+
 	@Override
 	public void processXMLentityValue(String environment, String value) {
 		if (environment.equals("/groups/item"))
 			GROUPS_ITEM.add(value);
-		else
-			if (environment.equals("/name"))
-				NAME = checkAndSet(NAME, value);
-			else
-				if (environment.equals("/updator"))
-					UPDATOR = checkAndSet(UPDATOR, value);
-				else
-					if (environment.equals("/rkouts/item"))
-						RKOUTS_ITEM.add(value);
-					else
-						if (environment.equals("/secid"))
-							SECID = checkAndSet(SECID, value);
-						else
-							if (environment.equals("/rkins/item"))
-								RKINS_ITEM.add(value);
-							else
-								if (environment.equals("/species"))
-									SPECIES = checkAndSet(SPECIES, value);
-								else
-									if (environment.equals("/references/item"))
-										REFERENCES_ITEM.add(value);
-									else
-										if (environment.equals("/members/item"))
-											MEMBERS_ITEM.add(value);
-										else
-											if (environment.equals("/accnos"))
-												ACCNOS.add(value);
-											else
-												if (environment.equals("/synonyms"))
-													SYNONYMS.add(value);
-												else
-													if (environment.equals("/creator"))
-														CREATOR = checkAndSet(CREATOR, value);
-													else {
-														System.out.println("UNKNOWN TRANSPATH GENE XML INFORMATION: " + environment + " (value: " + value + ")");
-													}
+		else if (environment.equals("/name"))
+			NAME = checkAndSet(NAME, value);
+		else if (environment.equals("/updator"))
+			UPDATOR = checkAndSet(UPDATOR, value);
+		else if (environment.equals("/rkouts/item"))
+			RKOUTS_ITEM.add(value);
+		else if (environment.equals("/secid"))
+			SECID = checkAndSet(SECID, value);
+		else if (environment.equals("/rkins/item"))
+			RKINS_ITEM.add(value);
+		else if (environment.equals("/species"))
+			SPECIES = checkAndSet(SPECIES, value);
+		else if (environment.equals("/references/item"))
+			REFERENCES_ITEM.add(value);
+		else if (environment.equals("/members/item"))
+			MEMBERS_ITEM.add(value);
+		else if (environment.equals("/accnos"))
+			ACCNOS.add(value);
+		else if (environment.equals("/synonyms"))
+			SYNONYMS.add(value);
+		else if (environment.equals("/creator"))
+			CREATOR = checkAndSet(CREATOR, value);
+		else {
+			System.out.println("UNKNOWN TRANSPATH GENE XML INFORMATION: " + environment + " (value: " + value + ")");
+		}
 	}
 }

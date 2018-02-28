@@ -46,10 +46,11 @@ import org.jfree.ui.RefineryUtilities;
 public class XYSeriesDemo2 extends ApplicationFrame {
 
 	/**
-	 * A demonstration application showing an {@link XYSeries} where all the y-values are the same.
+	 * A demonstration application showing an {@link XYSeries} where all the
+	 * y-values are the same.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XYSeriesDemo2(final String title) {
 
@@ -65,16 +66,8 @@ public class XYSeriesDemo2 extends ApplicationFrame {
 		series.add(25.6, 100.0);
 		series.add(30.0, 100.0);
 		final XYSeriesCollection data = new XYSeriesCollection(series);
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-							"XY Series Demo 2",
-							"X",
-							"Y",
-							data,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createXYLineChart("XY Series Demo 2", "X", "Y", data,
+				PlotOrientation.VERTICAL, true, true, false);
 
 		final XYPlot plot = (XYPlot) chart.getPlot();
 		final NumberAxis axis = (NumberAxis) plot.getRangeAxis();
@@ -101,7 +94,7 @@ public class XYSeriesDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

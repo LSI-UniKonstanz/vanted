@@ -55,9 +55,8 @@ import org.jfree.ui.Spacer;
 import org.jfree.ui.TextAnchor;
 
 /**
- * A simple demonstration of the {@link XYDifferenceRenderer}. The sunrise and sunset times for
- * this demo were obtained from:
- * http://www.sunrisesunset.com/
+ * A simple demonstration of the {@link XYDifferenceRenderer}. The sunrise and
+ * sunset times for this demo were obtained from: http://www.sunrisesunset.com/
  */
 public class DifferenceChartDemo2 extends ApplicationFrame {
 
@@ -65,7 +64,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public DifferenceChartDemo2(final String title) {
 
@@ -89,9 +88,9 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 	 * A utility method for creating a value based on a time.
 	 * 
 	 * @param hour
-	 *           the hour.
+	 *            the hour.
 	 * @param min
-	 *           the minute.
+	 *            the minute.
 	 * @return a value.
 	 */
 	private Long time(final int hour, final int min) {
@@ -883,24 +882,18 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							"Daylight Hours - London, UK",
-							"Date",
-							"Time",
-							dataset,
-							true, // legend
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Daylight Hours - London, UK", "Date", "Time",
+				dataset, true, // legend
 				true, // tool tips
 				false // URLs
-				);
+		);
 		chart.setBackgroundPaint(Color.white);
 
-		final XYDifferenceRenderer renderer = new XYDifferenceRenderer(
-							Color.blue, Color.blue, false
-							);
+		final XYDifferenceRenderer renderer = new XYDifferenceRenderer(Color.blue, Color.blue, false);
 		renderer.setStroke(new BasicStroke(2.0f));
 		renderer.setSeriesPaint(0, Color.yellow);
 		renderer.setSeriesPaint(1, Color.red);
@@ -919,10 +912,8 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 		plot.setForegroundAlpha(0.5f);
 
 		final Color c = new Color(255, 60, 24, 63);
-		final Marker bst = new IntervalMarker(
-							new Day(28, 3, 2004).getFirstMillisecond(), new Day(30, 10, 2004).getFirstMillisecond(),
-							c, new BasicStroke(2.0f), null, null, 1.0f
-							);
+		final Marker bst = new IntervalMarker(new Day(28, 3, 2004).getFirstMillisecond(),
+				new Day(30, 10, 2004).getFirstMillisecond(), c, new BasicStroke(2.0f), null, null, 1.0f);
 		bst.setLabel("British Summer Time");
 		bst.setLabelAnchor(RectangleAnchor.BOTTOM_RIGHT);
 		bst.setLabelFont(new Font("SansSerif", Font.ITALIC + Font.BOLD, 10));
@@ -951,7 +942,7 @@ public class DifferenceChartDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

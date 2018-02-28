@@ -40,16 +40,18 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A demo showing a time series (quarterly data) with a <code>null</code> value. The <code>null</code> value causes a gap in the line connecting the data
+ * A demo showing a time series (quarterly data) with a <code>null</code> value.
+ * The <code>null</code> value causes a gap in the line connecting the data
  * points.
  */
 public class TimeSeriesDemo2 extends ApplicationFrame {
 
 	/**
-	 * A demonstration application showing a quarterly time series containing a null value.
+	 * A demonstration application showing a quarterly time series containing a null
+	 * value.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public TimeSeriesDemo2(final String title) {
 
@@ -65,15 +67,8 @@ public class TimeSeriesDemo2 extends ApplicationFrame {
 		series.add(new Quarter(3, 2002), 734.4);
 		series.add(new Quarter(4, 2002), 453.2);
 		final TimeSeriesCollection dataset = new TimeSeriesCollection(series);
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							"Time Series Demo 2",
-							"Time",
-							"Value",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Time Series Demo 2", "Time", "Value", dataset,
+				true, true, false);
 		chart.getXYPlot().addRangeMarker(new ValueMarker(550.0));
 		final Quarter q = new Quarter(2, 2002);
 		chart.getXYPlot().addDomainMarker(new ValueMarker(q.getMiddleMillisecond()));
@@ -98,7 +93,7 @@ public class TimeSeriesDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

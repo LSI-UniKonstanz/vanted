@@ -61,16 +61,13 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.util.PublicCloneable;
 
 /**
- * Line/Step item renderer for an {@link XYPlot}. This class draws lines between data
- * points, only allowing horizontal or vertical lines (steps).
+ * Line/Step item renderer for an {@link XYPlot}. This class draws lines between
+ * data points, only allowing horizontal or vertical lines (steps).
  * 
  * @author Roger Studner
  */
 public class XYStepRenderer extends AbstractXYItemRenderer
-										implements XYItemRenderer,
-													Cloneable,
-													PublicCloneable,
-													Serializable {
+		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
 
 	/**
 	 * Constructs a new renderer with no tooltip or URL generation.
@@ -83,12 +80,11 @@ public class XYStepRenderer extends AbstractXYItemRenderer
 	 * Constructs a new renderer.
 	 * 
 	 * @param toolTipGenerator
-	 *           the item label generator.
+	 *            the item label generator.
 	 * @param urlGenerator
-	 *           the URL generator.
+	 *            the URL generator.
 	 */
-	public XYStepRenderer(XYToolTipGenerator toolTipGenerator,
-									XYURLGenerator urlGenerator) {
+	public XYStepRenderer(XYToolTipGenerator toolTipGenerator, XYURLGenerator urlGenerator) {
 
 		super();
 		setToolTipGenerator(toolTipGenerator);
@@ -100,42 +96,33 @@ public class XYStepRenderer extends AbstractXYItemRenderer
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the area within which the data is being drawn.
+	 *            the area within which the data is being drawn.
 	 * @param info
-	 *           collects information about the drawing.
+	 *            collects information about the drawing.
 	 * @param plot
-	 *           the plot (can be used to obtain standard color information etc).
+	 *            the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the vertical axis.
+	 *            the vertical axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @param crosshairState
-	 *           crosshair information for the plot (<code>null</code> permitted).
+	 *            crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *           the pass index (ignored here).
+	 *            the pass index (ignored here).
 	 */
-	public void drawItem(Graphics2D g2,
-									XYItemRendererState state,
-									Rectangle2D dataArea,
-									PlotRenderingInfo info,
-									XYPlot plot,
-									ValueAxis domainAxis,
-									ValueAxis rangeAxis,
-									XYDataset dataset,
-									int series,
-									int item,
-									CrosshairState crosshairState,
-									int pass) {
+	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
+			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
+			CrosshairState crosshairState, int pass) {
 
 		PlotOrientation orientation = plot.getOrientation();
 
@@ -161,12 +148,8 @@ public class XYStepRenderer extends AbstractXYItemRenderer
 			Number x0 = dataset.getXValue(series, item - 1);
 			Number y0 = dataset.getYValue(series, item - 1);
 			if (y0 != null) {
-				double transX0 = domainAxis.valueToJava2D(
-									x0.doubleValue(), dataArea, xAxisLocation
-									);
-				double transY0 = rangeAxis.valueToJava2D(
-									y0.doubleValue(), dataArea, yAxisLocation
-									);
+				double transX0 = domainAxis.valueToJava2D(x0.doubleValue(), dataArea, xAxisLocation);
+				double transY0 = rangeAxis.valueToJava2D(y0.doubleValue(), dataArea, yAxisLocation);
 
 				Line2D line = state.workingLine;
 				if (orientation == PlotOrientation.HORIZONTAL) {
@@ -180,33 +163,31 @@ public class XYStepRenderer extends AbstractXYItemRenderer
 						line.setLine(transY1, transX0, transY1, transX1);
 						g2.draw(line);
 					}
-				} else
-					if (orientation == PlotOrientation.VERTICAL) {
-						if (transY0 == transY1) { // this represents the situation for drawing a
-							// horizontal bar.
-							line.setLine(transX0, transY0, transX1, transY1);
-							g2.draw(line);
-						} else { // this handles the need to perform a 'step'.
-							line.setLine(transX0, transY0, transX1, transY0);
-							g2.draw(line);
-							line.setLine(transX1, transY0, transX1, transY1);
-							g2.draw(line);
-						}
+				} else if (orientation == PlotOrientation.VERTICAL) {
+					if (transY0 == transY1) { // this represents the situation for drawing a
+						// horizontal bar.
+						line.setLine(transX0, transY0, transX1, transY1);
+						g2.draw(line);
+					} else { // this handles the need to perform a 'step'.
+						line.setLine(transX0, transY0, transX1, transY0);
+						g2.draw(line);
+						line.setLine(transX1, transY0, transX1, transY1);
+						g2.draw(line);
 					}
+				}
 
 			}
 		}
 
-		updateCrosshairValues(
-							crosshairState, x1.doubleValue(), y1.doubleValue(), transX1, transY1, orientation);
+		updateCrosshairValues(crosshairState, x1.doubleValue(), y1.doubleValue(), transX1, transY1, orientation);
 		// collect entity and tool tip information...
 
 		if (state.getInfo() != null) {
 			EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
 			if (entities != null) {
 				Shape shape = orientation == PlotOrientation.VERTICAL
-									? new Rectangle2D.Double(transX1 - 2, transY1 - 2, 4.0, 4.0)
-									: new Rectangle2D.Double(transY1 - 2, transX1 - 2, 4.0, 4.0);
+						? new Rectangle2D.Double(transX1 - 2, transY1 - 2, 4.0, 4.0)
+						: new Rectangle2D.Double(transY1 - 2, transX1 - 2, 4.0, 4.0);
 				if (shape != null) {
 					String tip = null;
 					XYToolTipGenerator generator = getToolTipGenerator(series, item);
@@ -229,7 +210,7 @@ public class XYStepRenderer extends AbstractXYItemRenderer
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the renderer cannot be cloned.
+	 *             if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

@@ -16,15 +16,14 @@ import java.awt.Component;
  * 
  * @version $Revision: 1.6 $
  */
-public class PluginPanel
-					extends AbstractGraffitiContainer {
+public class PluginPanel extends AbstractGraffitiContainer {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Creates a new PluginPanel object.
 	 */
@@ -32,9 +31,9 @@ public class PluginPanel
 		id = "pluginPanel";
 		preferredComponent = "";
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * @see java.awt.Container#addImpl(Component, Object, int)
 	 */

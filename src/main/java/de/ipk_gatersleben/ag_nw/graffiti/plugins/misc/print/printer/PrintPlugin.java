@@ -17,7 +17,7 @@ import org.graffiti.plugin.algorithm.Algorithm;
  * @version $Revision$
  */
 public class PrintPlugin extends GenericPluginAdapter {
-	
+
 	/**
 	 * Empty constructor.
 	 * <p>
@@ -28,7 +28,7 @@ public class PrintPlugin extends GenericPluginAdapter {
 	 */
 	public PrintPlugin() {
 		super();
-		
+
 		this.algorithms = new Algorithm[] { new PrintAlgorithm() };
 	}
 }

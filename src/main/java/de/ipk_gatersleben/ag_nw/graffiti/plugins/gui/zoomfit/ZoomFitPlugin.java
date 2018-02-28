@@ -12,13 +12,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_EditorPluginAdapter;
  * 
  * @version $Revision$
  */
-public class ZoomFitPlugin
-					extends IPK_EditorPluginAdapter {
+public class ZoomFitPlugin extends IPK_EditorPluginAdapter {
 	public ZoomFitPlugin() {
-		guiComponents = new GraffitiComponent[] {
-							new ZoomFitChangeComponent("defaultToolbar"), // defaultToolbar // toolbarPanel
-				new AlignNodesComponent("defaultToolbar")
-		};
+		guiComponents = new GraffitiComponent[] { new ZoomFitChangeComponent("defaultToolbar"), // defaultToolbar //
+																								// toolbarPanel
+				new AlignNodesComponent("defaultToolbar") };
 	}
 }
 

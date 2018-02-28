@@ -10,11 +10,11 @@ import java.util.TreeSet;
 import org.ErrorMsg;
 
 public abstract class TranspathEntity implements TranspathEntityType {
-	
+
 	private static TreeSet<String> todo = new TreeSet<String>();
 	int maxExamples = 4;
 	private static HashMap<String, HashSet<String>> todo2examples = new HashMap<String, HashSet<String>>();
-	
+
 	public void processXMLentityValue(String environment, String value) {
 		// System.out.println("TODO : "+environment+" : "+value);
 		todo.add(environment);
@@ -23,7 +23,7 @@ public abstract class TranspathEntity implements TranspathEntityType {
 		if (todo2examples.get(environment).size() < maxExamples)
 			todo2examples.get(environment).add(value);
 	}
-	
+
 	public void printTodo() {
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 		System.out.println("CLASS: " + this.getClass().getSimpleName());
@@ -35,7 +35,7 @@ public abstract class TranspathEntity implements TranspathEntityType {
 			System.out.println(".?.]");
 		}
 	}
-	
+
 	protected String checkAndSet(String priorValue, String value) {
 		if (priorValue != null)
 			ErrorMsg.addErrorMessage("Internal error: variable content has been set more than once!");

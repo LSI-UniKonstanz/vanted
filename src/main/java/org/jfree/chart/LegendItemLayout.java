@@ -35,11 +35,11 @@ package org.jfree.chart;
 public interface LegendItemLayout {
 
 	/**
-	 * Updates the locations of all the legend items in the collection,
-	 * according to some particular layout algorithm.
+	 * Updates the locations of all the legend items in the collection, according to
+	 * some particular layout algorithm.
 	 * 
 	 * @param collection
-	 *           the collection of legend items.
+	 *            the collection of legend items.
 	 */
 	public void layoutLegendItems(LegendItemCollection collection);
 

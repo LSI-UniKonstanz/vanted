@@ -51,8 +51,8 @@ import org.jfree.io.SerialUtilities;
 import org.jfree.util.ObjectUtils;
 
 /**
- * A legend item. Records all the properties of a legend item, but is not concerned about the
- * display location. Instances of this class are immutable.
+ * A legend item. Records all the properties of a legend item, but is not
+ * concerned about the display location. Instances of this class are immutable.
  */
 public class LegendItem implements Serializable {
 
@@ -84,44 +84,37 @@ public class LegendItem implements Serializable {
 	 * Creates a new legend item.
 	 * 
 	 * @param label
-	 *           the label (<code>null</code> not permitted).
+	 *            the label (<code>null</code> not permitted).
 	 * @param paint
-	 *           the fill paint (<code>null</code> not permitted).
+	 *            the fill paint (<code>null</code> not permitted).
 	 */
 	public LegendItem(String label, Paint paint) {
-		this(
-							label, label, new Rectangle2D.Double(-4.0, -4.0, 8.0, 8.0),
-							true, paint, new BasicStroke(0.5f), Color.lightGray, new BasicStroke(0.5f));
+		this(label, label, new Rectangle2D.Double(-4.0, -4.0, 8.0, 8.0), true, paint, new BasicStroke(0.5f),
+				Color.lightGray, new BasicStroke(0.5f));
 	}
 
 	/**
 	 * Creates a new legend item.
 	 * 
 	 * @param label
-	 *           the label (<code>null</code> not permitted).
+	 *            the label (<code>null</code> not permitted).
 	 * @param description
-	 *           the description (not currently used, <code>null</code> permitted).
+	 *            the description (not currently used, <code>null</code> permitted).
 	 * @param shape
-	 *           the shape (<code>null</code> permitted).
+	 *            the shape (<code>null</code> permitted).
 	 * @param shapeFilled
-	 *           a flag that controls whether or not the shape is filled.
+	 *            a flag that controls whether or not the shape is filled.
 	 * @param paint
-	 *           the paint (<code>null</code> not permitted).
+	 *            the paint (<code>null</code> not permitted).
 	 * @param stroke
-	 *           the stroke (<code>null</code> not permitted).
+	 *            the stroke (<code>null</code> not permitted).
 	 * @param outlinePaint
-	 *           the outline paint (<code>null</code> not permitted).
+	 *            the outline paint (<code>null</code> not permitted).
 	 * @param outlineStroke
-	 *           the outline stroke (<code>null</code> not permitted).
+	 *            the outline stroke (<code>null</code> not permitted).
 	 */
-	public LegendItem(String label,
-								String description,
-								Shape shape,
-								boolean shapeFilled,
-								Paint paint,
-								Stroke stroke,
-								Paint outlinePaint,
-								Stroke outlineStroke) {
+	public LegendItem(String label, String description, Shape shape, boolean shapeFilled, Paint paint, Stroke stroke,
+			Paint outlinePaint, Stroke outlineStroke) {
 
 		if (label == null) {
 			throw new IllegalArgumentException("Null 'label' argument.");
@@ -216,7 +209,7 @@ public class LegendItem implements Serializable {
 	 * Tests this item for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -258,9 +251,9 @@ public class LegendItem implements Serializable {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the output stream (<code>null</code> not permitted).
+	 *            the output stream (<code>null</code> not permitted).
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -275,11 +268,11 @@ public class LegendItem implements Serializable {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the input stream (<code>null</code> not permitted).
+	 *            the input stream (<code>null</code> not permitted).
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *            if there is a classpath problem.
+	 *             if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
@@ -290,31 +283,27 @@ public class LegendItem implements Serializable {
 		this.outlinePaint = SerialUtilities.readPaint(stream);
 	}
 
-	// // DEPRECATED CODE //////////////////////////////////////////////////////////////////////////
+	// // DEPRECATED CODE
+	// //////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Creates a new legend item.
 	 * 
 	 * @param label
-	 *           the label.
+	 *            the label.
 	 * @param description
-	 *           the description (not used).
+	 *            the description (not used).
 	 * @param shape
-	 *           the shape.
+	 *            the shape.
 	 * @param paint
-	 *           the paint.
+	 *            the paint.
 	 * @param outlinePaint
-	 *           the outline paint.
+	 *            the outline paint.
 	 * @param stroke
-	 *           the stroke.
+	 *            the stroke.
 	 * @deprecated Use the other constructor.
 	 */
-	public LegendItem(String label,
-						String description,
-						Shape shape,
-						Paint paint,
-						Paint outlinePaint,
-						Stroke stroke) {
+	public LegendItem(String label, String description, Shape shape, Paint paint, Paint outlinePaint, Stroke stroke) {
 		this(label, description, shape, true, paint, outlinePaint, stroke);
 	}
 
@@ -322,27 +311,23 @@ public class LegendItem implements Serializable {
 	 * Creates a new legend item.
 	 * 
 	 * @param label
-	 *           the label.
+	 *            the label.
 	 * @param description
-	 *           the description (not used).
+	 *            the description (not used).
 	 * @param shape
-	 *           the shape.
+	 *            the shape.
 	 * @param shapeFilled
-	 *           a flag that controls whether or not the shape is filled.
+	 *            a flag that controls whether or not the shape is filled.
 	 * @param paint
-	 *           the paint.
+	 *            the paint.
 	 * @param outlinePaint
-	 *           the outline paint.
+	 *            the outline paint.
 	 * @param stroke
-	 *           the stroke.
+	 *            the stroke.
 	 * @deprecated Use other constructor.
 	 */
-	public LegendItem(String label,
-						String description,
-						Shape shape,
-						boolean shapeFilled,
-						Paint paint, Paint outlinePaint,
-						Stroke stroke) {
+	public LegendItem(String label, String description, Shape shape, boolean shapeFilled, Paint paint,
+			Paint outlinePaint, Stroke stroke) {
 
 		this.label = label;
 		this.description = description;

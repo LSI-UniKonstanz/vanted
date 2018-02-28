@@ -41,7 +41,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demo showing a dataset created using the {@link XYSeriesCollection} class.
+ * A simple demo showing a dataset created using the {@link XYSeriesCollection}
+ * class.
  */
 public class XYSeriesDemo extends ApplicationFrame {
 
@@ -49,7 +50,7 @@ public class XYSeriesDemo extends ApplicationFrame {
 	 * A demonstration application showing an XY series containing a null value.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XYSeriesDemo(final String title) {
 
@@ -65,16 +66,8 @@ public class XYSeriesDemo extends ApplicationFrame {
 		series.add(25.6, 734.4);
 		series.add(30.0, 453.2);
 		final XYSeriesCollection data = new XYSeriesCollection(series);
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-							"XY Series Demo",
-							"X",
-							"Y",
-							data,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createXYLineChart("XY Series Demo", "X", "Y", data,
+				PlotOrientation.VERTICAL, true, true, false);
 
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
@@ -97,7 +90,7 @@ public class XYSeriesDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

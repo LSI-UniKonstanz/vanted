@@ -33,20 +33,20 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  * @author Christian Klukas
  */
 public class XMLdataTablePane extends JComponent {
-	
+
 	private static final long serialVersionUID = 1L;
 	String myCompoundID;
 	String mySubstrateName;
 	String myFormula;
-	
+
 	public XMLdataTablePane(ExperimentInterface experiment, final JTabbedPane parentPane) {
-		
+
 		double border = 5;
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, border } }; // Rows
-		
+
 		this.setLayout(new TableLayout(size));
-		
+
 		JButton closeTab = new JButton("Close this Tab");
 		closeTab.setOpaque(false);
 		final JComponent thisTab = this;
@@ -55,19 +55,18 @@ public class XMLdataTablePane extends JComponent {
 				parentPane.remove(thisTab);
 			}
 		});
-		
+
 		this.add(closeTab, "1,1");
-		
+
 		/*
 		 * String mapping=""; try { if (mappedDataList!=null) for (Iterator
-		 * it=mappedDataList.iterator(); it.hasNext(); ) { // w3c node ! not a
-		 * gravisto node ! Node n = (Node) it.next();
+		 * it=mappedDataList.iterator(); it.hasNext(); ) { // w3c node ! not a gravisto
+		 * node ! Node n = (Node) it.next();
 		 * mapping+="***********"+MyXMLhelper.getOuterXml(n); } this.add(new
 		 * JEditorPane(mapping), "1,2"); } catch (IOException e) {
-		 * ErrorMsg.addErrorMessage(e.getLocalizedMessage()); } JTextArea jta =
-		 * new JTextArea(mapping); jta.setLineWrap(true);
-		 * jta.setWrapStyleWord(true); jta.setAutoscrolls(true); this.add(new
-		 * JScrollPane(jta), "1,2");
+		 * ErrorMsg.addErrorMessage(e.getLocalizedMessage()); } JTextArea jta = new
+		 * JTextArea(mapping); jta.setLineWrap(true); jta.setWrapStyleWord(true);
+		 * jta.setAutoscrolls(true); this.add(new JScrollPane(jta), "1,2");
 		 */
 
 		/*
@@ -77,7 +76,7 @@ public class XMLdataTablePane extends JComponent {
 		 */
 
 		JTabbedPane dataPanes = new JTabbedPane();
-		
+
 		int mapCnt = 0;
 		for (SubstanceInterface n : experiment) {
 			mapCnt++;
@@ -85,9 +84,9 @@ public class XMLdataTablePane extends JComponent {
 		}
 		this.add(dataPanes, "1,2");
 		this.revalidate();
-		
+
 	}
-	
+
 	private JComponent getXMLeditView(SubstanceInterface n) {
 		JEditorPane jep = null;
 		try {

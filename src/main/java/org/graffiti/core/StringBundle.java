@@ -11,29 +11,28 @@ package org.graffiti.core;
 
 /**
  * The localized resource for the the labels used in the whole system as for
- * label, buttons etc. This class is implemented using the singlton pattern
- * such that there will always be just on instance of a <code>Bundle</code> created.
+ * label, buttons etc. This class is implemented using the singlton pattern such
+ * that there will always be just on instance of a <code>Bundle</code> created.
  * 
  * @see GenericBundle
  */
-public class StringBundle
-					extends GenericBundle {
+public class StringBundle extends GenericBundle {
 	// ~ Static fields/initializers =============================================
-	
+
 	/** The only instance which will be created and returned. */
 	private static StringBundle instance = null;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new <code>StringBundle</code>.
 	 */
 	protected StringBundle() {
 		super();
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the only instance of this class.
 	 * 
@@ -43,10 +42,10 @@ public class StringBundle
 		if (instance == null) {
 			instance = new StringBundle();
 		}
-		
+
 		return instance;
 	}
-	
+
 	/**
 	 * Returns the location of this <code>Bundle</code>.
 	 * 

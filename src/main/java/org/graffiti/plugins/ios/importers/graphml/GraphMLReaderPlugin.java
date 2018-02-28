@@ -16,22 +16,19 @@ import org.graffiti.plugin.GenericPluginAdapter;
  *
  * @author ruediger
  */
-public class GraphMLReaderPlugin
-    extends GenericPluginAdapter
-{
-    //~ Constructors ===========================================================
+public class GraphMLReaderPlugin extends GenericPluginAdapter {
+	// ~ Constructors ===========================================================
 
-    /**
-     * Constructs a new <code>GraphMLReaderPlugin</code>.
-     */
-    public GraphMLReaderPlugin()
-    {
-        super();
-        this.inputSerializers = new GraphMLReader[1];
-        this.inputSerializers[0] = new GraphMLReader();
-    }
+	/**
+	 * Constructs a new <code>GraphMLReaderPlugin</code>.
+	 */
+	public GraphMLReaderPlugin() {
+		super();
+		this.inputSerializers = new GraphMLReader[1];
+		this.inputSerializers[0] = new GraphMLReader();
+	}
 }
 
-//------------------------------------------------------------------------------
-//   end of file
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// end of file
+// ------------------------------------------------------------------------------

@@ -23,7 +23,7 @@ import javax.swing.Timer;
 
 public class MarkComponent extends JComponent {
 	private static final long serialVersionUID = 1L;
-	
+
 	JLabel b1 = new JLabel();
 	JLabel b2 = new JLabel();
 	JLabel bb1 = new JLabel();
@@ -32,16 +32,16 @@ public class MarkComponent extends JComponent {
 	Color selColBB = null;
 	JComponent comp;
 	private boolean marked;
-	
+
 	private boolean requestFocus;
-	
+
 	private double intensity = 1d;
-	
+
 	public MarkComponent(JComponent comp, boolean marked, double width, boolean requestFocus, double layoutHeight) {
-		
+
 		this.comp = comp;
 		this.requestFocus = requestFocus;
-		
+
 		setLayout(TableLayout.getLayout(new double[] { 5, 1, width, 1, 5 }, layoutHeight));
 		add(b1, "0,0");
 		add(bb1, "1,0");
@@ -51,12 +51,12 @@ public class MarkComponent extends JComponent {
 		this.marked = marked;
 		updateMarked();
 	}
-	
+
 	public MarkComponent(JComponent comp, boolean marked, double width, boolean requestFocus) {
-		
+
 		this.comp = comp;
 		this.requestFocus = requestFocus;
-		
+
 		setLayout(TableLayout.getLayout(new double[] { 5, 1, width, 1, 5 }, TableLayoutConstants.PREFERRED));
 		add(b1, "0,0");
 		add(bb1, "1,0");
@@ -66,11 +66,11 @@ public class MarkComponent extends JComponent {
 		this.marked = marked;
 		updateMarked();
 	}
-	
+
 	public void setRequestFocus(boolean requestFocus) {
 		this.requestFocus = requestFocus;
 	}
-	
+
 	public void playAnimation(int animationtime) {
 		setMark(true);
 		final MarkComponent thisM = this;
@@ -101,11 +101,11 @@ public class MarkComponent extends JComponent {
 		t2.setRepeats(false);
 		t2.start();
 	}
-	
+
 	public boolean isMarked() {
 		return marked;
 	}
-	
+
 	private void updateMarked() {
 		b1.setOpaque(marked);
 		b2.setOpaque(marked);
@@ -156,13 +156,13 @@ public class MarkComponent extends JComponent {
 			}
 		}
 	}
-	
+
 	public void setMarkColor(Color c, Color gapColor) {
 		this.selCol = c;
 		this.selColBB = gapColor;
 		updateMarked();
 	}
-	
+
 	public void setMark(final boolean markedReq) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -175,7 +175,7 @@ public class MarkComponent extends JComponent {
 			}
 		});
 	}
-	
+
 	public static void initLinearMarkSequence(final MarkComponent markGotoFromEnd, final MarkComponent... mark) {
 		final ArrayList<MarkComponent> mcs = new ArrayList<MarkComponent>();
 		for (MarkComponent mc : mark) {
@@ -188,13 +188,13 @@ public class MarkComponent extends JComponent {
 				JComboBox jc = (JComboBox) c;
 				final int ti = i;
 				jc.addActionListener(getUpdateCommand(mcs, ti, markGotoFromEnd, mark));
-				
+
 			}
 			if (c instanceof JCheckBox) {
 				JCheckBox jc = (JCheckBox) c;
 				final int ti = i;
 				jc.addActionListener(getUpdateCommand(mcs, ti, markGotoFromEnd, mark));
-				
+
 			}
 			if (c instanceof JButton) {
 				JButton jb = (JButton) c;
@@ -203,10 +203,11 @@ public class MarkComponent extends JComponent {
 			}
 		}
 	}
-	
+
 	private static boolean invokePending = false;
-	
-	private static ActionListener getUpdateCommand(final ArrayList<MarkComponent> mcs, final int ti, final MarkComponent jump, final MarkComponent... mark) {
+
+	private static ActionListener getUpdateCommand(final ArrayList<MarkComponent> mcs, final int ti,
+			final MarkComponent jump, final MarkComponent... mark) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				invokePending = true;
@@ -229,10 +230,8 @@ public class MarkComponent extends JComponent {
 			}
 		};
 	}
-	
-	protected static void markComponent(
-						MarkComponent markThis,
-						MarkComponent... allMarks) {
+
+	protected static void markComponent(MarkComponent markThis, MarkComponent... allMarks) {
 		for (MarkComponent mc : allMarks) {
 			if (mc != markThis)
 				mc.setMark(false);

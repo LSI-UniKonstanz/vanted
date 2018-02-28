@@ -40,7 +40,8 @@ import org.jfree.chart.StandardLegendItemLayout;
 /**
  * A chart title that displays a legend for the data in the chart.
  * <P>
- * The title can be populated with legend items manually, or you can assign a reference to the chart, in which case the legend items will be automatically
+ * The title can be populated with legend items manually, or you can assign a
+ * reference to the chart, in which case the legend items will be automatically
  * created to match the dataset.
  */
 public abstract class LegendTitle extends Title {
@@ -65,7 +66,7 @@ public abstract class LegendTitle extends Title {
 	 * Creates a new legend title.
 	 * 
 	 * @param layout
-	 *           the layout.
+	 *            the layout.
 	 */
 	public LegendTitle(LegendItemLayout layout) {
 		// this.layout = layout;
@@ -75,7 +76,7 @@ public abstract class LegendTitle extends Title {
 	 * Adds a legend item to the LegendTitle.
 	 * 
 	 * @param item
-	 *           the item to add.
+	 *            the item to add.
 	 */
 	public void addLegendItem(LegendItem item) {
 		this.items.add(item);
@@ -86,9 +87,9 @@ public abstract class LegendTitle extends Title {
 	 * printer). Currently it does nothing.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param area
-	 *           the area for the chart and all its titles.
+	 *            the area for the chart and all its titles.
 	 */
 	public void draw(Graphics2D g2, Rectangle2D area) {
 

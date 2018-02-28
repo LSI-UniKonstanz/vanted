@@ -8,10 +8,8 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 
 public class CenterLayouterPlugin extends IPK_PluginAdapter {
-	
+
 	public CenterLayouterPlugin() {
-		this.algorithms = new Algorithm[] {
-							new CenterLayouterAlgorithm()
-		};
+		this.algorithms = new Algorithm[] { new CenterLayouterAlgorithm() };
 	}
 }

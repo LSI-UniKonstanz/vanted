@@ -44,8 +44,7 @@ public class SBMLParameter {
 	 */
 	HashSet<String> discardedRowIDs;
 
-	public SBMLParameter(Graph g, String internHeadline,
-			String presentedHeadline) {
+	public SBMLParameter(Graph g, String internHeadline, String presentedHeadline) {
 		this.g = g;
 		attWriter = new SBML_SBase_Writer();
 		attReader = new SBML_SBase_Reader();
@@ -53,8 +52,7 @@ public class SBMLParameter {
 		this.internHeadline = internHeadline;
 		initParameterNideIDs();
 
-		Collection<String> colDiscardedRowIDs = DefaultEditPanel
-				.getDiscardedRowIDs();
+		Collection<String> colDiscardedRowIDs = DefaultEditPanel.getDiscardedRowIDs();
 		discardedRowIDs = new HashSet<String>(colDiscardedRowIDs);
 		DefaultEditPanel.setDiscardedRowIDs(discardedRowIDs);
 	}
@@ -67,8 +65,8 @@ public class SBMLParameter {
 	}
 
 	public Boolean isSetID() {
-		if (AttributeHelper.hasAttribute(g, internHeadline, new StringBuffer(
-				internHeadline).append(SBML_Constants.PARAMETER_ID).toString())) {
+		if (AttributeHelper.hasAttribute(g, internHeadline,
+				new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_ID).toString())) {
 			return true;
 		} else {
 			return false;
@@ -76,9 +74,8 @@ public class SBMLParameter {
 	}
 
 	public Boolean isSetName() {
-		if (AttributeHelper.hasAttribute(g, internHeadline, new StringBuffer(
-				internHeadline).append(SBML_Constants.PARAMETER_NAME)
-				.toString())) {
+		if (AttributeHelper.hasAttribute(g, internHeadline,
+				new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_NAME).toString())) {
 			return true;
 		} else {
 			return false;
@@ -86,8 +83,8 @@ public class SBMLParameter {
 	}
 
 	public Boolean isSetValue() {
-		if (AttributeHelper.hasAttribute(g, internHeadline, new StringBuffer(
-				internHeadline).append(SBML_Constants.VALUE).toString())) {
+		if (AttributeHelper.hasAttribute(g, internHeadline,
+				new StringBuffer(internHeadline).append(SBML_Constants.VALUE).toString())) {
 			return true;
 		} else {
 			return false;
@@ -95,9 +92,8 @@ public class SBMLParameter {
 	}
 
 	public Boolean isSetUnits() {
-		if (AttributeHelper.hasAttribute(g, internHeadline, new StringBuffer(
-				internHeadline).append(SBML_Constants.PARAMETER_UNITS)
-				.toString())) {
+		if (AttributeHelper.hasAttribute(g, internHeadline,
+				new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_UNITS).toString())) {
 			return true;
 		} else {
 			return false;
@@ -105,9 +101,8 @@ public class SBMLParameter {
 	}
 
 	public Boolean isSetConstant() {
-		if (AttributeHelper.hasAttribute(g, internHeadline, new StringBuffer(
-				internHeadline).append(SBML_Constants.PARAMETER_CONSTANT)
-				.toString())) {
+		if (AttributeHelper.hasAttribute(g, internHeadline,
+				new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_CONSTANT).toString())) {
 			return true;
 		} else {
 			return false;
@@ -116,11 +111,8 @@ public class SBMLParameter {
 
 	public String getID() {
 		if (isSetID()) {
-			return (String) attWriter.getAttribute(
-					g,
-					internHeadline,
-					new StringBuffer(internHeadline).append(
-							SBML_Constants.PARAMETER_ID).toString());
+			return (String) attWriter.getAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_ID).toString());
 		} else {
 			return SBML_Constants.EMPTY;
 		}
@@ -128,11 +120,8 @@ public class SBMLParameter {
 
 	public String getName() {
 		if (isSetName()) {
-			return (String) attWriter.getAttribute(
-					g,
-					internHeadline,
-					new StringBuffer(internHeadline).append(
-							SBML_Constants.PARAMETER_NAME).toString());
+			return (String) attWriter.getAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_NAME).toString());
 		} else {
 			return SBML_Constants.EMPTY;
 		}
@@ -140,11 +129,8 @@ public class SBMLParameter {
 
 	public Double getValue() {
 		if (isSetValue()) {
-			return (Double) attWriter.getAttribute(
-					g,
-					internHeadline,
-					new StringBuffer(internHeadline).append(
-							SBML_Constants.VALUE).toString());
+			return (Double) attWriter.getAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.VALUE).toString());
 		} else {
 			return null;
 		}
@@ -152,11 +138,8 @@ public class SBMLParameter {
 
 	public String getUnits() {
 		if (isSetUnits()) {
-			return (String) attWriter.getAttribute(
-					g,
-					internHeadline,
-					new StringBuffer(internHeadline).append(
-							SBML_Constants.PARAMETER_UNITS).toString());
+			return (String) attWriter.getAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_UNITS).toString());
 		} else {
 			return SBML_Constants.EMPTY;
 		}
@@ -164,11 +147,8 @@ public class SBMLParameter {
 
 	public Boolean getConstant() {
 		if (isSetConstant()) {
-			return (Boolean) attWriter.getAttribute(
-					g,
-					internHeadline,
-					new StringBuffer(internHeadline).append(
-							SBML_Constants.PARAMETER_CONSTANT).toString());
+			return (Boolean) attWriter.getAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_CONSTANT).toString());
 		} else {
 			return false;
 		}
@@ -176,120 +156,91 @@ public class SBMLParameter {
 
 	public void setID(String ID) {
 		if (!ID.isEmpty()) {
-			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
-					internHeadline).append(SBML_Constants.PARAMETER_ID)
-					.toString(), ID);
+			AttributeHelper.setAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_ID).toString(), ID);
 		}
 	}
 
 	public void setName(String name) {
 		if (!name.isEmpty()) {
-			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
-					internHeadline).append(SBML_Constants.PARAMETER_NAME)
-					.toString(), name);
+			AttributeHelper.setAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_NAME).toString(), name);
 		}
 	}
 
 	public void setValue(Double value) {
 		if (value != null) {
-			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
-					internHeadline).append(SBML_Constants.VALUE).toString(),
-					value);
+			AttributeHelper.setAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.VALUE).toString(), value);
 		}
 	}
 
 	public void setUnits(String units) {
 		if (!units.isEmpty()) {
-			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
-					internHeadline).append(SBML_Constants.PARAMETER_UNITS)
-					.toString(), units);
+			AttributeHelper.setAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_UNITS).toString(), units);
 		}
 	}
 
 	public void setConstant(Boolean constant) {
 		if (constant != null) {
-			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
-					internHeadline).append(SBML_Constants.PARAMETER_CONSTANT)
-					.toString(), constant);
+			AttributeHelper.setAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_CONSTANT).toString(), constant);
 		}
 	}
 
 	public void setMetaID(String metaID) {
 		if (!metaID.isEmpty()) {
-			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
-					internHeadline).append(SBML_Constants.META_ID).toString(),
-					metaID);
+			AttributeHelper.setAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.META_ID).toString(), metaID);
 		}
 	}
 
 	public void setSBOTerm(String sboTerm) {
 		if (!sboTerm.isEmpty()) {
-			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
-					internHeadline).append(SBML_Constants.SBOTERM).toString(),
-					sboTerm);
+			AttributeHelper.setAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(), sboTerm);
 		}
 	}
 
 	public void setNotes(String notes, XMLNode notesObj) {
 		if (!notes.isEmpty()) {
-			attReader.addNotes(
-					notesObj,
-					notes,
-					g,
-					internHeadline,
-					new StringBuffer(internHeadline).append(
-							SBML_Constants.NOTES).toString());
+			attReader.addNotes(notesObj, notes, g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.NOTES).toString());
 		}
 
-		discardedRowIDs.add(new StringBuffer(internHeadline).append(
-				SBML_Constants.NOTES).toString());
+		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.NOTES).toString());
 	}
 
 	public void setAnnotation(Annotation annotation) {
-		AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
-				internHeadline).append(SBML_Constants.ANNOTATION).toString(),
-				annotation);
-		discardedRowIDs.add(new StringBuffer(internHeadline).append(
-				SBML_Constants.ANNOTATION).toString());
+		AttributeHelper.setAttribute(g, internHeadline,
+				new StringBuffer(internHeadline).append(SBML_Constants.ANNOTATION).toString(), annotation);
+		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.ANNOTATION).toString());
 	}
 
 	public void setNonRDFAnnotation(XMLNode xmlNode) {
-		AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
-				internHeadline).append(SBML_Constants.NON_RDF_ANNOTATION)
-				.toString(), xmlNode);
-		discardedRowIDs.add(new StringBuffer(internHeadline).append(
-				SBML_Constants.NON_RDF_ANNOTATION).toString());
+		AttributeHelper.setAttribute(g, internHeadline,
+				new StringBuffer(internHeadline).append(SBML_Constants.NON_RDF_ANNOTATION).toString(), xmlNode);
+		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.NON_RDF_ANNOTATION).toString());
 	}
 
 	private void initParameterNideIDs() {
-		AttributeHelper.setNiceId(
-				new StringBuffer(internHeadline).append(
-						SBML_Constants.PARAMETER_ID).toString(),
+		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_ID).toString(),
 				presentedHeadline + ": ID");
-		AttributeHelper.setNiceId(
-				new StringBuffer(internHeadline).append(
-						SBML_Constants.PARAMETER_NAME).toString(),
+		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_NAME).toString(),
 				presentedHeadline + ": Name");
-		AttributeHelper.setNiceId(
-				new StringBuffer(internHeadline).append(SBML_Constants.VALUE)
-						.toString(), presentedHeadline + ": Value");
-		AttributeHelper.setNiceId(
-				new StringBuffer(internHeadline).append(
-						SBML_Constants.PARAMETER_UNITS).toString(),
+		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.VALUE).toString(),
+				presentedHeadline + ": Value");
+		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_UNITS).toString(),
 				presentedHeadline + ": Units");
-		AttributeHelper.setNiceId(
-				new StringBuffer(internHeadline).append(
-						SBML_Constants.PARAMETER_CONSTANT).toString(),
+		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.PARAMETER_CONSTANT).toString(),
 				presentedHeadline + ": Constant");
-		AttributeHelper.setNiceId(
-				new StringBuffer(internHeadline).append(SBML_Constants.META_ID)
-						.toString(), presentedHeadline + ": Meta ID");
-		AttributeHelper.setNiceId(
-				new StringBuffer(internHeadline).append(SBML_Constants.NOTES)
-						.toString(), presentedHeadline + ": Notes");
-		AttributeHelper.setNiceId(
-				new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM)
-						.toString(), presentedHeadline + ": SBOTerm");
+		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.META_ID).toString(),
+				presentedHeadline + ": Meta ID");
+		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.NOTES).toString(),
+				presentedHeadline + ": Notes");
+		AttributeHelper.setNiceId(new StringBuffer(internHeadline).append(SBML_Constants.SBOTERM).toString(),
+				presentedHeadline + ": SBOTerm");
 	}
 
 }

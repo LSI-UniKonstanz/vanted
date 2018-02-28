@@ -41,15 +41,12 @@ import org.jfree.data.XYDataset;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A tool tip generator that stores custom tooltips. The dataset passed into the generateToolTip
- * method is ignored.
+ * A tool tip generator that stores custom tooltips. The dataset passed into the
+ * generateToolTip method is ignored.
  * 
  * @author Richard Atkinson
  */
-public class CustomXYToolTipGenerator implements XYToolTipGenerator,
-																	Cloneable,
-																	PublicCloneable,
-																	Serializable {
+public class CustomXYToolTipGenerator implements XYToolTipGenerator, Cloneable, PublicCloneable, Serializable {
 
 	/** Storage for the tooltip lists. */
 	private List toolTipSeries = new java.util.ArrayList();
@@ -74,7 +71,7 @@ public class CustomXYToolTipGenerator implements XYToolTipGenerator,
 	 * Returns the number of tool tips in a given list.
 	 * 
 	 * @param list
-	 *           the list index (zero based).
+	 *            the list index (zero based).
 	 * @return The tooltip count.
 	 */
 	public int getToolTipCount(int list) {
@@ -91,9 +88,9 @@ public class CustomXYToolTipGenerator implements XYToolTipGenerator,
 	 * Returns the tool tip text for an item.
 	 * 
 	 * @param series
-	 *           the series index.
+	 *            the series index.
 	 * @param item
-	 *           the item index.
+	 *            the item index.
 	 * @return The tool tip text.
 	 */
 	public String getToolTipText(int series, int item) {
@@ -116,7 +113,7 @@ public class CustomXYToolTipGenerator implements XYToolTipGenerator,
 	 * Adds a list of tooltips for a series.
 	 * 
 	 * @param toolTips
-	 *           the list of tool tips.
+	 *            the list of tool tips.
 	 */
 	public void addToolTipSeries(List toolTips) {
 		this.toolTipSeries.add(toolTips);
@@ -126,11 +123,11 @@ public class CustomXYToolTipGenerator implements XYToolTipGenerator,
 	 * Generates a tool tip text item for a particular item within a series.
 	 * 
 	 * @param data
-	 *           the dataset (ignored in this implementation).
+	 *            the dataset (ignored in this implementation).
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the tooltip text.
 	 */
 	public String generateToolTip(XYDataset data, int series, int item) {
@@ -144,7 +141,7 @@ public class CustomXYToolTipGenerator implements XYToolTipGenerator,
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if cloning is not supported.
+	 *             if cloning is not supported.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 
@@ -162,7 +159,7 @@ public class CustomXYToolTipGenerator implements XYToolTipGenerator,
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {

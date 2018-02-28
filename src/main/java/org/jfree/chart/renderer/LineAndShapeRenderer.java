@@ -75,12 +75,13 @@ import org.jfree.util.ObjectUtils;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A renderer that draws shapes for each data item, and lines between data items.
+ * A renderer that draws shapes for each data item, and lines between data
+ * items.
  * <p>
  * For use with the {@link CategoryPlot} class.
  */
 public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
-												implements Cloneable, PublicCloneable, Serializable {
+		implements Cloneable, PublicCloneable, Serializable {
 
 	/** Useful constant for specifying the type of rendering (shapes only). */
 	public static final int SHAPES = 1;
@@ -112,13 +113,18 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	/** A flag that controls whether or not shapes are filled for ALL series. */
 	private Boolean shapesFilled;
 
-	/** A table of flags that control (per series) whether or not shapes are filled. */
+	/**
+	 * A table of flags that control (per series) whether or not shapes are filled.
+	 */
 	private BooleanList seriesShapesFilled;
 
 	/** The default value returned by the getShapeFilled(...) method. */
 	private Boolean defaultShapesFilled;
 
-	/** A flag that controls whether the fill paint is used for drawing shape outlines. */
+	/**
+	 * A flag that controls whether the fill paint is used for drawing shape
+	 * outlines.
+	 */
 	protected boolean useFillPaintForShapeOutline = false;
 
 	/**
@@ -134,7 +140,7 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	 * Use one of the constants SHAPES, LINES or SHAPES_AND_LINES.
 	 * 
 	 * @param type
-	 *           the type of renderer.
+	 *            the type of renderer.
 	 */
 	public LineAndShapeRenderer(int type) {
 		super();
@@ -155,7 +161,8 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Returns the flag that controls whether the fill paint is used for shape outlines.
+	 * Returns the flag that controls whether the fill paint is used for shape
+	 * outlines.
 	 * 
 	 * @return A boolean.
 	 */
@@ -164,17 +171,19 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Sets the flag that controls whether the fill paint is used for shape outlines.
+	 * Sets the flag that controls whether the fill paint is used for shape
+	 * outlines.
 	 * 
 	 * @param use
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setUseFillPaintForShapeOutline(boolean use) {
 		this.useFillPaintForShapeOutline = use;
 	}
 
 	/**
-	 * Returns <code>true</code> if a shape should be drawn to represent each data point, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if a shape should be drawn to represent each data
+	 * point, and <code>false</code> otherwise.
 	 * 
 	 * @return A boolean flag.
 	 */
@@ -183,11 +192,11 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Sets the flag that controls whether or not a shape should be drawn to represent each data
-	 * point.
+	 * Sets the flag that controls whether or not a shape should be drawn to
+	 * represent each data point.
 	 * 
 	 * @param draw
-	 *           the new value of the flag.
+	 *            the new value of the flag.
 	 */
 	public void setDrawShapes(boolean draw) {
 		if (draw != this.drawShapes) {
@@ -197,8 +206,8 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Returns <code>true</code> if a line should be drawn from the previous to the current data
-	 * point, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if a line should be drawn from the previous to the
+	 * current data point, and <code>false</code> otherwise.
 	 * 
 	 * @return A boolean flag.
 	 */
@@ -207,10 +216,11 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Sets the flag that controls whether or not lines are drawn between consecutive data points.
+	 * Sets the flag that controls whether or not lines are drawn between
+	 * consecutive data points.
 	 * 
 	 * @param draw
-	 *           the new value of the flag.
+	 *            the new value of the flag.
 	 */
 	public void setDrawLines(boolean draw) {
 		if (draw != this.drawLines) {
@@ -222,15 +232,17 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	// SHAPES FILLED
 
 	/**
-	 * Returns the flag used to control whether or not the shape for an item is filled.
+	 * Returns the flag used to control whether or not the shape for an item is
+	 * filled.
 	 * <p>
-	 * The default implementation passes control to the <code>getSeriesShapesFilled</code> method. You can override this method if you require different
-	 * behaviour.
+	 * The default implementation passes control to the
+	 * <code>getSeriesShapesFilled</code> method. You can override this method if
+	 * you require different behaviour.
 	 * 
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return A boolean.
 	 */
 	public boolean getItemShapeFilled(int series, int item) {
@@ -238,10 +250,11 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Returns the flag used to control whether or not the shapes for a series are filled.
+	 * Returns the flag used to control whether or not the shapes for a series are
+	 * filled.
 	 * 
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @return A boolean.
 	 */
 	public boolean getSeriesShapesFilled(int series) {
@@ -262,7 +275,8 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Returns the flag that controls whether or not shapes are filled for ALL series.
+	 * Returns the flag that controls whether or not shapes are filled for ALL
+	 * series.
 	 * 
 	 * @return A Boolean.
 	 */
@@ -274,7 +288,7 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	 * Sets the 'shapes filled' for ALL series.
 	 * 
 	 * @param filled
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setShapesFilled(boolean filled) {
 		if (filled) {
@@ -288,7 +302,7 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	 * Sets the 'shapes filled' for ALL series.
 	 * 
 	 * @param filled
-	 *           the flag (<code>null</code> permitted).
+	 *            the flag (<code>null</code> permitted).
 	 */
 	public void setShapesFilled(Boolean filled) {
 		this.shapesFilled = filled;
@@ -298,9 +312,9 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	 * Sets the 'shapes filled' flag for a series.
 	 * 
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param filled
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setSeriesShapesFilled(int series, Boolean filled) {
 		this.seriesShapesFilled.setBoolean(series, filled);
@@ -310,9 +324,9 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	 * Sets the 'shapes filled' flag for a series.
 	 * 
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param filled
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setSeriesShapesFilled(int series, boolean filled) {
 		this.seriesShapesFilled.setBoolean(series, new Boolean(filled));
@@ -331,7 +345,7 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	 * Sets the default 'shapes filled' flag.
 	 * 
 	 * @param flag
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setDefaultShapesFilled(Boolean flag) {
 		this.defaultShapesFilled = flag;
@@ -341,7 +355,7 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	 * Sets the default 'shapes filled' flag.
 	 * 
 	 * @param flag
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setDefaultShapesFilled(boolean flag) {
 		setDefaultShapesFilled(new Boolean(flag));
@@ -351,33 +365,26 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	 * Draw a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the area in which the data is drawn.
+	 *            the area in which the data is drawn.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	public void drawItem(Graphics2D g2,
-									CategoryItemRendererState state,
-									Rectangle2D dataArea,
-									CategoryPlot plot,
-									CategoryAxis domainAxis,
-									ValueAxis rangeAxis,
-									CategoryDataset dataset,
-									int row,
-									int column) {
+	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
+			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
 
 		// nothing is drawn for null...
 		Number v = dataset.getValue(row, column);
@@ -388,19 +395,16 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 		PlotOrientation orientation = plot.getOrientation();
 
 		// current data point...
-		double x1 = domainAxis.getCategoryMiddle(
-							column, getColumnCount(), dataArea, plot.getDomainAxisEdge()
-							);
+		double x1 = domainAxis.getCategoryMiddle(column, getColumnCount(), dataArea, plot.getDomainAxisEdge());
 		double value = v.doubleValue();
 		double y1 = rangeAxis.valueToJava2D(value, dataArea, plot.getRangeAxisEdge());
 
 		Shape shape = getItemShape(row, column);
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			shape = createTransformedShape(shape, y1, x1);
-		} else
-			if (orientation == PlotOrientation.VERTICAL) {
-				shape = createTransformedShape(shape, x1, y1);
-			}
+		} else if (orientation == PlotOrientation.VERTICAL) {
+			shape = createTransformedShape(shape, x1, y1);
+		}
 		if (isDrawShapes()) {
 
 			if (getItemShapeFilled(row, column)) {
@@ -425,20 +429,16 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 
 					// previous data point...
 					double previous = previousValue.doubleValue();
-					double x0 = domainAxis.getCategoryMiddle(
-										column - 1, getColumnCount(), dataArea, plot.getDomainAxisEdge()
-										);
-					double y0 = rangeAxis.valueToJava2D(
-										previous, dataArea, plot.getRangeAxisEdge()
-										);
+					double x0 = domainAxis.getCategoryMiddle(column - 1, getColumnCount(), dataArea,
+							plot.getDomainAxisEdge());
+					double y0 = rangeAxis.valueToJava2D(previous, dataArea, plot.getRangeAxisEdge());
 
 					Line2D line = null;
 					if (orientation == PlotOrientation.HORIZONTAL) {
 						line = new Line2D.Double(y0, x0, y1, x1);
-					} else
-						if (orientation == PlotOrientation.VERTICAL) {
-							line = new Line2D.Double(x0, y0, x1, y1);
-						}
+					} else if (orientation == PlotOrientation.VERTICAL) {
+						line = new Line2D.Double(x0, y0, x1, y1);
+					}
 					g2.setPaint(getItemPaint(row, column));
 					g2.setStroke(getItemStroke(row, column));
 					g2.draw(line);
@@ -448,8 +448,7 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 
 		// draw the item label if there is one...
 		if (isItemLabelVisible(row, column)) {
-			drawItemLabel(
-								g2, orientation, dataset, row, column, x1, y1, (value < 0.0));
+			drawItemLabel(g2, orientation, dataset, row, column, x1, y1, (value < 0.0));
 		}
 
 		// collect entity and tool tip information...
@@ -465,9 +464,8 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 				if (getItemURLGenerator(row, column) != null) {
 					url = getItemURLGenerator(row, column).generateURL(dataset, row, column);
 				}
-				CategoryItemEntity entity = new CategoryItemEntity(
-									shape, tip, url, dataset, row, dataset.getColumnKey(column), column
-									);
+				CategoryItemEntity entity = new CategoryItemEntity(shape, tip, url, dataset, row,
+						dataset.getColumnKey(column), column);
 				entities.addEntity(entity);
 
 			}
@@ -480,7 +478,7 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	 * Tests this renderer for equality with another object.
 	 * 
 	 * @param obj
-	 *           the object.
+	 *            the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
@@ -507,7 +505,7 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            should not happen.
+	 *             should not happen.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		LineAndShapeRenderer clone = (LineAndShapeRenderer) super.clone();

@@ -7,6 +7,5 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection;
 
 public enum SearchLogic {
-	searchMatched,
-	searchNotMatched
+	searchMatched, searchNotMatched
 }

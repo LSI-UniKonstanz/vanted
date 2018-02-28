@@ -50,19 +50,19 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.RelationType
  * @author Christian Klukas
  */
 public class GraphHelperBio implements HelperClass {
-	
+
 	public static String getKeggType(GraphElement ge, String resultIfNotAvailable) {
 		return (String) AttributeHelper.getAttributeValue(ge, "kegg", "kegg_type", resultIfNotAvailable, "", false);
 	}
-	
+
 	public static void setKeggType(GraphElement ge, String keggType) {
 		AttributeHelper.setAttribute(ge, "kegg", "kegg_type", keggType);
 	}
-	
+
 	public static String getKeggName(GraphElement ge, String resultIfNotAvailable) {
 		return (String) AttributeHelper.getAttributeValue(ge, "kegg", "kegg_name", resultIfNotAvailable, "", false);
 	}
-	
+
 	public static boolean isMapLink(Edge e) {
 		String keggType = getKeggType(e, null);
 		if (keggType != null && keggType.equalsIgnoreCase("maplink"))
@@ -70,7 +70,7 @@ public class GraphHelperBio implements HelperClass {
 		else
 			return false;
 	}
-	
+
 	public static ArrayList<Edge> getMapLinkEdges(Graph g) {
 		ArrayList<Edge> result = new ArrayList<Edge>();
 		for (Edge e : g.getEdges()) {
@@ -79,7 +79,7 @@ public class GraphHelperBio implements HelperClass {
 		}
 		return result;
 	}
-	
+
 	public static ArrayList<Node> getEnzymeNodes(Graph g) {
 		ArrayList<Node> result = new ArrayList<Node>();
 		for (Node n : g.getNodes()) {
@@ -89,7 +89,7 @@ public class GraphHelperBio implements HelperClass {
 		}
 		return result;
 	}
-	
+
 	public static ArrayList<Node> getMapLinkNodes(Graph g) {
 		ArrayList<Node> result = new ArrayList<Node>();
 		for (Node n : g.getNodes()) {
@@ -99,11 +99,8 @@ public class GraphHelperBio implements HelperClass {
 		}
 		return result;
 	}
-	
-	public static Edge addEdgeIfNotExistant(
-			Graph graph,
-			Node nodeA, Node nodeB,
-			boolean directed,
+
+	public static Edge addEdgeIfNotExistant(Graph graph, Node nodeA, Node nodeB, boolean directed,
 			CollectionAttribute graphicsAttributeForEdge) {
 		// if (directed)
 		// if (nodeA.getOutNeighbors().contains(nodeB)) {
@@ -136,17 +133,17 @@ public class GraphHelperBio implements HelperClass {
 		}
 		return graph.addEdge(nodeA, nodeB, directed, graphicsAttributeForEdge);
 	}
-	
+
 	public static Edge addEdgeCopyIfNotExistant(Edge refEdge, Node a, Node b) {
 		Graph g = refEdge.getGraph();
 		return g.addEdgeCopy(refEdge, a, b);
 	}
-	
+
 	public static Node addMapNode(Graph superGraph, KeggPathwayEntry kpe) {
 		Node newNode = superGraph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(100, 100));
 		String pathway = kpe.getPathwayName();
-		if (pathway != null){ 
-			if( pathway.indexOf(" - ") > 0) {
+		if (pathway != null) {
+			if (pathway.indexOf(" - ") > 0) {
 				pathway = pathway.substring(0, pathway.indexOf(" - "));
 			}
 			AttributeHelper.setLabel(newNode, pathway);
@@ -154,31 +151,28 @@ public class GraphHelperBio implements HelperClass {
 			if (pathway.startsWith("TITLE:") || pathway.startsWith("<html>TITLE:"))
 				AttributeHelper.setBorderWidth(newNode, 3d);
 		}
-		
+
 		AttributeHelper.setAttribute(newNode, "kegg", "kegg_type", "map");
 		URLAttribute ua = new URLAttribute("kegg_map_link", "path:" + kpe.getMapName());
 		newNode.addAttribute(ua, "kegg");
-		
+
 		return newNode;
 	}
-	
+
 	/**
 	 * @param kegg
 	 * @param org
 	 * @param returnSuperPathway
-	 *           If set to true, only one pathway, which represents all KEGG Pathways is returned,
-	 *           otherwise, all pathway graphs are returned.
+	 *            If set to true, only one pathway, which represents all KEGG
+	 *            Pathways is returned, otherwise, all pathway graphs are returned.
 	 * @param statusProvider
 	 * @return Kegg pathway(s)
 	 * @throws IOException
 	 * @throws ServiceException
 	 */
-	
-	private static void processSOAPoverviewLoading(List<Graph> result,
-			Collection<KeggPathwayEntry> pathways,
-			BackgroundTaskStatusProviderSupportingExternalCall statusProvider,
-			OrganismEntry org,
-			String serverURL) {
+
+	private static void processSOAPoverviewLoading(List<Graph> result, Collection<KeggPathwayEntry> pathways,
+			BackgroundTaskStatusProviderSupportingExternalCall statusProvider, OrganismEntry org, String serverURL) {
 		Graph superGraph = new AdjListGraph();
 		HashMap<String, Node> mapNumber2superGraphNode = new HashMap<String, Node>();
 		PositionGridGenerator pgg = new PositionGridGenerator(200, 50, 1000);
@@ -212,25 +206,21 @@ public class GraphHelperBio implements HelperClass {
 					if (targetNode == null) {
 						org.getShortName();
 						String mapNumber = l.replaceFirst("path:", "");
-						KeggPathwayEntry kpe =
-								new KeggPathwayEntry(
-										l,
-										false,
-										mapNumber,
-										new String[] { "KEGG" }
-								// KeggHelper.getGroupFromMapName("--")
-								);
+						KeggPathwayEntry kpe = new KeggPathwayEntry(l, false, mapNumber, new String[] { "KEGG" }
+						// KeggHelper.getGroupFromMapName("--")
+						);
 						checkTheseMaps.add(kpe.getMapName());
 						Node mapNode = GraphHelperBio.addMapNode(superGraph, kpe);
 						pretifyMapNode(pgg, mapNumber2superGraphNode, kpe, mapNode);
 						targetNode = mapNode;
 					}
 					if (targetNode == null)
-						ErrorMsg.addErrorMessage("Could not connect map node for map id " + checkThisMap + " to unknown map with ID " + l);
+						ErrorMsg.addErrorMessage("Could not connect map node for map id " + checkThisMap
+								+ " to unknown map with ID " + l);
 					else {
 						if (!sourceNode.getOutNeighbors().contains(targetNode)) {
-							Edge ne = superGraph.addEdge(sourceNode, targetNode, false, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK,
-									false));
+							Edge ne = superGraph.addEdge(sourceNode, targetNode, false, AttributeHelper
+									.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, false));
 							AttributeHelper.setDashInfo(ne, 5, 5);
 							// AttributeHelper.setBorderWidth(ne, 5);
 							// AttributeHelper.setArrowSize(ne, 6);
@@ -257,11 +247,13 @@ public class GraphHelperBio implements HelperClass {
 			statusProvider.setCurrentStatusText1("Processing completed");
 		else
 			statusProvider.setCurrentStatusText1("Processing aborted");
-		statusProvider.setCurrentStatusText2("Map Overview: " + superGraph.getNodes().size() + " Nodes, " + superGraph.getEdges().size() + " Edges");
+		statusProvider.setCurrentStatusText2(
+				"Map Overview: " + superGraph.getNodes().size() + " Nodes, " + superGraph.getEdges().size() + " Edges");
 		statusProvider.setCurrentStatusValueFine(100d);
 	}
-	
-	private static void pretifyMapNode(PositionGridGenerator pgg, HashMap<String, Node> mapNumber2superGraphNode, KeggPathwayEntry kpe, Node mapNode) {
+
+	private static void pretifyMapNode(PositionGridGenerator pgg, HashMap<String, Node> mapNumber2superGraphNode,
+			KeggPathwayEntry kpe, Node mapNode) {
 		mapNumber2superGraphNode.put(kpe.getMapName(), mapNode);
 		String label = AttributeHelper.getLabel(mapNode, "");
 		JLabel testLabel = new JLabel(label);
@@ -272,9 +264,9 @@ public class GraphHelperBio implements HelperClass {
 		nh.setClusterID("path:" + kpe.getMapName());
 		KeggGmlHelper.setKeggId(mapNode, "path:" + kpe.getMapName());
 	}
-	
-	private static void processFullMapLoading(boolean returnSuperPathway, boolean returnFullSuperPathway, List<Graph> result,
-			Collection<KeggPathwayEntry> pathways,
+
+	private static void processFullMapLoading(boolean returnSuperPathway, boolean returnFullSuperPathway,
+			List<Graph> result, Collection<KeggPathwayEntry> pathways,
 			BackgroundTaskStatusProviderSupportingExternalCall statusProvider) {
 		Graph superGraph = new AdjListGraph();
 		HashMap<String, Node> mapNumber2superGraphNode = new HashMap<String, Node>();
@@ -293,7 +285,8 @@ public class GraphHelperBio implements HelperClass {
 				break;
 			Graph keggPathwayGraph = new AdjListGraph();
 			statusProvider.setCurrentStatusText2("Load map " + kpe.getMapName() + " (" + kpe.getPathwayName() + ")");
-			KeggService.loadKeggPathwayIntoEditor(kpe, keggPathwayGraph, KeggService.getDefaultEnzymeColor(), i == pathways.size() - 1);
+			KeggService.loadKeggPathwayIntoEditor(kpe, keggPathwayGraph, KeggService.getDefaultEnzymeColor(),
+					i == pathways.size() - 1);
 			double thisMaxX = 0;
 			Vector2d maxXYxy = NodeTools.getMaximumXY(keggPathwayGraph.getNodes(), 1d, 0, 0, true);
 			thisMaxX = maxXYxy.x;
@@ -320,7 +313,7 @@ public class GraphHelperBio implements HelperClass {
 				// superGraph.addGraph(keggPathwayGraph);
 				KeggService.mergeKeggGraphs(superGraph, keggPathwayGraph, null, true, false);
 			}
-			
+
 			if (returnSuperPathway) {
 				if (!mapNumber2superGraphNode.containsKey(kpe.getMapName())) {
 					Node mapNode = GraphHelperBio.addMapNode(superGraph, kpe);
@@ -334,16 +327,20 @@ public class GraphHelperBio implements HelperClass {
 				Node thisPathwayNode = mapNumber2superGraphNode.get(kpe.getMapName());
 				Collection<Node> mapNodes = GraphHelperBio.getMapLinkNodes(keggPathwayGraph);
 				for (Node referencedMapNode : mapNodes) {
-					String referencedMap = (String) AttributeHelper.getAttributeValue(referencedMapNode, "kegg", "kegg_map_link", null, "", false);
+					String referencedMap = (String) AttributeHelper.getAttributeValue(referencedMapNode, "kegg",
+							"kegg_map_link", null, "", false);
 					if (referencedMap != null && referencedMap.length() > 0) {
 						referencedMap = StringManipulationTools.stringReplace(referencedMap, "path:", "");
 						if (mapNumber2superGraphNode.containsKey(referencedMap)) {
 							Node superPathwayMapNode = mapNumber2superGraphNode.get(referencedMap);
-							if (!thisPathwayNode.getNeighbors().contains(superPathwayMapNode) && (!kpe.getMapName().equalsIgnoreCase(referencedMap))) {
-								Edge edge = superGraph.addEdge(thisPathwayNode, superPathwayMapNode, false, AttributeHelper.getDefaultGraphicsAttributeForEdge(
-										Color.BLACK, Color.BLACK, false));
+							if (!thisPathwayNode.getNeighbors().contains(superPathwayMapNode)
+									&& (!kpe.getMapName().equalsIgnoreCase(referencedMap))) {
+								Edge edge = superGraph.addEdge(thisPathwayNode, superPathwayMapNode, false,
+										AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK,
+												false));
 								AttributeHelper.setDashInfo(edge, 5f, 5f);
-								// System.out.println("Connect Map Nodes: "+kpe.getMapName()+" <==> "+referencedMap);
+								// System.out.println("Connect Map Nodes: "+kpe.getMapName()+" <==>
+								// "+referencedMap);
 							}
 						}
 					}
@@ -380,27 +377,21 @@ public class GraphHelperBio implements HelperClass {
 			statusProvider.setCurrentStatusText1("Processing completed");
 		else
 			statusProvider.setCurrentStatusText1("Processing aborted");
-		statusProvider.setCurrentStatusText2("Map Overview: " + superGraph.getNodes().size() + " Nodes, " + superGraph.getEdges().size() + " Edges");
+		statusProvider.setCurrentStatusText2(
+				"Map Overview: " + superGraph.getNodes().size() + " Nodes, " + superGraph.getEdges().size() + " Edges");
 		statusProvider.setCurrentStatusValueFine(100d);
 	}
-	
-	public static void mergeNodesWithSameLabel(
-			List<Node> nodes,
-			final boolean selectOnlyTrueOrMergeIsFalse,
-			boolean extendSelection,
-			boolean considerCluster) {
+
+	public static void mergeNodesWithSameLabel(List<Node> nodes, final boolean selectOnlyTrueOrMergeIsFalse,
+			boolean extendSelection, boolean considerCluster) {
 		mergeNodesWithSameLabel(nodes, selectOnlyTrueOrMergeIsFalse, extendSelection, considerCluster, false, true);
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static void mergeNodesWithSameLabel(
-			List<Node> nodes,
-			final boolean selectOnlyTrueOrMergeIsFalse,
-			boolean extendSelection,
-			boolean considerCluster,
-			boolean considerPositionPlusMinus10,
+	public static void mergeNodesWithSameLabel(List<Node> nodes, final boolean selectOnlyTrueOrMergeIsFalse,
+			boolean extendSelection, boolean considerCluster, boolean considerPositionPlusMinus10,
 			boolean retainClusterIDs) {
-		
+
 		if (selectOnlyTrueOrMergeIsFalse && extendSelection) {
 			selectNodesWithSameLabelBasedOnCurrentSelection(nodes);
 			return;
@@ -430,23 +421,27 @@ public class GraphHelperBio implements HelperClass {
 		final Graph g = g2;
 		if (g != null) {
 			try {
-//				if (!selectOnlyTrueOrMergeIsFalse)
-//					g.getListenerManager().transactionStarted(g);
+				// if (!selectOnlyTrueOrMergeIsFalse)
+				// g.getListenerManager().transactionStarted(g);
 				int workSize = label2nodeList.values().size();
 				int workI = 0;
 				int numberN = 0;
 				int lastn = nodes.size();
 				HashSet<Node> selNodes = new HashSet<Node>();
 				for (ArrayList<Node> toBeCondensed : label2nodeList.values()) {
-					MainFrame.showMessage("Condense Nodes (" + (int) (workI * 100d / workSize) + "%)", MessageType.PERMANENT_INFO);
+					MainFrame.showMessage("Condense Nodes (" + (int) (workI * 100d / workSize) + "%)",
+							MessageType.PERMANENT_INFO);
 					if (toBeCondensed.size() > 1) {
 						if (selectOnlyTrueOrMergeIsFalse) {
 							numberN++;
 							selNodes.addAll(toBeCondensed);
 						} else {
-							Node newNode = MergeNodes.mergeNode(g, toBeCondensed, NodeTools.getCenter(toBeCondensed), retainClusterIDs);
-							Set<Object> srcFileNamesSet = AttributeHelper.getAttributeValueSet((Collection) toBeCondensed, "src", "fileName", "-", "", false);
-							String srcFileNames = AttributeHelper.getStringList(srcFileNamesSet.toArray(new String[] {}), ";");
+							Node newNode = MergeNodes.mergeNode(g, toBeCondensed, NodeTools.getCenter(toBeCondensed),
+									retainClusterIDs);
+							Set<Object> srcFileNamesSet = AttributeHelper.getAttributeValueSet(
+									(Collection) toBeCondensed, "src", "fileName", "-", "", false);
+							String srcFileNames = AttributeHelper
+									.getStringList(srcFileNamesSet.toArray(new String[] {}), ";");
 							if (srcFileNames != null && !srcFileNames.equals("-"))
 								AttributeHelper.setAttribute(newNode, "src", "fileName", srcFileNames);
 							g.deleteAll((Collection) toBeCondensed);
@@ -462,21 +457,21 @@ public class GraphHelperBio implements HelperClass {
 					}
 					MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(sel);
 					MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
-					
+
 					MainFrame.showMessage("Number of multiple occurring nodes: " + numberN, MessageType.INFO);
 				} else
 					MainFrame.showMessage("Condensed Nodes: " + firstn + " --> " + lastn, MessageType.INFO);
 			} finally {
-//				SwingUtilities.invokeLater(new Runnable() {
-//					public void run() {
-//						if (!selectOnlyTrueOrMergeIsFalse)
-//							g.getListenerManager().transactionFinished(g);
-//					}
-//				});
+				// SwingUtilities.invokeLater(new Runnable() {
+				// public void run() {
+				// if (!selectOnlyTrueOrMergeIsFalse)
+				// g.getListenerManager().transactionFinished(g);
+				// }
+				// });
 			}
 		}
 	}
-	
+
 	private static void selectNodesWithSameLabelBasedOnCurrentSelection(List<Node> selectedNodes) {
 		Selection sel = new Selection("multipleOccuringNodes");
 		HashSet<String> labelsToTest = new HashSet<String>();
@@ -515,7 +510,7 @@ public class GraphHelperBio implements HelperClass {
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(sel);
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 	}
-	
+
 	public static void connectNodesWithSameLabel(List<Node> nodes) {
 		HashMap<String, ArrayList<Node>> keggID2nodeList = new HashMap<String, ArrayList<Node>>();
 		Graph g = null;
@@ -538,13 +533,15 @@ public class GraphHelperBio implements HelperClass {
 				int addedges = 0;
 				ArrayList<Edge> newEdges = new ArrayList<Edge>();
 				for (ArrayList<Node> toBeCondensed : keggID2nodeList.values()) {
-					MainFrame.showMessage("Connect Nodes (" + (int) (workI * 100d / workSize) + "%)", MessageType.PERMANENT_INFO);
+					MainFrame.showMessage("Connect Nodes (" + (int) (workI * 100d / workSize) + "%)",
+							MessageType.PERMANENT_INFO);
 					if (toBeCondensed.size() > 1) {
 						for (Node a : toBeCondensed) {
 							for (Node b : toBeCondensed) {
 								if (a != b) {
 									if (!a.getNeighbors().contains(b)) {
-										Edge e = addEdgeIfNotExistant(g, a, b, false, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, false));
+										Edge e = addEdgeIfNotExistant(g, a, b, false, AttributeHelper
+												.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, false));
 										if (e != null) {
 											newEdges.add(e);
 											AttributeHelper.setDashInfo(e, 5, 5);

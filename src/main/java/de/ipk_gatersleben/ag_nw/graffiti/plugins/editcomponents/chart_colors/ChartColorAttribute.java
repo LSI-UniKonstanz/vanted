@@ -18,12 +18,11 @@ import org.graffiti.event.AttributeEvent;
 import org.graffiti.graph.Graph;
 
 /**
- * All StringAttributes with the name id "chart_colors" will be converted
- * into a ChartColorAttribute (see ChartAttributePlugin, where the mapping
- * information from id to class type is initialized.
+ * All StringAttributes with the name id "chart_colors" will be converted into a
+ * ChartColorAttribute (see ChartAttributePlugin, where the mapping information
+ * from id to class type is initialized.
  * 
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class ChartColorAttribute extends StringAttribute {
 	// format of color string:
@@ -31,99 +30,100 @@ public class ChartColorAttribute extends StringAttribute {
 	private String value;
 	public static String attributeName = "chart_colors";
 	public static String attributeFolder = "";
-	
+
 	private final String notSet = "undefined"; // "0,0,0,255:255,255,255,255;255,0,0,255:0,255,255,255;50,50,0,255:255,55,55,255";
-	
+
 	public ChartColorAttribute() {
 		super(attributeName);
 		value = notSet;
 	}
-	
+
 	public ChartColorAttribute(String id) {
 		super(id);
 		setDescription("Modify the colors of bars and lines in the charts"); // tooltip
 		value = notSet;
 	}
-	
+
 	public ChartColorAttribute(String id, String value) {
 		super(id);
 		this.value = value;
 	}
-	
+
 	@Override
 	public void setDefaultValue() {
 		value = notSet;
 	}
-	
+
 	public static ChartColorAttribute getAttribute(Graph graph) {
-		ChartColorAttribute chartColorAttribute = (ChartColorAttribute) AttributeHelper.getAttributeValue(
-				graph, ChartColorAttribute.attributeFolder,
-				ChartColorAttribute.attributeName,
-				new ChartColorAttribute(), new ChartColorAttribute(), false);
+		ChartColorAttribute chartColorAttribute = (ChartColorAttribute) AttributeHelper.getAttributeValue(graph,
+				ChartColorAttribute.attributeFolder, ChartColorAttribute.attributeName, new ChartColorAttribute(),
+				new ChartColorAttribute(), false);
 		return chartColorAttribute;
 	}
-	
+
 	public static boolean hasAttribute(Graph graph) {
-		return AttributeHelper.hasAttribute(graph, ChartColorAttribute.attributeFolder, ChartColorAttribute.attributeName);
+		return AttributeHelper.hasAttribute(graph, ChartColorAttribute.attributeFolder,
+				ChartColorAttribute.attributeName);
 	}
-	
+
 	@Override
 	public void setString(String value) {
 		assert value != null;
-		
+
 		AttributeEvent ae = new AttributeEvent(this);
 		callPreAttributeChanged(ae);
 		this.value = value;
 		callPostAttributeChanged(ae);
 	}
-	
+
 	@Override
 	public String getString() {
 		return value;
 	}
-	
+
 	@Override
 	public Object getValue() {
 		return value;
 	}
-	
+
 	@Override
 	public Object copy() {
 		return new ChartColorAttribute(this.getId(), this.value);
 	}
-	
+
 	@Override
 	public String toString(int n) {
 		return getSpaces(n) + getId() + " = \"" + value + "\"";
 	}
-	
+
 	@Override
 	public String toXMLString() {
 		return getStandardXML(value);
 	}
-	
+
 	public ArrayList<Color> getSeriesColors(Collection<String> idList) {
 		if (idList == null || idList.isEmpty())
 			return new ArrayList<Color>();
 		return getSeriesOrOutlineColors(idList, 0);
 	}
-	
+
 	private ArrayList<Color> getSeriesOrOutlineColors(Collection<String> idList, int zeroInner_oneOutline) {
 		HashSet<String> innerIds = new HashSet<String>();
 		ArrayList<String> innerIdsAL = new ArrayList<String>();
 		String curVal = "";
 		if (getAttributable() != null)
-			curVal = (String) AttributeHelper.getAttributeValue(getAttributable(), "", "chart_color_line_names", "", "");
+			curVal = (String) AttributeHelper.getAttributeValue(getAttributable(), "", "chart_color_line_names", "",
+					"");
 		String[] values = curVal.split(";");
 		for (String v : values)
 			if (v.length() > 0 && !innerIds.contains(v)) {
 				innerIds.add(v);
 				innerIdsAL.add(v);
 			}
-		
+
 		for (String o : idList) {
-			if (o != null) { 
-				if( o.indexOf("§") > 0)
+			if (o != null) {
+				if (o.indexOf("§") > 0)
 					o = o.substring(0, o.lastIndexOf("§"));
 				String v = o;
 				if (v.length() > 0 && !innerIds.contains(v)) {
@@ -146,13 +146,13 @@ public class ChartColorAttribute extends StringAttribute {
 			}
 			id2col.put(id, c);
 		}
-		
+
 		for (String o : idList) {
 			if (o != null && o.indexOf("§") > 0)
 				o = o.substring(0, o.lastIndexOf("§"));
 			result.add(id2col.get(o));
 		}
-		
+
 		StringBuilder sb = new StringBuilder();
 		for (String v : innerIdsAL)
 			sb.append(v + ";");
@@ -165,14 +165,14 @@ public class ChartColorAttribute extends StringAttribute {
 			} else
 				AttributeHelper.setAttribute(getAttributable(), "", "chart_color_line_names", sb.toString());
 		}
-		
+
 		return result;
 	}
-	
+
 	public ArrayList<Color> getSeriesOutlineColors(Collection<String> idList) {
 		return getSeriesOrOutlineColors(idList, 1);
 	}
-	
+
 	private ArrayList<Color> interpreteColorString(int type0bar_1outline) {
 		if (value == null || value.equals(notSet))
 			return null;
@@ -201,21 +201,21 @@ public class ChartColorAttribute extends StringAttribute {
 			return result;
 		}
 	}
-	
+
 	private void setColorString(int idx0bar_1outline, int series, Paint newColor) {
 		String[] cols = value.split(";");
 		while (cols.length < series) {
 			value += ";null:null";
 			cols = value.split(";");
 		}
-		
+
 		if (cols[series].indexOf(":") < 0)
 			cols[series] = "null:null";
 		if (idx0bar_1outline == 0) {
 			cols[series] = getColorCode(newColor) + ":" + nullForEmpty(cols[series].split(":")[1]);
 		} else
 			cols[series] = nullForEmpty(cols[series].split(":")[0]) + ":" + getColorCode(newColor);
-		
+
 		StringBuilder result = new StringBuilder("");
 		for (int i = 0; i < cols.length; i++) {
 			result.append(cols[i]);
@@ -224,7 +224,7 @@ public class ChartColorAttribute extends StringAttribute {
 		}
 		value = result.toString();
 	}
-	
+
 	/**
 	 * @param string
 	 * @return
@@ -235,7 +235,7 @@ public class ChartColorAttribute extends StringAttribute {
 		else
 			return string;
 	}
-	
+
 	private String getColorCode(Paint newColor) {
 		if (newColor == null)
 			return "null";
@@ -247,7 +247,7 @@ public class ChartColorAttribute extends StringAttribute {
 				return "null";
 		}
 	}
-	
+
 	public void ensureMinimumColorSelection(int barCount) {
 		boolean set = false;
 		ArrayList<Color> colorList = Colors.getGrayColors(barCount);
@@ -272,50 +272,52 @@ public class ChartColorAttribute extends StringAttribute {
 			}
 		}
 	}
-	
+
 	@Override
 	protected void doSetValue(Object o) throws IllegalArgumentException {
 		assert o != null;
-		
+
 		try {
 			value = (String) o;
 		} catch (ClassCastException cce) {
 			throw new IllegalArgumentException("Invalid value type.");
 		}
 	}
-	
+
 	public int getDefinedBarCount() {
 		if (value == null || value.equals(notSet))
 			return 0;
 		else
 			return value.length() - value.replaceAll(";", "").length() + 1;
 	}
-	
+
 	public void setSeriesColor(int series, Color color) {
 		ensureMinimumColorSelection(series);
 		setColorString(0, series, color);
 	}
-	
+
 	public void setSeriesOutlineColor(int series, Color color) {
 		ensureMinimumColorSelection(series);
 		setColorString(1, series, color);
 	}
-	
+
 	public ArrayList<String> getIdList(int minimumReturn) {
 		ArrayList<String> innerIds = new ArrayList<String>();
-		String curVal = (String) AttributeHelper.getAttributeValue(getAttributable(), "", "chart_color_line_names", "", "");
+		String curVal = (String) AttributeHelper.getAttributeValue(getAttributable(), "", "chart_color_line_names", "",
+				"");
 		String[] values = curVal.split(";");
 		for (String v : values)
 			if (v.length() > 0)
 				innerIds.add(v);
-		
+
 		while (innerIds.size() < minimumReturn)
 			innerIds.add("");
 		return innerIds;
 	}
-	
+
 	public Color getSeriesColor(String serie, Color returnIfNotDefined) {
-		String curVal = (String) AttributeHelper.getAttributeValue(getAttributable(), "", "chart_color_line_names", "", "");
+		String curVal = (String) AttributeHelper.getAttributeValue(getAttributable(), "", "chart_color_line_names", "",
+				"");
 		String[] values = curVal.split(";");
 		int idx = -1;
 		int i = 0;
@@ -331,9 +333,10 @@ public class ChartColorAttribute extends StringAttribute {
 		ArrayList<Color> colors = interpreteColorString(0);
 		return colors.get(idx);
 	}
-	
+
 	public Color getSeriesOutlineColor(String serie, Color returnIfNotDefined) {
-		String curVal = (String) AttributeHelper.getAttributeValue(getAttributable(), "", "chart_color_line_names", "", "");
+		String curVal = (String) AttributeHelper.getAttributeValue(getAttributable(), "", "chart_color_line_names", "",
+				"");
 		String[] values = curVal.split(";");
 		int idx = -1;
 		int i = 0;
@@ -349,9 +352,10 @@ public class ChartColorAttribute extends StringAttribute {
 		ArrayList<Color> colors = interpreteColorString(1);
 		return colors.get(idx);
 	}
-	
+
 	public void setSeriesColor(String serie, Color color) {
-		String curVal = (String) AttributeHelper.getAttributeValue(getAttributable(), "", "chart_color_line_names", "", "");
+		String curVal = (String) AttributeHelper.getAttributeValue(getAttributable(), "", "chart_color_line_names", "",
+				"");
 		String[] values = curVal.split(";");
 		int idx = -1;
 		int i = 0;

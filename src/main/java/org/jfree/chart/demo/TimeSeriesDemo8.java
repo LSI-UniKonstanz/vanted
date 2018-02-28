@@ -53,7 +53,7 @@ public class TimeSeriesDemo8 extends ApplicationFrame {
 	 * A demonstration application showing how to create a simple time series chart.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public TimeSeriesDemo8(final String title) {
 		super(title);
@@ -72,9 +72,7 @@ public class TimeSeriesDemo8 extends ApplicationFrame {
 	 */
 	private XYDataset createDataset() {
 		final TimeSeries eur = DemoDatasetFactory.createEURTimeSeries();
-		final TimeSeries mav = MovingAverage.createMovingAverage(
-							eur, "30 day moving average", 30, 30
-							);
+		final TimeSeries mav = MovingAverage.createMovingAverage(eur, "30 day moving average", 30, 30);
 		final TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(eur);
 		dataset.addSeries(mav);
@@ -85,24 +83,16 @@ public class TimeSeriesDemo8 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							"Time Series Demo 8",
-							"Date",
-							"Value",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Time Series Demo 8", "Date", "Value", dataset,
+				true, true, false);
 		final XYItemRenderer renderer = chart.getXYPlot().getRenderer();
 		final StandardXYToolTipGenerator g = new StandardXYToolTipGenerator(
-							StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-							new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")
-							);
+				StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT, new SimpleDateFormat("d-MMM-yyyy"),
+				new DecimalFormat("0.00"));
 		renderer.setToolTipGenerator(g);
 		return chart;
 	}
@@ -122,7 +112,7 @@ public class TimeSeriesDemo8 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

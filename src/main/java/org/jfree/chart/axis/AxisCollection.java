@@ -34,7 +34,8 @@ import java.util.List;
 import org.jfree.ui.RectangleEdge;
 
 /**
- * A collection of axes that have been assigned to the TOP, BOTTOM, LEFT or RIGHT of a chart.
+ * A collection of axes that have been assigned to the TOP, BOTTOM, LEFT or
+ * RIGHT of a chart.
  */
 public class AxisCollection {
 
@@ -61,7 +62,8 @@ public class AxisCollection {
 	}
 
 	/**
-	 * Returns a list of the axes (if any) that need to be drawn at the top of the plot area.
+	 * Returns a list of the axes (if any) that need to be drawn at the top of the
+	 * plot area.
 	 * 
 	 * @return A list of axes.
 	 */
@@ -70,7 +72,8 @@ public class AxisCollection {
 	}
 
 	/**
-	 * Returns a list of the axes (if any) that need to be drawn at the bottom of the plot area.
+	 * Returns a list of the axes (if any) that need to be drawn at the bottom of
+	 * the plot area.
 	 * 
 	 * @return A list of axes.
 	 */
@@ -79,7 +82,8 @@ public class AxisCollection {
 	}
 
 	/**
-	 * Returns a list of the axes (if any) that need to be drawn at the left of the plot area.
+	 * Returns a list of the axes (if any) that need to be drawn at the left of the
+	 * plot area.
 	 * 
 	 * @return A list of axes.
 	 */
@@ -88,7 +92,8 @@ public class AxisCollection {
 	}
 
 	/**
-	 * Returns a list of the axes (if any) that need to be drawn at the right of the plot area.
+	 * Returns a list of the axes (if any) that need to be drawn at the right of the
+	 * plot area.
 	 * 
 	 * @return A list of axes.
 	 */
@@ -100,9 +105,10 @@ public class AxisCollection {
 	 * Adds an axis to the collection.
 	 * 
 	 * @param axis
-	 *           the axis (<code>null</code> not permitted).
+	 *            the axis (<code>null</code> not permitted).
 	 * @param edge
-	 *           the edge of the plot that the axis should be drawn on (<code>null</code> not permitted).
+	 *            the edge of the plot that the axis should be drawn on
+	 *            (<code>null</code> not permitted).
 	 */
 	public void add(Axis axis, RectangleEdge edge) {
 		if (axis == null) {
@@ -113,16 +119,13 @@ public class AxisCollection {
 		}
 		if (edge == RectangleEdge.TOP) {
 			this.axesAtTop.add(axis);
-		} else
-			if (edge == RectangleEdge.BOTTOM) {
-				this.axesAtBottom.add(axis);
-			} else
-				if (edge == RectangleEdge.LEFT) {
-					this.axesAtLeft.add(axis);
-				} else
-					if (edge == RectangleEdge.RIGHT) {
-						this.axesAtRight.add(axis);
-					}
+		} else if (edge == RectangleEdge.BOTTOM) {
+			this.axesAtBottom.add(axis);
+		} else if (edge == RectangleEdge.LEFT) {
+			this.axesAtLeft.add(axis);
+		} else if (edge == RectangleEdge.RIGHT) {
+			this.axesAtRight.add(axis);
+		}
 	}
 
 }

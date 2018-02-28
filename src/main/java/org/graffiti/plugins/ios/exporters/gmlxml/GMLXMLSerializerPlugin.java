@@ -13,22 +13,22 @@ import org.graffiti.plugin.GenericPluginAdapter;
 import org.graffiti.plugin.io.OutputSerializer;
 
 /**
- * Provides a GML serializer. See
- * http://infosun.fmi.uni-passau.de/Graphlet/GML/ for more details.
+ * Provides a GML serializer. See http://infosun.fmi.uni-passau.de/Graphlet/GML/
+ * for more details.
  * 
  * @version $Revision: 1.4 $
  */
-public class GMLXMLSerializerPlugin
-					extends GenericPluginAdapter {
+public class GMLXMLSerializerPlugin extends GenericPluginAdapter {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor for GMLSerializerPlugin.
 	 */
 	public GMLXMLSerializerPlugin() {
 		super();
-		
-		// TODO perhaps: merge this and org.graffiti.plugins.io.exporter.gml.GMLReaderPlugin.
+
+		// TODO perhaps: merge this and
+		// org.graffiti.plugins.io.exporter.gml.GMLReaderPlugin.
 		outputSerializers = new OutputSerializer[1];
 		outputSerializers[0] = new GMLXMLWriter();
 	}

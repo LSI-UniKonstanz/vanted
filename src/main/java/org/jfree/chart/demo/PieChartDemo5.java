@@ -47,7 +47,7 @@ public class PieChartDemo5 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PieChartDemo5(final String title) {
 		super(title);
@@ -89,18 +89,15 @@ public class PieChartDemo5 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final PieDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createPieChart(
-							"Pie Chart Demo 5", // chart title
+		final JFreeChart chart = ChartFactory.createPieChart("Pie Chart Demo 5", // chart title
 				dataset, // data
 				false, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		final PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setInteriorGap(0.0);
@@ -113,7 +110,7 @@ public class PieChartDemo5 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

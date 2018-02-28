@@ -39,18 +39,18 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 	private static final long serialVersionUID = -3026855152800218905L;
 	private String title, webAddress, content, contentSingle, infoURL;
 	protected PathwayWebLinkTreeNode myRootNode;
-	
+
 	private final HashMap<String, PathwayWebLinkTreeNode> group2treeNode = new HashMap<String, PathwayWebLinkTreeNode>();
-	
+
 	private final boolean ommitIfEmtpyGroup;
 	private boolean showGraphExtensions = false;
 	private final String downloadButtonText;
-	
+
 	public PathwayWebLinkTab(String title, String url, String content, String contentSingle, String infoURL,
 			boolean ommitEmptyGroupItems) {
 		this(title, url, content, contentSingle, infoURL, ommitEmptyGroupItems, "<html>Download selected " + content);
 	}
-	
+
 	public PathwayWebLinkTab(String title, String url, String content, String contentSingle, String infoURL,
 			boolean ommitEmptyGroupItems, String downloadButtonText) {
 		super();
@@ -64,18 +64,17 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 		this.downloadButtonText = downloadButtonText;
 		initComponents();
 	}
-	
+
 	protected void initComponents() {
 		removeAll();
 		double border = 5;
-		double[][] size = {
-				{ border, TableLayoutConstants.FILL, border }, // Columns
+		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.PREFERRED, 3, TableLayoutConstants.PREFERRED, 5,
 						TableLayoutConstants.PREFERRED, 3, TableLayoutConstants.FILL, border } }; // Rows
 		this.setLayout(new TableLayout(size));
-		
+
 		final JTree pathwayList = getPathwayList();
-		
+
 		MouseListener ml = new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -86,35 +85,36 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 			}
 		};
 		pathwayList.addMouseListener(ml);
-		
+
 		add(getDownloadButton(pathwayList, "Get list of " + content), "1,1");
-		
+
 		add(getLoadDataButton(pathwayList), "1,3");
-		
+
 		add(new JLabel("<html>Select " + content + " from the list and use the download button "
 				+ "to download and view " + title.toLowerCase() + " (" + infoURL + ")."), "1,5");
-		
+
 		add(new JScrollPane(pathwayList, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED), "1,7");
-		
+
 		validate();
 	}
-	
+
 	private JButton getLoadDataButton(final JTree pathwayList) {
 		JButton result = new JMButton(downloadButtonText);
-		
+
 		result.setOpaque(false);
 		result.addActionListener(getDownloadFilesActionListener(pathwayList));
 		return result;
 	}
-	
+
 	protected ActionListener getDownloadFilesActionListener(final JTree pathwayList) {
 		return new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
 				final Collection<PathwayWebLinkItem> selection = getPathwaySelection(pathwayList);
 				if (selection.isEmpty()) {
-					MainFrame.showMessageDialog("<html>" + "Please select at least one " + contentSingle
-							+ " from the list.<br>" + "If the list is empty, please use the action command to fill the list.",
+					MainFrame.showMessageDialog(
+							"<html>" + "Please select at least one " + contentSingle + " from the list.<br>"
+									+ "If the list is empty, please use the action command to fill the list.",
 							"Information");
 				}
 				final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
@@ -164,22 +164,22 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 			}
 		};
 	}
-	
+
 	protected abstract void addAnnotationsToGraphElements(Graph graph);
-	
+
 	private JTree getPathwayList() {
 		JTree result = new JTree(new DefaultTreeModel(myRootNode));
 		return result;
 	}
-	
+
 	private JButton getDownloadButton(final JTree pathwayTree, String desc) {
 		JButton result = new JMButton(desc);
-		
+
 		result.setOpaque(false);
 		result.addActionListener(getLoadActionListener(pathwayTree));
 		return result;
 	}
-	
+
 	public ActionListener getLoadActionListener(final JTree pathwayTree) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -194,16 +194,16 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 					ErrorMsg.addErrorMessage(e);
 					MainFrame.showMessageDialog("I/O-Exception: " + e.toString(), "Error");
 				} catch (NullPointerException npe) {
-					//NPE is result of connection error, already reported to
-					//the user, so do nothing, no change in the tree appearance
+					// NPE is result of connection error, already reported to
+					// the user, so do nothing, no change in the tree appearance
 				}
 				((DefaultTreeModel) pathwayTree.getModel()).reload();
 			}
 		};
 	}
-	
+
 	protected abstract String[] getValidExtensions();
-	
+
 	protected void addTreeChild(PathwayWebLinkItem i) {
 		String group1 = i.getGroup1();
 		String group2 = i.getGroup2();
@@ -211,7 +211,7 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 			return;
 		if (ommitIfEmtpyGroup && group2 != null && group2.trim().length() <= 0)
 			return;
-		
+
 		PathwayWebLinkTreeNode tn = group2treeNode.get(group1);
 		if (tn == null) {
 			PathwayWebLinkTreeNode groupNode = new PathwayWebLinkTreeNode(group1);
@@ -235,52 +235,52 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 		} else
 			tn.add(new PathwayWebLinkTreeNode(i));
 	}
-	
+
 	@Override
 	public String getTitle() {
 		return title;
 	}
-	
+
 	public void postAttributeAdded(AttributeEvent e) {
 		//
-		
+
 	}
-	
+
 	public void postAttributeChanged(AttributeEvent e) {
 		//
-		
+
 	}
-	
+
 	public void postAttributeRemoved(AttributeEvent e) {
 		//
-		
+
 	}
-	
+
 	public void preAttributeAdded(AttributeEvent e) {
 		//
-		
+
 	}
-	
+
 	public void preAttributeChanged(AttributeEvent e) {
 		//
-		
+
 	}
-	
+
 	public void preAttributeRemoved(AttributeEvent e) {
 		//
-		
+
 	}
-	
+
 	public void transactionFinished(TransactionEvent e) {
 		//
-		
+
 	}
-	
+
 	public void transactionStarted(TransactionEvent e) {
 		//
-		
+
 	}
-	
+
 	protected Collection<PathwayWebLinkItem> getPathwaySelection(JTree pathwayList) {
 		HashSet<PathwayWebLinkItem> resultA = new HashSet<PathwayWebLinkItem>();
 		ArrayList<PathwayWebLinkItem> resultB = new ArrayList<PathwayWebLinkItem>();
@@ -328,14 +328,14 @@ public abstract class PathwayWebLinkTab extends InspectorTab {
 		}
 		return resultB;
 	}
-	
+
 	public void setShowGraphExtensions(boolean show) {
 		this.showGraphExtensions = show;
 	}
-	
+
 	protected void setWebAddress(String webAddress) {
 		this.webAddress = webAddress;
-		//initComponents();
+		// initComponents();
 	}
-	
+
 }

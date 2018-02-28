@@ -116,17 +116,12 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	 * Creates a new title, using default attributes where necessary.
 	 * 
 	 * @param text
-	 *           the title text.
+	 *            the title text.
 	 */
 	public TextTitle(String text) {
 
-		this(text,
-							TextTitle.DEFAULT_FONT,
-							TextTitle.DEFAULT_TEXT_PAINT,
-							Title.DEFAULT_POSITION,
-							Title.DEFAULT_HORIZONTAL_ALIGNMENT,
-							Title.DEFAULT_VERTICAL_ALIGNMENT,
-							Title.DEFAULT_SPACER);
+		this(text, TextTitle.DEFAULT_FONT, TextTitle.DEFAULT_TEXT_PAINT, Title.DEFAULT_POSITION,
+				Title.DEFAULT_HORIZONTAL_ALIGNMENT, Title.DEFAULT_VERTICAL_ALIGNMENT, Title.DEFAULT_SPACER);
 
 	}
 
@@ -134,18 +129,14 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	 * Creates a new title, using default attributes where necessary.
 	 * 
 	 * @param text
-	 *           the title text.
+	 *            the title text.
 	 * @param font
-	 *           the title font.
+	 *            the title font.
 	 */
 	public TextTitle(String text, Font font) {
 
-		this(text, font,
-							TextTitle.DEFAULT_TEXT_PAINT,
-							Title.DEFAULT_POSITION,
-							Title.DEFAULT_HORIZONTAL_ALIGNMENT,
-							Title.DEFAULT_VERTICAL_ALIGNMENT,
-							Title.DEFAULT_SPACER);
+		this(text, font, TextTitle.DEFAULT_TEXT_PAINT, Title.DEFAULT_POSITION, Title.DEFAULT_HORIZONTAL_ALIGNMENT,
+				Title.DEFAULT_VERTICAL_ALIGNMENT, Title.DEFAULT_SPACER);
 
 	}
 
@@ -153,72 +144,62 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	 * Creates a new title, using default attributes where necessary.
 	 * 
 	 * @param text
-	 *           the title text.
+	 *            the title text.
 	 * @param font
-	 *           the title font.
+	 *            the title font.
 	 * @param paint
-	 *           the title color.
+	 *            the title color.
 	 */
 	public TextTitle(String text, Font font, Paint paint) {
 
-		this(text, font, paint,
-							Title.DEFAULT_POSITION,
-							Title.DEFAULT_HORIZONTAL_ALIGNMENT,
-							Title.DEFAULT_VERTICAL_ALIGNMENT,
-							Title.DEFAULT_SPACER);
+		this(text, font, paint, Title.DEFAULT_POSITION, Title.DEFAULT_HORIZONTAL_ALIGNMENT,
+				Title.DEFAULT_VERTICAL_ALIGNMENT, Title.DEFAULT_SPACER);
 
 	}
 
 	/**
 	 * Creates a new title, using default attributes where necessary.
 	 * <P>
-	 * For the horizontal alignment, use the constants (LEFT, RIGHT and CENTER) defined in the Title class.
+	 * For the horizontal alignment, use the constants (LEFT, RIGHT and CENTER)
+	 * defined in the Title class.
 	 * 
 	 * @param text
-	 *           the title text.
+	 *            the title text.
 	 * @param font
-	 *           the title font.
+	 *            the title font.
 	 * @param horizontalAlignment
-	 *           the horizontal alignment.
+	 *            the horizontal alignment.
 	 */
 	public TextTitle(String text, Font font, HorizontalAlignment horizontalAlignment) {
 
-		this(text, font,
-							TextTitle.DEFAULT_TEXT_PAINT,
-							Title.DEFAULT_POSITION,
-							horizontalAlignment,
-							Title.DEFAULT_VERTICAL_ALIGNMENT,
-							Title.DEFAULT_SPACER);
+		this(text, font, TextTitle.DEFAULT_TEXT_PAINT, Title.DEFAULT_POSITION, horizontalAlignment,
+				Title.DEFAULT_VERTICAL_ALIGNMENT, Title.DEFAULT_SPACER);
 
 	}
 
 	/**
 	 * Creates a new title.
 	 * <p>
-	 * For the titlePosition, horizontalAlignment and verticalAlignment, use the constants defined in the Title class.
+	 * For the titlePosition, horizontalAlignment and verticalAlignment, use the
+	 * constants defined in the Title class.
 	 * 
 	 * @param text
-	 *           the text for the title (<code>null</code> not permitted).
+	 *            the text for the title (<code>null</code> not permitted).
 	 * @param font
-	 *           the font (<code>null</code> not permitted).
+	 *            the font (<code>null</code> not permitted).
 	 * @param paint
-	 *           the color (<code>null</code> not permitted).
+	 *            the color (<code>null</code> not permitted).
 	 * @param position
-	 *           the title position (<code>null</code> not permitted).
+	 *            the title position (<code>null</code> not permitted).
 	 * @param horizontalAlignment
-	 *           the horizontal alignment (<code>null</code> not permitted).
+	 *            the horizontal alignment (<code>null</code> not permitted).
 	 * @param verticalAlignment
-	 *           the vertical alignment (<code>null</code> not permitted).
+	 *            the vertical alignment (<code>null</code> not permitted).
 	 * @param spacer
-	 *           the space to leave around the outside of the title.
+	 *            the space to leave around the outside of the title.
 	 */
-	public TextTitle(String text,
-							Font font,
-							Paint paint,
-							RectangleEdge position,
-							HorizontalAlignment horizontalAlignment,
-							VerticalAlignment verticalAlignment,
-							Spacer spacer) {
+	public TextTitle(String text, Font font, Paint paint, RectangleEdge position,
+			HorizontalAlignment horizontalAlignment, VerticalAlignment verticalAlignment, Spacer spacer) {
 
 		super(position, horizontalAlignment, verticalAlignment, spacer);
 
@@ -248,11 +229,11 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the title to the specified text and sends a {@link TitleChangeEvent} to all
-	 * registered listeners.
+	 * Sets the title to the specified text and sends a {@link TitleChangeEvent} to
+	 * all registered listeners.
 	 * 
 	 * @param text
-	 *           the text (<code>null</code> not permitted).
+	 *            the text (<code>null</code> not permitted).
 	 */
 	public void setText(String text) {
 
@@ -276,11 +257,11 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the font used to display the title string. Registered listeners are notified that
-	 * the title has been modified.
+	 * Sets the font used to display the title string. Registered listeners are
+	 * notified that the title has been modified.
 	 * 
 	 * @param font
-	 *           the new font (<code>null</code> not permitted).
+	 *            the new font (<code>null</code> not permitted).
 	 */
 	public void setFont(Font font) {
 
@@ -307,18 +288,17 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the paint used to display the title string. Registered listeners are notified that
-	 * the title has been modified.
+	 * Sets the paint used to display the title string. Registered listeners are
+	 * notified that the title has been modified.
 	 * 
 	 * @param paint
-	 *           the new paint (<code>null</code> not permitted).
+	 *            the new paint (<code>null</code> not permitted).
 	 */
 	public void setPaint(Paint paint) {
 
 		// check argument...
 		if (paint == null) {
-			throw new IllegalArgumentException(
-								"TextTitle.setPaint(...): null paint not permitted.");
+			throw new IllegalArgumentException("TextTitle.setPaint(...): null paint not permitted.");
 		}
 
 		// make the change...
@@ -339,12 +319,12 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the background paint and sends a {@link TitleChangeEvent} to all registered listeners.
-	 * If you set this attribute to <code>null</code>, no background is painted (which makes the
-	 * title background transparent).
+	 * Sets the background paint and sends a {@link TitleChangeEvent} to all
+	 * registered listeners. If you set this attribute to <code>null</code>, no
+	 * background is painted (which makes the title background transparent).
 	 * 
 	 * @param paint
-	 *           the background paint (<code>null</code> permitted).
+	 *            the background paint (<code>null</code> permitted).
 	 */
 	public void setBackgroundPaint(Paint paint) {
 		this.backgroundPaint = paint;
@@ -352,22 +332,21 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns the preferred width of the title. This will only be called when the title
-	 * is being drawn at the left or right of a chart.
+	 * Returns the preferred width of the title. This will only be called when the
+	 * title is being drawn at the left or right of a chart.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param height
-	 *           the height.
+	 *            the height.
 	 * @return the preferred width of the title.
 	 */
 	public float getPreferredWidth(Graphics2D g2, float height) {
 		float result = 0.0f;
 		if (this.text != null && !this.text.equals("")) {
 			g2.setFont(this.font);
-			TextBlock title = TextUtilities.createTextBlock(
-								this.text, this.font, this.paint, height, new G2TextMeasurer(g2)
-								);
+			TextBlock title = TextUtilities.createTextBlock(this.text, this.font, this.paint, height,
+					new G2TextMeasurer(g2));
 			Size2D d = title.calculateDimensions(g2);
 			result = (float) getSpacer().getAdjustedWidth(d.getHeight());
 			// use height here because the title
@@ -383,9 +362,9 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	 * Returns the preferred height of the title.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param width
-	 *           the width.
+	 *            the width.
 	 * @return the preferred height of the title.
 	 */
 	public float getPreferredHeight(Graphics2D g2, float width) {
@@ -393,9 +372,8 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 		if (this.text != null && !this.text.equals("")) {
 			g2.setFont(this.font);
 			float textWidth = (float) getSpacer().trimWidth(width);
-			TextBlock title = TextUtilities.createTextBlock(
-								this.text, this.font, this.paint, textWidth, new G2TextMeasurer(g2)
-								);
+			TextBlock title = TextUtilities.createTextBlock(this.text, this.font, this.paint, textWidth,
+					new G2TextMeasurer(g2));
 			Size2D d = title.calculateDimensions(g2);
 			result = (float) getSpacer().getAdjustedHeight(d.getHeight());
 		}
@@ -406,12 +384,13 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Draws the title on a Java 2D graphics device (such as the screen or a printer).
+	 * Draws the title on a Java 2D graphics device (such as the screen or a
+	 * printer).
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param area
-	 *           the area allocated for the title.
+	 *            the area allocated for the title.
 	 */
 	public void draw(Graphics2D g2, Rectangle2D area) {
 		if (logger.isDebugEnabled()) {
@@ -427,113 +406,100 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 		RectangleEdge position = getPosition();
 		if (position == RectangleEdge.TOP || position == RectangleEdge.BOTTOM) {
 			drawHorizontal(g2, area);
-		} else
-			if (position == RectangleEdge.LEFT || position == RectangleEdge.RIGHT) {
-				drawVertical(g2, area);
-			}
+		} else if (position == RectangleEdge.LEFT || position == RectangleEdge.RIGHT) {
+			drawVertical(g2, area);
+		}
 	}
 
 	/**
-	 * Draws a the title horizontally within the specified area. This method will be called
-	 * from the {@link #draw(Graphics2D, Rectangle2D) draw} method.
+	 * Draws a the title horizontally within the specified area. This method will be
+	 * called from the {@link #draw(Graphics2D, Rectangle2D) draw} method.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param area
-	 *           the area for the title.
+	 *            the area for the title.
 	 */
 	protected void drawHorizontal(Graphics2D g2, Rectangle2D area) {
 		Rectangle2D titleArea = (Rectangle2D) area.clone();
 		getSpacer().trim(titleArea);
 		g2.setFont(this.font);
 		g2.setPaint(this.paint);
-		TextBlock title = TextUtilities.createTextBlock(
-							this.text, this.font, this.paint, (float) titleArea.getWidth(), new G2TextMeasurer(g2)
-							);
+		TextBlock title = TextUtilities.createTextBlock(this.text, this.font, this.paint, (float) titleArea.getWidth(),
+				new G2TextMeasurer(g2));
 		TextBlockAnchor anchor = null;
 		float x = 0.0f;
 		HorizontalAlignment horizontalAlignment = getHorizontalAlignment();
 		if (horizontalAlignment == HorizontalAlignment.LEFT) {
 			x = (float) titleArea.getX();
 			anchor = TextBlockAnchor.TOP_LEFT;
-		} else
-			if (horizontalAlignment == HorizontalAlignment.RIGHT) {
-				x = (float) titleArea.getMaxX();
-				anchor = TextBlockAnchor.TOP_RIGHT;
-			} else
-				if (horizontalAlignment == HorizontalAlignment.CENTER) {
-					x = (float) titleArea.getCenterX();
-					anchor = TextBlockAnchor.TOP_CENTER;
-				}
+		} else if (horizontalAlignment == HorizontalAlignment.RIGHT) {
+			x = (float) titleArea.getMaxX();
+			anchor = TextBlockAnchor.TOP_RIGHT;
+		} else if (horizontalAlignment == HorizontalAlignment.CENTER) {
+			x = (float) titleArea.getCenterX();
+			anchor = TextBlockAnchor.TOP_CENTER;
+		}
 		float y = 0.0f;
 		RectangleEdge position = getPosition();
 		if (position == RectangleEdge.TOP) {
 			y = (float) titleArea.getY();
-		} else
-			if (position == RectangleEdge.BOTTOM) {
-				y = (float) titleArea.getMaxY();
-				if (horizontalAlignment == HorizontalAlignment.LEFT) {
-					anchor = TextBlockAnchor.BOTTOM_LEFT;
-				} else
-					if (horizontalAlignment == HorizontalAlignment.CENTER) {
-						anchor = TextBlockAnchor.BOTTOM_CENTER;
-					} else
-						if (horizontalAlignment == HorizontalAlignment.RIGHT) {
-							anchor = TextBlockAnchor.BOTTOM_RIGHT;
-						}
+		} else if (position == RectangleEdge.BOTTOM) {
+			y = (float) titleArea.getMaxY();
+			if (horizontalAlignment == HorizontalAlignment.LEFT) {
+				anchor = TextBlockAnchor.BOTTOM_LEFT;
+			} else if (horizontalAlignment == HorizontalAlignment.CENTER) {
+				anchor = TextBlockAnchor.BOTTOM_CENTER;
+			} else if (horizontalAlignment == HorizontalAlignment.RIGHT) {
+				anchor = TextBlockAnchor.BOTTOM_RIGHT;
 			}
+		}
 		title.draw(g2, x, y, anchor);
 	}
 
 	/**
-	 * Draws a the title vertically within the specified area. This method will be called
-	 * from the {@link #draw(Graphics2D, Rectangle2D) draw} method.
+	 * Draws a the title vertically within the specified area. This method will be
+	 * called from the {@link #draw(Graphics2D, Rectangle2D) draw} method.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param area
-	 *           the area for the title.
+	 *            the area for the title.
 	 */
 	protected void drawVertical(Graphics2D g2, Rectangle2D area) {
 		Rectangle2D titleArea = (Rectangle2D) area.clone();
 		getSpacer().trim(titleArea);
 		g2.setFont(this.font);
 		g2.setPaint(this.paint);
-		TextBlock title = TextUtilities.createTextBlock(
-							this.text, this.font, this.paint, (float) titleArea.getHeight(), new G2TextMeasurer(g2)
-							);
+		TextBlock title = TextUtilities.createTextBlock(this.text, this.font, this.paint, (float) titleArea.getHeight(),
+				new G2TextMeasurer(g2));
 		TextBlockAnchor anchor = null;
 		float y = 0.0f;
 		VerticalAlignment verticalAlignment = getVerticalAlignment();
 		if (verticalAlignment == VerticalAlignment.TOP) {
 			y = (float) titleArea.getY();
 			anchor = TextBlockAnchor.TOP_RIGHT;
-		} else
-			if (verticalAlignment == VerticalAlignment.BOTTOM) {
-				y = (float) titleArea.getMaxY();
-				anchor = TextBlockAnchor.TOP_LEFT;
-			} else
-				if (verticalAlignment == VerticalAlignment.CENTER) {
-					y = (float) titleArea.getCenterY();
-					anchor = TextBlockAnchor.TOP_CENTER;
-				}
+		} else if (verticalAlignment == VerticalAlignment.BOTTOM) {
+			y = (float) titleArea.getMaxY();
+			anchor = TextBlockAnchor.TOP_LEFT;
+		} else if (verticalAlignment == VerticalAlignment.CENTER) {
+			y = (float) titleArea.getCenterY();
+			anchor = TextBlockAnchor.TOP_CENTER;
+		}
 		float x = 0.0f;
 		RectangleEdge position = getPosition();
 		if (position == RectangleEdge.LEFT) {
 			x = (float) titleArea.getX();
-		} else
-			if (position == RectangleEdge.RIGHT) {
-				x = (float) titleArea.getMaxX();
-				if (verticalAlignment == VerticalAlignment.TOP) {
-					anchor = TextBlockAnchor.BOTTOM_RIGHT;
-				} else
-					if (verticalAlignment == VerticalAlignment.CENTER) {
-						anchor = TextBlockAnchor.BOTTOM_CENTER;
-					} else
-						if (verticalAlignment == VerticalAlignment.BOTTOM) {
-							anchor = TextBlockAnchor.BOTTOM_LEFT;
-						}
+		} else if (position == RectangleEdge.RIGHT) {
+			x = (float) titleArea.getMaxX();
+			if (verticalAlignment == VerticalAlignment.TOP) {
+				anchor = TextBlockAnchor.BOTTOM_RIGHT;
+			} else if (verticalAlignment == VerticalAlignment.CENTER) {
+				anchor = TextBlockAnchor.BOTTOM_CENTER;
+			} else if (verticalAlignment == VerticalAlignment.BOTTOM) {
+				anchor = TextBlockAnchor.BOTTOM_LEFT;
 			}
+		}
 		title.draw(g2, x, y, anchor, x, y, -Math.PI / 2.0);
 	}
 
@@ -541,7 +507,7 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	 * Tests this title for equality with another object.
 	 * 
 	 * @param obj
-	 *           the object.
+	 *            the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
@@ -597,7 +563,7 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	 * 
 	 * @return a clone of this object.
 	 * @throws CloneNotSupportedException
-	 *            never.
+	 *             never.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -607,9 +573,9 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the output stream.
+	 *            the output stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -621,11 +587,11 @@ public class TextTitle extends Title implements Serializable, Cloneable {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the input stream.
+	 *            the input stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *            if there is a classpath problem.
+	 *             if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();

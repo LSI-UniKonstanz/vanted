@@ -26,9 +26,11 @@ import org.graffiti.graph.Node;
  */
 public class GeneralUtils implements HelperClass {
 	/**
-	 * Returns a <code>Collection</code> of edges between <code>n1</code> (source) and <code>n2</code> (target).
+	 * Returns a <code>Collection</code> of edges between <code>n1</code> (source)
+	 * and <code>n2</code> (target).
 	 * <p>
-	 * If no edge exists, returns an empty instance of <code>Collection</code>. <code>n1==n2</code> allowed.
+	 * If no edge exists, returns an empty instance of <code>Collection</code>.
+	 * <code>n1==n2</code> allowed.
 	 * </p>
 	 * 
 	 * @param n1
@@ -37,18 +39,18 @@ public class GeneralUtils implements HelperClass {
 	 */
 	public static final Collection<Edge> getEdges(Node n1, Node n2) {
 		Collection<Edge> col = new LinkedList<Edge>();
-		
+
 		for (Iterator<Edge> iter = n1.getEdgesIterator(); iter.hasNext();) {
 			Edge edge = (Edge) iter.next();
-			
+
 			if (n2.equals(edge.getSource()) || n2.equals(edge.getTarget())) {
 				col.add(edge);
 			}
 		}
-		
+
 		return col;
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -57,55 +59,55 @@ public class GeneralUtils implements HelperClass {
 	public static final String getNewLineString() {
 		return System.getProperty("line.separator");
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param s
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public static final int[] getPositionOfOnes(String s) {
 		int len = s.length();
 		ArrayList<Integer> pos = new ArrayList<Integer>(len / 2);
-		
+
 		for (int i = 0; i < len; i++) {
 			if ("1".equals(String.valueOf(s.charAt(i)))) {
 				pos.add(new Integer(len - i - 1));
 			}
 		}
-		
+
 		int[] intarray = new int[pos.size()];
-		
+
 		int cnt = 0;
-		
+
 		for (Iterator<Integer> it = pos.iterator(); it.hasNext();) {
 			intarray[cnt++] = ((Integer) it.next()).intValue();
 		}
-		
+
 		return intarray;
 	}
-	
+
 	/**
 	 * Returns <code>true</code> iff first parameter is a power of second, i.e.
 	 * returns true iff <code>base^a</code> is a natural number.
 	 * 
 	 * @param a
-	 *           number to check
+	 *            number to check
 	 * @param base
 	 * @return DOCUMENT ME!
 	 */
 	public static final boolean isPowerOf(int a, int base) {
 		double log = log(a, base);
-		
+
 		return ((int) log == log);
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param inStr
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public static final String XMLify(String inStr) {
@@ -114,12 +116,13 @@ public class GeneralUtils implements HelperClass {
 		inStr = inStr.replaceAll(">", "&gt;");
 		inStr = inStr.replaceAll("'", "&apos;");
 		inStr = inStr.replaceAll("\"", "&quot;");
-		
+
 		return inStr;
 	}
-	
+
 	/**
-	 * True iff any edge between <code>n1</code> (source) and <code>n2</code> (target) exists.
+	 * True iff any edge between <code>n1</code> (source) and <code>n2</code>
+	 * (target) exists.
 	 * <p>
 	 * <code>n1==n2</code> allowed.
 	 * </p>
@@ -131,130 +134,124 @@ public class GeneralUtils implements HelperClass {
 	public boolean existsEdge(Node n1, Node n2) {
 		for (Iterator<Edge> iter = n1.getEdgesIterator(); iter.hasNext();) {
 			Edge edge = (Edge) iter.next();
-			
+
 			if (n2.equals(edge.getSource()) || n2.equals(edge.getTarget())) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
-	 * Returns the logarithm of <code>a</code> with respect to base <code>base</code>.
+	 * Returns the logarithm of <code>a</code> with respect to base
+	 * <code>base</code>.
 	 * 
 	 * @param a
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param base
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public static final double log(double a, double base) {
 		return Math.log(a) / Math.log(base);
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param d
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public static final boolean nan(double d) {
 		return Double.doubleToRawLongBits(d) == Double.doubleToRawLongBits(Double.NaN);
 	}
-	
+
 	/**
 	 * Returns the number of "1"s within the string s.
 	 * 
 	 * @param s
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public static final int numberOfOnes(String s) {
 		int cnt = 0;
-		
+
 		for (int i = 0; i < s.length(); i++) {
 			if ("1".equals(String.valueOf(s.charAt(i)))) {
 				cnt++;
 			}
 		}
-		
+
 		return cnt;
 	}
-	
+
 	/**
-	 * Returns the first attribute it finds that has the given class type.
-	 * Warning: this method delivers only one contained attribute of the given
-	 * type. If there are more than one attibute of that type and you expect
-	 * all that attributes you should better use either {@link #searchForAttributes(Attribute, Class, List)}.
+	 * Returns the first attribute it finds that has the given class type. Warning:
+	 * this method delivers only one contained attribute of the given type. If there
+	 * are more than one attibute of that type and you expect all that attributes
+	 * you should better use either
+	 * {@link #searchForAttributes(Attribute, Class, List)}.
 	 * 
 	 * @param attr
-	 *           the root attribute for the search
+	 *            the root attribute for the search
 	 * @param attributeType
-	 *           class to match
+	 *            class to match
 	 * @return first child (depth first) of attr that matches class type
 	 *         attributeType.
 	 */
 	@SuppressWarnings("unchecked")
-	public static final Attribute searchForAttribute(Attribute attr,
-						Class attributeType) {
+	public static final Attribute searchForAttribute(Attribute attr, Class attributeType) {
 		if (attributeType.isInstance(attr)) {
 			return attr;
 		} else {
 			if (attr instanceof CollectionAttribute) {
-				Iterator<Attribute> it = ((CollectionAttribute) attr).getCollection()
-									.values().iterator();
-				
+				Iterator<Attribute> it = ((CollectionAttribute) attr).getCollection().values().iterator();
+
 				while (it.hasNext()) {
-					Attribute newAttr = searchForAttribute((Attribute) it.next(),
-										attributeType);
-					
+					Attribute newAttr = searchForAttribute((Attribute) it.next(), attributeType);
+
 					if (newAttr != null) {
 						return newAttr;
 					}
 				}
-			} else
-				if (attr instanceof CompositeAttribute) {
-					// TODO: treat those correctly; some of those have not yet
-					// been correctly implemented
-					return null;
-				}
+			} else if (attr instanceof CompositeAttribute) {
+				// TODO: treat those correctly; some of those have not yet
+				// been correctly implemented
+				return null;
+			}
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * Searches for all attributes that have the given class type.
 	 * 
 	 * @param attr
-	 *           the root attribute for the search
+	 *            the root attribute for the search
 	 * @param attributeType
-	 *           class to match
+	 *            class to match
 	 * @param attributesList
-	 *           list which will be filled with found attributes.
+	 *            list which will be filled with found attributes.
 	 */
 	@SuppressWarnings("unchecked")
-	public static void searchForAttributes(Attribute attr, Class attributeType,
-						List attributesList) {
+	public static void searchForAttributes(Attribute attr, Class attributeType, List attributesList) {
 		if (attributeType.isInstance(attr)) {
 			attributesList.add(attr);
 		}
-		
+
 		if (attr instanceof CollectionAttribute) {
-			Iterator it = ((CollectionAttribute) attr).getCollection().values()
-								.iterator();
-			
+			Iterator it = ((CollectionAttribute) attr).getCollection().values().iterator();
+
 			while (it.hasNext()) {
-				searchForAttributes((Attribute) it.next(), attributeType,
-									attributesList);
+				searchForAttributes((Attribute) it.next(), attributeType, attributesList);
 			}
-		} else
-			if (attr instanceof CompositeAttribute) {
-				// TODO: treat those correctly; some of those have not yet
-				// been correctly implemented
-			}
+		} else if (attr instanceof CompositeAttribute) {
+			// TODO: treat those correctly; some of those have not yet
+			// been correctly implemented
+		}
 	}
 }
 

@@ -45,12 +45,13 @@ public interface YisSymbolic {
 	public String[] getYSymbolicValues();
 
 	/**
-	 * Returns the symbolic value of the data set specified by <CODE>series</CODE> and <CODE>item</CODE> parameters.
+	 * Returns the symbolic value of the data set specified by <CODE>series</CODE>
+	 * and <CODE>item</CODE> parameters.
 	 * 
 	 * @param series
-	 *           value of the serie.
+	 *            value of the serie.
 	 * @param item
-	 *           value of the item.
+	 *            value of the item.
 	 * @return the symbolic value.
 	 */
 	public String getYSymbolicValue(int series, int item);
@@ -59,7 +60,7 @@ public interface YisSymbolic {
 	 * Returns the symbolic value linked with the specified <CODE>Integer</CODE>.
 	 * 
 	 * @param val
-	 *           value of the integer linked with the symbolic value.
+	 *            value of the integer linked with the symbolic value.
 	 * @return the symbolic value.
 	 */
 	public String getYSymbolicValue(Integer val);

@@ -45,12 +45,12 @@ import org.jfree.data.CategoryDataset;
 import org.jfree.util.ObjectUtils;
 
 /**
- * A URL generator that can be assigned to a {@link org.jfree.chart.renderer.CategoryItemRenderer}.
+ * A URL generator that can be assigned to a
+ * {@link org.jfree.chart.renderer.CategoryItemRenderer}.
  * 
  * @author Richard Atkinson
  */
-public class StandardCategoryURLGenerator implements CategoryURLGenerator,
-																		Cloneable, Serializable {
+public class StandardCategoryURLGenerator implements CategoryURLGenerator, Cloneable, Serializable {
 
 	/** Prefix to the URL */
 	private String prefix = "index.html";
@@ -72,7 +72,7 @@ public class StandardCategoryURLGenerator implements CategoryURLGenerator,
 	 * Constructor that overrides default prefix to the URL.
 	 * 
 	 * @param prefix
-	 *           the prefix to the URL (<code>null</code> not permitted).
+	 *            the prefix to the URL (<code>null</code> not permitted).
 	 */
 	public StandardCategoryURLGenerator(String prefix) {
 		if (prefix == null) {
@@ -85,17 +85,15 @@ public class StandardCategoryURLGenerator implements CategoryURLGenerator,
 	 * Constructor that overrides all the defaults.
 	 * 
 	 * @param prefix
-	 *           the prefix to the URL (<code>null</code> not permitted).
+	 *            the prefix to the URL (<code>null</code> not permitted).
 	 * @param seriesParameterName
-	 *           the name of the series parameter to go in
-	 *           each URL (<code>null</code> not permitted).
+	 *            the name of the series parameter to go in each URL
+	 *            (<code>null</code> not permitted).
 	 * @param categoryParameterName
-	 *           the name of the category parameter to go in
-	 *           each URL (<code>null</code> not permitted).
+	 *            the name of the category parameter to go in each URL
+	 *            (<code>null</code> not permitted).
 	 */
-	public StandardCategoryURLGenerator(String prefix,
-														String seriesParameterName,
-														String categoryParameterName) {
+	public StandardCategoryURLGenerator(String prefix, String seriesParameterName, String categoryParameterName) {
 
 		if (prefix == null) {
 			throw new IllegalArgumentException("Null 'prefix' argument.");
@@ -116,11 +114,11 @@ public class StandardCategoryURLGenerator implements CategoryURLGenerator,
 	 * Generates a URL for a particular item within a series.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param category
-	 *           the category index (zero-based).
+	 *            the category index (zero-based).
 	 * @return The generated URL.
 	 */
 	public String generateURL(CategoryDataset dataset, int series, int category) {
@@ -130,17 +128,17 @@ public class StandardCategoryURLGenerator implements CategoryURLGenerator,
 		boolean firstParameter = url.indexOf("?") == -1;
 		url += firstParameter ? "?" : "&";
 		// try {
-		url += this.seriesParameterName + "="
-							+ URLEncoder.encode(seriesKey.toString());
-		// + URLEncoder.encode(seriesKey.toString(), "UTF-8"); Not supported in JDK 1.2.2
+		url += this.seriesParameterName + "=" + URLEncoder.encode(seriesKey.toString());
+		// + URLEncoder.encode(seriesKey.toString(), "UTF-8"); Not supported in JDK
+		// 1.2.2
 		// }
 		// catch (UnsupportedEncodingException uee) {
 		// url += this.seriesParameterName + "=" + seriesKey.toString();
 		// }
 		// try {
-		url += "&" + this.categoryParameterName + "="
-							+ URLEncoder.encode(categoryKey.toString());
-		// + URLEncoder.encode(categoryKey.toString(), "UTF-8"); not supported in JDK 1.2.2
+		url += "&" + this.categoryParameterName + "=" + URLEncoder.encode(categoryKey.toString());
+		// + URLEncoder.encode(categoryKey.toString(), "UTF-8"); not supported in JDK
+		// 1.2.2
 		// }
 		// catch (UnsupportedEncodingException uee) {
 		// url += "&" + this.categoryParameterName + "=" + categoryKey.toString();
@@ -153,7 +151,7 @@ public class StandardCategoryURLGenerator implements CategoryURLGenerator,
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            not thrown by this class, but subclasses (if any) might.
+	 *             not thrown by this class, but subclasses (if any) might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 
@@ -166,7 +164,7 @@ public class StandardCategoryURLGenerator implements CategoryURLGenerator,
 	 * Tests the generator for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -198,10 +196,8 @@ public class StandardCategoryURLGenerator implements CategoryURLGenerator,
 	public int hashCode() {
 		int result;
 		result = (this.prefix != null ? this.prefix.hashCode() : 0);
-		result = 29 * result
-							+ (this.seriesParameterName != null ? this.seriesParameterName.hashCode() : 0);
-		result = 29 * result
-							+ (this.categoryParameterName != null ? this.categoryParameterName.hashCode() : 0);
+		result = 29 * result + (this.seriesParameterName != null ? this.seriesParameterName.hashCode() : 0);
+		result = 29 * result + (this.categoryParameterName != null ? this.categoryParameterName.hashCode() : 0);
 		return result;
 	}
 

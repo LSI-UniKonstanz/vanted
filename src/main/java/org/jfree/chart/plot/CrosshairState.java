@@ -42,7 +42,10 @@ import java.awt.geom.Point2D;
  */
 public class CrosshairState {
 
-	/** A flag that controls whether the distance is calculated in data space or Java2D space. */
+	/**
+	 * A flag that controls whether the distance is calculated in data space or
+	 * Java2D space.
+	 */
 	private boolean calculateDistanceInDataSpace = false;
 
 	/** The x-value (in data space) for the anchor point. */
@@ -74,20 +77,21 @@ public class CrosshairState {
 	 * Creates a new info object.
 	 * 
 	 * @param calculateDistanceInDataSpace
-	 *           a flag that controls whether the distance is calculated
-	 *           in data space or Java2D space.
+	 *            a flag that controls whether the distance is calculated in data
+	 *            space or Java2D space.
 	 */
 	public CrosshairState(boolean calculateDistanceInDataSpace) {
 		this.calculateDistanceInDataSpace = calculateDistanceInDataSpace;
 	}
 
 	/**
-	 * Sets the distance between the anchor point and the current crosshair point. As each
-	 * data point is processed, its distance to the anchor point is compared with this value and,
-	 * if it is closer, the data point becomes the new crosshair point.
+	 * Sets the distance between the anchor point and the current crosshair point.
+	 * As each data point is processed, its distance to the anchor point is compared
+	 * with this value and, if it is closer, the data point becomes the new
+	 * crosshair point.
 	 * 
 	 * @param distance
-	 *           the distance.
+	 *            the distance.
 	 */
 	public void setCrosshairDistance(double distance) {
 		this.distance = distance;
@@ -97,29 +101,29 @@ public class CrosshairState {
 	 * Evaluates a data point and if it is the closest to the anchor point it
 	 * becomes the new crosshair point.
 	 * <P>
-	 * To understand this method, you need to know the context in which it will be called. An instance of this class is passed to an
-	 * {@link org.jfree.chart.renderer.XYItemRenderer} as each data point is plotted. As the point is plotted, it is passed to this method to see if it should be
-	 * the new crosshair point.
+	 * To understand this method, you need to know the context in which it will be
+	 * called. An instance of this class is passed to an
+	 * {@link org.jfree.chart.renderer.XYItemRenderer} as each data point is
+	 * plotted. As the point is plotted, it is passed to this method to see if it
+	 * should be the new crosshair point.
 	 * 
 	 * @param x
-	 *           x coordinate (measured against the domain axis).
+	 *            x coordinate (measured against the domain axis).
 	 * @param y
-	 *           y coordinate (measured against the range axis).
+	 *            y coordinate (measured against the range axis).
 	 * @param transX
-	 *           x translated into Java2D space.
+	 *            x translated into Java2D space.
 	 * @param transY
-	 *           y translated into Java2D space.
+	 *            y translated into Java2D space.
 	 * @param orientation
-	 *           the plot orientation.
+	 *            the plot orientation.
 	 */
-	public void updateCrosshairPoint(double x, double y, double transX, double transY,
-													PlotOrientation orientation) {
+	public void updateCrosshairPoint(double x, double y, double transX, double transY, PlotOrientation orientation) {
 
 		if (this.anchor != null) {
 			double d = 0.0;
 			if (this.calculateDistanceInDataSpace) {
-				d = (x - this.anchorX) * (x - this.anchorX)
-									+ (y - this.anchorY) * (y - this.anchorY);
+				d = (x - this.anchorX) * (x - this.anchorX) + (y - this.anchorY) * (y - this.anchorY);
 			} else {
 				double xx = this.anchor.getX();
 				double yy = this.anchor.getY();
@@ -141,13 +145,13 @@ public class CrosshairState {
 	}
 
 	/**
-	 * Evaluates an x-value and if it is the closest to the anchor point it
-	 * becomes the new crosshair point.
+	 * Evaluates an x-value and if it is the closest to the anchor point it becomes
+	 * the new crosshair point.
 	 * <P>
 	 * Used in cases where only the x-axis is numerical.
 	 * 
 	 * @param candidateX
-	 *           x position of the candidate for the new crosshair point.
+	 *            x position of the candidate for the new crosshair point.
 	 */
 	public void updateCrosshairX(double candidateX) {
 
@@ -160,13 +164,13 @@ public class CrosshairState {
 	}
 
 	/**
-	 * Evaluates a y-value and if it is the closest to the anchor point it
-	 * becomes the new crosshair point.
+	 * Evaluates a y-value and if it is the closest to the anchor point it becomes
+	 * the new crosshair point.
 	 * <P>
 	 * Used in cases where only the y-axis is numerical.
 	 * 
 	 * @param candidateY
-	 *           y position of the candidate for the new crosshair point.
+	 *            y position of the candidate for the new crosshair point.
 	 */
 	public void updateCrosshairY(double candidateY) {
 
@@ -179,11 +183,12 @@ public class CrosshairState {
 	}
 
 	/**
-	 * Sets the anchor point. This is usually the mouse click point in a chart panel, and the
-	 * crosshair point will often be the data item that is closest to the anchor point.
+	 * Sets the anchor point. This is usually the mouse click point in a chart
+	 * panel, and the crosshair point will often be the data item that is closest to
+	 * the anchor point.
 	 * 
 	 * @param anchor
-	 *           the anchor point.
+	 *            the anchor point.
 	 */
 	public void setAnchor(Point2D anchor) {
 		this.anchor = anchor;
@@ -199,19 +204,19 @@ public class CrosshairState {
 	}
 
 	/**
-	 * Sets the x coordinate for the crosshair. This is the coordinate in data space measured
-	 * against the domain axis.
+	 * Sets the x coordinate for the crosshair. This is the coordinate in data space
+	 * measured against the domain axis.
 	 * 
 	 * @param x
-	 *           the coordinate.
+	 *            the coordinate.
 	 */
 	public void setCrosshairX(double x) {
 		this.crosshairX = x;
 	}
 
 	/**
-	 * Get the y-value for the crosshair point. This is the coordinate in data space measured
-	 * against the range axis.
+	 * Get the y-value for the crosshair point. This is the coordinate in data space
+	 * measured against the range axis.
 	 * 
 	 * @return the y position of the crosshair point.
 	 */
@@ -223,7 +228,7 @@ public class CrosshairState {
 	 * Sets the y coordinate for the crosshair.
 	 * 
 	 * @param y
-	 *           the y coordinate.
+	 *            the y coordinate.
 	 */
 	public void setCrosshairY(double y) {
 		this.crosshairY = y;

@@ -60,7 +60,7 @@ public class LineChartDemo5 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public LineChartDemo5(final String title) {
 		super(title);
@@ -132,13 +132,12 @@ public class LineChartDemo5 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createLineChart(
-							"Line Chart Demo 5", // chart title
+		final JFreeChart chart = ChartFactory.createLineChart("Line Chart Demo 5", // chart title
 				"Type", // domain axis label
 				"Value", // range axis label
 				dataset, // data
@@ -146,7 +145,7 @@ public class LineChartDemo5 extends ApplicationFrame {
 				true, // include legend
 				true, // tooltips
 				false // urls
-				);
+		);
 
 		final StandardLegend legend = (StandardLegend) chart.getLegend();
 		legend.setDisplaySeriesShapes(true);
@@ -168,40 +167,21 @@ public class LineChartDemo5 extends ApplicationFrame {
 		ypoints = new int[] { 0, -3, 3 };
 		shapes[2] = new Polygon(xpoints, ypoints, 3);
 
-		final DrawingSupplier supplier = new DefaultDrawingSupplier(
-							DefaultDrawingSupplier.DEFAULT_PAINT_SEQUENCE,
-							DefaultDrawingSupplier.DEFAULT_OUTLINE_PAINT_SEQUENCE,
-							DefaultDrawingSupplier.DEFAULT_STROKE_SEQUENCE,
-							DefaultDrawingSupplier.DEFAULT_OUTLINE_STROKE_SEQUENCE,
-							shapes
-							);
+		final DrawingSupplier supplier = new DefaultDrawingSupplier(DefaultDrawingSupplier.DEFAULT_PAINT_SEQUENCE,
+				DefaultDrawingSupplier.DEFAULT_OUTLINE_PAINT_SEQUENCE, DefaultDrawingSupplier.DEFAULT_STROKE_SEQUENCE,
+				DefaultDrawingSupplier.DEFAULT_OUTLINE_STROKE_SEQUENCE, shapes);
 		final CategoryPlot plot = chart.getCategoryPlot();
 		plot.setDrawingSupplier(supplier);
 
 		chart.setBackgroundPaint(Color.yellow);
 
 		// set the stroke for each series...
-		plot.getRenderer().setSeriesStroke(
-							0,
-							new BasicStroke(
-												2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
-												1.0f, new float[] { 10.0f, 6.0f }, 0.0f
-							)
-							);
-		plot.getRenderer().setSeriesStroke(
-							1,
-							new BasicStroke(
-												2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
-												1.0f, new float[] { 6.0f, 6.0f }, 0.0f
-							)
-							);
-		plot.getRenderer().setSeriesStroke(
-							2,
-							new BasicStroke(
-												2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
-												1.0f, new float[] { 2.0f, 6.0f }, 0.0f
-							)
-							);
+		plot.getRenderer().setSeriesStroke(0, new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f,
+				new float[] { 10.0f, 6.0f }, 0.0f));
+		plot.getRenderer().setSeriesStroke(1, new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f,
+				new float[] { 6.0f, 6.0f }, 0.0f));
+		plot.getRenderer().setSeriesStroke(2, new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f,
+				new float[] { 2.0f, 6.0f }, 0.0f));
 
 		// customise the renderer...
 		final LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
@@ -234,7 +214,7 @@ public class LineChartDemo5 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

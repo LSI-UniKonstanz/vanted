@@ -22,33 +22,32 @@ import org.graffiti.plugin.tool.Tool;
  * 
  * @version $Revision: 1.9 $
  */
-public class StandardTools
-					extends EditorPluginAdapter {
+public class StandardTools extends EditorPluginAdapter {
 	// ~ Instance fields ========================================================
-	
+
 	/** The <code>ImageBundle</code> of the main frame. */
 	private ImageBundle iBundle = ImageBundle.getInstance();
-	
+
 	/** DOCUMENT ME! */
 	private Tool label;
-	
+
 	/** The tools this plugin provides. */
 	private Tool megaCreate;
-	
+
 	/** DOCUMENT ME! */
 	private Tool megaMove;
-	
+
 	/** DOCUMENT ME! */
 	// private ToolButton labelButton;
-	
+
 	/** The buttons for the tools this plugin provides. */
 	private ToolButton megaCreateButton;
-	
+
 	/** DOCUMENT ME! */
 	private ToolButton megaMoveButton;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Creates a new StandardTools object.
 	 */
@@ -60,13 +59,11 @@ public class StandardTools
 		tools[0] = megaCreate;
 		tools[1] = megaMove;
 		tools[2] = label;
-		
-		megaCreateButton = new ToolButton(megaCreate,
-							"org.graffiti.plugins.modes.defaultEditMode",
-							iBundle.getImageIcon("tool.megaCreate"));
-		megaMoveButton = new ToolButton(megaMove,
-							"org.graffiti.plugins.modes.defaultEditMode",
-							iBundle.getImageIcon("tool.megaMove"));
+
+		megaCreateButton = new ToolButton(megaCreate, "org.graffiti.plugins.modes.defaultEditMode",
+				iBundle.getImageIcon("tool.megaCreate"));
+		megaMoveButton = new ToolButton(megaMove, "org.graffiti.plugins.modes.defaultEditMode",
+				iBundle.getImageIcon("tool.megaMove"));
 		// labelButton = new ToolButton(label,
 		// "org.graffiti.plugins.modes.defaultEditMode",
 		// iBundle.getImageIcon("tool.label"));
@@ -74,16 +71,16 @@ public class StandardTools
 		guiComponents[0] = megaCreateButton;
 		guiComponents[1] = megaMoveButton;
 		// guiComponents[2] = labelButton;
-		
+
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Sets the preferences in all tools this plugin provides.
 	 * 
 	 * @param prefs
-	 *           the preferences node for this plugin.
+	 *            the preferences node for this plugin.
 	 * @see org.graffiti.plugin.GenericPlugin#configure(Preferences)
 	 */
 	@Override

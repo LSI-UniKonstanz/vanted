@@ -20,16 +20,14 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.FontChooser;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class FontAttributeEditor
-					extends AbstractValueEditComponent {
+public class FontAttributeEditor extends AbstractValueEditComponent {
 	protected JButton jButtonFontAndColor;
-	
+
 	public FontAttributeEditor(final Displayable disp) {
 		super(disp);
-		
+
 		jButtonFontAndColor = new JButton("Font");
 		jButtonFontAndColor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -45,11 +43,11 @@ public class FontAttributeEditor
 		// if (disp.getValue().equals(IPKnodeComponent.nodeTypeChart2D_type1_line))
 		// jComboBoxChartType.setSelectedIndex(1);
 	}
-	
+
 	public JComponent getComponent() {
 		return jButtonFontAndColor;
 	}
-	
+
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			jButtonFontAndColor.setFont(FontAttribute.getDefaultFont());
@@ -59,7 +57,7 @@ public class FontAttributeEditor
 			jButtonFontAndColor.setForeground(((FontAttribute) displayable).getColor());
 		}
 	}
-	
+
 	public void setValue() {
 		((FontAttribute) displayable).setFont(jButtonFontAndColor.getFont());
 		((FontAttribute) displayable).setColor(jButtonFontAndColor.getForeground());

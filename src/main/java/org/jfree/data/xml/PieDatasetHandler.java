@@ -63,9 +63,9 @@ public class PieDatasetHandler extends RootHandler implements DatasetTags {
 	 * Adds an item to the dataset under construction.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public void addItem(final Comparable key, final Number value) {
 		this.dataset.setValue(key, value);
@@ -75,33 +75,29 @@ public class PieDatasetHandler extends RootHandler implements DatasetTags {
 	 * Starts an element.
 	 * 
 	 * @param namespaceURI
-	 *           the namespace.
+	 *            the namespace.
 	 * @param localName
-	 *           the element name.
+	 *            the element name.
 	 * @param qName
-	 *           the element name.
+	 *            the element name.
 	 * @param atts
-	 *           the element attributes.
+	 *            the element attributes.
 	 * @throws SAXException
-	 *            for errors.
+	 *             for errors.
 	 */
-	public void startElement(final String namespaceURI,
-										final String localName,
-										final String qName,
-										final Attributes atts) throws SAXException {
+	public void startElement(final String namespaceURI, final String localName, final String qName,
+			final Attributes atts) throws SAXException {
 
 		final DefaultHandler current = getCurrentHandler();
 		if (current != this) {
 			current.startElement(namespaceURI, localName, qName, atts);
-		} else
-			if (qName.equals(PIEDATASET_TAG)) {
-				this.dataset = new DefaultPieDataset();
-			} else
-				if (qName.equals(ITEM_TAG)) {
-					final ItemHandler subhandler = new ItemHandler(this, this);
-					getSubHandlers().push(subhandler);
-					subhandler.startElement(namespaceURI, localName, qName, atts);
-				}
+		} else if (qName.equals(PIEDATASET_TAG)) {
+			this.dataset = new DefaultPieDataset();
+		} else if (qName.equals(ITEM_TAG)) {
+			final ItemHandler subhandler = new ItemHandler(this, this);
+			getSubHandlers().push(subhandler);
+			subhandler.startElement(namespaceURI, localName, qName, atts);
+		}
 
 	}
 
@@ -109,17 +105,15 @@ public class PieDatasetHandler extends RootHandler implements DatasetTags {
 	 * The end of an element.
 	 * 
 	 * @param namespaceURI
-	 *           the namespace.
+	 *            the namespace.
 	 * @param localName
-	 *           the element name.
+	 *            the element name.
 	 * @param qName
-	 *           the element name.
+	 *            the element name.
 	 * @throws SAXException
-	 *            for errors.
+	 *             for errors.
 	 */
-	public void endElement(final String namespaceURI,
-									final String localName,
-									final String qName) throws SAXException {
+	public void endElement(final String namespaceURI, final String localName, final String qName) throws SAXException {
 
 		final DefaultHandler current = getCurrentHandler();
 		if (current != this) {

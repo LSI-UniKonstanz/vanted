@@ -65,7 +65,7 @@ public class StandardEntityCollection implements EntityCollection, Cloneable, Se
 	 * Adds an entity.
 	 * 
 	 * @param entity
-	 *           the entity.
+	 *            the entity.
 	 */
 	public void addEntity(ChartEntity entity) {
 		this.entities.add(entity);
@@ -75,7 +75,7 @@ public class StandardEntityCollection implements EntityCollection, Cloneable, Se
 	 * Adds all the entities from the specified collection.
 	 * 
 	 * @param collection
-	 *           the collection of entities.
+	 *            the collection of entities.
 	 */
 	public void addEntities(EntityCollection collection) {
 		this.entities.addAll(collection.getEntities());
@@ -85,9 +85,9 @@ public class StandardEntityCollection implements EntityCollection, Cloneable, Se
 	 * Returns an entity for the specified coordinates.
 	 * 
 	 * @param x
-	 *           the x coordinate.
+	 *            the x coordinate.
 	 * @param y
-	 *           the y coordinate.
+	 *            the y coordinate.
 	 * @return the entity.
 	 */
 	public ChartEntity getEntity(double x, double y) {
@@ -127,7 +127,7 @@ public class StandardEntityCollection implements EntityCollection, Cloneable, Se
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object to test against (<code>null</code> permitted).
+	 *            the object to test against (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -146,7 +146,7 @@ public class StandardEntityCollection implements EntityCollection, Cloneable, Se
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the object cannot be cloned.
+	 *             if the object cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

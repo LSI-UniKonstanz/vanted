@@ -50,7 +50,7 @@ public class Second {
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
@@ -76,16 +76,8 @@ public class Second {
 		data.addSeries(series4);
 
 		// create a chart...
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-							"My Chart",
-							"Calories",
-							"Y",
-							data,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createXYLineChart("My Chart", "Calories", "Y", data,
+				PlotOrientation.VERTICAL, true, true, false);
 
 		// ****************************************************************************
 		// * JFREECHART DEVELOPER GUIDE *

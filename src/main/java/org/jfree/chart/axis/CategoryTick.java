@@ -53,21 +53,18 @@ public class CategoryTick extends Tick {
 	 * Creates a new tick.
 	 * 
 	 * @param category
-	 *           the category.
+	 *            the category.
 	 * @param label
-	 *           the label.
+	 *            the label.
 	 * @param labelAnchor
-	 *           the label anchor.
+	 *            the label anchor.
 	 * @param rotationAnchor
-	 *           the rotation anchor.
+	 *            the rotation anchor.
 	 * @param angle
-	 *           the rotation angle (in radians).
+	 *            the rotation angle (in radians).
 	 */
-	public CategoryTick(Comparable category,
-								TextBlock label,
-								TextBlockAnchor labelAnchor,
-								TextAnchor rotationAnchor,
-								double angle) {
+	public CategoryTick(Comparable category, TextBlock label, TextBlockAnchor labelAnchor, TextAnchor rotationAnchor,
+			double angle) {
 
 		super("", TextAnchor.CENTER, rotationAnchor, angle);
 		this.category = category;
@@ -107,7 +104,7 @@ public class CategoryTick extends Tick {
 	 * Tests this category tick for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {

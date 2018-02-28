@@ -54,8 +54,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.Spacer;
 
 /**
- * A demonstration application showing a time series chart where you can dynamically add
- * (random) data by clicking on a button.
+ * A demonstration application showing a time series chart where you can
+ * dynamically add (random) data by clicking on a button.
  */
 public class DynamicDataDemo2 extends ApplicationFrame implements ActionListener {
 
@@ -75,7 +75,7 @@ public class DynamicDataDemo2 extends ApplicationFrame implements ActionListener
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public DynamicDataDemo2(final String title) {
 
@@ -84,9 +84,8 @@ public class DynamicDataDemo2 extends ApplicationFrame implements ActionListener
 		this.series2 = new TimeSeries("Random 2", Millisecond.class);
 		final TimeSeriesCollection dataset1 = new TimeSeriesCollection(this.series1);
 		final TimeSeriesCollection dataset2 = new TimeSeriesCollection(this.series2);
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							"Dynamic Data Demo 2", "Time", "Value", dataset1, true, true, false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Dynamic Data Demo 2", "Time", "Value", dataset1,
+				true, true, false);
 		chart.setBackgroundPaint(Color.white);
 
 		final XYPlot plot = chart.getXYPlot();
@@ -148,21 +147,19 @@ public class DynamicDataDemo2 extends ApplicationFrame implements ActionListener
 	 * Handles a click on the button by adding new (random) data.
 	 * 
 	 * @param e
-	 *           the action event.
+	 *            the action event.
 	 */
 	public void actionPerformed(final ActionEvent e) {
 		boolean add1 = false;
 		boolean add2 = false;
 		if (e.getActionCommand().equals("ADD_DATA_1")) {
 			add1 = true;
-		} else
-			if (e.getActionCommand().equals("ADD_DATA_2")) {
-				add2 = true;
-			} else
-				if (e.getActionCommand().equals("ADD_BOTH")) {
-					add1 = true;
-					add2 = true;
-				}
+		} else if (e.getActionCommand().equals("ADD_DATA_2")) {
+			add2 = true;
+		} else if (e.getActionCommand().equals("ADD_BOTH")) {
+			add1 = true;
+			add2 = true;
+		}
 		if (add1) {
 			final double factor = 0.90 + 0.2 * Math.random();
 			this.lastValue1 = this.lastValue1 * factor;
@@ -183,7 +180,7 @@ public class DynamicDataDemo2 extends ApplicationFrame implements ActionListener
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

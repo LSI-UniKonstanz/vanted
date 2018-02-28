@@ -50,7 +50,7 @@ public interface EntityCollection {
 	 * Adds an entity to the collection.
 	 * 
 	 * @param entity
-	 *           the entity.
+	 *            the entity.
 	 */
 	public void addEntity(ChartEntity entity);
 
@@ -58,7 +58,7 @@ public interface EntityCollection {
 	 * Adds the entities from another collection to this collection.
 	 * 
 	 * @param collection
-	 *           the other collection.
+	 *            the other collection.
 	 */
 	public void addEntities(EntityCollection collection);
 
@@ -66,9 +66,9 @@ public interface EntityCollection {
 	 * Returns an entity whose area contains the specified point.
 	 * 
 	 * @param x
-	 *           the x coordinate.
+	 *            the x coordinate.
 	 * @param y
-	 *           the y coordinate.
+	 *            the y coordinate.
 	 * @return The entity.
 	 */
 	public ChartEntity getEntity(double x, double y);

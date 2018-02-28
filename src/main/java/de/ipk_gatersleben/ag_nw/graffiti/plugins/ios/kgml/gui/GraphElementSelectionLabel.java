@@ -31,33 +31,31 @@ public class GraphElementSelectionLabel extends JLabel {
 	private Node n = null;
 	private Edge e = null;
 	private Collection<Attributable> errorSources = null;
-	
+
 	public GraphElementSelectionLabel(Attributable causingGraphElement) {
 		if (causingGraphElement instanceof Graph) {
 			g = (Graph) causingGraphElement;
 			setText("Graph: " + g.getName());
-		} else
-			if (causingGraphElement instanceof Node) {
-				n = (Node) causingGraphElement;
-				String lbl = AttributeHelper.getLabel(n, "(unnamed node (" + n.getID() + ")");
-				String keggId = KeggGmlHelper.getKeggId(n);
-				setText("Node: " + lbl + " KEGG ID=" + keggId);
-			} else
-				if (causingGraphElement instanceof Edge) {
-					e = (Edge) causingGraphElement;
-					if(e != null) {
-						String lblNs = AttributeHelper.getLabel(e.getSource(), "(unnamed node (" + e.getSource().getID() + ")");
-						String lblNt = AttributeHelper.getLabel(e.getTarget(), "(unnamed node (" + e.getTarget().getID() + ")");
-						String lbl = AttributeHelper.getLabel(e, "");
-						setText("Edge: " + lblNs + " --> " + lblNt + (lbl.length() > 0 ? " (" + lbl + ")" : ""));
-					}
-				}
+		} else if (causingGraphElement instanceof Node) {
+			n = (Node) causingGraphElement;
+			String lbl = AttributeHelper.getLabel(n, "(unnamed node (" + n.getID() + ")");
+			String keggId = KeggGmlHelper.getKeggId(n);
+			setText("Node: " + lbl + " KEGG ID=" + keggId);
+		} else if (causingGraphElement instanceof Edge) {
+			e = (Edge) causingGraphElement;
+			if (e != null) {
+				String lblNs = AttributeHelper.getLabel(e.getSource(), "(unnamed node (" + e.getSource().getID() + ")");
+				String lblNt = AttributeHelper.getLabel(e.getTarget(), "(unnamed node (" + e.getTarget().getID() + ")");
+				String lbl = AttributeHelper.getLabel(e, "");
+				setText("Edge: " + lblNs + " --> " + lblNt + (lbl.length() > 0 ? " (" + lbl + ")" : ""));
+			}
+		}
 		setCursor(new Cursor(Cursor.HAND_CURSOR));
 		setForeground(Color.BLUE);
 		setToolTipText("Click here, to select graph-element");
 		addMouseListener();
 	}
-	
+
 	public GraphElementSelectionLabel(Collection<Attributable> causingGraphElements) {
 		errorSources = causingGraphElements;
 		String lbl = "<html><table border='0'>";
@@ -68,20 +66,19 @@ public class GraphElementSelectionLabel extends JLabel {
 			if (causingGraphElement instanceof Graph) {
 				g = (Graph) causingGraphElement;
 				lbl = lbl + pre + "Graph" + in + g.getName() + post;
-			} else
-				if (causingGraphElement instanceof Node) {
-					n = (Node) causingGraphElement;
-					String nlbl = AttributeHelper.getLabel(n, "(unnamed node (" + n.getID() + ")");
-					String keggId = KeggGmlHelper.getKeggId(n);
-					lbl = lbl + pre + "Node" + in + nlbl + post + " KEGG ID=" + keggId;
-				} else
-					if (causingGraphElement instanceof Edge) {
-						e = (Edge) causingGraphElement;
-						String lblNs = AttributeHelper.getLabel(e.getSource(), "(unlabeled node (" + n.getID() + ")");
-						String lblNt = AttributeHelper.getLabel(e.getTarget(), "(unlabeled node (" + n.getID() + ")");
-						String elbl = AttributeHelper.getLabel(e, "");
-						lbl = lbl + pre + "Edge" + in + lblNs + " --> " + lblNt + (lbl.length() > 0 ? " (" + elbl + ")" : "") + pre;
-					}
+			} else if (causingGraphElement instanceof Node) {
+				n = (Node) causingGraphElement;
+				String nlbl = AttributeHelper.getLabel(n, "(unnamed node (" + n.getID() + ")");
+				String keggId = KeggGmlHelper.getKeggId(n);
+				lbl = lbl + pre + "Node" + in + nlbl + post + " KEGG ID=" + keggId;
+			} else if (causingGraphElement instanceof Edge) {
+				e = (Edge) causingGraphElement;
+				String lblNs = AttributeHelper.getLabel(e.getSource(), "(unlabeled node (" + n.getID() + ")");
+				String lblNt = AttributeHelper.getLabel(e.getTarget(), "(unlabeled node (" + n.getID() + ")");
+				String elbl = AttributeHelper.getLabel(e, "");
+				lbl = lbl + pre + "Edge" + in + lblNs + " --> " + lblNt + (lbl.length() > 0 ? " (" + elbl + ")" : "")
+						+ pre;
+			}
 		}
 		setText(lbl);
 		setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -89,7 +86,7 @@ public class GraphElementSelectionLabel extends JLabel {
 		setToolTipText("Click here, to select graph-elements");
 		addMouseListener();
 	}
-	
+
 	private void addMouseListener() {
 		addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent arg0) {
@@ -137,34 +134,36 @@ public class GraphElementSelectionLabel extends JLabel {
 					}
 				});
 			}
-			
+
 			public void mouseEntered(MouseEvent arg0) {
 			}
-			
+
 			public void mouseExited(MouseEvent arg0) {
 			}
-			
+
 			public void mousePressed(MouseEvent arg0) {
 			}
-			
+
 			public void mouseReleased(MouseEvent arg0) {
 			}
 		});
 	}
-	
+
 	private void processTab(AbstractTab nt, boolean mark, boolean showInFront) {
 		nt.getTitle();
 		int index = ((JTabbedPane) nt.getParent()).indexOfComponent(nt);
 		if (index >= 0) {
 			// if (mark)
-			// ((JTabbedPane)nt.getParent()).setTitleAt(index, "<html><font color='red'>"+ot);
+			// ((JTabbedPane)nt.getParent()).setTitleAt(index, "<html><font
+			// color='red'>"+ot);
 			// else
-			// ((JTabbedPane)nt.getParent()).setTitleAt(index, "<html><font color='black'>"+ot);
+			// ((JTabbedPane)nt.getParent()).setTitleAt(index, "<html><font
+			// color='black'>"+ot);
 			if (showInFront)
 				((JTabbedPane) nt.getParent()).setSelectedIndex(index);
 		}
 	}
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 }

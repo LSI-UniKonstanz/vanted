@@ -50,21 +50,14 @@ public class ScatterPlotDemo extends ApplicationFrame {
 	 * A demonstration application showing a scatter plot.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public ScatterPlotDemo(final String title) {
 
 		super(title);
 		final XYDataset data = new SampleXYDataset2();
-		final JFreeChart chart = ChartFactory.createScatterPlot(
-							"Scatter Plot Demo",
-							"X", "Y",
-							data,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createScatterPlot("Scatter Plot Demo", "X", "Y", data,
+				PlotOrientation.VERTICAL, true, true, false);
 		final Legend legend = chart.getLegend();
 		if (legend instanceof StandardLegend) {
 			final StandardLegend sl = (StandardLegend) legend;
@@ -99,7 +92,7 @@ public class ScatterPlotDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

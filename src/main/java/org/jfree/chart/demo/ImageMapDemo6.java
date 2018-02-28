@@ -95,7 +95,7 @@ public class ImageMapDemo6 {
 			writer.println("<BODY>");
 			ChartUtilities.writeImageMap(writer, "chart", info);
 			writer.println("<IMG SRC=\"multipiechart100.png\" "
-								+ "WIDTH=\"600\" HEIGHT=\"400\" BORDER=\"0\" USEMAP=\"#chart\">");
+					+ "WIDTH=\"600\" HEIGHT=\"400\" BORDER=\"0\" USEMAP=\"#chart\">");
 			writer.println("</BODY>");
 			writer.println("</HTML>");
 			writer.close();
@@ -111,18 +111,9 @@ public class ImageMapDemo6 {
 	 * @return A sample dataset.
 	 */
 	private CategoryDataset createDataset() {
-		final double[][] data = new double[][] {
-							{ 3.0, 4.0, 3.0, 5.0 },
-							{ 5.0, 7.0, 6.0, 8.0 },
-							{ 5.0, 7.0, 3.0, 8.0 },
-							{ 1.0, 2.0, 3.0, 4.0 },
-							{ 2.0, 3.0, 2.0, 3.0 }
-			};
-		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset(
-							"Region ",
-							"Sales/Q",
-							data
-							);
+		final double[][] data = new double[][] { { 3.0, 4.0, 3.0, 5.0 }, { 5.0, 7.0, 6.0, 8.0 }, { 5.0, 7.0, 3.0, 8.0 },
+				{ 1.0, 2.0, 3.0, 4.0 }, { 2.0, 3.0, 2.0, 3.0 } };
+		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Region ", "Sales/Q", data);
 		return dataset;
 	}
 
@@ -130,18 +121,14 @@ public class ImageMapDemo6 {
 	 * Creates a sample chart with the given dataset.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-		final JFreeChart chart = ChartFactory.createMultiplePieChart(
-							"Multiple Pie Chart", // chart title
+		final JFreeChart chart = ChartFactory.createMultiplePieChart("Multiple Pie Chart", // chart title
 				dataset, // dataset
-				TableOrder.BY_ROW,
-							true, // include legend
-				true,
-							true
-							);
+				TableOrder.BY_ROW, true, // include legend
+				true, true);
 		final MultiplePiePlot plot = (MultiplePiePlot) chart.getPlot();
 		final JFreeChart subchart = plot.getPieChart();
 		final PiePlot p = (PiePlot) subchart.getPlot();
@@ -156,7 +143,7 @@ public class ImageMapDemo6 {
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 		final ImageMapDemo6 demo = new ImageMapDemo6();

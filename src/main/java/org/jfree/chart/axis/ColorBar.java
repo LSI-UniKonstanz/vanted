@@ -91,7 +91,7 @@ public class ColorBar implements Cloneable, Serializable {
 	 * Constructs a horizontal colorbar axis, using default values where necessary.
 	 * 
 	 * @param label
-	 *           the axis label.
+	 *            the axis label.
 	 */
 	public ColorBar(String label) {
 
@@ -114,7 +114,7 @@ public class ColorBar implements Cloneable, Serializable {
 	 * Configures the color bar.
 	 * 
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 */
 	public void configure(ContourPlot plot) {
 		double minZ = plot.getDataset().getMinZValue();
@@ -136,7 +136,7 @@ public class ColorBar implements Cloneable, Serializable {
 	 * Sets the axis.
 	 * 
 	 * @param axis
-	 *           the axis.
+	 *            the axis.
 	 */
 	public void setAxis(ValueAxis axis) {
 		this.axis = axis;
@@ -152,26 +152,26 @@ public class ColorBar implements Cloneable, Serializable {
 	}
 
 	/**
-	 * Draws the plot on a Java 2D graphics device (such as the screen or a printer).
+	 * Draws the plot on a Java 2D graphics device (such as the screen or a
+	 * printer).
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param cursor
-	 *           the cursor.
+	 *            the cursor.
 	 * @param plotArea
-	 *           the area within which the chart should be drawn.
+	 *            the area within which the chart should be drawn.
 	 * @param dataArea
-	 *           the area within which the plot should be drawn (a
-	 *           subset of the drawArea).
+	 *            the area within which the plot should be drawn (a subset of the
+	 *            drawArea).
 	 * @param reservedArea
-	 *           the reserved area.
+	 *            the reserved area.
 	 * @param edge
-	 *           the color bar location.
+	 *            the color bar location.
 	 * @return The new cursor location.
 	 */
-	public double draw(Graphics2D g2, double cursor,
-								Rectangle2D plotArea, Rectangle2D dataArea,
-								Rectangle2D reservedArea, RectangleEdge edge) {
+	public double draw(Graphics2D g2, double cursor, Rectangle2D plotArea, Rectangle2D dataArea,
+			Rectangle2D reservedArea, RectangleEdge edge) {
 
 		Rectangle2D colorBarArea = null;
 
@@ -192,75 +192,57 @@ public class ColorBar implements Cloneable, Serializable {
 		}
 
 		if (edge == RectangleEdge.BOTTOM) {
-			colorBarArea = new Rectangle2D.Double(dataArea.getX(),
-																	plotArea.getMaxY() + this.outerGap,
-																	length, thickness);
-		} else
-			if (edge == RectangleEdge.TOP) {
-				colorBarArea = new Rectangle2D.Double(dataArea.getX(),
-																	reservedArea.getMinY() + this.outerGap,
-																	length, thickness);
-			} else
-				if (edge == RectangleEdge.LEFT) {
-					colorBarArea = new Rectangle2D.Double(plotArea.getX() - thickness - this.outerGap,
-																	dataArea.getMinY(),
-																	thickness, length);
-				} else
-					if (edge == RectangleEdge.RIGHT) {
-						colorBarArea = new Rectangle2D.Double(plotArea.getMaxX() + this.outerGap,
-																	dataArea.getMinY(),
-																	thickness, length);
-					}
+			colorBarArea = new Rectangle2D.Double(dataArea.getX(), plotArea.getMaxY() + this.outerGap, length,
+					thickness);
+		} else if (edge == RectangleEdge.TOP) {
+			colorBarArea = new Rectangle2D.Double(dataArea.getX(), reservedArea.getMinY() + this.outerGap, length,
+					thickness);
+		} else if (edge == RectangleEdge.LEFT) {
+			colorBarArea = new Rectangle2D.Double(plotArea.getX() - thickness - this.outerGap, dataArea.getMinY(),
+					thickness, length);
+		} else if (edge == RectangleEdge.RIGHT) {
+			colorBarArea = new Rectangle2D.Double(plotArea.getMaxX() + this.outerGap, dataArea.getMinY(), thickness,
+					length);
+		}
 
 		// update, but dont draw tick marks (needed for stepped colors)
 		this.axis.refreshTicks(g2, new AxisState(), plotArea, colorBarArea, edge);
-		if(colorBarArea != null)
+		if (colorBarArea != null)
 			drawColorBar(g2, colorBarArea, edge);
 
 		AxisState state = null;
 		if (edge == RectangleEdge.TOP) {
 			cursor = colorBarArea.getMinY();
-			state = this.axis.draw(
-								g2, cursor, reservedArea, colorBarArea, RectangleEdge.TOP, null
-								);
-		} else
-			if (edge == RectangleEdge.BOTTOM) {
-				cursor = colorBarArea.getMaxY();
-				state = this.axis.draw(
-									g2, cursor, reservedArea, colorBarArea, RectangleEdge.BOTTOM, null
-									);
-			} else
-				if (edge == RectangleEdge.LEFT) {
-					cursor = colorBarArea.getMinX();
-					state = this.axis.draw(
-										g2, cursor, reservedArea, colorBarArea, RectangleEdge.LEFT, null
-										);
-				} else
-					if (edge == RectangleEdge.RIGHT) {
-						cursor = colorBarArea.getMaxX();
-						state = this.axis.draw(
-											g2, cursor, reservedArea, colorBarArea, RectangleEdge.RIGHT, null
-											);
-					}
+			state = this.axis.draw(g2, cursor, reservedArea, colorBarArea, RectangleEdge.TOP, null);
+		} else if (edge == RectangleEdge.BOTTOM) {
+			cursor = colorBarArea.getMaxY();
+			state = this.axis.draw(g2, cursor, reservedArea, colorBarArea, RectangleEdge.BOTTOM, null);
+		} else if (edge == RectangleEdge.LEFT) {
+			cursor = colorBarArea.getMinX();
+			state = this.axis.draw(g2, cursor, reservedArea, colorBarArea, RectangleEdge.LEFT, null);
+		} else if (edge == RectangleEdge.RIGHT) {
+			cursor = colorBarArea.getMaxX();
+			state = this.axis.draw(g2, cursor, reservedArea, colorBarArea, RectangleEdge.RIGHT, null);
+		}
 		return state.getCursor();
 
 	}
 
 	/**
-	 * Draws the plot on a Java 2D graphics device (such as the screen or a printer).
+	 * Draws the plot on a Java 2D graphics device (such as the screen or a
+	 * printer).
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param colorBarArea
-	 *           the area within which the axis should be drawn.
+	 *            the area within which the axis should be drawn.
 	 * @param edge
-	 *           the location.
+	 *            the location.
 	 */
 	public void drawColorBar(Graphics2D g2, Rectangle2D colorBarArea, RectangleEdge edge) {
 
 		Object antiAlias = g2.getRenderingHint(RenderingHints.KEY_ANTIALIASING);
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-										RenderingHints.VALUE_ANTIALIAS_OFF);
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 
 		// setTickValues was missing from ColorPalette v. 0.96
 		// colorPalette.setTickValues(this.axis.getTicks());
@@ -312,7 +294,7 @@ public class ColorBar implements Cloneable, Serializable {
 	 * Returns the Paint associated with a value.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @return the paint.
 	 */
 	public Paint getPaint(double value) {
@@ -323,7 +305,7 @@ public class ColorBar implements Cloneable, Serializable {
 	 * Sets the color palette.
 	 * 
 	 * @param palette
-	 *           the new palette.
+	 *            the new palette.
 	 */
 	public void setColorPalette(ColorPalette palette) {
 		this.colorPalette = palette;
@@ -333,7 +315,7 @@ public class ColorBar implements Cloneable, Serializable {
 	 * Sets the maximum value.
 	 * 
 	 * @param value
-	 *           the maximum value.
+	 *            the maximum value.
 	 */
 	public void setMaximumValue(double value) {
 		this.colorPalette.setMaxZ(value);
@@ -344,7 +326,7 @@ public class ColorBar implements Cloneable, Serializable {
 	 * Sets the minimum value.
 	 * 
 	 * @param value
-	 *           the minimum value.
+	 *            the minimum value.
 	 */
 	public void setMinimumValue(double value) {
 		this.colorPalette.setMinZ(value);
@@ -355,21 +337,21 @@ public class ColorBar implements Cloneable, Serializable {
 	 * Reserves the space required to draw the color bar.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plot
-	 *           the plot that the axis belongs to.
+	 *            the plot that the axis belongs to.
 	 * @param plotArea
-	 *           the area within which the plot should be drawn.
+	 *            the area within which the plot should be drawn.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param edge
-	 *           the axis location.
+	 *            the axis location.
 	 * @param space
-	 *           the space already reserved.
+	 *            the space already reserved.
 	 * @return The space required to draw the axis in the specified plot area.
 	 */
-	public AxisSpace reserveSpace(Graphics2D g2, Plot plot, Rectangle2D plotArea,
-												Rectangle2D dataArea, RectangleEdge edge, AxisSpace space) {
+	public AxisSpace reserveSpace(Graphics2D g2, Plot plot, Rectangle2D plotArea, Rectangle2D dataArea,
+			RectangleEdge edge, AxisSpace space) {
 
 		AxisSpace result = this.axis.reserveSpace(g2, plot, plotArea, edge, space, true);
 
@@ -383,9 +365,9 @@ public class ColorBar implements Cloneable, Serializable {
 	 * Calculates the bar thickness.
 	 * 
 	 * @param plotArea
-	 *           the plot area.
+	 *            the plot area.
 	 * @param edge
-	 *           the location.
+	 *            the location.
 	 * @return The thickness.
 	 */
 	private double calculateBarThickness(Rectangle2D plotArea, RectangleEdge edge) {
@@ -403,8 +385,7 @@ public class ColorBar implements Cloneable, Serializable {
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if some component of the color bar does not support
-	 *            cloning.
+	 *             if some component of the color bar does not support cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 
@@ -420,7 +401,7 @@ public class ColorBar implements Cloneable, Serializable {
 	 * Tests this object for equality with another.
 	 * 
 	 * @param obj
-	 *           the object to test against.
+	 *            the object to test against.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {

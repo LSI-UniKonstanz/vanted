@@ -15,8 +15,8 @@ package org.graffiti.plugin.view;
  * @author $Author: morla $
  * @version $Revision: 1.3 $
  */
-public interface AttributeShape
-					extends GraffitiShape {}
+public interface AttributeShape extends GraffitiShape {
+}
 
 // ------------------------------------------------------------------------------
 // end of file

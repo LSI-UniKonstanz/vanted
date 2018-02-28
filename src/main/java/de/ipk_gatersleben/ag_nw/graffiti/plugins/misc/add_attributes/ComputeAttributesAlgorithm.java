@@ -15,7 +15,7 @@ import org.graffiti.plugin.algorithm.Category;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 
 public class ComputeAttributesAlgorithm extends LaunchGui {
-	
+
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
@@ -24,7 +24,7 @@ public class ComputeAttributesAlgorithm extends LaunchGui {
 		res.add(new CalculateAttribute());
 		return res;
 	}
-	
+
 	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
@@ -32,7 +32,7 @@ public class ComputeAttributesAlgorithm extends LaunchGui {
 		else
 			return null;
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Analysis";
@@ -40,12 +40,7 @@ public class ComputeAttributesAlgorithm extends LaunchGui {
 
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION,
-				Category.MAPPING
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.MAPPING));
 	}
-	
-	
+
 }

@@ -14,14 +14,14 @@ package org.graffiti.plugin.io;
  */
 public interface Serializer {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * The file extensions the serializer can read or write.
 	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public String[] getExtensions();
-	
+
 	/**
 	 * The file type descriptions of the files the serializer can read or write.
 	 * 

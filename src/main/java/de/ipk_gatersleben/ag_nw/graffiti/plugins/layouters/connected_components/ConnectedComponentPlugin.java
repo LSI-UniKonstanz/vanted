@@ -7,10 +7,10 @@ import org.graffiti.plugin.GenericPluginAdapter;
 import org.graffiti.plugin.algorithm.Algorithm;
 
 public class ConnectedComponentPlugin extends GenericPluginAdapter {
-	
+
 	public ConnectedComponentPlugin() {
 		this.algorithms = new Algorithm[1];
 		this.algorithms[0] = new ConnectedComponentLayout();
 	}
-	
+
 }

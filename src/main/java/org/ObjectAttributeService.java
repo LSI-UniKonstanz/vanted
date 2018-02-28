@@ -17,13 +17,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class ObjectAttributeService implements HelperClass {
-	
+
 	public static String objectToStringMappingPossible_StringPrefix = "$STRINGOBJECT$";
-	
+
 	public static String getStringRepresentationFor(Object myInstance) throws IOException {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		// ObjectOutputStream oos = new ObjectOutputStream(os);
@@ -42,14 +41,14 @@ public class ObjectAttributeService implements HelperClass {
 		}
 		return objectToStringMappingPossible_StringPrefix + sb.toString();
 	}
-	
+
 	/**
 	 * @param string
 	 * @return
 	 * @throws InvalidClassException
 	 */
 	public static Object getObjectFromString(String serializedObject)
-						throws InvalidClassException, IOException, ClassNotFoundException {
+			throws InvalidClassException, IOException, ClassNotFoundException {
 		if (serializedObject.startsWith(objectToStringMappingPossible_StringPrefix)) {
 			serializedObject = serializedObject.substring(objectToStringMappingPossible_StringPrefix.length());
 			List<Byte> bytes = new LinkedList<Byte>();
@@ -73,12 +72,12 @@ public class ObjectAttributeService implements HelperClass {
 		} else
 			throw new InvalidClassException("The given String is not a valid serialized StringObjectAttribute!");
 	}
-	
+
 	public static void main(String[] args) {
 		System.out.println("Serialization - Test (IPK, CK)");
-		
+
 	}
-	
+
 	/**
 	 * @param list
 	 * @return
@@ -86,7 +85,7 @@ public class ObjectAttributeService implements HelperClass {
 	public static String getStringPrefix(Object instance) {
 		return objectToStringMappingPossible_StringPrefix + instance.getClass().getCanonicalName() + "$";
 	}
-	
+
 	/**
 	 * @param string
 	 * @return

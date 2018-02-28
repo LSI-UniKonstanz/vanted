@@ -39,9 +39,11 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Wrapper for a <code>java.util.Date</code> object that allows it to be used as a {@link RegularTimePeriod}.
+ * Wrapper for a <code>java.util.Date</code> object that allows it to be used as
+ * a {@link RegularTimePeriod}.
  * <P>
- * This class is immutable, which is a requirement for all {@link RegularTimePeriod} subclasses.
+ * This class is immutable, which is a requirement for all
+ * {@link RegularTimePeriod} subclasses.
  */
 public class FixedMillisecond extends RegularTimePeriod implements Serializable {
 
@@ -59,7 +61,7 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 	 * Constructs a millisecond.
 	 * 
 	 * @param millisecond
-	 *           the millisecond (same encoding as java.util.Date).
+	 *            the millisecond (same encoding as java.util.Date).
 	 */
 	public FixedMillisecond(final long millisecond) {
 		this(new Date(millisecond));
@@ -69,7 +71,7 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 	 * Constructs a millisecond.
 	 * 
 	 * @param time
-	 *           the time.
+	 *            the time.
 	 */
 	public FixedMillisecond(final Date time) {
 		this.time = time;
@@ -124,7 +126,7 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 	 * Tests the equality of this object against an arbitrary Object.
 	 * 
 	 * @param object
-	 *           the object to compare
+	 *            the object to compare
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object object) {
@@ -148,12 +150,11 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 	}
 
 	/**
-	 * Returns an integer indicating the order of this Millisecond object
-	 * relative to the specified
-	 * object: negative == before, zero == same, positive == after.
+	 * Returns an integer indicating the order of this Millisecond object relative
+	 * to the specified object: negative == before, zero == same, positive == after.
 	 * 
 	 * @param o1
-	 *           the object to compare.
+	 *            the object to compare.
 	 * @return negative == before, zero == same, positive == after.
 	 */
 	public int compareTo(final Object o1) {
@@ -179,18 +180,17 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 
 		// CASE 2 : Comparing to another TimePeriod object
 		// -----------------------------------------------
-		else
-			if (o1 instanceof RegularTimePeriod) {
-				// more difficult case - evaluate later...
-				result = 0;
-			}
+		else if (o1 instanceof RegularTimePeriod) {
+			// more difficult case - evaluate later...
+			result = 0;
+		}
 
-			// CASE 3 : Comparing to a non-TimePeriod object
-			// ---------------------------------------------
-			else {
-				// consider time periods to be ordered after general objects
-				result = 1;
-			}
+		// CASE 3 : Comparing to a non-TimePeriod object
+		// ---------------------------------------------
+		else {
+			// consider time periods to be ordered after general objects
+			result = 1;
+		}
 
 		return result;
 
@@ -209,7 +209,7 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 	 * Returns the first millisecond of the time period.
 	 * 
 	 * @param calendar
-	 *           the calendar.
+	 *            the calendar.
 	 * @return the first millisecond of the time period.
 	 */
 	public long getFirstMillisecond(final Calendar calendar) {
@@ -229,7 +229,7 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 	 * Returns the last millisecond of the time period.
 	 * 
 	 * @param calendar
-	 *           the calendar.
+	 *            the calendar.
 	 * @return the last millisecond of the time period.
 	 */
 	public long getLastMillisecond(final Calendar calendar) {
@@ -249,7 +249,7 @@ public class FixedMillisecond extends RegularTimePeriod implements Serializable 
 	 * Returns the millisecond closest to the middle of the time period.
 	 * 
 	 * @param calendar
-	 *           the calendar.
+	 *            the calendar.
 	 * @return the millisecond closest to the middle of the time period.
 	 */
 	public long getMiddleMillisecond(final Calendar calendar) {

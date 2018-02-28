@@ -33,15 +33,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.KeggGmlHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.RelationType;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class KeggRelationTypeAttributeEditor
-					extends AbstractValueEditComponent
-					implements ActionListener {
+public class KeggRelationTypeAttributeEditor extends AbstractValueEditComponent implements ActionListener {
 	protected JLabel keggRelationTypeSelection = new JLabel();
 	protected JButton selectOfThisType = new JButton("Select");
-	
+
 	public KeggRelationTypeAttributeEditor(final Displayable disp) {
 		super(disp);
 		String curVal = ((KeggRelationTypeAttribute) getDisplayable()).getString();
@@ -51,14 +48,12 @@ public class KeggRelationTypeAttributeEditor
 		keggRelationTypeSelection.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
 		selectOfThisType.addActionListener(this);
 	}
-	
+
 	public JComponent getComponent() {
-		return TableLayout.getSplit(
-							keggRelationTypeSelection,
-							selectOfThisType,
-							TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
+		return TableLayout.getSplit(keggRelationTypeSelection, selectOfThisType, TableLayoutConstants.FILL,
+				TableLayoutConstants.PREFERRED);
 	}
-	
+
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			selectOfThisType.setEnabled(false);
@@ -69,12 +64,12 @@ public class KeggRelationTypeAttributeEditor
 			keggRelationTypeSelection.setText(curVal);
 		}
 	}
-	
+
 	public void setValue() {
 		if (!keggRelationTypeSelection.getText().equals(EMPTY_STRING))
 			((KeggRelationTypeAttribute) displayable).setString(keggRelationTypeSelection.getText());
 	}
-	
+
 	public void actionPerformed(ActionEvent arg0) {
 		String currentRelationTypeString = keggRelationTypeSelection.getText();
 		if (currentRelationTypeString == null)

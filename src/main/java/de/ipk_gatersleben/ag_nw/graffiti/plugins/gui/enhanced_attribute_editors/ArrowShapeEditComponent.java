@@ -24,36 +24,32 @@ import org.graffiti.plugin.editcomponent.ComboBoxEditComponent;
  * 
  * @version $Revision$
  */
-public class ArrowShapeEditComponent
-					extends ComboBoxEditComponent {
+public class ArrowShapeEditComponent extends ComboBoxEditComponent {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor sets the correct entries of the combo box. And creates a new
 	 * combo box.
 	 * 
 	 * @param disp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public ArrowShapeEditComponent(Displayable disp) {
 		super(disp);
 		this.comboText = new String[] { "Rectangle", "Circle", "Ellipse" };
-		this.comboValue = new String[]
-												{
-																	"org.graffiti.plugins.views.defaults.RectangleNodeShape",
-																	"org.graffiti.plugins.views.defaults.CircleNodeShape",
-																	"org.graffiti.plugins.views.defaults.EllipseNodeShape"
-												};
+		this.comboValue = new String[] { "org.graffiti.plugins.views.defaults.RectangleNodeShape",
+				"org.graffiti.plugins.views.defaults.CircleNodeShape",
+				"org.graffiti.plugins.views.defaults.EllipseNodeShape" };
 		this.comboBox = new JComboBox(this.comboText) {
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			public Dimension getMinimumSize() {
 				Dimension res = super.getMinimumSize();
 				res.setSize(20, res.getHeight());
 				return res;
 			}
-			
+
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension res = super.getPreferredSize();

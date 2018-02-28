@@ -1,7 +1,8 @@
 package org;
 
 /**
- * Directive interface for all API Helper classes.<p/>
+ * Directive interface for all API Helper classes.
+ * <p/>
  * 
  * Implement, if your class provides assisting functionality.
  * 

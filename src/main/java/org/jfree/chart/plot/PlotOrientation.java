@@ -51,7 +51,7 @@ public final class PlotOrientation implements Serializable {
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *           the name.
+	 *            the name.
 	 */
 	private PlotOrientation(String name) {
 		this.name = name;
@@ -67,10 +67,11 @@ public final class PlotOrientation implements Serializable {
 	}
 
 	/**
-	 * Returns <code>true</code> if this object is equal to the specified object, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if this object is equal to the specified object,
+	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
@@ -96,16 +97,15 @@ public final class PlotOrientation implements Serializable {
 	 * 
 	 * @return The object.
 	 * @throws ObjectStreamException
-	 *            if there is a problem.
+	 *             if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		Object result = null;
 		if (this.equals(PlotOrientation.HORIZONTAL)) {
 			result = PlotOrientation.HORIZONTAL;
-		} else
-			if (this.equals(PlotOrientation.VERTICAL)) {
-				result = PlotOrientation.VERTICAL;
-			}
+		} else if (this.equals(PlotOrientation.VERTICAL)) {
+			result = PlotOrientation.VERTICAL;
+		}
 		return result;
 	}
 

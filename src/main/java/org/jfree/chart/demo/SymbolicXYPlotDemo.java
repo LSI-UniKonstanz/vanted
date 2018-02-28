@@ -64,29 +64,27 @@ public class SymbolicXYPlotDemo {
 	 * Creates a XY graph with symbolic value on X and Y axis.
 	 * 
 	 * @param title
-	 *           the title.
+	 *            the title.
 	 * @param xAxisLabel
-	 *           the x axis label.
+	 *            the x axis label.
 	 * @param yAxisLabel
-	 *           the y axis label.
+	 *            the y axis label.
 	 * @param data
-	 *           the dataset.
+	 *            the dataset.
 	 * @param legend
-	 *           create a legend?
+	 *            create a legend?
 	 * @return a chart.
 	 */
-	public static JFreeChart createXYSymbolicPlot(final String title, final String xAxisLabel,
-																	final String yAxisLabel, final XYDataset data,
-																	final boolean legend) {
+	public static JFreeChart createXYSymbolicPlot(final String title, final String xAxisLabel, final String yAxisLabel,
+			final XYDataset data, final boolean legend) {
 
 		final SymbolicAxis xSymbolicAxis = new SymbolicAxis(xAxisLabel, ((XisSymbolic) data).getXSymbolicValues());
 
 		final SymbolicAxis ySymbolicAxis = new SymbolicAxis(yAxisLabel, ((YisSymbolic) data).getYSymbolicValues());
 
 		final XYPlot plot = new XYPlot(data, xSymbolicAxis, ySymbolicAxis, null);
-		final XYItemRenderer renderer = new StandardXYItemRenderer(
-							StandardXYItemRenderer.SHAPES, new SymbolicXYItemLabelGenerator()
-							);
+		final XYItemRenderer renderer = new StandardXYItemRenderer(StandardXYItemRenderer.SHAPES,
+				new SymbolicXYItemLabelGenerator());
 		plot.setRenderer(renderer);
 		final JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT, plot, legend);
 		return chart;
@@ -101,9 +99,8 @@ public class SymbolicXYPlotDemo {
 	public static SampleYSymbolicDataset createYSymbolicSample1() {
 
 		final String[] sData = { "Lion", "Elephant", "Monkey", "Hippopotamus", "Giraffe" };
-		final SampleYSymbolicDataset data = new SampleYSymbolicDataset(
-							"AY Sample", 20, sData, 4, 20, new String[] { "Fall", "Spring", "Summer", "Winter" }
-							);
+		final SampleYSymbolicDataset data = new SampleYSymbolicDataset("AY Sample", 20, sData, 4, 20,
+				new String[] { "Fall", "Spring", "Summer", "Winter" });
 		return data;
 
 	}
@@ -116,9 +113,8 @@ public class SymbolicXYPlotDemo {
 	public static SampleYSymbolicDataset createYSymbolicSample2() {
 
 		final String[] sData = { "Giraffe", "Gazelle", "Zebra", "Gnu" };
-		final SampleYSymbolicDataset data = new SampleYSymbolicDataset(
-							"BY Sample", 40, sData, 4, 10, new String[] { "Fall", "Spring", "Summer", "Winter" }
-							);
+		final SampleYSymbolicDataset data = new SampleYSymbolicDataset("BY Sample", 40, sData, 4, 10,
+				new String[] { "Fall", "Spring", "Summer", "Winter" });
 		return data;
 
 	}
@@ -130,27 +126,19 @@ public class SymbolicXYPlotDemo {
 	 */
 	public static SampleXYSymbolicDataset createXYSymbolicSample1() {
 
-		final String[] xsData = { "Atmosphere", "Continental Ecosystem",
-									"Limnic Ecosystem", "Marine Ecosystem" };
-		final String[] ysData = { "Ionizing radiations", "Thermic pollutants", "Hydrocarbon",
-									"Synthetic materials", "Pesticides", "Detergent",
-									"Synthetic organic materials", "Sulphur", "Nitrate", "Phosphate",
-									"Heavy metals", "Fluors", "Aerosols", "Dead organic materials",
-									"Pathogen micro-organisms" };
+		final String[] xsData = { "Atmosphere", "Continental Ecosystem", "Limnic Ecosystem", "Marine Ecosystem" };
+		final String[] ysData = { "Ionizing radiations", "Thermic pollutants", "Hydrocarbon", "Synthetic materials",
+				"Pesticides", "Detergent", "Synthetic organic materials", "Sulphur", "Nitrate", "Phosphate",
+				"Heavy metals", "Fluors", "Aerosols", "Dead organic materials", "Pathogen micro-organisms" };
 
-		final int[][] xd = {
-				{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2,
-									2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 }
-			};
-		final int[][] yd = {
-				{ 0, 2, 3, 7, 10, 11, 12, 14, 0, 2, 3, 4, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 3,
-									4, 5, 7, 8, 9, 10, 13, 14, 0, 1, 2, 3, 4, 5, 8, 9, 10, 13, 14 }
-			};
+		final int[][] xd = { { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+				2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3 } };
+		final int[][] yd = { { 0, 2, 3, 7, 10, 11, 12, 14, 0, 2, 3, 4, 7, 8, 9, 10, 11, 12, 14, 0, 1, 2, 3, 4, 5, 7, 8,
+				9, 10, 13, 14, 0, 1, 2, 3, 4, 5, 8, 9, 10, 13, 14 } };
 		final Integer[][] xData = (Integer[][]) toArray(xd);
 		final Integer[][] yData = (Integer[][]) toArray(yd);
-		final SampleXYSymbolicDataset xySymbolicData = new SampleXYSymbolicDataset(
-							"AXY Sample", xData, yData, xsData, ysData, new String[] { "A" }
-							);
+		final SampleXYSymbolicDataset xySymbolicData = new SampleXYSymbolicDataset("AXY Sample", xData, yData, xsData,
+				ysData, new String[] { "A" });
 		return xySymbolicData;
 
 	}
@@ -163,18 +151,16 @@ public class SymbolicXYPlotDemo {
 	public static SampleXYSymbolicDataset createXYSymbolicSample2() {
 
 		final String[] xsData = { "Physic pollutant", "Chemical pollutant", "Biological pollutant" };
-		final String[] ysData = { "Ionizing radiations", "Thermic pollutants", "Hydrocarbon",
-										"Synthetic materials", "Pesticides", "Detergent",
-										"Synthetic organic materials", "Sulphur", "Nitrate", "Phosphate",
-										"Heavy metals", "Fluors", "Aerosols", "Dead organic materials",
-										"Pathogen micro-organisms" };
+		final String[] ysData = { "Ionizing radiations", "Thermic pollutants", "Hydrocarbon", "Synthetic materials",
+				"Pesticides", "Detergent", "Synthetic organic materials", "Sulphur", "Nitrate", "Phosphate",
+				"Heavy metals", "Fluors", "Aerosols", "Dead organic materials", "Pathogen micro-organisms" };
 
 		final int[][] xd = { { 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2 } };
 		final int[][] yd = { { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 } };
 		final Integer[][] xData = (Integer[][]) toArray(xd);
 		final Integer[][] yData = (Integer[][]) toArray(yd);
-		final SampleXYSymbolicDataset xySymbolicData = new SampleXYSymbolicDataset("BXY Sample",
-							xData, yData, xsData, ysData, new String[] { "B" });
+		final SampleXYSymbolicDataset xySymbolicData = new SampleXYSymbolicDataset("BXY Sample", xData, yData, xsData,
+				ysData, new String[] { "B" });
 		return xySymbolicData;
 
 	}
@@ -183,23 +169,20 @@ public class SymbolicXYPlotDemo {
 	 * Displays an XYPlot with symbolic axes.
 	 * 
 	 * @param frameTitle
-	 *           the frame title.
+	 *            the frame title.
 	 * @param data
-	 *           the dataset.
+	 *            the dataset.
 	 * @param chartTitle
-	 *           the chart title.
+	 *            the chart title.
 	 * @param xAxisLabel
-	 *           the x axis label.
+	 *            the x axis label.
 	 * @param yAxisLabel
-	 *           the y axis label.
+	 *            the y axis label.
 	 */
-	private static void displayXYSymbolic(final String frameTitle,
-														final XYDataset data, final String chartTitle,
-														final String xAxisLabel, final String yAxisLabel) {
+	private static void displayXYSymbolic(final String frameTitle, final XYDataset data, final String chartTitle,
+			final String xAxisLabel, final String yAxisLabel) {
 
-		final JFreeChart chart = createXYSymbolicPlot(
-							chartTitle, xAxisLabel, yAxisLabel, data, true
-							);
+		final JFreeChart chart = createXYSymbolicPlot(chartTitle, xAxisLabel, yAxisLabel, data, true);
 		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 1000, 0, Color.green));
 		final JFrame frame = new ChartFrame(frameTitle, chart);
 		frame.pack();
@@ -212,14 +195,14 @@ public class SymbolicXYPlotDemo {
 	 * Displays an overlaid XYPlot with X and Y symbolic data.
 	 * 
 	 * @param frameTitle
-	 *           the frame title.
+	 *            the frame title.
 	 * @param data1
-	 *           the dataset 1.
+	 *            the dataset 1.
 	 * @param data2
-	 *           the dataset 2.
+	 *            the dataset 2.
 	 */
-	private static void displayXYSymbolicOverlaid(final String frameTitle,
-																	final XYDataset data1, final XYDataset data2) {
+	private static void displayXYSymbolicOverlaid(final String frameTitle, final XYDataset data1,
+			final XYDataset data2) {
 
 		final String title = "Pollutant Overlaid";
 		final String xAxisLabel = "Contamination and Type";
@@ -227,11 +210,11 @@ public class SymbolicXYPlotDemo {
 
 		// combine the x symbolic values of the two data sets
 		final String[] combinedXSymbolicValues = SampleXYSymbolicDataset.combineXSymbolicDataset((XisSymbolic) data1,
-																					(XisSymbolic) data2);
+				(XisSymbolic) data2);
 
 		// combine the y symbolic values of the two data sets
 		final String[] combinedYSymbolicValues = SampleXYSymbolicDataset.combineYSymbolicDataset((YisSymbolic) data1,
-																					(YisSymbolic) data2);
+				(YisSymbolic) data2);
 
 		// make master dataset...
 		final CombinedDataset data = new CombinedDataset();
@@ -246,14 +229,10 @@ public class SymbolicXYPlotDemo {
 		final SymbolicAxis hsymbolicAxis = new SymbolicAxis(xAxisLabel, combinedXSymbolicValues);
 		final SymbolicAxis vsymbolicAxis = new SymbolicAxis(yAxisLabel, combinedYSymbolicValues);
 
-		final XYItemRenderer renderer1 = new StandardXYItemRenderer(
-							StandardXYItemRenderer.SHAPES, null
-							);
+		final XYItemRenderer renderer1 = new StandardXYItemRenderer(StandardXYItemRenderer.SHAPES, null);
 		final XYPlot plot = new XYPlot(series0, hsymbolicAxis, vsymbolicAxis, renderer1);
 
-		final XYItemRenderer renderer2 = new StandardXYItemRenderer(
-							StandardXYItemRenderer.SHAPES, null
-							);
+		final XYItemRenderer renderer2 = new StandardXYItemRenderer(StandardXYItemRenderer.SHAPES, null);
 		plot.setDataset(1, series1);
 		plot.setRenderer(1, renderer2);
 
@@ -273,15 +252,14 @@ public class SymbolicXYPlotDemo {
 	 * Displays an horizontally combined XYPlot with X and Y symbolic data.
 	 * 
 	 * @param frameTitle
-	 *           the frame title.
+	 *            the frame title.
 	 * @param data1
-	 *           the dataset 1.
+	 *            the dataset 1.
 	 * @param data2
-	 *           the dataset 2.
+	 *            the dataset 2.
 	 */
-	private static void displayXYSymbolicCombinedHorizontally(final String frameTitle,
-																					final XYDataset data1,
-																					final XYDataset data2) {
+	private static void displayXYSymbolicCombinedHorizontally(final String frameTitle, final XYDataset data1,
+			final XYDataset data2) {
 
 		final String title = "Pollutant Horizontally Combined";
 		final String x1AxisLabel = "Contamination";
@@ -289,9 +267,8 @@ public class SymbolicXYPlotDemo {
 		final String yAxisLabel = "Pollutant";
 
 		// combine the y symbolic values of the two data sets
-		final String[] combinedYSymbolicValues =
-							SampleXYSymbolicDataset.combineYSymbolicDataset((YisSymbolic) data1,
-																				(YisSymbolic) data2);
+		final String[] combinedYSymbolicValues = SampleXYSymbolicDataset.combineYSymbolicDataset((YisSymbolic) data1,
+				(YisSymbolic) data2);
 
 		// make master dataset...
 		final CombinedDataset data = new CombinedDataset();
@@ -313,9 +290,7 @@ public class SymbolicXYPlotDemo {
 		final CombinedRangeXYPlot mainPlot = new CombinedRangeXYPlot(symbolicAxis);
 
 		// add subplots...
-		final XYItemRenderer renderer = new StandardXYItemRenderer(
-							StandardXYItemRenderer.SHAPES, null
-							);
+		final XYItemRenderer renderer = new StandardXYItemRenderer(StandardXYItemRenderer.SHAPES, null);
 		final XYPlot subplot0 = new XYPlot(series0, hsymbolicAxis0, null, renderer);
 		final XYPlot subplot1 = new XYPlot(series1, hsymbolicAxis1, null, renderer);
 		mainPlot.add(subplot0, 1);
@@ -348,15 +323,14 @@ public class SymbolicXYPlotDemo {
 	 * Vertically combined sample1 and sample2 and display it.
 	 * 
 	 * @param frameTitle
-	 *           the frame title.
+	 *            the frame title.
 	 * @param data1
-	 *           the dataset 1.
+	 *            the dataset 1.
 	 * @param data2
-	 *           the dataset 2.
+	 *            the dataset 2.
 	 */
-	private static void displayXYSymbolicCombinedVertically(final String frameTitle,
-																				final XYDataset data1,
-																				final XYDataset data2) {
+	private static void displayXYSymbolicCombinedVertically(final String frameTitle, final XYDataset data1,
+			final XYDataset data2) {
 
 		final String title = "Pollutant Vertically Combined";
 		final String xAxisLabel = "Contamination and Type";
@@ -364,7 +338,7 @@ public class SymbolicXYPlotDemo {
 
 		// combine the x symbolic values of the two data sets
 		final String[] combinedXSymbolicValues = SampleXYSymbolicDataset.combineXSymbolicDataset((XisSymbolic) data1,
-																					(XisSymbolic) data2);
+				(XisSymbolic) data2);
 
 		// make master dataset...
 		final CombinedDataset data = new CombinedDataset();
@@ -386,9 +360,7 @@ public class SymbolicXYPlotDemo {
 		final CombinedDomainXYPlot mainPlot = new CombinedDomainXYPlot(hsymbolicAxis);
 
 		// add the sub-plots...
-		final XYItemRenderer renderer = new StandardXYItemRenderer(
-							StandardXYItemRenderer.SHAPES, null
-							);
+		final XYItemRenderer renderer = new StandardXYItemRenderer(StandardXYItemRenderer.SHAPES, null);
 		final XYPlot subplot0 = new XYPlot(series0, null, vsymbolicAxis0, renderer);
 		final XYPlot subplot1 = new XYPlot(series1, null, vsymbolicAxis1, renderer);
 
@@ -396,9 +368,7 @@ public class SymbolicXYPlotDemo {
 		mainPlot.add(subplot1, 1);
 
 		// make the chart...
-		final JFreeChart chart = new JFreeChart(
-							title, JFreeChart.DEFAULT_TITLE_FONT, mainPlot, true
-							);
+		final JFreeChart chart = new JFreeChart(title, JFreeChart.DEFAULT_TITLE_FONT, mainPlot, true);
 		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 0, 1000, Color.blue));
 
 		// and present it in a frame...
@@ -413,7 +383,7 @@ public class SymbolicXYPlotDemo {
 	 * Transform an primitive array to an object array.
 	 * 
 	 * @param arr
-	 *           the array.
+	 *            the array.
 	 * @return an array.
 	 */
 	private static Object toArray(final Object arr) {
@@ -445,28 +415,21 @@ public class SymbolicXYPlotDemo {
 		try {
 			if (compType.equals(Integer.TYPE)) {
 				newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Integer"), length);
-			} else
-				if (compType.equals(Double.TYPE)) {
-					newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Double"), length);
-				} else
-					if (compType.equals(Long.TYPE)) {
-						newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Long"), length);
-					} else
-						if (compType.equals(Float.TYPE)) {
-							newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Float"), length);
-						} else
-							if (compType.equals(Short.TYPE)) {
-								newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Short"), length);
-							} else
-								if (compType.equals(Byte.TYPE)) {
-									newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Byte"), length);
-								} else
-									if (compType.equals(Character.TYPE)) {
-										newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Character"), length);
-									} else
-										if (compType.equals(Boolean.TYPE)) {
-											newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Boolean"), length);
-										}
+			} else if (compType.equals(Double.TYPE)) {
+				newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Double"), length);
+			} else if (compType.equals(Long.TYPE)) {
+				newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Long"), length);
+			} else if (compType.equals(Float.TYPE)) {
+				newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Float"), length);
+			} else if (compType.equals(Short.TYPE)) {
+				newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Short"), length);
+			} else if (compType.equals(Byte.TYPE)) {
+				newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Byte"), length);
+			} else if (compType.equals(Character.TYPE)) {
+				newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Character"), length);
+			} else if (compType.equals(Boolean.TYPE)) {
+				newarr = (Object[]) Array.newInstance(Class.forName("java.lang.Boolean"), length);
+			}
 		} catch (ClassNotFoundException ex) {
 			System.out.println(ex);
 		}
@@ -485,7 +448,7 @@ public class SymbolicXYPlotDemo {
 	 * Starting point for the application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
@@ -497,13 +460,13 @@ public class SymbolicXYPlotDemo {
 		displayXYSymbolic("Example 2", s2, "Pollutant", "type", "pollutant");
 
 		displayXYSymbolicCombinedHorizontally("Example 3", (SampleXYSymbolicDataset) s1.clone(),
-																				(SampleXYSymbolicDataset) s2.clone());
+				(SampleXYSymbolicDataset) s2.clone());
 
 		displayXYSymbolicCombinedVertically("Example 4", (SampleXYSymbolicDataset) s1.clone(),
-																			(SampleXYSymbolicDataset) s2.clone());
+				(SampleXYSymbolicDataset) s2.clone());
 
 		displayXYSymbolicOverlaid("Example 5", (SampleXYSymbolicDataset) s1.clone(),
-																(SampleXYSymbolicDataset) s2.clone());
+				(SampleXYSymbolicDataset) s2.clone());
 
 	}
 

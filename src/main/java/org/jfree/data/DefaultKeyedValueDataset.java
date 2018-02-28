@@ -37,8 +37,7 @@ import org.jfree.util.ObjectUtils;
 /**
  * A default implementation of the {@link KeyedValueDataset} interface.
  */
-public class DefaultKeyedValueDataset extends AbstractDataset
-													implements KeyedValueDataset, Serializable {
+public class DefaultKeyedValueDataset extends AbstractDataset implements KeyedValueDataset, Serializable {
 
 	/** Storage for the data. */
 	private KeyedValue data;
@@ -54,9 +53,9 @@ public class DefaultKeyedValueDataset extends AbstractDataset
 	 * Creates a new dataset with the specified initial value.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @param value
-	 *           the value (<code>null</code> permitted).
+	 *            the value (<code>null</code> permitted).
 	 */
 	public DefaultKeyedValueDataset(final Comparable key, final Number value) {
 		this(new DefaultKeyedValue(key, value));
@@ -66,15 +65,15 @@ public class DefaultKeyedValueDataset extends AbstractDataset
 	 * Creates a new dataset that uses the data from a {@link KeyedValue} instance.
 	 * 
 	 * @param data
-	 *           the data (<code>null</code> permitted).
+	 *            the data (<code>null</code> permitted).
 	 */
 	public DefaultKeyedValueDataset(final KeyedValue data) {
 		this.data = data;
 	}
 
 	/**
-	 * Returns the key associated with the value, or <code>null</code> if the dataset has no
-	 * data item.
+	 * Returns the key associated with the value, or <code>null</code> if the
+	 * dataset has no data item.
 	 * 
 	 * @return the key.
 	 */
@@ -103,7 +102,7 @@ public class DefaultKeyedValueDataset extends AbstractDataset
 	 * Updates the value.
 	 * 
 	 * @param value
-	 *           the new value (<code>null</code> permitted).
+	 *            the new value (<code>null</code> permitted).
 	 */
 	public void updateValue(final Number value) {
 		if (this.data == null) {
@@ -113,13 +112,13 @@ public class DefaultKeyedValueDataset extends AbstractDataset
 	}
 
 	/**
-	 * Sets the value for the dataset and sends a {@link DatasetChangeEvent} to all registered
-	 * listeners.
+	 * Sets the value for the dataset and sends a {@link DatasetChangeEvent} to all
+	 * registered listeners.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @param value
-	 *           the value (<code>null</code> permitted).
+	 *            the value (<code>null</code> permitted).
 	 */
 	public void setValue(final Comparable key, final Number value) {
 		this.data = new DefaultKeyedValue(key, value);
@@ -130,7 +129,7 @@ public class DefaultKeyedValueDataset extends AbstractDataset
 	 * Tests this dataset for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object.
+	 *            the object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object obj) {
@@ -178,8 +177,8 @@ public class DefaultKeyedValueDataset extends AbstractDataset
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            This class will not throw this exception, but subclasses
-	 *            (if any) might.
+	 *             This class will not throw this exception, but subclasses (if any)
+	 *             might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		final DefaultKeyedValueDataset clone = (DefaultKeyedValueDataset) super.clone();

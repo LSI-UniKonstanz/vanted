@@ -34,11 +34,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.Experiment2GraphHelper;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm {
-	
+
 	private boolean extendSelection = true;
 	private boolean onlyWithMapping = false;
 	private boolean onlyWithoutMapping = false;
@@ -47,51 +46,46 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 	private boolean onlyConnectedToSelectedEdges = false;
 	private boolean onlyVisibleNodes = false;
 	private boolean onlyHiddenNodes = false;
-	
+
 	private int minDistance = -1;
 	private int maxDistance = -1;
 	private boolean directedDistanceCalculation = true;
 	private boolean selectUnconnected = false;
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No active graph editor window found!");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Select Nodes";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.NODE,
-				Category.SELECTION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.SELECTION));
 	}
 
 	@Override
 	public String getDescription() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING)) {
-			return "<html>" +
-								"Select at least one of the checkboxes in order to limit<br>" +
-								"the node selection to nodes which meet the checked<br>" +
-								"parameters.<br><br>" +
-								"<b>Use default-settings (checkboxes unchecked and<br>" +
-								"degree and distance limits (if avail.) = -1), to<br>" +
-								"select all nodes.</b><br><br>";
+			return "<html>" + "Select at least one of the checkboxes in order to limit<br>"
+					+ "the node selection to nodes which meet the checked<br>" + "parameters.<br><br>"
+					+ "<b>Use default-settings (checkboxes unchecked and<br>"
+					+ "degree and distance limits (if avail.) = -1), to<br>" + "select all nodes.</b><br><br>";
 		} else {
-			return "<html><small>You may limit the node selection with a minimum and maximum<br>" +
-								"node-degree setting (number of connections to other nodes).<br><br>" +
-								"<b>Leave degree limits unchanged to select all nodes</b><br><br>";
+			return "<html><small>You may limit the node selection with a minimum and maximum<br>"
+					+ "node-degree setting (number of connections to other nodes).<br><br>"
+					+ "<b>Leave degree limits unchanged to select all nodes</b><br><br>";
 		}
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING)) {
@@ -101,27 +95,40 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 				maxDistance = -1;
 			}
 			return new Parameter[] {
-								selection != null && selection.isEmpty() ? null : new BooleanParameter(extendSelection, "Extend selection", "<html>" +
-													"If selected, the selection will be extended,<br>" +
-													"leaving currently selected elements unaffected."),
-								new BooleanParameter(onlyWithMapping, "With mapping-data", ""),
-								new BooleanParameter(onlyWithoutMapping, "Without mapping-data", ""),
-								new IntegerParameter(-1, "Degree >", "Degree greater than (-1 means no limit)"),
-								new IntegerParameter(-1, "Degree <", "Degree smaller than (-1 means no limit)"),
-								selection != null && selection.getEdges().isEmpty() ? null : new BooleanParameter(onlyConnectedToSelectedEdges, "Connected to sel. edges", ""),
-								new BooleanParameter(onlyVisibleNodes, "Visible nodes", ""),
-								new BooleanParameter(onlyHiddenNodes, "Hidden nodes", ""),
-								distEvalOk ? new IntegerParameter(-1, "Distance to sel. >", "Distance to selection greater than (-1 means not considered)") : null,
-									distEvalOk ? new IntegerParameter(-1, "Distance to sel. <", "Distance to selection smaller than (-1 means not considered)") : null,
-											distEvalOk ? new BooleanParameter(directedDistanceCalculation, "<html><small>^^^ consider edge-directions", "") : null,
-													distEvalOk ? new BooleanParameter(selectUnconnected, "<html><small>^^^ process non-reachable (dist=&infin;)", "") : null, };
+					selection != null && selection.isEmpty() ? null
+							: new BooleanParameter(extendSelection, "Extend selection",
+									"<html>" + "If selected, the selection will be extended,<br>"
+											+ "leaving currently selected elements unaffected."),
+					new BooleanParameter(onlyWithMapping, "With mapping-data", ""),
+					new BooleanParameter(onlyWithoutMapping, "Without mapping-data", ""),
+					new IntegerParameter(-1, "Degree >", "Degree greater than (-1 means no limit)"),
+					new IntegerParameter(-1, "Degree <", "Degree smaller than (-1 means no limit)"),
+					selection != null && selection.getEdges().isEmpty() ? null
+							: new BooleanParameter(onlyConnectedToSelectedEdges, "Connected to sel. edges", ""),
+					new BooleanParameter(onlyVisibleNodes, "Visible nodes", ""),
+					new BooleanParameter(onlyHiddenNodes, "Hidden nodes", ""),
+					distEvalOk
+							? new IntegerParameter(-1, "Distance to sel. >",
+									"Distance to selection greater than (-1 means not considered)")
+							: null,
+					distEvalOk
+							? new IntegerParameter(-1, "Distance to sel. <",
+									"Distance to selection smaller than (-1 means not considered)")
+							: null,
+					distEvalOk
+							? new BooleanParameter(directedDistanceCalculation,
+									"<html><small>^^^ consider edge-directions", "")
+							: null,
+					distEvalOk
+							? new BooleanParameter(selectUnconnected,
+									"<html><small>^^^ process non-reachable (dist=&infin;)", "")
+							: null, };
 		} else {
-			return new Parameter[] {
-								new IntegerParameter(-1, "Degree greater than (-1 = no limit)", "Degree >"),
-								new IntegerParameter(-1, "Degree smaller than (-1 = no limit)", "Degree <") };
+			return new Parameter[] { new IntegerParameter(-1, "Degree greater than (-1 = no limit)", "Degree >"),
+					new IntegerParameter(-1, "Degree smaller than (-1 = no limit)", "Degree <") };
 		}
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -131,7 +138,8 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 			onlyWithoutMapping = ((BooleanParameter) params[i++]).getBoolean();
 			minimumDegree = ((IntegerParameter) params[i++]).getInteger();
 			maximumDegree = ((IntegerParameter) params[i++]).getInteger();
-			onlyConnectedToSelectedEdges = params[i] == null ? (i++ < 0) : ((BooleanParameter) params[i++]).getBoolean();
+			onlyConnectedToSelectedEdges = params[i] == null ? (i++ < 0)
+					: ((BooleanParameter) params[i++]).getBoolean();
 			onlyVisibleNodes = ((BooleanParameter) params[i++]).getBoolean();
 			onlyHiddenNodes = ((BooleanParameter) params[i++]).getBoolean();
 			if (params[i] == null) {
@@ -168,14 +176,15 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 			selectUnconnected = false;
 		}
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "edit.Selection";
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
@@ -183,8 +192,8 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 		HashSet<Node> initalSelection = new HashSet<Node>();
 		if (minDistance >= 0 || maxDistance >= 0)
 			initalSelection.addAll(selection.getNodes());
-		if (onlyWithMapping || onlyWithoutMapping || maximumDegree >= 0 || minimumDegree >= 0
-							|| onlyHiddenNodes || onlyVisibleNodes || minDistance >= 0 || maxDistance >= 0) {
+		if (onlyWithMapping || onlyWithoutMapping || maximumDegree >= 0 || minimumDegree >= 0 || onlyHiddenNodes
+				|| onlyVisibleNodes || minDistance >= 0 || maxDistance >= 0) {
 			HashMap<Node, Integer> node2distance = new HashMap<Node, Integer>();
 			if (minDistance >= 0 || maxDistance >= 0)
 				GraphHelper.getShortestDistances(node2distance, initalSelection, directedDistanceCalculation, 0);
@@ -201,7 +210,7 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 					if (minDistance >= 0 && (dist == null || dist <= minDistance))
 						continue;
 				}
-				
+
 				if (maximumDegree >= 0 && n.getDegree() >= maximumDegree)
 					continue;
 				if (minimumDegree >= 0 && n.getDegree() <= minimumDegree)
@@ -210,7 +219,8 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 					validNodes.add(n);
 				else {
 					try {
-						Attribute a = n.getAttribute(Experiment2GraphHelper.mapFolder + Attribute.SEPARATOR + Experiment2GraphHelper.mapVarName);
+						Attribute a = n.getAttribute(Experiment2GraphHelper.mapFolder + Attribute.SEPARATOR
+								+ Experiment2GraphHelper.mapVarName);
 						if (a != null && onlyWithMapping)
 							validNodes.add(n);
 					} catch (AttributeNotFoundException anfe) {
@@ -233,21 +243,23 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 			if (!extendSelection)
 				selection.clear();
 			selection.addAll(validNodes);
-			MainFrame.showMessage("Added " + (selection.getNodes().size() - oldCnt) + " node(s) to selection (" + validNodes.size() + " met selected criteria)",
-								MessageType.INFO);
+			MainFrame.showMessage("Added " + (selection.getNodes().size() - oldCnt) + " node(s) to selection ("
+					+ validNodes.size() + " met selected criteria)", MessageType.INFO);
 		} else {
 			int oldCnt = selection.getNodes().size();
 			if (!extendSelection)
 				selection.clear();
 			selection.addAll(getNodesLimitedByEdgeSelectionSetting(graph));
 			if (!extendSelection)
-				MainFrame.showMessage("New selection: " + (selection.getNodes().size() - oldCnt) + " node(s)", MessageType.INFO);
+				MainFrame.showMessage("New selection: " + (selection.getNodes().size() - oldCnt) + " node(s)",
+						MessageType.INFO);
 			else
-				MainFrame.showMessage("Added " + (selection.getNodes().size() - oldCnt) + " node(s) to selection", MessageType.INFO);
+				MainFrame.showMessage("Added " + (selection.getNodes().size() - oldCnt) + " node(s) to selection",
+						MessageType.INFO);
 		}
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 	}
-	
+
 	private Collection<Node> getNodesLimitedByEdgeSelectionSetting(Graph graph) {
 		if (!onlyConnectedToSelectedEdges)
 			return graph.getNodes();
@@ -260,7 +272,7 @@ public class SelectNodesWithExperimentalDataAlgorithm extends AbstractAlgorithm 
 			return result;
 		}
 	}
-	
+
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}

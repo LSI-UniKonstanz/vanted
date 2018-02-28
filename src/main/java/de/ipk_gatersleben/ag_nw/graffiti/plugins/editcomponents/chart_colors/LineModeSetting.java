@@ -12,21 +12,21 @@ public class LineModeSetting {
 	public float a, b;
 	private boolean empty;
 	public static final float epsilon = 0.00001f;
-	
+
 	public LineModeSetting(float a, float b) {
 		this.a = a;
 		this.b = b;
 		empty = false;
 	}
-	
+
 	public LineModeSetting() {
 		empty = true;
 	}
-	
+
 	public boolean isEmptyValue() {
 		return empty;
 	}
-	
+
 	@Override
 	public String toString() {
 		if (empty)
@@ -52,7 +52,7 @@ public class LineModeSetting {
 		}
 		return "<html>" + res.toString();
 	}
-	
+
 	public float[] getDashArray() {
 		if (Math.abs(a) < epsilon && Math.abs(b) < epsilon)
 			return null;

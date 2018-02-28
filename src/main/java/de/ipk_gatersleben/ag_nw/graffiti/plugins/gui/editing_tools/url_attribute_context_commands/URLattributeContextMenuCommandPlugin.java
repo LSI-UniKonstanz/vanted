@@ -24,26 +24,25 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.url_attribute.URLAttribute;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.url_attribute.URLAttributeEditor;
 
-public class URLattributeContextMenuCommandPlugin
-					extends IPK_PluginAdapter
-					implements ProvidesDirectMouseClickContextMenu {
+public class URLattributeContextMenuCommandPlugin extends IPK_PluginAdapter
+		implements ProvidesDirectMouseClickContextMenu {
 	private ImageBundle iBundle = ImageBundle.getInstance();
-	
-	private ArrayList<JMenuItem> getContextCommandForURLattributes(MouseEvent lastMouseE, Component lastMouseSrc, Graph g, boolean modifyCommand) {
+
+	private ArrayList<JMenuItem> getContextCommandForURLattributes(MouseEvent lastMouseE, Component lastMouseSrc,
+			Graph g, boolean modifyCommand) {
 		ArrayList<JMenuItem> result = new ArrayList<JMenuItem>();
 		Attributable attr;
 		if (lastMouseSrc != null && (lastMouseSrc instanceof NodeComponent)) {
 			NodeComponent nc = (NodeComponent) lastMouseSrc;
 			attr = nc.getGraphElement();
-		} else
-			if (lastMouseSrc != null && (lastMouseSrc instanceof EdgeComponent)) {
-				EdgeComponent ec = (EdgeComponent) lastMouseSrc;
-				attr = ec.getGraphElement();
-			} else {
-				attr = g;
-				if (modifyCommand)
-					return result;
-			}
+		} else if (lastMouseSrc != null && (lastMouseSrc instanceof EdgeComponent)) {
+			EdgeComponent ec = (EdgeComponent) lastMouseSrc;
+			attr = ec.getGraphElement();
+		} else {
+			attr = g;
+			if (modifyCommand)
+				return result;
+		}
 		if (attr != null) {
 			CollectionAttribute ca = attr.getAttributes();
 			Stack<CollectionAttribute> catts = new Stack<CollectionAttribute>();
@@ -68,7 +67,7 @@ public class URLattributeContextMenuCommandPlugin
 							String title = getMenuItemTitle(a, modifyCommand, urlAttribute, desc);
 							JMenuItem mi = new JMenuItem(title);
 							mi.addActionListener(URLAttributeEditor.getActionListener(urlAttribute, modifyCommand));
-							
+
 							if (desc.indexOf("Reference") > 0 || desc.indexOf("URL") > 0)
 								mi.setIcon(iBundle.getImageIcon("tool.infobulb"));
 							else {
@@ -77,7 +76,7 @@ public class URLattributeContextMenuCommandPlugin
 								else
 									mi.setIcon(iBundle.getImageIcon("tool.addNodeSmall"));
 							}
-							
+
 							result.add(mi);
 						}
 					}
@@ -86,9 +85,8 @@ public class URLattributeContextMenuCommandPlugin
 		}
 		return result;
 	}
-	
-	private String getMenuItemTitle(Attribute a, boolean modifyCommand,
-						URLAttribute ua, String desc) {
+
+	private String getMenuItemTitle(Attribute a, boolean modifyCommand, URLAttribute ua, String desc) {
 		String title = URLAttributeEditor.getDescription(ua, true, modifyCommand).trim() + " " + desc;
 		title = StringManipulationTools.removeHTMLtags(title);
 		if (a.getValue() != null) {
@@ -112,24 +110,21 @@ public class URLattributeContextMenuCommandPlugin
 		}
 		return title;
 	}
-	
-	public JMenuItem[] getContextCommand(MouseEvent lastMouseE,
-						Component lastMouseSrc, Graph graph) {
+
+	public JMenuItem[] getContextCommand(MouseEvent lastMouseE, Component lastMouseSrc, Graph graph) {
 		JMenu a = new JMenu("Navigate");
 		JMenu b = new JMenu("Add Link");
 		int ia = 0;
 		int ib = 0;
 		for (JMenuItem mi : getContextCommandForURLattributes(
-							org.graffiti.plugins.modes.defaults.MegaTools.getLastMouseE(),
-							org.graffiti.plugins.modes.defaults.MegaTools.getLastMouseSrc(),
-							graph, false)) {
+				org.graffiti.plugins.modes.defaults.MegaTools.getLastMouseE(),
+				org.graffiti.plugins.modes.defaults.MegaTools.getLastMouseSrc(), graph, false)) {
 			a.add(mi);
 			ia++;
 		}
 		for (JMenuItem mi : getContextCommandForURLattributes(
-							org.graffiti.plugins.modes.defaults.MegaTools.getLastMouseE(),
-							org.graffiti.plugins.modes.defaults.MegaTools.getLastMouseSrc(),
-							graph, true)) {
+				org.graffiti.plugins.modes.defaults.MegaTools.getLastMouseE(),
+				org.graffiti.plugins.modes.defaults.MegaTools.getLastMouseSrc(), graph, true)) {
 			b.add(mi);
 			ib++;
 		}
@@ -140,5 +135,5 @@ public class URLattributeContextMenuCommandPlugin
 			result.add(b);
 		return result.toArray(new JMenuItem[] {});
 	}
-	
+
 }

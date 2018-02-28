@@ -53,7 +53,7 @@ public class LegendItemCollection {
 	 * Adds a legend item to the collection.
 	 * 
 	 * @param item
-	 *           the item to add.
+	 *            the item to add.
 	 */
 	public void add(LegendItem item) {
 		this.items.add(item);
@@ -63,7 +63,7 @@ public class LegendItemCollection {
 	 * Adds the legend items from another collection to this collection.
 	 * 
 	 * @param collection
-	 *           the other collection.
+	 *            the other collection.
 	 */
 	public void addAll(LegendItemCollection collection) {
 		this.items.addAll(collection.items);
@@ -73,7 +73,7 @@ public class LegendItemCollection {
 	 * Returns a legend item from the collection.
 	 * 
 	 * @param index
-	 *           the legend item index (zero-based).
+	 *            the legend item index (zero-based).
 	 * @return the legend item.
 	 */
 	public LegendItem get(int index) {

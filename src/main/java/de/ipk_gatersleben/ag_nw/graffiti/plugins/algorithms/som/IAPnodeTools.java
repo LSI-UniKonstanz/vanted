@@ -24,7 +24,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawC
  */
 public class IAPnodeTools extends NodeTools {
 	public static SOMdataEntry getSOMdataSet(GraphElement n, int columnCount, String[] columnDesc, boolean returnNaN,
-						boolean useSampleAverageValues) {
+			boolean useSampleAverageValues) {
 		List<MyComparableDataPoint> mappedData = new ArrayList<MyComparableDataPoint>();
 		StringBuffer res = new StringBuffer();
 		int missingDataPoints = 0;
@@ -38,9 +38,9 @@ public class IAPnodeTools extends NodeTools {
 					list = getSortedDataSetValues(mappingData);
 				mappedData.addAll(list);
 			}
-			
+
 			ArrayList<Double> dataPoints = new ArrayList<Double>();
-			
+
 			for (int column = 0; column < columnDesc.length; column++) {
 				String findDataPointWithColumnDesc = columnDesc[column];
 				MyComparableDataPoint mcdpResult = null;
@@ -69,7 +69,7 @@ public class IAPnodeTools extends NodeTools {
 					lastDataPoint = mcdpResult.mean;
 				}
 			}
-			
+
 			// search min max during
 			double min = Double.MAX_VALUE;
 			double max = Double.NEGATIVE_INFINITY;

@@ -84,15 +84,16 @@ import org.jfree.ui.TextAnchor;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A stacked bar renderer for use with the {@link org.jfree.chart.plot.CategoryPlot} class.
+ * A stacked bar renderer for use with the
+ * {@link org.jfree.chart.plot.CategoryPlot} class.
  */
-public class StackedBarRenderer extends BarRenderer
-											implements Cloneable, PublicCloneable, Serializable {
+public class StackedBarRenderer extends BarRenderer implements Cloneable, PublicCloneable, Serializable {
 
 	/**
 	 * Creates a new renderer with no tool tip generator and no URL generator.
 	 * <P>
-	 * The defaults (no tool tip or URL generators) have been chosen to minimise the processing required to generate a default chart. If you require tool tips or
+	 * The defaults (no tool tip or URL generators) have been chosen to minimise the
+	 * processing required to generate a default chart. If you require tool tips or
 	 * URLs, then you can easily add the required generators.
 	 */
 	public StackedBarRenderer() {
@@ -100,9 +101,7 @@ public class StackedBarRenderer extends BarRenderer
 
 		// set the default item label positions, which will only be used if the user
 		// requests visible item labels...
-		ItemLabelPosition p = new ItemLabelPosition(
-							ItemLabelAnchor.CENTER, TextAnchor.CENTER
-							);
+		ItemLabelPosition p = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER);
 		setBasePositiveItemLabelPosition(p);
 		setBaseNegativeItemLabelPosition(p);
 		setPositiveItemLabelPositionFallback(null);
@@ -110,12 +109,13 @@ public class StackedBarRenderer extends BarRenderer
 	}
 
 	/**
-	 * Returns the range of values the renderer requires to display all the items from the
-	 * specified dataset.
+	 * Returns the range of values the renderer requires to display all the items
+	 * from the specified dataset.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> permitted).
-	 * @return The range (or <code>null</code> if the dataset is <code>null</code> or empty).
+	 *            the dataset (<code>null</code> permitted).
+	 * @return The range (or <code>null</code> if the dataset is <code>null</code>
+	 *         or empty).
 	 */
 	public Range getRangeExtent(CategoryDataset dataset) {
 		return DatasetUtilities.getStackedRangeExtent(dataset);
@@ -125,18 +125,16 @@ public class StackedBarRenderer extends BarRenderer
 	 * Calculates the bar width and stores it in the renderer state.
 	 * 
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param rendererIndex
-	 *           the renderer index.
+	 *            the renderer index.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 */
-	protected void calculateBarWidth(CategoryPlot plot,
-													Rectangle2D dataArea,
-													int rendererIndex,
-													CategoryItemRendererState state) {
+	protected void calculateBarWidth(CategoryPlot plot, Rectangle2D dataArea, int rendererIndex,
+			CategoryItemRendererState state) {
 
 		// calculate the bar width
 		CategoryAxis xAxis = plot.getDomainAxisForDataset(rendererIndex);
@@ -146,10 +144,9 @@ public class StackedBarRenderer extends BarRenderer
 			double space = 0.0;
 			if (orientation == PlotOrientation.HORIZONTAL) {
 				space = dataArea.getHeight();
-			} else
-				if (orientation == PlotOrientation.VERTICAL) {
-					space = dataArea.getWidth();
-				}
+			} else if (orientation == PlotOrientation.VERTICAL) {
+				space = dataArea.getWidth();
+			}
 			double maxWidth = space * getMaxBarWidth();
 			int columns = data.getColumnCount();
 			double categoryMargin = 0.0;
@@ -157,8 +154,7 @@ public class StackedBarRenderer extends BarRenderer
 				categoryMargin = xAxis.getCategoryMargin();
 			}
 
-			double used = space * (1 - xAxis.getLowerMargin() - xAxis.getUpperMargin()
-													- categoryMargin);
+			double used = space * (1 - xAxis.getLowerMargin() - xAxis.getUpperMargin() - categoryMargin);
 			if (columns > 0) {
 				state.setBarWidth(Math.min(used / columns, maxWidth));
 			} else {
@@ -172,33 +168,26 @@ public class StackedBarRenderer extends BarRenderer
 	 * Draws a stacked bar for a specific item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the plot area.
+	 *            the plot area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain (category) axis.
+	 *            the domain (category) axis.
 	 * @param rangeAxis
-	 *           the range (value) axis.
+	 *            the range (value) axis.
 	 * @param dataset
-	 *           the data.
+	 *            the data.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	public void drawItem(Graphics2D g2,
-									CategoryItemRendererState state,
-									Rectangle2D dataArea,
-									CategoryPlot plot,
-									CategoryAxis domainAxis,
-									ValueAxis rangeAxis,
-									CategoryDataset dataset,
-									int row,
-									int column) {
+	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
+			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
 
 		// nothing is drawn for null values...
 		Number dataValue = dataset.getValue(row, column);
@@ -209,9 +198,8 @@ public class StackedBarRenderer extends BarRenderer
 		double value = dataValue.doubleValue();
 
 		PlotOrientation orientation = plot.getOrientation();
-		double barW0 = domainAxis.getCategoryMiddle(
-							column, getColumnCount(), dataArea, plot.getDomainAxisEdge()
-							) - state.getBarWidth() / 2.0;
+		double barW0 = domainAxis.getCategoryMiddle(column, getColumnCount(), dataArea, plot.getDomainAxisEdge())
+				- state.getBarWidth() / 2.0;
 
 		double positiveBase = 0.0;
 		double negativeBase = 0.0;
@@ -239,9 +227,7 @@ public class StackedBarRenderer extends BarRenderer
 			translatedValue = rangeAxis.valueToJava2D(negativeBase + value, dataArea, location);
 		}
 		double barL0 = Math.min(translatedBase, translatedValue);
-		double barLength = Math.max(
-							Math.abs(translatedValue - translatedBase), getMinimumBarLength()
-							);
+		double barLength = Math.max(Math.abs(translatedValue - translatedBase), getMinimumBarLength());
 
 		Rectangle2D bar = null;
 		if (orientation == PlotOrientation.HORIZONTAL) {
@@ -276,9 +262,8 @@ public class StackedBarRenderer extends BarRenderer
 				if (getItemURLGenerator(row, column) != null) {
 					url = getItemURLGenerator(row, column).generateURL(dataset, row, column);
 				}
-				CategoryItemEntity entity = new CategoryItemEntity(
-									bar, tip, url, dataset, row, dataset.getColumnKey(column), column
-									);
+				CategoryItemEntity entity = new CategoryItemEntity(bar, tip, url, dataset, row,
+						dataset.getColumnKey(column), column);
 				entities.addEntity(entity);
 			}
 		}

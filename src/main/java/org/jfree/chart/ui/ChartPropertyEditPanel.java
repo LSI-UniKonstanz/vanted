@@ -74,8 +74,7 @@ public class ChartPropertyEditPanel extends JPanel implements ActionListener {
 	private PlotPropertyEditPanel plotPropertiesPanel;
 
 	/**
-	 * A checkbox indicating whether or not the chart is drawn with
-	 * anti-aliasing.
+	 * A checkbox indicating whether or not the chart is drawn with anti-aliasing.
 	 */
 	private JCheckBox antialias;
 
@@ -83,14 +82,15 @@ public class ChartPropertyEditPanel extends JPanel implements ActionListener {
 	private PaintSample background;
 
 	/** The resourceBundle for the localization. */
-	protected static ResourceBundle localizationResources = ResourceBundle.getBundle("org.jfree.chart.ui.LocalizationBundle");
+	protected static ResourceBundle localizationResources = ResourceBundle
+			.getBundle("org.jfree.chart.ui.LocalizationBundle");
 
 	/**
 	 * Standard constructor - the property panel is made up of a number of
 	 * sub-panels that are displayed in the tabbed pane.
 	 * 
 	 * @param chart
-	 *           the chart, whichs properties should be changed.
+	 *            the chart, whichs properties should be changed.
 	 */
 	public ChartPropertyEditPanel(JFreeChart chart) {
 		setLayout(new BorderLayout());
@@ -99,9 +99,8 @@ public class ChartPropertyEditPanel extends JPanel implements ActionListener {
 		other.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
 		JPanel general = new JPanel(new BorderLayout());
-		general.setBorder(BorderFactory.createTitledBorder(
-										BorderFactory.createEtchedBorder(),
-										localizationResources.getString("General")));
+		general.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+				localizationResources.getString("General")));
 
 		JPanel interior = new JPanel(new LCBLayout(6));
 		interior.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
@@ -233,7 +232,7 @@ public class ChartPropertyEditPanel extends JPanel implements ActionListener {
 	 * Handles user interactions with the panel.
 	 * 
 	 * @param event
-	 *           a BackgroundPaint action.
+	 *            a BackgroundPaint action.
 	 */
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
@@ -244,13 +243,12 @@ public class ChartPropertyEditPanel extends JPanel implements ActionListener {
 
 	/**
 	 * Allows the user the opportunity to select a new background paint. Uses
-	 * JColorChooser, so we are only allowing a subset of all Paint objects to
-	 * be selected (fix later).
+	 * JColorChooser, so we are only allowing a subset of all Paint objects to be
+	 * selected (fix later).
 	 */
 	private void attemptModifyBackgroundPaint() {
 		Color c;
-		c = JColorChooser.showDialog(this, localizationResources.getString("Background_Color"),
-													Color.blue);
+		c = JColorChooser.showDialog(this, localizationResources.getString("Background_Color"), Color.blue);
 		if (c != null) {
 			this.background.setPaint(c);
 		}
@@ -261,7 +259,7 @@ public class ChartPropertyEditPanel extends JPanel implements ActionListener {
 	 * panel.
 	 * 
 	 * @param chart
-	 *           the chart.
+	 *            the chart.
 	 */
 	public void updateChartProperties(JFreeChart chart) {
 

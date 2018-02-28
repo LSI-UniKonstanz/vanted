@@ -56,13 +56,11 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A renderer that draws a circle at each data point. The renderer expects the dataset to be an {@link XYZDataset}.
+ * A renderer that draws a circle at each data point. The renderer expects the
+ * dataset to be an {@link XYZDataset}.
  */
 public class XYBubbleRenderer extends AbstractXYItemRenderer
-										implements XYItemRenderer,
-														Cloneable,
-														PublicCloneable,
-														Serializable {
+		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
 
 	/** A useful constant. */
 	public static final int SCALE_ON_BOTH_AXES = 0;
@@ -87,7 +85,7 @@ public class XYBubbleRenderer extends AbstractXYItemRenderer
 	 * Constructs a new renderer.
 	 * 
 	 * @param scaleType
-	 *           the type of scaling.
+	 *            the type of scaling.
 	 */
 	public XYBubbleRenderer(int scaleType) {
 		super();
@@ -107,42 +105,33 @@ public class XYBubbleRenderer extends AbstractXYItemRenderer
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the area within which the data is being drawn.
+	 *            the area within which the data is being drawn.
 	 * @param info
-	 *           collects information about the drawing.
+	 *            collects information about the drawing.
 	 * @param plot
-	 *           the plot (can be used to obtain standard color information etc).
+	 *            the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *           the domain (horizontal) axis.
+	 *            the domain (horizontal) axis.
 	 * @param rangeAxis
-	 *           the range (vertical) axis.
+	 *            the range (vertical) axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @param crosshairState
-	 *           crosshair information for the plot (<code>null</code> permitted).
+	 *            crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *           the pass index.
+	 *            the pass index.
 	 */
-	public void drawItem(Graphics2D g2,
-									XYItemRendererState state,
-									Rectangle2D dataArea,
-									PlotRenderingInfo info,
-									XYPlot plot,
-									ValueAxis domainAxis,
-									ValueAxis rangeAxis,
-									XYDataset dataset,
-									int series,
-									int item,
-									CrosshairState crosshairState,
-									int pass) {
+	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
+			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
+			CrosshairState crosshairState, int pass) {
 
 		PlotOrientation orientation = plot.getOrientation();
 
@@ -169,38 +158,33 @@ public class XYBubbleRenderer extends AbstractXYItemRenderer
 			double zero;
 
 			switch (getScaleType()) {
-				case SCALE_ON_DOMAIN_AXIS:
-					zero = domainAxis.valueToJava2D(0.0, dataArea, domainAxisLocation);
-					transDomain = domainAxis.valueToJava2D(z, dataArea, rangeAxisLocation) - zero;
-					transRange = transDomain;
-					break;
-				case SCALE_ON_RANGE_AXIS:
-					zero = rangeAxis.valueToJava2D(0.0, dataArea, rangeAxisLocation);
-					transRange = zero - rangeAxis.valueToJava2D(z, dataArea, rangeAxisLocation);
-					transDomain = transRange;
-					break;
-				default:
-					double zero1 = domainAxis.valueToJava2D(0.0, dataArea, domainAxisLocation);
-					double zero2 = rangeAxis.valueToJava2D(0.0, dataArea, rangeAxisLocation);
-					transDomain = domainAxis.valueToJava2D(z, dataArea, domainAxisLocation) - zero1;
-					transRange = zero2 - rangeAxis.valueToJava2D(z, dataArea, rangeAxisLocation);
+			case SCALE_ON_DOMAIN_AXIS:
+				zero = domainAxis.valueToJava2D(0.0, dataArea, domainAxisLocation);
+				transDomain = domainAxis.valueToJava2D(z, dataArea, rangeAxisLocation) - zero;
+				transRange = transDomain;
+				break;
+			case SCALE_ON_RANGE_AXIS:
+				zero = rangeAxis.valueToJava2D(0.0, dataArea, rangeAxisLocation);
+				transRange = zero - rangeAxis.valueToJava2D(z, dataArea, rangeAxisLocation);
+				transDomain = transRange;
+				break;
+			default:
+				double zero1 = domainAxis.valueToJava2D(0.0, dataArea, domainAxisLocation);
+				double zero2 = rangeAxis.valueToJava2D(0.0, dataArea, rangeAxisLocation);
+				transDomain = domainAxis.valueToJava2D(z, dataArea, domainAxisLocation) - zero1;
+				transRange = zero2 - rangeAxis.valueToJava2D(z, dataArea, rangeAxisLocation);
 			}
 			double transZ = -rangeAxis.valueToJava2D(z, dataArea, rangeAxisLocation)
-										+ rangeAxis.valueToJava2D(0.0, dataArea, rangeAxisLocation);
+					+ rangeAxis.valueToJava2D(0.0, dataArea, rangeAxisLocation);
 			transZ = Math.abs(transZ);
 			transDomain = Math.abs(transDomain);
 			transRange = Math.abs(transRange);
 			Ellipse2D circle = null;
 			if (orientation == PlotOrientation.VERTICAL) {
-				circle = new Ellipse2D.Double(transX - transZ / 2.0,
-																transY - transZ / 2.0,
-																transDomain, transRange);
-			} else
-				if (orientation == PlotOrientation.HORIZONTAL) {
-					circle = new Ellipse2D.Double(transY - transZ / 2.0,
-																transX - transZ / 2.0,
-																transRange, transDomain);
-				}
+				circle = new Ellipse2D.Double(transX - transZ / 2.0, transY - transZ / 2.0, transDomain, transRange);
+			} else if (orientation == PlotOrientation.HORIZONTAL) {
+				circle = new Ellipse2D.Double(transY - transZ / 2.0, transX - transZ / 2.0, transRange, transDomain);
+			}
 			g2.setPaint(getItemPaint(series, item));
 			g2.fill(circle);
 			g2.setStroke(new BasicStroke(1.0f));
@@ -238,7 +222,7 @@ public class XYBubbleRenderer extends AbstractXYItemRenderer
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the renderer cannot be cloned.
+	 *             if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

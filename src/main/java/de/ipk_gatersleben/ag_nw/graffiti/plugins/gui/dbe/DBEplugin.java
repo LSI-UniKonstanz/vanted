@@ -46,59 +46,43 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectEn
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectNodesWithExperimentalDataAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.add_attributes.CalculateAttribute;
 
-public class DBEplugin
-					extends DBE_PluginAdapter
-					implements EditorPlugin {
+public class DBEplugin extends DBE_PluginAdapter implements EditorPlugin {
 	@SuppressWarnings("unchecked")
 	private HashMap valueEditComponents = new HashMap();
-	
+
 	@SuppressWarnings("unchecked")
 	public DBEplugin() {
-		valueEditComponents.put(
-							JComponentParameter.class,
-							JComponentParameterEditor.class);
-		
+		valueEditComponents.put(JComponentParameter.class, JComponentParameterEditor.class);
+
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING)) {
 			/*
-			 * extensions = new Extension[] {
-			 * new DBEextension()
-			 * };
+			 * extensions = new Extension[] { new DBEextension() };
 			 */
 			algorithms = new Algorithm[] {
-								// new ProcessHierarchynodesDepOnLeafNodes(),
+					// new ProcessHierarchynodesDepOnLeafNodes(),
 					// new CreateKeggReactionNetworkAlgorithm(),
 					// new PruneTreeAlgorithm(),
 					// new CreateDirectChildrenClustersHistogramAlgorithm(),
-					new ExtractMappingDataAlgorithm(),
-								new RemoveMappingDataAlgorithm(),
-								new CombineMappingData(),
-								new AddDiagramLegendAlgorithm(),
-								new SetNumericAttributeFromDataAlgorithm(),
-								new RecolorEdgesAlgorithm(),
-//								new AddInterestingAttributes(),
-								new CalculateAttribute(),
-								// new ColorScaleLegendAlgorithm(),
-					new CreateDistanceMatrixAlgorithm(),
-								new ShowOrHideImageAttributesAlgorithm(),
-								new SelectCompoundsAlgorithm(),
-								new SelectEnzymesAlgorithm(),
-								// new SelectReactionsAlgorithm(),
-					new SplitNodeForSingleMappingData(),
-								new MergeNodes(),
-								new UserMappingAlgorithm(),
-								new TranspathPathwayLoader(),
+					new ExtractMappingDataAlgorithm(), new RemoveMappingDataAlgorithm(), new CombineMappingData(),
+					new AddDiagramLegendAlgorithm(), new SetNumericAttributeFromDataAlgorithm(),
+					new RecolorEdgesAlgorithm(),
+					// new AddInterestingAttributes(),
+					new CalculateAttribute(),
+					// new ColorScaleLegendAlgorithm(),
+					new CreateDistanceMatrixAlgorithm(), new ShowOrHideImageAttributesAlgorithm(),
+					new SelectCompoundsAlgorithm(), new SelectEnzymesAlgorithm(),
+					// new SelectReactionsAlgorithm(),
+					new SplitNodeForSingleMappingData(), new MergeNodes(), new UserMappingAlgorithm(),
+					new TranspathPathwayLoader(),
 					// new CreateHierarchyTree(),
 					// new HierarchyWizard()
-					};
-		} else {
-			algorithms = new Algorithm[] {
-								new SelectNodesWithExperimentalDataAlgorithm(),
-								new SelectEdgesAlgorithm(),
-								new CreateKeggReactionNetworkAlgorithm()
 			};
+		} else {
+			algorithms = new Algorithm[] { new SelectNodesWithExperimentalDataAlgorithm(), new SelectEdgesAlgorithm(),
+					new CreateKeggReactionNetworkAlgorithm() };
 		}
 	}
-	
+
 	@Override
 	public ImageIcon getIcon() {
 		try {
@@ -111,34 +95,34 @@ public class DBEplugin
 			return super.getIcon();
 		}
 	}
-	
+
 	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return null;
 	}
-	
+
 	public GraffitiComponent[] getGUIComponents() {
 		return null;
 	}
-	
+
 	public Mode[] getModes() {
 		return null;
 	}
-	
+
 	public GraffitiShape[] getShapes() {
 		return null;
 	}
-	
+
 	public Tool[] getTools() {
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}
-	
+
 	public InspectorTab[] getInspectorTabs() {
 		return null;
 	}
-	
+
 }

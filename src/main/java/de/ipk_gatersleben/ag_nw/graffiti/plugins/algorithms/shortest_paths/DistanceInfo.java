@@ -12,26 +12,26 @@ import java.util.HashSet;
 import org.graffiti.graph.Node;
 
 public class DistanceInfo {
-	
+
 	private HashSet<Node> sourceNodes = new HashSet<Node>();
 	private HashSet<Node> rejectedNodes = new HashSet<Node>();
 	private double minDistance = Double.MIN_VALUE;
 	private Node thisNode;
-	
+
 	public DistanceInfo(double distance, Node sourceNode, Node thisNode) {
 		minDistance = distance;
 		sourceNodes.add(sourceNode);
 		this.thisNode = thisNode;
 	}
-	
+
 	public Node getNode() {
 		return thisNode;
 	}
-	
+
 	public double getMinDistance() {
 		return minDistance;
 	}
-	
+
 	public void updateSourceIfValid(Node workNode, double minDistanceCheck) {
 		if (minDistanceCheck <= minDistance) {
 			sourceNodes.add(workNode);
@@ -39,7 +39,7 @@ public class DistanceInfo {
 			rejectedNodes.add(workNode);
 		}
 	}
-	
+
 	public boolean allRelevantEdgesProcessed(boolean directed) {
 		Collection<Node> checkTheseNodes;
 		if (directed)
@@ -55,7 +55,7 @@ public class DistanceInfo {
 		}
 		return !foundNotProcessed;
 	}
-	
+
 	public Collection<Node> getSourceNodes() {
 		return sourceNodes;
 	}

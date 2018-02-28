@@ -40,8 +40,9 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demonstration application showing how to create a pie chart using data from a {@link DefaultPieDataset}. This demo also shows an "exploded" section
- * in the chart.
+ * A simple demonstration application showing how to create a pie chart using
+ * data from a {@link DefaultPieDataset}. This demo also shows an "exploded"
+ * section in the chart.
  */
 public class PieChartDemo2 extends ApplicationFrame {
 
@@ -49,7 +50,7 @@ public class PieChartDemo2 extends ApplicationFrame {
 	 * Default constructor.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PieChartDemo2(final String title) {
 
@@ -95,17 +96,14 @@ public class PieChartDemo2 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final PieDataset dataset) {
-		final JFreeChart chart = ChartFactory.createPieChart(
-							"Pie Chart Demo 2", // chart title
+		final JFreeChart chart = ChartFactory.createPieChart("Pie Chart Demo 2", // chart title
 				dataset, // dataset
 				true, // include legend
-				true,
-							false
-							);
+				true, false);
 		final PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setNoDataMessage("No data available");
 		plot.setExplodePercent(1, 0.30);
@@ -116,7 +114,7 @@ public class PieChartDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

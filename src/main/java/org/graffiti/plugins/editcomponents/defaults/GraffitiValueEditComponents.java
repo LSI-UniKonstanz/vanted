@@ -39,56 +39,47 @@ import org.graffiti.plugin.parameter.StringParameter;
  * @see org.graffiti.plugin.editcomponent.ValueEditComponent
  * @see org.graffiti.plugin.GenericPlugin
  */
-public class GraffitiValueEditComponents
-					extends EditorPluginAdapter {
+public class GraffitiValueEditComponents extends EditorPluginAdapter {
 	// ~ Constructors ===========================================================
-	
+
 	// /**
 	// * The number of edit components this plugin provides.
 	// */
 	// private static final int NUMBER_OF_VECS = 20;
-	
+
 	/**
 	 * Constructs a new <code>GraffitiValueEditComponent</code>.
 	 */
 	public GraffitiValueEditComponents() {
 		super();
-		
+
 		// register the ui compoents for the displayable types
-		valueEditComponents.put(ColorAttribute.class,
-							ColorChooserEditComponent.class);
+		valueEditComponents.put(ColorAttribute.class, ColorChooserEditComponent.class);
 		// valueEditComponents.put(LineModeAttribute.class,
 		// LineModeEditComponent.class);
-		valueEditComponents.put(IntegerAttribute.class,
-							IntegerEditComponent.class);
+		valueEditComponents.put(IntegerAttribute.class, IntegerEditComponent.class);
 		valueEditComponents.put(ShortAttribute.class, ShortEditComponent.class);
 		valueEditComponents.put(LongAttribute.class, LongEditComponent.class);
 		valueEditComponents.put(ByteAttribute.class, ByteEditComponent.class);
 		valueEditComponents.put(FloatAttribute.class, FloatEditComponent.class);
 		valueEditComponents.put(DoubleAttribute.class, DoubleEditComponent.class);
-		valueEditComponents.put(BooleanAttribute.class,
-							BooleanEditComponent.class);
-		valueEditComponents.put(NodeShapeAttribute.class,
-							NodeShapeEditComponent.class);
-		valueEditComponents.put(EdgeShapeAttribute.class,
-							EdgeShapeEditComponent.class);
-		
+		valueEditComponents.put(BooleanAttribute.class, BooleanEditComponent.class);
+		valueEditComponents.put(NodeShapeAttribute.class, NodeShapeEditComponent.class);
+		valueEditComponents.put(EdgeShapeAttribute.class, EdgeShapeEditComponent.class);
+
 		valueEditComponents.put(ArrowShapeAttribute.class, EdgeArrowShapeEditComponent.class);
-		
+
 		valueEditComponents.put(StringAttribute.class, StringEditComponent.class);
-		
+
 		// register the ui compoents for the parameter types
-		valueEditComponents.put(IntegerParameter.class,
-							IntegerEditComponent.class);
+		valueEditComponents.put(IntegerParameter.class, IntegerEditComponent.class);
 		valueEditComponents.put(DoubleParameter.class, DoubleEditComponent.class);
 		valueEditComponents.put(FloatParameter.class, FloatEditComponent.class);
 		valueEditComponents.put(StringParameter.class, StringEditComponent.class);
 		valueEditComponents.put(MultiFileSelectionParameter.class, MultiFileSelectionEditComponent.class);
-		valueEditComponents.put(BooleanParameter.class,
-							BooleanEditComponent.class);
+		valueEditComponents.put(BooleanParameter.class, BooleanEditComponent.class);
 		valueEditComponents.put(NodeParameter.class, NodeEditComponent.class);
-		valueEditComponents.put(ObjectListParameter.class,
-							ObjectListComponent.class);
+		valueEditComponents.put(ObjectListParameter.class, ObjectListComponent.class);
 	}
 }
 

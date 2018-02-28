@@ -57,10 +57,11 @@ import org.jfree.ui.Spacer;
 public class MultipleAxisDemo1 extends ApplicationFrame {
 
 	/**
-	 * A demonstration application showing how to create a time series chart with muliple axes.
+	 * A demonstration application showing how to create a time series chart with
+	 * muliple axes.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public MultipleAxisDemo1(final String title) {
 
@@ -83,15 +84,8 @@ public class MultipleAxisDemo1 extends ApplicationFrame {
 
 		final XYDataset dataset1 = createDataset("Series 1", 100.0, new Minute(), 200);
 
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							"Multiple Axis Demo 1",
-							"Time of Day",
-							"Primary Range Axis",
-							dataset1,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Multiple Axis Demo 1", "Time of Day",
+				"Primary Range Axis", dataset1, true, true, false);
 
 		chart.setBackgroundPaint(Color.white);
 		chart.addSubtitle(new TextTitle("Four datasets and four range axes."));
@@ -166,17 +160,17 @@ public class MultipleAxisDemo1 extends ApplicationFrame {
 	 * Creates a sample dataset.
 	 * 
 	 * @param name
-	 *           the dataset name.
+	 *            the dataset name.
 	 * @param base
-	 *           the starting value.
+	 *            the starting value.
 	 * @param start
-	 *           the starting period.
+	 *            the starting period.
 	 * @param count
-	 *           the number of values to generate.
+	 *            the number of values to generate.
 	 * @return The dataset.
 	 */
-	private XYDataset createDataset(final String name, final double base,
-												final RegularTimePeriod start, final int count) {
+	private XYDataset createDataset(final String name, final double base, final RegularTimePeriod start,
+			final int count) {
 
 		final TimeSeries series = new TimeSeries(name, start.getClass());
 		RegularTimePeriod period = start;
@@ -198,7 +192,7 @@ public class MultipleAxisDemo1 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

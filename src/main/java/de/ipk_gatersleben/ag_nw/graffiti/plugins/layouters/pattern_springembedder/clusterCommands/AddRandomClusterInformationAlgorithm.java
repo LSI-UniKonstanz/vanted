@@ -17,35 +17,32 @@ import org.graffiti.plugin.parameter.Parameter;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 
 public class AddRandomClusterInformationAlgorithm extends AbstractAlgorithm {
-	
+
 	int maxClusterID = 10;
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Apply random Cluster-ID";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return null;
 		// return "Analysis";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.ANNOTATION,
-				Category.CLUSTER
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANNOTATION, Category.CLUSTER));
 	}
 
-	
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
@@ -57,30 +54,34 @@ public class AddRandomClusterInformationAlgorithm extends AbstractAlgorithm {
 		}
 		graph.getListenerManager().transactionFinished(this);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
 	@Override
 	public Parameter[] getParameters() {
-		IntegerParameter maxId = new IntegerParameter(maxClusterID,
-							"Cluster-Count", "Number of Clusters");
+		IntegerParameter maxId = new IntegerParameter(maxClusterID, "Cluster-Count", "Number of Clusters");
 		return new Parameter[] { maxId };
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
 	@Override
 	public void reset() {
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.Algorithm#setParameters(org.graffiti.plugin.parameter.Parameter[])
+	 * 
+	 * @see
+	 * org.graffiti.plugin.algorithm.Algorithm#setParameters(org.graffiti.plugin.
+	 * parameter.Parameter[])
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {

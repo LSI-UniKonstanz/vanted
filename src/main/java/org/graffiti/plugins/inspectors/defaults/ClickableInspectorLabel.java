@@ -14,12 +14,13 @@ import javax.swing.SwingConstants;
 import org.graffiti.editor.GravistoService;
 
 public class ClickableInspectorLabel extends JPanel {
-	
+
 	private static final long serialVersionUID = 1L;
 	private final Runnable executeOnClick;
 	private final JLabel textlabel, iconlabel;
-	private static ImageIcon icon = new ImageIcon(GravistoService.getResource(ClickableInspectorLabel.class, "deleteCross.png"));
-	
+	private static ImageIcon icon = new ImageIcon(
+			GravistoService.getResource(ClickableInspectorLabel.class, "deleteCross.png"));
+
 	public ClickableInspectorLabel(String text, final Runnable executeOnClick) {
 		textlabel = new JLabel(text);
 		textlabel.setIcon(null);
@@ -32,21 +33,21 @@ public class ClickableInspectorLabel extends JPanel {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				iconlabel.setIcon(null);
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				iconlabel.setIcon(icon);
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 			}
@@ -55,21 +56,21 @@ public class ClickableInspectorLabel extends JPanel {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				iconlabel.setIcon(null);
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				iconlabel.setIcon(icon);
 			}
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				executeOnClick.run();
@@ -77,19 +78,20 @@ public class ClickableInspectorLabel extends JPanel {
 		});
 		Cursor c = new Cursor(Cursor.HAND_CURSOR);
 		iconlabel.setCursor(c);
-		
-		setLayout(TableLayout.getLayout(new double[] { TableLayout.PREFERRED, 5, TableLayout.PREFERRED }, TableLayout.PREFERRED));
+
+		setLayout(TableLayout.getLayout(new double[] { TableLayout.PREFERRED, 5, TableLayout.PREFERRED },
+				TableLayout.PREFERRED));
 		add(textlabel, "0,0");
 		add(iconlabel, "2,0");
 		setOpaque(false);
 	}
-	
+
 	public ClickableInspectorLabel(String text, ClickableInspectorLabel copy) {
 		this(text, copy.executeOnClick);
 	}
-	
+
 	public JLabel getLabel() {
 		return textlabel;
 	}
-	
+
 }

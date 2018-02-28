@@ -19,41 +19,39 @@ import org.graffiti.plugin.view.View;
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 public class RecreateView extends AbstractEditorAlgorithm {
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Recreate View";
 	}
-	
+
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke('R', SystemInfo.getAccelModifier());
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "menu.window";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.UI,
-				Category.GRAPH
-				));
+		return new HashSet<Category>(Arrays.asList(Category.UI, Category.GRAPH));
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
@@ -63,9 +61,9 @@ public class RecreateView extends AbstractEditorAlgorithm {
 			GraphHelper.issueCompleteRedrawForGraph(graph);
 		}
 	}
-	
+
 	public boolean activeForView(View v) {
 		return v != null;
 	}
-	
+
 }

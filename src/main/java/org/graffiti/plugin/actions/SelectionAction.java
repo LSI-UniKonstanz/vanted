@@ -24,29 +24,29 @@ import org.graffiti.session.EditorSession;
  */
 public abstract class SelectionAction extends GraffitiAction {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Constructs a new selection action with the given name.
 	 * 
 	 * @param name
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param mainFrame
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public SelectionAction(String name, MainFrame mainFrame) {
 		super(name, mainFrame, null);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	@Override
 	public abstract boolean isEnabled();
-	
+
 	/**
 	 * Returns the current list of selected items of this action.
 	 * 
@@ -62,7 +62,7 @@ public abstract class SelectionAction extends GraffitiAction {
 		}
 		return result;
 	}
-	
+
 	public Selection getSelection() {
 		EditorSession session = MainFrame.getInstance().getActiveEditorSession();
 		if (session != null) {
@@ -71,7 +71,7 @@ public abstract class SelectionAction extends GraffitiAction {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Returns <code>true</code>, if this action should survive a focus change.
 	 * 
@@ -80,13 +80,14 @@ public abstract class SelectionAction extends GraffitiAction {
 	public boolean surviveFocusChange() {
 		return false;
 	}
-	
+
 	/**
-	 * Sets the internal <code>enable</code> flag, which depends on the given
-	 * list of selected items.
+	 * Sets the internal <code>enable</code> flag, which depends on the given list
+	 * of selected items.
 	 * 
 	 * @param items
-	 *           the items, which determine the internal state of the <code>enable</code> flag.
+	 *            the items, which determine the internal state of the
+	 *            <code>enable</code> flag.
 	 */
 	protected abstract void enable(List<?> items);
 }

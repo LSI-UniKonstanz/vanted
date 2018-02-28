@@ -62,92 +62,87 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
  */
 public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 		implements ProvidesGeneralContextMenu, ActionListener {
-	
+
 	Vector2d centerOfMass;
-	
+
 	double centerX;
-	
+
 	double centerY;
-	
+
 	Collection<Node> nodeList = null;
 	Collection<Edge> edgeList = null;
-	
+
 	Graph nonInteractiveGraph;
-	
+
 	Selection nonInteractiveSelection;
-	
+
 	private double degree = 0;
-	
+
 	private ThreadSafeOptions options;
-	
+
 	private boolean useUndoSupport = true;
-	
+
 	public String getName() {
 		return "Rotate";
 	}
-	
+
 	public String getCategory() {
-//		return "Layout";
+		// return "Layout";
 		return null;
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.LAYOUT,
-				Category.GRAPH
-				));
+		return new HashSet<Category>(Arrays.asList(Category.LAYOUT, Category.GRAPH));
 	}
-	
+
 	@Override
 	public String getMenuCategory() {
 		return null;
 	}
 
-	
 	@Override
 	public String toString() {
 		return getName();
 	}
-	
+
 	public Parameter[] getParameters() {
-		DoubleParameter degreeParam = new DoubleParameter(degree, "Degree",
-							"Degree to rotate network clockwise");
-		
+		DoubleParameter degreeParam = new DoubleParameter(degree, "Degree", "Degree to rotate network clockwise");
+
 		// BooleanParameter useSelectionParam = new BooleanParameter(useSelection,
 		// "Work on Selection", "Rotate only selected Nodes");
-		
-		return new Parameter[] { degreeParam /* , useSelectionParam */};
+
+		return new Parameter[] { degreeParam /* , useSelectionParam */ };
 	}
-	
+
 	public ActionEvent getActionEvent() {
 		return null;
 	}
-	
+
 	public void setActionEvent(ActionEvent a) {
 		// empty
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param params
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void setParameters(Parameter[] params) {
 		degree = ((DoubleParameter) params[0]).getDouble().doubleValue();
-		
+
 		// useSelection = ((BooleanParameter) params[1]).getBoolean().booleanValue();
 	}
-	
+
 	public void check() {
 	}
-	
+
 	void updateSelectionDependentVariables(Graph graph, Selection selection) {
-		
+
 		double x = 0.0;
 		double y = 0.0;
-		
+
 		if (selection != null && selection.getNodes().size() > 0) {
 			nodeList = selection.getNodes();
 			edgeList = selection.getEdges();
@@ -155,29 +150,29 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 			nodeList = graph.getNodes();
 			edgeList = graph.getEdges();
 		}
-		
+
 		int numberOfSelectedNodes = 0;
 		for (Node currentNode : nodeList) {
 			x += AttributeHelper.getPositionX(currentNode);
 			y += AttributeHelper.getPositionY(currentNode);
 			numberOfSelectedNodes++;
 		}
-		
+
 		x = x / numberOfSelectedNodes;
 		y = y / numberOfSelectedNodes;
-		
+
 		centerOfMass = new Vector2d(x, y);
 		centerX = centerOfMass.x;
 		centerY = centerOfMass.y;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void execute() {
 		double targetDegree = degree;
-		
+
 		// current angle
 		final ThreadSafeOptions absoluteDegree = new ThreadSafeOptions(); // Drehwinkel, ausgehend vom Startzustand
-		
+
 		if (options == null || options.getGraphInstance() == null) {
 			GravistoService.getInstance().algorithmAttachData(this);
 		}
@@ -186,9 +181,9 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 			nonInteractiveSelection = options.getSelection();
 		}
 		updateSelectionDependentVariables(nonInteractiveGraph, nonInteractiveSelection);
-		
+
 		final Graph graph = nonInteractiveGraph;
-		
+
 		if (nodeList.size() < 2)
 			return;
 		// options == null ==> Vom Menü, sonst Schleife für Background-Thread
@@ -200,10 +195,7 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 			coordinates2oldPositions.put(coA, new Vector2d(coA.getCoordinate()));
 		}
 		for (Edge e : edgeList) {
-			LinkedHashMapAttribute ha =
-								((LinkedHashMapAttribute)
-								e.getAttribute(
-													AttributeConstants.BENDS));
+			LinkedHashMapAttribute ha = ((LinkedHashMapAttribute) e.getAttribute(AttributeConstants.BENDS));
 			if (ha == null)
 				continue;
 			Map m = ha.getCollection();
@@ -216,29 +208,28 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 				coordinates2oldPositions.put(co, new Vector2d(co.getCoordinate()));
 			}
 		}
-		
+
 		do {
 			if (!SwingUtilities.isEventDispatchThread()) { // im Thread
-				targetDegree = ((Integer) options.getParam(1, new Integer(0)))
-									.intValue();
+				targetDegree = ((Integer) options.getParam(1, new Integer(0))).intValue();
 				double localDegree = targetDegree - absoluteDegree.getDouble();
-				
+
 				try {
 					Thread.sleep(50);
 				} catch (InterruptedException e) {
 					// empty
 				}
-				
+
 				if (Math.abs(localDegree) < 0.5) {
 					continue;
 				}
-				
+
 			}
-			
+
 			final double targetDegreeF = targetDegree;
-			
+
 			// graph.getListenerManager().transactionStarted(this);
-			
+
 			absoluteDegree.addInt(1);
 			final int latestRunID = absoluteDegree.getInt();
 			SwingUtilities.invokeLater(new Runnable() {
@@ -249,16 +240,14 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 					if (Math.abs(absoluteDegree.getDouble() - targetDegreeF) < 0.001)
 						return;
 					ArrayList<CoordinateAttribute> transformThese = new ArrayList<CoordinateAttribute>();
-					
+
 					for (Node n : nodeList) {
-						CoordinateAttribute coA = (CoordinateAttribute) n.getAttribute(GraphicAttributeConstants.COORD_PATH);
+						CoordinateAttribute coA = (CoordinateAttribute) n
+								.getAttribute(GraphicAttributeConstants.COORD_PATH);
 						transformThese.add(coA);
 					}
 					for (Edge e : edgeList) {
-						LinkedHashMapAttribute ha =
-											((LinkedHashMapAttribute)
-											e.getAttribute(
-																AttributeConstants.BENDS));
+						LinkedHashMapAttribute ha = ((LinkedHashMapAttribute) e.getAttribute(AttributeConstants.BENDS));
 						if (ha == null)
 							continue;
 						Map m = ha.getCollection();
@@ -278,10 +267,9 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 						if (Math.abs(currentDistance) > 0.00001) {
 							double x = currentPosition.x;
 							double y = currentPosition.y;
-							
-							double currentDegree = Math.asin((x - centerX) / currentDistance)
-												/ (2.0 * Math.PI) * 360.0;
-							
+
+							double currentDegree = Math.asin((x - centerX) / currentDistance) / (2.0 * Math.PI) * 360.0;
+
 							// 0 <= currentDegree < = 90
 							// nothing needs to be changed
 							if (y > centerY) {
@@ -293,24 +281,22 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 									currentDegree = 360 + currentDegree;
 								}
 							}
-							
+
 							x = centerOfMass.x
-												+ currentDistance
-												* Math.sin((targetDegreeF + currentDegree) / 180.0 * Math.PI);
+									+ currentDistance * Math.sin((targetDegreeF + currentDegree) / 180.0 * Math.PI);
 							y = centerOfMass.y
-												- currentDistance
-												* Math.cos((targetDegreeF + currentDegree) / 180.0 * Math.PI);
+									- currentDistance * Math.cos((targetDegreeF + currentDegree) / 180.0 * Math.PI);
 							coA.setCoordinate(x, y);
 							coordinates2newPositions.put(coA, new Vector2d(x, y));
 						}
 					}
 					graph.getListenerManager().transactionFinished(this);
-					
+
 					// graph.getListenerManager().transactionFinished(this);
 					absoluteDegree.setDouble(targetDegreeF);
 				}
 			});
-			
+
 		} while (options != null && !options.isAbortWanted());
 		if (options != null) {
 			options.setAbortWanted(false);
@@ -319,12 +305,13 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 		if (useUndoSupport) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
-					GraphHelper.postUndoableChanges(graphF, coordinates2oldPositions, coordinates2newPositions, "Rotation");
+					GraphHelper.postUndoableChanges(graphF, coordinates2oldPositions, coordinates2newPositions,
+							"Rotation");
 				}
 			});
 		}
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -332,46 +319,43 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 	 */
 	public JMenuItem[] getCurrentContextMenuItem() {
 		JMenuItem menuItem = new JMenuItem(getName());
-		
+
 		menuItem.addActionListener(this);
 		return new JMenuItem[] { menuItem };
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param e
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		// executeThreadSafe(null);
 		GravistoService.getInstance().algorithmAttachData(this);
-		GravistoService.getInstance().runAlgorithm(this, nonInteractiveGraph,
-							nonInteractiveSelection, e);
+		GravistoService.getInstance().runAlgorithm(this, nonInteractiveGraph, nonInteractiveSelection, e);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.ThreadSafeAlgorithm#setControlInterface(org.graffiti.plugin.algorithm.ThreadSafeOptions, javax.swing.JComponent)
+	 * 
+	 * @see
+	 * org.graffiti.plugin.algorithm.ThreadSafeAlgorithm#setControlInterface(org.
+	 * graffiti.plugin.algorithm.ThreadSafeOptions, javax.swing.JComponent)
 	 */
 	@Override
-	public boolean setControlInterface(final ThreadSafeOptions options,
-						JComponent jc) {
+	public boolean setControlInterface(final ThreadSafeOptions options, JComponent jc) {
 		this.options = options;
-		
+
 		double border = 5;
-		double[][] size = {
-							{ border, TableLayoutConstants.FILL, border }, // Columns
-				{ border, TableLayoutConstants.PREFERRED,
-												TableLayoutConstants.FILL, border } }; // Rows
-		
+		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
+				{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, border } }; // Rows
+
 		jc.setLayout(new TableLayout(size));
-		
-		final FolderPanel fp = new FolderPanel(
-							"Rotate Nodes",
-							false, false, false,
-							JLabelJavaHelpLink.getHelpActionListener("layout_rotate"));
-		
+
+		final FolderPanel fp = new FolderPanel("Rotate Nodes", false, false, false,
+				JLabelJavaHelpLink.getHelpActionListener("layout_rotate"));
+
 		JSlider angle = new JSlider();
 		angle.setBackground(null);
 		angle.setMinimum(0);
@@ -384,27 +368,27 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 			angle.setPaintTrack(false);
 		angle.setLabelTable(angle.createStandardLabels(60));
 		angle.setValue(((Integer) options.getParam(1, new Integer(0))).intValue());
-		
+
 		angle.addFocusListener(new FocusListener() {
-			
+
 			public void focusGained(FocusEvent e) {
 				options.setParam(2, new Integer(((JSlider) e.getSource()).getValue()));
 				options.setAbortWanted(true);
 				try {
 					Graph graph = MainFrame.getInstance().getActiveEditorSession().getGraph();
-					Selection s = MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection();
+					Selection s = MainFrame.getInstance().getActiveEditorSession().getSelectionModel()
+							.getActiveSelection();
 					options.setGraphInstance(graph);
 					options.setSelection(s);
 					updateSelectionDependentVariables(options.getGraphInstance(), options.getSelection());
 					Thread newBackgroundThread = null;
-					newBackgroundThread =
-										new Thread(new Runnable() {
-											public void run() {
-												executeThreadSafe(options);
-											}
-										}) {
-										};
-					
+					newBackgroundThread = new Thread(new Runnable() {
+						public void run() {
+							executeThreadSafe(options);
+						}
+					}) {
+					};
+
 					newBackgroundThread.setPriority(Thread.MIN_PRIORITY);
 					options.setAbortWanted(false);
 					newBackgroundThread.start();
@@ -415,12 +399,12 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 					fp.setTitle("Rotate Nodes (no network active!)");
 				}
 			}
-			
+
 			public void focusLost(FocusEvent e) {
 				options.setAbortWanted(true);
 			}
 		});
-		
+
 		angle.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				// Ziel-Grad-Wert
@@ -428,19 +412,21 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 				options.setParam(1, new Integer(((JSlider) e.getSource()).getValue() - oldOffset));
 			}
 		});
-		
+
 		fp.addComp(angle);
 		fp.layoutRows();
-		
+
 		jc.add(fp, "1,1");
 		jc.validate();
-		
+
 		return true;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.ThreadSafeAlgorithm#executeThreadSafe(org.graffiti.plugin.algorithm.ThreadSafeOptions)
+	 * 
+	 * @see org.graffiti.plugin.algorithm.ThreadSafeAlgorithm#executeThreadSafe(org.
+	 * graffiti.plugin.algorithm.ThreadSafeOptions)
 	 */
 	@Override
 	public void executeThreadSafe(ThreadSafeOptions options) {
@@ -455,17 +441,21 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 			ErrorMsg.addErrorMessage(npe);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.ThreadSafeAlgorithm#resetDataCache(org.graffiti.plugin.algorithm.ThreadSafeOptions)
+	 * 
+	 * @see
+	 * org.graffiti.plugin.algorithm.ThreadSafeAlgorithm#resetDataCache(org.graffiti
+	 * .plugin.algorithm.ThreadSafeOptions)
 	 */
 	@Override
 	public void resetDataCache(ThreadSafeOptions options) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
 	public void reset() {
@@ -474,10 +464,12 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 		options = null;
 		degree = 0;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.Algorithm#attach(org.graffiti.graph.Graph, org.graffiti.selection.Selection)
+	 * 
+	 * @see org.graffiti.plugin.algorithm.Algorithm#attach(org.graffiti.graph.Graph,
+	 * org.graffiti.selection.Selection)
 	 */
 	public void attach(Graph g, Selection selection) {
 		if (options != null) {
@@ -488,20 +480,21 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 			nonInteractiveSelection = selection;
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#isLayoutAlgorithm()
 	 */
 	public boolean isLayoutAlgorithm() {
 		return true;
 	}
-	
+
 	public String getDescription() {
 		//
 		return null;
 	}
-	
+
 	public void disableUndo() {
 		this.useUndoSupport = false;
 	}

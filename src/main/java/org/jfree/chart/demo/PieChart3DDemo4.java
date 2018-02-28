@@ -49,7 +49,7 @@ public class PieChart3DDemo4 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PieChart3DDemo4(final String title) {
 
@@ -94,18 +94,15 @@ public class PieChart3DDemo4 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final PieDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createPieChart3D(
-							"Pie Chart 3D Demo 4", // chart title
+		final JFreeChart chart = ChartFactory.createPieChart3D("Pie Chart 3D Demo 4", // chart title
 				dataset, // data
 				true, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		final PiePlot3D plot = (PiePlot3D) chart.getPlot();
 		plot.setStartAngle(290);
@@ -121,7 +118,7 @@ public class PieChart3DDemo4 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
@@ -141,9 +138,9 @@ public class PieChart3DDemo4 extends ApplicationFrame {
 		 * Generates a label for a pie section.
 		 * 
 		 * @param dataset
-		 *           the dataset (<code>null</code> not permitted).
+		 *            the dataset (<code>null</code> not permitted).
 		 * @param key
-		 *           the section key (<code>null</code> not permitted).
+		 *            the section key (<code>null</code> not permitted).
 		 * @return the label (possibly <code>null</code>).
 		 */
 		public String generateSectionLabel(final PieDataset dataset, final Comparable key) {

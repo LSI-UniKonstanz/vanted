@@ -34,16 +34,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.KeggGmlHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.ReactionType;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class KeggReactionTypeAttributeEditor
-					extends AbstractValueEditComponent
-					implements ActionListener {
+public class KeggReactionTypeAttributeEditor extends AbstractValueEditComponent implements ActionListener {
 	// protected JComboBox keggReactionTypeSelection = new JComboBox();
 	protected JLabel reactionTypeDisplay = new JLabel();
 	protected JButton selectOfThisType = new JButton("Select");
-	
+
 	public KeggReactionTypeAttributeEditor(final Displayable disp) {
 		super(disp);
 		String curVal = ((KeggReactionTypeAttribute) getDisplayable()).getString();
@@ -58,15 +55,13 @@ public class KeggReactionTypeAttributeEditor
 		reactionTypeDisplay.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
 		selectOfThisType.setOpaque(false);
 	}
-	
+
 	public JComponent getComponent() {
 		return TableLayout.getSplit(
-							// keggReactionTypeSelection,
-				reactionTypeDisplay,
-							selectOfThisType,
-							TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
+				// keggReactionTypeSelection,
+				reactionTypeDisplay, selectOfThisType, TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
 	}
-	
+
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			selectOfThisType.setEnabled(false);
@@ -81,14 +76,15 @@ public class KeggReactionTypeAttributeEditor
 			reactionTypeDisplay.setText(curVal);
 		}
 	}
-	
+
 	public void setValue() {
 		// if (!keggReactionTypeSelection.getSelectedItem().equals(EMPTY_STRING))
 		// ((KeggReactionTypeAttribute)displayable).setString(keggReactionTypeSelection.getSelectedItem().toString());
 	}
-	
+
 	public void actionPerformed(ActionEvent arg0) {
-		// String currentReactionTypeString = (String) keggReactionTypeSelection.getSelectedItem();
+		// String currentReactionTypeString = (String)
+		// keggReactionTypeSelection.getSelectedItem();
 		String currentReactionTypeString = reactionTypeDisplay.getText();
 		if (currentReactionTypeString == null)
 			return;
@@ -132,7 +128,7 @@ public class KeggReactionTypeAttributeEditor
 			}
 		}
 		selection.addAll(edges);
-		
+
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		for (Node n : graph.getNodes()) {
 			ArrayList<IndexAndString> reacTypeInfos = KeggGmlHelper.getKeggReactionTypes(n);
@@ -149,8 +145,9 @@ public class KeggReactionTypeAttributeEditor
 			}
 		}
 		selection.addAll(nodes);
-		
+
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
-		MainFrame.showMessage(nodes.size() + " nodes and " + edges.size() + " edges added to selection", MessageType.INFO);
+		MainFrame.showMessage(nodes.size() + " nodes and " + edges.size() + " edges added to selection",
+				MessageType.INFO);
 	}
 }

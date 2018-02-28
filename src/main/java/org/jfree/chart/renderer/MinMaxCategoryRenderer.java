@@ -69,9 +69,9 @@ import org.jfree.data.CategoryDataset;
 import org.jfree.io.SerialUtilities;
 
 /**
- * Renderer for drawing min max plot. This renderer draws all the series under the same category
- * in the same x position using <code>objectIcon</code> and a line from the maximum value to the
- * minimum value.
+ * Renderer for drawing min max plot. This renderer draws all the series under
+ * the same category in the same x position using <code>objectIcon</code> and a
+ * line from the maximum value to the minimum value.
  * <p>
  * For use with the {@link org.jfree.chart.plot.CategoryPlot} class.
  * 
@@ -89,12 +89,10 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 	private transient Stroke groupStroke = new BasicStroke(1.0f);
 
 	/** The icon used to indicate the minimum value. */
-	private transient Icon minIcon = getIcon(new Arc2D.Double(-4, -4, 8, 8, 0, 360, Arc2D.OPEN),
-															null, Color.black);
+	private transient Icon minIcon = getIcon(new Arc2D.Double(-4, -4, 8, 8, 0, 360, Arc2D.OPEN), null, Color.black);
 
 	/** The icon used to indicate the maximum value. */
-	private transient Icon maxIcon = getIcon(new Arc2D.Double(-4, -4, 8, 8, 0, 360, Arc2D.OPEN),
-															null, Color.black);
+	private transient Icon maxIcon = getIcon(new Arc2D.Double(-4, -4, 8, 8, 0, 360, Arc2D.OPEN), null, Color.black);
 
 	/** The icon used to indicate the values. */
 	private transient Icon objectIcon = getIcon(new Line2D.Double(-4, 0, 4, 0), false, true);
@@ -125,43 +123,33 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 	 * Draw a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the area in which the data is drawn.
+	 *            the area in which the data is drawn.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	public void drawItem(Graphics2D g2,
-									CategoryItemRendererState state,
-									Rectangle2D dataArea,
-									CategoryPlot plot,
-									CategoryAxis domainAxis,
-									ValueAxis rangeAxis,
-									CategoryDataset dataset,
-									int row,
-									int column) {
+	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
+			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
 
 		// first check the number we are plotting...
 		Number value = dataset.getValue(row, column);
 		if (value != null) {
 			// current data point...
-			double x1 = domainAxis.getCategoryMiddle(column, getColumnCount(), dataArea,
-																		plot.getDomainAxisEdge());
-			double y1 = rangeAxis.valueToJava2D(
-								value.doubleValue(), dataArea, plot.getRangeAxisEdge()
-								);
+			double x1 = domainAxis.getCategoryMiddle(column, getColumnCount(), dataArea, plot.getDomainAxisEdge());
+			double y1 = rangeAxis.valueToJava2D(value.doubleValue(), dataArea, plot.getRangeAxisEdge());
 			g2.setPaint(getItemPaint(row, column));
 			g2.setStroke(getItemStroke(row, column));
 			Shape shape = null;
@@ -209,12 +197,9 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 					if (previousValue != null) {
 						// previous data point...
 						double previous = previousValue.doubleValue();
-						double x0 = domainAxis.getCategoryStart(column - 1, getColumnCount(),
-																						dataArea,
-																						plot.getDomainAxisEdge());
-						double y0 = rangeAxis.valueToJava2D(
-											previous, dataArea, plot.getRangeAxisEdge()
-											);
+						double x0 = domainAxis.getCategoryStart(column - 1, getColumnCount(), dataArea,
+								plot.getDomainAxisEdge());
+						double y0 = rangeAxis.valueToJava2D(previous, dataArea, plot.getRangeAxisEdge());
 						g2.setPaint(getItemPaint(row, column));
 						g2.setStroke(getItemStroke(row, column));
 						Line2D line = new Line2D.Double(x0, y0, x1, y1);
@@ -232,8 +217,8 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 					if (tipster != null) {
 						tip = tipster.generateToolTip(dataset, row, column);
 					}
-					CategoryItemEntity entity = new CategoryItemEntity(
-										shape, tip, null, dataset, row, dataset.getColumnKey(column), column);
+					CategoryItemEntity entity = new CategoryItemEntity(shape, tip, null, dataset, row,
+							dataset.getColumnKey(column), column);
 					entities.addEntity(entity);
 				}
 			}
@@ -244,7 +229,7 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 	 * Sets whether or not lines are drawn between category points.
 	 * 
 	 * @param drawLines
-	 *           if true, then line will be drawn between sequenced categories.
+	 *            if true, then line will be drawn between sequenced categories.
 	 */
 	public void setDrawLines(boolean drawLines) {
 		this.plotLines = drawLines;
@@ -253,7 +238,8 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 	/**
 	 * Gets whether or not lines are drawn between category points.
 	 * 
-	 * @return boolean true if line will be drawn between sequenced categories, otherwise false.
+	 * @return boolean true if line will be drawn between sequenced categories,
+	 *         otherwise false.
 	 */
 	public boolean isDrawLines() {
 		return this.plotLines;
@@ -263,7 +249,7 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 	 * Sets the paint of the line between the minimum value and the maximum value.
 	 * 
 	 * @param groupPaint
-	 *           the new paint.
+	 *            the new paint.
 	 */
 	public void setGroupPaint(Paint groupPaint) {
 		this.groupPaint = groupPaint;
@@ -282,7 +268,7 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 	 * Sets the stroke of the line between the minimum value and the maximum value.
 	 * 
 	 * @param groupStroke
-	 *           The new stroke
+	 *            The new stroke
 	 */
 	public void setGroupStroke(Stroke groupStroke) {
 		this.groupStroke = groupStroke;
@@ -301,7 +287,7 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 	 * Sets the icon used to indicate the values.
 	 * 
 	 * @param objectIcon
-	 *           the icon.
+	 *            the icon.
 	 */
 	public void setObjectIcon(Icon objectIcon) {
 		this.objectIcon = objectIcon;
@@ -320,7 +306,7 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 	 * Sets the icon used to indicate the maximum value.
 	 * 
 	 * @param maxIcon
-	 *           the max icon.
+	 *            the max icon.
 	 */
 	public void setMaxIcon(Icon maxIcon) {
 		this.maxIcon = maxIcon;
@@ -339,7 +325,7 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 	 * Sets the icon used to indicate the minimum value.
 	 * 
 	 * @param minIcon
-	 *           the min icon.
+	 *            the min icon.
 	 */
 	public void setMinIcon(Icon minIcon) {
 		this.minIcon = minIcon;
@@ -358,11 +344,11 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 	 * Returns an icon.
 	 * 
 	 * @param shape
-	 *           the shape.
+	 *            the shape.
 	 * @param fillPaint
-	 *           the fill paint.
+	 *            the fill paint.
 	 * @param outlinePaint
-	 *           the outline paint.
+	 *            the outline paint.
 	 * @return the icon.
 	 */
 	private Icon getIcon(Shape shape, final Paint fillPaint, final Paint outlinePaint) {
@@ -400,11 +386,11 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 	 * Returns an icon.
 	 * 
 	 * @param shape
-	 *           the shape.
+	 *            the shape.
 	 * @param fill
-	 *           the fill flag.
+	 *            the fill flag.
 	 * @param outline
-	 *           the outline flag.
+	 *            the outline flag.
 	 * @return the icon.
 	 */
 	private Icon getIcon(Shape shape, final boolean fill, final boolean outline) {
@@ -438,9 +424,9 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the output stream.
+	 *            the output stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -452,23 +438,19 @@ public class MinMaxCategoryRenderer extends AbstractCategoryItemRenderer {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the input stream.
+	 *            the input stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *            if there is a classpath problem.
+	 *             if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
 		this.groupStroke = SerialUtilities.readStroke(stream);
 		this.groupPaint = SerialUtilities.readPaint(stream);
 
-		this.minIcon = getIcon(
-							new Arc2D.Double(-4, -4, 8, 8, 0, 360, Arc2D.OPEN), null, Color.black
-							);
-		this.maxIcon = getIcon(
-							new Arc2D.Double(-4, -4, 8, 8, 0, 360, Arc2D.OPEN), null, Color.black
-							);
+		this.minIcon = getIcon(new Arc2D.Double(-4, -4, 8, 8, 0, 360, Arc2D.OPEN), null, Color.black);
+		this.maxIcon = getIcon(new Arc2D.Double(-4, -4, 8, 8, 0, 360, Arc2D.OPEN), null, Color.black);
 		this.objectIcon = getIcon(new Line2D.Double(-4, 0, 4, 0), false, true);
 	}
 

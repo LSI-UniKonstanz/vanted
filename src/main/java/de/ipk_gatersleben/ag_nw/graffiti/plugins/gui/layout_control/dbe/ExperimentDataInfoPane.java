@@ -71,31 +71,31 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 /**
- * @author Christian Klukas
- *         To change the template for this generated type comment go to
- *         Window>Preferences>Java>Code Generation>Code and Comments
+ * @author Christian Klukas To change the template for this generated type
+ *         comment go to Window>Preferences>Java>Code Generation>Code and
+ *         Comments
  */
 public class ExperimentDataInfoPane extends JComponent implements SessionListener {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	// private Document mydoc;
-	
+
 	private ExperimentInterface md;
-	
+
 	private FolderPanel fpExperimentInfo;
 	private FolderPanel fpTimeAndPlants;
-	
+
 	private JList jcbFilterTime;
 	private JList jcbFilterPlant;
 	private String[] times;
-	
+
 	private final JTabbedPane parentPane;
-	
+
 	private JComponent currentGui;
-	
+
 	private JLabel alternativeIDCount;
-	
+
 	// /**
 	// * Use getDocumentData, if possible.
 	// *
@@ -105,11 +105,11 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 	// private Document getDocument() {
 	// return Experiment.getDocuments(md).iterator().next();
 	// }
-	
+
 	public ExperimentInterface getDocumentData() {
 		return md;
 	}
-	
+
 	public void installDragNDropForAnnotationFiles(final JButton target, final JButton addIdentifiers) {
 		target.setToolTipText(target.getToolTipText() + "<br/>Drag & Drop supported");
 		final String title = target.getText();
@@ -124,7 +124,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 				}
 			}
 		};
-		
+
 		Runnable dragdetected = new Runnable() {
 			public void run() {
 				MainFrame.showMessage(
@@ -133,7 +133,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 				target.setText("<html><br>Drop file to load annotation<br><br>");
 			}
 		};
-		
+
 		Runnable dragenddetected = new Runnable() {
 			public void run() {
 				// MainFrame.showMessage("Drag & Drop action canceled",
@@ -143,9 +143,9 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 		};
 		new FileDrop(target, fdl, dragdetected, dragenddetected);
 	}
-	
+
 	public void installDragNDropForArrayFiles(final JButton target, final JButton addIdentifiers) {
-		
+
 		target.setToolTipText(target.getToolTipText() + "<br/>Drag & Drop supported");
 		final String title = target.getText();
 		FileDrop.Listener fdl = new FileDrop.Listener() {
@@ -158,7 +158,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 				}
 			}
 		};
-		
+
 		Runnable dragdetected = new Runnable() {
 			public void run() {
 				MainFrame.showMessage("<html><b>Drag &amp; Drop action detected:</b> "
@@ -166,7 +166,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 				target.setText("<html><br>Drop file to load array annotation<br><br>");
 			}
 		};
-		
+
 		Runnable dragenddetected = new Runnable() {
 			public void run() {
 				// MainFrame.showMessage("Drag & Drop action canceled",
@@ -176,36 +176,34 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 		};
 		new FileDrop(target, fdl, dragdetected, dragenddetected);
 	}
-	
+
 	private static ArrayList<AnnotationProvider> annotationProviders = new ArrayList<AnnotationProvider>();
-	
+
 	public static void addAnnotationProvider(AnnotationProvider provider) {
 		annotationProviders.add(provider);
 	}
-	
+
 	public ExperimentDataInfoPane(final TableData td, ExperimentInterface doc, final JTabbedPane parentPane,
 			final List<ExperimentDataInfoPane> shownExpPanes, final JComponent gui) {
-		
+
 		MainFrame.getInstance().getSessionManager().addSessionListener(this);
-		
+
 		this.parentPane = parentPane;
-		
+
 		// this.setLayout(new SingleFiledLayout(SingleFiledLayout.COLUMN,
 		// SingleFiledLayout.FULL, 5));
-		
-		double[][] size = new double[][] {
-				{ TableLayout.FILL },
-				{ TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, 5, TableLayout.PREFERRED, 5,
-						TableLayout.PREFERRED, 5, TableLayout.FILL } };
-		
+
+		double[][] size = new double[][] { { TableLayout.FILL }, { TableLayout.PREFERRED, TableLayout.PREFERRED,
+				TableLayout.PREFERRED, 5, TableLayout.PREFERRED, 5, TableLayout.PREFERRED, 5, TableLayout.FILL } };
+
 		this.setLayout(new TableLayout(size));
-		
+
 		this.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
-		
+
 		this.md = doc;
-		
+
 		final ExperimentDataInfoPane thisPane = this;
-		
+
 		JButton closeTab = new JMButton("<html><small>Close");
 		if (SystemInfo.isMac()) {
 			closeTab.setText(StringManipulationTools.removeHTMLtags(closeTab.getText()));
@@ -221,7 +219,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 				MainFrame.getInstance().updateActions();
 			}
 		});
-		
+
 		JButton saveXMLdoc = new JMButton("<html><small><center>Export to<br>Filesystem");
 		if (SystemInfo.isMac()) {
 			saveXMLdoc.putClientProperty("JComponent.sizeVariant", "mini");
@@ -229,164 +227,167 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 		saveXMLdoc.setOpaque(false);
 		saveXMLdoc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				File xmlFile = OpenFileDialogService.getSaveFile(new String[] { "xlsx", "xml" }, "Experiment-Data (*.xlsx, *.xml)");
+				File xmlFile = OpenFileDialogService.getSaveFile(new String[] { "xlsx", "xml" },
+						"Experiment-Data (*.xlsx, *.xml)");
 				if (xmlFile != null) {
-					
+
 					if (xmlFile.getName().toLowerCase().endsWith(".xlsx"))
 						ExperimentDataFileWriter.writeExcel(xmlFile, md);
-					else
-						if (xmlFile.getName().toLowerCase().endsWith(".xml")) {
-							// XMLOutputter out = new XMLOutputter();
-							// OutputStream stream;
-							try {
-								TextFile.write(xmlFile.toString(), md.toString());
-								// stream = new FileOutputStream(xmlFile);
-								// org.jdom.Document dd = JDOM2DOM.getJDOMfromDOM(getDocument());
-								// out.output(dd, stream);
-								// stream.close();
-							} catch (FileNotFoundException err) {
-								ErrorMsg.addErrorMessage(err);
-							} catch (IOException err) {
-								ErrorMsg.addErrorMessage(err);
-							}
-						} else
-							MainFrame.showMessageDialog("Wrong file type chosen. Please save as *.xlsx or *.xml", "Export Error");
+					else if (xmlFile.getName().toLowerCase().endsWith(".xml")) {
+						// XMLOutputter out = new XMLOutputter();
+						// OutputStream stream;
+						try {
+							TextFile.write(xmlFile.toString(), md.toString());
+							// stream = new FileOutputStream(xmlFile);
+							// org.jdom.Document dd = JDOM2DOM.getJDOMfromDOM(getDocument());
+							// out.output(dd, stream);
+							// stream.close();
+						} catch (FileNotFoundException err) {
+							ErrorMsg.addErrorMessage(err);
+						} catch (IOException err) {
+							ErrorMsg.addErrorMessage(err);
+						}
+					} else
+						MainFrame.showMessageDialog("Wrong file type chosen. Please save as *.xlsx or *.xml",
+								"Export Error");
 				}
 			}
 		});
-		
-//		JButton showTableData = new JMButton("<html><small><center>Show<br>Input-Form");
-//		if (SystemInfo.isMac()) {
-//			showTableData.putClientProperty("JComponent.sizeVariant", "mini");
-//		}
-		
-//		showTableData.setOpaque(false);
-//		showTableData.setEnabled(td != null);
-//		showTableData.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				td.showDataDialog();
-//			}
-//		});
-		
+
+		// JButton showTableData = new
+		// JMButton("<html><small><center>Show<br>Input-Form");
+		// if (SystemInfo.isMac()) {
+		// showTableData.putClientProperty("JComponent.sizeVariant", "mini");
+		// }
+
+		// showTableData.setOpaque(false);
+		// showTableData.setEnabled(td != null);
+		// showTableData.addActionListener(new ActionListener() {
+		// public void actionPerformed(ActionEvent e) {
+		// td.showDataDialog();
+		// }
+		// });
+
 		if (doc == null) {
-//			this.add(TableLayout.get3Split(closeTab, new JLabel(), showTableData, TableLayout.PREFERRED, TableLayout.FILL,
-//					TableLayout.PREFERRED), "0,0");
+			// this.add(TableLayout.get3Split(closeTab, new JLabel(), showTableData,
+			// TableLayout.PREFERRED, TableLayout.FILL,
+			// TableLayout.PREFERRED), "0,0");
 			this.add(TableLayout.getSplit(closeTab, new JLabel(), TableLayout.PREFERRED, TableLayout.FILL), "0,0");
-			this
-					.add(
-							new JLabel(
-									"<html>Error: Experiment-Data could not be retrieved from the network or could not be converted from the file source.<br>"
-											+ "<br>In case the data has been loaded from the network, you might try loading again in a few minutes. "
-											+ "Sometimes database or general network problems prevent the loading of data.<br><br>"
-											+ "In case the data has been loaded from file, please check the format of the file.<br>"
-											+ "Sometimes cells are in a wrong format (text instead of numbers) and sometimes mandatory"
-											+ " fields are not filled."
-											+ "<br>"
-											+ "You should check the Error-Log with<br>the menu command <i>Help/Error Messages</i> "
-											+ "to get more details on the cause of the error.<br><br>"
-											+ "Also the <i>Show Input-Form</i> command at the top of this tab pane might help to identify problems."),
-							"0,1");
+			this.add(new JLabel(
+					"<html>Error: Experiment-Data could not be retrieved from the network or could not be converted from the file source.<br>"
+							+ "<br>In case the data has been loaded from the network, you might try loading again in a few minutes. "
+							+ "Sometimes database or general network problems prevent the loading of data.<br><br>"
+							+ "In case the data has been loaded from file, please check the format of the file.<br>"
+							+ "Sometimes cells are in a wrong format (text instead of numbers) and sometimes mandatory"
+							+ " fields are not filled." + "<br>"
+							+ "You should check the Error-Log with<br>the menu command <i>Help/Error Messages</i> "
+							+ "to get more details on the cause of the error.<br><br>"
+							+ "Also the <i>Show Input-Form</i> command at the top of this tab pane might help to identify problems."),
+					"0,1");
 			this.currentGui = null;
 		} else {
 			fpExperimentInfo = new FolderPanel("Experiment Info", true, true, false, null);
 			fpExperimentInfo.layoutRows();
-			
+
 			fpTimeAndPlants = new FolderPanel("Specify Mapping-Data", false, true, false, null);
 			fpTimeAndPlants.layoutRows();
-			
+
 			final JButton replaceIDs = new JMButton("Set Main ID");
-			
+
 			replaceIDs.setOpaque(false);
-			replaceIDs
-					.setToolTipText("Allows to specify the most important ID (name) for a substance,<br>which is used as new node's label text .");
+			replaceIDs.setToolTipText(
+					"Allows to specify the most important ID (name) for a substance,<br>which is used as new node's label text .");
 			replaceIDs.addActionListener(replaceSubstanceIdsCommand());
-			
+
 			final JButton addIdentifiers = new JMButton("Add Alternative IDs");
-			
+
 			addIdentifiers.setOpaque(false);
-			replaceIDs.setToolTipText("Allows to specify other names for substances, e.g. \"1438_at\" -> \"EC:2.7.10.1\"");
+			replaceIDs.setToolTipText(
+					"Allows to specify other names for substances, e.g. \"1438_at\" -> \"EC:2.7.10.1\"");
 			addIdentifiers.addActionListener(getAddAlternativeIdentifiersIdsCommand(addIdentifiers));
-			
+
 			// final JButton bridgeDB = new JMButton("BRIDGE DB");
 			//
 			// bridgeDB.setOpaque(false);
 			// bridgeDB.addActionListener(getAddAlternativeIdentifiersIdsCommandBRIDGEDB(addIdentifiers));
-			
+
 			/*
 			 * final JButton addAffyIdentifiers = new JMButton("Load Array-Annotation");
-			 * addAffyIdentifiers.setToolTipText("<html>" + "Load Affymetrix or Agilent Annotation File<br>"
-			 * + "Processed are Entrez Gene IDs.");
-			 * addAffyIdentifiers.setOpaque(false);
-			 * addAffyIdentifiers.addActionListener(getAddAffyIdentifiersCommand(addIdentifiers));
+			 * addAffyIdentifiers.setToolTipText("<html>" +
+			 * "Load Affymetrix or Agilent Annotation File<br>" +
+			 * "Processed are Entrez Gene IDs."); addAffyIdentifiers.setOpaque(false);
+			 * addAffyIdentifiers.addActionListener(getAddAffyIdentifiersCommand(
+			 * addIdentifiers));
 			 */
 			JButton removeIdentifiers = new JMButton("Remove IDs");
-			
+
 			removeIdentifiers.setOpaque(false);
 			removeIdentifiers.setToolTipText("Allows to remove alternative names for substances");
 			removeIdentifiers.addActionListener(getRemoveAnnotationCommand(addIdentifiers));
-			
+
 			FolderPanel fpDataAnnotation = new FolderPanel("Identifier Annotation", true, true, false, null);
-			
+
 			int cnt = 0;
 			for (SubstanceInterface s : doc)
 				cnt += s.getSynonyms().size();
-			
-			alternativeIDCount = new JLabelHTMLlink("Alternative Identifiers: " + cnt, "Click to see all identifiers", new Runnable() {
-				@Override
-				public void run() {
-					TableData td = new TableData();
-					int row = 0;
-					HashMap<Integer, String> header = new HashMap<Integer, String>();
-					for (SubstanceInterface s : ExperimentDataInfoPane.this.md) {
-						Collection<String> syns = s.getSynonyms();
-						header.put(0, "Main ID");
-						td.addCellData(0, row, s.getName());
-						int col = 1;
-						for (String syn : syns) {
-							header.put(col, "Alt. ID " + col);
-							td.addCellData(col++, row, syn);
+
+			alternativeIDCount = new JLabelHTMLlink("Alternative Identifiers: " + cnt, "Click to see all identifiers",
+					new Runnable() {
+						@Override
+						public void run() {
+							TableData td = new TableData();
+							int row = 0;
+							HashMap<Integer, String> header = new HashMap<Integer, String>();
+							for (SubstanceInterface s : ExperimentDataInfoPane.this.md) {
+								Collection<String> syns = s.getSynonyms();
+								header.put(0, "Main ID");
+								td.addCellData(0, row, s.getName());
+								int col = 1;
+								for (String syn : syns) {
+									header.put(col, "Alt. ID " + col);
+									td.addCellData(col++, row, syn);
+								}
+								if (syns.size() <= 0) { // just one substancename/id
+									header.put(1, "Alt. ID 1");
+									td.addCellData(1, row, s.getName());
+								}
+								row++;
+							}
+							td.showDataDialog(header);
 						}
-						if (syns.size() <= 0) { // just one substancename/id
-							header.put(1, "Alt. ID 1");
-							td.addCellData(1, row, s.getName());
-						}
-						row++;
-					}
-					td.showDataDialog(header);
-				}
-			});
-			
+					});
+
 			fpDataAnnotation.addComp(alternativeIDCount);
-			fpDataAnnotation.addComp(
-					TableLayout.get3Split(
-							TableLayout.get3SplitVertical(
-									addIdentifiers,
-									removeIdentifiers,
-									TableLayout.getMultiSplitVertical(getAnnotationProviderButtons(doc), 0),
-									
-									TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED), new JLabel(""),
-							TableLayout.getSplitVertical(replaceIDs, new JLabel(), TableLayout.PREFERRED, TableLayout.PREFERRED),
-							TableLayout.FILL, 5, TableLayout.PREFERRED), 5);
+			fpDataAnnotation.addComp(TableLayout.get3Split(
+					TableLayout.get3SplitVertical(addIdentifiers, removeIdentifiers,
+							TableLayout.getMultiSplitVertical(getAnnotationProviderButtons(doc), 0),
+
+							TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED),
+					new JLabel(""), TableLayout.getSplitVertical(replaceIDs, new JLabel(), TableLayout.PREFERRED,
+							TableLayout.PREFERRED),
+					TableLayout.FILL, 5, TableLayout.PREFERRED), 5);
 			fpDataAnnotation.layoutRows();
-			
+
 			installDragNDropForAnnotationFiles(addIdentifiers, addIdentifiers);
-			
-//			installDragNDropForArrayFiles(addAffyIdentifiers, addAffyIdentifiers);
-			
+
+			// installDragNDropForArrayFiles(addAffyIdentifiers, addAffyIdentifiers);
+
 			FolderPanel fp5 = new FolderPanel("Analysis Pipeline", true, true, false, null);
 			JButton hierarchyWizard = new JMButton("Hierarchy Wizard");
-			
+
 			fp5.addComp(hierarchyWizard, 5);
 			fp5.layoutRows();
-			
+
 			this.add(TableLayout.get3Split(closeTab, new JLabel(), saveXMLdoc, TableLayout.PREFERRED, TableLayout.FILL,
 					TableLayout.PREFERRED), "0,0");
-//			this.add(TableLayout.getSplit(TableLayout.getSplit(new JLabel(), closeTab, TableLayout.FILL,
-//					TableLayout.PREFERRED), saveXMLdoc, TableLayout.FILL, TableLayout.PREFERRED
-//					), "0,0");
-			
-			this.add(TableLayout.get3SplitVertical(null, getActionCommandGUI(), null, 4, TableLayout.PREFERRED, 4), "0,1");
-			
+			// this.add(TableLayout.getSplit(TableLayout.getSplit(new JLabel(), closeTab,
+			// TableLayout.FILL,
+			// TableLayout.PREFERRED), saveXMLdoc, TableLayout.FILL, TableLayout.PREFERRED
+			// ), "0,0");
+
+			this.add(TableLayout.get3SplitVertical(null, getActionCommandGUI(), null, 4, TableLayout.PREFERRED, 4),
+					"0,1");
+
 			this.add(fpExperimentInfo, "0,2");
 			this.add(fpTimeAndPlants, "0,4");
 			this.add(fpDataAnnotation, "0,6");
@@ -401,21 +402,21 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			updateGUIforUpdatedExperimentData(null, null, null);
 		}
 	}
-	
+
 	private Collection<JComponent> getAnnotationProviderButtons(final ExperimentInterface md) {
 		Collection<JComponent> result = new ArrayList<JComponent>();
 		for (final AnnotationProvider p : annotationProviders)
 			result.add(p.getButton(md, this));
 		return result;
 	}
-	
+
 	private final Collection<MappingButton> dataMappingCommandButtons = new ArrayList<MappingButton>();
-	
+
 	private JComponent getActionCommandGUI() {
 		if (dataMappingCommandButtons.size() > 0)
 			ErrorMsg.addErrorMessage("Internal Error: getActionCommandGUI should be called only once!");
 		ArrayList<JComponent> buttonCommands = new ArrayList<JComponent>();
-		
+
 		for (ExperimentDataProcessor p : ExperimentDataProcessingManager.getExperimentDataProcessors()) {
 			if (p instanceof PutIntoSidePanel || !(p instanceof AbstractExperimentDataProcessor))
 				continue;
@@ -426,9 +427,9 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			b.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					ExperimentInterface experimentData = getDocumentData();
-					
-					final boolean applyPlantFilter = jcbFilterPlant.getSelectedValues().length != jcbFilterPlant.getModel()
-							.getSize();
+
+					final boolean applyPlantFilter = jcbFilterPlant.getSelectedValues().length != jcbFilterPlant
+							.getModel().getSize();
 					final boolean applyTimeFilter = jcbFilterTime.getSelectedValues().length != jcbFilterTime.getModel()
 							.getSize();
 					Object[] sel = jcbFilterPlant.getSelectedValues();
@@ -443,10 +444,10 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 					sel = jcbFilterTime.getSelectedValues();
 					for (Object o : sel)
 						validTimes.add((String) o);
-					
+
 					if (applyPlantFilter || applyTimeFilter)
 						experimentData = experimentData.filter(validNames, validTimes);
-					
+
 					pp.setActionEvent(e);
 					pp.setExperimentData(experimentData);
 					View v;
@@ -463,7 +464,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 		updateButtonStatus();
 		return TableLayout.getMultiSplitVertical(buttonCommands, 5);
 	}
-	
+
 	private void updateButtonStatus() {
 		Session s;
 		try {
@@ -473,16 +474,16 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 		}
 		sessionChanged(s);
 	}
-	
+
 	private ActionListener getRemoveAnnotationCommand(final JButton addIdentifiers) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Object[] res = MyInputHelper.getInput("<html>"
 						+ "By leaving the search text empty, all alternative identifiers besides the main ID will<br>"
 						+ "be removed. If you specify search text, alternative identifiers which contain the given<br>"
-						+ "search text will be removed.", "Alternative Identifiers Removal", new Object[] { "Search Text",
-						"", "Remove Alternative IDs which do NOT contain search text", false,
-						"Remove Substances with no alternative IDs", false });
+						+ "search text will be removed.", "Alternative Identifiers Removal",
+						new Object[] { "Search Text", "", "Remove Alternative IDs which do NOT contain search text",
+								false, "Remove Substances with no alternative IDs", false });
 				if (res == null) {
 					MainFrame.showMessageDialog("Alternative identifiers remain unchanged.", "Information");
 					return;
@@ -519,10 +520,11 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 				}
 				for (SubstanceInterface dels : removeTheseSubstances)
 					md.remove(dels);
-				
-				MainFrame.showMessageDialog("<html>" + "Alternative substance identifiers (" + workCnt
-						+ ") have been removed.<br>" + removeTheseSubstances.size()
-						+ " substance datasets have been removed. ", "Information");
+
+				MainFrame.showMessageDialog(
+						"<html>" + "Alternative substance identifiers (" + workCnt + ") have been removed.<br>"
+								+ removeTheseSubstances.size() + " substance datasets have been removed. ",
+						"Information");
 				if (removeTheseSubstances.size() > 0)
 					updateGUIforUpdatedExperimentData(null, null, null);
 				// addIdentifiers.setText("Additional Identifiers (0)");
@@ -530,13 +532,13 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			}
 		};
 	}
-	
+
 	public void setAnnotationCounter(String txt) {
 		((JLabelHTMLlink) alternativeIDCount).setLabelText("Alternative Identifiers: " + txt);
 		alternativeIDCount.validate();
 		alternativeIDCount.repaint();
 	}
-	
+
 	private ActionListener getAddAlternativeIdentifiersIdsCommand(final JButton addIdentifiers) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -545,17 +547,18 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			}
 		};
 	}
-	
+
 	// public static Runnable bridgeDBrunner;
 	//
-	// private ActionListener getAddAlternativeIdentifiersIdsCommandBRIDGEDB(final JButton addIdentifiers) {
+	// private ActionListener getAddAlternativeIdentifiersIdsCommandBRIDGEDB(final
+	// JButton addIdentifiers) {
 	// return new ActionListener() {
 	// public void actionPerformed(ActionEvent e) {
 	// bridgeDBrunner.run();
 	// }
 	// };
 	// }
-	
+
 	private ActionListener getAddAffyIdentifiersCommand(final JButton addIdentifiers) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -564,7 +567,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			}
 		};
 	}
-	
+
 	private ActionListener replaceSubstanceIdsCommand() {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -592,10 +595,11 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 					}
 					Object result = JOptionPane.showInputDialog(MainFrame.getInstance(),
 							"<html>Select the alternative identifier index which will be used to replace the current<br>"
-									+ "substance name of the measurements (0 is the default value):", "Select Identifier",
-							JOptionPane.QUESTION_MESSAGE, null, selvals.toArray(), null);
+									+ "substance name of the measurements (0 is the default value):",
+							"Select Identifier", JOptionPane.QUESTION_MESSAGE, null, selvals.toArray(), null);
 					if (result == null) {
-						MainFrame.showMessageDialog("No value selected, substance IDs remain unchanged.", "Information");
+						MainFrame.showMessageDialog("No value selected, substance IDs remain unchanged.",
+								"Information");
 					} else {
 						int workCnt = 0;
 						String number = (String) result;
@@ -610,19 +614,20 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 								workCnt++;
 							}
 						}
-						MainFrame.showMessageDialog("Replaced " + workCnt + " substance names with alternative identifiers!",
+						MainFrame.showMessageDialog(
+								"Replaced " + workCnt + " substance names with alternative identifiers!",
 								"Information");
 					}
 				}
 			}
 		};
 	}
-	
+
 	// @Deprecated
 	// protected void setDocument(Document doc) {
 	// md = Experiment.getExperimentFromDOM(doc);
 	// }
-	
+
 	public String getExperimentName() {
 		try {
 			String name = md.getName();
@@ -632,7 +637,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			return "null";
 		}
 	}
-	
+
 	public synchronized void updateGUIforUpdatedExperimentData(String experimentName, final ExperimentInterface mdNew,
 			JComponent gui) {
 		if (mdNew != null)
@@ -657,10 +662,10 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 				ErrorMsg.addErrorMessage(e);
 			}
 		}
-		
+
 		for (JMButton b : dataMappingCommandButtons)
 			b.setEnabled(false);
-		
+
 		fpExperimentInfo.clearGuiComponentList();
 		fpExperimentInfo.addComp(new JLabel("<html>Analyze Dataset..."));
 		fpExperimentInfo.layoutRows();
@@ -669,7 +674,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 		revalidate();
 		final ArrayList<JComponent> components = new ArrayList<JComponent>();
 		final ArrayList<JComponent> timecomponents = new ArrayList<JComponent>();
-		
+
 		final ArrayList<Boolean> onePlant = new ArrayList<Boolean>();
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 				"Analyze Dataset", "XPATH query");
@@ -695,65 +700,68 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 				updateView(components, timecomponents, onePlant);
 				status.setCurrentStatusText2("Get Import Time...");
 				if (doc.getImportDate() != null)
-					components.add(new JLabel("<html>Import time: " + AttributeHelper.getDateString(doc.getImportDate())));
+					components.add(
+							new JLabel("<html>Import time: " + AttributeHelper.getDateString(doc.getImportDate())));
 				updateView(components, timecomponents, onePlant);
 				status.setCurrentStatusText2("Get Start Date...");
 				if (doc.getStartDate() != null)
-					components.add(new JLabel("<html>Experiment started: " + AttributeHelper.getDateString(doc.getStartDate())));
-				
+					components.add(new JLabel(
+							"<html>Experiment started: " + AttributeHelper.getDateString(doc.getStartDate())));
+
 				updateView(components, timecomponents, onePlant);
 				status.setCurrentStatusText2("Get Sample Time Values...");
 				times = Experiment.getTimes(md);
-				if(times != null) { 
+				if (times != null) {
 					jcbFilterTime = new JList(times == null ? new String[] { "Error" } : times);
 					jcbFilterTime.setSelectionInterval(0, times.length - 1);
 					jcbFilterTime.setVisibleRowCount(times.length > 5 ? 5 : times.length);
-					timecomponents.add(TableLayout.getSplitVertical(new JLabel("Time Points"), new JScrollPane(jcbFilterTime),
-							TableLayout.PREFERRED, jcbFilterTime.getPreferredScrollableViewportSize().getHeight() + 5));
+					timecomponents.add(TableLayout.getSplitVertical(new JLabel("Time Points"),
+							new JScrollPane(jcbFilterTime), TableLayout.PREFERRED,
+							jcbFilterTime.getPreferredScrollableViewportSize().getHeight() + 5));
 					updateView(components, timecomponents, onePlant);
 				}
 				status.setCurrentStatusText2("Analyze Conditions...");
 				String[] plants = Experiment.getConditionsAsString(md);
 				onePlant.add(plants != null && plants.length == 1);
-				if(plants != null) { 
+				if (plants != null) {
 					jcbFilterPlant = new JList(plants == null ? new String[] { "Error" } : plants);
 					jcbFilterPlant.setSelectionInterval(0, plants.length - 1);
 					jcbFilterPlant.setVisibleRowCount(plants.length > 5 ? 5 : plants.length);
-					timecomponents.add(TableLayout.getSplitVertical(new JLabel("Genotypes/Conditions"), new JScrollPane(
-							jcbFilterPlant), TableLayout.PREFERRED, jcbFilterPlant.getPreferredScrollableViewportSize()
-							.getHeight() + 5));
+					timecomponents.add(TableLayout.getSplitVertical(new JLabel("Genotypes/Conditions"),
+							new JScrollPane(jcbFilterPlant), TableLayout.PREFERRED,
+							jcbFilterPlant.getPreferredScrollableViewportSize().getHeight() + 5));
 				}
 				status.setCurrentStatusText2("Looking for missing replicates...");
 				if (Experiment.isReplicateDataMissing(md))
 					timecomponents.add(TableLayout.getSplitVertical(new JLabel("Replicate data not available"),
 							getStdDevProcessingButton(md), TableLayout.PREFERRED, TableLayout.PREFERRED));
-				
+
 				status.setCurrentStatusText2("Looking for technical and biological replicates...");
 				if (Experiment.isBiologicalAndTechnicalReplicateDataAvailable(md))
 					timecomponents.add(TableLayout.getSplitVertical(new JLabel("Biological Replicate data available"),
 							getReplicateProcessingButton(md), TableLayout.PREFERRED, TableLayout.PREFERRED));
-				
+
 				status.setCurrentStatusText2("Looking for annotations...");
 				int cnt = 0;
 				for (SubstanceInterface s : md)
 					cnt += s.getSynonyms().size();
 				setAnnotationCounter(cnt + "");
-				
+
 				status.setCurrentStatusText2("Processing finished");
-				
+
 			}
 		}, new Runnable() {
 			public void run() {
 				updateView(components, timecomponents, onePlant);
-				
+
 				validateXML();
-				
+
 				updateButtonStatus();
 			}
-			
+
 		}, status);
 	}
-	
+
 	protected void validateXML() {
 		Thread t = new Thread(new Runnable() {
 			public void run() {
@@ -766,16 +774,16 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 							lbl.addMouseListener(new MouseListener() {
 								public void mouseReleased(MouseEvent e) {
 								}
-								
+
 								public void mousePressed(MouseEvent e) {
 								}
-								
+
 								public void mouseExited(MouseEvent e) {
 								}
-								
+
 								public void mouseEntered(MouseEvent e) {
 								}
-								
+
 								public void mouseClicked(MouseEvent e) {
 									showXMLdata(md);
 								}
@@ -790,7 +798,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 		t.setPriority(Thread.MIN_PRIORITY);
 		t.start();
 	}
-	
+
 	private synchronized void updateView(ArrayList<JComponent> components, ArrayList<JComponent> timecomponents,
 			ArrayList<Boolean> onePlant) {
 		final ArrayList<JComponent> fComponents = new ArrayList<JComponent>(components);
@@ -803,20 +811,20 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 				for (JComponent jc : cc)
 					fpExperimentInfo.addComp(jc);
 				fpExperimentInfo.layoutRows();
-				
+
 				fpTimeAndPlants.clearGuiComponentList();
 				for (JComponent jc : fTimecomponents)
 					fpTimeAndPlants.addComp(jc);
 				fpTimeAndPlants.layoutRows();
-				
+
 				validate();
 			}
 		});
 	}
-	
+
 	private JComponent getStdDevProcessingButton(final ExperimentInterface measurementdata) {
 		JButton result = new JMButton("Process standard deviation data");
-		
+
 		result.setOpaque(false);
 		result.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -851,12 +859,13 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 		});
 		return result;
 	}
-	
+
 	private JComponent getReplicateProcessingButton(final ExperimentInterface measurementdata) {
 		JButton result = new JMButton("Merge Biological Replicates");
-		result.setToolTipText("<html>Biological replicates are determined by checking, if there are equal Genotypes/Conditions specified.<br>" +
-				"If you choose to merge this data, the technical replicates will be merged into one value and the values<br>" +
-				"of all equal Genotypes/Conditions treated as replicates, therefor removing double Genotypes/Conditions.");
+		result.setToolTipText(
+				"<html>Biological replicates are determined by checking, if there are equal Genotypes/Conditions specified.<br>"
+						+ "If you choose to merge this data, the technical replicates will be merged into one value and the values<br>"
+						+ "of all equal Genotypes/Conditions treated as replicates, therefor removing double Genotypes/Conditions.");
 		result.setOpaque(false);
 		result.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -877,7 +886,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 		});
 		return result;
 	}
-	
+
 	private void processAnnotationFileLoading(final ExperimentInterface md, final JButton addIdentifiers,
 			final Collection<File> excelFiles) {
 		if (excelFiles != null && excelFiles.size() > 0) {
@@ -886,9 +895,9 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			boolean tagRemoveU = false;
 			String startU = null;
 			String endU = null;
-			
+
 			boolean skipFirstRowU = false;
-			
+
 			ArrayList<String> modes = new ArrayList<String>();
 			final String mode1 = "1:1 match / Match current Main ID with reference IDs (col 1)";
 			final String mode2 = "n:1 match / Match main and alternative IDs with reference IDs (col 1)";
@@ -896,15 +905,15 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			modes.add(mode1);
 			modes.add(mode2);
 			modes.add(mode3);
-			
+
 			String mode;
-			
-			Object[] res = MyInputHelper.getInput(StringManipulationTools.getWordWrap(new String[] {
-					"<html>",
+
+			Object[] res = MyInputHelper.getInput(StringManipulationTools.getWordWrap(new String[] { "<html>",
 					"The alternative identifier table needs to contain the "
 							+ "reference IDs in column A, alternative identifiers in " + "the following colum(s).",
 					"<br>",
-					"Multiple alternative ID for one main ID may be " + "specified as several columns or in several rows.",
+					"Multiple alternative ID for one main ID may be "
+							+ "specified as several columns or in several rows.",
 					"<br><br>",
 					"In case the corresponding setting is enabled, the "
 							+ "cells content for the definition of alternative "
@@ -915,10 +924,11 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 							+ "a identifier value &quot;A (remark), B (remark)&quot; will be "
 							+ "transformed and split: cell 1: &quot;A&quot;, cell 2: &quot;B&quot;. "
 							+ "In case of splitting or removal of text content, white "
-							+ "space at the start or end is removed.", "<br><br>" }, 80), "Split Cells", new Object[] {
-					"Mode of Operation", modes, "Enable Cell Splitting", false, "Split-Char", ",", "Remove Tags", false,
-					"Start", "(", "End", ")", "Skip First Row", false });
-			
+							+ "space at the start or end is removed.",
+					"<br><br>" }, 80), "Split Cells",
+					new Object[] { "Mode of Operation", modes, "Enable Cell Splitting", false, "Split-Char", ",",
+							"Remove Tags", false, "Start", "(", "End", ")", "Skip First Row", false });
+
 			if (res == null) {
 				MainFrame.showMessage("Processing aborted!", MessageType.INFO);
 				return;
@@ -948,7 +958,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			final String start = startU;
 			final String end = endU;
 			final boolean skipFirstRow = skipFirstRowU;
-			
+
 			final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 					"Process Data", "Please wait...");
 			BackgroundTaskHelper.issueSimpleTask("Additional Identifiers", "Process Data", new Runnable() {
@@ -960,7 +970,8 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 					for (File excelFile : excelFiles) {
 						status.setCurrentStatusValueFine(100d * i / max);
 						i++;
-						status.setCurrentStatusText1("Read Table " + i + "/" + max + " (" + excelFile.getName() + ")...");
+						status.setCurrentStatusText1(
+								"Read Table " + i + "/" + max + " (" + excelFile.getName() + ")...");
 						TableData myData = ExperimentDataFileReader.getExcelTableData(excelFile);
 						if (split)
 							myData.splitCells(splitChar);
@@ -970,7 +981,8 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 							myData.processCellContentRemoveStringTags(start, end);
 						// myData.showDataDialog();
 						if (status.wantsToStop()) {
-							// addIdentifiers.setText("Additional Identifiers ("+result+") (processing aborted)");
+							// addIdentifiers.setText("Additional Identifiers ("+result+") (processing
+							// aborted)");
 							setAnnotationCounter(result + " (processing aborted)");
 							MainFrame.showMessageDialog("<html>"
 									+ "Processing incomplete. Additional identifiers have not be added, previous<br>"
@@ -980,10 +992,11 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 						status.setCurrentStatusValueFine(60); // 50 --> 60%
 						if (tagRemove || split)
 							myData.showDataDialog();
-						status.setCurrentStatusText1("Process Table Data " + i + "/" + max + " (" + excelFile.getName()
-								+ ")...");
+						status.setCurrentStatusText1(
+								"Process Table Data " + i + "/" + max + " (" + excelFile.getName() + ")...");
 						StringBuilder statusMessage = new StringBuilder();
-						statusMessage.append("Processed Table Data " + i + "/" + max + " (" + excelFile.getName() + "):<br>");
+						statusMessage.append(
+								"Processed Table Data " + i + "/" + max + " (" + excelFile.getName() + "):<br>");
 						statusMessages.add(statusMessage);
 						boolean matchAllExisting = false;
 						boolean matchAllNew = false;
@@ -999,9 +1012,10 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 							matchAllExisting = true;
 							matchAllNew = true;
 						}
-						result += AlternativeIdentifierTableData.processAdditionaldentifiers(matchAllExisting, matchAllNew,
-								myData, md, status, 60, 100, statusMessage, skipFirstRow, ignoreColumns);
-						// addIdentifiers.setText("Additional Identifiers ("+result+") (still processing)");
+						result += AlternativeIdentifierTableData.processAdditionaldentifiers(matchAllExisting,
+								matchAllNew, myData, md, status, 60, 100, statusMessage, skipFirstRow, ignoreColumns);
+						// addIdentifiers.setText("Additional Identifiers ("+result+") (still
+						// processing)");
 						setAnnotationCounter(result + " (still processing)");
 					}
 					status.setCurrentStatusValueFine(100d);
@@ -1012,13 +1026,13 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 					setAnnotationCounter(result + "");
 					MainFrame.showMessageDialogWithScrollBars("<html>"
 							+ "Additional identifiers from the mapping table have been added to the dataset.<br>"
-							+ "Existing identifiers (if available) have not been removed. Status-Message(s):<br>" + "<ul>"
-							+ statusMsg + "</ul>", "Information");
+							+ "Existing identifiers (if available) have not been removed. Status-Message(s):<br>"
+							+ "<ul>" + statusMsg + "</ul>", "Information");
 				}
 			}, null, status);
 		}
 	}
-	
+
 	private void processAffyAnnotationFileLoading(final ExperimentInterface md, final JButton addIdentifiers,
 			final Collection<File> excelFiles) {
 		if (excelFiles != null && excelFiles.size() > 0) {
@@ -1069,7 +1083,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			final boolean skipFirstRow = true;
 			// final boolean processAffyGO = processAffyGOu;
 			// final boolean processAffyEntrez = processAffyEntrezU;
-			
+
 			final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 					"Process Data", "Please wait...");
 			BackgroundTaskHelper.issueSimpleTask("Additional Identifiers", "Process Data", new Runnable() {
@@ -1081,14 +1095,15 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 					for (File excelFile : excelFiles) {
 						status.setCurrentStatusValueFine(100d * i / max);
 						i++;
-						status.setCurrentStatusText1("Read Table " + i + "/" + max + " (" + excelFile.getName() + ")...");
+						status.setCurrentStatusText1(
+								"Read Table " + i + "/" + max + " (" + excelFile.getName() + ")...");
 						TableData myData;
 						if (excelFile.getName().endsWith(".xls") || excelFile.getName().endsWith(".xlsx"))
-							myData = ExperimentDataFileReader.getExcelTableData(excelFile, TableData
-									.getRelevantAffymetrixAnnotationColumnHeaders());
+							myData = ExperimentDataFileReader.getExcelTableData(excelFile,
+									TableData.getRelevantAffymetrixAnnotationColumnHeaders());
 						else
-							myData = ExperimentDataFileReader.getCSVdata(excelFile, TableData
-									.getRelevantAffymetrixAnnotationColumnHeaders(), status);
+							myData = ExperimentDataFileReader.getCSVdata(excelFile,
+									TableData.getRelevantAffymetrixAnnotationColumnHeaders(), status);
 						HashSet<Integer> ignoreColumns = new HashSet<Integer>();
 						boolean processAffyEntrez = true;
 						boolean processAffyGO = false;
@@ -1099,7 +1114,8 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 						if (tagRemove)
 							myData.processCellContentRemoveStringTags(start, end);
 						if (status.wantsToStop()) {
-							// addIdentifiers.setText("Additional Identifiers ("+result+") (processing aborted)");
+							// addIdentifiers.setText("Additional Identifiers ("+result+") (processing
+							// aborted)");
 							setAnnotationCounter(result + " (processing aborted)");
 							MainFrame.showMessageDialog("<html>"
 									+ "Processing incomplete. Additional identifiers have not be added, previous<br>"
@@ -1109,10 +1125,11 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 						status.setCurrentStatusValueFine(60); // 50 --> 60%
 						if (tagRemove || split)
 							myData.showDataDialog();
-						status.setCurrentStatusText1("Process Table Data " + i + "/" + max + " (" + excelFile.getName()
-								+ ")...");
+						status.setCurrentStatusText1(
+								"Process Table Data " + i + "/" + max + " (" + excelFile.getName() + ")...");
 						StringBuilder statusMessage = new StringBuilder();
-						statusMessage.append("Processed Table Data " + i + "/" + max + " (" + excelFile.getName() + "):<br>");
+						statusMessage.append(
+								"Processed Table Data " + i + "/" + max + " (" + excelFile.getName() + "):<br>");
 						statusMessages.add(statusMessage);
 						boolean matchAllExisting = false;
 						boolean matchAllNew = false;
@@ -1124,9 +1141,10 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 						// matchAllExisting = true;
 						// matchAllNew = false;
 						// }
-						result += AlternativeIdentifierTableData.processAdditionaldentifiers(matchAllExisting, matchAllNew,
-								myData, md, status, 60, 100, statusMessage, skipFirstRow, ignoreColumns);
-						// addIdentifiers.setText("Additional Identifiers ("+result+") (still processing)");
+						result += AlternativeIdentifierTableData.processAdditionaldentifiers(matchAllExisting,
+								matchAllNew, myData, md, status, 60, 100, statusMessage, skipFirstRow, ignoreColumns);
+						// addIdentifiers.setText("Additional Identifiers ("+result+") (still
+						// processing)");
 						setAnnotationCounter(result + " (still processing)");
 					}
 					status.setCurrentStatusValueFine(100d);
@@ -1137,13 +1155,13 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 					setAnnotationCounter(result + "");
 					MainFrame.showMessageDialogWithScrollBars("<html>"
 							+ "Additional identifiers from the mapping table have been added to the dataset.<br>"
-							+ "Existing identifiers (if available) have not been removed. Status-Message(s):<br>" + "<ul>"
-							+ statusMsg + "</ul>", "Information");
+							+ "Existing identifiers (if available) have not been removed. Status-Message(s):<br>"
+							+ "<ul>" + statusMsg + "</ul>", "Information");
 				}
 			}, null, status);
 		}
 	}
-	
+
 	public void sessionChanged(Session s) {
 		View v = s != null ? s.getActiveView() : null;
 		for (MappingButton b : dataMappingCommandButtons) {
@@ -1152,26 +1170,27 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 			b.setText(b.getExperimentProcessor().getName());
 		}
 	}
-	
+
 	public void sessionDataChanged(Session s) {
 		sessionChanged(s);
 	}
-	
+
 	public static void showXMLdata(final ExperimentInterface md) {
-		
+
 		if (((Experiment) md).getAllMeasurements().size() > 50000) {
-			Object[] res = MyInputHelper.getInput("<html>[Show anyway;Cancel]The experiment contains more than 50000 measurement values.<br>" +
-					"It is not adviced to show such large datasets as xml.",
-					"Warning",
-					new Object[] {});
+			Object[] res = MyInputHelper
+					.getInput(
+							"<html>[Show anyway;Cancel]The experiment contains more than 50000 measurement values.<br>"
+									+ "It is not adviced to show such large datasets as xml.",
+							"Warning", new Object[] {});
 			if (res == null)
 				return;
 		}
-		
-		BackgroundTaskStatusProviderSupportingExternalCallImpl status =
-				new BackgroundTaskStatusProviderSupportingExternalCallImpl("Generating XML", "of experiment \"" + md.getName() + "\"");
+
+		BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
+				"Generating XML", "of experiment \"" + md.getName() + "\"");
 		BackgroundTaskHelper.issueSimpleTask("Generating XML", "Generating XML of \"" + md.getName(), new Runnable() {
-			
+
 			@Override
 			public void run() {
 				boolean ok = false;
@@ -1201,7 +1220,8 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 					@Override
 					public void run() {
 						JEditorPane jep = new JEditorPane("text/plain", xmlf);
-						MainFrame.showMessageDialog((okf ? "XML XSD validation successful!" : "XML invalid"), new JScrollPane(jep));
+						MainFrame.showMessageDialog((okf ? "XML XSD validation successful!" : "XML invalid"),
+								new JScrollPane(jep));
 					}
 				});
 			}

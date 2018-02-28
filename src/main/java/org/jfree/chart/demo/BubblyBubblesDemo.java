@@ -60,8 +60,8 @@ public class BubblyBubblesDemo extends ApplicationFrame {
 	private static final String TITLE = "Population count at grid locations";
 
 	/**
-	 * The normalized matrix series is used here to represent a changing
-	 * population on a grid.
+	 * The normalized matrix series is used here to represent a changing population
+	 * on a grid.
 	 */
 	NormalizedMatrixSeries series;
 
@@ -69,7 +69,7 @@ public class BubblyBubblesDemo extends ApplicationFrame {
 	 * A demonstration application showing a bubble chart using matrix series.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public BubblyBubblesDemo(final String title) {
 		super(title);
@@ -78,14 +78,10 @@ public class BubblyBubblesDemo extends ApplicationFrame {
 
 		final MatrixSeriesCollection dataset = new MatrixSeriesCollection(this.series);
 
-		final JFreeChart chart = ChartFactory.createBubbleChart(
-							TITLE, "X", "Y", dataset,
-							PlotOrientation.VERTICAL,
-							true,
-							true, false);
+		final JFreeChart chart = ChartFactory.createBubbleChart(TITLE, "X", "Y", dataset, PlotOrientation.VERTICAL,
+				true, true, false);
 
-		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 0,
-							1000, Color.blue));
+		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 0, 1000, Color.blue));
 
 		final XYPlot plot = chart.getXYPlot();
 		plot.setForegroundAlpha(0.5f);
@@ -108,7 +104,7 @@ public class BubblyBubblesDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 		final BubblyBubblesDemo demo = new BubblyBubblesDemo(TITLE);
@@ -139,8 +135,7 @@ public class BubblyBubblesDemo extends ApplicationFrame {
 	 * @return The series.
 	 */
 	private NormalizedMatrixSeries createInitialSeries() {
-		final NormalizedMatrixSeries newSeries =
-							new NormalizedMatrixSeries("Sample Grid 1", SIZE, SIZE);
+		final NormalizedMatrixSeries newSeries = new NormalizedMatrixSeries("Sample Grid 1", SIZE, SIZE);
 
 		// seed a few random bubbles
 		for (int count = 0; count < SIZE; count++) {

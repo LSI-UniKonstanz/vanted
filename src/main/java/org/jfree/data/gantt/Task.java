@@ -37,8 +37,8 @@ import org.jfree.data.time.SimpleTimePeriod;
 import org.jfree.data.time.TimePeriod;
 
 /**
- * A simple representation of a task. The task has a description and a duration. You can add
- * sub-tasks to the task.
+ * A simple representation of a task. The task has a description and a duration.
+ * You can add sub-tasks to the task.
  */
 public class Task {
 
@@ -58,9 +58,9 @@ public class Task {
 	 * Creates a new task.
 	 * 
 	 * @param description
-	 *           the task description.
+	 *            the task description.
 	 * @param duration
-	 *           the task duration.
+	 *            the task duration.
 	 */
 	public Task(final String description, final TimePeriod duration) {
 		this.description = description;
@@ -73,11 +73,11 @@ public class Task {
 	 * Creates a new task.
 	 * 
 	 * @param description
-	 *           the task description.
+	 *            the task description.
 	 * @param start
-	 *           the start date.
+	 *            the start date.
 	 * @param end
-	 *           the end date.
+	 *            the end date.
 	 */
 	public Task(final String description, final Date start, final Date end) {
 		this(description, new SimpleTimePeriod(start, end));
@@ -96,7 +96,7 @@ public class Task {
 	 * Sets the task description.
 	 * 
 	 * @param description
-	 *           the new description.
+	 *            the new description.
 	 */
 	public void setDescription(final String description) {
 		this.description = description;
@@ -115,7 +115,7 @@ public class Task {
 	 * Sets the task duration (actual or estimated).
 	 * 
 	 * @param duration
-	 *           the duration.
+	 *            the duration.
 	 */
 	public void setDuration(final TimePeriod duration) {
 		this.duration = duration;
@@ -134,7 +134,7 @@ public class Task {
 	 * Sets the percentage complete for the task.
 	 * 
 	 * @param percent
-	 *           the percentage.
+	 *            the percentage.
 	 */
 	public void setPercentComplete(final double percent) {
 		setPercentComplete(new Double(percent));
@@ -144,7 +144,7 @@ public class Task {
 	 * Sets the percentage complete for the task.
 	 * 
 	 * @param percent
-	 *           the percentage (<code>null</code> permitted).
+	 *            the percentage (<code>null</code> permitted).
 	 */
 	public void setPercentComplete(final Double percent) {
 		this.percentComplete = percent;
@@ -154,7 +154,7 @@ public class Task {
 	 * Adds a sub-task to the task.
 	 * 
 	 * @param subtask
-	 *           the subtask.
+	 *            the subtask.
 	 */
 	public void addSubtask(final Task subtask) {
 		this.subtasks.add(subtask);
@@ -164,7 +164,7 @@ public class Task {
 	 * Removes a sub-task from the task.
 	 * 
 	 * @param subtask
-	 *           the subtask.
+	 *            the subtask.
 	 */
 	public void removeSubtask(final Task subtask) {
 		this.subtasks.remove(subtask);
@@ -183,7 +183,7 @@ public class Task {
 	 * Returns a sub-task.
 	 * 
 	 * @param index
-	 *           the index.
+	 *            the index.
 	 * @return The sub-task.
 	 */
 	public Task getSubtask(final int index) {

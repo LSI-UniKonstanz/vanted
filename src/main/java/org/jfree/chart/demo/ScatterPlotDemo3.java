@@ -48,8 +48,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A demo scatter plot with some code showing how to convert between Java2D coordinates and
- * (x, y) coordinates.
+ * A demo scatter plot with some code showing how to convert between Java2D
+ * coordinates and (x, y) coordinates.
  */
 public class ScatterPlotDemo3 extends ApplicationFrame implements ChartMouseListener {
 
@@ -60,7 +60,7 @@ public class ScatterPlotDemo3 extends ApplicationFrame implements ChartMouseList
 	 * A demonstration application showing a scatter plot.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public ScatterPlotDemo3(final String title) {
 		super(title);
@@ -80,19 +80,12 @@ public class ScatterPlotDemo3 extends ApplicationFrame implements ChartMouseList
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A dataset.
 	 */
 	private JFreeChart createChart(XYDataset dataset) {
-		final JFreeChart chart = ChartFactory.createScatterPlot(
-							"Scatter Plot Demo",
-							"X", "Y",
-							dataset,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createScatterPlot("Scatter Plot Demo", "X", "Y", dataset,
+				PlotOrientation.VERTICAL, true, true, false);
 		final Legend legend = chart.getLegend();
 		if (legend instanceof StandardLegend) {
 			final StandardLegend sl = (StandardLegend) legend;
@@ -107,7 +100,7 @@ public class ScatterPlotDemo3 extends ApplicationFrame implements ChartMouseList
 	 * Callback method for receiving notification of a mouse click on a chart.
 	 * 
 	 * @param event
-	 *           information about the event.
+	 *            information about the event.
 	 */
 	public void chartMouseClicked(ChartMouseEvent event) {
 		int x = event.getTrigger().getX();
@@ -120,20 +113,16 @@ public class ScatterPlotDemo3 extends ApplicationFrame implements ChartMouseList
 		// now convert the Java2D coordinate to axis coordinates...
 		XYPlot plot = chartPanel.getChart().getXYPlot();
 		Rectangle2D dataArea = chartPanel.getChartRenderingInfo().getPlotInfo().getDataArea();
-		double xx = plot.getDomainAxis().java2DToValue(
-							p.getX(), dataArea, plot.getDomainAxisEdge()
-							);
-		double yy = plot.getRangeAxis().java2DToValue(
-							p.getY(), dataArea, plot.getRangeAxisEdge()
-							);
+		double xx = plot.getDomainAxis().java2DToValue(p.getX(), dataArea, plot.getDomainAxisEdge());
+		double yy = plot.getRangeAxis().java2DToValue(p.getY(), dataArea, plot.getRangeAxisEdge());
 
-		// just for fun, lets convert the axis coordinates back to component coordinates...
+		// just for fun, lets convert the axis coordinates back to component
+		// coordinates...
 		double xxx = plot.getDomainAxis().valueToJava2D(xx, dataArea, plot.getDomainAxisEdge());
 		double yyy = plot.getRangeAxis().valueToJava2D(yy, dataArea, plot.getRangeAxisEdge());
 
 		Point2D p2 = chartPanel.translateJava2DToScreen(new Point2D.Double(xxx, yyy));
-		System.out.println("Mouse coordinates are (" + x + ", " + y
-							+ "), in data space = (" + xx + ", " + yy + ").");
+		System.out.println("Mouse coordinates are (" + x + ", " + y + "), in data space = (" + xx + ", " + yy + ").");
 		System.out.println("--> (" + p2.getX() + ", " + p2.getY() + ")");
 	}
 
@@ -141,7 +130,7 @@ public class ScatterPlotDemo3 extends ApplicationFrame implements ChartMouseList
 	 * Callback method for receiving notification of a mouse movement on a chart.
 	 * 
 	 * @param event
-	 *           information about the event.
+	 *            information about the event.
 	 */
 	public void chartMouseMoved(ChartMouseEvent event) {
 		// ignore
@@ -162,7 +151,7 @@ public class ScatterPlotDemo3 extends ApplicationFrame implements ChartMouseList
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 		final ScatterPlotDemo3 demo = new ScatterPlotDemo3("Scatter Plot Demo 3");

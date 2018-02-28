@@ -46,7 +46,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demonstration application showing how to create a stacked area chart using data from a {@link CategoryDataset}.
+ * A simple demonstration application showing how to create a stacked area chart
+ * using data from a {@link CategoryDataset}.
  */
 public class StackedAreaChartDemo extends ApplicationFrame {
 
@@ -54,7 +55,7 @@ public class StackedAreaChartDemo extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public StackedAreaChartDemo(final String title) {
 		super(title);
@@ -71,15 +72,10 @@ public class StackedAreaChartDemo extends ApplicationFrame {
 	 * @return A sample dataset.
 	 */
 	public CategoryDataset createDataset() {
-		final double[][] data = new double[][] {
-							{ 1.0, 4.0, 3.0, 5.0, 5.0, 7.0, 7.0, 8.0 },
-							{ 5.0, 7.0, 6.0, 8.0, 4.0, 4.0, 2.0, 1.0 },
-							{ 4.0, 3.0, 2.0, 3.0, 6.0, 3.0, 4.0, 3.0 }
-			};
+		final double[][] data = new double[][] { { 1.0, 4.0, 3.0, 5.0, 5.0, 7.0, 7.0, 8.0 },
+				{ 5.0, 7.0, 6.0, 8.0, 4.0, 4.0, 2.0, 1.0 }, { 4.0, 3.0, 2.0, 3.0, 6.0, 3.0, 4.0, 3.0 } };
 
-		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset(
-							"Series ", "Type ", data
-							);
+		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Series ", "Type ", data);
 		return dataset;
 	}
 
@@ -87,21 +83,18 @@ public class StackedAreaChartDemo extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A sample chart.
 	 */
 	public JFreeChart createChart(CategoryDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createStackedAreaChart(
-							"Stacked Area Chart", // chart title
+		final JFreeChart chart = ChartFactory.createStackedAreaChart("Stacked Area Chart", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
 				PlotOrientation.VERTICAL, // orientation
 				true, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		chart.setBackgroundPaint(Color.white);
 
@@ -141,7 +134,7 @@ public class StackedAreaChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

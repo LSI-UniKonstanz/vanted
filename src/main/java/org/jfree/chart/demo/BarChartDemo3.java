@@ -53,13 +53,15 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.TextAnchor;
 
 /**
- * A bar chart that uses a custom renderer to display different colors within a series.
- * No legend is displayed because there is only one series but the colors are not consistent.
+ * A bar chart that uses a custom renderer to display different colors within a
+ * series. No legend is displayed because there is only one series but the
+ * colors are not consistent.
  */
 public class BarChartDemo3 extends ApplicationFrame {
 
 	/**
-	 * A custom renderer that returns a different color for each item in a single series.
+	 * A custom renderer that returns a different color for each item in a single
+	 * series.
 	 */
 	class CustomRenderer extends BarRenderer {
 
@@ -70,7 +72,7 @@ public class BarChartDemo3 extends ApplicationFrame {
 		 * Creates a new renderer.
 		 * 
 		 * @param colors
-		 *           the colors.
+		 *            the colors.
 		 */
 		public CustomRenderer(final Paint[] colors) {
 			this.colors = colors;
@@ -81,9 +83,9 @@ public class BarChartDemo3 extends ApplicationFrame {
 		 * AbstractSeriesRenderer.
 		 * 
 		 * @param row
-		 *           the series.
+		 *            the series.
 		 * @param column
-		 *           the category.
+		 *            the category.
 		 * @return The item color.
 		 */
 		public Paint getItemPaint(final int row, final int column) {
@@ -95,7 +97,7 @@ public class BarChartDemo3 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public BarChartDemo3(final String title) {
 		super(title);
@@ -113,32 +115,25 @@ public class BarChartDemo3 extends ApplicationFrame {
 	 */
 	private CategoryDataset createDataset() {
 		final double[][] data = new double[][] { { 4.0, 3.0, -2.0, 3.0, 6.0 } };
-		return DatasetUtilities.createCategoryDataset(
-							"Series ",
-							"Category ",
-							data
-							);
+		return DatasetUtilities.createCategoryDataset("Series ", "Category ", data);
 	}
 
 	/**
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return a sample chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createBarChart(
-							"Bar Chart Demo 3", // chart title
+		final JFreeChart chart = ChartFactory.createBarChart("Bar Chart Demo 3", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
 				PlotOrientation.VERTICAL, // the plot orientation
 				false, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		chart.setBackgroundPaint(Color.lightGray);
 
@@ -146,16 +141,12 @@ public class BarChartDemo3 extends ApplicationFrame {
 		final CategoryPlot plot = chart.getCategoryPlot();
 		plot.setNoDataMessage("NO DATA!");
 
-		final CategoryItemRenderer renderer = new CustomRenderer(
-							new Paint[] { Color.red, Color.blue, Color.green,
-												Color.yellow, Color.orange, Color.cyan,
-												Color.magenta, Color.blue }
-							);
+		final CategoryItemRenderer renderer = new CustomRenderer(new Paint[] { Color.red, Color.blue, Color.green,
+				Color.yellow, Color.orange, Color.cyan, Color.magenta, Color.blue });
 		renderer.setLabelGenerator(new StandardCategoryLabelGenerator());
 		renderer.setItemLabelsVisible(true);
-		final ItemLabelPosition p = new ItemLabelPosition(
-							ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER, 45.0
-							);
+		final ItemLabelPosition p = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER, TextAnchor.CENTER,
+				45.0);
 		renderer.setPositiveItemLabelPosition(p);
 		plot.setRenderer(renderer);
 
@@ -184,7 +175,7 @@ public class BarChartDemo3 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

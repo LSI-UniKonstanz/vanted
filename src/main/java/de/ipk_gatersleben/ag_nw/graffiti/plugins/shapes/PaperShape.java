@@ -20,27 +20,27 @@ import org.graffiti.graphics.NodeGraphicAttribute;
  * @author Christian Klukas, Tobias Czauderna
  */
 public class PaperShape extends RelativePolyShape {
-	
+
 	// definition of offsets and width off callout for paper shapes with callout
 	double offsetTop = 0.4; // offset of paper shape from top
 	double offsetRight = 0.4; // offset of paper shape from right
 	double offsetBottom = 0.4; // offset of paper shape from bottom
 	double offsetLeft = 0.4; // offset of paper shape from left
 	double calloutWidth = 0.125; // relative width off callout
-	
+
 	public PaperShape() {
-		
+
 		this.ignorePoints = new HashSet<>();
 		this.ignorePoints.add(new Integer(3));
 		this.ignorePoints.add(new Integer(4));
-		
+
 	}
-	
+
 	@Override
 	public void buildShape(NodeGraphicAttribute nodeGraphicAttribute) {
-		
+
 		this.nodeAttr = nodeGraphicAttribute;
-		
+
 		DimensionAttribute dimensionAttribute = nodeGraphicAttribute.getDimension();
 		double width = dimensionAttribute.getWidth();
 		double height = dimensionAttribute.getHeight();
@@ -52,7 +52,7 @@ public class PaperShape extends RelativePolyShape {
 		this.roundingRadius = rounding / width;
 		double frameThickness = nodeGraphicAttribute.getFrameThickness();
 		double offset = frameThickness / 2d;
-		
+
 		Collection<Vector2d> points = getRelativePointPositions();
 		int[] xPoints = new int[points.size()];
 		int[] yPoints = new int[points.size()];
@@ -61,23 +61,21 @@ public class PaperShape extends RelativePolyShape {
 			xPoints[k] = (int) Math.round(point.x * width);
 			if (point.y >= 0 && point.y <= 1)
 				yPoints[k] = (int) Math.round(point.y * height);
+			else if (point.y > 1)
+				yPoints[k] = (int) Math.round(height - (point.y - 1) * width);
 			else
-				if (point.y > 1)
-					yPoints[k] = (int) Math.round(height - (point.y - 1) * width);
-				else
-					yPoints[k] = (int) Math.round(-point.y * width);
+				yPoints[k] = (int) Math.round(-point.y * width);
 			k++;
 		}
-		
+
 		this.polygon = new Polygon(xPoints, yPoints, points.size());
 		int nOffset = (int) Math.round(offset);
 		this.polygon.translate(nOffset, nOffset);
-		
+
 		if (Double.compare(Math.floor(offset), offset) == 0) {
 			width = width + frameThickness + 1;
 			height = height + frameThickness + 1;
-		}
-		else {
+		} else {
 			width += frameThickness;
 			height += frameThickness;
 		}
@@ -86,12 +84,12 @@ public class PaperShape extends RelativePolyShape {
 			height += 1;
 		}
 		setThickShape(width, height);
-		
+
 	}
-	
+
 	@Override
 	protected Collection<Vector2d> getRelativePointPositions() {
-		
+
 		// paper shape without callout
 		double off = this.roundingRadius;
 		Collection<Vector2d> points = new ArrayList<>();
@@ -105,7 +103,7 @@ public class PaperShape extends RelativePolyShape {
 		points.add(new Vector2d(0, 1)); // 7
 		points.add(new Vector2d(0, 0)); // 8
 		return points;
-		
+
 	}
-	
+
 }

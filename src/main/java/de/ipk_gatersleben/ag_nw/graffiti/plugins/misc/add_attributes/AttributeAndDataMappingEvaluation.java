@@ -9,9 +9,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 
 public class AttributeAndDataMappingEvaluation extends IPK_PluginAdapter {
 	public AttributeAndDataMappingEvaluation() {
-		algorithms = new Algorithm[] {
-							new AddInterestingAttributes(),
-//							new ComputeAttributesAlgorithm()
+		algorithms = new Algorithm[] { new AddInterestingAttributes(),
+				// new ComputeAttributesAlgorithm()
 		};
 	}
 }

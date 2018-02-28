@@ -20,17 +20,18 @@ import org.graffiti.plugin.algorithm.Algorithm;
  * @version $Revision: 1.6 $
  * @see org.graffiti.managers.pluginmgr.PluginManagerListener
  */
-public interface AlgorithmManager
-					extends PluginManagerListener {
+public interface AlgorithmManager extends PluginManagerListener {
 	// ~ Methods ================================================================
-	
+
 	/**
-	 * Returns a <code>java.util.List</code> containing all the <code>Algorithm</code> instances the manager contains.
+	 * Returns a <code>java.util.List</code> containing all the
+	 * <code>Algorithm</code> instances the manager contains.
 	 * 
-	 * @return a <code>java.util.List</code> containing all the <code>Algorithm</code> instances the manager contains.
+	 * @return a <code>java.util.List</code> containing all the
+	 *         <code>Algorithm</code> instances the manager contains.
 	 */
 	List<?> getAlgorithms();
-	
+
 	// /**
 	// * Returns the class name of the specified algorithm. Using the
 	// * <code>InstanceLoader</code> an instance of this <code>Algorithm</code>
@@ -42,12 +43,12 @@ public interface AlgorithmManager
 	// * @return the class name of the specified algorithm.
 	// */
 	// String getClassName(Algorithm algorithm);
-	
+
 	/**
 	 * Adds the given algorithm to the list of algorithms.
 	 * 
 	 * @param algorithm
-	 *           the algorithm to add to the list.
+	 *            the algorithm to add to the list.
 	 */
 	void addAlgorithm(Algorithm algorithm);
 }

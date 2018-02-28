@@ -63,11 +63,11 @@ public class CategoryDatasetHandler extends RootHandler implements DatasetTags {
 	 * Adds an item to the dataset.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public void addItem(final Comparable rowKey, final Comparable columnKey, final Number value) {
 		this.dataset.addValue(value, rowKey, columnKey);
@@ -77,35 +77,31 @@ public class CategoryDatasetHandler extends RootHandler implements DatasetTags {
 	 * The start of an element.
 	 * 
 	 * @param namespaceURI
-	 *           the namespace.
+	 *            the namespace.
 	 * @param localName
-	 *           the element name.
+	 *            the element name.
 	 * @param qName
-	 *           the element name.
+	 *            the element name.
 	 * @param atts
-	 *           the element attributes.
+	 *            the element attributes.
 	 * @throws SAXException
-	 *            for errors.
+	 *             for errors.
 	 */
-	public void startElement(final String namespaceURI,
-										final String localName,
-										final String qName,
-										final Attributes atts) throws SAXException {
+	public void startElement(final String namespaceURI, final String localName, final String qName,
+			final Attributes atts) throws SAXException {
 
 		final DefaultHandler current = getCurrentHandler();
 		if (current != this) {
 			current.startElement(namespaceURI, localName, qName, atts);
-		} else
-			if (qName.equals(CATEGORYDATASET_TAG)) {
-				this.dataset = new DefaultCategoryDataset();
-			} else
-				if (qName.equals(SERIES_TAG)) {
-					final CategorySeriesHandler subhandler = new CategorySeriesHandler(this);
-					getSubHandlers().push(subhandler);
-					subhandler.startElement(namespaceURI, localName, qName, atts);
-				} else {
-					throw new SAXException("Element not recognised: " + qName);
-				}
+		} else if (qName.equals(CATEGORYDATASET_TAG)) {
+			this.dataset = new DefaultCategoryDataset();
+		} else if (qName.equals(SERIES_TAG)) {
+			final CategorySeriesHandler subhandler = new CategorySeriesHandler(this);
+			getSubHandlers().push(subhandler);
+			subhandler.startElement(namespaceURI, localName, qName, atts);
+		} else {
+			throw new SAXException("Element not recognised: " + qName);
+		}
 
 	}
 
@@ -113,17 +109,15 @@ public class CategoryDatasetHandler extends RootHandler implements DatasetTags {
 	 * The end of an element.
 	 * 
 	 * @param namespaceURI
-	 *           the namespace.
+	 *            the namespace.
 	 * @param localName
-	 *           the element name.
+	 *            the element name.
 	 * @param qName
-	 *           the element name.
+	 *            the element name.
 	 * @throws SAXException
-	 *            for errors.
+	 *             for errors.
 	 */
-	public void endElement(final String namespaceURI,
-									final String localName,
-									final String qName) throws SAXException {
+	public void endElement(final String namespaceURI, final String localName, final String qName) throws SAXException {
 
 		final DefaultHandler current = getCurrentHandler();
 		if (current != this) {

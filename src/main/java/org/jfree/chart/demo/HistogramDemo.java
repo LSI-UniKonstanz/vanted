@@ -59,7 +59,7 @@ public class HistogramDemo extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public HistogramDemo(final String title) {
 		super(title);
@@ -99,20 +99,12 @@ public class HistogramDemo extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           a dataset.
+	 *            a dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final IntervalXYDataset dataset) {
-		final JFreeChart chart = ChartFactory.createHistogram(
-							"Histogram Demo",
-							null,
-							null,
-							dataset,
-							PlotOrientation.VERTICAL,
-							true,
-							false,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createHistogram("Histogram Demo", null, null, dataset,
+				PlotOrientation.VERTICAL, true, false, false);
 		chart.getXYPlot().setForegroundAlpha(0.75f);
 		return chart;
 	}
@@ -121,9 +113,9 @@ public class HistogramDemo extends ApplicationFrame {
 	 * Generates an array of sample data.
 	 * 
 	 * @param size
-	 *           the array size.
+	 *            the array size.
 	 * @param shift
-	 *           the shift from zero.
+	 *            the shift from zero.
 	 * @return The array of sample data.
 	 */
 	private static double[] gaussianData(final int size, final double shift) {
@@ -138,9 +130,9 @@ public class HistogramDemo extends ApplicationFrame {
 	 * The starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 * @throws IOException
-	 *            if there is a problem saving the file.
+	 *             if there is a problem saving the file.
 	 */
 	public static void main(final String[] args) throws IOException {
 

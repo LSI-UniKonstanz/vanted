@@ -17,44 +17,45 @@ import java.util.Map;
  * 
  * @author Paul
  */
-public class DefaultAlgorithmResult
-					implements AlgorithmResult {
+public class DefaultAlgorithmResult implements AlgorithmResult {
 	// ~ Instance fields ========================================================
-	
+
 	/** DOCUMENT ME! */
 	protected Map<String, Object> resultMap = new HashMap<String, Object>();
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor for DefaultAlgorithmResult.
 	 */
 	public DefaultAlgorithmResult() {
 		super();
 	}
-	
+
 	/**
 	 * Constructor for DefaultAlgorithmResult.
 	 * 
 	 * @param resultMap
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public DefaultAlgorithmResult(Map<String, Object> resultMap) {
 		super();
 		this.resultMap = resultMap;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.AlgorithmResult#getResult()
 	 */
 	public Map<String, Object> getResult() {
 		return this.resultMap;
 	}
-	
+
 	/*
-	 * @see org.graffiti.plugin.algorithm.AlgorithmResult#addToResult(java.lang.String, java.lang.Object)
+	 * @see
+	 * org.graffiti.plugin.algorithm.AlgorithmResult#addToResult(java.lang.String,
+	 * java.lang.Object)
 	 */
 	public void addToResult(String key, Object value) {
 		this.resultMap.put(key, value);

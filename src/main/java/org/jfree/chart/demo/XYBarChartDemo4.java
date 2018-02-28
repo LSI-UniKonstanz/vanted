@@ -54,7 +54,7 @@ public class XYBarChartDemo4 extends ApplicationFrame {
 	 * Constructs the demo application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XYBarChartDemo4(final String title) {
 
@@ -62,17 +62,8 @@ public class XYBarChartDemo4 extends ApplicationFrame {
 
 		final IntervalXYDataset dataset = createDataset();
 
-		final JFreeChart chart = ChartFactory.createXYBarChart(
-							title,
-							"X",
-							false,
-							"Y",
-							dataset,
-							PlotOrientation.VERTICAL,
-							true,
-							false,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createXYBarChart(title, "X", false, "Y", dataset,
+				PlotOrientation.VERTICAL, true, false, false);
 
 		// then customise it a little...
 		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 1000, 0, Color.blue));
@@ -116,7 +107,7 @@ public class XYBarChartDemo4 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

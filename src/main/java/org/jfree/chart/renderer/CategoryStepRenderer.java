@@ -43,18 +43,21 @@ import org.jfree.data.CategoryDataset;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A "step" renderer similar to {@link XYStepRenderer} but
- * that can be used with the {@link CategoryPlot} class.
+ * A "step" renderer similar to {@link XYStepRenderer} but that can be used with
+ * the {@link CategoryPlot} class.
  * 
  * @author Brian Cole
  */
 public class CategoryStepRenderer extends AbstractCategoryItemRenderer
-												implements Cloneable, PublicCloneable, Serializable {
+		implements Cloneable, PublicCloneable, Serializable {
 
 	/** The stagger width. */
 	public static final int STAGGER_WIDTH = 5; // could make this configurable...
 
-	/** A flag that controls whether or not the steps for multiple series are staggered. */
+	/**
+	 * A flag that controls whether or not the steps for multiple series are
+	 * staggered.
+	 */
 	private boolean stagger = false;
 
 	/** A working line - need to remove this. */
@@ -71,7 +74,7 @@ public class CategoryStepRenderer extends AbstractCategoryItemRenderer
 	 * Creates a new renderer.
 	 * 
 	 * @param stagger
-	 *           should the horizontal part of the step be staggered by series?
+	 *            should the horizontal part of the step be staggered by series?
 	 */
 	public CategoryStepRenderer(boolean stagger) {
 		this.stagger = stagger;
@@ -90,7 +93,7 @@ public class CategoryStepRenderer extends AbstractCategoryItemRenderer
 	 * Sets the flag that controls whether or not the series steps are staggered.
 	 * 
 	 * @param shouldStagger
-	 *           a boolean.
+	 *            a boolean.
 	 */
 	public void setStagger(boolean shouldStagger) {
 		stagger = shouldStagger;
@@ -100,29 +103,27 @@ public class CategoryStepRenderer extends AbstractCategoryItemRenderer
 	 * Draws the line.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param orientation
-	 *           the plot orientation.
+	 *            the plot orientation.
 	 * @param x0
-	 *           the x-coordinate for the start of the line.
+	 *            the x-coordinate for the start of the line.
 	 * @param y0
-	 *           the y-coordinate for the start of the line.
+	 *            the y-coordinate for the start of the line.
 	 * @param x1
-	 *           the x-coordinate for the end of the line.
+	 *            the x-coordinate for the end of the line.
 	 * @param y1
-	 *           the y-coordinate for the end of the line.
+	 *            the y-coordinate for the end of the line.
 	 */
-	protected void drawLine(Graphics2D g2, PlotOrientation orientation,
-										double x0, double y0, double x1, double y1) {
+	protected void drawLine(Graphics2D g2, PlotOrientation orientation, double x0, double y0, double x1, double y1) {
 
 		if (orientation == PlotOrientation.VERTICAL) {
 			line.setLine(x0, y0, x1, y1);
 			g2.draw(line);
-		} else
-			if (orientation == PlotOrientation.HORIZONTAL) {
-				line.setLine(y0, x0, y1, x1); // switch x and y
-				g2.draw(line);
-			}
+		} else if (orientation == PlotOrientation.HORIZONTAL) {
+			line.setLine(y0, x0, y1, x1); // switch x and y
+			g2.draw(line);
+		}
 		// else unknown orientation (complain?)
 	}
 
@@ -130,33 +131,26 @@ public class CategoryStepRenderer extends AbstractCategoryItemRenderer
 	 * Draw a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the area in which the data is drawn.
+	 *            the area in which the data is drawn.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	public void drawItem(Graphics2D g2,
-									CategoryItemRendererState state,
-									Rectangle2D dataArea,
-									CategoryPlot plot,
-									CategoryAxis domainAxis,
-									ValueAxis rangeAxis,
-									CategoryDataset dataset,
-									int row,
-									int column) {
+	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
+			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
 
 		Number value = dataset.getValue(row, column);
 		if (value == null) {
@@ -165,12 +159,8 @@ public class CategoryStepRenderer extends AbstractCategoryItemRenderer
 		PlotOrientation orientation = plot.getOrientation();
 
 		// current data point...
-		double x1s = domainAxis.getCategoryStart(
-							column, getColumnCount(), dataArea, plot.getDomainAxisEdge()
-							);
-		double x1 = domainAxis.getCategoryMiddle(
-							column, getColumnCount(), dataArea, plot.getDomainAxisEdge()
-							);
+		double x1s = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, plot.getDomainAxisEdge());
+		double x1 = domainAxis.getCategoryMiddle(column, getColumnCount(), dataArea, plot.getDomainAxisEdge());
 		double x1e = 2 * x1 - x1s; // or: x1s + 2*(x1-x1s)
 		double y1 = rangeAxis.valueToJava2D(value.doubleValue(), dataArea, plot.getRangeAxisEdge());
 		g2.setPaint(getItemPaint(row, column));
@@ -181,12 +171,10 @@ public class CategoryStepRenderer extends AbstractCategoryItemRenderer
 			if (previousValue != null) {
 				// previous data point...
 				double previous = previousValue.doubleValue();
-				double x0s = domainAxis.getCategoryStart(
-									column - 1, getColumnCount(), dataArea, plot.getDomainAxisEdge()
-									);
-				double x0 = domainAxis.getCategoryMiddle(
-									column - 1, getColumnCount(), dataArea, plot.getDomainAxisEdge()
-									);
+				double x0s = domainAxis.getCategoryStart(column - 1, getColumnCount(), dataArea,
+						plot.getDomainAxisEdge());
+				double x0 = domainAxis.getCategoryMiddle(column - 1, getColumnCount(), dataArea,
+						plot.getDomainAxisEdge());
 				double x0e = 2 * x0 - x0s; // or: x0s + 2*(x0-x0s)
 				double y0 = rangeAxis.valueToJava2D(previous, dataArea, plot.getRangeAxisEdge());
 				if (getStagger()) {
@@ -205,34 +193,20 @@ public class CategoryStepRenderer extends AbstractCategoryItemRenderer
 
 		// draw the item labels if there are any...
 		if (isItemLabelVisible(row, column)) {
-			drawItemLabel(
-								g2, orientation, dataset, row, column, x1, y1, (value.doubleValue() < 0.0));
+			drawItemLabel(g2, orientation, dataset, row, column, x1, y1, (value.doubleValue() < 0.0));
 		}
 		/*
-		 * This is how LineAndShapeRenderer.drawItem() handles tips and URLs, but
-		 * I omit it due to time pressure. It shouldn't be hard to put back
-		 * in.
-		 * // collect entity and tool tip information...
-		 * if (state.getInfo() != null) {
-		 * EntityCollection entities =
-		 * state.getInfo().getOwner().getEntityCollection();
-		 * if (entities != null && shape != null) {
-		 * String tip = null;
-		 * CategoryItemLabelGenerator generator =
-		 * getItemLabelGenerator(row, column);
-		 * if (generator != null) {
-		 * tip = generator.generateToolTip(dataset, row, column);
-		 * }
-		 * String url = null;
-		 * if (getItemURLGenerator(row, column) != null)
-		 * url = getItemURLGenerator(row, column).generateURL(dataset, row, column);
-		 * }
-		 * CategoryItemEntity entity = new CategoryItemEntity(
-		 * shape, tip, url, dataset, row,
-		 * dataset.getColumnKey(column), column);
-		 * entities.addEntity(entity);
-		 * }
-		 * }
+		 * This is how LineAndShapeRenderer.drawItem() handles tips and URLs, but I omit
+		 * it due to time pressure. It shouldn't be hard to put back in. // collect
+		 * entity and tool tip information... if (state.getInfo() != null) {
+		 * EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
+		 * if (entities != null && shape != null) { String tip = null;
+		 * CategoryItemLabelGenerator generator = getItemLabelGenerator(row, column); if
+		 * (generator != null) { tip = generator.generateToolTip(dataset, row, column);
+		 * } String url = null; if (getItemURLGenerator(row, column) != null) url =
+		 * getItemURLGenerator(row, column).generateURL(dataset, row, column); }
+		 * CategoryItemEntity entity = new CategoryItemEntity( shape, tip, url, dataset,
+		 * row, dataset.getColumnKey(column), column); entities.addEntity(entity); } }
 		 */
 
 	}

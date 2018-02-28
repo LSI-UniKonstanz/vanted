@@ -61,13 +61,13 @@ public abstract class Tick implements Serializable, Cloneable {
 	 * Creates a new tick.
 	 * 
 	 * @param text
-	 *           the formatted version of the tick value.
+	 *            the formatted version of the tick value.
 	 * @param textAnchor
-	 *           the text anchor (<code>null</code> not permitted).
+	 *            the text anchor (<code>null</code> not permitted).
 	 * @param rotationAnchor
-	 *           the rotation anchor (<code>null</code> not permitted).
+	 *            the rotation anchor (<code>null</code> not permitted).
 	 * @param angle
-	 *           the angle.
+	 *            the angle.
 	 */
 	public Tick(String text, TextAnchor textAnchor, TextAnchor rotationAnchor, double angle) {
 		if (textAnchor == null) {
@@ -101,7 +101,8 @@ public abstract class Tick implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns the text anchor that defines the point around which the label is rotated.
+	 * Returns the text anchor that defines the point around which the label is
+	 * rotated.
 	 * 
 	 * @return A text anchor (never <code>null</code>).
 	 */
@@ -122,7 +123,7 @@ public abstract class Tick implements Serializable, Cloneable {
 	 * Tests this tick for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -153,7 +154,7 @@ public abstract class Tick implements Serializable, Cloneable {
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if there is a problem cloning.
+	 *             if there is a problem cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		Tick clone = (Tick) super.clone();

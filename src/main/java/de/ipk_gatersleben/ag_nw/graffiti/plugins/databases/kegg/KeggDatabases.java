@@ -1,23 +1,17 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg;
 
 public enum KeggDatabases {
-	
-	PATHWAY("pathway", "path", "map number", ""),
-	BRITE("brite", "br", "br number", ""),
-	ORTHOLOGY("orthology", "ko", "K number", ""),
-	GENES("genes", "genes", "map number", "Composite database: consisting of KEGG organisms"),
-	ENZYME("enzyme", "ec", "", ""),
-	COMPOUND("compound", "cpd", "C number", ""),
-	REACTION("reaction", "rn", "R number", "");
-	
+
+	PATHWAY("pathway", "path", "map number", ""), BRITE("brite", "br", "br number", ""), ORTHOLOGY("orthology", "ko",
+			"K number", ""), GENES("genes", "genes", "map number",
+					"Composite database: consisting of KEGG organisms"), ENZYME("enzyme", "ec", "", ""), COMPOUND(
+							"compound", "cpd", "C number", ""), REACTION("reaction", "rn", "R number", "");
+
 	private String dbname;
 	private String abbreviation;
 	private String kId;
 	private String remark;
-	
-	
-	
-	
+
 	private KeggDatabases(String name, String abbreviation, String kId, String remark) {
 		this.dbname = name;
 		this.abbreviation = abbreviation;
@@ -40,7 +34,5 @@ public enum KeggDatabases {
 	public String getRemark() {
 		return remark;
 	}
-	
-	
-	
+
 }

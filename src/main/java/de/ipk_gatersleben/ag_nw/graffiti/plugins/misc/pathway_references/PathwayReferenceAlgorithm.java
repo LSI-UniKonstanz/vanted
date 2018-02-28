@@ -20,33 +20,28 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
 
 public class PathwayReferenceAlgorithm extends AbstractAlgorithm implements Algorithm {
-	
+
 	private String targetURL;
-	
+
 	public String getName() {
 		return "Add link to other network file...";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Elements"; // "menu.edit";
 	}
-	
 
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION,
-				Category.MAPPING
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.MAPPING));
 	}
 
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
@@ -54,17 +49,16 @@ public class PathwayReferenceAlgorithm extends AbstractAlgorithm implements Algo
 		if (selection == null || selection.isEmpty())
 			throw new PreconditionException("No graph elements are selected!");
 	}
-	
+
 	@Override
 	public String getDescription() {
-		return "<html>" +
-							"Please enter a file name for a cross-reference to another network.<br>" +
-							"Use relative file path information if possible, to make this information<br>" +
-							"robust against folder renaming and movement operations.<br>" +
-							"<small>This information may be later retrieved by the node/edge<br>" +
-							"context menu or the corresponding attribute editors in the side panel.";
+		return "<html>" + "Please enter a file name for a cross-reference to another network.<br>"
+				+ "Use relative file path information if possible, to make this information<br>"
+				+ "robust against folder renaming and movement operations.<br>"
+				+ "<small>This information may be later retrieved by the node/edge<br>"
+				+ "context menu or the corresponding attribute editors in the side panel.";
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
 		String currentURL = "";
@@ -79,13 +73,13 @@ public class PathwayReferenceAlgorithm extends AbstractAlgorithm implements Algo
 		}
 		return new Parameter[] { new StringParameter(currentURL, "Referenced Pathway Filename", null) };
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
 		this.targetURL = ((StringParameter) params[i++]).getString();
 	}
-	
+
 	public void execute() {
 		if (targetURL == null)
 			return;

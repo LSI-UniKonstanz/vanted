@@ -53,7 +53,7 @@ public class Performance {
 	 * Creates lines in a loop.
 	 * 
 	 * @param count
-	 *           the number of lines to create.
+	 *            the number of lines to create.
 	 */
 	public void createLines(final int count) {
 
@@ -69,7 +69,7 @@ public class Performance {
 	 * Creates one line, then repeatedly calls the setLine method.
 	 * 
 	 * @param count
-	 *           the number of times to call the setLine method.
+	 *            the number of times to call the setLine method.
 	 */
 	public void setLines(final int count) {
 
@@ -84,7 +84,7 @@ public class Performance {
 	 * Repeatedly grabs a value from a Number instance.
 	 * 
 	 * @param count
-	 *           the number of times to call doubleValue().
+	 *            the number of times to call doubleValue().
 	 */
 	public void getNumber(final int count) {
 
@@ -100,7 +100,7 @@ public class Performance {
 	 * Repeatedly grabs a value from a double.
 	 * 
 	 * @param count
-	 *           the number of times to fetch the value.
+	 *            the number of times to fetch the value.
 	 */
 	public void getValue(final int count) {
 
@@ -116,9 +116,9 @@ public class Performance {
 	 * Writes the current time to the console.
 	 * 
 	 * @param text
-	 *           the prefix.
+	 *            the prefix.
 	 * @param time
-	 *           the time.
+	 *            the time.
 	 */
 	public void writeTime(final String text, final Date time) {
 
@@ -130,7 +130,7 @@ public class Performance {
 	 * Starting point for the application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

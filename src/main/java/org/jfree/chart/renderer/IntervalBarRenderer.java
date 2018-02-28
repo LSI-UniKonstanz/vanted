@@ -64,18 +64,15 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A renderer that handles the drawing of bars for a bar plot where
- * each bar has a high and low value.
+ * A renderer that handles the drawing of bars for a bar plot where each bar has
+ * a high and low value.
  * <p>
  * For use with the {@link CategoryPlot} class.
  * 
  * @author Jeremy Bowman
  */
 public class IntervalBarRenderer extends BarRenderer
-											implements CategoryItemRenderer,
-															Cloneable,
-															PublicCloneable,
-															Serializable {
+		implements CategoryItemRenderer, Cloneable, PublicCloneable, Serializable {
 
 	/**
 	 * Constructs a new renderer.
@@ -88,33 +85,26 @@ public class IntervalBarRenderer extends BarRenderer
 	 * Draws the bar for a single (series, category) data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	public void drawItem(Graphics2D g2,
-									CategoryItemRendererState state,
-									Rectangle2D dataArea,
-									CategoryPlot plot,
-									CategoryAxis domainAxis,
-									ValueAxis rangeAxis,
-									CategoryDataset dataset,
-									int row,
-									int column) {
+	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
+			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
 
 		if (dataset instanceof IntervalCategoryDataset) {
 			IntervalCategoryDataset d = (IntervalCategoryDataset) dataset;
@@ -129,33 +119,26 @@ public class IntervalBarRenderer extends BarRenderer
 	 * Draws a single interval.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the data plot area.
+	 *            the data plot area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the data.
+	 *            the data.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	protected void drawInterval(Graphics2D g2,
-											CategoryItemRendererState state,
-											Rectangle2D dataArea,
-											CategoryPlot plot,
-											CategoryAxis domainAxis,
-											ValueAxis rangeAxis,
-											IntervalCategoryDataset dataset,
-											int row,
-											int column) {
+	protected void drawInterval(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
+			CategoryAxis domainAxis, ValueAxis rangeAxis, IntervalCategoryDataset dataset, int row, int column) {
 
 		int seriesCount = getRowCount();
 		int categoryCount = getColumnCount();
@@ -173,18 +156,14 @@ public class IntervalBarRenderer extends BarRenderer
 		if (value0 == null) {
 			return;
 		}
-		double java2dValue0 = rangeAxis.valueToJava2D(
-							value0.doubleValue(), dataArea, rangeAxisLocation
-							);
+		double java2dValue0 = rangeAxis.valueToJava2D(value0.doubleValue(), dataArea, rangeAxisLocation);
 
 		// Y1
 		Number value1 = dataset.getStartValue(row, column);
 		if (value1 == null) {
 			return;
 		}
-		double java2dValue1 = rangeAxis.valueToJava2D(
-							value1.doubleValue(), dataArea, rangeAxisLocation
-							);
+		double java2dValue1 = rangeAxis.valueToJava2D(value1.doubleValue(), dataArea, rangeAxisLocation);
 
 		if (java2dValue1 < java2dValue0) {
 			double temp = java2dValue1;
@@ -203,11 +182,9 @@ public class IntervalBarRenderer extends BarRenderer
 
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			// BAR Y
-			rectY = domainAxis.getCategoryStart(column, getColumnCount(), dataArea,
-																domainAxisLocation);
+			rectY = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, domainAxisLocation);
 			if (seriesCount > 1) {
-				double seriesGap = dataArea.getHeight() * getItemMargin()
-												/ (categoryCount * (seriesCount - 1));
+				double seriesGap = dataArea.getHeight() * getItemMargin() / (categoryCount * (seriesCount - 1));
 				rectY = rectY + row * (state.getBarWidth() + seriesGap);
 			} else {
 				rectY = rectY + row * state.getBarWidth();
@@ -218,23 +195,20 @@ public class IntervalBarRenderer extends BarRenderer
 			rectHeight = state.getBarWidth();
 			rectWidth = Math.abs(java2dValue1 - java2dValue0);
 
-		} else
-			if (orientation == PlotOrientation.VERTICAL) {
-				// BAR X
-				rectX = domainAxis.getCategoryStart(column, getColumnCount(), dataArea,
-																domainAxisLocation);
+		} else if (orientation == PlotOrientation.VERTICAL) {
+			// BAR X
+			rectX = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, domainAxisLocation);
 
-				if (seriesCount > 1) {
-					double seriesGap = dataArea.getWidth() * getItemMargin()
-												/ (categoryCount * (seriesCount - 1));
-					rectX = rectX + row * (state.getBarWidth() + seriesGap);
-				} else {
-					rectX = rectX + row * state.getBarWidth();
-				}
-
-				rectY = java2dValue0;
-
+			if (seriesCount > 1) {
+				double seriesGap = dataArea.getWidth() * getItemMargin() / (categoryCount * (seriesCount - 1));
+				rectX = rectX + row * (state.getBarWidth() + seriesGap);
+			} else {
+				rectX = rectX + row * state.getBarWidth();
 			}
+
+			rectY = java2dValue0;
+
+		}
 		Rectangle2D bar = new Rectangle2D.Double(rectX, rectY, rectWidth, rectHeight);
 		Paint seriesPaint = getItemPaint(row, column);
 		g2.setPaint(seriesPaint);
@@ -269,9 +243,8 @@ public class IntervalBarRenderer extends BarRenderer
 				if (getItemURLGenerator(row, column) != null) {
 					url = getItemURLGenerator(row, column).generateURL(dataset, row, column);
 				}
-				CategoryItemEntity entity = new CategoryItemEntity(
-									bar, tip, url, dataset, row, dataset.getColumnKey(column), column
-									);
+				CategoryItemEntity entity = new CategoryItemEntity(bar, tip, url, dataset, row,
+						dataset.getColumnKey(column), column);
 				entities.addEntity(entity);
 			}
 		}

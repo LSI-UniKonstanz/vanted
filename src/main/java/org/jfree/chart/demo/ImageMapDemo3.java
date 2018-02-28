@@ -71,9 +71,9 @@ public class ImageMapDemo3 {
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 * @throws ParseException
-	 *            if there is a problem parsing dates.
+	 *             if there is a problem parsing dates.
 	 */
 	public static void main(final String[] args) throws ParseException {
 
@@ -108,8 +108,7 @@ public class ImageMapDemo3 {
 		valueAxis.setAutoRangeIncludesZero(false); // override default
 		final XYPlot plot = new XYPlot(xyDataset, timeAxis, valueAxis, null);
 		final StandardXYItemRenderer sxyir = new StandardXYItemRenderer(
-							StandardXYItemRenderer.LINES + StandardXYItemRenderer.SHAPES,
-							ttg, urlg);
+				StandardXYItemRenderer.LINES + StandardXYItemRenderer.SHAPES, ttg, urlg);
 		sxyir.setShapesFilled(true);
 		plot.setRenderer(sxyir);
 		final JFreeChart chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, false);
@@ -140,8 +139,8 @@ public class ImageMapDemo3 {
 			writer.println("<HEAD><TITLE>JFreeChart Image Map Demo</TITLE></HEAD>");
 			writer.println("<BODY>");
 			ChartUtilities.writeImageMap(writer, "chart", info);
-			writer.println("<IMG SRC=\"xychart100.png\" "
-									+ "WIDTH=\"600\" HEIGHT=\"400\" BORDER=\"0\" USEMAP=\"#chart\">");
+			writer.println(
+					"<IMG SRC=\"xychart100.png\" " + "WIDTH=\"600\" HEIGHT=\"400\" BORDER=\"0\" USEMAP=\"#chart\">");
 			writer.println("</BODY>");
 			writer.println("</HTML>");
 			writer.close();

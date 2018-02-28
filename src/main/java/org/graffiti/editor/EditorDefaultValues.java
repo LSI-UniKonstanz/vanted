@@ -17,13 +17,13 @@ package org.graffiti.editor;
  */
 interface EditorDefaultValues {
 	// ~ Static fields/initializers =============================================
-	
+
 	/** The default width of the main frame. */
 	public static final int SIZE_WIDTH = 640;
-	
+
 	/** The default height of the main frame. */
 	public static final int SIZE_HEIGHT = 480;
-	
+
 	/** The number of pixels for the vertical splitter's divider location. */
 	public static final int VERT_SPLITTER = 500;
 }

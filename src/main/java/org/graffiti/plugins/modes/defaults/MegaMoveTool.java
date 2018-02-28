@@ -90,128 +90,127 @@ import org.graffiti.undo.GraphElementsDeletionEdit;
  * @version $Revision: 1.67.6.2 $
  */
 public class MegaMoveTool extends MegaTools implements PreferencesInterface {
-//	private static final String PREFERENCE_USE_MOUSE_WHEEL_TO_ZOOM = "Use Mouse-wheel To Zoom";
-	
+	// private static final String PREFERENCE_USE_MOUSE_WHEEL_TO_ZOOM = "Use
+	// Mouse-wheel To Zoom";
+
 	private static final String PREFERENCE_SNAP_TO_GRID = "Snap to Grid";
 	private static final String PREFERENCE_GRID_SIZE = "Grid Size";
-	private static final String PREFERENCE_SHOW_WARNING_POPUP = "Show OOB Warning";//OOB: OutOfBounds
-	
+	private static final String PREFERENCE_SHOW_WARNING_POPUP = "Show OOB Warning";// OOB: OutOfBounds
+
 	private static final Integer PREFERENCE_DEFAULT_GRID_SIZE = 5;
-	
+
 	// ~ Static fields/initializers =============================================
 	private static String rkey = "selrect";
-	
+
 	static final Logger logger = Logger.getLogger(MegaMoveTool.class);
-	
+
 	static {
 		logger.setLevel(Level.INFO);
 	}
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * Specifies if - when there is a selection - graph elements are highlighted
 	 * only if the CTRL key is pressed.
 	 */
 	protected boolean onlyIfCtrl = false;
-	
+
 	private final Action deleteAction, leftAction, upAction, rightAction, downAction, escAction;
-	
-	private final Action leftActionFine, upActionFine, rightActionFine,
-			downActionFine;
-	
+
+	private final Action leftActionFine, upActionFine, rightActionFine, downActionFine;
+
 	/** Component that was last marked. */
 	private Component lastPressed;
-	
+
 	/** Coordinates of the bend on which the user most recently pressed. */
 	private CoordinateAttribute lastBendHit;
-	
+
 	/**
-	 * Component used to associate the key binding for deleting graph elements
-	 * with.
+	 * Component used to associate the key binding for deleting graph elements with.
 	 */
 	protected JComponent keyComponent;
-	
+
 	protected Cursor myNormCursor = new Cursor(Cursor.HAND_CURSOR);
-	
+
 	protected Cursor myResize_TL_Cursor = new Cursor(Cursor.NW_RESIZE_CURSOR);
 	protected Cursor myResize_TR_Cursor = new Cursor(Cursor.NE_RESIZE_CURSOR);
 	protected Cursor myResize_BR_Cursor = new Cursor(Cursor.SE_RESIZE_CURSOR);
 	protected Cursor myResize_BL_Cursor = new Cursor(Cursor.SW_RESIZE_CURSOR);
-	
+
 	/**
 	 * Saves original attributes with their values in this map before they are
 	 * changed; used for undo
 	 */
 	private Map<Attribute, Object> originalCoordinates;
-	
+
 	/** First corner of selection rectangle. */
 	private Point2D lastPressedPoint;
-	
+
 	/** Second corner of selection rectangle. */
 	private Point2D lastPressedPoint2;
-	
+
 	/** Point used for moving. */
 	private Point2D lastPressedMousePointRel;
-	
+
 	/** The selection rectangle. */
 	private final Rectangle selRect = new Rectangle();
-	
+
 	/** Used to distinguish between simple move and drag. */
 	private boolean dragged = false;
-	
+
 	private static double lastDragX = 100;
 	private static double lastDragY = 100;
-	
+
 	private int prevPosX;
 	private int prevPosY;
-	
+
 	private boolean resizeHit = false;
 	private boolean resizeHitTl = false;
 	private boolean resizeHitTr = false;
 	private boolean resizeHitBl = false;
 	private boolean resizeHitBr = false;
-	
+
 	private int resizeStartDimW = 0;
 	private int resizeStartDimH = 0;
-	
+
 	private int moveStartX = 0;
 	private int moveStartY = 0;
-	
+
 	private JComponent selRectComp;
-	
+
 	private Component lastPressedComponent;
-	
+
 	private CoordinateAttribute lastBendAdded;
 	private double lastBendAddedInitX, lastBendAddedInitY;
 	private long lastBendAddedTime = 0;
-	
+
 	public static int gridMovement = PREFERENCE_DEFAULT_GRID_SIZE;
 	public static int gridResizeSmallNodes = 2;
 	public static int gridResizeNormalNodes = 5;
 	public static int gridResizeLargeNodes = 10;
 	public static boolean gridEnabled = true;
-	
+
 	private static MegaMoveTool thisInstance;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor for this tool. Registers a key used to delete graph elements.
 	 */
 	public MegaMoveTool() {
 		super();
-		
+
 		if (!knownTools.contains(this))
 			knownTools.add(this);
-		
+
 		thisInstance = this;
-		
+
 		edgeCursor = new Cursor(Cursor.HAND_CURSOR);
 		nodeCursor = new Cursor(Cursor.MOVE_CURSOR);
-		
+
 		deleteAction = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
-			
+
 			public void actionPerformed(ActionEvent e) {
 				if (AdvancedLabelTool.getEditDeleteAction() != null)
 					AdvancedLabelTool.getEditDeleteAction().delete(selection.getElements());
@@ -219,8 +218,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					// useful to check if the selection isn't empty
 					// before an edit is build.
 					if (!selection.isEmpty()) {
-						GraphElementsDeletionEdit edit = new GraphElementsDeletionEdit(
-								selection.getElements(), getGraph(), geMap);
+						GraphElementsDeletionEdit edit = new GraphElementsDeletionEdit(selection.getElements(),
+								getGraph(), geMap);
 						unmarkAll();
 						edit.execute();
 						undoSupport.postEdit(edit);
@@ -229,136 +228,138 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				}
 			}
 		};
-		
+
 		leftAction = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("LEFT");
 				processMovement(-10, 0, arg0);
 			}
 		};
-		
+
 		upAction = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("UP");
 				processMovement(0, -10, arg0);
 			}
 		};
-		
+
 		rightAction = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("RIGHT");
 				processMovement(10, 0, arg0);
 			}
-			
+
 		};
-		
+
 		downAction = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("DOWN");
 				processMovement(0, 10, arg0);
 			}
 		};
-		
+
 		leftActionFine = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("LEFT FINE");
 				processMovement(-1, 0, arg0);
 			}
 		};
-		
+
 		upActionFine = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("UP FINE");
 				processMovement(0, -1, arg0);
 			}
 		};
-		
+
 		rightActionFine = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("RIGHT FINE");
 				processMovement(1, 0, arg0);
 			}
-			
+
 		};
-		
+
 		downActionFine = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				// System.out.println("DOWN FINE");
 				processMovement(0, 1, arg0);
 			}
 		};
-		
+
 		escAction = new AbstractAction() {
 			private static final long serialVersionUID = 1L;
-			
+
 			public void actionPerformed(ActionEvent arg0) {
 				unmarkAll();
 				fireSelectionChanged();
 			}
 		};
 	}
-	
+
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
-		arrayList.add(new BooleanParameter(true, PREFERENCE_SNAP_TO_GRID, "Enable/Disable this option let nodes snap to the grid"));
-		arrayList.add(new IntegerParameter(PREFERENCE_DEFAULT_GRID_SIZE, PREFERENCE_GRID_SIZE, "Sets the size of the grid"));
+		arrayList.add(new BooleanParameter(true, PREFERENCE_SNAP_TO_GRID,
+				"Enable/Disable this option let nodes snap to the grid"));
+		arrayList.add(
+				new IntegerParameter(PREFERENCE_DEFAULT_GRID_SIZE, PREFERENCE_GRID_SIZE, "Sets the size of the grid"));
 		return arrayList;
 	}
-	
+
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		gridEnabled = preferences.getBoolean(PREFERENCE_SNAP_TO_GRID, true);
 		gridMovement = preferences.getInt(PREFERENCE_GRID_SIZE, PREFERENCE_DEFAULT_GRID_SIZE);
-		if(gridMovement <= 0)
+		if (gridMovement <= 0)
 			gridMovement = PREFERENCE_DEFAULT_GRID_SIZE;
 	}
-	
+
 	@Override
 	public String getPreferencesAlternativeName() {
 		// TODO Auto-generated method stub
 		return "Mouse Control";
 	}
-	
+
 	private void processMovement(int diffX, int diffY, ActionEvent actionEvent) {
 		int xn = diffX;
 		int yn = diffY;
-		
+
 		lastPressed = null;
-		
-		MouseEvent me = new MouseEvent(
-				(Component) actionEvent.getSource(), -1, 0,
+
+		MouseEvent me = new MouseEvent((Component) actionEvent.getSource(), -1, 0,
 				InputEvent.BUTTON1_MASK + InputEvent.SHIFT_MASK, xn, yn, 1, false, MouseEvent.BUTTON1);
-		
+
 		lastBendHit = null;
 		lastPressed = null;
 		lastPressedPoint = null;
 		lastPressedPoint2 = null;
 		lastPressedMousePointRel = null;
-		
+
 		mouseDragged(me);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
-	 * States whether this class wants to be registered as a <code>SessionListener</code>. This tool returns true.
+	 * States whether this class wants to be registered as a
+	 * <code>SessionListener</code>. This tool returns true.
 	 * 
 	 * @return DOCUMENT ME!
 	 */
@@ -366,13 +367,13 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	public boolean isSessionListener() {
 		return true;
 	}
-	
+
 	@Override
 	public void sessionChanged(Session s) {
 		super.sessionChanged(s);
 		lastPressed = null;
 	}
-	
+
 	/**
 	 * The method additionally registers a key used to delete graph elements.
 	 * 
@@ -380,14 +381,13 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	 */
 	@Override
 	public void activate() {
-		if (session == null || session.getActiveView() == null
-				|| session.getActiveView().getViewComponent() == null)
+		if (session == null || session.getActiveView() == null || session.getActiveView().getViewComponent() == null)
 			return;
-		
+
 		super.activate();
-		
+
 		JComponent view = session.getActiveView().getViewComponent();
-		
+
 		while (!((view instanceof GraffitiInternalFrame))) {
 			if (view.getParent() == null || !(view.getParent() instanceof JComponent)) {
 				break;
@@ -396,113 +396,96 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			}
 		}
 		keyComponent = view;
-		
-		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), escAction.toString());
+
+		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+				escAction.toString());
 		view.getActionMap().put(escAction.toString(), escAction);
-		
+
 		String deleteName = "delete";
-		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), deleteName);
+		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),
+				deleteName);
 		view.getActionMap().put(deleteName, deleteAction);
-		
+
 		// / move nodes CTRL
-		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.CTRL_DOWN_MASK),
-				leftAction.toString());
-		view.getActionMap().put(leftAction.toString(), leftAction);
-		
 		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(
-						KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT,
-								InputEvent.CTRL_DOWN_MASK), rightAction.toString());
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.CTRL_DOWN_MASK), leftAction.toString());
+		view.getActionMap().put(leftAction.toString(), leftAction);
+
+		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.CTRL_DOWN_MASK), rightAction.toString());
 		view.getActionMap().put(rightAction.toString(), rightAction);
-		
-		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.CTRL_DOWN_MASK),
-				upAction.toString());
+
+		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.CTRL_DOWN_MASK), upAction.toString());
 		view.getActionMap().put(upAction.toString(), upAction);
-		
-		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.CTRL_DOWN_MASK),
-				downAction.toString());
+
+		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.CTRL_DOWN_MASK), downAction.toString());
 		view.getActionMap().put(downAction.toString(), downAction);
-		
+
 		// / move nodes SHIFT
-		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.SHIFT_DOWN_MASK),
-				leftActionFine.toString());
+		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.SHIFT_DOWN_MASK), leftActionFine.toString());
 		view.getActionMap().put(leftActionFine.toString(), leftActionFine);
-		
-		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.SHIFT_DOWN_MASK),
-				rightActionFine.toString());
+
+		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.SHIFT_DOWN_MASK), rightActionFine.toString());
 		view.getActionMap().put(rightActionFine.toString(), rightActionFine);
-		
-		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.SHIFT_DOWN_MASK),
-				upActionFine.toString());
+
+		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.SHIFT_DOWN_MASK), upActionFine.toString());
 		view.getActionMap().put(upActionFine.toString(), upActionFine);
-		
-		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.SHIFT_DOWN_MASK),
-				downActionFine.toString());
+
+		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.SHIFT_DOWN_MASK), downActionFine.toString());
 		view.getActionMap().put(downActionFine.toString(), downActionFine);
-		
-		MainFrame
-				.showMessage(
-						"<html>Use the mouse or keyboard (Shift/Ctrl + Cursor Keys) to move "
-								+
-								// "and Shift/Ctrl + Mouse Wheel to rotate" +
-								" the selected or all items. "
-								+
-								"Double-click (or start typing*) to edit a node- or edge-label (*select elements before and press the move-tool button again). Shift+Double-Click hides/makes visible child elements of a node. "
-								+
-								"Use middle mouse click to select a node and all nodes, placed inside the node.",
-						MessageType.INFO);
+
+		MainFrame.showMessage("<html>Use the mouse or keyboard (Shift/Ctrl + Cursor Keys) to move " +
+		// "and Shift/Ctrl + Mouse Wheel to rotate" +
+				" the selected or all items. "
+				+ "Double-click (or start typing*) to edit a node- or edge-label (*select elements before and press the move-tool button again). Shift+Double-Click hides/makes visible child elements of a node. "
+				+ "Use middle mouse click to select a node and all nodes, placed inside the node.", MessageType.INFO);
 	}
-	
+
 	/**
-	 * This method additionaly unregisters the key used for deleting graph
-	 * elements.
+	 * This method additionaly unregisters the key used for deleting graph elements.
 	 * 
 	 * @see org.graffiti.plugin.tool.AbstractTool#deactivate()
 	 */
 	@Override
 	public void deactivate() {
 		super.deactivate();
-		
+
 		if (keyComponent != null)
-			keyComponent.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-					KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0),
-					null);
+			keyComponent.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+					.put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0), null);
 	}
-	
+
 	/**
-	 * Empty method. Invoked at mouse clicks. Does not do anything. All is done
-	 * via mousePressed.
+	 * Empty method. Invoked at mouse clicks. Does not do anything. All is done via
+	 * mousePressed.
 	 * 
 	 * @param e
-	 *           the mouse event
+	 *            the mouse event
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		super.mouseClicked(e);
 		mouseMoved(e);
 	}
-	
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
-//		logger.debug("begin mouseMoved");
+		// logger.debug("begin mouseMoved");
 		super.mouseMoved(e);
 		Component src;
 		if (SwingUtilities.isMiddleMouseButton(e))
 			src = null;
 		else
 			src = getFoundComponent();
-		
+
 		edgeCursor = myNormCursor;
-		
+
 		if (src != null) {
 			if (src instanceof EdgeComponentInterface) { // instanceof View
 				EdgeComponentInterface eci = (EdgeComponentInterface) src;
@@ -521,7 +504,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					for (Iterator<?> it = bends.iterator(); it.hasNext();) {
 						coordAttr = (CoordinateAttribute) it.next();
 						coord = coordAttr.getCoordinate();
-						
+
 						if (hit(e.getPoint(), coord)) {
 							bendHit = true;
 							break;
@@ -533,10 +516,10 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			}
 		}
 	}
-	
+
 	protected void processScrolling(MouseEvent e) {
-		
-//		System.out.println("-scrolling");
+
+		// System.out.println("-scrolling");
 		Object o = e.getSource();
 		if (o != null && o instanceof JComponent) {
 			JComponent jc = (JComponent) o;
@@ -544,25 +527,25 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			JScrollBar jsb = null;
 			float dx = prevPosX - e.getX();
 			float dy = prevPosY - e.getY();
-			
+
 			AffineTransform zoom = null;
 			if (o instanceof GraffitiView)
 				zoom = ((GraffitiView) o).getZoom();
-			
-//			System.out.println("zoom: "+ zoom.toString()+" dx:"+dx+" dy:"+dy);
-//			System.out.println("prevDragX:"+prevPosX+" prevDragY:"+prevPosY);
-//			System.out.println(" mouseX:" + e.getX()+" mouseY:" + e.getY());
-//			System.out.println(" horSBpos:" + jsp.getHorizontalScrollBar().getValue());
-//			System.out.println(" verSBpos:" + jsp.getVerticalScrollBar().getValue());
-//			if(dx < 0 || dy < 0)
-//				System.out.println();
-//			if(Math.abs(dx) > 100 || Math.abs(dy) > 100)
-//			System.out.println();
+
+			// System.out.println("zoom: "+ zoom.toString()+" dx:"+dx+" dy:"+dy);
+			// System.out.println("prevDragX:"+prevPosX+" prevDragY:"+prevPosY);
+			// System.out.println(" mouseX:" + e.getX()+" mouseY:" + e.getY());
+			// System.out.println(" horSBpos:" + jsp.getHorizontalScrollBar().getValue());
+			// System.out.println(" verSBpos:" + jsp.getVerticalScrollBar().getValue());
+			// if(dx < 0 || dy < 0)
+			// System.out.println();
+			// if(Math.abs(dx) > 100 || Math.abs(dy) > 100)
+			// System.out.println();
 			if (dx != 0) {
 				jsb = jsp.getHorizontalScrollBar();
-				
+
 				int v = jsb.getValue();
-				
+
 				v += dx * zoom.getScaleX();
 				if (v < jsb.getMinimum())
 					v = jsb.getMinimum();
@@ -572,9 +555,9 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			}
 			if (dy != 0) {
 				jsb = jsp.getVerticalScrollBar();
-				
+
 				int v = jsb.getValue();
-				
+
 				v += dy * zoom.getScaleY();
 				if (v < jsb.getMinimum())
 					v = jsb.getMinimum();
@@ -583,24 +566,23 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				jsb.setValue(v);
 			}
 			/*
-			 * adjust prev position to the new scroll position of the view
-			 * with respect to the changed dx values
-			 * Just setting the previous x/y coordinates results in flicker, due
-			 * to the changed scroll position
+			 * adjust prev position to the new scroll position of the view with respect to
+			 * the changed dx values Just setting the previous x/y coordinates results in
+			 * flicker, due to the changed scroll position
 			 */
 			prevPosX = e.getX() + (int) dx;
 			prevPosY = e.getY() + (int) dy;
-			
+
 		}
-//		System.out.println("--- finished scrolling");
+		// System.out.println("--- finished scrolling");
 	}
-	
+
 	/**
-	 * Invoked when the mouse button has been pressed and dragged inside the
-	 * editor panel and handles what has to happen.
+	 * Invoked when the mouse button has been pressed and dragged inside the editor
+	 * panel and handles what has to happen.
 	 * 
 	 * @param e
-	 *           the mouse event
+	 *            the mouse event
 	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
@@ -608,12 +590,12 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		logger.debug("MOUSE DRAGGED");
 		if (e.getSource() instanceof GraffitiView)
 			((GraffitiView) e.getSource()).setDrawMode(DrawMode.REDUCED);
-		
+
 		lastDragX = e.getPoint().getX();
 		lastDragY = e.getPoint().getY();
-		
+
 		View view;
-		
+
 		if (e.isAltDown()) {
 			view = session.getActiveView();
 		} else if (e.getComponent() instanceof GraffitiInternalFrame) {
@@ -635,39 +617,39 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			}
 		}
 		super.mouseMoved(e);
-		
+
 		if (!SwingUtilities.isLeftMouseButton(e) && !SwingUtilities.isMiddleMouseButton(e)) {
 			dragged = true;
 			return;
 		}
-		
+
 		if (lastBendHit == null && !dragged) {
-//			int x = e.getX();
-//			int y = e.getY();
-//			if (e.getWhen() - lastClick < 1000) {
-//				x = lastClickPoint.x;
-//				y = lastClickPoint.y;
-//			}
+			// int x = e.getX();
+			// int y = e.getY();
+			// if (e.getWhen() - lastClick < 1000) {
+			// x = lastClickPoint.x;
+			// y = lastClickPoint.y;
+			// }
 			Component c = lastPressedComponent;
 			if (c instanceof EdgeComponent) {
 				// break!
-				MouseEvent me = new MouseEvent((Component)e.getSource(), e.getID(), e.getWhen(), e.getModifiers(), prevPosX, prevPosY, e.getClickCount(), e.isPopupTrigger());
+				MouseEvent me = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiers(),
+						prevPosX, prevPosY, e.getClickCount(), e.isPopupTrigger());
 				processBendCreation(me, c);
 				return;
 			}
 		}
-		
+
 		if (lastBendHit != null) {
 			// calculated moved distance
 			double newX = e.getPoint().getX() + lastPressedMousePointRel.getX();
 			double newY = e.getPoint().getY() + lastPressedMousePointRel.getY();
-			
+
 			if (!dragged) {
-				ChangeAttributesEdit edit = new ChangeAttributesEdit(
-						getGraph(), lastBendHit, geMap);
+				ChangeAttributesEdit edit = new ChangeAttributesEdit(getGraph(), lastBendHit, geMap);
 				undoSupport.postEdit(edit);
 			}
-			
+
 			if (!e.isShiftDown()) {
 				int grid = getGrid(-1);
 				if (grid > 0) {
@@ -675,7 +657,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					newY = newY - (newY % grid);
 				}
 			}
-			
+
 			Component c = getFoundComponent();
 			if (c != null && c instanceof EdgeComponent) {
 				if (e.isControlDown() && e.isShiftDown()) {
@@ -690,80 +672,81 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			}
 
 			lastBendHit.setCoordinate(new Point2D.Double(newX, newY));
-//			e.getComponent().repaint();
-//			for (View v : MainFrame.getInstance().getActiveEditorSession().getViews())
-//				v.repaint(null);
+			// e.getComponent().repaint();
+			// for (View v : MainFrame.getInstance().getActiveEditorSession().getViews())
+			// v.repaint(null);
 			dragged = true;
-			
+
 			view.getViewComponent().setCursor(myMoveCursor);
-			
-			MainFrame.showMessage("<html>Hint: While moving edge bend press Ctrl key to activate smooth-line, press Ctrl and Shift keys " +
-					"to activate poly-line edge bend style. After activation of desired style stop mouse movement then release keyboard keys. " +
-					"Press Shift key while moving edge bend to disable position grid.", MessageType.INFO);
-			
+
+			MainFrame.showMessage(
+					"<html>Hint: While moving edge bend press Ctrl key to activate smooth-line, press Ctrl and Shift keys "
+							+ "to activate poly-line edge bend style. After activation of desired style stop mouse movement then release keyboard keys. "
+							+ "Press Shift key while moving edge bend to disable position grid.",
+					MessageType.INFO);
+
 			return;
 		}
-		
+
 		if (lastPressedPoint != null) { // equiv. to "pressed" on view before
 			lastPressedPoint2 = e.getPoint();
 			paintSelectionRectangle((JComponent) e.getSource(), lastPressedPoint, lastPressedPoint2);
-			
+
 			// update view scrolling
 			// View view = (View) e.getComponent();
-			view.autoscroll(new Point((int) lastPressedPoint2.getX(),
-					(int) lastPressedPoint2.getY()));
+			view.autoscroll(new Point((int) lastPressedPoint2.getX(), (int) lastPressedPoint2.getY()));
 			view.getViewComponent().repaint();
 		} else if (lastPressed instanceof NodeComponent || lastPressed == null) {
 			if (selection.isEmpty())
 				return;
 			if (isControlDown(e)) {
 				dragged = true;
-				
+
 				return;
 			}
 			if (!dragged)
 				mouseDraggedFirstCallStoreCoordinatesForUndoSupport();
-			
+
 			Vector2d delta = mouseDraggedCalculatedXYmovementValues(e);
-			
+
 			if ((int) delta.x == 0 && (int) delta.y == 0)
 				return;
 			logger.debug("time mousedragged til movement call: " + (System.currentTimeMillis() - starttime));
 			mouseDraggedToMoveNodesAndEdgeBends(e, view, delta.x, delta.y);
 		}
-		
+
 		dragged = true;
-		
+
 		// else do nothing with labels and other attribute components
 	}
-	
+
 	public CoordinateAttribute processBendCreation(final MouseEvent e, final Component c) {
-		
+
 		AbstractUndoableEdit createNewBend = new AbstractUndoableEdit() {
 			private static final long serialVersionUID = 1L;
 			private ArrayList<CoordinateAttribute> bendsBeforeBending = new ArrayList<CoordinateAttribute>();
 			private boolean newStyleSet = false;
 			private Edge bendedEdge;
-			
+
 			@Override
 			public String getPresentationName() {
 				return "Create Edge Bend";
 			}
-			
+
 			@Override
 			public String getRedoPresentationName() {
 				return "Redo Create Edge Bend";
 			}
-			
+
 			@Override
 			public String getUndoPresentationName() {
 				return "Undo Create Edge Bend";
 			}
-			
+
 			@Override
 			public void redo() throws CannotRedoException {
 				newStyleSet = false;
-				
+
 				EdgeComponent ec = (EdgeComponent) c;
 				bendedEdge = (Edge) ec.getGraphElement();
 				boolean added = false;
@@ -771,8 +754,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				int idx = -1;
 				if (ec.getShape() != null && ec.getShape() instanceof PolyLineEdgeShape) {
 					PolyLineEdgeShape ls = (PolyLineEdgeShape) ec.getShape();
-					idx = ls.getIndexOfPathWhichContains(e.getX() - ec.getX() + 1, e.getY() - ec.getY() + 1); // same formula as in GraffitiView.myFindComponent(...)
-					if(idx != -1) {
+					idx = ls.getIndexOfPathWhichContains(e.getX() - ec.getX() + 1, e.getY() - ec.getY() + 1); // same
+																												// formula
+																												// as in
+																												// GraffitiView.myFindComponent(...)
+					if (idx != -1) {
 						bendsBeforeBending = AttributeHelper.getEdgeBendCoordinateAttributes(bendedEdge);
 						if (bendsBeforeBending.size() >= idx && idx >= 0) {
 							AttributeHelper.removeEdgeBends(bendedEdge);
@@ -782,54 +768,59 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 									lastBendAdded = AttributeHelper.addEdgeBend(bendedEdge, e.getX(), e.getY(), true);
 									added = true;
 								}
-								AttributeHelper.addEdgeBend(bendedEdge, bendsBeforeBending.get(i).getX(), bendsBeforeBending.get(i).getY(), true);
+								AttributeHelper.addEdgeBend(bendedEdge, bendsBeforeBending.get(i).getX(),
+										bendsBeforeBending.get(i).getY(), true);
 							}
 						}
 					}
 				}
 				if (!added) // new bend created and appended at the end
 					lastBendAdded = AttributeHelper.addEdgeBend(bendedEdge, e.getX(), e.getY(), true);
-				
+
 				if (lastBendAdded != null) {
 					lastBendAddedInitX = lastBendAdded.getX();
 					lastBendAddedInitY = lastBendAdded.getY();
 					lastBendAddedTime = e.getWhen();
-					// System.out.println("Bend added at "+lastBendAddedInitX+" / "+lastBendAddedInitY);
+					// System.out.println("Bend added at "+lastBendAddedInitX+" /
+					// "+lastBendAddedInitY);
 					String style = AttributeHelper.getEdgeBendStyle(bendedEdge);
 					if (style.equals("org.graffiti.plugins.views.defaults.StraightLineEdgeShape")) {
-						AttributeHelper.setEdgeBendStyle(bendedEdge, "org.graffiti.plugins.views.defaults.PolyLineEdgeShape");
+						AttributeHelper.setEdgeBendStyle(bendedEdge,
+								"org.graffiti.plugins.views.defaults.PolyLineEdgeShape");
 						newStyleSet = true;
 					}
 				}
-				
+
 				dragged = false;
 				mousePressed(e);
 			}
-			
+
 			@Override
 			public void undo() throws CannotUndoException {
 				AttributeHelper.removeEdgeBends(bendedEdge);
 				for (int i = 0; i < bendsBeforeBending.size(); i++)
-					AttributeHelper.addEdgeBend(bendedEdge, bendsBeforeBending.get(i).getX(), bendsBeforeBending.get(i).getY(), true);
+					AttributeHelper.addEdgeBend(bendedEdge, bendsBeforeBending.get(i).getX(),
+							bendsBeforeBending.get(i).getY(), true);
 				if (newStyleSet)
-					AttributeHelper.setEdgeBendStyle(bendedEdge, "org.graffiti.plugins.views.defaults.StraightLineEdgeShape");
+					AttributeHelper.setEdgeBendStyle(bendedEdge,
+							"org.graffiti.plugins.views.defaults.StraightLineEdgeShape");
 			}
-			
+
 		};
-		
+
 		createNewBend.redo();
-		
+
 		undoSupport.beginUpdate();
 		undoSupport.postEdit(createNewBend);
 		undoSupport.endUpdate();
-		
+
 		return lastBendAdded;
 	}
-	
+
 	private double distance(double x0, double y0, double x, double y) {
 		return new Vector2d(x0, y0).distance(new Vector2d(x, y));
 	}
-	
+
 	private View findView(Component component) {
 		for (GraffitiFrame f : MainFrame.getInstance().getDetachedFrames()) {
 			while (component != null) {
@@ -840,13 +831,13 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		}
 		return null;
 	}
-	
+
 	private Vector2d mouseDraggedCalculatedXYmovementValues(MouseEvent mouse) {
 		Vector2d delta = new Vector2d(0, 0);
-		
+
 		if (lastPressed != null) {
 			NodeComponent nodecomp = (NodeComponent) lastPressed;
-			
+
 			// calculated moved distance
 			if (resizeHit) {
 				delta.x = mouse.getPoint().getX() - lastPressedMousePointRel.getX();
@@ -860,20 +851,18 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 						curPosX = curPosX - (curPosX % grid);
 						curPosY = curPosY - (curPosY % grid);
 					}
-//					setTransformersXY(nodecomp.getGraphElement(), curPosX, curPosY);
+					// setTransformersXY(nodecomp.getGraphElement(), curPosX, curPosY);
 				}
 				delta.x = mouse.getPoint().getX();
 				delta.y = mouse.getPoint().getY();
-				delta.x = mouse.getPoint().getX() - curPosX
-						+ lastPressedMousePointRel.getX();
-				delta.y = mouse.getPoint().getY() - curPosY
-						+ lastPressedMousePointRel.getY();
+				delta.x = mouse.getPoint().getX() - curPosX + lastPressedMousePointRel.getX();
+				delta.y = mouse.getPoint().getY() - curPosY + lastPressedMousePointRel.getY();
 			}
 		} else {
 			delta.x = mouse.getPoint().getX();
 			delta.y = mouse.getPoint().getY();
 		}
-		
+
 		if (!mouse.isShiftDown()) {
 			int grid = getGrid(-1);
 			if (grid > 0) {
@@ -883,59 +872,59 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		}
 		return delta;
 	}
-	
+
 	private double getTransformersX(GraphElement graphElement) {
 		CoordinateAttribute ca = (CoordinateAttribute) graphElement.getAttribute(
 				GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR + GraphicAttributeConstants.COORDINATE);
-		
+
 		switch (getCoordinateSystem()) {
-			case XY:
-				return ca.getX();
-			case XZ:
-				return ca.getX();
-			case ZY:
-				return AttributeHelper.getPositionZ((Node) graphElement, true);
-			default:
-				return Double.NaN;
+		case XY:
+			return ca.getX();
+		case XZ:
+			return ca.getX();
+		case ZY:
+			return AttributeHelper.getPositionZ((Node) graphElement, true);
+		default:
+			return Double.NaN;
 		}
 	}
-	
+
 	private double getTransformersY(GraphElement graphElement) {
 		CoordinateAttribute ca = (CoordinateAttribute) graphElement.getAttribute(
 				GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR + GraphicAttributeConstants.COORDINATE);
-		
+
 		switch (getCoordinateSystem()) {
-			case XY:
-				return ca.getY();
-			case XZ:
-				return AttributeHelper.getPositionZ((Node) graphElement, true);
-			case ZY:
-				return ca.getY();
-			default:
-				return Double.NaN;
+		case XY:
+			return ca.getY();
+		case XZ:
+			return AttributeHelper.getPositionZ((Node) graphElement, true);
+		case ZY:
+			return ca.getY();
+		default:
+			return Double.NaN;
 		}
 	}
-	
+
 	private void setTransformersXY(GraphElement graphElement, double curPosX, double curPosY) {
-		
+
 		CoordinateAttribute coord = (CoordinateAttribute) graphElement.getAttribute(
 				GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR + GraphicAttributeConstants.COORDINATE);
-		
+
 		switch (getCoordinateSystem()) {
-			case XY:
-				coord.setCoordinate(curPosX, curPosY);
-				break;
-			case XZ:
-				coord.setX(curPosX);
-				AttributeHelper.setPositionZ((Node) graphElement, curPosY);
-				break;
-			case ZY:
-				AttributeHelper.setPositionZ((Node) graphElement, curPosX);
-				coord.setY(curPosY);
-				break;
+		case XY:
+			coord.setCoordinate(curPosX, curPosY);
+			break;
+		case XZ:
+			coord.setX(curPosX);
+			AttributeHelper.setPositionZ((Node) graphElement, curPosY);
+			break;
+		case ZY:
+			AttributeHelper.setPositionZ((Node) graphElement, curPosX);
+			coord.setY(curPosY);
+			break;
 		}
 	}
-	
+
 	private CoordinateSystem getCoordinateSystem() {
 		View v = MainFrame.getInstance().getActiveEditorSession().getActiveView();
 		if (v instanceof GraffitiView)
@@ -943,17 +932,17 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		else
 			return CoordinateSystem.XY;
 	}
-	
+
 	private void mouseDraggedFirstCallStoreCoordinatesForUndoSupport() {
 		// first call to mouseDragged
 		// save changed (Coordinate/Bends Attributes) for undo edit
 		List<GraphElement> selElements = selection.getElements();
 		Set<Node> selNodes = new HashSet<Node>(selection.getNodes());
-		
+
 		originalCoordinates = new HashMap<Attribute, Object>();
-		
+
 		String attrPath = GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR + GraphicAttributeConstants.BENDS;
-		
+
 		ChangeAttributesEdit edit;
 		long timeForNodes = 0;
 		long timeForEdges = 0;
@@ -976,42 +965,41 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			} else {
 				lastTimeForEdge = System.currentTimeMillis();
 				// for edges, add the coordinates of their bends
-				
+
 				Edge curSelEdge = (Edge) ge;
-				if (selNodes.contains(curSelEdge.getSource())
-						&& selNodes.contains(curSelEdge.getTarget())) {
-					SortedCollectionAttribute bends = (SortedCollectionAttribute) curSelEdge
-							.getAttribute(attrPath);
+				if (selNodes.contains(curSelEdge.getSource()) && selNodes.contains(curSelEdge.getTarget())) {
+					SortedCollectionAttribute bends = (SortedCollectionAttribute) curSelEdge.getAttribute(attrPath);
 					Object value = bends.getValue();
 					if (!((LinkedHashMap) value).isEmpty())
 						originalCoordinates.put(bends, ((Attribute) bends.copy()).getValue());
 				}
-				
+
 				long now = System.currentTimeMillis();
 				timeForEdges += now - lastTimeForEdge;
 				lastTimeForEdge = now;
 			}
 		}
-		logger.debug("MegaMoveTool: mouseDraggedFirstCallStoreCoordinatesForUndoSupport(). timeNodes:" + timeForNodes + ", timeEdges: " + timeForEdges);
+		logger.debug("MegaMoveTool: mouseDraggedFirstCallStoreCoordinatesForUndoSupport(). timeNodes:" + timeForNodes
+				+ ", timeEdges: " + timeForEdges);
 		edit = new ChangeAttributesEdit(session.getGraph(), originalCoordinates, geMap);
 		undoSupport.postEdit(edit);
 	}
-	
-	private void mouseDraggedToMoveNodesAndEdgeBends(MouseEvent e, View view,
-			double deltaX, double deltaY) {
+
+	private void mouseDraggedToMoveNodesAndEdgeBends(MouseEvent e, View view, double deltaX, double deltaY) {
 		long starttime = System.currentTimeMillis();
 		try {
 			getGraph().getListenerManager().transactionStarted(this);
-			
+
 			// save max values (for autoscroll)
 			double maxX = 0;
 			double maxY = 0;
-			
+
 			if (resizeHit) {
 				// update node sizes
 				for (Node node : selection.getNodes()) {
-					DimensionAttribute coord = (DimensionAttribute) node.getAttribute(GraphicAttributeConstants.DIM_PATH);
-					
+					DimensionAttribute coord = (DimensionAttribute) node
+							.getAttribute(GraphicAttributeConstants.DIM_PATH);
+
 					double fx = 1;
 					double fy = 1;
 					if (resizeHitTl || resizeHitBl)
@@ -1025,10 +1013,10 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					double newW = resizeStartDimW + deltaX * fx;
 					double newH = resizeStartDimH + deltaY * fy;
 					double ratio = (double) resizeStartDimW / (double) resizeStartDimH;
-					
+
 					newW = Math.abs(newW);
 					newH = Math.abs(newH);
-					
+
 					if (!e.isShiftDown()) {
 						int grid = getGrid(newW);
 						if (grid > 0) {
@@ -1040,19 +1028,20 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 						}
 					}
 					coord.setDimension(newW, newH);
-					String status = "Resize: w/h: " + resizeStartDimW + " / " + resizeStartDimH + " --> " +
-							AttributeHelper.formatNumber(newW, "#") + " / " +
-							AttributeHelper.formatNumber(newH, "#") + " ratio: " + AttributeHelper.formatNumber(ratio, "#.###") + " --> "
-							+ AttributeHelper.formatNumber(newW / newH, "#.###") +
-							(e.isShiftDown() ? "" : " - press Shift to disable grid point resize");
+					String status = "Resize: w/h: " + resizeStartDimW + " / " + resizeStartDimH + " --> "
+							+ AttributeHelper.formatNumber(newW, "#") + " / " + AttributeHelper.formatNumber(newH, "#")
+							+ " ratio: " + AttributeHelper.formatNumber(ratio, "#.###") + " --> "
+							+ AttributeHelper.formatNumber(newW / newH, "#.###")
+							+ (e.isShiftDown() ? "" : " - press Shift to disable grid point resize");
 					MainFrame.showMessage(status, MessageType.INFO);
 				}
 			} else {
 				// update coordinates
 				for (Node node : selection.getNodes()) {
-					CoordinateAttribute coord = (CoordinateAttribute) node.getAttribute(
-							GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR + GraphicAttributeConstants.COORDINATE);
-					
+					CoordinateAttribute coord = (CoordinateAttribute) node
+							.getAttribute(GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR
+									+ GraphicAttributeConstants.COORDINATE);
+
 					double newX = coord.getX();
 					double newY = coord.getY();
 					double newZ = Double.NaN;
@@ -1062,31 +1051,31 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					double dY = 0;
 					double dZ = 0;
 					String ppp = "[internal error]";
-					
+
 					switch (getCoordinateSystem()) {
-						case XY:
-							dX = deltaX;
-							dY = deltaY;
-							dZ = 0;
-							ppp = "x/y";
-							break;
-						case XZ:
-							dX = deltaX;
-							dY = 0;
-							dZ = deltaY;
-							ppp = "x/z";
-							break;
-						case ZY:
-							dX = 0;
-							dY = deltaY;
-							dZ = deltaX;
-							ppp = "z/y";
-							break;
+					case XY:
+						dX = deltaX;
+						dY = deltaY;
+						dZ = 0;
+						ppp = "x/y";
+						break;
+					case XZ:
+						dX = deltaX;
+						dY = 0;
+						dZ = deltaY;
+						ppp = "x/z";
+						break;
+					case ZY:
+						dX = 0;
+						dY = deltaY;
+						dZ = deltaX;
+						ppp = "z/y";
+						break;
 					}
 					newX += dX;
 					newY += dY;
 					newZ += dZ;
-									
+
 					if (!e.isShiftDown() && e.isAltDown()) {
 						int grid = getGrid(-1);
 						if (grid > 0) {
@@ -1095,25 +1084,26 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 							newZ = newZ - (newZ % grid);
 						}
 					}
-					
+
 					coord.setCoordinate(new Point2D.Double(newX, newY));
 					if (!(getCoordinateSystem() == CoordinateSystem.XY))
 						AttributeHelper.setPositionZ(node, newZ);
-					
+
 					if (maxX < newX)
 						maxX = newX;
-					
+
 					if (maxY < newY)
 						maxY = newY;
-					
-					String status = "Move: " + ppp + ": " + moveStartX + " / " + moveStartY + " --> " + (int) newX + " / " + (int) newY +
-							(e.isShiftDown() ? "" : " - press Shift to disable grid point movement, press Alt to move selection to grid points");
+
+					String status = "Move: " + ppp + ": " + moveStartX + " / " + moveStartY + " --> " + (int) newX
+							+ " / " + (int) newY + (e.isShiftDown() ? ""
+									: " - press Shift to disable grid point movement, press Alt to move selection to grid points");
 					MainFrame.showMessage(status, MessageType.INFO);
-				}				
-				//display hideable warning to inform the user about the return commands
+				}
+				// display hideable warning to inform the user about the return commands
 				showOutOfBoundsWarning(e);
 			}
-			
+
 			if (!resizeHit) {
 				Set<CoordinateAttribute> bendsCoordsSet = new HashSet<CoordinateAttribute>();
 				Set<Node> selNodes = new HashSet<>(selection.getNodes());
@@ -1132,7 +1122,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					Point2D coordPt = coord.getCoordinate();
 					double newX = coordPt.getX() + deltaX;
 					double newY = coordPt.getY() + deltaY;
-					
+
 					if (!e.isShiftDown() && e.isAltDown()) {
 						int grid = getGrid(-1);
 						if (grid > 0) {
@@ -1142,69 +1132,72 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					}
 
 					coord.setCoordinate(new Point2D.Double(newX, newY));
-					
+
 					if (maxX < newX)
 						maxX = newX;
-					
+
 					if (maxY < newY)
 						maxY = newY;
 				}
 			}
-			
+
 			// update view scrolling
 			if (e.getID() != -1) {
 				view.autoscroll(e.getPoint());
 				// view.autoscroll(new Point((int) maxX, (int) maxY));
-				//e.getComponent().repaint();
+				// e.getComponent().repaint();
 			}
 		} finally {
 			logger.debug("time in updateposition: " + (System.currentTimeMillis() - starttime));
 			getGraph().getListenerManager().transactionFinished(this);
 		}
-		
+
 	}
 
 	/**
 	 * Show the user information how to return from negative coordinates. Otherwise
-	 * this gets hidden out of view's bounds and is not directly accessible
-	 * for the user. We uses Preference to determine whether the user wants to see it 
-	 * again.
+	 * this gets hidden out of view's bounds and is not directly accessible for the
+	 * user. We uses Preference to determine whether the user wants to see it again.
 	 *
-	 * @param e the mouse event - here, we use it to determine whether movement went out of bounds
+	 * @param e
+	 *            the mouse event - here, we use it to determine whether movement
+	 *            went out of bounds
 	 * 
 	 * @author dim8
 	 */
 	private void showOutOfBoundsWarning(MouseEvent e) {
-		//check if the user wants to see the pop-up
+		// check if the user wants to see the pop-up
 		final Preferences warningPrefs = PreferenceManager.getPreferenceForClass(MegaMoveTool.class);
 		boolean show = warningPrefs.getBoolean(PREFERENCE_SHOW_WARNING_POPUP, true);
-		
-		//skip unnecessary calculations if no warning would be shown
+
+		// skip unnecessary calculations if no warning would be shown
 		if (!show)
 			return;
-		
+
 		WarningButton showbt = new WarningButton("Don't show again", new Runnable() {
-			
+
 			@Override
 			public void run() {
 				warningPrefs.putBoolean(PREFERENCE_SHOW_WARNING_POPUP, false);
-				
+
 			}
 		});
-		
-		Collection<WarningButton> wbts = new ArrayDeque<WarningButton>(1); //increase before adding more buttons!
+
+		Collection<WarningButton> wbts = new ArrayDeque<WarningButton>(1); // increase before adding more buttons!
 		wbts.add(showbt);
-		
-		if ((e.getPoint().getX() + lastPressedMousePointRel.getX() < 0 ||
-						e.getPoint().getY() + lastPressedMousePointRel.getY() < 0))
-				MainFrame.showWarningPopup("<html><strong>A cluster of graph elements is out of view frustum!</strong><br>"
-						+ "To bring back: Network &#10148; Move Network to Top-Left (Ctrl+1).", 8000, wbts);
+
+		if ((e.getPoint().getX() + lastPressedMousePointRel.getX() < 0
+				|| e.getPoint().getY() + lastPressedMousePointRel.getY() < 0))
+			MainFrame.showWarningPopup("<html><strong>A cluster of graph elements is out of view frustum!</strong><br>"
+					+ "To bring back: Network &#10148; Move Network to Top-Left (Ctrl+1).", 8000, wbts);
 	}
-	
+
 	public static int getGrid(double sz) {
 		if (!gridEnabled)
-//		boolean snap = PreferenceManager.getPreferenceForClass(MegaMoveTool.class).getBoolean(PREFERENCE_SNAP_TO_GRID, true);
-//		if(!snap)
+			// boolean snap =
+			// PreferenceManager.getPreferenceForClass(MegaMoveTool.class).getBoolean(PREFERENCE_SNAP_TO_GRID,
+			// true);
+			// if(!snap)
 			return 0;
 		if (sz < 0)
 			return gridMovement;
@@ -1214,25 +1207,25 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			return gridResizeNormalNodes;
 		return gridResizeLargeNodes;
 	}
-	
+
 	protected boolean resizeHit_TL(int mx, int my, int x, int y, int w, int h) {
 		return resizeHit(mx, my, x, y, w, h, true, false, false, false);
 	}
-	
+
 	protected boolean resizeHit_TR(int mx, int my, int x, int y, int w, int h) {
 		return resizeHit(mx, my, x, y, w, h, false, true, false, false);
 	}
-	
+
 	protected boolean resizeHit_BR(int mx, int my, int x, int y, int w, int h) {
 		return resizeHit(mx, my, x, y, w, h, false, false, false, true);
 	}
-	
+
 	protected boolean resizeHit_BL(int mx, int my, int x, int y, int w, int h) {
 		return resizeHit(mx, my, x, y, w, h, false, false, true, false);
 	}
-	
-	protected boolean resizeHit(int mx, int my, int x, int y, int w, int h,
-			boolean tl, boolean tr, boolean bl, boolean br) {
+
+	protected boolean resizeHit(int mx, int my, int x, int y, int w, int h, boolean tl, boolean tr, boolean bl,
+			boolean br) {
 		if (my < y || my > y + h || mx < x || mx > x + w) {
 			return false;
 		} else {
@@ -1258,16 +1251,16 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		}
 		return false;
 	}
-	
+
 	private long lastClick = Long.MIN_VALUE;
-	
-//	private Point lastClickPoint;
-	
+
+	// private Point lastClickPoint;
+
 	/**
 	 * Invoked when the mouse button has been pressed.
 	 * 
 	 * @param e
-	 *           the mouse event
+	 *            the mouse event
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -1275,18 +1268,17 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		if (e.getWhen() <= lastClick)
 			return;
 		lastClick = e.getWhen();
-		
+
 		Component src;
 		/*
-		 * if user presses ctrl+shift while left-click, then
-		 * node selection is disabled to be able to always
-		 * draw a selection rectangle since the src
-		 * will be the viewcomponent
+		 * if user presses ctrl+shift while left-click, then node selection is disabled
+		 * to be able to always draw a selection rectangle since the src will be the
+		 * viewcomponent
 		 */
 		src = getFoundComponent();
 		lastPressedComponent = src;
-		if(e.isShiftDown() && e.isControlDown())
-			if( ! (src instanceof View))
+		if (e.isShiftDown() && e.isControlDown())
+			if (!(src instanceof View))
 				src = src.getParent();
 		/*
 		 * init stuff for view scrolling
@@ -1297,20 +1289,20 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			selectedView = src;
 		else
 			selectedView = null;
-		
+
 		if (!SwingUtilities.isLeftMouseButton(e) && !SwingUtilities.isMiddleMouseButton(e))
 			return;
-		
-//		lastClickPoint = e.getPoint();
-		
+
+		// lastClickPoint = e.getPoint();
+
 		dragged = false;
-		
+
 		GravistoService.ensureActiveViewAndSession(e);
-		
-//		selection = session.getSelectionModel().getActiveSelection();
-		
-//		logger.debug("1");
-		
+
+		// selection = session.getSelectionModel().getActiveSelection();
+
+		// logger.debug("1");
+
 		resizeHit = false;
 		resizeHitTl = false;
 		resizeHitTr = false;
@@ -1320,37 +1312,36 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		resizeStartDimH = 0;
 		moveStartX = 0;
 		moveStartY = 0;
-		
+
 		if (src == null)
 			return;
-		
+
 		if (src instanceof View) {
 			lastBendHit = null;
-			
+
 			Point2D coord;
 			CoordinateAttribute coordAttr;
 			View v = (View) src;
-			
+
 			bendsearch: for (Edge edge : v.getGraph().getEdges()) {
 				SortedCollectionAttribute bendsColl = (SortedCollectionAttribute) edge
 						.getAttribute(GraphicAttributeConstants.BENDS_PATH);
 				Collection<?> bends = bendsColl.getCollection().values();
-				
+
 				for (Iterator<?> it = bends.iterator(); it.hasNext();) {
 					coordAttr = (CoordinateAttribute) it.next();
 					coord = coordAttr.getCoordinate();
-					
+
 					if (hit(e.getPoint(), coord)) {
 						lastBendHit = coordAttr;
-						lastPressedMousePointRel = new Point2D.Double(coord.getX()
-								- e.getPoint().getX(), coord.getY()
-								- e.getPoint().getY());
-						
+						lastPressedMousePointRel = new Point2D.Double(coord.getX() - e.getPoint().getX(),
+								coord.getY() - e.getPoint().getY());
+
 						break bendsearch;
 					}
 				}
 			}
-			
+
 			if (lastBendHit == null) {
 				if (!isControlDown(e)) {
 					if (getAllMarkedComps().size() > 0) {
@@ -1364,41 +1355,39 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					}
 				}
 			}
-			
+
 			lastPressedPoint = e.getPoint();
 			logger.debug("2");
 		} else if (src instanceof NodeComponent) {
 			NodeComponent nodeComp = (NodeComponent) src;
-			
+
 			if (e.getClickCount() > 1 && e.isShiftDown()) {
 				LinkedHashSet<Node> nodes = new LinkedHashSet<Node>();
 				Node node = (Node) nodeComp.getGraphElement();
 				nodes.add(node);
-				nodes.addAll(MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection().getNodes());
+				nodes.addAll(MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection()
+						.getNodes());
 				AttributeHelper.switchVisibilityOfChildElements(nodes);
 				postProcessVisibilityChange(node);
 			} else if (e.getClickCount() > 1) {
 				AdvancedLabelTool.processLabelEdit(nodeComp);
 				return;
 			}
-			
+
 			checkResizeHit(e.getX(), e.getY(), nodeComp);
-			
-			// if (!selection.contains(nodeComp.getGraphElement()) || isInnerNode(nodeComp.getGraphElement()))
+
+			// if (!selection.contains(nodeComp.getGraphElement()) ||
+			// isInnerNode(nodeComp.getGraphElement()))
 			boolean mid = SwingUtilities.isMiddleMouseButton(e);
-			
+
 			// if (!isInnerNode(nodeComp.getGraphElement()))
 			mid = !mid;
-			mark(nodeComp,
-					(!resizeHit && !mid),
-					isControlDown(e) || (e.getClickCount() == 1 && e.isShiftDown()), this, true);
+			mark(nodeComp, (!resizeHit && !mid), isControlDown(e) || (e.getClickCount() == 1 && e.isShiftDown()), this,
+					true);
 			if (resizeHit) {
-				lastPressedMousePointRel = new Point2D.Double(
-						e.getPoint().getX(),
-						e.getPoint().getY());
-				Dimension size = ((DimensionAttribute) (nodeComp
-						.getGraphElement().getAttribute(GraphicAttributeConstants.DIM_PATH)))
-						.getDimension();
+				lastPressedMousePointRel = new Point2D.Double(e.getPoint().getX(), e.getPoint().getY());
+				Dimension size = ((DimensionAttribute) (nodeComp.getGraphElement()
+						.getAttribute(GraphicAttributeConstants.DIM_PATH))).getDimension();
 				resizeStartDimW = size.width;
 				resizeStartDimH = size.height;
 			} else {
@@ -1409,24 +1398,25 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				moveStartX = (int) getTransformersX(nodeComp.getGraphElement());
 				moveStartY = (int) getTransformersY(nodeComp.getGraphElement());
 			}
-			
+
 			lastPressedPoint = null;
 			lastPressed = nodeComp;
 			lastBendHit = null;
-			
+
 		} else if (src instanceof EdgeComponent) {
-			
+
 			EdgeComponent edgeComp = (EdgeComponent) src;
-			
+
 			if (e.getClickCount() > 1) {
 				AdvancedLabelTool.processLabelEdit(edgeComp);
 				return;
 			}
-			
-			mark((EdgeComponent) src, SwingUtilities.isMiddleMouseButton(e), isControlDown(e) || (e.getClickCount() == 1 && e.isShiftDown()), this, true);
+
+			mark((EdgeComponent) src, SwingUtilities.isMiddleMouseButton(e),
+					isControlDown(e) || (e.getClickCount() == 1 && e.isShiftDown()), this, true);
 			lastPressedPoint = null;
 			lastPressed = src;
-			
+
 			Edge edge = (Edge) edgeComp.getGraphElement();
 			SortedCollectionAttribute bendsColl = (SortedCollectionAttribute) edge
 					.getAttribute(GraphicAttributeConstants.BENDS_PATH);
@@ -1434,31 +1424,29 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			Point2D coord;
 			CoordinateAttribute coordAttr;
 			lastBendHit = null;
-			
+
 			for (Iterator<?> it = bends.iterator(); it.hasNext();) {
 				coordAttr = (CoordinateAttribute) it.next();
 				coord = coordAttr.getCoordinate();
-				
+
 				if (hit(e.getPoint(), coord)) {
 					lastBendHit = coordAttr;
-					lastPressedMousePointRel = new Point2D.Double(coord.getX()
-							- e.getPoint().getX(), coord.getY()
-							- e.getPoint().getY());
-					
+					lastPressedMousePointRel = new Point2D.Double(coord.getX() - e.getPoint().getX(),
+							coord.getY() - e.getPoint().getY());
+
 					break;
 				}
 			}
 		} /*
-			 * else
-			 * if (src!=null)
+			 * else if (src!=null)
 			 * System.out.println("SRC: "+src.getClass().getSimpleName());
 			 */
 	}
-	
+
 	protected void postProcessVisibilityChange(GraphElement sourceElementGUIinteraction) {
 		// empty
 	}
-	
+
 	private void checkResizeHit(int mx, int my, NodeComponent nodeComp) {
 		int x = nodeComp.getX();
 		int y = nodeComp.getY();
@@ -1470,20 +1458,20 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		resizeHitTr = resizeHit(mx, my, x, y, w, h, false, true, false, false);
 		resizeHit = resizeHitTl || resizeHitTr || resizeHitBl || resizeHitBr;
 	}
-	
+
 	/**
-	 * Invoked when the mouse button has been released inside the editor panel
-	 * and handles what has to happen.
+	 * Invoked when the mouse button has been released inside the editor panel and
+	 * handles what has to happen.
 	 * 
 	 * @param e
-	 *           the mouse event
+	 *            the mouse event
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		logger.debug("begin mouseReleased");
 		if (e.getSource() instanceof GraffitiView)
 			((GraffitiView) e.getSource()).setDrawMode(DrawMode.NORMAL);
-		
+
 		/*
 		 * do nothing if we've moved the scrollpane with the right mouse button
 		 */
@@ -1491,11 +1479,10 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			selectedView = null;
 			return;
 		}
-		
+
 		// logger.info("MOUSE RELEASED");
 		if (selRectComp != null) {
-			SelectionRectangle r = (SelectionRectangle) selRectComp
-					.getClientProperty(rkey);
+			SelectionRectangle r = (SelectionRectangle) selRectComp.getClientProperty(rkey);
 			if (r != null) {
 				selRectComp.remove(r);
 				selRectComp.revalidate();
@@ -1504,106 +1491,108 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				selRectComp = null;
 			}
 		}
-		
-//		if (!SwingUtilities.isLeftMouseButton(e) && !SwingUtilities.isMiddleMouseButton(e)) {
-//			return;
-//		}
-//		
+
+		// if (!SwingUtilities.isLeftMouseButton(e) &&
+		// !SwingUtilities.isMiddleMouseButton(e)) {
+		// return;
+		// }
+		//
 		super.mouseReleased(e);
-		
+
 		if (dragged && (lastPressedPoint != null) && (lastBendHit == null)) {
 			// if selection rectangle has been drawn
 			if (!isControlDown(e)) {
 				unmarkAll();
 			}
-			
+
 			markInRectangle(e, lastPressedPoint, lastPressedPoint2);
-			
+
 			lastPressedPoint = null;
 			fireSelectionChanged();
 			// ((Container) e.getSource()).repaint();
 		}
-		
-//		if (resizeHit && selection.getElements().size() == 1) {
-//			unmarkAll();
-//		}
-		
+
+		// if (resizeHit && selection.getElements().size() == 1) {
+		// unmarkAll();
+		// }
+
 		if (lastBendHit != null && lastBendHit.getAttributable() instanceof Edge) {
-			MainFrame.showMessage("Hint: Move edge bend inside source or target node to delete selected edge bend.", MessageType.INFO);
+			MainFrame.showMessage("Hint: Move edge bend inside source or target node to delete selected edge bend.",
+					MessageType.INFO);
 			Vector2d bp = new Vector2d(lastBendHit.getX(), lastBendHit.getY());
 			Edge edge = (Edge) lastBendHit.getAttributable();
 			Vector2d sp = AttributeHelper.getPositionVec2d(edge.getSource());
-			double r1 = min2(AttributeHelper.getWidth(edge.getSource()), AttributeHelper.getHeight(edge.getSource())) / 2
-					+ AttributeHelper.getFrameThickNess(edge.getSource());
-			double r2 = min2(AttributeHelper.getWidth(edge.getTarget()), AttributeHelper.getHeight(edge.getTarget())) / 2
-					+ AttributeHelper.getFrameThickNess(edge.getTarget());
+			double r1 = min2(AttributeHelper.getWidth(edge.getSource()), AttributeHelper.getHeight(edge.getSource()))
+					/ 2 + AttributeHelper.getFrameThickNess(edge.getSource());
+			double r2 = min2(AttributeHelper.getWidth(edge.getTarget()), AttributeHelper.getHeight(edge.getTarget()))
+					/ 2 + AttributeHelper.getFrameThickNess(edge.getTarget());
 			Vector2d tp = AttributeHelper.getPositionVec2d(edge.getTarget());
 			if (sp.distance(bp) < r1 || tp.distance(bp) < r2) {
 				lastBendHit.getParent().remove(lastBendHit);
 				MainFrame.showMessage("Edge bend moved to src/tgt --> removed!", MessageType.INFO);
 			} else if (lastBendAdded != null && e.getWhen() - lastBendAddedTime < 1000) {
 				double ddd = distance(lastBendAddedInitX, lastBendAddedInitY, e.getX(), e.getY());
-				// System.out.println("UP "+lastBendAddedInitX+" / "+lastBendAddedInitY+" <--> "+e.getX()+" / "+e.getY());
+				// System.out.println("UP "+lastBendAddedInitX+" / "+lastBendAddedInitY+" <-->
+				// "+e.getX()+" / "+e.getY());
 				if (ddd <= 20) {
 					lastBendHit.getParent().remove(lastBendHit);
-					MainFrame.showMessage("New bend not or only slightly (d=" + (int) ddd + ") moved --> removed!", MessageType.INFO);
+					MainFrame.showMessage("New bend not or only slightly (d=" + (int) ddd + ") moved --> removed!",
+							MessageType.INFO);
 				} else {
 					// System.out.println("lastBendAdded!=null, d="+ddd);
 					lastBendAdded = null;
 				}
 			} // else System.out.println("lastBendAdded==null");
 		}
-		
+
 		originalCoordinates = null;
-		
+
 		ToolButton.requestToolButtonFocus();
 		logger.debug("end mouseReleased");
 	}
-	
+
 	private double min2(double a, double b) {
 		return a < b ? a : b;
 	}
-	
+
 	/**
 	 * Resets the tool to initial values.
 	 */
 	public void reset() {
 		lastPressedPoint = null;
-//		lastClickPoint = null;
+		// lastClickPoint = null;
 	}
-	
+
 	/**
 	 * Adds all coordinates of bends of an edge into a set.
 	 * 
 	 * @param set
-	 *           The set where the bends are put.
+	 *            The set where the bends are put.
 	 * @param edge
-	 *           The bends of this edge are processed.
+	 *            The bends of this edge are processed.
 	 */
 	@SuppressWarnings("unchecked")
 	protected void addBends(Set<CoordinateAttribute> set, Edge edge) {
-		SortedCollectionAttribute bends = (SortedCollectionAttribute) edge
-				.getAttribute(GraphicAttributeConstants.GRAPHICS
-						+ Attribute.SEPARATOR + GraphicAttributeConstants.BENDS);
+		SortedCollectionAttribute bends = (SortedCollectionAttribute) edge.getAttribute(
+				GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR + GraphicAttributeConstants.BENDS);
 		Collection<CoordinateAttribute> bendCoords = (Collection) bends.getCollection().values();
 		set.addAll(bendCoords);
 	}
-	
+
 	/**
-	 * Highlights all nodes / edges that lie entirely inside the rectangle given
-	 * by the two points. Those two points must already be zoomed.
+	 * Highlights all nodes / edges that lie entirely inside the rectangle given by
+	 * the two points. Those two points must already be zoomed.
 	 * 
 	 * @param comp
-	 *           mouseEvent whose source is searched
+	 *            mouseEvent whose source is searched
 	 * @param p1
-	 *           first corner of the rectangle
+	 *            first corner of the rectangle
 	 * @param p2
-	 *           second corner of the rectangle
+	 *            second corner of the rectangle
 	 */
-	private void displayAsMarkedInRectangle(JComponent comp, Point2D p1,
-			Point2D p2) {
+	private void displayAsMarkedInRectangle(JComponent comp, Point2D p1, Point2D p2) {
 		selRect.setFrameFromDiagonal(p1, p2);
-		
+
 		// Component[] allComps = comp.getComponents();
 		//
 		// for (int i = 0; i < allComps.length; i++) {
@@ -1616,7 +1605,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		// }
 		// }
 	}
-	
+
 	public static boolean hit(Point2D pnt1, Point2D pnt2) {
 		if ((Math.abs(pnt1.getX() - pnt2.getX()) < EdgeShape.CLICK_TOLERANCE)
 				&& (Math.abs(pnt1.getY() - pnt2.getY()) < EdgeShape.CLICK_TOLERANCE)) {
@@ -1625,24 +1614,24 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			return false;
 		}
 	}
-	
+
 	/**
-	 * Marks all nodes / edges that lie entirely inside the rectangle given by
-	 * the two points. Uses me.getSource().
+	 * Marks all nodes / edges that lie entirely inside the rectangle given by the
+	 * two points. Uses me.getSource().
 	 * 
 	 * @param me
-	 *           mouseEvent whose source is searched
+	 *            mouseEvent whose source is searched
 	 * @param p1
-	 *           first corner of the rectangle
+	 *            first corner of the rectangle
 	 * @param p2
-	 *           second corner of the rectangle
+	 *            second corner of the rectangle
 	 */
 	private void markInRectangle(MouseEvent me, Point2D p1, Point2D p2) {
 		if (p1 == null || p2 == null || (p1.distance(p2) <= 0))
 			return;
 		Rectangle selRect = new Rectangle();
 		selRect.setFrameFromDiagonal(p1, p2);
-		
+
 		Component[] allComps = ((JComponent) me.getSource()).getComponents();
 		// // probably could leave that out ... :
 		// if (!isControlDown(me)) {
@@ -1650,38 +1639,35 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		// }
 		if (me.isShiftDown() && me.isControlDown()) {
 			for (int i = 0; i < allComps.length; i++) {
-				if (selRect.contains(allComps[i].getBounds())
-						&& allComps[i] instanceof GraphElementComponent) {
-//					mark((GraphElementComponent) allComps[i], false, false, this, false);
+				if (selRect.contains(allComps[i].getBounds()) && allComps[i] instanceof GraphElementComponent) {
+					// mark((GraphElementComponent) allComps[i], false, false, this, false);
 					selection.add(((GraphElementComponent) allComps[i]).getGraphElement());
 				}
 			}
-			
+
 		} else if (me.isShiftDown())
 			for (int i = 0; i < allComps.length; i++) {
-				if (selRect.intersects(allComps[i].getBounds())
-						&& allComps[i] instanceof GraphElementComponent) {
+				if (selRect.intersects(allComps[i].getBounds()) && allComps[i] instanceof GraphElementComponent) {
 					mark((GraphElementComponent) allComps[i], false, true, this, false);
 				}
 			}
 		else
 			for (int i = 0; i < allComps.length; i++) {
-				if (selRect.contains(allComps[i].getBounds())
-						&& allComps[i] instanceof GraphElementComponent) {
+				if (selRect.contains(allComps[i].getBounds()) && allComps[i] instanceof GraphElementComponent) {
 					mark((GraphElementComponent) allComps[i], false, true, this, false);
 				}
 			}
 	}
-	
+
 	/**
 	 * Draws a rectangle on the given graphics context.
 	 * 
 	 * @param comp
-	 *           context to draw upon
+	 *            context to draw upon
 	 * @param p1
-	 *           first corner of the rectangle
+	 *            first corner of the rectangle
 	 * @param p2
-	 *           second corner of the rectangle
+	 *            second corner of the rectangle
 	 */
 	private void paintSelectionRectangle(JComponent comp, Point2D p1, Point2D p2) {
 		int tlx;
@@ -1692,11 +1678,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		tly = (int) Math.min(p1.getY(), p2.getY());
 		w = (int) Math.abs(p1.getX() - p2.getX());
 		h = (int) Math.abs(p1.getY() - p2.getY());
-		
+
 		displayAsMarkedInRectangle(comp, p1, p2);
-		
+
 		// g.drawRect(tlx, tly, w, h);
-		
+
 		SelectionRectangle r = (SelectionRectangle) comp.getClientProperty(rkey);
 		if (r == null) {
 			r = new SelectionRectangle();
@@ -1705,22 +1691,22 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			comp.putClientProperty(rkey, r);
 			selRectComp = comp;
 		}
-		
+
 		comp.repaint(r.getBounds());
 		r.setBounds(tlx, tly, w, h);
 		r.repaint();
 	}
-	
+
 	public static Vector2d getLastMovementPosition() {
 		Vector2d res = new Vector2d(lastDragX, lastDragY);
 		res.applyGrid(10, 10);
 		return res;
 	}
-	
+
 	public static MegaMoveTool getInstance() {
 		return thisInstance;
 	}
-	
+
 	public String getToolName() {
 		return "MegaMoveTool";
 	}

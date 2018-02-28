@@ -41,7 +41,8 @@ import java.awt.geom.Rectangle2D;
 import org.jfree.ui.Drawable;
 
 /**
- * An implementation of the {@link Drawable} interface, to illustrate the use of the {@link org.jfree.chart.annotations.XYDrawableAnnotation} class.
+ * An implementation of the {@link Drawable} interface, to illustrate the use of
+ * the {@link org.jfree.chart.annotations.XYDrawableAnnotation} class.
  */
 public class CircleDrawer implements Drawable {
 
@@ -58,15 +59,13 @@ public class CircleDrawer implements Drawable {
 	 * Creates a new instance.
 	 * 
 	 * @param outlinePaint
-	 *           the outline paint.
+	 *            the outline paint.
 	 * @param outlineStroke
-	 *           the outline stroke.
+	 *            the outline stroke.
 	 * @param fillPaint
-	 *           the fill paint.
+	 *            the fill paint.
 	 */
-	public CircleDrawer(final Paint outlinePaint,
-								final Stroke outlineStroke,
-								final Paint fillPaint) {
+	public CircleDrawer(final Paint outlinePaint, final Stroke outlineStroke, final Paint fillPaint) {
 		this.outlinePaint = outlinePaint;
 		this.outlineStroke = outlineStroke;
 		this.fillPaint = fillPaint;
@@ -76,13 +75,12 @@ public class CircleDrawer implements Drawable {
 	 * Draws the circle.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param area
-	 *           the area in which to draw.
+	 *            the area in which to draw.
 	 */
 	public void draw(final Graphics2D g2, final Rectangle2D area) {
-		final Ellipse2D ellipse = new Ellipse2D.Double(area.getX(), area.getY(),
-																	area.getWidth(), area.getHeight());
+		final Ellipse2D ellipse = new Ellipse2D.Double(area.getX(), area.getY(), area.getWidth(), area.getHeight());
 		if (this.fillPaint != null) {
 			g2.setPaint(this.fillPaint);
 			g2.fill(ellipse);
@@ -95,10 +93,8 @@ public class CircleDrawer implements Drawable {
 
 		g2.setPaint(Color.black);
 		g2.setStroke(new BasicStroke(1.0f));
-		final Line2D line1 = new Line2D.Double(area.getCenterX(), area.getMinY(),
-														area.getCenterX(), area.getMaxY());
-		final Line2D line2 = new Line2D.Double(area.getMinX(), area.getCenterY(),
-														area.getMaxX(), area.getCenterY());
+		final Line2D line1 = new Line2D.Double(area.getCenterX(), area.getMinY(), area.getCenterX(), area.getMaxY());
+		final Line2D line2 = new Line2D.Double(area.getMinX(), area.getCenterY(), area.getMaxX(), area.getCenterY());
 		g2.draw(line1);
 		g2.draw(line2);
 	}

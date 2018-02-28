@@ -7,40 +7,40 @@ import org.AttributeHelper;
 import org.graffiti.plugins.inspectors.defaults.DefaultEditPanel;
 
 public class SBML_Constants {
-	
+
 	private static boolean _isInitialized = false;
-	
+
 	/**
 	 * switch, to activate readout of layout information
 	 */
 	public static final boolean isLayoutActive = true;
-	
+
 	// Helpful constants
 	public static final String EMPTY = "";
 	public static final String UNDERLINE = "_";
 	private static final String ATT = AttributeHelper.attributeSeparator;
-	
+
 	public static final String SBML_LAYOUT_ID = "sbml_layout_id";
 	public static final String SPECIES_GLYPH_ID = "speciesGlyphID";
 	public static final String REACTION_GLYPH_ID = "reactionGlyphID";
-	
+
 	public static final String LOCALPARAMETER_HEADLINE = "Local Parameter ";
 	public static final String COMARTMENT_HEADLINE = "SBML Compartment ";
 	public static final String SBML_HEADLINE = "SBML";
-	
+
 	public static final String ROLE_REACTANT = "reactant";
 	public static final String ROLE_PRODUCT = "product";
 	public static final String ROLE_MODIFIER = "modifier";
 	public static final String ROLE_SPECIES = "species";
 	public static final String ROLE_REACTION = "reaction";
 	public static final String SBML_ROLE = "sbmlRole";
-	
+
 	public static final String SBOTERM = "_sboterm";
 	public static final String META_ID = "_meta_id";
 	public static final String NOTES = "_notes";
 	public static final String ANNOTATION = "_annotation";
 	public static final String NON_RDF_ANNOTATION = "_non_rdf_annotation";
-	
+
 	// SBML attribute constants
 	public static final String VERSION = "sbml_version";
 	public static final String LEVEL = "sbml_level";
@@ -51,7 +51,7 @@ public class SBML_Constants {
 	public static final String SBML_SBOTERM = "sbml_sboterm";
 	public static final String SBML_ANNOTATION = "sbml_annotation";
 	public static final String SBML_NON_RDF_ANNOTATION = "sbml_non_rdf_annotation";
-	
+
 	// Model attribute constants
 	public static final String MODEL_ID = "model_sbml_id";
 	public static final String MODEL_NAME = "model_name";
@@ -67,20 +67,20 @@ public class SBML_Constants {
 	public static final String MODEL_SBOTERM = "model_sboterm";
 	public static final String MODEL_ANNOTATION = "model_annotation";
 	public static final String MODEL_NON_RDF_ANNOTATION = "model_non_rdf_annotation";
-	
+
 	// FunctionDefinition attribute constants
 	public static final String SBML_FUNCTION_DEFINITION = "sbml_function_definition_";
 	public static final String FUNCTION_DEFINITION_FUNCTION = "_function";
 	public static final String FUNCTION_DEFINITION_ID = "_id";
 	public static final String FUNCTION_DEFINITION_NAME = "_name";
-	
+
 	// UnitDefinition attribute constants
 	public static final String SBML_UNIT_DEFINITION = "sbml_unit_definition_";
 	public static final String UNIT_DEFINITION_ID = "_id";
 	public static final String UNIT_DEFINITION_NAME = "_name";
 	public static final String SUB_UNIT = "_sub_unit_";
 	public static final String UNIT = "unit";
-	
+
 	// Compartment attribute constants
 	public static final String SBML_COMPARTMENT = "sbml_compartment_";
 	public static final String COMPARTMENT_ID = "_id";
@@ -90,7 +90,7 @@ public class SBML_Constants {
 	public static final String UNITS = "_units";
 	public static final String CONSTANT = "_constant";
 	public static final String OUTSIDE = "_outside"; // Level 2
-	
+
 	// Species attribute constants
 	public static final String SPECIES_ID = "species_id";
 	public static final String SPECIES_NAME = "species_name";
@@ -109,7 +109,7 @@ public class SBML_Constants {
 	public static final String SPECIES_COMPARTMENT_NAME = "compartment_name";
 	public static final String SPECIES_ANNOTATION = "species_annotation";
 	public static final String SPECIES_NON_RDF_ANNOTATION = "species_non_rdf_annotation";
-	
+
 	// Parameter attribute constants
 	public static final String SBML_PARAMETER = "sbml_parameter_";
 	public static final String PARAMETER_ID = "_id";
@@ -117,12 +117,12 @@ public class SBML_Constants {
 	public static final String VALUE = "_value";
 	public static final String PARAMETER_UNITS = "_units";
 	public static final String PARAMETER_CONSTANT = "_constant";
-	
+
 	// InitialAssignment attribute constants
 	public static final String SBML_INITIAL_ASSIGNMENT = "sbml_initial_assignment_";
 	public static final String SYMBOL = "_symbol";
 	public static final String INITIAL_ASSIGNMENT_FUNCTION = "_function";
-	
+
 	// Rule attribute constants
 	public static final String SBML_RATE_RULE = "sbml_rate_rule_";
 	public static final String SBML_ASSIGNMENT_RULE = "sbml_assignment_rule_";
@@ -132,12 +132,12 @@ public class SBML_Constants {
 	public static final String RATE_FUNCTION = "_function";
 	public static final String ASSIGNMENT_FUNCTION = "_function";
 	public static final String ALGEBRAIC_FUNCTION = "_function";
-	
+
 	// Constraint attribute constants
 	public static final String SBML_CONSTRAINT = "sbml_constraint_";
 	public static final String CONSTRAINT = "_constraint";
 	public static final String MESSAGE = "_message";
-	
+
 	// Reaction attribute constants
 	public static final String REACTION_ID = "reaction_id";
 	public static final String REACTION_NAME = "reaction_name";
@@ -181,7 +181,7 @@ public class SBML_Constants {
 	public static final String MODIFIER_NON_RDF_ANNOTATION = "modifier_non_rdf_annotation";
 	public static final String KINETIC_LAW_ANNOTATION = "kinetic_law_annotation";
 	public static final String KINETIC_LAW_NON_RDF_ANNOTATION = "kinetic_law_non_rdf_annotation";
-	
+
 	// Event attribute constants
 	public static final String SBML_EVENT = "sbml_event_";
 	public static final String EVENT_ID = "_event_id";
@@ -205,12 +205,12 @@ public class SBML_Constants {
 	public static final String INITIAL_VALUE = "_initial_value";
 	public static final String VARIABLE = "_variable";
 	public static final String FUNCTION = "_function";
-	
+
 	// those stings only used with attached numbers.
 	public static final String SBML_SPECIES = "sbml_species";
 	public static final String SBML_Cluster = "cluster";
 	public static final String SBML_Label = "Label";
-	
+
 	public static void init() {
 		if (!_isInitialized) {
 			AttributeHelper.setNiceId(SBML_LAYOUT_ID, "SBML: Layout ID");
@@ -221,9 +221,9 @@ public class SBML_Constants {
 			AttributeHelper.setNiceId(SBML_META_ID, "SBML: SBML Meta ID");
 			AttributeHelper.setNiceId(SBML_NOTES, "SBML: SBML Notes");
 			AttributeHelper.setNiceId(SBML_SBOTERM, "SBML: SBML SBOTerm");
-			
+
 			// initialize Model niceId
-			
+
 			AttributeHelper.setNiceId(MODEL_ID, "SBML: Model ID");
 			AttributeHelper.setNiceId(MODEL_NAME, "SBML: Model Name");
 			AttributeHelper.setNiceId(SUBSTANCE_UNITS, "SBML: Substance Units");
@@ -236,16 +236,14 @@ public class SBML_Constants {
 			AttributeHelper.setNiceId(MODEL_META_ID, "SBML: Model Meta ID");
 			AttributeHelper.setNiceId(MODEL_NOTES, "SBML: Model Notes");
 			AttributeHelper.setNiceId(MODEL_SBOTERM, "SBML: Model SBOTerm");
-			
+
 			AttributeHelper.setNiceId(SBOTERM, "SBML: SBOTerm");
-			
+
 			/*
 			 * List of Attributes to hide from the information panel in Vanted
 			 */
-			Collection<String> colDiscardedRowIDs = DefaultEditPanel
-					.getDiscardedRowIDs();
-			HashSet<String> discardedRowIDs = new HashSet<String>(
-					colDiscardedRowIDs);
+			Collection<String> colDiscardedRowIDs = DefaultEditPanel.getDiscardedRowIDs();
+			HashSet<String> discardedRowIDs = new HashSet<String>(colDiscardedRowIDs);
 			discardedRowIDs.add(MODEL_META_ID);
 			// discardedRowIDs.add(SBML_NOTES);
 			// discardedRowIDs.add(MODEL_NOTES);
@@ -276,17 +274,14 @@ public class SBML_Constants {
 			discardedRowIDs.add(SBML_LAYOUT_ID);
 			discardedRowIDs.add(SBML_ROLE);
 			DefaultEditPanel.setDiscardedRowIDs(discardedRowIDs);
-			
+
 			/*
-			 * AttributeHelper.setNiceId(SBML_Constants.sbml+ATT+SBML_Constants.meta_id
-			 * , "SBML: Meta ID");
-			 * AttributeHelper.setNiceId(SBML_Constants.sbml+ATT+
+			 * AttributeHelper.setNiceId(SBML_Constants.sbml+ATT+SBML_Constants.meta_id ,
+			 * "SBML: Meta ID"); AttributeHelper.setNiceId(SBML_Constants.sbml+ATT+
 			 * SBML_Constants.SBOTERM, "SBML: SBOTerm");
-			 * AttributeHelper.setNiceId(SBML_Constants
-			 * .sbml+ATT+SBML_Constants.NAMESPACE, "SBML: Namespaces");
-			 * AttributeHelper
-			 * .setNiceId(SBML_Constants.sbml+ATT+SBML_Constants.TOOLTIP,
-			 * "SBML: ToolTip");
+			 * AttributeHelper.setNiceId(SBML_Constants .sbml+ATT+SBML_Constants.NAMESPACE,
+			 * "SBML: Namespaces"); AttributeHelper
+			 * .setNiceId(SBML_Constants.sbml+ATT+SBML_Constants.TOOLTIP, "SBML: ToolTip");
 			 * AttributeHelper.setNiceId(SBML_Constants.sbml+ATT+SBML_Constants.LEVEL
 			 * ,"SBML:  Level");
 			 * AttributeHelper.setNiceId(SBML_Constants.sbml+ATT+SBML_Constants
@@ -294,34 +289,24 @@ public class SBML_Constants {
 			 * AttributeHelper.setNiceId(SBML_Constants.sbml_model+ATT+SBML_Constants
 			 * .ID,"SBML Model"+ATT+"ID");
 			 * AttributeHelper.setNiceId(SBML_Constants.sbml_model
-			 * +ATT+SBML_Constants.NAME,"SBML Model"+ATT+"Name");
-			 * AttributeHelper.setNiceId
+			 * +ATT+SBML_Constants.NAME,"SBML Model"+ATT+"Name"); AttributeHelper.setNiceId
 			 * (SBML_Constants.sbml_model+ATT+SBML_Constants
-			 * .SUBSTANCE_UNITS,"SBML Model"+ATT+"Substance Units");
-			 * AttributeHelper.
+			 * .SUBSTANCE_UNITS,"SBML Model"+ATT+"Substance Units"); AttributeHelper.
 			 * setNiceId(SBML_Constants.sbml_model+ATT+SBML_Constants
-			 * .TIME_UNITS,"SBML Model"+ATT+"Time Units");
-			 * AttributeHelper.setNiceId(
+			 * .TIME_UNITS,"SBML Model"+ATT+"Time Units"); AttributeHelper.setNiceId(
 			 * SBML_Constants.sbml_model+ATT+SBML_Constants
-			 * .VOLUME_UNITS,"SBML Model"+ATT+"Volume Units");
-			 * AttributeHelper.setNiceId
+			 * .VOLUME_UNITS,"SBML Model"+ATT+"Volume Units"); AttributeHelper.setNiceId
 			 * (SBML_Constants.sbml_model+ATT+SBML_Constants
-			 * .AREA_UNITS,"SBML Model"+ATT+"Area Units");
-			 * AttributeHelper.setNiceId(
+			 * .AREA_UNITS,"SBML Model"+ATT+"Area Units"); AttributeHelper.setNiceId(
 			 * SBML_Constants.sbml_model+ATT+SBML_Constants
-			 * .EXTENT_UNITS,"SBML Model"+ATT+"Extent Units");
-			 * AttributeHelper.setNiceId
+			 * .EXTENT_UNITS,"SBML Model"+ATT+"Extent Units"); AttributeHelper.setNiceId
 			 * (SBML_Constants.sbml_model+ATT+SBML_Constants
-			 * .LENGTH_UNITS,"SBML Model"+ATT+"Length Units");
-			 * AttributeHelper.setNiceId
+			 * .LENGTH_UNITS,"SBML Model"+ATT+"Length Units"); AttributeHelper.setNiceId
 			 * (SBML_Constants.sbml_model+ATT+SBML_Constants
-			 * .CONVERSION_FACTOR,"SBML Model"+ATT+"Conversion Factor");
-			 * AttributeHelper
-			 * .setNiceId(SBML_Constants.sbml_model+ATT+SBML_Constants
-			 * .meta_id,"Meta ID");
+			 * .CONVERSION_FACTOR,"SBML Model"+ATT+"Conversion Factor"); AttributeHelper
+			 * .setNiceId(SBML_Constants.sbml_model+ATT+SBML_Constants .meta_id,"Meta ID");
 			 * AttributeHelper.setNiceId(SBML_Constants.sbml_model
-			 * +ATT+SBML_Constants.SBOTERM,"SBML Model"+ATT+"SBOTerm");
-			 * AttributeHelper
+			 * +ATT+SBML_Constants.SBOTERM,"SBML Model"+ATT+"SBOTerm"); AttributeHelper
 			 * .setNiceId(SBML_Constants.sbml_model+ATT+SBML_Constants
 			 * .TOOLTIP,"SBML Model"+ATT+"Tooltip");
 			 */

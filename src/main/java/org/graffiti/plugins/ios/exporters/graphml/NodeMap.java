@@ -20,15 +20,15 @@ import org.graffiti.graph.Node;
  */
 class NodeMap {
 	// ~ Instance fields ========================================================
-	
+
 	/** Maps nodes to ids. */
 	private HashMap<Node, Integer> map;
-	
+
 	/** Counter for the ids. */
 	private int count;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new <code>NodeMap</code>.
 	 */
@@ -36,32 +36,32 @@ class NodeMap {
 		this.map = new HashMap<Node, Integer>();
 		this.count = -1;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the id corresponding to the specified node.
 	 * 
 	 * @param n
-	 *           the node of which to return the id.
+	 *            the node of which to return the id.
 	 * @return the id corresponding to the specified node.
 	 */
 	int getId(Node n) {
 		Integer id = (Integer) this.map.get(n);
-		
+
 		return id.intValue();
 	}
-	
+
 	/**
 	 * Adds a new node to the mapping and assigns it a new id.
 	 * 
 	 * @param n
-	 *           the node to be added.
+	 *            the node to be added.
 	 * @return the id of the node which has been added to the mapping.
 	 */
 	int add(Node n) {
 		this.map.put(n, new Integer(++count));
-		
+
 		return count;
 	}
 }

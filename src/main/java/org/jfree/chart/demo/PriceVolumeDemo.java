@@ -63,7 +63,7 @@ public class PriceVolumeDemo extends ApplicationFrame {
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PriceVolumeDemo(final String title) {
 
@@ -84,15 +84,8 @@ public class PriceVolumeDemo extends ApplicationFrame {
 
 		final XYDataset priceData = createPriceDataset();
 		final String title = "Eurodollar Futures Contract (MAR03)";
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							title,
-							"Date",
-							"Price",
-							priceData,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart(title, "Date", "Price", priceData, true, true,
+				false);
 		final XYPlot plot = chart.getXYPlot();
 		final NumberAxis rangeAxis1 = (NumberAxis) plot.getRangeAxis();
 		rangeAxis1.setLowerMargin(0.40); // to leave room for volume bars
@@ -100,12 +93,8 @@ public class PriceVolumeDemo extends ApplicationFrame {
 		rangeAxis1.setNumberFormatOverride(format);
 
 		final XYItemRenderer renderer1 = plot.getRenderer();
-		renderer1.setToolTipGenerator(
-							new StandardXYToolTipGenerator(
-												StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-												new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")
-							)
-							);
+		renderer1.setToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+				new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")));
 
 		final NumberAxis rangeAxis2 = new NumberAxis("Volume");
 		rangeAxis2.setUpperMargin(1.00); // to leave room for price line
@@ -114,12 +103,8 @@ public class PriceVolumeDemo extends ApplicationFrame {
 		plot.setRangeAxis(1, rangeAxis2);
 		plot.mapDatasetToRangeAxis(1, 1);
 		final XYBarRenderer renderer2 = new XYBarRenderer(0.20);
-		renderer2.setToolTipGenerator(
-							new StandardXYToolTipGenerator(
-												StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-												new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0,000.00")
-							)
-							);
+		renderer2.setToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+				new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0,000.00")));
 		plot.setRenderer(1, renderer2);
 		return chart;
 
@@ -680,7 +665,7 @@ public class PriceVolumeDemo extends ApplicationFrame {
 	 * Starting point for the price/volume chart demo application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

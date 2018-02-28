@@ -14,10 +14,10 @@ import org.graffiti.graph.GraphElement;
  * @author klukas
  */
 public interface DeleteAction {
-	
+
 	/**
 	 * @param elements
 	 */
 	void delete(List<GraphElement> elements);
-	
+
 }

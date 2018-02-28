@@ -58,7 +58,7 @@ public class TimeSeriesDemo12 extends ApplicationFrame {
 	 * A demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public TimeSeriesDemo12(final String title) {
 
@@ -88,20 +88,13 @@ public class TimeSeriesDemo12 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           a dataset.
+	 *            a dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							"Sample Chart",
-							"Date",
-							"Value",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Sample Chart", "Date", "Value", dataset, true,
+				true, false);
 
 		chart.setBackgroundPaint(Color.white);
 
@@ -164,7 +157,7 @@ public class TimeSeriesDemo12 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

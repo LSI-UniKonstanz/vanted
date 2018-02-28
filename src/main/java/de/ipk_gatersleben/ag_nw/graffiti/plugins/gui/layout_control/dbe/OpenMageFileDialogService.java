@@ -12,8 +12,7 @@ import org.HelperClass;
 import org.OpenFileDialogService;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class OpenMageFileDialogService implements HelperClass {
 	public static File getXMLfile() {

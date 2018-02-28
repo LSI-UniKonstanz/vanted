@@ -5,14 +5,13 @@ import org.graffiti.graph.GraphElement;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
-public class Urna extends UtilitySuperClassToGraph
-{
+public class Urna extends UtilitySuperClassToGraph {
 
-	public static void addAttributesToNode(GraphElement elem, rna i)
-	{
+	public static void addAttributesToNode(GraphElement elem, rna i) {
 		// first set label to node
 		setLabels(elem, i);
-		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), Messages.getString("UtilitySuperClassToGraph.140"));
+		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"),
+				Messages.getString("UtilitySuperClassToGraph.140"));
 		// set attribute paths
 		setAvailability(elem, i.getAVAILABILITY());
 		setComment(elem, i.getCOMMENT());

@@ -20,15 +20,15 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawC
  * @author Christian Klukas
  */
 public class SOMplugin extends IPK_PluginAdapter {
-	
+
 	private static DataSet mydataset = null;
 	private static String[] columns;
 	private static boolean usedAverageValuesForStep1;
-	
+
 	public SOMplugin() {
 		this.algorithms = new Algorithm[] { new SOManalysis() };
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -37,9 +37,9 @@ public class SOMplugin extends IPK_PluginAdapter {
 			mydataset = new DataSet();
 		return mydataset;
 	}
-	
+
 	static String[] initDataSetWithSelection(DataSet mydataset, Collection<GraphElement> selection, boolean returnNaN,
-						boolean useSampleAverageValues) {
+			boolean useSampleAverageValues) {
 		HashSet<String> timePoints = new HashSet<String>();
 		for (GraphElement n : selection) {
 			for (MyComparableDataPoint mcdp : NodeTools.getDataTimePoints(n, useSampleAverageValues)) {
@@ -58,7 +58,7 @@ public class SOMplugin extends IPK_PluginAdapter {
 			heading += group + ";";
 		if (heading.length() > 0)
 			heading = heading.substring(0, heading.length() - 1);
-		
+
 		mydataset.setGroupDescription(heading);
 		mydataset.clearEntries();
 		for (GraphElement n : selection) {
@@ -68,19 +68,19 @@ public class SOMplugin extends IPK_PluginAdapter {
 		}
 		return groups;
 	}
-	
+
 	public static String[] getColumns() {
 		return columns;
 	}
-	
+
 	public static void setColumns(String[] cols) {
 		columns = cols;
 	}
-	
+
 	public static boolean getLastUseAverageSetting() {
 		return usedAverageValuesForStep1;
 	}
-	
+
 	public static void setLastUseAverageSetting(boolean useAverageValues) {
 		usedAverageValuesForStep1 = useAverageValues;
 	}

@@ -19,32 +19,31 @@ import org.graffiti.attributes.DoubleAttribute;
  * DOCUMENT ME!
  * 
  * @author holleis
- * @version $Revision: 1.6 $ Specifies position of a node label providing several parameters.
+ * @version $Revision: 1.6 $ Specifies position of a node label providing
+ *          several parameters.
  */
-public class NodeLabelPositionAttribute
-					extends PositionAttribute {
+public class NodeLabelPositionAttribute extends PositionAttribute {
 	// ~ Instance fields ========================================================
-	
+
 	/**
-	 * Specifies alignment of the label at the point given by relHor and
-	 * relVert.
+	 * Specifies alignment of the label at the point given by relHor and relVert.
 	 */
 	private DoubleAttribute localAlign;
-	
+
 	/**
-	 * Specifies relative horizontal position (relative to center of node) of
-	 * center of label.
+	 * Specifies relative horizontal position (relative to center of node) of center
+	 * of label.
 	 */
 	private DoubleAttribute relHor;
-	
+
 	/**
-	 * Specifies relative vertical position (relative to center of node) of
-	 * center of label.
+	 * Specifies relative vertical position (relative to center of node) of center
+	 * of label.
 	 */
 	private DoubleAttribute relVert;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor for NodeLabelPositionAttribute.
 	 * 
@@ -53,23 +52,21 @@ public class NodeLabelPositionAttribute
 	public NodeLabelPositionAttribute(String id) {
 		this(id, 0d, 0d, 0d);
 	}
-	
+
 	/**
 	 * Constructor for NodeLabelPositionAttribute.
 	 * 
 	 * @param id
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param relHor
 	 * @param relVert
 	 * @param localAlign
 	 */
-	public NodeLabelPositionAttribute(String id, double relHor, double relVert,
-						double localAlign) {
-		this(id, new DoubleAttribute(RELHOR, relHor),
-							new DoubleAttribute(RELVERT, relVert),
-							new DoubleAttribute(LOCALALIGN, localAlign));
+	public NodeLabelPositionAttribute(String id, double relHor, double relVert, double localAlign) {
+		this(id, new DoubleAttribute(RELHOR, relHor), new DoubleAttribute(RELVERT, relVert),
+				new DoubleAttribute(LOCALALIGN, localAlign));
 	}
-	
+
 	/**
 	 * Constructor for NodeLabelPositionAttribute.
 	 * 
@@ -78,8 +75,8 @@ public class NodeLabelPositionAttribute
 	 * @param relVert
 	 * @param localAlign
 	 */
-	public NodeLabelPositionAttribute(String id, DoubleAttribute relHor,
-						DoubleAttribute relVert, DoubleAttribute localAlign) {
+	public NodeLabelPositionAttribute(String id, DoubleAttribute relHor, DoubleAttribute relVert,
+			DoubleAttribute localAlign) {
 		super(id);
 		this.relHor = relHor;
 		this.relVert = relVert;
@@ -88,51 +85,50 @@ public class NodeLabelPositionAttribute
 		add(this.relVert, false);
 		add(this.localAlign, false);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
-	 * Sets the collection of attributes contained within this <tt>CollectionAttribute</tt>
+	 * Sets the collection of attributes contained within this
+	 * <tt>CollectionAttribute</tt>
 	 * 
 	 * @param attrs
-	 *           the map that contains all attributes.
+	 *            the map that contains all attributes.
 	 * @throws IllegalArgumentException
-	 *            DOCUMENT ME!
+	 *             DOCUMENT ME!
 	 */
 	@Override
 	public void setCollection(Map<String, Attribute> attrs) {
-		if (attrs.keySet().contains(RELHOR) && attrs.keySet().contains(RELVERT) &&
-							attrs.keySet().contains(LOCALALIGN)) {
+		if (attrs.keySet().contains(RELHOR) && attrs.keySet().contains(RELVERT)
+				&& attrs.keySet().contains(LOCALALIGN)) {
 			for (Iterator<String> it = attrs.keySet().iterator(); it.hasNext();) {
 				String attrId = (String) it.next();
-				
+
 				if (attrId.equals(RELHOR)) {
 					setRelHor(((DoubleAttribute) attrs.get(RELHOR)).getDouble());
-				} else
-					if (attrId.equals(RELVERT)) {
-						setRelVert(((DoubleAttribute) attrs.get(RELVERT)).getDouble());
-					} else
-						if (attrId.equals(LOCALALIGN)) {
-							setLocalAlign(((DoubleAttribute) attrs.get(LOCALALIGN)).getDouble());
-						} else {
-							this.add(attrs.get(it.next()));
-						}
+				} else if (attrId.equals(RELVERT)) {
+					setRelVert(((DoubleAttribute) attrs.get(RELVERT)).getDouble());
+				} else if (attrId.equals(LOCALALIGN)) {
+					setLocalAlign(((DoubleAttribute) attrs.get(LOCALALIGN)).getDouble());
+				} else {
+					this.add(attrs.get(it.next()));
+				}
 			}
 		} else {
 			throw new IllegalArgumentException("Invalid value type.");
 		}
 	}
-	
+
 	/**
 	 * Sets the localAlign.
 	 * 
 	 * @param localAlign
-	 *           The localAlign to set
+	 *            The localAlign to set
 	 */
 	public void setLocalAlign(double localAlign) {
 		this.localAlign.setDouble(localAlign);
 	}
-	
+
 	/**
 	 * Returns the localAlign.
 	 * 
@@ -141,17 +137,17 @@ public class NodeLabelPositionAttribute
 	public double getLocalAlign() {
 		return this.localAlign.getDouble();
 	}
-	
+
 	/**
 	 * Sets the relHor.
 	 * 
 	 * @param relHor
-	 *           The relHor to set
+	 *            The relHor to set
 	 */
 	public void setRelHor(double relHor) {
 		this.relHor.setDouble(relHor);
 	}
-	
+
 	/**
 	 * Returns the relHor.
 	 * 
@@ -160,17 +156,17 @@ public class NodeLabelPositionAttribute
 	public double getRelHor() {
 		return this.relHor.getDouble();
 	}
-	
+
 	/**
 	 * Sets the relVert.
 	 * 
 	 * @param relVert
-	 *           The relVert to set
+	 *            The relVert to set
 	 */
 	public void setRelVert(double relVert) {
 		this.relVert.setDouble(relVert);
 	}
-	
+
 	/**
 	 * Returns the relVert.
 	 * 
@@ -179,7 +175,7 @@ public class NodeLabelPositionAttribute
 	public double getRelVert() {
 		return this.relVert.getDouble();
 	}
-	
+
 	/**
 	 * Returns a deep copy of this object.
 	 * 
@@ -191,10 +187,10 @@ public class NodeLabelPositionAttribute
 		copied.setRelHor(this.getRelHor());
 		copied.setRelVert(this.getRelVert());
 		copied.setLocalAlign(this.getLocalAlign());
-		
+
 		return copied;
 	}
-	
+
 	// /**
 	// * Sets the value of this <code>Attribute</code> to the given value without
 	// * informing the <code>ListenerManager</code>.

@@ -69,16 +69,14 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A renderer that draws high/low/open/close markers on an {@link XYPlot} (requires
- * a {@link HighLowDataset}).
+ * A renderer that draws high/low/open/close markers on an {@link XYPlot}
+ * (requires a {@link HighLowDataset}).
  * <P>
- * This renderer does not include code to calculate the crosshair point for the plot.
+ * This renderer does not include code to calculate the crosshair point for the
+ * plot.
  */
 public class HighLowRenderer extends AbstractXYItemRenderer
-										implements XYItemRenderer,
-														Cloneable,
-														PublicCloneable,
-														Serializable {
+		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
 
 	/** A flag that controls whether the open ticks are drawn. */
 	private boolean drawOpenTicks;
@@ -105,10 +103,11 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 	}
 
 	/**
-	 * Sets the flag that controls whether open ticks are drawn, and sends a {@link RendererChangeEvent} to all registered listeners.
+	 * Sets the flag that controls whether open ticks are drawn, and sends a
+	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param draw
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setDrawOpenTicks(boolean draw) {
 		this.drawOpenTicks = draw;
@@ -125,10 +124,11 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 	}
 
 	/**
-	 * Sets the flag that controls whether close ticks are drawn, and sends a {@link RendererChangeEvent} to all registered listeners.
+	 * Sets the flag that controls whether close ticks are drawn, and sends a
+	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param draw
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setDrawCloseTicks(boolean draw) {
 		this.drawCloseTicks = draw;
@@ -139,42 +139,33 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the area within which the plot is being drawn.
+	 *            the area within which the plot is being drawn.
 	 * @param info
-	 *           collects information about the drawing.
+	 *            collects information about the drawing.
 	 * @param plot
-	 *           the plot (can be used to obtain standard color information etc).
+	 *            the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @param crosshairState
-	 *           crosshair information for the plot (<code>null</code> permitted).
+	 *            crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *           the pass index.
+	 *            the pass index.
 	 */
-	public void drawItem(Graphics2D g2,
-									XYItemRendererState state,
-									Rectangle2D dataArea,
-									PlotRenderingInfo info,
-									XYPlot plot,
-									ValueAxis domainAxis,
-									ValueAxis rangeAxis,
-									XYDataset dataset,
-									int series,
-									int item,
-									CrosshairState crosshairState,
-									int pass) {
+	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
+			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
+			CrosshairState crosshairState, int pass) {
 
 		// first make sure we have a valid x value...
 		Number x = dataset.getXValue(series, item);
@@ -212,16 +203,13 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 				double yyLow = rangeAxis.valueToJava2D(yLow.doubleValue(), dataArea, location);
 				if (orientation == PlotOrientation.HORIZONTAL) {
 					g2.draw(new Line2D.Double(yyLow, xx, yyHigh, xx));
-					entityArea = new Rectangle2D.Double(
-										Math.min(yyLow, yyHigh), xx - 1.0, Math.abs(yyHigh - yyLow), 2.0
-										);
-				} else
-					if (orientation == PlotOrientation.VERTICAL) {
-						g2.draw(new Line2D.Double(xx, yyLow, xx, yyHigh));
-						entityArea = new Rectangle2D.Double(
-											xx - 1.0, Math.min(yyLow, yyHigh), 2.0, Math.abs(yyHigh - yyLow)
-											);
-					}
+					entityArea = new Rectangle2D.Double(Math.min(yyLow, yyHigh), xx - 1.0, Math.abs(yyHigh - yyLow),
+							2.0);
+				} else if (orientation == PlotOrientation.VERTICAL) {
+					g2.draw(new Line2D.Double(xx, yyLow, xx, yyHigh));
+					entityArea = new Rectangle2D.Double(xx - 1.0, Math.min(yyLow, yyHigh), 2.0,
+							Math.abs(yyHigh - yyLow));
+				}
 			}
 
 			double delta = 2.0;
@@ -231,35 +219,30 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 			if (getDrawOpenTicks()) {
 				Number yOpen = hld.getOpenValue(series, item);
 				if (yOpen != null) {
-					double yyOpen = rangeAxis.valueToJava2D(
-										yOpen.doubleValue(), dataArea, location
-										);
+					double yyOpen = rangeAxis.valueToJava2D(yOpen.doubleValue(), dataArea, location);
 					if (orientation == PlotOrientation.HORIZONTAL) {
 						g2.draw(new Line2D.Double(yyOpen, xx + delta, yyOpen, xx));
-					} else
-						if (orientation == PlotOrientation.VERTICAL) {
-							g2.draw(new Line2D.Double(xx - delta, yyOpen, xx, yyOpen));
-						}
+					} else if (orientation == PlotOrientation.VERTICAL) {
+						g2.draw(new Line2D.Double(xx - delta, yyOpen, xx, yyOpen));
+					}
 				}
 			}
 
 			if (getDrawCloseTicks()) {
 				Number yClose = hld.getCloseValue(series, item);
 				if (yClose != null) {
-					double yyClose = rangeAxis.valueToJava2D(
-										yClose.doubleValue(), dataArea, location
-										);
+					double yyClose = rangeAxis.valueToJava2D(yClose.doubleValue(), dataArea, location);
 					if (orientation == PlotOrientation.HORIZONTAL) {
 						g2.draw(new Line2D.Double(yyClose, xx, yyClose, xx - delta));
-					} else
-						if (orientation == PlotOrientation.VERTICAL) {
-							g2.draw(new Line2D.Double(xx, yyClose, xx + delta, yyClose));
-						}
+					} else if (orientation == PlotOrientation.VERTICAL) {
+						g2.draw(new Line2D.Double(xx, yyClose, xx + delta, yyClose));
+					}
 				}
 			}
 
 		} else {
-			// not a HighLowDataset, so just draw a line connecting this point with the previous
+			// not a HighLowDataset, so just draw a line connecting this point with the
+			// previous
 			// point...
 			if (item > 0) {
 				Number x0 = dataset.getXValue(series, item - 1);
@@ -268,17 +251,14 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 				if (x0 == null || y0 == null || y == null) {
 					return;
 				}
-				double xx0 = domainAxis.valueToJava2D(
-									x0.doubleValue(), dataArea, plot.getDomainAxisEdge()
-									);
+				double xx0 = domainAxis.valueToJava2D(x0.doubleValue(), dataArea, plot.getDomainAxisEdge());
 				double yy0 = rangeAxis.valueToJava2D(y0.doubleValue(), dataArea, location);
 				double yy = rangeAxis.valueToJava2D(y.doubleValue(), dataArea, location);
 				if (orientation == PlotOrientation.HORIZONTAL) {
 					g2.draw(new Line2D.Double(yy0, xx0, yy, xx));
-				} else
-					if (orientation == PlotOrientation.VERTICAL) {
-						g2.draw(new Line2D.Double(xx0, yy0, xx, yy));
-					}
+				} else if (orientation == PlotOrientation.VERTICAL) {
+					g2.draw(new Line2D.Double(xx0, yy0, xx, yy));
+				}
 			}
 		}
 
@@ -304,7 +284,7 @@ public class HighLowRenderer extends AbstractXYItemRenderer
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the renderer cannot be cloned.
+	 *             if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

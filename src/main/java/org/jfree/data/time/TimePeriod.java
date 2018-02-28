@@ -33,7 +33,8 @@ package org.jfree.data.time;
 import java.util.Date;
 
 /**
- * A period of time measured to millisecond precision using <code>java.util.Date</code>.
+ * A period of time measured to millisecond precision using
+ * <code>java.util.Date</code>.
  */
 public interface TimePeriod {
 

@@ -34,18 +34,16 @@ import org.graffiti.session.SessionListener;
  * @author klukas
  */
 public class SubtabHostTab extends InspectorTab
-implements SessionListener, ViewListener, ContainsTabbedPane, SelectionListener {
+		implements SessionListener, ViewListener, ContainsTabbedPane, SelectionListener {
 	private static final long serialVersionUID = -3810951162912767447L;
 
 	static Logger logger = Logger.getLogger(SubtabHostTab.class);
 	static {
-		logger.setLevel(Level.INFO); //Adjust for debugging purposes
+		logger.setLevel(Level.INFO); // Adjust for debugging purposes
 	}
 	private List<InspectorTab> subtabs;
 
 	JTabbedPane tabbedPane = new JTabbedPane();
-
-
 
 	private LinkedHashSet<InspectorTab> hiddenTabs = new LinkedHashSet<InspectorTab>();
 
@@ -98,19 +96,19 @@ implements SessionListener, ViewListener, ContainsTabbedPane, SelectionListener 
 		return visible;
 	}
 
-	
-	
 	/**
-	 * This componentShown callback is only called for the upmost tab and not it's children.
-	 * To send the component shown to the visible children we recurse this event
+	 * This componentShown callback is only called for the upmost tab and not it's
+	 * children. To send the component shown to the visible children we recurse this
+	 * event
+	 * 
 	 * @param e
 	 */
 	@Override
 	public void componentShown(ComponentEvent e) {
 		for (InspectorTab tab : subtabs)
-			if(tab.isVisible())
+			if (tab.isVisible())
 				tab.componentShown(e);
-		
+
 	}
 
 	public void sessionChanged(Session s) {
@@ -126,19 +124,18 @@ implements SessionListener, ViewListener, ContainsTabbedPane, SelectionListener 
 		return subtabs;
 	}
 
-
 	/**
 	 * Adds a tab to the inspector.
 	 * 
 	 * @param tab
-	 *           the tab to add to the inspector.
+	 *            the tab to add to the inspector.
 	 */
 	public synchronized void addTab(InspectorTab tab, ImageIcon icon) {
-		if(! subtabs.contains(tab)) {
+		if (!subtabs.contains(tab)) {
 			subtabs.add(tab);
 		}
-		logger.debug("adding tab:"+tab.getTitle()+" to "+getTitle());
-		switch(tab.getPreferredTabPosition()) {
+		logger.debug("adding tab:" + tab.getTitle() + " to " + getTitle());
+		switch (tab.getPreferredTabPosition()) {
 
 		case InspectorTab.TAB_LEADING:
 			tabbedPane.insertTab(tab.getTitle(), icon, tab, null, 0);
@@ -154,7 +151,7 @@ implements SessionListener, ViewListener, ContainsTabbedPane, SelectionListener 
 	 * Removes a tab from the inspector.
 	 * 
 	 * @param tab
-	 *           the tab to remove from the inspector.
+	 *            the tab to remove from the inspector.
 	 */
 	public void removeTab(InspectorTab tab) {
 		int idx = tabbedPane.indexOfTab(tab.getTitle());
@@ -167,11 +164,12 @@ implements SessionListener, ViewListener, ContainsTabbedPane, SelectionListener 
 
 	public void hideTab(InspectorTab tab) {
 		int idx = tabbedPane.indexOfTab(tab.getName());
-		if (idx >= 0){
+		if (idx >= 0) {
 			tabbedPane.removeTabAt(idx);
 			hiddenTabs.add(tab);
 		}
 	}
+
 	public void showTab(InspectorTab tab) {
 		if (hiddenTabs.contains(tab)) {
 
@@ -213,7 +211,6 @@ implements SessionListener, ViewListener, ContainsTabbedPane, SelectionListener 
 	public boolean isSelectionListener() {
 		return true;
 	}
-
 
 	public void selectionChanged(SelectionEvent e) {
 		for (InspectorTab tab : subtabs) {
@@ -306,9 +303,7 @@ implements SessionListener, ViewListener, ContainsTabbedPane, SelectionListener 
 	}
 
 	@Override
-	public void setEditPanelInformation(
-			Map<?, ?> valueEditComponents,
-			Map<GraphElement, GraphElement> map) {
+	public void setEditPanelInformation(Map<?, ?> valueEditComponents, Map<GraphElement, GraphElement> map) {
 		for (InspectorTab tab : subtabs) {
 			if (tab.getEditPanel() != null) {
 				tab.getEditPanel().setEditComponentMap(valueEditComponents);
@@ -317,18 +312,19 @@ implements SessionListener, ViewListener, ContainsTabbedPane, SelectionListener 
 		}
 	}
 
-	/** 
-	 * gets called each time a tab is added, to figure out the 
-	 * order of tab layout as given by their preferredTab Position parameter in InspectorTab
+	/**
+	 * gets called each time a tab is added, to figure out the order of tab layout
+	 * as given by their preferredTab Position parameter in InspectorTab
 	 */
 	private void sortTabs() {
 		Collections.sort(subtabs, new Comparator<InspectorTab>() {
 
 			@Override
 			public int compare(InspectorTab o1, InspectorTab o2) {
-				if(o1.getPreferredTabPosition() == o2.getPreferredTabPosition())
+				if (o1.getPreferredTabPosition() == o2.getPreferredTabPosition())
 					return 0;
-				else return o1.getPreferredTabPosition() < o2.getPreferredTabPosition() ? -1 : 1;
+				else
+					return o1.getPreferredTabPosition() < o2.getPreferredTabPosition() ? -1 : 1;
 			}
 
 		});

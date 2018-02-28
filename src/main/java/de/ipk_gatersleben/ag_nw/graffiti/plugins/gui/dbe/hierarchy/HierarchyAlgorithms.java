@@ -18,11 +18,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.hierarchy.HideOrShowChildN
 
 @Deprecated
 public class HierarchyAlgorithms extends LaunchGui {
-	
+
 	public HierarchyAlgorithms() {
 		super();
 	}
-	
+
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
@@ -34,7 +34,7 @@ public class HierarchyAlgorithms extends LaunchGui {
 		res.add(new ProcessHierarchynodesDepOnLeafNodes());
 		return res;
 	}
-	
+
 	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
@@ -42,12 +42,12 @@ public class HierarchyAlgorithms extends LaunchGui {
 		else
 			return null;
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Analysis";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
 		return null;

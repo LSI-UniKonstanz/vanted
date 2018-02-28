@@ -55,13 +55,14 @@ public class ChartProgressEvent extends java.util.EventObject {
 	 * Creates a new chart change event.
 	 * 
 	 * @param source
-	 *           the source of the event (could be the chart, a title, an axis etc.)
+	 *            the source of the event (could be the chart, a title, an axis
+	 *            etc.)
 	 * @param chart
-	 *           the chart that generated the event.
+	 *            the chart that generated the event.
 	 * @param type
-	 *           the type of event.
+	 *            the type of event.
 	 * @param percent
-	 *           the percentage of completion.
+	 *            the percentage of completion.
 	 */
 	public ChartProgressEvent(Object source, JFreeChart chart, int type, int percent) {
 		super(source);
@@ -82,7 +83,7 @@ public class ChartProgressEvent extends java.util.EventObject {
 	 * Sets the chart that generated the change event.
 	 * 
 	 * @param chart
-	 *           the chart that generated the event.
+	 *            the chart that generated the event.
 	 */
 	public void setChart(JFreeChart chart) {
 		this.chart = chart;
@@ -101,7 +102,7 @@ public class ChartProgressEvent extends java.util.EventObject {
 	 * Sets the event type.
 	 * 
 	 * @param type
-	 *           the event type.
+	 *            the event type.
 	 */
 	public void setType(int type) {
 		this.type = type;
@@ -120,7 +121,7 @@ public class ChartProgressEvent extends java.util.EventObject {
 	 * Sets the percentage complete.
 	 * 
 	 * @param percent
-	 *           the percentage.
+	 *            the percentage.
 	 */
 	public void setPercent(int percent) {
 		this.percent = percent;

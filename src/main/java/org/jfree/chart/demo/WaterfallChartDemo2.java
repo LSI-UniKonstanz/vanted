@@ -58,7 +58,7 @@ public class WaterfallChartDemo2 extends ApplicationFrame {
 	 * Creates a new WaterFall Chart demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public WaterfallChartDemo2(final String title) {
 
@@ -99,7 +99,7 @@ public class WaterfallChartDemo2 extends ApplicationFrame {
 	 * Returns the chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
@@ -138,9 +138,7 @@ public class WaterfallChartDemo2 extends ApplicationFrame {
 		labelFormatter.setNegativeSuffix(")");
 
 		final WaterfallBarRenderer renderer = new WaterfallBarRenderer();
-		renderer.setLabelGenerator(
-							new StandardCategoryLabelGenerator("{2}", labelFormatter)
-							);
+		renderer.setLabelGenerator(new StandardCategoryLabelGenerator("{2}", labelFormatter));
 		renderer.setItemLabelsVisible(Boolean.TRUE);
 
 		final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
@@ -152,8 +150,7 @@ public class WaterfallChartDemo2 extends ApplicationFrame {
 		baseline.setStroke(new BasicStroke(1.1f));
 		plot.addRangeMarker(baseline, Layer.FOREGROUND);
 
-		final JFreeChart chart = new JFreeChart("OM WaterFall Chart",
-														JFreeChart.DEFAULT_TITLE_FONT, plot, false);
+		final JFreeChart chart = new JFreeChart("OM WaterFall Chart", JFreeChart.DEFAULT_TITLE_FONT, plot, false);
 		chart.setBackgroundPaint(Color.white);
 		return chart;
 	}
@@ -162,7 +159,7 @@ public class WaterfallChartDemo2 extends ApplicationFrame {
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 		final WaterfallChartDemo2 demo = new WaterfallChartDemo2("Waterfall Chart Demo 2");

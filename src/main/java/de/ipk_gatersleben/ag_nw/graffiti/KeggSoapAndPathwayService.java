@@ -33,12 +33,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
  */
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class KeggSoapAndPathwayService
-					implements Runnable, BackgroundTaskStatusProvider, HelperClass {
-	
+public class KeggSoapAndPathwayService implements Runnable, BackgroundTaskStatusProvider, HelperClass {
+
 	private String status1;
 	private String targetDirectory;
 	private ArrayList<KeggPathwayEntry> keggPathwayEntries;
@@ -46,24 +44,19 @@ public class KeggSoapAndPathwayService
 	private String status2;
 	private double statusFine = -1d;
 	private Color enzymeColor;
-	
-	public void setOptions(String targetdirectory, ArrayList<KeggPathwayEntry> keggPathwayEntries,
-						Color enzymeColor) {
+
+	public void setOptions(String targetdirectory, ArrayList<KeggPathwayEntry> keggPathwayEntries, Color enzymeColor) {
 		this.targetDirectory = targetdirectory;
 		this.keggPathwayEntries = keggPathwayEntries;
 		this.enzymeColor = enzymeColor;
 	}
-	
-	private static Graph getKeggPathway(
-						int index,
-						ArrayList<KeggPathwayEntry> keggPathwayEntries,
-						Color enzymeColor) {
+
+	private static Graph getKeggPathway(int index, ArrayList<KeggPathwayEntry> keggPathwayEntries, Color enzymeColor) {
 		if (index >= keggPathwayEntries.size() || index < 0)
 			return null;
 		else {
 			try {
-				return KeggService.getKeggPathwayGravistoGraph(keggPathwayEntries
-									.get(index), false, enzymeColor);
+				return KeggService.getKeggPathwayGravistoGraph(keggPathwayEntries.get(index), false, enzymeColor);
 			} catch (MalformedURLException er) {
 				ErrorMsg.addErrorMessage(er);
 			} catch (IOException er) {
@@ -74,7 +67,7 @@ public class KeggSoapAndPathwayService
 			return null;
 		}
 	}
-	
+
 	public static boolean writeGML(Graph g, String fileName) {
 		if (g == null || g.getNodes().size() <= 0)
 			return false;
@@ -92,9 +85,10 @@ public class KeggSoapAndPathwayService
 		}
 		return false;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
@@ -109,10 +103,11 @@ public class KeggSoapAndPathwayService
 			statusFine = ((double) i) / (double) maxI * 100d;
 			if (graph == null) {
 				errorCount++;
-				System.err.println("Kegg Pathway " + keggPathwayEntries.get(i - 1) + " could not be loaded or is empty." +
-									"<br>URL: " + keggPathwayEntries.get(i - 1).getPathwayURL());
-				ErrorMsg.addErrorMessage("Kegg Pathway " + keggPathwayEntries.get(i - 1) + " could not be loaded or is empty." +
-									"<br>URL: " + keggPathwayEntries.get(i - 1).getPathwayURL());
+				System.err.println("Kegg Pathway " + keggPathwayEntries.get(i - 1) + " could not be loaded or is empty."
+						+ "<br>URL: " + keggPathwayEntries.get(i - 1).getPathwayURL());
+				ErrorMsg.addErrorMessage(
+						"Kegg Pathway " + keggPathwayEntries.get(i - 1) + " could not be loaded or is empty."
+								+ "<br>URL: " + keggPathwayEntries.get(i - 1).getPathwayURL());
 				continue;
 			}
 			String errTxt = "";
@@ -123,7 +118,7 @@ public class KeggSoapAndPathwayService
 				errTxt = errTxt + ", " + errorCount + " graph(s) not loaded";
 			status1 = "Process graph " + i + "/" + maxI + errTxt + ": ";
 			status2 = graph.getName();
-			
+
 			String search = "rn:";
 			Selection selection = new Selection();
 			search = search.toUpperCase(); // case insensitive
@@ -141,11 +136,12 @@ public class KeggSoapAndPathwayService
 			}
 			while (!toAdd.empty())
 				selection.add((GraphElement) toAdd.pop());
-			MyNonInteractiveSpringEmb se = new MyNonInteractiveSpringEmb(graph, selection, MyNonInteractiveSpringEmb.getNewThreadSafeOptionsWithDefaultSettings());
+			MyNonInteractiveSpringEmb se = new MyNonInteractiveSpringEmb(graph, selection,
+					MyNonInteractiveSpringEmb.getNewThreadSafeOptionsWithDefaultSettings());
 			se.run();
 			statusFine = (i + 0.33d) / maxI * 100d;
-			String fileName = keggPathwayEntries.get(i - 1).getMapName() + "_" + keggPathwayEntries.get(i - 1).getPathwayName().replaceAll("/", "_").trim()
-								+ ".gml";
+			String fileName = keggPathwayEntries.get(i - 1).getMapName() + "_"
+					+ keggPathwayEntries.get(i - 1).getPathwayName().replaceAll("/", "_").trim() + ".gml";
 			writeGML(graph, targetDirectory + fileName);
 			statusFine = (i + 0.66d) / maxI * 100d;
 			success++;
@@ -163,63 +159,84 @@ public class KeggSoapAndPathwayService
 			status2 = success + "/" + keggPathwayEntries.size() + " pathways saved in folder " + targetDirectory;
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#getCurrentStatusValue()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * getCurrentStatusValue()
 	 */
 	public int getCurrentStatusValue() {
 		return (int) getCurrentStatusValueFine();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#getCurrentStatusValueFine()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * getCurrentStatusValueFine()
 	 */
 	public double getCurrentStatusValueFine() {
 		return statusFine;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#getCurrentStatusMessage1()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * getCurrentStatusMessage1()
 	 */
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#getCurrentStatusMessage2()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * getCurrentStatusMessage2()
 	 */
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#pleaseStop()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * pleaseStop()
 	 */
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#pluginWaitsForUser()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * pluginWaitsForUser()
 	 */
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#pleaseContinueRun()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * pleaseContinueRun()
 	 */
 	public void pleaseContinueRun() {
 		// empty
 	}
-	
+
 	public void setCurrentStatusValue(int value) {
 		statusFine = value;
 	}

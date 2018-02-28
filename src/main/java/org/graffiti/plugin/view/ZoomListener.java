@@ -18,7 +18,7 @@ import java.awt.geom.AffineTransform;
  */
 public interface ZoomListener {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Indicates that a zoom value has changed.
 	 */

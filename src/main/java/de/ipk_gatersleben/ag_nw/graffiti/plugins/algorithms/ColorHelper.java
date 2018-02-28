@@ -12,16 +12,16 @@ import org.graffiti.graph.Graph;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.chart_colors.ChartColorAttribute;
 
 public class ColorHelper implements HelperClass {
-	
+
 	ChartColorAttribute cca = null;
-	
+
 	HashMap<String, Color> seriesInner2color = new HashMap<String, Color>();
 	HashMap<String, Color> seriesOuter2color = new HashMap<String, Color>();
-	
+
 	public ColorHelper(Graph g) {
 		cca = ChartColorAttribute.getAttribute(g);
 	}
-	
+
 	public Color getColor1ForRowKey(String serie) {
 		if (serie == null || serie.length() <= 0)
 			return Color.DARK_GRAY;
@@ -31,7 +31,7 @@ public class ColorHelper implements HelperClass {
 		seriesInner2color.put(serie, c);
 		return c;
 	}
-	
+
 	public Color getColor2ForRowKey(String serie) {
 		if (serie == null || serie.length() <= 0)
 			return Color.BLACK;
@@ -41,7 +41,7 @@ public class ColorHelper implements HelperClass {
 		seriesOuter2color.put(serie, c);
 		return c;
 	}
-	
+
 	public void setColor1For(String col, Color color1) {
 		cca.setSeriesColor(col, color1);
 	}

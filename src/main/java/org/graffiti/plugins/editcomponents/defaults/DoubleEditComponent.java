@@ -18,15 +18,14 @@ import org.graffiti.plugin.editcomponent.NumberEditComponent;
  * 
  * @see NumberEditComponent
  */
-public class DoubleEditComponent
-					extends NumberEditComponent {
+public class DoubleEditComponent extends NumberEditComponent {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Creates a new DoubleEditComponent object.
 	 * 
 	 * @param disp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public DoubleEditComponent(Displayable disp) {
 		super(disp);

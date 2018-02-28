@@ -34,8 +34,8 @@ import java.util.Arrays;
 import java.util.Date;
 
 /**
- * A simple implementation of the {@link HighLowDataset} interface. This implementation supports
- * only one series.
+ * A simple implementation of the {@link HighLowDataset} interface. This
+ * implementation supports only one series.
  */
 public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 
@@ -49,9 +49,9 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Creates a new dataset.
 	 * 
 	 * @param name
-	 *           the series name.
+	 *            the series name.
 	 * @param data
-	 *           the data items.
+	 *            the data items.
 	 */
 	public OHLCDataset(final String name, final OHLCDataItem[] data) {
 		this.name = name;
@@ -62,7 +62,7 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the series name.
 	 * 
 	 * @param series
-	 *           the series index (ignored).
+	 *            the series index (ignored).
 	 * @return the series name.
 	 */
 	public String getSeriesName(final int series) {
@@ -73,9 +73,9 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the x-value for a data item.
 	 * 
 	 * @param series
-	 *           the series index (ignored).
+	 *            the series index (ignored).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return the x-value.
 	 */
 	public Number getXValue(final int series, final int item) {
@@ -86,9 +86,9 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the x-value for a data item as a date.
 	 * 
 	 * @param series
-	 *           the series index (ignored).
+	 *            the series index (ignored).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return the x-value as a date.
 	 */
 	public Date getXDate(final int series, final int item) {
@@ -99,9 +99,9 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the y-value.
 	 * 
 	 * @param series
-	 *           the series index (ignored).
+	 *            the series index (ignored).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return the y value.
 	 */
 	public Number getYValue(final int series, final int item) {
@@ -112,9 +112,9 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the high value.
 	 * 
 	 * @param series
-	 *           the series index (ignored).
+	 *            the series index (ignored).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return the high value.
 	 */
 	public Number getHighValue(final int series, final int item) {
@@ -125,9 +125,9 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the high-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The high-value.
 	 */
 	public double getHigh(int series, int item) {
@@ -143,9 +143,9 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the low value.
 	 * 
 	 * @param series
-	 *           the series index (ignored).
+	 *            the series index (ignored).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return the low value.
 	 */
 	public Number getLowValue(final int series, final int item) {
@@ -156,9 +156,9 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the low-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The low-value.
 	 */
 	public double getLow(int series, int item) {
@@ -174,9 +174,9 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the open value.
 	 * 
 	 * @param series
-	 *           the series index (ignored).
+	 *            the series index (ignored).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return the open value.
 	 */
 	public Number getOpenValue(final int series, final int item) {
@@ -187,9 +187,9 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the open-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The open-value.
 	 */
 	public double getOpen(int series, int item) {
@@ -205,9 +205,9 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the close value.
 	 * 
 	 * @param series
-	 *           the series index (ignored).
+	 *            the series index (ignored).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return the close value.
 	 */
 	public Number getCloseValue(final int series, final int item) {
@@ -218,9 +218,9 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the close-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The close-value.
 	 */
 	public double getClose(int series, int item) {
@@ -236,9 +236,9 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the trading volume.
 	 * 
 	 * @param series
-	 *           the series index (ignored).
+	 *            the series index (ignored).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return the trading volume.
 	 */
 	public Number getVolumeValue(final int series, final int item) {
@@ -249,9 +249,9 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the volume-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The volume-value.
 	 */
 	public double getVolume(int series, int item) {
@@ -276,7 +276,7 @@ public class OHLCDataset extends AbstractXYDataset implements HighLowDataset {
 	 * Returns the item count for the specified series.
 	 * 
 	 * @param series
-	 *           the series index (ignored).
+	 *            the series index (ignored).
 	 * @return the item count.
 	 */
 	public int getItemCount(final int series) {

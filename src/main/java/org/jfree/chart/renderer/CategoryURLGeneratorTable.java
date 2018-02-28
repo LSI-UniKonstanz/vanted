@@ -38,8 +38,8 @@ import org.jfree.util.ObjectTable;
 /**
  * A lookup table for URL generators. Now based on the object table.
  * 
- * @deprecated This class is no longer being used in JFreeChart and will be removed before
- *             version 1.0.0 is released.
+ * @deprecated This class is no longer being used in JFreeChart and will be
+ *             removed before version 1.0.0 is released.
  */
 public class CategoryURLGeneratorTable extends ObjectTable implements Serializable {
 
@@ -54,9 +54,9 @@ public class CategoryURLGeneratorTable extends ObjectTable implements Serializab
 	 * Returns the URL generator object from a particular cell in the table.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The URL generator.
 	 */
 	public CategoryURLGenerator getURLGenerator(int row, int column) {
@@ -66,14 +66,15 @@ public class CategoryURLGeneratorTable extends ObjectTable implements Serializab
 	}
 
 	/**
-	 * Sets the URL generator for a cell in the table. The table is expanded if necessary.
+	 * Sets the URL generator for a cell in the table. The table is expanded if
+	 * necessary.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @param generator
-	 *           the URL generator.
+	 *            the URL generator.
 	 */
 	public void setURLGenerator(int row, int column, CategoryURLGenerator generator) {
 
@@ -82,11 +83,11 @@ public class CategoryURLGeneratorTable extends ObjectTable implements Serializab
 	}
 
 	/**
-	 * Tests this paint table for equality with another object (typically another label generator
-	 * table).
+	 * Tests this paint table for equality with another object (typically another
+	 * label generator table).
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {

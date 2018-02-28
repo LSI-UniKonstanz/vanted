@@ -22,15 +22,14 @@ import org.graffiti.session.Session;
  * 
  * @version $Revision$
  */
-public class TabVisualisationControl
-					extends InspectorTab {
-	
+public class TabVisualisationControl extends InspectorTab {
+
 	private static final long serialVersionUID = 1L;
 	/**
 	 * DOCUMENT ME!
 	 */
 	JComboBox pluginSelection;
-	
+
 	/**
 	 * DOCUMENT ME!
 	 */
@@ -38,22 +37,19 @@ public class TabVisualisationControl
 		// initOldDialog();
 		initNewDialog();
 	}
-	
+
 	/**
 	 * 
 	 */
 	private void initNewDialog() {
 		double border = 2;
-		double[][] size =
-		{
-							{ border, TableLayoutConstants.FILL, border }, // Columns
-				{ border, TableLayoutConstants.FILL, border }
-		}; // Rows
+		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
+				{ border, TableLayoutConstants.FILL, border } }; // Rows
 		this.setLayout(new TableLayout(size));
 		this.add(new JLabel("ToDo"), "1,1");
 		this.revalidate();
 	}
-	
+
 	/**
 	 * Constructs a <code>PatternTab</code> and sets the title.
 	 */
@@ -62,84 +58,114 @@ public class TabVisualisationControl
 		this.title = "Node Drawing";
 		initComponents();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.AttributeListener#postAttributeAdded(org.graffiti.event.AttributeEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.AttributeListener#postAttributeAdded(org.graffiti.event.
+	 * AttributeEvent)
 	 */
 	public void postAttributeAdded(AttributeEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.AttributeListener#postAttributeChanged(org.graffiti.event.AttributeEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.AttributeListener#postAttributeChanged(org.graffiti.event.
+	 * AttributeEvent)
 	 */
 	public void postAttributeChanged(AttributeEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.AttributeListener#postAttributeRemoved(org.graffiti.event.AttributeEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.AttributeListener#postAttributeRemoved(org.graffiti.event.
+	 * AttributeEvent)
 	 */
 	public void postAttributeRemoved(AttributeEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.AttributeListener#preAttributeAdded(org.graffiti.event.AttributeEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.AttributeListener#preAttributeAdded(org.graffiti.event.
+	 * AttributeEvent)
 	 */
 	public void preAttributeAdded(AttributeEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.AttributeListener#preAttributeChanged(org.graffiti.event.AttributeEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.AttributeListener#preAttributeChanged(org.graffiti.event.
+	 * AttributeEvent)
 	 */
 	public void preAttributeChanged(AttributeEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.AttributeListener#preAttributeRemoved(org.graffiti.event.AttributeEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.AttributeListener#preAttributeRemoved(org.graffiti.event.
+	 * AttributeEvent)
 	 */
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.TransactionListener#transactionFinished(org.graffiti.event.TransactionEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.TransactionListener#transactionFinished(org.graffiti.event
+	 * .TransactionEvent)
 	 */
 	public void transactionFinished(TransactionEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.TransactionListener#transactionStarted(org.graffiti.event.TransactionEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.TransactionListener#transactionStarted(org.graffiti.event.
+	 * TransactionEvent)
 	 */
 	public void transactionStarted(TransactionEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.session.SessionListener#sessionChanged(org.graffiti.session.Session)
+	 * 
+	 * @see
+	 * org.graffiti.session.SessionListener#sessionChanged(org.graffiti.session.
+	 * Session)
 	 */
 	public void sessionChanged(Session s) {
 		//
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.session.SessionListener#sessionDataChanged(org.graffiti.session.Session)
+	 * 
+	 * @see
+	 * org.graffiti.session.SessionListener#sessionDataChanged(org.graffiti.session.
+	 * Session)
 	 */
 	public void sessionDataChanged(Session s) {
 		//
-		
+
 	}
-	
+
 	@Override
 	public boolean visibleForView(View v) {
 		return v != null;
 	}
-	
+
 }

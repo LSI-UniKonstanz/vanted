@@ -37,13 +37,11 @@ import org.jfree.data.CategoryDataset;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A standard label generator that can be used with a {@link org.jfree.chart.renderer.CategoryItemRenderer}.
+ * A standard label generator that can be used with a
+ * {@link org.jfree.chart.renderer.CategoryItemRenderer}.
  */
 public class StandardCategoryLabelGenerator extends AbstractCategoryItemLabelGenerator
-															implements CategoryLabelGenerator,
-																			Cloneable,
-																			PublicCloneable,
-																			Serializable {
+		implements CategoryLabelGenerator, Cloneable, PublicCloneable, Serializable {
 
 	/** The default format string. */
 	public static final String DEFAULT_LABEL_FORMAT_STRING = "{2}";
@@ -59,9 +57,9 @@ public class StandardCategoryLabelGenerator extends AbstractCategoryItemLabelGen
 	 * Creates a new generator with the specified number formatter.
 	 * 
 	 * @param labelFormat
-	 *           the label format string (<code>null</code> not permitted).
+	 *            the label format string (<code>null</code> not permitted).
 	 * @param formatter
-	 *           the number formatter (<code>null</code> not permitted).
+	 *            the number formatter (<code>null</code> not permitted).
 	 */
 	public StandardCategoryLabelGenerator(String labelFormat, NumberFormat formatter) {
 		super(labelFormat, formatter);
@@ -71,9 +69,9 @@ public class StandardCategoryLabelGenerator extends AbstractCategoryItemLabelGen
 	 * Creates a new generator with the specified date formatter.
 	 * 
 	 * @param labelFormat
-	 *           the label format string (<code>null</code> not permitted).
+	 *            the label format string (<code>null</code> not permitted).
 	 * @param formatter
-	 *           the date formatter (<code>null</code> not permitted).
+	 *            the date formatter (<code>null</code> not permitted).
 	 */
 	public StandardCategoryLabelGenerator(String labelFormat, DateFormat formatter) {
 		super(labelFormat, formatter);
@@ -85,11 +83,11 @@ public class StandardCategoryLabelGenerator extends AbstractCategoryItemLabelGen
 	 * particular category.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> not permitted).
+	 *            the dataset (<code>null</code> not permitted).
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The label (possibly <code>null</code>).
 	 */
 	public String generateLabel(CategoryDataset dataset, int row, int column) {

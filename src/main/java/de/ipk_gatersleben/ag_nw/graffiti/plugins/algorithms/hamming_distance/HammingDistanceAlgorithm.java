@@ -29,84 +29,75 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
  * This algorithm computes the hamming distances between directed graphs. The
- * hamming distance is the number of pairwise differences between the
- * graphs, whereas nodes, edges, or both and also edge labels can be
- * considered. It uses the node labels to compare nodes and the labels of
- * nodes connected to the edge to compare edges. Each node may have a
- * distinguishable label.
+ * hamming distance is the number of pairwise differences between the graphs,
+ * whereas nodes, edges, or both and also edge labels can be considered. It uses
+ * the node labels to compare nodes and the labels of nodes connected to the
+ * edge to compare edges. Each node may have a distinguishable label.
  * 
  * @author Falk Schreiber
  */
 
 /*
- * TODO: implement in check:
- * - check if the graphs are directed,
- * - check if the graph contains distinguished node labels
- * (and also if they contain a label for each node!)
- * possible extensions:
- * - consider:
- * - undirected graphs,
- * - directed graph as undirected graphs
- * - a given set of nodes and edges for computing
- * the hamming distance
- * (also update check precondition)
- * - set attributes to use the graph colorer algorithm to
- * show the differences in the graphs
- * - sort the graphs depending on the MIN SUM ordering
+ * TODO: implement in check: - check if the graphs are directed, - check if the
+ * graph contains distinguished node labels (and also if they contain a label
+ * for each node!) possible extensions: - consider: - undirected graphs, -
+ * directed graph as undirected graphs - a given set of nodes and edges for
+ * computing the hamming distance (also update check precondition) - set
+ * attributes to use the graph colorer algorithm to show the differences in the
+ * graphs - sort the graphs depending on the MIN SUM ordering
  */
-public class HammingDistanceAlgorithm
-					extends AbstractAlgorithm {
+public class HammingDistanceAlgorithm extends AbstractAlgorithm {
 	/*************************************************************/
 	/* Member variables */
 	/*************************************************************/
-	
+
 	/**
 	 * The list of current graphs
 	 */
 	// private Collection<Graph> listOfGraphs;
-	
+
 	/**
 	 * The list of current sessions (for the graph names)
 	 */
 	// private Collection allSessions;
-	
+
 	/**
 	 * The number of current graphs (size of listOfGraphs)
 	 */
 	// private int numberOfGraphs;
-	
+
 	/**
 	 * Parameter to consider nodes
 	 */
 	private boolean consNodes = true;
-	
+
 	private boolean useLoadedGraphs;
-	
+
 	/**
 	 * Parameter to consider edges
 	 */
 	private boolean consEdges = true;
-	
+
 	/**
 	 * Parameter to consider edge labels
 	 */
 	private boolean consEdgeLabels;
-	
+
 	/**
 	 * Parameter for hamming distance for nodes
 	 */
 	private int nodesDistance;
-	
+
 	/**
 	 * Parameter for hamming distance for edges
 	 */
 	private int edgesDistance;
-	
+
 	/**
 	 * Parameter to compute order of graphs
 	 */
 	private boolean computeOrder;
-	
+
 	/**
 	 * Returns the name of the algorithm.
 	 * 
@@ -115,32 +106,31 @@ public class HammingDistanceAlgorithm
 	public String getName() {
 		return "Hamming Distance";
 	}
-	
+
 	/**
 	 * Checks the preconditions of the algorithm.
 	 * 
 	 * @throws PreconditionException
 	 */
 	@Override
-	public void check()
-						throws PreconditionException {
+	public void check() throws PreconditionException {
 		PreconditionException errors = new PreconditionException();
-		
+
 		if (useLoadedGraphs) {
 			if (graph == null) {
 				errors.add("The graph instance may not be null.");
 			}
 			Collection<Graph> listOfGraphs = GravistoService.getInstance().getMainGraphs();
-			
+
 			if (listOfGraphs == null || listOfGraphs.size() < 2) {
 				errors.add("The list of graphs has to contain more than one graph.");
 			}
-			
+
 			Iterator<Graph> it = listOfGraphs.iterator();
-			
+
 			while (it.hasNext()) {
 				Graph g = (Graph) it.next();
-				
+
 				if (g.getNumberOfNodes() == 0) {
 					errors.add("A graph may not be empty.");
 				}
@@ -149,16 +139,16 @@ public class HammingDistanceAlgorithm
 		if (nodesDistance <= 0) {
 			errors.add("The value of the hamming distance between nodes may not <= 0.");
 		}
-		
+
 		if (edgesDistance <= 0) {
 			errors.add("The value of the hamming distance between edges may not <= 0.");
 		}
-		
+
 		if (!errors.isEmpty()) {
 			throw errors;
 		}
 	}
-	
+
 	/**
 	 * The main method
 	 */
@@ -171,13 +161,13 @@ public class HammingDistanceAlgorithm
 			JFileChooser fc = MainFrame.getInstance().getIoManager().createOpenFileChooser();
 			fc.setMultiSelectionEnabled(true);
 			// fc.resetChoosableFileFilters();
-			
+
 			OpenFileDialogService.setActiveDirectoryFor(fc);
-			
+
 			int returnVal = fc.showDialog(MainFrame.getInstance(), "Compute Hamming-Distances");
-			
+
 			OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
-			
+
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				File[] selfiles = fc.getSelectedFiles();
 				// ask if they should be opened into one graph view
@@ -188,7 +178,7 @@ public class HammingDistanceAlgorithm
 			processGraphs(null, files);
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		if (args == null || args.length != 2) {
 			System.out.println("VANTED COMMAND LINE ANALYSIS (HAMMING DISTANCES)");
@@ -213,7 +203,7 @@ public class HammingDistanceAlgorithm
 			}
 			File[] files = dir.listFiles();
 			ArrayList<File> filelist = new ArrayList<File>();
-			if(files != null)
+			if (files != null)
 				for (File file : files) {
 					if (file.getName().toUpperCase().endsWith(".GML"))
 						filelist.add(file);
@@ -229,21 +219,20 @@ public class HammingDistanceAlgorithm
 				System.out.println("Calculation SIMULATION");
 			System.out.println("Input/Output Folder: " + dir.getAbsolutePath());
 			System.out.println("Input Files: " + files.length);
-			HammingCalculator hc = new HammingCalculator(
-								null, filelist,
-								true, true, false, 1, 1, false, index, dir.getAbsolutePath());
+			HammingCalculator hc = new HammingCalculator(null, filelist, true, true, false, 1, 1, false, index,
+					dir.getAbsolutePath());
 			hc.run();
 		}
 		return;
 	}
-	
+
 	private void processGraphs(Collection<Graph> listOfGraphs, ArrayList<File> listOfGraphFileNames) {
-		HammingCalculator hc = new HammingCalculator(
-							listOfGraphs, listOfGraphFileNames,
-							consNodes, consEdges, consEdgeLabels, nodesDistance, edgesDistance, computeOrder, 0, null);
-		BackgroundTaskHelper.issueSimpleTask("Hamming Distance Calculation", "Compute Hamming-Distances...", hc, null, hc);
+		HammingCalculator hc = new HammingCalculator(listOfGraphs, listOfGraphFileNames, consNodes, consEdges,
+				consEdgeLabels, nodesDistance, edgesDistance, computeOrder, 0, null);
+		BackgroundTaskHelper.issueSimpleTask("Hamming Distance Calculation", "Compute Hamming-Distances...", hc, null,
+				hc);
 	}
-	
+
 	/**
 	 * Get parameters
 	 * 
@@ -251,41 +240,30 @@ public class HammingDistanceAlgorithm
 	 */
 	@Override
 	public Parameter[] getParameters() {
-		BooleanParameter loadedGraphsParam =
-							new BooleanParameter(
-												false,
-												"Analyze loaded graphs",
-												"If selected, the currently loaded graphs are analyzed, if unselected, you may specify the list of graphs by selecting the corresponding graph files.");
-		BooleanParameter nodesParam =
-							new BooleanParameter(consNodes, "Consider nodes",
-												"Consider nodes to compute the hamming distance.");
-		BooleanParameter edgesParam =
-							new BooleanParameter(consEdges, "Consider edges",
-												"Consider edges to compute the hamming distance.");
-		BooleanParameter edgeLabelsParam =
-							new BooleanParameter(consEdgeLabels, "Consider edge labels",
-												"Consider edge labels to compute the hamming distance.");
-		BooleanParameter computeOrderParam =
-							new BooleanParameter(computeOrder, "Compute order",
-												"Compute MIN SUM ordering of graphs.");
-		IntegerParameter nodesDistanceParam =
-							new IntegerParameter(1, "Nodes distance",
-												"Each different node increases the hamming distance by this value.");
-		IntegerParameter edgesDistanceParam =
-							new IntegerParameter(1, "Edges distance",
-												"Each different edge increases the hamming distance by this value.");
-		
-		return new Parameter[] {
-							loadedGraphsParam,
-							nodesParam, edgesParam, edgeLabelsParam, computeOrderParam,
-							nodesDistanceParam, edgesDistanceParam };
+		BooleanParameter loadedGraphsParam = new BooleanParameter(false, "Analyze loaded graphs",
+				"If selected, the currently loaded graphs are analyzed, if unselected, you may specify the list of graphs by selecting the corresponding graph files.");
+		BooleanParameter nodesParam = new BooleanParameter(consNodes, "Consider nodes",
+				"Consider nodes to compute the hamming distance.");
+		BooleanParameter edgesParam = new BooleanParameter(consEdges, "Consider edges",
+				"Consider edges to compute the hamming distance.");
+		BooleanParameter edgeLabelsParam = new BooleanParameter(consEdgeLabels, "Consider edge labels",
+				"Consider edge labels to compute the hamming distance.");
+		BooleanParameter computeOrderParam = new BooleanParameter(computeOrder, "Compute order",
+				"Compute MIN SUM ordering of graphs.");
+		IntegerParameter nodesDistanceParam = new IntegerParameter(1, "Nodes distance",
+				"Each different node increases the hamming distance by this value.");
+		IntegerParameter edgesDistanceParam = new IntegerParameter(1, "Edges distance",
+				"Each different edge increases the hamming distance by this value.");
+
+		return new Parameter[] { loadedGraphsParam, nodesParam, edgesParam, edgeLabelsParam, computeOrderParam,
+				nodesDistanceParam, edgesDistanceParam };
 	}
-	
+
 	/**
 	 * Sets parameters
 	 * 
 	 * @param params
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
@@ -294,28 +272,20 @@ public class HammingDistanceAlgorithm
 		useLoadedGraphs = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		consNodes = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		consEdges = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
-		consEdgeLabels =
-							((BooleanParameter) params[i++]).getBoolean().booleanValue();
-		computeOrder =
-							((BooleanParameter) params[i++]).getBoolean().booleanValue();
-		nodesDistance =
-							((IntegerParameter) params[i++]).getInteger().intValue();
-		edgesDistance =
-							((IntegerParameter) params[i++]).getInteger().intValue();
+		consEdgeLabels = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
+		computeOrder = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
+		nodesDistance = ((IntegerParameter) params[i++]).getInteger().intValue();
+		edgesDistance = ((IntegerParameter) params[i++]).getInteger().intValue();
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Analysis";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.ANALYSIS
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANALYSIS));
 	}
 
 }

@@ -36,13 +36,14 @@ package org.jfree.data;
 public abstract class Regression {
 
 	/**
-	 * Returns the parameters 'a' and 'b' for an equation y = a + bx, fitted to the data using
-	 * ordinary least squares regression.
+	 * Returns the parameters 'a' and 'b' for an equation y = a + bx, fitted to the
+	 * data using ordinary least squares regression.
 	 * <p>
-	 * The result is returned as a double[], where result[0] --> a, and result[1] --> b.
+	 * The result is returned as a double[], where result[0] --> a, and result[1]
+	 * --> b.
 	 * 
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @return the parameters.
 	 */
 	public static double[] getOLSRegression(final double[][] data) {
@@ -80,15 +81,16 @@ public abstract class Regression {
 	}
 
 	/**
-	 * Returns the parameters 'a' and 'b' for an equation y = a + bx, fitted to the data using
-	 * ordinary least squares regression.
+	 * Returns the parameters 'a' and 'b' for an equation y = a + bx, fitted to the
+	 * data using ordinary least squares regression.
 	 * <p>
-	 * The result is returned as a double[], where result[0] --> a, and result[1] --> b.
+	 * The result is returned as a double[], where result[0] --> a, and result[1]
+	 * --> b.
 	 * 
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return the parameters.
 	 */
 	public static double[] getOLSRegression(final XYDataset data, final int series) {
@@ -126,13 +128,14 @@ public abstract class Regression {
 	}
 
 	/**
-	 * Returns the parameters 'a' and 'b' for an equation y = ax^b, fitted to the data using
-	 * a power regression equation.
+	 * Returns the parameters 'a' and 'b' for an equation y = ax^b, fitted to the
+	 * data using a power regression equation.
 	 * <p>
-	 * The result is returned as an array, where double[0] --> a, and double[1] --> b.
+	 * The result is returned as an array, where double[0] --> a, and double[1] -->
+	 * b.
 	 * 
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @return the parameters.
 	 */
 	public static double[] getPowerRegression(final double[][] data) {
@@ -170,15 +173,16 @@ public abstract class Regression {
 	}
 
 	/**
-	 * Returns the parameters 'a' and 'b' for an equation y = ax^b, fitted to the data using
-	 * a power regression equation.
+	 * Returns the parameters 'a' and 'b' for an equation y = ax^b, fitted to the
+	 * data using a power regression equation.
 	 * <p>
-	 * The result is returned as an array, where double[0] --> a, and double[1] --> b.
+	 * The result is returned as an array, where double[0] --> a, and double[1] -->
+	 * b.
 	 * 
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @param series
-	 *           the series to fit the regression line against.
+	 *            the series to fit the regression line against.
 	 * @return the parameters.
 	 */
 	public static double[] getPowerRegression(final XYDataset data, final int series) {

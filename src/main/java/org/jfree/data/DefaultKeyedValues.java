@@ -45,7 +45,8 @@ import java.util.List;
 import org.jfree.util.SortOrder;
 
 /**
- * A collection of (key, value) pairs. This class provides a default implementation of the {@link KeyedValues} interface.
+ * A collection of (key, value) pairs. This class provides a default
+ * implementation of the {@link KeyedValues} interface.
  */
 public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable {
 
@@ -72,7 +73,7 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 	 * Returns a value.
 	 * 
 	 * @param item
-	 *           the item of interest (zero-based index).
+	 *            the item of interest (zero-based index).
 	 * @return the value.
 	 */
 	public Number getValue(final int item) {
@@ -90,7 +91,7 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 	 * Returns a key.
 	 * 
 	 * @param index
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return the row key.
 	 */
 	public Comparable getKey(final int index) {
@@ -108,7 +109,7 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 	 * Returns the index for a given key or -1 if the key is not found.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @return the index.
 	 */
 	public int getIndex(final Comparable key) {
@@ -144,11 +145,11 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 	}
 
 	/**
-	 * Returns the value (possibly <code>null</code>) for a given key. If the key is not
-	 * recognised, the method returns <code>null</code>.
+	 * Returns the value (possibly <code>null</code>) for a given key. If the key is
+	 * not recognised, the method returns <code>null</code>.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @return the value.
 	 */
 	public Number getValue(final Comparable key) {
@@ -168,9 +169,9 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 	 * This is the same as the setValue(...) method.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public void addValue(final Comparable key, final Number value) {
 		setValue(key, value);
@@ -182,9 +183,9 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 	 * This is the same as the addValue(...) method.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public void setValue(final Comparable key, final Number value) {
 		final int keyIndex = getIndex(key);
@@ -201,18 +202,18 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 	 * Removes a value from the collection.
 	 * 
 	 * @param index
-	 *           the index of the item to remove.
+	 *            the index of the item to remove.
 	 */
 	public void removeValue(final int index) {
 		this.data.remove(index);
 	}
 
 	/**
-	 * Removes a value from the collection. If there is no value with the specified key,
-	 * then this method does nothing.
+	 * Removes a value from the collection. If there is no value with the specified
+	 * key, then this method does nothing.
 	 * 
 	 * @param key
-	 *           the key of the item to remove.
+	 *            the key of the item to remove.
 	 */
 	public void removeValue(final Comparable key) {
 		final int index = getIndex(key);
@@ -225,27 +226,24 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 	 * Sorts the items in the list by key.
 	 * 
 	 * @param order
-	 *           the sort order (ascending or descending).
+	 *            the sort order (ascending or descending).
 	 */
 	public void sortByKeys(final SortOrder order) {
 
-		final Comparator comparator = new KeyedValueComparator(
-							KeyedValueComparatorType.BY_KEY, order
-							);
+		final Comparator comparator = new KeyedValueComparator(KeyedValueComparatorType.BY_KEY, order);
 		Collections.sort(this.data, comparator);
 	}
 
 	/**
-	 * Sorts the items in the list by value. If the list contains <code>null</code> values, they
-	 * will sort to the end of the list, irrespective of the sort order.
+	 * Sorts the items in the list by value. If the list contains <code>null</code>
+	 * values, they will sort to the end of the list, irrespective of the sort
+	 * order.
 	 * 
 	 * @param order
-	 *           the sort order (ascending or descending).
+	 *            the sort order (ascending or descending).
 	 */
 	public void sortByValues(final SortOrder order) {
-		final Comparator comparator = new KeyedValueComparator(
-							KeyedValueComparatorType.BY_VALUE, order
-							);
+		final Comparator comparator = new KeyedValueComparator(KeyedValueComparatorType.BY_VALUE, order);
 		Collections.sort(this.data, comparator);
 	}
 
@@ -253,7 +251,7 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
@@ -310,8 +308,7 @@ public class DefaultKeyedValues implements KeyedValues, Cloneable, Serializable 
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            this class will not throw this exception, but subclasses
-	 *            might.
+	 *             this class will not throw this exception, but subclasses might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		final DefaultKeyedValues clone = (DefaultKeyedValues) super.clone();

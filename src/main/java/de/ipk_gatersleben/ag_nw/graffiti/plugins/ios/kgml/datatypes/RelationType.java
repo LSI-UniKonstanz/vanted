@@ -6,10 +6,9 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes;
 
-public enum RelationType
-					implements ProvidesExplanation {
+public enum RelationType implements ProvidesExplanation {
 	ECrel, PPrel, GErel, PCrel, maplink;
-	
+
 	public String getExplanation() {
 		if (this == ECrel)
 			return "enzyme-enzyme relation, indicating two enzymes catalyzing successive reaction steps";
@@ -23,21 +22,21 @@ public enum RelationType
 			return "link to another map";
 		return null;
 	}
-	
+
 	public String getTypeDescription(boolean html) {
 		if (html)
-			return "<html>" +
-								"The type attribute specifies one of three types of relations, so-called the generalized<br>" +
-								"protein interactions in KEGG, and additional PCrel for interaction between a protein and<br>" +
-								"a chemical compound, and maplink for linkage between a protein and a map. The maplink<br>" +
-								"relation is provided for interaction between a protein and another in the specified map.";
+			return "<html>"
+					+ "The type attribute specifies one of three types of relations, so-called the generalized<br>"
+					+ "protein interactions in KEGG, and additional PCrel for interaction between a protein and<br>"
+					+ "a chemical compound, and maplink for linkage between a protein and a map. The maplink<br>"
+					+ "relation is provided for interaction between a protein and another in the specified map.";
 		else
-			return "The type attribute specifies one of three types of relations, so-called the generalized " +
-								"protein interactions in KEGG, and additional PCrel for interaction between a protein and " +
-								"a chemical compound, and maplink for linkage between a protein and a map. The maplink " +
-								"relation is provided for interaction between a protein and another in the specified map.";
+			return "The type attribute specifies one of three types of relations, so-called the generalized "
+					+ "protein interactions in KEGG, and additional PCrel for interaction between a protein and "
+					+ "a chemical compound, and maplink for linkage between a protein and a map. The maplink "
+					+ "relation is provided for interaction between a protein and another in the specified map.";
 	}
-	
+
 	public static RelationType getRelationType(String typeValue) {
 		if (typeValue.equals("ECrel"))
 			return ECrel;
@@ -53,20 +52,20 @@ public enum RelationType
 			return maplink;
 		return null;
 	}
-	
+
 	@Override
 	public String toString() {
 		switch (this) {
-			case ECrel:
-				return "ECrel";
-			case PPrel:
-				return "PPrel";
-			case GErel:
-				return "GErel";
-			case PCrel:
-				return "PCrel";
-			case maplink:
-				return "maplink";
+		case ECrel:
+			return "ECrel";
+		case PPrel:
+			return "PPrel";
+		case GErel:
+			return "GErel";
+		case PCrel:
+			return "PCrel";
+		case maplink:
+			return "maplink";
 		}
 		return "";
 	}

@@ -34,8 +34,8 @@ package org.jfree.data;
 import java.io.Serializable;
 
 /**
- * A class that is used to group datasets. The main purpose of this is to implement a
- * shared reader-writer lock among all datasets in the group.
+ * A class that is used to group datasets. The main purpose of this is to
+ * implement a shared reader-writer lock among all datasets in the group.
  */
 public class DatasetGroup implements Cloneable, Serializable {
 
@@ -51,7 +51,7 @@ public class DatasetGroup implements Cloneable, Serializable {
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            not by this class.
+	 *             not by this class.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

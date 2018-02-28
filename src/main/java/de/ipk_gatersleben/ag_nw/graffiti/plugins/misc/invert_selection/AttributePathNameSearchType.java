@@ -19,26 +19,27 @@ public class AttributePathNameSearchType {
 	private String niceID;
 	private boolean inNode = false;
 	private boolean inEdge = false;
-	
-	public AttributePathNameSearchType(String attributePath, String attributeName, SearchType searchType, String niceID) {
+
+	public AttributePathNameSearchType(String attributePath, String attributeName, SearchType searchType,
+			String niceID) {
 		this.attributePath = attributePath;
 		this.attributeName = attributeName;
 		this.searchType = searchType;
 		this.niceID = niceID;
 	}
-	
+
 	public String getAttributePath() {
 		return attributePath;
 	}
-	
+
 	public String getAttributeName() {
 		return attributeName;
 	}
-	
+
 	public SearchType getSearchType() {
 		return searchType;
 	}
-	
+
 	@Override
 	public String toString() {
 		String strippedNiceID = niceID;
@@ -52,13 +53,13 @@ public class AttributePathNameSearchType {
 				es = -1;
 		}
 		strippedNiceID = StringManipulationTools.stringReplace(strippedNiceID, "&nbsp;", " ");
-		
+
 		strippedNiceID = StringManipulationTools.stringReplace(strippedNiceID, "(selected elements)", " ");
 		strippedNiceID = StringManipulationTools.stringReplace(strippedNiceID, "(not auto-updated)", " ");
 		String res = "<html>" + strippedNiceID + getNiceSearchType(); // + " ("+attributePath+")";
 		return res;
 	}
-	
+
 	private String getNiceSearchType() {
 		String st = "";
 		if (searchType == SearchType.searchBoolean)
@@ -69,31 +70,32 @@ public class AttributePathNameSearchType {
 			st = "integer";
 		if (searchType == SearchType.searchString)
 			st = "text";
-		
+
 		return "<small><font color=\"gray\"> - " + st + "</font></small>";
 	}
-	
+
 	public String getNiceID() {
 		return niceID;
 	}
-	
+
 	public boolean isInEdge() {
 		return inEdge;
 	}
-	
+
 	public boolean isInNode() {
 		return inNode;
 	}
-	
+
 	public void setInEdge(boolean inEdge) {
 		this.inEdge = inEdge;
 	}
-	
+
 	public void setInNode(boolean inNode) {
 		this.inNode = inNode;
 	}
-	
-	// public double getMinimumEdgeAttributeValueConnectingGivenNodes(boolean directed, Node srcNode, Node tgtNode, double returnIfNotAvail) {
+
+	// public double getMinimumEdgeAttributeValueConnectingGivenNodes(boolean
+	// directed, Node srcNode, Node tgtNode, double returnIfNotAvail) {
 	// Collection<Edge> checkTheseEdges;
 	// if (directed)
 	// checkTheseEdges = srcNode.getAllOutEdges();
@@ -103,9 +105,11 @@ public class AttributePathNameSearchType {
 	// for (Edge e : checkTheseEdges) {
 	// if (directed && e.getTarget()!=tgtNode)
 	// continue;
-	// if (!directed && ! ( (e.getSource()==srcNode && e.getTarget()==tgtNode) || (e.getSource()==tgtNode && e.getTarget()==srcNode) ))
+	// if (!directed && ! ( (e.getSource()==srcNode && e.getTarget()==tgtNode) ||
+	// (e.getSource()==tgtNode && e.getTarget()==srcNode) ))
 	// continue;
-	// double val = (Double)AttributeHelper.getAttributeValue(e, attributePath, attributeName, Double.MAX_VALUE, Double.MAX_VALUE);
+	// double val = (Double)AttributeHelper.getAttributeValue(e, attributePath,
+	// attributeName, Double.MAX_VALUE, Double.MAX_VALUE);
 	// if (val<minVal)
 	// minVal = val;
 	// }
@@ -114,23 +118,26 @@ public class AttributePathNameSearchType {
 	// else
 	// return minVal;
 	// }
-	
+
 	public double getAttributeValue(GraphElement ge, double returnIfNotAvail) {
-		return (Double) AttributeHelper.getAttributeValue(ge, attributePath, attributeName, returnIfNotAvail, returnIfNotAvail, false);
+		return (Double) AttributeHelper.getAttributeValue(ge, attributePath, attributeName, returnIfNotAvail,
+				returnIfNotAvail, false);
 	}
-	
+
 	public void setAttributeValue(GraphElement ge, double value) {
 		if (searchType == SearchType.searchDouble)
 			AttributeHelper.setAttribute(ge, attributePath, attributeName, value);
 		if (searchType == SearchType.searchInteger)
 			AttributeHelper.setAttribute(ge, attributePath, attributeName, (int) value);
 	}
-	
+
 	public void setAttributeValue(GraphElement ge, Color color) {
 		AttributeHelper.setAttribute(ge, attributePath, attributeName, color);
 	}
-	
-	// public boolean getIsEdgeWithMinimumAttributeValueConnectingSrcTgtNodes(boolean directed, Edge edge, double returnIfNotAvail) {
+
+	// public boolean
+	// getIsEdgeWithMinimumAttributeValueConnectingSrcTgtNodes(boolean directed,
+	// Edge edge, double returnIfNotAvail) {
 	// Node srcNode = edge.getSource();
 	// Node tgtNode = edge.getTarget();
 	//
@@ -145,9 +152,11 @@ public class AttributePathNameSearchType {
 	// for (Edge e : checkTheseEdges) {
 	// if (directed && e.getTarget()!=tgtNode)
 	// continue;
-	// if (!directed && ! ( (e.getSource()==srcNode && e.getTarget()==tgtNode) || (e.getSource()==tgtNode && e.getTarget()==srcNode) ))
+	// if (!directed && ! ( (e.getSource()==srcNode && e.getTarget()==tgtNode) ||
+	// (e.getSource()==tgtNode && e.getTarget()==srcNode) ))
 	// continue;
-	// double val = (Double)AttributeHelper.getAttributeValue(e, attributePath, attributeName, Double.MAX_VALUE, Double.MAX_VALUE);
+	// double val = (Double)AttributeHelper.getAttributeValue(e, attributePath,
+	// attributeName, Double.MAX_VALUE, Double.MAX_VALUE);
 	// if (val<minVal) {
 	// minVal = val;
 	// if (e!=edge) {
@@ -158,5 +167,5 @@ public class AttributePathNameSearchType {
 	// }
 	// return givenEdgeHasMinimumValue;
 	// }
-	
+
 }

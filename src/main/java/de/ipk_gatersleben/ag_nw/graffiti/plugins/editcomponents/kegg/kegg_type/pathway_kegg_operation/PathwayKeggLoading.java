@@ -32,15 +32,15 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.IdRef;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.RelationType;
 
 public class PathwayKeggLoading {
-	
+
 	public static void collapsePathway(Graph graph, String curVal, Node sourceNode) {
 		if (!ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS_ENH))
 			return;
 		String pathwayId = KeggGmlHelper.getKeggId(sourceNode);
-		
+
 		if (pathwayId == null || !pathwayId.startsWith("path:"))
 			return;
-		
+
 		if (sourceNode != null) {
 			ArrayList<Node> nnll = new ArrayList<Node>();
 			for (Node n : graph.getNodes()) {
@@ -57,32 +57,31 @@ public class PathwayKeggLoading {
 			currentLabel = currentLabel.replaceAll("TITLE:", "");
 			KeggGmlHelper.setKeggGraphicsTitle(sourceNode, currentLabel);
 		}
-		
+
 		Collection<Gml2PathwayWarningInformation> warnings = new ArrayList<Gml2PathwayWarningInformation>();
 		Collection<Gml2PathwayErrorInformation> errors = new ArrayList<Gml2PathwayErrorInformation>();
 		HashMap<Entry, Node> entry2graphNode = new HashMap<Entry, Node>();
 		Pathway p = Pathway.getPathwayFromGraph(graph, warnings, errors, entry2graphNode);
-		
+
 		Entry mapEntry = null;
 		for (Entry e : p.getEntries())
 			if (e.getSourceGraphNode() == sourceNode && e.getType() == EntryType.map) {
 				mapEntry = e;
 				break;
 			}
-		
+
 		if (mapEntry == null) {
 			MainFrame.showMessageDialog(
-								"<html>" +
-													"Map Entry could not be found in generated KGML Pathway.<br>" +
-													"Can't proceed.", "Error");
+					"<html>" + "Map Entry could not be found in generated KGML Pathway.<br>" + "Can't proceed.",
+					"Error");
 			return;
 		}
-		
+
 		HashSet<Entry> entriesOfMap = new HashSet<Entry>();
 		for (Entry e : p.getEntries())
 			if (e.getSourcePathwayKeggId() != null && e.getSourcePathwayKeggId().equalsIgnoreCase(pathwayId))
 				entriesOfMap.add(e);
-		
+
 		HashSet<Relation> relDel = new HashSet<Relation>();
 		for (Relation r : p.getRelations()) {
 			Entry se = r.getSourceEntry();
@@ -102,7 +101,7 @@ public class PathwayKeggLoading {
 		for (Relation rd : relDel) {
 			p.getRelations().remove(rd);
 		}
-		
+
 		for (Entry eom : entriesOfMap) {
 			if (eom != mapEntry) {
 				if (eom.getType() == EntryType.enzyme) {
@@ -116,40 +115,45 @@ public class PathwayKeggLoading {
 		graph.deleteAll(graph.getGraphElements());
 		p.getGraph(graph);
 	}
-	
-	public static Pathway processInternalMapLinks(Graph baseGraph, Pathway optAddPathway, Vector2d optCenterOfAddGraph) {
+
+	public static Pathway processInternalMapLinks(Graph baseGraph, Pathway optAddPathway,
+			Vector2d optCenterOfAddGraph) {
 		if (optAddPathway != null) {
 			Graph addGraph = optAddPathway.getGraph();
 			// move graph elements to target-center position (source node position)
 			if (optCenterOfAddGraph != null)
 				repositionGraphNodes(optCenterOfAddGraph, addGraph);
-			
+
 			baseGraph.addGraph(addGraph);
 		}
 		Collection<Gml2PathwayWarningInformation> warnings = new ArrayList<Gml2PathwayWarningInformation>();
 		Collection<Gml2PathwayErrorInformation> errors = new ArrayList<Gml2PathwayErrorInformation>();
 		HashMap<Entry, Node> entry2graphNode = new HashMap<Entry, Node>();
-		
+
 		// at this stage the pathway contains the source pathway and the new pathway
 		// later, the source pathway map-link needs to be removed
 		// also all new map-links need to be "re-routed" to the prior existing map links
 		Pathway combinedPathway = Pathway.getPathwayFromGraph(baseGraph, warnings, errors, entry2graphNode);
-		
+
 		// * identify source pathway ids in combined pathway
-		// * identify "hidden" eentries inside map link nodes, representing the source pathway ids
-		// * remove map link entries (not map link title entries) which represent the loaded
+		// * identify "hidden" eentries inside map link nodes, representing the source
+		// pathway ids
+		// * remove map link entries (not map link title entries) which represent the
+		// loaded
 		// pathways
 		// * create new connections, which connect the subtype entry-nodes
-		// * some information about specific connectivity of the pathways is lost during this process
-		
+		// * some information about specific connectivity of the pathways is lost during
+		// this process
+
 		HashSet<String> loadedMaps = new HashSet<String>();
 		for (Entry e : combinedPathway.getEntries()) {
 			if (e.getType() != EntryType.map && e.getSourcePathwayKeggId() != null && e.getGraphics() != null) {
-				// System.out.println("Loaded map: "+e.getSourcePathwayKeggId()+" says: "+e.getVisibleName());
+				// System.out.println("Loaded map: "+e.getSourcePathwayKeggId()+" says:
+				// "+e.getVisibleName());
 				loadedMaps.add(e.getSourcePathwayKeggId());
 			}
 		}
-		
+
 		HashSet<Entry> mapEntriesToBeDeleted = new HashSet<Entry>();
 		for (String processLinksToThisPathway : loadedMaps) {
 			for (Entry mapEntry : combinedPathway.getEntries()) {
@@ -159,7 +163,8 @@ public class PathwayKeggLoading {
 					for (Relation r : combinedPathway.getRelations()) {
 						if (r.getSourceEntry() == mapEntry) {
 							// set source to sub-component of relation in other pathway
-							Entry e = findNearestTargetEntry(combinedPathway, r.getSubtypeRefs(), r.getTargetEntry(), processLinksToThisPathway, entry2graphNode);
+							Entry e = findNearestTargetEntry(combinedPathway, r.getSubtypeRefs(), r.getTargetEntry(),
+									processLinksToThisPathway, entry2graphNode);
 							if (e != null) {
 								r.setSourceEntry(e);
 								mapEntriesToBeDeleted.add(mapEntry);
@@ -167,7 +172,8 @@ public class PathwayKeggLoading {
 						}
 						if (r.getTargetEntry() == mapEntry) {
 							// set target to sub-component of relation in other pathway
-							Entry e = findNearestTargetEntry(combinedPathway, r.getSubtypeRefs(), r.getSourceEntry(), processLinksToThisPathway, entry2graphNode);
+							Entry e = findNearestTargetEntry(combinedPathway, r.getSubtypeRefs(), r.getSourceEntry(),
+									processLinksToThisPathway, entry2graphNode);
 							if (e != null) {
 								r.setTargetEntry(e);
 								mapEntriesToBeDeleted.add(mapEntry);
@@ -184,19 +190,21 @@ public class PathwayKeggLoading {
 				hiddenEntriesToBeDeleted.add(e);
 		for (Entry del : hiddenEntriesToBeDeleted)
 			combinedPathway.getEntries().remove(del);
-		
+
 		// remove not needed map entries
 		for (Entry del : mapEntriesToBeDeleted) {
 			combinedPathway.getEntries().remove(del);
 			System.out.println("(1) Delete map entry: " + del.getVisibleName());
 		}
-		
-		// merge entries of new pathway with existing map references in remaining network
+
+		// merge entries of new pathway with existing map references in remaining
+		// network
 		HashSet<Entry> mapEntriesOfNewPathway = new HashSet<Entry>();
 		for (Entry e : combinedPathway.getEntries()) {
 			if (e.getType() == EntryType.map) {
 				if (optAddPathway != null) {
-					if (e.getSourcePathwayKeggId() != null && e.getSourcePathwayKeggId().equals(optAddPathway.getName().getId())) {
+					if (e.getSourcePathwayKeggId() != null
+							&& e.getSourcePathwayKeggId().equals(optAddPathway.getName().getId())) {
 						mapEntriesOfNewPathway.add(e);
 						System.out.println("(2a) Proposal of deletion of map entry: " + e.getVisibleName());
 					}
@@ -207,10 +215,10 @@ public class PathwayKeggLoading {
 			}
 		}
 		combinedPathway.removeMergeTheseEntriesIfPossible(mapEntriesOfNewPathway);
-		
+
 		return combinedPathway;
 	}
-	
+
 	private static void repositionGraphNodes(Vector2d centerOfAddGraph, Graph addGraph) {
 		Vector2d currCenter = NodeTools.getCenter(addGraph.getNodes());
 		double diffX = centerOfAddGraph.x - currCenter.x;
@@ -220,13 +228,9 @@ public class PathwayKeggLoading {
 			nh.setPosition(nh.getX() + diffX, nh.getY() + diffY);
 		}
 	}
-	
-	private static Entry findNearestTargetEntry(
-						Pathway pathway,
-						ArrayList<IdRef> subtypeRefs,
-						Entry replacementEntry,
-						String processLinksToThisPathway,
-						HashMap<Entry, Node> entry2graphNode) {
+
+	private static Entry findNearestTargetEntry(Pathway pathway, ArrayList<IdRef> subtypeRefs, Entry replacementEntry,
+			String processLinksToThisPathway, HashMap<Entry, Node> entry2graphNode) {
 		ArrayList<String> searchIds = new ArrayList<String>();
 		if (subtypeRefs != null) {
 			for (IdRef sr : subtypeRefs) {
@@ -238,11 +242,11 @@ public class PathwayKeggLoading {
 		for (String searchThisId : searchIds) {
 			ArrayList<Entry> possibleTargetsOrSources = new ArrayList<Entry>();
 			for (Entry e : pathway.getEntries())
-				if (e.getName().getId().equals(searchThisId) &&
-									e.getSourcePathwayKeggId().equals(processLinksToThisPathway)) {
+				if (e.getName().getId().equals(searchThisId)
+						&& e.getSourcePathwayKeggId().equals(processLinksToThisPathway)) {
 					possibleTargetsOrSources.add(e);
 				}
-			
+
 			// if no target has been found, return title map node of target pathway
 			if (possibleTargetsOrSources.size() <= 0)
 				for (Entry e : pathway.getEntries())
@@ -251,10 +255,10 @@ public class PathwayKeggLoading {
 							if (e.getSourcePathwayKeggId().equals(processLinksToThisPathway)) {
 								possibleTargetsOrSources.add(e);
 							}
-			
+
 			Entry eWithMinDist = null;
 			double minDist = Double.MAX_VALUE;
-			
+
 			for (Entry possibleTargetOrSource : possibleTargetsOrSources) {
 				double dist = getDistance(possibleTargetOrSource, replacementEntry, entry2graphNode);
 				if (dist < minDist || eWithMinDist == null) {
@@ -267,7 +271,7 @@ public class PathwayKeggLoading {
 		}
 		return null;
 	}
-	
+
 	private static double getDistance(Entry ea, Entry eb, HashMap<Entry, Node> entry2graphNode) {
 		Node a = entry2graphNode.get(ea);
 		Node b = entry2graphNode.get(eb);

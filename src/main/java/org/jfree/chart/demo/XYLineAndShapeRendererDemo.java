@@ -50,22 +50,14 @@ public class XYLineAndShapeRendererDemo extends ApplicationFrame {
 	 * Constructs the demo application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XYLineAndShapeRendererDemo(final String title) {
 
 		super(title);
 		XYDataset dataset = createSampleDataset();
-		JFreeChart chart = ChartFactory.createXYLineChart(
-							title,
-							"X",
-							"Y",
-							dataset,
-							PlotOrientation.VERTICAL,
-							true,
-							false,
-							false
-							);
+		JFreeChart chart = ChartFactory.createXYLineChart(title, "X", "Y", dataset, PlotOrientation.VERTICAL, true,
+				false, false);
 		XYPlot plot = (XYPlot) chart.getPlot();
 		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 		renderer.setSeriesLinesVisible(0, true);
@@ -115,13 +107,11 @@ public class XYLineAndShapeRendererDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
-		final XYLineAndShapeRendererDemo demo = new XYLineAndShapeRendererDemo(
-							"XYLineAndShapeRenderer Demo"
-							);
+		final XYLineAndShapeRendererDemo demo = new XYLineAndShapeRendererDemo("XYLineAndShapeRenderer Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);

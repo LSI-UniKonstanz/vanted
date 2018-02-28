@@ -15,7 +15,8 @@ package org.graffiti.managers.pluginmgr;
  * 
  * @see org.graffiti.plugin.GenericPlugin
  */
-public class UnresolvableDependenyException {}
+public class UnresolvableDependenyException {
+}
 
 // ------------------------------------------------------------------------------
 // end of file

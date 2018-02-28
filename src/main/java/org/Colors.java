@@ -19,55 +19,55 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class Colors implements HelperClass {
-	
+
 	/**
-	 * creates the specified number of color objects which can be
-	 * discriminated as good as possible
+	 * creates the specified number of color objects which can be discriminated as
+	 * good as possible
 	 * 
 	 * @param numberOfColors
-	 *           number of different colors to create
+	 *            number of different colors to create
 	 * @return Collection of Color objects
 	 */
 	public static ArrayList<Color> get(int numberOfColors) {
 		return get(numberOfColors, 0.2f); // 0.8f); // 0.5f);
 	}
-	
+
 	public static ArrayList<Color> get(int numberOfColors, double saturation) {
 		return get(numberOfColors, (float) saturation);
 	}
-	
+
 	/**
-	 * creates the specified number of color objects which can be
-	 * discriminated as good as possible
+	 * creates the specified number of color objects which can be discriminated as
+	 * good as possible
 	 * 
 	 * @param numberOfColors
-	 *           number of different colors to create
+	 *            number of different colors to create
 	 * @return Collection of Color objects
 	 * @author HS, modified by C. Klukas (hue value calculation modified)
 	 */
 	public static ArrayList<Color> get(int numberOfColors, float saturation) {
 		ArrayList<Color> colors = new ArrayList<Color>();
-		
+
 		// define how much the Hue will change between steps
 		float incr = 1f / numberOfColors;
 		float s = saturation;
 		float b = 1;
-		
+
 		for (int i = 0; i < numberOfColors; i++) {
 			float h = incr * i;
 			// create a new color using the HSB parameters
 			colors.add(Color.getHSBColor(h, s, b));
 		}
-		
+
 		return colors;
 	}
-	
+
 	public static ArrayList<Color> getGrayColors(int numberOfColors) {
 		ArrayList<Color> colors = new ArrayList<Color>();
-		
+
 		final Color c1 = Color.LIGHT_GRAY;
 		final Color c2 = Color.BLACK;
-		
+
 		for (int i = 0; i < numberOfColors; i++) {
 			float f;
 			if (numberOfColors > 1)
@@ -77,12 +77,11 @@ public class Colors implements HelperClass {
 			Color cc = getColor(f, 1, c1, c2);
 			colors.add(cc);
 		}
-		
+
 		return colors;
 	}
-	
-	public static Color getColor(float maxOrMinR, double gamma,
-						Color col__1, Color col_1) {
+
+	public static Color getColor(float maxOrMinR, double gamma, Color col__1, Color col_1) {
 		Color col1 = col__1;
 		Color col2 = col_1;
 		maxOrMinR = Math.abs(maxOrMinR);
@@ -93,17 +92,17 @@ public class Colors implements HelperClass {
 		float alpha = (col2.getAlpha() - col1.getAlpha()) * maxOrMinR + col1.getAlpha();
 		return new Color(red / 255f, green / 255f, blue / 255f, alpha / 255f);
 	}
-	
+
 	public static ArrayList<Color> getGrayColorsInverse(int numberOfColors) {
 		ArrayList<Color> colors = getGrayColors(numberOfColors);
-		
+
 		ArrayList<Color> result = new ArrayList<Color>();
 		for (int i = colors.size() - 1; i >= 0; i--) {
 			result.add(colors.get(i));
 		}
 		return result;
 	}
-	
+
 	public static Color[] getAlphaColors(int numberOfColors, int alpha) {
 		Collection<Color> r = get(numberOfColors);
 		Color[] result = new Color[r.size()];
@@ -115,7 +114,7 @@ public class Colors implements HelperClass {
 		}
 		return result;
 	}
-	
+
 	public static Color[] getColors(int numberOfColors) {
 		Collection<Color> r = get(numberOfColors);
 		Color[] result = new Color[r.size()];
@@ -127,7 +126,7 @@ public class Colors implements HelperClass {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * @author klukas
 	 * @param numberOfColors
@@ -139,7 +138,7 @@ public class Colors implements HelperClass {
 		Color[] result = getAlphaColors(numberOfColors, alpha);
 		return result[index];
 	}
-	
+
 	/**
 	 * @param newColor
 	 * @return
@@ -155,7 +154,7 @@ public class Colors implements HelperClass {
 		// return r;
 		return new Color(color.getRGB() ^ 0x00ffffff);
 	}
-	
+
 	public static Color brighten(Color color, double saturation, double value) {
 		float[] hsb = new float[3];
 		Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsb);

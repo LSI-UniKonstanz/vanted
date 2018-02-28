@@ -51,7 +51,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demonstration application showing how to create a vertical bar chart.
+ * A simple demonstration application showing how to create a vertical bar
+ * chart.
  */
 public class XYBarChartDemo extends ApplicationFrame {
 
@@ -59,7 +60,7 @@ public class XYBarChartDemo extends ApplicationFrame {
 	 * Constructs the demo application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XYBarChartDemo(final String title) {
 
@@ -67,25 +68,15 @@ public class XYBarChartDemo extends ApplicationFrame {
 
 		final TimeSeriesCollection data = DemoDatasetFactory.createTimeSeriesCollection1();
 		data.setDomainIsPointsInTime(false);
-		final JFreeChart chart = ChartFactory.createXYBarChart(
-							title,
-							"X",
-							true,
-							"Y",
-							data,
-							PlotOrientation.VERTICAL,
-							true,
-							false,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createXYBarChart(title, "X", true, "Y", data, PlotOrientation.VERTICAL,
+				true, false, false);
 
 		// then customise it a little...
 		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 1000, 0, Color.blue));
 
 		final XYItemRenderer renderer = chart.getXYPlot().getRenderer();
-		final StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator(
-							"{1} = {2}", new SimpleDateFormat("yyyy"), new DecimalFormat("0.00")
-							);
+		final StandardXYToolTipGenerator generator = new StandardXYToolTipGenerator("{1} = {2}",
+				new SimpleDateFormat("yyyy"), new DecimalFormat("0.00"));
 		renderer.setToolTipGenerator(generator);
 
 		final XYPlot plot = chart.getXYPlot();
@@ -114,7 +105,7 @@ public class XYBarChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

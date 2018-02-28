@@ -53,7 +53,8 @@ import org.jfree.date.SerialDate;
 /**
  * Represents a single month.
  * <P>
- * This class is immutable, which is a requirement for all {@link RegularTimePeriod} subclasses.
+ * This class is immutable, which is a requirement for all
+ * {@link RegularTimePeriod} subclasses.
  */
 public class Month extends RegularTimePeriod implements Serializable {
 
@@ -76,9 +77,9 @@ public class Month extends RegularTimePeriod implements Serializable {
 	 * Constructs a new month instance.
 	 * 
 	 * @param month
-	 *           the month (in the range 1 to 12).
+	 *            the month (in the range 1 to 12).
 	 * @param year
-	 *           the year.
+	 *            the year.
 	 */
 	public Month(final int month, final int year) {
 
@@ -90,9 +91,9 @@ public class Month extends RegularTimePeriod implements Serializable {
 	 * Constructs a new month instance.
 	 * 
 	 * @param month
-	 *           the month (in the range 1 to 12).
+	 *            the month (in the range 1 to 12).
 	 * @param year
-	 *           the year.
+	 *            the year.
 	 */
 	public Month(final int month, final Year year) {
 
@@ -109,7 +110,7 @@ public class Month extends RegularTimePeriod implements Serializable {
 	 * Constructs a Month, based on a date/time and the default time zone.
 	 * 
 	 * @param time
-	 *           the date/time.
+	 *            the date/time.
 	 */
 	public Month(final Date time) {
 
@@ -121,9 +122,9 @@ public class Month extends RegularTimePeriod implements Serializable {
 	 * Constructs a Month, based on a date/time and a time zone.
 	 * 
 	 * @param time
-	 *           the date/time.
+	 *            the date/time.
 	 * @param zone
-	 *           the time zone.
+	 *            the time zone.
 	 */
 	public Month(final Date time, final TimeZone zone) {
 
@@ -153,8 +154,7 @@ public class Month extends RegularTimePeriod implements Serializable {
 	}
 
 	/**
-	 * Returns the month.
-	 * Note that 1=JAN, 2=FEB, ...
+	 * Returns the month. Note that 1=JAN, 2=FEB, ...
 	 * 
 	 * @return the month.
 	 */
@@ -225,12 +225,12 @@ public class Month extends RegularTimePeriod implements Serializable {
 	}
 
 	/**
-	 * Tests the equality of this Month object to an arbitrary object.
-	 * Returns true if the target is a Month instance representing the same
-	 * month as this object. In all other cases, returns false.
+	 * Tests the equality of this Month object to an arbitrary object. Returns true
+	 * if the target is a Month instance representing the same month as this object.
+	 * In all other cases, returns false.
 	 * 
 	 * @param obj
-	 *           the object.
+	 *            the object.
 	 * @return <code>true</code> if month and year of this and object are the same.
 	 */
 	public boolean equals(final Object obj) {
@@ -251,7 +251,8 @@ public class Month extends RegularTimePeriod implements Serializable {
 	/**
 	 * Returns a hash code for this object instance.
 	 * <p>
-	 * The approach described by Joshua Bloch in "Effective Java" has been used here:
+	 * The approach described by Joshua Bloch in "Effective Java" has been used
+	 * here:
 	 * <p>
 	 * <code>http://developer.java.sun.com/developer/Books/effectivejava/Chapter3.pdf</code>
 	 * 
@@ -265,12 +266,11 @@ public class Month extends RegularTimePeriod implements Serializable {
 	}
 
 	/**
-	 * Returns an integer indicating the order of this Month object relative to
-	 * the specified
-	 * object: negative == before, zero == same, positive == after.
+	 * Returns an integer indicating the order of this Month object relative to the
+	 * specified object: negative == before, zero == same, positive == after.
 	 * 
 	 * @param o1
-	 *           the object to compare.
+	 *            the object to compare.
 	 * @return negative == before, zero == same, positive == after.
 	 */
 	public int compareTo(final Object o1) {
@@ -289,18 +289,17 @@ public class Month extends RegularTimePeriod implements Serializable {
 
 		// CASE 2 : Comparing to another TimePeriod object
 		// -----------------------------------------------
-		else
-			if (o1 instanceof RegularTimePeriod) {
-				// more difficult case - evaluate later...
-				result = 0;
-			}
+		else if (o1 instanceof RegularTimePeriod) {
+			// more difficult case - evaluate later...
+			result = 0;
+		}
 
-			// CASE 3 : Comparing to a non-TimePeriod object
-			// ---------------------------------------------
-			else {
-				// consider time periods to be ordered after general objects
-				result = 1;
-			}
+		// CASE 3 : Comparing to a non-TimePeriod object
+		// ---------------------------------------------
+		else {
+			// consider time periods to be ordered after general objects
+			result = 1;
+		}
 
 		return result;
 
@@ -311,7 +310,7 @@ public class Month extends RegularTimePeriod implements Serializable {
 	 * calendar (which determines the time zone).
 	 * 
 	 * @param calendar
-	 *           the calendar.
+	 *            the calendar.
 	 * @return the first millisecond of the month.
 	 */
 	public long getFirstMillisecond(final Calendar calendar) {
@@ -326,7 +325,7 @@ public class Month extends RegularTimePeriod implements Serializable {
 	 * calendar (which determines the time zone).
 	 * 
 	 * @param calendar
-	 *           the calendar.
+	 *            the calendar.
 	 * @return the last millisecond of the month.
 	 */
 	public long getLastMillisecond(final Calendar calendar) {
@@ -340,11 +339,13 @@ public class Month extends RegularTimePeriod implements Serializable {
 	/**
 	 * Parses the string argument as a month.
 	 * <P>
-	 * This method is required to accept the format "YYYY-MM". It will also accept "MM-YYYY". Anything else, at the moment, is a bonus.
+	 * This method is required to accept the format "YYYY-MM". It will also accept
+	 * "MM-YYYY". Anything else, at the moment, is a bonus.
 	 * 
 	 * @param s
-	 *           the string to parse.
-	 * @return <code>null</code> if the string is not parseable, the month otherwise.
+	 *            the string to parse.
+	 * @return <code>null</code> if the string is not parseable, the month
+	 *         otherwise.
 	 */
 	public static Month parseMonth(String s) {
 
@@ -364,8 +365,7 @@ public class Month extends RegularTimePeriod implements Serializable {
 				if (year != null) {
 					month = SerialDate.stringToMonthCode(s2);
 					if (month == -1) {
-						throw new TimePeriodFormatException(
-											"Month.parseMonth(String): can't evaluate the month.");
+						throw new TimePeriodFormatException("Month.parseMonth(String): can't evaluate the month.");
 					}
 					result = new Month(month, year);
 				} else {
@@ -373,19 +373,16 @@ public class Month extends RegularTimePeriod implements Serializable {
 					if (year != null) {
 						month = SerialDate.stringToMonthCode(s1);
 						if (month == -1) {
-							throw new TimePeriodFormatException(
-												"Month.parseMonth(String): can't evaluate the month.");
+							throw new TimePeriodFormatException("Month.parseMonth(String): can't evaluate the month.");
 						}
 						result = new Month(month, year);
 					} else {
-						throw new TimePeriodFormatException(
-											"Month.parseMonth(String): can't evaluate the year.");
+						throw new TimePeriodFormatException("Month.parseMonth(String): can't evaluate the year.");
 					}
 				}
 
 			} else {
-				throw new TimePeriodFormatException(
-									"Month.parseMonth(String): could not find separator.");
+				throw new TimePeriodFormatException("Month.parseMonth(String): could not find separator.");
 			}
 
 		}
@@ -397,9 +394,9 @@ public class Month extends RegularTimePeriod implements Serializable {
 	 * Finds the first occurrence of ' ', '-', ',' or '.'
 	 * 
 	 * @param s
-	 *           the string to parse.
-	 * @return <code>-1</code> if none of the characters where found, the
-	 *         position of the first occurence otherwise.
+	 *            the string to parse.
+	 * @return <code>-1</code> if none of the characters where found, the position
+	 *         of the first occurence otherwise.
 	 */
 	private static int findSeparator(final String s) {
 
@@ -420,7 +417,7 @@ public class Month extends RegularTimePeriod implements Serializable {
 	 * Creates a year from a string, or returns null (format exceptions suppressed).
 	 * 
 	 * @param s
-	 *           the string to parse.
+	 *            the string to parse.
 	 * @return <code>nukl</code> if the string is not parseable, the year otherwise.
 	 */
 	private static Year evaluateAsYear(final String s) {

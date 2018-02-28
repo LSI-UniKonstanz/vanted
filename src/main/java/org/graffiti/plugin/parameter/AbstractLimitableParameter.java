@@ -10,30 +10,29 @@
 package org.graffiti.plugin.parameter;
 
 /**
- * This abstract class provides an implementation for the <code>isValid</code> method, using the <code>compareTo</code> method of the <code>Comparable</code>
- * interface.
+ * This abstract class provides an implementation for the <code>isValid</code>
+ * method, using the <code>compareTo</code> method of the
+ * <code>Comparable</code> interface.
  * 
  * @version $Revision: 1.6 $
  */
-public abstract class AbstractLimitableParameter
-					extends AbstractSingleParameter
-					implements LimitableParameter {
+public abstract class AbstractLimitableParameter extends AbstractSingleParameter implements LimitableParameter {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new abstract limitable parameter.
 	 * 
 	 * @param name
-	 *           the name of the parameter.
+	 *            the name of the parameter.
 	 * @param description
-	 *           the description of the parameter.
+	 *            the description of the parameter.
 	 */
 	public AbstractLimitableParameter(String name, String description) {
 		super(name, description);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * @see org.graffiti.plugin.parameter.Parameter#toXMLString()
 	 */

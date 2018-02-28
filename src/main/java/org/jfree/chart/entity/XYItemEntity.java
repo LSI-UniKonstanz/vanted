@@ -42,7 +42,8 @@ import java.awt.Shape;
 import org.jfree.data.XYDataset;
 
 /**
- * A chart entity that represents one item within an {@link org.jfree.chart.plot.XYPlot}.
+ * A chart entity that represents one item within an
+ * {@link org.jfree.chart.plot.XYPlot}.
  */
 public class XYItemEntity extends ChartEntity {
 
@@ -59,21 +60,19 @@ public class XYItemEntity extends ChartEntity {
 	 * Creates a new entity.
 	 * 
 	 * @param area
-	 *           the area.
+	 *            the area.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @param toolTipText
-	 *           the tool tip text.
+	 *            the tool tip text.
 	 * @param urlText
-	 *           the URL text for HTML image maps.
+	 *            the URL text for HTML image maps.
 	 */
-	public XYItemEntity(Shape area,
-								XYDataset dataset, int series, int item,
-								String toolTipText, String urlText) {
+	public XYItemEntity(Shape area, XYDataset dataset, int series, int item, String toolTipText, String urlText) {
 		super(area, toolTipText, urlText);
 		this.dataset = dataset;
 		this.series = series;
@@ -93,7 +92,7 @@ public class XYItemEntity extends ChartEntity {
 	 * Sets the dataset this entity refers to.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 */
 	public void setDataset(XYDataset dataset) {
 		this.dataset = dataset;
@@ -112,7 +111,7 @@ public class XYItemEntity extends ChartEntity {
 	 * Sets the series index.
 	 * 
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 */
 	public void setSeriesIndex(int series) {
 		this.series = series;
@@ -131,7 +130,7 @@ public class XYItemEntity extends ChartEntity {
 	 * Sets the item index.
 	 * 
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 */
 	public void setItem(int item) {
 		this.item = item;
@@ -141,7 +140,7 @@ public class XYItemEntity extends ChartEntity {
 	 * Tests the entity for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -161,19 +160,20 @@ public class XYItemEntity extends ChartEntity {
 		return false;
 	}
 
-	// // DEPRECATED CODE /////////////////////////////////////////////////////////////////////////
+	// // DEPRECATED CODE
+	// /////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Creates a new entity.
 	 * 
 	 * @param area
-	 *           the area.
+	 *            the area.
 	 * @param toolTipText
-	 *           the tool tip text.
+	 *            the tool tip text.
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @deprecated Use alternative constructor.
 	 */
 	public XYItemEntity(Shape area, String toolTipText, int series, int item) {
@@ -186,15 +186,15 @@ public class XYItemEntity extends ChartEntity {
 	 * Creates a new entity.
 	 * 
 	 * @param area
-	 *           the area.
+	 *            the area.
 	 * @param toolTipText
-	 *           the tool tip text.
+	 *            the tool tip text.
 	 * @param urlText
-	 *           the URL text for HTML image maps.
+	 *            the URL text for HTML image maps.
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @deprecated Use alternative constructor.
 	 */
 	public XYItemEntity(Shape area, String toolTipText, String urlText, int series, int item) {
@@ -217,7 +217,7 @@ public class XYItemEntity extends ChartEntity {
 	 * Sets the series index.
 	 * 
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @deprecated Renamed setSeriesIndex().
 	 */
 	public void setSeries(int series) {

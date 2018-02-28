@@ -33,53 +33,52 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.Experiment2GraphHelper;
 
 /**
- * @author Christian Klukas
- *         (c) 2005 IPK Gatersleben, Group Network Analysis
+ * @author Christian Klukas (c) 2005 IPK Gatersleben, Group Network Analysis
  */
 public class MergeNodes extends AbstractAlgorithm {
-	
+
 	private boolean considerSameLabel;
 	private boolean considerCluster;
-	
+
 	public String getName() {
 		return "Merge Nodes";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Network.Nodes";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return null;
-//		"<html>Hint: If you would like to merge frequently occuring nodes, which are recognized by<br>"
-//							+ "their identical labels, then this command is not suitable for this task.<br>"
-//							+ "Please use the node-processing commands from the 'Tools' tab, instead.<br>"
-//							+ "There you will find a node merge-command which processes the edge-connections<br>"
-//							+ "and occurrence of nodes with the same label.<br><br>"
-//							+ "With this command you may merge nodes into a single node (processing<br>"
-//							+ "connections to other nodes and node data-mappings)";
+		// "<html>Hint: If you would like to merge frequently occuring nodes, which are
+		// recognized by<br>"
+		// + "their identical labels, then this command is not suitable for this
+		// task.<br>"
+		// + "Please use the node-processing commands from the 'Tools' tab,
+		// instead.<br>"
+		// + "There you will find a node merge-command which processes the
+		// edge-connections<br>"
+		// + "and occurrence of nodes with the same label.<br><br>"
+		// + "With this command you may merge nodes into a single node (processing<br>"
+		// + "connections to other nodes and node data-mappings)";
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
 		Parameter[] params = new Parameter[] {
 				new BooleanParameter(true, "Only with same label", "Consider same label when merging nodes."),
-				new BooleanParameter(false, "Consider Cluster", "Consider cluster inforamtion when merging nodes.")
-		};
-		
+				new BooleanParameter(false, "Consider Cluster", "Consider cluster inforamtion when merging nodes.") };
+
 		return params;
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		if (params == null) {
@@ -91,20 +90,20 @@ public class MergeNodes extends AbstractAlgorithm {
 			considerCluster = ((BooleanParameter) params[i++]).getBoolean();
 		}
 	}
-	
+
 	public void execute() {
 		List<Node> workNodes = new ArrayList<Node>(getSelectedOrAllNodes());
 		graph.getListenerManager().transactionStarted(this);
-		
+
 		if (considerSameLabel) {
 			GraphHelperBio.mergeNodesWithSameLabel(workNodes, false, false, considerCluster);
 		} else {
 			mergeNodesIntoSingleNode(graph, workNodes);
 		}
-		
+
 		graph.getListenerManager().transactionFinished(this);
 	}
-	
+
 	public static void mergeNodesIntoSingleNode(Graph graph, Collection<Node> workNodes) {
 		Vector2d center = NodeTools.getCenter(workNodes);
 		List<SubstanceInterface> targetMappingList = new ArrayList<SubstanceInterface>();
@@ -121,19 +120,19 @@ public class MergeNodes extends AbstractAlgorithm {
 			} else {
 				targetNodeName = AttributeHelper.getLabel(workNode, "[unnamed]");
 			}
-			
+
 			if (firstNode) {
 				firstNode = false;
 				mergedNode = mergeNode(graph, workNodes, center, true);
 			}
-			
+
 			Vector2d size = AttributeHelper.getSize(workNode);
 			targetArea += size.x * size.x + size.y * size.y;
 			sumWidth += size.x;
 			sumHeight += size.y;
-			
+
 			extractDataMappingInformation(targetMappingList, mapping2chartTitle, workNode);
-			
+
 			if (mergedNode != workNode)
 				graph.deleteNode(workNode);
 		}
@@ -142,10 +141,10 @@ public class MergeNodes extends AbstractAlgorithm {
 		tsize.y = Math.sqrt(targetArea) * sumHeight / sumWidth;
 		// AttributeHelper.setSize(mergedNode, tsize.x, tsize.y);
 		AttributeHelper.setLabel(mergedNode, targetNodeName);
-		
+
 		applyDataMappingInformation(targetMappingList, mergedNode, mapping2chartTitle);
 	}
-	
+
 	private static void applyDataMappingInformation(List<SubstanceInterface> targetMappingList, Node node,
 			HashMap<SubstanceInterface, String> mapping2chartTitle) {
 		RemoveMappingDataAlgorithm.removeMappingDataFrom(node);
@@ -159,10 +158,11 @@ public class MergeNodes extends AbstractAlgorithm {
 		for (SubstanceInterface mappData : targetMappingList) {
 			Experiment2GraphHelper.addMappingData2Node(mappData, node);
 			if (titles.size() > 1)
-				AttributeHelper.setAttribute(node, "charting", "chartTitle" + (++idx), mapping2chartTitle.get(mappData));
+				AttributeHelper.setAttribute(node, "charting", "chartTitle" + (++idx),
+						mapping2chartTitle.get(mappData));
 		}
 	}
-	
+
 	private static void extractDataMappingInformation(List<SubstanceInterface> targetMappingList,
 			HashMap<SubstanceInterface, String> mapping2chartTitle, Node node) {
 		Iterable<SubstanceInterface> mappingList = Experiment2GraphHelper.getMappedDataListFromGraphElement(node);
@@ -182,7 +182,7 @@ public class MergeNodes extends AbstractAlgorithm {
 				targetMappingList.add(m);
 		}
 	}
-	
+
 	public static Node mergeNode(Graph graph, Collection<Node> toBeMerged, Vector2d center, boolean retainClusterIDs) {
 		Node mergedNode;
 		mergedNode = graph.addNodeCopy(toBeMerged.iterator().next());
@@ -227,7 +227,7 @@ public class MergeNodes extends AbstractAlgorithm {
 					graph.addEdgeCopy(outEdge, mergedNode, outEdge.getTarget());
 				}
 			}
-			
+
 			for (Node undirNode : checkNode.getUndirectedNeighbors())
 				if (!mergedNode.getUndirectedNeighbors().contains(undirNode)) {
 					graph.addEdge(mergedNode, undirNode, false);

@@ -14,16 +14,13 @@ import org.graffiti.graph.Node;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3utility.UtilityClassSelectorToGraph;
 
-public class BPTransport extends BPInteraction
-{
+public class BPTransport extends BPInteraction {
 
-	public BPTransport(Graph Graph, Hashtable<Entity, Node> Nodes)
-	{
+	public BPTransport(Graph Graph, Hashtable<Entity, Node> Nodes) {
 		super(Graph, Nodes);
 	}
 
-	public void read(Interaction i)
-	{
+	public void read(Interaction i) {
 		Transport trans = (Transport) i;
 
 		Set<PhysicalEntity> left = trans.getLeft();
@@ -34,19 +31,19 @@ public class BPTransport extends BPInteraction
 		UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(center, trans);
 		nodes.put(trans, center);
 
-		for (PhysicalEntity l : left)
-		{
+		for (PhysicalEntity l : left) {
 			Node node = findORcreateNode(l);
 			Edge e = addEdge(node, center);
-			setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.116"), Messages.getString("UtilitySuperClassToGraph.117")); //$NON-NLS-1$ //$NON-NLS-2$
+			setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.116"), //$NON-NLS-1$
+					Messages.getString("UtilitySuperClassToGraph.117")); //$NON-NLS-1$
 			sW.writeParticipantStoichiometry(node, center, e, trans.getParticipantStoichiometry());
 		}
 
-		for (PhysicalEntity r : right)
-		{
+		for (PhysicalEntity r : right) {
 			Node node = findORcreateNode(r);
 			Edge e = addEdge(center, node);
-			setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.116"), Messages.getString("UtilitySuperClassToGraph.118")); //$NON-NLS-1$ //$NON-NLS-2$
+			setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.116"), //$NON-NLS-1$
+					Messages.getString("UtilitySuperClassToGraph.118")); //$NON-NLS-1$
 			sW.writeParticipantStoichiometry(node, center, e, trans.getParticipantStoichiometry());
 		}
 	}

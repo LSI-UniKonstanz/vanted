@@ -10,33 +10,33 @@
 package org.graffiti.session;
 
 /**
- * An <code>UnsatisfiedConstraintException</code> is thrown when a constraint
- * to a graph is not satisfied.
+ * An <code>UnsatisfiedConstraintException</code> is thrown when a constraint to
+ * a graph is not satisfied.
  * 
  * @see java.lang.Exception
  */
-public class UnsatisfiedConstraintException
-					extends Exception {
+public class UnsatisfiedConstraintException extends Exception {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
-	 * Constructs a new <code>UnsatisfiedConstraintException</code> with <code>null</code> as its detail message.
+	 * Constructs a new <code>UnsatisfiedConstraintException</code> with
+	 * <code>null</code> as its detail message.
 	 */
 	public UnsatisfiedConstraintException() {
 		super();
 	}
-	
+
 	/**
 	 * Constructs a new <code>UnsatisfiedConstraintException</code> with the
 	 * specifiecd detail message.
 	 * 
 	 * @param msg
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public UnsatisfiedConstraintException(String msg) {
 		super(msg);

@@ -14,12 +14,13 @@ import org.graffiti.attributes.HashMapAttribute;
  * DOCUMENT ME!
  * 
  * @author holleis
- * @version $Revision: 1.9 $ Extends LabelAttribute by a PositionAttribute specific for edges.
+ * @version $Revision: 1.9 $ Extends LabelAttribute by a PositionAttribute
+ *          specific for edges.
  */
 public class EdgeLabelAttribute extends LabelAttribute {
 	/** Position of a label within this node. */
 	// private EdgeLabelPositionAttribute position;
-	
+
 	/**
 	 * Constructor for EdgeLabelAttribute.
 	 * 
@@ -29,7 +30,7 @@ public class EdgeLabelAttribute extends LabelAttribute {
 		super(id);
 		add(new EdgeLabelPositionAttribute(POSITION), false);
 	}
-	
+
 	/**
 	 * Constructor for EdgeLabelAttribute.
 	 * 
@@ -39,7 +40,7 @@ public class EdgeLabelAttribute extends LabelAttribute {
 		super(id, l);
 		this.add(new EdgeLabelPositionAttribute(POSITION), false);
 	}
-	
+
 	//
 	// /**
 	// * Constructor for EdgeLabelAttribute.
@@ -95,9 +96,10 @@ public class EdgeLabelAttribute extends LabelAttribute {
 	// this.position = new EdgeLabelPositionAttribute(POSITION);
 	// this.add(this.position, false);
 	// }
-	
+
 	// /**
-	// * Sets the collection of attributes contained within this <tt>CollectionAttribute</tt>
+	// * Sets the collection of attributes contained within this
+	// <tt>CollectionAttribute</tt>
 	// *
 	// * @param attrs
 	// * the map that contains all attributes.
@@ -120,9 +122,11 @@ public class EdgeLabelAttribute extends LabelAttribute {
 	// } else
 	// if (attrId.equals(POSITION)) {
 	// if (!(attrs.get(POSITION) instanceof EdgeLabelPositionAttribute)) {
-	// setPosition(new EdgeLabelPositionAttribute(attrs.get(POSITION).getId(), 0, 0, 0, 0));
+	// setPosition(new EdgeLabelPositionAttribute(attrs.get(POSITION).getId(), 0, 0,
+	// 0, 0));
 	// } else {
-	// EdgeLabelPositionAttribute elpa = (EdgeLabelPositionAttribute) attrs.get(POSITION);
+	// EdgeLabelPositionAttribute elpa = (EdgeLabelPositionAttribute)
+	// attrs.get(POSITION);
 	// setPosition(elpa);
 	// }
 	// } else
@@ -146,18 +150,18 @@ public class EdgeLabelAttribute extends LabelAttribute {
 	// // throw new IllegalArgumentException("Invalid value type.");
 	// // }
 	// }
-	
+
 	/**
 	 * Sets the 'position'-value.
 	 * 
 	 * @param p
-	 *           the 'position'-value to be set.
+	 *            the 'position'-value to be set.
 	 */
 	public void setPosition(EdgeLabelPositionAttribute p) {
 		remove(POSITION);
 		add(p, false);
 	}
-	
+
 	/**
 	 * Returns the NodeLabelPositionAttribute specifying the position of the
 	 * encapsulated label.
@@ -169,13 +173,12 @@ public class EdgeLabelAttribute extends LabelAttribute {
 		if (this.attributes.get(POSITION) == null) {
 			EdgeLabelPositionAttribute elpa = new EdgeLabelPositionAttribute(POSITION);
 			this.attributes.put(POSITION, elpa);
-		} else
-			if (!this.attributes.get(POSITION).getClass().equals(EdgeLabelPositionAttribute.class)) {
-				HashMapAttribute hma = (HashMapAttribute) this.attributes.get(POSITION);
-				EdgeLabelPositionAttribute elpa = new EdgeLabelPositionAttribute(POSITION);
-				elpa.setCollection(hma.getCollection());
-				this.attributes.put(POSITION, elpa);
-			}
+		} else if (!this.attributes.get(POSITION).getClass().equals(EdgeLabelPositionAttribute.class)) {
+			HashMapAttribute hma = (HashMapAttribute) this.attributes.get(POSITION);
+			EdgeLabelPositionAttribute elpa = new EdgeLabelPositionAttribute(POSITION);
+			elpa.setCollection(hma.getCollection());
+			this.attributes.put(POSITION, elpa);
+		}
 		return (EdgeLabelPositionAttribute) this.attributes.get(POSITION);
 	}
 }

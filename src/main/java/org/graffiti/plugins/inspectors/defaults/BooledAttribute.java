@@ -18,40 +18,40 @@ import org.graffiti.attributes.Attribute;
  */
 public class BooledAttribute {
 	// ~ Instance fields ========================================================
-	
+
 	/** DOCUMENT ME! */
 	private Attribute attribute;
-	
+
 	/** DOCUMENT ME! */
 	private boolean bool;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor for BooledAttribute.
 	 * 
 	 * @param attr
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param bool
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public BooledAttribute(Attribute attr, boolean bool) {
 		this.attribute = attr;
 		this.bool = bool;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Sets the attribute.
 	 * 
 	 * @param attribute
-	 *           The attribute to set
+	 *            The attribute to set
 	 */
 	public void setAttribute(Attribute attribute) {
 		this.attribute = attribute;
 	}
-	
+
 	/**
 	 * Returns the attribute.
 	 * 
@@ -60,17 +60,17 @@ public class BooledAttribute {
 	public Attribute getAttribute() {
 		return attribute;
 	}
-	
+
 	/**
 	 * Sets the bool.
 	 * 
 	 * @param bool
-	 *           The bool to set
+	 *            The bool to set
 	 */
 	public void setBool(boolean bool) {
 		this.bool = bool;
 	}
-	
+
 	/**
 	 * Returns the bool.
 	 * 
@@ -79,7 +79,7 @@ public class BooledAttribute {
 	public boolean getBool() {
 		return bool;
 	}
-	
+
 	/**
 	 * Returns the ID of the contained attribute.
 	 * 

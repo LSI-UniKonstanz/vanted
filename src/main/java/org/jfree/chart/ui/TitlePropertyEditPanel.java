@@ -78,15 +78,16 @@ public class TitlePropertyEditPanel extends JPanel implements ActionListener {
 	private PaintSample titlePaint;
 
 	/** The resourceBundle for the localization. */
-	protected static ResourceBundle localizationResources = ResourceBundle.getBundle("org.jfree.chart.ui.LocalizationBundle");
+	protected static ResourceBundle localizationResources = ResourceBundle
+			.getBundle("org.jfree.chart.ui.LocalizationBundle");
 
 	/**
-	 * Standard constructor: builds a panel for displaying/editing the
-	 * properties of the specified title.
+	 * Standard constructor: builds a panel for displaying/editing the properties of
+	 * the specified title.
 	 * 
 	 * @param title
-	 *           the title, which should be changed. This parameter
-	 *           is not used yet.
+	 *            the title, which should be changed. This parameter is not used
+	 *            yet.
 	 */
 	public TitlePropertyEditPanel(Title title) {
 
@@ -96,7 +97,7 @@ public class TitlePropertyEditPanel extends JPanel implements ActionListener {
 
 		JPanel general = new JPanel(new BorderLayout());
 		general.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-																		localizationResources.getString("General")));
+				localizationResources.getString("General")));
 
 		JPanel interior = new JPanel(new LCBLayout(3));
 		interior.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
@@ -160,7 +161,7 @@ public class TitlePropertyEditPanel extends JPanel implements ActionListener {
 	 * Handles button clicks by passing control to an appropriate handler method.
 	 * 
 	 * @param event
-	 *           the event
+	 *            the event
 	 */
 	public void actionPerformed(ActionEvent event) {
 
@@ -168,10 +169,9 @@ public class TitlePropertyEditPanel extends JPanel implements ActionListener {
 
 		if (command.equals("SelectFont")) {
 			attemptFontSelection();
-		} else
-			if (command.equals("SelectPaint")) {
-				attemptPaintSelection();
-			}
+		} else if (command.equals("SelectPaint")) {
+			attemptPaintSelection();
+		}
 
 	}
 
@@ -181,10 +181,8 @@ public class TitlePropertyEditPanel extends JPanel implements ActionListener {
 	public void attemptFontSelection() {
 
 		FontChooserPanel panel = new FontChooserPanel(this.titleFont);
-		int result =
-							JOptionPane.showConfirmDialog(this, panel,
-														localizationResources.getString("Font_Selection"),
-														JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(this, panel, localizationResources.getString("Font_Selection"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (result == JOptionPane.OK_OPTION) {
 			this.titleFont = panel.getSelectedFont();
@@ -194,25 +192,23 @@ public class TitlePropertyEditPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Allow the user the opportunity to select a Paint object. For now, we
-	 * just use the standard color chooser - all colors are Paint objects, but
-	 * not all Paint objects are colors (later we can implement a more general
-	 * Paint chooser).
+	 * Allow the user the opportunity to select a Paint object. For now, we just use
+	 * the standard color chooser - all colors are Paint objects, but not all Paint
+	 * objects are colors (later we can implement a more general Paint chooser).
 	 */
 	public void attemptPaintSelection() {
-		Color c = JColorChooser.showDialog(this, localizationResources.getString("Title_Color"),
-															Color.blue);
+		Color c = JColorChooser.showDialog(this, localizationResources.getString("Title_Color"), Color.blue);
 		if (c != null) {
 			this.titlePaint.setPaint(c);
 		}
 	}
 
 	/**
-	 * Sets the properties of the specified title to match the properties
-	 * defined on this panel. This method does nothing.
+	 * Sets the properties of the specified title to match the properties defined on
+	 * this panel. This method does nothing.
 	 * 
 	 * @param title
-	 *           an Title.
+	 *            an Title.
 	 */
 	public void setTitleProperties(Title title) {
 		if (title instanceof TextTitle) {

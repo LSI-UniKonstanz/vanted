@@ -39,14 +39,17 @@ import org.jfree.chart.plot.PlotRenderingInfo;
  */
 public class XYItemRendererState extends RendererState {
 
-	/** A line object that the renderer can reuse to save instantiating a lot of objects. */
+	/**
+	 * A line object that the renderer can reuse to save instantiating a lot of
+	 * objects.
+	 */
 	public Line2D workingLine;
 
 	/**
 	 * Creates a new state.
 	 * 
 	 * @param info
-	 *           the plot rendering info.
+	 *            the plot rendering info.
 	 */
 	public XYItemRendererState(PlotRenderingInfo info) {
 		super(info);

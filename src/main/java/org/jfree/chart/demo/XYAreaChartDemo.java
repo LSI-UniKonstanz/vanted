@@ -56,7 +56,7 @@ public class XYAreaChartDemo extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XYAreaChartDemo(final String title) {
 
@@ -97,20 +97,16 @@ public class XYAreaChartDemo extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createXYAreaChart(
-							"XY Area Chart Demo",
-							"Domain (X)", "Range (Y)",
-							dataset,
-							PlotOrientation.VERTICAL,
-							true, // legend
+		final JFreeChart chart = ChartFactory.createXYAreaChart("XY Area Chart Demo", "Domain (X)", "Range (Y)",
+				dataset, PlotOrientation.VERTICAL, true, // legend
 				true, // tool tips
 				false // URLs
-				);
+		);
 
 		chart.setBackgroundPaint(Color.white);
 
@@ -148,7 +144,7 @@ public class XYAreaChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

@@ -50,7 +50,8 @@ public abstract class Statistics {
 	 * Returns the mean of an array of numbers.
 	 * 
 	 * @param values
-	 *           the values (<code>null</code> permitted, returns <code>Double.NaN</code>).
+	 *            the values (<code>null</code> permitted, returns
+	 *            <code>Double.NaN</code>).
 	 * @return The mean.
 	 */
 	public static double calculateMean(final Number[] values) {
@@ -70,7 +71,8 @@ public abstract class Statistics {
 	 * Returns the mean of a collection of <code>Number</code> objects.
 	 * 
 	 * @param values
-	 *           the values (<code>null</code> permitted, returns <code>Double.NaN</code>).
+	 *            the values (<code>null</code> permitted, returns
+	 *            <code>Double.NaN</code>).
 	 * @return The mean.
 	 */
 	public static double calculateMean(final Collection values) {
@@ -95,11 +97,11 @@ public abstract class Statistics {
 	}
 
 	/**
-	 * Calculates the median for a list of values (<code>Number</code> objects). The list
-	 * of values will be sorted first.
+	 * Calculates the median for a list of values (<code>Number</code> objects). The
+	 * list of values will be sorted first.
 	 * 
 	 * @param values
-	 *           the values.
+	 *            the values.
 	 * @return The median.
 	 */
 	public static double calculateMedian(final List values) {
@@ -107,13 +109,14 @@ public abstract class Statistics {
 	}
 
 	/**
-	 * Calculates the median for a list of values (<code>Number</code> objects) that are assumed
-	 * to be in ascending order.
+	 * Calculates the median for a list of values (<code>Number</code> objects) that
+	 * are assumed to be in ascending order.
 	 * 
 	 * @param values
-	 *           the values.
+	 *            the values.
 	 * @param copyAndSort
-	 *           a flag that controls whether the list of values is copied and sorted.
+	 *            a flag that controls whether the list of values is copied and
+	 *            sorted.
 	 * @return The median.
 	 */
 	public static double calculateMedian(List values, boolean copyAndSort) {
@@ -150,14 +153,15 @@ public abstract class Statistics {
 	}
 
 	/**
-	 * Calculates the median for a sublist within a list of values (<code>Number</code> objects).
+	 * Calculates the median for a sublist within a list of values
+	 * (<code>Number</code> objects).
 	 * 
 	 * @param values
-	 *           the values (in any order).
+	 *            the values (in any order).
 	 * @param start
-	 *           the start index.
+	 *            the start index.
 	 * @param end
-	 *           the end index.
+	 *            the end index.
 	 * @return The median.
 	 */
 	public static double calculateMedian(final List values, final int start, final int end) {
@@ -165,22 +169,22 @@ public abstract class Statistics {
 	}
 
 	/**
-	 * Calculates the median for a sublist within a list of values (<code>Number</code> objects).
-	 * The entire list will be sorted if the <code>ascending</code< argument is <code>false</code>.
+	 * Calculates the median for a sublist within a list of values
+	 * (<code>Number</code> objects). The entire list will be sorted if the
+	 * <code>ascending</code< argument is <code>false</code>.
 	 * 
 	 * @param values
-	 *           the values.
+	 *            the values.
 	 * @param start
-	 *           the start index.
+	 *            the start index.
 	 * @param end
-	 *           the end index.
+	 *            the end index.
 	 * @param copyAndSort
-	 *           a flag that that controls whether the list of values is copied and
-	 *           sorted.
+	 *            a flag that that controls whether the list of values is copied and
+	 *            sorted.
 	 * @return The median.
 	 */
-	public static double calculateMedian(final List values, final int start, final int end,
-														boolean copyAndSort) {
+	public static double calculateMedian(final List values, final int start, final int end, boolean copyAndSort) {
 
 		double result = Double.NaN;
 		if (copyAndSort) {
@@ -216,7 +220,7 @@ public abstract class Statistics {
 	 * Returns the standard deviation of a set of numbers.
 	 * 
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @return the standard deviation of a set of numbers.
 	 */
 	public static double getStdDev(final Number[] data) {
@@ -235,17 +239,16 @@ public abstract class Statistics {
 	 * intercept.
 	 * 
 	 * @param xData
-	 *           the x-data.
+	 *            the x-data.
 	 * @param yData
-	 *           the y-data.
+	 *            the y-data.
 	 * @return a double array with the intercept in [0] and the slope in [1].
 	 */
 	public static double[] getLinearFit(final Number[] xData, final Number[] yData) {
 
 		// check arguments...
 		if (xData.length != yData.length) {
-			throw new IllegalArgumentException(
-								"Statistics.getLinearFit(...): array lengths must be equal.");
+			throw new IllegalArgumentException("Statistics.getLinearFit(...): array lengths must be equal.");
 		}
 
 		final double[] result = new double[2];
@@ -262,17 +265,16 @@ public abstract class Statistics {
 	 * Finds the slope of a regression line using least squares.
 	 * 
 	 * @param xData
-	 *           an array of Numbers (the x values).
+	 *            an array of Numbers (the x values).
 	 * @param yData
-	 *           an array of Numbers (the y values).
+	 *            an array of Numbers (the y values).
 	 * @return the slope.
 	 */
 	public static double getSlope(final Number[] xData, final Number[] yData) {
 
 		// check arguments...
 		if (xData.length != yData.length) {
-			throw new IllegalArgumentException(
-								"Statistics.getSlope(...): array lengths must be equal.");
+			throw new IllegalArgumentException("Statistics.getSlope(...): array lengths must be equal.");
 		}
 
 		// ********* stat function for linear slope ********
@@ -297,15 +299,16 @@ public abstract class Statistics {
 	}
 
 	/**
-	 * Calculates the correlation between two datasets. Both arrays should contain the same number
-	 * of items. Null values are treated as zero.
+	 * Calculates the correlation between two datasets. Both arrays should contain
+	 * the same number of items. Null values are treated as zero.
 	 * <P>
-	 * Information about the correlation calculation was obtained from: http://trochim.human.cornell.edu/kb/statcorr.htm
+	 * Information about the correlation calculation was obtained from:
+	 * http://trochim.human.cornell.edu/kb/statcorr.htm
 	 * 
 	 * @param data1
-	 *           the first dataset.
+	 *            the first dataset.
 	 * @param data2
-	 *           the second dataset.
+	 *            the second dataset.
 	 * @return The correlation.
 	 */
 	public static double getCorrelation(final Number[] data1, final Number[] data2) {
@@ -316,8 +319,7 @@ public abstract class Statistics {
 			throw new IllegalArgumentException("Null 'data2' argument.");
 		}
 		if (data1.length != data2.length) {
-			throw new IllegalArgumentException(
-								"'data1' and 'data2' arrays must have same length.");
+			throw new IllegalArgumentException("'data1' and 'data2' arrays must have same length.");
 		}
 		final int n = data1.length;
 		double sumX = 0.0;
@@ -340,35 +342,31 @@ public abstract class Statistics {
 			sumX2 = sumX2 + (x * x);
 			sumY2 = sumY2 + (y * y);
 		}
-		return (n * sumXY - sumX * sumY)
-							/ Math.pow((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY), 0.5);
+		return (n * sumXY - sumX * sumY) / Math.pow((n * sumX2 - sumX * sumX) * (n * sumY2 - sumY * sumY), 0.5);
 	}
 
 	/**
 	 * Returns a data set for a moving average on the data set passed in.
 	 * 
 	 * @param xData
-	 *           an array of the x data.
+	 *            an array of the x data.
 	 * @param yData
-	 *           an array of the y data.
+	 *            an array of the y data.
 	 * @param period
-	 *           the number of data points to average
-	 * @return a double[][] the length of the data set in the first dimension,
-	 *         with two doubles for x and y in the second dimension
+	 *            the number of data points to average
+	 * @return a double[][] the length of the data set in the first dimension, with
+	 *         two doubles for x and y in the second dimension
 	 */
-	public static double[][] getMovingAverage(final Number[] xData,
-																final Number[] yData,
-																final int period) {
+	public static double[][] getMovingAverage(final Number[] xData, final Number[] yData, final int period) {
 
 		// check arguments...
 		if (xData.length != yData.length) {
-			throw new IllegalArgumentException(
-								"Statistics.getMovingAverage(...): array lengths must be equal.");
+			throw new IllegalArgumentException("Statistics.getMovingAverage(...): array lengths must be equal.");
 		}
 
 		if (period > xData.length) {
 			throw new IllegalArgumentException(
-								"Statistics.getMovingAverage(...): period can't be longer than dataset.");
+					"Statistics.getMovingAverage(...): period can't be longer than dataset.");
 		}
 
 		final double[][] result = new double[xData.length - period][2];
@@ -386,13 +384,14 @@ public abstract class Statistics {
 
 	}
 
-	// // DEPRECATED CODE /////////////////////////////////////////////////////////////////////////
+	// // DEPRECATED CODE
+	// /////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Returns the average of a set of numbers.
 	 * 
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @return The average of a set of numbers.
 	 * @deprecated Renamed calculateMean().
 	 */

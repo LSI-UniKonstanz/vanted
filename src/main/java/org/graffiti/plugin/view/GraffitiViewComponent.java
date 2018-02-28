@@ -18,29 +18,26 @@ import org.graffiti.attributes.Attribute;
  */
 public interface GraffitiViewComponent {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Called when a graphics attribute of the GraphElement represented by this
 	 * component has changed.
 	 * 
 	 * @param attr
-	 *           the attribute that has triggered the event.
+	 *            the attribute that has triggered the event.
 	 */
-	public void attributeChanged(Attribute attr)
-						throws ShapeNotFoundException;
-	
+	public void attributeChanged(Attribute attr) throws ShapeNotFoundException;
+
 	/**
-	 * Called to initialise the shape of the NodeComponent correctly. Also
-	 * calls <code>repaint()</code>.
+	 * Called to initialise the shape of the NodeComponent correctly. Also calls
+	 * <code>repaint()</code>.
 	 * 
 	 * @param coordSys
-	 *           TODO
+	 *            TODO
 	 * @exception ShapeNotFoundException
-	 *               thrown when the shapeclass couldn't be
-	 *               resolved.
+	 *                thrown when the shapeclass couldn't be resolved.
 	 */
-	public void createNewShape(CoordinateSystem coordSys)
-						throws ShapeNotFoundException;
+	public void createNewShape(CoordinateSystem coordSys) throws ShapeNotFoundException;
 }
 
 // ------------------------------------------------------------------------------

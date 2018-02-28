@@ -16,11 +16,11 @@ public class SelectionRectangle extends JComponent {
 	private static Color drawColForeGround = new Color(255, 0, 0, 40);
 	// private static Color drawColShadow = new Color(50, 50, 50, 40);
 	private static Color drawColBorder = new Color(80, 10, 10, 100);
-	
+
 	public SelectionRectangle() {
 		setOpaque(false);
 	}
-	
+
 	@Override
 	public void paint(Graphics g) {
 		g.setColor(drawColForeGround);

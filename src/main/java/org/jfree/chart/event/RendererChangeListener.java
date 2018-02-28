@@ -41,7 +41,7 @@ public interface RendererChangeListener extends EventListener {
 	 * Receives notification of a renderer change event.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void rendererChanged(RendererChangeEvent event);
 

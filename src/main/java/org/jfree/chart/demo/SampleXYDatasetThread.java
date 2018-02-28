@@ -31,15 +31,18 @@
 package org.jfree.chart.demo;
 
 /**
- * Implements the runnable interface and updates the SampleXYDataset. This gives the event
- * notification mechanism in JFreeChart a run to make sure it works.
- * WARNING 1 : There are likely to be problems with accessing datasets from more than one thread,
- * so don't use this code for anything other than the demo!
+ * Implements the runnable interface and updates the SampleXYDataset. This gives
+ * the event notification mechanism in JFreeChart a run to make sure it works.
+ * WARNING 1 : There are likely to be problems with accessing datasets from more
+ * than one thread, so don't use this code for anything other than the demo!
  * <P>
- * WARNING 2 : Updating the dataset this way 'animates' the chart - but JFreeChart is not designed for the production of animated charts. For fast animations,
- * you need a chart that draws to a bitmap, in order to optimise the screen updates. But JFreeChart draws to an abstract drawing surface (Graphics2D), which
- * brings many benefits, but also means that we cannot implement any performance tricks when the screen updates because we cannot guarantee which pixels are
- * rendered by the Graphics2D pipeline...
+ * WARNING 2 : Updating the dataset this way 'animates' the chart - but
+ * JFreeChart is not designed for the production of animated charts. For fast
+ * animations, you need a chart that draws to a bitmap, in order to optimise the
+ * screen updates. But JFreeChart draws to an abstract drawing surface
+ * (Graphics2D), which brings many benefits, but also means that we cannot
+ * implement any performance tricks when the screen updates because we cannot
+ * guarantee which pixels are rendered by the Graphics2D pipeline...
  */
 public class SampleXYDatasetThread implements Runnable {
 
@@ -50,7 +53,7 @@ public class SampleXYDatasetThread implements Runnable {
 	 * Creates a new thread.
 	 * 
 	 * @param data
-	 *           the dataset.
+	 *            the dataset.
 	 */
 	public SampleXYDatasetThread(final SampleXYDataset data) {
 		this.data = data;

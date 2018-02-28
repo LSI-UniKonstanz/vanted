@@ -42,13 +42,13 @@ import org.jfree.data.Range;
 import org.jfree.data.RangeInfo;
 
 /**
- * A convenience class that provides a default implementation of the {@link StatisticalCategoryDataset} interface.
+ * A convenience class that provides a default implementation of the
+ * {@link StatisticalCategoryDataset} interface.
  * 
  * @author Pascal Collet
  */
 public class DefaultStatisticalCategoryDataset extends AbstractDataset
-																implements StatisticalCategoryDataset,
-																				RangeInfo {
+		implements StatisticalCategoryDataset, RangeInfo {
 
 	/** Storage for the data. */
 	protected KeyedObjects2D data;
@@ -81,9 +81,9 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	 * Returns the mean value for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return the mean value.
 	 */
 	public Number getMeanValue(final int row, final int column) {
@@ -101,9 +101,9 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	 * Returns the value for an item.
 	 * 
 	 * @param row
-	 *           the row index.
+	 *            the row index.
 	 * @param column
-	 *           the column index.
+	 *            the column index.
 	 * @return the value.
 	 */
 	public Number getValue(final int row, final int column) {
@@ -114,9 +114,9 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	 * Returns the value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return the value.
 	 */
 	public Number getValue(final Comparable rowKey, final Comparable columnKey) {
@@ -127,9 +127,9 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	 * Returns the mean value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return the mean value.
 	 */
 	public Number getMeanValue(final Comparable rowKey, final Comparable columnKey) {
@@ -147,9 +147,9 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	 * Returns the standard deviation value for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return the standard deviation.
 	 */
 	public Number getStdDevValue(final int row, final int column) {
@@ -167,9 +167,9 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	 * Returns the standard deviation value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return the standard deviation.
 	 */
 	public Number getStdDevValue(final Comparable rowKey, final Comparable columnKey) {
@@ -187,7 +187,7 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	 * Returns the column index for a given key.
 	 * 
 	 * @param key
-	 *           the column key.
+	 *            the column key.
 	 * @return the column index.
 	 */
 	public int getColumnIndex(final Comparable key) {
@@ -198,7 +198,7 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	 * Returns a column key.
 	 * 
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return the column key.
 	 */
 	public Comparable getColumnKey(final int column) {
@@ -218,7 +218,7 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	 * Returns the row index for a given key.
 	 * 
 	 * @param key
-	 *           the row key.
+	 *            the row key.
 	 * @return the row index.
 	 */
 	public int getRowIndex(final Comparable key) {
@@ -229,7 +229,7 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	 * Returns a row key.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @return the row key.
 	 */
 	public Comparable getRowKey(final int row) {
@@ -267,60 +267,56 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	 * Adds a mean and standard deviation to the table.
 	 * 
 	 * @param mean
-	 *           the mean.
+	 *            the mean.
 	 * @param standardDeviation
-	 *           the standard deviation.
+	 *            the standard deviation.
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 */
-	public void add(final double mean, final double standardDeviation,
-							final Comparable rowKey, final Comparable columnKey, boolean showOnlyHalfErrorBar) {
+	public void add(final double mean, final double standardDeviation, final Comparable rowKey,
+			final Comparable columnKey, boolean showOnlyHalfErrorBar) {
 
 		final MeanAndStandardDeviation item = new MeanAndStandardDeviation(new Double(mean),
-																							new Double(standardDeviation));
+				new Double(standardDeviation));
 		addDataObject(item, rowKey, columnKey);
 		addStep2(mean, standardDeviation, rowKey, columnKey, showOnlyHalfErrorBar);
 	}
 
-	public void add(final double mean, final double standardDeviation,
-						final Comparable rowKey, final Comparable columnKey) {
+	public void add(final double mean, final double standardDeviation, final Comparable rowKey,
+			final Comparable columnKey) {
 		final MeanAndStandardDeviation item = new MeanAndStandardDeviation(new Double(mean),
-																							new Double(standardDeviation));
+				new Double(standardDeviation));
 		addDataObject(item, rowKey, columnKey);
 		addStep2(mean, standardDeviation, rowKey, columnKey, false);
 	}
 
-	protected void addDataObject(MeanAndStandardDeviation item,
-						final Comparable rowKey, final Comparable columnKey) {
+	protected void addDataObject(MeanAndStandardDeviation item, final Comparable rowKey, final Comparable columnKey) {
 		this.data.addObject(item, rowKey, columnKey);
 	}
 
-	protected void addStep2(double mean, double standardDeviation,
-							final Comparable rowKey, final Comparable columnKey,
-							boolean showOnlyHalfErrorBar) {
+	protected void addStep2(double mean, double standardDeviation, final Comparable rowKey, final Comparable columnKey,
+			boolean showOnlyHalfErrorBar) {
 		if (Double.isInfinite(standardDeviation) || Double.isNaN(standardDeviation))
 			standardDeviation = 0;
-		if (!Double.isInfinite(mean) && !Double.isInfinite(standardDeviation)
-							&& !Double.isNaN(mean) && !Double.isNaN(standardDeviation)) {
+		if (!Double.isInfinite(mean) && !Double.isInfinite(standardDeviation) && !Double.isNaN(mean)
+				&& !Double.isNaN(standardDeviation)) {
 			if ((mean + standardDeviation) > this.maximumRangeValue.doubleValue()) {
 				this.maximumRangeValue = new Double(mean + standardDeviation);
-				this.valueRange = new Range(this.minimumRangeValue.doubleValue(),
-															this.maximumRangeValue.doubleValue());
+				this.valueRange = new Range(this.minimumRangeValue.doubleValue(), this.maximumRangeValue.doubleValue());
 			}
 			if ((mean - standardDeviation) < this.minimumRangeValue.doubleValue()) {
 				this.minimumRangeValue = new Double(mean - (showOnlyHalfErrorBar ? 0 : standardDeviation));
-				this.valueRange = new Range(this.minimumRangeValue.doubleValue(),
-															this.maximumRangeValue.doubleValue());
+				this.valueRange = new Range(this.minimumRangeValue.doubleValue(), this.maximumRangeValue.doubleValue());
 			}
 			fireDatasetChanged();
 		}
 	}
 
 	/**
-	 * Returns the minimum value in the dataset's range (or null if all the
-	 * values in the range are null).
+	 * Returns the minimum value in the dataset's range (or null if all the values
+	 * in the range are null).
 	 * 
 	 * @return the minimum value.
 	 */
@@ -329,8 +325,8 @@ public class DefaultStatisticalCategoryDataset extends AbstractDataset
 	}
 
 	/**
-	 * Returns the maximum value in the dataset's range (or null if all the
-	 * values in the range are null).
+	 * Returns the maximum value in the dataset's range (or null if all the values
+	 * in the range are null).
 	 * 
 	 * @return the maximum value.
 	 */

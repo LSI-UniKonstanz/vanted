@@ -5,16 +5,14 @@ import java.util.List;
 import java.util.Set;
 
 public class BriteEntry {
-	
-	
+
 	protected BriteEntry parent;
 	protected List<BriteEntry> children;
-	
+
 	String KOId;
 	String name;
 	Set<String> setEC;
 	String pathId;
-	
 
 	public BriteEntry(BriteEntry parent, String kOId, String name, Set<String> setEC, String pathId) {
 		super();
@@ -23,7 +21,7 @@ public class BriteEntry {
 		this.name = name;
 		this.setEC = setEC;
 		this.pathId = pathId;
-		
+
 	}
 
 	public BriteEntry getParent() {
@@ -34,9 +32,8 @@ public class BriteEntry {
 		return children;
 	}
 
-
-	public void addChild(BriteEntry entry){
-		if(this.children == null)
+	public void addChild(BriteEntry entry) {
+		if (this.children == null)
 			children = new ArrayList<>();
 
 		this.children.add(entry);
@@ -58,8 +55,4 @@ public class BriteEntry {
 		return pathId;
 	}
 
-
-	
-	
-	
 }

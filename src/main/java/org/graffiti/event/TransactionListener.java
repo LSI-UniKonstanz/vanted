@@ -20,29 +20,30 @@ import org.graffiti.attributes.Attributable;
  * 
  * @version $Revision: 1.6 $
  */
-public interface TransactionListener
-					extends EventListener {
+public interface TransactionListener extends EventListener {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Called when a transaction has stopped. <br>
-	 * The class {@link TransactionHashMap} merges duplicate {@link AttributeEvent}s.
-	 * In case the Attribute path for the same {@link Attributable} is not equal,
-	 * detailed information about Attribute path is lost. Instead a generic {@link AttributeEvent} containing just the {@link Attributable} is in the list of
-	 * changed Objects (see {@link TransactionEvent}).<br>
-	 * In case no detailed information about an Attribute change is available, your code
-	 * should completely re-process the affected {@link Attributable}.
+	 * The class {@link TransactionHashMap} merges duplicate
+	 * {@link AttributeEvent}s. In case the Attribute path for the same
+	 * {@link Attributable} is not equal, detailed information about Attribute path
+	 * is lost. Instead a generic {@link AttributeEvent} containing just the
+	 * {@link Attributable} is in the list of changed Objects (see
+	 * {@link TransactionEvent}).<br>
+	 * In case no detailed information about an Attribute change is available, your
+	 * code should completely re-process the affected {@link Attributable}.
 	 * 
 	 * @param e
-	 *           the EdgeEvent detailing the changes.
+	 *            the EdgeEvent detailing the changes.
 	 */
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status);
-	
+
 	/**
 	 * Called when a transaction has started.
 	 * 
 	 * @param e
-	 *           the EdgeEvent detailing the changes.
+	 *            the EdgeEvent detailing the changes.
 	 */
 	public void transactionStarted(TransactionEvent e);
 }

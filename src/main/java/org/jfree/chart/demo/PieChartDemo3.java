@@ -41,7 +41,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A pie chart with no data, to demonstrate the use of the setNoDataMessage(...) method.
+ * A pie chart with no data, to demonstrate the use of the setNoDataMessage(...)
+ * method.
  */
 public class PieChartDemo3 extends ApplicationFrame {
 
@@ -49,7 +50,7 @@ public class PieChartDemo3 extends ApplicationFrame {
 	 * Default constructor.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PieChartDemo3(final String title) {
 
@@ -59,13 +60,10 @@ public class PieChartDemo3 extends ApplicationFrame {
 		final DefaultPieDataset data = new DefaultPieDataset();
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createPieChart(
-							"Pie Chart Demo 3", // chart title
+		final JFreeChart chart = ChartFactory.createPieChart("Pie Chart Demo 3", // chart title
 				data, // data
 				true, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		final PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setNoDataMessage("No data available");
@@ -94,7 +92,7 @@ public class PieChartDemo3 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

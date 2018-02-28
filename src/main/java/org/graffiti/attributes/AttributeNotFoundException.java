@@ -15,18 +15,18 @@ package org.graffiti.attributes;
  * 
  * @version $Revision: 1.4 $
  */
-public class AttributeNotFoundException
-					extends RuntimeException {
+public class AttributeNotFoundException extends RuntimeException {
 	// ~ Constructors ===========================================================
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Constructs an <code>AttributeNotFoundException</code> with the specified
 	 * detail message.
 	 * 
 	 * @param msg
-	 *           the detail message which is saved for later retrieval by the <code>getMessage()</code> method.
+	 *            the detail message which is saved for later retrieval by the
+	 *            <code>getMessage()</code> method.
 	 */
 	public AttributeNotFoundException(String msg) {
 		super(msg);

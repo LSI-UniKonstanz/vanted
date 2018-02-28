@@ -36,7 +36,8 @@ import java.io.Serializable;
 /**
  * A (key, value) pair.
  * <P>
- * This class provides a default implementation of the {@link KeyedValue} interface.
+ * This class provides a default implementation of the {@link KeyedValue}
+ * interface.
  */
 public class DefaultKeyedValue implements KeyedValue, Cloneable, Serializable {
 
@@ -50,9 +51,9 @@ public class DefaultKeyedValue implements KeyedValue, Cloneable, Serializable {
 	 * Creates a new (key, value) pair.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @param value
-	 *           the value (<code>null</code> permitted).
+	 *            the value (<code>null</code> permitted).
 	 */
 	public DefaultKeyedValue(final Comparable key, final Number value) {
 		this.key = key;
@@ -81,7 +82,7 @@ public class DefaultKeyedValue implements KeyedValue, Cloneable, Serializable {
 	 * Sets the value.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public synchronized void setValue(final Number value) {
 		this.value = value;
@@ -91,7 +92,7 @@ public class DefaultKeyedValue implements KeyedValue, Cloneable, Serializable {
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
@@ -104,12 +105,10 @@ public class DefaultKeyedValue implements KeyedValue, Cloneable, Serializable {
 
 		final DefaultKeyedValue defaultKeyedValue = (DefaultKeyedValue) o;
 
-		if (this.key != null ? !this.key.equals(defaultKeyedValue.key)
-							: defaultKeyedValue.key != null) {
+		if (this.key != null ? !this.key.equals(defaultKeyedValue.key) : defaultKeyedValue.key != null) {
 			return false;
 		}
-		if (this.value != null ? !this.value.equals(defaultKeyedValue.value)
-							: defaultKeyedValue.value != null) {
+		if (this.value != null ? !this.value.equals(defaultKeyedValue.value) : defaultKeyedValue.value != null) {
 			return false;
 		}
 
@@ -129,12 +128,12 @@ public class DefaultKeyedValue implements KeyedValue, Cloneable, Serializable {
 	}
 
 	/**
-	 * Returns a clone. It is assumed that both the key and value are immutable objects,
-	 * so only the references are cloned, not the objects themselves.
+	 * Returns a clone. It is assumed that both the key and value are immutable
+	 * objects, so only the references are cloned, not the objects themselves.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            Not thrown by this class, but subclasses (if any) might.
+	 *             Not thrown by this class, but subclasses (if any) might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		final DefaultKeyedValue clone = (DefaultKeyedValue) super.clone();

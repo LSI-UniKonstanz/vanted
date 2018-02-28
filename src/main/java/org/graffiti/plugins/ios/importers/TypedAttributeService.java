@@ -51,7 +51,7 @@ public class TypedAttributeService implements HelperClass {
 		}
 		return g;
 	}
-	
+
 	private static void processAttributable(Attributable attr, boolean isNode) {
 		CollectionAttribute ca = attr.getAttributes();
 		Stack<CollectionAttribute> catts = new Stack<CollectionAttribute>();
@@ -71,16 +71,17 @@ public class TypedAttributeService implements HelperClass {
 					// System.out.println("> "+a.getId()+" ("+a.getDescription()+")");
 					/*
 					 * if (a.getId().equalsIgnoreCase("framethickness")) {
-					 * System.out.println("VALUE: "+((DoubleAttribute)a).getValue().toString());
-					 * }
+					 * System.out.println("VALUE: "+((DoubleAttribute)a).getValue().toString()); }
 					 */
 				}
 			}
 		}
 		while (!toDo.empty()) {
 			Attribute untypedAttribute = toDo.pop();
-			// System.out.println("["+toDo.size()+"] Covert "+untypedAttribute.getId()+" ("+untypedAttribute.getDescription()+")");
-			Attribute typedAttribute = AbstractAttribute.getTypedAttribute(untypedAttribute.getId(), untypedAttribute.getAttributable() instanceof Node);
+			// System.out.println("["+toDo.size()+"] Covert "+untypedAttribute.getId()+"
+			// ("+untypedAttribute.getDescription()+")");
+			Attribute typedAttribute = AbstractAttribute.getTypedAttribute(untypedAttribute.getId(),
+					untypedAttribute.getAttributable() instanceof Node);
 			if (typedAttribute != null) {
 				HashMapAttribute ha = (HashMapAttribute) untypedAttribute;
 				CollectionAttribute pa = ha.getParent();
@@ -103,7 +104,7 @@ public class TypedAttributeService implements HelperClass {
 				AttributeHelper.setLabel((Node) attr, oldLabel);
 			attr.removeAttribute("label");
 		} catch (Exception err) {
-			
+
 		}
 		try {
 			HashMapAttribute charting = (HashMapAttribute) attr.getAttributes().getAttribute("charting");
@@ -117,7 +118,7 @@ public class TypedAttributeService implements HelperClass {
 			}
 			a.getParent().remove(a);
 		} catch (Exception err) {
-			
+
 		}
 		try {
 			HashMapAttribute charting = (HashMapAttribute) attr.getAttributes().getAttribute("data");
@@ -131,7 +132,7 @@ public class TypedAttributeService implements HelperClass {
 			}
 			a.getParent().remove(a);
 		} catch (Exception err) {
-			
+
 		}
 		if (attr instanceof Edge) {
 			try {
@@ -149,8 +150,10 @@ public class TypedAttributeService implements HelperClass {
 		}
 		if (attr instanceof Edge) {
 			try {
-				String s1 = (String) AttributeHelper.getAttributeValue(attr, "graphics", "arrowheadstyle", null, "", false);
-				String s2 = (String) AttributeHelper.getAttributeValue(attr, "graphics", "arrowtailstyle", null, "", false);
+				String s1 = (String) AttributeHelper.getAttributeValue(attr, "graphics", "arrowheadstyle", null, "",
+						false);
+				String s2 = (String) AttributeHelper.getAttributeValue(attr, "graphics", "arrowtailstyle", null, "",
+						false);
 				if (s1 != null && s1.length() > 0) {
 					String ss1 = GMLWriter.getArrowShapeClassNameFromGMLarrowStyle(s1);
 					if (ss1 != null && ss1.length() > 0)
@@ -170,5 +173,5 @@ public class TypedAttributeService implements HelperClass {
 
 		PortableUrlService.processUrlAttributes(attr);
 	}
-	
+
 }

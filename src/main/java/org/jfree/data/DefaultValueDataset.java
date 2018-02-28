@@ -37,8 +37,7 @@ import org.jfree.util.ObjectUtils;
 /**
  * A default implementation of the {@link ValueDataset} interface.
  */
-public class DefaultValueDataset extends AbstractDataset
-											implements ValueDataset, Cloneable, Serializable {
+public class DefaultValueDataset extends AbstractDataset implements ValueDataset, Cloneable, Serializable {
 
 	/** The value. */
 	private Number value;
@@ -56,7 +55,7 @@ public class DefaultValueDataset extends AbstractDataset
 	 * Creates a new dataset.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public DefaultValueDataset(final double value) {
 		this(new Double(value));
@@ -66,7 +65,7 @@ public class DefaultValueDataset extends AbstractDataset
 	 * Creates a new dataset.
 	 * 
 	 * @param value
-	 *           the initial value.
+	 *            the initial value.
 	 */
 	public DefaultValueDataset(final Number value) {
 		this.value = value;
@@ -82,10 +81,11 @@ public class DefaultValueDataset extends AbstractDataset
 	}
 
 	/**
-	 * Sets the value. A {@link DatasetChangeEvent} is sent to all registered listeners.
+	 * Sets the value. A {@link DatasetChangeEvent} is sent to all registered
+	 * listeners.
 	 * 
 	 * @param value
-	 *           the new value.
+	 *            the new value.
 	 */
 	public void setValue(final Number value) {
 		this.value = value;
@@ -96,7 +96,7 @@ public class DefaultValueDataset extends AbstractDataset
 	 * Tests this dataset for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object.
+	 *            the object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object obj) {

@@ -63,28 +63,26 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	/**
 	 * Constructs a new high/low/open/close dataset.
 	 * <p>
-	 * The current implementation allows only one series in the dataset. This may be extended in a future version.
+	 * The current implementation allows only one series in the dataset. This may be
+	 * extended in a future version.
 	 * 
 	 * @param seriesName
-	 *           the name of the series.
+	 *            the name of the series.
 	 * @param date
-	 *           the dates.
+	 *            the dates.
 	 * @param high
-	 *           the high values.
+	 *            the high values.
 	 * @param low
-	 *           the low values.
+	 *            the low values.
 	 * @param open
-	 *           the open values.
+	 *            the open values.
 	 * @param close
-	 *           the close values.
+	 *            the close values.
 	 * @param volume
-	 *           the volume values.
+	 *            the volume values.
 	 */
-	public DefaultHighLowDataset(final String seriesName,
-											final Date[] date,
-											final double[] high, final double[] low,
-											final double[] open, final double[] close,
-											final double[] volume) {
+	public DefaultHighLowDataset(final String seriesName, final Date[] date, final double[] high, final double[] low,
+			final double[] open, final double[] close, final double[] volume) {
 
 		this.seriesName = seriesName;
 		this.date = date;
@@ -100,7 +98,7 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * Returns the name of the series stored in this dataset.
 	 * 
 	 * @param i
-	 *           the index of the series. Currently ignored.
+	 *            the index of the series. Currently ignored.
 	 * @return the name of this series.
 	 */
 	public String getSeriesName(final int i) {
@@ -110,12 +108,13 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	/**
 	 * Returns the x-value for one item in a series.
 	 * <p>
-	 * The value returned is a Long object generated from the underlying Date object.
+	 * The value returned is a Long object generated from the underlying Date
+	 * object.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the x-value.
 	 */
 	public Number getXValue(final int series, final int item) {
@@ -128,9 +127,9 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * This method is provided for convenience only.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the x-value as a Date.
 	 */
 	public Date getXDate(final int series, final int item) {
@@ -140,12 +139,13 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	/**
 	 * Returns the y-value for one item in a series.
 	 * <p>
-	 * This method (from the XYDataset interface) is mapped to the getCloseValue(...) method.
+	 * This method (from the XYDataset interface) is mapped to the
+	 * getCloseValue(...) method.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the y-value.
 	 */
 	public Number getYValue(final int series, final int item) {
@@ -156,9 +156,9 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * Returns the high-value for one item in a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the high-value.
 	 */
 	public Number getHighValue(final int series, final int item) {
@@ -169,9 +169,9 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * Returns the high-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The high-value.
 	 */
 	public double getHigh(int series, int item) {
@@ -187,9 +187,9 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * Returns the low-value for one item in a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the low-value.
 	 */
 	public Number getLowValue(final int series, final int item) {
@@ -200,9 +200,9 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * Returns the low-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The low-value.
 	 */
 	public double getLow(int series, int item) {
@@ -218,9 +218,9 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * Returns the open-value for one item in a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the open-value.
 	 */
 	public Number getOpenValue(final int series, final int item) {
@@ -231,9 +231,9 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * Returns the open-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The open-value.
 	 */
 	public double getOpen(int series, int item) {
@@ -249,9 +249,9 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * Returns the close-value for one item in a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the close-value.
 	 */
 	public Number getCloseValue(final int series, final int item) {
@@ -262,9 +262,9 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * Returns the close-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The close-value.
 	 */
 	public double getClose(int series, int item) {
@@ -280,9 +280,9 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * Returns the volume-value for one item in a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the volume-value.
 	 */
 	public Number getVolumeValue(final int series, final int item) {
@@ -293,9 +293,9 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * Returns the volume-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The volume-value.
 	 */
 	public double getVolume(int series, int item) {
@@ -322,7 +322,7 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * Returns the number of items in the specified series.
 	 * 
 	 * @param series
-	 *           the index (zero-based) of the series.
+	 *            the index (zero-based) of the series.
 	 * @return the number of items in the specified series.
 	 */
 	public int getItemCount(final int series) {
@@ -333,7 +333,7 @@ public class DefaultHighLowDataset extends AbstractXYDataset implements HighLowD
 	 * Constructs an array of Number objects from an array of doubles.
 	 * 
 	 * @param data
-	 *           the double values to convert.
+	 *            the double values to convert.
 	 * @return data as array of Number.
 	 */
 	public static Number[] createNumberArray(final double[] data) {

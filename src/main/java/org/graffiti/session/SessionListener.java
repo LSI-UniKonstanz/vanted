@@ -17,15 +17,15 @@ package org.graffiti.session;
  */
 public interface SessionListener {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * This method is called when the session changes.
 	 * 
 	 * @param s
-	 *           the new Session.
+	 *            the new Session.
 	 */
 	public void sessionChanged(Session s);
-	
+
 	/**
 	 * This method is called when the data (except the graph data) are changed.
 	 */

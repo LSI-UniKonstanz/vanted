@@ -10,13 +10,14 @@
 package org.graffiti.plugin.parameter;
 
 /**
- * Tagging interface for <code>Parameters</code> that can be used in a <code>ParameterList</code>.
+ * Tagging interface for <code>Parameters</code> that can be used in a
+ * <code>ParameterList</code>.
  * 
  * @version $Revision: 1.3 $
  * @see ParameterList
  */
-public interface SingleParameter
-					extends Parameter {}
+public interface SingleParameter extends Parameter {
+}
 
 // ------------------------------------------------------------------------------
 // end of file

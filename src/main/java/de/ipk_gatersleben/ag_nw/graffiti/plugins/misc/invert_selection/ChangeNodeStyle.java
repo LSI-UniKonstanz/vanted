@@ -10,15 +10,15 @@ import org.graffiti.plugin.view.View;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 
 public class ChangeNodeStyle extends AbstractEditorAlgorithm {
-	
+
 	public void execute() {
 		getMainFrame().showAndHighlightSidePanelTab("Node", false);
 	}
-	
+
 	public String getName() {
 		return "Node Attributes";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Network.Nodes";
@@ -26,11 +26,9 @@ public class ChangeNodeStyle extends AbstractEditorAlgorithm {
 
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.UI
-				));
+		return new HashSet<Category>(Arrays.asList(Category.UI));
 	}
-	
+
 	public boolean activeForView(View v) {
 		return v instanceof GraffitiView;
 	}

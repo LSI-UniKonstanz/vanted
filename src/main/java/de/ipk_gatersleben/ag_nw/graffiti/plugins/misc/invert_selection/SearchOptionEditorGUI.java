@@ -28,44 +28,40 @@ import javax.swing.SwingUtilities;
 
 public class SearchOptionEditorGUI extends JComponent {
 	private static final long serialVersionUID = 1L;
-	
+
 	private SearchOption option;
-	
+
 	public SearchOptionEditorGUI(final SearchOption option,
-						final Collection<AttributePathNameSearchType> possibleAttributes,
-						boolean showAndOrField) {
+			final Collection<AttributePathNameSearchType> possibleAttributes, boolean showAndOrField) {
 		this(option, possibleAttributes, showAndOrField, false);
 	}
-	
+
 	public SearchOptionEditorGUI(final SearchOption option,
-						final Collection<AttributePathNameSearchType> possibleAttributes,
-						boolean showAndOrField, final boolean isFindReplaceDialog) {
+			final Collection<AttributePathNameSearchType> possibleAttributes, boolean showAndOrField,
+			final boolean isFindReplaceDialog) {
 		this.option = option;
-		
+
 		final JComboBox andOrSel = new JComboBox(new String[] { "AND", "OR" });
-		
+
 		double border = 5;
-		double[][] size = {
-							{
-												border,
-												// AND/OR
-									isFindReplaceDialog ? 0
-																	: andOrSel.getPreferredSize().width + 10, // 1
-									// node/edge/edge or node
-									TableLayoutConstants.PREFERRED, // 2
-									// attribute
-									TableLayoutConstants.PREFERRED, // 3
-									// is/is not
-									TableLayoutConstants.PREFERRED, // 4
-									// equals/is smaller/is greater/contains/...
-									TableLayoutConstants.PREFERRED, // 5
-									// search term
-									isFindReplaceDialog ? 0 : 100, // 6
-									border }, // Columns
+		double[][] size = { { border,
+				// AND/OR
+				isFindReplaceDialog ? 0 : andOrSel.getPreferredSize().width + 10, // 1
+				// node/edge/edge or node
+				TableLayoutConstants.PREFERRED, // 2
+				// attribute
+				TableLayoutConstants.PREFERRED, // 3
+				// is/is not
+				TableLayoutConstants.PREFERRED, // 4
+				// equals/is smaller/is greater/contains/...
+				TableLayoutConstants.PREFERRED, // 5
+				// search term
+				isFindReplaceDialog ? 0 : 100, // 6
+				border }, // Columns
 				{ border, TableLayoutConstants.PREFERRED, border } }; // Rows
 		setLayout(new TableLayout(size));
 		// [AND/OR] Node Attribute | AttributeName | Is / Is Not | Equals | Text
-		
+
 		if (option.getLogicalConnection() == LogicConnection.AND)
 			andOrSel.setSelectedIndex(0);
 		if (option.getLogicalConnection() == LogicConnection.OR)
@@ -85,8 +81,7 @@ public class SearchOptionEditorGUI extends JComponent {
 			add(emptyLabel, "1,1");
 			option.setLogicalConnection(LogicConnection.OR);
 		}
-		final JComboBox matchOrNotSel = new JComboBox(new String[] { "is",
-							"is not" });
+		final JComboBox matchOrNotSel = new JComboBox(new String[] { "is", "is not" });
 		if (option.getSearchLogic() == SearchLogic.searchMatched)
 			matchOrNotSel.setSelectedIndex(0);
 		if (option.getSearchLogic() == SearchLogic.searchNotMatched)
@@ -103,33 +98,30 @@ public class SearchOptionEditorGUI extends JComponent {
 			add(new JLabel(), "4,1");
 		else
 			add(matchOrNotSel, "4,1");
-		
+
 		final JCheckBox jCheckBoxSearchBoolean = new JCheckBox("Selected");
 		jCheckBoxSearchBoolean.setSelected(option.isSearchAttributeBoolean());
 		jCheckBoxSearchBoolean.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				option.setSearchAttributeBoolean(jCheckBoxSearchBoolean
-									.isSelected());
+				option.setSearchAttributeBoolean(jCheckBoxSearchBoolean.isSelected());
 			}
 		});
-		
-		final JTextField jTextFieldString = new JTextField(option
-							.getSearchAttributeString());
+
+		final JTextField jTextFieldString = new JTextField(option.getSearchAttributeString());
 		jTextFieldString.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
 			}
-			
+
 			public void focusLost(FocusEvent e) {
 				option.setSearchAttributeString(jTextFieldString.getText());
 			}
 		});
-		
-		final JTextField jTextFieldInteger = new JTextField(new Integer(option
-							.getSearchAttributeInteger()).toString());
+
+		final JTextField jTextFieldInteger = new JTextField(new Integer(option.getSearchAttributeInteger()).toString());
 		jTextFieldInteger.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
 			}
-			
+
 			public void focusLost(FocusEvent e) {
 				try {
 					int i = Integer.parseInt(jTextFieldInteger.getText());
@@ -141,13 +133,12 @@ public class SearchOptionEditorGUI extends JComponent {
 				}
 			}
 		});
-		
-		final JTextField jTextFieldDouble = new JTextField(new Double(option
-							.getSearchAttributeDouble()).toString());
+
+		final JTextField jTextFieldDouble = new JTextField(new Double(option.getSearchAttributeDouble()).toString());
 		jTextFieldDouble.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
 			}
-			
+
 			public void focusLost(FocusEvent e) {
 				try {
 					double d = Double.parseDouble(jTextFieldDouble.getText());
@@ -159,28 +150,26 @@ public class SearchOptionEditorGUI extends JComponent {
 				}
 			}
 		});
-		
-		final JComponent equalSel = new JComboBox(new String[] {
-							"containing text", "greater than", "smaller than", "equal to",
-							"ending with", "starting with", "matching reg. expr.",
-							"sort asc., top n:", "sort desc., top n:" });
-		
+
+		final JComponent equalSel = new JComboBox(
+				new String[] { "containing text", "greater than", "smaller than", "equal to", "ending with",
+						"starting with", "matching reg. expr.", "sort asc., top n:", "sort desc., top n:" });
+
 		final JComboBox attributeSel = new JComboBox();
 		attributeSel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Object o = attributeSel.getSelectedItem();
 				if (o != null && (o instanceof AttributePathNameSearchType)) {
 					AttributePathNameSearchType pns = (AttributePathNameSearchType) o;
-					
+
 					option.setSearchAttributePath(pns.getAttributePath());
-					
+
 					option.setSearchAttributeName(pns.getAttributeName());
-					
-					option.setSearchAttributeBoolean(jCheckBoxSearchBoolean
-										.isSelected());
-					
+
+					option.setSearchAttributeBoolean(jCheckBoxSearchBoolean.isSelected());
+
 					option.setSearchAttributeString(jTextFieldString.getText());
-					
+
 					try {
 						int i = Integer.parseInt(jTextFieldInteger.getText());
 						option.setSearchAttributeInteger(i);
@@ -189,39 +178,37 @@ public class SearchOptionEditorGUI extends JComponent {
 						option.setSearchAttributeInteger(Integer.MAX_VALUE);
 						jTextFieldInteger.setBackground(Color.RED);
 					}
-					
+
 					try {
-						double d = Double.parseDouble(jTextFieldDouble
-											.getText());
+						double d = Double.parseDouble(jTextFieldDouble.getText());
 						option.setSearchAttributeDouble(d);
 						jTextFieldInteger.setBackground(Color.WHITE);
 					} catch (NumberFormatException nfe) {
 						option.setSearchAttributeDouble(Double.NaN);
 						jTextFieldInteger.setBackground(Color.RED);
 					}
-					
+
 					option.setSearchType(pns.getSearchType());
-					
+
 					equalSel.setVisible(true);
-					
-					updateInputField(option, isFindReplaceDialog, jCheckBoxSearchBoolean, jTextFieldString, jTextFieldInteger, jTextFieldDouble, equalSel, pns);
+
+					updateInputField(option, isFindReplaceDialog, jCheckBoxSearchBoolean, jTextFieldString,
+							jTextFieldInteger, jTextFieldDouble, equalSel, pns);
 				}
 			}
 		});
 		add(attributeSel, "3,1");
-		
-		final JComboBox nodeOrEdgeSel = new JComboBox(new String[] {
-							"Node Attribute", "Edge Attribute", "Node Or Edge Attribute" });
+
+		final JComboBox nodeOrEdgeSel = new JComboBox(
+				new String[] { "Node Attribute", "Edge Attribute", "Node Or Edge Attribute" });
 		if (option.getSearchNodeOrEdge() == NodeOrEdge.Nodes)
 			nodeOrEdgeSel.setSelectedIndex(0);
+		else if (option.getSearchNodeOrEdge() == NodeOrEdge.Edges)
+			nodeOrEdgeSel.setSelectedIndex(1);
+		else if (option.getSearchNodeOrEdge() == NodeOrEdge.NodesAndEdges)
+			nodeOrEdgeSel.setSelectedIndex(2);
 		else
-			if (option.getSearchNodeOrEdge() == NodeOrEdge.Edges)
-				nodeOrEdgeSel.setSelectedIndex(1);
-			else
-				if (option.getSearchNodeOrEdge() == NodeOrEdge.NodesAndEdges)
-					nodeOrEdgeSel.setSelectedIndex(2);
-				else
-					option.setSearchNodeOrEdge(NodeOrEdge.Nodes);
+			option.setSearchNodeOrEdge(NodeOrEdge.Nodes);
 		propagateAttributeList(option, possibleAttributes, attributeSel);
 		nodeOrEdgeSel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -235,9 +222,9 @@ public class SearchOptionEditorGUI extends JComponent {
 			}
 		});
 		add(nodeOrEdgeSel, "2,1");
-		
+
 		if (!isFindReplaceDialog) {
-			
+
 			if (option.getSearchOperation() == SearchOperation.include)
 				((JComboBox) equalSel).setSelectedIndex(0);
 			if (option.getSearchOperation() == SearchOperation.greater)
@@ -279,23 +266,22 @@ public class SearchOptionEditorGUI extends JComponent {
 					Object o = attributeSel.getSelectedItem();
 					if (o != null && (o instanceof AttributePathNameSearchType)) {
 						AttributePathNameSearchType pns = (AttributePathNameSearchType) o;
-						updateInputField(option, isFindReplaceDialog, jCheckBoxSearchBoolean, jTextFieldString, jTextFieldInteger, jTextFieldDouble, equalSel, pns);
+						updateInputField(option, isFindReplaceDialog, jCheckBoxSearchBoolean, jTextFieldString,
+								jTextFieldInteger, jTextFieldDouble, equalSel, pns);
 					}
 				}
 			});
 		}
-		
+
 		if (!isFindReplaceDialog)
 			add(equalSel, "5,1");
 		else
 			add(new JLabel(), "5,1");
-		processBorder(emptyLabel, andOrSel, matchOrNotSel, nodeOrEdgeSel,
-							attributeSel, equalSel);
-		processInputBorder(jTextFieldDouble, jTextFieldInteger,
-							jTextFieldString, jCheckBoxSearchBoolean);
-		
+		processBorder(emptyLabel, andOrSel, matchOrNotSel, nodeOrEdgeSel, attributeSel, equalSel);
+		processInputBorder(jTextFieldDouble, jTextFieldInteger, jTextFieldString, jCheckBoxSearchBoolean);
+
 		validate();
-		
+
 		if (!showAndOrField) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
@@ -304,15 +290,14 @@ public class SearchOptionEditorGUI extends JComponent {
 			});
 		}
 	}
-	
-	private void propagateAttributeList(SearchOption option,
-						Collection<AttributePathNameSearchType> possibleAttributes,
-						final JComboBox attributeSel) {
+
+	private void propagateAttributeList(SearchOption option, Collection<AttributePathNameSearchType> possibleAttributes,
+			final JComboBox attributeSel) {
 		attributeSel.removeAllItems();
 		boolean includeEdges = option.getSearchNodeOrEdge() == NodeOrEdge.Edges
-							|| option.getSearchNodeOrEdge() == NodeOrEdge.NodesAndEdges;
+				|| option.getSearchNodeOrEdge() == NodeOrEdge.NodesAndEdges;
 		boolean includeNodes = option.getSearchNodeOrEdge() == NodeOrEdge.Nodes
-							|| option.getSearchNodeOrEdge() == NodeOrEdge.NodesAndEdges;
+				|| option.getSearchNodeOrEdge() == NodeOrEdge.NodesAndEdges;
 		AttributePathNameSearchType firstAtt = null;
 		AttributePathNameSearchType defaultSelection = null;
 		for (AttributePathNameSearchType a : possibleAttributes) {
@@ -353,54 +338,56 @@ public class SearchOptionEditorGUI extends JComponent {
 		if (jct != null && (jct instanceof JDialog))
 			((JDialog) jct).pack();
 	}
-	
+
 	private void processBorder(JComponent... comps) {
 		for (JComponent c : comps) {
 			c.setOpaque(false);
 			c.setBorder(BorderFactory.createEmptyBorder(1, 3, 1, 3));
 		}
 	}
-	
+
 	private void processInputBorder(JComponent... comps) {
 		for (JComponent c : comps) {
 			c.setOpaque(false);
 			c.setBorder(BorderFactory.createEtchedBorder());
 		}
 	}
-	
+
 	public SearchOption getSearchOption() {
 		return option;
 	}
-	
-	private void updateInputField(final SearchOption option, final boolean isFindReplaceDialog, final JCheckBox jCheckBoxSearchBoolean,
-						final JTextField jTextFieldString, final JTextField jTextFieldInteger, final JTextField jTextFieldDouble, final JComponent equalSel,
-						AttributePathNameSearchType pns) {
+
+	private void updateInputField(final SearchOption option, final boolean isFindReplaceDialog,
+			final JCheckBox jCheckBoxSearchBoolean, final JTextField jTextFieldString,
+			final JTextField jTextFieldInteger, final JTextField jTextFieldDouble, final JComponent equalSel,
+			AttributePathNameSearchType pns) {
 		remove(jCheckBoxSearchBoolean);
 		remove(jTextFieldString);
 		remove(jTextFieldInteger);
 		remove(jTextFieldDouble);
-		if (option.getSearchOperation() == SearchOperation.bottomN || option.getSearchOperation() == SearchOperation.topN) {
+		if (option.getSearchOperation() == SearchOperation.bottomN
+				|| option.getSearchOperation() == SearchOperation.topN) {
 			add(jTextFieldInteger, "6,1");
 		} else {
 			switch (pns.getSearchType()) {
-				case searchBoolean:
-					add(jCheckBoxSearchBoolean, "6,1");
-					equalSel.setVisible(false);
-					((JComboBox) equalSel).setSelectedIndex(3);
-					option.setSearchOperation(SearchOperation.equals);
-					break;
-				case searchInteger:
-					add(jTextFieldInteger, "6,1");
-					break;
-				case searchString:
-					if (!isFindReplaceDialog)
-						add(jTextFieldString, "6,1");
-					else
-						add(new JLabel(""), "6,1");
-					break;
-				case searchDouble:
-					add(jTextFieldDouble, "6,1");
-					break;
+			case searchBoolean:
+				add(jCheckBoxSearchBoolean, "6,1");
+				equalSel.setVisible(false);
+				((JComboBox) equalSel).setSelectedIndex(3);
+				option.setSearchOperation(SearchOperation.equals);
+				break;
+			case searchInteger:
+				add(jTextFieldInteger, "6,1");
+				break;
+			case searchString:
+				if (!isFindReplaceDialog)
+					add(jTextFieldString, "6,1");
+				else
+					add(new JLabel(""), "6,1");
+				break;
+			case searchDouble:
+				add(jTextFieldDouble, "6,1");
+				break;
 			}
 		}
 		repaint();

@@ -23,64 +23,59 @@ import org.graffiti.plugins.ios.importers.graphml.parser.GraphMLParser;
  *
  * @author ruediger
  */
-public class GraphMLReader
-    extends AbstractInputSerializer
-    implements InputSerializer
-{
-    //~ Static fields/initializers =============================================
+public class GraphMLReader extends AbstractInputSerializer implements InputSerializer {
+	// ~ Static fields/initializers =============================================
 
-    //~ Instance fields ========================================================
+	// ~ Instance fields ========================================================
 
-    /** The parser for reading the graphml input. */
-    private GraphMLParser graphmlParser;
+	/** The parser for reading the graphml input. */
+	private GraphMLParser graphmlParser;
 
-    /** The supported extension. */
-    private String[] extensions = { ".graphml" /*, ".xml" */};
+	/** The supported extension. */
+	private String[] extensions = { ".graphml" /* , ".xml" */ };
 
-    //~ Constructors ===========================================================
+	// ~ Constructors ===========================================================
 
-    /**
-     * Constructs a new <code>GraphMLReader</code>.
-     */
-    public GraphMLReader()
-    {
-        super();
-        this.graphmlParser = new GraphMLParser();
-    }
+	/**
+	 * Constructs a new <code>GraphMLReader</code>.
+	 */
+	public GraphMLReader() {
+		super();
+		this.graphmlParser = new GraphMLParser();
+	}
 
-    //~ Methods ================================================================
+	// ~ Methods ================================================================
 
-    /*
-     *
-     */
-    public String[] getExtensions()
-    {
-        return this.extensions;
-    }
-    
-    /* (non-Javadoc)
-     * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
-     */
-    public String[] getFileTypeDescriptions() {
-        return new String[] { "GraphML" /* , "GraphXML"*/};
-    }
+	/*
+	 *
+	 */
+	public String[] getExtensions() {
+		return this.extensions;
+	}
 
-    /*
-     *
-     */
-    @Override
-	public void read(InputStream in, Graph g)
-        throws IOException
-    {
-        this.graphmlParser.parse(in, g);
-        in.close();
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
+	 */
+	public String[] getFileTypeDescriptions() {
+		return new String[] { "GraphML" /* , "GraphXML" */ };
+	}
+
+	/*
+	 *
+	 */
+	@Override
+	public void read(InputStream in, Graph g) throws IOException {
+		this.graphmlParser.parse(in, g);
+		in.close();
+	}
 
 	public void read(Reader reader, Graph newGraph) throws Exception {
-		  this.graphmlParser.parse(reader, newGraph);
+		this.graphmlParser.parse(reader, newGraph);
 	}
 }
 
-//------------------------------------------------------------------------------
-//   end of file
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// end of file
+// ------------------------------------------------------------------------------

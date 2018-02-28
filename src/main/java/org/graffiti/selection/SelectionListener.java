@@ -17,12 +17,12 @@ package org.graffiti.selection;
  */
 public interface SelectionListener {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Is called, if something in the selection model changed.
 	 */
 	public void selectionChanged(SelectionEvent e);
-	
+
 	/**
 	 * Is called, if a named selection is added or removed.
 	 */

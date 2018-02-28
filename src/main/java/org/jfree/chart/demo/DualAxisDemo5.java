@@ -50,10 +50,11 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * This demo shows how to create a dual axis bar chart. A workaround is used because the {@link BarRenderer} and {@link CategoryAxis} classes will overlap the
- * bars for the two
- * datasets - to get around this, an an additional series (containing 'null' values) is added
- * to each dataset, and the getLegendItems() method in the plot is overridden.
+ * This demo shows how to create a dual axis bar chart. A workaround is used
+ * because the {@link BarRenderer} and {@link CategoryAxis} classes will overlap
+ * the bars for the two datasets - to get around this, an an additional series
+ * (containing 'null' values) is added to each dataset, and the getLegendItems()
+ * method in the plot is overridden.
  */
 public class DualAxisDemo5 extends ApplicationFrame {
 
@@ -61,7 +62,7 @@ public class DualAxisDemo5 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public DualAxisDemo5(final String title) {
 		super(title);
@@ -156,9 +157,9 @@ public class DualAxisDemo5 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset1
-	 *           the first dataset.
+	 *            the first dataset.
 	 * @param dataset2
-	 *           the second dataset.
+	 *            the second dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset1, final CategoryDataset dataset2) {
@@ -223,7 +224,7 @@ public class DualAxisDemo5 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

@@ -18,7 +18,7 @@ import org.AttributeHelper;
 public class JLabelHTMLlink extends JLabel {
 	String labelText;
 	boolean defaultTooltip = false;
-	
+
 	public JLabelHTMLlink(String label, final String url) {
 		super("<html>" + label);
 		labelText = label;
@@ -31,23 +31,23 @@ public class JLabelHTMLlink extends JLabel {
 			public void mouseClicked(MouseEvent e) {
 				AttributeHelper.showInBrowser(urlLink);
 			}
-			
+
 			public void mousePressed(MouseEvent e) {
 			}
-			
+
 			public void mouseReleased(MouseEvent e) {
 			}
-			
+
 			public void mouseEntered(MouseEvent e) {
 				setText("<html><u>" + labelText);
 			}
-			
+
 			public void mouseExited(MouseEvent e) {
 				setText("<html>" + labelText);
 			}
 		});
 	}
-	
+
 	public JLabelHTMLlink(String label, String tooltip, final Runnable runOnClick) {
 		super("<html>" + label);
 		labelText = label;
@@ -60,35 +60,35 @@ public class JLabelHTMLlink extends JLabel {
 			public void mouseClicked(MouseEvent e) {
 				runOnClick.run();
 			}
-			
+
 			public void mousePressed(MouseEvent e) {
 			}
-			
+
 			public void mouseReleased(MouseEvent e) {
 			}
-			
+
 			public void mouseEntered(MouseEvent e) {
 				setText("<html><u>" + labelText);
 			}
-			
+
 			public void mouseExited(MouseEvent e) {
 				setText("<html>" + labelText);
 			}
 		});
 	}
-	
+
 	private String urlLink;
-	
+
 	public void setUrl(String url) {
 		urlLink = url;
 		if (defaultTooltip)
 			setToolTipText("Open " + url);
 	}
-	
+
 	public JLabelHTMLlink(String htmlText, final String url, String tooltip) {
 		this(htmlText, url, tooltip, true);
 	}
-	
+
 	public JLabelHTMLlink(String htmlText, final String url, String tooltip, final boolean highlight) {
 		super(htmlText);
 		defaultTooltip = tooltip == null;
@@ -101,17 +101,17 @@ public class JLabelHTMLlink extends JLabel {
 			public void mouseClicked(MouseEvent e) {
 				AttributeHelper.showInBrowser(urlLink);
 			}
-			
+
 			public void mousePressed(MouseEvent e) {
 			}
-			
+
 			public void mouseReleased(MouseEvent e) {
-				
+
 			}
-			
+
 			Color oldColor;
 			boolean oldOpaque;
-			
+
 			public void mouseEntered(MouseEvent e) {
 				if (!highlight || url == null || url.length() <= 0)
 					return;
@@ -120,7 +120,7 @@ public class JLabelHTMLlink extends JLabel {
 				oldColor = getBackground();
 				setBackground(new Color(240, 240, 255));
 			}
-			
+
 			public void mouseExited(MouseEvent e) {
 				if (!highlight)
 					return;
@@ -129,12 +129,12 @@ public class JLabelHTMLlink extends JLabel {
 			}
 		});
 	}
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	public void setLabelText(String text) {
 		labelText = text;
 		setText(text);
 	}
-	
+
 }

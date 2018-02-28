@@ -47,7 +47,7 @@ public class LineChartDemo4 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public LineChartDemo4(final String title) {
 
@@ -57,16 +57,14 @@ public class LineChartDemo4 extends ApplicationFrame {
 		final XYDataset dataset = new SampleXYDataset();
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-							"Line Chart Demo 4", // chart title
+		final JFreeChart chart = ChartFactory.createXYLineChart("Line Chart Demo 4", // chart title
 				"X", // x axis label
 				"Y", // y axis label
 				dataset, // data
-				PlotOrientation.VERTICAL,
-							true, // include legend
+				PlotOrientation.VERTICAL, true, // include legend
 				true, // tooltips
 				false // urls
-				);
+		);
 
 		final XYPlot plot = chart.getXYPlot();
 		plot.getDomainAxis().setLowerMargin(0.0);
@@ -94,7 +92,7 @@ public class LineChartDemo4 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

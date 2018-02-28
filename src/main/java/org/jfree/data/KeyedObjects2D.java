@@ -37,8 +37,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A data structure that stores zero, one or many objects, where each object is associated with
- * two keys (a 'row' key and a 'column' key).
+ * A data structure that stores zero, one or many objects, where each object is
+ * associated with two keys (a 'row' key and a 'column' key).
  */
 public class KeyedObjects2D implements Cloneable, Serializable {
 
@@ -82,9 +82,9 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * Returns the object for a given row and column.
 	 * 
 	 * @param row
-	 *           the row index.
+	 *            the row index.
 	 * @param column
-	 *           the column index.
+	 *            the column index.
 	 * @return the object.
 	 */
 	public Object getObject(final int row, final int column) {
@@ -105,7 +105,7 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * Returns the key for a given row.
 	 * 
 	 * @param row
-	 *           the row index (zero based).
+	 *            the row index (zero based).
 	 * @return the row index.
 	 */
 	public Comparable getRowKey(final int row) {
@@ -116,7 +116,7 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * Returns the row index for a given key.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @return the row index.
 	 */
 	public int getRowIndex(final Comparable key) {
@@ -136,7 +136,7 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * Returns the key for a given column.
 	 * 
 	 * @param column
-	 *           the column.
+	 *            the column.
 	 * @return the key.
 	 */
 	public Comparable getColumnKey(final int column) {
@@ -147,7 +147,7 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * Returns the column index for a given key.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @return the column index.
 	 */
 	public int getColumnIndex(final Comparable key) {
@@ -167,9 +167,9 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * Returns the object for the given row and column keys.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @return the object.
 	 */
 	public Object getObject(final Comparable rowKey, final Comparable columnKey) {
@@ -188,15 +188,13 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * Adds an object to the table. Performs the same function as setObject(...).
 	 * 
 	 * @param object
-	 *           the object.
+	 *            the object.
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 */
-	public void addObject(final Object object,
-									final Comparable rowKey,
-									final Comparable columnKey) {
+	public void addObject(final Object object, final Comparable rowKey, final Comparable columnKey) {
 		setObject(object, rowKey, columnKey);
 	}
 
@@ -204,15 +202,13 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * Adds or updates an object.
 	 * 
 	 * @param object
-	 *           the object.
+	 *            the object.
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 */
-	public void setObject(final Object object,
-									final Comparable rowKey,
-									final Comparable columnKey) {
+	public void setObject(final Object object, final Comparable rowKey, final Comparable columnKey) {
 
 		final KeyedObjects row;
 		final int rowIndex = this.rowKeys.indexOf(rowKey);
@@ -236,9 +232,9 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * Removes an object.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 */
 	public void removeObject(final Comparable rowKey, final Comparable columnKey) {
 		setObject(null, rowKey, columnKey);
@@ -250,7 +246,7 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * Removes a row.
 	 * 
 	 * @param rowIndex
-	 *           the row index.
+	 *            the row index.
 	 */
 	public void removeRow(final int rowIndex) {
 		this.rowKeys.remove(rowIndex);
@@ -261,7 +257,7 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * Removes a row.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 */
 	public void removeRow(final Comparable rowKey) {
 		removeRow(getRowIndex(rowKey));
@@ -271,7 +267,7 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * Removes a column.
 	 * 
 	 * @param columnIndex
-	 *           the column index.
+	 *            the column index.
 	 */
 	public void removeColumn(final int columnIndex) {
 		final Comparable columnKey = getColumnKey(columnIndex);
@@ -282,7 +278,7 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * Removes a column.
 	 * 
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 */
 	public void removeColumn(final Comparable columnKey) {
 		final Iterator iterator = this.rows.iterator();
@@ -297,7 +293,7 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object to test (<code>null</code> permitted).
+	 *            the object to test (<code>null</code> permitted).
 	 * @return a boolean.
 	 */
 	public boolean equals(final Object obj) {
@@ -367,8 +363,8 @@ public class KeyedObjects2D implements Cloneable, Serializable {
 	 * 
 	 * @return a clone.
 	 * @throws CloneNotSupportedException
-	 *            this class will not throw this exception, but subclasses
-	 *            (if any) might.
+	 *             this class will not throw this exception, but subclasses (if any)
+	 *             might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

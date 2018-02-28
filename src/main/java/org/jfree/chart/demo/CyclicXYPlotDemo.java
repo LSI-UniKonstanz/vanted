@@ -71,10 +71,11 @@ public class CyclicXYPlotDemo extends ApplicationFrame implements ActionListener
 	Timer timer;
 
 	/**
-	 * A demonstration application showing an XY plot, with a cyclic axis and renderer
+	 * A demonstration application showing an XY plot, with a cyclic axis and
+	 * renderer
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public CyclicXYPlotDemo(final String title) {
 
@@ -85,16 +86,8 @@ public class CyclicXYPlotDemo extends ApplicationFrame implements ActionListener
 		// Keep more as a mean to test this.
 		final XYSeriesCollection data = new XYSeriesCollection(this.series);
 
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-							"Cyclic XY Plot Demo",
-							"X",
-							"Y",
-							data,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createXYLineChart("Cyclic XY Plot Demo", "X", "Y", data,
+				PlotOrientation.VERTICAL, true, true, false);
 
 		final XYPlot plot = chart.getXYPlot();
 		plot.setDomainAxis(new CyclicNumberAxis(10, 0));
@@ -145,7 +138,7 @@ public class CyclicXYPlotDemo extends ApplicationFrame implements ActionListener
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
@@ -161,7 +154,7 @@ public class CyclicXYPlotDemo extends ApplicationFrame implements ActionListener
 	 * Receives notification of an action event.
 	 * 
 	 * @param e
-	 *           the event.
+	 *            the event.
 	 */
 	public void actionPerformed(final ActionEvent e) {
 		double delta = Math.random() * 10 - 5;

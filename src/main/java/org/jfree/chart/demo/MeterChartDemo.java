@@ -61,9 +61,9 @@ public class MeterChartDemo {
 	 * Displays a meter chart.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @param shape
-	 *           the dial shape.
+	 *            the dial shape.
 	 */
 	void displayMeterChart(final double value, final DialShape shape) {
 
@@ -80,12 +80,7 @@ public class MeterChartDemo {
 		plot.setTickLabelFont(new Font("SansSerif", Font.BOLD, 9));
 
 		plot.setInsets(new Insets(5, 5, 5, 5));
-		final JFreeChart chart = new JFreeChart(
-							"Meter Chart",
-							JFreeChart.DEFAULT_TITLE_FONT,
-							plot,
-							false
-							);
+		final JFreeChart chart = new JFreeChart("Meter Chart", JFreeChart.DEFAULT_TITLE_FONT, plot, false);
 
 		final MeterLegend legend = new MeterLegend("Sample Meter");
 		chart.setLegend(legend);
@@ -95,8 +90,8 @@ public class MeterChartDemo {
 		final JFrame chartFrame = new ChartFrame("Meter Chart", chart);
 		chartFrame.addWindowListener(new WindowAdapter() {
 			/**
-			 * Invoked when a window is in the process of being closed.
-			 * The close operation can be overridden at this point.
+			 * Invoked when a window is in the process of being closed. The close operation
+			 * can be overridden at this point.
 			 */
 			public void windowClosing(final WindowEvent e) {
 				System.exit(0);
@@ -124,7 +119,7 @@ public class MeterChartDemo {
 	 * Starting point for the meter plot demonstration application.
 	 * 
 	 * @param args
-	 *           used to specify the type and value.
+	 *            used to specify the type and value.
 	 */
 	public static void main(final String[] args) {
 
@@ -141,13 +136,11 @@ public class MeterChartDemo {
 			final int type = Integer.parseInt(args[0]);
 			if (type == 0) {
 				dialShape = DialShape.PIE;
-			} else
-				if (type == 1) {
-					dialShape = DialShape.CIRCLE;
-				} else
-					if (type == 0) {
-						dialShape = DialShape.CHORD;
-					}
+			} else if (type == 1) {
+				dialShape = DialShape.CIRCLE;
+			} else if (type == 0) {
+				dialShape = DialShape.CHORD;
+			}
 		}
 		if (args.length > 1) {
 			val = new Double(args[1]).doubleValue();

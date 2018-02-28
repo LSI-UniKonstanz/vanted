@@ -47,17 +47,18 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A time series demo, with monthly data, where the tick unit on the axis is set to
- * one month also (this switches off the auto tick unit selection, and *can* result in
- * overlapping labels).
+ * A time series demo, with monthly data, where the tick unit on the axis is set
+ * to one month also (this switches off the auto tick unit selection, and *can*
+ * result in overlapping labels).
  */
 public class TimeSeriesDemo3 extends ApplicationFrame {
 
 	/**
-	 * A demonstration application showing a quarterly time series containing a null value.
+	 * A demonstration application showing a quarterly time series containing a null
+	 * value.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public TimeSeriesDemo3(final String title) {
 
@@ -118,23 +119,15 @@ public class TimeSeriesDemo3 extends ApplicationFrame {
 	 * Creates a new chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The dataset.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							"Time Series Demo 3",
-							"Time",
-							"Value",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Time Series Demo 3", "Time", "Value", dataset,
+				true, true, false);
 		final XYPlot plot = chart.getXYPlot();
 		final DateAxis axis = (DateAxis) plot.getDomainAxis();
-		axis.setTickUnit(new DateTickUnit(DateTickUnit.MONTH, 1,
-														new SimpleDateFormat("MMM-yyyy")));
+		axis.setTickUnit(new DateTickUnit(DateTickUnit.MONTH, 1, new SimpleDateFormat("MMM-yyyy")));
 		axis.setVerticalTickLabels(true);
 
 		final StandardXYItemRenderer renderer = (StandardXYItemRenderer) plot.getRenderer();
@@ -149,7 +142,7 @@ public class TimeSeriesDemo3 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

@@ -12,9 +12,9 @@ import org.graffiti.plugin.GenericPluginAdapter;
 import org.graffiti.plugin.algorithm.Algorithm;
 
 /**
- * @author Christian Klukas
- *         To change the template for this generated type comment go to
- *         Window>Preferences>Java>Code Generation>Code and Comments
+ * @author Christian Klukas To change the template for this generated type
+ *         comment go to Window>Preferences>Java>Code Generation>Code and
+ *         Comments
  */
 public class SpringEmbedderPlugin extends GenericPluginAdapter {
 	/**
@@ -24,5 +24,5 @@ public class SpringEmbedderPlugin extends GenericPluginAdapter {
 		this.algorithms = new Algorithm[1];
 		this.algorithms[0] = new SpringEmbedderAlgorithm();
 	}
-	
+
 }

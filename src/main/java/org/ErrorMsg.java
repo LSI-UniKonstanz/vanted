@@ -24,13 +24,13 @@ public class ErrorMsg implements HelperClass {
 	private static LinkedList<String> errorMessages = new LinkedList<String>();
 	private static LinkedList<String> errorMessagesShort = new LinkedList<String>();
 	private static String statusMsg = null;
-	
+
 	private static boolean rethrowErrorMessages = true;
-	
+
 	public static void setRethrowErrorMessages(boolean rethrowErrorMessages) {
 		ErrorMsg.rethrowErrorMessages = rethrowErrorMessages;
 	}
-	
+
 	public static DecimalFormat getDecimalFormat(String pattern) {
 		pattern = StringManipulationTools.stringReplace(pattern, ",", "");
 		NumberFormat nf = NumberFormat.getNumberInstance(Locale.US);
@@ -38,10 +38,11 @@ public class ErrorMsg implements HelperClass {
 		df.applyPattern(pattern);
 		return df;
 	}
-	
+
 	/**
 	 * Adds a errorMessage to a global list. The error messages can be retrieved
-	 * with <code>getErrorMessages</code> and cleared with <code>clearErrorMessages</code>.
+	 * with <code>getErrorMessages</code> and cleared with
+	 * <code>clearErrorMessages</code>.
 	 * 
 	 * @param errorMsg
 	 */
@@ -70,11 +71,12 @@ public class ErrorMsg implements HelperClass {
 						// constructor
 						// caused the
 						// problem
-						res = res + "     Line: " + stack[i].getLineNumber() + " Method: " + stack[i].getClassName() + "/"
-											+ methodName + "<br>";
-						if (firstMethod.length() <= 0 && methodName != null && !methodName.endsWith("addErrorMessage")) {
-							firstMethod = ", Line " + stack[i].getLineNumber() + " Method " + stack[i].getClassName() + "/"
-												+ methodName;
+						res = res + "     Line: " + stack[i].getLineNumber() + " Method: " + stack[i].getClassName()
+								+ "/" + methodName + "<br>";
+						if (firstMethod.length() <= 0 && methodName != null
+								&& !methodName.endsWith("addErrorMessage")) {
+							firstMethod = ", Line " + stack[i].getLineNumber() + " Method " + stack[i].getClassName()
+									+ "/" + methodName;
 						}
 					}
 					if (stack[i].getMethodName().equalsIgnoreCase("addErrorMessage"))
@@ -93,24 +95,24 @@ public class ErrorMsg implements HelperClass {
 			}
 		}
 	}
-	
+
 	public static void addErrorMessage(Thread t, StackTraceElement[] sf) {
 		String firstMethod = null;
 		StringBuffer buf = new StringBuffer();
 		buf.append("Thread: " + t.getName());
 		buf.append(System.getProperty("line.separator"));
-		for(StackTraceElement s : sf) {
-			if(s.getLineNumber() > 0 && firstMethod == null)
+		for (StackTraceElement s : sf) {
+			if (s.getLineNumber() > 0 && firstMethod == null)
 				firstMethod = s.toString();
 			buf.append(s.toString());
 			buf.append(System.getProperty("line.separator"));
 		}
 		String err = buf.toString();
-//		System.out.println("--- Error ---\n" + buf.toString() + "---\n");
+		// System.out.println("--- Error ---\n" + buf.toString() + "---\n");
 		synchronized (errorMessages) {
 			if (!errorMessages.contains(err))
 				errorMessages.add(err);
-			
+
 		}
 		synchronized (errorMessagesShort) {
 			if (firstMethod.length() > 0)
@@ -120,13 +122,13 @@ public class ErrorMsg implements HelperClass {
 				errorMessagesShort.add(shortMsg);
 		}
 	}
-	
+
 	public synchronized static void setStatusMessage(String statusMsg) {
 		synchronized (errorMessages) {
 			ErrorMsg.statusMsg = statusMsg;
 		}
 	}
-	
+
 	/**
 	 * Removes the current error messages. E.g. after showing them to the user.
 	 */
@@ -139,7 +141,7 @@ public class ErrorMsg implements HelperClass {
 			errorMessagesShort.clear();
 		}
 	}
-	
+
 	/**
 	 * Returns pending error messages that were not shown to the user immediatly.
 	 * 
@@ -150,7 +152,7 @@ public class ErrorMsg implements HelperClass {
 			int statusAvail = 0;
 			if (statusMsg != null && errorMessages.size() > 0)
 				statusAvail = 1;
-			
+
 			String[] result = new String[errorMessages.size() + statusAvail];
 			if (statusMsg != null && errorMessages.size() > 0)
 				result[0] = "Last Status: " + statusMsg;
@@ -161,17 +163,17 @@ public class ErrorMsg implements HelperClass {
 			return result;
 		}
 	}
-	
+
 	public static String[] getErrors() {
 		synchronized (errorMessages) {
 			String[] ret = new String[errorMessages.size()];
 			int i = 0;
-			for(String emsg : errorMessages)
+			for (String emsg : errorMessages)
 				ret[i++] = emsg;
 			return ret;
 		}
 	}
-	
+
 	public synchronized static String[] getErrorMessagesShort() {
 		synchronized (errorMessagesShort) {
 			String[] result = new String[errorMessagesShort.size()];
@@ -192,7 +194,7 @@ public class ErrorMsg implements HelperClass {
 			return result;
 		}
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -205,24 +207,24 @@ public class ErrorMsg implements HelperClass {
 				res += "<" + errorTag + ">" + StringManipulationTools.UnicodeToHtml(errmsg[i]) + "</" + errorTag + ">";
 		return "<errormessages>" + res + "</errormessages>";
 	}
-	
+
 	public static int getErrorMsgCount() {
 		return errorMessages.size();
 	}
-	
+
 	public static String getLastStatusMessage() {
 		return statusMsg;
 	}
-	
+
 	private static ApplicationStatus apploadingCompleted = ApplicationStatus.INITIALIZATION;
-	
+
 	private static Collection<Runnable> finishedListeners = new ArrayList<Runnable>();
 	static Collection<Runnable> finishedAddonLoadingListeners = new ArrayList<Runnable>();
-	
+
 	public static ApplicationStatus getAppLoadingStatus() {
 		return apploadingCompleted;
 	}
-	
+
 	public static void setAppLoadingCompleted(ApplicationStatus status) {
 		apploadingCompleted = status;
 		if (apploadingCompleted == ApplicationStatus.PROGRAM_LOADING_FINISHED) {
@@ -240,8 +242,8 @@ public class ErrorMsg implements HelperClass {
 			});
 		}
 		if (apploadingCompleted == ApplicationStatus.ADDONS_LOADED
-							|| (apploadingCompleted == ApplicationStatus.PROGRAM_LOADING_FINISHED && ReleaseInfo
-												.getIsAllowedFeature(FeatureSet.ADDON_LOADING))) {
+				|| (apploadingCompleted == ApplicationStatus.PROGRAM_LOADING_FINISHED
+						&& ReleaseInfo.getIsAllowedFeature(FeatureSet.ADDON_LOADING))) {
 			Collection<Runnable> fl;
 			synchronized (finishedAddonLoadingListeners) {
 				fl = new ArrayList<Runnable>(finishedAddonLoadingListeners);
@@ -256,7 +258,7 @@ public class ErrorMsg implements HelperClass {
 			});
 		}
 	}
-	
+
 	public static boolean areApploadingAndFinishActionsCompleted() {
 		if (getAppLoadingStatus() == ApplicationStatus.INITIALIZATION)
 			return false;
@@ -266,7 +268,7 @@ public class ErrorMsg implements HelperClass {
 		}
 		return result;
 	}
-	
+
 	public static void addOnAppLoadingFinishedAction(Runnable actionListener) {
 		if (getAppLoadingStatus() != ApplicationStatus.INITIALIZATION) {
 			SwingUtilities.invokeLater(actionListener);
@@ -276,7 +278,7 @@ public class ErrorMsg implements HelperClass {
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static Object findChildComponent(Component c, Class searchClass) {
 		if (c == null)
@@ -299,7 +301,7 @@ public class ErrorMsg implements HelperClass {
 			}
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static void findChildComponents(Component c, Class searchClass, ArrayList<Object> result) {
 		if (c == null)
@@ -321,7 +323,7 @@ public class ErrorMsg implements HelperClass {
 				findChildComponents(jj, searchClass, result);
 			}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public static Object findParentComponent(Component c, Class searchClass) {
 		if (c == null)
@@ -338,29 +340,29 @@ public class ErrorMsg implements HelperClass {
 		}
 		return findParentComponent(c.getParent(), searchClass);
 	}
-	
+
 	public static void addErrorMessage(Exception e) {
 		if (rethrowErrorMessages)
 			throw new Error(e);
-		
-//		addErrorMessage(e.getLocalizedMessage());
+
+		// addErrorMessage(e.getLocalizedMessage());
 		addErrorMessage(Thread.currentThread(), e.getStackTrace());
 		e.printStackTrace();
 	}
-	
+
 	public static void addErrorMessage(Throwable t) {
 		if (rethrowErrorMessages)
 			throw new Error(t);
-		
+
 		addErrorMessage(Thread.currentThread(), t.getStackTrace());
-		
+
 	}
-	
+
 	public static void addOnAddonLoadingFinishedAction(Runnable runnable) {
 		if (getAppLoadingStatus() == ApplicationStatus.ADDONS_LOADED)
 			runnable.run();
 		else
 			finishedAddonLoadingListeners.add(runnable);
 	}
-	
+
 }

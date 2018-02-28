@@ -22,35 +22,35 @@ import org.graffiti.plugin.mode.Mode;
  * 
  * @version $Revision: 1.6 $
  */
-public class DefaultModeManager
-					implements ModeManager {
+public class DefaultModeManager implements ModeManager {
 	// ~ Static fields/initializers =============================================
-	
+
 	// ~ Instance fields ========================================================
-	
+
 	/** Maps the id of the mode to the corresponding instance of mode. */
 	private Map<String, Mode> modes;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new mode manager.
 	 */
 	public DefaultModeManager() {
 		modes = new HashMap<String, Mode>();
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/*
 	 * @see org.graffiti.managers.ModeManager#getMode(java.lang.String)
 	 */
 	public Mode getMode(String mode) {
 		return (Mode) modes.get(mode);
 	}
-	
+
 	/**
-	 * Adds the given mode to the list of modes. <code>mode</code> may not be <code>null</code>.
+	 * Adds the given mode to the list of modes. <code>mode</code> may not be
+	 * <code>null</code>.
 	 * 
 	 * @see org.graffiti.managers.ModeManager#addMode(org.graffiti.plugin.mode.Mode)
 	 */
@@ -58,15 +58,16 @@ public class DefaultModeManager
 		assert mode != null;
 		modes.put(mode.getId(), mode);
 	}
-	
+
 	/*
-	 * @see org.graffiti.managers.pluginmgr.PluginManagerListener#pluginAdded(org.graffiti.plugin.GenericPlugin,
+	 * @see org.graffiti.managers.pluginmgr.PluginManagerListener#pluginAdded(org.
+	 * graffiti.plugin.GenericPlugin,
 	 * org.graffiti.managers.pluginmgr.PluginDescription)
 	 */
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
 		try {
 			Mode[] modes = ((EditorPlugin) plugin).getModes();
-			
+
 			if (modes != null) {
 				for (int i = modes.length - 1; i >= 0; i--) {
 					addMode(modes[i]);
@@ -77,9 +78,10 @@ public class DefaultModeManager
 			// only EditorPlugins provide modes
 		}
 	}
-	
+
 	/*
-	 * @see org.graffiti.managers.ModeManager#removeMode(org.graffiti.plugin.mode.Mode)
+	 * @see
+	 * org.graffiti.managers.ModeManager#removeMode(org.graffiti.plugin.mode.Mode)
 	 */
 	public void removeMode(Mode mode) {
 		throw new UnsupportedOperationException();

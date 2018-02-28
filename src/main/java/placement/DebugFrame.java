@@ -7,15 +7,15 @@ public class DebugFrame extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@SuppressWarnings("unused")
 	private Constraints constraints;
-	
+
 	@SuppressWarnings("unused")
 	private Blocks blocks;
-	
+
 	private DebugPanel panel;
-	
+
 	DebugFrame(Blocks blocks, Constraints constraints) {
 		super();
 		this.blocks = blocks;
@@ -31,7 +31,7 @@ public class DebugFrame extends JFrame {
 		add(panel);
 		setVisible(true);
 	}
-	
+
 	void animate() {
 		if (panel != null) {
 			panel.updateDrawing();

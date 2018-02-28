@@ -50,9 +50,7 @@ import org.jfree.data.TableXYDataset;
  * @author andreas.schroeder
  */
 public class TimeTableXYDataset extends AbstractIntervalXYDataset
-											implements IntervalXYDataset,
-															DomainInfo,
-															TableXYDataset {
+		implements IntervalXYDataset, DomainInfo, TableXYDataset {
 
 	/**
 	 * The data structure to store the values.
@@ -60,9 +58,9 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	private DefaultKeyedValues2D values;
 
 	/**
-	 * A flag that indicates that the domain is 'points in time'. If this flag is true, only
-	 * the x-value is used to determine the range of values in the domain, the start and end
-	 * x-values are ignored.
+	 * A flag that indicates that the domain is 'points in time'. If this flag is
+	 * true, only the x-value is used to determine the range of values in the
+	 * domain, the start and end x-values are ignored.
 	 */
 	private boolean domainIsPointsInTime;
 
@@ -70,9 +68,9 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	private Calendar workingCalendar;
 
 	/**
-	 * The point within each time period that is used for the X value when this collection is used
-	 * as an {@link org.jfree.data.XYDataset}. This can be the start, middle or end of the
-	 * time period.
+	 * The point within each time period that is used for the X value when this
+	 * collection is used as an {@link org.jfree.data.XYDataset}. This can be the
+	 * start, middle or end of the time period.
 	 */
 	private TimePeriodAnchor xPosition;
 
@@ -87,7 +85,7 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * Creates a new TimeTableDataset with the given time zone.
 	 * 
 	 * @param zone
-	 *           the time zone to use.
+	 *            the time zone to use.
 	 */
 	public TimeTableXYDataset(final TimeZone zone) {
 		this(zone, Locale.getDefault());
@@ -97,9 +95,9 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * Creates a new TimeTableDataset with the given time zone and locale.
 	 * 
 	 * @param zone
-	 *           the time zone to use.
+	 *            the time zone to use.
 	 * @param locale
-	 *           the locale to use.
+	 *            the locale to use.
 	 */
 	public TimeTableXYDataset(final TimeZone zone, final Locale locale) {
 		this.values = new DefaultKeyedValues2D(true);
@@ -111,11 +109,11 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * Adds a new data item to the dataset.
 	 * 
 	 * @param period
-	 *           the time period.
+	 *            the time period.
 	 * @param y
-	 *           the value for this period.
+	 *            the value for this period.
 	 * @param seriesName
-	 *           the name of the series to add the value.
+	 *            the name of the series to add the value.
 	 */
 	public void add(final RegularTimePeriod period, final double y, final String seriesName) {
 		add(period, new Double(y), seriesName, true);
@@ -125,16 +123,15 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * Adds a new data item to the dataset.
 	 * 
 	 * @param period
-	 *           the time period.
+	 *            the time period.
 	 * @param y
-	 *           the value for this period.
+	 *            the value for this period.
 	 * @param seriesName
-	 *           the name of the series to add the value.
+	 *            the name of the series to add the value.
 	 * @param notify
-	 *           wether dataset listener are notified or not.
+	 *            wether dataset listener are notified or not.
 	 */
-	public void add(final RegularTimePeriod period, final Number y,
-							final String seriesName, final boolean notify) {
+	public void add(final RegularTimePeriod period, final Number y, final String seriesName, final boolean notify) {
 		this.values.addValue(y, period, seriesName);
 
 		if (notify) {
@@ -146,9 +143,9 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * Removes an existing data item from the dataset.
 	 * 
 	 * @param period
-	 *           the (existing!) time period of the value to remove.
+	 *            the (existing!) time period of the value to remove.
 	 * @param seriesName
-	 *           the (existing!) series name to remove the value.
+	 *            the (existing!) series name to remove the value.
 	 */
 	public void remove(final RegularTimePeriod period, final String seriesName) {
 		remove(period, seriesName, true);
@@ -158,14 +155,13 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * Removes an existing data item from the dataset.
 	 * 
 	 * @param period
-	 *           the (existing!) time period of the value to remove.
+	 *            the (existing!) time period of the value to remove.
 	 * @param seriesName
-	 *           the (existing!) series name to remove the value.
+	 *            the (existing!) series name to remove the value.
 	 * @param notify
-	 *           wether dataset listener are notified or not.
+	 *            wether dataset listener are notified or not.
 	 */
-	public void remove(final RegularTimePeriod period, final String seriesName,
-								final boolean notify) {
+	public void remove(final RegularTimePeriod period, final String seriesName, final boolean notify) {
 		this.values.removeValue(period, seriesName);
 
 		if (notify) {
@@ -186,7 +182,7 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * Returns the number of items in a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return the number of items within the series.
 	 */
 	public int getItemCount(final int series) {
@@ -206,7 +202,7 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return the name of the series.
 	 */
 	public String getSeriesName(final int series) {
@@ -214,13 +210,14 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	}
 
 	/**
-	 * Returns the x-value for an item within a series. The x-values may or may not be returned
-	 * in ascending order, that is up to the class implementing the interface.
+	 * Returns the x-value for an item within a series. The x-values may or may not
+	 * be returned in ascending order, that is up to the class implementing the
+	 * interface.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the x-value.
 	 */
 	public Number getXValue(final int series, final int item) {
@@ -232,9 +229,9 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * Returns the starting X value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item within a series (zero-based index).
+	 *            the item within a series (zero-based index).
 	 * @return the starting X value for the specified series and item.
 	 */
 	public Number getStartXValue(final int series, final int item) {
@@ -246,9 +243,9 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * Returns the ending X value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item within a series (zero-based index).
+	 *            the item within a series (zero-based index).
 	 * @return the ending X value for the specified series and item.
 	 */
 	public Number getEndXValue(final int series, final int item) {
@@ -260,9 +257,9 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * Returns the y-value for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the y-value (possibly <code>null</code>).
 	 */
 	public Number getYValue(final int series, final int item) {
@@ -273,9 +270,9 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * Returns the starting Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item within a series (zero-based index).
+	 *            the item within a series (zero-based index).
 	 * @return starting Y value for the specified series and item.
 	 */
 	public Number getStartYValue(final int series, final int item) {
@@ -286,9 +283,9 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * Returns the ending Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item within a series (zero-based index).
+	 *            the item within a series (zero-based index).
 	 * @return the ending Y value for the specified series and item.
 	 */
 	public Number getEndYValue(final int series, final int item) {
@@ -299,7 +296,7 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	 * Returns the x-value for a time period.
 	 * 
 	 * @param period
-	 *           the time period.
+	 *            the time period.
 	 * @return the x-value.
 	 */
 	private long getX(final RegularTimePeriod period) {
@@ -307,19 +304,17 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 		long result = 0L;
 		if (this.xPosition == TimePeriodAnchor.START) {
 			result = period.getFirstMillisecond(this.workingCalendar);
-		} else
-			if (this.xPosition == TimePeriodAnchor.MIDDLE) {
-				result = period.getMiddleMillisecond(this.workingCalendar);
-			} else
-				if (this.xPosition == TimePeriodAnchor.END) {
-					result = period.getLastMillisecond(this.workingCalendar);
-				}
+		} else if (this.xPosition == TimePeriodAnchor.MIDDLE) {
+			result = period.getMiddleMillisecond(this.workingCalendar);
+		} else if (this.xPosition == TimePeriodAnchor.END) {
+			result = period.getLastMillisecond(this.workingCalendar);
+		}
 		return result;
 	}
 
 	/**
-	 * Returns the minimum value in the dataset (or <code>null</code> if all the values in
-	 * the domain are <code>null</code>).
+	 * Returns the minimum value in the dataset (or <code>null</code> if all the
+	 * values in the domain are <code>null</code>).
 	 * 
 	 * @return The minimum value.
 	 */
@@ -328,8 +323,8 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	}
 
 	/**
-	 * Returns the maximum value in the dataset (or <code>null</code> if all the values in
-	 * the domain are <code>null</code>).
+	 * Returns the maximum value in the dataset (or <code>null</code> if all the
+	 * values in the domain are <code>null</code>).
 	 * 
 	 * @return The maximum value.
 	 */
@@ -355,14 +350,16 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 			return new Range(getX(first), getX(last));
 		} else {
 			return new Range(first.getFirstMillisecond(this.workingCalendar),
-								last.getLastMillisecond(this.workingCalendar));
+					last.getLastMillisecond(this.workingCalendar));
 		}
 	}
 
 	/**
-	 * Returns a flag that controls whether the domain is treated as 'points in time'.
+	 * Returns a flag that controls whether the domain is treated as 'points in
+	 * time'.
 	 * <P>
-	 * This flag is used when determining the max and min values for the domain. If true, then only the x-values are considered for the max and min values. If
+	 * This flag is used when determining the max and min values for the domain. If
+	 * true, then only the x-values are considered for the max and min values. If
 	 * false, then the start and end x-values will also be taken into consideration
 	 * 
 	 * @return the flag.
@@ -372,11 +369,11 @@ public class TimeTableXYDataset extends AbstractIntervalXYDataset
 	}
 
 	/**
-	 * Sets a flag that controls whether the domain is treated as 'points in time', or time
-	 * periods.
+	 * Sets a flag that controls whether the domain is treated as 'points in time',
+	 * or time periods.
 	 * 
 	 * @param flag
-	 *           The new value of the flag.
+	 *            The new value of the flag.
 	 */
 	public void setDomainIsPointsInTime(final boolean flag) {
 		this.domainIsPointsInTime = flag;

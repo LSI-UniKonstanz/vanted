@@ -68,15 +68,11 @@ public class XYStepChartDemo {
 
 			final XYDataset data = createStepXYDataset();
 
-			final JFreeChart chart = ChartFactory.createXYStepChart(
-								title,
-								xAxisLabel, yAxisLabel,
-								data,
-								PlotOrientation.VERTICAL,
-								true, // legend
+			final JFreeChart chart = ChartFactory.createXYStepChart(title, xAxisLabel, yAxisLabel, data,
+					PlotOrientation.VERTICAL, true, // legend
 					true, // tooltips
 					false // urls
-					);
+			);
 
 			// then customise it a little...
 			chart.setBackgroundPaint(new Color(216, 216, 216));
@@ -150,7 +146,7 @@ public class XYStepChartDemo {
 	 * The starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

@@ -58,7 +58,7 @@ public class MeterChartDemo2 {
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

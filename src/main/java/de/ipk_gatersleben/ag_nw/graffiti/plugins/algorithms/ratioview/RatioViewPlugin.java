@@ -16,19 +16,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 /**
  * @author Christian Klukas
  */
-public class RatioViewPlugin
-					extends IPK_PluginAdapter {
-	
+public class RatioViewPlugin extends IPK_PluginAdapter {
+
 	public RatioViewPlugin() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
-			this.algorithms = new Algorithm[] {
-								new RatioViewAlgorithm(),
-								new SubstanceRatioCalculationAlgorithm(),
-								new ExchangeNodePositionsAlgorithm()
-			};
+			this.algorithms = new Algorithm[] { new RatioViewAlgorithm(), new SubstanceRatioCalculationAlgorithm(),
+					new ExchangeNodePositionsAlgorithm() };
 		else
-			this.algorithms = new Algorithm[] {
-								new ExchangeNodePositionsAlgorithm()
-			};
+			this.algorithms = new Algorithm[] { new ExchangeNodePositionsAlgorithm() };
 	}
 }

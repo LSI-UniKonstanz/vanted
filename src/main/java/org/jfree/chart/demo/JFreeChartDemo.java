@@ -166,68 +166,66 @@ public class JFreeChartDemo extends JFrame implements ActionListener, WindowList
 	 * Handles menu selections by passing control to an appropriate method.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void actionPerformed(final ActionEvent event) {
 
 		final String command = event.getActionCommand();
 		if (command.equals(EXIT_COMMAND)) {
 			attemptExit();
-		} else
-			if (command.equals(ABOUT_COMMAND)) {
-				about();
-			} else {
-				// / Loop through available commands to find index to current command.
-				int chartnum = -1;
-				int i = CHART_COMMANDS.length;
-				while (i > 0) {
-					--i;
-					if (command.equals(CHART_COMMANDS[i][0])) {
-						chartnum = i;
-						i = 0;
-					}
-				}
-
-				// / check our index is valid
-				if ((chartnum >= 0) && (chartnum < this.frame.length)) {
-					// / Check we have not already created chart.
-					if (this.frame[chartnum] == null) {
-						// setup the chart.
-						DEMO.getChart(chartnum);
-
-						// present it in a frame...
-						String str = this.resources.getString(CHART_COMMANDS[chartnum][2] + ".title");
-						this.frame[chartnum] = new ChartFrame(str, DEMO.getChart(chartnum));
-						this.frame[chartnum].getChartPanel().setPreferredSize(
-																			new java.awt.Dimension(500, 270));
-						this.frame[chartnum].pack();
-						RefineryUtilities.positionFrameRandomly(this.frame[chartnum]);
-
-						// / Set panel to zoomable if required
-						try {
-							str = this.resources.getString(CHART_COMMANDS[chartnum][2] + ".zoom");
-							if ((str != null) && (str.toLowerCase().equals("true"))) {
-								final ChartPanel panel = this.frame[chartnum].getChartPanel();
-								panel.setMouseZoomable(true);
-								panel.setHorizontalAxisTrace(true);
-								panel.setVerticalAxisTrace(true);
-							}
-						} catch (Exception ex) {
-							// / Filter out messages which for charts which do not have zoom
-							// / specified.
-							if (ex.getMessage().indexOf("MissingResourceException") == 0) {
-								ex.printStackTrace();
-							}
-						}
-
-						this.frame[chartnum].setVisible(true);
-
-					} else {
-						this.frame[chartnum].setVisible(true);
-						this.frame[chartnum].requestFocus();
-					}
+		} else if (command.equals(ABOUT_COMMAND)) {
+			about();
+		} else {
+			// / Loop through available commands to find index to current command.
+			int chartnum = -1;
+			int i = CHART_COMMANDS.length;
+			while (i > 0) {
+				--i;
+				if (command.equals(CHART_COMMANDS[i][0])) {
+					chartnum = i;
+					i = 0;
 				}
 			}
+
+			// / check our index is valid
+			if ((chartnum >= 0) && (chartnum < this.frame.length)) {
+				// / Check we have not already created chart.
+				if (this.frame[chartnum] == null) {
+					// setup the chart.
+					DEMO.getChart(chartnum);
+
+					// present it in a frame...
+					String str = this.resources.getString(CHART_COMMANDS[chartnum][2] + ".title");
+					this.frame[chartnum] = new ChartFrame(str, DEMO.getChart(chartnum));
+					this.frame[chartnum].getChartPanel().setPreferredSize(new java.awt.Dimension(500, 270));
+					this.frame[chartnum].pack();
+					RefineryUtilities.positionFrameRandomly(this.frame[chartnum]);
+
+					// / Set panel to zoomable if required
+					try {
+						str = this.resources.getString(CHART_COMMANDS[chartnum][2] + ".zoom");
+						if ((str != null) && (str.toLowerCase().equals("true"))) {
+							final ChartPanel panel = this.frame[chartnum].getChartPanel();
+							panel.setMouseZoomable(true);
+							panel.setHorizontalAxisTrace(true);
+							panel.setVerticalAxisTrace(true);
+						}
+					} catch (Exception ex) {
+						// / Filter out messages which for charts which do not have zoom
+						// / specified.
+						if (ex.getMessage().indexOf("MissingResourceException") == 0) {
+							ex.printStackTrace();
+						}
+					}
+
+					this.frame[chartnum].setVisible(true);
+
+				} else {
+					this.frame[chartnum].setVisible(true);
+					this.frame[chartnum].requestFocus();
+				}
+			}
+		}
 	}
 
 	/**
@@ -237,9 +235,8 @@ public class JFreeChartDemo extends JFrame implements ActionListener, WindowList
 
 		final String title = this.resources.getString("dialog.exit.title");
 		final String message = this.resources.getString("dialog.exit.message");
-		final int result = JOptionPane.showConfirmDialog(this, message, title,
-																	JOptionPane.YES_NO_OPTION,
-																	JOptionPane.QUESTION_MESSAGE);
+		final int result = JOptionPane.showConfirmDialog(this, message, title, JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE);
 		if (result == JOptionPane.YES_OPTION) {
 			dispose();
 			System.exit(0);
@@ -267,7 +264,7 @@ public class JFreeChartDemo extends JFrame implements ActionListener, WindowList
 	 * The starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
@@ -281,7 +278,7 @@ public class JFreeChartDemo extends JFrame implements ActionListener, WindowList
 	 * Required for WindowListener interface, but not used by this class.
 	 * 
 	 * @param e
-	 *           the event.
+	 *            the event.
 	 */
 	public void windowActivated(final WindowEvent e) {
 		// not used
@@ -291,7 +288,7 @@ public class JFreeChartDemo extends JFrame implements ActionListener, WindowList
 	 * Clears the reference to the print preview frames when they are closed.
 	 * 
 	 * @param e
-	 *           the event.
+	 *            the event.
 	 */
 	public void windowClosed(final WindowEvent e) {
 
@@ -305,7 +302,7 @@ public class JFreeChartDemo extends JFrame implements ActionListener, WindowList
 	 * Required for WindowListener interface, but not used by this class.
 	 * 
 	 * @param e
-	 *           the event.
+	 *            the event.
 	 */
 	public void windowClosing(final WindowEvent e) {
 		// ignored
@@ -315,7 +312,7 @@ public class JFreeChartDemo extends JFrame implements ActionListener, WindowList
 	 * Required for WindowListener interface, but not used by this class.
 	 * 
 	 * @param e
-	 *           the event.
+	 *            the event.
 	 */
 	public void windowDeactivated(final WindowEvent e) {
 		// ignored
@@ -325,7 +322,7 @@ public class JFreeChartDemo extends JFrame implements ActionListener, WindowList
 	 * Required for WindowListener interface, but not used by this class.
 	 * 
 	 * @param e
-	 *           the event.
+	 *            the event.
 	 */
 	public void windowDeiconified(final WindowEvent e) {
 		// ignored
@@ -335,7 +332,7 @@ public class JFreeChartDemo extends JFrame implements ActionListener, WindowList
 	 * Required for WindowListener interface, but not used by this class.
 	 * 
 	 * @param e
-	 *           the event.
+	 *            the event.
 	 */
 	public void windowIconified(final WindowEvent e) {
 		// ignored
@@ -345,7 +342,7 @@ public class JFreeChartDemo extends JFrame implements ActionListener, WindowList
 	 * Required for WindowListener interface, but not used by this class.
 	 * 
 	 * @param e
-	 *           the event.
+	 *            the event.
 	 */
 	public void windowOpened(final WindowEvent e) {
 		// ignored
@@ -355,7 +352,7 @@ public class JFreeChartDemo extends JFrame implements ActionListener, WindowList
 	 * Creates a menubar.
 	 * 
 	 * @param resources
-	 *           localised resources.
+	 *            localised resources.
 	 * @return the menu bar.
 	 */
 	private JMenuBar createMenuBar(final ResourceBundle resources) {
@@ -404,7 +401,7 @@ public class JFreeChartDemo extends JFrame implements ActionListener, WindowList
 	 * Creates a tabbed pane containing descriptions of the demo charts.
 	 * 
 	 * @param resources
-	 *           localised resources.
+	 *            localised resources.
 	 * @return a tabbed pane.
 	 */
 	private JTabbedPane createTabbedPane(final ResourceBundle resources) {
@@ -467,8 +464,7 @@ public class JFreeChartDemo extends JFrame implements ActionListener, WindowList
 				usage = null;
 			}
 
-			if ((usage == null) || usage.equalsIgnoreCase("All")
-											|| usage.equalsIgnoreCase("Swing")) {
+			if ((usage == null) || usage.equalsIgnoreCase("All") || usage.equalsIgnoreCase("Swing")) {
 
 				title = resources.getString(CHART_COMMANDS[i][2] + ".title");
 				description = resources.getString(CHART_COMMANDS[i][2] + ".description");
@@ -476,8 +472,7 @@ public class JFreeChartDemo extends JFrame implements ActionListener, WindowList
 					tab = Integer.parseInt(resources.getString(CHART_COMMANDS[i][2] + ".tab"));
 					--tab;
 				} catch (Exception ex) {
-					System.err.println("Demo : Error retrieving tab identifier for chart "
-													+ CHART_COMMANDS[i][2]);
+					System.err.println("Demo : Error retrieving tab identifier for chart " + CHART_COMMANDS[i][2]);
 					System.err.println("Demo : Error = " + ex.getMessage());
 					tab = 0;
 				}

@@ -48,7 +48,8 @@ import org.jfree.util.Log;
 import org.jfree.util.PrintStreamLogTarget;
 
 /**
- * A simple demonstration application showing how to create a pie chart using data from a {@link DefaultPieDataset}.
+ * A simple demonstration application showing how to create a pie chart using
+ * data from a {@link DefaultPieDataset}.
  */
 public class PieChartDemo1 extends ApplicationFrame {
 
@@ -56,7 +57,7 @@ public class PieChartDemo1 extends ApplicationFrame {
 	 * Default constructor.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PieChartDemo1(final String title) {
 		super(title);
@@ -98,18 +99,15 @@ public class PieChartDemo1 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final PieDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createPieChart(
-							"Pie Chart Demo 1", // chart title
+		final JFreeChart chart = ChartFactory.createPieChart("Pie Chart Demo 1", // chart title
 				dataset, // data
 				true, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		final PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -125,7 +123,7 @@ public class PieChartDemo1 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

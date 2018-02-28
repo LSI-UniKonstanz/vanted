@@ -36,22 +36,21 @@ import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.algorithms.RecolorEdgesAlgorithm;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 	private JPanel jpanel;
-	
+
 	private JButton qsButton;
-	
+
 	private int barCount = -1;
-	
+
 	public ChartColorAttributeEditor(Displayable disp) {
 		super(disp);
 		qsButton = getQuickSetButton();
 		setGUI((ChartColorAttribute) disp, false);
 	}
-	
+
 	private JButton getQuickSetButton() {
 		JButton res = new JButton("P");
 		res.setToolTipText("Select Preset (Quick-Set Colors)");
@@ -63,7 +62,8 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 				ChartColorAttribute cca = (ChartColorAttribute) getDisplayable();
 				int numberOfColors = cca.getDefinedBarCount();
 				if (numberOfColors <= 0) {
-					MainFrame.showMessageDialog("Number of lines is too low (0). Editing colors not possible.", "Information");
+					MainFrame.showMessageDialog("Number of lines is too low (0). Editing colors not possible.",
+							"Information");
 					return;
 				}
 				ArrayList<String> knownPresets = new ArrayList<String>();
@@ -77,14 +77,10 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 				knownPresets.add(presetDiffLess1);
 				knownPresets.add(presetDiffLess2);
 				knownPresets.add(presetDiffLess3);
-				Object[] inp = MyInputHelper.getInput("Select a preset:", "Color Presets (" + numberOfColors + " lines)",
-									new Object[] {
-														"Presets", knownPresets,
-														"Stripe/Start", Color.BLACK,
-														"Stripe/End", Color.LIGHT_GRAY,
-														"Set Line/Fill", true,
-														"Set Outline", false
-				});
+				Object[] inp = MyInputHelper.getInput("Select a preset:",
+						"Color Presets (" + numberOfColors + " lines)",
+						new Object[] { "Presets", knownPresets, "Stripe/Start", Color.BLACK, "Stripe/End",
+								Color.LIGHT_GRAY, "Set Line/Fill", true, "Set Outline", false });
 				if (inp != null) {
 					String cmd = (String) inp[0];
 					ArrayList<Color> colors = null;
@@ -126,15 +122,14 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 										jb.setForeground(c1);
 										jb.setText("#");
 									}
-								} else
-									if (barIndex != null) {
-										Color c1 = colors.get(barIndex.intValue());
-										if (setBackground) {
-											jb.setBackground(c1);
-											jb.setForeground(c1);
-											jb.setText("#");
-										}
+								} else if (barIndex != null) {
+									Color c1 = colors.get(barIndex.intValue());
+									if (setBackground) {
+										jb.setBackground(c1);
+										jb.setForeground(c1);
+										jb.setText("#");
 									}
+								}
 							}
 						}
 					}
@@ -143,10 +138,10 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 		});
 		return res;
 	}
-	
+
 	private void setGUI(ChartColorAttribute cca, boolean showEmpty) {
 		jpanel = new JPanel();
-		
+
 		double[][] size = new double[2][];
 		barCount = cca.getDefinedBarCount();
 		if (barCount <= 0) {
@@ -159,7 +154,7 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 				size[0][x] = TableLayoutConstants.FILL;
 			size[1][0] = TableLayoutConstants.PREFERRED; // TableLayoutConstants.FILL;
 			size[1][1] = TableLayoutConstants.PREFERRED; // TableLayoutConstants.FILL;
-			
+
 			jpanel.setLayout(new TableLayout(size));
 			ArrayList<Color> barCols = null;
 			ArrayList<Color> barOutlineCols = null;
@@ -178,7 +173,8 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 					addDefaultColorActionListenerAndAddBarInfo(colButton, true, cca.getIdList(barCount).get(i));
 					colButton.putClientProperty("isBar", new Boolean(true));
 					colButton.putClientProperty("barIndex", new Integer(i));
-					colButton.setToolTipText("Line/Bar-Color: " + cca.getIdList(barCount).get(i) + ": " + AttributeHelper.getColorName(barCols.get(i)));
+					colButton.setToolTipText("Line/Bar-Color: " + cca.getIdList(barCount).get(i) + ": "
+							+ AttributeHelper.getColorName(barCols.get(i)));
 
 					if (barOutlineCols != null && barOutlineCols.get(i) != null && !showEmpty) {
 						colButtonOutline.setBackground(barOutlineCols.get(i));
@@ -187,25 +183,27 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 					} else
 						colButtonOutline.setText(EMPTY_STRING);
 
-					colButtonOutline.setToolTipText("Outline-Color: " + cca.getIdList(barCount).get(i) + ": " + AttributeHelper.getColorName(barOutlineCols.get(i)));
+					colButtonOutline.setToolTipText("Outline-Color: " + cca.getIdList(barCount).get(i) + ": "
+							+ AttributeHelper.getColorName(barOutlineCols.get(i)));
 
 					addDefaultColorActionListenerAndAddBarInfo(colButtonOutline, false, cca.getIdList(barCount).get(i));
 					colButtonOutline.putClientProperty("isBar", new Boolean(false));
 					colButtonOutline.putClientProperty("barIndex", new Integer(i));
 					jpanel.add(colButton, i + ",0");
-					
+
 					jpanel.add(colButtonOutline, i + ",1");
 				}
 			} catch (Exception e) {
 				ErrorMsg.addErrorMessage(e);
 			}
-			
+
 		}
 		// jpanel.setMaximumSize(new Dimension(2000, 40));
 		jpanel.validate();
 	}
-	
-	private void addDefaultColorActionListenerAndAddBarInfo(final JLabel colorButton, final boolean barColor, final String bar) {
+
+	private void addDefaultColorActionListenerAndAddBarInfo(final JLabel colorButton, final boolean barColor,
+			final String bar) {
 		colorButton.setOpaque(true);
 		colorButton.setBorder(BorderFactory.createRaisedBevelBorder());
 		colorButton.addMouseListener(new MouseListener() {
@@ -213,9 +211,11 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 				JLabel src = (JLabel) e.getSource();
 				Color c;
 				if (barColor)
-					c = JColorChooser.showDialog(MainFrame.getInstance(), "Select the (bar/line) color of dataset " + bar, src.getBackground());
+					c = JColorChooser.showDialog(MainFrame.getInstance(),
+							"Select the (bar/line) color of dataset " + bar, src.getBackground());
 				else
-					c = JColorChooser.showDialog(MainFrame.getInstance(), "Select the outline-color (bar charts) of dataset " + bar, src.getBackground());
+					c = JColorChooser.showDialog(MainFrame.getInstance(),
+							"Select the outline-color (bar charts) of dataset " + bar, src.getBackground());
 				if (c != null) {
 					src.setBackground(c);
 					src.setForeground(c);
@@ -226,27 +226,27 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 						src.setToolTipText("Outline-Color: " + bar + ": " + AttributeHelper.getColorName(c));
 				}
 			}
-			
+
 			public void mousePressed(MouseEvent arg0) {
 			}
-			
+
 			public void mouseReleased(MouseEvent arg0) {
 			}
-			
+
 			public void mouseEntered(MouseEvent arg0) {
 				colorButton.setBorder(BorderFactory.createLineBorder(Color.BLUE, 1));
 			}
-			
+
 			public void mouseExited(MouseEvent arg0) {
 				colorButton.setBorder(BorderFactory.createRaisedBevelBorder());
 			}
 		});
 	}
-	
+
 	public JComponent getComponent() {
 		return TableLayout.getSplit(qsButton, jpanel, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
 	}
-	
+
 	public void setEditFieldValue() {
 		ChartColorAttribute cca = (ChartColorAttribute) getDisplayable();
 		for (int i = 0; i < jpanel.getComponentCount(); i++) {
@@ -259,13 +259,12 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 				Integer barIndex = (Integer) jb.getClientProperty("barIndex");
 				if (bar != null && bar.booleanValue())
 					cca.setSeriesColor(barIndex.intValue(), jb.getBackground());
-				else
-					if (barIndex != null)
-						cca.setSeriesOutlineColor(barIndex.intValue(), jb.getBackground());
+				else if (barIndex != null)
+					cca.setSeriesOutlineColor(barIndex.intValue(), jb.getBackground());
 			}
 		}
 	}
-	
+
 	public void setValue() {
 		ChartColorAttribute cca = (ChartColorAttribute) getDisplayable();
 		for (int i = 0; i < jpanel.getComponentCount(); i++) {

@@ -42,7 +42,8 @@ import org.jfree.ui.RefineryUtilities;
 
 /**
  * A simple demonstration application showing how to create a stacked bar chart
- * using data from a {@link CategoryDataset}. This demo also has item labels displayed.
+ * using data from a {@link CategoryDataset}. This demo also has item labels
+ * displayed.
  */
 public class StackedBarChartDemo2 extends ApplicationFrame {
 
@@ -50,7 +51,7 @@ public class StackedBarChartDemo2 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public StackedBarChartDemo2(final String title) {
 
@@ -77,21 +78,21 @@ public class StackedBarChartDemo2 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return a sample chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createStackedBarChart(
-							"Stacked Bar Chart Demo 2",
-							"Category", // domain axis label
+		final JFreeChart chart = ChartFactory.createStackedBarChart("Stacked Bar Chart Demo 2", "Category", // domain
+																											// axis
+																											// label
 				"Value", // range axis label
 				dataset, // data
 				PlotOrientation.HORIZONTAL, // the plot orientation
 				true, // include legend
 				true, // tooltips
 				false // urls
-				);
+		);
 
 		final CategoryPlot plot = (CategoryPlot) chart.getPlot();
 		final StackedBarRenderer renderer = (StackedBarRenderer) plot.getRenderer();
@@ -116,7 +117,7 @@ public class StackedBarChartDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

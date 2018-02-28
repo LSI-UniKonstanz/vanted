@@ -18,15 +18,14 @@ import org.graffiti.plugin.tool.Tool;
  * @version $Revision: 1.5 $
  * @see org.graffiti.managers.pluginmgr.PluginManagerListener
  */
-public interface ToolManager
-					extends PluginManagerListener {
+public interface ToolManager extends PluginManagerListener {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Adds the specified tool to the list of tools of this manager.
 	 * 
 	 * @param tool
-	 *           the tool to be added.
+	 *            the tool to be added.
 	 */
 	public void addTool(Tool tool);
 }

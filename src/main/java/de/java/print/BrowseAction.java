@@ -25,18 +25,18 @@ class BrowseAction extends AbstractAction {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	public BrowseAction(Preview preview, int pageStep) {
 		super();
 		this.preview = preview;
 		this.pageStep = pageStep;
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 		preview.moveIndex(pageStep);
 		preview.repaint();
 	}
-	
+
 	protected Preview preview;
 	protected int pageStep;
 }

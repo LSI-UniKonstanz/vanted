@@ -30,37 +30,29 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawComponent.MyComparableDataPoint;
 
 /**
- * @author Christian Klukas
- *         (c) 2006 IPK Gatersleben, Group Network Analysis
+ * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
-public class CreateGOchildrenTtestHistogramAlgorithm extends AbstractAlgorithm implements
-					AlgorithmWithComponentDescription {
+public class CreateGOchildrenTtestHistogramAlgorithm extends AbstractAlgorithm
+		implements AlgorithmWithComponentDescription {
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Add t-Test Significance Histogram";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Hierarchy";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION,
-				Category.STATISTICS,
-				Category.CLUSTER,
-				Category.CHART,
-				Category.VISUAL
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.STATISTICS,
+				Category.CLUSTER, Category.CHART, Category.VISUAL));
 	}
-
 
 	public JComponent getDescriptionComponent() {
 		ClassLoader cl = this.getClass().getClassLoader();
@@ -68,19 +60,20 @@ public class CreateGOchildrenTtestHistogramAlgorithm extends AbstractAlgorithm i
 		ImageIcon icon = new ImageIcon(cl.getResource(path + "/images/go_cmd_desc_scaled.png"));
 		return FolderPanel.getBorderedComponent(new JLabel(icon), 5, 5, 5, 5);
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return "<html>" + "This command enumerates all leaf nodes<br>"
-							+ "with mapping data connected to a given GO-Term-<br>" + "Hierarchy-Node.<br>"
-							+ "A histogram of the number of significant <br>" + "differences of a line in comparison to the <br>"
-							+ "reference set is created.<br>" + "A data mapping representing this data is <br>"
-							+ "created and shown as a bar-chart.<br>" + "A t- or U-Test with the desired settings <br>"
-							+ "needs to be performed before issuing this <br>" + "command!";
+				+ "with mapping data connected to a given GO-Term-<br>" + "Hierarchy-Node.<br>"
+				+ "A histogram of the number of significant <br>" + "differences of a line in comparison to the <br>"
+				+ "reference set is created.<br>" + "A data mapping representing this data is <br>"
+				+ "created and shown as a bar-chart.<br>" + "A t- or U-Test with the desired settings <br>"
+				+ "needs to be performed before issuing this <br>" + "command!";
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
@@ -90,7 +83,8 @@ public class CreateGOchildrenTtestHistogramAlgorithm extends AbstractAlgorithm i
 			TreeSet<String> knownSeriesIDs = new TreeSet<String>();
 			HashSet<Node> processedNodes = new HashSet<Node>();
 			for (Node n : workingSet) {
-				knownSeriesIDs.addAll(getChildNodeSeriesNamesAndTimes(processedNodes, new NodeHelper(n), knownSeriesIDs));
+				knownSeriesIDs
+						.addAll(getChildNodeSeriesNamesAndTimes(processedNodes, new NodeHelper(n), knownSeriesIDs));
 			}
 			for (Node n : workingSet) {
 				NodeHelper nh = new NodeHelper(n);
@@ -102,13 +96,13 @@ public class CreateGOchildrenTtestHistogramAlgorithm extends AbstractAlgorithm i
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-	
+
 	private void processNode(NodeHelper nh, TreeSet<String> knownSeriesAndTimeIDs) {
 		Collection<Node> childNodes = nh.getAllOutChildNodes();
 		TreeMap<String, Integer> significance2frequency = new TreeMap<String, Integer>();
 		for (String ci : knownSeriesAndTimeIDs)
 			significance2frequency.put(ci, new Integer(0));
-		
+
 		for (Node n : childNodes) {
 			NodeHelper nnh = new NodeHelper(n);
 			if (nnh.hasDataMapping() && nnh.getOutDegree() == 0) {
@@ -140,20 +134,14 @@ public class CreateGOchildrenTtestHistogramAlgorithm extends AbstractAlgorithm i
 			else
 				nh.memSample(new Double(value), -1, plantID, "frequency", timeUnit, timePoint);
 		}
-		nh
-							.memAddDataMapping(
-												"mapping",
-												"significance frequency",
-												null,
-												"calculated analysis",
-												"system",
-												"Frequency of significant differences for series in comparison to reference set in child nodes of a GO-Term-Hierarchy-Node",
-												"");
+		nh.memAddDataMapping("mapping", "significance frequency", null, "calculated analysis", "system",
+				"Frequency of significant differences for series in comparison to reference set in child nodes of a GO-Term-Hierarchy-Node",
+				"");
 		nh.setChartType(GraffitiCharts.BAR);
 	}
-	
+
 	private TreeSet<String> getChildNodeSeriesNamesAndTimes(HashSet<Node> processedNodes, NodeHelper nh,
-						Collection<String> knownSeriesIDs) {
+			Collection<String> knownSeriesIDs) {
 		TreeSet<String> result = new TreeSet<String>();
 		if (!processedNodes.contains(nh.getGraphNode())) {
 			processedNodes.add(nh.getGraphNode());

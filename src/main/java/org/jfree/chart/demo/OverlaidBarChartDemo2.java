@@ -57,7 +57,7 @@ public class OverlaidBarChartDemo2 extends ApplicationFrame {
 	 * Default constructor.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public OverlaidBarChartDemo2(final String title) {
 		super(title);
@@ -145,7 +145,7 @@ public class OverlaidBarChartDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

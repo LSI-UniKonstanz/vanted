@@ -77,7 +77,7 @@ public class MeterLegend extends StandardLegend {
 	 * Constructs a new legend.
 	 * 
 	 * @param legendText
-	 *           the legend text.
+	 *            the legend text.
 	 */
 	public MeterLegend(String legendText) {
 		this.legendText = legendText;
@@ -87,11 +87,11 @@ public class MeterLegend extends StandardLegend {
 	 * Creates a new legend.
 	 * 
 	 * @param chart
-	 *           the chart that the legend belongs to.
+	 *            the chart that the legend belongs to.
 	 * @param legendText
-	 *           the legend text.
-	 * @deprecated use the default constructor instead and let JFreeChart manage
-	 *             the chart reference
+	 *            the legend text.
+	 * @deprecated use the default constructor instead and let JFreeChart manage the
+	 *             chart reference
 	 */
 	public MeterLegend(JFreeChart chart, String legendText) {
 		super(chart);
@@ -111,7 +111,7 @@ public class MeterLegend extends StandardLegend {
 	 * Sets the legend text.
 	 * 
 	 * @param text
-	 *           the new legend text.
+	 *            the new legend text.
 	 */
 	public void setLegendText(String text) {
 		this.legendText = text;
@@ -122,9 +122,9 @@ public class MeterLegend extends StandardLegend {
 	 * Draws the legend.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param available
-	 *           the available area.
+	 *            the available area.
 	 * @return the remaining available drawing area.
 	 */
 	public Rectangle2D draw(Graphics2D g2, Rectangle2D available) {
@@ -137,21 +137,21 @@ public class MeterLegend extends StandardLegend {
 	 * Updates the legend information.
 	 * 
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param data
-	 *           the dataset.
+	 *            the dataset.
 	 * @param type
-	 *           the type.
+	 *            the type.
 	 * @param index
-	 *           the index.
+	 *            the index.
 	 * @param legendItems
-	 *           the legend items.
+	 *            the legend items.
 	 * @param legendItemColors
-	 *           the colors.
+	 *            the colors.
 	 * @return boolean.
 	 */
-	private boolean updateInformation(MeterPlot plot, ValueDataset data, int type, int index,
-													LegendItem[] legendItems, Paint[] legendItemColors) {
+	private boolean updateInformation(MeterPlot plot, ValueDataset data, int type, int index, LegendItem[] legendItems,
+			Paint[] legendItemColors) {
 
 		boolean ret = false;
 		String label = null;
@@ -160,32 +160,32 @@ public class MeterLegend extends StandardLegend {
 		Paint paint = null;
 
 		switch (type) {
-			case MeterPlot.NORMAL_DATA_RANGE:
-				// minValue = plot.getNormalRange().getLowerBound();
-				// maxValue = plot.getNormalRange().getUpperBound();
-				paint = plot.getNormalPaint();
-				label = MeterPlot.NORMAL_TEXT;
-				break;
-			case MeterPlot.WARNING_DATA_RANGE:
-				// minValue = plot.getWarningRange().getLowerBound();
-				// maxValue = plot.getWarningRange().getUpperBound();
-				paint = plot.getWarningPaint();
-				label = MeterPlot.WARNING_TEXT;
-				break;
-			case MeterPlot.CRITICAL_DATA_RANGE:
-				// minValue = plot.getCriticalRange().getLowerBound();
-				// maxValue = plot.getCriticalRange().getUpperBound();
-				paint = plot.getCriticalPaint();
-				label = MeterPlot.CRITICAL_TEXT;
-				break;
-			case MeterPlot.FULL_DATA_RANGE:
-				// minValue = plot.getRange().getLowerBound();
-				// maxValue = plot.getRange().getUpperBound();
-				paint = MeterPlot.DEFAULT_BACKGROUND_PAINT;
-				label = "Meter Graph";
-				break;
-			default:
-				return false;
+		case MeterPlot.NORMAL_DATA_RANGE:
+			// minValue = plot.getNormalRange().getLowerBound();
+			// maxValue = plot.getNormalRange().getUpperBound();
+			paint = plot.getNormalPaint();
+			label = MeterPlot.NORMAL_TEXT;
+			break;
+		case MeterPlot.WARNING_DATA_RANGE:
+			// minValue = plot.getWarningRange().getLowerBound();
+			// maxValue = plot.getWarningRange().getUpperBound();
+			paint = plot.getWarningPaint();
+			label = MeterPlot.WARNING_TEXT;
+			break;
+		case MeterPlot.CRITICAL_DATA_RANGE:
+			// minValue = plot.getCriticalRange().getLowerBound();
+			// maxValue = plot.getCriticalRange().getUpperBound();
+			paint = plot.getCriticalPaint();
+			label = MeterPlot.CRITICAL_TEXT;
+			break;
+		case MeterPlot.FULL_DATA_RANGE:
+			// minValue = plot.getRange().getLowerBound();
+			// maxValue = plot.getRange().getUpperBound();
+			paint = MeterPlot.DEFAULT_BACKGROUND_PAINT;
+			label = "Meter Graph";
+			break;
+		default:
+			return false;
 		}
 
 		// if (minValue != null && maxValue != null) {
@@ -193,12 +193,12 @@ public class MeterLegend extends StandardLegend {
 		label += "  Range: ";
 		// + data.getMinimumValue().toString() + " to "
 		// + minValue.toString()
-		// + "  and  "
+		// + " and "
 		// + maxValue.toString() + " to "
 		// + data.getMaximumValue().toString();
 		// }
 		// else {
-		// label += "  Range: " + minValue.toString() + " to " + maxValue.toString();
+		// label += " Range: " + minValue.toString() + " to " + maxValue.toString();
 		// }
 		legendItems[index] = new LegendItem(label, label, null, true, null, null, null, null);
 		legendItemColors[index] = paint;
@@ -211,17 +211,16 @@ public class MeterLegend extends StandardLegend {
 	 * Draws the legend.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param available
-	 *           the available drawing area.
+	 *            the available drawing area.
 	 * @param horizontal
-	 *           if <code>true</code> draw a horizontal legend.
+	 *            if <code>true</code> draw a horizontal legend.
 	 * @param inverted
-	 *           ???
+	 *            ???
 	 * @return the remaining available drawing area.
 	 */
-	protected Rectangle2D draw(Graphics2D g2, Rectangle2D available,
-											boolean horizontal, boolean inverted) {
+	protected Rectangle2D draw(Graphics2D g2, Rectangle2D available, boolean horizontal, boolean inverted) {
 
 		int legendCount = 0;
 		Plot plot = getChart().getPlot();
@@ -248,24 +247,23 @@ public class MeterLegend extends StandardLegend {
 
 		int currentItem = 0;
 		String label = this.legendText
-							+ (data.getValue() != null ? ("   Current Value: " + data.getValue().toString()) : "");
+				+ (data.getValue() != null ? ("   Current Value: " + data.getValue().toString()) : "");
 		legendItems[currentItem] = new LegendItem(label, label, null, true, null, null, null, null);
 		legendItemColors[currentItem] = null; // no color
 		currentItem++;
-		if (updateInformation(meterPlot, data, MeterPlot.FULL_DATA_RANGE,
-							currentItem, legendItems, legendItemColors)) {
+		if (updateInformation(meterPlot, data, MeterPlot.FULL_DATA_RANGE, currentItem, legendItems, legendItemColors)) {
 			currentItem++;
 		}
-		if (this.showCritical && updateInformation(meterPlot, data,
-							MeterPlot.CRITICAL_DATA_RANGE, currentItem, legendItems, legendItemColors)) {
+		if (this.showCritical && updateInformation(meterPlot, data, MeterPlot.CRITICAL_DATA_RANGE, currentItem,
+				legendItems, legendItemColors)) {
 			currentItem++;
 		}
-		if (this.showWarning && updateInformation(meterPlot, data,
-							MeterPlot.WARNING_DATA_RANGE, currentItem, legendItems, legendItemColors)) {
+		if (this.showWarning && updateInformation(meterPlot, data, MeterPlot.WARNING_DATA_RANGE, currentItem,
+				legendItems, legendItemColors)) {
 			currentItem++;
 		}
-		if (this.showNormal && updateInformation(meterPlot, data,
-							MeterPlot.NORMAL_DATA_RANGE, currentItem, legendItems, legendItemColors)) {
+		if (this.showNormal && updateInformation(meterPlot, data, MeterPlot.NORMAL_DATA_RANGE, currentItem, legendItems,
+				legendItemColors)) {
 			currentItem++;
 		}
 
@@ -286,8 +284,7 @@ public class MeterLegend extends StandardLegend {
 			// as well as the bounding box for the legend.
 			if (horizontal) {
 				double xstart = available.getX() + getOuterGap().getLeftSpace(availableWidth);
-				double xlimit = available.getMaxX()
-											+ getOuterGap().getRightSpace(availableWidth) - 1;
+				double xlimit = available.getMaxX() + getOuterGap().getRightSpace(availableWidth) - 1;
 				double maxRowWidth = 0;
 				double xoffset = 0;
 				double rowHeight = 0;
@@ -296,8 +293,7 @@ public class MeterLegend extends StandardLegend {
 
 				for (int i = 0; i < legendItems.length; i++) {
 					items[i] = createLegendItem(g2, legendItems[i], xoffset, totalHeight);
-					if ((!startingNewRow)
-										&& (items[i].getX() + items[i].getWidth() + xstart > xlimit)) {
+					if ((!startingNewRow) && (items[i].getX() + items[i].getWidth() + xstart > xlimit)) {
 						maxRowWidth = Math.max(maxRowWidth, xoffset);
 						xoffset = 0;
 						totalHeight += rowHeight;
@@ -319,9 +315,8 @@ public class MeterLegend extends StandardLegend {
 				// The yloc point is the variable part of the translation point
 				// for horizontal legends. xloc is constant.
 				double yloc = (inverted)
-									? available.getMaxY() - totalHeight
-														- getOuterGap().getBottomSpace(availableHeight)
-									: available.getY() + getOuterGap().getTopSpace(availableHeight);
+						? available.getMaxY() - totalHeight - getOuterGap().getBottomSpace(availableHeight)
+						: available.getY() + getOuterGap().getTopSpace(availableHeight);
 				double xloc = available.getX() + available.getWidth() / 2 - maxRowWidth / 2;
 
 				// Create the translation point
@@ -341,9 +336,8 @@ public class MeterLegend extends StandardLegend {
 
 				// The xloc point is the variable part of the translation point
 				// for vertical legends. yloc is constant.
-				double xloc = (inverted)
-									? available.getMaxX() - maxWidth - getOuterGap().getRightSpace(availableWidth)
-									: available.getX() + getOuterGap().getLeftSpace(availableWidth);
+				double xloc = (inverted) ? available.getMaxX() - maxWidth - getOuterGap().getRightSpace(availableWidth)
+						: available.getX() + getOuterGap().getLeftSpace(availableWidth);
 				double yloc = available.getY() + (available.getHeight() / 2) - (totalHeight / 2);
 
 				// Create the translation point
@@ -368,9 +362,8 @@ public class MeterLegend extends StandardLegend {
 					g2.fill(items[i].getMarker());
 				}
 				g2.setPaint(getItemPaint());
-				g2.drawString(items[i].getItem().getLabel(),
-										(float) items[i].getLabelPosition().getX(),
-										(float) items[i].getLabelPosition().getY());
+				g2.drawString(items[i].getItem().getLabel(), (float) items[i].getLabelPosition().getX(),
+						(float) items[i].getLabelPosition().getY());
 			}
 
 			// translate the origin back to what it was prior to drawing the
@@ -386,14 +379,12 @@ public class MeterLegend extends StandardLegend {
 				// by the total height of the legend and the initial gap.
 				double yy = available.getY();
 				double yloc = (inverted) ? yy
-														: yy + legendArea.getHeight()
-																			+ getOuterGap().getBottomSpace(availableHeight);
+						: yy + legendArea.getHeight() + getOuterGap().getBottomSpace(availableHeight);
 
 				// return the remaining available drawing area
 				return new Rectangle2D.Double(available.getX(), yloc, availableWidth,
-									availableHeight - legendArea.getHeight()
-														- getOuterGap().getTopSpace(availableHeight)
-														- getOuterGap().getBottomSpace(availableHeight));
+						availableHeight - legendArea.getHeight() - getOuterGap().getTopSpace(availableHeight)
+								- getOuterGap().getBottomSpace(availableHeight));
 			} else {
 				// The remaining drawing area bounding box will have the same
 				// y origin, width and height independent of the anchor's
@@ -402,17 +393,13 @@ public class MeterLegend extends StandardLegend {
 				// of the available area. If it is WEST, we adjust original x
 				// by the total width of the legend and the initial gap.
 				double xloc = (inverted) ? available.getX()
-														: available.getX()
-																			+ legendArea.getWidth()
-																			+ getOuterGap().getLeftSpace(availableWidth)
-																			+ getOuterGap().getRightSpace(availableWidth);
+						: available.getX() + legendArea.getWidth() + getOuterGap().getLeftSpace(availableWidth)
+								+ getOuterGap().getRightSpace(availableWidth);
 
 				// return the remaining available drawing area
-				return new Rectangle2D.Double(xloc, available.getY(),
-									availableWidth - legendArea.getWidth()
-														- getOuterGap().getLeftSpace(availableWidth)
-														- getOuterGap().getRightSpace(availableWidth),
-									availableHeight);
+				return new Rectangle2D.Double(xloc, available.getY(), availableWidth - legendArea.getWidth()
+						- getOuterGap().getLeftSpace(availableWidth) - getOuterGap().getRightSpace(availableWidth),
+						availableHeight);
 			}
 		} else {
 			return available;
@@ -423,17 +410,16 @@ public class MeterLegend extends StandardLegend {
 	 * Creates a legend item
 	 * 
 	 * @param graphics
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param item
-	 *           the legend item.
+	 *            the legend item.
 	 * @param x
-	 *           the x coordinate.
+	 *            the x coordinate.
 	 * @param y
-	 *           the y coordinate.
+	 *            the y coordinate.
 	 * @return the legend item.
 	 */
-	private DrawableLegendItem createLegendItem(Graphics graphics,
-																LegendItem item, double x, double y) {
+	private DrawableLegendItem createLegendItem(Graphics graphics, LegendItem item, double x, double y) {
 
 		int innerGap = 2;
 		FontMetrics fm = graphics.getFontMetrics();
@@ -453,8 +439,8 @@ public class MeterLegend extends StandardLegend {
 
 		drawable.setMarker(new Rectangle2D.Float(xloc, yloc, boxDim, boxDim));
 
-		float width = (float) (drawable.getLabelPosition().getX() - x
-											+ fm.stringWidth(item.getLabel()) + 0.5 * textHeight);
+		float width = (float) (drawable.getLabelPosition().getX() - x + fm.stringWidth(item.getLabel())
+				+ 0.5 * textHeight);
 
 		float height = 2 * innerGap + textHeight;
 		drawable.setBounds(x, y, width, height);

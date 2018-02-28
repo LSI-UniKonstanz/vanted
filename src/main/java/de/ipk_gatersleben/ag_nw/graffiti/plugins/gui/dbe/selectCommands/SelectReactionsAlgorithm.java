@@ -21,41 +21,38 @@ import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class SelectReactionsAlgorithm extends AbstractAlgorithm implements
-					Algorithm {
-	
+public class SelectReactionsAlgorithm extends AbstractAlgorithm implements Algorithm {
+
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No active graph editor window found!");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Select reactions";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "menu.edit";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.NODE,
-				Category.SELECTION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.SELECTION));
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
@@ -63,14 +60,16 @@ public class SelectReactionsAlgorithm extends AbstractAlgorithm implements
 		for (Node n : graph.getNodes()) {
 			AttributeHelper.getLabel(n, null);
 			// check for other hints, that this is a enzyme
-			String kegg_reaction_type = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_reaction_type", null, new String(""), false);
+			String kegg_reaction_type = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_reaction_type",
+					null, new String(""), false);
 			if (AttributeHelper.isSBMLreaction(n))
 				reactions.add(n);
 			else {
 				if (kegg_reaction_type != null && kegg_reaction_type.length() > 0)
 					reactions.add(n);
 				else {
-					String kegg_reaction_id = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_reaction", null, new String(""), false);
+					String kegg_reaction_id = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_reaction",
+							null, new String(""), false);
 					if (kegg_reaction_id != null && kegg_reaction_id.length() > 0)
 						reactions.add(n);
 				}
@@ -80,7 +79,7 @@ public class SelectReactionsAlgorithm extends AbstractAlgorithm implements
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 		MainFrame.showMessage(reactions.size() + " reaction-nodes added to selection", MessageType.INFO);
 	}
-	
+
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

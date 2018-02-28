@@ -19,26 +19,25 @@ import org.graffiti.options.AbstractOptionPane;
  * 
  * @version $Revision: 1.7 $
  */
-public class LoadSaveOptionsPane
-					extends AbstractOptionPane {
+public class LoadSaveOptionsPane extends AbstractOptionPane {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Constructor for LoadSaveOptionsPane.
 	 */
 	public LoadSaveOptionsPane() {
 		super("loadsave");
-		
+
 		// TODO
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/*
 	 * @see org.graffiti.options.AbstractOptionPane#initDefault()
 	 */
@@ -46,7 +45,7 @@ public class LoadSaveOptionsPane
 	protected void initDefault() {
 		// TODO
 	}
-	
+
 	/*
 	 * @see org.graffiti.options.AbstractOptionPane#saveDefault()
 	 */
@@ -54,41 +53,45 @@ public class LoadSaveOptionsPane
 	protected void saveDefault() {
 		// TODO
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.options.OptionPane#getCategory()
 	 */
 	public String getCategory() {
 		//
 		return null;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.options.OptionPane#getOptionName()
 	 */
 	public String getOptionName() {
 		//
 		return null;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.options.OptionPane#init(javax.swing.JComponent)
 	 */
 	public void init(JComponent options) {
 		//
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.options.OptionPane#save(javax.swing.JComponent)
 	 */
 	public void save(JComponent options) {
 		//
-		
+
 	}
 }
 

@@ -62,13 +62,13 @@ public class RootHandler extends DefaultHandler implements DatasetTags {
 	 * Receives some (or all) of the text in the current element.
 	 * 
 	 * @param ch
-	 *           character buffer.
+	 *            character buffer.
 	 * @param start
-	 *           the start index.
+	 *            the start index.
 	 * @param length
-	 *           the length of the valid character data.
+	 *            the length of the valid character data.
 	 * @throws SAXException
-	 *            for errors.
+	 *             for errors.
 	 */
 	public void characters(final char[] ch, final int start, final int length) throws SAXException {
 
@@ -105,7 +105,7 @@ public class RootHandler extends DefaultHandler implements DatasetTags {
 	 * Pushes a sub-handler onto the stack.
 	 * 
 	 * @param subhandler
-	 *           the sub-handler.
+	 *            the sub-handler.
 	 */
 	public void pushSubHandler(final DefaultHandler subhandler) {
 		this.subHandlers.push(subhandler);

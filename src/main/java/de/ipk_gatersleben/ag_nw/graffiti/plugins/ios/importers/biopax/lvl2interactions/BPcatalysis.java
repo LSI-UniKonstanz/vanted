@@ -14,38 +14,34 @@ import org.graffiti.graph.Node;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.biopax.lvl2utility.UtilityClassSelectorToGraph;
 
-public class BPcatalysis extends BPinteraction
-{
+public class BPcatalysis extends BPinteraction {
 
-	public BPcatalysis(Graph Graph, Hashtable<String, Node> Nodes)
-	{
+	public BPcatalysis(Graph Graph, Hashtable<String, Node> Nodes) {
 		super(Graph, Nodes);
 	}
 
-	public void read(Level2Element i)
-	{
+	public void read(Level2Element i) {
 		catalysis convers = (catalysis) i;
 
 		Set<physicalEntityParticipant> controller = convers.getCONTROLLER();
 		Set<process> controlled = convers.getCONTROLLED();
 
-		for (physicalEntityParticipant c : controller)
-		{
-			for (process p : controlled)
-			{
+		for (physicalEntityParticipant c : controller) {
+			for (process p : controlled) {
 				Node processNode = findORcreateNode(p);
 				Node controllerNode = findORcreateNode(c);
 
-				if (convers.getCOFACTOR().contains(c))
-				{
-					setAttributeSecure(controllerNode, Messages.getString("UtilitySuperClassToGraph.120"), Messages.getString("UtilitySuperClassToGraph.121"));
-				} else
-				{
-					setAttributeSecure(controllerNode, Messages.getString("UtilitySuperClassToGraph.120"), Messages.getString("UtilitySuperClassToGraph.122"));
+				if (convers.getCOFACTOR().contains(c)) {
+					setAttributeSecure(controllerNode, Messages.getString("UtilitySuperClassToGraph.120"),
+							Messages.getString("UtilitySuperClassToGraph.121"));
+				} else {
+					setAttributeSecure(controllerNode, Messages.getString("UtilitySuperClassToGraph.120"),
+							Messages.getString("UtilitySuperClassToGraph.122"));
 				}
 
 				Edge catalyse = addEdge(controllerNode, processNode);
-				setAttributeSecure(catalyse, Messages.getString("UtilitySuperClassToGraph.116"), Messages.getString("UtilitySuperClassToGraph.117")); //$NON-NLS-1$ //$NON-NLS-2$
+				setAttributeSecure(catalyse, Messages.getString("UtilitySuperClassToGraph.116"), //$NON-NLS-1$
+						Messages.getString("UtilitySuperClassToGraph.117")); //$NON-NLS-1$
 				UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(catalyse, convers);
 			}
 		}

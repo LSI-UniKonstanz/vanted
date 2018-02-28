@@ -32,40 +32,40 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 /**
  * @author klukas
  */
-public class ShortestPathSelectionAlgorithm
-					extends AbstractAlgorithm {
-	
+public class ShortestPathSelectionAlgorithm extends AbstractAlgorithm {
+
 	private boolean settingIncludeInnerEdges = false;
 	private boolean settingDirected = true;
 	private boolean settingIncludeEdges = true;
-	
+
 	/**
 	 * Constructs a new instance.
 	 */
 	public ShortestPathSelectionAlgorithm() {
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
-//		super.check();
+		// super.check();
 		if (selection == null || selection.getNumberOfNodes() < 2)
 			throw new PreconditionException("at least one start and one end node has to be selected");
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
 	@Override
 	public Parameter[] getParameters() {
-		return new Parameter[] {
-							new BooleanParameter(settingDirected, "Consider Edge Direction", ""),
-							new BooleanParameter(settingIncludeEdges, "Select Edges", "If enabled, edges along the shortest path(s) are selected"),
-							new BooleanParameter(settingIncludeInnerEdges, "Select Inner-Edges",
-												"If selected, all edges connecting nodes of the shortest path(s) are selected") };
+		return new Parameter[] { new BooleanParameter(settingDirected, "Consider Edge Direction", ""),
+				new BooleanParameter(settingIncludeEdges, "Select Edges",
+						"If enabled, edges along the shortest path(s) are selected"),
+				new BooleanParameter(settingIncludeInnerEdges, "Select Inner-Edges",
+						"If selected, all edges connecting nodes of the shortest path(s) are selected") };
 	}
-	
+
 	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm# setParameters(org.graffiti.plugin.algorithm.Parameter)
+	 * @see org.graffiti.plugin.algorithm.Algorithm#
+	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
@@ -74,7 +74,7 @@ public class ShortestPathSelectionAlgorithm
 		settingIncludeEdges = ((BooleanParameter) params[i++]).getBoolean();
 		settingIncludeInnerEdges = ((BooleanParameter) params[i++]).getBoolean();
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
@@ -95,11 +95,9 @@ public class ShortestPathSelectionAlgorithm
 		for (GraphElement ge : currentSelElements) {
 			if (ge instanceof Node) {
 				Node n = (Node) ge;
-				Collection<GraphElement> shortestPathNodesAndEdges =
-									WeightedShortestPathSelectionAlgorithm.getShortestPathElements(
-														graph.getGraphElements(),
-														n,
-														targetNodesToBeProcessed, settingDirected, false, false, Double.MAX_VALUE, null, false, false, false);
+				Collection<GraphElement> shortestPathNodesAndEdges = WeightedShortestPathSelectionAlgorithm
+						.getShortestPathElements(graph.getGraphElements(), n, targetNodesToBeProcessed, settingDirected,
+								false, false, Double.MAX_VALUE, null, false, false, false);
 				new ArrayList<GraphElement>(shortestPathNodesAndEdges);
 				for (GraphElement gg : shortestPathNodesAndEdges) {
 					if (settingIncludeEdges && (gg instanceof Edge))
@@ -111,7 +109,7 @@ public class ShortestPathSelectionAlgorithm
 					targetNodesToBeProcessed.remove(n);
 			}
 		}
-		
+
 		if (settingIncludeInnerEdges)
 			for (Node n : selection.getNodes()) {
 				for (Edge e : n.getEdges()) {
@@ -119,40 +117,35 @@ public class ShortestPathSelectionAlgorithm
 						selection.add(e);
 				}
 			}
-		if(selection != null)
+		if (selection != null)
 			GraphHelper.selectElements((Collection) selection.getElements());
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Find Shortest Paths";
 	}
-	
+
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
 	}
-	
+
 	@Override
 	public String getCategory() {
-			return "Network.Analysis";
+		return "Network.Analysis";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.SELECTION,
-				Category.ANALYSIS
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.SELECTION, Category.ANALYSIS));
 	}
-	
+
 	@Override
 	public String getMenuCategory() {
-		return null; //we don't want to appear in the menu
+		return null; // we don't want to appear in the menu
 	}
 
 	@Override

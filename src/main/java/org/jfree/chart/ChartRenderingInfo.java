@@ -50,10 +50,14 @@ import org.jfree.util.ObjectUtils;
  * A structure for storing rendering information from one call to the
  * JFreeChart.draw() method.
  * <P>
- * An instance of the {@link JFreeChart} class can draw itself within an arbitrary rectangle on any Graphics2D. It is assumed that client code will sometimes
- * render the same chart in more than one view, so the {@link JFreeChart} instance does not retain any information about its rendered dimensions. This
- * information can be useful sometimes, so you have the option to collect the information at each call to <code>JFreeChart.draw(...)</code>, by passing an
- * instance of this <code>ChartRenderingInfo</code> class.
+ * An instance of the {@link JFreeChart} class can draw itself within an
+ * arbitrary rectangle on any Graphics2D. It is assumed that client code will
+ * sometimes render the same chart in more than one view, so the
+ * {@link JFreeChart} instance does not retain any information about its
+ * rendered dimensions. This information can be useful sometimes, so you have
+ * the option to collect the information at each call to
+ * <code>JFreeChart.draw(...)</code>, by passing an instance of this
+ * <code>ChartRenderingInfo</code> class.
  */
 public class ChartRenderingInfo implements Cloneable, Serializable {
 
@@ -67,15 +71,16 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	private transient Rectangle2D plotArea;
 
 	/**
-	 * Storage for the chart entities. Since retaining entity information for charts with a
-	 * large number of data points consumes a lot of memory, it is intended that you can set
-	 * this to <code>null</code> to prevent the information being collected.
+	 * Storage for the chart entities. Since retaining entity information for charts
+	 * with a large number of data points consumes a lot of memory, it is intended
+	 * that you can set this to <code>null</code> to prevent the information being
+	 * collected.
 	 */
 	private EntityCollection entities;
 
 	/**
-	 * Constructs a new ChartRenderingInfo structure that can be used to collect information
-	 * about the dimensions of a rendered chart.
+	 * Constructs a new ChartRenderingInfo structure that can be used to collect
+	 * information about the dimensions of a rendered chart.
 	 */
 	public ChartRenderingInfo() {
 		this(new StandardEntityCollection());
@@ -84,11 +89,12 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	/**
 	 * Constructs a new ChartRenderingInfo structure.
 	 * <P>
-	 * If an entity collection is supplied, it will be populated with information about the entities in a chart. If it is null, no entity information (including
-	 * tool tips) will be collected.
+	 * If an entity collection is supplied, it will be populated with information
+	 * about the entities in a chart. If it is null, no entity information
+	 * (including tool tips) will be collected.
 	 * 
 	 * @param entities
-	 *           an entity collection (null permitted).
+	 *            an entity collection (null permitted).
 	 */
 	public ChartRenderingInfo(EntityCollection entities) {
 
@@ -115,7 +121,7 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	 * Sets the area in which the chart was drawn.
 	 * 
 	 * @param area
-	 *           the chart area.
+	 *            the chart area.
 	 */
 	public void setChartArea(Rectangle2D area) {
 		this.chartArea.setRect(area);
@@ -134,7 +140,7 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	 * Sets the area in which the plot and axes were drawn.
 	 * 
 	 * @param area
-	 *           the plot area.
+	 *            the plot area.
 	 */
 	public void setPlotArea(Rectangle2D area) {
 		this.plotArea.setRect(area);
@@ -153,7 +159,7 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	 * Sets the entity collection.
 	 * 
 	 * @param entities
-	 *           the entity collection (<code>null</code> permitted).
+	 *            the entity collection (<code>null</code> permitted).
 	 */
 	public void setEntityCollection(EntityCollection entities) {
 		this.entities = entities;
@@ -186,7 +192,7 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object to test against (<code>null</code> permitted).
+	 *            the object to test against (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -208,7 +214,7 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the object cannot be cloned.
+	 *             if the object cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -218,9 +224,9 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the output stream.
+	 *            the output stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -232,11 +238,11 @@ public class ChartRenderingInfo implements Cloneable, Serializable {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the input stream.
+	 *            the input stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *            if there is a classpath problem.
+	 *             if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();

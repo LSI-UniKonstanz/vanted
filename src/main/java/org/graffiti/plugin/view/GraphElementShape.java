@@ -14,21 +14,20 @@ import java.awt.geom.Rectangle2D;
 /**
  * Interface combining <code>NodeShape</code> and <code>EdgeShape</code>.
  */
-public interface GraphElementShape
-					extends GraffitiShape {
+public interface GraphElementShape extends GraffitiShape {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public Rectangle2D getRealBounds2D();
-	
+
 	public void setCoordinateSystem(CoordinateSystem coordinates);
-	
+
 	public double getXexcess();
-	
+
 	public double getYexcess();
 }
 

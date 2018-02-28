@@ -40,7 +40,8 @@ import org.jfree.data.Series;
 /**
  * A series that contains zero, one or many {@link Task} objects.
  * <P>
- * This class is used as a building block for the {@link TaskSeriesCollection} class that can be used to construct basic Gantt charts.
+ * This class is used as a building block for the {@link TaskSeriesCollection}
+ * class that can be used to construct basic Gantt charts.
  */
 public class TaskSeries extends Series {
 
@@ -51,7 +52,7 @@ public class TaskSeries extends Series {
 	 * Constructs a new series with the specified name.
 	 * 
 	 * @param name
-	 *           the series name.
+	 *            the series name.
 	 */
 	public TaskSeries(final String name) {
 		super(name);
@@ -62,7 +63,7 @@ public class TaskSeries extends Series {
 	 * Adds a task to the series.
 	 * 
 	 * @param task
-	 *           the task.
+	 *            the task.
 	 */
 	public void add(final Task task) {
 		this.tasks.add(task);
@@ -73,7 +74,7 @@ public class TaskSeries extends Series {
 	 * Removes a task from the series.
 	 * 
 	 * @param task
-	 *           the task.
+	 *            the task.
 	 */
 	public void remove(final Task task) {
 		this.tasks.remove(task);
@@ -101,7 +102,7 @@ public class TaskSeries extends Series {
 	 * Returns a task from the series.
 	 * 
 	 * @param index
-	 *           the task index (zero-based).
+	 *            the task index (zero-based).
 	 * @return the task.
 	 */
 	public Task get(final int index) {

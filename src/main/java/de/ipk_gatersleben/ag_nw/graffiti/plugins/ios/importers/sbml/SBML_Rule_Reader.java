@@ -22,14 +22,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLRuleHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_Rule_Reader {
-	
+
 	/**
 	 * Method reads in rules and is called from class SBML_XML_Reader.java
 	 * 
 	 * @param listOfRules
-	 *        contains the rules for the import
+	 *            contains the rules for the import
 	 * @param g
-	 *        the data structure for reading in the information
+	 *            the data structure for reading in the information
 	 */
 	public void addRule(ListOf<Rule> listOfRules, Graph g) {
 		Iterator<Rule> itRule = listOfRules.iterator();
@@ -41,7 +41,7 @@ public class SBML_Rule_Reader {
 			Rule rule = itRule.next();
 			String metaID = rule.getMetaId();
 			String sboTerm = rule.getSBOTermID();
-			
+
 			String math = "";
 			try {
 				if (rule.isSetMath()) {
@@ -55,37 +55,30 @@ public class SBML_Rule_Reader {
 			String variable = "";
 			if (rule.isAssignment()) {
 				AssignmentRule assignment = (AssignmentRule) rule;
-				
-				String internHeadline = new StringBuffer(
-						SBML_Constants.SBML_ASSIGNMENT_RULE).append(
-						assignmentCount).toString();
-				String presentedHeadline = new StringBuffer(
-						"SBML Assignment Rule ").append(assignmentCount)
+
+				String internHeadline = new StringBuffer(SBML_Constants.SBML_ASSIGNMENT_RULE).append(assignmentCount)
 						.toString();
-				SBMLAssignmentRule assignmentRuleHelper = ruleHelperObject
-						.addAssignmentRule(g, internHeadline, presentedHeadline);
+				String presentedHeadline = new StringBuffer("SBML Assignment Rule ").append(assignmentCount).toString();
+				SBMLAssignmentRule assignmentRuleHelper = ruleHelperObject.addAssignmentRule(g, internHeadline,
+						presentedHeadline);
 				// initAssignmnetNiceIDs(internHeadline, presentedHeadline);
-				
+
 				/*
-				 * String presentedHeadline = "SBML Assignment Rule " +
-				 * assignmentCount; String internHeadline =
-				 * getNiceHeadline(presentedHeadline);
+				 * String presentedHeadline = "SBML Assignment Rule " + assignmentCount; String
+				 * internHeadline = getNiceHeadline(presentedHeadline);
 				 * SBML_Constants.put(internHeadline, presentedHeadline);
 				 */
-				
+
 				/*
-				 * String keyVariable =
-				 * SBML_Constants.addToNiceIdList(presentedHeadline,
+				 * String keyVariable = SBML_Constants.addToNiceIdList(presentedHeadline,
 				 * "Variable"); String keyFormula =
-				 * SBML_Constants.addToNiceIdList(presentedHeadline, "Formula");
-				 * String keyMetaId =
-				 * SBML_Constants.addToNiceIdList(presentedHeadline, "Meta ID");
-				 * String keySBOTerm =
-				 * SBML_Constants.addToNiceIdList(presentedHeadline, "SBOTerm");
-				 * String keyToolTip =
+				 * SBML_Constants.addToNiceIdList(presentedHeadline, "Formula"); String
+				 * keyMetaId = SBML_Constants.addToNiceIdList(presentedHeadline, "Meta ID");
+				 * String keySBOTerm = SBML_Constants.addToNiceIdList(presentedHeadline,
+				 * "SBOTerm"); String keyToolTip =
 				 * SBML_Constants.addToNiceIdList(presentedHeadline, "ToolTip");
 				 */
-				
+
 				variable = assignment.getVariable();
 				if (assignment.isSetMetaId()) {
 					assignmentRuleHelper.setMetaID(metaID);
@@ -108,51 +101,41 @@ public class SBML_Rule_Reader {
 						e.printStackTrace();
 						notesString = "";
 					}
-					assignmentRuleHelper.setNotes(notesString,
-							rule.getNotes());
+					assignmentRuleHelper.setNotes(notesString, rule.getNotes());
 				}
 				if (assignment.isSetAnnotation()) {
 					if (assignment.getAnnotation().isSetRDFannotation()) {
-						assignmentRuleHelper.setAnnotation(assignment
-								.getAnnotation());
+						assignmentRuleHelper.setAnnotation(assignment.getAnnotation());
 					}
 					if (assignment.getAnnotation().isSetNonRDFannotation()) {
-						assignmentRuleHelper.setNonRDFAnnotation(assignment
-								.getAnnotation().getNonRDFannotation());
+						assignmentRuleHelper.setNonRDFAnnotation(assignment.getAnnotation().getNonRDFannotation());
 					}
 				}
-				
+
 				assignmentCount++;
 			}
 			if (rule.isAlgebraic()) {
 				AlgebraicRule algebraic = (AlgebraicRule) rule;
-				
-				String internHeadline = new StringBuffer(
-						SBML_Constants.SBML_ALGEBRAIC_RULE).append(
-						algebraicCount).toString();
-				String presentedHeadline = new StringBuffer(
-						"SBML Algebraic Rule ").append(algebraicCount)
+
+				String internHeadline = new StringBuffer(SBML_Constants.SBML_ALGEBRAIC_RULE).append(algebraicCount)
 						.toString();
-				
-				SBMLAlgebraicRule algebraicRuleHelper = ruleHelperObject
-						.addAlgebraicRule(g, internHeadline, presentedHeadline);
+				String presentedHeadline = new StringBuffer("SBML Algebraic Rule ").append(algebraicCount).toString();
+
+				SBMLAlgebraicRule algebraicRuleHelper = ruleHelperObject.addAlgebraicRule(g, internHeadline,
+						presentedHeadline);
 				// initAlgebraicNiceIDs(internHeadline, presentedHeadline);
-				
+
 				/*
-				 * String presentedHeadline = "SBML Algebraic Rule " +
-				 * algebraicCount; String internHeadline =
-				 * getNiceHeadline(presentedHeadline);
-				 * SBML_Constants.put(internHeadline, presentedHeadline);
-				 * String keyFormula =
-				 * SBML_Constants.addToNiceIdList(presentedHeadline, "Formula");
-				 * String keyMetaId =
-				 * SBML_Constants.addToNiceIdList(presentedHeadline, "Meta ID");
-				 * String keySBOTerm =
-				 * SBML_Constants.addToNiceIdList(presentedHeadline, "SBOTerm");
-				 * String keyToolTip =
+				 * String presentedHeadline = "SBML Algebraic Rule " + algebraicCount; String
+				 * internHeadline = getNiceHeadline(presentedHeadline);
+				 * SBML_Constants.put(internHeadline, presentedHeadline); String keyFormula =
+				 * SBML_Constants.addToNiceIdList(presentedHeadline, "Formula"); String
+				 * keyMetaId = SBML_Constants.addToNiceIdList(presentedHeadline, "Meta ID");
+				 * String keySBOTerm = SBML_Constants.addToNiceIdList(presentedHeadline,
+				 * "SBOTerm"); String keyToolTip =
 				 * SBML_Constants.addToNiceIdList(presentedHeadline, "ToolTip");
 				 */
-				
+
 				if (algebraic.isSetMetaId()) {
 					algebraicRuleHelper.setMetaID(metaID);
 				}
@@ -171,50 +154,39 @@ public class SBML_Rule_Reader {
 						e.printStackTrace();
 						notesString = "";
 					}
-					algebraicRuleHelper.setNotes(notesString,
-							rule.getNotes());
+					algebraicRuleHelper.setNotes(notesString, rule.getNotes());
 				}
 				if (algebraic.isSetAnnotation()) {
 					if (algebraic.getAnnotation().isSetRDFannotation()) {
-						algebraicRuleHelper.setAnnotation(algebraic
-								.getAnnotation());
+						algebraicRuleHelper.setAnnotation(algebraic.getAnnotation());
 					}
 					if (algebraic.getAnnotation().isSetNonRDFannotation()) {
-						algebraicRuleHelper.setNonRDFAnnotation(algebraic
-								.getAnnotation().getNonRDFannotation());
+						algebraicRuleHelper.setNonRDFAnnotation(algebraic.getAnnotation().getNonRDFannotation());
 					}
 				}
-				
+
 				algebraicCount++;
 			}
 			if (rule.isRate()) {
 				RateRule rate = (RateRule) rule;
-				
-				String internHeadline = new StringBuffer(
-						SBML_Constants.SBML_RATE_RULE).append(rateCount)
-						.toString();
-				String presentedHeadline = new StringBuffer("SBML Rate Rule ")
-						.append(rateCount).toString();
-				SBMLRateRule rateRuleHelper = ruleHelperObject.addRateRule(g,
-						internHeadline, presentedHeadline);
+
+				String internHeadline = new StringBuffer(SBML_Constants.SBML_RATE_RULE).append(rateCount).toString();
+				String presentedHeadline = new StringBuffer("SBML Rate Rule ").append(rateCount).toString();
+				SBMLRateRule rateRuleHelper = ruleHelperObject.addRateRule(g, internHeadline, presentedHeadline);
 				// initRateNiceIDs(internHeadline, presentedHeadline);
-				
+
 				/*
-				 * String presentedHeadline = "SBML Rate Rule " + rateCount;
-				 * String internHeadline = getNiceHeadline(presentedHeadline);
-				 * SBML_Constants.put(internHeadline, presentedHeadline);
-				 * String keyVariable =
-				 * SBML_Constants.addToNiceIdList(presentedHeadline,
-				 * "Variable"); String keyFormula =
-				 * SBML_Constants.addToNiceIdList(presentedHeadline, "Formula");
-				 * String keyMetaId =
-				 * SBML_Constants.addToNiceIdList(presentedHeadline, "Meta ID");
-				 * String keySBOTerm =
-				 * SBML_Constants.addToNiceIdList(presentedHeadline, "SBOTerm");
-				 * String keyToolTip =
-				 * SBML_Constants.addToNiceIdList(presentedHeadline, "ToolTip");
+				 * String presentedHeadline = "SBML Rate Rule " + rateCount; String
+				 * internHeadline = getNiceHeadline(presentedHeadline);
+				 * SBML_Constants.put(internHeadline, presentedHeadline); String keyVariable =
+				 * SBML_Constants.addToNiceIdList(presentedHeadline, "Variable"); String
+				 * keyFormula = SBML_Constants.addToNiceIdList(presentedHeadline, "Formula");
+				 * String keyMetaId = SBML_Constants.addToNiceIdList(presentedHeadline,
+				 * "Meta ID"); String keySBOTerm =
+				 * SBML_Constants.addToNiceIdList(presentedHeadline, "SBOTerm"); String
+				 * keyToolTip = SBML_Constants.addToNiceIdList(presentedHeadline, "ToolTip");
 				 */
-				
+
 				variable = rate.getVariable();
 				if (rate.isSetMetaId()) {
 					rateRuleHelper.setMetaID(metaID);
@@ -237,22 +209,20 @@ public class SBML_Rule_Reader {
 						e.printStackTrace();
 						notesString = "";
 					}
-					rateRuleHelper.setNotes(notesString,
-							rule.getNotes());
+					rateRuleHelper.setNotes(notesString, rule.getNotes());
 				}
 				if (rate.isSetAnnotation()) {
 					if (rate.getAnnotation().isSetRDFannotation()) {
 						rateRuleHelper.setAnnotation(rate.getAnnotation());
 					}
 					if (rate.getAnnotation().isSetNonRDFannotation()) {
-						rateRuleHelper.setNonRDFAnnotation(rate.getAnnotation()
-								.getNonRDFannotation());
+						rateRuleHelper.setNonRDFAnnotation(rate.getAnnotation().getNonRDFannotation());
 					}
 				}
-				
+
 				rateCount++;
 			}
 		}
 	}
-	
+
 }

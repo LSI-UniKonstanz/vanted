@@ -30,9 +30,10 @@
 package org.jfree.data;
 
 /**
- * Represents a dense normalized matrix M[i,j] where each Mij item of the
- * matrix has a value (default is 0). When a matrix item is observed using <code>getItem</code> method, it is normalized, that is, divided by the
- * total sum of all items. It can be also be scaled by setting a scale factor.
+ * Represents a dense normalized matrix M[i,j] where each Mij item of the matrix
+ * has a value (default is 0). When a matrix item is observed using
+ * <code>getItem</code> method, it is normalized, that is, divided by the total
+ * sum of all items. It can be also be scaled by setting a scale factor.
  * 
  * @author Barak Naveh
  * @since Jun 18, 2003
@@ -43,7 +44,8 @@ public class NormalizedMatrixSeries extends MatrixSeries {
 	public static final double DEFAULT_SCALE_FACTOR = 1.0;
 
 	/**
-	 * A factor that multiplies each item in this series when observed using getItem method.
+	 * A factor that multiplies each item in this series when observed using getItem
+	 * method.
 	 */
 	private double m_scaleFactor = DEFAULT_SCALE_FACTOR;
 
@@ -54,20 +56,19 @@ public class NormalizedMatrixSeries extends MatrixSeries {
 	 * Constructor for NormalizedMatrixSeries.
 	 * 
 	 * @param name
-	 *           the series name.
+	 *            the series name.
 	 * @param rows
-	 *           the number of rows.
+	 *            the number of rows.
 	 * @param columns
-	 *           the number of columns.
+	 *            the number of columns.
 	 */
 	public NormalizedMatrixSeries(final String name, final int rows, final int columns) {
 		super(name, rows, columns);
 
 		/*
-		 * we assum super is always initialized to all-zero matrix, so the
-		 * total sum should be 0 upon initialization. However, we set it to
-		 * Double.MIN_VALUE to get the same effect and yet avoid division by 0
-		 * upon initialization.
+		 * we assum super is always initialized to all-zero matrix, so the total sum
+		 * should be 0 upon initialization. However, we set it to Double.MIN_VALUE to
+		 * get the same effect and yet avoid division by 0 upon initialization.
 		 */
 		this.m_totalSum = Double.MIN_VALUE;
 	}
@@ -76,7 +77,7 @@ public class NormalizedMatrixSeries extends MatrixSeries {
 	 * Returns an item.
 	 * 
 	 * @param itemIndex
-	 *           the index.
+	 *            the index.
 	 * @return The value.
 	 * @see org.jfree.data.MatrixSeries#getItem(int)
 	 */
@@ -91,11 +92,11 @@ public class NormalizedMatrixSeries extends MatrixSeries {
 	}
 
 	/**
-	 * Sets the factor that multiplies each item in this series when observed
-	 * using getItem mehtod.
+	 * Sets the factor that multiplies each item in this series when observed using
+	 * getItem mehtod.
 	 * 
 	 * @param factor
-	 *           new factor to set.
+	 *            new factor to set.
 	 * @see #DEFAULT_SCALE_FACTOR
 	 */
 	public void setScaleFactor(final double factor) {
@@ -103,8 +104,8 @@ public class NormalizedMatrixSeries extends MatrixSeries {
 	}
 
 	/**
-	 * Returns the factor that multiplies each item in this series when
-	 * observed using getItem mehtod.
+	 * Returns the factor that multiplies each item in this series when observed
+	 * using getItem mehtod.
 	 * 
 	 * @return the factor
 	 */

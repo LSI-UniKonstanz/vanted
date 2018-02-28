@@ -21,9 +21,10 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.session.EditorSession;
 
 public class ShowClusterGraphAlgorithm extends AbstractAlgorithm {
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
@@ -32,14 +33,13 @@ public class ShowClusterGraphAlgorithm extends AbstractAlgorithm {
 		else
 			return null;
 	}
-	
+
 	@Override
 	public String getCategory() {
 		// return "Analysis";
 		return "Cluster";
 	}
-	
-	
+
 	@Override
 	public String getMenuCategory() {
 		return "Network.Cluster.Process Cluster Overview-Graph";
@@ -47,41 +47,42 @@ public class ShowClusterGraphAlgorithm extends AbstractAlgorithm {
 
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.CLUSTER,
-				Category.GRAPH
-				));
+		return new HashSet<Category>(Arrays.asList(Category.CLUSTER, Category.GRAPH));
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
 		Graph emptyGraph = new AdjListGraph();
-		Graph clusterGraph = (Graph) AttributeHelper.getAttributeValue(graph, "cluster", "clustergraph", emptyGraph, new AdjListGraph(), false);
+		Graph clusterGraph = (Graph) AttributeHelper.getAttributeValue(graph, "cluster", "clustergraph", emptyGraph,
+				new AdjListGraph(), false);
 		if (clusterGraph == emptyGraph) {
-			throw new PreconditionException("No overview-graph available!<br>" +
-								"Please load a graph file with cluster-information (e.g. a PAJEK file),<br>" +
-								"or do a Cluster-Analysis to add Cluster-Information to this graph.<br>" +
-								"Then use the command <i>" + new CreateClusterGraphAlgorithm().getName() + "</i>," +
-								"<br>to create and layout a overview-graph.");
+			throw new PreconditionException("No overview-graph available!<br>"
+					+ "Please load a graph file with cluster-information (e.g. a PAJEK file),<br>"
+					+ "or do a Cluster-Analysis to add Cluster-Information to this graph.<br>"
+					+ "Then use the command <i>" + new CreateClusterGraphAlgorithm().getName() + "</i>,"
+					+ "<br>to create and layout a overview-graph.");
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
 		MainFrame mf = GravistoService.getInstance().getMainFrame();
 		Graph emptyGraph = new AdjListGraph();
-		Graph clusterGraph = (Graph) AttributeHelper.getAttributeValue(graph, "cluster", "clustergraph", emptyGraph, new AdjListGraph(), false);
+		Graph clusterGraph = (Graph) AttributeHelper.getAttributeValue(graph, "cluster", "clustergraph", emptyGraph,
+				new AdjListGraph(), false);
 		if (clusterGraph == emptyGraph) {
-			ErrorMsg.addErrorMessage("Internal Error: No Overview-Graph Available, <b>check</b> was not called before <b>execute</b>.");
+			ErrorMsg.addErrorMessage(
+					"Internal Error: No Overview-Graph Available, <b>check</b> was not called before <b>execute</b>.");
 		} else {
 			EditorSession es = new EditorSession(clusterGraph);
 			// es.setFileName(file.toURI());
 			mf.showViewChooserDialog(es, false, getActionEvent());
 		}
 	}
-	
+
 }

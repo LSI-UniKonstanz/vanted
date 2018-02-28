@@ -32,7 +32,8 @@ package org.jfree.chart.renderer;
 import org.jfree.chart.plot.PlotRenderingInfo;
 
 /**
- * An object that retains temporary state information for a {@link CategoryItemRenderer}.
+ * An object that retains temporary state information for a
+ * {@link CategoryItemRenderer}.
  */
 public class CategoryItemRendererState extends RendererState {
 
@@ -43,10 +44,11 @@ public class CategoryItemRendererState extends RendererState {
 	private double seriesRunningTotal;
 
 	/**
-	 * Creates a new object for recording temporary state information for a renderer.
+	 * Creates a new object for recording temporary state information for a
+	 * renderer.
 	 * 
 	 * @param info
-	 *           the plot rendering info.
+	 *            the plot rendering info.
 	 */
 	public CategoryItemRendererState(PlotRenderingInfo info) {
 		super(info);
@@ -64,11 +66,11 @@ public class CategoryItemRendererState extends RendererState {
 	}
 
 	/**
-	 * Sets the bar width. The renderer calculates this value and stores it here - it is not
-	 * intended that users can manually set the bar width.
+	 * Sets the bar width. The renderer calculates this value and stores it here -
+	 * it is not intended that users can manually set the bar width.
 	 * 
 	 * @param width
-	 *           the width.
+	 *            the width.
 	 */
 	public void setBarWidth(double width) {
 		this.barWidth = width;
@@ -84,10 +86,11 @@ public class CategoryItemRendererState extends RendererState {
 	}
 
 	/**
-	 * Sets the series running total (this method is intended for the use of the renderer only).
+	 * Sets the series running total (this method is intended for the use of the
+	 * renderer only).
 	 * 
 	 * @param total
-	 *           the new total.
+	 *            the new total.
 	 */
 	void setSeriesRunningTotal(double total) {
 		this.seriesRunningTotal = total;

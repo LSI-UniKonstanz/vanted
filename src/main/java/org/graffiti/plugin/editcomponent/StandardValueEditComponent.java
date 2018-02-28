@@ -21,20 +21,19 @@ import org.graffiti.plugin.Displayable;
  * 
  * @version $Revision: 1.4 $
  */
-public class StandardValueEditComponent
-					extends AbstractValueEditComponent {
+public class StandardValueEditComponent extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
-	
+
 	/** DOCUMENT ME! */
 	private JTextField textField;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Standard constructor.
 	 * 
 	 * @param disp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public StandardValueEditComponent(Displayable disp) {
 		super(disp);
@@ -43,9 +42,9 @@ public class StandardValueEditComponent
 		if (displayable.getValue() != null)
 			textField.setText(displayable.getValue().toString());
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Return the component used to display the displayable.
 	 * 
@@ -59,11 +58,11 @@ public class StandardValueEditComponent
 		textField.setMinimumSize(new Dimension(0, 20));
 		textField.setPreferredSize(new Dimension(50, 30));
 		textField.setMaximumSize(new Dimension(2000, 40));
-		
+
 		// textField.setSize(100, 30);
 		return textField;
 	}
-	
+
 	/**
 	 * Updates this component with the value from the displayable.
 	 */
@@ -76,7 +75,7 @@ public class StandardValueEditComponent
 			}
 		}
 	}
-	
+
 	/**
 	 * Standard edit component is not editable.
 	 */

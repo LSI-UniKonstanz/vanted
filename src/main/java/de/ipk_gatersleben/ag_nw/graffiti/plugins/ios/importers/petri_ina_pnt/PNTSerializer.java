@@ -23,38 +23,37 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 
 /**
- * @author klukas
- *         7.12.2006
+ * @author klukas 7.12.2006
  */
-public class PNTSerializer
-		extends AbstractOutputSerializer {
+public class PNTSerializer extends AbstractOutputSerializer {
 	/*
 	 * @see org.graffiti.plugin.io.Serializer#getExtensions()
 	 */
 	public String[] getExtensions() {
 		return new String[] { ".pnt" };
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
 	 */
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "INA PNT" };
 	}
-	
+
 	@Override
 	public boolean validFor(Graph g) {
 		return true;
 	}
-	
+
 	/*
 	 * @see org.graffiti.plugin.io.OutputSerializer#write(java.io.OutputStream,
 	 * org.graffiti.graph.Graph)
 	 */
 	public synchronized void write(OutputStream out, Graph g) {
 		PrintStream stream = new PrintStream(out);
-		
+
 		stream.print("P   M    PRE,POST  NETZ 1:" + encodeName(g.getName()) + "\r\n");
 		int i = 0;
 		HashMap<Node, Integer> node2placeNo = new HashMap<Node, Integer>();
@@ -107,13 +106,13 @@ public class PNTSerializer
 			}
 		}
 		stream.println("@\r\n");
-		
+
 		// finished
 		stream.close();
-		
+
 		reversibeErrorCheck(g);
 	}
-	
+
 	private boolean definesReversibleTransitionWithoutReferingToModifiers(Node n) {
 		boolean foundReversible = false;
 		for (Edge e : n.getEdges()) {
@@ -127,7 +126,7 @@ public class PNTSerializer
 		}
 		return foundReversible;
 	}
-	
+
 	private void reversibeErrorCheck(Graph g) {
 		Collection<Node> invalidNodes = new ArrayList<Node>();
 		for (Node n : g.getNodes()) {
@@ -151,19 +150,15 @@ public class PNTSerializer
 			}
 		}
 		if (invalidNodes.size() > 0) {
-			MainFrame.showMessageDialog(
-					"<html>" +
-							"A number of invalid transitions have been found.<br>" +
-							"Edges, connected to these transitions do not have a<br>" +
-							"uniform setting for the specification of a reversible<br>" +
-							"or irreversible reaction.<br>" +
-							"<b>The written PNT file might therefore be not error-free.</b><br>" +
-							"The invalid nodes have been selected.",
-					"Invalid Transitions (reversible/irreversible)");
+			MainFrame.showMessageDialog("<html>" + "A number of invalid transitions have been found.<br>"
+					+ "Edges, connected to these transitions do not have a<br>"
+					+ "uniform setting for the specification of a reversible<br>" + "or irreversible reaction.<br>"
+					+ "<b>The written PNT file might therefore be not error-free.</b><br>"
+					+ "The invalid nodes have been selected.", "Invalid Transitions (reversible/irreversible)");
 			GraphHelper.selectNodes(invalidNodes);
 		}
 	}
-	
+
 	private String encodeName(String name) {
 		String res = "";
 		if (name != null)
@@ -175,17 +170,19 @@ public class PNTSerializer
 		res = res.substring(0, 16);
 		return res;
 	}
-	
-	private void writePlaceConnectionInfo(int i, Node n, Graph g, PrintStream stream, HashMap<Node, ArrayList<Integer>> node2transNo) {
+
+	private void writePlaceConnectionInfo(int i, Node n, Graph g, PrintStream stream,
+			HashMap<Node, ArrayList<Integer>> node2transNo) {
 		String a = getPreOrPostTransitionInfo(true, n, node2transNo);
 		String b = getPreOrPostTransitionInfo(false, n, node2transNo);
 		if (a.length() <= 0)
 			a = "";
 		if (b.length() > 0)
 			b = ", " + b;
-		stream.print(getSpace(i + "", " ", 3) + " " + getSpace(getMarkierung(n) + "", " ", 1) + "      " + a + b + "\r\n");
+		stream.print(
+				getSpace(i + "", " ", 3) + " " + getSpace(getMarkierung(n) + "", " ", 1) + "      " + a + b + "\r\n");
 	}
-	
+
 	private int getMarkierung(Node n) {
 		String lbl = AttributeHelper.getLabel(n, "");
 		if (lbl.indexOf(":") > 0) {
@@ -198,8 +195,9 @@ public class PNTSerializer
 		} else
 			return 0;
 	}
-	
-	private String getPreOrPostTransitionInfo(boolean pre, Node nodePlace, HashMap<Node, ArrayList<Integer>> node2transNo) {
+
+	private String getPreOrPostTransitionInfo(boolean pre, Node nodePlace,
+			HashMap<Node, ArrayList<Integer>> node2transNo) {
 		TreeSet<String> tt = new TreeSet<String>();
 		for (Edge e : nodePlace.getEdges()) {
 			if (e.getSource() == e.getTarget())
@@ -214,12 +212,13 @@ public class PNTSerializer
 				try {
 					double t = Double.parseDouble(edgeLabel);
 					freq = (int) t;
-					// ErrorMsg.addErrorMessage("Warning: non-Integer value " + edgeLabel + " has been interpreted as value " + freq + ", for PNT export!");
+					// ErrorMsg.addErrorMessage("Warning: non-Integer value " + edgeLabel + " has
+					// been interpreted as value " + freq + ", for PNT export!");
 				} catch (NumberFormatException nfe2) {
 					ErrorMsg.addErrorMessage(nfe);
 				}
 			}
-			
+
 			boolean isModifier = false;
 			boolean isSubstrateEdge = false;
 			String role = AttributeHelper.getSBMLrole(e);
@@ -229,10 +228,11 @@ public class PNTSerializer
 			if (role != null && role.equals("reactant")) {
 				isSubstrateEdge = true;
 			}
-			
+
 			boolean reversible = AttributeHelper.isSBMLreversibleReaction(e);
-			
-			if (isModifier || reversible || (!reversible && ((pre && e.getTarget() == nodePlace) || (!pre && e.getSource() == nodePlace)))) {
+
+			if (isModifier || reversible
+					|| (!reversible && ((pre && e.getTarget() == nodePlace) || (!pre && e.getSource() == nodePlace)))) {
 				ArrayList<Integer> tidxlist = node2transNo.get(otherNode);
 				int transIdx = tidxlist.get(0);
 				if (tidxlist.size() > 2)
@@ -250,10 +250,10 @@ public class PNTSerializer
 							transIdx = tidxlist.get(0);
 						else
 							transIdx = tidxlist.get(1);
-						
+
 					}
 				}
-				
+
 				String t;
 				if (freq != 1) {
 					t = transIdx + ": " + freq;
@@ -269,30 +269,30 @@ public class PNTSerializer
 		}
 		return res.toString().trim();
 	}
-	
+
 	private void writeTransInfo(int idx, Node n, Graph g, PrintStream stream, String preLbl) {
 		NodeHelper nh = new NodeHelper(n);
 		stream.print(getSpace(idx + "", " ", 8) + ": " + encodeName(preLbl + nh.getLabel()) + "        0    0\r\n");
 	}
-	
+
 	private void writePlaceInfo(int idx, Node n, Graph g, PrintStream stream) {
 		NodeHelper nh = new NodeHelper(n);
 		stream.print(getSpace(idx + "", " ", 8) + ": " + encodeName(nh.getLabel()) + "       oo    0\r\n");
 	}
-	
+
 	private String getSpace(String value, String spaceString, int len) {
 		String res = value;
 		while (res.length() < len)
 			res = spaceString + res;
 		return res;
 	}
-	
+
 	private boolean isTrans(Node n) {
 		NodeHelper nh = new NodeHelper(n);
 		String shape = nh.getShape();
 		return shape != null && shape.indexOf("Rectangle") >= 0 && nh.getDegree() > 0;
 	}
-	
+
 	private boolean isPlace(Node n) {
 		NodeHelper nh = new NodeHelper(n);
 		String shape = nh.getShape();

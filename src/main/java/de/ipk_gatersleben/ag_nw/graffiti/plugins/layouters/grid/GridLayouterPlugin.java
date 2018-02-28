@@ -11,9 +11,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
  * 
  * @author Falk Schreiber
  */
-public class GridLayouterPlugin
-					extends IPK_PluginAdapter {
-	
+public class GridLayouterPlugin extends IPK_PluginAdapter {
+
 	/**
 	 * Creates a new GridLayouterPlugin object.
 	 */

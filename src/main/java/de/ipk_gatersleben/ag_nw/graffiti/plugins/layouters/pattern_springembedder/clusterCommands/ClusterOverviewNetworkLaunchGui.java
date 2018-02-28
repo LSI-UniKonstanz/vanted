@@ -14,7 +14,7 @@ import org.graffiti.plugin.algorithm.Category;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 
 public class ClusterOverviewNetworkLaunchGui extends LaunchGui {
-	
+
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
@@ -25,12 +25,12 @@ public class ClusterOverviewNetworkLaunchGui extends LaunchGui {
 		res.add(new ShowClusterGraphAlgorithm());
 		return res;
 	}
-	
+
 	@Override
 	public boolean closeDialogBeforeExecution(Algorithm algorithm) {
 		return !(algorithm instanceof SetClusterInfoAlgorithm);
 	}
-	
+
 	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
@@ -38,7 +38,7 @@ public class ClusterOverviewNetworkLaunchGui extends LaunchGui {
 		else
 			return "Process Cluster Overview-Graph";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Network.Cluster";
@@ -46,10 +46,7 @@ public class ClusterOverviewNetworkLaunchGui extends LaunchGui {
 
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.CLUSTER,
-				Category.GRAPH
-				));
+		return new HashSet<Category>(Arrays.asList(Category.CLUSTER, Category.GRAPH));
 	}
-	
+
 }

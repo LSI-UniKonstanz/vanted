@@ -9,24 +9,25 @@ public class MyPluginTreeNode extends DefaultMutableTreeNode {
 	private static final long serialVersionUID = 1L;
 	String nodeText;
 	Class<?> identifyAs;
-	
+
 	public MyPluginTreeNode(String nodeText, Object data, Class<?> identifyAs) {
 		super(data);
 		this.nodeText = nodeText;
 		this.identifyAs = identifyAs;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return nodeText;
 	}
-	
+
 	public Class<?> getClassType() {
 		return identifyAs;
 	}
-	
+
 }

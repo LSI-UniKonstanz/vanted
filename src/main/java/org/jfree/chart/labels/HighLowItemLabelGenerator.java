@@ -47,13 +47,11 @@ import org.jfree.data.XYDataset;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A standard item label generator for plots that use data from a {@link HighLowDataset}.
+ * A standard item label generator for plots that use data from a
+ * {@link HighLowDataset}.
  */
-public class HighLowItemLabelGenerator implements XYLabelGenerator,
-																	XYToolTipGenerator,
-																	Cloneable,
-																	PublicCloneable,
-																	Serializable {
+public class HighLowItemLabelGenerator
+		implements XYLabelGenerator, XYToolTipGenerator, Cloneable, PublicCloneable, Serializable {
 
 	/** The date formatter. */
 	private DateFormat dateFormatter;
@@ -72,9 +70,9 @@ public class HighLowItemLabelGenerator implements XYLabelGenerator,
 	 * Creates a tool tip generator using the supplied date formatter.
 	 * 
 	 * @param dateFormatter
-	 *           the date formatter (<code>null</code> not permitted).
+	 *            the date formatter (<code>null</code> not permitted).
 	 * @param numberFormatter
-	 *           the number formatter (<code>null</code> not permitted).
+	 *            the number formatter (<code>null</code> not permitted).
 	 */
 	public HighLowItemLabelGenerator(DateFormat dateFormatter, NumberFormat numberFormatter) {
 		if (dateFormatter == null) {
@@ -91,11 +89,11 @@ public class HighLowItemLabelGenerator implements XYLabelGenerator,
 	 * Generates a tooltip text item for a particular item within a series.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the tooltip text.
 	 */
 	public String generateToolTip(XYDataset dataset, int series, int item) {
@@ -136,15 +134,15 @@ public class HighLowItemLabelGenerator implements XYLabelGenerator,
 	}
 
 	/**
-	 * Generates a label for the specified item. The label is typically a formatted version of
-	 * the data value, but any text can be used.
+	 * Generates a label for the specified item. The label is typically a formatted
+	 * version of the data value, but any text can be used.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> not permitted).
+	 *            the dataset (<code>null</code> not permitted).
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param category
-	 *           the category index (zero-based).
+	 *            the category index (zero-based).
 	 * @return the label (possibly <code>null</code>).
 	 */
 	public String generateLabel(XYDataset dataset, int series, int category) {
@@ -156,7 +154,7 @@ public class HighLowItemLabelGenerator implements XYLabelGenerator,
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if cloning is not supported.
+	 *             if cloning is not supported.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 
@@ -177,7 +175,7 @@ public class HighLowItemLabelGenerator implements XYLabelGenerator,
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {

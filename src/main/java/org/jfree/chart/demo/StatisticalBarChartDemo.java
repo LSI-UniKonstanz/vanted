@@ -57,7 +57,7 @@ public class StatisticalBarChartDemo extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public StatisticalBarChartDemo(final String title) {
 
@@ -74,10 +74,8 @@ public class StatisticalBarChartDemo extends ApplicationFrame {
 		final CategoryItemRenderer renderer = new StatisticalBarRenderer();
 		final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
 
-		final JFreeChart chart = new JFreeChart("Statistical Bar Chart Demo",
-														new Font("Helvetica", Font.BOLD, 14),
-														plot,
-														true);
+		final JFreeChart chart = new JFreeChart("Statistical Bar Chart Demo", new Font("Helvetica", Font.BOLD, 14),
+				plot, true);
 		// chart.setBackgroundPaint(Color.white);
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
@@ -129,13 +127,11 @@ public class StatisticalBarChartDemo extends ApplicationFrame {
 	 * For testing from the command line.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
-		final StatisticalBarChartDemo demo = new StatisticalBarChartDemo(
-							"Statistical Bar Chart Demo"
-							);
+		final StatisticalBarChartDemo demo = new StatisticalBarChartDemo("Statistical Bar Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);

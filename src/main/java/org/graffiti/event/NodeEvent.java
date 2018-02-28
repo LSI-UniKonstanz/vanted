@@ -14,54 +14,54 @@ import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
 
 /**
- * Contains a node event. A <code>NodeEvent</code> object is passed to every <code>NodeListener</code> or <code>AbstractNodeListener</code> object which
- * is registered to receive the "interesting" node events using the
- * component's <code>addNodeListener</code> method.
- * (<code>AbstractNodeListener</code> objects implement the <code>NodeListener</code> interface.) Each such listener object gets a <code>NodeEvent</code>
- * containing the node event.
+ * Contains a node event. A <code>NodeEvent</code> object is passed to every
+ * <code>NodeListener</code> or <code>AbstractNodeListener</code> object which
+ * is registered to receive the "interesting" node events using the component's
+ * <code>addNodeListener</code> method. (<code>AbstractNodeListener</code>
+ * objects implement the <code>NodeListener</code> interface.) Each such
+ * listener object gets a <code>NodeEvent</code> containing the node event.
  * 
  * @version $Revision: 1.6 $
  * @see NodeListener
  * @see AbstractNodeListener
  */
-public class NodeEvent
-					extends AbstractEvent {
+public class NodeEvent extends AbstractEvent {
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	/** The edge that might have been responsible for the NodeEvent. */
 	private Edge edge;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a graph event object with the specified source components.
 	 * 
 	 * @param node
-	 *           the node that originated the event.
+	 *            the node that originated the event.
 	 * @param edge
-	 *           the edge that originated the event.
+	 *            the edge that originated the event.
 	 */
 	public NodeEvent(Node node, Edge edge) {
 		super(node);
 		this.edge = edge;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
-	 * Returns the edge that originated this event. E.g.: the edge that has
-	 * been added to the incoming egdes list of the node. Might return <tt>null</tt>.
+	 * Returns the edge that originated this event. E.g.: the edge that has been
+	 * added to the incoming egdes list of the node. Might return <tt>null</tt>.
 	 * 
 	 * @return The edge that originated the event.
 	 */
 	public Edge getEdge() {
 		return edge;
 	}
-	
+
 	/**
 	 * Returns the node that has been changed by this event.
 	 * 
@@ -70,7 +70,7 @@ public class NodeEvent
 	public Node getNode() {
 		return (Node) getSource();
 	}
-	
+
 	public Attributable getAttributeable() {
 		if (getNode() != null)
 			return getNode();

@@ -17,15 +17,14 @@ import java.util.logging.LogRecord;
  * 
  * @version $Revision: 1.5 $
  */
-public class SimpleFormatter
-					extends Formatter {
+public class SimpleFormatter extends Formatter {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the message of the given <code>LogRecord</code>
 	 * 
 	 * @param record
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @return a human readable string of the log record's message.
 	 */
 	@Override

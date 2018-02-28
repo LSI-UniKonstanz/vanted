@@ -20,16 +20,16 @@ import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
  */
 @SuppressWarnings("nls")
 public class EdgeRoutingPlugin extends GenericPluginAdapter {
-	
+
 	/**
-	 * Initializes the edge routing plugin.
-	 * Registers the edge routing algorithm and copies the native Adaptagrams libraries if necessary.
+	 * Initializes the edge routing plugin. Registers the edge routing algorithm and
+	 * copies the native Adaptagrams libraries if necessary.
 	 */
 	public EdgeRoutingPlugin() {
-		
+
 		// register the edge routing algorithm
 		this.algorithms = new Algorithm[] { new EdgeRoutingAlgorithm() };
-		
+
 		// initial step to use the Adaptagrams libraries in Vanted
 		// copy native Adaptagrams libraries from the jar to folder on the file system
 		String sourceFolder = "libs";
@@ -37,7 +37,8 @@ public class EdgeRoutingPlugin extends GenericPluginAdapter {
 		String[] libNames = AdaptagramsLibrary.getLibraryNames();
 		URL url = null;
 		int k = 0;
-		// the native libraries are all in the same jar, it's enough to find the url for one library
+		// the native libraries are all in the same jar, it's enough to find the url for
+		// one library
 		while (url == null && k < libNames.length) {
 			url = this.getClass().getClassLoader().getResource(sourceFolder + "/" + libNames[k]);
 			k++;
@@ -55,14 +56,15 @@ public class EdgeRoutingPlugin extends GenericPluginAdapter {
 				}
 			}
 			// Java Web Start, access the libraries from resource (as stream)
-			// this will always copy the libraries since the files in the resource are always newer than the libraries on the file system
+			// this will always copy the libraries since the files in the resource are
+			// always newer than the libraries on the file system
 			else {
 				for (String libName : libNames)
 					if (this.getClass().getClassLoader().getResourceAsStream(sourceFolder + "/" + libName) != null)
 						FileHelper.copyFileFromStream(sourceFolder, targetFolder, libName);
 			}
 		}
-		
+
 	}
-	
+
 }

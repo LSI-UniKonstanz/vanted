@@ -65,7 +65,7 @@ public class ImageMapDemo2 {
 	 * The starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
@@ -89,13 +89,10 @@ public class ImageMapDemo2 {
 			plot.setURLGenerator(new StandardPieURLGenerator("pie_chart_detail.jsp"));
 			chart = new JFreeChart("Pie Chart Demo 1", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 		} else {
-			chart = ChartFactory.createPieChart(
-								"Pie Chart Demo 1", // chart title
+			chart = ChartFactory.createPieChart("Pie Chart Demo 1", // chart title
 					data, // data
 					true, // include legend
-					true,
-								false
-								);
+					true, false);
 		}
 		chart.setBackgroundPaint(java.awt.Color.white);
 
@@ -124,8 +121,8 @@ public class ImageMapDemo2 {
 			writer.println("<HEAD><TITLE>JFreeChart Image Map Demo 2</TITLE></HEAD>");
 			writer.println("<BODY>");
 			ChartUtilities.writeImageMap(writer, "chart", info);
-			writer.println("<IMG SRC=\"piechart100.png\" "
-									+ "WIDTH=\"600\" HEIGHT=\"400\" BORDER=\"0\" USEMAP=\"#chart\">");
+			writer.println(
+					"<IMG SRC=\"piechart100.png\" " + "WIDTH=\"600\" HEIGHT=\"400\" BORDER=\"0\" USEMAP=\"#chart\">");
 			writer.println("</BODY>");
 			writer.println("</HTML>");
 			writer.close();

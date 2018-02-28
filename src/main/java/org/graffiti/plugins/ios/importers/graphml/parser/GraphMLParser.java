@@ -34,40 +34,39 @@ import org.xml.sax.helpers.XMLFilterImpl;
  *
  * @author ruediger
  */
-public class GraphMLParser
-{
-    //~ Static fields/initializers =============================================
+public class GraphMLParser {
+	// ~ Static fields/initializers =============================================
 
-    /** The validation feature property string. */
-    private static final String VALIDATION_FEATURE = "http://apache.org/xml/" +
-        "features/validation/schema";
+	/** The validation feature property string. */
+	private static final String VALIDATION_FEATURE = "http://apache.org/xml/" + "features/validation/schema";
 
-    //~ Constructors ===========================================================
+	// ~ Constructors ===========================================================
 
-    /**
-     * Constructs a new <code>GraphMLParser</code>.
-     */
-    public GraphMLParser()
-    {
-    }
+	/**
+	 * Constructs a new <code>GraphMLParser</code>.
+	 */
+	public GraphMLParser() {
+	}
 
-    //~ Methods ================================================================
+	// ~ Methods ================================================================
 
-    /**
-     * Parses the given <code>InputStream</code> and adds the read in data to
-     * the given <code>Graph</code>.
-     *
-     * @param in the <code>InputStream</code> from which to read.
-     * @param g the <code>Graph</code> to which to add the parsed data.
-     *
-     * @throws IOException if something fails during parsing.
-     * @throws GraphMLException if something fails during parsing.
-     */
-    public void parse(InputStream in, Graph g)
-        throws IOException
-    {
-   		parse(new InputSource(in), g, false);
-    }
+	/**
+	 * Parses the given <code>InputStream</code> and adds the read in data to the
+	 * given <code>Graph</code>.
+	 *
+	 * @param in
+	 *            the <code>InputStream</code> from which to read.
+	 * @param g
+	 *            the <code>Graph</code> to which to add the parsed data.
+	 *
+	 * @throws IOException
+	 *             if something fails during parsing.
+	 * @throws GraphMLException
+	 *             if something fails during parsing.
+	 */
+	public void parse(InputStream in, Graph g) throws IOException {
+		parse(new InputSource(in), g, false);
+	}
 
 	private void parse(InputSource in, Graph g, boolean validate) throws GraphMLException, IOException {
 		parseWithSettings(in, g, validate);
@@ -75,60 +74,54 @@ public class GraphMLParser
 
 	private void parseWithSettings(InputSource in, Graph g, boolean validate) throws GraphMLException, IOException {
 		// instantiate a SAXParserFactory that creates SAX parsers that are
-        // validating, support namespaces and XML schema validation
-//        SAXParserFactory spf = SAXParserFactory.newInstance();
-//        spf.setNamespaceAware(true);
-//        spf.setValidating(validate);
+		// validating, support namespaces and XML schema validation
+		// SAXParserFactory spf = SAXParserFactory.newInstance();
+		// spf.setNamespaceAware(true);
+		// spf.setValidating(validate);
 
-        // make sure the features are supported
-//        assert spf.isNamespaceAware() : "parser is not namespace aware.";
-//        assert spf.isValidating() : "parser is not validating.";
+		// make sure the features are supported
+		// assert spf.isNamespaceAware() : "parser is not namespace aware.";
+		// assert spf.isValidating() : "parser is not validating.";
 
-        // instantiate a parser
-        SAXParser saxParser;
+		// instantiate a parser
+		SAXParser saxParser;
 
-        try
-        {
-            saxParser = new org.apache.xerces.jaxp.SAXParserFactoryImpl().newSAXParser(); 
-            	// spf.newSAXParser();
-        }
-        catch(ParserConfigurationException pe)
-        {
-            throw new GraphMLException(pe);
-        }
-//        catch(SAXException se)
-//        {
-//            throw new GraphMLException(se);
-//        }
-        
-        System.out.println("SAX Parser: "+saxParser.getClass().getCanonicalName());
+		try {
+			saxParser = new org.apache.xerces.jaxp.SAXParserFactoryImpl().newSAXParser();
+			// spf.newSAXParser();
+		} catch (ParserConfigurationException pe) {
+			throw new GraphMLException(pe);
+		}
+		// catch(SAXException se)
+		// {
+		// throw new GraphMLException(se);
+		// }
 
-        // configure the different readers
-        XMLReader parser;
+		System.out.println("SAX Parser: " + saxParser.getClass().getCanonicalName());
 
-        try
-        {
-            parser = saxParser.getXMLReader();
-        }
-        catch(SAXException se)
-        {
-            throw new GraphMLException(se);
-        }
-        
-        System.out.println("XML Reader: "+parser.getClass().getCanonicalName());
+		// configure the different readers
+		XMLReader parser;
 
-        // create a filter for filtering character events
-        XMLFilterImpl charFilter = new CharFilter(parser);
+		try {
+			parser = saxParser.getXMLReader();
+		} catch (SAXException se) {
+			throw new GraphMLException(se);
+		}
 
-        // create a filter to filter the content supported by Gravisto
-        // XMLFilterImpl gravistoFilter = new GraphMLGravistoFilter(parser, g);
-        XMLFilterImpl gravistoFilter = new GraphMLGravistoFilter(charFilter);
+		System.out.println("XML Reader: " + parser.getClass().getCanonicalName());
 
-        // create a filter for processing the relevant content
-        XMLFilterImpl graphMLParser = new GraphMLFilter(gravistoFilter, g);
-        graphMLParser.setEntityResolver(new GraphMLEntityResolver());
-        
-        graphMLParser.setErrorHandler(new ErrorHandler() {
+		// create a filter for filtering character events
+		XMLFilterImpl charFilter = new CharFilter(parser);
+
+		// create a filter to filter the content supported by Gravisto
+		// XMLFilterImpl gravistoFilter = new GraphMLGravistoFilter(parser, g);
+		XMLFilterImpl gravistoFilter = new GraphMLGravistoFilter(charFilter);
+
+		// create a filter for processing the relevant content
+		XMLFilterImpl graphMLParser = new GraphMLFilter(gravistoFilter, g);
+		graphMLParser.setEntityResolver(new GraphMLEntityResolver());
+
+		graphMLParser.setErrorHandler(new ErrorHandler() {
 
 			public void error(SAXParseException exception) throws SAXException {
 				ErrorMsg.addErrorMessage(exception);
@@ -140,26 +133,24 @@ public class GraphMLParser
 
 			public void warning(SAXParseException exception) throws SAXException {
 				ErrorMsg.addErrorMessage(exception);
-			}});
+			}
+		});
 
-        // run the parser
-        try
-        {
-            graphMLParser.parse(in);
-            TypedAttributeService.createTypedHashMapAttributes(g);
+		// run the parser
+		try {
+			graphMLParser.parse(in);
+			TypedAttributeService.createTypedHashMapAttributes(g);
 
-        }
-        catch(SAXException se)
-        {
-            throw new GraphMLException(se);
-        }
+		} catch (SAXException se) {
+			throw new GraphMLException(se);
+		}
 	}
 
 	public void parse(Reader reader, Graph g) throws GraphMLException, IOException {
-   		parse(new InputSource(reader), g, false);
+		parse(new InputSource(reader), g, false);
 	}
 }
 
-//------------------------------------------------------------------------------
-//   end of file
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// end of file
+// ------------------------------------------------------------------------------

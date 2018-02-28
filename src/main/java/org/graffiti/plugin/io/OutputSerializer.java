@@ -20,24 +20,22 @@ import org.graffiti.graph.Graph;
  * 
  * @version $Revision: 1.6 $
  */
-public interface OutputSerializer
-					extends Serializer {
+public interface OutputSerializer extends Serializer {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Writes the contents of the given graph to a stream.
 	 * 
 	 * @param stream
-	 *           The output stream to save the graph to.
+	 *            The output stream to save the graph to.
 	 * @param g
-	 *           The graph to save.
+	 *            The graph to save.
 	 */
-	public void write(OutputStream stream, Graph g)
-						throws IOException;
-	
+	public void write(OutputStream stream, Graph g) throws IOException;
+
 	/**
 	 * @param g
-	 *           The graph to be serialized
+	 *            The graph to be serialized
 	 * @return
 	 */
 	public boolean validFor(Graph g);

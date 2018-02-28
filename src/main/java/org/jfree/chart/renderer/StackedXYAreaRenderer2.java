@@ -51,10 +51,7 @@ import org.jfree.util.PublicCloneable;
 /**
  * A stacked area renderer for the {@link XYPlot} class.
  */
-public class StackedXYAreaRenderer2 extends XYAreaRenderer2
-												implements Cloneable,
-																PublicCloneable,
-																Serializable {
+public class StackedXYAreaRenderer2 extends XYAreaRenderer2 implements Cloneable, PublicCloneable, Serializable {
 
 	/**
 	 * Creates a new renderer.
@@ -67,12 +64,11 @@ public class StackedXYAreaRenderer2 extends XYAreaRenderer2
 	 * Constructs a new renderer.
 	 * 
 	 * @param labelGenerator
-	 *           the tool tip generator to use. <code>null</code> is none.
+	 *            the tool tip generator to use. <code>null</code> is none.
 	 * @param urlGenerator
-	 *           the URL generator (null permitted).
+	 *            the URL generator (null permitted).
 	 */
-	public StackedXYAreaRenderer2(XYToolTipGenerator labelGenerator,
-												XYURLGenerator urlGenerator) {
+	public StackedXYAreaRenderer2(XYToolTipGenerator labelGenerator, XYURLGenerator urlGenerator) {
 		super(labelGenerator, urlGenerator);
 	}
 
@@ -86,12 +82,13 @@ public class StackedXYAreaRenderer2 extends XYAreaRenderer2
 	}
 
 	/**
-	 * Returns the range of values the renderer requires to display all the items from the
-	 * specified dataset.
+	 * Returns the range of values the renderer requires to display all the items
+	 * from the specified dataset.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> permitted).
-	 * @return The range (or <code>null</code> if the dataset is <code>null</code> or empty).
+	 *            the dataset (<code>null</code> permitted).
+	 * @return The range (or <code>null</code> if the dataset is <code>null</code>
+	 *         or empty).
 	 */
 	public Range getRangeExtent(XYDataset dataset) {
 		double min = Double.POSITIVE_INFINITY;
@@ -119,42 +116,33 @@ public class StackedXYAreaRenderer2 extends XYAreaRenderer2
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the area within which the data is being drawn.
+	 *            the area within which the data is being drawn.
 	 * @param info
-	 *           collects information about the drawing.
+	 *            collects information about the drawing.
 	 * @param plot
-	 *           the plot (can be used to obtain standard color information etc).
+	 *            the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @param crosshairState
-	 *           information about crosshairs on a plot.
+	 *            information about crosshairs on a plot.
 	 * @param pass
-	 *           the pass index.
+	 *            the pass index.
 	 */
-	public void drawItem(Graphics2D g2,
-									XYItemRendererState state,
-									Rectangle2D dataArea,
-									PlotRenderingInfo info,
-									XYPlot plot,
-									ValueAxis domainAxis,
-									ValueAxis rangeAxis,
-									XYDataset dataset,
-									int series,
-									int item,
-									CrosshairState crosshairState,
-									int pass) {
+	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
+			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
+			CrosshairState crosshairState, int pass) {
 
 		// get the data point...
 		Number x1n = dataset.getXValue(series, item);
@@ -206,10 +194,9 @@ public class StackedXYAreaRenderer2 extends XYAreaRenderer2
 		if (y1 >= 0.0) { // handle positive value
 			float transY1 = (float) rangeAxis.valueToJava2D(y1 + stack1[1], dataArea, edge1);
 			float transStack1 = (float) rangeAxis.valueToJava2D(stack1[1], dataArea, edge1);
-			// float transStackLeft = (float) rangeAxis.valueToJava2D(stackLeft[1], dataArea, edge1);
-			float transStackLeft = (float) rangeAxis.valueToJava2D(
-								adjStackLeft[1], dataArea, edge1
-								);
+			// float transStackLeft = (float) rangeAxis.valueToJava2D(stackLeft[1],
+			// dataArea, edge1);
+			float transStackLeft = (float) rangeAxis.valueToJava2D(adjStackLeft[1], dataArea, edge1);
 
 			// LEFT POLYGON
 			if (y0 >= 0.0) {
@@ -227,9 +214,7 @@ public class StackedXYAreaRenderer2 extends XYAreaRenderer2
 				left.closePath();
 			}
 
-			float transStackRight = (float) rangeAxis.valueToJava2D(
-								adjStackRight[1], dataArea, edge1
-								);
+			float transStackRight = (float) rangeAxis.valueToJava2D(adjStackRight[1], dataArea, edge1);
 			// RIGHT POLYGON
 			if (y2 >= 0.0) {
 				double yright = (y1 + y2) / 2.0 + stackRight[1];
@@ -248,9 +233,7 @@ public class StackedXYAreaRenderer2 extends XYAreaRenderer2
 		} else { // handle negative value
 			float transY1 = (float) rangeAxis.valueToJava2D(y1 + stack1[0], dataArea, edge1);
 			float transStack1 = (float) rangeAxis.valueToJava2D(stack1[0], dataArea, edge1);
-			float transStackLeft = (float) rangeAxis.valueToJava2D(
-								adjStackLeft[0], dataArea, edge1
-								);
+			float transStackLeft = (float) rangeAxis.valueToJava2D(adjStackLeft[0], dataArea, edge1);
 
 			// LEFT POLYGON
 			if (y0 >= 0.0) {
@@ -267,9 +250,7 @@ public class StackedXYAreaRenderer2 extends XYAreaRenderer2
 				left.lineTo(transXLeft, transYLeft);
 				left.closePath();
 			}
-			float transStackRight = (float) rangeAxis.valueToJava2D(
-								adjStackRight[0], dataArea, edge1
-								);
+			float transStackRight = (float) rangeAxis.valueToJava2D(adjStackRight[0], dataArea, edge1);
 
 			// RIGHT POLYGON
 			if (y2 >= 0.0) {
@@ -302,17 +283,18 @@ public class StackedXYAreaRenderer2 extends XYAreaRenderer2
 	}
 
 	/**
-	 * Calculates the stacked value of the all series up to, but not including <code>series</code> for the specified category, <code>category</code>. It returns
-	 * 0.0 if <code>series</code> is the first series, i.e. 0.
+	 * Calculates the stacked value of the all series up to, but not including
+	 * <code>series</code> for the specified category, <code>category</code>. It
+	 * returns 0.0 if <code>series</code> is the first series, i.e. 0.
 	 * 
 	 * @param dataset
-	 *           the data.
+	 *            the data.
 	 * @param series
-	 *           the series.
+	 *            the series.
 	 * @param index
-	 *           the index.
-	 * @return double returns a cumulative value for all series' values up to
-	 *         but excluding <code>series</code> for <code>index</code>.
+	 *            the index.
+	 * @return double returns a cumulative value for all series' values up to but
+	 *         excluding <code>series</code> for <code>index</code>.
 	 */
 	private double[] getStackValues(XYDataset dataset, int series, int index) {
 		double[] result = new double[2];
@@ -334,9 +316,9 @@ public class StackedXYAreaRenderer2 extends XYAreaRenderer2
 	 * Returns a pair of "stack" values calculated from the two specified pairs.
 	 * 
 	 * @param stack1
-	 *           the first stack pair.
+	 *            the first stack pair.
 	 * @param stack2
-	 *           the second stack pair.
+	 *            the second stack pair.
 	 * @return A pair of average stack values.
 	 */
 	private double[] averageStackValues(double[] stack1, double[] stack2) {
@@ -350,9 +332,9 @@ public class StackedXYAreaRenderer2 extends XYAreaRenderer2
 	 * Returns a pair of "stack" values calculated from the two specified pairs.
 	 * 
 	 * @param stack1
-	 *           the first stack pair.
+	 *            the first stack pair.
 	 * @param stack2
-	 *           the second stack pair.
+	 *            the second stack pair.
 	 * @return A pair of average stack values.
 	 */
 	private double[] adjustedStackValues(double[] stack1, double[] stack2) {
@@ -375,7 +357,7 @@ public class StackedXYAreaRenderer2 extends XYAreaRenderer2
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the renderer cannot be cloned.
+	 *             if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

@@ -10,15 +10,13 @@ import org.graffiti.graphics.NodeGraphicAttribute;
 import org.graffiti.plugin.view.ProvidesAdditonalDrawingShapes;
 import org.graffiti.plugins.views.defaults.EllipseNodeShape;
 
-public class DoubleEllipseShape
-					extends EllipseNodeShape
-					implements ProvidesAdditonalDrawingShapes {
+public class DoubleEllipseShape extends EllipseNodeShape implements ProvidesAdditonalDrawingShapes {
 	ArrayList<Shape> res = null;
 	DoubleEllipseShape s = null;
-	
+
 	private int iOffX = 0;
 	private int iOffY = 0;
-	
+
 	public DoubleEllipseShape() {
 		addSx = 0;
 		addSy = 0;
@@ -26,20 +24,20 @@ public class DoubleEllipseShape
 		res = new ArrayList<Shape>();
 		res.add(s);
 	}
-	
+
 	public DoubleEllipseShape(boolean multi) {
 		offX += iOffX;
 		offY += iOffY;
 	}
-	
+
 	public Collection<Shape> getPostBorderShapes() {
 		return null;
 	}
-	
+
 	@Override
 	public void buildShape(NodeGraphicAttribute graphics) {
 		this.nodeAttr = graphics;
-		
+
 		DimensionAttribute dim = nodeAttr.getDimension();
 		double w = dim.getWidth();
 		double h = dim.getHeight();
@@ -52,26 +50,26 @@ public class DoubleEllipseShape
 			offX = (int) rr;
 			offY = (int) rr;
 		}
-		
+
 		double ft = Math.floor(nodeAttr.getFrameThickness());
 		double offset = ft / 2d;
 		this.ell2D.setFrame(offset + offX, offset + offY, w, h);
-		
+
 		double corwidth = w + ft;
 		double corheight = h + ft;
-		
+
 		if (Double.compare(Math.floor(offset), offset) == 0) {
 			corwidth = w + ft + 1;
 			corheight = h + ft + 1;
 		}
-		
+
 		((RectangularShape) this.thickShape).setFrame(0, 0, corwidth + addSx, corheight + addSy);
-		
+
 		if (s != null) {
 			s.buildShape(nodeAttr);
 		}
 	}
-	
+
 	public Collection<Shape> getPreBorderShapes() {
 		if (s != null) {
 			return res;

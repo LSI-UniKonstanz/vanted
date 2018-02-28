@@ -26,48 +26,45 @@ import org.xml.sax.SAXException;
  */
 public class PluginXMLParser {
 	// ~ Static fields/initializers =============================================
-	
+
 	/** The <code>StringBundle</code> for the xml parser. */
 	protected static StringBundle sBundle = StringBundle.getInstance();
-	
+
 	/** The public identifier of the plugin dtd. */
-	public static String PUBLIC_DTD_IDENTIFIER = sBundle.getString(
-						"plugin.dtd.identifier");
-	
+	public static String PUBLIC_DTD_IDENTIFIER = sBundle.getString("plugin.dtd.identifier");
+
 	/** The local plugin dtd. */
-	public static String PLUGIN_DTD_LOCAL = sBundle.getRes("plugin.dtd.local")
-						.toString();
-	
+	public static String PLUGIN_DTD_LOCAL = sBundle.getRes("plugin.dtd.local").toString();
+
 	// ~ Instance fields ========================================================
-	
+
 	/** The parser instance. */
 	private Digester parser;
-	
+
 	/** A temporary plugin description, which is used by the xml parser. */
 	private PluginDescription description;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new plugin xml parser instance.
 	 */
 	public PluginXMLParser() {
 		parser = new Digester();
-		
+
 		parser.setValidating(true);
 		parser.setErrorHandler(new PluginXMLParserErrorHandler());
-		
+
 		parser.setLogger(new NoOpLog());
-		
+
 		// register an alternative plugin.dtd URL
 		parser.register(PUBLIC_DTD_IDENTIFIER, PLUGIN_DTD_LOCAL);
-		
-		parser.addObjectCreate("plugin",
-							"org.graffiti.managers.pluginmgr.PluginDescription");
-		
+
+		parser.addObjectCreate("plugin", "org.graffiti.managers.pluginmgr.PluginDescription");
+
 		parser.addCallMethod("plugin/author", "setAuthor", 0);
 		parser.addCallMethod("plugin/description", "setDescription", 0);
-		
+
 		parser.addCallMethod("plugin/plugindesc/name", "setName", 0);
 		parser.addCallMethod("plugin/plugindesc/main", "setMain", 0);
 		parser.addCallMethod("plugin/plugindesc/compatibility", "setCompatibleVersion", 0);
@@ -78,51 +75,48 @@ public class PluginXMLParser {
 		parser.addCallMethod("plugin/plugindesc/priority", "setIsPriorityPlugin", 0);
 		parser.addCallMethod("plugin/plugindesc/feedname", "setRSSfeedName", 0);
 		parser.addCallMethod("plugin/plugindesc/feedurl", "setRSSfeedURL", 0);
-		
+
 		// the rules for the plugin's dependencies
-		parser.addObjectCreate("plugin/deps/plugindesc",
-							"org.graffiti.managers.pluginmgr.PluginDependency");
-		
+		parser.addObjectCreate("plugin/deps/plugindesc", "org.graffiti.managers.pluginmgr.PluginDependency");
+
 		parser.addCallMethod("plugin/deps/plugindesc/name", "setName", 0);
 		parser.addCallMethod("plugin/deps/plugindesc/main", "setMain", 0);
 		parser.addCallMethod("plugin/deps/plugindesc/version", "setVersion", 0);
-		
+
 		parser.addCallMethod("plugin/deps/plugindesc/avaliable", "setAvailable", 0);
-		
+
 		// add the parsed plugin dependency to the list of dependencies
 		parser.addSetNext("plugin/deps/plugindesc", "addPluginDependency",
-							"org.graffiti.managers.pluginmgr.PluginDependency");
-		
+				"org.graffiti.managers.pluginmgr.PluginDependency");
+
 		// create a rule for saving the parsed plugin description object
-		parser.addSetNext("plugin", "setPluginDescription",
-							"org.graffiti.managers.pluginmgr.PluginDescription");
+		parser.addSetNext("plugin", "setPluginDescription", "org.graffiti.managers.pluginmgr.PluginDescription");
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Sets the internal temporary plugin description to the given value. This
 	 * method is used by the xml parser only.
 	 * 
 	 * @param description
-	 *           the new value.
+	 *            the new value.
 	 */
 	public void setPluginDescription(PluginDescription description) {
 		this.description = description;
 	}
-	
+
 	/**
 	 * Parses the given <code>plugin.xml</code> file.
 	 * 
 	 * @param is
-	 *           input stream of the<code>plugin.xml</code> file.
+	 *            input stream of the<code>plugin.xml</code> file.
 	 * @return an instance of plugin description, which contains the parsed
 	 *         information.
 	 * @throws IOException
-	 *            DOCUMENT ME!
+	 *             DOCUMENT ME!
 	 */
-	public PluginDescription parse(InputStream is)
-						throws IOException {
+	public PluginDescription parse(InputStream is) throws IOException {
 		parser.clear();
 		parser.push(this);
 		try {
@@ -131,40 +125,38 @@ public class PluginXMLParser {
 			ErrorMsg.addErrorMessage(saxe);
 			return null;
 		}
-		
+
 		try {
 			validateDescription(description);
 		} catch (SAXException saxe) {
 			ErrorMsg.addErrorMessage(saxe);
 			return null;
 		}
-		
+
 		return description;
 	}
-	
+
 	/**
 	 * Validates the given current plugin description.
 	 * 
 	 * @param description
-	 *           the description to validate.
+	 *            the description to validate.
 	 * @throws SAXException
-	 *            DOCUMENT ME!
+	 *             DOCUMENT ME!
 	 */
-	public void validateDescription(PluginDescription description)
-						throws SAXException {
+	public void validateDescription(PluginDescription description) throws SAXException {
 		if (description == null) {
-			throw new SAXException(new PluginManagerException(
-								"exception.PluginDescriptionNull"));
+			throw new SAXException(new PluginManagerException("exception.PluginDescriptionNull"));
 		}
-		
+
 		if ((description.getName() == null) || "".equals(description.getName())) {
-			throw new SAXException(new PluginManagerException(
-								"exception.IllegalPluginName", description.getName()).getMessage());
+			throw new SAXException(
+					new PluginManagerException("exception.IllegalPluginName", description.getName()).getMessage());
 		}
-		
+
 		if ((description.getMain() == null) || "".equals(description.getMain())) {
-			throw new SAXException(new PluginManagerException(
-								"exception.IllegalPluginMain", description.getMain()).getMessage());
+			throw new SAXException(
+					new PluginManagerException("exception.IllegalPluginMain", description.getMain()).getMessage());
 		}
 	}
 }

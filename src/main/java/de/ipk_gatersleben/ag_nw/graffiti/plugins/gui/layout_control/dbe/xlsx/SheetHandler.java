@@ -13,13 +13,13 @@ public class SheetHandler extends DefaultHandler {
 	// private SharedStringsTable sst;
 	private String lastContents;
 	private boolean nextIsString;
-	
-	// public SheetHandler(SharedStringsTable sst, TableData myData, int maximumRowToBeProcessed) {
+
+	// public SheetHandler(SharedStringsTable sst, TableData myData, int
+	// maximumRowToBeProcessed) {
 	// this.sst = sst;
 	// }
-	
-	public void startElement(String uri, String localName, String name,
-						Attributes attributes) throws SAXException {
+
+	public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
 		// c => cell
 		if (name.equals("c")) {
 			// Print the cell reference
@@ -35,24 +35,22 @@ public class SheetHandler extends DefaultHandler {
 		// Clear contents cache
 		lastContents = "";
 	}
-	
-	public void endElement(String uri, String localName, String name)
-						throws SAXException {
+
+	public void endElement(String uri, String localName, String name) throws SAXException {
 		// Process the last contents as required.
 		// Do now, as characters() may be called more than once
 		if (nextIsString) {
 			Integer.parseInt(lastContents);
 		}
-		
+
 		// v => contents of a cell
 		// Output after we've seen the string contents
 		if (name.equals("v")) {
 			System.out.println(lastContents);
 		}
 	}
-	
-	public void characters(char[] ch, int start, int length)
-						throws SAXException {
+
+	public void characters(char[] ch, int start, int length) throws SAXException {
 		lastContents += new String(ch, start, length);
 	}
 }

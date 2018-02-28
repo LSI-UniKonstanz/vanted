@@ -53,36 +53,17 @@ public class JFreeChartAppletDemo extends JApplet {
 		final JTabbedPane tabs = new JTabbedPane();
 
 		final XYDataset data1 = DemoDatasetFactory.createTimeSeriesCollection1();
-		final JFreeChart chart1 = ChartFactory.createTimeSeriesChart(
-							"Time Series",
-							"Date",
-							"Rate",
-							data1,
-							true,
-							true,
-							false
-							);
-		final ChartPanel panel1 = new ChartPanel(
-							chart1, 400, 300, 200, 100, 400, 200,
-							true, false, false, false, true, true
-							);
+		final JFreeChart chart1 = ChartFactory.createTimeSeriesChart("Time Series", "Date", "Rate", data1, true, true,
+				false);
+		final ChartPanel panel1 = new ChartPanel(chart1, 400, 300, 200, 100, 400, 200, true, false, false, false, true,
+				true);
 		tabs.add("Chart 1", panel1);
 
 		final CategoryDataset data2 = DemoDatasetFactory.createCategoryDataset();
-		final JFreeChart chart2 = ChartFactory.createBarChart(
-							"Bar Chart",
-							"Categories",
-							"Value",
-							data2,
-							PlotOrientation.HORIZONTAL,
-							true,
-							true,
-							false
-							);
-		final ChartPanel panel2 = new ChartPanel(
-							chart2, 400, 300, 200, 100, 400, 200,
-							true, false, false, false, true, true
-							);
+		final JFreeChart chart2 = ChartFactory.createBarChart("Bar Chart", "Categories", "Value", data2,
+				PlotOrientation.HORIZONTAL, true, true, false);
+		final ChartPanel panel2 = new ChartPanel(chart2, 400, 300, 200, 100, 400, 200, true, false, false, false, true,
+				true);
 		tabs.add("Chart 2", panel2);
 
 		getContentPane().add(tabs);

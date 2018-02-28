@@ -37,7 +37,8 @@ import java.util.List;
 import org.jfree.util.ObjectUtils;
 
 /**
- * Represents one data item within a box-and-whisker dataset. This class is immutable.
+ * Represents one data item within a box-and-whisker dataset. This class is
+ * immutable.
  */
 public class BoxAndWhiskerItem implements Serializable {
 
@@ -72,33 +73,27 @@ public class BoxAndWhiskerItem implements Serializable {
 	 * Creates a new box-and-whisker item.
 	 * 
 	 * @param mean
-	 *           the mean (<code>null</code> permitted).
+	 *            the mean (<code>null</code> permitted).
 	 * @param median
-	 *           the median (<code>null</code> permitted).
+	 *            the median (<code>null</code> permitted).
 	 * @param q1
-	 *           the first quartile (<code>null</code> permitted).
+	 *            the first quartile (<code>null</code> permitted).
 	 * @param q3
-	 *           the third quartile (<code>null</code> permitted).
+	 *            the third quartile (<code>null</code> permitted).
 	 * @param minRegularValue
-	 *           the minimum regular value (<code>null</code> permitted).
+	 *            the minimum regular value (<code>null</code> permitted).
 	 * @param maxRegularValue
-	 *           the maximum regular value (<code>null</code> permitted).
+	 *            the maximum regular value (<code>null</code> permitted).
 	 * @param minOutlier
-	 *           the minimum outlier (<code>null</code> permitted).
+	 *            the minimum outlier (<code>null</code> permitted).
 	 * @param maxOutlier
-	 *           the maximum outlier (<code>null</code> permitted).
+	 *            the maximum outlier (<code>null</code> permitted).
 	 * @param outliers
-	 *           the outliers (<code>null</code> permitted).
+	 *            the outliers (<code>null</code> permitted).
 	 */
-	public BoxAndWhiskerItem(final Number mean,
-										final Number median,
-										final Number q1,
-										final Number q3,
-										final Number minRegularValue,
-										final Number maxRegularValue,
-										final Number minOutlier,
-										final Number maxOutlier,
-										final List outliers) {
+	public BoxAndWhiskerItem(final Number mean, final Number median, final Number q1, final Number q3,
+			final Number minRegularValue, final Number maxRegularValue, final Number minOutlier,
+			final Number maxOutlier, final List outliers) {
 
 		this.mean = mean;
 		this.median = median;
@@ -197,7 +192,7 @@ public class BoxAndWhiskerItem implements Serializable {
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object to test against (<code>null</code> permitted).
+	 *            the object to test against (<code>null</code> permitted).
 	 * @return a boolean.
 	 */
 	public boolean equals(final Object obj) {

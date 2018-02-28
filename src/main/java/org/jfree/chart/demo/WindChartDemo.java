@@ -48,7 +48,7 @@ public class WindChartDemo extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public WindChartDemo(final String title) {
 
@@ -70,20 +70,13 @@ public class WindChartDemo extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final WindDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createWindPlot(
-							"Wind Chart Demo",
-							"Date",
-							"Direction / Force",
-							dataset,
-							true,
-							false,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createWindPlot("Wind Chart Demo", "Date", "Direction / Force", dataset,
+				true, false, false);
 
 		// then customise it a little...
 		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 1000, 0, Color.green));
@@ -106,7 +99,7 @@ public class WindChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

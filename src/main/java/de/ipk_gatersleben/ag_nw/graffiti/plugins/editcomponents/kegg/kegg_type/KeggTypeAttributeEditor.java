@@ -31,17 +31,14 @@ import org.graffiti.session.EditorSession;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.EntryType;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class KeggTypeAttributeEditor
-					extends AbstractValueEditComponent
-					implements ActionListener {
+public class KeggTypeAttributeEditor extends AbstractValueEditComponent implements ActionListener {
 	// protected JComboBox keggTypeSelection = new JComboBox();
 	protected JButton selectOfThisType = new JButton("Select");
 	protected JLabel keggTypeLabel = new JLabel();
 	protected boolean showButton = false;
-	
+
 	public KeggTypeAttributeEditor(final Displayable disp) {
 		super(disp);
 		String curVal = ((KeggTypeAttribute) getDisplayable()).getString();
@@ -55,25 +52,21 @@ public class KeggTypeAttributeEditor
 		selectOfThisType.setOpaque(false);
 		// keggTypeSelection.setOpaque(false);
 	}
-	
+
 	public JComponent getComponent() {
 		if (showButton)
 			return TableLayout.getSplit(
-								// keggTypeSelection,
-					keggTypeLabel,
-								selectOfThisType,
-								TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
+					// keggTypeSelection,
+					keggTypeLabel, selectOfThisType, TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
 		else
 			return keggTypeLabel;
 		// return keggTypeSelection; /*
 		/*
-		 * return TableLayout.getSplit(
-		 * keggTypeSelection,
-		 * new JLabel(),
+		 * return TableLayout.getSplit( keggTypeSelection, new JLabel(),
 		 * TableLayout.FILL, 0);
 		 */
 	}
-	
+
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			selectOfThisType.setEnabled(false);
@@ -88,12 +81,12 @@ public class KeggTypeAttributeEditor
 			keggTypeLabel.setText(curVal);
 		}
 	}
-	
+
 	public void setValue() {
 		// if (!keggTypeSelection.getSelectedItem().equals(EMPTY_STRING))
 		// ((KeggTypeAttribute)displayable).setString(keggTypeSelection.getSelectedItem().toString());
 	}
-	
+
 	public void actionPerformed(ActionEvent arg0) {
 		// String currentEntryTypeString = (String) keggTypeSelection.getSelectedItem();
 		String currentEntryTypeString = keggTypeLabel.getText();
@@ -119,7 +112,8 @@ public class KeggTypeAttributeEditor
 		Selection selection = es.getSelectionModel().getActiveSelection();
 		ArrayList<Node> enzymes = new ArrayList<Node>();
 		for (Node n : graph.getNodes()) {
-			String kegg_type = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_type", null, new String(""), false);
+			String kegg_type = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_type", null, new String(""),
+					false);
 			if (kegg_type != null && kegg_type.equals(et.getDescription())) {
 				enzymes.add(n);
 			}

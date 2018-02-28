@@ -39,16 +39,14 @@ import org.jfree.util.ObjectUtils;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A base class that can be used to create a label or tooltip generator that can be
- * assigned to a {@link org.jfree.chart.renderer.CategoryItemRenderer}.
+ * A base class that can be used to create a label or tooltip generator that can
+ * be assigned to a {@link org.jfree.chart.renderer.CategoryItemRenderer}.
  */
-public abstract class AbstractCategoryItemLabelGenerator implements PublicCloneable,
-																							Cloneable,
-																							Serializable {
+public abstract class AbstractCategoryItemLabelGenerator implements PublicCloneable, Cloneable, Serializable {
 
 	/**
-	 * The label format string (used by a MessageFormat object to combine the standard
-	 * items. {0} = series name, {1} = category, {2} = value.
+	 * The label format string (used by a MessageFormat object to combine the
+	 * standard items. {0} = series name, {1} = category, {2} = value.
 	 */
 	private String labelFormat;
 
@@ -68,9 +66,9 @@ public abstract class AbstractCategoryItemLabelGenerator implements PublicClonea
 	 * Creates a label generator with the specified number formatter.
 	 * 
 	 * @param labelFormat
-	 *           the label format string (<code>null</code> not permitted).
+	 *            the label format string (<code>null</code> not permitted).
 	 * @param formatter
-	 *           the number formatter (<code>null</code> not permitted).
+	 *            the number formatter (<code>null</code> not permitted).
 	 */
 	protected AbstractCategoryItemLabelGenerator(String labelFormat, NumberFormat formatter) {
 		if (labelFormat == null) {
@@ -88,9 +86,9 @@ public abstract class AbstractCategoryItemLabelGenerator implements PublicClonea
 	 * Creates a label generator with the specified date formatter.
 	 * 
 	 * @param labelFormat
-	 *           the label format string (<code>null</code> not permitted).
+	 *            the label format string (<code>null</code> not permitted).
 	 * @param formatter
-	 *           the date formatter (<code>null</code> not permitted).
+	 *            the date formatter (<code>null</code> not permitted).
 	 */
 	protected AbstractCategoryItemLabelGenerator(String labelFormat, DateFormat formatter) {
 		if (labelFormat == null) {
@@ -135,11 +133,11 @@ public abstract class AbstractCategoryItemLabelGenerator implements PublicClonea
 	 * Generates a for the specified item.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> not permitted).
+	 *            the dataset (<code>null</code> not permitted).
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The label (possibly <code>null</code>).
 	 */
 	protected String generateLabelString(CategoryDataset dataset, int row, int column) {
@@ -154,15 +152,15 @@ public abstract class AbstractCategoryItemLabelGenerator implements PublicClonea
 	}
 
 	/**
-	 * Creates the array of items that can be passed to the {@link MessageFormat} class
-	 * for creating labels.
+	 * Creates the array of items that can be passed to the {@link MessageFormat}
+	 * class for creating labels.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> not permitted).
+	 *            the dataset (<code>null</code> not permitted).
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The items (never <code>null</code>).
 	 */
 	protected Object[] createItemArray(CategoryDataset dataset, int row, int column) {
@@ -172,10 +170,9 @@ public abstract class AbstractCategoryItemLabelGenerator implements PublicClonea
 		Number value = dataset.getValue(row, column);
 		if (this.numberFormat != null) {
 			result[2] = this.numberFormat.format(value);
-		} else
-			if (this.dateFormat != null) {
-				result[2] = this.dateFormat.format(value);
-			}
+		} else if (this.dateFormat != null) {
+			result[2] = this.dateFormat.format(value);
+		}
 		return result;
 	}
 
@@ -183,7 +180,7 @@ public abstract class AbstractCategoryItemLabelGenerator implements PublicClonea
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the other object (<code>null</code> permitted).
+	 *            the other object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -205,7 +202,7 @@ public abstract class AbstractCategoryItemLabelGenerator implements PublicClonea
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            should not happen.
+	 *             should not happen.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 

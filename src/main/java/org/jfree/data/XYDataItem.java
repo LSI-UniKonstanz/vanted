@@ -49,9 +49,9 @@ public class XYDataItem implements Cloneable, Comparable, Serializable {
 	 * Constructs a new data item.
 	 * 
 	 * @param x
-	 *           the x-value (<code>null</code> NOT permitted).
+	 *            the x-value (<code>null</code> NOT permitted).
 	 * @param y
-	 *           the y-value (<code>null</code> permitted).
+	 *            the y-value (<code>null</code> permitted).
 	 */
 	public XYDataItem(final Number x, final Number y) {
 		if (x == null) {
@@ -65,9 +65,9 @@ public class XYDataItem implements Cloneable, Comparable, Serializable {
 	 * Constructs a new data pair.
 	 * 
 	 * @param x
-	 *           the x-value.
+	 *            the x-value.
 	 * @param y
-	 *           the y-value.
+	 *            the y-value.
 	 */
 	public XYDataItem(final double x, final double y) {
 		this(new Double(x), new Double(y));
@@ -97,21 +97,23 @@ public class XYDataItem implements Cloneable, Comparable, Serializable {
 	 * Note that there is no corresponding method to change the x-value.
 	 * 
 	 * @param y
-	 *           the new y-value (<code>null</code> permitted).
+	 *            the new y-value (<code>null</code> permitted).
 	 */
 	public void setY(final Number y) {
 		this.y = y;
 	}
 
 	/**
-	 * Returns an integer indicating the order of this object relative to another object.
+	 * Returns an integer indicating the order of this object relative to another
+	 * object.
 	 * <P>
-	 * For the order we consider only the x-value: negative == "less-than", zero == "equal", positive == "greater-than".
+	 * For the order we consider only the x-value: negative == "less-than", zero ==
+	 * "equal", positive == "greater-than".
 	 * 
 	 * @param o1
-	 *           the object being compared to.
-	 * @return an integer indicating the order of this data pair object
-	 *         relative to another object.
+	 *            the object being compared to.
+	 * @return an integer indicating the order of this data pair object relative to
+	 *         another object.
 	 */
 	public int compareTo(final Object o1) {
 
@@ -149,7 +151,7 @@ public class XYDataItem implements Cloneable, Comparable, Serializable {
 	 * 
 	 * @return a clone.
 	 * @throws CloneNotSupportedException
-	 *            not thrown by this class, but subclasses may differ.
+	 *             not thrown by this class, but subclasses may differ.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -159,7 +161,8 @@ public class XYDataItem implements Cloneable, Comparable, Serializable {
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *           the object to test against for equality (<code>null</code> permitted).
+	 *            the object to test against for equality (<code>null</code>
+	 *            permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {

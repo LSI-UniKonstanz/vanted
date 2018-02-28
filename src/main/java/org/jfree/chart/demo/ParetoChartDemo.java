@@ -61,7 +61,7 @@ public class ParetoChartDemo extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public ParetoChartDemo(final String title) {
 
@@ -84,16 +84,12 @@ public class ParetoChartDemo extends ApplicationFrame {
 		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Languages", data);
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createBarChart(
-							"Freshmeat Software Projects", // chart title
+		final JFreeChart chart = ChartFactory.createBarChart("Freshmeat Software Projects", // chart title
 				"Language", // domain axis label
 				"Projects", // range axis label
 				dataset, // data
-				PlotOrientation.VERTICAL,
-							true, // include legend
-				true,
-							false
-							);
+				PlotOrientation.VERTICAL, true, // include legend
+				true, false);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 		chart.addSubtitle(new TextTitle("By Programming Language"));
@@ -115,9 +111,7 @@ public class ParetoChartDemo extends ApplicationFrame {
 
 		final LineAndShapeRenderer renderer2 = new LineAndShapeRenderer();
 
-		final CategoryDataset dataset2 = DatasetUtilities.createCategoryDataset(
-							"Cumulative", cumulative
-							);
+		final CategoryDataset dataset2 = DatasetUtilities.createCategoryDataset("Cumulative", cumulative);
 		final NumberAxis axis2 = new NumberAxis("Percent");
 		axis2.setNumberFormatOverride(NumberFormat.getPercentInstance());
 		plot.setRangeAxis(1, axis2);
@@ -150,7 +144,7 @@ public class ParetoChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

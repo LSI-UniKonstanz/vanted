@@ -19,16 +19,14 @@ import org.graffiti.selection.SelectionListener;
  * 
  * @version $Revision: 1.5 $
  */
-public class SwitchSelectionsPlugin
-					extends EditorPluginAdapter
-					implements SelectionListener {
+public class SwitchSelectionsPlugin extends EditorPluginAdapter implements SelectionListener {
 	// ~ Instance fields ========================================================
-	
+
 	/** DOCUMENT ME! */
 	SelectionMenu selMenu = new SelectionMenu();
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Creates a new TrivialGridRestrictedPlugin object.
 	 */
@@ -36,9 +34,9 @@ public class SwitchSelectionsPlugin
 		this.guiComponents = new GraffitiComponent[1];
 		this.guiComponents[0] = selMenu;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * @see org.graffiti.plugin.GenericPluginAdapter#isSelectionListener()
 	 */
@@ -46,14 +44,14 @@ public class SwitchSelectionsPlugin
 	public boolean isSelectionListener() {
 		return true;
 	}
-	
+
 	/**
 	 * @see org.graffiti.selection.SelectionListener#selectionChanged(org.graffiti.selection.SelectionEvent)
 	 */
 	public void selectionChanged(SelectionEvent e) {
 		((SelectionListener) selMenu).selectionChanged(e);
 	}
-	
+
 	/**
 	 * @see org.graffiti.selection.SelectionListener#selectionListChanged(org.graffiti.selection.SelectionEvent)
 	 */

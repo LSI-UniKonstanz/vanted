@@ -74,10 +74,7 @@ import org.jfree.util.PublicCloneable;
  * @author Sylvain Vieujot
  */
 public class SignalRenderer extends AbstractXYItemRenderer
-										implements XYItemRenderer,
-													Cloneable,
-													PublicCloneable,
-													Serializable {
+		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
 
 	/** The mark offset. */
 	private double markOffset = 5;
@@ -108,7 +105,7 @@ public class SignalRenderer extends AbstractXYItemRenderer
 	 * Sets the mark offset.
 	 * 
 	 * @param offset
-	 *           the mark offset.
+	 *            the mark offset.
 	 */
 	public void setMarkOffset(double offset) {
 		this.markOffset = offset;
@@ -127,7 +124,7 @@ public class SignalRenderer extends AbstractXYItemRenderer
 	 * Sets the shape width.
 	 * 
 	 * @param width
-	 *           the shape width.
+	 *            the shape width.
 	 */
 	public void setShapeWidth(double width) {
 		this.shapeWidth = width;
@@ -146,7 +143,7 @@ public class SignalRenderer extends AbstractXYItemRenderer
 	 * Sets the shape height.
 	 * 
 	 * @param height
-	 *           the shape height.
+	 *            the shape height.
 	 */
 	public void setShapeHeight(double height) {
 		this.shapeHeight = height;
@@ -156,42 +153,33 @@ public class SignalRenderer extends AbstractXYItemRenderer
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the area within which the plot is being drawn.
+	 *            the area within which the plot is being drawn.
 	 * @param info
-	 *           collects information about the drawing.
+	 *            collects information about the drawing.
 	 * @param plot
-	 *           the plot (can be used to obtain standard color information etc).
+	 *            the plot (can be used to obtain standard color information etc).
 	 * @param horizontalAxis
-	 *           the horizontal axis.
+	 *            the horizontal axis.
 	 * @param verticalAxis
-	 *           the vertical axis.
+	 *            the vertical axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @param crosshairState
-	 *           crosshair information for the plot (<code>null</code> permitted).
+	 *            crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *           the pass index.
+	 *            the pass index.
 	 */
-	public void drawItem(Graphics2D g2,
-									XYItemRendererState state,
-									Rectangle2D dataArea,
-									PlotRenderingInfo info,
-									XYPlot plot,
-									ValueAxis horizontalAxis,
-									ValueAxis verticalAxis,
-									XYDataset dataset,
-									int series,
-									int item,
-									CrosshairState crosshairState,
-									int pass) {
+	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
+			XYPlot plot, ValueAxis horizontalAxis, ValueAxis verticalAxis, XYDataset dataset, int series, int item,
+			CrosshairState crosshairState, int pass) {
 
 		// setup for collecting optional entity info...
 		EntityCollection entities = null;
@@ -206,12 +194,8 @@ public class SignalRenderer extends AbstractXYItemRenderer
 		int type = signalData.getType(series, item);
 		// double level = signalData.getLevel(series, item);
 
-		double xx = horizontalAxis.valueToJava2D(
-							x.doubleValue(), dataArea, plot.getDomainAxisEdge()
-							);
-		double yy = verticalAxis.valueToJava2D(
-							y.doubleValue(), dataArea, plot.getRangeAxisEdge()
-							);
+		double xx = horizontalAxis.valueToJava2D(x.doubleValue(), dataArea, plot.getDomainAxisEdge());
+		double yy = verticalAxis.valueToJava2D(y.doubleValue(), dataArea, plot.getRangeAxisEdge());
 
 		Paint p = getItemPaint(series, item);
 		Stroke s = getItemStroke(series, item);
@@ -229,34 +213,19 @@ public class SignalRenderer extends AbstractXYItemRenderer
 		GeneralPath path = new GeneralPath();
 		if ((type == SignalsDataset.ENTER_LONG) || (type == SignalsDataset.ENTER_SHORT)) {
 			path.moveTo((float) xx, (float) yy);
-			path.lineTo(
-								(float) (xx + this.shapeWidth / 2), (float) (yy - direction * this.shapeHeight / 3)
-								);
-			path.lineTo(
-								(float) (xx + this.shapeWidth / 6), (float) (yy - direction * this.shapeHeight / 3)
-								);
-			path.lineTo(
-								(float) (xx + this.shapeWidth / 6), (float) (yy - direction * this.shapeHeight)
-								);
-			path.lineTo(
-								(float) (xx - this.shapeWidth / 6), (float) (yy - direction * this.shapeHeight)
-								);
-			path.lineTo(
-								(float) (xx - this.shapeWidth / 6), (float) (yy - direction * this.shapeHeight / 3)
-								);
-			path.lineTo(
-								(float) (xx - this.shapeWidth / 2), (float) (yy - direction * this.shapeHeight / 3)
-								);
+			path.lineTo((float) (xx + this.shapeWidth / 2), (float) (yy - direction * this.shapeHeight / 3));
+			path.lineTo((float) (xx + this.shapeWidth / 6), (float) (yy - direction * this.shapeHeight / 3));
+			path.lineTo((float) (xx + this.shapeWidth / 6), (float) (yy - direction * this.shapeHeight));
+			path.lineTo((float) (xx - this.shapeWidth / 6), (float) (yy - direction * this.shapeHeight));
+			path.lineTo((float) (xx - this.shapeWidth / 6), (float) (yy - direction * this.shapeHeight / 3));
+			path.lineTo((float) (xx - this.shapeWidth / 2), (float) (yy - direction * this.shapeHeight / 3));
 			path.lineTo((float) xx, (float) yy);
 		} else {
 			path.moveTo((float) xx, (float) yy);
 			path.lineTo((float) xx, (float) (yy - direction * this.shapeHeight));
-			Ellipse2D.Double ellipse = new Ellipse2D.Double(
-								xx - this.shapeWidth / 2,
-								yy + (direction == 1 ? -this.shapeHeight : this.shapeHeight - this.shapeWidth),
-								this.shapeWidth,
-								this.shapeWidth
-								);
+			Ellipse2D.Double ellipse = new Ellipse2D.Double(xx - this.shapeWidth / 2,
+					yy + (direction == 1 ? -this.shapeHeight : this.shapeHeight - this.shapeWidth), this.shapeWidth,
+					this.shapeWidth);
 			path.append(ellipse, false);
 		}
 
@@ -286,7 +255,7 @@ public class SignalRenderer extends AbstractXYItemRenderer
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the renderer cannot be cloned.
+	 *             if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

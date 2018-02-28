@@ -57,7 +57,7 @@ public class CombinedXYPlotDemo5 extends ApplicationFrame {
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public CombinedXYPlotDemo5(final String title) {
 
@@ -93,9 +93,7 @@ public class CombinedXYPlotDemo5 extends ApplicationFrame {
 		dataset0.addSeries(eur);
 
 		final TimeSeriesCollection dataset1 = new TimeSeriesCollection();
-		final TimeSeries mav = MovingAverage.createMovingAverage(
-							eur, "EUR/GBP (30 Day MA)", 30, 30
-							);
+		final TimeSeries mav = MovingAverage.createMovingAverage(eur, "EUR/GBP (30 Day MA)", 30, 30);
 		dataset1.addSeries(eur);
 		dataset1.addSeries(mav);
 
@@ -112,22 +110,19 @@ public class CombinedXYPlotDemo5 extends ApplicationFrame {
 		final CombinedRangeXYPlot parent = new CombinedRangeXYPlot(valueAxis);
 
 		// add subplot 1...
-		final XYPlot subplot1 = new XYPlot(dataset0, new DateAxis("Date 1"), null,
-													new StandardXYItemRenderer());
+		final XYPlot subplot1 = new XYPlot(dataset0, new DateAxis("Date 1"), null, new StandardXYItemRenderer());
 		subplot1.setDomainCrosshairVisible(true);
 		subplot1.setRangeCrosshairVisible(true);
 		parent.add(subplot1, 1);
 
 		// add subplot 2...
-		final XYPlot subplot2 = new XYPlot(dataset1, new DateAxis("Date 2"), null,
-													new StandardXYItemRenderer());
+		final XYPlot subplot2 = new XYPlot(dataset1, new DateAxis("Date 2"), null, new StandardXYItemRenderer());
 		subplot2.setDomainCrosshairVisible(true);
 		subplot2.setRangeCrosshairVisible(true);
 		parent.add(subplot2, 1);
 
 		// add subplot 3...
-		final XYPlot subplot3 = new XYPlot(dataset2, new DateAxis("Date 3"),
-													null, new XYBarRenderer(0.20));
+		final XYPlot subplot3 = new XYPlot(dataset2, new DateAxis("Date 3"), null, new XYBarRenderer(0.20));
 		subplot3.setDomainCrosshairVisible(true);
 		subplot3.setRangeCrosshairVisible(true);
 		parent.add(subplot3, 1);
@@ -136,8 +131,7 @@ public class CombinedXYPlotDemo5 extends ApplicationFrame {
 		chart = new JFreeChart("Demo Chart", JFreeChart.DEFAULT_TITLE_FONT, parent, true);
 
 		// then customise it a little...
-		final TextTitle subtitle = new TextTitle("This is a subtitle",
-															new Font("SansSerif", Font.BOLD, 12));
+		final TextTitle subtitle = new TextTitle("This is a subtitle", new Font("SansSerif", Font.BOLD, 12));
 		chart.addSubtitle(subtitle);
 		chart.setBackgroundPaint(new GradientPaint(0, 0, Color.white, 0, 1000, Color.blue));
 		return chart;
@@ -148,7 +142,7 @@ public class CombinedXYPlotDemo5 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

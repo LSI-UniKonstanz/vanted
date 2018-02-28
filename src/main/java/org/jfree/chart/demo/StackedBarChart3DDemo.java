@@ -47,8 +47,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.TextAnchor;
 
 /**
- * A simple demonstration application showing how to create a stacked 3D bar chart
- * using data from a {@link CategoryDataset}.
+ * A simple demonstration application showing how to create a stacked 3D bar
+ * chart using data from a {@link CategoryDataset}.
  */
 public class StackedBarChart3DDemo extends ApplicationFrame {
 
@@ -56,7 +56,7 @@ public class StackedBarChart3DDemo extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public StackedBarChart3DDemo(final String title) {
 
@@ -73,13 +73,12 @@ public class StackedBarChart3DDemo extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createStackedBarChart3D(
-							"Stacked Bar Chart 3D Demo", // chart title
+		final JFreeChart chart = ChartFactory.createStackedBarChart3D("Stacked Bar Chart 3D Demo", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
@@ -87,19 +86,15 @@ public class StackedBarChart3DDemo extends ApplicationFrame {
 				true, // include legend
 				true, // tooltips
 				false // urls
-				);
+		);
 		final StandardLegend legend = (StandardLegend) chart.getLegend();
 		legend.setRenderingOrder(LegendRenderingOrder.REVERSE);
 		final CategoryPlot plot = (CategoryPlot) chart.getPlot();
 		final CategoryItemRenderer renderer = plot.getRenderer();
 		renderer.setLabelGenerator(new StandardCategoryLabelGenerator());
 		renderer.setItemLabelsVisible(true);
-		renderer.setPositiveItemLabelPosition(
-							new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER)
-							);
-		renderer.setNegativeItemLabelPosition(
-							new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER)
-							);
+		renderer.setPositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER));
+		renderer.setNegativeItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER));
 		return chart;
 
 	}
@@ -119,7 +114,7 @@ public class StackedBarChart3DDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

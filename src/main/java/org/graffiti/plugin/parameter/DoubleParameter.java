@@ -19,47 +19,45 @@ import scenario.ProvidesScenarioSupportCommand;
  * 
  * @version $Revision: 1.8 $
  */
-public class DoubleParameter
-					extends AbstractLimitableParameter
-					implements ProvidesScenarioSupportCommand {
+public class DoubleParameter extends AbstractLimitableParameter implements ProvidesScenarioSupportCommand {
 	// ~ Instance fields ========================================================
-	
+
 	private Double max = null;
-	
+
 	private Double min = null;
-	
+
 	/** The value of this parameter. */
 	private Double value = null;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new double parameter.
 	 * 
 	 * @param name
-	 *           the name of the parameter.
+	 *            the name of the parameter.
 	 * @param description
-	 *           the description of the parameter.
+	 *            the description of the parameter.
 	 */
 	public DoubleParameter(String name, String description) {
 		super(name, description);
 	}
-	
+
 	/**
 	 * Constructs a new double parameter.
 	 * 
 	 * @param val
-	 *           the value of the parameter
+	 *            the value of the parameter
 	 * @param name
-	 *           the name of the parameter.
+	 *            the name of the parameter.
 	 * @param description
-	 *           the description of the parameter.
+	 *            the description of the parameter.
 	 */
 	public DoubleParameter(Number val, String name, String description) {
 		super(name, description);
 		value = new Double(val.doubleValue());
 	}
-	
+
 	public DoubleParameter(Number val, Double min, Double max, String name, String description) {
 		this(val, name, description);
 		this.min = min;
@@ -67,27 +65,27 @@ public class DoubleParameter
 	}
 
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param val
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void setDouble(Double val) {
 		this.value = val;
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param val
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void setDouble(double val) {
 		this.value = new Double(val);
 	}
-	
+
 	/**
 	 * Returns the value of this parameter as a <code>Double</code>.
 	 * 
@@ -96,7 +94,7 @@ public class DoubleParameter
 	public Double getDouble() {
 		return value;
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -104,9 +102,9 @@ public class DoubleParameter
 	 */
 	@Override
 	public Comparable<Double> getMax() {
-		return max == null ? Double.MAX_VALUE : max; 
+		return max == null ? Double.MAX_VALUE : max;
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -116,7 +114,7 @@ public class DoubleParameter
 	public Comparable<Double> getMin() {
 		return min == null ? Double.MIN_VALUE : min;
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -125,37 +123,37 @@ public class DoubleParameter
 	@Override
 	public boolean isValid() {
 		boolean valid = true;
-		if(value == null)
+		if (value == null)
 			return false;
-		
-		if(min != null && min.compareTo(value) > 0)
+
+		if (min != null && min.compareTo(value) > 0)
 			valid = false;
-		if(max != null && max.compareTo(value) < 0)
+		if (max != null && max.compareTo(value) < 0)
 			valid = false;
 		return valid;
 	}
-	
+
 	/**
 	 * Sets the value of the <code>AttributeParameter</code>.
 	 * 
 	 * @param value
-	 *           the new value of the <code>AttributeParameter</code>.
+	 *            the new value of the <code>AttributeParameter</code>.
 	 */
 	@Override
 	public void setValue(Object value) {
 		// TODO
-		if(value instanceof Double)
+		if (value instanceof Double)
 			this.value = (Double) value;
-		if(value instanceof String){
+		if (value instanceof String) {
 			try {
-				this.value = Double.parseDouble((String)value);
+				this.value = Double.parseDouble((String) value);
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns the value of this parameter.
 	 * 
@@ -165,9 +163,7 @@ public class DoubleParameter
 	public Object getValue() {
 		return value;
 	}
-	
-	
-	
+
 	public void setMax(Double max) {
 		this.max = max;
 	}
@@ -177,10 +173,9 @@ public class DoubleParameter
 	}
 
 	public String getScenarioCommand() {
-		return "new DoubleParameter(" +
-							getDouble() + ", \"" + getName() + "\", \"" + getDescription() + "\")";
+		return "new DoubleParameter(" + getDouble() + ", \"" + getName() + "\", \"" + getDescription() + "\")";
 	}
-	
+
 	public Collection<String> getScenarioImports() {
 		ArrayList<String> res = new ArrayList<String>();
 		res.add("import org.graffiti.plugin.parameter.DoubleParameter;");

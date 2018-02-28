@@ -45,8 +45,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A bar chart with only two bars - here the 'maxBarWidth' attribute in the renderer prevents
- * the bars from getting too wide.
+ * A bar chart with only two bars - here the 'maxBarWidth' attribute in the
+ * renderer prevents the bars from getting too wide.
  */
 public class BarChartDemo4 extends ApplicationFrame {
 
@@ -54,7 +54,7 @@ public class BarChartDemo4 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public BarChartDemo4(final String title) {
 
@@ -108,22 +108,20 @@ public class BarChartDemo4 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createBarChart(
-							"Bar Chart Demo", // chart title
+		final JFreeChart chart = ChartFactory.createBarChart("Bar Chart Demo", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
-				PlotOrientation.VERTICAL,
-							true, // include legend
+				PlotOrientation.VERTICAL, true, // include legend
 				true, // tooltips?
 				false // URLs?
-				);
+		);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
@@ -143,14 +141,8 @@ public class BarChartDemo4 extends ApplicationFrame {
 		renderer.setMaxBarWidth(0.10);
 
 		// set up gradient paints for series...
-		final GradientPaint gp0 = new GradientPaint(
-							0.0f, 0.0f, Color.blue,
-							0.0f, 0.0f, Color.lightGray
-							);
-		final GradientPaint gp1 = new GradientPaint(
-							0.0f, 0.0f, Color.green,
-							0.0f, 0.0f, Color.lightGray
-							);
+		final GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 0.0f, 0.0f, Color.lightGray);
+		final GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, Color.lightGray);
 		renderer.setSeriesPaint(0, gp0);
 		renderer.setSeriesPaint(1, gp1);
 
@@ -164,7 +156,7 @@ public class BarChartDemo4 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

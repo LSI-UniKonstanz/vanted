@@ -21,10 +21,12 @@ public class TestImageExport {
 	//
 	// Graph g = new AdjListGraph();
 	// g.setName("/Users/klukas/test.gml");
-	// Node n1 = g.addNode(AttributeHelper.getDefaultGraphicsAttributeForKeggNode(100, 100));
-	// Node n2 = g.addNode(AttributeHelper.getDefaultGraphicsAttributeForKeggNode(200, 200));
+	// Node n1 =
+	// g.addNode(AttributeHelper.getDefaultGraphicsAttributeForKeggNode(100, 100));
+	// Node n2 =
+	// g.addNode(AttributeHelper.getDefaultGraphicsAttributeForKeggNode(200, 200));
 	// g.addEdge(n1, n2, true);
 	// PngJpegAlgorithm.createPNGimageFromGraph(g);
 	// }
-	
+
 }

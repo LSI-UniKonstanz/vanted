@@ -27,35 +27,30 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 /**
- * @author Christian Klukas
- *         (c) 2006 IPK Gatersleben, Group Network Analysis
+ * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class CreateGOtreeAlgorithm extends AbstractAlgorithm {
-	
+
 	private GoProcessing gp = null;
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Create Complete Gene Ontology Network";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Network.Hierarchy.Extra";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.HIDDEN,
-				Category.HIERARCHY,
-				Category.LAYOUT
-				));
+		return new HashSet<Category>(
+				Arrays.asList(Category.GRAPH, Category.HIDDEN, Category.HIERARCHY, Category.LAYOUT));
 	}
 
 	@Override
@@ -64,9 +59,10 @@ public class CreateGOtreeAlgorithm extends AbstractAlgorithm {
 			throw new PreconditionException("No active network window");
 		super.check();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
@@ -77,20 +73,22 @@ public class CreateGOtreeAlgorithm extends AbstractAlgorithm {
 			gp = new GoProcessing(obofile);
 			if (!gp.isValid()) {
 				gp = null;
-				MainFrame.showMessageDialog("The input file could not be loaded. It may not be a valid gene-ontology obo-xml file!", "Error");
+				MainFrame.showMessageDialog(
+						"The input file could not be loaded. It may not be a valid gene-ontology obo-xml file!",
+						"Error");
 				return;
 			}
 		}
 		final Graph workGraph = graph;
 		workGraph.getListenerManager().transactionStarted(workGraph);
-		final BackgroundTaskStatusProviderSupportingExternalCallImpl sp = new BackgroundTaskStatusProviderSupportingExternalCallImpl("Create GO Tree...",
-							"Please wait");
+		final BackgroundTaskStatusProviderSupportingExternalCallImpl sp = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
+				"Create GO Tree...", "Please wait");
 		BackgroundTaskHelper.issueSimpleTask("Create GO Tree", "Create GO Tree...", new Runnable() {
 			public void run() {
 				int startNodeCnt = workGraph.getNumberOfNodes();
-				
+
 				PositionGridGenerator pgg = new PositionGridGenerator(250, 30, 250);
-				
+
 				HashMap<String, Node> goTerm2goNode = new HashMap<String, Node>();
 				Collection<String> goTerms = gp.getAllGoTerms();
 				int i = 0;
@@ -110,7 +108,7 @@ public class CreateGOtreeAlgorithm extends AbstractAlgorithm {
 				sp.setCurrentStatusValue(100);
 			}
 		}, new Runnable() {
-			
+
 			public void run() {
 				workGraph.getListenerManager().transactionFinished(workGraph);
 			}

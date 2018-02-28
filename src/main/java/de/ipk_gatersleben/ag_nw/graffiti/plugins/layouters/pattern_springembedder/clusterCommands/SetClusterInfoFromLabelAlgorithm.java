@@ -19,9 +19,10 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 public class SetClusterInfoFromLabelAlgorithm extends AbstractAlgorithm {
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
@@ -30,30 +31,25 @@ public class SetClusterInfoFromLabelAlgorithm extends AbstractAlgorithm {
 		else
 			return "Copy node/edge label to cluster ID";
 	}
-	
+
 	@Override
 	public String getDescription() {
-		return "<html>" +
-							"About to use the node labels for the assignment of a cluster ID.<br><br>" +
-							"<small>Hint: Commands dealing with alternative substance IDs, available from<br>" +
-							"the mappings menu may be useful to temporaty modify the node labels, before<br>" +
-							"using this command.";
+		return "<html>" + "About to use the node labels for the assignment of a cluster ID.<br><br>"
+				+ "<small>Hint: Commands dealing with alternative substance IDs, available from<br>"
+				+ "the mappings menu may be useful to temporaty modify the node labels, before<br>"
+				+ "using this command.";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Elements"; // "menu.edit";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.ANNOTATION,
-				Category.CLUSTER
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANNOTATION, Category.CLUSTER));
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
@@ -61,7 +57,7 @@ public class SetClusterInfoFromLabelAlgorithm extends AbstractAlgorithm {
 		if (graph.getNumberOfNodes() <= 0)
 			throw new PreconditionException("Graph contains no graph elements!");
 	}
-	
+
 	public void execute() {
 		HashMap<GraphElement, String> ge2newClusterID = new HashMap<GraphElement, String>();
 		for (GraphElement ge : getSelectedOrAllGraphElements()) {
@@ -70,9 +66,9 @@ public class SetClusterInfoFromLabelAlgorithm extends AbstractAlgorithm {
 		}
 		GraphHelper.applyUndoableClusterIdAssignment(graph, ge2newClusterID, getName(), true);
 	}
-	
+
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-	
+
 }

@@ -59,7 +59,7 @@ public class CompassFormatDemo extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public CompassFormatDemo(final String title) {
 		super(title);
@@ -84,7 +84,7 @@ public class CompassFormatDemo extends ApplicationFrame {
 	 * Creates a sample dataset.
 	 * 
 	 * @param count
-	 *           the item count.
+	 *            the item count.
 	 * @return the dataset.
 	 */
 	private XYDataset createDirectionDataset(final int count) {
@@ -98,10 +98,9 @@ public class CompassFormatDemo extends ApplicationFrame {
 			direction = direction + (Math.random() - 0.5) * 15.0;
 			if (direction < 0.0) {
 				direction = direction + 360.0;
-			} else
-				if (direction > 360.0) {
-					direction = direction - 360.0;
-				}
+			} else if (direction > 360.0) {
+				direction = direction - 360.0;
+			}
 		}
 		dataset.addSeries(s1);
 		return dataset;
@@ -111,7 +110,7 @@ public class CompassFormatDemo extends ApplicationFrame {
 	 * Creates a sample dataset.
 	 * 
 	 * @param count
-	 *           the item count.
+	 *            the item count.
 	 * @return the dataset.
 	 */
 	private XYDataset createForceDataset(final int count) {
@@ -135,15 +134,8 @@ public class CompassFormatDemo extends ApplicationFrame {
 	 */
 	private JFreeChart createChart() {
 		final XYDataset direction = createDirectionDataset(600);
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							"Time",
-							"Date",
-							"Direction",
-							direction,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Time", "Date", "Direction", direction, true, true,
+				false);
 
 		final XYPlot plot = chart.getXYPlot();
 		plot.getDomainAxis().setLowerMargin(0.0);
@@ -177,7 +169,7 @@ public class CompassFormatDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 		final CompassFormatDemo demo = new CompassFormatDemo("Compass Format Demo");

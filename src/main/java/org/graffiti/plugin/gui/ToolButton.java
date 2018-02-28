@@ -29,29 +29,27 @@ import org.graffiti.plugin.tool.Tool;
  * @author $Author: klukas $
  * @version $Revision: 1.11 $ $Date: 2010/12/22 13:05:54 $
  */
-public class ToolButton
-					extends GraffitiToggleButton
-					implements GraffitiToolComponent, ActionListener {
+public class ToolButton extends GraffitiToggleButton implements GraffitiToolComponent, ActionListener {
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/** The tool this button is identified with. */
 	private Tool tool;
-	
+
 	private static List<ToolButton> knownTools = new LinkedList<ToolButton>();
 	private static List<ModeToolbar> knownToolBars = new LinkedList<ModeToolbar>();
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor that sets the buttons tool to the given <code>Tool</code>.
 	 * 
 	 * @param t
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public ToolButton(Tool t) {
 		this.tool = t;
@@ -60,7 +58,7 @@ public class ToolButton
 			knownTools.add(this);
 		}
 	}
-	
+
 	public static void checkStatusForAllToolButtons() {
 		if (ErrorMsg.getAppLoadingStatus() == ApplicationStatus.INITIALIZATION)
 			return;
@@ -70,7 +68,7 @@ public class ToolButton
 			t.setSelected(t.tool.isActive());
 		}
 	}
-	
+
 	public static void requestToolButtonFocus() {
 		for (Iterator<ToolButton> it = knownTools.iterator(); it.hasNext();) {
 			ToolButton t = (ToolButton) it.next();
@@ -78,14 +76,14 @@ public class ToolButton
 				t.requestFocusInWindow();
 		}
 	}
-	
+
 	/**
 	 * Creates a new ToolButton object.
 	 * 
 	 * @param t
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param preferredComponent
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public ToolButton(Tool t, String preferredComponent) {
 		super(preferredComponent);
@@ -95,16 +93,16 @@ public class ToolButton
 			knownTools.add(this);
 		}
 	}
-	
+
 	/**
 	 * Creates a new ToolButton object.
 	 * 
 	 * @param t
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param preferredComponent
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param icon
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public ToolButton(Tool t, String preferredComponent, ImageIcon icon) {
 		super(preferredComponent, icon);
@@ -115,16 +113,16 @@ public class ToolButton
 		}
 		setMargin(new Insets(1, 1, 1, 1));
 	}
-	
+
 	/**
 	 * Creates a new ToolButton object.
 	 * 
 	 * @param t
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param preferredComponent
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param text
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public ToolButton(Tool t, String preferredComponent, String text) {
 		super(text);
@@ -132,16 +130,16 @@ public class ToolButton
 		addActionListener(this);
 		setMargin(new Insets(1, 1, 1, 1));
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * @see org.graffiti.plugin.gui.GraffitiContainer#getId()
 	 */
 	public String getId() {
 		return getClass().getName();
 	}
-	
+
 	/**
 	 * Returns the tool this button is identified with.
 	 * 
@@ -150,17 +148,19 @@ public class ToolButton
 	public Tool getTool() {
 		return tool;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent arg0) {
 		MainFrame.showMessage("", org.graffiti.editor.MessageType.INFO);
 		tool.activate();
 		checkStatusForAllToolButtons();
 	}
-	
+
 	/**
 	 * @param toolbar
 	 */

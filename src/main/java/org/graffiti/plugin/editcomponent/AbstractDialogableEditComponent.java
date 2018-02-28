@@ -15,38 +15,37 @@ import javax.swing.JDialog;
 import org.graffiti.plugin.Displayable;
 
 /**
- * <code>AbstractDialogableEditComponent</code> provides some default
- * extensions of the <code>AbstractValueEditComponent</code> for those
- * instances of <code>ValueEditComponent</code> which offer an arbitrary
- * dialog for specifying the corresponding attribute value.
+ * <code>AbstractDialogableEditComponent</code> provides some default extensions
+ * of the <code>AbstractValueEditComponent</code> for those instances of
+ * <code>ValueEditComponent</code> which offer an arbitrary dialog for
+ * specifying the corresponding attribute value.
  * 
  * @see javax.swing.JButton
  * @see javax.swing.JDialog
  */
-public abstract class AbstractDialogableEditComponent
-					extends AbstractValueEditComponent {
+public abstract class AbstractDialogableEditComponent extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
-	
+
 	/** The button for opening the dialog. */
 	protected JButton button;
-	
+
 	/** The dialog for specifying the value. */
 	protected JDialog dialog;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new <code>AbstractDialogableEditComponent</code>.
 	 * 
 	 * @param disp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	protected AbstractDialogableEditComponent(Displayable disp) {
 		super(disp);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the button of the <code>AbstractDialogableEditComponent</code>.
 	 * 
@@ -55,7 +54,7 @@ public abstract class AbstractDialogableEditComponent
 	public JButton getButton() {
 		return this.button;
 	}
-	
+
 	/**
 	 * Returns the dialog of this <code>AbstractDialogableEditComponent</code>.
 	 * 

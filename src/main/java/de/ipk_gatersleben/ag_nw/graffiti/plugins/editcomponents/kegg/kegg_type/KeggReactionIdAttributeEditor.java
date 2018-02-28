@@ -58,16 +58,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Reaction;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.ReactionType;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class KeggReactionIdAttributeEditor
-					extends AbstractValueEditComponent
-					implements ActionListener {
+public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent implements ActionListener {
 	protected JLabel keggReactionIdEditor = new JLabel();
 	protected JButton selectOfThisType = new JButton("Select");
 	protected JButton editThisReaction = new JButton("Edit");
-	
+
 	public KeggReactionIdAttributeEditor(final Displayable disp) {
 		super(disp);
 		String curVal = ((KeggReactionIdAttribute) getDisplayable()).getString();
@@ -79,20 +76,18 @@ public class KeggReactionIdAttributeEditor
 		keggReactionIdEditor.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
 		keggReactionIdEditor.setPreferredSize(new Dimension(20, keggReactionIdEditor.getPreferredSize().height));
 	}
-	
+
 	public JComponent getComponent() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return TableLayout.getSplit(
-								keggReactionIdEditor,
-								TableLayout.getSplit(editThisReaction, selectOfThisType,
-													TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED),
-								TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
+					keggReactionIdEditor, TableLayout.getSplit(editThisReaction, selectOfThisType,
+							TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED),
+					TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
 		else
-			return TableLayout.getSplit(
-								keggReactionIdEditor, selectOfThisType,
-								TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
+			return TableLayout.getSplit(keggReactionIdEditor, selectOfThisType, TableLayoutConstants.FILL,
+					TableLayoutConstants.PREFERRED);
 	}
-	
+
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			selectOfThisType.setEnabled(false);
@@ -105,12 +100,12 @@ public class KeggReactionIdAttributeEditor
 			keggReactionIdEditor.setText(curVal);
 		}
 	}
-	
+
 	public void setValue() {
 		if (!keggReactionIdEditor.getText().equals(EMPTY_STRING))
 			((KeggReactionIdAttribute) displayable).setString(keggReactionIdEditor.getText());
 	}
-	
+
 	public void actionPerformed(ActionEvent arg0) {
 		String currentReactionId = keggReactionIdEditor.getText();
 		if (currentReactionId == null)
@@ -145,30 +140,25 @@ public class KeggReactionIdAttributeEditor
 			editReactions(null, currentReactionId, graph, selection);
 		}
 	}
-	
-	public static void editReactions(
-						GraphElement ge,
-						String currentReactionId, Graph graph, Selection selection) {
+
+	public static void editReactions(GraphElement ge, String currentReactionId, Graph graph, Selection selection) {
 		Collection<Gml2PathwayWarningInformation> warnings = new ArrayList<Gml2PathwayWarningInformation>();
 		Collection<Gml2PathwayErrorInformation> errors = new ArrayList<Gml2PathwayErrorInformation>();
 		HashMap<Entry, Node> entry2graphNode = new HashMap<Entry, Node>();
 		Pathway p = Pathway.getPathwayFromGraph(graph, warnings, errors, entry2graphNode);
 		if (errors.size() > 0) {
-			MainFrame.showMessageDialog(
-								"<html>" +
-													"The current graph can not be error-free interpreted<br>" +
-													"as an KEGG Pathway!<br><br>" + errors.size() + " errors have been found<br>" +
-													"during graph analysis.<br><br>" +
-													"Please choose <b>Cancel</b> in the following edit dialog,<br>" +
-													"in order to leave the current graph unmodified.<br>" +
-													"Then select the Pathway Editing side panel and locate and fix<br>" +
-													"the problematic network elements.<br><br>" +
-													"If you want to save the current work without loosing any network<br>" +
-													"elements, select and use the <b>GML</b> format available with the " +
-													"<b>Save As...</b> command.<br><br>" +
-													"In case you select <b>OK</b> in the following edit dialog,<br>" +
-													"only the network elements, which are error-free converted<br>" +
-													"into a KEGG Pathway model will be conserved.", "Error");
+			MainFrame.showMessageDialog("<html>" + "The current graph can not be error-free interpreted<br>"
+					+ "as an KEGG Pathway!<br><br>" + errors.size() + " errors have been found<br>"
+					+ "during graph analysis.<br><br>" + "Please choose <b>Cancel</b> in the following edit dialog,<br>"
+					+ "in order to leave the current graph unmodified.<br>"
+					+ "Then select the Pathway Editing side panel and locate and fix<br>"
+					+ "the problematic network elements.<br><br>"
+					+ "If you want to save the current work without loosing any network<br>"
+					+ "elements, select and use the <b>GML</b> format available with the "
+					+ "<b>Save As...</b> command.<br><br>"
+					+ "In case you select <b>OK</b> in the following edit dialog,<br>"
+					+ "only the network elements, which are error-free converted<br>"
+					+ "into a KEGG Pathway model will be conserved.", "Error");
 		}
 		Collection<Reaction> rl = null;
 		if (currentReactionId != null && currentReactionId.length() > 0)
@@ -190,43 +180,29 @@ public class KeggReactionIdAttributeEditor
 			}
 			rl = p.findReaction(findReacIds);
 		}
-		
+
 		Reaction currReaction = null;
 		if (rl != null && rl.size() > 0)
 			rl.iterator().next();
-		
+
 		ReactionIdEditor reactionIdEditor = new ReactionIdEditor(currReaction, p);
 		ReactionTypeSelection reactionTypeSelection = new ReactionTypeSelection(currReaction);
 		CompoundListEditor l1 = new CompoundListEditor(currReaction, p, true, false, false, entry2graphNode);
 		CompoundListEditor l2 = new CompoundListEditor(currReaction, p, false, true, false, entry2graphNode);
 		CompoundListEditor l3 = new CompoundListEditor(currReaction, p, false, false, true, entry2graphNode);
-		
+
 		JLabel reacDesc = new JLabel("");
-		
-		MyReactionList reacList = new MyReactionList(
-							rl.toArray(),
-							reacDesc,
-							reactionIdEditor,
-							reactionTypeSelection,
-							l1, l2, l3
-							);
-		
+
+		MyReactionList reacList = new MyReactionList(rl.toArray(), reacDesc, reactionIdEditor, reactionTypeSelection,
+				l1, l2, l3);
+
 		Object[] input = MyInputHelper.getInput(
-							getReactionSelection(currReaction, null, null, reacList, entry2graphNode, p),
-							"Edit Reaction",
-							new Object[] {
-												"Description", reacDesc,
-												"Reaction ID", reactionIdEditor,
-												"Reaction Type", reactionTypeSelection,
-												"Substrates", l1,
-												"Enzymes", l2,
-												"Products", l3,
-												"",
-												new JLabel("<html><font color='" + (errors.size() > 0 ? "red" : "gray") + "'><small><br>" +
-																	"Information: Interpretation of graph network as KGML data model produced " +
-																	errors.size() + " errors and " +
-																	warnings.size() + " warnings.<br><br>")
-				});
+				getReactionSelection(currReaction, null, null, reacList, entry2graphNode, p), "Edit Reaction",
+				new Object[] { "Description", reacDesc, "Reaction ID", reactionIdEditor, "Reaction Type",
+						reactionTypeSelection, "Substrates", l1, "Enzymes", l2, "Products", l3, "",
+						new JLabel("<html><font color='" + (errors.size() > 0 ? "red" : "gray") + "'><small><br>"
+								+ "Information: Interpretation of graph network as KGML data model produced "
+								+ errors.size() + " errors and " + warnings.size() + " warnings.<br><br>") });
 		if (input != null) {
 			// update view
 			Document d = p.getKgmlDocument();
@@ -235,16 +211,13 @@ public class KeggReactionIdAttributeEditor
 			p2.getGraph(graph);
 		}
 	}
-	
-	private static JComponent getReactionSelection(
-						final Reaction initialReaction,
-						final Entry defaultNewSourceEntry, final Entry defaultNewTargetEntry,
-						final MyReactionList reacSel,
-						final HashMap<Entry, Node> entry2graphNode,
-						final Pathway pathway) {
-		
+
+	private static JComponent getReactionSelection(final Reaction initialReaction, final Entry defaultNewSourceEntry,
+			final Entry defaultNewTargetEntry, final MyReactionList reacSel, final HashMap<Entry, Node> entry2graphNode,
+			final Pathway pathway) {
+
 		reacSel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
+
 		reacSel.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				Reaction r = (Reaction) reacSel.getSelectedValue();
@@ -257,7 +230,7 @@ public class KeggReactionIdAttributeEditor
 						nodes.add(entry2graphNode.get(enz));
 					for (Entry p : r.getProducts())
 						nodes.add(entry2graphNode.get(p));
-					
+
 					if (nodes.size() > 0) {
 						Graph graph = nodes.iterator().next().getGraph();
 						EditorSession es = MainFrame.getInstance().getActiveEditorSession();
@@ -272,24 +245,19 @@ public class KeggReactionIdAttributeEditor
 				}
 			}
 		});
-		
+
 		final JButton add = new JButton("add");
 		JButton del = new JButton("del");
 		add.addActionListener(getAddReactionListner(reacSel, pathway, defaultNewSourceEntry, defaultNewTargetEntry));
 		del.addActionListener(getDeleteReactionListner(reacSel, pathway));
 		add.setOpaque(false);
 		del.setOpaque(false);
-		JComponent addDel = TableLayout.get3Split(
-							new JLabel("Reactions "), add, del,
-							TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
-		
-		JComponent result =
-							TableLayout.getSplitVertical(
-												addDel,
-												new JScrollPane(reacSel),
-												TableLayoutConstants.PREFERRED,
-												TableLayoutConstants.FILL);
-		
+		JComponent addDel = TableLayout.get3Split(new JLabel("Reactions "), add, del, TableLayoutConstants.FILL,
+				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
+
+		JComponent result = TableLayout.getSplitVertical(addDel, new JScrollPane(reacSel),
+				TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
+
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				if (initialReaction != null)
@@ -297,7 +265,7 @@ public class KeggReactionIdAttributeEditor
 				else {
 					if (((DefaultListModel) reacSel.getModel()).size() > 0)
 						reacSel.setSelectedValue(((DefaultListModel) reacSel.getModel()).firstElement(), true);
-					
+
 				}
 				if (((DefaultListModel) reacSel.getModel()).size() <= 0)
 					add.doClick();
@@ -305,7 +273,7 @@ public class KeggReactionIdAttributeEditor
 		});
 		return result;
 	}
-	
+
 	private static ActionListener getDeleteReactionListner(final MyReactionList reacSel, final Pathway pathway) {
 		ActionListener al = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -330,20 +298,20 @@ public class KeggReactionIdAttributeEditor
 		};
 		return al;
 	}
-	
+
 	private static ActionListener getAddReactionListner(final MyReactionList reacSel, final Pathway pathway,
-						final Entry defaultNewSourceEntry, final Entry defaultNewTargetEntry) {
+			final Entry defaultNewSourceEntry, final Entry defaultNewTargetEntry) {
 		ActionListener al = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				ArrayList<Entry> sl = new ArrayList<Entry>();
 				ArrayList<Entry> pl = new ArrayList<Entry>();
-				
+
 				if (defaultNewSourceEntry != null)
 					sl.add(defaultNewSourceEntry);
-				
+
 				if (defaultNewTargetEntry != null)
 					pl.add(defaultNewTargetEntry);
-				
+
 				final Reaction newReaction = new Reaction("R00000", ReactionType.reversible, sl, pl);
 				pathway.getReactions().add(newReaction);
 				((DefaultListModel) reacSel.getModel()).addElement(newReaction);
@@ -358,7 +326,7 @@ public class KeggReactionIdAttributeEditor
 		};
 		return al;
 	}
-	
+
 	private void selectReactions(String currentReactionId, Graph graph, Selection selection) {
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		for (Node n : graph.getNodes()) {
@@ -397,43 +365,31 @@ public class KeggReactionIdAttributeEditor
 		}
 		selection.addAll(edges);
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
-		MainFrame.showMessage(nodes.size() + " nodes and " + edges.size() + "edges do match this criteria", MessageType.INFO);
+		MainFrame.showMessage(nodes.size() + " nodes and " + edges.size() + "edges do match this criteria",
+				MessageType.INFO);
 	}
-	
-	public static void editReactions(Reaction r, Pathway p, Collection<Gml2PathwayWarningInformation> warnings, Collection<Gml2PathwayErrorInformation> errors,
-						HashMap<Entry, Node> entry2graphNode, Graph graph) {
+
+	public static void editReactions(Reaction r, Pathway p, Collection<Gml2PathwayWarningInformation> warnings,
+			Collection<Gml2PathwayErrorInformation> errors, HashMap<Entry, Node> entry2graphNode, Graph graph) {
 		ReactionIdEditor reactionIdEditor = new ReactionIdEditor(r, p);
 		ReactionTypeSelection reactionTypeSelection = new ReactionTypeSelection(r);
 		CompoundListEditor l1 = new CompoundListEditor(r, p, true, false, false, entry2graphNode);
 		CompoundListEditor l2 = new CompoundListEditor(r, p, false, true, false, entry2graphNode);
 		CompoundListEditor l3 = new CompoundListEditor(r, p, false, false, true, entry2graphNode);
-		
+
 		JLabel reacDesc = new JLabel("");
-		
+
 		MyReactionList reacList = new MyReactionList(
-							(p.getReactions() != null ? p.getReactions().toArray() : new Object[] {}),
-							reacDesc,
-							reactionIdEditor,
-							reactionTypeSelection,
-							l1, l2, l3
-							);
-		
-		Object[] input = MyInputHelper.getInput(
-							getReactionSelection(r, null, null, reacList, entry2graphNode, p),
-							"Edit Reaction",
-							new Object[] {
-												"Description", reacDesc,
-												"Reaction ID", reactionIdEditor,
-												"Reaction Type", reactionTypeSelection,
-												"Substrates", l1,
-												"Enzymes", l2,
-												"Products", l3,
-												"",
-												new JLabel("<html><font color='" + (errors.size() > 0 ? "red" : "gray") + "'><small><br>" +
-																	"Information: Interpretation of graph network as KGML data model produced " +
-																	errors.size() + " errors and " +
-																	warnings.size() + " warnings.<br><br>")
-				});
+				(p.getReactions() != null ? p.getReactions().toArray() : new Object[] {}), reacDesc, reactionIdEditor,
+				reactionTypeSelection, l1, l2, l3);
+
+		Object[] input = MyInputHelper.getInput(getReactionSelection(r, null, null, reacList, entry2graphNode, p),
+				"Edit Reaction",
+				new Object[] { "Description", reacDesc, "Reaction ID", reactionIdEditor, "Reaction Type",
+						reactionTypeSelection, "Substrates", l1, "Enzymes", l2, "Products", l3, "",
+						new JLabel("<html><font color='" + (errors.size() > 0 ? "red" : "gray") + "'><small><br>"
+								+ "Information: Interpretation of graph network as KGML data model produced "
+								+ errors.size() + " errors and " + warnings.size() + " warnings.<br><br>") });
 		if (input != null) {
 			// update view
 			Document d = p.getKgmlDocument();

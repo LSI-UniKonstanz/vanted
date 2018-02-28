@@ -6,27 +6,26 @@ package org.vanted.animation.interpolators;
  * 
  */
 public class LinearInterpolator extends Interpolator {
-	public LinearInterpolator()
-	{ 
+	public LinearInterpolator() {
 	}
+
 	@Override
-	protected double interpolate(double t, double...y)
-	{
-		return linearInterpolation(t,y[0],y[1]);
+	protected double interpolate(double t, double... y) {
+		return linearInterpolation(t, y[0], y[1]);
 	}
+
 	@Override
-	protected int getPointsBefore()
-	{
+	protected int getPointsBefore() {
 		return 0;
 	}
+
 	@Override
-	protected int getPointsAfter()
-	{
+	protected int getPointsAfter() {
 		return 1;
 	}
+
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "Linear Interpolator";
 	}
 }

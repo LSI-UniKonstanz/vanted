@@ -12,35 +12,37 @@ import java.util.Collection;
 import org.graffiti.attributes.Attributable;
 
 public class Gml2PathwayErrorInformation {
-	
+
 	private Gml2PathwayError error;
 	private ArrayList<Attributable> errorNodesOrEdges;
 	private Attributable errorSource;
 	private String description;
-	
+
 	public Gml2PathwayErrorInformation(Gml2PathwayError error, Attributable errorSource) {
 		this.error = error;
 		this.errorSource = errorSource;
 	}
-	
+
 	public Gml2PathwayErrorInformation(Gml2PathwayError error, ArrayList<Attributable> errorSource) {
 		this.error = error;
-		this.errorNodesOrEdges = errorSource;;
+		this.errorNodesOrEdges = errorSource;
+		;
 	}
-	
-	public Gml2PathwayErrorInformation(Gml2PathwayError error, ArrayList<Attributable> errorSource, String description) {
+
+	public Gml2PathwayErrorInformation(Gml2PathwayError error, ArrayList<Attributable> errorSource,
+			String description) {
 		this(error, errorSource);
 		this.description = description;
 	}
-	
+
 	public Gml2PathwayError getError() {
 		return error;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
-	
+
 	public Collection<Attributable> getCausingGraphElements() {
 		Collection<Attributable> result = new ArrayList<Attributable>();
 		if (errorNodesOrEdges != null)
@@ -49,11 +51,11 @@ public class Gml2PathwayErrorInformation {
 			result.add(errorSource);
 		return result;
 	}
-	
+
 	public void printMessageToConsole() {
 		System.out.println("ERROR: " + toString());
 	}
-	
+
 	@Override
 	public String toString() {
 		if (errorSource != null)

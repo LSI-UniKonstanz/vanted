@@ -54,9 +54,9 @@ public class ItemHandler extends DefaultHandler implements DatasetTags {
 	 * Creates a new item handler.
 	 * 
 	 * @param root
-	 *           the root handler.
+	 *            the root handler.
 	 * @param parent
-	 *           the parent handler.
+	 *            the parent handler.
 	 */
 	public ItemHandler(final RootHandler root, final DefaultHandler parent) {
 		this.root = root;
@@ -78,7 +78,7 @@ public class ItemHandler extends DefaultHandler implements DatasetTags {
 	 * Sets the key.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 */
 	public void setKey(final Comparable key) {
 		this.key = key;
@@ -97,7 +97,7 @@ public class ItemHandler extends DefaultHandler implements DatasetTags {
 	 * Sets the value.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public void setValue(final Number value) {
 		this.value = value;
@@ -107,31 +107,28 @@ public class ItemHandler extends DefaultHandler implements DatasetTags {
 	 * The start of an element.
 	 * 
 	 * @param namespaceURI
-	 *           the namespace.
+	 *            the namespace.
 	 * @param localName
-	 *           the element name.
+	 *            the element name.
 	 * @param qName
-	 *           the element name.
+	 *            the element name.
 	 * @param atts
-	 *           the attributes.
+	 *            the attributes.
 	 * @throws SAXException
-	 *            for errors.
+	 *             for errors.
 	 */
-	public void startElement(final String namespaceURI,
-										final String localName,
-										final String qName,
-										final Attributes atts) throws SAXException {
+	public void startElement(final String namespaceURI, final String localName, final String qName,
+			final Attributes atts) throws SAXException {
 
 		if (qName.equals(ITEM_TAG)) {
 			final KeyHandler subhandler = new KeyHandler(this.root, this);
 			this.root.pushSubHandler(subhandler);
-		} else
-			if (qName.equals(VALUE_TAG)) {
-				final ValueHandler subhandler = new ValueHandler(this.root, this);
-				this.root.pushSubHandler(subhandler);
-			} else {
-				throw new SAXException("Expected <Item> or <Value>...found " + qName);
-			}
+		} else if (qName.equals(VALUE_TAG)) {
+			final ValueHandler subhandler = new ValueHandler(this.root, this);
+			this.root.pushSubHandler(subhandler);
+		} else {
+			throw new SAXException("Expected <Item> or <Value>...found " + qName);
+		}
 
 	}
 
@@ -139,26 +136,23 @@ public class ItemHandler extends DefaultHandler implements DatasetTags {
 	 * The end of an element.
 	 * 
 	 * @param namespaceURI
-	 *           the namespace.
+	 *            the namespace.
 	 * @param localName
-	 *           the element name.
+	 *            the element name.
 	 * @param qName
-	 *           the element name.
+	 *            the element name.
 	 */
-	public void endElement(final String namespaceURI,
-									final String localName,
-									final String qName) {
+	public void endElement(final String namespaceURI, final String localName, final String qName) {
 
 		if (this.parent instanceof PieDatasetHandler) {
 			final PieDatasetHandler handler = (PieDatasetHandler) this.parent;
 			handler.addItem(this.key, this.value);
 			this.root.popSubHandler();
-		} else
-			if (this.parent instanceof CategorySeriesHandler) {
-				final CategorySeriesHandler handler = (CategorySeriesHandler) this.parent;
-				handler.addItem(this.key, this.value);
-				this.root.popSubHandler();
-			}
+		} else if (this.parent instanceof CategorySeriesHandler) {
+			final CategorySeriesHandler handler = (CategorySeriesHandler) this.parent;
+			handler.addItem(this.key, this.value);
+			this.root.popSubHandler();
+		}
 
 	}
 

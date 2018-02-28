@@ -21,8 +21,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3utility.UtilityC
  * @author ricardo
  * 
  */
-public class BPInteraction extends HelperClass
-{
+public class BPInteraction extends HelperClass {
 
 	protected Graph graph;
 	protected Hashtable<Entity, Node> nodes;
@@ -30,8 +29,7 @@ public class BPInteraction extends HelperClass
 	protected StoichiometryWriter sW;
 	protected CollectionAttribute centerAttribute;
 
-	public BPInteraction(Graph Graph, Hashtable<Entity, Node> Nodes)
-	{
+	public BPInteraction(Graph Graph, Hashtable<Entity, Node> Nodes) {
 		super();
 		rand = new Random();
 		sW = new StoichiometryWriter();
@@ -49,19 +47,16 @@ public class BPInteraction extends HelperClass
 	 * @param entity
 	 * @return
 	 */
-	protected Node findORcreateNode(Entity entity)
-	{
+	protected Node findORcreateNode(Entity entity) {
 		Node node;
 		// check whether the entity is already in the graph or not
-		if (nodes.get(entity) == null)
-		{
+		if (nodes.get(entity) == null) {
 			int posX = rand.nextInt(100);
 			int posY = rand.nextInt(100);
 			node = graph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(posX, posY));
 			UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(node, entity);
 			nodes.put(entity, node);
-		} else
-		{
+		} else {
 			node = nodes.get(entity);
 		}
 		return node;
@@ -74,8 +69,8 @@ public class BPInteraction extends HelperClass
 	 * @param to
 	 * @return
 	 */
-	protected Edge addEdge(Node from, Node to)
-	{
-		return graph.addEdge(from, to, Boolean.TRUE, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.black, Color.black, true));
+	protected Edge addEdge(Node from, Node to) {
+		return graph.addEdge(from, to, Boolean.TRUE,
+				AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.black, Color.black, true));
 	}
 }

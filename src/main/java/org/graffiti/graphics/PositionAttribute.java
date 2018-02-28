@@ -19,11 +19,9 @@ import org.graffiti.attributes.HashMapAttribute;
  * 
  * @version $Revision: 1.5 $
  */
-public abstract class PositionAttribute
-					extends HashMapAttribute
-					implements GraphicAttributeConstants {
+public abstract class PositionAttribute extends HashMapAttribute implements GraphicAttributeConstants {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor for NodeLabelPositionAttribute.
 	 * 
@@ -32,16 +30,17 @@ public abstract class PositionAttribute
 	public PositionAttribute(String id) {
 		super(id);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
-	 * Sets the collection of attributes contained within this <tt>CollectionAttribute</tt>
+	 * Sets the collection of attributes contained within this
+	 * <tt>CollectionAttribute</tt>
 	 * 
 	 * @param attrs
-	 *           the map that contains all attributes.
+	 *            the map that contains all attributes.
 	 * @throws IllegalArgumentException
-	 *            DOCUMENT ME!
+	 *             DOCUMENT ME!
 	 */
 	@Override
 	public void setCollection(Map<String, Attribute> attrs) {

@@ -14,31 +14,31 @@ import java.util.Map;
 import org.graffiti.graph.Graph;
 
 /**
- * <code>GraphElementsEdit</code> is abstract class for building edits belong
- * to the operations on graph elements like adding or removing.
+ * <code>GraphElementsEdit</code> is abstract class for building edits belong to
+ * the operations on graph elements like adding or removing.
  * 
  * @author $Author: klukas $
  * @version $Revision: 1.4 $ $Date: 2010/12/22 13:05:35 $
  */
 public abstract class GraphElementsEdit extends GraffitiAbstractUndoableEdit {
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	/** Necessary graph reference */
 	protected Graph graph;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Create a nes <code>GraphElementsEdit</code>.
 	 * 
 	 * @param graph
-	 *           a graph reference
+	 *            a graph reference
 	 * @param geMap
-	 *           reference to the map supports the undo operations.
+	 *            reference to the map supports the undo operations.
 	 */
 	@SuppressWarnings("unchecked")
 	public GraphElementsEdit(Graph graph, Map geMap) {

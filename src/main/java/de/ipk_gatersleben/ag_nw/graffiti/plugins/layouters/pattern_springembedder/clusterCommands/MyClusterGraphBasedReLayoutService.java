@@ -36,70 +36,81 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 public class MyClusterGraphBasedReLayoutService
-					implements BackgroundTaskStatusProviderSupportingExternalCall, Runnable, HelperClass {
+		implements BackgroundTaskStatusProviderSupportingExternalCall, Runnable, HelperClass {
 	boolean userBreak = false;
 	double statusValue = -1;
 	boolean pleaseStop = false;
-	
+
 	String status1, status2;
-	
+
 	private Algorithm layoutAlgorithm;
 	private final boolean currentOptionWaitForLayout;
 	private final Graph graph;
 	private Algorithm optLayoutAlgorithm2;
-	
+
 	public MyClusterGraphBasedReLayoutService(boolean waitForLayout, Graph g) {
 		this.currentOptionWaitForLayout = waitForLayout;
 		this.graph = g;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#getCurrentStatusValue()
+	 * 
+	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
+	 * getCurrentStatusValue()
 	 */
 	public int getCurrentStatusValue() {
 		return (int) statusValue;
 	}
-	
+
 	public void setAlgorithm(Algorithm algorithm, Algorithm optAlgorithm2) {
 		this.layoutAlgorithm = algorithm;
 		this.optLayoutAlgorithm2 = optAlgorithm2;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#getCurrentStatusValueFine()
+	 * 
+	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
+	 * getCurrentStatusValueFine()
 	 */
 	public double getCurrentStatusValueFine() {
 		return statusValue;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#getCurrentStatusMessage1()
+	 * 
+	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
+	 * getCurrentStatusMessage1()
 	 */
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#getCurrentStatusMessage2()
+	 * 
+	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
+	 * getCurrentStatusMessage2()
 	 */
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#pleaseStop()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#pleaseStop()
 	 */
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
@@ -124,9 +135,10 @@ public class MyClusterGraphBasedReLayoutService
 		}
 		if (checkStop())
 			return;
-		
+
 		boolean creationNeeded = true;
-		Graph testGraph = (Graph) AttributeHelper.getAttributeValue(mainGraph, "cluster", "clustergraph", null, new AdjListGraph(), false);
+		Graph testGraph = (Graph) AttributeHelper.getAttributeValue(mainGraph, "cluster", "clustergraph", null,
+				new AdjListGraph(), false);
 		if (testGraph != null) {
 			creationNeeded = false;
 			Collection<String> clusterNames = GraphHelper.getClusters(testGraph.getNodes());
@@ -161,10 +173,10 @@ public class MyClusterGraphBasedReLayoutService
 			pleaseStop();
 			MainFrame.showMessageDialog("Error: Could not create overview-graph", "Error");
 		}
-		
+
 		if (checkStop())
 			return;
-		
+
 		status1 = "Process cluster node size and position...";
 		HashMap<String, Vector2d> clusterLocationsBeforeLayout = new HashMap<String, Vector2d>();
 		if (clusterGraph != null) {
@@ -177,10 +189,10 @@ public class MyClusterGraphBasedReLayoutService
 				clusterLocationsBeforeLayout.put(clusterId, new Vector2d(position));
 			}
 		}
-		
+
 		if (checkStop())
 			return;
-		
+
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR) {
 			// add kegg-ed relevant information to edges
 			for (Edge e : clusterGraph.getEdges()) {
@@ -191,7 +203,7 @@ public class MyClusterGraphBasedReLayoutService
 				KeggGmlHelper.setRelationTypeInformation(e, 0, RelationType.maplink);
 			}
 		}
-		
+
 		status2 = "Layout overview-graph...";
 		layoutAlgorithm.attach(clusterGraph, new Selection());
 		layoutAlgorithm.execute();
@@ -204,7 +216,7 @@ public class MyClusterGraphBasedReLayoutService
 			}
 		}
 		layoutAlgorithm.reset();
-		
+
 		if (optLayoutAlgorithm2 != null) {
 			optLayoutAlgorithm2.attach(clusterGraph, new Selection());
 			optLayoutAlgorithm2.execute();
@@ -218,9 +230,9 @@ public class MyClusterGraphBasedReLayoutService
 			}
 			optLayoutAlgorithm2.reset();
 		}
-		
+
 		status2 = "Layout finished";
-		
+
 		if (!checkStop()) {
 			if (currentOptionWaitForLayout) {
 				clusterGraph.setName("overview-graph (apply layout then click OK, you may then close this window)");
@@ -259,21 +271,21 @@ public class MyClusterGraphBasedReLayoutService
 			Point2D position = AttributeHelper.getPosition(clusterNode);
 			clusterLocationsAfterLayout.put(clusterId, new Vector2d(position));
 		}
-		
+
 		// GraphHelper.printNodeLayout(mainGraph);
 		// GraphHelper.printNodeLayout(clusterGraph);
-		
+
 		if (checkStop())
 			return;
-		
+
 		// ArrayList<Graph> clusterGraphsToBeAnalyzed = new ArrayList<Graph>();
 		// ArrayList<String> clusterGraphsToBeAnalyzedID = new ArrayList<String>();
-		
+
 		status1 = "Apply layout...";
 		status2 = "";
-		
+
 		boolean error = false;
-		
+
 		final HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
 		for (Node n : mainGraph.getNodes()) {
 			String clusterId = NodeTools.getClusterID(n, null);
@@ -284,10 +296,8 @@ public class MyClusterGraphBasedReLayoutService
 				if (clusterAfter == null) {
 					error = true;
 				} else {
-					Vector2d newPosition = new Vector2d(
-										currentPosition.x + (clusterAfter.x - clusterBefore.x),
-										currentPosition.y + (clusterAfter.y - clusterBefore.y)
-										);
+					Vector2d newPosition = new Vector2d(currentPosition.x + (clusterAfter.x - clusterBefore.x),
+							currentPosition.y + (clusterAfter.y - clusterBefore.y));
 					nodes2newPositions.put(n, newPosition);
 				}
 			}
@@ -302,7 +312,8 @@ public class MyClusterGraphBasedReLayoutService
 				if (clusterAfter == null)
 					error = true;
 				else
-					EdgeHelper.moveBends(e, (clusterAfter.x - clusterBefore.x), (clusterAfter.y - clusterBefore.y), bends2newPositions);
+					EdgeHelper.moveBends(e, (clusterAfter.x - clusterBefore.x), (clusterAfter.y - clusterBefore.y),
+							bends2newPositions);
 			}
 		}
 		final boolean errorF = error;
@@ -310,30 +321,29 @@ public class MyClusterGraphBasedReLayoutService
 		BackgroundTaskHelper.executeLaterOnSwingTask(50, new Runnable() {
 			public void run() {
 				if (errorF)
-					MainFrame.showMessageDialog(
-										"<html>" +
-															"Some sub-graph positions could not be updated." +
-															"Eventually you closed the overview-graph window, before applying the layout to the<br>" +
-															"source graph. It is recommended, to first modify the overview-graph layout. Then<br>" +
-															"continue the re-layout operation by clicking onto the OK button in the progress panel.<br>" +
-															"Then you may close the overview-graph window.", "Error");
-				// GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, "Overview-Graph based layout");
-				GraphHelper.applyUndoableNodeAndBendPositionUpdate(nodes2newPositions, bends2newPositions, "Overview-Graph based layout");
-				
+					MainFrame.showMessageDialog("<html>" + "Some sub-graph positions could not be updated."
+							+ "Eventually you closed the overview-graph window, before applying the layout to the<br>"
+							+ "source graph. It is recommended, to first modify the overview-graph layout. Then<br>"
+							+ "continue the re-layout operation by clicking onto the OK button in the progress panel.<br>"
+							+ "Then you may close the overview-graph window.", "Error");
+				// GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions,
+				// "Overview-Graph based layout");
+				GraphHelper.applyUndoableNodeAndBendPositionUpdate(nodes2newPositions, bends2newPositions,
+						"Overview-Graph based layout");
+
 				for (Node n : mainGraphF.getNodes()) {
 					String clusterId = NodeTools.getClusterID(n, "no cluster");
 					if (clusterId.equals("no cluster"))
 						NodeTools.setClusterID(n, "");
 				}
-				GravistoService.getInstance().runAlgorithm(
-									new CenterLayouterAlgorithm(), mainGraphF, new Selection(""),
-									null);
+				GravistoService.getInstance().runAlgorithm(new CenterLayouterAlgorithm(), mainGraphF, new Selection(""),
+						null);
 			}
 		});
 		statusValue = 100;
-		
+
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -345,46 +355,55 @@ public class MyClusterGraphBasedReLayoutService
 		}
 		return pleaseStop;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#pluginWaitsForUser()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * pluginWaitsForUser()
 	 */
 	public boolean pluginWaitsForUser() {
 		return userBreak;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#pleaseContinueRun()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * pleaseContinueRun()
 	 */
 	public void pleaseContinueRun() {
 		userBreak = false;
 	}
-	
+
 	public void setCurrentStatusValue(int value) {
 		statusValue = value;
 	}
-	
+
 	public void setCurrentStatusValueFine(double value) {
-		statusValue = value;;
+		statusValue = value;
+		;
 	}
-	
+
 	public boolean wantsToStop() {
 		return pleaseStop;
 	}
-	
+
 	public void setCurrentStatusText1(String status) {
 		status1 = status;
 	}
-	
+
 	public void setCurrentStatusText2(String status) {
 		status2 = status;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.BackgroundTaskStatusProviderSupportingExternalCall#setCurrentStatusValueFineAdd(double)
+	 * 
+	 * @see org.BackgroundTaskStatusProviderSupportingExternalCall#
+	 * setCurrentStatusValueFineAdd(double)
 	 */
 	public void setCurrentStatusValueFineAdd(double smallProgressStep) {
 		statusValue += smallProgressStep;

@@ -22,24 +22,23 @@ import org.graffiti.options.AbstractOptionPane;
  * @author flierl
  * @version $Revision: 1.7 $
  */
-public class ShortcutsOptionPane
-					extends AbstractOptionPane {
+public class ShortcutsOptionPane extends AbstractOptionPane {
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Constructor for ShortcutsOptionPane.
 	 */
 	public ShortcutsOptionPane() {
 		super("shortcuts");
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/*
 	 * @see org.graffiti.options.AbstractOptionPane#initDefault()
 	 */
@@ -47,7 +46,7 @@ public class ShortcutsOptionPane
 	protected void initDefault() {
 		// TODO
 	}
-	
+
 	/*
 	 * @see org.graffiti.options.AbstractOptionPane#saveDefault()
 	 */
@@ -55,34 +54,33 @@ public class ShortcutsOptionPane
 	protected void saveDefault() {
 		// TODO
 	}
-	
+
 	// ~ Inner Classes ==========================================================
-	
+
 	/**
 	 * The table of shortcuts.
 	 */
-	protected class ShortcutsModel
-						extends AbstractTableModel {
+	protected class ShortcutsModel extends AbstractTableModel {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		
+
 		/** Contains a list of key bindings. */
 		private List<?> bindings;
-		
+
 		/**
 		 * Constructs a new shortcuts model.
 		 * 
 		 * @param name
-		 *           the name of the model.
+		 *            the name of the model.
 		 * @param bindings
-		 *           list of keybindings.
+		 *            list of keybindings.
 		 */
 		ShortcutsModel(String name, List<?> bindings) {
 			// TODO
 		}
-		
+
 		/**
 		 * Return the number of columns for this table (3).
 		 * 
@@ -91,7 +89,7 @@ public class ShortcutsOptionPane
 		public int getColumnCount() {
 			return 3;
 		}
-		
+
 		/**
 		 * Returns the number of rows of this table.
 		 * 
@@ -99,57 +97,61 @@ public class ShortcutsOptionPane
 		 */
 		public int getRowCount() {
 			return 0;
-//			return bindings.size();
+			// return bindings.size();
 		}
-		
+
 		/**
 		 * DOCUMENT ME!
 		 * 
 		 * @param row
-		 *           DOCUMENT ME!
+		 *            DOCUMENT ME!
 		 * @param col
-		 *           DOCUMENT ME!
+		 *            DOCUMENT ME!
 		 * @return DOCUMENT ME!
 		 */
 		public Object getValueAt(int row, int col) {
 			return null; // TODO
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.options.OptionPane#getCategory()
 	 */
 	public String getCategory() {
 		//
 		return null;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.options.OptionPane#getOptionName()
 	 */
 	public String getOptionName() {
 		//
 		return null;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.options.OptionPane#init(javax.swing.JComponent)
 	 */
 	public void init(JComponent options) {
 		//
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.options.OptionPane#save(javax.swing.JComponent)
 	 */
 	public void save(JComponent options) {
 		//
-		
+
 	}
 }
 

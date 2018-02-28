@@ -64,23 +64,22 @@ public class CategoryItemEntity extends ChartEntity implements Cloneable, Serial
 	 * Creates a new category item entity.
 	 * 
 	 * @param area
-	 *           the area.
+	 *            the area.
 	 * @param toolTipText
-	 *           the tool tip text.
+	 *            the tool tip text.
 	 * @param urlText
-	 *           the URL text for HTML image maps.
+	 *            the URL text for HTML image maps.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param category
-	 *           the category.
+	 *            the category.
 	 * @param categoryIndex
-	 *           the category index.
+	 *            the category index.
 	 */
-	public CategoryItemEntity(Shape area, String toolTipText, String urlText,
-										CategoryDataset dataset,
-										int series, Object category, int categoryIndex) {
+	public CategoryItemEntity(Shape area, String toolTipText, String urlText, CategoryDataset dataset, int series,
+			Object category, int categoryIndex) {
 
 		super(area, toolTipText, urlText);
 		this.dataset = dataset;
@@ -103,7 +102,7 @@ public class CategoryItemEntity extends ChartEntity implements Cloneable, Serial
 	 * Sets the datset this entity refers to.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> permited).
+	 *            the dataset (<code>null</code> permited).
 	 */
 	public void setDataset(CategoryDataset dataset) {
 		this.dataset = dataset;
@@ -122,7 +121,7 @@ public class CategoryItemEntity extends ChartEntity implements Cloneable, Serial
 	 * Sets the series index.
 	 * 
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 */
 	public void setSeries(int series) {
 		this.series = series;
@@ -141,7 +140,7 @@ public class CategoryItemEntity extends ChartEntity implements Cloneable, Serial
 	 * Sets the category.
 	 * 
 	 * @param category
-	 *           the category (<code>null</code> permitted).
+	 *            the category (<code>null</code> permitted).
 	 */
 	public void setCategory(Object category) {
 		this.category = category;
@@ -160,7 +159,7 @@ public class CategoryItemEntity extends ChartEntity implements Cloneable, Serial
 	 * Sets the category index.
 	 * 
 	 * @param index
-	 *           the category index.
+	 *            the category index.
 	 */
 	public void setCategoryIndex(int index) {
 		this.categoryIndex = index;
@@ -172,15 +171,14 @@ public class CategoryItemEntity extends ChartEntity implements Cloneable, Serial
 	 * @return A string.
 	 */
 	public String toString() {
-		return "Category Item: series=" + this.series
-							+ ", category=" + this.category.toString();
+		return "Category Item: series=" + this.series + ", category=" + this.category.toString();
 	}
 
 	/**
 	 * Tests the entity for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -203,25 +201,25 @@ public class CategoryItemEntity extends ChartEntity implements Cloneable, Serial
 		return false;
 	}
 
-	// // DEPRECATED CODE /////////////////////////////////////////////////////////////////////////
+	// // DEPRECATED CODE
+	// /////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Creates a new category item entity.
 	 * 
 	 * @param area
-	 *           the area.
+	 *            the area.
 	 * @param toolTipText
-	 *           the tool tip text.
+	 *            the tool tip text.
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param category
-	 *           the category.
+	 *            the category.
 	 * @param categoryIndex
-	 *           the index of the category.
+	 *            the index of the category.
 	 * @deprecated Use alternative constructor.
 	 */
-	public CategoryItemEntity(Shape area, String toolTipText,
-										int series, Object category, int categoryIndex) {
+	public CategoryItemEntity(Shape area, String toolTipText, int series, Object category, int categoryIndex) {
 
 		super(area, toolTipText);
 		this.series = series;
@@ -234,21 +232,21 @@ public class CategoryItemEntity extends ChartEntity implements Cloneable, Serial
 	 * Creates a new category item entity.
 	 * 
 	 * @param area
-	 *           the area.
+	 *            the area.
 	 * @param toolTipText
-	 *           the tool tip text.
+	 *            the tool tip text.
 	 * @param urlText
-	 *           the URL text for HTML image maps.
+	 *            the URL text for HTML image maps.
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param category
-	 *           the category.
+	 *            the category.
 	 * @param categoryIndex
-	 *           the category index.
+	 *            the category index.
 	 * @deprecated Use alternative constructor.
 	 */
-	public CategoryItemEntity(Shape area, String toolTipText, String urlText,
-										int series, Object category, int categoryIndex) {
+	public CategoryItemEntity(Shape area, String toolTipText, String urlText, int series, Object category,
+			int categoryIndex) {
 
 		super(area, toolTipText, urlText);
 		this.series = series;

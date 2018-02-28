@@ -32,32 +32,31 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.SubstanceInterface;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class TableData {
 	private static final String ENTREZ_GENE_AFY = "Entrez Gene";
 	private static final String ENTREZ_GENE_AGI = "EntrezGeneID";
 	private static final String PROBE_SET_ID_AFY = "Probe Set ID";
 	private static final String PROBE_SET_ID_AGI = "ProbeID";
-	
+
 	public static final int MAX_COLUMN = 1024 * 1024; // 255;
-	
+
 	private final HashMap<Integer, Hashtable<Integer, Object>> worksheetData = new HashMap<Integer, Hashtable<Integer, Object>>();
 	private final Hashtable<Integer, Integer> maxRowForColumn = new Hashtable<Integer, Integer>();
-	
+
 	private SSTRecord stringRec;
-	
+
 	private int maxRow = Integer.MIN_VALUE;
 	private int maxCol = Integer.MIN_VALUE;
-	
+
 	// private long getIndex(long col, long row) {
 	// return row * MAX_COLUMN + col;
 	// }
-	
+
 	public TableData() {
 	}
-	
+
 	public TableData(TableData copyData, boolean transposedWrote, int fromRow) {
 		final int mCol = copyData.getMaximumCol();
 		final int mRow = copyData.getMaximumRow();
@@ -70,7 +69,8 @@ public class TableData {
 					targetCol = row - fromRow;
 					targetRow = col + fromRow;
 					o = copyData.getCellData(col, row, null);
-					// System.out.println("Add Data / Source [col x row] ["+col+" x "+row+"] -> Target ["+targetCol+" x "+targetRow+"] max Col="+getMaximumCol()+"");
+					// System.out.println("Add Data / Source [col x row] ["+col+" x "+row+"] ->
+					// Target ["+targetCol+" x "+targetRow+"] max Col="+getMaximumCol()+"");
 				} else {
 					targetCol = col;
 					targetRow = row;
@@ -85,14 +85,15 @@ public class TableData {
 		}
 		// int tCol = getMaximumCol();
 		// int tRow = getMaximumRow();
-		// System.out.println("Transposed Data from row "+fromRow+". Source ["+mCol+" x "+mRow+"] -> Target ["+tCol+" x "+tRow+"]");
+		// System.out.println("Transposed Data from row "+fromRow+". Source ["+mCol+" x
+		// "+mRow+"] -> Target ["+tCol+" x "+tRow+"]");
 	}
-	
+
 	public int processAdditionaldentifiers(boolean processAllIDs, boolean processAllNewIDs,
-						final ExperimentInterface substanceNodes, BackgroundTaskStatusProviderSupportingExternalCall optStatus,
-						double optStartProgress, double optEndProgress, StringBuilder statusMessage, boolean skipFirstRow,
-						HashSet<Integer> ignoreColumns) {
-		
+			final ExperimentInterface substanceNodes, BackgroundTaskStatusProviderSupportingExternalCall optStatus,
+			double optStartProgress, double optEndProgress, StringBuilder statusMessage, boolean skipFirstRow,
+			HashSet<Integer> ignoreColumns) {
+
 		// first row description of columns
 		// ArrayList<org.w3c.dom.Node> substanceNodes =
 		// XPathHelper.getSubstanceNodes(substancenodes);
@@ -132,7 +133,8 @@ public class TableData {
 						}
 						if (firstMapping.length() <= 0) {
 							String altIds = "";
-							if (mainId2alternativeIDs.get(mainID) == null || mainId2alternativeIDs.get(mainID).size() <= 0)
+							if (mainId2alternativeIDs.get(mainID) == null
+									|| mainId2alternativeIDs.get(mainID).size() <= 0)
 								altIds = " / empty /";
 							else {
 								for (String altId : mainId2alternativeIDs.get(mainID)) {
@@ -146,7 +148,8 @@ public class TableData {
 						}
 						if (row == maxRow) {
 							String altIds = "";
-							if (mainId2alternativeIDs.get(mainID) == null || mainId2alternativeIDs.get(mainID).size() <= 0)
+							if (mainId2alternativeIDs.get(mainID) == null
+									|| mainId2alternativeIDs.get(mainID).size() <= 0)
 								altIds = " / empty /";
 							else {
 								for (String altId : mainId2alternativeIDs.get(mainID)) {
@@ -157,7 +160,7 @@ public class TableData {
 								}
 								if (altIds.length() > 50)
 									altIds = altIds.substring(0, 50) + "... // id count="
-														+ mainId2alternativeIDs.get(mainID).size();
+											+ mainId2alternativeIDs.get(mainID).size();
 							}
 							lastMapping = "<li>row " + row + ": '" + mainID + "' ==> (" + altIds + ")";
 						}
@@ -174,15 +177,16 @@ public class TableData {
 				if (optStatus.wantsToStop())
 					break;
 			}
-			
+
 			String name = xmlSubstanceNode.getName();
 			if (name != null) {
 				if (optStatus != null)
-					optStatus.setCurrentStatusText2("Process Substance " + (int) (nodeIdx + 1) + "/" + (int) nodeCnt + " ("
-										+ name + ") (" + (processAllIDs ? "match all current IDs" : "match current main ID") + ")...");
+					optStatus.setCurrentStatusText2(
+							"Process Substance " + (int) (nodeIdx + 1) + "/" + (int) nodeCnt + " (" + name + ") ("
+									+ (processAllIDs ? "match all current IDs" : "match current main ID") + ")...");
 				if (name.endsWith(".0"))
 					name = name.substring(0, name.length() - 2);
-				
+
 				ArrayList<String> alternativeIds = mainId2alternativeIDs.get(name);
 				String matchName = name;
 				if (processAllIDs) {
@@ -220,20 +224,19 @@ public class TableData {
 			nodeIdx = nodeIdx + 1;
 			if (optStatus != null)
 				optStatus.setCurrentStatusText2("Processed Substance: " + (int) nodeIdx + "/" + (int) nodeCnt
-									+ " (main ID: " + name + ") (" + (processAllIDs ? "match all IDs" : "match main ID") + ")...");
+						+ " (main ID: " + name + ") (" + (processAllIDs ? "match all IDs" : "match main ID") + ")...");
 			if (optStatus != null)
 				optStatus.setCurrentStatusValueFine(optStartProgress + nodeIdx / nodeCnt * workLoad);
 		}
-		statusMessage.append("" + "<ul>Definition of first and last alternative identifier:" + firstMapping + ""
-							+ lastMapping + ""
-							+
-							// (matchStrings.length()>0 ?
+		statusMessage.append(
+				"" + "<ul>Definition of first and last alternative identifier:" + firstMapping + "" + lastMapping + "" +
+				// (matchStrings.length()>0 ?
 				// "<li>Matches:<br>"+matchStrings : "")+
-				(matchStrings.length() > 0 ? "<li>First 5 matches:<br>" + matchStrings : "") + "</ul>" + "Matches: "
-							+ matches + ", overall alternative ID count (empty values omitted): " + idCnt);
+						(matchStrings.length() > 0 ? "<li>First 5 matches:<br>" + matchStrings : "") + "</ul>"
+						+ "Matches: " + matches + ", overall alternative ID count (empty values omitted): " + idCnt);
 		return idCnt;
 	}
-	
+
 	public synchronized boolean isDBEinputForm() {
 		String v = getUnicodeStringCellData(10, 4);
 		String v2 = getUnicodeStringCellData(11, 4);
@@ -264,9 +267,9 @@ public class TableData {
 		} else
 			return false;
 	}
-	
+
 	private static String[] knownHeaders = new String[] { "spot", "info", "score", "EST clust-ID", "Unique funcat" };
-	
+
 	public synchronized boolean isGeneExpressionFileFormatForm() {
 		HashSet<String> headers = new HashSet<String>();
 		for (int col = 1; col < 5; col++) {
@@ -281,7 +284,7 @@ public class TableData {
 		}
 		return hitCount > 1;
 	}
-	
+
 	public synchronized boolean isDBEtransposedInputForm() {
 		String v = getUnicodeStringCellData(10, 4);
 		String v2 = getUnicodeStringCellData(11, 4);
@@ -317,9 +320,9 @@ public class TableData {
 		} else
 			return false;
 	}
-	
+
 	public synchronized String getTableStringData(int startRow, int endRow, int startCol, int endCol, String rowDivider,
-						String colDivider) {
+			String colDivider) {
 		StringBuilder res = new StringBuilder();
 		for (int row = startRow; row <= endRow; row++) {
 			for (int col = startCol; col <= endCol; col++) {
@@ -332,12 +335,12 @@ public class TableData {
 		}
 		return res.toString();
 	}
-	
+
 	/**
 	 * @param col
-	 *           Column 0..n (different from getCellData)
+	 *            Column 0..n (different from getCellData)
 	 * @param row
-	 *           Row 0..n (different from getCellData)
+	 *            Row 0..n (different from getCellData)
 	 * @param data
 	 */
 	public synchronized void addCellData(int col, int row, Object data) {
@@ -349,13 +352,12 @@ public class TableData {
 			String str = ((String) data).trim();
 			// //////// str=ErrorMsg.UnicodeToHtml(str);
 			worksheetData.get(col + 1).put(row + 1, str);
-		} else
-			if (data instanceof UnicodeString) {
-				String str = ((UnicodeString) data).getString().trim();
-				worksheetData.get(col + 1).put(row + 1, str);
-			} else {
-				worksheetData.get(col + 1).put(row + 1, data);
-			}
+		} else if (data instanceof UnicodeString) {
+			String str = ((UnicodeString) data).getString().trim();
+			worksheetData.get(col + 1).put(row + 1, str);
+		} else {
+			worksheetData.get(col + 1).put(row + 1, data);
+		}
 		if (row > maxRow)
 			maxRow = row;
 		if (col > maxCol)
@@ -369,14 +371,14 @@ public class TableData {
 		} else
 			maxRowForColumn.put(col, row);
 	}
-	
+
 	/**
 	 * @param col
-	 *           Column (1...n)
+	 *            Column (1...n)
 	 * @param row
-	 *           Row (1..n)
+	 *            Row (1..n)
 	 * @param expectIfNULL
-	 *           Return value in case cell is empty
+	 *            Return value in case cell is empty
 	 * @return
 	 */
 	public synchronized Object getCellData(int col, Integer row, Object expectIfNULL) {
@@ -388,11 +390,11 @@ public class TableData {
 		else
 			return expectIfNULL;
 	}
-	
+
 	public synchronized String getCellDataDate(int col, int row, String expectIfNULL) {
 		try {
 			Object o = getCellData(col, row, expectIfNULL);
-			if (o != null ){
+			if (o != null) {
 				if (o instanceof Date)
 					return AttributeHelper.getDateString(((Date) o));
 				else {
@@ -401,16 +403,16 @@ public class TableData {
 				}
 			}
 		} catch (ClassCastException cce) {
-			ErrorMsg.addErrorMessage("Could not return date data from column " + getExcelColumnName(col) + ", row " + row
-								+ " [cell=" + getCellData(col, row, expectIfNULL) + "]!");
+			ErrorMsg.addErrorMessage("Could not return date data from column " + getExcelColumnName(col) + ", row "
+					+ row + " [cell=" + getCellData(col, row, expectIfNULL) + "]!");
 		}
 		return expectIfNULL;
 	}
-	
+
 	public synchronized Date getCellDataDateObject(int col, int row, Date expectIfNULL) {
 		try {
 			Object o = getCellData(col, row, expectIfNULL);
-			if (o != null ){
+			if (o != null) {
 				if (o instanceof Date)
 					return ((Date) o);
 				else {
@@ -419,44 +421,43 @@ public class TableData {
 				}
 			}
 		} catch (ClassCastException cce) {
-			ErrorMsg.addErrorMessage("Could not return date data from column " + getExcelColumnName(col) + ", row " + row
-								+ " [cell=" + getCellData(col, row, expectIfNULL) + "]!");
-//			return expectIfNULL;
+			ErrorMsg.addErrorMessage("Could not return date data from column " + getExcelColumnName(col) + ", row "
+					+ row + " [cell=" + getCellData(col, row, expectIfNULL) + "]!");
+			// return expectIfNULL;
 		}
 		return expectIfNULL;
 	}
-	
+
 	public synchronized String getUnicodeStringCellData(int col, int row) {
 		Object r = getCellData(col, row, null);
 		if (r != null && r instanceof String) {
 			return (String) r; // //////// ErrorMsg.htmlToUnicode((String)r);
+		} else if (r != null && r instanceof Double) {
+			String rr = r.toString();
+			if (rr.endsWith(".0"))
+				return rr.substring(0, rr.length() - ".0".length());
+			else
+				return rr;
 		} else
-			if (r != null && r instanceof Double) {
-				String rr = r.toString();
-				if (rr.endsWith(".0"))
-					return rr.substring(0, rr.length() - ".0".length());
-				else
-					return rr;
-			} else
-				return null;
+			return null;
 	}
-	
+
 	public void setStringRec(SSTRecord stringRec) {
 		this.stringRec = stringRec;
 	}
-	
+
 	public SSTRecord getStringRec() {
 		return stringRec;
 	}
-	
+
 	public int getMaximumRow() {
 		return maxRow + 1;
 	}
-	
+
 	public int getMaximumCol() {
 		return maxCol + 1;
 	}
-	
+
 	public ArrayList<SampleEntry> getSamples(SubstanceColumnInformation sci, int plantOrGenotypeColumnRefID) {
 		HashMap<String, ArrayList<ReplicateDouble>> plant_time_timeunit = new HashMap<String, ArrayList<ReplicateDouble>>();
 		HashMap<String, Double> plant_time_timeunit2time = new HashMap<String, Double>();
@@ -474,13 +475,13 @@ public class TableData {
 							String sr = val.toString();
 							if (val instanceof String) {
 								sr = getUnicodeStringCellData(column, row);
-								if (sr != null
-													&& (sr.equalsIgnoreCase("-") || sr.equalsIgnoreCase("n/a") || sr.equalsIgnoreCase("na")))
+								if (sr != null && (sr.equalsIgnoreCase("-") || sr.equalsIgnoreCase("n/a")
+										|| sr.equalsIgnoreCase("na")))
 									ok = true;
 							}
 							if (!ok)
 								ErrorMsg.addErrorMessage("Non-Numeric value (" + sr + ") in column "
-													+ getExcelColumnName(column) + ", row " + row + "!");
+										+ getExcelColumnName(column) + ", row " + row + "!");
 						}
 						if (!ok)
 							continue;
@@ -494,7 +495,7 @@ public class TableData {
 						Double plantID = (Double) plantObj;
 						if (plantID.intValue() == plantOrGenotypeColumnRefID) {
 							processData(plant_time_timeunit, plant_time_timeunit2time, plant_time_timeunit2timeunit,
-												plant_time_timeunit2mesunit, column, row, val, plantID);
+									plant_time_timeunit2mesunit, column, row, val, plantID);
 						}
 					}
 				}
@@ -503,12 +504,12 @@ public class TableData {
 		ArrayList<SampleEntry> result = new ArrayList<SampleEntry>();
 		for (String key : plant_time_timeunit.keySet()) {
 			SampleEntry se = new SampleEntry(plant_time_timeunit2time.get(key), plant_time_timeunit2timeunit.get(key),
-								plant_time_timeunit2mesunit.get(key), plant_time_timeunit.get(key));
+					plant_time_timeunit2mesunit.get(key), plant_time_timeunit.get(key));
 			result.add(se);
 		}
 		return result;
 	}
-	
+
 	private Object getDoubleCellData(int column, Integer row, Object espectIfNull, boolean warnNonNumeric) {
 		Object o = getCellData(column, row, espectIfNull);
 		if (o != null && o instanceof String) {
@@ -520,17 +521,17 @@ public class TableData {
 			} catch (Exception e) {
 				if (warnNonNumeric)
 					ErrorMsg.addErrorMessage("Input Format Warning: Instead of Numeric Value  a " + "Text Value (" + os
-										+ ") that could not be converted to a numeric value " + getExcelColumnName(column) + " row " + row
-										+ "!");
+							+ ") that could not be converted to a numeric value " + getExcelColumnName(column) + " row "
+							+ row + "!");
 				// empty
 			}
 		}
 		return o;
 	}
-	
+
 	private void processData(HashMap<String, ArrayList<ReplicateDouble>> plant_time_timeunit,
-						HashMap<String, Double> plant_time_timeunit2time, HashMap<String, String> plant_time_timeunit2timeunit,
-						HashMap<String, String> plant_time_timeunit2mesunit, int column, int row, Object val, Double plantID) {
+			HashMap<String, Double> plant_time_timeunit2time, HashMap<String, String> plant_time_timeunit2timeunit,
+			HashMap<String, String> plant_time_timeunit2mesunit, int column, int row, Object val, Double plantID) {
 		String plant = plantID.toString();
 		String time = "-1";
 		String replicateNum = "-1";
@@ -541,11 +542,11 @@ public class TableData {
 		if (replObj != null && replObj instanceof Double)
 			replicateNum = ((Double) replObj).toString();
 		ReplicateDouble measureValue = new ReplicateDouble(val, replicateNum, null);
-		
+
 		String timeUnit = getUnicodeStringCellData(col("D"), row);
 		if (timeUnit == null)
 			timeUnit = "-1";
-		
+
 		String plantIDandTime = plant + "$" + time + "$" + timeUnit;
 		if (!plant_time_timeunit.containsKey(plantIDandTime)) {
 			plant_time_timeunit.put(plantIDandTime, new ArrayList<ReplicateDouble>());
@@ -554,7 +555,7 @@ public class TableData {
 			String mesUnit = getUnicodeStringCellData(column, 22);
 			if (mesUnit == null) {
 				ErrorMsg.addErrorMessage("Warning: No measurement unit in dataset in row 22, column "
-									+ getExcelColumnName(column) + "!");
+						+ getExcelColumnName(column) + "!");
 				mesUnit = "no unit set";
 			}
 			plant_time_timeunit2mesunit.put(plantIDandTime, mesUnit);
@@ -562,7 +563,7 @@ public class TableData {
 		ArrayList<ReplicateDouble> measurementValues = plant_time_timeunit.get(plantIDandTime);
 		measurementValues.add(measureValue);
 	}
-	
+
 	/**
 	 * converts the column from an integer to Excel column notation
 	 * <p>
@@ -580,7 +581,7 @@ public class TableData {
 		}
 		return excelCol;
 	}
-	
+
 	private int col(String col) {
 		if (col.length() == 1) {
 			char c1 = col.charAt(0);
@@ -590,12 +591,13 @@ public class TableData {
 			return -1;
 		}
 	}
-	
+
 	public Collection<SubstanceColumnInformation> getSubstanceColumnInformation(String firstCol) {
 		return getSubstanceColumnInformation(firstCol, false);
 	}
-	
-	public Collection<SubstanceColumnInformation> getSubstanceColumnInformation(String firstCol, boolean keepDoubleSubstancenames) {
+
+	public Collection<SubstanceColumnInformation> getSubstanceColumnInformation(String firstCol,
+			boolean keepDoubleSubstancenames) {
 		HashMap<String, SubstanceColumnInformation> res = new HashMap<String, SubstanceColumnInformation>();
 		ArrayList<SubstanceColumnInformation> resWithDoublettes = new ArrayList<SubstanceColumnInformation>();
 		for (int colSubst = col(firstCol); colSubst <= getMaximumCol(); colSubst++) {
@@ -606,7 +608,7 @@ public class TableData {
 					sci.addDataColumn(colSubst);
 					resWithDoublettes.add(sci);
 				} else {
-					
+
 					if (!res.keySet().contains(substName)) {
 						SubstanceColumnInformation sci = new SubstanceColumnInformation();
 						res.put(substName, sci);
@@ -618,16 +620,16 @@ public class TableData {
 		}
 		return keepDoubleSubstancenames ? resWithDoublettes : res.values();
 	}
-	
+
 	public void showDataDialog() {
 		showDataDialog(null);
 	}
-	
+
 	// show a dialog with the table data
 	public void showDataDialog(HashMap<Integer, String> optHeaders) {
 		MainFrame.showMessageDialog("Table Data", getDataInScrollbars(optHeaders));
 	}
-	
+
 	public JScrollPane getDataInScrollbars(HashMap<Integer, String> optHeaders) {
 		XlsTableModel xtm = new XlsTableModel(this, Integer.MAX_VALUE, Integer.MAX_VALUE);
 		// if (optHeaders != null)
@@ -639,23 +641,23 @@ public class TableData {
 		jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		return jsp;
 	}
-	
+
 	public int getMaximumRow(int column) {
 		if (maxRowForColumn.containsKey(column))
 			return maxRowForColumn.get(column);
 		else
 			return 0;
 	}
-	
+
 	public TableData getTransposedDataset() {
 		return new TableData(this, true, 0);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Table Data (col/rows " + maxCol + " x " + maxRow + ")";
 	}
-	
+
 	public void splitCells(String splitChar) {
 		for (int row = 1; row <= getMaximumRow(); row++) {
 			ArrayList<Object> valuesInRow = new ArrayList<Object>();
@@ -683,10 +685,9 @@ public class TableData {
 			}
 		}
 	}
-	
+
 	public void processGOanno(String splitChar, String preString, int minNumericLength) {
 
-		
 		for (int row = 1; row <= getMaximumRow(); row++) {
 			ArrayList<Object> valuesInRow = new ArrayList<Object>();
 			for (int col = 1; col <= getMaximumCol(); col++) {
@@ -748,7 +749,7 @@ public class TableData {
 			}
 		}
 	}
-	
+
 	private void clearRow(int row) {
 		int maxCol = getMaximumCol();
 		for (int col = 1; col <= maxCol; col++) {
@@ -758,7 +759,7 @@ public class TableData {
 			}
 		}
 	}
-	
+
 	public void processCellContentRemoveStringTags(String start, String end) {
 		if (start == null)
 			start = "";
@@ -782,21 +783,19 @@ public class TableData {
 							s = s.trim();
 							addCellData(col - 1, row - 1, s);
 						}
-					} else
-						if (start.length() > 0 && end.length() <= 0) {
-							if (s.indexOf(start) >= 0) {
-								s = s.substring(s.indexOf(start) + start.length());
-								s = s.trim();
-								addCellData(col - 1, row - 1, s);
-							}
-						} else
-							if (start.length() > 0 && end.length() > 0) {
-								s = StringManipulationTools.removeTags(s, start, end);
-								s = s.trim();
-								// System.out.println(s+" <-- "+so);
-								addCellData(col - 1, row - 1, s);
-								// System.out.println("--> "+getCellData(col, row, ""));
-							}
+					} else if (start.length() > 0 && end.length() <= 0) {
+						if (s.indexOf(start) >= 0) {
+							s = s.substring(s.indexOf(start) + start.length());
+							s = s.trim();
+							addCellData(col - 1, row - 1, s);
+						}
+					} else if (start.length() > 0 && end.length() > 0) {
+						s = StringManipulationTools.removeTags(s, start, end);
+						s = s.trim();
+						// System.out.println(s+" <-- "+so);
+						addCellData(col - 1, row - 1, s);
+						// System.out.println("--> "+getCellData(col, row, ""));
+					}
 				}
 				Object o2 = getCellData(col, row, null);
 				if (o2 != null && (o2 instanceof String)) {
@@ -809,7 +808,7 @@ public class TableData {
 		}
 		System.out.println("AAA " + aaa);
 	}
-	
+
 	public static ArrayList<String> getRelevantAffymetrixAnnotationColumnHeaders() {
 		ArrayList<String> result = new ArrayList<String>();
 		// result.add(SPECIES_SCIENTIFIC_NAME);
@@ -819,18 +818,18 @@ public class TableData {
 		result.add(ENTREZ_GENE_AGI);
 		return result;
 	}
-	
+
 	/**
-	 * @return set of processed columns which should be ignored by other
-	 *         annotation column processing
+	 * @return set of processed columns which should be ignored by other annotation
+	 *         column processing
 	 */
 	public HashSet<Integer> processAffymetrixAnnotationColumns(boolean processAffyGO, boolean processAffyEntrez) {
 		HashSet<Integer> columnsToIgnoreColumns = new HashSet<Integer>();
-		
+
 		for (int col = 1; col <= getMaximumCol(); col++) {
 			columnsToIgnoreColumns.add(col);
 		}
-		
+
 		// int species_scientific_name_column = -1;
 		// for (int col = 1; col<=getMaximumCol(); col++) {
 		// String header = getUnicodeStringCellData(col, 1);
@@ -843,7 +842,7 @@ public class TableData {
 		// ErrorMsg.addErrorMessage("Could not find 'Species Scientific Name'-column.");
 		// return columnsToIgnoreColumns;
 		// }
-		
+
 		int probe_set_id_column = -1;
 		for (int col = 1; col <= getMaximumCol(); col++) {
 			String header = getUnicodeStringCellData(col, 1);
@@ -859,10 +858,11 @@ public class TableData {
 			}
 		}
 		if (probe_set_id_column < 0) {
-			ErrorMsg.addErrorMessage("Could not find 'Probe Set ID' (Affymetrix Annotation) or 'ProbeID' (Agilent Annotation) column.");
+			ErrorMsg.addErrorMessage(
+					"Could not find 'Probe Set ID' (Affymetrix Annotation) or 'ProbeID' (Agilent Annotation) column.");
 			return columnsToIgnoreColumns;
 		}
-		
+
 		int entrez_gene_column = -1;
 		for (int col = 1; col <= getMaximumCol(); col++) {
 			String header = getUnicodeStringCellData(col, 1);
@@ -881,7 +881,7 @@ public class TableData {
 			ErrorMsg.addErrorMessage("Could not find 'Entrez Gene'-column.");
 			return columnsToIgnoreColumns;
 		}
-		
+
 		// process data
 		// probe_set_id_column
 		// species_scientific_name_column
@@ -893,7 +893,7 @@ public class TableData {
 		clearRow(1);
 		addCellData(0, 0, headerA);
 		addCellData(1, 0, headerB);
-		
+
 		for (int row = 2; row <= getMaximumRow(); row++) {
 			String probeID = getUnicodeStringCellData(probe_set_id_column, row);
 			if (probeID == null || probeID.length() == 0 || probeID.equals("---")) {
@@ -913,7 +913,7 @@ public class TableData {
 		}
 		return columnsToIgnoreColumns;
 	}
-	
+
 	public String getSampleValues(boolean headerRow, int col, int maxValues, String div, String ifNoValues) {
 		LinkedHashSet<String> values = new LinkedHashSet<>();
 		int startRow = headerRow ? 2 : 1;
@@ -922,7 +922,7 @@ public class TableData {
 				break;
 			values.add(getUnicodeStringCellData(col, row));
 		}
-		
+
 		if (values.size() == 0)
 			return ifNoValues;
 		else {

@@ -43,7 +43,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.Rotation;
 
 /**
- * A simple demonstration application showing how to create a pie chart using data from a {@link DefaultPieDataset}.
+ * A simple demonstration application showing how to create a pie chart using
+ * data from a {@link DefaultPieDataset}.
  */
 public class PieChart3DDemo1 extends ApplicationFrame {
 
@@ -51,7 +52,7 @@ public class PieChart3DDemo1 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PieChart3DDemo1(final String title) {
 
@@ -102,18 +103,15 @@ public class PieChart3DDemo1 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final PieDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createPieChart3D(
-							"Pie Chart 3D Demo 1", // chart title
+		final JFreeChart chart = ChartFactory.createPieChart3D("Pie Chart 3D Demo 1", // chart title
 				dataset, // data
 				true, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		final PiePlot3D plot = (PiePlot3D) chart.getPlot();
 		plot.setStartAngle(290);
@@ -128,7 +126,7 @@ public class PieChart3DDemo1 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

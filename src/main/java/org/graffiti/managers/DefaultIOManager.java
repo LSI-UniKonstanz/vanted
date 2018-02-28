@@ -42,18 +42,19 @@ import org.graffiti.plugin.io.resources.ResourceIOManager;
  * @version $Revision: 1.20.4.1.2.1 $
  */
 public class DefaultIOManager implements IOManager {
-	
+
 	private class GravistoFileOpenFilter extends GenericFileFilter {
-		
+
 		/**
 		 * @param extension
 		 */
 		public GravistoFileOpenFilter(String extension) {
 			super(extension);
 		}
-		
+
 		/*
 		 * (non-Javadoc)
+		 * 
 		 * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
 		 */
 		@Override
@@ -77,9 +78,10 @@ public class DefaultIOManager implements IOManager {
 			}
 			return false;
 		}
-		
+
 		/*
 		 * (non-Javadoc)
+		 * 
 		 * @see javax.swing.filechooser.FileFilter#getDescription()
 		 */
 		@Override
@@ -88,25 +90,25 @@ public class DefaultIOManager implements IOManager {
 			return "Supported Graph Files";
 		}
 	}
-	
+
 	// ~ Static fields/initializers =============================================
-	
+
 	// ~ Instance fields ========================================================
-	
+
 	/** The set of input serializers. */
 	private final List<InputSerializer> inputSerializer;
-	
+
 	/** The set of output serializers. */
 	private final List<OutputSerializer> outputSerializer;
-	
+
 	/** The file chooser used to open and save graphs. */
 	private JFileChooser fc;
-	
+
 	/** The list of listeners. */
 	private final List<IOManagerListener> listeners;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new io manager.
 	 */
@@ -116,41 +118,40 @@ public class DefaultIOManager implements IOManager {
 		listeners = new LinkedList<IOManagerListener>();
 		try {
 			/*
-			 * there might be a problem, when starting vanted, because if network drives are mapped
-			 * (on windows) but the server is not reachable, the JFileChooser constructor stops
-			 * This also means Vanted doesn't boot up.. 
-			 * To prevent this, a getter method was implemented so that the startup is garuanteed
+			 * there might be a problem, when starting vanted, because if network drives are
+			 * mapped (on windows) but the server is not reachable, the JFileChooser
+			 * constructor stops This also means Vanted doesn't boot up.. To prevent this, a
+			 * getter method was implemented so that the startup is garuanteed
 			 */
-//			fc = new JFileChooser();
-//			System.out.println("created filechooser");
+			// fc = new JFileChooser();
+			// System.out.println("created filechooser");
 		} catch (AccessControlException ace) {
 			// ErrorMsg.addErrorMessage(ace);
 		}
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	public JFileChooser getFileChooser() {
-		if(fc == null)
+		if (fc == null)
 			fc = new JFileChooser();
-		
+
 		return fc;
 	}
-	
+
 	/*
-	 * @see
-	 * org.graffiti.managers.IOManager#addInputSerializer(org.graffiti.plugin
+	 * @see org.graffiti.managers.IOManager#addInputSerializer(org.graffiti.plugin
 	 * .io.InputSerializer)
 	 */
 	public void addInputSerializer(InputSerializer is) {
 		// String[] inExtensions = is.getExtensions();
-		
+
 		// for (int j = 0; j < inExtensions.length; j++) {
 		inputSerializer.add(is);
 		// }
 		fireInputSerializerAdded(is);
 	}
-	
+
 	/*
 	 * @see
 	 * org.graffiti.managers.IOManager#addListener(org.graffiti.managers.IOManager
@@ -159,10 +160,9 @@ public class DefaultIOManager implements IOManager {
 	public void addListener(IOManagerListener ioManagerListener) {
 		listeners.add(ioManagerListener);
 	}
-	
+
 	/*
-	 * @see
-	 * org.graffiti.managers.IOManager#addOutputSerializer(org.graffiti.plugin
+	 * @see org.graffiti.managers.IOManager#addOutputSerializer(org.graffiti.plugin
 	 * .io.OutputSerializer)
 	 */
 	public void addOutputSerializer(OutputSerializer os) {
@@ -170,13 +170,12 @@ public class DefaultIOManager implements IOManager {
 		//
 		// for (int j = 0; j < outExtensions.length; j++)
 		outputSerializer.add(os);
-		
+
 		fireOutputSerializerAdded(os);
 	}
-	
+
 	/*
-	 * @see
-	 * org.graffiti.managers.IOManager#createInputSerializer(java.lang.String)
+	 * @see org.graffiti.managers.IOManager#createInputSerializer(java.lang.String)
 	 */
 	public InputSerializer createInputSerializer(InputStream in, String extSearch) throws FileNotFoundException {
 		ArrayList<InputSerializer> ins = new ArrayList<InputSerializer>();
@@ -198,7 +197,8 @@ public class DefaultIOManager implements IOManager {
 				try {
 					InputStream inps = new MyByteArrayInputStream(out.getBuff());
 					if (is.validFor(inps)) {
-						// System.out.println(ins.size() + " input serializers for file extension " + extSearch + ". Selected "
+						// System.out.println(ins.size() + " input serializers for file extension " +
+						// extSearch + ". Selected "
 						// + is.getClass().getCanonicalName());
 						return is;
 					}
@@ -211,7 +211,7 @@ public class DefaultIOManager implements IOManager {
 		}
 		return null;
 	}
-	
+
 	public Set<String> getGraphFileExtensions() {
 		Set<String> knownExt = new TreeSet<String>();
 		for (Iterator<InputSerializer> itr = inputSerializer.iterator(); itr.hasNext();) {
@@ -223,7 +223,7 @@ public class DefaultIOManager implements IOManager {
 		}
 		return knownExt;
 	}
-	
+
 	/*
 	 * @see org.graffiti.managers.IOManager#createOpenFileChooser()
 	 */
@@ -236,12 +236,14 @@ public class DefaultIOManager implements IOManager {
 			String[] ext = is.getExtensions();
 			String[] desc = is.getFileTypeDescriptions();
 			if (ext.length != desc.length) {
-				ErrorMsg.addErrorMessage("Error: File-Type descriptions do not match extensions - Class: " + is.toString());
+				ErrorMsg.addErrorMessage(
+						"Error: File-Type descriptions do not match extensions - Class: " + is.toString());
 				continue;
 			}
 			for (int i = 0; i < ext.length; i++) {
 				// if (knownExt.contains(ext[i]))
-				// ErrorMsg.addErrorMessage("Internal Error: Duplicate Input File Type Extension - "
+				// ErrorMsg.addErrorMessage("Internal Error: Duplicate Input File Type Extension
+				// - "
 				// + ext[i] + " Class: " + is.toString());
 				// knownExt.add(ext[i]);
 				// System.out.println("Output: " + ext[i] + " Class: " +
@@ -250,25 +252,24 @@ public class DefaultIOManager implements IOManager {
 				fc.addChoosableFileFilter(gff);
 			}
 		}
-		
+
 		fc.addChoosableFileFilter(new GravistoFileOpenFilter(null));
-		
+
 		return fc;
 	}
-	
+
 	/*
-	 * @see
-	 * org.graffiti.managers.IOManager#createOutputSerializer(java.lang.String)
+	 * @see org.graffiti.managers.IOManager#createOutputSerializer(java.lang.String)
 	 */
 	public OutputSerializer createOutputSerializer(String extSearch) {
-		
+
 		return createOutputSerializer(extSearch, null);
-		
+
 	}
-	
+
 	/*
-	 * @see
-	 * org.graffiti.managers.IOManager#createOutputSerializer(java.lang.String, java.lang.String)
+	 * @see org.graffiti.managers.IOManager#createOutputSerializer(java.lang.String,
+	 * java.lang.String)
 	 */
 	public OutputSerializer createOutputSerializer(String extSearch, String fileTypeDescription) {
 		for (Iterator<OutputSerializer> itr = outputSerializer.iterator(); itr.hasNext();) {
@@ -292,9 +293,7 @@ public class DefaultIOManager implements IOManager {
 		}
 		return null;
 	}
-	
-	
-	
+
 	@Override
 	public JFileChooser createSaveFileChooser() {
 		return createSaveFileChooser(null);
@@ -314,25 +313,27 @@ public class DefaultIOManager implements IOManager {
 		// Set<String> knownExt = new TreeSet<String>();
 		for (OutputSerializer os : outputSerializer) {
 			/*
-			 * if the given graph cannot be serialized with the current 
-			 * output serializer, skip it 
+			 * if the given graph cannot be serialized with the current output serializer,
+			 * skip it
 			 */
-			if(g != null && ! os.validFor(g))
+			if (g != null && !os.validFor(g))
 				continue;
-				
+
 			String[] ext = os.getExtensions();
 			String[] desc = os.getFileTypeDescriptions();
 			if (ext.length != desc.length) {
-				ErrorMsg.addErrorMessage("Error: File-Type descriptions do not match extensions - Class: " + os.toString());
+				ErrorMsg.addErrorMessage(
+						"Error: File-Type descriptions do not match extensions - Class: " + os.toString());
 				continue;
 			}
 			for (int i = 0; i < ext.length; i++) {
 				// if (knownExt.contains(ext[i]))
-				// ErrorMsg.addErrorMessage("Error: Duplicate Output File Type Extension - " + ext[i] + " Class: "
+				// ErrorMsg.addErrorMessage("Error: Duplicate Output File Type Extension - " +
+				// ext[i] + " Class: "
 				// + os.toString());
 				// knownExt.add(ext[i]);
 				GravistoFileFilter gff = new GravistoFileFilter(ext[i], desc[i]);
-				
+
 				if (defaultFileFilter == null && gff.getExtension().equalsIgnoreCase(defaultExt)) {
 					defaultFileFilter = gff;
 				} else {
@@ -344,52 +345,50 @@ public class DefaultIOManager implements IOManager {
 			fc.addChoosableFileFilter(defaultFileFilter);
 		return fc;
 	}
-	
+
 	/*
 	 * @see org.graffiti.managers.IOManager#hasInputSerializer()
 	 */
 	public boolean hasInputSerializer() {
 		return !inputSerializer.isEmpty();
 	}
-	
+
 	/*
 	 * @see org.graffiti.managers.IOManager#hasOutputSerializer()
 	 */
 	public boolean hasOutputSerializer() {
 		return !outputSerializer.isEmpty();
 	}
-	
+
 	/*
-	 * @see
-	 * org.graffiti.managers.pluginmgr.PluginManagerListener#pluginAdded(org.
+	 * @see org.graffiti.managers.pluginmgr.PluginManagerListener#pluginAdded(org.
 	 * graffiti.plugin.GenericPlugin,
 	 * org.graffiti.managers.pluginmgr.PluginDescription)
 	 */
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
 		// register add input serializers
 		InputSerializer[] is = plugin.getInputSerializers();
-		
+
 		for (int i = 0; i < is.length; i++) {
 			addInputSerializer(is[i]);
 		}
-		
+
 		// register all output serializers
 		OutputSerializer[] os = plugin.getOutputSerializers();
-		
+
 		for (int i = 0; i < os.length; i++) {
 			addOutputSerializer(os[i]);
 		}
 	}
-	
+
 	/*
-	 * @see
-	 * org.graffiti.managers.IOManager#removeListener(org.graffiti.managers.IOManager
-	 * .IOManagerListener)
+	 * @see org.graffiti.managers.IOManager#removeListener(org.graffiti.managers.
+	 * IOManager .IOManagerListener)
 	 */
 	public boolean removeListener(IOManagerListener l) {
 		return listeners.remove(l);
 	}
-	
+
 	/**
 	 * Returns a string representation of the io manager. Useful for debugging.
 	 * 
@@ -399,33 +398,33 @@ public class DefaultIOManager implements IOManager {
 	public String toString() {
 		return "inputSerializer: " + inputSerializer + " outputSerializer: " + outputSerializer;
 	}
-	
+
 	/**
-	 * Informs every registered io manager listener about the addition of the
-	 * given input serializer.
+	 * Informs every registered io manager listener about the addition of the given
+	 * input serializer.
 	 * 
 	 * @param is
-	 *           the input serializer, which was added.
+	 *            the input serializer, which was added.
 	 */
 	private void fireInputSerializerAdded(InputSerializer is) {
 		for (Iterator<IOManagerListener> i = listeners.iterator(); i.hasNext();) {
 			IOManager.IOManagerListener l = i.next();
-			
+
 			l.inputSerializerAdded(is);
 		}
 	}
-	
+
 	/**
 	 * Informs every output serializer about the addition of the given output
 	 * serializer.
 	 * 
 	 * @param os
-	 *           the output serializer, which was added.
+	 *            the output serializer, which was added.
 	 */
 	private void fireOutputSerializerAdded(OutputSerializer os) {
 		for (Iterator<IOManagerListener> i = listeners.iterator(); i.hasNext();) {
 			IOManager.IOManagerListener l = i.next();
-			
+
 			l.outputSerializerAdded(os);
 		}
 	}

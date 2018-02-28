@@ -18,35 +18,37 @@ import org.HelperClass;
 import de.ipk_gatersleben.ag_nw.graffiti.UDPreceiveStructure;
 
 /**
- * Creates a broadcast-service which allows sending and receiving of broadcast messages.
+ * Creates a broadcast-service which allows sending and receiving of broadcast
+ * messages.
  * 
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class BroadCastService implements HelperClass {
-	
+
 	private int udpPortStart;
 	private int udpPortEnd;
 	private int maxMessageLen;
 	private int udpBindPort;
 	private String targetIP;
-	
+
 	private int inCount = 0;
 	private int outCount = 0;
-	
+
 	private int inCountAll = 0;
-	
+
 	private DatagramSocket ds = null;
-	
+
 	/**
-	 * Creates a broadcast-service which allows sending and receiving of broadcast messages.
+	 * Creates a broadcast-service which allows sending and receiving of broadcast
+	 * messages.
 	 * 
 	 * @param udpPort
-	 *           The UDP Port where the data is received and send.
+	 *            The UDP Port where the data is received and send.
 	 * @param targetIP
-	 *           The Target IP (mask), e.g. 255.255.255.255
+	 *            The Target IP (mask), e.g. 255.255.255.255
 	 * @param maxMessageLen
-	 *           The maximum length of bytes that is allowed to send and receive by this service.
+	 *            The maximum length of bytes that is allowed to send and receive by
+	 *            this service.
 	 */
 	BroadCastService(int udpPortStart, int udpPortEnd, String targetIP, int maxMessageLen) {
 		this.udpPortStart = udpPortStart;
@@ -55,62 +57,57 @@ public class BroadCastService implements HelperClass {
 		this.targetIP = targetIP;
 		this.maxMessageLen = maxMessageLen;
 	}
-	
+
 	/**
-	 * Creates a broadcast-service which allows sending and receiving of broadcast messages.
-	 * A default target IP of 255.255.255.255 is used.
+	 * Creates a broadcast-service which allows sending and receiving of broadcast
+	 * messages. A default target IP of 255.255.255.255 is used.
 	 * 
 	 * @param udpPort
-	 *           The UDP Port where the data is received and send.
+	 *            The UDP Port where the data is received and send.
 	 * @param maxMessageLen
-	 *           The maximum length of bytes that is allowed to send and receive by this service.
+	 *            The maximum length of bytes that is allowed to send and receive by
+	 *            this service.
 	 */
 	public BroadCastService(int udpPortStart, int udpPortEnd, int maxMessageLen) {
 		this(udpPortStart, udpPortEnd, "255.255.255.255", maxMessageLen);
 	}
-	
+
 	/**
-	 * Sends a broadcast to all of the nodes the ip should be the ip for the
-	 * network
+	 * Sends a broadcast to all of the nodes the ip should be the ip for the network
 	 * 
 	 * @param msg
-	 *           the message to be send
+	 *            the message to be send
 	 * @param ip
-	 *           the ip address to use for the broadcast packet
+	 *            the ip address to use for the broadcast packet
 	 * @throws IOException
-	 *            if cannot send the packet
+	 *             if cannot send the packet
 	 */
 	public void sendBroadcast(byte[] msg) throws IOException, IllegalArgumentException {
 		if (msg.length > maxMessageLen)
 			throw new IllegalArgumentException("Broadcast Message Length is longer than specified maximum length.");
-		
+
 		for (int port = udpPortStart; port <= udpPortEnd; port++) {
-			DatagramPacket dp = new DatagramPacket(
-								msg,
-								0,
-								msg.length,
-								InetAddress.getByName(targetIP),
-								port);
+			DatagramPacket dp = new DatagramPacket(msg, 0, msg.length, InetAddress.getByName(targetIP), port);
 			DatagramSocket ds = new DatagramSocket();
 			ds.send(dp);
 			ds.close();
 			outCount++;
 		}
 	}
-	
+
 	/**
-	 * Receives and returns the data contained in a broadcast message.
-	 * Set timeout <= 0 if you wish to have no timeout
+	 * Receives and returns the data contained in a broadcast message. Set timeout
+	 * <= 0 if you wish to have no timeout
 	 * 
 	 * @throws IOException
 	 */
 	public UDPreceiveStructure receiveBroadcast(int timeout) throws IOException {
-		
+
 		if (udpBindPort == -1)
 			udpBindPort = udpPortStart;
-		
+
 		boolean success = false;
-		
+
 		UDPreceiveStructure result = null;
 		while (!success) {
 			try {
@@ -146,7 +143,7 @@ public class BroadCastService implements HelperClass {
 		else
 			return null;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -155,27 +152,27 @@ public class BroadCastService implements HelperClass {
 			inCount++;
 		}
 	}
-	
+
 	public int getInCount() {
 		return inCount;
 	}
-	
+
 	public int getOutCount() {
 		return outCount;
 	}
-	
+
 	public int getOtherInCount() {
 		return inCountAll - inCount;
 	}
-	
+
 	public int getStartPort() {
 		return udpPortStart;
 	}
-	
+
 	public int getEndPort() {
 		return udpPortEnd;
 	}
-	
+
 	public int getBindPort() {
 		return udpBindPort;
 	}

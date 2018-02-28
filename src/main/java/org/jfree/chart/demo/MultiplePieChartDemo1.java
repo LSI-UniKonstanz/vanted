@@ -44,8 +44,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.util.TableOrder;
 
 /**
- * A simple demonstration application showing how to create a chart consisting of multiple
- * pie charts.
+ * A simple demonstration application showing how to create a chart consisting
+ * of multiple pie charts.
  */
 public class MultiplePieChartDemo1 extends ApplicationFrame {
 
@@ -53,7 +53,7 @@ public class MultiplePieChartDemo1 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public MultiplePieChartDemo1(final String title) {
 
@@ -72,18 +72,9 @@ public class MultiplePieChartDemo1 extends ApplicationFrame {
 	 * @return A sample dataset.
 	 */
 	private CategoryDataset createDataset() {
-		final double[][] data = new double[][] {
-							{ 3.0, 4.0, 3.0, 5.0 },
-							{ 5.0, 7.0, 6.0, 8.0 },
-							{ 5.0, 7.0, 3.0, 8.0 },
-							{ 1.0, 2.0, 3.0, 4.0 },
-							{ 2.0, 3.0, 2.0, 3.0 }
-			};
-		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset(
-							"Region ",
-							"Sales/Q",
-							data
-							);
+		final double[][] data = new double[][] { { 3.0, 4.0, 3.0, 5.0 }, { 5.0, 7.0, 6.0, 8.0 }, { 5.0, 7.0, 3.0, 8.0 },
+				{ 1.0, 2.0, 3.0, 4.0 }, { 2.0, 3.0, 2.0, 3.0 } };
+		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Region ", "Sales/Q", data);
 		return dataset;
 	}
 
@@ -91,18 +82,14 @@ public class MultiplePieChartDemo1 extends ApplicationFrame {
 	 * Creates a sample chart with the given dataset.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
-		final JFreeChart chart = ChartFactory.createMultiplePieChart(
-							"Multiple Pie Chart", // chart title
+		final JFreeChart chart = ChartFactory.createMultiplePieChart("Multiple Pie Chart", // chart title
 				dataset, // dataset
-				TableOrder.BY_ROW,
-							true, // include legend
-				true,
-							false
-							);
+				TableOrder.BY_ROW, true, // include legend
+				true, false);
 		final MultiplePiePlot plot = (MultiplePiePlot) chart.getPlot();
 		final JFreeChart subchart = plot.getPieChart();
 		final PiePlot p = (PiePlot) subchart.getPlot();
@@ -128,7 +115,7 @@ public class MultiplePieChartDemo1 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

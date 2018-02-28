@@ -10,9 +10,9 @@ import scenario.Scenario;
 
 public class MyScenarioEditor extends JMButton {
 	private static final long serialVersionUID = 1L;
-	
+
 	Scenario s = null;
-	
+
 	public MyScenarioEditor(final Scenario s) {
 		this.s = s;
 		setIcon(WorkflowHelper.getInstance().myGetIcon("images/edit.png"));
@@ -27,5 +27,5 @@ public class MyScenarioEditor extends JMButton {
 		else
 			setToolTipText("Shown in contextmenu");
 	}
-	
+
 }

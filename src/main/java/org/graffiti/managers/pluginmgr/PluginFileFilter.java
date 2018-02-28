@@ -20,54 +20,52 @@ import org.graffiti.core.StringBundle;
  * 
  * @version $Revision: 1.5 $
  */
-public class PluginFileFilter
-					extends FileFilter {
+public class PluginFileFilter extends FileFilter {
 	// ~ Instance fields ========================================================
-	
+
 	/** The <code>StringBundle</code> of the file filter. */
 	protected StringBundle sBundle = StringBundle.getInstance();
-	
+
 	/** The description of this file filter. */
 	private String description;
-	
+
 	/** The list of extensions of this file to filter. */
 	private String[] extensions = null;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor for PluginFileFilter.
 	 * 
 	 * @param extension
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public PluginFileFilter(String extension) {
 		this(new String[] { extension });
 	}
-	
+
 	/**
 	 * Constructs a new plugin file filter from the given array of extensions.
 	 * 
 	 * @param extensions
-	 *           the array of extensions (<tt>String</tt>) to filter.
+	 *            the array of extensions (<tt>String</tt>) to filter.
 	 */
 	public PluginFileFilter(String[] extensions) {
 		super();
-		
+
 		this.extensions = extensions;
-		
+
 		StringBuffer exts = new StringBuffer();
-		
+
 		for (int i = 0; i < extensions.length; i++) {
 			exts.append(extensions[i]);
 		}
-		
-		description = sBundle.getString("plugin.filter.description." +
-							exts.toString());
+
+		description = sBundle.getString("plugin.filter.description." + exts.toString());
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * @see javax.swing.filechooser.FileFilter#getDescription()
 	 */
@@ -75,27 +73,27 @@ public class PluginFileFilter
 	public String getDescription() {
 		return description;
 	}
-	
+
 	/**
 	 * Returns the extension of the selected file.
 	 * 
 	 * @param f
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @return the extension of the selected file.
 	 */
 	public String getExtension(File f) {
 		String ext = null;
 		String s = f.getName();
-		
+
 		int i = s.lastIndexOf('.');
-		
+
 		if ((i > 0) && (i < (s.length() - 1))) {
 			ext = s.substring(i + 1).toLowerCase();
 		}
-		
+
 		return ext;
 	}
-	
+
 	/**
 	 * @see javax.swing.filechooser.FileFilter#accept(File)
 	 */
@@ -104,19 +102,19 @@ public class PluginFileFilter
 		if (f.isDirectory()) {
 			return true;
 		}
-		
+
 		String extension = getExtension(f);
-		
+
 		if (extension == null) {
 			return false;
 		}
-		
+
 		for (int i = 0; i < extensions.length; i++) {
 			if (extensions[i].compareTo(extension) == 0) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 }

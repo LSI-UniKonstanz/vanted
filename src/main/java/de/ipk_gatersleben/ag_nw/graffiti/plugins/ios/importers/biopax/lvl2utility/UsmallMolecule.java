@@ -5,14 +5,13 @@ import org.graffiti.graph.GraphElement;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
-public class UsmallMolecule extends UtilitySuperClassToGraph
-{
+public class UsmallMolecule extends UtilitySuperClassToGraph {
 
-	public static void addAttributesToNode(GraphElement elem, smallMolecule i)
-	{
+	public static void addAttributesToNode(GraphElement elem, smallMolecule i) {
 		// first set label to node
 		setLabels(elem, i);
-		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), Messages.getString("UtilitySuperClassToGraph.141"));
+		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"),
+				Messages.getString("UtilitySuperClassToGraph.141"));
 		setAvailability(elem, i.getAVAILABILITY());
 		setComment(elem, i.getCOMMENT());
 		setDataSource(elem, i.getDATA_SOURCE());

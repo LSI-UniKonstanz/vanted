@@ -110,19 +110,24 @@ public abstract class Legend implements Serializable, Cloneable {
 	/** Constant anchor value for legend position SOUTH_SOUTHEAST. */
 	public static final int SOUTH_SOUTHEAST = SOUTH + SOUTHEAST;
 
-	/** Internal value indicating the bit holding the value of interest in the anchor value. */
+	/**
+	 * Internal value indicating the bit holding the value of interest in the anchor
+	 * value.
+	 */
 	protected static final int INVERTED = 1 << 1;
 
-	/** Internal value indicating the bit holding the value of interest in the anchor value. */
+	/**
+	 * Internal value indicating the bit holding the value of interest in the anchor
+	 * value.
+	 */
 	protected static final int HORIZONTAL = 1 << 0;
 
 	/** The current location anchor of the legend. */
 	private int anchor = SOUTH;
 
 	/**
-	 * A reference to the chart that the legend belongs to
-	 * (used for access to the dataset).
-	 * <!-- use registerChart() instead -->
+	 * A reference to the chart that the legend belongs to (used for access to the
+	 * dataset). <!-- use registerChart() instead -->
 	 */
 	private JFreeChart chart;
 
@@ -133,7 +138,7 @@ public abstract class Legend implements Serializable, Cloneable {
 	 * Static factory method that returns a concrete subclass of Legend.
 	 * 
 	 * @param chart
-	 *           the chart that the legend belongs to.
+	 *            the chart that the legend belongs to.
 	 * @return a StandardLegend.
 	 */
 	public static Legend createInstance(JFreeChart chart) {
@@ -151,9 +156,9 @@ public abstract class Legend implements Serializable, Cloneable {
 	 * Creates a new legend.
 	 * 
 	 * @param chart
-	 *           the chart that the legend belongs to.
-	 * @deprecated use the default constructor instead and let JFreeChart manage
-	 *             the chart reference
+	 *            the chart that the legend belongs to.
+	 * @deprecated use the default constructor instead and let JFreeChart manage the
+	 *             chart reference
 	 */
 	protected Legend(JFreeChart chart) {
 		this();
@@ -170,26 +175,27 @@ public abstract class Legend implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Internal maintenance method to update the reference to the central
-	 * JFreeChart object.
+	 * Internal maintenance method to update the reference to the central JFreeChart
+	 * object.
 	 * 
 	 * @param chart
-	 *           the chart, may be null, if the legend gets removed from
-	 *           the chart.
+	 *            the chart, may be null, if the legend gets removed from the chart.
 	 */
 	protected void registerChart(JFreeChart chart) {
 		this.chart = chart;
 	}
 
 	/**
-	 * Draws the legend on a Java 2D graphics device (such as the screen or a printer).
+	 * Draws the legend on a Java 2D graphics device (such as the screen or a
+	 * printer).
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param available
-	 *           the area within which the legend (and plot) should be drawn.
+	 *            the area within which the legend (and plot) should be drawn.
 	 * @param info
-	 *           a carrier for returning information about the entities in the legend.
+	 *            a carrier for returning information about the entities in the
+	 *            legend.
 	 * @return the area remaining after the legend has drawn itself.
 	 */
 	public abstract Rectangle2D draw(Graphics2D g2, Rectangle2D available, ChartRenderingInfo info);
@@ -198,7 +204,7 @@ public abstract class Legend implements Serializable, Cloneable {
 	 * Registers an object for notification of changes to the legend.
 	 * 
 	 * @param listener
-	 *           the object that is being registered.
+	 *            the object that is being registered.
 	 */
 	public void addChangeListener(LegendChangeListener listener) {
 		this.listenerList.add(LegendChangeListener.class, listener);
@@ -208,17 +214,18 @@ public abstract class Legend implements Serializable, Cloneable {
 	 * Deregisters an object for notification of changes to the legend.
 	 * 
 	 * @param listener
-	 *           the object that is being deregistered.
+	 *            the object that is being deregistered.
 	 */
 	public void removeChangeListener(LegendChangeListener listener) {
 		this.listenerList.remove(LegendChangeListener.class, listener);
 	}
 
 	/**
-	 * Notifies all registered listeners that the chart legend has changed in some way.
+	 * Notifies all registered listeners that the chart legend has changed in some
+	 * way.
 	 * 
 	 * @param event
-	 *           information about the change to the legend.
+	 *            information about the change to the legend.
 	 */
 	protected void notifyListeners(LegendChangeEvent event) {
 
@@ -245,11 +252,13 @@ public abstract class Legend implements Serializable, Cloneable {
 	/**
 	 * Sets the current anchor of this legend.
 	 * <P>
-	 * The anchor can be one of: <code>NORTH</code>, <code>SOUTH</code>, <code>EAST</code>, <code>WEST</code>. If a valid anchor value is provided, the current
-	 * anchor is set and an update event is triggered. Otherwise, no change is made.
+	 * The anchor can be one of: <code>NORTH</code>, <code>SOUTH</code>,
+	 * <code>EAST</code>, <code>WEST</code>. If a valid anchor value is provided,
+	 * the current anchor is set and an update event is triggered. Otherwise, no
+	 * change is made.
 	 * 
 	 * @param anchor
-	 *           the new anchor value.
+	 *            the new anchor value.
 	 */
 	public void setAnchor(int anchor) {
 		if (isValidAnchor(anchor)) {
@@ -262,26 +271,27 @@ public abstract class Legend implements Serializable, Cloneable {
 	 * Tests if the specified anchor is a valid anchor.
 	 * 
 	 * @param anchor
-	 *           a candidate anchor.
-	 * @return <code>true</code> if the anchor is valid; <code>false</code> otherwise.
+	 *            a candidate anchor.
+	 * @return <code>true</code> if the anchor is valid; <code>false</code>
+	 *         otherwise.
 	 */
 	private boolean isValidAnchor(int anchor) {
 		switch (anchor) {
-			case NORTH:
-			case NORTH_NORTHEAST:
-			case NORTH_NORTHWEST:
-			case SOUTH:
-			case SOUTH_SOUTHEAST:
-			case SOUTH_SOUTHWEST:
-			case WEST:
-			case WEST_NORTHWEST:
-			case WEST_SOUTHWEST:
-			case EAST:
-			case EAST_NORTHEAST:
-			case EAST_SOUTHEAST:
-				return true;
-			default:
-				return false;
+		case NORTH:
+		case NORTH_NORTHEAST:
+		case NORTH_NORTHWEST:
+		case SOUTH:
+		case SOUTH_SOUTHEAST:
+		case SOUTH_SOUTHWEST:
+		case WEST:
+		case WEST_NORTHWEST:
+		case WEST_SOUTHWEST:
+		case EAST:
+		case EAST_NORTHEAST:
+		case EAST_SOUTHEAST:
+			return true;
+		default:
+			return false;
 		}
 	}
 
@@ -292,14 +302,14 @@ public abstract class Legend implements Serializable, Cloneable {
 	 */
 	protected boolean isAnchoredToTop() {
 		switch (this.anchor) {
-			case WEST_NORTHWEST:
-			case NORTH_NORTHWEST:
-			case NORTH:
-			case NORTH_NORTHEAST:
-			case EAST_NORTHEAST:
-				return true;
-			default:
-				return false;
+		case WEST_NORTHWEST:
+		case NORTH_NORTHWEST:
+		case NORTH:
+		case NORTH_NORTHEAST:
+		case EAST_NORTHEAST:
+			return true;
+		default:
+			return false;
 		}
 	}
 
@@ -319,14 +329,14 @@ public abstract class Legend implements Serializable, Cloneable {
 	 */
 	protected boolean isAnchoredToBottom() {
 		switch (this.anchor) {
-			case WEST_SOUTHWEST:
-			case SOUTH_SOUTHWEST:
-			case SOUTH:
-			case SOUTH_SOUTHEAST:
-			case EAST_SOUTHEAST:
-				return true;
-			default:
-				return false;
+		case WEST_SOUTHWEST:
+		case SOUTH_SOUTHWEST:
+		case SOUTH:
+		case SOUTH_SOUTHEAST:
+		case EAST_SOUTHEAST:
+			return true;
+		default:
+			return false;
 		}
 	}
 
@@ -337,14 +347,14 @@ public abstract class Legend implements Serializable, Cloneable {
 	 */
 	protected boolean isAnchoredToLeft() {
 		switch (this.anchor) {
-			case NORTH_NORTHWEST:
-			case WEST_NORTHWEST:
-			case WEST:
-			case WEST_SOUTHWEST:
-			case SOUTH_SOUTHWEST:
-				return true;
-			default:
-				return false;
+		case NORTH_NORTHWEST:
+		case WEST_NORTHWEST:
+		case WEST:
+		case WEST_SOUTHWEST:
+		case SOUTH_SOUTHWEST:
+			return true;
+		default:
+			return false;
 		}
 	}
 
@@ -355,14 +365,14 @@ public abstract class Legend implements Serializable, Cloneable {
 	 */
 	protected boolean isAnchoredToRight() {
 		switch (this.anchor) {
-			case NORTH_NORTHEAST:
-			case EAST_NORTHEAST:
-			case EAST:
-			case EAST_SOUTHEAST:
-			case SOUTH_SOUTHEAST:
-				return true;
-			default:
-				return false;
+		case NORTH_NORTHEAST:
+		case EAST_NORTHEAST:
+		case EAST:
+		case EAST_SOUTHEAST:
+		case SOUTH_SOUTHEAST:
+			return true;
+		default:
+			return false;
 		}
 	}
 
@@ -379,7 +389,7 @@ public abstract class Legend implements Serializable, Cloneable {
 	 * Tests this legend for equality with another object.
 	 * 
 	 * @param obj
-	 *           the object.
+	 *            the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
@@ -405,9 +415,9 @@ public abstract class Legend implements Serializable, Cloneable {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the output stream.
+	 *            the output stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -417,11 +427,11 @@ public abstract class Legend implements Serializable, Cloneable {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the input stream.
+	 *            the input stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *            if there is a classpath problem.
+	 *             if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
@@ -429,13 +439,13 @@ public abstract class Legend implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Clones the legend, and takes care of listeners.
-	 * Note: the cloned legend refer to the same chart as the original one.
-	 * JFreeChart clone() takes care of setting the references correctly.
+	 * Clones the legend, and takes care of listeners. Note: the cloned legend refer
+	 * to the same chart as the original one. JFreeChart clone() takes care of
+	 * setting the references correctly.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the object cannot be cloned.
+	 *             if the object cannot be cloned.
 	 */
 	protected Object clone() throws CloneNotSupportedException {
 		Legend ret = (Legend) super.clone();

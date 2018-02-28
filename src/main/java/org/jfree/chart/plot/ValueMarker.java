@@ -44,7 +44,7 @@ public class ValueMarker extends Marker {
 	 * Creates a new marker.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public ValueMarker(double value) {
 		super();
@@ -55,20 +55,20 @@ public class ValueMarker extends Marker {
 	 * Creates a new value marker.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @param paint
-	 *           the paint (<code>null</code> not permitted).
+	 *            the paint (<code>null</code> not permitted).
 	 * @param stroke
-	 *           the stroke (<code>null</code> not permitted).
+	 *            the stroke (<code>null</code> not permitted).
 	 * @param outlinePaint
-	 *           the outline paint (<code>null</code> permitted).
+	 *            the outline paint (<code>null</code> permitted).
 	 * @param outlineStroke
-	 *           the outline stroke (<code>null</code> permitted).
+	 *            the outline stroke (<code>null</code> permitted).
 	 * @param alpha
-	 *           the alpha transparency.
+	 *            the alpha transparency.
 	 */
-	public ValueMarker(double value, Paint paint, Stroke stroke,
-								Paint outlinePaint, Stroke outlineStroke, float alpha) {
+	public ValueMarker(double value, Paint paint, Stroke stroke, Paint outlinePaint, Stroke outlineStroke,
+			float alpha) {
 		super(paint, stroke, paint, stroke, alpha);
 		this.value = value;
 	}

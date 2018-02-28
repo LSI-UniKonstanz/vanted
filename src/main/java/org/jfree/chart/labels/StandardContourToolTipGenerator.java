@@ -40,7 +40,8 @@ import java.util.Locale;
 import org.jfree.data.ContourDataset;
 
 /**
- * A standard tooltip generator for plots that use data from an {@link ContourDataset}.
+ * A standard tooltip generator for plots that use data from an
+ * {@link ContourDataset}.
  * 
  * @author David M. O'Donnell
  */
@@ -51,8 +52,8 @@ public class StandardContourToolTipGenerator implements ContourToolTipGenerator,
 
 	/**
 	 * Replace occurrences of a substring.
-	 * http://ostermiller.org/utils/StringHelper.html
-	 * StringHelper.replace("1-2-3", "-", "|");<br>
+	 * http://ostermiller.org/utils/StringHelper.html StringHelper.replace("1-2-3",
+	 * "-", "|");<br>
 	 * result: "1|2|3"<br>
 	 * StringHelper.replace("-1--2-", "-", "|");<br>
 	 * result: "|1||2|"<br>
@@ -64,14 +65,14 @@ public class StandardContourToolTipGenerator implements ContourToolTipGenerator,
 	 * result: "1-2----3------4"<br>
 	 * 
 	 * @param s
-	 *           String to be modified.
+	 *            String to be modified.
 	 * @param find
-	 *           String to find.
+	 *            String to find.
 	 * @param replace
-	 *           String to replace.
+	 *            String to replace.
 	 * @return a string with all the occurrences of the string to find replaced.
 	 * @throws NullPointerException
-	 *            if s is null.
+	 *             if s is null.
 	 */
 	public static String stringReplace(String s, String find, String replace) {
 		int findLength;
@@ -157,9 +158,9 @@ public class StandardContourToolTipGenerator implements ContourToolTipGenerator,
 	 * Generates a tooltip text item for a particular item within a series.
 	 * 
 	 * @param data
-	 *           the dataset.
+	 *            the dataset.
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return The tooltip text.
 	 */
 	public String generateToolTip(ContourDataset data, int item) {
@@ -172,21 +173,16 @@ public class StandardContourToolTipGenerator implements ContourToolTipGenerator,
 		if (data.isDateAxis(0)) {
 			SimpleDateFormat formatter = new java.text.SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 			StringBuffer strbuf = new StringBuffer();
-			strbuf = formatter.format(new Date(x.longValue()),
-													strbuf,
-													new java.text.FieldPosition(0));
+			strbuf = formatter.format(new Date(x.longValue()), strbuf, new java.text.FieldPosition(0));
 			xString = strbuf.toString();
 		} else {
 			xString = this.valueForm.format(x.doubleValue());
 		}
 		if (z != null) {
-			return "X: " + xString
-								+ ", Y: " + this.valueForm.format(y.doubleValue())
-								+ ", Z: " + this.valueForm.format(z.doubleValue());
+			return "X: " + xString + ", Y: " + this.valueForm.format(y.doubleValue()) + ", Z: "
+					+ this.valueForm.format(z.doubleValue());
 		} else {
-			return "X: " + xString
-								+ ", Y: " + this.valueForm.format(y.doubleValue())
-								+ ", Z: no data";
+			return "X: " + xString + ", Y: " + this.valueForm.format(y.doubleValue()) + ", Z: no data";
 		}
 
 	}
@@ -195,7 +191,7 @@ public class StandardContourToolTipGenerator implements ContourToolTipGenerator,
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {

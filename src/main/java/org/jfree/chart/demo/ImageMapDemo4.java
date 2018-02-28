@@ -68,19 +68,15 @@ public class ImageMapDemo4 {
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
 		// create a chart
-		final double[][] data = new double[][] {
-							{ 56.0, -12.0, 34.0, 76.0, 56.0, 100.0, 67.0, 45.0 },
-							{ 37.0, 45.0, 67.0, 25.0, 34.0, 34.0, 100.0, 53.0 },
-							{ 43.0, 54.0, 34.0, 34.0, 87.0, 64.0, 73.0, 12.0 }
-			};
-		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset(
-							"Series ", "Type ", data
-							);
+		final double[][] data = new double[][] { { 56.0, -12.0, 34.0, 76.0, 56.0, 100.0, 67.0, 45.0 },
+				{ 37.0, 45.0, 67.0, 25.0, 34.0, 34.0, 100.0, 53.0 },
+				{ 43.0, 54.0, 34.0, 34.0, 87.0, 64.0, 73.0, 12.0 } };
+		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Series ", "Type ", data);
 
 		JFreeChart chart = null;
 		final boolean drilldown = true;
@@ -95,16 +91,12 @@ public class ImageMapDemo4 {
 			plot.setOrientation(PlotOrientation.VERTICAL);
 			chart = new JFreeChart("Bar Chart", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 		} else {
-			chart = ChartFactory.createBarChart3D(
-								"Bar Chart", // chart title
+			chart = ChartFactory.createBarChart3D("Bar Chart", // chart title
 					"Category", // domain axis label
 					"Value", // range axis label
 					dataset, // data
-					PlotOrientation.VERTICAL,
-								true, // include legend
-					true,
-								false
-								);
+					PlotOrientation.VERTICAL, true, // include legend
+					true, false);
 		}
 		chart.setBackgroundPaint(java.awt.Color.white);
 
@@ -133,8 +125,8 @@ public class ImageMapDemo4 {
 			writer.println("<HEAD><TITLE>JFreeChart Image Map Demo</TITLE></HEAD>");
 			writer.println("<BODY>");
 			ChartUtilities.writeImageMap(writer, "chart", info);
-			writer.println("<IMG SRC=\"barchart100.png\" "
-									+ "WIDTH=\"600\" HEIGHT=\"400\" BORDER=\"0\" USEMAP=\"#chart\">");
+			writer.println(
+					"<IMG SRC=\"barchart100.png\" " + "WIDTH=\"600\" HEIGHT=\"400\" BORDER=\"0\" USEMAP=\"#chart\">");
 			writer.println("</BODY>");
 			writer.println("</HTML>");
 			writer.close();

@@ -19,19 +19,19 @@ import org.graffiti.editor.MessageType;
 import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
 
 public class TemplateFile {
-	
+
 	private final String title;
 	private final URL url;
-	
+
 	public TemplateFile(String title, URL url, RunnableForFile openAfterSaving) {
 		this.title = title;
 		this.url = url;
 	}
-	
+
 	public URL getURL() {
 		return url;
 	}
-	
+
 	public JButton getButton() {
 		JButton tempBT = new JButton(title);
 		tempBT.addActionListener(new ActionListener() {
@@ -42,13 +42,13 @@ public class TemplateFile {
 					MainFrame.showMessageDialog("Input Template \"" + title + "\" not saved!", "Operation aborted");
 					return;
 				}
-				
+
 				try {
-					
+
 					File tgt = new File(targetFileName);
 					InputStream in = getURL().openStream();
 					FileOutputStream out = new FileOutputStream(tgt);
-					
+
 					int b;
 					long sz = 0;
 					while ((b = in.read()) != -1) {
@@ -56,15 +56,16 @@ public class TemplateFile {
 						sz++;
 					}
 					sz = sz / 1024;
-					
+
 					in.close();
 					out.close();
 					// if (true||checkBoxOpen.isSelected()) {
-					MainFrame.showMessage("Input Template saved as " + targetFileName + " (" + sz + " kb), open file with system default application...",
-										MessageType.INFO);
+					MainFrame.showMessage("Input Template saved as " + targetFileName + " (" + sz
+							+ " kb), open file with system default application...", MessageType.INFO);
 					AttributeHelper.showInBrowser(tgt.toURL().toString());
 					// } else
-					// MainFrame.showMessageDialog("Input Template saved as "+targetFileName+" ("+sz+" kb)", "Input Template Created");
+					// MainFrame.showMessageDialog("Input Template saved as "+targetFileName+"
+					// ("+sz+" kb)", "Input Template Created");
 				} catch (NullPointerException err) {
 					MainFrame.showMessageDialog("Error: " + err.getLocalizedMessage(), "Could not save file");
 					ErrorMsg.addErrorMessage(err);
@@ -79,5 +80,5 @@ public class TemplateFile {
 		});
 		return tempBT;
 	}
-	
+
 }

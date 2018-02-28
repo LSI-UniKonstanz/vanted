@@ -34,15 +34,14 @@ import org.graffiti.selection.Selection;
  * labels.
  */
 public class NumberNodesAndEdgesAlgorithm extends AbstractAlgorithm
-					implements ProvidesEdgeContextMenu,
-					ProvidesNodeContextMenu {
-	
+		implements ProvidesEdgeContextMenu, ProvidesNodeContextMenu {
+
 	JMenuItem numberNodes;
 	JMenuItem numberEdges;
-	
+
 	Collection<Node> currentNodes;
 	Collection<Edge> currentEdges;
-	
+
 	/**
 	 * Constructs a new instance.
 	 */
@@ -60,7 +59,7 @@ public class NumberNodesAndEdgesAlgorithm extends AbstractAlgorithm
 					}
 			}
 		});
-		
+
 		numberEdges.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int i = 1;
@@ -73,55 +72,52 @@ public class NumberNodesAndEdgesAlgorithm extends AbstractAlgorithm
 			}
 		});
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return null;
 	}
 
-	
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
 	}
 
-	
 	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm# setParameters(org.graffiti.plugin.algorithm.Parameter)
+	 * @see org.graffiti.plugin.algorithm.Algorithm#
+	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
-		JOptionPane.showMessageDialog(null,
-							"<html>Please use the context menu for numbering of nodes or edges.<p>");
-		
+		JOptionPane.showMessageDialog(null, "<html>Please use the context menu for numbering of nodes or edges.<p>");
+
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
 	@Override
 	public void reset() {
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return null;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.AlgorithmWithEdgeContextMenu#getCurrentEdgeContextMenuItem(java.util.Collection)
+	 * 
+	 * @see org.graffiti.plugin.algorithm.AlgorithmWithEdgeContextMenu#
+	 * getCurrentEdgeContextMenuItem(java.util.Collection)
 	 */
 	public JMenuItem[] getCurrentEdgeContextMenuItem(Collection<Edge> selectedEdges) {
 		currentEdges = selectedEdges;
@@ -129,11 +125,12 @@ public class NumberNodesAndEdgesAlgorithm extends AbstractAlgorithm
 			return new JMenuItem[] { numberEdges };
 		else
 			return new JMenuItem[] {};
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
 	@Override
@@ -141,28 +138,32 @@ public class NumberNodesAndEdgesAlgorithm extends AbstractAlgorithm
 		//
 		return null;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#attach(org.graffiti.graph.Graph)
 	 */
 	@Override
 	public void attach(Graph g, Selection s) {
 		// empty
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#check()
 	 */
 	@Override
 	public void check() {
 		// empty
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.AlgorithmWithNodeContextMenu#getCurrentNodeContextMenuItem(java.util.Collection)
+	 * 
+	 * @see org.graffiti.plugin.algorithm.AlgorithmWithNodeContextMenu#
+	 * getCurrentNodeContextMenuItem(java.util.Collection)
 	 */
 	public JMenuItem[] getCurrentNodeContextMenuItem(Collection<Node> selectedNodes) {
 		currentNodes = selectedNodes;
@@ -171,14 +172,15 @@ public class NumberNodesAndEdgesAlgorithm extends AbstractAlgorithm
 		else
 			return new JMenuItem[] {};
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#isLayoutAlgorithm()
 	 */
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-	
+
 }

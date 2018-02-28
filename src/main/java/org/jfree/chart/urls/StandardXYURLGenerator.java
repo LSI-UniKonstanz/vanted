@@ -66,7 +66,7 @@ public class StandardXYURLGenerator implements XYURLGenerator, Serializable {
 	 * Constructor that overrides default prefix to the URL.
 	 * 
 	 * @param sPrefix
-	 *           the prefix to the URL
+	 *            the prefix to the URL
 	 */
 	public StandardXYURLGenerator(String sPrefix) {
 		this.prefix = sPrefix;
@@ -76,15 +76,13 @@ public class StandardXYURLGenerator implements XYURLGenerator, Serializable {
 	 * Constructor that overrides all the defaults
 	 * 
 	 * @param prefix
-	 *           the prefix to the URL.
+	 *            the prefix to the URL.
 	 * @param seriesParameterName
-	 *           the name of the series parameter to go in each URL.
+	 *            the name of the series parameter to go in each URL.
 	 * @param itemParameterName
-	 *           the name of the item parameter to go in each URL.
+	 *            the name of the item parameter to go in each URL.
 	 */
-	public StandardXYURLGenerator(String prefix,
-												String seriesParameterName,
-												String itemParameterName) {
+	public StandardXYURLGenerator(String prefix, String seriesParameterName, String itemParameterName) {
 
 		this.prefix = prefix;
 		this.seriesParameterName = seriesParameterName;
@@ -96,19 +94,18 @@ public class StandardXYURLGenerator implements XYURLGenerator, Serializable {
 	 * Generates a URL for a particular item within a series.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series number (zero-based index).
+	 *            the series number (zero-based index).
 	 * @param item
-	 *           the item number (zero-based index).
+	 *            the item number (zero-based index).
 	 * @return the generated URL.
 	 */
 	public String generateURL(XYDataset dataset, int series, int item) {
 		String url = this.prefix;
 		boolean firstParameter = url.indexOf("?") == -1;
 		url += firstParameter ? "?" : "&";
-		url += this.seriesParameterName + "=" + series
-							+ "&" + this.itemParameterName + "=" + item;
+		url += this.seriesParameterName + "=" + series + "&" + this.itemParameterName + "=" + item;
 		return url;
 	}
 
@@ -116,7 +113,7 @@ public class StandardXYURLGenerator implements XYURLGenerator, Serializable {
 	 * Tests this generator for equaliaty with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 * @return a boolean.
 	 */
 	public boolean equals(Object obj) {

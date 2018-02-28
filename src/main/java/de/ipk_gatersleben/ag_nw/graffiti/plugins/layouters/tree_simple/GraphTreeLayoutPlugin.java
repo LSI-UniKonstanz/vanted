@@ -11,7 +11,7 @@ import org.graffiti.plugin.GenericPluginAdapter;
  * @author Joerg Bartelheimer
  */
 public class GraphTreeLayoutPlugin extends GenericPluginAdapter {
-	
+
 	/**
 	 * Creates a new GraphTreeLayoutPlugin object.
 	 */
@@ -19,5 +19,5 @@ public class GraphTreeLayoutPlugin extends GenericPluginAdapter {
 		// this.algorithms = new Algorithm[1];
 		// this.algorithms[0] = new GraphTreeLayout();
 	}
-	
+
 }

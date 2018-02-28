@@ -19,9 +19,9 @@ import org.graffiti.editor.MessageType;
  */
 public interface MessageListener {
 	// ~ Static fields/initializers =============================================
-	
+
 	// ~ Methods ================================================================
-	
+
 	// /**
 	// * The constants specify GUI components where the messages recieved by this
 	// * listener have to be displayed.
@@ -37,15 +37,15 @@ public interface MessageListener {
 	// * @param whereto a location for displaying this message
 	// */
 	// public void showMesssage(String message, int type, String whereto);
-	
+
 	/**
 	 * Method <code>showMesssage</code> displays a message on GUI components
 	 * according to the specified type.
 	 * 
 	 * @param message
-	 *           a message string to be displayed
+	 *            a message string to be displayed
 	 * @param type
-	 *           a type of the message (e.g. ERROR)
+	 *            a type of the message (e.g. ERROR)
 	 */
 	public void showMesssage(String message, MessageType type);
 }

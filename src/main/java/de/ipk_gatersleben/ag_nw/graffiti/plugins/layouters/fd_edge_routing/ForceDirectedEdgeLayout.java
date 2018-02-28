@@ -35,24 +35,19 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.myOp;
 
 public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
-	
+
 	double paramMinDistancePercent, paramForce, paramSegementLength, paramLayoutLength;
 	int paramMinimumBendCount = 0;
-	
+
 	public String getName() {
 		return "Force firected Edge-Routing Layout";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.LAYOUT
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
 
-	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
@@ -60,24 +55,24 @@ public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
 		if (graph.getNumberOfEdges() <= 0)
 			throw new PreconditionException("Graph contains no edges!");
 	}
-	
+
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
-		return new Parameter[] {
-							new DoubleParameter(40, "Segement Length", "Length of segments between edge bends"),
-							new DoubleParameter(20, "Target Length (Layout)", "Target length for force directed layout"),
-							new DoubleParameter(5000, "Repulsion Force (Layout)", "Repulsive force applied to edge bend points for layout"),
-							new DoubleParameter(0.01, "Minimum Distance (Percent)",
-												"Minimum distance (in percent of edge length) for bend distance to direct line betweeen nodes"),
-							new IntegerParameter(0, 0, Integer.MAX_VALUE, "Minimum Bend Count",
-												"If specified (>0), only edges with the specified possible bend count (dependent on edge length) will be processed") };
+		return new Parameter[] { new DoubleParameter(40, "Segement Length", "Length of segments between edge bends"),
+				new DoubleParameter(20, "Target Length (Layout)", "Target length for force directed layout"),
+				new DoubleParameter(5000, "Repulsion Force (Layout)",
+						"Repulsive force applied to edge bend points for layout"),
+				new DoubleParameter(0.01, "Minimum Distance (Percent)",
+						"Minimum distance (in percent of edge length) for bend distance to direct line betweeen nodes"),
+				new IntegerParameter(0, 0, Integer.MAX_VALUE, "Minimum Bend Count",
+						"If specified (>0), only edges with the specified possible bend count (dependent on edge length) will be processed") };
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -87,7 +82,7 @@ public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
 		paramMinDistancePercent = ((DoubleParameter) params[i++]).getDouble();
 		paramMinimumBendCount = ((IntegerParameter) params[i++]).getInteger();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public void execute() {
 		HashMap<Edge, ArrayList<Node>> oldEdge2newNodes = new HashMap<Edge, ArrayList<Node>>();
@@ -95,15 +90,19 @@ public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
 		boolean selectLines = selection.getEdges().size() > 0;
 		try {
 			graph.getListenerManager().transactionStarted(this);
-			
+
 			ArrayList<Node> allNodes = new ArrayList<Node>(graph.getNodes());
 			for (Node n : allNodes) {
 				Vector2d pos = AttributeHelper.getPositionVec2d(n);
 				Vector2d size = AttributeHelper.getSize(n);
-				Node tl = graph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(pos.x - size.x / 2, pos.y - size.y / 2));
-				Node tr = graph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(pos.x + size.x / 2, pos.y - size.y / 2));
-				Node bl = graph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(pos.x - size.x / 2, pos.y + size.y / 2));
-				Node br = graph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(pos.x + size.x / 2, pos.y + size.y / 2));
+				Node tl = graph.addNode(
+						AttributeHelper.getDefaultGraphicsAttributeForNode(pos.x - size.x / 2, pos.y - size.y / 2));
+				Node tr = graph.addNode(
+						AttributeHelper.getDefaultGraphicsAttributeForNode(pos.x + size.x / 2, pos.y - size.y / 2));
+				Node bl = graph.addNode(
+						AttributeHelper.getDefaultGraphicsAttributeForNode(pos.x - size.x / 2, pos.y + size.y / 2));
+				Node br = graph.addNode(
+						AttributeHelper.getDefaultGraphicsAttributeForNode(pos.x + size.x / 2, pos.y + size.y / 2));
 				Node l = graph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(pos.x - size.x / 2, pos.y));
 				Node r = graph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(pos.x + size.x / 2, pos.y));
 				Node t = graph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(pos.x, pos.y - size.y / 2));
@@ -117,7 +116,7 @@ public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
 				borderNodes.add(t);
 				borderNodes.add(b);
 			}
-			
+
 			for (GraphElement ge : getSelectedOrAllGraphElements()) {
 				if (!(ge instanceof Edge))
 					continue;
@@ -130,7 +129,7 @@ public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
 					bends = 0;
 				if (e.getSource() == e.getTarget())
 					bends = 2;
-				
+
 				// System.out.println("D="+length+", B="+bends);
 				AttributeHelper.removeEdgeBends(e);
 				if (bends > 0) {
@@ -142,11 +141,11 @@ public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
 					graph.deleteEdge(e);
 				}
 			}
-			
+
 			ArrayList<Node> bendNodes = new ArrayList<Node>();
 			for (ArrayList<Node> nodeList : oldEdge2newNodes.values())
 				bendNodes.addAll(nodeList);
-			
+
 			Selection selection = new Selection("bend layout", bendNodes);
 			try {
 				ThreadSafeOptions tso = MyNonInteractiveSpringEmb.getNewThreadSafeOptionsWithDefaultSettings();
@@ -163,7 +162,7 @@ public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
 		} finally {
 			for (Node n : borderNodes)
 				AttributeHelper.setSize(n, 1, 1);
-			
+
 			ArrayList<Edge> newEdges = new ArrayList<Edge>();
 			for (Edge e : oldEdge2newNodes.keySet()) {
 				Edge newEdge = graph.addEdgeCopy(e, e.getSource(), e.getTarget());
@@ -204,7 +203,7 @@ public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
 			GraphHelper.issueCompleteRedrawForGraph(graph);
 		}
 	}
-	
+
 	private Collection<Node> createEdgeBendNodes(Edge e, int bends) {
 		ArrayList<Node> result = new ArrayList<Node>();
 		if (e.getGraph() == null)
@@ -226,7 +225,7 @@ public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
 		e.getGraph().addEdge(lastNode, e.getTarget(), false);
 		return result;
 	}
-	
+
 	private double getLength(Edge e) {
 		Vector2d p1, p2;
 		p1 = AttributeHelper.getPositionVec2d(e.getSource());

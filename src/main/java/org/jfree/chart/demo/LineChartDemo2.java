@@ -51,7 +51,8 @@ import org.jfree.ui.Spacer;
 import org.jfree.ui.TextAnchor;
 
 /**
- * A simple demonstration application showing how to create a line chart using data from an {@link XYDataset}.
+ * A simple demonstration application showing how to create a line chart using
+ * data from an {@link XYDataset}.
  */
 public class LineChartDemo2 extends ApplicationFrame {
 
@@ -59,7 +60,7 @@ public class LineChartDemo2 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public LineChartDemo2(final String title) {
 
@@ -122,22 +123,20 @@ public class LineChartDemo2 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the data for the chart.
+	 *            the data for the chart.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-							"Line Chart Demo 2", // chart title
+		final JFreeChart chart = ChartFactory.createXYLineChart("Line Chart Demo 2", // chart title
 				"X", // x axis label
 				"Y", // y axis label
 				dataset, // data
-				PlotOrientation.HORIZONTAL,
-							true, // include legend
+				PlotOrientation.HORIZONTAL, true, // include legend
 				true, // tooltips
 				false // urls
-				);
+		);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 		chart.setBackgroundPaint(Color.white);
@@ -161,9 +160,8 @@ public class LineChartDemo2 extends ApplicationFrame {
 		renderer.setPlotShapes(true);
 		renderer.setShapesFilled(true);
 		renderer.setItemLabelsVisible(true);
-		final ItemLabelPosition p = new ItemLabelPosition(
-							ItemLabelAnchor.OUTSIDE12, TextAnchor.BOTTOM_CENTER, TextAnchor.CENTER, Math.PI / 4
-							);
+		final ItemLabelPosition p = new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, TextAnchor.BOTTOM_CENTER,
+				TextAnchor.CENTER, Math.PI / 4);
 		renderer.setPositiveItemLabelPosition(p);
 
 		// change the auto tick unit selection to integer units only...
@@ -190,7 +188,7 @@ public class LineChartDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

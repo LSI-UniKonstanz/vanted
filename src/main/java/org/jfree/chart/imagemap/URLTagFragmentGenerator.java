@@ -39,7 +39,7 @@ public interface URLTagFragmentGenerator {
 	 * Generates a URL string to go in an HTML image map.
 	 * 
 	 * @param urlText
-	 *           the URL.
+	 *            the URL.
 	 * @return the formatted HTML area tag attribute(s).
 	 */
 	public String generateURLFragment(String urlText);

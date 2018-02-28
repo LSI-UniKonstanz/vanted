@@ -42,9 +42,11 @@ import java.util.List;
 import org.jfree.data.XYDataset;
 
 /**
- * An interface that defines data in the form of (x, max, min, average, median) tuples.
+ * An interface that defines data in the form of (x, max, min, average, median)
+ * tuples.
  * <P>
- * Example: JFreeChart uses this interface to obtain data for AIMS max-min-average-median plots.
+ * Example: JFreeChart uses this interface to obtain data for AIMS
+ * max-min-average-median plots.
  * 
  * @author David Browning
  */
@@ -54,9 +56,9 @@ public interface BoxAndWhiskerXYDataset extends XYDataset {
 	 * Returns the mean for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the mean for the specified series and item.
 	 */
 	public Number getMeanValue(int series, int item);
@@ -65,9 +67,9 @@ public interface BoxAndWhiskerXYDataset extends XYDataset {
 	 * Returns the median-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the median-value for the specified series and item.
 	 */
 	public Number getMedianValue(int series, int item);
@@ -76,9 +78,9 @@ public interface BoxAndWhiskerXYDataset extends XYDataset {
 	 * Returns the Q1 median-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the Q1 median-value for the specified series and item.
 	 */
 	public Number getQ1Value(int series, int item);
@@ -87,9 +89,9 @@ public interface BoxAndWhiskerXYDataset extends XYDataset {
 	 * Returns the Q3 median-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the Q3 median-value for the specified series and item.
 	 */
 	public Number getQ3Value(int series, int item);
@@ -98,9 +100,9 @@ public interface BoxAndWhiskerXYDataset extends XYDataset {
 	 * Returns the min-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the min-value for the specified series and item.
 	 */
 	public Number getMinRegularValue(int series, int item);
@@ -109,9 +111,9 @@ public interface BoxAndWhiskerXYDataset extends XYDataset {
 	 * Returns the max-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the max-value for the specified series and item.
 	 */
 	public Number getMaxRegularValue(int series, int item);
@@ -120,21 +122,21 @@ public interface BoxAndWhiskerXYDataset extends XYDataset {
 	 * Returns the minimum value which is not a farout.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return a <code>Number</code> representing the maximum non-farout value.
 	 */
 	public Number getMinOutlier(int series, int item);
 
 	/**
-	 * Returns the maximum value which is not a farout, ie Q3 + (interquartile range * farout
-	 * coefficient).
+	 * Returns the maximum value which is not a farout, ie Q3 + (interquartile range
+	 * * farout coefficient).
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return a <code>Number</code> representing the maximum non-farout value.
 	 */
 	public Number getMaxOutlier(int series, int item);
@@ -143,9 +145,9 @@ public interface BoxAndWhiskerXYDataset extends XYDataset {
 	 * Returns an array of outliers for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the array of outliers for the specified series and item.
 	 */
 	public List getOutliers(int series, int item);
@@ -153,10 +155,12 @@ public interface BoxAndWhiskerXYDataset extends XYDataset {
 	/**
 	 * Returns the value used as the outlier coefficient. The outlier coefficient
 	 * gives an indication of the degree of certainty in an unskewed distribution.
-	 * Increasing the coefficient increases the number of values included.
-	 * Currently only used to ensure farout coefficient is greater than the outlier coefficient
+	 * Increasing the coefficient increases the number of values included. Currently
+	 * only used to ensure farout coefficient is greater than the outlier
+	 * coefficient
 	 * 
-	 * @return a <code>double</code> representing the value used to calculate outliers
+	 * @return a <code>double</code> representing the value used to calculate
+	 *         outliers
 	 */
 	public double getOutlierCoefficient();
 
@@ -164,7 +168,8 @@ public interface BoxAndWhiskerXYDataset extends XYDataset {
 	 * Returns the value used as the farout coefficient. The farout coefficient
 	 * allows the calculation of which values will be off the graph.
 	 * 
-	 * @return a <code>double</code> representing the value used to calculate farouts
+	 * @return a <code>double</code> representing the value used to calculate
+	 *         farouts
 	 */
 	public double getFaroutCoefficient();
 

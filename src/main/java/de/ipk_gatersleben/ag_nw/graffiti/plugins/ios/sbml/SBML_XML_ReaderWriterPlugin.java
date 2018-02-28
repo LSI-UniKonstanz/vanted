@@ -24,47 +24,47 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_XML_Rea
  */
 public class SBML_XML_ReaderWriterPlugin extends AddonAdapter {
 	/*
-	 * This static variable is to be set to true, when this plug-in is doing
-	 * a JUnit test. So, within the plug-in some code will not be executed,
-	 * which includes GUI dialogs, etc.
+	 * This static variable is to be set to true, when this plug-in is doing a JUnit
+	 * test. So, within the plug-in some code will not be executed, which includes
+	 * GUI dialogs, etc.
 	 */
 	public static boolean isTestintMode = false;
-	
+
 	@Override
 	protected void initializeAddon() {
 		System.out.println("initializeAddon called!");
 		try {
-			//logOperation();
+			// logOperation();
 			SBML_XML_Reader reader = new SBML_XML_Reader();
 			this.inputSerializers = new InputSerializer[] { reader };
 			this.outputSerializers = new OutputSerializer[] { new SBML_XML_Writer() };
-			
+
 			System.out.println("SBML_XML_Reader Writer Plugin started");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-		}	
+		}
 	}
-	
+
 	public SBML_XML_ReaderWriterPlugin() {
 		super();
 		initializeAddon();
 	}
-	
+
 	private static Logger logger = Logger.getRootLogger();
 
 	/**
 	 * For testing.
 	 * 
-	 * @throws IOException by the FileAppender
+	 * @throws IOException
+	 *             by the FileAppender
 	 */
 	@SuppressWarnings("unused")
 	private void logOperation() throws IOException {
 		SimpleLayout layout = new SimpleLayout();
-		ConsoleAppender consoleAppender = new ConsoleAppender( layout );
-		logger.addAppender( consoleAppender );
-		FileAppender fileAppender = new FileAppender(layout,
-				"log/jsbml.log", false );
-		logger.addAppender( fileAppender );
+		ConsoleAppender consoleAppender = new ConsoleAppender(layout);
+		logger.addAppender(consoleAppender);
+		FileAppender fileAppender = new FileAppender(layout, "log/jsbml.log", false);
+		logger.addAppender(fileAppender);
 	}
 }
