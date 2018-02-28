@@ -748,7 +748,7 @@ public class XmlDataChartComponent extends JComponent {
 		Double markerSize = (Double) AttributeHelper.getAttributeValue(g, "", AttributeHelper.id_ttestCircleSize,
 				Double.valueOf(10.0d), Double.valueOf(10.0d));
 		boolean useStdErrInsteadOfStdDev = ((Boolean) AttributeHelper.getAttributeValue(g, "", "node_useStdErr",
-				new Boolean(false), new Boolean(false))).booleanValue();
+				Boolean.valueOf(false), Boolean.valueOf(false))).booleanValue();
 		BioStatisticalCategoryDataset dataset = new BioStatisticalCategoryDataset(markerSize.floatValue());
 		List<MyComparableDataPoint> ss = NodeTools.getSortedAverageDataSetValues(xmldata, removeEmptyConditions);
 		SortedSet<Integer> timePoints = null;

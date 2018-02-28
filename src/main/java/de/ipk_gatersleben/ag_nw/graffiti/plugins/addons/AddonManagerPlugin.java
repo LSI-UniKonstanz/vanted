@@ -204,7 +204,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 				try {
 					loadAddonFromFile(mapPlugDescToFile.get(curPluginDesc));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				}
 			}
@@ -231,17 +231,13 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		}
 	}
 
-	private List<PluginDescription> getOrderedDependencyList(Collection<PluginDescription> coll) {
+	private static List<PluginDescription> getOrderedDependencyList(Collection<PluginDescription> coll) {
 		int size = coll.size();
 
 		PluginDescription[] array = new PluginDescription[size];
 		Iterator<PluginDescription> iterator = coll.iterator();
-		// debugging
-		// System.out.println("before");
-		//
 		for (int i = 0; i < size; i++) {
 			array[i] = iterator.next();
-			// System.out.println(array[i].getName());
 		}
 
 		for (int cnt = 0; cnt < size; cnt++)
@@ -343,7 +339,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 	 *            the dir
 	 * @return the jar file list
 	 */
-	private File[] getJarFileList(File dir) {
+	private static File[] getJarFileList(File dir) {
 		if (dir == null) {
 			ErrorMsg.addErrorMessage("Add-on folder not available.");
 			return new File[] {};
@@ -380,7 +376,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		InstanceLoader.overrideLoader(loader);
 	}
 
-	private PluginDescription loadAddonFromFile(File f) throws IOException {
+	private static PluginDescription loadAddonFromFile(File f) throws IOException {
 		expandClasspathByJarfile(Addon.getURLfromJarfile(f));
 
 		// load plugindescriptions and the addons
@@ -499,7 +495,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 	 *            The addon name
 	 * @return true, if it is deactivated
 	 */
-	private boolean isDeactivated(String addonName) {
+	private static boolean isDeactivated(String addonName) {
 
 		for (String s : getDeactivatedList())
 			if (addonName.equalsIgnoreCase(s))
@@ -515,7 +511,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 	 *            The textfile holding the deactivated Add-ons.
 	 * @return the deactivated list from file
 	 */
-	private String[] getDeactivatedList() {
+	private static String[] getDeactivatedList() {
 		try {
 			return TextFile.read(deactivatedlist).split("\n");
 		} catch (MalformedURLException e1) {
@@ -612,7 +608,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		return true;
 	}
 
-	private void hideNewComponents() {
+	private static void hideNewComponents() {
 		// get rid of the buttons etc
 		SwingUtilities.invokeLater(new Runnable() {
 
@@ -636,7 +632,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		});
 	}
 
-	private ImageIcon getIcon(PluginDescription desc) {
+	private static ImageIcon getIcon(PluginDescription desc) {
 		try {
 			return MainFrame.getInstance().getPluginManager().getPluginInstance(desc.getName()).getIcon();
 		} catch (Exception e) {
@@ -646,7 +642,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		}
 	}
 
-	private ImageIcon getInactiveIcon() {
+	private static ImageIcon getInactiveIcon() {
 		ClassLoader cl = AddonManagerPlugin.class.getClassLoader();
 		String path = AddonManagerPlugin.class.getPackage().getName().replace('.', '/');
 		return new ImageIcon(cl.getResource(path + "/inactive-addon-icon.png"));
@@ -675,7 +671,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 	 *             Signals that an I/O exception has occurred.
 	 */
 	public boolean installAddon(String jardir, String jarname) throws FileNotFoundException, IOException {
-
+		JarFile jarFile = null;
 		try {
 
 			File toBeInstalledAddonJarfile = new File(jardir + ReleaseInfo.getFileSeparator() + jarname);
@@ -733,7 +729,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 
 			} else {
 				String xmlString = null;
-				JarFile jarFile = new JarFile(toBeInstalledAddonJarfile);
+				jarFile = new JarFile(toBeInstalledAddonJarfile);
 				Enumeration<JarEntry> e = jarFile.entries();
 				while (e.hasMoreElements()) {
 					JarEntry entry = e.nextElement();
@@ -760,6 +756,9 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 			}
 		} catch (Exception e) {
 			return false;
+		} finally {
+			if (jarFile != null)
+				jarFile.close();
 		}
 		return true;
 	}
@@ -872,13 +871,6 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		return f.getAbsolutePath().toLowerCase().endsWith(".jar");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.DragAndDropHandler
-	 * #hasPriority()
-	 */
 	public boolean hasPriority() {
 		return false;
 	}

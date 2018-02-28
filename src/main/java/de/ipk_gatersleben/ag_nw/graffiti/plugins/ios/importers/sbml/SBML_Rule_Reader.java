@@ -97,7 +97,7 @@ public class SBML_Rule_Reader {
 					try {
 						notesString = rule.getNotesString();
 					} catch (XMLStreamException e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 						notesString = "";
 					}
@@ -150,7 +150,7 @@ public class SBML_Rule_Reader {
 					try {
 						notesString = rule.getNotesString();
 					} catch (XMLStreamException e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 						notesString = "";
 					}
@@ -205,7 +205,7 @@ public class SBML_Rule_Reader {
 					try {
 						notesString = rule.getNotesString();
 					} catch (XMLStreamException e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 						notesString = "";
 					}

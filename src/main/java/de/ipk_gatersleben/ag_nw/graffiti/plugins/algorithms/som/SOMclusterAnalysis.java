@@ -67,14 +67,14 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 
 	@Override
 	public Parameter[] getParameters() {
-		IntegerParameter numberOfNeurons = new IntegerParameter(new Integer(numberOfNeuronsParm), new Integer(1),
-				new Integer(Integer.MAX_VALUE), "Neurons", "Number of target clusters (neurons)");
+		IntegerParameter numberOfNeurons = new IntegerParameter(Integer.valueOf(numberOfNeuronsParm), Integer.valueOf(1),
+				Integer.valueOf(Integer.MAX_VALUE), "Neurons", "Number of target clusters (neurons)");
 
 		/**
 		 * Width of the SOM, 0 means quadratic (9 nodes, width=0 ==> width=3)
 		 */
-		IntegerParameter widthOfSOM = new IntegerParameter(new Integer(widthOfSOMparm), new Integer(0),
-				new Integer(Integer.MAX_VALUE), "Number of horizontal neurons",
+		IntegerParameter widthOfSOM = new IntegerParameter(Integer.valueOf(widthOfSOMparm), Integer.valueOf(0),
+				Integer.valueOf(Integer.MAX_VALUE), "Number of horizontal neurons",
 				"SOM neurons are initially layouted on a grid\nThis number sets the number of horizontal neurons\nIf 0, a quadratic grid is created");
 
 		/**
@@ -88,20 +88,20 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 		 * reduce neighbourhood, stay at maxNeighbourHood level
 		 */
 		IntegerParameter decreaseNeighbourHoodAfterXiterations = new IntegerParameter(
-				new Integer(decreaseNeighbourhoodAfterXiterationsParam), new Integer(0), new Integer(Integer.MAX_VALUE),
+				Integer.valueOf(decreaseNeighbourhoodAfterXiterationsParam), Integer.valueOf(0), Integer.valueOf(Integer.MAX_VALUE),
 				"Reduce neighborhood", "Reduce neighborhood considerations after X iterations. 0=off");
 
 		/**
 		 * Number of iterations (of the sample dataset) of the learning process.
 		 */
-		IntegerParameter repeatLearnCount = new IntegerParameter(new Integer(numberLearnIterationsParam),
-				new Integer(1), new Integer(Integer.MAX_VALUE), "Learn-Iterations",
+		IntegerParameter repeatLearnCount = new IntegerParameter(Integer.valueOf(numberLearnIterationsParam),
+				Integer.valueOf(1), Integer.valueOf(Integer.MAX_VALUE), "Learn-Iterations",
 				"Number of iterations of the learning process");
 
 		// Typ der Nachbarschaftsfunktion (1=Zylinder, 2=Kegel, 3=Gauss, 4=Mexican
 		// Hat, 5=Cosinus)?
 		IntegerParameter typeOfNeighbourHoodFunction = new IntegerParameter(
-				new Integer(typeOfNeighbourhoodFunctionParam), new Integer(1), new Integer(5), "Neighborhood-Function",
+				Integer.valueOf(typeOfNeighbourhoodFunctionParam), Integer.valueOf(1), Integer.valueOf(5), "Neighborhood-Function",
 				"1=Zylinder, 2=Kegel, 3=Gauss, 4=Mexican Hat, 5=Cosinus");
 		// int nachbarF = Integer.valueOf(nachbarFS).intValue();
 

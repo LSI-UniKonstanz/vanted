@@ -289,7 +289,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 										hierarchyInformationsForCurrentNode.add(entry);
 									}
 								} catch (IOException e) {
-									// TODO Auto-generated catch block
+									
 									e.printStackTrace();
 								}
 							}
@@ -305,7 +305,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 											}
 										}
 									} catch (IOException e) {
-										// TODO Auto-generated catch block
+										
 										e.printStackTrace();
 									}
 								}

@@ -151,7 +151,7 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 			if (!isAbort())
 				notifyResultSBMLListeners(simpleModel, result);
 		} catch (BioModelsWSException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 			notifyErrorListener(e);
 			throw e;
@@ -168,7 +168,7 @@ public class BiomodelsAccessAdapter implements PreferencesInterface {
 			simpleModel = createClient().getSimpleModelById(modelId);
 			result = getSBMLModel(simpleModel);
 		} catch (BioModelsWSException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 			notifyErrorListener(e);
 			throw e;

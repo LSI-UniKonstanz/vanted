@@ -18,8 +18,7 @@ public class SampleAverage implements SampleAverageInterface {
 		calculateValuesFromSampleData();
 	}
 
-	@SuppressWarnings("unchecked")
-	public SampleAverage(SampleInterface sample, Map map) {
+	public SampleAverage(SampleInterface sample, Map<?,?> map) {
 		this(sample);
 		for (Object key : map.keySet()) {
 			if (key instanceof String) {
@@ -111,7 +110,6 @@ public class SampleAverage implements SampleAverageInterface {
 			return ownUnit;
 	}
 
-	@SuppressWarnings("unchecked")
 	public boolean setData(Element averageElement) {
 		setMin(Double.NaN);
 		setMax(Double.NaN);
@@ -123,7 +121,7 @@ public class SampleAverage implements SampleAverageInterface {
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
 		}
-		List attributeList = averageElement.getAttributes();
+		List<?> attributeList = averageElement.getAttributes();
 		for (Object o : attributeList) {
 			if (o instanceof Attribute) {
 				Attribute a = (Attribute) o;

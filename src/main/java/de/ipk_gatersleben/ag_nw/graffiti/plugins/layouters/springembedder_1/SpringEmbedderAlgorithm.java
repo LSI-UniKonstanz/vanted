@@ -362,8 +362,8 @@ public class SpringEmbedderAlgorithm extends AbstractAlgorithm {
 		// mySettings.setPref(Sk2, Double.valueOf(k2).toString());
 		nat_l = ((DoubleParameter) params[2]).getDouble().doubleValue();
 		// mySettings.setPref(Snat_l, Double.valueOf(nat_l).toString());
-		borderForce = new Boolean(((BooleanParameter) params[3]).getValue().toString()).booleanValue();
-		// mySettings.setPref(SborderForce, new Boolean(borderForce).toString());
+		borderForce = Boolean.valueOf(((BooleanParameter) params[3]).getValue().toString()).booleanValue();
+		// mySettings.setPref(SborderForce, Boolean.valueOf(borderForce).toString());
 
 		borderWidth = ((DoubleParameter) params[4]).getDouble().doubleValue();
 		// mySettings.setPref(SborderWidth, Double.valueOf(borderWidth).toString());
@@ -372,8 +372,8 @@ public class SpringEmbedderAlgorithm extends AbstractAlgorithm {
 		// mySettings.setPref(SmaxBorderForce,
 		// Double.valueOf(maxBorderForce).toString());
 
-		redraw = new Boolean(((BooleanParameter) params[6]).getValue().toString()).booleanValue();
+		redraw = Boolean.valueOf(((BooleanParameter) params[6]).getValue().toString()).booleanValue();
 		// mySettings.setPref(Sredraw,
-		// new Boolean(redraw).toString());
+		// Boolean.valueOf(redraw).toString());
 	}
 }

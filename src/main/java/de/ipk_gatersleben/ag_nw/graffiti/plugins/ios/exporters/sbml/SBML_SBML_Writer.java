@@ -273,7 +273,7 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 		} catch (SBMLException e) {
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		}
 

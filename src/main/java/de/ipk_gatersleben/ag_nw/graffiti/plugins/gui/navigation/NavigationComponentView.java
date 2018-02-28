@@ -257,7 +257,7 @@ public class NavigationComponentView extends AbstractGraffitiContainer
 							g.drawRect((int) (normX * w), (int) (normY * h), (int) (normWidth * w),
 									(int) (normHeight * h));
 					} catch (AttributeNotFoundException e) {
-						// TODO Auto-generated catch block
+						
 						// e.printStackTrace();
 					}
 				}

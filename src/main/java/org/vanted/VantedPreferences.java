@@ -163,7 +163,7 @@ public class VantedPreferences implements PreferencesInterface {
 			System.setProperty("http.proxySet", "false");
 		}
 
-		PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE = new Boolean(
+		PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE = Boolean.valueOf(
 				preferences.get(PREFERENCE_DEBUG_SHOWPANELFRAMES, "false"));
 	}
 

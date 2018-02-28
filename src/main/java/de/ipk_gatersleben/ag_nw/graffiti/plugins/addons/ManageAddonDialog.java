@@ -61,9 +61,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 public class ManageAddonDialog extends JDialog {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	final static int iconcolumn = 0;
 	final static int namecolumn = 1;
@@ -634,7 +631,7 @@ public class ManageAddonDialog extends JDialog {
 		// },enter);
 	}
 
-	private Component getButtonPanel(JComponent a, JComponent b, JComponent c, JComponent d) {
+	private static Component getButtonPanel(JComponent a, JComponent b, JComponent c, JComponent d) {
 		return TableLayout.get4Split(a, b, c, d, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED,
 				TableLayout.PREFERRED, 10, 0);
 	}

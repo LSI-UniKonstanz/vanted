@@ -100,7 +100,7 @@ public class SetJavaMemoryMacOS {
 		try (FileWriter writer = new FileWriter(infoplistFile)) {
 			writer.write(newInfoPlist);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}
@@ -134,7 +134,7 @@ public class SetJavaMemoryMacOS {
 				xmxRetVal = Long.parseLong(xmxStringVal.substring(0, xmxStringVal.length() - 1));
 				xmxRetVal = xmxRetVal * 1024 * 1024 * 1024;
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -143,7 +143,7 @@ public class SetJavaMemoryMacOS {
 				xmxRetVal = Long.parseLong(xmxStringVal.substring(0, xmxStringVal.length() - 1));
 				xmxRetVal = xmxRetVal * 1024 * 1024;
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -209,7 +209,7 @@ public class SetJavaMemoryMacOS {
 			return buf.toString();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return null;

@@ -828,16 +828,16 @@ public class NodeHelper implements Node, HelperClass {
 	public void setChartRange(double minValue, double maxValue) {
 		setAttributeValue("charting", "minRange", Double.valueOf(minValue));
 		setAttributeValue("charting", "maxRange", Double.valueOf(maxValue));
-		setAttributeValue("charting", "useCustomRange", new Boolean(true));
+		setAttributeValue("charting", "useCustomRange", Boolean.valueOf(true));
 	}
 
 	/**
 	 * Shortcut method to enable or disable the display of a custom range. (see also
 	 * <code>setChartRange</code>) Implementation: setAttributeValue("charting",
-	 * "useCustomRange", new Boolean(set));
+	 * "useCustomRange", Boolean.valueOf(set));
 	 */
 	public void setChartSettingUseCustomRange(boolean set) {
-		setAttributeValue("charting", "useCustomRange", new Boolean(set));
+		setAttributeValue("charting", "useCustomRange", Boolean.valueOf(set));
 	}
 
 	public double getMappedMinSampleAvgValue() {

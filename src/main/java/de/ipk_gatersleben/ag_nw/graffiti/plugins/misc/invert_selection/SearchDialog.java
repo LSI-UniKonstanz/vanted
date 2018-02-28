@@ -560,7 +560,7 @@ public class SearchDialog extends JDialog {
 						new Object[] { "Target menu", new String("menu.edit"), "Command name",
 								new String("Quick-Search 1"), "<html>" + "Add or remove results to selection?<br>"
 										+ "Selected = add to selection<br>" + "Deselected = remove from selection",
-								new Boolean(true) });
+								Boolean.valueOf(true) });
 		if (input != null) {
 			String menu = (String) input[0];
 			String title = (String) input[1];

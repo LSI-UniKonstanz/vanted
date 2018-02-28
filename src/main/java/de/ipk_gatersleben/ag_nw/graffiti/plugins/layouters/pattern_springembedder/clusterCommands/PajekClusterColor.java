@@ -164,10 +164,10 @@ public class PajekClusterColor extends AbstractAlgorithm {
 			if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR || modeOfOperation.equals(modeNode))
 				executeClusterColoringOnGraph(g, clusters, cca);
 			if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR && modeOfOperation.equals(modeSurr)) {
-				AttributeHelper.setAttribute(graph, "", "background_coloring", new Boolean(true));
+				AttributeHelper.setAttribute(graph, "", "background_coloring", Boolean.valueOf(true));
 			}
 			if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR && modeOfOperation.equals(modeNode)) {
-				AttributeHelper.setAttribute(graph, "", "background_coloring", new Boolean(false));
+				AttributeHelper.setAttribute(graph, "", "background_coloring", Boolean.valueOf(false));
 			}
 
 			Graph emptyGraph = new AdjListGraph();

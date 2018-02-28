@@ -329,7 +329,7 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	 *            the flag.
 	 */
 	public void setSeriesShapesFilled(int series, boolean filled) {
-		this.seriesShapesFilled.setBoolean(series, new Boolean(filled));
+		this.seriesShapesFilled.setBoolean(series, Boolean.valueOf(filled));
 	}
 
 	/**
@@ -358,7 +358,7 @@ public class LineAndShapeRenderer extends AbstractCategoryItemRenderer
 	 *            the flag.
 	 */
 	public void setDefaultShapesFilled(boolean flag) {
-		setDefaultShapesFilled(new Boolean(flag));
+		setDefaultShapesFilled(Boolean.valueOf(flag));
 	}
 
 	/**

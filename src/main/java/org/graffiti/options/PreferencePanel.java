@@ -41,7 +41,7 @@ public class PreferencePanel extends JDialog {
 			try {
 				displayable = (Displayable) InstanceLoader.createInstance((Class) unknowndisplayable);
 			} catch (InstanceCreationException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 
@@ -53,7 +53,7 @@ public class PreferencePanel extends JDialog {
 						null);
 				unknownVEC.setDisplayable(displayable);
 			} catch (InstanceCreationException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 			if (unknownVEC instanceof ValueEditComponent) {
@@ -70,7 +70,7 @@ public class PreferencePanel extends JDialog {
 					if (component2 != null)
 						mainpanel.add(get3Split);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 			} else {

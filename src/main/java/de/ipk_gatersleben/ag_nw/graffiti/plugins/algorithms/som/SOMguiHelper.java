@@ -147,7 +147,7 @@ public class SOMguiHelper implements HelperClass {
 				{ border, TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED, border } }; // Rows
 		resultPanel.setLayout(new TableLayout(size));
 		resultPanel.add(chartPanel, "1,1");
-		final JComboBox selectClusterID = new JComboBox(getSelections(nodeIndex, maxIndex));
+		final JComboBox<String> selectClusterID = new JComboBox<>(getSelections(nodeIndex, maxIndex));
 		selectClusterID.setSelectedIndex(nodeIndex);
 		selectClusterID.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -289,7 +289,7 @@ public class SOMguiHelper implements HelperClass {
 				timeValues.add(ttt);
 				dataset.add(mean, standardDeviation, series, ttt, false, false, "relative", timeUnit, true, false);
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 			// dataset.addValue(som.getWeights()[i][nodeIndex], "som-weights",

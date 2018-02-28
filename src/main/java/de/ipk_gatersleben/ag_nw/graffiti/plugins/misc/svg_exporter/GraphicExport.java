@@ -23,7 +23,7 @@ public class GraphicExport extends LaunchGui {
 		boolean addAutomaticallyBorder = false;
 		if (graph != null)
 			addAutomaticallyBorder = (Boolean) AttributeHelper.getAttributeValue(graph, "", "background_coloring",
-					new Boolean(false), new Boolean(false), false);
+					Boolean.valueOf(false), Boolean.valueOf(false), false);
 
 		res.add(new SVGAlgorithm(addAutomaticallyBorder ? 50 : 0));
 		res.add(new PDFAlgorithm(addAutomaticallyBorder ? 50 : 0));

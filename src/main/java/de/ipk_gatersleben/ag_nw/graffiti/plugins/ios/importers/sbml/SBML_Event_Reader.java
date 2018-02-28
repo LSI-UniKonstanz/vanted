@@ -99,7 +99,7 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 					try {
 						notesString = priority.getNotesString();
 					} catch (XMLStreamException e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 						notesString = "";
 					}
@@ -149,7 +149,7 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 					try {
 						notesString = delay.getNotesString();
 					} catch (XMLStreamException e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 						notesString = "";
 					}
@@ -193,7 +193,7 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 				try {
 					notesString = event.getNotesString();
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					notesString = "";
 				}
@@ -288,7 +288,7 @@ public class SBML_Event_Reader extends SBML_SBase_Reader {
 					try {
 						notesString = eventAssignment.getNotesString();
 					} catch (XMLStreamException e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 						notesString = "";
 					}

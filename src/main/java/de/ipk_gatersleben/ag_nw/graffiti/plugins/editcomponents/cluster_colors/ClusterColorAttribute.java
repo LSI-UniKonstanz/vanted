@@ -224,14 +224,14 @@ public class ClusterColorAttribute extends StringAttribute {
 	 * @param string
 	 * @return
 	 */
-	private String nullForEmpty(String string) {
+	private static String nullForEmpty(String string) {
 		if (string == null || string.length() == 0)
 			return "null";
 		else
 			return string;
 	}
 
-	private String getColorCode(Paint newColor) {
+	private static String getColorCode(Paint newColor) {
 		if (newColor == null)
 			return "null";
 		else {

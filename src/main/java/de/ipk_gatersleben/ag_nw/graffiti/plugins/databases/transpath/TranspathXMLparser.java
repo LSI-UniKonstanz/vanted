@@ -3,6 +3,7 @@
  *******************************************************************************/
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.transpath;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 import org.ErrorMsg;
@@ -29,25 +30,22 @@ public class TranspathXMLparser extends DefaultHandler {
 
 	@Override
 	public void startElement(String uri, String localName, String qname, Attributes attr) {
-		// System.out.println("Start element: local name: " + localName
-		// + " qname: " + qname + " uri: " + uri);
-		int attrCount = attr.getLength();
-		if (attrCount > 0) {
-			// System.out.println("Attributes:");
-			// for (int i = 0; i < attrCount; i++) {
-			// System.out.println(" Name : " + attr.getQName(i));
-			// System.out.println(" Type : " + attr.getType(i));
-			// System.out.println(" Value: " + attr.getValue(i));
-			// }
-		}
-
 		if (entitystartEndTag.equals(qname)) {
 			activeEnvironment = "";
 			try {
-				currentEntity = (TranspathEntityType) entityType.newInstance();
+				currentEntity = (TranspathEntityType) entityType.getDeclaredConstructor().newInstance();
 			} catch (InstantiationException e) {
 				ErrorMsg.addErrorMessage(e);
 			} catch (IllegalAccessException e) {
+				ErrorMsg.addErrorMessage(e);
+			} catch (IllegalArgumentException e) {
+				ErrorMsg.addErrorMessage(e);
+			} catch (InvocationTargetException e) {
+				ErrorMsg.addErrorMessage(e);
+				ErrorMsg.addErrorMessage(e);
+			} catch (SecurityException e) {
+				ErrorMsg.addErrorMessage(e);
+			} catch (NoSuchMethodException e) {
 				ErrorMsg.addErrorMessage(e);
 			}
 		} else
@@ -56,8 +54,6 @@ public class TranspathXMLparser extends DefaultHandler {
 
 	@Override
 	public void endElement(String uri, String localName, String qname) {
-		// System.out.println("End element: local name: " + localName + " qname: "
-		// + qname + " uri: " + uri);
 		if (activeEnvironment.endsWith("/" + qname))
 			activeEnvironment = activeEnvironment.substring(0,
 					activeEnvironment.length() - "/".length() - qname.length());
@@ -70,7 +66,6 @@ public class TranspathXMLparser extends DefaultHandler {
 	@Override
 	public void characters(char[] ch, int start, int length) {
 		String s = new String(ch, start, length).trim();
-		// System.out.println("Characters: " + s);
 		if (currentEntity != null && activeEnvironment != null && activeEnvironment.length() > 0 && s.length() > 0)
 			currentEntity.processXMLentityValue(activeEnvironment, s);
 	}

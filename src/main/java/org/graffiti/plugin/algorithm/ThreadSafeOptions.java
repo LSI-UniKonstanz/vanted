@@ -321,7 +321,7 @@ public class ThreadSafeOptions implements HelperClass {
 				bValues = newBvalues;
 			}
 
-			bValues[index] = new Boolean(value);
+			bValues[index] = Boolean.valueOf(value);
 		}
 	}
 

@@ -115,7 +115,7 @@ public class BooleanAttribute extends AbstractAttribute {
 	 * @return the value of the attribute wrapped in an <code>Boolean</code> object.
 	 */
 	public Object getValue() {
-		return new Boolean(value);
+		return Boolean.valueOf(value);
 	}
 
 	/**

@@ -17,7 +17,7 @@ public class BriteHierarchyReadingTest {
 			HashSet<BriteEntry> hashSet2 = briteHierarchy.getECEntriesMap().get("2.3.3.1");
 			System.out.println("chance for breakpoint");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}

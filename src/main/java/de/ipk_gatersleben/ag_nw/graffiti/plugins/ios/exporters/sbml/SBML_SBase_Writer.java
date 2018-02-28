@@ -212,7 +212,7 @@ public class SBML_SBase_Writer {
 					// node.toXMLString());
 					annotation.appendNonRDFAnnotation((String) node.toXMLString());
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 				// Map<String, String> namespaces = sbase.getSBMLDocument()
@@ -261,7 +261,7 @@ public class SBML_SBase_Writer {
 					// xmlnode.toXMLString());
 					annotation.appendNonRDFAnnotation((String) xmlnode.toXMLString());
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 

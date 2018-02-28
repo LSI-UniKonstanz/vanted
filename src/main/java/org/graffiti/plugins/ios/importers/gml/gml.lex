@@ -73,7 +73,7 @@ NOBRACES  = [^\]\[]
 
 <GRAPH>    {SBRACE}      { return new Symbol(sym.SBRACE); }
 <GRAPH>    {CBRACE}      { return new Symbol(sym.CBRACE); }
-<GRAPH>    {BOOL01}      { return new Symbol(sym.BOOLEAN, new Boolean(new MyBoolean(yytext()).booleanValue())); }
+<GRAPH>    {BOOL01}      { return new Symbol(sym.BOOLEAN, Boolean.valueOf(new MyBoolean(yytext()).booleanValue())); }
 
            {INTEGER}     { return new Symbol(sym.INTEGER, Integer.valueOf(yytext())); }
            

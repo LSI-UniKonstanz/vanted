@@ -291,7 +291,7 @@ public class HammingCalculator implements Runnable, BackgroundTaskStatusProvider
 		return result;
 	}
 
-	private int getTaskQueueSize() {
+	private static int getTaskQueueSize() {
 		int result;
 		synchronized (workQueue) {
 			result = workQueue.size();
@@ -299,7 +299,7 @@ public class HammingCalculator implements Runnable, BackgroundTaskStatusProvider
 		return result;
 	}
 
-	private void enqueueWorkTask(WorkTask t) {
+	private static void enqueueWorkTask(WorkTask t) {
 		synchronized (workQueue) {
 			workQueue.add(t);
 		}
@@ -423,7 +423,7 @@ public class HammingCalculator implements Runnable, BackgroundTaskStatusProvider
 		}
 	}
 
-	private String getIdx(int validGraphIndex2) {
+	private static String getIdx(int validGraphIndex2) {
 		String idx = Math.abs(validGraphIndex2) + "";
 		while (idx.length() < 4)
 			idx = "0" + idx;
@@ -512,7 +512,7 @@ public class HammingCalculator implements Runnable, BackgroundTaskStatusProvider
 	 *            DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
-	private int computeSum(int[] permutation, int[][] hammingDistances, int numberOfGraphs) {
+	private static int computeSum(int[] permutation, int[][] hammingDistances, int numberOfGraphs) {
 		int sum = 0;
 
 		for (int i = 0; i < (numberOfGraphs - 1); i++) {

@@ -55,7 +55,7 @@ public class BooleanParameter extends AbstractSingleParameter implements Provide
 	 */
 	public BooleanParameter(boolean value, String name, String description) {
 		super(name, description);
-		this.value = new Boolean(value);
+		this.value = Boolean.valueOf(value);
 	}
 
 	// ~ Methods ================================================================

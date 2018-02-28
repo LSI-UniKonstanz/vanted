@@ -132,7 +132,7 @@ public class NodeBorder extends AbstractBorder {
 		try {
 			at.inverseTransform(pWH, pWH);
 		} catch (NoninvertibleTransformException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		double factor = (double) pWH.x / (double) borderWidth;

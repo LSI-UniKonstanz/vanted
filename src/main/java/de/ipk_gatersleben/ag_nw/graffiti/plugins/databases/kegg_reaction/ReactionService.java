@@ -368,7 +368,7 @@ public class ReactionService
 		return res;
 	}
 
-	private void pretifyButtons(ArrayList<JComponent> actionButtons) {
+	private static void pretifyButtons(ArrayList<JComponent> actionButtons) {
 		for (JComponent jc : actionButtons) {
 			((JButton) jc).setBackground(Color.white);
 		}

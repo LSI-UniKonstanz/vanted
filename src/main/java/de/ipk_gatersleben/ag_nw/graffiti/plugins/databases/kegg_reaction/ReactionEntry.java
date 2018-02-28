@@ -81,7 +81,7 @@ public class ReactionEntry {
 		products.addAll(getValues(prods, productsCnt));
 	}
 
-	private Collection<String> getValues(String vl, Collection<String> cnts) {
+	private static Collection<String> getValues(String vl, Collection<String> cnts) {
 		ArrayList<String> res = new ArrayList<String>();
 		String[] va = vl.split(" \\+");
 		for (String v : va) {

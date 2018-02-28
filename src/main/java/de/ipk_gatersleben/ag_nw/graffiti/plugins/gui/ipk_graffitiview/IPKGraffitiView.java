@@ -330,11 +330,11 @@ public class IPKGraffitiView extends GraffitiView
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR && AttributeHelper.hasAttribute(getGraph(),
 				ClusterColorAttribute.attributeFolder, ClusterColorAttribute.attributeName)) {
 			Boolean enablebackground = (Boolean) AttributeHelper.getAttributeValue(getGraph(), "",
-					"background_coloring", new Boolean(false), new Boolean(false), true);
+					"background_coloring", Boolean.valueOf(false), Boolean.valueOf(false), true);
 			Boolean clearOuter = (Boolean) AttributeHelper.getAttributeValue(getGraph(), "",
-					"clusterbackground_fill_outer_region", new Boolean(false), new Boolean(false), true);
+					"clusterbackground_fill_outer_region", Boolean.valueOf(false), Boolean.valueOf(false), true);
 			Boolean spaceFill = (Boolean) AttributeHelper.getAttributeValue(getGraph(), "",
-					"clusterbackground_space_fill", new Boolean(true), new Boolean(true), true);
+					"clusterbackground_space_fill", Boolean.valueOf(true), Boolean.valueOf(true), true);
 			if (enablebackground) {
 				Double radius = (Double) AttributeHelper.getAttributeValue(getGraph(), "", "clusterbackground_radius",
 						Double.valueOf(200), Double.valueOf(200), true);

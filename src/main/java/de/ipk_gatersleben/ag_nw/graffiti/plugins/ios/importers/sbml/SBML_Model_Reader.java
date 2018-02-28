@@ -132,7 +132,7 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 			// sets background-color for compartments
 			AttributeHelper.setAttribute(g, "", ClusterColorAttribute.attributeName,
 					ClusterColorAttribute.getDefaultValue(listCompartmentNames));
-			AttributeHelper.setAttribute(g, "", "background_coloring", new Boolean(showBackgroundColoring));
+			AttributeHelper.setAttribute(g, "", "background_coloring", Boolean.valueOf(showBackgroundColoring));
 
 			ListOf<Compartment> liste = model.getListOfCompartments();
 			for (Compartment compartment : liste) {
@@ -349,7 +349,7 @@ public class SBML_Model_Reader extends SBML_SBase_Reader {
 			try {
 				notesString = model.getNotesString();
 			} catch (XMLStreamException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 				notesString = "";
 			}

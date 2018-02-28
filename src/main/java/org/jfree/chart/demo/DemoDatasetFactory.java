@@ -95,9 +95,9 @@ public abstract class DemoDatasetFactory {
 	 */
 	public static CategoryDataset createSingleCategoryDataset() {
 
-		final Number[][] data = new Integer[][] { { new Integer(10) }, { new Integer(-5) }, { new Integer(6) },
-				{ new Integer(7) }, { new Integer(-8) }, { new Integer(9) }, { new Integer(-10) }, { new Integer(11) },
-				{ new Integer(-3) } };
+		final Number[][] data = new Integer[][] { { Integer.valueOf(10) }, { Integer.valueOf(-5) }, { Integer.valueOf(6) },
+				{ Integer.valueOf(7) }, { Integer.valueOf(-8) }, { Integer.valueOf(9) }, { Integer.valueOf(-10) }, { Integer.valueOf(11) },
+				{ Integer.valueOf(-3) } };
 
 		return DatasetUtilities.createCategoryDataset("Series ", "Category ", data);
 

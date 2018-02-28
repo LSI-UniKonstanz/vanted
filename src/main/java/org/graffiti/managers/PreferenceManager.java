@@ -274,10 +274,10 @@ public class PreferenceManager implements PluginManagerListener {
 		try {
 			((PreferencesInterface) clazz.newInstance()).updatePreferences(preferences);
 		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}

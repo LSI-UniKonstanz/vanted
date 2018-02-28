@@ -660,7 +660,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 						 * ErrorMsg.getErrorMessages()[errorMsg.length - 1],
 						 * "<html><small>Click 'Help/Error Messages' for more details.", new Runnable()
 						 * { public void run() { try { Thread.sleep(2000); } catch (InterruptedException
-						 * e) { // TODO Auto-generated catch block e.printStackTrace(); } } }, new
+						 * e) {  e.printStackTrace(); } } }, new
 						 * Runnable() { public void run() { } }, false);
 						 */
 					}

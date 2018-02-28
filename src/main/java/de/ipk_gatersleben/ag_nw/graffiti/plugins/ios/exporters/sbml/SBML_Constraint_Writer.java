@@ -45,7 +45,7 @@ public class SBML_Constraint_Writer extends SBML_SBase_Writer {
 				try {
 					constraint.setMessage(message);
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 			}

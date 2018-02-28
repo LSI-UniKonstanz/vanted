@@ -598,7 +598,7 @@ public class FolderPanel extends JComponent {
 					cmdButton.setIcon(condensedIcon);
 				else
 					cmdButton.setIcon(uncondensedIcon);
-				showCondensed.put(title, new Boolean(condensedState));
+				showCondensed.put(title, Boolean.valueOf(condensedState));
 				layoutRows();
 				for (ActionListener al : collapse_listeners) {
 					al.actionPerformed(new ActionEvent(this, condensedState ? 1 : 0, "collapseevent"));

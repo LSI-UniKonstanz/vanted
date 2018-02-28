@@ -247,7 +247,7 @@ public class SearchOption {
 
 	private Boolean getBoolean(Attributable attr) {
 		Object val = AttributeHelper.getAttributeValue(attr, searchAttributePath, searchAttributeName, null,
-				new Boolean(false), false);
+				Boolean.valueOf(false), false);
 		if (val == null || !(val instanceof Boolean))
 			return false;
 		else

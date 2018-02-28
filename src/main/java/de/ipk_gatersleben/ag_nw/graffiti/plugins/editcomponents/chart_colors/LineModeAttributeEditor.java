@@ -30,7 +30,7 @@ public class LineModeAttributeEditor extends AbstractValueEditComponent {
 		setGUI((LineModeAttribute) disp, false);
 	}
 
-	private LineModeSetting[] getPossibleLineModes() {
+	private static LineModeSetting[] getPossibleLineModes() {
 		return new LineModeSetting[] { null, new LineModeSetting(0, 0), new LineModeSetting(5, 5),
 				new LineModeSetting(10, 10), new LineModeSetting(20, 20), new LineModeSetting(10, 5),
 				new LineModeSetting(5, 10), new LineModeSetting(20, 10), new LineModeSetting(10, 20) };

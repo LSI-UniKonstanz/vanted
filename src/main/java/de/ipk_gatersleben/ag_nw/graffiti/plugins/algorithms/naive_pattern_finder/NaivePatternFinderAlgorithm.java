@@ -257,7 +257,7 @@ public class NaivePatternFinderAlgorithm extends AbstractAlgorithm {
 	 *            the graph to check
 	 * @return true, if the graph has multiple edges between any two nodes
 	 */
-	private boolean hasMultiEdgeDirectedGraph(Graph graph) {
+	private static boolean hasMultiEdgeDirectedGraph(Graph graph) {
 		Iterator<?> allNodesIt = graph.getNodesIterator();
 
 		while (allNodesIt.hasNext()) {

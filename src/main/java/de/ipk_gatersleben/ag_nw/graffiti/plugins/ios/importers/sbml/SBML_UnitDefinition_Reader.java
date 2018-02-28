@@ -60,7 +60,7 @@ public class SBML_UnitDefinition_Reader {
 				try {
 					notesString = unitDefinition.getNotesString();
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					notesString = "";
 				}
@@ -124,7 +124,7 @@ public class SBML_UnitDefinition_Reader {
 						try {
 							notesString = unit.getNotesString();
 						} catch (XMLStreamException e) {
-							// TODO Auto-generated catch block
+							
 							e.printStackTrace();
 							notesString = "";
 						}

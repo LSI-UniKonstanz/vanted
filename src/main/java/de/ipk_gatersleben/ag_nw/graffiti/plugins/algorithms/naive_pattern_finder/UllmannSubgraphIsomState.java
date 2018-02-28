@@ -568,6 +568,7 @@ class UllmannSubgraphIsomState implements State {
 	 * Remove from the compatiblityMatrix all pairs which are not compatible with
 	 * the isomorphism condition.
 	 */
+	@SuppressWarnings("unused")
 	private void refine() {
 		/*
 		 * This code is more or less a copy of the original one. I have no time to
@@ -738,7 +739,7 @@ class UllmannSubgraphIsomState implements State {
 	 *            a node from the target graph
 	 * @return true, if the labels are compatible
 	 */
-	private boolean isCompatibleNode(Node nodeOfPatternGraph, Node nodeOfTargetGraph) {
+	private static boolean isCompatibleNode(Node nodeOfPatternGraph, Node nodeOfTargetGraph) {
 		NodeLabelAttribute patternNodeLabel;
 		NodeLabelAttribute targetNodeLabel;
 
@@ -779,7 +780,7 @@ class UllmannSubgraphIsomState implements State {
 	 *            DOCUMENT ME!
 	 * @return true, if the edges are compatible
 	 */
-	private boolean compatibleEdgeExists(Node sourceNodeOfPatternGraph, Node targetNodeOfPatternGraph,
+	private static boolean compatibleEdgeExists(Node sourceNodeOfPatternGraph, Node targetNodeOfPatternGraph,
 			Node sourceNodeOfTargetGraph, Node targetNodeOfTargetGraph) {
 		Collection<Edge> allEdgesFromPatternGraph = new HashSet<Edge>();
 		allEdgesFromPatternGraph.addAll(sourceNodeOfPatternGraph.getEdges());
@@ -843,7 +844,7 @@ class UllmannSubgraphIsomState implements State {
 	 *            a graph
 	 * @return an array of nodes
 	 */
-	private Node[] encodeNodes(Graph g) {
+	private static Node[] encodeNodes(Graph g) {
 		Node[] nodeArray = new Node[g.getNumberOfNodes()];
 
 		int i = 0;
@@ -868,7 +869,7 @@ class UllmannSubgraphIsomState implements State {
 	 *            the requested node ids
 	 * @return an array of nodes
 	 */
-	private Node[] extractNodes(Node[] allNodesOfGraph, int[] resultNodeIds) {
+	private static Node[] extractNodes(Node[] allNodesOfGraph, int[] resultNodeIds) {
 		Node[] resultNodes = new Node[resultNodeIds.length];
 
 		for (int i = 0; i < resultNodeIds.length; i++) {

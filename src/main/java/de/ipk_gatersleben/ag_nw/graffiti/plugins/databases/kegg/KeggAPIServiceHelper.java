@@ -296,10 +296,10 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 					}
 				}
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 
@@ -374,7 +374,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 			try {
 				url = new URL(buf.toString());
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 
@@ -394,7 +394,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 					splitResult(bos.toByteArray(), synchronizedList);
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 
@@ -526,7 +526,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 					curKoEntry.addBriteEntry(briteHierarchy.getName(),
 							briteHierarchy.getEntriesMap().get(curKoEntry.getKoID()));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 			}

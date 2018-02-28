@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.DefaultListModel;
@@ -47,6 +48,7 @@ public class TranspathPathwayLoader extends AbstractAlgorithm {
 		MainFrame.getInstance().showGraph(g, getActionEvent());
 	}
 
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public static TranspathPathway[] getTranspathPathwaySelectionFromUser(final Collection<TranspathPathway> pathways) {
 		final MutableList pathwaySelection = new MutableList(new DefaultListModel());
 
@@ -103,7 +105,7 @@ public class TranspathPathwayLoader extends AbstractAlgorithm {
 				"Select Pathways",
 				new Object[] { "Select Pathways", pathwaySelectionScrollPane, "Search", filter, "", searchResult });
 		if (result != null && pathwaySelection.getSelectedValue() != null) {
-			Object[] ooo = pathwaySelection.getSelectedValues();
+			List<?> ooo = pathwaySelection.getSelectedValuesList();
 			ArrayList<TranspathPathway> res = new ArrayList<TranspathPathway>();
 			for (Object o : ooo)
 				res.add((TranspathPathway) o);

@@ -104,7 +104,7 @@ class MarkingPatternVisitor implements PatternVisitor {
 	 *            a prefix used in the line
 	 */
 	@SuppressWarnings("unused")
-	private void printoutLabels(Node[] matchingNodes, String prefix) {
+	private static void printoutLabels(Node[] matchingNodes, String prefix) {
 		/* print out the labels from the graph! */
 		for (int i = 0; i < matchingNodes.length; i++) {
 			Node n1 = matchingNodes[i];

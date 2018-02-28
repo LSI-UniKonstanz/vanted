@@ -484,7 +484,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 						break;
 					case Cell.CELL_TYPE_BOOLEAN:
 						myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(),
-								new Boolean(cell.getBooleanCellValue()));
+								Boolean.valueOf(cell.getBooleanCellValue()));
 						break;
 					}
 				}

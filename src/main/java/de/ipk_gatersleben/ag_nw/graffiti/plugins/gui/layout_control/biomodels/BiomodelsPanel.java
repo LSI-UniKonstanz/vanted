@@ -331,7 +331,7 @@ public class BiomodelsPanel extends JPanel implements ActionListener, BiomodelsL
 				logger.debug("calling adapter for query");
 				adapter.queryForSimpleModel(selItem, query);
 			} catch (BioModelsWSException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}

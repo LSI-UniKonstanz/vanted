@@ -107,7 +107,7 @@ public class SBML_Species_Reader {
 				try {
 					notes = speciesJSBML.getNotesString();
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					notes = "";
 				}

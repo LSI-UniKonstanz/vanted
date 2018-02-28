@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -116,7 +117,7 @@ public class TranspathService
 	 * Reads the file ko. All methods depending on info from that file should call
 	 * <code>initService</code>, first. To ensure that this service is available.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	private static void readTranspathDB() {
 		tpGenes.clear();
 		tpMolecules.clear();
@@ -157,7 +158,7 @@ public class TranspathService
 				DefaultHandler handler = new TranspathXMLparser(entries, entityType, info);
 				// Create the builder and parse the file
 				factory.newSAXParser().parse(input, handler);
-				((TranspathEntity) entityType.newInstance()).printTodo();
+				((TranspathEntity) entityType.getDeclaredConstructor().newInstance()).printTodo();
 				status1 = "File information analysed (" + entries.size() + ")";
 				System.out.println("File information analysed (" + entries.size() + ")");
 			} catch (IOException err) {
@@ -170,6 +171,14 @@ public class TranspathService
 			} catch (InstantiationException err) {
 				ErrorMsg.addErrorMessage(err);
 			} catch (IllegalAccessException err) {
+				ErrorMsg.addErrorMessage(err);
+			} catch (IllegalArgumentException err) {
+				ErrorMsg.addErrorMessage(err);
+			} catch (InvocationTargetException err) {
+				ErrorMsg.addErrorMessage(err);
+			} catch (NoSuchMethodException err) {
+				ErrorMsg.addErrorMessage(err);
+			} catch (SecurityException err) {
 				ErrorMsg.addErrorMessage(err);
 			}
 		}
@@ -346,7 +355,7 @@ public class TranspathService
 		return res;
 	}
 
-	private JComponent getDownloadButton() {
+	private static JComponent getDownloadButton() {
 		return GUIhelper.getWebsiteButton("Download", "http://www.biobase-international.com",
 				ReleaseInfo.getAppFolder(),
 				"<html>" + "The TRANSPATH database is available from the website<br>"
@@ -362,15 +371,15 @@ public class TranspathService
 				"Download Instructions");
 	}
 
-	private JComponent getLicenseButton() {
+	private static JComponent getLicenseButton() {
 		return GUIhelper.getWebsiteButton("License", "http://www.biobase-international.com", null, null, null);
 	}
 
-	private JComponent getWebsiteButton() {
+	private static JComponent getWebsiteButton() {
 		return GUIhelper.getWebsiteButton("Website", "http://www.biobase-international.com", null, null, null);
 	}
 
-	private void pretifyButtons(ArrayList<JComponent> actionButtons) {
+	private static void pretifyButtons(ArrayList<JComponent> actionButtons) {
 		for (JComponent jc : actionButtons) {
 			((JButton) jc).setBackground(Color.white);
 		}

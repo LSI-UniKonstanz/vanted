@@ -48,19 +48,19 @@ public class CalcClassPathJarsMd5 {
 
 						listJarMd5Pairs.add(new Pair<String, String>(jarurl.toURI().getPath(), md5));
 					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
+						
 						// e.printStackTrace();
 					} catch (URISyntaxException e) {
-						// TODO Auto-generated catch block
+						
 						// e.printStackTrace();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
+						
 						// e.printStackTrace();
 					}
 				}
 			}
 		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 

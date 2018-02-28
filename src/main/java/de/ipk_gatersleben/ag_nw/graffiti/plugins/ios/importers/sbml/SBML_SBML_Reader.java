@@ -40,7 +40,7 @@ public class SBML_SBML_Reader extends SBML_SBase_Reader {
 			try {
 				notesString = document.getNotesString();
 			} catch (XMLStreamException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 				notesString = "";
 			}

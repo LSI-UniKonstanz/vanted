@@ -78,7 +78,7 @@ public class ShortestPathSelectionAlgorithm extends AbstractAlgorithm {
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void execute() {
 		ArrayList<GraphElement> currentSelElements = new ArrayList<GraphElement>();
 		graph = MainFrame.getInstance().getActiveEditorSession().getGraph();

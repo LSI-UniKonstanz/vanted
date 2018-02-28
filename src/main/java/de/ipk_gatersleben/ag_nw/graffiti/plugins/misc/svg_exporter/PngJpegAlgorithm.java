@@ -986,7 +986,7 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements NeedsSwingThr
 		// if (ReleaseInfo.getRunningReleaseStatus()!=Release.KGML_EDITOR) {
 		// Boolean enablebackground =
 		// (Boolean)AttributeHelper.getAttributeValue(view.getGraph(), "",
-		// "background_coloring", new Boolean(false), new Boolean(false), true);
+		// "background_coloring", Boolean.valueOf(false), Boolean.valueOf(false), true);
 		// if (enablebackground) {
 		// Double radius =
 		// (Double)AttributeHelper.getAttributeValue(view.getGraph(), "",
@@ -1184,7 +1184,7 @@ public class PngJpegAlgorithm extends AbstractAlgorithm implements NeedsSwingThr
 		try {
 			bi = new BufferedImage((int) dim.x, (int) dim.y, imageType);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			if (Logger.getRootLogger().getLevel() == Level.DEBUG)
 				e.printStackTrace();
 			ErrorMsg.addErrorMessage("<html>Cannot create canvase<br/>" + e.getLocalizedMessage());

@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 
+ * @vanted.revision 2.6.5
+ */
 public class GraphParser {
 	Graph g = new Graph();
 
@@ -17,8 +21,7 @@ public class GraphParser {
 		Pattern heightPattern = Pattern.compile("height\\s*=\\s*\"?(\\d+(\\.\\d+)?)");
 		Pattern posPattern = Pattern.compile("pos\\s*=\\s*\"(-?\\d+),(-?\\d+)!?");
 		Pattern edgePattern = Pattern.compile("^\\s*(\\w+)\\s*(->|--)\\s*(\\w+)");
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(fileName));
+		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 			String s;
 			while ((s = br.readLine()) != null) {
 				Matcher m = nodePattern.matcher(s);
@@ -44,18 +47,18 @@ public class GraphParser {
 				}
 			}
 		} catch (FileNotFoundException fnfe) {
-			System.out.println("Cannot locate input file! " + fnfe.getMessage());
-			System.exit(0);
+			System.err.println("Cannot locate input file! " + fnfe.getMessage());
+			fnfe.printStackTrace();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		}
 	}
 
-	private String match(Pattern p, String s) {
+	private static String match(Pattern p, String s) {
 		return match(p, s, 1);
 	}
 
-	private String match(Pattern p, String s, int group) {
+	private static String match(Pattern p, String s, int group) {
 		Matcher m = p.matcher(s);
 		String val = null;
 		if (m.find()) {

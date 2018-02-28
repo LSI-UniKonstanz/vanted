@@ -124,7 +124,7 @@ public abstract class AbstractAttributable implements Attributable {
 	 */
 	public void setBoolean(String path, boolean value) {
 		assert path != null;
-		doSet(path, new Boolean(value), BOOLEAN_ATTRIBUTE);
+		doSet(path, Boolean.valueOf(value), BOOLEAN_ATTRIBUTE);
 	}
 
 	/**

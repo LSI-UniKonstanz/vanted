@@ -68,7 +68,7 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 
 	private ActionEvent ae;
 
-	private JComboBox dropDownChartStyle;
+	private JComboBox<?> dropDownChartStyle;
 
 	private View activeView;
 
@@ -152,7 +152,7 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 		parameters.add(new IntegerParameter(0, "Minimum condition count",
 				"<html>" + "Omit mapping in case minimum<br>condition count is not met."));
 
-		dropDownChartStyle = new JComboBox();
+		dropDownChartStyle = new JComboBox<>();
 		dropDownChartStyle.setOpaque(false);
 
 		// ArrayList<String> chartOptions = new ArrayList<String>();
@@ -293,7 +293,7 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 		};
 	}
 
-	private ArrayList<Node> getMappingNodes(List<Node> networkNodes, List<Node> searchThis) {
+	private static ArrayList<Node> getMappingNodes(List<Node> networkNodes, List<Node> searchThis) {
 		HashSet<String> searchIds = new HashSet<String>();
 		for (Node n : searchThis) {
 			String lbl = AttributeHelper.getLabel(n, null);

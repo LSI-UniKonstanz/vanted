@@ -86,6 +86,7 @@ public class KeggAPIService {
 		 * 
 		 * @return
 		 */
+		@SuppressWarnings("unused")
 		private List<String> translate() {
 			List<String> retKOIds = new ArrayList<>();
 			if (listIDsToTranslateFromKegg.length == 0)
@@ -116,10 +117,10 @@ public class KeggAPIService {
 					}
 				}
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 

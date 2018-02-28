@@ -27,8 +27,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.chart_settings.C
 
 public class ChartOptions {
 
-	private static final Boolean mTrue = new Boolean(true);
-	private static final Boolean mFalse = new Boolean(false);
+	private static final Boolean mTrue = Boolean.valueOf(true);
+	private static final Boolean mFalse = Boolean.valueOf(false);
 
 	private static final Double mNull = Double.valueOf(0);
 	private static final Double mOne = Double.valueOf(1);
@@ -188,26 +188,26 @@ public class ChartOptions {
 				Integer.valueOf(30))).intValue();
 
 		showShapes = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_lineChartShowShapes", mTrue,
-				new Boolean(true))).booleanValue();
+				Boolean.valueOf(true))).booleanValue();
 		showGridRange = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_showGridRange", mFalse,
-				new Boolean(false))).booleanValue();
+				Boolean.valueOf(false))).booleanValue();
 		useLogYscale = false; // ((Boolean)AttributeHelper.getAttributeValue( graph, * "",
-								// "node_useLogScaleForRangeAxis", new Boolean(false),
+								// "node_useLogScaleForRangeAxis", Boolean.valueOf(false),
 		// newBoolean(false))).booleanValue();
 
 		usePieScaling = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_usePieScale", mTrue,
-				new Boolean(true))).booleanValue();
+				Boolean.valueOf(true))).booleanValue();
 
 		showGridCategory = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_showGridCategory", mTrue,
 				mTrue)).booleanValue();
 		showLines = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_lineChartShowLines", mTrue,
-				new Boolean(true))).booleanValue();
+				Boolean.valueOf(true))).booleanValue();
 
 		showStdDevAsT = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_lineChartShowStdDev", mFalse,
 				mFalse)).booleanValue();
 
 		showStdDevAsFillRange = ((Boolean) AttributeHelper.getAttributeValue(graph, "",
-				"node_lineChartShowStdDevRangeLine", mTrue, new Boolean(true))).booleanValue();
+				"node_lineChartShowStdDevRangeLine", mTrue, Boolean.valueOf(true))).booleanValue();
 
 		connectPriorItems = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "connectPriorItems", mTrue, mTrue))
 				.booleanValue();
@@ -215,12 +215,12 @@ public class ChartOptions {
 		plotAxisSteps = ((Double) AttributeHelper.getAttributeValue(graph, "", "node_plotAxisSteps", mOne, mOne))
 				.intValue();
 		useCustomRangeSteps = ((Boolean) AttributeHelper.getAttributeValue(ge, "charting", "useCustomRangeSteps",
-				new Boolean(false), new Boolean(false))).booleanValue();
+				Boolean.valueOf(false), Boolean.valueOf(false))).booleanValue();
 
 		customRangeSteps = (Double) AttributeHelper.getAttributeValue(ge, "charting", "rangeStepSize", mNull, mNull);
 
 		boolean useCustomRange = ((Boolean) AttributeHelper.getAttributeValue(ge, "charting", "useCustomRange",
-				new Boolean(false), new Boolean(false))).booleanValue();
+				Boolean.valueOf(false), Boolean.valueOf(false))).booleanValue();
 		lowerBound = (Double) AttributeHelper.getAttributeValue(ge, "charting", "minRange", mNull, mNull);
 
 		upperBound = (Double) AttributeHelper.getAttributeValue(ge, "charting", "maxRange", mOne, mOne);
@@ -252,8 +252,8 @@ public class ChartOptions {
 		stdDevTopWidth = (Double) AttributeHelper.getAttributeValue(graph, "", "node_chartStdDevTopWidth",
 				Double.valueOf(10d), Double.valueOf(10d));
 
-		showLegend = ((Boolean) AttributeHelper.getAttributeValue(ge, "charting", "show_legend", new Boolean(false),
-				new Boolean(false))).booleanValue();
+		showLegend = ((Boolean) AttributeHelper.getAttributeValue(ge, "charting", "show_legend", Boolean.valueOf(false),
+				Boolean.valueOf(false))).booleanValue();
 
 	}
 

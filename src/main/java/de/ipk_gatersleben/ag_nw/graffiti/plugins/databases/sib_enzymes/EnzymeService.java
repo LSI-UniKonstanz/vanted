@@ -686,15 +686,15 @@ public class EnzymeService extends MemoryHog
 				"Manual download instructions (automatic download failure)", this);
 	}
 
-	private JComponent getLicenseButton() {
+	private static JComponent getLicenseButton() {
 		return GUIhelper.getWebsiteButton("License", "http://enzyme.expasy.org/enzyme.get", null, null, null);
 	}
 
-	private JComponent getWebsiteButton() {
+	private static JComponent getWebsiteButton() {
 		return GUIhelper.getWebsiteButton("Website", "http://enzyme.expasy.org/", null, null, null);
 	}
 
-	private void pretifyButtons(ArrayList<JComponent> actionButtons) {
+	private static void pretifyButtons(ArrayList<JComponent> actionButtons) {
 		for (JComponent jc : actionButtons)
 			jc.setBackground(Color.white);
 	}

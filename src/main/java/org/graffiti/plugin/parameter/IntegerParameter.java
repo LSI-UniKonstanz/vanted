@@ -155,7 +155,7 @@ public class IntegerParameter extends AbstractLimitableParameter implements Prov
 			try {
 				this.value = Integer.parseInt((String) value);
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
+				
 				throw new IllegalArgumentException(e.getMessage());
 				// e.printStackTrace();
 			}

@@ -350,7 +350,7 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 				if (createdNodesForThisBlock.size() > 0 && showRangeAxisForNode1) {
 					Node n1 = createdNodesForThisBlock.iterator().next();
 					NodeHelper nh = new NodeHelper(n1);
-					nh.setAttributeValue("charting", "showRangeAxis", new Boolean(true));
+					nh.setAttributeValue("charting", "showRangeAxis", Boolean.valueOf(true));
 					double spY = 16d;
 					nh.setPosition(nh.getPosition().getX(), nh.getPosition().getY() - spY / 2);
 					nh.setSize(nh.getWidth(), nh.getHeight() + spY);
@@ -364,16 +364,16 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 			return null;
 		}
 
-		AttributeHelper.setAttribute(ratioGraph, "", "node_showRangeAxis", new Boolean(false));
+		AttributeHelper.setAttribute(ratioGraph, "", "node_showRangeAxis", Boolean.valueOf(false));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_outlineBorderWidth", Double.valueOf(1d));
-		AttributeHelper.setAttribute(ratioGraph, "", "node_halfErrorBar", new Boolean(false));
+		AttributeHelper.setAttribute(ratioGraph, "", "node_halfErrorBar", Boolean.valueOf(false));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_chartStdDevLineWidth", Double.valueOf(0d));
-		AttributeHelper.setAttribute(ratioGraph, "", "node_plotOrientationHor", new Boolean(false));
+		AttributeHelper.setAttribute(ratioGraph, "", "node_plotOrientationHor", Boolean.valueOf(false));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_gridWidth", Double.valueOf(1d));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_axisWidth", Double.valueOf(1d));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_plotAxisFontSize", Integer.valueOf(30));
-		AttributeHelper.setAttribute(ratioGraph, "", "node_showGridRange", new Boolean(false));
-		AttributeHelper.setAttribute(ratioGraph, "", "node_showGridCategory", new Boolean(false)); // showRangeAxisForNode1));
+		AttributeHelper.setAttribute(ratioGraph, "", "node_showGridRange", Boolean.valueOf(false));
+		AttributeHelper.setAttribute(ratioGraph, "", "node_showGridCategory", Boolean.valueOf(false)); // showRangeAxisForNode1));
 		if (minValue < 0 && maxValue > 0 && -minValue < maxValue)
 			minValue = -maxValue;
 		if (minValue < 0 && maxValue > 0 && -minValue > maxValue)

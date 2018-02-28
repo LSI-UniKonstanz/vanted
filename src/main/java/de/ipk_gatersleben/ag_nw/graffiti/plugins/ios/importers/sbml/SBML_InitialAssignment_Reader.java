@@ -95,7 +95,7 @@ public class SBML_InitialAssignment_Reader {
 				try {
 					notesString = initialAssignment.getNotesString();
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					notesString = "";
 				}

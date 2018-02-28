@@ -90,7 +90,7 @@ public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 				} else
 					colButton.setText(EMPTY_STRING);
 				addDefaultColorActionListenerAndAddBarInfo(colButton, true, i);
-				colButton.putClientProperty("isBar", new Boolean(true));
+				colButton.putClientProperty("isBar", Boolean.valueOf(true));
 				colButton.putClientProperty("barIndex", Integer.valueOf(i));
 
 				if (barOutlineCols != null && barOutlineCols.get(i) != null && !showEmpty) {
@@ -100,7 +100,7 @@ public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 				} else
 					colButtonOutline.setText(EMPTY_STRING);
 				addDefaultColorActionListenerAndAddBarInfo(colButtonOutline, false, i);
-				colButtonOutline.putClientProperty("isBar", new Boolean(false));
+				colButtonOutline.putClientProperty("isBar", Boolean.valueOf(false));
 				colButtonOutline.putClientProperty("barIndex", Integer.valueOf(i));
 
 				jpanel.add(colButton, i + ",0");
@@ -112,7 +112,7 @@ public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 		jpanel.revalidate();
 	}
 
-	private void addDefaultColorActionListenerAndAddBarInfo(final JLabel colorButton, final boolean barColor,
+	private static void addDefaultColorActionListenerAndAddBarInfo(final JLabel colorButton, final boolean barColor,
 			final int bar) {
 		colorButton.setOpaque(true);
 		colorButton.setBorder(BorderFactory.createRaisedBevelBorder());

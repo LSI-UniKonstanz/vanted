@@ -148,7 +148,7 @@ public class DoubleParameter extends AbstractLimitableParameter implements Provi
 			try {
 				this.value = Double.parseDouble((String) value);
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}

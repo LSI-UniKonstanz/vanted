@@ -95,7 +95,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 	public static boolean loadKeggPathwayIntoEditor(final KeggPathwayEntry myEntry,
 			final Graph loadBlockingIntoThisGraph, final Color enzymeColor, final boolean separateClusters) {
 		final ObjectRef objref = new ObjectRef();
-		objref.setObject(new Boolean(true));
+		objref.setObject(Boolean.valueOf(true));
 		final Thread t = new Thread(new Runnable() {
 			public void run() {
 				Graph myGraph = null;
@@ -143,11 +143,11 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 				String detailInfo;
 				if (myGraph == null) {
 					detailInfo = "Graph instance not created";
-					objref.setObject(new Boolean(false));
+					objref.setObject(Boolean.valueOf(false));
 				} else {
 					detailInfo = "graph with " + myGraph.getNumberOfNodes() + " nodes and " + myGraph.getNumberOfEdges()
 							+ " edges created";
-					objref.setObject(new Boolean(true));
+					objref.setObject(Boolean.valueOf(true));
 				}
 				MainFrame.showMessage("Processing complete (" + detailInfo + ")", MessageType.INFO);
 			}
@@ -279,18 +279,18 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 		Object[] input;
 		if (!myEntry.isReferencePathway()) {
 			if (!askForNewWindow)
-				input = new Object[] { new Boolean(false), new Boolean(false) };
+				input = new Object[] { Boolean.valueOf(false), Boolean.valueOf(false) };
 			else {
 				if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS_ENH)) {
 					if (targetGraph == null)
-						input = new Object[] { new Boolean(false), new Boolean(true) };
+						input = new Object[] { Boolean.valueOf(false), Boolean.valueOf(true) };
 					else
 						input = MyInputHelper.getInput(
 								"Please specify if you would like to load the pathway in a new window<br>"
 										+ "or if you would like to add it to the current graph.",
 								"Load graph in new window?",
 								new Object[] { null, null, (targetGraph == null ? null : "Load Graph in new Window?"),
-										(targetGraph == null ? null : new Boolean(true)) });
+										(targetGraph == null ? null : Boolean.valueOf(true)) });
 				} else
 					input = MyInputHelper
 							.getInput(
@@ -301,25 +301,25 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 											+ "to the corresponding KEGG Pathway image. This is therefore the<br>"
 											+ "recommended setting.",
 									"Colorize organism-specific Enzymes, load in new Window?",
-									new Object[] { "Colorize organism-specific Enzymes?", new Boolean(true),
+									new Object[] { "Colorize organism-specific Enzymes?", Boolean.valueOf(true),
 											(targetGraph == null ? null : "Load Graph in new Window?"),
-											(targetGraph == null ? null : new Boolean(true)) // ,
+											(targetGraph == null ? null : Boolean.valueOf(true)) // ,
 									// "Enzyme-Color",
 									// KeggService.getDefaultEnzymeColor()
 									});
 			}
 		} else {
 			if (!askForNewWindow)
-				input = new Object[] { new Boolean(false), new Boolean(false) };
+				input = new Object[] { Boolean.valueOf(false), Boolean.valueOf(false) };
 			else if (targetGraph == null)
-				input = new Object[] { new Boolean(false), new Boolean(true) };
+				input = new Object[] { Boolean.valueOf(false), Boolean.valueOf(true) };
 			else
 				input = MyInputHelper.getInput(
 						"Please specify if you would like to load the pathway in a new window<br>"
 								+ "or if you would like to add it to the current graph.",
 						"Load graph in new window?",
 						new Object[] { null, null, (targetGraph == null ? null : "Load Graph in new Window?"),
-								(targetGraph == null ? null : new Boolean(true)) });
+								(targetGraph == null ? null : Boolean.valueOf(true)) });
 		}
 		boolean deleteInitialMapNode = false;
 		if (input != null) {

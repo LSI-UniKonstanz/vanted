@@ -61,7 +61,7 @@ public class SBML_Compartment_Reader {
 			try {
 				notes = compartment.getNotesString();
 			} catch (XMLStreamException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 				notes = "";
 			}

@@ -170,7 +170,7 @@ public class GraphHelperBio implements HelperClass {
 	 * @throws IOException
 	 * @throws ServiceException
 	 */
-
+	@SuppressWarnings("unused")
 	private static void processSOAPoverviewLoading(List<Graph> result, Collection<KeggPathwayEntry> pathways,
 			BackgroundTaskStatusProviderSupportingExternalCall statusProvider, OrganismEntry org, String serverURL) {
 		Graph superGraph = new AdjListGraph();
@@ -265,6 +265,7 @@ public class GraphHelperBio implements HelperClass {
 		KeggGmlHelper.setKeggId(mapNode, "path:" + kpe.getMapName());
 	}
 
+	@SuppressWarnings("unused")
 	private static void processFullMapLoading(boolean returnSuperPathway, boolean returnFullSuperPathway,
 			List<Graph> result, Collection<KeggPathwayEntry> pathways,
 			BackgroundTaskStatusProviderSupportingExternalCall statusProvider) {
@@ -438,13 +439,14 @@ public class GraphHelperBio implements HelperClass {
 						} else {
 							Node newNode = MergeNodes.mergeNode(g, toBeCondensed, NodeTools.getCenter(toBeCondensed),
 									retainClusterIDs);
+							@SuppressWarnings("rawtypes")
 							Set<Object> srcFileNamesSet = AttributeHelper.getAttributeValueSet(
 									(Collection) toBeCondensed, "src", "fileName", "-", "", false);
 							String srcFileNames = AttributeHelper
 									.getStringList(srcFileNamesSet.toArray(new String[] {}), ";");
 							if (srcFileNames != null && !srcFileNames.equals("-"))
 								AttributeHelper.setAttribute(newNode, "src", "fileName", srcFileNames);
-							g.deleteAll((Collection) toBeCondensed);
+							g.deleteAll((Collection<Node>) toBeCondensed);
 							lastn = lastn - toBeCondensed.size() + 1;
 						}
 					}

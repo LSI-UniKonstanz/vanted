@@ -463,6 +463,7 @@ public class SBMLHelper {
 	 *            contains the number of the current function definition
 	 * @return a filled list of function definitions
 	 */
+	@SuppressWarnings("unused")
 	private static List<FunctionDefinition> getAllFunctionDefinitions(Graph g, List<String> internHeadlines) {
 		Iterator<String> internHeadlinesIt = internHeadlines.iterator();
 		List<FunctionDefinition> functionDefinitionList = new ArrayList<FunctionDefinition>();
@@ -943,6 +944,7 @@ public class SBMLHelper {
 	 *            contains the number of the current unit definition
 	 * @return a filled UnitDefinition list
 	 */
+	@SuppressWarnings("unused")
 	private static List<UnitDefinition> getAllUnitDefinitions(Graph g, List<String> internHeadlines) {
 		List<UnitDefinition> udList = new ArrayList<UnitDefinition>();
 		Iterator<String> internHeadlineIt = internHeadlines.iterator();
@@ -1664,6 +1666,7 @@ public class SBMLHelper {
 	 *            a list which contains the number of the current compartment
 	 * @return a filled list of compartments
 	 */
+	@SuppressWarnings("unused")
 	private static List<Compartment> getAllCompartments(Graph g, List<String> internHeadlines) {
 		Iterator<String> internHeadlinesIt = internHeadlines.iterator();
 		List<Compartment> compartmentList = new ArrayList<Compartment>();
@@ -2866,6 +2869,7 @@ public class SBMLHelper {
 	 *            a list which contains the number of the current parameter
 	 * @return a filled list of parameters
 	 */
+	@SuppressWarnings("unused")
 	private static List<Parameter> getAllParameters(Graph g, List<String> internHeadlines) {
 		Iterator<String> internHeadlinesIt = internHeadlines.iterator();
 		List<Parameter> parameterList = new ArrayList<Parameter>();
@@ -3120,7 +3124,7 @@ public class SBMLHelper {
 			try {
 				ia.setFormula(getInitialAssignmentFunction(g, internHeadline));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -3136,6 +3140,7 @@ public class SBMLHelper {
 	 *            a list which contains the number of the current initial assignment
 	 * @return a filled list of initial assignment
 	 */
+	@SuppressWarnings("unused")
 	private static List<InitialAssignment> getAllInitialAssignment(Graph g, List<String> internHeadlines) {
 		Iterator<String> internHeadlinesIt = internHeadlines.iterator();
 		List<InitialAssignment> iaList = new ArrayList<InitialAssignment>();
@@ -3300,7 +3305,7 @@ public class SBMLHelper {
 			try {
 				rr.setFormula(getRateRuleFunction(g, internHeadline));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -3316,6 +3321,7 @@ public class SBMLHelper {
 	 *            a list which contains the number of the current rate rule
 	 * @return a filled list of rate rules
 	 */
+	@SuppressWarnings("unused")
 	private static List<RateRule> getAllRateRules(Graph g, List<String> internHeadlines) {
 		Iterator<String> internHeadlinesIt = internHeadlines.iterator();
 		List<RateRule> rrList = new ArrayList<RateRule>();
@@ -3333,6 +3339,7 @@ public class SBMLHelper {
 	 *            contains the information
 	 * @return a filled list of rate rules
 	 */
+	@SuppressWarnings("unused")
 	private static List<RateRule> getAllRateRules(Graph g) {
 		List<String> internHeadlines = getRateRuleHeadlines(g);
 		Iterator<String> internHeadlinesIt = internHeadlines.iterator();
@@ -3730,7 +3737,7 @@ public class SBMLHelper {
 			try {
 				ar.setFormula(getAssignmentRuleFunction(g, internHeadline));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -3856,7 +3863,7 @@ public class SBMLHelper {
 			try {
 				ar.setFormula(getAlgebraicRuleFunction(g, internHeadline));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
@@ -3889,6 +3896,7 @@ public class SBMLHelper {
 	 *            contains the information
 	 * @return a filled list of algebraic rules
 	 */
+	@SuppressWarnings("unused")
 	private static List<AlgebraicRule> getAllAlgebraicRules(Graph g) {
 		List<String> internHeadlines = getAlgebraicRuleHeadlines(g);
 		Iterator<String> internHeadlinesIt = internHeadlines.iterator();
@@ -3927,7 +3935,7 @@ public class SBMLHelper {
 			try {
 				notesString = constraint.getNotesString();
 			} catch (XMLStreamException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 				notesString = "";
 			}
@@ -4035,6 +4043,7 @@ public class SBMLHelper {
 	 * @param message
 	 *            the value that will be read in
 	 */
+	@SuppressWarnings("unused")
 	private static void setConstraintMessage(Graph g, String internHeadline, String message) {
 		if (!message.equals(SBML_Constants.EMPTY)) {
 			AttributeHelper.setAttribute(g, internHeadline,
@@ -4162,14 +4171,14 @@ public class SBMLHelper {
 			try {
 				con.setMessage(completeMessage);
 			} catch (XMLStreamException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
 		try {
 			con.setMath(ASTNode.parseFormula(getConstraintFunction(g, internHeadline)));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		return con;
@@ -4184,6 +4193,7 @@ public class SBMLHelper {
 	 *            a list which contains the number of the current constraint
 	 * @return a filled list of constraint
 	 */
+	@SuppressWarnings("unused")
 	private static List<Constraint> getAllConstraints(Graph g, List<String> internHeadlines) {
 		Iterator<String> internHeadlinesIt = internHeadlines.iterator();
 		List<Constraint> conList = new ArrayList<Constraint>();
@@ -5790,7 +5800,7 @@ public class SBMLHelper {
 				try {
 					kl.setFormula(getKineticLawFunction(node));
 				} catch (ParseException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 				int lpCount = localParameterCount(node);
@@ -6218,8 +6228,6 @@ public class SBMLHelper {
 
 	public static void deleteEventAssignment(Graph g, String id, String variable) {
 		String internHeadline = returnEventWithID(g, id);
-		char index = internHeadline.charAt(internHeadline.length() - 1);
-		String presentedHeadline = new StringBuffer("SBML Event ").append(index).toString();
 		int eventAssignmentCount = eventAssignmentCount(g, internHeadline);
 
 		for (int i = eventAssignmentCount; i >= 1; i--) {
@@ -6856,7 +6864,6 @@ public class SBMLHelper {
 				trigger.setFormula(getTriggerFunction(g, internHeadline));
 			}
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -6866,7 +6873,6 @@ public class SBMLHelper {
 			try {
 				prio.setFormula(getPriorityFunction(g, internHeadline));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			event.setPriority(prio);
@@ -6876,7 +6882,7 @@ public class SBMLHelper {
 			try {
 				delay.setFormula(getDelayFunction(g, internHeadline));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 			event.setDelay(delay);
@@ -6889,7 +6895,7 @@ public class SBMLHelper {
 			try {
 				ea.setFormula(getEventAssignmentFunction(g, internHeadline, i));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 			event.addEventAssignment(ea);
@@ -6923,6 +6929,7 @@ public class SBMLHelper {
 	 *            a list which contains the number of the current event
 	 * @return a filled list of event
 	 */
+	@SuppressWarnings("unused")
 	private static List<Event> getAllEvent(Graph g, List<String> internHeadlines) {
 		Iterator<String> internHeadlinesIt = internHeadlines.iterator();
 		List<Event> eventList = new ArrayList<Event>();

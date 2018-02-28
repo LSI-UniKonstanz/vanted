@@ -171,7 +171,7 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 					} else
 						colButton.setText(EMPTY_STRING);
 					addDefaultColorActionListenerAndAddBarInfo(colButton, true, cca.getIdList(barCount).get(i));
-					colButton.putClientProperty("isBar", new Boolean(true));
+					colButton.putClientProperty("isBar", Boolean.valueOf(true));
 					colButton.putClientProperty("barIndex", Integer.valueOf(i));
 					colButton.setToolTipText("Line/Bar-Color: " + cca.getIdList(barCount).get(i) + ": "
 							+ AttributeHelper.getColorName(barCols.get(i)));
@@ -187,7 +187,7 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 							+ AttributeHelper.getColorName(barOutlineCols.get(i)));
 
 					addDefaultColorActionListenerAndAddBarInfo(colButtonOutline, false, cca.getIdList(barCount).get(i));
-					colButtonOutline.putClientProperty("isBar", new Boolean(false));
+					colButtonOutline.putClientProperty("isBar", Boolean.valueOf(false));
 					colButtonOutline.putClientProperty("barIndex", Integer.valueOf(i));
 					jpanel.add(colButton, i + ",0");
 
@@ -202,7 +202,7 @@ public class ChartColorAttributeEditor extends AbstractValueEditComponent {
 		jpanel.validate();
 	}
 
-	private void addDefaultColorActionListenerAndAddBarInfo(final JLabel colorButton, final boolean barColor,
+	private static void addDefaultColorActionListenerAndAddBarInfo(final JLabel colorButton, final boolean barColor,
 			final String bar) {
 		colorButton.setOpaque(true);
 		colorButton.setBorder(BorderFactory.createRaisedBevelBorder());

@@ -85,7 +85,7 @@ public class SBML_Parameter_Reader {
 				try {
 					notesString = parameter.getNotesString();
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					notesString = "";
 				}

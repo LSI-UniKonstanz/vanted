@@ -211,17 +211,17 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 			return null;
 		}
 
-		AttributeHelper.setAttribute(ratioGraph, "", "node_showRangeAxis", new Boolean(true));
+		AttributeHelper.setAttribute(ratioGraph, "", "node_showRangeAxis", Boolean.valueOf(true));
 		// AttributeHelper.setAttribute(ratioGraph, "", "node_outlineBorderWidth", new
 		// Double(1d));
 		// AttributeHelper.setAttribute(ratioGraph, "", "node_chartStdDevLineWidth", new
 		// Double(0d));
 		// // AttributeHelper.setAttribute(ratioGraph, "", "node_plotOrientationHor",
-		// new Boolean(false));
+		// Boolean.valueOf(false));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_gridWidth", Double.valueOf(3d));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_axisWidth", Double.valueOf(3d));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_plotAxisFontSize", Integer.valueOf(30));
-		AttributeHelper.setAttribute(ratioGraph, "", "node_showGridRange", new Boolean(true));
+		AttributeHelper.setAttribute(ratioGraph, "", "node_showGridRange", Boolean.valueOf(true));
 		// AttributeHelper.setAttribute(ratioGraph, "", "node_showGridCategory", new
 		// Boolean(true));
 
@@ -229,7 +229,7 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 
 		for (Node n1 : ratioGraph.getNodes()) {
 			NodeHelper nh = new NodeHelper(n1);
-			// nh.setAttributeValue("charting", "showRangeAxis", new Boolean(true));
+			// nh.setAttributeValue("charting", "showRangeAxis", Boolean.valueOf(true));
 			double spY = 4d;
 			nh.setPosition(nh.getPosition().getX(), nh.getPosition().getY() - spY / 2);
 			nh.setSize(nh.getWidth(), nh.getHeight() + spY);

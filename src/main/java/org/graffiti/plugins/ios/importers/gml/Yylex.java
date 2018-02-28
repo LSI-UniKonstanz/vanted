@@ -787,7 +787,7 @@ class Yylex implements java_cup.runtime.Scanner {
 					case -21:
 						break;
 					case 21: {
-						return new Symbol(sym.BOOLEAN, new Boolean(new MyBoolean(yytext()).booleanValue()));
+						return new Symbol(sym.BOOLEAN, Boolean.valueOf(new MyBoolean(yytext()).booleanValue()));
 					}
 					case -22:
 						break;

@@ -158,7 +158,7 @@ public class MatrixModel extends AbstractTableModel implements GraphListener {
 				}
 			}
 
-			return new Boolean(found);
+			return Boolean.valueOf(found);
 		} else {
 			return null;
 		}

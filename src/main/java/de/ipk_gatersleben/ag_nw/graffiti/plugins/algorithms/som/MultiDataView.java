@@ -87,32 +87,32 @@ public class MultiDataView extends AbstractAlgorithm {
 				Double.valueOf(0d), Double.valueOf(0))).intValue();
 
 		boolean plotHor = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_plotOrientationHor",
-				new Boolean(true), new Boolean(true))).booleanValue();
+				Boolean.valueOf(true), Boolean.valueOf(true))).booleanValue();
 		PlotOrientation orientation;
 		if (plotHor)
 			orientation = PlotOrientation.VERTICAL;
 		else
 			orientation = PlotOrientation.HORIZONTAL;
 
-		((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_showCategoryAxis", new Boolean(false),
-				new Boolean(false))).booleanValue();
-		((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_showRangeAxis", new Boolean(false),
-				new Boolean(false))).booleanValue();
+		((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_showCategoryAxis", Boolean.valueOf(false),
+				Boolean.valueOf(false))).booleanValue();
+		((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_showRangeAxis", Boolean.valueOf(false),
+				Boolean.valueOf(false))).booleanValue();
 
 		boolean showShapes = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_lineChartShowShapes",
-				new Boolean(true), new Boolean(true))).booleanValue();
+				Boolean.valueOf(true), Boolean.valueOf(true))).booleanValue();
 		boolean showLines = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_lineChartShowLines",
-				new Boolean(true), new Boolean(true))).booleanValue();
+				Boolean.valueOf(true), Boolean.valueOf(true))).booleanValue();
 		boolean showStdDev = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_lineChartShowStdDev",
-				new Boolean(false), new Boolean(false))).booleanValue();
+				Boolean.valueOf(false), Boolean.valueOf(false))).booleanValue();
 
 		boolean showStdDevRangeLine = ((Boolean) AttributeHelper.getAttributeValue(graph, "",
-				"node_lineChartShowStdDevRangeLine", new Boolean(true), new Boolean(true))).booleanValue();
+				"node_lineChartShowStdDevRangeLine", Boolean.valueOf(true), Boolean.valueOf(true))).booleanValue();
 
 		Double temp = (Double) AttributeHelper.getAttributeValue(graph, "", "node_outlineBorderWidth", Double.valueOf(4d),
 				Double.valueOf(4d));
-		((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_halfErrorBar", new Boolean(false),
-				new Boolean(false))).booleanValue();
+		((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_halfErrorBar", Boolean.valueOf(false),
+				Boolean.valueOf(false))).booleanValue();
 
 		float outlineBorderWidth = temp.floatValue();
 
@@ -221,7 +221,7 @@ public class MultiDataView extends AbstractAlgorithm {
 		return chart;
 	}
 
-	private void setCategoryAxisOptions(final CategoryAxis axis, PlotOrientation orientation, boolean showCategoryAxis,
+	private static void setCategoryAxisOptions(final CategoryAxis axis, PlotOrientation orientation, boolean showCategoryAxis,
 			int axisRotation) {
 		if (orientation == PlotOrientation.VERTICAL) {
 			axis.setCategoryLabelPositions(
@@ -232,7 +232,7 @@ public class MultiDataView extends AbstractAlgorithm {
 		axis.setVisible(showCategoryAxis);
 	}
 
-	private BioStatisticalCategoryDataset getDataset(List<Iterable<SubstanceInterface>> xmldataListOfList, Graph g,
+	private static BioStatisticalCategoryDataset getDataset(List<Iterable<SubstanceInterface>> xmldataListOfList, Graph g,
 			boolean alsoUsedForPlottingStdDev,
 			// ArrayList<Color> seriesColors,
 			// ArrayList<Color> seriesOutlineColors,
@@ -241,7 +241,7 @@ public class MultiDataView extends AbstractAlgorithm {
 		Double markerSize = (Double) AttributeHelper.getAttributeValue(g, "", AttributeHelper.id_ttestCircleSize,
 				Double.valueOf(10.0d), Double.valueOf(10.0d));
 		boolean useStdErrInsteadOfStdDev = ((Boolean) AttributeHelper.getAttributeValue(g, "", "node_useStdErr",
-				new Boolean(false), new Boolean(false))).booleanValue();
+				Boolean.valueOf(false), Boolean.valueOf(false))).booleanValue();
 		BioStatisticalCategoryDataset dataset = new BioStatisticalCategoryDataset(markerSize.floatValue());
 		int idx = 0;
 		ColorHelper ch = new ColorHelper(g);
@@ -264,7 +264,7 @@ public class MultiDataView extends AbstractAlgorithm {
 		return dataset;
 	}
 
-	private String getZeros(int idx, int len) {
+	private static String getZeros(int idx, int len) {
 		String result = idx + "";
 		while (result.length() < len)
 			result = "0" + result;

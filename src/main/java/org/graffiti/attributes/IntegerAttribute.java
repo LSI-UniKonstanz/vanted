@@ -100,7 +100,7 @@ public class IntegerAttribute extends AbstractAttribute {
 	 * @return The value of the attribute wrapped in an <code>Integer</code> object.
 	 */
 	public Object getValue() {
-		return new Integer(value);
+		return Integer.valueOf(value);
 	}
 
 	/**

@@ -55,7 +55,7 @@ public class DBEgravistoHelper implements HelperClass {
 			Date d = s.parse(VANTED_BUILDDATE);
 			VANTED_BUILDDATE_TEXTFORMAT = new SimpleDateFormat("MMMM yyyy").format(d);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}

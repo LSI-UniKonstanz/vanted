@@ -719,7 +719,7 @@ public class PatternAttributeUtils {
 		Attribute nodeIndexAttribute = new IntegerAttribute(NODE_INDEX, nodeIndex);
 
 		List<Node> listOfNodes = (patternNode.getGraph().getNodes());
-		Integer internalNodeId = new Integer(listOfNodes.indexOf(patternNode));
+		Integer internalNodeId = Integer.valueOf(listOfNodes.indexOf(patternNode));
 		Attribute internalNodeIdAttribute = new IntegerAttribute(INTERNAL_NODE_INDEX, internalNodeId);
 
 		checkAndAddAGNWContainer(n);

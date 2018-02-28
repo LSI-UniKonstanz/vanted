@@ -34,7 +34,7 @@ public class AddonTableModel extends DefaultTableModel {
 		return null;
 	}
 
-	private String getDescription(PluginDescription pd) {
+	private static String getDescription(PluginDescription pd) {
 		return "<html><b>" + pd.getName() + "</b>  <small>v" + pd.getVersion() + "<br>" + pd.getAuthor();
 	}
 

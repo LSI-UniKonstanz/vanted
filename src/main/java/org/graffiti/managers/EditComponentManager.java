@@ -85,7 +85,7 @@ public class EditComponentManager implements PluginManagerListener {
 
 			return component;
 		} catch (InstanceCreationException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 

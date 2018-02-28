@@ -288,7 +288,7 @@ public class SortIntoCluster extends AbstractAlgorithm {
 	 * @param numClusters
 	 * @return
 	 */
-	private Parameter[] getClusterSplitValueParameters(double min, double max, int numClusters) {
+	private static Parameter[] getClusterSplitValueParameters(double min, double max, int numClusters) {
 
 		double increment = (max - min) / (double) numClusters;
 

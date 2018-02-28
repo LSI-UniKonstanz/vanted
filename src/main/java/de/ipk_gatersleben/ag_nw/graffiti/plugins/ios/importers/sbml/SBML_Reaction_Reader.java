@@ -142,7 +142,7 @@ public class SBML_Reaction_Reader {
 				try {
 					reactionHelper.setNotes(reactionNode, reaction.getNotesString(), reaction.getNotes());
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 			}
@@ -197,7 +197,7 @@ public class SBML_Reaction_Reader {
 					try {
 						kineticLawHelper.setNotes(reactionNode, kineticLaw.getNotesString(), kineticLaw.getNotes());
 					} catch (XMLStreamException e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
 					}
 				}
@@ -274,7 +274,7 @@ public class SBML_Reaction_Reader {
 									localParameterHelper.setNotes(reactionNode, localParameter.getNotesString(),
 											localParameter.getNotes());
 								} catch (XMLStreamException e) {
-									// TODO Auto-generated catch block
+									
 									e.printStackTrace();
 								}
 							}
@@ -699,7 +699,7 @@ public class SBML_Reaction_Reader {
 				try {
 					notesString = simpleRef.getNotesString();
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					notesString = "";
 				}
@@ -726,7 +726,7 @@ public class SBML_Reaction_Reader {
 				try {
 					notesString = simpleRef.getNotesString();
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					notesString = "";
 				}
@@ -753,7 +753,7 @@ public class SBML_Reaction_Reader {
 				try {
 					notesString = simpleRef.getNotesString();
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					notesString = "";
 				}

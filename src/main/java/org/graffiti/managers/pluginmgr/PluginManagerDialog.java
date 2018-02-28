@@ -219,7 +219,7 @@ public class PluginManagerDialog extends JDialog implements ActionListener, List
 		if (!pluginsTableModel.isEmpty()) {
 			for (int i = 0; i < pluginsTableModel.getRowCount(); i++) {
 				Boolean current = (Boolean) pluginsTableModel.getValueAt(i, 2);
-				pluginsTableModel.setValueAt(new Boolean(!current.booleanValue()), i, 2);
+				pluginsTableModel.setValueAt(Boolean.valueOf(!current.booleanValue()), i, 2);
 			}
 		}
 	}

@@ -52,7 +52,7 @@ public class SBML_Constraint_Reader extends SBML_SBase_Reader {
 				try {
 					message = removeTagFromString(constraint.getMessageString());
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					message = "";
 				}
@@ -69,7 +69,7 @@ public class SBML_Constraint_Reader extends SBML_SBase_Reader {
 				try {
 					notesString = constraint.getNotesString();
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					notesString = "";
 				}

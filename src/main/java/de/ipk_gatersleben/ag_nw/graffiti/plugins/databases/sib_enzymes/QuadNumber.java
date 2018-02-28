@@ -115,7 +115,7 @@ public class QuadNumber {
 				&& isValidNumberMatch(number3, quadNumber.number3) && isValidNumberMatch(number4, quadNumber.number4);
 	}
 
-	private boolean isValidNumberMatch(String numberB, String numberA) {
+	private static boolean isValidNumberMatch(String numberB, String numberA) {
 		if (numberA.equals("-"))
 			return true;
 		else
@@ -129,7 +129,7 @@ public class QuadNumber {
 				&& isValidNumberMatch_Inversed(number4, quadNumber.number4);
 	}
 
-	private boolean isValidNumberMatch_Inversed(String numberA, String numberB) {
+	private static boolean isValidNumberMatch_Inversed(String numberA, String numberB) {
 		if (numberA.equals("-"))
 			return true;
 		else if (numberB.equals("-"))
