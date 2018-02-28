@@ -118,7 +118,7 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset implements XYD
 				final double x = Math.random() * xRange;
 				final double y = Math.random() * tabString.length;
 				this.xValues[s][i] = new Double(x);
-				this.yValues[s][i] = new Integer((int) y);
+				this.yValues[s][i] = Integer.valueOf((int) y);
 			}
 		}
 	}
@@ -356,7 +356,7 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset implements XYD
 		for (int i = 0; i < sDataset2.getSeriesCount(); i++) {
 			for (int j = 0; j < sDataset2.getItemCount(i); j++) {
 				newIndex = ySymbolicValuesCombined.indexOf(sDataset2.getYSymbolicValue(i, j));
-				sDataset2.setYValue(i, j, new Integer(newIndex));
+				sDataset2.setYValue(i, j, Integer.valueOf(newIndex));
 			}
 		}
 

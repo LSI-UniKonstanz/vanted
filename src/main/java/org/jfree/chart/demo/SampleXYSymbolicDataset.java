@@ -367,7 +367,7 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 		for (int i = 0; i < sDataset2.getSeriesCount(); i++) {
 			for (int j = 0; j < sDataset2.getItemCount(i); j++) {
 				newIndex = ySymbolicValuesCombined.indexOf(sDataset2.getYSymbolicValue(i, j));
-				sDataset2.setYValue(i, j, new Integer(newIndex));
+				sDataset2.setYValue(i, j, Integer.valueOf(newIndex));
 			}
 		}
 
@@ -419,7 +419,7 @@ public class SampleXYSymbolicDataset extends AbstractSeriesDataset implements XY
 		for (int i = 0; i < sDataset2.getSeriesCount(); i++) {
 			for (int j = 0; j < sDataset2.getItemCount(i); j++) {
 				newIndex = xSymbolicValuesCombined.indexOf(sDataset2.getXSymbolicValue(i, j));
-				sDataset2.setXValue(i, j, new Integer(newIndex));
+				sDataset2.setXValue(i, j, Integer.valueOf(newIndex));
 			}
 		}
 

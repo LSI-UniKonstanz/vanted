@@ -22,8 +22,8 @@ public class PaperShapeTopRight extends PaperShape {
 	public PaperShapeTopRight() {
 
 		this.ignorePoints = new HashSet<>();
-		this.ignorePoints.add(new Integer(8));
-		this.ignorePoints.add(new Integer(9));
+		this.ignorePoints.add(Integer.valueOf(8));
+		this.ignorePoints.add(Integer.valueOf(9));
 
 	}
 

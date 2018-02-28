@@ -220,7 +220,7 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 		// new Boolean(false));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_gridWidth", new Double(3d));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_axisWidth", new Double(3d));
-		AttributeHelper.setAttribute(ratioGraph, "", "node_plotAxisFontSize", new Integer(30));
+		AttributeHelper.setAttribute(ratioGraph, "", "node_plotAxisFontSize", Integer.valueOf(30));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_showGridRange", new Boolean(true));
 		// AttributeHelper.setAttribute(ratioGraph, "", "node_showGridCategory", new
 		// Boolean(true));

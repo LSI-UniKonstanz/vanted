@@ -808,7 +808,7 @@ public class WorkflowHelper extends InspectorTab implements ScenarioGui, Contain
 				if (o instanceof String) {
 					sb.append("\"" + (String) o + "\"");
 				} else if (o instanceof Integer) {
-					sb.append("new Integer(" + ((Integer) o).intValue() + ")");
+					sb.append("Integer.valueOf(" + ((Integer) o).intValue() + ")");
 				} else {
 					if (o instanceof Boolean) {
 						sb.append("new Boolean(" + ((Boolean) o).booleanValue() + ")");

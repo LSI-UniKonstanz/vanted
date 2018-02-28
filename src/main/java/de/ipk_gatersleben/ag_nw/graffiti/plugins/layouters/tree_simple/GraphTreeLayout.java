@@ -403,8 +403,8 @@ public class GraphTreeLayout extends AbstractAlgorithm {
 		LinkedList leaves = new LinkedList();
 
 		queue.addLast(startNode);
-		bfsNum.put(startNode, new Integer(0));
-		bfsNumUpsideDown.put(startNode, new Integer(0));
+		bfsNum.put(startNode, Integer.valueOf(0));
+		bfsNumUpsideDown.put(startNode, Integer.valueOf(0));
 		forest.remove(startNode);
 
 		/* BreadthFirstSearch algorithm which calculates the depth of the tree */
@@ -421,7 +421,7 @@ public class GraphTreeLayout extends AbstractAlgorithm {
 
 				/* Not all neighbours, just the neighbours not visited yet */
 				if (!bfsNum.containsKey(neighbour)) {
-					Integer depth = new Integer(((Integer) bfsNum.get(v)).intValue() + 1);
+					Integer depth = Integer.valueOf(((Integer) bfsNum.get(v)).intValue() + 1);
 
 					forest.remove(neighbour);
 					isLeaf = false;
@@ -432,7 +432,7 @@ public class GraphTreeLayout extends AbstractAlgorithm {
 
 			if (isLeaf) {
 				leaves.add(v);
-				bfsNumUpsideDown.put(v, new Integer(0));
+				bfsNumUpsideDown.put(v, Integer.valueOf(0));
 			}
 
 		}
@@ -448,7 +448,7 @@ public class GraphTreeLayout extends AbstractAlgorithm {
 				Node neighbor = (Node) neighbours.next();
 
 				if (((Integer) bfsNum.get(v)).intValue() > ((Integer) bfsNum.get(neighbor)).intValue()) {
-					Integer depth = new Integer(((Integer) bfsNumUpsideDown.get(v)).intValue() + 1);
+					Integer depth = Integer.valueOf(((Integer) bfsNumUpsideDown.get(v)).intValue() + 1);
 					if (!((bfsNumUpsideDown.containsKey(neighbor))
 							&& ((Integer) bfsNumUpsideDown.get(neighbor)).intValue() > depth.intValue())) {
 
@@ -462,7 +462,7 @@ public class GraphTreeLayout extends AbstractAlgorithm {
 		for (Iterator iterator = bfsNum.keySet().iterator(); iterator.hasNext();) {
 			Node node = (Node) iterator.next();
 
-			Integer depth = new Integer(((Integer) bfsNumUpsideDown.get(node)).intValue());
+			Integer depth = Integer.valueOf(((Integer) bfsNumUpsideDown.get(node)).intValue());
 
 			double nodeHeight = getNodeHeight(node);
 
@@ -477,17 +477,17 @@ public class GraphTreeLayout extends AbstractAlgorithm {
 		}
 
 		/* Compute the maximum height of the root node */
-		depthOffsets.put(new Integer(maxNodeHeight.size() - 1), new Double(getNodeHeight(sourceNode) / 2.0));
-		maxNodeHeight.put(new Integer(maxNodeHeight.size() - 1), new Double(getNodeHeight(sourceNode)));
+		depthOffsets.put(Integer.valueOf(maxNodeHeight.size() - 1), new Double(getNodeHeight(sourceNode) / 2.0));
+		maxNodeHeight.put(Integer.valueOf(maxNodeHeight.size() - 1), new Double(getNodeHeight(sourceNode)));
 
 		for (int depth = maxNodeHeight.size() - 2; depth >= 0; depth--) {
 
-			double nodeHeight = ((Double) maxNodeHeight.get(new Integer(depth))).doubleValue();
-			double nodeHeightAncestor = ((Double) maxNodeHeight.get(new Integer(depth + 1))).doubleValue();
-			double yOffsetAncestor = ((Double) depthOffsets.get(new Integer(depth + 1))).doubleValue();
+			double nodeHeight = ((Double) maxNodeHeight.get(Integer.valueOf(depth))).doubleValue();
+			double nodeHeightAncestor = ((Double) maxNodeHeight.get(Integer.valueOf(depth + 1))).doubleValue();
+			double yOffsetAncestor = ((Double) depthOffsets.get(Integer.valueOf(depth + 1))).doubleValue();
 			double yOffset = yOffsetAncestor + nodeHeight / 2.0 + yNodeDistance + nodeHeightAncestor / 2.0;
 
-			depthOffsets.put(new Integer(depth), new Double(yOffset));
+			depthOffsets.put(Integer.valueOf(depth), new Double(yOffset));
 		}
 
 	}
@@ -507,12 +507,12 @@ public class GraphTreeLayout extends AbstractAlgorithm {
 		bfsNum = new HashMap();
 
 		queue.addLast(startNode);
-		bfsNum.put(startNode, new Integer(0));
+		bfsNum.put(startNode, Integer.valueOf(0));
 		forest.remove(startNode);
 
 		/* Compute the maximum height of the root node */
-		depthOffsets.put(new Integer(0), new Double(getNodeHeight(sourceNode) / 2.0));
-		maxNodeHeight.put(new Integer(0), new Double(getNodeHeight(sourceNode)));
+		depthOffsets.put(Integer.valueOf(0), new Double(getNodeHeight(sourceNode) / 2.0));
+		maxNodeHeight.put(Integer.valueOf(0), new Double(getNodeHeight(sourceNode)));
 
 		/* BreadthFirstSearch algorithm which calculates the depth of the tree */
 		while (!queue.isEmpty()) {
@@ -525,7 +525,7 @@ public class GraphTreeLayout extends AbstractAlgorithm {
 
 				/* Not all neighbours, just the neighbours not visited yet */
 				if (!bfsNum.containsKey(neighbour)) {
-					Integer depth = new Integer(((Integer) bfsNum.get(v)).intValue() + 1);
+					Integer depth = Integer.valueOf(((Integer) bfsNum.get(v)).intValue() + 1);
 
 					double nodeHeight = getNodeHeight(neighbour);
 
@@ -547,12 +547,12 @@ public class GraphTreeLayout extends AbstractAlgorithm {
 
 		for (int depth = 1; depth < maxNodeHeight.size(); depth++) {
 
-			double nodeHeight = ((Double) maxNodeHeight.get(new Integer(depth))).doubleValue();
-			double nodeHeightAncestor = ((Double) maxNodeHeight.get(new Integer(depth - 1))).doubleValue();
-			double yOffsetAncestor = ((Double) depthOffsets.get(new Integer(depth - 1))).doubleValue();
+			double nodeHeight = ((Double) maxNodeHeight.get(Integer.valueOf(depth))).doubleValue();
+			double nodeHeightAncestor = ((Double) maxNodeHeight.get(Integer.valueOf(depth - 1))).doubleValue();
+			double yOffsetAncestor = ((Double) depthOffsets.get(Integer.valueOf(depth - 1))).doubleValue();
 			double yOffset = yOffsetAncestor + nodeHeight / 2.0 + yNodeDistance + nodeHeightAncestor / 2.0;
 
-			depthOffsets.put(new Integer(depth), new Double(yOffset));
+			depthOffsets.put(Integer.valueOf(depth), new Double(yOffset));
 		}
 
 	}
@@ -672,7 +672,7 @@ public class GraphTreeLayout extends AbstractAlgorithm {
 			q.addLast(sourceNode);
 
 			/* Root node has the x position 0. */
-			d.put(sourceNode, new Integer(0));
+			d.put(sourceNode, Integer.valueOf(0));
 
 			/* First leaf has the x position 0. */
 			int xPosLeaf = 0;
@@ -697,7 +697,7 @@ public class GraphTreeLayout extends AbstractAlgorithm {
 					/* Neighbour already traversed ? */
 					if (!d.containsKey(neighbour)) {
 						xPosLeaf++;
-						d.put(neighbour, new Integer(xPosLeaf));
+						d.put(neighbour, Integer.valueOf(xPosLeaf));
 						q.addLast(neighbour);
 						isLeaf = false;
 					}
@@ -740,7 +740,7 @@ public class GraphTreeLayout extends AbstractAlgorithm {
 
 			/* Root node has the depth 0. */
 			q.addLast(sourceNode);
-			d.put(sourceNode, new Integer(0));
+			d.put(sourceNode, Integer.valueOf(0));
 			HashMap bfs = null;
 
 			if (zeroLeaves) {
@@ -756,10 +756,10 @@ public class GraphTreeLayout extends AbstractAlgorithm {
 
 					int level = ((Integer) bfs.get(n)).intValue();
 
-					setY(n, yStart + ((Double) depthOffsets.get(new Integer(level))).doubleValue());
+					setY(n, yStart + ((Double) depthOffsets.get(Integer.valueOf(level))).doubleValue());
 
 					ySpanningMax = Math.max(ySpanningMax,
-							((Double) depthOffsets.get(new Integer(level))).doubleValue());
+							((Double) depthOffsets.get(Integer.valueOf(level))).doubleValue());
 
 				}
 			}

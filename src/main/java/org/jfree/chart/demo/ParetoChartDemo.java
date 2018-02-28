@@ -68,16 +68,16 @@ public class ParetoChartDemo extends ApplicationFrame {
 		super(title);
 
 		final DefaultKeyedValues data = new DefaultKeyedValues();
-		data.addValue("C", new Integer(4843));
-		data.addValue("C++", new Integer(2098));
-		data.addValue("C#", new Integer(26));
-		data.addValue("Java", new Integer(1901));
-		data.addValue("Perl", new Integer(2507));
-		data.addValue("PHP", new Integer(1689));
-		data.addValue("Python", new Integer(948));
-		data.addValue("Ruby", new Integer(100));
-		data.addValue("SQL", new Integer(263));
-		data.addValue("Unix Shell", new Integer(485));
+		data.addValue("C", Integer.valueOf(4843));
+		data.addValue("C++", Integer.valueOf(2098));
+		data.addValue("C#", Integer.valueOf(26));
+		data.addValue("Java", Integer.valueOf(1901));
+		data.addValue("Perl", Integer.valueOf(2507));
+		data.addValue("PHP", Integer.valueOf(1689));
+		data.addValue("Python", Integer.valueOf(948));
+		data.addValue("Ruby", Integer.valueOf(100));
+		data.addValue("SQL", Integer.valueOf(263));
+		data.addValue("Unix Shell", Integer.valueOf(485));
 
 		data.sortByValues(SortOrder.DESCENDING);
 		final KeyedValues cumulative = DataUtilities.getCumulativePercentages(data);

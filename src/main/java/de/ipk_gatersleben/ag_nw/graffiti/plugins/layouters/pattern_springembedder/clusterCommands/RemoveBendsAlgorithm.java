@@ -40,8 +40,8 @@ public class RemoveBendsAlgorithm extends AbstractAlgorithm {
 	@Override
 	public Parameter[] getParameters() {
 		/*
-		 * return new Parameter[] { new IntegerParameter(minNodeSize, "Min. Node-Size",
-		 * "The minimum size of a node"), new IntegerParameter(maxNodeSize,
+		 * return new Parameter[] { Integer.valueOfParameter(minNodeSize, "Min. Node-Size",
+		 * "The minimum size of a node"), Integer.valueOfParameter(maxNodeSize,
 		 * "Max. Node-Size", "The maximum size of a node") };
 		 */
 		return null;

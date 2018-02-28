@@ -318,7 +318,7 @@ public class JDBCXYDataset extends AbstractXYDataset implements XYDataset, Table
 				final ArrayList newRow = new ArrayList();
 				for (int column = 0; column < numberOfColumns; column++) {
 					if (columnTypes[column] != Types.NULL) {
-						newRow.add(new Integer(0));
+						newRow.add(Integer.valueOf(0));
 					}
 				}
 				this.rows.add(newRow);

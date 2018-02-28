@@ -652,8 +652,8 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 			gammaSlider.setPaintTrack(false);
 		gammaSlider.setOpaque(false);
 		Dictionary<Integer, JLabel> d = new Hashtable<Integer, JLabel>();
-		d.put(new Integer(1), new JLabel("r^1", JLabel.LEFT));
-		d.put(new Integer(50), new JLabel("r^50"));
+		d.put(Integer.valueOf(1), new JLabel("r^1", JLabel.LEFT));
+		d.put(Integer.valueOf(50), new JLabel("r^50"));
 		gammaSlider.setLabelTable(d);
 		gammaSlider.setPaintLabels(true);
 		gammaSlider.setValue(currGammaValue);
@@ -2251,7 +2251,7 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		}
 
 		int axisFontSize = ((Integer) AttributeHelper.getAttributeValue(graph, "", "node_plotAxisFontSize",
-				new Integer(10), new Integer(10))).intValue();
+				Integer.valueOf(10), Integer.valueOf(10))).intValue();
 
 		MyScatterBlock scatterBlock = new MyScatterBlock(true, axisFontSize);
 		for (Iterator<GraphElement> it1 = graphElements.iterator(); it1.hasNext();) {

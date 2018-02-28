@@ -2742,7 +2742,7 @@ public class XYPlot extends Plot implements ValueAxisPlot, RendererChangeListene
 			mappedDatasets.addAll(getDatasetsMappedToDomainAxis(Integer.valueOf(domainIndex)));
 		} else if (axis == getDomainAxis()) {
 			isDomainAxis = true;
-			mappedDatasets.addAll(getDatasetsMappedToDomainAxis(new Integer(0)));
+			mappedDatasets.addAll(getDatasetsMappedToDomainAxis(Integer.valueOf(0)));
 		}
 
 		// or is it a range axis?

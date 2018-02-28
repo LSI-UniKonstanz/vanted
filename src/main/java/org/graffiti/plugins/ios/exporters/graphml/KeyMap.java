@@ -103,7 +103,7 @@ class KeyMap {
 		// list of types for the given path is empty: create a new entry
 		if (list == null) {
 			List<KeyData> l = new LinkedList<KeyData>();
-			l.add(new KeyData(new Integer(++count), type));
+			l.add(new KeyData(Integer.valueOf(++count), type));
 			this.map.put(path, l);
 
 			return count;
@@ -126,7 +126,7 @@ class KeyMap {
 			}
 
 			if (notDetected) {
-				list.add(new KeyData(new Integer(++count), type));
+				list.add(new KeyData(Integer.valueOf(++count), type));
 				id = count;
 			}
 

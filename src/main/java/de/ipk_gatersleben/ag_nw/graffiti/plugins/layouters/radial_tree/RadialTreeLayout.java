@@ -414,7 +414,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 			if (magnitude.get(node) != null) {
 				nodeValue = ((Integer) magnitude.get(node)).intValue();
 			} else {
-				magnitude.put(node, new Integer(1));
+				magnitude.put(node, Integer.valueOf(1));
 			}
 
 			for (Node neighbour : getPredecessors(node)) {
@@ -423,7 +423,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 					sum += ((Integer) magnitude.get(neighbour)).intValue();
 				}
 
-				magnitude.put(neighbour, new Integer(sum));
+				magnitude.put(neighbour, Integer.valueOf(sum));
 			}
 
 		}
@@ -563,7 +563,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 		bfsMapNodeToIndex = new HashMap<>();
 
 		queue.addLast(startNode);
-		bfsMapNodeToIndex.put(startNode, new Integer(0));
+		bfsMapNodeToIndex.put(startNode, Integer.valueOf(0));
 		graphNodes.remove(startNode);
 
 		/* BreadthFirstSearch algorithm which calculates the depth of the tree */
@@ -575,7 +575,7 @@ public class RadialTreeLayout extends AbstractAlgorithm {
 
 				/* Not all neighbours, just the neighbours not visited yet */
 				if (!bfsMapNodeToIndex.containsKey(neighbour)) {
-					Integer depth = new Integer(((Integer) bfsMapNodeToIndex.get(v)).intValue() + 1);
+					Integer depth = Integer.valueOf(((Integer) bfsMapNodeToIndex.get(v)).intValue() + 1);
 
 					double nodeHeight = getNodeHeight(neighbour);
 

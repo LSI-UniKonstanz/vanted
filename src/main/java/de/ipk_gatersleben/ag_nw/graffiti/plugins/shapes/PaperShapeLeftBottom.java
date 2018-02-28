@@ -22,8 +22,8 @@ public class PaperShapeLeftBottom extends PaperShape {
 	public PaperShapeLeftBottom() {
 
 		this.ignorePoints = new HashSet<>();
-		this.ignorePoints.add(new Integer(3));
-		this.ignorePoints.add(new Integer(4));
+		this.ignorePoints.add(Integer.valueOf(3));
+		this.ignorePoints.add(Integer.valueOf(4));
 
 	}
 

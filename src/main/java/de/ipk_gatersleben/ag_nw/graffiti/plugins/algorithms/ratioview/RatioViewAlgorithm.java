@@ -371,7 +371,7 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 		AttributeHelper.setAttribute(ratioGraph, "", "node_plotOrientationHor", new Boolean(false));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_gridWidth", new Double(1d));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_axisWidth", new Double(1d));
-		AttributeHelper.setAttribute(ratioGraph, "", "node_plotAxisFontSize", new Integer(30));
+		AttributeHelper.setAttribute(ratioGraph, "", "node_plotAxisFontSize", Integer.valueOf(30));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_showGridRange", new Boolean(false));
 		AttributeHelper.setAttribute(ratioGraph, "", "node_showGridCategory", new Boolean(false)); // showRangeAxisForNode1));
 		if (minValue < 0 && maxValue > 0 && -minValue < maxValue)
@@ -454,7 +454,7 @@ public class RatioViewAlgorithm extends AbstractAlgorithm {
 				150 + (nodeHeight - 2d) * idx + maxNodesPerSet * (row - 1) * nodeHeight + (row - 1) * 120d);
 		ratioNodeHelper.setAttributeValue("charting", "rangeAxis", "");
 		ratioNodeHelper.setAttributeValue("labelgraphics", "anchor", "w");
-		ratioNodeHelper.setAttributeValue("labelgraphics", "fontSize", new Integer(fontSize));
+		ratioNodeHelper.setAttributeValue("labelgraphics", "fontSize", Integer.valueOf(fontSize));
 		ratioNodeHelper.setAttributeValue("graphics", "component", "chart2d_type3");
 		ratioNodeHelper.setAttributeValue("charting", "empty_border_width", new Double(0d));
 	}

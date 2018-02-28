@@ -146,7 +146,7 @@ public class NodeHelper implements Node, HelperClass {
 			try {
 				timeValue = Integer.parseInt(dsr.timeS);
 			} catch (Exception e) {
-				timeValue = new Integer(-1);
+				timeValue = Integer.valueOf(-1);
 			}
 			String timeUnit = dsr.timeUnit;
 			if (timeUnit == null || timeUnit.length() <= 0 || timeUnit.equals("NA"))

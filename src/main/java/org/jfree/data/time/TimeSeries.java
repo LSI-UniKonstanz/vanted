@@ -295,7 +295,7 @@ public class TimeSeries extends Series implements Cloneable, Serializable {
 		}
 
 		// fetch the value...
-		final TimeSeriesDataItem dummy = new TimeSeriesDataItem(period, new Integer(0));
+		final TimeSeriesDataItem dummy = new TimeSeriesDataItem(period, Integer.valueOf(0));
 		final int index = Collections.binarySearch(this.data, dummy);
 		if (index >= 0) {
 			return (TimeSeriesDataItem) this.data.get(index);
@@ -380,7 +380,7 @@ public class TimeSeries extends Series implements Cloneable, Serializable {
 		}
 
 		// fetch the value...
-		final TimeSeriesDataItem dummy = new TimeSeriesDataItem(period, new Integer(0));
+		final TimeSeriesDataItem dummy = new TimeSeriesDataItem(period, Integer.valueOf(0));
 		final int index = Collections.binarySearch(this.data, dummy);
 		return index;
 

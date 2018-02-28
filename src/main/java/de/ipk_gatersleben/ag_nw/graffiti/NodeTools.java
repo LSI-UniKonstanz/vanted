@@ -283,7 +283,7 @@ public class NodeTools {
 		} catch (ClassCastException cce) {
 			// convert possible older integer id to string id
 			Integer oldval = (Integer) AttributeHelper.getAttributeValue(node, "cluster", "cluster", null,
-					new Integer(-1));
+					Integer.valueOf(-1));
 			if (oldval != null) {
 				((CollectionAttribute) node.getAttribute("cluster")).remove("cluster");
 				setClusterID(node, oldval.toString());

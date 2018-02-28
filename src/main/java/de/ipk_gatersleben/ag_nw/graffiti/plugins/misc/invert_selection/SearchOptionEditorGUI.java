@@ -117,7 +117,7 @@ public class SearchOptionEditorGUI extends JComponent {
 			}
 		});
 
-		final JTextField jTextFieldInteger = new JTextField(new Integer(option.getSearchAttributeInteger()).toString());
+		final JTextField jTextFieldInteger = new JTextField(Integer.valueOf(option.getSearchAttributeInteger()).toString());
 		jTextFieldInteger.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
 			}

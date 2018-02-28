@@ -60,7 +60,7 @@ class NodeMap {
 	 * @return the id of the node which has been added to the mapping.
 	 */
 	int add(Node n) {
-		this.map.put(n, new Integer(++count));
+		this.map.put(n, Integer.valueOf(++count));
 
 		return count;
 	}

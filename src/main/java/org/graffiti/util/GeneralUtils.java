@@ -73,7 +73,7 @@ public class GeneralUtils implements HelperClass {
 
 		for (int i = 0; i < len; i++) {
 			if ("1".equals(String.valueOf(s.charAt(i)))) {
-				pos.add(new Integer(len - i - 1));
+				pos.add(Integer.valueOf(len - i - 1));
 			}
 		}
 

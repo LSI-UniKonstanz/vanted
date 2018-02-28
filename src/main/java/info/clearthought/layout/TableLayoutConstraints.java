@@ -63,21 +63,21 @@ public class TableLayoutConstraints implements TableLayoutConstants {
 		try {
 			// Get the first column (assume component is in only one column)
 			token = st.nextToken();
-			col1 = new Integer(token).intValue();
+			col1 = Integer.valueOf(token).intValue();
 			col2 = col1;
 
 			// Get the first row (assume component is in only one row)
 			token = st.nextToken();
-			row1 = new Integer(token).intValue();
+			row1 = Integer.valueOf(token).intValue();
 			row2 = row1;
 
 			// Get the second column
 			token = st.nextToken();
-			col2 = new Integer(token).intValue();
+			col2 = Integer.valueOf(token).intValue();
 
 			// Get the second row
 			token = st.nextToken();
-			row2 = new Integer(token).intValue();
+			row2 = Integer.valueOf(token).intValue();
 		} catch (NoSuchElementException error) {
 		} catch (NumberFormatException error) {
 			try {

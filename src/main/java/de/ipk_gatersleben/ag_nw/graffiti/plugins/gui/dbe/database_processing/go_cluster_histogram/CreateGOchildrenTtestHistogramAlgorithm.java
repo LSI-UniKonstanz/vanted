@@ -101,7 +101,7 @@ public class CreateGOchildrenTtestHistogramAlgorithm extends AbstractAlgorithm
 		Collection<Node> childNodes = nh.getAllOutChildNodes();
 		TreeMap<String, Integer> significance2frequency = new TreeMap<String, Integer>();
 		for (String ci : knownSeriesAndTimeIDs)
-			significance2frequency.put(ci, new Integer(0));
+			significance2frequency.put(ci, Integer.valueOf(0));
 
 		for (Node n : childNodes) {
 			NodeHelper nnh = new NodeHelper(n);
@@ -113,7 +113,7 @@ public class CreateGOchildrenTtestHistogramAlgorithm extends AbstractAlgorithm
 							if (!mcdp.ttestIsReference && mcdp.ttestIsSignificantDifferent) {
 								String seriesAndTime = mcdp.serie + "§" + mcdp.timeUnitAndTime;
 								int cnt = significance2frequency.get(seriesAndTime);
-								significance2frequency.put(seriesAndTime, new Integer(cnt + 1));
+								significance2frequency.put(seriesAndTime, Integer.valueOf(cnt + 1));
 							}
 						}
 					}

@@ -75,7 +75,7 @@ public class ItemLabelDemo2 extends ApplicationFrame {
 		 *            the category index (zero-based).
 		 */
 		public LabelGenerator(final int category) {
-			this(new Integer(category));
+			this(Integer.valueOf(category));
 		}
 
 		/**

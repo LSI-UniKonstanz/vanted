@@ -56,18 +56,18 @@ public class Second {
 
 		// create some data...
 		final XYSeries series1 = new XYSeries("Advisory Range");
-		series1.add(new Integer(1200), new Integer(1));
-		series1.add(new Integer(1500), new Integer(1));
+		series1.add(Integer.valueOf(1200), Integer.valueOf(1));
+		series1.add(Integer.valueOf(1500), Integer.valueOf(1));
 
 		final XYSeries series2 = new XYSeries("Normal Range");
-		series2.add(new Integer(2000), new Integer(4));
-		series2.add(new Integer(2300), new Integer(4));
+		series2.add(Integer.valueOf(2000), Integer.valueOf(4));
+		series2.add(Integer.valueOf(2300), Integer.valueOf(4));
 
 		final XYSeries series3 = new XYSeries("Recommended");
-		series3.add(new Integer(2100), new Integer(2));
+		series3.add(Integer.valueOf(2100), Integer.valueOf(2));
 
 		final XYSeries series4 = new XYSeries("Current");
-		series4.add(new Integer(2400), new Integer(3));
+		series4.add(Integer.valueOf(2400), Integer.valueOf(3));
 
 		final XYSeriesCollection data = new XYSeriesCollection();
 		data.addSeries(series1);

@@ -160,7 +160,7 @@ public class HammingCalculator implements Runnable, BackgroundTaskStatusProvider
 				HashSet<String> nodesIn1 = new HashSet<String>();
 				for (Node n : graph1.getNodes())
 					nodesIn1.add(AttributeHelper.getLabel(n, null));
-				result.put(new Integer(i), graph1.getName());
+				result.put(Integer.valueOf(i), graph1.getName());
 				message2 = "Between " + graph1.getName() + " and remaining graphs (" + (i + 1) + "/" + numberOfGraphs
 						+ ")";
 				for (Graph graph2 : listOfGraphs) {
@@ -223,7 +223,7 @@ public class HammingCalculator implements Runnable, BackgroundTaskStatusProvider
 					graph1 = new AdjListGraph();
 					graph1.setName("Could not load " + graph1fn.getAbsolutePath());
 				}
-				result.put(new Integer(i), graph1.getName());
+				result.put(Integer.valueOf(i), graph1.getName());
 				HashSet<String> nodesIn1 = new HashSet<String>();
 				for (Node n : graph1.getNodes())
 					nodesIn1.add(AttributeHelper.getLabel(n, null));
@@ -404,7 +404,7 @@ public class HammingCalculator implements Runnable, BackgroundTaskStatusProvider
 				if (i + 1 != Math.abs(validGraphIndex))
 					continue;
 			}
-			String id = graphNames.get(new Integer(i));
+			String id = graphNames.get(Integer.valueOf(i));
 			id = id.substring(id.lastIndexOf(sep) + sep.length());
 			id = id.substring(0, id.lastIndexOf("."));
 			result.append(id + "  ");

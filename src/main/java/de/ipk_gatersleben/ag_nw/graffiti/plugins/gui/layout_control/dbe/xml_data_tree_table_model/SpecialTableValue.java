@@ -34,7 +34,7 @@ public class SpecialTableValue {
 				return startString + new Double(doubleValue).toString();
 		} else {
 			if (shiftRight)
-				return startString + new Integer((int) Math.round(doubleValue)).toString() + " ";
+				return startString + Integer.valueOf((int) Math.round(doubleValue)).toString() + " ";
 			else
 				return startString + new Double(doubleValue).toString();
 		}

@@ -772,7 +772,7 @@ public class DynamicTimeSeriesCollection extends AbstractIntervalXYDataset
 	 */
 	public Number getEndXValue(final int series, final int item) {
 		final RegularTimePeriod tp = this.pointsInTime[translateGet(item)];
-		return new Long(tp.getLastMillisecond(this.workingCalendar));
+		return Long.valueOf(tp.getLastMillisecond(this.workingCalendar));
 	}
 
 	/**

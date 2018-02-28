@@ -106,14 +106,14 @@ public class IntroduceSelfEdgeBends extends AbstractAlgorithm {
 						Integer knownFrequency = knownCombinations
 								.get(e.getSource().getID() + "§" + e.getTarget().getID());
 						if (knownFrequency == null) {
-							knownFrequency = new Integer(1);
+							knownFrequency = Integer.valueOf(1);
 						} else {
-							knownFrequency = new Integer(knownFrequency + 1);
+							knownFrequency = Integer.valueOf(knownFrequency + 1);
 						}
 						knownCombinations.put(e.getSource().getID() + "§" + e.getTarget().getID(),
-								new Integer(knownFrequency));
+								Integer.valueOf(knownFrequency));
 						knownCombinations.put(e.getTarget().getID() + "§" + e.getSource().getID(),
-								new Integer(knownFrequency));
+								Integer.valueOf(knownFrequency));
 
 						AttributeHelper.removeEdgeBends(e);
 						AttributeHelper.addEdgeBends(e,

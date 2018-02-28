@@ -63,7 +63,7 @@ public class MyComparableDataPoint implements Comparable<Object> {
 		this.timeUnitAndTime = timeUnitAndTime;
 		this.timeUnit = timeUnit;
 		this.timeValueForComparision = timeValueForComparision;
-		this.timeValue = new Integer(timeValueForComparision);
+		this.timeValue = Integer.valueOf(timeValueForComparision);
 		this.measurementUnit = measurementUnit;
 		this.ttestIsReference = ttestIsReference;
 		this.ttestIsSignificantDifferent = ttestIsSignificantDifferent;

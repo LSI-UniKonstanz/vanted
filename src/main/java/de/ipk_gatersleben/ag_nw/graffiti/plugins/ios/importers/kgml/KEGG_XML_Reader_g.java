@@ -192,7 +192,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			Element graphicsEntry = entry.getChild("graphics");
 			Node newNode = myGraph.addNode();
 			int mapid = Integer.parseInt(entry.getAttributeValue("id"));
-			mapID2GraphNode.put(new Integer(mapid), newNode);
+			mapID2GraphNode.put(Integer.valueOf(mapid), newNode);
 			setDefaultGraphicsAttribute(newNode, -1, -1);
 			processAttributes(newNode, entry, "type", "type", "link", "reaction", "map");
 			setLabel(newNode, entry.getAttributeValue("name"));
@@ -483,8 +483,8 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 			Element entry = (Element) entries.get(i);
 			int entry1 = Integer.parseInt(entry.getAttributeValue("entry1"));
 			int entry2 = Integer.parseInt(entry.getAttributeValue("entry2"));
-			Node e1 = mapID2GraphNode.get(new Integer(entry1));
-			Node e2 = mapID2GraphNode.get(new Integer(entry2));
+			Node e1 = mapID2GraphNode.get(Integer.valueOf(entry1));
+			Node e2 = mapID2GraphNode.get(Integer.valueOf(entry2));
 			if (e1 == null || e2 == null)
 				continue;
 			ArrayList<NodePair> edgesToBeAdded = new ArrayList<NodePair>();
@@ -497,7 +497,7 @@ public class KEGG_XML_Reader_g extends AbstractInputSerializer {
 							getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, false));
 				} else if (subType.getAttributeValue("name").equalsIgnoreCase("compound")) {
 					int compID = Integer.parseInt(subType.getAttributeValue("value"));
-					Node compNode = mapID2GraphNode.get(new Integer(compID));
+					Node compNode = mapID2GraphNode.get(Integer.valueOf(compID));
 					edgesToBeAdded.add(new NodePair(e1, compNode));
 
 					NodePair np = new NodePair(compNode, e2);

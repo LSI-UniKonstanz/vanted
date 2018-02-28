@@ -122,7 +122,7 @@ public class AlgorithmServices implements HelperClass {
 			multiplicators.clear();
 			nodeCount = nodes.size();
 			for (int i = 0; i < nodes.size(); i++)
-				nodeAndCirclePosition.put(new Integer(i), nodes.get(i));
+				nodeAndCirclePosition.put(Integer.valueOf(i), nodes.get(i));
 
 			Stack<Node> nodeStack = new Stack<Node>();
 			Stack<Node> currentResult = new Stack<Node>();
@@ -218,14 +218,14 @@ public class AlgorithmServices implements HelperClass {
 									Integer mA = multiplicators.get(edgA);
 									if (mA == null) {
 										Integer edgeDoublingA = (Integer) AttributeHelper.getAttributeValue(edgA,
-												"cluster", "edgecount", new Integer(1), null);
+												"cluster", "edgecount", Integer.valueOf(1), null);
 										multiplicators.put(edgA, edgeDoublingA);
 										mA = edgeDoublingA;
 									}
 									Integer mB = multiplicators.get(edgB);
 									if (mB == null) {
 										Integer edgeDoublingB = (Integer) AttributeHelper.getAttributeValue(edgB,
-												"cluster", "edgecount", new Integer(1), null);
+												"cluster", "edgecount", Integer.valueOf(1), null);
 										multiplicators.put(edgB, edgeDoublingB);
 										mB = edgeDoublingB;
 									}

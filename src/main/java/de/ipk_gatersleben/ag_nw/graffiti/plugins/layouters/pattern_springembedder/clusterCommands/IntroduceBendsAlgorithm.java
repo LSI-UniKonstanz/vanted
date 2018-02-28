@@ -62,7 +62,7 @@ public class IntroduceBendsAlgorithm extends AbstractAlgorithm {
 				new IntegerParameter(minPercent, "Minimum Percentage", ""),
 				new BooleanParameter(massCenterFromSelection, "Calculate Center from Selection",
 						"If selected, the mass center will be calculated from the selection instead from the whole graph")
-				// new IntegerParameter(maxDistance, "Detect Loops - max length:",
+				// Integer.valueOfParameter(maxDistance, "Detect Loops - max length:",
 				// "If this value is greater than 1, the algorithm is additionally applied to
 				// detected loops of the specified maximum length (number of nodes forming the
 				// loop).")

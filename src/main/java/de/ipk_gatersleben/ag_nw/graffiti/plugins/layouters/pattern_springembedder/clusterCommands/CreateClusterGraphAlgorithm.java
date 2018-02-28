@@ -215,7 +215,7 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		}
 		for (Node n : clusterReferenceGraph.getNodes()) {
 			Integer val = (Integer) AttributeHelper.getAttributeValue(n, "cluster", "nodecount",
-					new Integer(Integer.MAX_VALUE), new Integer(Integer.MAX_VALUE), false);
+					Integer.valueOf(Integer.MAX_VALUE), Integer.valueOf(Integer.MAX_VALUE), false);
 			int v = val.intValue();
 			if (v == Integer.MAX_VALUE)
 				continue;
@@ -239,8 +239,8 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		int maxCnt = Integer.MIN_VALUE;
 		boolean okToProceed = false;
 		for (Edge e : clusterReferenceGraph.getEdges()) {
-			Integer val = (Integer) AttributeHelper.getAttributeValue(e, "cluster", "edgecount", new Integer(0),
-					new Integer(0), false);
+			Integer val = (Integer) AttributeHelper.getAttributeValue(e, "cluster", "edgecount", Integer.valueOf(0),
+					Integer.valueOf(0), false);
 			if (e.getSource() != e.getTarget()) {
 				if (val.intValue() < minCnt)
 					minCnt = val.intValue();
@@ -252,8 +252,8 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		// set width of edges according to the edgecount
 		if (okToProceed)
 			for (Edge e : clusterReferenceGraph.getEdges()) {
-				Integer val = (Integer) AttributeHelper.getAttributeValue(e, "cluster", "edgecount", new Integer(0),
-						new Integer(0), false);
+				Integer val = (Integer) AttributeHelper.getAttributeValue(e, "cluster", "edgecount", Integer.valueOf(0),
+						Integer.valueOf(0), false);
 				int v = val.intValue();
 				double edgeWidth;
 				if (maxCnt > minCnt)

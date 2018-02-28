@@ -79,6 +79,8 @@ import scenario.ScenarioService;
 /**
  * Provides access to global variables, needed for various extensions to
  * Graffiti. Plugins can use the Preferences structure to save settings.
+ * 
+ * @vanted.revision 2.6.5
  */
 public class GravistoService implements HelperClass {
 
@@ -437,19 +439,6 @@ public class GravistoService implements HelperClass {
 							runAlgorithm(algo, event);
 					}
 				});
-			// class Exec {
-			// public void myRun(GravistoService gs) {
-			// Algorithm algo =
-			// gs.getAlgorithmInstanceFromFriendlyName(pluginNameOrClassName);
-			//
-			// MainFrame.showMesssage(
-			// "Execute plugin " + pluginNameOrClassName
-			// + "",
-			// MessageType.INFO);
-			// runAlgorithm(algo);
-			// }
-			// }
-			// (new Exec()).myRun(this);
 		} catch (InterruptedException e) {
 			ErrorMsg.addErrorMessage(e);
 		} catch (InvocationTargetException e) {
@@ -512,15 +501,6 @@ public class GravistoService implements HelperClass {
 			boolean enableMultipleSessionProcessing, ActionEvent event) {
 		algorithm.attach(graph, selection);
 		algorithm.setActionEvent(event);
-		// try {
-		// if (!true)
-		// algorithm.check();
-		// } catch (PreconditionException e) {
-		// StringBuilder sb = new StringBuilder();
-		// processError(algorithm, graph, sb, e);
-		// MainFrame.showMessageDialog("<html>" + sb.toString(), "Execution Error");
-		// return;
-		// }
 		Parameter[] parameters = algorithm.getParameters();
 		ThreadSafeOptions tsoParamDialogReturn = new ThreadSafeOptions();
 		if ((parameters != null) && (parameters.length != 0) || (algorithm instanceof AlgorithmWithComponentDescription
@@ -647,7 +627,7 @@ public class GravistoService implements HelperClass {
 		return doReturn;
 	}
 
-	private void multiGraphExecution(Algorithm algorithm, Graph graph, Selection selection, ActionEvent event,
+	private static void multiGraphExecution(Algorithm algorithm, Graph graph, Selection selection, ActionEvent event,
 			ParameterDialog paramDialog, Parameter[] params, StringBuilder errors) {
 		Collection<Session> sessions;
 		if (paramDialog != null)
@@ -669,7 +649,6 @@ public class GravistoService implements HelperClass {
 			}
 		}
 		boolean startLater = sessions.size() == 0;
-		boolean runnn = false;
 		for (Session s : sessions) {
 			Graph g = s.getGraph();
 			Selection sel;
@@ -689,7 +668,6 @@ public class GravistoService implements HelperClass {
 				algorithm.setActionEvent(event);
 				algorithm.check();
 				algorithm.execute();
-				runnn = true;
 				if (algorithm instanceof CalculatingAlgorithm) {
 					JOptionPane.showMessageDialog(null, "<html>Result of algorithm:<p>"
 							+ ((CalculatingAlgorithm) algorithm).getResult().toString());
@@ -721,14 +699,14 @@ public class GravistoService implements HelperClass {
 		}
 	}
 
-	private boolean checkRelease(boolean mayWorkOnMultipleGraphs) {
+	private static boolean checkRelease(boolean mayWorkOnMultipleGraphs) {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return false;
 		else
 			return mayWorkOnMultipleGraphs;
 	}
 
-	private void processError(Algorithm algorithm, Graph graph, StringBuilder errors, PreconditionException e) {
+	private static void processError(Algorithm algorithm, Graph graph, StringBuilder errors, PreconditionException e) {
 		String name = algorithm.getName();
 		if (name == null) {
 			name = algorithm.getClass().getSimpleName();
@@ -1063,13 +1041,16 @@ public class GravistoService implements HelperClass {
 	// based on
 	// http://www.tutorials.de/forum/java/255281-zip-entpacken-problem.html
 	public static void unzipFile(File archive) throws Exception {
+		ZipFile zipFile = null;
+		BufferedOutputStream bos = null;
+		BufferedInputStream bis = null;
 		try {
 			File destDir = new File(archive.getParent());
 			if (!destDir.exists()) {
 				destDir.mkdir();
 			}
 
-			ZipFile zipFile = new ZipFile(archive);
+			zipFile = new ZipFile(archive);
 			Enumeration<?> entries = zipFile.entries();
 
 			byte[] buffer = new byte[16384];
@@ -1085,21 +1066,28 @@ public class GravistoService implements HelperClass {
 				}
 
 				if (!entry.isDirectory()) {
-					BufferedOutputStream bos = new BufferedOutputStream(
+					bos = new BufferedOutputStream(
 							new FileOutputStream(new File(destDir, entryFileName)));
-					BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
+					bis = new BufferedInputStream(zipFile.getInputStream(entry));
 
 					while ((len = bis.read(buffer)) > 0) {
 						bos.write(buffer, 0, len);
 					}
-
-					bos.flush();
-					bos.close();
-					bis.close();
 				}
 			}
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
+		} finally {
+			if (zipFile != null)
+				zipFile.close();
+			
+			if (bos != null) {
+				bos.flush();
+				bos.close();
+			}
+			
+			if (bis != null)
+				bis.close();
 		}
 	}
 

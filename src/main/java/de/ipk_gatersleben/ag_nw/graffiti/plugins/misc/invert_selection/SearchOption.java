@@ -91,7 +91,7 @@ public class SearchOption {
 		int cnt = 0;
 		HashMap<GraphElement, Integer> result = new HashMap<GraphElement, Integer>();
 		for (ValueAndGraphElement vge : scope) {
-			result.put(vge.getGraphElement(), new Integer(cnt));
+			result.put(vge.getGraphElement(), Integer.valueOf(cnt));
 			cnt++;
 		}
 		return result;
@@ -168,7 +168,7 @@ public class SearchOption {
 
 	private Integer getInteger(Attributable attr) {
 		Object val = AttributeHelper.getAttributeValue(attr, searchAttributePath, searchAttributeName, null,
-				new Integer(Integer.MAX_VALUE), false);
+				Integer.valueOf(Integer.MAX_VALUE), false);
 		if (val == null || !(val instanceof Integer))
 			return null;
 		else
@@ -187,11 +187,11 @@ public class SearchOption {
 		case equals:
 			return i.intValue() == searchAttributeInteger;
 		case startswith:
-			return i.toString().startsWith(new Integer(searchAttributeInteger).toString());
+			return i.toString().startsWith(Integer.valueOf(searchAttributeInteger).toString());
 		case endswith:
-			return i.toString().endsWith(new Integer(searchAttributeInteger).toString());
+			return i.toString().endsWith(Integer.valueOf(searchAttributeInteger).toString());
 		case include:
-			return i.toString().indexOf(new Integer(searchAttributeInteger).toString()) >= 0;
+			return i.toString().indexOf(Integer.valueOf(searchAttributeInteger).toString()) >= 0;
 		case regexpsearch:
 			ErrorMsg.addErrorMessage(
 					"Invalid Search-Option: Regular expression search on integer values not supported!");

@@ -82,15 +82,15 @@ public class ZoomChangeComponent extends AbstractGraffitiComponent
 	public ZoomChangeComponent(String prefComp) {
 		super(prefComp);
 
-		m00.setValue(new Integer(1));
-		m01.setValue(new Integer(0));
+		m00.setValue(Integer.valueOf(1));
+		m01.setValue(Integer.valueOf(0));
 
-		// m02.setValue(new Integer(0));
-		m10.setValue(new Integer(0));
+		// m02.setValue(Integer.valueOf(0));
+		m10.setValue(Integer.valueOf(0));
 
-		m11.setValue(new Integer(1));
+		m11.setValue(Integer.valueOf(1));
 
-		// m12.setValue(new Integer(0));
+		// m12.setValue(Integer.valueOf(0));
 		matrixPanel.setLayout(new GridLayout(3, 3));
 		matrixPanel.add(m00);
 		matrixPanel.add(m01);

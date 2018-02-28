@@ -291,12 +291,12 @@ public class ExperimentDataFileWriter {
 		Collections.sort(orderedList, new Comparator<DataRowExcelExport>() {
 			@Override
 			public int compare(DataRowExcelExport o1, DataRowExcelExport o2) {
-				if (new Integer(o1.conditionID).compareTo(new Integer(o2.conditionID)) == 0) {
-					if (new Integer(o1.timeID).compareTo(new Integer(o2.timeID)) == 0)
-						return new Integer(o1.replicateID).compareTo(new Integer(o2.replicateID));
-					return new Integer(o1.timeID).compareTo(new Integer(o2.timeID));
+				if (Integer.valueOf(o1.conditionID).compareTo(Integer.valueOf(o2.conditionID)) == 0) {
+					if (Integer.valueOf(o1.timeID).compareTo(Integer.valueOf(o2.timeID)) == 0)
+						return Integer.valueOf(o1.replicateID).compareTo(Integer.valueOf(o2.replicateID));
+					return Integer.valueOf(o1.timeID).compareTo(Integer.valueOf(o2.timeID));
 				}
-				return new Integer(o1.conditionID).compareTo(new Integer(o2.conditionID));
+				return Integer.valueOf(o1.conditionID).compareTo(Integer.valueOf(o2.conditionID));
 			}
 		});
 

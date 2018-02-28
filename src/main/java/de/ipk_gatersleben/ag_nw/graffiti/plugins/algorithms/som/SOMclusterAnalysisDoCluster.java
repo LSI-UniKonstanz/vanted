@@ -232,7 +232,7 @@ class SOMclusterService
 				}
 				AttributeHelper.setAttribute(n, "som", "diff_sum_", sumDiff);
 				int tc = mydataset.getSOMmap().getTargetClusterForNode(i);
-				NodeTools.setClusterID(n, new Integer(tc).toString());
+				NodeTools.setClusterID(n, Integer.valueOf(tc).toString());
 			}
 		}
 		status1 = "Cluster IDs have been assigned";

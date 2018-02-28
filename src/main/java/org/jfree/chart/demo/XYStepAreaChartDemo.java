@@ -71,12 +71,12 @@ public class XYStepAreaChartDemo extends ApplicationFrame implements ActionListe
 	/** Problem data. */
 	private static final Object[][] TEST_DATA = {
 			// domain values, range values, may be null?
-			{ new Integer(1), new Integer(500), Boolean.TRUE }, { new Integer(2), new Integer(694) },
-			{ new Integer(3), new Integer(-734) }, { new Integer(4), new Integer(453) },
-			{ new Integer(5), new Integer(500), Boolean.TRUE }, { new Integer(6), new Integer(200) },
-			{ new Integer(7), new Integer(550), Boolean.TRUE }, { new Integer(8), new Integer(-150), Boolean.TRUE },
-			{ new Integer(9), new Integer(232) }, { new Integer(10), new Integer(734) },
-			{ new Integer(11), new Integer(400), Boolean.TRUE }, };
+			{ Integer.valueOf(1), Integer.valueOf(500), Boolean.TRUE }, { Integer.valueOf(2), Integer.valueOf(694) },
+			{ Integer.valueOf(3), Integer.valueOf(-734) }, { Integer.valueOf(4), Integer.valueOf(453) },
+			{ Integer.valueOf(5), Integer.valueOf(500), Boolean.TRUE }, { Integer.valueOf(6), Integer.valueOf(200) },
+			{ Integer.valueOf(7), Integer.valueOf(550), Boolean.TRUE }, { Integer.valueOf(8), Integer.valueOf(-150), Boolean.TRUE },
+			{ Integer.valueOf(9), Integer.valueOf(232) }, { Integer.valueOf(10), Integer.valueOf(734) },
+			{ Integer.valueOf(11), Integer.valueOf(400), Boolean.TRUE }, };
 
 	/** The chart panel. */
 	private ChartPanel chartPanel;

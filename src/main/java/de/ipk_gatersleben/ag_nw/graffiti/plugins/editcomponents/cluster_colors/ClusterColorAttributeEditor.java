@@ -91,7 +91,7 @@ public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 					colButton.setText(EMPTY_STRING);
 				addDefaultColorActionListenerAndAddBarInfo(colButton, true, i);
 				colButton.putClientProperty("isBar", new Boolean(true));
-				colButton.putClientProperty("barIndex", new Integer(i));
+				colButton.putClientProperty("barIndex", Integer.valueOf(i));
 
 				if (barOutlineCols != null && barOutlineCols.get(i) != null && !showEmpty) {
 					colButtonOutline.setBackground(barOutlineCols.get(i));
@@ -101,7 +101,7 @@ public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 					colButtonOutline.setText(EMPTY_STRING);
 				addDefaultColorActionListenerAndAddBarInfo(colButtonOutline, false, i);
 				colButtonOutline.putClientProperty("isBar", new Boolean(false));
-				colButtonOutline.putClientProperty("barIndex", new Integer(i));
+				colButtonOutline.putClientProperty("barIndex", Integer.valueOf(i));
 
 				jpanel.add(colButton, i + ",0");
 

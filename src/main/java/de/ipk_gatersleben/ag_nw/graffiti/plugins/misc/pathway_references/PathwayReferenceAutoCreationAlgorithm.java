@@ -247,7 +247,7 @@ public class PathwayReferenceAutoCreationAlgorithm extends AbstractAlgorithm imp
 				HashSet<Node> affectedNodes = linkSessions.get(sli);
 				for (Node n : affectedNodes) {
 					if (!node2currentPathwayReferenceIndex.containsKey(n)) {
-						node2currentPathwayReferenceIndex.put(n, new Integer(0));
+						node2currentPathwayReferenceIndex.put(n, Integer.valueOf(0));
 						AttributeHelper.setAttribute(n, "", "pathway_link_visualization", "mode1");
 					}
 					int currentIndex = node2currentPathwayReferenceIndex.get(n) + 1;

@@ -71,7 +71,7 @@ public class DataBase2GUI {
 	// int maxPlantID =
 	// DataExchange.getMaxPlantID(experimentName);
 	// /* System.err.println(
-	// "Node: " + new Integer(i + 1).toString()); */
+	// "Node: " + Integer.valueOf(i + 1).toString()); */
 	// processPlantDataForAllMeasurements(currentNode, compoundID, minPlantID,
 	// maxPlantID);
 	// if (minPlantID!=Integer.MAX_VALUE && maxPlantID!=Integer.MAX_VALUE && src>0)
@@ -102,12 +102,12 @@ public class DataBase2GUI {
 	// currentNode,
 	// "dbe",
 	// "minID",
-	// new Integer(minPlantID));
+	// Integer.valueOf(minPlantID));
 	// AttributeHelper.setAttribute(
 	// currentNode,
 	// "dbe",
 	// "maxID",
-	// new Integer(maxPlantID));
+	// Integer.valueOf(maxPlantID));
 	// } catch (Exception e) {
 	// ErrorMsg.addErrorMessage("Could not set data attributes to graph
 	// node.<br>"+e.getLocalizedMessage());
@@ -117,7 +117,7 @@ public class DataBase2GUI {
 	// private static void processPlantData(String experimentName, Node currentNode,
 	// String substanceName, int plantID) {
 	// try {
-	// String curID = new Integer(plantID).toString();
+	// String curID = Integer.valueOf(plantID).toString();
 	//
 	// int i = DataExchange.getReplCount(
 	// experimentName,
@@ -129,7 +129,7 @@ public class DataBase2GUI {
 	// currentNode,
 	// "dbe",
 	// "replCount"+curID,
-	// new Integer(i));
+	// Integer.valueOf(i));
 	//
 	// AttributeHelper.setAttribute(
 	// currentNode,

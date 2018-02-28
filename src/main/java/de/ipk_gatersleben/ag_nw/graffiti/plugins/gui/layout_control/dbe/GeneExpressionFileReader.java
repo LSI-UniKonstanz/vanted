@@ -194,7 +194,7 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 
 					// ********** ADD LINE ATTRIBUTES ***********
 					// ID
-					lineEntry.setRowId(new Integer(lineID));
+					lineEntry.setRowId(Integer.valueOf(lineID));
 					// Name
 					lineEntry.setSpecies(plantOrLine);
 					// genotype, treatment
@@ -211,8 +211,8 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 						SampleInterface sampleEntry = Experiment.getTypeManager().getNewSample(lineEntry);
 						lineEntry.add(sampleEntry);
 						// ADD SAMPLE ATTRIBUTES: ID, TIME, UNIT
-						sampleEntry.setRowId(new Integer(++sampleIDcount));
-						sampleEntry.setTime(new Integer(timeAndPlantName.getTime()));
+						sampleEntry.setRowId(Integer.valueOf(++sampleIDcount));
+						sampleEntry.setTime(Integer.valueOf(timeAndPlantName.getTime()));
 						if (optTimeUnit != null && optTimeUnit.length() > 0)
 							sampleEntry.setTimeUnit(optTimeUnit);
 						else
@@ -230,7 +230,7 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 							averageEntry.setUnit(optMeasurementUnit);
 						else
 							averageEntry.setUnit("expression");
-						averageEntry.setReplicateId(new Integer(replicates.size()));
+						averageEntry.setReplicateId(Integer.valueOf(replicates.size()));
 						averageEntry.setMin(new Double(ExperimentData.getMinimum(measurements)));
 						averageEntry.setMax(new Double(ExperimentData.getMaximum(measurements)));
 						averageEntry.setStddev(new Double(ExperimentData.getStddev(measurements)));
@@ -250,7 +250,7 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 								mesEntry.setUnit("expression");
 							if (rd.getOptionalQualityAnnotation() != null)
 								mesEntry.setQualityAnnotation(rd.getOptionalQualityAnnotation());
-							mesEntry.setReplicateID(new Integer(rd.getReplicateNumber()));
+							mesEntry.setReplicateID(Integer.valueOf(rd.getReplicateNumber()));
 							mesEntry.setValue(value);
 							dataCount++;
 						}
@@ -261,7 +261,7 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 				progressDouble = new Double(pv);
 			}
 		}
-		// measurementCountElement.setText(new Integer(dataCount).toString());
+		// measurementCountElement.setText(Integer.valueOf(dataCount).toString());
 		progressDouble = new Double(100d);
 		return e;
 	}

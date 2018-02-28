@@ -45,7 +45,7 @@ public class ClassesAll {
 
 		for (int i = 0; i < a.size(); i++) {
 
-			attributsSelected.addElement(new Integer(getAttributNameIndex((String) a.elementAt(i))));
+			attributsSelected.addElement(Integer.valueOf(getAttributNameIndex((String) a.elementAt(i))));
 
 		}
 

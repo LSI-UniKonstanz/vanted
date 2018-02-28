@@ -32,9 +32,9 @@ public class ObjectAttributeService implements HelperClass {
 		for (int i = 0; i < obj.length; i++) {
 			String number;
 			if (obj[i] < 0)
-				number = new Integer(-obj[i] + Byte.MAX_VALUE).toString();
+				number = Integer.valueOf(-obj[i] + Byte.MAX_VALUE).toString();
 			else
-				number = new Integer(obj[i]).toString();
+				number = Integer.valueOf(obj[i]).toString();
 			while (number.length() < 3)
 				number = "0" + number;
 			sb.append(number);
@@ -54,7 +54,7 @@ public class ObjectAttributeService implements HelperClass {
 			List<Byte> bytes = new LinkedList<Byte>();
 			while (serializedObject.length() >= 3) {
 				String curNumber = serializedObject.substring(0, 3);
-				Integer curVal = new Integer(curNumber);
+				Integer curVal = Integer.valueOf(curNumber);
 				if (curVal.intValue() > Byte.MAX_VALUE)
 					bytes.add(new Byte((byte) -(curVal.intValue() - Byte.MAX_VALUE)));
 				else

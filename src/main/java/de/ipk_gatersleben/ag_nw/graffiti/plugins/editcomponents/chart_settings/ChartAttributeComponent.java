@@ -104,7 +104,7 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 		setChartTransparency(alpha);
 	}
 
-	private static Integer defaultSizeForEdges = new Integer(80);
+	private static Integer defaultSizeForEdges = Integer.valueOf(80);
 
 	private JComponent chart;
 

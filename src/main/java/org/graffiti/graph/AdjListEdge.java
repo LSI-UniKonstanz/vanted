@@ -240,7 +240,7 @@ public class AdjListEdge extends AbstractEdge implements Edge, GraphElement {
 	}
 
 	public int compareTo(GraphElement arg0) {
-		return new Integer(getViewID()).compareTo(arg0.getViewID());
+		return Integer.valueOf(getViewID()).compareTo(arg0.getViewID());
 	}
 }
 

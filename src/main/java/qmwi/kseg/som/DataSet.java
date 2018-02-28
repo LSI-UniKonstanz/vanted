@@ -194,7 +194,7 @@ public class DataSet {
 
 	public int inputNeuronsNeededFor(int anzAuspr) {
 		if (compactBits) {
-			java.math.BigInteger dummy = new java.math.BigInteger(new Integer(anzAuspr).toString());
+			java.math.BigInteger dummy = new java.math.BigInteger(Integer.valueOf(anzAuspr).toString());
 			return dummy.bitLength();
 		} else
 			return anzAuspr;
@@ -212,7 +212,7 @@ public class DataSet {
 			else {
 
 				if (compactBits) {
-					java.math.BigInteger dummy = new java.math.BigInteger(new Integer(anzAuspr).toString());
+					java.math.BigInteger dummy = new java.math.BigInteger(Integer.valueOf(anzAuspr).toString());
 					neuronsNeeded += dummy.bitLength();
 				} else
 					neuronsNeeded += anzAuspr;
@@ -472,10 +472,10 @@ public class DataSet {
 						currentInput.setInput(iCols[ic], thedata.elementAt(j).getColumnData(iCols[ic]));
 
 						if (compactBits) {
-							java.math.BigInteger dummy = new java.math.BigInteger(new Integer(anzAuspr[ic]).toString());
+							java.math.BigInteger dummy = new java.math.BigInteger(Integer.valueOf(anzAuspr[ic]).toString());
 							neuronsNeeded = dummy.bitLength();
 							dummy = new java.math.BigInteger(
-									new Integer(GlobalLookUp.getEntry(ic, currentInput.currentValue)).toString());
+									Integer.valueOf(GlobalLookUp.getEntry(ic, currentInput.currentValue)).toString());
 							for (int z = currentBit; z < currentBit + neuronsNeeded; z++) { // für
 								// alle
 								// benötigten

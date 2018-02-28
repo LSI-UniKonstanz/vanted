@@ -50,7 +50,7 @@ public class AddRandomClusterInformationAlgorithm extends AbstractAlgorithm {
 		for (Iterator<?> it = selection.getNodes().iterator(); it.hasNext();) {
 			Node n = (Node) it.next();
 			int clusterId = 1 + (int) (Math.random() * maxClusterID);
-			NodeTools.setClusterID(n, new Integer(clusterId).toString());
+			NodeTools.setClusterID(n, Integer.valueOf(clusterId).toString());
 		}
 		graph.getListenerManager().transactionFinished(this);
 	}

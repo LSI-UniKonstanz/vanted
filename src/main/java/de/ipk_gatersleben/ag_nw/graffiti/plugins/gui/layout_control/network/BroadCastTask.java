@@ -112,7 +112,7 @@ public class BroadCastTask extends TimerTask {
 			}
 
 			private String ensure00(int value) {
-				String result = new Integer(value).toString();
+				String result = Integer.valueOf(value).toString();
 				if (result.length() < 2)
 					result = "0" + result;
 				return result;

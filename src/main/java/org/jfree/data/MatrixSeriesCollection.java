@@ -133,7 +133,7 @@ public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDat
 		final MatrixSeries series = (MatrixSeries) this.seriesList.get(seriesIndex);
 		final int x = series.getItemColumn(itemIndex);
 
-		return new Integer(x); // I know it's bad to create object. better idea?
+		return Integer.valueOf(x); // I know it's bad to create object. better idea?
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class MatrixSeriesCollection extends AbstractXYZDataset implements XYZDat
 		final MatrixSeries series = (MatrixSeries) this.seriesList.get(seriesIndex);
 		final int y = series.getItemRow(itemIndex);
 
-		return new Integer(y); // I know it's bad to create object. better idea?
+		return Integer.valueOf(y); // I know it's bad to create object. better idea?
 	}
 
 	/**

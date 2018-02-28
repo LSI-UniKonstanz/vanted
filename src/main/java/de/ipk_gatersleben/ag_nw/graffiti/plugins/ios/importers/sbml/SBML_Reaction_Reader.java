@@ -457,9 +457,9 @@ public class SBML_Reaction_Reader {
 			if (reaction.isReversible() && (speciesRole.equals(SpeciesReferenceRole.SUBSTRATE.toString())
 					|| speciesRole.equals(SpeciesReferenceRole.PRODUCT.toString())))
 				speciesRole = SpeciesReferenceRole.SUBSTRATE.toString() + "_" + SpeciesReferenceRole.PRODUCT.toString();
-			Integer numberOf = new Integer(1);
+			Integer numberOf = Integer.valueOf(1);
 			if (hmSpecies.get(speciesRole + "_" + speciesID) != null)
-				numberOf = new Integer(hmSpecies.get(speciesRole + "_" + speciesID).intValue() + 1);
+				numberOf = Integer.valueOf(hmSpecies.get(speciesRole + "_" + speciesID).intValue() + 1);
 			hmSpecies.put(speciesRole + "_" + speciesID, numberOf);
 			ArrayList<SpeciesReferenceGlyph> _speciesReferenceGlyphs = new ArrayList<>();
 			if (hmSpeciesReferenceGlyphs.get(speciesRole + "_" + speciesID) != null)

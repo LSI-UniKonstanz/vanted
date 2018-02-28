@@ -122,13 +122,13 @@ public class DefaultContourDataset extends AbstractXYZDataset implements Contour
 					final Date xDate = (Date) xData[k];
 					xNumber = new Long(xDate.getTime()); // store data as Long
 				} else {
-					xNumber = new Integer(0);
+					xNumber = Integer.valueOf(0);
 				}
 				this.xValues[k] = new Double(xNumber.doubleValue()); // store Number as Double
 
 				// check if starting new column
 				if (x != this.xValues[k].doubleValue()) {
-					tmpVector.add(new Integer(k)); // store index where new column starts
+					tmpVector.add(Integer.valueOf(k)); // store index where new column starts
 					x = this.xValues[k].doubleValue(); // set x to most recent value
 				}
 			}

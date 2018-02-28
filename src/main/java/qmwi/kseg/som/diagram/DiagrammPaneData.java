@@ -73,7 +73,7 @@ public class DiagrammPaneData extends javax.swing.table.AbstractTableModel {
 	public Object getValueAt(int row, int column) {
 
 		if (column == 0)
-			return new Integer(cAll.getCountObjects(row));
+			return Integer.valueOf(cAll.getCountObjects(row));
 
 		else {
 			/*
@@ -86,7 +86,7 @@ public class DiagrammPaneData extends javax.swing.table.AbstractTableModel {
 
 			// return new Float(aAll.getClass(row).getAttribut(column).values.size());
 
-			return new Integer(0);
+			return Integer.valueOf(0);
 		}
 
 	}

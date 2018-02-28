@@ -92,7 +92,7 @@ public class ExperimentData {
 		for (DataColumnHeader dch : replicates) {
 			Object mes_val = myData.getCellData(dch.getColumn(), row, null);
 			if (mes_val != null && mes_val instanceof Double) {
-				ReplicateDouble rd = new ReplicateDouble(mes_val, new Integer(dch.getReplicateNumber()).toString(),
+				ReplicateDouble rd = new ReplicateDouble(mes_val, Integer.valueOf(dch.getReplicateNumber()).toString(),
 						null);
 				result.add(rd);
 			}
@@ -103,7 +103,7 @@ public class ExperimentData {
 					if ((mes_val_s.equalsIgnoreCase("-") || mes_val_s.equalsIgnoreCase("n/a")
 							|| mes_val_s.equalsIgnoreCase("na"))) {
 						ReplicateDouble rd = new ReplicateDouble(Double.NaN,
-								new Integer(dch.getReplicateNumber()).toString(), null);
+								Integer.valueOf(dch.getReplicateNumber()).toString(), null);
 						result.add(rd);
 					} else {
 						try {
@@ -114,7 +114,7 @@ public class ExperimentData {
 								mes_val_s = mes_val_s.substring(0, colPos);
 							}
 							ReplicateDouble rd = new ReplicateDouble(Double.parseDouble(mes_val_s),
-									new Integer(dch.getReplicateNumber()).toString(), annotation);
+									Integer.valueOf(dch.getReplicateNumber()).toString(), annotation);
 							result.add(rd);
 						} catch (NumberFormatException nfe) {
 							ErrorMsg.addErrorMessage("Number Format Exception in row " + row + ", column "

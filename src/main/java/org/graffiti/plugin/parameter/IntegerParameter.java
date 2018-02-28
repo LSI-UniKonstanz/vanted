@@ -82,7 +82,7 @@ public class IntegerParameter extends AbstractLimitableParameter implements Prov
 	 */
 	public IntegerParameter(int value, String name, String description) {
 		super(name, description);
-		this.value = new Integer(value);
+		this.value = Integer.valueOf(value);
 	}
 
 	// ~ Methods ================================================================
@@ -172,7 +172,7 @@ public class IntegerParameter extends AbstractLimitableParameter implements Prov
 	}
 
 	public String getScenarioCommand() {
-		return "new IntegerParameter(" + getInteger().intValue() + ", \"" + getName() + "\", \"" + getDescription()
+		return "Integer.valueOfParameter(" + getInteger().intValue() + ", \"" + getName() + "\", \"" + getDescription()
 				+ "\")";
 	}
 

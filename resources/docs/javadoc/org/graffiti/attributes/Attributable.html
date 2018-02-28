@@ -773,7 +773,7 @@ var activeTableTab = "activeTableTab";
  CollectionAttribute ca = new CollectionAttribute("root");
  //add ca to the attributable g as root attribute
  g.addAttribute(ca, "");
- IntegerAttribute ia = new IntegerAttribute("int", 10);
+ IntegerAttribute ia = Integer.valueOfAttribute("int", 10);
  //add ia as child of root
  g.addAttribute(ia, "root");
  </pre>
@@ -914,8 +914,8 @@ var activeTableTab = "activeTableTab";
 <dt><span class="paramLabel">Parameters:</span></dt>
 <dd><code>path</code> - the path to the <code>CollectionAttribute</code> the new
            IntegerAttribute should be added to.</dd>
-<dd><code>id</code> - the id of the new IntegerAttribute.</dd>
-<dd><code>value</code> - the value of the new IntegerAttribute.</dd>
+<dd><code>id</code> - the id of the Integer.valueOfAttribute.</dd>
+<dd><code>value</code> - the value of the Integer.valueOfAttribute.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
 <dd><code><a href="../../../org/graffiti/attributes/NoCollectionAttributeException.html" title="class in org.graffiti.attributes">NoCollectionAttributeException</a></code> - if the <code>Attribute</code> at the location specified by <code>path</code> is no <code>CollectionAttribute</code>.</dd>
 <dd><code><a href="../../../org/graffiti/attributes/AttributeExistsException.html" title="class in org.graffiti.attributes">AttributeExistsException</a></code> - if there is already an <code>Attribute</code> with the given <code>id</code> at the

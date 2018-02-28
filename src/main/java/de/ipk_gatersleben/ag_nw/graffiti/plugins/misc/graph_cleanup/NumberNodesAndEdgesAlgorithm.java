@@ -54,7 +54,7 @@ public class NumberNodesAndEdgesAlgorithm extends AbstractAlgorithm
 				if (currentNodes != null)
 					for (Iterator<Node> it = currentNodes.iterator(); it.hasNext();) {
 						Node n = (Node) it.next();
-						AttributeHelper.setLabel(n, new Integer(i).toString());
+						AttributeHelper.setLabel(n, Integer.valueOf(i).toString());
 						i++;
 					}
 			}
@@ -66,7 +66,7 @@ public class NumberNodesAndEdgesAlgorithm extends AbstractAlgorithm
 				if (currentEdges != null)
 					for (Iterator<Edge> it = currentEdges.iterator(); it.hasNext();) {
 						Edge e = (Edge) it.next();
-						AttributeHelper.setLabel(e, new Integer(i).toString());
+						AttributeHelper.setLabel(e, Integer.valueOf(i).toString());
 						i++;
 					}
 			}

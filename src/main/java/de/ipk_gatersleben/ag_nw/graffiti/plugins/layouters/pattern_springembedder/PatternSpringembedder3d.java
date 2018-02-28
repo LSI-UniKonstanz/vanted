@@ -97,6 +97,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  * Spring Embedder Algorithm. Example #3.
  * 
  * @author Christian Klukas
+ * @vanted.ravision 2.6.5
  */
 public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 // implements EditorAlgorithm
@@ -175,15 +176,9 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 	 *         node is returned in the result set, if it has no pattern.
 	 */
 	@SuppressWarnings("unchecked")
-	private ArrayList<NodeCacheEntry3d> getPatternNodes(ThreadSafeOptions options, NodeCacheEntry3d nodeInfo) {
-		ArrayList<NodeCacheEntry3d> resultVec = getPatternNodesPublic((ArrayList<NodeCacheEntry3d>) options.nodeArray,
+	private static ArrayList<NodeCacheEntry3d> getPatternNodes(ThreadSafeOptions options, NodeCacheEntry3d nodeInfo) {
+		return getPatternNodesPublic((ArrayList<NodeCacheEntry3d>) options.nodeArray,
 				nodeInfo);
-
-		if (resultVec.size() > 1) {
-			// System.out.println("PC: " + resultVec.size());
-		}
-
-		return resultVec;
 	}
 
 	public static ArrayList<NodeCacheEntry3d> getPatternNodesPublic(ArrayList<NodeCacheEntry3d> nodeArray,
@@ -221,11 +216,11 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 	/**
 	 * euclidian distance
 	 */
-	private double getDistance(org.Vector3d a, org.Vector3d b) {
+	private static double getDistance(org.Vector3d a, org.Vector3d b) {
 		return Math.sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y) + (a.z - b.z) * (a.z - b.z));
 	}
 
-	private double borderForceX(ThreadSafeOptions options, double x) {
+	private static double borderForceX(ThreadSafeOptions options, double x) {
 		if (x < options.borderWidth) {
 			return Math.max(-options.maxBorderForce / options.borderWidth * x + options.maxBorderForce, 0);
 		} else { // return 0;
@@ -233,7 +228,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		}
 	}
 
-	private double borderForceY(ThreadSafeOptions options, double y) {
+	private static double borderForceY(ThreadSafeOptions options, double y) {
 		if (y < options.borderWidth) {
 			return Math.max(-options.maxBorderForce / options.borderWidth * y + options.maxBorderForce, 0);
 		} else { // return 0;
@@ -241,7 +236,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		}
 	}
 
-	private double borderForceZ(ThreadSafeOptions options, double y) {
+	private static double borderForceZ(ThreadSafeOptions options, double y) {
 		if (y < options.borderWidth) {
 			return Math.max(-options.maxBorderForce / options.borderWidth * y + options.maxBorderForce, 0);
 		} else { // return 0;
@@ -249,7 +244,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		}
 	}
 
-	private NodeCacheEntry3d getPatternNodeStructFromNode(ThreadSafeOptions options, Node search) {
+	private static NodeCacheEntry3d getPatternNodeStructFromNode(ThreadSafeOptions options, Node search) {
 		return (NodeCacheEntry3d) options.nodeSearch.get(search);
 	}
 
@@ -337,7 +332,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		return returnValue;
 	}
 
-	private void rotate(double angle, ArrayList<NodeCacheEntry3d> patternNodes, Vector3d centerOfPattern) {
+	private static void rotate(double angle, ArrayList<NodeCacheEntry3d> patternNodes, Vector3d centerOfPattern) {
 		AffineTransform transform = AffineTransform.getRotateInstance(angle, centerOfPattern.x, centerOfPattern.y);
 		for (NodeCacheEntry3d nce : patternNodes) {
 			double currentDistance = getDistance(nce.position, centerOfPattern);
@@ -352,7 +347,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		}
 	}
 
-	private double linearTransformation(double value, double minS, double maxS, double minT, double maxT) {
+	private static double linearTransformation(double value, double minS, double maxS, double minT, double maxT) {
 		if (value <= minS)
 			return minT;
 		if (value >= maxS)
@@ -369,7 +364,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 	 *            Node 2
 	 * @return True, if the two nodes belong to the same pattern. False, if not.
 	 */
-	private boolean samePattern(NodeCacheEntry3d n1, NodeCacheEntry3d n2) {
+	private static boolean samePattern(NodeCacheEntry3d n1, NodeCacheEntry3d n2) {
 		boolean sameNode = n1.nodeIndex == n2.nodeIndex;
 
 		if (sameNode) {
@@ -574,7 +569,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 	 *            node to be moved
 	 * @return actual movement
 	 */
-	private double moveNode(ThreadSafeOptions options, org.Vector3d moveVec, NodeCacheEntry3d node) {
+	private static double moveNode(ThreadSafeOptions options, org.Vector3d moveVec, NodeCacheEntry3d node) {
 		double l = Math.sqrt(moveVec.x * moveVec.x + moveVec.y * moveVec.y);
 
 		if (l > options.temperature_max_move) {
@@ -603,7 +598,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 	 * @return True, if a force between the two nodes should be calculated, false if
 	 *         not
 	 */
-	private boolean calcForce(NodeCacheEntry3d n1, NodeCacheEntry3d relN) {
+	private static boolean calcForce(NodeCacheEntry3d n1, NodeCacheEntry3d relN) {
 		if (n1.nodeIndex == relN.nodeIndex) {
 			return false;
 		}
@@ -625,7 +620,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 	 * @return An <code>Vector</code> with the connected nodes.
 	 *         (<code>NodeCacheEntry3d</code> list)
 	 */
-	private ArrayList<NodeCacheEntry3d> getConnectedNodes(ThreadSafeOptions options, NodeCacheEntry3d nodeI) {
+	private static ArrayList<NodeCacheEntry3d> getConnectedNodes(ThreadSafeOptions options, NodeCacheEntry3d nodeI) {
 		ArrayList<NodeCacheEntry3d> connectedNodes = new ArrayList<NodeCacheEntry3d>();
 		for (Node tempNode : nodeI.node.getNeighbors()) {
 			NodeCacheEntry3d n2 = getPatternNodeStructFromNode(options, tempNode);
@@ -678,13 +673,6 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 				new DoubleParameter(d2_1000, "Vertical Repulsion", "Strength of vertical repulsion") };
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.plugin.algorithm.ThreadSafeAlgorithm#setControlInterface(javax.
-	 * swing.JComponent)
-	 */
 	public boolean setControlInterface(final ThreadSafeOptions options, JComponent jc) {
 		int border = 5;
 		jc.setBorder(BorderFactory.createEmptyBorder(border, border, border, border));
@@ -769,8 +757,6 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 						redrawButton, TableLayout.get3Split(autoRefresh, new JLabel(""), helpButton,
 								TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED),
 						TableLayout.PREFERRED, TableLayout.FILL));
-
-		// ///////////////////////////
 		JLabel labelSliderLength = new JLabel("Target Length of Edges:");
 
 		JSlider sliderLength = new JSlider();
@@ -806,8 +792,8 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		sliderEnergyHor.setPaintLabels(true);
 		sliderEnergyHor.setPaintTicks(true);
 		Dictionary<Integer, Component> d = new Hashtable<Integer, Component>();
-		d.put(new Integer(0), new JLabel("low repulsion"));
-		d.put(new Integer(1000000), new JLabel("high repulsion"));
+		d.put(Integer.valueOf(0), new JLabel("low repulsion"));
+		d.put(Integer.valueOf(1000000), new JLabel("high repulsion"));
 		sliderEnergyHor.setLabelTable(d);
 		sliderEnergyHor.setToolTipText(
 				"<html>This value determines the horizontal<br>" + "repulsive energy between all nodes");
@@ -830,8 +816,8 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		sliderEnergyVert.setPaintLabels(true);
 		sliderEnergyVert.setPaintTicks(true);
 		Dictionary<Integer, Component> d2 = new Hashtable<Integer, Component>();
-		d2.put(new Integer(0), new JLabel("low repulsion"));
-		d2.put(new Integer(1000000), new JLabel("high repulsion"));
+		d2.put(Integer.valueOf(0), new JLabel("low repulsion"));
+		d2.put(Integer.valueOf(1000000), new JLabel("high repulsion"));
 		sliderEnergyVert.setLabelTable(d2);
 		sliderEnergyVert.setValue((int) options.getDval(myOp.DvalIndexSliderVertForce, 1000));
 
@@ -853,13 +839,13 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		sliderMultiplyRepulsive.setMajorTickSpacing(1);
 		sliderMultiplyRepulsive.setMinorTickSpacing(1);
 		Dictionary<Integer, Component> dMF = new Hashtable<Integer, Component>();
-		dMF.put(new Integer(-1), new JLabel("-1x"));
-		dMF.put(new Integer(0), new JLabel("0x"));
-		dMF.put(new Integer(1), new JLabel("1x"));
-		dMF.put(new Integer(3), new JLabel("3x"));
-		dMF.put(new Integer(5), new JLabel("5x"));
-		dMF.put(new Integer(8), new JLabel("8x"));
-		dMF.put(new Integer(10), new JLabel("10x"));
+		dMF.put(Integer.valueOf(-1), new JLabel("-1x"));
+		dMF.put(Integer.valueOf(0), new JLabel("0x"));
+		dMF.put(Integer.valueOf(1), new JLabel("1x"));
+		dMF.put(Integer.valueOf(3), new JLabel("3x"));
+		dMF.put(Integer.valueOf(5), new JLabel("5x"));
+		dMF.put(Integer.valueOf(8), new JLabel("8x"));
+		dMF.put(Integer.valueOf(10), new JLabel("10x"));
 		sliderMultiplyRepulsive.setLabelTable(dMF);
 		sliderMultiplyRepulsive.setPaintLabels(true);
 		sliderMultiplyRepulsive.setPaintTicks(true);
@@ -893,9 +879,9 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		sliderStiffnes.setPaintTicks(true);
 		sliderStiffnes.setValue((int) options.getDval(myOp.DvalIndexSliderStiffness, 10d));
 		Dictionary<Integer, Component> d3 = new Hashtable<Integer, Component>();
-		d3.put(new Integer(0), new JLabel("0"));
-		d3.put(new Integer(10), new JLabel("1 (norm)"));
-		d3.put(new Integer(50), new JLabel("5 (strong)"));
+		d3.put(Integer.valueOf(0), new JLabel("0"));
+		d3.put(Integer.valueOf(10), new JLabel("1 (norm)"));
+		d3.put(Integer.valueOf(50), new JLabel("5 (strong)"));
 		sliderStiffnes.setLabelTable(d3);
 		// sliderStiffnes.setLabelTable(sliderStiffnes.createStandardLabels(10));
 		jc.add(TableLayout.getDoubleRow(stiffnessDesc, sliderStiffnes, Color.WHITE));
@@ -929,9 +915,9 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		sliderClusterForce.setPaintLabels(true);
 		sliderClusterForce.setPaintTicks(true);
 		Dictionary<Integer, Component> d4 = new Hashtable<Integer, Component>();
-		d4.put(new Integer(0), new JLabel("zero force"));
-		d4.put(new Integer(500), new JLabel("average force"));
-		d4.put(new Integer(1000), new JLabel("strong force"));
+		d4.put(Integer.valueOf(0), new JLabel("zero force"));
+		d4.put(Integer.valueOf(500), new JLabel("average force"));
+		d4.put(Integer.valueOf(1000), new JLabel("strong force"));
 		sliderClusterForce.setLabelTable(d4);
 		sliderClusterForce.setValue((int) options.getDval(myOp.DvalIndexSliderClusterForce, myOp.InitClusterForce));
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR) {
@@ -1083,7 +1069,7 @@ public class PatternSpringembedder3d extends ThreadSafeAlgorithm
 		// if (options.maxThreads > maxThreadCount)
 		// options.maxThreads = maxThreadCount;
 		// } finally {
-		// ((JSpinner) e.getSource()).setValue(new Integer(
+		// ((JSpinner) e.getSource()).setValue(Integer.valueOf(
 		// options.maxThreads));
 		// }
 		// }

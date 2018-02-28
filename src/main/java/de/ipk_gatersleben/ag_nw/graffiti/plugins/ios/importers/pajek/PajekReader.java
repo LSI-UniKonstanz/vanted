@@ -153,8 +153,8 @@ public class PajekReader extends AbstractInputSerializer {
 	}
 
 	private void mode2dirEdge(Graph g, HashMap<Integer, Node> nodes, StringScanner s) {
-		Node node1 = nodes.get(new Integer(s.nextInt()));
-		Node node2 = nodes.get(new Integer(s.nextInt()));
+		Node node1 = nodes.get(Integer.valueOf(s.nextInt()));
+		Node node2 = nodes.get(Integer.valueOf(s.nextInt()));
 		Double weight = new Double(s.nextDouble());
 		if (weight != null && weight.isNaN())
 			weight = null;
@@ -165,8 +165,8 @@ public class PajekReader extends AbstractInputSerializer {
 	}
 
 	private void mode3undirEdge(Graph g, HashMap<Integer, Node> nodes, StringScanner s) {
-		Node node1 = nodes.get(new Integer(s.nextInt()));
-		Node node2 = nodes.get(new Integer(s.nextInt()));
+		Node node1 = nodes.get(Integer.valueOf(s.nextInt()));
+		Node node2 = nodes.get(Integer.valueOf(s.nextInt()));
 		Double weight = new Double(s.nextDouble());
 		if (weight != null && weight.isNaN())
 			weight = null;
@@ -184,7 +184,7 @@ public class PajekReader extends AbstractInputSerializer {
 			StringScanner s) {
 		boolean requestScale = true;
 		Node newNode = g.addNode();
-		Integer id = new Integer(s.nextInt());
+		Integer id = Integer.valueOf(s.nextInt());
 		nodes.put(id, newNode);
 		AttributeHelper.setAttribute(newNode, "", "pajek_id", id);
 		if (s.stillInputAvailable() && s.contains("\""))
@@ -239,7 +239,7 @@ public class PajekReader extends AbstractInputSerializer {
 					curNodeId += 1;
 					try {
 						String cluster = currLine.trim();
-						Node n = (Node) nodes.get(new Integer(curNodeId));
+						Node n = (Node) nodes.get(Integer.valueOf(curNodeId));
 						NodeTools.setClusterID(n, cluster);
 					} catch (NumberFormatException nfe) {
 						ErrorMsg.addErrorMessage(nfe.getLocalizedMessage());

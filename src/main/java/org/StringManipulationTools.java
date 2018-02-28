@@ -316,7 +316,7 @@ public class StringManipulationTools implements HelperClass {
 			if (Character.isDigit(c))
 				strBuff.append(c);
 			else if (strBuff.length() > 0) {
-				ints.add(new Integer(strBuff.toString()));
+				ints.add(Integer.valueOf(strBuff.toString()));
 				strBuff = new StringBuffer();
 			}
 		}
@@ -331,7 +331,7 @@ public class StringManipulationTools implements HelperClass {
 			if (curChar < 128 && Character.isLetterOrDigit(curChar)) {
 				result.append(curChar);
 			} else {
-				String html = "%" + new Integer(curChar).toString();
+				String html = "%" + Integer.valueOf(curChar).toString();
 				result.append(html);
 			}
 		}
@@ -346,7 +346,7 @@ public class StringManipulationTools implements HelperClass {
 			if (!badChars.contains(curChar)) {
 				result.append(curChar);
 			} else {
-				String html = "&#" + new Integer(curChar).toString() + ";";
+				String html = "&#" + Integer.valueOf(curChar).toString() + ";";
 				while (html.length() < 8)
 					html = stringReplace(html, "&#", "&#0");
 				result.append(html);
@@ -363,7 +363,7 @@ public class StringManipulationTools implements HelperClass {
 			if (curChar < 128 && Character.isLetterOrDigit(curChar)) {
 				result.append(curChar);
 			} else {
-				String html = "&#" + new Integer(curChar).toString() + ";";
+				String html = "&#" + Integer.valueOf(curChar).toString() + ";";
 				while (html.length() < 8)
 					html = stringReplace(html, "&#", "&#0");
 				result.append(html);

@@ -174,7 +174,7 @@ public class HistogramDataset extends AbstractIntervalXYDataset implements Inter
 		final Map map = new HashMap();
 		map.put("name", name);
 		map.put("bins", binList);
-		map.put("values.length", new Integer(values.length));
+		map.put("values.length", Integer.valueOf(values.length));
 		map.put("bin width", new Double(binWidth));
 		this.list.add(map);
 

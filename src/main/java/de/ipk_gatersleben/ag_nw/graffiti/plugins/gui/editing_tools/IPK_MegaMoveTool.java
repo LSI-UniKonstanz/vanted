@@ -5,7 +5,7 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools;
 
 import java.awt.Component;
-import java.awt.Event;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -43,10 +43,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.rotate.RotateAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeComponent;
 
 /**
- * A modified editing tool
+ * A modified editing tool.
  * 
  * @author Christian Klukas
- * @version $Revision$
+ * @vanted.revision 2.6.5
  */
 public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener {
 
@@ -73,7 +73,6 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 	 */
 	@Override
 	public List<Parameter> getDefaultParameters() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -112,11 +111,6 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 
 	private long lastClick_ipk = Long.MIN_VALUE;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (e.getWhen() <= lastClick_ipk)
@@ -160,11 +154,6 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 			mouseWheelComponent.removeMouseWheelListener(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		synchronized (GravistoService.getInstance().selectionSyncObject) {
@@ -210,9 +199,9 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 			JComponent jc = (JComponent) o;
 			JScrollPane jsp = (JScrollPane) ErrorMsg.findParentComponent(jc, JScrollPane.class);
 			JScrollBar jsb = null;
-			if ((e.getModifiers() & Event.SHIFT_MASK) == 1)
+			if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == 1)
 				jsb = jsp.getHorizontalScrollBar();
-			if (e.getModifiers() == 0)
+			if (e.getModifiersEx() == 0)
 				jsb = jsp.getVerticalScrollBar();
 			if (jsb != null) {
 				int v = jsb.getValue();
@@ -258,9 +247,6 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 
 			if (activeView instanceof IPKGraffitiView) {
 				JPopupMenu popupmenu = new DefaultContextMenuManager().getContextMenu(MegaTools.getLastMouseE());
-				// System.out.println("mouse x/y"+e.getX()+"/"+e.getY()+" zoom:
-				// "+activeView.getZoom().getScaleX()+" zoomedmouse x/y"+(int)(e.getX() /
-				// zoom.getScaleX())+"/"+(int)(e.getY() / zoom.getScaleY()));
 				popupmenu.show(activeView.getViewComponent(), (int) (e.getX() * activeView.getZoom().getScaleX()),
 						(int) (e.getY() * activeView.getZoom().getScaleY()));
 			}
@@ -271,11 +257,4 @@ public class IPK_MegaMoveTool extends MegaMoveTool implements MouseWheelListener
 	public String getToolName() {
 		return "IPK_MegaMoveTool";
 	}
-	// /* (non-Javadoc)
-	// * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-	// */
-	// public void mouseEntered(MouseEvent arg0) {
-	// // cmm.ensureActiveSession(arg0);
-	// super.mouseEntered(arg0);
-	// }
 }

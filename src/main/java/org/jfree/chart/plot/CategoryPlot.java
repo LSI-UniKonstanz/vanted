@@ -921,7 +921,7 @@ public class CategoryPlot extends Plot
 	 *            the axis index (zero-based).
 	 */
 	public void mapDatasetToDomainAxis(int index, int axisIndex) {
-		this.datasetToDomainAxisMap.set(index, new Integer(axisIndex));
+		this.datasetToDomainAxisMap.set(index, Integer.valueOf(axisIndex));
 		// fake a dataset change event to update axes...
 		datasetChanged(new DatasetChangeEvent(this, getDataset(index)));
 	}
@@ -952,7 +952,7 @@ public class CategoryPlot extends Plot
 	 *            the axis index (zero-based).
 	 */
 	public void mapDatasetToRangeAxis(int index, int axisIndex) {
-		this.datasetToRangeAxisMap.set(index, new Integer(axisIndex));
+		this.datasetToRangeAxisMap.set(index, Integer.valueOf(axisIndex));
 		// fake a dataset change event to update axes...
 		datasetChanged(new DatasetChangeEvent(this, getDataset(index)));
 	}
@@ -1515,17 +1515,17 @@ public class CategoryPlot extends Plot
 	public void addRangeMarker(int index, Marker marker, Layer layer) {
 		Collection markers;
 		if (layer == Layer.FOREGROUND) {
-			markers = (Collection) this.foregroundRangeMarkers.get(new Integer(index));
+			markers = (Collection) this.foregroundRangeMarkers.get(Integer.valueOf(index));
 			if (markers == null) {
 				markers = new java.util.ArrayList();
-				this.foregroundRangeMarkers.put(new Integer(index), markers);
+				this.foregroundRangeMarkers.put(Integer.valueOf(index), markers);
 			}
 			markers.add(marker);
 		} else if (layer == Layer.BACKGROUND) {
-			markers = (Collection) this.backgroundRangeMarkers.get(new Integer(index));
+			markers = (Collection) this.backgroundRangeMarkers.get(Integer.valueOf(index));
 			if (markers == null) {
 				markers = new java.util.ArrayList();
-				this.backgroundRangeMarkers.put(new Integer(index), markers);
+				this.backgroundRangeMarkers.put(Integer.valueOf(index), markers);
 			}
 			markers.add(marker);
 		}
@@ -1568,7 +1568,7 @@ public class CategoryPlot extends Plot
 	 */
 	public Collection getRangeMarkers(int index, Layer layer) {
 		Collection result = null;
-		Integer key = new Integer(index);
+		Integer key = Integer.valueOf(index);
 		if (layer == Layer.FOREGROUND) {
 			result = (Collection) this.foregroundRangeMarkers.get(key);
 		} else if (layer == Layer.BACKGROUND) {
@@ -1587,7 +1587,7 @@ public class CategoryPlot extends Plot
 	 *            the renderer index.
 	 */
 	public void clearRangeMarkers(int index) {
-		Integer key = new Integer(index);
+		Integer key = Integer.valueOf(index);
 		if (this.backgroundRangeMarkers != null) {
 			Collection markers = (Collection) this.backgroundRangeMarkers.get(key);
 			if (markers != null) {

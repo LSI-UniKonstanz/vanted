@@ -46,9 +46,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.MenuItemInf
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.BiomodelsAccessAdapter;
 
 /**
- * Contains the graffiti editor.
+ * Starts Vanted.
  * 
- * @version $Revision$
+ * @vanted.revision 2.6.5
  */
 public class Main {
 
@@ -70,7 +70,7 @@ public class Main {
 	 * Cmdline: java -jar vanted.jar -Dvanted.debug="true" Eclipse: start
 	 * configuration: VM parameter -Dvanted.debug="true"
 	 */
-	private void setupLogger() {
+	private static void setupLogger() {
 
 		if (System.getProperty("vanted.debug") == null || !System.getProperty("vanted.debug").equals("true")) {
 			Logger rootLogger = Logger.getRootLogger();
@@ -85,21 +85,6 @@ public class Main {
 	public Main(final boolean showMainFrame, String applicationName, String[] args, String[] addon) {
 
 		setupLogger();
-
-		// Thread.setDefaultUncaughtExceptionHandler(new
-		// Thread.UncaughtExceptionHandler() {
-		//
-		// @Override
-		// public void uncaughtException(Thread t, Throwable e) {
-		// StringBuffer buf = new StringBuffer();
-		// buf.append("Thread: " + t.getName() + "\n");
-		// for(StackTraceElement s : e.getStackTrace()) {
-		// buf.append(s.toString() + "\n");
-		// }
-		// System.err.println("--- Vanted exception ---\n" + buf.toString() + "---\n");
-		// ErrorMsg.addErrorMessage(e);
-		// }
-		// });
 
 		final ThreadSafeOptions tso = new ThreadSafeOptions();
 		SplashScreenInterface splashScreen = new DBEsplashScreen(applicationName, "", new Runnable() {
@@ -221,9 +206,10 @@ public class Main {
 
 				Action preferencesAction = new AbstractAction() {
 
+					private static final long serialVersionUID = 8316771010690543866L;
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
 						logger.debug("preferences action");
 						ShowPreferencesAction showPreferencesAction = new ShowPreferencesAction(
 								MainFrame.getInstance());
@@ -232,9 +218,10 @@ public class Main {
 				};
 				Action quitAction = new AbstractAction() {
 
+					private static final long serialVersionUID = -1538498368242793595L;
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
 						logger.debug("quit action");
 						MainFrame.getInstance().closeGravisto();
 					}
@@ -242,10 +229,11 @@ public class Main {
 
 				OpenFileAction openFileAction = new OpenFileAction() {
 
+					private static final long serialVersionUID = -2752572524562493637L;
+
 					@Override
 					public void openFiles(List<File> listFiles) {
 
-						// TODO Auto-generated method stub
 						List<File> copyList = new ArrayList<File>();
 						if (listFiles != null) {
 							for (File f : listFiles) {
@@ -263,16 +251,13 @@ public class Main {
 									try {
 										Thread.sleep(100);
 									} catch (InterruptedException e) {
-										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
 								try {
 									MainFrame.getInstance().loadGraphInBackground(array, null, true);
 								} catch (IllegalAccessException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								} catch (InstantiationException e) {
-									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 							}
@@ -298,8 +283,6 @@ public class Main {
 		LoggingProxy ps = new LoggingProxy(ProxySelector.getDefault());
 		ProxySelector.setDefault(ps);
 		ReleaseInfo.setRunningReleaseStatus(Release.RELEASE_PUBLIC);
-
-		// GravistoMainHelper.setLookAndFeel();
 
 		String stS = "<font color=\"#9500C0\"><b>";
 		String stE = "</b></font>";
@@ -341,9 +324,7 @@ public class Main {
 
 		AttributeHelper.setMacOSsettings(DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT);
 
-		Main e = new Main(true, DBEgravistoHelper.DBE_GRAVISTO_VERSION, args, developerAddon);
-		if (e == null)
-			System.err.println("MainFrame not created.");
+		new Main(true, DBEgravistoHelper.DBE_GRAVISTO_VERSION, args, developerAddon);
 	}
 
 	public static void startVanted(String[] args, String adn) {

@@ -110,7 +110,7 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 				}
 				if (cluster.length() >= 0) {
 					if (!cluster2frequencyGlobal.containsKey(cluster))
-						cluster2frequencyGlobal.put(cluster, new Integer(1));
+						cluster2frequencyGlobal.put(cluster, Integer.valueOf(1));
 					else
 						cluster2frequencyGlobal.put(cluster, cluster2frequencyGlobal.get(cluster) + 1);
 				}
@@ -266,13 +266,13 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 		Collection<Node> childNodes = nh.getAllOutChildNodes();
 		TreeMap<String, Integer> cluster2frequencyAB = new TreeMap<String, Integer>();
 		for (String ci : knownClusterIDs)
-			cluster2frequencyAB.put(ci, new Integer(0));
+			cluster2frequencyAB.put(ci, Integer.valueOf(0));
 
-		cluster2frequencyAB.put(notInA, new Integer(0));
+		cluster2frequencyAB.put(notInA, Integer.valueOf(0));
 
 		TreeMap<String, Integer> cluster2frequency = new TreeMap<String, Integer>();
 		for (String ci : knownClusterIDs)
-			cluster2frequency.put(ci, new Integer(0));
+			cluster2frequency.put(ci, Integer.valueOf(0));
 
 		int allChildrenCount = 0;
 		for (Node n : childNodes) {
@@ -287,8 +287,8 @@ public class ClusterHistogramFisherTest extends AbstractAlgorithm implements Alg
 					if (clusterID.equals(groupA) || clusterID.equals(groupB) || clusterID.equals(notInA)) {
 						Integer value = cluster2frequencyAB.get(clusterID);
 						if (value == null)
-							value = new Integer(0);
-						cluster2frequencyAB.put(clusterID, new Integer(value + 1));
+							value = Integer.valueOf(0);
+						cluster2frequencyAB.put(clusterID, Integer.valueOf(value + 1));
 					}
 				}
 			}

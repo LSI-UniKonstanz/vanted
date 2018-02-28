@@ -125,7 +125,7 @@ public class WaferMapDataset extends AbstractDataset {
 	 *            the y-index.
 	 */
 	public void addValue(final int v, final int x, final int y) {
-		setValue(new Double(v), new Integer(x), new Integer(y));
+		setValue(new Double(v), Integer.valueOf(x), Integer.valueOf(y));
 	}
 
 	/**
@@ -186,7 +186,7 @@ public class WaferMapDataset extends AbstractDataset {
 	 * @return the data value.
 	 */
 	public Number getChipValue(final int chipx, final int chipy) {
-		return getChipValue(new Integer(chipx), new Integer(chipy));
+		return getChipValue(Integer.valueOf(chipx), Integer.valueOf(chipy));
 	}
 
 	/**

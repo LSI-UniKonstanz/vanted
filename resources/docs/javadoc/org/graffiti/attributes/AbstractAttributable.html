@@ -911,7 +911,7 @@ implements <a href="../../../org/graffiti/attributes/Attributable.html" title="i
  CollectionAttribute ca = new CollectionAttribute("root");
  //add ca to the attributable g as root attribute
  g.addAttribute(ca, "");
- IntegerAttribute ia = new IntegerAttribute("int", 10);
+ IntegerAttribute ia = Integer.valueOfAttribute("int", 10);
  //add ia as child of root
  g.addAttribute(ia, "root");
  </pre>

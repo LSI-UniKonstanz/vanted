@@ -301,13 +301,13 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		if (ge instanceof Edge) {
 			Edge e = (Edge) ge;
 			if (e.getSource() == e.getTarget())
-				setAttribute(ge, folder, "degree", new Integer(1));
+				setAttribute(ge, folder, "degree", Integer.valueOf(1));
 			else
-				setAttribute(ge, folder, "degree", new Integer(2));
+				setAttribute(ge, folder, "degree", Integer.valueOf(2));
 		}
 		if (ge instanceof Node) {
 			Node n = (Node) ge;
-			setAttribute(ge, folder, "degree", new Integer(n.getDegree()));
+			setAttribute(ge, folder, "degree", Integer.valueOf(n.getDegree()));
 		}
 	}
 
@@ -318,7 +318,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		if (ge instanceof Node) {
 			Node n = (Node) ge;
-			setAttribute(ge, folder, "degree_in", new Integer(n.getInDegree()));
+			setAttribute(ge, folder, "degree_in", Integer.valueOf(n.getInDegree()));
 		}
 	}
 
@@ -329,7 +329,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		if (ge instanceof Node) {
 			Node n = (Node) ge;
-			setAttribute(ge, folder, "degree_out", new Integer(n.getOutDegree()));
+			setAttribute(ge, folder, "degree_out", Integer.valueOf(n.getOutDegree()));
 		}
 	}
 
@@ -365,7 +365,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 			return;
 		}
 		GraphElementHelper geh = new GraphElementHelper(ge);
-		setAttribute(ge, folder, "datamapping_cnt", new Integer(geh.getDataMappings().size()));
+		setAttribute(ge, folder, "datamapping_cnt", Integer.valueOf(geh.getDataMappings().size()));
 	}
 
 	private void processSampleCountAttribute(String folder, GraphElement ge, boolean calc) {
@@ -375,7 +375,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		GraphElementHelper geh = new GraphElementHelper(ge);
 		int samples = geh.getMappedSampleData().size();
-		setAttribute(ge, folder, "sample_cnt", new Integer(samples));
+		setAttribute(ge, folder, "sample_cnt", Integer.valueOf(samples));
 	}
 
 	private void processSignificantDifferencesCountAttribute(String folder, GraphElement ge, boolean calc) {
@@ -394,7 +394,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 				}
 			}
 		}
-		setAttribute(ge, folder, "significant_different_cnt", new Integer(cnt));
+		setAttribute(ge, folder, "significant_different_cnt", Integer.valueOf(cnt));
 	}
 
 	private void processInSignificantDifferencesCountAttribute(String folder, GraphElement ge, boolean calc) {
@@ -413,7 +413,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 				}
 			}
 		}
-		setAttribute(ge, folder, "significant_not_different_cnt", new Integer(cnt));
+		setAttribute(ge, folder, "significant_not_different_cnt", Integer.valueOf(cnt));
 	}
 
 	private void processSampleMinimumValueAttribute(String folder, GraphElement ge, boolean calc) {
@@ -521,7 +521,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		if (minReplCnt == Integer.MAX_VALUE)
 			minReplCnt = 0;
-		setAttribute(ge, folder, "sample_replicate_cnt_min", new Integer(minReplCnt));
+		setAttribute(ge, folder, "sample_replicate_cnt_min", Integer.valueOf(minReplCnt));
 	}
 
 	private void processSampleMaximumReplicateCountValueAttribute(String folder, GraphElement ge, boolean calc) {
@@ -541,7 +541,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		}
 		if (maxReplCnt == Integer.MIN_VALUE)
 			maxReplCnt = 0;
-		setAttribute(ge, folder, "sample_replicate_cnt_max", new Integer(maxReplCnt));
+		setAttribute(ge, folder, "sample_replicate_cnt_max", Integer.valueOf(maxReplCnt));
 	}
 
 	private void processReplicatesMinimumValueAttribute(String folder, GraphElement ge, boolean calc) {
@@ -602,7 +602,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 				}
 			}
 		}
-		setAttribute(ge, folder, "samples_different_timepoints_cnt", new Integer(timePoints.size()));
+		setAttribute(ge, folder, "samples_different_timepoints_cnt", Integer.valueOf(timePoints.size()));
 	}
 
 	private void processDifferentLinesCountAttribute(String folder, GraphElement ge, boolean calc) {
@@ -615,7 +615,7 @@ public class AddInterestingAttributes extends AbstractAlgorithm {
 		for (SubstanceInterface md : geh.getDataMappings()) {
 			cnt += md.size();
 		}
-		setAttribute(ge, folder, "lines_cnt", new Integer(cnt));
+		setAttribute(ge, folder, "lines_cnt", Integer.valueOf(cnt));
 	}
 
 	private void calculateAlpha(String folder, GraphElement ge, boolean calc) {

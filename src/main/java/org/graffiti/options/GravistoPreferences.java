@@ -69,7 +69,7 @@ public class GravistoPreferences {
 	}
 
 	public void putInt(String optionName, int value) {
-		optionsAndValues.put(optionName, new Integer(value));
+		optionsAndValues.put(optionName, Integer.valueOf(value));
 	}
 
 	public double getDouble(String optionName, double defaultValue) {

@@ -99,7 +99,7 @@ public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorit
 							String seriesAndTime = mcdp.serie + "§" + mcdp.timeUnitAndTime;
 							seriesAndTime2mappedValues.get(seriesAndTime).add(mcdp.mean);
 							if (!seriesAndTime2replicateid.containsKey(seriesAndTime)) {
-								seriesAndTime2replicateid.put(seriesAndTime, new Integer(currentReplicateID++));
+								seriesAndTime2replicateid.put(seriesAndTime, Integer.valueOf(currentReplicateID++));
 							}
 						}
 					}
@@ -123,7 +123,7 @@ public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorit
 					if (val != null && !Double.isNaN(val)) {
 						Integer replicateId = seriesAndTime2replicateid.get(seriesNameAndTime);
 						if (replicateId == null)
-							replicateId = new Integer(-1);
+							replicateId = Integer.valueOf(-1);
 						nh.memSample(val, replicateId, plantID, "average of sample means", timeUnit, timePoint);
 						added = true;
 					}

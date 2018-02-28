@@ -125,7 +125,7 @@ public class DBEinputFileReader extends ExperimentDataFileReader {
 				statusProvider.setCurrentStatusValueFine(progressDouble / 2 + 50d);
 		}
 		// setze datacount zu condition (wieviele measurements gemessen)
-		// da.setText(new Integer(dataCount).toString());
+		// da.setText(Integer.valueOf(dataCount).toString());
 		progressDouble = 100d;
 		if (statusProvider != null)
 			statusProvider.setCurrentStatusValueFine(progressDouble);
@@ -218,7 +218,7 @@ public class DBEinputFileReader extends ExperimentDataFileReader {
 
 		// ADD SAMPLE ATTRIBUTES: ID, TIME, UNIT
 		s.setRowId(++sampleIDcount);
-		s.setTime(new Integer(processTimeData(new Double(sample.getTime()).toString())));
+		s.setTime(Integer.valueOf(processTimeData(new Double(sample.getTime()).toString())));
 		s.setTimeUnit(sample.getTimeUnit());
 		// ADD DATA ATTRIBUTE: MEASUREMENT TOOL
 		String mesTool = myData.getUnicodeStringCellData(sci.getFirstColumn(), 21);
@@ -231,7 +231,7 @@ public class DBEinputFileReader extends ExperimentDataFileReader {
 
 		// ADD AVERAGE ATTRIBUTES: UNIT, REPLICATES, MIN, MAX, STDDEV
 		sa.setUnit(sample.getMeasurementUnit());
-		sa.setReplicateId(new Integer(measurements.size()));
+		sa.setReplicateId(Integer.valueOf(measurements.size()));
 		sa.setMin(new Double(sample.getMinimum()));
 		sa.setMax(new Double(sample.getMaximum()));
 		sa.setStddev(new Double(sample.getStddev()));
@@ -244,7 +244,7 @@ public class DBEinputFileReader extends ExperimentDataFileReader {
 			// ADD DATA ATTRIBUTE: UNIT
 			m.setUnit(checkNullError(myData.getUnicodeStringCellData(sci.getFirstColumn(), 22),
 					"No measurement unit given for substance listed in column(s) " + sci.getColumnList() + "!", "n/a"));
-			m.setReplicateID(new Integer(itMes.getReplicateNumber()));
+			m.setReplicateID(Integer.valueOf(itMes.getReplicateNumber()));
 			m.setValue(value);
 			dataCount++;
 		}

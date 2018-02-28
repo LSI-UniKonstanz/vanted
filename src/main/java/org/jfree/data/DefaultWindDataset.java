@@ -108,7 +108,7 @@ public class DefaultWindDataset extends AbstractXYDataset implements WindDataset
 							final Date xDate = (Date) xObject;
 							xNumber = new Long(xDate.getTime());
 						} else {
-							xNumber = new Integer(0);
+							xNumber = Integer.valueOf(0);
 						}
 					}
 					final Number windDir = (Number) data[seriesIndex][itemIndex][1];

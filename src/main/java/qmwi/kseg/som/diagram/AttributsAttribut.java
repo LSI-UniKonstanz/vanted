@@ -82,9 +82,9 @@ public class AttributsAttribut {
 
 		/*
 		 * if (valuesCount.size()==0 || valuesCount.size()-1<valuesIndex)
-		 * valuesCount.add(new Integer(1)); else { int count = ((Integer)
+		 * valuesCount.add(Integer.valueOf(1)); else { int count = ((Integer)
 		 * valuesCount.elementAt(valuesIndex)).intValue()+1;
-		 * valuesCount.setElementAt(new Integer(count),valuesIndex); }
+		 * valuesCount.setElementAt(Integer.valueOf(count),valuesIndex); }
 		 */
 
 	}

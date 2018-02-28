@@ -104,7 +104,7 @@ public class GraphHelper implements HelperClass {
 		for (Iterator<String> it = clusters.iterator(); it.hasNext();) {
 			Node clusterNode = clusterReferenceGraph.addNode();
 			String clusterID = it.next();
-			clusterNodeIDandNumberOfContainingNodes.put(clusterID, new Integer(0));
+			clusterNodeIDandNumberOfContainingNodes.put(clusterID, Integer.valueOf(0));
 			NodeTools.setClusterID(clusterNode, clusterID);
 			AttributeHelper.setDefaultGraphicsAttribute(clusterNode, pgg.getNextPosition());
 			AttributeHelper.setLabel(clusterNode, "Cluster " + clusterID);
@@ -130,7 +130,7 @@ public class GraphHelper implements HelperClass {
 				continue;
 			String cid = cluster;
 			clusterNodeIDandNumberOfContainingNodes.put(cid,
-					new Integer(clusterNodeIDandNumberOfContainingNodes.get(cid).intValue() + 1));
+					Integer.valueOf(clusterNodeIDandNumberOfContainingNodes.get(cid).intValue() + 1));
 			if (!cluster.equals(""))
 				for (Iterator<?> itOutN = graphNode.getOutNeighborsIterator(); itOutN.hasNext();) {
 					Node graphNodeNeighbor = (Node) itOutN.next();
@@ -163,9 +163,9 @@ public class GraphHelper implements HelperClass {
 								knownEdge = newEdge;
 							}
 							Integer edgeDoublingCount = (Integer) AttributeHelper.getAttributeValue(knownEdge,
-									"cluster", "edgecount", new Integer(0), null);
+									"cluster", "edgecount", Integer.valueOf(0), null);
 							AttributeHelper.setAttribute(knownEdge, "cluster", "edgecount",
-									new Integer(edgeDoublingCount.intValue() + 1));
+									Integer.valueOf(edgeDoublingCount.intValue() + 1));
 						}
 					}
 				}

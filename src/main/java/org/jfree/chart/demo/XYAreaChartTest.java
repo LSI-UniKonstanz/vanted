@@ -64,24 +64,24 @@ public class XYAreaChartTest extends ApplicationFrame {
 		super(title);
 
 		final XYSeries series1 = new XYSeries("Random 1");
-		series1.add(new Integer(1), new Double(500.2));
-		series1.add(new Integer(2), new Double(694.1));
-		series1.add(new Integer(3), new Double(-734.4));
-		series1.add(new Integer(4), new Double(453.2));
-		series1.add(new Integer(5), new Double(500.2));
-		series1.add(new Integer(6), new Double(300.7));
-		series1.add(new Integer(7), new Double(734.4));
-		series1.add(new Integer(8), new Double(453.2));
+		series1.add(Integer.valueOf(1), new Double(500.2));
+		series1.add(Integer.valueOf(2), new Double(694.1));
+		series1.add(Integer.valueOf(3), new Double(-734.4));
+		series1.add(Integer.valueOf(4), new Double(453.2));
+		series1.add(Integer.valueOf(5), new Double(500.2));
+		series1.add(Integer.valueOf(6), new Double(300.7));
+		series1.add(Integer.valueOf(7), new Double(734.4));
+		series1.add(Integer.valueOf(8), new Double(453.2));
 
 		final XYSeries series2 = new XYSeries("Random 2");
-		series2.add(new Integer(1), new Double(700.2));
-		series2.add(new Integer(2), new Double(534.1));
-		series2.add(new Integer(3), new Double(323.4));
-		series2.add(new Integer(4), new Double(125.2));
-		series2.add(new Integer(5), new Double(653.2));
-		series2.add(new Integer(6), new Double(432.7));
-		series2.add(new Integer(7), new Double(564.4));
-		series2.add(new Integer(8), new Double(322.2));
+		series2.add(Integer.valueOf(1), new Double(700.2));
+		series2.add(Integer.valueOf(2), new Double(534.1));
+		series2.add(Integer.valueOf(3), new Double(323.4));
+		series2.add(Integer.valueOf(4), new Double(125.2));
+		series2.add(Integer.valueOf(5), new Double(653.2));
+		series2.add(Integer.valueOf(6), new Double(432.7));
+		series2.add(Integer.valueOf(7), new Double(564.4));
+		series2.add(Integer.valueOf(8), new Double(322.2));
 
 		final XYSeriesCollection dataset = new XYSeriesCollection(series1);
 		dataset.addSeries(series2);

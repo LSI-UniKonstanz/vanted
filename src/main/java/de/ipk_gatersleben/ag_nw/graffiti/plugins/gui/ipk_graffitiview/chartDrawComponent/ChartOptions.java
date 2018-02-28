@@ -32,7 +32,7 @@ public class ChartOptions {
 
 	private static final Double mNull = new Double(0);
 	private static final Double mOne = new Double(1);
-	private static final Integer mim1 = new Integer(-1);
+	private static final Integer mim1 = Integer.valueOf(-1);
 
 	public Graph graph;
 	public BioStatisticalCategoryDataset dataset;
@@ -184,8 +184,8 @@ public class ChartOptions {
 		gridColor = NodeTools.getGridColor(graph, (Color) CategoryPlot.DEFAULT_GRIDLINE_PAINT);
 		axisColor = NodeTools.getAxisColor(graph, (Color) CategoryPlot.DEFAULT_GRIDLINE_PAINT);
 
-		axisFontSize = ((Integer) AttributeHelper.getAttributeValue(graph, "", "node_plotAxisFontSize", new Integer(30),
-				new Integer(30))).intValue();
+		axisFontSize = ((Integer) AttributeHelper.getAttributeValue(graph, "", "node_plotAxisFontSize", Integer.valueOf(30),
+				Integer.valueOf(30))).intValue();
 
 		showShapes = ((Boolean) AttributeHelper.getAttributeValue(graph, "", "node_lineChartShowShapes", mTrue,
 				new Boolean(true))).booleanValue();

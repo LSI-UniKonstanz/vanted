@@ -177,7 +177,7 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 
 		TreeMap<String, Integer> cluster2frequency = new TreeMap<String, Integer>();
 		for (String ci : knownClusterIDs)
-			cluster2frequency.put(ci, new Integer(0));
+			cluster2frequency.put(ci, Integer.valueOf(0));
 
 		for (Node n : childNodes) {
 			NodeHelper nnh = new NodeHelper(n);
@@ -186,8 +186,8 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 				if (clusterID != null) {
 					Integer value = cluster2frequency.get(clusterID);
 					if (value == null)
-						value = new Integer(0);
-					cluster2frequency.put(clusterID, new Integer(value + 1));
+						value = Integer.valueOf(0);
+					cluster2frequency.put(clusterID, Integer.valueOf(value + 1));
 				}
 			}
 		}
@@ -202,7 +202,7 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 			int plantID = nh.memGetPlantID(clusterID, "", "", "", "");
 			Integer value = cluster2frequency.get(clusterID);
 			if (value == null) {
-				nh.memSample(new Double(0), -1, plantID, "frequency", "-1", new Integer(-1));
+				nh.memSample(new Double(0), -1, plantID, "frequency", "-1", Integer.valueOf(-1));
 				if (sb != null) {
 					if (sb.length() > 0)
 						sb.append(", 0");
@@ -210,7 +210,7 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 						sb.append("0");
 				}
 			} else {
-				nh.memSample(new Double(value), -1, plantID, "frequency", "-1", new Integer(-1));
+				nh.memSample(new Double(value), -1, plantID, "frequency", "-1", Integer.valueOf(-1));
 				if (sb != null) {
 					if (sb.length() > 0)
 						sb.append(";" + (int) value);

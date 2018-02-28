@@ -91,7 +91,7 @@ public class WaferMapRenderer extends AbstractRenderer {
 	 *            the paint index method.
 	 */
 	public WaferMapRenderer(int paintLimit, int paintIndexMethod) {
-		this(new Integer(paintLimit), new Integer(paintIndexMethod));
+		this(Integer.valueOf(paintLimit), Integer.valueOf(paintIndexMethod));
 	}
 
 	/**
@@ -217,7 +217,7 @@ public class WaferMapRenderer extends AbstractRenderer {
 		if (uniqueValues.size() <= this.paintLimit) {
 			int count = 0; // assign a color for each unique value
 			for (Iterator i = uniqueValues.iterator(); i.hasNext();) {
-				this.paintIndex.put(i.next(), new Integer(count++));
+				this.paintIndex.put(i.next(), Integer.valueOf(count++));
 			}
 		} else {
 			// more values than paints so map
@@ -247,7 +247,7 @@ public class WaferMapRenderer extends AbstractRenderer {
 		int count = 0; // assign a color for each unique value
 		int paint = 0;
 		for (Iterator i = uniqueValues.iterator(); i.hasNext();) {
-			this.paintIndex.put(i.next(), new Integer(paint));
+			this.paintIndex.put(i.next(), Integer.valueOf(paint));
 			if (++count % valuesPerColor == 0) {
 				paint++;
 			}
@@ -282,7 +282,7 @@ public class WaferMapRenderer extends AbstractRenderer {
 					paint = this.paintLimit;
 				}
 			}
-			this.paintIndex.put(value, new Integer(paint));
+			this.paintIndex.put(value, Integer.valueOf(paint));
 		}
 	}
 

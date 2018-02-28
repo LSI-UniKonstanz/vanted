@@ -37,7 +37,7 @@ class GlobalLookUp {
 				}
 			}
 		}
-		columns.add(new Integer(column));
+		columns.add(Integer.valueOf(column));
 		list.add(what);
 		return getEntry(column, what);
 	}

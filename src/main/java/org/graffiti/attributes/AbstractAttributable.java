@@ -295,7 +295,7 @@ public abstract class AbstractAttributable implements Attributable {
 	 */
 	public void setInteger(String path, int value) {
 		assert path != null;
-		doSet(path, new Integer(value), INTEGER_ATTRIBUTE);
+		doSet(path, Integer.valueOf(value), INTEGER_ATTRIBUTE);
 	}
 
 	/**

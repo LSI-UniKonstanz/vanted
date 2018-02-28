@@ -116,7 +116,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 			selvals.add("Evaluate all alternative identifiers");
 			for (int i = 0; i <= maxID; i++) {
 				String s = "" + i;
-				String example = exampleValues.get(new Integer(i));
+				String example = exampleValues.get(Integer.valueOf(i));
 				if (example != null)
 					s += " (e.g. " + example + ")";
 				selvals.add(s);

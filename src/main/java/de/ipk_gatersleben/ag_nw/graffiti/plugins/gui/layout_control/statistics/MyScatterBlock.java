@@ -55,8 +55,8 @@ public class MyScatterBlock {
 	public void addChartPanel(JComponent chartPanel, int x, int y, String descX, String descY) {
 		assert x > 0;
 		assert y > 0;
-		descriptionX.put(new Integer(x), descX);
-		descriptionY.put(new Integer(y), descY);
+		descriptionX.put(Integer.valueOf(x), descX);
+		descriptionY.put(Integer.valueOf(y), descY);
 		chartPanels.put(x + "§" + y, chartPanel);
 		if (x > maxX)
 			maxX = x;
@@ -89,7 +89,7 @@ public class MyScatterBlock {
 				for (int y = 0; y < maxY; y++) {
 					JComponent c = chartPanels.get((x + 1) + "§" + (y + 1));
 					if (x == y && symetricScatterPanel) { // && c==null
-						String lbl = descriptionX.get(new Integer(x + 1));
+						String lbl = descriptionX.get(Integer.valueOf(x + 1));
 						c = new JLabel(lbl);
 						((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
 						((JLabel) c).setOpaque(true);

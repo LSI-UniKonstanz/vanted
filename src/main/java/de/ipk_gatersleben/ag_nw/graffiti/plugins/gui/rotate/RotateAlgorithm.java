@@ -211,7 +211,7 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 
 		do {
 			if (!SwingUtilities.isEventDispatchThread()) { // im Thread
-				targetDegree = ((Integer) options.getParam(1, new Integer(0))).intValue();
+				targetDegree = ((Integer) options.getParam(1, Integer.valueOf(0))).intValue();
 				double localDegree = targetDegree - absoluteDegree.getDouble();
 
 				try {
@@ -367,12 +367,12 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 		if (SystemInfo.isMac())
 			angle.setPaintTrack(false);
 		angle.setLabelTable(angle.createStandardLabels(60));
-		angle.setValue(((Integer) options.getParam(1, new Integer(0))).intValue());
+		angle.setValue(((Integer) options.getParam(1, Integer.valueOf(0))).intValue());
 
 		angle.addFocusListener(new FocusListener() {
 
 			public void focusGained(FocusEvent e) {
-				options.setParam(2, new Integer(((JSlider) e.getSource()).getValue()));
+				options.setParam(2, Integer.valueOf(((JSlider) e.getSource()).getValue()));
 				options.setAbortWanted(true);
 				try {
 					Graph graph = MainFrame.getInstance().getActiveEditorSession().getGraph();
@@ -392,8 +392,8 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 					newBackgroundThread.setPriority(Thread.MIN_PRIORITY);
 					options.setAbortWanted(false);
 					newBackgroundThread.start();
-					options.getParam(2, new Integer(0));
-					options.setParam(1, new Integer(0));
+					options.getParam(2, Integer.valueOf(0));
+					options.setParam(1, Integer.valueOf(0));
 					fp.setTitle("Rotate Nodes");
 				} catch (NullPointerException err) {
 					fp.setTitle("Rotate Nodes (no network active!)");
@@ -408,8 +408,8 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 		angle.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				// Ziel-Grad-Wert
-				int oldOffset = (Integer) options.getParam(2, new Integer(0));
-				options.setParam(1, new Integer(((JSlider) e.getSource()).getValue() - oldOffset));
+				int oldOffset = (Integer) options.getParam(2, Integer.valueOf(0));
+				options.setParam(1, Integer.valueOf(((JSlider) e.getSource()).getValue() - oldOffset));
 			}
 		});
 

@@ -257,7 +257,7 @@ public interface Attributable {
 	 * CollectionAttribute ca = new CollectionAttribute("root");
 	 * //add ca to the attributable g as root attribute
 	 * g.addAttribute(ca, "");
-	 * IntegerAttribute ia = new IntegerAttribute("int", 10);
+	 * IntegerAttribute ia = Integer.valueOfAttribute("int", 10);
 	 * //add ia as child of root
 	 * g.addAttribute(ia, "root");
 	 * </pre>
@@ -370,9 +370,9 @@ public interface Attributable {
 	 *            the path to the <code>CollectionAttribute</code> the new
 	 *            IntegerAttribute should be added to.
 	 * @param id
-	 *            the id of the new IntegerAttribute.
+	 *            the id of the Integer.valueOfAttribute.
 	 * @param value
-	 *            the value of the new IntegerAttribute.
+	 *            the value of the Integer.valueOfAttribute.
 	 * @exception NoCollectionAttributeException
 	 *                if the <code>Attribute</code> at the location specified by
 	 *                <code>path</code> is no <code>CollectionAttribute</code>.

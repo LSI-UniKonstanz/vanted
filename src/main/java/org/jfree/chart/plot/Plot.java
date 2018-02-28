@@ -130,7 +130,7 @@ import org.jfree.util.ObjectUtils;
 public abstract class Plot implements AxisChangeListener, DatasetChangeListener, Serializable, Cloneable {
 
 	/** Useful constant representing zero. */
-	public static final Number ZERO = new Integer(0);
+	public static final Number ZERO = Integer.valueOf(0);
 
 	/** The default insets. */
 	public static final Insets DEFAULT_INSETS = new Insets(4, 8, 4, 8);

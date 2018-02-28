@@ -89,7 +89,7 @@ public class FontChooser extends JDialog implements ActionListener {
 		fontName = new JComboBox(fontnames);
 
 		fontName.addActionListener(this);
-		fontSize = new JTextField(new Integer(initFont.getSize()).toString(), 4);
+		fontSize = new JTextField(Integer.valueOf(initFont.getSize()).toString(), 4);
 		fontSize.setHorizontalAlignment(SwingConstants.RIGHT);
 		fontSize.addActionListener(this);
 		fontSize.addFocusListener(new FocusListener() {
@@ -245,7 +245,7 @@ public class FontChooser extends JDialog implements ActionListener {
 			if (fontName.getItemAt(i).equals(initFont.getName()))
 				fontName.setSelectedIndex(i);
 		}
-		fontSize.setText(new Integer(initFont.getSize()).toString());
+		fontSize.setText(Integer.valueOf(initFont.getSize()).toString());
 		fontBold.setSelected(initFont.isBold());
 		fontItalic.setSelected(initFont.isItalic());
 		colorChooser.setColor(color);

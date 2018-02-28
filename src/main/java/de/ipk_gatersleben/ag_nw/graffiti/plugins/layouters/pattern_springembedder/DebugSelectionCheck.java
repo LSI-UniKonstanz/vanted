@@ -38,7 +38,7 @@ public class DebugSelectionCheck implements ActionListener {
 					if (n == null || nce == null)
 						System.err.println("\nUNKNOWN!");
 					else {
-						String con = (nce.connectedNodes != null) ? new Integer(nce.connectedNodes.size()).toString()
+						String con = (nce.connectedNodes != null) ? Integer.valueOf(nce.connectedNodes.size()).toString()
 								: "null";
 						System.err.println("Selection (Node ID=" + n.getID() + "/" + nce.node.getID() + "):\n"
 								+ "  POS:" + nce.position.x + "/" + nce.position.y + "\n" + "  NODE-REF==NODE?:"

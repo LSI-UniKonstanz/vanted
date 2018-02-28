@@ -367,7 +367,7 @@ public class TabPatternLayout extends InspectorTab {
 
 					GravistoService.getInstance().addPatternSession(es);
 
-					jTabbedPane1.add("Network " + new Integer(jTabbedPane1.getComponentCount() + 1).toString(), sp);
+					jTabbedPane1.add("Network " + Integer.valueOf(jTabbedPane1.getComponentCount() + 1).toString(), sp);
 
 				} catch (ParserException pe) {
 					showError(pe.getLocalizedMessage());
@@ -474,7 +474,7 @@ public class TabPatternLayout extends InspectorTab {
 
 		JScrollPane sp = mf.showViewChooserDialog(newSession, true, null);
 
-		jTabbedPane1.add("Network " + new Integer(jTabbedPane1.getComponentCount() + 1).toString(), sp);
+		jTabbedPane1.add("Network " + Integer.valueOf(jTabbedPane1.getComponentCount() + 1).toString(), sp);
 		jTabbedPane1.setSelectedIndex(jTabbedPane1.getComponentCount() - 1);
 		GravistoService.getInstance().framesDeselect();
 	}
@@ -498,7 +498,7 @@ public class TabPatternLayout extends InspectorTab {
 
 		JScrollPane sp = mf.showViewChooserDialog(newSession, true, null);
 
-		jTabbedPane1.add("Network " + new Integer(jTabbedPane1.getComponentCount() + 1).toString(), sp);
+		jTabbedPane1.add("Network " + Integer.valueOf(jTabbedPane1.getComponentCount() + 1).toString(), sp);
 	}
 
 	/**

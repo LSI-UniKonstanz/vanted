@@ -68,7 +68,7 @@ public class ReplaceDiagramTitleFromAlternativeSubstanceNames extends AbstractAl
 			// selvals.add("-1 Show All Identifiers (line break)");
 			for (int i = 0; i <= maxID; i++) {
 				String s = "" + i;
-				String example = exampleValues.get(new Integer(i));
+				String example = exampleValues.get(Integer.valueOf(i));
 				if (example != null)
 					s += " (e.g. " + example + ")";
 				selvals.add(s);

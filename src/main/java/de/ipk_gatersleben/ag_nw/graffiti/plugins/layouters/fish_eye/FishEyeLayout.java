@@ -310,7 +310,7 @@ public class FishEyeLayout extends AbstractAlgorithm {
 		bfsNum = new HashMap();
 
 		queue.addLast(startNode);
-		bfsNum.put(startNode, new Integer(0));
+		bfsNum.put(startNode, Integer.valueOf(0));
 		forest.remove(startNode);
 
 		/* BreadthFirstSearch algorithm which calculates the depth of the tree */
@@ -324,7 +324,7 @@ public class FishEyeLayout extends AbstractAlgorithm {
 
 				/* Not all neighbours, just the neighbours not visited yet */
 				if (!bfsNum.containsKey(neighbour)) {
-					Integer depth = new Integer(((Integer) bfsNum.get(v)).intValue() + 1);
+					Integer depth = Integer.valueOf(((Integer) bfsNum.get(v)).intValue() + 1);
 
 					double nodeHeight = getNodeHeight(neighbour);
 

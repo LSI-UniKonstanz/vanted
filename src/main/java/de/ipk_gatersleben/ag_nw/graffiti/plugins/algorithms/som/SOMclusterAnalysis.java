@@ -103,7 +103,7 @@ public class SOMclusterAnalysis extends AbstractAlgorithm {
 		IntegerParameter typeOfNeighbourHoodFunction = new IntegerParameter(
 				new Integer(typeOfNeighbourhoodFunctionParam), new Integer(1), new Integer(5), "Neighborhood-Function",
 				"1=Zylinder, 2=Kegel, 3=Gauss, 4=Mexican Hat, 5=Cosinus");
-		// int nachbarF = new Integer(nachbarFS).intValue();
+		// int nachbarF = Integer.valueOf(nachbarFS).intValue();
 
 		/**
 		 * Beta, default=0.1

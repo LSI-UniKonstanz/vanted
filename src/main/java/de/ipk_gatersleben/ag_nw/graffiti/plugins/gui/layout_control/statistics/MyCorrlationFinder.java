@@ -282,7 +282,7 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 						AttributeHelper.setDashInfo(nE, 10f, 20f);
 				}
 				for (Edge nE : newEdge)
-					AttributeHelper.setAttribute(nE, "statistics", "correlation_offset", new Integer(offset));
+					AttributeHelper.setAttribute(nE, "statistics", "correlation_offset", Integer.valueOf(offset));
 			}
 			if (newEdge != null) {
 				if (showStatusResult)
