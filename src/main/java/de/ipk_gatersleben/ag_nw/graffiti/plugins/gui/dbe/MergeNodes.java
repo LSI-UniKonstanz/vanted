@@ -7,6 +7,8 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,6 +16,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.swing.KeyStroke;
 
 import org.AttributeHelper;
 import org.ErrorMsg;
@@ -33,7 +37,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.Experiment2GraphHelper;
 
 /**
+ * Merges nodes within the same network, while considering connecting edges and
+ * data mapping information. 
+ * 
  * @author Christian Klukas (c) 2005 IPK Gatersleben, Group Network Analysis
+ * @version 2.6.5
+ * @vanted.revision 2.6.5
  */
 public class MergeNodes extends AbstractAlgorithm {
 
@@ -56,18 +65,14 @@ public class MergeNodes extends AbstractAlgorithm {
 
 	@Override
 	public String getDescription() {
-		return null;
-		// "<html>Hint: If you would like to merge frequently occuring nodes, which are
-		// recognized by<br>"
-		// + "their identical labels, then this command is not suitable for this
-		// task.<br>"
-		// + "Please use the node-processing commands from the 'Tools' tab,
-		// instead.<br>"
-		// + "There you will find a node merge-command which processes the
-		// edge-connections<br>"
-		// + "and occurrence of nodes with the same label.<br><br>"
-		// + "With this command you may merge nodes into a single node (processing<br>"
-		// + "connections to other nodes and node data-mappings)";
+		return "<html><p>Merges nodes together, while edges and data-mapping information<br>"
+				+ "are taken into account. To merge internetwork nodes, please, use<br/>"
+				+ "Window &#10148; Combine Open Networks beforehand.</p><br/></html>";
+	}
+
+	@Override
+	public KeyStroke getAcceleratorKeyStroke() {
+		return KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.CTRL_DOWN_MASK);
 	}
 
 	@Override
@@ -139,7 +144,6 @@ public class MergeNodes extends AbstractAlgorithm {
 		Vector2d tsize = new Vector2d(0d, 0d);
 		tsize.x = Math.sqrt(targetArea) * sumWidth / sumHeight;
 		tsize.y = Math.sqrt(targetArea) * sumHeight / sumWidth;
-		// AttributeHelper.setSize(mergedNode, tsize.x, tsize.y);
 		AttributeHelper.setLabel(mergedNode, targetNodeName);
 
 		applyDataMappingInformation(targetMappingList, mergedNode, mapping2chartTitle);
@@ -197,7 +201,6 @@ public class MergeNodes extends AbstractAlgorithm {
 		for (Node checkNode : toBeMerged) {
 			if (retainClusterIDs) {
 				String clusterID = NodeTools.getClusterID(checkNode, "");
-				String mapNumber = clusterID;
 				clusterIDs.add(clusterID);
 			}
 			extractDataMappingInformation(targetMappingList, mapping2chartTitle, checkNode);

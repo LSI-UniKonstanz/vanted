@@ -344,7 +344,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		lastPressed = null;
 
 		MouseEvent me = new MouseEvent((Component) actionEvent.getSource(), -1, 0,
-				InputEvent.BUTTON1_MASK + InputEvent.SHIFT_MASK, xn, yn, 1, false, MouseEvent.BUTTON1);
+				InputEvent.BUTTON1_DOWN_MASK + InputEvent.SHIFT_DOWN_MASK, xn, yn, 1, false, MouseEvent.BUTTON1);
 
 		lastBendHit = null;
 		lastPressed = null;
@@ -633,7 +633,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			Component c = lastPressedComponent;
 			if (c instanceof EdgeComponent) {
 				// break!
-				MouseEvent me = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiers(),
+				MouseEvent me = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(),
 						prevPosX, prevPosY, e.getClickCount(), e.isPopupTrigger());
 				processBendCreation(me, c);
 				return;
@@ -684,6 +684,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 							+ "to activate poly-line edge bend style. After activation of desired style stop mouse movement then release keyboard keys. "
 							+ "Press Shift key while moving edge bend to disable position grid.",
 					MessageType.INFO);
+			//is bend out of bounds? 
+			showOutOfBoundsWarning(e);
 
 			return;
 		}
@@ -817,11 +819,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		return lastBendAdded;
 	}
 
-	private double distance(double x0, double y0, double x, double y) {
+	private static double distance(double x0, double y0, double x, double y) {
 		return new Vector2d(x0, y0).distance(new Vector2d(x, y));
 	}
 
-	private View findView(Component component) {
+	private static View findView(Component component) {
 		for (GraffitiFrame f : MainFrame.getInstance().getDetachedFrames()) {
 			while (component != null) {
 				if (component == f)
@@ -873,7 +875,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		return delta;
 	}
 
-	private double getTransformersX(GraphElement graphElement) {
+	private static double getTransformersX(GraphElement graphElement) {
 		CoordinateAttribute ca = (CoordinateAttribute) graphElement.getAttribute(
 				GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR + GraphicAttributeConstants.COORDINATE);
 
@@ -889,7 +891,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		}
 	}
 
-	private double getTransformersY(GraphElement graphElement) {
+	private static double getTransformersY(GraphElement graphElement) {
 		CoordinateAttribute ca = (CoordinateAttribute) graphElement.getAttribute(
 				GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR + GraphicAttributeConstants.COORDINATE);
 
@@ -905,7 +907,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		}
 	}
 
-	private void setTransformersXY(GraphElement graphElement, double curPosX, double curPosY) {
+	@SuppressWarnings("unused")
+	private static void setTransformersXY(GraphElement graphElement, double curPosX, double curPosY) {
 
 		CoordinateAttribute coord = (CoordinateAttribute) graphElement.getAttribute(
 				GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR + GraphicAttributeConstants.COORDINATE);
@@ -925,7 +928,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		}
 	}
 
-	private CoordinateSystem getCoordinateSystem() {
+	private static CoordinateSystem getCoordinateSystem() {
 		View v = MainFrame.getInstance().getActiveEditorSession().getActiveView();
 		if (v instanceof GraffitiView)
 			return ((GraffitiView) v).getCoordinateSystem();
@@ -970,7 +973,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				if (selNodes.contains(curSelEdge.getSource()) && selNodes.contains(curSelEdge.getTarget())) {
 					SortedCollectionAttribute bends = (SortedCollectionAttribute) curSelEdge.getAttribute(attrPath);
 					Object value = bends.getValue();
-					if (!((LinkedHashMap) value).isEmpty())
+					if (!((LinkedHashMap<?,?>) value).isEmpty())
 						originalCoordinates.put(bends, ((Attribute) bends.copy()).getValue());
 				}
 
@@ -1188,7 +1191,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 
 		if ((e.getPoint().getX() + lastPressedMousePointRel.getX() < 0
 				|| e.getPoint().getY() + lastPressedMousePointRel.getY() < 0))
-			MainFrame.showWarningPopup("<html><strong>A cluster of graph elements is out of view frustum!</strong><br>"
+			MainFrame.showWarningPopup("<html><strong>Graph elements out of view!</strong><br>"
 					+ "To bring back: Network &#10148; Move Network to Top-Left (Ctrl+1).", 8000, wbts);
 	}
 
@@ -1551,7 +1554,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		logger.debug("end mouseReleased");
 	}
 
-	private double min2(double a, double b) {
+	private static double min2(double a, double b) {
 		return a < b ? a : b;
 	}
 
@@ -1571,7 +1574,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	 * @param edge
 	 *            The bends of this edge are processed.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected void addBends(Set<CoordinateAttribute> set, Edge edge) {
 		SortedCollectionAttribute bends = (SortedCollectionAttribute) edge.getAttribute(
 				GraphicAttributeConstants.GRAPHICS + Attribute.SEPARATOR + GraphicAttributeConstants.BENDS);
