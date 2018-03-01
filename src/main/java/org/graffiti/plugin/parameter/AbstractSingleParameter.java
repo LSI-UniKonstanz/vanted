@@ -106,23 +106,14 @@ public abstract class AbstractSingleParameter implements SingleParameter {
 		return name;
 	}
 
-	/**
-	 * @see org.graffiti.plugin.Displayable#setValue(java.lang.Object)
-	 */
 	public void setValue(Object val) throws IllegalArgumentException {
 		value = val;
 	}
 
-	/**
-	 * @see org.graffiti.plugin.Displayable#getValue()
-	 */
 	public Object getValue() {
 		return value;
 	}
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
 		if (getValue() == null) {
@@ -132,9 +123,6 @@ public abstract class AbstractSingleParameter implements SingleParameter {
 		}
 	}
 
-	/**
-	 * @see org.graffiti.plugin.parameter.Parameter#toXMLString()
-	 */
 	public String toXMLString() {
 		String valStr = (value == null) ? "null" : value.toString();
 

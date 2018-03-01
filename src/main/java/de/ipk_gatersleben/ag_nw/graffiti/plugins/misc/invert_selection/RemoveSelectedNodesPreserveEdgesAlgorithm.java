@@ -53,9 +53,6 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm extends AbstractAlgorithm
 
 	private boolean layoutParallelEdges = true;
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
-	 */
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
@@ -84,10 +81,6 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm extends AbstractAlgorithm
 					"Please select a number of nodes which will be removed from the network.<br>The result is a <b>folded network</b>, edges are preserved.");
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#
-	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
-	 */
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -95,9 +88,6 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm extends AbstractAlgorithm
 		layoutParallelEdges = ((BooleanParameter) params[i++]).getBoolean();
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		EditorSession session = MainFrame.getInstance().getActiveEditorSession();
 		if (selection == null)
@@ -121,7 +111,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm extends AbstractAlgorithm
 		}
 	}
 
-	private boolean isChain(ArrayList<Node> selection) {
+	private static boolean isChain(ArrayList<Node> selection) {
 		HashMap<Node, Node> pairs = new HashMap<>();
 		int actualPairs = 0; // because put() replaces some
 		for (Node node : selection) {
@@ -411,6 +401,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm extends AbstractAlgorithm
 	 * @param e
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private static EdgeType testEdgeType(Node n, Edge e) {
 		// test for IN_EDGE (incoming edge)
 		EdgeGraphicAttribute ega = (EdgeGraphicAttribute) e.getAttribute(GraphicAttributeConstants.GRAPHICS);
@@ -445,6 +436,7 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm extends AbstractAlgorithm
 	 * @param edge2
 	 * @return type of new folded edge or null if the edges cannot be folded
 	 */
+	@SuppressWarnings("unused")
 	private static EdgeType getResultEdge(EdgeType edge1, EdgeType edge2) {
 		// check combinations for an IN_EDGE
 		if (edge1 == EdgeType.IN_EDGE || edge1 == EdgeType.OUT_EDGE_IN) {
@@ -488,18 +480,12 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm extends AbstractAlgorithm
 		return null;
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
-	 */
 	@Override
 	public void reset() {
 		graph = null;
 		selection = null;
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		return "Fold-Delete";
 	}
@@ -525,12 +511,6 @@ public class RemoveSelectedNodesPreserveEdgesAlgorithm extends AbstractAlgorithm
 				+ "use \"Ignore Edge Direction\".<br /><br />";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.plugin.algorithm.AbstractAlgorithm#getAcceleratorKeyStroke()
-	 */
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, java.awt.event.InputEvent.CTRL_DOWN_MASK);

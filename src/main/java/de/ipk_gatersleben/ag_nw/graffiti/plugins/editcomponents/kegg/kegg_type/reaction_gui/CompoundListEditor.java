@@ -48,7 +48,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.KeggId;
 
 public class CompoundListEditor extends JComponent {
 	private static final long serialVersionUID = 1L;
-	private MutableList subProdSelection = new MutableList(new DefaultListModel());
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private MutableList subProdSelection = new MutableList<>(new DefaultListModel());
 	private Reaction currReaction;
 	private boolean isProductSelection;
 	private boolean isEnzymeSelection;
@@ -80,7 +81,7 @@ public class CompoundListEditor extends JComponent {
 		validate();
 	}
 
-	private Collection<Entry> getEntriesAcceptibleForEnzyme(Collection<Entry> entries) {
+	private static Collection<Entry> getEntriesAcceptibleForEnzyme(Collection<Entry> entries) {
 		ArrayList<Entry> result = new ArrayList<Entry>();
 		if (entries != null)
 			for (Entry e : entries) {
@@ -93,7 +94,7 @@ public class CompoundListEditor extends JComponent {
 		return result;
 	}
 
-	private Collection<Entry> getEntriesAcceptibleForSubstrateOrProduct(Collection<Entry> entries) {
+	private static Collection<Entry> getEntriesAcceptibleForSubstrateOrProduct(Collection<Entry> entries) {
 		ArrayList<Entry> result = new ArrayList<Entry>();
 		HashSet<String> knownIds = new HashSet<String>();
 		if (entries != null)
@@ -110,7 +111,7 @@ public class CompoundListEditor extends JComponent {
 		return result;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private JComponent getEntryList(String title, final Collection<Entry> entries,
 			final HashMap<Entry, Node> entry2graphNode) {
 		final MutableList entrySelection = new MutableList(new DefaultListModel());
@@ -184,10 +185,10 @@ public class CompoundListEditor extends JComponent {
 
 		addCmd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (entrySelection.getSelectedValues() == null || entrySelection.getSelectedValues().length <= 0)
+				if (entrySelection.getSelectedValuesList() == null || entrySelection.getSelectedValuesList().size() <= 0)
 					MainFrame.showMessageDialog("Please select a item to be added!", "No item selected");
 				else {
-					for (Object o : entrySelection.getSelectedValues()) {
+					for (Object o : entrySelection.getSelectedValuesList()) {
 						Entry e = (Entry) o;
 						if (!subProdSelection.getContents().contains(e)) {
 							subProdSelection.getContents().addElement(e);
@@ -208,10 +209,10 @@ public class CompoundListEditor extends JComponent {
 		});
 		delCmd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (subProdSelection.getSelectedValues() == null || subProdSelection.getSelectedValues().length <= 0)
+				if (subProdSelection.getSelectedValuesList() == null || subProdSelection.getSelectedValuesList().size() <= 0)
 					MainFrame.showMessageDialog("Please select a item to be removed!", "No item selected");
 				else {
-					for (Object o : subProdSelection.getSelectedValues()) {
+					for (Object o : subProdSelection.getSelectedValuesList()) {
 						Entry e = (Entry) o;
 						if (isSubstrateSelection)
 							currReaction.getSubstrates().remove(e);
@@ -265,14 +266,14 @@ public class CompoundListEditor extends JComponent {
 		return fp.getBorderedComponent(5, 0, 0, 0);
 	}
 
-	private ListSelectionListener getEntryGraphSelectionListener(final HashMap<Entry, Node> entry2graphNode,
-			final MutableList entrySelection, final boolean searchId) {
+	private static ListSelectionListener getEntryGraphSelectionListener(final HashMap<Entry, Node> entry2graphNode,
+			final MutableList<?> entrySelection, final boolean searchId) {
 		return new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						HashSet<Node> nodes = new HashSet<Node>();
-						for (Object o : entrySelection.getSelectedValues()) {
+						for (Object o : entrySelection.getSelectedValuesList()) {
 							Entry e = (Entry) o;
 							Node n = entry2graphNode.get(e);
 							if (n != null)
@@ -307,6 +308,7 @@ public class CompoundListEditor extends JComponent {
 		};
 	}
 
+	@SuppressWarnings("unchecked")
 	public void updateReactionSelection(Reaction r) {
 		this.currReaction = r;
 		subProdSelection.getContents().clear();

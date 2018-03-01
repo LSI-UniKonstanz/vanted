@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Relation;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.RelationType;
 
-public class RelationTypeEditor extends JComboBox {
+public class RelationTypeEditor extends JComboBox<RelationType> {
 	private static final long serialVersionUID = 1L;
 	private Relation currentRelation;
 	private JLabel relationHelp;

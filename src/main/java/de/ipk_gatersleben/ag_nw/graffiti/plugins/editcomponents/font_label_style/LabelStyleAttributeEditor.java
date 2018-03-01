@@ -36,7 +36,7 @@ public class LabelStyleAttributeEditor extends AbstractValueEditComponent {
 	protected JCheckBox jFontStyleItalic;
 	protected JCheckBox jFontStyleMouseOver;
 	protected JCheckBox jFontStyleShadow;
-	protected JComboBox jFontStyleFrame;
+	protected JComboBox<LabelFrameSetting> jFontStyleFrame;
 
 	public LabelStyleAttributeEditor(final Displayable disp) {
 		super(disp);
@@ -44,7 +44,7 @@ public class LabelStyleAttributeEditor extends AbstractValueEditComponent {
 		jFontStyleItalic = new JCheckBox(ITALICSTRING);
 		jFontStyleMouseOver = new JCheckBox(MOUSEOVERSTRING);
 		jFontStyleShadow = new JCheckBox(SHADOWSTRING);
-		jFontStyleFrame = new JComboBox(LabelFrameSetting.values());
+		jFontStyleFrame = new JComboBox<>(LabelFrameSetting.values());
 
 		jFontStyleBold.setOpaque(false);
 		jFontStyleItalic.setOpaque(false);

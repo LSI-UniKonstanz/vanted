@@ -18,6 +18,7 @@ import org.graffiti.plugin.editcomponent.ValueEditComponent;
 /**
  * @author Christian Klukas (c) 2008 IPK-Gatersleben
  */
+@SuppressWarnings("rawtypes")
 public class LineModeCellRenderer implements ListCellRenderer {
 
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,

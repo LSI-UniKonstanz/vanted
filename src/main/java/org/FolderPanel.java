@@ -510,7 +510,7 @@ public class FolderPanel extends JComponent {
 		});
 	}
 
-	private ArrayList<GuiRow> getSortedRows(ArrayList<GuiRow> rows) {
+	private static ArrayList<GuiRow> getSortedRows(ArrayList<GuiRow> rows) {
 		GuiRow sorted[] = rows.toArray(new GuiRow[] {});
 		Arrays.sort(sorted, new Comparator<Object>() {
 			public int compare(Object o1, Object o2) {
@@ -713,7 +713,7 @@ public class FolderPanel extends JComponent {
 		return tb;
 	}
 
-	private String getSearchHintText() {
+	private static String getSearchHintText() {
 		return "Enter text into the search field to filter the list content";
 	}
 

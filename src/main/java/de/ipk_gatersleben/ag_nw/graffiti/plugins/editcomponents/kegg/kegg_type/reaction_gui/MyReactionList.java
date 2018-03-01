@@ -79,7 +79,7 @@ public class MyReactionList extends JList {
 			jd.pack();
 	}
 
-	private ListCellRenderer getReactionCellRenderer() {
+	private static ListCellRenderer getReactionCellRenderer() {
 		ListCellRenderer res = new ListCellRenderer() {
 			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {

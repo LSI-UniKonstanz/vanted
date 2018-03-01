@@ -18,6 +18,7 @@ import org.ErrorMsg;
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
+@SuppressWarnings("rawtypes")
 public class MyDiagramPlacementSettingCellRenderer implements ListCellRenderer {
 
 	/*

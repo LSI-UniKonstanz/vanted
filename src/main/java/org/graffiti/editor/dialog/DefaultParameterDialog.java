@@ -255,9 +255,6 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 
 	// ~ Methods ================================================================
 
-	/**
-	 * @see org.graffiti.editor.dialog.ParameterDialog#getEditedParameters()
-	 */
 	public Parameter[] getEditedParameters() {
 		return this.paramEditPanel.getUpdatedParameters();
 	}
@@ -279,9 +276,6 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 		return selectedOk;
 	}
 
-	/**
-	 * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
-	 */
 	public void actionPerformed(ActionEvent e) {
 		Object src = e.getSource();
 
@@ -293,46 +287,25 @@ public class DefaultParameterDialog extends AbstractParameterDialog implements A
 		}
 	}
 
-	/**
-	 * @see java.awt.event.WindowListener#windowActivated(WindowEvent)
-	 */
 	public void windowActivated(WindowEvent arg0) {
 	}
 
-	/**
-	 * @see java.awt.event.WindowListener#windowClosed(WindowEvent)
-	 */
 	public void windowClosed(WindowEvent arg0) {
 	}
 
-	/**
-	 * @see java.awt.event.WindowListener#windowClosing(WindowEvent)
-	 */
 	public void windowClosing(WindowEvent arg0) {
 		dispose();
 	}
 
-	/**
-	 * @see java.awt.event.WindowListener#windowDeactivated(WindowEvent)
-	 */
 	public void windowDeactivated(WindowEvent arg0) {
 	}
 
-	/**
-	 * @see java.awt.event.WindowListener#windowDeiconified(WindowEvent)
-	 */
 	public void windowDeiconified(WindowEvent arg0) {
 	}
 
-	/**
-	 * @see java.awt.event.WindowListener#windowIconified(WindowEvent)
-	 */
 	public void windowIconified(WindowEvent arg0) {
 	}
 
-	/**
-	 * @see java.awt.event.WindowListener#windowOpened(WindowEvent)
-	 */
 	public void windowOpened(WindowEvent arg0) {
 	}
 

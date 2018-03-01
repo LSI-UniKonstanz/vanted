@@ -15,6 +15,7 @@ import javax.swing.ListCellRenderer;
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
+@SuppressWarnings("rawtypes")
 public class MyChartCellRenderer implements ListCellRenderer {
 
 	/*

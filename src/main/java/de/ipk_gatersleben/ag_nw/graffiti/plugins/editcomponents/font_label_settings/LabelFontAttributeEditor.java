@@ -27,7 +27,7 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
  */
 public class LabelFontAttributeEditor extends AbstractValueEditComponent {
 
-	protected JComboBox jFontSelection;
+	protected JComboBox<String> jFontSelection;
 	private static final String[] fontnames = GraphicsEnvironment.getLocalGraphicsEnvironment()
 			.getAvailableFontFamilyNames();
 	private static final int defaultSize = (int) (new JLabel("").getFont().getSize() * 1.8);
@@ -35,12 +35,12 @@ public class LabelFontAttributeEditor extends AbstractValueEditComponent {
 
 	public LabelFontAttributeEditor(final Displayable disp) {
 		super(disp);
-		jFontSelection = new JComboBox(getFontLabels(fontnames));
+		jFontSelection = new JComboBox<>(getFontLabels(fontnames));
 		jFontSelection.setOpaque(false);
 		jFontSelection.setMinimumSize(new Dimension(10, 5));
 		jFontSelection.setPreferredSize(new Dimension(10, jFontSelection.getPreferredSize().height));
-		jFontSelection.setRenderer(new ListCellRenderer() {
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+		jFontSelection.setRenderer(new ListCellRenderer<Object>() {
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {
 				String sel = (String) value;
 				if (sel.equalsIgnoreCase(EMPTY_STRING)) {
@@ -58,7 +58,7 @@ public class LabelFontAttributeEditor extends AbstractValueEditComponent {
 		});
 	}
 
-	private String[] getFontLabels(String[] fonts) {
+	private static String[] getFontLabels(String[] fonts) {
 		ArrayList<String> result = new ArrayList<String>();
 		result.add("~");
 		for (String font : fonts) {

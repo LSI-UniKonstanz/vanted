@@ -48,9 +48,8 @@ public class SubtypeCompoundEditor extends JPanel {
 
 	private Relation currentRelation;
 	private MyRelationList list;
-	private MutableList subProdSelection = new MutableList(new DefaultListModel());
+	private MutableList<Entry> subProdSelection = new MutableList<>(new DefaultListModel<Entry>());
 
-	@SuppressWarnings("unchecked")
 	public SubtypeCompoundEditor(String title, Relation initialRelation, final List<Entry> entries,
 			final HashMap<Entry, Node> entry2graphNode) {
 		this.currentRelation = initialRelation;
@@ -115,31 +114,29 @@ public class SubtypeCompoundEditor extends JPanel {
 
 		addSubtypeCompoundCmd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (entrySelection.getSelectedValues() == null || entrySelection.getSelectedValues().length <= 0)
+				if (entrySelection.getSelectedValuesList() == null || entrySelection.getSelectedValuesList().size() <= 0)
 					MainFrame.showMessageDialog("Please select a item to be added!", "No item selected");
 				else {
-					for (int i = 0; i < ((DefaultListModel) subProdSelection.getModel()).size(); i++) {
-						Entry e = (Entry) ((DefaultListModel) subProdSelection.getModel()).getElementAt(i);
+					for (int i = 0; i < ((DefaultListModel<Entry>) subProdSelection.getModel()).size(); i++) {
+						Entry e = ((DefaultListModel<Entry>) subProdSelection.getModel()).getElementAt(i);
 						currentRelation.removeSubtypeRef(e);
 					}
-					((DefaultListModel) subProdSelection.getModel()).clear();
-					for (Object o : entrySelection.getSelectedValues()) {
-						Entry e = (Entry) o;
+					((DefaultListModel<Entry>) subProdSelection.getModel()).clear();
+					for (Entry e : entrySelection.getSelectedValuesList())
 						currentRelation.addSubtypeRef(e);
-					}
+
 					list.updateRelationInfo(currentRelation);
 				}
 			}
 		});
 		removeSubtypeCompound.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (subProdSelection.getSelectedValues() == null || subProdSelection.getSelectedValues().length <= 0)
+				if (subProdSelection.getSelectedValuesList() == null || subProdSelection.getSelectedValuesList().size() <= 0)
 					MainFrame.showMessageDialog("Please select a item to be removed!", "No item selected");
 				else {
-					for (Object o : subProdSelection.getSelectedValues()) {
-						Entry e = (Entry) o;
+					for (Entry e : subProdSelection.getSelectedValuesList())
 						currentRelation.removeSubtypeRef(e);
-					}
+					
 					list.updateRelationInfo(currentRelation);
 				}
 			}
@@ -174,12 +171,12 @@ public class SubtypeCompoundEditor extends JPanel {
 		validate();
 	}
 
-	private ListSelectionListener getEntryGraphSelectionListener(final HashMap<Entry, Node> entry2graphNode,
-			final MutableList entrySelection) {
+	private static ListSelectionListener getEntryGraphSelectionListener(final HashMap<Entry, Node> entry2graphNode,
+			final MutableList<Entry> entrySelection) {
 		return new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent se) {
 				HashSet<Node> nodes = new HashSet<Node>();
-				for (Object o : entrySelection.getSelectedValues()) {
+				for (Object o : entrySelection.getSelectedValuesList()) {
 					Entry e = (Entry) o;
 					Node n = entry2graphNode.get(e);
 					if (n != null)

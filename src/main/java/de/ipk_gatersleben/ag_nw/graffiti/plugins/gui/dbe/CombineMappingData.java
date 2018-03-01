@@ -67,11 +67,6 @@ public class CombineMappingData extends AbstractAlgorithm {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		Collection<Node> workNodes = new ArrayList<Node>(getSelectedOrAllNodes());
 		graph.getListenerManager().transactionStarted(this);

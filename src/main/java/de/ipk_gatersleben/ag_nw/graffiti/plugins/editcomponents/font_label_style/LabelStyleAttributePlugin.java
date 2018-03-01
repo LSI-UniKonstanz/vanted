@@ -35,56 +35,26 @@ public class LabelStyleAttributePlugin extends IPK_PluginAdapter implements Edit
 		valueEditComponents.put(LabelStyleAttribute.class, LabelStyleAttributeEditor.class);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.EditorPlugin#getAttributeComponents()
-	 */
 	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.EditorPlugin#getGUIComponents()
-	 */
 	public GraffitiComponent[] getGUIComponents() {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.EditorPlugin#getModes()
-	 */
 	public Mode[] getModes() {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.EditorPlugin#getShapes()
-	 */
 	public GraffitiShape[] getShapes() {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.EditorPlugin#getTools()
-	 */
 	public Tool[] getTools() {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.EditorPlugin#getValueEditComponents()
-	 */
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}

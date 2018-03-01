@@ -207,7 +207,7 @@ public class ParameterEditPanel extends JPanel {
 	 *            DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
-	private ValueEditComponent getStandardEditComponent(Parameter parameter) {
+	private static ValueEditComponent getStandardEditComponent(Parameter parameter) {
 		ValueEditComponent vec = new StandardValueEditComponent(parameter);
 
 		// JTextField textField = new JTextField(parameter.getValue().toString());
@@ -227,8 +227,6 @@ public class ParameterEditPanel extends JPanel {
 	 * @param editFieldPanel
 	 * @param parameter
 	 * @param ecClass
-	 * @throws RuntimeException
-	 *             DOCUMENT ME!
 	 */
 	private void addRow(FolderPanel myPanel, Parameter parameter, Class<?> ecClass) {
 		if (parameter == null || myPanel == null || ecClass == null)

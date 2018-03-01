@@ -102,14 +102,13 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 		return "Hierarchy.KEGG";
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Parameter[] getParameters() {
 		int maxID = 0;
 		HashMap<Integer, String> exampleValues = new HashMap<Integer, String>();
 		ArrayList<String> selvals = new ArrayList<String>();
 		maxID = ReplaceLabelFromAlternativeSubstanceNames.enumerateExistingAlternativeSubstanceIDsAndTheirExamples(
-				(Collection) getSelectedOrAllNodes(), maxID, exampleValues);
+				(Collection<Node>) getSelectedOrAllNodes(), maxID, exampleValues);
 		if (maxID == 0) {
 			selvals.add(settingUseAllIdx);
 		} else {
@@ -415,6 +414,7 @@ public class CreateFuncatGraphAlgorithm extends AbstractAlgorithm {
 								}
 								Node hierarchy_tree_node = hierarchy_tree_itemName2node.get(hierarchyEntityName);
 								if (lastNode != null) {
+									@SuppressWarnings("unused")
 									String lastnodename = AttributeHelper.getLabel(lastNode, "");
 									// connect nodes
 									if (!lastNode.getNeighbors().contains(hierarchy_tree_node)) {

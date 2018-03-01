@@ -63,9 +63,9 @@ public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
 
 	@Override
 	public Parameter[] getParameters() {
-		return new Parameter[] { new DoubleParameter(40, "Segement Length", "Length of segments between edge bends"),
-				new DoubleParameter(20, "Target Length (Layout)", "Target length for force directed layout"),
-				new DoubleParameter(5000, "Repulsion Force (Layout)",
+		return new Parameter[] { new DoubleParameter(40d, "Segement Length", "Length of segments between edge bends"),
+				new DoubleParameter(20d, "Target Length (Layout)", "Target length for force directed layout"),
+				new DoubleParameter(5000d, "Repulsion Force (Layout)",
 						"Repulsive force applied to edge bend points for layout"),
 				new DoubleParameter(0.01, "Minimum Distance (Percent)",
 						"Minimum distance (in percent of edge length) for bend distance to direct line betweeen nodes"),
@@ -83,7 +83,6 @@ public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
 		paramMinimumBendCount = ((IntegerParameter) params[i++]).getInteger();
 	}
 
-	@SuppressWarnings("unchecked")
 	public void execute() {
 		HashMap<Edge, ArrayList<Node>> oldEdge2newNodes = new HashMap<Edge, ArrayList<Node>>();
 		ArrayList<Node> borderNodes = new ArrayList<Node>();
@@ -194,7 +193,7 @@ public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
 					AttributeHelper.setEdgeBendStyle(newEdge, "");
 				AttributeHelper.addEdgeBends(newEdge, points);
 				if (selectLines) {
-					GraphHelper.selectElements((Collection) newEdges);
+					GraphHelper.selectElements((Collection<Edge>) newEdges);
 				}
 			}
 			for (Node n : borderNodes)
@@ -204,7 +203,7 @@ public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
 		}
 	}
 
-	private Collection<Node> createEdgeBendNodes(Edge e, int bends) {
+	private static Collection<Node> createEdgeBendNodes(Edge e, int bends) {
 		ArrayList<Node> result = new ArrayList<Node>();
 		if (e.getGraph() == null)
 			return result;
@@ -226,7 +225,7 @@ public class ForceDirectedEdgeLayout extends AbstractAlgorithm {
 		return result;
 	}
 
-	private double getLength(Edge e) {
+	private static double getLength(Edge e) {
 		Vector2d p1, p2;
 		p1 = AttributeHelper.getPositionVec2d(e.getSource());
 		p2 = AttributeHelper.getPositionVec2d(e.getTarget());

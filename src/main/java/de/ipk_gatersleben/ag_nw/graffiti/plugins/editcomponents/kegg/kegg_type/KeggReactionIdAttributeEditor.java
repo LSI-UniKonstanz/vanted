@@ -260,14 +260,17 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				@SuppressWarnings("unchecked")
+				DefaultListModel<Reaction> model = (DefaultListModel<Reaction>) reacSel.getModel();
+				
 				if (initialReaction != null)
 					reacSel.setSelectedValue(initialReaction, true);
 				else {
-					if (((DefaultListModel) reacSel.getModel()).size() > 0)
-						reacSel.setSelectedValue(((DefaultListModel) reacSel.getModel()).firstElement(), true);
-
+					if (model.size() > 0)
+						reacSel.setSelectedValue(model.firstElement(), true);
 				}
-				if (((DefaultListModel) reacSel.getModel()).size() <= 0)
+				
+				if (model.size() <= 0)
 					add.doClick();
 			}
 		});
@@ -276,6 +279,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 
 	private static ActionListener getDeleteReactionListner(final MyReactionList reacSel, final Pathway pathway) {
 		ActionListener al = new ActionListener() {
+			@SuppressWarnings("rawtypes")
 			public void actionPerformed(ActionEvent arg0) {
 				Reaction r = (Reaction) reacSel.getSelectedValue();
 				if (r == null) {
@@ -302,6 +306,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 	private static ActionListener getAddReactionListner(final MyReactionList reacSel, final Pathway pathway,
 			final Entry defaultNewSourceEntry, final Entry defaultNewTargetEntry) {
 		ActionListener al = new ActionListener() {
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public void actionPerformed(ActionEvent arg0) {
 				ArrayList<Entry> sl = new ArrayList<Entry>();
 				ArrayList<Entry> pl = new ArrayList<Entry>();
@@ -327,7 +332,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 		return al;
 	}
 
-	private void selectReactions(String currentReactionId, Graph graph, Selection selection) {
+	private static void selectReactions(String currentReactionId, Graph graph, Selection selection) {
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		for (Node n : graph.getNodes()) {
 			ArrayList<IndexAndString> reacTypeInfos = KeggGmlHelper.getKeggReactions(n);

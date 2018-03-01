@@ -110,7 +110,7 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 		}
 	}
 
-	private File checkFile(Graph g, String fileName) {
+	private static File checkFile(Graph g, String fileName) {
 		java.io.File file = new File(fileName);
 
 		if (!file.exists() || !file.canRead())

@@ -109,7 +109,7 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 				new BooleanParameter(modeOfOperationSetClusterID, "<html><b>Result: Set Cluster ID", null), selvals);
 	}
 
-	private Parameter[] getParameters(Parameter p1, Parameter p2, Parameter p3, Parameter p4, Parameter p5,
+	private static Parameter[] getParameters(Parameter p1, Parameter p2, Parameter p3, Parameter p4, Parameter p5,
 			Parameter p6, ArrayList<String> selvals) {
 		ArrayList<Parameter> result = new ArrayList<Parameter>();
 		result.add(p1);
@@ -254,7 +254,7 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 			return result.toString();
 	}
 
-	private String getMultipleListValues(String preMap, String postMap, ArrayList<ArrayList<String>> mappingStrings,
+	private static String getMultipleListValues(String preMap, String postMap, ArrayList<ArrayList<String>> mappingStrings,
 			String dividerInList) {
 		StringBuilder result = new StringBuilder();
 		for (ArrayList<String> v : mappingStrings) {
@@ -265,7 +265,7 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 		return result.toString();
 	}
 
-	private String getListValue(Collection<String> values, String divider) {
+	private static String getListValue(Collection<String> values, String divider) {
 		ArrayList<String> v = new ArrayList<String>(values);
 		StringBuilder res = new StringBuilder();
 		for (int i = 0; i < v.size(); i++) {
@@ -276,7 +276,7 @@ public class ReplaceLabelFromAlternativeSubstanceNames extends AbstractAlgorithm
 		return res.toString();
 	}
 
-	public static int enumerateExistingAlternativeSubstanceIDsAndTheirExamples(Collection<GraphElement> graphElements,
+	public static int enumerateExistingAlternativeSubstanceIDsAndTheirExamples(Collection<? extends GraphElement> graphElements,
 			int maxID, HashMap<Integer, String> exampleValues) {
 		for (GraphElement ge : graphElements) {
 			GraphElementHelper geh = new GraphElementHelper(ge);

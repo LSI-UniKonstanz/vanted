@@ -25,7 +25,6 @@ public class ChartAttributePlugin extends IPK_PluginAdapter implements EditorPlu
 	private HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
 	private Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
 
-	@SuppressWarnings("unchecked")
 	public ChartAttributePlugin() {
 		this.attributes = new Class[1];
 		this.attributes[0] = ChartColorAttribute.class;

@@ -54,7 +54,7 @@ public class SrcTargetEditor extends JPanel {
 			final HashMap<Entry, Node> entry2graphNode) {
 
 		this.currentRelation = initialRelation;
-		final MutableList<Entry> entrySelection = new MutableList(new DefaultListModel<Entry>());
+		final MutableList<Entry> entrySelection = new MutableList<>(new DefaultListModel<Entry>());
 		Collections.sort(entries, new Comparator<Object>() {
 			public int compare(Object arg0, Object arg1) {
 				return arg0.toString().compareTo(arg1.toString());
@@ -72,7 +72,7 @@ public class SrcTargetEditor extends JPanel {
 		entrySelectionScrollPane.setPreferredSize(new Dimension(300, 100));
 
 		// ///////////
-		final MutableList<?> subProdSelection = new MutableList(new DefaultListModel());
+		final MutableList<Entry> subProdSelection = new MutableList<>(new DefaultListModel<Entry>());
 		Collections.sort(entries, new Comparator<Object>() {
 			public int compare(Object arg0, Object arg1) {
 				return arg0.toString().compareTo(arg1.toString());
@@ -165,13 +165,12 @@ public class SrcTargetEditor extends JPanel {
 		validate();
 	}
 
-	private ListSelectionListener getEntryGraphSelectionListener(final HashMap<Entry, Node> entry2graphNode,
-			final MutableList entrySelection) {
+	private static ListSelectionListener getEntryGraphSelectionListener(final HashMap<Entry, Node> entry2graphNode,
+			final MutableList<Entry> entrySelection) {
 		return new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent se) {
 				HashSet<Node> nodes = new HashSet<Node>();
-				for (Object o : entrySelection.getSelectedValues()) {
-					Entry e = (Entry) o;
+				for (Entry e : entrySelection.getSelectedValuesList()) {
 					Node n = entry2graphNode.get(e);
 					if (n != null)
 						nodes.add(n);

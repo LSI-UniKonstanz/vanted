@@ -1201,7 +1201,7 @@ public class GraphHelper implements HelperClass {
 		}
 	}
 
-	public static void selectElements(Collection<Attributable> elements) {
+	public static void selectElements(Collection<? extends Attributable> elements) {
 		try {
 			EditorSession es = findSession(elements);
 			es.getSelectionModel().getActiveSelection().addAll(elements);

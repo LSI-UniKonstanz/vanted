@@ -19,11 +19,11 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class CompoundImagePositionAttributeEditor extends AbstractValueEditComponent {
-	protected JComboBox positionSelection;
+	protected JComboBox<String> positionSelection;
 
 	public CompoundImagePositionAttributeEditor(Displayable disp) {
 		super(disp);
-		positionSelection = new JComboBox(getPosiblePositions(true));
+		positionSelection = new JComboBox<>(getPosiblePositions(true));
 		String val = disp.getValue().toString();
 		positionSelection.setSelectedItem(val);
 	}

@@ -100,7 +100,6 @@ public class EditComponentManager implements PluginManagerListener {
 	 * @param desc
 	 *            the description of the new plugin.
 	 */
-	@SuppressWarnings("unchecked")
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
 		// System.out.println("putting: " + plugin.getAttributeComponents());
 		if (plugin instanceof EditorPlugin) {

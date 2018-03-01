@@ -47,10 +47,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.selectCommands.SelectNo
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.add_attributes.CalculateAttribute;
 
 public class DBEplugin extends DBE_PluginAdapter implements EditorPlugin {
-	@SuppressWarnings("unchecked")
-	private HashMap valueEditComponents = new HashMap();
+	private HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents = new HashMap<>();
 
-	@SuppressWarnings("unchecked")
 	public DBEplugin() {
 		valueEditComponents.put(JComponentParameter.class, JComponentParameterEditor.class);
 
@@ -116,7 +114,6 @@ public class DBEplugin extends DBE_PluginAdapter implements EditorPlugin {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}

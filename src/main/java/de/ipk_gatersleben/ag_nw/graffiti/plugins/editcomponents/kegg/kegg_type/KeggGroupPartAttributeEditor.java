@@ -36,7 +36,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.KeggGmlHelper;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class KeggGroupPartAttributeEditor extends AbstractValueEditComponent implements ActionListener {
-	protected JComboBox keggIsPartSelection = new JComboBox();
+	protected JComboBox<String> keggIsPartSelection = new JComboBox<>();
 	protected JButton selectOfThisType = new JButton("Select");
 
 	protected final String isPartOfGroup = "<html>is part of a group<br>"

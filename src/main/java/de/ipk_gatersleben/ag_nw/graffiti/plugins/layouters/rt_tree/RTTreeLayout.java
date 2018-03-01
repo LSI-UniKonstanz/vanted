@@ -295,10 +295,10 @@ public class RTTreeLayout extends AbstractAlgorithm {
 
 			yDistanceParam = new DoubleParameter("Y distance", "The distance between nodes in vertical direction.");
 
-			xStartParam = new DoubleParameter(100, "X base",
+			xStartParam = new DoubleParameter(100d, "X base",
 					"The x coordinate of the starting point of the grid horizontal direction.");
 
-			yStartParam = new DoubleParameter(100, "Y base",
+			yStartParam = new DoubleParameter(100d, "Y base",
 					"The y coordinate of the starting point of the grid horizontal direction.");
 
 			horizontalParam = new BooleanParameter(horizontalLayout, "Place Trees in a Row",
@@ -638,7 +638,7 @@ public class RTTreeLayout extends AbstractAlgorithm {
 
 				EdgeShapeAttribute edgeShape = (EdgeShapeAttribute) (edge.getAttribute(SHAPE));
 				edgeShape.setValue("org.graffiti.plugins.views.defaults.PolyLineEdgeShape");
-				HashMap bends = new LinkedHashMap();
+				HashMap bends = new LinkedHashMap<>();
 
 				if (treeDirection == 270) {
 					bends.put("bend1", new CoordinateAttribute("bend1", yCoord, xCoord1));
@@ -668,13 +668,13 @@ public class RTTreeLayout extends AbstractAlgorithm {
 
 		maxNodeHeight = new LinkedHashMap<Integer, Double>();
 
-		treeMap = new LinkedList();
+		treeMap = new LinkedList<>();
 
 		depthOffsets = new LinkedHashMap<Integer, Double>();
 
 		bfsNum = new LinkedHashMap<Node, Integer>();
 
-		treeMap.add(new LinkedList());
+		treeMap.add(new LinkedList<>());
 		queue.addLast(startNode);
 		bfsNum.put(startNode, Integer.valueOf(0));
 
@@ -709,7 +709,7 @@ public class RTTreeLayout extends AbstractAlgorithm {
 					forest.remove(neighbour);
 
 					if (treeMap.size() <= depth.intValue()) {
-						treeMap.add(new LinkedList());
+						treeMap.add(new LinkedList<>());
 					}
 					bfsNum.put(neighbour, depth);
 

@@ -32,6 +32,14 @@ import org.graffiti.session.EditorSession;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
+/**
+ * Algorithm to assign an image to a node. The introduced Attribute with it is
+ * <i>image</i>, which together with its children defines the position and
+ * source of the image. It supports both absolute and relative image paths.
+ * 
+ * @vanted.revision 2.6.4
+ *
+ */
 public class ImageAssignmentCommand extends AbstractAlgorithm {
 
 	private String imageUrl = "";
@@ -42,6 +50,7 @@ public class ImageAssignmentCommand extends AbstractAlgorithm {
 	public void execute() {
 		if (imageUrl == null || imageUrl.length() <= 0)
 			return;
+
 		try {
 			graph.getListenerManager().transactionStarted(this);
 			for (Node n : getSelectedOrAllNodes()) {
@@ -135,7 +144,7 @@ public class ImageAssignmentCommand extends AbstractAlgorithm {
 	 *            the absolute path
 	 * @return image file path - relative or absolute
 	 */
-	private String getShorterImagePath(String abs) {
+	private static String getShorterImagePath(String abs) {
 		String graphPath = ((EditorSession) MainFrame.getInstance().getActiveSession()).getFileNameFull();
 		int lastSepIndex = graphPath.lastIndexOf(File.separatorChar);
 		if (lastSepIndex > 0)
@@ -155,7 +164,7 @@ public class ImageAssignmentCommand extends AbstractAlgorithm {
 	 * @param positions
 	 * @return
 	 */
-	private String[] translatePositionConstants(String[] positions) {
+	private static String[] translatePositionConstants(String[] positions) {
 		for (int i = 0; i < positions.length; i++) {
 			switch (positions[i]) {
 			case GraphicAttributeConstants.CENTERED:
@@ -196,7 +205,7 @@ public class ImageAssignmentCommand extends AbstractAlgorithm {
 	 * @param value
 	 * @return
 	 */
-	private String getConstantValue(String value) {
+	private static String getConstantValue(String value) {
 		switch (value) {
 		case POS_CENTERED:
 			return GraphicAttributeConstants.CENTERED;
