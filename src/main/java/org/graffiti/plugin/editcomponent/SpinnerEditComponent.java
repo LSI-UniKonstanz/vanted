@@ -28,7 +28,7 @@ import org.graffiti.plugin.parameter.AbstractLimitableParameter;
 /**
  * An <code>EditComponent</code>, displaying values in a JSpinner-manner.
  * 
- * @version 1.8
+ * @version 2.6.5
  * @vanted.revision 2.6.5
  */
 public class SpinnerEditComponent extends AbstractValueEditComponent {
@@ -59,27 +59,28 @@ public class SpinnerEditComponent extends AbstractValueEditComponent {
 		} else if (disp instanceof AbstractLimitableParameter) {
 			Comparable<?> min = ((AbstractLimitableParameter) disp).getMin();
 			Comparable<?> max = ((AbstractLimitableParameter) disp).getMax();
+			Number stepSize = ((AbstractLimitableParameter) disp).getValuesBall();
 			if (min instanceof Double) {
 				Double dMin = (Double) min;
 				Double dMax = (Double) max;
 				min = dMin.compareTo(Double.MIN_VALUE) == 0 ? null : min;
 				max = dMax.compareTo(Double.MAX_VALUE) == 0 ? null : max;
-				model = new SpinnerNumberModel((Double) disp.getValue(), min, max, Double.valueOf(1));
+				model = new SpinnerNumberModel((Double) disp.getValue(), min, max, stepSize);
 			} else if (min instanceof Float) {
 				Float fMin = (Float) min;
 				Float fMax = (Float) max;
 				model = new SpinnerNumberModel((Float) disp.getValue(),
 						fMin.compareTo(Float.MIN_VALUE) == 0 ? null : min,
-						fMax.compareTo(Float.MAX_VALUE) == 0 ? null : max, Float.valueOf(1));
+						fMax.compareTo(Float.MAX_VALUE) == 0 ? null : max, stepSize);
 			} else {
 				Integer iMin = (Integer) min;
 				Integer iMax = (Integer) max;
 				model = new SpinnerNumberModel((Integer) disp.getValue(),
 						iMin.compareTo(Integer.MIN_VALUE) == 0 ? null : min,
-						iMax.compareTo(Integer.MAX_VALUE) == 0 ? null : max, Integer.valueOf(1));
+						iMax.compareTo(Integer.MAX_VALUE) == 0 ? null : max, stepSize);
 			}
 		} else {
-			model = new SpinnerNumberModel(Double.valueOf(0), null, null, DEFAULT_STEP);
+			model = new SpinnerNumberModel(0d, null, null, DEFAULT_STEP);
 		}
 		this.jSpinner = new JSpinner(model);
 		jSpinner.setOpaque(false);

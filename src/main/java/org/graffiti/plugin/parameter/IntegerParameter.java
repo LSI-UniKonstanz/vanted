@@ -15,9 +15,10 @@ import java.util.Collection;
 import scenario.ProvidesScenarioSupportCommand;
 
 /**
- * Parameter that contains an <code>Integer</code> value.
+ * Parameter that can contain <code>Integer/int</code> values.
  * 
- * @version $Revision: 1.8 $
+ * @version 2.6.5
+ * @vanted.revision 2.6.5
  */
 public class IntegerParameter extends AbstractLimitableParameter implements ProvidesScenarioSupportCommand {
 	// ~ Instance fields ========================================================
@@ -31,35 +32,16 @@ public class IntegerParameter extends AbstractLimitableParameter implements Prov
 	/** The value of this parameter. */
 	private Integer value = null;
 
+	/** The distance between two values. If unset, the default value is 1. */
+	private Integer ball = 1;
+
 	// ~ Constructors ===========================================================
 
 	/**
-	 * Constructs a new integer parameter.
+	 * Constructs a new Integer parameter.
 	 * 
 	 * @param value
-	 *            the new integer value. May be null.
-	 * @param min
-	 *            the minimum value.
-	 * @param max
-	 *            the maximum value.
-	 * @param name
-	 *            the name of the parameter.
-	 * @param description
-	 *            the description of the parameter.
-	 */
-	public IntegerParameter(Integer value, Integer min, Integer max, String name, String description) {
-		super(name, description);
-
-		this.value = value;
-		this.min = min;
-		this.max = max;
-	}
-
-	/**
-	 * Constructs a new integer parameter.
-	 * 
-	 * @param value
-	 *            the new integer value. May be null.
+	 *            the new Integer value. May be null.
 	 * @param name
 	 *            the name of the parameter.
 	 * @param description
@@ -71,18 +53,64 @@ public class IntegerParameter extends AbstractLimitableParameter implements Prov
 	}
 
 	/**
-	 * Constructs a new integer parameter.
+	 * Constructs a new Integer parameter.
 	 * 
 	 * @param value
-	 *            the new integer value.
+	 *            the new Integer value. May be null.
+	 * @param min
+	 *            the minimum value.
+	 * @param max
+	 *            the maximum value.
 	 * @param name
 	 *            the name of the parameter.
 	 * @param description
 	 *            the description of the parameter.
 	 */
-	public IntegerParameter(int value, String name, String description) {
-		super(name, description);
-		this.value = Integer.valueOf(value);
+	public IntegerParameter(Integer value, Integer min, Integer max, String name, String description) {
+		this(value, name, description);
+		this.min = min;
+		this.max = max;
+	}
+
+	/**
+	 * Constructs a new Integer parameter.
+	 * 
+	 * @param value
+	 *            the new Integer value. May be null.
+	 * @param min
+	 *            the minimum value.
+	 * @param max
+	 *            the maximum value.
+	 * @param distance
+	 *            the distance between any two points in the [min, max] interval.
+	 * @param name
+	 *            the name of the parameter.
+	 * @param description
+	 *            the description of the parameter.
+	 */
+	public IntegerParameter(Integer value, Integer min, Integer max, Integer distance, String name,
+			String description) {
+		this(value, name, description);
+		this.min = min;
+		this.max = max;
+		this.ball = distance;
+	}
+
+	/**
+	 * Constructs a new Integer parameter.
+	 * 
+	 * @param value
+	 *            the new Integer value. May be null.
+	 * @param distance
+	 *            the distance between any two points in the open interval.
+	 * @param name
+	 *            the name of the parameter.
+	 * @param description
+	 *            the description of the parameter.
+	 */
+	public IntegerParameter(Integer value, Integer distance, String name, String description) {
+		this(value, name, description);
+		this.ball = distance;
 	}
 
 	// ~ Methods ================================================================
@@ -97,9 +125,9 @@ public class IntegerParameter extends AbstractLimitableParameter implements Prov
 	}
 
 	/**
-	 * Returns the maximum of the intervall.
+	 * Returns the maximum of the interval.
 	 * 
-	 * @return the maximum of the intervall.
+	 * @return the maximum of the interval.
 	 */
 	@Override
 	public Comparable<Integer> getMax() {
@@ -107,20 +135,15 @@ public class IntegerParameter extends AbstractLimitableParameter implements Prov
 	}
 
 	/**
-	 * Returns the minimum of the intervall.
+	 * Returns the minimum of the interval.
 	 * 
-	 * @return the minimum of the intervall.
+	 * @return the minimum of the interval.
 	 */
 	@Override
 	public Comparable<Integer> getMin() {
 		return min == null ? Integer.MIN_VALUE : min;
 	}
 
-	/**
-	 * Returns <code>true</code>, if the current value is valid.
-	 * 
-	 * @return DOCUMENT ME!
-	 */
 	@Override
 	public boolean isValid() {
 		if (value == null) {
@@ -155,7 +178,7 @@ public class IntegerParameter extends AbstractLimitableParameter implements Prov
 			try {
 				this.value = Integer.parseInt((String) value);
 			} catch (NumberFormatException e) {
-				
+
 				throw new IllegalArgumentException(e.getMessage());
 				// e.printStackTrace();
 			}
@@ -171,8 +194,23 @@ public class IntegerParameter extends AbstractLimitableParameter implements Prov
 		return value;
 	}
 
+	/**
+	 * Set new intervalue distance.
+	 * 
+	 * @param ball
+	 *            the change-size between two valid values
+	 */
+	public void setValuesBallSize(Integer ball) {
+		this.ball = ball;
+	}
+
+	@Override
+	public Number getValuesBall() {
+		return ball;
+	}
+
 	public String getScenarioCommand() {
-		return "Integer.valueOfParameter(" + getInteger().intValue() + ", \"" + getName() + "\", \"" + getDescription()
+		return "new IntegerParameter(" + getInteger().intValue() + ", \"" + getName() + "\", \"" + getDescription()
 				+ "\")";
 	}
 

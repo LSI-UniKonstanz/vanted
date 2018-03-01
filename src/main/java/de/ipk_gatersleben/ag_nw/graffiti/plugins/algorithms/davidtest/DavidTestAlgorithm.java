@@ -21,8 +21,14 @@ import org.graffiti.selection.Selection;
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.statistics.TabStatistics;
 
+/**
+ * Executes the David et. al statistical quicktest.
+ * 
+ * @version 2.6.5
+ */
 public class DavidTestAlgorithm extends AbstractAlgorithm {
 
+	/** Significance level (1..3 are valid). */
 	private int probab_123 = 1;
 
 	public String getName() {
@@ -66,10 +72,8 @@ public class DavidTestAlgorithm extends AbstractAlgorithm {
 
 	@Override
 	public Parameter[] getParameters() {
-		if (probab_123 < 1 || probab_123 > 3)
-			probab_123 = 1;
-		return new Parameter[] { new IntegerParameter(probab_123, "P (1=5%, 2=1%, 3=0.1%)",
-				"Select one of the significance levels (0/1/2)") };
+		return new Parameter[] { new IntegerParameter(probab_123, 1, 3, "P (1=5%, 2=1%, 3=0.1%)",
+				"Select one of the significance levels (1/2/3)") };
 	}
 
 	@Override
@@ -86,15 +90,12 @@ public class DavidTestAlgorithm extends AbstractAlgorithm {
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
-		if (probab_123 < 1 || probab_123 > 3)
-			throw new PreconditionException("Invalid significance level (1..3 are valid)!");
 		if (graph == null || graph.getNodes().size() <= 0)
 			throw new PreconditionException("No graph available or graph empty!");
 	}
 
 	@Override
 	public void reset() {
-		//
 		super.reset();
 	}
 

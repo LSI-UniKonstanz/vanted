@@ -2,11 +2,14 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.graph_generation;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import org.AttributeHelper;
@@ -32,6 +35,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.CircleLayouter
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
+/**
+ * Algorithm for generation of a random small-world network. It applies the
+ * Watts-Strogatz model.
+ * 
+ * @version 2.6.5
+ */
 public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 
 	@Override
@@ -53,7 +62,7 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 	public Parameter[] getParameters() {
 		return new Parameter[] { new IntegerParameter(numberOfNodes, "Number of nodes", "Number of nodes"),
 				new IntegerParameter(initDegree, "Mean degree K", "Initial node degree"),
-				new DoubleParameter(p, "Swap probability", "Edge swap probability"),
+				new DoubleParameter(p, 0d, 1d, .05, "Swap probability", "Edge swap probability"),
 				new BooleanParameter(label, "Add node label", "If enabled, each node will be labeld (1,2,3,...)"), };
 	}
 
@@ -74,10 +83,6 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 			throw new PreconditionException("Initial node degree should at least be 2");
 		if (initDegree > numberOfNodes - 1)
 			throw new PreconditionException("Initial node degree needs to be smaller than number of nodes minus one");
-		if (p < 0)
-			throw new PreconditionException("Negative edge-swap-probability is not supported");
-		if (p > 1)
-			throw new PreconditionException("Edge-swap-probability greater than 1 (100%) is not supported");
 	}
 
 	@Override
@@ -87,7 +92,12 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 
 	@Override
 	public String getDescription() {
-		return "<html>" + "Create small-world random network according to Watts and Strogatz model.";
+		return "<html>" + "Create small-world random network according to the Watts and Strogatz model.";
+	}
+
+	@Override
+	public KeyStroke getAcceleratorKeyStroke() {
+		return KeyStroke.getKeyStroke(KeyEvent.VK_2, InputEvent.ALT_DOWN_MASK);
 	}
 
 	Animator animator;

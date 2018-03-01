@@ -10,14 +10,14 @@
 package org.graffiti.plugin.parameter;
 
 /**
- * This abstract class provides an implementation for the <code>isValid</code>
- * method, using the <code>compareTo</code> method of the
- * <code>Comparable</code> interface.
+ * This abstract class provides a default implementation for the
+ * <code>toXMLString</code> method and specifies an interval size between the
+ * limitable parameter's values to be implemented for finer input control.
  * 
- * @version $Revision: 1.6 $
+ * @version 2.6.5
+ * @vanted.revision 2.6.5
  */
 public abstract class AbstractLimitableParameter extends AbstractSingleParameter implements LimitableParameter {
-	// ~ Constructors ===========================================================
 
 	/**
 	 * Constructs a new abstract limitable parameter.
@@ -31,18 +31,23 @@ public abstract class AbstractLimitableParameter extends AbstractSingleParameter
 		super(name, description);
 	}
 
-	// ~ Methods ================================================================
-
-	/**
-	 * @see org.graffiti.plugin.parameter.Parameter#toXMLString()
-	 */
 	@Override
 	public String toXMLString() {
 		return getStandardXML(getValue().toString());
 	}
 
-}
+	/**
+	 * The closed ball diameter exclusive for the current parameter value, such that<br/>
+	 * <br/>
+	 * 
+	 * v(t) = val<br/>
+	 * v(t+1) = (val +|- ballDiameter)<br/>
+	 * </br/>
+	 *
+	 * whereas <i>t</i> stands for time point.
+	 * 
+	 * @return a Number instance
+	 */
+	abstract public Number getValuesBall();
 
-// ------------------------------------------------------------------------------
-// end of file
-// ------------------------------------------------------------------------------
+}

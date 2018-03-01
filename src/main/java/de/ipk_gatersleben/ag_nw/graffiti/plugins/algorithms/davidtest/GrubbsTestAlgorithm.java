@@ -35,6 +35,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawComponent.MyComparableDataPoint;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.Experiment2GraphHelper;
 
+/**
+ * Executes the Grubbs' statistical test to detect outliers.
+ * 
+ * @version 2.6.5
+ */
 public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 
 	private double alphavalue = 0.05d;
@@ -76,7 +81,7 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 	public Parameter[] getParameters() {
 		if (alphavalue < 0 || alphavalue > 1)
 			alphavalue = 0.05d;
-		return new Parameter[] { new DoubleParameter(alphavalue, "alpha", "Use any alpha value, e.g. 0.05"),
+		return new Parameter[] { new DoubleParameter(alphavalue, 0d, 1d, .05, "alpha", "Use any alpha value, e.g. 0.05"),
 				new BooleanParameter(doRemoveOutliers, "Remove Outliers",
 						"If selected, all identified outliers will be removed from the dataset.") };
 	}
@@ -140,7 +145,7 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 									min = value.mean;
 									min_value = value;
 								}
-								n++; // System.out.println(value.toString());
+								n++;
 							}
 							double avg = sum / n;
 							double sumDiff = 0;
@@ -215,8 +220,6 @@ public class GrubbsTestAlgorithm extends AbstractAlgorithm {
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
-		if (alphavalue < 0 || alphavalue > 1)
-			throw new PreconditionException("Invalid alpha value (0..1 is valid)!");
 		if (graph == null || graph.getNodes().size() <= 0)
 			throw new PreconditionException("No graph available or graph empty!");
 	}
