@@ -266,9 +266,9 @@ public class SortIntoCluster extends AbstractAlgorithm {
 						continue;
 
 					int curIdx = 0;
+					@SuppressWarnings("unused")
 					double result;
 					while ((result = value - limits[curIdx++]) > 0) {
-						// System.out.println();
 					}
 
 					NodeTools.setClusterID(curNode, clusterNames[curIdx - 1]); // +2 because undo the decrement (+1) and

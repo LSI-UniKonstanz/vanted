@@ -4,12 +4,6 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti;
 
-/**
- * Created on 13/05/2004
- * Extended on 14/08/2015
- * 
- * @author Tobias Czauderna
- */
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,7 +34,12 @@ import org.OpenFileDialogService;
 import org.UNCFileLocationCheck;
 import org.graffiti.editor.GravistoService;
 
-@SuppressWarnings("nls")
+/**
+ * Created on 13/05/2004
+ * Extended on 14/08/2015
+ * 
+ * @author Tobias Czauderna
+ */
 public class FileHelper implements HelperClass {
 
 	public static String getFileName(final String defaultExt, final String description, String defaultFileName) {
@@ -75,7 +74,6 @@ public class FileHelper implements HelperClass {
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				file = fc.getSelectedFile();
 				fileName = file.getName();
-				// System.err.println(fileName);
 				String ext = defaultExt;
 
 				if (fileName.indexOf(".") == -1) {
@@ -86,7 +84,6 @@ public class FileHelper implements HelperClass {
 				// checks, if location is on UNC windows network path
 				if (UNCFileLocationCheck.showUNCPathConfirmDialogForPath(file) == UNCFileLocationCheck.CONFIRM) {
 
-					// System.err.println(fileName);
 					if (file.exists()) {
 						if (JOptionPane.showConfirmDialog(GravistoService.getInstance().getMainFrame(),
 								"<html>Do you want to overwrite the existing file <i>" + fileName + "</i>?</html>",

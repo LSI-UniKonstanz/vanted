@@ -252,7 +252,7 @@ public class DBEinputFileReader extends ExperimentDataFileReader {
 		return sampleIDcount;
 	}
 
-	private String checkNullError(String value, String errorMessageIfNull, String replaceWithForNull) {
+	private static String checkNullError(String value, String errorMessageIfNull, String replaceWithForNull) {
 		if (value == null) {
 			ErrorMsg.addErrorMessage(errorMessageIfNull);
 			return replaceWithForNull;
@@ -260,7 +260,7 @@ public class DBEinputFileReader extends ExperimentDataFileReader {
 		return value;
 	}
 
-	private String processTimeData(String timeVal) {
+	private static String processTimeData(String timeVal) {
 		if (timeVal != null) {
 			if (timeVal.endsWith(".0"))
 				timeVal = StringManipulationTools.stringReplace(timeVal, ".0", "");
@@ -277,7 +277,7 @@ public class DBEinputFileReader extends ExperimentDataFileReader {
 		dataCount = 0;
 	}
 
-	private int col(String col) {
+	private static int col(String col) {
 		if (col.length() == 1) {
 			char c1 = col.charAt(0);
 			return c1 - 64;

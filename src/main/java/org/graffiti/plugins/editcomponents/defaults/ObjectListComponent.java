@@ -36,7 +36,7 @@ public class ObjectListComponent extends ComboBoxEditComponent {
 			ObjectListParameter ola = (ObjectListParameter) disp;
 			this.comboText = ola.getPossibleValues().toArray();
 			this.comboValue = ola.getPossibleValues().toArray();
-			this.comboBox = new JComboBox(this.comboText);
+			this.comboBox = new JComboBox<>(this.comboText);
 			if (ola.getValue() != null)
 				comboBox.setSelectedItem(ola.getValue());
 			if (ola.getRenderer() != null)

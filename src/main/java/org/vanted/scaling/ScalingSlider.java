@@ -345,7 +345,7 @@ public class ScalingSlider extends ImmutableSlider implements ChangeListener, Fo
 			return false;
 	}
 
-	private void setScalingState() {
+	private static void setScalingState() {
 		if (AutomatonBean.getState().equals(State.ON_SLIDER.toString()))
 			AutomatonBean.setState(State.RESCALED);
 		else

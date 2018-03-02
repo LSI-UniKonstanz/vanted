@@ -141,7 +141,6 @@ public class PolygonalNodeShape extends RectangularNodeShape {
 	/**
 	 * @see org.graffiti.plugin.view.NodeShape#buildShape(NodeGraphicAttribute)
 	 */
-	@SuppressWarnings("unchecked")
 	public void buildShape(NodeGraphicAttribute graphics) {
 		this.nodeAttr = graphics;
 

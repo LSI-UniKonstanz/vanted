@@ -167,7 +167,7 @@ public abstract class AbstractAttributable implements Attributable {
 	 */
 	public void setByte(String path, byte value) {
 		assert path != null;
-		doSet(path, new Byte(value), BYTE_ATTRIBUTE);
+		doSet(path, Byte.valueOf(value), BYTE_ATTRIBUTE);
 	}
 
 	/**
@@ -381,7 +381,7 @@ public abstract class AbstractAttributable implements Attributable {
 	 */
 	public void setShort(String path, short value) {
 		assert path != null;
-		doSet(path, new Short(value), SHORT_ATTRIBUTE);
+		doSet(path, Short.valueOf(value), SHORT_ATTRIBUTE);
 	}
 
 	/**
@@ -1092,7 +1092,7 @@ public abstract class AbstractAttributable implements Attributable {
 		}
 	}
 
-	private Attribute getDefaultAttribute(Object o, int attributeType, String[] subPaths) {
+	private static Attribute getDefaultAttribute(Object o, int attributeType, String[] subPaths) {
 		Attribute a = null;
 		switch (attributeType) {
 		case BOOLEAN_ATTRIBUTE:

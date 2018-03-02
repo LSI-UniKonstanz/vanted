@@ -84,8 +84,6 @@ public abstract class LaunchGui extends AbstractEditorAlgorithm
 	}
 
 	private JComponent getLaunchButton(final Algorithm alg) {
-		final Graph g = graph;
-		final Selection s = selection;
 		JButton res = new JButton();
 		String sizetags = null;
 

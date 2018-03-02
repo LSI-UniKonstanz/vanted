@@ -28,11 +28,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  */
 public class CreateDistanceMatrixAlgorithm extends AbstractAlgorithm {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.DEBUG)
 			return "Create Distance Matrix from Data Points";
@@ -50,11 +45,6 @@ public class CreateDistanceMatrixAlgorithm extends AbstractAlgorithm {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		graph.getListenerManager().transactionStarted(this);
 		DistanceMatrix dm = new DistanceMatrix();
@@ -93,7 +83,7 @@ public class CreateDistanceMatrixAlgorithm extends AbstractAlgorithm {
 				+ "settings will be provided with future updates.";
 	}
 
-	private int calculateDistance(DataSetTable datasetTable1, DataSetTable datasetTable2, ArrayList<String> history,
+	private static int calculateDistance(DataSetTable datasetTable1, DataSetTable datasetTable2, ArrayList<String> history,
 			String lbl1, String lbl2) {
 		TreeSet<String> knownSubstanceNames = new TreeSet<String>();
 		int result = 0;

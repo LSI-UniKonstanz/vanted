@@ -61,7 +61,6 @@ public class LabelColorAttribute extends StringAttribute implements ColorSetAndG
 		assert o != null;
 
 		try {
-			// setString((String) o);
 			this.value = (String) o;
 		} catch (ClassCastException cce) {
 			throw new IllegalArgumentException("Invalid value type.");

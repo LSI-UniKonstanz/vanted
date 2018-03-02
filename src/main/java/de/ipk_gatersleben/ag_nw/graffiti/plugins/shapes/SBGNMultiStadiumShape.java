@@ -21,7 +21,6 @@ import org.graffiti.plugins.views.defaults.RectangleNodeShape;
 /**
  * @author Tobias Czauderna
  */
-@SuppressWarnings("nls")
 public class SBGNMultiStadiumShape extends RectangleNodeShape implements ProvidesAdditonalDrawingShapes {
 
 	ArrayList<Shape> shapes = null;
@@ -40,7 +39,6 @@ public class SBGNMultiStadiumShape extends RectangleNodeShape implements Provide
 
 	}
 
-	@SuppressWarnings("unused")
 	public SBGNMultiStadiumShape(boolean multi) {
 
 		this.offX = this.iOffX;

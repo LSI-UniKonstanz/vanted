@@ -366,7 +366,7 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 		return mapResult;
 	}
 
-	private void calcMinMaxMappingCountStatistics(MapResult mapResult,
+	private static void calcMinMaxMappingCountStatistics(MapResult mapResult,
 			HashSet<org.graffiti.graph.GraphElement> resultElements) {
 		int minMappCount = Integer.MAX_VALUE;
 		int maxMappCount = 0;
@@ -494,8 +494,8 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 		// if (substanceNameFromDataset.indexOf(":")>0)
 		// possibleOrganismId = substanceNameFromDataset.substring(0,
 		// substanceNameFromDataset.indexOf(":")).toUpperCase();
-		String possibleGeneIdFromDataset = substanceNameFromDataset
-				.substring(substanceNameFromDataset.indexOf(":") + 1);
+		// String possibleGeneIdFromDataset = substanceNameFromDataset
+		// 		.substring(substanceNameFromDataset.indexOf(":") + 1);
 		// matchingKo = KoService.getKoFromGeneId(possibleOrganismId,
 		// possibleGeneId);
 		for (org.graffiti.graph.GraphElement graphElement : workList) {

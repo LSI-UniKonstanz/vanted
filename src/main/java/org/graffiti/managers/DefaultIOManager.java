@@ -197,11 +197,11 @@ public class DefaultIOManager implements IOManager {
 				try {
 					InputStream inps = new MyByteArrayInputStream(out.getBuff());
 					if (is.validFor(inps)) {
-						// System.out.println(ins.size() + " input serializers for file extension " +
-						// extSearch + ". Selected "
-						// + is.getClass().getCanonicalName());
+						inps.close();
 						return is;
 					}
+					
+					inps.close();
 				} catch (Exception e) {
 					ErrorMsg.addErrorMessage(e);
 				}

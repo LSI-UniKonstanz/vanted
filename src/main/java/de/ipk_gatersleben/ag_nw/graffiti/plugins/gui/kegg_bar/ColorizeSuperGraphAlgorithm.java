@@ -105,8 +105,6 @@ public class ColorizeSuperGraphAlgorithm extends AbstractAlgorithm {
 		} catch (ServiceException er) {
 			ErrorMsg.addErrorMessage(er);
 		}
-		if (organisms == null)
-			return;
 		OrganismEntry[] organismSelections = TabKegg.getKEGGorganismFromUser(organisms);
 		if (organismSelections == null)
 			return;

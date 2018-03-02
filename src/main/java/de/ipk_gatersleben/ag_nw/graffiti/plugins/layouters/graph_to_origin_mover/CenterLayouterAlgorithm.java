@@ -168,7 +168,6 @@ public class CenterLayouterAlgorithm extends AbstractAlgorithm implements Provid
 	 *             Vector2d>)} instead
 	 */
 	@Deprecated
-	@SuppressWarnings("unchecked")
 	public static void moveBends(Edge e, double moveX, double moveY,
 			HashMap<CoordinateAttribute, Vector2d> bends2newPositions) {
 		EdgeHelper.moveBends(e, moveX, moveY, bends2newPositions);

@@ -94,7 +94,7 @@ public class GeneExpressionFileReader extends ExperimentDataFileReader {
 	 * @param attributeName
 	 * @param excelColumnHeader
 	 */
-	private void checkHeaderInfo(ArrayList<Annotation> anno, TableData myData, String attributeName,
+	private static void checkHeaderInfo(ArrayList<Annotation> anno, TableData myData, String attributeName,
 			String excelColumnHeader) {
 		if (getHeaderColumn(myData, excelColumnHeader) >= 0) {
 			anno.add(new Annotation(attributeName, getHeaderColumn(myData, excelColumnHeader)));

@@ -390,12 +390,12 @@ public class MegaCreateTool extends MegaTools {
 		}
 	}
 
-	private boolean getIsCtrlDown(MouseEvent e) {
-		return (e.getModifiers() & InputEvent.CTRL_MASK) != 0;
+	private static boolean getIsCtrlDown(MouseEvent e) {
+		return (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0;
 	}
 
-	private boolean getIsShiftDown(MouseEvent e) {
-		return (e.getModifiers() & InputEvent.SHIFT_MASK) != 0;
+	private static boolean getIsShiftDown(MouseEvent e) {
+		return (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0;
 	}
 
 	/**

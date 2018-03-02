@@ -30,7 +30,6 @@ import org.graffiti.graph.Node;
  * @author $Author $
  * @version $Revision: 1.9 $
  */
-@SuppressWarnings("unchecked")
 public class GraphElementsDeletionEdit extends GraphElementsEdit {
 	// ~ Static fields/initializers =============================================
 

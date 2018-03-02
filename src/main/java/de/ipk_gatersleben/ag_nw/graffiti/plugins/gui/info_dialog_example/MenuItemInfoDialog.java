@@ -2,7 +2,7 @@
  * Copyright (c) 2003-2007 Network Analysis Group, IPK Gatersleben
  *******************************************************************************/
 
-package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_cluster_analysis;
+package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_example;
 
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
@@ -52,7 +52,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 	/**
 	 * DOCUMENT ME!
 	 */
-	public static final String ID = "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe.MenuItemInfoDialog";
+	public static final String ID = "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_example.MenuItemInfoDialog";
 
 	/**
 	 * Create Menu.

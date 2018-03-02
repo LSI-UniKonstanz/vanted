@@ -35,7 +35,6 @@ public class PolyLineEdgeShape extends LineEdgeShape {
 	// ~ Instance fields ========================================================
 
 	/** the <code>Collection</code> of bends of this edge. */
-	@SuppressWarnings("unchecked")
 	protected Collection bends;
 
 	/**

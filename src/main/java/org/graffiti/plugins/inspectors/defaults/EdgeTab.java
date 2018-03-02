@@ -45,7 +45,6 @@ public class EdgeTab extends AbstractTab {
 		return instance;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void selectionChanged(SelectionEvent e) {
 		/*
 		 * if selection contains no edges and nodes only switch to nodetab

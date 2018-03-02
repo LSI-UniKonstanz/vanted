@@ -24,7 +24,6 @@ public class StandardAttributeComponents extends EditorPluginAdapter {
 	/**
 	 * Creates a new StandardAttributeComponents object.
 	 */
-	@SuppressWarnings("unchecked")
 	public StandardAttributeComponents() {
 		this.attributeComponents.put(NodeLabelAttribute.class, LabelComponent.class);
 		this.attributeComponents.put(EdgeLabelAttribute.class, LabelComponent.class);

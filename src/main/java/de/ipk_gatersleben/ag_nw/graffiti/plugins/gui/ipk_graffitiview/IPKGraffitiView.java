@@ -464,7 +464,7 @@ public class IPKGraffitiView extends GraffitiView
 
 	}
 
-	private Color getTargetColor(Color c, double dist, double maxd, float src, float tgt) {
+	private static Color getTargetColor(Color c, double dist, double maxd, float src, float tgt) {
 		float alpha;
 		if (dist < maxd)
 			alpha = (float) ((maxd - dist) / maxd * (src - tgt) + tgt);
@@ -504,7 +504,7 @@ public class IPKGraffitiView extends GraffitiView
 		gcbd = null;
 	}
 
-	private double getPositiveMin(double dl, double dt, double dr, double db) {
+	private static double getPositiveMin(double dl, double dt, double dr, double db) {
 		double min = Double.MAX_VALUE;
 		dl = Math.abs(dl);
 		dt = Math.abs(dt);
@@ -525,11 +525,6 @@ public class IPKGraffitiView extends GraffitiView
 		return useAntialiasing;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.options.OptionPane#getComponent()
-	 */
 	public JComponent getOptionDialogComponent() {
 		JPanel options = new JPanel();
 
@@ -549,11 +544,6 @@ public class IPKGraffitiView extends GraffitiView
 		return options;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.options.OptionPane#init()
-	 */
 	public void init(JComponent options) {
 		JCheckBox checkBoxUseAntiAliasing = (JCheckBox) options.getClientProperty("checkBoxUseAntiAliasing");
 		checkBoxUseAntiAliasing.setSelected(useAntialiasing);
@@ -564,43 +554,22 @@ public class IPKGraffitiView extends GraffitiView
 		return getOptionName();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.options.OptionPane#save()
-	 */
 	public void save(JComponent options) {
 		JCheckBox checkBoxUseAntiAliasing = (JCheckBox) options.getClientProperty("checkBoxUseAntiAliasing");
 		useAntialiasing = checkBoxUseAntiAliasing.isSelected();
 		GravistoService.getInstance().getMainFrame().repaint();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.options.OptionPane#getCategory()
-	 */
 	public String getCategory() {
 		return "View";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.options.OptionPane#getOptionName()
-	 */
 	public String getOptionName() {
 		return "Network View (default)";
 	}
 
 	public boolean printInProgress = false;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.print.Printable#print(java.awt.Graphics,
-	 * java.awt.print.PageFormat, int)
-	 */
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
 		synchronized (this) {
 			System.out.println("Printing Page " + pageIndex + ", Page Orientation: " + pageFormat.getOrientation());
@@ -639,7 +608,7 @@ public class IPKGraffitiView extends GraffitiView
 	 *            Value 2
 	 * @return The smaller one of the parameters
 	 */
-	private double min2(double smallestX, double cx) {
+	private static double min2(double smallestX, double cx) {
 		return smallestX < cx ? smallestX : cx;
 	}
 

@@ -87,7 +87,7 @@ public class XMLdataTablePane extends JComponent {
 
 	}
 
-	private JComponent getXMLeditView(SubstanceInterface n) {
+	private static JComponent getXMLeditView(SubstanceInterface n) {
 		JEditorPane jep = null;
 		try {
 			org.w3c.dom.Document doc = XMLHelper.getDocumentFromXMLstring(n.getXMLstring());

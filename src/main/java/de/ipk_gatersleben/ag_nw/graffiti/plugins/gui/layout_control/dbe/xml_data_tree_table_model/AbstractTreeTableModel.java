@@ -155,8 +155,7 @@ public abstract class AbstractTreeTableModel implements TreeTableModel {
 	// Default impelmentations for methods in the TreeTableModel interface.
 	//
 
-	@SuppressWarnings("unchecked")
-	public Class getColumnClass(int column) {
+	public Class<?> getColumnClass(int column) {
 		return Object.class;
 	}
 

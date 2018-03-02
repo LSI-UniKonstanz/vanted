@@ -34,11 +34,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawC
  */
 public class CreateGOchildrenTtestHistogramAlgorithm extends AbstractAlgorithm
 		implements AlgorithmWithComponentDescription {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+
 	public String getName() {
 		return "Add t-Test Significance Histogram";
 	}
@@ -71,11 +67,6 @@ public class CreateGOchildrenTtestHistogramAlgorithm extends AbstractAlgorithm
 				+ "needs to be performed before issuing this <br>" + "command!";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		try {
 			graph.getListenerManager().transactionStarted(this);
@@ -97,7 +88,7 @@ public class CreateGOchildrenTtestHistogramAlgorithm extends AbstractAlgorithm
 		}
 	}
 
-	private void processNode(NodeHelper nh, TreeSet<String> knownSeriesAndTimeIDs) {
+	private static void processNode(NodeHelper nh, TreeSet<String> knownSeriesAndTimeIDs) {
 		Collection<Node> childNodes = nh.getAllOutChildNodes();
 		TreeMap<String, Integer> significance2frequency = new TreeMap<String, Integer>();
 		for (String ci : knownSeriesAndTimeIDs)
@@ -140,7 +131,7 @@ public class CreateGOchildrenTtestHistogramAlgorithm extends AbstractAlgorithm
 		nh.setChartType(GraffitiCharts.BAR);
 	}
 
-	private TreeSet<String> getChildNodeSeriesNamesAndTimes(HashSet<Node> processedNodes, NodeHelper nh,
+	private static TreeSet<String> getChildNodeSeriesNamesAndTimes(HashSet<Node> processedNodes, NodeHelper nh,
 			Collection<String> knownSeriesIDs) {
 		TreeSet<String> result = new TreeSet<String>();
 		if (!processedNodes.contains(nh.getGraphNode())) {

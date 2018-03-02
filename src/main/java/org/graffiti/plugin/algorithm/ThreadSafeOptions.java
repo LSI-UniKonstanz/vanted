@@ -108,13 +108,11 @@ public class ThreadSafeOptions implements HelperClass {
 	 * saves/caches the information about pattern type and number for all nodes of a
 	 * graph
 	 */
-	@SuppressWarnings("unchecked")
 	public ArrayList nodeArray;
 
 	/**
 	 * Used for search from Node to NodeCacheEntry (which includes the Node)
 	 */
-	@SuppressWarnings("unchecked")
 	public HashMap nodeSearch;
 
 	/**

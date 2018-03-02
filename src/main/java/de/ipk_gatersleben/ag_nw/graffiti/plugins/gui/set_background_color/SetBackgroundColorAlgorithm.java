@@ -64,7 +64,7 @@ public class SetBackgroundColorAlgorithm extends AbstractEditorAlgorithm
 
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
-		return KeyStroke.getKeyStroke('B', InputEvent.ALT_MASK);
+		return KeyStroke.getKeyStroke('B', InputEvent.ALT_DOWN_MASK);
 	}
 
 	/*

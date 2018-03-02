@@ -10,7 +10,7 @@
 // ==============================================================================
 // $Id$
 
-package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_cluster_analysis;
+package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_example;
 
 import org.graffiti.editor.GravistoService;
 import org.graffiti.plugin.gui.GraffitiComponent;
@@ -19,10 +19,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.DBE_EditorPluginAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
 
 /**
- * This is a simple example for a gui component plugin for Graffiti.
+ * This is a simple example for a GUI component plugin for Graffiti.
  * 
  * @author chris
  */
+@Deprecated(since="2.6.5")
 public class PluginInfoMenu extends DBE_EditorPluginAdapter {
 	// ~ Constructors ===========================================================
 

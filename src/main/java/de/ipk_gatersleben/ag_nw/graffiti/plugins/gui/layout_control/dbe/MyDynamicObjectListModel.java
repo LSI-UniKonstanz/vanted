@@ -12,7 +12,7 @@ import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
-public class MyDynamicObjectListModel implements ListModel {
+public class MyDynamicObjectListModel implements ListModel<Object> {
 
 	private ArrayList<Object> items = new ArrayList<Object>();
 	ArrayList<ListDataListener> ll = new ArrayList<ListDataListener>();

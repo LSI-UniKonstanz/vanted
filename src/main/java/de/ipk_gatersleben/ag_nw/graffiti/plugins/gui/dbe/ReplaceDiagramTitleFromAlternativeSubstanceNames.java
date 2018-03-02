@@ -81,6 +81,7 @@ public class ReplaceDiagramTitleFromAlternativeSubstanceNames extends AbstractAl
 			if (result == null) {
 				MainFrame.showMessageDialog("No value selected, substance ids remain unchanged.", "Information");
 			} else {
+				@SuppressWarnings("unused")
 				int workCnt = 0;
 				String number = (String) result;
 				if (number.contains(" ")) {

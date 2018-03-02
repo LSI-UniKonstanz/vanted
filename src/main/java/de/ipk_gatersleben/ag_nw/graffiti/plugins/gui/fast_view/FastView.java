@@ -141,8 +141,8 @@ public class FastView extends JComponent implements Printable, GraphView {
 		final JSpinner minVal = new JSpinner(new SpinnerNumberModel(0d, null, null, 0.5d));
 		final JSpinner maxVal = new JSpinner(new SpinnerNumberModel(0d, null, null, 0.5d));
 
-		final DefaultComboBoxModel comboModel = new DefaultComboBoxModel();
-		final JComboBox attributeSelection = new JComboBox(comboModel);
+		final DefaultComboBoxModel<AttributePathNameSearchType> comboModel = new DefaultComboBoxModel<>();
+		final JComboBox<AttributePathNameSearchType> attributeSelection = new JComboBox<>(comboModel);
 
 		final JCheckBox considerNodesAttribute = new JCheckBox("Evaluate Node Attribute Values", true);
 		final JCheckBox considerEdgesAttribute = new JCheckBox("Evaluate Edge Attribute Values", false);

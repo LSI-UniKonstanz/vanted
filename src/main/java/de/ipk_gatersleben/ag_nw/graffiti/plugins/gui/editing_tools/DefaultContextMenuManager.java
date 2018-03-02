@@ -94,13 +94,6 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 
 	ImageBundle iBundle = ImageBundle.getInstance();
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.managers.IContextMenuManager#getContextMenu(java.lang.Object,
-	 * java.awt.event.MouseEvent)
-	 */
 	public JPopupMenu getContextMenu(MouseEvent e) {
 		PluginManager pm = GravistoService.getInstance().getMainFrame().getPluginManager();
 		Collection<PluginEntry> plugins = pm.getPluginEntries();
@@ -202,7 +195,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 	 *            to determine exact position
 	 * @return new JMenuItem
 	 */
-	private JMenuItem getDetachedWindowSnapMode(MouseEvent mouseEvent) {
+	private static JMenuItem getDetachedWindowSnapMode(MouseEvent mouseEvent) {
 		JMenuItem mItem;
 		GraffitiFrame frame = null; // the detached source-frame
 		final Object _IPKgraffitiView = mouseEvent.getSource();
@@ -235,7 +228,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		return mItem;
 	}
 
-	private JMenuItem getDetachWindowCommand() {
+	private static JMenuItem getDetachWindowCommand() {
 		JMenuItem menu = new JMenuItem("Detach/Attach");
 		menu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -245,7 +238,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		return menu;
 	}
 
-	private Collection<JMenuItem> getDirectMouseClickContextCommands(MouseEvent lastMouseE, Component lastMouseSrc,
+	private static Collection<JMenuItem> getDirectMouseClickContextCommands(MouseEvent lastMouseE, Component lastMouseSrc,
 			Graph graph, Collection<PluginEntry> pluginEntries) {
 		Collection<JMenuItem> result = new ArrayList<JMenuItem>();
 		for (Object o : pluginEntries) {
@@ -463,7 +456,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 	 * @param pluginEntries
 	 *            DOCUMENT ME!
 	 */
-	private void getPluginMenuItems(Iterator<PluginEntry> iter, JMenu pluginEntries, JMenu nodeEntries,
+	private static void getPluginMenuItems(Iterator<PluginEntry> iter, JMenu pluginEntries, JMenu nodeEntries,
 			JMenu edgeEntries, Collection<Node> selectedNodes, Collection<Edge> selectedEdges) {
 		while (iter.hasNext()) {
 			DefaultPluginEntry element = (DefaultPluginEntry) iter.next();
@@ -519,7 +512,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 	// return false;
 	// }
 
-	private void processPlugins(JMenu pluginEntries, JMenu nodeEntries, JMenu edgeEntries,
+	private static void processPlugins(JMenu pluginEntries, JMenu nodeEntries, JMenu edgeEntries,
 			Collection<Node> selectedNodes, Collection<Edge> selectedEdges, GenericPlugin plugin) {
 		if ((plugin instanceof ProvidesGeneralContextMenu) || (plugin instanceof ProvidesNodeContextMenu)
 				|| (plugin instanceof ProvidesEdgeContextMenu)) {
@@ -527,7 +520,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		}
 	}
 
-	private void processAlgorithms(JMenu pluginEntries, JMenu nodeEntries, JMenu edgeEntries,
+	private static void processAlgorithms(JMenu pluginEntries, JMenu nodeEntries, JMenu edgeEntries,
 			Collection<Node> selectedNodes, Collection<Edge> selectedEdges, GenericPlugin plugin) {
 		if (plugin.getAlgorithms() != null) {
 			Algorithm[] algos = plugin.getAlgorithms();
@@ -540,7 +533,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 		}
 	}
 
-	private void processExtensions(JMenu pluginEntries, JMenu nodeEntries, JMenu edgeEntries,
+	private static void processExtensions(JMenu pluginEntries, JMenu nodeEntries, JMenu edgeEntries,
 			Collection<Node> selectedNodes, Collection<Edge> selectedEdges, GenericPlugin plugin) {
 		if (plugin.getExtensions() != null) {
 			Extension[] extensions = plugin.getExtensions();
@@ -562,7 +555,7 @@ public class DefaultContextMenuManager extends ContextMenuManager {
 	 * @param extensions
 	 * @param i
 	 */
-	private void processContextMenuInterfaces(JMenu pluginEntries, JMenu nodeEntries, JMenu edgeEntries,
+	private static void processContextMenuInterfaces(JMenu pluginEntries, JMenu nodeEntries, JMenu edgeEntries,
 			Collection<Node> selectedNodes, Collection<Edge> selectedEdges, Object object) {
 		if (object instanceof Algorithm) {
 			GravistoService.getInstance().algorithmAttachData((Algorithm) object);

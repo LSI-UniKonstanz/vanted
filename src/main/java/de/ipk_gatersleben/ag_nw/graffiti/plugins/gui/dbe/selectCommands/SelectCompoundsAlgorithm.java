@@ -35,11 +35,6 @@ public class SelectCompoundsAlgorithm extends AbstractAlgorithm {
 			throw new PreconditionException("No active graph editor window found!");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS_ENH))
 			return null;
@@ -59,16 +54,11 @@ public class SelectCompoundsAlgorithm extends AbstractAlgorithm {
 		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.SELECTION));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		ArrayList<Node> compounds = new ArrayList<Node>();
 		for (Node n : graph.getNodes()) {
-			String label = AttributeHelper.getLabel(n, null);
 			boolean added = false;
+			// String label = AttributeHelper.getLabel(n, null);
 			// if (label != null) {
 			// CompoundEntry ce = CompoundService.getInformation(label);
 			// if (ce != null && ce.isValid()) {

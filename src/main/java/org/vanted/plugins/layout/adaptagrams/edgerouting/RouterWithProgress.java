@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 /**
  * @author Tobias Czauderna
  */
-@SuppressWarnings("nls")
 public class RouterWithProgress extends Router {
 
 	BackgroundTaskStatusProviderSupportingExternalCall backgroundTaskStatusProvider = null;

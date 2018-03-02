@@ -1400,7 +1400,6 @@ public class GraffitiView extends AbstractView implements View2D, GraphView, Gra
 		logger.debug("in transaction: updating " + setDependendComponents.size() + " dependend components");
 		// long size = setDependendComponents.size();
 		long time = System.currentTimeMillis();
-		long counter = 0;
 		final int numDepComp = setDependendComponents.size();
 		if (numDepComp > 4000) {
 			int threads = SystemAnalysis.getNumberOfCPUs();
@@ -1614,7 +1613,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView, Gra
 
 		try {
 			invZoomedPoint = zoom.inverseTransform(e.getPoint(), null);
-			MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiers(),
+			MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(),
 					(int) (invZoomedPoint.getX()), (int) (invZoomedPoint.getY()), e.getClickCount(),
 					e.isPopupTrigger());
 
@@ -1638,7 +1637,7 @@ public class GraffitiView extends AbstractView implements View2D, GraphView, Gra
 
 		try {
 			invZoomedPoint = zoom.inverseTransform(e.getPoint(), null);
-			MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiers(),
+			MouseEvent newME = new MouseEvent((Component) e.getSource(), e.getID(), e.getWhen(), e.getModifiersEx(),
 					(int) (invZoomedPoint.getX()), (int) (invZoomedPoint.getY()), e.getClickCount(),
 					e.isPopupTrigger());
 

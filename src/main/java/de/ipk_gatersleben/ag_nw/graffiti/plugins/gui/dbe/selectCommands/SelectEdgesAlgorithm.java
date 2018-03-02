@@ -48,11 +48,6 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 
 	private boolean extendSelection = true;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		return "Select Edges";
 	}
@@ -145,11 +140,6 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 			throw new PreconditionException("Current graph contains no edges which may be selected.");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		try {
 			graph.getListenerManager().transactionStarted(this);
@@ -205,7 +195,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 		return result;
 	}
 
-	private boolean parallelEdgeExists(Edge e) {
+	private static boolean parallelEdgeExists(Edge e) {
 		if (e.isDirected()) {
 			for (Edge e2 : e.getSource().getDirectedOutEdges()) {
 				if (e == e2)
@@ -227,7 +217,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 		}
 	}
 
-	private boolean antiParallelEdgeExists(Edge e) {
+	private static boolean antiParallelEdgeExists(Edge e) {
 		if (e.isDirected()) {
 			for (Edge e2 : e.getTarget().getDirectedOutEdges()) {
 				if (e == e2)
@@ -241,7 +231,7 @@ public class SelectEdgesAlgorithm extends AbstractAlgorithm {
 		}
 	}
 
-	private boolean isParallelRegardlessOfDirection(Edge e1, Edge e2) {
+	private static boolean isParallelRegardlessOfDirection(Edge e1, Edge e2) {
 		if (e1.getSource() == e2.getSource() && e1.getTarget() == e2.getTarget())
 			return true;
 		if (e1.getTarget() == e2.getSource() && e1.getSource() == e2.getTarget())

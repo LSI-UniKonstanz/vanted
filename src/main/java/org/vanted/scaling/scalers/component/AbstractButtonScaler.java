@@ -148,7 +148,7 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	 * @param button
 	 *            AbstractButton
 	 */
-	private void modifyHTML(String t, AbstractButton button) {
+	private static void modifyHTML(String t, AbstractButton button) {
 		if (!HTMLSupport.isHTMLStyled(t))
 			return;
 
@@ -178,7 +178,7 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	 * @param button
 	 *            AbstractButton
 	 */
-	private void modifyHTMLTooltip(String tooltip, AbstractButton button) {
+	private static void modifyHTMLTooltip(String tooltip, AbstractButton button) {
 		if (!HTMLSupport.isHTMLStyled(tooltip))
 			return;
 

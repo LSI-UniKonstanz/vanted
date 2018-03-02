@@ -32,7 +32,6 @@ public class AttributeComponentManager implements PluginManagerListener {
 	// ~ Instance fields ========================================================
 
 	/** Maps attribute classes to attributeComponent classes. */
-	@SuppressWarnings("unchecked")
 	private Map attributeComponents;
 
 	// ~ Constructors ===========================================================

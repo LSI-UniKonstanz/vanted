@@ -185,19 +185,19 @@ public class NodeHelper implements Node, HelperClass {
 		}
 	}
 
-	private String checkStringFormat(String text) {
+	private static String checkStringFormat(String text) {
 		if (text == null || text.equals("NA"))
 			return "NA";
 		else
 			return "\"" + text + "\"";
 	}
 
-	private String checkFormat(String text) {
+	private static String checkFormat(String text) {
 		text = StringManipulationTools.stringReplace(text, "\"", "\\\"");
 		return text;
 	}
 
-	private String getRowLabel(int i, int minWidth) {
+	private static String getRowLabel(int i, int minWidth) {
 		String result = "" + i;
 		while (result.length() < minWidth)
 			result = "0" + result;

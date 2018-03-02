@@ -63,7 +63,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKnodeCom
  * 
  * @version $Revision$
  */
-@SuppressWarnings("nls")
 public class PPTAlgorithm extends AbstractAlgorithm {
 
 	private static boolean exportCloneMarkers = false;
@@ -362,7 +361,7 @@ public class PPTAlgorithm extends AbstractAlgorithm {
 
 	}
 
-	private String toUnicode(String c) {
+	private static String toUnicode(String c) {
 
 		if (c.compareTo("92") == 0) {
 

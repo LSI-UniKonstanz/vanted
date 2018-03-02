@@ -18,10 +18,9 @@ import org.graffiti.plugin.editcomponent.ValueEditComponent;
 /**
  * @author Christian Klukas (c) 2008 IPK-Gatersleben
  */
-@SuppressWarnings("rawtypes")
-public class LineModeCellRenderer implements ListCellRenderer {
+public class LineModeCellRenderer implements ListCellRenderer<Object> {
 
-	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 			boolean cellHasFocus) {
 
 		JLabel result = new JLabel();

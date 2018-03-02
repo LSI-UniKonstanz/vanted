@@ -35,13 +35,12 @@ public class CalcClassPathJarsMd5 {
 		List<Pair<String, String>> listJarMd5Pairs = new ArrayList<Pair<String, String>>();
 
 		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
+			MessageDigest.getInstance("MD5");
 
 			if (CalcClassPathJarsMd5.class.getClassLoader() instanceof URLClassLoader) {
 				URLClassLoader cl = (URLClassLoader) CalcClassPathJarsMd5.class.getClassLoader();
 				for (URL jarurl : cl.getURLs()) {
-					try {
-						FileInputStream fis = new FileInputStream(new File(jarurl.toURI()));
+					try (FileInputStream fis = new FileInputStream(new File(jarurl.toURI()))) {
 						fis.available();
 						byte[] readAllBytes = Files.readAllBytes(Paths.get(jarurl.toURI()));
 						String md5 = DigestUtils.md5Hex(readAllBytes);

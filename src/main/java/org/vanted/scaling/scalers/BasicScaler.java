@@ -296,7 +296,7 @@ public class BasicScaler implements Scaler {
 	 * 
 	 * @return true if the LAF-Default should be modified
 	 */
-	private boolean endsWithOneOf(String text, String[] suffixes) {
+	private static boolean endsWithOneOf(String text, String[] suffixes) {
 		final String t = text;
 
 		return Arrays.stream(suffixes).anyMatch(new Predicate<String>() {
@@ -316,7 +316,7 @@ public class BasicScaler implements Scaler {
 	 * @return lower-case representation of the <code>key</code> argument, or empty
 	 *         <code>String</code>, if <code>key</code> is not <code>String</code>.
 	 */
-	private String lower(Object key) {
+	private static String lower(Object key) {
 		return (key instanceof String) ? ((String) key).toLowerCase(Locale.ROOT) : "";
 	}
 }

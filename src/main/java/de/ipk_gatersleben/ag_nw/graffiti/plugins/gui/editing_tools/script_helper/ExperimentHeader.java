@@ -164,7 +164,7 @@ public class ExperimentHeader implements ExperimentHeaderInterface {
 		r.append("</experiment>");
 	}
 
-	public ExperimentHeader(Map map) {
+	public ExperimentHeader(Map<String, Object> map) {
 		this();
 		setExperimentname((String) map.get("experimentname"));
 		if (getExperimentname() == null)

@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -56,9 +57,9 @@ public class ObjectAttributeService implements HelperClass {
 				String curNumber = serializedObject.substring(0, 3);
 				Integer curVal = Integer.valueOf(curNumber);
 				if (curVal.intValue() > Byte.MAX_VALUE)
-					bytes.add(new Byte((byte) -(curVal.intValue() - Byte.MAX_VALUE)));
+					bytes.add(Byte.valueOf((byte) -(curVal.intValue() - Byte.MAX_VALUE)));
 				else
-					bytes.add(new Byte(curVal.byteValue()));
+					bytes.add(Byte.valueOf(curVal.byteValue()));
 				serializedObject = serializedObject.substring(3);
 			}
 			byte[] buf = new byte[bytes.size()];
@@ -99,21 +100,28 @@ public class ObjectAttributeService implements HelperClass {
 			try {
 				String cn = string.substring(0, string.indexOf("$"));
 				Class<?> cl = Class.forName(cn);
-				Object o = cl.newInstance();
+				Object o = cl.getDeclaredConstructor().newInstance();
 				if (o instanceof ProvidesStringInitMethod) {
 					((ProvidesStringInitMethod) o).fromString(objstring);
 				}
 				return o;
 			} catch (ClassNotFoundException e) {
 				ErrorMsg.addErrorMessage(e.getLocalizedMessage());
-				return null;
 			} catch (InstantiationException e) {
 				ErrorMsg.addErrorMessage(e.getLocalizedMessage());
-				return null;
 			} catch (IllegalAccessException e) {
 				ErrorMsg.addErrorMessage(e.getLocalizedMessage());
-				return null;
+			} catch (IllegalArgumentException e) {
+				ErrorMsg.addErrorMessage(e.getLocalizedMessage());
+			} catch (InvocationTargetException e) {
+				ErrorMsg.addErrorMessage(e.getLocalizedMessage());
+			} catch (NoSuchMethodException e) {
+				ErrorMsg.addErrorMessage(e.getLocalizedMessage());
+			} catch (SecurityException e) {
+				ErrorMsg.addErrorMessage(e.getLocalizedMessage());
 			}
+			
+			return null;
 		}
 	}
 }

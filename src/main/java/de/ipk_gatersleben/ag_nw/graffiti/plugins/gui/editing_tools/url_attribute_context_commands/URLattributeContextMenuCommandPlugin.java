@@ -86,7 +86,7 @@ public class URLattributeContextMenuCommandPlugin extends IPK_PluginAdapter
 		return result;
 	}
 
-	private String getMenuItemTitle(Attribute a, boolean modifyCommand, URLAttribute ua, String desc) {
+	private static String getMenuItemTitle(Attribute a, boolean modifyCommand, URLAttribute ua, String desc) {
 		String title = URLAttributeEditor.getDescription(ua, true, modifyCommand).trim() + " " + desc;
 		title = StringManipulationTools.removeHTMLtags(title);
 		if (a.getValue() != null) {

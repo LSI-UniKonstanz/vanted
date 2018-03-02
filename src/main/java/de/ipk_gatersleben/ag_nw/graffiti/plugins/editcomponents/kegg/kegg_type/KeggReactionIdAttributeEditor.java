@@ -193,7 +193,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 
 		JLabel reacDesc = new JLabel("");
 
-		MyReactionList reacList = new MyReactionList(rl.toArray(), reacDesc, reactionIdEditor, reactionTypeSelection,
+		MyReactionList reacList = new MyReactionList(rl.toArray(new Reaction[0]), reacDesc, reactionIdEditor, reactionTypeSelection,
 				l1, l2, l3);
 
 		Object[] input = MyInputHelper.getInput(
@@ -260,7 +260,6 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				@SuppressWarnings("unchecked")
 				DefaultListModel<Reaction> model = (DefaultListModel<Reaction>) reacSel.getModel();
 				
 				if (initialReaction != null)
@@ -385,7 +384,7 @@ public class KeggReactionIdAttributeEditor extends AbstractValueEditComponent im
 		JLabel reacDesc = new JLabel("");
 
 		MyReactionList reacList = new MyReactionList(
-				(p.getReactions() != null ? p.getReactions().toArray() : new Object[] {}), reacDesc, reactionIdEditor,
+				(p.getReactions() != null ? p.getReactions().toArray(new Reaction[0]) : new Reaction[] {}), reacDesc, reactionIdEditor,
 				reactionTypeSelection, l1, l2, l3);
 
 		Object[] input = MyInputHelper.getInput(getReactionSelection(r, null, null, reacList, entry2graphNode, p),

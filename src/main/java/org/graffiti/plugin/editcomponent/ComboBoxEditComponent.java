@@ -38,7 +38,7 @@ public class ComboBoxEditComponent extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
 
 	/** The combobox component used. */
-	protected JComboBox comboBox;
+	protected JComboBox<Object> comboBox;
 
 	/** Text that is displayed in the combo box. */
 	protected Object[] comboText;
@@ -172,7 +172,7 @@ public class ComboBoxEditComponent extends AbstractValueEditComponent {
 
 	/**
 	 * Sets the value of the displayable specified in the <code>JComponent</code>.
-	 * Probably not usefull or overwritten by subclasses.
+	 * Probably not useful or overwritten by subclasses.
 	 */
 	public void setValue() {
 		if (this.comboBox.getSelectedItem().equals(EMPTY_STRING) || (displayable.getValue() != null

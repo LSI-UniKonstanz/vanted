@@ -248,7 +248,7 @@ public class DPIHelper {
 	 *            the ScalingSlider value, saved in Preferences
 	 * @return a JPanel, filled with all needed contents
 	 */
-	private JPanel getContents(int value) {
+	private static JPanel getContents(int value) {
 		int dpi = Math.round(DPIHelper.processEmulatedDPIValue(value));
 		JPanel contents = new JPanel();
 		contents.setLayout(new GridBagLayout());

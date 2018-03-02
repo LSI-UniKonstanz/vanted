@@ -18,17 +18,9 @@ import org.ErrorMsg;
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-@SuppressWarnings("rawtypes")
-public class MyDiagramPlacementSettingCellRenderer implements ListCellRenderer {
+public class MyDiagramPlacementSettingCellRenderer implements ListCellRenderer<Object> {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList,
-	 * java.lang.Object, int, boolean, boolean)
-	 */
-	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 			boolean cellHasFocus) {
 
 		JLabel result = new JLabel();

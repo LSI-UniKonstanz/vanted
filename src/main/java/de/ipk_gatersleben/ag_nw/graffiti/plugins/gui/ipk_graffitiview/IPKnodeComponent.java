@@ -42,7 +42,7 @@ public class IPKnodeComponent extends NodeComponent {
 		return result;
 	}
 
-	private String altLabels(GraphElement graphElement, boolean br) {
+	private static String altLabels(GraphElement graphElement, boolean br) {
 		StringBuilder sb = new StringBuilder();
 		for (String s : AttributeHelper.getLabels(graphElement, false)) {
 			if (s == null || s.trim().length() == 0)

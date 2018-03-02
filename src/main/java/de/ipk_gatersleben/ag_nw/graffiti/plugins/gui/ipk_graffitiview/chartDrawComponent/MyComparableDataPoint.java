@@ -107,7 +107,7 @@ public class MyComparableDataPoint implements Comparable<Object> {
 			return new String(serie + "§" + timeUnit + "§" + getZeros(timeValueForComparision, 9) + "§" + replicate);
 	}
 
-	private String getZeros(int val, int len) {
+	private static String getZeros(int val, int len) {
 		boolean negative = val < 0;
 		val = Math.abs(val);
 		String result = "" + val;

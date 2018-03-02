@@ -53,12 +53,12 @@ public class GoProcessing {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private void initNodeMap() throws JaxenException {
 		XPath xpath = new DOMXPath("/obo/term");
-		List terms = xpath.selectNodes(doc.getFirstChild());
-		for (Iterator it = terms.iterator(); it.hasNext();) {
-			Node tn = (Node) it.next();
+		@SuppressWarnings("unchecked") // library needs update to remove it (library method is raw-typed)
+		List<Node> terms = xpath.selectNodes(doc.getFirstChild());
+		for (Iterator<Node> it = terms.iterator(); it.hasNext();) {
+			Node tn = it.next();
 			String goTerm = getIDfromNode(tn);
 			goterm2xmlnode.put(goTerm, tn);
 			Collection<String> alt_ids = getAltIDsFromNode(tn);
@@ -67,7 +67,7 @@ public class GoProcessing {
 		}
 	}
 
-	private Collection<String> getAltIDsFromNode(Node term) {
+	private static Collection<String> getAltIDsFromNode(Node term) {
 		ArrayList<String> result = new ArrayList<String>();
 		NodeList nl = term.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
@@ -82,7 +82,7 @@ public class GoProcessing {
 		return isInitOK;
 	}
 
-	private String getNameFromNode(Node term) {
+	private static String getNameFromNode(Node term) {
 		NodeList nl = term.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node tn = nl.item(i);
@@ -92,7 +92,7 @@ public class GoProcessing {
 		return null;
 	}
 
-	private String getIsObseleteFromNode(Node term) {
+	private static String getIsObseleteFromNode(Node term) {
 		NodeList nl = term.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node tn = nl.item(i);
@@ -102,7 +102,7 @@ public class GoProcessing {
 		return null;
 	}
 
-	private String getIDfromNode(Node term) {
+	private static String getIDfromNode(Node term) {
 		NodeList nl = term.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node tn = nl.item(i);
@@ -112,7 +112,7 @@ public class GoProcessing {
 		return null;
 	}
 
-	private Collection<String> getDirectParents(Node term) {
+	private static Collection<String> getDirectParents(Node term) {
 		ArrayList<String> result = new ArrayList<String>();
 		NodeList nl = term.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
@@ -175,7 +175,7 @@ public class GoProcessing {
 		return goTerm;
 	}
 
-	private String getDefStrFromNode(Node t) {
+	private static String getDefStrFromNode(Node t) {
 		NodeList nl = t.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node tn = nl.item(i);
@@ -185,7 +185,7 @@ public class GoProcessing {
 		return null;
 	}
 
-	private String getDefStrFromDefNode(Node defNode) {
+	private static String getDefStrFromDefNode(Node defNode) {
 		NodeList nl = defNode.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node tn = nl.item(i);
@@ -195,7 +195,7 @@ public class GoProcessing {
 		return null;
 	}
 
-	private String getNameSpaceFromNode(Node t) {
+	private static String getNameSpaceFromNode(Node t) {
 		NodeList nl = t.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node tn = nl.item(i);

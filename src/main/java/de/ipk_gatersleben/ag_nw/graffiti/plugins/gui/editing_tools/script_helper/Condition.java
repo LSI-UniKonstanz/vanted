@@ -65,15 +65,11 @@ public class Condition implements ConditionInterface {
 		header = new ExperimentHeader();
 	}
 
-	@SuppressWarnings("unchecked")
-	public Condition(SubstanceInterface s, Map attributemap) {
+	public Condition(SubstanceInterface s, Map<String, String> attributemap) {
 		this(s);
-		for (Object o : attributemap.keySet()) {
-			if (o instanceof String) {
-				String key = (String) o;
-				if (attributemap.get(key) != null && attributemap.get(key) instanceof String)
-					setAttribute(new Attribute(key, (String) attributemap.get(key)));
-			}
+		for (String key : attributemap.keySet()) {
+			if (attributemap.get(key) != null && attributemap.get(key) instanceof String)
+				setAttribute(new Attribute(key, (String) attributemap.get(key)));
 		}
 	}
 
@@ -292,14 +288,14 @@ public class Condition implements ConditionInterface {
 		return sum;
 	}
 
-	private double getAvgI(ArrayList<Integer> meanTimePoints) {
+	private static double getAvgI(ArrayList<Integer> meanTimePoints) {
 		double sum = 0;
 		for (Integer i : meanTimePoints)
 			sum += i;
 		return sum / meanTimePoints.size();
 	}
 
-	private double getAvgD(ArrayList<Double> values) {
+	private static double getAvgD(ArrayList<Double> values) {
 		return getSum(values) / values.size();
 	}
 
@@ -327,10 +323,10 @@ public class Condition implements ConditionInterface {
 		return setData(condition, null);
 	}
 
-	@SuppressWarnings("unchecked")
 	public boolean setData(Element conditionElement, Element experimentChildElement) {
 
-		List attributeList = conditionElement.getAttributes();
+		@SuppressWarnings("unchecked") // update lib to remove suppression
+		List<Attribute> attributeList = conditionElement.getAttributes();
 
 		if (experimentChildElement != null)
 			for (Object o : experimentChildElement.getContent())
@@ -346,12 +342,10 @@ public class Condition implements ConditionInterface {
 				setAttribute(a);
 			}
 		}
-		List childrenList = conditionElement.getChildren();
-		for (Object o : childrenList) {
-			if (o instanceof Element) {
-				Element childElement = (Element) o;
-				setDataOfChildElement(childElement);
-			}
+		@SuppressWarnings("unchecked") // update lib to remove suppression
+		List<Element> childrenList = conditionElement.getChildren();
+		for (Element childElement : childrenList) {
+			setDataOfChildElement(childElement);
 		}
 		return true;
 	}

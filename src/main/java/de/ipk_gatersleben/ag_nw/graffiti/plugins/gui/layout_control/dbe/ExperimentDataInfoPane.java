@@ -86,8 +86,8 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 	private FolderPanel fpExperimentInfo;
 	private FolderPanel fpTimeAndPlants;
 
-	private JList jcbFilterTime;
-	private JList jcbFilterPlant;
+	private JList<String> jcbFilterTime;
+	private JList<String> jcbFilterPlant;
 	private String[] times;
 
 	private final JTabbedPane parentPane;
@@ -428,20 +428,19 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 				public void actionPerformed(ActionEvent e) {
 					ExperimentInterface experimentData = getDocumentData();
 
-					final boolean applyPlantFilter = jcbFilterPlant.getSelectedValues().length != jcbFilterPlant
+					final boolean applyPlantFilter = jcbFilterPlant.getSelectedValuesList().size() != jcbFilterPlant
 							.getModel().getSize();
-					final boolean applyTimeFilter = jcbFilterTime.getSelectedValues().length != jcbFilterTime.getModel()
+					final boolean applyTimeFilter = jcbFilterTime.getSelectedValuesList().size() != jcbFilterTime.getModel()
 							.getSize();
-					Object[] sel = jcbFilterPlant.getSelectedValues();
+					List<String> sel = jcbFilterPlant.getSelectedValuesList();
 					final Collection<String> validNames = new ArrayList<String>();
-					for (Object o : sel) {
-						String s = (String) o;
+					for (String s : sel) {
 						if (s.startsWith("id="))
 							s = s.substring(s.indexOf("id=") + "id=".length());
 						validNames.add(s);
 					}
 					final Collection<String> validTimes = new ArrayList<String>();
-					sel = jcbFilterTime.getSelectedValues();
+					sel = jcbFilterTime.getSelectedValuesList();
 					for (Object o : sel)
 						validTimes.add((String) o);
 
@@ -559,6 +558,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 	// };
 	// }
 
+	@SuppressWarnings("unused")
 	private ActionListener getAddAffyIdentifiersCommand(final JButton addIdentifiers) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -712,7 +712,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 				status.setCurrentStatusText2("Get Sample Time Values...");
 				times = Experiment.getTimes(md);
 				if (times != null) {
-					jcbFilterTime = new JList(times == null ? new String[] { "Error" } : times);
+					jcbFilterTime = new JList<String>(times == null ? new String[] { "Error" } : times);
 					jcbFilterTime.setSelectionInterval(0, times.length - 1);
 					jcbFilterTime.setVisibleRowCount(times.length > 5 ? 5 : times.length);
 					timecomponents.add(TableLayout.getSplitVertical(new JLabel("Time Points"),
@@ -724,7 +724,7 @@ public class ExperimentDataInfoPane extends JComponent implements SessionListene
 				String[] plants = Experiment.getConditionsAsString(md);
 				onePlant.add(plants != null && plants.length == 1);
 				if (plants != null) {
-					jcbFilterPlant = new JList(plants == null ? new String[] { "Error" } : plants);
+					jcbFilterPlant = new JList<String>(plants == null ? new String[] { "Error" } : plants);
 					jcbFilterPlant.setSelectionInterval(0, plants.length - 1);
 					jcbFilterPlant.setVisibleRowCount(plants.length > 5 ? 5 : plants.length);
 					timecomponents.add(TableLayout.getSplitVertical(new JLabel("Genotypes/Conditions"),

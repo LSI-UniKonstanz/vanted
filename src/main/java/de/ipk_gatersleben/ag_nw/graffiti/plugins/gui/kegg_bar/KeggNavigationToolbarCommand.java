@@ -16,6 +16,7 @@ import javax.swing.undo.CannotUndoException;
 
 import org.StringManipulationTools;
 import org.graffiti.graph.Graph;
+import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.EditorSession;
@@ -104,8 +105,7 @@ public class KeggNavigationToolbarCommand extends AbstractUndoableEdit {
 			(nodes.iterator().next()).getGraph().getListenerManager().transactionFinished(this);
 	}
 
-	@SuppressWarnings("unchecked")
-	private void condenseEntities(Collection<Node> nodes) {
+	private static void condenseEntities(Collection<Node> nodes) {
 		HashMap<String, ArrayList<Node>> keggID2nodeList = new HashMap<String, ArrayList<Node>>();
 		Graph g = null;
 		for (Node n : nodes) {
@@ -123,8 +123,7 @@ public class KeggNavigationToolbarCommand extends AbstractUndoableEdit {
 			for (ArrayList<Node> toBeCondensed : keggID2nodeList.values()) {
 				if (toBeCondensed.size() > 1) {
 					MergeNodes.mergeNode(g, toBeCondensed, NodeTools.getCenter(toBeCondensed), true);
-					// System.out.println("Delete: "+toBeCondensed.size());
-					g.deleteAll((Collection) toBeCondensed);
+					g.deleteAll((Collection<? extends GraphElement>) toBeCondensed);
 				}
 			}
 		}

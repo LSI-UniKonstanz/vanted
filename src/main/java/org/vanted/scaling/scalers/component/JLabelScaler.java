@@ -106,7 +106,7 @@ public class JLabelScaler extends ComponentScaler implements HTMLScaler {
 	 * @param text
 	 *            JTextComponent
 	 */
-	private void modifyHTML(String t, JLabel label) {
+	private static void modifyHTML(String t, JLabel label) {
 		if (!HTMLSupport.isHTMLStyled(t))
 			return;
 
@@ -136,7 +136,7 @@ public class JLabelScaler extends ComponentScaler implements HTMLScaler {
 	 * @param label
 	 *            JLabel
 	 */
-	private void modifyHTMLTooltip(String tooltip, JLabel label) {
+	private static void modifyHTMLTooltip(String tooltip, JLabel label) {
 		if (!HTMLSupport.isHTMLStyled(tooltip))
 			return;
 

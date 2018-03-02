@@ -99,7 +99,7 @@ public class ShortAttribute extends AbstractAttribute {
 	 * @return the value of the attribute wrapped in an <code>Short</code> object.
 	 */
 	public Object getValue() {
-		return new Short(value);
+		return Short.valueOf(value);
 	}
 
 	/**

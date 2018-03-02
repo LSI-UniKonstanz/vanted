@@ -582,7 +582,7 @@ public class TableData {
 		return excelCol;
 	}
 
-	private int col(String col) {
+	private static int col(String col) {
 		if (col.length() == 1) {
 			char c1 = col.charAt(0);
 			return c1 - 64;

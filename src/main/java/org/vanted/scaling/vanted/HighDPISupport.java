@@ -117,7 +117,7 @@ public class HighDPISupport implements PreferencesInterface {
 		if (laf == null || laf.equals(activeLaf)) // no LAF change
 			return;
 
-		if (laf.equals(QUAQUA))
+		if (laf.equals(QUAQUA))  
 			setLAF(quaqua);
 		else
 			setLAF(queryLafMap(laf, true));
@@ -162,7 +162,7 @@ public class HighDPISupport implements PreferencesInterface {
 		return instance;
 	}
 
-	private void setLAF(LookAndFeel laf) {
+	private static void setLAF(LookAndFeel laf) {
 		try {
 			UIManager.setLookAndFeel(laf);
 		} catch (UnsupportedLookAndFeelException e) {
@@ -170,7 +170,7 @@ public class HighDPISupport implements PreferencesInterface {
 		}
 	}
 
-	private void setLAF(String laf) {
+	private static void setLAF(String laf) {
 		try {
 			UIManager.setLookAndFeel(laf);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -179,7 +179,7 @@ public class HighDPISupport implements PreferencesInterface {
 		}
 	}
 
-	private JComponentParameter getInformation() {
+	private static JComponentParameter getInformation() {
 		JLabel text = new JLabel();
 		text.setVisible(false);
 		JComponentParameter information = new JComponentParameter(text, "", DESCRIPTION);
@@ -188,7 +188,7 @@ public class HighDPISupport implements PreferencesInterface {
 		return information;
 	}
 
-	private JComponentParameter getAlternativeInformation() {
+	private static JComponentParameter getAlternativeInformation() {
 		String disabled = UIManager.getLookAndFeel().getName();
 		JLabel text = new JLabel();
 		text.setVisible(false);
@@ -251,7 +251,7 @@ public class HighDPISupport implements PreferencesInterface {
 		}
 	}
 
-	private String getDefaultSystemLAFname() {
+	private static String getDefaultSystemLAFname() {
 		if (IS_MAC)
 			return "Mac OS X";
 		if (System.getProperty("os.name").toLowerCase().contains("windows"))
@@ -260,7 +260,7 @@ public class HighDPISupport implements PreferencesInterface {
 			return "Metal";
 	}
 
-	private String mapLAFClassToName(String clazz) {
+	private static String mapLAFClassToName(String clazz) {
 		String name = clazz.substring(clazz.lastIndexOf('.') + 1);
 		name = trimLAFEnding(name);
 		name = splitAtUppercase(name, " ");
@@ -268,14 +268,14 @@ public class HighDPISupport implements PreferencesInterface {
 		return name;
 	}
 
-	private String trimLAFEnding(String clazz) {
+	private static String trimLAFEnding(String clazz) {
 		if (clazz.endsWith("LookAndFeel"))
 			return clazz.replaceAll("LookAndFeel\\b", "");
 		else
 			return clazz;
 	}
 
-	private String splitAtUppercase(String name, String delimeter) {
+	private static String splitAtUppercase(String name, String delimeter) {
 		String newName = "";
 		int j = 0;
 		for (int i = 1; i < name.length(); i++)

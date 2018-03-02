@@ -526,7 +526,6 @@ public abstract class AbstractTool extends MouseInputAdapter implements Tool, Se
 	 * @param comps
 	 *            DOCUMENT ME!
 	 */
-	@SuppressWarnings("unchecked")
 	public void unDisplayAsMarked(List comps) {
 		for (Iterator it = comps.iterator(); it.hasNext();) {
 			unDisplayAsMarked((GraphElementComponent) (it.next()));

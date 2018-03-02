@@ -67,7 +67,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.KeggGmlHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Pathway;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.NoOverlappOfClustersAlgorithm;
 
-@SuppressWarnings("unchecked")
 public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 
 	private int progressVal = -1;
@@ -78,6 +77,7 @@ public class KeggService implements BackgroundTaskStatusProvider, HelperClass {
 
 	private boolean pleaseStop = false;
 
+	@SuppressWarnings("unused")
 	private static String getNumString(String s, int len) {
 		while (s.length() < len)
 			s = "0" + s;

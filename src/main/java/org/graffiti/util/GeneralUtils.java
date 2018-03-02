@@ -201,7 +201,6 @@ public class GeneralUtils implements HelperClass {
 	 * @return first child (depth first) of attr that matches class type
 	 *         attributeType.
 	 */
-	@SuppressWarnings("unchecked")
 	public static final Attribute searchForAttribute(Attribute attr, Class attributeType) {
 		if (attributeType.isInstance(attr)) {
 			return attr;

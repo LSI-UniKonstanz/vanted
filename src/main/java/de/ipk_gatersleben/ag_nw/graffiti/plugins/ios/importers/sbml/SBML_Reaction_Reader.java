@@ -47,7 +47,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLSpeciesHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
-@SuppressWarnings("nls")
 public class SBML_Reaction_Reader {
 
 	/**

@@ -81,7 +81,7 @@ public class MySpecialValueCellRenderer extends JLabel implements TableCellRende
 		return this;
 	}
 
-	private String getSpacedNumberText(String text) {
+	private static String getSpacedNumberText(String text) {
 		int pointPosition = text.indexOf(".");
 		if (pointPosition >= 0) {
 			int neededSpace = numberTab - pointPosition % numberTab;

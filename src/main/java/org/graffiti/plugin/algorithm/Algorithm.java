@@ -83,8 +83,8 @@ public interface Algorithm {
 	 * Returns the category an algorithm should assigned to. Return NULL if the
 	 * algorithm should be sorted directly in the plugin menu.
 	 * 
-	 * This method is deprecated, please use getSetCategory() To put this algorithm
-	 * into a menu, please use getMenuCategory()
+	 * @deprecated Please, use getSetCategory(). To put this algorithm into a menu,
+	 *             use getMenuCategory()
 	 * 
 	 * @return The category an algorithm should assigned to.
 	 */

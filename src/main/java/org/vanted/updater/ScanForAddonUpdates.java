@@ -45,6 +45,7 @@ public class ScanForAddonUpdates {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private boolean hasUpdates() {
 		/*
 		 * refreshNews is normally asynchron. we make it synchron with help of a monitor

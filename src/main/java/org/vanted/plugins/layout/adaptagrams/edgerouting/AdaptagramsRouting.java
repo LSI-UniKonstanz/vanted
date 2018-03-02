@@ -32,7 +32,6 @@ import org.graffiti.plugins.views.defaults.NodeComponent;
 /**
  * @author Tobias Czauderna
  */
-@SuppressWarnings("nls")
 public class AdaptagramsRouting {
 
 	/**

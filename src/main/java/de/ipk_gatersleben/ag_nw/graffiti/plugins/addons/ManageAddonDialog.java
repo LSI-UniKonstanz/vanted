@@ -267,6 +267,7 @@ public class ManageAddonDialog extends JDialog {
 											+ "Add-on available for direct download."));
 								}
 
+								@SuppressWarnings("unused")
 								Object[] input = MyInputHelper.getInput("[OK]", "Direct Add-on Download",
 										res.toArray());
 								initAddonTable();

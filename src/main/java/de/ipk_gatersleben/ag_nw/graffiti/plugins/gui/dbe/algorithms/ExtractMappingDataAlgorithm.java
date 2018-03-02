@@ -16,7 +16,6 @@ import java.util.Set;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.ErrorMsg;
-import org.graffiti.graph.Graph;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
@@ -87,7 +86,7 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 					status.setCurrentStatusValue(-1);
 					status.setCurrentStatusText1("Extracting mapped data...");
 					status.setCurrentStatusText2("");
-					Graph g = workNodes.iterator().next().getGraph();
+					// Graph g = workNodes.iterator().next().getGraph();
 					// g.getListenerManager().transactionStarted(ExtractMappingDataAlgorithm.this);
 					try {
 						status.setCurrentStatusText2("Getting mapped data from elements");

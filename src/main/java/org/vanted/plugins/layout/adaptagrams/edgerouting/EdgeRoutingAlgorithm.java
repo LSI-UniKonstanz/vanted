@@ -43,7 +43,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
 /**
  * @author Tobias Czauderna
  */
-@SuppressWarnings("nls")
 public class EdgeRoutingAlgorithm extends AbstractAlgorithm {
 
 	private static boolean isLayoutLibraryLoaded = false;

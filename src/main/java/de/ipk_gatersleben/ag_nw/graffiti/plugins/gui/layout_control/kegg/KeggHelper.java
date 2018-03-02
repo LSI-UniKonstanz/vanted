@@ -46,7 +46,7 @@ public class KeggHelper implements HelperClass {
 	/**
 	 * @return True, if the pathways for this version are provided by KEGG via FTP.
 	 */
-	private boolean isKEGGftpDownloadVersion(String kgmlVersion) {
+	private static boolean isKEGGftpDownloadVersion(String kgmlVersion) {
 		return kgmlVersion.equals("0.7.0");
 	}
 
@@ -239,6 +239,7 @@ public class KeggHelper implements HelperClass {
 	// return new String[] { "KO not available", "(non-specific)"};
 	// }
 
+	@SuppressWarnings("unused")
 	private static String getDigits(String mapNumber) {
 		String result = "";
 		for (char c : mapNumber.toCharArray()) {

@@ -51,7 +51,7 @@ public class ListBiomodelsCellRenderer implements ListCellRenderer<SimpleModel> 
 		return entry;
 	}
 
-	private String getTooltipText(SimpleModel text) {
+	private static String getTooltipText(SimpleModel text) {
 		StringBuilder str = new StringBuilder();
 
 		str.append("Identifier: " + text.getId() + "\n");

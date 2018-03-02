@@ -341,12 +341,10 @@ public class TabPatternLayout extends InspectorTab {
 			File file = fc.getSelectedFile();
 			String fileName = file.getName();
 
-			// System.err.println(fileName);
 			if (fileName.indexOf(".") == -1) {
 				fileName = file.getName() + ((GenericFileFilter) fc.getFileFilter()).getExtension();
 			}
 
-			// System.err.println(fileName);
 			String ext = fileName.substring(fileName.lastIndexOf("."));
 
 			try {
@@ -515,83 +513,27 @@ public class TabPatternLayout extends InspectorTab {
 		initComponents();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.AttributeListener#postAttributeAdded(org.graffiti.event.
-	 * AttributeEvent)
-	 */
 	public void postAttributeAdded(AttributeEvent e) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.AttributeListener#postAttributeChanged(org.graffiti.event.
-	 * AttributeEvent)
-	 */
 	public void postAttributeChanged(AttributeEvent e) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.AttributeListener#postAttributeRemoved(org.graffiti.event.
-	 * AttributeEvent)
-	 */
 	public void postAttributeRemoved(AttributeEvent e) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.AttributeListener#preAttributeAdded(org.graffiti.event.
-	 * AttributeEvent)
-	 */
 	public void preAttributeAdded(AttributeEvent e) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.AttributeListener#preAttributeChanged(org.graffiti.event.
-	 * AttributeEvent)
-	 */
 	public void preAttributeChanged(AttributeEvent e) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.AttributeListener#preAttributeRemoved(org.graffiti.event.
-	 * AttributeEvent)
-	 */
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.TransactionListener#transactionFinished(org.graffiti.event
-	 * .TransactionEvent)
-	 */
 	public void transactionFinished(TransactionEvent e) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.event.TransactionListener#transactionStarted(org.graffiti.event.
-	 * TransactionEvent)
-	 */
 	public void transactionStarted(TransactionEvent e) {
 	}
 
@@ -609,28 +551,10 @@ public class TabPatternLayout extends InspectorTab {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.session.SessionListener#sessionChanged(org.graffiti.session.
-	 * Session)
-	 */
 	public void sessionChanged(Session s) {
-		//
-
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.session.SessionListener#sessionDataChanged(org.graffiti.session.
-	 * Session)
-	 */
+	
 	public void sessionDataChanged(Session s) {
-		//
-
 	}
 
 	@Override

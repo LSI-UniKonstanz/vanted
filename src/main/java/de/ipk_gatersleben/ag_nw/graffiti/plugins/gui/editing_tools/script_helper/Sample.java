@@ -145,21 +145,16 @@ public class Sample implements SampleInterface {
 		return ttestInfo;
 	}
 
-	@SuppressWarnings("unchecked")
 	public boolean setData(Element sampleElement) {
-		List attributeList = sampleElement.getAttributes();
-		for (Object o : attributeList) {
-			if (o instanceof Attribute) {
-				Attribute a = (Attribute) o;
-				setAttribute(a);
-			}
+		@SuppressWarnings("unchecked") // update jdom lib to get rid of it
+		List<Attribute> attributeList = sampleElement.getAttributes();
+		for (Attribute a : attributeList) {
+			setAttribute(a);
 		}
-		List childrenList = sampleElement.getChildren();
-		for (Object o : childrenList) {
-			if (o instanceof Element) {
-				Element childElement = (Element) o;
-				setDataOfChildElement(childElement);
-			}
+		@SuppressWarnings("unchecked") // update jdom lib to get rid of it
+		List<Element> childrenList = sampleElement.getChildren();
+		for (Element childElement : childrenList) {
+			setDataOfChildElement(childElement);
 		}
 		return true;
 	}

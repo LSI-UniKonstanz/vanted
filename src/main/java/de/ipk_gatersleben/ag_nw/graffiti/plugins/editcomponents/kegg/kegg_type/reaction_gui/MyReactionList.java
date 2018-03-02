@@ -24,7 +24,11 @@ import org.ErrorMsg;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Reaction;
 
-public class MyReactionList extends JList {
+/**
+ * 
+ * @vanted.revision 2.6.5
+ */
+public class MyReactionList extends JList<Reaction> {
 	ReactionIdEditor reactionIdEditor;
 	ReactionTypeSelection reactionTypeSelection;
 	JLabel reactionDescription;
@@ -32,13 +36,13 @@ public class MyReactionList extends JList {
 	CompoundListEditor l2;
 	CompoundListEditor l3;
 
-	public MyReactionList(Object[] objects, JLabel reactionDescription, ReactionIdEditor reactionIdEditor,
+	public MyReactionList(Reaction[] reactions, JLabel reactionDescription, ReactionIdEditor reactionIdEditor,
 			ReactionTypeSelection reactionTypeSelection, CompoundListEditor l1, CompoundListEditor l2,
 			CompoundListEditor l3) {
 		super();
-		setModel(new DefaultListModel());
-		for (Object o : objects)
-			((DefaultListModel) getModel()).addElement(o);
+		setModel(new DefaultListModel<Reaction>());
+		for (Reaction r : reactions)
+			((DefaultListModel<Reaction>) getModel()).addElement(r);
 		this.reactionDescription = reactionDescription;
 		this.reactionIdEditor = reactionIdEditor;
 		this.reactionTypeSelection = reactionTypeSelection;
@@ -79,13 +83,17 @@ public class MyReactionList extends JList {
 			jd.pack();
 	}
 
-	private static ListCellRenderer getReactionCellRenderer() {
-		ListCellRenderer res = new ListCellRenderer() {
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
-					boolean cellHasFocus) {
-				Reaction r = (Reaction) value;
-				JLabel res = new JLabel(r.toStringWithDetails(true, false));
-				res.setToolTipText(r.toStringWithDetails(true, true));
+	/**
+	 * Static factory for this <code>MyReactionList</code> list cell renderer.
+	 * 
+	 * @return Reaction Cell Renderer
+	 */
+	private static ListCellRenderer<Reaction> getReactionCellRenderer() {
+		ListCellRenderer<Reaction> res = new ListCellRenderer<Reaction>() {
+			public Component getListCellRendererComponent(JList<? extends Reaction> list, Reaction value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				JLabel res = new JLabel(value.toStringWithDetails(true, false));
+				res.setToolTipText(value.toStringWithDetails(true, true));
 				res.setOpaque(true);
 				if (isSelected)
 					res.setBackground(new Color(240, 240, 255));

@@ -42,7 +42,6 @@ import org.graffiti.graphics.NodeLabelAttribute;
  * 
  * @version Mon Dec 07 12:54:24 CET 2009
  */
-@SuppressWarnings("unchecked")
 public class parser extends java_cup.runtime.lr_parser {
 
 	/** Default constructor. */

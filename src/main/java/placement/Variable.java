@@ -31,7 +31,6 @@ public class Variable {
 		this.name = name;
 	}
 
-	@SuppressWarnings("unchecked")
 	HashMap<Class, Object> data = new HashMap<Class, Object>();
 
 	double getPosition() {

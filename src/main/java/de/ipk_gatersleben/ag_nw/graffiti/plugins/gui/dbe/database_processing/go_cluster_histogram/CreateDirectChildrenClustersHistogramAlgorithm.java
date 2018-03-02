@@ -26,11 +26,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
  * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class CreateDirectChildrenClustersHistogramAlgorithm extends AbstractAlgorithm {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+
 	public String getName() {
 		return "Add Neighbour-Node Cluster-Histogram";
 	}
@@ -55,11 +51,6 @@ public class CreateDirectChildrenClustersHistogramAlgorithm extends AbstractAlgo
 				+ "&quot;Hierarchy&quot; menu.";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		try {
 			graph.getListenerManager().transactionStarted(this);
@@ -78,7 +69,7 @@ public class CreateDirectChildrenClustersHistogramAlgorithm extends AbstractAlgo
 		}
 	}
 
-	private void processNode(NodeHelper nh, TreeSet<String> knownClusterIDs) {
+	private static void processNode(NodeHelper nh, TreeSet<String> knownClusterIDs) {
 		Collection<Node> workNodes = nh.getNeighbors();
 		TreeMap<String, Integer> cluster2frequency = new TreeMap<String, Integer>();
 		for (String ci : knownClusterIDs)
@@ -114,7 +105,7 @@ public class CreateDirectChildrenClustersHistogramAlgorithm extends AbstractAlgo
 		nh.setChartType(GraffitiCharts.BAR);
 	}
 
-	private Collection<String> getChildNodeClusterIDs(HashSet<Node> processedNodes, NodeHelper nh,
+	private static Collection<String> getChildNodeClusterIDs(HashSet<Node> processedNodes, NodeHelper nh,
 			Collection<String> knownClusterIDs) {
 		Collection<String> result = new ArrayList<String>();
 		if (!processedNodes.contains(nh.getGraphNode())) {

@@ -99,7 +99,7 @@ public class ByteAttribute extends AbstractAttribute {
 	 * @return the value of the attribute wrapped in an <code>Byte</code> object.
 	 */
 	public Object getValue() {
-		return new Byte(value);
+		return Byte.valueOf(value);
 	}
 
 	/**

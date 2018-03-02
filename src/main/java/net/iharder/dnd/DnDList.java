@@ -79,7 +79,6 @@ public class DnDList extends javax.swing.JList
 	 *            The data from which to construct a list
 	 * @since 1.1
 	 */
-	@SuppressWarnings("unchecked")
 	public DnDList(java.util.Vector data) {
 		this();
 		((javax.swing.DefaultListModel) getModel()).copyInto(data.toArray());

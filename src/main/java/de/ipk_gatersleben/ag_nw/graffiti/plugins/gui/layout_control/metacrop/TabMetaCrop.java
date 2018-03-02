@@ -15,7 +15,6 @@ import org.graffiti.plugin.parameter.StringParameter;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
 
-@SuppressWarnings("nls")
 public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterface {
 
 	/**

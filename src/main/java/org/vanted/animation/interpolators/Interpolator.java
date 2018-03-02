@@ -209,7 +209,7 @@ public abstract class Interpolator {
 	 *         Eg. If we are interpolating RGB color values. array[0] would be all
 	 *         the red values, array[1] would be all the blue values, etc<br>
 	 */
-	private <V, T extends InterpolatableTimePoint<V>> double[][] toDataValues(List<T> y) {
+	private static <V, T extends InterpolatableTimePoint<V>> double[][] toDataValues(List<T> y) {
 		T firstPoint = y.get(0);
 		double firstValues[] = firstPoint.getDoubleValues();
 		double interpolationStructure[][] = new double[firstValues.length][];

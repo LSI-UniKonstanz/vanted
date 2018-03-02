@@ -29,11 +29,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawC
  * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorithm {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+
 	public String getName() {
 		return "Add Average-Values Diagram";
 	}
@@ -55,11 +51,6 @@ public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorit
 				+ "given GO-Term-Hierarchy-Node.";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		try {
 			graph.getListenerManager().transactionStarted(this);
@@ -81,7 +72,7 @@ public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorit
 		}
 	}
 
-	private void processNode(NodeHelper nh, TreeSet<String> knownSeriesAndTimeIDs) {
+	private static void processNode(NodeHelper nh, TreeSet<String> knownSeriesAndTimeIDs) {
 		Collection<Node> childNodes = nh.getAllOutChildNodes();
 		TreeMap<String, ArrayList<Double>> seriesAndTime2mappedValues = new TreeMap<String, ArrayList<Double>>();
 		for (String ci : knownSeriesAndTimeIDs)
@@ -137,7 +128,7 @@ public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorit
 		nh.setChartType(GraffitiCharts.BAR_FLAT);
 	}
 
-	private TreeSet<String> getChildNodeSeriesNamesAndTimes(HashSet<Node> processedNodes, NodeHelper nh,
+	private static TreeSet<String> getChildNodeSeriesNamesAndTimes(HashSet<Node> processedNodes, NodeHelper nh,
 			Collection<String> knownSeriesIDs) {
 		TreeSet<String> result = new TreeSet<String>();
 		if (!processedNodes.contains(nh.getGraphNode())) {

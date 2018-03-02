@@ -19,6 +19,7 @@ import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import org.ErrorMsg;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.util.InstanceLoader;
 
@@ -115,7 +116,7 @@ public class ClassPathAttributeCollector {
 	 *            DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
-	private boolean isZipFile(String fileName) {
+	private static boolean isZipFile(String fileName) {
 		// TODO remove hard coded strings
 		return fileName.endsWith(".jar") || fileName.endsWith(".zip");
 	}
@@ -158,17 +159,14 @@ public class ClassPathAttributeCollector {
 			// the file is a plugin file. therefore search in the
 			// plugin file for attributes, too.
 			if (isZipFile(root.toString())) {
-				JarFile jarFile = null;
+				Enumeration<JarEntry> entries;
 
-				try {
-					jarFile = new JarFile(root);
+				try (JarFile jarFile = new JarFile(root)) {
+					entries = jarFile.entries();
 				} catch (IOException e) {
-					System.out.println(e);
-
+					ErrorMsg.addErrorMessage(e);
 					return;
 				}
-
-				Enumeration<JarEntry> entries = jarFile.entries();
 
 				String name = new String();
 

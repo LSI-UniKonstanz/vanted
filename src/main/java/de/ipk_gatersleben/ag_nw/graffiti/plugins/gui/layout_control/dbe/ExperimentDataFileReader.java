@@ -67,8 +67,6 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 			FileInputStream fin = new FileInputStream(excelFile);
 			if (fin != null)
 				logger.debug("excel fileinputstream opened " + excelFile.getName());
-			else
-				logger.error("excel fileinputstream is null " + excelFile.getName());
 			ArrayList<TextFileColumnInformation> optValidColumn = null;
 			if (optRelevantColumn != null) {
 				optValidColumn = new ArrayList<TextFileColumnInformation>();
@@ -398,6 +396,7 @@ public abstract class ExperimentDataFileReader implements BackgroundTaskStatusPr
 		processCSVExcelFile(myData, in, maximumRowToBeProcessed, optValidColumns, optStatus, optValidColumnsNew);
 	}
 
+	@SuppressWarnings("unused")
 	private static void processBinaryExcelFile(final TableData myData, FileInputStream fin,
 			final int maximumRowToBeProcessed, ArrayList<TextFileColumnInformation> optValidColumn) throws IOException {
 		POIFSFileSystem poifs = new POIFSFileSystem(fin);

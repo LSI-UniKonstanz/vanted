@@ -16,7 +16,6 @@ public class CommandLineStart {
 	 * 
 	 * @param args
 	 */
-	@SuppressWarnings("nls")
 	public static void main(final String[] args) {
 		ErrorMsg.addOnAddonLoadingFinishedAction(new Runnable() {
 			public void run() {

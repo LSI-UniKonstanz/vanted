@@ -95,7 +95,7 @@ public class JTabbedPaneScaler extends ComponentScaler implements HTMLScaler {
 	 * @param index
 	 *            the TabComponent at this index
 	 */
-	private void modifyHTML(JTabbedPane pane, int index) {
+	private static void modifyHTML(JTabbedPane pane, int index) {
 		String t = pane.getTitleAt(index);
 
 		if (!HTMLSupport.isHTMLStyled(t))
@@ -120,7 +120,7 @@ public class JTabbedPaneScaler extends ComponentScaler implements HTMLScaler {
 		HTMLSupport.handleTextListener(c, false);
 	}
 
-	private void modifyHTMLTooltip(JTabbedPane pane, int index) {
+	private static void modifyHTMLTooltip(JTabbedPane pane, int index) {
 		String t = pane.getToolTipTextAt(index);
 
 		if (!HTMLSupport.isHTMLStyled(t))

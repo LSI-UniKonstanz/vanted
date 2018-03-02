@@ -11,8 +11,6 @@ import java.util.List;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Logger;
-
 /**
  * Handles Mac OS X specific stuff.
  *
@@ -28,7 +26,7 @@ public class OSXSupport {
 
 	public static final String HANDLE_ABOUT = "handleAbout";
 
-	private static final Logger logger = Logger.getLogger(OSXSupport.class.getName());
+	//private static final Logger logger = Logger.getLogger(OSXSupport.class.getName());
 
 	private static Object application = null;
 

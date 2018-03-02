@@ -12,7 +12,7 @@ import java.util.Map.Entry;
  * 
  * @author Sebastian Fröhlich
  */
-public class DataRowExcelExport implements Comparable, Comparator {
+public class DataRowExcelExport implements Comparable<DataRowExcelExport>, Comparator<DataRowExcelExport> {
 
 	int conditionID;
 	int timeID;
@@ -91,15 +91,15 @@ public class DataRowExcelExport implements Comparable, Comparator {
 	}
 
 	@Override
-	public int compare(Object arg0, Object arg1) {
+	public int compare(DataRowExcelExport arg0, DataRowExcelExport arg1) {
 		// negative -> less than
 		// positive -> greater than
 		// 0 -> equal;
 		// global sort key: getCondition
 		// second sort key: getTimeID
 		// third sort key: getReplicateID
-		DataRowExcelExport o1 = (DataRowExcelExport) arg0;
-		DataRowExcelExport o2 = (DataRowExcelExport) arg1;
+		DataRowExcelExport o1 = arg0;
+		DataRowExcelExport o2 = arg1;
 		if (o1.getConditionID() < o2.getConditionID())
 			return -1;
 		else if (o1.getConditionID() > o2.getConditionID())
@@ -121,15 +121,15 @@ public class DataRowExcelExport implements Comparable, Comparator {
 	}
 
 	@Override
-	public int compareTo(Object arg0) {
+	public int compareTo(DataRowExcelExport arg0) {
 		return compare(this, arg0);
 	}
 
 	@Override
 	public boolean equals(Object arg0) {
-		if (arg0 == null)
+		if (arg0 == null || !(arg0 instanceof DataRowExcelExport))
 			return false;
 
-		return this.compareTo(arg0) == 0;
+		return this.compareTo((DataRowExcelExport) arg0) == 0;
 	}
 }

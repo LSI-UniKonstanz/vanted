@@ -35,7 +35,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLSpeciesHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
-@SuppressWarnings("nls")
 public class SBML_Model_Reader extends SBML_SBase_Reader {
 
 	static Logger logger = Logger.getLogger(SBML_Model_Reader.class);

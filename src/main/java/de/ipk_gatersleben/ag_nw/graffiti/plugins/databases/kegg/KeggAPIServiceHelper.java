@@ -317,7 +317,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 	 * @author matthiak
 	 *
 	 */
-	class RetrieveKObyKOId extends RecursiveAction {
+	static class RetrieveKObyKOId extends RecursiveAction {
 		/**
 		 * 
 		 */
@@ -488,12 +488,12 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 
 		}
 
-		private void handleReferences(KoEntry curKoEntry, String line) {
+		private static void handleReferences(KoEntry curKoEntry, String line) {
 			// TODO Not yet implemented
 
 		}
 
-		private void handleGenes(KoEntry curKoEntry, String line) {
+		private static void handleGenes(KoEntry curKoEntry, String line) {
 			String[] KeyVals = line.split(":");
 			if (KeyVals.length < 2) {
 				// System.err.println();
@@ -506,7 +506,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 				curKoEntry.addGeneForSpecies(organism, geneid);
 		}
 
-		private void handleDbLinks(KoEntry curKoEntry, String line) {
+		private static void handleDbLinks(KoEntry curKoEntry, String line) {
 			String[] KeyVals = line.split(":");
 			String dbName = KeyVals[0];
 			String[] values = KeyVals[1].trim().split(" ");
@@ -515,7 +515,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 				curKoEntry.addDbLinkValue(dbName, value);
 		}
 
-		private void handleBrite(KoEntry curKoEntry, String line) {
+		private static void handleBrite(KoEntry curKoEntry, String line) {
 			int idx = line.indexOf("[BR:");
 			if (idx >= 0) {
 				String briteId = line.substring(idx + 4);
@@ -533,7 +533,8 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 
 		}
 
-		private void handlePathway(KoEntry curKoEntry, String line) {
+		@SuppressWarnings("unused")
+		private static void handlePathway(KoEntry curKoEntry, String line) {
 			int idx = line.indexOf(" ");
 			String pathid = line.substring(0, idx);
 			String pathname = line.substring(idx + 1, line.length());
@@ -543,7 +544,7 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 			 */
 		}
 
-		private void handleDefinition(KoEntry curKoEntry, String line) {
+		private static void handleDefinition(KoEntry curKoEntry, String line) {
 			if (line.indexOf("[EC:") >= 0) {
 				String ec = line.substring(line.indexOf("[EC:") + "[EC:".length());
 				if (ec.indexOf("]") > 0) {
@@ -553,12 +554,12 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 			}
 		}
 
-		private void handleName(KoEntry curKoEntry, String line) {
+		private static void handleName(KoEntry curKoEntry, String line) {
 			// String name = line.substring(0, line.indexOf(" "));
 			curKoEntry.setKoname(line);
 		}
 
-		private void handleEntry(KoEntry curKoEntry, String line) {
+		private static void handleEntry(KoEntry curKoEntry, String line) {
 			String id = line.substring(0, line.indexOf(" "));
 			curKoEntry.setKoentryID(id);
 		}
@@ -575,20 +576,16 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 
 	@Override
 	public JComponent getStatusPane(boolean showEmpty) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void finishedNewDownload() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

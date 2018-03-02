@@ -922,7 +922,7 @@ public class Experiment implements ExperimentInterface {
 
 	}
 
-	private boolean isSampleEqualForMerge(SampleInterface sample1, SampleInterface sample2) {
+	private static boolean isSampleEqualForMerge(SampleInterface sample1, SampleInterface sample2) {
 		if (sample1 == null || sample2 == null)
 			return false;
 		String s1 = sample1.getMeasurementtool() + ";" + sample1.getTime() + ";" + sample1.getTimeUnit() + ";"

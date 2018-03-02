@@ -218,7 +218,7 @@ public class ComponentRegulator {
 	 * @param component
 	 *            the to be scaled component
 	 */
-	private void conduct(JComponent component) {
+	private static void conduct(JComponent component) {
 		ComponentScaler scaler;
 		for (Entry<Class<?>, ComponentScaler> entry : scalers.entrySet()) {
 			if (matches(component, entry.getKey())) {

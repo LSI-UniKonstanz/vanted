@@ -44,11 +44,6 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 	private boolean removeExistingDatamapping = true;
 	private boolean processUpstreamOfSelection = true;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		return "Add Cluster-Histogram";
 	}
@@ -102,11 +97,6 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 		processUpstreamOfSelection = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		try {
 			graph.getListenerManager().transactionStarted(this);
@@ -162,7 +152,7 @@ public class CreateGOchildrenClustersHistogramAlgorithm extends AbstractAlgorith
 		}
 	}
 
-	private void processNode(NodeHelper nh, TreeSet<String> knownClusterIDs, boolean setLabel,
+	private static void processNode(NodeHelper nh, TreeSet<String> knownClusterIDs, boolean setLabel,
 			boolean removeExistingDataMapping, boolean specialModeUpstreamProcessing,
 			HashSet<Node> specialModeValidLeafNodes) {
 		HashSet<Node> childNodes = nh.getAllOutChildNodes();

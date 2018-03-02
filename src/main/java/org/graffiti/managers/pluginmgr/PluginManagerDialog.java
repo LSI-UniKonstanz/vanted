@@ -518,13 +518,11 @@ public class PluginManagerDialog extends JDialog implements ActionListener, List
 	protected class PluginsTableModel extends AbstractTableModel {
 		private static final long serialVersionUID = 1L;
 
-		@SuppressWarnings("unchecked")
 		private List pluginEntries;
 
 		/**
 		 * Constructs a new table model from the plugin managers plugin list.
 		 */
-		@SuppressWarnings("unchecked")
 		public PluginsTableModel() {
 			pluginEntries = new ArrayList();
 			updateModel();
@@ -666,7 +664,6 @@ public class PluginManagerDialog extends JDialog implements ActionListener, List
 	 * @author $Author: klukas $
 	 * @version $Revision: 1.8 $ $Date: 2010/12/22 13:05:33 $
 	 */
-	@SuppressWarnings("unchecked")
 	class EntryComparator implements Comparator {
 		/**
 		 * @see java.util.Comparator#compare(Object, Object)

@@ -82,7 +82,7 @@ public class JTextComponentScaler extends ComponentScaler implements HTMLScaler 
 	 * @param text
 	 *            JTextComponent
 	 */
-	private void modifyHTML(String t, JTextComponent text) {
+	private static void modifyHTML(String t, JTextComponent text) {
 		if (!HTMLSupport.isHTMLStyled(t))
 			return;
 
@@ -103,7 +103,7 @@ public class JTextComponentScaler extends ComponentScaler implements HTMLScaler 
 		HTMLSupport.handleTextListener(text, false);
 	}
 
-	private void modifyHTMLTooltip(String tooltip, JTextComponent text) {
+	private static void modifyHTMLTooltip(String tooltip, JTextComponent text) {
 		if (!HTMLSupport.isHTMLStyled(tooltip))
 			return;
 

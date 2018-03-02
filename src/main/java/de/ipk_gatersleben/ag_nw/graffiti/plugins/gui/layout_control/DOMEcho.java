@@ -309,7 +309,9 @@ public class DOMEcho {
 		new DOMEcho(new PrintWriter(outWriter, true)).echo(doc);
 	}
 
-	// Error handler to report errors and warnings
+	/**
+	 * Error handler to report errors and warnings.
+	 */
 	private static class MyErrorHandler implements ErrorHandler {
 		/** Error handler output goes here */
 		private PrintWriter out;
@@ -321,7 +323,7 @@ public class DOMEcho {
 		/**
 		 * Returns a string describing parse exception details
 		 */
-		private String getParseExceptionInfo(SAXParseException spe) {
+		private static String getParseExceptionInfo(SAXParseException spe) {
 			String systemId = spe.getSystemId();
 			if (systemId == null) {
 				systemId = "null";

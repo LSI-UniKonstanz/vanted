@@ -214,7 +214,6 @@ class XChunk extends Chunk<YChunk> {
 
 }
 
-@SuppressWarnings("unchecked")
 class ChunkEdge implements Comparable<ChunkEdge> {
 	Chunk chunk;
 

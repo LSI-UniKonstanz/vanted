@@ -413,7 +413,7 @@ public class PluginInfoHelper implements HelperClass {
 			return StringManipulationTools.removeHTMLtags(name);
 	}
 
-	private static String pretifyList(List list) {
+	private static String pretifyList(List<?> list) {
 		StringBuilder sb = new StringBuilder();
 		if (list != null)
 			for (Object o : list) {

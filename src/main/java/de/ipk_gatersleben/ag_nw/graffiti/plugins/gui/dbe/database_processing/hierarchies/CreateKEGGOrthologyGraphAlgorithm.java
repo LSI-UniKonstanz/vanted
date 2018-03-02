@@ -92,11 +92,6 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 		stepY = 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		return "Create KEGG Orthology Tree";
 	}
@@ -119,7 +114,6 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 		return "Network.Hierarchy";
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Parameter[] getParameters() {
 		/*
@@ -400,6 +394,7 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 				}
 				Node hierarchy_tree_node = hierarchy_tree_itemName2node.get(hierarchyEntityName);
 				if (lastNode != null) {
+					@SuppressWarnings("unused")
 					String lastnodename = AttributeHelper.getLabel(lastNode, "");
 					// connect nodes
 					if (!lastNode.getNeighbors().contains(hierarchy_tree_node)) {

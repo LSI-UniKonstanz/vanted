@@ -40,7 +40,7 @@ public class DataSetRow {
 				+ getNumeric(value) + "\t" + "\"" + unit + "\"";
 	}
 
-	private String getNumeric(Double d) {
+	private static String getNumeric(Double d) {
 		return d.toString();
 	}
 

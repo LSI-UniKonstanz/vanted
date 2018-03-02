@@ -9,7 +9,6 @@ import java.io.File;
 /**
  * @author Tobias Czauderna
  */
-@SuppressWarnings("nls")
 public class AdaptagramsLibrary {
 
 	/**

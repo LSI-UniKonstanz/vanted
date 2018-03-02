@@ -54,7 +54,6 @@ public class MultiComplexShape extends RelativePolyShape implements ProvidesAddi
 
 	}
 
-	@SuppressWarnings("nls")
 	@Override
 	public void buildShape(NodeGraphicAttribute graphics) {
 

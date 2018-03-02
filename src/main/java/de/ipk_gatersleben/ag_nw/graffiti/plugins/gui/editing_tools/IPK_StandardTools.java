@@ -157,10 +157,10 @@ public class IPK_StandardTools extends IPK_EditorPluginAdapter implements ViewLi
 		// guiComponents[3] = megaIPKsubstratButton;
 	}
 
-	private KeyListener getLabelKeylistener() {
+	private static KeyListener getLabelKeylistener() {
 		KeyListener result = new KeyListener() {
 			public void keyTyped(KeyEvent e) {
-				if (!((e.getModifiers() == 1) || (e.getModifiers() == 0))) {
+				if (!((e.getModifiersEx() == 1) || (e.getModifiersEx() == 0))) {
 					// System.out.println("Ignore: "+e.getModifiers()+" / "+e.getKeyChar());
 					return;
 				}

@@ -23,7 +23,6 @@ public class RedundantMultipleIterator implements Iterator<Object> {
 	// ~ Instance fields ========================================================
 
 	/** The iterators to iterate over. */
-	@SuppressWarnings("unchecked")
 	private Iterator[] iters;
 
 	/** Points to the current iterator. */
@@ -37,7 +36,6 @@ public class RedundantMultipleIterator implements Iterator<Object> {
 	 * @param iters
 	 *            the iterators over which to iterate.
 	 */
-	@SuppressWarnings("unchecked")
 	public RedundantMultipleIterator(Iterator[] iters) {
 		current = 0;
 		this.iters = iters;

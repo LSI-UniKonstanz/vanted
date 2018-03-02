@@ -27,7 +27,6 @@ public abstract class XGMMLHandler extends DefaultHandler {
 
 	/** Stack to push elements. */
 	Stack<StackElement> tagStack;
-	@SuppressWarnings("unchecked")
 	HashMap nodeIDMap;
 
 	Graph graph;

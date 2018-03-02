@@ -18,7 +18,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
 /**
  * @author Tobias Czauderna
  */
-@SuppressWarnings("nls")
 public class EdgeRoutingPlugin extends GenericPluginAdapter {
 
 	/**

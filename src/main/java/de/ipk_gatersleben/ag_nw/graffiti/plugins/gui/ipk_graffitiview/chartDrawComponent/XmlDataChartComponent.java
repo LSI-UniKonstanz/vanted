@@ -271,7 +271,7 @@ public class XmlDataChartComponent extends JComponent {
 		return null;
 	}
 
-	private GraffitiCharts getAutoChartTypeFor(SubstanceInterface xmldata) {
+	private static GraffitiCharts getAutoChartTypeFor(SubstanceInterface xmldata) {
 		int conditions = xmldata.size();
 		int times = xmldata.getNumberOfDifferentTimePoints();
 		if (times > 1)
@@ -282,7 +282,7 @@ public class XmlDataChartComponent extends JComponent {
 			return GraffitiCharts.BAR_FLAT;
 	}
 
-	private JComponent createHeatmap(ChartOptions co, HeatMapOptions hmo) {
+	private static JComponent createHeatmap(ChartOptions co, HeatMapOptions hmo) {
 		Color[][] colors = new Color[co.dataset.getRowCount()][co.dataset.getColumnCount()];
 		boolean opaque = true;
 		for (int col = 0; col < co.dataset.getColumnCount(); col++) {
@@ -354,7 +354,7 @@ public class XmlDataChartComponent extends JComponent {
 		return chart;
 	}
 
-	private JFreeChart createPieChart(ChartOptions co) {
+	private static JFreeChart createPieChart(ChartOptions co) {
 		final JFreeChart chart = ChartFactory.createMultiplePieChart(co.chartTitle, // chart
 				co.dataset, // data
 				TableOrder.BY_COLUMN, co.showLegend, // include legend
@@ -366,7 +366,7 @@ public class XmlDataChartComponent extends JComponent {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void prettifyPiePlot(ChartOptions co, final JFreeChart chart, boolean d3d) {
+	private static void prettifyPiePlot(ChartOptions co, final JFreeChart chart, boolean d3d) {
 		MultiplePiePlot plot = (MultiplePiePlot) chart.getPlot();
 		plot.setBackgroundPaint(null);
 		plot.setSumScale(co.usePieScaling);
@@ -429,7 +429,7 @@ public class XmlDataChartComponent extends JComponent {
 		chart.setBackgroundPaint(null);
 	}
 
-	private JFreeChart createPieChart3d(ChartOptions co) {
+	private static JFreeChart createPieChart3d(ChartOptions co) {
 		final JFreeChart chart = ChartFactory.createMultiplePieChart3D(co.chartTitle, // chart
 				co.dataset, // data
 				TableOrder.BY_COLUMN, co.showLegend, // include legend
@@ -483,7 +483,7 @@ public class XmlDataChartComponent extends JComponent {
 		return chart;
 	}
 
-	private void pretifyCategoryPlot(BarRenderer renderer, ChartOptions co) {
+	private static void pretifyCategoryPlot(BarRenderer renderer, ChartOptions co) {
 		if (co.axisFontSize > 0) {
 			Font af = new Font(Axis.DEFAULT_AXIS_LABEL_FONT.getFontName(), Axis.DEFAULT_AXIS_LABEL_FONT.getStyle(),
 					co.axisFontSize);
@@ -790,7 +790,7 @@ public class XmlDataChartComponent extends JComponent {
 		return dataset;
 	}
 
-	private void addMissingTimePoints(BioStatisticalCategoryDataset dataset, SortedSet<Integer> timePoints, int minTime,
+	private static void addMissingTimePoints(BioStatisticalCategoryDataset dataset, SortedSet<Integer> timePoints, int minTime,
 			int maxTime, String timeUnit, String measUnit, String series) {
 		int minDiff;
 		int maxDiff;

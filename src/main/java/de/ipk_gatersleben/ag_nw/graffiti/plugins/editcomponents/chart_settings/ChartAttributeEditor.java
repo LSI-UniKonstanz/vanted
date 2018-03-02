@@ -18,12 +18,13 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class ChartAttributeEditor extends AbstractValueEditComponent {
-	protected JComboBox jComboBoxChartType;
+	protected JComboBox<Object> jComboBoxChartType;
 
 	public ChartAttributeEditor(Displayable disp) {
 		super(disp);
 
-		jComboBoxChartType = new JComboBox() {
+		//TODO Add Dummy ChartComponent, instead of EMPTY_STRING, to avoid mixing
+		jComboBoxChartType = new JComboBox<Object>() {
 			private static final long serialVersionUID = 1L;
 
 			@Override

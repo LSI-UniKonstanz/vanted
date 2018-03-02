@@ -19,7 +19,6 @@ public class StringManipulationTools implements HelperClass {
 
 	public static final String Unicode = "UTF-8";
 
-	@SuppressWarnings("nls")
 	public static final String[][] htmlNamedEntity2Unicode = { { "&nbsp;", "\u00A0" }, { "&iexcl;", "\u00A1" },
 			{ "&cent;", "\u00A2" }, { "&pound;", "\u00A3" }, { "&curren;", "\u00A4" }, { "&yen;", "\u00A5" },
 			{ "&brvbar;", "\u00A6" }, { "&sect;", "\u00A7" }, { "&uml;", "\u00A8" }, { "&copy;", "\u00A9" },
@@ -426,7 +425,6 @@ public class StringManipulationTools implements HelperClass {
 		return namenew;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static String getStringList(ArrayList elements, String div) {
 		if (elements == null || elements.size() <= 0)
 			return "";

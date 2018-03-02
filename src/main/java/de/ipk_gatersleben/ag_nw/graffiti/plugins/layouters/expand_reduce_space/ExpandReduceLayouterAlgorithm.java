@@ -104,7 +104,6 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 	 * @param node
 	 * @param selectedNodes
 	 */
-	@SuppressWarnings("unchecked")
 	static void TransformEdgesForThisNode(HashMap<CoordinateAttribute, Vector2d> bends2newPositions, Node node,
 			Collection<Node> selectedNodes, double factorX, double factorY, Vector2d center) {
 		Collection<?> edges = node.getEdges();

@@ -55,13 +55,13 @@ public class DemoResources_de extends ListResourceBundle {
 			{ "about.title", "Info..." }, { "about.version.label", "Version" },
 
 			// menu labels...
-			{ "menu.file", "Datei" }, { "menu.file.mnemonic", new Character('D') },
+			{ "menu.file", "Datei" }, { "menu.file.mnemonic", Character.valueOf('D') },
 
-			{ "menu.file.exit", "Beenden" }, { "menu.file.exit.mnemonic", new Character('B') },
+			{ "menu.file.exit", "Beenden" }, { "menu.file.exit.mnemonic", Character.valueOf('B') },
 
-			{ "menu.help", "Hilfe" }, { "menu.help.mnemonic", new Character('H') },
+			{ "menu.help", "Hilfe" }, { "menu.help.mnemonic", Character.valueOf('H') },
 
-			{ "menu.help.about", "Info..." }, { "menu.help.about.mnemonic", new Character('I') },
+			{ "menu.help.about", "Info..." }, { "menu.help.about.mnemonic", Character.valueOf('I') },
 
 			// dialog messages...
 			{ "dialog.exit.title", "Programm beenden..." },

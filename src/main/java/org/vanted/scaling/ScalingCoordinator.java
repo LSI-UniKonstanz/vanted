@@ -115,7 +115,7 @@ public class ScalingCoordinator {
 	 * @param dpiRatio
 	 * @return the adequate type of LAF-Scaler
 	 */
-	private Scaler createScalerForCurrentLAF(float dpiRatio) {
+	private static Scaler createScalerForCurrentLAF(float dpiRatio) {
 		String testString = UIManager.getLookAndFeel().getName().toLowerCase();
 
 		if (testString.contains("windows"))
@@ -182,7 +182,7 @@ public class ScalingCoordinator {
 	 * 
 	 * @return newly scaled LAF-Defaults Object
 	 */
-	private Object getScaledValue(Scaler delegate, Object key, Object original) {
+	private static Object getScaledValue(Scaler delegate, Object key, Object original) {
 		if (original instanceof Font)
 			return delegate.modifyFont(key, (Font) original);
 

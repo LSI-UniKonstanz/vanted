@@ -166,7 +166,6 @@ public class RotateAlgorithm extends ThreadSafeAlgorithm // AbstractAlgorithm
 		centerY = centerOfMass.y;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void execute() {
 		double targetDegree = degree;
 

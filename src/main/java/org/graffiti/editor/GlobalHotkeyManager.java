@@ -55,7 +55,7 @@ public class GlobalHotkeyManager extends EventQueue {
 				if (action != null && action.isEnabled()) {
 					// I'm not sure about the parameters
 					action.actionPerformed(new ActionEvent(event.getSource(), event.getID(), actionKey,
-							((KeyEvent) event).getModifiers()));
+							((KeyEvent) event).getModifiersEx()));
 					return; // consume event
 				}
 			}

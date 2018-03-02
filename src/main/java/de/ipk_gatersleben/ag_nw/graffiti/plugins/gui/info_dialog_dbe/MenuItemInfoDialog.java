@@ -132,24 +132,25 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 				// "/pattern_graffiti_logo.png"));
 				int divisor = 1024;
 
-				String otherParties, otherParties2, copyR, copyRMonash, copyRKonstanz;
-				if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH)) {
-					// otherParties = "The node overlap removal algorithm is developed by Dr. Tim
-					// Dwyer.";
-				} else {
-					// otherParties = "The node overlap removal algorithm is provided by Dr. Tim
-					// Dwyer.";
-				}
-				otherParties = "";
-				if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR) {
-					otherParties2 = "This application does not contain/distribute information from the KEGG website, <br>"
-							+ "but it contains functionality for the online-access to the KEGG (Web)Services.<br>"
-							+ "We would like to thank the developers of KEGG, Professor Minoru Kanehisa and<br>"
-							+ "his associates, for their great work on this comprehensive information resource.<br><br>";
-				} else {
-					otherParties2 = "";
-				}
+//				String otherParties, otherParties2; 
+//				if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH)) {
+//					// otherParties = "The node overlap removal algorithm is developed by Dr. Tim
+//					// Dwyer.";
+//				} else {
+//					// otherParties = "The node overlap removal algorithm is provided by Dr. Tim
+//					// Dwyer.";
+//				}
+//				otherParties = "";
+//				if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR) {
+//					otherParties2 = "This application does not contain/distribute information from the KEGG website, <br>"
+//							+ "but it contains functionality for the online-access to the KEGG (Web)Services.<br>"
+//							+ "We would like to thank the developers of KEGG, Professor Minoru Kanehisa and<br>"
+//							+ "his associates, for their great work on this comprehensive information resource.<br><br>";
+//				} else {
+//					otherParties2 = "";
+//				}
 
+				String copyR, copyRMonash, copyRKonstanz;
 				if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 					copyR = "&copy; 2003 - 2012 Leibniz Institute of Plant Genetics and Crop Plant Research (IPK)";
 				else
@@ -157,7 +158,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 
 				copyRMonash = "&copy; 2014 - 2016 Monash University";
 
-				copyRKonstanz = "&copy; 2016 - 2017 Konstanz University";
+				copyRKonstanz = "&copy; 2016 - 2018 Konstanz University";
 
 				int num = 0;
 				num = MainFrame.getInstance().getPluginManager().getPluginEntries().size();
@@ -252,9 +253,10 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 
 				Action aboutAction = new AbstractAction() {
 
+					private static final long serialVersionUID = 6335335736808369654L;
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
 						logger.debug("about action emtpy");
 						showAbout();
 					}
@@ -790,7 +792,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 		}
 	}
 
-	private String[] getLibLicenseFileNames() {
+	private static String[] getLibLicenseFileNames() {
 		return new String[] { "apache.txt", "cpl.txt", "cupparser.txt", "lesser.txt", "secondstring.txt", "spl.txt" };
 	}
 

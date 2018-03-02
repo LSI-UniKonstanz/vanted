@@ -57,15 +57,13 @@ public class ExperimentDataProcessingManager {
 		processIncomingData(mdsOrDocuments, null, null, null, processor);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void processIncomingData(final ExperimentInterface mdsOrDocuments, final JComponent optSupplementaryPanel,
-			List<Class> optIgnoredProcessors, final HashMap<Class, List<Runnable>> postprocessors) {
+			List<Class<?>> optIgnoredProcessors, final HashMap<Class<?>, List<Runnable>> postprocessors) {
 		processIncomingData(mdsOrDocuments, optSupplementaryPanel, optIgnoredProcessors, postprocessors, null);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void processIncomingData(final ExperimentInterface mdsOrDocuments, final JComponent optSupplementaryPanel,
-			List<Class> optIgnoredProcessors, final HashMap<Class, List<Runnable>> postprocessors,
+			List<Class<?>> optIgnoredProcessors, final HashMap<Class<?>, List<Runnable>> postprocessors,
 			Class<ExperimentDataProcessor> optUseOnlyThisSpecificProcessor) {
 		if (mdsOrDocuments == null || mdsOrDocuments.size() == 0) {
 			MainFrame.showMessageDialog("Processing canceled, because experiment is empty.", "Processing Canceled");

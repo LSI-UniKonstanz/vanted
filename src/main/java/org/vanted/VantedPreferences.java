@@ -150,6 +150,7 @@ public class VantedPreferences implements PreferencesInterface {
 		String proxyport = preferences.get(PREFERENCE_PROXYPORT, null);
 		if (proxyhostname != null && proxyport != null && !proxyhostname.isEmpty()) {
 			try {
+				@SuppressWarnings("unused")
 				Integer portnumber = Integer.parseInt(proxyport);
 				System.setProperty("http.proxySet", "true");
 				System.setProperty("http.proxyHost", proxyhostname);
