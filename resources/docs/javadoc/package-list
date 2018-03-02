@@ -52,8 +52,8 @@ de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.url_attribute_contex
 de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.enhanced_attribute_editors
 de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.fast_view
 de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper
-de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_cluster_analysis
 de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_dbe
+de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_example
 de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview
 de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawComponent
 de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.kegg_bar
@@ -119,8 +119,8 @@ de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.grid
 de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.grid_placement
 de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.no_overlapp_as_tim
 de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder
-de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands
 de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder_no_cache
+de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands
 de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.radial_tree
 de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random
 de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.resize_and_grid_layout

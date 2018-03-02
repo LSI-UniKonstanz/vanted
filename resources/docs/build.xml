@@ -3,7 +3,7 @@
 
 	<property name="title" value="Vanted 2.6.5-SNAPSHOT"/>
 	<property name="java.compatibility" value="1.7"/>
-	<property name="java.api" value="http://docs.oracle.com/javase/7/docs/api/"/>
+	<property name="java.api" value="https://docs.oracle.com/javase/7/docs/api/"/>
 
 	<property name="base.dir" location="../.."/>
 	<property name="dest.dir" location="./javadoc"/>
