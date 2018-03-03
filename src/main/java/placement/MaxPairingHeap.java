@@ -10,9 +10,8 @@ import java.util.Queue;
  * Allen Weiss from the book "Data Stuctures & Algorithm Analysis in Java" -
  * Prentice Hall 1999
  */
-
 @SuppressWarnings("unchecked")
-public class MaxPairingHeap<T extends Comparable> implements MaxPriorityQueue<T> {
+public class MaxPairingHeap<T extends Comparable<T>> implements MaxPriorityQueue<T> {
 	int counter = 0;
 
 	/**
@@ -102,6 +101,8 @@ public class MaxPairingHeap<T extends Comparable> implements MaxPriorityQueue<T>
 		if (p != root) {
 			if (p.nextSibling != null)
 				p.nextSibling.prev = p.prev;
+			root = null;
+			
 			if (p.prev.leftChild == p)
 				p.prev.leftChild = p.nextSibling;
 			else
@@ -140,9 +141,11 @@ public class MaxPairingHeap<T extends Comparable> implements MaxPriorityQueue<T>
 	 *            null on entry.
 	 * @param second
 	 *            root of tree 2, which may be null.
+			root = null;
+		
 	 * @return result of the tree merge.
 	 */
-	private PNode compareAndLink(PNode<T> first, PNode<T> second) {
+	private PNode<T> compareAndLink(PNode<T> first, PNode<T> second) {
 		if (second == null)
 			return first;
 		if (first == null)
@@ -267,7 +270,7 @@ public class MaxPairingHeap<T extends Comparable> implements MaxPriorityQueue<T>
 	}
 
 	public static void main(String args[]) {
-		MaxPairingHeap<Integer> h = new MaxPairingHeap();
+		MaxPairingHeap<Integer> h = new MaxPairingHeap<>();
 		h.add(4);
 		h.add(1);
 		h.add(9);

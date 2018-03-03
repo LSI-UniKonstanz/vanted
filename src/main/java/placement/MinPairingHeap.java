@@ -8,7 +8,7 @@ package placement;
  */
 
 @SuppressWarnings("unchecked")
-public class MinPairingHeap<T extends Comparable> {
+public class MinPairingHeap<T extends Comparable<T>> {
 
 	/**
 	 * Construct the pairing heap.
@@ -120,7 +120,7 @@ public class MinPairingHeap<T extends Comparable> {
 	 *            root of tree 2, which may be null.
 	 * @return result of the tree merge.
 	 */
-	private PNode compareAndLink(PNode<T> first, PNode<T> second) {
+	private PNode<T> compareAndLink(PNode<T> first, PNode<T> second) {
 		if (second == null)
 			return first;
 
@@ -201,7 +201,7 @@ public class MinPairingHeap<T extends Comparable> {
 	}
 
 	public static void main(String args[]) {
-		MinPairingHeap<Integer> h = new MinPairingHeap();
+		MinPairingHeap<Integer> h = new MinPairingHeap<>();
 		int numItems = 100;
 		int i = 37;
 		int j;

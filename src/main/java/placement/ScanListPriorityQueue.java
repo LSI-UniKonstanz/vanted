@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @SuppressWarnings("unchecked")
-public class ScanListPriorityQueue<T extends Comparable> implements MaxPriorityQueue<T> {
+public class ScanListPriorityQueue<T extends Comparable<T>> implements MaxPriorityQueue<T> {
 	ArrayList<T> q = new ArrayList<T>();
 
 	MaxPairingHeap<T> ph = new MaxPairingHeap<T>();
@@ -38,8 +38,8 @@ public class ScanListPriorityQueue<T extends Comparable> implements MaxPriorityQ
 	}
 
 	public void merge(MaxPriorityQueue<T> other) {
-		q.addAll(((ScanListPriorityQueue) other).q);
-		ph.merge(((ScanListPriorityQueue) other).ph);
+		q.addAll(((ScanListPriorityQueue<T>) other).q);
+		ph.merge(((ScanListPriorityQueue<T>) other).ph);
 		assert (q.size() == ph.size());
 	}
 

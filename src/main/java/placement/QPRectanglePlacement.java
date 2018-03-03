@@ -29,7 +29,7 @@ import java.util.TreeSet;
 import java.util.logging.Logger;
 
 @SuppressWarnings("unchecked")
-abstract class Chunk<T extends Chunk> {
+abstract class Chunk<T extends Chunk<?>> {
 	T conj;
 
 	Rectangle2D rect;

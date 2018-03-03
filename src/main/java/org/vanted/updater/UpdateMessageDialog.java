@@ -28,6 +28,7 @@ import org.graffiti.editor.MainFrame;
  */
 public class UpdateMessageDialog extends JDialog {
 
+	private static final long serialVersionUID = 1972389636851761448L;
 	int width = 200;
 	int height = 300;
 

@@ -168,8 +168,8 @@ public class DesktopMenuManager implements MenuListener, SessionListener {
 	 * Remove all created menu entries.
 	 */
 	private void clearMenu() {
-		for (Iterator it = windowItems.iterator(); it.hasNext();) {
-			Component item = (Component) it.next();
+		for (Iterator<JComponent> it = windowItems.iterator(); it.hasNext();) {
+			Component item = it.next();
 			menu.remove(item);
 		}
 

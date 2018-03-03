@@ -31,7 +31,7 @@ public class Variable {
 		this.name = name;
 	}
 
-	HashMap<Class, Object> data = new HashMap<Class, Object>();
+	HashMap<Class<?>, Object> data = new HashMap<>();
 
 	double getPosition() {
 		return container.position + offset;

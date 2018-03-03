@@ -98,7 +98,7 @@ public class PerformanceTest {
 		// PerformanceTest p = new PerformanceTest();
 	}
 
-	private Cost run(RectanglePlacement p, ArrayList<Rectangle2D> orig) {
+	private static Cost run(RectanglePlacement p, ArrayList<Rectangle2D> orig) {
 		System.gc();
 		Cost c = new Cost();
 		long t0 = System.currentTimeMillis();

@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
-@SuppressWarnings("unchecked")
-public class SlowPriorityQueue<T extends Comparable> implements MaxPriorityQueue<T> {
+public class SlowPriorityQueue<T extends Comparable<T>> implements MaxPriorityQueue<T> {
 	PriorityQueue<T> q = new PriorityQueue<T>(10, new Comparator<T>() {
 
 		public int compare(T a, T b) {
