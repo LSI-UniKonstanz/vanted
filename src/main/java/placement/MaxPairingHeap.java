@@ -100,9 +100,7 @@ public class MaxPairingHeap<T extends Comparable<T>> implements MaxPriorityQueue
 		p.element = newVal;
 		if (p != root) {
 			if (p.nextSibling != null)
-				p.nextSibling.prev = p.prev;
-			root = null;
-			
+				p.nextSibling.prev = p.prev;	
 			if (p.prev.leftChild == p)
 				p.prev.leftChild = p.nextSibling;
 			else
@@ -141,8 +139,6 @@ public class MaxPairingHeap<T extends Comparable<T>> implements MaxPriorityQueue
 	 *            null on entry.
 	 * @param second
 	 *            root of tree 2, which may be null.
-			root = null;
-		
 	 * @return result of the tree merge.
 	 */
 	private PNode<T> compareAndLink(PNode<T> first, PNode<T> second) {
