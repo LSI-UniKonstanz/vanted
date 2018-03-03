@@ -22,8 +22,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
  * This is a simple example for a GUI component plugin for Graffiti.
  * 
  * @author chris
+ * @deprecated since 2.6.5
  */
-@Deprecated(since="2.6.5")
+@Deprecated
 public class PluginInfoMenu extends DBE_EditorPluginAdapter {
 	// ~ Constructors ===========================================================
 
