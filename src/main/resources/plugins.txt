@@ -60,7 +60,7 @@
 ./src/main/java/de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/layout_control/biomodels/plugin.xml
 ./src/main/java/de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/layout_control/pluginClusterTabs.xml
 ./src/main/java/de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/layout_control/plugin.xml
-./src/main/java/de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/info_dialog_cluster_analysis/plugin.xml
+./src/main/java/de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/info_dialog_example/plugin.xml
 ./src/main/java/de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/editing_tools/url_attribute_context_commands/plugin.xml
 ./src/main/java/de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/editing_tools/plugin.xml
 ./src/main/java/de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/set_background_color/plugin.xml

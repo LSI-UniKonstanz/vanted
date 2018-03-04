@@ -27,7 +27,7 @@
 "./de/ipk_gatersleben/ag_nw/graffiti/plugins/ios/exporters/matrix/plugin.xml" 
 "./de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/zoomfit/plugin.xml" 
 "./de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/set_background_color/plugin.xml" 
-"./de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/info_dialog_cluster_analysis/plugin.xml" 
+"./de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/info_dialog_example/plugin.xml" 
 "./de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/enhanced_attribute_editors/plugin.xml" 
 "./de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/editing_tools/plugin.xml" 
 "./de/ipk_gatersleben/ag_nw/graffiti/plugins/examples/node_mover/plugin.xml" 

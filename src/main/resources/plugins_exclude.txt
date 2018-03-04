@@ -45,7 +45,7 @@
 "./org/graffiti/plugins/tools/zoomtool/plugin.xml" 
 "./org/graffiti/plugins/tools/enhancedzoomtool/plugin.xml" 
 "./org/graffiti/plugins/algorithms/HighDimEmbed/plugin.xml" 
-"./de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/info_dialog_cluster_analysis/plugin.xml" 
+"./de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/info_dialog_example/plugin.xml" 
 "./de/ipk_gatersleben/ag_nw/graffiti/plugins/layouters/pattern_springembedder_no_cache/plugin.xml" 
 "./de/ipk_gatersleben/ag_nw/graffiti/plugins/gui/layout_control/pluginClusterTabs.xml" 
 "./de/ipk_gatersleben/ag_nw/graffiti/plugins/misc/scripting/plugin.xml"  
