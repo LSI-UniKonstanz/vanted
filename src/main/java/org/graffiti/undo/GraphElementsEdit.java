@@ -12,6 +12,7 @@ package org.graffiti.undo;
 import java.util.Map;
 
 import org.graffiti.graph.Graph;
+import org.graffiti.graph.GraphElement;
 
 /**
  * <code>GraphElementsEdit</code> is abstract class for building edits belong to
@@ -40,8 +41,7 @@ public abstract class GraphElementsEdit extends GraffitiAbstractUndoableEdit {
 	 * @param geMap
 	 *            reference to the map supports the undo operations.
 	 */
-	@SuppressWarnings("unchecked")
-	public GraphElementsEdit(Graph graph, Map geMap) {
+	public GraphElementsEdit(Graph graph, Map<GraphElement, GraphElement> geMap) {
 		super(geMap);
 		assert graph != null;
 		this.graph = graph;

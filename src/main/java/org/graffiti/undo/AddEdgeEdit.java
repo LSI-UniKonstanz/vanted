@@ -59,9 +59,6 @@ public class AddEdgeEdit extends GraphElementsEdit {
 		return sBundle.getString("undo.addEdge");
 	}
 
-	/*
-	 * @see org.graffiti.undo.GraffitiAbstractUndoableEdit#execute()
-	 */
 	@Override
 	public void execute() {
 	}

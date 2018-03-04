@@ -10,7 +10,7 @@
 
 	<plugindesc>
 	     <name>IPK-Cluster Analysis Info Dialog</name>
-             <main>de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_cluster_analysis.PluginInfoMenu</main>
+             <main>de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.info_dialog_example.PluginInfoMenu</main>
              <version>1.0.0</version>
              <available>mailto:klukas@ipk-gatersleben.de</available>
     </plugindesc>
