@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="vanted javadoc script" default="javadoc">
+<project name="vanted javadoc script" default="beautify">
 
 	<property name="title" value="Vanted 2.6.5-SNAPSHOT"/>
 	<property name="java.compatibility" value="1.7"/>
@@ -41,4 +41,14 @@
 		</delete>
 		<mkdir dir="${dest.dir}"/>
 	</target>
+
+	<!-- Hacky way of setting frames by default. -->
+	<target name="beautify" depends="javadoc">
+ 		<replace casesensitive="true" file="${dest.dir}/index.html">
+    			<replacetoken><![CDATA[]]>window.location.replace('overview-summary.html');</replacetoken>  
+			<replacevalue><![CDATA[window.location.replace('index.html?overview-summary.html');]]></replacevalue>  
+		</replace>
+		<echo message="Done!"/>
+	</target>
+
 </project>
