@@ -425,7 +425,7 @@ public class StringManipulationTools implements HelperClass {
 		return namenew;
 	}
 
-	public static String getStringList(ArrayList elements, String div) {
+	public static String getStringList(ArrayList<?> elements, String div) {
 		if (elements == null || elements.size() <= 0)
 			return "";
 		else {

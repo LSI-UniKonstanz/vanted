@@ -311,36 +311,17 @@ public class GravistoMainHelper implements HelperClass {
 
 		// ClassLoader cl = Main.class.getClassLoader();
 		URL r1 = cl.getResource("plugins.txt");
-		// URL r2 = cl.getResource("plugins2.txt");
-		// URL r3 = cl.getResource("plugins3.txt");
-		// URL r4 = cl.getResource("plugins4.txt");
 		URL r5 = null;
 		if (addPluginFile != null)
 			r5 = cl.getResource(addPluginFile);
 
 		URL rExcl = cl.getResource("plugins_exclude.txt");
 
-		// System.out.println("Plugins1: "+(r1!=null ? r1.toExternalForm() :
-		// "null"));
-		// System.out.println("Plugins2: "+(r2!=null ? r2.toExternalForm() :
-		// "null"));
-		// System.out.println("Plugins3: "+(r3!=null ? r3.toExternalForm() :
-		// "null"));
-		// System.out.println("Plugins4: "+(r4!=null ? r4.toExternalForm() :
-		// "null"));
-		// System.out.println("PluginsE: "+(rExcl!=null ? rExcl.toExternalForm() :
-		// "null"));
-		// System.out.println("Plugins5 (opt.): "+(r5!=null ? r5.toExternalForm()
-		// : "null"));
-
 		splashScreen.setText("Read plugin information...");
 
 		ArrayList<String> locations = new ArrayList<String>();
 		try {
 			locations.addAll(new TextFile(r1));
-			// locations.addAll(new TextFile(r2));
-			// locations.addAll(new TextFile(r3));
-			// locations.addAll(new TextFile(r4));
 			if (addPlugins != null)
 				for (String p : addPlugins)
 					if (p != null)
@@ -385,7 +366,7 @@ public class GravistoMainHelper implements HelperClass {
 			JOptionPane.showMessageDialog(null,
 					"<html><h2>ERROR: Plugin-Description files could not be loaded</h2>"
 							+ "Program execution can not continue.<br>"
-							+ "Pleas execute the createfilelist script from the make folder.<br>"
+							+ "Please, execute the createfilelist script from the make folder.<br>"
 							+ "The application needs to be closed.</html>");
 			System.err.println("EXIT");
 			System.exit(1);

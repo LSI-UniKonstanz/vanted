@@ -38,10 +38,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.DefaultContex
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
 
 /**
- * Contains the graffiti editor.
+ * Contains the Graffiti editor.
  * 
- * @version $Revision$
+ * @vanted.revision 2.6.5
+ * @deprecated because the Java Applet API is deprecated
  */
+@Deprecated
 public class GravistoMain extends JApplet {
 	// ~ Static fields/initializers =============================================
 

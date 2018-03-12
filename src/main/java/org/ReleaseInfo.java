@@ -286,14 +286,22 @@ public class ReleaseInfo implements HelperClass {
 		return helpIntro;
 	}
 
+	@Deprecated
 	private static boolean applet = false;
+	@Deprecated
 	private static JApplet appletContext = null;
 
+	/**
+	 * @deprecated since 2.6.5, because JApplet is going to be dropped altogether in
+	 *             future (9+) Java versions
+	 * @param appletContext
+	 */
 	public static void setRunningAsApplet(JApplet appletContext) {
 		applet = true;
 		ReleaseInfo.appletContext = appletContext;
 	}
 
+	@Deprecated
 	public static boolean isRunningAsApplet() {
 		return applet;
 	}
@@ -411,6 +419,7 @@ public class ReleaseInfo implements HelperClass {
 
 	/**
 	 * @return
+	 * @deprecated
 	 */
 	public static JApplet getApplet() {
 		return appletContext;
