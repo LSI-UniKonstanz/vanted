@@ -684,7 +684,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 							+ "to activate poly-line edge bend style. After activation of desired style stop mouse movement then release keyboard keys. "
 							+ "Press Shift key while moving edge bend to disable position grid.",
 					MessageType.INFO);
-			//is bend out of bounds? 
+			// is bend out of bounds?
 			showOutOfBoundsWarning(e);
 
 			return;
@@ -973,7 +973,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				if (selNodes.contains(curSelEdge.getSource()) && selNodes.contains(curSelEdge.getTarget())) {
 					SortedCollectionAttribute bends = (SortedCollectionAttribute) curSelEdge.getAttribute(attrPath);
 					Object value = bends.getValue();
-					if (!((LinkedHashMap<?,?>) value).isEmpty())
+					if (!((LinkedHashMap<?, ?>) value).isEmpty())
 						originalCoordinates.put(bends, ((Attribute) bends.copy()).getValue());
 				}
 
@@ -1158,6 +1158,14 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	}
 
 	/**
+	 * Point for storing the start location offset, when an element(s) is moved
+	 * through the keys.
+	 */
+	private static Point movOffset = new Point(0, 0);
+	/** The last moveStart point, to detect changes and reset the offset. */
+	private static Point lastMoveStart = new Point(0, 0);
+
+	/**
 	 * Show the user information how to return from negative coordinates. Otherwise
 	 * this gets hidden out of view's bounds and is not directly accessible for the
 	 * user. We uses Preference to determine whether the user wants to see it again.
@@ -1189,10 +1197,31 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		Collection<WarningButton> wbts = new ArrayDeque<WarningButton>(1); // increase before adding more buttons!
 		wbts.add(showbt);
 
-		if ((e.getPoint().getX() + lastPressedMousePointRel.getX() < 0
-				|| e.getPoint().getY() + lastPressedMousePointRel.getY() < 0))
+		boolean displayWarning = false;
+		if (lastPressedMousePointRel != null) {
+			if ((e.getPoint().getX() + lastPressedMousePointRel.getX() < 0
+					|| e.getPoint().getY() + lastPressedMousePointRel.getY() < 0))
+				displayWarning = true;
+		} else { // no last rel point => event originates from a keys combination
+			if (lastMoveStart.x != moveStartX || lastMoveStart.y != moveStartY) {
+				lastMoveStart.x = moveStartX;
+				lastMoveStart.y = moveStartY;
+				movOffset = new Point(0, 0);
+			}
+
+			movOffset.x += e.getPoint().x;
+			movOffset.y += e.getPoint().y;
+			if ((moveStartX + movOffset.x < 0) || (moveStartY + movOffset.y < 0))
+				displayWarning = true;
+		}
+
+		// finally, based on the new coords, display or hide the warning message
+		if (displayWarning) {
 			MainFrame.showWarningPopup("<html><strong>Graph elements out of view!</strong><br>"
 					+ "To bring back: Network &#10148; Move Network to Top-Left (Ctrl+1).", 8000, wbts);
+			displayWarning = false;
+		}
+
 	}
 
 	public static int getGrid(double sz) {

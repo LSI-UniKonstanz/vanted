@@ -40,11 +40,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.NeedsSwingThread;
  */
 public class SetBackgroundColorAlgorithm extends AbstractEditorAlgorithm
 		implements ProvidesGeneralContextMenu, ActionListener, NeedsSwingThread {
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
 			return "Set Background Color";
@@ -67,11 +63,6 @@ public class SetBackgroundColorAlgorithm extends AbstractEditorAlgorithm
 		return KeyStroke.getKeyStroke('B', InputEvent.ALT_DOWN_MASK);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		Color oldC = AttributeHelper.getColorFromAttribute(graph, "", "graphbackgroundcolor", Color.white);
 
@@ -82,12 +73,6 @@ public class SetBackgroundColorAlgorithm extends AbstractEditorAlgorithm
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.AlgorithmWithContextMenu#
-	 * getCurrentContextMenuItem()
-	 */
 	public JMenuItem[] getCurrentContextMenuItem() {
 		return null; /*
 						 * JMenuItem menuItem = new JMenuItem(getName());
@@ -95,12 +80,6 @@ public class SetBackgroundColorAlgorithm extends AbstractEditorAlgorithm
 						 */
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	public void actionPerformed(ActionEvent e) {
 		execute();
 	}

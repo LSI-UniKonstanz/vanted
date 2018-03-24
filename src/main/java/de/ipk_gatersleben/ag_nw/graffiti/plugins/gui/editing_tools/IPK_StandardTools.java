@@ -5,6 +5,7 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools;
 
 import java.awt.Component;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.prefs.Preferences;
@@ -160,8 +161,9 @@ public class IPK_StandardTools extends IPK_EditorPluginAdapter implements ViewLi
 	private static KeyListener getLabelKeylistener() {
 		KeyListener result = new KeyListener() {
 			public void keyTyped(KeyEvent e) {
-				if (!((e.getModifiersEx() == 1) || (e.getModifiersEx() == 0))) {
-					// System.out.println("Ignore: "+e.getModifiers()+" / "+e.getKeyChar());
+				if (!(((e.getModifiersEx() & (InputEvent.SHIFT_DOWN_MASK | InputEvent.ALT_DOWN_MASK
+						| InputEvent.CTRL_DOWN_MASK)) == InputEvent.SHIFT_DOWN_MASK) || (e.getModifiersEx() == 0))) {
+					// System.out.println("Ignore: "+e.getModifiersEx()+" / "+e.getKeyChar());
 					return;
 				}
 				try {
