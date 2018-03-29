@@ -88,7 +88,8 @@ import org.vanted.osx.OSXSupport;
  * A tool for creating and editing a graph.
  * 
  * @author Holleis, Klukas
- * @version $Revision: 1.67.6.2 $
+ * @vanted.revision 1.67.6.2
+ * @version 2.6.5
  */
 public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	// private static final String PREFERENCE_USE_MOUSE_WHEEL_TO_ZOOM = "Use
