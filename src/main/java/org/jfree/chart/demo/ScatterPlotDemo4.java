@@ -49,22 +49,14 @@ public class ScatterPlotDemo4 extends ApplicationFrame {
 	 * A demonstration application showing a scatter plot.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public ScatterPlotDemo4(final String title) {
 
 		super(title);
 		final XYDataset data = new SampleXYDataset2();
-		final JFreeChart chart = ChartFactory.createScatterPlot(
-							"Scatter Plot Demo",
-							"X",
-							"Y",
-							data,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createScatterPlot("Scatter Plot Demo", "X", "Y", data,
+				PlotOrientation.VERTICAL, true, true, false);
 		final XYPlot plot = chart.getXYPlot();
 		plot.setRenderer(new XYDotRenderer());
 		plot.setDomainCrosshairVisible(true);
@@ -94,7 +86,7 @@ public class ScatterPlotDemo4 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

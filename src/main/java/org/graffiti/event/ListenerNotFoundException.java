@@ -15,21 +15,20 @@ package org.graffiti.event;
  * 
  * @version $Revision: 1.5 $
  */
-public class ListenerNotFoundException
-					extends Exception {
+public class ListenerNotFoundException extends Exception {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
-	 * Constructs a <code>ListenerNotFoundException</code> with the specified
-	 * detail message.
+	 * Constructs a <code>ListenerNotFoundException</code> with the specified detail
+	 * message.
 	 * 
 	 * @param msg
-	 *           the detail message for the exception.
+	 *            the detail message for the exception.
 	 */
 	public ListenerNotFoundException(String msg) {
 		super(msg);

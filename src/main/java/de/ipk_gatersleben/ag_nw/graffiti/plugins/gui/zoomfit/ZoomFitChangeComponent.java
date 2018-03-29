@@ -54,9 +54,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.PaintStatu
 /**
  * @author Christian Klukas
  */
-public class ZoomFitChangeComponent extends JToolBar implements
-GraffitiComponent, ActionListener, ViewListener, SessionListener,
-SelectionListener, ZoomListener {
+public class ZoomFitChangeComponent extends JToolBar
+		implements GraffitiComponent, ActionListener, ViewListener, SessionListener, SelectionListener, ZoomListener {
 
 	// ~ Instance fields ========================================================
 
@@ -65,7 +64,7 @@ SelectionListener, ZoomListener {
 	static {
 		logger.setLevel(Level.ERROR);
 	}
-	
+
 	private static final long serialVersionUID = 1L;
 
 	/** The zoom buttons */
@@ -90,7 +89,7 @@ SelectionListener, ZoomListener {
 	 * Constructor for ZoomChangeComponent.
 	 * 
 	 * @param prefComp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public ZoomFitChangeComponent(String prefComp) {
 		super("Zoom");
@@ -99,14 +98,10 @@ SelectionListener, ZoomListener {
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');
 
-		ImageIcon icon1 = new ImageIcon(cl.getResource(path
-				+ "/images/lupeMinus.gif"));
-		ImageIcon icon2 = new ImageIcon(cl.getResource(path
-				+ "/images/lupePlus.gif"));
-		ImageIcon icon3 = new ImageIcon(cl.getResource(path
-				+ "/images/lupe1zu1.gif"));
-		ImageIcon icon4 = new ImageIcon(cl.getResource(path
-				+ "/images/lupeRegion.gif"));
+		ImageIcon icon1 = new ImageIcon(cl.getResource(path + "/images/lupeMinus.gif"));
+		ImageIcon icon2 = new ImageIcon(cl.getResource(path + "/images/lupePlus.gif"));
+		ImageIcon icon3 = new ImageIcon(cl.getResource(path + "/images/lupe1zu1.gif"));
+		ImageIcon icon4 = new ImageIcon(cl.getResource(path + "/images/lupeRegion.gif"));
 
 		int s = 2;
 
@@ -142,8 +137,9 @@ SelectionListener, ZoomListener {
 		jbZoomRegion.setMargin(new Insets(s, s, s, s));
 		jbZoomRegion.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent e) {
-				ZoomFitChangeComponent.useSmooth = activeSession != null && activeSession.getGraph() != null && activeSession.getGraph().getNumberOfNodes() <= 500;
-				//				zzz.actionPerformed(e);
+				ZoomFitChangeComponent.useSmooth = activeSession != null && activeSession.getGraph() != null
+						&& activeSession.getGraph().getNumberOfNodes() <= 500;
+				// zzz.actionPerformed(e);
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						zzz.actionPerformed(e);
@@ -151,9 +147,6 @@ SelectionListener, ZoomListener {
 				});
 			}
 		});
-
-
-
 
 		jbZoomRegion.setToolTipText("Zoom: Selected Region / Complete Graph (no selection)");
 		add(jbZoomRegion);
@@ -163,31 +156,18 @@ SelectionListener, ZoomListener {
 		 * this textfield is/was for debugging purposes
 		 */
 		/*
-		zoomTextField = new JTextField();
-		zoomTextField.setPreferredSize(new Dimension(12,30));
-		zoomTextField.addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				if(e.getKeyChar() == KeyEvent.VK_ENTER) {
-					ActionEvent e2 = new ActionEvent(zoomTextField, 0, "enter");
-					actionPerformed(e2);
-				}
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-			}
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-			}
-		});
-		add(zoomTextField);
-		*/
+		 * zoomTextField = new JTextField(); zoomTextField.setPreferredSize(new
+		 * Dimension(12,30)); zoomTextField.addKeyListener(new KeyListener() {
+		 * 
+		 * @Override public void keyTyped(KeyEvent e) { if(e.getKeyChar() ==
+		 * KeyEvent.VK_ENTER) { ActionEvent e2 = new ActionEvent(zoomTextField, 0,
+		 * "enter"); actionPerformed(e2); } }
+		 * 
+		 * @Override public void keyReleased(KeyEvent e) { }
+		 * 
+		 * @Override public void keyPressed(KeyEvent e) { } }); add(zoomTextField);
+		 */
 		validate();
-
-
 
 	}
 
@@ -251,7 +231,8 @@ SelectionListener, ZoomListener {
 		if (myView instanceof PaintStatusSupport) {
 			PaintStatusSupport pss = (PaintStatusSupport) myView;
 			if (pss.statusDrawInProgress()) {
-				MainFrame.showMessageDialog("Please do not change view characteristics until drawing has completed.", "Image Creation in Progress");
+				MainFrame.showMessageDialog("Please do not change view characteristics until drawing has completed.",
+						"Image Creation in Progress");
 				return;
 			}
 		}
@@ -279,123 +260,127 @@ SelectionListener, ZoomListener {
 			at.setToScale(1, 1);
 			zoomView.zoomChanged(at);
 			MainFrame.showMessage("Active Zoom: " + (int) (100d * at.getScaleX()) + "%", MessageType.INFO);
-		} else if(e.getSource().equals(zoomTextField)) {
+		} else if (e.getSource().equals(zoomTextField)) {
 			final AffineTransform at = new AffineTransform();
-			at.setToScale(Double.parseDouble(zoomTextField.getText())/100, Double.parseDouble(zoomTextField.getText())/100);
+			at.setToScale(Double.parseDouble(zoomTextField.getText()) / 100,
+					Double.parseDouble(zoomTextField.getText()) / 100);
 
 			Rectangle viewRect = scrollPane.getViewport().getViewRect();
-			logger.debug("before zoomChanged viewportviewX: " + viewRect.getX() +
-					" viewportviewY: " + viewRect.getY() + 
-					" viewportviewWidth: " +viewRect.getWidth() + 
-					" viewportviewHeight: " +viewRect.getHeight()
-					);
+			logger.debug("before zoomChanged viewportviewX: " + viewRect.getX() + " viewportviewY: " + viewRect.getY()
+					+ " viewportviewWidth: " + viewRect.getWidth() + " viewportviewHeight: " + viewRect.getHeight());
 
 			zoomView.zoomChanged(at);
 			scrollPane.paintImmediately(scrollPane.getVisibleRect());
-			logger.debug("after zoomChanged viewportviewX: " + viewRect.getX() +
-					" viewportviewY: " + viewRect.getY() + 
-					" viewportviewWidth: " +viewRect.getWidth() + 
-					" viewportviewHeight: " +viewRect.getHeight()
-					);
+			logger.debug("after zoomChanged viewportviewX: " + viewRect.getX() + " viewportviewY: " + viewRect.getY()
+					+ " viewportviewWidth: " + viewRect.getWidth() + " viewportviewHeight: " + viewRect.getHeight());
 			MainFrame.showMessage("Active Zoom: " + (int) (100d * at.getScaleX()) + "%", MessageType.INFO);
-		} else	
-			if (e.getSource().equals(jbZoomRegion) || e.getSource().equals(jbZoomOut) || e.getSource().equals(jbZoomIn)) {
+		} else if (e.getSource().equals(jbZoomRegion) || e.getSource().equals(jbZoomOut)
+				|| e.getSource().equals(jbZoomIn)) {
 
-				Rectangle currentViewRect = scrollPane.getViewport().getViewRect();
-				Point a = currentViewRect.getLocation();
-				Point b = new Point(a.x + currentViewRect.width, a.y + currentViewRect.height);
+			Rectangle currentViewRect = scrollPane.getViewport().getViewRect();
+			Point a = currentViewRect.getLocation();
+			Point b = new Point(a.x + currentViewRect.width, a.y + currentViewRect.height);
+			try {
+				currentZoom.inverseTransform(a, a);
+				currentZoom.inverseTransform(b, b);
+				currentViewRect = new Rectangle(a.x, a.y, b.x - a.x, b.y - a.y);
+			} catch (NoninvertibleTransformException e1) {
+				System.err.println(e1);
+			}
+
+			Rectangle targetViewRect = scrollPane.getViewport().getViewRect();
+			if (e.getSource().equals(jbZoomRegion)) {
+				Rectangle selectionViewRect = getViewRectFromSelection(view, elements);
+
+				if (selectionViewRect == null)
+					return;
+				// myZoomToView(view, scrollPane);
+
+				// if(true)
+				// return;
+
+				targetViewRect = selectionViewRect;
+				// boolean changed = false;
+
+				// if (targetViewRect.width < currentViewRect.width && targetViewRect.height <
+				// currentViewRect.height &&
+				// Math.abs(targetViewRect.getCenterX() - currentViewRect.getCenterX()) >
+				// targetViewRect.width / 20d &&
+				// Math.abs(targetViewRect.getCenterY() - currentViewRect.getCenterY()) >
+				// targetViewRect.height / 20d) {
+				// Rectangle tryNewRect = new Rectangle(targetViewRect);
+				// tryNewRect.grow((currentViewRect.width - targetViewRect.width) /
+				// zoomIntoValue,
+				// (currentViewRect.height - targetViewRect.height) / zoomIntoValue);
+				// if ((tryNewRect.getCenterX() >= tryNewRect.width / 2 &&
+				// tryNewRect.getCenterX() <= view.getViewComponent().getWidth() -
+				// tryNewRect.width / 2)
+				// || (tryNewRect.getCenterY() >= tryNewRect.height / 2 &&
+				// tryNewRect.getCenterY() <= view.getViewComponent().getHeight()
+				// - tryNewRect.height / 2)) {
+				// targetViewRect = tryNewRect;
+				// changed = true;
+				// }
+				// }
+
+				// if (!changed)
+				// targetViewRect.grow((int) (targetViewRect.width / (zoomIntoValue / 3d)),
+				// (int) (targetViewRect.height / (zoomIntoValue / 3d)));
+				// targetViewRect = selectionViewRect;
+			} else {
+				targetViewRect = scrollPane.getViewport().getViewRect();
+				if (e.getSource().equals(jbZoomOut)) {
+					targetViewRect.grow((int) (targetViewRect.width * plusMinusZoom / 2),
+							(int) (targetViewRect.height * plusMinusZoom / 2));
+				} else {
+					targetViewRect.grow(-(int) (targetViewRect.width * plusMinusZoom / 2),
+							-(int) (targetViewRect.height * plusMinusZoom / 2));
+				}
+				a = targetViewRect.getLocation();
+				b = new Point(a.x + targetViewRect.width, a.y + targetViewRect.height);
 				try {
 					currentZoom.inverseTransform(a, a);
 					currentZoom.inverseTransform(b, b);
-					currentViewRect = new Rectangle(a.x, a.y, b.x - a.x, b.y - a.y);
+					targetViewRect = new Rectangle(a.x, a.y, b.x - a.x, b.y - a.y);
 				} catch (NoninvertibleTransformException e1) {
-					System.err.println(e1);
+					ErrorMsg.addErrorMessage(e1);
 				}
+			}
 
-				Rectangle targetViewRect = scrollPane.getViewport().getViewRect();
-				if (e.getSource().equals(jbZoomRegion)) {
-					Rectangle selectionViewRect = getViewRectFromSelection(view, elements);
+			final double srcSmallestX = currentViewRect.getX();
+			final double srcSmallestY = currentViewRect.getY();
+			final double srcGreatestX = currentViewRect.getX() + currentViewRect.getWidth();
+			final double srcGreatestY = currentViewRect.getY() + currentViewRect.getHeight();
 
-					if (selectionViewRect == null)
-						return;
-					//				myZoomToView(view, scrollPane);
+			final double smallestX = targetViewRect.getX();
+			final double smallestY = targetViewRect.getY();
+			final double greatestX = targetViewRect.getX() + targetViewRect.getWidth();
+			final double greatestY = targetViewRect.getY() + targetViewRect.getHeight();
 
-					//				if(true)
-					//					return;
-
-					targetViewRect = selectionViewRect;
-					//				boolean changed = false;
-
-					//				if (targetViewRect.width < currentViewRect.width && targetViewRect.height < currentViewRect.height &&
-					//									Math.abs(targetViewRect.getCenterX() - currentViewRect.getCenterX()) > targetViewRect.width / 20d &&
-					//									Math.abs(targetViewRect.getCenterY() - currentViewRect.getCenterY()) > targetViewRect.height / 20d) {
-					//					Rectangle tryNewRect = new Rectangle(targetViewRect);
-					//					tryNewRect.grow((currentViewRect.width - targetViewRect.width) / zoomIntoValue,
-					//										(currentViewRect.height - targetViewRect.height) / zoomIntoValue);
-					//					if ((tryNewRect.getCenterX() >= tryNewRect.width / 2 && tryNewRect.getCenterX() <= view.getViewComponent().getWidth() - tryNewRect.width / 2)
-					//										|| (tryNewRect.getCenterY() >= tryNewRect.height / 2 && tryNewRect.getCenterY() <= view.getViewComponent().getHeight()
-					//															- tryNewRect.height / 2)) {
-					//						targetViewRect = tryNewRect;
-					//						changed = true;
-					//					}
-					//				}
-
-					//				if (!changed)
-					//					targetViewRect.grow((int) (targetViewRect.width / (zoomIntoValue / 3d)), (int) (targetViewRect.height / (zoomIntoValue / 3d)));
-					//				targetViewRect = selectionViewRect;
-				} else {
-					targetViewRect = scrollPane.getViewport().getViewRect();
-					if (e.getSource().equals(jbZoomOut)) {
-						targetViewRect.grow((int) (targetViewRect.width * plusMinusZoom / 2), (int) (targetViewRect.height * plusMinusZoom / 2));
-					} else {
-						targetViewRect.grow(-(int) (targetViewRect.width * plusMinusZoom / 2), -(int) (targetViewRect.height * plusMinusZoom / 2));
-					}
-					a = targetViewRect.getLocation();
-					b = new Point(a.x + targetViewRect.width, a.y + targetViewRect.height);
-					try {
-						currentZoom.inverseTransform(a, a);
-						currentZoom.inverseTransform(b, b);
-						targetViewRect = new Rectangle(a.x, a.y, b.x - a.x, b.y - a.y);
-					} catch (NoninvertibleTransformException e1) {
-						ErrorMsg.addErrorMessage(e1);
-					}
-				}
-
-
-				final double srcSmallestX = currentViewRect.getX();
-				final double srcSmallestY = currentViewRect.getY();
-				final double srcGreatestX = currentViewRect.getX() + currentViewRect.getWidth();
-				final double srcGreatestY = currentViewRect.getY() + currentViewRect.getHeight();
-
-				final double smallestX = targetViewRect.getX();
-				final double smallestY = targetViewRect.getY();
-				final double greatestX = targetViewRect.getX() + targetViewRect.getWidth();
-				final double greatestY = targetViewRect.getY() + targetViewRect.getHeight();
-
-				boolean smooth = !e.getSource().equals(jbZoomIn) && !e.getSource().equals(jbZoomOut); // (!e.getSource().equals(jbZoomRegion))
-				if (!useSmooth)
-					smooth = false;
-				if (!smooth) {
-					setZoom(zoomView, scrollPane, scrollPaneSize, smallestX, smallestY, greatestX, greatestY);
-				} else {
-					int duration = 300;
-					if (e.getSource().equals(jbZoomRegion))
-						duration = duration / 2;
-					long startTime = System.currentTimeMillis();
-					double f = 0;
-					final ThreadSafeOptions tso = new ThreadSafeOptions();
-					tso.setBval(0, false);
-					while (f < 1) {
-						long currTime = System.currentTimeMillis();
-						f = (currTime - startTime) / (double) duration;
-						if (f > 1)
-							f = 1;
-						if (f < 0)
-							f = 0;
-						double tx1 = getScale(f, srcSmallestX, smallestX);
-						double ty1 = getScale(f, srcSmallestY, smallestY);
-						double tx2 = getScale(f, srcGreatestX, greatestX);
-						double ty2 = getScale(f, srcGreatestY, greatestY);
+			boolean smooth = !e.getSource().equals(jbZoomIn) && !e.getSource().equals(jbZoomOut); // (!e.getSource().equals(jbZoomRegion))
+			if (!useSmooth)
+				smooth = false;
+			if (!smooth) {
+				setZoom(zoomView, scrollPane, scrollPaneSize, smallestX, smallestY, greatestX, greatestY);
+			} else {
+				int duration = 300;
+				if (e.getSource().equals(jbZoomRegion))
+					duration = duration / 2;
+				long startTime = System.currentTimeMillis();
+				double f = 0;
+				final ThreadSafeOptions tso = new ThreadSafeOptions();
+				tso.setBval(0, false);
+				while (f < 1) {
+					long currTime = System.currentTimeMillis();
+					f = (currTime - startTime) / (double) duration;
+					if (f > 1)
+						f = 1;
+					if (f < 0)
+						f = 0;
+					double tx1 = getScale(f, srcSmallestX, smallestX);
+					double ty1 = getScale(f, srcSmallestY, smallestY);
+					double tx2 = getScale(f, srcGreatestX, greatestX);
+					double ty2 = getScale(f, srcGreatestY, greatestY);
 					setZoom(zoomView, scrollPane, scrollPaneSize, tx1, ty1, tx2, ty2);
 					scrollPane.paintImmediately(scrollPane.getVisibleRect());
 					try {
@@ -403,12 +388,12 @@ SelectionListener, ZoomListener {
 					} catch (InterruptedException err) {
 						ErrorMsg.addErrorMessage(err);
 					}
-					}
-
-					setZoom(zoomView, scrollPane, scrollPaneSize, smallestX, smallestY, greatestX, greatestY);
-					scrollPane.paintImmediately(scrollPane.getVisibleRect());
 				}
+
+				setZoom(zoomView, scrollPane, scrollPaneSize, smallestX, smallestY, greatestX, greatestY);
+				scrollPane.paintImmediately(scrollPane.getVisibleRect());
 			}
+		}
 	}
 
 	private void myZoomToView(View view, JScrollPane scrollPane) {
@@ -420,9 +405,8 @@ SelectionListener, ZoomListener {
 
 		Point selectionLocation = new Point(selectionViewRect.x, selectionViewRect.y);
 		Point selectionDimension = new Point(selectionViewRect.width, selectionViewRect.height);
-		//		zoom.transform(zoomedSelectionLocation, zoomedSelectionLocation);
-		//		zoom.transform(zoomedSelectionDimension, zoomedSelectionDimension);
-
+		// zoom.transform(zoomedSelectionLocation, zoomedSelectionLocation);
+		// zoom.transform(zoomedSelectionDimension, zoomedSelectionDimension);
 
 		Rectangle curZoomedViewRect = scrollPane.getViewport().getViewRect();
 		Point curZoomedViewRectLocation = curZoomedViewRect.getLocation();
@@ -451,19 +435,19 @@ SelectionListener, ZoomListener {
 		if (myView instanceof PaintStatusSupport) {
 			PaintStatusSupport pss = (PaintStatusSupport) myView;
 			if (pss.statusDrawInProgress()) {
-				MainFrame.showMessageDialog("Please do not change view characteristics until drawing has completed.", "Image Creation in Progress");
+				MainFrame.showMessageDialog("Please do not change view characteristics until drawing has completed.",
+						"Image Creation in Progress");
 				return;
 			}
 		}
 
 		AffineTransform currentZoom = myView.getZoom();
 		/*
-		 * check for exceeding zoom level
-		 * scaleX and scaleY are supposed to be equal
+		 * check for exceeding zoom level scaleX and scaleY are supposed to be equal
 		 */
-		if(zoomFactor > 0 && myView.getZoom().getScaleX() + myView.getZoom().getScaleX() * Math.abs(zoomFactor) > 40.0)
+		if (zoomFactor > 0 && myView.getZoom().getScaleX() + myView.getZoom().getScaleX() * Math.abs(zoomFactor) > 40.0)
 			return;
-		if(zoomFactor < 0 && myView.getZoom().getScaleX() - myView.getZoom().getScaleX() * Math.abs(zoomFactor) < 0.02)
+		if (zoomFactor < 0 && myView.getZoom().getScaleX() - myView.getZoom().getScaleX() * Math.abs(zoomFactor) < 0.02)
 			return;
 
 		final ZoomListener zoomView = (ZoomListener) myView;
@@ -482,23 +466,22 @@ SelectionListener, ZoomListener {
 			return;
 		}
 
-
 		Point mouseCoord = new Point(coords.x, coords.y);
 		try {
 			currentZoom.inverseTransform(mouseCoord, mouseCoord);
 		} catch (NoninvertibleTransformException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
-		//		
+		//
 
 		Rectangle currentViewRect = scrollPane.getViewport().getViewRect();
 		Point a = currentViewRect.getLocation();
 		Point b = new Point(a.x + currentViewRect.width, a.y + currentViewRect.height);
 
-
-		//		System.out.println("sps: "+sps.toString());
-		//		System.out.println("currentViewRect: (before transform)"+currentViewRect.toString());
+		// System.out.println("sps: "+sps.toString());
+		// System.out.println("currentViewRect: (before
+		// transform)"+currentViewRect.toString());
 
 		/*
 		 * transform current view to the actual visible area
@@ -514,34 +497,39 @@ SelectionListener, ZoomListener {
 		/*
 		 * get the relational point of the mouse in the view (between 0..1)
 		 */
-		Point2d mouseCoordRel = new Point2d(
-				(double)(mouseCoord.x - currentViewRect.x) / currentViewRect.width, 
-				(double)(mouseCoord.y - currentViewRect.y) / currentViewRect.height);
+		Point2d mouseCoordRel = new Point2d((double) (mouseCoord.x - currentViewRect.x) / currentViewRect.width,
+				(double) (mouseCoord.y - currentViewRect.y) / currentViewRect.height);
 
-		//		System.out.println("currentViewRect: ( after transform)"+currentViewRect.toString());
-		//		System.out.println("mousepos rel to viewport: "+mouseCoordRel.toString());
+		// System.out.println("currentViewRect: ( after
+		// transform)"+currentViewRect.toString());
+		// System.out.println("mousepos rel to viewport: "+mouseCoordRel.toString());
 
 		Rectangle targetViewRect = currentViewRect;
 
-		//		System.out.println("point at "+mouseCoordRel.x+"%: "+ (targetViewRect.x + mouseCoordRel.x * (double)targetViewRect.width));
-		//		System.out.println("point at "+mouseCoordRel.y+"%: "+ (targetViewRect.y + mouseCoordRel.y * (double)targetViewRect.height));
+		// System.out.println("point at "+mouseCoordRel.x+"%: "+ (targetViewRect.x +
+		// mouseCoordRel.x * (double)targetViewRect.width));
+		// System.out.println("point at "+mouseCoordRel.y+"%: "+ (targetViewRect.y +
+		// mouseCoordRel.y * (double)targetViewRect.height));
 
-		targetViewRect.grow(-(int) (targetViewRect.width * plusMinusZoom / 2), -(int) (targetViewRect.height * plusMinusZoom / 2));
+		targetViewRect.grow(-(int) (targetViewRect.width * plusMinusZoom / 2),
+				-(int) (targetViewRect.height * plusMinusZoom / 2));
 
-		//		System.out.println("targetViewRect: "+targetViewRect.toString());
+		// System.out.println("targetViewRect: "+targetViewRect.toString());
 
 		/*
-		 * move the current view in a way, that the viewport coordinates under the mouse cursor stay the same
-		 * after the zoom. in other words, the two rectangles (before and after zoom) are aligned to the
-		 * mouse cursor coordinates
+		 * move the current view in a way, that the viewport coordinates under the mouse
+		 * cursor stay the same after the zoom. in other words, the two rectangles
+		 * (before and after zoom) are aligned to the mouse cursor coordinates
 		 */
-		targetViewRect.x = (int)Math.round((double)mouseCoord.x - mouseCoordRel.x * (double)targetViewRect.width); 
-		targetViewRect.y = (int)Math.round((double)mouseCoord.y  - mouseCoordRel.y * (double)targetViewRect.height); 		
+		targetViewRect.x = (int) Math.round((double) mouseCoord.x - mouseCoordRel.x * (double) targetViewRect.width);
+		targetViewRect.y = (int) Math.round((double) mouseCoord.y - mouseCoordRel.y * (double) targetViewRect.height);
 
-		//		System.out.println("targetViewRect2: "+targetViewRect.toString());
+		// System.out.println("targetViewRect2: "+targetViewRect.toString());
 
-		//		System.out.println("point at_"+mouseCoordRel.x+"%: "+ (targetViewRect.x + mouseCoordRel.x * (double)targetViewRect.width));
-		//		System.out.println("point at_"+mouseCoordRel.y+"%: "+ (targetViewRect.y + mouseCoordRel.y * (double)targetViewRect.height));
+		// System.out.println("point at_"+mouseCoordRel.x+"%: "+ (targetViewRect.x +
+		// mouseCoordRel.x * (double)targetViewRect.width));
+		// System.out.println("point at_"+mouseCoordRel.y+"%: "+ (targetViewRect.y +
+		// mouseCoordRel.y * (double)targetViewRect.height));
 
 		final double smallestX = targetViewRect.getX();
 		final double smallestY = targetViewRect.getY();
@@ -574,9 +562,8 @@ SelectionListener, ZoomListener {
 			if ((gvc == null || ra) && (ge instanceof Node)) {
 				if (!AttributeHelper.isHiddenGraphElement(ge))
 					r = AttributeHelper.getNodeRectangleAWT((Node) ge);
-			} else
-				if (!ra && gvc != null)
-					r = gvc.getBounds();
+			} else if (!ra && gvc != null)
+				r = gvc.getBounds();
 			if (r == null)
 				continue;
 			if (viewRect == null)
@@ -601,8 +588,6 @@ SelectionListener, ZoomListener {
 		return viewRect;
 	}
 
-
-
 	private void setZoom(final ZoomListener zoomView, JScrollPane scrollPane, Dimension scrollPaneSize,
 			double smallestX, double smallestY, double greatestX, double greatestY) {
 		double zomedSizeX, zomedSizeY;
@@ -610,34 +595,21 @@ SelectionListener, ZoomListener {
 		zomedSizeY = scrollPaneSize.getHeight() / (greatestY - smallestY);
 		final boolean xIsLimit = zomedSizeX < zomedSizeY;
 
-		logger.debug(
-				" smallestX: " + smallestX + 
-				" smallestY: " + smallestY + 
-				" greatestX: " + greatestX + 
-				" greatestY: " + greatestY 
-				);
+		logger.debug(" smallestX: " + smallestX + " smallestY: " + smallestY + " greatestX: " + greatestX
+				+ " greatestY: " + greatestY);
 		Rectangle viewRect = scrollPane.getViewport().getViewRect();
-		logger.debug("zoomed viewportviewX: " + viewRect.getX() +
-				" viewportviewY: " + viewRect.getY() + 
-				" viewportviewWidth: " +viewRect.getWidth() + 
-				" viewportviewHeight: " +viewRect.getHeight()
-				);
-
+		logger.debug("zoomed viewportviewX: " + viewRect.getX() + " viewportviewY: " + viewRect.getY()
+				+ " viewportviewWidth: " + viewRect.getWidth() + " viewportviewHeight: " + viewRect.getHeight());
 
 		double borderPercent = 0; // 0.1;
 
-		double zoomFaktorWanted = min2(zomedSizeX, zomedSizeY)
-				* (1 - borderPercent);
+		double zoomFaktorWanted = min2(zomedSizeX, zomedSizeY) * (1 - borderPercent);
 		final double zoomFaktor = min2(zoomFaktorWanted, 5); // maximum 500% zoom!
 
-		logger.debug( "zoomFaktor: " + zoomFaktor);
-
-
-
+		logger.debug("zoomFaktor: " + zoomFaktor);
 
 		final AffineTransform at = new AffineTransform();
 		at.setToScale(zoomFaktor, zoomFaktor);
-
 
 		MainFrame.showMessage("Active Zoom: " + (int) (100d * at.getScaleX()) + "%", MessageType.INFO);
 
@@ -652,65 +624,58 @@ SelectionListener, ZoomListener {
 		final JScrollPane spf = scrollPane;
 		final Dimension spsf = scrollPaneSize;
 
-		logger.debug(
-				"before zoom: scrollbarHorizPos: " + spf.getHorizontalScrollBar().getValue() +
-				" scrollbarHorizMax: " + spf.getHorizontalScrollBar().getMaximum()
-				);
+		logger.debug("before zoom: scrollbarHorizPos: " + spf.getHorizontalScrollBar().getValue()
+				+ " scrollbarHorizMax: " + spf.getHorizontalScrollBar().getMaximum());
 
 		zoomView.zoomChanged(at);
 
-		logger.debug(
-				"after zoom before setscrollbarVal: scrollbarHorizPos: " + spf.getHorizontalScrollBar().getValue() +	" scrollbarHorizMax: " + spf.getHorizontalScrollBar().getMaximum() );	
+		logger.debug("after zoom before setscrollbarVal: scrollbarHorizPos: " + spf.getHorizontalScrollBar().getValue()
+				+ " scrollbarHorizMax: " + spf.getHorizontalScrollBar().getMaximum());
 
-		logger.debug("after zoom: scrollpanesizeWidth: " + scrollPaneSize.getWidth() + 
-				" scrollpanesizeHeight: " + scrollPaneSize.getHeight() + 
-				" smallestX: " + smallestX + 
-				" smallestY: " + smallestY + 
-				" greatestX: " + greatestX + 
-				" greatestY: " + greatestY 
-				);
-
+		logger.debug("after zoom: scrollpanesizeWidth: " + scrollPaneSize.getWidth() + " scrollpanesizeHeight: "
+				+ scrollPaneSize.getHeight() + " smallestX: " + smallestX + " smallestY: " + smallestY + " greatestX: "
+				+ greatestX + " greatestY: " + greatestY);
 
 		if (xIsLimit) {
 			double offX = (gtX - smX) * bdP / 2;
 			int targetX = (int) ((smX - offX) * at.getScaleX());
-			//							spf.getHorizontalScrollBar().setValue(targetX);
-			double targetY = middleY * zoomFaktor - spsf.getHeight()
-					/ 2;
-			logger.debug("-viewport width: " + spf.getViewport().getWidth() + " viewport height: " + spf.getViewport().getHeight());
-			logger.debug("-targetX : "  + targetX + " targetY: " + targetY );
-			//							spf.getVerticalScrollBar().setValue((int) targetY);
-			if(targetX < 0)
+			// spf.getHorizontalScrollBar().setValue(targetX);
+			double targetY = middleY * zoomFaktor - spsf.getHeight() / 2;
+			logger.debug("-viewport width: " + spf.getViewport().getWidth() + " viewport height: "
+					+ spf.getViewport().getHeight());
+			logger.debug("-targetX : " + targetX + " targetY: " + targetY);
+			// spf.getVerticalScrollBar().setValue((int) targetY);
+			if (targetX < 0)
 				targetX = 0;
-			if(targetY < 0)
+			if (targetY < 0)
 				targetY = 0;
-			spf.getViewport().setViewPosition(new Point(targetX, (int)targetY));
+			spf.getViewport().setViewPosition(new Point(targetX, (int) targetY));
 
 		} else {
 			double offY = (gtY - smY) * bdP / 2;
 			int targetY = (int) ((smY - offY) * at.getScaleY());
-			//							spf.getVerticalScrollBar().setValue(targetY);
-			double targetX = middleX * zoomFaktor - spsf.getWidth()
-					/ 2;
-			//							spf.getHorizontalScrollBar().setValue((int) targetX);
-			if(targetX < 0)
+			// spf.getVerticalScrollBar().setValue(targetY);
+			double targetX = middleX * zoomFaktor - spsf.getWidth() / 2;
+			// spf.getHorizontalScrollBar().setValue((int) targetX);
+			if (targetX < 0)
 				targetX = 0;
-			if(targetY < 0)
+			if (targetY < 0)
 				targetY = 0;
-			logger.debug("-viewport width: " + spf.getViewport().getWidth() + " viewport height: " + spf.getViewport().getHeight());
-			logger.debug("-targetY : "  + targetY + " targetX: " + targetX);
-			spf.getViewport().setViewPosition(new Point((int)targetX, (int)targetY));
+			logger.debug("-viewport width: " + spf.getViewport().getWidth() + " viewport height: "
+					+ spf.getViewport().getHeight());
+			logger.debug("-targetY : " + targetY + " targetX: " + targetX);
+			spf.getViewport().setViewPosition(new Point((int) targetX, (int) targetY));
 		}
-		logger.debug(
-				"-after setVal: scrollbarHorizPos: " + spf.getHorizontalScrollBar().getValue() +	" scrollbarHorizMax: " + spf.getHorizontalScrollBar().getMaximum() );	
+		logger.debug("-after setVal: scrollbarHorizPos: " + spf.getHorizontalScrollBar().getValue()
+				+ " scrollbarHorizMax: " + spf.getHorizontalScrollBar().getMaximum());
 
 	}
 
 	/**
 	 * @param smallestX
-	 *           Value 1
+	 *            Value 1
 	 * @param cx
-	 *           Value 2
+	 *            Value 2
 	 * @return The smaller one of the parameters
 	 */
 	private double min2(double smallestX, double cx) {
@@ -744,7 +709,10 @@ SelectionListener, ZoomListener {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.view.ViewListener#viewChanged(org.graffiti.plugin.view.View)
+	 * 
+	 * @see
+	 * org.graffiti.plugin.view.ViewListener#viewChanged(org.graffiti.plugin.view.
+	 * View)
 	 */
 	public void viewChanged(View newView) {
 		View view = newView;
@@ -763,7 +731,9 @@ SelectionListener, ZoomListener {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.selection.SelectionListener#selectionChanged(org.graffiti.selection.SelectionEvent)
+	 * 
+	 * @see org.graffiti.selection.SelectionListener#selectionChanged(org.graffiti.
+	 * selection.SelectionEvent)
 	 */
 	public void selectionChanged(SelectionEvent e) {
 		e.getSelection();
@@ -771,7 +741,10 @@ SelectionListener, ZoomListener {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.selection.SelectionListener#selectionListChanged(org.graffiti.selection.SelectionEvent)
+	 * 
+	 * @see
+	 * org.graffiti.selection.SelectionListener#selectionListChanged(org.graffiti.
+	 * selection.SelectionEvent)
 	 */
 	public void selectionListChanged(SelectionEvent e) {
 		e.getSelection();
@@ -779,6 +752,7 @@ SelectionListener, ZoomListener {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.gui.GraffitiComponent#getPreferredComponent()
 	 */
 	public String getPreferredComponent() {

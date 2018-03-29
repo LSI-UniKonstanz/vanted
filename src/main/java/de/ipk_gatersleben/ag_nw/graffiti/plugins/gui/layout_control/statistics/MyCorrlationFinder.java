@@ -26,7 +26,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.Experiment2GraphHelper;
 
 public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnable {
-	
+
 	private final Collection<Node> nodes;
 	private final Graph graph;
 	private final EditorSession session;
@@ -47,11 +47,11 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 	private final boolean rankOrder;
 	private final boolean showStatusResult;
 	private final boolean dontAddNewEdgesOnlyUpdateExisting;
-	
+
 	public MyCorrlationFinder(Collection<Node> nodes, Graph graph, EditorSession session, boolean considerTimeShifts,
-						boolean mergeDataset, boolean colorCodeEdgesWithCorrelationValue, double minimumR, int currGammaValue,
-						Color colR_1, Color colR0, Color colR1, Collection<Edge> correlationEdges, double prob, boolean plotAverage,
-						boolean rankOrder, boolean showStatusResult, boolean dontAddNewEdgesOnlyUpdateExisting) {
+			boolean mergeDataset, boolean colorCodeEdgesWithCorrelationValue, double minimumR, int currGammaValue,
+			Color colR_1, Color colR0, Color colR1, Collection<Edge> correlationEdges, double prob, boolean plotAverage,
+			boolean rankOrder, boolean showStatusResult, boolean dontAddNewEdgesOnlyUpdateExisting) {
 		this.nodes = nodes;
 		this.graph = graph;
 		this.session = session;
@@ -72,38 +72,38 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 		if (dontAddNewEdgesOnlyUpdateExisting)
 			this.considerTimeShifts = false;
 	}
-	
+
 	public int getCurrentStatusValue() {
 		return (int) getCurrentStatusValueFine();
 	}
-	
+
 	public void setCurrentStatusValue(int value) {
 		currentStatus = value;
 	}
-	
+
 	public double getCurrentStatusValueFine() {
 		return currentStatus;
 	}
-	
+
 	public String getCurrentStatusMessage1() {
 		return "Calculate Correlation Factors...";
 	}
-	
+
 	public String getCurrentStatusMessage2() {
 		return (process == null || process.length() <= 0) ? "Please wait..." : process;
 	}
-	
+
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
-	
+
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-	
+
 	public void pleaseContinueRun() {
 	}
-	
+
 	public void run() {
 		List<ResultPair> result = new ArrayList<ResultPair>();
 		ArrayList<Node> processed = new ArrayList<Node>();
@@ -149,11 +149,11 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 								mappedDataList2 = Experiment2GraphHelper.getMappedDataListFromGraphElement(node2);
 								dataset = initDataset(mappedDataList1, mappedDataList2);
 								CorrelationResult correlation = TabStatistics.calculateCorrelation(dataset, node1desc,
-													node2desc, mergeDataset, offset, prob, rankOrder);
+										node2desc, mergeDataset, offset, prob, rankOrder);
 								if (correlation.isAnyOneSignificant(minimumR)) {
 									res.add(correlation);
 									rtimes += "r*=" + correlation.getMaxOrMinR2() + ", ";
-									
+
 								} else
 									rtimes += "r=" + correlation.getMaxOrMinR2() + ", ";
 							}
@@ -176,8 +176,8 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 							}
 						} else {
 							MyXML_XYDataset dataset = initDataset(mappedDataList1, mappedDataList2);
-							CorrelationResult correlation = TabStatistics.calculateCorrelation(dataset, node1desc, node2desc,
-												mergeDataset, 0, prob, rankOrder);
+							CorrelationResult correlation = TabStatistics.calculateCorrelation(dataset, node1desc,
+									node2desc, mergeDataset, 0, prob, rankOrder);
 							if (correlation.isAnyOneSignificant(minimumR)) {
 								result.add(new ResultPair(node1, node2, correlation));
 							}
@@ -207,9 +207,11 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 				if (dontAddNewEdgesOnlyUpdateExisting) {
 					if (a.getNeighbors().contains(b)) {
 						for (Edge nE : a.getEdges()) {
-							if ((nE.getSource() == a && nE.getTarget() == b) || (nE.getSource() == b && nE.getTarget() == a)) {
-								Color c = colorCodeEdgesWithCorrelationValue ? TabStatistics.getRcolor(r, currGammaValue,
-													colR_1, colR0, colR1) : Color.BLACK;
+							if ((nE.getSource() == a && nE.getTarget() == b)
+									|| (nE.getSource() == b && nE.getTarget() == a)) {
+								Color c = colorCodeEdgesWithCorrelationValue
+										? TabStatistics.getRcolor(r, currGammaValue, colR_1, colR0, colR1)
+										: Color.BLACK;
 								AttributeHelper.setFillColor(nE, c);
 								AttributeHelper.setOutlineColor(nE, c);
 								newEdge.add(nE);
@@ -217,10 +219,19 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 						}
 					}
 				} else {
-					Edge nE = graph.addEdge(a, b, false, AttributeHelper.getDefaultGraphicsAttributeForEdge(
-										(colorCodeEdgesWithCorrelationValue ? TabStatistics.getRcolor(r, currGammaValue, colR_1, colR0,
-															colR1) : Color.BLACK), (colorCodeEdgesWithCorrelationValue ? TabStatistics.getRcolor(r,
-															currGammaValue, colR_1, colR0, colR1) : Color.BLACK), false));
+					Edge nE = graph
+							.addEdge(a, b, false,
+									AttributeHelper
+											.getDefaultGraphicsAttributeForEdge(
+													(colorCodeEdgesWithCorrelationValue
+															? TabStatistics.getRcolor(r, currGammaValue, colR_1, colR0,
+																	colR1)
+															: Color.BLACK),
+													(colorCodeEdgesWithCorrelationValue
+															? TabStatistics.getRcolor(r, currGammaValue, colR_1, colR0,
+																	colR1)
+															: Color.BLACK),
+													false));
 					newEdge.add(nE);
 				}
 				// EdgeGraphicAttribute ega = (EdgeGraphicAttribute)
@@ -228,34 +239,50 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 			} else {
 				int offset = rp.correlation.getDataset2offsetOfMaxOrMinR();
 				if (offset < 0) {
-					Edge nE = graph.addEdge(b, a, true, AttributeHelper.getDefaultGraphicsAttributeForEdge(
-										(colorCodeEdgesWithCorrelationValue ? TabStatistics.getRcolor(r, currGammaValue, colR_1, colR0,
-															colR1) : Color.BLACK), (colorCodeEdgesWithCorrelationValue ? TabStatistics.getRcolor(r,
-															currGammaValue, colR_1, colR0, colR1) : Color.BLACK), true));
+					Edge nE = graph
+							.addEdge(b, a, true,
+									AttributeHelper
+											.getDefaultGraphicsAttributeForEdge(
+													(colorCodeEdgesWithCorrelationValue
+															? TabStatistics.getRcolor(r, currGammaValue, colR_1, colR0,
+																	colR1)
+															: Color.BLACK),
+													(colorCodeEdgesWithCorrelationValue
+															? TabStatistics.getRcolor(r, currGammaValue, colR_1, colR0,
+																	colR1)
+															: Color.BLACK),
+													true));
 					newEdge.add(nE);
 				} else {
-					Edge nE = graph.addEdge(a, b, true, AttributeHelper.getDefaultGraphicsAttributeForEdge(
-										(colorCodeEdgesWithCorrelationValue ? TabStatistics.getRcolor(r, currGammaValue, colR_1, colR0,
-															colR1) : Color.BLACK), (colorCodeEdgesWithCorrelationValue ? TabStatistics.getRcolor(r,
-															currGammaValue, colR_1, colR0, colR1) : Color.BLACK), true));
+					Edge nE = graph
+							.addEdge(a, b, true,
+									AttributeHelper
+											.getDefaultGraphicsAttributeForEdge(
+													(colorCodeEdgesWithCorrelationValue
+															? TabStatistics.getRcolor(r, currGammaValue, colR_1, colR0,
+																	colR1)
+															: Color.BLACK),
+													(colorCodeEdgesWithCorrelationValue
+															? TabStatistics.getRcolor(r, currGammaValue, colR_1, colR0,
+																	colR1)
+															: Color.BLACK),
+													true));
 					newEdge.add(nE);
 				}
 				if (offset == 0) {
 					// nothing
-				} else
-					if (offset == -1 || offset == 1) {
-						for (Edge nE : newEdge)
-							AttributeHelper.setDashInfo(nE, 10f, 5f);
-					} else
-						if (offset == -2 || offset == 2) {
-							for (Edge nE : newEdge)
-								AttributeHelper.setDashInfo(nE, 10f, 10f);
-						} else {
-							for (Edge nE : newEdge)
-								AttributeHelper.setDashInfo(nE, 10f, 20f);
-						}
+				} else if (offset == -1 || offset == 1) {
+					for (Edge nE : newEdge)
+						AttributeHelper.setDashInfo(nE, 10f, 5f);
+				} else if (offset == -2 || offset == 2) {
+					for (Edge nE : newEdge)
+						AttributeHelper.setDashInfo(nE, 10f, 10f);
+				} else {
+					for (Edge nE : newEdge)
+						AttributeHelper.setDashInfo(nE, 10f, 20f);
+				}
 				for (Edge nE : newEdge)
-					AttributeHelper.setAttribute(nE, "statistics", "correlation_offset", new Integer(offset));
+					AttributeHelper.setAttribute(nE, "statistics", "correlation_offset", Integer.valueOf(offset));
 			}
 			if (newEdge != null) {
 				if (showStatusResult)
@@ -267,19 +294,19 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 				newEdges.addAll(newEdge);
 				if (colorCodeEdgesWithCorrelationValue) {
 					for (Edge nE : newEdge) {
-						AttributeHelper.setOutlineColor(nE, TabStatistics.getRcolor(r, currGammaValue, colR_1, colR0, colR1));
+						AttributeHelper.setOutlineColor(nE,
+								TabStatistics.getRcolor(r, currGammaValue, colR_1, colR0, colR1));
 						AttributeHelper.setBorderWidth(nE, 5);
 					}
 				}
 				for (Edge nE : newEdge) {
-					
-					AttributeHelper.setAttribute(nE, "statistics", "correlation_r", new Double(r));
-					if( ! Double.isNaN(truecorrprob))
-					{
+
+					AttributeHelper.setAttribute(nE, "statistics", "correlation_r", Double.valueOf(r));
+					if (!Double.isNaN(truecorrprob)) {
 						double prob = 1d - truecorrprob;
 						AttributeHelper.setAttribute(nE, "statistics", "correlation_prob", prob);
 					}
-					
+
 				}
 			}
 		}
@@ -292,9 +319,9 @@ public class MyCorrlationFinder implements BackgroundTaskStatusProvider, Runnabl
 		currentStatus = 100;
 		if (pleaseStop)
 			process = "Processing incomplete";
-		
+
 	}
-	
+
 	private MyXML_XYDataset initDataset(ExperimentInterface mappedDataList1, ExperimentInterface mappedDataList2) {
 		Iterator<SubstanceInterface> itXml1 = mappedDataList1.iterator();
 		Iterator<SubstanceInterface> itXml2 = mappedDataList2.iterator();

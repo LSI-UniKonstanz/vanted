@@ -42,9 +42,9 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A time series chart with 4000 data points, to get an idea of how JFreeChart performs with a
- * larger dataset. You can see that it slows down significantly, so this needs to be worked on
- * (4000 points is not that many!).
+ * A time series chart with 4000 data points, to get an idea of how JFreeChart
+ * performs with a larger dataset. You can see that it slows down significantly,
+ * so this needs to be worked on (4000 points is not that many!).
  */
 public class TimeSeriesDemo5 extends ApplicationFrame {
 
@@ -52,7 +52,7 @@ public class TimeSeriesDemo5 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public TimeSeriesDemo5(final String title) {
 
@@ -79,7 +79,7 @@ public class TimeSeriesDemo5 extends ApplicationFrame {
 		for (int i = 0; i < 4000; i++) {
 			try {
 				value = value + Math.random() - 0.5;
-				series.add(current, new Double(value));
+				series.add(current, Double.valueOf(value));
 				current = (Day) current.next();
 			} catch (SeriesException e) {
 				System.err.println("Error adding to series");
@@ -92,19 +92,11 @@ public class TimeSeriesDemo5 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-		return ChartFactory.createTimeSeriesChart(
-							"Test",
-							"Day",
-							"Value",
-							dataset,
-							false,
-							false,
-							false
-							);
+		return ChartFactory.createTimeSeriesChart("Test", "Day", "Value", dataset, false, false, false);
 	}
 
 	// ****************************************************************************
@@ -122,7 +114,7 @@ public class TimeSeriesDemo5 extends ApplicationFrame {
 	 * Starting point for the application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

@@ -32,7 +32,8 @@ package org.jfree.chart.plot;
 import org.jfree.text.TextBox;
 
 /**
- * A structure that retains information about the label for a section in a pie chart.
+ * A structure that retains information about the label for a section in a pie
+ * chart.
  */
 public class PieLabelRecord implements Comparable {
 
@@ -64,22 +65,22 @@ public class PieLabelRecord implements Comparable {
 	 * Creates a new record.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @param angle
-	 *           the angle.
+	 *            the angle.
 	 * @param baseY
-	 *           the base y-coordinate.
+	 *            the base y-coordinate.
 	 * @param label
-	 *           the label.
+	 *            the label.
 	 * @param labelHeight
-	 *           the label height (in Java2D units).
+	 *            the label height (in Java2D units).
 	 * @param gap
-	 *           the gap.
+	 *            the gap.
 	 * @param linkPercent
-	 *           the link percent.
+	 *            the link percent.
 	 */
-	public PieLabelRecord(Comparable key, double angle, double baseY, TextBox label,
-									double labelHeight, double gap, double linkPercent) {
+	public PieLabelRecord(Comparable key, double angle, double baseY, TextBox label, double labelHeight, double gap,
+			double linkPercent) {
 		this.key = key;
 		this.angle = angle;
 		this.baseY = baseY;
@@ -91,8 +92,8 @@ public class PieLabelRecord implements Comparable {
 	}
 
 	/**
-	 * Returns the base y-coordinate. This is where the label will appear if there is no
-	 * overlapping of labels.
+	 * Returns the base y-coordinate. This is where the label will appear if there
+	 * is no overlapping of labels.
 	 * 
 	 * @return the base y-coordinate.
 	 */
@@ -104,7 +105,7 @@ public class PieLabelRecord implements Comparable {
 	 * Sets the base y-coordinate.
 	 * 
 	 * @param base
-	 *           the base y-coordinate.
+	 *            the base y-coordinate.
 	 */
 	public void setBaseY(double base) {
 		this.baseY = base;
@@ -177,7 +178,7 @@ public class PieLabelRecord implements Comparable {
 	 * Sets the allocated y-coordinate.
 	 * 
 	 * @param y
-	 *           the y-coordinate.
+	 *            the y-coordinate.
 	 */
 	public void setAllocatedY(double y) {
 		this.allocatedY = y;
@@ -205,7 +206,7 @@ public class PieLabelRecord implements Comparable {
 	 * Compares this object to an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object to compare against.
+	 *            the object to compare against.
 	 * @return an integer that specifies the relative order of the two objects.
 	 */
 	public int compareTo(Object obj) {
@@ -214,10 +215,9 @@ public class PieLabelRecord implements Comparable {
 			PieLabelRecord plr = (PieLabelRecord) obj;
 			if (this.baseY < plr.baseY) {
 				result = -1;
-			} else
-				if (this.baseY > plr.baseY) {
-					result = 1;
-				}
+			} else if (this.baseY > plr.baseY) {
+				result = 1;
+			}
 		}
 		return result;
 	}

@@ -6,37 +6,36 @@ package org.graffiti.options;
 import java.util.HashMap;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class GravistoPreferences {
-	
+
 	HashMap<String, Comparable> optionsAndValues;
 	String preferencesNodeName;
 
-	
-//	public GravistoPreferences(String preferencesNodeName) {
-//		
-//		this.preferencesNodeName = preferencesNodeName;
-//		optionsAndValues = new HashMap<String, Comparable>();
-//	}
-//	
-//
-//	
-//	public GravistoPreferences node(String subNodeName) {
-//		return new GravistoPreferences(preferencesNodeName + "/" + subNodeName);
-//	}
-//	/**
-//	 * @param class1
-//	 * @return
-//	 */
-//	public static GravistoPreferences userNodeForPackage(Class<?> classValue) {
-//		try {
-//			return new GravistoPreferences(classValue.getPackage().getName() + "/" + classValue.getName());
-//		} catch (NullPointerException npe) {
-//			return new GravistoPreferences("/" + classValue.getName());
-//		}
-//	}
+	// public GravistoPreferences(String preferencesNodeName) {
+	//
+	// this.preferencesNodeName = preferencesNodeName;
+	// optionsAndValues = new HashMap<String, Comparable>();
+	// }
+	//
+	//
+	//
+	// public GravistoPreferences node(String subNodeName) {
+	// return new GravistoPreferences(preferencesNodeName + "/" + subNodeName);
+	// }
+	// /**
+	// * @param class1
+	// * @return
+	// */
+	// public static GravistoPreferences userNodeForPackage(Class<?> classValue) {
+	// try {
+	// return new GravistoPreferences(classValue.getPackage().getName() + "/" +
+	// classValue.getName());
+	// } catch (NullPointerException npe) {
+	// return new GravistoPreferences("/" + classValue.getName());
+	// }
+	// }
 	public String get(String optionName, String defaultValue) {
 		if (optionsAndValues.containsKey(optionName)) {
 			Object value = optionsAndValues.get(optionName);
@@ -44,7 +43,7 @@ public class GravistoPreferences {
 		} else
 			return defaultValue;
 	}
-	
+
 	public float getFloat(String optionName, float defaultValue) {
 		if (optionsAndValues.containsKey(optionName)) {
 			Object value = optionsAndValues.get(optionName);
@@ -52,11 +51,11 @@ public class GravistoPreferences {
 		} else
 			return defaultValue;
 	}
-	
+
 	public void put(String optionName, String value) {
 		optionsAndValues.put(optionName, value);
 	}
-	
+
 	public int getInt(String optionName, int defaultValue) {
 		if (optionsAndValues.containsKey(optionName)) {
 			Object value = optionsAndValues.get(optionName);
@@ -64,15 +63,15 @@ public class GravistoPreferences {
 		} else
 			return defaultValue;
 	}
-	
+
 	public void clear() {
 		optionsAndValues.clear();
 	}
-	
+
 	public void putInt(String optionName, int value) {
-		optionsAndValues.put(optionName, new Integer(value));
+		optionsAndValues.put(optionName, Integer.valueOf(value));
 	}
-	
+
 	public double getDouble(String optionName, double defaultValue) {
 		if (optionsAndValues.containsKey(optionName)) {
 			Object value = optionsAndValues.get(optionName);
@@ -80,12 +79,12 @@ public class GravistoPreferences {
 		} else
 			return defaultValue;
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public String[] keys() {
 		return (String[]) optionsAndValues.keySet().toArray(new String[] {});
 	}
-	
+
 }

@@ -63,20 +63,13 @@ public class ImageMapDemo7 {
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
 		final XYDataset data = new SampleXYDataset2();
-		final JFreeChart chart = ChartFactory.createScatterPlot(
-							"Scatter Plot Demo",
-							"X", "Y",
-							data,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createScatterPlot("Scatter Plot Demo", "X", "Y", data,
+				PlotOrientation.VERTICAL, true, true, false);
 		final Legend legend = chart.getLegend();
 		if (legend instanceof StandardLegend) {
 			final StandardLegend sl = (StandardLegend) legend;
@@ -111,8 +104,8 @@ public class ImageMapDemo7 {
 			writer.println("<HEAD><TITLE>JFreeChart Image Map Demo</TITLE></HEAD>");
 			writer.println("<BODY>");
 			ChartUtilities.writeImageMap(writer, "chart", info);
-			writer.println("<IMG SRC=\"scatter100.png\" "
-									+ "WIDTH=\"600\" HEIGHT=\"400\" BORDER=\"0\" USEMAP=\"#chart\">");
+			writer.println(
+					"<IMG SRC=\"scatter100.png\" " + "WIDTH=\"600\" HEIGHT=\"400\" BORDER=\"0\" USEMAP=\"#chart\">");
 			writer.println("</BODY>");
 			writer.println("</HTML>");
 			writer.close();

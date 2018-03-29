@@ -25,24 +25,23 @@ import org.graffiti.session.EditorSession;
  * 
  * @version $Revision: 1.9 $
  */
-public class EditRedoAction
-					extends GraffitiAction {
+public class EditRedoAction extends GraffitiAction {
 	// ~ Constructors ===========================================================
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Creates a new EditRedoAction object.
 	 * 
 	 * @param mainFrame
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public EditRedoAction(MainFrame mainFrame) {
 		super("edit.redo", mainFrame, "editmenu_redo");
 		enabled = false;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * @see javax.swing.Action#isEnabled()
 	 */
@@ -50,7 +49,7 @@ public class EditRedoAction
 	public boolean isEnabled() {
 		return enabled;
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -58,13 +57,13 @@ public class EditRedoAction
 	public HelpContext getHelpContext() {
 		return null;
 	}
-	
+
 	/**
-	 * <b>Implementation Note:</b> The status of the GUIComponents has to be
-	 * updated after actionPerformed was executed.
+	 * <b>Implementation Note:</b> The status of the GUIComponents has to be updated
+	 * after actionPerformed was executed.
 	 * 
 	 * @param e
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		try {
@@ -72,13 +71,12 @@ public class EditRedoAction
 			mainFrame.getActiveEditorSession().getGraph().getListenerManager().transactionStarted(e);
 			mainFrame.getActiveEditorSession().getGraph().getListenerManager().transactionFinished(e);
 		} catch (CannotRedoException cre) {
-			MainFrame.showMessageDialog("<html>" +
-								"Can't redo command!<br>" +
-								"Error cause: " + cre.getMessage(), "Error");
+			MainFrame.showMessageDialog("<html>" + "Can't redo command!<br>" + "Error cause: " + cre.getMessage(),
+					"Error");
 		}
 		mainFrame.updateActions();
 	}
-	
+
 	/**
 	 * Updates the state of this action.
 	 */
@@ -95,10 +93,10 @@ public class EditRedoAction
 			putValue(NAME, sBundle.getString("menu." + getName()));
 			putValue(SHORT_DESCRIPTION, sBundle.getString("toolbar." + getName() + ".tooltip"));
 		}
-		
-		//SMALL_ICON is for JMenuItem, but not for e.g. JButton, and distorts scaling
-		//putValue(SMALL_ICON,
-							//iBundle.getImageIcon("toolbar." + getName() + ".icon"));
+
+		// SMALL_ICON is for JMenuItem, but not for e.g. JButton, and distorts scaling
+		// putValue(SMALL_ICON,
+		// iBundle.getImageIcon("toolbar." + getName() + ".icon"));
 	}
 }
 

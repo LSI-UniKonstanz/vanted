@@ -59,7 +59,7 @@ public class EventFrequencyDemo extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public EventFrequencyDemo(final String title) {
 
@@ -76,17 +76,16 @@ public class EventFrequencyDemo extends ApplicationFrame {
 		final Day d5 = new Day(20, SerialDate.JULY, 2002);
 		final Day d6 = new Day(22, SerialDate.AUGUST, 2002);
 
-		dataset.setValue(new Long(d1.getMiddleMillisecond()), "Series 1", "Requirement 1");
-		dataset.setValue(new Long(d1.getMiddleMillisecond()), "Series 1", "Requirement 2");
-		dataset.setValue(new Long(d2.getMiddleMillisecond()), "Series 1", "Requirement 3");
-		dataset.setValue(new Long(d3.getMiddleMillisecond()), "Series 2", "Requirement 1");
-		dataset.setValue(new Long(d4.getMiddleMillisecond()), "Series 2", "Requirement 3");
-		dataset.setValue(new Long(d5.getMiddleMillisecond()), "Series 3", "Requirement 2");
-		dataset.setValue(new Long(d6.getMiddleMillisecond()), "Series 1", "Requirement 4");
+		dataset.setValue(Long.valueOf(d1.getMiddleMillisecond()), "Series 1", "Requirement 1");
+		dataset.setValue(Long.valueOf(d1.getMiddleMillisecond()), "Series 1", "Requirement 2");
+		dataset.setValue(Long.valueOf(d2.getMiddleMillisecond()), "Series 1", "Requirement 3");
+		dataset.setValue(Long.valueOf(d3.getMiddleMillisecond()), "Series 2", "Requirement 1");
+		dataset.setValue(Long.valueOf(d4.getMiddleMillisecond()), "Series 2", "Requirement 3");
+		dataset.setValue(Long.valueOf(d5.getMiddleMillisecond()), "Series 3", "Requirement 2");
+		dataset.setValue(Long.valueOf(d6.getMiddleMillisecond()), "Series 1", "Requirement 4");
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createBarChart(
-							"Event Frequency Demo", // title
+		final JFreeChart chart = ChartFactory.createBarChart("Event Frequency Demo", // title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // dataset
@@ -94,7 +93,7 @@ public class EventFrequencyDemo extends ApplicationFrame {
 				true, // include legend
 				true, // tooltips
 				false // URLs
-				);
+		);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
@@ -108,9 +107,8 @@ public class EventFrequencyDemo extends ApplicationFrame {
 		final CategoryPlot plot = chart.getCategoryPlot();
 		plot.getDomainAxis().setMaxCategoryLabelWidthRatio(10.0f);
 		plot.setRangeAxis(new DateAxis("Date"));
-		final CategoryToolTipGenerator toolTipGenerator = new StandardCategoryToolTipGenerator(
-							"", DateFormat.getDateInstance()
-							);
+		final CategoryToolTipGenerator toolTipGenerator = new StandardCategoryToolTipGenerator("",
+				DateFormat.getDateInstance());
 		final CategoryItemRenderer renderer = new LineAndShapeRenderer(LineAndShapeRenderer.SHAPES);
 		renderer.setToolTipGenerator(toolTipGenerator);
 		plot.setRenderer(renderer);
@@ -139,7 +137,7 @@ public class EventFrequencyDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

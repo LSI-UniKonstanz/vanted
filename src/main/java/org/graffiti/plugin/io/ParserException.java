@@ -17,20 +17,19 @@ import java.io.IOException;
  * 
  * @see java.io.IoException
  */
-public class ParserException
-					extends IOException {
+public class ParserException extends IOException {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Constructs a new <code>ParserException</code>.
 	 * 
 	 * @param message
-	 *           the message for this exception.
+	 *            the message for this exception.
 	 */
 	public ParserException(String message) {
 		super(message);

@@ -20,87 +20,52 @@ import org.graffiti.plugin.view.GraffitiShape;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 
-public class ChartAttributePlugin
-					extends IPK_PluginAdapter
-					implements EditorPlugin {
-	private  Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
-	private  Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
-	
+public class ChartAttributePlugin extends IPK_PluginAdapter implements EditorPlugin {
+	private Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
+	private Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
+
 	public ChartAttributePlugin() {
-		this.attributes = new Class[] {
-							ChartAttribute.class,
-							ChartsColumnAttribute.class
-		};
-		
+		this.attributes = new Class[] { ChartAttribute.class, ChartsColumnAttribute.class };
+
 		StringAttribute.putAttributeType("component", ChartAttribute.class);
-		
+
 		valueEditComponents = new HashMap<>();
-		
-		valueEditComponents.put(
-							ChartAttribute.class,
-							ChartAttributeEditor.class);
-		valueEditComponents.put(
-							ChartsColumnAttribute.class,
-							ChartsColumnAttributeEditor.class);
-		
+
+		valueEditComponents.put(ChartAttribute.class, ChartAttributeEditor.class);
+		valueEditComponents.put(ChartsColumnAttribute.class, ChartsColumnAttributeEditor.class);
+
 		attributeComponents = new HashMap<>();
-		
-		attributeComponents.put(ChartAttribute.class,
-							ChartAttributeComponent.class);
-		
+
+		attributeComponents.put(ChartAttribute.class, ChartAttributeComponent.class);
+
 		for (GraffitiCharts c : GraffitiCharts.values())
 			ChartComponentManager.getInstance().registerChartComponent(c);
-		
-		attributeDescriptions = new AttributeDescription[] {
-							new AttributeDescription(ChartsColumnAttribute.name, ChartsColumnAttribute.class, null, true, true, null),
-		};
-		
+
+		attributeDescriptions = new AttributeDescription[] { new AttributeDescription(ChartsColumnAttribute.name,
+				ChartsColumnAttribute.class, null, true, true, null), };
+
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getAttributeComponents()
-	 */
+
 	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getGUIComponents()
-	 */
+
 	public GraffitiComponent[] getGUIComponents() {
 		return null;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getModes()
-	 */
+
 	public Mode[] getModes() {
 		return null;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getShapes()
-	 */
+
 	public GraffitiShape[] getShapes() {
 		return null;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getTools()
-	 */
+
 	public Tool[] getTools() {
 		return null;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getValueEditComponents()
-	 */
+
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}

@@ -149,12 +149,11 @@ import org.jfree.util.PublicCloneable;
 import org.jfree.util.SortOrder;
 
 /**
- * A general plotting class that uses data from a {@link CategoryDataset} and renders each data
- * item using a {@link CategoryItemRenderer}.
+ * A general plotting class that uses data from a {@link CategoryDataset} and
+ * renders each data item using a {@link CategoryItemRenderer}.
  */
 public class CategoryPlot extends Plot
-									implements ValueAxisPlot, RendererChangeListener,
-													Cloneable, PublicCloneable, Serializable {
+		implements ValueAxisPlot, RendererChangeListener, Cloneable, PublicCloneable, Serializable {
 
 	/** The default visibility of the grid lines plotted against the domain axis. */
 	public static final boolean DEFAULT_DOMAIN_GRIDLINES_VISIBLE = false;
@@ -163,12 +162,8 @@ public class CategoryPlot extends Plot
 	public static final boolean DEFAULT_RANGE_GRIDLINES_VISIBLE = true;
 
 	/** The default grid line stroke. */
-	public static final Stroke DEFAULT_GRIDLINE_STROKE = new BasicStroke(0.5f,
-						BasicStroke.CAP_BUTT,
-						BasicStroke.JOIN_BEVEL,
-						0.0f,
-						new float[] { 2.0f, 2.0f },
-						0.0f);
+	public static final Stroke DEFAULT_GRIDLINE_STROKE = new BasicStroke(0.5f, BasicStroke.CAP_BUTT,
+			BasicStroke.JOIN_BEVEL, 0.0f, new float[] { 2.0f, 2.0f }, 0.0f);
 
 	/** The default grid line paint. */
 	public static final Paint DEFAULT_GRIDLINE_PAINT = Color.lightGray;
@@ -177,7 +172,8 @@ public class CategoryPlot extends Plot
 	public static final Font DEFAULT_VALUE_LABEL_FONT = new Font("SansSerif", Font.PLAIN, 10);
 
 	/** The resourceBundle for the localization. */
-	protected static ResourceBundle localizationResources = ResourceBundle.getBundle("org.jfree.chart.plot.LocalizationBundle");
+	protected static ResourceBundle localizationResources = ResourceBundle
+			.getBundle("org.jfree.chart.plot.LocalizationBundle");
 
 	/** The plot orientation. */
 	private PlotOrientation orientation;
@@ -192,8 +188,8 @@ public class CategoryPlot extends Plot
 	private ObjectList domainAxisLocations;
 
 	/**
-	 * A flag that controls whether or not the shared domain axis is drawn (only relevant when
-	 * the plot is being used as a subplot).
+	 * A flag that controls whether or not the shared domain axis is drawn (only
+	 * relevant when the plot is being used as a subplot).
 	 */
 	private boolean drawSharedDomainAxis;
 
@@ -218,13 +214,21 @@ public class CategoryPlot extends Plot
 	/** The dataset rendering order. */
 	private DatasetRenderingOrder renderingOrder = DatasetRenderingOrder.REVERSE;
 
-	/** Controls the order in which the columns are traversed when rendering the data items. */
+	/**
+	 * Controls the order in which the columns are traversed when rendering the data
+	 * items.
+	 */
 	private SortOrder columnRenderingOrder = SortOrder.ASCENDING;
 
-	/** Controls the order in which the rows are traversed when rendering the data items. */
+	/**
+	 * Controls the order in which the rows are traversed when rendering the data
+	 * items.
+	 */
 	private SortOrder rowRenderingOrder = SortOrder.ASCENDING;
 
-	/** A flag that controls whether the grid-lines for the domain axis are visible. */
+	/**
+	 * A flag that controls whether the grid-lines for the domain axis are visible.
+	 */
 	private boolean domainGridlinesVisible;
 
 	/** The position of the domain gridlines relative to the category. */
@@ -236,7 +240,9 @@ public class CategoryPlot extends Plot
 	/** The paint used to draw the domain grid-lines. */
 	private transient Paint domainGridlinePaint;
 
-	/** A flag that controls whether the grid-lines for the range axis are visible. */
+	/**
+	 * A flag that controls whether the grid-lines for the range axis are visible.
+	 */
 	private boolean rangeGridlinesVisible;
 
 	/** The stroke used to draw the range axis grid-lines. */
@@ -260,7 +266,10 @@ public class CategoryPlot extends Plot
 	/** The color used to draw the crosshair (if any). */
 	private transient Paint rangeCrosshairPaint;
 
-	/** A flag that controls whether or not the crosshair locks onto actual data points. */
+	/**
+	 * A flag that controls whether or not the crosshair locks onto actual data
+	 * points.
+	 */
 	private boolean rangeCrosshairLockedOnData = true;
 
 	/** A map containing lists of markers for the range axes. */
@@ -273,8 +282,8 @@ public class CategoryPlot extends Plot
 	private transient List annotations;
 
 	/**
-	 * The weight for the plot (only relevant when the plot is used as a subplot within a
-	 * combined plot).
+	 * The weight for the plot (only relevant when the plot is used as a subplot
+	 * within a combined plot).
 	 */
 	private int weight;
 
@@ -301,18 +310,16 @@ public class CategoryPlot extends Plot
 	 * Creates a new plot.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> permitted).
+	 *            the dataset (<code>null</code> permitted).
 	 * @param domainAxis
-	 *           the domain axis (<code>null</code> permitted).
+	 *            the domain axis (<code>null</code> permitted).
 	 * @param rangeAxis
-	 *           the range axis (<code>null</code> permitted).
+	 *            the range axis (<code>null</code> permitted).
 	 * @param renderer
-	 *           the item renderer (<code>null</code> permitted).
+	 *            the item renderer (<code>null</code> permitted).
 	 */
-	public CategoryPlot(CategoryDataset dataset,
-								CategoryAxis domainAxis,
-								ValueAxis rangeAxis,
-								CategoryItemRenderer renderer) {
+	public CategoryPlot(CategoryDataset dataset, CategoryAxis domainAxis, ValueAxis rangeAxis,
+			CategoryItemRenderer renderer) {
 
 		super();
 
@@ -376,10 +383,8 @@ public class CategoryPlot extends Plot
 		this.foregroundRangeMarkers = new HashMap();
 		this.backgroundRangeMarkers = new HashMap();
 
-		Marker baseline = new ValueMarker(
-							0.0, new Color(0.8f, 0.8f, 0.8f, 0.5f), new BasicStroke(1.0f),
-							new Color(0.85f, 0.85f, 0.95f, 0.5f), new BasicStroke(1.0f), 0.6f
-							);
+		Marker baseline = new ValueMarker(0.0, new Color(0.8f, 0.8f, 0.8f, 0.5f), new BasicStroke(1.0f),
+				new Color(0.85f, 0.85f, 0.95f, 0.5f), new BasicStroke(1.0f), 0.6f);
 		addRangeMarker(baseline, Layer.BACKGROUND);
 
 		this.anchorValue = 0.0;
@@ -405,11 +410,11 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the orientation for the plot and sends a {@link PlotChangeEvent} to all registered
-	 * listeners.
+	 * Sets the orientation for the plot and sends a {@link PlotChangeEvent} to all
+	 * registered listeners.
 	 * 
 	 * @param orientation
-	 *           the orientation (<code>null</code> not permitted).
+	 *            the orientation (<code>null</code> not permitted).
 	 */
 	public void setOrientation(PlotOrientation orientation) {
 		if (orientation == null) {
@@ -432,7 +437,7 @@ public class CategoryPlot extends Plot
 	 * Sets the axis offsets (gap between the data area and the axes).
 	 * 
 	 * @param offset
-	 *           the offset.
+	 *            the offset.
 	 */
 	public void setAxisOffset(Spacer offset) {
 		this.axisOffset = offset;
@@ -440,9 +445,9 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Returns the domain axis for the plot. If the domain axis for this plot
-	 * is <code>null</code>, then the method will return the parent plot's domain axis (if
-	 * there is a parent plot).
+	 * Returns the domain axis for the plot. If the domain axis for this plot is
+	 * <code>null</code>, then the method will return the parent plot's domain axis
+	 * (if there is a parent plot).
 	 * 
 	 * @return The domain axis (<code>null</code> permitted).
 	 */
@@ -454,7 +459,7 @@ public class CategoryPlot extends Plot
 	 * Returns a domain axis.
 	 * 
 	 * @param index
-	 *           the axis index.
+	 *            the axis index.
 	 * @return The axis (<code>null</code> possible).
 	 */
 	public CategoryAxis getDomainAxis(int index) {
@@ -477,7 +482,7 @@ public class CategoryPlot extends Plot
 	 * registered listeners.
 	 * 
 	 * @param axis
-	 *           the axis (<code>null</code> permitted).
+	 *            the axis (<code>null</code> permitted).
 	 */
 	public void setDomainAxis(CategoryAxis axis) {
 		setDomainAxis(0, axis);
@@ -487,9 +492,9 @@ public class CategoryPlot extends Plot
 	 * Sets a domain axis.
 	 * 
 	 * @param index
-	 *           the axis index.
+	 *            the axis index.
 	 * @param axis
-	 *           the axis.
+	 *            the axis.
 	 */
 	public void setDomainAxis(int index, CategoryAxis axis) {
 
@@ -524,7 +529,7 @@ public class CategoryPlot extends Plot
 	 * Returns the location for a domain axis.
 	 * 
 	 * @param index
-	 *           the axis index.
+	 *            the axis index.
 	 * @return The location.
 	 */
 	public AxisLocation getDomainAxisLocation(int index) {
@@ -540,11 +545,11 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the location of the domain axis and sends a {@link PlotChangeEvent} to all registered
-	 * listeners.
+	 * Sets the location of the domain axis and sends a {@link PlotChangeEvent} to
+	 * all registered listeners.
 	 * 
 	 * @param location
-	 *           the axis location (<code>null</code> not permitted).
+	 *            the axis location (<code>null</code> not permitted).
 	 */
 	public void setDomainAxisLocation(AxisLocation location) {
 		// defer argument checking...
@@ -555,9 +560,9 @@ public class CategoryPlot extends Plot
 	 * Sets the location of the domain axis.
 	 * 
 	 * @param location
-	 *           the axis location (<code>null</code> not permitted).
+	 *            the axis location (<code>null</code> not permitted).
 	 * @param notify
-	 *           a flag that controls whether listeners are notified.
+	 *            a flag that controls whether listeners are notified.
 	 */
 	public void setDomainAxisLocation(AxisLocation location, boolean notify) {
 		if (location == null) {
@@ -567,13 +572,13 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the location for a domain axis and sends a {@link PlotChangeEvent} to all
-	 * registered listeners.
+	 * Sets the location for a domain axis and sends a {@link PlotChangeEvent} to
+	 * all registered listeners.
 	 * 
 	 * @param index
-	 *           the axis index.
+	 *            the axis index.
 	 * @param location
-	 *           the location.
+	 *            the location.
 	 */
 	public void setDomainAxisLocation(int index, AxisLocation location) {
 		// TODO: handle argument checking for primary axis location which
@@ -583,8 +588,8 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Returns the domain axis edge. This is derived from the axis location and the plot
-	 * orientation.
+	 * Returns the domain axis edge. This is derived from the axis location and the
+	 * plot orientation.
 	 * 
 	 * @return the edge (never <code>null</code>).
 	 */
@@ -596,7 +601,7 @@ public class CategoryPlot extends Plot
 	 * Returns the edge for a domain axis.
 	 * 
 	 * @param index
-	 *           the axis index.
+	 *            the axis index.
 	 * @return The edge (never <code>null</code>).
 	 */
 	public RectangleEdge getDomainAxisEdge(int index) {
@@ -611,8 +616,8 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Clears the domain axes from the plot and sends a {@link PlotChangeEvent} to all
-	 * registered listeners.
+	 * Clears the domain axes from the plot and sends a {@link PlotChangeEvent} to
+	 * all registered listeners.
 	 */
 	public void clearDomainAxes() {
 		for (int i = 0; i < this.domainAxes.size(); i++) {
@@ -638,9 +643,9 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Returns the range axis for the plot. If the range axis for this plot is
-	 * null, then the method will return the parent plot's range axis (if there
-	 * is a parent plot).
+	 * Returns the range axis for the plot. If the range axis for this plot is null,
+	 * then the method will return the parent plot's range axis (if there is a
+	 * parent plot).
 	 * 
 	 * @return The range axis (possibly <code>null</code>).
 	 */
@@ -652,7 +657,7 @@ public class CategoryPlot extends Plot
 	 * Returns a range axis.
 	 * 
 	 * @param index
-	 *           the axis index.
+	 *            the axis index.
 	 * @return The axis (<code>null</code> possible).
 	 */
 	public ValueAxis getRangeAxis(int index) {
@@ -671,11 +676,11 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the range axis for the plot and sends a {@link PlotChangeEvent} to all registered
-	 * listeners.
+	 * Sets the range axis for the plot and sends a {@link PlotChangeEvent} to all
+	 * registered listeners.
 	 * 
 	 * @param axis
-	 *           the axis (<code>null</code> permitted).
+	 *            the axis (<code>null</code> permitted).
 	 */
 	public void setRangeAxis(ValueAxis axis) {
 		setRangeAxis(0, axis);
@@ -685,9 +690,9 @@ public class CategoryPlot extends Plot
 	 * Sets a range axis.
 	 * 
 	 * @param index
-	 *           the axis index.
+	 *            the axis index.
 	 * @param axis
-	 *           the axis.
+	 *            the axis.
 	 */
 	public void setRangeAxis(int index, ValueAxis axis) {
 
@@ -722,7 +727,7 @@ public class CategoryPlot extends Plot
 	 * Returns the location for a range axis.
 	 * 
 	 * @param index
-	 *           the axis index.
+	 *            the axis index.
 	 * @return The location.
 	 */
 	public AxisLocation getRangeAxisLocation(int index) {
@@ -737,11 +742,11 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the location of the range axis and sends a {@link PlotChangeEvent} to all registered
-	 * listeners.
+	 * Sets the location of the range axis and sends a {@link PlotChangeEvent} to
+	 * all registered listeners.
 	 * 
 	 * @param location
-	 *           the location (<code>null</code> not permitted).
+	 *            the location (<code>null</code> not permitted).
 	 */
 	public void setRangeAxisLocation(AxisLocation location) {
 		// defer argument checking...
@@ -749,13 +754,13 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the location of the range axis and, if requested, sends a {@link PlotChangeEvent} to
-	 * all registered listeners.
+	 * Sets the location of the range axis and, if requested, sends a
+	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param location
-	 *           the location (<code>null</code> not permitted).
+	 *            the location (<code>null</code> not permitted).
 	 * @param notify
-	 *           notify listeners?
+	 *            notify listeners?
 	 */
 	public void setRangeAxisLocation(AxisLocation location, boolean notify) {
 		setRangeAxisLocation(0, location, notify);
@@ -766,9 +771,9 @@ public class CategoryPlot extends Plot
 	 * registered listeners.
 	 * 
 	 * @param index
-	 *           the axis index.
+	 *            the axis index.
 	 * @param location
-	 *           the location.
+	 *            the location.
 	 */
 	public void setRangeAxisLocation(int index, AxisLocation location) {
 		setRangeAxisLocation(index, location, true);
@@ -779,11 +784,11 @@ public class CategoryPlot extends Plot
 	 * registered listeners.
 	 * 
 	 * @param index
-	 *           the axis index.
+	 *            the axis index.
 	 * @param location
-	 *           the location.
+	 *            the location.
 	 * @param notify
-	 *           notify listeners?
+	 *            notify listeners?
 	 */
 	public void setRangeAxisLocation(int index, AxisLocation location, boolean notify) {
 		// TODO: don't allow null for index = 0
@@ -806,7 +811,7 @@ public class CategoryPlot extends Plot
 	 * Returns the edge for a range axis.
 	 * 
 	 * @param index
-	 *           the axis index.
+	 *            the axis index.
 	 * @return The edge.
 	 */
 	public RectangleEdge getRangeAxisEdge(int index) {
@@ -819,8 +824,8 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Clears the range axes from the plot and sends a {@link PlotChangeEvent} to all
-	 * registered listeners.
+	 * Clears the range axes from the plot and sends a {@link PlotChangeEvent} to
+	 * all registered listeners.
 	 */
 	public void clearRangeAxes() {
 		for (int i = 0; i < this.rangeAxes.size(); i++) {
@@ -858,7 +863,7 @@ public class CategoryPlot extends Plot
 	 * Returns a dataset.
 	 * 
 	 * @param index
-	 *           the dataset index.
+	 *            the dataset index.
 	 * @return The dataset (possibly <code>null</code>).
 	 */
 	public CategoryDataset getDataset(int index) {
@@ -870,12 +875,13 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the dataset for the plot, replacing the existing dataset, if there is one. This
-	 * method also calls the {@link #datasetChanged(DatasetChangeEvent)} method, which adjusts the
-	 * axis ranges if necessary and sends a {@link PlotChangeEvent} to all registered listeners.
+	 * Sets the dataset for the plot, replacing the existing dataset, if there is
+	 * one. This method also calls the {@link #datasetChanged(DatasetChangeEvent)}
+	 * method, which adjusts the axis ranges if necessary and sends a
+	 * {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> permitted).
+	 *            the dataset (<code>null</code> permitted).
 	 */
 	public void setDataset(CategoryDataset dataset) {
 		setDataset(0, dataset);
@@ -885,9 +891,9 @@ public class CategoryPlot extends Plot
 	 * Sets a dataset for the plot.
 	 * 
 	 * @param index
-	 *           the dataset index.
+	 *            the dataset index.
 	 * @param dataset
-	 *           the dataset (<code>null</code> permitted).
+	 *            the dataset (<code>null</code> permitted).
 	 */
 	public void setDataset(int index, CategoryDataset dataset) {
 
@@ -910,22 +916,22 @@ public class CategoryPlot extends Plot
 	 * Maps a dataset to a particular domain axis.
 	 * 
 	 * @param index
-	 *           the dataset index (zero-based).
+	 *            the dataset index (zero-based).
 	 * @param axisIndex
-	 *           the axis index (zero-based).
+	 *            the axis index (zero-based).
 	 */
 	public void mapDatasetToDomainAxis(int index, int axisIndex) {
-		this.datasetToDomainAxisMap.set(index, new Integer(axisIndex));
+		this.datasetToDomainAxisMap.set(index, Integer.valueOf(axisIndex));
 		// fake a dataset change event to update axes...
 		datasetChanged(new DatasetChangeEvent(this, getDataset(index)));
 	}
 
 	/**
-	 * Returns the domain axis for a dataset. You can change the axis for a dataset using the
-	 * mapDatasetToDomainAxis() method.
+	 * Returns the domain axis for a dataset. You can change the axis for a dataset
+	 * using the mapDatasetToDomainAxis() method.
 	 * 
 	 * @param index
-	 *           the dataset index.
+	 *            the dataset index.
 	 * @return The domain axis.
 	 */
 	public CategoryAxis getDomainAxisForDataset(int index) {
@@ -941,22 +947,22 @@ public class CategoryPlot extends Plot
 	 * Maps a dataset to a particular range axis.
 	 * 
 	 * @param index
-	 *           the dataset index (zero-based).
+	 *            the dataset index (zero-based).
 	 * @param axisIndex
-	 *           the axis index (zero-based).
+	 *            the axis index (zero-based).
 	 */
 	public void mapDatasetToRangeAxis(int index, int axisIndex) {
-		this.datasetToRangeAxisMap.set(index, new Integer(axisIndex));
+		this.datasetToRangeAxisMap.set(index, Integer.valueOf(axisIndex));
 		// fake a dataset change event to update axes...
 		datasetChanged(new DatasetChangeEvent(this, getDataset(index)));
 	}
 
 	/**
-	 * Returns the range axis for a dataset. You can change the axis for a dataset using the
-	 * mapDatasetToRangeAxis() method.
+	 * Returns the range axis for a dataset. You can change the axis for a dataset
+	 * using the mapDatasetToRangeAxis() method.
 	 * 
 	 * @param index
-	 *           the dataset index.
+	 *            the dataset index.
 	 * @return The range axis.
 	 */
 	public ValueAxis getRangeAxisForDataset(int index) {
@@ -981,7 +987,7 @@ public class CategoryPlot extends Plot
 	 * Returns a renderer.
 	 * 
 	 * @param index
-	 *           the renderer index.
+	 *            the renderer index.
 	 * @return The renderer (possibly <code>null</code>).
 	 */
 	public CategoryItemRenderer getRenderer(int index) {
@@ -994,57 +1000,60 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the renderer at index 0 (sometimes referred to as the "primary" renderer) and
-	 * sends a {@link PlotChangeEvent} to all registered listeners.
+	 * Sets the renderer at index 0 (sometimes referred to as the "primary"
+	 * renderer) and sends a {@link PlotChangeEvent} to all registered listeners.
 	 * 
 	 * @param renderer
-	 *           the renderer (<code>null</code> permitted.
+	 *            the renderer (<code>null</code> permitted.
 	 */
 	public void setRenderer(CategoryItemRenderer renderer) {
 		setRenderer(0, renderer, true);
 	}
 
 	/**
-	 * Sets the renderer at index 0 (sometimes referred to as the "primary" renderer) and,
-	 * if requested, sends a {@link PlotChangeEvent} to all registered listeners.
+	 * Sets the renderer at index 0 (sometimes referred to as the "primary"
+	 * renderer) and, if requested, sends a {@link PlotChangeEvent} to all
+	 * registered listeners.
 	 * <p>
-	 * You can set the renderer to <code>null</code>, but this is not recommended because:
+	 * You can set the renderer to <code>null</code>, but this is not recommended
+	 * because:
 	 * <ul>
 	 * <li>no data will be displayed;</li>
 	 * <li>the plot background will not be painted;</li>
 	 * </ul>
 	 * 
 	 * @param renderer
-	 *           the renderer (<code>null</code> permitted).
+	 *            the renderer (<code>null</code> permitted).
 	 * @param notify
-	 *           notify listeners?
+	 *            notify listeners?
 	 */
 	public void setRenderer(CategoryItemRenderer renderer, boolean notify) {
 		setRenderer(0, renderer, notify);
 	}
 
 	/**
-	 * Sets the renderer at the specified index and sends a {@link PlotChangeEvent} to all
-	 * registered listeners.
+	 * Sets the renderer at the specified index and sends a {@link PlotChangeEvent}
+	 * to all registered listeners.
 	 * 
 	 * @param index
-	 *           the index.
+	 *            the index.
 	 * @param renderer
-	 *           the renderer (<code>null</code> permitted).
+	 *            the renderer (<code>null</code> permitted).
 	 */
 	public void setRenderer(int index, CategoryItemRenderer renderer) {
 		setRenderer(index, renderer, true);
 	}
 
 	/**
-	 * Sets a renderer. A {@link PlotChangeEvent} is sent to all registered listeners.
+	 * Sets a renderer. A {@link PlotChangeEvent} is sent to all registered
+	 * listeners.
 	 * 
 	 * @param index
-	 *           the index.
+	 *            the index.
 	 * @param renderer
-	 *           the renderer (<code>null</code> permitted).
+	 *            the renderer (<code>null</code> permitted).
 	 * @param notify
-	 *           notify listeners?
+	 *            notify listeners?
 	 */
 	public void setRenderer(int index, CategoryItemRenderer renderer, boolean notify) {
 
@@ -1073,7 +1082,7 @@ public class CategoryPlot extends Plot
 	 * Returns the renderer for the specified dataset.
 	 * 
 	 * @param d
-	 *           the dataset (<code>null</code> permitted).
+	 *            the dataset (<code>null</code> permitted).
 	 * @return the renderer (possibly <code>null</code>).
 	 */
 	public CategoryItemRenderer getRendererForDataset(CategoryDataset d) {
@@ -1097,12 +1106,13 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the rendering order and sends a {@link PlotChangeEvent} to all registered listeners.
-	 * By default, the plot renders the primary dataset last (so that
-	 * the primary dataset overlays the secondary datasets). You can reverse this if you want to.
+	 * Sets the rendering order and sends a {@link PlotChangeEvent} to all
+	 * registered listeners. By default, the plot renders the primary dataset last
+	 * (so that the primary dataset overlays the secondary datasets). You can
+	 * reverse this if you want to.
 	 * 
 	 * @param order
-	 *           the rendering order (<code>null</code> not permitted).
+	 *            the rendering order (<code>null</code> not permitted).
 	 */
 	public void setDatasetRenderingOrder(DatasetRenderingOrder order) {
 		if (order == null) {
@@ -1125,7 +1135,7 @@ public class CategoryPlot extends Plot
 	 * Sets the order in which the columns should be rendered.
 	 * 
 	 * @param order
-	 *           the order.
+	 *            the order.
 	 */
 	public void setColumnRenderingOrder(SortOrder order) {
 		this.columnRenderingOrder = order;
@@ -1144,7 +1154,7 @@ public class CategoryPlot extends Plot
 	 * Sets the order in which the rows should be rendered.
 	 * 
 	 * @param order
-	 *           the order (<code>null</code> not allowed).
+	 *            the order (<code>null</code> not allowed).
 	 */
 	public void setRowRenderingOrder(SortOrder order) {
 		if (order == null) {
@@ -1163,12 +1173,14 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the flag that controls whether or not grid-lines are drawn against the domain axis.
+	 * Sets the flag that controls whether or not grid-lines are drawn against the
+	 * domain axis.
 	 * <p>
-	 * If the flag value changes, a {@link PlotChangeEvent} is sent to all registered listeners.
+	 * If the flag value changes, a {@link PlotChangeEvent} is sent to all
+	 * registered listeners.
 	 * 
 	 * @param visible
-	 *           the new value of the flag.
+	 *            the new value of the flag.
 	 */
 	public void setDomainGridlinesVisible(boolean visible) {
 		if (this.domainGridlinesVisible != visible) {
@@ -1190,7 +1202,7 @@ public class CategoryPlot extends Plot
 	 * Sets the position used for the domain gridlines.
 	 * 
 	 * @param position
-	 *           the position.
+	 *            the position.
 	 */
 	public void setDomainGridlinePosition(CategoryAnchor position) {
 		this.domainGridlinePosition = position;
@@ -1207,10 +1219,11 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the stroke used to draw grid-lines against the domain axis. A {@link PlotChangeEvent} is sent to all registered listeners.
+	 * Sets the stroke used to draw grid-lines against the domain axis. A
+	 * {@link PlotChangeEvent} is sent to all registered listeners.
 	 * 
 	 * @param stroke
-	 *           the stroke.
+	 *            the stroke.
 	 */
 	public void setDomainGridlineStroke(Stroke stroke) {
 		this.domainGridlineStroke = stroke;
@@ -1231,7 +1244,7 @@ public class CategoryPlot extends Plot
 	 * A {@link PlotChangeEvent} is sent to all registered listeners.
 	 * 
 	 * @param paint
-	 *           the paint.
+	 *            the paint.
 	 */
 	public void setDomainGridlinePaint(Paint paint) {
 		this.domainGridlinePaint = paint;
@@ -1248,11 +1261,12 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the flag that controls whether or not grid-lines are drawn against the range axis.
-	 * If the flag changes value, a {@link PlotChangeEvent} is sent to all registered listeners.
+	 * Sets the flag that controls whether or not grid-lines are drawn against the
+	 * range axis. If the flag changes value, a {@link PlotChangeEvent} is sent to
+	 * all registered listeners.
 	 * 
 	 * @param visible
-	 *           the new value of the flag.
+	 *            the new value of the flag.
 	 */
 	public void setRangeGridlinesVisible(boolean visible) {
 		if (this.rangeGridlinesVisible != visible) {
@@ -1271,11 +1285,11 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the stroke used to draw the grid-lines against the range axis.
-	 * A {@link PlotChangeEvent} is sent to all registered listeners.
+	 * Sets the stroke used to draw the grid-lines against the range axis. A
+	 * {@link PlotChangeEvent} is sent to all registered listeners.
 	 * 
 	 * @param stroke
-	 *           the stroke.
+	 *            the stroke.
 	 */
 	public void setRangeGridlineStroke(Stroke stroke) {
 		this.rangeGridlineStroke = stroke;
@@ -1292,11 +1306,11 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the paint used to draw the grid lines against the range axis.
-	 * A {@link PlotChangeEvent} is sent to all registered listeners.
+	 * Sets the paint used to draw the grid lines against the range axis. A
+	 * {@link PlotChangeEvent} is sent to all registered listeners.
 	 * 
 	 * @param paint
-	 *           the paint.
+	 *            the paint.
 	 */
 	public void setRangeGridlinePaint(Paint paint) {
 		this.rangeGridlinePaint = paint;
@@ -1313,11 +1327,11 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the fixed legend items for the plot. Leave this set to <code>null</code> if you
-	 * prefer the legend items to be created automatically.
+	 * Sets the fixed legend items for the plot. Leave this set to <code>null</code>
+	 * if you prefer the legend items to be created automatically.
 	 * 
 	 * @param items
-	 *           the legend items (<code>null</code> permitted).
+	 *            the legend items (<code>null</code> permitted).
 	 */
 	public void setFixedLegendItems(LegendItemCollection items) {
 		this.fixedLegendItems = items;
@@ -1325,9 +1339,9 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Returns the legend items for the plot. By default, this method creates a legend item for
-	 * each series in each of the datasets. You can change this behaviour by overriding this
-	 * method.
+	 * Returns the legend items for the plot. By default, this method creates a
+	 * legend item for each series in each of the datasets. You can change this
+	 * behaviour by overriding this method.
 	 * 
 	 * @return The legend items.
 	 */
@@ -1360,11 +1374,11 @@ public class CategoryPlot extends Plot
 	 * Handles a 'click' on the plot by updating the anchor value.
 	 * 
 	 * @param x
-	 *           x-coordinate of the click (in Java2D space).
+	 *            x-coordinate of the click (in Java2D space).
 	 * @param y
-	 *           y-coordinate of the click (in Java2D space).
+	 *            y-coordinate of the click (in Java2D space).
 	 * @param info
-	 *           information about the plot's dimensions.
+	 *            information about the plot's dimensions.
 	 */
 	public void handleClick(int x, int y, PlotRenderingInfo info) {
 
@@ -1374,12 +1388,10 @@ public class CategoryPlot extends Plot
 			double java2D = 0.0;
 			if (this.orientation == PlotOrientation.HORIZONTAL) {
 				java2D = x;
-			} else
-				if (this.orientation == PlotOrientation.VERTICAL) {
-					java2D = y;
-				}
-			RectangleEdge edge = Plot.resolveRangeAxisLocation(getRangeAxisLocation(),
-																					this.orientation);
+			} else if (this.orientation == PlotOrientation.VERTICAL) {
+				java2D = y;
+			}
+			RectangleEdge edge = Plot.resolveRangeAxisLocation(getRangeAxisLocation(), this.orientation);
 			double value = getRangeAxis().java2DToValue(java2D, info.getDataArea(), edge);
 			setAnchorValue(value);
 			setRangeCrosshairValue(value);
@@ -1390,21 +1402,19 @@ public class CategoryPlot extends Plot
 	/**
 	 * Zooms (in or out) on the plot's value axis.
 	 * <p>
-	 * If the value 0.0 is passed in as the zoom percent, the auto-range calculation for the axis is restored (which sets the range to include the minimum and
+	 * If the value 0.0 is passed in as the zoom percent, the auto-range calculation
+	 * for the axis is restored (which sets the range to include the minimum and
 	 * maximum data values, thus displaying all the data).
 	 * 
 	 * @param percent
-	 *           the zoom amount.
+	 *            the zoom amount.
 	 */
 	public void zoom(double percent) {
 
 		if (percent > 0.0) {
 			double range = getRangeAxis().getRange().getLength();
 			double scaledRange = range * percent;
-			getRangeAxis().setRange(
-								this.anchorValue - scaledRange / 2.0,
-								this.anchorValue + scaledRange / 2.0
-								);
+			getRangeAxis().setRange(this.anchorValue - scaledRange / 2.0, this.anchorValue + scaledRange / 2.0);
 		} else {
 			getRangeAxis().setAutoRange(true);
 		}
@@ -1417,7 +1427,7 @@ public class CategoryPlot extends Plot
 	 * The range axis bounds will be recalculated if necessary.
 	 * 
 	 * @param event
-	 *           information about the event (not used here).
+	 *            information about the event (not used here).
 	 */
 	public void datasetChanged(DatasetChangeEvent event) {
 
@@ -1441,7 +1451,7 @@ public class CategoryPlot extends Plot
 	 * Receives notification of a renderer change event.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void rendererChanged(RendererChangeEvent event) {
 		Plot parent = getParent();
@@ -1461,27 +1471,29 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Adds a marker for display (in the foreground) against the range axis and sends a {@link PlotChangeEvent} to all registered listeners. Typically a marker
-	 * will be drawn
-	 * by the renderer as a line perpendicular to the range axis, however this is entirely up
-	 * to the renderer.
+	 * Adds a marker for display (in the foreground) against the range axis and
+	 * sends a {@link PlotChangeEvent} to all registered listeners. Typically a
+	 * marker will be drawn by the renderer as a line perpendicular to the range
+	 * axis, however this is entirely up to the renderer.
 	 * 
 	 * @param marker
-	 *           the marker (<code>null</code> not permitted).
+	 *            the marker (<code>null</code> not permitted).
 	 */
 	public void addRangeMarker(Marker marker) {
 		addRangeMarker(marker, Layer.FOREGROUND);
 	}
 
 	/**
-	 * Adds a marker for display against the range axis and sends a {@link PlotChangeEvent} to
-	 * all registered listeners. Typically a marker will be drawn by the renderer as a line
-	 * perpendicular to the range axis, however this is entirely up to the renderer.
+	 * Adds a marker for display against the range axis and sends a
+	 * {@link PlotChangeEvent} to all registered listeners. Typically a marker will
+	 * be drawn by the renderer as a line perpendicular to the range axis, however
+	 * this is entirely up to the renderer.
 	 * 
 	 * @param marker
-	 *           the marker (<code>null</code> not permitted).
+	 *            the marker (<code>null</code> not permitted).
 	 * @param layer
-	 *           the layer (foreground or background) (<code>null</code> not permitted).
+	 *            the layer (foreground or background) (<code>null</code> not
+	 *            permitted).
 	 */
 	public void addRangeMarker(Marker marker, Layer layer) {
 		addRangeMarker(0, marker, layer);
@@ -1490,38 +1502,39 @@ public class CategoryPlot extends Plot
 	/**
 	 * Adds a marker for display by a particular renderer.
 	 * <P>
-	 * Typically a marker will be drawn by the renderer as a line perpendicular to a range axis, however this is entirely up to the renderer.
+	 * Typically a marker will be drawn by the renderer as a line perpendicular to a
+	 * range axis, however this is entirely up to the renderer.
 	 * 
 	 * @param index
-	 *           the renderer index.
+	 *            the renderer index.
 	 * @param marker
-	 *           the marker.
+	 *            the marker.
 	 * @param layer
-	 *           the layer.
+	 *            the layer.
 	 */
 	public void addRangeMarker(int index, Marker marker, Layer layer) {
 		Collection markers;
 		if (layer == Layer.FOREGROUND) {
-			markers = (Collection) this.foregroundRangeMarkers.get(new Integer(index));
+			markers = (Collection) this.foregroundRangeMarkers.get(Integer.valueOf(index));
 			if (markers == null) {
 				markers = new java.util.ArrayList();
-				this.foregroundRangeMarkers.put(new Integer(index), markers);
+				this.foregroundRangeMarkers.put(Integer.valueOf(index), markers);
 			}
 			markers.add(marker);
-		} else
-			if (layer == Layer.BACKGROUND) {
-				markers = (Collection) this.backgroundRangeMarkers.get(new Integer(index));
-				if (markers == null) {
-					markers = new java.util.ArrayList();
-					this.backgroundRangeMarkers.put(new Integer(index), markers);
-				}
-				markers.add(marker);
+		} else if (layer == Layer.BACKGROUND) {
+			markers = (Collection) this.backgroundRangeMarkers.get(Integer.valueOf(index));
+			if (markers == null) {
+				markers = new java.util.ArrayList();
+				this.backgroundRangeMarkers.put(Integer.valueOf(index), markers);
 			}
+			markers.add(marker);
+		}
 		notifyListeners(new PlotChangeEvent(this));
 	}
 
 	/**
-	 * Clears all the range markers for the plot and sends a {@link PlotChangeEvent} to all registered listeners.
+	 * Clears all the range markers for the plot and sends a {@link PlotChangeEvent}
+	 * to all registered listeners.
 	 */
 	public void clearRangeMarkers() {
 		if (this.backgroundRangeMarkers != null) {
@@ -1537,7 +1550,7 @@ public class CategoryPlot extends Plot
 	 * Returns the list of range markers (read only) for the specified layer.
 	 * 
 	 * @param layer
-	 *           the layer (foreground or background).
+	 *            the layer (foreground or background).
 	 * @return The list of range markers.
 	 */
 	public Collection getRangeMarkers(Layer layer) {
@@ -1548,20 +1561,19 @@ public class CategoryPlot extends Plot
 	 * Returns a collection of range markers for a particular renderer and layer.
 	 * 
 	 * @param index
-	 *           the renderer index.
+	 *            the renderer index.
 	 * @param layer
-	 *           the layer.
+	 *            the layer.
 	 * @return A collection of markers (possibly <code>null</code>).
 	 */
 	public Collection getRangeMarkers(int index, Layer layer) {
 		Collection result = null;
-		Integer key = new Integer(index);
+		Integer key = Integer.valueOf(index);
 		if (layer == Layer.FOREGROUND) {
 			result = (Collection) this.foregroundRangeMarkers.get(key);
-		} else
-			if (layer == Layer.BACKGROUND) {
-				result = (Collection) this.backgroundRangeMarkers.get(key);
-			}
+		} else if (layer == Layer.BACKGROUND) {
+			result = (Collection) this.backgroundRangeMarkers.get(key);
+		}
 		if (result != null) {
 			result = Collections.unmodifiableCollection(result);
 		}
@@ -1572,10 +1584,10 @@ public class CategoryPlot extends Plot
 	 * Clears all the range markers for the specified renderer.
 	 * 
 	 * @param index
-	 *           the renderer index.
+	 *            the renderer index.
 	 */
 	public void clearRangeMarkers(int index) {
-		Integer key = new Integer(index);
+		Integer key = Integer.valueOf(index);
 		if (this.backgroundRangeMarkers != null) {
 			Collection markers = (Collection) this.backgroundRangeMarkers.get(key);
 			if (markers != null) {
@@ -1604,7 +1616,7 @@ public class CategoryPlot extends Plot
 	 * Sets the flag indicating whether or not the range crosshair is visible.
 	 * 
 	 * @param flag
-	 *           the new value of the flag.
+	 *            the new value of the flag.
 	 */
 	public void setRangeCrosshairVisible(boolean flag) {
 
@@ -1616,8 +1628,8 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Returns a flag indicating whether or not the crosshair should "lock-on"
-	 * to actual data values.
+	 * Returns a flag indicating whether or not the crosshair should "lock-on" to
+	 * actual data values.
 	 * 
 	 * @return the flag.
 	 */
@@ -1630,7 +1642,7 @@ public class CategoryPlot extends Plot
 	 * to actual data values.
 	 * 
 	 * @param flag
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setRangeCrosshairLockedOnData(boolean flag) {
 
@@ -1653,10 +1665,11 @@ public class CategoryPlot extends Plot
 	/**
 	 * Sets the domain crosshair value.
 	 * <P>
-	 * Registered listeners are notified that the plot has been modified, but only if the crosshair is visible.
+	 * Registered listeners are notified that the plot has been modified, but only
+	 * if the crosshair is visible.
 	 * 
 	 * @param value
-	 *           the new value.
+	 *            the new value.
 	 */
 	public void setRangeCrosshairValue(double value) {
 
@@ -1667,12 +1680,13 @@ public class CategoryPlot extends Plot
 	/**
 	 * Sets the range crosshair value.
 	 * <P>
-	 * Registered listeners are notified that the axis has been modified, but only if the crosshair is visible.
+	 * Registered listeners are notified that the axis has been modified, but only
+	 * if the crosshair is visible.
 	 * 
 	 * @param value
-	 *           the new value.
+	 *            the new value.
 	 * @param notify
-	 *           a flag that controls whether or not listeners are notified.
+	 *            a flag that controls whether or not listeners are notified.
 	 */
 	public void setRangeCrosshairValue(double value, boolean notify) {
 
@@ -1684,7 +1698,8 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Returns the pen-style (<code>Stroke</code>) used to draw the crosshair (if visible).
+	 * Returns the pen-style (<code>Stroke</code>) used to draw the crosshair (if
+	 * visible).
 	 * 
 	 * @return the crosshair stroke.
 	 */
@@ -1693,11 +1708,11 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the pen-style (<code>Stroke</code>) used to draw the crosshairs (if visible).
-	 * A {@link PlotChangeEvent} is sent to all registered listeners.
+	 * Sets the pen-style (<code>Stroke</code>) used to draw the crosshairs (if
+	 * visible). A {@link PlotChangeEvent} is sent to all registered listeners.
 	 * 
 	 * @param stroke
-	 *           the new crosshair stroke.
+	 *            the new crosshair stroke.
 	 */
 	public void setRangeCrosshairStroke(Stroke stroke) {
 		this.rangeCrosshairStroke = stroke;
@@ -1718,7 +1733,7 @@ public class CategoryPlot extends Plot
 	 * registered listeners that the axis has been modified.
 	 * 
 	 * @param paint
-	 *           the new crosshair paint.
+	 *            the new crosshair paint.
 	 */
 	public void setRangeCrosshairPaint(Paint paint) {
 		this.rangeCrosshairPaint = paint;
@@ -1738,7 +1753,7 @@ public class CategoryPlot extends Plot
 	 * Adds an annotation to the plot.
 	 * 
 	 * @param annotation
-	 *           the annotation.
+	 *            the annotation.
 	 */
 	public void addAnnotation(CategoryAnnotation annotation) {
 
@@ -1754,15 +1769,15 @@ public class CategoryPlot extends Plot
 	 * Calculates the space required for the domain axis/axes.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plotArea
-	 *           the plot area.
+	 *            the plot area.
 	 * @param space
-	 *           a carrier for the result (<code>null</code> permitted).
+	 *            a carrier for the result (<code>null</code> permitted).
 	 * @return The required space.
 	 */
-	protected AxisSpace calculateDomainAxisSpace(Graphics2D g2, Rectangle2D plotArea,
-																	AxisSpace space, boolean isRangeAxisVisible) {
+	protected AxisSpace calculateDomainAxisSpace(Graphics2D g2, Rectangle2D plotArea, AxisSpace space,
+			boolean isRangeAxisVisible) {
 
 		if (space == null) {
 			space = new AxisSpace();
@@ -1773,16 +1788,13 @@ public class CategoryPlot extends Plot
 			if (this.orientation == PlotOrientation.HORIZONTAL) {
 				space.ensureAtLeast(this.fixedDomainAxisSpace.getLeft(), RectangleEdge.LEFT);
 				space.ensureAtLeast(this.fixedDomainAxisSpace.getRight(), RectangleEdge.RIGHT);
-			} else
-				if (this.orientation == PlotOrientation.VERTICAL) {
-					space.ensureAtLeast(this.fixedDomainAxisSpace.getTop(), RectangleEdge.TOP);
-					space.ensureAtLeast(this.fixedDomainAxisSpace.getBottom(), RectangleEdge.BOTTOM);
-				}
+			} else if (this.orientation == PlotOrientation.VERTICAL) {
+				space.ensureAtLeast(this.fixedDomainAxisSpace.getTop(), RectangleEdge.TOP);
+				space.ensureAtLeast(this.fixedDomainAxisSpace.getBottom(), RectangleEdge.BOTTOM);
+			}
 		} else {
 			// reserve space for the primary domain axis...
-			RectangleEdge domainEdge = Plot.resolveDomainAxisLocation(
-								getDomainAxisLocation(), this.orientation
-								);
+			RectangleEdge domainEdge = Plot.resolveDomainAxisLocation(getDomainAxisLocation(), this.orientation);
 			if (this.drawSharedDomainAxis) {
 				space = getDomainAxis().reserveSpace(g2, this, plotArea, domainEdge, space, getRangeAxis().isVisible());
 			}
@@ -1805,15 +1817,15 @@ public class CategoryPlot extends Plot
 	 * Calculates the space required for the range axis/axes.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plotArea
-	 *           the plot area.
+	 *            the plot area.
 	 * @param space
-	 *           a carrier for the result (<code>null</code> permitted).
+	 *            a carrier for the result (<code>null</code> permitted).
 	 * @return The required space.
 	 */
-	protected AxisSpace calculateRangeAxisSpace(Graphics2D g2, Rectangle2D plotArea,
-																AxisSpace space, boolean isDomainAxisVisible) {
+	protected AxisSpace calculateRangeAxisSpace(Graphics2D g2, Rectangle2D plotArea, AxisSpace space,
+			boolean isDomainAxisVisible) {
 
 		if (space == null) {
 			space = new AxisSpace();
@@ -1824,11 +1836,10 @@ public class CategoryPlot extends Plot
 			if (this.orientation == PlotOrientation.HORIZONTAL) {
 				space.ensureAtLeast(this.fixedRangeAxisSpace.getTop(), RectangleEdge.TOP);
 				space.ensureAtLeast(this.fixedRangeAxisSpace.getBottom(), RectangleEdge.BOTTOM);
-			} else
-				if (this.orientation == PlotOrientation.VERTICAL) {
-					space.ensureAtLeast(this.fixedRangeAxisSpace.getLeft(), RectangleEdge.LEFT);
-					space.ensureAtLeast(this.fixedRangeAxisSpace.getRight(), RectangleEdge.RIGHT);
-				}
+			} else if (this.orientation == PlotOrientation.VERTICAL) {
+				space.ensureAtLeast(this.fixedRangeAxisSpace.getLeft(), RectangleEdge.LEFT);
+				space.ensureAtLeast(this.fixedRangeAxisSpace.getRight(), RectangleEdge.RIGHT);
+			}
 		} else {
 			// reserve space for the range axes (if any)...
 			for (int i = 0; i < this.rangeAxes.size(); i++) {
@@ -1847,9 +1858,9 @@ public class CategoryPlot extends Plot
 	 * Calculates the space required for the axes.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plotArea
-	 *           the plot area.
+	 *            the plot area.
 	 * @return The space required for the axes.
 	 */
 	protected AxisSpace calculateAxisSpace(Graphics2D g2, Rectangle2D plotArea) {
@@ -1862,22 +1873,23 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Draws the plot on a Java 2D graphics device (such as the screen or a printer).
+	 * Draws the plot on a Java 2D graphics device (such as the screen or a
+	 * printer).
 	 * <P>
-	 * At your option, you may supply an instance of {@link PlotRenderingInfo}. If you do, it will be populated with information about the drawing, including
+	 * At your option, you may supply an instance of {@link PlotRenderingInfo}. If
+	 * you do, it will be populated with information about the drawing, including
 	 * various plot dimensions and tooltip info.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plotArea
-	 *           the area within which the plot (including axes) should be drawn.
+	 *            the area within which the plot (including axes) should be drawn.
 	 * @param parentState
-	 *           the state from the parent plot, if there is one.
+	 *            the state from the parent plot, if there is one.
 	 * @param state
-	 *           collects info as the chart is drawn (possibly <code>null</code>).
+	 *            collects info as the chart is drawn (possibly <code>null</code>).
 	 */
-	public void draw(Graphics2D g2, Rectangle2D plotArea, PlotState parentState,
-							PlotRenderingInfo state) {
+	public void draw(Graphics2D g2, Rectangle2D plotArea, PlotState parentState, PlotRenderingInfo state) {
 
 		// if the plot area is too small, just return...
 		boolean b1 = (plotArea.getWidth() <= MINIMUM_WIDTH_TO_DRAW);
@@ -1894,12 +1906,9 @@ public class CategoryPlot extends Plot
 		// adjust the drawing area for the plot insets (if any)...
 		Insets insets = getInsets();
 		if (insets != null) {
-			plotArea.setRect(
-								plotArea.getX() + insets.left,
-								plotArea.getY() + insets.top,
-								plotArea.getWidth() - insets.left - insets.right,
-								plotArea.getHeight() - insets.top - insets.bottom
-								);
+			plotArea.setRect(plotArea.getX() + insets.left, plotArea.getY() + insets.top,
+					plotArea.getWidth() - insets.left - insets.right,
+					plotArea.getHeight() - insets.top - insets.bottom);
 		}
 
 		// calculate the data area...
@@ -1911,7 +1920,8 @@ public class CategoryPlot extends Plot
 			state.setDataArea(dataArea);
 		}
 
-		// if there is a renderer, it draws the background, otherwise use the default background...
+		// if there is a renderer, it draws the background, otherwise use the default
+		// background...
 		if (getRenderer() != null) {
 			getRenderer().drawBackground(g2, this, dataArea);
 		} else {
@@ -1969,9 +1979,7 @@ public class CategoryPlot extends Plot
 
 		// draw vertical crosshair if required...
 		if (isRangeCrosshairVisible()) {
-			drawRangeLine(
-								g2, dataArea, getRangeCrosshairValue(),
-								getRangeCrosshairStroke(), getRangeCrosshairPaint());
+			drawRangeLine(g2, dataArea, getRangeCrosshairValue(), getRangeCrosshairStroke(), getRangeCrosshairPaint());
 		}
 
 		// draw the foreground range markers...
@@ -1996,19 +2004,16 @@ public class CategoryPlot extends Plot
 	 * A utility method for drawing the plot's axes.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plotArea
-	 *           the plot area.
+	 *            the plot area.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param plotState
-	 *           collects information about the plot (<code>null</code> permitted).
+	 *            collects information about the plot (<code>null</code> permitted).
 	 * @return a map containing the axis states.
 	 */
-	protected Map drawAxes(Graphics2D g2,
-									Rectangle2D plotArea,
-									Rectangle2D dataArea,
-									PlotRenderingInfo plotState) {
+	protected Map drawAxes(Graphics2D g2, Rectangle2D plotArea, Rectangle2D dataArea, PlotRenderingInfo plotState) {
 
 		AxisCollection axisCollection = new AxisCollection();
 
@@ -2036,9 +2041,7 @@ public class CategoryPlot extends Plot
 		while (iterator.hasNext()) {
 			Axis axis = (Axis) iterator.next();
 			if (axis != null) {
-				AxisState axisState = axis.draw(
-									g2, cursor, plotArea, dataArea, RectangleEdge.TOP, plotState
-									);
+				AxisState axisState = axis.draw(g2, cursor, plotArea, dataArea, RectangleEdge.TOP, plotState);
 				cursor = axisState.getCursor();
 				axisStateMap.put(axis, axisState);
 			}
@@ -2050,9 +2053,7 @@ public class CategoryPlot extends Plot
 		while (iterator.hasNext()) {
 			Axis axis = (Axis) iterator.next();
 			if (axis != null) {
-				AxisState axisState = axis.draw(
-									g2, cursor, plotArea, dataArea, RectangleEdge.BOTTOM, plotState
-									);
+				AxisState axisState = axis.draw(g2, cursor, plotArea, dataArea, RectangleEdge.BOTTOM, plotState);
 				cursor = axisState.getCursor();
 				axisStateMap.put(axis, axisState);
 			}
@@ -2064,9 +2065,7 @@ public class CategoryPlot extends Plot
 		while (iterator.hasNext()) {
 			Axis axis = (Axis) iterator.next();
 			if (axis != null) {
-				AxisState axisState = axis.draw(
-									g2, cursor, plotArea, dataArea, RectangleEdge.LEFT, plotState
-									);
+				AxisState axisState = axis.draw(g2, cursor, plotArea, dataArea, RectangleEdge.LEFT, plotState);
 				cursor = axisState.getCursor();
 				axisStateMap.put(axis, axisState);
 			}
@@ -2078,9 +2077,7 @@ public class CategoryPlot extends Plot
 		while (iterator.hasNext()) {
 			Axis axis = (Axis) iterator.next();
 			if (axis != null) {
-				AxisState axisState = axis.draw(
-									g2, cursor, plotArea, dataArea, RectangleEdge.RIGHT, plotState
-									);
+				AxisState axisState = axis.draw(g2, cursor, plotArea, dataArea, RectangleEdge.RIGHT, plotState);
 				cursor = axisState.getCursor();
 				axisStateMap.put(axis, axisState);
 			}
@@ -2091,17 +2088,17 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Draws a representation of a dataset within the dataArea region using the appropriate
-	 * renderer.
+	 * Draws a representation of a dataset within the dataArea region using the
+	 * appropriate renderer.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the region in which the data is to be drawn.
+	 *            the region in which the data is to be drawn.
 	 * @param index
-	 *           the dataset and renderer index.
+	 *            the dataset and renderer index.
 	 * @param info
-	 *           an optional object for collection dimension information.
+	 *            an optional object for collection dimension information.
 	 * @return A boolean that indicates whether or not real data was found.
 	 */
 	public boolean render(Graphics2D g2, Rectangle2D dataArea, int index, PlotRenderingInfo info) {
@@ -2123,17 +2120,13 @@ public class CategoryPlot extends Plot
 				for (int column = 0; column < columnCount; column++) {
 					if (this.rowRenderingOrder == SortOrder.ASCENDING) {
 						for (int row = 0; row < rowCount; row++) {
-							renderer.drawItem(
-												g2, state, dataArea, this, domainAxis, rangeAxis,
-												currentDataset, row, column
-												);
+							renderer.drawItem(g2, state, dataArea, this, domainAxis, rangeAxis, currentDataset, row,
+									column);
 						}
 					} else {
 						for (int row = rowCount - 1; row >= 0; row--) {
-							renderer.drawItem(
-												g2, state, dataArea, this, domainAxis, rangeAxis,
-												currentDataset, row, column
-												);
+							renderer.drawItem(g2, state, dataArea, this, domainAxis, rangeAxis, currentDataset, row,
+									column);
 						}
 					}
 				}
@@ -2141,17 +2134,13 @@ public class CategoryPlot extends Plot
 				for (int column = columnCount - 1; column >= 0; column--) {
 					if (this.rowRenderingOrder == SortOrder.ASCENDING) {
 						for (int row = 0; row < rowCount; row++) {
-							renderer.drawItem(
-												g2, state, dataArea, this, domainAxis, rangeAxis,
-												currentDataset, row, column
-												);
+							renderer.drawItem(g2, state, dataArea, this, domainAxis, rangeAxis, currentDataset, row,
+									column);
 						}
 					} else {
 						for (int row = rowCount - 1; row >= 0; row--) {
-							renderer.drawItem(
-												g2, state, dataArea, this, domainAxis, rangeAxis,
-												currentDataset, row, column
-												);
+							renderer.drawItem(g2, state, dataArea, this, domainAxis, rangeAxis, currentDataset, row,
+									column);
 						}
 					}
 				}
@@ -2212,9 +2201,8 @@ public class CategoryPlot extends Plot
 	}
 
 	protected void drawDomainBackgroundColors(Graphics2D g2, Rectangle2D dataArea) {
-		if ((backgroundColorIndexA >= 0 && backgroundColorA != null) ||
-							(backgroundColorB != null) ||
-							(backgroundColorIndexC >= 0 && backgroundColorC != null)) {
+		if ((backgroundColorIndexA >= 0 && backgroundColorA != null) || (backgroundColorB != null)
+				|| (backgroundColorIndexC >= 0 && backgroundColorC != null)) {
 			CategoryAnchor anchor = getDomainGridlinePosition();
 			RectangleEdge domainAxisEdge = getDomainAxisEdge();
 			// iterate over the categories
@@ -2226,52 +2214,37 @@ public class CategoryPlot extends Plot
 					int columnCount = data.getColumnCount();
 					if (backgroundColorB != null) {
 						g2.setColor(backgroundColorB);
-						double xx = axis.getCategoryJava2DCoordinate(
-														anchor, 0, columnCount, dataArea, domainAxisEdge
-												);
-						double xx2 = axis.getCategoryJava2DCoordinate(
-														anchor, columnCount - 1, columnCount, dataArea, domainAxisEdge
-												);
-						double xx3 = axis.getCategoryJava2DCoordinate(
-														anchor, columnCount, columnCount, dataArea, domainAxisEdge
-												);
+						double xx = axis.getCategoryJava2DCoordinate(anchor, 0, columnCount, dataArea, domainAxisEdge);
+						double xx2 = axis.getCategoryJava2DCoordinate(anchor, columnCount - 1, columnCount, dataArea,
+								domainAxisEdge);
+						double xx3 = axis.getCategoryJava2DCoordinate(anchor, columnCount, columnCount, dataArea,
+								domainAxisEdge);
 						int pA = (int) xx;
 						int pB = (int) xx2;
 						int pC = (int) ((xx3 - xx2) / 2d);
-						g2.fillRect(
-														pA - pC,
-														(int) dataArea.getY(),
-														pB - pA + 2 * pC,
-														(int) dataArea.getHeight());
+						g2.fillRect(pA - pC, (int) dataArea.getY(), pB - pA + 2 * pC, (int) dataArea.getHeight());
 
 					}
 					if (backgroundColorIndexA >= 0) {
-						double xx = axis.getCategoryJava2DCoordinate(
-												anchor, backgroundColorIndexA, columnCount, dataArea, domainAxisEdge
-											);
+						double xx = axis.getCategoryJava2DCoordinate(anchor, backgroundColorIndexA, columnCount,
+								dataArea, domainAxisEdge);
 						int pA = (int) xx;
 						g2.setColor(backgroundColorA);
-						g2.fillRect((int) dataArea.getX(), (int) dataArea.getY(), (int) (pA - dataArea.getX()), (int) dataArea.getHeight());
+						g2.fillRect((int) dataArea.getX(), (int) dataArea.getY(), (int) (pA - dataArea.getX()),
+								(int) dataArea.getHeight());
 					}
 					if (backgroundColorIndexC >= 0) {
-						double xx = axis.getCategoryJava2DCoordinate(
-												anchor, backgroundColorIndexC, columnCount, dataArea, domainAxisEdge
-											);
-						double xx2 = axis.getCategoryJava2DCoordinate(
-												anchor, columnCount - 1, columnCount, dataArea, domainAxisEdge
-											);
-						double xx3 = axis.getCategoryJava2DCoordinate(
-												anchor, columnCount, columnCount, dataArea, domainAxisEdge
-											);
+						double xx = axis.getCategoryJava2DCoordinate(anchor, backgroundColorIndexC, columnCount,
+								dataArea, domainAxisEdge);
+						double xx2 = axis.getCategoryJava2DCoordinate(anchor, columnCount - 1, columnCount, dataArea,
+								domainAxisEdge);
+						double xx3 = axis.getCategoryJava2DCoordinate(anchor, columnCount, columnCount, dataArea,
+								domainAxisEdge);
 						int pA = (int) xx;
 						int pB = (int) xx2;
 						int pC = (int) ((xx3 - xx2) / 2d);
 						g2.setColor(backgroundColorC);
-						g2.fillRect(
-													pA,
-													(int) dataArea.getY(),
-													pB - pA + pC,
-													(int) dataArea.getHeight());
+						g2.fillRect(pA, (int) dataArea.getY(), pB - pA + pC, (int) dataArea.getHeight());
 					}
 				}
 				g2.setColor(oldCol);
@@ -2283,9 +2256,9 @@ public class CategoryPlot extends Plot
 	 * Draws the gridlines for the plot.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the area inside the axes.
+	 *            the area inside the axes.
 	 */
 	protected void drawDomainGridlines(Graphics2D g2, Rectangle2D dataArea) {
 
@@ -2303,9 +2276,8 @@ public class CategoryPlot extends Plot
 					if (axis != null) {
 						int columnCount = data.getColumnCount();
 						for (int c = 0; c < columnCount; c++) {
-							double xx = axis.getCategoryJava2DCoordinate(
-												anchor, c, columnCount, dataArea, domainAxisEdge
-												);
+							double xx = axis.getCategoryJava2DCoordinate(anchor, c, columnCount, dataArea,
+									domainAxisEdge);
 							CategoryItemRenderer renderer1 = getRenderer();
 							if (renderer1 != null) {
 								if (c % skipValue == 0)
@@ -2322,11 +2294,11 @@ public class CategoryPlot extends Plot
 	 * Draws the gridlines for the plot.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the area inside the axes.
+	 *            the area inside the axes.
 	 * @param ticks
-	 *           the ticks.
+	 *            the ticks.
 	 */
 	protected void drawRangeGridlines(Graphics2D g2, Rectangle2D dataArea, List ticks) {
 		// draw the range grid lines, if any...
@@ -2341,9 +2313,7 @@ public class CategoryPlot extends Plot
 						ValueTick tick = (ValueTick) iterator.next();
 						CategoryItemRenderer renderer1 = getRenderer();
 						if (renderer1 != null) {
-							renderer1.drawRangeGridline(
-												g2, this, getRangeAxis(), dataArea, tick.getValue()
-												);
+							renderer1.drawRangeGridline(g2, this, getRangeAxis(), dataArea, tick.getValue());
 						}
 					}
 				}
@@ -2355,9 +2325,9 @@ public class CategoryPlot extends Plot
 	 * Draws the annotations...
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 */
 	protected void drawAnnotations(Graphics2D g2, Rectangle2D dataArea) {
 
@@ -2372,15 +2342,15 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Draws the range markers (if any) for the specified layer. This method is typically called
-	 * from within the draw(...) method.
+	 * Draws the range markers (if any) for the specified layer. This method is
+	 * typically called from within the draw(...) method.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param layer
-	 *           the layer (foreground or background).
+	 *            the layer (foreground or background).
 	 */
 	protected void drawRangeMarkers(Graphics2D g2, Rectangle2D dataArea, Layer layer) {
 		CategoryItemRenderer r = getRenderer();
@@ -2399,16 +2369,15 @@ public class CategoryPlot extends Plot
 	 * typically called from within the draw(...) method.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param index
-	 *           the renderer index.
+	 *            the renderer index.
 	 * @param layer
-	 *           the layer (foreground or background).
+	 *            the layer (foreground or background).
 	 */
-	protected void drawRangeMarkers(Graphics2D g2, Rectangle2D dataArea, int index,
-												Layer layer) {
+	protected void drawRangeMarkers(Graphics2D g2, Rectangle2D dataArea, int index, Layer layer) {
 
 		CategoryItemRenderer r = getRenderer(index);
 		if (r == null) {
@@ -2428,31 +2397,29 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Utility method for drawing a line perpendicular to the range axis (used for crosshairs).
+	 * Utility method for drawing a line perpendicular to the range axis (used for
+	 * crosshairs).
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the area defined by the axes.
+	 *            the area defined by the axes.
 	 * @param value
-	 *           the data value.
+	 *            the data value.
 	 * @param stroke
-	 *           the line stroke.
+	 *            the line stroke.
 	 * @param paint
-	 *           the line paint.
+	 *            the line paint.
 	 */
-	protected void drawRangeLine(Graphics2D g2,
-											Rectangle2D dataArea,
-											double value, Stroke stroke, Paint paint) {
+	protected void drawRangeLine(Graphics2D g2, Rectangle2D dataArea, double value, Stroke stroke, Paint paint) {
 
 		double java2D = getRangeAxis().valueToJava2D(value, dataArea, getRangeAxisEdge());
 		Line2D line = null;
 		if (this.orientation == PlotOrientation.HORIZONTAL) {
 			line = new Line2D.Double(java2D, dataArea.getMinY(), java2D, dataArea.getMaxY());
-		} else
-			if (this.orientation == PlotOrientation.VERTICAL) {
-				line = new Line2D.Double(dataArea.getMinX(), java2D, dataArea.getMaxX(), java2D);
-			}
+		} else if (this.orientation == PlotOrientation.VERTICAL) {
+			line = new Line2D.Double(dataArea.getMinX(), java2D, dataArea.getMaxX(), java2D);
+		}
 		g2.setStroke(stroke);
 		g2.setPaint(paint);
 		g2.draw(line);
@@ -2464,7 +2431,7 @@ public class CategoryPlot extends Plot
 	 * If the dataset is <code>null</code>, this method returns <code>null</code>.
 	 * 
 	 * @param axis
-	 *           the axis.
+	 *            the axis.
 	 * @return The data range.
 	 */
 	public Range getDataRange(ValueAxis axis) {
@@ -2475,12 +2442,12 @@ public class CategoryPlot extends Plot
 		int rangeIndex = this.rangeAxes.indexOf(axis);
 		if (rangeIndex >= 0) {
 			mappedDatasets.addAll(getDatasetsMappedToRangeAxis(rangeIndex));
-		} else
-			if (axis == getRangeAxis()) {
-				mappedDatasets.addAll(getDatasetsMappedToRangeAxis(0));
-			}
+		} else if (axis == getRangeAxis()) {
+			mappedDatasets.addAll(getDatasetsMappedToRangeAxis(0));
+		}
 
-		// iterate through the datasets that map to the axis and get the union of the ranges.
+		// iterate through the datasets that map to the axis and get the union of the
+		// ranges.
 		Iterator iterator = mappedDatasets.iterator();
 		while (iterator.hasNext()) {
 			CategoryDataset d = (CategoryDataset) iterator.next();
@@ -2494,10 +2461,11 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * A utility method that returns a list of datasets that are mapped to a given range axis.
+	 * A utility method that returns a list of datasets that are mapped to a given
+	 * range axis.
 	 * 
 	 * @param index
-	 *           the axis index.
+	 *            the axis index.
 	 * @return A list of datasets.
 	 */
 	private List getDatasetsMappedToRangeAxis(int index) {
@@ -2518,7 +2486,8 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Returns the weight for this plot when it is used as a subplot within a combined plot.
+	 * Returns the weight for this plot when it is used as a subplot within a
+	 * combined plot.
 	 * 
 	 * @return the weight.
 	 */
@@ -2530,7 +2499,7 @@ public class CategoryPlot extends Plot
 	 * Sets the weight for the plot.
 	 * 
 	 * @param weight
-	 *           the weight.
+	 *            the weight.
 	 */
 	public void setWeight(int weight) {
 		this.weight = weight;
@@ -2549,7 +2518,7 @@ public class CategoryPlot extends Plot
 	 * Sets the fixed domain axis space.
 	 * 
 	 * @param space
-	 *           the space.
+	 *            the space.
 	 */
 	public void setFixedDomainAxisSpace(AxisSpace space) {
 		this.fixedDomainAxisSpace = space;
@@ -2568,7 +2537,7 @@ public class CategoryPlot extends Plot
 	 * Sets the fixed range axis space.
 	 * 
 	 * @param space
-	 *           the space.
+	 *            the space.
 	 */
 	public void setFixedRangeAxisSpace(AxisSpace space) {
 		this.fixedRangeAxisSpace = space;
@@ -2588,8 +2557,8 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Returns the flag that controls whether or not the shared domain axis is drawn for
-	 * each subplot.
+	 * Returns the flag that controls whether or not the shared domain axis is drawn
+	 * for each subplot.
 	 * 
 	 * @return A boolean.
 	 */
@@ -2598,11 +2567,11 @@ public class CategoryPlot extends Plot
 	}
 
 	/**
-	 * Sets the flag that controls whether the shared domain axis is drawn when this plot
-	 * is being used as a subplot.
+	 * Sets the flag that controls whether the shared domain axis is drawn when this
+	 * plot is being used as a subplot.
 	 * 
 	 * @param draw
-	 *           a boolean.
+	 *            a boolean.
 	 */
 	public void setDrawSharedDomainAxis(boolean draw) {
 		this.drawSharedDomainAxis = draw;
@@ -2613,7 +2582,7 @@ public class CategoryPlot extends Plot
 	 * Multiplies the range on the horizontal axis/axes by the specified factor.
 	 * 
 	 * @param factor
-	 *           the zoom factor.
+	 *            the zoom factor.
 	 */
 	public void zoomHorizontalAxes(double factor) {
 		if (this.orientation == PlotOrientation.HORIZONTAL) {
@@ -2630,9 +2599,9 @@ public class CategoryPlot extends Plot
 	 * Zooms in on the horizontal axes.
 	 * 
 	 * @param lowerPercent
-	 *           the lower bound.
+	 *            the lower bound.
 	 * @param upperPercent
-	 *           the upper bound.
+	 *            the upper bound.
 	 */
 	public void zoomHorizontalAxes(double lowerPercent, double upperPercent) {
 		if (this.orientation == PlotOrientation.HORIZONTAL) {
@@ -2649,7 +2618,7 @@ public class CategoryPlot extends Plot
 	 * Multiplies the range on the vertical axis/axes by the specified factor.
 	 * 
 	 * @param factor
-	 *           the zoom factor.
+	 *            the zoom factor.
 	 */
 	public void zoomVerticalAxes(double factor) {
 		if (this.orientation == PlotOrientation.VERTICAL) {
@@ -2666,9 +2635,9 @@ public class CategoryPlot extends Plot
 	 * Zooms in on the vertical axes.
 	 * 
 	 * @param lowerPercent
-	 *           the lower bound.
+	 *            the lower bound.
 	 * @param upperPercent
-	 *           the upper bound.
+	 *            the upper bound.
 	 */
 	public void zoomVerticalAxes(double lowerPercent, double upperPercent) {
 		if (this.orientation == PlotOrientation.VERTICAL) {
@@ -2694,7 +2663,7 @@ public class CategoryPlot extends Plot
 	 * Sets the anchor value.
 	 * 
 	 * @param value
-	 *           the anchor value.
+	 *            the anchor value.
 	 */
 	public void setAnchorValue(double value) {
 		setAnchorValue(value, true);
@@ -2704,9 +2673,9 @@ public class CategoryPlot extends Plot
 	 * Sets the anchor value.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @param notify
-	 *           notify listeners?
+	 *            notify listeners?
 	 */
 	public void setAnchorValue(double value, boolean notify) {
 		this.anchorValue = value;
@@ -2719,7 +2688,7 @@ public class CategoryPlot extends Plot
 	 * Tests the plot for equality with an arbitrary object.
 	 * 
 	 * @param object
-	 *           the object to test against (<code>null</code> permitted).
+	 *            the object to test against (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
@@ -2763,10 +2732,9 @@ public class CategoryPlot extends Plot
 			boolean b29 = (this.weight == p.weight);
 			boolean b30 = ObjectUtils.equal(this.fixedDomainAxisSpace, p.fixedDomainAxisSpace);
 			boolean b31 = ObjectUtils.equal(this.fixedRangeAxisSpace, p.fixedRangeAxisSpace);
-			return b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9
-								&& b10 && b11 && b12 && b13 && b14 && b15 && b16 && b17 && b18 && b19
-								&& b20 && b21 && b22 && b23 && b24 && b25 && b26 && b27 && b28 && b29
-								&& b30 && b31;
+			return b0 && b1 && b2 && b3 && b4 && b5 && b6 && b7 && b8 && b9 && b10 && b11 && b12 && b13 && b14 && b15
+					&& b16 && b17 && b18 && b19 && b20 && b21 && b22 && b23 && b24 && b25 && b26 && b27 && b28 && b29
+					&& b30 && b31;
 
 		}
 
@@ -2779,7 +2747,7 @@ public class CategoryPlot extends Plot
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the cloning is not supported.
+	 *             if the cloning is not supported.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 
@@ -2826,9 +2794,9 @@ public class CategoryPlot extends Plot
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the output stream.
+	 *            the output stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -2844,11 +2812,11 @@ public class CategoryPlot extends Plot
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the input stream.
+	 *            the input stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *            if there is a classpath problem.
+	 *             if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 
@@ -2877,12 +2845,8 @@ public class CategoryPlot extends Plot
 		this.foregroundRangeMarkers = new HashMap();
 		this.backgroundRangeMarkers = new HashMap();
 
-		Marker baseline = new ValueMarker(
-							0.0,
-							new Color(0.8f, 0.8f, 0.8f, 0.5f), new BasicStroke(1.0f),
-							new Color(0.85f, 0.85f, 0.95f, 0.5f), new BasicStroke(1.0f),
-							0.6f
-							);
+		Marker baseline = new ValueMarker(0.0, new Color(0.8f, 0.8f, 0.8f, 0.5f), new BasicStroke(1.0f),
+				new Color(0.85f, 0.85f, 0.95f, 0.5f), new BasicStroke(1.0f), 0.6f);
 		addRangeMarker(baseline, Layer.BACKGROUND);
 
 	}

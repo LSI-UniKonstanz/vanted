@@ -17,12 +17,9 @@ import org.jfree.data.RangeInfo;
 import org.jfree.data.statistics.DefaultStatisticalCategoryDataset;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class BioStatisticalCategoryDataset
-					extends DefaultStatisticalCategoryDataset
-					implements RangeInfo {
+public class BioStatisticalCategoryDataset extends DefaultStatisticalCategoryDataset implements RangeInfo {
 
 	private static final long serialVersionUID = 1L;
 	private HashSet<String> units = new LinkedHashSet<String>(1);
@@ -39,15 +36,11 @@ public class BioStatisticalCategoryDataset
 	private HashMap<Comparable, Color> rowDesc2paint1 = new HashMap<Comparable, Color>();
 	private HashMap<Comparable, Color> rowDesc2paint2 = new HashMap<Comparable, Color>();
 
-	public void add(final double mean, final double standardDeviation,
-						final Comparable rowKey, final Comparable columnKey,
-						boolean ttestIsRef, boolean ttestIsDiff,
-						String unit, String timeunit, boolean datasetWillBeShownWithStdDev,
-						Color color1, Color color2, boolean showOnlyHalfErrorBar) {
-		add(mean, standardDeviation,
-							rowKey, columnKey,
-							ttestIsRef, ttestIsDiff,
-							unit, timeunit, datasetWillBeShownWithStdDev, showOnlyHalfErrorBar);
+	public void add(final double mean, final double standardDeviation, final Comparable rowKey,
+			final Comparable columnKey, boolean ttestIsRef, boolean ttestIsDiff, String unit, String timeunit,
+			boolean datasetWillBeShownWithStdDev, Color color1, Color color2, boolean showOnlyHalfErrorBar) {
+		add(mean, standardDeviation, rowKey, columnKey, ttestIsRef, ttestIsDiff, unit, timeunit,
+				datasetWillBeShownWithStdDev, showOnlyHalfErrorBar);
 		// System.out.println("ADD: "+rowKey+" COLOR: "+color1);
 		if (color1 != null && !rowDesc2paint1.containsKey(rowKey))
 			rowDesc2paint1.put(rowKey, color1);
@@ -59,34 +52,29 @@ public class BioStatisticalCategoryDataset
 	 * Adds a mean, a standard deviation and the info about the t test to the table.
 	 * 
 	 * @param mean
-	 *           the mean.
+	 *            the mean.
 	 * @param standardDeviation
-	 *           the standard deviation.
+	 *            the standard deviation.
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @param ttestIsRef
-	 *           True, if this is the reference, False if not
+	 *            True, if this is the reference, False if not
 	 * @param ttestIsDiff
-	 *           True, if the t test is done and H1 found to be probable,
-	 *           false if H0 is probable
+	 *            True, if the t test is done and H1 found to be probable, false if
+	 *            H0 is probable
 	 * @param unit
-	 *           The unit of the measurement e.g. mm
+	 *            The unit of the measurement e.g. mm
 	 * @param timeunit
-	 *           The time unit of the measurement e.g. day
+	 *            The time unit of the measurement e.g. day
 	 */
-	public void add(final double mean, final double standardDeviation,
-							final Comparable rowKey, final Comparable columnKey,
-							boolean ttestIsRef, boolean ttestIsDiff,
-							String unit, String timeunit, boolean datasetWillBeShownWithStdDev,
-							boolean showOnlyHalfErrorBar) {
+	public void add(final double mean, final double standardDeviation, final Comparable rowKey,
+			final Comparable columnKey, boolean ttestIsRef, boolean ttestIsDiff, String unit, String timeunit,
+			boolean datasetWillBeShownWithStdDev, boolean showOnlyHalfErrorBar) {
 
-		final BioMeanAndStandardDeviation item =
-							new BioMeanAndStandardDeviation(
-												new Double(mean),
-												new Double(standardDeviation),
-												ttestIsRef, ttestIsDiff);
+		final BioMeanAndStandardDeviation item = new BioMeanAndStandardDeviation(Double.valueOf(mean),
+				Double.valueOf(standardDeviation), ttestIsRef, ttestIsDiff);
 		addDataObject(item, rowKey, columnKey);
 
 		// if the standard deviation will be shown, it must be considered
@@ -112,14 +100,14 @@ public class BioStatisticalCategoryDataset
 
 	/**
 	 * Returns the true, if this is the reference sample or if no calculation is
-	 * done. False, if it is no rerence sample. The case that no calculation is
-	 * done can be recognized be calling <code>getTTestIsH1</code>, if this is also
-	 * true, then no calculation is done (true, true : would make no sense).
+	 * done. False, if it is no rerence sample. The case that no calculation is done
+	 * can be recognized be calling <code>getTTestIsH1</code>, if this is also true,
+	 * then no calculation is done (true, true : would make no sense).
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return True, if reference or no calculation is done for this sample/value.
 	 */
 	public boolean getTTestIsRef(final int row, final int column) {
@@ -133,16 +121,16 @@ public class BioStatisticalCategoryDataset
 
 	/**
 	 * Returns the true, if this is the reference sample or if no calculation is
-	 * done. False, if it is no rerence sample. The case that no calculation is
-	 * done can be recognized be calling <code>getTTestIsH1</code>, if this is also
-	 * true, then no calculation is done (true, true : would make no sense).
+	 * done. False, if it is no rerence sample. The case that no calculation is done
+	 * can be recognized be calling <code>getTTestIsH1</code>, if this is also true,
+	 * then no calculation is done (true, true : would make no sense).
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
-	 * @return True, if H1 is probable, False if H0 is probable,
-	 *         also True, if no calculation is done.
+	 *            the column index (zero-based).
+	 * @return True, if H1 is probable, False if H0 is probable, also True, if no
+	 *         calculation is done.
 	 */
 	public boolean getTTestIsH1(final int row, final int column) {
 		// Number result = null;

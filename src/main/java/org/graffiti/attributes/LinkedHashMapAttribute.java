@@ -21,39 +21,38 @@ import org.graffiti.plugin.XMLHelper;
  * 
  * @version $Revision: 1.8 $
  */
-public class LinkedHashMapAttribute
-					extends AbstractCollectionAttribute
-					implements SortedCollectionAttribute {
+public class LinkedHashMapAttribute extends AbstractCollectionAttribute implements SortedCollectionAttribute {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Construct a new instance of a <code>LinkedHashMapAttribute</code>. The
 	 * internal LinkedHashMap is initialized empty.
 	 * 
 	 * @param id
-	 *           the id of the attribute.
+	 *            the id of the attribute.
 	 */
 	public LinkedHashMapAttribute(String id) {
 		super(id);
 		this.attributes = new LinkedHashMap<String, Attribute>();
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
-	 * Sets the collection of attributes contained within this <tt>CollectionAttribute</tt> For each entry in the map, pre- and post-
+	 * Sets the collection of attributes contained within this
+	 * <tt>CollectionAttribute</tt> For each entry in the map, pre- and post-
 	 * AttributeAdded events are generated since method <code>add(Attribute
 	 * a)</code> is called for each attribute in the map.
 	 * 
 	 * @param attrs
-	 *           the Map that contains all attributes.
+	 *            the Map that contains all attributes.
 	 */
 	public void setCollection(Map<String, Attribute> attrs) {
 		assert attrs != null;
 		attributes = new LinkedHashMap<String, Attribute>();
-		
+
 		Iterator<Attribute> it = attrs.values().iterator();
-		
+
 		if (getAttributable() == null) {
 			while (it.hasNext()) {
 				Attribute attr = (Attribute) it.next();
@@ -66,23 +65,25 @@ public class LinkedHashMapAttribute
 			}
 		}
 	}
-	
+
 	/**
-	 * Returns a cloned map (shallow copy of map: i.e. <code>this.map.equals(getCollection())</code><b>but
-	 * not</b><code>this.map == getCollection()</code>) between attributes'
-	 * ids and attributes contained in this <code>CollectionAttribute</code>.
+	 * Returns a cloned map (shallow copy of map: i.e.
+	 * <code>this.map.equals(getCollection())</code><b>but
+	 * not</b><code>this.map == getCollection()</code>) between attributes' ids and
+	 * attributes contained in this <code>CollectionAttribute</code>.
 	 * 
-	 * @return a clone of the list of attributes in this <code>CollectionAttribute</code>.
+	 * @return a clone of the list of attributes in this
+	 *         <code>CollectionAttribute</code>.
 	 */
 	@SuppressWarnings("unchecked")
 	public Map<String, Attribute> getCollection() {
 		return (LinkedHashMap) ((LinkedHashMap) attributes).clone();
 	}
-	
+
 	public LinkedHashMap<String, Attribute> getCollectionNoClone() {
 		return (LinkedHashMap<String, Attribute>) attributes;
 	}
-	
+
 	/**
 	 * Already done in constructor for this attribute type.
 	 * 
@@ -90,7 +91,7 @@ public class LinkedHashMapAttribute
 	 */
 	public void setDefaultValue() {
 	}
-	
+
 	/**
 	 * Copies this <code>CollectionAttribute</code> and returns the copy. All
 	 * sub-attributes will be copied, too, i.e. a deep-copy is returned.
@@ -98,9 +99,8 @@ public class LinkedHashMapAttribute
 	 * @return a copy of the <code>CollectionAttribute</code>.
 	 */
 	public Object copy() {
-		LinkedHashMapAttribute copiedAttributes =
-							new LinkedHashMapAttribute(this.getId());
-		
+		LinkedHashMapAttribute copiedAttributes = new LinkedHashMapAttribute(this.getId());
+
 		// M.S.: w�re es hier nicht sinnvoller �ber attributes.values() zu
 		// iterieren? getId() ist wahrscheinlich schneller als get(Id)
 		// bzw. hat eine kleinerer Konstante...
@@ -111,43 +111,42 @@ public class LinkedHashMapAttribute
 			copiedAttribute.setParent(this);
 			copiedAttributes.attributes.put(attrId, copiedAttribute);
 		}
-		
+
 		return copiedAttributes;
 	}
-	
+
 	/**
-	 * Sets the value of the attribute by calling method <code>setCollection(Map attrs)</code>. The "value" is the Collection of
-	 * attributes. For each entry in the map, pre- and post- AttributeAdded
-	 * events are generated.
+	 * Sets the value of the attribute by calling method
+	 * <code>setCollection(Map attrs)</code>. The "value" is the Collection of
+	 * attributes. For each entry in the map, pre- and post- AttributeAdded events
+	 * are generated.
 	 * 
 	 * @param o
-	 *           the new value of the attribute.
+	 *            the new value of the attribute.
 	 * @exception IllegalArgumentException
-	 *               if the parameter has not the
-	 *               appropriate class for this attribute.
+	 *                if the parameter has not the appropriate class for this
+	 *                attribute.
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	protected void doSetValue(Object o)
-						throws IllegalArgumentException {
+	protected void doSetValue(Object o) throws IllegalArgumentException {
 		assert o != null;
-		
+
 		HashMap attrs;
-		
+
 		try {
 			attrs = (LinkedHashMap) o;
 		} catch (ClassCastException cce) {
 			try {
 				attrs = (HashMap) o;
 			} catch (ClassCastException cce2) {
-				throw new IllegalArgumentException("Wrong argument type " +
-									"((Linked)HashMap expected).");
+				throw new IllegalArgumentException("Wrong argument type " + "((Linked)HashMap expected).");
 			}
 		}
-		
+
 		setCollection(attrs);
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.Displayable#toXMLString()
 	 */
@@ -157,16 +156,15 @@ public class LinkedHashMapAttribute
 		valString.append("<subAttributes>" + XMLHelper.getDelimiter());
 		for (Iterator<Attribute> it = attributes.values().iterator(); it.hasNext();) {
 			Attribute attr = (Attribute) it.next();
-			valString.append(XMLHelper.spc(6) + "<subattr>" +
-								attr.toXMLString() + "</subattr>" + XMLHelper.getDelimiter());
+			valString.append(
+					XMLHelper.spc(6) + "<subattr>" + attr.toXMLString() + "</subattr>" + XMLHelper.getDelimiter());
 		}
-		valString.append(XMLHelper.spc(4) + "</subAttributes>" +
-							XMLHelper.getDelimiter() + XMLHelper.spc(4) +
-							"<sorted>true</sorted>");
-		
+		valString.append(XMLHelper.spc(4) + "</subAttributes>" + XMLHelper.getDelimiter() + XMLHelper.spc(4)
+				+ "<sorted>true</sorted>");
+
 		return getStandardXML(valString.toString());
 	}
-	
+
 	public int size() {
 		return attributes.size();
 	}

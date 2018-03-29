@@ -49,7 +49,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.Spacer;
 
 /**
- * A simple demonstration application showing how to create an area chart using data from a {@link CategoryDataset}.
+ * A simple demonstration application showing how to create an area chart using
+ * data from a {@link CategoryDataset}.
  */
 public class CategoryStepChartDemo extends ApplicationFrame {
 
@@ -57,22 +58,17 @@ public class CategoryStepChartDemo extends ApplicationFrame {
 	 * Creates a new demo application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public CategoryStepChartDemo(final String title) {
 
 		super(title);
 
 		// create a dataset...
-		final double[][] data = new double[][] {
-							{ 1.0, 4.0, 3.0, 5.0, 5.0, 7.0, 7.0, 8.0 },
-							{ 5.0, 7.0, 6.0, 8.0, 4.0, 4.0, 2.0, 1.0 },
-							{ 4.0, 3.0, 2.0, 3.0, 6.0, 3.0, 4.0, 3.0 }
-			};
+		final double[][] data = new double[][] { { 1.0, 4.0, 3.0, 5.0, 5.0, 7.0, 7.0, 8.0 },
+				{ 5.0, 7.0, 6.0, 8.0, 4.0, 4.0, 2.0, 1.0 }, { 4.0, 3.0, 2.0, 3.0, 6.0, 3.0, 4.0, 3.0 } };
 
-		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset(
-							"Series ", "Type ", data
-							);
+		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Series ", "Type ", data);
 
 		// create the chart...
 		final JFreeChart chart = createChart(dataset);
@@ -99,7 +95,7 @@ public class CategoryStepChartDemo extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
@@ -144,7 +140,7 @@ public class CategoryStepChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

@@ -9,18 +9,17 @@ import org.graffiti.plugin.io.InputSerializer;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 
-public class MetatoolIOPlugin
-		extends IPK_PluginAdapter {
+public class MetatoolIOPlugin extends IPK_PluginAdapter {
 	public MetatoolIOPlugin() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.EXTENDED_FILE_FORMAT)) {
 			// outputSerializers = new OutputSerializer[] {
 			// new MetatoolWriter()
 			// };
 		}
-		
+
 		inputSerializers = new InputSerializer[] {
 				// new MetaToolReader()
-				};
-		
+		};
+
 	}
 }

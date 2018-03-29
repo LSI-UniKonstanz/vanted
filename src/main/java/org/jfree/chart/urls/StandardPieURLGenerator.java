@@ -64,7 +64,7 @@ public class StandardPieURLGenerator implements PieURLGenerator, Serializable {
 	 * Creates a new generator.
 	 * 
 	 * @param prefix
-	 *           the prefix.
+	 *            the prefix.
 	 */
 	public StandardPieURLGenerator(String prefix) {
 		this.prefix = prefix;
@@ -74,9 +74,9 @@ public class StandardPieURLGenerator implements PieURLGenerator, Serializable {
 	 * Creates a new generator.
 	 * 
 	 * @param prefix
-	 *           the prefix.
+	 *            the prefix.
 	 * @param categoryParameterName
-	 *           the category parameter name.
+	 *            the category parameter name.
 	 */
 	public StandardPieURLGenerator(String prefix, String categoryParameterName) {
 		this.prefix = prefix;
@@ -87,15 +87,13 @@ public class StandardPieURLGenerator implements PieURLGenerator, Serializable {
 	 * Creates a new generator.
 	 * 
 	 * @param prefix
-	 *           the prefix.
+	 *            the prefix.
 	 * @param categoryParameterName
-	 *           the category parameter name.
+	 *            the category parameter name.
 	 * @param indexParameterName
-	 *           the index parameter name (<code>null</code> permitted).
+	 *            the index parameter name (<code>null</code> permitted).
 	 */
-	public StandardPieURLGenerator(String prefix,
-												String categoryParameterName,
-												String indexParameterName) {
+	public StandardPieURLGenerator(String prefix, String categoryParameterName, String indexParameterName) {
 		this.prefix = prefix;
 		this.categoryParameterName = categoryParameterName;
 		this.indexParameterName = indexParameterName;
@@ -105,11 +103,11 @@ public class StandardPieURLGenerator implements PieURLGenerator, Serializable {
 	 * Generates a URL.
 	 * 
 	 * @param data
-	 *           the dataset.
+	 *            the dataset.
 	 * @param key
-	 *           the item key.
+	 *            the item key.
 	 * @param pieIndex
-	 *           the pie index (ignored).
+	 *            the pie index (ignored).
 	 * @return a string containing the generated URL.
 	 */
 	public String generateURL(PieDataset data, Comparable key, int pieIndex) {
@@ -131,7 +129,7 @@ public class StandardPieURLGenerator implements PieURLGenerator, Serializable {
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
@@ -149,7 +147,7 @@ public class StandardPieURLGenerator implements PieURLGenerator, Serializable {
 
 		StandardPieURLGenerator generator = (StandardPieURLGenerator) o;
 		return (this.categoryParameterName.equals(generator.categoryParameterName))
-							&& (this.prefix.equals(generator.prefix));
+				&& (this.prefix.equals(generator.prefix));
 
 	}
 }

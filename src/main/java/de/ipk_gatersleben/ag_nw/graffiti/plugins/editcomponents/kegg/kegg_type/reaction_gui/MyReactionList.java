@@ -24,45 +24,44 @@ import org.ErrorMsg;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Reaction;
 
-public class MyReactionList extends JList {
+/**
+ * 
+ * @vanted.revision 2.6.5
+ */
+public class MyReactionList extends JList<Reaction> {
 	ReactionIdEditor reactionIdEditor;
 	ReactionTypeSelection reactionTypeSelection;
 	JLabel reactionDescription;
 	CompoundListEditor l1;
 	CompoundListEditor l2;
 	CompoundListEditor l3;
-	
-	public MyReactionList(
-						Object[] objects,
-						JLabel reactionDescription,
-						ReactionIdEditor reactionIdEditor,
-						ReactionTypeSelection reactionTypeSelection,
-						CompoundListEditor l1,
-						CompoundListEditor l2,
-						CompoundListEditor l3) {
+
+	public MyReactionList(Reaction[] reactions, JLabel reactionDescription, ReactionIdEditor reactionIdEditor,
+			ReactionTypeSelection reactionTypeSelection, CompoundListEditor l1, CompoundListEditor l2,
+			CompoundListEditor l3) {
 		super();
-		setModel(new DefaultListModel());
-		for (Object o : objects)
-			((DefaultListModel) getModel()).addElement(o);
+		setModel(new DefaultListModel<Reaction>());
+		for (Reaction r : reactions)
+			((DefaultListModel<Reaction>) getModel()).addElement(r);
 		this.reactionDescription = reactionDescription;
 		this.reactionIdEditor = reactionIdEditor;
 		this.reactionTypeSelection = reactionTypeSelection;
 		this.l1 = l1;
 		this.l2 = l2;
 		this.l3 = l3;
-		
+
 		reactionTypeSelection.setCallBack(this);
 		l1.setCallBack(this);
 		l2.setCallBack(this);
 		l3.setCallBack(this);
-		
+
 		reactionIdEditor.setCallBack(this);
-		
+
 		setCellRenderer(getReactionCellRenderer());
 	}
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	public void updateReactionInfo(Reaction r) {
 		if (r != null) {
 			reactionDescription.setText(r.toStringWithDetails(true, true));
@@ -71,25 +70,30 @@ public class MyReactionList extends JList {
 			reactionDescription.setText("");
 			// reactionDescription.setToolTipText("");
 		}
-		
+
 		reactionIdEditor.updateReactionSelection(r);
 		reactionTypeSelection.updateReactionSelection(r);
 		l1.updateReactionSelection(r);
 		l2.updateReactionSelection(r);
 		l3.updateReactionSelection(r);
 		repaint();
-		
+
 		JDialog jd = (JDialog) ErrorMsg.findParentComponent(this, JDialog.class);
 		if (jd != null)
 			jd.pack();
 	}
-	
-	private ListCellRenderer getReactionCellRenderer() {
-		ListCellRenderer res = new ListCellRenderer() {
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-				Reaction r = (Reaction) value;
-				JLabel res = new JLabel(r.toStringWithDetails(true, false));
-				res.setToolTipText(r.toStringWithDetails(true, true));
+
+	/**
+	 * Static factory for this <code>MyReactionList</code> list cell renderer.
+	 * 
+	 * @return Reaction Cell Renderer
+	 */
+	private static ListCellRenderer<Reaction> getReactionCellRenderer() {
+		ListCellRenderer<Reaction> res = new ListCellRenderer<Reaction>() {
+			public Component getListCellRendererComponent(JList<? extends Reaction> list, Reaction value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				JLabel res = new JLabel(value.toStringWithDetails(true, false));
+				res.setToolTipText(value.toStringWithDetails(true, true));
 				res.setOpaque(true);
 				if (isSelected)
 					res.setBackground(new Color(240, 240, 255));

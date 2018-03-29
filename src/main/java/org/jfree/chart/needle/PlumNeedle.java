@@ -49,13 +49,13 @@ public class PlumNeedle extends MeterNeedle implements Serializable {
 	 * Draws the needle.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plotArea
-	 *           the plot area.
+	 *            the plot area.
 	 * @param rotate
-	 *           the rotation point.
+	 *            the rotation point.
 	 * @param angle
-	 *           the angle.
+	 *            the angle.
 	 */
 	protected void drawNeedle(Graphics2D g2, Rectangle2D plotArea, Point2D rotate, double angle) {
 
@@ -64,9 +64,7 @@ public class PlumNeedle extends MeterNeedle implements Serializable {
 		double halfX = plotArea.getWidth() / 2;
 		double diameter = 2 * radius;
 
-		shape.setFrame(plotArea.getMinX() + halfX - radius,
-								plotArea.getMinY() - radius,
-								diameter, diameter);
+		shape.setFrame(plotArea.getMinX() + halfX - radius, plotArea.getMinY() - radius, diameter, diameter);
 		radius = Math.toDegrees(Math.asin(halfX / radius));
 		shape.setAngleStart(270 - radius);
 		shape.setAngleExtent(2 * radius);
@@ -86,7 +84,7 @@ public class PlumNeedle extends MeterNeedle implements Serializable {
 	 * Tests another object for equality with this object.
 	 * 
 	 * @param object
-	 *           the object to test.
+	 *            the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {

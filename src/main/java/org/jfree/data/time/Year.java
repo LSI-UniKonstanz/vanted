@@ -52,7 +52,8 @@ import org.jfree.date.SerialDate;
 /**
  * Represents a year in the range 1900 to 9999.
  * <P>
- * This class is immutable, which is a requirement for all {@link RegularTimePeriod} subclasses.
+ * This class is immutable, which is a requirement for all
+ * {@link RegularTimePeriod} subclasses.
  */
 public class Year extends RegularTimePeriod implements Serializable {
 
@@ -70,16 +71,14 @@ public class Year extends RegularTimePeriod implements Serializable {
 	 * Creates a time period representing a single year.
 	 * 
 	 * @param year
-	 *           the year.
+	 *            the year.
 	 */
 	public Year(final int year) {
 
 		// check arguments...
-		if ((year < SerialDate.MINIMUM_YEAR_SUPPORTED)
-							|| (year > SerialDate.MAXIMUM_YEAR_SUPPORTED)) {
+		if ((year < SerialDate.MINIMUM_YEAR_SUPPORTED) || (year > SerialDate.MAXIMUM_YEAR_SUPPORTED)) {
 
-			throw new IllegalArgumentException(
-								"Year constructor: year (" + year + ") outside valid range.");
+			throw new IllegalArgumentException("Year constructor: year (" + year + ") outside valid range.");
 
 		}
 
@@ -89,11 +88,11 @@ public class Year extends RegularTimePeriod implements Serializable {
 	}
 
 	/**
-	 * Creates a new <code>Year</code>, based on a particular instant in time, using the
-	 * default time zone.
+	 * Creates a new <code>Year</code>, based on a particular instant in time, using
+	 * the default time zone.
 	 * 
 	 * @param time
-	 *           the time.
+	 *            the time.
 	 */
 	public Year(final Date time) {
 		this(time, RegularTimePeriod.DEFAULT_TIME_ZONE);
@@ -103,9 +102,9 @@ public class Year extends RegularTimePeriod implements Serializable {
 	 * Constructs a year, based on a particular instant in time and a time zone.
 	 * 
 	 * @param time
-	 *           the time.
+	 *            the time.
 	 * @param zone
-	 *           the time zone.
+	 *            the time zone.
 	 */
 	public Year(final Date time, final TimeZone zone) {
 
@@ -170,7 +169,7 @@ public class Year extends RegularTimePeriod implements Serializable {
 	 * calendar (which determines the time zone).
 	 * 
 	 * @param calendar
-	 *           the calendar.
+	 *            the calendar.
 	 * @return the first millisecond of the year.
 	 */
 	public long getFirstMillisecond(final Calendar calendar) {
@@ -185,7 +184,7 @@ public class Year extends RegularTimePeriod implements Serializable {
 	 * calendar (which determines the time zone).
 	 * 
 	 * @param calendar
-	 *           the calendar.
+	 *            the calendar.
 	 * @return the last millisecond of the year.
 	 */
 	public long getLastMillisecond(final Calendar calendar) {
@@ -196,12 +195,13 @@ public class Year extends RegularTimePeriod implements Serializable {
 	}
 
 	/**
-	 * Tests the equality of this <code>Year</code> object to an arbitrary object. Returns <code>true</code> if the target is a <code>Year</code> instance
-	 * representing the same
-	 * year as this object. In all other cases, returns <code>false</code>.
+	 * Tests the equality of this <code>Year</code> object to an arbitrary object.
+	 * Returns <code>true</code> if the target is a <code>Year</code> instance
+	 * representing the same year as this object. In all other cases, returns
+	 * <code>false</code>.
 	 * 
 	 * @param object
-	 *           the object.
+	 *            the object.
 	 * @return <code>true</code> if the year of this and the object are the same.
 	 */
 	public boolean equals(final Object object) {
@@ -222,7 +222,8 @@ public class Year extends RegularTimePeriod implements Serializable {
 	/**
 	 * Returns a hash code for this object instance.
 	 * <p>
-	 * The approach described by Joshua Bloch in "Effective Java" has been used here:
+	 * The approach described by Joshua Bloch in "Effective Java" has been used
+	 * here:
 	 * <p>
 	 * <code>http://developer.java.sun.com/developer/Books/effectivejava/Chapter3.pdf</code>
 	 * 
@@ -236,12 +237,12 @@ public class Year extends RegularTimePeriod implements Serializable {
 	}
 
 	/**
-	 * Returns an integer indicating the order of this <code>Year</code> object relative to
-	 * the specified object:
-	 * negative == before, zero == same, positive == after.
+	 * Returns an integer indicating the order of this <code>Year</code> object
+	 * relative to the specified object: negative == before, zero == same, positive
+	 * == after.
 	 * 
 	 * @param o1
-	 *           the object to compare.
+	 *            the object to compare.
 	 * @return negative == before, zero == same, positive == after.
 	 */
 	public int compareTo(final Object o1) {
@@ -257,18 +258,17 @@ public class Year extends RegularTimePeriod implements Serializable {
 
 		// CASE 2 : Comparing to another TimePeriod object
 		// -----------------------------------------------
-		else
-			if (o1 instanceof RegularTimePeriod) {
-				// more difficult case - evaluate later...
-				result = 0;
-			}
+		else if (o1 instanceof RegularTimePeriod) {
+			// more difficult case - evaluate later...
+			result = 0;
+		}
 
-			// CASE 3 : Comparing to a non-TimePeriod object
-			// ---------------------------------------------
-			else {
-				// consider time periods to be ordered after general objects
-				result = 1;
-			}
+		// CASE 3 : Comparing to a non-TimePeriod object
+		// ---------------------------------------------
+		else {
+			// consider time periods to be ordered after general objects
+			result = 1;
+		}
 
 		return result;
 
@@ -289,7 +289,7 @@ public class Year extends RegularTimePeriod implements Serializable {
 	 * The string format is YYYY.
 	 * 
 	 * @param s
-	 *           a string representing the year.
+	 *            a string representing the year.
 	 * @return <code>null</code> if the string is not parseable, the year otherwise.
 	 */
 	public static Year parseYear(final String s) {
@@ -306,8 +306,7 @@ public class Year extends RegularTimePeriod implements Serializable {
 		try {
 			return new Year(y);
 		} catch (IllegalArgumentException e) {
-			throw new TimePeriodFormatException(
-								"Year.parseYear(string): year outside valid range.");
+			throw new TimePeriodFormatException("Year.parseYear(string): year outside valid range.");
 		}
 	}
 

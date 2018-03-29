@@ -17,17 +17,16 @@ import org.graffiti.graph.Node;
  * 
  * @version $Revision: 1.5 $
  */
-public class NodeParameter
-					extends AbstractSingleParameter {
+public class NodeParameter extends AbstractSingleParameter {
 	// ~ Instance fields ========================================================
-	
+
 	/** The value of this parameter. */
 	private Node value = null;
-	
+
 	private Graph graph = null;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	// /**
 	// * Constructs a new node parameter.
 	// *
@@ -38,14 +37,14 @@ public class NodeParameter
 	// {
 	// super(name, description);
 	// }
-	
+
 	/**
 	 * Constructs a new node parameter.
 	 * 
 	 * @param name
-	 *           the name of the parameter.
+	 *            the name of the parameter.
 	 * @param description
-	 *           the description of the parameter.
+	 *            the description of the parameter.
 	 */
 	public NodeParameter(Graph graph, Node initalNode, String name, String description) {
 		super(name, description);
@@ -54,9 +53,9 @@ public class NodeParameter
 		value = initalNode;
 		this.graph = graph;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the <code>Node</code> contained in this <code>NodeParameter</code>.
 	 * 
@@ -65,22 +64,22 @@ public class NodeParameter
 	public Node getNode() {
 		return value;
 	}
-	
+
 	public Node[] getPossibleNodes() {
 		return graph.getNodes().toArray(new Node[] {});
 	}
-	
+
 	/**
 	 * Sets the value of the <code>AttributeParameter</code>.
 	 * 
 	 * @param val
-	 *           the new value of the <code>AttributeParameter</code>.
+	 *            the new value of the <code>AttributeParameter</code>.
 	 */
 	@Override
 	public void setValue(Object val) {
 		value = (Node) val;
 	}
-	
+
 	/**
 	 * Returns the value of this parameter.
 	 * 

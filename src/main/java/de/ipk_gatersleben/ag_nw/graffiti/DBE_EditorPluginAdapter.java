@@ -12,8 +12,7 @@ import org.ErrorMsg;
 import org.graffiti.plugin.EditorPluginAdapter;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class DBE_EditorPluginAdapter extends EditorPluginAdapter {
 	@Override

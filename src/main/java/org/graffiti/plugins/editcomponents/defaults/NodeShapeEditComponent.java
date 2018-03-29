@@ -22,16 +22,15 @@ import org.graffiti.plugin.editcomponent.ComboBoxEditComponent;
  * 
  * @version $Revision: 1.11 $
  */
-public class NodeShapeEditComponent
-		extends ComboBoxEditComponent {
+public class NodeShapeEditComponent extends ComboBoxEditComponent {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor sets the correct entries of the combo box. And creates a new
 	 * combo box.
 	 * 
 	 * @param disp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public NodeShapeEditComponent(Displayable disp) {
 		super(disp);
@@ -39,14 +38,14 @@ public class NodeShapeEditComponent
 		this.comboValue = AttributeHelper.getShapeClasses();
 		this.comboBox = new JComboBox(this.comboText) {
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			public Dimension getMinimumSize() {
 				Dimension res = super.getMinimumSize();
 				res.setSize(20, res.getHeight() + 2);
 				return res;
 			}
-			
+
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension res = super.getPreferredSize();
@@ -56,13 +55,13 @@ public class NodeShapeEditComponent
 		};
 		this.comboBox.setRenderer(new NodeShapeCellRenderer());
 	}
-	
+
 	@Override
 	public void setEditFieldValue() {
 		Object value = this.displayable.getValue();
 		if (value == null)
 			showEmpty = true;
-		
+
 		if (showEmpty) {
 			comboBox.insertItemAt(EMPTY_STRING, 0);
 			comboBox.setSelectedIndex(0);
@@ -71,25 +70,25 @@ public class NodeShapeEditComponent
 				comboBox.removeItemAt(0);
 			}
 			for (int i = comboValue.length - 1; i >= 0; i--) {
-				if (value.equals(comboValue[i]) || ((String) value).equals(AttributeHelper.getShapeClassFromShapeName((String) comboValue[i]))) {
+				if (value.equals(comboValue[i]) || ((String) value)
+						.equals(AttributeHelper.getShapeClassFromShapeName((String) comboValue[i]))) {
 					this.comboBox.setSelectedIndex(i);
-					
+
 					break;
 				}
 			}
 		}
 		searchComponent.setEnabled(!showEmpty);
 	}
-	
+
 	@Override
 	public void setValue() {
 		if (this.comboBox.getSelectedItem().equals(EMPTY_STRING)
-				||
-				(displayable.getValue() != null && ((String) this.displayable.getValue()).equalsIgnoreCase(AttributeHelper
-						.getShapeClassFromDescription((String) this.comboBox.getSelectedItem())))) {
+				|| (displayable.getValue() != null && ((String) this.displayable.getValue()).equalsIgnoreCase(
+						AttributeHelper.getShapeClassFromDescription((String) this.comboBox.getSelectedItem())))) {
 			return;
 		}
-		
+
 		if (this.comboBox.getItemAt(0).equals(EMPTY_STRING)) {
 			this.displayable.setValue(comboValue[this.comboBox.getSelectedIndex() - 1]);
 		} else {

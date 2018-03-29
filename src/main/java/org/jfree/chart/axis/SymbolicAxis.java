@@ -100,9 +100,10 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 	 * Constructs a symbolic axis, using default attribute values where necessary.
 	 * 
 	 * @param label
-	 *           the axis label (null permitted).
+	 *            the axis label (null permitted).
 	 * @param sv
-	 *           the list of symbolic values to display instead of the numeric value.
+	 *            the list of symbolic values to display instead of the numeric
+	 *            value.
 	 */
 	public SymbolicAxis(String label, String[] sv) {
 
@@ -140,8 +141,8 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 	}
 
 	/**
-	 * Returns <CODE>true</CODE> if the symbolic grid lines are showing, and
-	 * false otherwise.
+	 * Returns <CODE>true</CODE> if the symbolic grid lines are showing, and false
+	 * otherwise.
 	 * 
 	 * @return true if the symbolic grid lines are showing, and false otherwise.
 	 */
@@ -154,7 +155,7 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 	 * listeners that the axis has been modified.
 	 * 
 	 * @param flag
-	 *           the new setting.
+	 *            the new setting.
 	 */
 	public void setSymbolicGridLinesVisible(boolean flag) {
 
@@ -168,40 +169,38 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 	 * This operation is not supported by the symbolic values.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param drawArea
-	 *           the area in which the plot and axes should be drawn.
+	 *            the area in which the plot and axes should be drawn.
 	 * @param plotArea
-	 *           the area in which the plot should be drawn.
+	 *            the area in which the plot should be drawn.
 	 */
 	protected void selectAutoTickUnit(Graphics2D g2, Rectangle2D drawArea, Rectangle2D plotArea) {
 		throw new UnsupportedOperationException();
 	}
 
 	/**
-	 * Draws the axis on a Java 2D graphics device (such as the screen or a printer).
+	 * Draws the axis on a Java 2D graphics device (such as the screen or a
+	 * printer).
 	 * 
 	 * @param g2
-	 *           the graphics device (<code>null</code> not permitted).
+	 *            the graphics device (<code>null</code> not permitted).
 	 * @param cursor
-	 *           the cursor location.
+	 *            the cursor location.
 	 * @param plotArea
-	 *           the area within which the plot and axes should be drawn (<code>null</code> not permitted).
+	 *            the area within which the plot and axes should be drawn
+	 *            (<code>null</code> not permitted).
 	 * @param dataArea
-	 *           the area within which the data should be drawn (<code>null</code> not
-	 *           permitted).
+	 *            the area within which the data should be drawn (<code>null</code>
+	 *            not permitted).
 	 * @param edge
-	 *           the axis location (<code>null</code> not permitted).
+	 *            the axis location (<code>null</code> not permitted).
 	 * @param plotState
-	 *           collects information about the plot (<code>null</code> permitted).
+	 *            collects information about the plot (<code>null</code> permitted).
 	 * @return the axis state (never <code>null</code>).
 	 */
-	public AxisState draw(Graphics2D g2,
-									double cursor,
-									Rectangle2D plotArea,
-									Rectangle2D dataArea,
-									RectangleEdge edge,
-									PlotRenderingInfo plotState) {
+	public AxisState draw(Graphics2D g2, double cursor, Rectangle2D plotArea, Rectangle2D dataArea, RectangleEdge edge,
+			PlotRenderingInfo plotState) {
 
 		AxisState info = new AxisState(cursor);
 		if (isVisible()) {
@@ -217,34 +216,32 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 	/**
 	 * Draws the symbolic grid lines.
 	 * <P>
-	 * The colors are consecutively the color specified by <CODE>symbolicGridPaint<CODE>
+	 * The colors are consecutively the color specified by
+	 * <CODE>symbolicGridPaint<CODE>
 	 * (<CODE>DEFAULT_SYMBOLIC_GRID_LINE_PAINT</CODE> by default) and white.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plotArea
-	 *           the area within which the chart should be drawn.
+	 *            the area within which the chart should be drawn.
 	 * @param dataArea
-	 *           the area within which the plot should be drawn (a subset of the drawArea).
+	 *            the area within which the plot should be drawn (a subset of the
+	 *            drawArea).
 	 * @param edge
-	 *           the axis location.
+	 *            the axis location.
 	 * @param ticks
-	 *           the ticks.
+	 *            the ticks.
 	 */
-	public void drawSymbolicGridLines(Graphics2D g2,
-													Rectangle2D plotArea,
-													Rectangle2D dataArea,
-													RectangleEdge edge,
-													List ticks) {
+	public void drawSymbolicGridLines(Graphics2D g2, Rectangle2D plotArea, Rectangle2D dataArea, RectangleEdge edge,
+			List ticks) {
 
 		Shape savedClip = g2.getClip();
 		g2.clip(dataArea);
 		if (RectangleEdge.isTopOrBottom(edge)) {
 			drawSymbolicGridLinesHorizontal(g2, plotArea, dataArea, true, ticks);
-		} else
-			if (RectangleEdge.isLeftOrRight(edge)) {
-				drawSymbolicGridLinesVertical(g2, plotArea, dataArea, true, ticks);
-			}
+		} else if (RectangleEdge.isLeftOrRight(edge)) {
+			drawSymbolicGridLinesVertical(g2, plotArea, dataArea, true, ticks);
+		}
 		g2.setClip(savedClip);
 
 	}
@@ -252,26 +249,28 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 	/**
 	 * Draws the symbolic grid lines.
 	 * <P>
-	 * The colors are consecutively the color specified by <CODE>symbolicGridPaint<CODE>
-	 * (<CODE>DEFAULT_SYMBOLIC_GRID_LINE_PAINT</CODE> by default) and white. or if <CODE>firstGridLineIsDark</CODE> is <CODE>true</CODE> white and the color
+	 * The colors are consecutively the color specified by
+	 * <CODE>symbolicGridPaint<CODE>
+	 * (<CODE>DEFAULT_SYMBOLIC_GRID_LINE_PAINT</CODE> by default) and white. or if
+	 * <CODE>firstGridLineIsDark</CODE> is <CODE>true</CODE> white and the color
 	 * specified by <CODE>symbolicGridPaint<CODE>.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plotArea
-	 *           the area within which the chart should be drawn.
+	 *            the area within which the chart should be drawn.
 	 * @param dataArea
-	 *           the area within which the plot should be drawn (a subset of the drawArea).
+	 *            the area within which the plot should be drawn (a subset of the
+	 *            drawArea).
 	 * @param firstGridLineIsDark
-	 *           True: the first symbolic grid line take the color of <CODE>symbolicGridPaint<CODE>. False: the first symbolic grid line is white.
+	 *            True: the first symbolic grid line take the color of
+	 *            <CODE>symbolicGridPaint<CODE>. False: the first symbolic grid line
+	 *            is white.
 	 * @param ticks
-	 *           the ticks.
+	 *            the ticks.
 	 */
-	public void drawSymbolicGridLinesHorizontal(Graphics2D g2,
-																Rectangle2D plotArea,
-																Rectangle2D dataArea,
-																boolean firstGridLineIsDark,
-																List ticks) {
+	public void drawSymbolicGridLinesHorizontal(Graphics2D g2, Rectangle2D plotArea, Rectangle2D dataArea,
+			boolean firstGridLineIsDark, List ticks) {
 
 		this.symbolicGridLineList = new Vector(ticks.size());
 		boolean currentGridLineIsDark = firstGridLineIsDark;
@@ -300,10 +299,8 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 				g2.setPaint(Color.white);
 				// g2.setXORMode(Color.white);
 			}
-			symbolicGridLine =
-								new Rectangle2D.Double(xx1,
-													yy + outlineStrokeWidth, xx2 - xx1,
-													dataArea.getMaxY() - yy - outlineStrokeWidth);
+			symbolicGridLine = new Rectangle2D.Double(xx1, yy + outlineStrokeWidth, xx2 - xx1,
+					dataArea.getMaxY() - yy - outlineStrokeWidth);
 			g2.fill(symbolicGridLine);
 			this.symbolicGridLineList.add(symbolicGridLine);
 			currentGridLineIsDark = !currentGridLineIsDark;
@@ -315,7 +312,7 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 	 * Get the symbolic grid line corresponding to the specified position.
 	 * 
 	 * @param position
-	 *           position of the grid line, startinf from 0.
+	 *            position of the grid line, startinf from 0.
 	 * @return the symbolic grid line corresponding to the specified position.
 	 */
 	public Rectangle2D.Double getSymbolicGridLine(int position) {
@@ -398,57 +395,52 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 	}
 
 	/**
-	 * Calculates the positions of the tick labels for the axis, storing the results in the
-	 * tick label list (ready for drawing).
+	 * Calculates the positions of the tick labels for the axis, storing the results
+	 * in the tick label list (ready for drawing).
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the axis state.
+	 *            the axis state.
 	 * @param plotArea
-	 *           the area in which the plot (inlcuding axes) should be drawn.
+	 *            the area in which the plot (inlcuding axes) should be drawn.
 	 * @param dataArea
-	 *           the area in which the data should be drawn.
+	 *            the area in which the data should be drawn.
 	 * @param edge
-	 *           the location of the axis.
+	 *            the location of the axis.
 	 * @return A list of ticks.
 	 */
-	public List refreshTicks(Graphics2D g2,
-										AxisState state,
-										Rectangle2D plotArea,
-										Rectangle2D dataArea,
-										RectangleEdge edge) {
+	public List refreshTicks(Graphics2D g2, AxisState state, Rectangle2D plotArea, Rectangle2D dataArea,
+			RectangleEdge edge) {
 
 		List ticks = null;
 		if (RectangleEdge.isTopOrBottom(edge)) {
 			ticks = refreshTicksHorizontal(g2, state.getCursor(), plotArea, dataArea, edge);
-		} else
-			if (RectangleEdge.isLeftOrRight(edge)) {
-				ticks = refreshTicksVertical(g2, state.getCursor(), plotArea, dataArea, edge);
-			}
+		} else if (RectangleEdge.isLeftOrRight(edge)) {
+			ticks = refreshTicksVertical(g2, state.getCursor(), plotArea, dataArea, edge);
+		}
 		return ticks;
 
 	}
 
 	/**
-	 * Calculates the positions of the tick labels for the axis, storing the results in the
-	 * tick label list (ready for drawing).
+	 * Calculates the positions of the tick labels for the axis, storing the results
+	 * in the tick label list (ready for drawing).
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param cursor
-	 *           the cursor position for drawing the axis.
+	 *            the cursor position for drawing the axis.
 	 * @param plotArea
-	 *           the area in which the plot (inlcuding axes) should be drawn.
+	 *            the area in which the plot (inlcuding axes) should be drawn.
 	 * @param dataArea
-	 *           the area in which the data should be drawn.
+	 *            the area in which the data should be drawn.
 	 * @param edge
-	 *           the location of the axis.
+	 *            the location of the axis.
 	 * @return The ticks.
 	 */
-	public List refreshTicksHorizontal(Graphics2D g2, double cursor,
-													Rectangle2D plotArea, Rectangle2D dataArea,
-													RectangleEdge edge) {
+	public List refreshTicksHorizontal(Graphics2D g2, double cursor, Rectangle2D plotArea, Rectangle2D dataArea,
+			RectangleEdge edge) {
 
 		List ticks = new java.util.ArrayList();
 
@@ -475,15 +467,11 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 				}
 
 				// avoid to draw overlapping tick labels
-				Rectangle2D bounds = TextUtilities.getTextBounds(
-									tickLabel, g2, g2.getFontMetrics()
-									);
-				double tickLabelLength = isVerticalTickLabels()
-														? bounds.getHeight() : bounds.getWidth();
+				Rectangle2D bounds = TextUtilities.getTextBounds(tickLabel, g2, g2.getFontMetrics());
+				double tickLabelLength = isVerticalTickLabels() ? bounds.getHeight() : bounds.getWidth();
 				boolean tickLabelsOverlapping = false;
 				if (i > 0) {
-					double avgTickLabelLength = (previousDrawnTickLabelLength + tickLabelLength)
-																/ 2.0;
+					double avgTickLabelLength = (previousDrawnTickLabelLength + tickLabelLength) / 2.0;
 					if (Math.abs(xx - previousDrawnTickLabelPos) < avgTickLabelLength) {
 						tickLabelsOverlapping = true;
 					}
@@ -516,9 +504,7 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 						rotationAnchor = TextAnchor.TOP_CENTER;
 					}
 				}
-				Tick tick = new NumberTick(
-									new Double(currentTickValue), tickLabel, anchor, rotationAnchor, angle
-									);
+				Tick tick = new NumberTick(Double.valueOf(currentTickValue), tickLabel, anchor, rotationAnchor, angle);
 				ticks.add(tick);
 			}
 		}
@@ -527,24 +513,23 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 	}
 
 	/**
-	 * Calculates the positions of the tick labels for the axis, storing the results in the
-	 * tick label list (ready for drawing).
+	 * Calculates the positions of the tick labels for the axis, storing the results
+	 * in the tick label list (ready for drawing).
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param cursor
-	 *           the cursor position for drawing the axis.
+	 *            the cursor position for drawing the axis.
 	 * @param plotArea
-	 *           the area in which the plot and the axes should be drawn.
+	 *            the area in which the plot and the axes should be drawn.
 	 * @param dataArea
-	 *           the area in which the plot should be drawn.
+	 *            the area in which the plot should be drawn.
 	 * @param edge
-	 *           the location of the axis.
+	 *            the location of the axis.
 	 * @return The ticks.
 	 */
-	public List refreshTicksVertical(Graphics2D g2, double cursor,
-													Rectangle2D plotArea, Rectangle2D dataArea,
-													RectangleEdge edge) {
+	public List refreshTicksVertical(Graphics2D g2, double cursor, Rectangle2D plotArea, Rectangle2D dataArea,
+			RectangleEdge edge) {
 
 		List ticks = new java.util.ArrayList();
 
@@ -571,15 +556,11 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 				}
 
 				// avoid to draw overlapping tick labels
-				Rectangle2D bounds = TextUtilities.getTextBounds(
-									tickLabel, g2, g2.getFontMetrics()
-									);
-				double tickLabelLength = isVerticalTickLabels()
-														? bounds.getWidth() : bounds.getHeight();
+				Rectangle2D bounds = TextUtilities.getTextBounds(tickLabel, g2, g2.getFontMetrics());
+				double tickLabelLength = isVerticalTickLabels() ? bounds.getWidth() : bounds.getHeight();
 				boolean tickLabelsOverlapping = false;
 				if (i > 0) {
-					double avgTickLabelLength =
-										(previousDrawnTickLabelLength + tickLabelLength) / 2.0;
+					double avgTickLabelLength = (previousDrawnTickLabelLength + tickLabelLength) / 2.0;
 					if (Math.abs(yy - previousDrawnTickLabelPos) < avgTickLabelLength) {
 						tickLabelsOverlapping = true;
 					}
@@ -611,9 +592,7 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 						rotationAnchor = TextAnchor.CENTER_LEFT;
 					}
 				}
-				Tick tick = new NumberTick(
-									new Double(currentTickValue), tickLabel, anchor, rotationAnchor, angle
-									);
+				Tick tick = new NumberTick(Double.valueOf(currentTickValue), tickLabel, anchor, rotationAnchor, angle);
 				ticks.add(tick);
 			}
 		}
@@ -625,7 +604,7 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 	 * Converts a value to a string, using the list of symbolic values.
 	 * 
 	 * @param value
-	 *           value to convert.
+	 *            value to convert.
 	 * @return the symbolic value.
 	 */
 	public String valueToString(double value) {
@@ -642,24 +621,28 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 	/**
 	 * Draws the symbolic grid lines.
 	 * <P>
-	 * The colors are consecutively the color specified by <CODE>symbolicGridPaint<CODE>
-	 * (<CODE>DEFAULT_SYMBOLIC_GRID_LINE_PAINT</CODE> by default) and white. or if <CODE>firstGridLineIsDark</CODE> is <CODE>true</CODE> white and the color
+	 * The colors are consecutively the color specified by
+	 * <CODE>symbolicGridPaint<CODE>
+	 * (<CODE>DEFAULT_SYMBOLIC_GRID_LINE_PAINT</CODE> by default) and white. or if
+	 * <CODE>firstGridLineIsDark</CODE> is <CODE>true</CODE> white and the color
 	 * specified by <CODE>symbolicGridPaint<CODE>.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param drawArea
-	 *           the area within which the chart should be drawn.
+	 *            the area within which the chart should be drawn.
 	 * @param plotArea
-	 *           the area within which the plot should be drawn (a subset of the drawArea).
+	 *            the area within which the plot should be drawn (a subset of the
+	 *            drawArea).
 	 * @param firstGridLineIsDark
-	 *           True: the first symbolic grid line take the color of <CODE>symbolicGridPaint<CODE>. False: the first symbolic grid line is white.
+	 *            True: the first symbolic grid line take the color of
+	 *            <CODE>symbolicGridPaint<CODE>. False: the first symbolic grid line
+	 *            is white.
 	 * @param ticks
-	 *           a list of ticks.
+	 *            a list of ticks.
 	 */
-	public void drawSymbolicGridLinesVertical(Graphics2D g2, Rectangle2D drawArea,
-																Rectangle2D plotArea, boolean firstGridLineIsDark,
-																List ticks) {
+	public void drawSymbolicGridLinesVertical(Graphics2D g2, Rectangle2D drawArea, Rectangle2D plotArea,
+			boolean firstGridLineIsDark, List ticks) {
 
 		this.symbolicGridLineList = new Vector(ticks.size());
 		boolean currentGridLineIsDark = firstGridLineIsDark;
@@ -688,8 +671,8 @@ public class SymbolicAxis extends NumberAxis implements Serializable {
 				g2.setPaint(Color.white);
 				// g2.setXORMode(Color.white);
 			}
-			symbolicGridLine = new Rectangle2D.Double(xx + outlineStrokeWidth,
-								yy1, plotArea.getMaxX() - xx - outlineStrokeWidth, yy2 - yy1);
+			symbolicGridLine = new Rectangle2D.Double(xx + outlineStrokeWidth, yy1,
+					plotArea.getMaxX() - xx - outlineStrokeWidth, yy2 - yy1);
 			g2.fill(symbolicGridLine);
 			this.symbolicGridLineList.add(symbolicGridLine);
 			currentGridLineIsDark = !currentGridLineIsDark;

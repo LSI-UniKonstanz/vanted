@@ -40,8 +40,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * This demo shows the creation of a stacked XY area chart. I created this demo while
- * investigating bug report 882890.
+ * This demo shows the creation of a stacked XY area chart. I created this demo
+ * while investigating bug report 882890.
  */
 public class StackedXYAreaChartDemo2 extends ApplicationFrame {
 
@@ -49,7 +49,7 @@ public class StackedXYAreaChartDemo2 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public StackedXYAreaChartDemo2(final String title) {
 		super(title);
@@ -91,13 +91,12 @@ public class StackedXYAreaChartDemo2 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset for the chart.
+	 *            the dataset for the chart.
 	 * @return a sample chart.
 	 */
 	private JFreeChart createChart(final TableXYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createStackedXYAreaChart(
-							"Stacked XY Area Chart Demo 2", // chart title
+		final JFreeChart chart = ChartFactory.createStackedXYAreaChart("Stacked XY Area Chart Demo 2", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
@@ -105,7 +104,7 @@ public class StackedXYAreaChartDemo2 extends ApplicationFrame {
 				true, // legend
 				true, // tooltips
 				false // urls
-				);
+		);
 		return chart;
 
 	}
@@ -125,12 +124,10 @@ public class StackedXYAreaChartDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
-		final StackedXYAreaChartDemo2 demo = new StackedXYAreaChartDemo2(
-							"Stacked XY Area Chart Demo 2"
-							);
+		final StackedXYAreaChartDemo2 demo = new StackedXYAreaChartDemo2("Stacked XY Area Chart Demo 2");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);

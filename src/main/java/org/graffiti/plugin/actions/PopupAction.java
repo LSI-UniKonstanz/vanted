@@ -21,27 +21,26 @@ import org.graffiti.help.HelpContext;
  * 
  * @version $Revision: 1.7 $
  */
-public class PopupAction
-					extends SelectionAction {
+public class PopupAction extends SelectionAction {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Comment for <code>serialVersionUID</code>
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Constructs a new popup action.
 	 * 
 	 * @param mainFrame
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public PopupAction(MainFrame mainFrame) {
 		super("action.popup", mainFrame);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the help context for the action.
 	 * 
@@ -51,7 +50,7 @@ public class PopupAction
 	public HelpContext getHelpContext() {
 		return null; // TODO
 	}
-	
+
 	/**
 	 * Returns the name of this action.
 	 * 
@@ -61,29 +60,31 @@ public class PopupAction
 	public String getName() {
 		return null; // TODO
 	}
-	
+
 	/**
 	 * Executes this action.
 	 * 
 	 * @param e
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 	}
-	
+
 	/**
-	 * Sets the internal <code>enable</code> flag, which depends on the given
-	 * list of selected items.
+	 * Sets the internal <code>enable</code> flag, which depends on the given list
+	 * of selected items.
 	 * 
 	 * @param items
-	 *           the items, which determine the internal state of the <code>enable</code> flag.
+	 *            the items, which determine the internal state of the
+	 *            <code>enable</code> flag.
 	 */
 	@Override
 	protected void enable(List<?> items) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.actions.SelectionAction#isEnabled()
 	 */
 	@Override

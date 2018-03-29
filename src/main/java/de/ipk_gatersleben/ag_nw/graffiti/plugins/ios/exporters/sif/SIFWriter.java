@@ -16,36 +16,38 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.io.AbstractOutputSerializer;
 
 public class SIFWriter extends AbstractOutputSerializer {
-	
+
 	private final String fileNameExt = ".sif";
-	
+
 	public SIFWriter() {
 		super();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.io.Serializer#getExtensions()
 	 */
 	@Override
 	public String[] getExtensions() {
 		return new String[] { fileNameExt };
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
 	 */
 	@Override
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "SIF (src interac. tgt)" };
 	}
-	
+
 	@Override
 	public boolean validFor(Graph g) {
 		return true;
 	}
-	
+
 	@Override
 	public void write(OutputStream out, Graph g) throws IOException {
 		g.numberGraphElements();
@@ -56,7 +58,7 @@ public class SIFWriter extends AbstractOutputSerializer {
 			if (nd.getInDegree() <= 0)
 				stream.print(getLabel(nd) + "\n");
 	}
-	
+
 	private String getLabel(GraphElement ge) {
 		String s = null;
 		if (ge instanceof Node) {

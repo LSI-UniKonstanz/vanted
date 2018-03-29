@@ -38,20 +38,21 @@ package org.jfree.chart.labels;
 import org.jfree.data.XYDataset;
 
 /**
- * Interface for a label generator for plots that use data from an {@link XYDataset}.
+ * Interface for a label generator for plots that use data from an
+ * {@link XYDataset}.
  */
 public interface XYLabelGenerator {
 
 	/**
-	 * Generates a label for the specified item. The label is typically a formatted version of
-	 * the data value, but any text can be used.
+	 * Generates a label for the specified item. The label is typically a formatted
+	 * version of the data value, but any text can be used.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> not permitted).
+	 *            the dataset (<code>null</code> not permitted).
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return The label (possibly <code>null</code>).
 	 */
 	public String generateLabel(XYDataset dataset, int series, int item);

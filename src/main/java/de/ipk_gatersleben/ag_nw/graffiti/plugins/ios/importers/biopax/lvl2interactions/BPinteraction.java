@@ -26,16 +26,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.biopax.lvl2utilit
  * @author ricardo
  * 
  */
-public class BPinteraction extends HelperClass
-{
+public class BPinteraction extends HelperClass {
 	protected Random rand;
 	protected StoichiometryWriter sW;
 	protected CollectionAttribute centerAttribute;
 	protected Graph graph;
 	protected Hashtable<String, Node> nodes;
 
-	public BPinteraction(Graph Graph, Hashtable<String, Node> Nodes)
-	{
+	public BPinteraction(Graph Graph, Hashtable<String, Node> Nodes) {
 		super();
 		rand = new Random();
 		sW = new StoichiometryWriter();
@@ -53,19 +51,16 @@ public class BPinteraction extends HelperClass
 	 * @param entity
 	 * @return
 	 */
-	protected Node findORcreateNode(physicalEntityParticipant entity)
-	{
+	protected Node findORcreateNode(physicalEntityParticipant entity) {
 		Node node;
 		// check whether the entity is already in the graph or not
-		if (nodes.get(entity.getPHYSICAL_ENTITY().getRDFId()) == null)
-		{
+		if (nodes.get(entity.getPHYSICAL_ENTITY().getRDFId()) == null) {
 			int posX = rand.nextInt(100);
 			int posY = rand.nextInt(100);
 			node = graph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(posX, posY));
 			UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(node, entity.getPHYSICAL_ENTITY());
 			nodes.put(entity.getPHYSICAL_ENTITY().getRDFId(), node);
-		} else
-		{
+		} else {
 			node = nodes.get(entity.getPHYSICAL_ENTITY().getRDFId());
 		}
 		return node;
@@ -77,19 +72,16 @@ public class BPinteraction extends HelperClass
 	 * @param entity
 	 * @return
 	 */
-	protected Node findORcreateNode(process p)
-	{
+	protected Node findORcreateNode(process p) {
 		Node processNode;
 		// check whether the entity is already in the graph or not
-		if (nodes.get(p.getRDFId()) == null)
-		{
+		if (nodes.get(p.getRDFId()) == null) {
 			int posX = rand.nextInt(100);
 			int posY = rand.nextInt(100);
 			processNode = graph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(posX, posY));
 			UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(processNode, p);
 			nodes.put(p.getRDFId(), processNode);
-		} else
-		{
+		} else {
 			processNode = nodes.get(p.getRDFId());
 		}
 		return processNode;
@@ -101,19 +93,16 @@ public class BPinteraction extends HelperClass
 	 * @param entity
 	 * @return
 	 */
-	protected Node findORcreateNode(InteractionParticipant l)
-	{
+	protected Node findORcreateNode(InteractionParticipant l) {
 		Node node;
 		// check whether the entity is already in the graph or not
-		if (nodes.get(l.getRDFId()) == null)
-		{
+		if (nodes.get(l.getRDFId()) == null) {
 			int posX = rand.nextInt(100);
 			int posY = rand.nextInt(100);
 			node = graph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(posX, posY));
 			UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(node, l);
 			nodes.put(l.getRDFId(), node);
-		} else
-		{
+		} else {
 			node = nodes.get(l.getRDFId());
 		}
 		return node;
@@ -126,8 +115,8 @@ public class BPinteraction extends HelperClass
 	 * @param to
 	 * @return
 	 */
-	protected Edge addEdge(Node from, Node to)
-	{
-		return graph.addEdge(from, to, Boolean.TRUE, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.black, Color.black, true));
+	protected Edge addEdge(Node from, Node to) {
+		return graph.addEdge(from, to, Boolean.TRUE,
+				AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.black, Color.black, true));
 	}
 }

@@ -47,24 +47,24 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
 /**
  * @author klukas
  */
-public class WebsiteGeneration extends AbstractEditorAlgorithm implements
-					NeedsSwingThread {
-	
+public class WebsiteGeneration extends AbstractEditorAlgorithm implements NeedsSwingThread {
+
 	private final String borderStyle = "frameborder=NO"; // "border=0 bordercolor=\"white\"";
 	// // frameborder=NO
 	// framescpacing=1
 	// border=2
-	
+
 	private String colorStart = "#FFFFFF";
 	private String colorEnd = "#ebebeb";
 	private String colorFooterEnd = "#bbbbbb";
 	private String colorDescription = "#FDFDFD";
-	
+
 	private final String colorBackgroundStart = "#8C8C8C";
 	private final String colorBackgroundEnd = "#3F3F3F";
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
@@ -72,8 +72,7 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 		for (EditorSession es : sortByFileName(MainFrame.getEditorSessions())) {
 			ws.add(es);
 		}
-		final File selPath = OpenFileDialogService
-							.getDirectoryFromUser("Select Output-Folder");
+		final File selPath = OpenFileDialogService.getDirectoryFromUser("Select Output-Folder");
 		if (selPath != null && !selPath.getPath().equals("Cancel") && selPath.isDirectory()) {
 			ArrayList<Object> paramsA = new ArrayList<Object>();
 			ArrayList<Object> paramsB = new ArrayList<Object>();
@@ -82,8 +81,8 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 			paramsA.add("Website-Title//");
 			paramsA.add("<h1>My Pathway Website</h1>");
 			paramsB.add("Website-Description//");
-			paramsB
-								.add("VANTED graph to website export. VANTED is available at <a href=\"http://kim25.wwwdns.kim.uni-konstanz.de/vanted/\" target=\"_blank\">http://kim25.wwwdns.kim.uni-konstanz.de/vanted/</a>.");
+			paramsB.add(
+					"VANTED graph to website export. VANTED is available at <a href=\"http://kim25.wwwdns.kim.uni-konstanz.de/vanted/\" target=\"_blank\">http://kim25.wwwdns.kim.uni-konstanz.de/vanted/</a>.");
 			paramsC.add("Footer//");
 			paramsC.add("<small>Copyright (c) " + Calendar.getInstance().get(Calendar.YEAR)
 					+ " by NAME OF INSTITUTION.</small>");
@@ -102,39 +101,26 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 				String fn = es.getFileName();
 				if (fn.indexOf(".") > 0)
 					fn = fn.substring(0, fn.lastIndexOf("."));
-				paramsA.add(AttributeHelper.getAttributeValue(es.getGraph(), "",
-									"title", fn, ""));
-				
+				paramsA.add(AttributeHelper.getAttributeValue(es.getGraph(), "", "title", fn, ""));
+
 				paramsB.add("Graph " + es.getFileName() + "//");
-				paramsB.add(AttributeHelper.getAttributeValue(es.getGraph(), "",
-									"description", "", ""));
+				paramsB.add(AttributeHelper.getAttributeValue(es.getGraph(), "", "description", "", ""));
 			}
-			ArrayList<ArrayList<Object>> res = MyInputHelper
-								.getMultipleInput(
-													" Open a set of networks and choose this command to create a simple website, containing links to graphical representations<br>"
-															+
-															" of the currently opened network files.<br>"
-															+
-															"Use the menu command Edit/Add Link... to create links assigned to network nodes, which point to other networks or to<br>"
-															+
-															"websites. This way it is possible to create and publish your own library of interlinked network files, possibly with<br>"
-															+
-															"references to other website resources." +
-															"<br>" +
-															"<br>" +
-															"Please specify the title for the whole website and for each loaded network:<br>"
-																		+ "<br>"
-																		+ "Hint: If the network titles contains a dot (.) character, "
-																		+ "the networks will be put into categories.<br>"
-																		+ "For example the title A.B would place the network "
-																		+ "into the group 'A' sown with network name 'B'.<br><br>",
-													"Titles", paramsA,
-													"Please specify website and graph descriptions:<br><br>",
-													"Descriptions", paramsB,
-													"Please specify website footer and a feedback e-mail address:<br><br>", "Footer and Feedback",
-													paramsC, "Please specify the color scheme:",
-													"Background-Colors", paramsD);
-			
+			ArrayList<ArrayList<Object>> res = MyInputHelper.getMultipleInput(
+					" Open a set of networks and choose this command to create a simple website, containing links to graphical representations<br>"
+							+ " of the currently opened network files.<br>"
+							+ "Use the menu command Edit/Add Link... to create links assigned to network nodes, which point to other networks or to<br>"
+							+ "websites. This way it is possible to create and publish your own library of interlinked network files, possibly with<br>"
+							+ "references to other website resources." + "<br>" + "<br>"
+							+ "Please specify the title for the whole website and for each loaded network:<br>" + "<br>"
+							+ "Hint: If the network titles contains a dot (.) character, "
+							+ "the networks will be put into categories.<br>"
+							+ "For example the title A.B would place the network "
+							+ "into the group 'A' sown with network name 'B'.<br><br>",
+					"Titles", paramsA, "Please specify website and graph descriptions:<br><br>", "Descriptions",
+					paramsB, "Please specify website footer and a feedback e-mail address:<br><br>",
+					"Footer and Feedback", paramsC, "Please specify the color scheme:", "Background-Colors", paramsD);
+
 			if (res != null) {
 				String websiteTitle = "", websiteDescription = "", footer = "", feedbackemail = "";
 				int idx = 0;
@@ -143,8 +129,7 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 					if (idx == 0)
 						websiteTitle = s;
 					else
-						AttributeHelper.setAttribute(ws.get(idx - 1).getGraph(), "",
-											"title", s);
+						AttributeHelper.setAttribute(ws.get(idx - 1).getGraph(), "", "title", s);
 					idx++;
 				}
 				idx = 0;
@@ -153,8 +138,7 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 					if (idx == 0)
 						websiteDescription = s;
 					else
-						AttributeHelper.setAttribute(ws.get(idx - 1).getGraph(), "",
-											"description", s);
+						AttributeHelper.setAttribute(ws.get(idx - 1).getGraph(), "", "description", s);
 					idx++;
 				}
 				idx = 0;
@@ -179,185 +163,90 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 					idx++;
 				}
 				String fileNameMainDescription = "overview.html";
-				
+
 				final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
-									"Generate Website", "Initialize...");
+						"Generate Website", "Initialize...");
 				final String fWebsiteTitle = websiteTitle;
 				final String fWebsiteDescription = websiteDescription;
 				final String fFooter = footer;
 				final String ffeedbackemail = feedbackemail;
 				final String fFileNameMainDescription = fileNameMainDescription;
-				BackgroundTaskHelper.issueSimpleTask(getName(),
-									"Generate Website...", new Runnable() {
-										public void run() {
-											try {
-												generateWebsite(selPath, fWebsiteTitle,
-																	fWebsiteDescription, fFooter, ws,
-																	fFileNameMainDescription, ffeedbackemail, status);
-											} catch (IOException e) {
-												ErrorMsg.addErrorMessage(e);
-												MainFrame.showMessageDialog(
-																	"Please select a valid output folder!",
-																	"Error");
-											}
-										}
-									}, new Runnable() {
-										public void run() {
-											AttributeHelper.showInBrowser(selPath.getAbsolutePath()
-																+ File.separator + "index.html");
-										}
-									}, status);
+				BackgroundTaskHelper.issueSimpleTask(getName(), "Generate Website...", new Runnable() {
+					public void run() {
+						try {
+							generateWebsite(selPath, fWebsiteTitle, fWebsiteDescription, fFooter, ws,
+									fFileNameMainDescription, ffeedbackemail, status);
+						} catch (IOException e) {
+							ErrorMsg.addErrorMessage(e);
+							MainFrame.showMessageDialog("Please select a valid output folder!", "Error");
+						}
+					}
+				}, new Runnable() {
+					public void run() {
+						AttributeHelper.showInBrowser(selPath.getAbsolutePath() + File.separator + "index.html");
+					}
+				}, status);
 			}
 		} else {
 			if (!selPath.getPath().equals("Cancel"))
-				MainFrame.showMessageDialog("Please select a valid output folder!",
-									"Error");
+				MainFrame.showMessageDialog("Please select a valid output folder!", "Error");
 		}
 	}
-	
-	private Collection<EditorSession> sortByFileName(
-						Set<EditorSession> editorSessions) {
+
+	private Collection<EditorSession> sortByFileName(Set<EditorSession> editorSessions) {
 		TreeMap<String, EditorSession> names = new TreeMap<String, EditorSession>();
 		for (EditorSession e : editorSessions)
 			names.put(e.getFileName(), e);
 		return names.values();
 	}
-	
-	private void generateWebsite(File targetPath, String websiteTitle,
-						String websiteDescription, String footer, ArrayList<EditorSession> ws,
-						String fileNameMainDescription,
-						String feedbackemail, BackgroundTaskStatusProviderSupportingExternalCall status)
-						throws IOException {
-		
+
+	private void generateWebsite(File targetPath, String websiteTitle, String websiteDescription, String footer,
+			ArrayList<EditorSession> ws, String fileNameMainDescription, String feedbackemail,
+			BackgroundTaskStatusProviderSupportingExternalCall status) throws IOException {
+
 		// writeSimpleWebsiteBody(targetPath, "index.html", websiteTitle,
 		// "<div id=\"page\">§" +
-		// "<iframe src=\"content.html\" frameborder=\"0\" style=\"height:90;width:90%;\"></iframe>§"
+		// "<iframe src=\"content.html\" frameborder=\"0\"
+		// style=\"height:90;width:90%;\"></iframe>§"
 		// +
 		// "</div>§",
 		// "index");
-		
-		generateMainFrameSet(targetPath,
-							"index.html", // "content.html",
-				"navigation.html", "header.html", "footer.html", "overview.html",
-							websiteTitle);
-		
-		writeNavigation(targetPath, "navigation.html", ws, websiteTitle,
-							fileNameMainDescription, feedbackemail);
-		
-		writeSimpleWebsiteBody(targetPath, "header.html", "Header", websiteTitle,
-							"gradient");
-		writeSimpleWebsiteBody(targetPath, "footer.html", "Footer", footer,
-							"footer");
-		
-		writeSimple(
-							targetPath,
-							"style.css",
-							"" + "body {§" + "  margin: 5;§" + "  padding: 5;§"
-												+ "  font-family: Arial, Helvetica, sans-serif;§"
-												+ "  background: "
-												+ colorEnd
-												+ ";§"
-												+ "  scrollbar-base-color: "
-												+ colorEnd
-												+ ";§"
-												+ "  scrollbar-arrow-color: "
-												+ colorStart
-												+ ";§"
-												+ "  scrollbar-DarkShadow-Color: "
-												+ colorFooterEnd
-												+ ";§"
-												+ "}§"
-												+ "body.index {§"
-												+ "  height: 100%;§"
-												+ "  margin: 0;§"
-												+ "  padding: 0§"
-												+ "  border: none;§"
-												+ "  text-align: center;"
-												+ "  background: -moz-linear-gradient(0% 270deg, "
-												+ colorBackgroundStart
-												+ ", "
-												+ colorBackgroundEnd
-												+ ");§"
-												+ "  background: -webkit-gradient(linear, left top, left bottom, to("
-												+ colorBackgroundEnd
-												+ "), from("
-												+ colorBackgroundStart
-												+ "));§"
-												+ "  background-repeat: no-repeat;§"
-												+ "  background-color: "
-												+ colorBackgroundEnd
-												+ ";§"
-												+ "}§"
-												+ "body.gradient {§"
-												+ "  background: -moz-linear-gradient(0% 270deg, "
-												+ colorStart
-												+ ", "
-												+ colorEnd
-												+ ");§"
-												+ "  background: -webkit-gradient(linear, left top, left bottom, to("
-												+ colorEnd
-												+ "), from("
-												+ colorStart
-												+ "));§"
-												+ "  background-repeat: no-repeat;§"
-												+ "  background-color: "
-												+ colorEnd
-												+ ";§"
-												+ "  text-align: center;§"
-												+ "}§"
-												+ "body.gradient {§"
-												+ "  text-align: center;§"
-												+ "}§"
-												+ "body.zoom {§"
-												+ "  background: -moz-linear-gradient(0% 270deg, #FDFDFD, "
-												+ colorEnd
-												+ ");§"
-												+ "  background: -webkit-gradient(linear, left top, left bottom, from("
-												+ colorDescription
-												+ "), to("
-												+ colorEnd
-												+ "));§"
-												+ "  background-repeat: no-repeat;§"
-												+ "}§"
-												+ "body.description {§"
-												+ "  background: "
-												+ colorDescription
-												+ ";§"
-												+ "}§"
-												+ "body.footer {§"
-												+ "  background: -moz-linear-gradient(0% 270deg, "
-												+ colorEnd
-												+ ", "
-												+ colorFooterEnd
-												+ ");§"
-												+ "  background: -webkit-gradient(linear, left top, left bottom, to("
-												+ colorFooterEnd
-												+ "), from("
-												+ colorEnd
-												+ "));§"
-												+ "  background-repeat: no-repeat;§"
-												+ "  background-color: "
-												+ colorFooterEnd
-												+ ";§"
-												+ "}§"
-												+ "body.navigation2 {§"
-												+ "  background: "
-												+ colorEnd
-												+ ";§"
-												+ "}§"
-												+ "§"
-												+ "a {§"
-												+ "  text-decoration: none;§"
-												+ "}§"
-												+ "a.zoom {§"
-												+ "  text-decoration: none;§"
-												+ "}§"
-												+ "#page {§"
-												+ "  position:relative;§" + "  top: 2%;§" + "}§");
-		
+
+		generateMainFrameSet(targetPath, "index.html", // "content.html",
+				"navigation.html", "header.html", "footer.html", "overview.html", websiteTitle);
+
+		writeNavigation(targetPath, "navigation.html", ws, websiteTitle, fileNameMainDescription, feedbackemail);
+
+		writeSimpleWebsiteBody(targetPath, "header.html", "Header", websiteTitle, "gradient");
+		writeSimpleWebsiteBody(targetPath, "footer.html", "Footer", footer, "footer");
+
+		writeSimple(targetPath, "style.css", "" + "body {§" + "  margin: 5;§" + "  padding: 5;§"
+				+ "  font-family: Arial, Helvetica, sans-serif;§" + "  background: " + colorEnd + ";§"
+				+ "  scrollbar-base-color: " + colorEnd + ";§" + "  scrollbar-arrow-color: " + colorStart + ";§"
+				+ "  scrollbar-DarkShadow-Color: " + colorFooterEnd + ";§" + "}§" + "body.index {§" + "  height: 100%;§"
+				+ "  margin: 0;§" + "  padding: 0§" + "  border: none;§" + "  text-align: center;"
+				+ "  background: -moz-linear-gradient(0% 270deg, " + colorBackgroundStart + ", " + colorBackgroundEnd
+				+ ");§" + "  background: -webkit-gradient(linear, left top, left bottom, to(" + colorBackgroundEnd
+				+ "), from(" + colorBackgroundStart + "));§" + "  background-repeat: no-repeat;§"
+				+ "  background-color: " + colorBackgroundEnd + ";§" + "}§" + "body.gradient {§"
+				+ "  background: -moz-linear-gradient(0% 270deg, " + colorStart + ", " + colorEnd + ");§"
+				+ "  background: -webkit-gradient(linear, left top, left bottom, to(" + colorEnd + "), from("
+				+ colorStart + "));§" + "  background-repeat: no-repeat;§" + "  background-color: " + colorEnd + ";§"
+				+ "  text-align: center;§" + "}§" + "body.gradient {§" + "  text-align: center;§" + "}§"
+				+ "body.zoom {§" + "  background: -moz-linear-gradient(0% 270deg, #FDFDFD, " + colorEnd + ");§"
+				+ "  background: -webkit-gradient(linear, left top, left bottom, from(" + colorDescription + "), to("
+				+ colorEnd + "));§" + "  background-repeat: no-repeat;§" + "}§" + "body.description {§"
+				+ "  background: " + colorDescription + ";§" + "}§" + "body.footer {§"
+				+ "  background: -moz-linear-gradient(0% 270deg, " + colorEnd + ", " + colorFooterEnd + ");§"
+				+ "  background: -webkit-gradient(linear, left top, left bottom, to(" + colorFooterEnd + "), from("
+				+ colorEnd + "));§" + "  background-repeat: no-repeat;§" + "  background-color: " + colorFooterEnd
+				+ ";§" + "}§" + "body.navigation2 {§" + "  background: " + colorEnd + ";§" + "}§" + "§" + "a {§"
+				+ "  text-decoration: none;§" + "}§" + "a.zoom {§" + "  text-decoration: none;§" + "}§" + "#page {§"
+				+ "  position:relative;§" + "  top: 2%;§" + "}§");
+
 		StringBuilder iconTable = new StringBuilder();
 		iconTable.append("<br><br>§" + "<table border=0>§");
-		
+
 		int index = 1, max = ws.size();
 		int n3 = 0;
 		status.setCurrentStatusValue(0);
@@ -366,11 +255,9 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 				iconTable.append("<tr>§");
 			status.setCurrentStatusText1("Generate images for");
 			status.setCurrentStatusText2(es.getFileName());
-			iconTable
-								.append("<td valign=\"top\" align=\"center\" width=300 height=280>");
-			exportGraphImages(targetPath, es,
-								getWebsiteNameForGraph(es.getGraph()), iconTable, status,
-								1d / max * 100d);
+			iconTable.append("<td valign=\"top\" align=\"center\" width=300 height=280>");
+			exportGraphImages(targetPath, es, getWebsiteNameForGraph(es.getGraph()), iconTable, status,
+					1d / max * 100d);
 			iconTable.append("</td>");
 			status.setCurrentStatusValueFine(100d * index / max);
 			n3++;
@@ -380,107 +267,80 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 				iconTable.append("</tr>§");
 			}
 		}
-		
+
 		iconTable.append("<table>§");
-		
-		writeSimpleWebsiteBody(targetPath, fileNameMainDescription, websiteTitle
-							+ " (overview)", websiteDescription + "§" + iconTable.toString(),
-							"overview");
+
+		writeSimpleWebsiteBody(targetPath, fileNameMainDescription, websiteTitle + " (overview)",
+				websiteDescription + "§" + iconTable.toString(), "overview");
 		status.setCurrentStatusText1("Website generated");
 		status.setCurrentStatusText2("One moment, opening result...");
 	}
-	
-	private void writeSimpleWebsiteBody(File targetPath, String fileName,
-						String title, String bodyContent, String optCssBodyClass)
-						throws IOException {
-		writeSimple(
-							targetPath,
-							fileName,
-							""
-												+ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">§"
-												+ "<html>§"
-												+ "<head>§"
-												+ "	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">§"
-												+ "	<title>"
-												+ StringManipulationTools
-																	.UnicodeToHtml(StringManipulationTools
-																						.removeHTMLtags(title)
-																						+ " - main menu")
-												+ "</title>§"
-												+ "  <link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\" />§"
-												+ "</head>§"
-												+ "<body"
-												+ (optCssBodyClass == null ? "" : " class=\""
-																	+ optCssBodyClass + "\"") + ">§" + bodyContent
-												+ "</body>§" + "</html>§");
+
+	private void writeSimpleWebsiteBody(File targetPath, String fileName, String title, String bodyContent,
+			String optCssBodyClass) throws IOException {
+		writeSimple(targetPath, fileName,
+				"" + "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">§"
+						+ "<html>§" + "<head>§"
+						+ "	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">§" + "	<title>"
+						+ StringManipulationTools
+								.UnicodeToHtml(StringManipulationTools.removeHTMLtags(title) + " - main menu")
+						+ "</title>§" + "  <link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\" />§"
+						+ "</head>§" + "<body" + (optCssBodyClass == null ? "" : " class=\"" + optCssBodyClass + "\"")
+						+ ">§" + bodyContent + "</body>§" + "</html>§");
 	}
-	
-	private void writeNavigation(File targetPath, String fileNameNavigation,
-						ArrayList<EditorSession> ws, String websiteTitle,
-						String fileNameMainDescription, String feedbackemail) throws IOException {
-		
+
+	private void writeNavigation(File targetPath, String fileNameNavigation, ArrayList<EditorSession> ws,
+			String websiteTitle, String fileNameMainDescription, String feedbackemail) throws IOException {
+
 		StringBuilder pathwayLinks = new StringBuilder();
-		
+
 		// read existing links
 		TreeSet<String> titles = new TreeSet<String>();
 		HashMap<String, String> fileName2title = new HashMap<String, String>();
-		readAndProcessExistingGraphLinks(targetPath, fileNameNavigation, ws,
-							titles, fileName2title);
-		
+		readAndProcessExistingGraphLinks(targetPath, fileNameNavigation, ws, titles, fileName2title);
+
 		NavigationTree tree = new NavigationTree(titles, fileName2title);
-		
+
 		tree.outputLinks(pathwayLinks);
-		//		
+		//
 		// writeSimpleWebsiteBody(
 		// targetPath,
 		// "feedback.html",
 		// "E-Mail Feedback",
 		// "<form action=\"mailto:\" method=\"post\" enctype=\"text/plain\">§"
-		// + "E-Mail Feedback:<br><textarea name=\"Feedback\" id=\"Feedback\" rows=\"30\" cols=\"60\"></textarea>§"
+		// + "E-Mail Feedback:<br><textarea name=\"Feedback\" id=\"Feedback\"
+		// rows=\"30\" cols=\"60\"></textarea>§"
 		// + "<p><input type=\"submit\" value=\"Send Feedback\">§"
 		// + "</form>", null);
-		
-		writeSimple(
-							targetPath,
-							fileNameNavigation,
-							""
-												+ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">§"
-												+ "<html>§"
-												+ "<head>§"
-												+ "	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">§"
-												+ "	<title>"
-												+ StringManipulationTools
-																	.UnicodeToHtml(StringManipulationTools
-																						.removeHTMLtags(websiteTitle)
-																						+ " - main menu")
-												+ "</title>§"
-												+ "  <link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\" />§"
-												+ "</head>§" + "<body class=\"navigation\">§" + "	<a href=\""
-												+ fileNameMainDescription
-												+ "\" target=\"main\">Overview</a><br><br>§"
-												+ pathwayLinks.toString() + "§"
-												// + "	<a href=\"feedback.html\" target=\"main\">Feedback</a>§"
-									+ "	<li><li><a href=\"mailto:" + feedbackemail + "?Subject=Feedback to " + StringManipulationTools.removeHTMLtags(websiteTitle)
-									+ "\">Feedback</a>"
-												+ "</body>§" + "</html>§");
+
+		writeSimple(targetPath, fileNameNavigation,
+				"" + "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\">§"
+						+ "<html>§" + "<head>§"
+						+ "	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">§" + "	<title>"
+						+ StringManipulationTools
+								.UnicodeToHtml(StringManipulationTools.removeHTMLtags(websiteTitle) + " - main menu")
+						+ "</title>§" + "  <link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\" />§"
+						+ "</head>§" + "<body class=\"navigation\">§" + "	<a href=\"" + fileNameMainDescription
+						+ "\" target=\"main\">Overview</a><br><br>§" + pathwayLinks.toString() + "§"
+						// + " <a href=\"feedback.html\" target=\"main\">Feedback</a>§"
+						+ "	<li><li><a href=\"mailto:" + feedbackemail + "?Subject=Feedback to "
+						+ StringManipulationTools.removeHTMLtags(websiteTitle) + "\">Feedback</a>" + "</body>§"
+						+ "</html>§");
 	}
-	
-	private void readAndProcessExistingGraphLinks(File targetPath,
-						String fileNameNavigation, ArrayList<EditorSession> ws,
-						TreeSet<String> titles, HashMap<String, String> fileName2title) {
-		
+
+	private void readAndProcessExistingGraphLinks(File targetPath, String fileNameNavigation,
+			ArrayList<EditorSession> ws, TreeSet<String> titles, HashMap<String, String> fileName2title) {
+
 		HashSet<String> fileNames = new HashSet<String>();
 		try {
-			TextFile nav = new TextFile(targetPath.getAbsolutePath()
-								+ File.separator + fileNameNavigation);
+			TextFile nav = new TextFile(targetPath.getAbsolutePath() + File.separator + fileNameNavigation);
 			for (String n : nav) {
 				// <li><a href="graph_2_4.html"
 				// target="main">AFLB3&#00032;maturation</a>
 				if (n.indexOf("graph_") > 0 && n.indexOf("target=\"main\">") > 0) {
 					String fileName = n.substring(n.indexOf("graph_"));
 					fileName = fileName.substring(0, fileName.indexOf("\""));
-					String title = n
-										.substring(n.indexOf("<!-- ") + "<!-- ".length());
+					String title = n.substring(n.indexOf("<!-- ") + "<!-- ".length());
 					title = title.substring(0, title.indexOf(" -->"));
 					title = StringManipulationTools.htmlToUnicode(title);
 					titles.add(title);
@@ -493,8 +353,8 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 		}
 		int idx = 1;
 		for (EditorSession es : ws) {
-			String title = (String) AttributeHelper.getAttributeValue(es
-								.getGraph(), "", "title", "Untitled Graph " + idx, "");
+			String title = (String) AttributeHelper.getAttributeValue(es.getGraph(), "", "title",
+					"Untitled Graph " + idx, "");
 			String fileName = getWebsiteNameForGraph(es.getGraph());
 			if (fileNames.contains(fileName)) {
 				String t = fileName2title.get(fileName);
@@ -508,11 +368,11 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 			idx++;
 		}
 	}
-	
+
 	private String getWebsiteNameForGraph(Graph graph) {
 		return "graph_" + getMD5(graph.getName()) + ".html";
 	}
-	
+
 	private String getMD5(String name) {
 		MessageDigest digest;
 		try {
@@ -526,146 +386,83 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 			return null;
 		}
 	}
-	
-	private void generateMainFrameSet(File targetPath, String fileNameFrameSet,
-						String fileNameNavigation, String fileNameHeader,
-						String fileNameFooter, String fileNameMainDescription,
-						String websiteTitle) throws IOException {
-		writeSimple(
-							targetPath,
-							fileNameFrameSet,
-							""
-												+ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Frameset//EN\" \"http://www.w3.org/TR/html4/frameset.dtd\">§"
-												+ "<html>§"
-												+ "<head>§"
-												+ "	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">§"
-												+ "	<title>"
-												+ StringManipulationTools
-																	.UnicodeToHtml(StringManipulationTools
-																						.removeHTMLtags(websiteTitle))
-												+ "</title>§"
-												+ "  <link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\" />§"
-												+ "</head>§"
-												+ "<frameset rows=\"80,*,35\" "
-												+ borderStyle
-												+ ">§"
-												+ "	<frame name=\"header\" src=\""
-												+ fileNameHeader
-												+ "\">§"
-												+ "	<frameset cols=\"200,*\" "
-												+ borderStyle
-												+ ">§"
-												+ "		<frame name=\"navigation\" src=\""
-												+ fileNameNavigation
-												+ "\">§"
-												+ "		<frame name=\"main\" src=\""
-												+ fileNameMainDescription
-												+ "\">§"
-												+ "	</frameset>§"
-												+ "	<frame name=\"footer\" src=\""
-												+ fileNameFooter
-												+ "\">§"
-												+ "</frameset>§" + "</html>");
+
+	private void generateMainFrameSet(File targetPath, String fileNameFrameSet, String fileNameNavigation,
+			String fileNameHeader, String fileNameFooter, String fileNameMainDescription, String websiteTitle)
+			throws IOException {
+		writeSimple(targetPath, fileNameFrameSet, ""
+				+ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Frameset//EN\" \"http://www.w3.org/TR/html4/frameset.dtd\">§"
+				+ "<html>§" + "<head>§" + "	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">§"
+				+ "	<title>"
+				+ StringManipulationTools.UnicodeToHtml(StringManipulationTools.removeHTMLtags(websiteTitle))
+				+ "</title>§" + "  <link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\" />§" + "</head>§"
+				+ "<frameset rows=\"80,*,35\" " + borderStyle + ">§" + "	<frame name=\"header\" src=\""
+				+ fileNameHeader + "\">§" + "	<frameset cols=\"200,*\" " + borderStyle + ">§"
+				+ "		<frame name=\"navigation\" src=\"" + fileNameNavigation + "\">§"
+				+ "		<frame name=\"main\" src=\"" + fileNameMainDescription + "\">§" + "	</frameset>§"
+				+ "	<frame name=\"footer\" src=\"" + fileNameFooter + "\">§" + "</frameset>§" + "</html>");
 	}
-	
-	private void writeSimple(File targetPath, String fileName, String content)
-						throws IOException {
-		content = StringManipulationTools.stringReplace(content, "§", System
-							.getProperty("line.separator"));
-		TextFile.writeE(targetPath.getAbsolutePath() + File.separator + fileName,
-							content, "UTF-8");
+
+	private void writeSimple(File targetPath, String fileName, String content) throws IOException {
+		content = StringManipulationTools.stringReplace(content, "§", System.getProperty("line.separator"));
+		TextFile.writeE(targetPath.getAbsolutePath() + File.separator + fileName, content, "UTF-8");
 	}
-	
-	private void exportGraphImages(File targetPath, EditorSession es,
-						String fileName, StringBuilder iconTable,
-						BackgroundTaskStatusProviderSupportingExternalCall status,
-						double progressStep) throws IOException {
-		String pathwayDescription = (String) AttributeHelper.getAttributeValue(es
-							.getGraph(), "", "description", "Description not available.", "");
-		String pathwayTitle = (String) AttributeHelper.getAttributeValue(es
-							.getGraph(), "", "title", "Title not specified.", "");
+
+	private void exportGraphImages(File targetPath, EditorSession es, String fileName, StringBuilder iconTable,
+			BackgroundTaskStatusProviderSupportingExternalCall status, double progressStep) throws IOException {
+		String pathwayDescription = (String) AttributeHelper.getAttributeValue(es.getGraph(), "", "description",
+				"Description not available.", "");
+		String pathwayTitle = (String) AttributeHelper.getAttributeValue(es.getGraph(), "", "title",
+				"Title not specified.", "");
 		String pureFn = fileName.substring(0, fileName.lastIndexOf("."));
-		generateGraphImagesAndFrameSet(
-							iconTable,
-							es,
-							targetPath,
-							fileName,
-							pathwayDescription,
-							pathwayTitle,
-							new SizeSettingZoom[] { SizeSettingZoom.L200, SizeSettingZoom.L150,
-												SizeSettingZoom.L125, SizeSettingZoom.L100,
-												SizeSettingZoom.L75, SizeSettingZoom.L50, SizeSettingZoom.L25 },
-							new String[] { pureFn + "_200.html", pureFn + "_150.html",
-												pureFn + "_125.html", pureFn + "_100.html",
-												pureFn + "_75.html", pureFn + "_50.html", pureFn + "_25.html" },
-							status, progressStep);
+		generateGraphImagesAndFrameSet(iconTable, es, targetPath, fileName, pathwayDescription, pathwayTitle,
+				new SizeSettingZoom[] { SizeSettingZoom.L200, SizeSettingZoom.L150, SizeSettingZoom.L125,
+						SizeSettingZoom.L100, SizeSettingZoom.L75, SizeSettingZoom.L50, SizeSettingZoom.L25 },
+				new String[] { pureFn + "_200.html", pureFn + "_150.html", pureFn + "_125.html", pureFn + "_100.html",
+						pureFn + "_75.html", pureFn + "_50.html", pureFn + "_25.html" },
+				status, progressStep);
 	}
-	
-	private void generateGraphImagesAndFrameSet(StringBuilder iconTable,
-						EditorSession es, File targetPath, String graphOverviewFileName,
-						String pathwayDescription, String pathwayTitle,
-						SizeSettingZoom[] zoomFactors, String[] fileNames,
-						BackgroundTaskStatusProviderSupportingExternalCall status,
-						double progressStep) throws IOException {
-		
+
+	private void generateGraphImagesAndFrameSet(StringBuilder iconTable, EditorSession es, File targetPath,
+			String graphOverviewFileName, String pathwayDescription, String pathwayTitle, SizeSettingZoom[] zoomFactors,
+			String[] fileNames, BackgroundTaskStatusProviderSupportingExternalCall status, double progressStep)
+			throws IOException {
+
 		// generate frameset
-		
+
 		StringBuilder zoomLinks = new StringBuilder();
 		zoomLinks.append("<small>Image Size: ");
 		int idx = 0;
 		for (SizeSettingZoom z : zoomFactors) {
-			zoomLinks.append("<a href=\"" + fileNames[idx]
-																	+ "\" class=\"zoom\" target=\"graphcontent\">"
-																	+ StringManipulationTools.UnicodeToHtml(z.toString())
-																	+ "</a>&nbsp; ");
+			zoomLinks.append("<a href=\"" + fileNames[idx] + "\" class=\"zoom\" target=\"graphcontent\">"
+					+ StringManipulationTools.UnicodeToHtml(z.toString()) + "</a>&nbsp; ");
 			idx++;
 		}
 		zoomLinks.append("</small>");
-		
-		String fileNameHeaderDescription = StringManipulationTools.stringReplace(
-							graphOverviewFileName, ".html", "")
-							+ "_description.html";
-		writeSimpleWebsiteBody(
-							targetPath,
-							fileNameHeaderDescription,
-							"Description for " + graphOverviewFileName,
-							"<h2>"
-												+ StringManipulationTools
-																	.UnicodeToHtml(getLastItemOf(pathwayTitle))
-												+ "</h2>"
-												+ getPathwayPath("<h3>", "</h3>",
-																	getAllButLastItemOf(pathwayTitle)) + pathwayDescription,
-							"description");
-		
-		String fileNameHeaderForZoom = StringManipulationTools.stringReplace(
-							graphOverviewFileName, ".html", "")
-							+ "_zoom.html";
-		writeSimpleWebsiteBody(targetPath, fileNameHeaderForZoom,
-							"Zoom selection for " + graphOverviewFileName,
-							zoomLinks.toString(), "zoom");
-		
-		writeSimple(
-							targetPath,
-							graphOverviewFileName,
-							""
-												+ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Frameset//EN\" \"http://www.w3.org/TR/html4/frameset.dtd\">§"
-												+ "<html>§"
-												+ "<header>§"
-												+ "	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">§"
-												+ "	<title>"
-												+ StringManipulationTools
-																	.UnicodeToHtml(StringManipulationTools
-																						.removeHTMLtags(graphOverviewFileName))
-												+ "</title>§"
-												+ "  <link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\" />§"
-												+ "</header>§" + "<frameset rows=\"130,40,*\" " + borderStyle
-												+ ">§" + "	<frame name=\"graphdescription\" src=\""
-												+ fileNameHeaderDescription + "\">§"
-												+ "	<frame name=\"graphzoom\" src=\"" + fileNameHeaderForZoom
-												+ "\">§" + "	<frame name=\"graphcontent\" src=\""
-												+ fileNames[fileNames.length - 1] + "\">§" + "</frameset>§"
-												+ "</html>");
-		
+
+		String fileNameHeaderDescription = StringManipulationTools.stringReplace(graphOverviewFileName, ".html", "")
+				+ "_description.html";
+		writeSimpleWebsiteBody(targetPath, fileNameHeaderDescription, "Description for " + graphOverviewFileName,
+				"<h2>" + StringManipulationTools.UnicodeToHtml(getLastItemOf(pathwayTitle)) + "</h2>"
+						+ getPathwayPath("<h3>", "</h3>", getAllButLastItemOf(pathwayTitle)) + pathwayDescription,
+				"description");
+
+		String fileNameHeaderForZoom = StringManipulationTools.stringReplace(graphOverviewFileName, ".html", "")
+				+ "_zoom.html";
+		writeSimpleWebsiteBody(targetPath, fileNameHeaderForZoom, "Zoom selection for " + graphOverviewFileName,
+				zoomLinks.toString(), "zoom");
+
+		writeSimple(targetPath, graphOverviewFileName, ""
+				+ "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Frameset//EN\" \"http://www.w3.org/TR/html4/frameset.dtd\">§"
+				+ "<html>§" + "<header>§" + "	<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">§"
+				+ "	<title>"
+				+ StringManipulationTools.UnicodeToHtml(StringManipulationTools.removeHTMLtags(graphOverviewFileName))
+				+ "</title>§" + "  <link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\" />§" + "</header>§"
+				+ "<frameset rows=\"130,40,*\" " + borderStyle + ">§" + "	<frame name=\"graphdescription\" src=\""
+				+ fileNameHeaderDescription + "\">§" + "	<frame name=\"graphzoom\" src=\"" + fileNameHeaderForZoom
+				+ "\">§" + "	<frame name=\"graphcontent\" src=\"" + fileNames[fileNames.length - 1] + "\">§"
+				+ "</frameset>§" + "</html>");
+
 		// generate zoomed images & html
 		PngJpegAlgorithmParams settings = new PngJpegAlgorithmParams();
 		settings.setCreateHTMLmap(true);
@@ -679,50 +476,42 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 			settings.setScaleFixedUseWidthOrHeightValue(100);
 			settings.setMaxHeight(200);
 			settings.setMaxWidth(200);
-			String pureFn = graphOverviewFileName.substring(0,
-								graphOverviewFileName.lastIndexOf("."));
+			String pureFn = graphOverviewFileName.substring(0, graphOverviewFileName.lastIndexOf("."));
 			String fn = pureFn + "_icon.png";
-			String title = (String) AttributeHelper.getAttributeValue(es
-								.getGraph(), "", "title", "Untitled Graph " + idx, "");
-			iconTable.append("<a href=\"" + pureFn
-								+ ".html\" target=\"main\"><img border=2 src=\"" + fn
-								+ "\"</a><br>§" + "<small>"
-								+ StringManipulationTools.UnicodeToHtml(getLastItemOf(title))
-								+ "</small>");
-			PngJpegAlgorithm.createPNGimageFromGraph(es.getGraph(), targetPath
-								.getAbsolutePath()
-								+ File.separator + fn, settings);
+			String title = (String) AttributeHelper.getAttributeValue(es.getGraph(), "", "title",
+					"Untitled Graph " + idx, "");
+			iconTable.append("<a href=\"" + pureFn + ".html\" target=\"main\"><img border=2 src=\"" + fn + "\"</a><br>§"
+					+ "<small>" + StringManipulationTools.UnicodeToHtml(getLastItemOf(title)) + "</small>");
+			PngJpegAlgorithm.createPNGimageFromGraph(es.getGraph(), targetPath.getAbsolutePath() + File.separator + fn,
+					settings);
 		}
 		settings.setScaleSetting(SizeSetting.ZOOM);
 		settings.setScaleFixedUseWidth(false);
 		double stepSize = 1d / (zoomFactors.length + 1) * progressStep;
 		status.getCurrentStatusValueFine();
 		for (int i = 0; i < zoomFactors.length; i++) {
-			status.setCurrentStatusValueFine(status.getCurrentStatusValueFine()
-								+ stepSize);
+			status.setCurrentStatusValueFine(status.getCurrentStatusValueFine() + stepSize);
 			SizeSettingZoom zoom = zoomFactors[i];
 			settings.setScaleZoomSetting(zoom);
 			String fn = fileNames[i];
-			PngJpegAlgorithm.createPNGimageFromGraph(es.getGraph(), targetPath
-								.getAbsolutePath()
-								+ File.separator + fn, settings);
+			PngJpegAlgorithm.createPNGimageFromGraph(es.getGraph(), targetPath.getAbsolutePath() + File.separator + fn,
+					settings);
 		}
 	}
-	
+
 	/**
 	 * @param string
 	 * @param string2
 	 * @param allButLastItemOf
 	 * @return
 	 */
-	private String getPathwayPath(String tagA, String tagB,
-						String allButLastItemOf) {
+	private String getPathwayPath(String tagA, String tagB, String allButLastItemOf) {
 		if (allButLastItemOf.length() == 0)
 			return "";
 		else
 			return tagA + allButLastItemOf + tagB;
 	}
-	
+
 	/**
 	 * @param pathwayTitle
 	 * @return
@@ -739,59 +528,56 @@ public class WebsiteGeneration extends AbstractEditorAlgorithm implements
 		}
 		return res.toString();
 	}
-	
+
 	private String getLastItemOf(String title) {
 		String[] n = title.split("\\.");
 		return n[n.length - 1];
 	}
-	
+
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return false; // is handled by the algorithm itself
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Network as Website";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "File.Export";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.EXPORT
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.EXPORT));
 	}
 
 	@Override
 	public ImageIcon getIcon() {
 		String path = this.getClass().getPackage().getName().replace('.', '/');
-		ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource(
-							path + "/browser.png"));
+		ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource(path + "/browser.png"));
 		return icon;
 	}
-	
+
 	@Override
 	public boolean showMenuIcon() {
 		return true;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.graffiti.plugin.algorithm.EditorAlgorithm#activeForView(org.graffiti
+	 * 
+	 * @see org.graffiti.plugin.algorithm.EditorAlgorithm#activeForView(org.graffiti
 	 * .plugin.view.View)
 	 */
 	public boolean activeForView(View v) {
 		return v != null;
 	}
-	
+
 }

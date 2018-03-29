@@ -86,21 +86,21 @@ public class WaferMapRenderer extends AbstractRenderer {
 	 * Creates a new renderer.
 	 * 
 	 * @param paintLimit
-	 *           the paint limit.
+	 *            the paint limit.
 	 * @param paintIndexMethod
-	 *           the paint index method.
+	 *            the paint index method.
 	 */
 	public WaferMapRenderer(int paintLimit, int paintIndexMethod) {
-		this(new Integer(paintLimit), new Integer(paintIndexMethod));
+		this(Integer.valueOf(paintLimit), Integer.valueOf(paintIndexMethod));
 	}
 
 	/**
 	 * Creates a new renderer.
 	 * 
 	 * @param paintLimit
-	 *           the paint limit.
+	 *            the paint limit.
 	 * @param paintIndexMethod
-	 *           the paint index method.
+	 *            the paint index method.
 	 */
 	public WaferMapRenderer(Integer paintLimit, Integer paintIndexMethod) {
 
@@ -125,17 +125,17 @@ public class WaferMapRenderer extends AbstractRenderer {
 	 * Verifies that the passed paint index method is valid.
 	 * 
 	 * @param method
-	 *           the method.
+	 *            the method.
 	 * @return true or false.
 	 */
 	private boolean isMethodValid(int method) {
 		switch (method) {
-			case POSITION_INDEX:
-				return true;
-			case VALUE_INDEX:
-				return true;
-			default:
-				return false;
+		case POSITION_INDEX:
+			return true;
+		case VALUE_INDEX:
+			return true;
+		default:
+			return false;
 		}
 	}
 
@@ -166,7 +166,7 @@ public class WaferMapRenderer extends AbstractRenderer {
 	 * Sets the plot and build the paint index.
 	 * 
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 */
 	public void setPlot(WaferMapPlot plot) {
 		this.plot = plot;
@@ -174,8 +174,8 @@ public class WaferMapRenderer extends AbstractRenderer {
 	}
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	// public void addPropertyChangeListener(PropertyChangeListener ear) {
 
 	// }
@@ -184,7 +184,7 @@ public class WaferMapRenderer extends AbstractRenderer {
 	 * Returns the paint for a given chip value.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @return the paint.
 	 */
 	public Paint getChipColor(Number value) {
@@ -195,7 +195,7 @@ public class WaferMapRenderer extends AbstractRenderer {
 	 * Returns the paint index for a given chip value.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @return the paint index.
 	 */
 	private int getPaintIndex(Number value) {
@@ -203,8 +203,8 @@ public class WaferMapRenderer extends AbstractRenderer {
 	}
 
 	/**
-	 * Builds a map of chip values to paint colors.
-	 * paintlimit is the maximum allowed number of colors.
+	 * Builds a map of chip values to paint colors. paintlimit is the maximum
+	 * allowed number of colors.
 	 */
 	private void makePaintIndex() {
 		if (this.plot == null) {
@@ -217,37 +217,37 @@ public class WaferMapRenderer extends AbstractRenderer {
 		if (uniqueValues.size() <= this.paintLimit) {
 			int count = 0; // assign a color for each unique value
 			for (Iterator i = uniqueValues.iterator(); i.hasNext();) {
-				this.paintIndex.put(i.next(), new Integer(count++));
+				this.paintIndex.put(i.next(), Integer.valueOf(count++));
 			}
 		} else {
 			// more values than paints so map
 			// multiple values to the same color
 			switch (this.paintIndexMethod) {
-				case POSITION_INDEX:
-					makePositionIndex(uniqueValues);
-					break;
-				case VALUE_INDEX:
-					makeValueIndex(dataMax, dataMin, uniqueValues);
-					break;
-				default:
-					break;
+			case POSITION_INDEX:
+				makePositionIndex(uniqueValues);
+				break;
+			case VALUE_INDEX:
+				makeValueIndex(dataMax, dataMin, uniqueValues);
+				break;
+			default:
+				break;
 			}
 		}
 	}
 
 	/**
-	 * Builds the paintindex by assigning colors based on the number
-	 * of unique values: totalvalues/totalcolors.
+	 * Builds the paintindex by assigning colors based on the number of unique
+	 * values: totalvalues/totalcolors.
 	 * 
 	 * @param uniqueValues
-	 *           the set of unique values.
+	 *            the set of unique values.
 	 */
 	private void makePositionIndex(Set uniqueValues) {
 		int valuesPerColor = (int) Math.ceil((double) uniqueValues.size() / this.paintLimit);
 		int count = 0; // assign a color for each unique value
 		int paint = 0;
 		for (Iterator i = uniqueValues.iterator(); i.hasNext();) {
-			this.paintIndex.put(i.next(), new Integer(paint));
+			this.paintIndex.put(i.next(), Integer.valueOf(paint));
 			if (++count % valuesPerColor == 0) {
 				paint++;
 			}
@@ -258,15 +258,15 @@ public class WaferMapRenderer extends AbstractRenderer {
 	}
 
 	/**
-	 * Builds the paintindex by assigning colors evenly across the range
-	 * of values: maxValue-minValue/totalcolors
+	 * Builds the paintindex by assigning colors evenly across the range of values:
+	 * maxValue-minValue/totalcolors
 	 * 
 	 * @param max
-	 *           the maximum value.
+	 *            the maximum value.
 	 * @param min
-	 *           the minumum value.
+	 *            the minumum value.
 	 * @param uniqueValues
-	 *           the unique values.
+	 *            the unique values.
 	 */
 	private void makeValueIndex(Number max, Number min, Set uniqueValues) {
 		double valueRange = max.doubleValue() - min.doubleValue();
@@ -282,13 +282,13 @@ public class WaferMapRenderer extends AbstractRenderer {
 					paint = this.paintLimit;
 				}
 			}
-			this.paintIndex.put(value, new Integer(paint));
+			this.paintIndex.put(value, Integer.valueOf(paint));
 		}
 	}
 
 	/**
-	 * Builds the list of legend entries. called by getLegendItems in
-	 * WaferMapPlot to populate the plot legend.
+	 * Builds the list of legend entries. called by getLegendItems in WaferMapPlot
+	 * to populate the plot legend.
 	 * 
 	 * @return the legend items.
 	 */
@@ -306,9 +306,7 @@ public class WaferMapRenderer extends AbstractRenderer {
 					Paint outlinePaint = Color.black;
 					Stroke stroke = DEFAULT_STROKE;
 
-					result.add(new LegendItem(
-										label, description, shape, true, paint, stroke, outlinePaint, stroke
-										));
+					result.add(new LegendItem(label, description, shape, true, paint, stroke, outlinePaint, stroke));
 
 				}
 			} else {
@@ -317,17 +315,16 @@ public class WaferMapRenderer extends AbstractRenderer {
 				for (Iterator i = this.paintIndex.entrySet().iterator(); i.hasNext();) {
 					Map.Entry entry = (Map.Entry) i.next();
 					if (unique.add(entry.getValue())) {
-						String label = getMinPaintValue((Integer) entry.getValue()).toString()
-											+ " - " + getMaxPaintValue((Integer) entry.getValue()).toString();
+						String label = getMinPaintValue((Integer) entry.getValue()).toString() + " - "
+								+ getMaxPaintValue((Integer) entry.getValue()).toString();
 						String description = label;
 						Shape shape = new Rectangle2D.Double(1d, 1d, 1d, 1d);
 						Paint paint = getSeriesPaint(((Integer) entry.getValue()).intValue());
 						Paint outlinePaint = Color.black;
 						Stroke stroke = DEFAULT_STROKE;
 
-						result.add(new LegendItem(
-											label, description, shape, true, paint, stroke, outlinePaint, stroke
-											));
+						result.add(
+								new LegendItem(label, description, shape, true, paint, stroke, outlinePaint, stroke));
 					}
 				} // end foreach map entry
 			} // end else
@@ -336,11 +333,10 @@ public class WaferMapRenderer extends AbstractRenderer {
 	}
 
 	/**
-	 * Returns the minimum chip value assigned to a color
-	 * in the paintIndex
+	 * Returns the minimum chip value assigned to a color in the paintIndex
 	 * 
 	 * @param index
-	 *           the index.
+	 *            the index.
 	 * @return the value.
 	 */
 	private Number getMinPaintValue(Integer index) {
@@ -353,15 +349,14 @@ public class WaferMapRenderer extends AbstractRenderer {
 				}
 			}
 		}
-		return new Double(minValue);
+		return Double.valueOf(minValue);
 	}
 
 	/**
-	 * Returns the maximum chip value assigned to a color
-	 * in the paintIndex
+	 * Returns the maximum chip value assigned to a color in the paintIndex
 	 * 
 	 * @param index
-	 *           the index.
+	 *            the index.
 	 * @return the value
 	 */
 	private Number getMaxPaintValue(Integer index) {
@@ -374,7 +369,7 @@ public class WaferMapRenderer extends AbstractRenderer {
 				}
 			}
 		}
-		return new Double(maxValue);
+		return Double.valueOf(maxValue);
 	}
 
 } // end class wafermaprenderer

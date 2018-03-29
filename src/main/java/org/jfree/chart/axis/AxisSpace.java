@@ -78,7 +78,7 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	 * Sets the top space.
 	 * 
 	 * @param space
-	 *           the space.
+	 *            the space.
 	 */
 	public void setTop(double space) {
 		this.top = space;
@@ -97,7 +97,7 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	 * Sets the bottom space.
 	 * 
 	 * @param space
-	 *           the space.
+	 *            the space.
 	 */
 	public void setBottom(double space) {
 		this.bottom = space;
@@ -116,7 +116,7 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	 * Sets the left space.
 	 * 
 	 * @param space
-	 *           the space.
+	 *            the space.
 	 */
 	public void setLeft(double space) {
 		this.left = space;
@@ -135,7 +135,7 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	 * Sets the right space.
 	 * 
 	 * @param space
-	 *           the space.
+	 *            the space.
 	 */
 	public void setRight(double space) {
 		this.right = space;
@@ -145,32 +145,29 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	 * Adds some space to the edge corresponding to the specified axis location.
 	 * 
 	 * @param space
-	 *           the space.
+	 *            the space.
 	 * @param edge
-	 *           the location.
+	 *            the location.
 	 */
 	public void add(double space, RectangleEdge edge) {
 		if (edge == RectangleEdge.TOP) {
 			this.top += space;
-		} else
-			if (edge == RectangleEdge.BOTTOM) {
-				this.bottom += space;
-			} else
-				if (edge == RectangleEdge.LEFT) {
-					this.left += space;
-				} else
-					if (edge == RectangleEdge.RIGHT) {
-						this.right += space;
-					} else {
-						throw new IllegalStateException("AxisSpace.add(...): unrecognised RectangleEdge.");
-					}
+		} else if (edge == RectangleEdge.BOTTOM) {
+			this.bottom += space;
+		} else if (edge == RectangleEdge.LEFT) {
+			this.left += space;
+		} else if (edge == RectangleEdge.RIGHT) {
+			this.right += space;
+		} else {
+			throw new IllegalStateException("AxisSpace.add(...): unrecognised RectangleEdge.");
+		}
 	}
 
 	/**
 	 * Ensures that this object reserves at least as much space as another.
 	 * 
 	 * @param space
-	 *           the other space.
+	 *            the other space.
 	 */
 	public void ensureAtLeast(AxisSpace space) {
 		this.top = Math.max(this.top, space.top);
@@ -180,69 +177,62 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	}
 
 	/**
-	 * Ensures there is a minimum amount of space at the edge corresponding to the specified
-	 * axis location.
+	 * Ensures there is a minimum amount of space at the edge corresponding to the
+	 * specified axis location.
 	 * 
 	 * @param space
-	 *           the space.
+	 *            the space.
 	 * @param edge
-	 *           the location.
+	 *            the location.
 	 */
 	public void ensureAtLeast(double space, RectangleEdge edge) {
 		if (edge == RectangleEdge.TOP) {
 			if (this.top < space) {
 				this.top = space;
 			}
-		} else
-			if (edge == RectangleEdge.BOTTOM) {
-				if (this.bottom < space) {
-					this.bottom = space;
-				}
-			} else
-				if (edge == RectangleEdge.LEFT) {
-					if (this.left < space) {
-						this.left = space;
-					}
-				} else
-					if (edge == RectangleEdge.RIGHT) {
-						if (this.right < space) {
-							this.right = space;
-						}
-					} else {
-						throw new IllegalStateException(
-											"AxisSpace.ensureAtLeast(...): unrecognised AxisLocation.");
-					}
+		} else if (edge == RectangleEdge.BOTTOM) {
+			if (this.bottom < space) {
+				this.bottom = space;
+			}
+		} else if (edge == RectangleEdge.LEFT) {
+			if (this.left < space) {
+				this.left = space;
+			}
+		} else if (edge == RectangleEdge.RIGHT) {
+			if (this.right < space) {
+				this.right = space;
+			}
+		} else {
+			throw new IllegalStateException("AxisSpace.ensureAtLeast(...): unrecognised AxisLocation.");
+		}
 	}
 
 	/**
 	 * Shrinks an area by the space attributes.
 	 * 
 	 * @param area
-	 *           the area to shrink.
+	 *            the area to shrink.
 	 * @param result
-	 *           an optional carrier for the result.
+	 *            an optional carrier for the result.
 	 * @return The result.
 	 */
 	public Rectangle2D shrink(Rectangle2D area, Rectangle2D result) {
 		if (result == null) {
 			result = new Rectangle2D.Double();
 		}
-		result.setRect(
-							area.getX() + this.left,
-							area.getY() + this.top,
-							area.getWidth() - this.left - this.right,
-							area.getHeight() - this.top - this.bottom
-							);
+		result.setRect(area.getX() + this.left, area.getY() + this.top, area.getWidth() - this.left - this.right,
+				area.getHeight() - this.top - this.bottom);
 		return result;
 	}
 
 	/**
-	 * Shrinks an area's left and right edges by the amount of this objects left and right settings.
+	 * Shrinks an area's left and right edges by the amount of this objects left and
+	 * right settings.
 	 * 
 	 * @param area
-	 *           the area to shrink.
+	 *            the area to shrink.
 	 * @param result
-	 *           an optional carrier for the result.
+	 *            an optional carrier for the result.
 	 * @return the result.
 	 * @deprecated This method is no longer required.
 	 */
@@ -250,22 +240,19 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 		if (result == null) {
 			result = new Rectangle2D.Double();
 		}
-		result.setRect(
-							area.getX() + this.left,
-							area.getY(),
-							area.getWidth() - this.left - this.right,
-							area.getHeight()
-							);
+		result.setRect(area.getX() + this.left, area.getY(), area.getWidth() - this.left - this.right,
+				area.getHeight());
 		return result;
 	}
 
 	/**
-	 * Shrinks an area's top and bottom edges by the amount of this objects top and bottom settings.
+	 * Shrinks an area's top and bottom edges by the amount of this objects top and
+	 * bottom settings.
 	 * 
 	 * @param area
-	 *           the area to shrink.
+	 *            the area to shrink.
 	 * @param result
-	 *           an optional carrier for the result.
+	 *            an optional carrier for the result.
 	 * @return the result.
 	 * @deprecated This method is no longer required.
 	 */
@@ -273,12 +260,7 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 		if (result == null) {
 			result = new Rectangle2D.Double();
 		}
-		result.setRect(
-							area.getX(),
-							area.getY() + this.top,
-							area.getWidth(),
-							area.getHeight() - this.top - this.bottom
-							);
+		result.setRect(area.getX(), area.getY() + this.top, area.getWidth(), area.getHeight() - this.top - this.bottom);
 		return result;
 	}
 
@@ -286,21 +268,17 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	 * Expands an area by the amount of space represented by this object.
 	 * 
 	 * @param area
-	 *           the area to expand.
+	 *            the area to expand.
 	 * @param result
-	 *           an optional carrier for the result.
+	 *            an optional carrier for the result.
 	 * @return The result.
 	 */
 	public Rectangle2D expand(Rectangle2D area, Rectangle2D result) {
 		if (result == null) {
 			result = new Rectangle2D.Double();
 		}
-		result.setRect(
-							area.getX() - this.left,
-							area.getY() - this.top,
-							area.getWidth() + this.left + this.right,
-							area.getHeight() + this.top + this.bottom
-							);
+		result.setRect(area.getX() - this.left, area.getY() - this.top, area.getWidth() + this.left + this.right,
+				area.getHeight() + this.top + this.bottom);
 		return result;
 	}
 
@@ -308,29 +286,22 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	 * Calculates the reserved area.
 	 * 
 	 * @param area
-	 *           the area.
+	 *            the area.
 	 * @param edge
-	 *           the edge.
+	 *            the edge.
 	 * @return The reserved area.
 	 */
 	public Rectangle2D reserved(Rectangle2D area, RectangleEdge edge) {
 		Rectangle2D result = null;
 		if (edge == RectangleEdge.TOP) {
-			result = new Rectangle2D.Double(area.getX(), area.getY(),
-															area.getWidth(), this.top);
-		} else
-			if (edge == RectangleEdge.BOTTOM) {
-				result = new Rectangle2D.Double(area.getX(), area.getMaxY() - this.top,
-															area.getWidth(), this.bottom);
-			} else
-				if (edge == RectangleEdge.LEFT) {
-					result = new Rectangle2D.Double(area.getX(), area.getY(),
-															this.left, area.getHeight());
-				} else
-					if (edge == RectangleEdge.RIGHT) {
-						result = new Rectangle2D.Double(area.getMaxX() - this.right, area.getY(),
-															this.right, area.getHeight());
-					}
+			result = new Rectangle2D.Double(area.getX(), area.getY(), area.getWidth(), this.top);
+		} else if (edge == RectangleEdge.BOTTOM) {
+			result = new Rectangle2D.Double(area.getX(), area.getMaxY() - this.top, area.getWidth(), this.bottom);
+		} else if (edge == RectangleEdge.LEFT) {
+			result = new Rectangle2D.Double(area.getX(), area.getY(), this.left, area.getHeight());
+		} else if (edge == RectangleEdge.RIGHT) {
+			result = new Rectangle2D.Double(area.getMaxX() - this.right, area.getY(), this.right, area.getHeight());
+		}
 		return result;
 	}
 
@@ -339,8 +310,8 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            This class won't throw this exception, but subclasses
-	 *            (if any) might.
+	 *             This class won't throw this exception, but subclasses (if any)
+	 *             might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -350,7 +321,7 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	 * Tests this object for equality with another object.
 	 * 
 	 * @param object
-	 *           the object to compare against.
+	 *            the object to compare against.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object object) {
@@ -382,8 +353,8 @@ public class AxisSpace implements Cloneable, PublicCloneable, Serializable {
 	 * @return a string.
 	 */
 	public String toString() {
-		return super.toString() + "[left=" + this.left + ",right=" + this.right
-											+ ",top=" + this.top + ",bottom=" + this.bottom + "]";
+		return super.toString() + "[left=" + this.left + ",right=" + this.right + ",top=" + this.top + ",bottom="
+				+ this.bottom + "]";
 	}
 
 }

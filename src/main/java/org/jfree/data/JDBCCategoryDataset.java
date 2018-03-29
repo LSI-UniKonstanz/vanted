@@ -52,19 +52,16 @@ import java.sql.Statement;
 import java.sql.Types;
 
 /**
- * A {@link CategoryDataset} implementation over a database JDBC result set.
- * The dataset is populated via a call to executeQuery with the string sql
- * query.
- * The sql query must return at least two columns. The first column will be
- * the category name and remaining columns values.
- * executeQuery can be called a number of times.
- * The database connection is read-only and no write back facility exists.
+ * A {@link CategoryDataset} implementation over a database JDBC result set. The
+ * dataset is populated via a call to executeQuery with the string sql query.
+ * The sql query must return at least two columns. The first column will be the
+ * category name and remaining columns values. executeQuery can be called a
+ * number of times. The database connection is read-only and no write back
+ * facility exists.
  * 
- * @author Bryan Scott
- *         Changes
- *         -------
- *         24-Sep-2003 : Added clearing results from previous queries to executeQuery
- *         following being highlighted on online forum (BS);
+ * @author Bryan Scott Changes ------- 24-Sep-2003 : Added clearing results from
+ *         previous queries to executeQuery following being highlighted on
+ *         online forum (BS);
  */
 public class JDBCCategoryDataset extends DefaultCategoryDataset {
 
@@ -81,8 +78,8 @@ public class JDBCCategoryDataset extends DefaultCategoryDataset {
 	// private ResultSetMetaData metaData;
 
 	/**
-	 * A flag the controls whether or not the table is transposed. The default is 'true'
-	 * because this provides the behaviour described in the documentation.
+	 * A flag the controls whether or not the table is transposed. The default is
+	 * 'true' because this provides the behaviour described in the documentation.
 	 */
 	private boolean transpose = true;
 
@@ -90,23 +87,20 @@ public class JDBCCategoryDataset extends DefaultCategoryDataset {
 	 * Creates a new dataset with a database connection.
 	 * 
 	 * @param url
-	 *           the URL of the database connection.
+	 *            the URL of the database connection.
 	 * @param driverName
-	 *           the database driver class name.
+	 *            the database driver class name.
 	 * @param user
-	 *           the database user.
+	 *            the database user.
 	 * @param passwd
-	 *           the database user's password.
+	 *            the database user's password.
 	 * @throws ClassNotFoundException
-	 *            if the driver cannot be found.
+	 *             if the driver cannot be found.
 	 * @throws SQLException
-	 *            if there is an error obtaining a connection to the database.
+	 *             if there is an error obtaining a connection to the database.
 	 */
-	public JDBCCategoryDataset(final String url,
-											final String driverName,
-											final String user,
-											final String passwd)
-						throws ClassNotFoundException, SQLException {
+	public JDBCCategoryDataset(final String url, final String driverName, final String user, final String passwd)
+			throws ClassNotFoundException, SQLException {
 
 		Class.forName(driverName);
 		this.connection = DriverManager.getConnection(url, user, passwd);
@@ -116,7 +110,7 @@ public class JDBCCategoryDataset extends DefaultCategoryDataset {
 	 * Create a new dataset with the given database connection.
 	 * 
 	 * @param connection
-	 *           the database connection.
+	 *            the database connection.
 	 */
 	public JDBCCategoryDataset(final Connection connection) {
 		if (connection == null) {
@@ -126,25 +120,24 @@ public class JDBCCategoryDataset extends DefaultCategoryDataset {
 	}
 
 	/**
-	 * Creates a new dataset with the given database connection, and executes the supplied
-	 * query to populate the dataset.
+	 * Creates a new dataset with the given database connection, and executes the
+	 * supplied query to populate the dataset.
 	 * 
 	 * @param connection
-	 *           the connection.
+	 *            the connection.
 	 * @param query
-	 *           the query.
+	 *            the query.
 	 * @throws SQLException
-	 *            if there is a problem executing the query.
+	 *             if there is a problem executing the query.
 	 */
-	public JDBCCategoryDataset(final Connection connection, final String query)
-						throws SQLException {
+	public JDBCCategoryDataset(final Connection connection, final String query) throws SQLException {
 		this(connection);
 		executeQuery(query);
 	}
 
 	/**
-	 * Returns a flag that controls whether or not the table values are transposed when added
-	 * to the dataset.
+	 * Returns a flag that controls whether or not the table values are transposed
+	 * when added to the dataset.
 	 * 
 	 * @return A boolean.
 	 */
@@ -153,43 +146,45 @@ public class JDBCCategoryDataset extends DefaultCategoryDataset {
 	}
 
 	/**
-	 * Sets a flag that controls whether or not the table values are transposed when added to
-	 * the dataset.
+	 * Sets a flag that controls whether or not the table values are transposed when
+	 * added to the dataset.
 	 * 
 	 * @param transpose
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setTranspose(final boolean transpose) {
 		this.transpose = transpose;
 	}
 
 	/**
-	 * Populates the dataset by executing the supplied query against the existing database
-	 * connection. If no connection exists then no action is taken.
+	 * Populates the dataset by executing the supplied query against the existing
+	 * database connection. If no connection exists then no action is taken.
 	 * <p>
-	 * The results from the query are extracted and cached locally, thus applying an upper limit on how many rows can be retrieved successfully.
+	 * The results from the query are extracted and cached locally, thus applying an
+	 * upper limit on how many rows can be retrieved successfully.
 	 * 
 	 * @param query
-	 *           the query.
+	 *            the query.
 	 * @throws SQLException
-	 *            if there is a problem executing the query.
+	 *             if there is a problem executing the query.
 	 */
 	public void executeQuery(final String query) throws SQLException {
 		executeQuery(this.connection, query);
 	}
 
 	/**
-	 * Populates the dataset by executing the supplied query against the existing database
-	 * connection. If no connection exists then no action is taken.
+	 * Populates the dataset by executing the supplied query against the existing
+	 * database connection. If no connection exists then no action is taken.
 	 * <p>
-	 * The results from the query are extracted and cached locally, thus applying an upper limit on how many rows can be retrieved successfully.
+	 * The results from the query are extracted and cached locally, thus applying an
+	 * upper limit on how many rows can be retrieved successfully.
 	 * 
 	 * @param con
-	 *           the connection.
+	 *            the connection.
 	 * @param query
-	 *           the query.
+	 *            the query.
 	 * @throws SQLException
-	 *            if there is a problem executing the query.
+	 *             if there is a problem executing the query.
 	 */
 	public void executeQuery(final Connection con, final String query) throws SQLException {
 
@@ -203,9 +198,8 @@ public class JDBCCategoryDataset extends DefaultCategoryDataset {
 			final int columnCount = metaData.getColumnCount();
 
 			if (columnCount < 2) {
-				throw new SQLException(
-									"JDBCCategoryDataset.executeQuery(...) : insufficient columns "
-														+ "returned from the database.");
+				throw new SQLException("JDBCCategoryDataset.executeQuery(...) : insufficient columns "
+						+ "returned from the database.");
 			}
 
 			// Remove any previous old data
@@ -223,54 +217,54 @@ public class JDBCCategoryDataset extends DefaultCategoryDataset {
 					final int columnType = metaData.getColumnType(column);
 
 					switch (columnType) {
-						case Types.TINYINT:
-						case Types.SMALLINT:
-						case Types.INTEGER:
-						case Types.BIGINT:
-						case Types.FLOAT:
-						case Types.DOUBLE:
-						case Types.DECIMAL:
-						case Types.NUMERIC:
-						case Types.REAL: {
-							final Number value = (Number) resultSet.getObject(column);
+					case Types.TINYINT:
+					case Types.SMALLINT:
+					case Types.INTEGER:
+					case Types.BIGINT:
+					case Types.FLOAT:
+					case Types.DOUBLE:
+					case Types.DECIMAL:
+					case Types.NUMERIC:
+					case Types.REAL: {
+						final Number value = (Number) resultSet.getObject(column);
+						if (this.transpose) {
+							setValue(value, columnKey, rowKey);
+						} else {
+							setValue(value, rowKey, columnKey);
+						}
+						break;
+					}
+					case Types.DATE:
+					case Types.TIME:
+					case Types.TIMESTAMP: {
+						final Date date = (Date) resultSet.getObject(column);
+						final Number value = Long.valueOf(date.getTime());
+						if (this.transpose) {
+							setValue(value, columnKey, rowKey);
+						} else {
+							setValue(value, rowKey, columnKey);
+						}
+						break;
+					}
+					case Types.CHAR:
+					case Types.VARCHAR:
+					case Types.LONGVARCHAR: {
+						final String string = (String) resultSet.getObject(column);
+						try {
+							final Number value = Double.valueOf(string);
 							if (this.transpose) {
 								setValue(value, columnKey, rowKey);
 							} else {
 								setValue(value, rowKey, columnKey);
 							}
-							break;
+						} catch (NumberFormatException e) {
+							// suppress (value defaults to null)
 						}
-						case Types.DATE:
-						case Types.TIME:
-						case Types.TIMESTAMP: {
-							final Date date = (Date) resultSet.getObject(column);
-							final Number value = new Long(date.getTime());
-							if (this.transpose) {
-								setValue(value, columnKey, rowKey);
-							} else {
-								setValue(value, rowKey, columnKey);
-							}
-							break;
-						}
-						case Types.CHAR:
-						case Types.VARCHAR:
-						case Types.LONGVARCHAR: {
-							final String string = (String) resultSet.getObject(column);
-							try {
-								final Number value = Double.valueOf(string);
-								if (this.transpose) {
-									setValue(value, columnKey, rowKey);
-								} else {
-									setValue(value, rowKey, columnKey);
-								}
-							} catch (NumberFormatException e) {
-								// suppress (value defaults to null)
-							}
-							break;
-						}
-						default:
-							// not a value, can't use it (defaults to null)
-							break;
+						break;
+					}
+					default:
+						// not a value, can't use it (defaults to null)
+						break;
 					}
 				}
 			}

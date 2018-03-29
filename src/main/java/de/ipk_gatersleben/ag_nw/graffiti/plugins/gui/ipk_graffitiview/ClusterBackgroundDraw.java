@@ -14,7 +14,6 @@ import java.util.TreeSet;
 
 import org.AttributeHelper;
 import org.Vector2df;
-import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.attributes.HashMapAttribute;
 import org.graffiti.graph.Graph;
@@ -25,19 +24,19 @@ import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.ClusterColorAttribute;
 
 public class ClusterBackgroundDraw {
-	
+
 	public HashMap<String, Color> cluster2color;
 	public HashMap<Node, Vector2df> node2position;
 	public HashMap<Node, String> node2cluster;
-	
+
 	public float minX = Float.MAX_VALUE;
 	public float minY = Float.MAX_VALUE;
 	public float maxX = Float.MIN_VALUE;
 	public float maxY = Float.MIN_VALUE;
-	
+
 	public void init(Graph graph) {
 		cluster2color = new HashMap<String, Color>();
-		
+
 		Set<String> clusters = new TreeSet<String>();
 		for (GraphElement ge : graph.getGraphElements()) {
 			if (AttributeHelper.isHiddenGraphElement(ge))
@@ -46,31 +45,30 @@ public class ClusterBackgroundDraw {
 			if (!clusterId.equals(""))
 				clusters.add(clusterId);
 		}
-		
-		HashMapAttribute a = (HashMapAttribute) AttributeHelper.getAttribute(graph, ClusterColorAttribute.attributeFolder);
+
+		HashMapAttribute a = (HashMapAttribute) AttributeHelper.getAttribute(graph,
+				ClusterColorAttribute.attributeFolder);
 		ClusterColorAttribute cca = null;
 		try {
-			cca = (ClusterColorAttribute)a.getAttribute(ClusterColorAttribute.attributeName);
+			cca = (ClusterColorAttribute) a.getAttribute(ClusterColorAttribute.attributeName);
 		} catch (AttributeNotFoundException e) {
-			cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(
-					graph,
-					ClusterColorAttribute.attributeFolder,
-					ClusterColorAttribute.attributeName,
-					ClusterColorAttribute.getDefaultValue(clusters),
-					new ClusterColorAttribute("resulttype"), true);
+			cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(graph,
+					ClusterColorAttribute.attributeFolder, ClusterColorAttribute.attributeName,
+					ClusterColorAttribute.getDefaultValue(clusters), new ClusterColorAttribute("resulttype"), true);
 		}
-		
-//		ClusterColorAttribute cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(
-//							graph,
-//							ClusterColorAttribute.attributeFolder,
-//							ClusterColorAttribute.attributeName,
-//							ClusterColorAttribute.getDefaultValue(clusters),
-//							new ClusterColorAttribute("resulttype"), true);
-		
-//		cca.ensureMinimumColorSelection(clusters.size());
-		
+
+		// ClusterColorAttribute cca = (ClusterColorAttribute)
+		// AttributeHelper.getAttributeValue(
+		// graph,
+		// ClusterColorAttribute.attributeFolder,
+		// ClusterColorAttribute.attributeName,
+		// ClusterColorAttribute.getDefaultValue(clusters),
+		// new ClusterColorAttribute("resulttype"), true);
+
+		// cca.ensureMinimumColorSelection(clusters.size());
+
 		cca.updateClusterList(clusters);
-		
+
 		ArrayList<String> clusterArray = new ArrayList<String>(clusters);
 		for (int idx = 0; idx < clusterArray.size(); idx++) {
 			String cluster = clusterArray.get(idx);
@@ -84,12 +82,12 @@ public class ClusterBackgroundDraw {
 			node2cluster.put(n, NodeTools.getClusterID(n, ""));
 			node2position.put(n, AttributeHelper.getPositionVec2df(n));
 		}
-		
+
 		minX = Float.MAX_VALUE;
 		minY = Float.MAX_VALUE;
 		maxX = Float.MIN_VALUE;
 		maxY = Float.MIN_VALUE;
-		
+
 		for (Vector2df p : node2position.values()) {
 			if (p.x < minX)
 				minX = p.x;
@@ -100,12 +98,12 @@ public class ClusterBackgroundDraw {
 			if (p.y > maxY)
 				maxY = p.y;
 		}
-		
+
 		int outer = 100;
 		minX += -outer;
 		minY += -outer;
 		maxX += outer;
 		maxY += outer;
 	}
-	
+
 }

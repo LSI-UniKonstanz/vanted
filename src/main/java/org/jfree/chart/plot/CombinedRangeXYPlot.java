@@ -87,11 +87,11 @@ import org.jfree.util.ObjectUtils;
 import org.jfree.util.PublicCloneable;
 
 /**
- * An extension of {@link XYPlot} that contains multiple subplots that share a common range axis.
+ * An extension of {@link XYPlot} that contains multiple subplots that share a
+ * common range axis.
  */
 public class CombinedRangeXYPlot extends XYPlot
-											implements Cloneable, PublicCloneable, Serializable,
-															PlotChangeListener {
+		implements Cloneable, PublicCloneable, Serializable, PlotChangeListener {
 
 	/** Storage for the subplot references. */
 	private List subplots;
@@ -106,8 +106,8 @@ public class CombinedRangeXYPlot extends XYPlot
 	private transient Rectangle2D[] subplotAreas;
 
 	/** The resourceBundle for the localization. */
-	protected static ResourceBundle localizationResources =
-						ResourceBundle.getBundle("org.jfree.chart.plot.LocalizationBundle");
+	protected static ResourceBundle localizationResources = ResourceBundle
+			.getBundle("org.jfree.chart.plot.LocalizationBundle");
 
 	/**
 	 * Default constructor.
@@ -120,14 +120,12 @@ public class CombinedRangeXYPlot extends XYPlot
 	 * Creates a new plot.
 	 * 
 	 * @param rangeAxis
-	 *           the shared axis.
+	 *            the shared axis.
 	 */
 	public CombinedRangeXYPlot(ValueAxis rangeAxis) {
 
 		super(null, // no data in the parent plot
-				null,
-							rangeAxis,
-							null);
+				null, rangeAxis, null);
 
 		this.subplots = new java.util.ArrayList();
 
@@ -155,7 +153,7 @@ public class CombinedRangeXYPlot extends XYPlot
 	 * Sets the amount of space between subplots.
 	 * 
 	 * @param gap
-	 *           the gap between subplots
+	 *            the gap between subplots
 	 */
 	public void setGap(double gap) {
 		this.gap = gap;
@@ -165,20 +163,21 @@ public class CombinedRangeXYPlot extends XYPlot
 	 * Adds a subplot, with a default 'weight' of 1.
 	 * 
 	 * @param subplot
-	 *           the subplot.
+	 *            the subplot.
 	 */
 	public void add(XYPlot subplot) {
 		add(subplot, 1);
 	}
 
 	/**
-	 * Adds a subplot with a particular weight (greater than or equal to one). The weight
-	 * determines how much space is allocated to the subplot relative to all the other subplots.
+	 * Adds a subplot with a particular weight (greater than or equal to one). The
+	 * weight determines how much space is allocated to the subplot relative to all
+	 * the other subplots.
 	 * 
 	 * @param subplot
-	 *           the subplot.
+	 *            the subplot.
 	 * @param weight
-	 *           the weight (must be 1 or greater).
+	 *            the weight (must be 1 or greater).
 	 */
 	public void add(XYPlot subplot, int weight) {
 
@@ -207,7 +206,7 @@ public class CombinedRangeXYPlot extends XYPlot
 	 * Removes a subplot from the combined chart.
 	 * 
 	 * @param subplot
-	 *           the subplot.
+	 *            the subplot.
 	 */
 	public void remove(XYPlot subplot) {
 
@@ -233,9 +232,9 @@ public class CombinedRangeXYPlot extends XYPlot
 	 * Calculates the space required for the axes.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plotArea
-	 *           the plot area.
+	 *            the plot area.
 	 * @return The space required for the axes.
 	 */
 	protected AxisSpace calculateAxisSpace(Graphics2D g2, Rectangle2D plotArea) {
@@ -249,15 +248,13 @@ public class CombinedRangeXYPlot extends XYPlot
 			if (orientation == PlotOrientation.VERTICAL) {
 				space.setLeft(fixed.getLeft());
 				space.setRight(fixed.getRight());
-			} else
-				if (orientation == PlotOrientation.HORIZONTAL) {
-					space.setTop(fixed.getTop());
-					space.setBottom(fixed.getBottom());
-				}
+			} else if (orientation == PlotOrientation.HORIZONTAL) {
+				space.setTop(fixed.getTop());
+				space.setBottom(fixed.getBottom());
+			}
 		} else {
 			ValueAxis valueAxis = getRangeAxis();
-			RectangleEdge valueEdge = Plot.resolveRangeAxisLocation(getRangeAxisLocation(),
-																							orientation);
+			RectangleEdge valueEdge = Plot.resolveRangeAxisLocation(getRangeAxisLocation(), orientation);
 			if (valueAxis != null) {
 				space = valueAxis.reserveSpace(g2, this, plotArea, valueEdge, space, true);
 			}
@@ -267,17 +264,17 @@ public class CombinedRangeXYPlot extends XYPlot
 		// work out the maximum height or width of the non-shared axes...
 		int n = this.subplots.size();
 
-		// calculate plotAreas of all sub-plots, maximum vertical/horizontal axis width/height
+		// calculate plotAreas of all sub-plots, maximum vertical/horizontal axis
+		// width/height
 		this.subplotAreas = new Rectangle2D[n];
 		double x = adjustedPlotArea.getX();
 		double y = adjustedPlotArea.getY();
 		double usableSize = 0.0;
 		if (orientation == PlotOrientation.VERTICAL) {
 			usableSize = adjustedPlotArea.getWidth() - this.gap * (n - 1);
-		} else
-			if (orientation == PlotOrientation.HORIZONTAL) {
-				usableSize = adjustedPlotArea.getHeight() - this.gap * (n - 1);
-			}
+		} else if (orientation == PlotOrientation.HORIZONTAL) {
+			usableSize = adjustedPlotArea.getHeight() - this.gap * (n - 1);
+		}
 
 		for (int i = 0; i < n; i++) {
 			XYPlot plot = (XYPlot) this.subplots.get(i);
@@ -285,15 +282,13 @@ public class CombinedRangeXYPlot extends XYPlot
 			// calculate sub-plot area
 			if (orientation == PlotOrientation.VERTICAL) {
 				double w = usableSize * plot.getWeight() / this.totalWeight;
-				this.subplotAreas[i] = new Rectangle2D.Double(x, y, w,
-																					adjustedPlotArea.getHeight());
+				this.subplotAreas[i] = new Rectangle2D.Double(x, y, w, adjustedPlotArea.getHeight());
 				x = x + w + this.gap;
-			} else
-				if (orientation == PlotOrientation.HORIZONTAL) {
-					double h = usableSize * plot.getWeight() / this.totalWeight;
-					this.subplotAreas[i] = new Rectangle2D.Double(x, y, adjustedPlotArea.getWidth(), h);
-					y = y + h + this.gap;
-				}
+			} else if (orientation == PlotOrientation.HORIZONTAL) {
+				double h = usableSize * plot.getWeight() / this.totalWeight;
+				this.subplotAreas[i] = new Rectangle2D.Double(x, y, adjustedPlotArea.getWidth(), h);
+				y = y + h + this.gap;
+			}
 
 			AxisSpace subSpace = plot.calculateDomainAxisSpace(g2, this.subplotAreas[i], null);
 			space.ensureAtLeast(subSpace);
@@ -304,23 +299,22 @@ public class CombinedRangeXYPlot extends XYPlot
 	}
 
 	/**
-	 * Draws the plot on a Java 2D graphics device (such as the screen or a printer).
-	 * Will perform all the placement calculations for each sub-plots and then tell these to draw
-	 * themselves.
+	 * Draws the plot on a Java 2D graphics device (such as the screen or a
+	 * printer). Will perform all the placement calculations for each sub-plots and
+	 * then tell these to draw themselves.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param area
-	 *           the area within which the plot (including axis labels) should be drawn.
+	 *            the area within which the plot (including axis labels) should be
+	 *            drawn.
 	 * @param parentState
-	 *           the state from the parent plot (if there is one).
+	 *            the state from the parent plot (if there is one).
 	 * @param info
-	 *           collects information about the drawing (<code>null</code> permitted).
+	 *            collects information about the drawing (<code>null</code>
+	 *            permitted).
 	 */
-	public void draw(Graphics2D g2,
-							Rectangle2D area,
-							PlotState parentState,
-							PlotRenderingInfo info) {
+	public void draw(Graphics2D g2, Rectangle2D area, PlotState parentState, PlotRenderingInfo info) {
 		draw(g2, area, null, parentState, info);
 	}
 
@@ -328,21 +322,18 @@ public class CombinedRangeXYPlot extends XYPlot
 	 * Draws the plot within the specified area on a graphics device.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param area
-	 *           the plot area (in Java2D space).
+	 *            the plot area (in Java2D space).
 	 * @param anchor
-	 *           an anchor point in Java2D space (<code>null</code> permitted).
+	 *            an anchor point in Java2D space (<code>null</code> permitted).
 	 * @param parentState
-	 *           the state from the parent plot, if there is one (<code>null</code> permitted).
+	 *            the state from the parent plot, if there is one (<code>null</code>
+	 *            permitted).
 	 * @param info
-	 *           collects chart drawing information (<code>null</code> permitted).
+	 *            collects chart drawing information (<code>null</code> permitted).
 	 */
-	public void draw(Graphics2D g2,
-							Rectangle2D area,
-							Point2D anchor,
-							PlotState parentState,
-							PlotRenderingInfo info) {
+	public void draw(Graphics2D g2, Rectangle2D area, Point2D anchor, PlotState parentState, PlotRenderingInfo info) {
 
 		// set up info collection...
 		if (info != null) {
@@ -352,10 +343,8 @@ public class CombinedRangeXYPlot extends XYPlot
 		// adjust the drawing area for plot insets (if any)...
 		Insets insets = getInsets();
 		if (insets != null) {
-			area.setRect(area.getX() + insets.left,
-									area.getY() + insets.top,
-									area.getWidth() - insets.left - insets.right,
-									area.getHeight() - insets.top - insets.bottom);
+			area.setRect(area.getX() + insets.left, area.getY() + insets.top,
+					area.getWidth() - insets.left - insets.right, area.getHeight() - insets.top - insets.bottom);
 		}
 
 		AxisSpace space = calculateAxisSpace(g2, area);
@@ -419,20 +408,21 @@ public class CombinedRangeXYPlot extends XYPlot
 	 * A zoom method that (currently) does nothing.
 	 * 
 	 * @param percent
-	 *           the zoom percentage.
+	 *            the zoom percentage.
 	 */
 	public void zoom(double percent) {
 		// need to decide how to handle zooming...
 	}
 
 	/**
-	 * Sets the item renderer FOR ALL SUBPLOTS. Registered listeners are notified that the plot
-	 * has been modified.
+	 * Sets the item renderer FOR ALL SUBPLOTS. Registered listeners are notified
+	 * that the plot has been modified.
 	 * <P>
-	 * Note: usually you will want to set the renderer independently for each subplot, which is NOT what this method does.
+	 * Note: usually you will want to set the renderer independently for each
+	 * subplot, which is NOT what this method does.
 	 * 
 	 * @param renderer
-	 *           the new renderer.
+	 *            the new renderer.
 	 */
 	public void setRenderer(XYItemRenderer renderer) {
 
@@ -451,7 +441,7 @@ public class CombinedRangeXYPlot extends XYPlot
 	 * Sets the orientation for the plot (and all its subplots).
 	 * 
 	 * @param orientation
-	 *           the orientation.
+	 *            the orientation.
 	 */
 	public void setOrientation(PlotOrientation orientation) {
 
@@ -466,10 +456,11 @@ public class CombinedRangeXYPlot extends XYPlot
 	}
 
 	/**
-	 * Returns the range for the axis. This is the combined range of all the subplots.
+	 * Returns the range for the axis. This is the combined range of all the
+	 * subplots.
 	 * 
 	 * @param axis
-	 *           the axis.
+	 *            the axis.
 	 * @return the range.
 	 */
 	public Range getDataRange(ValueAxis axis) {
@@ -487,11 +478,11 @@ public class CombinedRangeXYPlot extends XYPlot
 	}
 
 	/**
-	 * Sets the space (width or height, depending on the orientation of the plot) for the domain
-	 * axis of each subplot.
+	 * Sets the space (width or height, depending on the orientation of the plot)
+	 * for the domain axis of each subplot.
 	 * 
 	 * @param space
-	 *           the space.
+	 *            the space.
 	 */
 	protected void setFixedDomainAxisSpaceForSubplots(AxisSpace space) {
 
@@ -507,11 +498,11 @@ public class CombinedRangeXYPlot extends XYPlot
 	 * Handles a 'click' on the plot by updating the anchor values...
 	 * 
 	 * @param x
-	 *           x-coordinate, where the click occured.
+	 *            x-coordinate, where the click occured.
 	 * @param y
-	 *           y-coordinate, where the click occured.
+	 *            y-coordinate, where the click occured.
 	 * @param info
-	 *           object containing information about the plot dimensions.
+	 *            object containing information about the plot dimensions.
 	 */
 	public void handleClick(int x, int y, PlotRenderingInfo info) {
 
@@ -530,7 +521,7 @@ public class CombinedRangeXYPlot extends XYPlot
 	 * Receives a {@link PlotChangeEvent} and responds by notifying all listeners.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void plotChanged(PlotChangeEvent event) {
 		notifyListeners(event);
@@ -540,7 +531,7 @@ public class CombinedRangeXYPlot extends XYPlot
 	 * Tests this plot for equality with another object.
 	 * 
 	 * @param obj
-	 *           the other object.
+	 *            the other object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
@@ -571,8 +562,8 @@ public class CombinedRangeXYPlot extends XYPlot
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            this class will not throw this exception, but subclasses
-	 *            (if any) might.
+	 *             this class will not throw this exception, but subclasses (if any)
+	 *             might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 
@@ -583,7 +574,8 @@ public class CombinedRangeXYPlot extends XYPlot
 			child.setParent(result);
 		}
 
-		// after setting up all the subplots, the shared range axis may need reconfiguring
+		// after setting up all the subplots, the shared range axis may need
+		// reconfiguring
 		ValueAxis rangeAxis = result.getRangeAxis();
 		if (rangeAxis != null) {
 			rangeAxis.configure();

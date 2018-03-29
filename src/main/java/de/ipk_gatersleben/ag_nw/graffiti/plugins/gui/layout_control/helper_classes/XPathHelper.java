@@ -33,14 +33,13 @@ import com.sun.org.apache.xpath.internal.XPathAPI;
 import com.sun.org.apache.xpath.internal.objects.XBoolean;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 @SuppressWarnings("unchecked")
 public class XPathHelper implements HelperClass {
-	
+
 	public static String noGivenTimeStringConstant = "- not specified -";
-	
+
 	public static int getSampleCountForSubstanceNode(Node n) {
 		XPath xpath;
 		try {
@@ -51,7 +50,7 @@ public class XPathHelper implements HelperClass {
 			return 0;
 		}
 	}
-	
+
 	public static int getLineCountForSubstanceNode(Node n) {
 		XPath xpath;
 		try {
@@ -62,7 +61,7 @@ public class XPathHelper implements HelperClass {
 			return 0;
 		}
 	}
-	
+
 	public static int getTimeCountForSubstanceNode(Node nn) {
 		try {
 			ArrayList<TimeAndTimeUnit> resultList = new ArrayList<>();
@@ -88,7 +87,7 @@ public class XPathHelper implements HelperClass {
 			return 0;
 		}
 	}
-	
+
 	/**
 	 * Get the possible time values that are stored in an experiment.
 	 * 
@@ -144,7 +143,7 @@ public class XPathHelper implements HelperClass {
 		String[] res = (String[]) string_resultList.toArray(new String[] {});
 		return res;
 	}
-	
+
 	/**
 	 * Get a list of analyzed plants for the experiment.
 	 * 
@@ -193,14 +192,13 @@ public class XPathHelper implements HelperClass {
 		});
 		return res;
 	}
-	
+
 	/**
 	 * @param genotype
 	 * @param treatment
 	 * @return
 	 */
-	private static String getGenotypeAndTreatment(String genotype,
-						String treatment) {
+	private static String getGenotypeAndTreatment(String genotype, String treatment) {
 		StringBuilder res = new StringBuilder();
 		if (genotype != null && genotype.length() > 0)
 			res.append(genotype);
@@ -214,7 +212,7 @@ public class XPathHelper implements HelperClass {
 		else
 			return "";
 	}
-	
+
 	public static ArrayList<Node> getPlantNodes(Document experimentData) {
 		try {
 			XPath xpath = new DOMXPath("/experimentdata/measurements/substance/line"); // /substance/line/sample
@@ -225,7 +223,7 @@ public class XPathHelper implements HelperClass {
 			return null;
 		}
 	}
-	
+
 	public static ArrayList<Node> getSubstanceNodes(Document document) {
 		try {
 			XPath xpathAllSubstances;
@@ -241,7 +239,7 @@ public class XPathHelper implements HelperClass {
 			return new ArrayList();
 		}
 	}
-	
+
 	public static Node getChildNode(Node node, String childNodeName) {
 		XPath workXpath;
 		try {
@@ -253,7 +251,7 @@ public class XPathHelper implements HelperClass {
 			return null;
 		}
 	}
-	
+
 	public static String getSumOfValues(Document mydoc) {
 		String res = "";
 		try {
@@ -278,7 +276,7 @@ public class XPathHelper implements HelperClass {
 					return "- Error 2 -";
 				}
 			}
-			res = new Double(sum).toString();
+			res = Double.valueOf(sum).toString();
 			if (errCnt > 0) {
 				res = res + " (" + errCnt + " errors)";
 			}
@@ -288,14 +286,14 @@ public class XPathHelper implements HelperClass {
 			return "- Error 0 -";
 		}
 	}
-	
+
 	public static void setTtestInfoSampleIsReference(org.w3c.dom.Node sampleNode) {
 		Attr attr = sampleNode.getOwnerDocument().createAttribute("t-test");
 		attr.setNodeValue("reference");
 		Element e = (Element) sampleNode;
 		e.setAttributeNode(attr);
 	}
-	
+
 	public static Double[] getDataList(Node sampleNode) {
 		if (sampleNode == null)
 			return new Double[0];
@@ -305,21 +303,19 @@ public class XPathHelper implements HelperClass {
 			if (n.getNodeName().equalsIgnoreCase("data")) {
 				String ms = n.getFirstChild().getNodeValue();
 				double mesVal = Double.parseDouble(ms);
-				measureValues.add(new Double(mesVal));
+				measureValues.add(Double.valueOf(mesVal));
 			}
 			n = n.getNextSibling();
 		}
 		return measureValues.toArray(new Double[0]);
 	}
-	
+
 	public static int getSampleTimeValueForComparison(Node sampleNode) {
 		String time;
-		if (sampleNode.getAttributes() == null
-							|| sampleNode.getAttributes().getNamedItem("time") == null)
+		if (sampleNode.getAttributes() == null || sampleNode.getAttributes().getNamedItem("time") == null)
 			time = "-1";
 		else
-			time = sampleNode.getAttributes().getNamedItem("time").getFirstChild()
-								.getNodeValue();
+			time = sampleNode.getAttributes().getNamedItem("time").getFirstChild().getNodeValue();
 		int result;
 		try {
 			result = Integer.parseInt(time);
@@ -329,7 +325,7 @@ public class XPathHelper implements HelperClass {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * @param sampleNode
 	 * @return The time and time unit from a sample. e.g. "day 1" or "week 2".
@@ -337,27 +333,23 @@ public class XPathHelper implements HelperClass {
 	 */
 	public static String getSampleTime(Node sampleNode) {
 		String time;
-		if (sampleNode.getAttributes() == null
-							|| sampleNode.getAttributes().getNamedItem("time") == null)
+		if (sampleNode.getAttributes() == null || sampleNode.getAttributes().getNamedItem("time") == null)
 			time = "-1";
 		else
-			time = sampleNode.getAttributes().getNamedItem("time").getFirstChild()
-								.getNodeValue();
+			time = sampleNode.getAttributes().getNamedItem("time").getFirstChild().getNodeValue();
 		String timeunit;
-		if (sampleNode.getAttributes() == null
-							|| sampleNode.getAttributes().getNamedItem("unit") == null)
+		if (sampleNode.getAttributes() == null || sampleNode.getAttributes().getNamedItem("unit") == null)
 			timeunit = "-1";
 		else
-			timeunit = sampleNode.getAttributes().getNamedItem("unit")
-								.getFirstChild().getNodeValue();
-		
+			timeunit = sampleNode.getAttributes().getNamedItem("unit").getFirstChild().getNodeValue();
+
 		String timeUnitAndTime = timeunit + " " + time; // +" ("+unit+")";
 		if (time.equals("-1") && timeunit.equals("-1"))
 			timeUnitAndTime = ""; // "("+unit+")";
-			
+
 		return timeUnitAndTime;
 	}
-	
+
 	/**
 	 * @param sampleNode
 	 * @return The time and time unit from a sample. e.g. "day 1" or "week 2".
@@ -365,16 +357,14 @@ public class XPathHelper implements HelperClass {
 	 */
 	public static String getSampleTimeUnit(Node sampleNode) {
 		String timeunit;
-		if (sampleNode.getAttributes() == null
-							|| sampleNode.getAttributes().getNamedItem("unit") == null)
+		if (sampleNode.getAttributes() == null || sampleNode.getAttributes().getNamedItem("unit") == null)
 			timeunit = null;
 		else
-			timeunit = sampleNode.getAttributes().getNamedItem("unit")
-								.getFirstChild().getNodeValue();
-		
+			timeunit = sampleNode.getAttributes().getNamedItem("unit").getFirstChild().getNodeValue();
+
 		return timeunit;
 	}
-	
+
 	/**
 	 * @param sampleNode
 	 */
@@ -384,9 +374,8 @@ public class XPathHelper implements HelperClass {
 		Element e = (Element) sampleNode;
 		e.setAttributeNode(attr);
 	}
-	
-	public static void tTestSetSampleSignificane(Node sampleNode,
-						boolean different) {
+
+	public static void tTestSetSampleSignificane(Node sampleNode, boolean different) {
 		Attr attr = sampleNode.getOwnerDocument().createAttribute("ttest");
 		if (different)
 			attr.setNodeValue("H1");
@@ -397,9 +386,8 @@ public class XPathHelper implements HelperClass {
 		e.setAttributeNode(attr);
 		e.removeAttribute("ttest-level");
 	}
-	
-	public static void setTTestSetSampleSignificane(Node sampleNode,
-						boolean different, double level) {
+
+	public static void setTTestSetSampleSignificane(Node sampleNode, boolean different, double level) {
 		Attr attr = sampleNode.getOwnerDocument().createAttribute("ttest");
 		Attr attrLevel = sampleNode.getOwnerDocument().createAttribute("ttest-level");
 		if (different)
@@ -412,20 +400,18 @@ public class XPathHelper implements HelperClass {
 		e.setAttributeNode(attr);
 		e.setAttributeNode(attrLevel);
 	}
-	
+
 	/**
 	 * @param samplenode
 	 * @return
 	 */
 	public static boolean tTestIsReference(Node sampleNode) {
-		if (sampleNode.getAttributes() == null
-							|| sampleNode.getAttributes().getNamedItem("ttest") == null)
+		if (sampleNode.getAttributes() == null || sampleNode.getAttributes().getNamedItem("ttest") == null)
 			return true;
 		else
-			return sampleNode.getAttributes().getNamedItem("ttest")
-								.getFirstChild().getNodeValue().equals("reference");
+			return sampleNode.getAttributes().getNamedItem("ttest").getFirstChild().getNodeValue().equals("reference");
 	}
-	
+
 	/**
 	 * @param linenode
 	 * @return
@@ -446,19 +432,20 @@ public class XPathHelper implements HelperClass {
 			return "Error: Series Name Unknown";
 		}
 	}
-	
-	public static String getSeriesNameFromSpeciesGenotypeAndTreatment(String linename, String linegenotype, String linetreatment) {
+
+	public static String getSeriesNameFromSpeciesGenotypeAndTreatment(String linename, String linegenotype,
+			String linetreatment) {
 		String serie;
 		// DO NOT CHANGE THE NAMING SYSTEM
 		// IT IS PROCESSED BY CLASS SeriesData and at least XML Helper !
 		if (linetreatment != null && linetreatment.length() > 0 && !linetreatment.equalsIgnoreCase("null")
-							&& !checkForSameGenoTypeAndTreatment(linegenotype, linetreatment))
+				&& !checkForSameGenoTypeAndTreatment(linegenotype, linetreatment))
 			serie = linename + (linegenotype.length() > 0 ? "/" + linegenotype : "") + " (" + linetreatment + ")";
 		else
 			serie = linename + (linegenotype.length() > 0 ? "/" + linegenotype : "");
 		return serie;
 	}
-	
+
 	private static boolean checkForSameGenoTypeAndTreatment(String linegenotype, String linetreatment) {
 		if (linegenotype == null || linetreatment == null)
 			return false;
@@ -467,24 +454,22 @@ public class XPathHelper implements HelperClass {
 		else
 			return false;
 	}
-	
+
 	/**
 	 * @param samplenode
 	 * @return
 	 */
 	public static boolean ttestIsH1(Node sampleNode) {
-		if (sampleNode.getAttributes() == null
-							|| sampleNode.getAttributes().getNamedItem("ttest") == null)
+		if (sampleNode.getAttributes() == null || sampleNode.getAttributes().getNamedItem("ttest") == null)
 			return true;
 		else
-			return sampleNode.getAttributes().getNamedItem("ttest")
-								.getFirstChild().getNodeValue().equals("H1");
+			return sampleNode.getAttributes().getNamedItem("ttest").getFirstChild().getNodeValue().equals("H1");
 	}
-	
+
 	public static String getExpAndSeriesName(String expName, String seriesName) {
 		return expName + ": " + seriesName;
 	}
-	
+
 	// public static String getExpAndSeriesNameFromSample(
 	// org.w3c.dom.Node sampleNode) {
 	// org.w3c.dom.Node lineNode = sampleNode.getParentNode();
@@ -493,12 +478,12 @@ public class XPathHelper implements HelperClass {
 	// } else
 	// return null;
 	// }
-	
+
 	// public static String getExpAndSeriesNameFromLine(org.w3c.dom.Node lineNode) {
 	// String expName = getExperimentNameFromLineNode(lineNode);
 	// return getExpAndSeriesName(expName, getSeriesNameForLine(lineNode));
 	// }
-	
+
 	// public static Node getFirstMatchingSampleFromTimeAndLine(List samplesInNode,
 	// String compareTime, String seriesNameFromSample) {
 	// Node result = null;
@@ -513,44 +498,44 @@ public class XPathHelper implements HelperClass {
 	// break;
 	// }
 	// } else
-	// ErrorMsg.addErrorMessage("Expected Sample Node, but got different data set: "+ n.getNodeName());
+	// ErrorMsg.addErrorMessage("Expected Sample Node, but got different data set:
+	// "+ n.getNodeName());
 	// }
 	// return result;
 	// }
-	
+
 	public static String getExperimentNameFromLineNode(Node linenode) {
 		try {
 			Node t1 = linenode.getAttributes().getNamedItem("experimentname");
 			if (t1 != null)
 				return t1.getNodeValue();
 			else
-				return linenode.getOwnerDocument().getElementsByTagName(
-									"experimentname").item(0).getFirstChild().getNodeValue();
+				return linenode.getOwnerDocument().getElementsByTagName("experimentname").item(0).getFirstChild()
+						.getNodeValue();
 		} catch (NullPointerException npe) {
 			return "";
 		}
 	}
-	
+
 	public static String getCoordinatorFromLineNode(Node linenode) {
 		Node t1 = linenode.getAttributes().getNamedItem("coordinator");
 		if (t1 != null)
 			return t1.getNodeValue();
 		else
-			return linenode.getOwnerDocument().getElementsByTagName(
-								"coordinator").item(0).getFirstChild().getNodeValue();
+			return linenode.getOwnerDocument().getElementsByTagName("coordinator").item(0).getFirstChild()
+					.getNodeValue();
 	}
-	
+
 	public static String getStartDateFromLineNode(Node linenode) {
 		String date = "";
 		Node t1 = linenode.getAttributes().getNamedItem("startdate");
 		if (t1 != null)
 			date = t1.getNodeValue();
 		else
-			date = linenode.getOwnerDocument().getElementsByTagName(
-								"startdate").item(0).getFirstChild().getNodeValue();
+			date = linenode.getOwnerDocument().getElementsByTagName("startdate").item(0).getFirstChild().getNodeValue();
 		return date;
 	}
-	
+
 	// public static String getFuncatDescFromLineNode(Node linenode) {
 	// Node t1 = linenode.getAttributes().getNamedItem("funcat");
 	// if (t1 != null)
@@ -558,7 +543,7 @@ public class XPathHelper implements HelperClass {
 	// else
 	// return null;
 	// }
-	
+
 	public static String getSeriesIDforLine(Node linenode) {
 		try {
 			String lineid = linenode.getAttributes().getNamedItem("id").getFirstChild().getNodeValue();
@@ -567,13 +552,14 @@ public class XPathHelper implements HelperClass {
 			return null;
 		}
 	}
-	
+
 	/**
-	 * (1) search substance names which end with <code>substanceStdDevEndID</code> (2) for each substance get all experiment/genotype/line/time combinations
-	 * enclosed
-	 * extract average sample values
-	 * (3) use average sample values as sample stddev for corresponding substance/sample data
-	 * whose substance name is the same as the one mentioned above, but without the trailing <code>substanceStdDevEndID</code> id.
+	 * (1) search substance names which end with <code>substanceStdDevEndID</code>
+	 * (2) for each substance get all experiment/genotype/line/time combinations
+	 * enclosed extract average sample values (3) use average sample values as
+	 * sample stddev for corresponding substance/sample data whose substance name is
+	 * the same as the one mentioned above, but without the trailing
+	 * <code>substanceStdDevEndID</code> id.
 	 * 
 	 * @param mydoc
 	 * @param substanceStdDevEndID
@@ -591,24 +577,29 @@ public class XPathHelper implements HelperClass {
 			while ((substance = substanceNodes.nextNode()) != null) {
 				String substanceName = substance.getAttributes().getNamedItem("name").getNodeValue();
 				if (substName2substNode.containsKey(substanceName.toUpperCase())) {
-					ErrorMsg.addErrorMessage("Substance named " + substanceName + " seems to be more than one time defined in the dataset!");
+					ErrorMsg.addErrorMessage("Substance named " + substanceName
+							+ " seems to be more than one time defined in the dataset!");
 				} else
 					substName2substNode.put(substanceName.toUpperCase(), substance);
 			}
 			for (String substName : substName2substNode.keySet()) {
 				if (substName.endsWith(substanceStdDevEndID)) {
-					String correspondingSubstanceName = substName.substring(0, substName.length() - substanceStdDevEndID.length());
+					String correspondingSubstanceName = substName.substring(0,
+							substName.length() - substanceStdDevEndID.length());
 					if (substName2substNode.containsKey(correspondingSubstanceName)) {
 						int transformedForThisSubstance = 0;
-						
-						HashMap<String, Node> samplePath2avgNode_stdDevData = getSamplePathAndAvgValues(substName2substNode.get(substName));
-						HashMap<String, Node> samplePath2avgNode_actualDataWithoutStdDev = getSamplePathAndAvgValues(substName2substNode
-											.get(correspondingSubstanceName));
-						// samplePath = //id of plant/name of plant/genotype of plant/timepoint and timeunit
+
+						HashMap<String, Node> samplePath2avgNode_stdDevData = getSamplePathAndAvgValues(
+								substName2substNode.get(substName));
+						HashMap<String, Node> samplePath2avgNode_actualDataWithoutStdDev = getSamplePathAndAvgValues(
+								substName2substNode.get(correspondingSubstanceName));
+						// samplePath = //id of plant/name of plant/genotype of plant/timepoint and
+						// timeunit
 						for (String samplePath : samplePath2avgNode_stdDevData.keySet()) {
 							if (samplePath2avgNode_actualDataWithoutStdDev.containsKey(samplePath)) {
 								Node stdDevAvgData = samplePath2avgNode_stdDevData.get(samplePath);
-								Node actualDataWithoutStdDev = samplePath2avgNode_actualDataWithoutStdDev.get(samplePath);
+								Node actualDataWithoutStdDev = samplePath2avgNode_actualDataWithoutStdDev
+										.get(samplePath);
 								// avg value --> std dev value
 								String avgValue = stdDevAvgData.getFirstChild().getNodeValue();
 								actualDataWithoutStdDev.getAttributes().getNamedItem("stddev").setNodeValue(avgValue);
@@ -616,7 +607,7 @@ public class XPathHelper implements HelperClass {
 								transformedForThisSubstance++;
 							}
 						}
-						
+
 						if (transformedForThisSubstance > 0)
 							toBeDeleted.add(substName);
 					}
@@ -631,7 +622,7 @@ public class XPathHelper implements HelperClass {
 		}
 		return transformed;
 	}
-	
+
 	private static HashMap<String, Node> getSamplePathAndAvgValues(Node substanceNode) throws TransformerException {
 		HashMap<String, Node> result = new HashMap<String, Node>();
 		String xpath = "line/sample";
@@ -647,10 +638,13 @@ public class XPathHelper implements HelperClass {
 			Node avgOrData = sample.getFirstChild();
 			while (avgOrData != null) {
 				if (avgOrData.getNodeName().equalsIgnoreCase("average")) {
-					String path = "//" + lineSpeciesID + "/" + lineSpeciesName + "/" + lineSpeciesGenotype + "/" + sampleTime + " " + sampleTimeUnit;
+					String path = "//" + lineSpeciesID + "/" + lineSpeciesName + "/" + lineSpeciesGenotype + "/"
+							+ sampleTime + " " + sampleTimeUnit;
 					path = path.toUpperCase();
 					if (result.containsKey(path))
-						ErrorMsg.addErrorMessage("Duplicate measurement data found for species/genotype/sample time combination: " + path);
+						ErrorMsg.addErrorMessage(
+								"Duplicate measurement data found for species/genotype/sample time combination: "
+										+ path);
 					else
 						result.put(path, avgOrData);
 				}
@@ -659,7 +653,7 @@ public class XPathHelper implements HelperClass {
 		}
 		return result;
 	}
-	
+
 	public static boolean isReplicateDataMissing(Document mydoc) {
 		//
 		String xpath = "count(//substance/line/sample/average[@replicates > 1])<=0";
@@ -672,10 +666,11 @@ public class XPathHelper implements HelperClass {
 		}
 		return ((XBoolean) result).bool();
 	}
-	
+
 	// public static ArrayList<Node> getSampleNodes(Document doc) {
 	// try {
-	// XPath xpath=new DOMXPath("/experimentdata/measurements/substance/line/sample");
+	// XPath xpath=new
+	// DOMXPath("/experimentdata/measurements/substance/line/sample");
 	// ArrayList results = (ArrayList) xpath.selectNodes(doc);
 	// return results;
 	// } catch (Exception e) {
@@ -683,10 +678,11 @@ public class XPathHelper implements HelperClass {
 	// return null;
 	// }
 	// }
-	
+
 	public static ArrayList<Node> getSampleNodes(Document doc, Integer plantID, String substanceID) {
 		try {
-			XPath xpath = new DOMXPath("/experimentdata/measurements/substance[@id=" + substanceID + "]/line[@id=" + plantID + "]/sample");
+			XPath xpath = new DOMXPath(
+					"/experimentdata/measurements/substance[@id=" + substanceID + "]/line[@id=" + plantID + "]/sample");
 			ArrayList results = (ArrayList) xpath.selectNodes(doc);
 			return results;
 		} catch (Exception e) {
@@ -694,7 +690,7 @@ public class XPathHelper implements HelperClass {
 			return null;
 		}
 	}
-	
+
 	public static ArrayList<Node> getDataNodes(Document doc, Integer sampleID) {
 		try {
 			XPath xpath = new DOMXPath("/experimentdata/measurements/substance/line/sample[@id=" + sampleID + "]/data");
@@ -705,10 +701,11 @@ public class XPathHelper implements HelperClass {
 			return null;
 		}
 	}
-	
+
 	public static ArrayList<Node> getDataVolumeNodes(Document doc, Integer sampleID) {
 		try {
-			XPath xpath = new DOMXPath("/experimentdata/measurements/substance/line/sample[@id=" + sampleID + "]/volume");
+			XPath xpath = new DOMXPath(
+					"/experimentdata/measurements/substance/line/sample[@id=" + sampleID + "]/volume");
 			ArrayList results = (ArrayList) xpath.selectNodes(doc);
 			return results;
 		} catch (Exception e) {
@@ -716,10 +713,11 @@ public class XPathHelper implements HelperClass {
 			return null;
 		}
 	}
-	
+
 	public static ArrayList<Node> getDataNetworkNodes(Document doc, Integer sampleID) {
 		try {
-			XPath xpath = new DOMXPath("/experimentdata/measurements/substance/line/sample[@id=" + sampleID + "]/network");
+			XPath xpath = new DOMXPath(
+					"/experimentdata/measurements/substance/line/sample[@id=" + sampleID + "]/network");
 			ArrayList results = (ArrayList) xpath.selectNodes(doc);
 			return results;
 		} catch (Exception e) {
@@ -727,10 +725,11 @@ public class XPathHelper implements HelperClass {
 			return null;
 		}
 	}
-	
+
 	public static ArrayList<Node> getDataImageNodes(Document doc, Integer sampleID) {
 		try {
-			XPath xpath = new DOMXPath("/experimentdata/measurements/substance/line/sample[@id=" + sampleID + "]/image");
+			XPath xpath = new DOMXPath(
+					"/experimentdata/measurements/substance/line/sample[@id=" + sampleID + "]/image");
 			ArrayList results = (ArrayList) xpath.selectNodes(doc);
 			return results;
 		} catch (Exception e) {
@@ -738,14 +737,14 @@ public class XPathHelper implements HelperClass {
 			return null;
 		}
 	}
-	
+
 	/**
-	 * Returns the highest index number of a alternative identifier. Processes all attributes and looks for
-	 * attribute names that start with "name".
+	 * Returns the highest index number of a alternative identifier. Processes all
+	 * attributes and looks for attribute names that start with "name".
 	 * 
 	 * @param xmlSubstanceNode
-	 * @return The highest index of a alternative identifier attribute. Returns -1 in case no alternative identifier is
-	 *         currently assigned.
+	 * @return The highest index of a alternative identifier attribute. Returns -1
+	 *         in case no alternative identifier is currently assigned.
 	 */
 	public static int getMaximumAlternativeIDidx(Node xmlSubstanceNode) {
 		int maxId = -1;
@@ -758,7 +757,7 @@ public class XPathHelper implements HelperClass {
 		}
 		return maxId;
 	}
-	
+
 	public static int getAlternativeIdCount(Node xmlSubstanceNode, boolean includeEmpty) {
 		int idCnt = 0;
 		int maxID = xmlSubstanceNode.getAttributes().getLength();
@@ -772,7 +771,7 @@ public class XPathHelper implements HelperClass {
 		}
 		return idCnt;
 	}
-	
+
 	public static ArrayList<String> getAlternativeIDs(Node xmlSubstanceNode) {
 		ArrayList<String> result = new ArrayList<String>();
 		int maxID = xmlSubstanceNode.getAttributes().getLength();
@@ -784,5 +783,5 @@ public class XPathHelper implements HelperClass {
 		}
 		return result;
 	}
-	
+
 }

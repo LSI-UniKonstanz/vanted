@@ -50,7 +50,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demonstration application showing how to create a line chart using data from a {@link CategoryDataset}.
+ * A simple demonstration application showing how to create a line chart using
+ * data from a {@link CategoryDataset}.
  */
 public class LineChartDemo1 extends ApplicationFrame {
 
@@ -58,7 +59,7 @@ public class LineChartDemo1 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public LineChartDemo1(final String title) {
 		super(title);
@@ -129,14 +130,13 @@ public class LineChartDemo1 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           a dataset.
+	 *            a dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createLineChart(
-							"Line Chart Demo 1", // chart title
+		final JFreeChart chart = ChartFactory.createLineChart("Line Chart Demo 1", // chart title
 				"Type", // domain axis label
 				"Value", // range axis label
 				dataset, // data
@@ -144,7 +144,7 @@ public class LineChartDemo1 extends ApplicationFrame {
 				true, // include legend
 				true, // tooltips
 				false // urls
-				);
+		);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 		final StandardLegend legend = (StandardLegend) chart.getLegend();
@@ -179,24 +179,12 @@ public class LineChartDemo1 extends ApplicationFrame {
 		final LineAndShapeRenderer renderer = (LineAndShapeRenderer) plot.getRenderer();
 		renderer.setDrawShapes(true);
 
-		renderer.setSeriesStroke(
-							0, new BasicStroke(
-												2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
-												1.0f, new float[] { 10.0f, 6.0f }, 0.0f
-							)
-							);
-		renderer.setSeriesStroke(
-							1, new BasicStroke(
-												2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
-												1.0f, new float[] { 6.0f, 6.0f }, 0.0f
-							)
-							);
-		renderer.setSeriesStroke(
-							2, new BasicStroke(
-												2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
-												1.0f, new float[] { 2.0f, 6.0f }, 0.0f
-							)
-							);
+		renderer.setSeriesStroke(0, new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f,
+				new float[] { 10.0f, 6.0f }, 0.0f));
+		renderer.setSeriesStroke(1, new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f,
+				new float[] { 6.0f, 6.0f }, 0.0f));
+		renderer.setSeriesStroke(2, new BasicStroke(2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1.0f,
+				new float[] { 2.0f, 6.0f }, 0.0f));
 		// OPTIONAL CUSTOMISATION COMPLETED.
 
 		return chart;
@@ -206,7 +194,7 @@ public class LineChartDemo1 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

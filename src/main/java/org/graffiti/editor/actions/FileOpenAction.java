@@ -36,45 +36,44 @@ import org.vanted.VantedPreferences;
  */
 public class FileOpenAction extends GraffitiAction {
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/** DOCUMENT ME! */
 	private static IOManager ioManager;
-	
+
 	/** DOCUMENT ME! */
 	private static StringBundle sBundle;
-	
+
 	/** DOCUMENT ME! */
 	private ViewManager viewManager;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Creates a new FileOpenAction object.
 	 * 
 	 * @param mainFrame
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param ioManager
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param viewManager
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param sBundle
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
-	public FileOpenAction(MainFrame mainFrame, IOManager ioManager,
-						ViewManager viewManager, StringBundle sBundle) {
+	public FileOpenAction(MainFrame mainFrame, IOManager ioManager, ViewManager viewManager, StringBundle sBundle) {
 		super("file.open", mainFrame, "filemenu_open");
 		FileOpenAction.ioManager = ioManager;
 		this.viewManager = viewManager;
 		FileOpenAction.sBundle = sBundle;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * This action is enabled, if the editor's io manager contains an input
 	 * serializer.
@@ -86,7 +85,7 @@ public class FileOpenAction extends GraffitiAction {
 	public boolean isEnabled() {
 		return ioManager.hasInputSerializer() && viewManager.hasViews();
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -94,29 +93,30 @@ public class FileOpenAction extends GraffitiAction {
 	public HelpContext getHelpContext() {
 		return null;
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 		JFileChooser fc = ioManager.createOpenFileChooser();
 		OpenFileDialogService.setActiveDirectoryFor(fc);
 		fc.setMultiSelectionEnabled(true);
-		
+
 		/*
 		 * set preferred file extension for opening dialog
 		 */
-		String prefExtension = PreferenceManager.getPreferenceForClass(VantedPreferences.class).get(VantedPreferences.PREFERENCE_STANDARD_SAVE_FILEFORMAT, "");
+		String prefExtension = PreferenceManager.getPreferenceForClass(VantedPreferences.class)
+				.get(VantedPreferences.PREFERENCE_STANDARD_SAVE_FILEFORMAT, "");
 		for (FileFilter filterFilter : fc.getChoosableFileFilters()) {
-			//System.out.println(filterFilter.toString());
-			if (filterFilter instanceof GenericFileFilter && (((GenericFileFilter) filterFilter).getExtension()).endsWith(prefExtension)) {
+			// System.out.println(filterFilter.toString());
+			if (filterFilter instanceof GenericFileFilter
+					&& (((GenericFileFilter) filterFilter).getExtension()).endsWith(prefExtension)) {
 				fc.setFileFilter(filterFilter);
 				break;
 			}
 		}
 		// fc.resetChoosableFileFilters();
-		int returnVal = fc.showDialog(mainFrame, sBundle
-							.getString("menu.file.open"));
-		
+		int returnVal = fc.showDialog(mainFrame, sBundle.getString("menu.file.open"));
+
 		OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
-		
+
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File[] selfiles = fc.getSelectedFiles();
 			try {
@@ -135,18 +135,17 @@ public class FileOpenAction extends GraffitiAction {
 		}
 		fc.setMultiSelectionEnabled(false);
 	}
-	
+
 	public static Collection<File> getGraphFilesFromUser() {
 		ArrayList<File> result = new ArrayList<File>();
 		JFileChooser fc = ioManager.createOpenFileChooser();
 		OpenFileDialogService.setActiveDirectoryFor(fc);
 		fc.setMultiSelectionEnabled(true);
 		// fc.resetChoosableFileFilters();
-		int returnVal = fc.showDialog(MainFrame.getInstance(), sBundle
-							.getString("menu.file.open"));
-		
+		int returnVal = fc.showDialog(MainFrame.getInstance(), sBundle.getString("menu.file.open"));
+
 		OpenFileDialogService.setActiveDirectoryFrom(fc.getCurrentDirectory());
-		
+
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File[] selfiles = fc.getSelectedFiles();
 			for (File f : selfiles)
@@ -158,7 +157,7 @@ public class FileOpenAction extends GraffitiAction {
 		}
 		return result;
 	}
-	
+
 	// private void openFile(File sf, JFileChooser fc, boolean loadInBackground) {
 	// File selfile = sf;
 	// File file = sf;
@@ -166,14 +165,16 @@ public class FileOpenAction extends GraffitiAction {
 	// && (selfile.getName().indexOf(".") == -1)) {
 	// String extension = null;
 	// if (((GenericFileFilter) fc.getFileFilter()).getExtension() == null) {
-	// // no file filter selected, check if a file with any of the given extensions is available
+	// // no file filter selected, check if a file with any of the given extensions
+	// is available
 	// FileFilter[] ff = fc.getChoosableFileFilters();
 	// for (int i = 0; i < ff.length; i++) {
 	// if (ff[i] instanceof GenericFileFilter) {
 	// extension = ((GenericFileFilter) ff[i]).getExtension();
 	// file = new File(selfile + extension);
 	// } else {
-	// ErrorMsg.addErrorMessage("Invalid File Filter Type Found ("+ff[i]+" not instance of GenericFileFilter)");
+	// ErrorMsg.addErrorMessage("Invalid File Filter Type Found ("+ff[i]+" not
+	// instance of GenericFileFilter)");
 	// }
 	// if (file.exists()) break;
 	// }

@@ -13,8 +13,7 @@ import org.graffiti.plugin.GenericPluginAdapter;
 import org.graffiti.plugin.inspector.InspectorTab;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class IPK_PluginAdapter extends GenericPluginAdapter {
 	@Override
@@ -29,9 +28,9 @@ public class IPK_PluginAdapter extends GenericPluginAdapter {
 			return super.getIcon();
 		}
 	}
-	
+
 	public InspectorTab[] getInspectorTabs() {
 		return null;
 	}
-	
+
 }

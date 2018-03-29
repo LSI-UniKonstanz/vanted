@@ -40,37 +40,34 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.network.BroadCastService;
  * 
  * @version $Revision$
  */
-public class TabAglet
-					extends InspectorTab implements Runnable {
-	
+public class TabAglet extends InspectorTab implements Runnable {
+
 	public static String newline = System.getProperty("line.separator");
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private Timer networkBroadCast;
 	private BroadCastService broadCastService = new BroadCastService(9900, 9910, 1000);
 	private BroadCastTask broadCastTask;
-	
-	private JCheckBox runService = new JCheckBox("Allow Network Broadcast (udp-port " +
-						broadCastService.getStartPort() + "-" + broadCastService.getEndPort() + ")", false);
+
+	private JCheckBox runService = new JCheckBox("Allow Network Broadcast (udp-port " + broadCastService.getStartPort()
+			+ "-" + broadCastService.getEndPort() + ")", false);
 	private JLabel myStatusLabel = new JLabel();
 	private JTextArea myDataIn = new JTextArea();
 	private JTextField inputField = new JTextField();
 	private JButton sendButton = new JButton("Send");
-	
+
 	private javax.swing.Timer updateNetStatus;
-	
+
 	private void initComponents() {
 		double border = 2;
-		double[][] size =
-		{
-							{ border, TableLayoutConstants.FILL, border }, // Columns
-				{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, 30, border }
-		}; // Rows
+		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
+				{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL, 30,
+						border } }; // Rows
 		this.setLayout(new TableLayout(size));
-		
+
 		final TabAglet thisTabAglet = this;
-		
+
 		runService.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JCheckBox src = (JCheckBox) e.getSource();
@@ -87,15 +84,11 @@ public class TabAglet
 				updateNetworkStatus();
 			}
 		});
-		
+
 		this.add(runService, "1,1");
 		this.add(myStatusLabel, "1,2");
 		this.add(myDataIn, "1,3");
-		this.add(
-							TableLayout.
-												getSplit(
-																	inputField, sendButton,
-																	TableLayoutConstants.FILL, 80), "1,4");
+		this.add(TableLayout.getSplit(inputField, sendButton, TableLayoutConstants.FILL, 80), "1,4");
 		sendButton.setMnemonic('S');
 		sendButton.setEnabled(false);
 		sendButton.addActionListener(new ActionListener() {
@@ -107,19 +100,19 @@ public class TabAglet
 				updateNetworkStatus();
 			}
 		});
-		
+
 		myDataIn.setBackground(new Color(230, 230, 255));
-		
+
 		updateNetStatus = new javax.swing.Timer(3000, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				updateNetworkStatus();
 			}
 		});
 		updateNetStatus.start();
-		
+
 		this.revalidate();
 	}
-	
+
 	/**
 	 * Constructs a <code>PatternTab</code> and sets the title.
 	 */
@@ -128,65 +121,90 @@ public class TabAglet
 		this.title = "Chat";
 		initComponents();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.AttributeListener#postAttributeAdded(org.graffiti.event.AttributeEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.AttributeListener#postAttributeAdded(org.graffiti.event.
+	 * AttributeEvent)
 	 */
 	public void postAttributeAdded(AttributeEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.AttributeListener#postAttributeChanged(org.graffiti.event.AttributeEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.AttributeListener#postAttributeChanged(org.graffiti.event.
+	 * AttributeEvent)
 	 */
 	public void postAttributeChanged(AttributeEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.AttributeListener#postAttributeRemoved(org.graffiti.event.AttributeEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.AttributeListener#postAttributeRemoved(org.graffiti.event.
+	 * AttributeEvent)
 	 */
 	public void postAttributeRemoved(AttributeEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.AttributeListener#preAttributeAdded(org.graffiti.event.AttributeEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.AttributeListener#preAttributeAdded(org.graffiti.event.
+	 * AttributeEvent)
 	 */
 	public void preAttributeAdded(AttributeEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.AttributeListener#preAttributeChanged(org.graffiti.event.AttributeEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.AttributeListener#preAttributeChanged(org.graffiti.event.
+	 * AttributeEvent)
 	 */
 	public void preAttributeChanged(AttributeEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.AttributeListener#preAttributeRemoved(org.graffiti.event.AttributeEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.AttributeListener#preAttributeRemoved(org.graffiti.event.
+	 * AttributeEvent)
 	 */
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.TransactionListener#transactionFinished(org.graffiti.event.TransactionEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.TransactionListener#transactionFinished(org.graffiti.event
+	 * .TransactionEvent)
 	 */
 	public void transactionFinished(TransactionEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.event.TransactionListener#transactionStarted(org.graffiti.event.TransactionEvent)
+	 * 
+	 * @see
+	 * org.graffiti.event.TransactionListener#transactionStarted(org.graffiti.event.
+	 * TransactionEvent)
 	 */
 	public void transactionStarted(TransactionEvent e) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
@@ -199,14 +217,15 @@ public class TabAglet
 			try {
 				msg = new String((byte[]) it.next(), "UTF-8");
 				myDataIn.setText(msg + newline + curText);
-				MainFrame.showMessage("<html><b>Incoming Broadcast Chat Message:</b> " + msg, MessageType.PERMANENT_INFO);
+				MainFrame.showMessage("<html><b>Incoming Broadcast Chat Message:</b> " + msg,
+						MessageType.PERMANENT_INFO);
 			} catch (UnsupportedEncodingException e) {
 				ErrorMsg.addErrorMessage(e);
 			}
 		}
 		updateNetworkStatus();
 	}
-	
+
 	private void updateNetworkStatus() {
 		if (broadCastTask == null) {
 			myStatusLabel.setText("<html><small>Network functions are disabled");
@@ -228,34 +247,38 @@ public class TabAglet
 				netW = "Broadcast enabled";
 			else
 				netW = "Broadcast disabled";
-			
-			myStatusLabel.setText("<html><small>" + netW + " (in/out/other in, listener-port): "
-								+ broadCastService.getInCount() + "/"
-								+ broadCastService.getOutCount() + "/"
-								+ broadCastService.getOtherInCount() +
-								", " + broadCastService.getBindPort() +
-								"<br>Active Hosts (" + hosts.size() + "): " + hostList);
+
+			myStatusLabel.setText(
+					"<html><small>" + netW + " (in/out/other in, listener-port): " + broadCastService.getInCount() + "/"
+							+ broadCastService.getOutCount() + "/" + broadCastService.getOtherInCount() + ", "
+							+ broadCastService.getBindPort() + "<br>Active Hosts (" + hosts.size() + "): " + hostList);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.session.SessionListener#sessionChanged(org.graffiti.session.Session)
+	 * 
+	 * @see
+	 * org.graffiti.session.SessionListener#sessionChanged(org.graffiti.session.
+	 * Session)
 	 */
 	public void sessionChanged(Session s) {
 		//
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.session.SessionListener#sessionDataChanged(org.graffiti.session.Session)
+	 * 
+	 * @see
+	 * org.graffiti.session.SessionListener#sessionDataChanged(org.graffiti.session.
+	 * Session)
 	 */
 	public void sessionDataChanged(Session s) {
 		//
-		
+
 	}
-	
+
 	@Override
 	public boolean visibleForView(View v) {
 		return v == null || v instanceof GraphView;

@@ -20,28 +20,28 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.exporters.sbml.SBML_SBase_W
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_SBase_Reader;
 
 public class KineticLawHelper implements AttributeListener {
-	
+
 	Graph g;
-	
+
 	/**
 	 * Provides necessary methods
 	 */
 	SBML_SBase_Writer attWriter;
-	
+
 	Map<String, List<Node>> _reactionClones;
-	
+
 	/**
 	 * Provides necessary methods
 	 */
 	SBML_SBase_Reader attReader;
-	
+
 	List<SBMLLocalParameter> localParameterList;
-	
+
 	/**
 	 * Constructor. Initializes the graph
 	 * 
 	 * @param g
-	 *           the graph where the information is read from
+	 *            the graph where the information is read from
 	 */
 	public KineticLawHelper(Graph g, Map<String, List<Node>> reactionClones) {
 		this.g = g;
@@ -51,37 +51,36 @@ public class KineticLawHelper implements AttributeListener {
 		localParameterList = new ArrayList<SBMLLocalParameter>();
 		initKineticLawNideIDs();
 		// the following two lines cause a problem
-		// any attribute change triggers a call of preAttributeChanged and postAttributeChanged for each reaction node
-		// the current implementation of postAttributeChanged (see below) is executed 'number of reaction nodes' times
+		// any attribute change triggers a call of preAttributeChanged and
+		// postAttributeChanged for each reaction node
+		// the current implementation of postAttributeChanged (see below) is executed
+		// 'number of reaction nodes' times
 		// for each attribute change on a single reaction node
-		// opening a large SBML model (more than 5000 reactions) in VANTED takes a long time (several minutes)
+		// opening a large SBML model (more than 5000 reactions) in VANTED takes a long
+		// time (several minutes)
 		// ListenerManager listenerManager = g.getListenerManager();
 		// listenerManager.addAllTimeAttributeListener(this);
 	}
-	
-	public SBMLLocalParameter addLocalParemeter(Graph g,
-			String presentedAttributeName, String internAttributeName) {
-		SBMLLocalParameter localParameter = new SBMLLocalParameter(g,
-				presentedAttributeName, internAttributeName);
+
+	public SBMLLocalParameter addLocalParemeter(Graph g, String presentedAttributeName, String internAttributeName) {
+		SBMLLocalParameter localParameter = new SBMLLocalParameter(g, presentedAttributeName, internAttributeName);
 		localParameterList.add(localParameter);
 		return localParameter;
 	}
-	
+
 	public SBMLLocalParameter addLocalParameter(Graph g, int localParameterCount) {
-		SBMLLocalParameter localParameter = new SBMLLocalParameter(g,
-				localParameterCount);
+		SBMLLocalParameter localParameter = new SBMLLocalParameter(g, localParameterCount);
 		localParameterList.add(localParameter);
 		return localParameter;
 	}
-	
+
 	public void setMetaId(Node reactionNode, String metaID) {
 		if (!metaID.equals(SBML_Constants.EMPTY)) {
-			AttributeHelper.setAttribute(reactionNode,
-					SBML_Constants.SBML_KINETIC_LAW,
+			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
 					SBML_Constants.KINETIC_LAW_META_ID, metaID);
 		}
 	}
-	
+
 	public Boolean isSetMetaID(Node reactionNode) {
 		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
 				SBML_Constants.KINETIC_LAW_META_ID)) {
@@ -90,45 +89,46 @@ public class KineticLawHelper implements AttributeListener {
 			return false;
 		}
 	}
-	
+
 	public String getMetaID(Node reactionNode) {
 		if (isSetMetaID(reactionNode)) {
-			return (String) attWriter.getAttribute(reactionNode,
-					SBML_Constants.SBML_KINETIC_LAW, SBML_Constants.KINETIC_LAW_META_ID);
+			return (String) attWriter.getAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
+					SBML_Constants.KINETIC_LAW_META_ID);
 		} else {
 			return SBML_Constants.EMPTY;
 		}
 	}
-	
+
 	public void deleteMetaID(Node reactionNode) {
 		if (isSetMetaID(reactionNode)) {
-			AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW, SBML_Constants.KINETIC_LAW_META_ID);
+			AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
+					SBML_Constants.KINETIC_LAW_META_ID);
 		}
 	}
-	
+
 	public void setSBOTerm(Node reactionNode, String sboTerm) {
 		if (!sboTerm.equals(SBML_Constants.EMPTY)) {
-			AttributeHelper.setAttribute(reactionNode,
-					SBML_Constants.SBML_KINETIC_LAW,
+			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
 					SBML_Constants.KINETIC_LAW_SBOTERM, sboTerm);
 		}
 	}
-	
+
 	public String getSBOTerm(Node reactionNode) {
 		if (isSetSBOTerm(reactionNode)) {
-			return (String) attWriter.getAttribute(reactionNode,
-					SBML_Constants.SBML_KINETIC_LAW, SBML_Constants.KINETIC_LAW_SBOTERM);
+			return (String) attWriter.getAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
+					SBML_Constants.KINETIC_LAW_SBOTERM);
 		} else {
 			return SBML_Constants.EMPTY;
 		}
 	}
-	
+
 	public void deleteSBOTerm(Node reactionNode) {
 		if (isSetSBOTerm(reactionNode)) {
-			AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW, SBML_Constants.KINETIC_LAW_SBOTERM);
+			AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
+					SBML_Constants.KINETIC_LAW_SBOTERM);
 		}
 	}
-	
+
 	public Boolean isSetSBOTerm(Node reactionNode) {
 		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
 				SBML_Constants.KINETIC_LAW_SBOTERM)) {
@@ -137,13 +137,12 @@ public class KineticLawHelper implements AttributeListener {
 			return false;
 		}
 	}
-	
+
 	public void setAnnotation(Node reactionNode, Annotation annotation) {
-		AttributeHelper.setAttribute(reactionNode,
-				SBML_Constants.SBML_KINETIC_LAW,
+		AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
 				SBML_Constants.KINETIC_LAW_ANNOTATION, annotation);
 	}
-	
+
 	public Boolean isSetAnnotation(Node reactionNode) {
 		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
 				SBML_Constants.KINETIC_LAW_ANNOTATION)) {
@@ -152,29 +151,28 @@ public class KineticLawHelper implements AttributeListener {
 			return false;
 		}
 	}
-	
+
 	public void deleteAnnotation(Node reactionNode) {
 		if (isSetAnnotation(reactionNode)) {
-			AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW, SBML_Constants.KINETIC_LAW_ANNOTATION);
+			AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
+					SBML_Constants.KINETIC_LAW_ANNOTATION);
 		}
 	}
-	
+
 	public Annotation getAnnotation(Node reactionNode) {
 		if (isSetAnnotation(reactionNode)) {
-			return (Annotation) attWriter.getAttribute(reactionNode,
-					SBML_Constants.SBML_KINETIC_LAW, SBML_Constants.KINETIC_LAW_ANNOTATION);
+			return (Annotation) attWriter.getAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
+					SBML_Constants.KINETIC_LAW_ANNOTATION);
 		} else {
 			return null;
 		}
 	}
-	
+
 	public void setNonRDFAnnotation(Node reactionNode, XMLNode xmlNode) {
-		AttributeHelper
-				.setAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
-						SBML_Constants.KINETIC_LAW_NON_RDF_ANNOTATION,
-						xmlNode);
+		AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
+				SBML_Constants.KINETIC_LAW_NON_RDF_ANNOTATION, xmlNode);
 	}
-	
+
 	public Boolean isSetNonRDFAnnotation(Node reactionNode) {
 		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
 				SBML_Constants.KINETIC_LAW_NON_RDF_ANNOTATION)) {
@@ -183,38 +181,37 @@ public class KineticLawHelper implements AttributeListener {
 			return false;
 		}
 	}
-	
+
 	public void deleteNonRDFAnnotation(Node reactionNode) {
 		if (isSetNonRDFAnnotation(reactionNode)) {
-			AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW, SBML_Constants.KINETIC_LAW_NON_RDF_ANNOTATION);
+			AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
+					SBML_Constants.KINETIC_LAW_NON_RDF_ANNOTATION);
 		}
 	}
-	
+
 	public XMLNode getNonRDFAnnotation(Node reactionNode) {
 		if (isSetNonRDFAnnotation(reactionNode)) {
-			return (XMLNode) attWriter.getAttribute(reactionNode,
-					SBML_Constants.SBML_KINETIC_LAW, SBML_Constants.KINETIC_LAW_NON_RDF_ANNOTATION);
+			return (XMLNode) attWriter.getAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
+					SBML_Constants.KINETIC_LAW_NON_RDF_ANNOTATION);
 		} else {
 			return null; // check if null pointer is thrown
 		}
 	}
-	
+
 	public void setFunction(Node reactionNode, String function) {
 		if (!function.equals(SBML_Constants.EMPTY)) {
-			AttributeHelper.setAttribute(reactionNode,
-					SBML_Constants.SBML_KINETIC_LAW,
+			AttributeHelper.setAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
 					SBML_Constants.KINETIC_LAW_FUNCTION, function);
 		}
 	}
-	
+
 	public void setNotes(Node reactionNode, String notes, XMLNode notesObj) {
 		if (!notes.equals(SBML_Constants.EMPTY)) {
-			attReader.addNotes(notesObj, notes, reactionNode,
-					SBML_Constants.SBML_KINETIC_LAW,
+			attReader.addNotes(notesObj, notes, reactionNode, SBML_Constants.SBML_KINETIC_LAW,
 					SBML_Constants.KINETIC_LAW_NOTES);
 		}
 	}
-	
+
 	public Boolean isSetNotes(Node reactionNode) {
 		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
 				SBML_Constants.KINETIC_LAW_NOTES)) {
@@ -223,71 +220,66 @@ public class KineticLawHelper implements AttributeListener {
 			return false;
 		}
 	}
-	
+
 	public XMLNode getNotes(Node reactionNode) {
 		if (isSetNotes(reactionNode)) {
-			return (XMLNode) attWriter.getAttribute(reactionNode,
-					SBML_Constants.SBML_KINETIC_LAW, SBML_Constants.KINETIC_LAW_NOTES);
+			return (XMLNode) attWriter.getAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
+					SBML_Constants.KINETIC_LAW_NOTES);
 		} else {
 			return null;
 		}
 	}
-	
+
 	public void deleteNotes(Node reactionNode) {
 		if (isSetNotes(reactionNode)) {
-			AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW, SBML_Constants.KINETIC_LAW_NOTES);
+			AttributeHelper.deleteAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
+					SBML_Constants.KINETIC_LAW_NOTES);
 		}
 	}
-	
+
 	public Boolean isSetFunction(Node reactionNode) {
-		if (AttributeHelper.hasAttribute(reactionNode,
-				SBML_Constants.SBML_KINETIC_LAW,
+		if (AttributeHelper.hasAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
 				SBML_Constants.KINETIC_LAW_FUNCTION)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	public String getFunction(Node reactionNode) {
 		if (isSetFunction(reactionNode)) {
-			return (String) attWriter.getAttribute(reactionNode,
-					SBML_Constants.SBML_KINETIC_LAW,
+			return (String) attWriter.getAttribute(reactionNode, SBML_Constants.SBML_KINETIC_LAW,
 					SBML_Constants.KINETIC_LAW_FUNCTION);
 		} else {
 			return SBML_Constants.EMPTY;
 		}
 	}
-	
+
 	private void initKineticLawNideIDs() {
-		AttributeHelper.setNiceId(SBML_Constants.KINETIC_LAW_NOTES,
-				"SBML Kinetic Law: Notes");
-		AttributeHelper.setNiceId(SBML_Constants.KINETIC_LAW_META_ID,
-				"SBML Kinetic Law: Meta ID");
-		AttributeHelper.setNiceId(SBML_Constants.KINETIC_LAW_SBOTERM,
-				"SBML Kinetic Law: SBOTerm");
-		AttributeHelper.setNiceId(SBML_Constants.KINETIC_LAW_FUNCTION,
-				"SBML Kinetic Law: Function");
+		AttributeHelper.setNiceId(SBML_Constants.KINETIC_LAW_NOTES, "SBML Kinetic Law: Notes");
+		AttributeHelper.setNiceId(SBML_Constants.KINETIC_LAW_META_ID, "SBML Kinetic Law: Meta ID");
+		AttributeHelper.setNiceId(SBML_Constants.KINETIC_LAW_SBOTERM, "SBML Kinetic Law: SBOTerm");
+		AttributeHelper.setNiceId(SBML_Constants.KINETIC_LAW_FUNCTION, "SBML Kinetic Law: Function");
 	}
-	
+
 	@Override
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void transactionStarted(TransactionEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void postAttributeAdded(AttributeEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void postAttributeChanged(AttributeEvent e) {
 		Attributable attributeable = e.getAttributeable();
@@ -298,7 +290,7 @@ public class KineticLawHelper implements AttributeListener {
 			}
 		}
 	}
-	
+
 	private void propagateChanges(Node reactionNode, String attributeName, Object newValue) {
 		String reactionId = SBMLHelper.getReactionID(reactionNode);
 		List<Node> reactionNodes = _reactionClones.get(reactionId);
@@ -306,228 +298,223 @@ public class KineticLawHelper implements AttributeListener {
 			reactionNodes = new ArrayList<Node>();
 		}
 		for (Node node : reactionNodes) {
-			
+
 			if (newValue instanceof String && SBMLHelper.isKineticLawFunction(reactionNode)) {
 				String function = (String) newValue;
-				if (attributeName.equals(SBML_Constants.KINETIC_LAW_FUNCTION) && function.equals(SBML_Constants.EMPTY)) {
-					AttributeHelper.deleteAttribute(node, SBML_Constants.SBML_KINETIC_LAW, SBML_Constants.KINETIC_LAW_FUNCTION);
-				} else
-					if (attributeName.equals(SBML_Constants.KINETIC_LAW_FUNCTION) && !SBMLHelper.getKineticLawFunction(node).equals(function)) {
-						setFunction(node, function);
-						continue;
-					}
+				if (attributeName.equals(SBML_Constants.KINETIC_LAW_FUNCTION)
+						&& function.equals(SBML_Constants.EMPTY)) {
+					AttributeHelper.deleteAttribute(node, SBML_Constants.SBML_KINETIC_LAW,
+							SBML_Constants.KINETIC_LAW_FUNCTION);
+				} else if (attributeName.equals(SBML_Constants.KINETIC_LAW_FUNCTION)
+						&& !SBMLHelper.getKineticLawFunction(node).equals(function)) {
+					setFunction(node, function);
+					continue;
+				}
 			}
 			if (newValue instanceof String && isSetMetaID(reactionNode)) {
 				String metaID = (String) newValue;
 				if (attributeName.equals(SBML_Constants.KINETIC_LAW_META_ID) && metaID.equals(SBML_Constants.EMPTY)) {
 					deleteMetaID(node);
-				} else
-					if (attributeName.equals(SBML_Constants.KINETIC_LAW_META_ID) && !getMetaID(node).equals(metaID)) {
-						setMetaId(node, metaID);
-						continue;
-					}
+				} else if (attributeName.equals(SBML_Constants.KINETIC_LAW_META_ID)
+						&& !getMetaID(node).equals(metaID)) {
+					setMetaId(node, metaID);
+					continue;
+				}
 			}
 			if (newValue instanceof String && isSetSBOTerm(reactionNode)) {
 				String sboTerm = (String) newValue;
 				if (attributeName.equals(SBML_Constants.KINETIC_LAW_SBOTERM) && sboTerm.equals(SBML_Constants.EMPTY)) {
 					deleteSBOTerm(node);
-				} else
-					if (attributeName.equals(SBML_Constants.KINETIC_LAW_SBOTERM) && !getSBOTerm(node).equals(sboTerm)) {
-						setSBOTerm(node, sboTerm);
-						continue;
-					}
+				} else if (attributeName.equals(SBML_Constants.KINETIC_LAW_SBOTERM)
+						&& !getSBOTerm(node).equals(sboTerm)) {
+					setSBOTerm(node, sboTerm);
+					continue;
+				}
 			}
-			
+
 			if (newValue instanceof XMLNode && isSetNotes(reactionNode)) {
 				XMLNode notes = (XMLNode) newValue;
 				if (attributeName.equals(SBML_Constants.KINETIC_LAW_NOTES) && notes.getChildCount() != 0) {
 					deleteNotes(node);
-				} else
-					if (attributeName.equals(SBML_Constants.KINETIC_LAW_NOTES) && !getNotes(node).equals(notes)) {
-						setNotes(node, notes.toString(), notes);
-						continue;
-					}
+				} else if (attributeName.equals(SBML_Constants.KINETIC_LAW_NOTES) && !getNotes(node).equals(notes)) {
+					setNotes(node, notes.toString(), notes);
+					continue;
+				}
 			}
 			if (newValue instanceof Annotation && isSetAnnotation(reactionNode)) {
 				Annotation annotation = (Annotation) newValue;
-				if (attributeName.equals(SBML_Constants.KINETIC_LAW_ANNOTATION) && annotation.toString().equals(SBML_Constants.EMPTY)) {
+				if (attributeName.equals(SBML_Constants.KINETIC_LAW_ANNOTATION)
+						&& annotation.toString().equals(SBML_Constants.EMPTY)) {
 					deleteAnnotation(node);
-				} else
-					if (attributeName.equals(SBML_Constants.KINETIC_LAW_ANNOTATION) && !getAnnotation(node).equals(annotation)) {
-						setAnnotation(node, annotation);
-						continue;
-					}
+				} else if (attributeName.equals(SBML_Constants.KINETIC_LAW_ANNOTATION)
+						&& !getAnnotation(node).equals(annotation)) {
+					setAnnotation(node, annotation);
+					continue;
+				}
 			}
-			
+
 			if (newValue instanceof XMLNode && isSetNonRDFAnnotation(reactionNode)) {
 				XMLNode annotation = (XMLNode) newValue;
 				if (attributeName.equals(SBML_Constants.KINETIC_LAW_NON_RDF_ANNOTATION) && annotation == null) {
 					deleteNonRDFAnnotation(node);
-				} else
-					if (attributeName.equals(SBML_Constants.KINETIC_LAW_NON_RDF_ANNOTATION) && !getNonRDFAnnotation(node).equals(annotation)) {
-						setNonRDFAnnotation(node, annotation);
-						continue;
-					}
+				} else if (attributeName.equals(SBML_Constants.KINETIC_LAW_NON_RDF_ANNOTATION)
+						&& !getNonRDFAnnotation(node).equals(annotation)) {
+					setNonRDFAnnotation(node, annotation);
+					continue;
+				}
 			}
-			
+
 			Iterator<SBMLLocalParameter> localParameterIt = localParameterList.iterator();
 			int count = 1;
 			while (localParameterIt.hasNext()) {
 				SBMLLocalParameter localParameter = localParameterIt.next();
 				if (newValue instanceof String && SBMLHelper.isLocalParameterID(reactionNode, count)) {
-					String localParameterName = SBML_Constants.LOCAL_PARAMETER + count + SBML_Constants.LOCAL_PARAMETER_ID;
-					
+					String localParameterName = SBML_Constants.LOCAL_PARAMETER + count
+							+ SBML_Constants.LOCAL_PARAMETER_ID;
+
 					String id = (String) newValue;
 					if (id.equals(SBML_Constants.EMPTY)) {
 						SBMLHelper.deleteLocalParameterID(node, id);
+					} else if (attributeName.equals(localParameterName)
+							&& !SBMLHelper.getLocalParameterID(node, count).equals(id)) {
+						localParameter.setID(node, id);
+						continue;
 					}
-					else
-						if (attributeName.equals(localParameterName) && !SBMLHelper.getLocalParameterID(node, count).equals(id)) {
-							localParameter.setID(node, id);
-							continue;
-						}
 				}
 				if (newValue instanceof String && SBMLHelper.isLocalParameterName(reactionNode, count)) {
-					String localParameterName = SBML_Constants.LOCAL_PARAMETER + count + SBML_Constants.LOCAL_PARAMETER_NAME;
-					
+					String localParameterName = SBML_Constants.LOCAL_PARAMETER + count
+							+ SBML_Constants.LOCAL_PARAMETER_NAME;
+
 					String name = (String) newValue;
 					if (name.equals(SBML_Constants.EMPTY)) {
 						SBMLHelper.deleteLocalParameterName(node, SBMLHelper.getLocalParameterID(node, count));
+					} else if (attributeName.equals(localParameterName)
+							&& !SBMLHelper.getLocalParameterName(node, count).equals(name)) {
+						localParameter.setName(node, name);
+						continue;
 					}
-					else
-						if (attributeName.equals(localParameterName) && !SBMLHelper.getLocalParameterName(node, count).equals(name)) {
-							localParameter.setName(node, name);
-							continue;
-						}
-					
+
 				}
 				if (newValue instanceof Double && SBMLHelper.isLocalParameterValue(reactionNode, count)) {
-					String localParameterName = SBML_Constants.LOCAL_PARAMETER + count + SBML_Constants.LOCAL_PARAMETER_VALUE;
-					
+					String localParameterName = SBML_Constants.LOCAL_PARAMETER + count
+							+ SBML_Constants.LOCAL_PARAMETER_VALUE;
+
 					Double value = (Double) newValue;
 					if (Double.isNaN(value)) {
 						SBMLHelper.deleteLocalParameterValue(node, SBMLHelper.getLocalParameterID(node, count));
+					} else if (attributeName.equals(localParameterName)
+							&& !SBMLHelper.getLocalParameterValue(node, count).equals(value)) {
+						localParameter.setValue(node, value);
+						continue;
 					}
-					else
-						if (attributeName.equals(localParameterName) && !SBMLHelper.getLocalParameterValue(node, count).equals(value)) {
-							localParameter.setValue(node, value);
-							continue;
-						}
-					
+
 				}
 				if (newValue instanceof String && SBMLHelper.isLocalParameterUnits(reactionNode, count)) {
-					String localParameterName = SBML_Constants.LOCAL_PARAMETER + count + SBML_Constants.LOCAL_PARAMETER_UNITS;
-					
+					String localParameterName = SBML_Constants.LOCAL_PARAMETER + count
+							+ SBML_Constants.LOCAL_PARAMETER_UNITS;
+
 					String units = (String) newValue;
 					if (units.equals(SBML_Constants.EMPTY)) {
 						SBMLHelper.deleteLocalParameterUnits(node, SBMLHelper.getLocalParameterID(node, count));
+					} else if (attributeName.equals(localParameterName)
+							&& !SBMLHelper.getLocalParameterUnits(node, count).equals(units)) {
+						localParameter.setUnits(node, units);
+						continue;
 					}
-					else
-						if (attributeName.equals(localParameterName) && !SBMLHelper.getLocalParameterUnits(node, count).equals(units)) {
-							localParameter.setUnits(node, units);
-							continue;
-						}
-					
+
 				}
 				if (newValue instanceof String && localParameter.isSetMetaID(reactionNode)) {
 					String localParameterMetaID = SBML_Constants.LOCAL_PARAMETER + count + SBML_Constants.META_ID;
-					
+
 					String metaId = (String) newValue;
 					if (attributeName.equals(localParameterMetaID) && metaId.equals(SBML_Constants.EMPTY)) {
 						localParameter.deleteMetaID(node);
+					} else if (attributeName.equals(localParameterMetaID) && !getMetaID(node).equals(metaId)) {
+						localParameter.setMetaID(node, metaId);
+						continue;
 					}
-					else
-						if (attributeName.equals(localParameterMetaID) && !getMetaID(node).equals(metaId)) {
-							localParameter.setMetaID(node, metaId);
-							continue;
-						}
-					
+
 				}
 				if (newValue instanceof String && localParameter.isSetSBOTerm(reactionNode)) {
 					String localParameterSBOTerm = SBML_Constants.LOCAL_PARAMETER + count + SBML_Constants.SBOTERM;
-					
+
 					String sboTerm = (String) newValue;
 					String oldValue = getSBOTerm(node);
 					if (attributeName.equals(localParameterSBOTerm) && sboTerm.equals(SBML_Constants.EMPTY)) {
 						localParameter.deleteSBOTerm(node);
+					} else if (attributeName.equals(localParameterSBOTerm) && !oldValue.equals(sboTerm)) {
+						localParameter.setSBOTerm(node, sboTerm);
+						continue;
 					}
-					else
-						if (attributeName.equals(localParameterSBOTerm) && !oldValue.equals(sboTerm)) {
-							localParameter.setSBOTerm(node, sboTerm);
-							continue;
-						}
 				}
-				
+
 				if (newValue instanceof XMLNode && localParameter.isSetNotes(reactionNode)) {
 					String localParameterNote = SBML_Constants.LOCAL_PARAMETER + count + SBML_Constants.NOTES;
-					
+
 					XMLNode notes = (XMLNode) newValue;
 					XMLNode notesOld = getNotes(node);
 					if (attributeName.equals(localParameterNote) && notes.getChildCount() == 0) {
 						localParameter.deleteNotes(node);
+					} else if (attributeName.equals(localParameterNote) && !notesOld.equals(notes)) {
+						localParameter.setNotes(node, notes.toString(), notes);
+						continue;
 					}
-					else
-						if (attributeName.equals(localParameterNote) && !notesOld.equals(notes)) {
-							localParameter.setNotes(node, notes.toString(), notes);
-							continue;
-						}
 				}
-				
+
 				if (newValue instanceof Annotation && localParameter.isSetAnnotation(reactionNode)) {
-					String localParameterAnnotation = SBML_Constants.LOCAL_PARAMETER + count + SBML_Constants.ANNOTATION;
-					
+					String localParameterAnnotation = SBML_Constants.LOCAL_PARAMETER + count
+							+ SBML_Constants.ANNOTATION;
+
 					Annotation annotation = (Annotation) newValue;
 					Annotation oldAnnotation = getAnnotation(node);
-					if (attributeName.equals(localParameterAnnotation) && annotation.getFullAnnotationString().isEmpty()) {
+					if (attributeName.equals(localParameterAnnotation)
+							&& annotation.getFullAnnotationString().isEmpty()) {
 						localParameter.deleteAnnotation(node);
+					} else if (attributeName.equals(localParameterAnnotation) && !oldAnnotation.equals(annotation)) {
+						localParameter.setAnnotation(node, annotation);
+						continue;
 					}
-					else
-						if (attributeName.equals(localParameterAnnotation) && !oldAnnotation.equals(annotation)) {
-							localParameter.setAnnotation(node, annotation);
-							continue;
-						}
 				}
-				
+
 				if (newValue instanceof XMLNode && localParameter.isSetNonRDFAnnotation(reactionNode)) {
-					String localParameterAnnotation = SBML_Constants.LOCAL_PARAMETER + count + SBML_Constants.NON_RDF_ANNOTATION;
-					
+					String localParameterAnnotation = SBML_Constants.LOCAL_PARAMETER + count
+							+ SBML_Constants.NON_RDF_ANNOTATION;
+
 					XMLNode annotation = (XMLNode) newValue;
 					XMLNode oldAnnotation = getNonRDFAnnotation(node);
 					if (attributeName.equals(localParameterAnnotation) && annotation == null) {
 						localParameter.deleteNonRDFAnnotation(node);
+					} else if (attributeName.equals(localParameterAnnotation) && !oldAnnotation.equals(annotation)) {
+						localParameter.setNonRDFAnnotation(node, annotation);
+						continue;
 					}
-					else
-						if (attributeName.equals(localParameterAnnotation) && !oldAnnotation.equals(annotation)) {
-							localParameter.setNonRDFAnnotation(node, annotation);
-							continue;
-						}
 				}
 				count++;
 			}
 		}
 	}
-	
+
 	@Override
 	public void postAttributeRemoved(AttributeEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void preAttributeAdded(AttributeEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void preAttributeChanged(AttributeEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void preAttributeRemoved(AttributeEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

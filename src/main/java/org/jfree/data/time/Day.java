@@ -56,7 +56,8 @@ import org.jfree.date.SerialDate;
 /**
  * Represents a single day in the range 1-Jan-1900 to 31-Dec-9999.
  * <P>
- * This class is immutable, which is a requirement for all {@link RegularTimePeriod} subclasses.
+ * This class is immutable, which is a requirement for all
+ * {@link RegularTimePeriod} subclasses.
  */
 public class Day extends RegularTimePeriod implements Serializable {
 
@@ -86,11 +87,11 @@ public class Day extends RegularTimePeriod implements Serializable {
 	 * Constructs a new one day time period.
 	 * 
 	 * @param day
-	 *           the day-of-the-month.
+	 *            the day-of-the-month.
 	 * @param month
-	 *           the month (1 to 12).
+	 *            the month (1 to 12).
 	 * @param year
-	 *           the year (1900 <= year <= 9999).
+	 *            the year (1900 <= year <= 9999).
 	 */
 	public Day(final int day, final int month, final int year) {
 		this.serialDate = SerialDate.createInstance(day, month, year);
@@ -100,18 +101,18 @@ public class Day extends RegularTimePeriod implements Serializable {
 	 * Constructs a new one day time period.
 	 * 
 	 * @param serialDate
-	 *           the day.
+	 *            the day.
 	 */
 	public Day(final SerialDate serialDate) {
 		this.serialDate = serialDate;
 	}
 
 	/**
-	 * Constructs a new Day, based on a particular date/time and the default
-	 * time zone.
+	 * Constructs a new Day, based on a particular date/time and the default time
+	 * zone.
 	 * 
 	 * @param time
-	 *           the time.
+	 *            the time.
 	 */
 	public Day(final Date time) {
 		this(time, RegularTimePeriod.DEFAULT_TIME_ZONE);
@@ -121,9 +122,9 @@ public class Day extends RegularTimePeriod implements Serializable {
 	 * Constructs a Day, based on a particular date/time and time zone.
 	 * 
 	 * @param time
-	 *           the date/time.
+	 *            the date/time.
 	 * @param zone
-	 *           the time zone.
+	 *            the time zone.
 	 */
 	public Day(final Date time, final TimeZone zone) {
 
@@ -139,8 +140,9 @@ public class Day extends RegularTimePeriod implements Serializable {
 	/**
 	 * Returns the day as a SerialDate.
 	 * <P>
-	 * Note: the reference that is returned should be an instance of an immutable SerialDate (otherwise the caller could use the reference to alter the state of
-	 * this Day instance, and Day is supposed to be immutable).
+	 * Note: the reference that is returned should be an instance of an immutable
+	 * SerialDate (otherwise the caller could use the reference to alter the state
+	 * of this Day instance, and Day is supposed to be immutable).
 	 * 
 	 * @return the day as a SerialDate.
 	 */
@@ -197,7 +199,8 @@ public class Day extends RegularTimePeriod implements Serializable {
 	/**
 	 * Returns the day following this one, or null if some limit has been reached.
 	 * 
-	 * @return the day following this one, or <code>null</code> if some limit has been reached.
+	 * @return the day following this one, or <code>null</code> if some limit has
+	 *         been reached.
 	 */
 	public RegularTimePeriod next() {
 
@@ -227,7 +230,7 @@ public class Day extends RegularTimePeriod implements Serializable {
 	 * calendar (which determines the time zone).
 	 * 
 	 * @param calendar
-	 *           calendar to use.
+	 *            calendar to use.
 	 * @return the start of the day as milliseconds since 01-01-1970.
 	 */
 	public long getFirstMillisecond(final Calendar calendar) {
@@ -249,7 +252,7 @@ public class Day extends RegularTimePeriod implements Serializable {
 	 * calendar (which determines the time zone).
 	 * 
 	 * @param calendar
-	 *           calendar to use.
+	 *            calendar to use.
 	 * @return the end of the day as milliseconds since 01-01-1970.
 	 */
 	public long getLastMillisecond(final Calendar calendar) {
@@ -267,13 +270,12 @@ public class Day extends RegularTimePeriod implements Serializable {
 	}
 
 	/**
-	 * Tests the equality of this Day object to an arbitrary object. Returns
-	 * true if the target is a Day instance or a SerialDate instance
-	 * representing the same day as this object. In all other cases,
-	 * returns false.
+	 * Tests the equality of this Day object to an arbitrary object. Returns true if
+	 * the target is a Day instance or a SerialDate instance representing the same
+	 * day as this object. In all other cases, returns false.
 	 * 
 	 * @param object
-	 *           the object.
+	 *            the object.
 	 * @return a flag indicating whether or not an object is equal to this day.
 	 */
 	public boolean equals(final Object object) {
@@ -294,7 +296,8 @@ public class Day extends RegularTimePeriod implements Serializable {
 	/**
 	 * Returns a hash code for this object instance.
 	 * <p>
-	 * The approach described by Joshua Bloch in "Effective Java" has been used here:
+	 * The approach described by Joshua Bloch in "Effective Java" has been used
+	 * here:
 	 * <p>
 	 * <code>http://developer.java.sun.com/developer/Books/effectivejava/Chapter3.pdf</code>
 	 * 
@@ -305,12 +308,11 @@ public class Day extends RegularTimePeriod implements Serializable {
 	}
 
 	/**
-	 * Returns an integer indicating the order of this Day object relative to
-	 * the specified object:
-	 * negative == before, zero == same, positive == after.
+	 * Returns an integer indicating the order of this Day object relative to the
+	 * specified object: negative == before, zero == same, positive == after.
 	 * 
 	 * @param o1
-	 *           the object to compare.
+	 *            the object to compare.
 	 * @return negative == before, zero == same, positive == after.
 	 */
 	public int compareTo(final Object o1) {
@@ -326,18 +328,17 @@ public class Day extends RegularTimePeriod implements Serializable {
 
 		// CASE 2 : Comparing to another TimePeriod object
 		// -----------------------------------------------
-		else
-			if (o1 instanceof RegularTimePeriod) {
-				// more difficult case - evaluate later...
-				result = 0;
-			}
+		else if (o1 instanceof RegularTimePeriod) {
+			// more difficult case - evaluate later...
+			result = 0;
+		}
 
-			// CASE 3 : Comparing to a non-TimePeriod object
-			// ---------------------------------------------
-			else {
-				// consider time periods to be ordered after general objects
-				result = 1;
-			}
+		// CASE 3 : Comparing to a non-TimePeriod object
+		// ---------------------------------------------
+		else {
+			// consider time periods to be ordered after general objects
+			result = 1;
+		}
 
 		return result;
 
@@ -355,10 +356,11 @@ public class Day extends RegularTimePeriod implements Serializable {
 	/**
 	 * Parses the string argument as a day.
 	 * <P>
-	 * This method is required to recognise YYYY-MM-DD as a valid format. Anything else, for now, is a bonus.
+	 * This method is required to recognise YYYY-MM-DD as a valid format. Anything
+	 * else, for now, is a bonus.
 	 * 
 	 * @param s
-	 *           the date string to parse.
+	 *            the date string to parse.
 	 * @return <code>null</code> if the string does not contain any parseable
 	 *         string, the day otherwise.
 	 */

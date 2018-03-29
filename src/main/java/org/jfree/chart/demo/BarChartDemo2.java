@@ -45,7 +45,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demonstration application showing how to create a horizontal bar chart.
+ * A simple demonstration application showing how to create a horizontal bar
+ * chart.
  */
 public class BarChartDemo2 extends ApplicationFrame {
 
@@ -53,7 +54,7 @@ public class BarChartDemo2 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public BarChartDemo2(final String title) {
 		super(title);
@@ -73,11 +74,9 @@ public class BarChartDemo2 extends ApplicationFrame {
 	 * @return A dataset.
 	 */
 	private CategoryDataset createDataset() {
-		final double[][] data = new double[][] {
-							{ 1.0, 43.0, 35.0, 58.0, 54.0, 77.0, 71.0, 89.0 },
-							{ 54.0, 75.0, 63.0, 83.0, 43.0, 46.0, 27.0, 13.0 },
-							{ 41.0, 33.0, 22.0, 34.0, 62.0, 32.0, 42.0, 34.0 }
-			};
+		final double[][] data = new double[][] { { 1.0, 43.0, 35.0, 58.0, 54.0, 77.0, 71.0, 89.0 },
+				{ 54.0, 75.0, 63.0, 83.0, 43.0, 46.0, 27.0, 13.0 },
+				{ 41.0, 33.0, 22.0, 34.0, 62.0, 32.0, 42.0, 34.0 } };
 		return DatasetUtilities.createCategoryDataset("Series ", "Factor ", data);
 	}
 
@@ -85,21 +84,18 @@ public class BarChartDemo2 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createBarChart(
-							"Bar Chart Demo 2", // chart title
+		final JFreeChart chart = ChartFactory.createBarChart("Bar Chart Demo 2", // chart title
 				"Category", // domain axis label
 				"Score (%)", // range axis label
 				dataset, // data
 				PlotOrientation.HORIZONTAL, // orientation
 				true, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
@@ -136,7 +132,7 @@ public class BarChartDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

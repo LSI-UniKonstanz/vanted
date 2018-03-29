@@ -10,13 +10,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.svg_exporter.PngJpegAlgorithm;
 
 public class CommandLineStart {
-	
+
 	/**
 	 * Example command line start method
 	 * 
 	 * @param args
 	 */
-	@SuppressWarnings("nls")
 	public static void main(final String[] args) {
 		ErrorMsg.addOnAddonLoadingFinishedAction(new Runnable() {
 			public void run() {
@@ -34,5 +33,5 @@ public class CommandLineStart {
 		});
 		new Main(false, (args.length > 0 ? args[0] : DBEgravistoHelper.DBE_GRAVISTO_NAME_SHORT), args, new String[] {});
 	}
-	
+
 }

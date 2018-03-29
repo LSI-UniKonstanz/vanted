@@ -39,7 +39,7 @@ public class StandardToolTipTagFragmentGenerator implements ToolTipTagFragmentGe
 	 * Generates a tooltip string to go in an HTML image map.
 	 * 
 	 * @param toolTipText
-	 *           the tooltip.
+	 *            the tooltip.
 	 * @return the formatted HTML area tag attribute(s).
 	 */
 	public String generateToolTipFragment(String toolTipText) {

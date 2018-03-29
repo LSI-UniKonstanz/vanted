@@ -54,7 +54,7 @@ public class CategorySeriesHandler extends DefaultHandler implements DatasetTags
 	 * Creates a new item handler.
 	 * 
 	 * @param root
-	 *           the root handler.
+	 *            the root handler.
 	 */
 	public CategorySeriesHandler(final RootHandler root) {
 		this.root = root;
@@ -65,7 +65,7 @@ public class CategorySeriesHandler extends DefaultHandler implements DatasetTags
 	 * Sets the series name.
 	 * 
 	 * @param name
-	 *           the name.
+	 *            the name.
 	 */
 	public void setSeriesName(final String name) {
 		this.seriesName = name;
@@ -75,9 +75,9 @@ public class CategorySeriesHandler extends DefaultHandler implements DatasetTags
 	 * Adds an item to the temporary storage for the series.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public void addItem(final Comparable key, final Number value) {
 		this.values.addValue(key, value);
@@ -87,50 +87,45 @@ public class CategorySeriesHandler extends DefaultHandler implements DatasetTags
 	 * The start of an element.
 	 * 
 	 * @param namespaceURI
-	 *           the namespace.
+	 *            the namespace.
 	 * @param localName
-	 *           the element name.
+	 *            the element name.
 	 * @param qName
-	 *           the element name.
+	 *            the element name.
 	 * @param atts
-	 *           the attributes.
+	 *            the attributes.
 	 * @throws SAXException
-	 *            for errors.
+	 *             for errors.
 	 */
-	public void startElement(final String namespaceURI,
-										final String localName,
-										final String qName,
-										final Attributes atts) throws SAXException {
+	public void startElement(final String namespaceURI, final String localName, final String qName,
+			final Attributes atts) throws SAXException {
 
 		if (qName.equals(SERIES_TAG)) {
 			setSeriesName(atts.getValue("name"));
 			final ItemHandler subhandler = new ItemHandler(this.root, this);
 			this.root.pushSubHandler(subhandler);
-		} else
-			if (qName.equals(ITEM_TAG)) {
-				final ItemHandler subhandler = new ItemHandler(this.root, this);
-				this.root.pushSubHandler(subhandler);
-				subhandler.startElement(namespaceURI, localName, qName, atts);
-			}
+		} else if (qName.equals(ITEM_TAG)) {
+			final ItemHandler subhandler = new ItemHandler(this.root, this);
+			this.root.pushSubHandler(subhandler);
+			subhandler.startElement(namespaceURI, localName, qName, atts);
+		}
 
-			else {
-				throw new SAXException("Expecting <Series> or <Item> tag...found " + qName);
-			}
+		else {
+			throw new SAXException("Expecting <Series> or <Item> tag...found " + qName);
+		}
 	}
 
 	/**
 	 * The end of an element.
 	 * 
 	 * @param namespaceURI
-	 *           the namespace.
+	 *            the namespace.
 	 * @param localName
-	 *           the element name.
+	 *            the element name.
 	 * @param qName
-	 *           the element name.
+	 *            the element name.
 	 */
-	public void endElement(final String namespaceURI,
-									final String localName,
-									final String qName) {
+	public void endElement(final String namespaceURI, final String localName, final String qName) {
 
 		if (this.root instanceof CategoryDatasetHandler) {
 			final CategoryDatasetHandler handler = (CategoryDatasetHandler) this.root;

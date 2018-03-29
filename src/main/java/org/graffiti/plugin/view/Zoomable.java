@@ -18,14 +18,14 @@ import java.awt.geom.AffineTransform;
  */
 public interface Zoomable {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @return DOCUMENT ME!
 	 */
 	public AffineTransform getZoom();
-	
+
 	/**
 	 * @return
 	 */

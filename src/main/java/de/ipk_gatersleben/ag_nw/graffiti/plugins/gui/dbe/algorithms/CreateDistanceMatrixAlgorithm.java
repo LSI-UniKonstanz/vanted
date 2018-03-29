@@ -24,40 +24,27 @@ import org.graffiti.plugin.algorithm.Category;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 
 /**
- * @author Christian Klukas
- *         (c) 2005 IPK Gatersleben, Group Network Analysis
+ * @author Christian Klukas (c) 2005 IPK Gatersleben, Group Network Analysis
  */
 public class CreateDistanceMatrixAlgorithm extends AbstractAlgorithm {
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.DEBUG)
 			return "Create Distance Matrix from Data Points";
 		else
 			return null;
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Hierarchy";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		graph.getListenerManager().transactionStarted(this);
 		DistanceMatrix dm = new DistanceMatrix();
@@ -72,7 +59,8 @@ public class CreateDistanceMatrixAlgorithm extends AbstractAlgorithm {
 					ArrayList<String> calculationHistory = new ArrayList<String>();
 					String lbl1 = nh1.getLabel();
 					String lbl2 = nh2.getLabel();
-					int distance = calculateDistance(nh1.getDatasetTable(), nh2.getDatasetTable(), calculationHistory, lbl1, lbl2);
+					int distance = calculateDistance(nh1.getDatasetTable(), nh2.getDatasetTable(), calculationHistory,
+							lbl1, lbl2);
 					dm.setDistanceInformation(lbl1, lbl2, i, j, distance, calculationHistory);
 					j++;
 				}
@@ -83,20 +71,20 @@ public class CreateDistanceMatrixAlgorithm extends AbstractAlgorithm {
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-	
+
 	@Override
 	public String getDescription() {
-		return "<html>" +
-							"<h2>This algorithm is currently included only for testing purposes:</h2>" +
-							"This algorithm calculates a distance matrix from the selected or all graph nodes<br>" +
-							"with mapping data. Currently the data mappings may not contain time series data<br>" +
-							"or more than one replicate value. This situation will be supported with future<br>" +
-							"updates. The differences between the datapoints are specially weighted:<br>" +
-							"A detailed description and a GUI for changing the difference-calcualtion-<br>" +
-							"settings will be provided with future updates.";
+		return "<html>" + "<h2>This algorithm is currently included only for testing purposes:</h2>"
+				+ "This algorithm calculates a distance matrix from the selected or all graph nodes<br>"
+				+ "with mapping data. Currently the data mappings may not contain time series data<br>"
+				+ "or more than one replicate value. This situation will be supported with future<br>"
+				+ "updates. The differences between the datapoints are specially weighted:<br>"
+				+ "A detailed description and a GUI for changing the difference-calcualtion-<br>"
+				+ "settings will be provided with future updates.";
 	}
-	
-	private int calculateDistance(DataSetTable datasetTable1, DataSetTable datasetTable2, ArrayList<String> history, String lbl1, String lbl2) {
+
+	private static int calculateDistance(DataSetTable datasetTable1, DataSetTable datasetTable2, ArrayList<String> history,
+			String lbl1, String lbl2) {
 		TreeSet<String> knownSubstanceNames = new TreeSet<String>();
 		int result = 0;
 		for (DataSetRow dsr1 : datasetTable1.getRows()) {
@@ -126,61 +114,59 @@ public class CreateDistanceMatrixAlgorithm extends AbstractAlgorithm {
 				history.add("More than one value per line for line " + substance);
 				ErrorMsg.addErrorMessage("More than one value per line for line " + substance);
 				return Integer.MAX_VALUE;
-			} else
-				if (values1.size() == 0 && values2.size() == 0) {
-					history.add("Internal Error: no value per line for line " + substance);
-					ErrorMsg.addErrorMessage("Internal Error: no value per line for line " + substance);
-					return Integer.MAX_VALUE;
-				} else
-					if (values1.size() == 0) {
-						if (lbl1.equalsIgnoreCase("Brenda/Brenda") || lbl2.equalsIgnoreCase("Brenda/Brenda"))
-							;//
-						else
-							result++;
-					} else
-						if (values2.size() == 0) {
-							if (lbl1.equalsIgnoreCase("Brenda/Brenda") || lbl2.equalsIgnoreCase("Brenda/Brenda"))
-								;//
-							else
-								result++;
-						} else
-							if (values1.size() == 1 && values2.size() == 1) {
-								double v1 = values1.iterator().next();
-								double v2 = values2.iterator().next();
-								boolean isNull1 = Math.abs(v1) < 0.00000000000000001d;
-								boolean isNull2 = Math.abs(v2) < 0.00000000000000001d;
-								if (isNull1 && isNull2) {
-									result = result + 0;
-									history.add(lbl1 + " / " + lbl2 + ": " + substance + " not found in both lines # +0");
-								} else {
-									if (isNull1 && v2 > 0) {
-										result = result + 1;
-										history.add(lbl1 + " / " + lbl2 + ": " + substance + " not found in line 1, greater than 0 in line 2 # +1");
-									} else
-										if (isNull1 && v2 < 0) {
-											result = result + 1;
-											history.add(lbl1 + " / " + lbl2 + ": " + substance + " not found in line 1, smaller than 0 in line 2 # +1");
-										} else
-											if (isNull2 && v1 < 0) {
-												result = result + 1;
-												history.add(lbl1 + " / " + lbl2 + ": " + substance + " not found in line 2, smaller than 0 in line 1 # +1");
-											} else
-												if (isNull2 && v1 > 0) {
-													result = result + 1;
-													history.add(lbl1 + " / " + lbl2 + ": " + substance + " not found in line 2, greater than 0 in line 1 # +1");
-												} else {
-													if (v2 > v1) {
-														result = result + 1;
-														history.add(lbl1 + " / " + lbl2 + ": " + substance + " value of line 1 smaller than line 2 # +1");
-													} else
-														if (v1 > v2) {
-															result = result + 1;
-															history.add(lbl1 + " / " + lbl2 + ": " + substance + " value of line 1 greater than line 2 # +1");
-														}
-												}
-								}
-							}
-			
+			} else if (values1.size() == 0 && values2.size() == 0) {
+				history.add("Internal Error: no value per line for line " + substance);
+				ErrorMsg.addErrorMessage("Internal Error: no value per line for line " + substance);
+				return Integer.MAX_VALUE;
+			} else if (values1.size() == 0) {
+				if (lbl1.equalsIgnoreCase("Brenda/Brenda") || lbl2.equalsIgnoreCase("Brenda/Brenda"))
+					;//
+				else
+					result++;
+			} else if (values2.size() == 0) {
+				if (lbl1.equalsIgnoreCase("Brenda/Brenda") || lbl2.equalsIgnoreCase("Brenda/Brenda"))
+					;//
+				else
+					result++;
+			} else if (values1.size() == 1 && values2.size() == 1) {
+				double v1 = values1.iterator().next();
+				double v2 = values2.iterator().next();
+				boolean isNull1 = Math.abs(v1) < 0.00000000000000001d;
+				boolean isNull2 = Math.abs(v2) < 0.00000000000000001d;
+				if (isNull1 && isNull2) {
+					result = result + 0;
+					history.add(lbl1 + " / " + lbl2 + ": " + substance + " not found in both lines # +0");
+				} else {
+					if (isNull1 && v2 > 0) {
+						result = result + 1;
+						history.add(lbl1 + " / " + lbl2 + ": " + substance
+								+ " not found in line 1, greater than 0 in line 2 # +1");
+					} else if (isNull1 && v2 < 0) {
+						result = result + 1;
+						history.add(lbl1 + " / " + lbl2 + ": " + substance
+								+ " not found in line 1, smaller than 0 in line 2 # +1");
+					} else if (isNull2 && v1 < 0) {
+						result = result + 1;
+						history.add(lbl1 + " / " + lbl2 + ": " + substance
+								+ " not found in line 2, smaller than 0 in line 1 # +1");
+					} else if (isNull2 && v1 > 0) {
+						result = result + 1;
+						history.add(lbl1 + " / " + lbl2 + ": " + substance
+								+ " not found in line 2, greater than 0 in line 1 # +1");
+					} else {
+						if (v2 > v1) {
+							result = result + 1;
+							history.add(lbl1 + " / " + lbl2 + ": " + substance
+									+ " value of line 1 smaller than line 2 # +1");
+						} else if (v1 > v2) {
+							result = result + 1;
+							history.add(lbl1 + " / " + lbl2 + ": " + substance
+									+ " value of line 1 greater than line 2 # +1");
+						}
+					}
+				}
+			}
+
 		}
 		return result;
 	}

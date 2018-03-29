@@ -17,56 +17,39 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.Experime
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.TableData;
 
 public class ExperimentConstructor {
-	
-	public static ExperimentInterface processData(
-						String measuredSubstance, String measurementUnit,
-						ArrayList<MemSample> memSamples,
-						ArrayList<MemPlant> memPlants,
-						String experimentStart,
-						String experimentName,
-						String coordinator,
-						String optRemark,
-						String optSequence) {
-		
-		ExperimentInterface doc = getDoc(measuredSubstance, measurementUnit, memSamples,
-							memPlants,
-							experimentStart,
-							experimentName,
-							coordinator,
-							optRemark,
-							optSequence);
+
+	public static ExperimentInterface processData(String measuredSubstance, String measurementUnit,
+			ArrayList<MemSample> memSamples, ArrayList<MemPlant> memPlants, String experimentStart,
+			String experimentName, String coordinator, String optRemark, String optSequence) {
+
+		ExperimentInterface doc = getDoc(measuredSubstance, measurementUnit, memSamples, memPlants, experimentStart,
+				experimentName, coordinator, optRemark, optSequence);
 		return doc;
 	}
-	
+
 	@SuppressWarnings("deprecation")
-	private static ExperimentInterface getDoc(
-						String measuredSubstance,
-						String measurementUnit,
-						ArrayList<MemSample> memSamples,
-						ArrayList<MemPlant> memPlants,
-						String experimentStart,
-						String experimentName,
-						String coordinator,
-						String optRemark,
-						String optSequence) {
+	private static ExperimentInterface getDoc(String measuredSubstance, String measurementUnit,
+			ArrayList<MemSample> memSamples, ArrayList<MemPlant> memPlants, String experimentStart,
+			String experimentName, String coordinator, String optRemark, String optSequence) {
 		ExperimentDataFileReader edr = new DBEinputFileReader();
 		TableData xls = new TableData();
 		addCellDataDirect(xls, 10, 4, "V1.2");
-		
+
 		Date startDate = new Date();
 		try {
 			startDate = new Date(experimentStart);
 		} catch (Exception e) {
 			// ErrorMsg.addErrorMessage(e);
 		}
-		
+
 		// experiment header
 		addCellDataDirect(xls, col("B"), 4, startDate); // start of experiment
 		addCellDataDirect(xls, col("B"), 5, optRemark != null ? optRemark : ""); // remark
-		addCellDataDirect(xls, col("B"), 6, experimentName); // experiment name (targetExp. should be a String in this context
+		addCellDataDirect(xls, col("B"), 6, experimentName); // experiment name (targetExp. should be a String in this
+																// context
 		addCellDataDirect(xls, col("B"), 7, coordinator); // coordinator
 		addCellDataDirect(xls, col("B"), 8, optSequence != null ? optSequence : ""); // sequence name
-		
+
 		// plant/genotypes
 		int addCol = 0;
 		for (MemPlant mp : memPlants) {
@@ -77,17 +60,17 @@ public class ExperimentConstructor {
 			addCellDataDirect(xls, col("B") + addCol, 15, mp.getTreatment()); // treatment
 			addCol++;
 		}
-		
+
 		int col = 0;
 		addCellDataDirect(xls, col("F") + col, 20, measuredSubstance); // Substance
 		addCellDataDirect(xls, col("F") + col, 22, measurementUnit); // Unit
 		processMeasValues(xls, 0, memSamples);
-		
+
 		// if (true)
 		// xls.showDataDialog();
 		return edr.getXMLDataFromExcelTable(null, xls, null);
 	}
-	
+
 	private static void processMeasValues(TableData xls, int col, List<MemSample> samples) {
 		int row = max(xls.getMaximumRow(col("A") - 1), xls.getMaximumRow(col - 1)) + 2;
 		if (row < 23)
@@ -101,15 +84,15 @@ public class ExperimentConstructor {
 			row++;
 		}
 	}
-	
+
 	private static void addCellDataDirect(TableData xls, int col, int row, Object o) {
 		xls.addCellData(col - 1, row - 1, o);
 	}
-	
+
 	private static int max(int a, int b) {
 		return a > b ? a : b;
 	}
-	
+
 	private static int col(String col) {
 		if (col.length() == 1) {
 			char c1 = col.charAt(0);
@@ -119,5 +102,5 @@ public class ExperimentConstructor {
 			return -1;
 		}
 	}
-	
+
 }

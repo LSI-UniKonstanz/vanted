@@ -85,13 +85,13 @@ public class DateTickUnit extends TickUnit implements Serializable {
 	private DateFormat formatter;
 
 	/**
-	 * Creates a new date tick unit. The dates will be formatted using a SHORT format for the
-	 * default locale.
+	 * Creates a new date tick unit. The dates will be formatted using a SHORT
+	 * format for the default locale.
 	 * 
 	 * @param unit
-	 *           the unit.
+	 *            the unit.
 	 * @param count
-	 *           the unit count.
+	 *            the unit count.
 	 */
 	public DateTickUnit(int unit, int count) {
 		this(unit, count, null);
@@ -100,15 +100,16 @@ public class DateTickUnit extends TickUnit implements Serializable {
 	/**
 	 * Creates a new date tick unit.
 	 * <P>
-	 * You can specify the units using one of the constants YEAR, MONTH, DAY, HOUR, MINUTE, SECOND or MILLISECOND. In addition, you can specify a unit count, and
+	 * You can specify the units using one of the constants YEAR, MONTH, DAY, HOUR,
+	 * MINUTE, SECOND or MILLISECOND. In addition, you can specify a unit count, and
 	 * a date format.
 	 * 
 	 * @param unit
-	 *           the unit.
+	 *            the unit.
 	 * @param count
-	 *           the unit count.
+	 *            the unit count.
 	 * @param formatter
-	 *           the date formatter (defaults to DateFormat.SHORT).
+	 *            the date formatter (defaults to DateFormat.SHORT).
 	 */
 	public DateTickUnit(int unit, int count, DateFormat formatter) {
 
@@ -120,15 +121,15 @@ public class DateTickUnit extends TickUnit implements Serializable {
 	 * Creates a new unit.
 	 * 
 	 * @param unit
-	 *           the unit.
+	 *            the unit.
 	 * @param count
-	 *           the count.
+	 *            the count.
 	 * @param rollUnit
-	 *           the roll unit.
+	 *            the roll unit.
 	 * @param rollCount
-	 *           the roll count.
+	 *            the roll count.
 	 * @param formatter
-	 *           the date formatter (defaults to DateFormat.SHORT).
+	 *            the date formatter (defaults to DateFormat.SHORT).
 	 */
 	public DateTickUnit(int unit, int count, int rollUnit, int rollCount, DateFormat formatter) {
 
@@ -144,9 +145,11 @@ public class DateTickUnit extends TickUnit implements Serializable {
 	}
 
 	/**
-	 * Returns the date unit. This will be one of the constants <code>YEAR</code>, <code>MONTH</code>, <code>DAY</code>, <code>HOUR</code>, <code>MINUTE</code>,
-	 * <code>SECOND</code> or <code>MILLISECOND</code>, defined by this class. Note that these
-	 * constants do NOT correspond to those defined in Java's <code>Calendar</code> class.
+	 * Returns the date unit. This will be one of the constants <code>YEAR</code>,
+	 * <code>MONTH</code>, <code>DAY</code>, <code>HOUR</code>, <code>MINUTE</code>,
+	 * <code>SECOND</code> or <code>MILLISECOND</code>, defined by this class. Note
+	 * that these constants do NOT correspond to those defined in Java's
+	 * <code>Calendar</code> class.
 	 * 
 	 * @return the date unit.
 	 */
@@ -164,9 +167,10 @@ public class DateTickUnit extends TickUnit implements Serializable {
 	}
 
 	/**
-	 * Returns the roll unit. This is the amount by which the tick advances if it is "hidden"
-	 * when displayed on a segmented date axis. Typically the roll will be smaller than the
-	 * regular tick unit (for example, a 7 day tick unit might use a 1 day roll).
+	 * Returns the roll unit. This is the amount by which the tick advances if it is
+	 * "hidden" when displayed on a segmented date axis. Typically the roll will be
+	 * smaller than the regular tick unit (for example, a 7 day tick unit might use
+	 * a 1 day roll).
 	 * 
 	 * @return the roll unit.
 	 */
@@ -187,7 +191,7 @@ public class DateTickUnit extends TickUnit implements Serializable {
 	 * Formats a value.
 	 * 
 	 * @param milliseconds
-	 *           date in milliseconds since 01-01-1970.
+	 *            date in milliseconds since 01-01-1970.
 	 * @return the formatted date.
 	 */
 	public String valueToString(double milliseconds) {
@@ -198,7 +202,7 @@ public class DateTickUnit extends TickUnit implements Serializable {
 	 * Formats a date using the tick unit's formatter.
 	 * 
 	 * @param date
-	 *           the date.
+	 *            the date.
 	 * @return the formatted date.
 	 */
 	public String dateToString(Date date) {
@@ -209,7 +213,7 @@ public class DateTickUnit extends TickUnit implements Serializable {
 	 * Calculates a new date by adding this unit to the base date.
 	 * 
 	 * @param base
-	 *           the base date.
+	 *            the base date.
 	 * @return a new date one unit after the base date.
 	 */
 	public Date addToDate(Date base) {
@@ -225,7 +229,7 @@ public class DateTickUnit extends TickUnit implements Serializable {
 	 * Rolls the date forward by the amount specified by the roll unit and count.
 	 * 
 	 * @param base
-	 *           the base date.
+	 *            the base date.
 	 * @return the rolled date.
 	 */
 	public Date rollDate(Date base) {
@@ -245,69 +249,72 @@ public class DateTickUnit extends TickUnit implements Serializable {
 	}
 
 	/**
-	 * Returns a field code (that can be used with the Calendar class) for a given 'unit' code.
-	 * The 'unit' is one of: YEAR, MONTH, DAY, HOUR, MINUTE, SECOND and MILLISECOND.
+	 * Returns a field code (that can be used with the Calendar class) for a given
+	 * 'unit' code. The 'unit' is one of: YEAR, MONTH, DAY, HOUR, MINUTE, SECOND and
+	 * MILLISECOND.
 	 * 
 	 * @param unit
-	 *           the unit.
+	 *            the unit.
 	 * @return the field code.
 	 */
 	private int getCalendarField(int unit) {
 
 		switch (unit) {
-			case (YEAR):
-				return Calendar.YEAR;
-			case (MONTH):
-				return Calendar.MONTH;
-			case (DAY):
-				return Calendar.DATE;
-			case (HOUR):
-				return Calendar.HOUR_OF_DAY;
-			case (MINUTE):
-				return Calendar.MINUTE;
-			case (SECOND):
-				return Calendar.SECOND;
-			case (MILLISECOND):
-				return Calendar.MILLISECOND;
-			default:
-				return Calendar.MILLISECOND;
+		case (YEAR):
+			return Calendar.YEAR;
+		case (MONTH):
+			return Calendar.MONTH;
+		case (DAY):
+			return Calendar.DATE;
+		case (HOUR):
+			return Calendar.HOUR_OF_DAY;
+		case (MINUTE):
+			return Calendar.MINUTE;
+		case (SECOND):
+			return Calendar.SECOND;
+		case (MILLISECOND):
+			return Calendar.MILLISECOND;
+		default:
+			return Calendar.MILLISECOND;
 		}
 
 	}
 
 	/**
-	 * Returns the (approximate) number of milliseconds for the given unit and unit count.
+	 * Returns the (approximate) number of milliseconds for the given unit and unit
+	 * count.
 	 * <P>
-	 * This value is an approximation some of the time (e.g. months are assumed to have 31 days) but this shouldn't matter.
+	 * This value is an approximation some of the time (e.g. months are assumed to
+	 * have 31 days) but this shouldn't matter.
 	 * 
 	 * @param unit
-	 *           the unit.
+	 *            the unit.
 	 * @param count
-	 *           the unit count.
+	 *            the unit count.
 	 * @return the number of milliseconds.
 	 */
 	private static long getMillisecondCount(int unit, int count) {
 
 		switch (unit) {
-			case (YEAR):
-				return (365L * 24L * 60L * 60L * 1000L) * count;
-			case (MONTH):
-				return (31L * 24L * 60L * 60L * 1000L) * count;
-			case (DAY):
-				return (24L * 60L * 60L * 1000L) * count;
-			case (HOUR):
-				return (60L * 60L * 1000L) * count;
-			case (MINUTE):
-				return (60L * 1000L) * count;
-			case (SECOND):
-				return 1000L * count;
-			case (MILLISECOND):
-				return count;
-			default:
-				throw new IllegalArgumentException("DateTickUnit.getMillisecondCount(...) : "
-									+ "unit must be one of the constants YEAR, MONTH, DAY, HOUR, "
-									+ "MINUTE, SECOND or MILLISECOND defined in the DateTickUnit class. "
-									+ "Do *not* use the constants defined in java.util.Calendar.");
+		case (YEAR):
+			return (365L * 24L * 60L * 60L * 1000L) * count;
+		case (MONTH):
+			return (31L * 24L * 60L * 60L * 1000L) * count;
+		case (DAY):
+			return (24L * 60L * 60L * 1000L) * count;
+		case (HOUR):
+			return (60L * 60L * 1000L) * count;
+		case (MINUTE):
+			return (60L * 1000L) * count;
+		case (SECOND):
+			return 1000L * count;
+		case (MILLISECOND):
+			return count;
+		default:
+			throw new IllegalArgumentException("DateTickUnit.getMillisecondCount(...) : "
+					+ "unit must be one of the constants YEAR, MONTH, DAY, HOUR, "
+					+ "MINUTE, SECOND or MILLISECOND defined in the DateTickUnit class. "
+					+ "Do *not* use the constants defined in java.util.Calendar.");
 		}
 
 	}
@@ -316,7 +323,7 @@ public class DateTickUnit extends TickUnit implements Serializable {
 	 * Tests this unit for equality with another object.
 	 * 
 	 * @param obj
-	 *           the object.
+	 *            the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {

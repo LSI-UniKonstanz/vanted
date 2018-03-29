@@ -47,10 +47,10 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A demonstration application to illustrate ContourPlot.
- * Command line options exist to control different plot properties
- * such as colorbar orientation, etc. List of options are available
- * by launching with the -? option, e.g., ContourPlotDemo -?
+ * A demonstration application to illustrate ContourPlot. Command line options
+ * exist to control different plot properties such as colorbar orientation, etc.
+ * List of options are available by launching with the -? option, e.g.,
+ * ContourPlotDemo -?
  * 
  * @author David M. O'Donnell
  */
@@ -108,7 +108,7 @@ public class ContourPlotDemo extends ApplicationFrame {
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public ContourPlotDemo(final String title) {
 
@@ -238,14 +238,14 @@ public class ContourPlotDemo extends ApplicationFrame {
 			tmpDateX[k] = new Date((long) ((i + 100) * 1.e8));
 			tmpDoubleX[k] = i + 2;
 			tmpDoubleY[k] = zmult * (z++);
-			oDoubleX[k] = new Double(tmpDoubleX[k]);
-			oDoubleY[k] = new Double(tmpDoubleY[k]);
+			oDoubleX[k] = Double.valueOf(tmpDoubleX[k]);
+			oDoubleY[k] = Double.valueOf(tmpDoubleY[k]);
 			final double rad = Math.random();
 			if (makeHoles && (rad > 0.4 && rad < 0.6)) {
 				oDoubleZ[k] = null;
 			} else {
 				// tmpDoubleZ[k] = 3.0 * ((tmpDoubleX[k] + 1) * (tmpDoubleY[k] + 1) + 100);
-				oDoubleZ[k] = new Double(3.0 * ((tmpDoubleX[k] + 1) * (tmpDoubleY[k] + 1) + 100));
+				oDoubleZ[k] = Double.valueOf(3.0 * ((tmpDoubleX[k] + 1) * (tmpDoubleY[k] + 1) + 100));
 			}
 			j++;
 		}
@@ -264,20 +264,13 @@ public class ContourPlotDemo extends ApplicationFrame {
 	 * Sets options passed via the command line
 	 * 
 	 * @param args
-	 *           the command line arguments.
+	 *            the command line arguments.
 	 * @return Flag indicating whether program should continue.
 	 */
 	protected static boolean processArgs(final String[] args) {
 
-		final String[] options = { "-?",
-										"-invert",
-										"-log",
-										"-date",
-										"-vertical",
-										"-holes",
-										"-ratio:",
-										"-numX:",
-										"-numY:" };
+		final String[] options = { "-?", "-invert", "-log", "-date", "-vertical", "-holes", "-ratio:", "-numX:",
+				"-numY:" };
 
 		for (int i = 0; i < args.length; i++) {
 			boolean foundOption = false;
@@ -287,45 +280,45 @@ public class ContourPlotDemo extends ApplicationFrame {
 					int index = 0;
 					String tmpStr = null;
 					switch (j) {
-						case 0: // -?
-							usage();
-							return false;
-						case 1:
-							xIsInverted = true;
-							yIsInverted = true;
-							zIsInverted = true;
-							break;
-						case 2:
-							xIsLog = true;
-							yIsLog = true;
-							zIsLog = true;
-							break;
-						case 3:
-							xIsDate = true;
-							break;
-						case 4:
-							// zIsVertical = true;
-							break;
-						case 5:
-							makeHoles = true;
-							break;
-						case 6:
-							index = args[i].indexOf(':');
-							tmpStr = args[i].substring(index + 1);
-							ratio = Double.parseDouble(tmpStr);
-							break;
-						case 7:
-							index = args[i].indexOf(':');
-							tmpStr = args[i].substring(index + 1);
-							numX = Integer.parseInt(tmpStr);
-							break;
-						case 8:
-							index = args[i].indexOf(':');
-							tmpStr = args[i].substring(index + 1);
-							numY = Integer.parseInt(tmpStr);
-							break;
-						default:
-							System.out.println("Only 9 options available, update options array");
+					case 0: // -?
+						usage();
+						return false;
+					case 1:
+						xIsInverted = true;
+						yIsInverted = true;
+						zIsInverted = true;
+						break;
+					case 2:
+						xIsLog = true;
+						yIsLog = true;
+						zIsLog = true;
+						break;
+					case 3:
+						xIsDate = true;
+						break;
+					case 4:
+						// zIsVertical = true;
+						break;
+					case 5:
+						makeHoles = true;
+						break;
+					case 6:
+						index = args[i].indexOf(':');
+						tmpStr = args[i].substring(index + 1);
+						ratio = Double.parseDouble(tmpStr);
+						break;
+					case 7:
+						index = args[i].indexOf(':');
+						tmpStr = args[i].substring(index + 1);
+						numX = Integer.parseInt(tmpStr);
+						break;
+					case 8:
+						index = args[i].indexOf(':');
+						tmpStr = args[i].substring(index + 1);
+						numY = Integer.parseInt(tmpStr);
+						break;
+					default:
+						System.out.println("Only 9 options available, update options array");
 					}
 				}
 			}
@@ -344,8 +337,8 @@ public class ContourPlotDemo extends ApplicationFrame {
 	 */
 	public static void usage() {
 		System.out.println("Usage:");
-		System.out.println("ContourPlotDemo -? -invert -log -date -vertical -holes -ratio:value "
-									+ "-numX:value -numY:value");
+		System.out.println(
+				"ContourPlotDemo -? -invert -log -date -vertical -holes -ratio:value " + "-numX:value -numY:value");
 		System.out.println("Where:");
 		System.out.println("-? displays usage and exits");
 		System.out.println("-invert cause axes to be inverted");
@@ -364,7 +357,8 @@ public class ContourPlotDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           command line options, launch ContourDemoPlot -? for listing of options.
+	 *            command line options, launch ContourDemoPlot -? for listing of
+	 *            options.
 	 */
 	public static void main(final String[] args) {
 

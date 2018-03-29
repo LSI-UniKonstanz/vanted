@@ -15,14 +15,15 @@ import org.OpenFileDialogService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.TextFile;
 
 public class DistanceMatrix {
-	
+
 	HashMap<String, Integer> ij2distance = new HashMap<String, Integer>();
 	HashMap<String, ArrayList<String>> ij2history = new HashMap<String, ArrayList<String>>();
 	HashMap<Integer, String> i2lbl = new HashMap<Integer, String>();
 	int maxI = 0;
 	int maxJ = 0;
-	
-	public void setDistanceInformation(String labelA, String labelB, int i, int j, int distance, ArrayList<String> calculationHistory) {
+
+	public void setDistanceInformation(String labelA, String labelB, int i, int j, int distance,
+			ArrayList<String> calculationHistory) {
 		if (i > maxI)
 			maxI = i;
 		if (j > maxJ)
@@ -32,7 +33,7 @@ public class DistanceMatrix {
 		i2lbl.put(i, labelA);
 		System.out.println("Distance between " + i + ":" + j + " / " + labelA + ":" + labelB + " = " + distance);
 	}
-	
+
 	public void printMatrix() {
 		for (int j = 0; j <= maxI; j++)
 			System.out.print("\t" + i2lbl.get(j));
@@ -45,13 +46,13 @@ public class DistanceMatrix {
 			System.out.println();
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public void saveDMF() {
 		File targetFile = OpenFileDialogService.getSaveFile(new String[] { ".DMF" }, "Distance Matrix File (.dmf)");
 		if (targetFile == null)
 			return;
-		
+
 		TextFile tf = new TextFile();
 		tf.add("   DistanceMatrix File v1.0");
 		tf.add("# " + targetFile.getAbsolutePath());
@@ -71,20 +72,11 @@ public class DistanceMatrix {
 			}
 			tf.add(line);
 		}
-		
+
 		/*
-		 * DistanceMatrix File v1.0
-		 * # C:\test.dmf
-		 * # 1999/06/11 PM 09:30:01
-		 * # User : chris
-		 * Species = 11
-		 * Width = 1000
-		 * Height = 1000
-		 * //
-		 * # Distance Matrix
-		 * 32_2_2 0;
-		 * 6_6_11 42 0;
-		 * 3_6_2 -3 -43 0;
+		 * DistanceMatrix File v1.0 # C:\test.dmf # 1999/06/11 PM 09:30:01 # User :
+		 * chris Species = 11 Width = 1000 Height = 1000 // # Distance Matrix 32_2_2 0;
+		 * 6_6_11 42 0; 3_6_2 -3 -43 0;
 		 */
 		try {
 			tf.write(targetFile);

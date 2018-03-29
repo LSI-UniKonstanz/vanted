@@ -18,10 +18,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.SubtypeName;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.SubtypeValue;
 
 public class Subtype {
-	
+
 	private SubtypeName name;
 	private IdRef value;
-	
+
 	public Subtype(SubtypeName name, IdRef value) {
 		assert name != null;
 		// assert value!=null;
@@ -30,15 +30,15 @@ public class Subtype {
 		this.name = name;
 		this.value = value;
 	}
-	
+
 	public SubtypeName getName() {
 		return name;
 	}
-	
+
 	public IdRef getValue() {
 		return value;
 	}
-	
+
 	@Override
 	public String toString() {
 		if (value != null)
@@ -46,10 +46,9 @@ public class Subtype {
 		else
 			return name.toString();
 	}
-	
-	public static Subtype getSubtypeFromKgmlSubtypeElement(Element subtypeElement,
-						Collection<Entry> entries,
-						String clusterIdForHiddenCompounds) {
+
+	public static Subtype getSubtypeFromKgmlSubtypeElement(Element subtypeElement, Collection<Entry> entries,
+			String clusterIdForHiddenCompounds) {
 		String nameValue = KGMLhelper.getAttributeValue(subtypeElement, "name", null);
 		if (nameValue == null)
 			return null;
@@ -63,15 +62,8 @@ public class Subtype {
 				}
 			}
 			if (refEntry == null) {
-				Entry newEntry = new Entry(
-									new Id(valueIdRef),
-									new KeggId(valueIdRef),
-									EntryType.hiddenCompound,
-									null,
-									null,
-									null,
-									null,
-									null);
+				Entry newEntry = new Entry(new Id(valueIdRef), new KeggId(valueIdRef), EntryType.hiddenCompound, null,
+						null, null, null, null);
 				newEntry.setSourcePathwayKeggId(clusterIdForHiddenCompounds);
 				entries.add(newEntry);
 				refEntry = newEntry;
@@ -83,7 +75,7 @@ public class Subtype {
 		SubtypeName name = SubtypeName.getSubtypeName(nameValue);
 		return new Subtype(name, null);
 	}
-	
+
 	public Element getKgmlSubtypeElement() {
 		Element subtypeElement = new Element("subtype");
 		KGMLhelper.addNewAttribute(subtypeElement, "name", name.toString());
@@ -97,7 +89,7 @@ public class Subtype {
 		}
 		return subtypeElement;
 	}
-	
+
 	public String getVisibleName() {
 		if (value != null)
 			return value.getRef().getVisibleName();

@@ -11,15 +11,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 /**
  * @author Christian Klukas
  */
-public class ExpandReduceLayouterPlugin
-					extends IPK_PluginAdapter {
-	
+public class ExpandReduceLayouterPlugin extends IPK_PluginAdapter {
+
 	/**
 	 * Creates a new CircleLayouterPlugin object.
 	 */
 	public ExpandReduceLayouterPlugin() {
-		this.algorithms = new Algorithm[] {
-							new ExpandReduceLayouterAlgorithm()
-		};
+		this.algorithms = new Algorithm[] { new ExpandReduceLayouterAlgorithm() };
 	}
 }

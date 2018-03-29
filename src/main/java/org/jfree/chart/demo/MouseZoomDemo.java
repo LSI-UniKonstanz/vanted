@@ -67,22 +67,14 @@ public class MouseZoomDemo extends ApplicationFrame {
 	 * A demonstration of mouse zooming.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public MouseZoomDemo(final String title) {
 
 		super(title);
 		final SampleXYDataset data = new SampleXYDataset();
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-							"Mouse Zoom Demo",
-							"X",
-							"Y",
-							data,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createXYLineChart("Mouse Zoom Demo", "X", "Y", data,
+				PlotOrientation.VERTICAL, true, true, false);
 
 		this.chartPanel = new ChartPanel(chart);
 		this.chartPanel.setHorizontalZoom(false);
@@ -124,7 +116,7 @@ public class MouseZoomDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
@@ -147,7 +139,7 @@ public class MouseZoomDemo extends ApplicationFrame {
 		 * Receives change events.
 		 * 
 		 * @param e
-		 *           the event.
+		 *            the event.
 		 */
 		public void itemStateChanged(final ItemEvent e) {
 			final Object source = e.getItemSelectable();
@@ -160,17 +152,16 @@ public class MouseZoomDemo extends ApplicationFrame {
 					chartPanel.setHorizontalZoom(true);
 					chartPanel.setHorizontalAxisTrace(true);
 				}
-			} else
-				if (source == yzoom) {
-					if (e.getStateChange() == ItemEvent.DESELECTED) {
-						chartPanel.setVerticalZoom(false);
-						chartPanel.setVerticalAxisTrace(false);
-						chartPanel.repaint();
-					} else {
-						chartPanel.setVerticalZoom(true);
-						chartPanel.setVerticalAxisTrace(true);
-					}
+			} else if (source == yzoom) {
+				if (e.getStateChange() == ItemEvent.DESELECTED) {
+					chartPanel.setVerticalZoom(false);
+					chartPanel.setVerticalAxisTrace(false);
+					chartPanel.repaint();
+				} else {
+					chartPanel.setVerticalZoom(true);
+					chartPanel.setVerticalAxisTrace(true);
 				}
+			}
 		}
 	}
 

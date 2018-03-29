@@ -26,47 +26,43 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeEnt
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.EnzymeService;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class SelectEnzymesAlgorithm extends AbstractAlgorithm implements
-					Algorithm {
-	
+public class SelectEnzymesAlgorithm extends AbstractAlgorithm implements Algorithm {
+
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No active graph editor window found!");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS_ENH))
 			return null;
+		else if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS))
+			return "Select enzymes";
 		else
-			if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS))
-				return "Select enzymes";
-			else
-				return null;
+			return null;
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "menu.edit";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.NODE,
-				Category.SELECTION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.SELECTION));
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
@@ -83,7 +79,8 @@ public class SelectEnzymesAlgorithm extends AbstractAlgorithm implements
 			}
 			if (!added) {
 				// check for other hints, that this is a enzyme
-				String kegg_type = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_type", null, new String(""), false);
+				String kegg_type = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_type", null,
+						new String(""), false);
 				if (kegg_type != null && kegg_type.equalsIgnoreCase("enzyme")) {
 					enzymes.add(n);
 					added = true;
@@ -94,10 +91,10 @@ public class SelectEnzymesAlgorithm extends AbstractAlgorithm implements
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 		MainFrame.showMessage(enzymes.size() + " enzyme-nodes added to selection", MessageType.INFO);
 	}
-	
+
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-	
+
 }

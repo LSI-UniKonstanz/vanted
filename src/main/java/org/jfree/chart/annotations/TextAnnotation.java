@@ -47,8 +47,8 @@ import org.jfree.ui.TextAnchor;
 import org.jfree.util.ObjectUtils;
 
 /**
- * A base class for text annotations. This class records the content but not the location of the
- * annotation.
+ * A base class for text annotations. This class records the content but not the
+ * location of the annotation.
  */
 public class TextAnnotation implements Serializable {
 
@@ -89,7 +89,7 @@ public class TextAnnotation implements Serializable {
 	 * Creates a text annotation with default settings.
 	 * 
 	 * @param text
-	 *           the text.
+	 *            the text.
 	 */
 	protected TextAnnotation(String text) {
 		this.text = text;
@@ -113,7 +113,7 @@ public class TextAnnotation implements Serializable {
 	 * Sets the text for the annotation.
 	 * 
 	 * @param text
-	 *           the text.
+	 *            the text.
 	 */
 	public void setText(String text) {
 		this.text = text;
@@ -132,7 +132,7 @@ public class TextAnnotation implements Serializable {
 	 * Sets the font for the annotation.
 	 * 
 	 * @param font
-	 *           the font.
+	 *            the font.
 	 */
 	public void setFont(Font font) {
 		this.font = font;
@@ -151,7 +151,7 @@ public class TextAnnotation implements Serializable {
 	 * Sets the paint for the annotation.
 	 * 
 	 * @param paint
-	 *           the paint.
+	 *            the paint.
 	 */
 	public void setPaint(Paint paint) {
 		this.paint = paint;
@@ -167,11 +167,11 @@ public class TextAnnotation implements Serializable {
 	}
 
 	/**
-	 * Sets the text anchor (the point on the text bounding rectangle that is aligned to the
-	 * (x, y) coordinate of the annotation).
+	 * Sets the text anchor (the point on the text bounding rectangle that is
+	 * aligned to the (x, y) coordinate of the annotation).
 	 * 
 	 * @param anchor
-	 *           the anchor point.
+	 *            the anchor point.
 	 */
 	public void setTextAnchor(TextAnchor anchor) {
 		this.textAnchor = anchor;
@@ -190,7 +190,7 @@ public class TextAnnotation implements Serializable {
 	 * Sets the rotation anchor point.
 	 * 
 	 * @param anchor
-	 *           the anchor.
+	 *            the anchor.
 	 */
 	public void setRotationAnchor(TextAnchor anchor) {
 		this.rotationAnchor = anchor;
@@ -211,7 +211,7 @@ public class TextAnnotation implements Serializable {
 	 * The angle is measured clockwise in radians.
 	 * 
 	 * @param angle
-	 *           the angle (in radians).
+	 *            the angle (in radians).
 	 */
 	public void setRotationAngle(double angle) {
 		this.rotationAngle = angle;
@@ -221,7 +221,7 @@ public class TextAnnotation implements Serializable {
 	 * Tests this object for equality with another object.
 	 * 
 	 * @param object
-	 *           the object.
+	 *            the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object object) {
@@ -256,9 +256,9 @@ public class TextAnnotation implements Serializable {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the output stream.
+	 *            the output stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -269,11 +269,11 @@ public class TextAnnotation implements Serializable {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the input stream.
+	 *            the input stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *            if there is a classpath problem.
+	 *             if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();

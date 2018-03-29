@@ -53,9 +53,9 @@ public interface SignalsDataset extends XYDataset {
 	 * Returns the type.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the type.
 	 */
 	public int getType(int series, int item);
@@ -64,9 +64,9 @@ public interface SignalsDataset extends XYDataset {
 	 * Returns the level.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the level.
 	 */
 	public double getLevel(int series, int item);

@@ -18,7 +18,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.AttributeConstants;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.Experiment2GraphHelper;
 
 public class EdgeHelper implements HelperClass {
-	
+
 	public static void moveBends(Edge edge, double offX, double offY) {
 		try {
 			EdgeGraphicAttribute ega = (EdgeGraphicAttribute) edge.getAttribute("graphics");
@@ -31,18 +31,19 @@ public class EdgeHelper implements HelperClass {
 			return;
 		}
 	}
-	
+
 	public static boolean hasMappingData(Edge e) {
 		try {
-			Attribute a = e.getAttribute(Experiment2GraphHelper.mapFolder + Attribute.SEPARATOR + Experiment2GraphHelper.mapVarName);
+			Attribute a = e.getAttribute(
+					Experiment2GraphHelper.mapFolder + Attribute.SEPARATOR + Experiment2GraphHelper.mapVarName);
 			return a != null;
 		} catch (AttributeNotFoundException anfe) {
 			return false;
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public static void moveBends(Edge e, double moveX, double moveY, HashMap<CoordinateAttribute, Vector2d> bends2newPositions) {
+	public static void moveBends(Edge e, double moveX, double moveY,
+			HashMap<CoordinateAttribute, Vector2d> bends2newPositions) {
 		LinkedHashMapAttribute ha = null;
 		try {
 			ha = ((LinkedHashMapAttribute) e.getAttribute(AttributeConstants.BENDS));
@@ -51,13 +52,13 @@ public class EdgeHelper implements HelperClass {
 		}
 		if (ha == null)
 			return;
-		Map<?, ?> m = ha.getCollection();
-		for (Iterator<?> bi = m.entrySet().iterator(); bi.hasNext();) {
+		Map<String, Attribute> m = ha.getCollection();
+		for (Iterator<Entry<String, Attribute>> bi = m.entrySet().iterator(); bi.hasNext();) {
 			// transform bends
-			Map.Entry en = (Entry<?, ?>) bi.next();
+			Map.Entry<String, Attribute> en = bi.next();
 			CoordinateAttribute co = (CoordinateAttribute) en.getValue();
 			bends2newPositions.put(co, new Vector2d(co.getX() + moveX, co.getY() + moveY));
 		}
 	}
-	
+
 }

@@ -67,12 +67,12 @@ import org.jfree.util.PublicCloneable;
 /**
  * A category item renderer that draws area charts.
  * <p>
- * You can use this renderer with the {@link org.jfree.chart.plot.CategoryPlot} class.
+ * You can use this renderer with the {@link org.jfree.chart.plot.CategoryPlot}
+ * class.
  * 
  * @author Jon Iles
  */
-public class AreaRenderer extends AbstractCategoryItemRenderer
-									implements Cloneable, PublicCloneable, Serializable {
+public class AreaRenderer extends AbstractCategoryItemRenderer implements Cloneable, PublicCloneable, Serializable {
 
 	/** A flag that controls how the ends of the areas are drawn. */
 	private AreaRendererEndType endType;
@@ -95,11 +95,11 @@ public class AreaRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Sets a token that controls how the renderer draws the end points, and sends
-	 * a {@link RendererChangeEvent} to all registered listeners.
+	 * Sets a token that controls how the renderer draws the end points, and sends a
+	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param type
-	 *           the end type (<code>null</code> not permitted).
+	 *            the end type (<code>null</code> not permitted).
 	 */
 	public void setEndType(AreaRendererEndType type) {
 		if (type == null) {
@@ -113,33 +113,26 @@ public class AreaRenderer extends AbstractCategoryItemRenderer
 	 * Draw a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the data plot area.
+	 *            the data plot area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	public void drawItem(Graphics2D g2,
-									CategoryItemRendererState state,
-									Rectangle2D dataArea,
-									CategoryPlot plot,
-									CategoryAxis domainAxis,
-									ValueAxis rangeAxis,
-									CategoryDataset dataset,
-									int row,
-									int column) {
+	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
+			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
 
 		// plot non-null values only...
 		Number value = dataset.getValue(row, column);
@@ -158,10 +151,9 @@ public class AreaRenderer extends AbstractCategoryItemRenderer
 			if (this.endType == AreaRendererEndType.TRUNCATE) {
 				if (column == 0) {
 					x0 = x1;
-				} else
-					if (column == getColumnCount() - 1) {
-						x2 = x1;
-					}
+				} else if (column == getColumnCount() - 1) {
+					x2 = x1;
+				}
 			}
 
 			double yy1 = value.doubleValue();
@@ -199,14 +191,13 @@ public class AreaRenderer extends AbstractCategoryItemRenderer
 				area.lineTo(x1, y1);
 				area.lineTo(x2, y2);
 				area.lineTo(x2, yz);
-			} else
-				if (orientation == PlotOrientation.HORIZONTAL) {
-					area.moveTo(yz, x0);
-					area.lineTo(y0, x0);
-					area.lineTo(y1, x1);
-					area.lineTo(y2, x2);
-					area.lineTo(yz, x2);
-				}
+			} else if (orientation == PlotOrientation.HORIZONTAL) {
+				area.moveTo(yz, x0);
+				area.lineTo(y0, x0);
+				area.lineTo(y1, x1);
+				area.lineTo(y2, x2);
+				area.lineTo(yz, x2);
+			}
 			area.closePath();
 
 			g2.setPaint(getItemPaint(row, column));
@@ -214,8 +205,7 @@ public class AreaRenderer extends AbstractCategoryItemRenderer
 
 			// draw the item labels if there are any...
 			if (isItemLabelVisible(row, column)) {
-				drawItemLabel(
-									g2, orientation, dataset, row, column, x1, y1, (value.doubleValue() < 0.0));
+				drawItemLabel(g2, orientation, dataset, row, column, x1, y1, (value.doubleValue() < 0.0));
 			}
 
 			// collect entity and tool tip information...
@@ -232,9 +222,7 @@ public class AreaRenderer extends AbstractCategoryItemRenderer
 						url = getItemURLGenerator(row, column).generateURL(dataset, row, column);
 					}
 					Comparable columnKey = dataset.getColumnKey(column);
-					CategoryItemEntity entity = new CategoryItemEntity(
-										area, tip, url, dataset, row, columnKey, column
-										);
+					CategoryItemEntity entity = new CategoryItemEntity(area, tip, url, dataset, row, columnKey, column);
 					entities.addEntity(entity);
 				}
 			}
@@ -247,7 +235,7 @@ public class AreaRenderer extends AbstractCategoryItemRenderer
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            should not happen.
+	 *             should not happen.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

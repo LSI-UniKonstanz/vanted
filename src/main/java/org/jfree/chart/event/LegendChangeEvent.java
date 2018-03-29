@@ -34,7 +34,8 @@ package org.jfree.chart.event;
 import org.jfree.chart.Legend;
 
 /**
- * A change event that encapsulates information about a change to a chart legend.
+ * A change event that encapsulates information about a change to a chart
+ * legend.
  */
 public class LegendChangeEvent extends ChartChangeEvent {
 
@@ -45,7 +46,7 @@ public class LegendChangeEvent extends ChartChangeEvent {
 	 * Creates a new LegendChangeEvent.
 	 * 
 	 * @param legend
-	 *           the legend that generated the event.
+	 *            the legend that generated the event.
 	 */
 	public LegendChangeEvent(Legend legend) {
 		super(legend);

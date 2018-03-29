@@ -36,10 +36,10 @@ import java.util.List;
 import org.jfree.util.TableOrder;
 
 /**
- * A {@link PieDataset} implementation that obtains its data from one row or column of a {@link CategoryDataset}.
+ * A {@link PieDataset} implementation that obtains its data from one row or
+ * column of a {@link CategoryDataset}.
  */
-public class CategoryToPieDataset extends AbstractDataset
-												implements PieDataset, DatasetChangeListener {
+public class CategoryToPieDataset extends AbstractDataset implements PieDataset, DatasetChangeListener {
 
 	/** The source. */
 	private CategoryDataset source;
@@ -51,19 +51,18 @@ public class CategoryToPieDataset extends AbstractDataset
 	private int index;
 
 	/**
-	 * An adaptor class that converts any {@link CategoryDataset} into a {@link PieDataset}, by
-	 * taking the values from a single row or column.
+	 * An adaptor class that converts any {@link CategoryDataset} into a
+	 * {@link PieDataset}, by taking the values from a single row or column.
 	 * 
 	 * @param source
-	 *           the source dataset (<code>null</code> permitted).
+	 *            the source dataset (<code>null</code> permitted).
 	 * @param extract
-	 *           extract data from rows or columns? (<code>null</code> not permitted).
+	 *            extract data from rows or columns? (<code>null</code> not
+	 *            permitted).
 	 * @param index
-	 *           the row or column index.
+	 *            the row or column index.
 	 */
-	public CategoryToPieDataset(final CategoryDataset source,
-											final TableOrder extract,
-											final int index) {
+	public CategoryToPieDataset(final CategoryDataset source, final TableOrder extract, final int index) {
 		if (extract == null) {
 			throw new IllegalArgumentException("Null 'extract' argument.");
 		}
@@ -84,10 +83,9 @@ public class CategoryToPieDataset extends AbstractDataset
 		if (this.source != null) {
 			if (this.extract == TableOrder.BY_ROW) {
 				result = this.source.getColumnCount();
-			} else
-				if (this.extract == TableOrder.BY_COLUMN) {
-					result = this.source.getRowCount();
-				}
+			} else if (this.extract == TableOrder.BY_COLUMN) {
+				result = this.source.getRowCount();
+			}
 		}
 		return result;
 	}
@@ -96,7 +94,7 @@ public class CategoryToPieDataset extends AbstractDataset
 	 * Returns a value.
 	 * 
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return The value (possibly <code>null</code>).
 	 */
 	public Number getValue(final int item) {
@@ -104,10 +102,9 @@ public class CategoryToPieDataset extends AbstractDataset
 		if (this.source != null) {
 			if (this.extract == TableOrder.BY_ROW) {
 				result = this.source.getValue(this.index, item);
-			} else
-				if (this.extract == TableOrder.BY_COLUMN) {
-					result = this.source.getValue(item, this.index);
-				}
+			} else if (this.extract == TableOrder.BY_COLUMN) {
+				result = this.source.getValue(item, this.index);
+			}
 		}
 		return result;
 	}
@@ -116,17 +113,16 @@ public class CategoryToPieDataset extends AbstractDataset
 	 * Returns a key.
 	 * 
 	 * @param index
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return The key.
 	 */
 	public Comparable getKey(final int index) {
 		Comparable result = null;
 		if (this.extract == TableOrder.BY_ROW) {
 			result = this.source.getColumnKey(index);
-		} else
-			if (this.extract == TableOrder.BY_COLUMN) {
-				result = this.source.getRowKey(index);
-			}
+		} else if (this.extract == TableOrder.BY_COLUMN) {
+			result = this.source.getRowKey(index);
+		}
 		return result;
 	}
 
@@ -134,17 +130,16 @@ public class CategoryToPieDataset extends AbstractDataset
 	 * Returns the index for a given key.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @return The index.
 	 */
 	public int getIndex(final Comparable key) {
 		int result = -1;
 		if (this.extract == TableOrder.BY_ROW) {
 			result = this.source.getColumnIndex(key);
-		} else
-			if (this.extract == TableOrder.BY_COLUMN) {
-				result = this.source.getRowIndex(key);
-			}
+		} else if (this.extract == TableOrder.BY_COLUMN) {
+			result = this.source.getRowIndex(key);
+		}
 		return result;
 	}
 
@@ -157,20 +152,19 @@ public class CategoryToPieDataset extends AbstractDataset
 		List result = null;
 		if (this.extract == TableOrder.BY_ROW) {
 			result = this.source.getColumnKeys();
-		} else
-			if (this.extract == TableOrder.BY_COLUMN) {
-				result = this.source.getRowKeys();
-			}
+		} else if (this.extract == TableOrder.BY_COLUMN) {
+			result = this.source.getRowKeys();
+		}
 		return result;
 	}
 
 	/**
-	 * Returns the value for a given key. If the key is not recognised, the method should
-	 * return <code>null</code> (but note that <code>null</code> can be associated with a
-	 * valid key also).
+	 * Returns the value for a given key. If the key is not recognised, the method
+	 * should return <code>null</code> (but note that <code>null</code> can be
+	 * associated with a valid key also).
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @return The value (possibly <code>null</code>).
 	 */
 	public Number getValue(final Comparable key) {
@@ -178,10 +172,9 @@ public class CategoryToPieDataset extends AbstractDataset
 		final int keyIndex = getIndex(key);
 		if (this.extract == TableOrder.BY_ROW) {
 			result = this.source.getValue(this.index, keyIndex);
-		} else
-			if (this.extract == TableOrder.BY_COLUMN) {
-				result = this.source.getValue(keyIndex, this.index);
-			}
+		} else if (this.extract == TableOrder.BY_COLUMN) {
+			result = this.source.getValue(keyIndex, this.index);
+		}
 		return result;
 	}
 
@@ -189,13 +182,14 @@ public class CategoryToPieDataset extends AbstractDataset
 	 * Passes the {@link DatasetChangeEvent} through.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void datasetChanged(final DatasetChangeEvent event) {
 		fireDatasetChanged();
 	}
 
-	// // DEPRECATED CODE ////////////////////////////////////////////////////////////////////////
+	// // DEPRECATED CODE
+	// ////////////////////////////////////////////////////////////////////////
 
 	/**
 	 * A constant indicating that data should be extracted from a row.
@@ -212,15 +206,15 @@ public class CategoryToPieDataset extends AbstractDataset
 	public static final int COLUMN = 1;
 
 	/**
-	 * An adaptor class that converts any {@link CategoryDataset} into a {@link PieDataset}, by
-	 * taking the values from a single row or column.
+	 * An adaptor class that converts any {@link CategoryDataset} into a
+	 * {@link PieDataset}, by taking the values from a single row or column.
 	 * 
 	 * @param source
-	 *           the source dataset.
+	 *            the source dataset.
 	 * @param extract
-	 *           ROW or COLUMN.
+	 *            ROW or COLUMN.
 	 * @param index
-	 *           the row or column index.
+	 *            the row or column index.
 	 * @deprecated Use the other constructor.
 	 */
 	public CategoryToPieDataset(final CategoryDataset source, final int extract, final int index) {

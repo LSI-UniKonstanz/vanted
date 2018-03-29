@@ -40,52 +40,52 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskPanelEntry;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 public class SBML_XML_Reader extends AbstractInputSerializer {
-	
+
 	static Logger logger = Logger.getLogger(SBML_XML_Reader.class);
-	
+
 	static boolean doValidate = false;
-	
+
 	private static boolean fixPath2Models = false;
-	
+
 	public SBML_XML_Reader() {
 		// System.out.println("SBML_XML_Reader with layout constructor");
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public static void doValidateSBMLOnLoad(boolean validate) {
 		doValidate = validate;
 	}
-	
+
 	public static boolean isValidatingSBMLOnLoad() {
 		return doValidate;
 	}
-	
+
 	public static void setFixPath2Models(boolean fix) {
-		
+
 		fixPath2Models = fix;
-		
+
 	}
-	
+
 	public static boolean isFixPath2Models() {
-		
+
 		return fixPath2Models;
-		
+
 	}
-	
+
 	/**
 	 * Method controls the import of the SBML document.
 	 * 
 	 * @param document
-	 *           contains the data to be imported.
+	 *            contains the data to be imported.
 	 * @param g
-	 *           is the data structure for reading in the information.
+	 *            is the data structure for reading in the information.
 	 */
-	
+
 	public void read(final SBMLDocument document, Graph g,
 			BackgroundTaskStatusProviderSupportingExternalCallImpl status) {
-		
+
 		try {
-			
+
 			boolean readIn = false;
 			URL url = new URL("http://sbml.org/Facilities/Validator/");
 			// URLConnection connection = url.openConnection();
@@ -100,36 +100,26 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 				// SBML_Logger.addErrorMessage("No internet connection");
 				readIn = true;
 				/*
-				 * JOptionPane.showMessageDialog(null,
-				 * "Online validation not possible.");
+				 * JOptionPane.showMessageDialog(null, "Online validation not possible.");
 				 */
 			}
-			
+
 			if (null != is) {
-				
+
 				int validate = 1;
 				if (!SBML_XML_ReaderWriterPlugin.isTestintMode && doValidate)
-					validate = JOptionPane
-							.showConfirmDialog(
-									null,
-									"Do you want to validate the SBML file against the Level 3 Version 1 specification?");
+					validate = JOptionPane.showConfirmDialog(null,
+							"Do you want to validate the SBML file against the Level 3 Version 1 specification?");
 				if (validate == 0) {
-					
-					document.setConsistencyChecks(
-							CHECK_CATEGORY.GENERAL_CONSISTENCY, true);
-					document.setConsistencyChecks(
-							CHECK_CATEGORY.IDENTIFIER_CONSISTENCY, true);
-					document.setConsistencyChecks(
-							CHECK_CATEGORY.UNITS_CONSISTENCY, true);
-					document.setConsistencyChecks(
-							CHECK_CATEGORY.MATHML_CONSISTENCY, true);
-					document.setConsistencyChecks(
-							CHECK_CATEGORY.MODELING_PRACTICE, true);
-					document.setConsistencyChecks(
-							CHECK_CATEGORY.SBO_CONSISTENCY, true);
-					document.setConsistencyChecks(
-							CHECK_CATEGORY.OVERDETERMINED_MODEL, true);
-					
+
+					document.setConsistencyChecks(CHECK_CATEGORY.GENERAL_CONSISTENCY, true);
+					document.setConsistencyChecks(CHECK_CATEGORY.IDENTIFIER_CONSISTENCY, true);
+					document.setConsistencyChecks(CHECK_CATEGORY.UNITS_CONSISTENCY, true);
+					document.setConsistencyChecks(CHECK_CATEGORY.MATHML_CONSISTENCY, true);
+					document.setConsistencyChecks(CHECK_CATEGORY.MODELING_PRACTICE, true);
+					document.setConsistencyChecks(CHECK_CATEGORY.SBO_CONSISTENCY, true);
+					document.setConsistencyChecks(CHECK_CATEGORY.OVERDETERMINED_MODEL, true);
+
 					int numberOfErrors = document.checkConsistency();
 					if (numberOfErrors > 0) {
 						SBMLErrorLog errorLog = document.getListOfErrors();
@@ -138,9 +128,8 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 						}
 					}
 					if (numberOfErrors > 0) {
-						int load = JOptionPane
-								.showConfirmDialog(null,
-										"The online validator detected mistakes in the file. Load anyway?");
+						int load = JOptionPane.showConfirmDialog(null,
+								"The online validator detected mistakes in the file. Load anyway?");
 						if (load == 0) {
 							readIn = true;
 						}
@@ -152,17 +141,16 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 				if (validate == 1) {
 					readIn = true;
 				}
-				
+
 				is.close();
 			} else {
 				readIn = true;
-				JOptionPane.showMessageDialog(null,
-						"Online validation not possible.");
+				JOptionPane.showMessageDialog(null, "Online validation not possible.");
 			}
-			
+
 			// to indicate an possible Exception - for example
 			// NullPointerException
-			
+
 			if (readIn) {
 				SBML_SBML_Reader readSBML = new SBML_SBML_Reader();
 				readSBML.addSBML(document, g);
@@ -171,41 +159,39 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 				SBMLErrorLog errors = document.getListOfErrors();
 				List<SBMLError> validationErrors = errors.getValidationErrors();
 				for (SBMLError sbmlError : validationErrors) {
-					SBML_Logger.addErrorMessage(sbmlError.getMessage() + ": at "
-							+ sbmlError.getLine()
-							+ "\n near by: " + sbmlError.getExcerpt());
+					SBML_Logger.addErrorMessage(sbmlError.getMessage() + ": at " + sbmlError.getLine() + "\n near by: "
+							+ sbmlError.getExcerpt());
 				}
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			SBML_Logger.addErrorMessage(e.getMessage());
 		}
 	}
-	
+
 	public void read(final Reader reader, final Graph g) throws Exception {
 		long starttime = System.currentTimeMillis();
-		
+
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 				"Load SBML", "");
 		final BackgroundTaskGUIprovider taskWindow;
 		taskWindow = new BackgroundTaskPanelEntry(false);
-		taskWindow.setStatusProvider(status, "SBML Loader",
-				"loading from reader");
-		
+		taskWindow.setStatusProvider(status, "SBML Loader", "loading from reader");
+
 		final MainFrame mf = GravistoService.getInstance().getMainFrame();
 		if (mf != null)
 			mf.addStatusPanel((JPanel) taskWindow);
-		
+
 		try {
-			
+
 			status.setCurrentStatusText2("Please wait. This may take a few moments.");
-			
+
 			SAXBuilder builder = new SAXBuilder();
 			Document document;
-			
+
 			SBMLDocument sbmlDocument;
-			
+
 			document = builder.build(reader);
 			if (status.wantsToStop()) {
 				logger.debug("aborting load");
@@ -217,9 +203,8 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 			status.setCurrentStatusValue(30);
 			try {
 				logger.info("start parsing sbml documet (Reader)");
-				sbmlDocument = sbmlReader.readSBMLFromString(document
-						.toString());
-				
+				sbmlDocument = sbmlReader.readSBMLFromString(document.toString());
+
 				if (sbmlDocument != null) {
 					if (status.wantsToStop()) {
 						logger.debug("aborting load");
@@ -236,11 +221,11 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 					}
 					status.setCurrentStatusText1("adding graph to window");
 					status.setCurrentStatusValue(90);
-					
+
 					status.setCurrentStatusText1("building graph");
 				} else {
-					ErrorMsg
-							.addErrorMessage("Document can not be loaded. Check the document manually with the online validator (http://sbml.org/Facilities/Validator/).");
+					ErrorMsg.addErrorMessage(
+							"Document can not be loaded. Check the document manually with the online validator (http://sbml.org/Facilities/Validator/).");
 				}
 			} catch (XMLStreamException e) {
 				SBML_Logger.addErrorMessage(e);
@@ -254,27 +239,26 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 		}
 		long endtime = System.currentTimeMillis();
 		taskWindow.setTaskFinished(true, endtime - starttime);
-		
+
 	}
-	
+
 	public void read(final InputStream in, final Graph g) throws IOException {
-		
+
 		long starttime = System.currentTimeMillis();
-		
+
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 				"Load SBML", "");
 		final BackgroundTaskGUIprovider taskWindow;
 		taskWindow = new BackgroundTaskPanelEntry(false);
-		taskWindow.setStatusProvider(status, "SBML Loader",
-				"loading from stream");
-		
+		taskWindow.setStatusProvider(status, "SBML Loader", "loading from stream");
+
 		final MainFrame mf = GravistoService.getInstance().getMainFrame();
 		if (mf != null)
 			mf.addStatusPanel((JPanel) taskWindow);
-		
+
 		try {
 			status.setCurrentStatusText2("Please wait. This may take a few moments.");
-			
+
 			SBMLReader reader = new SBMLReader();
 			SBMLDocument document = null;
 			status.setCurrentStatusText1("loading SBML document");
@@ -298,13 +282,13 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 				status.setCurrentStatusValue(100);
 			} else {
 				logger.info("the sbml document is not valid.");
-				ErrorMsg
-						.addErrorMessage("Document can not be loaded. Check the document manually with the online validator (http://sbml.org/Facilities/Validator/).");
+				ErrorMsg.addErrorMessage(
+						"Document can not be loaded. Check the document manually with the online validator (http://sbml.org/Facilities/Validator/).");
 			}
 		} catch (XMLStreamException error) {
-			
+
 			SBML_Logger.addErrorMessage(error);
-			
+
 			logger.error(error.getMessage());
 			try {
 				error.printStackTrace(new PrintWriter("stack_trace.txt"));
@@ -313,18 +297,18 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 			}
 			error.printStackTrace();
 			/*
-			 * due to a bug in the vanted boot process the SBML reader is broken
-			 * and throws classcast exceptions.. reason yet unknown
-			 * This will catch it and ask for an update
-			 * The boot process has been fixed but the true reason is still unknown
+			 * due to a bug in the vanted boot process the SBML reader is broken and throws
+			 * classcast exceptions.. reason yet unknown This will catch it and ask for an
+			 * update The boot process has been fixed but the true reason is still unknown
 			 */
 		} catch (ClassCastException cce) {
-			JOptionPane.showMessageDialog(MainFrame.getInstance(), "<html>Due to a bug in the VANTED start process<br/>"
-					+ "the loading of SBML documents is broken.<br/>"
-					+ "Please go to the <strong>vanted.org</strong> website and download<br/>"
-					+ "and install the fixed version.",
+			JOptionPane.showMessageDialog(MainFrame.getInstance(),
+					"<html>Due to a bug in the VANTED start process<br/>"
+							+ "the loading of SBML documents is broken.<br/>"
+							+ "Please go to the <strong>vanted.org</strong> website and download<br/>"
+							+ "and install the fixed version.",
 					"VANTED Bug", JOptionPane.ERROR_MESSAGE);
-			
+
 		}
 		try {
 			in.close();
@@ -334,17 +318,17 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 		}
 		long endtime = System.currentTimeMillis();
 		taskWindow.setTaskFinished(true, endtime - starttime);
-		
+
 	}
-	
+
 	@Override
 	public boolean validFor(InputStream reader) {
 		return validSBML(reader);
 	}
-	
+
 	Boolean validSBML(InputStream in) {
 		InputStreamReader reader = new InputStreamReader(in);
-		
+
 		BufferedReader bufferedReader = new BufferedReader(reader);
 		StringBuffer finalString = new StringBuffer();
 		try {
@@ -352,7 +336,7 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 				finalString = finalString.append(bufferedReader.readLine());
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		String content = finalString.toString();
@@ -360,40 +344,40 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 		try {
 			reader.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		try {
 			bufferedReader.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
-		if (content.contains("sbml") && content.contains("model")
-				&& content.contains("version") && content.contains("level")) {
+		if (content.contains("sbml") && content.contains("model") && content.contains("version")
+				&& content.contains("level")) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	/**
-	 * Implemented method of interface InputSerializer.java Returns the
-	 * extension of files that can be read in with the SBML importer
+	 * Implemented method of interface InputSerializer.java Returns the extension of
+	 * files that can be read in with the SBML importer
 	 */
 	public String[] getExtensions() {
-		
+
 		String[] ext = new String[] { ".sbml", ".xml" };
 		return ext;
 	}
-	
+
 	/**
-	 * Implemented method of interface InputSerializer.java Returns the
-	 * description of the input format
+	 * Implemented method of interface InputSerializer.java Returns the description
+	 * of the input format
 	 */
 	public String[] getFileTypeDescriptions() {
 		String[] desc = new String[] { "SBML", "SBML" };
 		return desc;
 	}
-	
+
 }

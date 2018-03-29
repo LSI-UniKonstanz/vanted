@@ -35,8 +35,8 @@ import java.util.Comparator;
 import org.jfree.util.SortOrder;
 
 /**
- * A utility class that can compare and order two {@link KeyedValue} instances and sort them
- * into ascending or descending order by key or by value.
+ * A utility class that can compare and order two {@link KeyedValue} instances
+ * and sort them into ascending or descending order by key or by value.
  */
 public class KeyedValueComparator implements Comparator {
 
@@ -50,9 +50,9 @@ public class KeyedValueComparator implements Comparator {
 	 * Creates a new comparator.
 	 * 
 	 * @param type
-	 *           the type (<code>BY_KEY</code> or <code>BY_VALUE</code>).
+	 *            the type (<code>BY_KEY</code> or <code>BY_VALUE</code>).
 	 * @param order
-	 *           the order (ascending or descending).
+	 *            the order (ascending or descending).
 	 */
 	public KeyedValueComparator(final KeyedValueComparatorType type, final SortOrder order) {
 		this.type = type;
@@ -60,13 +60,13 @@ public class KeyedValueComparator implements Comparator {
 	}
 
 	/**
-	 * Compares two {@link KeyedValue} instances and returns an <code>int</code> that indicates the
-	 * relative order of the two objects.
+	 * Compares two {@link KeyedValue} instances and returns an <code>int</code>
+	 * that indicates the relative order of the two objects.
 	 * 
 	 * @param o1
-	 *           object 1.
+	 *            object 1.
 	 * @param o2
-	 *           object 2.
+	 *            object 2.
 	 * @return An int indicating the relative order of the objects.
 	 */
 	public int compare(final Object o1, final Object o2) {
@@ -86,52 +86,44 @@ public class KeyedValueComparator implements Comparator {
 		if (this.type == KeyedValueComparatorType.BY_KEY) {
 			if (this.order.equals(SortOrder.ASCENDING)) {
 				result = kv1.getKey().compareTo(kv2.getKey());
-			} else
-				if (this.order.equals(SortOrder.DESCENDING)) {
-					result = kv2.getKey().compareTo(kv1.getKey());
-				} else {
-					throw new IllegalArgumentException("KeyedValueComparator.compare(...) : "
-																	+ "unrecognised sort order.");
-				}
-		} else
-			if (this.type == KeyedValueComparatorType.BY_VALUE) {
-				final Number n1 = kv1.getValue();
-				final Number n2 = kv2.getValue();
-				if (n2 == null) {
-					return -1;
-				}
-				if (n1 == null) {
-					return 1;
-				}
-				final double d1 = n1.doubleValue();
-				final double d2 = n2.doubleValue();
-				if (this.order.equals(SortOrder.ASCENDING)) {
-					if (d1 > d2) {
-						result = 1;
-					} else
-						if (d1 < d2) {
-							result = -1;
-						} else {
-							result = 0;
-						}
-				} else
-					if (this.order.equals(SortOrder.DESCENDING)) {
-						if (d1 > d2) {
-							result = -1;
-						} else
-							if (d1 < d2) {
-								result = 1;
-							} else {
-								result = 0;
-							}
-					} else {
-						throw new IllegalArgumentException("KeyedValueComparator.compare(...) : "
-																	+ "unrecognised sort order.");
-					}
+			} else if (this.order.equals(SortOrder.DESCENDING)) {
+				result = kv2.getKey().compareTo(kv1.getKey());
 			} else {
-				throw new IllegalArgumentException("KeyedValueComparator.compare(...) : "
-																+ "unrecognised type.");
+				throw new IllegalArgumentException("KeyedValueComparator.compare(...) : " + "unrecognised sort order.");
 			}
+		} else if (this.type == KeyedValueComparatorType.BY_VALUE) {
+			final Number n1 = kv1.getValue();
+			final Number n2 = kv2.getValue();
+			if (n2 == null) {
+				return -1;
+			}
+			if (n1 == null) {
+				return 1;
+			}
+			final double d1 = n1.doubleValue();
+			final double d2 = n2.doubleValue();
+			if (this.order.equals(SortOrder.ASCENDING)) {
+				if (d1 > d2) {
+					result = 1;
+				} else if (d1 < d2) {
+					result = -1;
+				} else {
+					result = 0;
+				}
+			} else if (this.order.equals(SortOrder.DESCENDING)) {
+				if (d1 > d2) {
+					result = -1;
+				} else if (d1 < d2) {
+					result = 1;
+				} else {
+					result = 0;
+				}
+			} else {
+				throw new IllegalArgumentException("KeyedValueComparator.compare(...) : " + "unrecognised sort order.");
+			}
+		} else {
+			throw new IllegalArgumentException("KeyedValueComparator.compare(...) : " + "unrecognised type.");
+		}
 
 		return result;
 	}

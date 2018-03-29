@@ -59,12 +59,10 @@ import org.jfree.data.DefaultValueDataset;
 public class ThermometerDemo extends JPanel {
 
 	/** Options for the value label position combo box. */
-	protected static final String[] OPTIONS = {
-						"None", "Right", "Left", "Bulb" };
+	protected static final String[] OPTIONS = { "None", "Right", "Left", "Bulb" };
 
 	/** Axis position options. */
-	protected static final String[] AXIS_OPTIONS = {
-						"None", "Right", "Left" };
+	protected static final String[] AXIS_OPTIONS = { "None", "Right", "Left" };
 
 	/** The dataset. */
 	private DefaultValueDataset data = new DefaultValueDataset(20.0);
@@ -73,9 +71,7 @@ public class ThermometerDemo extends JPanel {
 	private MeterPlot meterplot = new MeterPlot(this.data);
 
 	/** The meter chart (dial). */
-	private JFreeChart meterchart = new JFreeChart("Meter Chart",
-																	JFreeChart.DEFAULT_TITLE_FONT,
-																	this.meterplot, false);
+	private JFreeChart meterchart = new JFreeChart("Meter Chart", JFreeChart.DEFAULT_TITLE_FONT, this.meterplot, false);
 
 	/** The meter panel. */
 	private ChartPanel panelMeter = new ChartPanel(this.meterchart);
@@ -221,11 +217,11 @@ public class ThermometerDemo extends JPanel {
 	 * Initialises the class.
 	 * 
 	 * @throws Exception
-	 *            for any exception.
+	 *             for any exception.
 	 */
 	void jbInit() throws Exception {
 
-		// data.setRange(new Double(-20), new Double(20));
+		// data.setRange(Double.valueOf(-20), Double.valueOf(20));
 		this.thermo[0] = this.thermo1;
 		this.thermo[1] = this.thermo2;
 		this.thermo[2] = this.thermo3;
@@ -260,8 +256,7 @@ public class ThermometerDemo extends JPanel {
 
 		this.thermo[0].addSubtitle("Sea Water Temp");
 		this.thermo[1].addSubtitle("Air Temp", new Font("SansSerif", Font.PLAIN, 16));
-		this.thermo[2].addSubtitle("Ship Temp",
-									new Font("SansSerif", Font.ITALIC + Font.BOLD, 20));
+		this.thermo[2].addSubtitle("Ship Temp", new Font("SansSerif", Font.ITALIC + Font.BOLD, 20));
 
 		this.thermo[1].setValueFormat(new DecimalFormat("#0.0"));
 		this.thermo[2].setValueFormat(new DecimalFormat("#0.00"));
@@ -408,7 +403,7 @@ public class ThermometerDemo extends JPanel {
 	 * Starting point for the demo application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
@@ -421,8 +416,7 @@ public class ThermometerDemo extends JPanel {
 		frame.getContentPane().add(panel, BorderLayout.CENTER);
 		frame.setSize(700, 400);
 		final Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		frame.setLocation((d.width - frame.getSize().width) / 2,
-								(d.height - frame.getSize().height) / 2);
+		frame.setLocation((d.width - frame.getSize().width) / 2, (d.height - frame.getSize().height) / 2);
 		frame.setVisible(true);
 
 	}
@@ -431,16 +425,14 @@ public class ThermometerDemo extends JPanel {
 	 * Sets the value of one of the thermometers.
 	 * 
 	 * @param thermometer
-	 *           the thermometer index.
+	 *            the thermometer index.
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	private void setValue(final int thermometer, final double value) {
 		if ((thermometer >= 0) && (thermometer < 3)) {
 			try {
-				this.thermo[thermometer].setValue(
-									this.thermo[thermometer].getValue().doubleValue() + value
-									);
+				this.thermo[thermometer].setValue(this.thermo[thermometer].getValue().doubleValue() + value);
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -451,7 +443,7 @@ public class ThermometerDemo extends JPanel {
 	 * Sets the meter value.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	private void setMeterValue(final double value) {
 		try {
@@ -459,7 +451,7 @@ public class ThermometerDemo extends JPanel {
 			if (this.data.getValue() != null) {
 				newValue += this.data.getValue().doubleValue();
 			}
-			this.data.setValue(new Double(newValue));
+			this.data.setValue(Double.valueOf(newValue));
 		} catch (Exception ex) {
 			System.err.println(ex.getMessage());
 		}
@@ -469,12 +461,11 @@ public class ThermometerDemo extends JPanel {
 	 * Sets the value label position for one of the thermometers.
 	 * 
 	 * @param thermometer
-	 *           the thermometer index.
+	 *            the thermometer index.
 	 */
 	private void setShowValue(final int thermometer) {
 		if ((thermometer >= 0) && (thermometer < 3)) {
-			this.thermo[thermometer].setValueLocation(this.pickShow[thermometer].
-															getSelectedIndex());
+			this.thermo[thermometer].setValueLocation(this.pickShow[thermometer].getSelectedIndex());
 		}
 	}
 
@@ -482,12 +473,11 @@ public class ThermometerDemo extends JPanel {
 	 * Sets the axis position for one of the thermometers.
 	 * 
 	 * @param thermometer
-	 *           the thermometer index.
+	 *            the thermometer index.
 	 */
 	private void setShowAxis(final int thermometer) {
 		if ((thermometer >= 0) && (thermometer < 3)) {
-			this.thermo[thermometer].setShowAxisLocation(this.pickAxis[thermometer].
-															getSelectedIndex());
+			this.thermo[thermometer].setShowAxisLocation(this.pickAxis[thermometer].getSelectedIndex());
 		}
 	}
 

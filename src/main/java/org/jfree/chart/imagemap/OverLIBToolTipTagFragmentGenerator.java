@@ -29,7 +29,8 @@
 package org.jfree.chart.imagemap;
 
 /**
- * Generates tooltips using the OverLIB library (http://www.bosrup.com/web/overlib/).
+ * Generates tooltips using the OverLIB library
+ * (http://www.bosrup.com/web/overlib/).
  * 
  * @author Richard Atkinson
  */
@@ -39,12 +40,11 @@ public class OverLIBToolTipTagFragmentGenerator implements ToolTipTagFragmentGen
 	 * Generates a tooltip string to go in an HTML image map.
 	 * 
 	 * @param toolTipText
-	 *           the tooltip.
+	 *            the tooltip.
 	 * @return the formatted HTML area tag attribute(s).
 	 */
 	public String generateToolTipFragment(String toolTipText) {
-		return " onMouseOver=\"return overlib('" + toolTipText
-							+ "');\" onMouseOut=\"return nd();\"";
+		return " onMouseOver=\"return overlib('" + toolTipText + "');\" onMouseOut=\"return nd();\"";
 	}
 
 }

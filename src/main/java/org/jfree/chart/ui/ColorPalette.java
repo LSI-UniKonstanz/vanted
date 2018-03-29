@@ -89,7 +89,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	 * Returns the color associated with a value.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @return the color.
 	 */
 	public Paint getColor(double value) {
@@ -101,7 +101,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	 * Returns a color.
 	 * 
 	 * @param izV
-	 *           ??.
+	 *            ??.
 	 * @return the color.
 	 */
 	public Color getColor(int izV) {
@@ -112,7 +112,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	 * Returns Color by mapping a given value to a linear palette.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @return The color.
 	 */
 	public Color getColorLinear(double value) {
@@ -139,7 +139,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	 * Returns Color by mapping a given value to a common log palette.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @return The color.
 	 */
 	public Color getColorLog(double value) {
@@ -192,11 +192,11 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	}
 
 	/**
-	 * Returns Paint by mapping a given value to a either a linear or common log palette
-	 * as controlled by the value logscale.
+	 * Returns Paint by mapping a given value to a either a linear or common log
+	 * palette as controlled by the value logscale.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @return The paint.
 	 */
 	public Paint getPaint(double value) {
@@ -282,7 +282,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	 * Sets the inverse flag.
 	 * 
 	 * @param inverse
-	 *           the new value.
+	 *            the new value.
 	 */
 	public void setInverse(boolean inverse) {
 		this.inverse = inverse;
@@ -297,7 +297,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	 * Sets the 'log-scale' flag.
 	 * 
 	 * @param logscale
-	 *           the new value.
+	 *            the new value.
 	 */
 	public void setLogscale(boolean logscale) {
 		this.logscale = logscale;
@@ -307,7 +307,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	 * Sets the maximum Z value.
 	 * 
 	 * @param newMaxZ
-	 *           the new value.
+	 *            the new value.
 	 */
 	public void setMaxZ(double newMaxZ) {
 		this.maxZ = newMaxZ;
@@ -317,7 +317,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	 * Sets the minimum Z value.
 	 * 
 	 * @param newMinZ
-	 *           the new value.
+	 *            the new value.
 	 */
 	public void setMinZ(double newMinZ) {
 		this.minZ = newMinZ;
@@ -327,7 +327,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	 * Sets the palette name.
 	 * 
 	 * @param paletteName
-	 *           the name.
+	 *            the name.
 	 */
 	public void setPaletteName(String paletteName) {
 		// String oldValue = this.paletteName;
@@ -339,7 +339,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	 * Sets the stepped flag.
 	 * 
 	 * @param stepped
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setStepped(boolean stepped) {
 		this.stepped = stepped;
@@ -350,7 +350,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	 * Sets the tick values.
 	 * 
 	 * @param newTickValues
-	 *           the tick values.
+	 *            the tick values.
 	 */
 	public void setTickValues(double[] newTickValues) {
 		this.tickValues = newTickValues;
@@ -360,7 +360,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	 * Store ticks. Required when doing stepped axis
 	 * 
 	 * @param ticks
-	 *           the ticks.
+	 *            the ticks.
 	 */
 	public void setTickValues(java.util.List ticks) {
 		this.tickValues = new double[ticks.size()];
@@ -373,7 +373,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	 * Tests an object for equality with this instance.
 	 * 
 	 * @param o
-	 *           the object to test.
+	 *            the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
@@ -407,9 +407,8 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 		if (!Arrays.equals(this.g, colorPalette.g)) {
 			return false;
 		}
-		if (this.paletteName != null
-							? !this.paletteName.equals(colorPalette.paletteName)
-							: colorPalette.paletteName != null) {
+		if (this.paletteName != null ? !this.paletteName.equals(colorPalette.paletteName)
+				: colorPalette.paletteName != null) {
 			return false;
 		}
 		if (!Arrays.equals(this.r, colorPalette.r)) {
@@ -446,7 +445,7 @@ public abstract class ColorPalette implements Cloneable, Serializable {
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            never.
+	 *             never.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 

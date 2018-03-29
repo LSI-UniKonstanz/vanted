@@ -51,7 +51,7 @@ public class StackedBarChartDemo3 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public StackedBarChartDemo3(final String title) {
 
@@ -77,13 +77,12 @@ public class StackedBarChartDemo3 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset for the chart.
+	 *            the dataset for the chart.
 	 * @return a sample chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createStackedBarChart(
-							"Stacked Bar Chart Demo 3", // chart title
+		final JFreeChart chart = ChartFactory.createStackedBarChart("Stacked Bar Chart Demo 3", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
@@ -91,7 +90,7 @@ public class StackedBarChartDemo3 extends ApplicationFrame {
 				true, // legend
 				false, // tooltips
 				false // urls
-				);
+		);
 		final CategoryPlot plot = chart.getCategoryPlot();
 		final CategoryItemRenderer renderer = new ExtendedStackedBarRenderer();
 		renderer.setToolTipGenerator(new StandardCategoryToolTipGenerator());
@@ -119,7 +118,7 @@ public class StackedBarChartDemo3 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

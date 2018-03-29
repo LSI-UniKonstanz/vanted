@@ -16,21 +16,20 @@ package org.graffiti.event;
  * 
  * @version $Revision: 1.5 $
  */
-public class ListenerRegistrationException
-					extends RuntimeException {
+public class ListenerRegistrationException extends RuntimeException {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
-	 * Constructs a <code>ListenerRegistrationException</code> with the
-	 * specified detail message.
+	 * Constructs a <code>ListenerRegistrationException</code> with the specified
+	 * detail message.
 	 * 
 	 * @param msg
-	 *           the detail message for the exception.
+	 *            the detail message for the exception.
 	 */
 	public ListenerRegistrationException(String msg) {
 		super(msg);

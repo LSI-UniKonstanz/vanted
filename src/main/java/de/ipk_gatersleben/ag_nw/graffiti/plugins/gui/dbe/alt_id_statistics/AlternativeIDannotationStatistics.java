@@ -31,18 +31,19 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 public class AlternativeIDannotationStatistics extends AbstractAlgorithm {
-	
+
 	private String filterText = "";
 	private boolean createLogFile = false;
-	
+
 	public void execute() {
 		final TextFile logFile = new TextFile();
-		
-		final BackgroundTaskStatusProviderSupportingExternalCallImpl sp = new BackgroundTaskStatusProviderSupportingExternalCallImpl("", "");
-		
+
+		final BackgroundTaskStatusProviderSupportingExternalCallImpl sp = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
+				"", "");
+
 		final Graph fg = graph;
 		final Selection fs = selection;
-		
+
 		Runnable bt = new Runnable() {
 			public void run() {
 				fg.getListenerManager().transactionStarted(AlternativeIDannotationStatistics.class);
@@ -53,7 +54,7 @@ public class AlternativeIDannotationStatistics extends AbstractAlgorithm {
 				}
 			}
 		};
-		
+
 		Runnable st = new Runnable() {
 			public void run() {
 				if (createLogFile) {
@@ -68,54 +69,49 @@ public class AlternativeIDannotationStatistics extends AbstractAlgorithm {
 				}
 			}
 		};
-		
+
 		BackgroundTaskHelper.issueSimpleTask("Alternative ID Statistics", "", bt, st, sp);
 	}
-	
+
 	public String getName() {
 		return "Alternative Identifier Statistics";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Hierarchy";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.STATISTICS,
-				Category.CLUSTER,
-				Category.ANNOTATION
-				));
+		return new HashSet<Category>(
+				Arrays.asList(Category.GRAPH, Category.STATISTICS, Category.CLUSTER, Category.ANNOTATION));
 	}
-	
+
 	@Override
 	public String getDescription() {
-		return "<html>" +
-							"Calculate frequency of alternative identifiers, connected to<br>" +
-							"leaf nodes, reachable from hierarchy nodes.";
+		return "<html>" + "Calculate frequency of alternative identifiers, connected to<br>"
+				+ "leaf nodes, reachable from hierarchy nodes.";
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
-							new StringParameter(filterText, "Filter", "Only alternative IDs, which contain the specified search filter are processed."),
-							new BooleanParameter(createLogFile, "Create Log-File", "If selected, a CSV text file containing computation results is created.") };
+				new StringParameter(filterText, "Filter",
+						"Only alternative IDs, which contain the specified search filter are processed."),
+				new BooleanParameter(createLogFile, "Create Log-File",
+						"If selected, a CSV text file containing computation results is created.") };
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
 		this.filterText = ((StringParameter) params[i++]).getString();
 		this.createLogFile = ((BooleanParameter) params[i++]).getBoolean();
 	}
-	
-	private void processData(final TextFile logFile,
-						final BackgroundTaskStatusProviderSupportingExternalCallImpl sp,
-						final Graph fg, final Selection fs) {
+
+	private void processData(final TextFile logFile, final BackgroundTaskStatusProviderSupportingExternalCallImpl sp,
+			final Graph fg, final Selection fs) {
 		attach(fg, fs);
 		HashSet<String> clusterIDs = new HashSet<String>();
 		for (Node n : GraphHelper.getLeafNodes(getSelectedOrAllNodes())) {
@@ -129,12 +125,12 @@ public class AlternativeIDannotationStatistics extends AbstractAlgorithm {
 		String sep = "\t";
 		String heading = "Label" + sep;
 		boolean headingSet = false;
-		
+
 		double max = getSelectedOrAllNodes().size();
-		
+
 		sp.setCurrentStatusText1("Alternative ID filter: " + filterText + ", " + (int) max + " nodes");
 		sp.setCurrentStatusText2("");
-		
+
 		double current = 0;
 		sp.setCurrentStatusValueFine(0);
 		for (Node n : getSelectedOrAllNodes()) {
@@ -148,14 +144,15 @@ public class AlternativeIDannotationStatistics extends AbstractAlgorithm {
 			HashMap<String, ArrayList<String>> geneNameAndClusterIDs = new HashMap<String, ArrayList<String>>();
 			HashMap<String, HashSet<String>> geneNameAndClusterIDset = new HashMap<String, HashSet<String>>();
 			HashMap<String, Integer> clusterIDandFrequency = new HashMap<String, Integer>();
-			
+
 			StringBuilder currentLine = new StringBuilder("");
 			currentLine.append(nh.getLabel() + sep);
-			
+
 			if (!headingSet) {
-				heading += "m_a" + sep + "m_b" + sep + "m_c" + sep + "m_d" + sep + "p (one sided)" + sep + "p (two sided)";
+				heading += "m_a" + sep + "m_b" + sep + "m_c" + sep + "m_d" + sep + "p (one sided)" + sep
+						+ "p (two sided)";
 			}
-			
+
 			int a = (Integer) AttributeHelper.getAttributeValue(nh, "Fisher", "m_a", -1, -1);
 			int b = (Integer) AttributeHelper.getAttributeValue(nh, "Fisher", "m_b", -1, -1);
 			int c = (Integer) AttributeHelper.getAttributeValue(nh, "Fisher", "m_c", -1, -1);
@@ -163,14 +160,14 @@ public class AlternativeIDannotationStatistics extends AbstractAlgorithm {
 			double p1 = (Double) AttributeHelper.getAttributeValue(nh, "Fisher", "p_fisher", -1d, -1d);
 			double p2 = (Double) AttributeHelper.getAttributeValue(nh, "Fisher", "p_fisher2", -1d, -1d);
 			currentLine.append(a + sep + b + sep + c + sep + d + sep + p1 + sep + p2 + sep);
-			
+
 			for (NodeHelper leafNode : nh.getReachableLeafNodes()) {
 				String leafCluster = leafNode.getClusterID("");
 				leafCluster = StringManipulationTools.stringReplace(leafCluster, ":", "_");
-				
+
 				if (!leafNode.hasDataMapping())
 					leafCluster = "";
-				
+
 				ArrayList<String> altIDs = leafNode.getAlternativeIDs();
 				String lbl = leafNode.getLabel();
 				if (lbl != null && altIDs.size() == 0) {
@@ -187,20 +184,21 @@ public class AlternativeIDannotationStatistics extends AbstractAlgorithm {
 						idSet.add(id);
 					}
 				}
-				
+
 				if (!clusterIDandFrequency.containsKey(leafCluster))
 					clusterIDandFrequency.put(leafCluster, 0);
 				clusterIDandFrequency.put(leafCluster, clusterIDandFrequency.get(leafCluster) + 1);
 			}
 			if (!createLogFile)
-				nh.setAttributeValue("hierarchy-" + filterText, "leaf-alt-id-values", AttributeHelper.getStringList(idSet, ","));
+				nh.setAttributeValue("hierarchy-" + filterText, "leaf-alt-id-values",
+						AttributeHelper.getStringList(idSet, ","));
 			nh.setAttributeValue("hierarchy-" + filterText, "leaf-alt-id-count", idSet.size());
-			
+
 			if (!headingSet) {
 				heading += "leaf-alt-id-set" + sep + "leaf-alt-id-cnt" + sep;
 			}
 			currentLine.append(AttributeHelper.getStringList(idSet, ",") + sep + idSet.size() + sep);
-			
+
 			TreeSet<String> otherClusterGeneList = new TreeSet<String>();
 			for (String clusterID : clusterIDs) {
 				int frequency = 0;
@@ -219,30 +217,36 @@ public class AlternativeIDannotationStatistics extends AbstractAlgorithm {
 						}
 					}
 				}
-				nh.setAttributeValue("hierarchy-" + filterText, "leaf-alt-id-frequency-for-cluster-" + clusterID, geneList.size());
+				nh.setAttributeValue("hierarchy-" + filterText, "leaf-alt-id-frequency-for-cluster-" + clusterID,
+						geneList.size());
 				if (!createLogFile)
-					nh.setAttributeValue("hierarchy-" + filterText, "leaf-alt-id-values-for-cluster-" + clusterID, AttributeHelper.getStringList(geneList, ","));
+					nh.setAttributeValue("hierarchy-" + filterText, "leaf-alt-id-values-for-cluster-" + clusterID,
+							AttributeHelper.getStringList(geneList, ","));
 				if (!headingSet) {
-					heading += "leaf-alt-id-set-for-cluster-" + clusterID + sep + "leaf-alt-id-cnt-for-cluster-" + clusterID + sep;
+					heading += "leaf-alt-id-set-for-cluster-" + clusterID + sep + "leaf-alt-id-cnt-for-cluster-"
+							+ clusterID + sep;
 				}
 				currentLine.append(AttributeHelper.getStringList(geneList, ",") + sep + geneList.size() + sep);
 			}
-			nh.setAttributeValue("hierarchy-" + filterText, "leaf-alt-id-frequency-for-cluster-other", otherClusterGeneList.size());
+			nh.setAttributeValue("hierarchy-" + filterText, "leaf-alt-id-frequency-for-cluster-other",
+					otherClusterGeneList.size());
 			if (!createLogFile)
-				nh.setAttributeValue("hierarchy-" + filterText, "leaf-alt-id-values-for-cluster-other", AttributeHelper.getStringList(otherClusterGeneList, ","));
+				nh.setAttributeValue("hierarchy-" + filterText, "leaf-alt-id-values-for-cluster-other",
+						AttributeHelper.getStringList(otherClusterGeneList, ","));
 			if (!headingSet) {
 				heading += "leaf-alt-id-set-for-cluster-other" + sep + "leaf-alt-id-cnt-for-cluster-other";
 			}
-			currentLine.append(AttributeHelper.getStringList(otherClusterGeneList, ",") + sep + otherClusterGeneList.size());
-			
+			currentLine.append(
+					AttributeHelper.getStringList(otherClusterGeneList, ",") + sep + otherClusterGeneList.size());
+
 			if (!headingSet)
 				logFile.add(heading);
 			logFile.add(currentLine.toString());
-			
+
 			headingSet = true;
 			current += 1;
 			sp.setCurrentStatusValueFine(current / max * 100);
 		}
 	}
-	
+
 }

@@ -22,25 +22,27 @@ import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
 
 public class CachedWebDownload {
-	
+
 	/**
-	 * If the parameter specifies a remote file, it is downloaded and saved at the hard disc drive.
-	 * A URL to the downloaded file will be returned. In case of error (saving of file or download not
-	 * possible), a error message is added to the error log and the given parameter is returned unchanged.
-	 * If the caching file is existant, the file is not downloaded again.
+	 * If the parameter specifies a remote file, it is downloaded and saved at the
+	 * hard disc drive. A URL to the downloaded file will be returned. In case of
+	 * error (saving of file or download not possible), a error message is added to
+	 * the error log and the given parameter is returned unchanged. If the caching
+	 * file is existant, the file is not downloaded again.
 	 * 
 	 * @param url
-	 *           The (remote) URL to the file.
+	 *            The (remote) URL to the file.
 	 * @return If possible, a local URL to a downloaded caching file.
 	 */
 	@SuppressWarnings("deprecation")
 	public static URL getCacheURL(URL url, String fileID, String filetype) {
-		
+
 		if (url != null && url.getProtocol().equalsIgnoreCase("file"))
 			return url;
-		
-		String fileName = ReleaseInfo.getAppSubdirFolderWithFinalSep("cached_images") + "cached_" + filetype + "_" + fileID;
-		
+
+		String fileName = ReleaseInfo.getAppSubdirFolderWithFinalSep("cached_images") + "cached_" + filetype + "_"
+				+ fileID;
+
 		if (new File(fileName).canRead()) {
 			try {
 				return new File(fileName).toURL();
@@ -70,7 +72,7 @@ public class CachedWebDownload {
 			}
 		}
 	}
-	
+
 	private static void downloadFile(URL url, File targetFile) throws IOException {
 		MainFrame.showMessage("Download " + url.toExternalForm() + "...", MessageType.INFO);
 		InputStream in = url.openStream();
@@ -85,11 +87,11 @@ public class CachedWebDownload {
 		out.close();
 		MainFrame.showMessage("", MessageType.INFO);
 	}
-	
+
 	public static boolean isCacheURL(URL url) {
 		return (!url.toExternalForm().contains("http:/"));
 	}
-	
+
 	public static String getFileIdFromUrl(String url) {
 		String s = StringManipulationTools.stringReplace(url, ":", "_");
 		s = StringManipulationTools.stringReplace(s, "/", "_");
@@ -100,5 +102,5 @@ public class CachedWebDownload {
 		s = StringManipulationTools.stringReplace(s, "\"", "_");
 		return s;
 	}
-	
+
 }

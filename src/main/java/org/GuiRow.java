@@ -10,13 +10,12 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class GuiRow {
 	public JComponent left, right;
 	public boolean span;
-	
+
 	public GuiRow(JComponent left, JComponent right) {
 		if (left == null)
 			left = new JLabel("");

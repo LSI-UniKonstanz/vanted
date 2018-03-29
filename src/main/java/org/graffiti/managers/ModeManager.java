@@ -18,30 +18,29 @@ import org.graffiti.plugin.mode.Mode;
  * @version $Revision: 1.5 $
  * @see org.graffiti.managers.pluginmgr.PluginManagerListener
  */
-public interface ModeManager
-					extends PluginManagerListener {
+public interface ModeManager extends PluginManagerListener {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the specified mode from the list of modes.
 	 * 
 	 * @return the specified mode from the list of modes.
 	 */
 	public Mode getMode(String mode);
-	
+
 	/**
 	 * Adds the specified mode to the list of modes this manager contains.
 	 * 
 	 * @param mode
-	 *           the mode to be added to the list.
+	 *            the mode to be added to the list.
 	 */
 	public void addMode(Mode mode);
-	
+
 	/**
 	 * Removes the specified mode from the list of modes the manager contains.
 	 * 
 	 * @param mode
-	 *           the mode to be removed.
+	 *            the mode to be removed.
 	 */
 	public void removeMode(Mode mode);
 }

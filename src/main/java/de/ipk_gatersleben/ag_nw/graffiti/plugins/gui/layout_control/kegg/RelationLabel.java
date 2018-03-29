@@ -29,22 +29,17 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.IdRef;
 public class RelationLabel extends JLabel {
 	private static final long serialVersionUID = 1L;
 	private Relation relation;
-	
-	public RelationLabel(
-						final Relation r,
-						final HashMap<Entry, Node> entry2graphNode,
-						final Pathway pathway,
-						final Collection<Gml2PathwayWarningInformation> warnings,
-						final Collection<Gml2PathwayErrorInformation> errors,
-						final Graph graph) {
+
+	public RelationLabel(final Relation r, final HashMap<Entry, Node> entry2graphNode, final Pathway pathway,
+			final Collection<Gml2PathwayWarningInformation> warnings,
+			final Collection<Gml2PathwayErrorInformation> errors, final Graph graph) {
 		super(r.toStringWithKeggNames());
 		this.relation = r;
 		setBackground(null);
 		setOpaque(false);
 		setCursor(new Cursor(Cursor.HAND_CURSOR));
-		setToolTipText("<html>" +
-							"<b>Click to select</b> related graph-elements<br>");
-		
+		setToolTipText("<html>" + "<b>Click to select</b> related graph-elements<br>");
+
 		addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				HashSet<Node> nodes = new HashSet<Node>();
@@ -73,21 +68,21 @@ public class RelationLabel extends JLabel {
 					MainFrame.showMessage(nodes.size() + " nodes selected", MessageType.INFO);
 				}
 			}
-			
+
 			public void mouseEntered(MouseEvent e) {
 			}
-			
+
 			public void mouseExited(MouseEvent e) {
 			}
-			
+
 			public void mousePressed(MouseEvent e) {
 			}
-			
+
 			public void mouseReleased(MouseEvent e) {
 			}
 		});
 	}
-	
+
 	public Relation getRelation() {
 		return relation;
 	}

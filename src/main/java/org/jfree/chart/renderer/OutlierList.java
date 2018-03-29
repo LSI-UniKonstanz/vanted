@@ -36,14 +36,13 @@ import java.util.List;
 
 /**
  * A collection of outliers for a single entity in a box and whisker plot.
- * Outliers are grouped in lists for each entity. Lists contain
- * one or more outliers, determined by whether overlaps have
- * occured. Overlapping outliers are grouped in the same list.
- * Each list contains an averaged outlier, which is the same as a single
- * outlier if there is only one outlier in the list, but the average of
- * all the outliers in the list if there is more than one.
- * NB This is simply my scheme for displaying outliers, and might not be
- * acceptable by the wider community.
+ * Outliers are grouped in lists for each entity. Lists contain one or more
+ * outliers, determined by whether overlaps have occured. Overlapping outliers
+ * are grouped in the same list. Each list contains an averaged outlier, which
+ * is the same as a single outlier if there is only one outlier in the list, but
+ * the average of all the outliers in the list if there is more than one. NB
+ * This is simply my scheme for displaying outliers, and might not be acceptable
+ * by the wider community.
  * 
  * @author David Browning
  */
@@ -55,14 +54,16 @@ public class OutlierList {
 	/** The averaged outlier. */
 	private Outlier averagedOutlier;
 
-	/** A flag that indicates whether or not there are multiple outliers in the list. */
+	/**
+	 * A flag that indicates whether or not there are multiple outliers in the list.
+	 */
 	private boolean multiple = false;
 
 	/**
 	 * Creates a new list containing a single outlier.
 	 * 
 	 * @param outlier
-	 *           the outlier.
+	 *            the outlier.
 	 */
 	public OutlierList(Outlier outlier) {
 		this.outliers = new ArrayList();
@@ -73,7 +74,7 @@ public class OutlierList {
 	 * Adds an outlier to the list.
 	 * 
 	 * @param outlier
-	 *           the outlier.
+	 *            the outlier.
 	 * @return A boolean.
 	 */
 	public boolean add(Outlier outlier) {
@@ -102,14 +103,15 @@ public class OutlierList {
 	 * Sets the averaged outlier.
 	 * 
 	 * @param averagedOutlier
-	 *           the averaged outlier.
+	 *            the averaged outlier.
 	 */
 	public void setAveragedOutlier(Outlier averagedOutlier) {
 		this.averagedOutlier = averagedOutlier;
 	}
 
 	/**
-	 * Returns <code>true</code> if the list contains multiple outliers, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the list contains multiple outliers, and
+	 * <code>false</code> otherwise.
 	 * 
 	 * @return A boolean.
 	 */
@@ -118,20 +120,22 @@ public class OutlierList {
 	}
 
 	/**
-	 * Sets the flag that indicates whether or not this list represents multiple outliers.
+	 * Sets the flag that indicates whether or not this list represents multiple
+	 * outliers.
 	 * 
 	 * @param multiple
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setMultiple(boolean multiple) {
 		this.multiple = multiple;
 	}
 
 	/**
-	 * Returns <code>true</code> if the outlier overlaps, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the outlier overlaps, and <code>false</code>
+	 * otherwise.
 	 * 
 	 * @param other
-	 *           the outlier.
+	 *            the outlier.
 	 * @return A boolean.
 	 */
 	public boolean isOverlapped(Outlier other) {
@@ -157,8 +161,7 @@ public class OutlierList {
 			totalXCoords += o.getX();
 			totalYCoords += o.getY();
 		}
-		getAveragedOutlier().getPoint().setLocation(new Point2D.Double(totalXCoords / size,
-																								totalYCoords / size));
+		getAveragedOutlier().getPoint().setLocation(new Point2D.Double(totalXCoords / size, totalYCoords / size));
 	}
 
 }

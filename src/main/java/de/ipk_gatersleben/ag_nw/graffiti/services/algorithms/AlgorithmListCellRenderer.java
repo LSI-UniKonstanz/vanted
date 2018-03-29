@@ -17,13 +17,13 @@ import org.graffiti.plugin.algorithm.Algorithm;
  * @author matthiak
  *
  */
-public class AlgorithmListCellRenderer 
-extends JLabel implements ListCellRenderer<Algorithm>{
+public class AlgorithmListCellRenderer extends JLabel implements ListCellRenderer<Algorithm> {
 
-	private static final Color selectedColor = new Color(250,250,150);
+	private static final long serialVersionUID = -303781688423686382L;
 
+	private static final Color selectedColor = new Color(250, 250, 150);
 
-	private static final Color defaultColor = new Color(255,255,255);
+	private static final Color defaultColor = new Color(255, 255, 255);
 
 	/**
 	 * 
@@ -33,21 +33,18 @@ extends JLabel implements ListCellRenderer<Algorithm>{
 		setOpaque(true);
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 	}
-	
-	
+
 	@Override
-	public Component getListCellRendererComponent(
-			JList<? extends Algorithm> list, Algorithm value, int index,
+	public Component getListCellRendererComponent(JList<? extends Algorithm> list, Algorithm value, int index,
 			boolean isSelected, boolean cellHasFocus) {
 		setBackground(defaultColor);
-		if(isSelected) {
+		if (isSelected) {
 			setBackground(selectedColor);
 		}
-		
-		setText(value.getName());	
-		
+
+		setText(value.getName());
+
 		return this;
 	}
 
-	
 }

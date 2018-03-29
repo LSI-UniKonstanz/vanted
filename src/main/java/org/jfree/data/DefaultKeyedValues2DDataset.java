@@ -34,8 +34,7 @@ import java.io.Serializable;
 /**
  * A default implementation of the {@link KeyedValues2DDataset} interface.
  */
-public class DefaultKeyedValues2DDataset extends DefaultCategoryDataset
-														implements KeyedValues2DDataset, Serializable {
+public class DefaultKeyedValues2DDataset extends DefaultCategoryDataset implements KeyedValues2DDataset, Serializable {
 
 	// all code inherited
 

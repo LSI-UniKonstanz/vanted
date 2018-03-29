@@ -24,26 +24,26 @@ import org.graffiti.plugin.io.AbstractOutputSerializer;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 
-public class XWGSerializer
-		extends AbstractOutputSerializer {
-	
+public class XWGSerializer extends AbstractOutputSerializer {
+
 	public String[] getExtensions() {
 		return new String[] { ".xwg" };
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
 	 */
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "XWG Wilmascope" };
 	}
-	
+
 	@Override
 	public boolean validFor(Graph g) {
 		return false;
 	}
-	
+
 	public void write(OutputStream out, Graph g) {
 		PrintStream stream;
 		try {
@@ -65,7 +65,7 @@ public class XWGSerializer
 					cluster2node.put(cluster, nl);
 				}
 			}
-			
+
 			for (String cluster : cluster2node.keySet()) {
 				// stream.println(getTab(1)+"<Cluster>");
 				if (cluster.length() > 0)
@@ -83,7 +83,8 @@ public class XWGSerializer
 				// stream.println(getTab(1)+"</Cluster>");
 			}
 			for (Edge e : g.getEdges()) {
-				stream.println(getTab(2) + "<Edge EndID=\"" + getNodeID(e.getSource()) + "\" StartID=\"" + getNodeID(e.getTarget()) + "\">");
+				stream.println(getTab(2) + "<Edge EndID=\"" + getNodeID(e.getSource()) + "\" StartID=\""
+						+ getNodeID(e.getTarget()) + "\">");
 				stream.println(getTab(3) + "<ViewType Name=\"" + getViewType(e) + "\">");
 				stream.println(getTab(4) + "<Property Key=\"Label\" Value=\"" + getLabel(e) + "\"/>");
 				stream.println(getTab(4) + "<Property Key=\"Radius\" Value=\"" + getRadius(e) + "\"/>");
@@ -98,7 +99,7 @@ public class XWGSerializer
 			ErrorMsg.addErrorMessage(e1);
 		}
 	}
-	
+
 	private String getLabel(GraphElement ge) {
 		String label = AttributeHelper.getLabel(ge, "");
 		label = StringManipulationTools.stringReplace(label, "<html>", "");
@@ -107,20 +108,20 @@ public class XWGSerializer
 		label = StringManipulationTools.stringReplace(label, ">", "");
 		return label;
 	}
-	
+
 	private String getRadius(Edge e) {
 		return "0.2";
 	}
-	
+
 	private String getRadius(Node n) {
 		AttributeHelper.getSize(n);
 		return "2.0"; // +(sz.x>10 ? sz.x/20d : 20/20d);
 	}
-	
+
 	private String getViewType(Edge e) {
 		return "Arrow";
 	}
-	
+
 	private String getPosition(Node n) {
 		Point2D p = AttributeHelper.getPosition(n);
 		String x, y, z;
@@ -133,7 +134,7 @@ public class XWGSerializer
 		z = StringManipulationTools.stringReplace(z, ",", ".");
 		return x + " " + y + " " + z;
 	}
-	
+
 	private String getColor(GraphElement ge) {
 		Color c = AttributeHelper.getFillColor(ge);
 		String r, g, b;
@@ -142,7 +143,7 @@ public class XWGSerializer
 		b = AttributeHelper.formatNumber(c.getBlue() / 255d, "#.#");
 		return r + " " + g + " " + b;
 	}
-	
+
 	private String getViewType(Node n) {
 		NodeTools.getNodeComponentType(n);
 		NodeHelper nh = new NodeHelper(n, false);
@@ -151,12 +152,12 @@ public class XWGSerializer
 		else
 			return "Oriented Box Node";
 	}
-	
+
 	private String getNodeID(Node n) {
 		return "N" + n.getID();
 		// return n.getGraph().getName()+"_"+n.getID();
 	}
-	
+
 	private String getTab(int d) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < d; i++)

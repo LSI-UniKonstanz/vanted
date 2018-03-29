@@ -46,8 +46,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * Another horizontal bar chart demo. This time all the extras (titles, legend and axes) are
- * removed, to display just a single bar.
+ * Another horizontal bar chart demo. This time all the extras (titles, legend
+ * and axes) are removed, to display just a single bar.
  */
 public class BarChartDemo6 extends ApplicationFrame {
 
@@ -55,7 +55,7 @@ public class BarChartDemo6 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public BarChartDemo6(final String title) {
 
@@ -66,16 +66,12 @@ public class BarChartDemo6 extends ApplicationFrame {
 		dataset.addValue(83.0, "First", "Factor 1");
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createBarChart(
-							null, // chart title
+		final JFreeChart chart = ChartFactory.createBarChart(null, // chart title
 				"Category", // domain axis label
 				"Score (%)", // range axis label
 				dataset, // data
-				PlotOrientation.HORIZONTAL,
-							false, // include legend
-				true,
-							false
-							);
+				PlotOrientation.HORIZONTAL, false, // include legend
+				true, false);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 		chart.setBackgroundPaint(Color.yellow); // not seen
@@ -113,7 +109,7 @@ public class BarChartDemo6 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

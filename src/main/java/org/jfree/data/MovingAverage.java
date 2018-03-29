@@ -42,43 +42,39 @@ import org.jfree.data.time.TimeSeriesDataItem;
 public class MovingAverage {
 
 	/**
-	 * Creates a new {@link TimeSeriesCollection} containing a moving average series for each
-	 * series in the source collection.
+	 * Creates a new {@link TimeSeriesCollection} containing a moving average series
+	 * for each series in the source collection.
 	 * 
 	 * @param source
-	 *           the source collection.
+	 *            the source collection.
 	 * @param suffix
-	 *           the suffix added to each source series name to create the corresponding
-	 *           moving average series name.
+	 *            the suffix added to each source series name to create the
+	 *            corresponding moving average series name.
 	 * @param periodCount
-	 *           the number of periods in the moving average calculation.
+	 *            the number of periods in the moving average calculation.
 	 * @param skip
-	 *           the number of initial periods to skip.
+	 *            the number of initial periods to skip.
 	 * @return A collection of moving average time series.
 	 */
-	public static TimeSeriesCollection createMovingAverage(final TimeSeriesCollection source,
-																				final String suffix,
-																				final int periodCount,
-																				final int skip) {
+	public static TimeSeriesCollection createMovingAverage(final TimeSeriesCollection source, final String suffix,
+			final int periodCount, final int skip) {
 
 		// check arguments
 		if (source == null) {
-			throw new IllegalArgumentException(
-								"MovingAverage.createMovingAverage(...) : null source.");
+			throw new IllegalArgumentException("MovingAverage.createMovingAverage(...) : null source.");
 		}
 
 		if (periodCount < 1) {
-			throw new IllegalArgumentException("MovingAverage.createMovingAverage(...) : "
-								+ "periodCount must be greater than or equal to 1.");
+			throw new IllegalArgumentException(
+					"MovingAverage.createMovingAverage(...) : " + "periodCount must be greater than or equal to 1.");
 		}
 
 		final TimeSeriesCollection result = new TimeSeriesCollection();
 
 		for (int i = 0; i < source.getSeriesCount(); i++) {
 			final TimeSeries sourceSeries = source.getSeries(i);
-			final TimeSeries maSeries = createMovingAverage(
-								sourceSeries, sourceSeries.getName() + suffix, periodCount, skip
-								);
+			final TimeSeries maSeries = createMovingAverage(sourceSeries, sourceSeries.getName() + suffix, periodCount,
+					skip);
 			result.addSeries(maSeries);
 		}
 
@@ -87,34 +83,32 @@ public class MovingAverage {
 	}
 
 	/**
-	 * Creates a new {@link TimeSeries} containing moving average values for the given series.
+	 * Creates a new {@link TimeSeries} containing moving average values for the
+	 * given series.
 	 * <p>
 	 * If the series is empty (contains zero items), the result is an empty series.
 	 * 
 	 * @param source
-	 *           the source series.
+	 *            the source series.
 	 * @param name
-	 *           the name of the new series.
+	 *            the name of the new series.
 	 * @param periodCount
-	 *           the number of periods used in the average calculation.
+	 *            the number of periods used in the average calculation.
 	 * @param skip
-	 *           the number of initial periods to skip.
+	 *            the number of initial periods to skip.
 	 * @return The moving average series.
 	 */
-	public static TimeSeries createMovingAverage(final TimeSeries source,
-																	final String name,
-																	final int periodCount,
-																	final int skip) {
+	public static TimeSeries createMovingAverage(final TimeSeries source, final String name, final int periodCount,
+			final int skip) {
 
 		// check arguments
 		if (source == null) {
-			throw new IllegalArgumentException(
-								"MovingAverage.createMovingAverage(...) : null source.");
+			throw new IllegalArgumentException("MovingAverage.createMovingAverage(...) : null source.");
 		}
 
 		if (periodCount < 1) {
-			throw new IllegalArgumentException("MovingAverage.createMovingAverage(...) : "
-								+ "periodCount must be greater than or equal to 1.");
+			throw new IllegalArgumentException(
+					"MovingAverage.createMovingAverage(...) : " + "periodCount must be greater than or equal to 1.");
 
 		}
 
@@ -122,7 +116,8 @@ public class MovingAverage {
 
 		if (source.getItemCount() > 0) {
 
-			// if the initial averaging period is to be excluded, then calculate the index of the
+			// if the initial averaging period is to be excluded, then calculate the index
+			// of the
 			// first data item to have an average calculated...
 			final long firstSerial = source.getDataItem(0).getPeriod().getSerialIndex() + skip;
 
@@ -173,33 +168,34 @@ public class MovingAverage {
 	}
 
 	/**
-	 * Creates a new {@link TimeSeries} containing moving average values for the given series,
-	 * calculated by number of points (irrespective of the 'age' of those points).
+	 * Creates a new {@link TimeSeries} containing moving average values for the
+	 * given series, calculated by number of points (irrespective of the 'age' of
+	 * those points).
 	 * <p>
 	 * If the series is empty (contains zero items), the result is an empty series.
 	 * <p>
 	 * Developed by Benoit Xhenseval (www.ObjectLab.co.uk).
 	 * 
 	 * @param source
-	 *           the source series.
+	 *            the source series.
 	 * @param name
-	 *           the name of the new series.
+	 *            the name of the new series.
 	 * @param pointCount
-	 *           the number of POINTS used in the average calculation (not periods!)
+	 *            the number of POINTS used in the average calculation (not
+	 *            periods!)
 	 * @return The moving average series.
 	 */
-	public static TimeSeries createPointMovingAverage(final TimeSeries source,
-																		final String name, final int pointCount) {
+	public static TimeSeries createPointMovingAverage(final TimeSeries source, final String name,
+			final int pointCount) {
 
 		// check arguments
 		if (source == null) {
-			throw new IllegalArgumentException("MovingAverage.createMovingAverage(...) : "
-								+ "null source.");
+			throw new IllegalArgumentException("MovingAverage.createMovingAverage(...) : " + "null source.");
 		}
 
 		if (pointCount < 2) {
-			throw new IllegalArgumentException("MovingAverage.createMovingAverage(...) : "
-								+ "periodCount must be greater than or equal to 2.");
+			throw new IllegalArgumentException(
+					"MovingAverage.createMovingAverage(...) : " + "periodCount must be greater than or equal to 2.");
 
 		}
 
@@ -216,61 +212,62 @@ public class MovingAverage {
 				final TimeSeriesDataItem startOfMovingAvg = source.getDataItem(i - pointCount);
 				rollingSumForPeriod -= startOfMovingAvg.getValue().doubleValue();
 				result.add(period, rollingSumForPeriod / pointCount);
-			} else
-				if (i == pointCount - 1) {
-					result.add(period, rollingSumForPeriod / pointCount);
-				}
+			} else if (i == pointCount - 1) {
+				result.add(period, rollingSumForPeriod / pointCount);
+			}
 		}
 		return result;
 	}
 
 	/**
-	 * Creates a new {@link XYDataset} containing the moving averages of each series in the <code>source</code> dataset.
+	 * Creates a new {@link XYDataset} containing the moving averages of each series
+	 * in the <code>source</code> dataset.
 	 * 
 	 * @param source
-	 *           the source dataset.
+	 *            the source dataset.
 	 * @param suffix
-	 *           the string to append to source series names to create target series names.
+	 *            the string to append to source series names to create target
+	 *            series names.
 	 * @param period
-	 *           the averaging period.
+	 *            the averaging period.
 	 * @param skip
-	 *           the length of the initial skip period.
+	 *            the length of the initial skip period.
 	 * @return The dataset.
 	 */
-	public static XYDataset createMovingAverage(final XYDataset source, final String suffix,
-																final long period, final long skip) {
+	public static XYDataset createMovingAverage(final XYDataset source, final String suffix, final long period,
+			final long skip) {
 
 		return createMovingAverage(source, suffix, (double) period, (double) skip);
 
 	}
 
 	/**
-	 * Creates a new {@link XYDataset} containing the moving averages of each series in the <code>source</code> dataset.
+	 * Creates a new {@link XYDataset} containing the moving averages of each series
+	 * in the <code>source</code> dataset.
 	 * 
 	 * @param source
-	 *           the source dataset.
+	 *            the source dataset.
 	 * @param suffix
-	 *           the string to append to source series names to create target series names.
+	 *            the string to append to source series names to create target
+	 *            series names.
 	 * @param period
-	 *           the averaging period.
+	 *            the averaging period.
 	 * @param skip
-	 *           the length of the initial skip period.
+	 *            the length of the initial skip period.
 	 * @return The dataset.
 	 */
-	public static XYDataset createMovingAverage(final XYDataset source, final String suffix,
-																final double period, final double skip) {
+	public static XYDataset createMovingAverage(final XYDataset source, final String suffix, final double period,
+			final double skip) {
 
 		// check arguments
 		if (source == null) {
-			throw new IllegalArgumentException(
-								"MovingAverage.createMovingAverage(...) : null source (XYDataset).");
+			throw new IllegalArgumentException("MovingAverage.createMovingAverage(...) : null source (XYDataset).");
 		}
 
 		final XYSeriesCollection result = new XYSeriesCollection();
 
 		for (int i = 0; i < source.getSeriesCount(); i++) {
-			final XYSeries s = createMovingAverage(source, i, source.getSeriesName(i) + suffix,
-															period, skip);
+			final XYSeries s = createMovingAverage(source, i, source.getSeriesName(i) + suffix, period, skip);
 			result.addSeries(s);
 		}
 
@@ -279,61 +276,60 @@ public class MovingAverage {
 	}
 
 	/**
-	 * Creates a new {@link XYSeries} containing the moving averages of one series in the <code>source</code> dataset.
+	 * Creates a new {@link XYSeries} containing the moving averages of one series
+	 * in the <code>source</code> dataset.
 	 * 
 	 * @param source
-	 *           the source dataset.
+	 *            the source dataset.
 	 * @param series
-	 *           the series index (zero based).
+	 *            the series index (zero based).
 	 * @param name
-	 *           the name for the new series.
+	 *            the name for the new series.
 	 * @param period
-	 *           the averaging period.
+	 *            the averaging period.
 	 * @param skip
-	 *           the length of the initial skip period.
+	 *            the length of the initial skip period.
 	 * @return The dataset.
 	 * @deprecated Use similar method with 'double' parameters.
 	 */
-	public static XYSeries createMovingAverage(final XYDataset source,
-																final int series, final String name,
-																final long period, final long skip) {
+	public static XYSeries createMovingAverage(final XYDataset source, final int series, final String name,
+			final long period, final long skip) {
 		return createMovingAverage(source, series, name, (double) period, (double) skip);
 	}
 
 	/**
-	 * Creates a new {@link XYSeries} containing the moving averages of one series in the <code>source</code> dataset.
+	 * Creates a new {@link XYSeries} containing the moving averages of one series
+	 * in the <code>source</code> dataset.
 	 * 
 	 * @param source
-	 *           the source dataset.
+	 *            the source dataset.
 	 * @param series
-	 *           the series index (zero based).
+	 *            the series index (zero based).
 	 * @param name
-	 *           the name for the new series.
+	 *            the name for the new series.
 	 * @param period
-	 *           the averaging period.
+	 *            the averaging period.
 	 * @param skip
-	 *           the length of the initial skip period.
+	 *            the length of the initial skip period.
 	 * @return The dataset.
 	 */
-	public static XYSeries createMovingAverage(final XYDataset source,
-																final int series, final String name,
-																final double period, final double skip) {
+	public static XYSeries createMovingAverage(final XYDataset source, final int series, final String name,
+			final double period, final double skip) {
 
 		// check arguments
 		if (source == null) {
-			throw new IllegalArgumentException("MovingAverage.createMovingAverage(...) : "
-								+ "null source (XYDataset).");
+			throw new IllegalArgumentException(
+					"MovingAverage.createMovingAverage(...) : " + "null source (XYDataset).");
 		}
 
 		if (period < Double.MIN_VALUE) {
-			throw new IllegalArgumentException("MovingAverage.createMovingAverage(...) : "
-								+ "period must be positive.");
+			throw new IllegalArgumentException(
+					"MovingAverage.createMovingAverage(...) : " + "period must be positive.");
 
 		}
 
 		if (skip < 0.0) {
-			throw new IllegalArgumentException("MovingAverage.createMovingAverage(...) : "
-								+ "skip must be >= 0.0.");
+			throw new IllegalArgumentException("MovingAverage.createMovingAverage(...) : " + "skip must be >= 0.0.");
 
 		}
 

@@ -34,17 +34,22 @@ import java.io.Serializable;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A package only class for delegating xy-interval issues to.
- * Enhances a XYDataset to an XYIntervalDataset. The decorator pattern
- * was not used because of the several possibly implemented interfaces of
- * the decorated instance (e.g. TableXYDataset, RangeInfo, DomainInfo etc.).
+ * A package only class for delegating xy-interval issues to. Enhances a
+ * XYDataset to an XYIntervalDataset. The decorator pattern was not used because
+ * of the several possibly implemented interfaces of the decorated instance
+ * (e.g. TableXYDataset, RangeInfo, DomainInfo etc.).
  * <p>
- * This class calculates the minimal interval width between two items. This width influences the width of bars displayed with this dataset.
+ * This class calculates the minimal interval width between two items. This
+ * width influences the width of bars displayed with this dataset.
  * <p>
- * The width can be set manually or calculated automatically. The switch autoWidth allows to determine which behavior is used. The behavior is transparent: The
- * width is always calculated automatically in the background without affecting the manually set width. The switch simply determines which value is used. <br>
+ * The width can be set manually or calculated automatically. The switch
+ * autoWidth allows to determine which behavior is used. The behavior is
+ * transparent: The width is always calculated automatically in the background
+ * without affecting the manually set width. The switch simply determines which
+ * value is used. <br>
  * As default manually set width, 1.0 is used. <br>
- * If there is only one item in the series, the auto width calculation fails and falls back on the manually set interval width (which is itself defaulted to
+ * If there is only one item in the series, the auto width calculation fails and
+ * falls back on the manually set interval width (which is itself defaulted to
  * 1.0).
  * 
  * @author andreas.schroeder
@@ -94,7 +99,7 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 	 * Creates an XYIntervalDelegate.
 	 * 
 	 * @param dataset
-	 *           the dataset for which this interval delegate works.
+	 *            the dataset for which this interval delegate works.
 	 */
 	public IntervalXYDelegate(final XYDataset dataset) {
 		this(dataset, true);
@@ -104,9 +109,9 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 	 * Creates an XYIntervalDelegate.
 	 * 
 	 * @param dataset
-	 *           the dataset for which this interval delegate works.
+	 *            the dataset for which this interval delegate works.
 	 * @param autoWidth
-	 *           ???.
+	 *            ???.
 	 */
 	public IntervalXYDelegate(final XYDataset dataset, final boolean autoWidth) {
 		this.autoWidth = autoWidth;
@@ -131,7 +136,7 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 	 * calculated or not.
 	 * 
 	 * @param b
-	 *           a boolean.
+	 *            a boolean.
 	 */
 	public void setAutoWidth(final boolean b) {
 		this.autoWidth = b;
@@ -147,13 +152,13 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 	}
 
 	/**
-	 * Sets the interval position factor. Must be between 0.0 and 1.0 inclusive.
-	 * If the factor is 0.5, the gap is in the middle of the x values. If it
-	 * is lesser than 0.5, the gap is farther to the left and if greater than
-	 * 0.5 it gets farther to the right.
+	 * Sets the interval position factor. Must be between 0.0 and 1.0 inclusive. If
+	 * the factor is 0.5, the gap is in the middle of the x values. If it is lesser
+	 * than 0.5, the gap is farther to the left and if greater than 0.5 it gets
+	 * farther to the right.
 	 * 
 	 * @param d
-	 *           the new interval position factor.
+	 *            the new interval position factor.
 	 */
 	public void setIntervalPositionFactor(final double d) {
 		if (d < 0.0 || 1.0 < d) {
@@ -167,15 +172,15 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 	 * Sets the interval width manually.
 	 * 
 	 * @param d
-	 *           the new interval width.
+	 *            the new interval width.
 	 */
 	public void setIntervalWidth(final double d) {
 		this.intervalWidth = d;
 	}
 
 	/**
-	 * returns the full interval width. For behavior of this method, see
-	 * the class comments.
+	 * returns the full interval width. For behavior of this method, see the class
+	 * comments.
 	 * 
 	 * @return the interval width to use.
 	 */
@@ -190,47 +195,48 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 	}
 
 	/**
-	 * returns the start x value based on the intervalWidth and the intervalPositionFactor.
+	 * returns the start x value based on the intervalWidth and the
+	 * intervalPositionFactor.
 	 * 
 	 * @param series
-	 *           the series index.
+	 *            the series index.
 	 * @param item
-	 *           the item index.
-	 * @return the start value based on the intervalWidth and the intervalPositionFactor.
+	 *            the item index.
+	 * @return the start value based on the intervalWidth and the
+	 *         intervalPositionFactor.
 	 */
 	public Number getStartXValue(final int series, final int item) {
 		Number startX = null;
 		final Number x = this.dataset.getXValue(series, item);
 		if (x != null) {
-			startX = new Double(x.doubleValue()
-								- (getIntervalPositionFactor() * getIntervalWidth()));
+			startX = Double.valueOf(x.doubleValue() - (getIntervalPositionFactor() * getIntervalWidth()));
 		}
 		return startX;
 	}
 
 	/**
-	 * returns the end x value based on the intervalWidth and the intervalPositionFactor.
+	 * returns the end x value based on the intervalWidth and the
+	 * intervalPositionFactor.
 	 * 
 	 * @param series
-	 *           the series index.
+	 *            the series index.
 	 * @param item
-	 *           the item index.
-	 * @return the end value based on the intervalWidth and the intervalPositionFactor.
+	 *            the item index.
+	 * @return the end value based on the intervalWidth and the
+	 *         intervalPositionFactor.
 	 */
 	public Number getEndXValue(final int series, final int item) {
 		Number endX = null;
 		final Number x = this.dataset.getXValue(series, item);
 		if (x != null) {
-			endX = new Double(x.doubleValue()
-								+ ((1.0 - getIntervalPositionFactor()) * getIntervalWidth()));
+			endX = Double.valueOf(x.doubleValue() + ((1.0 - getIntervalPositionFactor()) * getIntervalWidth()));
 		}
 		return endX;
 	}
 
 	/**
 	 * Returns the domain range. If the dataset contains a single item in one
-	 * series, the returned domain range is extended by the double interval
-	 * width.
+	 * series, the returned domain range is extended by the double interval width.
 	 * 
 	 * @return the domain range.
 	 */
@@ -239,14 +245,10 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 
 		if (this.dataset.getSeriesCount() == 1 && this.dataset.getItemCount(0) == 1) {
 			/*
-			 * if there is only one interval value, so add some space to the left
-			 * and the right - otherwise one bar looks like a background
-			 * coloration.
+			 * if there is only one interval value, so add some space to the left and the
+			 * right - otherwise one bar looks like a background coloration.
 			 */
-			range = new Range(
-								range.getLowerBound() - getIntervalWidth(),
-								range.getUpperBound() + getIntervalWidth()
-								);
+			range = new Range(range.getLowerBound() - getIntervalWidth(), range.getUpperBound() + getIntervalWidth());
 		}
 
 		return range;
@@ -258,7 +260,7 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 	 * @return The maximum domain value.
 	 */
 	public Number getMaximumDomainValue() {
-		return new Double(getDomainRange().getUpperBound());
+		return Double.valueOf(getDomainRange().getUpperBound());
 	}
 
 	/**
@@ -267,19 +269,19 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 	 * @return The minimum domain value.
 	 */
 	public Number getMinimumDomainValue() {
-		return new Double(getDomainRange().getLowerBound());
+		return Double.valueOf(getDomainRange().getLowerBound());
 	}
 
 	/**
-	 * updates the interval width if an item is added, i.e. relaxes the interval width to the
-	 * minimum of the actual interval width, the distance between the actual x value and
-	 * the previous x value and the distance between the next x value and the
-	 * actual x value.
+	 * updates the interval width if an item is added, i.e. relaxes the interval
+	 * width to the minimum of the actual interval width, the distance between the
+	 * actual x value and the previous x value and the distance between the next x
+	 * value and the actual x value.
 	 * 
 	 * @param item
-	 *           the number of the item.
+	 *            the number of the item.
 	 * @param series
-	 *           the number of the series
+	 *            the number of the series
 	 */
 	public void itemAdded(final int series, final int item) {
 		final double x = this.dataset.getXValue(series, item).doubleValue();
@@ -306,13 +308,13 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 	}
 
 	/**
-	 * updates the interval width if an item is removed, i.e. enlarges the
-	 * interval width to the new interval minimum if the removed value was
-	 * part of the minimum. For performance reason this methos should be called
-	 * only if the x value was definitely removed from the series.
+	 * updates the interval width if an item is removed, i.e. enlarges the interval
+	 * width to the new interval minimum if the removed value was part of the
+	 * minimum. For performance reason this methos should be called only if the x
+	 * value was definitely removed from the series.
 	 * 
 	 * @param x
-	 *           the x value of the removed item (that doesn't occur twice)
+	 *            the x value of the removed item (that doesn't occur twice)
 	 */
 	public void itemRemoved(final double x) {
 		if (x == this.lowerBound || x == this.upperBound) {
@@ -336,7 +338,7 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 	 * calculates the interval width for a given series index.
 	 * 
 	 * @param series
-	 *           the index of the series.
+	 *            the index of the series.
 	 */
 	private void calculateSeries(final int series) {
 		final int totalCount = this.dataset.getItemCount(series);
@@ -358,7 +360,7 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 	 * Convenience method for XYSeriesCollection.
 	 * 
 	 * @param series
-	 *           the series index.
+	 *            the series index.
 	 */
 	public void seriesAdded(final int series) {
 		calculateSeries(series);
@@ -374,7 +376,7 @@ class IntervalXYDelegate implements DomainInfo, Serializable, Cloneable, PublicC
 	/**
 	 * @return a clone of this delegate.
 	 * @throws CloneNotSupportedException
-	 *            if the object cannot be cloned.
+	 *             if the object cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

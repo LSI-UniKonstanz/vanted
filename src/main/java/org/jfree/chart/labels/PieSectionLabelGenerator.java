@@ -44,7 +44,8 @@ package org.jfree.chart.labels;
 import org.jfree.data.PieDataset;
 
 /**
- * Interface for a label generator for plots that use data from a {@link PieDataset}.
+ * Interface for a label generator for plots that use data from a
+ * {@link PieDataset}.
  */
 public interface PieSectionLabelGenerator {
 
@@ -52,9 +53,9 @@ public interface PieSectionLabelGenerator {
 	 * Generates a label for a pie section.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> not permitted).
+	 *            the dataset (<code>null</code> not permitted).
 	 * @param key
-	 *           the section key (<code>null</code> not permitted).
+	 *            the section key (<code>null</code> not permitted).
 	 * @return The label (possibly <code>null</code>).
 	 */
 	public String generateSectionLabel(PieDataset dataset, Comparable key);

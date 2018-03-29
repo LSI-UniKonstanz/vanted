@@ -12,29 +12,28 @@ import org.graffiti.plugin.view.View;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 
 public class ChangeElementStyle extends AbstractEditorAlgorithm {
-	
+
 	public void execute() {
 		getMainFrame().showAndHighlightSidePanelTab("Network", true);
 	}
-	
+
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
 		else
 			return "Change Graphelement Style";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return null;// "Elements";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.UI
-				));
+		return new HashSet<Category>(Arrays.asList(Category.UI));
 	}
+
 	public boolean activeForView(View v) {
 		return v instanceof GraffitiView;
 	}

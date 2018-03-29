@@ -26,82 +26,74 @@ import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.parameter.AbstractLimitableParameter;
 
 /**
- * DOCUMENT ME!
+ * An <code>EditComponent</code>, displaying values in a JSpinner-manner.
  * 
- * @version $Revision: 1.8 $
+ * @version 2.6.5
+ * @vanted.revision 2.6.5
  */
-public class SpinnerEditComponent
-					extends AbstractValueEditComponent {
+public class SpinnerEditComponent extends AbstractValueEditComponent {
 	// ~ Instance fields ========================================================
-	
+
 	/** The default step width for floating point numbers. */
-	private final Double DEFAULT_STEP = new Double(0.5d);
-	
+	private final Double DEFAULT_STEP = Double.valueOf(0.5);
+
 	/** The spinner component used. */
 	private JSpinner jSpinner;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor for SpinnerEditComponent.
 	 * 
 	 * @param disp
-	 *           DOCUMENT ME!
+	 *            containing the attributes to be displayed
 	 */
 	public SpinnerEditComponent(Displayable disp) {
 		super(disp);
-		
 		SpinnerNumberModel model;
-		
-		if (disp instanceof IntegerAttribute || disp instanceof ByteAttribute ||
-					disp instanceof LongAttribute || disp instanceof ShortAttribute
-					) {
-				model = new SpinnerNumberModel(new Integer(0), null, null, new Integer(1));
-			 
-		} else if( disp instanceof AbstractLimitableParameter) {
-				Comparable<?> min = ((AbstractLimitableParameter)disp).getMin();
-				Comparable<?> max = ((AbstractLimitableParameter)disp).getMax();
-				if(min instanceof Double) {
-					Double dMin = (Double)min;
-					Double dMax = (Double)max;
-					min = dMin.compareTo(Double.MIN_VALUE) == 0 ? null : min;
-					max = dMax.compareTo(Double.MAX_VALUE) == 0 ? null : max;
-					model = new SpinnerNumberModel((Double)disp.getValue(), min, max, new Double(1));
-				}
-				else if(min instanceof Float) {
-					Float fMin = (Float)min;
-					Float fMax = (Float)max;
-					model = new SpinnerNumberModel((Float)disp.getValue(), fMin.compareTo(Float.MIN_VALUE) == 0 ? null : min, fMax.compareTo(Float.MAX_VALUE) == 0 ? null : max, new Float(1));
-				}
-				else {
-					Integer iMin = (Integer)min;
-					Integer iMax = (Integer)max;
-					model = new SpinnerNumberModel((Integer)disp.getValue(), iMin.compareTo(Integer.MIN_VALUE) == 0 ? null : min, iMax.compareTo(Integer.MAX_VALUE) == 0 ? null : max, new Integer(1));
-				}
-		}
-		else {
-			model = new SpinnerNumberModel(new Double(0d), null, null,
-					DEFAULT_STEP);
+
+		if (disp instanceof IntegerAttribute || disp instanceof ByteAttribute || disp instanceof LongAttribute
+				|| disp instanceof ShortAttribute) {
+			model = new SpinnerNumberModel(Integer.valueOf(0), null, null, Integer.valueOf(1));
+
+		} else if (disp instanceof AbstractLimitableParameter) {
+			Comparable<?> min = ((AbstractLimitableParameter) disp).getMin();
+			Comparable<?> max = ((AbstractLimitableParameter) disp).getMax();
+			Number stepSize = ((AbstractLimitableParameter) disp).getValuesBall();
+			if (min instanceof Double) {
+				Double dMin = (Double) min;
+				Double dMax = (Double) max;
+				min = dMin.compareTo(Double.MIN_VALUE) == 0 ? null : min;
+				max = dMax.compareTo(Double.MAX_VALUE) == 0 ? null : max;
+				model = new SpinnerNumberModel((Double) disp.getValue(), min, max, stepSize);
+			} else if (min instanceof Float) {
+				Float fMin = (Float) min;
+				Float fMax = (Float) max;
+				model = new SpinnerNumberModel((Float) disp.getValue(),
+						fMin.compareTo(Float.MIN_VALUE) == 0 ? null : min,
+						fMax.compareTo(Float.MAX_VALUE) == 0 ? null : max, stepSize);
+			} else {
+				Integer iMin = (Integer) min;
+				Integer iMax = (Integer) max;
+				model = new SpinnerNumberModel((Integer) disp.getValue(),
+						iMin.compareTo(Integer.MIN_VALUE) == 0 ? null : min,
+						iMax.compareTo(Integer.MAX_VALUE) == 0 ? null : max, stepSize);
+			}
+		} else {
+			model = new SpinnerNumberModel(0d, null, null, DEFAULT_STEP);
 		}
 		this.jSpinner = new JSpinner(model);
-		// this.spinner = new JSpinner();
-		// this.spinner.setBorder(BorderFactory.createEmptyBorder());
-		
 		jSpinner.setOpaque(false);
-		
-		// this.spinner.setSize(100, 40);
-		// this.spinner.setMinimumSize(new Dimension(40, 10));
-		// this.spinner.setPreferredSize(new Dimension(100, 40));
 		displayable = null; // ensure setDisplayable really does sth
 		this.setDisplayable(disp);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the <code>ValueEditComponent</code>'s <code>JComponent</code>.
 	 * 
-	 * @return DOCUMENT ME!
+	 * @return underlying JSpinner Component
 	 */
 	public JComponent getComponent() {
 		jSpinner.setMinimumSize(new Dimension(0, 30));
@@ -109,49 +101,48 @@ public class SpinnerEditComponent
 		jSpinner.setMaximumSize(new Dimension(2000, 30));
 		return jSpinner;
 	}
-	
+
 	/**
 	 * Sets the displayable.
 	 * 
 	 * @param disp
+	 *            new displayable
 	 */
 	@Override
 	public void setDisplayable(Displayable disp) {
 		this.displayable = disp;
 	}
-	
+
 	/**
-	 * Sets the current value of the <code>Attribute</code> in the
-	 * corresponding <code>JComponent</code>.
+	 * Sets the current value of the <code>Attribute</code> in the corresponding
+	 * <code>JComponent</code>.
 	 */
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			((JSpinner.DefaultEditor) this.jSpinner.getEditor()).getTextField().setText(EMPTY_STRING);
 		} else {
 			jSpinner.setValue(this.displayable.getValue());
-			
+
 			ChangeEvent ce = new ChangeEvent(jSpinner);
-			
+
 			for (int i = 0; i < jSpinner.getChangeListeners().length; i++) {
 				jSpinner.getChangeListeners()[i].stateChanged(ce);
 			}
 		}
 	}
-	
-	/*
-	 * @see org.graffiti.plugin.editcomponent.AbstractValueEditComponent#setShowEmpty(boolean)
-	 */
+
 	@Override
 	public void setShowEmpty(boolean showEmpty) {
 		if (this.showEmpty != showEmpty) {
 			super.setShowEmpty(showEmpty);
 		}
-		
+
 		this.setEditFieldValue();
 	}
-	
+
 	/**
-	 * Sets the value of the displayable specified in the <code>JComponent</code>. But only if it is different.
+	 * Sets the value of the displayable, specified in the <code>JComponent</code>.
+	 * But only, if it is different.
 	 */
 	public void setValue() {
 		if (jSpinner.getEditor() != null && jSpinner.getEditor() instanceof NumberEditor) {
@@ -166,53 +157,41 @@ public class SpinnerEditComponent
 					if (this.displayable.getValue() instanceof Double) {
 						this.displayable.setValue((Double) this.displayable.getValue() * p);
 						return;
-					} else
-						if (this.displayable.getValue() instanceof Integer) {
-							this.displayable.setValue((int) ((Integer) this.displayable.getValue() * p));
-							return;
-						}
-				} else
-					if (txt.startsWith("/")) {
-						Double p = Double.parseDouble(txt.substring("/".length()));
-						if (this.displayable.getValue() instanceof Double) {
-							this.displayable.setValue((Double) this.displayable.getValue() / p);
-							return;
-						} else
-							if (this.displayable.getValue() instanceof Integer) {
-								this.displayable.setValue((int) ((Integer) this.displayable.getValue() / p));
-								return;
-							}
-					} else
-						if (txt.startsWith("+")) {
-							Double p = Double.parseDouble(txt.substring("+".length()));
-							if (this.displayable.getValue() instanceof Double) {
-								this.displayable.setValue((Double) this.displayable.getValue() + p);
-								return;
-							} else
-								if (this.displayable.getValue() instanceof Integer) {
-									this.displayable.setValue((int) ((Integer) this.displayable.getValue() + p));
-									return;
-								}
-						}
-				
+					} else if (this.displayable.getValue() instanceof Integer) {
+						this.displayable.setValue((int) ((Integer) this.displayable.getValue() * p));
+						return;
+					}
+				} else if (txt.startsWith("/")) {
+					Double p = Double.parseDouble(txt.substring("/".length()));
+					if (this.displayable.getValue() instanceof Double) {
+						this.displayable.setValue((Double) this.displayable.getValue() / p);
+						return;
+					} else if (this.displayable.getValue() instanceof Integer) {
+						this.displayable.setValue((int) ((Integer) this.displayable.getValue() / p));
+						return;
+					}
+				} else if (txt.startsWith("+")) {
+					Double p = Double.parseDouble(txt.substring("+".length()));
+					if (this.displayable.getValue() instanceof Double) {
+						this.displayable.setValue((Double) this.displayable.getValue() + p);
+						return;
+					} else if (this.displayable.getValue() instanceof Integer) {
+						this.displayable.setValue((int) ((Integer) this.displayable.getValue() + p));
+						return;
+					}
+				}
+
 			} catch (NumberFormatException nfe) {
-				//
+				nfe.printStackTrace();
 			}
 		}
 		try {
 			jSpinner.getEditor();
-			// String txt1 = ne.getTextField().getText();
-			// System.out.println("A: "+txt1);
 			jSpinner.commitEdit();
-			// String txt2 = ne.getTextField().getText();
-			// System.out.println("B: "+txt2);
-			// System.out.println(this.displayable.getValue()+" <-?-> "+this.jSpinner.getValue());
 			if (!this.displayable.getValue().equals(this.jSpinner.getValue()))
 				this.displayable.setValue(this.jSpinner.getValue());
-			// String txt3 = ne.getTextField().getText();
-			// System.out.println("C: "+txt3);
 		} catch (ParseException e) {
-			// input not parsable
+			e.printStackTrace();
 		}
 	}
 }

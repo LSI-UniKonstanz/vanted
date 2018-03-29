@@ -51,16 +51,18 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * An example of a time series chart. For the most part, default settings are used, except that
- * the renderer is modified to show filled shapes (as well as lines) at each data point.
+ * An example of a time series chart. For the most part, default settings are
+ * used, except that the renderer is modified to show filled shapes (as well as
+ * lines) at each data point.
  */
 public class DualAxisDemo2 extends ApplicationFrame {
 
 	/**
-	 * A demonstration application showing how to create a time series chart with dual axes.
+	 * A demonstration application showing how to create a time series chart with
+	 * dual axes.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public DualAxisDemo2(final String title) {
 
@@ -70,15 +72,8 @@ public class DualAxisDemo2 extends ApplicationFrame {
 		final String chartTitle = "Dual Axis Demo 2";
 		final XYDataset dataset = createDataset1();
 
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							chartTitle,
-							"Date",
-							"Price Per Unit",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart(chartTitle, "Date", "Price Per Unit", dataset, true,
+				true, false);
 
 		final StandardLegend legend = (StandardLegend) chart.getLegend();
 		legend.setDisplaySeriesShapes(true);
@@ -195,7 +190,7 @@ public class DualAxisDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

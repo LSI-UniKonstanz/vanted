@@ -19,25 +19,24 @@ import org.graffiti.graphics.EdgeGraphicAttribute;
  * @author $Author: klukas $
  * @version $Revision: 1.5 $
  */
-public interface EdgeShape
-					extends GraphElementShape {
+public interface EdgeShape extends GraphElementShape {
 	// ~ Static fields/initializers =============================================
-	
+
 	/**
-	 * The allowed distance of a mouse click from an edge where the edge is
-	 * still selected.
+	 * The allowed distance of a mouse click from an edge where the edge is still
+	 * selected.
 	 */
 	public static final double CLICK_TOLERANCE = 3.0d;
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the shape representing the arrow at the target node.
 	 * 
 	 * @return the shape representing the arrow at the target node.
 	 */
 	public Shape getHeadArrow();
-	
+
 	// /**
 	// * Returns the <code>CoordinateAttribute</code> that represents the bend
 	// * that is near the coordinates <code>x</code>, <code>y</code>.
@@ -50,14 +49,14 @@ public interface EdgeShape
 	// * no bend was hit.
 	// */
 	// public CoordinateAttribute bendHit(double x, double y);
-	
+
 	/**
 	 * Returns the shape representing the arrow at the source node.
 	 * 
 	 * @return the shape representing the arrow at the source node.
 	 */
 	public Shape getTailArrow();
-	
+
 	/**
 	 * Called when one of the nodes belonging to this edge has changed.
 	 * 
@@ -65,9 +64,8 @@ public interface EdgeShape
 	 * @param source
 	 * @param target
 	 */
-	public void buildShape(EdgeGraphicAttribute graphics, NodeShape source,
-						NodeShape target)
-						throws ShapeNotFoundException;
+	public void buildShape(EdgeGraphicAttribute graphics, NodeShape source, NodeShape target)
+			throws ShapeNotFoundException;
 }
 
 // ------------------------------------------------------------------------------

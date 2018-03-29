@@ -11,25 +11,25 @@ import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
 
 public class ChartsColumnAttributeEditor extends AbstractValueEditComponent {
-	
-	private final JComboBox combo;
-	
+
+	private final JComboBox<String> combo;
+
 	public ChartsColumnAttributeEditor(Displayable disp) {
 		super(disp);
-		ArrayList<Integer> validOptions = new ArrayList<Integer>();
+		ArrayList<String> validOptions = new ArrayList<>();
 		for (int i = -2; i < 10; i++)
 			if (i != 0)
-				validOptions.add(i);
-		combo = new JComboBox(validOptions.toArray()) {
+				validOptions.add(String.valueOf(i));
+		combo = new JComboBox<String>(validOptions.toArray(new String[validOptions.size()])) {
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			public Dimension getMinimumSize() {
 				Dimension res = super.getMinimumSize();
 				res.setSize(20, res.getHeight());
 				return res;
 			}
-			
+
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension res = super.getPreferredSize();
@@ -39,12 +39,12 @@ public class ChartsColumnAttributeEditor extends AbstractValueEditComponent {
 		};
 		combo.setRenderer(new MyDiagramPlacementSettingCellRenderer());
 	}
-	
+
 	@Override
 	public JComponent getComponent() {
 		return combo;
 	}
-	
+
 	@Override
 	public void setEditFieldValue() {
 		if (showEmpty) {
@@ -54,7 +54,7 @@ public class ChartsColumnAttributeEditor extends AbstractValueEditComponent {
 		}
 		combo.setSelectedItem(((Attribute) getDisplayable()).getValue());
 	}
-	
+
 	@Override
 	public void setValue() {
 		Object selitem = combo.getSelectedItem();
@@ -62,5 +62,5 @@ public class ChartsColumnAttributeEditor extends AbstractValueEditComponent {
 			return;
 		((Attribute) getDisplayable()).setValue(selitem);
 	}
-	
+
 }

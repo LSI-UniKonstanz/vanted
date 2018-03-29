@@ -5,14 +5,13 @@ import org.graffiti.graph.GraphElement;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
-public class Ucatalysis extends UtilitySuperClassToGraph
-{
+public class Ucatalysis extends UtilitySuperClassToGraph {
 
-	public static void addAttributesToNode(GraphElement elem, catalysis i)
-	{
+	public static void addAttributesToNode(GraphElement elem, catalysis i) {
 		// first set label to node
 		setLabels(elem, i);
-		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), Messages.getString("UtilitySuperClassToGraph.129")); //$NON-NLS-1$ //$NON-NLS-2$
+		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), //$NON-NLS-1$
+				Messages.getString("UtilitySuperClassToGraph.129")); //$NON-NLS-1$
 		// set attribute paths
 		setAvailability(elem, i.getAVAILABILITY());
 		setComment(elem, i.getCOMMENT());

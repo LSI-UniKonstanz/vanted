@@ -14,57 +14,55 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
-import org.vanted.updater.PreferencesUpdater;
 
-@SuppressWarnings("nls")
 public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterface {
-	
+
 	/**
 	 * 
 	 */
 	static final String METACROP_PATHWAY_URL_PARAM = "Metacrop Pathway URL";
 	static String METACROP_PATHWAY_URL_VALUE = "http://kim25.wwwdns.kim.uni-konstanz.de/vanted/addons/metacrop/gml-newsbgnshapes/";
 	private static final long serialVersionUID = 1L;
-	
+
 	public TabMetaCrop() {
-		
-		super("MetaCrop", METACROP_PATHWAY_URL_VALUE, "pathways", "pathway",
-				"http://metacrop.ipk-gatersleben.de/", false);
-		
+
+		super("MetaCrop", METACROP_PATHWAY_URL_VALUE, "pathways", "pathway", "http://metacrop.ipk-gatersleben.de/",
+				false);
+
 	}
-	
-	public TabMetaCrop(String title, String url, String content, String contentSingle, String infoURL, boolean ommitEmptyGroupItems, String downloadButtonText) {
-		
+
+	public TabMetaCrop(String title, String url, String content, String contentSingle, String infoURL,
+			boolean ommitEmptyGroupItems, String downloadButtonText) {
+
 		super(title, url, content, contentSingle, infoURL, ommitEmptyGroupItems, downloadButtonText);
-		
+
 	}
-	
+
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		ArrayList<Parameter> arrayList = new ArrayList<Parameter>();
-		arrayList.add(new BooleanParameter(true, PREFERENCE_TAB_SHOW, "Enable/Disable this option to show/hide the Metacrop Tab"));
+		arrayList.add(new BooleanParameter(true, PREFERENCE_TAB_SHOW,
+				"Enable/Disable this option to show/hide the Metacrop Tab"));
 		arrayList.add(new StringParameter(METACROP_PATHWAY_URL_VALUE, METACROP_PATHWAY_URL_PARAM,
 				"<html>Set URL to MetaCrop pathway repository"));
 		return arrayList;
 	}
-	
+
 	@Override
 	public void updatePreferences(Preferences preferences) {
-		//update previously written sensitive preferences from version 2.6.3
-		PreferencesUpdater.checkAndUpdateMonashLink(preferences, METACROP_PATHWAY_URL_PARAM, METACROP_PATHWAY_URL_VALUE);
 		METACROP_PATHWAY_URL_VALUE = preferences.get(METACROP_PATHWAY_URL_PARAM, METACROP_PATHWAY_URL_VALUE);
 		setWebAddress(METACROP_PATHWAY_URL_VALUE);
 	}
-	
+
 	@Override
 	public String getPreferencesAlternativeName() {
 		// TODO Auto-generated method stub
 		return "MetaCrop";
 	}
-	
+
 	@Override
 	public void addAnnotationsToGraphElements(Graph graph) {
-		
+
 		// 'graph' should have set a reference url
 		// this is just a workaround in case there is no reference url
 		// try to create the reference url based on name first
@@ -83,77 +81,35 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 			if (sbmlID != null && sbmlID.trim().length() > 0)
 				AttributeHelper.setReferenceURL(node, prefURL + sbmlID);
 		}
-		
+
 	}
-	
+
 	private String getPathwayReference(String paramPathwayName, String returnIfUnknown) {
-		
-		String[] knownNamesAndIDs = new String[] {
-				"Alanine degradation;123",
-				"Alanine, Valine, Leucine biosynthesis;12",
-				"Arabinoxylan, Beta-Glucan, Cellulose biosynthesis;50",
-				"Arginine biosynthesis;19",
-				"Arginine degradation;122",
-				"Ascorbate biosynthesis;24",
-				"Ascorbate-Glutathione cycle;25",
-				"Asparagine biosynthesis;74",
-				"Asparagine degradation;146",
-				"Aspartate degradation;145",
-				"C4-metabolism (NADP-ME subtype);115",
-				"Calvin cycle;37",
-				"Calvin cycle (Zea mays);133",
-				"Chlorogenic acid biosynthesis;28",
-				"Cyclic photophosphorylation;132",
-				"Cysteine degradation;141",
-				"Fatty acid biosynthesis;35",
-				"Fermentation;32",
-				"Folate biosynthesis;112",
-				"Fructan biosynthesis;30",
-				"GDP sugars;129",
-				"GS-GOGAT cycle;63",
-				"Glutathione biosynthesis;26",
-				"Glycine degradation;144",
-				"Glycolysis, Gluconeogenesis;34",
-				"Glyoxylate cycle;84",
-				"Histidine biosynthesis;16",
-				"Isoleucine biosynthesis;13",
-				"Isoleucine degradation;126",
-				"Leucine degradation;125",
-				"Lysine biosynthesis;18",
-				"Lysine degradation;147",
-				"Methionine biosynthesis;88",
-				"Methionine degradation;136",
-				"Methionine recycling;58",
-				"NAD+ NADP+ de novo biosynthesis;48",
-				"Non-cyclic photophosphorylation;131",
-				"Oxidative phosphorylation;113",
-				"Pentose phosphate pathway;91",
-				"Phenylalanine degradation;137",
-				"Phenylalanine, Tyrosine, Tryptophan biosynthesis;10",
-				"Photorespiration;148",
-				"Photorespiration C4;134",
-				"Proline biosynthesis;20",
-				"Proline degradation;140",
-				"Purine de novo biosynthesis;22",
-				"Pyrimidine de novo biosynthesis;23",
-				"Serine degradation;143",
-				"Serine, Glycine, Cysteine biosynthesis;11",
-				"Shikimate biosynthesis;9",
-				"Starch metabolism (monocots);99",
-				"Sucrose breakdown pathway (dicots);4",
-				"Sucrose breakdown pathway (monocots);65",
-				"Sugar metabolism;31",
-				"TAG biosynthesis (simpl.);49",
-				"TCA cycle;68",
-				"Threonine biosynthesis;14",
-				"Threonine degradation;142",
-				"Tryptophan degradation;139",
-				"Tyrosine degradation;138",
-				"UDP sugars;128",
-				"Valine degradation;124"
-		};
+
+		String[] knownNamesAndIDs = new String[] { "Alanine degradation;123",
+				"Alanine, Valine, Leucine biosynthesis;12", "Arabinoxylan, Beta-Glucan, Cellulose biosynthesis;50",
+				"Arginine biosynthesis;19", "Arginine degradation;122", "Ascorbate biosynthesis;24",
+				"Ascorbate-Glutathione cycle;25", "Asparagine biosynthesis;74", "Asparagine degradation;146",
+				"Aspartate degradation;145", "C4-metabolism (NADP-ME subtype);115", "Calvin cycle;37",
+				"Calvin cycle (Zea mays);133", "Chlorogenic acid biosynthesis;28", "Cyclic photophosphorylation;132",
+				"Cysteine degradation;141", "Fatty acid biosynthesis;35", "Fermentation;32", "Folate biosynthesis;112",
+				"Fructan biosynthesis;30", "GDP sugars;129", "GS-GOGAT cycle;63", "Glutathione biosynthesis;26",
+				"Glycine degradation;144", "Glycolysis, Gluconeogenesis;34", "Glyoxylate cycle;84",
+				"Histidine biosynthesis;16", "Isoleucine biosynthesis;13", "Isoleucine degradation;126",
+				"Leucine degradation;125", "Lysine biosynthesis;18", "Lysine degradation;147",
+				"Methionine biosynthesis;88", "Methionine degradation;136", "Methionine recycling;58",
+				"NAD+ NADP+ de novo biosynthesis;48", "Non-cyclic photophosphorylation;131",
+				"Oxidative phosphorylation;113", "Pentose phosphate pathway;91", "Phenylalanine degradation;137",
+				"Phenylalanine, Tyrosine, Tryptophan biosynthesis;10", "Photorespiration;148",
+				"Photorespiration C4;134", "Proline biosynthesis;20", "Proline degradation;140",
+				"Purine de novo biosynthesis;22", "Pyrimidine de novo biosynthesis;23", "Serine degradation;143",
+				"Serine, Glycine, Cysteine biosynthesis;11", "Shikimate biosynthesis;9",
+				"Starch metabolism (monocots);99", "Sucrose breakdown pathway (dicots);4",
+				"Sucrose breakdown pathway (monocots);65", "Sugar metabolism;31", "TAG biosynthesis (simpl.);49",
+				"TCA cycle;68", "Threonine biosynthesis;14", "Threonine degradation;142", "Tryptophan degradation;139",
+				"Tyrosine degradation;138", "UDP sugars;128", "Valine degradation;124" };
 		String prefURL = "http://metacrop.ipk-gatersleben.de/pls/htmldb_pgrc/f?p=metacrop:7:::NO::P7_PATHWAY_ID:";
-		
+
 		String pathwayName = paramPathwayName.toUpperCase();
 		if (pathwayName.endsWith(".GML"))
 			pathwayName = pathwayName.substring(0, pathwayName.length() - ".GML".length());
@@ -170,28 +126,28 @@ public class TabMetaCrop extends PathwayWebLinkTab implements PreferencesInterfa
 			}
 		}
 		return returnIfUnknown;
-		
+
 	}
-	
+
 	@Override
 	public boolean visibleForView(View v) {
-		
+
 		return v == null || v instanceof GraphView;
-		
+
 	}
-	
+
 	@Override
 	protected String[] getValidExtensions() {
-		
+
 		return new String[] { ".gml", ".graphml" };
-		
+
 	}
-	
+
 	@Override
 	public String getTabParentPath() {
 		return "Pathways";
 	}
-	
+
 	@Override
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_LEADING;

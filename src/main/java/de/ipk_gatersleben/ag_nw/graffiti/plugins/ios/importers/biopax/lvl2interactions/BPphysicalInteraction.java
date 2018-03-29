@@ -13,15 +13,12 @@ import org.graffiti.graph.Node;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.biopax.lvl2utility.UtilityClassSelectorToGraph;
 
-public class BPphysicalInteraction extends BPinteraction
-{
-	public BPphysicalInteraction(Graph Graph, Hashtable<String, Node> Nodes)
-	{
+public class BPphysicalInteraction extends BPinteraction {
+	public BPphysicalInteraction(Graph Graph, Hashtable<String, Node> Nodes) {
 		super(Graph, Nodes);
 	}
 
-	public void read(Level2Element i)
-	{
+	public void read(Level2Element i) {
 		physicalInteraction physInter = (physicalInteraction) i;
 
 		Set<InteractionParticipant> parts = physInter.getPARTICIPANTS();
@@ -31,12 +28,12 @@ public class BPphysicalInteraction extends BPinteraction
 		UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(center, physInter);
 		nodes.put(physInter.getRDFId(), center);
 
-		for (InteractionParticipant l : parts)
-		{
+		for (InteractionParticipant l : parts) {
 			Node node = findORcreateNode(l);
 
 			Edge e = addEdge(center, node);
-			setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.116"), Messages.getString("UtilitySuperClassToGraph.119"));
+			setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.116"),
+					Messages.getString("UtilitySuperClassToGraph.119"));
 		}
 	}
 }

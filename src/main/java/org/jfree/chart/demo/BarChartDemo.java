@@ -61,7 +61,7 @@ public class BarChartDemo extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public BarChartDemo(final String title) {
 
@@ -123,14 +123,13 @@ public class BarChartDemo extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createBarChart(
-							"Bar Chart Demo", // chart title
+		final JFreeChart chart = ChartFactory.createBarChart("Bar Chart Demo", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
@@ -138,7 +137,7 @@ public class BarChartDemo extends ApplicationFrame {
 				true, // include legend
 				true, // tooltips?
 				false // URLs?
-				);
+		);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
@@ -160,26 +159,15 @@ public class BarChartDemo extends ApplicationFrame {
 		renderer.setDrawBarOutline(false);
 
 		// set up gradient paints for series...
-		final GradientPaint gp0 = new GradientPaint(
-							0.0f, 0.0f, Color.blue,
-							0.0f, 0.0f, Color.lightGray
-							);
-		final GradientPaint gp1 = new GradientPaint(
-							0.0f, 0.0f, Color.green,
-							0.0f, 0.0f, Color.lightGray
-							);
-		final GradientPaint gp2 = new GradientPaint(
-							0.0f, 0.0f, Color.red,
-							0.0f, 0.0f, Color.lightGray
-							);
+		final GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue, 0.0f, 0.0f, Color.lightGray);
+		final GradientPaint gp1 = new GradientPaint(0.0f, 0.0f, Color.green, 0.0f, 0.0f, Color.lightGray);
+		final GradientPaint gp2 = new GradientPaint(0.0f, 0.0f, Color.red, 0.0f, 0.0f, Color.lightGray);
 		renderer.setSeriesPaint(0, gp0);
 		renderer.setSeriesPaint(1, gp1);
 		renderer.setSeriesPaint(2, gp2);
 
 		final CategoryAxis domainAxis = plot.getDomainAxis();
-		domainAxis.setCategoryLabelPositions(
-							CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0)
-							);
+		domainAxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0));
 		// OPTIONAL CUSTOMISATION COMPLETED.
 
 		return chart;
@@ -201,7 +189,7 @@ public class BarChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

@@ -9,9 +9,9 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview;
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
 
 public interface PaintStatusSupport {
-	
+
 	void setStatusProvider(BackgroundTaskStatusProviderSupportingExternalCall optStatus);
-	
+
 	boolean statusDrawInProgress();
-	
+
 }

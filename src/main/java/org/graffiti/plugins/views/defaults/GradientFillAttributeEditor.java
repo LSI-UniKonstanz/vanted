@@ -25,13 +25,13 @@ import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
 
 public class GradientFillAttributeEditor extends AbstractValueEditComponent {
-	
+
 	private JComboBox combo;
 	private JCheckBox chkbx;
 	private JSpinner spinner;
 	private JPanel pan;
 	private JComponent emptylabel;
-	
+
 	public GradientFillAttributeEditor(Displayable disp) {
 		super(disp);
 		combo = new JComboBox(NodeGradientModes.values());
@@ -58,34 +58,34 @@ public class GradientFillAttributeEditor extends AbstractValueEditComponent {
 		emptylabel.setOpaque(true);
 		emptylabel.setBackground(Color.white);
 	}
-	
+
 	public JComponent getComponent() {
 		return pan;
 	}
-	
+
 	public void setEditFieldValue() {
-		
+
 		pan.removeAll();
 		double value = (Double) ((Attribute) getDisplayable()).getValue();
-		
+
 		if (((Attribute) getDisplayable()).getAttributable() instanceof Edge) {
 			pan.add(chkbx, "0,0");
 			chkbx.setSelected(value > 0.00001d || value < -0.00001); // !=0 :-)
 		} else {
-			
+
 			if (showEmpty) {
 				combo.addItem(EMPTY_STRING);
 				combo.setSelectedItem(EMPTY_STRING);
 				pan.add(TableLayout.getSplit(combo, emptylabel, TableLayout.PREFERRED, TableLayout.FILL), "0,0");
 				return;
 			}
-			
+
 			setGuiFromMode(NodeGradientModes.getMode(value));
 		}
 		pan.validate();
 		pan.repaint();
 	}
-	
+
 	private void setGuiFromMode(NodeGradientModes mode) {
 		if (mode == NodeGradientModes.NONE)
 			pan.add(TableLayout.getSplit(combo, emptylabel, TableLayout.PREFERRED, TableLayout.FILL), "0,0");
@@ -97,17 +97,18 @@ public class GradientFillAttributeEditor extends AbstractValueEditComponent {
 				newvalue = getGuiValue(mode, value);
 			else
 				newvalue = 30;
-			spinner.setModel(new SpinnerNumberModel(newvalue, 0, mode == NodeGradientModes.VERTICAL_THRESHOLD ? 100d : 300d, 5d));
+			spinner.setModel(new SpinnerNumberModel(newvalue, 0,
+					mode == NodeGradientModes.VERTICAL_THRESHOLD ? 100d : 300d, 5d));
 		}
 		combo.setSelectedItem(mode);
 	}
-	
+
 	public void setValue() {
-		
+
 		if (((Attribute) getDisplayable()).getAttributable() instanceof Edge) {
 			((Attribute) getDisplayable()).setValue(chkbx.isSelected() ? 0.1d : 0d);
 		} else {
-			
+
 			Object selitem = combo.getSelectedItem();
 			if (selitem.equals(EMPTY_STRING))
 				return;
@@ -117,45 +118,46 @@ public class GradientFillAttributeEditor extends AbstractValueEditComponent {
 				((Attribute) getDisplayable()).setValue(value);
 		}
 	}
-	
+
 	private double getGuiValue(NodeGradientModes mode, double value) {
 		switch (mode) {
-			case RADIAL:
-				return value * 100;
-			case VERTICAL_THRESHOLD:
-				return (-value) * 100;
-			case VERTICAL:
-				return (-value - 1) * 100;
-			case NONE:
-				return 0d;
+		case RADIAL:
+			return value * 100;
+		case VERTICAL_THRESHOLD:
+			return (-value) * 100;
+		case VERTICAL:
+			return (-value - 1) * 100;
+		case NONE:
+			return 0d;
 		}
 		return Double.NEGATIVE_INFINITY;
 	}
-	
+
 	private double getAttributeValue(NodeGradientModes mode, double value) {
 		switch (mode) {
-			case RADIAL:
-				return value / 100d;
-			case VERTICAL_THRESHOLD:
-				return -value / 100d;
-			case VERTICAL:
-				return -value / 100d - 1;
-			case NONE:
-				return 0d;
+		case RADIAL:
+			return value / 100d;
+		case VERTICAL_THRESHOLD:
+			return -value / 100d;
+		case VERTICAL:
+			return -value / 100d - 1;
+		case NONE:
+			return 0d;
 		}
 		return Double.NEGATIVE_INFINITY;
 	}
-	
+
 	public enum NodeGradientModes {
 		VERTICAL_THRESHOLD("threshold"), VERTICAL("vertical"), RADIAL("radial"), NONE("empty");
-		
+
 		private ImageIcon icon;
-		
+
 		private NodeGradientModes(String iconname) {
 			if (iconname != null)
-				this.icon = new ImageIcon(GravistoService.getResource(GradientFillAttributeEditor.class, "editorimages/" + iconname + ".png"));
+				this.icon = new ImageIcon(GravistoService.getResource(GradientFillAttributeEditor.class,
+						"editorimages/" + iconname + ".png"));
 		}
-		
+
 		public static NodeGradientModes getMode(double value) {
 			if (value < -1)
 				return VERTICAL;
@@ -167,23 +169,24 @@ public class GradientFillAttributeEditor extends AbstractValueEditComponent {
 				return NONE;
 			return null;
 		}
-		
+
 		public ImageIcon getIcon() {
 			return icon;
 		}
-		
+
 	}
-	
+
 	public class NodeGradientRenderer extends JLabel implements ListCellRenderer {
-		
+
 		private static final long serialVersionUID = 1L;
-		
+
 		public NodeGradientRenderer() {
 			setOpaque(true);
 		}
-		
+
 		@Override
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+				boolean cellHasFocus) {
 			if (value instanceof String) {
 				setText("~");
 				setIcon(null);
@@ -191,7 +194,7 @@ public class GradientFillAttributeEditor extends AbstractValueEditComponent {
 				setIcon(((NodeGradientModes) value).getIcon());
 				setText(null);
 			}
-			
+
 			if (isSelected) {
 				setBackground(list.getSelectionBackground());
 				setForeground(list.getSelectionForeground());
@@ -202,5 +205,5 @@ public class GradientFillAttributeEditor extends AbstractValueEditComponent {
 			return this;
 		}
 	}
-	
+
 }

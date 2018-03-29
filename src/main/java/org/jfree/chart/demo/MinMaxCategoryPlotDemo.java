@@ -43,7 +43,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demonstration application showing how to create a min/max category plot.
+ * A simple demonstration application showing how to create a min/max category
+ * plot.
  */
 public class MinMaxCategoryPlotDemo extends ApplicationFrame {
 
@@ -51,7 +52,7 @@ public class MinMaxCategoryPlotDemo extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public MinMaxCategoryPlotDemo(final String title) {
 
@@ -85,16 +86,14 @@ public class MinMaxCategoryPlotDemo extends ApplicationFrame {
 		dataset.addValue(3.0, "Third", "Category 8");
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createBarChart(
-							"Min/Max Category Plot", // chart title
+		final JFreeChart chart = ChartFactory.createBarChart("Min/Max Category Plot", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
-				PlotOrientation.VERTICAL,
-							true, // include legend
+				PlotOrientation.VERTICAL, true, // include legend
 				true, // tooltips
 				false // urls
-				);
+		);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
@@ -128,13 +127,11 @@ public class MinMaxCategoryPlotDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
-		final MinMaxCategoryPlotDemo demo = new MinMaxCategoryPlotDemo(
-							"Min/Max Category Chart Demo"
-							);
+		final MinMaxCategoryPlotDemo demo = new MinMaxCategoryPlotDemo("Min/Max Category Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);

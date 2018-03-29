@@ -36,17 +36,21 @@ public class CreateOrgSpecificSuperGraphsAlgorithm extends AbstractAlgorithm {
 	private boolean checkCompounds = false;
 	private boolean convertKOsToGenes = true;
 	private OrganismEntry[] organismSelection;
-	
+
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
-							new BooleanParameter(checkOrthologs, "Check Orthologs", "If selected, the organism specific ortholog information is processed"),
-							new BooleanParameter(convertKOsToGenes, "Convert KOs to Genes", "(requires 'Check Orthologs')"),
-							new BooleanParameter(checkEnzymes, "Check Enzymes", "If selected, the organism specific enzymes are enumerated"),
-							new BooleanParameter(checkGlycans, "Check Glycans", "If selected, the organism specific glycans are enumerated"),
-							new BooleanParameter(checkCompounds, "Check Compounds", "If selected, the organism specific compounds are enumerated") };
+				new BooleanParameter(checkOrthologs, "Check Orthologs",
+						"If selected, the organism specific ortholog information is processed"),
+				new BooleanParameter(convertKOsToGenes, "Convert KOs to Genes", "(requires 'Check Orthologs')"),
+				new BooleanParameter(checkEnzymes, "Check Enzymes",
+						"If selected, the organism specific enzymes are enumerated"),
+				new BooleanParameter(checkGlycans, "Check Glycans",
+						"If selected, the organism specific glycans are enumerated"),
+				new BooleanParameter(checkCompounds, "Check Compounds",
+						"If selected, the organism specific compounds are enumerated") };
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -66,35 +70,29 @@ public class CreateOrgSpecificSuperGraphsAlgorithm extends AbstractAlgorithm {
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-	
+
 	public String getName() {
 		return null; // start from kegg tab 2
 		// return "Create ALL Organism-Specific SG from current SG";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Nodes";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.LAYOUT,
-				Category.COMPUTATION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT, Category.COMPUTATION));
 	}
 
-	
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("The active graph needs to be a KEGG reference super-pathway!");
 		super.check();
 	}
-	
+
 	public void execute() {
 		if (organismSelection == null || organismSelection.length <= 0) {
 			MainFrame.showMessageDialog("No organism has been selected. Processing aborted.", "Information");
@@ -108,8 +106,9 @@ public class CreateOrgSpecificSuperGraphsAlgorithm extends AbstractAlgorithm {
 			File file = fc.getSelectedFile();
 			String targetFolder = file.getPath();
 			AllSuperGraphsCreator workTask = new AllSuperGraphsCreator(graph, targetFolder, organismSelection,
-								checkOrthologs, checkEnzymes, checkGlycans, checkCompounds, convertKOsToGenes);
-			BackgroundTaskHelper.issueSimpleTask("Organism Specific Super Graphs", "Please wait...", workTask, null, workTask);
+					checkOrthologs, checkEnzymes, checkGlycans, checkCompounds, convertKOsToGenes);
+			BackgroundTaskHelper.issueSimpleTask("Organism Specific Super Graphs", "Please wait...", workTask, null,
+					workTask);
 		}
 	}
 }

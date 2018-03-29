@@ -33,24 +33,19 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 /**
  * @author Christian Klukas
  */
-public class ExchangeNodePositionsAlgorithm
-					extends AbstractAlgorithm {
+public class ExchangeNodePositionsAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		return "Exchange Positions";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Network.Nodes";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.LAYOUT
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
 
 	@Override
@@ -61,41 +56,41 @@ public class ExchangeNodePositionsAlgorithm
 		if (selection.getNodes().size() < 2)
 			throw new PreconditionException("At least two nodes need to be selected");
 	}
-	
+
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-	
+
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0);
 	}
-	
+
 	public void execute() {
 		final Collection<Node> myNodeList = selection.getNodes();
 		final Graph myGraph = graph;
-		
+
 		AbstractUndoableEdit myExchangeCmd = new AbstractUndoableEdit() {
 			private static final long serialVersionUID = 1L;
-			
+
 			HashMap<Node, Point2D> oldPositions = new HashMap<Node, Point2D>();
-			
+
 			@Override
 			public String getPresentationName() {
 				return "Node position exchange";
 			}
-			
+
 			@Override
 			public String getRedoPresentationName() {
 				return "Redo node position exchange";
 			}
-			
+
 			@Override
 			public String getUndoPresentationName() {
 				return "Undo node position exchange";
 			}
-			
+
 			@Override
 			public void redo() throws CannotRedoException {
 				myGraph.getListenerManager().transactionStarted(this);
@@ -121,7 +116,7 @@ public class ExchangeNodePositionsAlgorithm
 					myGraph.getListenerManager().transactionFinished(this);
 				}
 			}
-			
+
 			@Override
 			public void undo() throws CannotUndoException {
 				myGraph.getListenerManager().transactionStarted(this);
@@ -142,11 +137,11 @@ public class ExchangeNodePositionsAlgorithm
 				}
 				oldPositions.clear();
 			}
-			
+
 		};
-		
+
 		myExchangeCmd.redo();
-		
+
 		UndoableEditSupport undo = MainFrame.getInstance().getUndoSupport();
 		undo.beginUpdate();
 		undo.postEdit(myExchangeCmd);

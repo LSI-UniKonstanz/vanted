@@ -10,11 +10,9 @@ import org.graffiti.graph.Node;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
-public class UPathway extends UtilitySuperClassToGraph
-{
+public class UPathway extends UtilitySuperClassToGraph {
 	/**
-	 * adds all information within the biopax class to the attribute set of the
-	 * node
+	 * adds all information within the biopax class to the attribute set of the node
 	 * 
 	 * @param elem
 	 * @param i
@@ -22,11 +20,12 @@ public class UPathway extends UtilitySuperClassToGraph
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public static void addAttributesToNode(GraphElement elem, Pathway i) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
-	{
+	public static void addAttributesToNode(GraphElement elem, Pathway i)
+			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		// first set label to node
 		setLabels(elem, i);
-		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), Messages.getString("UtilitySuperClassToGraph.136")); //$NON-NLS-1$ //$NON-NLS-2$
+		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), //$NON-NLS-1$
+				Messages.getString("UtilitySuperClassToGraph.136")); //$NON-NLS-1$
 		// set attribute paths
 		setAvailability(elem, i.getAvailability());
 		setComment(elem, i.getComment());
@@ -39,8 +38,8 @@ public class UPathway extends UtilitySuperClassToGraph
 
 	}
 
-	public static void readAttributesFromNode(GraphElement node, Graph g, Model model) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
-	{
+	public static void readAttributesFromNode(GraphElement node, Graph g, Model model)
+			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		Node elem = (Node) node;
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 		Pathway interaction = model.addNew(Pathway.class, RDFID);

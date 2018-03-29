@@ -29,58 +29,56 @@ import org.graffiti.options.AbstractOptionPane;
  * 
  * @version $Revision: 1.7 $
  */
-public class ToolBarOptionPane
-					extends AbstractOptionPane {
+public class ToolBarOptionPane extends AbstractOptionPane {
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/** DOCUMENT ME! */
 	private JCheckBox showToolbar;
-	
+
 	/** The editor's preferences. */
 	private Preferences prefs;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor for ToolBarOptionPane.
 	 * 
 	 * @param prefs
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public ToolBarOptionPane(Preferences prefs) {
 		super("toolbar");
 		this.prefs = prefs.node("toolbar");
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/*
 	 * @see org.graffiti.options.AbstractOptionPane#initDefault()
 	 */
 	@Override
 	protected void initDefault() {
 		setLayout(new BorderLayout());
-		
+
 		JPanel panel = new JPanel(new GridLayout(2, 1));
-		
+
 		// show tool bar
-		showToolbar = new JCheckBox(sBundle.getString(
-							"options.toolbar.showToolBar"));
+		showToolbar = new JCheckBox(sBundle.getString("options.toolbar.showToolBar"));
 		showToolbar.setSelected(prefs.getBoolean("view.showToolBar", true));
-		
+
 		panel.add(showToolbar);
-		
+
 		panel.add(new JLabel(sBundle.getString("options.toolbar.caption")));
 		add(BorderLayout.NORTH, panel);
-		
+
 		// TODO
 	}
-	
+
 	/*
 	 * @see org.graffiti.options.AbstractOptionPane#saveDefault()
 	 */
@@ -88,93 +86,94 @@ public class ToolBarOptionPane
 	protected void saveDefault() {
 		// TODO
 	}
-	
+
 	// ~ Inner Classes ==========================================================
-	
+
 	/**
 	 * The action handler for this option panel.
 	 */
-	protected class ActionHandler
-						implements ActionListener {
+	protected class ActionHandler implements ActionListener {
 		/**
 		 * DOCUMENT ME!
 		 * 
 		 * @param e
-		 *           DOCUMENT ME!
+		 *            DOCUMENT ME!
 		 */
 		public void actionPerformed(ActionEvent e) {
 		}
 	}
-	
+
 	/**
 	 * The tool bar edit dialog.
 	 */
-	protected class ToolBarEditDialog
-						extends JDialog {
+	protected class ToolBarEditDialog extends JDialog {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-		
+
 		/**
 		 * Constructs a new tool bar editor instance.
 		 * 
 		 * @param parent
-		 *           the parent frame.
+		 *            the parent frame.
 		 */
 		public ToolBarEditDialog(Frame parent) {
 		}
-		
+
 		/**
 		 * The action handler for the edit dialog.
 		 */
-		protected class ActionHandler
-							implements ActionListener {
+		protected class ActionHandler implements ActionListener {
 			/**
 			 * DOCUMENT ME!
 			 * 
 			 * @param e
-			 *           DOCUMENT ME!
+			 *            DOCUMENT ME!
 			 */
 			public void actionPerformed(ActionEvent e) {
 			}
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.options.OptionPane#getCategory()
 	 */
 	public String getCategory() {
 		//
 		return null;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.options.OptionPane#getOptionName()
 	 */
 	public String getOptionName() {
 		//
 		return null;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.options.OptionPane#init(javax.swing.JComponent)
 	 */
 	public void init(JComponent options) {
 		//
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.options.OptionPane#save(javax.swing.JComponent)
 	 */
 	public void save(JComponent options) {
 		//
-		
+
 	}
 }
 

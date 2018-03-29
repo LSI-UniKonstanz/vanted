@@ -38,9 +38,9 @@ import org.jfree.ui.RectangleAnchor;
 import org.jfree.ui.TextAnchor;
 
 /**
- * The attributes that control the position of the labels for the categories on a {@link CategoryAxis}. Instances of this class are immutable and other
- * JFreeChart classes
- * rely upon this.
+ * The attributes that control the position of the labels for the categories on
+ * a {@link CategoryAxis}. Instances of this class are immutable and other
+ * JFreeChart classes rely upon this.
  */
 public class CategoryLabelPosition implements Serializable {
 
@@ -59,73 +59,69 @@ public class CategoryLabelPosition implements Serializable {
 	/** The width calculation type. */
 	private CategoryLabelWidthType widthType;
 
-	/** The maximum label width as a percentage of the category space or the range space. */
+	/**
+	 * The maximum label width as a percentage of the category space or the range
+	 * space.
+	 */
 	private float widthRatio;
 
 	/**
 	 * Creates a new position record with default settings.
 	 */
 	public CategoryLabelPosition() {
-		this(
-							RectangleAnchor.CENTER, TextBlockAnchor.BOTTOM_CENTER,
-							TextAnchor.CENTER, 0.0, CategoryLabelWidthType.CATEGORY, 0.90f);
+		this(RectangleAnchor.CENTER, TextBlockAnchor.BOTTOM_CENTER, TextAnchor.CENTER, 0.0,
+				CategoryLabelWidthType.CATEGORY, 0.90f);
 	}
 
 	/**
 	 * Creates a new category label position record.
 	 * 
 	 * @param categoryAnchor
-	 *           the category anchor (<code>null</code> not permitted).
+	 *            the category anchor (<code>null</code> not permitted).
 	 * @param labelAnchor
-	 *           the label anchor (<code>null</code> not permitted).
+	 *            the label anchor (<code>null</code> not permitted).
 	 */
 	public CategoryLabelPosition(RectangleAnchor categoryAnchor, TextBlockAnchor labelAnchor) {
 		// argument checking delegated...
-		this(
-							categoryAnchor, labelAnchor, TextAnchor.CENTER, 0.0,
-							CategoryLabelWidthType.CATEGORY, 0.90f);
+		this(categoryAnchor, labelAnchor, TextAnchor.CENTER, 0.0, CategoryLabelWidthType.CATEGORY, 0.90f);
 	}
 
 	/**
 	 * Creates a new category label position record.
 	 * 
 	 * @param categoryAnchor
-	 *           the category anchor (<code>null</code> not permitted).
+	 *            the category anchor (<code>null</code> not permitted).
 	 * @param labelAnchor
-	 *           the label anchor (<code>null</code> not permitted).
+	 *            the label anchor (<code>null</code> not permitted).
 	 * @param widthType
-	 *           the width type (<code>null</code> not permitted).
+	 *            the width type (<code>null</code> not permitted).
 	 * @param widthRatio
-	 *           the maximum label width as a percentage (of the category space or the
-	 *           range space).
+	 *            the maximum label width as a percentage (of the category space or
+	 *            the range space).
 	 */
-	public CategoryLabelPosition(RectangleAnchor categoryAnchor,
-											TextBlockAnchor labelAnchor,
-											CategoryLabelWidthType widthType,
-											float widthRatio) {
+	public CategoryLabelPosition(RectangleAnchor categoryAnchor, TextBlockAnchor labelAnchor,
+			CategoryLabelWidthType widthType, float widthRatio) {
 		// argument checking delegated...
 		this(categoryAnchor, labelAnchor, TextAnchor.CENTER, 0.0, widthType, widthRatio);
 	}
 
 	/**
-	 * Creates a new position record. The item label anchor is a point relative to the
-	 * data item (dot, bar or other visual item) on a chart. The item label is aligned
-	 * by aligning the text anchor with the item label anchor.
+	 * Creates a new position record. The item label anchor is a point relative to
+	 * the data item (dot, bar or other visual item) on a chart. The item label is
+	 * aligned by aligning the text anchor with the item label anchor.
 	 * 
 	 * @param categoryAnchor
-	 *           the category anchor (<code>null</code> not permitted).
+	 *            the category anchor (<code>null</code> not permitted).
 	 * @param labelAnchor
-	 *           the label anchor (<code>null</code> not permitted).
+	 *            the label anchor (<code>null</code> not permitted).
 	 * @param rotationAnchor
-	 *           the rotation anchor (<code>null</code> not permitted).
+	 *            the rotation anchor (<code>null</code> not permitted).
 	 * @param angle
-	 *           the rotation angle (<code>null</code> not permitted).
+	 *            the rotation angle (<code>null</code> not permitted).
 	 * @deprecated Use alternative constructor.
 	 */
-	public CategoryLabelPosition(RectangleAnchor categoryAnchor,
-											TextBlockAnchor labelAnchor,
-											TextAnchor rotationAnchor,
-											double angle) {
+	public CategoryLabelPosition(RectangleAnchor categoryAnchor, TextBlockAnchor labelAnchor, TextAnchor rotationAnchor,
+			double angle) {
 
 		if (categoryAnchor == null) {
 			throw new IllegalArgumentException("Null 'categoryAnchor' argument.");
@@ -147,30 +143,26 @@ public class CategoryLabelPosition implements Serializable {
 	}
 
 	/**
-	 * Creates a new position record. The item label anchor is a point relative to the
-	 * data item (dot, bar or other visual item) on a chart. The item label is aligned
-	 * by aligning the text anchor with the item label anchor.
+	 * Creates a new position record. The item label anchor is a point relative to
+	 * the data item (dot, bar or other visual item) on a chart. The item label is
+	 * aligned by aligning the text anchor with the item label anchor.
 	 * 
 	 * @param categoryAnchor
-	 *           the category anchor (<code>null</code> not permitted).
+	 *            the category anchor (<code>null</code> not permitted).
 	 * @param labelAnchor
-	 *           the label anchor (<code>null</code> not permitted).
+	 *            the label anchor (<code>null</code> not permitted).
 	 * @param rotationAnchor
-	 *           the rotation anchor (<code>null</code> not permitted).
+	 *            the rotation anchor (<code>null</code> not permitted).
 	 * @param angle
-	 *           the rotation angle (<code>null</code> not permitted).
+	 *            the rotation angle (<code>null</code> not permitted).
 	 * @param widthType
-	 *           the width type (<code>null</code> not permitted).
+	 *            the width type (<code>null</code> not permitted).
 	 * @param widthRatio
-	 *           the maximum label width as a percentage (of the category space or the
-	 *           range space).
+	 *            the maximum label width as a percentage (of the category space or
+	 *            the range space).
 	 */
-	public CategoryLabelPosition(RectangleAnchor categoryAnchor,
-											TextBlockAnchor labelAnchor,
-											TextAnchor rotationAnchor,
-											double angle,
-											CategoryLabelWidthType widthType,
-											float widthRatio) {
+	public CategoryLabelPosition(RectangleAnchor categoryAnchor, TextBlockAnchor labelAnchor, TextAnchor rotationAnchor,
+			double angle, CategoryLabelWidthType widthType, float widthRatio) {
 
 		if (categoryAnchor == null) {
 			throw new IllegalArgumentException("Null 'categoryAnchor' argument.");
@@ -252,7 +244,7 @@ public class CategoryLabelPosition implements Serializable {
 	 * Tests an object for equality with this instance.
 	 * 
 	 * @param object
-	 *           the object.
+	 *            the object.
 	 * @return a boolean.
 	 */
 	public boolean equals(Object object) {

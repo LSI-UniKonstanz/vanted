@@ -7,7 +7,7 @@ public class QuadNumber {
 	String number1, number2, number3, number4;
 	int number1int, number2int, number3int, number4int;
 	String restOfLine = null;
-	
+
 	public QuadNumber(String number1, String number2, String number3, String number4) {
 		this.number1 = number1;
 		this.number2 = number2;
@@ -15,7 +15,7 @@ public class QuadNumber {
 		this.number4 = number4;
 		updateNumberInts();
 	}
-	
+
 	private void updateNumberInts() {
 		if (number1.equals("-")) {
 			number1int = Integer.MIN_VALUE;
@@ -54,15 +54,15 @@ public class QuadNumber {
 			}
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return number1 + "." + number2 + "." + number3 + "." + number4;
 	}
-	
+
 	/**
 	 * @param line
-	 *           A complete ec number name like a.b.c.d
+	 *            A complete ec number name like a.b.c.d
 	 */
 	public QuadNumber(String line) throws StringIndexOutOfBoundsException {
 		String testString = line.replaceAll("\\.", ""); // ErrorMsg.stringReplace(line, ".", "");
@@ -104,41 +104,37 @@ public class QuadNumber {
 		}
 		this.restOfLine = line;
 	}
-	
+
 	public boolean isValidQuadNumber() {
-		return (number1int != Integer.MAX_VALUE &&
-							number2int != Integer.MAX_VALUE &&
-							number3int != Integer.MAX_VALUE && number4int != Integer.MAX_VALUE);
+		return (number1int != Integer.MAX_VALUE && number2int != Integer.MAX_VALUE && number3int != Integer.MAX_VALUE
+				&& number4int != Integer.MAX_VALUE);
 	}
-	
+
 	public boolean isValidMatchFor(QuadNumber quadNumber) {
-		return isValidNumberMatch(number1, quadNumber.number1) &&
-							isValidNumberMatch(number2, quadNumber.number2) &&
-							isValidNumberMatch(number3, quadNumber.number3) &&
-							isValidNumberMatch(number4, quadNumber.number4);
+		return isValidNumberMatch(number1, quadNumber.number1) && isValidNumberMatch(number2, quadNumber.number2)
+				&& isValidNumberMatch(number3, quadNumber.number3) && isValidNumberMatch(number4, quadNumber.number4);
 	}
-	
-	private boolean isValidNumberMatch(String numberB, String numberA) {
+
+	private static boolean isValidNumberMatch(String numberB, String numberA) {
 		if (numberA.equals("-"))
 			return true;
 		else
 			return numberA.equals(numberB);
 	}
-	
+
 	public boolean isValidMatchFor_Inversed(QuadNumber quadNumber) {
-		return isValidNumberMatch_Inversed(number1, quadNumber.number1) &&
-							isValidNumberMatch_Inversed(number2, quadNumber.number2) &&
-							isValidNumberMatch_Inversed(number3, quadNumber.number3) &&
-							isValidNumberMatch_Inversed(number4, quadNumber.number4);
+		return isValidNumberMatch_Inversed(number1, quadNumber.number1)
+				&& isValidNumberMatch_Inversed(number2, quadNumber.number2)
+				&& isValidNumberMatch_Inversed(number3, quadNumber.number3)
+				&& isValidNumberMatch_Inversed(number4, quadNumber.number4);
 	}
-	
-	private boolean isValidNumberMatch_Inversed(String numberA, String numberB) {
+
+	private static boolean isValidNumberMatch_Inversed(String numberA, String numberB) {
 		if (numberA.equals("-"))
 			return true;
+		else if (numberB.equals("-"))
+			return true;
 		else
-			if (numberB.equals("-"))
-				return true;
-			else
-				return numberA.equals(numberB);
+			return numberA.equals(numberB);
 	}
 }

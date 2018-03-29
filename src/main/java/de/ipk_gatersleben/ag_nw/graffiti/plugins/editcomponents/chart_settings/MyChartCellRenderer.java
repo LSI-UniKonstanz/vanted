@@ -13,22 +13,24 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class MyChartCellRenderer implements ListCellRenderer {
-	
+public class MyChartCellRenderer implements ListCellRenderer<Object> {
+
 	/*
 	 * (non-Javadoc)
-	 * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
+	 * 
+	 * @see
+	 * javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList,
+	 * java.lang.Object, int, boolean, boolean)
 	 */
-	public Component getListCellRendererComponent(JList list, Object value,
-						int index, boolean isSelected, boolean cellHasFocus) {
-		
+	public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+			boolean cellHasFocus) {
+
 		JLabel result = new JLabel();
-		
+
 		result.setText(value.toString());
-		
+
 		if (isSelected)
 			result.setBackground(list.getSelectionBackground());
 		else {
@@ -43,5 +45,5 @@ public class MyChartCellRenderer implements ListCellRenderer {
 		}
 		return result;
 	}
-	
+
 }

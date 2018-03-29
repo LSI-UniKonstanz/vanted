@@ -6,7 +6,7 @@ import java.util.Collection;
 import org.Vector2d;
 
 public class TruncProteinShape extends RelativePolyShape {
-	
+
 	@Override
 	protected Collection<Vector2d> getRelativePointPositions() {
 		Collection<Vector2d> points = new ArrayList<Vector2d>();

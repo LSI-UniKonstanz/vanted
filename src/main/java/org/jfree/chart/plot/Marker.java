@@ -56,7 +56,8 @@ import org.jfree.util.ObjectUtils;
 import org.jfree.util.UnitType;
 
 /**
- * The base class for markers that can be added to plots to highlight a value or range of values.
+ * The base class for markers that can be added to plots to highlight a value or
+ * range of values.
  */
 public abstract class Marker implements Serializable, Cloneable {
 
@@ -104,7 +105,7 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Constructs a new marker.
 	 * 
 	 * @param paint
-	 *           the paint (<code>null</code> not permitted).
+	 *            the paint (<code>null</code> not permitted).
 	 */
 	public Marker(Paint paint) {
 		this(paint, new BasicStroke(0.5f), Color.gray, new BasicStroke(0.5f), 0.80f);
@@ -114,19 +115,17 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Constructs a new marker.
 	 * 
 	 * @param paint
-	 *           the paint (<code>null</code> not permitted).
+	 *            the paint (<code>null</code> not permitted).
 	 * @param stroke
-	 *           the stroke (<code>null</code> not permitted).
+	 *            the stroke (<code>null</code> not permitted).
 	 * @param outlinePaint
-	 *           the outline paint (<code>null</code> permitted).
+	 *            the outline paint (<code>null</code> permitted).
 	 * @param outlineStroke
-	 *           the outline stroke (<code>null</code> permitted).
+	 *            the outline stroke (<code>null</code> permitted).
 	 * @param alpha
-	 *           the alpha transparency.
+	 *            the alpha transparency.
 	 */
-	public Marker(Paint paint, Stroke stroke,
-						Paint outlinePaint, Stroke outlineStroke,
-						float alpha) {
+	public Marker(Paint paint, Stroke stroke, Paint outlinePaint, Stroke outlineStroke, float alpha) {
 
 		if (paint == null) {
 			throw new IllegalArgumentException("Null 'paint' argument.");
@@ -162,7 +161,7 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Sets the paint.
 	 * 
 	 * @param paint
-	 *           the paint (<code>null</code> not permitted).
+	 *            the paint (<code>null</code> not permitted).
 	 */
 	public void setPaint(Paint paint) {
 		if (paint == null) {
@@ -184,7 +183,7 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Sets the stroke.
 	 * 
 	 * @param stroke
-	 *           the stroke (<code>null</code> not permitted).
+	 *            the stroke (<code>null</code> not permitted).
 	 */
 	public void setStroke(Stroke stroke) {
 		if (stroke == null) {
@@ -206,7 +205,7 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Sets the outline paint.
 	 * 
 	 * @param paint
-	 *           the paint (<code>null</code> permitted).
+	 *            the paint (<code>null</code> permitted).
 	 */
 	public void setOutlinePaint(Paint paint) {
 		this.outlinePaint = paint;
@@ -225,7 +224,7 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Sets the outline stroke.
 	 * 
 	 * @param stroke
-	 *           the stroke (<code>null</code> permitted).
+	 *            the stroke (<code>null</code> permitted).
 	 */
 	public void setOutlineStroke(Stroke stroke) {
 		this.outlineStroke = stroke;
@@ -244,7 +243,7 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Sets the alpha transparency.
 	 * 
 	 * @param alpha
-	 *           the alpha transparency.
+	 *            the alpha transparency.
 	 */
 	public void setAlpha(float alpha) {
 		this.alpha = alpha;
@@ -263,7 +262,7 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Sets the label (if <code>null</code> no label is displayed).
 	 * 
 	 * @param label
-	 *           the label (<code>null</code> permitted).
+	 *            the label (<code>null</code> permitted).
 	 */
 	public void setLabel(String label) {
 		this.label = label;
@@ -282,7 +281,7 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Sets the label font.
 	 * 
 	 * @param font
-	 *           the font (<code>null</code> not permitted).
+	 *            the font (<code>null</code> not permitted).
 	 */
 	public void setLabelFont(Font font) {
 		if (font == null) {
@@ -304,7 +303,7 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Sets the label paint.
 	 * 
 	 * @param paint
-	 *           the paint (<code>null</code> not permitted).
+	 *            the paint (<code>null</code> not permitted).
 	 */
 	public void setLabelPaint(Paint paint) {
 		if (paint == null) {
@@ -326,7 +325,7 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Sets the label anchor.
 	 * 
 	 * @param anchor
-	 *           the anchor (<code>null</code> not permitted).
+	 *            the anchor (<code>null</code> not permitted).
 	 */
 	public void setLabelAnchor(RectangleAnchor anchor) {
 		if (anchor == null) {
@@ -348,7 +347,7 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Sets the label offset.
 	 * 
 	 * @param offset
-	 *           the label offset (<code>null</code> not permitted).
+	 *            the label offset (<code>null</code> not permitted).
 	 */
 	public void setLabelOffset(RectangleInsets offset) {
 		if (offset == null) {
@@ -370,7 +369,7 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Sets the label text anchor.
 	 * 
 	 * @param anchor
-	 *           the label text anchor (<code>null</code> not permitted).
+	 *            the label text anchor (<code>null</code> not permitted).
 	 */
 	public void setLabelTextAnchor(TextAnchor anchor) {
 		if (anchor == null) {
@@ -383,7 +382,7 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Tests an object for equality with this instance.
 	 * 
 	 * @param object
-	 *           the object to test.
+	 *            the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
@@ -417,9 +416,9 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the output stream.
+	 *            the output stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 
@@ -433,11 +432,11 @@ public abstract class Marker implements Serializable, Cloneable {
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the input stream.
+	 *            the input stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *            if there is a classpath problem.
+	 *             if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 

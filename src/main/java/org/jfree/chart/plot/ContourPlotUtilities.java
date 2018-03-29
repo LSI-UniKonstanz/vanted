@@ -45,11 +45,11 @@ public abstract class ContourPlotUtilities {
 	 * Returns the visible z-range.
 	 * 
 	 * @param data
-	 *           the dataset.
+	 *            the dataset.
 	 * @param x
-	 *           the x range.
+	 *            the x range.
 	 * @param y
-	 *           the y range.
+	 *            the y range.
 	 * @return The range.
 	 */
 	public static Range visibleRange(ContourDataset data, Range x, Range y) {

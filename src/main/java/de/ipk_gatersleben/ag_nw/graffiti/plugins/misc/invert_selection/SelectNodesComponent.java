@@ -47,21 +47,20 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffit
 
 // import com.sun.java.swing.SwingUtilities2;
 
-public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
-					SessionListener, ViewListener {
-	
+public class SelectNodesComponent extends JToolBar implements GraffitiComponent, SessionListener, ViewListener {
+
 	private static final long serialVersionUID = 1L;
 	private final ArrayList<Node> initSelection = new ArrayList<Node>();
 	// private Selection selection;
 	private final String prefComp;
 	private static Session activeSession;
-	
+
 	private final JTextField searchText;
 	private final JLabel searchDesc;
 	private final JButton okButton;
-	
+
 	private static SelectNodesComponent instance;
-	
+
 	public static void focus(KeyEvent e) {
 		if (instance != null) {
 			instance.searchText.requestFocusInWindow();
@@ -72,22 +71,22 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 			}
 		}
 	}
-	
+
 	public SelectNodesComponent(String prefComp) {
 		super("Select Nodes/Edges");
 		instance = this;
 		this.prefComp = prefComp;
 		MainFrame.getInstance().addViewListener(this);
-		
+
 		searchDesc = new JLabel(FolderPanel.getSearchIcon());
 		if (!SystemInfo.isMac())
 			add(searchDesc);
-		
+
 		okButton = new JButton("OK");
 		// int s = 0;
 		// okButton.setMargin(new Insets(s, s, s, s));
 		okButton.setRolloverEnabled(true);
-		
+
 		searchText = new JTextField();
 		if (SystemInfo.isMac()) {
 			searchText.putClientProperty("JTextField.variant", "search");
@@ -99,7 +98,8 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 		searchText.setPreferredSize(new Dimension(120, okButton.getPreferredSize().height));
 		searchText.setMaximumSize(new Dimension(120, okButton.getPreferredSize().height));
 		add(searchText);
-		// add(TableLayout.getSplitVertical(searchText, null, TableLayout.PREFERRED, 0));
+		// add(TableLayout.getSplitVertical(searchText, null, TableLayout.PREFERRED,
+		// 0));
 		searchText.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				okButton.doClick();
@@ -112,11 +112,13 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 					searchText.setBackground(Color.WHITE);
 					initSelection.clear();
 					initSelection.addAll(getActiveSelection());
-					MainFrame.showMessage("<html>Search for Node/Edge labels, press <b>Enter</b> to activate selection, <b>ESC</b> to cancel operation. " +
-										"Delete typed search text to select all nodes which have a label.", MessageType.PERMANENT_INFO);
+					MainFrame.showMessage(
+							"<html>Search for Node/Edge labels, press <b>Enter</b> to activate selection, <b>ESC</b> to cancel operation. "
+									+ "Delete typed search text to select all nodes which have a label.",
+							MessageType.PERMANENT_INFO);
 				}
 			}
-			
+
 			private Collection<Node> getActiveSelection() {
 				if (activeSession != null) {
 					Selection selection = ((EditorSession) activeSession).getSelectionModel().getActiveSelection();
@@ -124,12 +126,13 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 				} else
 					return null;
 			}
-			
+
 			public void focusLost(FocusEvent e) {
 				if (activeSession != null) {
 					if (e.getOppositeComponent() == okButton) {
 						setSelection(initSelection, true);
-						int sel1 = ((EditorSession) activeSession).getSelectionModel().getActiveSelection().getElements().size();
+						int sel1 = ((EditorSession) activeSession).getSelectionModel().getActiveSelection()
+								.getElements().size();
 						int sel0 = initSelection.size();
 						initSelection.clear();
 						MainFrame.showMessage("Added " + (sel1 - sel0) + " elements to selection", MessageType.INFO);
@@ -142,7 +145,7 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 					searchText.setBackground(null);
 				}
 			}
-			
+
 			private void setSelection(ArrayList<Node> tSelection, boolean addToSelection) {
 				activeSession.getGraph().getListenerManager().transactionStarted(this);
 				Selection selection = ((EditorSession) activeSession).getSelectionModel().getActiveSelection();
@@ -156,7 +159,7 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 				activeSession.getGraph().getListenerManager().transactionFinished(this);
 			}
 		});
-		
+
 		searchText.addKeyListener(new KeyListener() {
 			public void keyTyped(KeyEvent e) {
 				if (activeSession != null) {
@@ -164,8 +167,10 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 						public void run() {
 							// if (searchText.getText().length() > 0) {
 							// activeSession.getGraph().getListenerManager().transactionStarted(this);
-							// Selection selection = ((EditorSession)activeSession).getSelectionModel().getActiveSelection();
-							Selection newSelection = new Selection("id", getFilteredGraphElementList(searchText.getText()));
+							// Selection selection =
+							// ((EditorSession)activeSession).getSelectionModel().getActiveSelection();
+							Selection newSelection = new Selection("id",
+									getFilteredGraphElementList(searchText.getText()));
 							((EditorSession) activeSession).getSelectionModel().setActiveSelection(newSelection);
 							// activeSession.getGraph().getListenerManager().transactionFinished(this);
 							// }
@@ -173,7 +178,7 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 					});
 				}
 			}
-			
+
 			public void keyPressed(KeyEvent e) {
 				// enter
 				if (e.getKeyCode() == 10) {
@@ -188,18 +193,18 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 					e.consume();
 					ToolButton.requestToolButtonFocus();
 				}
-				
+
 			}
-			
+
 			public void keyReleased(KeyEvent e) {
 			}
 		});
-		
+
 		add(okButton);
 		// setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
 		validate();
 	}
-	
+
 	private Collection<GraphElement> getFilteredGraphElementList(String text) {
 		text = text.toUpperCase();
 		ArrayList<GraphElement> result = new ArrayList<GraphElement>();
@@ -208,10 +213,9 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 			if (nodeLabel != null) {
 				if (text.length() <= 0)
 					result.add(n);
-				else
-					if (nodeLabel.indexOf(text) >= 0 ||
-										StringManipulationTools.stringReplace(nodeLabel.toUpperCase(), "<BR>", "").indexOf(text) >= 0)
-						result.add(n);
+				else if (nodeLabel.indexOf(text) >= 0 || StringManipulationTools
+						.stringReplace(nodeLabel.toUpperCase(), "<BR>", "").indexOf(text) >= 0)
+					result.add(n);
 			}
 		}
 		for (Edge e : activeSession.getGraph().getEdges()) {
@@ -219,22 +223,22 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 			if (edgeLabel != null) {
 				if (text.length() <= 0)
 					result.add(e);
-				else
-					if (edgeLabel.indexOf(text) >= 0 ||
-										StringManipulationTools.stringReplace(edgeLabel.toUpperCase(), "<BR>", "").indexOf(text) >= 0)
-						result.add(e);
+				else if (edgeLabel.indexOf(text) >= 0 || StringManipulationTools
+						.stringReplace(edgeLabel.toUpperCase(), "<BR>", "").indexOf(text) >= 0)
+					result.add(e);
 			}
 		}
 		return result;
 	}
-	
+
 	// private String getDescLabelText() {
 	// return "<html><small>Search:&nbsp;";
 	// }
-	
+
 	// private Collection<Node> getFilteredSelection() {
 	// Graph graph = activeSession.getGraph();
-	// Selection selection = ((EditorSession)activeSession).getSelectionModel().getActiveSelection();
+	// Selection selection =
+	// ((EditorSession)activeSession).getSelectionModel().getActiveSelection();
 	// List<Node> nodes;
 	// if (selection == null || selection.isEmpty()) {
 	// nodes = graph.getNodes();
@@ -246,34 +250,41 @@ public class SelectNodesComponent extends JToolBar implements GraffitiComponent,
 	//
 	// return nodes;
 	// }
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.session.SessionListener#sessionChanged(org.graffiti.session.Session)
+	 * 
+	 * @see
+	 * org.graffiti.session.SessionListener#sessionChanged(org.graffiti.session.
+	 * Session)
 	 */
 	public void sessionChanged(Session s) {
 		activeSession = s;
 		if (s != null)
 			viewChanged(s.getActiveView());
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.session.SessionListener#sessionDataChanged(org.graffiti.session.Session)
+	 * 
+	 * @see
+	 * org.graffiti.session.SessionListener#sessionDataChanged(org.graffiti.session.
+	 * Session)
 	 */
 	public void sessionDataChanged(Session s) {
 		if (s != null)
 			viewChanged(s.getActiveView());
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.gui.GraffitiComponent#getPreferredComponent()
 	 */
 	public String getPreferredComponent() {
 		return prefComp;
 	}
-	
+
 	public void viewChanged(View newView) {
 		View view = newView;
 		if (view == null || !(view.getClass() == IPKGraffitiView.class)) {

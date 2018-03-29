@@ -61,7 +61,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A demonstration application showing a time series chart overlaid with a vertical XY bar chart.
+ * A demonstration application showing a time series chart overlaid with a
+ * vertical XY bar chart.
  */
 public class OverlaidXYPlotDemo extends ApplicationFrame {
 
@@ -69,7 +70,7 @@ public class OverlaidXYPlotDemo extends ApplicationFrame {
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public OverlaidXYPlotDemo(final String title) {
 
@@ -91,12 +92,8 @@ public class OverlaidXYPlotDemo extends ApplicationFrame {
 		// create plot ...
 		final IntervalXYDataset data1 = createDataset1();
 		final XYItemRenderer renderer1 = new XYBarRenderer(0.20);
-		renderer1.setToolTipGenerator(
-							new StandardXYToolTipGenerator(
-												StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-												new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")
-							)
-							);
+		renderer1.setToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+				new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")));
 		final DateAxis domainAxis = new DateAxis("Date");
 		domainAxis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);
 		final ValueAxis rangeAxis = new NumberAxis("Value");
@@ -109,12 +106,8 @@ public class OverlaidXYPlotDemo extends ApplicationFrame {
 		// add a second dataset and renderer...
 		final XYDataset data2 = createDataset2();
 		final XYItemRenderer renderer2 = new StandardXYItemRenderer();
-		renderer2.setToolTipGenerator(
-							new StandardXYToolTipGenerator(
-												StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-												new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")
-							)
-							);
+		renderer2.setToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+				new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0.00")));
 		plot.setDataset(1, data2);
 		plot.setRenderer(1, renderer2);
 
@@ -199,7 +192,7 @@ public class OverlaidXYPlotDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

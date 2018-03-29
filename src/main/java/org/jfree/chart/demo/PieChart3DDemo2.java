@@ -54,7 +54,7 @@ public class PieChart3DDemo2 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PieChart3DDemo2(final String title) {
 
@@ -62,20 +62,17 @@ public class PieChart3DDemo2 extends ApplicationFrame {
 
 		// create a dataset...
 		final DefaultPieDataset data = new DefaultPieDataset();
-		data.setValue("Java", new Double(43.2));
-		data.setValue("Visual Basic", new Double(10.0));
-		data.setValue("C/C++", new Double(17.5));
-		data.setValue("PHP", new Double(32.5));
-		data.setValue("Perl", new Double(12.5));
+		data.setValue("Java", Double.valueOf(43.2));
+		data.setValue("Visual Basic", Double.valueOf(10.0));
+		data.setValue("C/C++", Double.valueOf(17.5));
+		data.setValue("PHP", Double.valueOf(32.5));
+		data.setValue("Perl", Double.valueOf(12.5));
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createPieChart3D(
-							"Pie Chart 3D Demo 2", // chart title
+		final JFreeChart chart = ChartFactory.createPieChart3D("Pie Chart 3D Demo 2", // chart title
 				data, // data
 				true, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		chart.setBackgroundPaint(Color.yellow);
 		final PiePlot3D plot = (PiePlot3D) chart.getPlot();
@@ -97,7 +94,7 @@ public class PieChart3DDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
@@ -136,7 +133,7 @@ class Rotator extends Timer implements ActionListener {
 	 * Constructor.
 	 * 
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 */
 	Rotator(final PiePlot3D plot) {
 		super(100, null);
@@ -148,7 +145,7 @@ class Rotator extends Timer implements ActionListener {
 	 * Modifies the starting angle.
 	 * 
 	 * @param event
-	 *           the action event.
+	 *            the action event.
 	 */
 	public void actionPerformed(final ActionEvent event) {
 		this.plot.setStartAngle(this.angle);

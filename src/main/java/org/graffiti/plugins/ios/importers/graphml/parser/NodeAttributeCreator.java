@@ -18,31 +18,27 @@ import org.graffiti.graphics.NodeGraphicAttribute;
  *
  * @author ruediger
  */
-class NodeAttributeCreator
-    extends AttributeCreator
-{
-    //~ Constructors ===========================================================
+class NodeAttributeCreator extends AttributeCreator {
+	// ~ Constructors ===========================================================
 
-    /**
-     * Constructs a new <code>NodeAttributeCreator</code>.
-     */
-    NodeAttributeCreator()
-    {
-        super();
-    }
+	/**
+	 * Constructs a new <code>NodeAttributeCreator</code>.
+	 */
+	NodeAttributeCreator() {
+		super();
+	}
 
-    //~ Methods ================================================================
+	// ~ Methods ================================================================
 
-    /*
-     *
-     */
-    @Override
-	CollectionAttribute createDefaultAttribute()
-    {
-        return new NodeGraphicAttribute();
-    }
+	/*
+	 *
+	 */
+	@Override
+	CollectionAttribute createDefaultAttribute() {
+		return new NodeGraphicAttribute();
+	}
 }
 
-//------------------------------------------------------------------------------
-//   end of file
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// end of file
+// ------------------------------------------------------------------------------

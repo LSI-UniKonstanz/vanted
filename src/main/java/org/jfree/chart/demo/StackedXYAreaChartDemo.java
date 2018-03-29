@@ -53,8 +53,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demonstration application showing how to create a
- * stacked XY area chart.
+ * A simple demonstration application showing how to create a stacked XY area
+ * chart.
  */
 public class StackedXYAreaChartDemo extends ApplicationFrame {
 
@@ -62,7 +62,7 @@ public class StackedXYAreaChartDemo extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public StackedXYAreaChartDemo(final String title) {
 
@@ -149,24 +149,22 @@ public class StackedXYAreaChartDemo extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final TableXYDataset dataset) {
 
 		final StandardXYToolTipGenerator toolTipGenerator = new StandardXYToolTipGenerator(
-							StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-							new SimpleDateFormat("dd-MMM-yyyy", Locale.UK), NumberFormat.getInstance()
-							);
+				StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT, new SimpleDateFormat("dd-MMM-yyyy", Locale.UK),
+				NumberFormat.getInstance());
 		final DateAxis xAxis = new DateAxis("Domain (X)");
 		xAxis.setLowerMargin(0.0);
 		xAxis.setUpperMargin(0.0);
 
 		final NumberAxis yAxis = new NumberAxis("Range (Y)");
 		yAxis.setAutoRangeIncludesZero(true);
-		final StackedXYAreaRenderer renderer = new StackedXYAreaRenderer(
-							XYAreaRenderer.AREA_AND_SHAPES, toolTipGenerator, null
-							);
+		final StackedXYAreaRenderer renderer = new StackedXYAreaRenderer(XYAreaRenderer.AREA_AND_SHAPES,
+				toolTipGenerator, null);
 		renderer.setOutline(true);
 		renderer.setSeriesPaint(0, new Color(255, 255, 206));
 		renderer.setSeriesPaint(1, new Color(206, 230, 255));
@@ -185,12 +183,10 @@ public class StackedXYAreaChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
-		final StackedXYAreaChartDemo demo = new StackedXYAreaChartDemo(
-							"Stacked Area XY Chart Demo"
-							);
+		final StackedXYAreaChartDemo demo = new StackedXYAreaChartDemo("Stacked Area XY Chart Demo");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);

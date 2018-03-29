@@ -17,39 +17,37 @@ import org.graffiti.plugin.algorithm.Category;
 import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class CountCircularCrossingsAlgorithm extends AbstractAlgorithm {
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.extension.Extension#getName()
 	 */
 	public String getName() {
 		return "Count Circular Edge Crossings";
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.extension.Extension#getCategory()
 	 */
 	@Override
 	public String getCategory() {
 		return "Analysis";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
@@ -57,8 +55,8 @@ public class CountCircularCrossingsAlgorithm extends AbstractAlgorithm {
 			selection.addAll(graph.getNodes());
 		int crossings = AlgorithmServices.getNumberOfCircularEdgeCrossings(selection.getNodes());
 		MainFrame.showMessageDialog(
-							"Number of edge-crossings (in case of a circular layout of the selection) is " + crossings + ".",
-							"Edge-crossings of selected or all nodes");
+				"Number of edge-crossings (in case of a circular layout of the selection) is " + crossings + ".",
+				"Edge-crossings of selected or all nodes");
 	}
-	
+
 }

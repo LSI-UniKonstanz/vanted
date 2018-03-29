@@ -48,7 +48,8 @@ import org.jfree.util.Log;
 import org.jfree.util.PrintStreamLogTarget;
 
 /**
- * A simple demonstration application showing how to create a pie chart using data from a {@link DefaultPieDataset}.
+ * A simple demonstration application showing how to create a pie chart using
+ * data from a {@link DefaultPieDataset}.
  */
 public class PieChartDemo1 extends ApplicationFrame {
 
@@ -56,7 +57,7 @@ public class PieChartDemo1 extends ApplicationFrame {
 	 * Default constructor.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PieChartDemo1(final String title) {
 		super(title);
@@ -74,12 +75,12 @@ public class PieChartDemo1 extends ApplicationFrame {
 	 */
 	private PieDataset createDataset() {
 		final DefaultPieDataset dataset = new DefaultPieDataset();
-		dataset.setValue("One", new Double(43.2));
-		dataset.setValue("Two", new Double(10.0));
-		dataset.setValue("Three", new Double(27.5));
-		dataset.setValue("Four", new Double(17.5));
-		dataset.setValue("Five", new Double(11.0));
-		dataset.setValue("Six", new Double(19.4));
+		dataset.setValue("One", Double.valueOf(43.2));
+		dataset.setValue("Two", Double.valueOf(10.0));
+		dataset.setValue("Three", Double.valueOf(27.5));
+		dataset.setValue("Four", Double.valueOf(17.5));
+		dataset.setValue("Five", Double.valueOf(11.0));
+		dataset.setValue("Six", Double.valueOf(19.4));
 		return dataset;
 	}
 
@@ -98,18 +99,15 @@ public class PieChartDemo1 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final PieDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createPieChart(
-							"Pie Chart Demo 1", // chart title
+		final JFreeChart chart = ChartFactory.createPieChart("Pie Chart Demo 1", // chart title
 				dataset, // data
 				true, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		final PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setLabelFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -125,7 +123,7 @@ public class PieChartDemo1 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

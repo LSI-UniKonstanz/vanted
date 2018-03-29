@@ -30,18 +30,19 @@
 package org.jfree.data;
 
 /**
- * Utility methods for use with some of the data classes (but not the datasets, see {@link DatasetUtilities}).
+ * Utility methods for use with some of the data classes (but not the datasets,
+ * see {@link DatasetUtilities}).
  */
 public abstract class DataUtilities {
 
 	/**
-	 * Returns a {@link KeyedValues} instance that contains the cumulative percentage values
-	 * for the data in another {@link KeyedValues} instance.
+	 * Returns a {@link KeyedValues} instance that contains the cumulative
+	 * percentage values for the data in another {@link KeyedValues} instance.
 	 * <p>
 	 * The percentages are values between 0.0 and 1.0 (where 1.0 = 100%).
 	 * 
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @return The cumulative percentages.
 	 */
 	public static KeyedValues getCumulativePercentages(final KeyedValues data) {
@@ -62,7 +63,7 @@ public abstract class DataUtilities {
 			if (v != null) {
 				runningTotal = runningTotal + v.doubleValue();
 			}
-			result.addValue(data.getKey(i), new Double(runningTotal / total));
+			result.addValue(data.getKey(i), Double.valueOf(runningTotal / total));
 		}
 
 		return result;

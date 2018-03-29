@@ -99,7 +99,8 @@ import org.jfree.util.ObjectUtils;
 import org.jfree.util.PublicCloneable;
 
 /**
- * The base class for axes that display value data, where values are measured using the <code>double</code> primitive. The two key subclasses are
+ * The base class for axes that display value data, where values are measured
+ * using the <code>double</code> primitive. The two key subclasses are
  * {@link DateAxis} and {@link NumberAxis}.
  */
 public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneable, Serializable {
@@ -134,10 +135,16 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	/** The maximum tick count. */
 	public static final int MAXIMUM_TICK_COUNT = 500;
 
-	/** A flag that controls whether an arrow is drawn at the positive end of the axis line. */
+	/**
+	 * A flag that controls whether an arrow is drawn at the positive end of the
+	 * axis line.
+	 */
 	private boolean positiveArrowVisible;
 
-	/** A flag that controls whether an arrow is drawn at the negative end of the axis line. */
+	/**
+	 * A flag that controls whether an arrow is drawn at the negative end of the
+	 * axis line.
+	 */
 	private boolean negativeArrowVisible;
 
 	/** The shape used for an up arrow. */
@@ -158,34 +165,39 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	/** The axis range. */
 	private Range range;
 
-	/** Flag that indicates whether the axis automatically scales to fit the chart data. */
+	/**
+	 * Flag that indicates whether the axis automatically scales to fit the chart
+	 * data.
+	 */
 	private boolean autoRange;
 
 	/** The minimum size for the 'auto' axis range (excluding margins). */
 	private double autoRangeMinimumSize;
 
 	/**
-	 * The upper margin percentage. This indicates the amount by which the maximum axis value
-	 * exceeds the maximum data value (as a percentage of the range on the axis) when the axis
-	 * range is determined automatically.
+	 * The upper margin percentage. This indicates the amount by which the maximum
+	 * axis value exceeds the maximum data value (as a percentage of the range on
+	 * the axis) when the axis range is determined automatically.
 	 */
 	private double upperMargin;
 
 	/**
-	 * The lower margin. This is a percentage that indicates the amount by
-	 * which the minimum axis value is "less than" the minimum data value when
-	 * the axis range is determined automatically.
+	 * The lower margin. This is a percentage that indicates the amount by which the
+	 * minimum axis value is "less than" the minimum data value when the axis range
+	 * is determined automatically.
 	 */
 	private double lowerMargin;
 
 	/**
-	 * If this value is positive, the amount is subtracted from the maximum
-	 * data value to determine the lower axis range. This can be used to
-	 * provide a fixed "window" on dynamic data.
+	 * If this value is positive, the amount is subtracted from the maximum data
+	 * value to determine the lower axis range. This can be used to provide a fixed
+	 * "window" on dynamic data.
 	 */
 	private double fixedAutoRange;
 
-	/** Flag that indicates whether or not the tick unit is selected automatically. */
+	/**
+	 * Flag that indicates whether or not the tick unit is selected automatically.
+	 */
 	private boolean autoTickUnitSelection;
 
 	/** The standard tick units for the axis. */
@@ -201,9 +213,9 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * Constructs a value axis.
 	 * 
 	 * @param label
-	 *           the axis label.
+	 *            the axis label.
 	 * @param standardTickUnits
-	 *           the source for standard tick units (<code>null</code> permitted).
+	 *            the source for standard tick units (<code>null</code> permitted).
 	 */
 	protected ValueAxis(String label, TickUnitSource standardTickUnits) {
 
@@ -259,7 +271,8 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Returns true if the tick labels should be rotated (to vertical), and false otherwise.
+	 * Returns true if the tick labels should be rotated (to vertical), and false
+	 * otherwise.
 	 * 
 	 * @return <code>true</code> or <code>false</code>.
 	 */
@@ -268,13 +281,14 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets the flag that controls whether the tick labels are displayed vertically (that is,
-	 * rotated 90 degrees from horizontal).
+	 * Sets the flag that controls whether the tick labels are displayed vertically
+	 * (that is, rotated 90 degrees from horizontal).
 	 * <P>
-	 * If the flag is changed, an {@link AxisChangeEvent} is sent to all registered listeners.
+	 * If the flag is changed, an {@link AxisChangeEvent} is sent to all registered
+	 * listeners.
 	 * 
 	 * @param flag
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setVerticalTickLabels(boolean flag) {
 		if (this.verticalTickLabels != flag) {
@@ -284,8 +298,8 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Returns a flag that controls whether or not the axis line has an arrow drawn that
-	 * points in the positive direction for the axis.
+	 * Returns a flag that controls whether or not the axis line has an arrow drawn
+	 * that points in the positive direction for the axis.
 	 * 
 	 * @return A boolean.
 	 */
@@ -294,11 +308,12 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets a flag that controls whether or not the axis lines has an arrow drawn that
-	 * points in the positive direction for the axis, and sends an {@link AxisChangeEvent} to all registered listeners.
+	 * Sets a flag that controls whether or not the axis lines has an arrow drawn
+	 * that points in the positive direction for the axis, and sends an
+	 * {@link AxisChangeEvent} to all registered listeners.
 	 * 
 	 * @param visible
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setPositiveArrowVisible(boolean visible) {
 		this.positiveArrowVisible = visible;
@@ -306,8 +321,8 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Returns a flag that controls whether or not the axis line has an arrow drawn that
-	 * points in the negative direction for the axis.
+	 * Returns a flag that controls whether or not the axis line has an arrow drawn
+	 * that points in the negative direction for the axis.
 	 * 
 	 * @return A boolean.
 	 */
@@ -316,11 +331,12 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets a flag that controls whether or not the axis lines has an arrow drawn that
-	 * points in the negative direction for the axis, and sends an {@link AxisChangeEvent} to all registered listeners.
+	 * Sets a flag that controls whether or not the axis lines has an arrow drawn
+	 * that points in the negative direction for the axis, and sends an
+	 * {@link AxisChangeEvent} to all registered listeners.
 	 * 
 	 * @param visible
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setNegativeArrowVisible(boolean visible) {
 		this.negativeArrowVisible = visible;
@@ -328,8 +344,8 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Returns a shape that can be displayed as an arrow pointing upwards at the end of
-	 * an axis line.
+	 * Returns a shape that can be displayed as an arrow pointing upwards at the end
+	 * of an axis line.
 	 * 
 	 * @return A shape (never <code>null</code>).
 	 */
@@ -338,11 +354,12 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets the shape that can be displayed as an arrow pointing upwards at the end of an
-	 * axis line and sends an {@link AxisChangeEvent} to all registered listeners.
+	 * Sets the shape that can be displayed as an arrow pointing upwards at the end
+	 * of an axis line and sends an {@link AxisChangeEvent} to all registered
+	 * listeners.
 	 * 
 	 * @param arrow
-	 *           the arrow shape (<code>null</code> not permitted).
+	 *            the arrow shape (<code>null</code> not permitted).
 	 */
 	public void setUpArrow(Shape arrow) {
 		if (arrow == null) {
@@ -353,8 +370,8 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Returns a shape that can be displayed as an arrow pointing downwards at the end of
-	 * an axis line.
+	 * Returns a shape that can be displayed as an arrow pointing downwards at the
+	 * end of an axis line.
 	 * 
 	 * @return A shape (never <code>null</code>).
 	 */
@@ -363,11 +380,12 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets the shape that can be displayed as an arrow pointing downwards at the end of an
-	 * axis line and sends an {@link AxisChangeEvent} to all registered listeners.
+	 * Sets the shape that can be displayed as an arrow pointing downwards at the
+	 * end of an axis line and sends an {@link AxisChangeEvent} to all registered
+	 * listeners.
 	 * 
 	 * @param arrow
-	 *           the arrow shape (<code>null</code> not permitted).
+	 *            the arrow shape (<code>null</code> not permitted).
 	 */
 	public void setDownArrow(Shape arrow) {
 		if (arrow == null) {
@@ -388,11 +406,12 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets the shape that can be displayed as an arrow pointing left at the end of an
-	 * axis line and sends an {@link AxisChangeEvent} to all registered listeners.
+	 * Sets the shape that can be displayed as an arrow pointing left at the end of
+	 * an axis line and sends an {@link AxisChangeEvent} to all registered
+	 * listeners.
 	 * 
 	 * @param arrow
-	 *           the arrow shape (<code>null</code> not permitted).
+	 *            the arrow shape (<code>null</code> not permitted).
 	 */
 	public void setLeftArrow(Shape arrow) {
 		if (arrow == null) {
@@ -403,8 +422,8 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Returns a shape that can be displayed as an arrow pointing right at the end of
-	 * an axis line.
+	 * Returns a shape that can be displayed as an arrow pointing right at the end
+	 * of an axis line.
 	 * 
 	 * @return A shape (never <code>null</code>).
 	 */
@@ -413,11 +432,12 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets the shape that can be displayed as an arrow pointing rightwards at the end of an
-	 * axis line and sends an {@link AxisChangeEvent} to all registered listeners.
+	 * Sets the shape that can be displayed as an arrow pointing rightwards at the
+	 * end of an axis line and sends an {@link AxisChangeEvent} to all registered
+	 * listeners.
 	 * 
 	 * @param arrow
-	 *           the arrow shape (<code>null</code> not permitted).
+	 *            the arrow shape (<code>null</code> not permitted).
 	 */
 	public void setRightArrow(Shape arrow) {
 		if (arrow == null) {
@@ -431,29 +451,25 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * Draws an axis line at the current cursor position and edge.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param cursor
-	 *           the cursor position.
+	 *            the cursor position.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param edge
-	 *           the edge.
+	 *            the edge.
 	 */
-	protected void drawAxisLine(Graphics2D g2, double cursor,
-											Rectangle2D dataArea, RectangleEdge edge) {
+	protected void drawAxisLine(Graphics2D g2, double cursor, Rectangle2D dataArea, RectangleEdge edge) {
 		Line2D axisLine = null;
 		if (edge == RectangleEdge.TOP) {
 			axisLine = new Line2D.Double(dataArea.getX(), cursor, dataArea.getMaxX(), cursor);
-		} else
-			if (edge == RectangleEdge.BOTTOM) {
-				axisLine = new Line2D.Double(dataArea.getX(), cursor, dataArea.getMaxX(), cursor);
-			} else
-				if (edge == RectangleEdge.LEFT) {
-					axisLine = new Line2D.Double(cursor, dataArea.getY(), cursor, dataArea.getMaxY());
-				} else
-					if (edge == RectangleEdge.RIGHT) {
-						axisLine = new Line2D.Double(cursor, dataArea.getY(), cursor, dataArea.getMaxY());
-					}
+		} else if (edge == RectangleEdge.BOTTOM) {
+			axisLine = new Line2D.Double(dataArea.getX(), cursor, dataArea.getMaxX(), cursor);
+		} else if (edge == RectangleEdge.LEFT) {
+			axisLine = new Line2D.Double(cursor, dataArea.getY(), cursor, dataArea.getMaxY());
+		} else if (edge == RectangleEdge.RIGHT) {
+			axisLine = new Line2D.Double(cursor, dataArea.getY(), cursor, dataArea.getMaxY());
+		}
 		g2.setPaint(getAxisLinePaint());
 		g2.setStroke(getAxisLineStroke());
 		g2.draw(axisLine);
@@ -482,12 +498,11 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 				x = dataArea.getMaxX();
 				y = cursor;
 				arrow = this.rightArrow;
-			} else
-				if (edge == RectangleEdge.LEFT || edge == RectangleEdge.RIGHT) {
-					x = cursor;
-					y = dataArea.getMinY();
-					arrow = this.upArrow;
-				}
+			} else if (edge == RectangleEdge.LEFT || edge == RectangleEdge.RIGHT) {
+				x = cursor;
+				y = dataArea.getMinY();
+				arrow = this.upArrow;
+			}
 
 			// draw the arrow...
 			AffineTransform transformer = new AffineTransform();
@@ -505,12 +520,11 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 				x = dataArea.getMinX();
 				y = cursor;
 				arrow = this.leftArrow;
-			} else
-				if (edge == RectangleEdge.LEFT || edge == RectangleEdge.RIGHT) {
-					x = cursor;
-					y = dataArea.getMaxY();
-					arrow = this.downArrow;
-				}
+			} else if (edge == RectangleEdge.LEFT || edge == RectangleEdge.RIGHT) {
+				x = cursor;
+				y = dataArea.getMaxY();
+				arrow = this.downArrow;
+			}
 
 			// draw the arrow...
 			AffineTransform transformer = new AffineTransform();
@@ -526,37 +540,31 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * Calculates the anchor point for a tick label.
 	 * 
 	 * @param tick
-	 *           the tick.
+	 *            the tick.
 	 * @param cursor
-	 *           the cursor.
+	 *            the cursor.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param edge
-	 *           the edge on which the axis is drawn.
+	 *            the edge on which the axis is drawn.
 	 * @return the x and y coordinates of the anchor point.
 	 */
-	protected float[] calculateAnchorPoint(ValueTick tick,
-															double cursor,
-															Rectangle2D dataArea,
-															RectangleEdge edge) {
+	protected float[] calculateAnchorPoint(ValueTick tick, double cursor, Rectangle2D dataArea, RectangleEdge edge) {
 
 		float[] result = new float[2];
 		if (edge == RectangleEdge.TOP) {
 			result[0] = (float) this.translateValueToJava2D(tick.getValue(), dataArea, edge);
 			result[1] = (float) (cursor - getTickLabelInsets().bottom - 2.0);
-		} else
-			if (edge == RectangleEdge.BOTTOM) {
-				result[0] = (float) this.translateValueToJava2D(tick.getValue(), dataArea, edge);
-				result[1] = (float) (cursor + getTickLabelInsets().top + 2.0);
-			} else
-				if (edge == RectangleEdge.LEFT) {
-					result[0] = (float) (cursor - getTickLabelInsets().left - 2.0);
-					result[1] = (float) this.translateValueToJava2D(tick.getValue(), dataArea, edge);
-				} else
-					if (edge == RectangleEdge.RIGHT) {
-						result[0] = (float) (cursor + getTickLabelInsets().right + 2.0);
-						result[1] = (float) this.translateValueToJava2D(tick.getValue(), dataArea, edge);
-					}
+		} else if (edge == RectangleEdge.BOTTOM) {
+			result[0] = (float) this.translateValueToJava2D(tick.getValue(), dataArea, edge);
+			result[1] = (float) (cursor + getTickLabelInsets().top + 2.0);
+		} else if (edge == RectangleEdge.LEFT) {
+			result[0] = (float) (cursor - getTickLabelInsets().left - 2.0);
+			result[1] = (float) this.translateValueToJava2D(tick.getValue(), dataArea, edge);
+		} else if (edge == RectangleEdge.RIGHT) {
+			result[0] = (float) (cursor + getTickLabelInsets().right + 2.0);
+			result[1] = (float) this.translateValueToJava2D(tick.getValue(), dataArea, edge);
+		}
 		return result;
 	}
 
@@ -564,23 +572,20 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * Draws the axis line, tick marks and tick mark labels.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param cursor
-	 *           the cursor.
+	 *            the cursor.
 	 * @param plotArea
-	 *           the plot area.
+	 *            the plot area.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param edge
-	 *           the edge that the axis is aligned with.
+	 *            the edge that the axis is aligned with.
 	 * @return The width or height used to draw the axis.
 	 */
 	@SuppressWarnings("unchecked")
-	protected AxisState drawTickMarksAndLabels(Graphics2D g2,
-																double cursor,
-																Rectangle2D plotArea,
-																Rectangle2D dataArea,
-																RectangleEdge edge) {
+	protected AxisState drawTickMarksAndLabels(Graphics2D g2, double cursor, Rectangle2D plotArea, Rectangle2D dataArea,
+			RectangleEdge edge) {
 
 		AxisState state = new AxisState(cursor);
 
@@ -601,11 +606,8 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 			if (isTickLabelsVisible()) {
 				g2.setPaint(getTickLabelPaint());
 				float[] anchorPoint = calculateAnchorPoint(tick, cursor, dataArea, edge);
-				RefineryUtilities.drawRotatedString(tick.getText(), g2,
-																		anchorPoint[0], anchorPoint[1],
-																		tick.getTextAnchor(),
-																		tick.getRotationAnchor(),
-																		tick.getAngle());
+				RefineryUtilities.drawRotatedString(tick.getText(), g2, anchorPoint[0], anchorPoint[1],
+						tick.getTextAnchor(), tick.getRotationAnchor(), tick.getAngle());
 			}
 
 			if (isTickMarksVisible()) {
@@ -615,16 +617,13 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 				g2.setPaint(getTickMarkPaint());
 				if (edge == RectangleEdge.LEFT) {
 					mark = new Line2D.Double(cursor - ol, xx, cursor + il, xx);
-				} else
-					if (edge == RectangleEdge.RIGHT) {
-						mark = new Line2D.Double(cursor + ol, xx, cursor - il, xx);
-					} else
-						if (edge == RectangleEdge.TOP) {
-							mark = new Line2D.Double(xx, cursor - ol, xx, cursor + il);
-						} else
-							if (edge == RectangleEdge.BOTTOM) {
-								mark = new Line2D.Double(xx, cursor + ol, xx, cursor - il);
-							}
+				} else if (edge == RectangleEdge.RIGHT) {
+					mark = new Line2D.Double(cursor + ol, xx, cursor - il, xx);
+				} else if (edge == RectangleEdge.TOP) {
+					mark = new Line2D.Double(xx, cursor - ol, xx, cursor + il);
+				} else if (edge == RectangleEdge.BOTTOM) {
+					mark = new Line2D.Double(xx, cursor + ol, xx, cursor - il);
+				}
 				g2.draw(mark);
 			}
 		}
@@ -636,19 +635,16 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 			if (edge == RectangleEdge.LEFT) {
 				used += findMaximumTickLabelWidth(ticks, g2, plotArea, isVerticalTickLabels());
 				state.cursorLeft(used);
-			} else
-				if (edge == RectangleEdge.RIGHT) {
-					used = findMaximumTickLabelWidth(ticks, g2, plotArea, isVerticalTickLabels());
-					state.cursorRight(used);
-				} else
-					if (edge == RectangleEdge.TOP) {
-						used = findMaximumTickLabelHeight(ticks, g2, plotArea, isVerticalTickLabels());
-						state.cursorUp(used);
-					} else
-						if (edge == RectangleEdge.BOTTOM) {
-							used = findMaximumTickLabelHeight(ticks, g2, plotArea, isVerticalTickLabels());
-							state.cursorDown(used);
-						}
+			} else if (edge == RectangleEdge.RIGHT) {
+				used = findMaximumTickLabelWidth(ticks, g2, plotArea, isVerticalTickLabels());
+				state.cursorRight(used);
+			} else if (edge == RectangleEdge.TOP) {
+				used = findMaximumTickLabelHeight(ticks, g2, plotArea, isVerticalTickLabels());
+				state.cursorUp(used);
+			} else if (edge == RectangleEdge.BOTTOM) {
+				used = findMaximumTickLabelHeight(ticks, g2, plotArea, isVerticalTickLabels());
+				state.cursorDown(used);
+			}
 		}
 
 		return state;
@@ -658,19 +654,19 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * Returns the space required to draw the axis.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plot
-	 *           the plot that the axis belongs to.
+	 *            the plot that the axis belongs to.
 	 * @param plotArea
-	 *           the area within which the plot should be drawn.
+	 *            the area within which the plot should be drawn.
 	 * @param edge
-	 *           the axis location.
+	 *            the axis location.
 	 * @param space
-	 *           the space already reserved (for other axes).
+	 *            the space already reserved (for other axes).
 	 * @return The space required to draw the axis (including pre-reserved space).
 	 */
-	public AxisSpace reserveSpace(Graphics2D g2, Plot plot, Rectangle2D plotArea,
-												RectangleEdge edge, AxisSpace space, boolean isOpositeAxisVisible) {
+	public AxisSpace reserveSpace(Graphics2D g2, Plot plot, Rectangle2D plotArea, RectangleEdge edge, AxisSpace space,
+			boolean isOpositeAxisVisible) {
 
 		// create a new space object if one wasn't supplied...
 		if (space == null) {
@@ -709,15 +705,14 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 				space.add(tickLabelWidth / 2d, RectangleEdge.LEFT);
 			}
 			space.add(tickLabelWidth / 2d, RectangleEdge.RIGHT);
-		} else
-			if (RectangleEdge.isLeftOrRight(edge)) {
-				labelWidth = labelEnclosure.getWidth();
-				space.add(labelWidth + tickLabelWidth, edge);
-				if (!isOpositeAxisVisible) {
-					space.add(tickLabelHeight / 2d, RectangleEdge.BOTTOM);
-				}
-				space.add(tickLabelHeight / 2d, RectangleEdge.TOP);
+		} else if (RectangleEdge.isLeftOrRight(edge)) {
+			labelWidth = labelEnclosure.getWidth();
+			space.add(labelWidth + tickLabelWidth, edge);
+			if (!isOpositeAxisVisible) {
+				space.add(tickLabelHeight / 2d, RectangleEdge.BOTTOM);
 			}
+			space.add(tickLabelHeight / 2d, RectangleEdge.TOP);
+		}
 
 		return space;
 
@@ -727,19 +722,17 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * A utility method for determining the height of the tallest tick label.
 	 * 
 	 * @param ticks
-	 *           the ticks.
+	 *            the ticks.
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param drawArea
-	 *           the area within which the plot and axes should be drawn.
+	 *            the area within which the plot and axes should be drawn.
 	 * @param vertical
-	 *           a flag that indicates whether or not the tick labels are 'vertical'.
+	 *            a flag that indicates whether or not the tick labels are
+	 *            'vertical'.
 	 * @return the height of the tallest tick label.
 	 */
-	protected double findMaximumTickLabelHeight(List ticks,
-																Graphics2D g2,
-																Rectangle2D drawArea,
-																boolean vertical) {
+	protected double findMaximumTickLabelHeight(List ticks, Graphics2D g2, Rectangle2D drawArea, boolean vertical) {
 
 		Insets insets = getTickLabelInsets();
 		Font font = getTickLabelFont();
@@ -766,19 +759,17 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * A utility method for determining the width of the widest tick label.
 	 * 
 	 * @param ticks
-	 *           the ticks.
+	 *            the ticks.
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param drawArea
-	 *           the area within which the plot and axes should be drawn.
+	 *            the area within which the plot and axes should be drawn.
 	 * @param vertical
-	 *           a flag that indicates whether or not the tick labels are 'vertical'.
+	 *            a flag that indicates whether or not the tick labels are
+	 *            'vertical'.
 	 * @return the width of the tallest tick label.
 	 */
-	protected double findMaximumTickLabelWidth(List ticks,
-																Graphics2D g2,
-																Rectangle2D drawArea,
-																boolean vertical) {
+	protected double findMaximumTickLabelWidth(List ticks, Graphics2D g2, Rectangle2D drawArea, boolean vertical) {
 
 		Insets insets = getTickLabelInsets();
 		Font font = getTickLabelFont();
@@ -809,8 +800,9 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	/**
 	 * Returns a flag that controls the direction of values on the axis.
 	 * <P>
-	 * For a regular axis, values increase from left to right (for a horizontal axis) and bottom to top (for a vertical axis). When the axis is 'inverted', the
-	 * values increase in the opposite direction.
+	 * For a regular axis, values increase from left to right (for a horizontal
+	 * axis) and bottom to top (for a vertical axis). When the axis is 'inverted',
+	 * the values increase in the opposite direction.
 	 * 
 	 * @return the flag.
 	 */
@@ -819,11 +811,11 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets a flag that controls the direction of values on the axis, and
-	 * notifies registered listeners that the axis has changed.
+	 * Sets a flag that controls the direction of values on the axis, and notifies
+	 * registered listeners that the axis has changed.
 	 * 
 	 * @param flag
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setInverted(boolean flag) {
 
@@ -844,24 +836,25 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets a flag that determines whether or not the axis range is
-	 * automatically adjusted to fit the data, and notifies registered
-	 * listeners that the axis has been modified.
+	 * Sets a flag that determines whether or not the axis range is automatically
+	 * adjusted to fit the data, and notifies registered listeners that the axis has
+	 * been modified.
 	 * 
 	 * @param auto
-	 *           the new value of the flag.
+	 *            the new value of the flag.
 	 */
 	public void setAutoRange(boolean auto) {
 		setAutoRange(auto, true);
 	}
 
 	/**
-	 * Sets the auto range attribute. If the <code>notify</code> flag is set, an {@link AxisChangeEvent} is sent to registered listeners.
+	 * Sets the auto range attribute. If the <code>notify</code> flag is set, an
+	 * {@link AxisChangeEvent} is sent to registered listeners.
 	 * 
 	 * @param auto
-	 *           the new value of the flag.
+	 *            the new value of the flag.
 	 * @param notify
-	 *           notify listeners?
+	 *            notify listeners?
 	 */
 	protected void setAutoRange(boolean auto, boolean notify) {
 		if (this.autoRange != auto) {
@@ -876,7 +869,8 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Returns the minimum size allowed for the axis range when it is automatically calculated.
+	 * Returns the minimum size allowed for the axis range when it is automatically
+	 * calculated.
 	 * 
 	 * @return the minimum range.
 	 */
@@ -885,32 +879,33 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets the auto range minimum size and sends an {@link AxisChangeEvent} to all registered
-	 * listeners.
+	 * Sets the auto range minimum size and sends an {@link AxisChangeEvent} to all
+	 * registered listeners.
 	 * 
 	 * @param size
-	 *           the size.
+	 *            the size.
 	 */
 	public void setAutoRangeMinimumSize(double size) {
 		setAutoRangeMinimumSize(size, true);
 	}
 
 	/**
-	 * Sets the minimum size allowed for the axis range when it is automatically calculated.
+	 * Sets the minimum size allowed for the axis range when it is automatically
+	 * calculated.
 	 * <p>
-	 * If requested, an {@link AxisChangeEvent} is forwarded to all registered listeners.
+	 * If requested, an {@link AxisChangeEvent} is forwarded to all registered
+	 * listeners.
 	 * 
 	 * @param size
-	 *           the new minimum.
+	 *            the new minimum.
 	 * @param notify
-	 *           notify listeners?
+	 *            notify listeners?
 	 */
 	public void setAutoRangeMinimumSize(double size, boolean notify) {
 
 		// check argument...
 		if (size <= 0.0) {
-			throw new IllegalArgumentException(
-								"NumberAxis.setAutoRangeMinimumSize(double): must be > 0.0.");
+			throw new IllegalArgumentException("NumberAxis.setAutoRangeMinimumSize(double): must be > 0.0.");
 		}
 
 		// make the change...
@@ -927,10 +922,10 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Returns the lower margin for the axis, expressed as a percentage of the axis range. This
-	 * controls the space added to the lower end of the axis when the axis range is automatically
-	 * calculated (it is ignored when the axis range is set explicitly). The default value is
-	 * 0.05 (five percent).
+	 * Returns the lower margin for the axis, expressed as a percentage of the axis
+	 * range. This controls the space added to the lower end of the axis when the
+	 * axis range is automatically calculated (it is ignored when the axis range is
+	 * set explicitly). The default value is 0.05 (five percent).
 	 * 
 	 * @return The lower margin.
 	 */
@@ -939,12 +934,13 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets the lower margin for the axis (as a percentage of the axis range) and sends an {@link AxisChangeEvent} to all registered listeners. This margin is
-	 * added only when the
-	 * axis range is auto-calculated - if you set the axis range manually, the margin is ignored.
+	 * Sets the lower margin for the axis (as a percentage of the axis range) and
+	 * sends an {@link AxisChangeEvent} to all registered listeners. This margin is
+	 * added only when the axis range is auto-calculated - if you set the axis range
+	 * manually, the margin is ignored.
 	 * 
 	 * @param margin
-	 *           the margin percentage (for example, 0.05 is five percent).
+	 *            the margin percentage (for example, 0.05 is five percent).
 	 */
 	public void setLowerMargin(double margin) {
 		this.lowerMargin = margin;
@@ -955,10 +951,10 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Returns the upper margin for the axis, expressed as a percentage of the axis range. This
-	 * controls the space added to the lower end of the axis when the axis range is automatically
-	 * calculated (it is ignored when the axis range is set explicitly). The default value is
-	 * 0.05 (five percent).
+	 * Returns the upper margin for the axis, expressed as a percentage of the axis
+	 * range. This controls the space added to the lower end of the axis when the
+	 * axis range is automatically calculated (it is ignored when the axis range is
+	 * set explicitly). The default value is 0.05 (five percent).
 	 * 
 	 * @return The upper margin.
 	 */
@@ -967,12 +963,13 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets the upper margin for the axis (as a percentage of the axis range) and sends an {@link AxisChangeEvent} to all registered listeners. This margin is
-	 * added only when the
-	 * axis range is auto-calculated - if you set the axis range manually, the margin is ignored.
+	 * Sets the upper margin for the axis (as a percentage of the axis range) and
+	 * sends an {@link AxisChangeEvent} to all registered listeners. This margin is
+	 * added only when the axis range is auto-calculated - if you set the axis range
+	 * manually, the margin is ignored.
 	 * 
 	 * @param margin
-	 *           the margin percentage (for example, 0.05 is five percent).
+	 *            the margin percentage (for example, 0.05 is five percent).
 	 */
 	public void setUpperMargin(double margin) {
 		this.upperMargin = margin;
@@ -995,7 +992,7 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * Sets the fixed auto range for the axis.
 	 * 
 	 * @param length
-	 *           the range length.
+	 *            the range length.
 	 */
 	public void setFixedAutoRange(double length) {
 
@@ -1018,7 +1015,7 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * to all registered listeners.
 	 * 
 	 * @param min
-	 *           the new minimum.
+	 *            the new minimum.
 	 */
 	public void setLowerBound(double min) {
 		if (this.range.getUpperBound() > min) {
@@ -1042,7 +1039,7 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * to all registered listeners.
 	 * 
 	 * @param max
-	 *           the new maximum.
+	 *            the new maximum.
 	 */
 	public void setUpperBound(double max) {
 
@@ -1064,11 +1061,12 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets the range attribute and sends an {@link AxisChangeEvent} to all registered
-	 * listeners. As a side-effect, the auto-range flag is set to <code>false</code>.
+	 * Sets the range attribute and sends an {@link AxisChangeEvent} to all
+	 * registered listeners. As a side-effect, the auto-range flag is set to
+	 * <code>false</code>.
 	 * 
 	 * @param range
-	 *           the range (<code>null</code> not permitted).
+	 *            the range (<code>null</code> not permitted).
 	 */
 	public void setRange(Range range) {
 		// defer argument checking
@@ -1076,15 +1074,16 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets the range for the axis, if requested, sends an {@link AxisChangeEvent} to all
-	 * registered listeners. As a side-effect, the auto-range flag is set to <code>false</code> (optional).
+	 * Sets the range for the axis, if requested, sends an {@link AxisChangeEvent}
+	 * to all registered listeners. As a side-effect, the auto-range flag is set to
+	 * <code>false</code> (optional).
 	 * 
 	 * @param range
-	 *           the range (<code>null</code> not permitted).
+	 *            the range (<code>null</code> not permitted).
 	 * @param turnOffAutoRange
-	 *           a flag that controls whether or not the auto range is turned off.
+	 *            a flag that controls whether or not the auto range is turned off.
 	 * @param notify
-	 *           a flag that controls whether or not listeners are notified.
+	 *            a flag that controls whether or not listeners are notified.
 	 */
 	public void setRange(Range range, boolean turnOffAutoRange, boolean notify) {
 		if (range == null) {
@@ -1101,39 +1100,42 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 
 	/**
 	 * Sets the axis range and sends an {@link AxisChangeEvent} to all registered
-	 * listeners. As a side-effect, the auto-range flag is set to <code>false</code>.
+	 * listeners. As a side-effect, the auto-range flag is set to
+	 * <code>false</code>.
 	 * 
 	 * @param lower
-	 *           the lower axis limit.
+	 *            the lower axis limit.
 	 * @param upper
-	 *           the upper axis limit.
+	 *            the upper axis limit.
 	 */
 	public void setRange(double lower, double upper) {
 		setRange(new Range(lower, upper));
 	}
 
 	/**
-	 * Sets the range for the axis (after first adding the current margins to the specified range)
-	 * and sends an {@link AxisChangeEvent} to all registered listeners.
+	 * Sets the range for the axis (after first adding the current margins to the
+	 * specified range) and sends an {@link AxisChangeEvent} to all registered
+	 * listeners.
 	 * 
 	 * @param range
-	 *           the range (<code>null</code> not permitted).
+	 *            the range (<code>null</code> not permitted).
 	 */
 	public void setRangeWithMargins(Range range) {
 		setRangeWithMargins(range, true, true);
 	}
 
 	/**
-	 * Sets the range for the axis after first adding the current margins to the range and, if
-	 * requested, sends an {@link AxisChangeEvent} to all registered listeners. As a side-effect,
-	 * the auto-range flag is set to <code>false</code> (optional).
+	 * Sets the range for the axis after first adding the current margins to the
+	 * range and, if requested, sends an {@link AxisChangeEvent} to all registered
+	 * listeners. As a side-effect, the auto-range flag is set to <code>false</code>
+	 * (optional).
 	 * 
 	 * @param range
-	 *           the range (excluding margins, <code>null</code> not permitted).
+	 *            the range (excluding margins, <code>null</code> not permitted).
 	 * @param turnOffAutoRange
-	 *           a flag that controls whether or not the auto range is turned off.
+	 *            a flag that controls whether or not the auto range is turned off.
 	 * @param notify
-	 *           a flag that controls whether or not listeners are notified.
+	 *            a flag that controls whether or not listeners are notified.
 	 */
 	public void setRangeWithMargins(Range range, boolean turnOffAutoRange, boolean notify) {
 		if (range == null) {
@@ -1143,26 +1145,27 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets the axis range (after first adding the current margins to the range) and sends an {@link AxisChangeEvent} to all registered listeners. As a
-	 * side-effect, the auto-range
-	 * flag is set to <code>false</code>.
+	 * Sets the axis range (after first adding the current margins to the range) and
+	 * sends an {@link AxisChangeEvent} to all registered listeners. As a
+	 * side-effect, the auto-range flag is set to <code>false</code>.
 	 * 
 	 * @param lower
-	 *           the lower axis limit.
+	 *            the lower axis limit.
 	 * @param upper
-	 *           the upper axis limit.
+	 *            the upper axis limit.
 	 */
 	public void setRangeWithMargins(double lower, double upper) {
 		setRangeWithMargins(new Range(lower, upper));
 	}
 
 	/**
-	 * Sets the axis range, where the new range is 'size' in length, and centered on 'value'.
+	 * Sets the axis range, where the new range is 'size' in length, and centered on
+	 * 'value'.
 	 * 
 	 * @param value
-	 *           the central value.
+	 *            the central value.
 	 * @param length
-	 *           the range length.
+	 *            the range length.
 	 */
 	public void setRangeAboutValue(double value, double length) {
 		setRange(new Range(value - length / 2, value + length / 2));
@@ -1172,32 +1175,33 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * Returns a flag indicating whether or not the tick unit is automatically
 	 * selected from a range of standard tick units.
 	 * 
-	 * @return a flag indicating whether or not the tick unit is automatically selected.
+	 * @return a flag indicating whether or not the tick unit is automatically
+	 *         selected.
 	 */
 	public boolean isAutoTickUnitSelection() {
 		return this.autoTickUnitSelection;
 	}
 
 	/**
-	 * Sets a flag indicating whether or not the tick unit is automatically
-	 * selected from a range of standard tick units. If the flag is changed, registered
+	 * Sets a flag indicating whether or not the tick unit is automatically selected
+	 * from a range of standard tick units. If the flag is changed, registered
 	 * listeners are notified that the chart has changed.
 	 * 
 	 * @param flag
-	 *           the new value of the flag.
+	 *            the new value of the flag.
 	 */
 	public void setAutoTickUnitSelection(boolean flag) {
 		setAutoTickUnitSelection(flag, true);
 	}
 
 	/**
-	 * Sets a flag indicating whether or not the tick unit is automatically
-	 * selected from a range of standard tick units.
+	 * Sets a flag indicating whether or not the tick unit is automatically selected
+	 * from a range of standard tick units.
 	 * 
 	 * @param flag
-	 *           the new value of the flag.
+	 *            the new value of the flag.
 	 * @param notify
-	 *           notify listeners?
+	 *            notify listeners?
 	 */
 	public void setAutoTickUnitSelection(boolean flag, boolean notify) {
 
@@ -1219,13 +1223,14 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Sets the source for obtaining standard tick units for the axis and sends an {@link AxisChangeEvent} to all registered listeners. The axis will try to
-	 * select the
-	 * smallest tick unit from the source that does not cause the tick labels to overlap (see
-	 * also the {@link #setAutoTickUnitSelection(boolean)} method.
+	 * Sets the source for obtaining standard tick units for the axis and sends an
+	 * {@link AxisChangeEvent} to all registered listeners. The axis will try to
+	 * select the smallest tick unit from the source that does not cause the tick
+	 * labels to overlap (see also the {@link #setAutoTickUnitSelection(boolean)}
+	 * method.
 	 * 
 	 * @param source
-	 *           the source for standard tick units (<code>null</code> permitted).
+	 *            the source for standard tick units (<code>null</code> permitted).
 	 */
 	public void setStandardTickUnits(TickUnitSource source) {
 		this.standardTickUnits = source;
@@ -1233,38 +1238,34 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Converts a data value to a coordinate in Java2D space, assuming that the
-	 * axis runs along one edge of the specified dataArea.
+	 * Converts a data value to a coordinate in Java2D space, assuming that the axis
+	 * runs along one edge of the specified dataArea.
 	 * <p>
 	 * Note that it is possible for the coordinate to fall outside the area.
 	 * 
 	 * @param value
-	 *           the data value.
+	 *            the data value.
 	 * @param area
-	 *           the area for plotting the data.
+	 *            the area for plotting the data.
 	 * @param edge
-	 *           the edge along which the axis lies.
+	 *            the edge along which the axis lies.
 	 * @return the Java2D coordinate.
 	 */
-	public abstract double valueToJava2D(double value,
-														Rectangle2D area,
-														RectangleEdge edge);
+	public abstract double valueToJava2D(double value, Rectangle2D area, RectangleEdge edge);
 
 	/**
 	 * Converts a coordinate in Java2D space to the corresponding data value,
 	 * assuming that the axis runs along one edge of the specified dataArea.
 	 * 
 	 * @param java2DValue
-	 *           the coordinate in Java2D space.
+	 *            the coordinate in Java2D space.
 	 * @param area
-	 *           the area in which the data is plotted.
+	 *            the area in which the data is plotted.
 	 * @param edge
-	 *           the edge along which the axis lies.
+	 *            the edge along which the axis lies.
 	 * @return the data value.
 	 */
-	public abstract double java2DToValue(double java2DValue,
-														Rectangle2D area,
-														RectangleEdge edge);
+	public abstract double java2DToValue(double java2DValue, Rectangle2D area, RectangleEdge edge);
 
 	/**
 	 * Automatically sets the axis range to fit the range of values in the dataset.
@@ -1272,30 +1273,31 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	protected abstract void autoAdjustRange();
 
 	/**
-	 * Centers the axis range about the specified value and sends an {@link AxisChangeEvent} to all registered listeners.
+	 * Centers the axis range about the specified value and sends an
+	 * {@link AxisChangeEvent} to all registered listeners.
 	 * 
 	 * @param value
-	 *           the center value.
+	 *            the center value.
 	 */
 	public void centerRange(double value) {
 
 		double central = this.range.getCentralValue();
-		Range adjusted = new Range(
-							this.range.getLowerBound() + value - central,
-							this.range.getUpperBound() + value - central
-							);
+		Range adjusted = new Range(this.range.getLowerBound() + value - central,
+				this.range.getUpperBound() + value - central);
 		setRange(adjusted);
 
 	}
 
 	/**
 	 * Increases or decreases the axis range by the specified percentage about the
-	 * central value and sends an {@link AxisChangeEvent} to all registered listeners.
+	 * central value and sends an {@link AxisChangeEvent} to all registered
+	 * listeners.
 	 * <P>
-	 * To double the length of the axis range, use 200% (2.0). To halve the length of the axis range, use 50% (0.5).
+	 * To double the length of the axis range, use 200% (2.0). To halve the length
+	 * of the axis range, use 50% (0.5).
 	 * 
 	 * @param percent
-	 *           the resize factor.
+	 *            the resize factor.
 	 */
 	public void resizeRange(double percent) {
 		resizeRange(percent, this.range.getCentralValue());
@@ -1306,12 +1308,13 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * specified anchor value and sends an {@link AxisChangeEvent} to all registered
 	 * listeners.
 	 * <P>
-	 * To double the length of the axis range, use 200% (2.0). To halve the length of the axis range, use 50% (0.5).
+	 * To double the length of the axis range, use 200% (2.0). To halve the length
+	 * of the axis range, use 50% (0.5).
 	 * 
 	 * @param percent
-	 *           the resize factor.
+	 *            the resize factor.
 	 * @param anchorValue
-	 *           the new central value after the resize.
+	 *            the new central value after the resize.
 	 */
 	public void resizeRange(double percent, double anchorValue) {
 
@@ -1329,17 +1332,16 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * Zooms in on the current range.
 	 * 
 	 * @param lowerPercent
-	 *           the new lower bound.
+	 *            the new lower bound.
 	 * @param upperPercent
-	 *           the new upper bound.
+	 *            the new upper bound.
 	 */
 	public void zoomRange(double lowerPercent, double upperPercent) {
 		double start = this.range.getLowerBound();
 		double length = this.range.getLength();
 		Range adjusted = null;
 		if (isInverted()) {
-			adjusted = new Range(start + (length * (1 - upperPercent)),
-											start + (length * (1 - lowerPercent)));
+			adjusted = new Range(start + (length * (1 - upperPercent)), start + (length * (1 - lowerPercent)));
 		} else {
 			adjusted = new Range(start + length * lowerPercent, start + length * upperPercent);
 		}
@@ -1359,7 +1361,7 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * Sets the auto tick index.
 	 * 
 	 * @param index
-	 *           the new value.
+	 *            the new value.
 	 */
 	protected void setAutoTickIndex(int index) {
 		this.autoTickIndex = index;
@@ -1369,7 +1371,7 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * Tests the axis for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {
@@ -1414,7 +1416,7 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if some component of the axis does not support cloning.
+	 *             if some component of the axis does not support cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		ValueAxis clone = (ValueAxis) super.clone();
@@ -1425,9 +1427,9 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the output stream.
+	 *            the output stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 
@@ -1443,11 +1445,11 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * Provides serialization support.
 	 * 
 	 * @param stream
-	 *           the input stream.
+	 *            the input stream.
 	 * @throws IOException
-	 *            if there is an I/O error.
+	 *             if there is an I/O error.
 	 * @throws ClassNotFoundException
-	 *            if there is a classpath problem.
+	 *             if there is a classpath problem.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 
@@ -1459,7 +1461,8 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 
 	}
 
-	// // DEPRECATED METHODS ///////////////////////////////////////////////////////////////////////
+	// // DEPRECATED METHODS
+	// ///////////////////////////////////////////////////////////////////////
 
 	/**
 	 * Returns the minimum value for the axis.
@@ -1477,7 +1480,7 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * Registered listeners are notified that the axis has been modified.
 	 * 
 	 * @param min
-	 *           the new minimum.
+	 *            the new minimum.
 	 * @deprecated Use setLowerBound(...).
 	 */
 	public void setMinimumAxisValue(double min) {
@@ -1500,7 +1503,7 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * Registered listeners are notified that the axis has been modified.
 	 * 
 	 * @param max
-	 *           the new maximum.
+	 *            the new maximum.
 	 * @deprecated Use setUpperBound(...).
 	 */
 	public void setMaximumAxisValue(double max) {
@@ -1508,23 +1511,21 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	}
 
 	/**
-	 * Converts a data value to a coordinate in Java2D space, assuming that the
-	 * axis runs along one edge of the specified dataArea.
+	 * Converts a data value to a coordinate in Java2D space, assuming that the axis
+	 * runs along one edge of the specified dataArea.
 	 * <p>
 	 * Note that it is possible for the coordinate to fall outside the plotArea.
 	 * 
 	 * @param value
-	 *           the data value.
+	 *            the data value.
 	 * @param area
-	 *           the area for plotting the data.
+	 *            the area for plotting the data.
 	 * @param edge
-	 *           the edge along which the axis lies.
+	 *            the edge along which the axis lies.
 	 * @return The Java2D coordinate.
 	 * @deprecated Use valueToJava2D instead.
 	 */
-	public double translateValueToJava2D(double value,
-						Rectangle2D area,
-						RectangleEdge edge) {
+	public double translateValueToJava2D(double value, Rectangle2D area, RectangleEdge edge) {
 		return valueToJava2D(value, area, edge);
 	}
 
@@ -1533,17 +1534,15 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * assuming that the axis runs along one edge of the specified dataArea.
 	 * 
 	 * @param java2DValue
-	 *           the coordinate in Java2D space.
+	 *            the coordinate in Java2D space.
 	 * @param dataArea
-	 *           the area in which the data is plotted.
+	 *            the area in which the data is plotted.
 	 * @param edge
-	 *           the edge along which the axis lies.
+	 *            the edge along which the axis lies.
 	 * @return the data value.
 	 * @deprecated Use translateJava2DToValue(double, ...).
 	 */
-	public double translateJava2DtoValue(float java2DValue,
-						Rectangle2D dataArea,
-						RectangleEdge edge) {
+	public double translateJava2DtoValue(float java2DValue, Rectangle2D dataArea, RectangleEdge edge) {
 
 		return translateJava2DToValue(java2DValue, dataArea, edge);
 
@@ -1554,17 +1553,15 @@ public abstract class ValueAxis extends Axis implements Cloneable, PublicCloneab
 	 * assuming that the axis runs along one edge of the specified area.
 	 * 
 	 * @param java2DValue
-	 *           the coordinate in Java2D space.
+	 *            the coordinate in Java2D space.
 	 * @param area
-	 *           the area in which the data is plotted.
+	 *            the area in which the data is plotted.
 	 * @param edge
-	 *           the edge along which the axis lies.
+	 *            the edge along which the axis lies.
 	 * @return the data value.
 	 * @deprecated Use java2DToValue instead.
 	 */
-	public double translateJava2DToValue(double java2DValue,
-														Rectangle2D area,
-														RectangleEdge edge) {
+	public double translateJava2DToValue(double java2DValue, Rectangle2D area, RectangleEdge edge) {
 		return java2DToValue(java2DValue, area, edge);
 	}
 

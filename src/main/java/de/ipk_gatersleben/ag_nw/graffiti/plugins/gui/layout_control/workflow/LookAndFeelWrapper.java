@@ -3,24 +3,24 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.workflow;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 public class LookAndFeelWrapper {
-	
+
 	private LookAndFeelInfo info;
 	private String name;
-	
+
 	public LookAndFeelWrapper(LookAndFeelInfo info) {
 		this.info = info;
 		this.name = info.getName();
 	}
-	
+
 	@Override
 	public String toString() {
 		return name;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public boolean isValid() {
 		try {
 			Class<?> c = Class.forName(info.getClassName());
@@ -33,13 +33,13 @@ public class LookAndFeelWrapper {
 		}
 		return false;
 	}
-	
+
 	// public LookAndFeelInfo getLookAndFeelInfo() {
 	// return info;
 	// }
-	
+
 	public String getClassName() {
 		return info.getClassName();
 	}
-	
+
 }

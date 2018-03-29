@@ -49,7 +49,8 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.util.ObjectList;
 
 /**
- * A {@link CategoryItemRenderer} that represents data using bars which are superimposed.
+ * A {@link CategoryItemRenderer} that represents data using bars which are
+ * superimposed.
  * 
  * @author Arnaud Lelievre
  */
@@ -71,18 +72,16 @@ public class LayeredBarRenderer extends BarRenderer {
 	 * Calculates the bar width and stores it in the renderer state.
 	 * 
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param rendererIndex
-	 *           the renderer index.
+	 *            the renderer index.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 */
-	protected void calculateBarWidth(CategoryPlot plot,
-													Rectangle2D dataArea,
-													int rendererIndex,
-													CategoryItemRendererState state) {
+	protected void calculateBarWidth(CategoryPlot plot, Rectangle2D dataArea, int rendererIndex,
+			CategoryItemRendererState state) {
 
 		// calculate the bar width
 		CategoryAxis domainAxis = getDomainAxis(plot, rendererIndex);
@@ -94,10 +93,9 @@ public class LayeredBarRenderer extends BarRenderer {
 			PlotOrientation orientation = plot.getOrientation();
 			if (orientation == PlotOrientation.HORIZONTAL) {
 				space = dataArea.getHeight();
-			} else
-				if (orientation == PlotOrientation.VERTICAL) {
-					space = dataArea.getWidth();
-				}
+			} else if (orientation == PlotOrientation.VERTICAL) {
+				space = dataArea.getWidth();
+			}
 			double categoryMargin = 0.0;
 			double currentItemMargin = 0.0;
 			if (columns > 1) {
@@ -106,8 +104,8 @@ public class LayeredBarRenderer extends BarRenderer {
 			if (rows > 1) {
 				currentItemMargin = getItemMargin();
 			}
-			double used = space * (1 - domainAxis.getLowerMargin() - domainAxis.getUpperMargin()
-													- categoryMargin - currentItemMargin);
+			double used = space * (1 - domainAxis.getLowerMargin() - domainAxis.getUpperMargin() - categoryMargin
+					- currentItemMargin);
 			if ((rows * columns) > 0) {
 				state.setBarWidth(used / (dataset.getColumnCount()));
 			} else {
@@ -120,43 +118,33 @@ public class LayeredBarRenderer extends BarRenderer {
 	 * Draws the bar for one item in the dataset.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the plot area.
+	 *            the plot area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain (category) axis.
+	 *            the domain (category) axis.
 	 * @param rangeAxis
-	 *           the range (value) axis.
+	 *            the range (value) axis.
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	public void drawItem(Graphics2D g2,
-									CategoryItemRendererState state,
-									Rectangle2D dataArea,
-									CategoryPlot plot,
-									CategoryAxis domainAxis,
-									ValueAxis rangeAxis,
-									CategoryDataset data,
-									int row,
-									int column) {
+	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
+			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset data, int row, int column) {
 
 		PlotOrientation orientation = plot.getOrientation();
 		if (orientation == PlotOrientation.HORIZONTAL) {
-			drawHorizontalItem(g2, state, dataArea,
-											plot, domainAxis, rangeAxis, data, row, column);
-		} else
-			if (orientation == PlotOrientation.VERTICAL) {
-				drawVerticalItem(g2, state, dataArea,
-										plot, domainAxis, rangeAxis, data, row, column);
-			}
+			drawHorizontalItem(g2, state, dataArea, plot, domainAxis, rangeAxis, data, row, column);
+		} else if (orientation == PlotOrientation.VERTICAL) {
+			drawVerticalItem(g2, state, dataArea, plot, domainAxis, rangeAxis, data, row, column);
+		}
 
 	}
 
@@ -164,33 +152,27 @@ public class LayeredBarRenderer extends BarRenderer {
 	 * Draws the bar for a single (series, category) data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	protected void drawHorizontalItem(Graphics2D g2,
-													CategoryItemRendererState state,
-													Rectangle2D dataArea,
-													CategoryPlot plot,
-													CategoryAxis domainAxis,
-													ValueAxis rangeAxis,
-													CategoryDataset data,
-													int row,
-													int column) {
+	protected void drawHorizontalItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea,
+			CategoryPlot plot, CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset data, int row,
+			int column) {
 
 		// nothing is drawn for null values...
 		Number dataValue = data.getValue(row, column);
@@ -211,24 +193,23 @@ public class LayeredBarRenderer extends BarRenderer {
 			if (value <= lclip) {
 				value = lclip;
 			}
-		} else
-			if (lclip <= 0.0) { // cases 5, 6, 7 and 8
-				if (value >= uclip) {
-					value = uclip;
-				} else {
-					if (value <= lclip) {
-						value = lclip;
-					}
-				}
-			} else { // cases 9, 10, 11 and 12
+		} else if (lclip <= 0.0) { // cases 5, 6, 7 and 8
+			if (value >= uclip) {
+				value = uclip;
+			} else {
 				if (value <= lclip) {
-					return; // bar is not visible
-				}
-				base = lclip;
-				if (value >= uclip) {
-					value = uclip;
+					value = lclip;
 				}
 			}
+		} else { // cases 9, 10, 11 and 12
+			if (value <= lclip) {
+				return; // bar is not visible
+			}
+			base = lclip;
+			if (value >= uclip) {
+				value = uclip;
+			}
+		}
 
 		RectangleEdge edge = plot.getRangeAxisEdge();
 		double transX1 = rangeAxis.valueToJava2D(base, dataArea, edge);
@@ -237,8 +218,7 @@ public class LayeredBarRenderer extends BarRenderer {
 		double rectWidth = Math.abs(transX2 - transX1);
 
 		// Y
-		double rectY = domainAxis.getCategoryStart(column, getColumnCount(), dataArea,
-																	plot.getDomainAxisEdge());
+		double rectY = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, plot.getDomainAxisEdge());
 
 		int seriesCount = getRowCount();
 
@@ -255,10 +235,8 @@ public class LayeredBarRenderer extends BarRenderer {
 			}
 		}
 
-		Rectangle2D bar = new Rectangle2D.Double(rectX,
-																(rectY + ((seriesCount - 1 - row) * shift)),
-																rectWidth,
-																(rectHeight - (seriesCount - 1 - row) * shift * 2));
+		Rectangle2D bar = new Rectangle2D.Double(rectX, (rectY + ((seriesCount - 1 - row) * shift)), rectWidth,
+				(rectHeight - (seriesCount - 1 - row) * shift * 2));
 
 		g2.setPaint(getItemPaint(row, column));
 		g2.fill(bar);
@@ -292,8 +270,8 @@ public class LayeredBarRenderer extends BarRenderer {
 				if (getItemURLGenerator(row, column) != null) {
 					url = getItemURLGenerator(row, column).generateURL(data, row, column);
 				}
-				CategoryItemEntity entity = new CategoryItemEntity(bar, tip, url, data, row,
-																					data.getColumnKey(column), column);
+				CategoryItemEntity entity = new CategoryItemEntity(bar, tip, url, data, row, data.getColumnKey(column),
+						column);
 				entities.addEntity(entity);
 			}
 		}
@@ -303,33 +281,27 @@ public class LayeredBarRenderer extends BarRenderer {
 	 * Draws the bar for a single (series, category) data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	protected void drawVerticalItem(Graphics2D g2,
-												CategoryItemRendererState state,
-												Rectangle2D dataArea,
-												CategoryPlot plot,
-												CategoryAxis domainAxis,
-												ValueAxis rangeAxis,
-												CategoryDataset data,
-												int row,
-												int column) {
+	protected void drawVerticalItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea,
+			CategoryPlot plot, CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset data, int row,
+			int column) {
 
 		// nothing is drawn for null values...
 		Number dataValue = data.getValue(row, column);
@@ -338,8 +310,7 @@ public class LayeredBarRenderer extends BarRenderer {
 		}
 
 		// BAR X
-		double rectX = domainAxis.getCategoryStart(column, getColumnCount(), dataArea,
-																	plot.getDomainAxisEdge());
+		double rectX = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, plot.getDomainAxisEdge());
 
 		int seriesCount = getRowCount();
 
@@ -357,24 +328,23 @@ public class LayeredBarRenderer extends BarRenderer {
 			if (value <= lclip) {
 				value = lclip;
 			}
-		} else
-			if (lclip <= 0.0) { // cases 5, 6, 7 and 8
-				if (value >= uclip) {
-					value = uclip;
-				} else {
-					if (value <= lclip) {
-						value = lclip;
-					}
-				}
-			} else { // cases 9, 10, 11 and 12
+		} else if (lclip <= 0.0) { // cases 5, 6, 7 and 8
+			if (value >= uclip) {
+				value = uclip;
+			} else {
 				if (value <= lclip) {
-					return; // bar is not visible
-				}
-				base = getLowerClip();
-				if (value >= uclip) {
-					value = uclip;
+					value = lclip;
 				}
 			}
+		} else { // cases 9, 10, 11 and 12
+			if (value <= lclip) {
+				return; // bar is not visible
+			}
+			base = getLowerClip();
+			if (value >= uclip) {
+				value = uclip;
+			}
+		}
 
 		RectangleEdge edge = plot.getRangeAxisEdge();
 		double transY1 = rangeAxis.valueToJava2D(base, dataArea, edge);
@@ -398,11 +368,8 @@ public class LayeredBarRenderer extends BarRenderer {
 			}
 		}
 
-		Rectangle2D bar = new Rectangle2D.Double(
-																(rectX + ((seriesCount - 1 - row) * shift)),
-																rectY,
-																(rectWidth - (seriesCount - 1 - row) * shift * 2),
-																rectHeight);
+		Rectangle2D bar = new Rectangle2D.Double((rectX + ((seriesCount - 1 - row) * shift)), rectY,
+				(rectWidth - (seriesCount - 1 - row) * shift * 2), rectHeight);
 		g2.setPaint(getItemPaint(row, column));
 		g2.fill(bar);
 
@@ -439,9 +406,8 @@ public class LayeredBarRenderer extends BarRenderer {
 				if (getItemURLGenerator(row, column) != null) {
 					url = getItemURLGenerator(row, column).generateURL(data, row, column);
 				}
-				CategoryItemEntity entity = new CategoryItemEntity(
-									bar, tip, url, data, row, data.getColumnKey(column), column
-									);
+				CategoryItemEntity entity = new CategoryItemEntity(bar, tip, url, data, row, data.getColumnKey(column),
+						column);
 				entities.addEntity(entity);
 			}
 		}
@@ -451,9 +417,9 @@ public class LayeredBarRenderer extends BarRenderer {
 	 * Returns the bar width for a series.
 	 * 
 	 * @param series
-	 *           the series index (zero based).
+	 *            the series index (zero based).
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @return The width for the series (1.0=100%, it is the maximum).
 	 */
 	public double getSeriesBarWidth(int series, CategoryItemRendererState state) {
@@ -469,12 +435,13 @@ public class LayeredBarRenderer extends BarRenderer {
 	 * Sets the width of the bars of a series.
 	 * 
 	 * @param series
-	 *           the series index (zero based).
+	 *            the series index (zero based).
 	 * @param width
-	 *           the width of the series bar in percentage (1.0=100%, it is the maximum).
+	 *            the width of the series bar in percentage (1.0=100%, it is the
+	 *            maximum).
 	 */
 	public void setSeriesBarWidth(int series, double width) {
-		this.seriesBarWidthList.set(series, new Double(width));
+		this.seriesBarWidthList.set(series, Double.valueOf(width));
 	}
 
 }

@@ -40,16 +40,16 @@ package org.jfree.data;
 public interface DomainInfo {
 
 	/**
-	 * Returns the minimum value in the dataset (or <code>null</code> if all the values in
-	 * the domain are <code>null</code>).
+	 * Returns the minimum value in the dataset (or <code>null</code> if all the
+	 * values in the domain are <code>null</code>).
 	 * 
 	 * @return The minimum value.
 	 */
 	public Number getMinimumDomainValue();
 
 	/**
-	 * Returns the maximum value in the dataset (or <code>null</code> if all the values in
-	 * the domain are <code>null</code>).
+	 * Returns the maximum value in the dataset (or <code>null</code> if all the
+	 * values in the domain are <code>null</code>).
 	 * 
 	 * @return The maximum value.
 	 */

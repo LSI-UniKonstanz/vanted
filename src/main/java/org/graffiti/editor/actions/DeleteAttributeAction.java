@@ -23,27 +23,26 @@ import org.graffiti.selection.SelectionEvent;
  * @author $Author: klukas $
  * @version $Revision: 1.7 $ $Date: 2010/12/22 13:05:53 $
  */
-public class DeleteAttributeAction
-					extends SelectionAction {
+public class DeleteAttributeAction extends SelectionAction {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Comment for <code>serialVersionUID</code>
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Constructs a new delete attribute action.
 	 * 
 	 * @param mainFrame
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public DeleteAttributeAction(MainFrame mainFrame) {
 		super("action.delete.attribute", mainFrame);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the help context of this action.
 	 * 
@@ -53,7 +52,7 @@ public class DeleteAttributeAction
 	public HelpContext getHelpContext() {
 		return null; // TODO
 	}
-	
+
 	/**
 	 * Returns the name of this action.
 	 * 
@@ -63,53 +62,54 @@ public class DeleteAttributeAction
 	public String getName() {
 		return null;
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param e
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		// TODO
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param e
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void selectionChanged(SelectionEvent e) {
 		// TODO
 	}
-	
+
 	/**
-	 * Returns <code>true</code>, if this action should survive a focus change
-	 * in the editor.
+	 * Returns <code>true</code>, if this action should survive a focus change in
+	 * the editor.
 	 * 
-	 * @return <code>true</code>, if this action should survive a focus chage
-	 *         in the editor.
+	 * @return <code>true</code>, if this action should survive a focus chage in the
+	 *         editor.
 	 */
 	@Override
 	public boolean surviveFocusChange() {
 		return true;
 	}
-	
+
 	/**
-	 * Sets the internal <code>enable</code> flag, which depends on the given
-	 * list of selected items.
+	 * Sets the internal <code>enable</code> flag, which depends on the given list
+	 * of selected items.
 	 * 
 	 * @param selectedItems
-	 *           the items, which determine the internal state of
-	 *           the<code>enable</code> flag.
+	 *            the items, which determine the internal state of
+	 *            the<code>enable</code> flag.
 	 */
 	@Override
 	protected void enable(List<?> selectedItems) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.actions.SelectionAction#isEnabled()
 	 */
 	@Override

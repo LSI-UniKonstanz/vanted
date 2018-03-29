@@ -61,39 +61,35 @@ public class ParetoChartDemo extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public ParetoChartDemo(final String title) {
 
 		super(title);
 
 		final DefaultKeyedValues data = new DefaultKeyedValues();
-		data.addValue("C", new Integer(4843));
-		data.addValue("C++", new Integer(2098));
-		data.addValue("C#", new Integer(26));
-		data.addValue("Java", new Integer(1901));
-		data.addValue("Perl", new Integer(2507));
-		data.addValue("PHP", new Integer(1689));
-		data.addValue("Python", new Integer(948));
-		data.addValue("Ruby", new Integer(100));
-		data.addValue("SQL", new Integer(263));
-		data.addValue("Unix Shell", new Integer(485));
+		data.addValue("C", Integer.valueOf(4843));
+		data.addValue("C++", Integer.valueOf(2098));
+		data.addValue("C#", Integer.valueOf(26));
+		data.addValue("Java", Integer.valueOf(1901));
+		data.addValue("Perl", Integer.valueOf(2507));
+		data.addValue("PHP", Integer.valueOf(1689));
+		data.addValue("Python", Integer.valueOf(948));
+		data.addValue("Ruby", Integer.valueOf(100));
+		data.addValue("SQL", Integer.valueOf(263));
+		data.addValue("Unix Shell", Integer.valueOf(485));
 
 		data.sortByValues(SortOrder.DESCENDING);
 		final KeyedValues cumulative = DataUtilities.getCumulativePercentages(data);
 		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Languages", data);
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createBarChart(
-							"Freshmeat Software Projects", // chart title
+		final JFreeChart chart = ChartFactory.createBarChart("Freshmeat Software Projects", // chart title
 				"Language", // domain axis label
 				"Projects", // range axis label
 				dataset, // data
-				PlotOrientation.VERTICAL,
-							true, // include legend
-				true,
-							false
-							);
+				PlotOrientation.VERTICAL, true, // include legend
+				true, false);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 		chart.addSubtitle(new TextTitle("By Programming Language"));
@@ -115,9 +111,7 @@ public class ParetoChartDemo extends ApplicationFrame {
 
 		final LineAndShapeRenderer renderer2 = new LineAndShapeRenderer();
 
-		final CategoryDataset dataset2 = DatasetUtilities.createCategoryDataset(
-							"Cumulative", cumulative
-							);
+		final CategoryDataset dataset2 = DatasetUtilities.createCategoryDataset("Cumulative", cumulative);
 		final NumberAxis axis2 = new NumberAxis("Percent");
 		axis2.setNumberFormatOverride(NumberFormat.getPercentInstance());
 		plot.setRangeAxis(1, axis2);
@@ -150,7 +144,7 @@ public class ParetoChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

@@ -46,7 +46,7 @@ public class First {
 	 * The starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
@@ -57,13 +57,10 @@ public class First {
 		data.setValue("Category 3", 79.5);
 
 		// create a chart...
-		final JFreeChart chart = ChartFactory.createPieChart(
-							"Sample Pie Chart",
-							data,
-							true, // legend?
+		final JFreeChart chart = ChartFactory.createPieChart("Sample Pie Chart", data, true, // legend?
 				true, // tooltips?
 				false // URLs?
-				);
+		);
 
 		// create and display a frame...
 		final ChartFrame frame = new ChartFrame("First", chart);

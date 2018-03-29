@@ -19,54 +19,53 @@ import java.util.ResourceBundle;
  */
 public abstract class GenericBundle {
 	// ~ Instance fields ========================================================
-	
+
 	/** Resource bundle. */
 	protected ResourceBundle resources;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs new <code>GenericBundle</code>.
 	 */
 	protected GenericBundle() {
 		try {
-			resources = ResourceBundle.getBundle(getBundleLocation(),
-								Locale.getDefault());
+			resources = ResourceBundle.getBundle(getBundleLocation(), Locale.getDefault());
 		} catch (MissingResourceException mre) {
 			System.err.println(getBundleLocation() + ".properties not found.");
 			mre.printStackTrace(System.err);
 		}
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the relative location of the specified resource.
 	 * 
 	 * @param s
-	 *           the name of the resource.
+	 *            the name of the resource.
 	 * @return the relative location of the specified resource.
 	 */
 	public URL getRes(String s) {
 		if (s == null) {
 			return null;
 		}
-		
+
 		String res = getString(s);
-		
+
 		if (res == null) {
 			return null;
 		}
-		
+
 		return GenericBundle.class.getClassLoader().getResource(res);
 	}
-	
+
 	/**
-	 * Returns the specified String from the properties, <code>null</code> if
-	 * there is no such key.
+	 * Returns the specified String from the properties, <code>null</code> if there
+	 * is no such key.
 	 * 
 	 * @param id
-	 *           the key of the String to look up.
+	 *            the key of the String to look up.
 	 * @return the value of the looked up key.
 	 */
 	public String getString(String id) {
@@ -76,9 +75,10 @@ public abstract class GenericBundle {
 			return null;
 		}
 	}
-	
+
 	/**
-	 * Returns the location of the bundle. This is a String like <code>package/subpackage/classname</code>.
+	 * Returns the location of the bundle. This is a String like
+	 * <code>package/subpackage/classname</code>.
 	 * 
 	 * @return the location of the bundle.
 	 */

@@ -32,9 +32,9 @@ package org.jfree.data;
 import java.util.Date;
 
 /**
- * Represents a single (open-high-low-close) data item in an {@link OHLCDataset}. This data item
- * is commonly used to summarise the trading activity of a financial commodity for a fixed period
- * (most often one day).
+ * Represents a single (open-high-low-close) data item in an
+ * {@link OHLCDataset}. This data item is commonly used to summarise the trading
+ * activity of a financial commodity for a fixed period (most often one day).
  */
 public class OHLCDataItem implements Comparable {
 
@@ -60,30 +60,26 @@ public class OHLCDataItem implements Comparable {
 	 * Creates a new item.
 	 * 
 	 * @param date
-	 *           the date.
+	 *            the date.
 	 * @param open
-	 *           the open value.
+	 *            the open value.
 	 * @param high
-	 *           the high value.
+	 *            the high value.
 	 * @param low
-	 *           the low value.
+	 *            the low value.
 	 * @param close
-	 *           the close value.
+	 *            the close value.
 	 * @param volume
-	 *           the volume.
+	 *            the volume.
 	 */
-	public OHLCDataItem(final Date date,
-								final double open,
-								final double high,
-								final double low,
-								final double close,
-								final double volume) {
+	public OHLCDataItem(final Date date, final double open, final double high, final double low, final double close,
+			final double volume) {
 		this.date = date;
-		this.open = new Double(open);
-		this.high = new Double(high);
-		this.low = new Double(low);
-		this.close = new Double(close);
-		this.volume = new Double(volume);
+		this.open = Double.valueOf(open);
+		this.high = Double.valueOf(high);
+		this.low = Double.valueOf(low);
+		this.close = Double.valueOf(close);
+		this.volume = Double.valueOf(volume);
 	}
 
 	/**
@@ -141,14 +137,14 @@ public class OHLCDataItem implements Comparable {
 	}
 
 	/**
-	 * Compares this object with the specified object for order. Returns a negative integer, zero,
-	 * or a positive integer as this object is less than, equal to, or greater than the specified
-	 * object.
+	 * Compares this object with the specified object for order. Returns a negative
+	 * integer, zero, or a positive integer as this object is less than, equal to,
+	 * or greater than the specified object.
 	 * 
 	 * @param object
-	 *           the object to compare to.
-	 * @return a negative integer, zero, or a positive integer as this object is less than, equal
-	 *         to, or greater than the specified object.
+	 *            the object to compare to.
+	 * @return a negative integer, zero, or a positive integer as this object is
+	 *         less than, equal to, or greater than the specified object.
 	 */
 	public int compareTo(final Object object) {
 		if (object instanceof OHLCDataItem) {

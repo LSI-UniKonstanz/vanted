@@ -46,7 +46,7 @@ public class TimeSeriesDemo7 extends ApplicationFrame {
 	 * A demonstration application showing how to create a simple time series chart.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public TimeSeriesDemo7(final String title) {
 
@@ -54,19 +54,10 @@ public class TimeSeriesDemo7 extends ApplicationFrame {
 
 		// create a title...
 		final String chartTitle = "Time Series Demo";
-		final XYDataset dataset = new TimeSeriesCollection(
-							DemoDatasetFactory.createEURTimeSeries()
-							);
+		final XYDataset dataset = new TimeSeriesCollection(DemoDatasetFactory.createEURTimeSeries());
 
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							chartTitle,
-							"Date",
-							"Value",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart(chartTitle, "Date", "Value", dataset, true, true,
+				false);
 
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
@@ -89,7 +80,7 @@ public class TimeSeriesDemo7 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

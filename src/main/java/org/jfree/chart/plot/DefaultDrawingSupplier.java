@@ -55,32 +55,22 @@ import org.jfree.util.PublicCloneable;
 /**
  * A default implementation of the {@link DrawingSupplier} interface.
  */
-public class DefaultDrawingSupplier implements DrawingSupplier,
-																Cloneable,
-																PublicCloneable,
-																Serializable {
+public class DefaultDrawingSupplier implements DrawingSupplier, Cloneable, PublicCloneable, Serializable {
 
 	/** The default fill paint sequence. */
 	public static final Paint[] DEFAULT_PAINT_SEQUENCE = ChartColor.createDefaultPaintArray();
 
 	/** The default outline paint sequence. */
-	public static final Paint[] DEFAULT_OUTLINE_PAINT_SEQUENCE = new Paint[] {
-										Color.BLACK // Color.lightGray
-										};
+	public static final Paint[] DEFAULT_OUTLINE_PAINT_SEQUENCE = new Paint[] { Color.BLACK // Color.lightGray
+	};
 
 	/** The default stroke sequence. */
 	public static final Stroke[] DEFAULT_STROKE_SEQUENCE = new Stroke[] {
-												new BasicStroke(1.0f,
-																		BasicStroke.CAP_SQUARE,
-																		BasicStroke.JOIN_BEVEL)
-											};
+			new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL) };
 
 	/** The default outline stroke sequence. */
 	public static final Stroke[] DEFAULT_OUTLINE_STROKE_SEQUENCE = new Stroke[] {
-												new BasicStroke(1.0f,
-																		BasicStroke.CAP_SQUARE,
-																		BasicStroke.JOIN_BEVEL)
-											};
+			new BasicStroke(1.0f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL) };
 
 	/** The default shape sequence. */
 	public static Shape[] DEFAULT_SHAPE_SEQUENCE = createStandardSeriesShapes(6);
@@ -116,16 +106,13 @@ public class DefaultDrawingSupplier implements DrawingSupplier,
 	private int shapeIndex;
 
 	/**
-	 * Creates a new supplier, with default sequences for fill paint, outline paint, stroke and
-	 * shapes.
+	 * Creates a new supplier, with default sequences for fill paint, outline paint,
+	 * stroke and shapes.
 	 */
 	public DefaultDrawingSupplier() {
 
-		this(DEFAULT_PAINT_SEQUENCE,
-							DEFAULT_OUTLINE_PAINT_SEQUENCE,
-							DEFAULT_STROKE_SEQUENCE,
-							DEFAULT_OUTLINE_STROKE_SEQUENCE,
-							DEFAULT_SHAPE_SEQUENCE);
+		this(DEFAULT_PAINT_SEQUENCE, DEFAULT_OUTLINE_PAINT_SEQUENCE, DEFAULT_STROKE_SEQUENCE,
+				DEFAULT_OUTLINE_STROKE_SEQUENCE, DEFAULT_SHAPE_SEQUENCE);
 
 	}
 
@@ -133,21 +120,18 @@ public class DefaultDrawingSupplier implements DrawingSupplier,
 	 * Creates a new supplier.
 	 * 
 	 * @param paintSequence
-	 *           the fill paint sequence.
+	 *            the fill paint sequence.
 	 * @param outlinePaintSequence
-	 *           the outline paint sequence.
+	 *            the outline paint sequence.
 	 * @param strokeSequence
-	 *           the stroke sequence.
+	 *            the stroke sequence.
 	 * @param outlineStrokeSequence
-	 *           the outline stroke sequence.
+	 *            the outline stroke sequence.
 	 * @param shapeSequence
-	 *           the shape sequence.
+	 *            the shape sequence.
 	 */
-	public DefaultDrawingSupplier(Paint[] paintSequence,
-												Paint[] outlinePaintSequence,
-												Stroke[] strokeSequence,
-												Stroke[] outlineStrokeSequence,
-												Shape[] shapeSequence) {
+	public DefaultDrawingSupplier(Paint[] paintSequence, Paint[] outlinePaintSequence, Stroke[] strokeSequence,
+			Stroke[] outlineStrokeSequence, Shape[] shapeSequence) {
 
 		this.paintSequence = paintSequence;
 		this.outlinePaintSequence = outlinePaintSequence;
@@ -174,9 +158,7 @@ public class DefaultDrawingSupplier implements DrawingSupplier,
 	 * @return The paint.
 	 */
 	public Paint getNextOutlinePaint() {
-		Paint result = this.outlinePaintSequence[
-							this.outlinePaintIndex % this.outlinePaintSequence.length
-							];
+		Paint result = this.outlinePaintSequence[this.outlinePaintIndex % this.outlinePaintSequence.length];
 		this.outlinePaintIndex++;
 		return result;
 	}
@@ -198,9 +180,7 @@ public class DefaultDrawingSupplier implements DrawingSupplier,
 	 * @return The stroke.
 	 */
 	public Stroke getNextOutlineStroke() {
-		Stroke result = this.outlineStrokeSequence[
-							this.outlineStrokeIndex % this.outlineStrokeSequence.length
-							];
+		Stroke result = this.outlineStrokeSequence[this.outlineStrokeIndex % this.outlineStrokeSequence.length];
 		this.outlineStrokeIndex++;
 		return result;
 	}
@@ -217,7 +197,8 @@ public class DefaultDrawingSupplier implements DrawingSupplier,
 	}
 
 	/**
-	 * Creates an array of standard shapes to display for the items in series on charts.
+	 * Creates an array of standard shapes to display for the items in series on
+	 * charts.
 	 * 
 	 * @return The array of shapes.
 	 */
@@ -277,7 +258,7 @@ public class DefaultDrawingSupplier implements DrawingSupplier,
 	 * Tests this object for equality with another object.
 	 * 
 	 * @param obj
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -326,9 +307,9 @@ public class DefaultDrawingSupplier implements DrawingSupplier,
 	 * Handles serialization.
 	 * 
 	 * @param stream
-	 *           the output stream.
+	 *            the output stream.
 	 * @throws IOException
-	 *            if there is an I/O problem.
+	 *             if there is an I/O problem.
 	 */
 	private void writeObject(ObjectOutputStream stream) throws IOException {
 		stream.defaultWriteObject();
@@ -369,11 +350,11 @@ public class DefaultDrawingSupplier implements DrawingSupplier,
 	 * Restores a serialized object.
 	 * 
 	 * @param stream
-	 *           the input stream.
+	 *            the input stream.
 	 * @throws IOException
-	 *            if there is an I/O problem.
+	 *             if there is an I/O problem.
 	 * @throws ClassNotFoundException
-	 *            if there is a problem loading a class.
+	 *             if there is a problem loading a class.
 	 */
 	private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
 		stream.defaultReadObject();
@@ -411,15 +392,15 @@ public class DefaultDrawingSupplier implements DrawingSupplier,
 	}
 
 	/**
-	 * Helper method to avoid lots of explicit casts in getShape(). Returns
-	 * an array containing the provided doubles cast to ints.
+	 * Helper method to avoid lots of explicit casts in getShape(). Returns an array
+	 * containing the provided doubles cast to ints.
 	 * 
 	 * @param a
-	 *           x
+	 *            x
 	 * @param b
-	 *           y
+	 *            y
 	 * @param c
-	 *           z
+	 *            z
 	 * @return int[3] with converted params.
 	 */
 	private static int[] intArray(double a, double b, double c) {
@@ -427,17 +408,17 @@ public class DefaultDrawingSupplier implements DrawingSupplier,
 	}
 
 	/**
-	 * Helper method to avoid lots of explicit casts in getShape(). Returns
-	 * an array containing the provided doubles cast to ints.
+	 * Helper method to avoid lots of explicit casts in getShape(). Returns an array
+	 * containing the provided doubles cast to ints.
 	 * 
 	 * @param a
-	 *           x
+	 *            x
 	 * @param b
-	 *           y
+	 *            y
 	 * @param c
-	 *           z
+	 *            z
 	 * @param d
-	 *           t
+	 *            t
 	 * @return int[3] with converted params.
 	 */
 	private static int[] intArray(double a, double b, double c, double d) {
@@ -449,15 +430,17 @@ public class DefaultDrawingSupplier implements DrawingSupplier,
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if a component of the supplier does not support cloning.
+	 *             if a component of the supplier does not support cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		DefaultDrawingSupplier clone = (DefaultDrawingSupplier) super.clone();
-		// public static final Paint[] DEFAULT_PAINT_SEQUENCE = ChartColor.createDefaultPaintArray();
+		// public static final Paint[] DEFAULT_PAINT_SEQUENCE =
+		// ChartColor.createDefaultPaintArray();
 		// public static final Paint[] DEFAULT_OUTLINE_PAINT_SEQUENCE
 		// public static final Stroke[] DEFAULT_STROKE_SEQUENCE
 		// public static final Stroke[] DEFAULT_OUTLINE_STROKE_SEQUENCE
-		// public static final Shape[] DEFAULT_SHAPE_SEQUENCE = createStandardSeriesShapes();
+		// public static final Shape[] DEFAULT_SHAPE_SEQUENCE =
+		// createStandardSeriesShapes();
 		// private transient Paint[] paintSequence;
 		// private int paintIndex;
 		// private transient Paint[] outlinePaintSequence;

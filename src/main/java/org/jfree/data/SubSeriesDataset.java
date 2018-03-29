@@ -37,13 +37,13 @@
 package org.jfree.data;
 
 /**
- * This class will create a dataset with one or more series from another {@link SeriesDataset}.
+ * This class will create a dataset with one or more series from another
+ * {@link SeriesDataset}.
  * 
  * @author Bill Kelemen (bill@kelemen-usa.com)
  */
 public class SubSeriesDataset extends AbstractIntervalXYDataset
-										implements HighLowDataset, SignalsDataset, IntervalXYDataset,
-														CombinationDataset {
+		implements HighLowDataset, SignalsDataset, IntervalXYDataset, CombinationDataset {
 
 	/** The parent dataset. */
 	private SeriesDataset parent = null;
@@ -56,9 +56,9 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	 * The series to use are passed as an array of int.
 	 * 
 	 * @param parent
-	 *           underlying dataset
+	 *            underlying dataset
 	 * @param map
-	 *           int[] of series from parent to include in this Dataset
+	 *            int[] of series from parent to include in this Dataset
 	 */
 	public SubSeriesDataset(final SeriesDataset parent, final int[] map) {
 		this.parent = parent;
@@ -66,13 +66,13 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	}
 
 	/**
-	 * Creates a SubSeriesDataset using one series from <code>parent</code>.
-	 * The series to is passed as an int.
+	 * Creates a SubSeriesDataset using one series from <code>parent</code>. The
+	 * series to is passed as an int.
 	 * 
 	 * @param parent
-	 *           underlying dataset
+	 *            underlying dataset
 	 * @param series
-	 *           series from parent to include in this Dataset
+	 *            series from parent to include in this Dataset
 	 */
 	public SubSeriesDataset(final SeriesDataset parent, final int series) {
 		this(parent, new int[] { series });
@@ -85,12 +85,13 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	/**
 	 * Returns the high-value for the specified series and item.
 	 * <p>
-	 * Note: throws <code>ClassCastException</code> if the series if not from a {@link HighLowDataset}.
+	 * Note: throws <code>ClassCastException</code> if the series if not from a
+	 * {@link HighLowDataset}.
 	 * 
 	 * @param series
-	 *           the index of the series of interest (zero-based).
+	 *            the index of the series of interest (zero-based).
 	 * @param item
-	 *           the index of the item of interest (zero-based).
+	 *            the index of the item of interest (zero-based).
 	 * @return the high-value for the specified series and item.
 	 */
 	public Number getHighValue(final int series, final int item) {
@@ -101,9 +102,9 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	 * Returns the high-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The high-value.
 	 */
 	public double getHigh(int series, int item) {
@@ -118,12 +119,13 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	/**
 	 * Returns the low-value for the specified series and item.
 	 * <p>
-	 * Note: throws <code>ClassCastException</code> if the series if not from a {@link HighLowDataset}.
+	 * Note: throws <code>ClassCastException</code> if the series if not from a
+	 * {@link HighLowDataset}.
 	 * 
 	 * @param series
-	 *           the index of the series of interest (zero-based).
+	 *            the index of the series of interest (zero-based).
 	 * @param item
-	 *           the index of the item of interest (zero-based).
+	 *            the index of the item of interest (zero-based).
 	 * @return the low-value for the specified series and item.
 	 */
 	public Number getLowValue(final int series, final int item) {
@@ -134,9 +136,9 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	 * Returns the low-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The low-value.
 	 */
 	public double getLow(int series, int item) {
@@ -151,12 +153,13 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	/**
 	 * Returns the open-value for the specified series and item.
 	 * <p>
-	 * Note: throws <code>ClassCastException</code> if the series if not from a {@link HighLowDataset}.
+	 * Note: throws <code>ClassCastException</code> if the series if not from a
+	 * {@link HighLowDataset}.
 	 * 
 	 * @param series
-	 *           the index of the series of interest (zero-based).
+	 *            the index of the series of interest (zero-based).
 	 * @param item
-	 *           the index of the item of interest (zero-based).
+	 *            the index of the item of interest (zero-based).
 	 * @return the open-value for the specified series and item.
 	 */
 	public Number getOpenValue(final int series, final int item) {
@@ -167,9 +170,9 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	 * Returns the open-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The open-value.
 	 */
 	public double getOpen(int series, int item) {
@@ -184,12 +187,13 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	/**
 	 * Returns the close-value for the specified series and item.
 	 * <p>
-	 * Note: throws <code>ClassCastException</code> if the series if not from a {@link HighLowDataset}.
+	 * Note: throws <code>ClassCastException</code> if the series if not from a
+	 * {@link HighLowDataset}.
 	 * 
 	 * @param series
-	 *           the index of the series of interest (zero-based).
+	 *            the index of the series of interest (zero-based).
 	 * @param item
-	 *           the index of the item of interest (zero-based).
+	 *            the index of the item of interest (zero-based).
 	 * @return the close-value for the specified series and item.
 	 */
 	public Number getCloseValue(final int series, final int item) {
@@ -200,9 +204,9 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	 * Returns the close-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The close-value.
 	 */
 	public double getClose(int series, int item) {
@@ -217,12 +221,13 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	/**
 	 * Returns the volume.
 	 * <p>
-	 * Note: throws <code>ClassCastException</code> if the series if not from a {@link HighLowDataset}.
+	 * Note: throws <code>ClassCastException</code> if the series if not from a
+	 * {@link HighLowDataset}.
 	 * 
 	 * @param series
-	 *           the series (zero based index).
+	 *            the series (zero based index).
 	 * @param item
-	 *           the item (zero based index).
+	 *            the item (zero based index).
 	 * @return the volume.
 	 */
 	public Number getVolumeValue(final int series, final int item) {
@@ -233,9 +238,9 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	 * Returns the volume-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The volume-value.
 	 */
 	public double getVolume(int series, int item) {
@@ -254,12 +259,13 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	/**
 	 * Returns the X-value for the specified series and item.
 	 * <p>
-	 * Note: throws <code>ClassCastException</code> if the series if not from a {@link XYDataset}.
+	 * Note: throws <code>ClassCastException</code> if the series if not from a
+	 * {@link XYDataset}.
 	 * 
 	 * @param series
-	 *           the index of the series of interest (zero-based);
+	 *            the index of the series of interest (zero-based);
 	 * @param item
-	 *           the index of the item of interest (zero-based).
+	 *            the index of the item of interest (zero-based).
 	 * @return the X-value for the specified series and item.
 	 */
 	public Number getXValue(final int series, final int item) {
@@ -269,12 +275,13 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	/**
 	 * Returns the Y-value for the specified series and item.
 	 * <p>
-	 * Note: throws <code>ClassCastException</code> if the series if not from a {@link XYDataset}.
+	 * Note: throws <code>ClassCastException</code> if the series if not from a
+	 * {@link XYDataset}.
 	 * 
 	 * @param series
-	 *           the index of the series of interest (zero-based).
+	 *            the index of the series of interest (zero-based).
 	 * @param item
-	 *           the index of the item of interest (zero-based).
+	 *            the index of the item of interest (zero-based).
 	 * @return the Y-value for the specified series and item.
 	 */
 	public Number getYValue(final int series, final int item) {
@@ -284,10 +291,11 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	/**
 	 * Returns the number of items in a series.
 	 * <p>
-	 * Note: throws <code>ClassCastException</code> if the series if not from a {@link XYDataset}.
+	 * Note: throws <code>ClassCastException</code> if the series if not from a
+	 * {@link XYDataset}.
 	 * 
 	 * @param series
-	 *           the index of the series of interest (zero-based).
+	 *            the index of the series of interest (zero-based).
 	 * @return the number of items in a series.
 	 */
 	public int getItemCount(final int series) {
@@ -311,7 +319,7 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return the name of a series.
 	 */
 	public String getSeriesName(final int series) {
@@ -326,9 +334,9 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	 * Returns the starting X value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the index of the series of interest (zero-based).
+	 *            the index of the series of interest (zero-based).
 	 * @param item
-	 *           the index of the item of interest (zero-based).
+	 *            the index of the item of interest (zero-based).
 	 * @return the starting X value for the specified series and item.
 	 */
 	public Number getStartXValue(final int series, final int item) {
@@ -343,9 +351,9 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	 * Returns the ending X value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the index of the series of interest (zero-based).
+	 *            the index of the series of interest (zero-based).
 	 * @param item
-	 *           the index of the item of interest (zero-based).
+	 *            the index of the item of interest (zero-based).
 	 * @return the ending X value for the specified series and item.
 	 */
 	public Number getEndXValue(final int series, final int item) {
@@ -360,9 +368,9 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	 * Returns the starting Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the index of the series of interest (zero-based).
+	 *            the index of the series of interest (zero-based).
 	 * @param item
-	 *           the index of the item of interest (zero-based).
+	 *            the index of the item of interest (zero-based).
 	 * @return the starting Y value for the specified series and item.
 	 */
 	public Number getStartYValue(final int series, final int item) {
@@ -377,9 +385,9 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	 * Returns the ending Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the index of the series of interest (zero-based).
+	 *            the index of the series of interest (zero-based).
 	 * @param item
-	 *           the index of the item of interest (zero-based).
+	 *            the index of the item of interest (zero-based).
 	 * @return the ending Y value for the specified series and item.
 	 */
 	public Number getEndYValue(final int series, final int item) {
@@ -398,9 +406,9 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	 * Returns the type.
 	 * 
 	 * @param series
-	 *           the series (zero based index).
+	 *            the series (zero based index).
 	 * @param item
-	 *           the item (zero based index).
+	 *            the item (zero based index).
 	 * @return the type.
 	 */
 	public int getType(final int series, final int item) {
@@ -415,9 +423,9 @@ public class SubSeriesDataset extends AbstractIntervalXYDataset
 	 * Returns the level.
 	 * 
 	 * @param series
-	 *           the series (zero based index).
+	 *            the series (zero based index).
 	 * @param item
-	 *           the item (zero based index).
+	 *            the item (zero based index).
 	 * @return the level.
 	 */
 	public double getLevel(final int series, final int item) {

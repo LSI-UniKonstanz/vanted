@@ -39,7 +39,7 @@ public class Performance2 {
 	private double primitive = 42.0;
 
 	/** A number object. */
-	private Number object = new Double(42.0);
+	private Number object = Double.valueOf(42.0);
 
 	/**
 	 * Default constructor.
@@ -58,12 +58,13 @@ public class Performance2 {
 	}
 
 	/**
-	 * Creates a Number object every time the primitive is accessed - should be really slow.
+	 * Creates a Number object every time the primitive is accessed - should be
+	 * really slow.
 	 * 
 	 * @return creates and returns a Number object.
 	 */
 	public Number getPrimitiveAsObject() {
-		return new Double(this.primitive);
+		return Double.valueOf(this.primitive);
 	}
 
 	/**
@@ -76,8 +77,8 @@ public class Performance2 {
 	}
 
 	/**
-	 * Returns a double value generated from the Object - should be similar to previous method,
-	 * but is not!
+	 * Returns a double value generated from the Object - should be similar to
+	 * previous method, but is not!
 	 * 
 	 * @return the doubleValue() for the Number.
 	 */
@@ -89,7 +90,7 @@ public class Performance2 {
 	 * Cycles through accessing the primitive.
 	 * 
 	 * @param count
-	 *           the number of times to access.
+	 *            the number of times to access.
 	 */
 	public void getPrimitiveLoop(final int count) {
 
@@ -105,7 +106,7 @@ public class Performance2 {
 	 * Cycles through accessing the primitive as an object.
 	 * 
 	 * @param count
-	 *           the number of times to access.
+	 *            the number of times to access.
 	 */
 	public void getPrimitiveAsObjectLoop(final int count) {
 
@@ -121,7 +122,7 @@ public class Performance2 {
 	 * Cycles through accessing the object as a primitive.
 	 * 
 	 * @param count
-	 *           the number of times to access.
+	 *            the number of times to access.
 	 */
 	public void getObjectAsPrimitiveLoop(final int count) {
 
@@ -137,7 +138,7 @@ public class Performance2 {
 	 * Cycles through accessing the object.
 	 * 
 	 * @param count
-	 *           the number of times to access.
+	 *            the number of times to access.
 	 */
 	public void getObjectLoop(final int count) {
 
@@ -153,11 +154,11 @@ public class Performance2 {
 	 * Outputs the current status to the console.
 	 * 
 	 * @param label
-	 *           the label.
+	 *            the label.
 	 * @param start
-	 *           the start time.
+	 *            the start time.
 	 * @param end
-	 *           the end time.
+	 *            the end time.
 	 */
 	public void status(final String label, final Date start, final Date end) {
 		final long elapsed = end.getTime() - start.getTime();
@@ -168,7 +169,7 @@ public class Performance2 {
 	 * The starting point for the performance test.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

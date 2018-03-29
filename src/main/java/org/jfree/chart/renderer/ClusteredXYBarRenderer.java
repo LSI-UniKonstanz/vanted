@@ -58,18 +58,17 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.util.PublicCloneable;
 
 /**
- * An extension of {@link XYBarRenderer} that displays bars for different
- * series values at the same x next to each other. The assumption here is
- * that for each x (time or else) there is a y value for each series. If
- * this is not the case, there will be spaces between bars for a given x.
+ * An extension of {@link XYBarRenderer} that displays bars for different series
+ * values at the same x next to each other. The assumption here is that for each
+ * x (time or else) there is a y value for each series. If this is not the case,
+ * there will be spaces between bars for a given x.
  * <P>
- * This renderer does not include code to calculate the crosshair point for the plot.
+ * This renderer does not include code to calculate the crosshair point for the
+ * plot.
  * 
  * @author Paolo Cova
  */
-public class ClusteredXYBarRenderer extends XYBarRenderer implements Cloneable,
-																							PublicCloneable,
-																							Serializable {
+public class ClusteredXYBarRenderer extends XYBarRenderer implements Cloneable, PublicCloneable, Serializable {
 
 	/** Percentage margin (to reduce the width of bars). */
 	private double margin;
@@ -91,9 +90,9 @@ public class ClusteredXYBarRenderer extends XYBarRenderer implements Cloneable,
 	 * Constructs a new XY clustered bar renderer.
 	 * 
 	 * @param margin
-	 *           the percentage amount to trim from the width of each bar.
+	 *            the percentage amount to trim from the width of each bar.
 	 * @param centerBarAtStartValue
-	 *           If true, bars will be centered on the start of the time period.
+	 *            If true, bars will be centered on the start of the time period.
 	 */
 	public ClusteredXYBarRenderer(double margin, boolean centerBarAtStartValue) {
 		super(margin);
@@ -102,27 +101,25 @@ public class ClusteredXYBarRenderer extends XYBarRenderer implements Cloneable,
 	}
 
 	/**
-	 * Initialises the renderer. Here we calculate the Java2D y-coordinate for zero, since all
-	 * the bars have their bases fixed at zero. Copied from superclass to
+	 * Initialises the renderer. Here we calculate the Java2D y-coordinate for zero,
+	 * since all the bars have their bases fixed at zero. Copied from superclass to
 	 * initialize local variables.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the area inside the axes.
+	 *            the area inside the axes.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @param info
-	 *           an optional info collection object to return data back to the caller.
+	 *            an optional info collection object to return data back to the
+	 *            caller.
 	 * @return The number of passes required by the renderer.
 	 */
-	public XYItemRendererState initialise(Graphics2D g2,
-														Rectangle2D dataArea,
-														XYPlot plot,
-														XYDataset data,
-														PlotRenderingInfo info) {
+	public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea, XYPlot plot, XYDataset data,
+			PlotRenderingInfo info) {
 
 		XYItemRendererState state = super.initialise(g2, dataArea, plot, data, info);
 		ValueAxis rangeAxis = plot.getRangeAxis();
@@ -135,7 +132,7 @@ public class ClusteredXYBarRenderer extends XYBarRenderer implements Cloneable,
 	 * Sets the margin.
 	 * 
 	 * @param margin
-	 *           the margin.
+	 *            the margin.
 	 */
 	public void setMargin(double margin) {
 		this.margin = margin;
@@ -143,48 +140,40 @@ public class ClusteredXYBarRenderer extends XYBarRenderer implements Cloneable,
 	}
 
 	/**
-	 * Draws the visual representation of a single data item. This method
-	 * is mostly copied from the superclass, the change is that in the
-	 * calculated space for a singe bar we draw bars for each series next to
-	 * each other. The width of each bar is the available width divided by
-	 * the number of series. Bars for each series are drawn in order left to
-	 * right.
+	 * Draws the visual representation of a single data item. This method is mostly
+	 * copied from the superclass, the change is that in the calculated space for a
+	 * singe bar we draw bars for each series next to each other. The width of each
+	 * bar is the available width divided by the number of series. Bars for each
+	 * series are drawn in order left to right.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the area within which the plot is being drawn.
+	 *            the area within which the plot is being drawn.
 	 * @param info
-	 *           collects information about the drawing.
+	 *            collects information about the drawing.
 	 * @param plot
-	 *           the plot (can be used to obtain standard color information etc).
+	 *            the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series index.
+	 *            the series index.
 	 * @param item
-	 *           the item index.
+	 *            the item index.
 	 * @param crosshairState
-	 *           crosshair information for the plot (<code>null</code> permitted).
+	 *            crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *           the pass index.
+	 *            the pass index.
 	 */
-	public void drawItem(Graphics2D g2,
-									XYItemRendererState state,
-									Rectangle2D dataArea,
-									PlotRenderingInfo info,
-									XYPlot plot,
-									ValueAxis domainAxis,
-									ValueAxis rangeAxis,
-									XYDataset dataset, int series, int item,
-									CrosshairState crosshairState,
-									int pass) {
+	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
+			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
+			CrosshairState crosshairState, int pass) {
 
 		IntervalXYDataset intervalData = (IntervalXYDataset) dataset;
 
@@ -225,16 +214,13 @@ public class ClusteredXYBarRenderer extends XYBarRenderer implements Cloneable,
 		PlotOrientation orientation = plot.getOrientation();
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			bar = new Rectangle2D.Double(Math.min(this.translatedRangeZero, translatedY),
-														translatedX1 - seriesBarWidth * (numSeries - series),
-														translatedHeight, seriesBarWidth);
-		} else
-			if (orientation == PlotOrientation.VERTICAL) {
+					translatedX1 - seriesBarWidth * (numSeries - series), translatedHeight, seriesBarWidth);
+		} else if (orientation == PlotOrientation.VERTICAL) {
 
-				bar = new Rectangle2D.Double(translatedX1 + seriesBarWidth * series,
-														Math.min(this.translatedRangeZero, translatedY),
-														seriesBarWidth, translatedHeight);
+			bar = new Rectangle2D.Double(translatedX1 + seriesBarWidth * series,
+					Math.min(this.translatedRangeZero, translatedY), seriesBarWidth, translatedHeight);
 
-			}
+		}
 		g2.setPaint(seriesPaint);
 		g2.fill(bar);
 		if (Math.abs(translatedX2 - translatedX1) > 3) {
@@ -268,7 +254,7 @@ public class ClusteredXYBarRenderer extends XYBarRenderer implements Cloneable,
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the renderer cannot be cloned.
+	 *             if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

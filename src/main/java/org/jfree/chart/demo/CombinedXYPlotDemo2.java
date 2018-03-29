@@ -56,8 +56,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A demonstration application showing how to create a combined chart. A
- * bar chart is displayed on the left, and a line chart on the right.
+ * A demonstration application showing how to create a combined chart. A bar
+ * chart is displayed on the left, and a line chart on the right.
  */
 public class CombinedXYPlotDemo2 extends ApplicationFrame {
 
@@ -65,7 +65,7 @@ public class CombinedXYPlotDemo2 extends ApplicationFrame {
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public CombinedXYPlotDemo2(final String title) {
 
@@ -87,23 +87,15 @@ public class CombinedXYPlotDemo2 extends ApplicationFrame {
 		// create subplot 1...
 		final IntervalXYDataset data1 = createDataset1();
 		final XYItemRenderer renderer1 = new XYBarRenderer(0.20);
-		renderer1.setToolTipGenerator(
-							new StandardXYToolTipGenerator(
-												StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-												new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0,000.0")
-							)
-							);
+		renderer1.setToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+				new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0,000.0")));
 		final XYPlot subplot1 = new XYPlot(data1, new DateAxis("Date"), null, renderer1);
 
 		// create subplot 2...
 		final XYDataset data2 = createDataset2();
 		final XYItemRenderer renderer2 = new StandardXYItemRenderer();
-		renderer2.setToolTipGenerator(
-							new StandardXYToolTipGenerator(
-												StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-												new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0,000.0")
-							)
-							);
+		renderer2.setToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+				new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("0,000.0")));
 		final XYPlot subplot2 = new XYPlot(data2, new DateAxis("Date"), null, renderer2);
 
 		// create a parent plot...
@@ -114,8 +106,7 @@ public class CombinedXYPlotDemo2 extends ApplicationFrame {
 		plot.add(subplot2, 1);
 
 		// return a new chart containing the overlaid plot...
-		return new JFreeChart(
-							"Combined (Range) XY Plot", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
+		return new JFreeChart("Combined (Range) XY Plot", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 
 	}
 
@@ -198,7 +189,7 @@ public class CombinedXYPlotDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

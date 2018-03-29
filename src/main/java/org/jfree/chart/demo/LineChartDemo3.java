@@ -51,7 +51,7 @@ public class LineChartDemo3 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public LineChartDemo3(final String title) {
 
@@ -91,21 +91,19 @@ public class LineChartDemo3 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           a dataset.
+	 *            a dataset.
 	 * @return A chart based on the supplied dataset.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-							"Line Chart Demo 3", // chart title
+		final JFreeChart chart = ChartFactory.createXYLineChart("Line Chart Demo 3", // chart title
 				"X", // x axis label
 				"Y", // y axis label
 				dataset, // data
-				PlotOrientation.VERTICAL,
-							true, // include legend
+				PlotOrientation.VERTICAL, true, // include legend
 				true, // tooltips
 				false // urls
-				);
+		);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
@@ -125,7 +123,7 @@ public class LineChartDemo3 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

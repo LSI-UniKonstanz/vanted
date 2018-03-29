@@ -37,72 +37,68 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawComponent.HeatMapOptions;
 
 /**
- * @author Christian Klukas
- *         (c) 2007 IPK Gatersleben, Group Network Analysis
+ * @author Christian Klukas (c) 2007 IPK Gatersleben, Group Network Analysis
  */
 public class AddDiagramLegendAlgorithm extends AbstractAlgorithm {
-	
+
 	int nElements = 11;
 	int legendWidth = 10;
 	int legendHeight = 100;
 	private static LegendType type = LegendType.OLDSTYLE;
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Create Legend";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Mapping";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.VISUAL,
-				Category.CHART
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.VISUAL, Category.CHART));
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
 		if (!ChartColorAttribute.hasAttribute(graph) && !AttributeHelper.hasAttribute(graph, "hm_gamma"))
 			throw new PreconditionException("Graph contains neither diagrams nor heatmap visualizations!");
 		// if (!AttributeHelper.hasAttribute(graph, "hm_gamma")) {
-		// throw new PreconditionException("Graph contains no diagrams with heatmap visualization style!");
+		// throw new PreconditionException("Graph contains no diagrams with heatmap
+		// visualization style!");
 		// };
 	}
-	
+
 	@Override
 	public String getDescription() {
 		if (AttributeHelper.hasAttribute(graph, "hm_gamma"))
-			return "<html>" +
-					"This command creates a color-scale legend for the<br>" +
-					"heatmap (color-coding) diagrams of the current graph.<br>" +
-					"The heatmap color-selection and boundary specification<br>" +
-					"is available from the network tab, but only in case<br>" +
-					"the heatmap diagram style has been activated before<br>" +
-					"from the node or edge tab.<br>" +
-					"You may specify here, how many different colors should<br>" +
-					"be processed, and how large the legend should be.";
+			return "<html>" + "This command creates a color-scale legend for the<br>"
+					+ "heatmap (color-coding) diagrams of the current graph.<br>"
+					+ "The heatmap color-selection and boundary specification<br>"
+					+ "is available from the network tab, but only in case<br>"
+					+ "the heatmap diagram style has been activated before<br>" + "from the node or edge tab.<br>"
+					+ "You may specify here, how many different colors should<br>"
+					+ "be processed, and how large the legend should be.";
 		else
 			return null;
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
-		
+
 		// nutzer fragen nach style (mit nummer und allem, mit allem, nur die wichtigen)
-		
+
 		if (AttributeHelper.hasAttribute(graph, "hm_gamma"))
 			return new Parameter[] {
-					new IntegerParameter(nElements, "Number of Color Shades", "Specify the number of color-shades (differently colored nodes)"), // number of
+					new IntegerParameter(nElements, "Number of Color Shades",
+							"Specify the number of color-shades (differently colored nodes)"), // number of
 					// elements
 					new IntegerParameter(legendWidth, "Color-Scale Width", "Width of the colored network elements"), // width
 					new IntegerParameter(legendHeight, "Color-Scale Height", "Overall height of the color-scale") // height
@@ -110,7 +106,7 @@ public class AddDiagramLegendAlgorithm extends AbstractAlgorithm {
 		else
 			return new Parameter[] { new ObjectListParameter(LegendType.COMPLETE, "Type", "", LegendType.values()) };
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		if (AttributeHelper.hasAttribute(graph, "hm_gamma")) {
@@ -121,14 +117,14 @@ public class AddDiagramLegendAlgorithm extends AbstractAlgorithm {
 		} else
 			type = (LegendType) params[0].getValue();
 	}
-	
+
 	public void execute() {
 		if (ChartColorAttribute.hasAttribute(graph))
 			createSeriesColorLegend();
 		if (AttributeHelper.hasAttribute(graph, "hm_gamma"))
 			createHeatMapLegend();
 	}
-	
+
 	private void createSeriesColorLegend() {
 		int startX = 50;
 		int startY = 50;
@@ -156,25 +152,27 @@ public class AddDiagramLegendAlgorithm extends AbstractAlgorithm {
 				if (condname2cond.containsKey(id)) {
 					Condition cond = ((Condition) condname2cond.get(id));
 					switch (type) {
-						case COMPLETE:
-							lbl = cond.getExperimentName() + ", " + cond.getRowId() + ": " + getValue(cond.getSpecies()) + getValue(cond.getGenotype())
-									+ getValue(cond.getTreatment()) + getValue(cond.getGrowthconditions()) + getValue(cond.getVariety());
-							break;
-						case COMPLETE_WITHOUT_EXPERIMENT:
-							lbl = cond.getRowId() + ": " + getValue(cond.getSpecies()) + getValue(cond.getGenotype())
-									+ getValue(cond.getTreatment()) + getValue(cond.getGrowthconditions()) + getValue(cond.getVariety());
-							break;
-						case COMPLETE_WITHOUT_EXPERIMENT_AND_CONDITIONNUMBER:
-							lbl = getValue(cond.getSpecies()) + getValue(cond.getGenotype())
-									+ getValue(cond.getTreatment()) + getValue(cond.getGrowthconditions()) + getValue(cond.getVariety());
-							break;
-						default: // case OLDSTYLE:
-							lbl = id;
-							break;
+					case COMPLETE:
+						lbl = cond.getExperimentName() + ", " + cond.getRowId() + ": " + getValue(cond.getSpecies())
+								+ getValue(cond.getGenotype()) + getValue(cond.getTreatment())
+								+ getValue(cond.getGrowthconditions()) + getValue(cond.getVariety());
+						break;
+					case COMPLETE_WITHOUT_EXPERIMENT:
+						lbl = cond.getRowId() + ": " + getValue(cond.getSpecies()) + getValue(cond.getGenotype())
+								+ getValue(cond.getTreatment()) + getValue(cond.getGrowthconditions())
+								+ getValue(cond.getVariety());
+						break;
+					case COMPLETE_WITHOUT_EXPERIMENT_AND_CONDITIONNUMBER:
+						lbl = getValue(cond.getSpecies()) + getValue(cond.getGenotype()) + getValue(cond.getTreatment())
+								+ getValue(cond.getGrowthconditions()) + getValue(cond.getVariety());
+						break;
+					default: // case OLDSTYLE:
+						lbl = id;
+						break;
 					}
 				} else
 					lbl = id;
-				
+
 				if (lbl.endsWith(" / "))
 					lbl = lbl.substring(0, lbl.length() - " / ".length());
 				AttributeHelper.setLabel(n, lbl);
@@ -183,30 +181,34 @@ public class AddDiagramLegendAlgorithm extends AbstractAlgorithm {
 				AttributeHelper.setLabelAlignment(-1, n, AlignmentSetting.RIGHT);
 			}
 			if (barCnt > 0)
-				MainFrame.showMessageDialog("Legend with " + barCnt + " series items has been created and is placed at the lower left.", "Information");
+				MainFrame.showMessageDialog(
+						"Legend with " + barCnt + " series items has been created and is placed at the lower left.",
+						"Information");
 			else
-				MainFrame.showMessageDialog("Legend could not be created as no series data is visible or mapped to the network!", "Information");
+				MainFrame.showMessageDialog(
+						"Legend could not be created as no series data is visible or mapped to the network!",
+						"Information");
 		} finally {
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-	
+
 	public String getValue(String s) {
 		if (s == null || s.length() <= 0)
 			return "";
 		else
 			return s + " / ";
 	}
-	
+
 	public void createHeatMapLegend() {
 		HeatMapOptions hmo = new HeatMapOptions(graph);
 		nElements = Math.abs(nElements);
 		legendWidth = Math.abs(legendWidth);
 		legendHeight = Math.abs(legendHeight);
-		
+
 		double nodeHeight = (double) legendHeight / (double) nElements;
 		double nodeWidth = legendWidth;
-		
+
 		Vector2d maxxy = NodeTools.getMaximumXY(graph.getNodes(), 1, 0, 0, true);
 		double offX = maxxy.x + 30d;
 		double offY = 50d;
@@ -215,20 +217,21 @@ public class AddDiagramLegendAlgorithm extends AbstractAlgorithm {
 		NodeHelper middleNode = null;
 		double minDist = Double.MAX_VALUE;
 		for (int i = 0; i < nElements; i++) {
-			double currentValue = (double) i / (double) (nElements - 1) * (hmo.heatMapUpperBound - hmo.heatMapLowerBound) + hmo.heatMapLowerBound;
+			double currentValue = (double) i / (double) (nElements - 1)
+					* (hmo.heatMapUpperBound - hmo.heatMapLowerBound) + hmo.heatMapLowerBound;
 			double x = offX;
 			double y = offY + i * nodeHeight;
 			Node n = graph.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(x, y));
-			
+
 			newNodes.add(n);
-			
+
 			NodeHelper nh = new NodeHelper(n);
-			
+
 			if (Math.abs(currentValue - hmo.heatMapMiddleBound) < minDist) {
 				minDist = Math.abs(currentValue - hmo.heatMapMiddleBound);
 				middleNode = nh;
 			}
-			
+
 			nh.setBorderWidth(0);
 			nh.setRounding(0);
 			nh.setFillColor(hmo.getHeatmapColor(currentValue));
@@ -244,16 +247,18 @@ public class AddDiagramLegendAlgorithm extends AbstractAlgorithm {
 			middleNode.setLabelFontSize(10, false);
 		}
 		graph.getListenerManager().transactionFinished(this);
-		
+
 		GraphHelper.selectNodes(newNodes);
-		MainFrame.showMessage("Heatmap color-scale legend has been created (" + newNodes.size() + " nodes added and selected)", MessageType.INFO);
+		MainFrame.showMessage(
+				"Heatmap color-scale legend has been created (" + newNodes.size() + " nodes added and selected)",
+				MessageType.INFO);
 	}
-	
+
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;

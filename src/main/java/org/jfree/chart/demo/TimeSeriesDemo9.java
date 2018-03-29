@@ -53,11 +53,11 @@ import org.jfree.ui.RefineryUtilities;
 public class TimeSeriesDemo9 extends ApplicationFrame {
 
 	/**
-	 * A demonstration application showing how to create a simple time series chart. This
-	 * example uses monthly data.
+	 * A demonstration application showing how to create a simple time series chart.
+	 * This example uses monthly data.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public TimeSeriesDemo9(final String title) {
 
@@ -67,15 +67,8 @@ public class TimeSeriesDemo9 extends ApplicationFrame {
 		final String chartTitle = "Test";
 		final XYDataset dataset = createDataset();
 
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							chartTitle,
-							"Date",
-							"Price Per Unit",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart(chartTitle, "Date", "Price Per Unit", dataset, true,
+				true, false);
 
 		final StandardLegend sl = (StandardLegend) chart.getLegend();
 		sl.setDisplaySeriesShapes(true);
@@ -149,9 +142,9 @@ public class TimeSeriesDemo9 extends ApplicationFrame {
 	 * Creates a time series containing random daily data.
 	 * 
 	 * @param series
-	 *           the series index.
+	 *            the series index.
 	 * @param count
-	 *           the number of items for the series.
+	 *            the number of items for the series.
 	 * @return the dataset.
 	 */
 	public TimeSeries createTimeSeries(final int series, final int count) {
@@ -172,7 +165,7 @@ public class TimeSeriesDemo9 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

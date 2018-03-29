@@ -47,8 +47,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demonstration application showing how to create a bar chart with a custom item
- * label generator.
+ * A simple demonstration application showing how to create a bar chart with a
+ * custom item label generator.
  */
 public class BarChartDemo8 extends ApplicationFrame {
 
@@ -56,7 +56,7 @@ public class BarChartDemo8 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public BarChartDemo8(final String title) {
 
@@ -118,14 +118,13 @@ public class BarChartDemo8 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createBarChart(
-							"Bar Chart Demo 8", // chart title
+		final JFreeChart chart = ChartFactory.createBarChart("Bar Chart Demo 8", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
@@ -133,7 +132,7 @@ public class BarChartDemo8 extends ApplicationFrame {
 				false, // include legend
 				true, // tooltips?
 				false // URLs?
-				);
+		);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
@@ -179,7 +178,7 @@ public class BarChartDemo8 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

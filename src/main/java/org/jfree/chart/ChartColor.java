@@ -33,9 +33,9 @@ import java.awt.Color;
 import java.awt.Paint;
 
 /**
- * Class to extend the number of Colors available to the charts. This
- * extends the java.awt.Color object and extends the number of final
- * Colors publically accessible.
+ * Class to extend the number of Colors available to the charts. This extends
+ * the java.awt.Color object and extends the number of final Colors publically
+ * accessible.
  * 
  * @author <a href="criley@ekmail.com">Cameron Riley</a>
  */
@@ -114,63 +114,38 @@ public class ChartColor extends Color {
 	public static final Color VERY_LIGHT_MAGENTA = new Color(0xFF, 0x80, 0xFF);
 
 	/**
-	 * Creates a Color with an opaque sRGB with red, green and blue values in range 0-255.
+	 * Creates a Color with an opaque sRGB with red, green and blue values in range
+	 * 0-255.
 	 * 
 	 * @param r
-	 *           the red component in range 0x00-0xFF.
+	 *            the red component in range 0x00-0xFF.
 	 * @param g
-	 *           the green component in range 0x00-0xFF.
+	 *            the green component in range 0x00-0xFF.
 	 * @param b
-	 *           the blue component in range 0x00-0xFF.
+	 *            the blue component in range 0x00-0xFF.
 	 */
 	public ChartColor(int r, int g, int b) {
 		super(r, g, b);
 	}
 
 	/**
-	 * Convenience method to return an array of <code>Paint</code> objects that represent
-	 * the pre-defined colors in the <code>Color<code> and <code>ChartColor</code> objects.
+	 * Convenience method to return an array of <code>Paint</code> objects that
+	 * represent the pre-defined colors in the
+	 * <code>Color<code> and <code>ChartColor</code> objects.
 	 * 
 	 * @return an array of objects with the <code>Paint</code> interface.
 	 */
 	public static Paint[] createDefaultPaintArray() {
 
-		return new Paint[] {
-							Color.red,
-							Color.blue,
-							Color.green,
-							Color.yellow,
-							Color.orange,
-							Color.magenta,
-							Color.cyan,
-							Color.pink,
-							Color.gray,
-							ChartColor.DARK_RED,
-							ChartColor.DARK_BLUE,
-							ChartColor.DARK_GREEN,
-							ChartColor.DARK_YELLOW,
-							ChartColor.DARK_MAGENTA,
-							ChartColor.DARK_CYAN,
-							Color.darkGray,
-							ChartColor.LIGHT_RED,
-							ChartColor.LIGHT_BLUE,
-							ChartColor.LIGHT_GREEN,
-							ChartColor.LIGHT_YELLOW,
-							ChartColor.LIGHT_MAGENTA,
-							ChartColor.LIGHT_CYAN,
-							Color.lightGray,
-							ChartColor.VERY_DARK_RED,
-							ChartColor.VERY_DARK_BLUE,
-							ChartColor.VERY_DARK_GREEN,
-							ChartColor.VERY_DARK_YELLOW,
-							ChartColor.VERY_DARK_MAGENTA,
-							ChartColor.VERY_DARK_CYAN,
-							ChartColor.VERY_LIGHT_RED,
-							ChartColor.VERY_LIGHT_BLUE,
-							ChartColor.VERY_LIGHT_GREEN,
-							ChartColor.VERY_LIGHT_YELLOW,
-							ChartColor.VERY_LIGHT_MAGENTA,
-							ChartColor.VERY_LIGHT_CYAN };
+		return new Paint[] { Color.red, Color.blue, Color.green, Color.yellow, Color.orange, Color.magenta, Color.cyan,
+				Color.pink, Color.gray, ChartColor.DARK_RED, ChartColor.DARK_BLUE, ChartColor.DARK_GREEN,
+				ChartColor.DARK_YELLOW, ChartColor.DARK_MAGENTA, ChartColor.DARK_CYAN, Color.darkGray,
+				ChartColor.LIGHT_RED, ChartColor.LIGHT_BLUE, ChartColor.LIGHT_GREEN, ChartColor.LIGHT_YELLOW,
+				ChartColor.LIGHT_MAGENTA, ChartColor.LIGHT_CYAN, Color.lightGray, ChartColor.VERY_DARK_RED,
+				ChartColor.VERY_DARK_BLUE, ChartColor.VERY_DARK_GREEN, ChartColor.VERY_DARK_YELLOW,
+				ChartColor.VERY_DARK_MAGENTA, ChartColor.VERY_DARK_CYAN, ChartColor.VERY_LIGHT_RED,
+				ChartColor.VERY_LIGHT_BLUE, ChartColor.VERY_LIGHT_GREEN, ChartColor.VERY_LIGHT_YELLOW,
+				ChartColor.VERY_LIGHT_MAGENTA, ChartColor.VERY_LIGHT_CYAN };
 	}
 
 }

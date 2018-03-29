@@ -36,7 +36,8 @@ import java.util.List;
 import org.jfree.data.CategoryDataset;
 
 /**
- * A category dataset that defines various medians, outliers and an average value for each item.
+ * A category dataset that defines various medians, outliers and an average
+ * value for each item.
  * 
  * @author David Browning
  */
@@ -46,9 +47,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the mean value for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The mean value.
 	 */
 	public Number getMeanValue(int row, int column);
@@ -57,9 +58,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the average value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return the average value.
 	 */
 	public Number getMeanValue(Comparable rowKey, Comparable columnKey);
@@ -68,9 +69,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the median value for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return the median value.
 	 */
 	public Number getMedianValue(int row, int column);
@@ -79,9 +80,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the median value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return the median value.
 	 */
 	public Number getMedianValue(Comparable rowKey, Comparable columnKey);
@@ -90,9 +91,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the q1median value for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return the q1median value.
 	 */
 	public Number getQ1Value(int row, int column);
@@ -101,9 +102,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the q1median value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return the q1median value.
 	 */
 	public Number getQ1Value(Comparable rowKey, Comparable columnKey);
@@ -112,9 +113,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the q3median value for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return the q3median value.
 	 */
 	public Number getQ3Value(int row, int column);
@@ -123,9 +124,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the q3median value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return the q3median value.
 	 */
 	public Number getQ3Value(Comparable rowKey, Comparable columnKey);
@@ -134,9 +135,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the minimum regular (non-outlier) value for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The minimum regular value.
 	 */
 	public Number getMinRegularValue(int row, int column);
@@ -145,9 +146,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the minimum regular (non-outlier) value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return The minimum regular value.
 	 */
 	public Number getMinRegularValue(Comparable rowKey, Comparable columnKey);
@@ -156,9 +157,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the maximum regular (non-outlier) value for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The maximum regular value.
 	 */
 	public Number getMaxRegularValue(int row, int column);
@@ -167,9 +168,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the maximum regular (non-outlier) value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return The maximum regular value.
 	 */
 	public Number getMaxRegularValue(Comparable rowKey, Comparable columnKey);
@@ -178,9 +179,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the minimum outlier (non-farout) for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The minimum outlier.
 	 */
 	public Number getMinOutlier(int row, int column);
@@ -189,9 +190,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the minimum outlier (non-farout) for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return The minimum outlier.
 	 */
 	public Number getMinOutlier(Comparable rowKey, Comparable columnKey);
@@ -200,9 +201,9 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the maximum outlier (non-farout) for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The maximum outlier.
 	 */
 	public Number getMaxOutlier(int row, int column);
@@ -211,33 +212,33 @@ public interface BoxAndWhiskerCategoryDataset extends CategoryDataset {
 	 * Returns the maximum outlier (non-farout) for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return The maximum outlier.
 	 */
 	public Number getMaxOutlier(Comparable rowKey, Comparable columnKey);
 
 	/**
-	 * Returns a list of outlier values for an item. The list may be empty, but should never
-	 * be <code>null</code>.
+	 * Returns a list of outlier values for an item. The list may be empty, but
+	 * should never be <code>null</code>.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return A list of outliers for an item.
 	 */
 	public List getOutliers(int row, int column);
 
 	/**
-	 * Returns a list of outlier values for an item. The list may be empty, but should never
-	 * be <code>null</code>.
+	 * Returns a list of outlier values for an item. The list may be empty, but
+	 * should never be <code>null</code>.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return A list of outlier values for an item.
 	 */
 	public List getOutliers(Comparable rowKey, Comparable columnKey);

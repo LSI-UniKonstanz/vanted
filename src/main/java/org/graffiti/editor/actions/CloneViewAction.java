@@ -19,21 +19,20 @@ import org.graffiti.plugin.actions.GraffitiAction;
  * 
  * @version $Revision: 1.6 $
  */
-public class CloneViewAction
-					extends GraffitiAction {
+public class CloneViewAction extends GraffitiAction {
 	// ~ Constructors ===========================================================
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Constructs a new clone view action.
 	 */
 	public CloneViewAction() {
 		super("action.view.clone", null, null); // TODO
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * @see javax.swing.Action#isEnabled()
 	 */
@@ -41,7 +40,7 @@ public class CloneViewAction
 	public boolean isEnabled() {
 		return false;
 	}
-	
+
 	/**
 	 * Returns the help context for this action.
 	 * 
@@ -51,7 +50,7 @@ public class CloneViewAction
 	public HelpContext getHelpContext() {
 		return null; //
 	}
-	
+
 	/**
 	 * Returns the name of this action.
 	 * 
@@ -61,12 +60,12 @@ public class CloneViewAction
 	public String getName() {
 		return null; //
 	}
-	
+
 	/**
 	 * Executes this action.
 	 * 
 	 * @param e
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 	}

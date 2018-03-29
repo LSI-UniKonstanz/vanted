@@ -51,12 +51,12 @@ import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
  */
 public class XMLHelper implements HelperClass {
 	// ~ Static fields/initializers =============================================
-	
+
 	/** Indicates whether or not indent XML elements. */
 	public static boolean useIndentation = false;
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns a string used to separate XML elements for better readability.
 	 * 
@@ -66,46 +66,45 @@ public class XMLHelper implements HelperClass {
 		// return GeneralUtils.getNewLineDelimiter();
 		return "";
 	}
-	
+
 	/**
-	 * Returns a String containing <code>n</code> spaces (or the empty String
-	 * if <code>useIndentation</code> is set to <code>false</code>).
+	 * Returns a String containing <code>n</code> spaces (or the empty String if
+	 * <code>useIndentation</code> is set to <code>false</code>).
 	 * 
 	 * @param n
-	 *           number of spaces
+	 *            number of spaces
 	 * @return DOCUMENT ME!
 	 */
 	public static String spc(int n) {
 		if (useIndentation) {
 			StringBuffer sb = new StringBuffer();
-			
+
 			for (int i = 0; i < n; i++) {
 				sb.append(" ");
 			}
-			
+
 			return sb.toString();
 		} else {
 			return "";
 		}
 	}
-	
+
 	public static String getOuterXml(Node node) throws TransformerException {
 		DOMSource nodeSource = new DOMSource(node);
 		// System.out.println("ClassTypeNodeDOMsource:"+nodeSource.getClass().getCanonicalName());
 		StringWriter resultStringWriter = new StringWriter();
 		StreamResult streamResult = new StreamResult(resultStringWriter);
-		
-		Transformer outerXmlTransformer = TransformerFactory.newInstance()
-							.newTransformer();
+
+		Transformer outerXmlTransformer = TransformerFactory.newInstance().newTransformer();
 		// System.out.println("OutTransformer:"+outerXmlTransformer.getClass().getCanonicalName());
 		outerXmlTransformer.setOutputProperty("omit-xml-declaration", "yes");
 		outerXmlTransformer.transform(nodeSource, streamResult);
-		
+
 		String result = resultStringWriter.toString();
 		result = StringManipulationTools.stringReplace(result, "'", "&apos;");
 		return result;
 	}
-	
+
 	public static String getOuterXmlPretty(Node n) throws IOException, TransformerException, JDOMException {
 		ByteArrayInputStream is = new ByteArrayInputStream(getOuterXml(n).getBytes("UTF-8"));
 		Document doc = getDocument(is);
@@ -117,12 +116,12 @@ public class XMLHelper implements HelperClass {
 		result = StringManipulationTools.stringReplace(result, "'", "&apos;");
 		return result;
 	}
-	
+
 	public static org.jdom.Document getJDOMfromDOM(org.w3c.dom.Document doc) {
 		DOMBuilder db = new DOMBuilder();
 		return db.build(doc);
 	}
-	
+
 	/**
 	 * @param xmlString
 	 * @return
@@ -134,12 +133,11 @@ public class XMLHelper implements HelperClass {
 		else
 			return d;
 	}
-	
+
 	// private static DocumentBuilderFactory dbf =
 	// DocumentBuilderFactory.newInstance();
-	private static DocumentBuilderFactory dbf =
-						new DocumentBuilderFactoryImpl();
-	
+	private static DocumentBuilderFactory dbf = new DocumentBuilderFactoryImpl();
+
 	/**
 	 * @param res
 	 * @return
@@ -157,27 +155,25 @@ public class XMLHelper implements HelperClass {
 			// Step 3: parse the input file
 			InputSource is = new InputSource(new StringReader(res));
 			doc = db.parse(is);
-			// System.err.println("Type of XML Document Builder: " + db.getClass().getCanonicalName());
+			// System.err.println("Type of XML Document Builder: " +
+			// db.getClass().getCanonicalName());
 			return doc;
 		} catch (NullPointerException e) {
-			ErrorMsg.addErrorMessage("Null Pointer Exception, data could not be retrieved.<br>"
-								+ e.getLocalizedMessage());
+			ErrorMsg.addErrorMessage(
+					"Null Pointer Exception, data could not be retrieved.<br>" + e.getLocalizedMessage());
 		} catch (SAXException e) {
-			ErrorMsg.addErrorMessage("SAX Exception while processing experimental data.<br>"
-					+ e.getLocalizedMessage());
+			ErrorMsg.addErrorMessage("SAX Exception while processing experimental data.<br>" + e.getLocalizedMessage());
 		} catch (IOException e) {
-			ErrorMsg.addErrorMessage("IO Exception while processing experimental data.<br>"
-								+ e.getLocalizedMessage());
+			ErrorMsg.addErrorMessage("IO Exception while processing experimental data.<br>" + e.getLocalizedMessage());
 		} catch (ParserConfigurationException e) {
 			ErrorMsg.addErrorMessage("Format Parser Configuration Exception while processing experimental data.<br>"
-								+ e.getLocalizedMessage());
+					+ e.getLocalizedMessage());
 		} catch (Exception e) {
-			ErrorMsg.addErrorMessage("Exception, data could not be processed.<br>"
-								+ e.getLocalizedMessage());
+			ErrorMsg.addErrorMessage("Exception, data could not be processed.<br>" + e.getLocalizedMessage());
 		}
 		return null;
 	}
-	
+
 	public static Document getDocument(InputStream inpS) {
 		// System.out.println("Try to parse:\n"+res);
 		// Set namespaceAware to true to get a DOM Level 2 tree with nodes
@@ -195,32 +191,27 @@ public class XMLHelper implements HelperClass {
 			// db.getClass().getCanonicalName());
 			return doc;
 		} catch (NullPointerException e) {
-			ErrorMsg
-								.addErrorMessage("Null Pointer Exception, data could not be retrieved.<br>"
-													+ e.getLocalizedMessage());
+			ErrorMsg.addErrorMessage(
+					"Null Pointer Exception, data could not be retrieved.<br>" + e.getLocalizedMessage());
 		} catch (SAXException e) {
-			ErrorMsg
-								.addErrorMessage("Format Parser (SAX) Exception while processing experimental data.<br>"
-													+ e.getLocalizedMessage());
+			ErrorMsg.addErrorMessage(
+					"Format Parser (SAX) Exception while processing experimental data.<br>" + e.getLocalizedMessage());
 		} catch (IOException e) {
-			ErrorMsg
-								.addErrorMessage("IO Exception while processing experimental data.<br>"
-													+ e.getLocalizedMessage());
+			ErrorMsg.addErrorMessage("IO Exception while processing experimental data.<br>" + e.getLocalizedMessage());
 		} catch (ParserConfigurationException e) {
-			ErrorMsg
-								.addErrorMessage("Format Parser Configuration Exception while processing experimental data.<br>"
-													+ e.getLocalizedMessage());
+			ErrorMsg.addErrorMessage("Format Parser Configuration Exception while processing experimental data.<br>"
+					+ e.getLocalizedMessage());
 		}
 		return null;
 	}
-	
+
 	public static void validate(Document doc, URL xsdLocation) throws Exception {
 		SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
 		Schema schema = factory.newSchema(xsdLocation);
 		Validator validator = schema.newValidator();
 		validator.validate(new DOMSource(doc));
 	}
-	
+
 	public static void writeXMLDataToFile(Document doc, String path_and_filename) {
 		try {
 			Transformer t = TransformerFactory.newInstance().newTransformer();
@@ -231,7 +222,7 @@ public class XMLHelper implements HelperClass {
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-	
+
 }
 
 // ------------------------------------------------------------------------------

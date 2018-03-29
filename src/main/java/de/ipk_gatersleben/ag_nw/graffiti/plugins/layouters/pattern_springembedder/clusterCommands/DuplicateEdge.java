@@ -21,36 +21,37 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 public class DuplicateEdge extends AbstractEditorAlgorithm {
-	
+
 	@Override
 	public boolean activeForView(View v) {
 		return v != null;
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
 		PreconditionException e = new PreconditionException();
 		if (selection.getNumberOfNodes() > 0 || selection.getNumberOfEdges() != 1)
 			e.add("Exactly one edge needs to be selected!");
-		
+
 		if (!e.isEmpty())
 			throw e;
 	}
-	
+
 	@Override
 	public void execute() {
-		
-		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl("", "");
+
+		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
+				"", "");
 		status.setPluginWaitsForUser(true);
-		
+
 		final EditorSession session = MainFrame.getInstance().getActiveEditorSession();
-		
+
 		final ArrayList<Node> src = new ArrayList<Node>();
 		final ArrayList<Node> tgt = new ArrayList<Node>();
-		
+
 		final Edge edgeToBeCopied = selection.getEdges().iterator().next();
-		
+
 		Runnable interaction = new Runnable() {
 			@Override
 			public void run() {
@@ -91,7 +92,7 @@ public class DuplicateEdge extends AbstractEditorAlgorithm {
 				status.setCurrentStatusValue(100);
 			}
 		};
-		
+
 		Runnable exec = new Runnable() {
 			@Override
 			public void run() {
@@ -104,53 +105,49 @@ public class DuplicateEdge extends AbstractEditorAlgorithm {
 							Edge ne = session.getGraph().addEdgeCopy(edgeToBeCopied, s, t);
 							if (!hasSelfLoops && ne.getSource() == ne.getTarget())
 								hasSelfLoops = true;
-							else
-								if (!hasParallelEdges && session.getGraph().getEdges(s, t).size() > 1)
-									hasParallelEdges = true;
-							
+							else if (!hasParallelEdges && session.getGraph().getEdges(s, t).size() > 1)
+								hasParallelEdges = true;
+
 							newEdges.add(ne);
 						}
 					}
 					Selection sel = new Selection(getName(), newEdges);
-					
+
 					if (hasSelfLoops)
-						GravistoService.getInstance().runAlgorithm(new IntroduceSelfEdgeBends(), session.getGraph(), sel, false, getActionEvent());
+						GravistoService.getInstance().runAlgorithm(new IntroduceSelfEdgeBends(), session.getGraph(),
+								sel, false, getActionEvent());
 					if (hasParallelEdges)
-						GravistoService.getInstance().runAlgorithm(new IntroduceParallelEdgeBends(), session.getGraph(), sel, false, getActionEvent());
-					
+						GravistoService.getInstance().runAlgorithm(new IntroduceParallelEdgeBends(), session.getGraph(),
+								sel, false, getActionEvent());
+
 					session.getSelectionModel().setActiveSelection(sel);
 					session.getSelectionModel().selectionChanged();
 				}
 			}
 		};
-		
+
 		BackgroundTaskHelper.issueSimpleTask(getName(), "", interaction, exec, status);
 	}
-	
+
 	@Override
 	public String getName() {
 		return "Clone Edge";
 	}
-	
+
 	@Override
 	public String getDescription() {
-		return "<html>This command will clone the edge with all attributes and<br>" +
-						"connect this copy to the interactively chosen source and<br>" +
-						"target node. If there are many nodes chosen the edge will<br>" +
-						"be multiplicated several times.";
+		return "<html>This command will clone the edge with all attributes and<br>"
+				+ "connect this copy to the interactively chosen source and<br>"
+				+ "target node. If there are many nodes chosen the edge will<br>" + "be multiplicated several times.";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Network.Edges";
 	}
-	
 
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.EDGE
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.EDGE));
 	}
 }

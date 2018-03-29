@@ -9,17 +9,17 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes;
 public class EnzClassEntry {
 	QuadNumber quadNumber;
 	String description;
-	
+
 	@Override
 	public String toString() {
 		return quadNumber.toString() + " " + description;
 	}
-	
+
 	public EnzClassEntry(EnzClassEntry template) {
 		description = template.description;
 		quadNumber = template.quadNumber;
 	}
-	
+
 	/**
 	 * @param number12
 	 * @param number22
@@ -27,20 +27,19 @@ public class EnzClassEntry {
 	 * @param number42
 	 * @param description2
 	 */
-	public EnzClassEntry(String number1, String number2,
-						String number3, String number4, String description) {
+	public EnzClassEntry(String number1, String number2, String number3, String number4, String description) {
 		quadNumber = new QuadNumber(number1, number2, number3, number4);
 		this.description = description;
 	}
-	
+
 	/**
 	 * @param line
-	 *           A enzyme class entry, e.g.
-	 *           "1. 1. 5.-    weiterer Text."
-	 *           The format is anum.bnum.cnum.dnum[space]description
-	 *           each number is either a "-" or a number. Spaces are removed for this part.
-	 *           The numbers are divided with the description by two or more spaces.
-	 *           The last point (which must be existent!) is removed autmatically be this constructor.
+	 *            A enzyme class entry, e.g. "1. 1. 5.- weiterer Text." The format
+	 *            is anum.bnum.cnum.dnum[space]description each number is either a
+	 *            "-" or a number. Spaces are removed for this part. The numbers are
+	 *            divided with the description by two or more spaces. The last point
+	 *            (which must be existent!) is removed autmatically be this
+	 *            constructor.
 	 */
 	public static EnzClassEntry getEnzClassEntry(String line) {
 		try {
@@ -50,7 +49,7 @@ public class EnzClassEntry {
 			QuadNumber qn = new QuadNumber(line);
 			line = qn.restOfLine;
 			String description = line;
-			
+
 			if (qn.isValidQuadNumber())
 				return new EnzClassEntry(qn.number1, qn.number2, qn.number3, qn.number4, description);
 			else
@@ -59,10 +58,10 @@ public class EnzClassEntry {
 			return null;
 		}
 	}
-	
+
 	/**
-	 * Determines if a given line is a valid start for a enzyme class entry.
-	 * Example for a valid entry: " 6. 3. 1.-"
+	 * Determines if a given line is a valid start for a enzyme class entry. Example
+	 * for a valid entry: " 6. 3. 1.-"
 	 * 
 	 * @param line
 	 * @return True, if the line (and possibily following lines) should be treated
@@ -83,18 +82,17 @@ public class EnzClassEntry {
 		}
 		return result;
 	}
-	
+
 	/**
-	 * If a entry is the same as the given, true is returned.
-	 * The entry may contain "-", but then the entry must be same
-	 * for this number. The other way around, if the object contains
-	 * some "-" any number can be given for this entry, the match
-	 * will be valid. Object="1.2.-.-" => ec_number "1.2.3.4" will match.
+	 * If a entry is the same as the given, true is returned. The entry may contain
+	 * "-", but then the entry must be same for this number. The other way around,
+	 * if the object contains some "-" any number can be given for this entry, the
+	 * match will be valid. Object="1.2.-.-" => ec_number "1.2.3.4" will match.
 	 * Reversed this is not true.
 	 * 
 	 * @param ec_number
-	 * @return True, if the given ec_number is a valid match
-	 *         for the category, this object instance represents.
+	 * @return True, if the given ec_number is a valid match for the category, this
+	 *         object instance represents.
 	 */
 	public boolean isValidMatchFor(String ec_number) {
 		if (!quadNumber.isValidQuadNumber())
@@ -111,7 +109,7 @@ public class EnzClassEntry {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * @param id
 	 * @return
@@ -131,7 +129,7 @@ public class EnzClassEntry {
 			return false;
 		}
 	}
-	
+
 	public boolean isValidMatchFor_Inversed(QuadNumber testNumber) {
 		if (!quadNumber.isValidQuadNumber())
 			return false;
@@ -146,5 +144,5 @@ public class EnzClassEntry {
 			return false;
 		}
 	}
-	
+
 }

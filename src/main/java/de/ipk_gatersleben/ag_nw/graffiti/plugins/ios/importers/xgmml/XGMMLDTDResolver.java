@@ -14,31 +14,30 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
 /**
- * Resolver for the XGMML DTD.
- * Normally DTDs will be loaded via HTTP.
- * This Resolver provides functionality so that the XGMML DTD need not be
- * retrieved via HTTP.
- * This resolver will return the DTD from within the <tt>CLASSPATH</tt>.
+ * Resolver for the XGMML DTD. Normally DTDs will be loaded via HTTP. This
+ * Resolver provides functionality so that the XGMML DTD need not be retrieved
+ * via HTTP. This resolver will return the DTD from within the
+ * <tt>CLASSPATH</tt>.
  * 
  * @author <a href="mailto:sell@nesoft.de">Burkhard Sell</a>
  * @version $Revision$
  */
 
 public class XGMMLDTDResolver implements EntityResolver {
-	
+
 	/**
 	 * Resolves the entity.
 	 * 
-	 * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String, java.lang.String)
+	 * @see org.xml.sax.EntityResolver#resolveEntity(java.lang.String,
+	 *      java.lang.String)
 	 */
 	public InputSource resolveEntity(String publicId, String systemId) {
 		systemId = systemId.toLowerCase();
 		if ((systemId.indexOf("xgmml.dtd") != -1) || publicId.equals(XGMMLConstants.PUBLIC_ID)) {
 			return new InputSource(
-								new BufferedReader(
-													new InputStreamReader(getClass().getResourceAsStream("xgmml.dtd"))));
+					new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("xgmml.dtd"))));
 		}
-		
+
 		return null;
 	}
 }

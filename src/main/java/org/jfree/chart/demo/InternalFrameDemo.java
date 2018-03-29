@@ -55,7 +55,7 @@ public class InternalFrameDemo extends ApplicationFrame {
 	 * Creates a new instance of the demo.
 	 * 
 	 * @param title
-	 *           the title.
+	 *            the title.
 	 */
 	public InternalFrameDemo(final String title) {
 		super(title);
@@ -83,16 +83,8 @@ public class InternalFrameDemo extends ApplicationFrame {
 		dataset.addValue(34.0, "Series 1", "Category 1");
 		dataset.addValue(23.0, "Series 1", "Category 2");
 		dataset.addValue(54.0, "Series 1", "Category 3");
-		final JFreeChart chart = ChartFactory.createBarChart(
-							"Bar Chart",
-							"Category",
-							"Series",
-							dataset,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createBarChart("Bar Chart", "Category", "Series", dataset,
+				PlotOrientation.VERTICAL, true, true, false);
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new Dimension(200, 100));
 		final JInternalFrame frame = new JInternalFrame("Frame 1", true);
@@ -109,15 +101,8 @@ public class InternalFrameDemo extends ApplicationFrame {
 	private JInternalFrame createFrame2() {
 		final XYDataset dataset1 = createDataset("Series 1", 100.0, new Minute(), 200);
 
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							"Time Series Chart",
-							"Time of Day",
-							"Value",
-							dataset1,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Time Series Chart", "Time of Day", "Value",
+				dataset1, true, true, false);
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new Dimension(200, 100));
 		final JInternalFrame frame = new JInternalFrame("Frame 2", true);
@@ -129,19 +114,17 @@ public class InternalFrameDemo extends ApplicationFrame {
 	 * Creates a sample dataset.
 	 * 
 	 * @param name
-	 *           the dataset name.
+	 *            the dataset name.
 	 * @param base
-	 *           the starting value.
+	 *            the starting value.
 	 * @param start
-	 *           the starting period.
+	 *            the starting period.
 	 * @param count
-	 *           the number of values to generate.
+	 *            the number of values to generate.
 	 * @return The dataset.
 	 */
-	private XYDataset createDataset(final String name,
-												final double base,
-												final RegularTimePeriod start,
-												final int count) {
+	private XYDataset createDataset(final String name, final double base, final RegularTimePeriod start,
+			final int count) {
 
 		final TimeSeries series = new TimeSeries(name, start.getClass());
 		RegularTimePeriod period = start;
@@ -174,7 +157,7 @@ public class InternalFrameDemo extends ApplicationFrame {
 	 * The starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 		final InternalFrameDemo demo = new InternalFrameDemo("Internal Frame Demo");

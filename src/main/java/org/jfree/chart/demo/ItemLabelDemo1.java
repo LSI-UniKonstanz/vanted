@@ -60,31 +60,29 @@ public class ItemLabelDemo1 extends ApplicationFrame {
 		private double threshold;
 
 		/**
-		 * Creates a new generator that only displays labels that are greater
-		 * than or equal to the threshold value.
+		 * Creates a new generator that only displays labels that are greater than or
+		 * equal to the threshold value.
 		 * 
 		 * @param threshold
-		 *           the threshold value.
+		 *            the threshold value.
 		 */
 		public LabelGenerator(final double threshold) {
 			this.threshold = threshold;
 		}
 
 		/**
-		 * Generates a label for the specified item. The label is typically a
-		 * formatted version of the data value, but any text can be used.
+		 * Generates a label for the specified item. The label is typically a formatted
+		 * version of the data value, but any text can be used.
 		 * 
 		 * @param dataset
-		 *           the dataset (<code>null</code> not permitted).
+		 *            the dataset (<code>null</code> not permitted).
 		 * @param series
-		 *           the series index (zero-based).
+		 *            the series index (zero-based).
 		 * @param category
-		 *           the category index (zero-based).
+		 *            the category index (zero-based).
 		 * @return the label (possibly <code>null</code>).
 		 */
-		public String generateLabel(final CategoryDataset dataset,
-												final int series,
-												final int category) {
+		public String generateLabel(final CategoryDataset dataset, final int series, final int category) {
 
 			String result = null;
 			final Number value = dataset.getValue(series, category);
@@ -104,7 +102,7 @@ public class ItemLabelDemo1 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public ItemLabelDemo1(final String title) {
 
@@ -138,14 +136,13 @@ public class ItemLabelDemo1 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return the chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createBarChart(
-							"Item Label Demo 1", // chart title
+		final JFreeChart chart = ChartFactory.createBarChart("Item Label Demo 1", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
@@ -153,7 +150,7 @@ public class ItemLabelDemo1 extends ApplicationFrame {
 				false, // include legend
 				true, // tooltips?
 				false // URLs?
-				);
+		);
 
 		chart.setBackgroundPaint(Color.white);
 
@@ -177,7 +174,7 @@ public class ItemLabelDemo1 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

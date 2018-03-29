@@ -62,7 +62,7 @@ public class KeyToGroupMap implements Cloneable, PublicCloneable, Serializable {
 	 * Creates a new map with the specified default group.
 	 * 
 	 * @param defaultGroup
-	 *           the default group (<code>null</code> not permitted).
+	 *            the default group (<code>null</code> not permitted).
 	 */
 	public KeyToGroupMap(Comparable defaultGroup) {
 		if (defaultGroup == null) {
@@ -104,7 +104,7 @@ public class KeyToGroupMap implements Cloneable, PublicCloneable, Serializable {
 	 * Returns the index for the group.
 	 * 
 	 * @param group
-	 *           the group.
+	 *            the group.
 	 * @return The group index.
 	 */
 	public int getGroupIndex(Comparable group) {
@@ -115,9 +115,9 @@ public class KeyToGroupMap implements Cloneable, PublicCloneable, Serializable {
 	 * Returns the group that a key is mapped to.
 	 * 
 	 * @param key
-	 *           the key.
-	 * @return The group (never <code>null</code>, returns the default group if there
-	 *         is no mapping for the specified key).
+	 *            the key.
+	 * @return The group (never <code>null</code>, returns the default group if
+	 *         there is no mapping for the specified key).
 	 */
 	public Comparable getGroup(Comparable key) {
 		Comparable result = this.defaultGroup;
@@ -132,9 +132,10 @@ public class KeyToGroupMap implements Cloneable, PublicCloneable, Serializable {
 	 * Maps a key to a group.
 	 * 
 	 * @param key
-	 *           the key (<code>null</code> not permitted).
+	 *            the key (<code>null</code> not permitted).
 	 * @param group
-	 *           the group (<code>null</code> permitted, replaced by default group).
+	 *            the group (<code>null</code> permitted, replaced by default
+	 *            group).
 	 */
 	public void mapKeyToGroup(Comparable key, Comparable group) {
 		if (key == null) {
@@ -150,7 +151,7 @@ public class KeyToGroupMap implements Cloneable, PublicCloneable, Serializable {
 	 * Tests the map for equality against an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object to test against (<code>null</code> permitted).
+	 *            the object to test against (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -171,7 +172,7 @@ public class KeyToGroupMap implements Cloneable, PublicCloneable, Serializable {
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if there is a problem cloning the map.
+	 *             if there is a problem cloning the map.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

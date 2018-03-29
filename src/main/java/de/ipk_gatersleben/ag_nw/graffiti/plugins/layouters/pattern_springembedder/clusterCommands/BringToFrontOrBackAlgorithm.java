@@ -18,20 +18,21 @@ import org.graffiti.plugin.parameter.Parameter;
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 public class BringToFrontOrBackAlgorithm extends AbstractAlgorithm {
-	
+
 	boolean bringToFront = true;
 	private boolean redrawViewWhenFinished = true;
-	
+
 	public BringToFrontOrBackAlgorithm() {
 		bringToFront = true;
 	}
-	
+
 	public BringToFrontOrBackAlgorithm(boolean toBack) {
 		bringToFront = !toBack;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
@@ -40,36 +41,32 @@ public class BringToFrontOrBackAlgorithm extends AbstractAlgorithm {
 		else
 			return null;
 	}
-	
+
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Network.Arrange";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.LAYOUT
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
 
-	
 	@Override
 	public Parameter[] getParameters() {
 		return null;
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
-		
+
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
@@ -77,25 +74,26 @@ public class BringToFrontOrBackAlgorithm extends AbstractAlgorithm {
 		if (graph.getEdges().size() <= 0 && graph.getNodes().size() <= 0)
 			throw new PreconditionException("Graph contains no elements!");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
 		int smallestViewID = Integer.MAX_VALUE;
 		int greatestViewID = Integer.MIN_VALUE;
-		
+
 		for (GraphElement ge : graph.getGraphElements()) {
 			if (ge.getViewID() < smallestViewID)
 				smallestViewID = ge.getViewID();
 			if (ge.getViewID() > greatestViewID)
 				greatestViewID = ge.getViewID();
 		}
-		
+
 		if (selection.isEmpty())
 			selection.addAll(graph.getEdges());
-		
+
 		for (GraphElement ge : selection.getElements()) {
 			if (bringToFront) {
 				if (greatestViewID != Integer.MIN_VALUE)
@@ -105,13 +103,13 @@ public class BringToFrontOrBackAlgorithm extends AbstractAlgorithm {
 					ge.setViewID(smallestViewID - 1);
 			}
 		}
-		
+
 		if (redrawViewWhenFinished)
 			GraphHelper.issueCompleteRedrawForGraph(graph);
 	}
-	
+
 	public void setRedraw(boolean redrawViewWhenFinished) {
 		this.redrawViewWhenFinished = redrawViewWhenFinished;
 	}
-	
+
 }

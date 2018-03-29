@@ -15,13 +15,13 @@ import javax.swing.JLabel;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Relation;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.RelationType;
 
-public class RelationTypeEditor extends JComboBox {
+public class RelationTypeEditor extends JComboBox<RelationType> {
 	private static final long serialVersionUID = 1L;
 	private Relation currentRelation;
 	private JLabel relationHelp;
-	
+
 	private MyRelationList list;
-	
+
 	public RelationTypeEditor(Relation initialRelation, final JLabel relationHelp) {
 		super(RelationType.values());
 		this.relationHelp = relationHelp;
@@ -37,7 +37,7 @@ public class RelationTypeEditor extends JComboBox {
 			}
 		});
 	}
-	
+
 	public void updateRelationSelection(Relation r) {
 		this.currentRelation = r;
 		if (r == null) {
@@ -50,12 +50,13 @@ public class RelationTypeEditor extends JComboBox {
 				setToolTipText(r.getType().getExplanation());
 				relationHelp.setText(currentRelation.getType().getExplanation());
 			} else {
-				setToolTipText("");;
+				setToolTipText("");
+				;
 				relationHelp.setText("");
 			}
 		}
 	}
-	
+
 	public void setCallBack(MyRelationList list) {
 		this.list = list;
 	}

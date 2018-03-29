@@ -37,15 +37,16 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 
 public class SBML_SBML_Writer extends SBML_SBase_Writer {
 	private Model _model;
-	
+
 	Logger logger = Logger.getLogger(SBML_SBML_Writer.class);
+
 	/**
 	 * Processes the reading in an model
 	 * 
 	 * @param stream
-	 *        the data will be written into this stream
+	 *            the data will be written into this stream
 	 * @param g
-	 *        contains the data
+	 *            contains the data
 	 */
 	public void addSBML(OutputStream stream, Graph g) {
 		SBML_Constants.init();
@@ -53,15 +54,12 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 		SBMLWriter writer = new SBMLWriter();
 		int level = 0;
 		int version = 1;
-		if (AttributeHelper.hasAttribute(g, SBML_Constants.SBML,
-				SBML_Constants.LEVEL)) {
-			level = Integer.parseInt((String)AttributeHelper.getAttributeValue(g,
-					SBML_Constants.SBML, SBML_Constants.LEVEL, null, null));
+		if (AttributeHelper.hasAttribute(g, SBML_Constants.SBML, SBML_Constants.LEVEL)) {
+			level = Integer.parseInt((String) AttributeHelper.getAttributeValue(g, SBML_Constants.SBML,
+					SBML_Constants.LEVEL, null, null));
 		}
-		if (AttributeHelper.hasAttribute(g, SBML_Constants.SBML,
-				SBML_Constants.VERSION)) {
-			version = Integer.parseInt((String)getAttribute(g, SBML_Constants.SBML,
-					SBML_Constants.VERSION));
+		if (AttributeHelper.hasAttribute(g, SBML_Constants.SBML, SBML_Constants.VERSION)) {
+			version = Integer.parseInt((String) getAttribute(g, SBML_Constants.SBML, SBML_Constants.VERSION));
 		}
 		// L3V1 is the current spec
 		if (level < 3) {
@@ -70,39 +68,33 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 		}
 		SBMLDocument doc = new SBMLDocument(level, version);
 		addSBaseAttributes(doc, g);
-		
+
 		_model = null;
-		
-		if (AttributeHelper.hasAttribute(g, SBML_Constants.SBML,
-				SBML_Constants.MODEL_ID)) {
-			_model = doc.createModel((String) getAttribute(g,
-					SBML_Constants.SBML, SBML_Constants.MODEL_ID));
+
+		if (AttributeHelper.hasAttribute(g, SBML_Constants.SBML, SBML_Constants.MODEL_ID)) {
+			_model = doc.createModel((String) getAttribute(g, SBML_Constants.SBML, SBML_Constants.MODEL_ID));
 		} else {
 			_model = doc.createModel();
 		}
-		
+
 		SBML_Model_Writer writeModel = new SBML_Model_Writer();
 		writeModel.addModel(_model, g);
-		
-		ArrayList<String> functionDefinitions = headlineHelper(g,
-				SBML_Constants.SBML_FUNCTION_DEFINITION);
+
+		ArrayList<String> functionDefinitions = headlineHelper(g, SBML_Constants.SBML_FUNCTION_DEFINITION);
 		if (functionDefinitions.size() > 0) {
-			Iterator<String> itFunctionDefinitions = functionDefinitions
-					.iterator();
+			Iterator<String> itFunctionDefinitions = functionDefinitions.iterator();
 			int i = 1;
 			SBMLFunctionDefinitionHelper functionDefinitionHelper = new SBMLFunctionDefinitionHelper();
 			while (itFunctionDefinitions.hasNext()) {
-				String functionDefinitionHeadline = (String) itFunctionDefinitions
-						.next();
+				String functionDefinitionHeadline = (String) itFunctionDefinitions.next();
 				SBML_FunctionDefinition_Writer writeFunctionDefinition = new SBML_FunctionDefinition_Writer();
-				writeFunctionDefinition.addFunctionDefinition(_model, g,
-						functionDefinitionHeadline, functionDefinitionHelper);
+				writeFunctionDefinition.addFunctionDefinition(_model, g, functionDefinitionHeadline,
+						functionDefinitionHelper);
 				i++;
 			}
 		}
-		
-		ArrayList<String> unitDefinitions = headlineHelper(g,
-				SBML_Constants.SBML_UNIT_DEFINITION);
+
+		ArrayList<String> unitDefinitions = headlineHelper(g, SBML_Constants.SBML_UNIT_DEFINITION);
 		if (unitDefinitions.size() > 0) {
 			Iterator<String> itUnitDefinition = unitDefinitions.iterator();
 			int i = 1;
@@ -115,9 +107,8 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 				i++;
 			}
 		}
-		
-		ArrayList<String> compartments = headlineHelper(g,
-				SBML_Constants.SBML_COMPARTMENT);
+
+		ArrayList<String> compartments = headlineHelper(g, SBML_Constants.SBML_COMPARTMENT);
 		if (compartments.size() > 0) {
 			SBMLCompartmentHelper compartmentHelperObject = new SBMLCompartmentHelper();
 			Iterator<String> itCompartments = compartments.iterator();
@@ -125,19 +116,17 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 			while (itCompartments.hasNext()) {
 				String compartmentHeadline = itCompartments.next();
 				SBML_Compartment_Writer writeCompartmentDefinition = new SBML_Compartment_Writer();
-				writeCompartmentDefinition.addCompartment(_model, g,
-						compartmentHeadline, compartmentHelperObject);
+				writeCompartmentDefinition.addCompartment(_model, g, compartmentHeadline, compartmentHelperObject);
 				i++;
 			}
 		}
-		
+
 		SBML_Species_Writer writeSpeciesDefinition = new SBML_Species_Writer();
 		writeSpeciesDefinition.addSpecies(_model, g);
 		createExtendedLayoutModel(g);
 		writeSpeciesDefinition.addSpeciesGlyph(_model, g);
-		
-		ArrayList<String> parameters = headlineHelper(g,
-				SBML_Constants.SBML_PARAMETER);
+
+		ArrayList<String> parameters = headlineHelper(g, SBML_Constants.SBML_PARAMETER);
 		if (parameters.size() > 0) {
 			Iterator<String> itParameters = parameters.iterator();
 			int i = 1;
@@ -146,35 +135,29 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 				String parameterHeadline = itParameters.next();
 				// String presentedHeadline = "SBML Parameter "+i;
 				SBML_Parameter_Writer writeParameter = new SBML_Parameter_Writer();
-				writeParameter.addParameter(g, _model, parameterHeadline,
-						parameterHelperObject);
+				writeParameter.addParameter(g, _model, parameterHeadline, parameterHelperObject);
 				i++;
 			}
 		}
-		
-		ArrayList<String> initialAssignments = headlineHelper(g,
-				SBML_Constants.SBML_INITIAL_ASSIGNMENT);
+
+		ArrayList<String> initialAssignments = headlineHelper(g, SBML_Constants.SBML_INITIAL_ASSIGNMENT);
 		if (initialAssignments.size() > 0) {
-			Iterator<String> itInitialAssignments = initialAssignments
-					.iterator();
+			Iterator<String> itInitialAssignments = initialAssignments.iterator();
 			int i = 1;
 			SBMLInitialAssignmentHelper iaHelperObject = new SBMLInitialAssignmentHelper();
 			while (itInitialAssignments.hasNext()) {
-				String initialAssignmentHeadline = (String) itInitialAssignments
-						.next();
+				String initialAssignmentHeadline = (String) itInitialAssignments.next();
 				// String presentedHeadline = "SBML Initial Assignment " + i;
 				SBML_InitialAssignment_Writer writeInitialAssignment = new SBML_InitialAssignment_Writer();
-				writeInitialAssignment.addInitialAssignment(g, _model,
-						initialAssignmentHeadline, iaHelperObject);
+				writeInitialAssignment.addInitialAssignment(g, _model, initialAssignmentHeadline, iaHelperObject);
 				i++;
 			}
 		}
-		
+
 		SBML_Rule_Writer writeRuleDefinition = new SBML_Rule_Writer();
 		writeRuleDefinition.addRules(g, _model);
-		
-		ArrayList<String> constraints = headlineHelper(g,
-				SBML_Constants.SBML_CONSTRAINT);
+
+		ArrayList<String> constraints = headlineHelper(g, SBML_Constants.SBML_CONSTRAINT);
 		if (constraints.size() > 0) {
 			Iterator<String> itConstraints = constraints.iterator();
 			SBMLConstraintHelper constraintHelperObject = new SBMLConstraintHelper();
@@ -183,15 +166,14 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 				String constraintHeadline = (String) itConstraints.next();
 				// String presentedHeadline = "SBML Constraint " + i;
 				SBML_Constraint_Writer writeConstraint = new SBML_Constraint_Writer();
-				writeConstraint.addConstraint(g, _model, constraintHeadline,
-						constraintHelperObject);
+				writeConstraint.addConstraint(g, _model, constraintHeadline, constraintHelperObject);
 				i++;
 			}
 		}
-		
+
 		SBML_Reaction_Writer writeReaction = new SBML_Reaction_Writer();
 		writeReaction.addReactions(g, _model);
-		
+
 		ArrayList<String> events = headlineHelper(g, SBML_Constants.SBML_EVENT);
 		if (events.size() > 0) {
 			Iterator<String> itEvents = events.iterator();
@@ -204,84 +186,86 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 				i++;
 			}
 		}
-		
+
 		int eventCount = _model.getNumEvents();
-		
+
 		/*
 		 * temporarily removed validation when writing sbml files
 		 */
-		
-//		boolean write = false;
-//		try {
-//			URL url = new URL("http://sbml.org/Facilities/Validator/");
-//			URLConnection connection = url.openConnection();
-//			InputStream is = null;
-//			try {
-//				is = connection.getInputStream();
-//			} catch (Exception e) {
-//				SBML_Logger.addErrorMessage("No internet connection. Can not validate document.");
-//				/*
-//				 * JOptionPane .showMessageDialog(null,
-//				 * "No internet connection. Can not validate document before saving."
-//				 * );
-//				 */
-//				write = true;
-//			}
-//			if (null != is) {
-//				int validate = 1;
-//				if (!SBML_XML_ReaderWriterPlugin.isTestintMode)
-//					validate = JOptionPane
-//							.showConfirmDialog(
-//									null,
-//									"Do you want to validate the SBML file against the Level 3 Version 1 specification?");
-//				if (validate == 0) {
-//					
-//					doc.setConsistencyChecks(
-//							CHECK_CATEGORY.GENERAL_CONSISTENCY, true);
-//					doc.setConsistencyChecks(
-//							CHECK_CATEGORY.IDENTIFIER_CONSISTENCY, true);
-//					doc.setConsistencyChecks(CHECK_CATEGORY.UNITS_CONSISTENCY,
-//							true);
-//					doc.setConsistencyChecks(CHECK_CATEGORY.MATHML_CONSISTENCY,
-//							true);
-//					doc.setConsistencyChecks(CHECK_CATEGORY.MODELING_PRACTICE,
-//							true);
-//					doc.setConsistencyChecks(CHECK_CATEGORY.SBO_CONSISTENCY,
-//							true);
-//					doc.setConsistencyChecks(
-//							CHECK_CATEGORY.OVERDETERMINED_MODEL, true);
-//					
-//					int numberOfErrors = doc.checkConsistency();
-//					if (numberOfErrors > 0) {
-//						SBMLErrorLog errorLog = doc.getListOfErrors();
-//						for (int i = 0; i < numberOfErrors; i++) {
-//							SBML_Logger.addErrorMessage(errorLog.getError(i));
-//						}
-//					}
-//					if (numberOfErrors > 0) {
-//						int load = JOptionPane
-//								.showConfirmDialog(null,
-//										"The online validator detected mistakes in the file. Save anyway?");
-//						if (load == 0) {
-//							write = true;
-//						}
-//					}
-//					if (numberOfErrors == 0) {
-//						write = true;
-//					}
-//				}
-//				if (validate == 1) {
-//					write = true;
-//				}
-//			} else {
-//				write = true;
-//				JOptionPane.showMessageDialog(null,
-//						"Online validation not possible.");
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		PrintStream ps = null;
+
+		// boolean write = false;
+		// try {
+		// URL url = new URL("http://sbml.org/Facilities/Validator/");
+		// URLConnection connection = url.openConnection();
+		// InputStream is = null;
+		// try {
+		// is = connection.getInputStream();
+		// } catch (Exception e) {
+		// SBML_Logger.addErrorMessage("No internet connection. Can not validate
+		// document.");
+		// /*
+		// * JOptionPane .showMessageDialog(null,
+		// * "No internet connection. Can not validate document before saving."
+		// * );
+		// */
+		// write = true;
+		// }
+		// if (null != is) {
+		// int validate = 1;
+		// if (!SBML_XML_ReaderWriterPlugin.isTestintMode)
+		// validate = JOptionPane
+		// .showConfirmDialog(
+		// null,
+		// "Do you want to validate the SBML file against the Level 3 Version 1
+		// specification?");
+		// if (validate == 0) {
+		//
+		// doc.setConsistencyChecks(
+		// CHECK_CATEGORY.GENERAL_CONSISTENCY, true);
+		// doc.setConsistencyChecks(
+		// CHECK_CATEGORY.IDENTIFIER_CONSISTENCY, true);
+		// doc.setConsistencyChecks(CHECK_CATEGORY.UNITS_CONSISTENCY,
+		// true);
+		// doc.setConsistencyChecks(CHECK_CATEGORY.MATHML_CONSISTENCY,
+		// true);
+		// doc.setConsistencyChecks(CHECK_CATEGORY.MODELING_PRACTICE,
+		// true);
+		// doc.setConsistencyChecks(CHECK_CATEGORY.SBO_CONSISTENCY,
+		// true);
+		// doc.setConsistencyChecks(
+		// CHECK_CATEGORY.OVERDETERMINED_MODEL, true);
+		//
+		// int numberOfErrors = doc.checkConsistency();
+		// if (numberOfErrors > 0) {
+		// SBMLErrorLog errorLog = doc.getListOfErrors();
+		// for (int i = 0; i < numberOfErrors; i++) {
+		// SBML_Logger.addErrorMessage(errorLog.getError(i));
+		// }
+		// }
+		// if (numberOfErrors > 0) {
+		// int load = JOptionPane
+		// .showConfirmDialog(null,
+		// "The online validator detected mistakes in the file. Save anyway?");
+		// if (load == 0) {
+		// write = true;
+		// }
+		// }
+		// if (numberOfErrors == 0) {
+		// write = true;
+		// }
+		// }
+		// if (validate == 1) {
+		// write = true;
+		// }
+		// } else {
+		// write = true;
+		// JOptionPane.showMessageDialog(null,
+		// "Online validation not possible.");
+		// }
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
+		// PrintStream ps = null;
 		try (PrintStream ps = new PrintStream(stream, false, "UTF-8")) {
 			writer.write(doc, ps);
 		} catch (XMLStreamException e) {
@@ -289,12 +273,12 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 		} catch (SBMLException e) {
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
 		}
 
 	}
-	
+
 	private void createExtendedLayoutModel(Graph g) {
 		LayoutModelPlugin extendedLayoutModel = new LayoutModelPlugin(_model);
 		_model.addExtension(SBMLHelper.SBML_LAYOUT_EXTENSION_NAMESPACE, extendedLayoutModel);
@@ -305,13 +289,14 @@ public class SBML_SBML_Writer extends SBML_SBase_Writer {
 		Set<String> allLayoutIDs = new HashSet<String>();
 		while (itSpeicesNodes.hasNext()) {
 			Node speicesNode = itSpeicesNodes.next();
-			String layoutID = (String) AttributeHelper.getAttributeValue(speicesNode, SBML_Constants.SBML, SBML_Constants.SBML_LAYOUT_ID, null, null);
+			String layoutID = (String) AttributeHelper.getAttributeValue(speicesNode, SBML_Constants.SBML,
+					SBML_Constants.SBML_LAYOUT_ID, null, null);
 			if (allLayoutIDs.add(layoutID)) {
 				Layout layout = extendedLayoutModel.createLayout();
 				layout.setId(layoutID);
 				logger.debug("in create extended layout model: " + layoutID);
 			}
 		}
-		
+
 	}
 }

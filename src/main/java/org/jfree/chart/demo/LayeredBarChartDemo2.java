@@ -44,7 +44,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demonstration application showing how to create a superimposed vertical bar chart.
+ * A simple demonstration application showing how to create a superimposed
+ * vertical bar chart.
  * 
  * @author Arnaud Lelievre
  */
@@ -54,46 +55,35 @@ public class LayeredBarChartDemo2 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public LayeredBarChartDemo2(final String title) {
 
 		super(title);
 
 		// create a dataset...
-		final double[][] data = new double[][] {
-							{ 41.0, 33.0, 22.0, 64.0, 42.0, 62.0, 22.0, 14.0 },
-							{ 55.0, 63.0, 55.0, 48.0, 54.0, 37.0, 41.0, 39.0 },
-							{ 57.0, 75.0, 43.0, 33.0, 63.0, 46.0, 57.0, 33.0 }
-			};
+		final double[][] data = new double[][] { { 41.0, 33.0, 22.0, 64.0, 42.0, 62.0, 22.0, 14.0 },
+				{ 55.0, 63.0, 55.0, 48.0, 54.0, 37.0, 41.0, 39.0 },
+				{ 57.0, 75.0, 43.0, 33.0, 63.0, 46.0, 57.0, 33.0 } };
 
-		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Series ",
-																									"Factor ",
-																									data);
+		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Series ", "Factor ", data);
 
 		// create the chart...
 		final CategoryAxis categoryAxis = new CategoryAxis("Category");
 		final ValueAxis valueAxis = new NumberAxis("Score (%)");
 
-		final CategoryPlot plot = new CategoryPlot(dataset,
-															categoryAxis,
-															valueAxis,
-															new LayeredBarRenderer());
+		final CategoryPlot plot = new CategoryPlot(dataset, categoryAxis, valueAxis, new LayeredBarRenderer());
 
 		plot.setOrientation(PlotOrientation.VERTICAL);
-		final JFreeChart chart = new JFreeChart(
-							"Layered Bar Chart Demo 2",
-							JFreeChart.DEFAULT_TITLE_FONT,
-							plot,
-							true
-							);
+		final JFreeChart chart = new JFreeChart("Layered Bar Chart Demo 2", JFreeChart.DEFAULT_TITLE_FONT, plot, true);
 
 		// set the background color for the chart...
 		chart.setBackgroundPaint(Color.lightGray);
 
 		final LayeredBarRenderer renderer = (LayeredBarRenderer) plot.getRenderer();
 
-		// we can set each series bar width individually or let the renderer manage a standard view.
+		// we can set each series bar width individually or let the renderer manage a
+		// standard view.
 		// the width is set in percentage, where 1.0 is the maximum (100%).
 		renderer.setSeriesBarWidth(0, 1.0);
 		renderer.setSeriesBarWidth(1, 0.7);
@@ -128,7 +118,7 @@ public class LayeredBarChartDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

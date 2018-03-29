@@ -48,8 +48,7 @@ public class DataPackageResources_ru extends ListResourceBundle {
 	/** The resources to be localised. */
 	private static final Object[][] CONTENTS = {
 
-	{ "series.default-prefix", "��ਨ" },
-						{ "categories.default-prefix", "��⥣�ਨ" },
+			{ "series.default-prefix", "��ਨ" }, { "categories.default-prefix", "��⥣�ਨ" },
 
 	};
 

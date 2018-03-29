@@ -42,18 +42,18 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_class
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.NodeCacheEntry;
 
 public class NodeTools {
-	
+
 	public static Vector2d getMaximumXY(Collection<Node> nodeList, double factorXY, double minx, double miny,
-						boolean includeSizeInformation) {
+			boolean includeSizeInformation) {
 		return getMaximumXY(nodeList, factorXY, minx, miny, includeSizeInformation, false);
 	}
-	
+
 	public static Vector2d getMaximumXY(Collection<Node> nodeList, double factorXY, double minx, double miny,
-						boolean includeSizeInformation, boolean includeInvisibleNodes) {
-		
+			boolean includeSizeInformation, boolean includeInvisibleNodes) {
+
 		double maxx = 0, maxy = 0;
-		
-		for(Node currentNode : nodeList) {
+
+		for (Node currentNode : nodeList) {
 			double x, y;
 			double sx = 0, sy = 0;
 			if (!includeInvisibleNodes) {
@@ -76,18 +76,18 @@ public class NodeTools {
 		}
 		return new Vector2d((maxx * factorXY - minx), (maxy * factorXY - miny));
 	}
-	
+
 	public static Vector2d getMinimumXY(Collection<Node> nodeList, double factorXY, double subx, double suby,
-						boolean includeSizeInformation) {
+			boolean includeSizeInformation) {
 		return getMinimumXY(nodeList, factorXY, subx, suby, includeSizeInformation, false);
 	}
-	
+
 	public static Vector2d getMinimumXY(Collection<Node> nodeList, double factorXY, double subx, double suby,
-						boolean includeSizeInformation, boolean includeInvisibleNodes) {
-		
+			boolean includeSizeInformation, boolean includeInvisibleNodes) {
+
 		double minx = Double.MAX_VALUE, miny = Double.MAX_VALUE;
-		
-		for(Node currentNode : nodeList) {
+
+		for (Node currentNode : nodeList) {
 			double x, y;
 			double sx = 0, sy = 0;
 			if (!includeInvisibleNodes) {
@@ -110,7 +110,7 @@ public class NodeTools {
 		}
 		return new Vector2d((minx * factorXY - subx), (miny * factorXY - suby));
 	}
-	
+
 	/**
 	 * Calculates the center of a number of given nodes (other Graph elements are
 	 * ignored). If no nodes are given the position vector contains Double.NaN
@@ -118,14 +118,14 @@ public class NodeTools {
 	 * 
 	 * @author Christian Klukas
 	 * @param nodeList
-	 *           Node collection to work with. The collection has to contain
-	 *           either <code>Node</code> objects, or <code>NodeCacheEntry</code> objects.
+	 *            Node collection to work with. The collection has to contain either
+	 *            <code>Node</code> objects, or <code>NodeCacheEntry</code> objects.
 	 * @return A <code>Vector2d</code> containing the position of the center.
 	 */
 	public static Vector2d getCenter(Collection<?> nodeList) {
 		double x = 0;
 		double y = 0;
-		
+
 		Iterator<?> nodeIterator = nodeList.iterator();
 		int numberOfSelectedNodes = 0;
 		while (nodeIterator.hasNext()) {
@@ -152,12 +152,12 @@ public class NodeTools {
 		}
 		return new Vector2d(x, y);
 	}
-	
+
 	public static Vector3d getCenter3d(Collection<?> nodeList) {
 		double x = 0;
 		double y = 0;
 		double z = 0;
-		
+
 		Iterator<?> nodeIterator = nodeList.iterator();
 		int numberOfSelectedNodes = 0;
 		while (nodeIterator.hasNext()) {
@@ -188,7 +188,7 @@ public class NodeTools {
 		}
 		return new Vector3d(x, y, z);
 	}
-	
+
 	// /**
 	// * Use this method to rotate a given collection of nodes around a point,
 	// given by the
@@ -240,7 +240,7 @@ public class NodeTools {
 	// // AttributeHelper.setPosition(currentNode, newX, newY);
 	// // }
 	// }
-	
+
 	// /**
 	// *
 	// * @param p Given
@@ -276,14 +276,14 @@ public class NodeTools {
 	// double newY = result.get(1, 0);
 	// return new Vector2d(newX, newY);
 	// }
-	
+
 	public static String getClusterID(GraphElement node, String idIfNoCluster) {
 		try {
 			return ((String) AttributeHelper.getAttributeValue(node, "cluster", "cluster", idIfNoCluster, null, false));
 		} catch (ClassCastException cce) {
 			// convert possible older integer id to string id
-			Integer oldval = (Integer) AttributeHelper
-								.getAttributeValue(node, "cluster", "cluster", null, new Integer(-1));
+			Integer oldval = (Integer) AttributeHelper.getAttributeValue(node, "cluster", "cluster", null,
+					Integer.valueOf(-1));
 			if (oldval != null) {
 				((CollectionAttribute) node.getAttribute("cluster")).remove("cluster");
 				setClusterID(node, oldval.toString());
@@ -292,14 +292,14 @@ public class NodeTools {
 				throw new RuntimeException("Cluster ID in wrong format, coversion failed.");
 		}
 	}
-	
+
 	public static void setClusterID(GraphElement node, String clusterId) {
 		if (clusterId != null)
 			AttributeHelper.setAttribute(node, "cluster", "cluster", clusterId);
 		else
 			AttributeHelper.deleteAttribute(node, "cluster", "cluster");
 	}
-	
+
 	public static List<MyComparableDataPoint> getDataTimePoints(GraphElement n, boolean useSampleAverage) {
 		List<SubstanceInterface> mappings = getMappedDataListFromNode(n);
 		List<MyComparableDataPoint> mappedData = new ArrayList<MyComparableDataPoint>();
@@ -311,44 +311,44 @@ public class NodeTools {
 				else
 					mappedData.addAll(getSortedDataSetValues(mapping));
 			}
-			
+
 			result.addAll(mappedData);
 		}
 		return result;
 	}
-	
+
 	public static List<SubstanceInterface> getMappedDataListFromNode(GraphElement graphElement) {
 		return Experiment2GraphHelper.getMappedDataListFromGraphElement(graphElement);
 	}
-	
+
 	/**
-	 * Get a list of <code>MyComparableDataPoint</code> entries from a
-	 * xmldata-node.
+	 * Get a list of <code>MyComparableDataPoint</code> entries from a xmldata-node.
 	 * 
 	 * @param xmldata
-	 *           A xml data node or a specific xml series data node.
+	 *            A xml data node or a specific xml series data node.
 	 * @return A list of <code>MyComparableDataPoint</code> entries.
 	 */
 	public static List<MyComparableDataPoint> getSortedAverageDataSetValues(SubstanceInterface xmldata) {
 		return getSortedAverageOrDataSetValues(xmldata, "average", false);
 	}
-	
-	public static List<MyComparableDataPoint> getSortedAverageDataSetValues(SubstanceInterface xmldata, boolean removeEmptyConditions) {
+
+	public static List<MyComparableDataPoint> getSortedAverageDataSetValues(SubstanceInterface xmldata,
+			boolean removeEmptyConditions) {
 		return getSortedAverageOrDataSetValues(xmldata, "average", removeEmptyConditions);
 	}
-	
+
 	private static List<MyComparableDataPoint> getSortedAverageOrDataSetValues(SubstanceInterface xmldata,
-						String avgOrDataIdentifier, boolean removeEmptyConditions) {
-		
+			String avgOrDataIdentifier, boolean removeEmptyConditions) {
+
 		boolean returnAvgValues = avgOrDataIdentifier.equals("average");
-		
+
 		ArrayList<MyComparableDataPoint> ss = new ArrayList<MyComparableDataPoint>();
-		
+
 		ss.addAll(xmldata.getDataPoints(returnAvgValues, removeEmptyConditions));
-		
+
 		return ss;
 	}
-	
+
 	public static ArrayList<org.w3c.dom.Node> getSortedLines(NodeList lines) {
 		ArrayList<org.w3c.dom.Node> result = new ArrayList<org.w3c.dom.Node>();
 		for (int i = 0; i < lines.getLength(); i++) {
@@ -374,16 +374,16 @@ public class NodeTools {
 		});
 		return result;
 	}
-	
+
 	/**
 	 * @param xmldata
-	 *           A xml data mapping node or a specific xml line data node
+	 *            A xml data mapping node or a specific xml line data node
 	 * @return
 	 */
 	public static List<MyComparableDataPoint> getSortedDataSetValues(SubstanceInterface xmldata) {
 		return getSortedAverageOrDataSetValues(xmldata, "data", false);
 	}
-	
+
 	// public synchronized static void setNodeComponentType(GraphElement ge, int
 	// chartType0123456) {
 	// if (chartType0123456==0)
@@ -416,16 +416,17 @@ public class NodeTools {
 	// if (chartType0123456==-1)
 	// NodeTools.setNodeComponentType(ge, XMLAttribute.nodeTypeChart_auto);
 	// else
-	// ErrorMsg.addErrorMessage("Internal Error: Invalid Charttype Set: Valid is only type 0-6!");
+	// ErrorMsg.addErrorMessage("Internal Error: Invalid Charttype Set: Valid is
+	// only type 0-6!");
 	// }
-	
+
 	public synchronized static void setNodeComponentType(GraphElement ge, String nodeType) {
 		String path = GraphicAttributeConstants.GRAPHICS;
 		if (!AttributeHelper.hasAttribute(ge, path)) {
 			AttributeHelper.addAttributeFolder(ge, path);
 		}
 		HashMapAttribute a = (HashMapAttribute) AttributeHelper.getAttribute(ge, path);
-		
+
 		Attribute ea = a.getCollection().get("component"); // existing attribute;
 		if (ea != null)
 			ea.setValue(nodeType);
@@ -436,16 +437,16 @@ public class NodeTools {
 		// AttributeHelper.setAttribute(graphNode, "graphics", "component",
 		// nodeType);
 	}
-	
+
 	public static String getNodeComponentType(Node node) {
 		return (String) AttributeHelper.getAttributeValue(node, GraphicAttributeConstants.GRAPHICS, "component",
-							new String("unknown"), null);
+				new String("unknown"), null);
 	}
-	
+
 	public static Font getLabelFont(Node node) {
 		return getFontFromAttribute(node, "nodefont");
 	}
-	
+
 	private static Font getFontFromAttribute(GraphElement ge, String attributeID) {
 		Font result;
 		try {
@@ -460,11 +461,11 @@ public class NodeTools {
 		}
 		return result;
 	}
-	
+
 	public static Color getLabelColor(Node node) {
 		return getColorFromAttribute(node, "nodefont");
 	}
-	
+
 	private static Color getColorFromAttribute(GraphElement ge, String attributeID) {
 		Color result;
 		try {
@@ -475,23 +476,23 @@ public class NodeTools {
 		}
 		return result;
 	}
-	
+
 	public static Font getChartTitleFont(GraphElement ge) {
 		return getFontFromAttribute(ge, "charttitlefont");
 	}
-	
+
 	public static Paint getChartTitleColor(GraphElement ge) {
 		return getColorFromAttribute(ge, "charttitlefont");
 	}
-	
+
 	public static Color getChartBackgroundColor(GraphElement ge) {
 		return getChartBackgroundColor(ge, "");
 	}
-	
+
 	public static Color getChartBackgroundColor(GraphElement ge, int idx) {
 		return getChartBackgroundColor(ge, idx + "");
 	}
-	
+
 	private static Color getChartBackgroundColor(GraphElement ge, String add) {
 		String cbcp = "charting" + Attribute.SEPARATOR + GraphicAttributeConstants.CHARTBACKGROUNDCOLOR + add;
 		try {
@@ -500,20 +501,20 @@ public class NodeTools {
 			try {
 				Attribute a = ge.getAttribute(old_cbcp);
 				if (a != null) {
-					if( a instanceof HashMapAttribute) {
+					if (a instanceof HashMapAttribute) {
 						HashMapAttribute ha = (HashMapAttribute) a;
 						a.getParent().remove(a.getId());
 						Attribute colAtt = StringAttribute.getTypedStringAttribute(
-								GraphicAttributeConstants.CHARTBACKGROUNDCOLOR + add, ColorUtil
-								.getHexFromColor(getColorFromHashMapAttribute(ha)));
+								GraphicAttributeConstants.CHARTBACKGROUNDCOLOR + add,
+								ColorUtil.getHexFromColor(getColorFromHashMapAttribute(ha)));
 						ge.addAttribute(colAtt, "charting");
-					} 
+					}
 					a.getParent().remove(a.getId());
 				}
 			} catch (AttributeNotFoundException err) {
 				//
 			}
-			
+
 			colorAtt = (LabelColorAttribute) ge.getAttribute(cbcp);
 			Color resultCol = colorAtt.getColor();
 			if (resultCol.getRed() == 0 && resultCol.getGreen() == 0 && resultCol.getBlue() == 0)
@@ -521,16 +522,17 @@ public class NodeTools {
 			else
 				return resultCol;
 		} catch (AttributeNotFoundException e) {
-			Attribute newAtt = StringAttribute.getTypedStringAttribute(GraphicAttributeConstants.CHARTBACKGROUNDCOLOR
-								+ add, ColorUtil.getHexFromColor(Color.BLACK));
+			Attribute newAtt = StringAttribute.getTypedStringAttribute(
+					GraphicAttributeConstants.CHARTBACKGROUNDCOLOR + add, ColorUtil.getHexFromColor(Color.BLACK));
 			ge.addAttribute(newAtt, "charting");
 			return null;
 		} catch (ClassCastException e) {
-			ErrorMsg.addErrorMessage("<html>Internal error: could not determine chart backgroundcolor!<br>" + e.getLocalizedMessage());
+			ErrorMsg.addErrorMessage(
+					"<html>Internal error: could not determine chart backgroundcolor!<br>" + e.getLocalizedMessage());
 			return Color.red;
 		}
 	}
-	
+
 	public static Color getGridColor(Graph g, Color defaultColor) {
 		String cbcp = GraphicAttributeConstants.GRIDCOLOR;
 		try {
@@ -538,13 +540,13 @@ public class NodeTools {
 			Color resultCol = colorAtt.getColor();
 			return resultCol;
 		} catch (AttributeNotFoundException e) {
-			Attribute newAtt = StringAttribute.getTypedStringAttribute(GraphicAttributeConstants.GRIDCOLOR, ColorUtil
-								.getHexFromColor(defaultColor));
+			Attribute newAtt = StringAttribute.getTypedStringAttribute(GraphicAttributeConstants.GRIDCOLOR,
+					ColorUtil.getHexFromColor(defaultColor));
 			g.addAttribute(newAtt, "");
 			return defaultColor;
 		}
 	}
-	
+
 	public static Color getAxisColor(Graph g, Color defaultColor) {
 		String cbcp = GraphicAttributeConstants.AXISCOLOR;
 		try {
@@ -552,20 +554,20 @@ public class NodeTools {
 			Color resultCol = colorAtt.getColor();
 			return resultCol;
 		} catch (AttributeNotFoundException e) {
-			Attribute newAtt = StringAttribute.getTypedStringAttribute(GraphicAttributeConstants.AXISCOLOR, ColorUtil
-								.getHexFromColor(defaultColor));
+			Attribute newAtt = StringAttribute.getTypedStringAttribute(GraphicAttributeConstants.AXISCOLOR,
+					ColorUtil.getHexFromColor(defaultColor));
 			g.addAttribute(newAtt, "");
 			return defaultColor;
 		}
 	}
-	
+
 	private static Color getColorFromHashMapAttribute(HashMapAttribute a) {
 		IntegerAttribute ir = (IntegerAttribute) a.getAttribute("red");
 		IntegerAttribute ig = (IntegerAttribute) a.getAttribute("green");
 		IntegerAttribute ib = (IntegerAttribute) a.getAttribute("blue");
 		return new Color(ir.getInteger(), ig.getInteger(), ib.getInteger());
 	}
-	
+
 	public static Color getCategoryBackgroundColorA(Graph g, Color defaultColor) {
 		String cbcp = GraphicAttributeConstants.CATEGORY_BACKGROUND_A;
 		try {
@@ -574,12 +576,12 @@ public class NodeTools {
 			return resultCol;
 		} catch (AttributeNotFoundException e) {
 			Attribute newAtt = StringAttribute.getTypedStringAttribute(GraphicAttributeConstants.CATEGORY_BACKGROUND_A,
-								ColorUtil.getHexFromColor(defaultColor));
+					ColorUtil.getHexFromColor(defaultColor));
 			g.addAttribute(newAtt, "");
 			return defaultColor;
 		}
 	}
-	
+
 	public static Color getCategoryBackgroundColorB(Graph g, Color defaultColor) {
 		String cbcp = GraphicAttributeConstants.CATEGORY_BACKGROUND_B;
 		try {
@@ -588,12 +590,12 @@ public class NodeTools {
 			return resultCol;
 		} catch (AttributeNotFoundException e) {
 			Attribute newAtt = StringAttribute.getTypedStringAttribute(GraphicAttributeConstants.CATEGORY_BACKGROUND_B,
-								ColorUtil.getHexFromColor(defaultColor));
+					ColorUtil.getHexFromColor(defaultColor));
 			g.addAttribute(newAtt, "");
 			return defaultColor;
 		}
 	}
-	
+
 	public static Color getCategoryBackgroundColorC(Graph g, Color defaultColor) {
 		String cbcp = GraphicAttributeConstants.CATEGORY_BACKGROUND_C;
 		try {
@@ -602,24 +604,25 @@ public class NodeTools {
 			return resultCol;
 		} catch (AttributeNotFoundException e) {
 			Attribute newAtt = StringAttribute.getTypedStringAttribute(GraphicAttributeConstants.CATEGORY_BACKGROUND_C,
-								ColorUtil.getHexFromColor(defaultColor));
+					ColorUtil.getHexFromColor(defaultColor));
 			g.addAttribute(newAtt, "");
 			return defaultColor;
 		}
 	}
-	
+
 	public static Color getColorAttributeValue(Graph g, String attName, Color defaultColor) {
 		try {
 			LabelColorAttribute colorAtt = (LabelColorAttribute) g.getAttribute(attName);
 			Color resultCol = colorAtt.getColor();
 			return resultCol;
 		} catch (AttributeNotFoundException e) {
-			Attribute newAtt = StringAttribute.getTypedStringAttribute(attName, ColorUtil.getHexFromColor(defaultColor));
+			Attribute newAtt = StringAttribute.getTypedStringAttribute(attName,
+					ColorUtil.getHexFromColor(defaultColor));
 			g.addAttribute(newAtt, "");
 			return defaultColor;
 		}
 	}
-	
+
 	public static void setCenter(List<Node> nodeList, Vector2d center) {
 		Vector2d currentCenter = getCenter(nodeList);
 		double offx = center.x - currentCenter.x;
@@ -635,6 +638,6 @@ public class NodeTools {
 					}
 			}
 		}
-		
+
 	}
 }

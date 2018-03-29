@@ -8,15 +8,15 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe;
 
 public class SetAbleBoolean {
 	boolean value = false;
-	
+
 	public SetAbleBoolean(boolean initValue) {
 		value = initValue;
 	}
-	
+
 	public void setValue(boolean value) {
 		this.value = value;
 	}
-	
+
 	public boolean getValue() {
 		return value;
 	}

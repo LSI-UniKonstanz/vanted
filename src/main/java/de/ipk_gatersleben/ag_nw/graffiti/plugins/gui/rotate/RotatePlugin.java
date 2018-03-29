@@ -12,8 +12,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.rotate;
 import org.graffiti.plugin.GenericPluginAdapter;
 import org.graffiti.plugin.algorithm.Algorithm;
 
-public class RotatePlugin
-					extends GenericPluginAdapter {
+public class RotatePlugin extends GenericPluginAdapter {
 	public RotatePlugin() {
 		this.algorithms = new Algorithm[1];
 		this.algorithms[0] = new RotateAlgorithm();

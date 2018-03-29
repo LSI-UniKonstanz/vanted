@@ -52,7 +52,7 @@ public class BarChart3DDemo3 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public BarChart3DDemo3(final String title) {
 
@@ -99,13 +99,12 @@ public class BarChart3DDemo3 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createBarChart3D(
-							"3D Bar Chart Demo", // chart title
+		final JFreeChart chart = ChartFactory.createBarChart3D("3D Bar Chart Demo", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
@@ -113,13 +112,11 @@ public class BarChart3DDemo3 extends ApplicationFrame {
 				true, // include legend
 				true, // tooltips
 				false // urls
-				);
+		);
 
 		final CategoryPlot plot = chart.getCategoryPlot();
 		final CategoryAxis axis = plot.getDomainAxis();
-		axis.setCategoryLabelPositions(
-							CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 8.0)
-							);
+		axis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 8.0));
 
 		final CategoryItemRenderer renderer = plot.getRenderer();
 		renderer.setItemLabelsVisible(true);
@@ -134,7 +131,7 @@ public class BarChart3DDemo3 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

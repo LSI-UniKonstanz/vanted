@@ -51,7 +51,7 @@ public class WaterTemperatureDemo extends ApplicationFrame {
 	 * A demonstration application showing an XY series containing a null value.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public WaterTemperatureDemo(final String title) {
 
@@ -114,7 +114,7 @@ public class WaterTemperatureDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

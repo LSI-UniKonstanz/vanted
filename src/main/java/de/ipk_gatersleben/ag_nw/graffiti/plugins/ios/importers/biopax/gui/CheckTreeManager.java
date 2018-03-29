@@ -9,14 +9,12 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
-public class CheckTreeManager extends MouseAdapter implements TreeSelectionListener
-{
+public class CheckTreeManager extends MouseAdapter implements TreeSelectionListener {
 	private CheckTreeSelectionModel selectionModel;
 	private JTree tree = new JTree();
 	int hotspot = new JCheckBox().getPreferredSize().width;
 
-	public CheckTreeManager(JTree tree)
-	{
+	public CheckTreeManager(JTree tree) {
 		this.tree = tree;
 		selectionModel = new CheckTreeSelectionModel(tree.getModel());
 		tree.setCellRenderer(new CheckTreeCellRenderer(tree.getCellRenderer(), selectionModel));
@@ -25,8 +23,7 @@ public class CheckTreeManager extends MouseAdapter implements TreeSelectionListe
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent me)
-	{
+	public void mouseClicked(MouseEvent me) {
 		TreePath path = tree.getPathForLocation(me.getX(), me.getY());
 		if (path == null)
 			return;
@@ -36,27 +33,23 @@ public class CheckTreeManager extends MouseAdapter implements TreeSelectionListe
 		boolean selected = selectionModel.isPathSelected(path, true);
 		selectionModel.removeTreeSelectionListener(this);
 
-		try
-		{
+		try {
 			if (selected)
 				selectionModel.removeSelectionPath(path);
 			else
 				selectionModel.addSelectionPath(path);
-		} finally
-		{
+		} finally {
 			selectionModel.addTreeSelectionListener(this);
 			tree.treeDidChange();
 		}
 	}
 
-	public CheckTreeSelectionModel getSelectionModel()
-	{
+	public CheckTreeSelectionModel getSelectionModel() {
 		return selectionModel;
 	}
 
 	@Override
-	public void valueChanged(TreeSelectionEvent e)
-	{
+	public void valueChanged(TreeSelectionEvent e) {
 		tree.treeDidChange();
 	}
 }

@@ -52,7 +52,7 @@ public class SymbolicChartDemo1 extends ApplicationFrame {
 	 * A demonstration application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public SymbolicChartDemo1(final String title) {
 
@@ -65,9 +65,8 @@ public class SymbolicChartDemo1 extends ApplicationFrame {
 		final SymbolicAxis symbolicAxis = new SymbolicAxis("Y", ((YisSymbolic) dataset).getYSymbolicValues());
 
 		final XYPlot plot = new XYPlot(dataset, domainAxis, symbolicAxis, null);
-		final XYItemRenderer renderer = new StandardXYItemRenderer(
-							StandardXYItemRenderer.SHAPES, new SymbolicXYItemLabelGenerator()
-							);
+		final XYItemRenderer renderer = new StandardXYItemRenderer(StandardXYItemRenderer.SHAPES,
+				new SymbolicXYItemLabelGenerator());
 		plot.setRenderer(renderer);
 		final JFreeChart chart = new JFreeChart(title, plot);
 
@@ -97,7 +96,7 @@ public class SymbolicChartDemo1 extends ApplicationFrame {
 
 		final String[] sData = { "Giraffe", "Gazelle", "Zebra", "Gnu" };
 		final SampleYSymbolicDataset data = new SampleYSymbolicDataset("BY Sample", 40, sData, 4, 20,
-							new String[] { "B Fall", "B Spring", "B Summer", "B Winter" });
+				new String[] { "B Fall", "B Spring", "B Summer", "B Winter" });
 		return data;
 
 	}
@@ -106,7 +105,7 @@ public class SymbolicChartDemo1 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

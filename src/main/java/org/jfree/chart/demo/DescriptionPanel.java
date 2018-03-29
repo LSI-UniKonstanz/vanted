@@ -49,16 +49,14 @@ public class DescriptionPanel extends JPanel {
 	 * Creates a new panel.
 	 * 
 	 * @param text
-	 *           the component containing the text.
+	 *            the component containing the text.
 	 */
 	public DescriptionPanel(final JTextArea text) {
 
 		setLayout(new BorderLayout());
 		text.setLineWrap(true);
 		text.setWrapStyleWord(true);
-		add(new JScrollPane(text,
-										JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-										JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+		add(new JScrollPane(text, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 
 	}
 

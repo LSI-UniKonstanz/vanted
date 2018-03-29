@@ -13,7 +13,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.dbe.alt_id_statistics.Alter
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 
 public class ProcessHierarchynodesDepOnLeafNodes extends LaunchGui {
-	
+
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
@@ -24,7 +24,7 @@ public class ProcessHierarchynodesDepOnLeafNodes extends LaunchGui {
 		res.add(new AlternativeIDannotationStatistics());
 		return res;
 	}
-	
+
 	@Override
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.DATAMAPPING))
@@ -32,18 +32,18 @@ public class ProcessHierarchynodesDepOnLeafNodes extends LaunchGui {
 		else
 			return null;
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Network.Hierarchy";
 	}
-	
+
 	@Override
 	public String getLaunchGuiDescription() {
-		return "Information about reachable leaf-nodes is processed and<br>" +
-							"added to the working-set of hierarchy-nodes.";
+		return "Information about reachable leaf-nodes is processed and<br>"
+				+ "added to the working-set of hierarchy-nodes.";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
 		return null;

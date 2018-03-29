@@ -5,14 +5,13 @@ import org.graffiti.graph.GraphElement;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
-public class UphysicalInteraction extends UtilitySuperClassToGraph
-{
+public class UphysicalInteraction extends UtilitySuperClassToGraph {
 
-	public static void addAttributesToNode(GraphElement elem, physicalInteraction i)
-	{
+	public static void addAttributesToNode(GraphElement elem, physicalInteraction i) {
 		// first set label to node
 		setLabels(elem, i);
-		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), Messages.getString("UtilitySuperClassToGraph.138"));
+		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"),
+				Messages.getString("UtilitySuperClassToGraph.138"));
 		// set attribute paths
 		setAvailability(elem, i.getAVAILABILITY());
 		setComment(elem, i.getCOMMENT());

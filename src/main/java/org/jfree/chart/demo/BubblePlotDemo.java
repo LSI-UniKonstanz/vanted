@@ -48,7 +48,7 @@ public class BubblePlotDemo extends ApplicationFrame {
 	 * A demonstration application showing a bubble chart.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public BubblePlotDemo(final String title) {
 
@@ -68,24 +68,17 @@ public class BubblePlotDemo extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final XYZDataset dataset) {
-		final JFreeChart chart = ChartFactory.createBubbleChart(
-							"Bubble Plot Demo",
-							"X",
-							"Y",
-							dataset,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createBubbleChart("Bubble Plot Demo", "X", "Y", dataset,
+				PlotOrientation.VERTICAL, true, true, false);
 		final XYPlot plot = chart.getXYPlot();
 		plot.setForegroundAlpha(0.65f);
 
-		// increase the margins to account for the fact that the auto-range doesn't take into
+		// increase the margins to account for the fact that the auto-range doesn't take
+		// into
 		// account the bubble size...
 		final NumberAxis domainAxis = (NumberAxis) plot.getDomainAxis();
 		domainAxis.setLowerMargin(0.15);
@@ -111,7 +104,7 @@ public class BubblePlotDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

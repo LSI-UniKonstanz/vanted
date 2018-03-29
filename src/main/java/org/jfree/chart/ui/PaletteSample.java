@@ -59,7 +59,7 @@ public class PaletteSample extends JComponent implements ListCellRenderer {
 	 * Creates a new sample.
 	 * 
 	 * @param palette
-	 *           the palette.
+	 *            the palette.
 	 */
 	public PaletteSample(ColorPalette palette) {
 		this.palette = palette;
@@ -67,23 +67,23 @@ public class PaletteSample extends JComponent implements ListCellRenderer {
 	}
 
 	/**
-	 * Returns a list cell renderer for the stroke, so the sample can be displayed in a list or
-	 * combo.
+	 * Returns a list cell renderer for the stroke, so the sample can be displayed
+	 * in a list or combo.
 	 * 
 	 * @param list
-	 *           the list component.
+	 *            the list component.
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @param index
-	 *           the index.
+	 *            the index.
 	 * @param isSelected
-	 *           a flag that indicates whether or not the item is selected.
+	 *            a flag that indicates whether or not the item is selected.
 	 * @param cellHasFocus
-	 *           a flag that indicates whether or not the cell has the focus.
+	 *            a flag that indicates whether or not the cell has the focus.
 	 * @return The renderer.
 	 */
-	public Component getListCellRendererComponent(JList list, Object value, int index,
-																	boolean isSelected, boolean cellHasFocus) {
+	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+			boolean cellHasFocus) {
 		if (value instanceof PaletteSample) {
 			PaletteSample in = (PaletteSample) value;
 			setPalette(in.getPalette());
@@ -113,7 +113,7 @@ public class PaletteSample extends JComponent implements ListCellRenderer {
 	 * Draws the sample.
 	 * 
 	 * @param g
-	 *           the graphics device.
+	 *            the graphics device.
 	 */
 	public void paintComponent(Graphics g) {
 
@@ -144,7 +144,7 @@ public class PaletteSample extends JComponent implements ListCellRenderer {
 	 * Sets the palette object being displayed.
 	 * 
 	 * @param palette
-	 *           the palette.
+	 *            the palette.
 	 */
 	public void setPalette(ColorPalette palette) {
 		this.palette = palette;

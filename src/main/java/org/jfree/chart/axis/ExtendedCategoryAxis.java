@@ -44,8 +44,8 @@ import org.jfree.text.TextLine;
 import org.jfree.ui.RectangleEdge;
 
 /**
- * An extended version of the {@link CategoryAxis} class that supports sublabels on
- * the axis.
+ * An extended version of the {@link CategoryAxis} class that supports sublabels
+ * on the axis.
  */
 public class ExtendedCategoryAxis extends CategoryAxis {
 
@@ -62,7 +62,7 @@ public class ExtendedCategoryAxis extends CategoryAxis {
 	 * Creates a new axis.
 	 * 
 	 * @param label
-	 *           the axis label.
+	 *            the axis label.
 	 */
 	public ExtendedCategoryAxis(String label) {
 		super(label);
@@ -84,7 +84,7 @@ public class ExtendedCategoryAxis extends CategoryAxis {
 	 * Sets the font for the sublabels.
 	 * 
 	 * @param font
-	 *           the font.
+	 *            the font.
 	 */
 	public void setSubLabelFont(Font font) {
 		this.sublabelFont = font;
@@ -103,7 +103,7 @@ public class ExtendedCategoryAxis extends CategoryAxis {
 	 * Sets the paint for the sublabels.
 	 * 
 	 * @param paint
-	 *           the paint.
+	 *            the paint.
 	 */
 	public void setSubLabelPaint(Paint paint) {
 		this.sublabelPaint = paint;
@@ -113,45 +113,41 @@ public class ExtendedCategoryAxis extends CategoryAxis {
 	 * Adds a sublabel for a category.
 	 * 
 	 * @param category
-	 *           the category.
+	 *            the category.
 	 * @param label
-	 *           the label.
+	 *            the label.
 	 */
 	public void addSubLabel(Comparable category, String label) {
 		this.sublabels.put(category, label);
 	}
 
 	/**
-	 * Overrides the default behaviour by adding the sublabel to the text block that is
-	 * used for the category label.
+	 * Overrides the default behaviour by adding the sublabel to the text block that
+	 * is used for the category label.
 	 * 
 	 * @param category
-	 *           the category.
+	 *            the category.
 	 * @param width
-	 *           the width (not used yet).
+	 *            the width (not used yet).
 	 * @param edge
-	 *           the location of the axis.
+	 *            the location of the axis.
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @return a label.
 	 */
-	protected TextBlock createLabel(Comparable category, float width,
-												RectangleEdge edge, Graphics2D g2) {
+	protected TextBlock createLabel(Comparable category, float width, RectangleEdge edge, Graphics2D g2) {
 		TextBlock label = super.createLabel(category, width, edge, g2);
 		String s = (String) this.sublabels.get(category);
 		if (s != null) {
 			if (edge == RectangleEdge.TOP || edge == RectangleEdge.BOTTOM) {
 				TextLine line = new TextLine(s, this.sublabelFont, this.sublabelPaint);
 				label.addLine(line);
-			} else
-				if (edge == RectangleEdge.LEFT || edge == RectangleEdge.RIGHT) {
-					TextLine line = label.getLastLine();
-					if (line != null) {
-						line.addFragment(
-											new TextFragment("  " + s, this.sublabelFont, this.sublabelPaint)
-											);
-					}
+			} else if (edge == RectangleEdge.LEFT || edge == RectangleEdge.RIGHT) {
+				TextLine line = label.getLastLine();
+				if (line != null) {
+					line.addFragment(new TextFragment("  " + s, this.sublabelFont, this.sublabelPaint));
 				}
+			}
 		}
 		return label;
 	}

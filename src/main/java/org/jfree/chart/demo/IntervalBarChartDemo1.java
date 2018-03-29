@@ -105,9 +105,7 @@ public class IntervalBarChartDemo1 {
 		renderer.setLabelGenerator(new IntervalCategoryLabelGenerator());
 		renderer.setItemLabelsVisible(true);
 		renderer.setItemLabelPaint(Color.white);
-		final ItemLabelPosition p = new ItemLabelPosition(
-							ItemLabelAnchor.CENTER, TextAnchor.CENTER
-							);
+		final ItemLabelPosition p = new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.CENTER);
 		renderer.setPositiveItemLabelPosition(p);
 
 		final CategoryPlot plot = new CategoryPlot(data, xAxis, yAxis, renderer);
@@ -143,7 +141,7 @@ public class IntervalBarChartDemo1 {
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 		final IntervalBarChartDemo1 sample = new IntervalBarChartDemo1();

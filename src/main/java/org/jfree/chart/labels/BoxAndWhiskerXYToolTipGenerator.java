@@ -44,10 +44,12 @@ import org.jfree.data.XYDataset;
 import org.jfree.data.statistics.BoxAndWhiskerXYDataset;
 
 /**
- * An item label generator for plots that use data from a {@link BoxAndWhiskerXYDataset}.
+ * An item label generator for plots that use data from a
+ * {@link BoxAndWhiskerXYDataset}.
  * <P>
- * The tooltip text and item label text are composed using a {@link java.text.MessageFormat} object, that can aggregate some or all of the following string
- * values into a message.
+ * The tooltip text and item label text are composed using a
+ * {@link java.text.MessageFormat} object, that can aggregate some or all of the
+ * following string values into a message.
  * <table>
  * <tr>
  * <td>0</td>
@@ -86,9 +88,7 @@ import org.jfree.data.statistics.BoxAndWhiskerXYDataset;
  * @author David Browning
  */
 public class BoxAndWhiskerXYToolTipGenerator extends StandardXYToolTipGenerator
-															implements XYToolTipGenerator,
-																			Cloneable,
-																			Serializable {
+		implements XYToolTipGenerator, Cloneable, Serializable {
 
 	/** The default tooltip format string. */
 	public static final String DEFAULT_TOOL_TIP_FORMAT = "X: {1} Mean: {2} Median: {3} Min: {4} Max: {5} Q1: {6} Q3: {7} ";
@@ -97,40 +97,36 @@ public class BoxAndWhiskerXYToolTipGenerator extends StandardXYToolTipGenerator
 	 * Creates a default item label generator.
 	 */
 	public BoxAndWhiskerXYToolTipGenerator() {
-		super(
-							DEFAULT_TOOL_TIP_FORMAT,
-							NumberFormat.getInstance(), NumberFormat.getInstance());
+		super(DEFAULT_TOOL_TIP_FORMAT, NumberFormat.getInstance(), NumberFormat.getInstance());
 	}
 
 	/**
-	 * Creates a new item label generator. If the date formatter is not <code>null</code>,
-	 * the x-values will be formatted as dates.
+	 * Creates a new item label generator. If the date formatter is not
+	 * <code>null</code>, the x-values will be formatted as dates.
 	 * 
 	 * @param toolTipFormat
-	 *           the tool tip format string (<code>null</code> not permitted).
+	 *            the tool tip format string (<code>null</code> not permitted).
 	 * @param numberFormat
-	 *           the number formatter (<code>null</code> not permitted).
+	 *            the number formatter (<code>null</code> not permitted).
 	 * @param dateFormat
-	 *           the date formatter (<code>null</code> permitted).
+	 *            the date formatter (<code>null</code> permitted).
 	 */
-	public BoxAndWhiskerXYToolTipGenerator(String toolTipFormat,
-															DateFormat dateFormat,
-															NumberFormat numberFormat) {
+	public BoxAndWhiskerXYToolTipGenerator(String toolTipFormat, DateFormat dateFormat, NumberFormat numberFormat) {
 
 		super(toolTipFormat, dateFormat, numberFormat);
 
 	}
 
 	/**
-	 * Creates the array of items that can be passed to the {@link MessageFormat} class
-	 * for creating labels.
+	 * Creates the array of items that can be passed to the {@link MessageFormat}
+	 * class for creating labels.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> not permitted).
+	 *            the dataset (<code>null</code> not permitted).
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the items (never <code>null</code>).
 	 */
 	protected Object[] createItemArray(XYDataset dataset, int series, int item) {
@@ -160,7 +156,7 @@ public class BoxAndWhiskerXYToolTipGenerator extends StandardXYToolTipGenerator
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {

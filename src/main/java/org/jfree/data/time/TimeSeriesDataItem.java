@@ -53,10 +53,12 @@ import java.io.Serializable;
  * <li>{@link Millisecond}</li>
  * <li>{@link FixedMillisecond}</li>
  * </ul>
- * The time period is an immutable property of the data item. Data items will often be sorted within a list, and allowing the time period to be changed could
- * destroy the sort order.
+ * The time period is an immutable property of the data item. Data items will
+ * often be sorted within a list, and allowing the time period to be changed
+ * could destroy the sort order.
  * <P>
- * Implements the <code>Comparable</code> interface so that standard Java sorting can be used to keep the data items in order.
+ * Implements the <code>Comparable</code> interface so that standard Java
+ * sorting can be used to keep the data items in order.
  */
 public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 
@@ -70,9 +72,9 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 	 * Constructs a new data item that associates a value with a time period.
 	 * 
 	 * @param period
-	 *           the time period (<code>null</code> not permitted).
+	 *            the time period (<code>null</code> not permitted).
 	 * @param value
-	 *           the value (<code>null</code> permitted).
+	 *            the value (<code>null</code> permitted).
 	 */
 	public TimeSeriesDataItem(final RegularTimePeriod period, final Number value) {
 		if (period == null) {
@@ -86,12 +88,12 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 	 * Constructs a new data item that associates a value with a time period.
 	 * 
 	 * @param period
-	 *           the time period (<code>null</code> not permitted).
+	 *            the time period (<code>null</code> not permitted).
 	 * @param value
-	 *           the value associated with the time period.
+	 *            the value associated with the time period.
 	 */
 	public TimeSeriesDataItem(final RegularTimePeriod period, final double value) {
-		this(period, new Double(value));
+		this(period, Double.valueOf(value));
 	}
 
 	/**
@@ -116,7 +118,7 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 	 * Sets the value for this data item.
 	 * 
 	 * @param value
-	 *           the value (<code>null</code> permitted).
+	 *            the value (<code>null</code> permitted).
 	 */
 	public void setValue(final Number value) {
 		this.value = value;
@@ -126,7 +128,7 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
@@ -141,19 +143,17 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 			if (!this.period.equals(timeSeriesDataItem.period)) {
 				return false;
 			}
-		} else
-			if (timeSeriesDataItem.period != null) {
-				return false;
-			}
+		} else if (timeSeriesDataItem.period != null) {
+			return false;
+		}
 
 		if (this.value != null) {
 			if (!this.value.equals(timeSeriesDataItem.value)) {
 				return false;
 			}
-		} else
-			if (timeSeriesDataItem.value != null) {
-				return false;
-			}
+		} else if (timeSeriesDataItem.value != null) {
+			return false;
+		}
 
 		return true;
 	}
@@ -171,14 +171,16 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 	}
 
 	/**
-	 * Returns an integer indicating the order of this data pair object
-	 * relative to another object.
+	 * Returns an integer indicating the order of this data pair object relative to
+	 * another object.
 	 * <P>
-	 * For the order we consider only the timing: negative == before, zero == same, positive == after.
+	 * For the order we consider only the timing: negative == before, zero == same,
+	 * positive == after.
 	 * 
 	 * @param o1
-	 *           The object being compared to.
-	 * @return An integer indicating the order of the data pair object relative to another object.
+	 *            The object being compared to.
+	 * @return An integer indicating the order of the data pair object relative to
+	 *         another object.
 	 */
 	public int compareTo(final Object o1) {
 
@@ -205,7 +207,8 @@ public class TimeSeriesDataItem implements Cloneable, Comparable, Serializable {
 	/**
 	 * Clones the data item.
 	 * <P>
-	 * Notes: --> no need to clone the period or value since they are immutable classes.
+	 * Notes: --> no need to clone the period or value since they are immutable
+	 * classes.
 	 * 
 	 * @return A clone of the data item.
 	 */

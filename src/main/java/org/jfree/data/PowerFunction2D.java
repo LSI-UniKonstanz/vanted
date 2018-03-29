@@ -44,9 +44,9 @@ public class PowerFunction2D implements Function2D {
 	 * Creates a new power function.
 	 * 
 	 * @param a
-	 *           the 'a' coefficient.
+	 *            the 'a' coefficient.
 	 * @param b
-	 *           the 'b' coefficient.
+	 *            the 'b' coefficient.
 	 */
 	public PowerFunction2D(final double a, final double b) {
 		this.a = a;
@@ -57,7 +57,7 @@ public class PowerFunction2D implements Function2D {
 	 * Returns the value of the function for a given input ('x').
 	 * 
 	 * @param x
-	 *           the x-value.
+	 *            the x-value.
 	 * @return the value.
 	 */
 	public double getValue(final double x) {

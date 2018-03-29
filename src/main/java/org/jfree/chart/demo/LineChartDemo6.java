@@ -47,7 +47,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.Spacer;
 
 /**
- * A simple demonstration application showing how to create a line chart using data from an {@link XYDataset}.
+ * A simple demonstration application showing how to create a line chart using
+ * data from an {@link XYDataset}.
  */
 public class LineChartDemo6 extends ApplicationFrame {
 
@@ -55,7 +56,7 @@ public class LineChartDemo6 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public LineChartDemo6(final String title) {
 
@@ -119,22 +120,20 @@ public class LineChartDemo6 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the data for the chart.
+	 *            the data for the chart.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-							"Line Chart Demo 6", // chart title
+		final JFreeChart chart = ChartFactory.createXYLineChart("Line Chart Demo 6", // chart title
 				"X", // x axis label
 				"Y", // y axis label
 				dataset, // data
-				PlotOrientation.VERTICAL,
-							true, // include legend
+				PlotOrientation.VERTICAL, true, // include legend
 				true, // tooltips
 				false // urls
-				);
+		);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 		chart.setBackgroundPaint(Color.white);
@@ -178,7 +177,7 @@ public class LineChartDemo6 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

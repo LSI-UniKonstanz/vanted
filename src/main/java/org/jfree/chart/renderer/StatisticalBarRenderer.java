@@ -61,14 +61,13 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A renderer that handles the drawing a bar plot where
- * each bar has a mean value and a standard deviation line.
+ * A renderer that handles the drawing a bar plot where each bar has a mean
+ * value and a standard deviation line.
  * 
  * @author Pascal Collet
  */
 public class StatisticalBarRenderer extends BarRenderer
-												implements CategoryItemRenderer,
-																Cloneable, PublicCloneable, Serializable {
+		implements CategoryItemRenderer, Cloneable, PublicCloneable, Serializable {
 
 	/**
 	 * 
@@ -83,99 +82,81 @@ public class StatisticalBarRenderer extends BarRenderer
 	}
 
 	/**
-	 * Draws the bar with its standard deviation line range for a single (series, category) data
-	 * item.
+	 * Draws the bar with its standard deviation line range for a single (series,
+	 * category) data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	public void drawItem(Graphics2D g2,
-									CategoryItemRendererState state,
-									Rectangle2D dataArea,
-									CategoryPlot plot,
-									CategoryAxis domainAxis,
-									ValueAxis rangeAxis,
-									CategoryDataset data,
-									int row,
-									int column) {
+	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
+			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset data, int row, int column) {
 
 		// defensive check
 		if (!(data instanceof StatisticalCategoryDataset)) {
 			throw new IllegalArgumentException("StatisticalBarRenderer.drawCategoryItem()"
-								+ " : the data should be of type StatisticalCategoryDataset only.");
+					+ " : the data should be of type StatisticalCategoryDataset only.");
 		}
 		StatisticalCategoryDataset statData = (StatisticalCategoryDataset) data;
 
 		PlotOrientation orientation = plot.getOrientation();
 		if (orientation == PlotOrientation.HORIZONTAL) {
-			drawHorizontalItem(g2, state, dataArea, plot, domainAxis, rangeAxis, statData,
-											row, column);
-		} else
-			if (orientation == PlotOrientation.VERTICAL) {
-				drawVerticalItem(g2, state, dataArea, plot, domainAxis, rangeAxis, statData,
-										row, column);
-			}
+			drawHorizontalItem(g2, state, dataArea, plot, domainAxis, rangeAxis, statData, row, column);
+		} else if (orientation == PlotOrientation.VERTICAL) {
+			drawVerticalItem(g2, state, dataArea, plot, domainAxis, rangeAxis, statData, row, column);
+		}
 	}
 
 	/**
 	 * Draws an item for a plot with a horizontal orientation.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the data.
+	 *            the data.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	protected void drawHorizontalItem(Graphics2D g2,
-													CategoryItemRendererState state,
-													Rectangle2D dataArea,
-													CategoryPlot plot,
-													CategoryAxis domainAxis,
-													ValueAxis rangeAxis,
-													StatisticalCategoryDataset dataset,
-													int row,
-													int column) {
+	protected void drawHorizontalItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea,
+			CategoryPlot plot, CategoryAxis domainAxis, ValueAxis rangeAxis, StatisticalCategoryDataset dataset,
+			int row, int column) {
 
 		RectangleEdge xAxisLocation = plot.getDomainAxisEdge();
 
 		// BAR Y
-		double rectY = domainAxis.getCategoryStart(column, getColumnCount(), dataArea,
-																	xAxisLocation);
+		double rectY = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, xAxisLocation);
 
 		int seriesCount = getRowCount();
 		int categoryCount = getColumnCount();
 		if (seriesCount > 1) {
-			double seriesGap = dataArea.getHeight() * getItemMargin()
-											/ (categoryCount * (seriesCount - 1));
+			double seriesGap = dataArea.getHeight() * getItemMargin() / (categoryCount * (seriesCount - 1));
 			rectY = rectY + row * (state.getBarWidth() + seriesGap);
 		} else {
 			rectY = rectY + row * state.getBarWidth();
@@ -197,24 +178,23 @@ public class StatisticalBarRenderer extends BarRenderer
 			if (value <= lclip) {
 				value = lclip;
 			}
-		} else
-			if (lclip <= 0.0) { // cases 5, 6, 7 and 8
-				if (value >= uclip) {
-					value = uclip;
-				} else {
-					if (value <= lclip) {
-						value = lclip;
-					}
-				}
-			} else { // cases 9, 10, 11 and 12
+		} else if (lclip <= 0.0) { // cases 5, 6, 7 and 8
+			if (value >= uclip) {
+				value = uclip;
+			} else {
 				if (value <= lclip) {
-					return; // bar is not visible
-				}
-				base = getLowerClip();
-				if (value >= uclip) {
-					value = uclip;
+					value = lclip;
 				}
 			}
+		} else { // cases 9, 10, 11 and 12
+			if (value <= lclip) {
+				return; // bar is not visible
+			}
+			base = getLowerClip();
+			if (value >= uclip) {
+				value = uclip;
+			}
+		}
 
 		RectangleEdge yAxisLocation = plot.getRangeAxisEdge();
 		double transY1 = rangeAxis.valueToJava2D(base, dataArea, yAxisLocation);
@@ -241,27 +221,22 @@ public class StatisticalBarRenderer extends BarRenderer
 		if (num != null)
 			valueDelta = num.doubleValue();
 		if (!Double.isNaN(valueDelta)) {
-			double highVal = rangeAxis.valueToJava2D(
-								meanValue.doubleValue() + valueDelta, dataArea, yAxisLocation
-								);
+			double highVal = rangeAxis.valueToJava2D(meanValue.doubleValue() + valueDelta, dataArea, yAxisLocation);
 			double lowVal = rangeAxis.valueToJava2D(
-								meanValue.doubleValue()
-													- (dataset.drawOnlyTopOfErrorBar() ? 0 : valueDelta)
-								, dataArea, yAxisLocation
-								);
+					meanValue.doubleValue() - (dataset.drawOnlyTopOfErrorBar() ? 0 : valueDelta), dataArea,
+					yAxisLocation);
 
 			Line2D line = null;
-			line = new Line2D.Double(lowVal, rectY + rectHeight / 2.0d,
-												highVal, rectY + rectHeight / 2.0d);
+			line = new Line2D.Double(lowVal, rectY + rectHeight / 2.0d, highVal, rectY + rectHeight / 2.0d);
 			g2.draw(line);
 
 			double devLine = dataset.getErrorBarLen();
-			line = new Line2D.Double(highVal, rectY + rectHeight / 2d - devLine,
-												highVal, rectY + rectHeight / 2d + devLine);
+			line = new Line2D.Double(highVal, rectY + rectHeight / 2d - devLine, highVal,
+					rectY + rectHeight / 2d + devLine);
 			g2.draw(line);
 			if (!dataset.drawOnlyTopOfErrorBar()) {
-				line = new Line2D.Double(lowVal, rectY + rectHeight / 2d - devLine,
-													lowVal, rectY + rectHeight / 2d + devLine);
+				line = new Line2D.Double(lowVal, rectY + rectHeight / 2d - devLine, lowVal,
+						rectY + rectHeight / 2d + devLine);
 				g2.draw(line);
 			}
 		}
@@ -294,45 +269,37 @@ public class StatisticalBarRenderer extends BarRenderer
 	 * Draws an item for a plot with a vertical orientation.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the data.
+	 *            the data.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	protected void drawVerticalItem(Graphics2D g2,
-												CategoryItemRendererState state,
-												Rectangle2D dataArea,
-												CategoryPlot plot,
-												CategoryAxis domainAxis,
-												ValueAxis rangeAxis,
-												StatisticalCategoryDataset dataset,
-												int row,
-												int column) {
+	protected void drawVerticalItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea,
+			CategoryPlot plot, CategoryAxis domainAxis, ValueAxis rangeAxis, StatisticalCategoryDataset dataset,
+			int row, int column) {
 
 		RectangleEdge xAxisLocation = plot.getDomainAxisEdge();
 
 		// BAR X
-		double rectX = domainAxis.getCategoryStart(column, getColumnCount(), dataArea,
-																	xAxisLocation);
+		double rectX = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, xAxisLocation);
 
 		int seriesCount = getRowCount();
 		int categoryCount = getColumnCount();
 		if (seriesCount > 1) {
-			double seriesGap = dataArea.getWidth() * getItemMargin()
-											/ (categoryCount * (seriesCount - 1));
+			double seriesGap = dataArea.getWidth() * getItemMargin() / (categoryCount * (seriesCount - 1));
 			rectX = rectX + row * (state.getBarWidth() + seriesGap);
 		} else {
 			rectX = rectX + row * state.getBarWidth();
@@ -355,24 +322,23 @@ public class StatisticalBarRenderer extends BarRenderer
 			if (value <= lclip) {
 				value = lclip;
 			}
-		} else
-			if (lclip <= 0.0) { // cases 5, 6, 7 and 8
-				if (value >= uclip) {
-					value = uclip;
-				} else {
-					if (value <= lclip) {
-						value = lclip;
-					}
-				}
-			} else { // cases 9, 10, 11 and 12
+		} else if (lclip <= 0.0) { // cases 5, 6, 7 and 8
+			if (value >= uclip) {
+				value = uclip;
+			} else {
 				if (value <= lclip) {
-					return; // bar is not visible
-				}
-				base = getLowerClip();
-				if (value >= uclip) {
-					value = uclip;
+					value = lclip;
 				}
 			}
+		} else { // cases 9, 10, 11 and 12
+			if (value <= lclip) {
+				return; // bar is not visible
+			}
+			base = getLowerClip();
+			if (value >= uclip) {
+				value = uclip;
+			}
+		}
 
 		RectangleEdge yAxisLocation = plot.getRangeAxisEdge();
 		double transY1 = rangeAxis.valueToJava2D(base, dataArea, yAxisLocation);
@@ -399,30 +365,25 @@ public class StatisticalBarRenderer extends BarRenderer
 			valueDelta = num.doubleValue();
 		double highVal;
 		if (!Double.isNaN(valueDelta)) {
-			highVal = rangeAxis.valueToJava2D(
-								meanValue.doubleValue() + valueDelta, dataArea, yAxisLocation
-								);
+			highVal = rangeAxis.valueToJava2D(meanValue.doubleValue() + valueDelta, dataArea, yAxisLocation);
 			double lowVal = rangeAxis.valueToJava2D(
-								meanValue.doubleValue() - (dataset.drawOnlyTopOfErrorBar() ? 0 : valueDelta), dataArea, yAxisLocation
-								);
+					meanValue.doubleValue() - (dataset.drawOnlyTopOfErrorBar() ? 0 : valueDelta), dataArea,
+					yAxisLocation);
 
 			Line2D line = null;
-			line = new Line2D.Double(rectX + rectWidth / 2.0d, lowVal,
-												rectX + rectWidth / 2.0d, highVal);
+			line = new Line2D.Double(rectX + rectWidth / 2.0d, lowVal, rectX + rectWidth / 2.0d, highVal);
 			g2.draw(line);
 			double devLine = dataset.getErrorBarLen();
-			line = new Line2D.Double(rectX + rectWidth / 2.0d - devLine, highVal,
-												rectX + rectWidth / 2.0d + devLine, highVal);
+			line = new Line2D.Double(rectX + rectWidth / 2.0d - devLine, highVal, rectX + rectWidth / 2.0d + devLine,
+					highVal);
 			g2.draw(line);
 			if (!dataset.drawOnlyTopOfErrorBar()) {
-				line = new Line2D.Double(rectX + rectWidth / 2.0d - devLine, lowVal,
-													rectX + rectWidth / 2.0d + devLine, lowVal);
+				line = new Line2D.Double(rectX + rectWidth / 2.0d - devLine, lowVal, rectX + rectWidth / 2.0d + devLine,
+						lowVal);
 				g2.draw(line);
 			}
 		} else {
-			highVal = rangeAxis.valueToJava2D(
-								meanValue.doubleValue() + 0, dataArea, yAxisLocation
-								);
+			highVal = rangeAxis.valueToJava2D(meanValue.doubleValue() + 0, dataArea, yAxisLocation);
 		}
 		// check ttest info
 		if (dataset instanceof BioStatisticalCategoryDataset) {
@@ -445,12 +406,8 @@ public class StatisticalBarRenderer extends BarRenderer
 						Color blackPaint = Color.BLACK;
 						if (seriesPaint instanceof Color) {
 							Color serColor = (Color) seriesPaint;
-							if (serColor.getRGB() == Color.BLACK.getRGB()
-												||
-												(serColor.getRed() < 60 &&
-																	serColor.getGreen() < 60 &&
-												serColor.getBlue() < 60
-												)) {
+							if (serColor.getRGB() == Color.BLACK.getRGB() || (serColor.getRed() < 60
+									&& serColor.getGreen() < 60 && serColor.getBlue() < 60)) {
 								blackPaint = Color.WHITE;
 							}
 						}
@@ -459,8 +416,10 @@ public class StatisticalBarRenderer extends BarRenderer
 						if (value + valueDelta > uclip * 0.5) {
 							// g2.fill(new Ellipse2D.Float(x_-sxx, y_-sxy, sxx*2, sxy*2));
 							g2.setPaint(blackPaint);
-							// g2.fill(new Ellipse2D.Float(x_-sxx, (float)(y_-3*sxy+bar.getHeight()), sxx*2, sxy*2));
-							g2.fill(getTTestShape(x_ - sxx, (float) (y_ - 3 * sxy + bar.getHeight()), sxx * 2, sxy * 2));
+							// g2.fill(new Ellipse2D.Float(x_-sxx, (float)(y_-3*sxy+bar.getHeight()), sxx*2,
+							// sxy*2));
+							g2.fill(getTTestShape(x_ - sxx, (float) (y_ - 3 * sxy + bar.getHeight()), sxx * 2,
+									sxy * 2));
 						} else {
 							// g2.fill(new Ellipse2D.Float(x_-sxx, y_-sxy, sxx*2, sxy*2));
 							g2.setPaint(Color.BLACK);
@@ -475,15 +434,12 @@ public class StatisticalBarRenderer extends BarRenderer
 
 	public static Shape getTTestShape(float x, float y, float width, float height) {
 		/*
-		 * Polygon pBig = getPentaShape(x,y,width,height, false);
-		 * float fak = 0.45f;
-		 * Polygon pSmall = getPentaShape(x+(width*(1f-fak)/2f),2+y+(height*(1f-fak)/2f),width*fak,height*fak, true);
-		 * Polygon result = new Polygon();
-		 * for (int i=0; i<pBig.npoints; i++) {
-		 * result.addPoint(pBig.xpoints[i], pBig.ypoints[i]);
-		 * result.addPoint(pSmall.xpoints[i], pSmall.ypoints[i]);
-		 * }
-		 * return result;
+		 * Polygon pBig = getPentaShape(x,y,width,height, false); float fak = 0.45f;
+		 * Polygon pSmall =
+		 * getPentaShape(x+(width*(1f-fak)/2f),2+y+(height*(1f-fak)/2f),width*fak,height
+		 * *fak, true); Polygon result = new Polygon(); for (int i=0; i<pBig.npoints;
+		 * i++) { result.addPoint(pBig.xpoints[i], pBig.ypoints[i]);
+		 * result.addPoint(pSmall.xpoints[i], pSmall.ypoints[i]); } return result;
 		 */
 
 		GeneralPath path = new GeneralPath(GeneralPath.WIND_NON_ZERO);
@@ -502,8 +458,8 @@ public class StatisticalBarRenderer extends BarRenderer
 
 	}
 
-	private static ArrayList<FloatDimension> getPentaShapeDimension(
-						float x, float y, float width, float height, boolean inversed) {
+	private static ArrayList<FloatDimension> getPentaShapeDimension(float x, float y, float width, float height,
+			boolean inversed) {
 		ArrayList<FloatDimension> result = new ArrayList<FloatDimension>();
 
 		float x0 = x;

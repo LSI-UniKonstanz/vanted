@@ -26,45 +26,31 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.chartDrawComponent.MyComparableDataPoint;
 
 /**
- * @author Christian Klukas
- *         (c) 2006 IPK Gatersleben, Group Network Analysis
+ * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorithm {
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+
 	public String getName() {
 		return "Add Average-Values Diagram";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Hierarchy";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION,
-				Category.STATISTICS,
-				Category.CHART,
-				Category.VISUAL
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.STATISTICS,
+				Category.CHART, Category.VISUAL));
 	}
 
-	
 	@Override
 	public String getDescription() {
 		return "<html>" + "This command enumerates all <br>" + "leaf nodes with mapping data of a<br>"
-							+ "given GO-Term-Hierarchy-Node.";
+				+ "given GO-Term-Hierarchy-Node.";
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
+
 	public void execute() {
 		try {
 			graph.getListenerManager().transactionStarted(this);
@@ -72,7 +58,8 @@ public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorit
 			TreeSet<String> knownSeriesIDs = new TreeSet<String>();
 			HashSet<Node> processedNodes = new HashSet<Node>();
 			for (Node n : workingSet) {
-				knownSeriesIDs.addAll(getChildNodeSeriesNamesAndTimes(processedNodes, new NodeHelper(n), knownSeriesIDs));
+				knownSeriesIDs
+						.addAll(getChildNodeSeriesNamesAndTimes(processedNodes, new NodeHelper(n), knownSeriesIDs));
 			}
 			for (Node n : workingSet) {
 				NodeHelper nh = new NodeHelper(n);
@@ -84,13 +71,13 @@ public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorit
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-	
-	private void processNode(NodeHelper nh, TreeSet<String> knownSeriesAndTimeIDs) {
+
+	private static void processNode(NodeHelper nh, TreeSet<String> knownSeriesAndTimeIDs) {
 		Collection<Node> childNodes = nh.getAllOutChildNodes();
 		TreeMap<String, ArrayList<Double>> seriesAndTime2mappedValues = new TreeMap<String, ArrayList<Double>>();
 		for (String ci : knownSeriesAndTimeIDs)
 			seriesAndTime2mappedValues.put(ci, new ArrayList<Double>());
-		
+
 		HashMap<String, Integer> seriesAndTime2replicateid = new HashMap<String, Integer>();
 		int currentReplicateID = 1;
 		for (Node n : childNodes) {
@@ -103,7 +90,7 @@ public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorit
 							String seriesAndTime = mcdp.serie + "§" + mcdp.timeUnitAndTime;
 							seriesAndTime2mappedValues.get(seriesAndTime).add(mcdp.mean);
 							if (!seriesAndTime2replicateid.containsKey(seriesAndTime)) {
-								seriesAndTime2replicateid.put(seriesAndTime, new Integer(currentReplicateID++));
+								seriesAndTime2replicateid.put(seriesAndTime, Integer.valueOf(currentReplicateID++));
 							}
 						}
 					}
@@ -120,29 +107,29 @@ public class CreateGOchildrenAverageDataDiagramAlgorithm extends AbstractAlgorit
 			int plantID = nh.memGetPlantID(seriesName, "", "", "", "");
 			ArrayList<Double> values = seriesAndTime2mappedValues.get(seriesNameAndTime);
 			if (values == null || values.size() <= 0)
-				nh.memSample(new Double(Double.NaN), -1, plantID, "frequency", timeUnit, timePoint);
+				nh.memSample(Double.valueOf(Double.NaN), -1, plantID, "frequency", timeUnit, timePoint);
 			else {
 				boolean added = false;
 				for (Double val : values) {
 					if (val != null && !Double.isNaN(val)) {
 						Integer replicateId = seriesAndTime2replicateid.get(seriesNameAndTime);
 						if (replicateId == null)
-							replicateId = new Integer(-1);
+							replicateId = Integer.valueOf(-1);
 						nh.memSample(val, replicateId, plantID, "average of sample means", timeUnit, timePoint);
 						added = true;
 					}
 				}
 				if (!added)
-					nh.memSample(new Double(Double.NaN), -1, plantID, "average of sample means", timeUnit, timePoint);
+					nh.memSample(Double.valueOf(Double.NaN), -1, plantID, "average of sample means", timeUnit, timePoint);
 			}
 		}
 		nh.memAddDataMapping("mapping", "average of sample means", null, "calculated analysis", "system",
-							"Average of sample means", "");
+				"Average of sample means", "");
 		nh.setChartType(GraffitiCharts.BAR_FLAT);
 	}
-	
-	private TreeSet<String> getChildNodeSeriesNamesAndTimes(HashSet<Node> processedNodes, NodeHelper nh,
-						Collection<String> knownSeriesIDs) {
+
+	private static TreeSet<String> getChildNodeSeriesNamesAndTimes(HashSet<Node> processedNodes, NodeHelper nh,
+			Collection<String> knownSeriesIDs) {
 		TreeSet<String> result = new TreeSet<String>();
 		if (!processedNodes.contains(nh.getGraphNode())) {
 			processedNodes.add(nh.getGraphNode());

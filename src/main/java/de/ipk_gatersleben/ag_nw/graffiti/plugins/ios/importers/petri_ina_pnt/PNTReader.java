@@ -25,16 +25,14 @@ import org.graffiti.graphics.LabelAttribute;
 import org.graffiti.plugin.io.AbstractInputSerializer;
 
 /**
- * @author klukas
- *         7.12.2006
+ * @author klukas 7.12.2006
  */
-public class PNTReader
-					extends AbstractInputSerializer {
+public class PNTReader extends AbstractInputSerializer {
 	@Override
 	public void read(InputStream in, Graph g) throws IOException {
 		read(new InputStreamReader(in), g);
 	}
-	
+
 	private double getViewHeight(String line) {
 		double res = 0;
 		String bb = getEntry("bb=", line, "0,0,0,0");
@@ -50,7 +48,7 @@ public class PNTReader
 		}
 		return res;
 	}
-	
+
 	private void processEdgeDesign(Edge e, String line, double viewHeight) {
 		try {
 			String pos = getEntry("pos=", line, null);
@@ -80,7 +78,7 @@ public class PNTReader
 			ErrorMsg.addErrorMessage(err);
 		}
 	}
-	
+
 	private String getNextEdgeId(String line) {
 		if (line.indexOf("->") <= 0 && line.indexOf("--") <= 0)
 			return null;
@@ -93,7 +91,7 @@ public class PNTReader
 		String id = getFirstId(rol);
 		return id;
 	}
-	
+
 	private void processNodeDesign(Node n, String line, String defaultFontSize, double viewHeight) {
 		try {
 			String label = getEntry("label=", line, null);
@@ -138,7 +136,7 @@ public class PNTReader
 			ErrorMsg.addErrorMessage("Invalid node settings: " + line);
 		}
 	}
-	
+
 	private String getFirstId(String line) {
 		try {
 			if (line.indexOf("[") > 0) {
@@ -153,7 +151,7 @@ public class PNTReader
 			return null;
 		}
 	}
-	
+
 	private String getEntry(String setting, String line, String defaultReturn) {
 		String r1 = getEntryImpl(setting, line, defaultReturn);
 		if (r1 == null) {
@@ -163,7 +161,7 @@ public class PNTReader
 		} else
 			return r1;
 	}
-	
+
 	private String getEntryImpl(String setting, String line, String defaultReturn) {
 		if (line.indexOf(setting) < 0)
 			return defaultReturn;
@@ -180,24 +178,23 @@ public class PNTReader
 			String del2 = "]";
 			if (restOfLine.indexOf(del1) >= 0) {
 				return restOfLine.substring(0, restOfLine.indexOf(del1));
-			} else
-				if (restOfLine.indexOf(del2) >= 0) {
-					return restOfLine.substring(0, restOfLine.indexOf(del2));
-				} else {
-					ErrorMsg.addErrorMessage("Text in line [" + line + "] is not properly quotet (missing , or ]).");
-					return restOfLine;
-				}
+			} else if (restOfLine.indexOf(del2) >= 0) {
+				return restOfLine.substring(0, restOfLine.indexOf(del2));
+			} else {
+				ErrorMsg.addErrorMessage("Text in line [" + line + "] is not properly quotet (missing , or ]).");
+				return restOfLine;
+			}
 		}
 	}
-	
+
 	public String[] getExtensions() {
 		return new String[] { ".pnt" };
 	}
-	
+
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "INA PNT" };
 	}
-	
+
 	public void read(Reader in, Graph g) throws IOException {
 		ArrayList<String> lines = new ArrayList<String>();
 		BufferedReader br = new BufferedReader(in);
@@ -226,64 +223,64 @@ public class PNTReader
 			line = line.trim();
 			if (line.startsWith("digraph ") && line.endsWith("{")) {
 				g.setDirected(true);
-			} else
-				if (line.startsWith("graph ") && line.endsWith("{")) {
-					g.setDirected(false);
+			} else if (line.startsWith("graph ") && line.endsWith("{")) {
+				g.setDirected(false);
+			} else {
+				if (line.startsWith("graph ")) {
+					viewHeight = getViewHeight(line);
+				} else if (line.startsWith("node ")) {
+					String shape = "shape=";
+					String fontsize = "fontsize=";
+					if (line.indexOf(shape) > 0) {
+						defaultShape = getEntry(shape, line, defaultShape);
+					}
+					if (line.indexOf(fontsize) > 0) {
+						defaultFontSize = getEntry(fontsize, line, defaultFontSize);
+					}
 				} else {
-					if (line.startsWith("graph ")) {
-						viewHeight = getViewHeight(line);
-					} else
-						if (line.startsWith("node ")) {
-							String shape = "shape=";
-							String fontsize = "fontsize=";
-							if (line.indexOf(shape) > 0) {
-								defaultShape = getEntry(shape, line, defaultShape);
-							}
-							if (line.indexOf(fontsize) > 0) {
-								defaultFontSize = getEntry(fontsize, line, defaultFontSize);
-							}
-						} else {
-							boolean directed = g.isDirected();
-							int arrowPos = line.indexOf(" -> ");
-							if (arrowPos < 0) {
-								arrowPos = line.indexOf(" -- ");
-								directed = false;
-							}
-							int eqPos = line.indexOf("=");
-							boolean isEdgeLine = arrowPos > 0;
-							if (eqPos > 0 && isEdgeLine && arrowPos > eqPos)
-								isEdgeLine = false;
-							if (!isEdgeLine) {
-								String id = getFirstId(line);
-								if (id != null && id.length() > 0 && !id.trim().equalsIgnoreCase("}")) {
-									// create node
-									// id2graphNode
-									Point2D np = pgg.getNextPosition();
-									Node n = g.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(np.getX(), np.getY()));
-									processNodeDesign(n, line, defaultFontSize, viewHeight);
-									id2graphNode.put(id, n);
-								}
-							} else {
-								// create edge
-								if (arrowPos <= 0)
-									continue;
-								String idA = getFirstId(line.substring(0, arrowPos).trim());
-								if (idA != null) {
-									String idB = getNextEdgeId(line);
-									if (idB != null) {
-										Node a = id2graphNode.get(idA);
-										Node b = id2graphNode.get(idB);
-										if (a == null || b == null) {
-											ErrorMsg.addErrorMessage("Invalid Line Definition (Node not defined): " + line);
-										} else {
-											Edge e = g.addEdge(a, b, directed, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, directed));
-											processEdgeDesign(e, line, viewHeight);
-										}
-									}
+					boolean directed = g.isDirected();
+					int arrowPos = line.indexOf(" -> ");
+					if (arrowPos < 0) {
+						arrowPos = line.indexOf(" -- ");
+						directed = false;
+					}
+					int eqPos = line.indexOf("=");
+					boolean isEdgeLine = arrowPos > 0;
+					if (eqPos > 0 && isEdgeLine && arrowPos > eqPos)
+						isEdgeLine = false;
+					if (!isEdgeLine) {
+						String id = getFirstId(line);
+						if (id != null && id.length() > 0 && !id.trim().equalsIgnoreCase("}")) {
+							// create node
+							// id2graphNode
+							Point2D np = pgg.getNextPosition();
+							Node n = g
+									.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(np.getX(), np.getY()));
+							processNodeDesign(n, line, defaultFontSize, viewHeight);
+							id2graphNode.put(id, n);
+						}
+					} else {
+						// create edge
+						if (arrowPos <= 0)
+							continue;
+						String idA = getFirstId(line.substring(0, arrowPos).trim());
+						if (idA != null) {
+							String idB = getNextEdgeId(line);
+							if (idB != null) {
+								Node a = id2graphNode.get(idA);
+								Node b = id2graphNode.get(idB);
+								if (a == null || b == null) {
+									ErrorMsg.addErrorMessage("Invalid Line Definition (Node not defined): " + line);
+								} else {
+									Edge e = g.addEdge(a, b, directed, AttributeHelper
+											.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, directed));
+									processEdgeDesign(e, line, viewHeight);
 								}
 							}
 						}
+					}
 				}
+			}
 		}
 	}
 }

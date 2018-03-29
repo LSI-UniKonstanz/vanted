@@ -27,9 +27,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.KeggHel
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.KeggService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.OrganismEntry;
 
-public class AllSuperGraphsCreator implements BackgroundTaskStatusProvider,
-		Runnable {
-	
+public class AllSuperGraphsCreator implements BackgroundTaskStatusProvider, Runnable {
+
 	private Graph graph;
 	private String message1 = "Please wait...";
 	private String message2 = "";
@@ -42,9 +41,9 @@ public class AllSuperGraphsCreator implements BackgroundTaskStatusProvider,
 	private boolean checkGlycans;
 	private boolean checkCompounds;
 	private OrganismEntry[] orgs;
-	
-	public AllSuperGraphsCreator(Graph graph, String targetFolder, OrganismEntry[] orgs,
-			boolean checkOrthologs, boolean checkEnzymes, boolean checkGlycans, boolean checkCompounds, boolean convertKOsToGenes) {
+
+	public AllSuperGraphsCreator(Graph graph, String targetFolder, OrganismEntry[] orgs, boolean checkOrthologs,
+			boolean checkEnzymes, boolean checkGlycans, boolean checkCompounds, boolean convertKOsToGenes) {
 		this.graph = graph;
 		this.targetFolder = targetFolder;
 		this.orgs = orgs;
@@ -54,39 +53,39 @@ public class AllSuperGraphsCreator implements BackgroundTaskStatusProvider,
 		this.checkGlycans = checkGlycans;
 		this.checkCompounds = checkCompounds;
 	}
-	
+
 	public int getCurrentStatusValue() {
 		return (int) getCurrentStatusValueFine();
 	}
-	
+
 	public void setCurrentStatusValue(int value) {
 		// empty
 	}
-	
+
 	public double getCurrentStatusValueFine() {
 		return progress;
 	}
-	
+
 	public String getCurrentStatusMessage1() {
 		return message1;
 	}
-	
+
 	public String getCurrentStatusMessage2() {
 		return message2;
 	}
-	
+
 	public void pleaseStop() {
 		stop = true;
 	}
-	
+
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-	
+
 	public void pleaseContinueRun() {
 		// empty
 	}
-	
+
 	public void run() {
 		KeggHelper kegg = new KeggHelper();
 		try {
@@ -97,7 +96,7 @@ public class AllSuperGraphsCreator implements BackgroundTaskStatusProvider,
 			int max = orgs.length;
 			double step = 1d / orgs.length;
 			int lastErrorCnt = ErrorMsg.getErrorMsgCount();
-			
+
 			ArrayList<String> coveredMaps = new ArrayList<String>();
 			for (Node n : graph.getNodes()) {
 				NodeHelper nh = new NodeHelper(n);
@@ -108,26 +107,25 @@ public class AllSuperGraphsCreator implements BackgroundTaskStatusProvider,
 						cluster = StringManipulationTools.stringReplace(cluster, ".xml", "");
 						if (!coveredMaps.contains(cluster))
 							coveredMaps.add(cluster);
-					} else
-						if (cluster.indexOf("ko") >= 0) {
-							cluster = cluster.substring(cluster.indexOf("ko"));
-							cluster = StringManipulationTools.stringReplace(cluster, ".xml", "");
-							if (!coveredMaps.contains(cluster))
-								coveredMaps.add(cluster);
-						}
+					} else if (cluster.indexOf("ko") >= 0) {
+						cluster = cluster.substring(cluster.indexOf("ko"));
+						cluster = StringManipulationTools.stringReplace(cluster, ".xml", "");
+						if (!coveredMaps.contains(cluster))
+							coveredMaps.add(cluster);
+					}
 				}
 			}
 			for (OrganismEntry organismSelection : orgs) {
 				progress = 100d * (current / max);
-				message1 = "Process organism " + organismSelection.getShortName() + " (" + ((int) (current + 1)) + "/" + max + ")";
+				message1 = "Process organism " + organismSelection.getShortName() + " (" + ((int) (current + 1)) + "/"
+						+ max + ")";
 				message2 = "Copy Graph...";
 				Graph graphCopy = new AdjListGraph(new ListenerManager());
 				graphCopy.addGraph(graph);
 				message2 = "Enumerate source maps...";
 				for (Node n : graphCopy.getNodes()) {
 					new NodeHelper(n);
-					String keggID = (String) AttributeHelper.getAttributeValue(n,
-							"kegg", "kegg_name", "", "");
+					String keggID = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_name", "", "");
 					if (checkOrthologs)
 						if (keggID.startsWith("ko:"))
 							AttributeHelper.setAttribute(n, "kegg", "present", "not found");
@@ -147,9 +145,8 @@ public class AllSuperGraphsCreator implements BackgroundTaskStatusProvider,
 					String sn = organismSelection.getShortName();
 					map = StringManipulationTools.stringReplace(map, "map", sn);
 					message2 = "SOAP: Check present enzymes for map " + map + "...";
-					KeggService.colorizeEnzymesGlycansCompounds(graphCopy, map,
-							KeggService.getDefaultEnzymeColor(), false,
-							checkOrthologs, checkEnzymes, checkGlycans, checkCompounds, convertKOsToGenes);
+					KeggService.colorizeEnzymesGlycansCompounds(graphCopy, map, KeggService.getDefaultEnzymeColor(),
+							false, checkOrthologs, checkEnzymes, checkGlycans, checkCompounds, convertKOsToGenes);
 					workI++;
 					progress = 100d * (current / max + step * workI / workLoad);
 					if (stop)
@@ -159,14 +156,16 @@ public class AllSuperGraphsCreator implements BackgroundTaskStatusProvider,
 				ArrayList<Node> toBeDeleted = new ArrayList<Node>();
 				for (Node n : graphCopy.getNodes()) {
 					// NodeHelper nh = new NodeHelper(n);
-					String enzymePresent = (String) AttributeHelper.getAttributeValue(n, "kegg", "present", "", "", false);
+					String enzymePresent = (String) AttributeHelper.getAttributeValue(n, "kegg", "present", "", "",
+							false);
 					if (enzymePresent.equalsIgnoreCase("not found") /* || nh.getDegree()<=0 */) {
 						toBeDeleted.add(n);
 					}
 				}
 				// ArrayList<Edge> toBeDeletedEdges = new ArrayList<Edge>();
 				// for (Edge e : graphCopy.getEdges()) {
-				// if ((e.getSource()==e.getTarget()) || toBeDeleted.contains(e.getSource()) || toBeDeleted.contains(e.getTarget()))
+				// if ((e.getSource()==e.getTarget()) || toBeDeleted.contains(e.getSource()) ||
+				// toBeDeleted.contains(e.getTarget()))
 				// toBeDeletedEdges.add(e);
 				// }
 				// for (Edge del : toBeDeletedEdges)

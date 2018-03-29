@@ -12,11 +12,11 @@ public class InhibitorArrowShape extends AbstractArrowShape {
 		super();
 		updateSize(size);
 	}
-	
+
 	@Override
 	public void updateSize(double size) {
 		super.updateSize(size);
-		
+
 		GeneralPath arrow = new GeneralPath();
 		if (SIZE >= 0.99999 && SIZE <= 1.00001) {
 			SCALE_FACTOR = 6;
@@ -34,13 +34,13 @@ public class InhibitorArrowShape extends AbstractArrowShape {
 		// arrow.moveTo(0f, 0f);
 		// arrow.lineTo(0f, SIZE);
 		arrow.closePath();
-		
+
 		this.head = new Point2D.Double(SIZE / 2, SIZE / 2d);
 		this.anchor = new Point2D.Double(0, SIZE / 2d);
 		this.arrowShape = arrow;
 		this.arrowWidth = this.arrowShape.getBounds2D().getHeight();
 	}
-	
+
 	public InhibitorArrowShape() {
 		// this(10f);
 	}

@@ -13,14 +13,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 /**
  * @author Hendrik Rohn
  */
-public class PluginFeatureExtendedFileFormatSupport
-		extends IPK_PluginAdapter {
-	
+public class PluginFeatureExtendedFileFormatSupport extends IPK_PluginAdapter {
+
 	public PluginFeatureExtendedFileFormatSupport() {
-		// if (new SettingsHelperDefaultIsFalse().isEnabled("Extended file format support"))
+		// if (new SettingsHelperDefaultIsFalse().isEnabled("Extended file format
+		// support"))
 		ReleaseInfo.enableFeature(FeatureSet.EXTENDED_FILE_FORMAT);
 	}
-	
+
 	@Override
 	public void configure(Preferences p) {
 		super.configure(p);

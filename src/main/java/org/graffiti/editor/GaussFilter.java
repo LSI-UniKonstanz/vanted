@@ -8,37 +8,37 @@ import java.awt.image.Kernel;
 public class GaussFilter {
 	protected float radius;
 	protected Kernel kernel;
-	
+
 	public GaussFilter(float radius) {
 		this.radius = radius;
 		kernel = makeKernel(radius);
 	}
-	
+
 	public BufferedImage filter(BufferedImage src, BufferedImage dst) {
 		int width = src.getWidth();
 		int height = src.getHeight();
-		
+
 		if (dst == null)
 			dst = createCompatibleDestImage(src, null);
-		
+
 		int[] inPixels = new int[width * height];
 		int[] outPixels = new int[width * height];
 		src.getRGB(0, 0, width, height, inPixels, 0, width);
-		
+
 		boolean alpha = src.getTransparency() != Transparency.OPAQUE;
 		convolveAndTranspose(kernel, inPixels, outPixels, width, height, alpha);
 		convolveAndTranspose(kernel, outPixels, inPixels, height, width, alpha);
-		
+
 		dst.setRGB(0, 0, width, height, inPixels, 0, width);
 		return dst;
 	}
-	
+
 	public static void convolveAndTranspose(Kernel kernel, int[] inPixels, int[] out, int width, int height,
-						boolean hasAlpha) {
+			boolean hasAlpha) {
 		float[] matrix = kernel.getKernelData(null);
 		int cols = kernel.getWidth();
 		int cols2 = cols / 2;
-		
+
 		for (int y = 0; y < height; y++) {
 			int index = y;
 			int ioffset = y * width;
@@ -47,15 +47,14 @@ public class GaussFilter {
 				int moffset = cols2;
 				for (int col = -cols2; col <= cols2; col++) {
 					float f = matrix[moffset + col];
-					
+
 					if (f != 0) {
 						int ix = x + col;
 						if (ix < 0) {
 							ix = 0;
-						} else
-							if (ix >= width) {
-								ix = width - 1;
-							}
+						} else if (ix >= width) {
+							ix = width - 1;
+						}
 						int rgb = inPixels[ioffset + ix];
 						a += f * ((rgb >> 24) & 0xff);
 						r += f * ((rgb >> 16) & 0xff);
@@ -72,7 +71,7 @@ public class GaussFilter {
 			}
 		}
 	}
-	
+
 	public static Kernel makeKernel(float radius) {
 		int r = (int) Math.ceil(radius);
 		int rows = r * 2 + 1;
@@ -94,17 +93,17 @@ public class GaussFilter {
 		}
 		for (int i = 0; i < rows; i++)
 			matrix[i] /= total;
-		
+
 		return new Kernel(rows, 1, matrix);
 	}
-	
+
 	public BufferedImage createCompatibleDestImage(BufferedImage src, ColorModel dstCM) {
 		if (dstCM == null)
 			dstCM = src.getColorModel();
-		return new BufferedImage(dstCM, dstCM.createCompatibleWritableRaster(src.getWidth(), src.getHeight()), dstCM
-							.isAlphaPremultiplied(), null);
+		return new BufferedImage(dstCM, dstCM.createCompatibleWritableRaster(src.getWidth(), src.getHeight()),
+				dstCM.isAlphaPremultiplied(), null);
 	}
-	
+
 	public static int clamp(int c) {
 		if (c < 0)
 			return 0;
@@ -112,5 +111,5 @@ public class GaussFilter {
 			return 255;
 		return c;
 	}
-	
+
 }

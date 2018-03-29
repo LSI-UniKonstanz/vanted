@@ -38,10 +38,12 @@ import org.jfree.data.Series;
 import org.jfree.data.SeriesException;
 
 /**
- * A structure containing zero, one or many {@link TimePeriodValue} instances. The time periods
- * can overlap, and are maintained in the order that they are added to the collection.
+ * A structure containing zero, one or many {@link TimePeriodValue} instances.
+ * The time periods can overlap, and are maintained in the order that they are
+ * added to the collection.
  * <p>
- * This is similar to the {@link TimeSeries} class, except that the time periods can have irregular lengths.
+ * This is similar to the {@link TimeSeries} class, except that the time periods
+ * can have irregular lengths.
  */
 public class TimePeriodValues extends Series implements Serializable {
 
@@ -82,28 +84,27 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * Creates a new (empty) collection of time period values.
 	 * 
 	 * @param name
-	 *           the name of the series.
+	 *            the name of the series.
 	 */
 	public TimePeriodValues(final String name) {
 
-		this(name,
-							DEFAULT_DOMAIN_DESCRIPTION,
-							DEFAULT_RANGE_DESCRIPTION);
+		this(name, DEFAULT_DOMAIN_DESCRIPTION, DEFAULT_RANGE_DESCRIPTION);
 
 	}
 
 	/**
 	 * Creates a new time series that contains no data.
 	 * <P>
-	 * Descriptions can be specified for the domain and range. One situation where this is helpful is when generating a chart for the time series - axis labels
+	 * Descriptions can be specified for the domain and range. One situation where
+	 * this is helpful is when generating a chart for the time series - axis labels
 	 * can be taken from the domain and range description.
 	 * 
 	 * @param name
-	 *           the name of the series.
+	 *            the name of the series.
 	 * @param domain
-	 *           the domain description.
+	 *            the domain description.
 	 * @param range
-	 *           the range description.
+	 *            the range description.
 	 */
 	public TimePeriodValues(final String name, final String domain, final String range) {
 
@@ -129,7 +130,7 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * A property change event is fired, and an undoable edit is posted.
 	 * 
 	 * @param description
-	 *           the new description.
+	 *            the new description.
 	 */
 	public void setDomainDescription(final String description) {
 
@@ -154,7 +155,7 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * Registered listeners are notified of the change.
 	 * 
 	 * @param description
-	 *           the new description.
+	 *            the new description.
 	 */
 	public void setRangeDescription(final String description) {
 
@@ -177,7 +178,7 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * Returns one data item for the series.
 	 * 
 	 * @param index
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return one data item for the series.
 	 */
 	public TimePeriodValue getDataItem(final int index) {
@@ -190,7 +191,7 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * Returns the time period at the specified index.
 	 * 
 	 * @param index
-	 *           the index of the data pair.
+	 *            the index of the data pair.
 	 * @return the time period at the specified index.
 	 */
 	public TimePeriod getTimePeriod(final int index) {
@@ -201,7 +202,7 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * Returns the value at the specified index.
 	 * 
 	 * @param index
-	 *           index of a value.
+	 *            index of a value.
 	 * @return the value at the specified index.
 	 */
 	public Number getValue(final int index) {
@@ -212,7 +213,7 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * Adds a data item to the series.
 	 * 
 	 * @param item
-	 *           the (timeperiod, value) pair.
+	 *            the (timeperiod, value) pair.
 	 */
 	public void add(final TimePeriodValue item) {
 
@@ -231,9 +232,9 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * Update the index values for the maximum and minimum bounds.
 	 * 
 	 * @param period
-	 *           the time period.
+	 *            the time period.
 	 * @param index
-	 *           the index of the time period.
+	 *            the index of the time period.
 	 */
 	private void updateBounds(final TimePeriod period, final int index) {
 
@@ -316,9 +317,9 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * Adds a new data item to the series.
 	 * 
 	 * @param period
-	 *           the time period.
+	 *            the time period.
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public void add(final TimePeriod period, final double value) {
 
@@ -331,9 +332,9 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * Adds a new data item to the series.
 	 * 
 	 * @param period
-	 *           the time period.
+	 *            the time period.
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public void add(final TimePeriod period, final Number value) {
 
@@ -346,9 +347,9 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * Updates (changes) the value of a data item.
 	 * 
 	 * @param index
-	 *           the index of the data item to update.
+	 *            the index of the data item to update.
 	 * @param value
-	 *           the new value.
+	 *            the new value.
 	 */
 	public void update(final int index, final Number value) {
 
@@ -362,9 +363,9 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * Deletes data from start until end index (end inclusive).
 	 * 
 	 * @param start
-	 *           the index of the first period to delete.
+	 *            the index of the first period to delete.
 	 * @param end
-	 *           the index of the last period to delete.
+	 *            the index of the last period to delete.
 	 */
 	public void delete(final int start, final int end) {
 
@@ -380,7 +381,7 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * Tests the series for equality with another object.
 	 * 
 	 * @param object
-	 *           the object.
+	 *            the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(final Object object) {
@@ -442,13 +443,14 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * <P>
 	 * Notes:
 	 * <ul>
-	 * <li>no need to clone the domain and range descriptions, since String object is immutable;</li>
+	 * <li>no need to clone the domain and range descriptions, since String object
+	 * is immutable;</li>
 	 * <li>we pass over to the more general method createCopy(start, end).</li>
 	 * </ul>
 	 * 
 	 * @return a clone of the time series.
 	 * @throws CloneNotSupportedException
-	 *            if there is a cloning problem.
+	 *             if there is a cloning problem.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 
@@ -461,15 +463,14 @@ public class TimePeriodValues extends Series implements Serializable {
 	 * Creates a new instance by copying a subset of the data in this collection.
 	 * 
 	 * @param start
-	 *           the index of the first item to copy.
+	 *            the index of the first item to copy.
 	 * @param end
-	 *           the index of the last item to copy.
+	 *            the index of the last item to copy.
 	 * @return A copy of a subset of the items.
 	 * @throws CloneNotSupportedException
-	 *            if there is a cloning problem.
+	 *             if there is a cloning problem.
 	 */
-	public TimePeriodValues createCopy(final int start, final int end)
-						throws CloneNotSupportedException {
+	public TimePeriodValues createCopy(final int start, final int end) throws CloneNotSupportedException {
 
 		final TimePeriodValues copy = (TimePeriodValues) super.clone();
 

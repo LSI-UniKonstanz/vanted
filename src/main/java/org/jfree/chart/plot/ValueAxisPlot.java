@@ -32,8 +32,8 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.data.Range;
 
 /**
- * An interface that is implemented by plots that use a {@link ValueAxis}, providing a standard
- * method to find the current data range.
+ * An interface that is implemented by plots that use a {@link ValueAxis},
+ * providing a standard method to find the current data range.
  */
 public interface ValueAxisPlot {
 
@@ -41,7 +41,7 @@ public interface ValueAxisPlot {
 	 * Returns the data range that should apply for the specified axis.
 	 * 
 	 * @param axis
-	 *           the axis.
+	 *            the axis.
 	 * @return The data range.
 	 */
 	public Range getDataRange(ValueAxis axis);
@@ -50,7 +50,7 @@ public interface ValueAxisPlot {
 	 * Multiplies the range on the horizontal axis/axes by the specified factor.
 	 * 
 	 * @param factor
-	 *           the zoom factor.
+	 *            the zoom factor.
 	 */
 	public void zoomHorizontalAxes(double factor);
 
@@ -58,9 +58,9 @@ public interface ValueAxisPlot {
 	 * Zooms in on the horizontal axes.
 	 * 
 	 * @param lowerPercent
-	 *           the new lower bound.
+	 *            the new lower bound.
 	 * @param upperPercent
-	 *           the new upper bound.
+	 *            the new upper bound.
 	 */
 	public void zoomHorizontalAxes(double lowerPercent, double upperPercent);
 
@@ -68,7 +68,7 @@ public interface ValueAxisPlot {
 	 * Multiplies the range on the vertical axis/axes by the specified factor.
 	 * 
 	 * @param factor
-	 *           the zoom factor.
+	 *            the zoom factor.
 	 */
 	public void zoomVerticalAxes(double factor);
 
@@ -76,9 +76,9 @@ public interface ValueAxisPlot {
 	 * Zooms in on the vertical axes.
 	 * 
 	 * @param lowerPercent
-	 *           the new lower bound.
+	 *            the new lower bound.
 	 * @param upperPercent
-	 *           the new upper bound.
+	 *            the new upper bound.
 	 */
 	public void zoomVerticalAxes(double lowerPercent, double upperPercent);
 

@@ -49,8 +49,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demonstration application showing how to create an area chart with a date axis for
- * the domain values.
+ * A simple demonstration application showing how to create an area chart with a
+ * date axis for the domain values.
  */
 public class XYAreaChartDemo2 extends ApplicationFrame {
 
@@ -58,7 +58,7 @@ public class XYAreaChartDemo2 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XYAreaChartDemo2(final String title) {
 
@@ -98,19 +98,15 @@ public class XYAreaChartDemo2 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-		final JFreeChart chart = ChartFactory.createXYAreaChart(
-							"XY Area Chart Demo 2",
-							"Time", "Value",
-							dataset,
-							PlotOrientation.VERTICAL,
-							true, // legend
+		final JFreeChart chart = ChartFactory.createXYAreaChart("XY Area Chart Demo 2", "Time", "Value", dataset,
+				PlotOrientation.VERTICAL, true, // legend
 				true, // tool tips
 				false // URLs
-				);
+		);
 		final XYPlot plot = chart.getXYPlot();
 
 		final ValueAxis domainAxis = new DateAxis("Time");
@@ -120,12 +116,8 @@ public class XYAreaChartDemo2 extends ApplicationFrame {
 		plot.setForegroundAlpha(0.5f);
 
 		final XYItemRenderer renderer = plot.getRenderer();
-		renderer.setToolTipGenerator(
-							new StandardXYToolTipGenerator(
-												StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
-												new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("#,##0.00")
-							)
-							);
+		renderer.setToolTipGenerator(new StandardXYToolTipGenerator(StandardXYToolTipGenerator.DEFAULT_TOOL_TIP_FORMAT,
+				new SimpleDateFormat("d-MMM-yyyy"), new DecimalFormat("#,##0.00")));
 		return chart;
 	}
 
@@ -133,7 +125,7 @@ public class XYAreaChartDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

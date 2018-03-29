@@ -49,8 +49,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A demonstration application showing a time series chart where you can dynamically add
- * (random) data by clicking on a button.
+ * A demonstration application showing a time series chart where you can
+ * dynamically add (random) data by clicking on a button.
  */
 public class DynamicDataDemo extends ApplicationFrame implements ActionListener {
 
@@ -64,7 +64,7 @@ public class DynamicDataDemo extends ApplicationFrame implements ActionListener 
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public DynamicDataDemo(final String title) {
 
@@ -90,19 +90,12 @@ public class DynamicDataDemo extends ApplicationFrame implements ActionListener 
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-		final JFreeChart result = ChartFactory.createTimeSeriesChart(
-							"Dynamic Data Demo",
-							"Time",
-							"Value",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart result = ChartFactory.createTimeSeriesChart("Dynamic Data Demo", "Time", "Value", dataset,
+				true, true, false);
 		final XYPlot plot = result.getXYPlot();
 		ValueAxis axis = plot.getDomainAxis();
 		axis.setAutoRange(true);
@@ -127,7 +120,7 @@ public class DynamicDataDemo extends ApplicationFrame implements ActionListener 
 	 * Handles a click on the button by adding new (random) data.
 	 * 
 	 * @param e
-	 *           the action event.
+	 *            the action event.
 	 */
 	public void actionPerformed(final ActionEvent e) {
 		if (e.getActionCommand().equals("ADD_DATA")) {
@@ -143,7 +136,7 @@ public class DynamicDataDemo extends ApplicationFrame implements ActionListener 
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

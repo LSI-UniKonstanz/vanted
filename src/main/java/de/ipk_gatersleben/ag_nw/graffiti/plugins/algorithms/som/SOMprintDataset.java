@@ -20,8 +20,7 @@ import org.graffiti.plugin.parameter.Parameter;
 import qmwi.kseg.som.DataSet;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SOMprintDataset extends AbstractAlgorithm {
 	int numberOfNeuronsParm = 8;
@@ -34,9 +33,10 @@ public class SOMprintDataset extends AbstractAlgorithm {
 	double gammaParam = 2;
 	boolean returnNaN;
 	private boolean useSampleAverage;
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
@@ -45,7 +45,7 @@ public class SOMprintDataset extends AbstractAlgorithm {
 		else
 			return null; // "Print Dataset as CSV to Console";
 	}
-	
+
 	@Override
 	public void reset() {
 		super.reset();
@@ -58,44 +58,45 @@ public class SOMprintDataset extends AbstractAlgorithm {
 		// betaParam=0.1;
 		// gammaParam=2;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.extension.Extension#getCategory()
 	 */
 	@Override
 	public String getCategory() {
 		return "Analysis";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.DATA,
-				Category.EXPORT
-				));
+		return new HashSet<Category>(Arrays.asList(Category.DATA, Category.EXPORT));
 	}
+
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
-							new BooleanParameter(returnNaN, "Disable Interpolation",
-												"If selected, missing time points are not filled with the value from the previous time point."),
-							new BooleanParameter(SOMplugin.getLastUseAverageSetting(), "Use Sample Average Values",
-												"If selected, the sample average values will be used, otherwise the replicate values will be used.") };
+				new BooleanParameter(returnNaN, "Disable Interpolation",
+						"If selected, missing time points are not filled with the value from the previous time point."),
+				new BooleanParameter(SOMplugin.getLastUseAverageSetting(), "Use Sample Average Values",
+						"If selected, the sample average values will be used, otherwise the replicate values will be used.") };
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		returnNaN = ((BooleanParameter) params[0]).getBoolean().booleanValue();
 		useSampleAverage = ((BooleanParameter) params[1]).getBoolean().booleanValue();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
-		SOMplugin.initDataSetWithSelection(SOMplugin.getDataSet(false), getSelectedOrAllGraphElements(), returnNaN, useSampleAverage);
+		SOMplugin.initDataSetWithSelection(SOMplugin.getDataSet(false), getSelectedOrAllGraphElements(), returnNaN,
+				useSampleAverage);
 		DataSet ds = SOMplugin.getDataSet(false);
 		System.out.println("=================== DATA SET ===================");
 		for (int i = 0; i < ds.getGroupSize(); i++) {

@@ -16,41 +16,40 @@ import org.graffiti.event.AbstractEvent;
  * 
  * @version $Revision: 1.5 $
  */
-public class SelectionEvent
-					extends AbstractEvent {
+public class SelectionEvent extends AbstractEvent {
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	/** DOCUMENT ME! */
 	private boolean added;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new <code>SelectionEvent</code>.
 	 * 
 	 * @param selection
-	 *           the (new / updated) selection.
+	 *            the (new / updated) selection.
 	 */
 	public SelectionEvent(Selection selection) {
 		super(selection);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Sets the added.
 	 * 
 	 * @param added
-	 *           The added to set
+	 *            The added to set
 	 */
 	public void setAdded(boolean added) {
 		this.added = added;
 	}
-	
+
 	/**
 	 * Returns the selection contained in the event.
 	 * 
@@ -59,7 +58,7 @@ public class SelectionEvent
 	public Selection getSelection() {
 		return (Selection) getSource();
 	}
-	
+
 	/**
 	 * Returns the added.
 	 * 

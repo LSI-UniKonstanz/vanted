@@ -9,11 +9,9 @@ import org.graffiti.graph.GraphElement;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
-public class UDnaRegion extends UtilitySuperClassToGraph
-{
+public class UDnaRegion extends UtilitySuperClassToGraph {
 	/**
-	 * adds all information within the biopax class to the attribute set of the
-	 * node
+	 * adds all information within the biopax class to the attribute set of the node
 	 * 
 	 * @param elem
 	 * @param i
@@ -21,12 +19,13 @@ public class UDnaRegion extends UtilitySuperClassToGraph
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public static void addAttributesToNode(GraphElement elem, DnaRegion i) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException
-	{
+	public static void addAttributesToNode(GraphElement elem, DnaRegion i)
+			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 
 		// first set label to node
 		setLabels(elem, i);
-		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), Messages.getString("UtilitySuperClassToGraph.148")); //$NON-NLS-1$ //$NON-NLS-2$
+		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), //$NON-NLS-1$
+				Messages.getString("UtilitySuperClassToGraph.148")); //$NON-NLS-1$
 		// set attribute paths
 		setAvailability(elem, i.getAvailability());
 		setCellularLocation(elem, i.getCellularLocation());
@@ -44,12 +43,10 @@ public class UDnaRegion extends UtilitySuperClassToGraph
 
 	}
 
-	public static void readAttributesFromNode(GraphElement elem, Graph g, Model model)
-	{
+	public static void readAttributesFromNode(GraphElement elem, Graph g, Model model) {
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 
-		if (!model.containsID(RDFID))
-		{
+		if (!model.containsID(RDFID)) {
 			DnaRegion interaction = model.addNew(DnaRegion.class, RDFID);
 			UtilitySuperClassFromGraph.getDisplayName(elem, interaction);
 			UtilitySuperClassFromGraph.getAvailability(elem, interaction);

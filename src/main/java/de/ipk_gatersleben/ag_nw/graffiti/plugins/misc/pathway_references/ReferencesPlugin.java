@@ -16,23 +16,20 @@ import org.graffiti.plugin.algorithm.Algorithm;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_EditorPluginAdapter;
 
-public class ReferencesPlugin
-					extends IPK_EditorPluginAdapter {
-	
+public class ReferencesPlugin extends IPK_EditorPluginAdapter {
+
 	@SuppressWarnings("unchecked")
 	public ReferencesPlugin() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.PATHWAY_FILE_REFERENCE)) {
-			algorithms = new Algorithm[] {
-								new LinkSelection()
-			};
-			attributes = new Class[] {
-								NodePathwayLinkVisualizationAttribute.class
-			};
+			algorithms = new Algorithm[] { new LinkSelection() };
+			attributes = new Class[] { NodePathwayLinkVisualizationAttribute.class };
 			StringAttribute.putAttributeType("pathway_link_visualization", NodePathwayLinkVisualizationAttribute.class);
 			attributeComponents = new HashMap();
-			attributeComponents.put(NodePathwayLinkVisualizationAttribute.class, PathwayLinkVisualizationComponent.class);
+			attributeComponents.put(NodePathwayLinkVisualizationAttribute.class,
+					PathwayLinkVisualizationComponent.class);
 			valueEditComponents = new HashMap();
-			valueEditComponents.put(NodePathwayLinkVisualizationAttribute.class, NodePathwayLinkVisualizationAttributeEditor.class);
+			valueEditComponents.put(NodePathwayLinkVisualizationAttribute.class,
+					NodePathwayLinkVisualizationAttributeEditor.class);
 		}
 	};
 }

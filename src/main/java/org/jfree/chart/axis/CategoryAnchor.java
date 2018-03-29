@@ -33,7 +33,8 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * Used to indicate one of three positions within a category: <code>START</code>, <code>MIDDLE</code> and <code>END</code>.
+ * Used to indicate one of three positions within a category:
+ * <code>START</code>, <code>MIDDLE</code> and <code>END</code>.
  */
 public final class CategoryAnchor implements Serializable {
 
@@ -53,7 +54,7 @@ public final class CategoryAnchor implements Serializable {
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *           the name.
+	 *            the name.
 	 */
 	private CategoryAnchor(String name) {
 		this.name = name;
@@ -69,10 +70,11 @@ public final class CategoryAnchor implements Serializable {
 	}
 
 	/**
-	 * Returns <code>true</code> if this object is equal to the specified object, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if this object is equal to the specified object,
+	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
@@ -98,18 +100,16 @@ public final class CategoryAnchor implements Serializable {
 	 * 
 	 * @return The object.
 	 * @throws ObjectStreamException
-	 *            if there is a problem.
+	 *             if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		if (this.equals(CategoryAnchor.START)) {
 			return CategoryAnchor.START;
-		} else
-			if (this.equals(CategoryAnchor.MIDDLE)) {
-				return CategoryAnchor.MIDDLE;
-			} else
-				if (this.equals(CategoryAnchor.END)) {
-					return CategoryAnchor.END;
-				}
+		} else if (this.equals(CategoryAnchor.MIDDLE)) {
+			return CategoryAnchor.MIDDLE;
+		} else if (this.equals(CategoryAnchor.END)) {
+			return CategoryAnchor.END;
+		}
 		return null;
 	}
 

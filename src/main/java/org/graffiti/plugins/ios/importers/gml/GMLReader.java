@@ -26,25 +26,24 @@ import org.graffiti.plugins.ios.importers.TypedAttributeService;
  * 
  * @see org.graffiti.plugin.io.AbstractIOSerializer
  */
-public class GMLReader
-					extends AbstractInputSerializer {
+public class GMLReader extends AbstractInputSerializer {
 	// ~ Instance fields ========================================================
-	
+
 	/** The supported extensions. */
 	private String[] extensions = { ".gml" };
-	
+
 	/** The parser for reading in the graph. */
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new <code>GMLReader</code>
 	 */
 	public GMLReader() {
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the extensions supported by this reader.
 	 * 
@@ -53,54 +52,54 @@ public class GMLReader
 	public String[] getExtensions() {
 		return this.extensions;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
 	 */
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "GML" };
 	}
-	
+
 	/**
-	 * Reads in a graph from the given input stream. <code>GraphElements</code> read are <b>cloned</b> when added to the graph. Consider using the
-	 * <code>read(InputStream)</code> method when you start with an empty
-	 * graph.
+	 * Reads in a graph from the given input stream. <code>GraphElements</code> read
+	 * are <b>cloned</b> when added to the graph. Consider using the
+	 * <code>read(InputStream)</code> method when you start with an empty graph.
 	 * 
 	 * @param in
-	 *           the <code>InputStream</code> from which to read in the graph.
+	 *            the <code>InputStream</code> from which to read in the graph.
 	 * @param g
-	 *           the graph in which to read in the file.
+	 *            the graph in which to read in the file.
 	 * @throws IOException
 	 */
 	@Override
-	public void read(InputStream in, Graph g)
-						throws IOException {
+	public void read(InputStream in, Graph g) throws IOException {
 		g.addGraph(read(in));
 	}
-	
+
 	/**
-	 * Reads in a graph from the given input stream. This implementation
-	 * returns an instance of <code>OptAdjListGraph</code> (that's what the
-	 * parser returns).
+	 * Reads in a graph from the given input stream. This implementation returns an
+	 * instance of <code>OptAdjListGraph</code> (that's what the parser returns).
 	 * 
 	 * @param in
-	 *           The input stream to read the graph from.
+	 *            The input stream to read the graph from.
 	 * @return The newly read graph (an instance of <code>OptAdjListGraph</code>).
 	 * @exception IOException
-	 *               If an IO error occurs.
+	 *                If an IO error occurs.
 	 * @throws ParserException
-	 *            DOCUMENT ME!
+	 *             DOCUMENT ME!
 	 */
 	@Override
-	public Graph read(InputStream in)
-						throws IOException {
+	public Graph read(InputStream in) throws IOException {
 		parser p = null;
 		try {
-			p = new parser(new Yylex(new java.io.BufferedReader(new java.io.InputStreamReader(in, Charset.forName(StringManipulationTools.Unicode))))); // defaultCharset()))));
+			p = new parser(new Yylex(new java.io.BufferedReader(
+					new java.io.InputStreamReader(in, Charset.forName(StringManipulationTools.Unicode))))); // defaultCharset()))));
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
-			p = new parser(new Yylex(new java.io.BufferedReader(new java.io.InputStreamReader(in, Charset.defaultCharset()))));
+			p = new parser(
+					new Yylex(new java.io.BufferedReader(new java.io.InputStreamReader(in, Charset.defaultCharset()))));
 		}
 		try {
 			p.parse();
@@ -118,7 +117,7 @@ public class GMLReader
 			throw new ParserException(e.getMessage());
 		}
 	}
-	
+
 	public void read(Reader reader, Graph newGraph) {
 		parser p = new parser(new Yylex(new java.io.BufferedReader(reader)));
 		try {
@@ -129,7 +128,7 @@ public class GMLReader
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-	
+
 }
 
 // ------------------------------------------------------------------------------

@@ -47,12 +47,13 @@ public class DatasetChangeEvent extends java.util.EventObject {
 	/**
 	 * Constructs a new event.
 	 * <P>
-	 * The source is either the dataset or the Plot class. The dataset can be null (in this case the source will be the Plot class).
+	 * The source is either the dataset or the Plot class. The dataset can be null
+	 * (in this case the source will be the Plot class).
 	 * 
 	 * @param source
-	 *           the source of the event.
+	 *            the source of the event.
 	 * @param data
-	 *           the dataset that generated the event.
+	 *            the dataset that generated the event.
 	 */
 	public DatasetChangeEvent(final Object source, final Dataset data) {
 		super(source);

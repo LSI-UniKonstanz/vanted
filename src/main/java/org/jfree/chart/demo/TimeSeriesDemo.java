@@ -52,17 +52,18 @@ import org.jfree.util.Log;
 import org.jfree.util.PrintStreamLogTarget;
 
 /**
- * An example of a time series chart. For the most part, default settings are used, except that
- * the renderer is modified to show filled shapes (as well as lines) at each data point.
+ * An example of a time series chart. For the most part, default settings are
+ * used, except that the renderer is modified to show filled shapes (as well as
+ * lines) at each data point.
  */
 public class TimeSeriesDemo extends ApplicationFrame {
 
 	/**
-	 * A demonstration application showing how to create a simple time series chart. This
-	 * example uses monthly data.
+	 * A demonstration application showing how to create a simple time series chart.
+	 * This example uses monthly data.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public TimeSeriesDemo(final String title) {
 
@@ -80,19 +81,13 @@ public class TimeSeriesDemo extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           a dataset.
+	 *            a dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							"Legal & General Unit Trust Prices",
-							"Date", "Price Per Unit",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Legal & General Unit Trust Prices", "Date",
+				"Price Per Unit", dataset, true, true, false);
 
 		chart.setBackgroundPaint(Color.white);
 
@@ -194,7 +189,7 @@ public class TimeSeriesDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

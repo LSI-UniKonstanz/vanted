@@ -34,8 +34,8 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * An enumeration of the positions that a value label can take, relative to an item
- * in a {@link org.jfree.chart.plot.CategoryPlot}.
+ * An enumeration of the positions that a value label can take, relative to an
+ * item in a {@link org.jfree.chart.plot.CategoryPlot}.
  */
 public final class ItemLabelAnchor implements Serializable {
 
@@ -121,7 +121,7 @@ public final class ItemLabelAnchor implements Serializable {
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *           the name.
+	 *            the name.
 	 */
 	private ItemLabelAnchor(String name) {
 		this.name = name;
@@ -137,10 +137,11 @@ public final class ItemLabelAnchor implements Serializable {
 	}
 
 	/**
-	 * Returns <code>true</code> if this object is equal to the specified object, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if this object is equal to the specified object,
+	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
@@ -166,95 +167,73 @@ public final class ItemLabelAnchor implements Serializable {
 	 * 
 	 * @return the object.
 	 * @throws ObjectStreamException
-	 *            if there is a problem.
+	 *             if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		ItemLabelAnchor result = null;
 		if (this.equals(ItemLabelAnchor.CENTER)) {
 			result = ItemLabelAnchor.CENTER;
-		} else
-			if (this.equals(ItemLabelAnchor.INSIDE1)) {
-				result = ItemLabelAnchor.INSIDE1;
-			} else
-				if (this.equals(ItemLabelAnchor.INSIDE2)) {
-					result = ItemLabelAnchor.INSIDE2;
-				} else
-					if (this.equals(ItemLabelAnchor.INSIDE3)) {
-						result = ItemLabelAnchor.INSIDE3;
-					} else
-						if (this.equals(ItemLabelAnchor.INSIDE4)) {
-							result = ItemLabelAnchor.INSIDE4;
-						} else
-							if (this.equals(ItemLabelAnchor.INSIDE5)) {
-								result = ItemLabelAnchor.INSIDE5;
-							} else
-								if (this.equals(ItemLabelAnchor.INSIDE6)) {
-									result = ItemLabelAnchor.INSIDE6;
-								} else
-									if (this.equals(ItemLabelAnchor.INSIDE7)) {
-										result = ItemLabelAnchor.INSIDE7;
-									} else
-										if (this.equals(ItemLabelAnchor.INSIDE8)) {
-											result = ItemLabelAnchor.INSIDE8;
-										} else
-											if (this.equals(ItemLabelAnchor.INSIDE9)) {
-												result = ItemLabelAnchor.INSIDE9;
-											} else
-												if (this.equals(ItemLabelAnchor.INSIDE10)) {
-													result = ItemLabelAnchor.INSIDE10;
-												} else
-													if (this.equals(ItemLabelAnchor.INSIDE11)) {
-														result = ItemLabelAnchor.INSIDE11;
-													} else
-														if (this.equals(ItemLabelAnchor.INSIDE12)) {
-															result = ItemLabelAnchor.INSIDE12;
-														} else
-															if (this.equals(ItemLabelAnchor.OUTSIDE1)) {
-																result = ItemLabelAnchor.OUTSIDE1;
-															} else
-																if (this.equals(ItemLabelAnchor.OUTSIDE2)) {
-																	result = ItemLabelAnchor.OUTSIDE2;
-																} else
-																	if (this.equals(ItemLabelAnchor.OUTSIDE3)) {
-																		result = ItemLabelAnchor.OUTSIDE3;
-																	} else
-																		if (this.equals(ItemLabelAnchor.OUTSIDE4)) {
-																			result = ItemLabelAnchor.OUTSIDE4;
-																		} else
-																			if (this.equals(ItemLabelAnchor.OUTSIDE5)) {
-																				result = ItemLabelAnchor.OUTSIDE5;
-																			} else
-																				if (this.equals(ItemLabelAnchor.OUTSIDE6)) {
-																					result = ItemLabelAnchor.OUTSIDE6;
-																				} else
-																					if (this.equals(ItemLabelAnchor.OUTSIDE7)) {
-																						result = ItemLabelAnchor.OUTSIDE7;
-																					} else
-																						if (this.equals(ItemLabelAnchor.OUTSIDE8)) {
-																							result = ItemLabelAnchor.OUTSIDE8;
-																						} else
-																							if (this.equals(ItemLabelAnchor.OUTSIDE9)) {
-																								result = ItemLabelAnchor.OUTSIDE9;
-																							} else
-																								if (this.equals(ItemLabelAnchor.OUTSIDE10)) {
-																									result = ItemLabelAnchor.OUTSIDE10;
-																								} else
-																									if (this.equals(ItemLabelAnchor.OUTSIDE11)) {
-																										result = ItemLabelAnchor.OUTSIDE11;
-																									} else
-																										if (this.equals(ItemLabelAnchor.OUTSIDE12)) {
-																											result = ItemLabelAnchor.OUTSIDE12;
-																										}
+		} else if (this.equals(ItemLabelAnchor.INSIDE1)) {
+			result = ItemLabelAnchor.INSIDE1;
+		} else if (this.equals(ItemLabelAnchor.INSIDE2)) {
+			result = ItemLabelAnchor.INSIDE2;
+		} else if (this.equals(ItemLabelAnchor.INSIDE3)) {
+			result = ItemLabelAnchor.INSIDE3;
+		} else if (this.equals(ItemLabelAnchor.INSIDE4)) {
+			result = ItemLabelAnchor.INSIDE4;
+		} else if (this.equals(ItemLabelAnchor.INSIDE5)) {
+			result = ItemLabelAnchor.INSIDE5;
+		} else if (this.equals(ItemLabelAnchor.INSIDE6)) {
+			result = ItemLabelAnchor.INSIDE6;
+		} else if (this.equals(ItemLabelAnchor.INSIDE7)) {
+			result = ItemLabelAnchor.INSIDE7;
+		} else if (this.equals(ItemLabelAnchor.INSIDE8)) {
+			result = ItemLabelAnchor.INSIDE8;
+		} else if (this.equals(ItemLabelAnchor.INSIDE9)) {
+			result = ItemLabelAnchor.INSIDE9;
+		} else if (this.equals(ItemLabelAnchor.INSIDE10)) {
+			result = ItemLabelAnchor.INSIDE10;
+		} else if (this.equals(ItemLabelAnchor.INSIDE11)) {
+			result = ItemLabelAnchor.INSIDE11;
+		} else if (this.equals(ItemLabelAnchor.INSIDE12)) {
+			result = ItemLabelAnchor.INSIDE12;
+		} else if (this.equals(ItemLabelAnchor.OUTSIDE1)) {
+			result = ItemLabelAnchor.OUTSIDE1;
+		} else if (this.equals(ItemLabelAnchor.OUTSIDE2)) {
+			result = ItemLabelAnchor.OUTSIDE2;
+		} else if (this.equals(ItemLabelAnchor.OUTSIDE3)) {
+			result = ItemLabelAnchor.OUTSIDE3;
+		} else if (this.equals(ItemLabelAnchor.OUTSIDE4)) {
+			result = ItemLabelAnchor.OUTSIDE4;
+		} else if (this.equals(ItemLabelAnchor.OUTSIDE5)) {
+			result = ItemLabelAnchor.OUTSIDE5;
+		} else if (this.equals(ItemLabelAnchor.OUTSIDE6)) {
+			result = ItemLabelAnchor.OUTSIDE6;
+		} else if (this.equals(ItemLabelAnchor.OUTSIDE7)) {
+			result = ItemLabelAnchor.OUTSIDE7;
+		} else if (this.equals(ItemLabelAnchor.OUTSIDE8)) {
+			result = ItemLabelAnchor.OUTSIDE8;
+		} else if (this.equals(ItemLabelAnchor.OUTSIDE9)) {
+			result = ItemLabelAnchor.OUTSIDE9;
+		} else if (this.equals(ItemLabelAnchor.OUTSIDE10)) {
+			result = ItemLabelAnchor.OUTSIDE10;
+		} else if (this.equals(ItemLabelAnchor.OUTSIDE11)) {
+			result = ItemLabelAnchor.OUTSIDE11;
+		} else if (this.equals(ItemLabelAnchor.OUTSIDE12)) {
+			result = ItemLabelAnchor.OUTSIDE12;
+		}
 		return result;
 	}
 
-	// // DEPRECATED METHODS ///////////////////////////////////////////////////////////////////////
+	// // DEPRECATED METHODS
+	// ///////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Returns the anchor point that is horizontally opposite the given anchor point.
+	 * Returns the anchor point that is horizontally opposite the given anchor
+	 * point.
 	 * 
 	 * @param anchor
-	 *           an anchor point.
+	 *            an anchor point.
 	 * @return The opposite anchor point.
 	 * @deprecated Renderer now has positive and negative item label anchors.
 	 */
@@ -262,79 +241,55 @@ public final class ItemLabelAnchor implements Serializable {
 
 		if (anchor == ItemLabelAnchor.CENTER) {
 			return ItemLabelAnchor.CENTER;
-		} else
-			if (anchor == ItemLabelAnchor.INSIDE1) {
-				return ItemLabelAnchor.INSIDE11;
-			} else
-				if (anchor == ItemLabelAnchor.INSIDE2) {
-					return ItemLabelAnchor.INSIDE10;
-				} else
-					if (anchor == ItemLabelAnchor.INSIDE3) {
-						return ItemLabelAnchor.INSIDE9;
-					} else
-						if (anchor == ItemLabelAnchor.INSIDE4) {
-							return ItemLabelAnchor.INSIDE8;
-						} else
-							if (anchor == ItemLabelAnchor.INSIDE5) {
-								return ItemLabelAnchor.INSIDE7;
-							} else
-								if (anchor == ItemLabelAnchor.INSIDE6) {
-									return ItemLabelAnchor.INSIDE6;
-								} else
-									if (anchor == ItemLabelAnchor.INSIDE7) {
-										return ItemLabelAnchor.INSIDE5;
-									} else
-										if (anchor == ItemLabelAnchor.INSIDE8) {
-											return ItemLabelAnchor.INSIDE4;
-										} else
-											if (anchor == ItemLabelAnchor.INSIDE9) {
-												return ItemLabelAnchor.INSIDE3;
-											} else
-												if (anchor == ItemLabelAnchor.INSIDE10) {
-													return ItemLabelAnchor.INSIDE2;
-												} else
-													if (anchor == ItemLabelAnchor.INSIDE11) {
-														return ItemLabelAnchor.INSIDE1;
-													} else
-														if (anchor == ItemLabelAnchor.INSIDE12) {
-															return ItemLabelAnchor.INSIDE12;
-														} else
-															if (anchor == ItemLabelAnchor.OUTSIDE1) {
-																return ItemLabelAnchor.OUTSIDE11;
-															} else
-																if (anchor == ItemLabelAnchor.OUTSIDE2) {
-																	return ItemLabelAnchor.OUTSIDE10;
-																} else
-																	if (anchor == ItemLabelAnchor.OUTSIDE3) {
-																		return ItemLabelAnchor.OUTSIDE9;
-																	} else
-																		if (anchor == ItemLabelAnchor.OUTSIDE4) {
-																			return ItemLabelAnchor.OUTSIDE8;
-																		} else
-																			if (anchor == ItemLabelAnchor.OUTSIDE5) {
-																				return ItemLabelAnchor.OUTSIDE7;
-																			} else
-																				if (anchor == ItemLabelAnchor.OUTSIDE6) {
-																					return ItemLabelAnchor.OUTSIDE6;
-																				} else
-																					if (anchor == ItemLabelAnchor.OUTSIDE7) {
-																						return ItemLabelAnchor.OUTSIDE5;
-																					} else
-																						if (anchor == ItemLabelAnchor.OUTSIDE8) {
-																							return ItemLabelAnchor.OUTSIDE4;
-																						} else
-																							if (anchor == ItemLabelAnchor.OUTSIDE9) {
-																								return ItemLabelAnchor.OUTSIDE3;
-																							} else
-																								if (anchor == ItemLabelAnchor.OUTSIDE10) {
-																									return ItemLabelAnchor.OUTSIDE2;
-																								} else
-																									if (anchor == ItemLabelAnchor.OUTSIDE11) {
-																										return ItemLabelAnchor.OUTSIDE1;
-																									} else
-																										if (anchor == ItemLabelAnchor.OUTSIDE12) {
-																											return ItemLabelAnchor.OUTSIDE12;
-																										}
+		} else if (anchor == ItemLabelAnchor.INSIDE1) {
+			return ItemLabelAnchor.INSIDE11;
+		} else if (anchor == ItemLabelAnchor.INSIDE2) {
+			return ItemLabelAnchor.INSIDE10;
+		} else if (anchor == ItemLabelAnchor.INSIDE3) {
+			return ItemLabelAnchor.INSIDE9;
+		} else if (anchor == ItemLabelAnchor.INSIDE4) {
+			return ItemLabelAnchor.INSIDE8;
+		} else if (anchor == ItemLabelAnchor.INSIDE5) {
+			return ItemLabelAnchor.INSIDE7;
+		} else if (anchor == ItemLabelAnchor.INSIDE6) {
+			return ItemLabelAnchor.INSIDE6;
+		} else if (anchor == ItemLabelAnchor.INSIDE7) {
+			return ItemLabelAnchor.INSIDE5;
+		} else if (anchor == ItemLabelAnchor.INSIDE8) {
+			return ItemLabelAnchor.INSIDE4;
+		} else if (anchor == ItemLabelAnchor.INSIDE9) {
+			return ItemLabelAnchor.INSIDE3;
+		} else if (anchor == ItemLabelAnchor.INSIDE10) {
+			return ItemLabelAnchor.INSIDE2;
+		} else if (anchor == ItemLabelAnchor.INSIDE11) {
+			return ItemLabelAnchor.INSIDE1;
+		} else if (anchor == ItemLabelAnchor.INSIDE12) {
+			return ItemLabelAnchor.INSIDE12;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE1) {
+			return ItemLabelAnchor.OUTSIDE11;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE2) {
+			return ItemLabelAnchor.OUTSIDE10;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE3) {
+			return ItemLabelAnchor.OUTSIDE9;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE4) {
+			return ItemLabelAnchor.OUTSIDE8;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE5) {
+			return ItemLabelAnchor.OUTSIDE7;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE6) {
+			return ItemLabelAnchor.OUTSIDE6;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE7) {
+			return ItemLabelAnchor.OUTSIDE5;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE8) {
+			return ItemLabelAnchor.OUTSIDE4;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE9) {
+			return ItemLabelAnchor.OUTSIDE3;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE10) {
+			return ItemLabelAnchor.OUTSIDE2;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE11) {
+			return ItemLabelAnchor.OUTSIDE1;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE12) {
+			return ItemLabelAnchor.OUTSIDE12;
+		}
 		return null;
 	}
 
@@ -342,7 +297,7 @@ public final class ItemLabelAnchor implements Serializable {
 	 * Returns the anchor point that is vertically opposite the given anchor point.
 	 * 
 	 * @param anchor
-	 *           an anchor point.
+	 *            an anchor point.
 	 * @return The opposite anchor point.
 	 * @deprecated Renderer now has positive and negative item label positions.
 	 */
@@ -350,79 +305,55 @@ public final class ItemLabelAnchor implements Serializable {
 
 		if (anchor == ItemLabelAnchor.CENTER) {
 			return ItemLabelAnchor.CENTER;
-		} else
-			if (anchor == ItemLabelAnchor.INSIDE1) {
-				return ItemLabelAnchor.INSIDE5;
-			} else
-				if (anchor == ItemLabelAnchor.INSIDE2) {
-					return ItemLabelAnchor.INSIDE4;
-				} else
-					if (anchor == ItemLabelAnchor.INSIDE3) {
-						return ItemLabelAnchor.INSIDE3;
-					} else
-						if (anchor == ItemLabelAnchor.INSIDE4) {
-							return ItemLabelAnchor.INSIDE2;
-						} else
-							if (anchor == ItemLabelAnchor.INSIDE5) {
-								return ItemLabelAnchor.INSIDE1;
-							} else
-								if (anchor == ItemLabelAnchor.INSIDE6) {
-									return ItemLabelAnchor.INSIDE12;
-								} else
-									if (anchor == ItemLabelAnchor.INSIDE7) {
-										return ItemLabelAnchor.INSIDE11;
-									} else
-										if (anchor == ItemLabelAnchor.INSIDE8) {
-											return ItemLabelAnchor.INSIDE10;
-										} else
-											if (anchor == ItemLabelAnchor.INSIDE9) {
-												return ItemLabelAnchor.INSIDE9;
-											} else
-												if (anchor == ItemLabelAnchor.INSIDE10) {
-													return ItemLabelAnchor.INSIDE8;
-												} else
-													if (anchor == ItemLabelAnchor.INSIDE11) {
-														return ItemLabelAnchor.INSIDE7;
-													} else
-														if (anchor == ItemLabelAnchor.INSIDE12) {
-															return ItemLabelAnchor.INSIDE6;
-														} else
-															if (anchor == ItemLabelAnchor.OUTSIDE1) {
-																return ItemLabelAnchor.OUTSIDE5;
-															} else
-																if (anchor == ItemLabelAnchor.OUTSIDE2) {
-																	return ItemLabelAnchor.OUTSIDE4;
-																} else
-																	if (anchor == ItemLabelAnchor.OUTSIDE3) {
-																		return ItemLabelAnchor.OUTSIDE3;
-																	} else
-																		if (anchor == ItemLabelAnchor.OUTSIDE4) {
-																			return ItemLabelAnchor.OUTSIDE2;
-																		} else
-																			if (anchor == ItemLabelAnchor.OUTSIDE5) {
-																				return ItemLabelAnchor.OUTSIDE1;
-																			} else
-																				if (anchor == ItemLabelAnchor.OUTSIDE6) {
-																					return ItemLabelAnchor.OUTSIDE12;
-																				} else
-																					if (anchor == ItemLabelAnchor.OUTSIDE7) {
-																						return ItemLabelAnchor.OUTSIDE11;
-																					} else
-																						if (anchor == ItemLabelAnchor.OUTSIDE8) {
-																							return ItemLabelAnchor.OUTSIDE10;
-																						} else
-																							if (anchor == ItemLabelAnchor.OUTSIDE9) {
-																								return ItemLabelAnchor.OUTSIDE9;
-																							} else
-																								if (anchor == ItemLabelAnchor.OUTSIDE10) {
-																									return ItemLabelAnchor.OUTSIDE8;
-																								} else
-																									if (anchor == ItemLabelAnchor.OUTSIDE11) {
-																										return ItemLabelAnchor.OUTSIDE7;
-																									} else
-																										if (anchor == ItemLabelAnchor.OUTSIDE12) {
-																											return ItemLabelAnchor.OUTSIDE6;
-																										}
+		} else if (anchor == ItemLabelAnchor.INSIDE1) {
+			return ItemLabelAnchor.INSIDE5;
+		} else if (anchor == ItemLabelAnchor.INSIDE2) {
+			return ItemLabelAnchor.INSIDE4;
+		} else if (anchor == ItemLabelAnchor.INSIDE3) {
+			return ItemLabelAnchor.INSIDE3;
+		} else if (anchor == ItemLabelAnchor.INSIDE4) {
+			return ItemLabelAnchor.INSIDE2;
+		} else if (anchor == ItemLabelAnchor.INSIDE5) {
+			return ItemLabelAnchor.INSIDE1;
+		} else if (anchor == ItemLabelAnchor.INSIDE6) {
+			return ItemLabelAnchor.INSIDE12;
+		} else if (anchor == ItemLabelAnchor.INSIDE7) {
+			return ItemLabelAnchor.INSIDE11;
+		} else if (anchor == ItemLabelAnchor.INSIDE8) {
+			return ItemLabelAnchor.INSIDE10;
+		} else if (anchor == ItemLabelAnchor.INSIDE9) {
+			return ItemLabelAnchor.INSIDE9;
+		} else if (anchor == ItemLabelAnchor.INSIDE10) {
+			return ItemLabelAnchor.INSIDE8;
+		} else if (anchor == ItemLabelAnchor.INSIDE11) {
+			return ItemLabelAnchor.INSIDE7;
+		} else if (anchor == ItemLabelAnchor.INSIDE12) {
+			return ItemLabelAnchor.INSIDE6;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE1) {
+			return ItemLabelAnchor.OUTSIDE5;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE2) {
+			return ItemLabelAnchor.OUTSIDE4;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE3) {
+			return ItemLabelAnchor.OUTSIDE3;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE4) {
+			return ItemLabelAnchor.OUTSIDE2;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE5) {
+			return ItemLabelAnchor.OUTSIDE1;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE6) {
+			return ItemLabelAnchor.OUTSIDE12;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE7) {
+			return ItemLabelAnchor.OUTSIDE11;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE8) {
+			return ItemLabelAnchor.OUTSIDE10;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE9) {
+			return ItemLabelAnchor.OUTSIDE9;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE10) {
+			return ItemLabelAnchor.OUTSIDE8;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE11) {
+			return ItemLabelAnchor.OUTSIDE7;
+		} else if (anchor == ItemLabelAnchor.OUTSIDE12) {
+			return ItemLabelAnchor.OUTSIDE6;
+		}
 		return null;
 	}
 

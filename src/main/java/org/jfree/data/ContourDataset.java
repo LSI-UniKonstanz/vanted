@@ -32,8 +32,8 @@
 package org.jfree.data;
 
 /**
- * The interface through which JFreeChart obtains data in the form of (x, y, z) items - used for
- * XY and XYZ plots.
+ * The interface through which JFreeChart obtains data in the form of (x, y, z)
+ * items - used for XY and XYZ plots.
  * 
  * @author David M. O'Donnell
  */
@@ -92,9 +92,9 @@ public interface ContourDataset extends XYZDataset {
 	 * Returns the maximum z-value within visible region of plot.
 	 * 
 	 * @param x
-	 *           the x-value.
+	 *            the x-value.
 	 * @param y
-	 *           the y-value.
+	 *            the y-value.
 	 * @return The maximum z-value.
 	 */
 	public Range getZValueRange(Range x, Range y);
@@ -103,7 +103,7 @@ public interface ContourDataset extends XYZDataset {
 	 * Returns true if axis are dates.
 	 * 
 	 * @param axisNumber
-	 *           the axis where 0-x, 1-y, and 2-z.
+	 *            the axis where 0-x, 1-y, and 2-z.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean isDateAxis(int axisNumber);

@@ -8,9 +8,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.kegg.KoEntry;
 
 public class KoDBReaderTest {
 
-	
 	public static void main(String[] args) {
-		
+
 		List<String> listKOs = new ArrayList<>();
 		listKOs.add("K00001");
 		listKOs.add("K00002");
@@ -24,8 +23,9 @@ public class KoDBReaderTest {
 		listKOs.add("K00010");
 		listKOs.add("K00011");
 		listKOs.add("K00121");
-//		List<KoEntry> entriesByKO = KeggAPIService.getInstance().getEntriesByKO(listKOs);
-		
+		// List<KoEntry> entriesByKO =
+		// KeggAPIService.getInstance().getEntriesByKO(listKOs);
+
 		List<String> listECs = new ArrayList<>();
 		listECs.add("2.7.1.2");
 		listECs.add("2.7.1.3");

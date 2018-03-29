@@ -30,15 +30,18 @@
 package org.jfree.data;
 
 /**
- * Uses to indicate the type of a {@link KeyedValueComparator} : 'by key' or 'by value'.
+ * Uses to indicate the type of a {@link KeyedValueComparator} : 'by key' or 'by
+ * value'.
  */
 public final class KeyedValueComparatorType {
 
 	/** An object representing 'by key' sorting. */
-	public static final KeyedValueComparatorType BY_KEY = new KeyedValueComparatorType("KeyedValueComparatorType.BY_KEY");
+	public static final KeyedValueComparatorType BY_KEY = new KeyedValueComparatorType(
+			"KeyedValueComparatorType.BY_KEY");
 
 	/** An object representing 'by value' sorting. */
-	public static final KeyedValueComparatorType BY_VALUE = new KeyedValueComparatorType("KeyedValueComparatorType.BY_VALUE");
+	public static final KeyedValueComparatorType BY_VALUE = new KeyedValueComparatorType(
+			"KeyedValueComparatorType.BY_VALUE");
 
 	/** The name. */
 	private String name;
@@ -47,7 +50,7 @@ public final class KeyedValueComparatorType {
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *           the name.
+	 *            the name.
 	 */
 	private KeyedValueComparatorType(final String name) {
 		this.name = name;
@@ -63,10 +66,11 @@ public final class KeyedValueComparatorType {
 	}
 
 	/**
-	 * Returns <code>true</code> if this object is equal to the specified object, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if this object is equal to the specified object,
+	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {

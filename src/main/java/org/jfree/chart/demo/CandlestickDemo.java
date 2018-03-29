@@ -46,7 +46,7 @@ public class CandlestickDemo extends ApplicationFrame {
 	 * A demonstration application showing a candlestick chart.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public CandlestickDemo(final String title) {
 
@@ -65,17 +65,12 @@ public class CandlestickDemo extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The dataset.
 	 */
 	private JFreeChart createChart(final HighLowDataset dataset) {
-		final JFreeChart chart = ChartFactory.createCandlestickChart(
-							"Candlestick Demo",
-							"Time",
-							"Value",
-							dataset,
-							true
-							);
+		final JFreeChart chart = ChartFactory.createCandlestickChart("Candlestick Demo", "Time", "Value", dataset,
+				true);
 		return chart;
 	}
 
@@ -94,7 +89,7 @@ public class CandlestickDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

@@ -10,12 +10,11 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.kgml;
 import org.graffiti.graph.Node;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class NodePair {
 	public Node a, b;
-	
+
 	public NodePair(Node a, Node b) {
 		this.a = a;
 		this.b = b;

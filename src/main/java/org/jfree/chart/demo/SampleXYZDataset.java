@@ -34,22 +34,20 @@ import org.jfree.data.AbstractXYZDataset;
 import org.jfree.data.XYZDataset;
 
 /**
- * A quick-and-dirty implementation of the {@link XYZDataset interface}. Hard-coded and not useful
- * beyond the demo.
+ * A quick-and-dirty implementation of the {@link XYZDataset interface}.
+ * Hard-coded and not useful beyond the demo.
  */
 public class SampleXYZDataset extends AbstractXYZDataset implements XYZDataset {
 
 	/** The x values. */
-	private double[] xVal = { 2.1, 2.375625, 2.375625, 2.232928726, 2.232928726, 1.860415253,
-										1.840842668, 1.905415253, 2.336029412, 3.8 };
+	private double[] xVal = { 2.1, 2.375625, 2.375625, 2.232928726, 2.232928726, 1.860415253, 1.840842668, 1.905415253,
+			2.336029412, 3.8 };
 
 	/** The y values. */
-	private double[] yVal = { 14.168, 11.156, 10.089, 8.884, 8.719, 8.466, 5.489,
-										4.107, 4.101, 25 };
+	private double[] yVal = { 14.168, 11.156, 10.089, 8.884, 8.719, 8.466, 5.489, 4.107, 4.101, 25 };
 
 	/** The z values. */
-	private double[] zVal = { 2.45, 2.791285714, 2.791285714, 2.2125, 2.2125, 2.22, 2.1, 2.22,
-										1.64875, 4 };
+	private double[] zVal = { 2.45, 2.791285714, 2.791285714, 2.2125, 2.2125, 2.22, 2.1, 2.22, 1.64875, 4 };
 
 	/**
 	 * Returns the number of series in the dataset.
@@ -64,7 +62,7 @@ public class SampleXYZDataset extends AbstractXYZDataset implements XYZDataset {
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return the name of the series.
 	 */
 	public String getSeriesName(final int series) {
@@ -75,7 +73,7 @@ public class SampleXYZDataset extends AbstractXYZDataset implements XYZDataset {
 	 * Returns the number of items in a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return the number of items within the series.
 	 */
 	public int getItemCount(final int series) {
@@ -85,42 +83,43 @@ public class SampleXYZDataset extends AbstractXYZDataset implements XYZDataset {
 	/**
 	 * Returns the x-value for an item within a series.
 	 * <P>
-	 * The implementation is responsible for ensuring that the x-values are presented in ascending order.
+	 * The implementation is responsible for ensuring that the x-values are
+	 * presented in ascending order.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the x-value.
 	 */
 	public Number getXValue(final int series, final int item) {
-		return new Double(this.xVal[item]);
+		return Double.valueOf(this.xVal[item]);
 	}
 
 	/**
 	 * Returns the y-value for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the y-value.
 	 */
 	public Number getYValue(final int series, final int item) {
-		return new Double(this.yVal[item]);
+		return Double.valueOf(this.yVal[item]);
 	}
 
 	/**
 	 * Returns the z-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the z-value for the specified series and item.
 	 */
 	public Number getZValue(final int series, final int item) {
-		return new Double(this.zVal[item]);
+		return Double.valueOf(this.zVal[item]);
 	}
 
 }

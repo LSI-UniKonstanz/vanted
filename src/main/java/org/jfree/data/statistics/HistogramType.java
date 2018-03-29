@@ -33,8 +33,8 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * A class for creating constants to represent the histogram type. See Bloch's enum tip in
- * 'Effective Java'
+ * A class for creating constants to represent the histogram type. See Bloch's
+ * enum tip in 'Effective Java'
  */
 public class HistogramType implements Serializable {
 
@@ -54,7 +54,7 @@ public class HistogramType implements Serializable {
 	 * Creates a new type.
 	 * 
 	 * @param name
-	 *           the name.
+	 *            the name.
 	 */
 	private HistogramType(final String name) {
 		this.name = name;
@@ -73,7 +73,7 @@ public class HistogramType implements Serializable {
 	 * Tests this type for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object to test against.
+	 *            the object to test against.
 	 * @return a boolean.
 	 */
 	public boolean equals(final Object obj) {
@@ -113,18 +113,16 @@ public class HistogramType implements Serializable {
 	 * 
 	 * @return the object.
 	 * @throws ObjectStreamException
-	 *            if there is a problem.
+	 *             if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		if (this.equals(HistogramType.FREQUENCY)) {
 			return HistogramType.FREQUENCY;
-		} else
-			if (this.equals(HistogramType.RELATIVE_FREQUENCY)) {
-				return HistogramType.RELATIVE_FREQUENCY;
-			} else
-				if (this.equals(HistogramType.SCALE_AREA_TO_1)) {
-					return HistogramType.SCALE_AREA_TO_1;
-				}
+		} else if (this.equals(HistogramType.RELATIVE_FREQUENCY)) {
+			return HistogramType.RELATIVE_FREQUENCY;
+		} else if (this.equals(HistogramType.SCALE_AREA_TO_1)) {
+			return HistogramType.SCALE_AREA_TO_1;
+		}
 		return null;
 	}
 

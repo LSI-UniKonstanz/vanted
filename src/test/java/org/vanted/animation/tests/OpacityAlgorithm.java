@@ -27,22 +27,22 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
  * @author matthiak
  */
 public class OpacityAlgorithm extends AbstractEditorAlgorithm {
-	
+
 	@Override
 	public boolean activeForView(View v) {
 		return true;
 	}
-	
+
 	@Override
 	public String getName() {
 		return "Animate Opacity";
 	}
-	
+
 	@Override
 	public String getMenuCategory() {
 		return "Network";
 	}
-	
+
 	@Override
 	public void execute() {
 		int duration = 1000;
@@ -53,7 +53,7 @@ public class OpacityAlgorithm extends AbstractEditorAlgorithm {
 			nodesAndEdges.addAll(graph.getNodes());
 		else
 			nodesAndEdges.addAll(getSelectedOrAllGraphElements());
-		
+
 		Set<Edge> edges = new HashSet<>();
 		for (GraphElement ge : getSelectedOrAllGraphElements()) {
 			if (ge instanceof Node) {
@@ -67,9 +67,8 @@ public class OpacityAlgorithm extends AbstractEditorAlgorithm {
 					boolean targethidden = AttributeHelper.isHiddenGraphElement(target);
 					System.out.println("source: " + source + " " + sourcehidden);
 					System.out.println("target: " + target + " " + targethidden);
-					
-					if ((sourcehidden && targethidden)
-							|| (!sourcehidden && !targethidden)) {
+
+					if ((sourcehidden && targethidden) || (!sourcehidden && !targethidden)) {
 						nodesAndEdges.add(curEdge);
 						System.out.println("adding");
 					} else
@@ -83,25 +82,27 @@ public class OpacityAlgorithm extends AbstractEditorAlgorithm {
 			 */
 			double opacity = AttributeHelper.getOpacity(ge);
 			if (AttributeHelper.isHiddenGraphElement(ge)) {
-				
-//				if (opacity <= 0.0) {
+
+				// if (opacity <= 0.0) {
 				List<DoubleTimePoint> listTP = new ArrayList<DoubleTimePoint>();
 				listTP.add(new DoubleTimePoint(0, opacity));
 				listTP.add(new DoubleTimePoint(duration, 1.0));
-				HideAnimation opacAnim = new HideAnimation(ge, 0, duration, new LinearInterpolator(), listTP, 1, new StandardLooper());
-				
+				HideAnimation opacAnim = new HideAnimation(ge, 0, duration, new LinearInterpolator(), listTP, 1,
+						new StandardLooper());
+
 				animator.addAnimation(opacAnim);
-				
-//				}
+
+				// }
 			} else {
 				List<DoubleTimePoint> listTP = new ArrayList<DoubleTimePoint>();
 				listTP.add(new DoubleTimePoint(0, opacity));
 				listTP.add(new DoubleTimePoint(duration, 0.0));
-				HideAnimation opacAnim = new HideAnimation(ge, 0, duration, new LinearInterpolator(), listTP, 1, new StandardLooper());
+				HideAnimation opacAnim = new HideAnimation(ge, 0, duration, new LinearInterpolator(), listTP, 1,
+						new StandardLooper());
 				animator.addAnimation(opacAnim);
-				
+
 			}
-			
+
 		}
 		GraphHelper.clearSelection();
 		animator.start();

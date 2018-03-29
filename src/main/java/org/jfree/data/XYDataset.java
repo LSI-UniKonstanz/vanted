@@ -41,19 +41,20 @@ public interface XYDataset extends SeriesDataset {
 	 * Returns the number of items in a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return The item count.
 	 */
 	public int getItemCount(int series);
 
 	/**
-	 * Returns the x-value for an item within a series. The x-values may or may not be returned
-	 * in ascending order, that is up to the class implementing the interface.
+	 * Returns the x-value for an item within a series. The x-values may or may not
+	 * be returned in ascending order, that is up to the class implementing the
+	 * interface.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The x-value (possibly <code>null</code>).
 	 */
 	public Number getXValue(int series, int item);
@@ -62,9 +63,9 @@ public interface XYDataset extends SeriesDataset {
 	 * Returns the x-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The x-value.
 	 */
 	public double getX(int series, int item);
@@ -73,9 +74,9 @@ public interface XYDataset extends SeriesDataset {
 	 * Returns the y-value for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the y-value (possibly <code>null</code>).
 	 */
 	public Number getYValue(int series, int item);
@@ -84,9 +85,9 @@ public interface XYDataset extends SeriesDataset {
 	 * Returns the y-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The y-value.
 	 */
 	public double getY(int series, int item);

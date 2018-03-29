@@ -10,19 +10,20 @@ import org.graffiti.graph.Node;
 /**
  * Utilities for the naive pattern finder package.
  * 
- * @author Dirk Kosch�tzki, Christian Klukas: extended to support edge direction ignoration
+ * @author Dirk Kosch�tzki, Christian Klukas: extended to support edge direction
+ *         ignoration
  */
 class NaivePatternFinderUtils {
-	
+
 	/**
 	 * Checks if in the given graph an edge between s and t exists.
 	 * 
 	 * @param g
-	 *           the graph
+	 *            the graph
 	 * @param s
-	 *           the source node
+	 *            the source node
 	 * @param t
-	 *           the target node
+	 *            the target node
 	 * @param check
 	 * @return true if an edge exists.
 	 */
@@ -42,13 +43,13 @@ class NaivePatternFinderUtils {
 			//
 			// return false;
 			//
-			
+
 			return s.getOutNeighbors().contains(t);
 		} else {
 			return s.getNeighbors().contains(t);
 		}
 	}
-	
+
 	static Edge getUniqueDirectedEdge(Node s, Node t, boolean ignoreEdgeDirection) {
 		if (!ignoreEdgeDirection) {
 			// Edge resultEdge = null;
@@ -68,7 +69,7 @@ class NaivePatternFinderUtils {
 			// }
 			//
 			// return resultEdge;
-			
+
 			for (Edge e : s.getAllOutEdges()) {
 				if (e.getTarget() == t)
 					return e;
@@ -81,5 +82,5 @@ class NaivePatternFinderUtils {
 		}
 		return null;
 	}
-	
+
 }

@@ -28,11 +28,10 @@ import org.graffiti.selection.Selection;
  * Labels all selected nodes with unique numbers. Does not touch existing
  * labels.
  */
-public class ExpandSelectionAlgorithm
-					extends AbstractAlgorithm {
-	
+public class ExpandSelectionAlgorithm extends AbstractAlgorithm {
+
 	private boolean directed, inverseDirected;
-	
+
 	/**
 	 * Constructs a new instance.
 	 */
@@ -40,7 +39,7 @@ public class ExpandSelectionAlgorithm
 		this.directed = directed;
 		this.inverseDirected = inverseDirected;
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
@@ -48,29 +47,29 @@ public class ExpandSelectionAlgorithm
 	public Parameter[] getParameters() {
 		return null;
 	}
-	
+
 	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm# setParameters(org.graffiti.plugin.algorithm.Parameter)
+	 * @see org.graffiti.plugin.algorithm.Algorithm#
+	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
 		Selection sel = new Selection("id");
 		ArrayList<GraphElement> currentSelElements = new ArrayList<GraphElement>();
-		selection = MainFrame.getInstance().getActiveEditorSession().
-							getSelectionModel().getActiveSelection();
+		selection = MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection();
 		graph = MainFrame.getInstance().getActiveEditorSession().getGraph();
 		if (selection != null)
 			currentSelElements.addAll(selection.getElements());
 		for (GraphElement ge : currentSelElements) {
 			if (ge instanceof Edge) {
-				sel.add(((Edge)ge).getSource());
-				sel.add(((Edge)ge).getTarget());
+				sel.add(((Edge) ge).getSource());
+				sel.add(((Edge) ge).getTarget());
 			}
 			if (ge instanceof Node) {
 				Node n = (Node) ge;
@@ -99,10 +98,9 @@ public class ExpandSelectionAlgorithm
 			}
 		}
 		sel.addAll(currentSelElements);
-		MainFrame.getInstance().getActiveEditorSession().
-							getSelectionModel().setActiveSelection(sel);
+		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(sel);
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
@@ -111,7 +109,7 @@ public class ExpandSelectionAlgorithm
 		graph = null;
 		selection = null;
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
@@ -121,7 +119,7 @@ public class ExpandSelectionAlgorithm
 		else
 			return "Extend Selection (Upstream)";
 	}
-	
+
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		if (directed) {
@@ -134,26 +132,22 @@ public class ExpandSelectionAlgorithm
 			// return KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0);
 			return KeyStroke.getKeyStroke('E', SystemInfo.getAccelModifier());
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "edit.Selection";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.SELECTION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.SELECTION));
 	}
 
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 
 	 * @param selection
-	 *           the selection
+	 *            the selection
 	 */
 	public void setSelection(Selection selection) {
 		this.selection = selection;

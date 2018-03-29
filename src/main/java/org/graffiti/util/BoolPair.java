@@ -17,30 +17,30 @@ package org.graffiti.util;
  */
 public class BoolPair {
 	// ~ Instance fields ========================================================
-	
+
 	/** DOCUMENT ME! */
 	private boolean bool1;
-	
+
 	/** DOCUMENT ME! */
 	private boolean bool2;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Creates a new BoolPair object.
 	 * 
 	 * @param bool1
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param bool2
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public BoolPair(boolean bool1, boolean bool2) {
 		this.bool1 = bool1;
 		this.bool2 = bool2;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -49,7 +49,7 @@ public class BoolPair {
 	public boolean getFst() {
 		return bool1;
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 

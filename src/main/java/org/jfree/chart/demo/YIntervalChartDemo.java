@@ -48,7 +48,7 @@ public class YIntervalChartDemo extends ApplicationFrame {
 	 * Constructs the demo application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public YIntervalChartDemo(final String title) {
 
@@ -71,21 +71,17 @@ public class YIntervalChartDemo extends ApplicationFrame {
 	 * Creates a new chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final IntervalXYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createScatterPlot(
-							"Y Interval Chart Demo", // chart title
+		final JFreeChart chart = ChartFactory.createScatterPlot("Y Interval Chart Demo", // chart title
 				"X", // domain axis label
 				"Y", // range axis label
 				dataset, // data
-				PlotOrientation.VERTICAL,
-							true, // include legend
-				true,
-							false
-							);
+				PlotOrientation.VERTICAL, true, // include legend
+				true, false);
 
 		final XYPlot plot = chart.getXYPlot();
 		plot.setRenderer(new YIntervalRenderer());
@@ -109,7 +105,7 @@ public class YIntervalChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

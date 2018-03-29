@@ -15,17 +15,17 @@ public class DebugPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private Constraints constraints;
-	
+
 	private Blocks blocks;
-	
+
 	public DebugPanel(Blocks blocks, Constraints constraints) {
 		super();
 		this.blocks = blocks;
 		this.constraints = constraints;
 	}
-	
+
 	@Override
 	synchronized public void paintComponent(Graphics gOld) {
 		Graphics2D g = (Graphics2D) gOld;
@@ -78,20 +78,19 @@ public class DebugPanel extends JPanel {
 			c.colour = Color.BLUE;
 			if (c.isViolated()) {
 				c.colour = Color.RED;
-			} else
-				if (c.isTight()) {
-					c.colour = Color.GREEN;
-				}
+			} else if (c.isTight()) {
+				c.colour = Color.GREEN;
+			}
 			g.setPaint(c.colour);
 			g.drawLine(xl, yLookup.get(l), xr, yLookup.get(r));
 			g.drawOval(xr - 5, yLookup.get(r) - 5, 10, 10);
 		}
 	}
-	
+
 	public void updateDrawing() {
 		paintComponent(getGraphics());
 	}
-	
+
 	Hashtable<Variable, Integer> yLookup = new Hashtable<Variable, Integer>();
-	
+
 }

@@ -25,28 +25,27 @@ import org.graffiti.session.EditorSession;
  * 
  * @version $Revision: 1.10 $
  */
-public class EditUndoAction
-					extends GraffitiAction {
+public class EditUndoAction extends GraffitiAction {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Creates a new EditUndoAction object.
 	 * 
 	 * @param mainFrame
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public EditUndoAction(MainFrame mainFrame) {
 		super("edit.undo", mainFrame, "editmenu_undo");
 		enabled = false;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * @see javax.swing.Action#isEnabled()
 	 */
@@ -54,7 +53,7 @@ public class EditUndoAction
 	public boolean isEnabled() {
 		return enabled;
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -62,13 +61,13 @@ public class EditUndoAction
 	public HelpContext getHelpContext() {
 		return null;
 	}
-	
+
 	/**
-	 * <b>Implementation Note:</b> The status of the GUIComponents has to be
-	 * updated after actionPerformed was executed.
+	 * <b>Implementation Note:</b> The status of the GUIComponents has to be updated
+	 * after actionPerformed was executed.
 	 * 
 	 * @param e
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		try {
@@ -76,13 +75,12 @@ public class EditUndoAction
 			mainFrame.getActiveEditorSession().getGraph().getListenerManager().transactionStarted(e);
 			mainFrame.getActiveEditorSession().getGraph().getListenerManager().transactionFinished(e);
 		} catch (CannotUndoException cue) {
-			MainFrame.showMessageDialog("<html>" +
-								"Can't undo command!<br>" +
-								"Error cause: " + cue.getMessage(), "Error");
+			MainFrame.showMessageDialog("<html>" + "Can't undo command!<br>" + "Error cause: " + cue.getMessage(),
+					"Error");
 		}
 		mainFrame.updateActions();
 	}
-	
+
 	/**
 	 * Updates the state of this action.
 	 */
@@ -100,10 +98,10 @@ public class EditUndoAction
 			putValue(NAME, sBundle.getString("menu." + getName()));
 			putValue(SHORT_DESCRIPTION, sBundle.getString("toolbar." + getName() + ".tooltip"));
 		}
-		
-		//SMALL_ICON is for JMenuItem, but not for e.g. JButton, and distorts scaling
-		//putValue(SMALL_ICON,
-						//	iBundle.getImageIcon("toolbar." + getName() + ".icon"));
+
+		// SMALL_ICON is for JMenuItem, but not for e.g. JButton, and distorts scaling
+		// putValue(SMALL_ICON,
+		// iBundle.getImageIcon("toolbar." + getName() + ".icon"));
 	}
 }
 

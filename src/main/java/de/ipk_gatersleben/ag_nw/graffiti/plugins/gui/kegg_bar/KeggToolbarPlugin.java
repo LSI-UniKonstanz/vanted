@@ -13,20 +13,16 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_EditorPluginAdapter;
  * 
  * @version $Revision$
  */
-public class KeggToolbarPlugin
-					extends IPK_EditorPluginAdapter {
+public class KeggToolbarPlugin extends IPK_EditorPluginAdapter {
 	public KeggToolbarPlugin() {
 		guiComponents = new GraffitiComponent[] {
-				// new KeggNavigationToolbarComponent("defaultToolbar"), // defaultToolbar // toolbarPanel
+				// new KeggNavigationToolbarComponent("defaultToolbar"), // defaultToolbar //
+				// toolbarPanel
 				// new ClusterHelperToolbarComponent("defaultToolbar")
-				};
-		
-		algorithms = new Algorithm[] {
-							new MergeWindowsAlgorithm(),
-							new SelectWindowsAlgorithm(),
-							new ColorizeSuperGraphAlgorithm(),
-							new CreateOrgSpecificSuperGraphsAlgorithm()
 		};
+
+		algorithms = new Algorithm[] { new MergeWindowsAlgorithm(), new SelectWindowsAlgorithm(),
+				new ColorizeSuperGraphAlgorithm(), new CreateOrgSpecificSuperGraphsAlgorithm() };
 	}
 }
 

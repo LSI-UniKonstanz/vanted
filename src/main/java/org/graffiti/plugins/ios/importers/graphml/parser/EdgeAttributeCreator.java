@@ -13,39 +13,35 @@ import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.graphics.EdgeGraphicAttribute;
 
 /**
- * Class <code>EdgeAttributeCreator</code> is used for reading
- * <code>Edge</code> attributes.
+ * Class <code>EdgeAttributeCreator</code> is used for reading <code>Edge</code>
+ * attributes.
  *
  * @author ruediger
  */
-class EdgeAttributeCreator
-    extends AttributeCreator
-{
-    //~ Constructors ===========================================================
+class EdgeAttributeCreator extends AttributeCreator {
+	// ~ Constructors ===========================================================
 
-    /**
-     * Constructs a new <code>EdgeAttributeCreator</code>.
-     */
-    EdgeAttributeCreator()
-    {
-        super();
-    }
+	/**
+	 * Constructs a new <code>EdgeAttributeCreator</code>.
+	 */
+	EdgeAttributeCreator() {
+		super();
+	}
 
-    //~ Methods ================================================================
+	// ~ Methods ================================================================
 
-    /*
-     *
-     */
-    @Override
-	CollectionAttribute createDefaultAttribute()
-    {
-    	EdgeGraphicAttribute result = new EdgeGraphicAttribute();
-    	result.setArrowhead("");
-    	result.setArrowtail("");
-        return result;
-    }
+	/*
+	 *
+	 */
+	@Override
+	CollectionAttribute createDefaultAttribute() {
+		EdgeGraphicAttribute result = new EdgeGraphicAttribute();
+		result.setArrowhead("");
+		result.setArrowtail("");
+		return result;
+	}
 }
 
-//------------------------------------------------------------------------------
-//   end of file
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// end of file
+// ------------------------------------------------------------------------------

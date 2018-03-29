@@ -17,22 +17,20 @@ import org.graffiti.graphics.GraphicAttributeConstants;
  * 
  * @version $Revision: 1.5 $
  */
-public class SimpleLabelComponent
-					extends LabelComponent
-					implements GraphicAttributeConstants {
+public class SimpleLabelComponent extends LabelComponent implements GraphicAttributeConstants {
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Instantiates an <code>LabelComponent</code>
 	 */
 	public SimpleLabelComponent() {
 		super();
-		
+
 		// done in recreate:
 		// this.labelPanel = new JTextField(DEFAULT_WIDTH);
 	}

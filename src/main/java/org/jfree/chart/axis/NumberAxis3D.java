@@ -79,7 +79,7 @@ public class NumberAxis3D extends NumberAxis implements Serializable {
 	 * Constructs a new axis.
 	 * 
 	 * @param label
-	 *           the axis label (<code>null</code> permitted).
+	 *            the axis label (<code>null</code> permitted).
 	 */
 	public NumberAxis3D(String label) {
 		super(label);
@@ -87,28 +87,25 @@ public class NumberAxis3D extends NumberAxis implements Serializable {
 	}
 
 	/**
-	 * Draws the axis on a Java 2D graphics device (such as the screen or a printer).
+	 * Draws the axis on a Java 2D graphics device (such as the screen or a
+	 * printer).
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param cursor
-	 *           the cursor.
+	 *            the cursor.
 	 * @param plotArea
-	 *           the area for drawing the axes and data.
+	 *            the area for drawing the axes and data.
 	 * @param dataArea
-	 *           the area for drawing the data (a subset of the plotArea).
+	 *            the area for drawing the data (a subset of the plotArea).
 	 * @param edge
-	 *           the axis location.
+	 *            the axis location.
 	 * @param plotState
-	 *           collects information about the plot (<code>null</code> permitted).
+	 *            collects information about the plot (<code>null</code> permitted).
 	 * @return The updated cursor value.
 	 */
-	public AxisState draw(Graphics2D g2,
-									double cursor,
-									Rectangle2D plotArea,
-									Rectangle2D dataArea,
-									RectangleEdge edge,
-									PlotRenderingInfo plotState) {
+	public AxisState draw(Graphics2D g2, double cursor, Rectangle2D plotArea, Rectangle2D dataArea, RectangleEdge edge,
+			PlotRenderingInfo plotState) {
 
 		// if the axis is not visible, don't draw it...
 		if (!isVisible()) {
@@ -130,12 +127,10 @@ public class NumberAxis3D extends NumberAxis implements Serializable {
 
 		if (edge == RectangleEdge.LEFT || edge == RectangleEdge.BOTTOM) {
 			adjustedY += e3D.getYOffset();
-		} else
-			if (edge == RectangleEdge.RIGHT || edge == RectangleEdge.TOP) {
-				adjustedX += e3D.getXOffset();
-			}
-		Rectangle2D adjustedDataArea = new Rectangle2D.Double(adjustedX, adjustedY,
-																					adjustedW, adjustedH);
+		} else if (edge == RectangleEdge.RIGHT || edge == RectangleEdge.TOP) {
+			adjustedX += e3D.getXOffset();
+		}
+		Rectangle2D adjustedDataArea = new Rectangle2D.Double(adjustedX, adjustedY, adjustedW, adjustedH);
 
 		// draw the tick marks and labels...
 		AxisState info = drawTickMarksAndLabels(g2, cursor, plotArea, adjustedDataArea, edge);

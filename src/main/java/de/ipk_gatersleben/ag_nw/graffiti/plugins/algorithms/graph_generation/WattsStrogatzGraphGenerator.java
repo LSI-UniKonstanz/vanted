@@ -2,12 +2,14 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.graph_generation;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import org.AttributeHelper;
@@ -27,43 +29,43 @@ import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 import org.vanted.animation.Animator;
-import org.vanted.animation.animations.Position2DAnimation;
-import org.vanted.animation.data.Point2DTimePoint;
-import org.vanted.animation.interpolators.LinearInterpolator;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.CircleLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
+/**
+ * Algorithm for generation of a random small-world network. It applies the
+ * Watts-Strogatz model.
+ * 
+ * @version 2.6.5
+ */
 public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
-	
+
 	@Override
 	public String getCategory() {
 		return "File.New.Random Network";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION));
 	}
+
 	private int numberOfNodes = 5;
 	private int initDegree = 4;
 	private double p = 0.5;
 	private boolean label = true;
-	
+
 	@Override
 	public Parameter[] getParameters() {
-		return new Parameter[] {
-				new IntegerParameter(numberOfNodes, "Number of nodes", "Number of nodes"),
+		return new Parameter[] { new IntegerParameter(numberOfNodes, "Number of nodes", "Number of nodes"),
 				new IntegerParameter(initDegree, "Mean degree K", "Initial node degree"),
-				new DoubleParameter(p, "Swap probability", "Edge swap probability"),
+				new DoubleParameter(p, 0d, 1d, .05, "Swap probability", "Edge swap probability"),
 				new BooleanParameter(label, "Add node label", "If enabled, each node will be labeld (1,2,3,...)"), };
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
@@ -72,7 +74,7 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 		p = ((DoubleParameter) params[i++]).getDouble();
 		label = ((BooleanParameter) params[i++]).getBoolean();
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		if (numberOfNodes < 1)
@@ -81,26 +83,28 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 			throw new PreconditionException("Initial node degree should at least be 2");
 		if (initDegree > numberOfNodes - 1)
 			throw new PreconditionException("Initial node degree needs to be smaller than number of nodes minus one");
-		if (p < 0)
-			throw new PreconditionException("Negative edge-swap-probability is not supported");
-		if (p > 1)
-			throw new PreconditionException("Edge-swap-probability greater than 1 (100%) is not supported");
 	}
-	
+
 	@Override
 	public String getName() {
 		return "Generate Watts and Strogatz random network";
 	}
-	
+
 	@Override
 	public String getDescription() {
-		return "<html>" +
-				"Create small-world random network according to Watts and Strogatz model.";
-	} 
+		return "<html>" + "Create small-world random network according to the Watts and Strogatz model.";
+	}
+
+	@Override
+	public KeyStroke getAcceleratorKeyStroke() {
+		return KeyStroke.getKeyStroke(KeyEvent.VK_2, InputEvent.ALT_DOWN_MASK);
+	}
+
 	Animator animator;
+
 	@Override
 	public void execute() {
-		
+
 		BackgroundTaskHelper.issueSimpleTask("Generating random network", "Generating random network", new Runnable() {
 			@Override
 			public void run() {
@@ -117,14 +121,16 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 				} catch (Exception e) {
 					ErrorMsg.addErrorMessage(e);
 				} catch (OutOfMemoryError e) {
-					ErrorMsg.addErrorMessage("Out of memory! Please choose to create a smaller network or increase memory of Java VM!");
+					ErrorMsg.addErrorMessage(
+							"Out of memory! Please choose to create a smaller network or increase memory of Java VM!");
 				}
 			}
 		}, null);
 	}
+
 	public static Graph createGraph(int numberOfNodes, boolean label, int initDegree, double p) {
 		Graph rdg = new AdjListGraph();
-		
+
 		rdg.getListenerManager().transactionStarted(rdg);
 		try {
 			ArrayList<Node> nodes = new ArrayList<Node>();
@@ -133,7 +139,7 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 				Node n = rdg.addNode(AttributeHelper.getDefaultGraphicsAttributeForNode(pgg.getNextPositionVec2d()));
 				AttributeHelper.setShapeEllipse(n);
 				nodes.add(n);
-				
+
 				if (label)
 					AttributeHelper.setLabel(n, "" + (i + 1));
 			}
@@ -176,7 +182,7 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 			ctr.execute();
 		} finally {
 			rdg.getListenerManager().transactionFinished(rdg);
-		} 
+		}
 		return rdg;
 	}
 
@@ -184,6 +190,5 @@ public class WattsStrogatzGraphGenerator extends AbstractAlgorithm {
 	public boolean isAlwaysExecutable() {
 		return true;
 	}
-	
-	
+
 }

@@ -15,11 +15,9 @@ import org.graffiti.graph.Node;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
-public class UTransportWithBiochemicalReaction extends UtilitySuperClassToGraph
-{
+public class UTransportWithBiochemicalReaction extends UtilitySuperClassToGraph {
 	/**
-	 * adds all information within the biopax class to the attribute set of the
-	 * node
+	 * adds all information within the biopax class to the attribute set of the node
 	 * 
 	 * @param elem
 	 * @param i
@@ -27,12 +25,12 @@ public class UTransportWithBiochemicalReaction extends UtilitySuperClassToGraph
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public static void addAttributesToNode(GraphElement elem, TransportWithBiochemicalReaction i) throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException
-	{
+	public static void addAttributesToNode(GraphElement elem, TransportWithBiochemicalReaction i)
+			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		// first set label to node
 		setLabels(elem, i);
-		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), Messages.getString("UtilitySuperClassToGraph.143")); //$NON-NLS-1$ //$NON-NLS-2$
+		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), //$NON-NLS-1$
+				Messages.getString("UtilitySuperClassToGraph.143")); //$NON-NLS-1$
 		// set attribute paths
 		setAvailability(elem, i.getAvailability());
 		setComment(elem, i.getComment());
@@ -50,15 +48,14 @@ public class UTransportWithBiochemicalReaction extends UtilitySuperClassToGraph
 		setSpontaneous(elem, i.getSpontaneous());
 		setStandardName(elem, i.getStandardName());
 		setXRef(elem, i.getXref());
-		
+
 	}
-	
-	public static void readAttributesFromNode(GraphElement node, Graph g, Model model)
-	{
+
+	public static void readAttributesFromNode(GraphElement node, Graph g, Model model) {
 		Node elem = (Node) node;
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 		TransportWithBiochemicalReaction interaction = model.addNew(TransportWithBiochemicalReaction.class, RDFID);
-		
+
 		UtilitySuperClassFromGraph.getDisplayName(elem, interaction);
 		UtilitySuperClassFromGraph.getAvailability(elem, interaction);
 		UtilitySuperClassFromGraph.getConversionDirection(elem, interaction);
@@ -75,71 +72,59 @@ public class UTransportWithBiochemicalReaction extends UtilitySuperClassToGraph
 		UtilitySuperClassFromGraph.getSpontaneous(elem, interaction);
 		UtilitySuperClassFromGraph.getStandardName(elem, interaction);
 		UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
-		
+
 		StoichiometryWriter sW = new StoichiometryWriter();
-		for (Edge ingoing : elem.getAllInEdges())
-		{
-			
+		for (Edge ingoing : elem.getAllInEdges()) {
+
 			CollectionAttribute map = ingoing.getAttributes();
 			boolean isAControl = false;
-			try
-			{
-				if (null != map.getAttribute(Messages.getString("UtilitySuperClassToGraph.82")))
-				{
+			try {
+				if (null != map.getAttribute(Messages.getString("UtilitySuperClassToGraph.82"))) {
 					// only controls put RDFIds on edges
 					isAControl = true;// do nothing
 				}
-				
-			} catch (AttributeNotFoundException e)
-			{
+
+			} catch (AttributeNotFoundException e) {
 				ErrorMsg.addErrorMessage(e);
-			} finally
-			{
+			} finally {
 				Node in = ingoing.getSource();
-				
+
 				String RDFId = getAttributeSecure(in, Messages.getString("UtilitySuperClassToGraph.82"));
 				PhysicalEntity p = (PhysicalEntity) model.getByID(RDFId);
-				
-				if (!isAControl)
-				{
+
+				if (!isAControl) {
 					// so the node can be added to the conversion
 					interaction.addLeft(p);
 				}
 				sW.readParticipantStoichiometry(p, interaction, ingoing, model);
 			}
-			
+
 		}
-		for (Edge outgoing : elem.getAllOutEdges())
-		{
+		for (Edge outgoing : elem.getAllOutEdges()) {
 			CollectionAttribute map = outgoing.getAttributes();
 			boolean isAControl = false;
-			try
-			{
-				if (null != map.getAttribute(Messages.getString("UtilitySuperClassToGraph.82")))
-				{
+			try {
+				if (null != map.getAttribute(Messages.getString("UtilitySuperClassToGraph.82"))) {
 					// only controls put RDFIds on edges
 					isAControl = true;// do nothing
 				}
-				
-			} catch (AttributeNotFoundException e)
-			{
+
+			} catch (AttributeNotFoundException e) {
 				ErrorMsg.addErrorMessage(e);
-			} finally
-			{
+			} finally {
 				Node in = outgoing.getTarget();
-				
+
 				String RDFId = getAttributeSecure(in, Messages.getString("UtilitySuperClassToGraph.82"));
 				PhysicalEntity p = (PhysicalEntity) model.getByID(RDFId);
-				
-				if (!isAControl)
-				{
+
+				if (!isAControl) {
 					// so the node can be added to the conversion
 					interaction.addRight(p);
 				}
 				sW.readParticipantStoichiometry(p, interaction, outgoing, model);
 			}
 		}
-		
+
 	}
-	
+
 }

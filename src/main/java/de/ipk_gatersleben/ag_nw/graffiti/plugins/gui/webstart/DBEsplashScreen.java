@@ -30,35 +30,34 @@ import org.graffiti.editor.SplashScreenInterface;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.helper.DBEgravistoHelper;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class DBEsplashScreen implements SplashScreenInterface {
-	
+
 	CenterFrame splash = null;
 	private String applicationName;
 	private JProgressBar progressBar = null;
 	private JLabel statusLabel = null;
 	private Runnable endTask = null;
-	
+
 	private JLabel infoLabel = null;
-	
+
 	public static ImageIcon getStartLogo() {
 		ClassLoader cl = DBEsplashScreen.class.getClassLoader();
 		String path = DBEsplashScreen.class.getPackage().getName().replace('.', '/');
 		ImageIcon icon = new ImageIcon(cl.getResource(path + "/vanted_logo_splash.jpg"));
 		return icon;
 	}
-	
+
 	public DBEsplashScreen(String applicationName, String copyright, Runnable endTask) {
 		this.applicationName = applicationName;
 		this.endTask = endTask;
 		splash = new CenterFrame(applicationName);
 		splash.setUndecorated(true);
-		
+
 		Color bc = Color.WHITE; // new Color(235,255,235);
 		splash.setBackground(bc);
-		
+
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path;
 		try {
@@ -66,52 +65,49 @@ public class DBEsplashScreen implements SplashScreenInterface {
 		} catch (Exception e) {
 			path = "de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart".replace('.', '/');
 		}
-//		ImageIcon icon = new ImageIcon(cl.getResource(path + "/vanted_logo_splash.jpg"));
+		// ImageIcon icon = new ImageIcon(cl.getResource(path +
+		// "/vanted_logo_splash.jpg"));
 		URL resource = cl.getResource("images/vanted_logo_splash.jpg");
 		ImageIcon icon = new ImageIcon(resource);
-		
+
 		infoLabel = new JLabel(getSplashScreenlabel(applicationName, -1));
 		infoLabel.setVerticalTextPosition(SwingConstants.CENTER);
 		double border = 5;
-		
+
 		if (!SystemInfo.isMac() || !UIManager.getLookAndFeel().isNativeLookAndFeel()) {
 		}
-		
-		double sizeInfoPart[][] =
-		{ { border, TableLayoutConstants.PREFERRED, border }, // Columns
+
+		double sizeInfoPart[][] = { { border, TableLayoutConstants.PREFERRED, border }, // Columns
 				{ border, TableLayoutConstants.PREFERRED, border } // 20, xs,
 		}; // Rows
-		
+
 		border = 2;
-		double sizeParent[][] =
-		{ { border, 180, TableLayoutConstants.PREFERRED, border },
-							{ border, TableLayoutConstants.PREFERRED, border }
-		}; // Rows
-		
+		double sizeParent[][] = { { border, 180, TableLayoutConstants.PREFERRED, border },
+				{ border, TableLayoutConstants.PREFERRED, border } }; // Rows
+
 		border = 0;
-		double sizeGlobal[][] =
-		{ { border, TableLayoutConstants.FILL, border }, // Columns
-				{ border, TableLayoutConstants.FILL, border }
-		}; // Rows
-		
+		double sizeGlobal[][] = { { border, TableLayoutConstants.FILL, border }, // Columns
+				{ border, TableLayoutConstants.FILL, border } }; // Rows
+
 		JPanel parent = new JPanel();
 		parent.setLayout(new TableLayout(sizeParent));
 		parent.setOpaque(true);
 		parent.setBackground(bc);
-		// parent.setBorder(BorderFactory.createEtchedBorder(Color.BLACK, Color.LIGHT_GRAY));
+		// parent.setBorder(BorderFactory.createEtchedBorder(Color.BLACK,
+		// Color.LIGHT_GRAY));
 		parent.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-		
+
 		progressBar = new JProgressBar();
-		
+
 		progressBar.putClientProperty("JProgressBar.style", "circular");
-		
+
 		progressBar.setIndeterminate(true);
-		
+
 		statusLabel = new JLabel("Initializing...");
-		
+
 		progressBar.setVisible(false);
 		statusLabel.setVisible(false);
-		
+
 		JPanel rightComp = new JPanel();
 		rightComp.setBackground(bc);
 		rightComp.setOpaque(true);
@@ -120,56 +116,53 @@ public class DBEsplashScreen implements SplashScreenInterface {
 		// rightComp.add(statusLabel, "1,2");
 		// rightComp.add(progressBar, "1,3");
 		rightComp.revalidate();
-		
+
 		parent.add(new JLabel(icon), "1,1");
 		parent.add(rightComp, "2,1");
-		
+
 		parent.validate();
-		
+
 		// splash.setBounds(0, 0, 600, 200);
-		
-		splash.setBounds(0, 0,
-							(int) (parent.getPreferredSize().width + border * 2),
-							(int) (parent.getPreferredSize().height + border * 2));
-		
+
+		splash.setBounds(0, 0, (int) (parent.getPreferredSize().width + border * 2),
+				(int) (parent.getPreferredSize().height + border * 2));
+
 		// splash.centerFrame();
-		
+
 		splash.setLayout(new TableLayout(sizeGlobal));
-		
+
 		splash.add(parent, "1,1");
 		splash.validate();
-		
 
-		
 		Point p = GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint();
 		p.x = p.x - splash.getWidth() / 2;
 		p.y = p.y - splash.getHeight() / 2;
 		splash.setLocation(p);
 	}
-	
+
 	private String getSplashScreenlabel(String appname, double progress) {
-		
+
 		progress = progress * 1.2d;
-		
+
 		String grayA = "<font color='black'>";
 		String grayB = "</font>";
-		
+
 		String blackA = "<font color='gray'>";
 		String blackB = "</font>";
-		
+
 		StringBuilder nn = new StringBuilder();
 		double maxLen = appname.length();
 		boolean gray = false;
 		boolean black = false;
 		int idx = 0;
-		
+
 		gray = true;
 		nn.append(grayA);
-		
+
 		for (char c : appname.toCharArray()) {
 			idx++;
 			double appnameProgress = 100d * idx / maxLen;
-			
+
 			if (appnameProgress > progress && gray) {
 				gray = false;
 				nn.append(grayB);
@@ -177,38 +170,39 @@ public class DBEsplashScreen implements SplashScreenInterface {
 			}
 			nn.append(c);
 		}
-		
+
 		if (gray)
 			nn.append(grayB);
 		if (black)
 			nn.append(blackB);
-		
-		return "<html>" +
-							"<br><br>" +
-							"<h2>" + nn.toString() + "</h2>" +
-							"<p>" + DBEgravistoHelper.DBE_GRAVISTO_NAME + "<br><br><br>";
+
+		return "<html>" + "<br><br>" + "<h2>" + nn.toString() + "</h2>" + "<p>" + DBEgravistoHelper.DBE_GRAVISTO_NAME
+				+ "<br><br><br>";
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.util.ProgressViewer#setMaximum(int)
 	 */
 	public void setMaximum(int maximum) {
 		progressBar.setMaximum(maximum);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.util.ProgressViewer#setText(java.lang.String)
 	 */
 	public void setText(String text) {
 		statusLabel.setText(text);
 	}
-	
+
 	int outputlen = 0;
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.util.ProgressViewer#setValue(int)
 	 */
 	public void setValue(final int value) {
@@ -231,25 +225,28 @@ public class DBEsplashScreen implements SplashScreenInterface {
 			});
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.util.ProgressViewer#getValue()
 	 */
 	public int getValue() {
 		return progressBar.getValue();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.editor.SplashScreenInterface#setVisible(boolean)
 	 */
 	public void setVisible(boolean visible) {
 		splash.setVisible(visible);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.editor.SplashScreenInterface#setInitialisationFinished()
 	 */
 	public void setInitialisationFinished() {
@@ -258,17 +255,18 @@ public class DBEsplashScreen implements SplashScreenInterface {
 		if (!infoLabel.isShowing())
 			System.out.println("");
 	}
-	
+
 	public void setIconImage(Image image) {
 		splash.setIconImage(image);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.util.ProgressViewer#getMaximum()
 	 */
 	public int getMaximum() {
 		return progressBar.getMaximum();
 	}
-	
+
 }

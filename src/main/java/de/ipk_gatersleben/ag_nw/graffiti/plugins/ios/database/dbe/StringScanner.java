@@ -16,10 +16,10 @@ import org.StringManipulationTools;
  * @author klukas
  */
 public class StringScanner implements HelperClass {
-	
+
 	private String del1, del2, del3;
 	private String work;
-	
+
 	/**
 	 * @param val
 	 * @param string
@@ -32,7 +32,7 @@ public class StringScanner implements HelperClass {
 		this.del3 = del3;
 		work = input;
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -52,10 +52,11 @@ public class StringScanner implements HelperClass {
 			return val;
 		}
 	}
-	
+
 	/**
-	 * Returns the next String value, must be enclosed by a given start and end character
-	 * e.g. " for the input "test" will result in _test_ the " will be removed from the input.
+	 * Returns the next String value, must be enclosed by a given start and end
+	 * character e.g. " for the input "test" will result in _test_ the " will be
+	 * removed from the input.
 	 * 
 	 * @param startEndCharacter
 	 * @return
@@ -77,7 +78,7 @@ public class StringScanner implements HelperClass {
 		} else
 			return null;
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -89,7 +90,7 @@ public class StringScanner implements HelperClass {
 			return false;
 		return true;
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -99,22 +100,12 @@ public class StringScanner implements HelperClass {
 			return Double.NaN;
 		int len = 0;
 		String workSearch = work;
-		while (workSearch.startsWith("0") ||
-							workSearch.startsWith("1") ||
-							workSearch.startsWith("2") ||
-							workSearch.startsWith("3") ||
-							workSearch.startsWith("4") ||
-							workSearch.startsWith("5") ||
-							workSearch.startsWith("6") ||
-							workSearch.startsWith("7") ||
-							workSearch.startsWith("8") ||
-							workSearch.startsWith("9") ||
-							workSearch.startsWith(".") ||
-							workSearch.startsWith(",") ||
-							workSearch.startsWith("e") ||
-							workSearch.startsWith("E") ||
-							workSearch.startsWith("+") ||
-							workSearch.startsWith("-")) {
+		while (workSearch.startsWith("0") || workSearch.startsWith("1") || workSearch.startsWith("2")
+				|| workSearch.startsWith("3") || workSearch.startsWith("4") || workSearch.startsWith("5")
+				|| workSearch.startsWith("6") || workSearch.startsWith("7") || workSearch.startsWith("8")
+				|| workSearch.startsWith("9") || workSearch.startsWith(".") || workSearch.startsWith(",")
+				|| workSearch.startsWith("e") || workSearch.startsWith("E") || workSearch.startsWith("+")
+				|| workSearch.startsWith("-")) {
 			workSearch = workSearch.substring(1);
 			len += 1;
 		}
@@ -133,15 +124,14 @@ public class StringScanner implements HelperClass {
 			return Double.NaN;
 		}
 	}
-	
+
 	/**
 	 * 
 	 */
 	private void skipBlank() {
 		if (del1.length() > 0 || del2.length() > 0 || del3.length() > 0)
-			while ((del1.length() > 0 && work.startsWith(del1))
-								|| (del2.length() > 0 && work.startsWith(del2))
-								|| (del3.length() > 0 && work.startsWith(del3))) {
+			while ((del1.length() > 0 && work.startsWith(del1)) || (del2.length() > 0 && work.startsWith(del2))
+					|| (del3.length() > 0 && work.startsWith(del3))) {
 				if (del1.length() > 0)
 					if (work.startsWith(del1))
 						work = work.substring(del1.length());
@@ -153,11 +143,11 @@ public class StringScanner implements HelperClass {
 						work = work.substring(del3.length());
 			}
 	}
-	
+
 	public boolean contains(String string) {
 		return work.contains(string);
 	}
-	
+
 	public String nextNotQuotedString() {
 		work = "§" + StringManipulationTools.stringReplace(work, " ", "§");
 		String result = nextString("§");

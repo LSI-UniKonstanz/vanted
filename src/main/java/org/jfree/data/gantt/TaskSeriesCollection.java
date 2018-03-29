@@ -44,12 +44,14 @@ import org.jfree.data.SeriesChangeEvent;
 /**
  * A collection of {@link TaskSeries} objects.
  * <P>
- * This class provides one implementation of the {@link GanttCategoryDataset} interface.
+ * This class provides one implementation of the {@link GanttCategoryDataset}
+ * interface.
  */
-public class TaskSeriesCollection extends AbstractSeriesDataset
-												implements GanttCategoryDataset {
+public class TaskSeriesCollection extends AbstractSeriesDataset implements GanttCategoryDataset {
 
-	/** Storage for aggregate task keys (the task description is used as the key). */
+	/**
+	 * Storage for aggregate task keys (the task description is used as the key).
+	 */
 	private List keys;
 
 	/** Storage for the series. */
@@ -67,7 +69,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @return The name of a series.
 	 */
 	public String getSeriesName(final int series) {
@@ -124,7 +126,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns a column key.
 	 * 
 	 * @param item
-	 *           the index.
+	 *            the index.
 	 * @return The column key.
 	 */
 	public Comparable getColumnKey(final int item) {
@@ -135,7 +137,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the column index for a column key.
 	 * 
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return The column index.
 	 */
 	public int getColumnIndex(final Comparable columnKey) {
@@ -146,7 +148,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the row index for the given row key.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @return The index.
 	 */
 	public int getRowIndex(final Comparable rowKey) {
@@ -157,7 +159,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the key for a row.
 	 * 
 	 * @param index
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @return The key.
 	 */
 	public Comparable getRowKey(final int index) {
@@ -169,14 +171,13 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Adds a series to the dataset.
 	 * 
 	 * @param series
-	 *           the series.
+	 *            the series.
 	 */
 	public void add(final TaskSeries series) {
 
 		// check arguments...
 		if (series == null) {
-			throw new IllegalArgumentException(
-								"XYSeriesCollection.addSeries(...): cannot add null series.");
+			throw new IllegalArgumentException("XYSeriesCollection.addSeries(...): cannot add null series.");
 		}
 
 		this.data.add(series);
@@ -203,14 +204,13 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Notifies all registered listeners that the dataset has changed.
 	 * 
 	 * @param series
-	 *           the series (zero based index).
+	 *            the series (zero based index).
 	 */
 	public void remove(final int series) {
 
 		// check arguments...
 		if ((series < 0) || (series > getSeriesCount())) {
-			throw new IllegalArgumentException(
-								"TaskSeriesCollection.remove(...): index outside valid range.");
+			throw new IllegalArgumentException("TaskSeriesCollection.remove(...): index outside valid range.");
 		}
 
 		// fetch the series, remove the change listener, then remove the series.
@@ -227,14 +227,13 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Notifies all registered listeners that the dataset has changed.
 	 * 
 	 * @param series
-	 *           the series.
+	 *            the series.
 	 */
 	public void remove(final TaskSeries series) {
 
 		// check arguments...
 		if (series == null) {
-			throw new IllegalArgumentException(
-								"TaskSeriesCollection.remove(...): cannot remove null series.");
+			throw new IllegalArgumentException("TaskSeriesCollection.remove(...): cannot remove null series.");
 		}
 
 		// remove the series...
@@ -253,7 +252,8 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 */
 	public void removeAll() {
 
-		// deregister the collection as a change listener to each series in the collection.
+		// deregister the collection as a change listener to each series in the
+		// collection.
 		final Iterator iterator = this.data.iterator();
 		while (iterator.hasNext()) {
 			final TaskSeries series = (TaskSeries) iterator.next();
@@ -270,9 +270,9 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @return The item value.
 	 */
 	public Number getValue(final Comparable rowKey, final Comparable columnKey) {
@@ -282,13 +282,12 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	}
 
 	/**
-	 * /**
-	 * Returns the value for a task.
+	 * /** Returns the value for a task.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The start value.
 	 */
 	public Number getValue(final int row, final int column) {
@@ -299,9 +298,9 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the start value for a task.
 	 * 
 	 * @param rowKey
-	 *           the series.
+	 *            the series.
 	 * @param columnKey
-	 *           the category.
+	 *            the category.
 	 * @return The start value.
 	 */
 	public Number getStartValue(final Comparable rowKey, final Comparable columnKey) {
@@ -314,9 +313,9 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the start value for a task.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The start value.
 	 */
 	public Number getStartValue(final int row, final int column) {
@@ -326,7 +325,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 		final int tasks = series.getItemCount();
 		if (column < tasks) {
 			final Task task = series.get(column);
-			result = new Long(task.getDuration().getStart().getTime());
+			result = Long.valueOf(task.getDuration().getStart().getTime());
 		}
 		return result;
 
@@ -336,9 +335,9 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the end value for a task.
 	 * 
 	 * @param rowKey
-	 *           the series.
+	 *            the series.
 	 * @param columnKey
-	 *           the category.
+	 *            the category.
 	 * @return The end value.
 	 */
 	public Number getEndValue(final Comparable rowKey, final Comparable columnKey) {
@@ -351,9 +350,9 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the end value for a task.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The end value.
 	 */
 	public Number getEndValue(final int row, final int column) {
@@ -363,7 +362,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 		final int tasks = series.getItemCount();
 		if (column < tasks) {
 			final Task task = series.get(column);
-			result = new Long(task.getDuration().getEnd().getTime());
+			result = Long.valueOf(task.getDuration().getEnd().getTime());
 		}
 		return result;
 
@@ -373,9 +372,9 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the percent complete for a given item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The percent complete.
 	 */
 	public Number getPercentComplete(final int row, final int column) {
@@ -393,9 +392,9 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the percent complete for a given item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @return The percent complete.
 	 */
 	public Number getPercentComplete(final Comparable rowKey, final Comparable columnKey) {
@@ -408,9 +407,9 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the number of sub-intervals for a given item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The sub-interval count.
 	 */
 	public int getSubIntervalCount(final int row, final int column) {
@@ -430,9 +429,9 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the number of sub-intervals for a given item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @return The sub-interval count.
 	 */
 	public int getSubIntervalCount(final Comparable rowKey, final Comparable columnKey) {
@@ -447,11 +446,11 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the start value of a sub-interval for a given item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @param subinterval
-	 *           the sub-interval index (zero-based).
+	 *            the sub-interval index (zero-based).
 	 * @return The start value (possibly <code>null</code>).
 	 */
 	public Number getStartValue(final int row, final int column, final int subinterval) {
@@ -462,7 +461,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 		if (column < tasks) {
 			final Task task = series.get(column);
 			final Task subtask = task.getSubtask(subinterval);
-			result = new Long(subtask.getDuration().getStart().getTime());
+			result = Long.valueOf(subtask.getDuration().getStart().getTime());
 		}
 		return result;
 
@@ -472,16 +471,14 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the start value of a sub-interval for a given item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @param subinterval
-	 *           the subinterval.
+	 *            the subinterval.
 	 * @return The start value (possibly <code>null</code>).
 	 */
-	public Number getStartValue(final Comparable rowKey,
-											final Comparable columnKey,
-											final int subinterval) {
+	public Number getStartValue(final Comparable rowKey, final Comparable columnKey, final int subinterval) {
 
 		final int row = getRowIndex(rowKey);
 		final int column = getColumnIndex(columnKey);
@@ -493,11 +490,11 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the end value of a sub-interval for a given item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @param subinterval
-	 *           the subinterval.
+	 *            the subinterval.
 	 * @return The end value (possibly <code>null</code>).
 	 */
 	public Number getEndValue(final int row, final int column, final int subinterval) {
@@ -508,7 +505,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 		if (column < tasks) {
 			final Task task = series.get(column);
 			final Task subtask = task.getSubtask(subinterval);
-			result = new Long(subtask.getDuration().getEnd().getTime());
+			result = Long.valueOf(subtask.getDuration().getEnd().getTime());
 		}
 		return result;
 
@@ -518,16 +515,14 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the end value of a sub-interval for a given item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @param subinterval
-	 *           the subinterval.
+	 *            the subinterval.
 	 * @return The end value (possibly <code>null</code>).
 	 */
-	public Number getEndValue(final Comparable rowKey,
-										final Comparable columnKey,
-										final int subinterval) {
+	public Number getEndValue(final Comparable rowKey, final Comparable columnKey, final int subinterval) {
 
 		final int row = getRowIndex(rowKey);
 		final int column = getColumnIndex(columnKey);
@@ -539,11 +534,11 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the percentage complete value of a sub-interval for a given item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @param subinterval
-	 *           the sub-interval.
+	 *            the sub-interval.
 	 * @return The percent complete value (possibly <code>null</code>).
 	 */
 	public Number getPercentComplete(final int row, final int column, final int subinterval) {
@@ -562,16 +557,14 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Returns the percentage complete value of a sub-interval for a given item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @param subinterval
-	 *           the sub-interval.
+	 *            the sub-interval.
 	 * @return The precent complete value (possibly <code>null</code>).
 	 */
-	public Number getPercentComplete(final Comparable rowKey,
-													final Comparable columnKey,
-													final int subinterval) {
+	public Number getPercentComplete(final Comparable rowKey, final Comparable columnKey, final int subinterval) {
 		final int row = getRowIndex(rowKey);
 		final int column = getColumnIndex(columnKey);
 		return getPercentComplete(row, column, subinterval);
@@ -581,7 +574,7 @@ public class TaskSeriesCollection extends AbstractSeriesDataset
 	 * Called when a series belonging to the dataset changes.
 	 * 
 	 * @param event
-	 *           information about the change.
+	 *            information about the change.
 	 */
 	public void seriesChanged(final SeriesChangeEvent event) {
 		refreshKeys();

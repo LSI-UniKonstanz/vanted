@@ -15,22 +15,21 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class Java_1_5_compatibility_impl {
 	public static void setComponentZorder(JDesktopPane jDesktopPane, JInternalFrame jInternalFrame) {
 		jDesktopPane.setComponentZOrder(jInternalFrame, 0);
 		// throw new NoSuchMethodError("ERR");
 	}
-	
+
 	/**
 	 * @return
 	 */
 	public static StackTraceElement[] getStackFrame() {
 		return Thread.currentThread().getStackTrace();
 	}
-	
+
 	/**
 	 * @param url
 	 * @return
@@ -43,7 +42,7 @@ public class Java_1_5_compatibility_impl {
 			throw new NoSuchMethodError("ERR");
 		}
 	}
-	
+
 	public static String myStringReplace(String workString, String search, String replace) {
 		return workString.replace(search, replace);
 		// return null;

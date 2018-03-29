@@ -43,7 +43,8 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.util.ObjectUtils;
 
 /**
- * A general annotation that can be placed on an {@link org.jfree.chart.plot.XYPlot}.
+ * A general annotation that can be placed on an
+ * {@link org.jfree.chart.plot.XYPlot}.
  */
 public class XYDrawableAnnotation implements XYAnnotation, Cloneable, Serializable {
 
@@ -66,18 +67,17 @@ public class XYDrawableAnnotation implements XYAnnotation, Cloneable, Serializab
 	 * Creates a new annotation to be displayed within the given area.
 	 * 
 	 * @param x
-	 *           the x-coordinate for the area.
+	 *            the x-coordinate for the area.
 	 * @param y
-	 *           the y-coordinate for the area.
+	 *            the y-coordinate for the area.
 	 * @param width
-	 *           the width of the area.
+	 *            the width of the area.
 	 * @param height
-	 *           the height of the area.
+	 *            the height of the area.
 	 * @param drawable
-	 *           the drawable object.
+	 *            the drawable object.
 	 */
-	public XYDrawableAnnotation(double x, double y, double width, double height,
-											Drawable drawable) {
+	public XYDrawableAnnotation(double x, double y, double width, double height, Drawable drawable) {
 
 		this.x = x;
 		this.y = y;
@@ -91,29 +91,25 @@ public class XYDrawableAnnotation implements XYAnnotation, Cloneable, Serializab
 	 * Draws the annotation.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 */
-	public void draw(Graphics2D g2, XYPlot plot, Rectangle2D dataArea,
-							ValueAxis domainAxis, ValueAxis rangeAxis) {
+	public void draw(Graphics2D g2, XYPlot plot, Rectangle2D dataArea, ValueAxis domainAxis, ValueAxis rangeAxis) {
 
 		PlotOrientation orientation = plot.getOrientation();
-		RectangleEdge domainEdge = Plot.resolveDomainAxisLocation(plot.getDomainAxisLocation(),
-																						orientation);
-		RectangleEdge rangeEdge = Plot.resolveRangeAxisLocation(plot.getRangeAxisLocation(),
-																						orientation);
+		RectangleEdge domainEdge = Plot.resolveDomainAxisLocation(plot.getDomainAxisLocation(), orientation);
+		RectangleEdge rangeEdge = Plot.resolveRangeAxisLocation(plot.getRangeAxisLocation(), orientation);
 		float j2DX = (float) domainAxis.valueToJava2D(this.x, dataArea, domainEdge);
 		float j2DY = (float) rangeAxis.valueToJava2D(this.y, dataArea, rangeEdge);
-		Rectangle2D area = new Rectangle2D.Double(j2DX - this.width / 2.0,
-																	j2DY - this.height / 2.0,
-																	this.width, this.height);
+		Rectangle2D area = new Rectangle2D.Double(j2DX - this.width / 2.0, j2DY - this.height / 2.0, this.width,
+				this.height);
 		this.drawable.draw(g2, area);
 
 	}
@@ -122,7 +118,7 @@ public class XYDrawableAnnotation implements XYAnnotation, Cloneable, Serializab
 	 * Tests this annotation for equality with an object.
 	 * 
 	 * @param object
-	 *           the object to test against.
+	 *            the object to test against.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object object) {
@@ -155,7 +151,7 @@ public class XYDrawableAnnotation implements XYAnnotation, Cloneable, Serializab
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the annotation can't be cloned.
+	 *             if the annotation can't be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

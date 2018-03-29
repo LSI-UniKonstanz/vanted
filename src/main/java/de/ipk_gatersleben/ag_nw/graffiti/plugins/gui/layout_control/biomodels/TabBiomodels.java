@@ -30,20 +30,19 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_XML_Rea
  * @author matthiak
  *
  */
-public class TabBiomodels extends InspectorTab
-implements BiomodelsLoaderCallback{
+public class TabBiomodels extends InspectorTab implements BiomodelsLoaderCallback {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4603467064417816569L;
 
-	
 	static final Logger logger = Logger.getLogger(TabBiomodels.class);
 
 	static final String NAME = "Biomodels";
 
 	BiomodelsPanel panel;
+
 	/**
 	 * 
 	 */
@@ -54,14 +53,9 @@ implements BiomodelsLoaderCallback{
 		add(panel, BorderLayout.CENTER);
 	}
 
-
-
 	@Override
-	public void resultForSimpleModelQuery(QueryType type,
-			List<SimpleModel> simpleModel) {
+	public void resultForSimpleModelQuery(QueryType type, List<SimpleModel> simpleModel) {
 	}
-
-
 
 	@Override
 	public void resultForSBML(SimpleModel model, String modelstring) {
@@ -69,7 +63,7 @@ implements BiomodelsLoaderCallback{
 		final InputSerializer is;
 		final SimpleModel finalModel = model;
 		try {
-			final InputStream bis = new ByteArrayInputStream( modelstring.getBytes() );
+			final InputStream bis = new ByteArrayInputStream(modelstring.getBytes());
 			is = MainFrame.getInstance().getIoManager().createInputSerializer(null, ".sbml");
 
 			SwingUtilities.invokeLater(new Runnable() {
@@ -80,12 +74,12 @@ implements BiomodelsLoaderCallback{
 						Graph g = new AdjListGraph();
 						g.setName(finalModel.getName());
 						boolean saveReaderstate = true;
-						if(is instanceof SBML_XML_Reader){
+						if (is instanceof SBML_XML_Reader) {
 							saveReaderstate = SBML_XML_Reader.isValidatingSBMLOnLoad();
 							SBML_XML_Reader.doValidateSBMLOnLoad(false);
 						}
 						is.read(bis, g);
-						if(is instanceof SBML_XML_Reader){
+						if (is instanceof SBML_XML_Reader) {
 							SBML_XML_Reader.doValidateSBMLOnLoad(saveReaderstate);
 						}
 						MainFrame.getInstance().showGraph(g, null);
@@ -104,16 +98,14 @@ implements BiomodelsLoaderCallback{
 			e1.printStackTrace();
 		}
 
-
 	}
 
-	
 	@Override
 	public void resultError(Exception e) {
-		JOptionPane.showMessageDialog(MainFrame.getInstance(), "Unable to communicate with Biomodels Webservice\n" + e.getMessage(), "Communication Error", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(MainFrame.getInstance(),
+				"Unable to communicate with Biomodels Webservice\n" + e.getMessage(), "Communication Error",
+				JOptionPane.ERROR_MESSAGE);
 	}
-
-
 
 	@Override
 	public String getTitle() {
@@ -139,6 +131,5 @@ implements BiomodelsLoaderCallback{
 	public int getPreferredTabPosition() {
 		return InspectorTab.TAB_TRAILING;
 	}
-
 
 }

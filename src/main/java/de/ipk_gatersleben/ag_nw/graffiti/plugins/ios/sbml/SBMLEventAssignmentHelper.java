@@ -46,8 +46,8 @@ public class SBMLEventAssignmentHelper {
 	 */
 	HashSet<String> discardedRowIDs;
 
-	public SBMLEventAssignmentHelper(Graph g, String internHeadline,
-			String presentedHeadline, int eventAssignmentCount) {
+	public SBMLEventAssignmentHelper(Graph g, String internHeadline, String presentedHeadline,
+			int eventAssignmentCount) {
 		this.g = g;
 		attWriter = new SBML_SBase_Writer();
 		attReader = new SBML_SBase_Reader();
@@ -56,14 +56,12 @@ public class SBMLEventAssignmentHelper {
 		this.eventAssignmentCount = eventAssignmentCount;
 		initEventAssignmentNideIDs(eventAssignmentCount);
 
-		Collection<String> colDiscardedRowIDs = DefaultEditPanel
-				.getDiscardedRowIDs();
+		Collection<String> colDiscardedRowIDs = DefaultEditPanel.getDiscardedRowIDs();
 		discardedRowIDs = new HashSet<String>(colDiscardedRowIDs);
 		DefaultEditPanel.setDiscardedRowIDs(discardedRowIDs);
 	}
 
-	public SBMLEventAssignmentHelper(Graph g, String internHeadline,
-			int eventAssignmentCount) {
+	public SBMLEventAssignmentHelper(Graph g, String internHeadline, int eventAssignmentCount) {
 		this.g = g;
 		attWriter = new SBML_SBase_Writer();
 		attReader = new SBML_SBase_Reader();
@@ -73,24 +71,16 @@ public class SBMLEventAssignmentHelper {
 
 	public void setVariable(String variable) {
 		if (!variable.equals(SBML_Constants.EMPTY)) {
-			AttributeHelper.setAttribute(
-					g,
-					internHeadline,
-					new StringBuffer(internHeadline)
-							.append(SBML_Constants.EVENT_ASSIGNMENT)
-							.append(eventAssignmentCount)
-							.append(SBML_Constants.VARIABLE).toString(),
+			AttributeHelper.setAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT)
+							.append(eventAssignmentCount).append(SBML_Constants.VARIABLE).toString(),
 					variable);
 		}
 	}
 
 	public Boolean isSetVariable() {
-		if (AttributeHelper.hasAttribute(
-				g,
-				internHeadline,
-				new StringBuffer(internHeadline)
-						.append(SBML_Constants.EVENT_ASSIGNMENT)
-						.append(eventAssignmentCount)
+		if (AttributeHelper.hasAttribute(g, internHeadline,
+				new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT).append(eventAssignmentCount)
 						.append(SBML_Constants.VARIABLE).toString())) {
 			return true;
 		} else {
@@ -100,93 +90,65 @@ public class SBMLEventAssignmentHelper {
 
 	public void setFunction(String function) {
 		if (!function.equals(SBML_Constants.EMPTY)) {
-			AttributeHelper.setAttribute(
-					g,
-					internHeadline,
-					new StringBuffer(internHeadline)
-							.append(SBML_Constants.EVENT_ASSIGNMENT)
-							.append(eventAssignmentCount)
-							.append(SBML_Constants.FUNCTION).toString(),
+			AttributeHelper.setAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT)
+							.append(eventAssignmentCount).append(SBML_Constants.FUNCTION).toString(),
 					function);
 		}
 	}
 
 	public void setMetaID(String metaID) {
 		if (!metaID.equals(SBML_Constants.EMPTY)) {
-			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
-					internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT)
-					.append(eventAssignmentCount)
-					.append(SBML_Constants.META_ID).toString(), metaID);
+			AttributeHelper.setAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT)
+							.append(eventAssignmentCount).append(SBML_Constants.META_ID).toString(),
+					metaID);
 		}
 	}
 
 	public void setSBOTerm(String sboTerm) {
 		if (!sboTerm.equals(SBML_Constants.EMPTY)) {
-			AttributeHelper.setAttribute(g, internHeadline, new StringBuffer(
-					internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT)
-					.append(eventAssignmentCount)
-					.append(SBML_Constants.SBOTERM).toString(), sboTerm);
+			AttributeHelper.setAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT)
+							.append(eventAssignmentCount).append(SBML_Constants.SBOTERM).toString(),
+					sboTerm);
 		}
 	}
 
 	public void setAnnotation(Annotation annotation) {
-		AttributeHelper.setAttribute(
-				g,
-				internHeadline,
-				new StringBuffer(internHeadline)
-						.append(SBML_Constants.EVENT_ASSIGNMENT)
-						.append(eventAssignmentCount)
+		AttributeHelper.setAttribute(g, internHeadline,
+				new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT).append(eventAssignmentCount)
 						.append(SBML_Constants.ANNOTATION).toString(),
 				annotation);
 
-		discardedRowIDs.add(new StringBuffer(internHeadline)
-				.append(SBML_Constants.EVENT_ASSIGNMENT)
-				.append(eventAssignmentCount).append(SBML_Constants.ANNOTATION)
-				.toString());
+		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT)
+				.append(eventAssignmentCount).append(SBML_Constants.ANNOTATION).toString());
 	}
 
 	public void setNonRDFAnnotation(XMLNode nonRDFAnnotation) {
 		AttributeHelper.setAttribute(
-				g,
-				internHeadline,
-				new StringBuffer(internHeadline)
-						.append(SBML_Constants.EVENT_ASSIGNMENT)
-						.append(eventAssignmentCount)
-						.append(SBML_Constants.NON_RDF_ANNOTATION).toString(),
+				g, internHeadline, new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT)
+						.append(eventAssignmentCount).append(SBML_Constants.NON_RDF_ANNOTATION).toString(),
 				nonRDFAnnotation);
 
-		discardedRowIDs.add(new StringBuffer(internHeadline)
-				.append(SBML_Constants.EVENT_ASSIGNMENT)
-				.append(eventAssignmentCount)
-				.append(SBML_Constants.NON_RDF_ANNOTATION).toString());
+		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT)
+				.append(eventAssignmentCount).append(SBML_Constants.NON_RDF_ANNOTATION).toString());
 	}
 
 	public void setNotes(String notes, XMLNode notesObj) {
 		if (!notes.equals(SBML_Constants.EMPTY)) {
-			attReader.addNotes(
-					notesObj,
-					notes,
-					g,
-					internHeadline,
-					new StringBuffer(internHeadline)
-							.append(SBML_Constants.EVENT_ASSIGNMENT)
-							.append(eventAssignmentCount)
-							.append(SBML_Constants.NOTES).toString());
+			attReader.addNotes(notesObj, notes, g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT)
+							.append(eventAssignmentCount).append(SBML_Constants.NOTES).toString());
 		}
 
-		discardedRowIDs.add(new StringBuffer(internHeadline)
-				.append(SBML_Constants.EVENT_ASSIGNMENT)
-				.append(eventAssignmentCount).append(SBML_Constants.NOTES)
-				.toString());
+		discardedRowIDs.add(new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT)
+				.append(eventAssignmentCount).append(SBML_Constants.NOTES).toString());
 	}
 
 	public Boolean isSetFunction() {
-		if (AttributeHelper.hasAttribute(
-				g,
-				internHeadline,
-				new StringBuffer(internHeadline)
-						.append(SBML_Constants.EVENT_ASSIGNMENT)
-						.append(eventAssignmentCount)
+		if (AttributeHelper.hasAttribute(g, internHeadline,
+				new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT).append(eventAssignmentCount)
 						.append(SBML_Constants.FUNCTION).toString())) {
 			return true;
 		} else {
@@ -196,13 +158,9 @@ public class SBMLEventAssignmentHelper {
 
 	public String getVariable() {
 		if (isSetVariable()) {
-			return (String) attWriter.getAttribute(
-					g,
-					internHeadline,
-					new StringBuffer(internHeadline)
-							.append(SBML_Constants.EVENT_ASSIGNMENT)
-							.append(eventAssignmentCount)
-							.append(SBML_Constants.VARIABLE).toString());
+			return (String) attWriter.getAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT)
+							.append(eventAssignmentCount).append(SBML_Constants.VARIABLE).toString());
 		} else {
 			return SBML_Constants.EMPTY;
 		}
@@ -210,13 +168,9 @@ public class SBMLEventAssignmentHelper {
 
 	public String getFunction() {
 		if (isSetFunction()) {
-			return (String) attWriter.getAttribute(
-					g,
-					internHeadline,
-					new StringBuffer(internHeadline)
-							.append(SBML_Constants.EVENT_ASSIGNMENT)
-							.append(eventAssignmentCount)
-							.append(SBML_Constants.FUNCTION).toString());
+			return (String) attWriter.getAttribute(g, internHeadline,
+					new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT)
+							.append(eventAssignmentCount).append(SBML_Constants.FUNCTION).toString());
 		} else {
 			return SBML_Constants.EMPTY;
 		}
@@ -224,44 +178,29 @@ public class SBMLEventAssignmentHelper {
 
 	private void initEventAssignmentNideIDs(int eventAssignmentCount) {
 		AttributeHelper.setNiceId(
-				new StringBuffer(internHeadline)
-						.append(SBML_Constants.EVENT_ASSIGNMENT)
-						.append(eventAssignmentCount)
+				new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT).append(eventAssignmentCount)
 						.append(SBML_Constants.VARIABLE).toString(),
-				presentedHeadline + ": Event Assignment "
-						+ eventAssignmentCount + " Variable");
+				presentedHeadline + ": Event Assignment " + eventAssignmentCount + " Variable");
 
 		AttributeHelper.setNiceId(
-				new StringBuffer(internHeadline)
-						.append(SBML_Constants.EVENT_ASSIGNMENT)
-						.append(eventAssignmentCount)
+				new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT).append(eventAssignmentCount)
 						.append(SBML_Constants.FUNCTION).toString(),
-				presentedHeadline + ": Event Assignment "
-						+ eventAssignmentCount + " Function");
+				presentedHeadline + ": Event Assignment " + eventAssignmentCount + " Function");
 
 		AttributeHelper.setNiceId(
-				new StringBuffer(internHeadline)
-						.append(SBML_Constants.EVENT_ASSIGNMENT)
-						.append(eventAssignmentCount)
+				new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT).append(eventAssignmentCount)
 						.append(SBML_Constants.META_ID).toString(),
-				presentedHeadline + ": Event Assignment "
-						+ eventAssignmentCount + " Meta ID");
+				presentedHeadline + ": Event Assignment " + eventAssignmentCount + " Meta ID");
 
 		AttributeHelper.setNiceId(
-				new StringBuffer(internHeadline)
-						.append(SBML_Constants.EVENT_ASSIGNMENT)
-						.append(eventAssignmentCount)
+				new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT).append(eventAssignmentCount)
 						.append(SBML_Constants.SBOTERM).toString(),
-				presentedHeadline + ": Event Assignment "
-						+ eventAssignmentCount + " SBOTerm");
+				presentedHeadline + ": Event Assignment " + eventAssignmentCount + " SBOTerm");
 
 		AttributeHelper.setNiceId(
-				new StringBuffer(internHeadline)
-						.append(SBML_Constants.EVENT_ASSIGNMENT)
-						.append(eventAssignmentCount)
+				new StringBuffer(internHeadline).append(SBML_Constants.EVENT_ASSIGNMENT).append(eventAssignmentCount)
 						.append(SBML_Constants.NOTES).toString(),
-				presentedHeadline + ": Event Assignment "
-						+ eventAssignmentCount + " Notes");
+				presentedHeadline + ": Event Assignment " + eventAssignmentCount + " Notes");
 
 	}
 }

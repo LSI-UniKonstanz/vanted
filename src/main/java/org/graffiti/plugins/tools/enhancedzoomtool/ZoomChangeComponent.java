@@ -29,104 +29,103 @@ import org.graffiti.session.SessionListener;
 /**
  * DOCUMENT ME!
  */
-public class ZoomChangeComponent
-					extends AbstractGraffitiComponent
-					implements ActionListener, ViewListener, SessionListener {
+public class ZoomChangeComponent extends AbstractGraffitiComponent
+		implements ActionListener, ViewListener, SessionListener {
 	// ~ Instance fields ========================================================
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/** DOCUMENT ME! */
 	private JButton combo;
-	
+
 	// /** DOCUMENT ME! */
 	// private MainFrame mainframe;
 	// /** DOCUMENT ME! */
 	// private Object zoomValue;
-	
+
 	/** DOCUMENT ME! */
 	private JPanel matrixPanel = new JPanel();
-	
+
 	/** DOCUMENT ME! */
 	private Session activeSession;
-	
+
 	/** DOCUMENT ME! */
 	private JButton okButton;
-	
+
 	/** DOCUMENT ME! */
 	private JDialog dialog;
-	
+
 	/** DOCUMENT ME! */
 	private JFormattedTextField m00 = new JFormattedTextField();
-	
+
 	/** DOCUMENT ME! */
 	private JFormattedTextField m01 = new JFormattedTextField();
-	
+
 	/** DOCUMENT ME! */
-	
+
 	// private JFormattedTextField m02 = new JFormattedTextField();
-	
+
 	/** DOCUMENT ME! */
 	private JFormattedTextField m10 = new JFormattedTextField();
-	
+
 	/** DOCUMENT ME! */
 	private JFormattedTextField m11 = new JFormattedTextField();
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor for ZoomChangeComponent.
 	 * 
 	 * @param prefComp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public ZoomChangeComponent(String prefComp) {
 		super(prefComp);
-		
-		m00.setValue(new Integer(1));
-		m01.setValue(new Integer(0));
-		
-		// m02.setValue(new Integer(0));
-		m10.setValue(new Integer(0));
-		
-		m11.setValue(new Integer(1));
-		
-		// m12.setValue(new Integer(0));
+
+		m00.setValue(Integer.valueOf(1));
+		m01.setValue(Integer.valueOf(0));
+
+		// m02.setValue(Integer.valueOf(0));
+		m10.setValue(Integer.valueOf(0));
+
+		m11.setValue(Integer.valueOf(1));
+
+		// m12.setValue(Integer.valueOf(0));
 		matrixPanel.setLayout(new GridLayout(3, 3));
 		matrixPanel.add(m00);
 		matrixPanel.add(m01);
-		
+
 		// matrixPanel.add(m02);
 		matrixPanel.add(m10);
-		
+
 		matrixPanel.add(m11);
-		
+
 		// matrixPanel.add(m12);
 		matrixPanel.add(new JPanel());
 		okButton = new JButton("OK");
 		matrixPanel.add(okButton);
-		
+
 		okButton.addActionListener(this);
-		
-		combo = new JButton("Zoom: " + m00.getValue().toString() + ", " +
-							m01.getValue().toString() + ", " + m10.getValue().toString() +
-							", " + m11.getValue().toString());
+
+		combo = new JButton("Zoom: " + m00.getValue().toString() + ", " + m01.getValue().toString() + ", "
+				+ m10.getValue().toString() + ", " + m11.getValue().toString());
 		add(combo);
-		
+
 		combo.addActionListener(this);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	// /**
-	// * @see org.graffiti.plugin.gui.AbstractGraffitiComponent#setMainFrame(org.graffiti.editor.MainFrame)
+	// * @see
+	// org.graffiti.plugin.gui.AbstractGraffitiComponent#setMainFrame(org.graffiti.editor.MainFrame)
 	// */
 	// public void setMainFrame(MainFrame mf)
 	// {
 	// super.setMainFrame(mf);
 	// this.mainframe = mf;
 	// }
-	
+
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
@@ -138,37 +137,35 @@ public class ZoomChangeComponent
 				dialog.getContentPane().add(matrixPanel);
 				dialog.pack();
 			}
-			
+
 			dialog.setVisible(true);
 		}
-		
+
 		if (okButton.equals(e.getSource())) {
 			dialog.setVisible(false);
-			
+
 			ZoomListener zoomView = activeSession.getActiveView();
 			AffineTransform at = new AffineTransform(((Number) m00.getValue()).doubleValue(),
-								((Number) m10.getValue()).doubleValue(),
-								((Number) m01.getValue()).doubleValue(),
-								((Number) m11.getValue()).doubleValue(), 0d, 0d);
+					((Number) m10.getValue()).doubleValue(), ((Number) m01.getValue()).doubleValue(),
+					((Number) m11.getValue()).doubleValue(), 0d, 0d);
 			zoomView.zoomChanged(at);
-			
-			combo.setText("Zoom: " + m00.getValue().toString() + ", " +
-								m01.getValue().toString() + ", " + m10.getValue().toString() +
-								", " + m11.getValue().toString());
+
+			combo.setText("Zoom: " + m00.getValue().toString() + ", " + m01.getValue().toString() + ", "
+					+ m10.getValue().toString() + ", " + m11.getValue().toString());
 		}
 	}
-	
+
 	/**
 	 * @see org.graffiti.session.SessionListener#sessionChanged(org.graffiti.session.Session)
 	 */
 	public void sessionChanged(Session s) {
 		activeSession = s;
-		
+
 		if (s != null) {
 			viewChanged(s.getActiveView());
 		}
 	}
-	
+
 	/**
 	 * @see org.graffiti.session.SessionListener#sessionDataChanged(org.graffiti.session.Session)
 	 */
@@ -176,13 +173,13 @@ public class ZoomChangeComponent
 		activeSession = s;
 		viewChanged(s.getActiveView());
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.view.ViewListener#viewChanged(org.graffiti.plugin.view.View)
 	 */
 	public void viewChanged(View newView) {
 		Object newZoom = newView.getZoom();
-		
+
 		// String zoomStr;
 		// if(newZoom instanceof Point2D)
 		// {
@@ -193,16 +190,16 @@ public class ZoomChangeComponent
 			AffineTransform at = (AffineTransform) newZoom;
 			double[] matrix = new double[6];
 			at.getMatrix(matrix);
-			m00.setValue(new Double(matrix[0]));
-			m10.setValue(new Double(matrix[1]));
-			m01.setValue(new Double(matrix[2]));
-			
-			m11.setValue(new Double(matrix[3]));
-			
-			// m02.setValue(new Double(matrix[4]));
-			// m12.setValue(new Double(matrix[5]));
+			m00.setValue(Double.valueOf(matrix[0]));
+			m10.setValue(Double.valueOf(matrix[1]));
+			m01.setValue(Double.valueOf(matrix[2]));
+
+			m11.setValue(Double.valueOf(matrix[3]));
+
+			// m02.setValue(Double.valueOf(matrix[4]));
+			// m12.setValue(Double.valueOf(matrix[5]));
 		}
-		
+
 		// else
 		// {
 		// zoomStr = newZoom.toString();

@@ -47,7 +47,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.Spacer;
 
 /**
- * A simple demonstration of the crosshairs that can be displayed in an {@link XYPlot}.
+ * A simple demonstration of the crosshairs that can be displayed in an
+ * {@link XYPlot}.
  */
 public class CrosshairDemo1 extends ApplicationFrame {
 
@@ -55,7 +56,7 @@ public class CrosshairDemo1 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public CrosshairDemo1(final String title) {
 		super(title);
@@ -116,21 +117,19 @@ public class CrosshairDemo1 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the data for the chart.
+	 *            the data for the chart.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-							"Crosshair Demo 1", // chart title
+		final JFreeChart chart = ChartFactory.createXYLineChart("Crosshair Demo 1", // chart title
 				"X", // x axis label
 				"Y", // y axis label
 				dataset, // data
-				PlotOrientation.VERTICAL,
-							true, // include legend
+				PlotOrientation.VERTICAL, true, // include legend
 				true, // tooltips
 				false // urls
-				);
+		);
 
 		chart.setBackgroundPaint(Color.white);
 
@@ -176,7 +175,7 @@ public class CrosshairDemo1 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

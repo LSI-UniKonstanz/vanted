@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.DefaultListModel;
@@ -35,9 +36,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.transpath.TranspathSe
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.MutableList;
 
 public class TranspathPathwayLoader extends AbstractAlgorithm {
-	
+
 	public void execute() {
-		
+
 		TranspathPathway[] sel = getTranspathPathwaySelectionFromUser(TranspathService.getPathways());
 		Graph g = new AdjListGraph(new ListenerManager());
 		HashMap<String, Node> graphElementId2graphNode = new HashMap<String, Node>();
@@ -46,68 +47,65 @@ public class TranspathPathwayLoader extends AbstractAlgorithm {
 		}
 		MainFrame.getInstance().showGraph(g, getActionEvent());
 	}
-	
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public static TranspathPathway[] getTranspathPathwaySelectionFromUser(final Collection<TranspathPathway> pathways) {
 		final MutableList pathwaySelection = new MutableList(new DefaultListModel());
-		
+
 		pathwaySelection.setPrototypeCellValue("<html>ÄÖyz");
 		pathwaySelection.setFixedCellWidth(580);
 		pathwaySelection.setFixedCellHeight(new JLabel("<html>AyÖÄ").getPreferredSize().height);
-		
+
 		for (TranspathPathway oe : pathways) {
 			pathwaySelection.getContents().addElement(oe);
 		}
 		pathwaySelection.setSelectedIndex(0);
-		
+
 		final JLabel searchResult = new JLabel("<html><small><font color='gray'>" + pathways.size() + " pathways");
-		
+
 		JScrollPane pathwaySelectionScrollPane = new JScrollPane(pathwaySelection);
-		
+
 		pathwaySelectionScrollPane.setPreferredSize(new Dimension(600, 300));
-		
+
 		final JTextField filter = new JTextField("");
-		
+
 		filter.addKeyListener(new KeyListener() {
-			
+
 			public void keyPressed(KeyEvent e) {
 				//
-				
+
 			}
-			
+
 			public void keyReleased(KeyEvent e) {
 				//
-				
+
 			}
-			
+
 			public void keyTyped(KeyEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						String filterText = filter.getText().toUpperCase();
-						
+
 						pathwaySelection.getContents().clear();
 						for (TranspathPathway oe : pathways) {
 							if (oe.toString().toUpperCase().contains(filterText))
 								pathwaySelection.getContents().addElement(oe);
 						}
-						searchResult.setText("<html><small><font color='gray'>" + pathwaySelection.getContents().size() + "/" + pathways.size() + " pathways shown");
+						searchResult.setText("<html><small><font color='gray'>" + pathwaySelection.getContents().size()
+								+ "/" + pathways.size() + " pathways shown");
 					};
 				});
 			}
 		});
-		
+
 		// MyOrganismSelectionDialog osd = new MyOrganismSelectionDialog();
 		Object[] result = MyInputHelper.getInput(
-							"Please select the desired pathway(s).<br>" +
-												"<small>You may use the Search-Field to locate the " +
-												"desired pathway.",
-							"Select Pathways",
-							new Object[] {
-												"Select Pathways", pathwaySelectionScrollPane,
-												"Search", filter,
-												"", searchResult
-				});
+				"Please select the desired pathway(s).<br>" + "<small>You may use the Search-Field to locate the "
+						+ "desired pathway.",
+				"Select Pathways",
+				new Object[] { "Select Pathways", pathwaySelectionScrollPane, "Search", filter, "", searchResult });
 		if (result != null && pathwaySelection.getSelectedValue() != null) {
-			Object[] ooo = pathwaySelection.getSelectedValues();
+			List<?> ooo = pathwaySelection.getSelectedValuesList();
 			ArrayList<TranspathPathway> res = new ArrayList<TranspathPathway>();
 			for (Object o : ooo)
 				res.add((TranspathPathway) o);
@@ -116,24 +114,22 @@ public class TranspathPathwayLoader extends AbstractAlgorithm {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Nodes";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.IMPORT
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.IMPORT));
 	}
+
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TRANSPATH_ACCESS))
 			return "Load TRANSPATH (R) Pathway";
 		else
 			return null;
 	}
-	
+
 }

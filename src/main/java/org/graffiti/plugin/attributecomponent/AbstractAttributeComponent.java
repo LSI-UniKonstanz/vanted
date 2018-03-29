@@ -37,40 +37,37 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.IPKGraffit
  * 
  * @version $Revision: 1.9 $
  */
-public abstract class AbstractAttributeComponent
-		extends AttributeComponent
-		implements GraffitiViewComponent {
+public abstract class AbstractAttributeComponent extends AttributeComponent implements GraffitiViewComponent {
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/** The attribute that this component displays. */
 	protected Attribute attr;
-	
+
 	/** The shape of the node or edge to which this attribute belongs. */
 	protected GraphElementShape geShape;
-	
+
 	/** DOCUMENT ME! */
 	protected Point shift;
-	
+
 	protected Point loc = new Point();
 
-	
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Instantiates an <code>AttributeComponent</code>
 	 */
 	public AbstractAttributeComponent() {
 		super();
-//		setupOpacity(1);
+		// setupOpacity(1);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Sets an instance of attribute which this component displays.
 	 * 
@@ -80,15 +77,15 @@ public abstract class AbstractAttributeComponent
 	public void setAttribute(Attribute attr) {
 		this.attr = attr;
 		/*
-		 * new graphelement transparency attribute 
+		 * new graphelement transparency attribute
 		 */
-		double opacity = (double) AttributeHelper.getAttributeValue(attr.getAttributable(), GraphicAttributeConstants.GRAPHICS, GraphicAttributeConstants.OPAC,
-				1.0, new Double(1));
+		double opacity = (double) AttributeHelper.getAttributeValue(attr.getAttributable(),
+				GraphicAttributeConstants.GRAPHICS, GraphicAttributeConstants.OPAC, 1.0, Double.valueOf(1));
 		setupOpacity(opacity);
 	}
-	
+
 	protected void setupOpacity(double opacity) {
-		
+
 		if (opacity > 1.0)
 			opacity = 1.0;
 		if (opacity < 0)
@@ -97,14 +94,14 @@ public abstract class AbstractAttributeComponent
 		if (opacity < 1.0) {
 			setOpaque(false);
 			composite = AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, alpha);
-			
+
 		} else {
-			
+
 			composite = null;
 		}
-		
+
 	}
-	
+
 	/**
 	 * Returns the attribute that is displayed by this component.
 	 * 
@@ -114,10 +111,9 @@ public abstract class AbstractAttributeComponent
 	public Attribute getAttribute() {
 		return this.attr;
 	}
-	
+
 	/**
-	 * Sets shape of graph element to which the attribute of this component
-	 * belongs.
+	 * Sets shape of graph element to which the attribute of this component belongs.
 	 * 
 	 * @param geShape
 	 */
@@ -125,72 +121,67 @@ public abstract class AbstractAttributeComponent
 	public void setGraphElementShape(GraphElementShape geShape) {
 		this.geShape = geShape;
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param shift
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@Override
 	public void setShift(Point shift) {
 		this.shift = shift;
 	}
-	
+
 	@Override
 	public void adjustComponentPosition() {
 	}
-	
+
 	/**
 	 * Called when a graphics attribute of the attribute represented by this
 	 * component has changed.
 	 * 
 	 * @param attr
-	 *           the attribute that has triggered the event.
+	 *            the attribute that has triggered the event.
 	 */
 	@Override
-	public abstract void attributeChanged(Attribute attr)
-			throws ShapeNotFoundException;
-	
+	public abstract void attributeChanged(Attribute attr) throws ShapeNotFoundException;
+
 	/**
-	 * Called to initialise the component of this attribute correctly. Also
-	 * calls <code>repaint()</code>.
+	 * Called to initialise the component of this attribute correctly. Also calls
+	 * <code>repaint()</code>.
 	 * 
 	 * @exception ShapeNotFoundException
-	 *               thrown when the shapeclass couldn't be
-	 *               resolved.
+	 *                thrown when the shapeclass couldn't be resolved.
 	 */
-	public void createNewShape(CoordinateSystem coordSys)
-			throws ShapeNotFoundException {
+	public void createNewShape(CoordinateSystem coordSys) throws ShapeNotFoundException {
 		this.recreate();
 	}
-	
+
 	/**
-	 * Used when the shape changed in the datastructure. Makes the painter to
-	 * create a new shape.
+	 * Used when the shape changed in the datastructure. Makes the painter to create
+	 * a new shape.
 	 */
 	@Override
-	public abstract void recreate()
-			throws ShapeNotFoundException;
-	
+	public abstract void recreate() throws ShapeNotFoundException;
+
 	/**
-	 * Attribute components can use this method to check if they are
-	 * or should be visible in the view.
-	 * Currently there is hard coded variables defining visibility such as
-	 * presumed size of the component and the current drawing mode
-	 * Future implementation should parameterize this.
+	 * Attribute components can use this method to check if they are or should be
+	 * visible in the view. Currently there is hard coded variables defining
+	 * visibility such as presumed size of the component and the current drawing
+	 * mode Future implementation should parameterize this.
 	 * 
 	 * @param minimumComponentSize
-	 *           TODO
+	 *            TODO
 	 * @return
 	 */
 	public boolean checkVisibility(int minimumComponentSize) {
-		/* 
-		 * only draw component, if printing is in progress, it is graphically visible or not FAST mode enabled
+		/*
+		 * only draw component, if printing is in progress, it is graphically visible or
+		 * not FAST mode enabled
 		 */
 		Container parent = getParent();
-		if (parent instanceof IPKGraffitiView &&
-				((IPKGraffitiView) getParent()).printInProgress) {
+		if (parent instanceof IPKGraffitiView && ((IPKGraffitiView) getParent()).printInProgress) {
 			return true;
 		}
 		if (parent instanceof GraffitiView) {
@@ -198,33 +189,36 @@ public abstract class AbstractAttributeComponent
 			if (view.getDrawMode() == DrawMode.FAST)
 				return false;
 			AffineTransform zoom = view.getZoom();
-			//TODO: parameterize those constants..
+			// TODO: parameterize those constants..
 			if (getHeight() * zoom.getScaleX() < minimumComponentSize
 					|| getWidth() * zoom.getScaleY() < minimumComponentSize)
 				return false;
 			else
 				return true;
-			
-		}
-		else
+
+		} else
 			return true;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
-//		if (hidden)
-//			return;
-//		if (composite != null) {
-//			g = g.create();
-//			((Graphics2D) g).setComposite(composite);
-//		}
+		// if (hidden)
+		// return;
+		// if (composite != null) {
+		// g = g.create();
+		// ((Graphics2D) g).setComposite(composite);
+		// }
 		super.paintComponent(g);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
 	 */
 	@Override
@@ -237,19 +231,18 @@ public abstract class AbstractAttributeComponent
 		}
 		super.paint(g);
 	}
-	
+
 	@Override
 	public void adjustComponentSize() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	protected DrawMode getDrawingModeOfView() {
 		if (getParent() instanceof GraffitiView) {
 			GraffitiView view = (GraffitiView) getParent();
 			return view.getDrawMode();
-		}
-		else
+		} else
 			return DrawMode.NORMAL;
 	}
 }

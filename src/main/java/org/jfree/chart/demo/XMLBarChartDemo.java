@@ -44,8 +44,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demonstration application showing how to create a bar chart using data from an
- * XML data file.
+ * A simple demonstration application showing how to create a bar chart using
+ * data from an XML data file.
  */
 public class XMLBarChartDemo extends ApplicationFrame {
 
@@ -53,7 +53,7 @@ public class XMLBarChartDemo extends ApplicationFrame {
 	 * Default constructor.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XMLBarChartDemo(final String title) {
 
@@ -71,16 +71,10 @@ public class XMLBarChartDemo extends ApplicationFrame {
 		}
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createBarChart(
-							"Bar Chart", // chart title
-				"Domain",
-							"Range",
-							dataset, // data
-				PlotOrientation.VERTICAL,
-							true, // include legend
-				true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createBarChart("Bar Chart", // chart title
+				"Domain", "Range", dataset, // data
+				PlotOrientation.VERTICAL, true, // include legend
+				true, false);
 
 		// set the background color for the chart...
 		chart.setBackgroundPaint(Color.yellow);
@@ -107,7 +101,7 @@ public class XMLBarChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

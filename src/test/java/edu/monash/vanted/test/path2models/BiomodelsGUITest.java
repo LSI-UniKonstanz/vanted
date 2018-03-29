@@ -13,16 +13,17 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.biomodels.Bi
  * @author matthiak
  *
  */
-public class BiomodelsGUITest extends JFrame{
+public class BiomodelsGUITest extends JFrame {
 
 	BiomodelsPanel panel;
+
 	/**
 	 * 
 	 */
 	public BiomodelsGUITest() {
-		
+
 		panel = new BiomodelsPanel();
-		
+
 		setSize(300, 400);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(panel, BorderLayout.CENTER);
@@ -30,6 +31,7 @@ public class BiomodelsGUITest extends JFrame{
 		pack();
 		setVisible(true);
 	}
+
 	/**
 	 * @param args
 	 */

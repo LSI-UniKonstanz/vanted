@@ -47,9 +47,9 @@ public class ContourEntity extends ChartEntity implements Cloneable, Serializabl
 	 * Constructor for ContourEntity.
 	 * 
 	 * @param area
-	 *           the area.
+	 *            the area.
 	 * @param toolTipText
-	 *           the tooltip text.
+	 *            the tooltip text.
 	 */
 	public ContourEntity(Shape area, String toolTipText) {
 		super(area, toolTipText);
@@ -59,11 +59,11 @@ public class ContourEntity extends ChartEntity implements Cloneable, Serializabl
 	 * Constructor for ContourEntity.
 	 * 
 	 * @param area
-	 *           the area.
+	 *            the area.
 	 * @param toolTipText
-	 *           the tooltip text.
+	 *            the tooltip text.
 	 * @param urlText
-	 *           the URL text.
+	 *            the URL text.
 	 */
 	public ContourEntity(Shape area, String toolTipText, String urlText) {
 		super(area, toolTipText, urlText);
@@ -82,7 +82,7 @@ public class ContourEntity extends ChartEntity implements Cloneable, Serializabl
 	 * Sets the index.
 	 * 
 	 * @param index
-	 *           the index.
+	 *            the index.
 	 */
 	public void setIndex(int index) {
 		this.index = index;
@@ -92,7 +92,7 @@ public class ContourEntity extends ChartEntity implements Cloneable, Serializabl
 	 * Tests the entity for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -114,7 +114,7 @@ public class ContourEntity extends ChartEntity implements Cloneable, Serializabl
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if cloning is not supported.
+	 *             if cloning is not supported.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

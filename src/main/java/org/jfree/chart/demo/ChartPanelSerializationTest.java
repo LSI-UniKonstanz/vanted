@@ -57,17 +57,18 @@ import org.jfree.util.Log;
 import org.jfree.util.PrintStreamLogTarget;
 
 /**
- * This demo tests the ability to serialize/deserialize a {@link ChartPanel}. The
- * basics are working, but more testing is needed to iron out the remaining bugs.
+ * This demo tests the ability to serialize/deserialize a {@link ChartPanel}.
+ * The basics are working, but more testing is needed to iron out the remaining
+ * bugs.
  */
 public class ChartPanelSerializationTest extends ApplicationFrame {
 
 	/**
-	 * A demonstration application showing how to create a simple time series chart. This
-	 * example uses monthly data.
+	 * A demonstration application showing how to create a simple time series chart.
+	 * This example uses monthly data.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public ChartPanelSerializationTest(final String title) {
 
@@ -100,19 +101,13 @@ public class ChartPanelSerializationTest extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           a dataset.
+	 *            a dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							"Legal & General Unit Trust Prices",
-							"Date", "Price Per Unit",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Legal & General Unit Trust Prices", "Date",
+				"Price Per Unit", dataset, true, true, false);
 
 		chart.setBackgroundPaint(Color.white);
 
@@ -214,14 +209,12 @@ public class ChartPanelSerializationTest extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
 		Log.getInstance().addTarget(new PrintStreamLogTarget());
-		final ChartPanelSerializationTest demo = new ChartPanelSerializationTest(
-							"Serialization Test"
-							);
+		final ChartPanelSerializationTest demo = new ChartPanelSerializationTest("Serialization Test");
 		demo.pack();
 		RefineryUtilities.centerFrameOnScreen(demo);
 		demo.setVisible(true);

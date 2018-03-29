@@ -21,35 +21,29 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
 /**
  * @author Christian Klukas
  */
-public class PluginFeatureClusterCommands
-					extends IPK_PluginAdapter {
-	
+public class PluginFeatureClusterCommands extends IPK_PluginAdapter {
+
 	public static SelectClusterAlgorithm alg;
-	
+
 	public PluginFeatureClusterCommands() {
 		if (new SettingsHelperDefaultIsTrue().isEnabled("Cluster commands")) {
-			this.algorithms = new Algorithm[] {
-								new AddRandomClusterInformationAlgorithm(),
-								new PajekClusterColor(),
-								new ClusterOverviewNetworkLaunchGui(),
-								new ClusterIndividualLayout(),
-								new SetCluster(),
-								new NoOverlappOfClustersAlgorithm(),
-								new SortIntoCluster()
-			};
+			this.algorithms = new Algorithm[] { new AddRandomClusterInformationAlgorithm(), new PajekClusterColor(),
+					new ClusterOverviewNetworkLaunchGui(), new ClusterIndividualLayout(), new SetCluster(),
+					new NoOverlappOfClustersAlgorithm(), new SortIntoCluster() };
 			alg = new SelectClusterAlgorithm();
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.GenericPlugin#configure(java.util.prefs.Preferences)
 	 */
 	@Override
 	public void configure(Preferences p) {
 		super.configure(p);
 	}
-	
+
 	public static Algorithm getSelectClusterAlgorithm() {
 		return alg;
 	}

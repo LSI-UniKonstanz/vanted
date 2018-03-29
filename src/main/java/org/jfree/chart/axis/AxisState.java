@@ -33,10 +33,11 @@ package org.jfree.chart.axis;
 import java.util.List;
 
 /**
- * Instances of this class are used to carry state information for an axis during the drawing
- * process. By retaining this information in a separate object, it is possible for multiple
- * threads to draw the same axis to different output targets (each drawing will maintain separate
- * state information).
+ * Instances of this class are used to carry state information for an axis
+ * during the drawing process. By retaining this information in a separate
+ * object, it is possible for multiple threads to draw the same axis to
+ * different output targets (each drawing will maintain separate state
+ * information).
  */
 public class AxisState {
 
@@ -60,7 +61,7 @@ public class AxisState {
 	 * Creates a new axis state.
 	 * 
 	 * @param cursor
-	 *           the cursor.
+	 *            the cursor.
 	 */
 	public AxisState(double cursor) {
 		this.cursor = cursor;
@@ -80,7 +81,7 @@ public class AxisState {
 	 * Sets the cursor position.
 	 * 
 	 * @param cursor
-	 *           the cursor position.
+	 *            the cursor position.
 	 */
 	public void setCursor(double cursor) {
 		this.cursor = cursor;
@@ -90,7 +91,7 @@ public class AxisState {
 	 * Moves the cursor up by the specified number of Java 2D units.
 	 * 
 	 * @param units
-	 *           the units.
+	 *            the units.
 	 */
 	public void cursorUp(double units) {
 		this.cursor = this.cursor - units;
@@ -100,7 +101,7 @@ public class AxisState {
 	 * Moves the cursor down by the specified number of Java 2D units.
 	 * 
 	 * @param units
-	 *           the units.
+	 *            the units.
 	 */
 	public void cursorDown(double units) {
 		this.cursor = this.cursor + units;
@@ -110,7 +111,7 @@ public class AxisState {
 	 * Moves the cursor left by the specified number of Java 2D units.
 	 * 
 	 * @param units
-	 *           the units.
+	 *            the units.
 	 */
 	public void cursorLeft(double units) {
 		this.cursor = this.cursor - units;
@@ -120,7 +121,7 @@ public class AxisState {
 	 * Moves the cursor right by the specified number of Java 2D units.
 	 * 
 	 * @param units
-	 *           the units.
+	 *            the units.
 	 */
 	public void cursorRight(double units) {
 		this.cursor = this.cursor + units;
@@ -139,7 +140,7 @@ public class AxisState {
 	 * Sets the list of ticks.
 	 * 
 	 * @param ticks
-	 *           the ticks.
+	 *            the ticks.
 	 */
 	public void setTicks(List ticks) {
 		this.ticks = ticks;
@@ -158,7 +159,7 @@ public class AxisState {
 	 * Sets the maximum width/height.
 	 * 
 	 * @param max
-	 *           the maximum width/height.
+	 *            the maximum width/height.
 	 */
 	public void setMax(double max) {
 		this.max = max;

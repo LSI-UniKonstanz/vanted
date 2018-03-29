@@ -26,75 +26,71 @@ import org.graffiti.undo.Undoable;
 /**
  * DOCUMENT ME!
  */
-public class ClusterHelperToolbarComponent extends JToolBar implements GraffitiComponent,
-					ActionListener, Undoable, SessionListener {
-	
+public class ClusterHelperToolbarComponent extends JToolBar
+		implements GraffitiComponent, ActionListener, Undoable, SessionListener {
+
 	// ~ Instance fields
 	// ========================================================
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	// JToolBar myContent;
-	
+
 	/** The alignment buttons */
 	private JButton jbUpdateClusterNodes, jbCondense, jbHideClusterNodes;
-	
+
 	/** active session */
 	private static Session activeSession;
-	
+
 	private UndoableEditSupport undoSupport;
-	
+
 	private String prefComp;
-	
+
 	// ~ Constructors
 	// ===========================================================
-	
+
 	/**
 	 * Constructor for ZoomChangeComponent.
 	 * 
 	 * @param prefComp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public ClusterHelperToolbarComponent(String prefComp) {
 		super("Cluster/Nodes");
 		this.prefComp = prefComp;
-		
+
 		// myContent = new JToolBar();
 		// // myContent.putClientProperty(Options.HEADER_STYLE_KEY, HeaderStyle.SINGLE);
 		//
 		// myContent.setFloatable(false);
-		setLayout(new SingleFiledLayout(SingleFiledLayout.ROW,
-							SingleFiledLayout.FULL, 0));
-		
+		setLayout(new SingleFiledLayout(SingleFiledLayout.ROW, SingleFiledLayout.FULL, 0));
+
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/');
-		
-		ImageIcon iconShowCluster = new ImageIcon(cl.getResource(path
-							+ "/images/show_cluster_nodes.gif"));
-		ImageIcon iconHideCluster = new ImageIcon(cl.getResource(path
-							+ "/images/hide_cluster_nodes.gif"));
-		ImageIcon iconCondense = new ImageIcon(cl.getResource(path
-							+ "/images/condense_nodes.gif"));
-		
+
+		ImageIcon iconShowCluster = new ImageIcon(cl.getResource(path + "/images/show_cluster_nodes.gif"));
+		ImageIcon iconHideCluster = new ImageIcon(cl.getResource(path + "/images/hide_cluster_nodes.gif"));
+		ImageIcon iconCondense = new ImageIcon(cl.getResource(path + "/images/condense_nodes.gif"));
+
 		jbCondense = addButton(this, iconCondense);
 		jbCondense.putClientProperty("cmd", KeggNavigationToolbarCommand.Command.CONDENSE_ENTITIES);
 		jbCondense.setToolTipText("Condense multiple entities");
-		
+
 		jbUpdateClusterNodes = addButton(this, iconShowCluster);
 		jbUpdateClusterNodes.putClientProperty("cmd", KeggNavigationToolbarCommand.Command.UPDATE_CLUSTER_NODES);
 		jbUpdateClusterNodes.setToolTipText("Create or update cluster background-nodes");
-		
+
 		jbHideClusterNodes = addButton(this, iconHideCluster);
 		jbHideClusterNodes.putClientProperty("cmd", KeggNavigationToolbarCommand.Command.HIDE_CLUSTER_NODES);
 		jbHideClusterNodes.setToolTipText("Hide cluster background-nodes");
-		
+
 		setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		validate();
 	}
-	
+
 	// ~ Methods
 	// ================================================================
-	
+
 	private JButton addButton(JComponent myContent, ImageIcon icon) {
 		JButton newButton = new JButton(icon);
 		int s = 4;
@@ -104,47 +100,56 @@ public class ClusterHelperToolbarComponent extends JToolBar implements GraffitiC
 		myContent.add(newButton);
 		return newButton;
 	}
-	
+
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (activeSession != null) {
 			UndoableEdit cmd = new KeggNavigationToolbarCommand(
-								(KeggNavigationToolbarCommand.Command) ((JButton) e.getSource())
-													.getClientProperty("cmd"), (EditorSession) activeSession);
+					(KeggNavigationToolbarCommand.Command) ((JButton) e.getSource()).getClientProperty("cmd"),
+					(EditorSession) activeSession);
 			cmd.redo();
 			undoSupport.beginUpdate();
 			undoSupport.postEdit(cmd);
 			undoSupport.endUpdate();
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.undo.Undoable#setUndoSupport(javax.swing.undo.UndoableEditSupport)
+	 * 
+	 * @see org.graffiti.undo.Undoable#setUndoSupport(javax.swing.undo.
+	 * UndoableEditSupport)
 	 */
 	public void setUndoSupport(UndoableEditSupport us) {
 		undoSupport = us;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.session.SessionListener#sessionChanged(org.graffiti.session.Session)
+	 * 
+	 * @see
+	 * org.graffiti.session.SessionListener#sessionChanged(org.graffiti.session.
+	 * Session)
 	 */
 	public void sessionChanged(Session s) {
 		activeSession = s;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.session.SessionListener#sessionDataChanged(org.graffiti.session.Session)
+	 * 
+	 * @see
+	 * org.graffiti.session.SessionListener#sessionDataChanged(org.graffiti.session.
+	 * Session)
 	 */
 	public void sessionDataChanged(Session s) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.gui.GraffitiComponent#getPreferredComponent()
 	 */
 	public String getPreferredComponent() {

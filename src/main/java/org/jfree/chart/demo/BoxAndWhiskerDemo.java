@@ -64,7 +64,7 @@ public class BoxAndWhiskerDemo extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public BoxAndWhiskerDemo(final String title) {
 
@@ -80,12 +80,8 @@ public class BoxAndWhiskerDemo extends ApplicationFrame {
 		renderer.setToolTipGenerator(new BoxAndWhiskerToolTipGenerator());
 		final CategoryPlot plot = new CategoryPlot(dataset, xAxis, yAxis, renderer);
 
-		final JFreeChart chart = new JFreeChart(
-							"Box-and-Whisker Demo",
-							new Font("SansSerif", Font.BOLD, 14),
-							plot,
-							true
-							);
+		final JFreeChart chart = new JFreeChart("Box-and-Whisker Demo", new Font("SansSerif", Font.BOLD, 14), plot,
+				true);
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(450, 270));
 		setContentPane(chartPanel);
@@ -110,9 +106,9 @@ public class BoxAndWhiskerDemo extends ApplicationFrame {
 				// add some values...
 				for (int k = 0; k < entityCount; k++) {
 					final double value1 = 10.0 + Math.random() * 3;
-					list.add(new Double(value1));
+					list.add(Double.valueOf(value1));
 					final double value2 = 11.25 + Math.random(); // concentrate values in the middle
-					list.add(new Double(value2));
+					list.add(Double.valueOf(value2));
 				}
 				LOGGER.debug("Adding series " + i);
 				LOGGER.debug(list.toString());
@@ -139,7 +135,7 @@ public class BoxAndWhiskerDemo extends ApplicationFrame {
 	 * For testing from the command line.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

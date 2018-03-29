@@ -3,13 +3,13 @@ package org.graffiti.plugin.parameter;
 public class EnumParameter extends AbstractSingleParameter {
 
 	Enum<?> enumParameter;
-	
+
 	Enum<?>[] allEnums;
-	
+
 	public EnumParameter(Enum<?> val, String name, String description) {
 		super(val, name, description);
 		this.enumParameter = val;
-		
+
 		allEnums = enumParameter.getDeclaringClass().getEnumConstants();
 	}
 
@@ -27,7 +27,7 @@ public class EnumParameter extends AbstractSingleParameter {
 
 	@Override
 	public void setValue(Object val) throws IllegalArgumentException {
-		if(val instanceof Enum) 
+		if (val instanceof Enum)
 			enumParameter = (Enum<?>) val;
 	}
 
@@ -40,10 +40,11 @@ public class EnumParameter extends AbstractSingleParameter {
 	public Enum<?> getEnumValue() {
 		return enumParameter;
 	}
-	
+
 	/**
-	 * this will return all possible enum values contained in
-	 * the enum stored in this object
+	 * this will return all possible enum values contained in the enum stored in
+	 * this object
+	 * 
 	 * @return
 	 */
 	public Enum<?>[] getAllEnumValue() {

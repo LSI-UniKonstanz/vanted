@@ -18,19 +18,15 @@ import org.graffiti.plugin.EditorPluginAdapter;
  * 
  * @version $Revision: 1.6 $
  */
-public class StandardAttributeComponents
-					extends EditorPluginAdapter {
+public class StandardAttributeComponents extends EditorPluginAdapter {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Creates a new StandardAttributeComponents object.
 	 */
-	@SuppressWarnings("unchecked")
 	public StandardAttributeComponents() {
-		this.attributeComponents.put(NodeLabelAttribute.class,
-							LabelComponent.class);
-		this.attributeComponents.put(EdgeLabelAttribute.class,
-							LabelComponent.class);
+		this.attributeComponents.put(NodeLabelAttribute.class, LabelComponent.class);
+		this.attributeComponents.put(EdgeLabelAttribute.class, LabelComponent.class);
 	}
 }
 

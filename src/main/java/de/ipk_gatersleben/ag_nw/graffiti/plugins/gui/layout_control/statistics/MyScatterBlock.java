@@ -20,57 +20,57 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class MyScatterBlock {
-	
+
 	private int maxX = 0;
 	private int maxY = 0;
 	private boolean returned = false;
-	
+
 	private HashMap<String, JComponent> chartPanels = new HashMap<String, JComponent>();
 	private HashMap<Integer, String> descriptionX = new HashMap<Integer, String>();
 	private HashMap<Integer, String> descriptionY = new HashMap<Integer, String>();
-	
+
 	private boolean symetricScatterPanel;
 	private int fontSize;
-	
+
 	public MyScatterBlock(boolean symetricScatterPanel, int fontSize) {
 		this.symetricScatterPanel = symetricScatterPanel;
 		this.fontSize = fontSize;
 	}
-	
+
 	/**
 	 * @param chartPanel
-	 *           The chart panel (probably a scatter plot)
+	 *            The chart panel (probably a scatter plot)
 	 * @param x
-	 *           The position in the scatter block - X
+	 *            The position in the scatter block - X
 	 * @param y
-	 *           The position in the scatter block - Y
+	 *            The position in the scatter block - Y
 	 * @param descX
-	 *           The description of the X axis.
+	 *            The description of the X axis.
 	 * @param descY
-	 *           The description of the Y axis.
+	 *            The description of the Y axis.
 	 */
 	public void addChartPanel(JComponent chartPanel, int x, int y, String descX, String descY) {
 		assert x > 0;
 		assert y > 0;
-		descriptionX.put(new Integer(x), descX);
-		descriptionY.put(new Integer(y), descY);
+		descriptionX.put(Integer.valueOf(x), descX);
+		descriptionY.put(Integer.valueOf(y), descY);
 		chartPanels.put(x + "§" + y, chartPanel);
 		if (x > maxX)
 			maxX = x;
 		if (y > maxY)
 			maxY = y;
 	}
-	
+
 	/**
-	 * Returns the scatter block as a component.
-	 * This method can only be called once, as components are not allowed
-	 * to be used twice in Java GUI programming (IMHO).
+	 * Returns the scatter block as a component. This method can only be called
+	 * once, as components are not allowed to be used twice in Java GUI programming
+	 * (IMHO).
 	 * 
-	 * @return The scatter block with the charts that where added with <code>addChartPanel</code>.
+	 * @return The scatter block with the charts that where added with
+	 *         <code>addChartPanel</code>.
 	 */
 	public JComponent getChartPanel() {
 		if (returned) {
@@ -89,7 +89,7 @@ public class MyScatterBlock {
 				for (int y = 0; y < maxY; y++) {
 					JComponent c = chartPanels.get((x + 1) + "§" + (y + 1));
 					if (x == y && symetricScatterPanel) { // && c==null
-						String lbl = descriptionX.get(new Integer(x + 1));
+						String lbl = descriptionX.get(Integer.valueOf(x + 1));
 						c = new JLabel(lbl);
 						((JLabel) c).setHorizontalAlignment(SwingConstants.CENTER);
 						((JLabel) c).setOpaque(true);
@@ -99,7 +99,8 @@ public class MyScatterBlock {
 					}
 					if (c == null)
 						c = new JLabel("n/a");
-					// ((JComponent)c).setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+					// ((JComponent)c).setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY,
+					// 1));
 					result.add(c, x + "," + y); // new JLabel(x+","+y)
 				}
 			returned = true;
@@ -114,7 +115,7 @@ public class MyScatterBlock {
 			return result;
 		}
 	}
-	
+
 	public static Color getBackCol() {
 		return Color.WHITE;
 		// new Color(250, 250, 250);

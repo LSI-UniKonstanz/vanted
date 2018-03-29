@@ -45,80 +45,74 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.Preferences
 /**
  * @author matthiak
  */
-public class AlgorithmPanelFactory extends JPanel
-		implements TreeSelectionListener {
-	
+public class AlgorithmPanelFactory extends JPanel implements TreeSelectionListener {
+
 	private static final long serialVersionUID = 6550915952424474575L;
 
 	JTree myTree;
-	
+
 	DefaultMutableTreeNode rootNode;
 	DefaultMutableTreeNode rootNodeByPlugin;
 	DefaultMutableTreeNode rootNodeAlgorithms;
 	DefaultMutableTreeNode rootNodeThreadSafeAlgorithms;
 	DefaultMutableTreeNode rootNodeSettings;
 	DefaultMutableTreeNode rootNodeScripts;
-	
+
 	HashMap<String, MyPluginTreeNode> knownNodes;
-	
+
 	public ThreadSafeOptions optionsForPlugin = null;
-	
+
 	// HashMap<String, MyPluginTreeNode> knownNodes;
-	
+
 	JPanel settingsPanel;
-	
+
 	// JList<Algorithm> jListAlgorithms;
-	
+
 	/**
 	 * 
 	 */
 	public AlgorithmPanelFactory(boolean vertical, List<Algorithm> algorithms) {
-		initializeGUIforGivenContainer(
-				vertical,
-				algorithms.toArray(new Algorithm[algorithms.size()]));
+		initializeGUIforGivenContainer(vertical, algorithms.toArray(new Algorithm[algorithms.size()]));
 	}
-	
-	public static JPanel createForAlgorithms(boolean vertical,
-			List<Algorithm> algorithms) {
+
+	public static JPanel createForAlgorithms(boolean vertical, List<Algorithm> algorithms) {
 		AlgorithmPanelFactory fact = new AlgorithmPanelFactory(vertical, algorithms);
 		return fact;
 	}
-	
+
 	/**
 	 * @param cp
 	 * @param selection
 	 * @param graph
 	 * @param setAlgorithmDataObject
 	 */
-	public void initializeGUIforGivenContainer(
-			boolean vertical,
-			Algorithm[] algorithms
-			) {
-		
+	public void initializeGUIforGivenContainer(boolean vertical, Algorithm[] algorithms) {
+
 		Container cp = this;
 		cp.setLayout(new BoxLayout(cp, BoxLayout.Y_AXIS));
-		
+
 		settingsPanel = new JPanel();
-		
+
 		settingsPanel.setLayout(new BoxLayout(settingsPanel, BoxLayout.Y_AXIS));
 		settingsPanel.setPreferredSize(new Dimension(200, 200));
-		
+
 		// jListAlgorithms = new JList<Algorithm>(algorithms);
 		// jListAlgorithms.setSelectionMode(ListSelectionModel.SINGLE_SELECTION );
 		// jListAlgorithms.setCellRenderer(new AlgorithmListCellRenderer());
 		// jListAlgorithms.addListSelectionListener(this);
-		
+
 		rootNode = new DefaultMutableTreeNode("Algorithms");
-		
+
 		for (Algorithm algo : algorithms)
 			rootNode.add(new MyPluginTreeNode(algo.getName(), algo, Algorithm.class));
-		
+
 		myTree = new JTree(rootNode);
-		// DefaultTreeCellRenderer tcr = (DefaultTreeCellRenderer) myTree.getCellRenderer();
+		// DefaultTreeCellRenderer tcr = (DefaultTreeCellRenderer)
+		// myTree.getCellRenderer();
 		// tcr.setOpaque(true);
 		// tcr.setBackgroundNonSelectionColor(Color.YELLOW);
 		myTree.addTreeSelectionListener(this);
-		
+
 		JSplitPane mainComp;
 		// myTree.setOpaque(false);
 		JScrollPane sp = new JScrollPane(myTree);
@@ -131,52 +125,49 @@ public class AlgorithmPanelFactory extends JPanel
 		mainComp.setDividerLocation(0.5); // 175
 		mainComp.setDividerSize(7);
 		// mainComp.setOneTouchExpandable(true);
-		
+
 		mainComp.setBorder(null);
-		
+
 		cp.add(mainComp);
-		
+
 		// cp.validate();
-		
+
 	}
-	
+
 	void runAlgorithm(final Algorithm alg, Graph graph, Selection selection) {
 		// ScenarioService.postWorkflowStep(alg, alg.getParameters());
 		alg.reset();
 		alg.attach(graph, selection);
 		alg.execute();
 	}
-	
-	private void initAlgorithmPreferencesPanel(final Algorithm alg,
-			final Graph graph, Selection selection) {
+
+	private void initAlgorithmPreferencesPanel(final Algorithm alg, final Graph graph, Selection selection) {
 		// settingsPanel.add(new JLabel("Algorithm selection: "+alg.getName()));
-		
+
 		settingsPanel.removeAll();
-		
+
 		JPanel progressAndStatus = new JPanel();
 		double border = 5;
-		double[][] size =
-		{
-				{ border, TableLayoutConstants.FILL, border }, // Columns
-				{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, border }
-		}; // Rows
-		
+		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
+				{ border, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED,
+						TableLayoutConstants.PREFERRED, border } }; // Rows
+
 		progressAndStatus.setLayout(new TableLayout(size));
-		
+
 		String desc = alg.getDescription();
 		JLabel info = new JLabel(desc);
 		info.setBorder(BorderFactory.createLoweredBevelBorder());
 		info.setOpaque(false);
-		
-		//scaling
+
+		// scaling
 		float factor = Toolbox.getDPIScalingRatio();
 		if (factor != 1f)
 			new JLabelScaler(factor).coscaleHTML(info);
-		
+
 		if (desc != null && desc.length() > 0)
 			progressAndStatus.add(info, "1,3");
 		EditComponentManager editComponentManager = MainFrame.getInstance().getEditComponentManager();
-		
+
 		ParameterEditPanel paramPanel = null;
 		alg.attach(graph, selection);
 		boolean canNotStart = false;
@@ -185,7 +176,8 @@ public class AlgorithmPanelFactory extends JPanel
 			try {
 				if (workgraph == null) {
 					workgraph = MainFrame.getInstance().getActiveEditorSession().getGraph();
-					selection = MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection();
+					selection = MainFrame.getInstance().getActiveEditorSession().getSelectionModel()
+							.getActiveSelection();
 					if (selection == null)
 						selection = new Selection("");
 				}
@@ -202,8 +194,8 @@ public class AlgorithmPanelFactory extends JPanel
 		}
 		if (!canNotStart)
 			if (alg.getParameters() != null) {
-				paramPanel = new ParameterEditPanel(alg.getParameters(),
-						editComponentManager.getEditComponents(), selection, alg.getName(), true, alg.getName());
+				paramPanel = new ParameterEditPanel(alg.getParameters(), editComponentManager.getEditComponents(),
+						selection, alg.getName(), true, alg.getName());
 				if (paramPanel != null) {
 					JScrollPane sp = new JScrollPane(paramPanel);
 					sp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -215,10 +207,10 @@ public class AlgorithmPanelFactory extends JPanel
 		final ParameterEditPanel finalParamPanel = paramPanel;
 		JButton runButton = new JMButton("Execute");
 		PreferencesDialog.activeStartLayoutButton = runButton;
-		
+
 		if (canNotStart)
 			runButton.setEnabled(false);
-		
+
 		final Selection selectionF = selection;
 		runButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -236,7 +228,8 @@ public class AlgorithmPanelFactory extends JPanel
 				Selection selection = selectionF;
 				try {
 					workgraph = MainFrame.getInstance().getActiveEditorSession().getGraph();
-					selection = MainFrame.getInstance().getActiveEditorSession().getSelectionModel().getActiveSelection();
+					selection = MainFrame.getInstance().getActiveEditorSession().getSelectionModel()
+							.getActiveSelection();
 					if (selection == null)
 						selection = new Selection("");
 				} catch (NullPointerException npe) {
@@ -247,24 +240,25 @@ public class AlgorithmPanelFactory extends JPanel
 		});
 		runButton.setMinimumSize(new Dimension(10, 10));
 		progressAndStatus.add(runButton, "1,1");
-		
+
 		progressAndStatus.validate();
 		settingsPanel.add(progressAndStatus);
 		settingsPanel.validate();
 	}
-	
+
 	@Override
 	public void valueChanged(TreeSelectionEvent e) {
 		processTreeSelectionEvent(e);
 	}
-	
+
 	private void processTreeSelectionEvent(TreeSelectionEvent e) {
-		
+
 		if (optionsForPlugin != null) {
 			optionsForPlugin.setAbortWanted(true);
 		}
 		Object lastPathComponent = e.getPath().getLastPathComponent();
 		if (lastPathComponent instanceof MyPluginTreeNode)
-			initAlgorithmPreferencesPanel((Algorithm) ((MyPluginTreeNode) lastPathComponent).getUserObject(), null, null);
+			initAlgorithmPreferencesPanel((Algorithm) ((MyPluginTreeNode) lastPathComponent).getUserObject(), null,
+					null);
 	}
 }

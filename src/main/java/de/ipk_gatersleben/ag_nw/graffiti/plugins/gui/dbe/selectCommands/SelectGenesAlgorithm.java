@@ -22,19 +22,19 @@ import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class SelectGenesAlgorithm extends AbstractAlgorithm {
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No active graph editor window found!");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
@@ -43,22 +43,20 @@ public class SelectGenesAlgorithm extends AbstractAlgorithm {
 		else
 			return "Select Genes";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "menu.edit";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.NODE,
-				Category.SELECTION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.SELECTION));
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
@@ -67,7 +65,8 @@ public class SelectGenesAlgorithm extends AbstractAlgorithm {
 			boolean added = false;
 			if (!added) {
 				// check for other hints, that this is a gene
-				String kegg_type = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_type", null, new String(""), false);
+				String kegg_type = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_type", null,
+						new String(""), false);
 				if (kegg_type != null && kegg_type.equalsIgnoreCase("gene")) {
 					geneNodes.add(n);
 					added = true;
@@ -78,7 +77,7 @@ public class SelectGenesAlgorithm extends AbstractAlgorithm {
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 		MainFrame.showMessage(geneNodes.size() + " gene-nodes added to selection", MessageType.INFO);
 	}
-	
+
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

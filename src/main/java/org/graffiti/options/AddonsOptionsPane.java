@@ -23,10 +23,10 @@ import org.graffiti.plugin.GenericPluginAdapter;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.addons.AddonManagerPlugin;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
-public class AddonsOptionsPane extends AbstractOptionPane{
+public class AddonsOptionsPane extends AbstractOptionPane {
 
 	private static double border = 5;
-	
+
 	protected AddonsOptionsPane() {
 		super("Addon Manager");
 		// TODO Auto-generated constructor stub
@@ -64,35 +64,35 @@ public class AddonsOptionsPane extends AbstractOptionPane{
 	@Override
 	protected void saveDefault() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	private void createUI() {
-		double[][] size = {
-				{ border, TableLayoutConstants.FILL, border }, // Columns
+		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.PREFERRED, 2 * border, TableLayoutConstants.PREFERRED, 2 * border,
-					TableLayoutConstants.PREFERRED, 2 * border, TableLayoutConstants.PREFERRED, 2 * border,
-				} }; // Rows
+						TableLayoutConstants.PREFERRED, 2 * border, TableLayoutConstants.PREFERRED, 2 * border, } }; // Rows
 		setLayout(new TableLayout(size));
 
-		
 		add(TableLayout.get3Split(getAddOnManagerButton(), null, getPreferencesFolderButton(), TableLayout.FILL, 4,
 				TableLayout.FILL, 0, 0), "1,1");
 	}
+
 	private JButton getAddOnManagerButton() {
 		final JButton result = new JMButton("<html>Install / Configure Add-ons");
 		result.setIcon(GenericPluginAdapter.getAddonIcon());
 		// makes no sense, will be chacked when clicking on button
 		// if (AddonManagerPlugin.getInstance() == null) {
 		// result.setEnabled(false);
-		// result.setText("<html>" + result.getText() + "<br>(Add-on manager plugin not available)");
+		// result.setText("<html>" + result.getText() + "<br>(Add-on manager plugin not
+		// available)");
 		// }
 		result.setOpaque(false);
 		result.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				AddonManagerPlugin p = AddonManagerPlugin.getInstance();
 				if (p == null)
-					MainFrame.showMessageDialog("Addon-Manager Plugin not loaded on startup. Please restart application.",
+					MainFrame.showMessageDialog(
+							"Addon-Manager Plugin not loaded on startup. Please restart application.",
 							"Internal Error");
 				else
 					p.showManageAddonDialog();
@@ -151,6 +151,7 @@ public class AddonsOptionsPane extends AbstractOptionPane{
 		});
 		return result;
 	}
+
 	public static void showPreferencesFolder() {
 		MainFrame.showMessageDialog("<html>" + "The application preferences folder will be opened in a moment.<br>"
 				+ "This folder contains downloaded database files, stored quick-searches,<br>"

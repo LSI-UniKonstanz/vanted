@@ -54,9 +54,9 @@ public class KeyHandler extends DefaultHandler implements DatasetTags {
 	 * Creates a new handler.
 	 * 
 	 * @param rootHandler
-	 *           the root handler.
+	 *            the root handler.
 	 * @param itemHandler
-	 *           the item handler.
+	 *            the item handler.
 	 */
 	public KeyHandler(final RootHandler rootHandler, final ItemHandler itemHandler) {
 		this.rootHandler = rootHandler;
@@ -69,20 +69,18 @@ public class KeyHandler extends DefaultHandler implements DatasetTags {
 	 * The start of an element.
 	 * 
 	 * @param namespaceURI
-	 *           the namespace.
+	 *            the namespace.
 	 * @param localName
-	 *           the element name.
+	 *            the element name.
 	 * @param qName
-	 *           the element name.
+	 *            the element name.
 	 * @param atts
-	 *           the attributes.
+	 *            the attributes.
 	 * @throws SAXException
-	 *            for errors.
+	 *             for errors.
 	 */
-	public void startElement(final String namespaceURI,
-										final String localName,
-										final String qName,
-										final Attributes atts) throws SAXException {
+	public void startElement(final String namespaceURI, final String localName, final String qName,
+			final Attributes atts) throws SAXException {
 
 		if (qName.equals(KEY_TAG)) {
 			clearCurrentText();
@@ -96,17 +94,15 @@ public class KeyHandler extends DefaultHandler implements DatasetTags {
 	 * The end of an element.
 	 * 
 	 * @param namespaceURI
-	 *           the namespace.
+	 *            the namespace.
 	 * @param localName
-	 *           the element name.
+	 *            the element name.
 	 * @param qName
-	 *           the element name.
+	 *            the element name.
 	 * @throws SAXException
-	 *            for errors.
+	 *             for errors.
 	 */
-	public void endElement(final String namespaceURI,
-									final String localName,
-									final String qName) throws SAXException {
+	public void endElement(final String namespaceURI, final String localName, final String qName) throws SAXException {
 
 		if (qName.equals(KEY_TAG)) {
 			this.itemHandler.setKey(getCurrentText());
@@ -122,11 +118,11 @@ public class KeyHandler extends DefaultHandler implements DatasetTags {
 	 * Receives some (or all) of the text in the current element.
 	 * 
 	 * @param ch
-	 *           character buffer.
+	 *            character buffer.
 	 * @param start
-	 *           the start index.
+	 *            the start index.
 	 * @param length
-	 *           the length of the valid character data.
+	 *            the length of the valid character data.
 	 */
 	public void characters(final char[] ch, final int start, final int length) {
 		if (this.currentText != null) {

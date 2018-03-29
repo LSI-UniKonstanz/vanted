@@ -12,20 +12,25 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLCompartment;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBMLCompartmentHelper;
 
 public class SBML_Compartment_Writer extends SBML_SBase_Writer {
-	
+
 	/**
 	 * Adds a compartment and its attributes to the model.
 	 * 
-	 * @param model the compartments will be added to this model
-	 * @param g contains the values for the export
-	 * @param headline indicates where the information should be read from
-	 * @param internHeadline the intern representation of headline
+	 * @param model
+	 *            the compartments will be added to this model
+	 * @param g
+	 *            contains the values for the export
+	 * @param headline
+	 *            indicates where the information should be read from
+	 * @param internHeadline
+	 *            the intern representation of headline
 	 */
-	public void addCompartment(Model model, Graph g, String internHeadline, SBMLCompartmentHelper compartmentHelperObject) {
+	public void addCompartment(Model model, Graph g, String internHeadline,
+			SBMLCompartmentHelper compartmentHelperObject) {
 		SBMLCompartment compartmentHelper = compartmentHelperObject.addCompartment(g, internHeadline);
 		Compartment compartment = model.createCompartment();
 		addSBaseAttributes(compartment, g, internHeadline);
-		
+
 		if (compartmentHelper.isSetID()) {
 			String id = compartmentHelper.getID();
 			if (Compartment.isValidId(id, compartment.getLevel(), compartment.getVersion())) {

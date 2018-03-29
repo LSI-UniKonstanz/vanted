@@ -55,9 +55,9 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * Based on the DynamicDataDemo class, this demo serializes and deserializes the chart
- * before displaying it - the idea is that this confirms that the serialization process
- * returns a working chart.
+ * Based on the DynamicDataDemo class, this demo serializes and deserializes the
+ * chart before displaying it - the idea is that this confirms that the
+ * serialization process returns a working chart.
  */
 public class SerializationTest1 extends ApplicationFrame implements ActionListener {
 
@@ -71,7 +71,7 @@ public class SerializationTest1 extends ApplicationFrame implements ActionListen
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public SerializationTest1(final String title) {
 
@@ -93,20 +93,18 @@ public class SerializationTest1 extends ApplicationFrame implements ActionListen
 			this.series = null;
 			System.gc();
 
-			final ObjectInput in = new ObjectInputStream(
-								new ByteArrayInputStream(buffer.toByteArray())
-								);
+			final ObjectInput in = new ObjectInputStream(new ByteArrayInputStream(buffer.toByteArray()));
 			deserializedChart = (JFreeChart) in.readObject();
 			in.close();
 			final TimeSeriesCollection c = (TimeSeriesCollection) deserializedChart.getXYPlot().getDataset();
 			this.series = c.getSeries(0);
 			// FINISHED TEST
-			
+
 			final ChartPanel chartPanel = new ChartPanel(deserializedChart);
 			final JButton button = new JButton("Add New Data Item");
 			button.setActionCommand("ADD_DATA");
 			button.addActionListener(this);
-			
+
 			final JPanel content = new JPanel(new BorderLayout());
 			content.add(chartPanel);
 			content.add(button, BorderLayout.SOUTH);
@@ -122,19 +120,12 @@ public class SerializationTest1 extends ApplicationFrame implements ActionListen
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-		final JFreeChart result = ChartFactory.createTimeSeriesChart(
-							"Serialization Test 1",
-							"Time",
-							"Value",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart result = ChartFactory.createTimeSeriesChart("Serialization Test 1", "Time", "Value", dataset,
+				true, true, false);
 		final XYPlot plot = result.getXYPlot();
 		final ValueAxis axis = plot.getDomainAxis();
 		axis.setAutoRange(true);
@@ -146,7 +137,7 @@ public class SerializationTest1 extends ApplicationFrame implements ActionListen
 	 * Handles a click on the button by adding new (random) data.
 	 * 
 	 * @param e
-	 *           the action event.
+	 *            the action event.
 	 */
 	public void actionPerformed(final ActionEvent e) {
 		if (e.getActionCommand().equals("ADD_DATA")) {
@@ -162,7 +153,7 @@ public class SerializationTest1 extends ApplicationFrame implements ActionListen
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

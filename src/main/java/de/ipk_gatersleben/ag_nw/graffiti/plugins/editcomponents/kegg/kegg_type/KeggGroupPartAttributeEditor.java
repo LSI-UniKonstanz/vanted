@@ -33,19 +33,16 @@ import org.graffiti.session.EditorSession;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.KeggGmlHelper;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class KeggGroupPartAttributeEditor
-					extends AbstractValueEditComponent
-					implements ActionListener {
-	protected JComboBox keggIsPartSelection = new JComboBox();
+public class KeggGroupPartAttributeEditor extends AbstractValueEditComponent implements ActionListener {
+	protected JComboBox<String> keggIsPartSelection = new JComboBox<>();
 	protected JButton selectOfThisType = new JButton("Select");
-	
-	protected final String isPartOfGroup = "<html>is part of a group<br>" +
-						"<small><font color='gray'>(move element inside corresponding group element)";
+
+	protected final String isPartOfGroup = "<html>is part of a group<br>"
+			+ "<small><font color='gray'>(move element inside corresponding group element)";
 	protected final String isNotPartOfGroup = "<html>is not part of a group";
-	
+
 	public KeggGroupPartAttributeEditor(final Displayable disp) {
 		super(disp);
 		String curVal = ((KeggGroupPartAttribute) getDisplayable()).getString();
@@ -62,14 +59,12 @@ public class KeggGroupPartAttributeEditor
 		keggIsPartSelection.setPreferredSize(new Dimension(40, defHeight));
 		keggIsPartSelection.setMinimumSize(new Dimension(40, defHeight));
 	}
-	
+
 	public JComponent getComponent() {
-		return TableLayout.getSplit(
-							keggIsPartSelection,
-							selectOfThisType,
-							TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
+		return TableLayout.getSplit(keggIsPartSelection, selectOfThisType, TableLayoutConstants.FILL,
+				TableLayoutConstants.PREFERRED);
 	}
-	
+
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			selectOfThisType.setEnabled(false);
@@ -85,7 +80,7 @@ public class KeggGroupPartAttributeEditor
 				keggIsPartSelection.setSelectedItem(isNotPartOfGroup);
 		}
 	}
-	
+
 	public void setValue() {
 		if (!keggIsPartSelection.getSelectedItem().equals(EMPTY_STRING)) {
 			Object o = keggIsPartSelection.getSelectedItem();
@@ -95,7 +90,7 @@ public class KeggGroupPartAttributeEditor
 				((KeggGroupPartAttribute) displayable).setString("no");
 		}
 	}
-	
+
 	public void actionPerformed(ActionEvent arg0) {
 		String currentSel = (String) keggIsPartSelection.getSelectedItem();
 		boolean searchGroupParts = false;
@@ -125,12 +120,11 @@ public class KeggGroupPartAttributeEditor
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		for (Node n : graph.getNodes()) {
 			boolean partOfGroup = KeggGmlHelper.getIsPartOfGroup(n);
-			if ((partOfGroup && searchGroupParts) ||
-								(!partOfGroup && !searchGroupParts))
+			if ((partOfGroup && searchGroupParts) || (!partOfGroup && !searchGroupParts))
 				nodes.add(n);
 		}
 		selection.addAll(nodes);
-		
+
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 		MainFrame.showMessage(nodes.size() + " nodes match criteria", MessageType.INFO);
 	}

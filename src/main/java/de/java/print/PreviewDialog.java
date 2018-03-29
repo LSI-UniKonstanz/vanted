@@ -40,7 +40,7 @@ public class PreviewDialog extends JDialog implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final static double DEFAULT_ZOOM_FACTOR_STEP = 0.1;
-	
+
 	public PreviewDialog(String title, JFrame owner, Pageable pageable, double zoom) {
 		super(owner, title, true);
 		this.pageable = pageable;
@@ -63,59 +63,59 @@ public class PreviewDialog extends JDialog implements ActionListener {
 		dialog.add(ok);
 		getContentPane().add(dialog, "South");
 	}
-	
+
 	public PreviewDialog(String title, JFrame owner, Pageable pageable) {
 		this(title, owner, pageable, 0.0);
 	}
-	
+
 	public PreviewDialog(String title, JFrame owner, Printable printable, PageFormat format, int pages, double zoom) {
 		this(title, owner, new MyPageable(printable, format, pages), zoom);
 	}
-	
+
 	public PreviewDialog(String title, JFrame owner, Printable printable, PageFormat format, int pages) {
 		this(title, owner, printable, format, pages, 0.0);
 	}
-	
+
 	private static class MyPageable implements Pageable {
 		public MyPageable(Printable printable, PageFormat format, int pages) {
 			this.printable = printable;
 			this.format = format;
 			this.pages = pages;
 		}
-		
+
 		public int getNumberOfPages() {
 			return pages;
 		}
-		
+
 		public Printable getPrintable(int index) {
 			if (index >= pages)
 				throw new IndexOutOfBoundsException();
 			return printable;
 		}
-		
+
 		public PageFormat getPageFormat(int index) {
 			if (index >= pages)
 				throw new IndexOutOfBoundsException();
 			return format;
 		}
-		
+
 		private Printable printable;
 		private PageFormat format;
 		private int pages;
 	}
-	
+
 	private JButton getButton(String iconName, AbstractAction action) {
 		return getButton(null, iconName, action);
 	}
-	
+
 	private JButton getButton(String name, String iconName, AbstractAction action) {
 		JButton result = null;
-		
+
 		ImageIcon icon = null;
 		URL imageURL = getClass().getClassLoader().getResource("images/" + iconName);
 		if (imageURL != null)
 			icon = new ImageIcon(imageURL);
-		
+
 		if (action != null) {
 			if (icon != null)
 				action.putValue(Action.SMALL_ICON, new ImageIcon(imageURL));
@@ -124,13 +124,13 @@ public class PreviewDialog extends JDialog implements ActionListener {
 			result = new JButton(action);
 		} else
 			result = new JButton(name, icon);
-		
+
 		return result;
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 		dispose();
 	}
-	
+
 	protected Pageable pageable;
 }

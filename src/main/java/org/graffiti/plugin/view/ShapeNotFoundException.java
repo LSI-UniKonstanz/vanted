@@ -17,20 +17,19 @@ package org.graffiti.plugin.view;
  *         disable the creation of type comments go to
  *         Window>Preferences>Java>Code Generation.
  */
-public class ShapeNotFoundException
-					extends Exception {
+public class ShapeNotFoundException extends Exception {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Constructs a ShapeNotFoundException.
 	 * 
 	 * @param msg
-	 *           the message to set.
+	 *            the message to set.
 	 */
 	public ShapeNotFoundException(String msg) {
 		super(msg);

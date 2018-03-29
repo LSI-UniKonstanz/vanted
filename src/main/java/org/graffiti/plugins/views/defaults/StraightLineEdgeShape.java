@@ -24,10 +24,9 @@ import org.graffiti.plugin.view.ShapeNotFoundException;
  * 
  * @version $Revision: 1.15 $
  */
-public class StraightLineEdgeShape
-					extends LineEdgeShape {
+public class StraightLineEdgeShape extends LineEdgeShape {
 	// ~ Methods ================================================================
-	
+
 	// /**
 	// * Returns the coordinates of the default port of a node.
 	// * (standard implementation is the center of the node).
@@ -93,100 +92,97 @@ public class StraightLineEdgeShape
 	// }
 	// return point;
 	// }
-	
+
 	public PathIterator getPathIterator(AffineTransform t, double d) {
 		return line2D.getPathIterator(t, d);
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param t
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public PathIterator getPathIterator(AffineTransform t) {
 		return line2D.getPathIterator(t);
 	}
-	
+
 	/**
 	 * This method sets all necessary properties of an edge using the values
-	 * contained within the <code>CollectionAttribute</code> (like
-	 * coordinates etc.). It also uses information about ports. It attaches
-	 * arrows if there are any.
+	 * contained within the <code>CollectionAttribute</code> (like coordinates
+	 * etc.). It also uses information about ports. It attaches arrows if there are
+	 * any.
 	 * 
 	 * @param edgeAttr
-	 *           the attribute that contains all necessary information to
-	 *           construct a line.
+	 *            the attribute that contains all necessary information to construct
+	 *            a line.
 	 * @param sourceShape
-	 *           DOCUMENT ME!
-	 * @param targetShape
-	 *           DOCUMENT ME!
-	 * @throws ShapeNotFoundException
 	 *            DOCUMENT ME!
+	 * @param targetShape
+	 *            DOCUMENT ME!
+	 * @throws ShapeNotFoundException
+	 *             DOCUMENT ME!
 	 */
 	@Override
-	public void buildShape(EdgeGraphicAttribute edgeAttr,
-						NodeShape sourceShape, NodeShape targetShape)
-						throws ShapeNotFoundException {
+	public void buildShape(EdgeGraphicAttribute edgeAttr, NodeShape sourceShape, NodeShape targetShape)
+			throws ShapeNotFoundException {
 		this.graphicsAttr = edgeAttr;
-		
+
 		// docking
 		Point2D start = getSourceDockingCoords(edgeAttr, sourceShape);
 		Point2D end = getTargetDockingCoords(edgeAttr, targetShape);
-		
+
 		line2D.setLine(start, end);
-		
+
 		// clipping
 		// if no intersection was found, just draw from / to docking
-		
+
 		Point2D nStart = null;
 		if (!(start instanceof Point2Dfix))
 			nStart = (sourceShape != null ? sourceShape.getIntersection(this.line2D) : null);
 		Point2D nEnd = null;
 		if (!(end instanceof Point2Dfix))
 			nEnd = (targetShape != null ? targetShape.getIntersection(this.line2D) : null);
-		
+
 		if (nStart != null)
 			start = nStart;
 		if (nEnd != null)
 			end = nEnd;
-		
+
 		start = attachSourceArrow(edgeAttr, start, end);
 		end = attachTargetArrow(edgeAttr, end, start);
-		
+
 		line2D.setLine(start, end);
-		
+
 		realBounds = getThickBounds(this.line2D, edgeAttr);
-		
+
 		if (getHeadArrow() != null) {
-			this.realBounds.add(
-								StandardArrowShape.addThickness(getHeadArrow().getBounds2D(), getFrameThickness()));
+			this.realBounds.add(StandardArrowShape.addThickness(getHeadArrow().getBounds2D(), getFrameThickness()));
 		}
-		
+
 		if (tailArrow != null) {
-			this.realBounds.add(
-								StandardArrowShape.addThickness(tailArrow.getBounds2D(), getFrameThickness()));
+			this.realBounds.add(StandardArrowShape.addThickness(tailArrow.getBounds2D(), getFrameThickness()));
 		}
-		
+
 		AffineTransform at = new AffineTransform();
 		at.setToTranslation(-realBounds.getX(), -realBounds.getY());
 		if (headArrow != null)
 			headArrow = at.createTransformedShape(headArrow);
 		if (tailArrow != null)
 			tailArrow = at.createTransformedShape(tailArrow);
-		
+
 		this.line2D.setLine(at.transform(start, null), at.transform(end, null));
 		this.linePath = new GeneralPath(this.line2D);
 	}
-	
+
 	/**
 	 * Decides whether or not a point lies within this shape.
 	 * 
 	 * @param x
-	 *           the x-coordinate of the point to check.
+	 *            the x-coordinate of the point to check.
 	 * @param y
-	 *           the y-coordinate of the point to check.
+	 *            the y-coordinate of the point to check.
 	 * @return true if the point lies within this shape.
 	 */
 	@Override
@@ -194,16 +190,16 @@ public class StraightLineEdgeShape
 		// TODO: check why this method is called to often
 		return lineContains(this.line2D, x, y);
 	}
-	
+
 	public void setCoordinateSystem(CoordinateSystem coordinates) {
 		//
-		
+
 	}
-	
+
 	public double getXexcess() {
 		return 0;
 	}
-	
+
 	public double getYexcess() {
 		return 0;
 	}

@@ -51,10 +51,8 @@ public class CompassFormat extends NumberFormat {
 	private static final String W = "W";
 
 	/** The directions. */
-	public static final String[] DIRECTIONS = {
-						N, N + N + E, N + E, E + N + E, E, E + S + E, S + E, S + S + E, S,
-						S + S + W, S + W, W + S + W, W, W + N + W, N + W, N + N + W, N
-		};
+	public static final String[] DIRECTIONS = { N, N + N + E, N + E, E + N + E, E, E + S + E, S + E, S + S + E, S,
+			S + S + W, S + W, W + S + W, W, W + N + W, N + W, N + N + W, N };
 
 	/**
 	 * Creates a new formatter.
@@ -67,7 +65,7 @@ public class CompassFormat extends NumberFormat {
 	 * Returns a string representing the direction.
 	 * 
 	 * @param direction
-	 *           the direction.
+	 *            the direction.
 	 * @return a string.
 	 */
 	public String getDirectionCode(double direction) {
@@ -83,7 +81,9 @@ public class CompassFormat extends NumberFormat {
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.text.NumberFormat#format(double, java.lang.StringBuffer, java.text.FieldPosition)
+	 * 
+	 * @see java.text.NumberFormat#format(double, java.lang.StringBuffer,
+	 * java.text.FieldPosition)
 	 */
 	public StringBuffer format(double number, StringBuffer toAppendTo, FieldPosition pos) {
 		return toAppendTo.append(getDirectionCode(number));
@@ -91,7 +91,9 @@ public class CompassFormat extends NumberFormat {
 
 	/*
 	 * (non-Javadoc)
-	 * @see java.text.NumberFormat#format(long, java.lang.StringBuffer, java.text.FieldPosition)
+	 * 
+	 * @see java.text.NumberFormat#format(long, java.lang.StringBuffer,
+	 * java.text.FieldPosition)
 	 */
 	public StringBuffer format(long number, StringBuffer toAppendTo, FieldPosition pos) {
 		return toAppendTo.append(getDirectionCode(number));

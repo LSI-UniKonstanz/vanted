@@ -38,7 +38,8 @@ import org.jfree.data.time.RegularTimePeriod;
 import org.jfree.data.time.TimeSeries;
 
 /**
- * Wrapper around a time series to convert it to a table model for use in a JTable.
+ * Wrapper around a time series to convert it to a table model for use in a
+ * JTable.
  */
 public class TimeSeriesTableModel extends AbstractTableModel implements SeriesChangeListener {
 
@@ -65,7 +66,7 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 	 * Constructs a table model for a time series.
 	 * 
 	 * @param series
-	 *           the time series.
+	 *            the time series.
 	 */
 	public TimeSeriesTableModel(final TimeSeries series) {
 		this(series, false);
@@ -75,9 +76,9 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 	 * Creates a table model based on a time series.
 	 * 
 	 * @param series
-	 *           the time series.
+	 *            the time series.
 	 * @param editable
-	 *           if <ocde>true</code>, the table is editable.
+	 *            if <ocde>true</code>, the table is editable.
 	 */
 	public TimeSeriesTableModel(final TimeSeries series, final boolean editable) {
 
@@ -87,8 +88,8 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 	}
 
 	/**
-	 * Returns the number of columns in the table model. For this particular
-	 * model, the column count is fixed at 2.
+	 * Returns the number of columns in the table model. For this particular model,
+	 * the column count is fixed at 2.
 	 * 
 	 * @return The column count.
 	 */
@@ -100,7 +101,7 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 	 * Returns the column class in the table model.
 	 * 
 	 * @param column
-	 *           The column index.
+	 *            The column index.
 	 * @return the column class in the table model.
 	 */
 	public Class getColumnClass(final int column) {
@@ -121,7 +122,7 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 	 * Returns the name of a column
 	 * 
 	 * @param column
-	 *           the column index.
+	 *            the column index.
 	 * @return the name of a column.
 	 */
 	public String getColumnName(final int column) {
@@ -151,9 +152,9 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 	 * Returns the data value for a cell in the table model.
 	 * 
 	 * @param row
-	 *           The row number.
+	 *            The row number.
 	 * @param column
-	 *           The column number.
+	 *            The column number.
 	 * @return the data value for a cell in the table model.
 	 */
 	public Object getValueAt(final int row, final int column) {
@@ -186,9 +187,9 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 	 * Returns a flag indicating whether or not the specified cell is editable.
 	 * 
 	 * @param row
-	 *           the row number.
+	 *            the row number.
 	 * @param column
-	 *           the column number.
+	 *            the column number.
 	 * @return <code>true</code> if the specified cell is editable.
 	 */
 	public boolean isCellEditable(final int row, final int column) {
@@ -209,11 +210,11 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 	 * Updates the time series.
 	 * 
 	 * @param value
-	 *           the new value.
+	 *            the new value.
 	 * @param row
-	 *           the row.
+	 *            the row.
 	 * @param column
-	 *           the column.
+	 *            the column.
 	 */
 	public void setValueAt(final Object value, final int row, final int column) {
 
@@ -233,19 +234,18 @@ public class TimeSeriesTableModel extends AbstractTableModel implements SeriesCh
 			if (column == 0) {
 				// this.series.getClass().valueOf(value.toString());
 				this.newTimePeriod = null;
-			} else
-				if (column == 1) {
-					this.newValue = Double.valueOf(value.toString());
-				}
+			} else if (column == 1) {
+				this.newValue = Double.valueOf(value.toString());
+			}
 		}
 	}
 
 	/**
-	 * Receives notification that the time series has been changed. Responds
-	 * by firing a table data change event.
+	 * Receives notification that the time series has been changed. Responds by
+	 * firing a table data change event.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void seriesChanged(final SeriesChangeEvent event) {
 		fireTableDataChanged();

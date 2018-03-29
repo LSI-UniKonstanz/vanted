@@ -30,49 +30,48 @@ import org.graffiti.plugin.Displayable;
  * @see EdgeEditComponent
  * @see org.graffiti.graph.GraphElement
  */
-public abstract class SingleGraphElementEditComponent
-		extends GraphComponentEditComponent {
-	
+public abstract class SingleGraphElementEditComponent extends GraphComponentEditComponent {
+
 	class MyGraphElementForComboBox {
 		String title;
 		GraphElement value;
-		
+
 		MyGraphElementForComboBox(String title, GraphElement value) {
 			this.title = title;
 			this.value = value;
 		}
-		
+
 		@Override
 		public String toString() {
 			return title;
 		}
 	}
-	
+
 	// ~ Instance fields ========================================================
-	
+
 	/** The <code>GraphElement</code> to be edited. */
 	protected GraphElement ge;
-	
+
 	/** The <code>CombobBox</code> for selecting a graph element. */
 	protected JComboBox comboBox;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new <code>SingleGraphElementEditComponent</code>.
 	 * 
 	 * @param disp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	protected SingleGraphElementEditComponent(Displayable disp) {
 		super(disp);
-		
+
 		final SingleGraphElementEditComponent thisComp = this;
-		
+
 		comboBox = new JComboBox();
 		comboBox.setOpaque(false);
 		Object[] possibilities = getPossibilities();
-		
+
 		for (int i = 0; i < possibilities.length; i++) {
 			GraphElement gElem = (GraphElement) possibilities[i];
 			String title;
@@ -81,7 +80,7 @@ public abstract class SingleGraphElementEditComponent
 				title = "Node #" + (i + 1) + ": " + lbl;
 			} else
 				title = "Element #" + (i + 1) + ": " + AttributeHelper.getLabel(gElem, "unlabeled");
-			
+
 			MyGraphElementForComboBox comp = new MyGraphElementForComboBox(title, gElem);
 			comboBox.addItem(comp);
 		}
@@ -89,8 +88,8 @@ public abstract class SingleGraphElementEditComponent
 		if (pw > 100)
 			pw = 100;
 		comboBox.setPreferredSize(new Dimension(pw, comboBox.getPreferredSize().height));
-//		comboBox.setSelectedItem(disp.getValue());
-		
+		// comboBox.setSelectedItem(disp.getValue());
+
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent src) {
 				JComboBox jc = (JComboBox) src.getSource();
@@ -104,7 +103,7 @@ public abstract class SingleGraphElementEditComponent
 		ge = (GraphElement) disp.getValue();
 		setEditFieldValue();
 	}
-	
+
 	// ~ Methods ================================================================
 	/**
 	 * Returns a String suitable for the name column in the name value table.
@@ -114,21 +113,21 @@ public abstract class SingleGraphElementEditComponent
 	public String getCaption() {
 		return ge.getAttribute("graphics.label").getId();
 	}
-	
+
 	/**
 	 * Returns the <code>ValueEditComponent</code>'s <code>JComponent</code>.
 	 * 
 	 * @return DOCUMENT ME!
 	 * @throws RuntimeException
-	 *            DOCUMENT ME!
+	 *             DOCUMENT ME!
 	 */
 	public JComponent getComponent() {
 		return comboBox;
 	}
-	
+
 	/**
-	 * Sets the current value of the <code>Attribute</code> in the
-	 * corresponding <code>JComponent</code>.
+	 * Sets the current value of the <code>Attribute</code> in the corresponding
+	 * <code>JComponent</code>.
 	 */
 	public void setEditFieldValue() {
 		for (int i = 0; i < comboBox.getItemCount(); i++) {
@@ -139,7 +138,7 @@ public abstract class SingleGraphElementEditComponent
 			}
 		}
 	}
-	
+
 	/**
 	 * Sets the graph component selectable by this edit component.
 	 */
@@ -148,7 +147,7 @@ public abstract class SingleGraphElementEditComponent
 		this.ge = ge;
 		displayable.setValue(ge);
 	}
-	
+
 	protected Object[] getPossibilities() {
 		throw new RuntimeException("implement me"); // this is overridden by NodeEditComponent
 	}

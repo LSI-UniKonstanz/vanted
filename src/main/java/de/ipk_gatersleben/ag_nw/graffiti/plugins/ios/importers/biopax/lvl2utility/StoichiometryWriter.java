@@ -15,22 +15,20 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
  * @author ricardo
  * 
  */
-public class StoichiometryWriter extends HelperClass
-{
+public class StoichiometryWriter extends HelperClass {
 
-	public void writeParticipantStoichiometry(Node node, Node center, Edge e, Set<physicalEntityParticipant> set)
-	{
+	public void writeParticipantStoichiometry(Node node, Node center, Edge e, Set<physicalEntityParticipant> set) {
 		String nodeRDFId = node.getAttribute(Messages.getString("UtilitySuperClassToGraph.82")).getValue().toString();
-		for (physicalEntityParticipant part : set)
-		{
+		for (physicalEntityParticipant part : set) {
 
 			String physicalEntityRDFId = part.getPHYSICAL_ENTITY().getRDFId();
-			if (physicalEntityRDFId.matches(nodeRDFId))
-			{
+			if (physicalEntityRDFId.matches(nodeRDFId)) {
 				// Stoichiometry found
 				setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.144"), physicalEntityRDFId);
-				setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.145"), String.valueOf(part.getSTOICHIOMETRIC_COEFFICIENT()));
-				setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.146"), physicalEntityRDFId + "_stoich");
+				setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.145"),
+						String.valueOf(part.getSTOICHIOMETRIC_COEFFICIENT()));
+				setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.146"),
+						physicalEntityRDFId + "_stoich");
 				break;
 			}
 		}

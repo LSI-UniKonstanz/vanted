@@ -30,9 +30,10 @@
 package org.jfree.chart.renderer;
 
 /**
- * An enumeration of the 'range types' for a renderer. This is used when calculating the axis
- * range required to display all the data in a dataset...the result will depend on whether the
- * renderer plots the values directly (STANDARD) or stacks them (STACKED).
+ * An enumeration of the 'range types' for a renderer. This is used when
+ * calculating the axis range required to display all the data in a
+ * dataset...the result will depend on whether the renderer plots the values
+ * directly (STANDARD) or stacks them (STACKED).
  */
 public final class RangeType {
 
@@ -42,13 +43,14 @@ public final class RangeType {
 	public static final RangeType STANDARD = new RangeType("RangeType.STANDARD");
 
 	/**
-	 * The overall range is determined by looking at the sums of the values within each
-	 * category.
+	 * The overall range is determined by looking at the sums of the values within
+	 * each category.
 	 */
 	public static final RangeType STACKED = new RangeType("RangeType.STACKED");
 
 	/**
-	 * The overall range is determined by looking at the running total within each series.
+	 * The overall range is determined by looking at the running total within each
+	 * series.
 	 */
 	public static final RangeType SERIES_CUMULATIVE = new RangeType("RangeType.SERIES_CUMULATIVE");
 
@@ -59,7 +61,7 @@ public final class RangeType {
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *           the name.
+	 *            the name.
 	 */
 	private RangeType(String name) {
 		this.name = name;
@@ -75,10 +77,11 @@ public final class RangeType {
 	}
 
 	/**
-	 * Returns <code>true</code> if this object is equal to the specified object, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if this object is equal to the specified object,
+	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {

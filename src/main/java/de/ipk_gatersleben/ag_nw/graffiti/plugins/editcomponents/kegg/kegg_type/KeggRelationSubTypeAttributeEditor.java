@@ -19,14 +19,12 @@ import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class KeggRelationSubTypeAttributeEditor
-					extends AbstractValueEditComponent {
-	
+public class KeggRelationSubTypeAttributeEditor extends AbstractValueEditComponent {
+
 	protected ArrayList<? super JComponent> keggRelationSubTypeSelection = new ArrayList<>();
-	
+
 	public KeggRelationSubTypeAttributeEditor(final Displayable disp) {
 		super(disp);
 		String curValuesString = ((KeggRelationSubTypeAttribute) getDisplayable()).getString();
@@ -40,18 +38,18 @@ public class KeggRelationSubTypeAttributeEditor
 			keggRelationSubTypeSelection.add(rsts);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public JComponent getComponent() {
 		JComponent res = TableLayout.getMultiSplit((ArrayList<JComponent>) keggRelationSubTypeSelection);
 		res.setOpaque(false);
 		return res;
 	}
-	
+
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			for (Object jcb : keggRelationSubTypeSelection) {
-				((JLabel)jcb).setText(EMPTY_STRING);
+				((JLabel) jcb).setText(EMPTY_STRING);
 			}
 		} else {
 			keggRelationSubTypeSelection.clear();
@@ -66,17 +64,17 @@ public class KeggRelationSubTypeAttributeEditor
 			}
 		}
 	}
-	
+
 	public void setValue() {
 		boolean isOneEmpty = false;
 		for (Object jcb : keggRelationSubTypeSelection) {
-			if (((JLabel)jcb).getText().equals(EMPTY_STRING))
+			if (((JLabel) jcb).getText().equals(EMPTY_STRING))
 				isOneEmpty = true;
 		}
 		if (!isOneEmpty) {
 			String rval = "";
 			for (Object jcb : keggRelationSubTypeSelection) {
-				rval = rval + ((JLabel)jcb).getText() + ";";
+				rval = rval + ((JLabel) jcb).getText() + ";";
 			}
 			if (rval.endsWith(";"))
 				rval = rval.substring(0, rval.length() - 1);

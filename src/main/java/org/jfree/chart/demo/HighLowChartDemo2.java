@@ -43,7 +43,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A demo showing a high-low-open-close chart with a moving average overlaid on top.
+ * A demo showing a high-low-open-close chart with a moving average overlaid on
+ * top.
  */
 public class HighLowChartDemo2 extends ApplicationFrame {
 
@@ -51,7 +52,7 @@ public class HighLowChartDemo2 extends ApplicationFrame {
 	 * A demonstration application showing a high-low-open-close chart.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public HighLowChartDemo2(final String title) {
 
@@ -79,25 +80,17 @@ public class HighLowChartDemo2 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           a dataset.
+	 *            a dataset.
 	 * @return a sample chart.
 	 */
 	private JFreeChart createChart(final HighLowDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createHighLowChart(
-							"OHLC Demo 2",
-							"Time",
-							"Value",
-							dataset,
-							true
-							);
+		final JFreeChart chart = ChartFactory.createHighLowChart("OHLC Demo 2", "Time", "Value", dataset, true);
 
 		final DateAxis axis = (DateAxis) chart.getXYPlot().getDomainAxis();
 		axis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);
 
-		final XYDataset dataset2 = MovingAverage.createMovingAverage(
-							dataset, "-MAVG", 3 * 24 * 60 * 60 * 1000L, 0L
-							);
+		final XYDataset dataset2 = MovingAverage.createMovingAverage(dataset, "-MAVG", 3 * 24 * 60 * 60 * 1000L, 0L);
 		final XYPlot plot = (XYPlot) chart.getPlot();
 		plot.setDataset(1, dataset2);
 		plot.setRenderer(1, new StandardXYItemRenderer());
@@ -121,7 +114,7 @@ public class HighLowChartDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

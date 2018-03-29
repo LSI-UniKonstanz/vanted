@@ -10,27 +10,25 @@ import org.graffiti.plugin.view.View;
 import org.graffiti.plugins.views.defaults.GraffitiView;
 
 public class ShowLayoutTab extends AbstractEditorAlgorithm {
-	
+
 	public void execute() {
 		getMainFrame().showAndHighlightSidePanelTab("Layout", false);
 	}
-	
+
 	public String getName() {
 		return "Layout Network";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Network";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.UI
-				));
+		return new HashSet<Category>(Arrays.asList(Category.UI));
 	}
-	
+
 	public boolean activeForView(View v) {
 		return v instanceof GraffitiView;
 	}

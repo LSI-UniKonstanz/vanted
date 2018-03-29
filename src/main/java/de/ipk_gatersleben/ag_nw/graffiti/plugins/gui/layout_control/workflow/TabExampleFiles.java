@@ -7,27 +7,27 @@ import org.graffiti.plugin.view.View;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.metacrop.PathwayWebLinkTab;
 
 public class TabExampleFiles extends PathwayWebLinkTab {
-	
+
 	public TabExampleFiles() {
-		super("Examples", "http://kim25.wwwdns.kim.uni-konstanz.de/vanted/examplefiles/",
-							"example files", "example file", "www.vanted.org", true);
+		super("Examples", "http://kim25.wwwdns.kim.uni-konstanz.de/vanted/examplefiles/", "example files",
+				"example file", "www.vanted.org", true);
 	}
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
 	protected void addAnnotationsToGraphElements(Graph graph) {
 		// empty
 	}
-	
+
 	@Override
 	public boolean visibleForView(View v) {
 		return v == null || v instanceof GraphView;
 	}
-	
+
 	@Override
 	protected String[] getValidExtensions() {
 		return new String[] { ".gml", ".graphml" };
 	}
-	
+
 }

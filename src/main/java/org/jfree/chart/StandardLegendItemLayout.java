@@ -53,9 +53,9 @@ public class StandardLegendItemLayout implements LegendItemLayout {
 	 * Constructs a new layout class for legend items.
 	 * 
 	 * @param orientation
-	 *           the orientation of the layout (HORIZONTAL or VERTICAL).
+	 *            the orientation of the layout (HORIZONTAL or VERTICAL).
 	 * @param dimension
-	 *           the constrained dimension.
+	 *            the constrained dimension.
 	 */
 	public StandardLegendItemLayout(int orientation, double dimension) {
 
@@ -68,16 +68,15 @@ public class StandardLegendItemLayout implements LegendItemLayout {
 	 * Performs a layout on the items in the collection.
 	 * 
 	 * @param collection
-	 *           the collection to be laid out.
+	 *            the collection to be laid out.
 	 */
 	public void layoutLegendItems(LegendItemCollection collection) {
 
 		if (this.orientation == HORIZONTAL) {
 			doHorizontalLayout(collection);
-		} else
-			if (this.orientation == VERTICAL) {
-				doVerticalLayout(collection);
-			}
+		} else if (this.orientation == VERTICAL) {
+			doVerticalLayout(collection);
+		}
 
 	}
 
@@ -85,7 +84,7 @@ public class StandardLegendItemLayout implements LegendItemLayout {
 	 * Lays out the items horizontally, with a constraint on the width.
 	 * 
 	 * @param collection
-	 *           The collection to be laid out.
+	 *            The collection to be laid out.
 	 */
 	private void doHorizontalLayout(LegendItemCollection collection) {
 
@@ -123,7 +122,7 @@ public class StandardLegendItemLayout implements LegendItemLayout {
 	 * Lays out the items vertically, with a constraint on the height.
 	 * 
 	 * @param collection
-	 *           The collection to be laid out.
+	 *            The collection to be laid out.
 	 */
 	private void doVerticalLayout(LegendItemCollection collection) {
 

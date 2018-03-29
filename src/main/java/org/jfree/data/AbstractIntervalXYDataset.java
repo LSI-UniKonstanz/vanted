@@ -30,18 +30,19 @@
 package org.jfree.data;
 
 /**
- * An base class that you can use to create new implementations of the {@link XYDataset} interface.
+ * An base class that you can use to create new implementations of the
+ * {@link XYDataset} interface.
  */
-public abstract class AbstractIntervalXYDataset extends AbstractXYDataset
-																implements IntervalXYDataset {
+public abstract class AbstractIntervalXYDataset extends AbstractXYDataset implements IntervalXYDataset {
 
 	/**
-	 * Returns the start x-value (as a double primitive) for an item within a series.
+	 * Returns the start x-value (as a double primitive) for an item within a
+	 * series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The start x-value.
 	 */
 	public double getStartX(int series, int item) {
@@ -57,9 +58,9 @@ public abstract class AbstractIntervalXYDataset extends AbstractXYDataset
 	 * Returns the end x-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The end x-value.
 	 */
 	public double getEndX(int series, int item) {
@@ -72,12 +73,13 @@ public abstract class AbstractIntervalXYDataset extends AbstractXYDataset
 	}
 
 	/**
-	 * Returns the start y-value (as a double primitive) for an item within a series.
+	 * Returns the start y-value (as a double primitive) for an item within a
+	 * series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The start y-value.
 	 */
 	public double getStartY(int series, int item) {
@@ -93,9 +95,9 @@ public abstract class AbstractIntervalXYDataset extends AbstractXYDataset
 	 * Returns the end y-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The end y-value.
 	 */
 	public double getEndY(int series, int item) {

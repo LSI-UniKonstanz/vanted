@@ -49,7 +49,8 @@ import java.util.TimeZone;
 /**
  * Represents an hour in a specific day.
  * <P>
- * This class is immutable, which is a requirement for all {@link RegularTimePeriod} subclasses.
+ * This class is immutable, which is a requirement for all
+ * {@link RegularTimePeriod} subclasses.
  */
 public class Hour extends RegularTimePeriod implements Serializable {
 
@@ -78,9 +79,9 @@ public class Hour extends RegularTimePeriod implements Serializable {
 	 * Constructs a new Hour.
 	 * 
 	 * @param hour
-	 *           the hour (in the range 0 to 23).
+	 *            the hour (in the range 0 to 23).
 	 * @param day
-	 *           the day.
+	 *            the day.
 	 */
 	public Hour(final int hour, final Day day) {
 
@@ -93,13 +94,13 @@ public class Hour extends RegularTimePeriod implements Serializable {
 	 * Creates a new hour.
 	 * 
 	 * @param hour
-	 *           the hour (0-23).
+	 *            the hour (0-23).
 	 * @param day
-	 *           the day (1-31).
+	 *            the day (1-31).
 	 * @param month
-	 *           the month (1-12).
+	 *            the month (1-12).
 	 * @param year
-	 *           the year (1900-9999).
+	 *            the year (1900-9999).
 	 */
 	public Hour(final int hour, final int day, final int month, final int year) {
 		this(hour, new Day(day, month, year));
@@ -109,7 +110,7 @@ public class Hour extends RegularTimePeriod implements Serializable {
 	 * Constructs a new Hour, based on the supplied date/time.
 	 * 
 	 * @param time
-	 *           the date-time.
+	 *            the date-time.
 	 */
 	public Hour(final Date time) {
 
@@ -122,9 +123,9 @@ public class Hour extends RegularTimePeriod implements Serializable {
 	 * specified time zone.
 	 * 
 	 * @param time
-	 *           the date-time.
+	 *            the date-time.
 	 * @param zone
-	 *           the time zone.
+	 *            the time zone.
 	 */
 	public Hour(final Date time, final TimeZone zone) {
 
@@ -238,7 +239,7 @@ public class Hour extends RegularTimePeriod implements Serializable {
 	 * Returns the first millisecond of the hour.
 	 * 
 	 * @param calendar
-	 *           the calendar/timezone.
+	 *            the calendar/timezone.
 	 * @return the first millisecond.
 	 */
 	public long getFirstMillisecond(final Calendar calendar) {
@@ -258,7 +259,7 @@ public class Hour extends RegularTimePeriod implements Serializable {
 	 * Returns the last millisecond of the hour.
 	 * 
 	 * @param calendar
-	 *           the calendar/timezone.
+	 *            the calendar/timezone.
 	 * @return the last millisecond.
 	 */
 	public long getLastMillisecond(final Calendar calendar) {
@@ -277,12 +278,13 @@ public class Hour extends RegularTimePeriod implements Serializable {
 	/**
 	 * Tests the equality of this object against an arbitrary Object.
 	 * <P>
-	 * This method will return true ONLY if the object is an Hour object representing the same hour as this instance.
+	 * This method will return true ONLY if the object is an Hour object
+	 * representing the same hour as this instance.
 	 * 
 	 * @param object
-	 *           the object to compare.
-	 * @return <code>true</code> if the hour and day value of the object
-	 *         is the same as this.
+	 *            the object to compare.
+	 * @return <code>true</code> if the hour and day value of the object is the same
+	 *         as this.
 	 */
 	public boolean equals(final Object object) {
 		if (object instanceof Hour) {
@@ -296,7 +298,8 @@ public class Hour extends RegularTimePeriod implements Serializable {
 	/**
 	 * Returns a hash code for this object instance.
 	 * <p>
-	 * The approach described by Joshua Bloch in "Effective Java" has been used here:
+	 * The approach described by Joshua Bloch in "Effective Java" has been used
+	 * here:
 	 * <p>
 	 * <code>http://developer.java.sun.com/developer/Books/effectivejava/Chapter3.pdf</code>
 	 * 
@@ -310,12 +313,11 @@ public class Hour extends RegularTimePeriod implements Serializable {
 	}
 
 	/**
-	 * Returns an integer indicating the order of this Hour object relative to
-	 * the specified object:
-	 * negative == before, zero == same, positive == after.
+	 * Returns an integer indicating the order of this Hour object relative to the
+	 * specified object: negative == before, zero == same, positive == after.
 	 * 
 	 * @param o1
-	 *           the object to compare.
+	 *            the object to compare.
 	 * @return negative == before, zero == same, positive == after.
 	 */
 	public int compareTo(final Object o1) {
@@ -334,30 +336,28 @@ public class Hour extends RegularTimePeriod implements Serializable {
 
 		// CASE 2 : Comparing to another TimePeriod object
 		// -----------------------------------------------
-		else
-			if (o1 instanceof RegularTimePeriod) {
-				// more difficult case - evaluate later...
-				result = 0;
-			}
+		else if (o1 instanceof RegularTimePeriod) {
+			// more difficult case - evaluate later...
+			result = 0;
+		}
 
-			// CASE 3 : Comparing to a non-TimePeriod object
-			// ---------------------------------------------
-			else {
-				// consider time periods to be ordered after general objects
-				result = 1;
-			}
+		// CASE 3 : Comparing to a non-TimePeriod object
+		// ---------------------------------------------
+		else {
+			// consider time periods to be ordered after general objects
+			result = 1;
+		}
 
 		return result;
 
 	}
 
 	/**
-	 * Creates an Hour instance by parsing a string. The string is assumed to
-	 * be in the format "YYYY-MM-DD HH", perhaps with leading or trailing
-	 * whitespace.
+	 * Creates an Hour instance by parsing a string. The string is assumed to be in
+	 * the format "YYYY-MM-DD HH", perhaps with leading or trailing whitespace.
 	 * 
 	 * @param s
-	 *           the hour string to parse.
+	 *            the hour string to parse.
 	 * @return <code>null</code> if the string is not parseable, the hour otherwise.
 	 */
 	public static Hour parseHour(String s) {
@@ -368,8 +368,7 @@ public class Hour extends RegularTimePeriod implements Serializable {
 		final String daystr = s.substring(0, Math.min(10, s.length()));
 		final Day day = Day.parseDay(daystr);
 		if (day != null) {
-			String hourstr = s.substring(Math.min(daystr.length() + 1, s.length()),
-														s.length());
+			String hourstr = s.substring(Math.min(daystr.length() + 1, s.length()), s.length());
 			hourstr = hourstr.trim();
 			final int hour = Integer.parseInt(hourstr);
 			// if the hour is 0 - 23 then create an hour

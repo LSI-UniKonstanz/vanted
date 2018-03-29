@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class SubstanceColumnInformation {
 	ArrayList<Integer> columns = new ArrayList<Integer>();
-	
+
 	public String getColumnList() {
 		String res = "";
 		for (Integer col : columns) {
@@ -21,17 +21,17 @@ public class SubstanceColumnInformation {
 		}
 		return res;
 	}
-	
+
 	public Integer[] getColumns() {
 		return columns.toArray(new Integer[] {});
 	}
-	
+
 	public int getFirstColumn() {
 		return columns.get(0);
 	}
-	
+
 	public void addDataColumn(int colSubst) {
 		columns.add(colSubst);
 	}
-	
+
 }

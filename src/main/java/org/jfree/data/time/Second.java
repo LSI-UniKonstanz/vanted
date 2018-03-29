@@ -50,7 +50,8 @@ import java.util.TimeZone;
 /**
  * Represents a second in a particular day.
  * <P>
- * This class is immutable, which is a requirement for all {@link RegularTimePeriod} subclasses.
+ * This class is immutable, which is a requirement for all
+ * {@link RegularTimePeriod} subclasses.
  */
 public class Second extends RegularTimePeriod implements Serializable {
 
@@ -77,9 +78,9 @@ public class Second extends RegularTimePeriod implements Serializable {
 	 * Constructs a new Second.
 	 * 
 	 * @param second
-	 *           the second (0 to 24*60*60-1).
+	 *            the second (0 to 24*60*60-1).
 	 * @param minute
-	 *           the minute (<code>null</code> not permitted).
+	 *            the minute (<code>null</code> not permitted).
 	 */
 	public Second(final int second, final Minute minute) {
 		if (minute == null) {
@@ -93,20 +94,19 @@ public class Second extends RegularTimePeriod implements Serializable {
 	 * Creates a new second.
 	 * 
 	 * @param second
-	 *           the second (0-59).
+	 *            the second (0-59).
 	 * @param minute
-	 *           the minute (0-59).
+	 *            the minute (0-59).
 	 * @param hour
-	 *           the hour (0-23).
+	 *            the hour (0-23).
 	 * @param day
-	 *           the day (1-31).
+	 *            the day (1-31).
 	 * @param month
-	 *           the month (1-12).
+	 *            the month (1-12).
 	 * @param year
-	 *           the year (1900-9999).
+	 *            the year (1900-9999).
 	 */
-	public Second(final int second, final int minute, final int hour,
-						final int day, final int month, final int year) {
+	public Second(final int second, final int minute, final int hour, final int day, final int month, final int year) {
 		this(second, new Minute(minute, hour, day, month, year));
 	}
 
@@ -114,7 +114,7 @@ public class Second extends RegularTimePeriod implements Serializable {
 	 * Constructs a second.
 	 * 
 	 * @param time
-	 *           the time.
+	 *            the time.
 	 */
 	public Second(final Date time) {
 		this(time, RegularTimePeriod.DEFAULT_TIME_ZONE);
@@ -124,9 +124,9 @@ public class Second extends RegularTimePeriod implements Serializable {
 	 * Creates a new second based on the supplied time and time zone.
 	 * 
 	 * @param time
-	 *           the instant in time.
+	 *            the instant in time.
 	 * @param zone
-	 *           the time zone.
+	 *            the time zone.
 	 */
 	public Second(final Date time, final TimeZone zone) {
 
@@ -209,7 +209,7 @@ public class Second extends RegularTimePeriod implements Serializable {
 	 * Returns the first millisecond of the minute.
 	 * 
 	 * @param calendar
-	 *           the calendar/timezone.
+	 *            the calendar/timezone.
 	 * @return The first millisecond.
 	 */
 	public long getFirstMillisecond(final Calendar calendar) {
@@ -220,7 +220,7 @@ public class Second extends RegularTimePeriod implements Serializable {
 	 * Returns the last millisecond of the second.
 	 * 
 	 * @param calendar
-	 *           the calendar/timezone.
+	 *            the calendar/timezone.
 	 * @return The last millisecond.
 	 */
 	public long getLastMillisecond(final Calendar calendar) {
@@ -230,11 +230,13 @@ public class Second extends RegularTimePeriod implements Serializable {
 	/**
 	 * Tests the equality of this object against an arbitrary Object.
 	 * <P>
-	 * This method will return true ONLY if the object is a Second object representing the same second as this instance.
+	 * This method will return true ONLY if the object is a Second object
+	 * representing the same second as this instance.
 	 * 
 	 * @param object
-	 *           the object to compare.
-	 * @return <code>true</code> if second and minute of this and the object are the same.
+	 *            the object to compare.
+	 * @return <code>true</code> if second and minute of this and the object are the
+	 *         same.
 	 */
 	public boolean equals(final Object object) {
 		if (object instanceof Second) {
@@ -248,7 +250,8 @@ public class Second extends RegularTimePeriod implements Serializable {
 	/**
 	 * Returns a hash code for this object instance.
 	 * <p>
-	 * The approach described by Joshua Bloch in "Effective Java" has been used here:
+	 * The approach described by Joshua Bloch in "Effective Java" has been used
+	 * here:
 	 * <p>
 	 * <code>http://developer.java.sun.com/developer/Books/effectivejava/Chapter3.pdf</code>
 	 * 
@@ -262,12 +265,11 @@ public class Second extends RegularTimePeriod implements Serializable {
 	}
 
 	/**
-	 * Returns an integer indicating the order of this Second object relative
-	 * to the specified
-	 * object: negative == before, zero == same, positive == after.
+	 * Returns an integer indicating the order of this Second object relative to the
+	 * specified object: negative == before, zero == same, positive == after.
 	 * 
 	 * @param o1
-	 *           the object to compare.
+	 *            the object to compare.
 	 * @return negative == before, zero == same, positive == after.
 	 */
 	public int compareTo(final Object o1) {
@@ -286,30 +288,29 @@ public class Second extends RegularTimePeriod implements Serializable {
 
 		// CASE 2 : Comparing to another TimePeriod object
 		// -----------------------------------------------
-		else
-			if (o1 instanceof RegularTimePeriod) {
-				// more difficult case - evaluate later...
-				result = 0;
-			}
+		else if (o1 instanceof RegularTimePeriod) {
+			// more difficult case - evaluate later...
+			result = 0;
+		}
 
-			// CASE 3 : Comparing to a non-TimePeriod object
-			// ---------------------------------------------
-			else {
-				// consider time periods to be ordered after general objects
-				result = 1;
-			}
+		// CASE 3 : Comparing to a non-TimePeriod object
+		// ---------------------------------------------
+		else {
+			// consider time periods to be ordered after general objects
+			result = 1;
+		}
 
 		return result;
 
 	}
 
 	/**
-	 * Creates a new instance by parsing a string. The string is assumed to
-	 * be in the format "YYYY-MM-DD HH:MM:SS", perhaps with leading or trailing
+	 * Creates a new instance by parsing a string. The string is assumed to be in
+	 * the format "YYYY-MM-DD HH:MM:SS", perhaps with leading or trailing
 	 * whitespace.
 	 * 
 	 * @param s
-	 *           the string to parse.
+	 *            the string to parse.
 	 * @return The second, or <code>null</code> if the string is not parseable.
 	 */
 	public static Second parseSecond(String s) {
@@ -320,8 +321,7 @@ public class Second extends RegularTimePeriod implements Serializable {
 		final String daystr = s.substring(0, Math.min(10, s.length()));
 		final Day day = Day.parseDay(daystr);
 		if (day != null) {
-			String hmsstr = s.substring(Math.min(daystr.length() + 1, s.length()),
-														s.length());
+			String hmsstr = s.substring(Math.min(daystr.length() + 1, s.length()), s.length());
 			hmsstr = hmsstr.trim();
 
 			final int l = hmsstr.length();

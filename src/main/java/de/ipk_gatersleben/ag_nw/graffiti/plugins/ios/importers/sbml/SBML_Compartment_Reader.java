@@ -19,15 +19,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
 public class SBML_Compartment_Reader {
-	
+
 	/**
-	 * Method reads in compartments and is called from class
-	 * SBML_XML_Reader.java
+	 * Method reads in compartments and is called from class SBML_XML_Reader.java
 	 * 
 	 * @param compartmentList
-	 *        contains the compartments for the import
+	 *            contains the compartments for the import
 	 * @param g
-	 *        the data structure for reading in the information
+	 *            the data structure for reading in the information
 	 */
 	public void addCompartment(ListOf<Compartment> compartmentList, Graph g) {
 		Iterator<Compartment> itComp = compartmentList.iterator();
@@ -62,36 +61,27 @@ public class SBML_Compartment_Reader {
 			try {
 				notes = compartment.getNotesString();
 			} catch (XMLStreamException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 				notes = "";
 			}
-			internHeadline = new StringBuffer(SBML_Constants.SBML_COMPARTMENT)
-					.append(id).toString();
+			internHeadline = new StringBuffer(SBML_Constants.SBML_COMPARTMENT).append(id).toString();
 			presentedHeadline = SBML_Constants.EMPTY;
 			if (compartment.isSetName()) {
-				presentedHeadline = new StringBuffer(
-						SBML_Constants.COMARTMENT_HEADLINE).append(name)
-						.toString();
+				presentedHeadline = new StringBuffer(SBML_Constants.COMARTMENT_HEADLINE).append(name).toString();
 			} else if (compartment.isSetId()) {
-				presentedHeadline = new StringBuffer(
-						SBML_Constants.COMARTMENT_HEADLINE).append(id)
-						.toString();
+				presentedHeadline = new StringBuffer(SBML_Constants.COMARTMENT_HEADLINE).append(id).toString();
 			} else {
-				presentedHeadline = new StringBuffer(
-						SBML_Constants.COMARTMENT_HEADLINE).append(
-						compartmentCount).toString();
+				presentedHeadline = new StringBuffer(SBML_Constants.COMARTMENT_HEADLINE).append(compartmentCount)
+						.toString();
 			}
 			if (Double.isNaN(size) && compartment.isSetSize()) {
-				SBML_Logger.addErrorMessage("Attribute size of "
-						+ presentedHeadline + " is not a valid double value.");
+				SBML_Logger.addErrorMessage("Attribute size of " + presentedHeadline + " is not a valid double value.");
 			}
-			SBMLCompartment compartmentHelper = compartmentHelperObject
-					.addCompartment(g, internHeadline, presentedHeadline);
-			
-			if (compartment.isSetId()
-					&& Compartment.isValidId(id, compartment.getLevel(),
-							compartment.getVersion())) {
+			SBMLCompartment compartmentHelper = compartmentHelperObject.addCompartment(g, internHeadline,
+					presentedHeadline);
+
+			if (compartment.isSetId() && Compartment.isValidId(id, compartment.getLevel(), compartment.getVersion())) {
 				compartmentHelper.setID(id);
 			}
 			if (compartment.isSetName() && (!name.isEmpty())) {
@@ -123,15 +113,13 @@ public class SBML_Compartment_Reader {
 			}
 			if (compartment.isSetAnnotation()) {
 				if (compartment.getAnnotation().isSetRDFannotation()) {
-					compartmentHelper
-							.setAnnotation(compartment.getAnnotation());
+					compartmentHelper.setAnnotation(compartment.getAnnotation());
 				}
 				if (compartment.getAnnotation().isSetNonRDFannotation()) {
-					compartmentHelper.setNonRDFAnnotation(compartment
-							.getAnnotation().getNonRDFannotation());
+					compartmentHelper.setNonRDFAnnotation(compartment.getAnnotation().getNonRDFannotation());
 				}
 			}
-			
+
 			compartmentCount++;
 		}
 	}

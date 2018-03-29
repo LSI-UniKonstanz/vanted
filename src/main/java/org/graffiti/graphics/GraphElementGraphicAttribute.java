@@ -19,19 +19,16 @@ import org.graffiti.attributes.StringAttribute;
  * 
  * @version $Revision: 1.5 $
  */
-public abstract class GraphElementGraphicAttribute
-		extends HashMapAttribute
-		implements GraphicAttributeConstants {
+public abstract class GraphElementGraphicAttribute extends HashMapAttribute implements GraphicAttributeConstants {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor for GraphElementGraphicAttribute.
 	 * 
 	 * @param id
 	 * @throws IllegalIdException
 	 */
-	public GraphElementGraphicAttribute(String id)
-			throws IllegalIdException {
+	public GraphElementGraphicAttribute(String id) throws IllegalIdException {
 		super(id);
 		// add(new ImageAttribute(BGIMAGE), false);
 		add(new ColorAttribute(FRAMECOLOR, java.awt.Color.BLACK), false);
@@ -42,34 +39,33 @@ public abstract class GraphElementGraphicAttribute
 		add(new LineModeAttribute(LINEMODE), false);
 		add(new DoubleAttribute(OPAC, 1.0), false);
 	}
-	
+
 	/**
 	 * Constructor for GraphElementGraphicAttribute.
 	 * 
 	 * @param id
-	 *           the id of the attribute.
+	 *            the id of the attribute.
 	 * @param i
-	 *           the backgroundimage-value of the attriubte
+	 *            the backgroundimage-value of the attriubte
 	 * @param frc
-	 *           the framecolor-value of the attribute.
+	 *            the framecolor-value of the attribute.
 	 * @param fic
-	 *           the fillcolor-value of the attribute.
+	 *            the fillcolor-value of the attribute.
 	 * @param l
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param ft
-	 *           the framethickness-value of the attribute.
+	 *            the framethickness-value of the attribute.
 	 * @param lm
-	 *           the linemode-value of the attribute.
+	 *            the linemode-value of the attribute.
 	 * @param s
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @throws IllegalIdException
 	 */
-	public GraphElementGraphicAttribute(String id, ImageAttribute i,
-			ColorAttribute frc, ColorAttribute fic, LabelAttribute l,
-			DoubleAttribute ft, LineModeAttribute lm, StringAttribute s)
-			throws IllegalIdException {
+	public GraphElementGraphicAttribute(String id, ImageAttribute i, ColorAttribute frc, ColorAttribute fic,
+			LabelAttribute l, DoubleAttribute ft, LineModeAttribute lm, StringAttribute s) throws IllegalIdException {
 		super(id);
-		// add(new ImageAttribute(BGIMAGE, i.getTiled(), i.getMaximize(), i.getImage(), i.getReference()), false);
+		// add(new ImageAttribute(BGIMAGE, i.getTiled(), i.getMaximize(), i.getImage(),
+		// i.getReference()), false);
 		add(new ColorAttribute(FRAMECOLOR, frc), false);
 		add(new ColorAttribute(FILLCOLOR, fic), false);
 		add(new DoubleAttribute(FRAMETHICKNESS, ft.getDouble()), false);
@@ -78,32 +74,30 @@ public abstract class GraphElementGraphicAttribute
 		add(new GradientFillAttribute(GRADIENT, 0), false);
 		add(new DoubleAttribute(OPAC, 1.0), false);
 	}
-	
+
 	/**
 	 * Constructor for GraphElementGraphicAttribute.
 	 * 
 	 * @param id
-	 *           the id of the attribute.
+	 *            the id of the attribute.
 	 * @param i
-	 *           the backgroundimage-value of the attriubte
+	 *            the backgroundimage-value of the attriubte
 	 * @param frc
-	 *           the framecolor-value of the attribute.
+	 *            the framecolor-value of the attribute.
 	 * @param fic
-	 *           the fillcolor-value of the attribute.
+	 *            the fillcolor-value of the attribute.
 	 * @param l
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param ft
-	 *           the framethickness-value of the attribute.
+	 *            the framethickness-value of the attribute.
 	 * @param lm
-	 *           the linemode-value of the attribute.
+	 *            the linemode-value of the attribute.
 	 * @param s
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @throws IllegalIdException
 	 */
-	public GraphElementGraphicAttribute(String id, java.awt.Image i,
-			java.awt.Color frc, java.awt.Color fic, LabelAttribute l, double ft,
-			LineModeAttribute lm, String s)
-			throws IllegalIdException {
+	public GraphElementGraphicAttribute(String id, java.awt.Image i, java.awt.Color frc, java.awt.Color fic,
+			LabelAttribute l, double ft, LineModeAttribute lm, String s) throws IllegalIdException {
 		super(id);
 		// add(new ImageAttribute(BGIMAGE, false, false, i, ""), false);
 		add(new ColorAttribute(FRAMECOLOR, frc), false);
@@ -114,20 +108,20 @@ public abstract class GraphElementGraphicAttribute
 		add(new GradientFillAttribute(GRADIENT, 0), false);
 		add(new DoubleAttribute(OPAC, 1.0), false);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Sets the 'backgroundimage'-value.
 	 * 
 	 * @param bgi
-	 *           the 'backgroundimage'-value to be set.
+	 *            the 'backgroundimage'-value to be set.
 	 */
 	public void setBackgroundImage(ImageAttribute bgi) {
 		remove(IMAGE);
 		add(bgi, false);
 	}
-	
+
 	/**
 	 * Returns the 'backgroundimage'-value of the encapsulated edge.
 	 * 
@@ -136,18 +130,18 @@ public abstract class GraphElementGraphicAttribute
 	public ImageAttribute getBackgroundImage() {
 		return (ImageAttribute) attributes.get(IMAGE);
 	}
-	
+
 	/**
 	 * Sets the 'fillcolor'-value.
 	 * 
 	 * @param fic
-	 *           the 'fillcolor'-value to be set.
+	 *            the 'fillcolor'-value to be set.
 	 */
 	public void setFillcolor(ColorAttribute fic) {
 		remove(FILLCOLOR);
 		add(fic, false);
 	}
-	
+
 	/**
 	 * Returns the 'fillcolor'-value of the encapsulated edge.
 	 * 
@@ -156,25 +150,25 @@ public abstract class GraphElementGraphicAttribute
 	public ColorAttribute getFillcolor() {
 		return (ColorAttribute) attributes.get(FILLCOLOR);
 	}
-	
+
 	/**
 	 * Sets the 'frameThickness'-value.
 	 * 
 	 * @param ft
-	 *           the 'frameThickness'-value to be set.
+	 *            the 'frameThickness'-value to be set.
 	 */
 	public void setFrameThickness(double ft) {
 		((DoubleAttribute) attributes.get(FRAMETHICKNESS)).setDouble(ft);
 	}
-	
+
 	public void setRoundedEdges(double rd) {
 		((DoubleAttribute) attributes.get(ROUNDING)).setDouble(rd);
 	}
-	
+
 	public void setUseGradient(double rd) {
 		((DoubleAttribute) attributes.get(GRADIENT)).setDouble(rd);
 	}
-	
+
 	/**
 	 * Returns the 'frameThickness'-value of the encapsulated edge.
 	 * 
@@ -183,7 +177,7 @@ public abstract class GraphElementGraphicAttribute
 	public double getFrameThickness() {
 		return ((DoubleAttribute) attributes.get(FRAMETHICKNESS)).getDouble();
 	}
-	
+
 	/**
 	 * Returns the rounding of the edges.
 	 * 
@@ -193,22 +187,22 @@ public abstract class GraphElementGraphicAttribute
 	public double getRoundedEdges() {
 		return ((DoubleAttribute) attributes.get(ROUNDING)).getDouble();
 	}
-	
+
 	public double getUseGradient() {
 		return ((GradientFillAttribute) attributes.get(GRADIENT)).getDouble();
 	}
-	
+
 	/**
 	 * Sets the 'framecolor'-value.
 	 * 
 	 * @param frc
-	 *           the 'framecolor'-valueto be set.
+	 *            the 'framecolor'-valueto be set.
 	 */
 	public void setFramecolor(ColorAttribute frc) {
 		remove(FRAMECOLOR);
 		add(frc, false);
 	}
-	
+
 	/**
 	 * Returns the 'framecolor'-value of the encapsulated edge.
 	 * 
@@ -217,12 +211,12 @@ public abstract class GraphElementGraphicAttribute
 	public ColorAttribute getFramecolor() {
 		return (ColorAttribute) attributes.get(FRAMECOLOR);
 	}
-	
+
 	/**
 	 * Sets the 'lineMode'-value.
 	 * 
 	 * @param lma
-	 *           the 'lineMode'-value to be set.
+	 *            the 'lineMode'-value to be set.
 	 */
 	public void setLineMode(LineModeAttribute lma) {
 		if (attributes.containsKey(LINEMODE))
@@ -230,7 +224,7 @@ public abstract class GraphElementGraphicAttribute
 		attributes.put(LINEMODE, lma);
 		lma.setParent(this);
 	}
-	
+
 	/**
 	 * Returns the 'lineMode'-value of the encapsulated edge.
 	 * 
@@ -239,17 +233,17 @@ public abstract class GraphElementGraphicAttribute
 	public LineModeAttribute getLineMode() {
 		return (LineModeAttribute) attributes.get(LINEMODE);
 	}
-	
+
 	/**
 	 * Sets the 'shape'-value.
 	 * 
 	 * @param sn
-	 *           the 'shape'-value to be set.
+	 *            the 'shape'-value to be set.
 	 */
 	public void setShape(String sn) {
 		((StringAttribute) attributes.get(SHAPE)).setString(sn);
 	}
-	
+
 	/**
 	 * Returns the 'shape'-value of the encapsulated edge.
 	 * 
@@ -258,23 +252,21 @@ public abstract class GraphElementGraphicAttribute
 	public String getShape() {
 		return ((StringAttribute) attributes.get(SHAPE)).getString();
 	}
-	
+
 	/**
-	 * Sets the opacity of a graph element (node or edge)
-	 * This value will also influence the opacity of all
-	 * dependent graph attribute components.
-	 * Only values between 0.0 (transparent) and 1.0 (opaque) are
-	 * allowed
-	 * Values outside the allowed range are capped
+	 * Sets the opacity of a graph element (node or edge) This value will also
+	 * influence the opacity of all dependent graph attribute components. Only
+	 * values between 0.0 (transparent) and 1.0 (opaque) are allowed Values outside
+	 * the allowed range are capped
 	 */
 	public void setOpacity(double value) {
 		if (value < 0.0)
 			value = 0.0;
 		if (value > 1.0)
 			value = 1.0;
-		((DoubleAttribute) attributes.get(OPAC)).setValue(new Double(value));
+		((DoubleAttribute) attributes.get(OPAC)).setValue(Double.valueOf(value));
 	}
-	
+
 	/**
 	 * Returns the current opacity of this graph element
 	 * 

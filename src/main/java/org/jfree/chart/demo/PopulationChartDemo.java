@@ -48,7 +48,7 @@ public class PopulationChartDemo extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PopulationChartDemo(final String title) {
 
@@ -56,16 +56,14 @@ public class PopulationChartDemo extends ApplicationFrame {
 		final CategoryDataset dataset = createDataset();
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createStackedBarChart(
-							"Population Chart Demo",
-							"Age Group", // domain axis label
+		final JFreeChart chart = ChartFactory.createStackedBarChart("Population Chart Demo", "Age Group", // domain axis
+																											// label
 				"Population (millions)", // range axis label
 				dataset, // data
-				PlotOrientation.HORIZONTAL,
-							true, // include legend
+				PlotOrientation.HORIZONTAL, true, // include legend
 				true, // tooltips
 				false // urls
-				);
+		);
 
 		// add the chart to a panel...
 		final ChartPanel chartPanel = new ChartPanel(chart);
@@ -117,7 +115,7 @@ public class PopulationChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

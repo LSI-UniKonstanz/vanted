@@ -13,10 +13,11 @@ import javax.swing.JInternalFrame;
 
 /**
  * Internal frame that hides the title bar when maximized. Intented to be used
- * together with {@link org.graffiti.util.MaximizeManager}. This extends {@link javax.swing.JInternalFrame} in a single point: Its layout is wrapped
+ * together with {@link org.graffiti.util.MaximizeManager}. This extends
+ * {@link javax.swing.JInternalFrame} in a single point: Its layout is wrapped
  * with a {@link org.graffiti.util.MaximizeLayout}. Instead of extending this
- * class, a client can alternatively extend JInternalFrame (or a subclass of
- * it) and set its layout manually, e.&nbsp;g., by using the following code:
+ * class, a client can alternatively extend JInternalFrame (or a subclass of it)
+ * and set its layout manually, e.&nbsp;g., by using the following code:
  * 
  * <pre>
  * setRootPaneCheckingEnabled(false);
@@ -29,15 +30,14 @@ import javax.swing.JInternalFrame;
  * @see org.graffiti.util.MaximizeManager
  * @see org.graffiti.util.MaximizeLayout
  */
-public class MaximizeFrame
-					extends JInternalFrame {
+public class MaximizeFrame extends JInternalFrame {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Create a MaximizeFrame object.
 	 * 
@@ -47,7 +47,7 @@ public class MaximizeFrame
 		super();
 		init();
 	}
-	
+
 	/**
 	 * Create a MaximizeFrame object.
 	 * 
@@ -57,7 +57,7 @@ public class MaximizeFrame
 		super(title);
 		init();
 	}
-	
+
 	/**
 	 * Create a MaximizeFrame object.
 	 * 
@@ -67,7 +67,7 @@ public class MaximizeFrame
 		super(title, resizable);
 		init();
 	}
-	
+
 	/**
 	 * Create a MaximizeFrame object.
 	 * 
@@ -77,31 +77,31 @@ public class MaximizeFrame
 		super(title, resizable, closable);
 		init();
 	}
-	
+
 	/**
 	 * Create a MaximizeFrame object.
 	 * 
-	 * @see JInternalFrame#JInternalFrame(java.lang.String, boolean, boolean, boolean)
+	 * @see JInternalFrame#JInternalFrame(java.lang.String, boolean, boolean,
+	 *      boolean)
 	 */
-	public MaximizeFrame(String title, boolean resizable, boolean closable,
-						boolean maximizable) {
+	public MaximizeFrame(String title, boolean resizable, boolean closable, boolean maximizable) {
 		super(title, resizable, closable, maximizable);
 		init();
 	}
-	
+
 	/**
 	 * Create a MaximizeFrame object.
 	 * 
-	 * @see JInternalFrame#JInternalFrame(java.lang.String, boolean, boolean, boolean, boolean)
+	 * @see JInternalFrame#JInternalFrame(java.lang.String, boolean, boolean,
+	 *      boolean, boolean)
 	 */
-	public MaximizeFrame(String title, boolean resizable, boolean closable,
-						boolean maximizable, boolean iconifiable) {
+	public MaximizeFrame(String title, boolean resizable, boolean closable, boolean maximizable, boolean iconifiable) {
 		super(title, resizable, closable, maximizable, iconifiable);
 		init();
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Wrap the frame&quot;s layout into a {@link MaximizeLayout}.
 	 */

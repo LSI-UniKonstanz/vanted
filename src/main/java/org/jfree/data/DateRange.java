@@ -36,8 +36,8 @@ import java.text.DateFormat;
 import java.util.Date;
 
 /**
- * A range specified in terms of two <code>java.util.Date</code> objects. Instances of this class
- * are immutable.
+ * A range specified in terms of two <code>java.util.Date</code> objects.
+ * Instances of this class are immutable.
  */
 public class DateRange extends Range implements Serializable {
 
@@ -58,9 +58,9 @@ public class DateRange extends Range implements Serializable {
 	 * Constructs a new range.
 	 * 
 	 * @param lower
-	 *           the lower bound (<code>null</code> not permitted).
+	 *            the lower bound (<code>null</code> not permitted).
 	 * @param upper
-	 *           the upper bound (<code>null</code> not permitted).
+	 *            the upper bound (<code>null</code> not permitted).
 	 */
 	public DateRange(final Date lower, final Date upper) {
 
@@ -71,13 +71,13 @@ public class DateRange extends Range implements Serializable {
 	}
 
 	/**
-	 * Constructs a new range using two values that will be interpreted as "milliseconds since
-	 * midnight GMT, 1-Jan-1970".
+	 * Constructs a new range using two values that will be interpreted as
+	 * "milliseconds since midnight GMT, 1-Jan-1970".
 	 * 
 	 * @param lower
-	 *           the lower (oldest) date.
+	 *            the lower (oldest) date.
 	 * @param upper
-	 *           the upper (most recent) date.
+	 *            the upper (most recent) date.
 	 */
 	public DateRange(final double lower, final double upper) {
 
@@ -90,11 +90,12 @@ public class DateRange extends Range implements Serializable {
 	/**
 	 * Constructs a new range that is based on another {@link Range}.
 	 * <P>
-	 * The other range does not have to be a {@link DateRange}. If it is not, the upper and lower bounds are evaluated as milliseconds since midnight GMT,
+	 * The other range does not have to be a {@link DateRange}. If it is not, the
+	 * upper and lower bounds are evaluated as milliseconds since midnight GMT,
 	 * 1-Jan-1970.
 	 * 
 	 * @param other
-	 *           the other range (<code>null</code> not permitted).
+	 *            the other range (<code>null</code> not permitted).
 	 */
 	public DateRange(final Range other) {
 		this(other.getLowerBound(), other.getUpperBound());

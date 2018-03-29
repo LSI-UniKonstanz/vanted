@@ -48,10 +48,10 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A text annotation that can be placed on a {@link org.jfree.chart.plot.CategoryPlot}.
+ * A text annotation that can be placed on a
+ * {@link org.jfree.chart.plot.CategoryPlot}.
  */
-public class CategoryTextAnnotation extends TextAnnotation
-												implements CategoryAnnotation, Cloneable, Serializable {
+public class CategoryTextAnnotation extends TextAnnotation implements CategoryAnnotation, Cloneable, Serializable {
 
 	/** The category. */
 	private Comparable category;
@@ -66,11 +66,11 @@ public class CategoryTextAnnotation extends TextAnnotation
 	 * Creates a new annotation to be displayed at the given location.
 	 * 
 	 * @param text
-	 *           the text.
+	 *            the text.
 	 * @param category
-	 *           the category.
+	 *            the category.
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public CategoryTextAnnotation(String text, Comparable category, double value) {
 		super(text);
@@ -92,7 +92,7 @@ public class CategoryTextAnnotation extends TextAnnotation
 	 * Sets the category that the annotation attaches to.
 	 * 
 	 * @param category
-	 *           the category.
+	 *            the category.
 	 */
 	public void setCategory(Comparable category) {
 		this.category = category;
@@ -111,7 +111,7 @@ public class CategoryTextAnnotation extends TextAnnotation
 	 * Sets the category anchor point.
 	 * 
 	 * @param anchor
-	 *           the anchor point.
+	 *            the anchor point.
 	 */
 	public void setCategoryAnchor(CategoryAnchor anchor) {
 		this.categoryAnchor = anchor;
@@ -130,7 +130,7 @@ public class CategoryTextAnnotation extends TextAnnotation
 	 * Sets the value.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public void setValue(double value) {
 		this.value = value;
@@ -140,18 +140,18 @@ public class CategoryTextAnnotation extends TextAnnotation
 	 * Draws the annotation.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 */
-	public void draw(Graphics2D g2, CategoryPlot plot, Rectangle2D dataArea,
-							CategoryAxis domainAxis, ValueAxis rangeAxis) {
+	public void draw(Graphics2D g2, CategoryPlot plot, Rectangle2D dataArea, CategoryAxis domainAxis,
+			ValueAxis rangeAxis) {
 
 		CategoryDataset dataset = plot.getDataset();
 		int catIndex = dataset.getColumnIndex(this.category);
@@ -160,34 +160,22 @@ public class CategoryTextAnnotation extends TextAnnotation
 		float anchorX = 0.0f;
 		float anchorY = 0.0f;
 		PlotOrientation orientation = plot.getOrientation();
-		RectangleEdge domainEdge = Plot.resolveDomainAxisLocation(plot.getDomainAxisLocation(),
-																						orientation);
-		RectangleEdge rangeEdge = Plot.resolveRangeAxisLocation(plot.getRangeAxisLocation(),
-																						orientation);
+		RectangleEdge domainEdge = Plot.resolveDomainAxisLocation(plot.getDomainAxisLocation(), orientation);
+		RectangleEdge rangeEdge = Plot.resolveRangeAxisLocation(plot.getRangeAxisLocation(), orientation);
 
 		if (orientation == PlotOrientation.HORIZONTAL) {
-			anchorY = (float) domainAxis.getCategoryJava2DCoordinate(
-								this.categoryAnchor, catIndex, catCount, dataArea, domainEdge
-								);
+			anchorY = (float) domainAxis.getCategoryJava2DCoordinate(this.categoryAnchor, catIndex, catCount, dataArea,
+					domainEdge);
 			anchorX = (float) rangeAxis.valueToJava2D(this.value, dataArea, rangeEdge);
-		} else
-			if (orientation == PlotOrientation.VERTICAL) {
-				anchorX = (float) domainAxis.getCategoryJava2DCoordinate(
-									this.categoryAnchor, catIndex, catCount, dataArea, domainEdge
-									);
-				anchorY = (float) rangeAxis.valueToJava2D(this.value, dataArea, rangeEdge);
-			}
+		} else if (orientation == PlotOrientation.VERTICAL) {
+			anchorX = (float) domainAxis.getCategoryJava2DCoordinate(this.categoryAnchor, catIndex, catCount, dataArea,
+					domainEdge);
+			anchorY = (float) rangeAxis.valueToJava2D(this.value, dataArea, rangeEdge);
+		}
 		g2.setFont(getFont());
 		g2.setPaint(getPaint());
-		RefineryUtilities.drawRotatedString(
-							getText(),
-							g2,
-							anchorX,
-							anchorY,
-							getTextAnchor(),
-							getRotationAnchor(),
-							getRotationAngle()
-							);
+		RefineryUtilities.drawRotatedString(getText(), g2, anchorX, anchorY, getTextAnchor(), getRotationAnchor(),
+				getRotationAngle());
 
 	}
 
@@ -195,7 +183,7 @@ public class CategoryTextAnnotation extends TextAnnotation
 	 * Tests this object for equality with another.
 	 * 
 	 * @param object
-	 *           the object to test against.
+	 *            the object to test against.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object object) {
@@ -229,8 +217,8 @@ public class CategoryTextAnnotation extends TextAnnotation
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            this class will not throw this exception, but subclasses
-	 *            (if any) might.
+	 *             this class will not throw this exception, but subclasses (if any)
+	 *             might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

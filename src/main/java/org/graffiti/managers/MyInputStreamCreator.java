@@ -8,25 +8,25 @@ import java.net.URL;
 import java.util.zip.GZIPInputStream;
 
 public class MyInputStreamCreator {
-	
+
 	private String absolutePath;
 	private boolean gzip;
 	private File file;
 	private URL url;
-	
+
 	public MyInputStreamCreator(boolean gzip, String absolutePath) {
 		this.absolutePath = absolutePath;
 		this.gzip = gzip;
 	}
-	
+
 	public MyInputStreamCreator(File file) {
 		this.file = file;
 	}
-	
+
 	public MyInputStreamCreator(URL url) {
 		this.url = url;
 	}
-	
+
 	public InputStream getNewInputStream() throws IOException {
 		if (absolutePath != null) {
 			if (gzip)
@@ -40,5 +40,5 @@ public class MyInputStreamCreator {
 			return url.openStream();
 		return null;
 	}
-	
+
 }

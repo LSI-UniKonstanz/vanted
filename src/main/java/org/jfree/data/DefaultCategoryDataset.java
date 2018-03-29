@@ -38,8 +38,7 @@ import java.util.List;
 /**
  * A default implementation of the {@link CategoryDataset} interface.
  */
-public class DefaultCategoryDataset extends AbstractDataset
-												implements CategoryDataset, Serializable {
+public class DefaultCategoryDataset extends AbstractDataset implements CategoryDataset, Serializable {
 
 	/** A storage structure for the data. */
 	private DefaultKeyedValues2D data;
@@ -73,9 +72,9 @@ public class DefaultCategoryDataset extends AbstractDataset
 	 * Returns a value from the table.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return the value (possibly null).
 	 */
 	public Number getValue(final int row, final int column) {
@@ -86,7 +85,7 @@ public class DefaultCategoryDataset extends AbstractDataset
 	 * Returns a row key.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @return the row key.
 	 */
 	public Comparable getRowKey(final int row) {
@@ -97,7 +96,7 @@ public class DefaultCategoryDataset extends AbstractDataset
 	 * Returns the row index for a given key.
 	 * 
 	 * @param key
-	 *           the row key.
+	 *            the row key.
 	 * @return the row index.
 	 */
 	public int getRowIndex(final Comparable key) {
@@ -117,7 +116,7 @@ public class DefaultCategoryDataset extends AbstractDataset
 	 * Returns a column key.
 	 * 
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return the column key.
 	 */
 	public Comparable getColumnKey(final int column) {
@@ -128,7 +127,7 @@ public class DefaultCategoryDataset extends AbstractDataset
 	 * Returns the column index for a given key.
 	 * 
 	 * @param key
-	 *           the column key.
+	 *            the column key.
 	 * @return the column index.
 	 */
 	public int getColumnIndex(final Comparable key) {
@@ -147,12 +146,13 @@ public class DefaultCategoryDataset extends AbstractDataset
 	/**
 	 * Returns the value for a pair of keys.
 	 * <P>
-	 * This method should return <code>null</code> if either of the keys is not found.
+	 * This method should return <code>null</code> if either of the keys is not
+	 * found.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @return the value.
 	 */
 	public Number getValue(final Comparable rowKey, final Comparable columnKey) {
@@ -163,11 +163,11 @@ public class DefaultCategoryDataset extends AbstractDataset
 	 * Adds a value to the table. Performs the same function as setValue(...).
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 */
 	public void addValue(final Number value, final Comparable rowKey, final Comparable columnKey) {
 		this.data.addValue(value, rowKey, columnKey);
@@ -178,25 +178,25 @@ public class DefaultCategoryDataset extends AbstractDataset
 	 * Adds a value to the table.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 */
 	public void addValue(final double value, final Comparable rowKey, final Comparable columnKey) {
-		addValue(new Double(value), rowKey, columnKey);
+		addValue(Double.valueOf(value), rowKey, columnKey);
 	}
 
 	/**
 	 * Adds or updates a value in the table.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 */
 	public void setValue(final Number value, final Comparable rowKey, final Comparable columnKey) {
 		this.data.setValue(value, rowKey, columnKey);
@@ -207,29 +207,28 @@ public class DefaultCategoryDataset extends AbstractDataset
 	 * Adds or updates a value in the table.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 */
 	public void setValue(final double value, final Comparable rowKey, final Comparable columnKey) {
-		setValue(new Double(value), rowKey, columnKey);
+		setValue(Double.valueOf(value), rowKey, columnKey);
 	}
 
 	/**
-	 * Adds the specified value to an existing value in the dataset (if the existing value is <code>null</code>, it is treated as if it were 0.0).
+	 * Adds the specified value to an existing value in the dataset (if the existing
+	 * value is <code>null</code>, it is treated as if it were 0.0).
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 */
-	public void incrementValue(final double value,
-											final Comparable rowKey,
-											final Comparable columnKey) {
+	public void incrementValue(final double value, final Comparable rowKey, final Comparable columnKey) {
 		double existing = 0.0;
 		final Number n = getValue(rowKey, columnKey);
 		if (n != null) {
@@ -242,9 +241,9 @@ public class DefaultCategoryDataset extends AbstractDataset
 	 * Removes a value from the dataset.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 */
 	public void removeValue(final Comparable rowKey, final Comparable columnKey) {
 		this.data.removeValue(rowKey, columnKey);
@@ -255,7 +254,7 @@ public class DefaultCategoryDataset extends AbstractDataset
 	 * Removes a row from the dataset.
 	 * 
 	 * @param rowIndex
-	 *           the row index.
+	 *            the row index.
 	 */
 	public void removeRow(final int rowIndex) {
 		this.data.removeRow(rowIndex);
@@ -266,7 +265,7 @@ public class DefaultCategoryDataset extends AbstractDataset
 	 * Removes a row from the dataset.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 */
 	public void removeRow(final Comparable rowKey) {
 		this.data.removeRow(rowKey);
@@ -277,7 +276,7 @@ public class DefaultCategoryDataset extends AbstractDataset
 	 * Removes a column from the dataset.
 	 * 
 	 * @param columnIndex
-	 *           the column index.
+	 *            the column index.
 	 */
 	public void removeColumn(final int columnIndex) {
 		this.data.removeColumn(columnIndex);
@@ -288,7 +287,7 @@ public class DefaultCategoryDataset extends AbstractDataset
 	 * Removes a column from the dataset.
 	 * 
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 */
 	public void removeColumn(final Comparable columnKey) {
 		this.data.removeColumn(columnKey);
@@ -296,8 +295,8 @@ public class DefaultCategoryDataset extends AbstractDataset
 	}
 
 	/**
-	 * Clears all data from the dataset and sends a {@link DatasetChangeEvent} to all registered
-	 * listeners.
+	 * Clears all data from the dataset and sends a {@link DatasetChangeEvent} to
+	 * all registered listeners.
 	 */
 	public void clear() {
 		this.data.clear();
@@ -308,7 +307,7 @@ public class DefaultCategoryDataset extends AbstractDataset
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
@@ -343,10 +342,9 @@ public class DefaultCategoryDataset extends AbstractDataset
 					if (v2 != null) {
 						return false;
 					}
-				} else
-					if (!v1.equals(v2)) {
-						return false;
-					}
+				} else if (!v1.equals(v2)) {
+					return false;
+				}
 			}
 		}
 		return true;

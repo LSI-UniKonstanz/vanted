@@ -52,9 +52,9 @@ public interface Values2D {
 	 * Returns a value from the table.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return the value (possibly <code>null</code>).
 	 */
 	public Number getValue(int row, int column);

@@ -31,10 +31,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchTyp
  * @param attr
  * @return
  */
-public class TreeAttributSearcher
-{
-	public static Map<String[], Attribute> getMapPathToAttributable(HashSet<SearchType> validSearchTypes, GraphElement attr)
-	{
+public class TreeAttributSearcher {
+	public static Map<String[], Attribute> getMapPathToAttributable(HashSet<SearchType> validSearchTypes,
+			GraphElement attr) {
 		Map<String[], Attribute> mapPathToAttribute = new HashMap<String[], Attribute>();
 
 		// get CollectionAttribute
@@ -48,8 +47,7 @@ public class TreeAttributSearcher
 		Map<CollectionAttribute, List<String>> mapColAttrToPathList = new HashMap<CollectionAttribute, List<String>>();
 		mapColAttrToPathList.put(ca, new ArrayList<String>());
 
-		while (!stack.empty())
-		{
+		while (!stack.empty()) {
 			// get current attr and add its path
 			CollectionAttribute colAttr = stack.pop();
 			List<String> pathList = mapColAttrToPathList.remove(colAttr);
@@ -59,21 +57,18 @@ public class TreeAttributSearcher
 			if (pathElement != null && pathElement.length() > 0)
 				pathList.add(pathElement);
 
-			for (Attribute subAttr : colAttr.getCollection().values())
-			{
+			for (Attribute subAttr : colAttr.getCollection().values()) {
 				// for all child-attributes - clone path list
 				@SuppressWarnings("unchecked")
 				List<String> listClone = (List<String>) ((ArrayList<String>) pathList).clone();
 
-				if (subAttr instanceof CollectionAttribute)
-				{
+				if (subAttr instanceof CollectionAttribute) {
 					// recursion!
 					CollectionAttribute subColAttr = (CollectionAttribute) subAttr;
 
 					stack.push(subColAttr);
 					mapColAttrToPathList.put(subColAttr, listClone);
-				} else
-				{
+				} else {
 					// leaf!
 					SearchType st = null;
 					if (subAttr instanceof StringAttribute)
@@ -97,17 +92,17 @@ public class TreeAttributSearcher
 						// attribute type not wanted!
 						continue;
 
-					if (subAttr != null && subAttr.getId() != null)
-					{
+					if (subAttr != null && subAttr.getId() != null) {
 						// valid!
 						String leafName = subAttr.getId();
 						listClone.add(leafName);
 
 						mapPathToAttribute.put(listClone.toArray(new String[listClone.size()]), subAttr);
 					} else
-						// valid!
-						if(subAttr != null)
-							ErrorMsg.addErrorMessage("Unexpected attribute: " + st + ", " + subAttr + ", " + subAttr.getClass() + ", " + subAttr.getId());
+					// valid!
+					if (subAttr != null)
+						ErrorMsg.addErrorMessage("Unexpected attribute: " + st + ", " + subAttr + ", "
+								+ subAttr.getClass() + ", " + subAttr.getId());
 				}
 			}
 		}
@@ -115,8 +110,7 @@ public class TreeAttributSearcher
 		return mapPathToAttribute;
 	}
 
-	public static Map<String[], Attribute> getMapPathToAttributable(HashSet<SearchType> validSearchTypes, Graph attr)
-	{
+	public static Map<String[], Attribute> getMapPathToAttributable(HashSet<SearchType> validSearchTypes, Graph attr) {
 		Map<String[], Attribute> mapPathToAttribute = new HashMap<String[], Attribute>();
 
 		// get CollectionAttribute
@@ -130,8 +124,7 @@ public class TreeAttributSearcher
 		Map<CollectionAttribute, List<String>> mapColAttrToPathList = new HashMap<CollectionAttribute, List<String>>();
 		mapColAttrToPathList.put(ca, new ArrayList<String>());
 
-		while (!stack.empty())
-		{
+		while (!stack.empty()) {
 			// get current attr and add its path
 			CollectionAttribute colAttr = stack.pop();
 			List<String> pathList = mapColAttrToPathList.remove(colAttr);
@@ -141,21 +134,18 @@ public class TreeAttributSearcher
 			if (pathElement != null && pathElement.length() > 0)
 				pathList.add(pathElement);
 
-			for (Attribute subAttr : colAttr.getCollection().values())
-			{
+			for (Attribute subAttr : colAttr.getCollection().values()) {
 				// for all child-attributes - clone path list
 				@SuppressWarnings("unchecked")
 				List<String> listClone = (List<String>) ((ArrayList<String>) pathList).clone();
 
-				if (subAttr instanceof CollectionAttribute)
-				{
+				if (subAttr instanceof CollectionAttribute) {
 					// recursion!
 					CollectionAttribute subColAttr = (CollectionAttribute) subAttr;
 
 					stack.push(subColAttr);
 					mapColAttrToPathList.put(subColAttr, listClone);
-				} else
-				{
+				} else {
 					// leaf!
 					SearchType st = null;
 					if (subAttr instanceof StringAttribute)
@@ -179,17 +169,17 @@ public class TreeAttributSearcher
 						// attribute type not wanted!
 						continue;
 
-					if (subAttr != null && subAttr.getId() != null)
-					{
+					if (subAttr != null && subAttr.getId() != null) {
 						// valid!
 						String leafName = subAttr.getId();
 						listClone.add(leafName);
 
 						mapPathToAttribute.put(listClone.toArray(new String[listClone.size()]), subAttr);
 					} else
-						// valid!
-						if(subAttr != null)
-							ErrorMsg.addErrorMessage("Unexpected attribute: " + st + ", " + subAttr + ", " + subAttr.getClass() + ", " + subAttr.getId());
+					// valid!
+					if (subAttr != null)
+						ErrorMsg.addErrorMessage("Unexpected attribute: " + st + ", " + subAttr + ", "
+								+ subAttr.getClass() + ", " + subAttr.getId());
 				}
 			}
 		}

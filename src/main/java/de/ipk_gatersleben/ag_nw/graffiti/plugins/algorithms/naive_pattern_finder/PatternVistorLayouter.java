@@ -12,19 +12,18 @@ import org.graffiti.selection.Selection;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.CircleLayouterAlgorithm;
 
 /**
- * @author Christian Klukas
- *         4.7.2007
+ * @author Christian Klukas 4.7.2007
  */
 public class PatternVistorLayouter implements PatternVisitor {
-	
+
 	private Algorithm layout;
-	
+
 	public PatternVistorLayouter(Algorithm layoutAlgorithm) {
 		this.layout = layoutAlgorithm;
 	}
-	
-	public boolean visitPattern(int numberOfNodesInMatch,
-						Node[] matchInPattern, Node[] matchInTarget, String patternName, boolean allowOverlap) {
+
+	public boolean visitPattern(int numberOfNodesInMatch, Node[] matchInPattern, Node[] matchInTarget,
+			String patternName, boolean allowOverlap) {
 		if (matchInTarget != null && matchInTarget.length > 0) {
 			if (MarkingPatternVisitor.checkForDuplicateMatch(matchInTarget)) {
 				return false;
@@ -34,16 +33,17 @@ public class PatternVistorLayouter implements PatternVisitor {
 			Selection sel = new Selection("temp");
 			for (Node n : matchInTarget)
 				sel.add(n);
-			
+
 			layout.attach(firstNode.getGraph(), sel);
 			try {
 				layout.check();
-				
+
 				if (layout instanceof CircleLayouterAlgorithm) {
-					((CircleLayouterAlgorithm) layout).setRadius(
-										((CircleLayouterAlgorithm) layout).getPatternNodeDistance() * matchInTarget.length / 2 / Math.PI);
+					((CircleLayouterAlgorithm) layout)
+							.setRadius(((CircleLayouterAlgorithm) layout).getPatternNodeDistance()
+									* matchInTarget.length / 2 / Math.PI);
 				}
-				
+
 				layout.execute();
 			} catch (PreconditionException e) {
 				ErrorMsg.addErrorMessage(e);
@@ -51,5 +51,5 @@ public class PatternVistorLayouter implements PatternVisitor {
 		}
 		return false;
 	}
-	
+
 }

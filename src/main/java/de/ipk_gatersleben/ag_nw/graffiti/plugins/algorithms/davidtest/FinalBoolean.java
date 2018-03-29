@@ -8,17 +8,17 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.davidtest;
 
 public class FinalBoolean {
 	private boolean b;
-	
+
 	public FinalBoolean(boolean b) {
 		this.b = b;
 	}
-	
+
 	public void set(boolean b) {
 		this.b = b;
 	}
-	
+
 	public boolean isSet() {
 		return b;
 	}
-	
+
 }

@@ -57,7 +57,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.Spacer;
 
 /**
- * A demo showing eight plots with various inverted axis and plot orientation combinations.
+ * A demo showing eight plots with various inverted axis and plot orientation
+ * combinations.
  */
 public class PlotOrientationDemo2 extends ApplicationFrame {
 
@@ -77,7 +78,7 @@ public class PlotOrientationDemo2 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PlotOrientationDemo2(String title) {
 
@@ -87,9 +88,8 @@ public class PlotOrientationDemo2 extends ApplicationFrame {
 			this.datasets[i] = createDataset(i);
 			this.charts[i] = createChart(i, this.datasets[i]);
 			XYPlot plot = this.charts[i].getXYPlot();
-			XYShapeAnnotation a1 = new XYShapeAnnotation(
-								new Rectangle2D.Double(1.0, 2.0, 2.0, 3.0), new BasicStroke(1.0f), Color.blue
-								);
+			XYShapeAnnotation a1 = new XYShapeAnnotation(new Rectangle2D.Double(1.0, 2.0, 2.0, 3.0),
+					new BasicStroke(1.0f), Color.blue);
 			XYLineAnnotation a2 = new XYLineAnnotation(0.0, -5.0, 10.0, -5.0);
 
 			plot.addAnnotation(a1);
@@ -132,7 +132,7 @@ public class PlotOrientationDemo2 extends ApplicationFrame {
 	 * Creates a sample dataset.
 	 * 
 	 * @param index
-	 *           the dataset index.
+	 *            the dataset index.
 	 * @return A dataset.
 	 */
 	private XYDataset createDataset(int index) {
@@ -148,24 +148,22 @@ public class PlotOrientationDemo2 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param index
-	 *           the chart index.
+	 *            the chart index.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(int index, XYDataset dataset) {
 
 		// create the chart...
-		JFreeChart chart = ChartFactory.createXYLineChart(
-							"Chart " + (index + 1), // chart title
+		JFreeChart chart = ChartFactory.createXYLineChart("Chart " + (index + 1), // chart title
 				"X", // x axis label
 				"Y", // y axis label
 				dataset, // data
-				PlotOrientation.VERTICAL,
-							false, // include legend
+				PlotOrientation.VERTICAL, false, // include legend
 				false, // tooltips
 				false // urls
-				);
+		);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 		chart.setBackgroundPaint(Color.white);
@@ -195,7 +193,7 @@ public class PlotOrientationDemo2 extends ApplicationFrame {
 	 * The starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(String[] args) {
 		PlotOrientationDemo2 demo = new PlotOrientationDemo2("Plot Orientation Demo 2");

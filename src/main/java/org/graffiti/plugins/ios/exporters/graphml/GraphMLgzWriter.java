@@ -9,23 +9,21 @@ import org.graffiti.graph.Graph;
 /**
  * @author Christian Klukas
  */
-public class GraphMLgzWriter
-					extends GraphMLWriter {
-	
+public class GraphMLgzWriter extends GraphMLWriter {
+
 	@Override
 	public String[] getExtensions() {
 		String[] exts = { ".graphml.gz" };
 		return exts;
 	}
-	
+
 	@Override
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "GraphML (compressed)" };
 	}
-	
+
 	@Override
-	public void write(OutputStream stream, Graph g)
-						throws IOException {
+	public void write(OutputStream stream, Graph g) throws IOException {
 		GZIPOutputStream os = null;
 		try {
 			os = new GZIPOutputStream(stream);

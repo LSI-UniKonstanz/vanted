@@ -14,9 +14,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
  * @author Dirk Koschuetzki
  * @author Christian Klukas
  */
-public class BeanShellDesktopPlugin
-					extends IPK_PluginAdapter {
-	
+public class BeanShellDesktopPlugin extends IPK_PluginAdapter {
+
 	/**
 	 * Creates a new BeanShellDesktopPlugin object.
 	 */

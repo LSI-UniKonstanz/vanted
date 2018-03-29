@@ -8,16 +8,13 @@ import org.ReleaseInfo;
 import org.graffiti.plugin.GenericPluginAdapter;
 import org.graffiti.plugin.io.OutputSerializer;
 
-public class XWGSerializerPlugin
-					extends GenericPluginAdapter {
-	
+public class XWGSerializerPlugin extends GenericPluginAdapter {
+
 	public XWGSerializerPlugin() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.EXTENDED_FILE_FORMAT)) {
-			
-			this.outputSerializers = new OutputSerializer[] {
-								new XWGSerializer()
-			};
-			
+
+			this.outputSerializers = new OutputSerializer[] { new XWGSerializer() };
+
 		}
 	}
 }

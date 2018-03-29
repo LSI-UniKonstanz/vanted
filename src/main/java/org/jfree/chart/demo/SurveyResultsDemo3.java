@@ -64,7 +64,7 @@ public class SurveyResultsDemo3 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public SurveyResultsDemo3(final String title) {
 
@@ -100,21 +100,18 @@ public class SurveyResultsDemo3 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createBarChart(
-							null, // chart title
+		final JFreeChart chart = ChartFactory.createBarChart(null, // chart title
 				null, // domain axis label
 				null, // range axis label
 				dataset, // data
 				PlotOrientation.HORIZONTAL, // orientation
 				false, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		chart.setBackgroundPaint(Color.white);
 		chart.getPlot().setOutlinePaint(null);
@@ -138,9 +135,7 @@ public class SurveyResultsDemo3 extends ApplicationFrame {
 		domainAxis.addSubLabel("Lg.", "(10)");
 		domainAxis.addSubLabel("All", "(10)");
 		final CategoryLabelPositions p = domainAxis.getCategoryLabelPositions();
-		final CategoryLabelPosition left = new CategoryLabelPosition(
-							RectangleAnchor.LEFT, TextBlockAnchor.CENTER_LEFT
-							);
+		final CategoryLabelPosition left = new CategoryLabelPosition(RectangleAnchor.LEFT, TextBlockAnchor.CENTER_LEFT);
 		domainAxis.setCategoryLabelPositions(CategoryLabelPositions.replaceLeftPosition(p, left));
 		plot.setDomainAxis(domainAxis);
 
@@ -148,15 +143,12 @@ public class SurveyResultsDemo3 extends ApplicationFrame {
 		renderer.setSeriesPaint(0, new Color(0x9C, 0xA4, 0x4A));
 		renderer.setBaseOutlineStroke(null);
 
-		final StandardCategoryLabelGenerator generator = new StandardCategoryLabelGenerator(
-							"{2}", new DecimalFormat("0.00")
-							);
+		final StandardCategoryLabelGenerator generator = new StandardCategoryLabelGenerator("{2}",
+				new DecimalFormat("0.00"));
 		renderer.setLabelGenerator(generator);
 		renderer.setItemLabelsVisible(true);
 		renderer.setItemLabelFont(new Font("SansSerif", Font.PLAIN, 18));
-		final ItemLabelPosition position = new ItemLabelPosition(
-							ItemLabelAnchor.INSIDE3, TextAnchor.CENTER_RIGHT
-							);
+		final ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.INSIDE3, TextAnchor.CENTER_RIGHT);
 		renderer.setPositiveItemLabelPosition(position);
 		renderer.setPositiveItemLabelPositionFallback(new ItemLabelPosition());
 
@@ -179,7 +171,7 @@ public class SurveyResultsDemo3 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

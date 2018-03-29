@@ -40,7 +40,8 @@ import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
 
 /**
- * The interface that must be supported by annotations that are to be added to an {@link XYPlot}.
+ * The interface that must be supported by annotations that are to be added to
+ * an {@link XYPlot}.
  */
 public interface XYAnnotation {
 
@@ -48,17 +49,16 @@ public interface XYAnnotation {
 	 * Draws the annotation.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 */
-	public void draw(Graphics2D g2, XYPlot plot, Rectangle2D dataArea,
-							ValueAxis domainAxis, ValueAxis rangeAxis);
+	public void draw(Graphics2D g2, XYPlot plot, Rectangle2D dataArea, ValueAxis domainAxis, ValueAxis rangeAxis);
 
 }

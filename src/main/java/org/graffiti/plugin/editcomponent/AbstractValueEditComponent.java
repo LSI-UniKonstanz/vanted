@@ -20,37 +20,36 @@ import org.graffiti.plugin.Displayable;
  * 
  * @see ValueEditComponent
  */
-public abstract class AbstractValueEditComponent
-					extends ValueEditComponentAdapter {
+public abstract class AbstractValueEditComponent extends ValueEditComponentAdapter {
 	// ~ Instance fields ========================================================
-	
+
 	/** The field to edit the value of the displayable. */
 	protected JComponent editField;
-	
+
 	/**
-	 * Set to true if this component should display nothing instead of the
-	 * value of the attribute it represents.
+	 * Set to true if this component should display nothing instead of the value of
+	 * the attribute it represents.
 	 */
 	public boolean showEmpty = false;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	protected AbstractValueEditComponent() {
 		this(null);
 	}
-	
+
 	/**
 	 * Constructs a new <code>AbstractValueEditComponent</code>.
 	 * 
 	 * @param disp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	protected AbstractValueEditComponent(Displayable disp) {
 		super(disp);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Sets the displayable.
 	 * 
@@ -59,50 +58,53 @@ public abstract class AbstractValueEditComponent
 	public void setDisplayable(Displayable disp) {
 		this.displayable = disp;
 	}
-	
+
 	/**
-	 * Returns the <code>Attribute</code> instance the current <code>ValueEditComponent</code> contains.
+	 * Returns the <code>Attribute</code> instance the current
+	 * <code>ValueEditComponent</code> contains.
 	 * 
-	 * @return the <code>Attribute</code> instance the current <code>ValueEditComponent</code> contains.
+	 * @return the <code>Attribute</code> instance the current
+	 *         <code>ValueEditComponent</code> contains.
 	 */
 	public Displayable getDisplayable() {
 		return this.displayable;
 	}
-	
+
 	/*
 	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#setEnabled(boolean)
 	 */
 	public void setEnabled(boolean enabled) {
 		getComponent().setEnabled(enabled);
 	}
-	
+
 	/*
 	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#isEnabled()
 	 */
 	public boolean isEnabled() {
 		return getComponent().isEnabled();
 	}
-	
+
 	/*
-	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#setShowEmpty(boolean)
+	 * @see
+	 * org.graffiti.plugin.editcomponent.ValueEditComponent#setShowEmpty(boolean)
 	 */
 	public void setShowEmpty(boolean showEmpty) {
 		this.showEmpty = showEmpty;
 		setEditFieldValue();
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#getShowEmpty()
 	 */
 	public boolean getShowEmpty() {
 		return this.showEmpty;
 	}
-	
+
 	/**
 	 * Called after a change of an displayable took place.
 	 * 
 	 * @param e
-	 *           the AttributeEvent detailing the changes.
+	 *            the AttributeEvent detailing the changes.
 	 */
 	@Override
 	public void postAttributeChanged(AttributeEvent e) {
@@ -110,17 +112,17 @@ public abstract class AbstractValueEditComponent
 			setEditFieldValue();
 		}
 	}
-	
+
 	/**
 	 * Called before a change of an displayable takes place.
 	 * 
 	 * @param e
-	 *           the AttributeEvent detailing the changes.
+	 *            the AttributeEvent detailing the changes.
 	 */
 	@Override
 	public void preAttributeChanged(AttributeEvent e) {
 	}
-	
+
 	// /**
 	// * Called just before an displayable is added.
 	// *

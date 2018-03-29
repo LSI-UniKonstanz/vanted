@@ -41,47 +41,45 @@ import org.graffiti.plugin.view.MessageListener;
  * 
  * @version $Revision: 1.7 $
  */
-public class MatrixView
-					extends AbstractView
-					implements ActionListener, AttributeConsumer {
+public class MatrixView extends AbstractView implements ActionListener, AttributeConsumer {
 	// ~ Static fields/initializers =============================================
-	
+
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/** The table, which contains the matrix of the graph. */
 	private JTable matrixView;
-	
+
 	/** The table model. */
 	private MatrixModel matrix;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new matrix view from the given graph.
 	 */
 	public MatrixView() {
 		this(null);
 	}
-	
+
 	/**
 	 * Constructs a new matrix view.
 	 * 
 	 * @param graph
-	 *           the graph to be displayed.
+	 *            the graph to be displayed.
 	 */
 	public MatrixView(Graph graph) {
 		super(graph);
-		
+
 		setLayout(new BorderLayout());
-		
+
 		matrixView = new JTable() {
 			private static final long serialVersionUID = 1L;
-			
+
 			@Override
 			public Component prepareRenderer(TableCellRenderer renderer, int rowIndex, int vColIndex) {
 				Component c = super.prepareRenderer(renderer, rowIndex, vColIndex);
@@ -98,9 +96,9 @@ public class MatrixView
 		matrixView.setCellSelectionEnabled(true);
 		add(matrixView, BorderLayout.CENTER);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * @see java.awt.dnd.Autoscroll#getAutoscrollInsets()
 	 */
@@ -108,14 +106,14 @@ public class MatrixView
 	public Insets getAutoscrollInsets() {
 		return new Insets(0, 0, 0, 0);
 	}
-	
+
 	/**
 	 * @see org.graffiti.attributes.AttributeConsumer#getEdgeAttribute()
 	 */
 	public CollectionAttribute getEdgeAttribute() {
 		return null; // this view does not depend on any edge attributes
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.view.AbstractView#setGraph(Graph)
 	 */
@@ -126,21 +124,21 @@ public class MatrixView
 		matrixView.setModel(matrix);
 		updateGUI();
 	}
-	
+
 	/**
 	 * @see org.graffiti.attributes.AttributeConsumer#getGraphAttribute()
 	 */
 	public CollectionAttribute getGraphAttribute() {
 		return null; // this view does not depend on any graph attributes
 	}
-	
+
 	/**
 	 * @see org.graffiti.attributes.AttributeConsumer#getNodeAttribute()
 	 */
 	public CollectionAttribute getNodeAttribute() {
 		return null; // this view does not depend on any node attributes
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.view.View#getViewComponent()
 	 */
@@ -148,7 +146,7 @@ public class MatrixView
 	public JComponent getViewComponent() {
 		return this;
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.view.View#getViewName()
 	 */
@@ -156,70 +154,70 @@ public class MatrixView
 	public String getViewName() {
 		return null;
 	}
-	
+
 	/**
 	 * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent action) {
 		// Object src = action.getSource();
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.view.View#addMessageListener(MessageListener)
 	 */
 	@Override
 	public void addMessageListener(MessageListener ml) {
 	}
-	
+
 	/**
 	 * @see java.awt.dnd.Autoscroll#autoscroll(Point)
 	 */
 	@Override
 	public void autoscroll(Point arg0) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.view.View#close()
 	 */
 	@Override
 	public void close() {
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.view.View#completeRedraw()
 	 */
 	public void completeRedraw() {
 		setGraph(currentGraph);
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.AttributeListener#postAttributeAdded(AttributeEvent)
 	 */
 	@Override
 	public void postAttributeAdded(AttributeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.AttributeListener#postAttributeChanged(AttributeEvent)
 	 */
 	@Override
 	public void postAttributeChanged(AttributeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.AttributeListener#postAttributeRemoved(AttributeEvent)
 	 */
 	@Override
 	public void postAttributeRemoved(AttributeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.EdgeListener#postDirectedChanged(EdgeEvent)
 	 */
 	@Override
 	public void postDirectedChanged(EdgeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.GraphListener#postEdgeAdded(GraphEvent)
 	 */
@@ -227,7 +225,7 @@ public class MatrixView
 	public void postEdgeAdded(GraphEvent e) {
 		matrix.postEdgeAdded(e);
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.GraphListener#postEdgeRemoved(GraphEvent)
 	 */
@@ -236,14 +234,14 @@ public class MatrixView
 		matrix.postEdgeRemoved(e);
 		updateGUI();
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.EdgeListener#postEdgeReversed(EdgeEvent)
 	 */
 	@Override
 	public void postEdgeReversed(EdgeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.GraphListener#postGraphCleared(GraphEvent)
 	 */
@@ -252,21 +250,21 @@ public class MatrixView
 		matrix.postGraphCleared(e);
 		updateGUI();
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.NodeListener#postInEdgeAdded(NodeEvent)
 	 */
 	@Override
 	public void postInEdgeAdded(NodeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.NodeListener#postInEdgeRemoved(NodeEvent)
 	 */
 	@Override
 	public void postInEdgeRemoved(NodeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.GraphListener#postNodeAdded(GraphEvent)
 	 */
@@ -275,7 +273,7 @@ public class MatrixView
 		matrix.postNodeAdded(e);
 		updateGUI();
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.GraphListener#postNodeRemoved(GraphEvent)
 	 */
@@ -284,188 +282,188 @@ public class MatrixView
 		matrix.postNodeRemoved(e);
 		updateGUI();
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.NodeListener#postOutEdgeAdded(NodeEvent)
 	 */
 	@Override
 	public void postOutEdgeAdded(NodeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.NodeListener#postOutEdgeRemoved(NodeEvent)
 	 */
 	@Override
 	public void postOutEdgeRemoved(NodeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.EdgeListener#postSourceNodeChanged(EdgeEvent)
 	 */
 	@Override
 	public void postSourceNodeChanged(EdgeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.EdgeListener#postTargetNodeChanged(EdgeEvent)
 	 */
 	@Override
 	public void postTargetNodeChanged(EdgeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.NodeListener#postUndirectedEdgeAdded(NodeEvent)
 	 */
 	@Override
 	public void postUndirectedEdgeAdded(NodeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.NodeListener#postUndirectedEdgeRemoved(NodeEvent)
 	 */
 	@Override
 	public void postUndirectedEdgeRemoved(NodeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.AttributeListener#preAttributeAdded(AttributeEvent)
 	 */
 	@Override
 	public void preAttributeAdded(AttributeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.AttributeListener#preAttributeChanged(AttributeEvent)
 	 */
 	@Override
 	public void preAttributeChanged(AttributeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.AttributeListener#preAttributeRemoved(AttributeEvent)
 	 */
 	@Override
 	public void preAttributeRemoved(AttributeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.EdgeListener#preDirectedChanged(EdgeEvent)
 	 */
 	@Override
 	public void preDirectedChanged(EdgeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.GraphListener#preEdgeAdded(GraphEvent)
 	 */
 	@Override
 	public void preEdgeAdded(GraphEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.GraphListener#preEdgeRemoved(GraphEvent)
 	 */
 	@Override
 	public void preEdgeRemoved(GraphEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.EdgeListener#preEdgeReversed(EdgeEvent)
 	 */
 	@Override
 	public void preEdgeReversed(EdgeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.GraphListener#preGraphCleared(GraphEvent)
 	 */
 	@Override
 	public void preGraphCleared(GraphEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.NodeListener#preInEdgeAdded(NodeEvent)
 	 */
 	@Override
 	public void preInEdgeAdded(NodeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.NodeListener#preInEdgeRemoved(NodeEvent)
 	 */
 	@Override
 	public void preInEdgeRemoved(NodeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.GraphListener#preNodeAdded(GraphEvent)
 	 */
 	@Override
 	public void preNodeAdded(GraphEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.GraphListener#preNodeRemoved(GraphEvent)
 	 */
 	@Override
 	public void preNodeRemoved(GraphEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.NodeListener#preOutEdgeAdded(NodeEvent)
 	 */
 	@Override
 	public void preOutEdgeAdded(NodeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.NodeListener#preOutEdgeRemoved(NodeEvent)
 	 */
 	@Override
 	public void preOutEdgeRemoved(NodeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.EdgeListener#preSourceNodeChanged(EdgeEvent)
 	 */
 	@Override
 	public void preSourceNodeChanged(EdgeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.EdgeListener#preTargetNodeChanged(EdgeEvent)
 	 */
 	@Override
 	public void preTargetNodeChanged(EdgeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.NodeListener#preUndirectedEdgeAdded(NodeEvent)
 	 */
 	@Override
 	public void preUndirectedEdgeAdded(NodeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.NodeListener#preUndirectedEdgeRemoved(NodeEvent)
 	 */
 	@Override
 	public void preUndirectedEdgeRemoved(NodeEvent e) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.view.View#removeMessageListener(MessageListener)
 	 */
 	@Override
 	public void removeMessageListener(MessageListener ml) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.view.View#repaint(GraphElement)
 	 */
 	public void repaint(GraphElement ge) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.TransactionListener#transactionFinished(TransactionEvent)
 	 */
@@ -473,7 +471,7 @@ public class MatrixView
 		matrix.transactionFinished(e, status);
 		updateGUI();
 	}
-	
+
 	/**
 	 * @see org.graffiti.event.TransactionListener#transactionStarted(TransactionEvent)
 	 */
@@ -482,17 +480,16 @@ public class MatrixView
 		matrix.transactionStarted(e);
 		updateGUI();
 	}
-	
-	
+
 	@Override
 	public void attributeChanged(Attribute attr) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
-	 * Extracts the name of this view class. It has to be overridden by all
-	 * extended subclasses of this class.
+	 * Extracts the name of this view class. It has to be overridden by all extended
+	 * subclasses of this class.
 	 * 
 	 * @return DOCUMENT ME!
 	 */
@@ -500,19 +497,19 @@ public class MatrixView
 	protected String extractName() {
 		return this.getClass().getName();
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.view.AbstractView#informMessageListener(String, int)
 	 */
 	protected void informMessageListener(String message, int type) {
 	}
-	
+
 	/**
 	 * Updates the gui.
 	 */
 	private void updateGUI() {
 		TableColumn column;
-		
+
 		for (int i = 0; i < matrixView.getColumnCount(); i++) {
 			column = matrixView.getColumnModel().getColumn(i);
 			column.setPreferredWidth(18);
@@ -520,15 +517,16 @@ public class MatrixView
 			column.setMinWidth(18);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.view.View#clearComponents()
 	 */
 	public void clearComponents() {
 		// empty
 	}
-	
+
 	public boolean putInScrollPane() {
 		return true;
 	}

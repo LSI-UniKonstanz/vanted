@@ -55,7 +55,7 @@ public class CombinedCategoryPlotDemo1 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public CombinedCategoryPlotDemo1(final String title) {
 
@@ -197,12 +197,8 @@ public class CombinedCategoryPlotDemo1 extends ApplicationFrame {
 		plot.add(subplot1, 2);
 		plot.add(subplot2, 1);
 
-		final JFreeChart result = new JFreeChart(
-							"Combined Domain Category Plot Demo",
-							new Font("SansSerif", Font.BOLD, 12),
-							plot,
-							true
-							);
+		final JFreeChart result = new JFreeChart("Combined Domain Category Plot Demo",
+				new Font("SansSerif", Font.BOLD, 12), plot, true);
 		result.getLegend().setAnchor(Legend.SOUTH);
 		return result;
 
@@ -212,7 +208,7 @@ public class CombinedCategoryPlotDemo1 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

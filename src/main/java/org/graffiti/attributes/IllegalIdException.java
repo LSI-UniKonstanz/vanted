@@ -15,18 +15,18 @@ package org.graffiti.attributes;
  * 
  * @version $Revision: 1.4 $
  */
-public class IllegalIdException
-					extends RuntimeException {
+public class IllegalIdException extends RuntimeException {
 	// ~ Constructors ===========================================================
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Constructs an <code>IllegalIdException</code> with the specified detail
 	 * message.
 	 * 
 	 * @param msg
-	 *           The detail message which is saved for later retrieval by the <code>getMessage()</code> method.
+	 *            The detail message which is saved for later retrieval by the
+	 *            <code>getMessage()</code> method.
 	 */
 	public IllegalIdException(String msg) {
 		super(msg);

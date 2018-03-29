@@ -7,6 +7,5 @@
 package org;
 
 public enum CondenseButtonLayout {
-	RIGHT,
-	LEFT
+	RIGHT, LEFT
 }

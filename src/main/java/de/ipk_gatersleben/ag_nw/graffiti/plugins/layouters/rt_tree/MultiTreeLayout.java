@@ -18,66 +18,61 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
-import org.vanted.animation.Animator;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
+
 public class MultiTreeLayout extends AbstractAlgorithm {
-	
+
 	public String getName() {
 		// return null;
 		return "Tree Layout (multi)";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Layout";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.LAYOUT
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
 
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
 		RTTreeLayout rtl = new RTTreeLayout();
 		rtl.attach(graph, selection);
 		return rtl.getParameters();
 	}
-	
+
 	@Override
 	public String getDescription() {
-		return "<html>" +
-							"Multi Tree-Layout: This algorithm works best for graphs<br>" +
-							"with multiple disconnected tree like graph structures.<br>" +
-							"On general graphs it may not work correctly.";
+		return "<html>" + "Multi Tree-Layout: This algorithm works best for graphs<br>"
+				+ "with multiple disconnected tree like graph structures.<br>"
+				+ "On general graphs it may not work correctly.";
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 	}
-	
+
 	public void execute() {
 		int i = 0;
 		HashMap<Integer, NodeHelper> id2node = new LinkedHashMap<Integer, NodeHelper>();
 		for (Node n : graph.getNodes()) {
 			NodeHelper nh = new NodeHelper(n, false);
-			nh.setAttributeValue("temp", "iid", new Integer(i++));
-			id2node.put(new Integer(i - 1), nh);
+			nh.setAttributeValue("temp", "iid", Integer.valueOf(i++));
+			id2node.put(Integer.valueOf(i - 1), nh);
 		}
 		Graph graphCopy = new AdjListGraph();
 		graphCopy.addGraph(graph);
-		Integer resultType = new Integer(0);
+		Integer resultType = Integer.valueOf(0);
 		double maxXallGraphs = 0;
 		for (Graph cc : GraphHelper.getConnectedComponentsAsCopy(graphCopy)) {
 			double maxXthisGraph = 0;

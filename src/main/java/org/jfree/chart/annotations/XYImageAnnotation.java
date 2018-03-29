@@ -45,9 +45,9 @@ import org.jfree.ui.RectangleEdge;
 import org.jfree.util.ObjectUtils;
 
 /**
- * An annotation that allows an image to be placed at some location on
- * an {@link XYPlot}.
- * TODO: implement serialization properly (image is not serializable).
+ * An annotation that allows an image to be placed at some location on an
+ * {@link XYPlot}. TODO: implement serialization properly (image is not
+ * serializable).
  */
 public class XYImageAnnotation implements XYAnnotation, Cloneable, Serializable {
 
@@ -64,11 +64,11 @@ public class XYImageAnnotation implements XYAnnotation, Cloneable, Serializable 
 	 * Creates a new annotation to be displayed at the specified (x, y) location.
 	 * 
 	 * @param x
-	 *           the x-coordinate (in data space).
+	 *            the x-coordinate (in data space).
 	 * @param y
-	 *           the y-coordinate (in data space).
+	 *            the y-coordinate (in data space).
 	 * @param image
-	 *           the image (<code>null</code> not permitted).
+	 *            the image (<code>null</code> not permitted).
 	 */
 	public XYImageAnnotation(double x, double y, Image image) {
 		if (image == null) {
@@ -80,22 +80,21 @@ public class XYImageAnnotation implements XYAnnotation, Cloneable, Serializable 
 	}
 
 	/**
-	 * Draws the annotation. This method is called by the drawing code in the {@link XYPlot} class,
-	 * you don't normally need to call this method directly.
+	 * Draws the annotation. This method is called by the drawing code in the
+	 * {@link XYPlot} class, you don't normally need to call this method directly.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 */
-	public void draw(Graphics2D g2, XYPlot plot, Rectangle2D dataArea,
-							ValueAxis domainAxis, ValueAxis rangeAxis) {
+	public void draw(Graphics2D g2, XYPlot plot, Rectangle2D dataArea, ValueAxis domainAxis, ValueAxis rangeAxis) {
 
 		PlotOrientation orientation = plot.getOrientation();
 		AxisLocation domainAxisLocation = plot.getDomainAxisLocation();
@@ -109,11 +108,10 @@ public class XYImageAnnotation implements XYAnnotation, Cloneable, Serializable 
 		if (orientation == PlotOrientation.HORIZONTAL) {
 			xx = j2DY;
 			yy = j2DX;
-		} else
-			if (orientation == PlotOrientation.VERTICAL) {
-				xx = j2DX;
-				yy = j2DY;
-			}
+		} else if (orientation == PlotOrientation.VERTICAL) {
+			xx = j2DX;
+			yy = j2DY;
+		}
 		xx = xx - this.image.getWidth(null) / 2.0f;
 		yy = yy - this.image.getHeight(null) / 2.0f;
 		g2.drawImage(this.image, (int) xx, (int) yy, null);
@@ -124,7 +122,7 @@ public class XYImageAnnotation implements XYAnnotation, Cloneable, Serializable 
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param object
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
@@ -146,7 +144,7 @@ public class XYImageAnnotation implements XYAnnotation, Cloneable, Serializable 
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the annotation can't be cloned.
+	 *             if the annotation can't be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();

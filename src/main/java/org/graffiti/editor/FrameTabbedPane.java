@@ -10,11 +10,11 @@ import org.graffiti.session.EditorSession;
 import org.graffiti.session.Session;
 
 public class FrameTabbedPane extends JTabbedPane implements ViewListener {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	HashMap<String, Integer> tab2index = new HashMap<String, Integer>();
-	
+
 	@Override
 	public void viewChanged(View newView) {
 		Session s = GravistoService.getInstance().getSessionFromView(newView);
@@ -23,13 +23,13 @@ public class FrameTabbedPane extends JTabbedPane implements ViewListener {
 			if (idx >= 0) {
 				setSelectedIndex(idx);
 				System.out.println(idx);
-				
+
 				repaint();
 				validate();
 			}
 		}
 	}
-	
+
 	public void sessionChanged() {
 		removeAll();
 		int cnt = 0;
@@ -41,5 +41,5 @@ public class FrameTabbedPane extends JTabbedPane implements ViewListener {
 		repaint();
 		validate();
 	}
-	
+
 }

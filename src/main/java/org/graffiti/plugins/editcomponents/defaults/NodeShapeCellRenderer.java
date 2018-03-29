@@ -15,22 +15,24 @@ import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
 /**
- * @author Christian Klukas
- *         (c) 2008 IPK-Gatersleben
+ * @author Christian Klukas (c) 2008 IPK-Gatersleben
  */
 public class NodeShapeCellRenderer implements ListCellRenderer {
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
+	 * 
+	 * @see
+	 * javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList,
+	 * java.lang.Object, int, boolean, boolean)
 	 */
-	public Component getListCellRendererComponent(JList list, Object value,
-						int index, boolean isSelected, boolean cellHasFocus) {
-		
+	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected,
+			boolean cellHasFocus) {
+
 		JLabel result = new JLabel();
-		
+
 		result.setText((String) value);
-		
+
 		if (isSelected)
 			result.setBackground(list.getSelectionBackground());
 		else {
@@ -39,18 +41,18 @@ public class NodeShapeCellRenderer implements ListCellRenderer {
 			else
 				result.setBackground(list.getBackground());
 		}
-		
+
 		ClassLoader cl = this.getClass().getClassLoader();
 		String path = this.getClass().getPackage().getName().replace('.', '/') + "/nodeshapes";
 		ImageIcon icon = null;
 		URL u = cl.getResource(path + "/" + value + ".png");
 		if (u != null)
 			icon = new ImageIcon(u);
-		
+
 		if (icon != null)
 			result.setIcon(icon);
-		
+
 		return result;
 	}
-	
+
 }

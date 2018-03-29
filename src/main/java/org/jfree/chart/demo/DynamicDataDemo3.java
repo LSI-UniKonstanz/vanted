@@ -56,8 +56,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.Spacer;
 
 /**
- * A demonstration application showing a time series chart where you can dynamically add
- * (random) data by clicking on a button.
+ * A demonstration application showing a time series chart where you can
+ * dynamically add (random) data by clicking on a button.
  */
 public class DynamicDataDemo3 extends ApplicationFrame implements ActionListener {
 
@@ -74,7 +74,7 @@ public class DynamicDataDemo3 extends ApplicationFrame implements ActionListener
 	 * Constructs a new demonstration application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public DynamicDataDemo3(final String title) {
 
@@ -89,9 +89,7 @@ public class DynamicDataDemo3 extends ApplicationFrame implements ActionListener
 			this.datasets[i] = new TimeSeriesCollection(series);
 			final NumberAxis rangeAxis = new NumberAxis("Y" + i);
 			rangeAxis.setAutoRangeIncludesZero(false);
-			final XYPlot subplot = new XYPlot(
-								this.datasets[i], null, rangeAxis, new StandardXYItemRenderer()
-								);
+			final XYPlot subplot = new XYPlot(this.datasets[i], null, rangeAxis, new StandardXYItemRenderer());
 			subplot.setBackgroundPaint(Color.lightGray);
 			subplot.setDomainGridlinePaint(Color.white);
 			subplot.setRangeGridlinePaint(Color.white);
@@ -152,7 +150,7 @@ public class DynamicDataDemo3 extends ApplicationFrame implements ActionListener
 	 * Handles a click on the button by adding new (random) data.
 	 * 
 	 * @param e
-	 *           the action event.
+	 *            the action event.
 	 */
 	public void actionPerformed(final ActionEvent e) {
 
@@ -180,7 +178,7 @@ public class DynamicDataDemo3 extends ApplicationFrame implements ActionListener
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

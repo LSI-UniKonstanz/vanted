@@ -37,26 +37,26 @@ import org.graffiti.selection.Selection;
  */
 public class PasteAction extends SelectionAction {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Comment for <code>serialVersionUID</code>
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private static final int pasteOffset = 50;
-	
+
 	/**
 	 * Constructs a new popup action.
 	 * 
 	 * @param mainFrame
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public PasteAction(MainFrame mainFrame) {
 		super("edit.paste", mainFrame);
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the help context for the action.
 	 * 
@@ -66,25 +66,25 @@ public class PasteAction extends SelectionAction {
 	public HelpContext getHelpContext() {
 		return null; // TODO
 	}
-	
+
 	HashMap<String, Integer> pasteHash2Offset = new HashMap<String, Integer>();
-	
+
 	public static final String PASTED_NODE = "pastedNode";
-	
+
 	/**
 	 * Executes this action.
 	 * 
 	 * @param e
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public void actionPerformed(ActionEvent e) {
 		String gml = ClipboardService.readFromClipboardAsText();
-		if(gml == null || gml.isEmpty())
+		if (gml == null || gml.isEmpty())
 			return;
-		//remove leading comments
+		// remove leading comments
 		while (gml.startsWith("#") && gml.contains("\n"))
 			gml = gml.substring(gml.indexOf("\n") + "\n".length(), gml.length());
-		
+
 		boolean isGMLformat = true;
 		if (!(gml != null && gml.startsWith("graph ["))) {
 			isGMLformat = false;
@@ -93,7 +93,7 @@ public class PasteAction extends SelectionAction {
 			MainFrame.showMessageDialog("Clipboard data could not be read. Can not proceed.", "Information");
 			return;
 		}
-		
+
 		String ext = "gml";
 		IOManager ioManager = MainFrame.getInstance().getIoManager();
 		try {
@@ -122,24 +122,24 @@ public class PasteAction extends SelectionAction {
 				workGraph = new AdjListGraph();
 				showGraphInNewView = true;
 			}
-			
+
 			String hashCode = gml.hashCode() + "§" + workGraph.hashCode();
-			
+
 			if (!pasteHash2Offset.containsKey(hashCode))
 				pasteHash2Offset.put(hashCode, 0);
 			pasteHash2Offset.put(hashCode, pasteHash2Offset.get(hashCode) + pasteOffset);
 			int off = pasteHash2Offset.get(hashCode);
 			AttributeHelper.moveGraph(newGraph, off, off);
-			
+
 			newGraph.setModified(false);
-			
+
 			Collection<GraphElement> newElements = workGraph.addGraph(newGraph);
 			Selection sel = getSelection();
 			if (sel == null)
 				sel = new Selection();
 			sel.clear();
 			sel.addAll(newElements);
-			
+
 			if (!showGraphInNewView) {
 				// MainFrame.getInstance().getSessionManager().getActiveSession().getActiveView().repaint(null);
 				MainFrame.getInstance().getSessionManager().getActiveSession().getActiveView().completeRedraw();
@@ -151,27 +151,29 @@ public class PasteAction extends SelectionAction {
 			ErrorMsg.addErrorMessage(err);
 		}
 	}
-	
+
 	/**
-	 * Sets the internal <code>enable</code> flag, which depends on the given
-	 * list of selected items.
+	 * Sets the internal <code>enable</code> flag, which depends on the given list
+	 * of selected items.
 	 * 
 	 * @param items
-	 *           the items, which determine the internal state of the <code>enable</code> flag.
+	 *            the items, which determine the internal state of the
+	 *            <code>enable</code> flag.
 	 */
 	@Override
 	protected void enable(List<?> items) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.actions.SelectionAction#isEnabled()
 	 */
 	@Override
 	public boolean isEnabled() {
 		return true; /*
-						 * String gml = ClipboardService.readFromClipboardAsText();
-						 * return (gml!=null && gml.startsWith("graph ["));
+						 * String gml = ClipboardService.readFromClipboardAsText(); return (gml!=null &&
+						 * gml.startsWith("graph ["));
 						 */
 	}
 }

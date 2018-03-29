@@ -14,25 +14,24 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 /**
  * @author Christian Klukas
  */
-public class LinkVisualizationLegendPlugin
-					extends IPK_PluginAdapter
-					implements SessionListener, ProvidesGeneralContextMenu {
-	
+public class LinkVisualizationLegendPlugin extends IPK_PluginAdapter
+		implements SessionListener, ProvidesGeneralContextMenu {
+
 	Session activeSession = null;
-	
+
 	public JMenuItem[] getCurrentContextMenuItem() {
 		if (activeSession == null)
 			return null;
 		else
 			return new JMenuItem[] { new JMenuItem("Test 123") };
 	}
-	
+
 	public void sessionChanged(Session s) {
 		this.activeSession = s;
 	}
-	
+
 	public void sessionDataChanged(Session s) {
 		// empty
 	}
-	
+
 }

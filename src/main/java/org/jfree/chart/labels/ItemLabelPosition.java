@@ -36,8 +36,8 @@ import java.io.Serializable;
 import org.jfree.ui.TextAnchor;
 
 /**
- * The attributes that control the position of the label for each data item on a chart. Instances
- * of this class are immutable.
+ * The attributes that control the position of the label for each data item on a
+ * chart. Instances of this class are immutable.
  */
 public class ItemLabelPosition implements Serializable {
 
@@ -64,32 +64,30 @@ public class ItemLabelPosition implements Serializable {
 	 * Creates a new position record (with zero rotation).
 	 * 
 	 * @param itemLabelAnchor
-	 *           the item label anchor (<code>null</code> not permitted).
+	 *            the item label anchor (<code>null</code> not permitted).
 	 * @param textAnchor
-	 *           the text anchor (<code>null</code> not permitted).
+	 *            the text anchor (<code>null</code> not permitted).
 	 */
 	public ItemLabelPosition(ItemLabelAnchor itemLabelAnchor, TextAnchor textAnchor) {
 		this(itemLabelAnchor, textAnchor, TextAnchor.CENTER, 0.0);
 	}
 
 	/**
-	 * Creates a new position record. The item label anchor is a point relative to the
-	 * data item (dot, bar or other visual item) on a chart. The item label is aligned
-	 * by aligning the text anchor with the item label anchor.
+	 * Creates a new position record. The item label anchor is a point relative to
+	 * the data item (dot, bar or other visual item) on a chart. The item label is
+	 * aligned by aligning the text anchor with the item label anchor.
 	 * 
 	 * @param itemLabelAnchor
-	 *           the item label anchor (<code>null</code> not permitted).
+	 *            the item label anchor (<code>null</code> not permitted).
 	 * @param textAnchor
-	 *           the text anchor (<code>null</code> not permitted).
+	 *            the text anchor (<code>null</code> not permitted).
 	 * @param rotationAnchor
-	 *           the rotation anchor (<code>null</code> not permitted).
+	 *            the rotation anchor (<code>null</code> not permitted).
 	 * @param angle
-	 *           the rotation angle (in radians).
+	 *            the rotation angle (in radians).
 	 */
-	public ItemLabelPosition(ItemLabelAnchor itemLabelAnchor,
-										TextAnchor textAnchor,
-										TextAnchor rotationAnchor,
-										double angle) {
+	public ItemLabelPosition(ItemLabelAnchor itemLabelAnchor, TextAnchor textAnchor, TextAnchor rotationAnchor,
+			double angle) {
 
 		if (itemLabelAnchor == null) {
 			throw new IllegalArgumentException("Null 'itemLabelAnchor' argument.");
@@ -148,7 +146,7 @@ public class ItemLabelPosition implements Serializable {
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param object
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 * @return a boolean.
 	 */
 	public boolean equals(Object object) {

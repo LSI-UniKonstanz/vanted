@@ -24,8 +24,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchTyp
  * @author ricardo
  * 
  */
-public class HelperClass
-{
+public class HelperClass {
 	/**
 	 * returns a set of attributes the attribute looked befor like:
 	 * comment_1,comment_2,...
@@ -34,8 +33,7 @@ public class HelperClass
 	 * @param elem
 	 * @return
 	 */
-	protected static ArrayList<Attribute> getAttributeOfSetOfString(String attr, Graph elem)
-	{
+	protected static ArrayList<Attribute> getAttributeOfSetOfString(String attr, Graph elem) {
 		ArrayList<Attribute> set = new ArrayList<Attribute>();
 
 		attr = attr.replace("iii", "[0-9]*");
@@ -53,8 +51,7 @@ public class HelperClass
 	 * @param elem
 	 * @return
 	 */
-	protected static ArrayList<Attribute> getAttributeOfSetOfString(String attr, GraphElement elem)
-	{
+	protected static ArrayList<Attribute> getAttributeOfSetOfString(String attr, GraphElement elem) {
 		ArrayList<Attribute> set = new ArrayList<Attribute>();
 
 		attr = attr.replace("iii", "[0-9]*");
@@ -74,8 +71,8 @@ public class HelperClass
 	 * @param firstNumber
 	 * @return
 	 */
-	protected static ArrayList<Attribute> getAttributeOfSetWithTwoInnerReplacements(String attr, Graph elem, int firstNumber)
-	{
+	protected static ArrayList<Attribute> getAttributeOfSetWithTwoInnerReplacements(String attr, Graph elem,
+			int firstNumber) {
 		ArrayList<Attribute> set = new ArrayList<Attribute>();
 
 		attr = attr.replace("iii", String.valueOf(firstNumber));
@@ -96,8 +93,8 @@ public class HelperClass
 	 * @param firstNumber
 	 * @return
 	 */
-	protected static ArrayList<Attribute> getAttributeOfSetWithTwoInnerReplacements(String attr, GraphElement elem, int firstNumber)
-	{
+	protected static ArrayList<Attribute> getAttributeOfSetWithTwoInnerReplacements(String attr, GraphElement elem,
+			int firstNumber) {
 		ArrayList<Attribute> set = new ArrayList<Attribute>();
 
 		attr = attr.replace("iii", String.valueOf(firstNumber));
@@ -115,27 +112,24 @@ public class HelperClass
 	 * @param attr
 	 * @return
 	 */
-	protected static String getAttributeSecure(GraphElement elem, String attr)
-	{
+	protected static String getAttributeSecure(GraphElement elem, String attr) {
 		String value = "";
-		if (AttributeHelper.hasAttribute(elem, attr))
-		{
+		if (AttributeHelper.hasAttribute(elem, attr)) {
 			value = elem.getAttribute(attr).getValue().toString();
 		}
 		return value;
 	}
 
 	/**
-	 * made for an attribute you are sure of to be existing only once the
-	 * attriute exists in the form Xref_1.db
+	 * made for an attribute you are sure of to be existing only once the attriute
+	 * exists in the form Xref_1.db
 	 * 
 	 * @param attr
 	 * @param elem
 	 * @param first
 	 * @return
 	 */
-	protected static Attribute getAttributeWithOneSpecificInnerReplacement(String attr, Graph elem, int first)
-	{
+	protected static Attribute getAttributeWithOneSpecificInnerReplacement(String attr, Graph elem, int first) {
 		ArrayList<Attribute> set = new ArrayList<Attribute>();
 
 		attr = attr.replace("iii", String.valueOf(first));
@@ -149,16 +143,15 @@ public class HelperClass
 	}
 
 	/**
-	 * made for an attribute you are sure of to be existing only once the
-	 * attriute exists in the form Xref_1.db
+	 * made for an attribute you are sure of to be existing only once the attriute
+	 * exists in the form Xref_1.db
 	 * 
 	 * @param attr
 	 * @param elem
 	 * @param first
 	 * @return
 	 */
-	protected static Attribute getAttributeWithOneSpecificInnerReplacement(String attr, GraphElement elem, int first)
-	{
+	protected static Attribute getAttributeWithOneSpecificInnerReplacement(String attr, GraphElement elem, int first) {
 		ArrayList<Attribute> set = new ArrayList<Attribute>();
 
 		attr = attr.replace("iii", String.valueOf(first));
@@ -178,22 +171,19 @@ public class HelperClass
 	 * @param string
 	 * @return
 	 */
-	protected static boolean hasAttribute(GraphElement elem, String string)
-	{
+	protected static boolean hasAttribute(GraphElement elem, String string) {
 		return AttributeHelper.hasAttribute(elem, string);
 	}
 
 	/**
 	 * written by Hendrik Mehlhorn it is looking for all attributes that match a
-	 * specific pattern and putting the result into the set passed into the
-	 * function
+	 * specific pattern and putting the result into the set passed into the function
 	 * 
 	 * @param elem
 	 * @param pattern
 	 * @param set
 	 */
-	public static void returnAttributeByPath(Graph elem, Pattern pattern, ArrayList<Attribute> set)
-	{
+	public static void returnAttributeByPath(Graph elem, Pattern pattern, ArrayList<Attribute> set) {
 		HashSet<SearchType> search = new HashSet<SearchType>();
 		search.add(SearchType.searchString);
 		search.add(SearchType.searchBoolean);
@@ -203,13 +193,11 @@ public class HelperClass
 		Map<String[], Attribute> map = new HashMap<String[], Attribute>();
 		map = TreeAttributSearcher.getMapPathToAttributable(search, elem);
 
-		for (String[] key : map.keySet())
-		{
+		for (String[] key : map.keySet()) {
 			String path = map.get(key).getPath();
 			Matcher matcher = pattern.matcher(path);
 
-			if (matcher.matches())
-			{
+			if (matcher.matches()) {
 				set.add(map.get(key));
 			}
 
@@ -226,8 +214,7 @@ public class HelperClass
 	 * @param set
 	 *            gets filled if Attribute was found
 	 */
-	public static void returnAttributeByPath(GraphElement elem, Pattern pattern, ArrayList<Attribute> set)
-	{
+	public static void returnAttributeByPath(GraphElement elem, Pattern pattern, ArrayList<Attribute> set) {
 		HashSet<SearchType> search = new HashSet<SearchType>();
 		search.add(SearchType.searchString);
 		search.add(SearchType.searchBoolean);
@@ -237,13 +224,11 @@ public class HelperClass
 		Map<String[], Attribute> map = new HashMap<String[], Attribute>();
 		map = TreeAttributSearcher.getMapPathToAttributable(search, elem);
 
-		for (String[] key : map.keySet())
-		{
+		for (String[] key : map.keySet()) {
 			String path = map.get(key).getPath();
 			Matcher matcher = pattern.matcher(path);
 
-			if (matcher.matches())
-			{
+			if (matcher.matches()) {
 				set.add(map.get(key));
 			}
 
@@ -257,11 +242,9 @@ public class HelperClass
 	 * @param attr
 	 * @param attributeSet
 	 */
-	protected static void setAttributeOfSetOfDouble(GraphElement elem, String attr, Set<Double> attributeSet)
-	{
+	protected static void setAttributeOfSetOfDouble(GraphElement elem, String attr, Set<Double> attributeSet) {
 		int i = 1;
-		for (Double s : attributeSet)
-		{
+		for (Double s : attributeSet) {
 			String attr_replaced = attr.replace("iii", String.valueOf(i));
 
 			int firstIndex = attr_replaced.indexOf(".");
@@ -280,11 +263,9 @@ public class HelperClass
 	 * @param attr
 	 * @param attributeSet
 	 */
-	protected static void setAttributeOfSetOfFloat(GraphElement elem, String attr, Set<Float> attributeSet)
-	{
+	protected static void setAttributeOfSetOfFloat(GraphElement elem, String attr, Set<Float> attributeSet) {
 		int i = 1;
-		for (Float s : attributeSet)
-		{
+		for (Float s : attributeSet) {
 			String attr_replaced = attr.replace("iii", String.valueOf(i));
 
 			int firstIndex = attr_replaced.indexOf(".");
@@ -303,11 +284,9 @@ public class HelperClass
 	 * @param attr
 	 * @param attributeSet
 	 */
-	protected static void setAttributeOfSetOfString(GraphElement elem, String attr, Set<String> attributeSet)
-	{
+	protected static void setAttributeOfSetOfString(GraphElement elem, String attr, Set<String> attributeSet) {
 		int i = 1;
-		for (String s : attributeSet)
-		{
+		for (String s : attributeSet) {
 			String attr_replaced = attr.replace("iii", String.valueOf(i));
 
 			int firstIndex = attr_replaced.indexOf(".");
@@ -329,10 +308,8 @@ public class HelperClass
 	 * @param value
 	 *            1
 	 */
-	protected static void setAttributeSecure(GraphElement elem, String attr, String value)
-	{
-		if (value != null)
-		{
+	protected static void setAttributeSecure(GraphElement elem, String attr, String value) {
+		if (value != null) {
 			int firstIndex = attr.indexOf(".");
 			String leaf = attr.substring(firstIndex);
 			String pathToLeaf = attr.substring(0, firstIndex);
@@ -342,18 +319,17 @@ public class HelperClass
 	}
 
 	/**
-	 * sets attributes with one inner replacement, use while need maintain an
-	 * index for example BioPax.Comment_i --> BioPax.Comment_14
+	 * sets attributes with one inner replacement, use while need maintain an index
+	 * for example BioPax.Comment_i --> BioPax.Comment_14
 	 * 
 	 * @param elem
 	 * @param attr
 	 * @param number
 	 * @param value
 	 */
-	protected static void setAttributeWithOneInnerReplacement(Attributable elem, String attr, int number, String value)
-	{
-		if (value != null)
-		{
+	protected static void setAttributeWithOneInnerReplacement(Attributable elem, String attr, int number,
+			String value) {
+		if (value != null) {
 			String attr_replaced = attr.replace("iii", String.valueOf(number));
 			int firstIndex = attr_replaced.indexOf(".");
 			String leaf = attr_replaced.substring(firstIndex);
@@ -375,10 +351,9 @@ public class HelperClass
 	 * @param j
 	 * @param value
 	 */
-	protected static void setAttributeWithTwoInnerReplacements(Attributable elem, String attr, int i, int j, String value)
-	{
-		if (value != null)
-		{
+	protected static void setAttributeWithTwoInnerReplacements(Attributable elem, String attr, int i, int j,
+			String value) {
+		if (value != null) {
 			String attr_replaced = attr.replace("iii", String.valueOf(i));
 			attr_replaced = attr_replaced.replace("jjj", String.valueOf(j));
 			int firstIndex = attr_replaced.indexOf(".");

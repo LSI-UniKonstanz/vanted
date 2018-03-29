@@ -17,19 +17,17 @@ import java.awt.geom.Point2D;
  * 
  * @version $Revision: 1.11 $
  */
-public class StandardArrowShape
-					extends AbstractArrowShape
-					implements SupportsHollowDrawing {
+public class StandardArrowShape extends AbstractArrowShape implements SupportsHollowDrawing {
 	// ~ Constructors
 	// ===========================================================
-	
+
 	boolean hollow = false;
-	
+
 	public StandardArrowShape(float size) {
 		super();
 		updateSize(size);
 	}
-	
+
 	@Override
 	public void updateSize(double size) {
 		super.updateSize(size);
@@ -41,27 +39,28 @@ public class StandardArrowShape
 		arrow.moveTo(0f, 0f);
 		arrow.lineTo(0f, ns);
 		arrow.lineTo(ns, ns / 2f);
-		
+
 		// arrow.lineTo(0f, 0f);
 		arrow.closePath();
-		
+
 		this.head = new Point2D.Double(ns, ns / 2d);
 		this.anchor = new Point2D.Double(0, ns / 2d);
 		this.arrowShape = arrow;
 		this.arrowWidth = ns;
 	}
-	
+
 	/**
-	 * Constructs a new arrow. Creates the <code>GeneralPath</code> representing the arrow and sets head and anchor.
+	 * Constructs a new arrow. Creates the <code>GeneralPath</code> representing the
+	 * arrow and sets head and anchor.
 	 */
 	public StandardArrowShape() {
 		// this(10f);
 	}
-	
+
 	public boolean isHollow() {
 		return hollow;
 	}
-	
+
 	public void setHollow(boolean h) {
 		this.hollow = h;
 	}

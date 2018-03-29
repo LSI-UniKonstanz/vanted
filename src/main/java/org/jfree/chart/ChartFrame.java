@@ -46,9 +46,9 @@ public class ChartFrame extends JFrame {
 	 * Constructs a frame for a chart.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 * @param chart
-	 *           the chart.
+	 *            the chart.
 	 */
 	public ChartFrame(String title, JFreeChart chart) {
 		this(title, chart, false);
@@ -58,11 +58,11 @@ public class ChartFrame extends JFrame {
 	 * Constructs a frame for a chart.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 * @param chart
-	 *           the chart.
+	 *            the chart.
 	 * @param scrollPane
-	 *           iIf <code>true</code>, put the Chart(Panel) into a JScrollPane.
+	 *            iIf <code>true</code>, put the Chart(Panel) into a JScrollPane.
 	 */
 	public ChartFrame(String title, JFreeChart chart, boolean scrollPane) {
 

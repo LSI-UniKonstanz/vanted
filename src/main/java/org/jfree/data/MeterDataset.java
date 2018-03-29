@@ -35,10 +35,12 @@
 package org.jfree.data;
 
 /**
- * A dataset containing a single value within an overall range. In addition, the dataset defines
- * three subranges: the 'normal' range, the 'warning' range and the 'critical' range.
+ * A dataset containing a single value within an overall range. In addition, the
+ * dataset defines three subranges: the 'normal' range, the 'warning' range and
+ * the 'critical' range.
  * 
- * @deprecated Use ValueDataset instead, this interface mixes data and presentation items.
+ * @deprecated Use ValueDataset instead, this interface mixes data and
+ *             presentation items.
  */
 public interface MeterDataset extends ValueDataset {
 

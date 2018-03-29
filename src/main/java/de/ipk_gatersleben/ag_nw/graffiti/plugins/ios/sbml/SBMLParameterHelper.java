@@ -25,10 +25,8 @@ public class SBMLParameterHelper {
 		return parameter;
 	}
 
-	public SBMLParameter addParameter(Graph g, String internHeadline,
-			String presentedHeadline) {
-		SBMLParameter parameter = new SBMLParameter(g, internHeadline,
-				presentedHeadline);
+	public SBMLParameter addParameter(Graph g, String internHeadline, String presentedHeadline) {
+		SBMLParameter parameter = new SBMLParameter(g, internHeadline, presentedHeadline);
 		parameterList.add(parameter);
 		return parameter;
 	}
@@ -38,8 +36,7 @@ public class SBMLParameterHelper {
 		return writer.headlineHelper(g, SBML_Constants.SBML_PARAMETER);
 	}
 
-	public List<SBMLParameter> addParameters(Graph g,
-			List<String> internHeadlines) {
+	public List<SBMLParameter> addParameters(Graph g, List<String> internHeadlines) {
 		List<SBMLParameter> returnList = new ArrayList<SBMLParameter>();
 		Iterator<String> internHeadlineIt = internHeadlines.iterator();
 		while (internHeadlineIt.hasNext()) {

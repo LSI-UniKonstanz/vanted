@@ -22,33 +22,28 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
 public class SBML_UnitDefinition_Reader {
-	
+
 	/**
 	 * Method reads in unit definitions and is called from class
 	 * SBML_XML_Reader.java
 	 * 
 	 * @param unitDefinitionList
-	 *        contains the unit definitions for the import
+	 *            contains the unit definitions for the import
 	 * @param g
-	 *        the data structure for reading in the information
+	 *            the data structure for reading in the information
 	 */
-	public void addUnitDefinitions(ListOf<UnitDefinition> unitDefinitionList,
-			Graph g) {
-		Iterator<UnitDefinition> itUnitDefinition = unitDefinitionList
-				.iterator();
+	public void addUnitDefinitions(ListOf<UnitDefinition> unitDefinitionList, Graph g) {
+		Iterator<UnitDefinition> itUnitDefinition = unitDefinitionList.iterator();
 		int unitCount = 1;
 		SBMLUnitDefinitionHelper unitDefinitionHelperObject = new SBMLUnitDefinitionHelper();
 		while (itUnitDefinition.hasNext()) {
 			int subUnitCount = 1;
 			UnitDefinition unitDefinition = itUnitDefinition.next();
-			String internHeadline = new StringBuffer(
-					SBML_Constants.SBML_UNIT_DEFINITION).append(unitCount)
-					.toString();
-			String presentedHeadline = new StringBuffer("SBML Unit Definition ")
-					.append(unitCount).toString();
-			SBMLUnitDefinition unitDefinitionHelper = unitDefinitionHelperObject
-					.addUnitDefinition(g, internHeadline, presentedHeadline);
-			
+			String internHeadline = new StringBuffer(SBML_Constants.SBML_UNIT_DEFINITION).append(unitCount).toString();
+			String presentedHeadline = new StringBuffer("SBML Unit Definition ").append(unitCount).toString();
+			SBMLUnitDefinition unitDefinitionHelper = unitDefinitionHelperObject.addUnitDefinition(g, internHeadline,
+					presentedHeadline);
+
 			String unitDefinitionID = unitDefinition.getId();
 			String unitDefinitionName = unitDefinition.getName();
 			String unitDefinitionSBOTerm = "";
@@ -59,23 +54,20 @@ public class SBML_UnitDefinition_Reader {
 			if (unitDefinition.isSetMetaId()) {
 				unitDefinitionMetaID = unitDefinition.getMetaId();
 			}
-			
+
 			if (unitDefinition.isSetNotes()) {
 				String notesString;
 				try {
 					notesString = unitDefinition.getNotesString();
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					notesString = "";
 				}
-				unitDefinitionHelper.setNotes(notesString,
-						unitDefinition.getNotes());
+				unitDefinitionHelper.setNotes(notesString, unitDefinition.getNotes());
 			}
-			if (unitDefinition.isSetId()
-					&& UnitDefinition.isValidId(unitDefinitionID,
-							unitDefinition.getLevel(),
-							unitDefinition.getVersion())) {
+			if (unitDefinition.isSetId() && UnitDefinition.isValidId(unitDefinitionID, unitDefinition.getLevel(),
+					unitDefinition.getVersion())) {
 				;
 				unitDefinitionHelper.setID(unitDefinitionID);
 			}
@@ -90,12 +82,10 @@ public class SBML_UnitDefinition_Reader {
 			}
 			if (unitDefinition.isSetAnnotation()) {
 				if (unitDefinition.getAnnotation().isSetRDFannotation()) {
-					unitDefinitionHelper.setAnnotation(unitDefinition
-							.getAnnotation());
+					unitDefinitionHelper.setAnnotation(unitDefinition.getAnnotation());
 				}
 				if (unitDefinition.getAnnotation().isSetNonRDFannotation()) {
-					unitDefinitionHelper.setNonRDFAnnotation(unitDefinition
-							.getAnnotation().getNonRDFannotation());
+					unitDefinitionHelper.setNonRDFAnnotation(unitDefinition.getAnnotation().getNonRDFannotation());
 				}
 			}
 			// The sub units are collected in this list
@@ -110,28 +100,18 @@ public class SBML_UnitDefinition_Reader {
 					int scale = unit.getScale();
 					Double exponent = unit.getExponent();
 					if (Double.isNaN(exponent)) {
-						SBML_Logger.addErrorMessage("Attribute exponent of unit definition "
-								+ unitCount
-								+ " sub unit "
-								+ subUnitCount
-								+ " with the id "
-								+ unitDefinitionID
-								+ " is not a valid double value.");
+						SBML_Logger.addErrorMessage("Attribute exponent of unit definition " + unitCount + " sub unit "
+								+ subUnitCount + " with the id " + unitDefinitionID + " is not a valid double value.");
 					}
 					Double multiplier = unit.getMultiplier();
 					if (Double.isNaN(multiplier)) {
-						SBML_Logger.addErrorMessage("Attribute multiplier of unit definition "
-								+ unitCount
-								+ " sub unit "
-								+ subUnitCount
-								+ " with the id "
-								+ unitDefinitionID
-								+ " is not a valid double value.");
+						SBML_Logger.addErrorMessage(
+								"Attribute multiplier of unit definition " + unitCount + " sub unit " + subUnitCount
+										+ " with the id " + unitDefinitionID + " is not a valid double value.");
 					}
 					String kind = unit.getKind().getName();
-					String composedSubUnit = "(" + multiplier + " * 10^"
-							+ scale + " * " + kind + ")^" + exponent;
-					
+					String composedSubUnit = "(" + multiplier + " * 10^" + scale + " * " + kind + ")^" + exponent;
+
 					unitHelper.setComposedSubUnit(composedSubUnit);
 					if (unit.isSetMetaId()) {
 						unitHelper.setMetaID(unit.getMetaId());
@@ -144,24 +124,22 @@ public class SBML_UnitDefinition_Reader {
 						try {
 							notesString = unit.getNotesString();
 						} catch (XMLStreamException e) {
-							// TODO Auto-generated catch block
+							
 							e.printStackTrace();
 							notesString = "";
 						}
-						unitHelper.setNotes(notesString,
-								unit.getNotes());
+						unitHelper.setNotes(notesString, unit.getNotes());
 					}
 					if (unit.isSetAnnotation()) {
 						if (unit.getAnnotation().isSetRDFannotation()) {
 							unitHelper.setAnnotation(unit.getAnnotation());
 						}
 						if (unit.getAnnotation().isSetNonRDFannotation()) {
-							unitHelper.setNonRDFAnnotation(unit.getAnnotation()
-									.getNonRDFannotation());
+							unitHelper.setNonRDFAnnotation(unit.getAnnotation().getNonRDFannotation());
 						}
 					}
 					ListOfSubUnits.add(composedSubUnit);
-					
+
 					subUnitCount++;
 				}
 				String composedUnit = "";
@@ -178,9 +156,9 @@ public class SBML_UnitDefinition_Reader {
 				}
 				unitHelper.setComposedUnit(composedUnit);
 			}
-			
+
 			unitCount++;
 		}
-		
+
 	}
 }

@@ -8,7 +8,6 @@ import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.ErrorMsg;
 import org.graffiti.graph.Graph;
 import org.sbml.jsbml.ListOf;
 import org.sbml.jsbml.Parameter;
@@ -19,14 +18,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Constants;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.sbml.SBML_Logger;
 
 public class SBML_Parameter_Reader {
-	
+
 	/**
 	 * Method reads in parameter and is called from class SBML_XML_Reader.java
 	 * 
 	 * @param parameterList
-	 *           contains the parameter for the import
+	 *            contains the parameter for the import
 	 * @param g
-	 *           the data structure for reading in the information
+	 *            the data structure for reading in the information
 	 */
 	public void addParameter(ListOf<Parameter> parameterList, Graph g) {
 		Iterator<Parameter> itParameter = parameterList.iterator();
@@ -34,20 +33,16 @@ public class SBML_Parameter_Reader {
 		SBMLParameterHelper parameterHelperObject = new SBMLParameterHelper();
 		while (itParameter.hasNext()) {
 			Parameter parameter = itParameter.next();
-			
-			String internHeadline = new StringBuffer(
-					SBML_Constants.SBML_PARAMETER).append(parameterCount)
-					.toString();
-			String presentedHeadline = new StringBuffer("SBML Parameter ")
-					.append(parameterCount).toString();
-			
-			SBMLParameter parameterHelper = parameterHelperObject.addParameter(
-					g, internHeadline, presentedHeadline);
-			
+
+			String internHeadline = new StringBuffer(SBML_Constants.SBML_PARAMETER).append(parameterCount).toString();
+			String presentedHeadline = new StringBuffer("SBML Parameter ").append(parameterCount).toString();
+
+			SBMLParameter parameterHelper = parameterHelperObject.addParameter(g, internHeadline, presentedHeadline);
+
 			String parameterID = parameter.getId();
 			String parameterName = parameter.getName();
 			Double parameterValue = parameter.getValue();
-			
+
 			// in BIOMD0000000012.xml from BioModels.org this error message would be shown
 			// nevertheless the model is valid
 			// so this message is not necessary
@@ -56,20 +51,16 @@ public class SBML_Parameter_Reader {
 			// + parameterCount + " with the id " + parameterID
 			// + " is not a valid double value.");
 			// }
-			
+
 			String parameterUnits = parameter.getUnits();
 			Boolean parameterConstant = parameter.isConstant();
 			String metaID = parameter.getMetaId();
 			String sboTerm = parameter.getSBOTermID();
-			if (parameter.isSetId()
-					&& Parameter.isValidId(parameterID, parameter.getLevel(),
-							parameter.getVersion())) {
+			if (parameter.isSetId() && Parameter.isValidId(parameterID, parameter.getLevel(), parameter.getVersion())) {
 				parameterHelper.setID(parameterID);
 			}
-			if (!Parameter.isValidId(parameterID, parameter.getLevel(),
-					parameter.getVersion())) {
-				SBML_Logger.addErrorMessage("ID of parameter " + parameterCount
-						+ " is not valid.");
+			if (!Parameter.isValidId(parameterID, parameter.getLevel(), parameter.getVersion())) {
+				SBML_Logger.addErrorMessage("ID of parameter " + parameterCount + " is not valid.");
 			}
 			if (parameter.isSetName()) {
 				parameterHelper.setName(parameterName);
@@ -94,20 +85,18 @@ public class SBML_Parameter_Reader {
 				try {
 					notesString = parameter.getNotesString();
 				} catch (XMLStreamException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 					notesString = "";
 				}
-				parameterHelper.setNotes(notesString,
-						parameter.getNotes());
+				parameterHelper.setNotes(notesString, parameter.getNotes());
 			}
 			if (parameter.isSetAnnotation()) {
 				if (parameter.getAnnotation().isSetRDFannotation()) {
 					parameterHelper.setAnnotation(parameter.getAnnotation());
 				}
 				if (parameter.getAnnotation().isSetNonRDFannotation()) {
-					parameterHelper.setNonRDFAnnotation(parameter
-							.getAnnotation().getNonRDFannotation());
+					parameterHelper.setNonRDFAnnotation(parameter.getAnnotation().getNonRDFannotation());
 				}
 			}
 			parameterCount++;

@@ -22,34 +22,33 @@ import org.graffiti.plugin.actions.GraffitiAction;
  * 
  * @version $Revision: 1.6 $
  */
-public class PluginManagerEditAction
-					extends GraffitiAction {
+public class PluginManagerEditAction extends GraffitiAction {
 	// ~ Instance fields ========================================================
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	/** DOCUMENT ME! */
 	PluginManager pluginmgr;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Creates a new PluginManagerEditAction object.
 	 * 
 	 * @param mainFrame
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param pluginmgr
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public PluginManagerEditAction(MainFrame mainFrame, PluginManager pluginmgr) {
 		super("pluginmgr.edit", mainFrame, null);
 		this.pluginmgr = pluginmgr;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * @see javax.swing.Action#isEnabled()
 	 */
@@ -57,7 +56,7 @@ public class PluginManagerEditAction
 	public boolean isEnabled() {
 		return true;
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
 	 */
@@ -65,12 +64,12 @@ public class PluginManagerEditAction
 	public HelpContext getHelpContext() {
 		return null;
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
 	 * @param e
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	@SuppressWarnings("deprecation")
 	public void actionPerformed(ActionEvent e) {

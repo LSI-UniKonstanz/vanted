@@ -70,19 +70,13 @@ public class XYStepAreaChartDemo extends ApplicationFrame implements ActionListe
 
 	/** Problem data. */
 	private static final Object[][] TEST_DATA = {
-						// domain values, range values, may be null?
-			{ new Integer(1), new Integer(500), Boolean.TRUE },
-						{ new Integer(2), new Integer(694) },
-						{ new Integer(3), new Integer(-734) },
-						{ new Integer(4), new Integer(453) },
-						{ new Integer(5), new Integer(500), Boolean.TRUE },
-						{ new Integer(6), new Integer(200) },
-						{ new Integer(7), new Integer(550), Boolean.TRUE },
-						{ new Integer(8), new Integer(-150), Boolean.TRUE },
-						{ new Integer(9), new Integer(232) },
-						{ new Integer(10), new Integer(734) },
-						{ new Integer(11), new Integer(400), Boolean.TRUE },
-		};
+			// domain values, range values, may be null?
+			{ Integer.valueOf(1), Integer.valueOf(500), Boolean.TRUE }, { Integer.valueOf(2), Integer.valueOf(694) },
+			{ Integer.valueOf(3), Integer.valueOf(-734) }, { Integer.valueOf(4), Integer.valueOf(453) },
+			{ Integer.valueOf(5), Integer.valueOf(500), Boolean.TRUE }, { Integer.valueOf(6), Integer.valueOf(200) },
+			{ Integer.valueOf(7), Integer.valueOf(550), Boolean.TRUE }, { Integer.valueOf(8), Integer.valueOf(-150), Boolean.TRUE },
+			{ Integer.valueOf(9), Integer.valueOf(232) }, { Integer.valueOf(10), Integer.valueOf(734) },
+			{ Integer.valueOf(11), Integer.valueOf(400), Boolean.TRUE }, };
 
 	/** The chart panel. */
 	private ChartPanel chartPanel;
@@ -106,7 +100,7 @@ public class XYStepAreaChartDemo extends ApplicationFrame implements ActionListe
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XYStepAreaChartDemo(final String title) {
 
@@ -177,20 +171,16 @@ public class XYStepAreaChartDemo extends ApplicationFrame implements ActionListe
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createXYStepAreaChart(
-							"XY Step Area Chart Demo",
-							"Domain (X)", "Range (Y)",
-							dataset,
-							PlotOrientation.VERTICAL,
-							true, // legend
+		final JFreeChart chart = ChartFactory.createXYStepAreaChart("XY Step Area Chart Demo", "Domain (X)",
+				"Range (Y)", dataset, PlotOrientation.VERTICAL, true, // legend
 				true, // tool tips
 				false // URLs
-				);
+		);
 
 		// color
 		final XYPlot plot = chart.getXYPlot();
@@ -207,7 +197,7 @@ public class XYStepAreaChartDemo extends ApplicationFrame implements ActionListe
 	 * Change options according to settings.
 	 * 
 	 * @param evt
-	 *           the event.
+	 *            the event.
 	 */
 	public void actionPerformed(final ActionEvent evt) {
 
@@ -224,31 +214,27 @@ public class XYStepAreaChartDemo extends ApplicationFrame implements ActionListe
 				this.xySeries.getDataItem(i).setY(yVal);
 			}
 
-		} else
-			if (source == this.outlineCheckBox) {
+		} else if (source == this.outlineCheckBox) {
 
-				final XYPlot plot = (XYPlot) this.chartPanel.getChart().getPlot();
-				((XYStepAreaRenderer) plot.getRenderer()).setOutline(this.outlineCheckBox.isSelected());
+			final XYPlot plot = (XYPlot) this.chartPanel.getChart().getPlot();
+			((XYStepAreaRenderer) plot.getRenderer()).setOutline(this.outlineCheckBox.isSelected());
 
-			} else
-				if (source == this.rangeBaseTextField) {
+		} else if (source == this.rangeBaseTextField) {
 
-					final double val = Double.parseDouble(this.rangeBaseTextField.getText());
-					final XYPlot plot = (XYPlot) this.chartPanel.getChart().getPlot();
-					final XYStepAreaRenderer rend = (XYStepAreaRenderer) plot.getRenderer();
-					rend.setRangeBase(val);
+			final double val = Double.parseDouble(this.rangeBaseTextField.getText());
+			final XYPlot plot = (XYPlot) this.chartPanel.getChart().getPlot();
+			final XYStepAreaRenderer rend = (XYStepAreaRenderer) plot.getRenderer();
+			rend.setRangeBase(val);
 
-				} else
-					if (source == this.orientationComboBox) {
+		} else if (source == this.orientationComboBox) {
 
-						final XYPlot plot = (XYPlot) this.chartPanel.getChart().getPlot();
-						if (this.orientationComboBox.getSelectedItem() == ORIENT_HORIZ) {
-							plot.setOrientation(PlotOrientation.HORIZONTAL);
-						} else
-							if (this.orientationComboBox.getSelectedItem() == ORIENT_VERT) {
-								plot.setOrientation(PlotOrientation.VERTICAL);
-							}
-					}
+			final XYPlot plot = (XYPlot) this.chartPanel.getChart().getPlot();
+			if (this.orientationComboBox.getSelectedItem() == ORIENT_HORIZ) {
+				plot.setOrientation(PlotOrientation.HORIZONTAL);
+			} else if (this.orientationComboBox.getSelectedItem() == ORIENT_VERT) {
+				plot.setOrientation(PlotOrientation.VERTICAL);
+			}
+		}
 
 		this.chartPanel.repaint();
 	}
@@ -257,7 +243,7 @@ public class XYStepAreaChartDemo extends ApplicationFrame implements ActionListe
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 		final XYStepAreaChartDemo demo = new XYStepAreaChartDemo("Step Area XY Chart Demo");

@@ -8,11 +8,11 @@ import javax.swing.JList;
 
 public class MutableList<T> extends JList<T> {
 	private static final long serialVersionUID = 1L;
-	
+
 	public MutableList(DefaultListModel<T> model) {
 		super(model);
 	}
-	
+
 	public DefaultListModel<T> getContents() {
 		return (DefaultListModel<T>) getModel();
 	}

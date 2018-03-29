@@ -99,7 +99,7 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 	 * Set the plot associated with this renderer.
 	 * 
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 */
 	public void setPlot(PolarPlot plot) {
 		this.plot = plot;
@@ -118,24 +118,20 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 	 * Plots the data for a given series.
 	 * 
 	 * @param g2
-	 *           the drawing surface.
+	 *            the drawing surface.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param info
-	 *           collects plot rendering info.
+	 *            collects plot rendering info.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param seriesIndex
-	 *           the series index.
+	 *            the series index.
 	 */
-	public void drawSeries(Graphics2D g2,
-									Rectangle2D dataArea,
-									PlotRenderingInfo info,
-									PolarPlot plot,
-									XYDataset dataset,
-									int seriesIndex) {
+	public void drawSeries(Graphics2D g2, Rectangle2D dataArea, PlotRenderingInfo info, PolarPlot plot,
+			XYDataset dataset, int seriesIndex) {
 
 		Polygon poly = new Polygon();
 		int numPoints = dataset.getItemCount(seriesIndex);
@@ -158,10 +154,11 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 	}
 
 	/**
-	 * Returns <code>true</code> if the renderer should fill the specified series, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the renderer should fill the specified series,
+	 * and <code>false</code> otherwise.
 	 * 
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @return A boolean.
 	 */
 	public boolean isSeriesFilled(int series) {
@@ -177,9 +174,9 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 	 * Sets a flag that controls whether or not a series is filled.
 	 * 
 	 * @param series
-	 *           the series index.
+	 *            the series index.
 	 * @param filled
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setSeriesFilled(int series, boolean filled) {
 		this.seriesFilled.setBoolean(series, BooleanUtils.valueOf(filled));
@@ -189,18 +186,15 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 	 * Draw the angular gridlines - the spokes.
 	 * 
 	 * @param g2
-	 *           the drawing surface.
+	 *            the drawing surface.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param ticks
-	 *           the ticks.
+	 *            the ticks.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 */
-	public void drawAngularGridLines(Graphics2D g2,
-													PolarPlot plot,
-													List ticks,
-													Rectangle2D dataArea) {
+	public void drawAngularGridLines(Graphics2D g2, PolarPlot plot, List ticks, Rectangle2D dataArea) {
 
 		g2.setFont(plot.getAngleLabelFont());
 		g2.setStroke(plot.getAngleGridlineStroke());
@@ -212,18 +206,14 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 		Iterator iterator = ticks.iterator();
 		while (iterator.hasNext()) {
 			NumberTick tick = (NumberTick) iterator.next();
-			Point p = plot.translateValueThetaRadiusToJava2D(
-								tick.getNumber().doubleValue(), maxRadius, dataArea
-								);
+			Point p = plot.translateValueThetaRadiusToJava2D(tick.getNumber().doubleValue(), maxRadius, dataArea);
 			g2.setPaint(plot.getAngleGridlinePaint());
 			g2.drawLine(center.x, center.y, p.x, p.y);
 			if (plot.isAngleLabelsVisible()) {
 				int x = p.x;
 				int y = p.y;
 				g2.setPaint(plot.getAngleLabelPaint());
-				RefineryUtilities.drawAlignedString(
-									tick.getText(), g2, x, y, TextAnchor.CENTER
-									);
+				RefineryUtilities.drawAlignedString(tick.getText(), g2, x, y, TextAnchor.CENTER);
 			}
 		}
 	}
@@ -232,21 +222,18 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 	 * Draw the radial gridlines - the rings.
 	 * 
 	 * @param g2
-	 *           the drawing surface.
+	 *            the drawing surface.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param radialAxis
-	 *           the radial axis.
+	 *            the radial axis.
 	 * @param ticks
-	 *           the ticks.
+	 *            the ticks.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 */
-	public void drawRadialGridLines(Graphics2D g2,
-												PolarPlot plot,
-												ValueAxis radialAxis,
-												List ticks,
-												Rectangle2D dataArea) {
+	public void drawRadialGridLines(Graphics2D g2, PolarPlot plot, ValueAxis radialAxis, List ticks,
+			Rectangle2D dataArea) {
 
 		g2.setFont(radialAxis.getTickLabelFont());
 		g2.setPaint(plot.getRadiusGridlinePaint());
@@ -257,9 +244,7 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 		Iterator iterator = ticks.iterator();
 		while (iterator.hasNext()) {
 			NumberTick tick = (NumberTick) iterator.next();
-			Point p = plot.translateValueThetaRadiusToJava2D(
-								90.0, tick.getNumber().doubleValue(), dataArea
-								);
+			Point p = plot.translateValueThetaRadiusToJava2D(90.0, tick.getNumber().doubleValue(), dataArea);
 			int r = p.x - center.x;
 			int upperLeftX = center.x - r;
 			int upperLeftY = center.y - r;
@@ -274,7 +259,7 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 	 * Return the legend for the given series.
 	 * 
 	 * @param series
-	 *           the series index.
+	 *            the series index.
 	 * @return The legend item.
 	 */
 	public LegendItem getLegendItem(int series) {
@@ -291,16 +276,7 @@ public class DefaultPolarItemRenderer extends AbstractRenderer implements PolarI
 				Paint paint = getSeriesPaint(series);
 				Paint outlinePaint = getSeriesOutlinePaint(series);
 				Stroke stroke = getSeriesStroke(series);
-				result = new LegendItem(
-									label,
-									description,
-									shape,
-									true,
-									paint,
-									stroke,
-									outlinePaint,
-									stroke
-									);
+				result = new LegendItem(label, description, shape, true, paint, stroke, outlinePaint, stroke);
 			}
 		}
 		return result;

@@ -12,7 +12,7 @@ import org.graffiti.plugin.algorithm.Algorithm;
  * @author Joerg Bartelheimer
  */
 public class RadialTreeLayoutPlugin extends GenericPluginAdapter {
-	
+
 	/**
 	 * Creates a new GraphTreeLayoutPlugin object.
 	 */
@@ -20,5 +20,5 @@ public class RadialTreeLayoutPlugin extends GenericPluginAdapter {
 		this.algorithms = new Algorithm[1];
 		this.algorithms[0] = new RadialTreeLayout();
 	}
-	
+
 }

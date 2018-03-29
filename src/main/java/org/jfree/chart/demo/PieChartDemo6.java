@@ -48,7 +48,7 @@ public class PieChartDemo6 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PieChartDemo6(final String title) {
 		super(title);
@@ -66,12 +66,12 @@ public class PieChartDemo6 extends ApplicationFrame {
 	 */
 	private PieDataset createDataset() {
 		final DefaultPieDataset dataset = new DefaultPieDataset();
-		dataset.setValue("One", new Double(43.2));
-		dataset.setValue("Two", new Double(10.0));
-		dataset.setValue("Three", new Double(27.5));
-		dataset.setValue("Four", new Double(17.5));
-		dataset.setValue("Five", new Double(11.0));
-		dataset.setValue("Six", new Double(19.4));
+		dataset.setValue("One", Double.valueOf(43.2));
+		dataset.setValue("Two", Double.valueOf(10.0));
+		dataset.setValue("Three", Double.valueOf(27.5));
+		dataset.setValue("Four", Double.valueOf(17.5));
+		dataset.setValue("Five", Double.valueOf(11.0));
+		dataset.setValue("Six", Double.valueOf(19.4));
 		return dataset;
 	}
 
@@ -90,18 +90,15 @@ public class PieChartDemo6 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return a chart.
 	 */
 	private JFreeChart createChart(final PieDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createPieChart(
-							"Pie Chart Demo 6", // chart title
+		final JFreeChart chart = ChartFactory.createPieChart("Pie Chart Demo 6", // chart title
 				dataset, // data
 				false, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		final PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setLabelGenerator(new CustomLabelGenerator());
@@ -113,7 +110,7 @@ public class PieChartDemo6 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
@@ -133,9 +130,9 @@ public class PieChartDemo6 extends ApplicationFrame {
 		 * Generates a label for a pie section.
 		 * 
 		 * @param dataset
-		 *           the dataset (<code>null</code> not permitted).
+		 *            the dataset (<code>null</code> not permitted).
 		 * @param key
-		 *           the section key (<code>null</code> not permitted).
+		 *            the section key (<code>null</code> not permitted).
 		 * @return the label (possibly <code>null</code>).
 		 */
 		public String generateSectionLabel(final PieDataset dataset, final Comparable key) {

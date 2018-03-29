@@ -39,18 +39,17 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
  * Labels all selected nodes with unique numbers. Does not touch existing
  * labels.
  */
-public class DeleteNodesAlgorithm
-					extends AbstractAlgorithm
-					implements ActionListener, ProvidesGeneralContextMenu, ProvidesEdgeContextMenu {
-	
+public class DeleteNodesAlgorithm extends AbstractAlgorithm
+		implements ActionListener, ProvidesGeneralContextMenu, ProvidesEdgeContextMenu {
+
 	private boolean delete_selection = true;
-	
+
 	JMenu myMenu;
 	JMenuItem m1delSel;
 	JMenuItem m2delAllButSel;
 	JMenuItem m3delBends;
 	JMenuItem myMenuDelEdges;
-	
+
 	/**
 	 * Constructs a new instance.
 	 */
@@ -60,42 +59,40 @@ public class DeleteNodesAlgorithm
 		m2delAllButSel = new JMenuItem("Delete all, but the selected subgraph");
 		m1delSel.addActionListener(this);
 		m2delAllButSel.addActionListener(this);
-		
+
 		m3delBends = new JMenuItem("Remove all Bends");
 		m3delBends.addActionListener(this);
-		
+
 		myMenu.add(m1delSel);
 		myMenu.add(m2delAllButSel);
 		// myMenu.add(m3delBends);
-		
+
 		myMenuDelEdges = new JMenuItem("Delete selected edges");
 		myMenuDelEdges.addActionListener(this);
-		
+
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
 	@Override
 	public Parameter[] getParameters() {
-		BooleanParameter delParam =
-							new BooleanParameter(
-												delete_selection,
-												"<html>Delete selection (y)<br>or remaining graph (N)",
-												"Delete selection (Y) or the remaining graph (N).");
+		BooleanParameter delParam = new BooleanParameter(delete_selection,
+				"<html>Delete selection (y)<br>or remaining graph (N)",
+				"Delete selection (Y) or the remaining graph (N).");
 		return new Parameter[] { delParam };
 	}
-	
+
 	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm# setParameters(org.graffiti.plugin.algorithm.Parameter)
+	 * @see org.graffiti.plugin.algorithm.Algorithm#
+	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
 		this.parameters = params;
-		delete_selection =
-							((BooleanParameter) params[0]).getBoolean().booleanValue();
+		delete_selection = ((BooleanParameter) params[0]).getBoolean().booleanValue();
 	}
-	
+
 	private void addConnectedNodes(Vector<Node> nodes, Node n) {
 		nodes.add(n);
 		Collection<?> neighbours = n.getNeighbors();
@@ -107,32 +104,32 @@ public class DeleteNodesAlgorithm
 			}
 		}
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
-		
+
 		GravistoService.getInstance().algorithmAttachData(this);
-		
+
 		Collection<Node> nodes;
 		if (selection.isEmpty()) {
 			nodes = graph.getNodes();
 		} else {
 			nodes = selection.getNodes();
 		}
-		
+
 		nodes = GraphHelper.getSelectedOrAllNodes(selection, graph);
-		
+
 		graph.getListenerManager().transactionStarted(this);
-		
+
 		Vector<Node> toBeDeleted = new Vector<Node>();
-		
+
 		Iterator<Node> it = nodes.iterator();
 		while (it.hasNext()) {
 			addConnectedNodes(toBeDeleted, (Node) it.next());
 		}
-		
+
 		if (delete_selection) {
 			for (int i = 0; i < toBeDeleted.size(); i++) {
 				Node del = (Node) toBeDeleted.get(i);
@@ -148,10 +145,10 @@ public class DeleteNodesAlgorithm
 				}
 			}
 		}
-		
+
 		graph.getListenerManager().transactionFinished(this);
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
@@ -161,7 +158,7 @@ public class DeleteNodesAlgorithm
 		selection = null;
 		delete_selection = true;
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
@@ -169,35 +166,34 @@ public class DeleteNodesAlgorithm
 		// return "Delete Nodes...";
 		return null;
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return null;
 		// return "Nodes";
 		// return "menu.edit";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH));
 	}
 
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 
 	 * @param selection
-	 *           the selection
+	 *            the selection
 	 */
 	public void setSelection(Selection selection) {
 		this.selection = selection;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == m1delSel) {
@@ -215,33 +211,26 @@ public class DeleteNodesAlgorithm
 			removeBends();
 		}
 	}
-	
+
 	/**
 	 * Remove bends from graph
 	 */
 	private void removeBends() {
-		EditorSession session =
-							GravistoService
-												.getInstance()
-												.getMainFrame()
-												.getActiveEditorSession();
+		EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 		selection = session.getSelectionModel().getActiveSelection();
-		
+
 		GraphHelper.removeAllBends(session.getGraph(), true);
 	}
-	
+
 	/**
 	 * 
 	 */
 	private void deleteEdges() {
 		GravistoService.getInstance().algorithmAttachData(this);
 		/*
-		 * EditorSession session =
-		 * GraffitiSingleton
-		 * .getInstance()
-		 * .getMainFrame()
-		 * .getActiveEditorSession();
-		 * selection = session.getSelectionModel().getActiveSelection();
+		 * EditorSession session = GraffitiSingleton .getInstance() .getMainFrame()
+		 * .getActiveEditorSession(); selection =
+		 * session.getSelectionModel().getActiveSelection();
 		 */
 		Collection<Edge> edges;
 		if (selection.isEmpty()) {
@@ -262,25 +251,25 @@ public class DeleteNodesAlgorithm
 			}
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.AlgorithmWithEdgeContextMenu#getCurrentEdgeContextMenuItem(java.util.Collection)
+	 * 
+	 * @see org.graffiti.plugin.algorithm.AlgorithmWithEdgeContextMenu#
+	 * getCurrentEdgeContextMenuItem(java.util.Collection)
 	 */
 	public JMenuItem[] getCurrentEdgeContextMenuItem(Collection<Edge> selectedEdges) {
 		return null; // new JMenuItem[] { myMenuDelEdges };
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.AlgorithmWithContextMenu#getCurrentContextMenuItem()
+	 * 
+	 * @see org.graffiti.plugin.algorithm.AlgorithmWithContextMenu#
+	 * getCurrentContextMenuItem()
 	 */
 	public JMenuItem[] getCurrentContextMenuItem() {
-		EditorSession session =
-							GravistoService
-												.getInstance()
-												.getMainFrame()
-												.getActiveEditorSession();
+		EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 		if (session == null)
 			return null;
 		selection = session.getSelectionModel().getActiveSelection();

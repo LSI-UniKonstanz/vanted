@@ -83,10 +83,11 @@ public class XYTickLabelDemo extends ApplicationFrame implements ActionListener 
 	private JTextField fontSizeTextField;
 
 	/**
-	 * A demonstration application showing some bugs with tick labels in version 0.9.13
+	 * A demonstration application showing some bugs with tick labels in version
+	 * 0.9.13
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XYTickLabelDemo(final String title) {
 
@@ -134,7 +135,7 @@ public class XYTickLabelDemo extends ApplicationFrame implements ActionListener 
 	 * When a checkbox is changed ...
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void actionPerformed(final ActionEvent event) {
 		final ValueAxis[] axes = new ValueAxis[4];
@@ -177,26 +178,24 @@ public class XYTickLabelDemo extends ApplicationFrame implements ActionListener 
 				axes[i].setVerticalTickLabels(val);
 			}
 
-		} else
-			if (source == this.symbolicAxesCheckBox || source == this.horizontalPlotCheckBox) {
+		} else if (source == this.symbolicAxesCheckBox || source == this.horizontalPlotCheckBox) {
 
-				final PlotOrientation val = this.horizontalPlotCheckBox.isSelected()
-									? PlotOrientation.HORIZONTAL : PlotOrientation.VERTICAL;
-				this.chart.getXYPlot().setOrientation(val);
+			final PlotOrientation val = this.horizontalPlotCheckBox.isSelected() ? PlotOrientation.HORIZONTAL
+					: PlotOrientation.VERTICAL;
+			this.chart.getXYPlot().setOrientation(val);
 
-			} else
-				if (source == this.symbolicAxesCheckBox || source == this.fontSizeTextField) {
-					final String s = this.fontSizeTextField.getText();
-					if (s.length() > 0) {
-						final float sz = Float.parseFloat(s);
-						for (int i = 0; i < axes.length; i++) {
-							final ValueAxis axis = axes[i];
-							Font ft = axis.getTickLabelFont();
-							ft = ft.deriveFont(sz);
-							axis.setTickLabelFont(ft);
-						}
-					}
+		} else if (source == this.symbolicAxesCheckBox || source == this.fontSizeTextField) {
+			final String s = this.fontSizeTextField.getText();
+			if (s.length() > 0) {
+				final float sz = Float.parseFloat(s);
+				for (int i = 0; i < axes.length; i++) {
+					final ValueAxis axis = axes[i];
+					Font ft = axis.getTickLabelFont();
+					ft = ft.deriveFont(sz);
+					axis.setTickLabelFont(ft);
 				}
+			}
+		}
 	}
 
 	/**
@@ -234,16 +233,8 @@ public class XYTickLabelDemo extends ApplicationFrame implements ActionListener 
 
 		// create the chart
 
-		final JFreeChart result = ChartFactory.createXYLineChart(
-							"Tick Label Demo",
-							"Domain Axis 1",
-							"Range Axis 1",
-							dataset1,
-							PlotOrientation.VERTICAL,
-							false,
-							true,
-							false
-							);
+		final JFreeChart result = ChartFactory.createXYLineChart("Tick Label Demo", "Domain Axis 1", "Range Axis 1",
+				dataset1, PlotOrientation.VERTICAL, false, true, false);
 
 		result.setBackgroundPaint(Color.white);
 		final XYPlot plot = result.getXYPlot();
@@ -280,7 +271,7 @@ public class XYTickLabelDemo extends ApplicationFrame implements ActionListener 
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

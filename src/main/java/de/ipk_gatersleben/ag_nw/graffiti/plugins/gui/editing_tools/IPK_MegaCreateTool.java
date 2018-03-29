@@ -28,17 +28,15 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeCompon
  * 
  * @author Christian Klukas
  */
-public class IPK_MegaCreateTool
-		extends MegaCreateTool
-		implements MouseWheelListener {
-	
+public class IPK_MegaCreateTool extends MegaCreateTool implements MouseWheelListener {
+
 	/**
 	 * Instance of DefaultContextMenuManager
 	 */
 	// DefaultContextMenuManager cmm = new DefaultContextMenuManager();
-	
+
 	JComponent mouseWheelComponent = null;
-	
+
 	@Override
 	public void activate() {
 		if (session == null || session.getActiveView() == null || session.getActiveView().getViewComponent() == null
@@ -46,7 +44,7 @@ public class IPK_MegaCreateTool
 			return;
 		}
 		super.activate();
-		
+
 		// try
 		// {
 		// JComponent view = session.getActiveView().getViewComponent();
@@ -55,8 +53,8 @@ public class IPK_MegaCreateTool
 		// ErrorMsg.addErrorMessage(e);
 		// }
 		//
-		if (MainFrame.getInstance().getActiveSession() != null &&
-				(MainFrame.getInstance().getActiveSession().getActiveView() instanceof GraffitiView)) {
+		if (MainFrame.getInstance().getActiveSession() != null
+				&& (MainFrame.getInstance().getActiveSession().getActiveView() instanceof GraffitiView)) {
 			GraffitiView gv = (GraffitiView) MainFrame.getInstance().getActiveSession().getActiveView();
 			if (gv != null) {
 				mouseWheelComponent = gv.getViewComponent();
@@ -68,13 +66,13 @@ public class IPK_MegaCreateTool
 			}
 		}
 	}
-	
+
 	@Override
 	public void deactivate() {
 		if (session == null || session.getActiveView() == null || session.getActiveView().getViewComponent() == null)
 			return;
 		super.deactivate();
-		
+
 		try {
 			JComponent view = session.getActiveView().getViewComponent();
 			if (view != null && view instanceof GraffitiView)
@@ -82,19 +80,19 @@ public class IPK_MegaCreateTool
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
 		}
-		
+
 		if (mouseWheelComponent != null)
 			mouseWheelComponent.removeMouseWheelListener(this);
 	}
-	
+
 	public long lastMove = Integer.MIN_VALUE;
-	
+
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		
+
 		if (e.getWhen() <= lastMove)
 			return;
 		lastMove = e.getWhen();
-		
+
 		if (!MegaTools.MouseWheelZoomEnabled) {
 			IPK_MegaMoveTool.processMouseWheelScrolling(e);
 		} else {
@@ -112,26 +110,25 @@ public class IPK_MegaCreateTool
 			}
 		}
 	}
-	
+
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if (!MegaTools.wasScrollPaneMovement() && SwingUtilities.isRightMouseButton(e) && !creatingEdge) {
 			View activeView = MainFrame.getInstance().getActiveEditorSession().getActiveView();
 			if (activeView instanceof IPKGraffitiView) {
-				JPopupMenu popupmenu = new DefaultContextMenuManager().getContextMenu(
-						MegaTools.getLastMouseE());
-				popupmenu.show(activeView.getViewComponent(), (int) (e.getX() * activeView.getZoom().getScaleX()), (int) (e.getY() * activeView.getZoom()
-						.getScaleY()));
+				JPopupMenu popupmenu = new DefaultContextMenuManager().getContextMenu(MegaTools.getLastMouseE());
+				popupmenu.show(activeView.getViewComponent(), (int) (e.getX() * activeView.getZoom().getScaleX()),
+						(int) (e.getY() * activeView.getZoom().getScaleY()));
 			}
 		}
 		super.mouseReleased(e);
-		
+
 	}
-	
+
 	@Override
 	public String getToolName() {
 		return "IPK_MegaCreateTool";
 	}
-	
+
 }

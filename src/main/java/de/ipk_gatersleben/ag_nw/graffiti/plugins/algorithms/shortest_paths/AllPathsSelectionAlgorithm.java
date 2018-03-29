@@ -33,33 +33,33 @@ import org.graffiti.selection.Selection;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.NodeHelper;
 
-public class AllPathsSelectionAlgorithm
-					extends AbstractAlgorithm {
-	
+public class AllPathsSelectionAlgorithm extends AbstractAlgorithm {
+
 	private boolean settingIncludeInnerEdges = false;
 	private boolean settingDirected = true;
 	private boolean settingIncludeEdges = true;
-	
+
 	/**
 	 * Constructs a new instance.
 	 */
 	public AllPathsSelectionAlgorithm() {
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
 	@Override
 	public Parameter[] getParameters() {
-		return new Parameter[] {
-							new BooleanParameter(settingDirected, "Consider Edge Direction", ""),
-							new BooleanParameter(settingIncludeEdges, "Select Edges", "If enabled, edges along the shortest path(s) are selected"),
-							new BooleanParameter(settingIncludeInnerEdges, "Select Inner-Edges",
-												"If selected, all edges connecting nodes of the shortest path(s) are selected") };
+		return new Parameter[] { new BooleanParameter(settingDirected, "Consider Edge Direction", ""),
+				new BooleanParameter(settingIncludeEdges, "Select Edges",
+						"If enabled, edges along the shortest path(s) are selected"),
+				new BooleanParameter(settingIncludeInnerEdges, "Select Inner-Edges",
+						"If selected, all edges connecting nodes of the shortest path(s) are selected") };
 	}
-	
+
 	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm# setParameters(org.graffiti.plugin.algorithm.Parameter)
+	 * @see org.graffiti.plugin.algorithm.Algorithm#
+	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
@@ -68,7 +68,7 @@ public class AllPathsSelectionAlgorithm
 		settingIncludeEdges = ((BooleanParameter) params[i++]).getBoolean();
 		settingIncludeInnerEdges = ((BooleanParameter) params[i++]).getBoolean();
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
@@ -91,11 +91,9 @@ public class AllPathsSelectionAlgorithm
 		for (GraphElement ge : currentSelElements) {
 			if (ge instanceof Node) {
 				Node n = (Node) ge;
-				Collection<GraphElement> shortestPathNodesAndEdges = getPathElements(
-									graphNodes,
-									n,
-									targetNodesToBeProcessed,
-									settingIncludeInnerEdges, settingDirected, settingIncludeEdges, Integer.MAX_VALUE);
+				Collection<GraphElement> shortestPathNodesAndEdges = getPathElements(graphNodes, n,
+						targetNodesToBeProcessed, settingIncludeInnerEdges, settingDirected, settingIncludeEdges,
+						Integer.MAX_VALUE);
 				sel.addAll(shortestPathNodesAndEdges);
 				if (!settingDirected)
 					targetNodesToBeProcessed.remove(n);
@@ -105,24 +103,21 @@ public class AllPathsSelectionAlgorithm
 		sel.addAll(currentSelElements);
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().setActiveSelection(sel);
 	}
-	
-	public static Collection<GraphElement> getPathElements(
-						Collection<Node> validNodes,
-						Node sourceNode, Collection<Node> targetNodes,
-						boolean includeInnerEdges,
-						boolean directed,
-						boolean includeEdges, int maxDistance) {
-		
+
+	public static Collection<GraphElement> getPathElements(Collection<Node> validNodes, Node sourceNode,
+			Collection<Node> targetNodes, boolean includeInnerEdges, boolean directed, boolean includeEdges,
+			int maxDistance) {
+
 		Queue<Node> findTheseNodes = new LinkedList<Node>();
 		findTheseNodes.addAll(targetNodes);
-		
+
 		HashSet<GraphElement> shortestPath = new HashSet<GraphElement>();
 		Queue<DistanceInfo> toDo = new LinkedList<DistanceInfo>();
 		HashMap<Node, DistanceInfo> node2distanceinfo = new HashMap<Node, DistanceInfo>();
 		DistanceInfo di = new DistanceInfo(0, sourceNode, sourceNode);
 		toDo.add(di);
 		node2distanceinfo.put(sourceNode, di);
-		
+
 		do {
 			DistanceInfo checkNeighbours = toDo.remove();
 			Node workNode = checkNeighbours.getNode();
@@ -154,24 +149,16 @@ public class AllPathsSelectionAlgorithm
 			shortestPath.add(targetNode);
 			if (node2distanceinfo.containsKey(targetNode)) {
 				DistanceInfo distInfo = node2distanceinfo.get(targetNode);
-				processReverseDistanceInfo(
-									node2distanceinfo,
-									shortestPath, distInfo,
-									includeInnerEdges,
-									directed,
-									includeEdges);
+				processReverseDistanceInfo(node2distanceinfo, shortestPath, distInfo, includeInnerEdges, directed,
+						includeEdges);
 			}
 		}
 		return shortestPath;
 	}
-	
-	private static void processReverseDistanceInfo(
-						HashMap<Node, DistanceInfo> node2distanceinfo,
-						HashSet<GraphElement> path,
-						DistanceInfo distInfo,
-						boolean includeInnerEdges,
-						boolean directed,
-						boolean includeEdges) {
+
+	private static void processReverseDistanceInfo(HashMap<Node, DistanceInfo> node2distanceinfo,
+			HashSet<GraphElement> path, DistanceInfo distInfo, boolean includeInnerEdges, boolean directed,
+			boolean includeEdges) {
 		path.add(distInfo.getNode());
 		Collection<Node> sn = distInfo.getSourceNodes();
 		for (Node sourceNode : sn) {
@@ -187,10 +174,7 @@ public class AllPathsSelectionAlgorithm
 			if (sourceNode != distInfo.getNode())
 				if (node2distanceinfo.containsKey(sourceNode)) {
 					DistanceInfo pdi = node2distanceinfo.get(sourceNode); // process distance
-					processReverseDistanceInfo(node2distanceinfo, path, pdi,
-										includeInnerEdges,
-										directed,
-										includeEdges);
+					processReverseDistanceInfo(node2distanceinfo, path, pdi, includeInnerEdges, directed, includeEdges);
 				}
 		}
 		if (includeEdges) {
@@ -219,7 +203,7 @@ public class AllPathsSelectionAlgorithm
 			}
 		}
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
@@ -228,7 +212,7 @@ public class AllPathsSelectionAlgorithm
 		graph = null;
 		selection = null;
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
@@ -236,12 +220,12 @@ public class AllPathsSelectionAlgorithm
 		return null;
 		// return "Find Paths";
 	}
-	
+
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
 	}
-	
+
 	@Override
 	public String getCategory() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
@@ -249,21 +233,17 @@ public class AllPathsSelectionAlgorithm
 		else
 			return "Analysis";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.SELECTION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.SELECTION));
 	}
 
-	
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 
 	 * @param selection
-	 *           the selection
+	 *            the selection
 	 */
 	public void setSelection(Selection selection) {
 		this.selection = selection;

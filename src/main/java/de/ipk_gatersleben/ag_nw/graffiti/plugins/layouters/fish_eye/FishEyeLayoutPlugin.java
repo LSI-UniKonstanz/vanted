@@ -17,7 +17,7 @@ import org.graffiti.plugin.algorithm.Algorithm;
  * @author Joerg Bartelheimer
  */
 public class FishEyeLayoutPlugin extends GenericPluginAdapter {
-	
+
 	/**
 	 * Creates a new FishEyeLayoutPlugin object.
 	 */

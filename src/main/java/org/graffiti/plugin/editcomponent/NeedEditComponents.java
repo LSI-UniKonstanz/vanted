@@ -18,7 +18,7 @@ import org.graffiti.plugin.Displayable;
  */
 public interface NeedEditComponents {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Set the map that connects attributes and parameters with editcomponents.
 	 * 

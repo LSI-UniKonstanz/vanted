@@ -9,13 +9,13 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.genophen;
 
 /**
- * @author klukas
- *         To change the template for this generated type comment go to
+ * @author klukas To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class DataBase2GUI {
 
-	// public static void processDBEnodeData(final String experimentName, final List nodes,
+	// public static void processDBEnodeData(final String experimentName, final List
+	// nodes,
 	// final ActionEvent arg0) {
 	// Thread r = new Thread(new Runnable() {
 	// public void run() {
@@ -36,7 +36,8 @@ public class DataBase2GUI {
 	// r.start();
 	// }
 	//
-	// static void threadProcessDBEnodeData(String experimentName, List nodes, JButton callButton) {
+	// static void threadProcessDBEnodeData(String experimentName, List nodes,
+	// JButton callButton) {
 	// for (int i = 0; i < nodes.size(); i++) {
 	//
 	// PluginStatusInfo.setCurrentMessage("Process experimental data for node "+i);
@@ -47,7 +48,8 @@ public class DataBase2GUI {
 	//
 	// String name = AttributeHelper.getLabel(currentNode, "");
 	//
-	// MainFrame.showMessage("Processing Data for Node \""+name+"\". Complete: "+i*100/nodes.size()+"%",
+	// MainFrame.showMessage("Processing Data for Node \""+name+"\". Complete:
+	// "+i*100/nodes.size()+"%",
 	// MessageType.PERMANENT_INFO);
 	//
 	// String substanceName =
@@ -55,7 +57,8 @@ public class DataBase2GUI {
 	//
 	// // src = sum replicate count for that substance
 	// int src = DataExchange.getDataCount(experimentName, substanceName);
-	// AttributeHelper.setAttribute(currentNode,"dbe","entryCount",new Integer(src));
+	// AttributeHelper.setAttribute(currentNode,"dbe","entryCount",new
+	// Integer(src));
 	//
 	// if (src<=0) continue;
 	//
@@ -68,8 +71,9 @@ public class DataBase2GUI {
 	// int maxPlantID =
 	// DataExchange.getMaxPlantID(experimentName);
 	// /* System.err.println(
-	// "Node: " + new Integer(i + 1).toString()); */
-	// processPlantDataForAllMeasurements(currentNode, compoundID, minPlantID, maxPlantID);
+	// "Node: " + Integer.valueOf(i + 1).toString()); */
+	// processPlantDataForAllMeasurements(currentNode, compoundID, minPlantID,
+	// maxPlantID);
 	// if (minPlantID!=Integer.MAX_VALUE && maxPlantID!=Integer.MAX_VALUE && src>0)
 	// for (int plantID = minPlantID;
 	// plantID <= maxPlantID;
@@ -80,8 +84,9 @@ public class DataBase2GUI {
 	// MainFrame.showMessage("DBE Data - Processing complete",
 	// MessageType.INFO);
 	// }
-	
-	// private static void processPlantDataForAllMeasurements(Node currentNode, String compoundID, int minPlantID, int maxPlantID) {
+
+	// private static void processPlantDataForAllMeasurements(Node currentNode,
+	// String compoundID, int minPlantID, int maxPlantID) {
 	// try {
 	// AttributeHelper.setAttribute(
 	// currentNode,
@@ -97,20 +102,22 @@ public class DataBase2GUI {
 	// currentNode,
 	// "dbe",
 	// "minID",
-	// new Integer(minPlantID));
+	// Integer.valueOf(minPlantID));
 	// AttributeHelper.setAttribute(
 	// currentNode,
 	// "dbe",
 	// "maxID",
-	// new Integer(maxPlantID));
+	// Integer.valueOf(maxPlantID));
 	// } catch (Exception e) {
-	// ErrorMsg.addErrorMessage("Could not set data attributes to graph node.<br>"+e.getLocalizedMessage());
+	// ErrorMsg.addErrorMessage("Could not set data attributes to graph
+	// node.<br>"+e.getLocalizedMessage());
 	// }
 	// }
 	//
-	// private static void processPlantData(String experimentName, Node currentNode, String substanceName, int plantID) {
+	// private static void processPlantData(String experimentName, Node currentNode,
+	// String substanceName, int plantID) {
 	// try {
-	// String curID = new Integer(plantID).toString();
+	// String curID = Integer.valueOf(plantID).toString();
 	//
 	// int i = DataExchange.getReplCount(
 	// experimentName,
@@ -122,13 +129,13 @@ public class DataBase2GUI {
 	// currentNode,
 	// "dbe",
 	// "replCount"+curID,
-	// new Integer(i));
+	// Integer.valueOf(i));
 	//
 	// AttributeHelper.setAttribute(
 	// currentNode,
 	// "dbe",
 	// "avgMeasurement"+curID,
-	// new Double(
+	// Double.valueOf(
 	// DataExchange.getAverageMeasurement(
 	// experimentName,
 	// plantID,
@@ -137,7 +144,7 @@ public class DataBase2GUI {
 	// currentNode,
 	// "dbe",
 	// "stdDev"+curID,
-	// new Double(
+	// Double.valueOf(
 	// DataExchange.getStdDev(
 	// experimentName,
 	// plantID,
@@ -146,7 +153,7 @@ public class DataBase2GUI {
 	// currentNode,
 	// "dbe",
 	// "variance"+curID,
-	// new Double(
+	// Double.valueOf(
 	// DataExchange.getVariance(
 	// experimentName,
 	// plantID,
@@ -155,7 +162,7 @@ public class DataBase2GUI {
 	// currentNode,
 	// "dbe",
 	// "min"+curID,
-	// new Double(
+	// Double.valueOf(
 	// DataExchange.getMin(
 	// experimentName,
 	// plantID,
@@ -164,7 +171,7 @@ public class DataBase2GUI {
 	// currentNode,
 	// "dbe",
 	// "max"+curID,
-	// new Double(
+	// Double.valueOf(
 	// DataExchange.getMax(
 	// experimentName,
 	// plantID,
@@ -181,5 +188,5 @@ public class DataBase2GUI {
 	// System.err.println(e.getLocalizedMessage());
 	// }
 	// }
-	
+
 }

@@ -12,6 +12,6 @@ idx = 1;
 for (n : nodes) {
 	label = org.AttributeHelper.getLabel(n, "");
 	if (label.length()<=0) // don't overwrite existing labels
-		org.AttributeHelper.setLabel(n, new Integer(idx++).toString());
+		org.AttributeHelper.setLabel(n, Integer.valueOf(idx++).toString());
 }
 graph.getListenerManager().transactionFinished(this);

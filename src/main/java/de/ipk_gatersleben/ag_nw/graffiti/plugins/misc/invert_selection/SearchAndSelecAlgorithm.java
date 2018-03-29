@@ -49,17 +49,17 @@ import scenario.ScenarioServiceHandlesStoredParametersOption;
  * Labels all selected nodes with unique numbers. Does not touch existing
  * labels.
  */
-public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements ScenarioServiceHandlesStoredParametersOption {
-	
-	
+public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
+		implements ScenarioServiceHandlesStoredParametersOption {
+
 	private static ArrayList<String> discardedSearchIDs = getDiscardedSearchIDs();
-	
+
 	/**
 	 * Constructs a new instance.
 	 */
 	public SearchAndSelecAlgorithm() {
 	}
-	
+
 	private static ArrayList<String> getDiscardedSearchIDs() {
 		ArrayList<String> result = new ArrayList<String>();
 		// result.add("red");
@@ -68,7 +68,7 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 		result.add("transparency");
 		return result;
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
@@ -76,30 +76,30 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 	public Parameter[] getParameters() {
 		return null;
 	}
-	
+
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke('L', SystemInfo.getAccelModifier());
 	}
-	
+
 	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm# setParameters(org.graffiti.plugin.algorithm.Parameter)
+	 * @see org.graffiti.plugin.algorithm.Algorithm#
+	 *      setParameters(org.graffiti.plugin.algorithm.Parameter)
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
 		ArrayList<AttributePathNameSearchType> possibleAttributes = new ArrayList<AttributePathNameSearchType>();
 		HashSet<SearchType> validSearchTypes = SearchType.getSetOfSearchTypes();
-		
+
 		enumerateAllAttributes(possibleAttributes, graph, validSearchTypes);
-		
-		final SearchDialog sd = new SearchDialog(getMainFrame(),
-							possibleAttributes, false);
+
+		final SearchDialog sd = new SearchDialog(getMainFrame(), possibleAttributes, false);
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				sd.setLocationRelativeTo(MainFrame.getInstance());
@@ -108,15 +108,13 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 		});
 		return;
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static void enumerateAllAttributes(
-						ArrayList<AttributePathNameSearchType> possibleAttributes,
-						Graph graph,
-						HashSet<SearchType> validSearchTypes) {
-		
+	public static void enumerateAllAttributes(ArrayList<AttributePathNameSearchType> possibleAttributes, Graph graph,
+			HashSet<SearchType> validSearchTypes) {
+
 		SearchAttributeHelper sah = new SearchAttributeHelper();
-		
+
 		try {
 			sah.prepareSearch();
 			for (Node n : graph.getNodes()) {
@@ -125,7 +123,8 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 			for (Edge e : graph.getEdges()) {
 				enumerateAttributes(possibleAttributes, e, validSearchTypes);
 			}
-			AttributePathNameSearchType[] sortedPossibleAttributes = possibleAttributes.toArray(new AttributePathNameSearchType[] {});
+			AttributePathNameSearchType[] sortedPossibleAttributes = possibleAttributes
+					.toArray(new AttributePathNameSearchType[] {});
 			Arrays.sort(sortedPossibleAttributes, new Comparator() {
 				public int compare(Object o1, Object o2) {
 					AttributePathNameSearchType a1 = (AttributePathNameSearchType) o1;
@@ -140,16 +139,15 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 			sah.restoreDefintions();
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
-	public static void enumerateAttributes(
-						ArrayList<AttributePathNameSearchType> possibleAttributes,
-						Collection graphElements,
-						HashSet<SearchType> validSearchTypes) {
+	public static void enumerateAttributes(ArrayList<AttributePathNameSearchType> possibleAttributes,
+			Collection graphElements, HashSet<SearchType> validSearchTypes) {
 		for (GraphElement ge : (Collection<GraphElement>) graphElements) {
 			enumerateAttributes(possibleAttributes, ge, validSearchTypes);
 		}
-		AttributePathNameSearchType[] sortedPossibleAttributes = possibleAttributes.toArray(new AttributePathNameSearchType[] {});
+		AttributePathNameSearchType[] sortedPossibleAttributes = possibleAttributes
+				.toArray(new AttributePathNameSearchType[] {});
 		Arrays.sort(sortedPossibleAttributes, new Comparator() {
 			public int compare(Object o1, Object o2) {
 				AttributePathNameSearchType a1 = (AttributePathNameSearchType) o1;
@@ -161,10 +159,9 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 		for (AttributePathNameSearchType a : sortedPossibleAttributes)
 			possibleAttributes.add(a);
 	}
-	
-	public static void enumerateAttributes(
-			ArrayList<AttributePathNameSearchType> possibleAttributes,
-						Attributable attr, HashSet<SearchType> validSearchTypes) {
+
+	public static void enumerateAttributes(ArrayList<AttributePathNameSearchType> possibleAttributes, Attributable attr,
+			HashSet<SearchType> validSearchTypes) {
 		CollectionAttribute ca = attr.getAttributes();
 		Stack<CollectionAttribute> catts = new Stack<CollectionAttribute>();
 		catts.push(ca);
@@ -191,23 +188,21 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 						st = SearchType.searchDouble;
 					if (a instanceof ColorAttribute)
 						st = SearchType.searchColor;
-					
+
 					if (!(validSearchTypes.contains(st)))
 						continue;
 					if (st != null && a != null && a.getId() != null) {
 						if (!DefaultEditPanel.getDiscardedRowIDs().contains(a.getId())
-											&& !discardedSearchIDs.contains(a.getId())) {
+								&& !discardedSearchIDs.contains(a.getId())) {
 							String desc = AttributeHelper.getDefaultAttributeDescriptionFor(a.getId(),
-												(attr instanceof Node) ? "Node" : "Edge", a);
+									(attr instanceof Node) ? "Node" : "Edge", a);
 							if (desc != null && desc.trim().length() > 0) {
 								desc = StringManipulationTools.stringReplace(desc, ":", ":  ");
 								desc = StringManipulationTools.stringReplace(desc, "  ", " ");
-								if (!listContains(possibleAttributes, desc,
-													attr instanceof Node,
-													attr instanceof Edge)) {
+								if (!listContains(possibleAttributes, desc, attr instanceof Node,
+										attr instanceof Edge)) {
 									AttributePathNameSearchType newAtt = new AttributePathNameSearchType(
-														a.getParent().getPath(), a
-																			.getName(), st, desc);
+											a.getParent().getPath(), a.getName(), st, desc);
 									newAtt.setInEdge(attr instanceof Edge);
 									newAtt.setInNode(attr instanceof Node);
 									possibleAttributes.add(newAtt);
@@ -219,10 +214,9 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 			}
 		}
 	}
-	
-	private static boolean listContains(
-			ArrayList<AttributePathNameSearchType> possibleAttributes,
-						String desc, boolean inNode, boolean inEdge) {
+
+	private static boolean listContains(ArrayList<AttributePathNameSearchType> possibleAttributes, String desc,
+			boolean inNode, boolean inEdge) {
 		boolean result = false;
 		for (AttributePathNameSearchType a : possibleAttributes) {
 			if (a.getNiceID().equals(desc)) {
@@ -236,7 +230,7 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 		}
 		return result;
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
@@ -245,38 +239,36 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm implements 
 		graph = null;
 		selection = null;
 	}
-	
+
 	/**
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Search";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "menu.edit";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.SELECTION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.SELECTION));
 	}
+
 	/**
 	 * Sets the selection on which the algorithm works.
 	 * 
 	 * @param selection
-	 *           the selection
+	 *            the selection
 	 */
 	public void setSelection(Selection selection) {
 		this.selection = selection;
 	}
-	
+
 	public boolean activeForView(View v) {
 		return v != null;
 	}
-	
+
 }

@@ -8,7 +8,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes;
 
 public enum ReactionType {
 	reversible, irreversible;
-	
+
 	public static ReactionType getReactiontype(String typeValue) {
 		if (typeValue == null)
 			return null;
@@ -18,14 +18,14 @@ public enum ReactionType {
 			return irreversible;
 		return null;
 	}
-	
+
 	@Override
 	public String toString() {
 		switch (this) {
-			case reversible:
-				return "reversible";
-			case irreversible:
-				return "irreversible";
+		case reversible:
+			return "reversible";
+		case irreversible:
+			return "irreversible";
 		}
 		return "";
 	}

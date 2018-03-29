@@ -19,72 +19,42 @@ import org.graffiti.plugin.view.GraffitiShape;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 
-public class ClusterColorAttributePlugin
-					extends IPK_PluginAdapter
-					implements EditorPlugin {
-	
+public class ClusterColorAttributePlugin extends IPK_PluginAdapter implements EditorPlugin {
+
 	private HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
 	private Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
-	
+
 	public ClusterColorAttributePlugin() {
 		this.attributes = new Class[1];
 		this.attributes[0] = ClusterColorAttribute.class;
-		
+
 		StringAttribute.putAttributeType(ClusterColorAttribute.attributeName, ClusterColorAttribute.class);
-		
+
 		valueEditComponents = new HashMap<>();
-		valueEditComponents.put(
-							ClusterColorAttribute.class,
-							ClusterColorAttributeEditor.class);
-		valueEditComponents.put(
-							ClusterColorParameter.class,
-							ClusterColorAttributeEditor.class);
+		valueEditComponents.put(ClusterColorAttribute.class, ClusterColorAttributeEditor.class);
+		valueEditComponents.put(ClusterColorParameter.class, ClusterColorAttributeEditor.class);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getAttributeComponents()
-	 */
+
 	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getGUIComponents()
-	 */
+
 	public GraffitiComponent[] getGUIComponents() {
 		return null;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getModes()
-	 */
+
 	public Mode[] getModes() {
 		return null;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getShapes()
-	 */
+
 	public GraffitiShape[] getShapes() {
 		return null;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getTools()
-	 */
+
 	public Tool[] getTools() {
 		return null;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getValueEditComponents()
-	 */
+
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}

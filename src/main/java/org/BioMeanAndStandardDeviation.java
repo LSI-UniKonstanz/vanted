@@ -9,8 +9,7 @@ package org;
 import org.jfree.data.MeanAndStandardDeviation;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class BioMeanAndStandardDeviation extends MeanAndStandardDeviation {
 
@@ -23,16 +22,16 @@ public class BioMeanAndStandardDeviation extends MeanAndStandardDeviation {
 	 * done for this sample.
 	 * 
 	 * @param mean
-	 *           The mean value
+	 *            The mean value
 	 * @param standardDeviation
-	 *           The StdDev
+	 *            The StdDev
 	 * @param isReference
-	 *           t test info, if this value is a reference
+	 *            t test info, if this value is a reference
 	 * @param isSignificantDifferent
-	 *           t test info, true for H1, false for H0 probable
+	 *            t test info, true for H1, false for H0 probable
 	 */
-	public BioMeanAndStandardDeviation(Number mean, Number standardDeviation,
-						boolean isReference, boolean isSignificantDifferent) {
+	public BioMeanAndStandardDeviation(Number mean, Number standardDeviation, boolean isReference,
+			boolean isSignificantDifferent) {
 		super(mean, standardDeviation);
 		this.isReference = isReference;
 		this.isSignificantDifferent = isSignificantDifferent;

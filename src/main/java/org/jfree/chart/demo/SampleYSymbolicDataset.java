@@ -38,13 +38,12 @@ import org.jfree.data.XYDataset;
 import org.jfree.data.YisSymbolic;
 
 /**
- * A dataset implementation that provides random data for a symbolic plot demo. This sample
- * dataset has numerical x-values, and symbolic y-values.
+ * A dataset implementation that provides random data for a symbolic plot demo.
+ * This sample dataset has numerical x-values, and symbolic y-values.
  * 
  * @author Anthony Boulestreau
  */
-public class SampleYSymbolicDataset extends AbstractSeriesDataset
-												implements XYDataset, YisSymbolic {
+public class SampleYSymbolicDataset extends AbstractSeriesDataset implements XYDataset, YisSymbolic {
 
 	/** The series count. */
 	private static final int DEFAULT_SERIES_COUNT = 1;
@@ -77,15 +76,13 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 	 * Creates a new sample dataset.
 	 * 
 	 * @param datasetName
-	 *           the dataset name.
+	 *            the dataset name.
 	 * @param xRange
-	 *           the upper limit of the (random) x-values.
+	 *            the upper limit of the (random) x-values.
 	 * @param tabString
-	 *           the symbols for the y-values.
+	 *            the symbols for the y-values.
 	 */
-	public SampleYSymbolicDataset(final String datasetName,
-												final int xRange,
-												final String[] tabString) {
+	public SampleYSymbolicDataset(final String datasetName, final int xRange, final String[] tabString) {
 		this(datasetName, xRange, tabString, DEFAULT_SERIES_COUNT, DEFAULT_ITEM_COUNT, null);
 	}
 
@@ -93,24 +90,20 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 	 * Creates a new sample dataset.
 	 * 
 	 * @param datasetName
-	 *           the dataset name.
+	 *            the dataset name.
 	 * @param xRange
-	 *           the upper limit of the (random) x-values.
+	 *            the upper limit of the (random) x-values.
 	 * @param tabString
-	 *           the symbolic y-values.
+	 *            the symbolic y-values.
 	 * @param seriesCount
-	 *           the number of series to create.
+	 *            the number of series to create.
 	 * @param itemCount
-	 *           the number of items to create for each series.
+	 *            the number of items to create for each series.
 	 * @param serieNames
-	 *           the series names.
+	 *            the series names.
 	 */
-	public SampleYSymbolicDataset(final String datasetName,
-												final int xRange,
-												final String[] tabString,
-												final int seriesCount,
-												final int itemCount,
-												final String[] serieNames) {
+	public SampleYSymbolicDataset(final String datasetName, final int xRange, final String[] tabString,
+			final int seriesCount, final int itemCount, final String[] serieNames) {
 
 		this.datasetName = datasetName;
 		this.ySymbolicValues = tabString;
@@ -124,8 +117,8 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 			for (int i = 0; i < itemCount; i++) {
 				final double x = Math.random() * xRange;
 				final double y = Math.random() * tabString.length;
-				this.xValues[s][i] = new Double(x);
-				this.yValues[s][i] = new Integer((int) y);
+				this.xValues[s][i] = Double.valueOf(x);
+				this.yValues[s][i] = Integer.valueOf((int) y);
 			}
 		}
 	}
@@ -134,27 +127,22 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 	 * Creates a new sample dataset.
 	 * 
 	 * @param datasetName
-	 *           the dataset name.
+	 *            the dataset name.
 	 * @param xValues
-	 *           the x values.
+	 *            the x values.
 	 * @param yValues
-	 *           the y values.
+	 *            the y values.
 	 * @param ySymbolicValues
-	 *           the y symbols
+	 *            the y symbols
 	 * @param seriesCount
-	 *           the series count.
+	 *            the series count.
 	 * @param itemCount
-	 *           the item count.
+	 *            the item count.
 	 * @param serieNames
-	 *           the series names.
+	 *            the series names.
 	 */
-	public SampleYSymbolicDataset(final String datasetName,
-												final Double[][] xValues,
-												final Integer[][] yValues,
-												final String[] ySymbolicValues,
-												final int seriesCount,
-												final int itemCount,
-												final String[] serieNames) {
+	public SampleYSymbolicDataset(final String datasetName, final Double[][] xValues, final Integer[][] yValues,
+			final String[] ySymbolicValues, final int seriesCount, final int itemCount, final String[] serieNames) {
 
 		this.datasetName = datasetName;
 		this.xValues = xValues;
@@ -167,13 +155,13 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 	}
 
 	/**
-	 * Returns the x-value for the specified series and item. Series are
-	 * numbered 0, 1, ...
+	 * Returns the x-value for the specified series and item. Series are numbered 0,
+	 * 1, ...
 	 * 
 	 * @param series
-	 *           the index (zero-based) of the series.
+	 *            the index (zero-based) of the series.
 	 * @param item
-	 *           the index (zero-based) of the required item.
+	 *            the index (zero-based) of the required item.
 	 * @return the x-value for the specified series and item.
 	 */
 	public Number getXValue(final int series, final int item) {
@@ -184,9 +172,9 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 	 * Returns the x-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The x-value.
 	 */
 	public double getX(int series, int item) {
@@ -199,13 +187,13 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 	}
 
 	/**
-	 * Returns the y-value for the specified series and item. Series are
-	 * numbered 0, 1, ...
+	 * Returns the y-value for the specified series and item. Series are numbered 0,
+	 * 1, ...
 	 * 
 	 * @param series
-	 *           the index (zero-based) of the series.
+	 *            the index (zero-based) of the series.
 	 * @param item
-	 *           the index (zero-based) of the required item.
+	 *            the index (zero-based) of the required item.
 	 * @return the y-value for the specified series and item.
 	 */
 	public Number getYValue(final int series, final int item) {
@@ -216,9 +204,9 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 	 * Returns the y-value (as a double primitive) for an item within a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The y-value.
 	 */
 	public double getY(int series, int item) {
@@ -231,17 +219,18 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 	}
 
 	/**
-	 * Sets the y-value for the specified series and item with the specified
-	 * new <CODE>Number</CODE> value. Series are numbered 0, 1, ...
+	 * Sets the y-value for the specified series and item with the specified new
+	 * <CODE>Number</CODE> value. Series are numbered 0, 1, ...
 	 * <P>
-	 * This method is used by combineYSymbolicDataset to modify the reference to the symbolic value ...
+	 * This method is used by combineYSymbolicDataset to modify the reference to the
+	 * symbolic value ...
 	 * 
 	 * @param series
-	 *           the index (zero-based) of the series.
+	 *            the index (zero-based) of the series.
 	 * @param item
-	 *           the index (zero-based) of the required item.
+	 *            the index (zero-based) of the required item.
 	 * @param newValue
-	 *           the value to set.
+	 *            the value to set.
 	 */
 	public void setYValue(final int series, final int item, final Number newValue) {
 		this.yValues[series][item] = (Integer) newValue;
@@ -260,7 +249,7 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 	 * Returns the name of the series.
 	 * 
 	 * @param series
-	 *           the index (zero-based) of the series.
+	 *            the index (zero-based) of the series.
 	 * @return the name of the series.
 	 */
 	public String getSeriesName(final int series) {
@@ -275,7 +264,7 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 	 * Returns the number of items in the specified series.
 	 * 
 	 * @param series
-	 *           The index (zero-based) of the series.
+	 *            The index (zero-based) of the series.
 	 * @return the number of items in the specified series.
 	 */
 	public int getItemCount(final int series) {
@@ -295,19 +284,20 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 	 * Sets the list of symbolic values.
 	 * 
 	 * @param sValues
-	 *           the new list of symbolic value.
+	 *            the new list of symbolic value.
 	 */
 	public void setYSymbolicValues(final String[] sValues) {
 		this.ySymbolicValues = sValues;
 	}
 
 	/**
-	 * Returns the symbolic value of the data set specified by <CODE>series</CODE> and <CODE>item</CODE> parameters.
+	 * Returns the symbolic value of the data set specified by <CODE>series</CODE>
+	 * and <CODE>item</CODE> parameters.
 	 * 
 	 * @param series
-	 *           value of the serie.
+	 *            value of the serie.
 	 * @param item
-	 *           value of the item.
+	 *            value of the item.
 	 * @return the symbolic value.
 	 */
 	public String getYSymbolicValue(final int series, final int item) {
@@ -319,7 +309,7 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 	 * Returns the symbolic value linked with the specified <CODE>Integer</CODE>.
 	 * 
 	 * @param val
-	 *           value of the integer linked with the symbolic value.
+	 *            value of the integer linked with the symbolic value.
 	 * @return the symbolic value.
 	 */
 	public String getYSymbolicValue(final Integer val) {
@@ -327,21 +317,21 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 	}
 
 	/**
-	 * This function modify <CODE>dataset1</CODE> and <CODE>dataset1</CODE> in
-	 * order that they share the same symbolic value list.
+	 * This function modify <CODE>dataset1</CODE> and <CODE>dataset1</CODE> in order
+	 * that they share the same symbolic value list.
 	 * <P>
-	 * The sharing symbolic value list is obtained adding the symbolic data list of the fist data set to the symbolic data list of the second data set.
+	 * The sharing symbolic value list is obtained adding the symbolic data list of
+	 * the fist data set to the symbolic data list of the second data set.
 	 * <P>
 	 * This function is use with the <I>combined plot</I> functions of JFreeChart.
 	 * 
 	 * @param dataset1
-	 *           the first data set to combine.
+	 *            the first data set to combine.
 	 * @param dataset2
-	 *           the second data set to combine.
+	 *            the second data set to combine.
 	 * @return the shared symbolic array.
 	 */
-	public static String[] combineYSymbolicDataset(final YisSymbolic dataset1,
-																	final YisSymbolic dataset2) {
+	public static String[] combineYSymbolicDataset(final YisSymbolic dataset1, final YisSymbolic dataset2) {
 
 		final SampleYSymbolicDataset sDataset1 = (SampleYSymbolicDataset) dataset1;
 		final SampleYSymbolicDataset sDataset2 = (SampleYSymbolicDataset) dataset2;
@@ -366,7 +356,7 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 		for (int i = 0; i < sDataset2.getSeriesCount(); i++) {
 			for (int j = 0; j < sDataset2.getItemCount(i); j++) {
 				newIndex = ySymbolicValuesCombined.indexOf(sDataset2.getYSymbolicValue(i, j));
-				sDataset2.setYValue(i, j, new Integer(newIndex));
+				sDataset2.setYValue(i, j, Integer.valueOf(newIndex));
 			}
 		}
 
@@ -392,15 +382,14 @@ public class SampleYSymbolicDataset extends AbstractSeriesDataset
 		final int serie = this.serie;
 		final int item = this.item;
 		final String[] serieNames = (String[]) cloneArray(this.serieNames);
-		return new SampleYSymbolicDataset(nDatasetName, nXValues, nYValues,
-							nYSymbolicValues, serie, item, serieNames);
+		return new SampleYSymbolicDataset(nDatasetName, nXValues, nYValues, nYSymbolicValues, serie, item, serieNames);
 	}
 
 	/**
 	 * Clones the array.
 	 * 
 	 * @param arr
-	 *           the array.
+	 *            the array.
 	 * @return an array.
 	 */
 	private static Object cloneArray(final Object arr) {

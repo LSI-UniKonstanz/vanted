@@ -23,26 +23,25 @@ import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class LabelFontAttributeEditor
-					extends AbstractValueEditComponent {
-	
-	protected JComboBox jFontSelection;
-	private static final String[] fontnames =
-						GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+public class LabelFontAttributeEditor extends AbstractValueEditComponent {
+
+	protected JComboBox<String> jFontSelection;
+	private static final String[] fontnames = GraphicsEnvironment.getLocalGraphicsEnvironment()
+			.getAvailableFontFamilyNames();
 	private static final int defaultSize = (int) (new JLabel("").getFont().getSize() * 1.8);
 	private static final int defaultStyle = new JLabel("").getFont().getStyle();
-	
+
 	public LabelFontAttributeEditor(final Displayable disp) {
 		super(disp);
-		jFontSelection = new JComboBox(getFontLabels(fontnames));
+		jFontSelection = new JComboBox<>(getFontLabels(fontnames));
 		jFontSelection.setOpaque(false);
 		jFontSelection.setMinimumSize(new Dimension(10, 5));
 		jFontSelection.setPreferredSize(new Dimension(10, jFontSelection.getPreferredSize().height));
-		jFontSelection.setRenderer(new ListCellRenderer() {
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+		jFontSelection.setRenderer(new ListCellRenderer<Object>() {
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
 				String sel = (String) value;
 				if (sel.equalsIgnoreCase(EMPTY_STRING)) {
 					return new JLabel("~");
@@ -58,8 +57,8 @@ public class LabelFontAttributeEditor
 			}
 		});
 	}
-	
-	private String[] getFontLabels(String[] fonts) {
+
+	private static String[] getFontLabels(String[] fonts) {
 		ArrayList<String> result = new ArrayList<String>();
 		result.add("~");
 		for (String font : fonts) {
@@ -67,11 +66,11 @@ public class LabelFontAttributeEditor
 		}
 		return result.toArray(new String[] {});
 	}
-	
+
 	public JComponent getComponent() {
 		return jFontSelection;
 	}
-	
+
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			jFontSelection.setSelectedIndex(0);
@@ -85,7 +84,7 @@ public class LabelFontAttributeEditor
 			}
 		}
 	}
-	
+
 	public void setValue() {
 		String selected = (String) jFontSelection.getSelectedItem();
 		if (!selected.equalsIgnoreCase(EMPTY_STRING))

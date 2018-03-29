@@ -21,25 +21,24 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EtchedBorder;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Relation;
-
-public class MyRelationList extends JList {
+/**
+ * 
+ * @vanted.revision 2.6.5
+ */
+public class MyRelationList extends JList<Relation> {
 	RelationTypeEditor relationTypeEditor;
 	SubComponentTypesEditor subComponentTypesEditor;
 	JLabel relationDescription;
 	SubtypeCompoundEditor subtypeCompoundEditor;
 	SrcTargetEditor srcTargetEditor;
-	
-	public MyRelationList(
-						Object[] objects,
-						RelationTypeEditor relationTypeEditor,
-						SubComponentTypesEditor subComponentTypesEditor,
-						JLabel relationDescription,
-						SrcTargetEditor srcTargetEditor,
-						SubtypeCompoundEditor subtypeCompoundEditor) {
+
+	public MyRelationList(Relation[] relations, RelationTypeEditor relationTypeEditor,
+			SubComponentTypesEditor subComponentTypesEditor, JLabel relationDescription,
+			SrcTargetEditor srcTargetEditor, SubtypeCompoundEditor subtypeCompoundEditor) {
 		super();
-		setModel(new DefaultListModel());
-		for (Object o : objects)
-			((DefaultListModel) getModel()).addElement(o);
+		setModel(new DefaultListModel<Relation>());
+		for (Relation r : relations)
+			((DefaultListModel<Relation>) getModel()).addElement(r);
 		this.relationTypeEditor = relationTypeEditor;
 		this.subComponentTypesEditor = subComponentTypesEditor;
 		this.relationDescription = relationDescription;
@@ -49,13 +48,13 @@ public class MyRelationList extends JList {
 		subComponentTypesEditor.setCallBack(this);
 		srcTargetEditor.setCallBack(this);
 		subtypeCompoundEditor.setCallBack(this);
-		
+
 		setCellRenderer(getRelationCellRenderer());
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	public void updateRelationInfo(Relation r) {
 		relationTypeEditor.updateRelationSelection(r);
 		subComponentTypesEditor.updateRelationSelection(r);
@@ -67,13 +66,13 @@ public class MyRelationList extends JList {
 		subtypeCompoundEditor.updateRelationSelection(r);
 		repaint();
 	}
-	
-	private ListCellRenderer getRelationCellRenderer() {
-		ListCellRenderer res = new ListCellRenderer() {
-			public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-				Relation r = (Relation) value;
-				JLabel res = new JLabel(r.toStringWithShortDesc(false));
-				res.setToolTipText(r.toStringWithShortDesc(true));
+
+	private static ListCellRenderer<Relation> getRelationCellRenderer() {
+		ListCellRenderer<Relation> res = new ListCellRenderer<Relation>() {
+			public Component getListCellRendererComponent(JList<? extends Relation> list, Relation value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				JLabel res = new JLabel(value.toStringWithShortDesc(false));
+				res.setToolTipText(value.toStringWithShortDesc(true));
 				res.setOpaque(true);
 				if (isSelected)
 					res.setBackground(new Color(240, 240, 255));
@@ -97,6 +96,7 @@ public class MyRelationList extends JList {
 				return TableLayout.get3Split(b1, res, b2, 5, TableLayoutConstants.FILL, 5);
 			}
 		};
+		
 		return res;
 	}
 }

@@ -29,48 +29,30 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.database.dbe.StringScanner;
 
 /**
  * 
- edges in list form (not supported):
- * vertices <# of vertices>
- * 1 "x"
- * 2 "y"
- * 3 "z"
- * arcslist
- * 1 2 3
- * 2 3
- * non-list form for edges:
- * vertices <# of vertices>
- * 1 "a" x y z
- * 2 "b" x y
- * 3 "c"
- * edges
- * 1 2 0.3
- * 1 3 0.7
- * 2 3 1.0
- * arcs
- * 1 2 0.3
- * 1 3 0.7
+ * edges in list form (not supported): vertices <# of vertices> 1 "x" 2 "y" 3
+ * "z" arcslist 1 2 3 2 3 non-list form for edges: vertices <# of vertices> 1
+ * "a" x y z 2 "b" x y 3 "c" edges 1 2 0.3 1 3 0.7 2 3 1.0 arcs 1 2 0.3 1 3 0.7
  * 2 3 1.0
  * 
  * @author Christian Klukas
  */
-public class PajekReader
-					extends AbstractInputSerializer {
-	
+public class PajekReader extends AbstractInputSerializer {
+
 	private String fileNameExt = ".net";
-	
+
 	private String specialStart = "*";
 	private String nodeStart = "*Vertices".toUpperCase();
 	private String edgeStart = "*Arcs".toUpperCase();
 	private String edgeUnDirStart = "*Edges".toUpperCase();
 	private String filename;
-	
+
 	/**
 	 *
 	 */
 	public PajekReader() {
 		super();
 	}
-	
+
 	@Override
 	public void read(String filename, Graph g) throws IOException {
 		this.filename = filename;
@@ -79,30 +61,30 @@ public class PajekReader
 			g.setName(filename);
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.io.AbstractInputSerializer#read(java.io.InputStream, org.graffiti.graph.Graph)
+	 * 
+	 * @see org.graffiti.plugin.io.AbstractInputSerializer#read(java.io.InputStream,
+	 * org.graffiti.graph.Graph)
 	 */
 	@Override
-	public void read(InputStream in, Graph g)
-						throws IOException {
+	public void read(InputStream in, Graph g) throws IOException {
 		InputStreamReader isr = new InputStreamReader(in);
 		BufferedReader bi = new BufferedReader(isr);
 		read(g, bi);
 		isr.close();
 	}
-	
+
 	private void read(Graph g, BufferedReader bi) throws IOException, FileNotFoundException {
 		HashMap<Integer, Node> nodes = new HashMap<Integer, Node>();
 		/**
-		 * mode = 0 => scan for known start lines
-		 * mode = 1 => "*Vertices" found, now we read nodes
-		 * mode = 2 => "*Arcs" found, now we read directed edges
-		 * mode = 3 => "*Edges" found, now we read undirected edges
+		 * mode = 0 => scan for known start lines mode = 1 => "*Vertices" found, now we
+		 * read nodes mode = 2 => "*Arcs" found, now we read directed edges mode = 3 =>
+		 * "*Edges" found, now we read undirected edges
 		 */
 		int mode = 0;
-		
+
 		PositionGridGenerator positionGen = new PositionGridGenerator(30, 30, 500);
 		boolean performPositionScaling = true;
 		String currLine;
@@ -113,32 +95,29 @@ public class PajekReader
 				if (currLine.startsWith(specialStart)) {
 					if (currLine.toUpperCase().startsWith("*NETWORK"))
 						g.setName(currLine.substring("*NETWORK".length()).trim());
+					else if (currLine.toUpperCase().startsWith(nodeStart))
+						mode = 1;
+					else if (currLine.toUpperCase().startsWith(edgeStart))
+						mode = 2;
+					else if (currLine.toUpperCase().startsWith(edgeUnDirStart))
+						mode = 3;
 					else
-						if (currLine.toUpperCase().startsWith(nodeStart))
-							mode = 1;
-						else
-							if (currLine.toUpperCase().startsWith(edgeStart))
-								mode = 2;
-							else
-								if (currLine.toUpperCase().startsWith(edgeUnDirStart))
-									mode = 3;
-								else
-									mode = 0;
+						mode = 0;
 				} else {
 					StringScanner s = new StringScanner(currLine, " ", " ", " ");
 					switch (mode) {
-						case 1:
-							if (!mode1node(g, nodes, positionGen, s))
-								performPositionScaling = false;
-							break;
-						case 2:
-							mode2dirEdge(g, nodes, s);
-							break;
-						case 3:
-							mode3undirEdge(g, nodes, s);
-							break;
-						default:
-							; // ignore
+					case 1:
+						if (!mode1node(g, nodes, positionGen, s))
+							performPositionScaling = false;
+						break;
+					case 2:
+						mode2dirEdge(g, nodes, s);
+						break;
+					case 3:
+						mode3undirEdge(g, nodes, s);
+						break;
+					default:
+						; // ignore
 					}
 				}
 			}
@@ -146,7 +125,8 @@ public class PajekReader
 		bi.close();
 		File clusterFile = null;
 		if (filename == null) {
-			ErrorMsg.addErrorMessage("Internal Error: Cluster Information (if available), could not be read. Check File-Load-Call.");
+			ErrorMsg.addErrorMessage(
+					"Internal Error: Cluster Information (if available), could not be read. Check File-Load-Call.");
 		} else {
 			String clusterFilename = filename.substring(0, filename.length() - fileNameExt.length()) + ".clu";
 			clusterFile = new File(clusterFilename);
@@ -171,11 +151,11 @@ public class PajekReader
 			}
 		}
 	}
-	
+
 	private void mode2dirEdge(Graph g, HashMap<Integer, Node> nodes, StringScanner s) {
-		Node node1 = nodes.get(new Integer(s.nextInt()));
-		Node node2 = nodes.get(new Integer(s.nextInt()));
-		Double weight = new Double(s.nextDouble());
+		Node node1 = nodes.get(Integer.valueOf(s.nextInt()));
+		Node node2 = nodes.get(Integer.valueOf(s.nextInt()));
+		Double weight = Double.valueOf(s.nextDouble());
 		if (weight != null && weight.isNaN())
 			weight = null;
 		Edge newEdge = g.addEdge(node1, node2, true);
@@ -183,11 +163,11 @@ public class PajekReader
 		if (weight != null)
 			AttributeHelper.setAttribute(newEdge, "pajek", "weight", weight);
 	}
-	
+
 	private void mode3undirEdge(Graph g, HashMap<Integer, Node> nodes, StringScanner s) {
-		Node node1 = nodes.get(new Integer(s.nextInt()));
-		Node node2 = nodes.get(new Integer(s.nextInt()));
-		Double weight = new Double(s.nextDouble());
+		Node node1 = nodes.get(Integer.valueOf(s.nextInt()));
+		Node node2 = nodes.get(Integer.valueOf(s.nextInt()));
+		Double weight = Double.valueOf(s.nextDouble());
 		if (weight != null && weight.isNaN())
 			weight = null;
 		Edge newEdge = g.addEdge(node1, node2, false);
@@ -195,21 +175,22 @@ public class PajekReader
 		if (weight != null)
 			AttributeHelper.setAttribute(newEdge, "pajek", "weight", weight);
 	}
-	
+
 	/**
-	 * @return true, in case x, y and z position is less or equal to 1 and greater or equal to 0
+	 * @return true, in case x, y and z position is less or equal to 1 and greater
+	 *         or equal to 0
 	 */
-	private boolean mode1node(Graph g, HashMap<Integer, Node> nodes, PositionGridGenerator positionGen, StringScanner s) {
+	private boolean mode1node(Graph g, HashMap<Integer, Node> nodes, PositionGridGenerator positionGen,
+			StringScanner s) {
 		boolean requestScale = true;
 		Node newNode = g.addNode();
-		Integer id = new Integer(s.nextInt());
+		Integer id = Integer.valueOf(s.nextInt());
 		nodes.put(id, newNode);
 		AttributeHelper.setAttribute(newNode, "", "pajek_id", id);
 		if (s.stillInputAvailable() && s.contains("\""))
 			AttributeHelper.setLabel(newNode, s.nextString("\""));
-		else
-			if (s.stillInputAvailable())
-				AttributeHelper.setLabel(newNode, s.nextNotQuotedString());
+		else if (s.stillInputAvailable())
+			AttributeHelper.setLabel(newNode, s.nextNotQuotedString());
 		double x = s.nextDouble();
 		double y = s.nextDouble();
 		double z = s.nextDouble();
@@ -226,7 +207,7 @@ public class PajekReader
 		}
 		return requestScale;
 	}
-	
+
 	/**
 	 * @param in
 	 * @param bi
@@ -234,14 +215,15 @@ public class PajekReader
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	private void readClusterInfo(File clusterFile, HashMap<Integer, Node> nodes) throws FileNotFoundException, IOException {
+	private void readClusterInfo(File clusterFile, HashMap<Integer, Node> nodes)
+			throws FileNotFoundException, IOException {
 		MainFrame.showMessage("Cluster Information (.CLU) found.", MessageType.INFO, 1000);
 		FileInputStream fisCl = new FileInputStream(clusterFile);
 		InputStreamReader isrCl = new InputStreamReader(fisCl);
 		BufferedReader biCl = new BufferedReader(isrCl);
 		/**
-		 * Mode = 0 ==> no start tag found
-		 * Mode = 1 ==> "*Verticies" found => read cluster info
+		 * Mode = 0 ==> no start tag found Mode = 1 ==> "*Verticies" found => read
+		 * cluster info
 		 */
 		int mode = 0;
 		int curNodeId = 0;
@@ -257,7 +239,7 @@ public class PajekReader
 					curNodeId += 1;
 					try {
 						String cluster = currLine.trim();
-						Node n = (Node) nodes.get(new Integer(curNodeId));
+						Node n = (Node) nodes.get(Integer.valueOf(curNodeId));
 						NodeTools.setClusterID(n, cluster);
 					} catch (NumberFormatException nfe) {
 						ErrorMsg.addErrorMessage(nfe.getLocalizedMessage());
@@ -270,23 +252,25 @@ public class PajekReader
 		isrCl.close();
 		fisCl.close();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.io.Serializer#getExtensions()
 	 */
 	public String[] getExtensions() {
 		return new String[] { fileNameExt };
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.io.Serializer#getFileTypeDescriptions()
 	 */
 	public String[] getFileTypeDescriptions() {
 		return new String[] { "Pajek" };
 	}
-	
+
 	public void read(Reader reader, Graph g) throws Exception {
 		BufferedReader bi = new BufferedReader(reader);
 		read(g, bi);

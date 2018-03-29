@@ -54,7 +54,7 @@ public class FastScatterPlotDemo extends ApplicationFrame {
 	 * Creates a new fast scatter plot demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public FastScatterPlotDemo(final String title) {
 
@@ -69,8 +69,7 @@ public class FastScatterPlotDemo extends ApplicationFrame {
 		chart.setLegend(null);
 
 		// force aliasing of the rendered content..
-		chart.getRenderingHints().put
-							(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		chart.getRenderingHints().put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		final ChartPanel panel = new ChartPanel(chart, true);
 		panel.setPreferredSize(new java.awt.Dimension(500, 270));
@@ -113,7 +112,7 @@ public class FastScatterPlotDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

@@ -35,8 +35,9 @@ package org.jfree.chart.event;
 import org.jfree.chart.plot.Plot;
 
 /**
- * An event that can be forwarded to any {@link org.jfree.chart.event.PlotChangeListener} to
- * signal a change to a plot.
+ * An event that can be forwarded to any
+ * {@link org.jfree.chart.event.PlotChangeListener} to signal a change to a
+ * plot.
  */
 public class PlotChangeEvent extends ChartChangeEvent {
 
@@ -47,7 +48,7 @@ public class PlotChangeEvent extends ChartChangeEvent {
 	 * Creates a new PlotChangeEvent.
 	 * 
 	 * @param plot
-	 *           the plot that generated the event.
+	 *            the plot that generated the event.
 	 */
 	public PlotChangeEvent(Plot plot) {
 		super(plot);

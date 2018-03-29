@@ -20,16 +20,15 @@ import org.graffiti.plugin.parameter.ObjectListParameter;
  * 
  * @version $Revision: 1.5 $
  */
-public class ObjectListComponent
-					extends ComboBoxEditComponent {
+public class ObjectListComponent extends ComboBoxEditComponent {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructor sets the correct entries of the combo box. And creates a new
 	 * combo box.
 	 * 
 	 * @param disp
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public ObjectListComponent(Displayable disp) {
 		super(disp);
@@ -37,7 +36,7 @@ public class ObjectListComponent
 			ObjectListParameter ola = (ObjectListParameter) disp;
 			this.comboText = ola.getPossibleValues().toArray();
 			this.comboValue = ola.getPossibleValues().toArray();
-			this.comboBox = new JComboBox(this.comboText);
+			this.comboBox = new JComboBox<>(this.comboText);
 			if (ola.getValue() != null)
 				comboBox.setSelectedItem(ola.getValue());
 			if (ola.getRenderer() != null)

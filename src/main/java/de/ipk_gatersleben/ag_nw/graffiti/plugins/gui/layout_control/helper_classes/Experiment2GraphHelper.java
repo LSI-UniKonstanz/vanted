@@ -51,28 +51,27 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.KeggHel
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.KeggGmlHelper;
 
 /**
- * @author klukas
- *         To change the template for this generated type comment go to Window -
- *         Preferences - Java - Code Generation - Code and Comments
+ * @author klukas To change the template for this generated type comment go to
+ *         Window - Preferences - Java - Code Generation - Code and Comments
  */
 public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSupportingExternalCall, HelperClass {
-	
+
 	public static String mapFolder = "mapping";
-	
+
 	public static String mapVarName = "measurementdata"; // data
-	
+
 	private static int dxNewNode = 150;
-	
+
 	private static int dyNewNode = 150;
-	
+
 	private String status1 = "Init Data Mapping...";
-	
+
 	private String status2;
-	
+
 	private boolean pleaseStop;
-	
+
 	private int progressValue;
-	
+
 	/**
 	 * Get a list of mapped xml data that has been assigned to a node (or other
 	 * GraphElement).
@@ -82,7 +81,7 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 	public static ExperimentInterface getMappedDataListFromGraphElement(GraphElement graphElement) {
 		return getMappedDataListFromGraphElement(graphElement, mapVarName);
 	}
-	
+
 	public static ExperimentInterface getMappedDataListFromGraphElement(GraphElement graphElement, String mapVarName) {
 		try {
 			CollectionAttribute ca = (CollectionAttribute) graphElement.getAttribute(mapFolder);
@@ -92,7 +91,7 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 			return null;
 		}
 	}
-	
+
 	public static XMLAttribute getXMLdataAttribute(GraphElement graphElement) {
 		try {
 			CollectionAttribute ca = (CollectionAttribute) graphElement.getAttribute(mapFolder);
@@ -102,7 +101,7 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 			return null;
 		}
 	}
-	
+
 	public static Integer getMappedDataListSizeFromGraphElement(GraphElement graphElement) {
 		try {
 			CollectionAttribute ca = (CollectionAttribute) graphElement.getAttribute(mapFolder);
@@ -112,7 +111,7 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 			return null;
 		}
 	}
-	
+
 	// public MapResult mapDataToGraphElements(
 	// boolean mapAlsoInCaseOfEmptyDataset, Document doc,
 	// Collection<org.graffiti.graph.GraphElement> targetGraphElements,
@@ -138,32 +137,32 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 	// considerMappingToKEGGmapNodes,
 	// selectResult);
 	// }
-	
+
 	public MapResult mapDataToGraphElements(boolean mapAlsoInCaseOfEmptyDataset, ExperimentInterface md,
 			Collection<org.graffiti.graph.GraphElement> targetGraphElements, Graph addNewGraphElementsToThisGraph,
-			boolean doUserMapping, String diagramStyle, int minimumLines,
-			boolean considerEnzymeDb, boolean considerMappingToKEGGmapNodes, boolean selectResult) {
+			boolean doUserMapping, String diagramStyle, int minimumLines, boolean considerEnzymeDb,
+			boolean considerMappingToKEGGmapNodes, boolean selectResult) {
 		int diagramsPerRow = -1;
 		return mapDataToGraphElements(mapAlsoInCaseOfEmptyDataset, md, targetGraphElements,
 				addNewGraphElementsToThisGraph, doUserMapping, diagramStyle, minimumLines, diagramsPerRow,
 				considerEnzymeDb, considerMappingToKEGGmapNodes, selectResult);
 	}
-	
+
 	/**
 	 * Maps the data from the XML document to the list of nodes
 	 * 
 	 * @param mapAlsoInCaseOfEmptyDataset
-	 *           If true, a mapping will be done although no data points are in
-	 *           the data set. This creates also empty diagrams.
+	 *            If true, a mapping will be done although no data points are in the
+	 *            data set. This creates also empty diagrams.
 	 * @param doc
-	 *           The XML Document with the experimental data.
+	 *            The XML Document with the experimental data.
 	 * @param targetGraphElements
-	 *           The node list where the data should be mapped.
+	 *            The node list where the data should be mapped.
 	 * @param addNewGraphElementsToThisGraph
-	 *           If not null, new nodes will be added to this graph if one or
-	 *           more mappings are done for a node, if set to false, each time a
-	 *           mapping is done, the count will be increased. Set this to true,
-	 *           to find out, how many nodes have data mapped.
+	 *            If not null, new nodes will be added to this graph if one or more
+	 *            mappings are done for a node, if set to false, each time a mapping
+	 *            is done, the count will be increased. Set this to true, to find
+	 *            out, how many nodes have data mapped.
 	 * @param validTimePoints
 	 * @param validConditons
 	 * @return MapResult
@@ -171,13 +170,13 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 	@SuppressWarnings("unchecked")
 	public MapResult mapDataToGraphElements(boolean mapAlsoInCaseOfEmptyDataset, ExperimentInterface mappingData,
 			Collection<org.graffiti.graph.GraphElement> targetGraphElements, Graph addNewGraphElementsToThisGraph,
-			boolean doUserMapping, String diagramStyle, int minimumLines, int diagramsPerRow,
-			boolean considerEnzymeDb, boolean considerMappingToKEGGmapNodes, boolean selectResult) {
+			boolean doUserMapping, String diagramStyle, int minimumLines, int diagramsPerRow, boolean considerEnzymeDb,
+			boolean considerMappingToKEGGmapNodes, boolean selectResult) {
 		MapResult mapResult = new MapResult();
 		progressValue = -1;
 		pleaseStop = false;
 		status1 = "Prepare Data Mapping";
-		
+
 		int offY = 0;
 		int offX = 100;
 		int cntX = 0;
@@ -189,15 +188,15 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 			offY += dyNewNode;
 		}
 		status2 = "Enumerate node names and alternative identifiers...";
-		
+
 		HashMap<org.graffiti.graph.GraphElement, HashSet<String>> graphElement2possibleIDs = new HashMap<org.graffiti.graph.GraphElement, HashSet<String>>();
 		for (org.graffiti.graph.GraphElement n : targetGraphElements) {
-			graphElement2possibleIDs.put(n, getAlternativeIdsAndLabelsOfGraphElement(n,
-					considerEnzymeDb, considerMappingToKEGGmapNodes));
+			graphElement2possibleIDs.put(n,
+					getAlternativeIdsAndLabelsOfGraphElement(n, considerEnzymeDb, considerMappingToKEGGmapNodes));
 		}
-		
+
 		HashMap<String, QuadNumber> id2quad = new HashMap<String, QuadNumber>();
-		
+
 		status2 = "";
 		status1 = "Start Data Mapping...";
 		Set<org.graffiti.graph.GraphElement> newNodesThatShouldNotAgainBeUsedForMapping = new HashSet<org.graffiti.graph.GraphElement>();
@@ -206,13 +205,13 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 		HashMap<String, EnzClassEntry> knownEnzClassEntries = new HashMap<String, EnzClassEntry>();
 		ArrayList<org.graffiti.graph.GraphElement> workList = new ArrayList<org.graffiti.graph.GraphElement>(
 				targetGraphElements);
-		
+
 		HashSet<org.graffiti.graph.GraphElement> resultElements = new HashSet<org.graffiti.graph.GraphElement>();
-		
+
 		int maxRow = (int) Math.sqrt(mappingData.size());
 		if (maxRow < 8)
 			maxRow = 8;
-		
+
 		for (int firstEdgesThenNodes = 0; firstEdgesThenNodes <= 1; firstEdgesThenNodes++)
 			for (SubstanceInterface substanceData : mappingData) {
 				if (pleaseStop) {
@@ -220,16 +219,16 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 					break;
 				}
 				progressValue = (100 * i) / msl;
-				
+
 				String substanceMainName = substanceData.getName();
-				
+
 				// connection to processing of new edges / nodes XXXX_ABC_XXXX (see
 				// below)
 				if (firstEdgesThenNodes == 0 && substanceMainName.indexOf("^") <= 0)
 					continue;
 				if (firstEdgesThenNodes == 1 && substanceMainName.indexOf("^") > 0)
 					continue;
-				
+
 				if (minimumLines > 0) {
 					int lines = substanceData.size();
 					if (lines < minimumLines)
@@ -239,10 +238,10 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 				if (substanceMainName != null && substanceMainName.endsWith(".0"))
 					substanceMainName = substanceMainName.substring(0, substanceMainName.length() - ".0".length());
 				status2 = "Substance: " + substanceMainName;
-				
+
 				HashSet<org.graffiti.graph.Node> edgeMappingPossibleSourceNodes = new HashSet<org.graffiti.graph.Node>();
 				HashSet<org.graffiti.graph.Node> edgeMappingPossibleTargetNodes = new HashSet<org.graffiti.graph.Node>();
-				
+
 				HashSet<String> substanceNames = new HashSet<String>();
 				substanceNames.add(substanceMainName);
 				if (substanceData.getSynonyms() != null)
@@ -252,12 +251,12 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 					substanceName = substanceName.trim();
 					if (substanceName.length() <= 0)
 						continue;
-					enumeratePossibleTargetGraphElementsForSubstance(considerEnzymeDb,
-							graphElement2possibleIDs, id2quad, newNodesThatShouldNotAgainBeUsedForMapping,
-							knownEnzClassEntries, workList, addMappingDataToTheseGraphElements, substanceName, false,
-							edgeMappingPossibleSourceNodes, edgeMappingPossibleTargetNodes);
+					enumeratePossibleTargetGraphElementsForSubstance(considerEnzymeDb, graphElement2possibleIDs,
+							id2quad, newNodesThatShouldNotAgainBeUsedForMapping, knownEnzClassEntries, workList,
+							addMappingDataToTheseGraphElements, substanceName, false, edgeMappingPossibleSourceNodes,
+							edgeMappingPossibleTargetNodes);
 				}
-				
+
 				if (addMappingDataToTheseGraphElements.size() == 0 && addNewGraphElementsToThisGraph != null) {
 					if (substanceMainName.indexOf("^") > 0) {
 						String substanceMainNameA = substanceMainName.substring(0, substanceMainName.indexOf("^"));
@@ -280,9 +279,9 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 							// not considered
 							// for mapping of further not mappable node data
 							status2 = "Add new source node...";
-							org.graffiti.graph.Node graphNode = GraphHelper.addNodeToGraph(addNewGraphElementsToThisGraph, 100
-									+ dxNewNode * cntX, 100 + dyNewNode * cntY++, 1, 120, 120, new Color(0, 0, 0, 255),
-									new Color(255, 255, 255, 255));
+							org.graffiti.graph.Node graphNode = GraphHelper.addNodeToGraph(
+									addNewGraphElementsToThisGraph, 100 + dxNewNode * cntX, 100 + dyNewNode * cntY++, 1,
+									120, 120, new Color(0, 0, 0, 255), new Color(255, 255, 255, 255));
 							mapResult.newNodes++;
 							if (cntY >= maxRow) {
 								cntY = 0;
@@ -297,9 +296,9 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 						}
 						if (edgeMappingPossibleTargetNodes.size() <= 0) {
 							status2 = "Add new target node...";
-							org.graffiti.graph.Node graphNode = GraphHelper.addNodeToGraph(addNewGraphElementsToThisGraph,
-									offX + dxNewNode * cntX, offY + dyNewNode * cntY++, 1, 120, 120, new Color(0, 0, 0, 255),
-									new Color(255, 255, 255, 255));
+							org.graffiti.graph.Node graphNode = GraphHelper.addNodeToGraph(
+									addNewGraphElementsToThisGraph, offX + dxNewNode * cntX, offY + dyNewNode * cntY++,
+									1, 120, 120, new Color(0, 0, 0, 255), new Color(255, 255, 255, 255));
 							mapResult.newNodes++;
 							if (cntY >= maxRow) {
 								cntY = 0;
@@ -315,8 +314,9 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 						// now create edges between all source and target nodes
 						for (org.graffiti.graph.Node sourceNode : edgeMappingPossibleSourceNodes) {
 							for (org.graffiti.graph.Node targetNode : edgeMappingPossibleTargetNodes) {
-								org.graffiti.graph.Edge nEdge = addNewGraphElementsToThisGraph.addEdge(sourceNode, targetNode,
-										true, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.black, Color.black, true));
+								org.graffiti.graph.Edge nEdge = addNewGraphElementsToThisGraph.addEdge(sourceNode,
+										targetNode, true, AttributeHelper
+												.getDefaultGraphicsAttributeForEdge(Color.black, Color.black, true));
 								mapResult.newEdges++;
 								addMappingDataToTheseGraphElements.add(nEdge);
 								if (sourceNode == targetNode) {
@@ -331,9 +331,9 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 					} else {
 						// No name mapping possible -> create new graph node
 						status2 = "Add new graph node...";
-						org.graffiti.graph.Node graphNode = GraphHelper.addNodeToGraph(addNewGraphElementsToThisGraph, offX
-								+ dxNewNode * cntX, offY + dyNewNode * cntY++, 1, 120, 120, new Color(0, 0, 0, 255), new Color(
-								255, 255, 255, 255));
+						org.graffiti.graph.Node graphNode = GraphHelper.addNodeToGraph(addNewGraphElementsToThisGraph,
+								offX + dxNewNode * cntX, offY + dyNewNode * cntY++, 1, 120, 120,
+								new Color(0, 0, 0, 255), new Color(255, 255, 255, 255));
 						mapResult.newNodes++;
 						if (cntY >= maxRow) {
 							cntY = 0;
@@ -362,11 +362,11 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 		calcMinMaxMappingCountStatistics(mapResult, resultElements);
 		if (selectResult)
 			GraphHelper.selectElements((Collection) resultElements);
-		
+
 		return mapResult;
 	}
-	
-	private void calcMinMaxMappingCountStatistics(MapResult mapResult,
+
+	private static void calcMinMaxMappingCountStatistics(MapResult mapResult,
 			HashSet<org.graffiti.graph.GraphElement> resultElements) {
 		int minMappCount = Integer.MAX_VALUE;
 		int maxMappCount = 0;
@@ -389,19 +389,20 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 		mapResult.minMappingCount = minMappCount;
 		mapResult.maxMappingCount = maxMappCount;
 	}
-	
+
 	private void createAndAddExperimentalDataAttribute(MapResult mapResult, String diagramStyle, int diagramsPerRow,
 			SubstanceInterface xmlSubstanceNode, String substanceMainName,
 			HashSet<org.graffiti.graph.GraphElement> addMappingDataToTheseGraphElements) {
-		
-		if(addMappingDataToTheseGraphElements == null)
+
+		if (addMappingDataToTheseGraphElements == null)
 			return;
-		
+
 		for (org.graffiti.graph.GraphElement targetGraphElement : addMappingDataToTheseGraphElements) {
 			status1 = "Map XML data for substance " + substanceMainName + " to graph element "
 					+ targetGraphElement.toString();
 			addMappingData2Node(xmlSubstanceNode, targetGraphElement, diagramStyle);
-			AttributeHelper.setAttribute(targetGraphElement, "charting", ChartsColumnAttribute.name, new ChartsColumnAttribute(diagramsPerRow));
+			AttributeHelper.setAttribute(targetGraphElement, "charting", ChartsColumnAttribute.name,
+					new ChartsColumnAttribute(diagramsPerRow));
 			// if (targetGraphElement!=null && (targetGraphElement instanceof
 			// org.graffiti.graph.Node) && diagramStyle>0 && diagramStyle<6
 			if (targetGraphElement != null && (targetGraphElement instanceof org.graffiti.graph.Node)
@@ -416,16 +417,17 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 			}
 		}
 	}
-	
+
 	private void enumeratePossibleTargetGraphElementsForSubstance(boolean considerEnzymeDb,
 			HashMap<org.graffiti.graph.GraphElement, HashSet<String>> graphNode2possibleIDs,
 			HashMap<String, QuadNumber> id2quad,
 			Set<org.graffiti.graph.GraphElement> newGraphElementsThatShouldNotAgainBeUsedForMapping,
 			HashMap<String, EnzClassEntry> knownEnzClassEntries, ArrayList<org.graffiti.graph.GraphElement> workList,
-			HashSet<org.graffiti.graph.GraphElement> addMappingDataToTheseGraphElements, String substanceNameFromDataset,
-			boolean edgeSearch, HashSet<org.graffiti.graph.Node> edgeMappingPossibleSourceNodes,
+			HashSet<org.graffiti.graph.GraphElement> addMappingDataToTheseGraphElements,
+			String substanceNameFromDataset, boolean edgeSearch,
+			HashSet<org.graffiti.graph.Node> edgeMappingPossibleSourceNodes,
 			HashSet<org.graffiti.graph.Node> edgeMappingPossibleTargetNodes) {
-		
+
 		// process graph edge mapping
 		// enumerate possible target and source nodes by recursive call
 		// enumerate edges, which connect the source nodes with target nodes
@@ -437,13 +439,13 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 			String substanceB = substanceNameFromDataset.substring(specialCharPos + "^".length());
 			HashSet<org.graffiti.graph.GraphElement> possibleTargetsA = new HashSet<GraphElement>();
 			HashSet<org.graffiti.graph.GraphElement> possibleTargetsB = new HashSet<GraphElement>();
-			enumeratePossibleTargetGraphElementsForSubstance(considerEnzymeDb, graphNode2possibleIDs,
-					id2quad, newGraphElementsThatShouldNotAgainBeUsedForMapping, knownEnzClassEntries, workList,
+			enumeratePossibleTargetGraphElementsForSubstance(considerEnzymeDb, graphNode2possibleIDs, id2quad,
+					newGraphElementsThatShouldNotAgainBeUsedForMapping, knownEnzClassEntries, workList,
 					possibleTargetsA, substanceA, true, null, null);
-			enumeratePossibleTargetGraphElementsForSubstance(considerEnzymeDb, graphNode2possibleIDs,
-					id2quad, newGraphElementsThatShouldNotAgainBeUsedForMapping, knownEnzClassEntries, workList,
+			enumeratePossibleTargetGraphElementsForSubstance(considerEnzymeDb, graphNode2possibleIDs, id2quad,
+					newGraphElementsThatShouldNotAgainBeUsedForMapping, knownEnzClassEntries, workList,
 					possibleTargetsB, substanceB, true, null, null);
-			
+
 			for (GraphElement geA : possibleTargetsA) {
 				if (!(geA instanceof org.graffiti.graph.Node))
 					continue;
@@ -453,13 +455,14 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 						continue;
 					org.graffiti.graph.Node nB = (org.graffiti.graph.Node) geB;
 					for (Edge ee : nA.getEdges()) {
-						if ((ee.getSource() == nA && ee.getTarget() == nB) || (ee.getSource() == nB && ee.getTarget() == nA)) {
+						if ((ee.getSource() == nA && ee.getTarget() == nB)
+								|| (ee.getSource() == nB && ee.getTarget() == nA)) {
 							addMappingDataToTheseGraphElements.add(ee);
 						}
 					}
 				}
 			}
-			
+
 			if (addMappingDataToTheseGraphElements.size() <= 0) {
 				for (GraphElement geA : possibleTargetsA) {
 					if (!(geA instanceof org.graffiti.graph.Node))
@@ -478,7 +481,7 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 			}
 			return;
 		}
-		
+
 		// process graph node mapping or direct (label based) graph edge mapping,
 		// or process enumeration of possible source or target nodes
 		// for mapping to graph edges (see above)
@@ -486,12 +489,13 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 			substanceNameFromDataset = substanceNameFromDataset.substring("EC ".length());
 		if (substanceNameFromDataset.startsWith("EC:"))
 			substanceNameFromDataset = substanceNameFromDataset.substring("EC:".length());
-		
+
 		// String possibleOrganismId = "";
 		// if (substanceNameFromDataset.indexOf(":")>0)
 		// possibleOrganismId = substanceNameFromDataset.substring(0,
 		// substanceNameFromDataset.indexOf(":")).toUpperCase();
-		String possibleGeneIdFromDataset = substanceNameFromDataset.substring(substanceNameFromDataset.indexOf(":") + 1);
+		// String possibleGeneIdFromDataset = substanceNameFromDataset
+		// 		.substring(substanceNameFromDataset.indexOf(":") + 1);
 		// matchingKo = KoService.getKoFromGeneId(possibleOrganismId,
 		// possibleGeneId);
 		for (org.graffiti.graph.GraphElement graphElement : workList) {
@@ -539,7 +543,7 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 			}
 		}
 	}
-	
+
 	public synchronized static void addMappingData2Node(SubstanceInterface xmlSubstanceNode,
 			org.graffiti.graph.GraphElement graphNode, String diagramStyle) {
 		XMLAttribute xa;
@@ -561,19 +565,19 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 		// Add XML Substance Data to Mapping List
 		xa.addData(xmlSubstanceNode);
 	}
-	
+
 	public static void addMappingData2Node(SubstanceInterface xmlSubstanceNode, org.graffiti.graph.Node graphNode) {
 		List<MyComparableDataPoint> testList = NodeTools.getSortedAverageDataSetValues(xmlSubstanceNode);
 		Set<String> times = new HashSet<String>();
 		for (MyComparableDataPoint mcdp : testList) {
 			times.add(mcdp.timeUnitAndTime);
 		}
-		
+
 		Set<String> conditions = new HashSet<String>();
 		for (MyComparableDataPoint mcdp : testList) {
 			conditions.add(mcdp.serie);
 		}
-		
+
 		if (times.size() > 1)
 			addMappingData2Node(xmlSubstanceNode, graphNode, GraffitiCharts.LINE.getName());
 		else {
@@ -582,9 +586,9 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 			else
 				addMappingData2Node(xmlSubstanceNode, graphNode, GraffitiCharts.HEATMAP.getName());
 		}
-		
+
 	}
-	
+
 	public static void addExperimentNameInfoToAllLinesForThisSubstanceNode(Node xmlSubstanceNode) {
 		xmlSubstanceNode.getOwnerDocument().getElementsByTagName("line");
 		Node lineNode = xmlSubstanceNode.getFirstChild();
@@ -606,10 +610,9 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 			lineNode = lineNode.getNextSibling();
 		}
 	}
-	
+
 	private HashSet<String> getAlternativeIdsAndLabelsOfGraphElement(org.graffiti.graph.GraphElement graphElement,
-			boolean considerEnzymeDb,
-			boolean considerMappingToKEGGmapNodes) {
+			boolean considerEnzymeDb, boolean considerMappingToKEGGmapNodes) {
 		HashSet<String> result = new HashSet<String>();
 		for (String nodeName : AttributeHelper.getLabels(graphElement)) {
 			if (nodeName != null) {
@@ -625,7 +628,7 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 							result.add(an);
 					}
 				}
-				
+
 			}
 		}
 		if (graphElement instanceof org.graffiti.graph.Node) {
@@ -677,7 +680,7 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 					status1 = prevStatus1;
 					status2 = prevStatus2;
 				}
-				
+
 				// check if this a species specific pathway
 				// if yes, then the organism code of the KEGG IDs is removed
 				ArrayList<String> keggIds = new ArrayList<String>();
@@ -702,55 +705,60 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 		}
 		return result;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @seede.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
 	 * getCurrentStatusValue()
 	 */
 	public int getCurrentStatusValue() {
 		return progressValue;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @seede.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
 	 * getCurrentStatusMessage1()
 	 */
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @seede.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
 	 * getCurrentStatusMessage2()
 	 */
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#pleaseStop
-	 * ()
+	 * de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#pleaseStop ()
 	 */
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @seede.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
 	 * getCurrentStatusValueFine()
 	 */
 	public double getCurrentStatusValueFine() {
 		return getCurrentStatusValue();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see
 	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider
 	 * #pluginWaitsForUser()
@@ -758,9 +766,10 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see
 	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider
 	 * #pleaseContinueRun()
@@ -768,34 +777,35 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 	public void pleaseContinueRun() {
 		// empty
 	}
-	
+
 	public void setCurrentStatusValue(int value) {
 		progressValue = value;
 	}
-	
+
 	/**
-	 * not implemented because it's not supported
-	 * (non-Javadoc)
+	 * not implemented because it's not supported (non-Javadoc)
+	 * 
 	 * @see org.BackgroundTaskStatusProviderSupportingExternalCall#setCurrentStatusValueFine(double)
 	 */
 	public void setCurrentStatusValueFine(double value) {
-		
+
 	}
-	
+
 	public boolean wantsToStop() {
 		return pleaseStop;
 	}
-	
+
 	public void setCurrentStatusText1(String status) {
 		status1 = status;
 	}
-	
+
 	public void setCurrentStatusText2(String status) {
 		status2 = status;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @seeorg.BackgroundTaskStatusProviderSupportingExternalCall#
 	 * setCurrentStatusValueFineAdd(double)
 	 */

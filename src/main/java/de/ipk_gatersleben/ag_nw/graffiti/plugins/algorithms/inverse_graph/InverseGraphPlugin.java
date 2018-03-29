@@ -8,13 +8,10 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 
 /**
- * @author Christian Klukas
- *         21.11.2007
+ * @author Christian Klukas 21.11.2007
  */
 public class InverseGraphPlugin extends IPK_PluginAdapter {
 	public InverseGraphPlugin() {
-		this.algorithms = new Algorithm[] {
-							new InverseGraphPluginAlgorithm()
-		};
+		this.algorithms = new Algorithm[] { new InverseGraphPluginAlgorithm() };
 	}
 }

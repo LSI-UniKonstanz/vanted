@@ -30,7 +30,8 @@
 package org.jfree.data;
 
 /**
- * A convenience class that extends the {@link DefaultContourDataset} to acommadate non-grid data.
+ * A convenience class that extends the {@link DefaultContourDataset} to
+ * acommadate non-grid data.
  */
 public class NonGridContourDataset extends DefaultContourDataset {
 
@@ -51,20 +52,20 @@ public class NonGridContourDataset extends DefaultContourDataset {
 	}
 
 	/**
-	 * Constructor for NonGridContourDataset. Uses default values for grid dimensions and
-	 * weighting.
+	 * Constructor for NonGridContourDataset. Uses default values for grid
+	 * dimensions and weighting.
 	 * 
 	 * @param seriesName
-	 *           the series name.
+	 *            the series name.
 	 * @param xData
-	 *           the x values.
+	 *            the x values.
 	 * @param yData
-	 *           the y values.
+	 *            the y values.
 	 * @param zData
-	 *           the z values.
+	 *            the z values.
 	 */
-	public NonGridContourDataset(final String seriesName,
-											final Object[] xData, final Object[] yData, final Object[] zData) {
+	public NonGridContourDataset(final String seriesName, final Object[] xData, final Object[] yData,
+			final Object[] zData) {
 		super(seriesName, xData, yData, zData);
 		buildGrid(DEFAULT_NUM_X, DEFAULT_NUM_Y, DEFAULT_POWER);
 	}
@@ -73,24 +74,22 @@ public class NonGridContourDataset extends DefaultContourDataset {
 	 * Constructor for NonGridContourDataset.
 	 * 
 	 * @param seriesName
-	 *           the series name.
+	 *            the series name.
 	 * @param xData
-	 *           the x values.
+	 *            the x values.
 	 * @param yData
-	 *           the y values.
+	 *            the y values.
 	 * @param zData
-	 *           the z values.
+	 *            the z values.
 	 * @param numX
-	 *           number grid cells in along the x-axis
+	 *            number grid cells in along the x-axis
 	 * @param numY
-	 *           number grid cells in along the y-axis
+	 *            number grid cells in along the y-axis
 	 * @param power
-	 *           exponent for inverse distance weighting
+	 *            exponent for inverse distance weighting
 	 */
-	public NonGridContourDataset(final String seriesName,
-											final Object[] xData, final Object[] yData,
-											final Object[] zData,
-											final int numX, final int numY, final int power) {
+	public NonGridContourDataset(final String seriesName, final Object[] xData, final Object[] yData,
+			final Object[] zData, final int numX, final int numY, final int power) {
 		super(seriesName, xData, yData, zData);
 		buildGrid(numX, numY, power);
 	}
@@ -98,15 +97,15 @@ public class NonGridContourDataset extends DefaultContourDataset {
 	/**
 	 * Builds a regular grid. Maps the non-grid data into the regular grid using an
 	 * inverse distance between grid and non-grid points. Weighting of distance can
-	 * be controlled by setting through the power parameter that controls the exponent
-	 * used on the distance weighting (e.g., distance^power).
+	 * be controlled by setting through the power parameter that controls the
+	 * exponent used on the distance weighting (e.g., distance^power).
 	 * 
 	 * @param numX
-	 *           number grid points in along the x-axis
+	 *            number grid points in along the x-axis
 	 * @param numY
-	 *           number grid points in along the y-axis
+	 *            number grid points in along the y-axis
 	 * @param power
-	 *           exponent for inverse distance weighting
+	 *            exponent for inverse distance weighting
 	 */
 	protected void buildGrid(final int numX, final int numY, final int power) {
 
@@ -202,19 +201,16 @@ public class NonGridContourDataset extends DefaultContourDataset {
 	 * Calculates the distance between two points.
 	 * 
 	 * @param xDataPt
-	 *           the x coordinate.
+	 *            the x coordinate.
 	 * @param yDataPt
-	 *           the y coordinate.
+	 *            the y coordinate.
 	 * @param xGrdPt
-	 *           the x grid coordinate.
+	 *            the x grid coordinate.
 	 * @param yGrdPt
-	 *           the y grid coordinate.
+	 *            the y grid coordinate.
 	 * @return The distance between two points.
 	 */
-	protected double distance(final double xDataPt,
-										final double yDataPt,
-										final double xGrdPt,
-										final double yGrdPt) {
+	protected double distance(final double xDataPt, final double yDataPt, final double xGrdPt, final double yGrdPt) {
 		final double dx = xDataPt - xGrdPt;
 		final double dy = yDataPt - yGrdPt;
 		return Math.sqrt(dx * dx + dy * dy);

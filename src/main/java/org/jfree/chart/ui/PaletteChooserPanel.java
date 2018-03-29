@@ -48,9 +48,9 @@ public class PaletteChooserPanel extends JPanel {
 	 * Constructor.
 	 * 
 	 * @param current
-	 *           the current palette sample.
+	 *            the current palette sample.
 	 * @param available
-	 *           an array of 'available' palette samples.
+	 *            an array of 'available' palette samples.
 	 */
 	public PaletteChooserPanel(PaletteSample current, PaletteSample[] available) {
 		setLayout(new BorderLayout());

@@ -14,21 +14,15 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.exporters.sif.SIFWriter;
 /**
  * @author Christian Klukas
  */
-public class TextListReaderPlugin
-					extends IPK_PluginAdapter {
+public class TextListReaderPlugin extends IPK_PluginAdapter {
 	/**
 	 *
 	 */
 	public TextListReaderPlugin() {
 		super();
-		this.inputSerializers = new InputSerializer[] {
-							new TextListReader(),
-							new SIFreader()
-		};
+		this.inputSerializers = new InputSerializer[] { new TextListReader(), new SIFreader() };
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.EXTENDED_FILE_FORMAT)) {
-			outputSerializers = new OutputSerializer[] {
-					new SIFWriter()
-			};
+			outputSerializers = new OutputSerializer[] { new SIFWriter() };
 		}
 	}
 }

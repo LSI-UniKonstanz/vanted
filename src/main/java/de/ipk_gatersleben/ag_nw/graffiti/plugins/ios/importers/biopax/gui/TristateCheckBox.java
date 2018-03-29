@@ -30,13 +30,10 @@ import javax.swing.plaf.ActionMapUIResource;
  * management.
  */
 @SuppressWarnings("serial")
-public class TristateCheckBox extends JCheckBox
-{
+public class TristateCheckBox extends JCheckBox {
 	/** This is a type-safe enumerated type */
-	public static class State
-	{
-		private State()
-		{
+	public static class State {
+		private State() {
 		}
 	}
 
@@ -46,26 +43,21 @@ public class TristateCheckBox extends JCheckBox
 
 	private final TristateDecorator model;
 
-	public TristateCheckBox(String text, Icon icon, State initial)
-	{
+	public TristateCheckBox(String text, Icon icon, State initial) {
 		super(text, icon);
 		// Add a listener for when the mouse is pressed
-		super.addMouseListener(new MouseAdapter()
-		{
+		super.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e)
-			{
+			public void mousePressed(MouseEvent e) {
 				grabFocus();
 				model.nextState();
 			}
 		});
 		// Reset the keyboard action map
 		ActionMap map = new ActionMapUIResource();
-		map.put("pressed", new AbstractAction()
-		{
+		map.put("pressed", new AbstractAction() {
 			@Override
-			public void actionPerformed(ActionEvent e)
-			{
+			public void actionPerformed(ActionEvent e) {
 				grabFocus();
 				model.nextState();
 			}
@@ -78,53 +70,44 @@ public class TristateCheckBox extends JCheckBox
 		setState(initial);
 	}
 
-	public TristateCheckBox(String text, State initial)
-	{
+	public TristateCheckBox(String text, State initial) {
 		this(text, null, initial);
 	}
 
-	public TristateCheckBox(String text)
-	{
+	public TristateCheckBox(String text) {
 		this(text, DONT_CARE);
 	}
 
-	public TristateCheckBox()
-	{
+	public TristateCheckBox() {
 		this(null);
 	}
 
 	/** No one may add mouse listeners, not even Swing! */
 	@Override
-	public void addMouseListener(MouseListener l)
-	{
+	public void addMouseListener(MouseListener l) {
 	}
 
 	/**
-	 * Set the new state to either SELECTED, NOT_SELECTED or DONT_CARE. If state
-	 * == null, it is treated as DONT_CARE.
+	 * Set the new state to either SELECTED, NOT_SELECTED or DONT_CARE. If state ==
+	 * null, it is treated as DONT_CARE.
 	 */
-	public void setState(State state)
-	{
+	public void setState(State state) {
 		model.setState(state);
 	}
 
 	/**
-	 * Return the current state, which is determined by the selection status of
-	 * the model.
+	 * Return the current state, which is determined by the selection status of the
+	 * model.
 	 */
-	public State getState()
-	{
+	public State getState() {
 		return model.getState();
 	}
 
 	@Override
-	public void setSelected(boolean b)
-	{
-		if (b)
-		{
+	public void setSelected(boolean b) {
+		if (b) {
 			setState(SELECTED);
-		} else
-		{
+		} else {
 			setState(NOT_SELECTED);
 		}
 	}
@@ -135,29 +118,23 @@ public class TristateCheckBox extends JCheckBox
 	 * extending functionality and "decorating" the original model with a more
 	 * powerful model.
 	 */
-	private class TristateDecorator implements ButtonModel
-	{
+	private class TristateDecorator implements ButtonModel {
 		private final ButtonModel other;
 
-		private TristateDecorator(ButtonModel other)
-		{
+		private TristateDecorator(ButtonModel other) {
 			this.other = other;
 		}
 
-		private void setState(State state)
-		{
-			if (state == NOT_SELECTED)
-			{
+		private void setState(State state) {
+			if (state == NOT_SELECTED) {
 				other.setArmed(false);
 				setPressed(false);
 				setSelected(false);
-			} else if (state == SELECTED)
-			{
+			} else if (state == SELECTED) {
 				other.setArmed(false);
 				setPressed(false);
 				setSelected(true);
-			} else
-			{ // either "null" or DONT_CARE
+			} else { // either "null" or DONT_CARE
 				other.setArmed(true);
 				setPressed(true);
 				setSelected(true);
@@ -165,58 +142,47 @@ public class TristateCheckBox extends JCheckBox
 		}
 
 		/**
-		 * The current state is embedded in the selection / armed state of the
-		 * model.
+		 * The current state is embedded in the selection / armed state of the model.
 		 * 
-		 * We return the SELECTED state when the checkbox is selected but not
-		 * armed, DONT_CARE state when the checkbox is selected and armed (grey)
-		 * and NOT_SELECTED when the checkbox is deselected.
+		 * We return the SELECTED state when the checkbox is selected but not armed,
+		 * DONT_CARE state when the checkbox is selected and armed (grey) and
+		 * NOT_SELECTED when the checkbox is deselected.
 		 */
-		private State getState()
-		{
-			if (isSelected() && !isArmed())
-			{
+		private State getState() {
+			if (isSelected() && !isArmed()) {
 				// normal black tick
 				return SELECTED;
-			} else if (isSelected() && isArmed())
-			{
+			} else if (isSelected() && isArmed()) {
 				// don't care grey tick
 				return DONT_CARE;
-			} else
-			{
+			} else {
 				// normal deselected
 				return NOT_SELECTED;
 			}
 		}
 
 		/** We rotate between NOT_SELECTED, SELECTED and DONT_CARE. */
-		private void nextState()
-		{
+		private void nextState() {
 			State current = getState();
-			if (current == NOT_SELECTED)
-			{
+			if (current == NOT_SELECTED) {
 				setState(SELECTED);
-			} else if (current == SELECTED)
-			{
+			} else if (current == SELECTED) {
 				setState(DONT_CARE);
-			} else if (current == DONT_CARE)
-			{
+			} else if (current == DONT_CARE) {
 				setState(NOT_SELECTED);
 			}
 		}
 
 		/** Filter: No one may change the armed status except us. */
 		@Override
-		public void setArmed(boolean b)
-		{
+		public void setArmed(boolean b) {
 		}
 
 		/**
 		 * We disable focusing on the component when it is not enabled.
 		 */
 		@Override
-		public void setEnabled(boolean b)
-		{
+		public void setEnabled(boolean b) {
 			setFocusable(b);
 			other.setEnabled(b);
 		}
@@ -226,122 +192,102 @@ public class TristateCheckBox extends JCheckBox
 		 * decorated.
 		 */
 		@Override
-		public boolean isArmed()
-		{
+		public boolean isArmed() {
 			return other.isArmed();
 		}
 
 		@Override
-		public boolean isSelected()
-		{
+		public boolean isSelected() {
 			return other.isSelected();
 		}
 
 		@Override
-		public boolean isEnabled()
-		{
+		public boolean isEnabled() {
 			return other.isEnabled();
 		}
 
 		@Override
-		public boolean isPressed()
-		{
+		public boolean isPressed() {
 			return other.isPressed();
 		}
 
 		@Override
-		public boolean isRollover()
-		{
+		public boolean isRollover() {
 			return other.isRollover();
 		}
 
 		@Override
-		public void setSelected(boolean b)
-		{
+		public void setSelected(boolean b) {
 			other.setSelected(b);
 		}
 
 		@Override
-		public void setPressed(boolean b)
-		{
+		public void setPressed(boolean b) {
 			other.setPressed(b);
 		}
 
 		@Override
-		public void setRollover(boolean b)
-		{
+		public void setRollover(boolean b) {
 			other.setRollover(b);
 		}
 
 		@Override
-		public void setMnemonic(int key)
-		{
+		public void setMnemonic(int key) {
 			other.setMnemonic(key);
 		}
 
 		@Override
-		public int getMnemonic()
-		{
+		public int getMnemonic() {
 			return other.getMnemonic();
 		}
 
 		@Override
-		public void setActionCommand(String s)
-		{
+		public void setActionCommand(String s) {
 			other.setActionCommand(s);
 		}
 
 		@Override
-		public String getActionCommand()
-		{
+		public String getActionCommand() {
 			return other.getActionCommand();
 		}
 
 		@Override
-		public void setGroup(ButtonGroup group)
-		{
+		public void setGroup(ButtonGroup group) {
 			other.setGroup(group);
 		}
 
 		@Override
-		public void addActionListener(ActionListener l)
-		{
+		public void addActionListener(ActionListener l) {
 			other.addActionListener(l);
 		}
 
 		@Override
-		public void removeActionListener(ActionListener l)
-		{
+		public void removeActionListener(ActionListener l) {
 			other.removeActionListener(l);
 		}
 
 		@Override
-		public void addItemListener(ItemListener l)
-		{
+		public void addItemListener(ItemListener l) {
 			other.addItemListener(l);
 		}
 
 		@Override
-		public void removeItemListener(ItemListener l)
-		{
+		public void removeItemListener(ItemListener l) {
 			other.removeItemListener(l);
 		}
 
 		@Override
-		public void addChangeListener(ChangeListener l)
-		{
+		public void addChangeListener(ChangeListener l) {
 			other.addChangeListener(l);
 		}
 
 		@Override
-		public void removeChangeListener(ChangeListener l)
-		{
+		public void removeChangeListener(ChangeListener l) {
 			other.removeChangeListener(l);
 		}
 
 		@Override
-		public Object[] getSelectedObjects()
-		{
+		public Object[] getSelectedObjects() {
 			return other.getSelectedObjects();
 		}
 	}

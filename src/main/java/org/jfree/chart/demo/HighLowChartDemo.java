@@ -47,16 +47,15 @@ public class HighLowChartDemo extends ApplicationFrame {
 	 * A demonstration application showing a high-low-open-close chart.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public HighLowChartDemo(final String title) {
 
 		super(title);
 
 		final HighLowDataset dataset = DemoDatasetFactory.createHighLowDataset();
-		final JFreeChart chart = ChartFactory.createHighLowChart("High-Low-Open-Close Demo",
-																				"Time", "Value",
-																				dataset, true);
+		final JFreeChart chart = ChartFactory.createHighLowChart("High-Low-Open-Close Demo", "Time", "Value", dataset,
+				true);
 		final DateAxis axis = (DateAxis) chart.getXYPlot().getDomainAxis();
 		axis.setTickMarkPosition(DateTickMarkPosition.MIDDLE);
 		final ChartPanel chartPanel = new ChartPanel(chart);
@@ -80,7 +79,7 @@ public class HighLowChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

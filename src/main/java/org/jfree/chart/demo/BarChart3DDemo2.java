@@ -52,8 +52,8 @@ import org.jfree.util.Log;
 import org.jfree.util.PrintStreamLogTarget;
 
 /**
- * A simple demonstration application showing how to create a horizontal 3D bar chart using data
- * from a {@link CategoryDataset}.
+ * A simple demonstration application showing how to create a horizontal 3D bar
+ * chart using data from a {@link CategoryDataset}.
  */
 public class BarChart3DDemo2 extends ApplicationFrame {
 
@@ -72,7 +72,7 @@ public class BarChart3DDemo2 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public BarChart3DDemo2(final String title) {
 
@@ -106,13 +106,12 @@ public class BarChart3DDemo2 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createBarChart3D(
-							"3D Bar Chart Demo 2", // chart title
+		final JFreeChart chart = ChartFactory.createBarChart3D("3D Bar Chart Demo 2", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
@@ -120,7 +119,7 @@ public class BarChart3DDemo2 extends ApplicationFrame {
 				true, // include legend
 				true, // tooltips
 				false // urls
-				);
+		);
 
 		final CategoryPlot plot = chart.getCategoryPlot();
 		plot.setForegroundAlpha(1.0f);
@@ -129,11 +128,8 @@ public class BarChart3DDemo2 extends ApplicationFrame {
 		final CategoryAxis axis = plot.getDomainAxis();
 		final CategoryLabelPositions p = axis.getCategoryLabelPositions();
 
-		final CategoryLabelPosition left = new CategoryLabelPosition(
-							RectangleAnchor.LEFT, TextBlockAnchor.CENTER_LEFT,
-							TextAnchor.CENTER_LEFT, 0.0,
-							CategoryLabelWidthType.RANGE, 0.30f
-							);
+		final CategoryLabelPosition left = new CategoryLabelPosition(RectangleAnchor.LEFT, TextBlockAnchor.CENTER_LEFT,
+				TextAnchor.CENTER_LEFT, 0.0, CategoryLabelWidthType.RANGE, 0.30f);
 		axis.setCategoryLabelPositions(CategoryLabelPositions.replaceLeftPosition(p, left));
 
 		return chart;
@@ -144,7 +140,7 @@ public class BarChart3DDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

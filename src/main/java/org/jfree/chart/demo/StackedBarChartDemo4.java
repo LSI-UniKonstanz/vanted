@@ -60,7 +60,7 @@ public class StackedBarChartDemo4 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public StackedBarChartDemo4(final String title) {
 		super(title);
@@ -125,13 +125,12 @@ public class StackedBarChartDemo4 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset for the chart.
+	 *            the dataset for the chart.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createStackedBarChart(
-							"Stacked Bar Chart Demo 4", // chart title
+		final JFreeChart chart = ChartFactory.createStackedBarChart("Stacked Bar Chart Demo 4", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
@@ -139,7 +138,7 @@ public class StackedBarChartDemo4 extends ApplicationFrame {
 				true, // legend
 				true, // tooltips
 				false // urls
-				);
+		);
 
 		GroupedStackedBarRenderer renderer = new GroupedStackedBarRenderer();
 		KeyToGroupMap map = new KeyToGroupMap("G1");
@@ -158,36 +157,27 @@ public class StackedBarChartDemo4 extends ApplicationFrame {
 		renderer.setSeriesToGroupMap(map);
 
 		renderer.setItemMargin(0.0);
-		Paint p1 = new GradientPaint(
-							0.0f, 0.0f, new Color(0x22, 0x22, 0xFF), 0.0f, 0.0f, new Color(0x88, 0x88, 0xFF)
-							);
+		Paint p1 = new GradientPaint(0.0f, 0.0f, new Color(0x22, 0x22, 0xFF), 0.0f, 0.0f, new Color(0x88, 0x88, 0xFF));
 		renderer.setSeriesPaint(0, p1);
 		renderer.setSeriesPaint(4, p1);
 		renderer.setSeriesPaint(8, p1);
 
-		Paint p2 = new GradientPaint(
-							0.0f, 0.0f, new Color(0x22, 0xFF, 0x22), 0.0f, 0.0f, new Color(0x88, 0xFF, 0x88)
-							);
+		Paint p2 = new GradientPaint(0.0f, 0.0f, new Color(0x22, 0xFF, 0x22), 0.0f, 0.0f, new Color(0x88, 0xFF, 0x88));
 		renderer.setSeriesPaint(1, p2);
 		renderer.setSeriesPaint(5, p2);
 		renderer.setSeriesPaint(9, p2);
 
-		Paint p3 = new GradientPaint(
-							0.0f, 0.0f, new Color(0xFF, 0x22, 0x22), 0.0f, 0.0f, new Color(0xFF, 0x88, 0x88)
-							);
+		Paint p3 = new GradientPaint(0.0f, 0.0f, new Color(0xFF, 0x22, 0x22), 0.0f, 0.0f, new Color(0xFF, 0x88, 0x88));
 		renderer.setSeriesPaint(2, p3);
 		renderer.setSeriesPaint(6, p3);
 		renderer.setSeriesPaint(10, p3);
 
-		Paint p4 = new GradientPaint(
-							0.0f, 0.0f, new Color(0xFF, 0xFF, 0x22), 0.0f, 0.0f, new Color(0xFF, 0xFF, 0x88)
-							);
+		Paint p4 = new GradientPaint(0.0f, 0.0f, new Color(0xFF, 0xFF, 0x22), 0.0f, 0.0f, new Color(0xFF, 0xFF, 0x88));
 		renderer.setSeriesPaint(3, p4);
 		renderer.setSeriesPaint(7, p4);
 		renderer.setSeriesPaint(11, p4);
 		renderer.setGradientPaintTransformer(
-							new StandardGradientPaintTransformer(GradientPaintTransformType.HORIZONTAL)
-							);
+				new StandardGradientPaintTransformer(GradientPaintTransformType.HORIZONTAL));
 
 		SubCategoryAxis domainAxis = new SubCategoryAxis("Product / Month");
 		domainAxis.setCategoryMargin(0.05);
@@ -205,8 +195,8 @@ public class StackedBarChartDemo4 extends ApplicationFrame {
 	}
 
 	/**
-	 * Creates the legend items for the chart. In this case, we set them manually because we
-	 * only want legend items for a subset of the data series.
+	 * Creates the legend items for the chart. In this case, we set them manually
+	 * because we only want legend items for a subset of the data series.
 	 * 
 	 * @return The legend items.
 	 */
@@ -238,7 +228,7 @@ public class StackedBarChartDemo4 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 		final StackedBarChartDemo4 demo = new StackedBarChartDemo4("Stacked Bar Chart Demo 4");

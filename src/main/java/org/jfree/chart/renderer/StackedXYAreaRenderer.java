@@ -70,10 +70,7 @@ import org.jfree.util.PublicCloneable;
  * 
  * @author Richard Atkinson
  */
-public class StackedXYAreaRenderer extends XYAreaRenderer
-												implements Cloneable,
-																PublicCloneable,
-																Serializable {
+public class StackedXYAreaRenderer extends XYAreaRenderer implements Cloneable, PublicCloneable, Serializable {
 
 	/**
 	 * A state object for use by this renderer.
@@ -96,7 +93,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 		 * Creates a new state for the renderer.
 		 * 
 		 * @param info
-		 *           the plot rendering info.
+		 *            the plot rendering info.
 		 */
 		public StackedXYAreaRendererState(PlotRenderingInfo info) {
 			super(info);
@@ -119,7 +116,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 		 * Sets the series area.
 		 * 
 		 * @param area
-		 *           the area.
+		 *            the area.
 		 */
 		public void setSeriesArea(Polygon area) {
 			this.seriesArea = area;
@@ -147,7 +144,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 		 * Sets the current series points.
 		 * 
 		 * @param points
-		 *           the points.
+		 *            the points.
 		 */
 		public void setCurrentSeriesPoints(Stack points) {
 			this.currentSeriesPoints = points;
@@ -166,7 +163,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 		 * Sets the last series points.
 		 * 
 		 * @param points
-		 *           the points.
+		 *            the points.
 		 */
 		public void setLastSeriesPoints(Stack points) {
 			this.lastSeriesPoints = points;
@@ -191,7 +188,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 	 * Constructs a new renderer.
 	 * 
 	 * @param type
-	 *           the type of the renderer.
+	 *            the type of the renderer.
 	 */
 	public StackedXYAreaRenderer(int type) {
 		this(type, null, null);
@@ -200,17 +197,17 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 	/**
 	 * Constructs a new renderer.
 	 * <p>
-	 * To specify the type of renderer, use one of the constants: SHAPES, LINES, SHAPES_AND_LINES, AREA or AREA_AND_SHAPES.
+	 * To specify the type of renderer, use one of the constants: SHAPES, LINES,
+	 * SHAPES_AND_LINES, AREA or AREA_AND_SHAPES.
 	 * 
 	 * @param type
-	 *           the type of renderer.
+	 *            the type of renderer.
 	 * @param labelGenerator
-	 *           the tool tip generator to use. <code>null</code> is none.
+	 *            the tool tip generator to use. <code>null</code> is none.
 	 * @param urlGenerator
-	 *           the URL generator (null permitted).
+	 *            the URL generator (null permitted).
 	 */
-	public StackedXYAreaRenderer(int type,
-											XYToolTipGenerator labelGenerator, XYURLGenerator urlGenerator) {
+	public StackedXYAreaRenderer(int type, XYToolTipGenerator labelGenerator, XYURLGenerator urlGenerator) {
 
 		super(type, labelGenerator, urlGenerator);
 	}
@@ -225,12 +222,13 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 	}
 
 	/**
-	 * Returns the range of values the renderer requires to display all the items from the
-	 * specified dataset.
+	 * Returns the range of values the renderer requires to display all the items
+	 * from the specified dataset.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> permitted).
-	 * @return The range (or <code>null</code> if the dataset is <code>null</code> or empty).
+	 *            the dataset (<code>null</code> permitted).
+	 * @return The range (or <code>null</code> if the dataset is <code>null</code>
+	 *         or empty).
 	 */
 	public Range getRangeExtent(XYDataset dataset) {
 		return DatasetUtilities.getStackedRangeExtent((TableXYDataset) dataset);
@@ -239,26 +237,26 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 	/**
 	 * Initialises the renderer.
 	 * <P>
-	 * This method will be called before the first item is rendered, giving the renderer an opportunity to initialise any state information it wants to maintain.
-	 * The renderer can do nothing if it chooses.
+	 * This method will be called before the first item is rendered, giving the
+	 * renderer an opportunity to initialise any state information it wants to
+	 * maintain. The renderer can do nothing if it chooses.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the area inside the axes.
+	 *            the area inside the axes.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @param info
-	 *           an optional info collection object to return data back to the caller.
-	 * @return A state object that should be passed to subsequent calls to the drawItem() method.
+	 *            an optional info collection object to return data back to the
+	 *            caller.
+	 * @return A state object that should be passed to subsequent calls to the
+	 *         drawItem() method.
 	 */
-	public XYItemRendererState initialise(Graphics2D g2,
-														Rectangle2D dataArea,
-														XYPlot plot,
-														XYDataset data,
-														PlotRenderingInfo info) {
+	public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea, XYPlot plot, XYDataset data,
+			PlotRenderingInfo info) {
 
 		return new StackedXYAreaRendererState(info);
 
@@ -277,46 +275,38 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the area within which the data is being drawn.
+	 *            the area within which the data is being drawn.
 	 * @param info
-	 *           collects information about the drawing.
+	 *            collects information about the drawing.
 	 * @param plot
-	 *           the plot (can be used to obtain standard color information etc).
+	 *            the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @param crosshairState
-	 *           information about crosshairs on a plot.
+	 *            information about crosshairs on a plot.
 	 * @param pass
-	 *           the pass index.
+	 *            the pass index.
 	 */
-	public void drawItem(Graphics2D g2,
-									XYItemRendererState state,
-									Rectangle2D dataArea,
-									PlotRenderingInfo info,
-									XYPlot plot,
-									ValueAxis domainAxis,
-									ValueAxis rangeAxis,
-									XYDataset dataset,
-									int series,
-									int item,
-									CrosshairState crosshairState,
-									int pass) {
+	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
+			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
+			CrosshairState crosshairState, int pass) {
 
 		PlotOrientation orientation = plot.getOrientation();
 		StackedXYAreaRendererState areaState = (StackedXYAreaRendererState) state;
-		// Get the item count for the series, so that we can know which is the end of the series.
+		// Get the item count for the series, so that we can know which is the end of
+		// the series.
 		TableXYDataset tableXYDataset = (TableXYDataset) dataset;
 		int itemCount = tableXYDataset.getItemCount();
 
@@ -325,18 +315,14 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 		Number y1 = dataset.getYValue(series, item);
 		boolean nullPoint = false;
 		if (y1 == null) {
-			y1 = new Double(0);
+			y1 = Double.valueOf(0);
 			nullPoint = true;
 		}
 
 		// Get height adjustment based on stack and translate to Java2D values
 		double ph1 = this.getPreviousHeight(dataset, series, item);
-		double transX1 = domainAxis.valueToJava2D(
-							x1.doubleValue(), dataArea, plot.getDomainAxisEdge()
-							);
-		double transY1 = rangeAxis.valueToJava2D(
-							y1.doubleValue() + ph1, dataArea, plot.getRangeAxisEdge()
-							);
+		double transX1 = domainAxis.valueToJava2D(x1.doubleValue(), dataArea, plot.getDomainAxisEdge());
+		double transY1 = rangeAxis.valueToJava2D(y1.doubleValue() + ph1, dataArea, plot.getRangeAxisEdge());
 
 		// Get series Paint and Stroke
 		Paint seriesPaint = getItemPaint(series, item);
@@ -357,10 +343,9 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 				// The first point is (x, 0)
 				if (orientation == PlotOrientation.VERTICAL) {
 					areaState.getSeriesArea().addPoint((int) transX1, (int) transY2);
-				} else
-					if (orientation == PlotOrientation.HORIZONTAL) {
-						areaState.getSeriesArea().addPoint((int) transY2, (int) transX1);
-					}
+				} else if (orientation == PlotOrientation.HORIZONTAL) {
+					areaState.getSeriesArea().addPoint((int) transY2, (int) transX1);
+				}
 			}
 
 			// Add each point to Area (x, y)
@@ -368,10 +353,9 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 				Point point = new Point((int) transX1, (int) transY1);
 				areaState.getSeriesArea().addPoint((int) point.getX(), (int) point.getY());
 				areaState.getCurrentSeriesPoints().push(point);
-			} else
-				if (orientation == PlotOrientation.HORIZONTAL) {
-					areaState.getSeriesArea().addPoint((int) transY1, (int) transX1);
-				}
+			} else if (orientation == PlotOrientation.HORIZONTAL) {
+				areaState.getSeriesArea().addPoint((int) transY1, (int) transX1);
+			}
 
 			if (this.getPlotLines()) {
 				if (item > 0) {
@@ -379,19 +363,14 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 					Number x0 = dataset.getXValue(series, item - 1);
 					Number y0 = dataset.getYValue(series, item - 1);
 					double ph0 = this.getPreviousHeight(dataset, series, item - 1);
-					double transX0 = domainAxis.valueToJava2D(
-										x0.doubleValue(), dataArea, plot.getDomainAxisEdge()
-										);
-					double transY0 = rangeAxis.valueToJava2D(
-										y0.doubleValue() + ph0, dataArea, plot.getRangeAxisEdge()
-										);
+					double transX0 = domainAxis.valueToJava2D(x0.doubleValue(), dataArea, plot.getDomainAxisEdge());
+					double transY0 = rangeAxis.valueToJava2D(y0.doubleValue() + ph0, dataArea, plot.getRangeAxisEdge());
 
 					if (orientation == PlotOrientation.VERTICAL) {
 						areaState.getLine().setLine(transX0, transY0, transX1, transY1);
-					} else
-						if (orientation == PlotOrientation.HORIZONTAL) {
-							areaState.getLine().setLine(transY0, transX0, transY1, transX1);
-						}
+					} else if (orientation == PlotOrientation.HORIZONTAL) {
+						areaState.getLine().setLine(transY0, transX0, transY1, transX1);
+					}
 					g2.draw(areaState.getLine());
 				}
 			}
@@ -405,11 +384,10 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 				if (orientation == PlotOrientation.VERTICAL) {
 					// Add the last point (x,0)
 					areaState.getSeriesArea().addPoint((int) transX1, (int) transY2);
-				} else
-					if (orientation == PlotOrientation.HORIZONTAL) {
-						// Add the last point (x,0)
-						areaState.getSeriesArea().addPoint((int) transY2, (int) transX1);
-					}
+				} else if (orientation == PlotOrientation.HORIZONTAL) {
+					// Add the last point (x,0)
+					areaState.getSeriesArea().addPoint((int) transY2, (int) transX1);
+				}
 
 				// Add points from last series to complete the base of the polygon
 				if (series != 0) {
@@ -433,77 +411,74 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 				}
 			}
 
-			updateCrosshairValues(
-								crosshairState, x1.doubleValue(), y1.doubleValue(), transX1, transY1, orientation);
+			updateCrosshairValues(crosshairState, x1.doubleValue(), y1.doubleValue(), transX1, transY1, orientation);
 
-		} else
-			if (pass == 1) {
-				// On second pass render shapes and collect entity and tooltip information
+		} else if (pass == 1) {
+			// On second pass render shapes and collect entity and tooltip information
 
-				Shape shape = null;
-				if (this.getPlotShapes()) {
-					shape = getItemShape(series, item);
-					if (plot.getOrientation() == PlotOrientation.VERTICAL) {
-						shape = createTransformedShape(shape, transX1, transY1);
-					} else
-						if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
-							shape = createTransformedShape(shape, transY1, transX1);
-						}
-					if (!nullPoint) {
-						if (getShapePaint() != null) {
-							g2.setPaint(getShapePaint());
-						} else {
-							g2.setPaint(seriesPaint);
-						}
-						if (getShapeStroke() != null) {
-							g2.setStroke(getShapeStroke());
-						} else {
-							g2.setStroke(seriesStroke);
-						}
-						g2.draw(shape);
-					}
-				} else {
-					if (plot.getOrientation() == PlotOrientation.VERTICAL) {
-						shape = new Rectangle2D.Double(transX1 - 3, transY1 - 3, 6.0, 6.0);
-					} else
-						if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
-							shape = new Rectangle2D.Double(transY1 - 3, transX1 - 3, 6.0, 6.0);
-						}
+			Shape shape = null;
+			if (this.getPlotShapes()) {
+				shape = getItemShape(series, item);
+				if (plot.getOrientation() == PlotOrientation.VERTICAL) {
+					shape = createTransformedShape(shape, transX1, transY1);
+				} else if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
+					shape = createTransformedShape(shape, transY1, transX1);
 				}
-
-				// collect entity and tool tip information...
-				if (state.getInfo() != null) {
-					EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
-					if (entities != null && shape != null && !nullPoint) {
-						String tip = null;
-						XYToolTipGenerator generator = getToolTipGenerator(series, item);
-						if (generator != null) {
-							tip = generator.generateToolTip(dataset, series, item);
-						}
-						String url = null;
-						if (getURLGenerator() != null) {
-							url = getURLGenerator().generateURL(dataset, series, item);
-						}
-						XYItemEntity entity = new XYItemEntity(shape, dataset, series, item, tip, url);
-						entities.addEntity(entity);
+				if (!nullPoint) {
+					if (getShapePaint() != null) {
+						g2.setPaint(getShapePaint());
+					} else {
+						g2.setPaint(seriesPaint);
 					}
+					if (getShapeStroke() != null) {
+						g2.setStroke(getShapeStroke());
+					} else {
+						g2.setStroke(seriesStroke);
+					}
+					g2.draw(shape);
 				}
-
+			} else {
+				if (plot.getOrientation() == PlotOrientation.VERTICAL) {
+					shape = new Rectangle2D.Double(transX1 - 3, transY1 - 3, 6.0, 6.0);
+				} else if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
+					shape = new Rectangle2D.Double(transY1 - 3, transX1 - 3, 6.0, 6.0);
+				}
 			}
+
+			// collect entity and tool tip information...
+			if (state.getInfo() != null) {
+				EntityCollection entities = state.getInfo().getOwner().getEntityCollection();
+				if (entities != null && shape != null && !nullPoint) {
+					String tip = null;
+					XYToolTipGenerator generator = getToolTipGenerator(series, item);
+					if (generator != null) {
+						tip = generator.generateToolTip(dataset, series, item);
+					}
+					String url = null;
+					if (getURLGenerator() != null) {
+						url = getURLGenerator().generateURL(dataset, series, item);
+					}
+					XYItemEntity entity = new XYItemEntity(shape, dataset, series, item, tip, url);
+					entities.addEntity(entity);
+				}
+			}
+
+		}
 	}
 
 	/**
-	 * Calculates the stacked value of the all series up to, but not including <code>series</code> for the specified category, <code>category</code>. It returns
-	 * 0.0 if <code>series</code> is the first series, i.e. 0.
+	 * Calculates the stacked value of the all series up to, but not including
+	 * <code>series</code> for the specified category, <code>category</code>. It
+	 * returns 0.0 if <code>series</code> is the first series, i.e. 0.
 	 * 
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @param series
-	 *           the series.
+	 *            the series.
 	 * @param index
-	 *           the index.
-	 * @return double returns a cumulative value for all series' values up to
-	 *         but excluding <code>series</code> for <code>index</code>.
+	 *            the index.
+	 * @return double returns a cumulative value for all series' values up to but
+	 *         excluding <code>series</code> for <code>index</code>.
 	 */
 	protected double getPreviousHeight(XYDataset data, int series, int index) {
 
@@ -526,7 +501,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the renderer cannot be cloned.
+	 *             if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -542,7 +517,8 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 	}
 
 	/**
-	 * Returns the Stroke used for rendering shapes, or null if using series Strokes.
+	 * Returns the Stroke used for rendering shapes, or null if using series
+	 * Strokes.
 	 * 
 	 * @return The Stroke.
 	 */
@@ -554,7 +530,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 	 * Sets the Paint for rendering shapes.
 	 * 
 	 * @param shapePaint
-	 *           The Paint.
+	 *            The Paint.
 	 */
 	public void setShapePaint(Paint shapePaint) {
 		this.shapePaint = shapePaint;
@@ -564,7 +540,7 @@ public class StackedXYAreaRenderer extends XYAreaRenderer
 	 * Sets the Stroke for rendering shapes.
 	 * 
 	 * @param shapeStroke
-	 *           The Stroke.
+	 *            The Stroke.
 	 */
 	public void setShapeStroke(Stroke shapeStroke) {
 		this.shapeStroke = shapeStroke;

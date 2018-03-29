@@ -10,11 +10,8 @@ import org.graffiti.plugin.algorithm.Algorithm;
 /**
  * @author Christian Klukas
  */
-public class ForceDirectedEdgeLayoutPlugin
-					extends GenericPluginAdapter {
+public class ForceDirectedEdgeLayoutPlugin extends GenericPluginAdapter {
 	public ForceDirectedEdgeLayoutPlugin() {
-		this.algorithms = new Algorithm[] {
-							new ForceDirectedEdgeLayout()
-		};
+		this.algorithms = new Algorithm[] { new ForceDirectedEdgeLayout() };
 	}
 }

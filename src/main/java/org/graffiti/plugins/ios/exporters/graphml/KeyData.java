@@ -17,30 +17,30 @@ package org.graffiti.plugins.ios.exporters.graphml;
  */
 class KeyData {
 	// ~ Instance fields ========================================================
-	
+
 	/** The id serving as a key. */
 	private Integer id;
-	
+
 	/** The type the id maps to. */
 	private String type;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Creates a new KeyData object.
 	 * 
 	 * @param id
-	 *           the id of the tuple.
+	 *            the id of the tuple.
 	 * @param type
-	 *           the type of the tuple.
+	 *            the type of the tuple.
 	 */
 	KeyData(Integer id, String type) {
 		this.id = id;
 		this.type = type;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns the id of the tuple.
 	 * 
@@ -49,7 +49,7 @@ class KeyData {
 	int getId() {
 		return this.id.intValue();
 	}
-	
+
 	/**
 	 * Returns the type of the tuple.
 	 * 

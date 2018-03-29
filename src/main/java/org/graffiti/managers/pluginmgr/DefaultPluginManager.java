@@ -41,52 +41,51 @@ import org.graffiti.util.StringSplitter;
  * 
  * @version $Revision: 1.31 $
  */
-public class DefaultPluginManager
-		implements PluginManager {
+public class DefaultPluginManager implements PluginManager {
 	// ~ Static fields/initializers =============================================
-	
+
 	Object loadPluginLock;
-	
+
 	public static DefaultPluginManager lastInstance = null;
-	
+
 	/** The logger for the current class. */
 	private static final Logger logger = Logger.getLogger(DefaultPluginManager.class.getName());
 
 	static {
-//		logger.setLevel(Level.INFO);
+		// logger.setLevel(Level.INFO);
 	}
-	
+
 	// ~ Instance fields ========================================================
-	
+
 	/** The <code>StringBundle</code> of the plugin manager. */
 	protected StringBundle sBundle = StringBundle.getInstance();
-	
+
 	/**
 	 * Maps from a plugin name (<code>String</code>) to a plugin entry
 	 * (<code>Entry</code>).
 	 */
 	private final Hashtable<String, PluginEntry> pluginEntries;
-	
+
 	/**
 	 * Holds the plugin entries of the last search. This avoids researching
 	 * everytime a dependent plugin is automatically searched.
 	 */
 	// private List<PluginEntry> entries;
-	
+
 	/** The list of plugin manager listeners. */
 	private final List<PluginManagerListener> pluginManagerListeners;
-	
+
 	/** The preferences of the plugin manager. */
 	private final Preferences prefs;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs a new <code>PluginManger</code> instance.
 	 * 
 	 * @param prefs
-	 *           the preferences, which contain information about what to
-	 *           load during the instanciation of the plugin manager.
+	 *            the preferences, which contain information about what to load
+	 *            during the instanciation of the plugin manager.
 	 */
 	public DefaultPluginManager(Preferences prefs) {
 		loadPluginLock = new Object();
@@ -95,15 +94,15 @@ public class DefaultPluginManager
 		this.pluginManagerListeners = new LinkedList<PluginManagerListener>();
 		lastInstance = this;
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
-	 * Checks if the plugin is already installed, i.e. if the plugin's name is
-	 * in the list of plugin entries.
+	 * Checks if the plugin is already installed, i.e. if the plugin's name is in
+	 * the list of plugin entries.
 	 * 
 	 * @param name
-	 *           name of the plugin.
+	 *            name of the plugin.
 	 * @return <code>true</code> if the plugin's name is in the list of plugin
 	 *         entries, <code>false</code> otherwise.
 	 */
@@ -113,21 +112,20 @@ public class DefaultPluginManager
 		else
 			return pluginEntries.containsKey(name);
 	}
-	
+
 	/**
-	 * Sets the <code>loadOnStartup</code> flag of the given object, to the
-	 * given value.
+	 * Sets the <code>loadOnStartup</code> flag of the given object, to the given
+	 * value.
 	 * 
 	 * @param name
-	 *           the name of the plugin.
+	 *            the name of the plugin.
 	 * @param loadOnStartup
-	 *           <code>true</code>, if the plugin should be loaded
-	 *           at startup.
+	 *            <code>true</code>, if the plugin should be loaded at startup.
 	 */
 	public void setLoadOnStartup(String name, Boolean loadOnStartup) {
 		(pluginEntries.get(name)).setLoadOnStartup(loadOnStartup);
 	}
-	
+
 	/**
 	 * Returns the corrent list of plugin entries.
 	 * 
@@ -138,12 +136,12 @@ public class DefaultPluginManager
 			return new ArrayList<PluginEntry>(pluginEntries.values());
 		}
 	}
-	
+
 	/**
 	 * Returns the plugin instance of the given plugin name.
 	 * 
 	 * @param name
-	 *           the name of the plugin.
+	 *            the name of the plugin.
 	 * @return the instance of the plugin of the given name.
 	 */
 	public GenericPlugin getPluginInstance(String name) {
@@ -154,56 +152,51 @@ public class DefaultPluginManager
 				return null;
 		}
 	}
-	
+
 	/**
 	 * Adds the given plugin manager listener to the list of listeners.
 	 * 
 	 * @param listener
-	 *           the new listener to add to the list.
+	 *            the new listener to add to the list.
 	 */
 	public void addPluginManagerListener(PluginManagerListener listener) {
 		synchronized (pluginManagerListeners) {
 			pluginManagerListeners.add(listener);
 		}
 	}
-	
+
 	/**
-	 * Returns a new instance of the plugin &quot;main&quot; class with the
-	 * given plugin name.
+	 * Returns a new instance of the plugin &quot;main&quot; class with the given
+	 * plugin name.
 	 * 
 	 * @param pluginLocation
-	 *           the URL to the plugin.
+	 *            the URL to the plugin.
 	 * @return the instantiated plugin.
 	 * @exception PluginManagerException
-	 *               an error occured while loading or
-	 *               instantiating the plugin.
+	 *                an error occured while loading or instantiating the plugin.
 	 */
-	public GenericPlugin createInstance(URL pluginLocation)
-			throws PluginManagerException {
+	public GenericPlugin createInstance(URL pluginLocation) throws PluginManagerException {
 		return createInstance(pluginLocation, null);
 	}
-	
+
 	/**
-	 * Returns a new instance of the plugin &quot;main&quot; class with the
-	 * given plugin name. The progress made is displayed with progressViewer.
+	 * Returns a new instance of the plugin &quot;main&quot; class with the given
+	 * plugin name. The progress made is displayed with progressViewer.
 	 * 
 	 * @param pluginLocation
-	 *           the URL to the plugin.
+	 *            the URL to the plugin.
 	 * @param progressViewer
-	 *           the progress viewer that display the progress made
+	 *            the progress viewer that display the progress made
 	 * @return the instantiated plugin.
 	 * @exception PluginManagerException
-	 *               an error occured while loading or
-	 *               instantiating the plugin.
+	 *                an error occured while loading or instantiating the plugin.
 	 */
-	public GenericPlugin createInstance(URL pluginLocation,
-			ProgressViewer progressViewer)
+	public GenericPlugin createInstance(URL pluginLocation, ProgressViewer progressViewer)
 			throws PluginManagerException {
 		PluginDescription description = PluginHelper.readPluginDescription(pluginLocation);
-		
-		GenericPlugin pluginInstance = createInstance(description,
-				progressViewer);
-		
+
+		GenericPlugin pluginInstance = createInstance(description, progressViewer);
+
 		// // add the plugin to the list of instanciated plugins.
 		// addPlugin(description, pluginInstance, pluginLocation, Boolean.TRUE);
 		//
@@ -211,72 +204,65 @@ public class DefaultPluginManager
 		// firePluginAdded(pluginInstance, description);
 		return pluginInstance;
 	}
-	
+
 	/**
 	 * Loads the plugin from the given location.
 	 * 
 	 * @param description
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param pluginLocation
-	 *           the location of the plugin.
+	 *            the location of the plugin.
 	 * @param loadOnStartup
-	 *           <code>true</code>, if the given plugin should be
-	 *           loaded at the startup.
+	 *            <code>true</code>, if the given plugin should be loaded at the
+	 *            startup.
 	 * @exception PluginManagerException
-	 *               if an error occurs while loading or
-	 *               instantiating the plugin.
+	 *                if an error occurs while loading or instantiating the plugin.
 	 */
-	public void loadPlugin(PluginDescription description, URL pluginLocation,
-			Boolean loadOnStartup)
+	public void loadPlugin(PluginDescription description, URL pluginLocation, Boolean loadOnStartup)
 			throws PluginManagerException {
 		loadPlugins(new PluginEntry[] { new DefaultPluginEntry(pluginLocation.toString(), description) });
 	}
-	
+
 	/**
 	 * Loads the plugin from the given location.
 	 * 
 	 * @param plugins
-	 *           the plugin entries describing the plugins to be loaded
+	 *            the plugin entries describing the plugins to be loaded
 	 * @exception PluginManagerException
-	 *               if an error occurs while loading or
-	 *               instantiating the plugin.
+	 *                if an error occurs while loading or instantiating the plugin.
 	 */
-	public void loadPlugins(PluginEntry[] plugins)
-			throws PluginManagerException {
+	public void loadPlugins(PluginEntry[] plugins) throws PluginManagerException {
 		loadPlugins(plugins, null);
 	}
-	
+
 	public void loadPlugins(PluginEntry[] plugins, ProgressViewer progressViewer) throws PluginManagerException {
 		loadPlugins(plugins, progressViewer, false);
 	}
-	
+
 	/**
-	 * Loads the plugin from the given location.The progress made is displayed
-	 * with progressViewer.
+	 * Loads the plugin from the given location.The progress made is displayed with
+	 * progressViewer.
 	 * 
 	 * @param plugins
-	 *           the plugin entries describing the plugins to be loaded
+	 *            the plugin entries describing the plugins to be loaded
 	 * @param progressViewer
-	 *           the progress viewer that display the progress made
+	 *            the progress viewer that display the progress made
 	 * @exception PluginManagerException
-	 *               if an error occurs while loading or
-	 *               instantiating the plugin.
+	 *                if an error occurs while loading or instantiating the plugin.
 	 */
-	public void loadPlugins(
-			final PluginEntry[] plugins,
-			final ProgressViewer progressViewer,
-			final boolean doAutomatic)
+	public void loadPlugins(final PluginEntry[] plugins, final ProgressViewer progressViewer, final boolean doAutomatic)
 			throws PluginManagerException {
 		if (progressViewer != null)
 			progressViewer.setText("Analyze plugin dependencies...");
-		
+
 		HashMap<String, PluginEntry> name2plugin = new HashMap<String, PluginEntry>();
 		for (PluginEntry plugin : plugins) {
 			if (plugin.getDescription() == null) {
 				System.err.println("Invalid plugin description for " + plugin.getFileName());
 			} else {
 				if (name2plugin.containsKey(plugin.getDescription().getName()))
-					System.err.println("Non-unique plugin name: " + plugin.getDescription().getName() + " // " + plugin.getFileName());
+					System.err.println("Non-unique plugin name: " + plugin.getDescription().getName() + " // "
+							+ plugin.getFileName());
 				name2plugin.put(plugin.getDescription().getName(), plugin);
 			}
 		}
@@ -288,15 +274,16 @@ public class DefaultPluginManager
 				for (PluginDependency dep : deps) {
 					PluginEntry pe;
 					pe = name2plugin.get(dep.getName());
-					if(pe == null)
+					if (pe == null)
 						pe = pluginEntries.get(dep.getName());
 					final String depName = dep.getName();
 					final String pluginName = plugin.getFileName();
 					if (pe == null) {
-						ErrorMsg.addErrorMessage("<html>Please install " + depName + "<br> (required by " + pluginName + ")");	
-						System.err.println("Plugin " + dep.getName() + " is unknown! (required by " + plugin.getFileName() + ")");
-					}
-					else {
+						ErrorMsg.addErrorMessage(
+								"<html>Please install " + depName + "<br> (required by " + pluginName + ")");
+						System.err.println(
+								"Plugin " + dep.getName() + " is unknown! (required by " + plugin.getFileName() + ")");
+					} else {
 						if (pe.getDescription() == null)
 							System.err.println("Plugin definition " + pe.getFileName() + " provides no description!");
 						else
@@ -305,33 +292,33 @@ public class DefaultPluginManager
 				}
 			}
 		}
-		
+
 		final HashSet<String> loading = new HashSet<String>();
-		
+
 		if (progressViewer != null)
 			progressViewer.setText("Load priority plugins...");
-		
+
 		ExecutorService runVIP;
 		if (ReleaseInfo.isRunningAsApplet())
 			runVIP = Executors.newFixedThreadPool(1);
 		else
 			runVIP = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-		
+
 		loadSetOfPlugins(plugins, progressViewer, runVIP, loading, true);
 		runVIP.shutdown();
-		
+
 		if (progressViewer != null)
 			progressViewer.setText("Load plugins...");
-		
+
 		ExecutorService run;
 		if (ReleaseInfo.isRunningAsApplet())
 			run = Executors.newFixedThreadPool(1);
 		else
 			run = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-		
+
 		loadSetOfPlugins(plugins, progressViewer, run, loading, false);
 		run.shutdown();
-		
+
 		int maxTime = 60;
 		try {
 			if (run.awaitTermination(maxTime, TimeUnit.SECONDS)) {
@@ -355,11 +342,10 @@ public class DefaultPluginManager
 			for (String s : loading)
 				System.err.println("Loading of plugin " + s + " not finished (time-out).");
 		}
-//		savePrefs();
+		// savePrefs();
 	}
-	
-	private void loadSetOfPlugins(final PluginEntry[] plugins,
-			final ProgressViewer progressViewer, ExecutorService run,
+
+	private void loadSetOfPlugins(final PluginEntry[] plugins, final ProgressViewer progressViewer, ExecutorService run,
 			final HashSet<String> loading, boolean loadPriorityPlugins) {
 		for (PluginEntry plugin : plugins) {
 			final URL pluginUrl;
@@ -372,71 +358,72 @@ public class DefaultPluginManager
 			final PluginDescription desc = plugin.getDescription();
 			if (desc == null)
 				System.err.println("Invalid plugin description for file " + pluginUrl.toString());
-			else
-				if ((loadPriorityPlugins && desc.isPriorityPlugin()) || (!loadPriorityPlugins && !desc.isPriorityPlugin()))
-					run.submit(new Runnable() {
-						public void run() {
-							try {
-								/*
-								 * only don't load the plugin if it's plugin loading time
-								 * For addons with dependcies the order of loading has already
-								 * been figured out and also the plugins.array size is 1 for loading addons 
-								 */
-								if (desc.getDependencies().size() > 0 && plugins.length > 1) {
-									logger.debug("[" + desc.getName() + "] plugin with dependencies found.. not loading now");
-									return;
-								}
-								
+			else if ((loadPriorityPlugins && desc.isPriorityPlugin())
+					|| (!loadPriorityPlugins && !desc.isPriorityPlugin()))
+				run.submit(new Runnable() {
+					public void run() {
+						try {
+							/*
+							 * only don't load the plugin if it's plugin loading time For addons with
+							 * dependcies the order of loading has already been figured out and also the
+							 * plugins.array size is 1 for loading addons
+							 */
+							if (desc.getDependencies().size() > 0 && plugins.length > 1) {
+								logger.debug(
+										"[" + desc.getName() + "] plugin with dependencies found.. not loading now");
+								return;
+							}
+
+							synchronized (loading) {
+								loading.add(desc.getName());
+							}
+
+							if (!loadPlugin(pluginUrl, desc, progressViewer)) {
+								ErrorMsg.addErrorMessage("ERROR: could not load plugin: " + pluginUrl);
+							} else {
 								synchronized (loading) {
-									loading.add(desc.getName());
+									loading.remove(desc.getName());
 								}
-								
-								if (!loadPlugin(pluginUrl, desc, progressViewer)) {
-									ErrorMsg.addErrorMessage("ERROR: could not load plugin: " + pluginUrl);
-								} else {
+								logger.debug("[" + desc.getName() + "] loading children");
+								loadChilds(desc);
+							}
+							logger.debug("Added Plugin: " + desc.getName());
+
+						} catch (PluginAlreadyLoadedException info) {
+							System.out.println(info.getMessage());
+							// can be ignored
+						} catch (Exception e) {
+							ErrorMsg.addErrorMessage(e);
+						}
+					}
+
+					private void loadChilds(PluginDescription desc) {
+						for (PluginEntry pe : desc.getChildPlugins()) {
+							URL url;
+							try {
+								url = pe.getPluginUrl();
+								synchronized (loading) {
+									loading.add(pe.getDescription().getName());
+								}
+								if (!loadPlugin(url, pe.getDescription(), progressViewer))
+									ErrorMsg.addErrorMessage("ERROR: could not load plugin: " + url);
+								else {
 									synchronized (loading) {
-										loading.remove(desc.getName());
+										loading.remove(pe.getDescription().getName());
 									}
-									logger.debug("[" + desc.getName() + "] loading children");
-									loadChilds(desc);
+									loadChilds(pe.getDescription());
 								}
-								logger.debug("Added Plugin: " + desc.getName());
-								
-							} catch (PluginAlreadyLoadedException info) {
-								System.out.println(info.getMessage());
-								// can be ignored
-							} catch (Exception e) {
-								ErrorMsg.addErrorMessage(e);
+							} catch (Exception err) {
+								ErrorMsg.addErrorMessage(err);
+								continue;
 							}
 						}
-						
-						private void loadChilds(PluginDescription desc) {
-							for (PluginEntry pe : desc.getChildPlugins()) {
-								URL url;
-								try {
-									url = pe.getPluginUrl();
-									synchronized (loading) {
-										loading.add(pe.getDescription().getName());
-									}
-									if (!loadPlugin(url, pe.getDescription(), progressViewer))
-										ErrorMsg.addErrorMessage("ERROR: could not load plugin: " + url);
-									else {
-										synchronized (loading) {
-											loading.remove(pe.getDescription().getName());
-										}
-										loadChilds(pe.getDescription());
-									}
-								} catch (Exception err) {
-									ErrorMsg.addErrorMessage(err);
-									continue;
-								}
-							}
-							
-						}
-					});
+
+					}
+				});
 		}
 	}
-	
+
 	/**
 	 * @param plugins
 	 * @param progressViewer
@@ -445,208 +432,201 @@ public class DefaultPluginManager
 	 * @param i
 	 * @throws PluginManagerException
 	 */
-	private boolean loadPlugin(URL pluginUrl, PluginDescription desc,
-			ProgressViewer progressViewer) throws PluginManagerException {
+	private boolean loadPlugin(URL pluginUrl, PluginDescription desc, ProgressViewer progressViewer)
+			throws PluginManagerException {
 
 		if (desc == null)
 			return true;
-		
+
 		List<?> deps = null;
 		if (desc != null)
 			deps = desc.getDependencies();
-		
+
 		if ((deps == null) || deps.isEmpty()) {
 			return addPlugin(desc, pluginUrl, Boolean.TRUE, progressViewer);
 		} else {
 			// check if deps are satisfied
 			boolean satisfied = true;
-			
+
 			for (Iterator<?> it = deps.iterator(); it.hasNext();) {
 				PluginDependency dep = (PluginDependency) it.next();
-				
+
 				if (!pluginEntries.containsKey(dep.getName())) {
 					// System.out.println("Plugin "+desc.getName()+" needs "+dep.getName()+"!");
-					
+
 					satisfied = false;
 					break;
 				}
 			}
-			
+
 			if (satisfied) {
 				boolean success = addPlugin(desc, pluginUrl, Boolean.TRUE, progressViewer);
-				if(success)
+				if (success)
 					logger.debug("[" + desc.getName() + "] successfully loaded");
 				else
 					logger.error("[" + desc.getName() + "] un-successfully loaded");
-				return success; 
+				return success;
 			} else {
 				return false;
 			}
 		}
 	}
-	
+
 	/**
 	 * Loads the plugins which should be loaded on startup.
 	 * 
 	 * @exception PluginManagerException
-	 *               if an error occurred while loading one
-	 *               of the plugins.
+	 *                if an error occurred while loading one of the plugins.
 	 */
-	public void loadStartupPlugins()
-			throws PluginManagerException {
+	public void loadStartupPlugins() throws PluginManagerException {
 		loadStartupPlugins(null);
 	}
-	
+
 	/**
-	 * Loads the plugins which should be loaded on startup. The progress made
-	 * is displayed with progressViewer.
+	 * Loads the plugins which should be loaded on startup. The progress made is
+	 * displayed with progressViewer.
 	 * 
 	 * @param progressViewer
-	 *           the progress viewer that display the progress made
+	 *            the progress viewer that display the progress made
 	 * @exception PluginManagerException
-	 *               if an error occurred while loading one
-	 *               of the plugins.
+	 *                if an error occurred while loading one of the plugins.
 	 */
 	/*
-	 * this method cannot work properly anymore with the new preferences implementation
-	 * (non-Javadoc)
-	 * @see org.graffiti.managers.pluginmgr.PluginManager#loadStartupPlugins(org.graffiti.util.ProgressViewer)
+	 * this method cannot work properly anymore with the new preferences
+	 * implementation (non-Javadoc)
+	 * 
+	 * @see
+	 * org.graffiti.managers.pluginmgr.PluginManager#loadStartupPlugins(org.graffiti
+	 * .util.ProgressViewer)
 	 */
 	@Deprecated
-	public void loadStartupPlugins(ProgressViewer progressViewer)
-			throws PluginManagerException {
-		
+	public void loadStartupPlugins(ProgressViewer progressViewer) throws PluginManagerException {
+
 		// load the user's standard plugins
 		int numberOfPlugins = prefs.getInt("numberOfPlugins", 0);
-		
+
 		// If available initialize the progressViewer
 		if (progressViewer != null)
 			progressViewer.setMaximum(numberOfPlugins);
-		
+
 		List<String> messages = new LinkedList<String>();
-		
+
 		PluginEntry[] pluginEntries = new PluginEntry[numberOfPlugins];
-		
+
 		int cnt = 0;
-		
+
 		for (int i = 1; i <= numberOfPlugins; i++) {
 			String pluginLocation = prefs.get("pluginLocation" + i, null);
-			
+
 			if (pluginLocation != null) {
 				try {
 					URL pluginUrl = new URL(pluginLocation);
 					PluginDescription desc = PluginHelper.readPluginDescription(pluginUrl);
-					pluginEntries[cnt++] = new DefaultPluginEntry(pluginLocation,
-							desc);
+					pluginEntries[cnt++] = new DefaultPluginEntry(pluginLocation, desc);
 				} catch (MalformedURLException mue) {
 					System.err.println(mue.getLocalizedMessage());
 					messages.add(mue.getMessage());
 				}
 			}
 		}
-		
+
 		try {
 			loadPlugins(pluginEntries, progressViewer);
 		} catch (PluginManagerException pme) {
 			messages.add(pme.getMessage());
 		}
-		
+
 		// collect info of all exceptions into one exception
 		if (!messages.isEmpty()) {
 			String msg = "";
-			
+
 			for (Iterator<String> itr = messages.iterator(); itr.hasNext();) {
 				msg += (itr.next() + "\n");
 			}
-			
-			throw new PluginManagerException("exception.loadStartup\n",
-					msg.trim());
+
+			throw new PluginManagerException("exception.loadStartup\n", msg.trim());
 		}
 	}
-	
+
 	/**
 	 * Removes the given plugin manager listener from the list of listeners.
 	 * 
 	 * @param listener
-	 *           the listener to remove from the list of listeners.
+	 *            the listener to remove from the list of listeners.
 	 */
 	public void removePluginManagerListener(PluginManagerListener listener) {
 		synchronized (pluginManagerListeners) {
 			boolean success = pluginManagerListeners.remove(listener);
-			
+
 			if (!success) {
-				logger.warn("trying to remove a non existing" +
-						" plugin manager listener");
+				logger.warn("trying to remove a non existing" + " plugin manager listener");
 			}
 		}
 	}
-	
+
 	/**
 	 * Saves the plugin manager's prefs.
 	 * 
 	 * @exception PluginManagerException
-	 *               if an error occurs while saving the
-	 *               preferences.
+	 *                if an error occurs while saving the preferences.
 	 */
-	public void savePrefs()
-			throws PluginManagerException {
+	public void savePrefs() throws PluginManagerException {
 		if (prefs == null)
 			return;
 		try {
 			// get rid of the old preferences ...
 			prefs.clear();
-			
+
 			// search for all plugins, which should be loaded at startup
 			// and put their urls into this list
 			List<URL> plugins = new LinkedList<URL>();
-			
+
 			for (Iterator<PluginEntry> i = pluginEntries.values().iterator(); i.hasNext();) {
 				PluginEntry e = i.next();
-				
+
 				if (e.getLoadOnStartup().equals(Boolean.TRUE)) {
 					plugins.add(e.getPluginLocation());
 				}
 			}
-			
+
 			// and write the new ones
 			prefs.putInt("numberOfPlugins", plugins.size());
-			
+
 			int count = 1;
-			
+
 			for (Iterator<URL> i = plugins.iterator(); i.hasNext();) {
 				prefs.put("pluginLocation" + count, i.next().toString());
 				count++;
 			}
 		} catch (Exception e) {
-			throw new PluginManagerException("exception.SavePrefs",
-					e.getMessage());
+			throw new PluginManagerException("exception.SavePrefs", e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Adds the given plugin file to the list of plugins. The progress made is
 	 * displayed with progressViewer.
 	 * 
 	 * @param description
-	 *           the name of the plugin's main class.
+	 *            the name of the plugin's main class.
 	 * @param pluginLocation
-	 *           the location of the given plugin.
+	 *            the location of the given plugin.
 	 * @param loadOnStartup
-	 *           <code>true</code> if the plugin should be loaded on
-	 *           the startup of the system, <code>false</code> otherwise.
+	 *            <code>true</code> if the plugin should be loaded on the startup of
+	 *            the system, <code>false</code> otherwise.
 	 * @param progressViewer
-	 *           the progress viewer that display the progress made
+	 *            the progress viewer that display the progress made
 	 * @throws PluginManagerException
-	 *            DOCUMENT ME!
+	 *             DOCUMENT ME!
 	 */
-	private boolean addPlugin(PluginDescription description,
-			URL pluginLocation, Boolean loadOnStartup, ProgressViewer progressViewer) throws PluginManagerException {
+	private boolean addPlugin(PluginDescription description, URL pluginLocation, Boolean loadOnStartup,
+			ProgressViewer progressViewer) throws PluginManagerException {
 		// assert plugin != null;
 		assert description != null;
-		
+
 		// create an instance of the plugin's main class
 		GenericPlugin plugin = createInstance(description, progressViewer);
-		
+
 		if (plugin == null) {
 			System.err.println("ERROR: COULD NOT CREATE PLUGIN");
 			if (description != null)
@@ -657,9 +637,9 @@ public class DefaultPluginManager
 				System.err.println("PluginLocation: " + pluginLocation.toString());
 			else
 				System.err.println("Plugin Location is NULL");
-			
+
 			String errMsg = "<br>ERROR: COULD NOT CREATE PLUGIN<br>";
-			
+
 			if (description != null)
 				errMsg += "Plugin Description/Name: " + description.getName() + "<br>";
 			else
@@ -670,11 +650,10 @@ public class DefaultPluginManager
 				errMsg += "Plugin Location is NULL";
 			throw new PluginManagerException("Plugin Loading Failed", errMsg);
 		}
-		
+
 		synchronized (pluginEntries) {
 			pluginEntries.put(description.getName(),
-					new DefaultPluginEntry(description, plugin, loadOnStartup,
-							pluginLocation));
+					new DefaultPluginEntry(description, plugin, loadOnStartup, pluginLocation));
 			// inform all listeners about the new plugin.
 		}
 		synchronized (loadPluginLock) {
@@ -687,44 +666,42 @@ public class DefaultPluginManager
 		// org/graffiti/plugins/io/graphviz/DOTSerializerPlugin
 		String[] strings = StringSplitter.split(description.getMain(), ".");
 		StringBuffer pluginNode = new StringBuffer();
-		
+
 		for (int i = 0; i < strings.length; i++) {
 			pluginNode.append(strings[i]);
-			
+
 			if (i < (strings.length - 1)) {
 				pluginNode.append("/");
 			}
 		}
-		
+
 		if (prefs != null) {
 			Preferences pluginPrefs;
-//			pluginPrefs = prefs.node("pluginPrefs/" + pluginNode.toString());
+			// pluginPrefs = prefs.node("pluginPrefs/" + pluginNode.toString());
 			pluginPrefs = PreferenceManager.getPreferenceForClass(plugin.getClass());
-			
+
 			// configure the plugin's preferences
 			if (plugin != null)
 				plugin.configure(pluginPrefs);
 		}
 		return true;
 	}
-	
+
 	/**
-	 * Creates an instance of the plugin from its description. The progress
-	 * made is displayed with progressViewer.
+	 * Creates an instance of the plugin from its description. The progress made is
+	 * displayed with progressViewer.
 	 * 
 	 * @param description
-	 *           the description of the plugin to be instantiated
+	 *            the description of the plugin to be instantiated
 	 * @param progressViewer
-	 *           the progress viewer that display the progress made
+	 *            the progress viewer that display the progress made
 	 * @return the instantiated plugin.
 	 * @exception PluginManagerException
-	 *               an error occurs while loading or
-	 *               instantiating the plugin.
+	 *                an error occurs while loading or instantiating the plugin.
 	 */
-	private GenericPlugin createInstance(PluginDescription description,
-			ProgressViewer progressViewer)
+	private GenericPlugin createInstance(PluginDescription description, ProgressViewer progressViewer)
 			throws PluginManagerException {
-		
+
 		if (description == null) {
 			return null;
 		}
@@ -734,16 +711,17 @@ public class DefaultPluginManager
 			loaded = true;
 			if (!ReleaseInfo.isRunningAsApplet()) {
 				// System.err.println("Applet? " + ReleaseInfo.isRunningAsApplet());
-				throw new PluginAlreadyLoadedException("Plugin name " + name + " already defined/plugin already loaded!");
+				throw new PluginAlreadyLoadedException(
+						"Plugin name " + name + " already defined/plugin already loaded!");
 			}
 		}
-		
+
 		// If available show statustext to the user
 		if (progressViewer != null)
 			progressViewer.setText("Loading " + description.getName() + "...");
-		
+
 		GenericPlugin pluginInstance;
-		
+
 		try { // to instantiate the plugin's main class
 			if (!loaded)
 				pluginInstance = (GenericPlugin) InstanceLoader.createInstance(description.getMain());
@@ -759,36 +737,37 @@ public class DefaultPluginManager
 			throw new PluginManagerException(nce.getMessage() + " (cause: " + nce.getCause().getMessage() + ") ",
 					description.toString());
 		}
-		
+
 		// update status (if available).
 		if (progressViewer != null) {
 			progressViewer.setText("Loading " + description.getName() + ": OK");
 			progressViewer.setValue(progressViewer.getValue() + 1);
 		}
-		
+
 		return pluginInstance;
 	}
-	
+
 	/**
-	 * Registers the plugin as a plugin manager listener, if it is of instance <code>PluginManagerListener</code> and calls the <code>pluginAdded</code> in all
-	 * plugin manager listeners.
+	 * Registers the plugin as a plugin manager listener, if it is of instance
+	 * <code>PluginManagerListener</code> and calls the <code>pluginAdded</code> in
+	 * all plugin manager listeners.
 	 * 
 	 * @param plugin
-	 *           the added plugin.
+	 *            the added plugin.
 	 * @param desc
-	 *           the description of the added plugin.
+	 *            the description of the added plugin.
 	 */
 	private void firePluginAdded(GenericPlugin plugin, PluginDescription desc) {
 		// register the plugin as a plugin manager listener, if needed
 		if (plugin instanceof PluginManagerListener) {
 			addPluginManagerListener((PluginManagerListener) plugin);
 		}
-		
+
 		ArrayList<PluginManagerListener> pml = new ArrayList<PluginManagerListener>();
 		synchronized (pluginManagerListeners) {
 			pml.addAll(pluginManagerListeners);
 		}
-		
+
 		for (PluginManagerListener listener : pml) {
 			if (plugin != null) {
 				try {
@@ -799,7 +778,7 @@ public class DefaultPluginManager
 			}
 		}
 	}
-	
+
 	public synchronized Collection<RSSfeedDefinition> getPluginFeeds() {
 		ArrayList<RSSfeedDefinition> feeds = new ArrayList<RSSfeedDefinition>();
 		ArrayList<PluginEntry> pes = new ArrayList<PluginEntry>();
@@ -810,10 +789,10 @@ public class DefaultPluginManager
 			if (pe.getDescription().hasRSSfeedDefined())
 				feeds.add(pe.getDescription().getFeed());
 		}
-		
+
 		return feeds;
 	}
-	
+
 }
 
 // ------------------------------------------------------------------------------

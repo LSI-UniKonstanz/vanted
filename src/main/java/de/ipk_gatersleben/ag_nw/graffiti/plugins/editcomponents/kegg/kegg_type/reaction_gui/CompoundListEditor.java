@@ -48,65 +48,60 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.KeggId;
 
 public class CompoundListEditor extends JComponent {
 	private static final long serialVersionUID = 1L;
-	private MutableList subProdSelection = new MutableList(new DefaultListModel());
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private MutableList subProdSelection = new MutableList<>(new DefaultListModel());
 	private Reaction currReaction;
 	private boolean isProductSelection;
 	private boolean isEnzymeSelection;
 	private boolean isSubstrateSelection;
 	private Pathway pathway;
 	private MyReactionList list;
-	
-	public CompoundListEditor(
-						Reaction currReaction,
-						Pathway p,
-						boolean sub, boolean enz, boolean prod,
-						HashMap<Entry, Node> entry2graphNode) {
+
+	public CompoundListEditor(Reaction currReaction, Pathway p, boolean sub, boolean enz, boolean prod,
+			HashMap<Entry, Node> entry2graphNode) {
 		this.pathway = p;
 		this.isProductSelection = prod;
 		this.isEnzymeSelection = enz;
 		this.isSubstrateSelection = sub;
 		JComponent mc = null;
 		if (enz) {
-			Collection<Entry> validEnzymeEntries = getEntriesAcceptibleForEnzyme(
-								p.getEntries());
+			Collection<Entry> validEnzymeEntries = getEntriesAcceptibleForEnzyme(p.getEntries());
 			mc = getEntryList("Enzymes", validEnzymeEntries, entry2graphNode);
 		}
 		if (sub) {
-			Collection<Entry> validEntries = getEntriesAcceptibleForSubstrateOrProduct(
-								p.getEntries());
+			Collection<Entry> validEntries = getEntriesAcceptibleForSubstrateOrProduct(p.getEntries());
 			mc = getEntryList("Substrates", validEntries, entry2graphNode);
 		}
 		if (prod) {
-			Collection<Entry> validEntries = getEntriesAcceptibleForSubstrateOrProduct(
-								p.getEntries());
+			Collection<Entry> validEntries = getEntriesAcceptibleForSubstrateOrProduct(p.getEntries());
 			mc = getEntryList("Products", validEntries, entry2graphNode);
 		}
 		setLayout(TableLayout.getLayout(TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
 		add(mc, "0,0");
 		validate();
 	}
-	
-	private Collection<Entry> getEntriesAcceptibleForEnzyme(Collection<Entry> entries) {
+
+	private static Collection<Entry> getEntriesAcceptibleForEnzyme(Collection<Entry> entries) {
 		ArrayList<Entry> result = new ArrayList<Entry>();
 		if (entries != null)
 			for (Entry e : entries) {
 				EntryType et = e.getType();
-				if (et != EntryType.map && et != EntryType.unspecified
-									&& et != EntryType.group && et != EntryType.genes && et != EntryType.compound) {
+				if (et != EntryType.map && et != EntryType.unspecified && et != EntryType.group && et != EntryType.genes
+						&& et != EntryType.compound) {
 					result.add(e);
 				}
 			}
 		return result;
 	}
-	
-	private Collection<Entry> getEntriesAcceptibleForSubstrateOrProduct(Collection<Entry> entries) {
+
+	private static Collection<Entry> getEntriesAcceptibleForSubstrateOrProduct(Collection<Entry> entries) {
 		ArrayList<Entry> result = new ArrayList<Entry>();
 		HashSet<String> knownIds = new HashSet<String>();
 		if (entries != null)
 			for (Entry e : entries) {
 				EntryType et = e.getType();
-				if (et != EntryType.map && et != EntryType.unspecified 
-									&& et != EntryType.group && et != EntryType.genes && et != EntryType.enzyme) {
+				if (et != EntryType.map && et != EntryType.unspecified && et != EntryType.group && et != EntryType.genes
+						&& et != EntryType.enzyme) {
 					if (!knownIds.contains(e.getName().getId())) {
 						knownIds.add(e.getName().getId());
 						result.add(e);
@@ -115,11 +110,10 @@ public class CompoundListEditor extends JComponent {
 			}
 		return result;
 	}
-	
-	@SuppressWarnings("unchecked")
-	private JComponent getEntryList(String title,
-						final Collection<Entry> entries,
-						final HashMap<Entry, Node> entry2graphNode) {
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private JComponent getEntryList(String title, final Collection<Entry> entries,
+			final HashMap<Entry, Node> entry2graphNode) {
 		final MutableList entrySelection = new MutableList(new DefaultListModel());
 		Collections.sort((List) entries, new Comparator() {
 			public int compare(Object arg0, Object arg1) {
@@ -130,42 +124,46 @@ public class CompoundListEditor extends JComponent {
 			entrySelection.getContents().addElement(e);
 		}
 		if (isEnzymeSelection)
-			entrySelection.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, entrySelection, false));
+			entrySelection
+					.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, entrySelection, false));
 		else
-			entrySelection.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, entrySelection, true));
-		
+			entrySelection
+					.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, entrySelection, true));
+
 		final JLabel searchResult = new JLabel("<html><small><font color='gray'>" + entries.size() + " entries");
-		
+
 		JScrollPane entrySelectionScrollPane = new JScrollPane(entrySelection);
-		
+
 		entrySelectionScrollPane.setPreferredSize(new Dimension(300, 100));
-		
+
 		// ///////////
 		Collections.sort((List) entries, new Comparator() {
 			public int compare(Object arg0, Object arg1) {
 				return arg0.toString().compareTo(arg1.toString());
 			}
 		});
-		
+
 		if (isEnzymeSelection)
-			subProdSelection.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, subProdSelection, false));
+			subProdSelection
+					.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, subProdSelection, false));
 		else
-			subProdSelection.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, subProdSelection, true));
-		
+			subProdSelection
+					.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, subProdSelection, true));
+
 		JScrollPane subProdScrollPane = new JScrollPane(subProdSelection);
-		
+
 		subProdScrollPane.setPreferredSize(new Dimension(300, 100));
 		// ///////////
-		
+
 		final JTextField filter = new JTextField("");
-		
+
 		filter.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 			}
-			
+
 			public void keyReleased(KeyEvent e) {
 			}
-			
+
 			public void keyTyped(KeyEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
@@ -175,21 +173,22 @@ public class CompoundListEditor extends JComponent {
 							if (e.toString().toUpperCase().contains(filterText))
 								entrySelection.getContents().addElement(e);
 						}
-						searchResult.setText("<html><small><font color='gray'>" + entrySelection.getContents().size() + "/" + entries.size() + " entries shown");
+						searchResult.setText("<html><small><font color='gray'>" + entrySelection.getContents().size()
+								+ "/" + entries.size() + " entries shown");
 					};
 				});
 			}
 		});
-		
+
 		JButton addCmd = new JButton();
 		JButton delCmd = new JButton();
-		
+
 		addCmd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (entrySelection.getSelectedValues() == null || entrySelection.getSelectedValues().length <= 0)
+				if (entrySelection.getSelectedValuesList() == null || entrySelection.getSelectedValuesList().size() <= 0)
 					MainFrame.showMessageDialog("Please select a item to be added!", "No item selected");
 				else {
-					for (Object o : entrySelection.getSelectedValues()) {
+					for (Object o : entrySelection.getSelectedValuesList()) {
 						Entry e = (Entry) o;
 						if (!subProdSelection.getContents().contains(e)) {
 							subProdSelection.getContents().addElement(e);
@@ -210,10 +209,10 @@ public class CompoundListEditor extends JComponent {
 		});
 		delCmd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (subProdSelection.getSelectedValues() == null || subProdSelection.getSelectedValues().length <= 0)
+				if (subProdSelection.getSelectedValuesList() == null || subProdSelection.getSelectedValuesList().size() <= 0)
 					MainFrame.showMessageDialog("Please select a item to be removed!", "No item selected");
 				else {
-					for (Object o : subProdSelection.getSelectedValues()) {
+					for (Object o : subProdSelection.getSelectedValuesList()) {
 						Entry e = (Entry) o;
 						if (isSubstrateSelection)
 							currReaction.getSubstrates().remove(e);
@@ -226,10 +225,10 @@ public class CompoundListEditor extends JComponent {
 				}
 			}
 		});
-		
+
 		addCmd.setOpaque(false);
 		delCmd.setOpaque(false);
-		
+
 		if (isSubstrateSelection) {
 			delCmd.setText("Remove Substrate");
 			addCmd.setText("<< Add <<");
@@ -242,25 +241,23 @@ public class CompoundListEditor extends JComponent {
 			delCmd.setText("Remove Product");
 			addCmd.setText("<< Add <<");
 		}
-		JComponent addRemoveCmds = TableLayout.getSplit(delCmd, new JLabel(), TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
-		
-		JComponent resultPane = TableLayout.getSplitVertical(
-							subProdScrollPane,
-							addRemoveCmds,
-							TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
-		
-		JComponent searchPane = TableLayout.getSplitVertical(
-							entrySelectionScrollPane,
-							TableLayout.getSplitVertical(
-												TableLayout.get3Split(new JLabel("Search"), new JLabel(), filter,
-																	TableLayoutConstants.PREFERRED, 2, TableLayoutConstants.FILL),
-												searchResult, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED),
-								TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
-		
-		JComponent addPane = TableLayout.get3SplitVertical(null, addCmd, null,
-							0, TableLayoutConstants.PREFERRED, TableLayoutConstants.FILL);
-		JComponent result = TableLayout.get3Split(resultPane, addPane, searchPane,
-							TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
+		JComponent addRemoveCmds = TableLayout.getSplit(delCmd, new JLabel(), TableLayoutConstants.PREFERRED,
+				TableLayoutConstants.FILL);
+
+		JComponent resultPane = TableLayout.getSplitVertical(subProdScrollPane, addRemoveCmds,
+				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
+
+		JComponent searchPane = TableLayout.getSplitVertical(entrySelectionScrollPane,
+				TableLayout.getSplitVertical(
+						TableLayout.get3Split(new JLabel("Search"), new JLabel(), filter,
+								TableLayoutConstants.PREFERRED, 2, TableLayoutConstants.FILL),
+						searchResult, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED),
+				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
+
+		JComponent addPane = TableLayout.get3SplitVertical(null, addCmd, null, 0, TableLayoutConstants.PREFERRED,
+				TableLayoutConstants.FILL);
+		JComponent result = TableLayout.get3Split(resultPane, addPane, searchPane, TableLayoutConstants.PREFERRED,
+				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
 		final FolderPanel fp = new FolderPanel(title, false, true, false, null);
 		fp.setFrameColor(new Color(240, 240, 240), new Color(240, 240, 250), 1, 2);
 		fp.addGuiComponentRow(null, result, false);
@@ -268,17 +265,15 @@ public class CompoundListEditor extends JComponent {
 		fp.addCollapseListenerDialogSizeUpdate();
 		return fp.getBorderedComponent(5, 0, 0, 0);
 	}
-	
-	private ListSelectionListener getEntryGraphSelectionListener(
-						final HashMap<Entry, Node> entry2graphNode,
-						final MutableList entrySelection,
-						final boolean searchId) {
+
+	private static ListSelectionListener getEntryGraphSelectionListener(final HashMap<Entry, Node> entry2graphNode,
+			final MutableList<?> entrySelection, final boolean searchId) {
 		return new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						HashSet<Node> nodes = new HashSet<Node>();
-						for (Object o : entrySelection.getSelectedValues()) {
+						for (Object o : entrySelection.getSelectedValuesList()) {
 							Entry e = (Entry) o;
 							Node n = entry2graphNode.get(e);
 							if (n != null)
@@ -308,31 +303,32 @@ public class CompoundListEditor extends JComponent {
 						}
 					}
 				});
-				
+
 			}
 		};
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	public void updateReactionSelection(Reaction r) {
 		this.currReaction = r;
 		subProdSelection.getContents().clear();
-		
+
 		if (isProductSelection && currReaction != null)
 			for (Entry e : currReaction.getProducts()) {
 				subProdSelection.getContents().addElement(e);
 			}
-		
+
 		if (isEnzymeSelection && currReaction != null)
 			for (Entry e : currReaction.getEntriesRepresentingThisReaction(pathway.getEntries())) {
 				subProdSelection.getContents().addElement(e);
 			}
-		
+
 		if (isSubstrateSelection && currReaction != null)
 			for (Entry e : currReaction.getSubstrates()) {
 				subProdSelection.getContents().addElement(e);
 			}
 	}
-	
+
 	public void setCallBack(MyReactionList list) {
 		this.list = list;
 	}

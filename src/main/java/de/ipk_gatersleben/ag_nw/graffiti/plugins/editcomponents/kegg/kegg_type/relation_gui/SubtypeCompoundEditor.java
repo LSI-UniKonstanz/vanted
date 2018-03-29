@@ -45,17 +45,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.IdRef;
 
 public class SubtypeCompoundEditor extends JPanel {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Relation currentRelation;
 	private MyRelationList list;
-	private MutableList subProdSelection = new MutableList(new DefaultListModel());
-	
-	@SuppressWarnings("unchecked")
-	public SubtypeCompoundEditor(
-						String title,
-						Relation initialRelation,
-						final List<Entry> entries,
-						final HashMap<Entry, Node> entry2graphNode) {
+	private MutableList<Entry> subProdSelection = new MutableList<>(new DefaultListModel<Entry>());
+
+	public SubtypeCompoundEditor(String title, Relation initialRelation, final List<Entry> entries,
+			final HashMap<Entry, Node> entry2graphNode) {
 		this.currentRelation = initialRelation;
 		final MutableList<Entry> entrySelection = new MutableList<Entry>(new DefaultListModel<Entry>());
 		Collections.sort(entries, new Comparator<Entry>() {
@@ -67,33 +63,33 @@ public class SubtypeCompoundEditor extends JPanel {
 			entrySelection.getContents().addElement(e);
 		}
 		entrySelection.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, entrySelection));
-		
+
 		final JLabel searchResult = new JLabel("<html><small><font color='gray'>" + entries.size() + " entries");
-		
+
 		JScrollPane entrySelectionScrollPane = new JScrollPane(entrySelection);
-		
+
 		entrySelectionScrollPane.setPreferredSize(new Dimension(300, 100));
-		
+
 		// ///////////
 		Collections.sort(entries, new Comparator<Entry>() {
 			public int compare(Entry arg0, Entry arg1) {
 				return arg0.toString().compareTo(arg1.toString());
 			}
 		});
-		
+
 		subProdSelection.addListSelectionListener(getEntryGraphSelectionListener(entry2graphNode, subProdSelection));
-		
+
 		// ///////////
-		
+
 		final JTextField filter = new JTextField("");
-		
+
 		filter.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 			}
-			
+
 			public void keyReleased(KeyEvent e) {
 			}
-			
+
 			public void keyTyped(KeyEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
@@ -103,87 +99,84 @@ public class SubtypeCompoundEditor extends JPanel {
 							if (e.toString().toUpperCase().contains(filterText))
 								entrySelection.getContents().addElement(e);
 						}
-						searchResult.setText("<html><small><font color='gray'>" + entrySelection.getContents().size() + "/" + entries.size() + " entries shown");
+						searchResult.setText("<html><small><font color='gray'>" + entrySelection.getContents().size()
+								+ "/" + entries.size() + " entries shown");
 					};
 				});
 			}
 		});
-		
+
 		JButton addSubtypeCompoundCmd = new JButton("^^ Set (Hidden) Compound ^^");
 		JButton removeSubtypeCompound = new JButton("Remove");
-		
+
 		addSubtypeCompoundCmd.setOpaque(false);
 		removeSubtypeCompound.setOpaque(false);
-		
+
 		addSubtypeCompoundCmd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (entrySelection.getSelectedValues() == null || entrySelection.getSelectedValues().length <= 0)
+				if (entrySelection.getSelectedValuesList() == null || entrySelection.getSelectedValuesList().size() <= 0)
 					MainFrame.showMessageDialog("Please select a item to be added!", "No item selected");
 				else {
-					for (int i = 0; i < ((DefaultListModel) subProdSelection.getModel()).size(); i++) {
-						Entry e = (Entry) ((DefaultListModel) subProdSelection.getModel()).getElementAt(i);
+					for (int i = 0; i < ((DefaultListModel<Entry>) subProdSelection.getModel()).size(); i++) {
+						Entry e = ((DefaultListModel<Entry>) subProdSelection.getModel()).getElementAt(i);
 						currentRelation.removeSubtypeRef(e);
 					}
-					((DefaultListModel) subProdSelection.getModel()).clear();
-					for (Object o : entrySelection.getSelectedValues()) {
-						Entry e = (Entry) o;
+					((DefaultListModel<Entry>) subProdSelection.getModel()).clear();
+					for (Entry e : entrySelection.getSelectedValuesList())
 						currentRelation.addSubtypeRef(e);
-					}
+
 					list.updateRelationInfo(currentRelation);
 				}
 			}
 		});
 		removeSubtypeCompound.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (subProdSelection.getSelectedValues() == null || subProdSelection.getSelectedValues().length <= 0)
+				if (subProdSelection.getSelectedValuesList() == null || subProdSelection.getSelectedValuesList().size() <= 0)
 					MainFrame.showMessageDialog("Please select a item to be removed!", "No item selected");
 				else {
-					for (Object o : subProdSelection.getSelectedValues()) {
-						Entry e = (Entry) o;
+					for (Entry e : subProdSelection.getSelectedValuesList())
 						currentRelation.removeSubtypeRef(e);
-					}
+					
 					list.updateRelationInfo(currentRelation);
 				}
 			}
 		});
-		
+
 		addSubtypeCompoundCmd.setOpaque(false);
-		
+
 		JComponent addPane;
-		
-		addPane = TableLayout.getSplit(removeSubtypeCompound, addSubtypeCompoundCmd,
-							TableLayoutConstants.FILL, TableLayoutConstants.FILL);
-		
-		JComponent searchPane = TableLayout.getSplitVertical(
-							entrySelectionScrollPane,
-							TableLayout.getSplitVertical(
-												TableLayout.get3Split(new JLabel("Search "), new JLabel(), filter,
-																	TableLayoutConstants.PREFERRED, 2, TableLayoutConstants.FILL),
-												searchResult, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED),
-								TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
-		
+
+		addPane = TableLayout.getSplit(removeSubtypeCompound, addSubtypeCompoundCmd, TableLayoutConstants.FILL,
+				TableLayoutConstants.FILL);
+
+		JComponent searchPane = TableLayout.getSplitVertical(entrySelectionScrollPane,
+				TableLayout.getSplitVertical(
+						TableLayout.get3Split(new JLabel("Search "), new JLabel(), filter,
+								TableLayoutConstants.PREFERRED, 2, TableLayoutConstants.FILL),
+						searchResult, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED),
+				TableLayoutConstants.FILL, TableLayoutConstants.PREFERRED);
+
 		JComponent result;
-		result = TableLayout.get3SplitVertical(subProdSelection, addPane, searchPane,
-							TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
+		result = TableLayout.get3SplitVertical(subProdSelection, addPane, searchPane, TableLayoutConstants.PREFERRED,
+				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
 		final FolderPanel fp = new FolderPanel(title, true, true, false, null);
 		fp.addGuiComponentRow(null, result, false);
 		fp.setBackground(null);
 		fp.setFrameColor(new JTabbedPane().getBackground(), Color.BLACK, 0, 2);
 		fp.layoutRows();
 		fp.addCollapseListenerDialogSizeUpdate();
-		
+
 		this.setLayout(TableLayout.getLayout(TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED));
 		add(fp, "0,0");
 		validate();
 	}
-	
-	private ListSelectionListener getEntryGraphSelectionListener(
-						final HashMap<Entry, Node> entry2graphNode,
-						final MutableList entrySelection) {
+
+	private static ListSelectionListener getEntryGraphSelectionListener(final HashMap<Entry, Node> entry2graphNode,
+			final MutableList<Entry> entrySelection) {
 		return new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent se) {
 				HashSet<Node> nodes = new HashSet<Node>();
-				for (Object o : entrySelection.getSelectedValues()) {
+				for (Object o : entrySelection.getSelectedValuesList()) {
 					Entry e = (Entry) o;
 					Node n = entry2graphNode.get(e);
 					if (n != null)
@@ -203,7 +196,7 @@ public class SubtypeCompoundEditor extends JPanel {
 			}
 		};
 	}
-	
+
 	public void updateRelationSelection(Relation r) {
 		this.currentRelation = r;
 		subProdSelection.getContents().clear();
@@ -211,9 +204,9 @@ public class SubtypeCompoundEditor extends JPanel {
 			for (IdRef ir : currentRelation.getSubtypeRefs()) {
 				subProdSelection.getContents().addElement(ir.getRef());
 			}
-		
+
 	}
-	
+
 	public void setCallBack(MyRelationList list) {
 		this.list = list;
 	}

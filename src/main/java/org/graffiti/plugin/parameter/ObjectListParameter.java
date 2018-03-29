@@ -9,18 +9,15 @@ import javax.swing.ListCellRenderer;
  * @author klukas
  * @version $Revision: 1.8 $
  */
-public class ObjectListParameter
-					extends AbstractSingleParameter {
-	@SuppressWarnings("unchecked")
-	private Collection possibleValues;
-	private ListCellRenderer renderer;
-	
-	@SuppressWarnings("unchecked")
-	public ObjectListParameter(Object val, String name, String description, Collection possibleValues) {
+public class ObjectListParameter extends AbstractSingleParameter {
+	private Collection<?> possibleValues;
+	private ListCellRenderer<Object> renderer;
+
+	public ObjectListParameter(Object val, String name, String description, Collection<?> possibleValues) {
 		super(val, name, description);
 		this.possibleValues = possibleValues;
 	}
-	
+
 	public ObjectListParameter(Object val, String name, String description, Object[] values) {
 		super(val, name, description);
 		ArrayList<Object> va = new ArrayList<Object>();
@@ -28,17 +25,16 @@ public class ObjectListParameter
 			va.add(o);
 		this.possibleValues = va;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public Collection getPossibleValues() {
+
+	public Collection<?> getPossibleValues() {
 		return possibleValues;
 	}
-	
-	public void setRenderer(ListCellRenderer renderer) {
+
+	public void setRenderer(ListCellRenderer<Object> renderer) {
 		this.renderer = renderer;
 	}
-	
-	public ListCellRenderer getRenderer() {
+
+	public ListCellRenderer<Object> getRenderer() {
 		return renderer;
 	}
 }

@@ -46,7 +46,7 @@ public interface Values {
 	 * Returns a value.
 	 * 
 	 * @param item
-	 *           the item of interest (zero-based index).
+	 *            the item of interest (zero-based index).
 	 * @return the value.
 	 */
 	public Number getValue(int item);

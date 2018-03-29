@@ -17,26 +17,21 @@ import org.graffiti.graph.Node;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3utility.UtilityClassSelectorToGraph;
 
-public class BPTemplateReactionRegulation extends BPInteraction
-{
+public class BPTemplateReactionRegulation extends BPInteraction {
 
-	public BPTemplateReactionRegulation(Graph Graph, Hashtable<Entity, Node> Nodes)
-	{
+	public BPTemplateReactionRegulation(Graph Graph, Hashtable<Entity, Node> Nodes) {
 		super(Graph, Nodes);
 	}
 
-	public void read(Interaction i)
-	{
+	public void read(Interaction i) {
 		TemplateReactionRegulation trr = (TemplateReactionRegulation) i;
 		// always TemplateReaction
 		Set<Process> controlled = trr.getControlled();
 		// always Physical Entity
 		Set<Controller> controller = trr.getController();
 
-		for (Controller c : controller)
-		{
-			for (Process p : controlled)
-			{
+		for (Controller c : controller) {
+			for (Process p : controlled) {
 				TemplateReaction TR = (TemplateReaction) p;
 				Node process = findORcreateNode(TR);
 
@@ -44,7 +39,8 @@ public class BPTemplateReactionRegulation extends BPInteraction
 				Node controllNode = findORcreateNode(entity);
 
 				Edge e = addEdge(controllNode, process);
-				setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.116"), Messages.getString("UtilitySuperClassToGraph.117")); //$NON-NLS-1$ //$NON-NLS-2$
+				setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.116"), //$NON-NLS-1$
+						Messages.getString("UtilitySuperClassToGraph.117")); //$NON-NLS-1$
 				UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(e, trr);
 			}
 		}

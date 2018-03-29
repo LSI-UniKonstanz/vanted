@@ -18,20 +18,19 @@ import org.StringManipulationTools;
  * @author klukas
  */
 public class NavigationTree {
-	
+
 	private final TreeSet<String> titles;
 	private final HashMap<String, String> fileName2title;
-	
+
 	/**
 	 * @param titles
 	 * @param fileName2title
 	 */
-	public NavigationTree(TreeSet<String> titles,
-						HashMap<String, String> fileName2title) {
+	public NavigationTree(TreeSet<String> titles, HashMap<String, String> fileName2title) {
 		this.titles = titles;
 		this.fileName2title = fileName2title;
 	}
-	
+
 	/**
 	 * @param pathwayLinks
 	 */
@@ -41,11 +40,10 @@ public class NavigationTree {
 		for (String title : titles) {
 			String[] levelNames = title.split("\\.");
 			currLevel = currentLevel.size();
-			
+
 			// last item is file extension, before is the file name
 			int thisLevelSize = levelNames.length - 1;
-			while (currLevel > 0
-								&& !currentLevel.peek().equals(levelNames[currLevel - 1])) {
+			while (currLevel > 0 && !currentLevel.peek().equals(levelNames[currLevel - 1])) {
 				currentLevel.pop();
 				currLevel--;
 				pathwayLinks.append("		</ul>§");
@@ -53,12 +51,11 @@ public class NavigationTree {
 			while (currLevel < thisLevelSize) {
 				String thisLevelDescription = levelNames[currLevel];
 				pathwayLinks.append("		" + (currLevel >= 1 ? "<li>" : "")
-									+ StringManipulationTools.UnicodeToHtml(thisLevelDescription)
-									+ "<ul>" + "§");
+						+ StringManipulationTools.UnicodeToHtml(thisLevelDescription) + "<ul>" + "§");
 				currentLevel.push(thisLevelDescription);
 				currLevel++;
 			}
-			
+
 			String fileName = "error";
 			for (Entry<String, String> e : fileName2title.entrySet()) {
 				if (e.getValue().equals(title)) {
@@ -66,10 +63,9 @@ public class NavigationTree {
 				}
 			}
 			String ddd = levelNames[currLevel];
-			pathwayLinks.append("		<li><a href=\"" + fileName
-								+ "\" target=\"main\">"
-								+ StringManipulationTools.UnicodeToHtml(ddd) + "</a><!-- "
-								+ StringManipulationTools.UnicodeToHtml(title) + " -->§");
+			pathwayLinks.append("		<li><a href=\"" + fileName + "\" target=\"main\">"
+					+ StringManipulationTools.UnicodeToHtml(ddd) + "</a><!-- "
+					+ StringManipulationTools.UnicodeToHtml(title) + " -->§");
 		}
 		while (currLevel > 0) {
 			currentLevel.pop();

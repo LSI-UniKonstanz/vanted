@@ -12,11 +12,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.SampleInterface;
 
 /**
- * @author Christian Klukas
- *         (c) 2004-2008 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004-2008 IPK-Gatersleben
  */
 public class MyComparableDataPoint implements Comparable<Object> {
-	
+
 	public double mean;
 	private double stddev;
 	public String serie;
@@ -31,21 +30,21 @@ public class MyComparableDataPoint implements Comparable<Object> {
 	private final Integer seriesID;
 	/**
 	 * In case this Object is represents a Mean value, this number specifies the
-	 * number of replicates, which where the basis for this mean value. If this
-	 * no Mean value, it specifies the replicate id of the sample.
+	 * number of replicates, which where the basis for this mean value. If this no
+	 * Mean value, it specifies the replicate id of the sample.
 	 */
 	private int replicateCount;
 	public boolean isMeanValue;
 	public Measurement xmlReference;
-	
+
 	private boolean outlier;
-	
+
 	@Override
 	public String toString() {
 		return serie + ": avg=" + mean + " " + measurementUnit + ", stddev=" + getStddev() + " " + measurementUnit
-							+ ", time=" + timeUnitAndTime + ", replicate=" + replicate;
+				+ ", time=" + timeUnitAndTime + ", replicate=" + replicate;
 	}
-	
+
 	/**
 	 * @param d
 	 * @param serie
@@ -54,8 +53,8 @@ public class MyComparableDataPoint implements Comparable<Object> {
 	 * @param reference
 	 */
 	public MyComparableDataPoint(boolean isMeanValue, double mean, double stddev, String serie, String timeUnitAndTime,
-						String measurementUnit, int timeValueForComparision, boolean ttestIsReference,
-						boolean ttestIsSignificantDifferent, String timeUnit, int seriesID, int replicate, Measurement reference) {
+			String measurementUnit, int timeValueForComparision, boolean ttestIsReference,
+			boolean ttestIsSignificantDifferent, String timeUnit, int seriesID, int replicate, Measurement reference) {
 		this.mean = mean;
 		this.isMeanValue = isMeanValue;
 		this.setStddev(stddev);
@@ -64,7 +63,7 @@ public class MyComparableDataPoint implements Comparable<Object> {
 		this.timeUnitAndTime = timeUnitAndTime;
 		this.timeUnit = timeUnit;
 		this.timeValueForComparision = timeValueForComparision;
-		this.timeValue = new Integer(timeValueForComparision);
+		this.timeValue = Integer.valueOf(timeValueForComparision);
 		this.measurementUnit = measurementUnit;
 		this.ttestIsReference = ttestIsReference;
 		this.ttestIsSignificantDifferent = ttestIsSignificantDifferent;
@@ -77,14 +76,15 @@ public class MyComparableDataPoint implements Comparable<Object> {
 		this.outlier = false;
 		this.xmlReference = reference;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(Object obj) {
 		MyComparableDataPoint ct = (MyComparableDataPoint) obj;
-		
+
 		if (ct.timeValueForComparision < timeValueForComparision)
 			return 1;
 		if (ct.timeValueForComparision > timeValueForComparision)
@@ -99,15 +99,15 @@ public class MyComparableDataPoint implements Comparable<Object> {
 		// return serie.compareTo(ct.serie);
 		// return 0;
 	}
-	
+
 	public String getSOMcolumnDesc(boolean useSampleAverageValues) {
 		if (useSampleAverageValues)
 			return new String(serie + "§" + timeUnit + "§" + getZeros(timeValueForComparision, 9) + "§0");
 		else
 			return new String(serie + "§" + timeUnit + "§" + getZeros(timeValueForComparision, 9) + "§" + replicate);
 	}
-	
-	private String getZeros(int val, int len) {
+
+	private static String getZeros(int val, int len) {
 		boolean negative = val < 0;
 		val = Math.abs(val);
 		String result = "" + val;
@@ -118,15 +118,15 @@ public class MyComparableDataPoint implements Comparable<Object> {
 		else
 			return result;
 	}
-	
+
 	public void setStddev(double stddev) {
 		this.stddev = stddev;
 	}
-	
+
 	public double getStddev() {
 		return stddev;
 	}
-	
+
 	public double getStddev(boolean useStdErrInsteadOfStdDev) {
 		if (!useStdErrInsteadOfStdDev)
 			return stddev;
@@ -137,27 +137,26 @@ public class MyComparableDataPoint implements Comparable<Object> {
 				return Double.NaN;
 		}
 	}
-	
+
 	/**
-	 * Returns the number of replicates, if this datapoint represents a
-	 * mean-value datapoint. Otherwise it returns the replicateID.
+	 * Returns the number of replicates, if this datapoint represents a mean-value
+	 * datapoint. Otherwise it returns the replicateID.
 	 * 
-	 * @return Number of replicates, if this object represents a sample-mean
-	 *         value, otherwise it returns the replicateId of the replicate
-	 *         value.
+	 * @return Number of replicates, if this object represents a sample-mean value,
+	 *         otherwise it returns the replicateId of the replicate value.
 	 */
 	public int getReplicateCount() {
 		return replicateCount;
 	}
-	
+
 	public Integer getSeriesID() {
 		return seriesID;
 	}
-	
+
 	public boolean isOutlier() {
 		return outlier;
 	}
-	
+
 	public void setIsOutlier(boolean outlier, boolean removeOutlierFromXMLreference) {
 		this.outlier = outlier;
 		if (removeOutlierFromXMLreference) {
@@ -168,7 +167,7 @@ public class MyComparableDataPoint implements Comparable<Object> {
 				ErrorMsg.addErrorMessage("Internal Error: Data point (outlier could not be removed from the dataset!");
 		}
 	}
-	
+
 	public static int getTimePointFromTimeAndUnit(String timeAndUnit) {
 		if (timeAndUnit == null || timeAndUnit.length() <= 0 || timeAndUnit.indexOf(" ") <= 0)
 			return -1;
@@ -176,14 +175,14 @@ public class MyComparableDataPoint implements Comparable<Object> {
 		int res = Integer.parseInt(timeValue.trim());
 		return res;
 	}
-	
+
 	public static String getTimeUnitFromTimeAndUnit(String timeAndUnit) {
 		if (timeAndUnit == null || timeAndUnit.length() <= 0 || timeAndUnit.indexOf(" ") <= 0)
 			return "-1";
 		String timeUnit = timeAndUnit.substring(0, timeAndUnit.indexOf(" "));
 		return timeUnit.trim();
 	}
-	
+
 	public Measurement getMeasurement() {
 		return xmlReference;
 	}

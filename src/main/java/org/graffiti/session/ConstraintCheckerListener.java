@@ -13,20 +13,21 @@
 package org.graffiti.session;
 
 /**
- * Defines a listener to the <code>GraphConstraintChecker</code>. The method <code>checkFailed</code> is called every time the
+ * Defines a listener to the <code>GraphConstraintChecker</code>. The method
+ * <code>checkFailed</code> is called every time the
  * <code>GraphConstraintChecker</code> finds an unsatisfied constraint.
  * 
  * @see GraphConstraintChecker
  */
 public interface ConstraintCheckerListener {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Handles the message received by the constraint checker indicating an
 	 * unsatisfied constraint.
 	 * 
 	 * @param msg
-	 *           the message telling about the unsatisfied constraint.
+	 *            the message telling about the unsatisfied constraint.
 	 */
 	public void checkFailed(String msg);
 }

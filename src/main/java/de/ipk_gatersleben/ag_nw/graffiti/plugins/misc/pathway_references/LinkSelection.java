@@ -13,7 +13,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SetURLAlgorithm;
 
 public class LinkSelection extends LaunchGui implements Algorithm {
-	
+
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
@@ -23,17 +23,17 @@ public class LinkSelection extends LaunchGui implements Algorithm {
 		res.add(new PathwayReferenceAutoCreationAlgorithm());
 		return res;
 	}
-	
+
 	@Override
 	public String getName() {
 		return "Add Link...";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "menu.edit";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
 		return null;

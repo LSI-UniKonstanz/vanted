@@ -47,14 +47,17 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.layout.LCBLayout;
 
 /**
- * A ColorBarPropertyEditPanel. Extends NumberAxisPropertyEditPanel to allow change general
- * axis type parameters.
+ * A ColorBarPropertyEditPanel. Extends NumberAxisPropertyEditPanel to allow
+ * change general axis type parameters.
  * 
  * @author David M. O'Donnell
  */
 public class ColorBarPropertyEditPanel extends NumberAxisPropertyEditPanel {
 
-	/** A checkbox that indicates whether or not the color indices should run high to low. */
+	/**
+	 * A checkbox that indicates whether or not the color indices should run high to
+	 * low.
+	 */
 	private JCheckBox invertPaletteCheckBox;
 
 	/** Flag set by invertPaletteCheckBox. */
@@ -73,14 +76,14 @@ public class ColorBarPropertyEditPanel extends NumberAxisPropertyEditPanel {
 	private PaletteSample[] availablePaletteSamples;
 
 	/** The resourceBundle for the localization. */
-	protected static ResourceBundle localizationResources =
-						ResourceBundle.getBundle("org.jfree.chart.ui.LocalizationBundle");
+	protected static ResourceBundle localizationResources = ResourceBundle
+			.getBundle("org.jfree.chart.ui.LocalizationBundle");
 
 	/**
 	 * Creates a new edit panel for a color bar.
 	 * 
 	 * @param colorBar
-	 *           the color bar.
+	 *            the color bar.
 	 */
 	public ColorBarPropertyEditPanel(ColorBar colorBar) {
 		super((NumberAxis) colorBar.getAxis());
@@ -97,17 +100,15 @@ public class ColorBarPropertyEditPanel extends NumberAxisPropertyEditPanel {
 		palettePanel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
 		palettePanel.add(new JPanel());
-		this.invertPaletteCheckBox = new JCheckBox(
-							localizationResources.getString("Invert_Palette"), this.invertPalette
-							);
+		this.invertPaletteCheckBox = new JCheckBox(localizationResources.getString("Invert_Palette"),
+				this.invertPalette);
 		this.invertPaletteCheckBox.setActionCommand("invertPalette");
 		this.invertPaletteCheckBox.addActionListener(this);
 		palettePanel.add(this.invertPaletteCheckBox);
 		palettePanel.add(new JPanel());
 
 		palettePanel.add(new JPanel());
-		this.stepPaletteCheckBox = new JCheckBox(localizationResources.getString("Step_Palette"),
-							this.stepPalette);
+		this.stepPaletteCheckBox = new JCheckBox(localizationResources.getString("Step_Palette"), this.stepPalette);
 		this.stepPaletteCheckBox.setActionCommand("stepPalette");
 		this.stepPaletteCheckBox.addActionListener(this);
 		palettePanel.add(this.stepPaletteCheckBox);
@@ -128,21 +129,19 @@ public class ColorBarPropertyEditPanel extends NumberAxisPropertyEditPanel {
 	 * Handles actions from within the property panel.
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if (command.equals("PaletteChoice")) {
 			attemptPaletteSelection();
-		} else
-			if (command.equals("invertPalette")) {
-				this.invertPalette = this.invertPaletteCheckBox.isSelected();
-			} else
-				if (command.equals("stepPalette")) {
-					this.stepPalette = this.stepPaletteCheckBox.isSelected();
-				} else {
-					super.actionPerformed(event); // pass to the super-class for handling
-				}
+		} else if (command.equals("invertPalette")) {
+			this.invertPalette = this.invertPaletteCheckBox.isSelected();
+		} else if (command.equals("stepPalette")) {
+			this.stepPalette = this.stepPaletteCheckBox.isSelected();
+		} else {
+			super.actionPerformed(event); // pass to the super-class for handling
+		}
 	}
 
 	/**
@@ -150,11 +149,8 @@ public class ColorBarPropertyEditPanel extends NumberAxisPropertyEditPanel {
 	 */
 	private void attemptPaletteSelection() {
 		PaletteChooserPanel panel = new PaletteChooserPanel(null, this.availablePaletteSamples);
-		int result =
-							JOptionPane.showConfirmDialog(this, panel,
-																localizationResources.getString("Palette_Selection"),
-																JOptionPane.OK_CANCEL_OPTION,
-																JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(this, panel, localizationResources.getString("Palette_Selection"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (result == JOptionPane.OK_OPTION) {
 			double zmin = this.currentPalette.getPalette().getMinZ();
@@ -166,10 +162,11 @@ public class ColorBarPropertyEditPanel extends NumberAxisPropertyEditPanel {
 	}
 
 	/**
-	 * Sets the properties of the specified axis to match the properties defined on this panel.
+	 * Sets the properties of the specified axis to match the properties defined on
+	 * this panel.
 	 * 
 	 * @param colorBar
-	 *           the color bar.
+	 *            the color bar.
 	 */
 	public void setAxisProperties(ColorBar colorBar) {
 		super.setAxisProperties(colorBar.getAxis());
@@ -179,11 +176,10 @@ public class ColorBarPropertyEditPanel extends NumberAxisPropertyEditPanel {
 	}
 
 	/**
-	 * A static method that returns a panel that is appropriate for the axis
-	 * type.
+	 * A static method that returns a panel that is appropriate for the axis type.
 	 * 
 	 * @param colorBar
-	 *           the color bar.
+	 *            the color bar.
 	 * @return a panel or <code>null</code< if axis is <code>null</code>.
 	 */
 	public static ColorBarPropertyEditPanel getInstance(ColorBar colorBar) {

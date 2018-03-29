@@ -43,8 +43,9 @@ public interface CombinationDataset {
 	// /////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Returns the parent Dataset of this combination. If there is more than
-	 * one parent, or a child is found that is not a combination, then returns <code>null</code>.
+	 * Returns the parent Dataset of this combination. If there is more than one
+	 * parent, or a child is found that is not a combination, then returns
+	 * <code>null</code>.
 	 * 
 	 * @return the parent Dataset of this combination.
 	 */

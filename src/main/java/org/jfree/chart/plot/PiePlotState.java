@@ -69,10 +69,11 @@ public class PiePlotState extends RendererState {
 	private Rectangle2D linkArea;
 
 	/**
-	 * Creates a new object for recording temporary state information for a renderer.
+	 * Creates a new object for recording temporary state information for a
+	 * renderer.
 	 * 
 	 * @param info
-	 *           the plot rendering info.
+	 *            the plot rendering info.
 	 */
 	public PiePlotState(PlotRenderingInfo info) {
 		super(info);
@@ -93,7 +94,7 @@ public class PiePlotState extends RendererState {
 	 * Sets the number of passes required by the renderer.
 	 * 
 	 * @param passes
-	 *           the passes.
+	 *            the passes.
 	 */
 	public void setPassesRequired(int passes) {
 		this.passesRequired = passes;
@@ -112,7 +113,7 @@ public class PiePlotState extends RendererState {
 	 * Sets the total.
 	 * 
 	 * @param total
-	 *           the total.
+	 *            the total.
 	 */
 	public void setTotal(double total) {
 		this.total = total;
@@ -131,7 +132,7 @@ public class PiePlotState extends RendererState {
 	 * Sets the latest angle.
 	 * 
 	 * @param angle
-	 *           the angle.
+	 *            the angle.
 	 */
 	public void setLatestAngle(double angle) {
 		this.latestAngle = angle;
@@ -150,7 +151,7 @@ public class PiePlotState extends RendererState {
 	 * Sets the pie area.
 	 * 
 	 * @param area
-	 *           the area.
+	 *            the area.
 	 */
 	public void setPieArea(Rectangle2D area) {
 		this.pieArea = area;
@@ -169,7 +170,7 @@ public class PiePlotState extends RendererState {
 	 * Sets the exploded pie area.
 	 * 
 	 * @param area
-	 *           the area.
+	 *            the area.
 	 */
 	public void setExplodedPieArea(Rectangle2D area) {
 		this.explodedPieArea = area;
@@ -188,14 +189,15 @@ public class PiePlotState extends RendererState {
 	 * Sets the x-coordinate of the center of the pie chart.
 	 * 
 	 * @param x
-	 *           the x-coordinate (in Java2D space).
+	 *            the x-coordinate (in Java2D space).
 	 */
 	public void setPieCenterX(double x) {
 		this.pieCenterX = x;
 	}
 
 	/**
-	 * Returns the y-coordinate (in Java2D space) of the center of the pie chart. For the {@link PiePlot3D} class, we derive this from the top of the pie.
+	 * Returns the y-coordinate (in Java2D space) of the center of the pie chart.
+	 * For the {@link PiePlot3D} class, we derive this from the top of the pie.
 	 * 
 	 * @return The y-coordinate (in Java2D space).
 	 */
@@ -204,11 +206,11 @@ public class PiePlotState extends RendererState {
 	}
 
 	/**
-	 * Sets the y-coordinate of the center of the pie chart. This method is used by the plot and
-	 * typically is not called directly by applications.
+	 * Sets the y-coordinate of the center of the pie chart. This method is used by
+	 * the plot and typically is not called directly by applications.
 	 * 
 	 * @param y
-	 *           the y-coordinate (in Java2D space).
+	 *            the y-coordinate (in Java2D space).
 	 */
 	public void setPieCenterY(double y) {
 		this.pieCenterY = y;
@@ -225,11 +227,11 @@ public class PiePlotState extends RendererState {
 	}
 
 	/**
-	 * Sets the label link area. This defines the "dog-leg" point for the label linking
-	 * lines.
+	 * Sets the label link area. This defines the "dog-leg" point for the label
+	 * linking lines.
 	 * 
 	 * @param area
-	 *           the area.
+	 *            the area.
 	 */
 	public void setLinkArea(Rectangle2D area) {
 		this.linkArea = area;
@@ -248,7 +250,7 @@ public class PiePlotState extends RendererState {
 	 * Sets the vertical pie radius.
 	 * 
 	 * @param radius
-	 *           the radius.
+	 *            the radius.
 	 */
 	public void setPieHRadius(double radius) {
 		this.pieHRadius = radius;
@@ -267,7 +269,7 @@ public class PiePlotState extends RendererState {
 	 * Sets the horizontal pie radius.
 	 * 
 	 * @param radius
-	 *           the radius.
+	 *            the radius.
 	 */
 	public void setPieWRadius(double radius) {
 		this.pieWRadius = radius;

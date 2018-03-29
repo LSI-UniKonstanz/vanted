@@ -55,7 +55,7 @@ public class DifferenceChartDemo extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public DifferenceChartDemo(final String title) {
 
@@ -90,18 +90,15 @@ public class DifferenceChartDemo extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							"Difference Chart Demo",
-							"Time", "Value",
-							dataset,
-							true, // legend
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart("Difference Chart Demo", "Time", "Value", dataset,
+				true, // legend
 				true, // tool tips
 				false // URLs
-				);
+		);
 		chart.setBackgroundPaint(Color.white);
 
 		final XYPlot plot = chart.getXYPlot();
@@ -134,7 +131,7 @@ public class DifferenceChartDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

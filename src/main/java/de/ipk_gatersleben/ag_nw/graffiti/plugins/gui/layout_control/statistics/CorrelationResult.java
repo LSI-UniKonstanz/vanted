@@ -15,12 +15,11 @@ import org.ErrorMsg;
 import org.StringManipulationTools;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class CorrelationResult {
 	private static DecimalFormat outputBase = ErrorMsg.getDecimalFormat("########0.00");
-	
+
 	private List<FloatAndDesc> r = new ArrayList<FloatAndDesc>();
 	private List<Double> corrprobs = new ArrayList<Double>();
 	private float maxR = Float.MIN_VALUE;
@@ -30,17 +29,16 @@ public class CorrelationResult {
 	private int dataset2offsetOfMaxR = 0;
 	private int indexOfMaxOrMin = Integer.MAX_VALUE;
 	private String maxRcalculationHistory = "";
-	
+
 	public CorrelationResult(String dataset1, String dataset2) {
 		this.dataset1 = dataset1;
 		this.dataset2 = dataset2;
 	}
-	
-	public void addR(float r,
-						double significantProbability, int dataset2offset, String calculationHistory, String seriesName,
-						double corrprobability) {
+
+	public void addR(float r, double significantProbability, int dataset2offset, String calculationHistory,
+			String seriesName, double corrprobability) {
 		this.r.add(new FloatAndDesc(r, seriesName));
-		this.corrprobs.add(new Double(corrprobability));
+		this.corrprobs.add(Double.valueOf(corrprobability));
 		if (Math.abs(corrprobability) >= significantProbability) {
 			isAnyOneSignificant = true;
 		}
@@ -56,25 +54,22 @@ public class CorrelationResult {
 			maxR = r;
 		}
 	}
-	
+
 	public boolean isAnyOneSignificant(double minimumR) {
 		boolean result;
-		
-		result = isAnyOneSignificant
-							&& ((Math.abs(maxR) >= Math.abs(minimumR)));
+
+		result = isAnyOneSignificant && ((Math.abs(maxR) >= Math.abs(minimumR)));
 		return result;
 	}
-	
+
 	public String getRlist() {
 		String res1;
 		// double alpha = 1d - significantProbability;
 		if (isAnyOneSignificant)
-			res1 = "Significant corr. (" +
-								dataset1 + " - " + dataset2 + "): ";
+			res1 = "Significant corr. (" + dataset1 + " - " + dataset2 + "): ";
 		else
-			res1 = "Not significant corr. (" +
-								dataset1 + " - " + dataset2 + "): ";
-		
+			res1 = "Not significant corr. (" + dataset1 + " - " + dataset2 + "): ";
+
 		for (Iterator<FloatAndDesc> it = this.r.iterator(); it.hasNext();) {
 			FloatAndDesc fad;
 			fad = it.next();
@@ -85,44 +80,44 @@ public class CorrelationResult {
 		}
 		String calcHist = StringManipulationTools.stringReplace(getCalculationHistoryForMaxR(), "<html>", "");
 		if (!isAnyOneSignificant)
-			calcHist = StringManipulationTools.stringReplace(getCalculationHistoryForMaxR(), "significant", "(insignificant)");
+			calcHist = StringManipulationTools.stringReplace(getCalculationHistoryForMaxR(), "significant",
+					"(insignificant)");
 		res1 += "<hr>" + calcHist;
 		return "<html>" + res1;
 	}
-	
+
 	public float getMaxR() {
 		return maxR;
 	}
-	
+
 	public int getDataset2offsetOfMaxOrMinR() {
 		return dataset2offsetOfMaxR;
 	}
-	
+
 	public String getCalculationHistoryForMaxR() {
 		return maxRcalculationHistory;
 	}
-	
+
 	public double getMaxTrueCorrProb() {
 		return maxCorrProb;
 	}
-	
+
 	public void setCalculationHistoryForMaxR(String history) {
 		maxRcalculationHistory = history;
 	}
-	
+
 	public String getMaxOrMinR2() {
 		float r = getMaxR();
 		return outputBase.format(r);
 	}
-	
+
 	public String getMaxOrMinProb() {
 		double r;
-		if(indexOfMaxOrMin >corrprobs.size() && corrprobs.size() == 1)
+		if (indexOfMaxOrMin > corrprobs.size() && corrprobs.size() == 1)
 			r = corrprobs.get(0);
 		else
 			r = corrprobs.get(indexOfMaxOrMin);
 		return outputBase.format(r);
 	}
-	
 
 }

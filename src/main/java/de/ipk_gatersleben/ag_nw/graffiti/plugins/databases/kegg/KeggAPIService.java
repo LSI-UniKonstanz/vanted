@@ -19,37 +19,34 @@ import org.apache.log4j.Logger;
  * It will retrieve (VATEND-)supported database objects from the KEGG database.
  * The supported databases are listed in the enum object: KeggDatabases.
  * 
- * The common URL for that is e.g.: http://rest.kegg.jp/get/ko:K00001
- * This retrieves the KEGG Orthology (ko) entry (K number) K00001
- * -----
+ * The common URL for that is e.g.: http://rest.kegg.jp/get/ko:K00001 This
+ * retrieves the KEGG Orthology (ko) entry (K number) K00001 -----
  * 
  * This accessor class also supports the 'link' operation of the REST service
  * which translates an ID to a target ID givent the target database.
  * 
  * http://rest.kegg.jp/link/compound/enzyme:1.1.1.1
  * 
- * This will find all connected KEGG compounds, given the EC ID from the KEGG enyzme database
+ * This will find all connected KEGG compounds, given the EC ID from the KEGG
+ * enyzme database
  * 
  * 
  * @author matthiak
  *
  */
 public class KeggAPIService {
-	
+
 	static Logger logger = Logger.getLogger(KeggAPIServiceHelper.class);
-	
+
 	static String URL_REST_LINK_ID = "http://rest.kegg.jp/link/";
 
-	
 	static int MAX_QUERY_SIZE = 10;
-	
+
 	/**
-	 * Retrieves results from KEGG REST service, using the link functionality
-	 * see:  http://www.kegg.jp/kegg/rest/keggapi.html   [Linked entries]
+	 * Retrieves results from KEGG REST service, using the link functionality see:
+	 * http://www.kegg.jp/kegg/rest/keggapi.html [Linked entries]
 	 * 
-	 * The result set will be KO entries.
-	 * The source must be valid identifiers:
-	 * * 
+	 * The result set will be KO entries. The source must be valid identifiers: *
 	 * 
 	 * @author matthiak
 	 *
@@ -63,8 +60,6 @@ public class KeggAPIService {
 		int leftIdx;
 		int rightIdx;
 
-		
-		
 		public RetrieveLinkMappingFromIDtoKO(String[] listIDsToTranslateFromKegg, int leftIdx, int rightIdx) {
 			super();
 			this.listIDsToTranslateFromKegg = listIDsToTranslateFromKegg;
@@ -72,70 +67,65 @@ public class KeggAPIService {
 			this.rightIdx = rightIdx;
 		}
 
-
-
 		@Override
 		protected void compute() {
-			
-			if((rightIdx - leftIdx) > MAX_QUERY_SIZE) {
+
+			if ((rightIdx - leftIdx) > MAX_QUERY_SIZE) {
 				invokeAll(
-						new RetrieveLinkMappingFromIDtoKO(listIDsToTranslateFromKegg, leftIdx, leftIdx + MAX_QUERY_SIZE),
-						new RetrieveLinkMappingFromIDtoKO(listIDsToTranslateFromKegg, leftIdx + MAX_QUERY_SIZE, rightIdx )
-						);
+						new RetrieveLinkMappingFromIDtoKO(listIDsToTranslateFromKegg, leftIdx,
+								leftIdx + MAX_QUERY_SIZE),
+						new RetrieveLinkMappingFromIDtoKO(listIDsToTranslateFromKegg, leftIdx + MAX_QUERY_SIZE,
+								rightIdx));
 			} else {
 				// do the work
 			}
 		}
 
-
-
-		
 		/**
 		 * translates given ids to KO ids using KEGG REST API
+		 * 
 		 * @return
 		 */
+		@SuppressWarnings("unused")
 		private List<String> translate() {
 			List<String> retKOIds = new ArrayList<>();
-			if(listIDsToTranslateFromKegg.length == 0)
+			if (listIDsToTranslateFromKegg.length == 0)
 				return retKOIds;
-			
+
 			StringBuilder str = new StringBuilder(URL_REST_LINK_ID);
-			
+
 			int idx = leftIdx;
 			str.append(listIDsToTranslateFromKegg[idx]);
 			idx++;
-			while(idx < rightIdx) {
+			while (idx < rightIdx) {
 				str.append("+");
 				str.append(listIDsToTranslateFromKegg[idx]);
 				idx++;
 			}
-			
+
 			try {
 				URL url = new URL(str.toString());
-				HttpURLConnection openConnection = (HttpURLConnection)url.openConnection();
-				if(openConnection.getResponseCode() == HttpStatus.SC_OK) {
+				HttpURLConnection openConnection = (HttpURLConnection) url.openConnection();
+				if (openConnection.getResponseCode() == HttpStatus.SC_OK) {
 					BufferedReader reader = new BufferedReader(new InputStreamReader(openConnection.getInputStream()));
 					String line;
-					while((line = reader.readLine()) != null) {
+					while ((line = reader.readLine()) != null) {
 						String[] mappedIds = line.split("\t");
-						if(mappedIds.length != 2)
+						if (mappedIds.length != 2)
 							System.err.println();
 						retKOIds.add(mappedIds[1].trim());
 					}
 				}
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
-			
+
 			return retKOIds;
 		}
 	}
-	
 
-	
-	
 }

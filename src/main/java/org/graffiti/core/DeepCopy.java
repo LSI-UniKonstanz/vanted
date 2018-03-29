@@ -16,7 +16,7 @@ package org.graffiti.core;
  */
 public interface DeepCopy {
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Returns a deep copy of this object.
 	 * 

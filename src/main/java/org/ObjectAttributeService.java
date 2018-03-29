@@ -12,18 +12,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.ObjectInputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class ObjectAttributeService implements HelperClass {
-	
+
 	public static String objectToStringMappingPossible_StringPrefix = "$STRINGOBJECT$";
-	
+
 	public static String getStringRepresentationFor(Object myInstance) throws IOException {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		// ObjectOutputStream oos = new ObjectOutputStream(os);
@@ -33,33 +33,33 @@ public class ObjectAttributeService implements HelperClass {
 		for (int i = 0; i < obj.length; i++) {
 			String number;
 			if (obj[i] < 0)
-				number = new Integer(-obj[i] + Byte.MAX_VALUE).toString();
+				number = Integer.valueOf(-obj[i] + Byte.MAX_VALUE).toString();
 			else
-				number = new Integer(obj[i]).toString();
+				number = Integer.valueOf(obj[i]).toString();
 			while (number.length() < 3)
 				number = "0" + number;
 			sb.append(number);
 		}
 		return objectToStringMappingPossible_StringPrefix + sb.toString();
 	}
-	
+
 	/**
 	 * @param string
 	 * @return
 	 * @throws InvalidClassException
 	 */
 	public static Object getObjectFromString(String serializedObject)
-						throws InvalidClassException, IOException, ClassNotFoundException {
+			throws InvalidClassException, IOException, ClassNotFoundException {
 		if (serializedObject.startsWith(objectToStringMappingPossible_StringPrefix)) {
 			serializedObject = serializedObject.substring(objectToStringMappingPossible_StringPrefix.length());
 			List<Byte> bytes = new LinkedList<Byte>();
 			while (serializedObject.length() >= 3) {
 				String curNumber = serializedObject.substring(0, 3);
-				Integer curVal = new Integer(curNumber);
+				Integer curVal = Integer.valueOf(curNumber);
 				if (curVal.intValue() > Byte.MAX_VALUE)
-					bytes.add(new Byte((byte) -(curVal.intValue() - Byte.MAX_VALUE)));
+					bytes.add(Byte.valueOf((byte) -(curVal.intValue() - Byte.MAX_VALUE)));
 				else
-					bytes.add(new Byte(curVal.byteValue()));
+					bytes.add(Byte.valueOf(curVal.byteValue()));
 				serializedObject = serializedObject.substring(3);
 			}
 			byte[] buf = new byte[bytes.size()];
@@ -73,12 +73,12 @@ public class ObjectAttributeService implements HelperClass {
 		} else
 			throw new InvalidClassException("The given String is not a valid serialized StringObjectAttribute!");
 	}
-	
+
 	public static void main(String[] args) {
 		System.out.println("Serialization - Test (IPK, CK)");
-		
+
 	}
-	
+
 	/**
 	 * @param list
 	 * @return
@@ -86,7 +86,7 @@ public class ObjectAttributeService implements HelperClass {
 	public static String getStringPrefix(Object instance) {
 		return objectToStringMappingPossible_StringPrefix + instance.getClass().getCanonicalName() + "$";
 	}
-	
+
 	/**
 	 * @param string
 	 * @return
@@ -100,21 +100,28 @@ public class ObjectAttributeService implements HelperClass {
 			try {
 				String cn = string.substring(0, string.indexOf("$"));
 				Class<?> cl = Class.forName(cn);
-				Object o = cl.newInstance();
+				Object o = cl.getDeclaredConstructor().newInstance();
 				if (o instanceof ProvidesStringInitMethod) {
 					((ProvidesStringInitMethod) o).fromString(objstring);
 				}
 				return o;
 			} catch (ClassNotFoundException e) {
 				ErrorMsg.addErrorMessage(e.getLocalizedMessage());
-				return null;
 			} catch (InstantiationException e) {
 				ErrorMsg.addErrorMessage(e.getLocalizedMessage());
-				return null;
 			} catch (IllegalAccessException e) {
 				ErrorMsg.addErrorMessage(e.getLocalizedMessage());
-				return null;
+			} catch (IllegalArgumentException e) {
+				ErrorMsg.addErrorMessage(e.getLocalizedMessage());
+			} catch (InvocationTargetException e) {
+				ErrorMsg.addErrorMessage(e.getLocalizedMessage());
+			} catch (NoSuchMethodException e) {
+				ErrorMsg.addErrorMessage(e.getLocalizedMessage());
+			} catch (SecurityException e) {
+				ErrorMsg.addErrorMessage(e.getLocalizedMessage());
 			}
+			
+			return null;
 		}
 	}
 }

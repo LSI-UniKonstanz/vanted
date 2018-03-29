@@ -43,9 +43,11 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.DefaultPieDataset;
 
 /**
- * Draws a pie chart over and over for 10 seconds. Reports on how many redraws were achieved.
+ * Draws a pie chart over and over for 10 seconds. Reports on how many redraws
+ * were achieved.
  * <p>
- * On my PC (SuSE Linux 8.2, JDK 1.4, 256mb RAM, 2.66ghz Pentium) I get 90-95 charts per second.
+ * On my PC (SuSE Linux 8.2, JDK 1.4, 256mb RAM, 2.66ghz Pentium) I get 90-95
+ * charts per second.
  */
 public class ChartTiming1 implements ActionListener {
 
@@ -67,22 +69,16 @@ public class ChartTiming1 implements ActionListener {
 
 		// create a dataset...
 		final DefaultPieDataset data = new DefaultPieDataset();
-		data.setValue("One", new Double(10.3));
-		data.setValue("Two", new Double(8.5));
-		data.setValue("Three", new Double(3.9));
-		data.setValue("Four", new Double(3.9));
-		data.setValue("Five", new Double(3.9));
-		data.setValue("Six", new Double(3.9));
+		data.setValue("One", Double.valueOf(10.3));
+		data.setValue("Two", Double.valueOf(8.5));
+		data.setValue("Three", Double.valueOf(3.9));
+		data.setValue("Four", Double.valueOf(3.9));
+		data.setValue("Five", Double.valueOf(3.9));
+		data.setValue("Six", Double.valueOf(3.9));
 
 		// create a pie chart...
 		final boolean withLegend = true;
-		final JFreeChart chart = ChartFactory.createPieChart(
-							"Testing",
-							data,
-							withLegend,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createPieChart("Testing", data, withLegend, true, false);
 
 		final BufferedImage image = new BufferedImage(400, 300, BufferedImage.TYPE_INT_RGB);
 		final Graphics2D g2 = image.createGraphics();
@@ -108,7 +104,7 @@ public class ChartTiming1 implements ActionListener {
 	 * Receives notification of action events (in this case, from the Timer).
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void actionPerformed(final ActionEvent event) {
 		this.finished = true;
@@ -118,7 +114,7 @@ public class ChartTiming1 implements ActionListener {
 	 * Starting point for the application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

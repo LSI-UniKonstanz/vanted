@@ -15,27 +15,29 @@ import org.graffiti.plugin.view.View;
 import org.graffiti.session.Session;
 
 public class CloseAllWindows extends AbstractEditorAlgorithm {
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Close All Windows";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "menu.window";
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
@@ -44,16 +46,14 @@ public class CloseAllWindows extends AbstractEditorAlgorithm {
 			MainFrame.getInstance().getSessionManager().closeSession(s);
 		}
 	}
-	
 
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.UI
-				));
+		return new HashSet<Category>(Arrays.asList(Category.UI));
 	}
+
 	public boolean activeForView(View v) {
 		return v != null;
 	}
-	
+
 }

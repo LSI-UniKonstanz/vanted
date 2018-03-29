@@ -8,21 +8,23 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * 
+ * @vanted.revision 2.6.5
+ *
+ */
 public class CSVreader {
-	
+
 	public static DataSet readFile(String fileName) {
-		
+
 		DataSet mainData;
 		mainData = new DataSet();
-		
+
 		String currentLine;
 		
-		System.out.println("Datei wird eingelesen...");
-		
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
 			mainData.setGroupDescription(reader.readLine());
-			
+
 			while ((currentLine = reader.readLine()) != null) {
 				currentLine = currentLine.replace(',', '.');
 				mainData.addEntry(currentLine);
@@ -34,5 +36,5 @@ public class CSVreader {
 			return null;
 		}
 		return mainData;
-	} // readFile
-} // class ReadData
+	}
+}

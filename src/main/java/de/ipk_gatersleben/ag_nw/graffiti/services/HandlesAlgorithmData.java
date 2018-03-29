@@ -9,11 +9,10 @@ package de.ipk_gatersleben.ag_nw.graffiti.services;
 import org.graffiti.plugin.algorithm.Algorithm;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public interface HandlesAlgorithmData {
 	public void setAlgorithm(Algorithm algorithm);
-	
+
 	public Algorithm getAlgorithm();
 }

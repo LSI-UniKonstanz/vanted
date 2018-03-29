@@ -44,25 +44,23 @@ import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A standard item label generator for plots that use data from an {@link XYDataset}.
+ * A standard item label generator for plots that use data from an
+ * {@link XYDataset}.
  * 
  * @author Anthony Boulestreau
  */
-public class SymbolicXYItemLabelGenerator implements XYLabelGenerator,
-																		XYToolTipGenerator,
-																		Cloneable,
-																		PublicCloneable,
-																		Serializable {
+public class SymbolicXYItemLabelGenerator
+		implements XYLabelGenerator, XYToolTipGenerator, Cloneable, PublicCloneable, Serializable {
 
 	/**
 	 * Generates a tool tip text item for a particular item within a series.
 	 * 
 	 * @param data
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series number (zero-based index).
+	 *            the series number (zero-based index).
 	 * @param item
-	 *           the item number (zero-based index).
+	 *            the item number (zero-based index).
 	 * @return The tool tip text (possibly <code>null</code>).
 	 */
 	public String generateToolTip(XYDataset data, int series, int item) {
@@ -76,27 +74,26 @@ public class SymbolicXYItemLabelGenerator implements XYLabelGenerator,
 		}
 		if (data instanceof XisSymbolic) {
 			x = ((XisSymbolic) data).getXSymbolicValue(series, item);
-		} else
-			if (data instanceof TimeSeriesCollection) {
-				RegularTimePeriod p = ((TimeSeriesCollection) data).getSeries(series).getTimePeriod(item);
-				x = p.toString();
-			} else {
-				Number n = data.getXValue(series, item);
-				x = Double.toString(round(n.doubleValue(), 2));
-			}
+		} else if (data instanceof TimeSeriesCollection) {
+			RegularTimePeriod p = ((TimeSeriesCollection) data).getSeries(series).getTimePeriod(item);
+			x = p.toString();
+		} else {
+			Number n = data.getXValue(series, item);
+			x = Double.toString(round(n.doubleValue(), 2));
+		}
 		return "X: " + x + ", Y: " + y;
 	}
 
 	/**
-	 * Generates a label for the specified item. The label is typically a formatted version of
-	 * the data value, but any text can be used.
+	 * Generates a label for the specified item. The label is typically a formatted
+	 * version of the data value, but any text can be used.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> not permitted).
+	 *            the dataset (<code>null</code> not permitted).
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param category
-	 *           the category index (zero-based).
+	 *            the category index (zero-based).
 	 * @return the label (possibly <code>null</code>).
 	 */
 	public String generateLabel(XYDataset dataset, int series, int category) {
@@ -107,9 +104,9 @@ public class SymbolicXYItemLabelGenerator implements XYLabelGenerator,
 	 * Round a double value.
 	 * 
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 * @param nb
-	 *           the exponent.
+	 *            the exponent.
 	 * @return the rounded value.
 	 */
 	private static double round(double value, int nb) {
@@ -126,7 +123,7 @@ public class SymbolicXYItemLabelGenerator implements XYLabelGenerator,
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if cloning is not supported.
+	 *             if cloning is not supported.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -136,7 +133,7 @@ public class SymbolicXYItemLabelGenerator implements XYLabelGenerator,
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {

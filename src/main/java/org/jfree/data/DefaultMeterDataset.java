@@ -40,7 +40,8 @@ import org.jfree.chart.plot.MeterPlot;
 /**
  * A default implementation of the {@link MeterDataset} interface.
  * 
- * @deprecated Use ValueDataset instead, this interface mixes data and presentation items.
+ * @deprecated Use ValueDataset instead, this interface mixes data and
+ *             presentation items.
  */
 public class DefaultMeterDataset extends AbstractDataset implements MeterDataset, Serializable {
 
@@ -84,61 +85,54 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 	 * Default constructor.
 	 */
 	public DefaultMeterDataset() {
-		this(new Double(0), new Double(0), null, null);
+		this(Double.valueOf(0), Double.valueOf(0), null, null);
 	}
 
 	/**
 	 * Creates a new dataset.
 	 * 
 	 * @param min
-	 *           the minimum value.
+	 *            the minimum value.
 	 * @param max
-	 *           the maximum value.
+	 *            the maximum value.
 	 * @param value
-	 *           the current value.
+	 *            the current value.
 	 * @param units
-	 *           the unit description.
+	 *            the unit description.
 	 */
-	public DefaultMeterDataset(final Number min,
-											final Number max,
-											final Number value,
-											final String units) {
-		this(
-							min, max, value, units, null, null, null, null, null, null, MeterPlot.FULL_DATA_RANGE);
+	public DefaultMeterDataset(final Number min, final Number max, final Number value, final String units) {
+		this(min, max, value, units, null, null, null, null, null, null, MeterPlot.FULL_DATA_RANGE);
 	}
 
 	/**
 	 * Creates a new dataset.
 	 * 
 	 * @param min
-	 *           the lower bound for the overall range.
+	 *            the lower bound for the overall range.
 	 * @param max
-	 *           the upper bound for the overall range.
+	 *            the upper bound for the overall range.
 	 * @param value
-	 *           the current value.
+	 *            the current value.
 	 * @param units
-	 *           the unit description.
+	 *            the unit description.
 	 * @param minCritical
-	 *           the minimum critical value.
+	 *            the minimum critical value.
 	 * @param maxCritical
-	 *           the maximum critical value.
+	 *            the maximum critical value.
 	 * @param minWarning
-	 *           the minimum warning value.
+	 *            the minimum warning value.
 	 * @param maxWarning
-	 *           the maximum warning value.
+	 *            the maximum warning value.
 	 * @param minNormal
-	 *           the minimum normal value.
+	 *            the minimum normal value.
 	 * @param maxNormal
-	 *           the maximum normal value.
+	 *            the maximum normal value.
 	 * @param borderType
-	 *           the border type.
+	 *            the border type.
 	 */
-	public DefaultMeterDataset(final Number min, final Number max, final Number value,
-											final String units,
-											final Number minCritical, final Number maxCritical,
-											final Number minWarning, final Number maxWarning,
-											final Number minNormal, final Number maxNormal,
-											final int borderType) {
+	public DefaultMeterDataset(final Number min, final Number max, final Number value, final String units,
+			final Number minCritical, final Number maxCritical, final Number minWarning, final Number maxWarning,
+			final Number minNormal, final Number maxNormal, final int borderType) {
 
 		setRange(min, max);
 		setValue(value);
@@ -151,7 +145,8 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 	}
 
 	/**
-	 * Returns <code>true</code> if the value is valid, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if the value is valid, and <code>false</code>
+	 * otherwise.
 	 * 
 	 * @return A boolean.
 	 */
@@ -172,23 +167,22 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 	 * Sets the value.
 	 * 
 	 * @param value
-	 *           the new value.
+	 *            the new value.
 	 */
 	public void setValue(final double value) {
-		setValue(new Double(value));
+		setValue(Double.valueOf(value));
 	}
 
 	/**
 	 * Sets the value for the dataset.
 	 * 
 	 * @param value
-	 *           the new value.
+	 *            the new value.
 	 */
 	public void setValue(final Number value) {
 
 		if (value != null && this.min != null && this.max != null) {
-			if (value.doubleValue() < this.min.doubleValue()
-								|| value.doubleValue() > this.max.doubleValue()) {
+			if (value.doubleValue() < this.min.doubleValue() || value.doubleValue() > this.max.doubleValue()) {
 
 				throw new IllegalArgumentException("Value is out of range for min/max");
 
@@ -197,8 +191,8 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 		this.value = value;
 		if (value != null && this.min != null && this.max != null) {
 			if (this.min.doubleValue() == this.max.doubleValue()) {
-				this.min = new Double(value.doubleValue() - DEFAULT_ADJ);
-				this.max = new Double(value.doubleValue() + DEFAULT_ADJ);
+				this.min = Double.valueOf(value.doubleValue() - DEFAULT_ADJ);
+				this.max = Double.valueOf(value.doubleValue() + DEFAULT_ADJ);
 			}
 		}
 		fireDatasetChanged();
@@ -278,12 +272,13 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 	}
 
 	/**
-	 * Sets the range for the dataset. Registered listeners are notified of the change.
+	 * Sets the range for the dataset. Registered listeners are notified of the
+	 * change.
 	 * 
 	 * @param min
-	 *           the new minimum.
+	 *            the new minimum.
 	 * @param max
-	 *           the new maximum.
+	 *            the new maximum.
 	 */
 	public void setRange(Number min, Number max) {
 
@@ -300,8 +295,8 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 
 		if (this.value != null) {
 			if (min.doubleValue() == max.doubleValue()) {
-				min = new Double(this.value.doubleValue() - DEFAULT_ADJ);
-				max = new Double(this.value.doubleValue() + DEFAULT_ADJ);
+				min = Double.valueOf(this.value.doubleValue() - DEFAULT_ADJ);
+				max = Double.valueOf(this.value.doubleValue() + DEFAULT_ADJ);
 			}
 		}
 		this.min = min;
@@ -311,13 +306,13 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 	}
 
 	/**
-	 * Sets the normal range for the dataset. Registered listeners are
-	 * notified of the change.
+	 * Sets the normal range for the dataset. Registered listeners are notified of
+	 * the change.
 	 * 
 	 * @param minNormal
-	 *           the new minimum.
+	 *            the new minimum.
 	 * @param maxNormal
-	 *           the new maximum.
+	 *            the new maximum.
 	 */
 	public void setNormalRange(final Number minNormal, final Number maxNormal) {
 
@@ -334,13 +329,13 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 	}
 
 	/**
-	 * Sets the warning range for the dataset. Registered listeners are
-	 * notified of the change.
+	 * Sets the warning range for the dataset. Registered listeners are notified of
+	 * the change.
 	 * 
 	 * @param minWarning
-	 *           the new minimum.
+	 *            the new minimum.
 	 * @param maxWarning
-	 *           the new maximum.
+	 *            the new maximum.
 	 */
 	public void setWarningRange(final Number minWarning, final Number maxWarning) {
 
@@ -358,13 +353,13 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 	}
 
 	/**
-	 * Sets the critical range for the dataset. Registered listeners are
-	 * notified of the change.
+	 * Sets the critical range for the dataset. Registered listeners are notified of
+	 * the change.
 	 * 
 	 * @param minCritical
-	 *           the new minimum.
+	 *            the new minimum.
 	 * @param maxCritical
-	 *           the new maximum.
+	 *            the new maximum.
 	 */
 	public void setCriticalRange(final Number minCritical, final Number maxCritical) {
 
@@ -394,7 +389,7 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 	 * Sets the measurement unit description.
 	 * 
 	 * @param units
-	 *           the new description.
+	 *            the new description.
 	 */
 	public void setUnits(final String units) {
 		this.units = units;
@@ -414,7 +409,7 @@ public class DefaultMeterDataset extends AbstractDataset implements MeterDataset
 	 * Sets the border type.
 	 * 
 	 * @param borderType
-	 *           the new border type.
+	 *            the new border type.
 	 */
 	public void setBorderType(final int borderType) {
 		this.borderType = borderType;

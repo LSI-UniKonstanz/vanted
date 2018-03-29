@@ -53,7 +53,7 @@ public class XYLogAxesDemo extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XYLogAxesDemo(final String title) {
 
@@ -81,16 +81,12 @@ public class XYLogAxesDemo extends ApplicationFrame {
 		dataset.addSeries(s2);
 		dataset.addSeries(s3);
 
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-							"Log Axis Demo", // chart title
+		final JFreeChart chart = ChartFactory.createXYLineChart("Log Axis Demo", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
-				PlotOrientation.VERTICAL,
-							true, // include legend
-				true,
-							false
-							);
+				PlotOrientation.VERTICAL, true, // include legend
+				true, false);
 
 		final XYPlot plot = chart.getXYPlot();
 		final NumberAxis domainAxis = new NumberAxis("x");
@@ -120,7 +116,7 @@ public class XYLogAxesDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

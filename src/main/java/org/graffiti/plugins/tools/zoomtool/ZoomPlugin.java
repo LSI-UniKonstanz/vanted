@@ -17,18 +17,17 @@ import org.graffiti.plugin.gui.GraffitiComponent;
  * 
  * @version $Revision: 1.6 $
  */
-public class ZoomPlugin
-					extends EditorPluginAdapter {
+public class ZoomPlugin extends EditorPluginAdapter {
 	// ~ Instance fields ========================================================
-	
+
 	/** The button for the zoom tool */
 	private GraffitiComponent zoomButton;
-	
+
 	/** The <code>ImageBundle</code> of the main frame. */
 	// private ImageBundle iBundle = ImageBundle.getInstance();
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Creates a new StandardTools object.
 	 */

@@ -37,17 +37,19 @@ import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.ContextMenuHelper;
 
 /**
- * Transforms the layout by doing a calculation like x=x*1.4 and y=y*1.4 for
- * the nodes and bends positions.
+ * Transforms the layout by doing a calculation like x=x*1.4 and y=y*1.4 for the
+ * nodes and bends positions.
  * 
  * @author Christian Klukas
  */
 public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
-					implements ProvidesNodeContextMenu, NeedsSwingThread {
-	
+		implements ProvidesNodeContextMenu, NeedsSwingThread {
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.AlgorithmWithNodeContextMenu#getCurrentNodeContextMenuItem(java.util.Collection)
+	 * 
+	 * @see org.graffiti.plugin.algorithm.AlgorithmWithNodeContextMenu#
+	 * getCurrentNodeContextMenuItem(java.util.Collection)
 	 */
 	public JMenuItem[] getCurrentNodeContextMenuItem(Collection<Node> selectedNodes) {
 		String sel = "selected";
@@ -60,17 +62,14 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 		}
 		if (selectedNodes.size() == 1)
 			return null;
-		JMenuItem increaseSpace =
-							new JMenuItem("Increase space between " + sel + " nodes");
-		JMenuItem decreaseSpace =
-							new JMenuItem("Decrease space between " + sel + " nodes");
-		JMenuItem modifySpace =
-							new JMenuItem("Increase space between " + sel + " nodes (parameterized)");
-		
+		JMenuItem increaseSpace = new JMenuItem("Increase space between " + sel + " nodes");
+		JMenuItem decreaseSpace = new JMenuItem("Decrease space between " + sel + " nodes");
+		JMenuItem modifySpace = new JMenuItem("Increase space between " + sel + " nodes (parameterized)");
+
 		final double factor = 1.5;
-		
+
 		final Collection<Node> selectedNodesF = selectedNodes;
-		
+
 		increaseSpace.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// increase space between nodes
@@ -86,42 +85,33 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 			public void actionPerformed(ActionEvent e) {
 				double factorX = factor;
 				double factorY = factor;
-				Object[] result = MyInputHelper.getInput(
-									"Please enter the X and Y factors<br>for distortion:",
-									"Distortion Parameters",
-									new Object[] {
-														"X-factor", new Double(factorX),
-														"Y-factor", new Double(factorY),
-						}
-									);
+				Object[] result = MyInputHelper.getInput("Please enter the X and Y factors<br>for distortion:",
+						"Distortion Parameters",
+						new Object[] { "X-factor", Double.valueOf(factorX), "Y-factor", Double.valueOf(factorY), });
 				if (result == null)
 					return;
 				doOperation(selectedNodesF, (Double) result[0], (Double) result[1], "X/Y transformation");
 			}
 		});
-		
+
 		return new JMenuItem[] { increaseSpace, decreaseSpace, modifySpace };
 	}
-	
+
 	/**
-	 * Transforms the Bends of an Edge that starts at a given node.
-	 * Only Edges are transformed, that have the target in the selection.
+	 * Transforms the Bends of an Edge that starts at a given node. Only Edges are
+	 * transformed, that have the target in the selection.
 	 * 
 	 * @param node
 	 * @param selectedNodes
 	 */
-	@SuppressWarnings("unchecked")
-	static void TransformEdgesForThisNode(HashMap<CoordinateAttribute, Vector2d> bends2newPositions,
-						Node node, Collection<Node> selectedNodes, double factorX, double factorY, Vector2d center) {
+	static void TransformEdgesForThisNode(HashMap<CoordinateAttribute, Vector2d> bends2newPositions, Node node,
+			Collection<Node> selectedNodes, double factorX, double factorY, Vector2d center) {
 		Collection<?> edges = node.getEdges();
 		for (Iterator<?> it = edges.iterator(); it.hasNext();) {
 			Edge e = (Edge) it.next();
-			if (selectedNodes.contains(e.getSource()) &&
-								selectedNodes.contains(e.getTarget()) && e.getSource() == node) {
-				LinkedHashMapAttribute ha =
-									((LinkedHashMapAttribute)
-									e.getAttribute(
-														AttributeConstants.BENDS));
+			if (selectedNodes.contains(e.getSource()) && selectedNodes.contains(e.getTarget())
+					&& e.getSource() == node) {
+				LinkedHashMapAttribute ha = ((LinkedHashMapAttribute) e.getAttribute(AttributeConstants.BENDS));
 				Map<?, ?> m = ha.getCollection();
 				for (Iterator<?> bi = m.entrySet().iterator(); bi.hasNext();) {
 					// transform bends
@@ -134,8 +124,9 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 			}
 		}
 	}
-	
-	// public static void expandSpace(Collection<Node> nodes, double factor, Vector2d center, double raster, Graph graph) {
+
+	// public static void expandSpace(Collection<Node> nodes, double factor,
+	// Vector2d center, double raster, Graph graph) {
 	// graph.getListenerManager().transactionStarted(graph);
 	// for (Node currentNode : nodes) {
 	// Vector2d currentPosition =
@@ -156,84 +147,90 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 	// }
 	// graph.getListenerManager().transactionFinished(graph);
 	// }
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
 		return "Expand or Reduce Node-Spacing";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Network";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.LAYOUT
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.LAYOUT));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.algorithm.Algorithm#setParameters(org.graffiti.plugin.parameter.Parameter[])
+	 * 
+	 * @see
+	 * org.graffiti.plugin.algorithm.Algorithm#setParameters(org.graffiti.plugin.
+	 * parameter.Parameter[])
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
 		// empty
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getParameters()
 	 */
 	@Override
 	public Parameter[] getParameters() {
 		return null;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#check()
 	 */
 	@Override
 	public void check() {
 		// empty
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
 		ContextMenuHelper.createAndShowContextMenuForAlgorithm(this);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
 	 */
 	@Override
 	public void reset() {
 		//
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#isLayoutAlgorithm()
 	 */
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return true;
 	}
-	
-	public static void doOperation(final Collection<Node> selectedNodes, final double factorX, double factorY, String description) {
+
+	public static void doOperation(final Collection<Node> selectedNodes, final double factorX, double factorY,
+			String description) {
 		Vector2d center;
 		if (!selectedNodes.isEmpty()) {
 			Node node1 = selectedNodes.iterator().next();
@@ -246,19 +243,18 @@ public class ExpandReduceLayouterAlgorithm extends AbstractAlgorithm
 				center = NodeTools.getCenter(selectedNodes);
 		} else
 			center = NodeTools.getCenter(selectedNodes);
-		
+
 		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
 		HashMap<CoordinateAttribute, Vector2d> bends2newPositions = new HashMap<CoordinateAttribute, Vector2d>();
-		
+
 		for (Iterator<Node> it = selectedNodes.iterator(); it.hasNext();) {
 			Node currentNode = it.next();
-			Vector2d currentPosition =
-								AttributeHelper.getPositionVec2d(currentNode);
+			Vector2d currentPosition = AttributeHelper.getPositionVec2d(currentNode);
 			double x = (currentPosition.x - center.x) * factorX + center.x;
 			double y = (currentPosition.y - center.y) * factorY + center.y;
-			
+
 			nodes2newPositions.put(currentNode, new Vector2d(x, y));
-			
+
 			TransformEdgesForThisNode(bends2newPositions, currentNode, selectedNodes, factorX, factorY, center);
 		}
 		GraphHelper.applyUndoableNodeAndBendPositionUpdate(nodes2newPositions, bends2newPositions, description);

@@ -23,9 +23,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.pathway_references.PathwayReferenceAutoCreationAlgorithm;
 
 public class LoadGraphFileAttributeAction implements URLattributeAction {
-	
-	public ActionListener getActionListener(final Attribute displayable,
-						final Graph graph, final GraphElement ge, final boolean performAltCommand) {
+
+	public ActionListener getActionListener(final Attribute displayable, final Graph graph, final GraphElement ge,
+			final boolean performAltCommand) {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String val = (String) displayable.getValue();
@@ -37,15 +37,15 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 					loadFile(val, graph, n, e);
 				else
 					addMapLink(val, graph, n, e);
-				
+
 			}
 		};
 	}
-	
+
 	public String getPreIdentifyer() {
 		return AttributeHelper.preFilePath;
 	}
-	
+
 	private void addMapLink(String fileName, Graph g, Node initialMapNode, ActionEvent ae) {
 		if (fileName != null && fileName.startsWith(getPreIdentifyer()))
 			fileName = fileName.substring(getPreIdentifyer().length());
@@ -53,19 +53,14 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 			MainFrame.showMessageDialog("No file name given! Can't load referenced network.", "Error");
 		}
 		Object[] res = MyInputHelper.getInput(
-							"<html>" +
-												"With this command, a new map link node will be created and linked<br>" +
-												"to the node you used to open the context menu.<br>" +
-												"If the first option is enabled, a existing map-link node will be used,<br>" +
-												"if available. The second option determines, if all nodes with the same<br>" +
-												"ID or label will be linked to the map-link node, or if only the<br>" +
-												"selected noded will be processed.",
-							"Add Map-Link Node",
-							new Object[] {
-												"Re-use existing map link nodes", true,
-												"Link all nodes with same label", true,
-												"Link all nodes with same target", false
-				});
+				"<html>" + "With this command, a new map link node will be created and linked<br>"
+						+ "to the node you used to open the context menu.<br>"
+						+ "If the first option is enabled, a existing map-link node will be used,<br>"
+						+ "if available. The second option determines, if all nodes with the same<br>"
+						+ "ID or label will be linked to the map-link node, or if only the<br>"
+						+ "selected noded will be processed.",
+				"Add Map-Link Node", new Object[] { "Re-use existing map link nodes", true,
+						"Link all nodes with same label", true, "Link all nodes with same target", false });
 		if (res == null)
 			return;
 		int i = 0;
@@ -74,7 +69,7 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 		boolean searchAndLinkSameTarget = (Boolean) res[i++];
 		HashSet<Node> knownNodes = new HashSet<Node>(g.getNodes());
 		Node pathwayLinkNode = PathwayReferenceAutoCreationAlgorithm.addMapLinkNode(fileName, g, initialMapNode, ae,
-							searchExistingMapLinkNode, searchAndLinkSimilarNodes, searchAndLinkSameTarget);
+				searchExistingMapLinkNode, searchAndLinkSimilarNodes, searchAndLinkSameTarget);
 		if (pathwayLinkNode != null && !knownNodes.contains(pathwayLinkNode)) {
 			Selection selection = new Selection("newMapLinkNode");
 			selection.add(pathwayLinkNode);
@@ -84,7 +79,7 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 			se.run();
 		}
 	}
-	
+
 	private void loadFile(String fileName, Graph g, Node initialMapNode, ActionEvent ae) {
 		if (fileName == null || fileName.length() <= 0) {
 			MainFrame.showMessageDialog("No file name given! Can't load referenced network.", "Error");
@@ -97,7 +92,7 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 		File file = checkFile(g, fileName);
 		// check for graphs in the same directory
 		file = checkFile(g, new File(g.getName(true)).getParent() + "/" + fileName);
-		
+
 		if (!file.exists())
 			MainFrame.showMessageDialog("File " + file.getAbsolutePath() + " could not be found!", "Error");
 		else {
@@ -114,10 +109,10 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 			}
 		}
 	}
-	
-	private File checkFile(Graph g, String fileName) {
+
+	private static File checkFile(Graph g, String fileName) {
 		java.io.File file = new File(fileName);
-		
+
 		if (!file.exists() || !file.canRead())
 			for (org.graffiti.session.Session s : MainFrame.getSessions()) {
 				if (s instanceof EditorSession) {
@@ -128,21 +123,19 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 							path = es.getFileNameFull();
 						if (path.lastIndexOf('/') > 0)
 							path = path.substring(0, path.lastIndexOf('/')) + '/';
-						else
-							if (path.lastIndexOf('\\') > 0)
-								path = path.substring(0, path.lastIndexOf('\\')) + '\\';
+						else if (path.lastIndexOf('\\') > 0)
+							path = path.substring(0, path.lastIndexOf('\\')) + '\\';
 						File filet = new File(path + fileName);
 						if (filet.exists()) {
 							return filet;
-						} else
-							if (fileName.indexOf("/") < 0 && fileName.indexOf("\\") < 0)
-								return filet;
+						} else if (fileName.indexOf("/") < 0 && fileName.indexOf("\\") < 0)
+							return filet;
 					}
 				}
 			}
 		return file;
 	}
-	
+
 	public String getCommandDescription(boolean shortDesc, boolean altDesc) {
 		if (shortDesc) {
 			if (altDesc)
@@ -156,7 +149,7 @@ public class LoadGraphFileAttributeAction implements URLattributeAction {
 				return "Load File";
 		}
 	}
-	
+
 	public boolean supportsModifyCommand() {
 		return true;
 	}

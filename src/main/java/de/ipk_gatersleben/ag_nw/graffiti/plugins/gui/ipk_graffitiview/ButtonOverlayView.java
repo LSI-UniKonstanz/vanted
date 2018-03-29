@@ -22,50 +22,49 @@ import javax.swing.JComponent;
  * @see javax.swing.JPanel
  * @see org.graffiti.plugin.view.View2D
  */
-public class ButtonOverlayView
-					extends IPKGraffitiView {
-	
+public class ButtonOverlayView extends IPKGraffitiView {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Override
 	public Object getViewToolbarComponentTop() {
 		return 100d;
 	}
-	
+
 	@Override
 	public Object getViewToolbarComponentBottom() {
 		return 100d;
 	}
-	
+
 	@Override
 	public Object getViewToolbarComponentLeft() {
 		return 100d;
 	}
-	
+
 	@Override
 	public Object getViewToolbarComponentRight() {
 		return 100d;
 	}
-	
+
 	@Override
 	public JComponent getViewToolbarComponentBackground() {
 		return new Star();
 	}
-	
+
 	@Override
 	public boolean putInScrollPane() {
 		return true;
 	}
-	
+
 	@Override
 	public JComponent getViewComponent() {
 		JComponent jc = super.getViewComponent();
 		return jc;
 	}
-	
+
 	@Override
 	public String getViewName() {
 		return "Button Overlay (demo)";

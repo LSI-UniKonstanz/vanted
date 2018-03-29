@@ -56,7 +56,7 @@ public class MovingAverageDemo extends ApplicationFrame {
 	 * A moving average demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public MovingAverageDemo(final String title) {
 
@@ -66,15 +66,8 @@ public class MovingAverageDemo extends ApplicationFrame {
 		final String chartTitle = "Legal & General Unit Trust Prices";
 		final XYDataset dataset = createDataset();
 
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							chartTitle,
-							"Date",
-							"Price Per Unit",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart(chartTitle, "Date", "Price Per Unit", dataset, true,
+				true, false);
 
 		final StandardLegend legend = (StandardLegend) chart.getLegend();
 		legend.setDisplaySeriesShapes(true);
@@ -94,7 +87,8 @@ public class MovingAverageDemo extends ApplicationFrame {
 	}
 
 	/**
-	 * Creates a dataset, one series containing unit trust prices, the other a moving average.
+	 * Creates a dataset, one series containing unit trust prices, the other a
+	 * moving average.
 	 * 
 	 * @return the dataset.
 	 */
@@ -131,9 +125,7 @@ public class MovingAverageDemo extends ApplicationFrame {
 		// * support us so that we can continue developing free software. *
 		// ****************************************************************************
 
-		final TimeSeries s2 = MovingAverage.createMovingAverage(
-							s1, "Six Month Moving Average", 6, 0
-							);
+		final TimeSeries s2 = MovingAverage.createMovingAverage(s1, "Six Month Moving Average", 6, 0);
 
 		final TimeSeriesCollection dataset = new TimeSeriesCollection();
 		dataset.addSeries(s1);
@@ -147,7 +139,7 @@ public class MovingAverageDemo extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

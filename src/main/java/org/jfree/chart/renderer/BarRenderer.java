@@ -86,13 +86,14 @@ import org.jfree.util.PublicCloneable;
 /**
  * A {@link CategoryItemRenderer} that draws individual data items as bars.
  */
-public class BarRenderer extends AbstractCategoryItemRenderer
-									implements Cloneable, PublicCloneable, Serializable {
+public class BarRenderer extends AbstractCategoryItemRenderer implements Cloneable, PublicCloneable, Serializable {
 
 	/** The default item margin percentage. */
 	public static final double DEFAULT_ITEM_MARGIN = 0.20;
 
-	/** Constant that controls the minimum width before a bar has an outline drawn. */
+	/**
+	 * Constant that controls the minimum width before a bar has an outline drawn.
+	 */
 	public static final double BAR_OUTLINE_WIDTH_THRESHOLD = 3.0;
 
 	/** The margin between items (bars) within a category. */
@@ -107,13 +108,19 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	/** The minimum bar length (in Java2D units). */
 	private double minimumBarLength;
 
-	/** An optional class used to transform gradient paint objects to fit each bar. */
+	/**
+	 * An optional class used to transform gradient paint objects to fit each bar.
+	 */
 	private GradientPaintTransformer gradientPaintTransformer;
 
-	/** The fallback position if a positive item label doesn't fit inside the bar. */
+	/**
+	 * The fallback position if a positive item label doesn't fit inside the bar.
+	 */
 	private ItemLabelPosition positiveItemLabelPositionFallback;
 
-	/** The fallback position if a negative item label doesn't fit inside the bar. */
+	/**
+	 * The fallback position if a negative item label doesn't fit inside the bar.
+	 */
 	private ItemLabelPosition negativeItemLabelPositionFallback;
 
 	/** The upper clip (axis) value for the axis. */
@@ -146,12 +153,13 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Sets the item margin and sends a {@link RendererChangeEvent} to all registered listeners.
-	 * The value is expressed as a percentage of the available width for plotting all the bars,
-	 * with the resulting amount to be distributed between all the bars evenly.
+	 * Sets the item margin and sends a {@link RendererChangeEvent} to all
+	 * registered listeners. The value is expressed as a percentage of the available
+	 * width for plotting all the bars, with the resulting amount to be distributed
+	 * between all the bars evenly.
 	 * 
 	 * @param percent
-	 *           the margin (where 0.10 is ten percent).
+	 *            the margin (where 0.10 is ten percent).
 	 */
 	public void setItemMargin(double percent) {
 		this.itemMargin = percent;
@@ -168,10 +176,11 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Sets the flag that controls whether or not bar outlines are drawn and sends a {@link RendererChangeEvent} to all registered listeners.
+	 * Sets the flag that controls whether or not bar outlines are drawn and sends a
+	 * {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param draw
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setDrawBarOutline(boolean draw) {
 		this.drawBarOutline = draw;
@@ -179,7 +188,8 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Returns the maximum bar width, as a percentage of the available drawing space.
+	 * Returns the maximum bar width, as a percentage of the available drawing
+	 * space.
 	 * 
 	 * @return the maximum bar width.
 	 */
@@ -188,11 +198,12 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Sets the maximum bar width, which is specified as a percentage of the available space
-	 * for all bars, and sends a {@link RendererChangeEvent} to all registered listeners.
+	 * Sets the maximum bar width, which is specified as a percentage of the
+	 * available space for all bars, and sends a {@link RendererChangeEvent} to all
+	 * registered listeners.
 	 * 
 	 * @param percent
-	 *           the percent (where 0.05 is five percent).
+	 *            the percent (where 0.05 is five percent).
 	 */
 	public void setMaxBarWidth(double percent) {
 		this.maxBarWidth = percent;
@@ -209,12 +220,13 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Sets the minimum bar length and sends a {@link RendererChangeEvent} to all registered
-	 * listeners. The minimum bar length is specified in Java2D units, and can be used to prevent
-	 * bars that represent very small data values from disappearing when drawn on the screen.
+	 * Sets the minimum bar length and sends a {@link RendererChangeEvent} to all
+	 * registered listeners. The minimum bar length is specified in Java2D units,
+	 * and can be used to prevent bars that represent very small data values from
+	 * disappearing when drawn on the screen.
 	 * 
 	 * @param min
-	 *           the minimum bar length (in Java2D units).
+	 *            the minimum bar length (in Java2D units).
 	 */
 	public void setMinimumBarLength(double min) {
 		this.minimumBarLength = min;
@@ -222,8 +234,8 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Returns the gradient paint transformer (an object used to transform gradient paint objects
-	 * to fit each bar.
+	 * Returns the gradient paint transformer (an object used to transform gradient
+	 * paint objects to fit each bar.
 	 * 
 	 * @return A transformer (<code>null</code> possible).
 	 */
@@ -232,11 +244,11 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Sets the gradient paint transformer and sends a {@link RendererChangeEvent} to all registered
-	 * listeners.
+	 * Sets the gradient paint transformer and sends a {@link RendererChangeEvent}
+	 * to all registered listeners.
 	 * 
 	 * @param transformer
-	 *           the transformer (<code>null</code> permitted).
+	 *            the transformer (<code>null</code> permitted).
 	 */
 	public void setGradientPaintTransformer(GradientPaintTransformer transformer) {
 		this.gradientPaintTransformer = transformer;
@@ -244,7 +256,8 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Returns the fallback position for positive item labels that don't fit within a bar.
+	 * Returns the fallback position for positive item labels that don't fit within
+	 * a bar.
 	 * 
 	 * @return The fallback position (<code>null</code> possible).
 	 */
@@ -253,11 +266,11 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Sets the fallback position for positive item labels that don't fit within a bar, and sends
-	 * a {@link RendererChangeEvent} to all registered listeners.
+	 * Sets the fallback position for positive item labels that don't fit within a
+	 * bar, and sends a {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param position
-	 *           the position (<code>null</code> permitted).
+	 *            the position (<code>null</code> permitted).
 	 */
 	public void setPositiveItemLabelPositionFallback(ItemLabelPosition position) {
 		this.positiveItemLabelPositionFallback = position;
@@ -265,7 +278,8 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Returns the fallback position for negative item labels that don't fit within a bar.
+	 * Returns the fallback position for negative item labels that don't fit within
+	 * a bar.
 	 * 
 	 * @return The fallback position (<code>null</code> possible).
 	 */
@@ -274,11 +288,11 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Sets the fallback position for negative item labels that don't fit within a bar, and sends
-	 * a {@link RendererChangeEvent} to all registered listeners.
+	 * Sets the fallback position for negative item labels that don't fit within a
+	 * bar, and sends a {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param position
-	 *           the position (<code>null</code> permitted).
+	 *            the position (<code>null</code> permitted).
 	 */
 	public void setNegativeItemLabelPositionFallback(ItemLabelPosition position) {
 		this.negativeItemLabelPositionFallback = position;
@@ -308,28 +322,25 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Initialises the renderer and returns a state object that will be passed to subsequent calls
-	 * to the drawItem method.
+	 * Initialises the renderer and returns a state object that will be passed to
+	 * subsequent calls to the drawItem method.
 	 * <p>
 	 * This method gets called once at the start of the process of drawing a chart.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the area in which the data is to be plotted.
+	 *            the area in which the data is to be plotted.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param rendererIndex
-	 *           the renderer index.
+	 *            the renderer index.
 	 * @param info
-	 *           collects chart rendering information for return to caller.
+	 *            collects chart rendering information for return to caller.
 	 * @return The renderer state.
 	 */
-	public CategoryItemRendererState initialise(Graphics2D g2,
-																Rectangle2D dataArea,
-																CategoryPlot plot,
-																int rendererIndex,
-																PlotRenderingInfo info) {
+	public CategoryItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea, CategoryPlot plot,
+			int rendererIndex, PlotRenderingInfo info) {
 
 		CategoryItemRendererState state = super.initialise(g2, dataArea, plot, rendererIndex, info);
 
@@ -349,18 +360,16 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	 * Calculates the bar width and stores it in the renderer state.
 	 * 
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param rendererIndex
-	 *           the renderer index.
+	 *            the renderer index.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 */
-	protected void calculateBarWidth(CategoryPlot plot,
-													Rectangle2D dataArea,
-													int rendererIndex,
-													CategoryItemRendererState state) {
+	protected void calculateBarWidth(CategoryPlot plot, Rectangle2D dataArea, int rendererIndex,
+			CategoryItemRendererState state) {
 
 		CategoryAxis domainAxis = getDomainAxis(plot, rendererIndex);
 		CategoryDataset dataset = plot.getDataset(rendererIndex);
@@ -371,10 +380,9 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 			PlotOrientation orientation = plot.getOrientation();
 			if (orientation == PlotOrientation.HORIZONTAL) {
 				space = dataArea.getHeight();
-			} else
-				if (orientation == PlotOrientation.VERTICAL) {
-					space = dataArea.getWidth();
-				}
+			} else if (orientation == PlotOrientation.VERTICAL) {
+				space = dataArea.getWidth();
+			}
 			double maxWidth = space * getMaxBarWidth();
 			double categoryMargin = 0.0;
 			double currentItemMargin = 0.0;
@@ -384,8 +392,8 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 			if (rows > 1) {
 				currentItemMargin = getItemMargin();
 			}
-			double used = space * (1 - domainAxis.getLowerMargin() - domainAxis.getUpperMargin()
-													- categoryMargin - currentItemMargin);
+			double used = space * (1 - domainAxis.getLowerMargin() - domainAxis.getUpperMargin() - categoryMargin
+					- currentItemMargin);
 			if ((rows * columns) > 0) {
 				state.setBarWidth(Math.min(used / (rows * columns), maxWidth));
 			} else {
@@ -395,32 +403,28 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Calculates the coordinate of the first "side" of a bar. This will be the minimum
-	 * x-coordinate for a vertical bar, and the minimum y-coordinate for a horizontal bar.
+	 * Calculates the coordinate of the first "side" of a bar. This will be the
+	 * minimum x-coordinate for a vertical bar, and the minimum y-coordinate for a
+	 * horizontal bar.
 	 * 
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param orientation
-	 *           the plot orientation.
+	 *            the plot orientation.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param state
-	 *           the renderer state (has the bar width precalculated).
+	 *            the renderer state (has the bar width precalculated).
 	 * @param row
-	 *           the row index.
+	 *            the row index.
 	 * @param column
-	 *           the column index.
+	 *            the column index.
 	 * @return the coordinate.
 	 */
-	protected double calculateBarW0(CategoryPlot plot,
-												PlotOrientation orientation,
-												Rectangle2D dataArea,
-												CategoryAxis domainAxis,
-												CategoryItemRendererState state,
-												int row,
-												int column) {
+	protected double calculateBarW0(CategoryPlot plot, PlotOrientation orientation, Rectangle2D dataArea,
+			CategoryAxis domainAxis, CategoryItemRendererState state, int row, int column) {
 		// calculate bar width...
 		double space = 0.0;
 		if (orientation == PlotOrientation.HORIZONTAL) {
@@ -428,20 +432,16 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 		} else {
 			space = dataArea.getWidth();
 		}
-		double barW0 = domainAxis.getCategoryStart(
-							column, getColumnCount(), dataArea, plot.getDomainAxisEdge()
-							);
+		double barW0 = domainAxis.getCategoryStart(column, getColumnCount(), dataArea, plot.getDomainAxisEdge());
 		int seriesCount = getRowCount();
 		int categoryCount = getColumnCount();
 		if (seriesCount > 1) {
 			double seriesGap = space * getItemMargin() / (categoryCount * (seriesCount - 1));
 			double seriesW = calculateSeriesWidth(space, domainAxis, categoryCount, seriesCount);
-			barW0 = barW0 + row * (seriesW + seriesGap)
-									+ (seriesW / 2.0) - (state.getBarWidth() / 2.0);
+			barW0 = barW0 + row * (seriesW + seriesGap) + (seriesW / 2.0) - (state.getBarWidth() / 2.0);
 		} else {
-			barW0 = domainAxis.getCategoryMiddle(
-								column, getColumnCount(), dataArea, plot.getDomainAxisEdge()
-								) - state.getBarWidth() / 2.0;
+			barW0 = domainAxis.getCategoryMiddle(column, getColumnCount(), dataArea, plot.getDomainAxisEdge())
+					- state.getBarWidth() / 2.0;
 		}
 		return barW0;
 	}
@@ -450,9 +450,9 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	 * Calculates the coordinates for the length of a single bar.
 	 * 
 	 * @param value
-	 *           the value represented by the bar.
-	 * @return the coordinates for each end of the bar (or <code>null</code> if the bar is not
-	 *         visible for the current axis range).
+	 *            the value represented by the bar.
+	 * @return the coordinates for each end of the bar (or <code>null</code> if the
+	 *         bar is not visible for the current axis range).
 	 */
 	protected double[] calculateBarL0L1(double value) {
 
@@ -467,24 +467,23 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 			if (value <= lclip) {
 				value = lclip;
 			}
-		} else
-			if (lclip <= 0.0) { // cases 5, 6, 7 and 8
-				if (value >= uclip) {
-					value = uclip;
-				} else {
-					if (value <= lclip) {
-						value = lclip;
-					}
-				}
-			} else { // cases 9, 10, 11 and 12
+		} else if (lclip <= 0.0) { // cases 5, 6, 7 and 8
+			if (value >= uclip) {
+				value = uclip;
+			} else {
 				if (value <= lclip) {
-					return null; // bar is not visible
-				}
-				base = lclip;
-				if (value >= uclip) {
-					value = uclip;
+					value = lclip;
 				}
 			}
+		} else { // cases 9, 10, 11 and 12
+			if (value <= lclip) {
+				return null; // bar is not visible
+			}
+			base = lclip;
+			if (value >= uclip) {
+				value = uclip;
+			}
+		}
 		return new double[] { base, value };
 	}
 
@@ -492,33 +491,26 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	 * Draws the bar for a single (series, category) data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the data area.
+	 *            the data area.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 */
-	public void drawItem(Graphics2D g2,
-									CategoryItemRendererState state,
-									Rectangle2D dataArea,
-									CategoryPlot plot,
-									CategoryAxis domainAxis,
-									ValueAxis rangeAxis,
-									CategoryDataset dataset,
-									int row,
-									int column) {
+	public void drawItem(Graphics2D g2, CategoryItemRendererState state, Rectangle2D dataArea, CategoryPlot plot,
+			CategoryAxis domainAxis, ValueAxis rangeAxis, CategoryDataset dataset, int row, int column) {
 
 		// nothing is drawn for null values...
 		Number dataValue = dataset.getValue(row, column);
@@ -585,9 +577,8 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 				if (getItemURLGenerator(row, column) != null) {
 					url = getItemURLGenerator(row, column).generateURL(dataset, row, column);
 				}
-				CategoryItemEntity entity = new CategoryItemEntity(
-									bar, tip, url, dataset, row, dataset.getColumnKey(column), column
-									);
+				CategoryItemEntity entity = new CategoryItemEntity(bar, tip, url, dataset, row,
+						dataset.getColumnKey(column), column);
 				entities.addEntity(entity);
 			}
 		}
@@ -598,17 +589,16 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	 * Calculates the available space for each series.
 	 * 
 	 * @param space
-	 *           the space along the entire axis (in Java2D units).
+	 *            the space along the entire axis (in Java2D units).
 	 * @param axis
-	 *           the category axis.
+	 *            the category axis.
 	 * @param categories
-	 *           the number of categories.
+	 *            the number of categories.
 	 * @param series
-	 *           the number of series.
+	 *            the number of series.
 	 * @return the width of one series.
 	 */
-	protected double calculateSeriesWidth(double space, CategoryAxis axis,
-														int categories, int series) {
+	protected double calculateSeriesWidth(double space, CategoryAxis axis, int categories, int series) {
 		double factor = 1.0 - getItemMargin() - axis.getLowerMargin() - axis.getUpperMargin();
 		if (categories > 1) {
 			factor = factor - axis.getCategoryMargin();
@@ -617,34 +607,28 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	}
 
 	/**
-	 * Draws an item label. This method is overridden so that the bar can be used
-	 * to calculate the label anchor point.
+	 * Draws an item label. This method is overridden so that the bar can be used to
+	 * calculate the label anchor point.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param data
-	 *           the dataset.
+	 *            the dataset.
 	 * @param row
-	 *           the row.
+	 *            the row.
 	 * @param column
-	 *           the column.
+	 *            the column.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param generator
-	 *           the label generator.
+	 *            the label generator.
 	 * @param bar
-	 *           the bar.
+	 *            the bar.
 	 * @param negative
-	 *           a flag indicating a negative value.
+	 *            a flag indicating a negative value.
 	 */
-	protected void drawItemLabel(Graphics2D g2,
-											CategoryDataset data,
-											int row,
-											int column,
-											CategoryPlot plot,
-											CategoryLabelGenerator generator,
-											Rectangle2D bar,
-											boolean negative) {
+	protected void drawItemLabel(Graphics2D g2, CategoryDataset data, int row, int column, CategoryPlot plot,
+			CategoryLabelGenerator generator, Rectangle2D bar, boolean negative) {
 
 		String label = generator.generateLabel(data, row, column);
 		if (label == null) {
@@ -665,19 +649,12 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 		}
 
 		// work out the label anchor point...
-		Point2D anchorPoint = calculateLabelAnchorPoint(
-							position.getItemLabelAnchor(), bar, plot.getOrientation()
-							);
+		Point2D anchorPoint = calculateLabelAnchorPoint(position.getItemLabelAnchor(), bar, plot.getOrientation());
 
 		if (isInternalAnchor(position.getItemLabelAnchor())) {
-			Shape bounds = RefineryUtilities.calculateRotatedStringBounds(
-								label, g2,
-								(float) anchorPoint.getX(),
-								(float) anchorPoint.getY(),
-								position.getTextAnchor(),
-								position.getRotationAnchor(),
-								position.getAngle()
-								);
+			Shape bounds = RefineryUtilities.calculateRotatedStringBounds(label, g2, (float) anchorPoint.getX(),
+					(float) anchorPoint.getY(), position.getTextAnchor(), position.getRotationAnchor(),
+					position.getAngle());
 
 			if (bounds != null) {
 				if (!bar.contains(bounds.getBounds2D())) {
@@ -687,9 +664,8 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 						position = getNegativeItemLabelPositionFallback();
 					}
 					if (position != null) {
-						anchorPoint = calculateLabelAnchorPoint(
-											position.getItemLabelAnchor(), bar, plot.getOrientation()
-											);
+						anchorPoint = calculateLabelAnchorPoint(position.getItemLabelAnchor(), bar,
+								plot.getOrientation());
 					}
 				}
 			}
@@ -697,10 +673,8 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 		}
 
 		if (position != null) {
-			RefineryUtilities.drawRotatedString(
-								label, g2, (float) anchorPoint.getX(), (float) anchorPoint.getY(),
-								position.getTextAnchor(), position.getRotationAnchor(), position.getAngle()
-								);
+			RefineryUtilities.drawRotatedString(label, g2, (float) anchorPoint.getX(), (float) anchorPoint.getY(),
+					position.getTextAnchor(), position.getRotationAnchor(), position.getAngle());
 		}
 	}
 
@@ -708,15 +682,14 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	 * Calculates the item label anchor point.
 	 * 
 	 * @param anchor
-	 *           the anchor.
+	 *            the anchor.
 	 * @param bar
-	 *           the bar.
+	 *            the bar.
 	 * @param orientation
-	 *           the plot orientation.
+	 *            the plot orientation.
 	 * @return The anchor point.
 	 */
-	private Point2D calculateLabelAnchorPoint(ItemLabelAnchor anchor,
-																Rectangle2D bar, PlotOrientation orientation) {
+	private Point2D calculateLabelAnchorPoint(ItemLabelAnchor anchor, Rectangle2D bar, PlotOrientation orientation) {
 
 		Point2D result = null;
 		double offset = getItemLabelAnchorOffset();
@@ -738,79 +711,55 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 
 		if (anchor == ItemLabelAnchor.CENTER) {
 			result = new Point2D.Double(x3, y3);
-		} else
-			if (anchor == ItemLabelAnchor.INSIDE1) {
-				result = new Point2D.Double(x4, y4);
-			} else
-				if (anchor == ItemLabelAnchor.INSIDE2) {
-					result = new Point2D.Double(x4, y4);
-				} else
-					if (anchor == ItemLabelAnchor.INSIDE3) {
-						result = new Point2D.Double(x4, y3);
-					} else
-						if (anchor == ItemLabelAnchor.INSIDE4) {
-							result = new Point2D.Double(x4, y2);
-						} else
-							if (anchor == ItemLabelAnchor.INSIDE5) {
-								result = new Point2D.Double(x4, y2);
-							} else
-								if (anchor == ItemLabelAnchor.INSIDE6) {
-									result = new Point2D.Double(x3, y2);
-								} else
-									if (anchor == ItemLabelAnchor.INSIDE7) {
-										result = new Point2D.Double(x2, y2);
-									} else
-										if (anchor == ItemLabelAnchor.INSIDE8) {
-											result = new Point2D.Double(x2, y2);
-										} else
-											if (anchor == ItemLabelAnchor.INSIDE9) {
-												result = new Point2D.Double(x2, y3);
-											} else
-												if (anchor == ItemLabelAnchor.INSIDE10) {
-													result = new Point2D.Double(x2, y4);
-												} else
-													if (anchor == ItemLabelAnchor.INSIDE11) {
-														result = new Point2D.Double(x2, y4);
-													} else
-														if (anchor == ItemLabelAnchor.INSIDE12) {
-															result = new Point2D.Double(x3, y4);
-														} else
-															if (anchor == ItemLabelAnchor.OUTSIDE1) {
-																result = new Point2D.Double(x5, y6);
-															} else
-																if (anchor == ItemLabelAnchor.OUTSIDE2) {
-																	result = new Point2D.Double(x6, y5);
-																} else
-																	if (anchor == ItemLabelAnchor.OUTSIDE3) {
-																		result = new Point2D.Double(x6, y3);
-																	} else
-																		if (anchor == ItemLabelAnchor.OUTSIDE4) {
-																			result = new Point2D.Double(x6, y1);
-																		} else
-																			if (anchor == ItemLabelAnchor.OUTSIDE5) {
-																				result = new Point2D.Double(x5, y0);
-																			} else
-																				if (anchor == ItemLabelAnchor.OUTSIDE6) {
-																					result = new Point2D.Double(x3, y0);
-																				} else
-																					if (anchor == ItemLabelAnchor.OUTSIDE7) {
-																						result = new Point2D.Double(x1, y0);
-																					} else
-																						if (anchor == ItemLabelAnchor.OUTSIDE8) {
-																							result = new Point2D.Double(x0, y1);
-																						} else
-																							if (anchor == ItemLabelAnchor.OUTSIDE9) {
-																								result = new Point2D.Double(x0, y3);
-																							} else
-																								if (anchor == ItemLabelAnchor.OUTSIDE10) {
-																									result = new Point2D.Double(x0, y5);
-																								} else
-																									if (anchor == ItemLabelAnchor.OUTSIDE11) {
-																										result = new Point2D.Double(x1, y6);
-																									} else
-																										if (anchor == ItemLabelAnchor.OUTSIDE12) {
-																											result = new Point2D.Double(x3, y6);
-																										}
+		} else if (anchor == ItemLabelAnchor.INSIDE1) {
+			result = new Point2D.Double(x4, y4);
+		} else if (anchor == ItemLabelAnchor.INSIDE2) {
+			result = new Point2D.Double(x4, y4);
+		} else if (anchor == ItemLabelAnchor.INSIDE3) {
+			result = new Point2D.Double(x4, y3);
+		} else if (anchor == ItemLabelAnchor.INSIDE4) {
+			result = new Point2D.Double(x4, y2);
+		} else if (anchor == ItemLabelAnchor.INSIDE5) {
+			result = new Point2D.Double(x4, y2);
+		} else if (anchor == ItemLabelAnchor.INSIDE6) {
+			result = new Point2D.Double(x3, y2);
+		} else if (anchor == ItemLabelAnchor.INSIDE7) {
+			result = new Point2D.Double(x2, y2);
+		} else if (anchor == ItemLabelAnchor.INSIDE8) {
+			result = new Point2D.Double(x2, y2);
+		} else if (anchor == ItemLabelAnchor.INSIDE9) {
+			result = new Point2D.Double(x2, y3);
+		} else if (anchor == ItemLabelAnchor.INSIDE10) {
+			result = new Point2D.Double(x2, y4);
+		} else if (anchor == ItemLabelAnchor.INSIDE11) {
+			result = new Point2D.Double(x2, y4);
+		} else if (anchor == ItemLabelAnchor.INSIDE12) {
+			result = new Point2D.Double(x3, y4);
+		} else if (anchor == ItemLabelAnchor.OUTSIDE1) {
+			result = new Point2D.Double(x5, y6);
+		} else if (anchor == ItemLabelAnchor.OUTSIDE2) {
+			result = new Point2D.Double(x6, y5);
+		} else if (anchor == ItemLabelAnchor.OUTSIDE3) {
+			result = new Point2D.Double(x6, y3);
+		} else if (anchor == ItemLabelAnchor.OUTSIDE4) {
+			result = new Point2D.Double(x6, y1);
+		} else if (anchor == ItemLabelAnchor.OUTSIDE5) {
+			result = new Point2D.Double(x5, y0);
+		} else if (anchor == ItemLabelAnchor.OUTSIDE6) {
+			result = new Point2D.Double(x3, y0);
+		} else if (anchor == ItemLabelAnchor.OUTSIDE7) {
+			result = new Point2D.Double(x1, y0);
+		} else if (anchor == ItemLabelAnchor.OUTSIDE8) {
+			result = new Point2D.Double(x0, y1);
+		} else if (anchor == ItemLabelAnchor.OUTSIDE9) {
+			result = new Point2D.Double(x0, y3);
+		} else if (anchor == ItemLabelAnchor.OUTSIDE10) {
+			result = new Point2D.Double(x0, y5);
+		} else if (anchor == ItemLabelAnchor.OUTSIDE11) {
+			result = new Point2D.Double(x1, y6);
+		} else if (anchor == ItemLabelAnchor.OUTSIDE12) {
+			result = new Point2D.Double(x3, y6);
+		}
 
 		return result;
 
@@ -820,30 +769,24 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 	 * Returns <code>true</code> if the specified anchor point is inside a bar.
 	 * 
 	 * @param anchor
-	 *           the anchor point.
+	 *            the anchor point.
 	 * @return A boolean.
 	 */
 	private boolean isInternalAnchor(ItemLabelAnchor anchor) {
-		return anchor == ItemLabelAnchor.CENTER
-							|| anchor == ItemLabelAnchor.INSIDE1
-							|| anchor == ItemLabelAnchor.INSIDE2
-							|| anchor == ItemLabelAnchor.INSIDE3
-							|| anchor == ItemLabelAnchor.INSIDE4
-							|| anchor == ItemLabelAnchor.INSIDE5
-							|| anchor == ItemLabelAnchor.INSIDE6
-							|| anchor == ItemLabelAnchor.INSIDE7
-							|| anchor == ItemLabelAnchor.INSIDE8
-							|| anchor == ItemLabelAnchor.INSIDE9
-							|| anchor == ItemLabelAnchor.INSIDE10
-							|| anchor == ItemLabelAnchor.INSIDE11
-							|| anchor == ItemLabelAnchor.INSIDE12;
+		return anchor == ItemLabelAnchor.CENTER || anchor == ItemLabelAnchor.INSIDE1
+				|| anchor == ItemLabelAnchor.INSIDE2 || anchor == ItemLabelAnchor.INSIDE3
+				|| anchor == ItemLabelAnchor.INSIDE4 || anchor == ItemLabelAnchor.INSIDE5
+				|| anchor == ItemLabelAnchor.INSIDE6 || anchor == ItemLabelAnchor.INSIDE7
+				|| anchor == ItemLabelAnchor.INSIDE8 || anchor == ItemLabelAnchor.INSIDE9
+				|| anchor == ItemLabelAnchor.INSIDE10 || anchor == ItemLabelAnchor.INSIDE11
+				|| anchor == ItemLabelAnchor.INSIDE12;
 	}
 
 	/**
 	 * Tests this instance for equality with an arbitrary object.
 	 * 
 	 * @param object
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
@@ -863,15 +806,9 @@ public class BarRenderer extends AbstractCategoryItemRenderer
 			boolean b1 = (this.drawBarOutline == r.drawBarOutline);
 			boolean b2 = (this.maxBarWidth == r.maxBarWidth);
 			boolean b3 = (this.minimumBarLength == r.minimumBarLength);
-			boolean b4 = ObjectUtils.equal(
-								this.gradientPaintTransformer, r.gradientPaintTransformer
-								);
-			boolean b5 = ObjectUtils.equal(
-								this.positiveItemLabelPositionFallback, r.positiveItemLabelPositionFallback
-								);
-			boolean b6 = ObjectUtils.equal(
-								this.negativeItemLabelPositionFallback, r.negativeItemLabelPositionFallback
-								);
+			boolean b4 = ObjectUtils.equal(this.gradientPaintTransformer, r.gradientPaintTransformer);
+			boolean b5 = ObjectUtils.equal(this.positiveItemLabelPositionFallback, r.positiveItemLabelPositionFallback);
+			boolean b6 = ObjectUtils.equal(this.negativeItemLabelPositionFallback, r.negativeItemLabelPositionFallback);
 			return b0 && b1 && b2 && b3 && b4 && b5 && b6;
 
 		}

@@ -88,7 +88,9 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 	/** A panel used to display/edit the properties of the range axis (if any). */
 	private AxisPropertyEditPanel rangeAxisPropertyPanel;
 
-	/** A panel used to display/edit the properties of the colorbar axis (if any). */
+	/**
+	 * A panel used to display/edit the properties of the colorbar axis (if any).
+	 */
 	private ColorBarPropertyEditPanel colorBarAxisPropertyPanel;
 
 	/** An array of stroke samples to choose from. */
@@ -101,18 +103,19 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 	private InsetsTextField insetsTextField;
 
 	/** The resourceBundle for the localization. */
-	protected static ResourceBundle localizationResources =
-										ResourceBundle.getBundle("org.jfree.chart.ui.LocalizationBundle");
+	protected static ResourceBundle localizationResources = ResourceBundle
+			.getBundle("org.jfree.chart.ui.LocalizationBundle");
 
 	/**
-	 * Standard constructor - constructs a panel for editing the properties of
-	 * the specified plot.
+	 * Standard constructor - constructs a panel for editing the properties of the
+	 * specified plot.
 	 * <P>
-	 * In designing the panel, we need to be aware that subclasses of Plot will need to implement subclasses of PlotPropertyEditPanel - so we need to leave one
-	 * or two 'slots' where the subclasses can extend the user interface.
+	 * In designing the panel, we need to be aware that subclasses of Plot will need
+	 * to implement subclasses of PlotPropertyEditPanel - so we need to leave one or
+	 * two 'slots' where the subclasses can extend the user interface.
 	 * 
 	 * @param plot
-	 *           the plot, which should be changed.
+	 *            the plot, which should be changed.
 	 */
 	public PlotPropertyEditPanel(Plot plot) {
 
@@ -130,13 +133,11 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 
 		// create a panel for the settings...
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.setBorder(BorderFactory.createTitledBorder(
-										BorderFactory.createEtchedBorder(),
-										plot.getPlotType() + localizationResources.getString(":")));
+		panel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
+				plot.getPlotType() + localizationResources.getString(":")));
 
 		JPanel general = new JPanel(new BorderLayout());
-		general.setBorder(BorderFactory.createTitledBorder(
-										localizationResources.getString("General")));
+		general.setBorder(BorderFactory.createTitledBorder(localizationResources.getString("General")));
 
 		JPanel interior = new JPanel(new LCBLayout(4));
 		interior.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
@@ -184,10 +185,9 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 		Axis domainAxis = null;
 		if (plot instanceof CategoryPlot) {
 			domainAxis = ((CategoryPlot) plot).getDomainAxis();
-		} else
-			if (plot instanceof XYPlot) {
-				domainAxis = ((XYPlot) plot).getDomainAxis();
-			}
+		} else if (plot instanceof XYPlot) {
+			domainAxis = ((XYPlot) plot).getDomainAxis();
+		}
 		this.domainAxisPropertyPanel = AxisPropertyEditPanel.getInstance(domainAxis);
 		if (this.domainAxisPropertyPanel != null) {
 			this.domainAxisPropertyPanel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
@@ -197,10 +197,9 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 		Axis rangeAxis = null;
 		if (plot instanceof CategoryPlot) {
 			rangeAxis = ((CategoryPlot) plot).getRangeAxis();
-		} else
-			if (plot instanceof XYPlot) {
-				rangeAxis = ((XYPlot) plot).getRangeAxis();
-			}
+		} else if (plot instanceof XYPlot) {
+			rangeAxis = ((XYPlot) plot).getRangeAxis();
+		}
 
 		this.rangeAxisPropertyPanel = AxisPropertyEditPanel.getInstance(rangeAxis);
 		if (this.rangeAxisPropertyPanel != null) {
@@ -267,8 +266,8 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Returns a reference to the panel for editing the properties of the
-	 * domain axis.
+	 * Returns a reference to the panel for editing the properties of the domain
+	 * axis.
 	 * 
 	 * @return a reference to a panel.
 	 */
@@ -277,8 +276,8 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Returns a reference to the panel for editing the properties of the
-	 * range axis.
+	 * Returns a reference to the panel for editing the properties of the range
+	 * axis.
 	 * 
 	 * @return a reference to a panel.
 	 */
@@ -290,22 +289,19 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 	 * Handles user actions generated within the panel.
 	 * 
 	 * @param event
-	 *           the event
+	 *            the event
 	 */
 	public void actionPerformed(ActionEvent event) {
 		String command = event.getActionCommand();
 		if (command.equals("BackgroundPaint")) {
 			attemptBackgroundPaintSelection();
-		} else
-			if (command.equals("OutlineStroke")) {
-				attemptOutlineStrokeSelection();
-			} else
-				if (command.equals("OutlinePaint")) {
-					attemptOutlinePaintSelection();
-				} else
-					if (command.equals("Insets")) {
-						editInsets();
-					}
+		} else if (command.equals("OutlineStroke")) {
+			attemptOutlineStrokeSelection();
+		} else if (command.equals("OutlinePaint")) {
+			attemptOutlinePaintSelection();
+		} else if (command.equals("Insets")) {
+			editInsets();
+		}
 
 	}
 
@@ -314,8 +310,7 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 	 */
 	private void attemptBackgroundPaintSelection() {
 		Color c;
-		c = JColorChooser.showDialog(this, localizationResources.getString("Background_Color"),
-													Color.blue);
+		c = JColorChooser.showDialog(this, localizationResources.getString("Background_Color"), Color.blue);
 		if (c != null) {
 			this.backgroundPaintSample.setPaint(c);
 		}
@@ -326,9 +321,8 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 	 */
 	private void attemptOutlineStrokeSelection() {
 		StrokeChooserPanel panel = new StrokeChooserPanel(null, this.availableStrokeSamples);
-		int result = JOptionPane.showConfirmDialog(this, panel,
-							localizationResources.getString("Stroke_Selection"),
-							JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(this, panel, localizationResources.getString("Stroke_Selection"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (result == JOptionPane.OK_OPTION) {
 			this.outlineStrokeSample.setStroke(panel.getSelectedStroke());
@@ -336,13 +330,12 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Allow the user to change the outline paint. We use JColorChooser, so
-	 * the user can only choose colors (a subset of all possible paints).
+	 * Allow the user to change the outline paint. We use JColorChooser, so the user
+	 * can only choose colors (a subset of all possible paints).
 	 */
 	private void attemptOutlinePaintSelection() {
 		Color c;
-		c = JColorChooser.showDialog(this, localizationResources.getString("Outline_Color"),
-													Color.blue);
+		c = JColorChooser.showDialog(this, localizationResources.getString("Outline_Color"), Color.blue);
 		if (c != null) {
 			this.outlinePaintSample.setPaint(c);
 		}
@@ -353,10 +346,8 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 	 */
 	private void editInsets() {
 		InsetsChooserPanel panel = new InsetsChooserPanel(this.plotInsets);
-		int result = JOptionPane.showConfirmDialog(this, panel,
-																	localizationResources.getString("Edit_Insets"),
-																	JOptionPane.OK_CANCEL_OPTION,
-																	JOptionPane.PLAIN_MESSAGE);
+		int result = JOptionPane.showConfirmDialog(this, panel, localizationResources.getString("Edit_Insets"),
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
 		if (result == JOptionPane.OK_OPTION) {
 			this.plotInsets = panel.getInsets();
@@ -369,7 +360,7 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 	 * Updates the plot properties to match the properties defined on the panel.
 	 * 
 	 * @param plot
-	 *           The plot.
+	 *            The plot.
 	 */
 	public void updatePlotProperties(Plot plot) {
 
@@ -385,11 +376,10 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 			if (plot instanceof CategoryPlot) {
 				CategoryPlot p = (CategoryPlot) plot;
 				domainAxis = p.getDomainAxis();
-			} else
-				if (plot instanceof XYPlot) {
-					XYPlot p = (XYPlot) plot;
-					domainAxis = p.getDomainAxis();
-				}
+			} else if (plot instanceof XYPlot) {
+				XYPlot p = (XYPlot) plot;
+				domainAxis = p.getDomainAxis();
+			}
 			if (domainAxis != null) {
 				this.domainAxisPropertyPanel.setAxisProperties(domainAxis);
 			}
@@ -400,11 +390,10 @@ public class PlotPropertyEditPanel extends JPanel implements ActionListener {
 			if (plot instanceof CategoryPlot) {
 				CategoryPlot p = (CategoryPlot) plot;
 				rangeAxis = p.getRangeAxis();
-			} else
-				if (plot instanceof XYPlot) {
-					XYPlot p = (XYPlot) plot;
-					rangeAxis = p.getRangeAxis();
-				}
+			} else if (plot instanceof XYPlot) {
+				XYPlot p = (XYPlot) plot;
+				rangeAxis = p.getRangeAxis();
+			}
 			if (rangeAxis != null) {
 				this.rangeAxisPropertyPanel.setAxisProperties(rangeAxis);
 			}

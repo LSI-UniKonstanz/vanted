@@ -23,20 +23,19 @@ import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class SelectMapNodesAlgorithm extends AbstractAlgorithm implements
-					Algorithm {
-	
+public class SelectMapNodesAlgorithm extends AbstractAlgorithm implements Algorithm {
+
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No active graph editor window found!");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
@@ -45,22 +44,20 @@ public class SelectMapNodesAlgorithm extends AbstractAlgorithm implements
 		else
 			return "Select Map Nodes";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "menu.edit";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.NODE,
-				Category.SELECTION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.NODE, Category.SELECTION));
 	}
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
@@ -70,7 +67,8 @@ public class SelectMapNodesAlgorithm extends AbstractAlgorithm implements
 		ArrayList<Node> mapNodes = new ArrayList<Node>();
 		for (Node n : graph.getNodes()) {
 			boolean added = false;
-			String kegg_type = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_type", null, new String(""), false);
+			String kegg_type = (String) AttributeHelper.getAttributeValue(n, "kegg", "kegg_type", null, new String(""),
+					false);
 			if (kegg_type != null && (kegg_type.equalsIgnoreCase("map") || kegg_type.equalsIgnoreCase("ko"))) {
 				if (skipTitleNodes) {
 					if (!(AttributeHelper.getLabel(n, "").indexOf("TITLE:") >= 0)) {
@@ -96,7 +94,7 @@ public class SelectMapNodesAlgorithm extends AbstractAlgorithm implements
 		MainFrame.getInstance().getActiveEditorSession().getSelectionModel().selectionChanged();
 		MainFrame.showMessage(mapNodes.size() + " map-nodes added to selection", MessageType.INFO);
 	}
-	
+
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

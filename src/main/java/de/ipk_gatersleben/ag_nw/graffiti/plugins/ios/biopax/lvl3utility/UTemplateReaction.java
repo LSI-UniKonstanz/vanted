@@ -14,11 +14,9 @@ import org.graffiti.graph.Node;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 
-public class UTemplateReaction extends UtilitySuperClassToGraph
-{
+public class UTemplateReaction extends UtilitySuperClassToGraph {
 	/**
-	 * adds all information within the biopax class to the attribute set of the
-	 * node
+	 * adds all information within the biopax class to the attribute set of the node
 	 * 
 	 * @param elem
 	 * @param i
@@ -26,12 +24,12 @@ public class UTemplateReaction extends UtilitySuperClassToGraph
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
 	 */
-	public static void addAttributesToNode(GraphElement elem, TemplateReaction i) throws IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException
-	{
+	public static void addAttributesToNode(GraphElement elem, TemplateReaction i)
+			throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		// first set label to node
 		setLabels(elem, i);
-		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), Messages.getString("UtilitySuperClassToGraph.164")); //$NON-NLS-1$ //$NON-NLS-2$
+		elem.setString(Messages.getString("UtilitySuperClassToGraph.127"), //$NON-NLS-1$
+				Messages.getString("UtilitySuperClassToGraph.164")); //$NON-NLS-1$
 		// set attribute paths
 		setAvailability(elem, i.getAvailability());
 		setComment(elem, i.getComment());
@@ -42,15 +40,14 @@ public class UTemplateReaction extends UtilitySuperClassToGraph
 		setRDFId(elem, i.getRDFId());
 		setStandardName(elem, i.getStandardName());
 		setXRef(elem, i.getXref());
-		
+
 	}
-	
-	public static void readAttributesFromNode(GraphElement node, Graph g, Model model)
-	{
+
+	public static void readAttributesFromNode(GraphElement node, Graph g, Model model) {
 		Node elem = (Node) node;
 		String RDFID = getAttributeSecure(elem, Messages.getString("UtilitySuperClassToGraph.82"));
 		TemplateReaction interaction = model.addNew(TemplateReaction.class, RDFID);
-		
+
 		UtilitySuperClassFromGraph.getDisplayName(elem, interaction);
 		UtilitySuperClassFromGraph.getAvailability(elem, interaction);
 		UtilitySuperClassFromGraph.getComment(elem, interaction);
@@ -60,38 +57,32 @@ public class UTemplateReaction extends UtilitySuperClassToGraph
 		UtilitySuperClassFromGraph.getName(elem, interaction);
 		UtilitySuperClassFromGraph.getStandardName(elem, interaction);
 		UtilitySuperClassFromGraph.getXRef(elem, interaction, model);
-		
-		for (Edge outgoing : elem.getAllOutEdges())
-		{
-			
+
+		for (Edge outgoing : elem.getAllOutEdges()) {
+
 			Node out = outgoing.getTarget();
 			String RDFId = getAttributeSecure(out, Messages.getString("UtilitySuperClassToGraph.82"));
-			try
-			{
+			try {
 				PhysicalEntity p = (PhysicalEntity) model.getByID(RDFId);
 				interaction.addProduct(p);
-			} catch (ClassCastException e)
-			{
+			} catch (ClassCastException e) {
 				ErrorMsg.addErrorMessage(e);
 			}
-			
+
 		}
-		for (Edge ingoing : elem.getAllInEdges())
-		{
-			
+		for (Edge ingoing : elem.getAllInEdges()) {
+
 			Node in = ingoing.getSource();
-			
+
 			String RDFId = getAttributeSecure(in, Messages.getString("UtilitySuperClassToGraph.82"));
-			try
-			{
+			try {
 				NucleicAcid NA = (NucleicAcid) model.getByID(RDFId);
 				interaction.setTemplate(NA);
-				
-			} catch (ClassCastException e)
-			{
+
+			} catch (ClassCastException e) {
 				ErrorMsg.addErrorMessage(e);
 			}
-			
+
 		}
 	}
 }

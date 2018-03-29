@@ -13,15 +13,12 @@ import org.graffiti.graph.Node;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.Messages;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.biopax.lvl3utility.UtilityClassSelectorToGraph;
 
-public class BPGeneticInteraction extends BPInteraction
-{
-	public BPGeneticInteraction(Graph Graph, Hashtable<Entity, Node> Nodes)
-	{
+public class BPGeneticInteraction extends BPInteraction {
+	public BPGeneticInteraction(Graph Graph, Hashtable<Entity, Node> Nodes) {
 		super(Graph, Nodes);
 	}
 
-	public void read(Interaction i)
-	{
+	public void read(Interaction i) {
 		GeneticInteraction gi = (GeneticInteraction) i;
 		Set<Entity> parts = gi.getParticipant();
 
@@ -30,11 +27,11 @@ public class BPGeneticInteraction extends BPInteraction
 		UtilityClassSelectorToGraph.chooseClassToPutAttributesToNodes(center, gi);
 		nodes.put(gi, center);
 
-		for (Entity p : parts)
-		{
+		for (Entity p : parts) {
 			Node node = findORcreateNode(p);
 			Edge e = addEdge(center, node);
-			setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.116"), Messages.getString("UtilitySuperClassToGraph.119")); //$NON-NLS-1$ //$NON-NLS-2$
+			setAttributeSecure(e, Messages.getString("UtilitySuperClassToGraph.116"), //$NON-NLS-1$
+					Messages.getString("UtilitySuperClassToGraph.119")); //$NON-NLS-1$
 		}
 	}
 }

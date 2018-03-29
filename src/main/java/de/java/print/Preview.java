@@ -34,7 +34,7 @@ class Preview extends JComponent {
 	private static final long serialVersionUID = 1L;
 	private final static int DEFAULT_PREVIEW_SIZE = 300;
 	private final static double MINIMUM_ZOOM_FACTOR = 0.1;
-	
+
 	public Preview(Pageable pageable, double zoom) {
 		this.pageable = pageable;
 		PageFormat format = pageable.getPageFormat(index);
@@ -47,14 +47,14 @@ class Preview extends JComponent {
 			this.zoom = zoom;
 		resize();
 	}
-	
+
 	protected void paintPaper(Graphics g, PageFormat format) {
 		g.setColor(Color.white);
 		g.fillRect(0, 0, (int) format.getWidth(), (int) format.getHeight());
 		g.setColor(Color.black);
 		g.drawRect(0, 0, (int) format.getWidth() - 1, (int) format.getHeight() - 1);
 	}
-	
+
 	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
@@ -68,7 +68,7 @@ class Preview extends JComponent {
 		} catch (IndexOutOfBoundsException e) {
 		}
 	}
-	
+
 	public void moveIndex(int indexStep) {
 		int newIndex = index + indexStep;
 		try {
@@ -78,24 +78,24 @@ class Preview extends JComponent {
 		} catch (IndexOutOfBoundsException ignored) {
 		}
 	}
-	
+
 	public void changeZoom(double zoom) {
 		this.zoom = Math.max(MINIMUM_ZOOM_FACTOR, this.zoom + zoom);
 		resize();
 	}
-	
+
 	public void resize() {
 		PageFormat format = pageable.getPageFormat(index);
 		int size = (int) Math.max(format.getWidth() * zoom, format.getHeight() * zoom);
 		setPreferredSize(new Dimension(size, size));
 		revalidate();
 	}
-	
+
 	@Override
 	public Dimension getMinimumSize() {
 		return getPreferredSize();
 	}
-	
+
 	protected Pageable pageable;
 	protected int index = 0;
 	protected double zoom = 0.0;

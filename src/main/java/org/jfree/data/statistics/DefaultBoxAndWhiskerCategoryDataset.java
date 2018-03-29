@@ -42,13 +42,13 @@ import org.jfree.data.RangeInfo;
 import org.jfree.util.ObjectUtils;
 
 /**
- * A convenience class that provides a default implementation of the {@link BoxAndWhiskerCategoryDataset} interface.
+ * A convenience class that provides a default implementation of the
+ * {@link BoxAndWhiskerCategoryDataset} interface.
  * 
  * @author David Browning (for Australian Institute of Marine Science)
  */
 public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
-																	implements BoxAndWhiskerCategoryDataset,
-																				RangeInfo {
+		implements BoxAndWhiskerCategoryDataset, RangeInfo {
 
 	/** Storage for the data. */
 	protected KeyedObjects2D data;
@@ -78,9 +78,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the value for an item.
 	 * 
 	 * @param row
-	 *           the row index.
+	 *            the row index.
 	 * @param column
-	 *           the column index.
+	 *            the column index.
 	 * @return the value.
 	 */
 	public Number getValue(final int row, final int column) {
@@ -91,9 +91,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return the value.
 	 */
 	public Number getValue(final Comparable rowKey, final Comparable columnKey) {
@@ -104,9 +104,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the mean value for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The mean value.
 	 */
 	public Number getMeanValue(final int row, final int column) {
@@ -124,9 +124,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the mean value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @return The mean value.
 	 */
 	public Number getMeanValue(final Comparable rowKey, final Comparable columnKey) {
@@ -144,9 +144,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the median value for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return the median value.
 	 */
 	public Number getMedianValue(final int row, final int column) {
@@ -164,9 +164,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the median value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the columnKey.
+	 *            the columnKey.
 	 * @return the median value.
 	 */
 	public Number getMedianValue(final Comparable rowKey, final Comparable columnKey) {
@@ -184,9 +184,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the first quartile value.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The first quartile value.
 	 */
 	public Number getQ1Value(final int row, final int column) {
@@ -204,9 +204,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the first quartile value.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @return The first quartile value.
 	 */
 	public Number getQ1Value(final Comparable rowKey, final Comparable columnKey) {
@@ -224,9 +224,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the third quartile value.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The third quartile value.
 	 */
 	public Number getQ3Value(final int row, final int column) {
@@ -244,9 +244,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the third quartile value.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @return The third quartile value.
 	 */
 	public Number getQ3Value(final Comparable rowKey, final Comparable columnKey) {
@@ -264,7 +264,7 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the column index for a given key.
 	 * 
 	 * @param key
-	 *           the column key.
+	 *            the column key.
 	 * @return the column index.
 	 */
 	public int getColumnIndex(final Comparable key) {
@@ -275,7 +275,7 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns a column key.
 	 * 
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return the column key.
 	 */
 	public Comparable getColumnKey(final int column) {
@@ -295,7 +295,7 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the row index for a given key.
 	 * 
 	 * @param key
-	 *           the row key.
+	 *            the row key.
 	 * @return the row index.
 	 */
 	public int getRowIndex(final Comparable key) {
@@ -306,7 +306,7 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns a row key.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @return the row key.
 	 */
 	public Comparable getRowKey(final int row) {
@@ -345,11 +345,12 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * The various median values are calculated.
 	 * 
 	 * @param list
-	 *           a collection of values from which the various medians will be calculated.
+	 *            a collection of values from which the various medians will be
+	 *            calculated.
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 */
 	public void add(final List list, final Comparable rowKey, final Comparable columnKey) {
 
@@ -363,44 +364,39 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * The various median values are calculated.
 	 * 
 	 * @param item
-	 *           a box and whisker item.
+	 *            a box and whisker item.
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 */
-	public void add(final BoxAndWhiskerItem item,
-							final Comparable rowKey,
-							final Comparable columnKey) {
+	public void add(final BoxAndWhiskerItem item, final Comparable rowKey, final Comparable columnKey) {
 
 		this.data.addObject(item, rowKey, columnKey);
 		final double minval = item.getMinOutlier().doubleValue();
 		final double maxval = item.getMaxOutlier().doubleValue();
 
 		if (this.maximumRangeValue == null) {
-			this.maximumRangeValue = new Double(maxval);
-		} else
-			if (maxval > this.maximumRangeValue.doubleValue()) {
-				this.maximumRangeValue = new Double(maxval);
-			}
+			this.maximumRangeValue = Double.valueOf(maxval);
+		} else if (maxval > this.maximumRangeValue.doubleValue()) {
+			this.maximumRangeValue = Double.valueOf(maxval);
+		}
 
 		if (this.minimumRangeValue == null) {
-			this.minimumRangeValue = new Double(minval);
-		} else
-			if (minval < this.minimumRangeValue.doubleValue()) {
-				this.minimumRangeValue = new Double(minval);
-			}
+			this.minimumRangeValue = Double.valueOf(minval);
+		} else if (minval < this.minimumRangeValue.doubleValue()) {
+			this.minimumRangeValue = Double.valueOf(minval);
+		}
 
-		this.valueRange = new Range(this.minimumRangeValue.doubleValue(),
-												this.maximumRangeValue.doubleValue());
+		this.valueRange = new Range(this.minimumRangeValue.doubleValue(), this.maximumRangeValue.doubleValue());
 
 		fireDatasetChanged();
 
 	}
 
 	/**
-	 * Returns the minimum value in the dataset's range (or null if all the
-	 * values in the range are null).
+	 * Returns the minimum value in the dataset's range (or null if all the values
+	 * in the range are null).
 	 * 
 	 * @return the minimum value.
 	 */
@@ -409,8 +405,8 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	}
 
 	/**
-	 * Returns the maximum value in the dataset's range (or null if all the
-	 * values in the range are null).
+	 * Returns the maximum value in the dataset's range (or null if all the values
+	 * in the range are null).
 	 * 
 	 * @return the maximum value.
 	 */
@@ -430,20 +426,23 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	// public Number getInterquartileRangeValue(int row, int column) {
 	//
 	// Number result = null;
-	// QuartileCalculator qCalc = (QuartileCalculator) this.data.getObject(row, column);
+	// QuartileCalculator qCalc = (QuartileCalculator) this.data.getObject(row,
+	// column);
 	// if (qCalc != null) {
-	// result = new Double(qCalc.getInterquartileRange());
+	// result = Double.valueOf(qCalc.getInterquartileRange());
 	// }
 	// return result;
 	//
 	// }
 	//
-	// public Number getInterquartileRangeValue(Comparable rowKey, Comparable columnKey) {
+	// public Number getInterquartileRangeValue(Comparable rowKey, Comparable
+	// columnKey) {
 	//
 	// Number result = null;
-	// QuartileCalculator qCalc = (QuartileCalculator) this.data.getObject(rowKey, columnKey);
+	// QuartileCalculator qCalc = (QuartileCalculator) this.data.getObject(rowKey,
+	// columnKey);
 	// if (qCalc != null) {
-	// result = new Double(qCalc.getInterquartileRange());
+	// result = Double.valueOf(qCalc.getInterquartileRange());
 	// }
 	// return result;
 	//
@@ -453,9 +452,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the minimum regular (non outlier) value for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The minimum regular value.
 	 */
 	public Number getMinRegularValue(final int row, final int column) {
@@ -473,9 +472,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the minimum regular (non outlier) value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @return The minimum regular value.
 	 */
 	public Number getMinRegularValue(final Comparable rowKey, final Comparable columnKey) {
@@ -493,9 +492,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the maximum regular (non outlier) value for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The maximum regular value.
 	 */
 	public Number getMaxRegularValue(final int row, final int column) {
@@ -513,9 +512,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the maximum regular (non outlier) value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @return The maximum regular value.
 	 */
 	public Number getMaxRegularValue(final Comparable rowKey, final Comparable columnKey) {
@@ -533,9 +532,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the minimum outlier (non farout) value for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The minimum outlier.
 	 */
 	public Number getMinOutlier(final int row, final int column) {
@@ -553,9 +552,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the minimum outlier (non farout) value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @return The minimum outlier.
 	 */
 	public Number getMinOutlier(final Comparable rowKey, final Comparable columnKey) {
@@ -573,9 +572,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the maximum outlier (non farout) value for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return The maximum outlier.
 	 */
 	public Number getMaxOutlier(final int row, final int column) {
@@ -593,9 +592,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns the maximum outlier (non farout) value for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @return The maximum outlier.
 	 */
 	public Number getMaxOutlier(final Comparable rowKey, final Comparable columnKey) {
@@ -613,9 +612,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns a list of outlier values for an item.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return A list of outlier values.
 	 */
 	public List getOutliers(final int row, final int column) {
@@ -633,9 +632,9 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Returns a list of outlier values for an item.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @return A list of outlier values.
 	 */
 	public List getOutliers(final Comparable rowKey, final Comparable columnKey) {
@@ -653,7 +652,7 @@ public class DefaultBoxAndWhiskerCategoryDataset extends AbstractDataset
 	 * Tests this dataset for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object to test against (<code>null</code> permitted).
+	 *            the object to test against (<code>null</code> permitted).
 	 * @return a boolean.
 	 */
 	public boolean equals(final Object obj) {

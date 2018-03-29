@@ -57,31 +57,31 @@ public class XYAreaChartTest extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XYAreaChartTest(final String title) {
 
 		super(title);
 
 		final XYSeries series1 = new XYSeries("Random 1");
-		series1.add(new Integer(1), new Double(500.2));
-		series1.add(new Integer(2), new Double(694.1));
-		series1.add(new Integer(3), new Double(-734.4));
-		series1.add(new Integer(4), new Double(453.2));
-		series1.add(new Integer(5), new Double(500.2));
-		series1.add(new Integer(6), new Double(300.7));
-		series1.add(new Integer(7), new Double(734.4));
-		series1.add(new Integer(8), new Double(453.2));
+		series1.add(Integer.valueOf(1), Double.valueOf(500.2));
+		series1.add(Integer.valueOf(2), Double.valueOf(694.1));
+		series1.add(Integer.valueOf(3), Double.valueOf(-734.4));
+		series1.add(Integer.valueOf(4), Double.valueOf(453.2));
+		series1.add(Integer.valueOf(5), Double.valueOf(500.2));
+		series1.add(Integer.valueOf(6), Double.valueOf(300.7));
+		series1.add(Integer.valueOf(7), Double.valueOf(734.4));
+		series1.add(Integer.valueOf(8), Double.valueOf(453.2));
 
 		final XYSeries series2 = new XYSeries("Random 2");
-		series2.add(new Integer(1), new Double(700.2));
-		series2.add(new Integer(2), new Double(534.1));
-		series2.add(new Integer(3), new Double(323.4));
-		series2.add(new Integer(4), new Double(125.2));
-		series2.add(new Integer(5), new Double(653.2));
-		series2.add(new Integer(6), new Double(432.7));
-		series2.add(new Integer(7), new Double(564.4));
-		series2.add(new Integer(8), new Double(322.2));
+		series2.add(Integer.valueOf(1), Double.valueOf(700.2));
+		series2.add(Integer.valueOf(2), Double.valueOf(534.1));
+		series2.add(Integer.valueOf(3), Double.valueOf(323.4));
+		series2.add(Integer.valueOf(4), Double.valueOf(125.2));
+		series2.add(Integer.valueOf(5), Double.valueOf(653.2));
+		series2.add(Integer.valueOf(6), Double.valueOf(432.7));
+		series2.add(Integer.valueOf(7), Double.valueOf(564.4));
+		series2.add(Integer.valueOf(8), Double.valueOf(322.2));
 
 		final XYSeriesCollection dataset = new XYSeriesCollection(series1);
 		dataset.addSeries(series2);
@@ -98,20 +98,16 @@ public class XYAreaChartTest extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createXYAreaChart(
-							"XY Area Chart Test",
-							"Domain (X)", "Range (Y)",
-							dataset,
-							PlotOrientation.VERTICAL,
-							true, // legend
+		final JFreeChart chart = ChartFactory.createXYAreaChart("XY Area Chart Test", "Domain (X)", "Range (Y)",
+				dataset, PlotOrientation.VERTICAL, true, // legend
 				true, // tool tips
 				false // URLs
-				);
+		);
 
 		chart.setBackgroundPaint(Color.white);
 
@@ -150,7 +146,7 @@ public class XYAreaChartTest extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

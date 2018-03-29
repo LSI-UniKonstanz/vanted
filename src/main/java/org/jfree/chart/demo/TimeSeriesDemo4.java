@@ -50,16 +50,18 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * An example of a time series chart using hourly data and including a null value. The plot
- * has an image set for the background, and a blue range marker is added to the plot.
+ * An example of a time series chart using hourly data and including a null
+ * value. The plot has an image set for the background, and a blue range marker
+ * is added to the plot.
  */
 public class TimeSeriesDemo4 extends ApplicationFrame {
 
 	/**
-	 * A demonstration application showing a quarterly time series containing a null value.
+	 * A demonstration application showing a quarterly time series containing a null
+	 * value.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public TimeSeriesDemo4(final String title) {
 
@@ -78,15 +80,8 @@ public class TimeSeriesDemo4 extends ApplicationFrame {
 
 		// create a title with Unicode characters (currency symbols in this case)...
 		final String chartTitle = "\u20A2\u20A2\u20A3\u20A4\u20A5\u20A6\u20A7\u20A8\u20A9\u20AA";
-		final JFreeChart chart = ChartFactory.createTimeSeriesChart(
-							chartTitle,
-							"Time",
-							"Value",
-							dataset,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createTimeSeriesChart(chartTitle, "Time", "Value", dataset, true, true,
+				false);
 
 		final XYPlot plot = chart.getXYPlot();
 		plot.setInsets(new Insets(0, 0, 0, 20));
@@ -124,7 +119,7 @@ public class TimeSeriesDemo4 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

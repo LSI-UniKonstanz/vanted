@@ -16,25 +16,21 @@ import org.graffiti.plugin.algorithm.Category;
  * @author rohn
  */
 public class RemoveHiddenLabelsAlgorithm extends AbstractAlgorithm {
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.ANNOTATION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANNOTATION));
 	}
-	
+
 	@Override
 	public String getMenuCategory() {
 		return "edit.Change Label";
 	}
 
-	
 	public String getName() {
 		return "Remove hidden labels";
 	}
-	
+
 	public void execute() {
 		int deletedCnt = 0, cntges = 0;
 		for (GraphElement ge : getSelectedOrAllGraphElements()) {
@@ -50,13 +46,13 @@ public class RemoveHiddenLabelsAlgorithm extends AbstractAlgorithm {
 		if (deletedCnt == 0)
 			MainFrame.showMessage("<html>No hidden labels removed", MessageType.PERMANENT_INFO);
 		else
-			MainFrame.showMessageDialog(
-					"<html>" + deletedCnt + " hidden labels of " + cntges + " graphelements have been deleted from graph<p><i>" + graph.getName(), "Information");
+			MainFrame.showMessageDialog("<html>" + deletedCnt + " hidden labels of " + cntges
+					+ " graphelements have been deleted from graph<p><i>" + graph.getName(), "Information");
 	}
-	
+
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;
 	}
-	
+
 }

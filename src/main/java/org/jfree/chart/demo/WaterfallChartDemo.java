@@ -58,7 +58,7 @@ public class WaterfallChartDemo extends ApplicationFrame {
 	 * Creates a new WaterFall Chart demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public WaterfallChartDemo(final String title) {
 
@@ -103,21 +103,13 @@ public class WaterfallChartDemo extends ApplicationFrame {
 	 * Returns the chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createWaterfallChart(
-							"Product Cost Breakdown",
-							"Expense Category",
-							"Cost Per Unit",
-							dataset,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createWaterfallChart("Product Cost Breakdown", "Expense Category",
+				"Cost Per Unit", dataset, PlotOrientation.VERTICAL, true, true, false);
 		chart.setBackgroundPaint(Color.white);
 
 		final CategoryPlot plot = chart.getCategoryPlot();
@@ -151,9 +143,7 @@ public class WaterfallChartDemo extends ApplicationFrame {
 		final DecimalFormat labelFormatter = new DecimalFormat("$##,###.00");
 		labelFormatter.setNegativePrefix("(");
 		labelFormatter.setNegativeSuffix(")");
-		renderer.setLabelGenerator(
-							new StandardCategoryLabelGenerator("{2}", labelFormatter)
-							);
+		renderer.setLabelGenerator(new StandardCategoryLabelGenerator("{2}", labelFormatter));
 		renderer.setItemLabelsVisible(true);
 
 		return chart;
@@ -163,7 +153,7 @@ public class WaterfallChartDemo extends ApplicationFrame {
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 		final WaterfallChartDemo demo = new WaterfallChartDemo("Waterfall Chart Demo");

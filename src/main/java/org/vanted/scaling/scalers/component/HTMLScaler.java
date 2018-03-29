@@ -5,8 +5,7 @@ import javax.swing.JComponent;
 import org.vanted.scaling.scalers.Scaler;
 
 /**
- * Implement this to make sure your HTML-styled component's text
- * will be scaled.
+ * Implement this to make sure your HTML-styled component's text will be scaled.
  * 
  * @author dim8
  *

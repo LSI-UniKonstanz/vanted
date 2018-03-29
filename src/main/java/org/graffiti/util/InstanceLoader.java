@@ -19,22 +19,22 @@ import java.util.HashSet;
  * Represents an instance loader, which can be used to instantiate a class with
  * the given name.
  * 
- * @version $Revision: 1.11 $
+ * @since 1.0
+ * @version 1.11
+ * @vanted.revision 2.6.5
  */
-@SuppressWarnings("unchecked")
 public class InstanceLoader {
-	// ~ Methods ================================================================
-	
+
 	private static ClassLoader storedLoader = InstanceLoader.class.getClassLoader();
-	
+
 	private static Policy allRight = new AllPermissionPolicy();
-	
+
 	public static synchronized void overrideLoader(ClassLoader loader) {
 		if (loader == null)
 			return;
-		
+
 		Policy.setPolicy(allRight); // :-D
-		
+
 		if (storedLoader != null && (storedLoader instanceof URLClassLoader) && (loader instanceof URLClassLoader)) {
 			// update stored loader with new URLs
 			URLClassLoader ucl = (URLClassLoader) storedLoader;
@@ -42,7 +42,7 @@ public class InstanceLoader {
 			HashSet<URL> knownURLs = new HashSet<URL>();
 			for (URL knownURL : ucl.getURLs())
 				knownURLs.add(knownURL);
-			
+
 			for (URL newURL : newUCL.getURLs()) {
 				if (!knownURLs.contains(newURL)) {
 					storedLoader = loader;
@@ -53,172 +53,123 @@ public class InstanceLoader {
 			storedLoader = loader;
 		}
 		Policy.setPolicy(allRight); // :-D
-		
+
 		Policy.setPolicy(allRight); // :-D
 	}
-	
+
 	public static synchronized void setClassLoader(ClassLoader newClassloader) {
 		storedLoader = newClassloader;
 	}
-	
+
 	public static synchronized ClassLoader getCurrentLoader() {
 		return storedLoader;
 	}
-	
+
 	/**
 	 * Returns a new instance of the specified class.
 	 * 
 	 * @param theClass
-	 *           the class to instantiate.
-	 * @return DOCUMENT ME!
+	 *            the class to instantiate.
+	 * @return newly instantiated instance of type theClass
 	 * @throws InstanceCreationException
-	 *            DOCUMENT ME!
+	 *             when an instance couldn't be created
 	 */
-	public static Object createInstance(Class theClass)
-						throws InstanceCreationException {
+	public static Object createInstance(Class<?> theClass) throws InstanceCreationException {
 		try {
-			return theClass.newInstance();
-		} catch (InstantiationException ie) {
-			throw new InstanceCreationException(ie);
-		} catch (IllegalAccessException iae) {
-			throw new InstanceCreationException(iae);
-		}
-	}
-	
-	/**
-	 * Returns a new instance of the specified class.
-	 * 
-	 * @param name
-	 *           the name of the class to instantiate.
-	 * @return DOCUMENT ME!
-	 * @throws InstanceCreationException
-	 *            DOCUMENT ME!
-	 */
-	public static synchronized Object createInstance(String name)
-						throws InstanceCreationException {
-		try {
-			Class<?> c = storedLoader.loadClass(name);
-			
-			return c.newInstance();
-			//It might be useful to print the Stacktraces too,
-			//since there some valuable information may be hiding itself *
-		} catch (NullPointerException npe) {
-			throw new InstanceCreationException(npe);
-		} catch (ClassNotFoundException cnfe) {
-			throw new InstanceCreationException(cnfe);
-		} catch (InstantiationException ie) {
-			throw new InstanceCreationException(ie);
-		} catch (IllegalAccessException iae) {
-			throw new InstanceCreationException(iae);
-		} catch (ClassCastException cce) {
-			cce.printStackTrace(); //As in here *
-			throw new InstanceCreationException(cce);
-		} catch (RuntimeException npe) {
-			throw new InstanceCreationException(npe);			
-		} catch (Exception e) {
-			System.err.println("Unhandled (ignored) exception: " + e.getLocalizedMessage());
-			e.printStackTrace();
+			return theClass.getDeclaredConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
 			throw new InstanceCreationException(e);
 		}
 	}
-	
+
 	/**
-	 * Returns a new instance of the specified class. Uses a constructor taking
-	 * one argument.
+	 * Returns a new instance of the specified class.
 	 * 
 	 * @param name
-	 *           the name of the class to instanciate.
-	 * @param param
-	 *           param
-	 * @return DOCUMENT ME!
+	 *            the name of the class to instantiate.
+	 * @return newly instantiated instance of type theClass
 	 * @throws InstanceCreationException
-	 *            DOCUMENT ME!
+	 *             when an instance couldn't be created
 	 */
-	public static Object createInstance(String name, Object param)
-						throws InstanceCreationException {
+	public static synchronized Object createInstance(String name) throws InstanceCreationException {
 		try {
-			return Class.forName(name)
-								.getConstructor(new Class[] { param.getClass() })
-								.newInstance(new Object[] { param });
-		} catch (InvocationTargetException ite) {
-			throw new InstanceCreationException(ite);
-		} catch (NoSuchMethodException nsme) {
-			throw new InstanceCreationException(nsme);
-		} catch (NullPointerException npe) {
-			throw new InstanceCreationException(npe);
-		} catch (ClassNotFoundException cnfe) {
-			throw new InstanceCreationException(cnfe);
-		} catch (InstantiationException ie) {
-			throw new InstanceCreationException(ie);
-		} catch (IllegalAccessException iae) {
-			throw new InstanceCreationException(iae);
+			Class<?> c = storedLoader.loadClass(name);
+
+			return c.getDeclaredConstructor().newInstance();
+		} catch (NullPointerException | ClassNotFoundException | InstantiationException | IllegalAccessException
+				| ClassCastException e) {
+			e.printStackTrace();
+			throw new InstanceCreationException(e);
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			throw new InstanceCreationException(exception);
 		}
 	}
-	
+
 	/**
-	 * Returns a new instance of the specified class. Uses a constructor taking
-	 * one argument.
+	 * Returns a new instance of the specified class. Uses a constructor taking one
+	 * argument.
+	 * 
+	 * @param name
+	 *            the name of the class to instantiate.
+	 * @param param
+	 *            specified class' constructor argument
+	 * @return newly instantiated instance of type theClass
+	 * @throws InstanceCreationException
+	 *             when an instance couldn't be created
+	 */
+	public static Object createInstance(String name, Object param) throws InstanceCreationException {
+		try {
+			return Class.forName(name).getConstructor(param.getClass()).newInstance(param);
+		} catch (InvocationTargetException | NoSuchMethodException | NullPointerException | ClassNotFoundException
+				| InstantiationException | IllegalAccessException ite) {
+			throw new InstanceCreationException(ite);
+		}
+	}
+
+	/**
+	 * Returns a new instance of the specified class. Uses a constructor taking one
+	 * argument.
 	 * 
 	 * @param theClass
-	 *           the name of the class to instanciate.
+	 *            the class to instantiate.
 	 * @param paramClassname
-	 *           DOCUMENT ME!
+	 *            the fully qualified name of the parameter class to instantiate.
 	 * @param param
-	 *           param
-	 * @return DOCUMENT ME!
+	 *            specified class' constructor argument
+	 * @return newly instantiated instance of type theClass
 	 * @throws InstanceCreationException
-	 *            DOCUMENT ME!
+	 *             when an instance couldn't be created
 	 */
-	public static Object createInstance(Class<?> theClass, String paramClassname,
-						Object param)
-						throws InstanceCreationException {
+	public static Object createInstance(Class<?> theClass, String paramClassname, Object param)
+			throws InstanceCreationException {
 		try {
-			return theClass.getConstructor(new Class[]
-																	{
-								Class.forName(paramClassname)
-																	}).newInstance(new Object[] { param });
-		} catch (InvocationTargetException ite) {
+			return theClass.getConstructor(Class.forName(paramClassname)).newInstance(param);
+		} catch (InvocationTargetException | NoSuchMethodException | NullPointerException | ClassNotFoundException
+				| InstantiationException | IllegalAccessException ite) {
 			throw new InstanceCreationException(ite);
-		} catch (NoSuchMethodException nsme) {
-			throw new InstanceCreationException(nsme);
-		} catch (NullPointerException npe) {
-			throw new InstanceCreationException(npe);
-		} catch (ClassNotFoundException cnfe) {
-			throw new InstanceCreationException(cnfe);
-		} catch (InstantiationException ie) {
-			throw new InstanceCreationException(ie);
-		} catch (IllegalAccessException iae) {
-			throw new InstanceCreationException(iae);
 		}
 	}
-	
+
 	/**
-	 * Returns a new instance of the specified class. Uses a constructor taking
-	 * one argument.
+	 * Returns a new instance of the specified class. Uses a constructor taking one
+	 * argument.
 	 * 
 	 * @param theClass
-	 *           the name of the class to instanciate.
+	 *            the name of the class to instantiate.
 	 * @param param
-	 *           param
-	 * @return DOCUMENT ME!
+	 *            specified class' constructor argument
+	 * @return newly instantiated instance of type theClass
 	 * @throws InstanceCreationException
-	 *            DOCUMENT ME!
+	 *             when an instance couldn't be created
 	 */
-	public static Object createInstance(Class theClass, Object param)
-						throws InstanceCreationException {
+	public static Object createInstance(Class<?> theClass, Object param) throws InstanceCreationException {
 		try {
-			return theClass.getConstructor(new Class[] { param.getClass() })
-								.newInstance(new Object[] { param });
-		} catch (InvocationTargetException ite) {
+			return theClass.getConstructor(param.getClass()).newInstance(param);
+		} catch (InvocationTargetException | NoSuchMethodException | NullPointerException | InstantiationException
+				| IllegalAccessException ite) {
 			throw new InstanceCreationException(ite);
-		} catch (NoSuchMethodException nsme) {
-			throw new InstanceCreationException(nsme);
-		} catch (NullPointerException npe) {
-			throw new InstanceCreationException(npe);
-		} catch (InstantiationException ie) {
-			throw new InstanceCreationException(ie);
-		} catch (IllegalAccessException iae) {
-			throw new InstanceCreationException(iae);
 		}
 	}
 }

@@ -13,7 +13,7 @@ import java.util.HashSet;
 import org.graffiti.graph.Graph;
 
 public class WorkTask {
-	
+
 	public HashSet<String> nodesIn1;
 	public String message2;
 	public int j;
@@ -23,9 +23,9 @@ public class WorkTask {
 	public Graph graph1;
 	public WorkSettings ws;
 	public ArrayList<WorkTask> runningThreads;
-	
-	public WorkTask(HashSet<String> nodesIn1, File graph2fn, int i, int j, String message2, int[][] hammingDistances, Graph graph1, WorkSettings ws,
-						ArrayList<WorkTask> runningThreads) {
+
+	public WorkTask(HashSet<String> nodesIn1, File graph2fn, int i, int j, String message2, int[][] hammingDistances,
+			Graph graph1, WorkSettings ws, ArrayList<WorkTask> runningThreads) {
 		this.nodesIn1 = nodesIn1;
 		this.graph2fn = graph2fn;
 		this.i = i;
@@ -36,5 +36,5 @@ public class WorkTask {
 		this.ws = ws;
 		this.runningThreads = runningThreads;
 	}
-	
+
 }

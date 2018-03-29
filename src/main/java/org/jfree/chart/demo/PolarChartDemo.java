@@ -44,7 +44,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * <code>PolarChartDemo</code> demonstrates the capabilities of the {@link PolarPlot}.
+ * <code>PolarChartDemo</code> demonstrates the capabilities of the
+ * {@link PolarPlot}.
  * 
  * @author Daniel Bridenbecker, Solution Engineering, Inc.
  */
@@ -54,7 +55,7 @@ public class PolarChartDemo extends ApplicationFrame {
 	 * Creates a new instance of the demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PolarChartDemo(final String title) {
 		super(title);
@@ -86,13 +87,11 @@ public class PolarChartDemo extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(final XYDataset dataset) {
-		final JFreeChart chart = ChartFactory.createPolarChart(
-							"Polar Chart Demo", dataset, true, true, false
-							);
+		final JFreeChart chart = ChartFactory.createPolarChart("Polar Chart Demo", dataset, true, true, false);
 		final PolarPlot plot = (PolarPlot) chart.getPlot();
 		final DefaultPolarItemRenderer renderer = (DefaultPolarItemRenderer) plot.getRenderer();
 		renderer.setSeriesFilled(2, true);
@@ -103,16 +102,14 @@ public class PolarChartDemo extends ApplicationFrame {
 	 * Creates a series containing random data.
 	 * 
 	 * @param name
-	 *           the series name.
+	 *            the series name.
 	 * @param baseRadius
-	 *           the base radius.
+	 *            the base radius.
 	 * @param thetaInc
-	 *           the angle increment.
+	 *            the angle increment.
 	 * @return The series.
 	 */
-	private static XYSeries createRandomData(final String name,
-															final double baseRadius,
-															final double thetaInc) {
+	private static XYSeries createRandomData(final String name, final double baseRadius, final double thetaInc) {
 		final XYSeries series = new XYSeries(name);
 		for (double theta = 0.0; theta < 360.0; theta += thetaInc) {
 			final double radius = baseRadius * (1.0 + Math.random());
@@ -122,11 +119,10 @@ public class PolarChartDemo extends ApplicationFrame {
 	}
 
 	/**
-	 * Main program that creates a thermometer and places it into
-	 * a JFrame.
+	 * Main program that creates a thermometer and places it into a JFrame.
 	 * 
 	 * @param argv
-	 *           Command line arguements - none used.
+	 *            Command line arguements - none used.
 	 */
 	public static void main(final String[] argv) {
 

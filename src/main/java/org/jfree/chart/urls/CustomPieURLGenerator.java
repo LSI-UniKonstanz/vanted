@@ -42,10 +42,7 @@ import org.jfree.util.PublicCloneable;
 /**
  * A custom URL generator for pie charts.
  */
-public class CustomPieURLGenerator implements PieURLGenerator,
-																Cloneable,
-																PublicCloneable,
-																Serializable {
+public class CustomPieURLGenerator implements PieURLGenerator, Cloneable, PublicCloneable, Serializable {
 
 	/** Storage for the URLs. */
 	private ArrayList urls;
@@ -61,11 +58,11 @@ public class CustomPieURLGenerator implements PieURLGenerator,
 	 * Generates a URL.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param key
-	 *           the item key.
+	 *            the item key.
 	 * @param pieIndex
-	 *           the pie index (ignored).
+	 *            the pie index (ignored).
 	 * @return a string containing the generated URL.
 	 */
 	public String generateURL(PieDataset dataset, Comparable key, int pieIndex) {
@@ -85,7 +82,7 @@ public class CustomPieURLGenerator implements PieURLGenerator,
 	 * Returns the number of URLs in a given list.
 	 * 
 	 * @param list
-	 *           the list index (zero based).
+	 *            the list index (zero based).
 	 * @return The URL count.
 	 */
 	public int getURLCount(int list) {
@@ -102,9 +99,9 @@ public class CustomPieURLGenerator implements PieURLGenerator,
 	 * Returns the URL for an item.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @param pieItem
-	 *           the item index.
+	 *            the item index.
 	 * @return The URL.
 	 */
 	public String getURL(Comparable key, int pieItem) {
@@ -125,7 +122,7 @@ public class CustomPieURLGenerator implements PieURLGenerator,
 	 * Adds a map of URLs.
 	 * 
 	 * @param urlMap
-	 *           the URLs.
+	 *            the URLs.
 	 */
 	public void addURLs(Map urlMap) {
 		this.urls.add(urlMap);
@@ -135,7 +132,7 @@ public class CustomPieURLGenerator implements PieURLGenerator,
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
@@ -173,7 +170,7 @@ public class CustomPieURLGenerator implements PieURLGenerator,
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if cloning is not supported.
+	 *             if cloning is not supported.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		CustomPieURLGenerator urlGen = new CustomPieURLGenerator();

@@ -15,20 +15,19 @@ import org.graffiti.plugin.algorithm.Algorithm;
  * @author Dirk Koschützki
  * @see NaivePatternFinderAlgorithm
  */
-public class NaivePatternFinderPlugin
-					extends GenericPluginAdapter {
+public class NaivePatternFinderPlugin extends GenericPluginAdapter {
 	/*************************************************************/
 	/* Declarations of methods */
 	/*************************************************************/
-	
+
 	/**
 	 * Constructor for the Plugin.
 	 */
 	public NaivePatternFinderPlugin() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH))
 			this.algorithms = new Algorithm[] {
-				// new NaivePatternFinderAlgorithm()
-				// no menu item needed for that command (included in side search tab
-				};
+					// new NaivePatternFinderAlgorithm()
+					// no menu item needed for that command (included in side search tab
+			};
 	}
 }

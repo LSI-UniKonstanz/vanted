@@ -18,22 +18,22 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.KeggId;
 public class ReactionIdEditor extends JTextField {
 	private static final long serialVersionUID = 1L;
 	private Reaction currReaction;
-	
+
 	private Pathway currPathway;
-	
+
 	private MyReactionList list;
-	
+
 	public ReactionIdEditor(Reaction initReaction, Pathway pathway) {
-		
+
 		this.currPathway = pathway;
-		
+
 		updateReactionSelection(initReaction);
-		
+
 		addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
 				updateReactionSelection(currReaction);
 			}
-			
+
 			public void focusLost(FocusEvent e) {
 				if (currReaction != null) {
 					String newId = getText();
@@ -52,13 +52,11 @@ public class ReactionIdEditor extends JTextField {
 							break;
 					}
 					if (known)
-						MainFrame.showMessageDialog(
-											"<html>" +
-																"This new reaction ID is already in use.<br>" +
-																"Now click Cancel in case merge of reaction information is not desired.<br>" +
-																"Now click OK and re-open reaction editing in case further editing of this<br>" +
-																"reaction is desired. Substrate and product list display are otherwise not<br>" +
-																"updated with information from existing reaction definition.", "Information");
+						MainFrame.showMessageDialog("<html>" + "This new reaction ID is already in use.<br>"
+								+ "Now click Cancel in case merge of reaction information is not desired.<br>"
+								+ "Now click OK and re-open reaction editing in case further editing of this<br>"
+								+ "reaction is desired. Substrate and product list display are otherwise not<br>"
+								+ "updated with information from existing reaction definition.", "Information");
 					for (Entry entry : currReaction.getEntriesRepresentingThisReaction(currPathway.getEntries())) {
 						for (KeggId keggID : entry.getReactions()) {
 							if (keggID.getId().equals(currReaction.getId())) {
@@ -72,11 +70,11 @@ public class ReactionIdEditor extends JTextField {
 			}
 		});
 	}
-	
+
 	public void setCallBack(MyReactionList list) {
 		this.list = list;
 	}
-	
+
 	public void updateReactionSelection(Reaction r) {
 		this.currReaction = r;
 		if (currReaction != null)
@@ -84,5 +82,5 @@ public class ReactionIdEditor extends JTextField {
 		else
 			setText("");
 	}
-	
+
 }

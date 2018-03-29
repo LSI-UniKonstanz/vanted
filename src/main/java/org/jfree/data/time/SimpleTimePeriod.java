@@ -36,9 +36,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * An arbitrary period of time, measured to millisecond precision using <code>java.util.Date</code>.
+ * An arbitrary period of time, measured to millisecond precision using
+ * <code>java.util.Date</code>.
  * <p>
- * This class is intentionally immutable (that is, once constructed, you cannot alter the start and end attributes).
+ * This class is intentionally immutable (that is, once constructed, you cannot
+ * alter the start and end attributes).
  */
 public class SimpleTimePeriod implements TimePeriod, Serializable {
 
@@ -52,9 +54,9 @@ public class SimpleTimePeriod implements TimePeriod, Serializable {
 	 * Creates a new time allocation.
 	 * 
 	 * @param start
-	 *           the start date/time.
+	 *            the start date/time.
 	 * @param end
-	 *           the end date/time.
+	 *            the end date/time.
 	 */
 	public SimpleTimePeriod(final Date start, final Date end) {
 
@@ -87,12 +89,14 @@ public class SimpleTimePeriod implements TimePeriod, Serializable {
 	}
 
 	/**
-	 * Returns <code>true</code> if this time period is equal to another object, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if this time period is equal to another object, and
+	 * <code>false</code> otherwise.
 	 * <P>
-	 * The test for equality looks only at the start and end values for the time period.
+	 * The test for equality looks only at the start and end values for the time
+	 * period.
 	 * 
 	 * @param obj
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object obj) {
@@ -111,7 +115,8 @@ public class SimpleTimePeriod implements TimePeriod, Serializable {
 	/**
 	 * Returns a hash code for this object instance.
 	 * <p>
-	 * The approach described by Joshua Bloch in "Effective Java" has been used here:
+	 * The approach described by Joshua Bloch in "Effective Java" has been used
+	 * here:
 	 * <p>
 	 * <code>http://developer.java.sun.com/developer/Books/effectivejava/Chapter3.pdf</code>
 	 * 

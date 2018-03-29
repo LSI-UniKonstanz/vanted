@@ -60,7 +60,7 @@ public class DefaultWindDataset extends AbstractXYDataset implements WindDataset
 	 * Constructs a dataset based on the specified data.
 	 * 
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 */
 	public DefaultWindDataset(final Object[][][] data) {
 		this(seriesNameListFromDataArray(data), data);
@@ -70,9 +70,9 @@ public class DefaultWindDataset extends AbstractXYDataset implements WindDataset
 	 * Constructs a dataset based on the specified data.
 	 * 
 	 * @param seriesNames
-	 *           the names of the series.
+	 *            the names of the series.
 	 * @param data
-	 *           the wind data.
+	 *            the wind data.
 	 */
 	public DefaultWindDataset(final String[] seriesNames, final Object[][][] data) {
 		this(Arrays.asList(seriesNames), data);
@@ -82,9 +82,9 @@ public class DefaultWindDataset extends AbstractXYDataset implements WindDataset
 	 * Constructs a dataset based on the specified data.
 	 * 
 	 * @param seriesNames
-	 *           the names of the series.
+	 *            the names of the series.
 	 * @param data
-	 *           the wind dataset.
+	 *            the wind dataset.
 	 */
 	public DefaultWindDataset(final List seriesNames, final Object[][][] data) {
 
@@ -106,9 +106,9 @@ public class DefaultWindDataset extends AbstractXYDataset implements WindDataset
 					} else {
 						if (xObject instanceof Date) {
 							final Date xDate = (Date) xObject;
-							xNumber = new Long(xDate.getTime());
+							xNumber = Long.valueOf(xDate.getTime());
 						} else {
-							xNumber = new Integer(0);
+							xNumber = Integer.valueOf(0);
 						}
 					}
 					final Number windDir = (Number) data[seriesIndex][itemIndex][1];
@@ -135,7 +135,7 @@ public class DefaultWindDataset extends AbstractXYDataset implements WindDataset
 	 * Returns the number of items in a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return The item count.
 	 */
 	public int getItemCount(final int series) {
@@ -147,7 +147,7 @@ public class DefaultWindDataset extends AbstractXYDataset implements WindDataset
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return The series name.
 	 */
 	public String getSeriesName(final int series) {
@@ -155,14 +155,13 @@ public class DefaultWindDataset extends AbstractXYDataset implements WindDataset
 	}
 
 	/**
-	 * Returns the x-value for one item within a series. This should represent
-	 * a point in time, encoded as milliseconds in the same way as
-	 * java.util.Date.
+	 * Returns the x-value for one item within a series. This should represent a
+	 * point in time, encoded as milliseconds in the same way as java.util.Date.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The x-value for the item within the series.
 	 */
 	public Number getXValue(final int series, final int item) {
@@ -177,9 +176,9 @@ public class DefaultWindDataset extends AbstractXYDataset implements WindDataset
 	 * extension of XYDataset.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The y-value for the item within the series.
 	 */
 	public Number getYValue(final int series, final int item) {
@@ -187,13 +186,13 @@ public class DefaultWindDataset extends AbstractXYDataset implements WindDataset
 	}
 
 	/**
-	 * Returns the wind direction for one item within a series. This is a
-	 * number between 0 and 12, like the numbers on a clock face.
+	 * Returns the wind direction for one item within a series. This is a number
+	 * between 0 and 12, like the numbers on a clock face.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The wind direction for the item within the series.
 	 */
 	public Number getWindDirection(final int series, final int item) {
@@ -203,13 +202,13 @@ public class DefaultWindDataset extends AbstractXYDataset implements WindDataset
 	}
 
 	/**
-	 * Returns the wind force for one item within a series. This is a number
-	 * between 0 and 12, as defined by the Beaufort scale.
+	 * Returns the wind force for one item within a series. This is a number between
+	 * 0 and 12, as defined by the Beaufort scale.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The wind force for the item within the series.
 	 */
 	public Number getWindForce(final int series, final int item) {
@@ -222,7 +221,7 @@ public class DefaultWindDataset extends AbstractXYDataset implements WindDataset
 	 * Utility method for automatically generating series names.
 	 * 
 	 * @param data
-	 *           the wind dataset.
+	 *            the wind dataset.
 	 * @return An array of <i>Series N</i> with N = { 1 .. data.length }.
 	 */
 	public static List seriesNameListFromDataArray(final Object[][] data) {
@@ -258,11 +257,11 @@ class WindDataItem implements Comparable {
 	 * Creates a new wind data item.
 	 * 
 	 * @param x
-	 *           the x-value.
+	 *            the x-value.
 	 * @param windDir
-	 *           the direction.
+	 *            the direction.
 	 * @param windForce
-	 *           the force.
+	 *            the force.
 	 */
 	public WindDataItem(final Number x, final Number windDir, final Number windForce) {
 		this.x = x;
@@ -301,7 +300,7 @@ class WindDataItem implements Comparable {
 	 * Compares this item to another object.
 	 * 
 	 * @param object
-	 *           the other object.
+	 *            the other object.
 	 * @return An int that indicates the relative comparison.
 	 */
 	public int compareTo(final Object object) {
@@ -309,12 +308,11 @@ class WindDataItem implements Comparable {
 			final WindDataItem item = (WindDataItem) object;
 			if (this.x.doubleValue() > item.x.doubleValue()) {
 				return 1;
-			} else
-				if (this.x.equals(item.x)) {
-					return 0;
-				} else {
-					return -1;
-				}
+			} else if (this.x.equals(item.x)) {
+				return 0;
+			} else {
+				return -1;
+			}
 		} else {
 			throw new ClassCastException("WindDataItem.compareTo(error)");
 		}

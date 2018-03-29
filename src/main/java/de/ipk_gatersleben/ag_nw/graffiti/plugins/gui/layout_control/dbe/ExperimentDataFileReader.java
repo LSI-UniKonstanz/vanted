@@ -40,53 +40,50 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.ExperimentInterface;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.kegg_expression.TextFileColumnInformation;
 
-public abstract class ExperimentDataFileReader
-					implements BackgroundTaskStatusProvider {
-	
+public abstract class ExperimentDataFileReader implements BackgroundTaskStatusProvider {
+
 	static Logger logger = Logger.getLogger(ExperimentDataFileReader.class);
-	
+
 	protected String status1 = "-";
 	protected String status2 = "";
 	private boolean please_stop = false;
-	
+
 	protected String fileName;
-	
+
 	protected double progressDouble = 0d;
 	protected String optCoordinatorValue;
 	protected String optExperimentName;
 	protected String optTimeUnit;
 	protected String optMeasurementUnit;
-	
+
 	public static TableData getExcelTableData(File excelFile) {
 		return getExcelTableData(excelFile, null);
 	}
-	
+
 	public static TableData getExcelTableData(File excelFile, ArrayList<String> optRelevantColumn) {
 		logger.debug("entering getExcelTableData");
 		final TableData myData = new TableData();
 		try {
 			FileInputStream fin = new FileInputStream(excelFile);
-			if(fin != null)
+			if (fin != null)
 				logger.debug("excel fileinputstream opened " + excelFile.getName());
-			else
-				logger.error("excel fileinputstream is null " + excelFile.getName());
 			ArrayList<TextFileColumnInformation> optValidColumn = null;
 			if (optRelevantColumn != null) {
 				optValidColumn = new ArrayList<TextFileColumnInformation>();
 				for (String col : optRelevantColumn)
 					optValidColumn.add(new TextFileColumnInformation(col, -1, -1));
 			}
-			
-			if (excelFile.getName().toUpperCase().endsWith(".CSV") ||
-								excelFile.getName().toUpperCase().endsWith(".DAT") ||
-								excelFile.getName().toUpperCase().endsWith(".TXT") ||
-								excelFile.getName().toUpperCase().endsWith(".LIST")) {
+
+			if (excelFile.getName().toUpperCase().endsWith(".CSV") || excelFile.getName().toUpperCase().endsWith(".DAT")
+					|| excelFile.getName().toUpperCase().endsWith(".TXT")
+					|| excelFile.getName().toUpperCase().endsWith(".LIST")) {
 				processCSVExcelFile(myData, fin, -1, optValidColumn, null);
 			} else {
 				/*
 				 * the old method is commented out, because you cant choose the work sheet and
-				 * if you have several sheets in a file, the values of different sheets are mixed together.
-				 * the new methods allows to choose the sheet (in every case the first)
+				 * if you have several sheets in a file, the values of different sheets are
+				 * mixed together. the new methods allows to choose the sheet (in every case the
+				 * first)
 				 */
 				// if (excelFile.getName().toUpperCase().endsWith(".XLS"))
 				// processBinaryExcelFile(myData, fin, -1, optValidColumn);
@@ -99,31 +96,31 @@ public abstract class ExperimentDataFileReader
 			return null;
 		}
 	}
-	
+
 	public static TableData getExcelTableDataPeak(File excelFile, int maximumRowToBeProcessed) {
 		return getExcelTableData(excelFile, maximumRowToBeProcessed, null, null);
 	}
-	
-	public static TableData getExcelTableData(File excelFile,
-						int maximumRowToBeProcessed,
-						ArrayList<TextFileColumnInformation> optValidColumns,
-						BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
+
+	public static TableData getExcelTableData(File excelFile, int maximumRowToBeProcessed,
+			ArrayList<TextFileColumnInformation> optValidColumns,
+			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
 		final TableData myData = new TableData();
 		try {
 			FileInputStream fin = new FileInputStream(excelFile);
-			if (excelFile.getName().toUpperCase().endsWith(".CSV") ||
-								excelFile.getName().toUpperCase().endsWith(".DAT") ||
-								excelFile.getName().toUpperCase().endsWith(".TXT") ||
-								excelFile.getName().toUpperCase().endsWith(".LIST")) {
+			if (excelFile.getName().toUpperCase().endsWith(".CSV") || excelFile.getName().toUpperCase().endsWith(".DAT")
+					|| excelFile.getName().toUpperCase().endsWith(".TXT")
+					|| excelFile.getName().toUpperCase().endsWith(".LIST")) {
 				processCSVExcelFile(myData, fin, maximumRowToBeProcessed, optValidColumns, optStatus);
 			} else {
 				/*
 				 * the old method is commented out, because you cant choose the work sheet and
-				 * if you have several sheets in a file, the values of different sheets are mixed together.
-				 * the new methods allows to choose the sheet (in every case the first)
+				 * if you have several sheets in a file, the values of different sheets are
+				 * mixed together. the new methods allows to choose the sheet (in every case the
+				 * first)
 				 */
 				// if (excelFile.getName().toUpperCase().endsWith(".XLS"))
-				// processBinaryExcelFile(myData, fin, maximumRowToBeProcessed, optValidColumns);
+				// processBinaryExcelFile(myData, fin, maximumRowToBeProcessed,
+				// optValidColumns);
 				// else
 				processExcelFile(myData, fin, maximumRowToBeProcessed);
 			}
@@ -136,27 +133,25 @@ public abstract class ExperimentDataFileReader
 			return null;
 		}
 	}
-	
-	public static TableData getExcelTableData(String tableData,
-						int maximumRowToBeProcessed,
-						ArrayList<TextFileColumnInformation> optValidColumns,
-						BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
+
+	public static TableData getExcelTableData(String tableData, int maximumRowToBeProcessed,
+			ArrayList<TextFileColumnInformation> optValidColumns,
+			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
 		final TableData myData = new TableData();
 		processCSVExcelFile(myData, tableData, maximumRowToBeProcessed, optValidColumns, optStatus);
 		return myData;
 	}
-	
-	public static TableData getExcelTableData(BufferedReader csvFile,
-						int maximumRowToBeProcessed,
-						ArrayList<TextFileColumnInformation> optValidColumns,
-						BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
+
+	public static TableData getExcelTableData(BufferedReader csvFile, int maximumRowToBeProcessed,
+			ArrayList<TextFileColumnInformation> optValidColumns,
+			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
 		TableData myData = new TableData();
 		processCSVExcelFile(myData, csvFile, maximumRowToBeProcessed, optValidColumns, optStatus);
 		return myData;
 	}
-	
-	public static TableData getCSVdata(File textFile,
-						ArrayList<String> arrayList, BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
+
+	public static TableData getCSVdata(File textFile, ArrayList<String> arrayList,
+			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
 		try {
 			HashSet<Integer> validColumns = new HashSet<Integer>();
 			TableData headerData = new TableData();
@@ -170,7 +165,7 @@ public abstract class ExperimentDataFileReader
 					System.out.println("valid: " + col);
 				}
 			}
-			
+
 			// read complete file, ignore non-relevant columns
 			fin = new FileInputStream(textFile);
 			TableData myData = new TableData();
@@ -182,20 +177,17 @@ public abstract class ExperimentDataFileReader
 			return null;
 		}
 	}
-	
-	private static void processCSVExcelFile(TableData myData, BufferedReader in,
-						int maximumRowToBeProcessed,
-						ArrayList<TextFileColumnInformation> optValidColumns,
-						BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
+
+	private static void processCSVExcelFile(TableData myData, BufferedReader in, int maximumRowToBeProcessed,
+			ArrayList<TextFileColumnInformation> optValidColumns,
+			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
 		processCSVExcelFile(myData, in, maximumRowToBeProcessed, optValidColumns, optStatus, null);
 	}
-	
+
 	@SuppressWarnings("deprecation")
-	private static void processCSVExcelFile(TableData myData, BufferedReader in,
-						int maximumRowToBeProcessed,
-						ArrayList<TextFileColumnInformation> optValidColumns,
-						BackgroundTaskStatusProviderSupportingExternalCall optStatus,
-						HashSet<Integer> validColumns) {
+	private static void processCSVExcelFile(TableData myData, BufferedReader in, int maximumRowToBeProcessed,
+			ArrayList<TextFileColumnInformation> optValidColumns,
+			BackgroundTaskStatusProviderSupportingExternalCall optStatus, HashSet<Integer> validColumns) {
 		int row = 0;
 		try {
 			String s;
@@ -207,7 +199,7 @@ public abstract class ExperimentDataFileReader
 						String[] cellsComma = s.split(",");
 						String[] cellsTab = s.split("\t");
 						String[] cellsSemi = s.split(";");
-						
+
 						if (cellsComma.length > cellsTab.length && cellsComma.length > cellsSemi.length)
 							separator = ",";
 						else {
@@ -288,12 +280,11 @@ public abstract class ExperimentDataFileReader
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-	
+
 	@SuppressWarnings("deprecation")
-	private static void processCSVExcelFile(TableData myData, String ins,
-						int maximumRowToBeProcessed,
-						ArrayList<TextFileColumnInformation> optValidColumns,
-						BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
+	private static void processCSVExcelFile(TableData myData, String ins, int maximumRowToBeProcessed,
+			ArrayList<TextFileColumnInformation> optValidColumns,
+			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
 		int row = 0;
 		boolean first = true;
 		String separator = "";
@@ -304,7 +295,7 @@ public abstract class ExperimentDataFileReader
 					String[] cellsComma = s.split(",");
 					String[] cellsTab = s.split("\t");
 					String[] cellsSemi = s.split(";");
-					
+
 					if (cellsComma.length > cellsTab.length && cellsComma.length > cellsSemi.length)
 						separator = ",";
 					else {
@@ -322,7 +313,8 @@ public abstract class ExperimentDataFileReader
 					String[] checkCells = s.split(separator);
 					for (String cc : checkCells) {
 						if (cc.indexOf("\"") >= 0) {
-							int numberOfParenthesis = cc.length() - StringManipulationTools.stringReplace(cc, "\"", "").length();
+							int numberOfParenthesis = cc.length()
+									- StringManipulationTools.stringReplace(cc, "\"", "").length();
 							if (numberOfParenthesis == 1) {
 								analysis.append(cc + separator);
 							} else {
@@ -374,11 +366,11 @@ public abstract class ExperimentDataFileReader
 				break;
 		}
 	}
-	
+
 	private static boolean validColumn(int col, ArrayList<TextFileColumnInformation> optValidColumns) {
 		if (col == 0) // the first column will always be loaded; containing gene ids
 			return true;
-		
+
 		if (optValidColumns == null)
 			return true;
 		for (TextFileColumnInformation tci : optValidColumns) {
@@ -389,24 +381,24 @@ public abstract class ExperimentDataFileReader
 		}
 		return false;
 	}
-	
+
 	private static void processCSVExcelFile(TableData myData, FileInputStream fin, int maximumRowToBeProcessed,
-						ArrayList<TextFileColumnInformation> optValidColumns,
-						BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
+			ArrayList<TextFileColumnInformation> optValidColumns,
+			BackgroundTaskStatusProviderSupportingExternalCall optStatus) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(fin));
 		processCSVExcelFile(myData, in, maximumRowToBeProcessed, optValidColumns, optStatus);
 	}
-	
+
 	private static void processCSVExcelFile(TableData myData, FileInputStream fin, int maximumRowToBeProcessed,
-						ArrayList<TextFileColumnInformation> optValidColumns,
-						BackgroundTaskStatusProviderSupportingExternalCall optStatus,
-						HashSet<Integer> optValidColumnsNew) {
+			ArrayList<TextFileColumnInformation> optValidColumns,
+			BackgroundTaskStatusProviderSupportingExternalCall optStatus, HashSet<Integer> optValidColumnsNew) {
 		BufferedReader in = new BufferedReader(new InputStreamReader(fin));
 		processCSVExcelFile(myData, in, maximumRowToBeProcessed, optValidColumns, optStatus, optValidColumnsNew);
 	}
-	
+
+	@SuppressWarnings("unused")
 	private static void processBinaryExcelFile(final TableData myData, FileInputStream fin,
-						final int maximumRowToBeProcessed, ArrayList<TextFileColumnInformation> optValidColumn) throws IOException {
+			final int maximumRowToBeProcessed, ArrayList<TextFileColumnInformation> optValidColumn) throws IOException {
 		POIFSFileSystem poifs = new POIFSFileSystem(fin);
 		InputStream din = poifs.createDocumentInputStream("Workbook"); //$NON-NLS-1$
 		HSSFRequest req = new HSSFRequest();
@@ -419,70 +411,60 @@ public abstract class ExperimentDataFileReader
 			}
 		}
 		new HashSet<Integer>();
-		
+
 		// req.addListenerForAllRecords(new HSSFListener()
 		req.addListener(new HSSFListener() {
 			public void processRecord(Record rec) {
 				LabelSSTRecord recT = (LabelSSTRecord) rec;
 				if (maximumRowToBeProcessed < 0 || recT.getRow() < maximumRowToBeProcessed)
-					myData.addCellData(
-										recT.getColumn(),
-										recT.getRow(),
-										myData.getStringRec().getString(recT.getSSTIndex()));
+					myData.addCellData(recT.getColumn(), recT.getRow(),
+							myData.getStringRec().getString(recT.getSSTIndex()));
 			}
 		}, LabelSSTRecord.sid);
-		
+
 		req.addListener(new HSSFListener() {
 			public void processRecord(Record rec) {
 				NumberRecord recT = (NumberRecord) rec;
 				if (maximumRowToBeProcessed < 0 || recT.getRow() < maximumRowToBeProcessed)
-					myData.addCellData(
-										recT.getColumn(),
-										recT.getRow(),
-										new Double(recT.getValue()));
+					myData.addCellData(recT.getColumn(), recT.getRow(), Double.valueOf(recT.getValue()));
 			}
 		}, NumberRecord.sid);
-		
+
 		req.addListener(new HSSFListener() {
 			public void processRecord(Record rec) {
 				FormulaRecord recT = (FormulaRecord) rec;
 				if (maximumRowToBeProcessed < 0 || recT.getRow() < maximumRowToBeProcessed)
-					myData.addCellData(
-										recT.getColumn(),
-										recT.getRow(),
-										new Double(recT.getValue()));
+					myData.addCellData(recT.getColumn(), recT.getRow(), Double.valueOf(recT.getValue()));
 			}
 		}, FormulaRecord.sid);
-		
+
 		req.addListener(new HSSFListener() {
 			public void processRecord(Record rec) {
 				SSTRecord recT = (SSTRecord) rec;
 				myData.setStringRec(recT);
 			}
 		}, SSTRecord.sid);
-		
+
 		HSSFEventFactory factory = new HSSFEventFactory();
 		factory.processEvents(req, din);
 	}
-	
-	private static void processExcelFile(TableData myData, FileInputStream fin,
-						final int maximumRowToBeProcessed) throws IOException, InvalidFormatException {
+
+	private static void processExcelFile(TableData myData, FileInputStream fin, final int maximumRowToBeProcessed)
+			throws IOException, InvalidFormatException {
 		logger.debug("entering processExcelFile");
 		try {
 			Workbook workbook = WorkbookFactory.create(fin);
-			if(workbook != null)
+			if (workbook != null)
 				logger.debug("workbook opened");
 			else
 				logger.error("workbook failed to open");
-			
-			
+
 			Sheet sheet = workbook.getSheetAt(0);
-			if(sheet != null)
+			if (sheet != null)
 				logger.debug("sheet opened");
 			else
 				logger.error("sheet failed to open");
-			
-			
+
 			int celltype;
 			for (Row row : sheet) {
 				if (maximumRowToBeProcessed > 0 && row.getRowNum() >= maximumRowToBeProcessed)
@@ -492,26 +474,29 @@ public abstract class ExperimentDataFileReader
 					if (celltype == Cell.CELL_TYPE_FORMULA)
 						celltype = cell.getCachedFormulaResultType();
 					switch (celltype) {
-						case Cell.CELL_TYPE_STRING:
-							myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(), cell.getStringCellValue());
-							break;
-						case Cell.CELL_TYPE_NUMERIC:
-							myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(), new Double(cell.getNumericCellValue()));
-							break;
-						case Cell.CELL_TYPE_BOOLEAN:
-							myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(), new Boolean(cell.getBooleanCellValue()));
-							break;
+					case Cell.CELL_TYPE_STRING:
+						myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(), cell.getStringCellValue());
+						break;
+					case Cell.CELL_TYPE_NUMERIC:
+						myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(),
+								Double.valueOf(cell.getNumericCellValue()));
+						break;
+					case Cell.CELL_TYPE_BOOLEAN:
+						myData.addCellData(cell.getColumnIndex(), cell.getRowIndex(),
+								Boolean.valueOf(cell.getBooleanCellValue()));
+						break;
 					}
 				}
 			}
-			
+
 		} catch (Exception e) {
 			logger.error(e);
 			ErrorMsg.addErrorMessage(e);
 		} catch (OutOfMemoryError e) {
 			logger.error(e);
-			ErrorMsg.addErrorMessage("<html>Not enough memory to load such files! Please start the application with increased memory.<br>"
-					+ e.getLocalizedMessage());
+			ErrorMsg.addErrorMessage(
+					"<html>Not enough memory to load such files! Please start the application with increased memory.<br>"
+							+ e.getLocalizedMessage());
 		} catch (Error e) {
 			logger.error(e);
 			ErrorMsg.addErrorMessage(e.getLocalizedMessage());
@@ -519,24 +504,24 @@ public abstract class ExperimentDataFileReader
 			fin.close();
 		}
 	}
-	
+
 	public ExperimentInterface getXMLdata(File excelFile, TableData myData,
-						BackgroundTaskStatusProviderSupportingExternalCall statusProvider) {
+			BackgroundTaskStatusProviderSupportingExternalCall statusProvider) {
 		if (excelFile != null)
 			fileName = excelFile.getName();
 		else
 			fileName = "not available";
-		
+
 		logger.debug("getXMLdata: filename:" + fileName);
-		
+
 		status1 = "Process data...";
 		status2 = "";
 		return getXMLDataFromExcelTable(excelFile, myData, statusProvider);
 	}
-	
+
 	public abstract ExperimentInterface getXMLDataFromExcelTable(File excelFile, TableData myData,
-						BackgroundTaskStatusProviderSupportingExternalCall statusProvider);
-	
+			BackgroundTaskStatusProviderSupportingExternalCall statusProvider);
+
 	/**
 	 * @return
 	 */
@@ -547,14 +532,12 @@ public abstract class ExperimentDataFileReader
 		}
 		return false;
 	}
-	
+
 	/**
-	 * searches for a column that looks like this: 0test_3
-	 * 0 is the time index (might be also 00, 01, 02, 2, 3, ...
-	 * test is here the analysed part of a plant, in the dbe data
-	 * termonology this is the analyzed "plant", the last
-	 * _2, _3, _0, _1 is about double measurements, here we have
-	 * the replicate number!
+	 * searches for a column that looks like this: 0test_3 0 is the time index
+	 * (might be also 00, 01, 02, 2, 3, ... test is here the analysed part of a
+	 * plant, in the dbe data termonology this is the analyzed "plant", the last _2,
+	 * _3, _0, _1 is about double measurements, here we have the replicate number!
 	 */
 	protected static int getFirstDataColumn(TableData myData) {
 		assert myData != null;
@@ -572,24 +555,21 @@ public abstract class ExperimentDataFileReader
 		}
 		return result;
 	}
-	
+
 	/**
-	 * get the column (in row 1) which matches the given pattern.
-	 * Possible patterns are: "*searchText" -> any text in front and then the
-	 * searchText,
+	 * get the column (in row 1) which matches the given pattern. Possible patterns
+	 * are: "*searchText" -> any text in front and then the searchText,
 	 * "*searchText*" -> return first column which contains "searchText",
 	 * "searchText*" -> return first column which starts with searchText,
-	 * "searchText", "searchText*searchText2" -> return first column which
-	 * matches
+	 * "searchText", "searchText*searchText2" -> return first column which matches
 	 * the given argument exactly.
 	 * 
 	 * @param myData
-	 *           The TableData
+	 *            The TableData
 	 * @param search
-	 *           The pattern to look for
+	 *            The pattern to look for
 	 * @return The index of the column or -1, if from column 1 to
-	 *         TableData.MAX_COLUMN
-	 *         no match is found.
+	 *         TableData.MAX_COLUMN no match is found.
 	 */
 	protected static int getHeaderColumn(TableData myData, String search) {
 		assert (search != null && search.length() > 0);
@@ -604,14 +584,12 @@ public abstract class ExperimentDataFileReader
 			boolean found = false;
 			if (search.startsWith("*") && search.endsWith("*"))
 				found = txt.contains(search.replace("*", ""));
+			else if (search.startsWith("*"))
+				found = txt.endsWith(search.replace("*", ""));
+			else if (search.endsWith("*"))
+				found = txt.startsWith(search.replace("*", ""));
 			else
-				if (search.startsWith("*"))
-					found = txt.endsWith(search.replace("*", ""));
-				else
-					if (search.endsWith("*"))
-						found = txt.startsWith(search.replace("*", ""));
-					else
-						found = txt.equals(search);
+				found = txt.equals(search);
 			if (found) {
 				result = col;
 				break;
@@ -619,51 +597,51 @@ public abstract class ExperimentDataFileReader
 		}
 		return result;
 	}
-	
+
 	public int getCurrentStatusValue() {
 		return (int) progressDouble;
 	}
-	
+
 	public void setCurrentStatusValue(int value) {
-		progressDouble = new Double(value);
+		progressDouble = Double.valueOf(value);
 	}
-	
+
 	public double getCurrentStatusValueFine() {
 		return progressDouble;
 	}
-	
+
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
-	
+
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
-	
+
 	public void pleaseStop() {
 		please_stop = true;
 	}
-	
+
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-	
+
 	public void pleaseContinueRun() {
 		// empty
 	}
-	
+
 	public void setCoordinator(String desiredCoordinatorValue) {
 		this.optCoordinatorValue = desiredCoordinatorValue;
 	}
-	
+
 	public void setExperimentName(String desiredExperimentName) {
 		this.optExperimentName = desiredExperimentName;
 	}
-	
+
 	public void setTimeUnit(String desiredTimeUnit) {
 		this.optTimeUnit = desiredTimeUnit;
 	}
-	
+
 	public void setMeasurementUnit(String desiredMeasurementUnit) {
 		this.optMeasurementUnit = desiredMeasurementUnit;
 	}

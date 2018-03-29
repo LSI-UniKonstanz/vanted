@@ -72,7 +72,8 @@ import org.jfree.data.ValueDataset;
 import org.jfree.util.ObjectUtils;
 
 /**
- * A specialised plot that draws a compass to indicate a direction based on the value from a {@link ValueDataset}.
+ * A specialised plot that draws a compass to indicate a direction based on the
+ * value from a {@link ValueDataset}.
  * 
  * @author Bryan Scott
  */
@@ -130,12 +131,12 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	private MeterNeedle[] seriesNeedle = new MeterNeedle[1];
 
 	/** The resourceBundle for the localization. */
-	protected static ResourceBundle localizationResources =
-						ResourceBundle.getBundle("org.jfree.chart.plot.LocalizationBundle");
+	protected static ResourceBundle localizationResources = ResourceBundle
+			.getBundle("org.jfree.chart.plot.LocalizationBundle");
 
 	/**
-	 * The count to complete one revolution. Can be arbitaly set
-	 * For degrees (the default) it is 360, for radians this is 2*Pi, etc
+	 * The count to complete one revolution. Can be arbitaly set For degrees (the
+	 * default) it is 360, for radians this is 2*Pi, etc
 	 */
 	protected double revolutionDistance = 360;
 
@@ -150,7 +151,7 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * Constructs a new compass plot.
 	 * 
 	 * @param dataset
-	 *           the dataset for the plot.
+	 *            the dataset for the plot.
 	 */
 	public CompassPlot(ValueDataset dataset) {
 
@@ -183,7 +184,7 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * Valid types are defined by the following constants: NO_LABELS, VALUE_LABELS.
 	 * 
 	 * @param type
-	 *           the type.
+	 *            the type.
 	 */
 	public void setLabelType(int type) {
 
@@ -217,14 +218,13 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * Notifies registered listeners that the plot has been changed.
 	 * 
 	 * @param font
-	 *           the new label font.
+	 *            the new label font.
 	 */
 	public void setLabelFont(Font font) {
 
 		// check arguments...
 		if (font == null) {
-			throw new IllegalArgumentException("MeterPlot.setLabelFont(...): "
-																+ "null font not allowed.");
+			throw new IllegalArgumentException("MeterPlot.setLabelFont(...): " + "null font not allowed.");
 		}
 
 		// make the change...
@@ -248,7 +248,7 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * Sets a flag that controls whether or not a border is drawn.
 	 * 
 	 * @param status
-	 *           the flag status.
+	 *            the flag status.
 	 */
 	public void setDrawBorder(boolean status) {
 		this.drawBorder = status;
@@ -258,9 +258,9 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * Sets the series paint.
 	 * 
 	 * @param series
-	 *           the series index.
+	 *            the series index.
 	 * @param paint
-	 *           the paint.
+	 *            the paint.
 	 */
 	public void setSeriesPaint(int series, Paint paint) {
 		// super.setSeriesPaint(series, paint);
@@ -273,9 +273,9 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * Sets the series outline paint.
 	 * 
 	 * @param series
-	 *           the series index.
+	 *            the series index.
 	 * @param p
-	 *           the paint.
+	 *            the paint.
 	 */
 	public void setSeriesOutlinePaint(int series, Paint p) {
 
@@ -289,9 +289,9 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * Sets the series outline stroke.
 	 * 
 	 * @param series
-	 *           the series index.
+	 *            the series index.
 	 * @param stroke
-	 *           the stroke.
+	 *            the stroke.
 	 */
 	public void setSeriesOutlineStroke(int series, Stroke stroke) {
 
@@ -305,7 +305,7 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * Sets the needle type.
 	 * 
 	 * @param type
-	 *           the type.
+	 *            the type.
 	 */
 	public void setSeriesNeedle(int type) {
 		setSeriesNeedle(0, type);
@@ -315,49 +315,49 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * Sets the needle for a series.
 	 * 
 	 * @param index
-	 *           the series index.
+	 *            the series index.
 	 * @param type
-	 *           the needle type.
+	 *            the needle type.
 	 */
 	public void setSeriesNeedle(int index, int type) {
 		switch (type) {
-			case 0:
-				setSeriesNeedle(index, new ArrowNeedle(true));
-				setSeriesPaint(index, Color.red);
-				this.seriesNeedle[index].setHighlightPaint(Color.white);
-				break;
-			case 1:
-				setSeriesNeedle(index, new LineNeedle());
-				break;
-			case 2:
-				MeterNeedle longNeedle = new LongNeedle();
-				longNeedle.setRotateY(0.5);
-				setSeriesNeedle(index, longNeedle);
-				break;
-			case 3:
-				setSeriesNeedle(index, new PinNeedle());
-				break;
-			case 4:
-				setSeriesNeedle(index, new PlumNeedle());
-				break;
-			case 5:
-				setSeriesNeedle(index, new PointerNeedle());
-				break;
-			case 6:
-				setSeriesPaint(index, null);
-				setSeriesOutlineStroke(index, new BasicStroke(3));
-				setSeriesNeedle(index, new ShipNeedle());
-				break;
-			case 7:
-				setSeriesPaint(index, Color.blue);
-				setSeriesNeedle(index, new WindNeedle());
-				break;
-			case 8:
-				setSeriesNeedle(index, new ArrowNeedle(true));
-				break;
-			default:
-				String message = "CompassPlot.setSeriesNeedle(...): unrecognised type.";
-				throw new IllegalArgumentException(message);
+		case 0:
+			setSeriesNeedle(index, new ArrowNeedle(true));
+			setSeriesPaint(index, Color.red);
+			this.seriesNeedle[index].setHighlightPaint(Color.white);
+			break;
+		case 1:
+			setSeriesNeedle(index, new LineNeedle());
+			break;
+		case 2:
+			MeterNeedle longNeedle = new LongNeedle();
+			longNeedle.setRotateY(0.5);
+			setSeriesNeedle(index, longNeedle);
+			break;
+		case 3:
+			setSeriesNeedle(index, new PinNeedle());
+			break;
+		case 4:
+			setSeriesNeedle(index, new PlumNeedle());
+			break;
+		case 5:
+			setSeriesNeedle(index, new PointerNeedle());
+			break;
+		case 6:
+			setSeriesPaint(index, null);
+			setSeriesOutlineStroke(index, new BasicStroke(3));
+			setSeriesNeedle(index, new ShipNeedle());
+			break;
+		case 7:
+			setSeriesPaint(index, Color.blue);
+			setSeriesNeedle(index, new WindNeedle());
+			break;
+		case 8:
+			setSeriesNeedle(index, new ArrowNeedle(true));
+			break;
+		default:
+			String message = "CompassPlot.setSeriesNeedle(...): unrecognised type.";
+			throw new IllegalArgumentException(message);
 		}
 
 	}
@@ -366,9 +366,9 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * Sets the needle for a series.
 	 * 
 	 * @param index
-	 *           the series index.
+	 *            the series index.
 	 * @param needle
-	 *           the needle.
+	 *            the needle.
 	 */
 	public void setSeriesNeedle(int index, MeterNeedle needle) {
 
@@ -394,7 +394,7 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * Adds a dataset to the compass.
 	 * 
 	 * @param data
-	 *           the new dataset.
+	 *            the new dataset.
 	 */
 	public void addData(ValueDataset data) {
 		addData(data, null);
@@ -404,9 +404,9 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * Adds a dataset to the compass.
 	 * 
 	 * @param data
-	 *           the new dataset.
+	 *            the new dataset.
 	 * @param needle
-	 *           the needle.
+	 *            the needle.
 	 */
 	public void addData(ValueDataset data, MeterNeedle needle) {
 
@@ -437,19 +437,19 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	}
 
 	/**
-	 * Draws the plot on a Java 2D graphics device (such as the screen or a printer).
+	 * Draws the plot on a Java 2D graphics device (such as the screen or a
+	 * printer).
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plotArea
-	 *           the area within which the plot should be drawn.
+	 *            the area within which the plot should be drawn.
 	 * @param parentState
-	 *           the state from the parent plot, if there is one.
+	 *            the state from the parent plot, if there is one.
 	 * @param info
-	 *           collects info about the drawing.
+	 *            collects info about the drawing.
 	 */
-	public void draw(Graphics2D g2, Rectangle2D plotArea, PlotState parentState,
-							PlotRenderingInfo info) {
+	public void draw(Graphics2D g2, Rectangle2D plotArea, PlotState parentState, PlotRenderingInfo info) {
 
 		int outerRadius = 0;
 		int innerRadius = 0;
@@ -463,10 +463,9 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 		// adjust for insets...
 		Insets insets = getInsets();
 		if (insets != null) {
-			plotArea.setRect(plotArea.getX() + insets.left,
-										plotArea.getY() + insets.top,
-										plotArea.getWidth() - insets.left - insets.right,
-										plotArea.getHeight() - insets.top - insets.bottom);
+			plotArea.setRect(plotArea.getX() + insets.left, plotArea.getY() + insets.top,
+					plotArea.getWidth() - insets.left - insets.right,
+					plotArea.getHeight() - insets.top - insets.bottom);
 		}
 
 		// draw the background
@@ -553,8 +552,7 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 		// plot the data (unless the dataset is null)...
 		y1 = radius / 2;
 		x1 = radius / 6;
-		Rectangle2D needleArea = new Rectangle2D.Double((midX - x1), (midY - y1),
-																			(2 * x1), (2 * y1));
+		Rectangle2D needleArea = new Rectangle2D.Double((midX - x1), (midY - y1), (2 * x1), (2 * y1));
 		int x = this.seriesNeedle.length;
 		int current = 0;
 		double value = 0;
@@ -586,8 +584,8 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	}
 
 	/**
-	 * Returns the legend items for the plot. For now, no legend is available - this method
-	 * returns null.
+	 * Returns the legend items for the plot. For now, no legend is available - this
+	 * method returns null.
 	 * 
 	 * @return the legend items.
 	 */
@@ -599,7 +597,7 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * No zooming is implemented for compass plot, so this method is empty.
 	 * 
 	 * @param percent
-	 *           the zoom amount.
+	 *            the zoom amount.
 	 */
 	public void zoom(double percent) {
 		// no zooming possible
@@ -609,7 +607,7 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * Returns the font for the compass.
 	 * 
 	 * @param radius
-	 *           the radius.
+	 *            the radius.
 	 * @return the font.
 	 */
 	protected Font getCompassFont(int radius) {
@@ -638,7 +636,7 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * Tests an object for equality with this plot.
 	 * 
 	 * @param object
-	 *           the object.
+	 *            the object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {
@@ -675,8 +673,8 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            this class will not throw this exception, but subclasses
-	 *            (if any) might.
+	 *             this class will not throw this exception, but subclasses (if any)
+	 *             might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 
@@ -708,11 +706,11 @@ public class CompassPlot extends Plot implements Cloneable, Serializable {
 	}
 
 	/**
-	 * Sets the count to complete one revolution. Can be arbitaly set
-	 * For degrees (the default) it is 360, for radians this is 2*Pi, etc
+	 * Sets the count to complete one revolution. Can be arbitaly set For degrees
+	 * (the default) it is 360, for radians this is 2*Pi, etc
 	 * 
 	 * @param size
-	 *           the count to complete one revolution.
+	 *            the count to complete one revolution.
 	 */
 	public void setRevolutionDistance(double size) {
 		if (size > 0) {

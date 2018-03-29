@@ -52,7 +52,7 @@ public class PieChartDemo7 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PieChartDemo7(String title) {
 
@@ -90,7 +90,7 @@ public class PieChartDemo7 extends ApplicationFrame {
 	 * The starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(String[] args) {
 		PieChartDemo7 demo = new PieChartDemo7("Pie Chart Demo 7");

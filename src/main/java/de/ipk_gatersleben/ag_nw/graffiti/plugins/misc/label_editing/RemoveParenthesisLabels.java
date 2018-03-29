@@ -15,10 +15,10 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
 
 public class RemoveParenthesisLabels extends AbstractAlgorithm {
-	
+
 	String tagA = "(";
 	String tagB = ")";
-	
+
 	public void execute() {
 		graph.getListenerManager().transactionStarted(this);
 		try {
@@ -34,28 +34,24 @@ public class RemoveParenthesisLabels extends AbstractAlgorithm {
 			graph.getListenerManager().transactionFinished(this);
 		}
 	}
-	
+
 	@Override
 	public String getDescription() {
-		return "<html>" +
-							"Label parts between tags<br>" +
-							"(and tags) will be removed.";
+		return "<html>" + "Label parts between tags<br>" + "(and tags) will be removed.";
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
-		return new Parameter[] {
-							new StringParameter(tagA, "Tag A", null),
-							new StringParameter(tagB, "Tag B", null) };
+		return new Parameter[] { new StringParameter(tagA, "Tag A", null), new StringParameter(tagB, "Tag B", null) };
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
 		tagA = ((StringParameter) params[i++]).getString();
 		tagB = ((StringParameter) params[i++]).getString();
 	}
-	
+
 	@Override
 	public String getCategory() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
@@ -63,28 +59,24 @@ public class RemoveParenthesisLabels extends AbstractAlgorithm {
 		else
 			return null;// "Elements";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.ANNOTATION
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.ANNOTATION));
 	}
-	
+
 	@Override
 	public String getMenuCategory() {
 		return "edit.Change Label";
 	}
 
-	
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
 		else
 			return "Remove parts of labels...";
 	}
-	
+
 	@Override
 	public boolean mayWorkOnMultipleGraphs() {
 		return true;

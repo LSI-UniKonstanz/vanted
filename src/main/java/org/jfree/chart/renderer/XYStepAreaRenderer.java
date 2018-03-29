@@ -59,10 +59,7 @@ import org.jfree.util.PublicCloneable;
  * @author Matthias Rose
  */
 public class XYStepAreaRenderer extends AbstractXYItemRenderer
-											implements XYItemRenderer,
-															Cloneable,
-															PublicCloneable,
-															Serializable {
+		implements XYItemRenderer, Cloneable, PublicCloneable, Serializable {
 
 	/** Useful constant for specifying the type of rendering (shapes only). */
 	public static final int SHAPES = 1;
@@ -102,7 +99,7 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 	 * Constructs a new renderer.
 	 * 
 	 * @param type
-	 *           the type of the renderer.
+	 *            the type of the renderer.
 	 */
 	public XYStepAreaRenderer(int type) {
 		this(type, null, null);
@@ -111,17 +108,17 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 	/**
 	 * Constructs a new renderer.
 	 * <p>
-	 * To specify the type of renderer, use one of the constants: AREA, SHAPES or AREA_AND_SHAPES.
+	 * To specify the type of renderer, use one of the constants: AREA, SHAPES or
+	 * AREA_AND_SHAPES.
 	 * 
 	 * @param type
-	 *           the type of renderer.
+	 *            the type of renderer.
 	 * @param toolTipGenerator
-	 *           the tool tip generator to use (<code>null</code> permitted).
+	 *            the tool tip generator to use (<code>null</code> permitted).
 	 * @param urlGenerator
-	 *           the URL generator (<code>null</code> permitted).
+	 *            the URL generator (<code>null</code> permitted).
 	 */
-	public XYStepAreaRenderer(int type,
-										XYToolTipGenerator toolTipGenerator, XYURLGenerator urlGenerator) {
+	public XYStepAreaRenderer(int type, XYToolTipGenerator toolTipGenerator, XYURLGenerator urlGenerator) {
 
 		super();
 		setToolTipGenerator(toolTipGenerator);
@@ -129,14 +126,12 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 
 		if (type == AREA) {
 			this.plotArea = true;
-		} else
-			if (type == SHAPES) {
-				this.plotShapes = true;
-			} else
-				if (type == AREA_AND_SHAPES) {
-					this.plotArea = true;
-					this.plotShapes = true;
-				}
+		} else if (type == SHAPES) {
+			this.plotShapes = true;
+		} else if (type == AREA_AND_SHAPES) {
+			this.plotArea = true;
+			this.plotShapes = true;
+		}
 		this.showOutline = false;
 	}
 
@@ -150,10 +145,11 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 	}
 
 	/**
-	 * Sets a flag that controls whether or not outlines of the areas are drawn, and sends a {@link RendererChangeEvent} to all registered listeners.
+	 * Sets a flag that controls whether or not outlines of the areas are drawn, and
+	 * sends a {@link RendererChangeEvent} to all registered listeners.
 	 * 
 	 * @param show
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setOutline(boolean show) {
 		this.showOutline = show;
@@ -170,10 +166,11 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 	}
 
 	/**
-	 * Sets the flag that controls whether or not shapes are displayed for each data item.
+	 * Sets the flag that controls whether or not shapes are displayed for each data
+	 * item.
 	 * 
 	 * @param flag
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setPlotShapes(boolean flag) {
 		this.plotShapes = flag;
@@ -193,7 +190,7 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 	 * Sets the 'shapes filled' for ALL series.
 	 * 
 	 * @param filled
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setShapesFilled(boolean filled) {
 		this.shapesFilled = filled;
@@ -213,7 +210,7 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 	 * Sets a flag that controls whether or not areas are drawn for each data item.
 	 * 
 	 * @param flag
-	 *           the flag.
+	 *            the flag.
 	 */
 	public void setPlotArea(boolean flag) {
 		this.plotArea = flag;
@@ -221,22 +218,24 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 	}
 
 	/**
-	 * Returns the value on the range axis which defines the 'lower' border of the area.
+	 * Returns the value on the range axis which defines the 'lower' border of the
+	 * area.
 	 * 
-	 * @return <code>double</code> the value on the range axis which defines the 'lower' border of
-	 *         the area.
+	 * @return <code>double</code> the value on the range axis which defines the
+	 *         'lower' border of the area.
 	 */
 	public double getRangeBase() {
 		return this.rangeBase;
 	}
 
 	/**
-	 * Sets the value on the range axis which defines the default border of the area.
-	 * E.g. setRangeBase(Double.NEGATIVE_INFINITY) lets areas always reach the lower border of the
-	 * plotArea.
+	 * Sets the value on the range axis which defines the default border of the
+	 * area. E.g. setRangeBase(Double.NEGATIVE_INFINITY) lets areas always reach the
+	 * lower border of the plotArea.
 	 * 
 	 * @param val
-	 *           the value on the range axis which defines the default border of the area.
+	 *            the value on the range axis which defines the default border of
+	 *            the area.
 	 */
 	public void setRangeBase(double val) {
 		this.rangeBase = val;
@@ -244,26 +243,24 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 	}
 
 	/**
-	 * Initialises the renderer. Here we calculate the Java2D y-coordinate for
-	 * zero, since all the bars have their bases fixed at zero.
+	 * Initialises the renderer. Here we calculate the Java2D y-coordinate for zero,
+	 * since all the bars have their bases fixed at zero.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param dataArea
-	 *           the area inside the axes.
+	 *            the area inside the axes.
 	 * @param plot
-	 *           the plot.
+	 *            the plot.
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 * @param info
-	 *           an optional info collection object to return data back to the caller.
+	 *            an optional info collection object to return data back to the
+	 *            caller.
 	 * @return The number of passes required by the renderer.
 	 */
-	public XYItemRendererState initialise(Graphics2D g2,
-														Rectangle2D dataArea,
-														XYPlot plot,
-														XYDataset data,
-														PlotRenderingInfo info) {
+	public XYItemRendererState initialise(Graphics2D g2, Rectangle2D dataArea, XYPlot plot, XYDataset data,
+			PlotRenderingInfo info) {
 
 		return super.initialise(g2, dataArea, plot, data, info);
 
@@ -273,46 +270,38 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 	 * Draws the visual representation of a single data item.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param state
-	 *           the renderer state.
+	 *            the renderer state.
 	 * @param dataArea
-	 *           the area within which the data is being drawn.
+	 *            the area within which the data is being drawn.
 	 * @param info
-	 *           collects information about the drawing.
+	 *            collects information about the drawing.
 	 * @param plot
-	 *           the plot (can be used to obtain standard color information etc).
+	 *            the plot (can be used to obtain standard color information etc).
 	 * @param domainAxis
-	 *           the domain axis.
+	 *            the domain axis.
 	 * @param rangeAxis
-	 *           the range axis.
+	 *            the range axis.
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @param crosshairState
-	 *           crosshair information for the plot (<code>null</code> permitted).
+	 *            crosshair information for the plot (<code>null</code> permitted).
 	 * @param pass
-	 *           the pass index.
+	 *            the pass index.
 	 */
-	public void drawItem(Graphics2D g2,
-									XYItemRendererState state,
-									Rectangle2D dataArea,
-									PlotRenderingInfo info,
-									XYPlot plot,
-									ValueAxis domainAxis,
-									ValueAxis rangeAxis,
-									XYDataset dataset,
-									int series,
-									int item,
-									CrosshairState crosshairState,
-									int pass) {
+	public void drawItem(Graphics2D g2, XYItemRendererState state, Rectangle2D dataArea, PlotRenderingInfo info,
+			XYPlot plot, ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset, int series, int item,
+			CrosshairState crosshairState, int pass) {
 
 		PlotOrientation orientation = plot.getOrientation();
 
-		// Get the item count for the series, so that we can know which is the end of the series.
+		// Get the item count for the series, so that we can know which is the end of
+		// the series.
 		int itemCount = dataset.getItemCount(series);
 
 		Paint paint = getItemPaint(series, item);
@@ -337,9 +326,7 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 			this.pArea = new Polygon();
 
 			// start from Y = rangeBase
-			double transY2 = rangeAxis.valueToJava2D(
-								getRangeBase(), dataArea, plot.getRangeAxisEdge()
-								);
+			double transY2 = rangeAxis.valueToJava2D(getRangeBase(), dataArea, plot.getRangeAxisEdge());
 
 			// avoid possible sun.dc.pr.PRException: endPath: bad path
 			transY2 = restrictValueToDataArea(transY2, plot, dataArea);
@@ -347,10 +334,9 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 			// The first point is (x, this.baseYValue)
 			if (orientation == PlotOrientation.VERTICAL) {
 				this.pArea.addPoint((int) transX1, (int) transY2);
-			} else
-				if (orientation == PlotOrientation.HORIZONTAL) {
-					this.pArea.addPoint((int) transY2, (int) transX1);
-				}
+			} else if (orientation == PlotOrientation.HORIZONTAL) {
+				this.pArea.addPoint((int) transY2, (int) transX1);
+			}
 		}
 
 		double transX0 = 0;
@@ -381,10 +367,9 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 				// not just a horizontal bar but need to perform a 'step'.
 				if (orientation == PlotOrientation.VERTICAL) {
 					this.pArea.addPoint((int) transX1, (int) transY0);
-				} else
-					if (orientation == PlotOrientation.HORIZONTAL) {
-						this.pArea.addPoint((int) transY0, (int) transX1);
-					}
+				} else if (orientation == PlotOrientation.HORIZONTAL) {
+					this.pArea.addPoint((int) transY0, (int) transX1);
+				}
 			}
 		}
 
@@ -393,19 +378,17 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 			// Add each point to Area (x, y)
 			if (orientation == PlotOrientation.VERTICAL) {
 				this.pArea.addPoint((int) transX1, (int) transY1);
-			} else
-				if (orientation == PlotOrientation.HORIZONTAL) {
-					this.pArea.addPoint((int) transY1, (int) transX1);
-				}
+			} else if (orientation == PlotOrientation.HORIZONTAL) {
+				this.pArea.addPoint((int) transY1, (int) transX1);
+			}
 
 			if (getPlotShapes()) {
 				shape = getItemShape(series, item);
 				if (orientation == PlotOrientation.VERTICAL) {
 					shape = createTransformedShape(shape, transX1, transY1);
-				} else
-					if (orientation == PlotOrientation.HORIZONTAL) {
-						shape = createTransformedShape(shape, transY1, transX1);
-					}
+				} else if (orientation == PlotOrientation.HORIZONTAL) {
+					shape = createTransformedShape(shape, transY1, transX1);
+				}
 				if (isShapesFilled()) {
 					g2.fill(shape);
 				} else {
@@ -414,21 +397,18 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 			} else {
 				if (orientation == PlotOrientation.VERTICAL) {
 					shape = new Rectangle2D.Double(transX1 - 2, transY1 - 2, 4.0, 4.0);
-				} else
-					if (orientation == PlotOrientation.HORIZONTAL) {
-						shape = new Rectangle2D.Double(transY1 - 2, transX1 - 2, 4.0, 4.0);
-					}
+				} else if (orientation == PlotOrientation.HORIZONTAL) {
+					shape = new Rectangle2D.Double(transY1 - 2, transX1 - 2, 4.0, 4.0);
+				}
 			}
 		}
 
 		// Check if the item is the last item for the series or if it
-		// is a NULL value and number of items > 0. We can't draw an area for a single point.
-		if (getPlotArea() && item > 0 && this.pArea != null
-									&& (item == (itemCount - 1) || y1 == null)) {
+		// is a NULL value and number of items > 0. We can't draw an area for a single
+		// point.
+		if (getPlotArea() && item > 0 && this.pArea != null && (item == (itemCount - 1) || y1 == null)) {
 
-			double transY2 = rangeAxis.valueToJava2D(
-								getRangeBase(), dataArea, plot.getRangeAxisEdge()
-								);
+			double transY2 = rangeAxis.valueToJava2D(getRangeBase(), dataArea, plot.getRangeAxisEdge());
 
 			// avoid possible sun.dc.pr.PRException: endPath: bad path
 			transY2 = restrictValueToDataArea(transY2, plot, dataArea);
@@ -436,11 +416,10 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 			if (orientation == PlotOrientation.VERTICAL) {
 				// Add the last point (x,0)
 				this.pArea.addPoint((int) transX1, (int) transY2);
-			} else
-				if (orientation == PlotOrientation.HORIZONTAL) {
-					// Add the last point (x,0)
-					this.pArea.addPoint((int) transY2, (int) transX1);
-				}
+			} else if (orientation == PlotOrientation.HORIZONTAL) {
+				// Add the last point (x,0)
+				this.pArea.addPoint((int) transY2, (int) transX1);
+			}
 
 			// fill the polygon
 			g2.fill(this.pArea);
@@ -458,8 +437,7 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 
 		// do we need to update the crosshair values?
 		if (y1 != null) {
-			updateCrosshairValues(
-								crosshairState, x1.doubleValue(), y1.doubleValue(), transX1, transY1, orientation);
+			updateCrosshairValues(crosshairState, x1.doubleValue(), y1.doubleValue(), transX1, transY1, orientation);
 		}
 
 		// collect entity and tool tip information...
@@ -486,48 +464,42 @@ public class XYStepAreaRenderer extends AbstractXYItemRenderer
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if the renderer cannot be cloned.
+	 *             if the renderer cannot be cloned.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
 
 	/**
-	 * Helper method which returns a value if it lies
-	 * inside the visible dataArea and otherwise the corresponding
-	 * coordinate on the border of the dataArea. The PlotOrientation
-	 * is taken into account.
-	 * Useful to avoid possible sun.dc.pr.PRException: endPath: bad path
-	 * which occurs when trying to draw lines/shapes which in large part
-	 * lie outside of the visible dataArea.
+	 * Helper method which returns a value if it lies inside the visible dataArea
+	 * and otherwise the corresponding coordinate on the border of the dataArea. The
+	 * PlotOrientation is taken into account. Useful to avoid possible
+	 * sun.dc.pr.PRException: endPath: bad path which occurs when trying to draw
+	 * lines/shapes which in large part lie outside of the visible dataArea.
 	 * 
 	 * @param value
-	 *           the value which shall be
+	 *            the value which shall be
 	 * @param dataArea
-	 *           the area within which the data is being drawn.
+	 *            the area within which the data is being drawn.
 	 * @param plot
-	 *           the plot (can be used to obtain standard color information etc).
+	 *            the plot (can be used to obtain standard color information etc).
 	 * @return <code>double</code> value inside the data area.
 	 */
-	protected static double restrictValueToDataArea(double value,
-																		XYPlot plot,
-																		Rectangle2D dataArea) {
+	protected static double restrictValueToDataArea(double value, XYPlot plot, Rectangle2D dataArea) {
 		double min = 0;
 		double max = 0;
 		if (plot.getOrientation() == PlotOrientation.VERTICAL) {
 			min = dataArea.getMinY();
 			max = dataArea.getMaxY();
-		} else
-			if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
-				min = dataArea.getMinX();
-				max = dataArea.getMaxX();
-			}
+		} else if (plot.getOrientation() == PlotOrientation.HORIZONTAL) {
+			min = dataArea.getMinX();
+			max = dataArea.getMaxX();
+		}
 		if (value < min) {
 			value = min;
-		} else
-			if (value > max) {
-				value = max;
-			}
+		} else if (value > max) {
+			value = max;
+		}
 		return value;
 	}
 

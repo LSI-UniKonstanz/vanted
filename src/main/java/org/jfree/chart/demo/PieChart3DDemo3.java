@@ -48,7 +48,7 @@ public class PieChart3DDemo3 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PieChart3DDemo3(final String title) {
 
@@ -69,11 +69,11 @@ public class PieChart3DDemo3 extends ApplicationFrame {
 	private PieDataset createSampleDataset() {
 
 		final DefaultPieDataset result = new DefaultPieDataset();
-		result.setValue("Java", new Double(43.2));
-		result.setValue("Visual Basic", new Double(10.0));
-		result.setValue("C/C++", new Double(17.5));
-		result.setValue("PHP", new Double(32.5));
-		result.setValue("Perl", new Double(1.0));
+		result.setValue("Java", Double.valueOf(43.2));
+		result.setValue("Visual Basic", Double.valueOf(10.0));
+		result.setValue("C/C++", Double.valueOf(17.5));
+		result.setValue("PHP", Double.valueOf(32.5));
+		result.setValue("Perl", Double.valueOf(1.0));
 		return result;
 
 	}
@@ -93,18 +93,15 @@ public class PieChart3DDemo3 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A chart.
 	 */
 	private JFreeChart createChart(final PieDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createPieChart3D(
-							"Pie Chart 3D Demo 3", // chart title
+		final JFreeChart chart = ChartFactory.createPieChart3D("Pie Chart 3D Demo 3", // chart title
 				dataset, // data
 				true, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		final PiePlot3D plot = (PiePlot3D) chart.getPlot();
 		plot.setStartAngle(290);
@@ -120,7 +117,7 @@ public class PieChart3DDemo3 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

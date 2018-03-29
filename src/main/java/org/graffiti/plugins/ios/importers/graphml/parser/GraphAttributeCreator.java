@@ -17,31 +17,27 @@ import org.graffiti.attributes.CollectionAttribute;
  *
  * @author ruediger
  */
-class GraphAttributeCreator
-    extends AttributeCreator
-{
-    //~ Constructors ===========================================================
+class GraphAttributeCreator extends AttributeCreator {
+	// ~ Constructors ===========================================================
 
-    /**
-     * Constructs a new <code>GraphAttributeCreator</code>.
-     */
-    public GraphAttributeCreator()
-    {
-        super();
-    }
+	/**
+	 * Constructs a new <code>GraphAttributeCreator</code>.
+	 */
+	public GraphAttributeCreator() {
+		super();
+	}
 
-    //~ Methods ================================================================
+	// ~ Methods ================================================================
 
-    /*
-     *
-     */
-    @Override
-	CollectionAttribute createDefaultAttribute()
-    {
-        return null;
-    }
+	/*
+	 *
+	 */
+	@Override
+	CollectionAttribute createDefaultAttribute() {
+		return null;
+	}
 }
 
-//------------------------------------------------------------------------------
-//   end of file
-//------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------
+// end of file
+// ------------------------------------------------------------------------------

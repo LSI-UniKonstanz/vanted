@@ -22,50 +22,44 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
 
 public class SetURLAlgorithm extends AbstractAlgorithm implements Algorithm {
-	
+
 	private String targetURL;
-	
+
 	public String getName() {
 		if (ReleaseInfo.getIsAllowedFeature(FeatureSet.URL_NODE_ANNOTATION))
 			return "Add URL-link to a web-resource...";
 		else
 			return null;
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Elements"; // "menu.edit";
 	}
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.COMPUTATION,
-				Category.MAPPING
-				));
+		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.COMPUTATION, Category.MAPPING));
 	}
 
-	
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No active graph editor window found!");
 	}
-	
+
 	@Override
 	public String getDescription() {
-		return "<html>" +
-							"Please enter the target URL for the reference information.<br><br>" +
-							"<small>This information may be later retrieved by the network/node/edge<br>" +
-							"context menu or the corresponding attribute editors in the side panel.";
+		return "<html>" + "Please enter the target URL for the reference information.<br><br>"
+				+ "<small>This information may be later retrieved by the network/node/edge<br>"
+				+ "context menu or the corresponding attribute editors in the side panel.";
 	}
-	
+
 	@Override
 	public Parameter[] getParameters() {
 		String currentURL = "http://";
@@ -90,13 +84,13 @@ public class SetURLAlgorithm extends AbstractAlgorithm implements Algorithm {
 		}
 		return new Parameter[] { new StringParameter(currentURL, "URL", null) };
 	}
-	
+
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
 		this.targetURL = ((StringParameter) params[i++]).getString();
 	}
-	
+
 	public void execute() {
 		if (targetURL == null)
 			return;

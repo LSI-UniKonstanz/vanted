@@ -27,16 +27,15 @@ public class DirkDemo {
 		dataset.addValue(2.2d, "Row 1", "Day 1");
 		dataset.addValue(3.2d, "Row 1", "Day 2");
 		dataset.addValue(5.2d, "Row 1", "Day 3");
-		
-		JFreeChart chart = ChartFactory.createLineChart("Demo Chart",
-							"DOMAIN AXIS",
-							"RANGE AXIS",
-							dataset, PlotOrientation.VERTICAL, true, true, false);
-		
+
+		JFreeChart chart = ChartFactory.createLineChart("Demo Chart", "DOMAIN AXIS", "RANGE AXIS", dataset,
+				PlotOrientation.VERTICAL, true, true, false);
+
 		ChartPanel chartPanel = new ChartPanel(chart);
-		
+
 		JFrame window = new JFrame("Line Chart");
-		LayoutManager lm = new TableLayout(new double[][] { { TableLayoutConstants.FILL }, { TableLayoutConstants.FILL } });
+		LayoutManager lm = new TableLayout(
+				new double[][] { { TableLayoutConstants.FILL }, { TableLayoutConstants.FILL } });
 		window.setLayout(lm);
 		window.add(chartPanel, "0,0");
 		window.validate();
@@ -45,5 +44,5 @@ public class DirkDemo {
 		window.setVisible(true);
 		window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
-	
+
 }

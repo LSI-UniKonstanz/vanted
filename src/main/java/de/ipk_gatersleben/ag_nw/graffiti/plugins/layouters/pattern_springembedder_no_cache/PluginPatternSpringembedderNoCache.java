@@ -12,9 +12,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 /**
  * @author Christian Klukas
  */
-public class PluginPatternSpringembedderNoCache
-					extends IPK_PluginAdapter {
-	
+public class PluginPatternSpringembedderNoCache extends IPK_PluginAdapter {
+
 	/**
 	 * DOCTODO: Include method header
 	 */
@@ -22,9 +21,10 @@ public class PluginPatternSpringembedderNoCache
 		this.algorithms = new Algorithm[1];
 		this.algorithms[0] = new PatternSpringembedder();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.GenericPlugin#configure(java.util.prefs.Preferences)
 	 */
 	@Override

@@ -41,36 +41,33 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.svg_exporter.PngJpegAlgori
  * @version $Revision$
  */
 public class PrintAlgorithm extends AbstractAlgorithm {
-	
+
 	private Session activeSession = null;
-	
+
 	private boolean printAllOpen = false;
-	
+
 	public PrintAlgorithm() {
 		super();
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "menu.file";
 	}
-	
+
 	public String getName() {
 		return "Print...";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.IMAGING,
-				Category.EXPORT
-				));
+		return new HashSet<Category>(Arrays.asList(Category.IMAGING, Category.EXPORT));
 	}
 
 	// public Parameter[] getParameters() {
 	// return new Parameter[] {
-	// new BooleanParameter(printAllOpen, "Print all loaded documents", "If enabled all open graph windows are printed at once.")
+	// new BooleanParameter(printAllOpen, "Print all loaded documents", "If enabled
+	// all open graph windows are printed at once.")
 	// };
 	// }
 	//
@@ -78,7 +75,7 @@ public class PrintAlgorithm extends AbstractAlgorithm {
 	// int i = 0;
 	// printAllOpen = ((BooleanParameter)params[i++]).getBoolean();
 	// }
-	
+
 	/**
 	 * Unused for this plugin.
 	 * 
@@ -88,56 +85,55 @@ public class PrintAlgorithm extends AbstractAlgorithm {
 	public void attach(Graph g, Selection s) {
 		// simply do nothing
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
-		EditorSession session = GravistoService.getInstance().getMainFrame()
-							.getActiveEditorSession();
-		
+		EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
+
 		session.getActiveView();
-		
+
 		// if (!PNGAlgorithm.isViewTypeOK(theView)) {
 		// throw new PreconditionException(
 		// "The active view may not be processed.<br>" +
 		// "Exporting a graphical view of this view type is not yet supported.");
 		// }
 	}
-	
+
 	@Override
 	public KeyStroke getAcceleratorKeyStroke() {
 		return KeyStroke.getKeyStroke(KeyEvent.VK_P, SystemInfo.getAccelModifier());
 	}
-	
+
 	/**
-	 * This method is invoked by the plugin environment to start
-	 * the action this plugin is for.
+	 * This method is invoked by the plugin environment to start the action this
+	 * plugin is for.
 	 * <p>
 	 * This method starts the printprocess
 	 * </p>
 	 * *
 	 * <p>
-	 * This method needs the activeSession set by the {@link #setActiveSession(Session) setActiveSession(Session)} Method. Make shure, that
-	 * <code>setActiveSession(Session)</code> is called <strong>BEFORE</strong> <code>execute()</code> method!!!
+	 * This method needs the activeSession set by the
+	 * {@link #setActiveSession(Session) setActiveSession(Session)} Method. Make
+	 * shure, that <code>setActiveSession(Session)</code> is called
+	 * <strong>BEFORE</strong> <code>execute()</code> method!!!
 	 * </p>
 	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 * @see #setActiveSession(Session)
 	 * @throws IllegalStateException
-	 *            if activeSession is null
+	 *             if activeSession is null
 	 */
 	public void execute() {
-		activeSession =
-							GravistoService.getInstance().getMainFrame().getActiveSession();
-		
+		activeSession = GravistoService.getInstance().getMainFrame().getActiveSession();
+
 		if (activeSession == null)
 			throw new IllegalStateException(
-								"No active session found. Ensure that "
-													+ "setActiveSession is called BEFORE execute method!");
-		
+					"No active session found. Ensure that " + "setActiveSession is called BEFORE execute method!");
+
 		if (!printAllOpen) {
 			if (AbstractTool.getActiveTool() != null)
 				AbstractTool.getActiveTool().preProcessImageCreation();
-			
+
 			PrintEnvironment.setZoomToOnePage(true);
 			PngJpegAlgorithm.setDoubleBuffered(activeSession.getActiveView().getViewComponent(), false);
 			// do the print using PrintTool
@@ -160,7 +156,7 @@ public class PrintAlgorithm extends AbstractAlgorithm {
 			}
 			if (AbstractTool.getActiveTool() != null)
 				AbstractTool.getActiveTool().preProcessImageCreation();
-			
+
 			PrintEnvironment.setZoomToOnePage(true);
 			try {
 				for (View v : views)
@@ -174,15 +170,16 @@ public class PrintAlgorithm extends AbstractAlgorithm {
 				AbstractTool.getActiveTool().postProcessImageCreation();
 		}
 	}
-	
+
 	/**
 	 * Resets the algorithm state.
 	 * <p>
 	 * Active session will be invalidated.
 	 * </p>
 	 * <p>
-	 * <strong>ATTENTION</strong>: After calling this method {@link #setActiveSession(Session) setActiveSession(Session)} have to be called again BEFORE calling
-	 * {@link #execute() execute()}
+	 * <strong>ATTENTION</strong>: After calling this method
+	 * {@link #setActiveSession(Session) setActiveSession(Session)} have to be
+	 * called again BEFORE calling {@link #execute() execute()}
 	 * <p>
 	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
@@ -193,11 +190,12 @@ public class PrintAlgorithm extends AbstractAlgorithm {
 		// invalidate active session by simply setting it to null
 		activeSession = null;
 	}
-	
+
 	/**
 	 * Sets the active session.
 	 * <p>
-	 * This session is uses by {@link #execute() execute()} Method. Make shure, that this method is called <strong>BEFORE</strong> <code>execute()</code>!!!
+	 * This session is uses by {@link #execute() execute()} Method. Make shure, that
+	 * this method is called <strong>BEFORE</strong> <code>execute()</code>!!!
 	 * </p>
 	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#setActiveSession(org.graffiti.session.Session)
@@ -206,16 +204,17 @@ public class PrintAlgorithm extends AbstractAlgorithm {
 	public void setActiveSession(Session session) {
 		// save the active session
 		this.activeSession = session;
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#isLayoutAlgorithm()
 	 */
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-	
+
 }

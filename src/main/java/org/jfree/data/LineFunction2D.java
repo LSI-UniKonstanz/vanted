@@ -44,9 +44,9 @@ public class LineFunction2D implements Function2D {
 	 * Constructs a new line function.
 	 * 
 	 * @param a
-	 *           the intercept.
+	 *            the intercept.
 	 * @param b
-	 *           the slope.
+	 *            the slope.
 	 */
 	public LineFunction2D(final double a, final double b) {
 		this.a = a;
@@ -57,7 +57,7 @@ public class LineFunction2D implements Function2D {
 	 * Returns the function value.
 	 * 
 	 * @param x
-	 *           the x-value.
+	 *            the x-value.
 	 * @return the value.
 	 */
 	public double getValue(final double x) {

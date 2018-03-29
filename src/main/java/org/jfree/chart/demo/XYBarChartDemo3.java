@@ -42,7 +42,8 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 /**
- * A simple demonstration application showing how to create a vertical bar chart.
+ * A simple demonstration application showing how to create a vertical bar
+ * chart.
  */
 public class XYBarChartDemo3 extends ApplicationFrame {
 
@@ -50,7 +51,7 @@ public class XYBarChartDemo3 extends ApplicationFrame {
 	 * Constructs the demo application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XYBarChartDemo3(final String title) {
 
@@ -84,22 +85,17 @@ public class XYBarChartDemo3 extends ApplicationFrame {
 	 * Creates a new chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final IntervalXYDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createXYBarChart(
-							"Sample", // chart title
+		final JFreeChart chart = ChartFactory.createXYBarChart("Sample", // chart title
 				"X", // domain axis label
-				false,
-							"Y", // range axis label
+				false, "Y", // range axis label
 				dataset, // data
-				PlotOrientation.VERTICAL,
-							true, // include legend
-				true,
-							false
-							);
+				PlotOrientation.VERTICAL, true, // include legend
+				true, false);
 
 		return chart;
 
@@ -109,7 +105,7 @@ public class XYBarChartDemo3 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

@@ -37,7 +37,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- * A needle in the shape of a pointer, for use with the {@link org.jfree.chart.plot.CompassPlot} class.
+ * A needle in the shape of a pointer, for use with the
+ * {@link org.jfree.chart.plot.CompassPlot} class.
  * 
  * @author Bryan Scott
  */
@@ -47,13 +48,13 @@ public class PointerNeedle extends MeterNeedle {
 	 * Draws the needle.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plotArea
-	 *           the plot area.
+	 *            the plot area.
 	 * @param rotate
-	 *           the rotation point.
+	 *            the rotation point.
 	 * @param angle
-	 *           the angle.
+	 *            the angle.
 	 */
 	protected void drawNeedle(Graphics2D g2, Rectangle2D plotArea, Point2D rotate, double angle) {
 
@@ -105,7 +106,7 @@ public class PointerNeedle extends MeterNeedle {
 	 * Tests another object for equality with this object.
 	 * 
 	 * @param object
-	 *           the object to test.
+	 *            the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {

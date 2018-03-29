@@ -14,16 +14,14 @@ public class PreferencesTest {
 	@Test
 	public void testPreferenceFieldLoading() {
 		PreferenceManager preferenceManager = PreferenceManager.getInstance();
-		
+
 		GenericPlugin plugin = new TestPlugin();
-		
-		
+
 		preferenceManager.pluginAdded(plugin, null);
-		
+
 		new TestAlgorithm().execute();
-		
+
 		System.out.println();
-		
 
 	}
 

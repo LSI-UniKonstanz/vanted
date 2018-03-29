@@ -54,11 +54,11 @@ public class ChartMouseEvent {
 	 * Constructs a new event.
 	 * 
 	 * @param chart
-	 *           the source chart.
+	 *            the source chart.
 	 * @param trigger
-	 *           the mouse event that triggered this event.
+	 *            the mouse event that triggered this event.
 	 * @param entity
-	 *           the chart entity (if any) under the mouse point.
+	 *            the chart entity (if any) under the mouse point.
 	 */
 	public ChartMouseEvent(JFreeChart chart, MouseEvent trigger, ChartEntity entity) {
 		this.chart = chart;

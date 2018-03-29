@@ -14,8 +14,7 @@ package org.graffiti.plugin.view;
  * 
  * @version $Revision: 1.3 $
  */
-public interface NodeComponentInterface
-					extends GraphElementComponentInterface {
+public interface NodeComponentInterface extends GraphElementComponentInterface {
 	// /**
 	// * Draws the shape of the node contained in this component according to the
 	// * graphic attributes of the node.

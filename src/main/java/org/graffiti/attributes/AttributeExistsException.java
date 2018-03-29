@@ -10,23 +10,23 @@
 package org.graffiti.attributes;
 
 /**
- * The <code>AttributeExistsException</code> will be thrown if a method tries
- * to add an attribute at a location where another attribute already exists.
+ * The <code>AttributeExistsException</code> will be thrown if a method tries to
+ * add an attribute at a location where another attribute already exists.
  * 
  * @version $Revision: 1.4 $
  */
-public class AttributeExistsException
-					extends RuntimeException {
+public class AttributeExistsException extends RuntimeException {
 	// ~ Constructors ===========================================================
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
-	 * Constructs an <code>AttributeExistsException</code> with the specified
-	 * detail message.
+	 * Constructs an <code>AttributeExistsException</code> with the specified detail
+	 * message.
 	 * 
 	 * @param msg
-	 *           the detail message which is saved for later retrieval by the <code>getMessage()</code> method.
+	 *            the detail message which is saved for later retrieval by the
+	 *            <code>getMessage()</code> method.
 	 */
 	public AttributeExistsException(String msg) {
 		super(msg);

@@ -48,7 +48,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.ui.TextAnchor;
 
 /**
- * This demo shows a simple bar chart created using the {@link XYSeriesCollection} dataset.
+ * This demo shows a simple bar chart created using the
+ * {@link XYSeriesCollection} dataset.
  */
 public class XYSeriesDemo3 extends ApplicationFrame {
 
@@ -56,7 +57,7 @@ public class XYSeriesDemo3 extends ApplicationFrame {
 	 * Creates a new demo instance.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public XYSeriesDemo3(final String title) {
 		super(title);
@@ -91,21 +92,12 @@ public class XYSeriesDemo3 extends ApplicationFrame {
 	 * Creates a sample chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return A sample chart.
 	 */
 	private JFreeChart createChart(IntervalXYDataset dataset) {
-		final JFreeChart chart = ChartFactory.createXYBarChart(
-							"XY Series Demo",
-							"X",
-							false,
-							"Y",
-							dataset,
-							PlotOrientation.VERTICAL,
-							true,
-							true,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createXYBarChart("XY Series Demo", "X", false, "Y", dataset,
+				PlotOrientation.VERTICAL, true, true, false);
 		XYPlot plot = (XYPlot) chart.getPlot();
 		final IntervalMarker target = new IntervalMarker(400.0, 700.0);
 		target.setLabel("Target Range");
@@ -132,7 +124,7 @@ public class XYSeriesDemo3 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

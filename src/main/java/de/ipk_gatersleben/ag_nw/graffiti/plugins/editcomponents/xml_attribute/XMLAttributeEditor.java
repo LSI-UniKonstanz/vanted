@@ -34,16 +34,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.xml_data
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.helper_classes.Experiment2GraphHelper;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class XMLAttributeEditor
-					extends AbstractValueEditComponent {
+public class XMLAttributeEditor extends AbstractValueEditComponent {
 	protected JButton mappingButton;
-	
+
 	public XMLAttributeEditor(final Displayable disp) {
 		super(disp);
-		
+
 		mappingButton = new JButton("Mapped Data");
 		mappingButton.setOpaque(false);
 		mappingButton.addActionListener(new ActionListener() {
@@ -52,28 +50,29 @@ public class XMLAttributeEditor
 			}
 		});
 	}
-	
+
 	public JComponent getComponent() {
 		return mappingButton;
 	}
-	
+
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			mappingButton.setText("Mapped Data (~)");
 		} else {
 			try {
-				ExperimentInterface o = Experiment2GraphHelper.getMappedDataListFromGraphElement((GraphElement) ((Attribute) getDisplayable()).getAttributable());
+				ExperimentInterface o = Experiment2GraphHelper.getMappedDataListFromGraphElement(
+						(GraphElement) ((Attribute) getDisplayable()).getAttributable());
 				mappingButton.setText("Mapped Data (" + o.size() + ")");
 			} catch (Exception e) {
 				mappingButton.setText("Mapped Data");
 			}
 		}
 	}
-	
+
 	public void setValue() {
 		// ((XMLAttribute)displayable).setColor(jButtonFontAndColor.getForeground());
 	}
-	
+
 	public static void showMappedDataForSelection(Collection<GraphElement> graphElements, String attributeName) {
 		if (graphElements.size() <= 0) {
 			MainFrame.showMessageDialog("No nodes or edges selected!", "Error");
@@ -87,12 +86,12 @@ public class XMLAttributeEditor
 			jf.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 			jf.setLayout(new GridLayout(1, 1));
 			jf.setLocationRelativeTo(MainFrame.getInstance());
-			
+
 			final JTabbedPane jtp = new JTabbedPane();
 			jtp.addContainerListener(new ContainerListener() {
 				public void componentAdded(ContainerEvent e) {
 				}
-				
+
 				public void componentRemoved(ContainerEvent e) {
 					if (jtp.getTabCount() <= 0) {
 						jf.setVisible(false);
@@ -100,15 +99,15 @@ public class XMLAttributeEditor
 					}
 				}
 			});
-			
+
 			for (GraphElement ge : graphElements) {
 				if (ge instanceof org.graffiti.graph.Node) {
 					String desc = AttributeHelper.getLabel(ge, null);
 					if (desc == null)
 						desc = "n/a";
-					
+
 					jtp.add("<html>" + desc, new XMLdataTablePane(
-										Experiment2GraphHelper.getMappedDataListFromGraphElement(ge, attributeName), jtp));
+							Experiment2GraphHelper.getMappedDataListFromGraphElement(ge, attributeName), jtp));
 				}
 				if (ge instanceof org.graffiti.graph.Edge) {
 					Node nA = ((org.graffiti.graph.Edge) ge).getSource();
@@ -124,16 +123,16 @@ public class XMLAttributeEditor
 						descE = descA + " -> " + descB;
 					else
 						descE = descA + " -" + descE + "-&gt; " + descB;
-					
+
 					if (Experiment2GraphHelper.getMappedDataListFromGraphElement(ge) != null)
 						jtp.add("<html>" + descE, new XMLdataTablePane(
-											Experiment2GraphHelper.getMappedDataListFromGraphElement(ge), jtp));
+								Experiment2GraphHelper.getMappedDataListFromGraphElement(ge), jtp));
 				}
 			}
-			
+
 			jf.getContentPane().add(jtp);
 			jf.getContentPane().validate();
-			
+
 			jf.setVisible(true);
 		}
 	}

@@ -49,20 +49,19 @@ public class ThermometerDemo2 extends ApplicationFrame {
 	 * Creates a new demo.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public ThermometerDemo2(final String title) {
 
 		super(title);
 
 		// create a dataset...
-		final DefaultValueDataset dataset = new DefaultValueDataset(new Double(43.0));
+		final DefaultValueDataset dataset = new DefaultValueDataset(Double.valueOf(43.0));
 
 		// create the chart...
 		final ThermometerPlot plot = new ThermometerPlot(dataset);
 		final JFreeChart chart = new JFreeChart("Thermometer Demo 2", // chart title
-				JFreeChart.DEFAULT_TITLE_FONT,
-														plot, // plot
+				JFreeChart.DEFAULT_TITLE_FONT, plot, // plot
 				false); // include legend
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
@@ -96,7 +95,7 @@ public class ThermometerDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

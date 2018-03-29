@@ -15,16 +15,17 @@ import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.selection.Selection;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class DebugSelectionCheck implements ActionListener {
-	
+
 	private static ThreadSafeOptions tso = null;
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 * 
+	 * @see
+	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent e) {
 		System.out.print(".");
@@ -37,13 +38,11 @@ public class DebugSelectionCheck implements ActionListener {
 					if (n == null || nce == null)
 						System.err.println("\nUNKNOWN!");
 					else {
-						String con = (nce.connectedNodes != null) ?
-											new Integer(nce.connectedNodes.size()).toString() :
-											"null";
-						System.err.println("Selection (Node ID=" + n.getID() + "/" + nce.node.getID() + "):\n" +
-											"  POS:" + nce.position.x + "/" + nce.position.y + "\n" +
-											"  NODE-REF==NODE?:" + (nce.node == n) + "\n" +
-											"  CONNECTIONS TO OTHER NODES: " + con);
+						String con = (nce.connectedNodes != null) ? Integer.valueOf(nce.connectedNodes.size()).toString()
+								: "null";
+						System.err.println("Selection (Node ID=" + n.getID() + "/" + nce.node.getID() + "):\n"
+								+ "  POS:" + nce.position.x + "/" + nce.position.y + "\n" + "  NODE-REF==NODE?:"
+								+ (nce.node == n) + "\n" + "  CONNECTIONS TO OTHER NODES: " + con);
 					}
 				}
 			} catch (NullPointerException npe) {
@@ -51,9 +50,9 @@ public class DebugSelectionCheck implements ActionListener {
 			}
 		}
 	}
-	
+
 	public static void setCheckThis(ThreadSafeOptions options) {
 		tso = options;
 	}
-	
+
 }

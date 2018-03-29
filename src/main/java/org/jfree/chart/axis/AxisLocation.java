@@ -36,8 +36,8 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * Used to indicate the location of an axis on a 2D plot, prior to knowing the orientation of
- * the plot.
+ * Used to indicate the location of an axis on a 2D plot, prior to knowing the
+ * orientation of the plot.
  */
 public final class AxisLocation implements Serializable {
 
@@ -48,14 +48,10 @@ public final class AxisLocation implements Serializable {
 	public static final AxisLocation TOP_OR_RIGHT = new AxisLocation("AxisLocation.TOP_OR_RIGHT");
 
 	/** Axis at the bottom or left. */
-	public static final AxisLocation BOTTOM_OR_LEFT = new AxisLocation(
-						"AxisLocation.BOTTOM_OR_LEFT"
-						);
+	public static final AxisLocation BOTTOM_OR_LEFT = new AxisLocation("AxisLocation.BOTTOM_OR_LEFT");
 
 	/** Axis at the bottom or right. */
-	public static final AxisLocation BOTTOM_OR_RIGHT = new AxisLocation(
-						"AxisLocation.BOTTOM_OR_RIGHT"
-						);
+	public static final AxisLocation BOTTOM_OR_RIGHT = new AxisLocation("AxisLocation.BOTTOM_OR_RIGHT");
 
 	/** The name. */
 	private String name;
@@ -64,7 +60,7 @@ public final class AxisLocation implements Serializable {
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *           the name.
+	 *            the name.
 	 */
 	private AxisLocation(String name) {
 		this.name = name;
@@ -80,10 +76,11 @@ public final class AxisLocation implements Serializable {
 	}
 
 	/**
-	 * Returns <code>true</code> if this object is equal to the specified object, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if this object is equal to the specified object,
+	 * and <code>false</code> otherwise.
 	 * 
 	 * @param obj
-	 *           the other object (<code>null</code> permitted).
+	 *            the other object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {
@@ -108,7 +105,7 @@ public final class AxisLocation implements Serializable {
 	 * Returns the location that is opposite to the supplied location.
 	 * 
 	 * @param location
-	 *           the location (<code>null</code> not permitted).
+	 *            the location (<code>null</code> not permitted).
 	 * @return The opposite location.
 	 */
 	public static AxisLocation getOpposite(AxisLocation location) {
@@ -118,18 +115,15 @@ public final class AxisLocation implements Serializable {
 		AxisLocation result = null;
 		if (location == AxisLocation.TOP_OR_LEFT) {
 			result = AxisLocation.BOTTOM_OR_RIGHT;
-		} else
-			if (location == AxisLocation.TOP_OR_RIGHT) {
-				result = AxisLocation.BOTTOM_OR_LEFT;
-			} else
-				if (location == AxisLocation.BOTTOM_OR_LEFT) {
-					result = AxisLocation.TOP_OR_RIGHT;
-				} else
-					if (location == AxisLocation.BOTTOM_OR_RIGHT) {
-						result = AxisLocation.TOP_OR_LEFT;
-					} else {
-						throw new IllegalStateException("AxisLocation not recognised.");
-					}
+		} else if (location == AxisLocation.TOP_OR_RIGHT) {
+			result = AxisLocation.BOTTOM_OR_LEFT;
+		} else if (location == AxisLocation.BOTTOM_OR_LEFT) {
+			result = AxisLocation.TOP_OR_RIGHT;
+		} else if (location == AxisLocation.BOTTOM_OR_RIGHT) {
+			result = AxisLocation.TOP_OR_LEFT;
+		} else {
+			throw new IllegalStateException("AxisLocation not recognised.");
+		}
 		return result;
 	}
 
@@ -138,21 +132,18 @@ public final class AxisLocation implements Serializable {
 	 * 
 	 * @return The object.
 	 * @throws ObjectStreamException
-	 *            if there is a problem.
+	 *             if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		if (this.equals(AxisLocation.TOP_OR_RIGHT)) {
 			return AxisLocation.TOP_OR_RIGHT;
-		} else
-			if (this.equals(AxisLocation.BOTTOM_OR_RIGHT)) {
-				return AxisLocation.BOTTOM_OR_RIGHT;
-			} else
-				if (this.equals(AxisLocation.TOP_OR_LEFT)) {
-					return AxisLocation.TOP_OR_LEFT;
-				} else
-					if (this.equals(AxisLocation.BOTTOM_OR_LEFT)) {
-						return AxisLocation.BOTTOM_OR_LEFT;
-					}
+		} else if (this.equals(AxisLocation.BOTTOM_OR_RIGHT)) {
+			return AxisLocation.BOTTOM_OR_RIGHT;
+		} else if (this.equals(AxisLocation.TOP_OR_LEFT)) {
+			return AxisLocation.TOP_OR_LEFT;
+		} else if (this.equals(AxisLocation.BOTTOM_OR_LEFT)) {
+			return AxisLocation.BOTTOM_OR_LEFT;
+		}
 		return null;
 	}
 

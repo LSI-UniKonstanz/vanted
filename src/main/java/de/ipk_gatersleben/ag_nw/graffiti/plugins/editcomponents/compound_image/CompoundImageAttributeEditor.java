@@ -40,16 +40,15 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.kegg.CachedWebDownload;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 	protected JLabel imageContainer;
-	
+
 	protected JTextField compoundNumber;
-	
+
 	private static final String IMAGE_NA = "Image N/A";
-	
+
 	public CompoundImageAttributeEditor(Displayable disp) {
 		super(disp);
 		compoundNumber = new JTextField();
@@ -58,37 +57,42 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 		compoundNumber.setText(val);
 		updateGraphicComponent(CompoundImageAttributeComponent.checkAndChangePath(val, (Attribute) displayable));
 	}
-	
+
 	private static HashSet<String> knownInvalidUrls = new HashSet<String>();
-	
+
 	public static JLabel getCompoundImageComponent(JLabel currentInstance, String imgName, boolean acceptNULLreturn) {
 		return getCompoundImageComponent(currentInstance, imgName, acceptNULLreturn, -1, -1);
 	}
-	
+
 	@SuppressWarnings("deprecation")
-	public static JLabel getCompoundImageComponent(
-			JLabel currentInstance,
-			String imgName,
-			boolean acceptNULLreturn, int sizex, int sizey) {
-		
+	public static JLabel getCompoundImageComponent(JLabel currentInstance, String imgName, boolean acceptNULLreturn,
+			int sizex, int sizey) {
+
 		ImageIcon graphicComponent = null;
 		if (!knownInvalidUrls.contains(imgName)) {
 			try {
 				String cachedFileName;
-				if (imgName != null && imgName.length() > 0 && (!imgName.contains("/")) && (!imgName.contains("\\") && (!imgName.contains(".")))) {
+				if (imgName != null && imgName.length() > 0 && (!imgName.contains("/"))
+						&& (!imgName.contains("\\") && (!imgName.contains(".")))) {
 					if (ReleaseInfo.getIsAllowedFeature(FeatureSet.KEGG_ACCESS))
-						cachedFileName = CachedWebDownload.getCacheURL(new URL("http://www.genome.ad.jp/Fig/compound_small/" + imgName + ".gif"), imgName + ".gif",
-								"compound_image").toExternalForm();
+						cachedFileName = CachedWebDownload
+								.getCacheURL(new URL("http://www.genome.ad.jp/Fig/compound_small/" + imgName + ".gif"),
+										imgName + ".gif", "compound_image")
+								.toExternalForm();
 					else
 						cachedFileName = null;
 				} else {
-					cachedFileName = CachedWebDownload.getCacheURL(new URL(imgName), CachedWebDownload.getFileIdFromUrl(imgName), "image").toExternalForm();
+					cachedFileName = CachedWebDownload
+							.getCacheURL(new URL(imgName), CachedWebDownload.getFileIdFromUrl(imgName), "image")
+							.toExternalForm();
 				}
 				BufferedImage bi = ImageIO.read(new URL(cachedFileName));
 				if (!GraphicsEnvironment.isHeadless()) {
-					GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+					GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment()
+							.getDefaultScreenDevice().getDefaultConfiguration();
 					if (!bi.getColorModel().equals(gc.getColorModel())) {
-						BufferedImage compatibleImage = gc.createCompatibleImage(bi.getWidth(), bi.getHeight(), bi.getTransparency());
+						BufferedImage compatibleImage = gc.createCompatibleImage(bi.getWidth(), bi.getHeight(),
+								bi.getTransparency());
 						Graphics g = compatibleImage.getGraphics();
 						g.drawImage(bi, 0, 0, null);
 						g.dispose();
@@ -107,9 +111,11 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 				try {
 					BufferedImage bi = ImageIO.read(new File(imgName).toURL());
 					if (!GraphicsEnvironment.isHeadless()) {
-						GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+						GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment()
+								.getDefaultScreenDevice().getDefaultConfiguration();
 						if (!bi.getColorModel().equals(gc.getColorModel())) {
-							BufferedImage compatibleImage = gc.createCompatibleImage(bi.getWidth(), bi.getHeight(), bi.getTransparency());
+							BufferedImage compatibleImage = gc.createCompatibleImage(bi.getWidth(), bi.getHeight(),
+									bi.getTransparency());
 							Graphics g = compatibleImage.getGraphics();
 							g.drawImage(bi, 0, 0, null);
 							g.dispose();
@@ -142,34 +148,37 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 			} catch (InterruptedException e) {
 				ErrorMsg.addErrorMessage(e);
 			}
-			
+
 			if (sizex > 0 && sizey > 0)
-				graphicComponent = new ImageIcon(GravistoService.getScaledImage(graphicComponent.getImage(), sizex, sizey));
-			
+				graphicComponent = new ImageIcon(
+						GravistoService.getScaledImage(graphicComponent.getImage(), sizex, sizey));
+
 			currentInstance.setIcon(graphicComponent);
-			
-			currentInstance.setPreferredSize(new Dimension(graphicComponent.getIconWidth(), graphicComponent.getIconHeight()));
+
+			currentInstance
+					.setPreferredSize(new Dimension(graphicComponent.getIconWidth(), graphicComponent.getIconHeight()));
 			currentInstance.setText(null);
 		} else {
 			knownInvalidUrls.add(imgName);
 			if (!acceptNULLreturn) {
 				// currentInstance.setText(IMAGE_NA);
-				currentInstance.setIcon(new ImageIcon(GravistoService.getResource(CompoundImageAttributeEditor.class, "MissingImage", "png")));
+				currentInstance.setIcon(new ImageIcon(
+						GravistoService.getResource(CompoundImageAttributeEditor.class, "MissingImage", "png")));
 			} else
 				return null;
 		}
 		return currentInstance;
 	}
-	
+
 	private void updateGraphicComponent(String imgName) {
 		imageContainer = getCompoundImageComponent(imageContainer, imgName, false, 128, 128);
 	}
-	
+
 	protected static String checkImageName(String imgName) {
 		if (imgName != null) {
 			if (imgName.startsWith("cpd:"))
 				imgName = imgName.substring("cpd:".length());
-			
+
 			// CompoundEntry ce = CompoundService.getInformation(imgName);
 			// if (ce != null) {
 			// return ce.getID() + ".gif";
@@ -180,22 +189,23 @@ public class CompoundImageAttributeEditor extends AbstractValueEditComponent {
 		}
 		return imgName;
 	}
-	
+
 	public JComponent getComponent() {
-		return TableLayout.getSplitVertical(imageContainer, compoundNumber,
-				TableLayoutConstants.PREFERRED, TableLayoutConstants.PREFERRED);
+		return TableLayout.getSplitVertical(imageContainer, compoundNumber, TableLayoutConstants.PREFERRED,
+				TableLayoutConstants.PREFERRED);
 	}
-	
+
 	public void setEditFieldValue() {
 		if (showEmpty) {
 			imageContainer.setIcon(null);
 			imageContainer.setText(EMPTY_STRING);
 			compoundNumber.setText(EMPTY_STRING);
 		} else {
-			updateGraphicComponent(CompoundImageAttributeComponent.checkAndChangePath(displayable.getValue().toString(), (Attribute) displayable));
+			updateGraphicComponent(CompoundImageAttributeComponent.checkAndChangePath(displayable.getValue().toString(),
+					(Attribute) displayable));
 		}
 	}
-	
+
 	public void setValue() {
 		String text = compoundNumber.getText();
 		if (!text.equals(EMPTY_STRING) && !text.equals(IMAGE_NA)

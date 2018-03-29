@@ -36,7 +36,8 @@ import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
 /**
- * A needle that indicates wind direction, for use with the {@link org.jfree.chart.plot.CompassPlot} class.
+ * A needle that indicates wind direction, for use with the
+ * {@link org.jfree.chart.plot.CompassPlot} class.
  * 
  * @author Bryan Scott
  */
@@ -53,13 +54,13 @@ public class WindNeedle extends ArrowNeedle implements Serializable {
 	 * Draws the needle.
 	 * 
 	 * @param g2
-	 *           the graphics device.
+	 *            the graphics device.
 	 * @param plotArea
-	 *           the plot area.
+	 *            the plot area.
 	 * @param rotate
-	 *           the rotation point.
+	 *            the rotation point.
 	 * @param angle
-	 *           the angle.
+	 *            the angle.
 	 */
 	protected void drawNeedle(Graphics2D g2, Rectangle2D plotArea, Point2D rotate, double angle) {
 
@@ -71,13 +72,13 @@ public class WindNeedle extends ArrowNeedle implements Serializable {
 
 			Point2D newRotate = rotate;
 			// Point2D newRotate = new Point2D.Double(rotate.getX()-spacing, rotate.getY());
-			newArea.setRect(plotArea.getMinX() - spacing, plotArea.getMinY(),
-										plotArea.getWidth(), plotArea.getHeight());
+			newArea.setRect(plotArea.getMinX() - spacing, plotArea.getMinY(), plotArea.getWidth(),
+					plotArea.getHeight());
 			super.drawNeedle(g2, newArea, newRotate, angle);
 
 			// newRotate.setLocation(rotate.getX()+spacing, rotate.getY());
-			newArea.setRect(plotArea.getMinX() + spacing, plotArea.getMinY(),
-										plotArea.getWidth(), plotArea.getHeight());
+			newArea.setRect(plotArea.getMinX() + spacing, plotArea.getMinY(), plotArea.getWidth(),
+					plotArea.getHeight());
 			super.drawNeedle(g2, newArea, newRotate, angle);
 
 		}
@@ -87,7 +88,7 @@ public class WindNeedle extends ArrowNeedle implements Serializable {
 	 * Tests another object for equality with this object.
 	 * 
 	 * @param object
-	 *           the object to test.
+	 *            the object to test.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object object) {

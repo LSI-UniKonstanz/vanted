@@ -36,11 +36,13 @@ package org.jfree.chart.axis;
 import java.io.Serializable;
 
 /**
- * Base class representing a tick unit. This determines the spacing of the
- * tick marks on an axis.
+ * Base class representing a tick unit. This determines the spacing of the tick
+ * marks on an axis.
  * <P>
- * This class (and any subclasses) should be immutable, the reason being that ORDERED collections of tick units are maintained and if one instance can be
- * changed, it may destroy the order of the collection that it belongs to. In addition, if the implementations are immutable, they can belong to multiple
+ * This class (and any subclasses) should be immutable, the reason being that
+ * ORDERED collections of tick units are maintained and if one instance can be
+ * changed, it may destroy the order of the collection that it belongs to. In
+ * addition, if the implementations are immutable, they can belong to multiple
  * collections.
  * 
  * @see ValueAxis
@@ -54,7 +56,7 @@ public abstract class TickUnit implements Comparable, Serializable {
 	 * Constructs a new tick unit.
 	 * 
 	 * @param size
-	 *           the tick unit size.
+	 *            the tick unit size.
 	 */
 	public TickUnit(double size) {
 		this.size = size;
@@ -75,7 +77,7 @@ public abstract class TickUnit implements Comparable, Serializable {
 	 * Subclasses may implement special formatting by overriding this method.
 	 * 
 	 * @param value
-	 *           the data value.
+	 *            the data value.
 	 * @return value as string.
 	 */
 	public String valueToString(double value) {
@@ -86,8 +88,9 @@ public abstract class TickUnit implements Comparable, Serializable {
 	 * Compares this tick unit to an arbitrary object.
 	 * 
 	 * @param object
-	 *           the object to compare against.
-	 * @return <code>1</code> if the size of the other object is less than this, <code>0</code> if both have the same size and <code>-1</code> this
+	 *            the object to compare against.
+	 * @return <code>1</code> if the size of the other object is less than this,
+	 *         <code>0</code> if both have the same size and <code>-1</code> this
 	 *         size is less than the others.
 	 */
 	public int compareTo(Object object) {
@@ -96,12 +99,11 @@ public abstract class TickUnit implements Comparable, Serializable {
 			TickUnit other = (TickUnit) object;
 			if (this.size > other.getSize()) {
 				return 1;
-			} else
-				if (this.size < other.getSize()) {
-					return -1;
-				} else {
-					return 0;
-				}
+			} else if (this.size < other.getSize()) {
+				return -1;
+			} else {
+				return 0;
+			}
 		} else {
 			return -1;
 		}
@@ -112,7 +114,7 @@ public abstract class TickUnit implements Comparable, Serializable {
 	 * Tests this unit for equality with another object.
 	 * 
 	 * @param obj
-	 *           the object.
+	 *            the object.
 	 * @return <code>true</code> or <code>false</code>.
 	 */
 	public boolean equals(Object obj) {

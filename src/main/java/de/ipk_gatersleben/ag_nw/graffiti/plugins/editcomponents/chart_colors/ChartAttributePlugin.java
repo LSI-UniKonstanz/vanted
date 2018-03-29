@@ -21,76 +21,46 @@ import org.graffiti.plugin.view.GraffitiShape;
 
 import de.ipk_gatersleben.ag_nw.graffiti.IPK_PluginAdapter;
 
-public class ChartAttributePlugin
-					extends IPK_PluginAdapter
-					implements EditorPlugin {
+public class ChartAttributePlugin extends IPK_PluginAdapter implements EditorPlugin {
 	private HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>> valueEditComponents;
-	private  Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
-	
+	private Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> attributeComponents;
+
 	public ChartAttributePlugin() {
 		this.attributes = new Class[1];
 		this.attributes[0] = ChartColorAttribute.class;
-		
+
 		StringAttribute.putAttributeType(ChartColorAttribute.attributeName, ChartColorAttribute.class);
-		
+
 		valueEditComponents = new HashMap<Class<? extends Displayable>, Class<? extends ValueEditComponent>>();
-		
-		valueEditComponents.put(
-							ChartColorAttribute.class,
-							ChartColorAttributeEditor.class);
-		valueEditComponents.put(
-							LineModeAttribute.class,
-							LineModeAttributeEditor.class);
+
+		valueEditComponents.put(ChartColorAttribute.class, ChartColorAttributeEditor.class);
+		valueEditComponents.put(LineModeAttribute.class, LineModeAttributeEditor.class);
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getAttributeComponents()
-	 */
+
 	public Map<Class<? extends Attribute>, Class<? extends AttributeComponent>> getAttributeComponents() {
 		return attributeComponents;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getGUIComponents()
-	 */
+
 	public GraffitiComponent[] getGUIComponents() {
 		return null;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getModes()
-	 */
+
 	public Mode[] getModes() {
 		return null;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getShapes()
-	 */
+
 	public GraffitiShape[] getShapes() {
 		return null;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getTools()
-	 */
+
 	public Tool[] getTools() {
 		return null;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.graffiti.plugin.EditorPlugin#getValueEditComponents()
-	 */
+
 	public Map<Class<? extends Displayable>, Class<? extends ValueEditComponent>> getValueEditComponents() {
 		return valueEditComponents;
 	}
-	
+
 	@Override
 	public InspectorTab[] getInspectorTabs() {
 		return null;

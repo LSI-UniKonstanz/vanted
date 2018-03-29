@@ -50,9 +50,9 @@ public class KeyedObject implements Cloneable, PublicCloneable, Serializable {
 	 * Creates a new (key, object) pair.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @param object
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 */
 	public KeyedObject(final Comparable key, final Object object) {
 		this.key = key;
@@ -81,19 +81,20 @@ public class KeyedObject implements Cloneable, PublicCloneable, Serializable {
 	 * Sets the object.
 	 * 
 	 * @param object
-	 *           the object (<code>null</code> permitted).
+	 *            the object (<code>null</code> permitted).
 	 */
 	public void setObject(final Object object) {
 		this.object = object;
 	}
 
 	/**
-	 * Returns a clone of this object. It is assumed that the key is an immutable object,
-	 * so it is not deep-cloned. The object is deep-cloned if it implements {@link PublicCloneable}, otherwise a shallow clone is made.
+	 * Returns a clone of this object. It is assumed that the key is an immutable
+	 * object, so it is not deep-cloned. The object is deep-cloned if it implements
+	 * {@link PublicCloneable}, otherwise a shallow clone is made.
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if there is a problem cloning.
+	 *             if there is a problem cloning.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		final KeyedObject clone = (KeyedObject) super.clone();
@@ -108,7 +109,7 @@ public class KeyedObject implements Cloneable, PublicCloneable, Serializable {
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param object
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object object) {

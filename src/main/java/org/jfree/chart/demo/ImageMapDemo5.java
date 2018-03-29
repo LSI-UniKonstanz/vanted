@@ -57,8 +57,8 @@ import org.jfree.ui.Spacer;
 import org.jfree.ui.VerticalAlignment;
 
 /**
- * Creates an HTML image map for an area chart. This demo was put together as a test for
- * bug report 815817.
+ * Creates an HTML image map for an area chart. This demo was put together as a
+ * test for bug report 815817.
  */
 public class ImageMapDemo5 {
 
@@ -75,14 +75,10 @@ public class ImageMapDemo5 {
 	public void saveImageAndHTML() {
 
 		// create a dataset
-		final double[][] data = new double[][] {
-							{ 56.0, -12.0, 34.0, 76.0, 56.0, 100.0, 67.0, 45.0 },
-							{ 37.0, 45.0, 67.0, 25.0, 34.0, 34.0, 100.0, 53.0 },
-							{ 43.0, 54.0, 34.0, 34.0, 87.0, 64.0, 73.0, 12.0 }
-			};
-		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset(
-							"Series ", "Type ", data
-							);
+		final double[][] data = new double[][] { { 56.0, -12.0, 34.0, 76.0, 56.0, 100.0, 67.0, 45.0 },
+				{ 37.0, 45.0, 67.0, 25.0, 34.0, 34.0, 100.0, 53.0 },
+				{ 43.0, 54.0, 34.0, 34.0, 87.0, 64.0, 73.0, 12.0 } };
+		final CategoryDataset dataset = DatasetUtilities.createCategoryDataset("Series ", "Type ", data);
 
 		final JFreeChart chart = createChart(dataset);
 
@@ -111,8 +107,8 @@ public class ImageMapDemo5 {
 			writer.println("<HEAD><TITLE>JFreeChart Image Map Demo</TITLE></HEAD>");
 			writer.println("<BODY>");
 			ChartUtilities.writeImageMap(writer, "chart", info);
-			writer.println("<IMG SRC=\"areachart100.png\" "
-								+ "WIDTH=\"600\" HEIGHT=\"400\" BORDER=\"0\" USEMAP=\"#chart\">");
+			writer.println(
+					"<IMG SRC=\"areachart100.png\" " + "WIDTH=\"600\" HEIGHT=\"400\" BORDER=\"0\" USEMAP=\"#chart\">");
 			writer.println("</BODY>");
 			writer.println("</HTML>");
 			writer.close();
@@ -126,13 +122,12 @@ public class ImageMapDemo5 {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final CategoryDataset dataset) {
 
-		final JFreeChart chart = ChartFactory.createAreaChart(
-							"Area Chart", // chart title
+		final JFreeChart chart = ChartFactory.createAreaChart("Area Chart", // chart title
 				"Category", // domain axis label
 				"Value", // range axis label
 				dataset, // data
@@ -140,7 +135,7 @@ public class ImageMapDemo5 {
 				true, // include legend
 				true, // tooltips
 				false // urls
-				);
+		);
 
 		// NOW DO SOME OPTIONAL CUSTOMISATION OF THE CHART...
 
@@ -149,10 +144,8 @@ public class ImageMapDemo5 {
 		legend.setAnchor(StandardLegend.SOUTH);
 
 		chart.setBackgroundPaint(Color.white);
-		final TextTitle subtitle = new TextTitle(
-							"An area chart demonstration.  We use this subtitle "
-												+ " as an example of what happens when you get a really long title or subtitle."
-							);
+		final TextTitle subtitle = new TextTitle("An area chart demonstration.  We use this subtitle "
+				+ " as an example of what happens when you get a really long title or subtitle.");
 		subtitle.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		subtitle.setPosition(RectangleEdge.TOP);
 		subtitle.setSpacer(new Spacer(Spacer.RELATIVE, 0.05, 0.05, 0.05, 0.05));
@@ -187,7 +180,7 @@ public class ImageMapDemo5 {
 	 * Starting point for the demo.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 		final ImageMapDemo5 demo = new ImageMapDemo5();

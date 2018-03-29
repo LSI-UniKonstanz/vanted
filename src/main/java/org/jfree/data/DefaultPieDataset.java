@@ -45,8 +45,7 @@ import java.util.List;
 /**
  * A default implementation of the {@link PieDataset} interface.
  */
-public class DefaultPieDataset extends AbstractDataset
-											implements PieDataset, Cloneable, Serializable {
+public class DefaultPieDataset extends AbstractDataset implements PieDataset, Cloneable, Serializable {
 
 	/** Storage for the data. */
 	private DefaultKeyedValues data;
@@ -64,7 +63,7 @@ public class DefaultPieDataset extends AbstractDataset
 	 * Creates a new dataset that uses the data from a {@link KeyedValues} instance.
 	 * 
 	 * @param data
-	 *           the data.
+	 *            the data.
 	 */
 	public DefaultPieDataset(final KeyedValues data) {
 
@@ -96,7 +95,7 @@ public class DefaultPieDataset extends AbstractDataset
 	 * Returns the key for an item.
 	 * 
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return the category.
 	 */
 	public Comparable getKey(final int item) {
@@ -113,7 +112,7 @@ public class DefaultPieDataset extends AbstractDataset
 	 * Returns the index for a key.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @return the key index.
 	 */
 	public int getIndex(final Comparable key) {
@@ -126,7 +125,7 @@ public class DefaultPieDataset extends AbstractDataset
 	 * Returns a value.
 	 * 
 	 * @param item
-	 *           the value index.
+	 *            the value index.
 	 * @return the value (possibly <code>null</code>).
 	 */
 	public Number getValue(final int item) {
@@ -143,7 +142,7 @@ public class DefaultPieDataset extends AbstractDataset
 	 * Returns the data value associated with a key.
 	 * 
 	 * @param key
-	 *           the key (<code>null</code> not permitted).
+	 *            the key (<code>null</code> not permitted).
 	 * @return the value (possibly <code>null</code>).
 	 */
 	public Number getValue(final Comparable key) {
@@ -162,9 +161,9 @@ public class DefaultPieDataset extends AbstractDataset
 	 * Sets the data value for a key.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public void setValue(final Comparable key, final Number value) {
 
@@ -177,13 +176,13 @@ public class DefaultPieDataset extends AbstractDataset
 	 * Sets the data value for a key.
 	 * 
 	 * @param key
-	 *           the key.
+	 *            the key.
 	 * @param value
-	 *           the value.
+	 *            the value.
 	 */
 	public void setValue(final Comparable key, final double value) {
 
-		setValue(key, new Double(value));
+		setValue(key, Double.valueOf(value));
 
 	}
 
@@ -191,7 +190,7 @@ public class DefaultPieDataset extends AbstractDataset
 	 * Tests if this object is equal to another.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object o) {
@@ -249,8 +248,8 @@ public class DefaultPieDataset extends AbstractDataset
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            This class will not throw this exception, but subclasses
-	 *            (if any) might.
+	 *             This class will not throw this exception, but subclasses (if any)
+	 *             might.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		final DefaultPieDataset clone = (DefaultPieDataset) super.clone();

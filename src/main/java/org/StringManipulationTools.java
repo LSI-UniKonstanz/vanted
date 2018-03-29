@@ -16,269 +16,78 @@ import java.util.Vector;
  * @author klukas
  */
 public class StringManipulationTools implements HelperClass {
-	
+
 	public static final String Unicode = "UTF-8";
-	
-	@SuppressWarnings("nls")
-	public static final String[][] htmlNamedEntity2Unicode = {
-			{ "&nbsp;", "\u00A0" },
-			{ "&iexcl;", "\u00A1" },
-			{ "&cent;", "\u00A2" },
-			{ "&pound;", "\u00A3" },
-			{ "&curren;", "\u00A4" },
-			{ "&yen;", "\u00A5" },
-			{ "&brvbar;", "\u00A6" },
-			{ "&sect;", "\u00A7" },
-			{ "&uml;", "\u00A8" },
-			{ "&copy;", "\u00A9" },
-			{ "&ordf;", "\u00AA" },
-			{ "&laquo;", "\u00AB" },
-			{ "&not;", "\u00AC" },
-			{ "&shy;", "\u00AD" },
-			{ "&reg;", "\u00AE" },
-			{ "&macr;", "\u00AF" },
-			{ "&deg;", "\u00B0" },
-			{ "&plusmn;", "\u00B1" },
-			{ "&sup2;", "\u00B2" },
-			{ "&sup3;", "\u00B3" },
-			{ "&acute;", "\u00B4" },
-			{ "&micro;", "\u00B5" },
-			{ "&para;", "\u00B6" },
-			{ "&middot;", "\u00B7" },
-			{ "&cedil;", "\u00B8" },
-			{ "&sup1;", "\u00B9" },
-			{ "&ordm;", "\u00BA" },
-			{ "&raquo;", "\u00BB" },
-			{ "&frac14;", "\u00BC" },
-			{ "&frac12;", "\u00BD" },
-			{ "&frac34;", "\u00BE" },
-			{ "&iquest;", "\u00BF" },
-			{ "&Agrave;", "\u00C0" },
-			{ "&Aacute;", "\u00C1" },
-			{ "&Acirc;", "\u00C2" },
-			{ "&Atilde;", "\u00C3" },
-			{ "&Auml;", "\u00C4" },
-			{ "&Aring;", "\u00C5" },
-			{ "&AElig;", "\u00C6" },
-			{ "&Ccedil;", "\u00C7" },
-			{ "&Egrave;", "\u00C8" },
-			{ "&Eacute;", "\u00C9" },
-			{ "&Ecirc;", "\u00CA" },
-			{ "&Euml;", "\u00CB" },
-			{ "&Igrave;", "\u00CC" },
-			{ "&Iacute;", "\u00CD" },
-			{ "&Icirc;", "\u00CE" },
-			{ "&Iuml;", "\u00CF" },
-			{ "&ETH;", "\u00D0" },
-			{ "&Ntilde;", "\u00D1" },
-			{ "&Ograve;", "\u00D2" },
-			{ "&Oacute;", "\u00D3" },
-			{ "&Ocirc;", "\u00D4" },
-			{ "&Otilde;", "\u00D5" },
-			{ "&Ouml;", "\u00D6" },
-			{ "&times;", "\u00D7" },
-			{ "&Oslash;", "\u00D8" },
-			{ "&Ugrave;", "\u00D9" },
-			{ "&Uacute;", "\u00DA" },
-			{ "&Ucirc;", "\u00DB" },
-			{ "&Uuml;", "\u00DC" },
-			{ "&Yacute;", "\u00DD" },
-			{ "&THORN;", "\u00DE" },
-			{ "&szlig;", "\u00DF" },
-			{ "&agrave;", "\u00E0" },
-			{ "&aacute;", "\u00E1" },
-			{ "&acirc;", "\u00E2" },
-			{ "&atilde;", "\u00E3" },
-			{ "&auml;", "\u00E4" },
-			{ "&aring;", "\u00E5" },
-			{ "&aelig;", "\u00E6" },
-			{ "&ccedil;", "\u00E7" },
-			{ "&egrave;", "\u00E8" },
-			{ "&eacute;", "\u00E9" },
-			{ "&ecirc;", "\u00EA" },
-			{ "&euml;", "\u00EB" },
-			{ "&igrave;", "\u00EC" },
-			{ "&iacute;", "\u00ED" },
-			{ "&icirc;", "\u00EE" },
-			{ "&iuml;", "\u00EF" },
-			{ "&eth;", "\u00F0" },
-			{ "&ntilde;", "\u00F1" },
-			{ "&ograve;", "\u00F2" },
-			{ "&oacute;", "\u00F3" },
-			{ "&ocirc;", "\u00F4" },
-			{ "&otilde;", "\u00F5" },
-			{ "&ouml;", "\u00F6" },
-			{ "&divide;", "\u00F7" },
-			{ "&oslash;", "\u00F8" },
-			{ "&ugrave;", "\u00F9" },
-			{ "&uacute;", "\u00FA" },
-			{ "&ucirc;", "\u00FB" },
-			{ "&uuml;", "\u00FC" },
-			{ "&yacute;", "\u00FD" },
-			{ "&thorn;", "\u00FE" },
-			{ "&yuml;", "\u00FF" },
-			{ "&OElig;", "\u0152" },
-			{ "&oelig;", "\u0153" },
-			{ "&quot;", "\\u0022" },
-			{ "&Scaron;", "\u0160" },
-			{ "&scaron;", "\u0161" },
-			{ "&Yuml;", "\u0178" },
-			{ "&amp;", "\u0026" },
-			{ "&apos;", "\u0027" },
-			{ "&fnof;", "\u0192" },
-			{ "&lt;", "\u003C" },
-			{ "&gt;", "\u003E" },
-			{ "&circ;", "\u02C6" },
-			{ "&tilde;", "\u02DC" },
-			{ "&ensp;", "\u2002" },
-			{ "&emsp;", "\u2003" },
-			{ "&thinsp;", "\u2009" },
-			{ "&zwnj;", "\u200C" },
-			{ "&zwj;", "\u200D" },
-			{ "&lrm;", "\u200E" },
-			{ "&rlm;", "\u200F" },
-			{ "&ndash;", "\u2013" },
-			{ "&mdash;", "\u2014" },
-			{ "&lsquo;", "\u2018" },
-			{ "&rsquo;", "\u2019" },
-			{ "&sbquo;", "\u201A" },
-			{ "&ldquo;", "\u201C" },
-			{ "&rdquo;", "\u201D" },
-			{ "&bdquo;", "\u201E" },
-			{ "&dagger;", "\u2020" },
-			{ "&Dagger;", "\u2021" },
-			{ "&bull;", "\u2022" },
-			{ "&hellip;", "\u2026" },
-			{ "&permil;", "\u2030" },
-			{ "&prime;", "\u2032" },
-			{ "&Prime;", "\u2033" },
-			{ "&lsaquo;", "\u2039" },
-			{ "&rsaquo;", "\u203A" },
-			{ "&oline;", "\u203E" },
-			{ "&frasl;", "\u2044" },
-			{ "&euro;", "\u20AC" },
-			{ "&image;", "\u2111" },
-			{ "&weierp;", "\u2118" },
-			{ "&real;", "\u211C" },
-			{ "&trade;", "\u2122" },
-			{ "&alefsym;", "\u2135" },
-			{ "&larr;", "\u2190" },
-			{ "&uarr;", "\u2191" },
-			{ "&rarr;", "\u2192" },
-			{ "&darr;", "\u2193" },
-			{ "&harr;", "\u2194" },
-			{ "&crarr;", "\u21B5" },
-			{ "&lArr;", "\u21D0" },
-			{ "&uArr;", "\u21D1" },
-			{ "&rArr;", "\u21D2" },
-			{ "&dArr;", "\u21D3" },
-			{ "&hArr;", "\u21D4" },
-			{ "&forall;", "\u2200" },
-			{ "&part;", "\u2202" },
-			{ "&exist;", "\u2203" },
-			{ "&empty;", "\u2205" },
-			{ "&nabla;", "\u2207" },
-			{ "&isin;", "\u2208" },
-			{ "&notin;", "\u2209" },
-			{ "&ni;", "\u220B" },
-			{ "&prod;", "\u220F" },
-			{ "&sum;", "\u2211" },
-			{ "&minus;", "\u2212" },
-			{ "&lowast;", "\u2217" },
-			{ "&radic;", "\u221A" },
-			{ "&prop;", "\u221D" },
-			{ "&infin;", "\u221E" },
-			{ "&ang;", "\u2220" },
-			{ "&and;", "\u2227" },
-			{ "&or;", "\u2228" },
-			{ "&cap;", "\u2229" },
-			{ "&cup;", "\u222A" },
-			{ "&int;", "\u222B" },
-			{ "&there4;", "\u2234" },
-			{ "&sim;", "\u223C" },
-			{ "&cong;", "\u2245" },
-			{ "&asymp;", "\u2248" },
-			{ "&ne;", "\u2260" },
-			{ "&equiv;", "\u2261" },
-			{ "&le;", "\u2264" },
-			{ "&ge;", "\u2265" },
-			{ "&sub;", "\u2282" },
-			{ "&sup;", "\u2283" },
-			{ "&nsub;", "\u2284" },
-			{ "&sube;", "\u2286" },
-			{ "&supe;", "\u2287" },
-			{ "&oplus;", "\u2295" },
-			{ "&otimes;", "\u2297" },
-			{ "&perp;", "\u22A5" },
-			{ "&sdot;", "\u22C5" },
-			{ "&lceil;", "\u2308" },
-			{ "&rceil;", "\u2309" },
-			{ "&lfloor;", "\u230A" },
-			{ "&rfloor;", "\u230B" },
-			{ "&lang;", "\u2329" },
-			{ "&rang;", "\u232A" },
-			{ "&Alpha;", "\u0391" },
-			{ "&Beta;", "\u0392" },
-			{ "&Gamma;", "\u0393" },
-			{ "&Delta;", "\u0394" },
-			{ "&Epsilon;", "\u0395" },
-			{ "&Zeta;", "\u0396" },
-			{ "&Eta;", "\u0397" },
-			{ "&Theta;", "\u0398" },
-			{ "&Iota;", "\u0399" },
-			{ "&Kappa;", "\u039A" },
-			{ "&Lambda;", "\u039B" },
-			{ "&Mu;", "\u039C" },
-			{ "&Nu;", "\u039D" },
-			{ "&Xi;", "\u039E" },
-			{ "&Omicron;", "\u039F" },
-			{ "&Pi;", "\u03A0" },
-			{ "&Rho;", "\u03A1" },
-			{ "&Sigma;", "\u03A3" },
-			{ "&Tau;", "\u03A4" },
-			{ "&Upsilon;", "\u03A5" },
-			{ "&Phi;", "\u03A6" },
-			{ "&Chi;", "\u03A7" },
-			{ "&Psi;", "\u03A8" },
-			{ "&Omega;", "\u03A9" },
-			{ "&alpha;", "\u03B1" },
-			{ "&beta;", "\u03B2" },
-			{ "&gamma;", "\u03B3" },
-			{ "&delta;", "\u03B4" },
-			{ "&epsilon;", "\u03B5" },
-			{ "&zeta;", "\u03B6" },
-			{ "&eta;", "\u03B7" },
-			{ "&theta;", "\u03B8" },
-			{ "&iota;", "\u03B9" },
-			{ "&kappa;", "\u03BA" },
-			{ "&lambda;", "\u03BB" },
-			{ "&mu;", "\u03BC" },
-			{ "&nu;", "\u03BD" },
-			{ "&xi;", "\u03BE" },
-			{ "&omicron;", "\u03BF" },
-			{ "&pi;", "\u03C0" },
-			{ "&rho;", "\u03C1" },
-			{ "&sigmaf;", "\u03C2" },
-			{ "&sigma;", "\u03C3" },
-			{ "&tau;", "\u03C4" },
-			{ "&upsilon;", "\u03C5" },
-			{ "&phi;", "\u03C6" },
-			{ "&chi;", "\u03C7" },
-			{ "&loz;", "\u25CA" },
-			{ "&psi;", "\u03C8" },
-			{ "&omega;", "\u03C9" },
-			{ "&thetasym;", "\u03D1" },
-			{ "&upsih;", "\u03D2" },
-			{ "&piv;", "\u03D6" },
-			{ "&spades;", "\u2660" },
-			{ "&clubs;", "\u2663" },
-			{ "&hearts;", "\u2665" },
-			{ "&diams;", "\u2666" } };
-	
+
+	public static final String[][] htmlNamedEntity2Unicode = { { "&nbsp;", "\u00A0" }, { "&iexcl;", "\u00A1" },
+			{ "&cent;", "\u00A2" }, { "&pound;", "\u00A3" }, { "&curren;", "\u00A4" }, { "&yen;", "\u00A5" },
+			{ "&brvbar;", "\u00A6" }, { "&sect;", "\u00A7" }, { "&uml;", "\u00A8" }, { "&copy;", "\u00A9" },
+			{ "&ordf;", "\u00AA" }, { "&laquo;", "\u00AB" }, { "&not;", "\u00AC" }, { "&shy;", "\u00AD" },
+			{ "&reg;", "\u00AE" }, { "&macr;", "\u00AF" }, { "&deg;", "\u00B0" }, { "&plusmn;", "\u00B1" },
+			{ "&sup2;", "\u00B2" }, { "&sup3;", "\u00B3" }, { "&acute;", "\u00B4" }, { "&micro;", "\u00B5" },
+			{ "&para;", "\u00B6" }, { "&middot;", "\u00B7" }, { "&cedil;", "\u00B8" }, { "&sup1;", "\u00B9" },
+			{ "&ordm;", "\u00BA" }, { "&raquo;", "\u00BB" }, { "&frac14;", "\u00BC" }, { "&frac12;", "\u00BD" },
+			{ "&frac34;", "\u00BE" }, { "&iquest;", "\u00BF" }, { "&Agrave;", "\u00C0" }, { "&Aacute;", "\u00C1" },
+			{ "&Acirc;", "\u00C2" }, { "&Atilde;", "\u00C3" }, { "&Auml;", "\u00C4" }, { "&Aring;", "\u00C5" },
+			{ "&AElig;", "\u00C6" }, { "&Ccedil;", "\u00C7" }, { "&Egrave;", "\u00C8" }, { "&Eacute;", "\u00C9" },
+			{ "&Ecirc;", "\u00CA" }, { "&Euml;", "\u00CB" }, { "&Igrave;", "\u00CC" }, { "&Iacute;", "\u00CD" },
+			{ "&Icirc;", "\u00CE" }, { "&Iuml;", "\u00CF" }, { "&ETH;", "\u00D0" }, { "&Ntilde;", "\u00D1" },
+			{ "&Ograve;", "\u00D2" }, { "&Oacute;", "\u00D3" }, { "&Ocirc;", "\u00D4" }, { "&Otilde;", "\u00D5" },
+			{ "&Ouml;", "\u00D6" }, { "&times;", "\u00D7" }, { "&Oslash;", "\u00D8" }, { "&Ugrave;", "\u00D9" },
+			{ "&Uacute;", "\u00DA" }, { "&Ucirc;", "\u00DB" }, { "&Uuml;", "\u00DC" }, { "&Yacute;", "\u00DD" },
+			{ "&THORN;", "\u00DE" }, { "&szlig;", "\u00DF" }, { "&agrave;", "\u00E0" }, { "&aacute;", "\u00E1" },
+			{ "&acirc;", "\u00E2" }, { "&atilde;", "\u00E3" }, { "&auml;", "\u00E4" }, { "&aring;", "\u00E5" },
+			{ "&aelig;", "\u00E6" }, { "&ccedil;", "\u00E7" }, { "&egrave;", "\u00E8" }, { "&eacute;", "\u00E9" },
+			{ "&ecirc;", "\u00EA" }, { "&euml;", "\u00EB" }, { "&igrave;", "\u00EC" }, { "&iacute;", "\u00ED" },
+			{ "&icirc;", "\u00EE" }, { "&iuml;", "\u00EF" }, { "&eth;", "\u00F0" }, { "&ntilde;", "\u00F1" },
+			{ "&ograve;", "\u00F2" }, { "&oacute;", "\u00F3" }, { "&ocirc;", "\u00F4" }, { "&otilde;", "\u00F5" },
+			{ "&ouml;", "\u00F6" }, { "&divide;", "\u00F7" }, { "&oslash;", "\u00F8" }, { "&ugrave;", "\u00F9" },
+			{ "&uacute;", "\u00FA" }, { "&ucirc;", "\u00FB" }, { "&uuml;", "\u00FC" }, { "&yacute;", "\u00FD" },
+			{ "&thorn;", "\u00FE" }, { "&yuml;", "\u00FF" }, { "&OElig;", "\u0152" }, { "&oelig;", "\u0153" },
+			{ "&quot;", "\\u0022" }, { "&Scaron;", "\u0160" }, { "&scaron;", "\u0161" }, { "&Yuml;", "\u0178" },
+			{ "&amp;", "\u0026" }, { "&apos;", "\u0027" }, { "&fnof;", "\u0192" }, { "&lt;", "\u003C" },
+			{ "&gt;", "\u003E" }, { "&circ;", "\u02C6" }, { "&tilde;", "\u02DC" }, { "&ensp;", "\u2002" },
+			{ "&emsp;", "\u2003" }, { "&thinsp;", "\u2009" }, { "&zwnj;", "\u200C" }, { "&zwj;", "\u200D" },
+			{ "&lrm;", "\u200E" }, { "&rlm;", "\u200F" }, { "&ndash;", "\u2013" }, { "&mdash;", "\u2014" },
+			{ "&lsquo;", "\u2018" }, { "&rsquo;", "\u2019" }, { "&sbquo;", "\u201A" }, { "&ldquo;", "\u201C" },
+			{ "&rdquo;", "\u201D" }, { "&bdquo;", "\u201E" }, { "&dagger;", "\u2020" }, { "&Dagger;", "\u2021" },
+			{ "&bull;", "\u2022" }, { "&hellip;", "\u2026" }, { "&permil;", "\u2030" }, { "&prime;", "\u2032" },
+			{ "&Prime;", "\u2033" }, { "&lsaquo;", "\u2039" }, { "&rsaquo;", "\u203A" }, { "&oline;", "\u203E" },
+			{ "&frasl;", "\u2044" }, { "&euro;", "\u20AC" }, { "&image;", "\u2111" }, { "&weierp;", "\u2118" },
+			{ "&real;", "\u211C" }, { "&trade;", "\u2122" }, { "&alefsym;", "\u2135" }, { "&larr;", "\u2190" },
+			{ "&uarr;", "\u2191" }, { "&rarr;", "\u2192" }, { "&darr;", "\u2193" }, { "&harr;", "\u2194" },
+			{ "&crarr;", "\u21B5" }, { "&lArr;", "\u21D0" }, { "&uArr;", "\u21D1" }, { "&rArr;", "\u21D2" },
+			{ "&dArr;", "\u21D3" }, { "&hArr;", "\u21D4" }, { "&forall;", "\u2200" }, { "&part;", "\u2202" },
+			{ "&exist;", "\u2203" }, { "&empty;", "\u2205" }, { "&nabla;", "\u2207" }, { "&isin;", "\u2208" },
+			{ "&notin;", "\u2209" }, { "&ni;", "\u220B" }, { "&prod;", "\u220F" }, { "&sum;", "\u2211" },
+			{ "&minus;", "\u2212" }, { "&lowast;", "\u2217" }, { "&radic;", "\u221A" }, { "&prop;", "\u221D" },
+			{ "&infin;", "\u221E" }, { "&ang;", "\u2220" }, { "&and;", "\u2227" }, { "&or;", "\u2228" },
+			{ "&cap;", "\u2229" }, { "&cup;", "\u222A" }, { "&int;", "\u222B" }, { "&there4;", "\u2234" },
+			{ "&sim;", "\u223C" }, { "&cong;", "\u2245" }, { "&asymp;", "\u2248" }, { "&ne;", "\u2260" },
+			{ "&equiv;", "\u2261" }, { "&le;", "\u2264" }, { "&ge;", "\u2265" }, { "&sub;", "\u2282" },
+			{ "&sup;", "\u2283" }, { "&nsub;", "\u2284" }, { "&sube;", "\u2286" }, { "&supe;", "\u2287" },
+			{ "&oplus;", "\u2295" }, { "&otimes;", "\u2297" }, { "&perp;", "\u22A5" }, { "&sdot;", "\u22C5" },
+			{ "&lceil;", "\u2308" }, { "&rceil;", "\u2309" }, { "&lfloor;", "\u230A" }, { "&rfloor;", "\u230B" },
+			{ "&lang;", "\u2329" }, { "&rang;", "\u232A" }, { "&Alpha;", "\u0391" }, { "&Beta;", "\u0392" },
+			{ "&Gamma;", "\u0393" }, { "&Delta;", "\u0394" }, { "&Epsilon;", "\u0395" }, { "&Zeta;", "\u0396" },
+			{ "&Eta;", "\u0397" }, { "&Theta;", "\u0398" }, { "&Iota;", "\u0399" }, { "&Kappa;", "\u039A" },
+			{ "&Lambda;", "\u039B" }, { "&Mu;", "\u039C" }, { "&Nu;", "\u039D" }, { "&Xi;", "\u039E" },
+			{ "&Omicron;", "\u039F" }, { "&Pi;", "\u03A0" }, { "&Rho;", "\u03A1" }, { "&Sigma;", "\u03A3" },
+			{ "&Tau;", "\u03A4" }, { "&Upsilon;", "\u03A5" }, { "&Phi;", "\u03A6" }, { "&Chi;", "\u03A7" },
+			{ "&Psi;", "\u03A8" }, { "&Omega;", "\u03A9" }, { "&alpha;", "\u03B1" }, { "&beta;", "\u03B2" },
+			{ "&gamma;", "\u03B3" }, { "&delta;", "\u03B4" }, { "&epsilon;", "\u03B5" }, { "&zeta;", "\u03B6" },
+			{ "&eta;", "\u03B7" }, { "&theta;", "\u03B8" }, { "&iota;", "\u03B9" }, { "&kappa;", "\u03BA" },
+			{ "&lambda;", "\u03BB" }, { "&mu;", "\u03BC" }, { "&nu;", "\u03BD" }, { "&xi;", "\u03BE" },
+			{ "&omicron;", "\u03BF" }, { "&pi;", "\u03C0" }, { "&rho;", "\u03C1" }, { "&sigmaf;", "\u03C2" },
+			{ "&sigma;", "\u03C3" }, { "&tau;", "\u03C4" }, { "&upsilon;", "\u03C5" }, { "&phi;", "\u03C6" },
+			{ "&chi;", "\u03C7" }, { "&loz;", "\u25CA" }, { "&psi;", "\u03C8" }, { "&omega;", "\u03C9" },
+			{ "&thetasym;", "\u03D1" }, { "&upsih;", "\u03D2" }, { "&piv;", "\u03D6" }, { "&spades;", "\u2660" },
+			{ "&clubs;", "\u2663" }, { "&hearts;", "\u2665" }, { "&diams;", "\u2666" } };
+
 	/**
 	 * Replace occurrences of a substring.
-	 * http://ostermiller.org/utils/StringHelper.html
-	 * StringHelper.replace("1-2-3", "-", "|");<br>
+	 * http://ostermiller.org/utils/StringHelper.html StringHelper.replace("1-2-3",
+	 * "-", "|");<br>
 	 * result: "1|2|3"<br>
 	 * StringHelper.replace("-1--2-", "-", "|");<br>
 	 * result: "|1||2|"<br>
@@ -290,14 +99,14 @@ public class StringManipulationTools implements HelperClass {
 	 * result: "1-2----3------4"<br>
 	 * 
 	 * @param s
-	 *           String to be modified.
+	 *            String to be modified.
 	 * @param find
-	 *           String to find.
+	 *            String to find.
 	 * @param replace
-	 *           String to replace.
+	 *            String to replace.
 	 * @return a string with all the occurrences of the string to find replaced.
 	 * @throws NullPointerException
-	 *            if s is null.
+	 *             if s is null.
 	 */
 	public static String stringReplace(String s, String find, String replace) {
 		int findLength;
@@ -314,7 +123,7 @@ public class StringManipulationTools implements HelperClass {
 			replace = ""; //$NON-NLS-1$
 		}
 		int replaceLength = replace.length();
-		
+
 		// We need to figure out how long our resulting string will be.
 		// This is required because without it, the possible resizing
 		// and copying of memory structures could lead to an unacceptable runtime.
@@ -329,7 +138,7 @@ public class StringManipulationTools implements HelperClass {
 			int count;
 			int start;
 			int end;
-			
+
 			// Scan s and count the number of times we find our target.
 			count = 0;
 			start = 0;
@@ -345,7 +154,7 @@ public class StringManipulationTools implements HelperClass {
 			}
 			length = stringLength - (count * (findLength - replaceLength));
 		}
-		
+
 		int start = 0;
 		int end = s.indexOf(find, start);
 		if (end == -1) {
@@ -358,7 +167,7 @@ public class StringManipulationTools implements HelperClass {
 		// it looks like we actually have something to replace
 		// *sigh* allocate memory for it.
 		StringBuffer sb = new StringBuffer(length);
-		
+
 		// Scan s and do the replacements
 		while (end != -1) {
 			sb.append(s.substring(start, end).toString());
@@ -368,10 +177,10 @@ public class StringManipulationTools implements HelperClass {
 		}
 		end = stringLength;
 		sb.append(s.substring(start, end).toString());
-		
+
 		return (sb.toString());
 	}
-	
+
 	public static String removeHTMLtags(String textWithHtmlTags) {
 		if (textWithHtmlTags == null)
 			return null;
@@ -380,7 +189,7 @@ public class StringManipulationTools implements HelperClass {
 		res = stringReplace(res, "%20", " ");
 		return res;
 	}
-	
+
 	public static String removeTags(String textWithHtmlTags, String tagA, String tagB) {
 		if (textWithHtmlTags == null)
 			return null;
@@ -399,24 +208,25 @@ public class StringManipulationTools implements HelperClass {
 			textWithHtmlTags = textWithHtmlTags.substring(textWithHtmlTags.indexOf(tagB) + tagB.length());
 		return textWithHtmlTags;
 	}
-	
+
 	/**
 	 * Removes the tags from a html-text and gives back the striped text.
 	 * 
 	 * @param textWithHtmlTags
-	 *           the text with html tags
+	 *            the text with html tags
 	 * @param tagA
-	 *           The left tag (e.g. <a>)
+	 *            The left tag (e.g. <a>)
 	 * @param tagB
-	 *           The right tag (e.g. </a>)
+	 *            The right tag (e.g. </a>)
 	 * @return The array list< string>, where get(0) is the striped text and all
 	 *         other are the striped texts
 	 */
-	public static ArrayList<String> removeTagsGetTextAndRemovedTexts(String textWithHtmlTags, String tagA, String tagB) {
+	public static ArrayList<String> removeTagsGetTextAndRemovedTexts(String textWithHtmlTags, String tagA,
+			String tagB) {
 		ArrayList<String> tu = new ArrayList<String>();
 		if (textWithHtmlTags == null)
 			return null;
-		
+
 		tu.add(textWithHtmlTags);
 		int tagApos = tu.get(0).indexOf(tagA);
 		while (tagApos >= 0) {
@@ -433,10 +243,10 @@ public class StringManipulationTools implements HelperClass {
 		}
 		if (tu.get(0).indexOf(tagB) >= 0)
 			tu.set(0, tu.get(0).substring(tu.get(0).indexOf(tagB) + tagB.length()));
-		
+
 		return tu;
 	}
-	
+
 	public static String getWordWrap(String desc, int width) {
 		String[] words = desc.split(" ");
 		String result = "";
@@ -445,18 +255,17 @@ public class StringManipulationTools implements HelperClass {
 			if (i > 0 && column + words[i].length() > width) {
 				result = result + "<br>" + words[i];
 				column = words[i].length();
-			} else
-				if (i > 0) {
-					result = result + " " + words[i];
-					column += words[i].length();
-				} else {
-					result = words[0];
-					column = words[0].length();
-				}
+			} else if (i > 0) {
+				result = result + " " + words[i];
+				column += words[i].length();
+			} else {
+				result = words[0];
+				column = words[0].length();
+			}
 		}
 		return result;
 	}
-	
+
 	public static String getWordWrap(String[] desc, int width) {
 		StringBuilder sb = new StringBuilder();
 		for (String s : desc) {
@@ -464,19 +273,19 @@ public class StringManipulationTools implements HelperClass {
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * @param mapName
 	 * @return
 	 */
 	final static String[] numbers = new String[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-	
+
 	public static String removeNumbersFromString(String s) {
 		for (String r : numbers)
 			s = stringReplace(s, r, "");
 		return s;
 	}
-	
+
 	public static String getNumbersFromString(String s) {
 		StringBuilder res = new StringBuilder();
 		for (Character c : s.toCharArray()) {
@@ -489,31 +298,30 @@ public class StringManipulationTools implements HelperClass {
 		}
 		return res.toString();
 	}
-	
+
 	public static List<Integer> getAllNumbersFromString(String str) {
-		
+
 		if (str == null || str.length() == 0) {
 			return null;
 		}
 		ArrayList<Integer> ints = new ArrayList<Integer>();
-		
+
 		StringBuffer strBuff = new StringBuffer();
 		char c;
-		
+
 		for (int i = 0; i < str.length(); i++) {
 			c = str.charAt(i);
-			
+
 			if (Character.isDigit(c))
 				strBuff.append(c);
-			else
-				if (strBuff.length() > 0) {
-					ints.add(new Integer(strBuff.toString()));
-					strBuff = new StringBuffer();
-				}
+			else if (strBuff.length() > 0) {
+				ints.add(Integer.valueOf(strBuff.toString()));
+				strBuff = new StringBuffer();
+			}
 		}
 		return ints;
 	}
-	
+
 	public static String UnicodeToURLsyntax(String unicodeText) {
 		StringBuffer result = new StringBuffer();
 		char[] characters = unicodeText.toCharArray();
@@ -522,13 +330,13 @@ public class StringManipulationTools implements HelperClass {
 			if (curChar < 128 && Character.isLetterOrDigit(curChar)) {
 				result.append(curChar);
 			} else {
-				String html = "%" + new Integer(curChar).toString();
+				String html = "%" + Integer.valueOf(curChar).toString();
 				result.append(html);
 			}
 		}
 		return result.toString();
 	}
-	
+
 	public static String UnicodeToHtml(String unicodeText, HashSet<Character> badChars) {
 		StringBuffer result = new StringBuffer();
 		char[] characters = unicodeText.toCharArray();
@@ -537,7 +345,7 @@ public class StringManipulationTools implements HelperClass {
 			if (!badChars.contains(curChar)) {
 				result.append(curChar);
 			} else {
-				String html = "&#" + new Integer(curChar).toString() + ";";
+				String html = "&#" + Integer.valueOf(curChar).toString() + ";";
 				while (html.length() < 8)
 					html = stringReplace(html, "&#", "&#0");
 				result.append(html);
@@ -545,7 +353,7 @@ public class StringManipulationTools implements HelperClass {
 		}
 		return result.toString();
 	}
-	
+
 	public static String UnicodeToHtml(String unicodeText) {
 		StringBuffer result = new StringBuffer();
 		char[] characters = unicodeText.toCharArray();
@@ -554,7 +362,7 @@ public class StringManipulationTools implements HelperClass {
 			if (curChar < 128 && Character.isLetterOrDigit(curChar)) {
 				result.append(curChar);
 			} else {
-				String html = "&#" + new Integer(curChar).toString() + ";";
+				String html = "&#" + Integer.valueOf(curChar).toString() + ";";
 				while (html.length() < 8)
 					html = stringReplace(html, "&#", "&#0");
 				result.append(html);
@@ -562,7 +370,7 @@ public class StringManipulationTools implements HelperClass {
 		}
 		return result.toString();
 	}
-	
+
 	/**
 	 * @param html
 	 * @return
@@ -595,7 +403,7 @@ public class StringManipulationTools implements HelperClass {
 		}
 		return uni;
 	}
-	
+
 	/**
 	 * converts all HTML named entities within a string to unicode
 	 * 
@@ -608,7 +416,7 @@ public class StringManipulationTools implements HelperClass {
 			unicode = stringReplace(unicode, htmlNamedEntity2Unicode[k][0], htmlNamedEntity2Unicode[k][1]);
 		return unicode;
 	}
-	
+
 	public static String getFileSystemName(String name) {
 		String namenew = stringReplace(name, "*", "");
 		namenew = stringReplace(namenew, " ", "_");
@@ -616,9 +424,8 @@ public class StringManipulationTools implements HelperClass {
 		namenew = stringReplace(namenew, "\\", "_");
 		return namenew;
 	}
-	
-	@SuppressWarnings("unchecked")
-	public static String getStringList(ArrayList elements, String div) {
+
+	public static String getStringList(ArrayList<?> elements, String div) {
 		if (elements == null || elements.size() <= 0)
 			return "";
 		else {
@@ -631,24 +438,24 @@ public class StringManipulationTools implements HelperClass {
 			return sb.toString();
 		}
 	}
-	
+
 	public static String[] splitSafe(String str, String delimiter) {
 		String[] stringPieces;
 		try {
 			Vector<String> v = new Vector<String>();
 			int start = 0;
 			int end = str.indexOf(delimiter);
-			
+
 			while (-1 != end) {
 				if (end > start) {
 					v.addElement(new String(str.substring(start, end)));
 				}
-				
+
 				start = end + delimiter.length();
 				end = str.indexOf(delimiter, start);
 			}
 			v.addElement(new String(str.substring(start, str.length())));
-			
+
 			stringPieces = new String[v.size()];
 			for (int i = 0; i < v.size(); ++i) {
 				stringPieces[i] = v.elementAt(i).toString();
@@ -657,10 +464,10 @@ public class StringManipulationTools implements HelperClass {
 			System.err.println(e.toString());
 			stringPieces = null;
 		}
-		
+
 		return stringPieces;
 	}
-	
+
 	public static String reverse(String in) {
 		StringBuilder out = new StringBuilder(in.length());
 		int len = in.length();

@@ -11,5 +11,5 @@ package org.graffiti.plugins.views.defaults;
  */
 public enum DrawMode {
 	NORMAL, REDUCED, FAST
-	
+
 }

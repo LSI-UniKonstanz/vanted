@@ -26,29 +26,29 @@ import org.graffiti.selection.Selection;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class AlgorithmServices implements HelperClass {
-	
+
 	/**
 	 * @param sortedNodes
 	 * @param object
 	 * @param runnable
 	 */
-	public static void doCircularEdgeCrossingsMinimization(
-						Object referenceObject, ArrayList<Node> nodes, Runnable threadUnsafePostTask) {
+	public static void doCircularEdgeCrossingsMinimization(Object referenceObject, ArrayList<Node> nodes,
+			Runnable threadUnsafePostTask) {
 		MyEdgeCrossingReduction mecr = new AlgorithmServices().new MyEdgeCrossingReduction(nodes, threadUnsafePostTask);
-		BackgroundTaskHelper bth = new BackgroundTaskHelper(mecr, mecr, "Reduce Edge Crossings", "Reduce Edge Crossings", true, false);
+		BackgroundTaskHelper bth = new BackgroundTaskHelper(mecr, mecr, "Reduce Edge Crossings",
+				"Reduce Edge Crossings", true, false);
 		bth.startWork(referenceObject);
 	}
-	
+
 	public static int getNumberOfCircularEdgeCrossings(Collection<Node> nodes) {
 		Stack<Node> s = new Stack<Node>();
 		s.addAll(nodes);
 		return new AlgorithmServices().new MyEdgeCrossingReduction(null, null).calculateEdgeCrossings(s);
 	}
-	
+
 	class MyEdgeCrossingReduction implements BackgroundTaskStatusProvider, Runnable {
 		Runnable threadUnsafePostTask;
 		double statusProgress = -1;
@@ -56,55 +56,64 @@ public class AlgorithmServices implements HelperClass {
 		boolean pleaseStop = false;
 		int nodeCount = -1;
 		ArrayList<Node> nodes;
-		
+
 		ArrayList<Node> bestResult = new ArrayList<Node>();
 		int edgeCrossingsForBestResult = Integer.MAX_VALUE;
 		int edgeCrossingsForInitalSet;
 		double currIteration;
 		double maxIteration;
 		private long lastUpdate = 0;
-		
+
 		HashMap<Edge, Integer> multiplicators = new HashMap<Edge, Integer>();
-		
+
 		public MyEdgeCrossingReduction(ArrayList<Node> nodes, Runnable threadUnsafePostTask) {
 			this.threadUnsafePostTask = threadUnsafePostTask;
 			this.nodes = nodes;
 		}
-		
+
 		/*
 		 * (non-Javadoc)
-		 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#getCurrentStatusValue()
+		 * 
+		 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
+		 * getCurrentStatusValue()
 		 */
 		public int getCurrentStatusValue() {
 			return (int) Math.round(statusProgress);
 		}
-		
+
 		/*
 		 * (non-Javadoc)
-		 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#getCurrentStatusMessage1()
+		 * 
+		 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
+		 * getCurrentStatusMessage1()
 		 */
 		public String getCurrentStatusMessage1() {
 			return status1;
 		}
-		
+
 		/*
 		 * (non-Javadoc)
-		 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#getCurrentStatusMessage2()
+		 * 
+		 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
+		 * getCurrentStatusMessage2()
 		 */
 		public String getCurrentStatusMessage2() {
 			return status2;
 		}
-		
+
 		/*
 		 * (non-Javadoc)
-		 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#pleaseStop()
+		 * 
+		 * @see
+		 * de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#pleaseStop()
 		 */
 		public void pleaseStop() {
 			pleaseStop = true;
 		}
-		
+
 		/*
 		 * (non-Javadoc)
+		 * 
 		 * @see java.lang.Runnable#run()
 		 */
 		public void run() {
@@ -113,8 +122,8 @@ public class AlgorithmServices implements HelperClass {
 			multiplicators.clear();
 			nodeCount = nodes.size();
 			for (int i = 0; i < nodes.size(); i++)
-				nodeAndCirclePosition.put(new Integer(i), nodes.get(i));
-			
+				nodeAndCirclePosition.put(Integer.valueOf(i), nodes.get(i));
+
 			Stack<Node> nodeStack = new Stack<Node>();
 			Stack<Node> currentResult = new Stack<Node>();
 			nodeStack.addAll(nodes);
@@ -134,7 +143,7 @@ public class AlgorithmServices implements HelperClass {
 			if (threadUnsafePostTask != null)
 				SwingUtilities.invokeLater(threadUnsafePostTask);
 		}
-		
+
 		/**
 		 * @param i
 		 * @return
@@ -145,7 +154,7 @@ public class AlgorithmServices implements HelperClass {
 				res = res * i;
 			return res;
 		}
-		
+
 		private void doIteration(Stack<Node> currentResult, Stack<Node> nodeStack) {
 			if (pleaseStop)
 				return;
@@ -158,7 +167,8 @@ public class AlgorithmServices implements HelperClass {
 					bestResult.addAll(currentResult);
 					statusProgress = (100.0 * currIteration) / maxIteration;
 					setStatus1();
-					status2 = "Edge crossings: " + edgeCrossingsForInitalSet + " -> " + edgeCrossingsForBestResult + " (" + nodeCount + " Nodes)";
+					status2 = "Edge crossings: " + edgeCrossingsForInitalSet + " -> " + edgeCrossingsForBestResult
+							+ " (" + nodeCount + " Nodes)";
 				}
 			} else {
 				for (int i = 0; i < nodeStack.size(); i++) {
@@ -178,13 +188,13 @@ public class AlgorithmServices implements HelperClass {
 				}
 			}
 		}
-		
+
 		private void setStatus1() {
-			String s = new Double(currIteration).toString();
+			String s = Double.valueOf(currIteration).toString();
 			s = StringManipulationTools.stringReplace(s, ".0", "");
 			status1 = "Iterate possibilities (" + s + "/" + maxIteration + ")";
 		}
-		
+
 		/**
 		 * @param currentResult
 		 * @return
@@ -207,19 +217,19 @@ public class AlgorithmServices implements HelperClass {
 								if (cross(edgA, edgB, currentResult)) {
 									Integer mA = multiplicators.get(edgA);
 									if (mA == null) {
-										Integer edgeDoublingA = (Integer) AttributeHelper.getAttributeValue(
-															edgA, "cluster", "edgecount", new Integer(1), null);
+										Integer edgeDoublingA = (Integer) AttributeHelper.getAttributeValue(edgA,
+												"cluster", "edgecount", Integer.valueOf(1), null);
 										multiplicators.put(edgA, edgeDoublingA);
 										mA = edgeDoublingA;
 									}
 									Integer mB = multiplicators.get(edgB);
 									if (mB == null) {
-										Integer edgeDoublingB = (Integer) AttributeHelper.getAttributeValue(
-															edgB, "cluster", "edgecount", new Integer(1), null);
+										Integer edgeDoublingB = (Integer) AttributeHelper.getAttributeValue(edgB,
+												"cluster", "edgecount", Integer.valueOf(1), null);
 										multiplicators.put(edgB, edgeDoublingB);
 										mB = edgeDoublingB;
 									}
-									
+
 									result += mA.intValue() * mB.intValue();
 								}
 							}
@@ -229,7 +239,7 @@ public class AlgorithmServices implements HelperClass {
 			}
 			return result;
 		}
-		
+
 		private boolean cross(Edge edgA, Edge edgB, Stack<Node> currentResult) {
 			int a0 = currentResult.indexOf(edgA.getSource());
 			int a1 = currentResult.indexOf(edgA.getTarget());
@@ -245,7 +255,7 @@ public class AlgorithmServices implements HelperClass {
 				b0 = b1;
 				b1 = t;
 			}
-			
+
 			if (b0 < a0) {
 				int t0 = b0;
 				int t1 = b1;
@@ -264,45 +274,54 @@ public class AlgorithmServices implements HelperClass {
 			// System.out.println(result);
 			return result;
 		}
-		
+
 		/*
 		 * (non-Javadoc)
-		 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#getCurrentStatusValueFine()
+		 * 
+		 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
+		 * getCurrentStatusValueFine()
 		 */
 		public double getCurrentStatusValueFine() {
 			return statusProgress;
 		}
-		
+
 		/*
 		 * (non-Javadoc)
-		 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#pluginWaitsForUser()
+		 * 
+		 * @see
+		 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+		 * pluginWaitsForUser()
 		 */
 		public boolean pluginWaitsForUser() {
 			return false;
 		}
-		
+
 		/*
 		 * (non-Javadoc)
-		 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#pleaseContinueRun()
+		 * 
+		 * @see
+		 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+		 * pleaseContinueRun()
 		 */
 		public void pleaseContinueRun() {
 			// empty
 		}
-		
+
 		public void setCurrentStatusValue(int value) {
 			statusProgress = value;
 		}
 	}
-	
+
 	/**
 	 * This method calls a user defined layout algorithm for the given graph.
 	 * 
 	 * @param clusterReferenceGraph
 	 * @param selection
 	 */
-	public static void selectAndRunLayoutAlgorithm(Graph clusterReferenceGraph, Selection selection, String commandTitle,
-						boolean executeMoveToTopAfterwards) {
-		RunAlgorithmDialog rad = new RunAlgorithmDialog(commandTitle, clusterReferenceGraph, selection, false, executeMoveToTopAfterwards);
+	public static void selectAndRunLayoutAlgorithm(Graph clusterReferenceGraph, Selection selection,
+			String commandTitle, boolean executeMoveToTopAfterwards) {
+		RunAlgorithmDialog rad = new RunAlgorithmDialog(commandTitle, clusterReferenceGraph, selection, false,
+				executeMoveToTopAfterwards);
 		rad.setModal(true);
 		rad.setAlwaysOnTop(true);
 		rad.setVisible(true);

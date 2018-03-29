@@ -41,13 +41,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 /**
- * @author Christian Klukas
- *         (c) 2006 IPK Gatersleben, Group Network Analysis
+ * @author Christian Klukas (c) 2006 IPK Gatersleben, Group Network Analysis
  */
 public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
 	 */
 	public String getName() {
@@ -56,106 +56,95 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 		else
 			return null;
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "KEGG";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.GRAPH,
-				Category.LAYOUT,
-				Category.COMPUTATION,
-				Category.HIDDEN
-				));
+		return new HashSet<Category>(
+				Arrays.asList(Category.GRAPH, Category.LAYOUT, Category.COMPUTATION, Category.HIDDEN));
 	}
 
-	
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
 	 */
 	public void execute() {
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl sp = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
-							"Create KEGG Reaction Network...", "Please wait");
-		BackgroundTaskHelper.issueSimpleTask("Create KEGG Reaction Network", "Create KEGG Reaction Network...", new Runnable() {
-			public void run() {
-				// KgmlIdGenerator idGen = new KgmlIdGenerator();
-				// PositionGridGenerator pgg = new PositionGridGenerator(250, 30, 250);
-				ArrayList<Entry> entries = new ArrayList<Entry>();
-				ArrayList<Reaction> reactions = new ArrayList<Reaction>();
-				ArrayList<Relation> relations = new ArrayList<Relation>();
-				
-				createReactionNetwork(sp, entries, reactions);
-				if (sp.wantsToStop())
-					sp.setCurrentStatusText2("Processing aborted");
-				else {
-					sp.setCurrentStatusText2("Create network...");
-					Pathway p = new Pathway(
-										new KeggId("map00000"),
-										new MapOrg("map"),
-										new MapNumber("00000"),
-										"Reaction Network",
-										null,
-										null,
-										entries,
-										reactions,
-										relations);
-					final Graph g = p.getGraph();
-					System.out.println("Network: " + g.getNumberOfNodes() + " nodes, " + g.getNumberOfEdges() + " edges. Create view...");
-					sp.setCurrentStatusText2("Create network view...");
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							MainFrame.getInstance().showGraph(g, getActionEvent());
+				"Create KEGG Reaction Network...", "Please wait");
+		BackgroundTaskHelper.issueSimpleTask("Create KEGG Reaction Network", "Create KEGG Reaction Network...",
+				new Runnable() {
+					public void run() {
+						// KgmlIdGenerator idGen = new KgmlIdGenerator();
+						// PositionGridGenerator pgg = new PositionGridGenerator(250, 30, 250);
+						ArrayList<Entry> entries = new ArrayList<Entry>();
+						ArrayList<Reaction> reactions = new ArrayList<Reaction>();
+						ArrayList<Relation> relations = new ArrayList<Relation>();
+
+						createReactionNetwork(sp, entries, reactions);
+						if (sp.wantsToStop())
+							sp.setCurrentStatusText2("Processing aborted");
+						else {
+							sp.setCurrentStatusText2("Create network...");
+							Pathway p = new Pathway(new KeggId("map00000"), new MapOrg("map"), new MapNumber("00000"),
+									"Reaction Network", null, null, entries, reactions, relations);
+							final Graph g = p.getGraph();
+							System.out.println("Network: " + g.getNumberOfNodes() + " nodes, " + g.getNumberOfEdges()
+									+ " edges. Create view...");
+							sp.setCurrentStatusText2("Create network view...");
+							SwingUtilities.invokeLater(new Runnable() {
+								public void run() {
+									MainFrame.getInstance().showGraph(g, getActionEvent());
+								}
+							});
 						}
-					});
-				}
-				sp.setCurrentStatusValue(100);
-			}
-		}, new Runnable() {
-			
-			public void run() {
-			}
-		}, sp);
+						sp.setCurrentStatusValue(100);
+					}
+				}, new Runnable() {
+
+					public void run() {
+					}
+				}, sp);
 	}
-	
-	private static Collection<Entry> getCompoundEntries(
-						HashMap<String, Entry> compoundId2entry,
-						Collection<String> compIds) {
+
+	private static Collection<Entry> getCompoundEntries(HashMap<String, Entry> compoundId2entry,
+			Collection<String> compIds) {
 		ArrayList<Entry> result = new ArrayList<Entry>();
 		for (String compId : compIds) {
 			if (compoundId2entry.containsKey(compId))
 				result.add(compoundId2entry.get(compId));
 			else {
-				Entry e = new Entry(
-									new Id(Pathway.getNextID() + ""),
-									new KeggId(compId), EntryType.compound, null, null, new ArrayList<KeggId>(), new ArrayList<IdRef>(), null);
+				Entry e = new Entry(new Id(Pathway.getNextID() + ""), new KeggId(compId), EntryType.compound, null,
+						null, new ArrayList<KeggId>(), new ArrayList<IdRef>(), null);
 				result.add(e);
 				compoundId2entry.put(compId, e);
 			}
 		}
 		return result;
 	}
-	
+
 	// private void connectNodeWithNodes(Node goNode, Node newGoNode) {
 	// if (goNode==null || newGoNode==null)
 	// return;
 	// if (!goNode.getNeighbors().contains(newGoNode)) {
-	// Edge e = goNode.getGraph().addEdge(goNode, newGoNode, true, AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK, true));
+	// Edge e = goNode.getGraph().addEdge(goNode, newGoNode, true,
+	// AttributeHelper.getDefaultGraphicsAttributeForEdge(Color.BLACK, Color.BLACK,
+	// true));
 	// AttributeHelper.setBorderWidth(e, 3d);
 	// }
 	// }
-	
-	private static void createReactionNetwork(final BackgroundTaskStatusProviderSupportingExternalCallImpl sp, ArrayList<Entry> entries,
-						ArrayList<Reaction> reactions) {
+
+	private static void createReactionNetwork(final BackgroundTaskStatusProviderSupportingExternalCallImpl sp,
+			ArrayList<Entry> entries, ArrayList<Reaction> reactions) {
 		HashMap<String, Entry> compoundId2entry = new HashMap<String, Entry>();
 		Collection<String> reationIds = ReactionService.getAllReactionIds();
 		int i = 0;
@@ -166,24 +155,21 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 			Collection<String> enz = re.getEnzymeNames();
 			Collection<String> prod = re.getProductNames();
 			KeggId rref = new KeggId(rid);
-			
+
 			if (enz != null && enz.size() > 0)
 				for (String enzymeId : enz) {
 					KeggId kid = new KeggId(enzymeId);
-					Entry enzymeEntry = new Entry(
-										new Id(Pathway.getNextID() + ""),
-										kid,
-										EntryType.enzyme, null, null,
-										new ArrayList<KeggId>(), null, null);
+					Entry enzymeEntry = new Entry(new Id(Pathway.getNextID() + ""), kid, EntryType.enzyme, null, null,
+							new ArrayList<KeggId>(), null, null);
 					kid.setReference(enzymeEntry);
 					enzymeEntry.addReaction(rref);
 					entries.add(enzymeEntry);
 				}
-			
+
 			Collection<Entry> subEntries, prodEntries;
 			subEntries = new ArrayList<Entry>();
 			prodEntries = new ArrayList<Entry>();
-			
+
 			if (sub != null && sub.size() > 0)
 				subEntries.addAll(getCompoundEntries(compoundId2entry, sub));
 			if (prod != null && prod.size() > 0)
@@ -204,27 +190,20 @@ public class CreateKeggReactionNetworkAlgorithm extends AbstractAlgorithm {
 		if (sp != null)
 			sp.setCurrentStatusText1("Finish transaction (update view, please wait)...");
 	}
-	
+
 	public static Graph getReactionNetwork() {
 		Pathway.resetIdGen();
 		// PositionGridGenerator pgg = new PositionGridGenerator(250, 30, 250);
 		ArrayList<Entry> entries = new ArrayList<Entry>();
 		ArrayList<Reaction> reactions = new ArrayList<Reaction>();
 		ArrayList<Relation> relations = new ArrayList<Relation>();
-		
+
 		createReactionNetwork(null, entries, reactions);
-		Pathway p = new Pathway(
-							new KeggId("map00000"),
-							new MapOrg("map"),
-							new MapNumber("00000"),
-							"Reaction Network",
-							null,
-							null,
-							entries,
-							reactions,
-							relations);
+		Pathway p = new Pathway(new KeggId("map00000"), new MapOrg("map"), new MapNumber("00000"), "Reaction Network",
+				null, null, entries, reactions, relations);
 		Graph g = p.getGraph();
-		System.out.println("Graph: " + g.getNumberOfNodes() + " nodes, " + g.getNumberOfEdges() + " edges. Create view...");
+		System.out.println(
+				"Graph: " + g.getNumberOfNodes() + " nodes, " + g.getNumberOfEdges() + " edges. Create view...");
 		return g;
 	}
 }

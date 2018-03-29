@@ -11,11 +11,11 @@ import javax.swing.JComboBox;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.Reaction;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.kgml.datatypes.ReactionType;
 
-public class ReactionTypeSelection extends JComboBox {
+public class ReactionTypeSelection extends JComboBox<ReactionType> {
 	private static final long serialVersionUID = 1L;
 	private Reaction currReaction;
 	private MyReactionList list;
-	
+
 	public ReactionTypeSelection(Reaction initReaction) {
 		updateReactionSelection(initReaction);
 		addActionListener(new ActionListener() {
@@ -27,7 +27,7 @@ public class ReactionTypeSelection extends JComboBox {
 			}
 		});
 	}
-	
+
 	public void updateReactionSelection(Reaction r) {
 		this.currReaction = r;
 		while (getItemCount() > 0)
@@ -39,7 +39,7 @@ public class ReactionTypeSelection extends JComboBox {
 		}
 		validate();
 	}
-	
+
 	public void setCallBack(MyReactionList list) {
 		this.list = list;
 	}

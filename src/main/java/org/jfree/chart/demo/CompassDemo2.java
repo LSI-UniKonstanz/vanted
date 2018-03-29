@@ -48,13 +48,13 @@ public class CompassDemo2 extends ApplicationFrame {
 	 * Creates a new demo application.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public CompassDemo2(final String title) {
 
 		super(title);
 
-		final ValueDataset dataset = new DefaultValueDataset(new Double(45.0));
+		final ValueDataset dataset = new DefaultValueDataset(Double.valueOf(45.0));
 		final JFreeChart chart = createChart(dataset);
 
 		// add the chart to a panel...
@@ -69,7 +69,7 @@ public class CompassDemo2 extends ApplicationFrame {
 	 * Creates a chart.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @return The chart.
 	 */
 	private JFreeChart createChart(final ValueDataset dataset) {
@@ -98,7 +98,7 @@ public class CompassDemo2 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

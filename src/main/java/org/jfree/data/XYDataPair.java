@@ -44,9 +44,9 @@ public class XYDataPair extends XYDataItem {
 	 * Constructs a new data pair.
 	 * 
 	 * @param x
-	 *           the x-value.
+	 *            the x-value.
 	 * @param y
-	 *           the y-value.
+	 *            the y-value.
 	 */
 	public XYDataPair(final Number x, final Number y) {
 		super(x, y);
@@ -56,9 +56,9 @@ public class XYDataPair extends XYDataItem {
 	 * Constructs a new data pair.
 	 * 
 	 * @param x
-	 *           the x-value.
+	 *            the x-value.
 	 * @param y
-	 *           the y-value.
+	 *            the y-value.
 	 */
 	public XYDataPair(final double x, final double y) {
 		super(x, y);

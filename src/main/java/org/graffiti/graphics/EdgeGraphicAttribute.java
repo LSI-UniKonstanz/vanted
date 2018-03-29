@@ -28,10 +28,9 @@ import org.graffiti.attributes.StringAttribute;
  * @author breu
  * @version $Revision: 1.8 $
  */
-public class EdgeGraphicAttribute
-					extends GraphElementGraphicAttribute {
+public class EdgeGraphicAttribute extends GraphElementGraphicAttribute {
 	// ~ Instance fields ========================================================
-	
+
 	// /** Object for docking specification of an edge at source and target nodes */
 	// private DockingAttribute docking;
 	//
@@ -52,27 +51,27 @@ public class EdgeGraphicAttribute
 	//
 	// /** Specifies the type of the line (e.g. polyline or spline types). */
 	// private StringAttribute lineType;
-	
+
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Constructs an EdgeGraphicAttribute and initializes all its members.
 	 * 
 	 * @param ah
-	 *           the arrowhead-value of the attribute.
+	 *            the arrowhead-value of the attribute.
 	 * @param at
-	 *           the arrowtail-value of the attribute.
+	 *            the arrowtail-value of the attribute.
 	 * @param t
-	 *           the thickness-value of the attribute.
+	 *            the thickness-value of the attribute.
 	 * @param d
-	 *           the docking-value of the attribute.
+	 *            the docking-value of the attribute.
 	 * @param b
-	 *           the <code>CollectionAttriubte</code> containing the bends.
+	 *            the <code>CollectionAttriubte</code> containing the bends.
 	 * @param lt
-	 *           the lineType of the edge.
+	 *            the lineType of the edge.
 	 */
-	public EdgeGraphicAttribute(String ah, String at, double t,
-						DockingAttribute d, LinkedHashMapAttribute b, String lt) {
+	public EdgeGraphicAttribute(String ah, String at, double t, DockingAttribute d, LinkedHashMapAttribute b,
+			String lt) {
 		super(GRAPHICS);
 		add(StringAttribute.getTypedStringAttribute(ARROWHEAD, ah), false);
 		add(StringAttribute.getTypedStringAttribute(ARROWTAIL, at), false);
@@ -82,89 +81,81 @@ public class EdgeGraphicAttribute
 		add(StringAttribute.getTypedStringAttribute(LINETYPE, lt), false);
 		add(new EdgeShapeAttribute(SHAPE, "org.graffiti.plugins.views.defaults.StraightLineEdgeShape"), false);
 	}
-	
+
 	/**
 	 * Constructs an EdgeGraphicAttribute and initializes all its members.
 	 * 
 	 * @throws IllegalIdException
 	 */
-	public EdgeGraphicAttribute()
-						throws IllegalIdException {
-		this("", "", 1d, new DockingAttribute(DOCKING),
-							new LinkedHashMapAttribute(BENDS), "");
+	public EdgeGraphicAttribute() throws IllegalIdException {
+		this("", "", 1d, new DockingAttribute(DOCKING), new LinkedHashMapAttribute(BENDS), "");
 	}
-	
+
 	/**
 	 * Constructs an EdgeGraphicAttribute and initializes all its members.
 	 * 
 	 * @param ah
-	 *           the arrowhead-value of the attribute.
+	 *            the arrowhead-value of the attribute.
 	 * @param at
-	 *           the arrowtail-value of the attribute.
+	 *            the arrowtail-value of the attribute.
 	 * @param t
-	 *           the thickness-value of the attribute.
+	 *            the thickness-value of the attribute.
 	 * @param d
-	 *           the docking-value of the attribute.
+	 *            the docking-value of the attribute.
 	 * @throws IllegalIdException
 	 */
-	public EdgeGraphicAttribute(String ah, String at, double t,
-						DockingAttribute d)
-						throws IllegalIdException {
+	public EdgeGraphicAttribute(String ah, String at, double t, DockingAttribute d) throws IllegalIdException {
 		this(ah, at, t, d, new LinkedHashMapAttribute(BENDS), "");
 	}
-	
+
 	/**
 	 * Constructs an EdgeGraphicAttribute and initializes all its members.
 	 * 
 	 * @param ah
-	 *           the arrowhead-value of the attribute.
+	 *            the arrowhead-value of the attribute.
 	 * @param at
-	 *           the arrowtail-value of the attribute.
+	 *            the arrowtail-value of the attribute.
 	 * @param t
-	 *           the thickness-value of the attribute.
+	 *            the thickness-value of the attribute.
 	 * @param d
-	 *           the docking-value of the attribute.
+	 *            the docking-value of the attribute.
 	 * @throws IllegalIdException
 	 */
-	public EdgeGraphicAttribute(String ah, String at, DoubleAttribute t,
-						DockingAttribute d)
-						throws IllegalIdException {
+	public EdgeGraphicAttribute(String ah, String at, DoubleAttribute t, DockingAttribute d) throws IllegalIdException {
 		this(ah, at, t.getDouble(), d, new LinkedHashMapAttribute(BENDS), "");
 	}
-	
+
 	/**
 	 * Constructs an EdgeGraphicAttribute and initializes all its members.
 	 * 
 	 * @param ah
-	 *           the arrowhead-value of the attribute.
+	 *            the arrowhead-value of the attribute.
 	 * @param at
-	 *           the arrowtail-value of the attribute.
+	 *            the arrowtail-value of the attribute.
 	 * @param t
-	 *           the thickness-value of the attribute.
+	 *            the thickness-value of the attribute.
 	 * @param d
-	 *           the docking-value of the attribute.
+	 *            the docking-value of the attribute.
 	 * @throws IllegalIdException
 	 */
-	public EdgeGraphicAttribute(StringAttribute ah, StringAttribute at,
-						double t, DockingAttribute d)
-						throws IllegalIdException {
-		this(ah.getString(), at.getString(), t, d,
-							new LinkedHashMapAttribute(BENDS), "");
+	public EdgeGraphicAttribute(StringAttribute ah, StringAttribute at, double t, DockingAttribute d)
+			throws IllegalIdException {
+		this(ah.getString(), at.getString(), t, d, new LinkedHashMapAttribute(BENDS), "");
 	}
-	
+
 	// ~ Methods ================================================================
-	
+
 	/**
 	 * Sets the 'arrowhead'-value.
 	 * 
 	 * @param ah
-	 *           the 'arrowhead'-value to be set.
+	 *            the 'arrowhead'-value to be set.
 	 */
 	public void setArrowhead(String ah) {
 		StringAttribute arrowhead = (StringAttribute) attributes.get(ARROWHEAD);
 		arrowhead.setString(ah);
 	}
-	
+
 	/**
 	 * Returns the 'arrowhead'-value of the encapsulated edge.
 	 * 
@@ -173,17 +164,17 @@ public class EdgeGraphicAttribute
 	public String getArrowhead() {
 		return ((StringAttribute) attributes.get(ARROWHEAD)).getString();
 	}
-	
+
 	/**
 	 * Sets the 'arrowtail'-value.
 	 * 
 	 * @param at
-	 *           the 'arrowtail'-value to be set.
+	 *            the 'arrowtail'-value to be set.
 	 */
 	public void setArrowtail(String at) {
 		((StringAttribute) attributes.get(ARROWTAIL)).setString(at);
 	}
-	
+
 	/**
 	 * Returns the 'arrowtail'-value of the encapsulated edge.
 	 * 
@@ -192,109 +183,93 @@ public class EdgeGraphicAttribute
 	public String getArrowtail() {
 		return ((StringAttribute) attributes.get(ARROWTAIL)).getString();
 	}
-	
+
 	/**
 	 * Sets the 'bends'-value.
 	 * 
 	 * @param b
-	 *           the 'bends'-value to be set.
+	 *            the 'bends'-value to be set.
 	 */
 	public void setBends(SortedCollectionAttribute b) {
 		SortedCollectionAttribute bends = (SortedCollectionAttribute) attributes.get(BENDS);
 		bends.setCollection(b.getCollection());
 	}
-	
+
 	/**
-	 * Returns the collection of <code>CoordinateAttribute</code>s specifying
-	 * the bends for this edge.
+	 * Returns the collection of <code>CoordinateAttribute</code>s specifying the
+	 * bends for this edge.
 	 * 
-	 * @return the collection of <code>CoordinateAttribute</code>s specifying
-	 *         the bends for this edge.
+	 * @return the collection of <code>CoordinateAttribute</code>s specifying the
+	 *         bends for this edge.
 	 */
 	public SortedCollectionAttribute getBends() {
 		return (SortedCollectionAttribute) attributes.get(BENDS);
 	}
-	
+
 	/**
-	 * Sets the collection of attributes contained within this <tt>CollectionAttribute</tt>
+	 * Sets the collection of attributes contained within this
+	 * <tt>CollectionAttribute</tt>
 	 * 
 	 * @param attrs
-	 *           the map that contains all attributes.
+	 *            the map that contains all attributes.
 	 * @throws IllegalArgumentException
-	 *            DOCUMENT ME!
+	 *             DOCUMENT ME!
 	 */
 	@Override
 	public void setCollection(Map<String, Attribute> attrs) {
-		if (attrs.keySet().contains(ARROWHEAD) &&
-							attrs.keySet().contains(ARROWTAIL) &&
-							attrs.keySet().contains(BENDS) && attrs.keySet().contains(DOCKING) &&
-							attrs.keySet().contains(THICKNESS) &&
-							attrs.keySet().contains(LINETYPE) &&
-							attrs.keySet().contains(BGIMAGE) &&
-							attrs.keySet().contains(FRAMECOLOR) &&
-							attrs.keySet().contains(FILLCOLOR) &&
-							attrs.keySet().contains(FRAMETHICKNESS) &&
-							attrs.keySet().contains(LINEMODE) &&
-							attrs.keySet().contains(SHAPE)) {
+		if (attrs.keySet().contains(ARROWHEAD) && attrs.keySet().contains(ARROWTAIL) && attrs.keySet().contains(BENDS)
+				&& attrs.keySet().contains(DOCKING) && attrs.keySet().contains(THICKNESS)
+				&& attrs.keySet().contains(LINETYPE) && attrs.keySet().contains(BGIMAGE)
+				&& attrs.keySet().contains(FRAMECOLOR) && attrs.keySet().contains(FILLCOLOR)
+				&& attrs.keySet().contains(FRAMETHICKNESS) && attrs.keySet().contains(LINEMODE)
+				&& attrs.keySet().contains(SHAPE)) {
 			for (Iterator<String> it = attrs.keySet().iterator(); it.hasNext();) {
 				String attrId = it.next();
-				
+
 				if (attrId.equals(ARROWHEAD)) {
 					setArrowhead(((StringAttribute) attrs.get(ARROWHEAD)).getString());
-				} else
-					if (attrId.equals(ARROWTAIL)) {
-						setArrowtail(((StringAttribute) attrs.get(ARROWTAIL)).getString());
-					} else
-						if (attrId.equals(BENDS)) {
-							setBends((SortedCollectionAttribute) attrs.get(BENDS));
-						} else
-							if (attrId.equals(DOCKING)) {
-								setDocking((DockingAttribute) attrs.get(DOCKING));
-							} else
-								if (attrId.equals(THICKNESS)) {
-									setThickness(((DoubleAttribute) attrs.get(THICKNESS)).getDouble());
-								} else
-									if (attrId.equals(LINETYPE)) {
-										setLineType(((StringAttribute) attrs.get(LINETYPE)).getString());
-									} else
-										if (attrId.equals(BGIMAGE)) {
-											setBackgroundImage((ImageAttribute) attrs.get(BGIMAGE));
-										} else
-											if (attrId.equals(FRAMECOLOR)) {
-												setFramecolor((ColorAttribute) attrs.get(FRAMECOLOR));
-											} else
-												if (attrId.equals(FILLCOLOR)) {
-													setFillcolor((ColorAttribute) attrs.get(FILLCOLOR));
-												} else
-													if (attrId.equals(FRAMETHICKNESS)) {
-														setFrameThickness(((DoubleAttribute) attrs.get(
-																			FRAMETHICKNESS)).getDouble());
-													} else
-														if (attrId.equals(LINEMODE)) {
-															setLineMode((LineModeAttribute) attrs.get(LINEMODE));
-														} else
-															if (attrId.equals(SHAPE)) {
-																setShape(((StringAttribute) attrs.get(SHAPE)).getString());
-															} else {
-																this.add(attrs.get(it.next()));
-															}
+				} else if (attrId.equals(ARROWTAIL)) {
+					setArrowtail(((StringAttribute) attrs.get(ARROWTAIL)).getString());
+				} else if (attrId.equals(BENDS)) {
+					setBends((SortedCollectionAttribute) attrs.get(BENDS));
+				} else if (attrId.equals(DOCKING)) {
+					setDocking((DockingAttribute) attrs.get(DOCKING));
+				} else if (attrId.equals(THICKNESS)) {
+					setThickness(((DoubleAttribute) attrs.get(THICKNESS)).getDouble());
+				} else if (attrId.equals(LINETYPE)) {
+					setLineType(((StringAttribute) attrs.get(LINETYPE)).getString());
+				} else if (attrId.equals(BGIMAGE)) {
+					setBackgroundImage((ImageAttribute) attrs.get(BGIMAGE));
+				} else if (attrId.equals(FRAMECOLOR)) {
+					setFramecolor((ColorAttribute) attrs.get(FRAMECOLOR));
+				} else if (attrId.equals(FILLCOLOR)) {
+					setFillcolor((ColorAttribute) attrs.get(FILLCOLOR));
+				} else if (attrId.equals(FRAMETHICKNESS)) {
+					setFrameThickness(((DoubleAttribute) attrs.get(FRAMETHICKNESS)).getDouble());
+				} else if (attrId.equals(LINEMODE)) {
+					setLineMode((LineModeAttribute) attrs.get(LINEMODE));
+				} else if (attrId.equals(SHAPE)) {
+					setShape(((StringAttribute) attrs.get(SHAPE)).getString());
+				} else {
+					this.add(attrs.get(it.next()));
+				}
 			}
 		} else {
 			throw new IllegalArgumentException("Invalid value type.");
 		}
 	}
-	
+
 	/**
 	 * Sets the 'docking'-value.
 	 * 
 	 * @param d
-	 *           the 'docking'-value to be set.
+	 *            the 'docking'-value to be set.
 	 */
 	public void setDocking(DockingAttribute d) {
 		remove(DOCKING);
 		add(d);
 	}
-	
+
 	/**
 	 * Returns the 'docking'-value of the encapsulated edge.
 	 * 
@@ -303,7 +278,7 @@ public class EdgeGraphicAttribute
 	public DockingAttribute getDocking() {
 		return (DockingAttribute) attributes.get(DOCKING);
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -312,7 +287,7 @@ public class EdgeGraphicAttribute
 	public void setLineType(String l) {
 		((StringAttribute) attributes.get(LINETYPE)).setString(l);
 	}
-	
+
 	/**
 	 * Returns the line type.
 	 * 
@@ -321,17 +296,17 @@ public class EdgeGraphicAttribute
 	public String getLineType() {
 		return ((StringAttribute) attributes.get(LINETYPE)).getString();
 	}
-	
+
 	/**
 	 * Sets the 'thickness'-value.
 	 * 
 	 * @param t
-	 *           the 'thickness'-value of the encapsulated edge.
+	 *            the 'thickness'-value of the encapsulated edge.
 	 */
 	public void setThickness(double t) {
 		((ThicknessAttribute) attributes.get(THICKNESS)).setDouble(t);
 	}
-	
+
 	/**
 	 * Returns the 'thickness'-value of the encapsulated edge.
 	 * 
@@ -340,7 +315,7 @@ public class EdgeGraphicAttribute
 	public double getThickness() {
 		return ((ThicknessAttribute) attributes.get(THICKNESS)).getDouble();
 	}
-	
+
 	/**
 	 * Returns a deep copy of this object.
 	 * 
@@ -349,12 +324,12 @@ public class EdgeGraphicAttribute
 	@Override
 	public Object copy() {
 		EdgeGraphicAttribute copied = new EdgeGraphicAttribute();
-		
+
 		// copy ALL of the subattributes
 		for (Iterator<?> iter = attributes.values().iterator(); iter.hasNext();) {
 			Attribute attr = (Attribute) iter.next();
 			Attribute copAttr = (Attribute) attr.copy();
-			
+
 			try {
 				Attribute exAttr = copied.getAttribute(copAttr.getId());
 				exAttr.setValue(copAttr.getValue());
@@ -362,7 +337,7 @@ public class EdgeGraphicAttribute
 				copied.add(copAttr, false);
 			}
 		}
-		
+
 		// // first setting the subattributes defined in
 		// // GraphElementGrapichAttribute
 		// copied.setBackgroundImage((ImageAttribute) this.getBackgroundImage()
@@ -381,12 +356,12 @@ public class EdgeGraphicAttribute
 		// copied.setThickness(this.getThickness());
 		return copied;
 	}
-	
+
 	public Collection<Attribute> getBendAttributes() {
 		LinkedHashMapAttribute bends = (LinkedHashMapAttribute) attributes.get(BENDS);
 		return bends.getCollectionNoClone().values();
 	}
-	
+
 	public int getBendCount() {
 		return ((LinkedHashMapAttribute) attributes.get(BENDS)).getCollectionNoClone().size();
 	}

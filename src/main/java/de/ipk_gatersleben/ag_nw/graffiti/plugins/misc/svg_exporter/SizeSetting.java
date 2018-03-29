@@ -12,5 +12,5 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.svg_exporter;
  */
 public enum SizeSetting {
 	ZOOM, FIXED, DPI
-	
+
 }

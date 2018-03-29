@@ -14,17 +14,16 @@ package org.graffiti.attributes;
  * 
  * @version $Revision: 1.4 $
  */
-public class NodeShapeAttribute
-					extends StringAttribute {
+public class NodeShapeAttribute extends StringAttribute {
 	// ~ Constructors ===========================================================
-	
+
 	/**
 	 * Creates a new NodeShapeAttribute object.
 	 * 
 	 * @param id
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 * @param value
-	 *           DOCUMENT ME!
+	 *            DOCUMENT ME!
 	 */
 	public NodeShapeAttribute(String id, String value) {
 		super(id, value);

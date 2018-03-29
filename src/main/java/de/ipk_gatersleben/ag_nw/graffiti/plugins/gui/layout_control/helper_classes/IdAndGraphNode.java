@@ -11,16 +11,15 @@ import org.StringManipulationTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.sib_enzymes.QuadNumber;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class IdAndGraphNode {
 	public String id;
 	public org.graffiti.graph.Node graphNode;
 	public QuadNumber quadNumber;
-	
+
 	public IdAndGraphNode(String id2, org.graffiti.graph.Node graphNode) {
-		if( id2 == null)
+		if (id2 == null)
 			return;
 		if (id2 != null)
 			id2 = id2.trim();
@@ -33,5 +32,5 @@ public class IdAndGraphNode {
 		if (!quadNumber.isValidQuadNumber())
 			quadNumber = null;
 	}
-	
+
 }

@@ -44,7 +44,7 @@ public class AxisChangeEvent extends ChartChangeEvent {
 	 * Creates a new AxisChangeEvent.
 	 * 
 	 * @param axis
-	 *           the axis that generated the event.
+	 *            the axis that generated the event.
 	 */
 	public AxisChangeEvent(Axis axis) {
 		super(axis);

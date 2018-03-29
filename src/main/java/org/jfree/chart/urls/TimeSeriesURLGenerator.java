@@ -66,16 +66,16 @@ public class TimeSeriesURLGenerator implements XYURLGenerator, Serializable {
 	 * Construct TimeSeriesURLGenerator overriding defaults
 	 * 
 	 * @param dDateFormat
-	 *           a formatter for the date.
+	 *            a formatter for the date.
 	 * @param sPrefix
-	 *           the prefix of the URL.
+	 *            the prefix of the URL.
 	 * @param sSeriesParameterName
-	 *           the name of the series parameter in the URL.
+	 *            the name of the series parameter in the URL.
 	 * @param sItemParameterName
-	 *           the name of the item parameter in the URL.
+	 *            the name of the item parameter in the URL.
 	 */
-	public TimeSeriesURLGenerator(DateFormat dDateFormat, String sPrefix,
-												String sSeriesParameterName, String sItemParameterName) {
+	public TimeSeriesURLGenerator(DateFormat dDateFormat, String sPrefix, String sSeriesParameterName,
+			String sItemParameterName) {
 
 		this.dateFormat = dDateFormat;
 		this.prefix = sPrefix;
@@ -88,11 +88,11 @@ public class TimeSeriesURLGenerator implements XYURLGenerator, Serializable {
 	 * Generates a URL for a particular item within a series.
 	 * 
 	 * @param dataset
-	 *           the dataset.
+	 *            the dataset.
 	 * @param series
-	 *           the series number (zero-based index).
+	 *            the series number (zero-based index).
 	 * @param item
-	 *           the item number (zero-based index).
+	 *            the item number (zero-based index).
 	 * @return the generated URL.
 	 */
 	public String generateURL(XYDataset dataset, int series, int item) {

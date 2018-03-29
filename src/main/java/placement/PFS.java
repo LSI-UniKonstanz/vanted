@@ -9,16 +9,16 @@ public class PFS implements RectanglePlacement {
 	class Vec {
 		double x, y;
 	}
-	
+
 	double xgap, ygap;
-	
+
 	public PFS(double xgap, double ygap) {
 		this.xgap = xgap;
 		this.ygap = ygap;
 	}
-	
+
 	ArrayList<Rectangle2D> rectangles;
-	
+
 	Vec force(Rectangle2D vi, Rectangle2D vj) {
 		Vec f = new Vec();
 		double dx = vj.getCenterX() - vi.getCenterX();
@@ -26,8 +26,7 @@ public class PFS implements RectanglePlacement {
 		double adx = Math.abs(dx);
 		double ady = Math.abs(dy);
 		double gij = dy / dx;
-		double Gij = (vi.getHeight() + vj.getHeight())
-							/ (vi.getWidth() + vj.getWidth());
+		double Gij = (vi.getHeight() + vj.getHeight()) / (vi.getWidth() + vj.getWidth());
 		if (Gij >= gij && gij > 0 || -Gij <= gij && gij < 0 || gij == 0) {
 			// vi and vj touch with y-direction boundaries
 			f.x = dx / adx * ((vi.getWidth() + vj.getWidth()) / 2.0 - adx);
@@ -40,17 +39,15 @@ public class PFS implements RectanglePlacement {
 		}
 		return f;
 	}
-	
+
 	Vec force2(Rectangle2D vi, Rectangle2D vj) {
 		Vec f = new Vec();
 		double dx = vj.getCenterX() - vi.getCenterX();
 		double dy = vj.getCenterY() - vi.getCenterY();
 		double gij = dy / dx;
 		if (vi.intersects(vj)) {
-			f.x = (vi.getWidth() + vj.getWidth()) / 2.0
-								- (vj.getCenterX() - vi.getCenterX());
-			f.y = (vi.getHeight() + vj.getHeight()) / 2.0
-								- (vj.getCenterY() - vi.getCenterY());
+			f.x = (vi.getWidth() + vj.getWidth()) / 2.0 - (vj.getCenterX() - vi.getCenterX());
+			f.y = (vi.getHeight() + vj.getHeight()) / 2.0 - (vj.getCenterY() - vi.getCenterY());
 			// in the x dimension
 			if (f.x > f.y && gij != 0) {
 				f.x = f.y / gij;
@@ -60,7 +57,7 @@ public class PFS implements RectanglePlacement {
 		}
 		return f;
 	}
-	
+
 	Comparator<Rectangle2D> xComparator = new Comparator<Rectangle2D>() {
 		public int compare(Rectangle2D u, Rectangle2D v) {
 			if (u.getCenterX() > v.getCenterX()) {
@@ -72,7 +69,7 @@ public class PFS implements RectanglePlacement {
 			return 0;
 		}
 	};
-	
+
 	void horizontal() {
 		Collections.sort(rectangles, xComparator);
 		int i = 0, n = rectangles.size();
@@ -105,9 +102,9 @@ public class PFS implements RectanglePlacement {
 			}
 			i = k + 1;
 		}
-		
+
 	}
-	
+
 	double horizontalImproved() {
 		Collections.sort(rectangles, xComparator);
 		int i = 0, n = rectangles.size();
@@ -172,15 +169,15 @@ public class PFS implements RectanglePlacement {
 			double oldPos = r.getMinX();
 			r.setRect(x[i], r.getMinY(), r.getWidth(), r.getHeight());
 			double newPos = r.getMinX();
-			
+
 			double diff = oldPos - newPos;
 			cost += diff * diff;
 		}
 		return cost;
 	}
-	
+
 	Comparator<Rectangle2D> yComparator = new Comparator<Rectangle2D>() {
-		
+
 		public int compare(Rectangle2D u, Rectangle2D v) {
 			if (u.getCenterY() > v.getCenterY()) {
 				return 1;
@@ -190,9 +187,9 @@ public class PFS implements RectanglePlacement {
 			}
 			return 0;
 		}
-		
+
 	};
-	
+
 	void vertical() {
 		Collections.sort(rectangles, yComparator);
 		int i = 0, n = rectangles.size();
@@ -225,9 +222,9 @@ public class PFS implements RectanglePlacement {
 			}
 			i = k + 1;
 		}
-		
+
 	}
-	
+
 	double verticalImproved() {
 		Collections.sort(rectangles, yComparator);
 		int i = 0, n = rectangles.size();
@@ -286,7 +283,7 @@ public class PFS implements RectanglePlacement {
 			sigma += delta;
 			i = k + 1;
 		}
-		
+
 		double cost = 0;
 		for (i = 0; i < n; i++) {
 			Rectangle2D r = rectangles.get(i);
@@ -298,7 +295,7 @@ public class PFS implements RectanglePlacement {
 		}
 		return cost;
 	}
-	
+
 	public void place(ArrayList<Rectangle2D> rectangles) {
 		this.rectangles = rectangles;
 		// the following is a hack but it's the easiest way to get the gaps

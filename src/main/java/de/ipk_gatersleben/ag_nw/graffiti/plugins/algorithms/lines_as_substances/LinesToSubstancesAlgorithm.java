@@ -32,40 +32,32 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 /**
- * @author Christian Klukas
- *         10.7.2006
+ * @author Christian Klukas 10.7.2006
  */
-public class LinesToSubstancesAlgorithm
-					extends AbstractAlgorithm {
+public class LinesToSubstancesAlgorithm extends AbstractAlgorithm {
 	private static int lines2substanceCallCount;
-	
+
 	public String getName() {
 		return null;// "Create Dataset (treat Lines as Substances)";
 	}
-	
+
 	@Override
 	public String getCategory() {
 		return "Mapping";
 	}
-	
-	
+
 	@Override
 	public Set<Category> getSetCategory() {
-		return new HashSet<Category>(Arrays.asList(
-				Category.COMPUTATION,
-				Category.DATA,
-				Category.GRAPH
-				));
+		return new HashSet<Category>(Arrays.asList(Category.COMPUTATION, Category.DATA, Category.GRAPH));
 	}
 
 	@Override
 	public String getDescription() {
-		return "<html>" +
-							"Create a new dataset, where for each line a new node<br>" +
-							"is created, which shows all of the different substance<br>" +
-							"measurements in this single graph node.";
+		return "<html>" + "Create a new dataset, where for each line a new node<br>"
+				+ "is created, which shows all of the different substance<br>"
+				+ "measurements in this single graph node.";
 	}
-	
+
 	@Override
 	public void check() throws PreconditionException {
 		super.check();
@@ -83,35 +75,30 @@ public class LinesToSubstancesAlgorithm
 		if (!foundData)
 			throw new PreconditionException("Graph nodes have no data assigned");
 	}
-	
+
 	@Override
 	public boolean isLayoutAlgorithm() {
 		return false;
 	}
-	
+
 	public void execute() {
-		final BackgroundTaskStatusProviderSupportingExternalCallImpl status =
-							new BackgroundTaskStatusProviderSupportingExternalCallImpl("<html>Create Line -&gt; Substance Dataset", "Please wait...");
-		
+		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
+				"<html>Create Line -&gt; Substance Dataset", "Please wait...");
+
 		final List<NodeHelper> workNodes;
 		if (MainFrame.getInstance().getActiveEditorSession().getGraph() == graph)
 			workNodes = GraphHelper.getSelectedOrAllHelperNodes(MainFrame.getInstance().getActiveEditorSession());
 		else
 			workNodes = GraphHelper.getHelperNodes(graph);
-		BackgroundTaskHelper.issueSimpleTask("<html>Line -&gt; Substance View",
-							"Create Dataset",
-							new Runnable() {
-								public void run() {
-									createLine2SubstanceView(status, workNodes, graph);
-								}
-							},
-							null, status);
+		BackgroundTaskHelper.issueSimpleTask("<html>Line -&gt; Substance View", "Create Dataset", new Runnable() {
+			public void run() {
+				createLine2SubstanceView(status, workNodes, graph);
+			}
+		}, null, status);
 	}
-	
-	private static void createLine2SubstanceView(
-						BackgroundTaskStatusProviderSupportingExternalCall status,
-						List<NodeHelper> workNodes,
-						Graph graph) {
+
+	private static void createLine2SubstanceView(BackgroundTaskStatusProviderSupportingExternalCall status,
+			List<NodeHelper> workNodes, Graph graph) {
 		lines2substanceCallCount++;
 		ArrayList<DataSetRow> mappingData = new ArrayList<DataSetRow>();
 		for (Node n : workNodes) {
@@ -153,7 +140,7 @@ public class LinesToSubstancesAlgorithm
 			}
 		});
 	}
-	
+
 	// private static void processNodeDesign(Graph ratioGraph,
 	// NodeHelper nh1,
 	// NodeHelper nh2,
@@ -172,8 +159,11 @@ public class LinesToSubstancesAlgorithm
 	// } else {
 	// ratioNodeHelper.setAttributeValue("labelgraphics", "anchor", "t");
 	// }
-	// // ratioNodeHelper.setAttributeValue("labelgraphics", "fontSize", new Integer(12));
-	// // ratioNodeHelper.setAttributeValue("graphics", "component", "chart2d_type3");
-	// // ratioNodeHelper.setAttributeValue("charting", "empty_border_width", new Double(3d));
+	// // ratioNodeHelper.setAttributeValue("labelgraphics", "fontSize", new
+	// Integer(12));
+	// // ratioNodeHelper.setAttributeValue("graphics", "component",
+	// "chart2d_type3");
+	// // ratioNodeHelper.setAttributeValue("charting", "empty_border_width", new
+	// Double(3d));
 	// }
 }

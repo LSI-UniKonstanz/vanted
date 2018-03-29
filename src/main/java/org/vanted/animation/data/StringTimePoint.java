@@ -1,4 +1,5 @@
 package org.vanted.animation.data;
+
 /**
  * 
  * @author - Patrick Shaw
@@ -6,6 +7,6 @@ package org.vanted.animation.data;
  */
 public class StringTimePoint extends TimePoint<String> {
 	public StringTimePoint(double time, String value) {
-		super(time,value);
+		super(time, value);
 	}
 }

@@ -32,8 +32,8 @@ package org.jfree.data;
 import java.util.List;
 
 /**
- * An extension of the {@link Values2D} interface where a unique key is associated with the row
- * and column indices.
+ * An extension of the {@link Values2D} interface where a unique key is
+ * associated with the row and column indices.
  */
 public interface KeyedValues2D extends Values2D {
 
@@ -41,7 +41,7 @@ public interface KeyedValues2D extends Values2D {
 	 * Returns a row key.
 	 * 
 	 * @param row
-	 *           the row index (zero-based).
+	 *            the row index (zero-based).
 	 * @return the row key.
 	 */
 	public Comparable getRowKey(int row);
@@ -50,7 +50,7 @@ public interface KeyedValues2D extends Values2D {
 	 * Returns the row index for a given key.
 	 * 
 	 * @param key
-	 *           the row key.
+	 *            the row key.
 	 * @return the row index.
 	 */
 	public int getRowIndex(Comparable key);
@@ -66,7 +66,7 @@ public interface KeyedValues2D extends Values2D {
 	 * Returns a column key.
 	 * 
 	 * @param column
-	 *           the column index (zero-based).
+	 *            the column index (zero-based).
 	 * @return the column key.
 	 */
 	public Comparable getColumnKey(int column);
@@ -75,7 +75,7 @@ public interface KeyedValues2D extends Values2D {
 	 * Returns the column index for a given key.
 	 * 
 	 * @param key
-	 *           the column key.
+	 *            the column key.
 	 * @return the column index.
 	 */
 	public int getColumnIndex(Comparable key);
@@ -93,9 +93,9 @@ public interface KeyedValues2D extends Values2D {
 	 * This method should return null if either of the keys is not found.
 	 * 
 	 * @param rowKey
-	 *           the row key.
+	 *            the row key.
 	 * @param columnKey
-	 *           the column key.
+	 *            the column key.
 	 * @return the value.
 	 */
 	public Number getValue(Comparable rowKey, Comparable columnKey);

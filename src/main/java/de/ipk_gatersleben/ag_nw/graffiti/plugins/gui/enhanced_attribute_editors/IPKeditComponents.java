@@ -19,24 +19,26 @@ import de.ipk_gatersleben.ag_nw.graffiti.IPK_EditorPluginAdapter;
  * @see org.graffiti.plugin.editcomponent.ValueEditComponent
  * @see org.graffiti.plugin.GenericPlugin
  */
-public class IPKeditComponents
-					extends IPK_EditorPluginAdapter
-					implements PluginManagerListener {
+public class IPKeditComponents extends IPK_EditorPluginAdapter implements PluginManagerListener {
 	// ~ Constructors ===========================================================
-	
+
 	public IPKeditComponents() {
 		super();
-		
+
 		// register the ui compoents for the displayable types
-		// //// valueEditComponents.put(DoubleAttribute.class, EnhDoubleEditComponent.class);
-		
+		// //// valueEditComponents.put(DoubleAttribute.class,
+		// EnhDoubleEditComponent.class);
+
 		// register the ui compoents for the parameter types
-		// //// valueEditComponents.put(DoubleParameter.class, EnhDoubleEditComponent.class);
+		// //// valueEditComponents.put(DoubleParameter.class,
+		// EnhDoubleEditComponent.class);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.graffiti.managers.pluginmgr.PluginManagerListener#pluginAdded(org.graffiti.plugin.GenericPlugin,
+	 * 
+	 * @see org.graffiti.managers.pluginmgr.PluginManagerListener#pluginAdded(org.
+	 * graffiti.plugin.GenericPlugin,
 	 * org.graffiti.managers.pluginmgr.PluginDescription)
 	 */
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
@@ -47,7 +49,8 @@ public class IPKeditComponents
 				EditComponentManager cm = GravistoService.getInstance().getMainFrame().getEditComponentManager();
 				cm.pluginAdded(this, null);
 			}
-			// System.out.println("IPK Parameter Plugin overrides Default Parameter Editors.");
+			// System.out.println("IPK Parameter Plugin overrides Default Parameter
+			// Editors.");
 		} catch (Exception e) {
 			System.err.println("ERR: " + e.getLocalizedMessage());
 		}

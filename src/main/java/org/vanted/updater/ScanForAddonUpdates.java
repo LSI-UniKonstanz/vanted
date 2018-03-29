@@ -28,40 +28,39 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
 public class ScanForAddonUpdates {
 
 	private boolean hasupdates = false;
-	
+
 	private boolean isFinished = false;
-	
+
 	private ArrayList<Object> res;
-	
+
 	public void doScan(boolean ignoreDate) {
-		
+
 		Date currentDate = new Date();
 		Preferences preferenceForClass = PreferenceManager.getPreferenceForClass(ScanForUpdate.class);
 
 		if (!ignoreDate) {
-			// if there is preference entry for reminder time..  check
-			if( ! CheckUpdateDate.isDateAfterUpdateDate(currentDate, preferenceForClass))
+			// if there is preference entry for reminder time.. check
+			if (!CheckUpdateDate.isDateAfterUpdateDate(currentDate, preferenceForClass))
 				return;
 		}
 	}
-	
+
+	@SuppressWarnings("unused")
 	private boolean hasUpdates() {
 		/*
-		 * refreshNews is normally asynchron.
-		 * we make it synchron with help of a monitor
+		 * refreshNews is normally asynchron. we make it synchron with help of a monitor
 		 */
 		addonUpdatesAvailable();
-		while(! isFinished()) {
+		while (!isFinished()) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 		}
 		return hasupdates;
 	}
-
 
 	public boolean isFinished() {
 		return isFinished;
@@ -71,20 +70,15 @@ public class ScanForAddonUpdates {
 		this.isFinished = isFinished;
 	}
 
-	
-	
 	private void addonUpdatesAvailable() {
-		
-		
-		
+
 		final RSSFeedManager rfm = RSSFeedManager.getInstance();
 		rfm.loadRegisteredFeeds();
 		rfm.setWordWrap(60);
 		NewsHelper.refreshNews(rfm, new Runnable() {
-			
 
 			public void run() {
-				
+
 				res = new ArrayList<Object>();
 				boolean found = false;
 				for (JComponent jc : rfm.getNewsComponents()) {
@@ -96,7 +90,8 @@ public class ScanForAddonUpdates {
 						fp.setShowCondenseButton(false);
 						fp.layoutRows();
 						fp.addCollapseListenerDialogSizeUpdate();
-						fp.setTitle(fp.getTitle().substring(0, fp.getTitle().indexOf(" (")) + " - " + fp.getFixedSearchFilterMatchCount() + " messages");
+						fp.setTitle(fp.getTitle().substring(0, fp.getTitle().indexOf(" (")) + " - "
+								+ fp.getFixedSearchFilterMatchCount() + " messages");
 						if (fp.getFixedSearchFilterMatchCount() > 0) {
 							found = true;
 							res.add("");
@@ -106,37 +101,36 @@ public class ScanForAddonUpdates {
 				}
 				if (!found) {
 					res.add("");
-					res.add(new JLabel(
-							"<html>" +
-									"Currently, there is no new or additional " +
-									"Add-on available for direct download."));
+					res.add(new JLabel("<html>" + "Currently, there is no new or additional "
+							+ "Add-on available for direct download."));
 				}
-//				
-				if(hasupdates) {
+				//
+				if (hasupdates) {
 					final BackgroundTaskPanelEntry backgroundTaskPanelEntry = new BackgroundTaskPanelEntry(false);
-					
+
 					final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 							"Updates for Addons found", "");
-					//<html><small>Goto Edit->Preferences->Addon Manager<br/>Click on 'Install configure Addons'<br/>Click on 'Find Addons / Updates'
+					// <html><small>Goto Edit->Preferences->Addon Manager<br/>Click on 'Install
+					// configure Addons'<br/>Click on 'Find Addons / Updates'
 					status.setCurrentStatusValue(100);
 					backgroundTaskPanelEntry.setStatusProvider(status, "Info", "Info");
 					backgroundTaskPanelEntry.setTaskFinished(false, 0);
 					JButton findAddonsUpdates = new JButton("Open Addons Manager");
 					findAddonsUpdates.addActionListener(new ActionListener() {
-						
+
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							backgroundTaskPanelEntry.removeStatusPanel();				
-							Object[] input = MyInputHelper.getInput("[OK]", "Direct Add-on Download", res.toArray());		
+							backgroundTaskPanelEntry.removeStatusPanel();
+							Object[] input = MyInputHelper.getInput("[OK]", "Direct Add-on Download", res.toArray());
 						}
 					});
 					backgroundTaskPanelEntry.add(findAddonsUpdates, "1,5");
-					
+
 					MainFrame.getInstance().addStatusPanel(backgroundTaskPanelEntry);
 				}
 				setFinished(true);
 			}
-			
+
 			private SearchFilter getSearchFilter() {
 				return new SearchFilter() {
 					public boolean accept(GuiRow gr, String searchText) {
@@ -149,11 +143,12 @@ public class ScanForAddonUpdates {
 							if (addOnProperty != null && addOnProperty.length() > 0 && addOnProperty.contains("/v")) {
 								// "vanted3d/v0.4"
 								String addOnName;
-								if(addOnProperty.contains("/req"))
+								if (addOnProperty.contains("/req"))
 									addOnName = addOnProperty.substring(0, addOnProperty.indexOf("/req"));
 								else
 									addOnName = addOnProperty.substring(0, addOnProperty.indexOf("/v"));
-								String addOnVersion = addOnProperty.substring(addOnProperty.indexOf("/v") + "/v".length());
+								String addOnVersion = addOnProperty
+										.substring(addOnProperty.indexOf("/v") + "/v".length());
 								for (Addon a : AddonManagerPlugin.getInstance().getAddons()) {
 									if (a.getDescription() != null) {
 										String n = a.getName();
@@ -168,7 +163,8 @@ public class ScanForAddonUpdates {
 								}
 								if (oldVersion != null && oldVersion.length() > 0) {
 									hasupdates = true;
-									downloadButton.setText("<html>Update Add-on from v" + oldVersion + " to v" + addOnVersion + "");
+									downloadButton.setText(
+											"<html>Update Add-on from v" + oldVersion + " to v" + addOnVersion + "");
 								}
 								return FolderPanel.getDefaultSearchFilter(null).accept(gr, searchText);
 							}

@@ -33,8 +33,8 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
- * Used to indicate the required position of tick marks on a date axis relative to the
- * underlying time period.
+ * Used to indicate the required position of tick marks on a date axis relative
+ * to the underlying time period.
  */
 public final class DateTickMarkPosition implements Serializable {
 
@@ -54,7 +54,7 @@ public final class DateTickMarkPosition implements Serializable {
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *           the name.
+	 *            the name.
 	 */
 	private DateTickMarkPosition(String name) {
 		this.name = name;
@@ -70,10 +70,11 @@ public final class DateTickMarkPosition implements Serializable {
 	}
 
 	/**
-	 * Returns <code>true</code> if this object is equal to the specified object, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if this object is equal to the specified object,
+	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
@@ -99,18 +100,16 @@ public final class DateTickMarkPosition implements Serializable {
 	 * 
 	 * @return The object.
 	 * @throws ObjectStreamException
-	 *            if there is a problem.
+	 *             if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		if (this.equals(DateTickMarkPosition.START)) {
 			return DateTickMarkPosition.START;
-		} else
-			if (this.equals(DateTickMarkPosition.MIDDLE)) {
-				return DateTickMarkPosition.MIDDLE;
-			} else
-				if (this.equals(DateTickMarkPosition.END)) {
-					return DateTickMarkPosition.END;
-				}
+		} else if (this.equals(DateTickMarkPosition.MIDDLE)) {
+			return DateTickMarkPosition.MIDDLE;
+		} else if (this.equals(DateTickMarkPosition.END)) {
+			return DateTickMarkPosition.END;
+		}
 		return null;
 	}
 

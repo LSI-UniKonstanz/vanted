@@ -68,37 +68,37 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 public class GravistoMainHelper implements HelperClass {
-	
+
 	private static final Preferences prefs = PreferenceManager.getPreferenceForClass(GravistoMainHelper.class);
-	
+
 	private static final PluginManager pluginManager = new DefaultPluginManager(getPreferences());
-	
+
 	public static Preferences getPreferences() {
 		return prefs;
 	}
-	
+
 	public static PluginManager getPluginManager() {
 		AttributeTypesManager attributeTypesManager = new AttributeTypesManager();
 		pluginManager.addPluginManagerListener(attributeTypesManager);
 		return pluginManager;
 	}
-	
+
 	public static void loadPlugins(Collection<String> pluginLocations, final ProgressViewer progressViewer)
 			throws PluginManagerException {
-		
+
 		ArrayList<String> validLocations = new ArrayList<String>();
 		for (String s : pluginLocations) {
 			if (s != null && s.length() > 0 && !s.endsWith("javadoc.xml"))
 				validLocations.add(s);
 		}
 		pluginLocations = validLocations;
-		
+
 		PluginManager pluginManager = getPluginManager();
-		
+
 		final List<String> messages = new LinkedList<String>();
-		
+
 		final ArrayList<PluginEntry> pluginEntries = new ArrayList<PluginEntry>();
-		
+
 		// progressViewer.setText("Process Init Command Add-ons...");
 		//
 		// try {
@@ -106,13 +106,13 @@ public class GravistoMainHelper implements HelperClass {
 		// } catch(Exception e) {
 		// ErrorMsg.addErrorMessage(e);
 		// }
-		
+
 		int nnc = pluginLocations.size();
 		progressViewer.setText("Read Plugin-Description Files... (" + nnc + ")");
 		final ClassLoader cl = Main.class.getClassLoader();
-		
+
 		ExecutorService run = Executors.newFixedThreadPool(SystemAnalysis.getNumberOfCPUs());
-		
+
 		for (String pluginLocation : pluginLocations) {
 			if (pluginLocation != null && pluginLocation.length() > 0) {
 				final String fpluginLocation = pluginLocation.substring(2);
@@ -120,13 +120,16 @@ public class GravistoMainHelper implements HelperClass {
 					public void run() {
 						try {
 							String pluginLocation = StringManipulationTools.stringReplace(fpluginLocation, "\\", "/");
-							if (!pluginLocation.startsWith("vanted_feature/") && pluginLocation.contains("/vanted_feature/"))
-								pluginLocation = pluginLocation.substring(pluginLocation.indexOf("/vanted_feature/")
-										+ "/".length());
+							if (!pluginLocation.startsWith("vanted_feature/")
+									&& pluginLocation.contains("/vanted_feature/"))
+								pluginLocation = pluginLocation
+										.substring(pluginLocation.indexOf("/vanted_feature/") + "/".length());
 							if (!pluginLocation.startsWith("de/") && pluginLocation.contains("/de/"))
-								pluginLocation = pluginLocation.substring(pluginLocation.indexOf("/de/") + "/".length());
+								pluginLocation = pluginLocation
+										.substring(pluginLocation.indexOf("/de/") + "/".length());
 							if (!pluginLocation.startsWith("org/") && pluginLocation.contains("/org/"))
-								pluginLocation = pluginLocation.substring(pluginLocation.indexOf("/org/") + "/".length());
+								pluginLocation = pluginLocation
+										.substring(pluginLocation.indexOf("/org/") + "/".length());
 							try {
 								URL pluginUrl = cl.getResource(pluginLocation);
 								PluginDescription desc = PluginHelper.readPluginDescription(pluginUrl);
@@ -135,32 +138,32 @@ public class GravistoMainHelper implements HelperClass {
 								}
 							} catch (PluginManagerException err) {
 								System.out.println("Plugin Manager Exception for " + pluginLocation);
-								ErrorMsg.addErrorMessage("Plugin Manager Exception for " + pluginLocation + ". Exception: "
-										+ err.getLocalizedMessage());
+								ErrorMsg.addErrorMessage("Plugin Manager Exception for " + pluginLocation
+										+ ". Exception: " + err.getLocalizedMessage());
 								System.err.println(err.getLocalizedMessage());
 								messages.add(err.getLocalizedMessage());
 							}
 						} catch (Exception err) {
 							System.out.println(err.getClass().getSimpleName() + " for " + fpluginLocation);
-							ErrorMsg.addErrorMessage("Exception for " + fpluginLocation + ". Exception: "
-									+ err.getLocalizedMessage());
+							ErrorMsg.addErrorMessage(
+									"Exception for " + fpluginLocation + ". Exception: " + err.getLocalizedMessage());
 							messages.add(err.getLocalizedMessage());
 						}
 					}
 				});
-				
+
 			}
 		}
-		
+
 		run.shutdown();
 		try {
 			run.awaitTermination(120, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			ErrorMsg.addErrorMessage(e);
 		}
-		
+
 		int loaded = pluginEntries.size();
-		
+
 		PluginEntry[] loadedPlugins = new PluginEntry[loaded];
 		int i2 = 0;
 		for (PluginEntry pe : pluginEntries) {
@@ -176,7 +179,7 @@ public class GravistoMainHelper implements HelperClass {
 			ErrorMsg.addErrorMessage("PluginManagerException: " + pme.getLocalizedMessage());
 			messages.add(pme.getMessage());
 		}
-		
+
 		// collect info of all exceptions into one exception
 		if (!messages.isEmpty()) {
 			String msg = "";
@@ -186,25 +189,26 @@ public class GravistoMainHelper implements HelperClass {
 			throw new PluginManagerException("exception.loadStartup\n", msg.trim());
 		}
 	}
-	
+
 	public static void setLookAndFeel() {
-		
+
 		Properties p = System.getProperties();
 		String os = (String) p.get("os.name");
 		try {
 			if (new File(ReleaseInfo.getAppFolderWithFinalSep() + "setting_java_look_and_feel").exists()) {
-				TextFile tf = new TextFile(new FileReader(new File(ReleaseInfo.getAppFolderWithFinalSep()
-						+ "setting_java_look_and_feel")));
+				TextFile tf = new TextFile(new FileReader(
+						new File(ReleaseInfo.getAppFolderWithFinalSep() + "setting_java_look_and_feel")));
 				String look = tf.get(0);
-				
+
 				System.out.print("Look and feel " + look);
-				
+
 				UIManager.setLookAndFeel(look);
 				System.out.println(": OK");
 			} else {
 				// UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-				
-				if (os != null && !os.toUpperCase().contains("LINUX") && !os.toUpperCase().contains("SUN") && !os.toUpperCase().contains("MAC")) {
+
+				if (os != null && !os.toUpperCase().contains("LINUX") && !os.toUpperCase().contains("SUN")
+						&& !os.toUpperCase().contains("MAC")) {
 					try {
 						// if (!ErrorMsg.isMac())
 						if (!ReleaseInfo.isRunningAsApplet())
@@ -223,7 +227,7 @@ public class GravistoMainHelper implements HelperClass {
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-	
+
 	public static void createApplicationSettingsFolder(SplashScreenInterface splashScreen) {
 		if (ReleaseInfo.isRunningAsApplet())
 			return;
@@ -231,18 +235,20 @@ public class GravistoMainHelper implements HelperClass {
 			splashScreen.setVisible(false);
 			boolean success = (new File(ReleaseInfo.getAppFolder())).mkdirs();
 			if (!success) {
-				JOptionPane.showMessageDialog(null, "<html>" + "<h3>The " + DBEgravistoHelper.DBE_GRAVISTO_VERSION
-						+ " - settings folder could not be created</h3>"
-						+ "Program execution can not continue as the settings folder is needed for<br>"
-						+ "storage of program settings and temporary files:<br>" + ReleaseInfo.getAppFolder() + "</html>");
+				JOptionPane.showMessageDialog(null,
+						"<html>" + "<h3>The " + DBEgravistoHelper.DBE_GRAVISTO_VERSION
+								+ " - settings folder could not be created</h3>"
+								+ "Program execution can not continue as the settings folder is needed for<br>"
+								+ "storage of program settings and temporary files:<br>" + ReleaseInfo.getAppFolder()
+								+ "</html>");
 				System.err.println("EXIT");
 				System.exit(1);
 			}
 		}
 	}
-	
+
 	private static ArrayList<DragAndDropHandler> dragAndDropHandlers = new ArrayList<DragAndDropHandler>();
-	
+
 	public static void addDragAndDropHandler(DragAndDropHandler handler) {
 		boolean found = false;
 		for (DragAndDropHandler dh : dragAndDropHandlers) {
@@ -254,11 +260,11 @@ public class GravistoMainHelper implements HelperClass {
 		if (!found)
 			dragAndDropHandlers.add(handler);
 	}
-	
+
 	public static void removeDragAndDropHandler(DragAndDropHandler handler) {
 		dragAndDropHandlers.remove(handler);
 	}
-	
+
 	private static void installDragAndDropHandler(MainFrame mainFrame) {
 		new FileDrop(mainFrame, new FileDrop.Listener() {
 			public void filesDropped(final File[] files) {
@@ -280,61 +286,42 @@ public class GravistoMainHelper implements HelperClass {
 			}
 		});
 	}
-	
+
 	public static MainFrame initApplication(String[] args, SplashScreenInterface splashScreen, ClassLoader cl,
 			String addPluginFile, String addPlugin) {
 		return initApplicationExt(args, splashScreen, cl, addPluginFile, new String[] { addPlugin });
 	}
-	
+
 	public static MainFrame initApplicationExt(String[] args, SplashScreenInterface splashScreen, ClassLoader cl,
 			String addPluginFile, String[] addPlugins) {
 		splashScreen.setText("Read plugin information");
-		
+
 		// construct and open the editor's main frame
 		Preferences uiPrefs = getPreferences().node("ui");
 		uiPrefs.put("showPluginManagerMenuOptions", "false");
 		uiPrefs.put("showPluginMenu", "false");
-		
+
 		splashScreen.setText("Read plugin information..");
-		
+
 		JPanel statusPanel = new JPanel();
 		// statusPanel.
 		final MainFrame mainFrame = new MainFrame(getPluginManager(), uiPrefs, statusPanel, true);
-		
+
 		installDragAndDropHandler(mainFrame);
-		
+
 		// ClassLoader cl = Main.class.getClassLoader();
 		URL r1 = cl.getResource("plugins.txt");
-//		URL r2 = cl.getResource("plugins2.txt");
-//		URL r3 = cl.getResource("plugins3.txt");
-//		URL r4 = cl.getResource("plugins4.txt");
 		URL r5 = null;
 		if (addPluginFile != null)
 			r5 = cl.getResource(addPluginFile);
-		
+
 		URL rExcl = cl.getResource("plugins_exclude.txt");
-		
-		// System.out.println("Plugins1: "+(r1!=null ? r1.toExternalForm() :
-		// "null"));
-		// System.out.println("Plugins2: "+(r2!=null ? r2.toExternalForm() :
-		// "null"));
-		// System.out.println("Plugins3: "+(r3!=null ? r3.toExternalForm() :
-		// "null"));
-		// System.out.println("Plugins4: "+(r4!=null ? r4.toExternalForm() :
-		// "null"));
-		// System.out.println("PluginsE: "+(rExcl!=null ? rExcl.toExternalForm() :
-		// "null"));
-		// System.out.println("Plugins5 (opt.): "+(r5!=null ? r5.toExternalForm()
-		// : "null"));
-		
+
 		splashScreen.setText("Read plugin information...");
-		
+
 		ArrayList<String> locations = new ArrayList<String>();
 		try {
 			locations.addAll(new TextFile(r1));
-//			locations.addAll(new TextFile(r2));
-//			locations.addAll(new TextFile(r3));
-//			locations.addAll(new TextFile(r4));
 			if (addPlugins != null)
 				for (String p : addPlugins)
 					if (p != null)
@@ -360,7 +347,7 @@ public class GravistoMainHelper implements HelperClass {
 						loc2 = StringManipulationTools.stringReplace(loc2, "\\", "");
 						loc2 = StringManipulationTools.stringReplace(loc2, " ", "");
 						loc2 = StringManipulationTools.stringReplace(loc2, "/", "");
-						
+
 						if (loc2.indexOf(remove) >= 0) {
 							locations.remove(loc);
 							break;
@@ -376,14 +363,15 @@ public class GravistoMainHelper implements HelperClass {
 			System.err.println("Don't forget to start createfilelist from the make folder.");
 			System.err.println("See make - intro.txt for details.");
 			System.err.println("-- Program needs to be stopped");
-			JOptionPane.showMessageDialog(null, "<html><h2>ERROR: Plugin-Description files could not be loaded</h2>"
-					+ "Program execution can not continue.<br>"
-					+ "Pleas execute the createfilelist script from the make folder.<br>"
-					+ "The application needs to be closed.</html>");
+			JOptionPane.showMessageDialog(null,
+					"<html><h2>ERROR: Plugin-Description files could not be loaded</h2>"
+							+ "Program execution can not continue.<br>"
+							+ "Please, execute the createfilelist script from the make folder.<br>"
+							+ "The application needs to be closed.</html>");
 			System.err.println("EXIT");
 			System.exit(1);
 		}
-		
+
 		// printLocations(locations, "info");
 		splashScreen.setText("Load plugins...");
 		try {
@@ -391,7 +379,7 @@ public class GravistoMainHelper implements HelperClass {
 		} catch (PluginManagerException pme) {
 			ErrorMsg.addErrorMessage(pme.getLocalizedMessage());
 		}
-		
+
 		Thread t = new Thread(new Runnable() {
 			public void run() {
 				JMenu dummyScipt = new JMenu("Dummy Script");
@@ -400,9 +388,9 @@ public class GravistoMainHelper implements HelperClass {
 		});
 		t.setPriority(Thread.MIN_PRIORITY);
 		t.start();
-		
+
 		splashScreen.setText("Processing finished");
-		
+
 		splashScreen.setInitialisationFinished();
 		ErrorMsg.setAppLoadingCompleted(ApplicationStatus.PROGRAM_LOADING_FINISHED);
 		if (args != null) {
@@ -428,8 +416,8 @@ public class GravistoMainHelper implements HelperClass {
 									SwingUtilities.invokeLater(new Runnable() {
 										@Override
 										public void run() {
-											mainFrame.showGraph(g, new ActionEvent(mainFrame, 1,
-													"load graph passed with arguments"));
+											mainFrame.showGraph(g,
+													new ActionEvent(mainFrame, 1, "load graph passed with arguments"));
 										}
 									});
 									break;
@@ -441,54 +429,42 @@ public class GravistoMainHelper implements HelperClass {
 				}
 			}
 		}
-		
+
 		GravistoService.loadFiles();
-		
+
 		if (ReleaseInfo.isFirstRun()) {
-			
+
 			/*
-			 * no database download window. the links don't work anyway anymore since kegg changed
+			 * no database download window. the links don't work anyway anymore since kegg
+			 * changed
 			 */
-/*
- * Runnable r = new Runnable() {
- * public void run() {
- * try {
- * Thread.sleep(5000);
- * } catch (InterruptedException e) {
- * ErrorMsg.addErrorMessage(e);
- * }
- * SwingUtilities.invokeLater(new Runnable() {
- * public void run() {
- * int res = JOptionPane
- * .showConfirmDialog(
- * mainFrame,
- * "<html>"
- * + "Some of the commands contained in this application require access to certain databases.<br>"
- * + "Database files are required for commands related to database identifier handling.<br>"
- * + "For example to exchange compound IDs with compound names (menu command<br>"
- * + "'Nodes/Interpret Database-Identifiers') and for synonyme processing during<br>"
- * + "data mapping.<br><br>"
- * + "Click 'Yes' to open the download command window. You may use the menu command<br>"
- * + "'Help/Database Status' at a later time to download or update the database files.",
- * "Show database download window?", JOptionPane.YES_NO_OPTION);
- * if (res == 0) {
- * DatabaseFileStatusService.showStatusDialog();
- * }
- * }
- * });
- * }
- * };
- * Thread tt = new Thread(r);
- * tt.setName("Ask for database download");
- * tt.start();
- */
 			/*
-			 * display the dialog box to inform the user that we changed the info.plist file with optimal
-			 * RAM settings
+			 * Runnable r = new Runnable() { public void run() { try { Thread.sleep(5000); }
+			 * catch (InterruptedException e) { ErrorMsg.addErrorMessage(e); }
+			 * SwingUtilities.invokeLater(new Runnable() { public void run() { int res =
+			 * JOptionPane .showConfirmDialog( mainFrame, "<html>" +
+			 * "Some of the commands contained in this application require access to certain databases.<br>"
+			 * +
+			 * "Database files are required for commands related to database identifier handling.<br>"
+			 * +
+			 * "For example to exchange compound IDs with compound names (menu command<br>"
+			 * +
+			 * "'Nodes/Interpret Database-Identifiers') and for synonyme processing during<br>"
+			 * + "data mapping.<br><br>" +
+			 * "Click 'Yes' to open the download command window. You may use the menu command<br>"
+			 * +
+			 * "'Help/Database Status' at a later time to download or update the database files."
+			 * , "Show database download window?", JOptionPane.YES_NO_OPTION); if (res == 0)
+			 * { DatabaseFileStatusService.showStatusDialog(); } } }); } }; Thread tt = new
+			 * Thread(r); tt.setName("Ask for database download"); tt.start();
+			 */
+			/*
+			 * display the dialog box to inform the user that we changed the info.plist file
+			 * with optimal RAM settings
 			 */
 			if (AttributeHelper.macOSrunning()) {
 				new Thread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						// TODO Auto-generated method stub
@@ -496,71 +472,73 @@ public class GravistoMainHelper implements HelperClass {
 							try {
 								Thread.sleep(5000);
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
+								
 								e.printStackTrace();
 							}
 						} while (!MainFrame.getInstance().isVisible());
 						SetJavaMemoryMacOS.showDialog();
-						
+
 					}
 				}).start();
 			}
-			
+
 		} else {
-//			final String lastVersion = ReleaseInfo
-//					.getOldVersionIfAppHasBeenUpdated(DBEgravistoHelper.DBE_GRAVISTO_VERSION);
-//			if (lastVersion != null) {
-//				Runnable r = new Runnable() {
-//					public void run() {
-//						try {
-//							Thread.sleep(2000);
-//						} catch (InterruptedException e) {
-//							ErrorMsg.addErrorMessage(e);
-//						}
-//						SwingUtilities.invokeLater(new Runnable() {
-//							public void run() {
-//								if (AddonManagerPlugin.getInstance() == null
-//										|| AddonManagerPlugin.getInstance().getAddons().size() <= 0) // &&
-// 									AddonManagerPlugin.getInstance().getDeactivatedAddons().size()<=0)
-//									JOptionPane.showMessageDialog(mainFrame, "<html>" + "<h3>Application has been updated!</h3>"
-//											+ "Previous installation of " + lastVersion + " is replaced by "
-//											+ DBEgravistoHelper.DBE_GRAVISTO_VERSION + ".<br><br>"
-//											, "Information",
-//											JOptionPane.INFORMATION_MESSAGE);
-//							}
-//						});
-//					}
-//					
-//				};
-//				Thread tt = new Thread(r);
-//				tt.setName("Ask for database download");
-//				tt.start();
-//			}
+			// final String lastVersion = ReleaseInfo
+			// .getOldVersionIfAppHasBeenUpdated(DBEgravistoHelper.DBE_GRAVISTO_VERSION);
+			// if (lastVersion != null) {
+			// Runnable r = new Runnable() {
+			// public void run() {
+			// try {
+			// Thread.sleep(2000);
+			// } catch (InterruptedException e) {
+			// ErrorMsg.addErrorMessage(e);
+			// }
+			// SwingUtilities.invokeLater(new Runnable() {
+			// public void run() {
+			// if (AddonManagerPlugin.getInstance() == null
+			// || AddonManagerPlugin.getInstance().getAddons().size() <= 0) // &&
+			// AddonManagerPlugin.getInstance().getDeactivatedAddons().size()<=0)
+			// JOptionPane.showMessageDialog(mainFrame, "<html>" + "<h3>Application has been
+			// updated!</h3>"
+			// + "Previous installation of " + lastVersion + " is replaced by "
+			// + DBEgravistoHelper.DBE_GRAVISTO_VERSION + ".<br><br>"
+			// , "Information",
+			// JOptionPane.INFORMATION_MESSAGE);
+			// }
+			// });
+			// }
+			//
+			// };
+			// Thread tt = new Thread(r);
+			// tt.setName("Ask for database download");
+			// tt.start();
+			// }
 		}
-		
+
 		return mainFrame;
 	}
-	
+
 	private static boolean canRead(IOurl url, String prefixErrorMessage) {
-		
+
 		if (!new File(url.getDetail() + IOurl.SEPERATOR + url.getFileName()).canRead()) {
 			ErrorMsg.addErrorMessage(prefixErrorMessage + url.getDetail() + IOurl.SEPERATOR + url.getFileName() + "!");
 			return false;
 		}
 		return true;
-		
+
 	}
-	
+
 	public static void processDroppedFiles(File[] files, boolean includeGraphFileLoaders) {
 		processDroppedFiles(files, includeGraphFileLoaders, null);
 	}
-	
+
 	private static void processData(HashMap<DragAndDropHandler, List<File>> processor2files, DragAndDropHandler dh,
 			final Class<ExperimentDataProcessor> processor) {
 		if (dh instanceof ExperimentDataDragAndDropHandler) {
 			ExperimentDataDragAndDropHandler ddh = (ExperimentDataDragAndDropHandler) dh;
 			ddh.setExperimentDataReceiver(new ExperimentDataPresenter() {
-				public void processReceivedData(TableData td, String experimentName, ExperimentInterface doc, JComponent gui) {
+				public void processReceivedData(TableData td, String experimentName, ExperimentInterface doc,
+						JComponent gui) {
 					if (processor == null)
 						ExperimentDataProcessingManager.getInstance().processIncomingData(doc);
 					else {
@@ -573,7 +551,8 @@ public class GravistoMainHelper implements HelperClass {
 		if (dh instanceof DataDragAndDropHandler) {
 			ExperimentInterface mds = ((DataDragAndDropHandler) dh).getProcessingResults();
 			// if(mds == null || mds.size() == 0)
-			// ErrorMsg.addErrorMessage("Internal Error: Loader could not correctly process the data");
+			// ErrorMsg.addErrorMessage("Internal Error: Loader could not correctly process
+			// the data");
 			// else
 			if (processor == null)
 				ExperimentDataProcessingManager.getInstance().processIncomingData(mds);
@@ -581,18 +560,18 @@ public class GravistoMainHelper implements HelperClass {
 				ExperimentDataProcessingManager.getInstance().processIncomingData(mds, processor);
 		}
 	}
-	
+
 	public static void processDroppedFiles(final File[] files, boolean includeGraphFileLoaders,
 			final Class<ExperimentDataProcessor> processor) {
-		
+
 		final ArrayList<File> ignoredFiles = new ArrayList<File>();
 		final HashMap<File, ArrayList<DragAndDropHandler>> workingSet = new HashMap<File, ArrayList<DragAndDropHandler>>();
-		
+
 		if (files == null)
 			return;
-		
+
 		final HashSet<DragAndDropHandler> myList = new HashSet<DragAndDropHandler>();
-		
+
 		if (includeGraphFileLoaders)
 			myList.add(new DragAndDropHandler() {
 				public boolean process(List<File> files) {
@@ -601,51 +580,51 @@ public class GravistoMainHelper implements HelperClass {
 					// graph
 					return true;
 				}
-				
+
 				public boolean canProcess(File f) {
 					return MainFrame.getInstance().isInputSerializerKnown(f);
 				}
-				
+
 				@Override
 				public String toString() {
 					return "Load graph";
 				}
-				
+
 				public boolean hasPriority() {
 					return true;
 				}
 			});
 		myList.addAll(dragAndDropHandlers);
-		
+
 		final BackgroundTaskStatusProviderSupportingExternalCallImpl status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 				"Processing Drag and Drop", "Please wait...");
-		
+
 		Runnable prepareProcess = new Runnable() {
 			@Override
 			public void run() {
-				
+
 				// if a file is a directory: recursively get all files in the directory
 				HashSet<File> realfiles = new HashSet<File>();
 				ArrayList<File> directories = new ArrayList<File>();
-				
+
 				for (File f : files)
 					if (f.isDirectory())
 						directories.add(f);
 					else
 						realfiles.add(f);
-				
+
 				for (File dir : directories)
 					addFiles(realfiles, dir);
-				
+
 				int cnt = 0, all = realfiles.size() * myList.size();
-				
+
 				cyclefiles: for (File f : realfiles) {
 					boolean canProcess = false;
 					status.setCurrentStatusText2("of \"" + f.getName() + "\"");
-					
+
 					for (DragAndDropHandler handler : myList) {
 						status.setCurrentStatusValue(100 * (cnt++) / all);
-						
+
 						if (handler.canProcess(f)) {
 							if (status.wantsToStop())
 								break cyclefiles;
@@ -655,7 +634,7 @@ public class GravistoMainHelper implements HelperClass {
 							workingSet.get(f).add(handler);
 						}
 					}
-					
+
 					if (!canProcess) {
 						ignoredFiles.add(f);
 					}
@@ -677,11 +656,11 @@ public class GravistoMainHelper implements HelperClass {
 				if (status.wantsToStop())
 					return;
 				FileHandlerUserDecision fhud = new FileHandlerUserDecision(workingSet);
-				
+
 				for (File f : workingSet.keySet())
 					fhud.addRows(f);
 				Object[] res;
-				
+
 				if (fhud.atLeastOneFileNeedsUserDecision())
 					res = MyInputHelper.getInput("", "Select File Processor", "", fhud.getFolderPanel());
 				else
@@ -689,7 +668,7 @@ public class GravistoMainHelper implements HelperClass {
 				if (res != null) {
 					// process files
 					final HashMap<DragAndDropHandler, List<File>> processor2files = new HashMap<DragAndDropHandler, List<File>>();
-					
+
 					for (Entry<File, JComboBox> e : fhud.getUserSelection().entrySet()) {
 						DragAndDropHandler dh = (DragAndDropHandler) e.getValue().getSelectedItem();
 						if (!processor2files.containsKey(dh))
@@ -721,7 +700,7 @@ public class GravistoMainHelper implements HelperClass {
 									}
 								}
 							});
-							
+
 						}
 					});
 					t.setName("Wait for graph loading to be finished");
@@ -729,22 +708,23 @@ public class GravistoMainHelper implements HelperClass {
 				}
 			}
 		};
-		
-		BackgroundTaskHelper.issueSimpleTask("Processing Drag and Drop", "Please wait...", prepareProcess, process, status);
+
+		BackgroundTaskHelper.issueSimpleTask("Processing Drag and Drop", "Please wait...", prepareProcess, process,
+				status);
 	}
-	
+
 	private static HashSet<File> addFiles(HashSet<File> files, File dir) {
-		if(dir == null)
+		if (dir == null)
 			return files;
 		if (!dir.isDirectory()) {
 			files.add(dir);
 			return files;
 		}
 		File[] listFiles = dir.listFiles();
-		if(listFiles != null)
+		if (listFiles != null)
 			for (File file : listFiles)
 				addFiles(files, file);
 		return files;
 	}
-	
+
 }

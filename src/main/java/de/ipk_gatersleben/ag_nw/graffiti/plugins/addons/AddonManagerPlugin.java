@@ -63,26 +63,27 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  * @author Hendrik Rohn, Christian Klukas
  */
 public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragAndDropHandler {
-	private static final String ADDONS_TO_BE_UPDATED_DIR = ReleaseInfo.getAppSubdirFolderWithFinalSep("addons_to_be_updated");
+	private static final String ADDONS_TO_BE_UPDATED_DIR = ReleaseInfo
+			.getAppSubdirFolderWithFinalSep("addons_to_be_updated");
 	private static final String ADDON_DIRECTORY = ReleaseInfo.getAppSubdirFolderWithFinalSep("addons");
 	private static final File deactivatedlist = new File(ADDON_DIRECTORY + "deactivated.txt");
-	
+
 	private final ArrayList<Addon> addons = new ArrayList<Addon>();
-	
+
 	private static PluginXMLParser p = new PluginXMLParser();
 	private static InputStream is;
-	
+
 	private static AddonManagerPlugin instance;
 	private boolean startupAddonsLoaded = false;
-	
+
 	/**
-	 * @return The Addonmanager instance or null, if no instance was created
-	 *         (e.g. deselected)
+	 * @return The Addonmanager instance or null, if no instance was created (e.g.
+	 *         deselected)
 	 */
 	public synchronized static AddonManagerPlugin getInstance() {
 		return instance;
 	}
-	
+
 	/**
 	 * Creates a new menu-entry for the Add-ons and waits for all plugins to be
 	 * started. Then the Add-ons can be loaded.
@@ -95,10 +96,10 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 			GravistoMainHelper.addDragAndDropHandler(this);
 			// this.guiComponents = new GraffitiComponent[1];
 			// this.guiComponents[0] = new AddonMenu(this);
-			
+
 			// waiting until all other plugins have been loaded, then load addons
 			Thread t = new Thread(new Runnable() {
-				
+
 				public void run() {
 					waitLoop: while (true) {
 						try {
@@ -136,138 +137,137 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 			AddonManagerPlugin.class.notify();
 		}
 	}
-	
+
 	/**
 	 * Load addons on startup.
 	 */
 
 	private synchronized void loadAddonsOnStartup() {
 		long time = System.currentTimeMillis();
-		
+
 		try {
 			File addonDirFile = new File(ADDON_DIRECTORY);
 			if (!addonDirFile.exists())
 				addonDirFile.createNewFile();
 			if (!deactivatedlist.exists())
 				deactivatedlist.createNewFile();
-			
+
 			File updateAddonDir = new File(ADDONS_TO_BE_UPDATED_DIR);
-			
+
 			// finalize the update procedure of add-ons by copying it to the
 			// appropriate directory
 			File[] files = getJarFileList(updateAddonDir);
 			if (files != null)
 				for (File toBeUpdatedAddonFile : files) {
 					try {
-						HomeFolder.copyFile(toBeUpdatedAddonFile, new File(ADDON_DIRECTORY + toBeUpdatedAddonFile.getName()));
+						HomeFolder.copyFile(toBeUpdatedAddonFile,
+								new File(ADDON_DIRECTORY + toBeUpdatedAddonFile.getName()));
 						toBeUpdatedAddonFile.delete();
 					} catch (IOException e) {
-						ErrorMsg.addErrorMessage("<html>Add-on " + toBeUpdatedAddonFile.getName() + " could not be updated due to I/O Error:<br>" + e.getMessage());
+						ErrorMsg.addErrorMessage("<html>Add-on " + toBeUpdatedAddonFile.getName()
+								+ " could not be updated due to I/O Error:<br>" + e.getMessage());
 					}
 					System.out.println("Updated Add-on " + toBeUpdatedAddonFile.getName());
 				}
-			
+
 			File[] fff = null;
 			if (updateAddonDir != null)
 				fff = updateAddonDir.listFiles();
 			if (fff != null && fff.length == 0)
 				updateAddonDir.delete();
-			
+
 			System.out.println("Trying to load Add-ons... ");
-			
+
 			/*
-			 * try to figure out the order of loading depending on addon dependencies
-			 * we also need to memorize the classloader before loading addons, since the URL classloaders
-			 * are a hierarchy as well and if dependend addons are loaded in wrong order th class loader will
-			 * not find the classes for the depending addons
+			 * try to figure out the order of loading depending on addon dependencies we
+			 * also need to memorize the classloader before loading addons, since the URL
+			 * classloaders are a hierarchy as well and if dependend addons are loaded in
+			 * wrong order th class loader will not find the classes for the depending
+			 * addons
 			 */
 			ClassLoader oldLoader = InstanceLoader.getCurrentLoader();
-			
+
 			final Map<PluginDescription, File> mapPlugDescToFile = new HashMap<PluginDescription, File>();
 			for (File toBeActivatedAddon : getJarFileList(addonDirFile)) {
 				mapPlugDescToFile.put(loadAddonFromFile(toBeActivatedAddon), toBeActivatedAddon);
 			}
-			
+
 			final List<PluginDescription> orderedList = getOrderedDependencyList(mapPlugDescToFile.keySet());
 
 			/*
-			 *  forget the addon classpaths because we need to add the addons to the classpath
-			 *  in the correct order
+			 * forget the addon classpaths because we need to add the addons to the
+			 * classpath in the correct order
 			 */
-			
+
 			InstanceLoader.setClassLoader(oldLoader);
-			for(PluginDescription curPluginDesc : orderedList) {
+			for (PluginDescription curPluginDesc : orderedList) {
 				try {
 					loadAddonFromFile(mapPlugDescToFile.get(curPluginDesc));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
+
 					e.printStackTrace();
 				}
 			}
-			
+
 			if (!SwingUtilities.isEventDispatchThread()) {
 				SwingUtilities.invokeAndWait(new Runnable() {
-					public void run() {						
-							for(PluginDescription curPluginDesc : orderedList) {
-								addAddon(curPluginDesc, mapPlugDescToFile.get(curPluginDesc), true);
-							}
+					public void run() {
+						for (PluginDescription curPluginDesc : orderedList) {
+							addAddon(curPluginDesc, mapPlugDescToFile.get(curPluginDesc), true);
+						}
 					}
 				});
 			}
-			
+
 			if (getJarFileList(addonDirFile).length > 0)
 				System.out.println("Add-ons loaded in " + (System.currentTimeMillis() - time) + "ms");
 			else
 				System.out.println("No Add-on found.");
-			
+
 			hideNewComponents();
-			
+
 		} catch (Exception e) {
 			ErrorMsg.addErrorMessage(e);
 		}
 	}
-	
-	private List<PluginDescription> getOrderedDependencyList(Collection<PluginDescription> coll) {
+
+	private static List<PluginDescription> getOrderedDependencyList(Collection<PluginDescription> coll) {
 		int size = coll.size();
-		
+
 		PluginDescription[] array = new PluginDescription[size];
 		Iterator<PluginDescription> iterator = coll.iterator();
-		// debugging
-//		System.out.println("before");
-//
-		for(int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) {
 			array[i] = iterator.next();
-//			System.out.println(array[i].getName());
 		}
-		
-		for(int cnt = 0; cnt < size; cnt ++)
-			for(int i = 0; i < size - 1; i++) {
+
+		for (int cnt = 0; cnt < size; cnt++)
+			for (int i = 0; i < size - 1; i++) {
 				PluginDescription pluginDescription = array[i];
 				int maxIdx = i;
-				for(PluginDependency depPluginDesc : pluginDescription.getDependencies()) {
-					for(int j = i + 1; j < size; j++) {
-						if(depPluginDesc.getMain().equals(array[j].getMain()) && j > maxIdx)
+				for (PluginDependency depPluginDesc : pluginDescription.getDependencies()) {
+					for (int j = i + 1; j < size; j++) {
+						if (depPluginDesc.getMain().equals(array[j].getMain()) && j > maxIdx)
 							maxIdx = j;
 					}
 				}
-				
-				/* 
-				 * if we found an addon we're depending on then we put us on the
-				 * position of that addon and move everything one position ahead
+
+				/*
+				 * if we found an addon we're depending on then we put us on the position of
+				 * that addon and move everything one position ahead
 				 */
-				if(maxIdx > i) {
-					for(int moveIdx = 0; moveIdx < maxIdx - i; moveIdx++) {
+				if (maxIdx > i) {
+					for (int moveIdx = 0; moveIdx < maxIdx - i; moveIdx++) {
 						array[i + moveIdx] = array[i + moveIdx + 1];
 					}
 					array[maxIdx] = pluginDescription;
 				}
-				
+
 			}
-		// debugging		
-//		System.out.println("after");
-//		for(int i = 0; i < size; i++) {
-//			System.out.println(array[i].getName());
-//		}
+		// debugging
+		// System.out.println("after");
+		// for(int i = 0; i < size; i++) {
+		// System.out.println(array[i].getName());
+		// }
 		return Arrays.asList(array);
 	}
 	// public void loadInitAddons() {
@@ -302,7 +302,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 	// System.out.println("No init command add-ons found.");
 	// }
 	// }
-	
+
 	// public static void loadOptionalProgramFeatureAddons() {
 	// long time = System.currentTimeMillis();
 	//
@@ -325,20 +325,21 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 	// for(File f : getJarFileList(dirC))
 	// addAddon(f);
 	// if(getJarFileList(dirC).length>0)
-	// System.out.println("Optional program features initialized in "+(System.currentTimeMillis()-time)+"ms");
+	// System.out.println("Optional program features initialized in
+	// "+(System.currentTimeMillis()-time)+"ms");
 	// else
 	// System.out.println("No optional program features found.");
 	// }
 	// }
-	
+
 	/**
 	 * Gets all jar files from Add-on directory.
 	 * 
 	 * @param dir
-	 *           the dir
+	 *            the dir
 	 * @return the jar file list
 	 */
-	private File[] getJarFileList(File dir) {
+	private static File[] getJarFileList(File dir) {
 		if (dir == null) {
 			ErrorMsg.addErrorMessage("Add-on folder not available.");
 			return new File[] {};
@@ -363,25 +364,24 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 			}
 		});
 	}
-	
+
 	/**
 	 * Expands the classloader by the Add-on jarfile.
 	 * 
 	 * @param files
-	 *           the files
+	 *            the files
 	 */
 	public static void expandClasspathByJarfile(URL[] files) {
-		URLClassLoader loader = new URLClassLoader(files, InstanceLoader
-				.getCurrentLoader());
+		URLClassLoader loader = new URLClassLoader(files, InstanceLoader.getCurrentLoader());
 		InstanceLoader.overrideLoader(loader);
 	}
-	
-	private PluginDescription loadAddonFromFile(File f) throws IOException{
+
+	private static PluginDescription loadAddonFromFile(File f) throws IOException {
 		expandClasspathByJarfile(Addon.getURLfromJarfile(f));
-		
+
 		// load plugindescriptions and the addons
 		final URL xmlURL = Addon.getXMLURL(InstanceLoader.getCurrentLoader(), f);
-		
+
 		// get rid of empty or otherwise wrong jars (without correct
 		// xml-files in root-dir)
 		if (xmlURL != null) {
@@ -395,27 +395,26 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Adds the addon to Vanted.
 	 * 
 	 * @param f
-	 *           The Add-on-Jar-File.
+	 *            The Add-on-Jar-File.
 	 */
 	public AddOnInstallResult addAddon(final PluginDescription pd, File f, boolean onStartup) {
-		
+
 		try {
 			// extend the system-classloader by the jar-url and set as
 			// default-system classloader
-			
-			
-			if(pd != null) {
+
+			if (pd != null) {
 				final URL xmlURL = Addon.getXMLURL(InstanceLoader.getCurrentLoader(), f);
-			
+
 				boolean isactive = !isDeactivated(f.getName().toLowerCase().replaceAll(".jar", ""));
-				
+
 				boolean incompatibleDeactivated = false;
-				
+
 				if (onStartup && ReleaseInfo.isUpdated() == UpdateInfoResult.UPDATED
 						&& !new Addon(f, xmlURL, pd, isactive, getInactiveIcon()).isTestedWithRunningVersion()) {
 					isactive = false;
@@ -428,7 +427,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 						incompatibleDeactivated = true;
 					}
 				}
-				
+
 				ImageIcon icon = null;
 				final ObjectRef or = new ObjectRef();
 				if (isactive) {
@@ -451,7 +450,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 				} else {
 					icon = getInactiveIcon();
 				}
-				
+
 				System.out.println("Add-on " + f.getName() + " processed");
 				// add all information to lists
 				if (!addonAlreadyInList(f)) {
@@ -481,38 +480,38 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 			return AddOnInstallResult.Error;
 		}
 	}
-	
+
 	private boolean addonAlreadyInList(File f) {
 		for (Addon a : addons)
 			if (a.getJarFile().compareTo(f) == 0)
 				return true;
 		return false;
 	}
-	
+
 	/**
 	 * Checks if a certain Add-on is deactivated.
 	 * 
 	 * @param addonName
-	 *           The addon name
+	 *            The addon name
 	 * @return true, if it is deactivated
 	 */
-	private boolean isDeactivated(String addonName) {
-		
+	private static boolean isDeactivated(String addonName) {
+
 		for (String s : getDeactivatedList())
 			if (addonName.equalsIgnoreCase(s))
 				return true;
 		return false;
 	}
-	
+
 	/**
 	 * Gets the list of deactivated Add-ons from file
 	 * .../vanted/addons/deactivated.txt.
 	 * 
 	 * @param f
-	 *           The textfile holding the deactivated Add-ons.
+	 *            The textfile holding the deactivated Add-ons.
 	 * @return the deactivated list from file
 	 */
-	private String[] getDeactivatedList() {
+	private static String[] getDeactivatedList() {
 		try {
 			return TextFile.read(deactivatedlist).split("\n");
 		} catch (MalformedURLException e1) {
@@ -524,34 +523,33 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		}
 		return new String[] {};
 	}
-	
+
 	/**
 	 * Write deactivated list to file.
 	 * 
 	 * @param list
-	 *           The file-list
+	 *            The file-list
 	 */
 	public void writeDeactivatedListToFile() {
 		String content = new String("");
-		
+
 		for (Addon a : addons)
 			if (!a.isActive())
 				content += a.getName() + "\n";
-		
+
 		try {
-			TextFile.write(ADDON_DIRECTORY
-					+ "deactivated.txt", content);
+			TextFile.write(ADDON_DIRECTORY + "deactivated.txt", content);
 		} catch (IOException e) {
 			ErrorMsg.addErrorMessage(e);
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Activate deactivated addon.
 	 * 
 	 * @param number
-	 *           the number
+	 *            the number
 	 */
 	public boolean activateAddon(int number) {
 		try {
@@ -562,24 +560,28 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 				else
 					return false;
 			}
-			if (a != null ){
-				if( !a.isTestedWithRunningVersion()) {
+			if (a != null) {
+				if (!a.isTestedWithRunningVersion()) {
 					String sup = addons.get(number).getDescription().getCompatibleVersion();
 					if (sup == null)
-						sup = "Add-on contains no compatibility information.<br>" +
-								"Check Add-on website for compatible program version(s).";
+						sup = "Add-on contains no compatibility information.<br>"
+								+ "Check Add-on website for compatible program version(s).";
 					else
-						sup = "Incompatible with " + DBEgravistoHelper.DBE_GRAVISTO_VERSION + ",<br>but works with " + sup + ".";
-					Object[] res = MyInputHelper.getInput("" +
-							"[" +
-							"<html><center>Force Activation<br><small>(override version check);" +
-							"<html><center>Cancel<br><small>(use 'Find Update' button)]" +
-							StringManipulationTools.getWordWrap("This Add-on has not been tested with " + DBEgravistoHelper.DBE_GRAVISTO_VERSION + ". " +
-									"To ensure stable operation of the application and the Add-on functions, it is recommended " +
-									"to use the 'Find Updates' function to look for an updated version of this Add-on.", 45) + "<br><br>" +
-									StringManipulationTools.getWordWrap("You may also opt for downloading and installing an older version of this application:", 45) +
-									"<br><br>" + sup + "<br><br>",
-									"Add-on may be incompatible", new Object[] {});
+						sup = "Incompatible with " + DBEgravistoHelper.DBE_GRAVISTO_VERSION + ",<br>but works with "
+								+ sup + ".";
+					Object[] res = MyInputHelper.getInput("" + "["
+							+ "<html><center>Force Activation<br><small>(override version check);"
+							+ "<html><center>Cancel<br><small>(use 'Find Update' button)]"
+							+ StringManipulationTools.getWordWrap("This Add-on has not been tested with "
+									+ DBEgravistoHelper.DBE_GRAVISTO_VERSION + ". "
+									+ "To ensure stable operation of the application and the Add-on functions, it is recommended "
+									+ "to use the 'Find Updates' function to look for an updated version of this Add-on.",
+									45)
+							+ "<br><br>"
+							+ StringManipulationTools.getWordWrap(
+									"You may also opt for downloading and installing an older version of this application:",
+									45)
+							+ "<br><br>" + sup + "<br><br>", "Add-on may be incompatible", new Object[] {});
 					if (res == null) {
 						return false;
 					}
@@ -590,9 +592,9 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 				MainFrame.getInstance().getPluginManager().loadPlugin(desc, a.getXMLURL(), false);
 				a.setIcon(getIcon(desc));
 			}
-			
+
 			hideNewComponents();
-			
+
 			writeDeactivatedListToFile();
 		} catch (PluginManagerException e) {
 			ErrorMsg.addErrorMessage(e);
@@ -605,11 +607,11 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		}
 		return true;
 	}
-	
-	private void hideNewComponents() {
+
+	private static void hideNewComponents() {
 		// get rid of the buttons etc
 		SwingUtilities.invokeLater(new Runnable() {
-			
+
 			public void run() {
 				Session s = MainFrame.getInstance().getActiveSession();
 				if (s == null)
@@ -618,34 +620,34 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 					MainFrame.getInstance().setActiveSession(s, s.getActiveView());
 			}
 		});
-		
+
 		// get rid of the new tabs
 		BackgroundTaskHelper.executeLaterOnSwingTask(100, new Runnable() {
 			public void run() {
 				Session s = MainFrame.getInstance().getActiveSession();
 				if (((Inspector) MainFrame.getInstance().getInspectorPlugin()) != null)
-					((Inspector) MainFrame.getInstance().getInspectorPlugin()).viewChanged(s == null ? null : s.getActiveView());
+					((Inspector) MainFrame.getInstance().getInspectorPlugin())
+							.viewChanged(s == null ? null : s.getActiveView());
 			}
 		});
 	}
-	
-	private ImageIcon getIcon(PluginDescription desc) {
+
+	private static ImageIcon getIcon(PluginDescription desc) {
 		try {
-			return MainFrame.getInstance().getPluginManager()
-					.getPluginInstance(desc.getName()).getIcon();
+			return MainFrame.getInstance().getPluginManager().getPluginInstance(desc.getName()).getIcon();
 		} catch (Exception e) {
 			ClassLoader cl = GenericPluginAdapter.class.getClassLoader();
 			String path = GenericPluginAdapter.class.getPackage().getName().replace('.', '/');
 			return new ImageIcon(cl.getResource(path + "/addon-icon.png"));
 		}
 	}
-	
-	private ImageIcon getInactiveIcon() {
+
+	private static ImageIcon getInactiveIcon() {
 		ClassLoader cl = AddonManagerPlugin.class.getClassLoader();
 		String path = AddonManagerPlugin.class.getPackage().getName().replace('.', '/');
 		return new ImageIcon(cl.getResource(path + "/inactive-addon-icon.png"));
 	}
-	
+
 	public void deactivateAddon(int number) {
 		Addon a;
 		synchronized (addons) {
@@ -655,33 +657,32 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		a.setIcon(getInactiveIcon());
 		writeDeactivatedListToFile();
 	}
-	
+
 	/**
 	 * Install Add-on by copying the jarfile and loading it.
 	 * 
 	 * @param jardir
-	 *           the jardir, which must not be the add-on directory
+	 *            the jardir, which must not be the add-on directory
 	 * @param jarname
-	 *           the jarname of the add-on
+	 *            the jarname of the add-on
 	 * @throws FileNotFoundException
-	 *            the file not found exception
+	 *             the file not found exception
 	 * @throws IOException
-	 *            Signals that an I/O exception has occurred.
+	 *             Signals that an I/O exception has occurred.
 	 */
 	public boolean installAddon(String jardir, String jarname) throws FileNotFoundException, IOException {
-		
+		JarFile jarFile = null;
 		try {
-			
+
 			File toBeInstalledAddonJarfile = new File(jardir + ReleaseInfo.getFileSeparator() + jarname);
 			URL jarfileurl = toBeInstalledAddonJarfile.toURI().toURL();
-			
+
 			expandClasspathByJarfile(new URL[] { jarfileurl });
-			URL xmlURL = Addon
-					.getXMLURL(InstanceLoader.getCurrentLoader(), toBeInstalledAddonJarfile);
-			
+			URL xmlURL = Addon.getXMLURL(InstanceLoader.getCurrentLoader(), toBeInstalledAddonJarfile);
+
 			// check if the to be installed addon is correct
 			if (xmlURL != null) {
-				
+
 				AddOnInstallResult result;
 				if (new File(ADDON_DIRECTORY + jarname + "_deleted").exists())
 					new File(ADDON_DIRECTORY + jarname + "_deleted").delete();
@@ -696,35 +697,39 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 					HomeFolder.copyFile(toBeInstalledAddonJarfile, addonCopyDestination);
 					result = addAddon(loadAddonFromFile(addonCopyDestination), addonCopyDestination, false);
 				}
-				
+
 				switch (result) {
-					case InstalledAndActive:
-						hideNewComponents();
-						
-						JOptionPane.showMessageDialog(MainFrame.getInstance(), "<html>Addon \"" + jarname
-								+ "\" was correctly installed and may be used.", "Install", JOptionPane.INFORMATION_MESSAGE);
-//						showManageAddonDialog("<html>Addon \"" + jarname
-//								+ "\" was correctly installed and may be used.", false);
-						return true;
-					case Updated:
-						JOptionPane.showMessageDialog(MainFrame.getInstance(), "<html>Addon \"" + jarname
-								+ "\" will be updated when application is restarted.", "Update", JOptionPane.INFORMATION_MESSAGE);
-						return true;
-					case InstalledAndIncompatible:
-						JOptionPane.showMessageDialog(MainFrame.getInstance(), "<html>Addon \"" + jarname
-								+ "\" is installed but is deactivated (compatibility error).", "Incompatible", JOptionPane.INFORMATION_MESSAGE);
-						return true;
-					case NotAnAddon:
-						return false;
-					case Error:
-						JOptionPane.showMessageDialog(MainFrame.getInstance(), "<html>Addon \"" + jarname
-								+ "\" could not be installed.", "Error", JOptionPane.ERROR_MESSAGE);
-						return false;
+				case InstalledAndActive:
+					hideNewComponents();
+
+					JOptionPane.showMessageDialog(MainFrame.getInstance(),
+							"<html>Addon \"" + jarname + "\" was correctly installed and may be used.", "Install",
+							JOptionPane.INFORMATION_MESSAGE);
+					// showManageAddonDialog("<html>Addon \"" + jarname
+					// + "\" was correctly installed and may be used.", false);
+					return true;
+				case Updated:
+					JOptionPane.showMessageDialog(MainFrame.getInstance(),
+							"<html>Addon \"" + jarname + "\" will be updated when application is restarted.", "Update",
+							JOptionPane.INFORMATION_MESSAGE);
+					return true;
+				case InstalledAndIncompatible:
+					JOptionPane.showMessageDialog(MainFrame.getInstance(),
+							"<html>Addon \"" + jarname + "\" is installed but is deactivated (compatibility error).",
+							"Incompatible", JOptionPane.INFORMATION_MESSAGE);
+					return true;
+				case NotAnAddon:
+					return false;
+				case Error:
+					JOptionPane.showMessageDialog(MainFrame.getInstance(),
+							"<html>Addon \"" + jarname + "\" could not be installed.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return false;
 				}
-				
+
 			} else {
 				String xmlString = null;
-				JarFile jarFile = new JarFile(toBeInstalledAddonJarfile);
+				jarFile = new JarFile(toBeInstalledAddonJarfile);
 				Enumeration<JarEntry> e = jarFile.entries();
 				while (e.hasMoreElements()) {
 					JarEntry entry = e.nextElement();
@@ -733,7 +738,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 						break;
 					}
 				}
-				
+
 				String text = "";
 				if (xmlString == null || xmlString.contains("/"))
 					text += "is not valid due to missing internal xml-file!<br>Please compile a new version together with the xml!";
@@ -741,33 +746,35 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 					if (xmlString.replace(".xml", "").equals(jarname.replace(".jar", "")))
 						text += "is not valid due to incorrect internal xml-file!<br>Please correct it and compile a new version!";
 					else
-						text += "is not valid, because the internal<br>xml-file \"" + xmlString + "\" must have the same name<br>" +
-								"as the jar-file. Please check the correct name,<br>" +
-								"maybe you or your browser renamed the jar.";
+						text += "is not valid, because the internal<br>xml-file \"" + xmlString
+								+ "\" must have the same name<br>"
+								+ "as the jar-file. Please check the correct name,<br>"
+								+ "maybe you or your browser renamed the jar.";
 				}
-				MainFrame.showMessageDialog("<html>Add-on file \"" + jarname + "\" " + text,
-						"Error installing Add-on");
+				MainFrame.showMessageDialog("<html>Add-on file \"" + jarname + "\" " + text, "Error installing Add-on");
 				return false;
 			}
 		} catch (Exception e) {
 			return false;
+		} finally {
+			if (jarFile != null)
+				jarFile.close();
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Removes the Add-on by renaming it.
 	 * 
 	 * @param file
-	 *           the file
+	 *            the file
 	 * @throws FileNotFoundException
-	 *            the file not found exception
+	 *             the file not found exception
 	 * @throws IOException
-	 *            Signals that an I/O exception has occurred.
+	 *             Signals that an I/O exception has occurred.
 	 */
-	public void removeAddon(File file) throws FileNotFoundException,
-			IOException {
-		
+	public void removeAddon(File file) throws FileNotFoundException, IOException {
+
 		Addon delete = null;
 		// don't deleted, rename instead
 		if (!file.delete()) {
@@ -784,12 +791,12 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 				addons.remove(delete);
 			}
 		}
-		
+
 		writeDeactivatedListToFile();
 	}
-	
+
 	ManageAddonDialog dialog = null;
-	
+
 	/**
 	 * Shows Add-on-Manage-Dialog.
 	 */
@@ -797,10 +804,10 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		if (dialog != null) {
 			dialog.close();
 		}
-		
+
 		dialog = new ManageAddonDialog(MainFrame.getInstance(), null);
 	}
-	
+
 	public void showManageAddonDialog(final String msg, final boolean highlightUpdate) {
 		showManageAddonDialog();
 		BackgroundTaskHelper.executeLaterOnSwingTask(0, new Runnable() {
@@ -815,7 +822,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 			}
 		});
 	}
-	
+
 	/**
 	 * Gets the all the Add-ons as a list.
 	 * 
@@ -826,7 +833,7 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 			return new ArrayList<Addon>(addons);
 		}
 	}
-	
+
 	public boolean process(List<File> files) {
 		for (File f : files) {
 			if (f.getAbsolutePath().toLowerCase().endsWith(".jar")) {
@@ -842,38 +849,32 @@ public class AddonManagerPlugin extends IPK_EditorPluginAdapter implements DragA
 		}
 		return true;
 	}
-	
+
 	public Addon getAddon(int number) {
 		synchronized (addons) {
 			return addons.get(number);
 		}
 	}
-	
+
 	public Collection<String> getDeactivatedAddons() {
 		ArrayList<String> res = new ArrayList<String>();
 		for (String s : getDeactivatedList())
 			res.add(s);
 		return res;
 	}
-	
+
 	public static boolean addonsLoaded() {
 		return instance.startupAddonsLoaded;
 	}
-	
+
 	public boolean canProcess(File f) {
 		return f.getAbsolutePath().toLowerCase().endsWith(".jar");
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.DragAndDropHandler
-	 * #hasPriority()
-	 */
+
 	public boolean hasPriority() {
 		return false;
 	}
-	
+
 	public boolean activateAddon(String name) {
 		synchronized (addons) {
 			int cnt = 0;

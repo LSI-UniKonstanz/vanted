@@ -38,14 +38,10 @@ import java.io.Serializable;
 public final class CategoryLabelWidthType implements Serializable {
 
 	/** Percentage of category. */
-	public static final CategoryLabelWidthType CATEGORY = new CategoryLabelWidthType(
-						"CategoryLabelWidthType.CATEGORY"
-						);
+	public static final CategoryLabelWidthType CATEGORY = new CategoryLabelWidthType("CategoryLabelWidthType.CATEGORY");
 
 	/** Percentage of range. */
-	public static final CategoryLabelWidthType RANGE = new CategoryLabelWidthType(
-						"CategoryLabelWidthType.RANGE"
-						);
+	public static final CategoryLabelWidthType RANGE = new CategoryLabelWidthType("CategoryLabelWidthType.RANGE");
 
 	/** The name. */
 	private String name;
@@ -54,7 +50,7 @@ public final class CategoryLabelWidthType implements Serializable {
 	 * Private constructor.
 	 * 
 	 * @param name
-	 *           the name (<code>null</code> not permitted).
+	 *            the name (<code>null</code> not permitted).
 	 */
 	private CategoryLabelWidthType(String name) {
 		if (name == null) {
@@ -73,10 +69,11 @@ public final class CategoryLabelWidthType implements Serializable {
 	}
 
 	/**
-	 * Returns <code>true</code> if this object is equal to the specified object, and <code>false</code> otherwise.
+	 * Returns <code>true</code> if this object is equal to the specified object,
+	 * and <code>false</code> otherwise.
 	 * 
 	 * @param o
-	 *           the other object.
+	 *            the other object.
 	 * @return A boolean.
 	 */
 	public boolean equals(Object o) {
@@ -102,15 +99,14 @@ public final class CategoryLabelWidthType implements Serializable {
 	 * 
 	 * @return The object.
 	 * @throws ObjectStreamException
-	 *            if there is a problem.
+	 *             if there is a problem.
 	 */
 	private Object readResolve() throws ObjectStreamException {
 		if (this.equals(CategoryLabelWidthType.CATEGORY)) {
 			return CategoryLabelWidthType.CATEGORY;
-		} else
-			if (this.equals(CategoryLabelWidthType.RANGE)) {
-				return CategoryLabelWidthType.RANGE;
-			}
+		} else if (this.equals(CategoryLabelWidthType.RANGE)) {
+			return CategoryLabelWidthType.RANGE;
+		}
 		return null;
 	}
 

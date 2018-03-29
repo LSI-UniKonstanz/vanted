@@ -49,9 +49,9 @@ import org.jfree.util.Log;
 import org.jfree.util.PrintStreamLogTarget;
 
 /**
- * A simple demonstration application showing how to create a pie chart using data from a {@link DefaultPieDataset}. This chart has a lot of labels and rotates,
- * so it is useful for
- * testing the label distribution algorithm.
+ * A simple demonstration application showing how to create a pie chart using
+ * data from a {@link DefaultPieDataset}. This chart has a lot of labels and
+ * rotates, so it is useful for testing the label distribution algorithm.
  */
 public class PieChartDemo4 extends ApplicationFrame {
 
@@ -59,7 +59,7 @@ public class PieChartDemo4 extends ApplicationFrame {
 	 * Default constructor.
 	 * 
 	 * @param title
-	 *           the frame title.
+	 *            the frame title.
 	 */
 	public PieChartDemo4(final String title) {
 
@@ -67,22 +67,18 @@ public class PieChartDemo4 extends ApplicationFrame {
 		final PieDataset dataset = createDataset(14);
 
 		// create the chart...
-		final JFreeChart chart = ChartFactory.createPieChart(
-							"Pie Chart Demo 4", // chart title
+		final JFreeChart chart = ChartFactory.createPieChart("Pie Chart Demo 4", // chart title
 				dataset, // dataset
 				false, // include legend
-				true,
-							false
-							);
+				true, false);
 
 		// set the background color for the chart...
 		chart.setBackgroundPaint(new Color(222, 222, 255));
 		final PiePlot plot = (PiePlot) chart.getPlot();
 		plot.setBackgroundPaint(Color.white);
 		plot.setCircular(true);
-		plot.setLabelGenerator(new StandardPieItemLabelGenerator(
-							"{0} = {2}", NumberFormat.getNumberInstance(), NumberFormat.getPercentInstance()
-							));
+		plot.setLabelGenerator(new StandardPieItemLabelGenerator("{0} = {2}", NumberFormat.getNumberInstance(),
+				NumberFormat.getPercentInstance()));
 		plot.setNoDataMessage("No data available");
 
 		// add the chart to a panel...
@@ -99,7 +95,7 @@ public class PieChartDemo4 extends ApplicationFrame {
 	 * Creates a sample dataset.
 	 * 
 	 * @param sections
-	 *           the number of sections.
+	 *            the number of sections.
 	 * @return A sample dataset.
 	 */
 	private PieDataset createDataset(final int sections) {
@@ -126,7 +122,7 @@ public class PieChartDemo4 extends ApplicationFrame {
 	 * Starting point for the demonstration application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 
@@ -153,7 +149,7 @@ public class PieChartDemo4 extends ApplicationFrame {
 		 * Constructor.
 		 * 
 		 * @param plot
-		 *           the plot.
+		 *            the plot.
 		 */
 		Rotator(final PiePlot plot) {
 			super(100, null);
@@ -165,7 +161,7 @@ public class PieChartDemo4 extends ApplicationFrame {
 		 * Modifies the starting angle.
 		 * 
 		 * @param event
-		 *           the action event.
+		 *            the action event.
 		 */
 		public void actionPerformed(final ActionEvent event) {
 			this.plot.setStartAngle(angle);

@@ -50,13 +50,11 @@ import org.jfree.data.XYDataset;
 import org.jfree.util.PublicCloneable;
 
 /**
- * A standard label generator for plots that use data from an {@link org.jfree.data.XYDataset}.
+ * A standard label generator for plots that use data from an
+ * {@link org.jfree.data.XYDataset}.
  */
 public class StandardXYLabelGenerator extends AbstractXYItemLabelGenerator
-													implements XYLabelGenerator,
-																	Cloneable,
-																	PublicCloneable,
-																	Serializable {
+		implements XYLabelGenerator, Cloneable, PublicCloneable, Serializable {
 
 	/** The default item label format. */
 	public static final String DEFAULT_ITEM_LABEL_FORMAT = "{2}";
@@ -65,24 +63,22 @@ public class StandardXYLabelGenerator extends AbstractXYItemLabelGenerator
 	 * Creates an item label generator using default number formatters.
 	 */
 	public StandardXYLabelGenerator() {
-		this(
-							DEFAULT_ITEM_LABEL_FORMAT,
-							NumberFormat.getNumberInstance(), NumberFormat.getNumberInstance());
+		this(DEFAULT_ITEM_LABEL_FORMAT, NumberFormat.getNumberInstance(), NumberFormat.getNumberInstance());
 	}
 
 	/**
 	 * Creates an item label generator using the specified number formatters.
 	 * 
 	 * @param formatString
-	 *           the item label format string (<code>null</code> not permitted).
+	 *            the item label format string (<code>null</code> not permitted).
 	 * @param xFormat
-	 *           the format object for the x values (<code>null</code> not permitted).
+	 *            the format object for the x values (<code>null</code> not
+	 *            permitted).
 	 * @param yFormat
-	 *           the format object for the y values (<code>null</code> not permitted).
+	 *            the format object for the y values (<code>null</code> not
+	 *            permitted).
 	 */
-	public StandardXYLabelGenerator(String formatString,
-												NumberFormat xFormat,
-												NumberFormat yFormat) {
+	public StandardXYLabelGenerator(String formatString, NumberFormat xFormat, NumberFormat yFormat) {
 
 		super(formatString, xFormat, yFormat);
 
@@ -92,15 +88,15 @@ public class StandardXYLabelGenerator extends AbstractXYItemLabelGenerator
 	 * Creates an item label generator using the specified number formatters.
 	 * 
 	 * @param formatString
-	 *           the item label format string (<code>null</code> not permitted).
+	 *            the item label format string (<code>null</code> not permitted).
 	 * @param xFormat
-	 *           the format object for the x values (<code>null</code> not permitted).
+	 *            the format object for the x values (<code>null</code> not
+	 *            permitted).
 	 * @param yFormat
-	 *           the format object for the y values (<code>null</code> not permitted).
+	 *            the format object for the y values (<code>null</code> not
+	 *            permitted).
 	 */
-	public StandardXYLabelGenerator(String formatString,
-												DateFormat xFormat,
-												NumberFormat yFormat) {
+	public StandardXYLabelGenerator(String formatString, DateFormat xFormat, NumberFormat yFormat) {
 
 		super(formatString, xFormat, yFormat);
 
@@ -110,15 +106,15 @@ public class StandardXYLabelGenerator extends AbstractXYItemLabelGenerator
 	 * Creates a label generator using the specified date formatters.
 	 * 
 	 * @param formatString
-	 *           the label format string (<code>null</code> not permitted).
+	 *            the label format string (<code>null</code> not permitted).
 	 * @param xFormat
-	 *           the format object for the x values (<code>null</code> not permitted).
+	 *            the format object for the x values (<code>null</code> not
+	 *            permitted).
 	 * @param yFormat
-	 *           the format object for the y values (<code>null</code> not permitted).
+	 *            the format object for the y values (<code>null</code> not
+	 *            permitted).
 	 */
-	public StandardXYLabelGenerator(String formatString,
-												DateFormat xFormat,
-												DateFormat yFormat) {
+	public StandardXYLabelGenerator(String formatString, DateFormat xFormat, DateFormat yFormat) {
 
 		super(formatString, xFormat, yFormat);
 
@@ -128,11 +124,11 @@ public class StandardXYLabelGenerator extends AbstractXYItemLabelGenerator
 	 * Generates the item label text for an item in a dataset.
 	 * 
 	 * @param dataset
-	 *           the dataset (<code>null</code> not permitted).
+	 *            the dataset (<code>null</code> not permitted).
 	 * @param series
-	 *           the series index (zero-based).
+	 *            the series index (zero-based).
 	 * @param item
-	 *           the item index (zero-based).
+	 *            the item index (zero-based).
 	 * @return The label text (possibly <code>null</code>).
 	 */
 	public String generateLabel(XYDataset dataset, int series, int item) {
@@ -144,7 +140,7 @@ public class StandardXYLabelGenerator extends AbstractXYItemLabelGenerator
 	 * 
 	 * @return A clone.
 	 * @throws CloneNotSupportedException
-	 *            if cloning is not supported.
+	 *             if cloning is not supported.
 	 */
 	public Object clone() throws CloneNotSupportedException {
 		return super.clone();
@@ -154,7 +150,7 @@ public class StandardXYLabelGenerator extends AbstractXYItemLabelGenerator
 	 * Tests this object for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the other object (<code>null</code> permitted).
+	 *            the other object (<code>null</code> permitted).
 	 * @return A boolean.
 	 */
 	public boolean equals(Object obj) {

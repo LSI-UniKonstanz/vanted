@@ -43,7 +43,7 @@ public class RendererState {
 	 * Creates a new state object.
 	 * 
 	 * @param info
-	 *           the plot rendering info.
+	 *            the plot rendering info.
 	 */
 	public RendererState(PlotRenderingInfo info) {
 		this.info = info;

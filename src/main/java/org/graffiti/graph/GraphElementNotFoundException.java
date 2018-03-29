@@ -11,22 +11,22 @@ package org.graffiti.graph;
 
 /**
  * The <code>GraphElementNotFoundException</code> will be thrown if a method
- * tries to deal with a <code>GraphElement</code> which cannot be found in the <code>Graph</code>.
+ * tries to deal with a <code>GraphElement</code> which cannot be found in the
+ * <code>Graph</code>.
  * 
  * @version $Revision: 1.4 $
  */
-public class GraphElementNotFoundException
-					extends RuntimeException {
+public class GraphElementNotFoundException extends RuntimeException {
 	// ~ Constructors ===========================================================
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Constructs a new <code>GraphElementNotFoundException</code> with the
 	 * specified detail message.
 	 * 
 	 * @param msg
-	 *           the error message.
+	 *            the error message.
 	 */
 	public GraphElementNotFoundException(String msg) {
 		super(msg);

@@ -47,9 +47,11 @@ import org.jfree.data.XYSeries;
 import org.jfree.data.XYSeriesCollection;
 
 /**
- * Draws a scatter plot over and over for 10 seconds. Reports on how many redraws were achieved.
+ * Draws a scatter plot over and over for 10 seconds. Reports on how many
+ * redraws were achieved.
  * <p>
- * On my PC (SuSE Linux 8.2, JDK 1.4, 256mb RAM, 2.66ghz Pentium) I get 13-14 charts per second.
+ * On my PC (SuSE Linux 8.2, JDK 1.4, 256mb RAM, 2.66ghz Pentium) I get 13-14
+ * charts per second.
  */
 public class ChartTiming3 implements ActionListener {
 
@@ -81,14 +83,8 @@ public class ChartTiming3 implements ActionListener {
 
 		// create a scatter chart...
 		final boolean withLegend = true;
-		final JFreeChart chart = ChartFactory.createScatterPlot(
-							"Scatter plot timing", "X", "Y",
-							data,
-							PlotOrientation.VERTICAL,
-							withLegend,
-							false,
-							false
-							);
+		final JFreeChart chart = ChartFactory.createScatterPlot("Scatter plot timing", "X", "Y", data,
+				PlotOrientation.VERTICAL, withLegend, false, false);
 
 		final XYPlot plot = chart.getXYPlot();
 		plot.setRenderer(new XYDotRenderer());
@@ -117,7 +113,7 @@ public class ChartTiming3 implements ActionListener {
 	 * Receives notification of action events (in this case, from the Timer).
 	 * 
 	 * @param event
-	 *           the event.
+	 *            the event.
 	 */
 	public void actionPerformed(final ActionEvent event) {
 		this.finished = true;
@@ -127,7 +123,7 @@ public class ChartTiming3 implements ActionListener {
 	 * Starting point for the application.
 	 * 
 	 * @param args
-	 *           ignored.
+	 *            ignored.
 	 */
 	public static void main(final String[] args) {
 

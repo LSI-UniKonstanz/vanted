@@ -11,19 +11,19 @@ import java.util.HashMap;
 import org.ErrorMsg;
 
 public class ContTable {
-	
+
 	private int a, b, c, d, n;
-	
+
 	@Override
 	public String toString() {
 		return "a=" + a + ", b=" + b + ", c=" + c + ", d=" + d + ", n=" + n;
 	}
-	
+
 	public ContTable(int a, int b, int c, int d, boolean swapIfNeeded) {
-		// System.out.println(a+"  "+b+"  "+(a+b));
-		// System.out.println(c+"  "+d+"  "+(c+d));
-		// System.out.println((a+c)+"  "+(b+d)+"  "+(a+b+c+d));
-		
+		// System.out.println(a+" "+b+" "+(a+b));
+		// System.out.println(c+" "+d+" "+(c+d));
+		// System.out.println((a+c)+" "+(b+d)+" "+(a+b+c+d));
+
 		if (a + b > c + d) {
 			int t = a;
 			a = c;
@@ -32,13 +32,13 @@ public class ContTable {
 			b = d;
 			d = t;
 		}
-		
+
 		if (swapIfNeeded) {
 			ContTable c1 = new ContTable(a, b, c, d, false);
 			ContTable c2 = new ContTable(b, a, d, c, false);
 			FisherProbability result1 = c1.getOneAndTwoSidedFisherProbability(false);
 			FisherProbability result2 = c2.getOneAndTwoSidedFisherProbability(false);
-			
+
 			if (result1.getOneSidedD() > result2.getOneSidedD()) {
 				this.a = a;
 				this.b = b;
@@ -58,12 +58,11 @@ public class ContTable {
 		}
 		this.n = a + b + c + d;
 	}
-	
+
 	/**
-	 * One and two sided Fisher test
-	 * Calculate the probability of given arrangement or any more
-	 * extreme arrangement.
-	 * The p-value for the same or a stronger association.
+	 * One and two sided Fisher test Calculate the probability of given arrangement
+	 * or any more extreme arrangement. The p-value for the same or a stronger
+	 * association.
 	 * 
 	 * @param calculationCache
 	 * @return P one and two sided
@@ -78,7 +77,7 @@ public class ContTable {
 				p_this_table = d; // first value is probability for given table
 			res = res.add(d);
 		}
-		
+
 		BigDecimal res2 = new BigDecimal(0);
 		if (alsoCalcTwoSided) {
 			int ta = a + 1;
@@ -88,7 +87,8 @@ public class ContTable {
 			while (ta >= 0 && tb >= 0) {
 				BigDecimal r = getPvalueForGivenTable(ta, tb, tc, td);
 				// System.out.println("P("+ta+","+tb+","+tc+","+td+")="+r.doubleValue()+
-				// " (p<="+p_this_table.doubleValue()+"?: "+(r.compareTo(p_this_table)<=0 ? "YES" : "NO"));
+				// " (p<="+p_this_table.doubleValue()+"?: "+(r.compareTo(p_this_table)<=0 ?
+				// "YES" : "NO"));
 				ta = ta + 1;
 				tb = tb - 1;
 				tc = tc - 1;
@@ -100,7 +100,7 @@ public class ContTable {
 		}
 		return new FisherProbability(res, res2, alsoCalcTwoSided);
 	}
-	
+
 	private BigDecimal p_values_one_sided(int m, ArrayList<BigDecimal> results) {
 		if (m < 0) {
 			ErrorMsg.addErrorMessage("Error P(m), m<0!");
@@ -112,7 +112,7 @@ public class ContTable {
 			BigDecimal o3 = i(a + c);
 			BigDecimal o4 = i(b + d);
 			BigDecimal o = o1.multiply(o2.multiply(o3.multiply(o4)));
-			
+
 			BigDecimal u1 = i(n);
 			BigDecimal u2 = i(a);
 			BigDecimal u3 = i(b);
@@ -140,14 +140,14 @@ public class ContTable {
 			}
 		}
 	}
-	
+
 	public static BigDecimal getPvalueForGivenTable(int a, int b, int c, int d) {
 		BigDecimal o1 = iCC(a + b);
 		BigDecimal o2 = iCC(c + d);
 		BigDecimal o3 = iCC(a + c);
 		BigDecimal o4 = iCC(b + d);
 		BigDecimal o = o1.multiply(o2.multiply(o3.multiply(o4)));
-		
+
 		int n = a + b + c + d;
 		BigDecimal u1 = iCC(n);
 		BigDecimal u2 = iCC(a);
@@ -163,7 +163,7 @@ public class ContTable {
 			return BigDecimal.ZERO;
 		}
 	}
-	
+
 	private BigDecimal p_oneSidedSum(int m, ArrayList<BigDecimal> results) {
 		if (m < 0) {
 			ErrorMsg.addErrorMessage("Error P(m), m<0!");
@@ -186,22 +186,22 @@ public class ContTable {
 			}
 		}
 	}
-	
+
 	private static BigDecimal i(int n) {
 		BigDecimal res = i(new BigDecimal(n));
 		return res;
 	}
-	
+
 	private static BigDecimal bdz = new BigDecimal(0);
 	private static BigDecimal bdp1 = new BigDecimal(1);
 	private static BigDecimal bdm1 = new BigDecimal(-1);
-	
+
 	private static HashMap<BigDecimal, BigDecimal> cachedCalculations = new HashMap<BigDecimal, BigDecimal>();
-	
+
 	private static BigDecimal iCC(int n) {
 		return iCC(new BigDecimal(n));
 	}
-	
+
 	/**
 	 * @param n
 	 * @return n!
@@ -223,7 +223,7 @@ public class ContTable {
 			return res;
 		}
 	}
-	
+
 	private static BigDecimal i(BigDecimal n) {
 		if (n.compareTo(bdz) == 0)
 			return bdp1;
@@ -234,5 +234,5 @@ public class ContTable {
 		}
 		return res;
 	}
-	
+
 }

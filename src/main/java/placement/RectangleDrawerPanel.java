@@ -43,46 +43,44 @@ import javax.swing.filechooser.FileFilter;
 
 class BlocksFileFilter extends FileFilter {
 	public File lastSelectedFile = null;
-	
+
 	@Override
 	public boolean accept(File file) {
-		return file.isDirectory() || file.getName().endsWith(".blocks")
-							|| file.getName().endsWith(".dot");
+		return file.isDirectory() || file.getName().endsWith(".blocks") || file.getName().endsWith(".dot");
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return "Blocks and Dot graph files";
 	}
 }
 
-public class RectangleDrawerPanel extends JPanel implements Printable, MouseInputListener,
-					Observer {
+public class RectangleDrawerPanel extends JPanel implements Printable, MouseInputListener, Observer {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	private int prevX, prevY;
-	
+
 	private boolean dragging;
-	
+
 	private Graphics2D g;
-	
+
 	private Rectangle2D rect;
-	
+
 	private ArrayList<Rectangle2D> rectangles = new ArrayList<Rectangle2D>();
-	
+
 	private Graph graph = null;
-	
+
 	private ArrayList<Rectangle2D> undoRectangles = new ArrayList<Rectangle2D>();;
-	
+
 	private Constraints constraints;
-	
+
 	BlocksFileFilter fileFilter = new BlocksFileFilter();
-	
+
 	protected Hashtable<Rectangle2D, Color> rectangleColourMap = new Hashtable<Rectangle2D, Color>();
-	
+
 	protected void generateRandom() {
 		clear();
 		Dimension dim = getSize();
@@ -90,9 +88,8 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 		int w = dim.width / 3;
 		int h = dim.height / 3;
 		for (int i = 0; i < 100; i++) {
-			Rectangle2D r = new Rectangle(w + rand.nextInt(w / 2), h
-								+ rand.nextInt(h / 2), rand.nextInt(w / 10), rand
-								.nextInt(h / 10));
+			Rectangle2D r = new Rectangle(w + rand.nextInt(w / 2), h + rand.nextInt(h / 2), rand.nextInt(w / 10),
+					rand.nextInt(h / 10));
 			rectangles.add(r);
 		}
 		int overlapCount = 0;
@@ -108,7 +105,7 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 		fitToScreen();
 		repaint();
 	}
-	
+
 	void fitToScreen() {
 		ArrayList<Rectangle2D> rectangles = getRectangles();
 		int xmax = 0;
@@ -147,7 +144,7 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 			r.setRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(h));
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected void load(File f) {
 		clear();
@@ -181,7 +178,7 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 		fitToScreen();
 		repaint();
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -193,18 +190,18 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 			undoRectangles.add(nr);
 		}
 	}
-	
+
 	protected void undo() {
 		rectangles = new ArrayList<Rectangle2D>(undoRectangles);
 	}
-	
+
 	/**
 	 * @return
 	 */
 	protected BlocksFileFilter getFileFilter() {
 		return fileFilter;
 	}
-	
+
 	/**
 	 * 
 	 */
@@ -212,17 +209,16 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
-	
+
 	public void clear() {
 		rectangles = new ArrayList<Rectangle2D>();
 		constraints = null;
 		graph = null;
 		repaint();
 	}
-	
+
 	public void render(int width, int height, Graphics2D g) {
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-							RenderingHints.VALUE_ANTIALIAS_OFF);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		Color original = g.getColor();
 		g.setColor(getBackground());
 		g.fillRect(0, 0, width, height);
@@ -248,28 +244,28 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 			g.draw(r);
 		}
 		drawConstraints();
-		
+
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics gOld) {
 		Graphics2D g = (Graphics2D) gOld;
 		Dimension size = getSize();
 		render(size.width, size.height, g);
 	}
-	
+
 	ArrayList<Rectangle2D> getRectangles() {
 		if (graph != null) {
 			return graph.getRectangles();
 		}
 		return rectangles;
 	}
-	
+
 	private void setUpDrawingGraphics() {
 		g = (Graphics2D) getGraphics();
 		g.setColor(Color.black);
 	}
-	
+
 	public void mousePressed(MouseEvent evt) {
 		int x = evt.getX();
 		int y = evt.getY();
@@ -282,15 +278,14 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 			dragging = true;
 			setUpDrawingGraphics();
 		}
-		
+
 	}
-	
+
 	public void drawConstraints() {
 		if (constraints == null)
 			return;
 		g = (Graphics2D) getGraphics();
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-							RenderingHints.VALUE_ANTIALIAS_OFF);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 		Color originalColour = g.getColor();
 		for (Constraint c : constraints) {
 			c.colour = Color.BLUE;
@@ -299,20 +294,18 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 					c.colour = Color.RED;
 					g.setColor(c.colour);
 					Rectangle2D r1 = (Rectangle2D) c.left.data.get(Rectangle2D.class);
-					Rectangle2D r2 = (Rectangle2D) c.right.data
-										.get(Rectangle2D.class);
+					Rectangle2D r2 = (Rectangle2D) c.right.data.get(Rectangle2D.class);
 					// Chunk chunk = (Chunk)c.left.data.get(Chunk.class);
 					g.drawLine((int) r1.getMinX(), (int) r1.getMinY(), (int) r2.getMinX(), (int) r2.getMinY());
-				} else
-					if (c.isTight()) {
-						c.colour = Color.GREEN;
-					}
+				} else if (c.isTight()) {
+					c.colour = Color.GREEN;
+				}
 			} catch (NullPointerException e) {
 			}
 		}
 		g.setColor(originalColour);
 	}
-	
+
 	public void mouseReleased(MouseEvent evt) {
 		if (dragging == false)
 			return;
@@ -322,7 +315,7 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 		rectangles.add(rect);
 		rect = null;
 	}
-	
+
 	public void mouseDragged(MouseEvent evt) {
 		if (dragging == false)
 			return;
@@ -331,33 +324,33 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 		int y = Math.min(evt.getY(), getSize().height - 1);
 		y = Math.max(y, 0);
 		paintComponent(g);
-		Rectangle r = new Rectangle(Math.min(prevX, x), Math.min(prevY, y), Math.abs(x
-							- prevX), Math.abs(y - prevY));
+		Rectangle r = new Rectangle(Math.min(prevX, x), Math.min(prevY, y), Math.abs(x - prevX), Math.abs(y - prevY));
 		g.drawRect(r.x, r.y, r.width, r.height);
 		rect = r;
 	}
-	
+
 	public void mouseEntered(MouseEvent evt) {
 	}
-	
+
 	public void mouseExited(MouseEvent evt) {
 	}
-	
+
 	public void mouseClicked(MouseEvent evt) {
 	}
-	
+
 	public void mouseMoved(MouseEvent evt) {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.util.Observer#update(java.util.Observable, java.lang.Object)
 	 */
 	public void update(Observable p, Object arg1) {
 		constraints = ((QPRectanglePlacement) p).constraints;
 		paintComponent(getGraphics());
 	}
-	
+
 	public int print(Graphics g, PageFormat pf, int pi) throws PrinterException {
 		if (pi >= 1) {
 			return Printable.NO_SUCH_PAGE;
@@ -370,9 +363,7 @@ public class RectangleDrawerPanel extends JPanel implements Printable, MouseInpu
 			d.height = Math.max((int) r.getMaxY(), d.height);
 			d.width = Math.max((int) r.getMaxX(), d.width);
 		}
-		double scale = Math.min(pf.getImageableWidth() / d.width, pf
-							.getImageableHeight()
-							/ d.height);
+		double scale = Math.min(pf.getImageableWidth() / d.width, pf.getImageableHeight() / d.height);
 		if (scale < 1.0) {
 			g2d.scale(scale, scale);
 		}

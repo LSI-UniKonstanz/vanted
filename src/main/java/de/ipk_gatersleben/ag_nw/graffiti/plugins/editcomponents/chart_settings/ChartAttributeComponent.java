@@ -42,21 +42,20 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.viewcomponents.EdgeComponen
 public class ChartAttributeComponent extends AbstractAttributeComponent
 		implements GraphicAttributeConstants, PreferencesInterface {
 	private static final long serialVersionUID = 1L;
-	
+
 	static Logger logger = Logger.getLogger(ChartAttributeComponent.class);
-	
+
 	private static int MINSIZE_VISIBILITY;
 	public static String PREF_MINSIZE_VISIBILITY = "min-size visibility";
-	
+
 	/**
-	 * Flatness value used for the <code>PathIterator</code> used to place
-	 * labels.
+	 * Flatness value used for the <code>PathIterator</code> used to place labels.
 	 */
 	protected final double flatness = 1.0d;
 	private Point loc = new Point();
-	
+
 	BufferedImage bufferedImage;
-	
+
 	@Override
 	public List<Parameter> getDefaultParameters() {
 		List<Parameter> params = new ArrayList<Parameter>();
@@ -64,18 +63,18 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 				"<html>Minimum size of width/height, that this <br/>component will be visible during painting"));
 		return params;
 	}
-	
+
 	@Override
 	public void updatePreferences(Preferences preferences) {
 		MINSIZE_VISIBILITY = preferences.getInt(PREF_MINSIZE_VISIBILITY, 10);
 	}
-	
+
 	@Override
 	public String getPreferencesAlternativeName() {
 		// TODO Auto-generated method stub
 		return "Charts";
 	}
-	
+
 	@Override
 	public void attributeChanged(Attribute attr) throws ShapeNotFoundException {
 		GraphElement ge = (GraphElement) this.attr.getAttributable();
@@ -95,143 +94,139 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 			} else if (attr.getId().equals("component") || attr.getId().equals("max_charts_in_column")) {
 				recreate();
 			} else {
-//				recreate();
+				// recreate();
 			}
 		} else {
-			// System.out.println("TODO: Process Attribute Change: "+attr.getPath()+attr.getName());
+			// System.out.println("TODO: Process Attribute Change:
+			// "+attr.getPath()+attr.getName());
 		}
-		alpha = (float)AttributeHelper.getOpacity(ge);
+		alpha = (float) AttributeHelper.getOpacity(ge);
 		setChartTransparency(alpha);
 	}
-	
-	private static Integer defaultSizeForEdges = new Integer(80);
+
+	private static Integer defaultSizeForEdges = Integer.valueOf(80);
 
 	private JComponent chart;
-	
+
 	@Override
 	public synchronized void recreate() throws ShapeNotFoundException {
 		GraphElement ge = (GraphElement) this.attr.getAttributable();
-		
+
 		setOpaque(false);
 		setBackground(null);
-		
+
 		removeAll();
 		double border = 0;
 		double[][] size = { { border, TableLayoutConstants.FILL, border }, // Columns
 				{ border, TableLayoutConstants.FILL, border } }; // Rows
-		
+
 		setLayout(new TableLayout(size));
-		
+
 		String ct = (String) attr.getValue();
 		if (ct.equals("hidden"))
 			setVisible(false);
 		else
 			setVisible(true);
-		
+
 		chart = ChartComponentManager.getInstance().getChartComponent(ct, ge);
 		if (chart != null)
 			add(chart, "1,1");
-		
+
 		if (ge instanceof Node) {
 			setSize(getLabelTransformedSize(AttributeHelper.getSizeD((Node) ge)));
 			setLocation(shift.x, shift.y + getCurrentLabelShift());
 		}
 		if (ge instanceof Edge) {
 			Edge e = (Edge) ge;
-			Integer sx = (Integer) AttributeHelper.getAttributeValue(e, "charting", "chartSizeX", defaultSizeForEdges, defaultSizeForEdges, true);
-			Integer sy = (Integer) AttributeHelper.getAttributeValue(e, "charting", "chartSizeY", defaultSizeForEdges, defaultSizeForEdges, true);
+			Integer sx = (Integer) AttributeHelper.getAttributeValue(e, "charting", "chartSizeX", defaultSizeForEdges,
+					defaultSizeForEdges, true);
+			Integer sy = (Integer) AttributeHelper.getAttributeValue(e, "charting", "chartSizeY", defaultSizeForEdges,
+					defaultSizeForEdges, true);
 			if (sx == null || sx < 0)
 				sx = defaultSizeForEdges;
 			if (sy == null || sy < 0)
 				sy = defaultSizeForEdges;
 			setSize(sx, sy);
-			EdgeComponentHelper.updatePositionForEdgeMapping(getAttribute(), geShape,
-					ChartAttribute.CHARTPOSITION,
-					"mapping",
-					flatness, getWidth(), getHeight(), loc);
+			EdgeComponentHelper.updatePositionForEdgeMapping(getAttribute(), geShape, ChartAttribute.CHARTPOSITION,
+					"mapping", flatness, getWidth(), getHeight(), loc);
 			setLocation((int) (loc.getX() + shift.getX()), (int) (loc.getY() + shift.getY()));
 		}
-		
-		setChartTransparency((float)AttributeHelper.getOpacity(ge));
-		
+
+		setChartTransparency((float) AttributeHelper.getOpacity(ge));
+
 		synchronized (getTreeLock()) {
 			if (isShowing())
 				validate();
 			else
 				validateTree();
 		}
-		
+
 		if (getWidth() > 0 && getHeight() > 0) {
-//			logger.debug("recreating chartimage with w h" + getWidth()+" "+getHeight());
+			// logger.debug("recreating chartimage with w h" + getWidth()+" "+getHeight());
 			bufferedImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 		}
 		if (bufferedImage != null) {
 			Graphics graphics2 = bufferedImage.getGraphics();
 			super.print(graphics2);
 		}
-		
+
 	}
 
 	private void setChartTransparency(float alpha) {
 		try {
 			Component component2 = chart.getComponent(0);
-			if(component2 instanceof ChartPanel) {
-				((ChartPanel)component2).getChart().getPlot().setForegroundAlpha(alpha);
+			if (component2 instanceof ChartPanel) {
+				((ChartPanel) component2).getChart().getPlot().setForegroundAlpha(alpha);
 			}
 		} catch (Exception e) {
 		}
 	}
-	
+
 	private boolean isLabelTop() {
 		String lp = AttributeHelper.getLabelPosition(attr.getAttributable());
 		if (lp != null && lp.equals("t"))
 			return true;
 		return false;
 	}
-	
+
 	private boolean isLabelTopOrBottom() {
 		String lp = AttributeHelper.getLabelPosition(attr.getAttributable());
 		if (lp != null && (lp.equals("t") || lp.equals("b")))
 			return true;
 		return false;
 	}
-	
+
 	private Dimension getLabelTransformedSize(Dimension sizeD) {
-		Dimension result = new Dimension(sizeD.width,
-				sizeD.height - getCurrentLabelHeight(isLabelTopOrBottom()
-						));
+		Dimension result = new Dimension(sizeD.width, sizeD.height - getCurrentLabelHeight(isLabelTopOrBottom()));
 		return result;
 	}
-	
+
 	private int getCurrentLabelHeight(boolean isBottomOrTop) {
 		if (!isBottomOrTop)
 			return 0;
 		else
 			return AttributeHelper.getLabel(-1, (Node) attr.getAttributable()).getLastComponentHeight();
 	}
-	
+
 	private int getCurrentLabelShift() {
 		if (isLabelTop())
 			return getCurrentLabelHeight(true);
 		else
 			return 0;
 	}
-	
-	private void changeParameters(Object graphicsAttr, GraphElement n)
-			throws ShapeNotFoundException {
-		if ((graphicsAttr != null)
-				&& (graphicsAttr instanceof CollectionAttribute)) {
+
+	private void changeParameters(Object graphicsAttr, GraphElement n) throws ShapeNotFoundException {
+		if ((graphicsAttr != null) && (graphicsAttr instanceof CollectionAttribute)) {
 			CollectionAttribute cAttr = (CollectionAttribute) graphicsAttr;
 			Object annotationObject = cAttr.getCollection().get("component");
-			
-			if ((annotationObject != null)
-					&& (annotationObject instanceof ChartAttribute)) {
-//				recreate();
+
+			if ((annotationObject != null) && (annotationObject instanceof ChartAttribute)) {
+				// recreate();
 			}
-			
+
 			Object coordinateObject = cAttr.getCollection().get(COORDINATE);
 			Object dimensionObject = cAttr.getCollection().get(DIMENSION);
-			
+
 			if (((coordinateObject != null) && (coordinateObject instanceof CoordinateAttribute))
 					|| ((dimensionObject != null) && (dimensionObject instanceof DimensionAttribute))) {
 				setLocation(shift.x, shift.y + getCurrentLabelShift());
@@ -241,21 +236,21 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 			recreate();
 		}
 	}
-	
+
 	@Override
 	public void paint(Graphics g) {
 		if (hidden)
 			return;
-		
+
 		if (isPaintingForPrint()) {
 			setChartTransparency(1);
-//			logger.debug("paint for bufferedimage");
+			// logger.debug("paint for bufferedimage");
 			// work around to trigger paint without composite
 			Composite temp = composite;
 			composite = null;
 			super.paint(g);
 			composite = temp;
-			
+
 			setChartTransparency(alpha);
 
 		} else if (checkVisibility(MINSIZE_VISIBILITY)) {
@@ -266,33 +261,35 @@ public class ChartAttributeComponent extends AbstractAttributeComponent
 			/*
 			 * Only for debugging
 			 */
-//			if(PreferenceManager.getPreferenceForClass(VantedPreferences.class).getBoolean(VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES, false)) {
-//				g.setColor(Color.BLUE);
-//				g.drawRect(0, 0, getWidth()-1, getHeight()-1);
-//			}
-			
+			// if(PreferenceManager.getPreferenceForClass(VantedPreferences.class).getBoolean(VantedPreferences.PREFERENCE_DEBUG_SHOWPANELFRAMES,
+			// false)) {
+			// g.setColor(Color.BLUE);
+			// g.drawRect(0, 0, getWidth()-1, getHeight()-1);
+			// }
+
 			if (getDrawingModeOfView() == DrawMode.REDUCED) {
-//				if (composite != null)
-//					((Graphics2D) g).setComposite(composite);
+				// if (composite != null)
+				// ((Graphics2D) g).setComposite(composite);
 				// for testing
-//				logger.debug("drawing chart from imagebuffer");
+				// logger.debug("drawing chart from imagebuffer");
 				g.drawImage(bufferedImage, 0, 0, null);
 			} else {
 				super.paint(g);
-//				logger.debug("composite: " + ((Graphics2D) g).getComposite().toString());
+				// logger.debug("composite: " + ((Graphics2D) g).getComposite().toString());
 			}
 		}
-		
+
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.graffiti.plugin.view.AttributeComponent#adjustComponentSize()
 	 */
 	@Override
 	public void adjustComponentSize() {
 		//
-		
+
 	}
-	
+
 }

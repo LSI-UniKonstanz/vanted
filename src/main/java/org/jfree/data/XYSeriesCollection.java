@@ -43,10 +43,11 @@ import java.util.List;
 import org.jfree.util.ObjectUtils;
 
 /**
- * Represents a collection of {@link XYSeries} objects that can be used as a dataset.
+ * Represents a collection of {@link XYSeries} objects that can be used as a
+ * dataset.
  */
 public class XYSeriesCollection extends AbstractIntervalXYDataset
-											implements IntervalXYDataset, DomainInfo, Serializable {
+		implements IntervalXYDataset, DomainInfo, Serializable {
 
 	/** The series that are included in the collection. */
 	private List data;
@@ -65,7 +66,7 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * Constructs a dataset and populates it with a single time series.
 	 * 
 	 * @param series
-	 *           the time series (<code>null</code> ignored).
+	 *            the time series (<code>null</code> ignored).
 	 */
 	public XYSeriesCollection(final XYSeries series) {
 		this.data = new java.util.ArrayList();
@@ -77,8 +78,8 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	}
 
 	/**
-	 * Returns the interval width. This is used to calculate the start and end x-values, if
-	 * they are used.
+	 * Returns the interval width. This is used to calculate the start and end
+	 * x-values, if they are used.
 	 * 
 	 * @return The interval width.
 	 */
@@ -90,7 +91,7 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * Sets the interval width.
 	 * 
 	 * @param width
-	 *           the width.
+	 *            the width.
 	 */
 	public void setIntervalWidth(final double width) {
 		this.intervalDelegate.setIntervalWidth(width);
@@ -107,12 +108,12 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	}
 
 	/**
-	 * Sets the interval position factor. This controls where the x-value is in relation to
-	 * the interval surrounding the x-value (0.0 means the x-value will be positioned at the start,
-	 * 0.5 in the middle, and 1.0 at the end).
+	 * Sets the interval position factor. This controls where the x-value is in
+	 * relation to the interval surrounding the x-value (0.0 means the x-value will
+	 * be positioned at the start, 0.5 in the middle, and 1.0 at the end).
 	 * 
 	 * @param factor
-	 *           the factor.
+	 *            the factor.
 	 */
 	public void setIntervalPositionFactor(final double factor) {
 		this.intervalDelegate.setIntervalPositionFactor(factor);
@@ -133,7 +134,7 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * calculated or not.
 	 * 
 	 * @param b
-	 *           a boolean.
+	 *            a boolean.
 	 */
 	public void setAutoWidth(final boolean b) {
 		this.intervalDelegate.setAutoWidth(b);
@@ -145,14 +146,13 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * registered listeners.
 	 * 
 	 * @param series
-	 *           the series (<code>null</code> not permitted).
+	 *            the series (<code>null</code> not permitted).
 	 */
 	public void addSeries(final XYSeries series) {
 
 		// check arguments...
 		if (series == null) {
-			throw new IllegalArgumentException(
-								"XYSeriesCollection.addSeries(...): cannot add null series.");
+			throw new IllegalArgumentException("XYSeriesCollection.addSeries(...): cannot add null series.");
 		}
 
 		// add the series...
@@ -185,15 +185,14 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return The series.
 	 */
 	public XYSeries getSeries(final int series) {
 
 		// check arguments...
 		if ((series < 0) || (series > getSeriesCount())) {
-			throw new IllegalArgumentException(
-								"XYSeriesCollection.getSeries(...): index outside valid range.");
+			throw new IllegalArgumentException("XYSeriesCollection.getSeries(...): index outside valid range.");
 		}
 
 		// fetch the series...
@@ -206,7 +205,7 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the name of a series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return the name of a series.
 	 */
 	public String getSeriesName(final int series) {
@@ -222,7 +221,7 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the number of items in the specified series.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @return the number of items in the specified series.
 	 */
 	public int getItemCount(final int series) {
@@ -238,9 +237,9 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the x-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return the x-value for the specified series and item.
 	 */
 	public Number getXValue(final int series, final int item) {
@@ -255,9 +254,9 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the starting X value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The starting X value.
 	 */
 	public Number getStartXValue(final int series, final int item) {
@@ -268,9 +267,9 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the ending X value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The ending X value.
 	 */
 	public Number getEndXValue(final int series, final int item) {
@@ -281,9 +280,9 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the y-value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param index
-	 *           the index of the item of interest (zero-based).
+	 *            the index of the item of interest (zero-based).
 	 * @return the y-value for the specified series and item.
 	 */
 	public Number getYValue(final int series, final int index) {
@@ -298,9 +297,9 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the starting Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The starting Y value.
 	 */
 	public Number getStartYValue(final int series, final int item) {
@@ -311,9 +310,9 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * Returns the ending Y value for the specified series and item.
 	 * 
 	 * @param series
-	 *           the series (zero-based index).
+	 *            the series (zero-based index).
 	 * @param item
-	 *           the item (zero-based index).
+	 *            the item (zero-based index).
 	 * @return The ending Y value.
 	 */
 	public Number getEndYValue(final int series, final int item) {
@@ -327,7 +326,8 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 */
 	public void removeAllSeries() {
 
-		// Unregister the collection as a change listener to each series in the collection.
+		// Unregister the collection as a change listener to each series in the
+		// collection.
 		for (int i = 0; i < this.data.size(); i++) {
 			final XYSeries series = (XYSeries) this.data.get(i);
 			series.removeChangeListener(this);
@@ -345,14 +345,13 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * Notifies all registered listeners that the dataset has changed.
 	 * 
 	 * @param series
-	 *           the series.
+	 *            the series.
 	 */
 	public void removeSeries(final XYSeries series) {
 
 		// check arguments...
 		if (series == null) {
-			throw new IllegalArgumentException(
-								"XYSeriesCollection.removeSeries(...): cannot remove null series.");
+			throw new IllegalArgumentException("XYSeriesCollection.removeSeries(...): cannot remove null series.");
 		}
 
 		// remove the series...
@@ -371,14 +370,13 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * Notifies all registered listeners that the dataset has changed.
 	 * 
 	 * @param series
-	 *           the series (zero based index).
+	 *            the series (zero based index).
 	 */
 	public void removeSeries(final int series) {
 
 		// check arguments...
 		if ((series < 0) || (series > getSeriesCount())) {
-			throw new IllegalArgumentException(
-								"XYSeriesCollection.removeSeries(...): index outside valid range.");
+			throw new IllegalArgumentException("XYSeriesCollection.removeSeries(...): index outside valid range.");
 		}
 
 		// fetch the series, remove the change listener, then remove the series.
@@ -394,27 +392,19 @@ public class XYSeriesCollection extends AbstractIntervalXYDataset
 	 * Tests this collection for equality with an arbitrary object.
 	 * 
 	 * @param obj
-	 *           the object.
+	 *            the object.
 	 * @return A boolean.
 	 */
 	public boolean equals(final Object obj) {
 		/*
-		 * XXX
-		 * what about the interval delegate...?
-		 * The interval width etc wasn't considered
-		 * before, hence i did not add it here (AS)
+		 * XXX what about the interval delegate...? The interval width etc wasn't
+		 * considered before, hence i did not add it here (AS)
 		 */
 
 		/*
-		 * you doesn't have to check this because it's ensured by the
-		 * instanceof check. I prefer using
-		 * if (obj == this)
-		 * return true;
-		 * if (!(obj instanceof MyClass)) // includes null check.
-		 * return false;
-		 * MyClass that = (MyClass) obj;
-		 * ...
-		 * (AS)
+		 * you doesn't have to check this because it's ensured by the instanceof check.
+		 * I prefer using if (obj == this) return true; if (!(obj instanceof MyClass))
+		 * // includes null check. return false; MyClass that = (MyClass) obj; ... (AS)
 		 */
 		if (obj == null) {
 			return false;

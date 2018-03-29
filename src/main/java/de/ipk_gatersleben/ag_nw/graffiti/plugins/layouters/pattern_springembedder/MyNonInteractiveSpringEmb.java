@@ -12,17 +12,15 @@ import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.selection.Selection;
 
 /**
- * @author Christian Klukas
- *         (c) 2004 IPK-Gatersleben
+ * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
-public class MyNonInteractiveSpringEmb
-					implements Runnable, BackgroundTaskStatusProvider {
-	
+public class MyNonInteractiveSpringEmb implements Runnable, BackgroundTaskStatusProvider {
+
 	private Graph graph;
 	private Selection selection;
 	private int initMaxMove = 30;
 	ThreadSafeOptions tso;
-	
+
 	/**
 	 * @param gi
 	 * @param s
@@ -32,18 +30,24 @@ public class MyNonInteractiveSpringEmb
 		this.selection = s;
 		this.tso = tso;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#getCurrentStatusValue()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * getCurrentStatusValue()
 	 */
 	public int getCurrentStatusValue() {
 		return (int) getCurrentStatusValueFine();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#getCurrentStatusValueFine()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * getCurrentStatusValueFine()
 	 */
 	public double getCurrentStatusValueFine() {
 		if (tso.temperature_max_move > 0 && tso.temperature_max_move <= initMaxMove && tso.runStatus != 3)
@@ -51,10 +55,13 @@ public class MyNonInteractiveSpringEmb
 		else
 			return 100f;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#getCurrentStatusMessage1()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * getCurrentStatusMessage1()
 	 */
 	public String getCurrentStatusMessage1() {
 		String nme = graph.getName();
@@ -65,24 +72,31 @@ public class MyNonInteractiveSpringEmb
 		else
 			return "Layout " + nme + " (" + tso.getRunStatus() + ")";
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#getCurrentStatusMessage2()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * getCurrentStatusMessage2()
 	 */
 	public String getCurrentStatusMessage2() {
 		return "";
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#pleaseStop()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * pleaseStop()
 	 */
 	public void pleaseStop() {
 	}
-	
+
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
@@ -92,7 +106,7 @@ public class MyNonInteractiveSpringEmb
 		tso.setSelection(selection);
 		pse.executeThreadSafe(tso);
 	}
-	
+
 	public static ThreadSafeOptions getNewThreadSafeOptionsWithDefaultSettings() {
 		ThreadSafeOptions tso = new ThreadSafeOptions();
 		tso.borderForce = false;
@@ -109,25 +123,31 @@ public class MyNonInteractiveSpringEmb
 		tso.doRemoveAllBends = false;
 		return tso;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#pluginWaitsForUser()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * pluginWaitsForUser()
 	 */
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#pleaseContinueRun()
+	 * 
+	 * @see
+	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
+	 * pleaseContinueRun()
 	 */
 	public void pleaseContinueRun() {
 		// empty
 	}
-	
+
 	public void setCurrentStatusValue(int value) {
 		// empty
 	}
-	
+
 }
