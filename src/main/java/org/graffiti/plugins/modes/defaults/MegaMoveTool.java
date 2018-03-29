@@ -82,6 +82,7 @@ import org.graffiti.plugins.views.defaults.PolyLineEdgeShape;
 import org.graffiti.session.Session;
 import org.graffiti.undo.ChangeAttributesEdit;
 import org.graffiti.undo.GraphElementsDeletionEdit;
+import org.vanted.osx.OSXSupport;
 
 /**
  * A tool for creating and editing a graph.
@@ -95,11 +96,13 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 
 	private static final String PREFERENCE_SNAP_TO_GRID = "Snap to Grid";
 	private static final String PREFERENCE_GRID_SIZE = "Grid Size";
-	private static final String PREFERENCE_SHOW_WARNING_POPUP = "Show OOB Warning";// OOB: OutOfBounds
+	private static final String PREFERENCE_SHOW_WARNING_POPUP = "Show OOB Warning";// OOB:
+																					// OutOfBounds
 
 	private static final Integer PREFERENCE_DEFAULT_GRID_SIZE = 5;
 
-	// ~ Static fields/initializers =============================================
+	// ~ Static fields/initializers
+	// =============================================
 	private static String rkey = "selrect";
 
 	static final Logger logger = Logger.getLogger(MegaMoveTool.class);
@@ -107,7 +110,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	static {
 		logger.setLevel(Level.INFO);
 	}
-	// ~ Instance fields ========================================================
+	// ~ Instance fields
+	// ========================================================
 
 	/**
 	 * Specifies if - when there is a selection - graph elements are highlighted
@@ -126,7 +130,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	private CoordinateAttribute lastBendHit;
 
 	/**
-	 * Component used to associate the key binding for deleting graph elements with.
+	 * Component used to associate the key binding for deleting graph elements
+	 * with.
 	 */
 	protected JComponent keyComponent;
 
@@ -192,7 +197,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 
 	private static MegaMoveTool thisInstance;
 
-	// ~ Constructors ===========================================================
+	// ~ Constructors
+	// ===========================================================
 
 	/**
 	 * Constructor for this tool. Registers a key used to delete graph elements.
@@ -355,7 +361,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		mouseDragged(me);
 	}
 
-	// ~ Methods ================================================================
+	// ~ Methods
+	// ================================================================
 
 	/**
 	 * States whether this class wants to be registered as a
@@ -408,19 +415,19 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 
 		// / move nodes CTRL
 		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, InputEvent.CTRL_DOWN_MASK), leftAction.toString());
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, OSXSupport.mapCtrlModifier()), leftAction.toString());
 		view.getActionMap().put(leftAction.toString(), leftAction);
 
 		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, InputEvent.CTRL_DOWN_MASK), rightAction.toString());
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, OSXSupport.mapCtrlModifier()), rightAction.toString());
 		view.getActionMap().put(rightAction.toString(), rightAction);
 
 		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, InputEvent.CTRL_DOWN_MASK), upAction.toString());
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, OSXSupport.mapCtrlModifier()), upAction.toString());
 		view.getActionMap().put(upAction.toString(), upAction);
 
 		view.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.CTRL_DOWN_MASK), downAction.toString());
+				.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, OSXSupport.mapCtrlModifier()), downAction.toString());
 		view.getActionMap().put(downAction.toString(), downAction);
 
 		// / move nodes SHIFT
@@ -440,15 +447,17 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, InputEvent.SHIFT_DOWN_MASK), downActionFine.toString());
 		view.getActionMap().put(downActionFine.toString(), downActionFine);
 
-		MainFrame.showMessage("<html>Use the mouse or keyboard (Shift/Ctrl + Cursor Keys) to move " +
-		// "and Shift/Ctrl + Mouse Wheel to rotate" +
+		MainFrame.showMessage("<html>Use the mouse or keyboard (Shift/" + OSXSupport.getMappedCtrlModifierText()
+				+ " + Cursor Keys) to move " +
+				// "and Shift/Ctrl + Mouse Wheel to rotate" +
 				" the selected or all items. "
 				+ "Double-click (or start typing*) to edit a node- or edge-label (*select elements before and press the move-tool button again). Shift+Double-Click hides/makes visible child elements of a node. "
 				+ "Use middle mouse click to select a node and all nodes, placed inside the node.", MessageType.INFO);
 	}
 
 	/**
-	 * This method additionaly unregisters the key used for deleting graph elements.
+	 * This method additionaly unregisters the key used for deleting graph
+	 * elements.
 	 * 
 	 * @see org.graffiti.plugin.tool.AbstractTool#deactivate()
 	 */
@@ -462,8 +471,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	}
 
 	/**
-	 * Empty method. Invoked at mouse clicks. Does not do anything. All is done via
-	 * mousePressed.
+	 * Empty method. Invoked at mouse clicks. Does not do anything. All is done
+	 * via mousePressed.
 	 * 
 	 * @param e
 	 *            the mouse event
@@ -532,11 +541,14 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			if (o instanceof GraffitiView)
 				zoom = ((GraffitiView) o).getZoom();
 
-			// System.out.println("zoom: "+ zoom.toString()+" dx:"+dx+" dy:"+dy);
+			// System.out.println("zoom: "+ zoom.toString()+" dx:"+dx+"
+			// dy:"+dy);
 			// System.out.println("prevDragX:"+prevPosX+" prevDragY:"+prevPosY);
 			// System.out.println(" mouseX:" + e.getX()+" mouseY:" + e.getY());
-			// System.out.println(" horSBpos:" + jsp.getHorizontalScrollBar().getValue());
-			// System.out.println(" verSBpos:" + jsp.getVerticalScrollBar().getValue());
+			// System.out.println(" horSBpos:" +
+			// jsp.getHorizontalScrollBar().getValue());
+			// System.out.println(" verSBpos:" +
+			// jsp.getVerticalScrollBar().getValue());
 			// if(dx < 0 || dy < 0)
 			// System.out.println();
 			// if(Math.abs(dx) > 100 || Math.abs(dy) > 100)
@@ -566,9 +578,10 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				jsb.setValue(v);
 			}
 			/*
-			 * adjust prev position to the new scroll position of the view with respect to
-			 * the changed dx values Just setting the previous x/y coordinates results in
-			 * flicker, due to the changed scroll position
+			 * adjust prev position to the new scroll position of the view with
+			 * respect to the changed dx values Just setting the previous x/y
+			 * coordinates results in flicker, due to the changed scroll
+			 * position
 			 */
 			prevPosX = e.getX() + (int) dx;
 			prevPosY = e.getY() + (int) dy;
@@ -578,8 +591,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	}
 
 	/**
-	 * Invoked when the mouse button has been pressed and dragged inside the editor
-	 * panel and handles what has to happen.
+	 * Invoked when the mouse button has been pressed and dragged inside the
+	 * editor panel and handles what has to happen.
 	 * 
 	 * @param e
 	 *            the mouse event
@@ -673,17 +686,19 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 
 			lastBendHit.setCoordinate(new Point2D.Double(newX, newY));
 			// e.getComponent().repaint();
-			// for (View v : MainFrame.getInstance().getActiveEditorSession().getViews())
+			// for (View v :
+			// MainFrame.getInstance().getActiveEditorSession().getViews())
 			// v.repaint(null);
 			dragged = true;
 
 			view.getViewComponent().setCursor(myMoveCursor);
 
-			MainFrame.showMessage(
-					"<html>Hint: While moving edge bend press Ctrl key to activate smooth-line, press Ctrl and Shift keys "
-							+ "to activate poly-line edge bend style. After activation of desired style stop mouse movement then release keyboard keys. "
-							+ "Press Shift key while moving edge bend to disable position grid.",
-					MessageType.INFO);
+			MainFrame
+					.showMessage(
+							"<html>Hint: While moving edge bend press Ctrl key to activate smooth-line, press Ctrl and Shift keys "
+									+ "to activate poly-line edge bend style. After activation of desired style stop mouse movement then release keyboard keys. "
+									+ "Press Shift key while moving edge bend to disable position grid.",
+							MessageType.INFO);
 			// is bend out of bounds?
 			showOutOfBoundsWarning(e);
 
@@ -758,7 +773,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					PolyLineEdgeShape ls = (PolyLineEdgeShape) ec.getShape();
 					idx = ls.getIndexOfPathWhichContains(e.getX() - ec.getX() + 1, e.getY() - ec.getY() + 1); // same
 																												// formula
-																												// as in
+																												// as
+																												// in
 																												// GraffitiView.myFindComponent(...)
 					if (idx != -1) {
 						bendsBeforeBending = AttributeHelper.getEdgeBendCoordinateAttributes(bendedEdge);
@@ -766,7 +782,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 							AttributeHelper.removeEdgeBends(bendedEdge);
 							for (int i = 0; i < bendsBeforeBending.size(); i++) {
 								if (i == idx) {
-									// introduce a bend between bends i and i+1 (and not at the end)
+									// introduce a bend between bends i and i+1
+									// (and not at the end)
 									lastBendAdded = AttributeHelper.addEdgeBend(bendedEdge, e.getX(), e.getY(), true);
 									added = true;
 								}
@@ -783,7 +800,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 					lastBendAddedInitX = lastBendAdded.getX();
 					lastBendAddedInitY = lastBendAdded.getY();
 					lastBendAddedTime = e.getWhen();
-					// System.out.println("Bend added at "+lastBendAddedInitX+" /
+					// System.out.println("Bend added at "+lastBendAddedInitX+"
+					// /
 					// "+lastBendAddedInitY);
 					String style = AttributeHelper.getEdgeBendStyle(bendedEdge);
 					if (style.equals("org.graffiti.plugins.views.defaults.StraightLineEdgeShape")) {
@@ -853,7 +871,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 						curPosX = curPosX - (curPosX % grid);
 						curPosY = curPosY - (curPosY % grid);
 					}
-					// setTransformersXY(nodecomp.getGraphElement(), curPosX, curPosY);
+					// setTransformersXY(nodecomp.getGraphElement(), curPosX,
+					// curPosY);
 				}
 				delta.x = mouse.getPoint().getX();
 				delta.y = mouse.getPoint().getY();
@@ -1103,7 +1122,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 									: " - press Shift to disable grid point movement, press Alt to move selection to grid points");
 					MainFrame.showMessage(status, MessageType.INFO);
 				}
-				// display hideable warning to inform the user about the return commands
+				// display hideable warning to inform the user about the return
+				// commands
 				showOutOfBoundsWarning(e);
 			}
 
@@ -1166,13 +1186,14 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	private static Point lastMoveStart = new Point(0, 0);
 
 	/**
-	 * Show the user information how to return from negative coordinates. Otherwise
-	 * this gets hidden out of view's bounds and is not directly accessible for the
-	 * user. We uses Preference to determine whether the user wants to see it again.
+	 * Show the user information how to return from negative coordinates.
+	 * Otherwise this gets hidden out of view's bounds and is not directly
+	 * accessible for the user. We uses Preference to determine whether the user
+	 * wants to see it again.
 	 *
 	 * @param e
-	 *            the mouse event - here, we use it to determine whether movement
-	 *            went out of bounds
+	 *            the mouse event - here, we use it to determine whether
+	 *            movement went out of bounds
 	 * 
 	 * @author dim8
 	 */
@@ -1194,7 +1215,11 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			}
 		});
 
-		Collection<WarningButton> wbts = new ArrayDeque<WarningButton>(1); // increase before adding more buttons!
+		Collection<WarningButton> wbts = new ArrayDeque<WarningButton>(1); // increase
+																			// before
+																			// adding
+																			// more
+																			// buttons!
 		wbts.add(showbt);
 
 		boolean displayWarning = false;
@@ -1202,7 +1227,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 			if ((e.getPoint().getX() + lastPressedMousePointRel.getX() < 0
 					|| e.getPoint().getY() + lastPressedMousePointRel.getY() < 0))
 				displayWarning = true;
-		} else { // no last rel point => event originates from a keys combination
+		} else { // no last rel point => event originates from a keys
+					// combination
 			if (lastMoveStart.x != moveStartX || lastMoveStart.y != moveStartY) {
 				lastMoveStart.x = moveStartX;
 				lastMoveStart.y = moveStartY;
@@ -1218,7 +1244,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		// finally, based on the new coords, display or hide the warning message
 		if (displayWarning) {
 			MainFrame.showWarningPopup("<html><strong>Graph elements out of view!</strong><br>"
-					+ "To bring back: Network &#10148; Move Network to Top-Left (Ctrl+1).", 8000, wbts);
+					+ "To bring back: Network &#10148; Move Network to Top-Left ("
+					+ OSXSupport.getMappedCtrlModifierText() + "+1).", 8000, wbts);
 			displayWarning = false;
 		}
 
@@ -1303,9 +1330,9 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 
 		Component src;
 		/*
-		 * if user presses ctrl+shift while left-click, then node selection is disabled
-		 * to be able to always draw a selection rectangle since the src will be the
-		 * viewcomponent
+		 * if user presses ctrl+shift while left-click, then node selection is
+		 * disabled to be able to always draw a selection rectangle since the
+		 * src will be the viewcomponent
 		 */
 		src = getFoundComponent();
 		lastPressedComponent = src;
@@ -1492,8 +1519,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	}
 
 	/**
-	 * Invoked when the mouse button has been released inside the editor panel and
-	 * handles what has to happen.
+	 * Invoked when the mouse button has been released inside the editor panel
+	 * and handles what has to happen.
 	 * 
 	 * @param e
 	 *            the mouse event
@@ -1564,7 +1591,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 				MainFrame.showMessage("Edge bend moved to src/tgt --> removed!", MessageType.INFO);
 			} else if (lastBendAdded != null && e.getWhen() - lastBendAddedTime < 1000) {
 				double ddd = distance(lastBendAddedInitX, lastBendAddedInitY, e.getX(), e.getY());
-				// System.out.println("UP "+lastBendAddedInitX+" / "+lastBendAddedInitY+" <-->
+				// System.out.println("UP "+lastBendAddedInitX+" /
+				// "+lastBendAddedInitY+" <-->
 				// "+e.getX()+" / "+e.getY());
 				if (ddd <= 20) {
 					lastBendHit.getParent().remove(lastBendHit);
@@ -1612,8 +1640,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	}
 
 	/**
-	 * Highlights all nodes / edges that lie entirely inside the rectangle given by
-	 * the two points. Those two points must already be zoomed.
+	 * Highlights all nodes / edges that lie entirely inside the rectangle given
+	 * by the two points. Those two points must already be zoomed.
 	 * 
 	 * @param comp
 	 *            mouseEvent whose source is searched
@@ -1648,8 +1676,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	}
 
 	/**
-	 * Marks all nodes / edges that lie entirely inside the rectangle given by the
-	 * two points. Uses me.getSource().
+	 * Marks all nodes / edges that lie entirely inside the rectangle given by
+	 * the two points. Uses me.getSource().
 	 * 
 	 * @param me
 	 *            mouseEvent whose source is searched
@@ -1672,7 +1700,8 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 		if (me.isShiftDown() && me.isControlDown()) {
 			for (int i = 0; i < allComps.length; i++) {
 				if (selRect.contains(allComps[i].getBounds()) && allComps[i] instanceof GraphElementComponent) {
-					// mark((GraphElementComponent) allComps[i], false, false, this, false);
+					// mark((GraphElementComponent) allComps[i], false, false,
+					// this, false);
 					selection.add(((GraphElementComponent) allComps[i]).getGraphElement());
 				}
 			}

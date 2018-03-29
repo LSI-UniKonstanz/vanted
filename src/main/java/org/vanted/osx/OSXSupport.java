@@ -3,6 +3,7 @@ package org.vanted.osx;
 import java.awt.Image;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
 import java.io.File;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -26,7 +27,8 @@ public class OSXSupport {
 
 	public static final String HANDLE_ABOUT = "handleAbout";
 
-	//private static final Logger logger = Logger.getLogger(OSXSupport.class.getName());
+	// private static final Logger logger =
+	// Logger.getLogger(OSXSupport.class.getName());
 
 	private static Object application = null;
 
@@ -101,7 +103,8 @@ public class OSXSupport {
 	 * @param handlerClassName
 	 *            the class name of the handler to add
 	 * @param handlerMethodName
-	 *            the name of the method that is called on the handler when invoked
+	 *            the name of the method that is called on the handler when
+	 *            invoked
 	 * @param handlerSetterMethodName
 	 *            the name of the method used to set the handler
 	 * @param action
@@ -188,12 +191,12 @@ public class OSXSupport {
 	}
 
 	/**
-	 * Mac OS X Lion full screen support was added in Java for Mac OS X 10.7 Update
-	 * 1 and 10.6 Update 6. This determines whether we are running on a version with
-	 * Lion full screen support.
+	 * Mac OS X Lion full screen support was added in Java for Mac OS X 10.7
+	 * Update 1 and 10.6 Update 6. This determines whether we are running on a
+	 * version with Lion full screen support.
 	 *
-	 * Which Java version corresponds to which Java for Mac OS X update can be found
-	 * in Apple's: "Technical Note TN2110 - Identifying Java on Mac OS X"
+	 * Which Java version corresponds to which Java for Mac OS X update can be
+	 * found in Apple's: "Technical Note TN2110 - Identifying Java on Mac OS X"
 	 * 
 	 * @see <a href=
 	 *      "https://developer.apple.com/library/mac/#technotes/tn2002/tn2110.html">Technical
@@ -232,5 +235,28 @@ public class OSXSupport {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Maps CTRL modifier to default Command (Apple) modifier key. Most often
+	 * usage is regarding conflicting bindings.
+	 * 
+	 * @return modifier depending on current OS
+	 */
+	public static int mapCtrlModifier() {
+		if (isOSX())
+			return InputEvent.META_DOWN_MASK;
+		else
+			return InputEvent.CTRL_DOWN_MASK;
+	}
+
+	/**
+	 * Gets the textual representation of the mapped CTRL modifier.
+	 * 
+	 * @return String for CTRL or Command key.
+	 * @see OSXSupport#mapCtrlModifier()
+	 */
+	public static String getMappedCtrlModifierText() {
+		return InputEvent.getModifiersExText(OSXSupport.mapCtrlModifier());
 	}
 }
