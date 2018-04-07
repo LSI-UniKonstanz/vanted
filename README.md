@@ -23,10 +23,19 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
-### VANTED v2.6.5 release (TBD) ### 
+### VANTED v2.6.5 release (29/03/2018) ### 
 
-    Java 9 Update
-    Minor internal improvements
+     Java 9 Compatibility Update
+     Several algorithms improved, including 
+         Find and Layout Circles
+         Merge Nodes
+         Erdos-Renyi Graph Generation
+         Watts-Strogatz Graph Generation
+         Grubbs' Test
+         David Test
+     Minor BioModels update
+     OS X in-graph grid movement fix
+     Overall internal improvements
     
 You can download and install this version [here](http://vanted.org/release/2.6.5).
 
