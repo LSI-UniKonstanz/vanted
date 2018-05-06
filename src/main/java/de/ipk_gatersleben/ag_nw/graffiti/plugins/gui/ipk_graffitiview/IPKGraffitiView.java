@@ -167,13 +167,6 @@ public class IPKGraffitiView extends GraffitiView
 		dirty = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.graffiti.plugins.views.defaults.GraffitiView#createNodeComponent(java.
-	 * util.Map, org.graffiti.graph.Node)
-	 */
 	@Override
 	protected NodeComponent createNodeComponent(Map<GraphElement, GraphElementComponent> gecMap, Node node) {
 
@@ -199,11 +192,6 @@ public class IPKGraffitiView extends GraffitiView
 		return nodeComponent;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
-	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		// logger.debug("paintcomponent");

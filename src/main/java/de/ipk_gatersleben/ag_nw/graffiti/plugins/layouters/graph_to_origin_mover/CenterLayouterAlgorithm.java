@@ -43,9 +43,9 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 public class CenterLayouterAlgorithm extends AbstractAlgorithm implements ProvidesGeneralContextMenu, ActionListener {
 
 	/**
-	 * DOCTODO: Include method header
+	 * The external name of this algorithm.
 	 * 
-	 * @return DOCUMENT ME!
+	 * @return Move Network to Top-Left
 	 */
 	public String getName() {
 		return "Move Network to Top-Left";
@@ -96,7 +96,6 @@ public class CenterLayouterAlgorithm extends AbstractAlgorithm implements Provid
 	 * DOCTODO: Include method header
 	 */
 	public void execute() {
-
 		moveGraph(graph, getName(), true, 50, 50);
 	}
 
@@ -173,23 +172,12 @@ public class CenterLayouterAlgorithm extends AbstractAlgorithm implements Provid
 		EdgeHelper.moveBends(e, moveX, moveY, bends2newPositions);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.ContextMenuPlugin#getCurrentContextMenuItem()
-	 */
 	public JMenuItem[] getCurrentContextMenuItem() {
 		JMenuItem myMenuItem = new JMenuItem("Move Network to Top-Left");
 		myMenuItem.addActionListener(this);
 		return new JMenuItem[] { myMenuItem };
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	public void actionPerformed(ActionEvent e) {
 		GravistoService.getInstance().getMainFrame();
 		GravistoService.getInstance().algorithmAttachData(this);

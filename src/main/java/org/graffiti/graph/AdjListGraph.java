@@ -29,6 +29,7 @@ import org.graffiti.event.ListenerManager;
  * modification according to the description in <code>Graph</code>.
  * 
  * @version $Revision: 1.12.4.1.2.1 $
+ * @vanted.revision 2.6.6
  * @see Graph
  * @see AbstractGraph
  * @see AdjListNode
@@ -87,21 +88,11 @@ public class AdjListGraph extends AbstractGraph implements Graph {
 		this.edges = new ArrayList<Edge>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.Graph#getNumberOfNodes()
-	 */
 	@Override
 	public int getNumberOfNodes() {
 		return nodes.size();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.Graph#getNodes()
-	 */
 	@Override
 	public List<Node> getNodes() {
 		return nodes;
@@ -427,50 +418,24 @@ public class AdjListGraph extends AbstractGraph implements Graph {
 		return new AdjListEdge(this, source, target, directed, col);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.Graph#isModified()
-	 */
 	public boolean isModified() {
 		return modified;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.Graph#setModified(boolean)
-	 */
 	public void setModified(boolean modified) {
 		this.modified = modified;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.Graph#getEdges()
-	 */
 	@Override
 	public Collection<Edge> getEdges() {
 		return edges;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.Graph#getNumberOfEdges()
-	 */
 	@Override
 	public int getNumberOfEdges() {
 		return edges.size();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.Graph#getEdges(org.graffiti.graph.Node,
-	 * org.graffiti.graph.Node)
-	 */
 	@Override
 	public Collection<Edge> getEdges(Node n1, Node n2) {
 		HashSet<Edge> result = new HashSet<Edge>();
@@ -480,11 +445,6 @@ public class AdjListGraph extends AbstractGraph implements Graph {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.Graph#deleteAll(java.util.List)
-	 */
 	public void deleteAll(Collection<? extends GraphElement> graphelements) {
 		for (GraphElement ge : graphelements) {
 			if ((ge instanceof Edge) && containsEdge((Edge) ge)) {
@@ -496,20 +456,10 @@ public class AdjListGraph extends AbstractGraph implements Graph {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.Graph#setName(java.lang.String)
-	 */
 	public void setName(String name) {
 		idName = name;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.Graph#getName()
-	 */
 	public String getName() {
 		return getName(false);
 	}
@@ -544,11 +494,7 @@ public class AdjListGraph extends AbstractGraph implements Graph {
 		// n.setID(++startNumber);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.Graph#setMaxId(long)
-	 */
+	@Deprecated
 	public void checkMaxGraphElementId(long id) {
 		// if (id > maxGraphElementId)
 		// maxGraphElementId = id;
