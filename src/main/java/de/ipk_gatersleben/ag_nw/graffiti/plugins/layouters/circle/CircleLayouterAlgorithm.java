@@ -290,7 +290,6 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 
 				@Override
 				public void onAnimatorStop(AnimatorData data) {
-					System.out.println("Animator stopped");
 				}
 
 				@Override
@@ -309,12 +308,10 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 				public void onAnimatorFinished(AnimatorData data) {
 					((GraffitiView) MainFrame.getInstance().getActiveSession().getActiveView())
 							.setDrawMode(DrawMode.NORMAL);
-					System.out.println("onAnimatorFinished");
 				}
 
 				@Override
 				public void onAnimationFinished(AnimatorData data, Animation<TimePoint> anim) {
-					// System.out.println("onAnimationFinished");
 				}
 			});
 			animator.setLoopDuration(duration, TimeUnit.MILLISECONDS);
@@ -450,9 +447,9 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 
 			equalizeParam = new BooleanParameter(true, "Equalize", "Equalize distance between nodes on the circle");
 			avgDistBoolean = new BooleanParameter(false, "Average Radius",
-					"This parameter overrules the 'Radius' parameter. It calculates the center of all nodes, \n"
-							+ "selected for layout and calculates then the average distance to every node,\n"
-							+ "which is then taken as final radius for the circle");
+					"This parameter overrules the 'Radius' parameter. Calculates the center of all selected nodes, \n"
+							+ "and then the average distance to every node,\n"
+							+ "which is then taken as final radius for the circle.");
 			minimzeCrossingsParam = new BooleanParameter(minimzeCrossings, "Minimize Crossings",
 					"If checked, the edge crossings will be minimzed");
 			sortbyclusterParam = new BooleanParameter(true, "Sort by cluster", "Sort elements by their clusterID");
@@ -482,11 +479,6 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		animate = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getCategory()
-	 */
 	@Override
 	public String getCategory() {
 		return "Layout";

@@ -260,7 +260,7 @@ public abstract class AbstractAttributable implements Attributable {
 	 * 
 	 * @param path
 	 *            the path to search for the <code>Attribute</code>.
-	 * @return the vlaue of the <code>Attribute</code> at the given path.
+	 * @return the value of the <code>Attribute</code> at the given path.
 	 * @exception AttributeNotFoundException
 	 *                if there is no <code>Attribute</code> at the specified
 	 *                location.

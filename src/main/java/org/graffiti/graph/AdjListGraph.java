@@ -482,9 +482,7 @@ public class AdjListGraph extends AbstractGraph implements Graph {
 	}
 
 	/**
-	 * Empty implementation, since we do not support this anymore (non-Javadoc)
-	 * 
-	 * @see org.graffiti.graph.Graph#numberNodes()
+	 * Empty implementation, since we do not support this anymore
 	 */
 	public void numberGraphElements() {
 		// long startNumber = maxGraphElementId; // avoid recursive modification

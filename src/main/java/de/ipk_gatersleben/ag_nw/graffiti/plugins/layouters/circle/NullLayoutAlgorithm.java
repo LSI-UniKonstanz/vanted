@@ -40,11 +40,6 @@ public class NullLayoutAlgorithm extends AbstractAlgorithm {
 	public void execute() {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getCategory()
-	 */
 	@Override
 	public String getCategory() {
 		return "Layout";

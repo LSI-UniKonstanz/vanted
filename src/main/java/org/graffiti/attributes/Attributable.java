@@ -247,7 +247,7 @@ public interface Attributable {
 	 * ListenManager. Also sets the <code>parent</code> and the
 	 * <code>attributable</code> of <code>attr</code>.
 	 * <p>
-	 * <b>Implementation Notes:</b><code>path</code> specifies the location of the
+	 * <b>Implementation Notes: </b><code>path</code> specifies the location of the
 	 * CollectionAttribute or (in case <code>path</code> is the empty string) the
 	 * Attributable <code>attr</code> should be added to. Usage should look as
 	 * follows: <blockquote>
@@ -264,6 +264,9 @@ public interface Attributable {
 	 * 
 	 * </blockquote>
 	 * </p>
+	 * 
+	 * <p>Given there already exists an <code>Attribute</code> with the same <code>id</code> and cannot be overwritten,
+	 * then an <code>AttributeExistsException</code> will be thrown.</p>
 	 * 
 	 * @param attr
 	 *            the <code>Attribute</code> to be added.
