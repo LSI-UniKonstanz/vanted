@@ -213,9 +213,6 @@ public class ZoomFitChangeComponent extends JToolBar
 		useSmooth = false;
 	}
 
-	/**
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	public void actionPerformed(final ActionEvent e) {
 		if (activeSession != null) {
 			Zoomable myView = activeSession.getActiveView();

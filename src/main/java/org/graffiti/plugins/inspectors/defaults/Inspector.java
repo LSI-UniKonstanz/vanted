@@ -179,7 +179,6 @@ public class Inspector extends EditorPluginAdapter
 	/**
 	 * Inspector relies on the edit components to be up-to-date.
 	 * 
-	 * @see org.graffiti.plugin.GenericPlugin#needsEditComponents()
 	 */
 	@Override
 	public boolean needsEditComponents() {
@@ -201,9 +200,6 @@ public class Inspector extends EditorPluginAdapter
 		}
 	}
 
-	/**
-	 * @see org.graffiti.selection.SelectionListener#selectionListChanged(org.graffiti.selection.SelectionEvent)
-	 */
 	public void selectionListChanged(SelectionEvent e) {
 		for (InspectorTab tab : getTabs()) {
 			if (tab.isSelectionListener()) {

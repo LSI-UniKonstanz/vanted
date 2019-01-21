@@ -1826,10 +1826,6 @@ public class MainFrame extends JFrame
 		}
 	}
 
-	/*
-	 * @see org.graffiti.managers.IOManager.IOManagerListener#outputSerializerAdded
-	 * (org.graffiti.plugin.io.OutputSerializer)
-	 */
 	public void outputSerializerAdded(OutputSerializer os) {
 		updateActions();
 	}

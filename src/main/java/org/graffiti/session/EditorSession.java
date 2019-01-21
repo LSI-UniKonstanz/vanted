@@ -76,7 +76,7 @@ public class EditorSession extends Session implements ActionListener {
 	public EditorSession(Graph graph) {
 		super(graph);
 		um = new UndoManager();
-		um.setLimit(5);
+		um.setLimit(20);
 		graphElementsMap = new HashMap<GraphElement, GraphElement>();
 
 		// this.selectionModel = new SelectionModel();

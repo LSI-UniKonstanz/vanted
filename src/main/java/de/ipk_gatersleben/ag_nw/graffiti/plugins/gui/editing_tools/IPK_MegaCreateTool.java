@@ -113,7 +113,6 @@ public class IPK_MegaCreateTool extends MegaCreateTool implements MouseWheelList
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if (!MegaTools.wasScrollPaneMovement() && SwingUtilities.isRightMouseButton(e) && !creatingEdge) {
 			View activeView = MainFrame.getInstance().getActiveEditorSession().getActiveView();
 			if (activeView instanceof IPKGraffitiView) {

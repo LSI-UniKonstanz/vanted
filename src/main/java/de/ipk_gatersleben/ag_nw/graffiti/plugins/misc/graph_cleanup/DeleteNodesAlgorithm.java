@@ -105,9 +105,6 @@ public class DeleteNodesAlgorithm extends AbstractAlgorithm
 		}
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 
 		GravistoService.getInstance().algorithmAttachData(this);
@@ -149,9 +146,6 @@ public class DeleteNodesAlgorithm extends AbstractAlgorithm
 		graph.getListenerManager().transactionFinished(this);
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
-	 */
 	@Override
 	public void reset() {
 		graph = null;
@@ -159,9 +153,6 @@ public class DeleteNodesAlgorithm extends AbstractAlgorithm
 		delete_selection = true;
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		// return "Delete Nodes...";
 		return null;
@@ -189,12 +180,6 @@ public class DeleteNodesAlgorithm extends AbstractAlgorithm
 		this.selection = selection;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == m1delSel) {
 			delete_selection = true;
@@ -252,22 +237,10 @@ public class DeleteNodesAlgorithm extends AbstractAlgorithm
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.AlgorithmWithEdgeContextMenu#
-	 * getCurrentEdgeContextMenuItem(java.util.Collection)
-	 */
 	public JMenuItem[] getCurrentEdgeContextMenuItem(Collection<Edge> selectedEdges) {
 		return null; // new JMenuItem[] { myMenuDelEdges };
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.AlgorithmWithContextMenu#
-	 * getCurrentContextMenuItem()
-	 */
 	public JMenuItem[] getCurrentContextMenuItem() {
 		EditorSession session = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
 		if (session == null)

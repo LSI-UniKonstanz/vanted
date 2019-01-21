@@ -309,9 +309,6 @@ public class GraffitiView extends AbstractView implements View2D, GraphView, Gra
 		return redrawInProgress;
 	}
 
-	/**
-	 * @see org.graffiti.plugin.view.View#completeRedraw()
-	 */
 	public void completeRedraw() {
 		logger.debug("complete redraw issued for " + getGraph().getName());
 		if (redrawInProgress)

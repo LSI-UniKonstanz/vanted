@@ -51,9 +51,6 @@ public class DefaultViewManager implements ViewManager {
 
 	// ~ Methods ================================================================
 
-	/*
-	 * @see org.graffiti.managers.ViewManager#getViewNames()
-	 */
 	public String[] getViewNames() {
 		Object[] names = views.toArray();
 		String[] stringNames = new String[names.length];
@@ -84,17 +81,10 @@ public class DefaultViewManager implements ViewManager {
 		return stringNames;
 	}
 
-	/*
-	 * @see org.graffiti.managers.ViewManager#addListener(org.graffiti.managers.
-	 * ViewManager.ViewManagerListener)
-	 */
 	public void addListener(ViewManagerListener viewManagerListener) {
 		listeners.add(viewManagerListener);
 	}
 
-	/*
-	 * @see org.graffiti.managers.ViewManager#addView(java.lang.String)
-	 */
 	public void addView(String viewType) {
 		views.add(viewType);
 		// logger.info("new view registered: " + viewType);
@@ -102,71 +92,38 @@ public class DefaultViewManager implements ViewManager {
 		fireViewTypeAdded(viewType);
 	}
 
-	/*
-	 * @see
-	 * org.graffiti.managers.ViewManager#addViewListener(org.graffiti.plugin.view.
-	 * ViewListener)
-	 */
 	public void addViewListener(ViewListener viewListener) {
 		viewListeners.add(viewListener);
 	}
 
-	/*
-	 * @see org.graffiti.managers.ViewManager#addViews(java.lang.String[])
-	 */
 	public void addViews(String[] views) {
 		for (int i = 0; i < views.length; i++) {
 			addView(views[i]);
 		}
 	}
 
-	/*
-	 * @see org.graffiti.managers.ViewManager#createView(java.lang.String)
-	 */
 	public View createView(String name) throws InstanceCreationException {
 		return (View) InstanceLoader.createInstance(name);
 	}
 
-	/*
-	 * @see org.graffiti.managers.ViewManager#hasViews()
-	 */
 	public boolean hasViews() {
 		return !views.isEmpty();
 	}
 
-	/*
-	 * @see org.graffiti.managers.pluginmgr.PluginManagerListener#pluginAdded(org.
-	 * graffiti.plugin.GenericPlugin,
-	 * org.graffiti.managers.pluginmgr.PluginDescription)
-	 */
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
 		addViews(plugin.getViews());
 		if (plugin.getDefaultView() != null)
 			setDefaultView(plugin.getDefaultView());
 	}
 
-	/*
-	 * @see org.graffiti.managers.ViewManager#removeListener(org.graffiti.managers.
-	 * ViewManager.ViewManagerListener)
-	 */
 	public boolean removeListener(ViewManagerListener l) {
 		return listeners.remove(l);
 	}
 
-	/*
-	 * @see
-	 * org.graffiti.managers.ViewManager#removeViewListener(org.graffiti.plugin.view
-	 * .ViewListener)
-	 */
 	public boolean removeViewListener(ViewListener l) {
 		return viewListeners.remove(l);
 	}
 
-	/*
-	 * @see
-	 * org.graffiti.plugin.view.ViewListener#viewChanged(org.graffiti.plugin.view.
-	 * View)
-	 */
 	public void viewChanged(View newView) {
 		for (ViewListener vl : viewListeners) {
 			vl.viewChanged(newView);
@@ -186,11 +143,6 @@ public class DefaultViewManager implements ViewManager {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.managers.ViewManager#removeViews()
-	 */
 	public void removeViews() {
 		views.clear();
 	}
