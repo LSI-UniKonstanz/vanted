@@ -11,7 +11,6 @@ import javax.swing.event.ChangeListener;
 
 import org.graffiti.editor.GraffitiInternalFrame;
 import org.graffiti.editor.MainFrame;
-import org.graffiti.plugin.view.View;
 import org.graffiti.session.Session;
 import org.graffiti.session.SessionListener;
 import org.vanted.scaling.DPIHelper;
@@ -27,7 +26,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeCompon
  * zooming, which acts as graph scaling.
  * 
  * @author dim8
- *
  */
 public class GraphScaler implements SessionListener, ChangeListener {
 
@@ -83,21 +81,21 @@ public class GraphScaler implements SessionListener, ChangeListener {
 
 			@Override
 			public void run() {
-				// postpone until completely loaded
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-
-				try {
-					handleZooming(0);
+//				// postpone until completely loaded
+//				try {
+//					Thread.sleep(100);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//
+//				try {
+//					handleZooming(0);
 					scaleGraphFrame(s);
-				} catch (NullPointerException e) {
-					// have loaded a pretty big graph &
-					// tried to zoom too early - go again.
-					this.run();
-				}
+//				} catch (NullPointerException e) {
+//					// have loaded a pretty big graph &
+//					// tried to zoom too early - go again.
+//					this.run();
+//				}
 			}
 		}).start();
 
@@ -118,21 +116,24 @@ public class GraphScaler implements SessionListener, ChangeListener {
 			return;
 		}
 
-		View activeView = active.getActiveView();
-		for (Session session : MainFrame.getSessions()) {
-			for (final View view : session.getViews()) {
-				MainFrame.getInstance().setActiveSession(session, view);
-				handleZooming(newValue);
-			}
-			scaledSessions.add(session.hashCode());
-		}
+//		View activeView = active.getActiveView();
+//		for (Session session : MainFrame.getSessions()) {
+//			for (final View view : session.getViews()) {
+//				MainFrame.getInstance().setActiveSession(session, view);
+//				handleZooming(newValue);
+//			}
+//			scaledSessions.add(session.hashCode());
+//		}
 
 		scaleGraphFrame(null);
 
-		MainFrame.getInstance().setActiveSession(active, activeView);
+//		MainFrame.getInstance().setActiveSession(active, activeView);
 		oldValueZooming = newValue;
 	}
-
+	/**
+	 * @deprecated
+	 * @param newValue
+	 */
 	private static void handleZooming(int newValue) {
 		if ((newValue == ScalingSlider.min || newValue == ScalingSlider.median)
 				&& oldValueZooming == ScalingSlider.median)

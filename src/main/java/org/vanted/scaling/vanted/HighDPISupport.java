@@ -14,7 +14,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.ReleaseInfo;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.PreferencesInterface;
@@ -128,9 +127,9 @@ public class HighDPISupport implements PreferencesInterface {
 		ScalerLoader.doScaling(false);
 
 		if (MainFrame.getInstance() != null) {
-			if (ReleaseInfo.isRunningAsApplet())
-				SwingUtilities.updateComponentTreeUI(ReleaseInfo.getApplet());
-			else
+//			if (ReleaseInfo.isRunningAsApplet())
+//				SwingUtilities.updateComponentTreeUI(ReleaseInfo.getApplet());
+//			else
 				SwingUtilities.updateComponentTreeUI(MainFrame.getInstance());
 			MainFrame.getInstance().repaint();
 		}
