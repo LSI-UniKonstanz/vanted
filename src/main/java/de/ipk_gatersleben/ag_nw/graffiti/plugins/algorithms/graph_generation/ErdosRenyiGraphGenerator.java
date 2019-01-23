@@ -85,7 +85,7 @@ public class ErdosRenyiGraphGenerator extends AbstractAlgorithm {
 
 	@Override
 	public String getName() {
-		return "Generate Erdős–Rényi random network";
+		return "Generate Erdos-Renyi random network";
 	}
 
 	@Override

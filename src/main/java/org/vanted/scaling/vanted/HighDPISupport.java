@@ -116,7 +116,7 @@ public class HighDPISupport implements PreferencesInterface {
 		if (laf == null || laf.equals(activeLaf)) // no LAF change
 			return;
 
-		if (laf.equals(QUAQUA))  
+		if (laf.equals(QUAQUA))
 			setLAF(quaqua);
 		else
 			setLAF(queryLafMap(laf, true));
@@ -126,13 +126,8 @@ public class HighDPISupport implements PreferencesInterface {
 		// scale new LAF
 		ScalerLoader.doScaling(false);
 
-		if (MainFrame.getInstance() != null) {
-//			if (ReleaseInfo.isRunningAsApplet())
-//				SwingUtilities.updateComponentTreeUI(ReleaseInfo.getApplet());
-//			else
-				SwingUtilities.updateComponentTreeUI(MainFrame.getInstance());
-			MainFrame.getInstance().repaint();
-		}
+		SwingUtilities.updateComponentTreeUI(MainFrame.getInstance());
+		MainFrame.getInstance().repaint();
 	}
 
 	@Override
@@ -144,8 +139,7 @@ public class HighDPISupport implements PreferencesInterface {
 	 * Through reflection we get an instance of the specified class, given there is
 	 * such static field defined.
 	 * 
-	 * @param clazz
-	 *            the Class to extract the instance from
+	 * @param clazz the Class to extract the instance from
 	 * @return a clazz instance
 	 */
 	public static Object getClassInstance(Class<?> clazz) {
