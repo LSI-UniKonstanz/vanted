@@ -29,8 +29,6 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
@@ -208,11 +206,13 @@ import org.vanted.VantedPreferences;
 
 import scenario.ScenarioService;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.navigation.NavigationComponentView;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeComponent;
 
 /**
  * Constructs a new graffiti frame, which contains the main gui components.
  * 
  * @version $Revision: 1.164.2.2 $
+ * @vanted.revision 2.6.6
  */
 public class MainFrame extends JFrame
 		implements SessionManager, SessionListener, PluginManagerListener, UndoableEditListener, EditorDefaultValues,
@@ -468,10 +468,8 @@ public class MainFrame extends JFrame
 	/**
 	 * Constructs a new <code>MainFrame</code>.
 	 * 
-	 * @param pluginmgr
-	 *            DOCUMENT ME!
-	 * @param prefs
-	 *            DOCUMENT ME!
+	 * @param pluginmgr DOCUMENT ME!
+	 * @param prefs     DOCUMENT ME!
 	 */
 	public MainFrame(PluginManager pluginmgr, Preferences prefs) {
 		this(pluginmgr, prefs, null, false);
@@ -480,10 +478,8 @@ public class MainFrame extends JFrame
 	/**
 	 * Constructs a new <code>MainFrame</code>.
 	 * 
-	 * @param pluginmgr
-	 *            DOCUMENT ME!
-	 * @param prefs
-	 *            DOCUMENT ME!
+	 * @param pluginmgr DOCUMENT ME!
+	 * @param prefs     DOCUMENT ME!
 	 */
 	public MainFrame(PluginManager pluginmgr, Preferences prefs, JPanel progressPanel, boolean showVantedHelp) {
 		super();
@@ -715,8 +711,7 @@ public class MainFrame extends JFrame
 	/**
 	 * Sets the current active session.
 	 * 
-	 * @param s
-	 *            The session to be activated.
+	 * @param s The session to be activated.
 	 */
 	public void setActiveSession(Session s, final View targetView) {
 		activeEditorSession = (EditorSession) s;
@@ -890,11 +885,10 @@ public class MainFrame extends JFrame
 	 * with id id and the newly created gui-component will be added to the gui of
 	 * the editor.
 	 * 
-	 * @param id
-	 *            the id of the gui-component where the component shall be added.
-	 * @param component
-	 *            the <code>JComponent</code> which shall be added to the specified
-	 *            gui-component.
+	 * @param id        the id of the gui-component where the component shall be
+	 *                  added.
+	 * @param component the <code>JComponent</code> which shall be added to the
+	 *                  specified gui-component.
 	 */
 	private void addGUIComponent(String id, JComponent component) {
 		// all GraffitiContainers should be JComponents
@@ -979,8 +973,7 @@ public class MainFrame extends JFrame
 	/**
 	 * Adds a <code>SelectionListener</code>.
 	 * 
-	 * @param sl
-	 *            DOCUMENT ME!
+	 * @param sl DOCUMENT ME!
 	 */
 	public void addSelectionListener(SelectionListener sl) {
 		this.selectionListeners.add(sl);
@@ -993,8 +986,7 @@ public class MainFrame extends JFrame
 	/**
 	 * Adds the given session to the list of sessions.
 	 * 
-	 * @param s
-	 *            the new session to add.
+	 * @param s the new session to add.
 	 */
 	public void addSession(Session s) {
 		sessions.add(s);
@@ -1015,8 +1007,7 @@ public class MainFrame extends JFrame
 	/**
 	 * Adds a <code>SessionListener</code>.
 	 * 
-	 * @param sl
-	 *            DOCUMENT ME!
+	 * @param sl DOCUMENT ME!
 	 */
 	public void addSessionListener(SessionListener sl) {
 		this.sessionListeners.add(sl);
@@ -1038,13 +1029,10 @@ public class MainFrame extends JFrame
 	 * Creates and adds a new internal frame to the desktop within an existing
 	 * session.
 	 * 
-	 * @param viewName
-	 *            a name of the new view
-	 * @param newFrameTitle
-	 *            the title for the frame, if <code>null</code> or the empty String
-	 *            no title will be set.
-	 * @param returnScrollpane
-	 *            DOCUMENT ME!
+	 * @param viewName         a name of the new view
+	 * @param newFrameTitle    the title for the frame, if <code>null</code> or the
+	 *                         empty String no title will be set.
+	 * @param returnScrollpane DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public JScrollPane createInternalFrame(String viewName, String newFrameTitle, boolean returnScrollpane,
@@ -1068,18 +1056,13 @@ public class MainFrame extends JFrame
 	/**
 	 * Creates and adds a new internal frame to the desktop within a new session.
 	 * 
-	 * @param viewName
-	 *            a name of the new view
-	 * @param newFrameTitle
-	 *            the title for the frame, if <code>null</code> or the empty String
-	 *            no title will be set.
-	 * @param session
-	 *            a new session.
-	 * @param returnScrollPane
-	 *            A scrollpane or a graffitiinternalframe
+	 * @param viewName         a name of the new view
+	 * @param newFrameTitle    the title for the frame, if <code>null</code> or the
+	 *                         empty String no title will be set.
+	 * @param session          a new session.
+	 * @param returnScrollPane A scrollpane or a graffitiinternalframe
 	 * @return DOCUMENT ME!
-	 * @throws RuntimeException
-	 *             DOCUMENT ME!
+	 * @throws RuntimeException DOCUMENT ME!
 	 */
 	public Object createInternalFrame(String viewName, String newFrameTitle, EditorSession session,
 			boolean returnScrollPane, boolean returnGraffitiFrame, boolean otherViewWillBeClosed,
@@ -1115,9 +1098,8 @@ public class MainFrame extends JFrame
 
 		view.setAttributeComponentManager(this.attributeComponentManager);
 
-		String modeName = "org.graffiti.plugins.modes.defaultEditMode";
 		if (modeManager != null)
-			session.changeActiveMode(modeManager.getMode(modeName));
+			session.changeActiveMode(modeManager.getMode("org.graffiti.plugins.modes.defaultEditMode"));
 
 		GraffitiInternalFrame frame = null;
 
@@ -1192,15 +1174,6 @@ public class MainFrame extends JFrame
 		scrollPane.getViewport().setBackground(Color.WHITE);
 		scrollPane.setWheelScrollingEnabled(true);
 
-		scrollPane.getHorizontalScrollBar().addAdjustmentListener(new AdjustmentListener() {
-
-			@Override
-			public void adjustmentValueChanged(AdjustmentEvent e) {
-				// logger.debug("horizontal scrollbar pos : " + e.getValue() + " maxval: " +
-				// scrollPane.getHorizontalScrollBar().getMaximum());
-			}
-		});
-
 		if (!returnScrollPane) {
 			Container j = frame.getContentPane();
 			if (view.putInScrollPane()) {
@@ -1215,15 +1188,19 @@ public class MainFrame extends JFrame
 			if (!returnGraffitiFrame) {
 				frame.setVisible(true);
 				try {
-					desktop.add(frame);
+					getDesktop().add(frame);
+					if (getDesktop().getAllFrames().length == 1) // maximize first frame only
+						frame.setMaximum(true);
 				} catch (IllegalArgumentException e) {
 					MainFrame.showMessageDialog("<html>Error occured during creation of a new internal frame.<br>"
-							+ "Probably you have more than one screen/computermonitor or a beamer plugged in. You<p>"
-							+ "mustn't move the application window to another screen after startup. It is<p>"
+							+ "Probably you have more than one screens (or a beamer) plugged in. You<p>"
+							+ "must not move the application window to another screen after startup. It is<p>"
 							+ "recommended to restart the application.", "Error: Other Graphics Device Detected!");
 					return null;
+				} catch (PropertyVetoException e1) {
+					e1.printStackTrace();
 				}
-				Java_1_5_compatibility.setComponentZorder(desktop, frame);
+				Java_1_5_compatibility.setComponentZorder(getDesktop(), frame);
 			}
 
 			final GraffitiInternalFrame fframe = frame;
@@ -1245,6 +1222,9 @@ public class MainFrame extends JFrame
 
 		if (zoomListeners != null)
 			this.zoomListeners.add(view);
+
+		// Aligns graph elements right into frame viewport
+		ZoomFitChangeComponent.zoomRegion(false);
 
 		if (returnGraffitiFrame)
 			return frame;
@@ -1325,8 +1305,7 @@ public class MainFrame extends JFrame
 	 * Informs all <code>SessionListener</code>s that the active session has
 	 * changed.
 	 * 
-	 * @param session
-	 *            DOCUMENT ME!
+	 * @param session DOCUMENT ME!
 	 */
 	public void fireSessionChanged(Session session) {
 		GravistoService.checkEventDispatchThread();
@@ -1354,8 +1333,7 @@ public class MainFrame extends JFrame
 	 * Called, if the session or data (except graph data) in the session have been
 	 * changed.
 	 * 
-	 * @param session
-	 *            DOCUMENT ME!
+	 * @param session DOCUMENT ME!
 	 */
 	public void fireSessionDataChanged(Session session) {
 		for (Iterator<SessionListener> it = this.sessionListeners.iterator(); it.hasNext();) {
@@ -1374,8 +1352,7 @@ public class MainFrame extends JFrame
 	/**
 	 * Loads a graph from a file;
 	 * 
-	 * @param file
-	 *            File containing the graph;
+	 * @param file File containing the graph;
 	 */
 	public Graph loadGraph(String fileName, URL url) {
 		String ext = fileName.substring(fileName.lastIndexOf("."));
@@ -1466,8 +1443,7 @@ public class MainFrame extends JFrame
 	 * shown after this method returns. Instead the graph will be shown as soon as
 	 * the file loading is finished.
 	 * 
-	 * @param file
-	 *            or url
+	 * @param file or url
 	 */
 	public void loadGraphInBackground(final File file, ActionEvent ae, boolean autoSwitch)
 			throws IllegalAccessException, InstantiationException {
@@ -1653,8 +1629,7 @@ public class MainFrame extends JFrame
 	/**
 	 * Loads a graph from a file;
 	 * 
-	 * @param file
-	 *            File containing the graph;
+	 * @param file File containing the graph;
 	 */
 	public void loadGraph(File file) {
 		Graph g;
@@ -1833,10 +1808,8 @@ public class MainFrame extends JFrame
 	/**
 	 * Called by the plugin manager, iff a plugin has been added.
 	 * 
-	 * @param plugin
-	 *            the added plugin.
-	 * @param desc
-	 *            the description of the new plugin.
+	 * @param plugin the added plugin.
+	 * @param desc   the description of the new plugin.
 	 */
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
 
@@ -2250,9 +2223,8 @@ public class MainFrame extends JFrame
 	 * the titles are sorted alphabetically.
 	 * 
 	 * @param menu
-	 * @param title
-	 *            Title of the new menu to be added to the target menu (
-	 *            <code>menu</code>).
+	 * @param title Title of the new menu to be added to the target menu (
+	 *              <code>menu</code>).
 	 * @return The target position where the menu should be added to.
 	 */
 	private int getTargetMenuPosition(JMenuBar menu, String title) {
@@ -2316,8 +2288,7 @@ public class MainFrame extends JFrame
 	/**
 	 * Removes a <code>SelectionListener</code>.
 	 * 
-	 * @param sl
-	 *            DOCUMENT ME!
+	 * @param sl DOCUMENT ME!
 	 */
 	public void removeSelectionListener(SelectionListener sl) {
 		this.selectionListeners.remove(sl);
@@ -2358,8 +2329,7 @@ public class MainFrame extends JFrame
 	 * Code originates from the closeSession() method. Now there is placed only a
 	 * method call instead.
 	 * 
-	 * @param session
-	 *            current active Session
+	 * @param session current active Session
 	 * @return <b>true</b> if the frame should be closed.
 	 */
 	public boolean promptClosing(Session session) {
@@ -2410,8 +2380,7 @@ public class MainFrame extends JFrame
 	 * Closes all views of the given session and removes the session from the list
 	 * of sessions.
 	 * 
-	 * @param session
-	 *            the session to be removed.
+	 * @param session the session to be removed.
 	 * 
 	 * @return <b>true</b> if the session has been closed
 	 */
@@ -2475,8 +2444,7 @@ public class MainFrame extends JFrame
 	/**
 	 * Removes a <code>SessionListener</code>.
 	 * 
-	 * @param sl
-	 *            DOCUMENT ME!
+	 * @param sl DOCUMENT ME!
 	 */
 	public void removeSessionListener(SessionListener sl) {
 		this.sessionListeners.remove(sl);
@@ -2485,8 +2453,7 @@ public class MainFrame extends JFrame
 	/**
 	 * Invoked when the session changed.
 	 * 
-	 * @param s
-	 *            the new session.
+	 * @param s the new session.
 	 */
 	public void sessionChanged(Session s) {
 		Tool lastActive = AbstractTool.getActiveTool();
@@ -2584,8 +2551,7 @@ public class MainFrame extends JFrame
 	/**
 	 * Invoked when the session data changed.
 	 * 
-	 * @param s
-	 *            DOCUMENT ME!
+	 * @param s DOCUMENT ME!
 	 */
 	public void sessionDataChanged(Session s) {
 		EditorSession es = (EditorSession) s;
@@ -2627,10 +2593,8 @@ public class MainFrame extends JFrame
 	 * defined number of seconds. This method can be called from a background
 	 * thread.
 	 * 
-	 * @param message
-	 *            a message string to be displayed
-	 * @param type
-	 *            a type of the message (e.g. MessageType.INFO)
+	 * @param message a message string to be displayed
+	 * @param type    a type of the message (e.g. MessageType.INFO)
 	 */
 	public static void showMessage(final String message, final MessageType type) {
 		int time;
@@ -2681,12 +2645,9 @@ public class MainFrame extends JFrame
 	 * according to the specified type for the given interval. This method is thread
 	 * safe.
 	 * 
-	 * @param message
-	 *            a message string to be displayed
-	 * @param type
-	 *            a type of the message (e.g. ERROR)
-	 * @param timeMillis
-	 *            number of milliseconds the message should be displayed
+	 * @param message    a message string to be displayed
+	 * @param type       a type of the message (e.g. ERROR)
+	 * @param timeMillis number of milliseconds the message should be displayed
 	 */
 	public static void showMessage(final String message, final MessageType type, final int timeMillis) {
 		if (SwingUtilities.isEventDispatchThread()) {
@@ -2705,8 +2666,7 @@ public class MainFrame extends JFrame
 	 * choosing view types. The parameter withNewSession specifies whether the new
 	 * view starts within an existing session or within a new session.
 	 * 
-	 * @param returnScrollpane
-	 *            DOCUMENT ME!
+	 * @param returnScrollpane DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	public JScrollPane showViewChooserDialog(boolean returnScrollpane, boolean useDefaultViewForSmallGraphs,
@@ -2733,10 +2693,8 @@ public class MainFrame extends JFrame
 	 * choosing view types. The parameter withNewSession specifies whether the new
 	 * view starts within an existing session or within a new session.
 	 * 
-	 * @param session
-	 *            the session in which to open the new view.
-	 * @param returnScrollPane
-	 *            DOCUMENT ME!
+	 * @param session          the session in which to open the new view.
+	 * @param returnScrollPane DOCUMENT ME!
 	 * @param e
 	 * @param interaction
 	 * @return DOCUMENT ME!
@@ -2870,8 +2828,7 @@ public class MainFrame extends JFrame
 	/**
 	 * Shows an error in a modal dialog box. (thread safe)
 	 * 
-	 * @param msg
-	 *            the message to be shown.
+	 * @param msg the message to be shown.
 	 */
 	protected void showError(final String msg) {
 		if (SwingUtilities.isEventDispatchThread()) {
@@ -2914,10 +2871,8 @@ public class MainFrame extends JFrame
 	 * Sets the accel key of the given item. The accel key information is gathered
 	 * from the <code>sBundle</code>.
 	 * 
-	 * @param item
-	 *            DOCUMENT ME!
-	 * @param action
-	 *            DOCUMENT ME!
+	 * @param item   DOCUMENT ME!
+	 * @param action DOCUMENT ME!
 	 */
 	private void setAccelKey(JMenuItem item, GraffitiAction action) {
 		String accel = sBundle.getString("menu." + action.getName() + ".accel");
@@ -2996,8 +2951,7 @@ public class MainFrame extends JFrame
 	 * read from the string bundle. &uqot;menu.&quot;<tt>name</tt> &quot;.icon&quot;
 	 * is read from the image bundle.
 	 * 
-	 * @param name
-	 *            the name of the menu item.
+	 * @param name the name of the menu item.
 	 * @return DOCUMENT ME!
 	 */
 	private JMenu createMenu(String name) {
@@ -3237,8 +3191,7 @@ public class MainFrame extends JFrame
 	/**
 	 * Shows an arbitrary message dialog.
 	 * 
-	 * @param msg
-	 *            the message to be shown.
+	 * @param msg the message to be shown.
 	 */
 	public void showMessageDialog(String msg) {
 		showMessageDialog(msg, StringBundle.getInstance().getString("message.dialog.title"));
@@ -3259,8 +3212,7 @@ public class MainFrame extends JFrame
 	/**
 	 * Shows an arbitrary message dialog.
 	 * 
-	 * @param msg
-	 *            the message to be shown.
+	 * @param msg the message to be shown.
 	 */
 	public static void showMessageDialog(final String msg, final String title) {
 		if (MainFrame.getInstance() == null)
@@ -3370,8 +3322,7 @@ public class MainFrame extends JFrame
 	 * &uqot;menu.&quot;<tt>name</tt>&quot;.icon&quot; is read from the image
 	 * bundle.
 	 * 
-	 * @param action
-	 *            the action, which should be executed by this menu item.
+	 * @param action the action, which should be executed by this menu item.
 	 * @return DOCUMENT ME!
 	 */
 	private JMenuItem createMenuItem(final GraffitiAction action) {
@@ -3480,8 +3431,7 @@ public class MainFrame extends JFrame
 	/**
 	 * Constructs and returns a button.
 	 * 
-	 * @param action
-	 *            the action, which is associated with this button.
+	 * @param action the action, which is associated with this button.
 	 * @return DOCUMENT ME!
 	 */
 	private JButton createToolBarButton(GraffitiAction action) {
@@ -3816,10 +3766,9 @@ public class MainFrame extends JFrame
 	// }
 
 	/**
-	 * @param panel
-	 *            A status panel that will be shown in the progress area. A timer
-	 *            calls isVisible to this panel. If it is not visible any more, it
-	 *            will be removed from the status area.
+	 * @param panel A status panel that will be shown in the progress area. A timer
+	 *              calls isVisible to this panel. If it is not visible any more, it
+	 *              will be removed from the status area.
 	 */
 	public void addStatusPanel(JPanel panel) {
 		if (jSplitPane_pluginPanelAndProgressView != null && progressPanel != null) {
