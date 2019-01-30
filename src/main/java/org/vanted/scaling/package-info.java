@@ -3,7 +3,7 @@
  * regulator, coordinator, etc.).
  * 
  * @since 2.6.4
- * @author Dimitar Garkov (dim8)
+ * @author D. Garkov
  * @version 0.8
  */
 package org.vanted.scaling;

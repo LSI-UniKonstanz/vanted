@@ -763,9 +763,18 @@ public class MainFrame extends JFrame
 	}
 
 	/**
+	 * 
+	 * @return the global Attribute Component Manager
+	 * @since 2.6.6
+	 */
+	public AttributeComponentManager getAttributeComponentManager() {
+		return attributeComponentManager;
+	}
+	
+	/**
 	 * DOCUMENT ME!
 	 * 
-	 * @return DOCUMENT ME!
+	 * @return the global Edit Component Manager
 	 */
 	public EditComponentManager getEditComponentManager() {
 		return editComponentManager;
@@ -774,7 +783,7 @@ public class MainFrame extends JFrame
 	/**
 	 * DOCUMENT ME!
 	 * 
-	 * @return DOCUMENT ME!
+	 * @return the global IO Manager
 	 */
 	public IOManager getIoManager() {
 		return ioManager;
@@ -792,7 +801,7 @@ public class MainFrame extends JFrame
 	/**
 	 * DOCUMENT ME!
 	 * 
-	 * @return DOCUMENT ME!
+	 * @return the global Plugin Manager
 	 */
 	public PluginManager getPluginManager() {
 		return pluginmgr;
@@ -810,7 +819,7 @@ public class MainFrame extends JFrame
 	/**
 	 * DOCUMENT ME!
 	 * 
-	 * @return DOCUMENT ME!
+	 * @return the global Session Manager
 	 */
 	public SessionManager getSessionManager() {
 		return this;
@@ -981,6 +990,16 @@ public class MainFrame extends JFrame
 		for (EditorSession es : getEditorSessions()) {
 			es.getSelectionModel().addSelectionListener(sl);
 		}
+	}
+
+	/**
+	 * Removes the session from the list of sessions.
+	 * 
+	 * @param s the session to remove.
+	 * @since 2.6.6
+	 */
+	public void removeSession(Session s) {
+		sessions.remove(s);
 	}
 
 	/**
@@ -1192,10 +1211,12 @@ public class MainFrame extends JFrame
 					if (getDesktop().getAllFrames().length == 1) // maximize first frame only
 						frame.setMaximum(true);
 				} catch (IllegalArgumentException e) {
-					MainFrame.showMessageDialog("<html>Error occured during creation of a new internal frame.<br>"
-							+ "Probably you have more than one screens (or a beamer) plugged in. You<p>"
-							+ "must not move the application window to another screen after startup. It is<p>"
-							+ "recommended to restart the application.", "Error: Other Graphics Device Detected!");
+					MainFrame.showMessageDialog(
+							"<html>Error occured during creation of a new internal frame.<br>"
+									+ "Probably you have more than one screens (or a beamer) plugged in. You<p>"
+									+ "must not move the application window to another screen after startup. It is<p>"
+									+ "recommended to restart the application.",
+							"Error: Other Graphics Device Detected!");
 					return null;
 				} catch (PropertyVetoException e1) {
 					e1.printStackTrace();
@@ -3734,11 +3755,6 @@ public class MainFrame extends JFrame
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.Component#processEvent(java.awt.AWTEvent)
-	 */
 	@Override
 	protected void processEvent(AWTEvent e) {
 		super.processEvent(e);

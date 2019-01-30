@@ -48,42 +48,18 @@ public abstract class AbstractExperimentDataProcessor extends AbstractEditorAlgo
 
 	public abstract void setExperimentData(ExperimentInterface mappingData);
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seede.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.
-	 * ExperimentDataProcessorInterface#getAnnotations()
-	 */
 	public HashMap<File, ExperimentDataAnnotation> getAnnotations(Collection<File> files) {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seede.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.
-	 * ExperimentDataProcessorInterface#setComponent(javax.swing.JComponent)
-	 */
 	public void setComponent(JComponent optSupplementaryPanel) {
 		// ignore
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seede.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.
-	 * ExperimentDataProcessorInterface#addPostProcessor(java.lang.Runnable)
-	 */
 	public void addPostProcessor(List<Runnable> postProcessors) {
 		this.postProcessors.addAll(postProcessors);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seede.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.dbe.
-	 * ExperimentDataProcessorInterface#removePostProcessor(java.lang.Runnable)
-	 */
 	public boolean removePostProcessor(List<Runnable> postProcessors) {
 		return this.postProcessors.removeAll(postProcessors);
 	}

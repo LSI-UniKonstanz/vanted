@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// ScalerLoader.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling;
 
 import java.awt.Container;
@@ -34,7 +41,7 @@ import org.vanted.scaling.vanted.GraphScaler;
  * scaling of its components. Then you could use the synchronized initial
  * scaling {@link ScalerLoader#doSyncInitialScaling()}.
  * 
- * @author dim8
+ * @author D. Garkov
  */
 public final class ScalerLoader {
 
@@ -280,7 +287,7 @@ public final class ScalerLoader {
 		/**
 		 * To access the container.
 		 * 
-		 * @author dim8
+		 * @author D. Garkov
 		 */
 		class Holder {
 			private Container c = null;

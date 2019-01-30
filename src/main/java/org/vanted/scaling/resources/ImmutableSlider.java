@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// ImmutableSlider.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.resources;
 
 import java.awt.Color;
@@ -30,7 +37,7 @@ import org.vanted.scaling.Toolbox;
  * The LookAndFeel immutable JSlider has two skins, one plain and one
  * color-coded.
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class ImmutableSlider extends JSlider {
@@ -109,7 +116,7 @@ public class ImmutableSlider extends JSlider {
 	 * from then on, that might be brought through a LAF change. Thus, we turn it
 	 * LAF-immutable.
 	 * 
-	 * @author dim8
+	 * @author D. Garkov
 	 *
 	 */
 	protected static class PlainImmutableSliderUI extends BasicSliderUI {
@@ -185,7 +192,7 @@ public class ImmutableSlider extends JSlider {
 	 * we turn it immutable. For completion (e.g. to avoid size-changing), it
 	 * extends the {@linkplain PlainImmutableSliderUI}.
 	 * 
-	 * @author dim8
+	 * @author D. Garkov
 	 *
 	 */
 	protected static class ColoredImmutableSliderUI extends PlainImmutableSliderUI {

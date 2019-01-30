@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// HTMLSupport.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.scalers.component;
 
 import java.beans.PropertyChangeEvent;
@@ -27,7 +34,7 @@ import org.vanted.scaling.ComponentRegulator;
  * 
  * @see {@link ComponentRegulator#scaleHTML(JComponent)}
  * 
- * @author dim8
+ * @author D. Garkov
  */
 class HTMLSupport {
 
@@ -304,7 +311,7 @@ class HTMLSupport {
 	 * Listener for any changes on a Swing Component regarding its text. See
 	 * {@link HTMLSupport#handleTextListener(JComponent, boolean)} for usage.
 	 * 
-	 * @author dim8
+	 * @author D. Garkov
 	 *
 	 */
 	private static class TextListener implements PropertyChangeListener {

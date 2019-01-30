@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// JLabelScaler.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.scalers.component;
 
 import javax.swing.Icon;
@@ -7,7 +14,7 @@ import javax.swing.JLabel;
 /**
  * A {@linkplain JLabel}-specific extension of {@link ComponentScaler}.
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class JLabelScaler extends ComponentScaler implements HTMLScaler {

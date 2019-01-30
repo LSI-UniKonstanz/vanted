@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// DPIHelper.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling;
 
 import java.awt.Container;
@@ -36,7 +43,7 @@ import org.vanted.scaling.vanted.HighDPISupport;
  * (Slider value) and is responsible for managing the scaling preferences among
  * some other useful functions in hand.
  * 
- * @author dim8
+ * @author D. Garkov
  */
 public class DPIHelper {
 

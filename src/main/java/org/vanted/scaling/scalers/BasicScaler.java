@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// BasicScaler.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.scalers;
 
 import java.awt.Dimension;
@@ -29,7 +36,7 @@ import org.vanted.scaling.resources.ScaledIcon;
  * might be later referred as the 4 specifics. For exact LAF implementations
  * consider {@link NimbusScaler} and {@link WindowsScaler}.
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class BasicScaler implements Scaler {

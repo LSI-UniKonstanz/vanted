@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// GraphScaler.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.vanted;
 
 import java.awt.Toolkit;
@@ -25,7 +32,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeCompon
  * Responsible for the synchronization between scaling and the established graph
  * zooming, which acts as graph scaling.
  * 
- * @author dim8
+ * @author D. Garkov
  */
 public class GraphScaler implements SessionListener, ChangeListener {
 

@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// ComponentRegulator.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling;
 
 import java.awt.Component;
@@ -39,7 +46,7 @@ import org.vanted.scaling.scalers.component.JTextComponentScaler;
  * any specified icons. Those are extracted from the component tree and rescaled
  * accordingly (see {@linkplain ComponentScaler} and its subtypes).
  * 
- * @author dim8
+ * @author D. Garkov
  */
 public class ComponentRegulator {
 

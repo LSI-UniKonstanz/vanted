@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// ScalingCoordinator.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling;
 
 import java.awt.Container;
@@ -11,7 +18,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
-import org.ReleaseInfo;
 import org.vanted.scaling.scalers.BasicScaler;
 import org.vanted.scaling.scalers.NimbusScaler;
 import org.vanted.scaling.scalers.Scaler;
@@ -26,7 +32,7 @@ import org.vanted.scaling.scalers.WindowsScaler;
  * Big Scale Operations (e.g. DPI-Scale factor of 50) require additional heap
  * space!
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class ScalingCoordinator {
@@ -36,10 +42,8 @@ public class ScalingCoordinator {
 
 	/**
 	 * 
-	 * @param factor
-	 *            the processed Slider value
-	 * @param main
-	 *            the main container
+	 * @param factor the processed Slider value
+	 * @param main   the main container
 	 */
 	public ScalingCoordinator(float factor, Container main) {
 		// scale all defaults
@@ -53,8 +57,7 @@ public class ScalingCoordinator {
 	/**
 	 * This uses the preferences-stored factor. Suitable for initial modifications.
 	 * 
-	 * @param main
-	 *            the main container
+	 * @param main the main container
 	 */
 	public ScalingCoordinator(Container main) {
 		int value = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET);
@@ -70,10 +73,8 @@ public class ScalingCoordinator {
 
 	/**
 	 * 
-	 * @param main
-	 *            the main container
-	 * @param components
-	 *            <b>false</b>: scale LAF Defaults only
+	 * @param main       the main container
+	 * @param components <b>false</b>: scale LAF Defaults only
 	 */
 	public ScalingCoordinator(Container main, boolean components) {
 		int value = DPIHelper.managePreferences(DPIHelper.VALUE_DEFAULT, DPIHelper.PREFERENCES_GET);
@@ -98,9 +99,8 @@ public class ScalingCoordinator {
 	/**
 	 * Scaling Look & Feel Defaults.
 	 * 
-	 * @param factor
-	 *            the required new DPI Factor, from which a scaling ratio would be
-	 *            constructed.
+	 * @param factor the required new DPI Factor, from which a scaling ratio would
+	 *               be constructed.
 	 */
 	public void scaleDefaults(float factor) {
 		float dpiRatio = Toolkit.getDefaultToolkit().getScreenResolution() / factor;
@@ -159,8 +159,7 @@ public class ScalingCoordinator {
 	/**
 	 * Scales JComponents.
 	 * 
-	 * @param factor
-	 *            the scaling ratio from system DPI & requested DPI
+	 * @param factor the scaling ratio from system DPI & requested DPI
 	 */
 	public void scaleComponents(float factor, Container main) {
 		float dpiRatio = Toolkit.getDefaultToolkit().getScreenResolution() / factor;
@@ -173,12 +172,9 @@ public class ScalingCoordinator {
 	 * Transforms the <code>original</code> LAf-Default using the dispatched
 	 * <code>delegate</code> Scaler.
 	 * 
-	 * @param delegate
-	 *            appropriate scaler
-	 * @param key
-	 *            the therewith associated defaults key
-	 * @param original
-	 *            to be scaled object
+	 * @param delegate appropriate scaler
+	 * @param key      the therewith associated defaults key
+	 * @param original to be scaled object
 	 * 
 	 * @return newly scaled LAF-Defaults Object
 	 */
@@ -202,8 +198,7 @@ public class ScalingCoordinator {
 	/**
 	 * Call after each major scaling operation.
 	 * 
-	 * @param main
-	 *            the main container
+	 * @param main the main container
 	 */
 	public static void refreshGUI(final Container main) {
 		if (main != null)
@@ -215,10 +210,7 @@ public class ScalingCoordinator {
 
 				@Override
 				public void run() {
-					if (ReleaseInfo.isRunningAsApplet())
-						SwingUtilities.updateComponentTreeUI(ReleaseInfo.getApplet());
-					else
-						SwingUtilities.updateComponentTreeUI(main);
+					SwingUtilities.updateComponentTreeUI(main);
 
 					// We switch on/off the frame to refresh Tabs when using Nimbus
 					if (isNimbus) {

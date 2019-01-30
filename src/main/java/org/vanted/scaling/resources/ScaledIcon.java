@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// ScaledIcon.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.resources;
 
 import java.awt.Component;
@@ -17,7 +24,7 @@ import javax.swing.Icon;
  * however, comes firstly in with JAVA 9, due to Project Jigsaw. Until then the
  * modifier is public.
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class ScaledIcon implements Icon {

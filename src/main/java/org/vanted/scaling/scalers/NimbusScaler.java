@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// NimbusScaler.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.scalers;
 
 import java.awt.Font;
@@ -10,7 +17,7 @@ import javax.swing.plaf.FontUIResource;
  * property change and Nimbus does the rest alone. Icons are sometimes shown
  * with marks, so we return them unchanged.
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class NimbusScaler extends BasicScaler {

@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// ScalingSlider.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling;
 
 import java.awt.Container;
@@ -30,7 +37,7 @@ import org.vanted.scaling.resources.ImmutableSlider;
  * UIdefaults with the factor of 2 at most. On the contrary, one could increase
  * with a factor of 100. This could be overwritten though.
  * 
- * @author dim8
+ * @author D. Garkov
  */
 public class ScalingSlider extends ImmutableSlider implements ChangeListener, FocusListener, Serializable {
 

@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// ScaledFontUIResource.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.resources;
 
 import java.awt.Toolkit;
@@ -7,7 +14,7 @@ import javax.swing.plaf.FontUIResource;
 /**
  * Customized {@link FontUIResource} class.
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class ScaledFontUIResource extends FontUIResource {

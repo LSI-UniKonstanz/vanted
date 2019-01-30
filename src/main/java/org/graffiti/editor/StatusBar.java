@@ -614,7 +614,7 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 	 * Sets size by taking and adjusting the respective LAF default.
 	 * 
 	 * @return LAF-respecting font size
-	 * @author dim8
+	 * @author D. Garkov
 	 * @since 2.6.4
 	 */
 	private int setStatuslineFontsize() {

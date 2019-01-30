@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// ImmutableCheckbox.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.resources;
 
 import java.awt.Dimension;
@@ -16,7 +23,7 @@ import javax.swing.plaf.FontUIResource;
  * Used for the HighDPISupport pane, where it is vital to preserve state, so
  * that the user can continue to work with its components.
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class ImmutableCheckBox extends JCheckBox {

@@ -1196,7 +1196,7 @@ public class MegaMoveTool extends MegaTools implements PreferencesInterface {
 	 *            the mouse event - here, we use it to determine whether
 	 *            movement went out of bounds
 	 * 
-	 * @author dim8
+	 * @author D. Garkov
 	 */
 	private void showOutOfBoundsWarning(MouseEvent e) {
 		// check if the user wants to see the pop-up

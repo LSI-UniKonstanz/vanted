@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// JSplitPaneScaler.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.scalers.component;
 
 import java.awt.Component;
@@ -8,7 +15,7 @@ import javax.swing.JSplitPane;
 /**
  * A {@linkplain JSplitPane}-specific extension of {@link ComponentScaler}.
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class JSplitPaneScaler extends ComponentScaler {

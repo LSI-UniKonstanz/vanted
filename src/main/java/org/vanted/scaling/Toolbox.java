@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// Toolbox.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling;
 
 import java.awt.Toolkit;
@@ -21,7 +28,7 @@ import org.vanted.scaling.scalers.component.*;
  * An utility class holding some handy methods for tweaking the scaling of some
  * components, where necessary.
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class Toolbox {

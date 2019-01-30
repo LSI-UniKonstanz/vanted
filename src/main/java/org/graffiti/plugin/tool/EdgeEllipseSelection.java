@@ -18,7 +18,7 @@ import org.graffiti.plugin.view.GraphElementShape;
  * Optional edge selection that would be implemented soon. There are multiple
  * TODOs for now!
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 class EdgeEllipseSelection {

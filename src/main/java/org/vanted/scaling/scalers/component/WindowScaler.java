@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// WindowScaler.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.scalers.component;
 
 import java.awt.AWTEvent;
@@ -22,7 +29,7 @@ import org.vanted.scaling.Toolbox;
  * Extension of {@linkplain ComponentScaler}, responsible for Window-derived
  * components' decorations scaling.
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class WindowScaler extends ComponentScaler {
@@ -98,7 +105,7 @@ public class WindowScaler extends ComponentScaler {
 	 * any new window. One notable exception are HeavyWeightWindows, whose scaling
 	 * is part of the normal DPI emulating cycle.
 	 * 
-	 * @author dim8
+	 * @author D. Garkov
 	 *
 	 */
 	private static class WindowResizerListener implements AWTEventListener {

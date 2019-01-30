@@ -1,3 +1,10 @@
+// ==============================================================================
+//
+// JTextComponentScaler.java
+//
+// Copyright (c) 2017-2019, University of Konstanz
+//
+// ==============================================================================
 package org.vanted.scaling.scalers.component;
 
 import javax.swing.JComponent;
@@ -7,7 +14,7 @@ import javax.swing.text.JTextComponent;
 /**
  * A {@linkplain JTextComponent}-specific extension of {@link ComponentScaler}.
  * 
- * @author dim8
+ * @author D. Garkov
  *
  */
 public class JTextComponentScaler extends ComponentScaler implements HTMLScaler {
