@@ -18,14 +18,11 @@ import org.graffiti.selection.SelectionListener;
  * Provides a spring embedder algorithm a la KK.
  * 
  * @version $Revision: 1.5 $
+ * @vated.revision 2.6.6
  */
 public class SwitchSelectionsPlugin extends EditorPluginAdapter implements SelectionListener {
-	// ~ Instance fields ========================================================
 
-	/** DOCUMENT ME! */
-	SelectionMenu selMenu = new SelectionMenu();
-
-	// ~ Constructors ===========================================================
+	private final SelectionMenu selMenu = new SelectionMenu();
 
 	/**
 	 * Creates a new TrivialGridRestrictedPlugin object.
@@ -35,31 +32,16 @@ public class SwitchSelectionsPlugin extends EditorPluginAdapter implements Selec
 		this.guiComponents[0] = selMenu;
 	}
 
-	// ~ Methods ================================================================
-
-	/**
-	 * @see org.graffiti.plugin.GenericPluginAdapter#isSelectionListener()
-	 */
 	@Override
 	public boolean isSelectionListener() {
 		return true;
 	}
 
-	/**
-	 * @see org.graffiti.selection.SelectionListener#selectionChanged(org.graffiti.selection.SelectionEvent)
-	 */
 	public void selectionChanged(SelectionEvent e) {
 		((SelectionListener) selMenu).selectionChanged(e);
 	}
 
-	/**
-	 * @see org.graffiti.selection.SelectionListener#selectionListChanged(org.graffiti.selection.SelectionEvent)
-	 */
 	public void selectionListChanged(SelectionEvent e) {
 		((SelectionListener) selMenu).selectionListChanged(e);
 	}
 }
-
-// ------------------------------------------------------------------------------
-// end of file
-// ------------------------------------------------------------------------------

@@ -386,7 +386,14 @@ public class ZoomFitChangeComponent extends JToolBar
 			}
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param view
+	 * @param scrollPane
+	 * @deprecated
+	 */
+	@SuppressWarnings("unused")
 	private void myZoomToView(View view, JScrollPane scrollPane) {
 		Rectangle selectionViewRect = getViewRectFromSelection(view, null);
 		if (selectionViewRect == null)

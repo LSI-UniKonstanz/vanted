@@ -6,11 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.AttributeHelper;
-import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.graffiti.attributes.Attributable;
+import org.graffiti.event.AttributeAdapter;
 import org.graffiti.event.AttributeEvent;
-import org.graffiti.event.AttributeListener;
-import org.graffiti.event.TransactionEvent;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.sbml.jsbml.Annotation;
@@ -19,7 +17,7 @@ import org.sbml.jsbml.xml.XMLNode;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.exporters.sbml.SBML_SBase_Writer;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.ios.importers.sbml.SBML_SBase_Reader;
 
-public class KineticLawHelper implements AttributeListener {
+public class KineticLawHelper extends AttributeAdapter {
 
 	Graph g;
 
@@ -263,24 +261,6 @@ public class KineticLawHelper implements AttributeListener {
 	}
 
 	@Override
-	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void transactionStarted(TransactionEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void postAttributeAdded(AttributeEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void postAttributeChanged(AttributeEvent e) {
 		Attributable attributeable = e.getAttributeable();
 		if (attributeable instanceof Node) {
@@ -355,9 +335,7 @@ public class KineticLawHelper implements AttributeListener {
 
 			if (newValue instanceof XMLNode && isSetNonRDFAnnotation(reactionNode)) {
 				XMLNode annotation = (XMLNode) newValue;
-				if (attributeName.equals(SBML_Constants.KINETIC_LAW_NON_RDF_ANNOTATION) && annotation == null) {
-					deleteNonRDFAnnotation(node);
-				} else if (attributeName.equals(SBML_Constants.KINETIC_LAW_NON_RDF_ANNOTATION)
+				if (attributeName.equals(SBML_Constants.KINETIC_LAW_NON_RDF_ANNOTATION)
 						&& !getNonRDFAnnotation(node).equals(annotation)) {
 					setNonRDFAnnotation(node, annotation);
 					continue;
@@ -482,9 +460,7 @@ public class KineticLawHelper implements AttributeListener {
 
 					XMLNode annotation = (XMLNode) newValue;
 					XMLNode oldAnnotation = getNonRDFAnnotation(node);
-					if (attributeName.equals(localParameterAnnotation) && annotation == null) {
-						localParameter.deleteNonRDFAnnotation(node);
-					} else if (attributeName.equals(localParameterAnnotation) && !oldAnnotation.equals(annotation)) {
+					if (attributeName.equals(localParameterAnnotation) && !oldAnnotation.equals(annotation)) {
 						localParameter.setNonRDFAnnotation(node, annotation);
 						continue;
 					}
@@ -492,29 +468,5 @@ public class KineticLawHelper implements AttributeListener {
 				count++;
 			}
 		}
-	}
-
-	@Override
-	public void postAttributeRemoved(AttributeEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void preAttributeAdded(AttributeEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void preAttributeChanged(AttributeEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void preAttributeRemoved(AttributeEvent e) {
-		// TODO Auto-generated method stub
-
 	}
 }

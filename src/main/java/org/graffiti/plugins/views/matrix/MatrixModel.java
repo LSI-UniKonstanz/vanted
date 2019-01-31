@@ -30,11 +30,6 @@ import org.graffiti.graph.Node;
  * @version $Revision: 1.8 $
  */
 public class MatrixModel extends AbstractTableModel implements GraphListener {
-	// ~ Static fields/initializers =============================================
-
-	/** The logger for the current class. */
-	// private static final Logger logger =
-	// Logger.getLogger(MatrixModel.class.getName());
 
 	// ~ Instance fields ========================================================
 
@@ -67,40 +62,24 @@ public class MatrixModel extends AbstractTableModel implements GraphListener {
 
 	// ~ Methods ================================================================
 
-	/**
-	 * @see javax.swing.table.TableModel#isCellEditable(int, int)
-	 */
 	@Override
 	public boolean isCellEditable(int row, int col) {
 		return row != col;
 	}
 
-	/**
-	 * @see javax.swing.table.TableModel#getColumnClass(int)
-	 */
-	@SuppressWarnings("unchecked")
 	@Override
-	public Class getColumnClass(int col) {
+	public Class<?> getColumnClass(int col) {
 		return Boolean.class;
 	}
 
-	/**
-	 * @see javax.swing.table.TableModel#getColumnCount()
-	 */
 	public int getColumnCount() {
 		return graph.getNumberOfNodes();
 	}
 
-	/**
-	 * @see javax.swing.table.TableModel#getRowCount()
-	 */
 	public int getRowCount() {
 		return graph.getNumberOfNodes();
 	}
 
-	/**
-	 * @see javax.swing.table.TableModel#setValueAt(Object, int, int)
-	 */
 	@Override
 	public void setValueAt(Object value, int row, int col) {
 		Node source = (Node) nodes.get(row);
@@ -137,10 +116,7 @@ public class MatrixModel extends AbstractTableModel implements GraphListener {
 			addEdge(source, target);
 		}
 	}
-
-	/**
-	 * @see javax.swing.table.TableModel#getValueAt(int, int)
-	 */
+	
 	public Object getValueAt(int row, int col) {
 		if ((row < nodes.size()) && (col < nodes.size())) {
 			Node source = (Node) nodes.get(row);
@@ -181,78 +157,56 @@ public class MatrixModel extends AbstractTableModel implements GraphListener {
 			return super.getColumnName(row);
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#postEdgeAdded(GraphEvent)
-	 */
+	@Override
 	public void postEdgeAdded(GraphEvent e) {
 		fireTableDataChanged();
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#postEdgeRemoved(GraphEvent)
-	 */
+	@Override
 	public void postEdgeRemoved(GraphEvent e) {
 		fireTableDataChanged();
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#postGraphCleared(GraphEvent)
-	 */
+	@Override
 	public void postGraphCleared(GraphEvent e) {
 		nodes.clear();
 		fireTableStructureChanged();
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#postNodeAdded(GraphEvent)
-	 */
+	@Override
 	public void postNodeAdded(GraphEvent e) {
 		nodes.add(e.getNode());
 		fireTableStructureChanged();
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#postNodeRemoved(GraphEvent)
-	 */
+	@Override
 	public void postNodeRemoved(GraphEvent e) {
 		// the array list access may be a bit inefficient here...
 		nodes.remove(e.getNode());
 		fireTableStructureChanged();
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#preEdgeAdded(GraphEvent)
-	 */
+	@Override
 	public void preEdgeAdded(GraphEvent e) {
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#preEdgeRemoved(GraphEvent)
-	 */
+	@Override
 	public void preEdgeRemoved(GraphEvent e) {
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#preGraphCleared(GraphEvent)
-	 */
+	@Override
 	public void preGraphCleared(GraphEvent e) {
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#preNodeAdded(GraphEvent)
-	 */
+	@Override
 	public void preNodeAdded(GraphEvent e) {
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#preNodeRemoved(GraphEvent)
-	 */
+	@Override
 	public void preNodeRemoved(GraphEvent e) {
 	}
 
-	/**
-	 * @see org.graffiti.event.TransactionListener#transactionFinished(TransactionEvent)
-	 */
+	@Override
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		nodes.clear();
 
@@ -264,9 +218,6 @@ public class MatrixModel extends AbstractTableModel implements GraphListener {
 		fireTableStructureChanged();
 	}
 
-	/**
-	 * @see org.graffiti.event.TransactionListener#transactionStarted(TransactionEvent)
-	 */
 	public void transactionStarted(TransactionEvent e) {
 	}
 
