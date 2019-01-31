@@ -34,14 +34,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.graph_generation.Wat
 /**
  * @author matthiak
  */
-public class AnimatorTestSuit extends AbstractEditorAlgorithm implements AnimatorListener {
+public class AnimatorTestSuit extends AbstractEditorAlgorithm implements AnimatorListener<Object> {
 
 	Graph testGraph;
 
-	List<AnimatorTest> listAnimationTests;
+	List<AnimatorTest<?>> listAnimationTests;
 
-	private Iterator<AnimatorTest> iterator;
-	AnimatorTest previousTest;
+	private Iterator<AnimatorTest<?>> iterator;
+	AnimatorTest<Object> previousTest;
 
 	Map<Node, Point2D> mapNodesLocationOriginal = new HashMap<Node, Point2D>();
 
@@ -65,7 +65,7 @@ public class AnimatorTestSuit extends AbstractEditorAlgorithm implements Animato
 		testGraph = WattsStrogatzGraphGenerator.createGraph(20, true, 5, 0.6);
 		MainFrame.getInstance().showGraph(testGraph, null);
 		graph = testGraph;
-		listAnimationTests = new ArrayList<AnimatorTestSuit.AnimatorTest>();
+		listAnimationTests = new ArrayList<AnimatorTestSuit.AnimatorTest<?>>();
 
 		/*
 		 * store original node locations. They will be restored after each test
@@ -92,12 +92,12 @@ public class AnimatorTestSuit extends AbstractEditorAlgorithm implements Animato
 		listAnimationTests.add(new ColorTest());
 
 		iterator = listAnimationTests.iterator();
-		previousTest = iterator.next();
+		previousTest = (AnimatorTest<Object>) iterator.next();
 		previousTest.runTest(this);
 	}
 
 	@Override
-	public void onAnimationFinished(AnimatorData data, Animation<TimePoint> anim) {
+	public void onAnimationFinished(AnimatorData data, Animation<TimePoint<Object>> anim) {
 		System.out.println("Animation finished: " + anim.toString());
 	}
 
@@ -133,25 +133,25 @@ public class AnimatorTestSuit extends AbstractEditorAlgorithm implements Animato
 		}
 		graph.getListenerManager().transactionFinished(this);
 		if (iterator.hasNext()) {
-			AnimatorTest next = iterator.next();
+			AnimatorTest<Object> next = (AnimatorTest<Object>) iterator.next();
 			previousTest = next;
 			next.runTest(this);
 		} else
 			System.out.println("all tests finished");
 	}
 
-	interface AnimatorTest {
-		public void runTest(AnimatorListener listener);
+	interface AnimatorTest<T> {
+		public void runTest(AnimatorListener<T> listener);
 
 		public void checkResult();
 	}
 
-	class MotionTest1 implements AnimatorTest {
+	class MotionTest1 implements AnimatorTest<Point2D> {
 
 		Map<Node, Point2D> mapNodesLocationExpectedAfter = new HashMap<Node, Point2D>();
 
 		@Override
-		public void runTest(AnimatorListener listener) {
+		public void runTest(AnimatorListener<Point2D> listener) {
 			System.out.println("starting motion test");
 
 			int duration = 1000;
@@ -193,12 +193,12 @@ public class AnimatorTestSuit extends AbstractEditorAlgorithm implements Animato
 		}
 	}
 
-	class MotionTest2 implements AnimatorTest {
+	class MotionTest2 implements AnimatorTest<Point2D> {
 
 		Map<Node, Point2D> mapNodesLocationExpectedAfter = new HashMap<Node, Point2D>();
 
 		@Override
-		public void runTest(AnimatorListener listener) {
+		public void runTest(AnimatorListener<Point2D> listener) {
 			System.out.println("starting motion2 test");
 			int duration = 500;
 			Animator animator = new Animator(graph, 1, 2 * duration);
@@ -241,11 +241,11 @@ public class AnimatorTestSuit extends AbstractEditorAlgorithm implements Animato
 		}
 	}
 
-	class ColorTest implements AnimatorTest {
+	class ColorTest implements AnimatorTest<Color> {
 		Map<Node, Color> mapNodesColorExpectedAfter = new HashMap<Node, Color>();
 
 		@Override
-		public void runTest(AnimatorListener listener) {
+		public void runTest(AnimatorListener<Color> listener) {
 
 			int duration = 1000;
 			Animator animator = new Animator(graph, 1, duration);

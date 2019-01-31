@@ -27,13 +27,11 @@ import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugins.views.defaults.DrawMode;
 import org.graffiti.plugins.views.defaults.GraffitiView;
-import org.vanted.animation.Animation;
 import org.vanted.animation.Animator;
+import org.vanted.animation.AnimatorAdapter;
 import org.vanted.animation.AnimatorData;
-import org.vanted.animation.AnimatorListener;
 import org.vanted.animation.animations.Position2DAnimation;
 import org.vanted.animation.data.Point2DTimePoint;
-import org.vanted.animation.data.TimePoint;
 import org.vanted.animation.interpolators.CosineInterpolator;
 import org.vanted.animation.loopers.StandardLooper;
 
@@ -70,8 +68,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 	/**
 	 * Creates a new CircleLayouterAlgorithm object.
 	 * 
-	 * @param defaultRadius
-	 *            a value for the radius
+	 * @param defaultRadius a value for the radius
 	 */
 	public CircleLayouterAlgorithm(double defaultRadius) {
 		super();
@@ -95,9 +92,8 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 	/**
 	 * Checks, if a graph was given and that the radius is positive.
 	 * 
-	 * @throws PreconditionException
-	 *             if no graph was given during algorithm invocation or the radius
-	 *             is negative
+	 * @throws PreconditionException if no graph was given during algorithm
+	 *                               invocation or the radius is negative
 	 */
 	@Override
 	public void check() throws PreconditionException {
@@ -282,36 +278,12 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 		if (animate) {
 			int duration = 1000;
 			final Animator animator = new Animator(graph, 1);
-			animator.addListener(new AnimatorListener() {
-
-				@Override
-				public void onNewAnimatorLoop(AnimatorData data) {
-				}
-
-				@Override
-				public void onAnimatorStop(AnimatorData data) {
-				}
-
-				@Override
-				public void onAnimatorStart(AnimatorData data) {
-				}
-
-				@Override
-				public void onAnimatorRestart(AnimatorData data) {
-				}
-
-				@Override
-				public void onAnimatorReset(AnimatorData data) {
-				}
+			animator.addListener(new AnimatorAdapter<Object>() {
 
 				@Override
 				public void onAnimatorFinished(AnimatorData data) {
 					((GraffitiView) MainFrame.getInstance().getActiveSession().getActiveView())
 							.setDrawMode(DrawMode.NORMAL);
-				}
-
-				@Override
-				public void onAnimationFinished(AnimatorData data, Animation<TimePoint> anim) {
 				}
 			});
 			animator.setLoopDuration(duration, TimeUnit.MILLISECONDS);
@@ -329,14 +301,8 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 						new StandardLooper(), new CosineInterpolator());
 				animator.addAnimation(posAnimation);
 			}
-			// SwingUtilities.invokeLater(new Runnable() {
-
-			// @Override
-			// public void run() {
 			((GraffitiView) MainFrame.getInstance().getActiveSession().getActiveView()).setDrawMode(DrawMode.REDUCED);
 			animator.start();
-			// }
-			// });
 		} else {
 			GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
 		}
@@ -462,8 +428,7 @@ public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 	/**
 	 * Sets the radius parameter to the given value.
 	 * 
-	 * @param params
-	 *            An array with exact one DoubleParameter.
+	 * @param params An array with exact one DoubleParameter.
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {

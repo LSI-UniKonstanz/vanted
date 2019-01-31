@@ -18,7 +18,9 @@ import java.util.NoSuchElementException;
  * iterate over all the iterators one after the other.
  * 
  * @version $Revision: 1.5 $
+ * @vanted.todo To be removed in future versions.
  */
+@Deprecated
 public class RedundantMultipleIterator implements Iterator<Object> {
 	// ~ Instance fields ========================================================
 

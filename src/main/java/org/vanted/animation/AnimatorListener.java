@@ -7,11 +7,11 @@ import org.vanted.animation.data.TimePoint;
  * @author - Patrick Shaw
  *
  */
-public interface AnimatorListener {
+public interface AnimatorListener<T> {
 	/**
 	 * Called when an animation is finished.
 	 */
-	public void onAnimationFinished(AnimatorData data, Animation<TimePoint> anim);
+	public void onAnimationFinished(AnimatorData data, Animation<TimePoint<T>> anim);
 
 	public void onNewAnimatorLoop(AnimatorData data);
 
