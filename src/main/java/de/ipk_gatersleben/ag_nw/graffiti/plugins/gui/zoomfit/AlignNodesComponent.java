@@ -50,12 +50,6 @@ public class AlignNodesComponent extends JToolBar
 	// ~ Constructors
 	// ===========================================================
 
-	/**
-	 * Constructor for ZoomChangeComponent.
-	 * 
-	 * @param prefComp
-	 *            DOCUMENT ME!
-	 */
 	public AlignNodesComponent(String prefComp) {
 		super("Node-Alignment");
 

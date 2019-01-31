@@ -29,7 +29,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JSeparator;
 import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 
 import org.ErrorMsg;
 import org.graffiti.editor.GraffitiInternalFrame;
@@ -48,8 +47,10 @@ import org.graffiti.session.SessionListener;
  * 
  * @author Michael Forster
  * @version $Revision: 1.9 $ $Date: 2011/06/30 06:55:30 $
+ * 
+ * @vanted.revision 2.6.6
  */
-public class DesktopMenuManager implements MenuListener, SessionListener {
+public class DesktopMenuManager extends MenuAdapter implements SessionListener {
 	// ~ Instance fields ========================================================
 
 	/** The associated desktop */
@@ -98,25 +99,7 @@ public class DesktopMenuManager implements MenuListener, SessionListener {
 	}
 
 	/**
-	 * Ignored.
-	 * 
-	 * @see javax.swing.event.MenuListener#menuCanceled(javax.swing.event.MenuEvent)
-	 */
-	public void menuCanceled(MenuEvent e) {
-	}
-
-	/**
-	 * Ignored.
-	 * 
-	 * @see javax.swing.event.MenuListener#menuDeselected(javax.swing.event.MenuEvent)
-	 */
-	public void menuDeselected(MenuEvent e) {
-	}
-
-	/**
 	 * Updates the associated menu.
-	 * 
-	 * @see javax.swing.event.MenuListener#menuSelected(javax.swing.event.MenuEvent)
 	 */
 	public void menuSelected(MenuEvent e) {
 		clearMenu();

@@ -85,12 +85,6 @@ public class ZoomFitChangeComponent extends JToolBar
 
 	// ~ Constructors ===========================================================
 
-	/**
-	 * Constructor for ZoomChangeComponent.
-	 * 
-	 * @param prefComp
-	 *            DOCUMENT ME!
-	 */
 	public ZoomFitChangeComponent(String prefComp) {
 		super("Zoom");
 		this.prefComp = prefComp;
