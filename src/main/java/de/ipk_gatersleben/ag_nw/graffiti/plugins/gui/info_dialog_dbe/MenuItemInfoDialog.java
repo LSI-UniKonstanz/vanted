@@ -158,7 +158,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 
 				copyRMonash = "&copy; 2014 - 2016 Monash University";
 
-				copyRKonstanz = "&copy; 2016 - 2018 Konstanz University";
+				copyRKonstanz = "&copy; 2016 - 2019 Konstanz University";
 
 				int num = 0;
 				num = MainFrame.getInstance().getPluginManager().getPluginEntries().size();
