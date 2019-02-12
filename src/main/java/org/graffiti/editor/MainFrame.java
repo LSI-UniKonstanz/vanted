@@ -770,7 +770,7 @@ public class MainFrame extends JFrame
 	public AttributeComponentManager getAttributeComponentManager() {
 		return attributeComponentManager;
 	}
-	
+
 	/**
 	 * DOCUMENT ME!
 	 * 
@@ -1244,8 +1244,11 @@ public class MainFrame extends JFrame
 		if (zoomListeners != null)
 			this.zoomListeners.add(view);
 
-		// Aligns graph elements right into frame viewport
-		ZoomFitChangeComponent.zoomRegion(false);
+		// Only for one (active) view, 1+ views
+		// (e.g. detached case) shouldn't zoom: either already zoomed or hidden => NPE
+		if (getActiveEditorSession().getViews().size() == 1)
+			// Aligns graph elements right into frame viewport
+			ZoomFitChangeComponent.zoomRegion(false);
 
 		if (returnGraffitiFrame)
 			return frame;
