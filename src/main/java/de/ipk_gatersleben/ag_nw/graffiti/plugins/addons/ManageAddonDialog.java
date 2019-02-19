@@ -168,7 +168,7 @@ public class ManageAddonDialog extends JDialog {
 			this.setTitle("Add-on Manager");
 
 			setModal(true);
-			// setAlwaysOnTop(true);
+			setAlwaysOnTop(true);
 			setLocationRelativeTo(MainFrame.getInstance());
 
 			initAddonTable();
