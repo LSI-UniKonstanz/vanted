@@ -8,6 +8,7 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -22,7 +23,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -87,14 +87,13 @@ public class ManageAddonDialog extends JDialog {
 	// private String msg;
 	protected PluginDescription currentDPE;
 
-	public ManageAddonDialog(JFrame frame, String msg) {
-		super(frame);
-		frame.setEnabled(false);
+	public ManageAddonDialog(Window parent, String msg) {
+		super(parent);
+		parent.setEnabled(false);
 		// this.manager = addonManager;
 		JButton jb = initGUI();
 		setTopText(msg);
 		// TODO: TEST THIS
-		setModal(true);
 		setVisible(true);
 		installDragNDrop(jb);
 	}
@@ -156,20 +155,18 @@ public class ManageAddonDialog extends JDialog {
 			getContentPane().removeAll();
 
 			TableLayout thisLayout = new TableLayout(new double[][] {
-					// spalten
+					// columns
 					{ 5.0, TableLayoutConstants.FILL, 80, 10.0, 85.0, 80, 0.0, 10.0, TableLayoutConstants.FILL,
 							TableLayoutConstants.FILL, 5.0 },
-					// zeilen
+					// rows
 					{ 0.0, TableLayout.PREFERRED, 5.0, 0.0, 45.0, 5.0, 45.0, 5.0, 45.0, 0.0, TableLayoutConstants.FILL,
 							5.0, 45.0, 0.0, 0, 0, 5.0, 30.0, 5.0 } });
 			getContentPane().setLayout(thisLayout);
 			this.setPreferredSize(new java.awt.Dimension(700, 400));
 			this.setMinimumSize(new java.awt.Dimension(700, 400));
 			this.setTitle("Add-on Manager");
-
-			setModal(true);
-			setAlwaysOnTop(true);
-			setLocationRelativeTo(MainFrame.getInstance());
+			setModalityType(DEFAULT_MODALITY_TYPE);
+			setLocationRelativeTo(getParent());
 
 			initAddonTable();
 
@@ -193,9 +190,8 @@ public class ManageAddonDialog extends JDialog {
 								return "Add-on Files (*.jar)";
 							}
 						});
-						fc.setApproveButtonText("Install");
-						fc.setDialogTitle("Choose Add-on to be installed");
-						int returnVal = fc.showDialog(getParent(), null);// OpenDialog(getParent());
+						fc.setDialogTitle("Choose Add-on to install");
+						int returnVal = fc.showDialog(getParent(), "Install");
 						if (returnVal == JFileChooser.APPROVE_OPTION) {
 							try {
 								AddonManagerPlugin.getInstance().installAddon(fc.getCurrentDirectory().toString(),

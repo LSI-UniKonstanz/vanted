@@ -21,6 +21,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import org.ErrorMsg;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.managers.PreferenceManager;
 import org.graffiti.options.PreferencesInterface;
@@ -156,7 +157,7 @@ public class HighDPISupport implements PreferencesInterface {
 			f.setAccessible(true);
 			instance = f.get(null);
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
+			ErrorMsg.addErrorMessage(e);
 		}
 
 		return instance;
@@ -166,7 +167,7 @@ public class HighDPISupport implements PreferencesInterface {
 		try {
 			UIManager.setLookAndFeel(laf);
 		} catch (UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
+			ErrorMsg.addErrorMessage(e);
 		}
 	}
 
@@ -175,7 +176,7 @@ public class HighDPISupport implements PreferencesInterface {
 			UIManager.setLookAndFeel(laf);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
+			ErrorMsg.addErrorMessage(e);
 		}
 	}
 

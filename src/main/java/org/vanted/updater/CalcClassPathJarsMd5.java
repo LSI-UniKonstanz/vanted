@@ -14,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ErrorMsg;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.graffiti.util.Pair;
 
@@ -46,21 +47,15 @@ public class CalcClassPathJarsMd5 {
 						String md5 = DigestUtils.md5Hex(readAllBytes);
 
 						listJarMd5Pairs.add(new Pair<String, String>(jarurl.toURI().getPath(), md5));
-					} catch (FileNotFoundException e) {
-						
-						// e.printStackTrace();
-					} catch (URISyntaxException e) {
-						
-						// e.printStackTrace();
+					} catch (FileNotFoundException | URISyntaxException  e) {
+						ErrorMsg.addErrorMessage(e);
 					} catch (IOException e) {
-						
-						// e.printStackTrace();
+						ErrorMsg.addErrorMessage(e);
 					}
 				}
 			}
 		} catch (NoSuchAlgorithmException e) {
-			
-			e.printStackTrace();
+			ErrorMsg.addErrorMessage(e);
 		}
 
 		return listJarMd5Pairs;

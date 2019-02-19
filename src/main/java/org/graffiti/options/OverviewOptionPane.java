@@ -39,11 +39,6 @@ public class OverviewOptionPane extends AbstractOptionPane {
 		super(sBundle.getString("options.overview.title"));
 	}
 
-	// ~ Methods ================================================================
-
-	/*
-	 * @see org.graffiti.options.AbstractOptionPane#initDefault()
-	 */
 	@Override
 	protected void initDefault() {
 		setLayout(new BorderLayout());
@@ -72,32 +67,18 @@ public class OverviewOptionPane extends AbstractOptionPane {
 		add(BorderLayout.CENTER, scroller);
 	}
 
-	/*
-	 * @see org.graffiti.options.AbstractOptionPane#saveDefault()
-	 */
 	@Override
 	protected void saveDefault() {
 		/* do nothing */
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.options.OptionPane#getCategory()
-	 */
 	public String getCategory() {
 		return "Gravisto Passau";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.options.OptionPane#getOptionName()
-	 */
 	public String getOptionName() {
 		return "Default Option";
 	}
-
 }
 
 // ------------------------------------------------------------------------------

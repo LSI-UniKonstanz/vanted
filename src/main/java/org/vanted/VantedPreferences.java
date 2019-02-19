@@ -14,6 +14,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
+import org.ErrorMsg;
 import org.ReleaseInfo;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -119,7 +120,7 @@ public class VantedPreferences implements PreferencesInterface {
 						UIManager.setLookAndFeel(lafName);
 					} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 							| UnsupportedLookAndFeelException e) {
-						e.printStackTrace();
+						ErrorMsg.addErrorMessage(e);
 					}
 
 					/**

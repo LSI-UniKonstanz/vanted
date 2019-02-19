@@ -67,6 +67,7 @@ public class GraphScaler extends SessionAdapter implements ChangeListener {
 		try {
 			dfCode = MainFrame.getInstance().getActiveDetachedFrame().hashCode();
 		} catch (NullPointerException e) {
+			//null-pointer occurs on graph creation, but part of the flow
 		}
 
 		if (s == null || scaledSessions.contains(s.hashCode()))

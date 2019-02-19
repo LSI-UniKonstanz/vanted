@@ -27,6 +27,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.text.JTextComponent;
 
+import org.ErrorMsg;
 import org.vanted.scaling.scalers.component.AbstractButtonScaler;
 import org.vanted.scaling.scalers.component.ComponentScaler;
 import org.vanted.scaling.scalers.component.HTMLScaler;
@@ -265,7 +266,7 @@ public class ComponentRegulator {
 					htmlModifier.invoke(scaler, component);
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
-					e.printStackTrace();
+					ErrorMsg.addErrorMessage(e);
 				}
 
 				break;

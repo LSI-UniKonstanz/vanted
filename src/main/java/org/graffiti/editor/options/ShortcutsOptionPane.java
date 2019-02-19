@@ -23,11 +23,7 @@ import org.graffiti.options.AbstractOptionPane;
  * @version $Revision: 1.7 $
  */
 public class ShortcutsOptionPane extends AbstractOptionPane {
-	// ~ Instance fields ========================================================
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -37,19 +33,11 @@ public class ShortcutsOptionPane extends AbstractOptionPane {
 		super("shortcuts");
 	}
 
-	// ~ Methods ================================================================
-
-	/*
-	 * @see org.graffiti.options.AbstractOptionPane#initDefault()
-	 */
 	@Override
 	protected void initDefault() {
 		// TODO
 	}
 
-	/*
-	 * @see org.graffiti.options.AbstractOptionPane#saveDefault()
-	 */
 	@Override
 	protected void saveDefault() {
 		// TODO
@@ -114,44 +102,22 @@ public class ShortcutsOptionPane extends AbstractOptionPane {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.options.OptionPane#getCategory()
-	 */
 	public String getCategory() {
 		//
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.options.OptionPane#getOptionName()
-	 */
 	public String getOptionName() {
 		//
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.options.OptionPane#init(javax.swing.JComponent)
-	 */
 	public void init(JComponent options) {
 		//
-
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.options.OptionPane#save(javax.swing.JComponent)
-	 */
 	public void save(JComponent options) {
 		//
-
 	}
 }
 

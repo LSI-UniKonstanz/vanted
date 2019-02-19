@@ -19,7 +19,6 @@ public class Addon {
 			return new URL[] { jarfiles.toURI().toURL() };
 		} catch (MalformedURLException e) {
 			ErrorMsg.addErrorMessage(e);
-			e.printStackTrace();
 		}
 		return null;
 

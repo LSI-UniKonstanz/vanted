@@ -53,10 +53,8 @@ public class Toolbox {
 	/**
 	 * Adds a new component scaler to the automatic scaling routine.
 	 * 
-	 * @param jComponentSuperclass
-	 *            the super JComponent for which the scaler is
-	 * @param scaler
-	 *            newly implemented ComponentScaler sub-type
+	 * @param jComponentSuperclass the super JComponent for which the scaler is
+	 * @param scaler               newly implemented ComponentScaler sub-type
 	 * 
 	 * @see ComponentRegulator#registerNewScaler(Class, ComponentScaler)
 	 */
@@ -120,19 +118,17 @@ public class Toolbox {
 	 * Access other than the current states by value. The case doesn't matter.
 	 * Alternatively, one could use the String State fields.
 	 * 
-	 * @param value
-	 *            Possible values are:
-	 *            <p>
-	 *            <b>unscaled</b>, <b>rescaled</b>,<br>
-	 *            <b>onStart</b>, <b>onSlider</b>,<br>
-	 *            <b>idle</b>.
+	 * @param value Possible values are:
+	 *              <p>
+	 *              <b>unscaled</b>, <b>rescaled</b>,<br>
+	 *              <b>onStart</b>, <b>onSlider</b>,<br>
+	 *              <b>idle</b>.
 	 * 
 	 * @return the state or an exception
 	 * 
-	 * @throws IllegalArgumentException
-	 *             if the value is different from the allowed names.
-	 * @throws NullPointerException
-	 *             if {@code value} is null.
+	 * @throws IllegalArgumentException if the value is different from the allowed
+	 *                                  names.
+	 * @throws NullPointerException     if {@code value} is null.
 	 */
 	public static State getState(String value) {
 		return Enum.valueOf(AutomatonBean.State.class, value.toUpperCase());
@@ -143,8 +139,7 @@ public class Toolbox {
 	 * that checks at runtime whether a component has been scaled with the most
 	 * recent scaling procedure.
 	 * 
-	 * @param component
-	 *            to be tested
+	 * @param component to be tested
 	 * @return true if the component has been scaled
 	 */
 	public static boolean isComponentScaled(JComponent component) {
@@ -200,11 +195,9 @@ public class Toolbox {
 	 * <b><i>Warning: </b></i> The JEditorPane should have as mime type "html".
 	 * 
 	 * @param ep
-	 * @param type
-	 *            one of the constant types
-	 * @param extra
-	 *            if some other specific type is necessary
-	 *            ({@linkplain Toolbox#UL_TYPE_EXTRA})
+	 * @param type  one of the constant types
+	 * @param extra if some other specific type is necessary
+	 *              ({@linkplain Toolbox#UL_TYPE_EXTRA})
 	 */
 	public static void scaleJEditorPaneUnorderedLists(JEditorPane ep, int type, String extra) {
 		HTMLEditorKit ekit = (HTMLEditorKit) ep.getEditorKit();
@@ -240,10 +233,8 @@ public class Toolbox {
 	 * Reset the scaling of {@code component} and its children. This does count as
 	 * actual scaling and also does not check whether components have been scaled.
 	 * 
-	 * @param component
-	 *            whose scaling shall be reset (and of its children)
-	 * @param previousDPIRatio
-	 *            the previous ratio
+	 * @param component        whose scaling shall be reset (and of its children)
+	 * @param previousDPIRatio the previous ratio
 	 */
 	public static void resetScalingOf(JComponent component, float previousDPIratio) {
 		float resetRatio = previousDPIratio / Toolkit.getDefaultToolkit().getScreenResolution();
@@ -257,10 +248,8 @@ public class Toolbox {
 	 * This automatically marks the component and its children as scaled, while
 	 * doing so.
 	 * 
-	 * @param component
-	 *            container to start scaling from
-	 * @param DPIratio
-	 *            see {@linkplain Toolbox#getDPIScalingRatio()}
+	 * @param component container to start scaling from
+	 * @param DPIratio  see {@linkplain Toolbox#getDPIScalingRatio()}
 	 */
 	public static void scaleComponent(JComponent component, float DPIratio, boolean checkScaled) {
 		if (DPIratio == 1f)

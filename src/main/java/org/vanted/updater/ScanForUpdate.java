@@ -133,7 +133,7 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 					try {
 						Thread.sleep(1000);// sleep 20 sec
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						ErrorMsg.addErrorMessage(e);
 					}
 				}
 				logger.debug("starting update scan task");
@@ -165,7 +165,7 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 						} catch (IOException e) {
 							if (Logger.getRootLogger().getLevel() == Level.DEBUG)
 								e.printStackTrace();
-							System.out.println("cannot scan for updates: " + e.getMessage());
+							ErrorMsg.addErrorMessage("Cannot scan for updates: " + e.getMessage());
 						}
 						scanForUpdate.backgroundTaskStatusProvider.setCurrentStatusText1("Download finished");
 					}
@@ -228,7 +228,7 @@ public class ScanForUpdate implements PreferencesInterface// , Runnable
 		} catch (FileNotFoundException e1) {
 			if (Logger.getRootLogger().getLevel() == Level.DEBUG)
 				e1.printStackTrace();
-			System.err.println("update file not found at location: " + e1.getMessage());
+			ErrorMsg.addErrorMessage("Update file not found at location: " + e1.getMessage());
 			return;
 		}
 

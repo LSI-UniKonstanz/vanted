@@ -13,6 +13,7 @@ import java.util.concurrent.Semaphore;
 
 import javax.swing.UIManager;
 
+import org.ErrorMsg;
 import org.vanted.scaling.AutomatonBean.State;
 import org.vanted.scaling.vanted.GraphScaler;
 
@@ -320,7 +321,7 @@ public final class ScalerLoader {
 							| NoSuchMethodException | SecurityException | InterruptedException e) {
 						System.err.println("Not able to load initial external Scaler!");
 						System.err.println("EXCEPTION: " + e.getCause());
-						e.printStackTrace();
+						ErrorMsg.addErrorMessage(e);
 
 						// kill the thread
 						if (!Thread.currentThread().isInterrupted())
