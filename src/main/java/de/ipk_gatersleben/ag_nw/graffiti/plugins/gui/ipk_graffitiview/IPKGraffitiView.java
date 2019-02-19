@@ -143,9 +143,12 @@ public class IPKGraffitiView extends GraffitiView
 
 	}
 
+	/**
+	 * @vanted.revision 2.6.6
+	 */
 	@Override
 	public String getPreferencesAlternativeName() {
-		return null;
+		return "Network View";
 	}
 
 	/**
