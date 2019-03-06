@@ -67,7 +67,7 @@ class HTMLSupport {
 	}
 
 	/**
-	 * Stores all used tags of the form &#60;small> or &#big>, while preserving the
+	 * Stores all used tags of the form &#60;small> or &#60;big>, while preserving the
 	 * order. Supporting data structure: {@link HTMLSupport#tags}. As key is used
 	 * the hash-code of the given component, thus identifying it uniquely during a
 	 * working session. It also supports more than one HTML text per component.
@@ -87,7 +87,7 @@ class HTMLSupport {
 		if (AwareTags.SPECIAL.isTagged(text) && !tags.containsKey(component.hashCode())) {
 
 			/*---Construct value---*/
-			String value = "";
+			StringBuilder value = new StringBuilder();
 
 			Map<String, Integer> occurrenceIndexer = AwareTags.SPECIAL.putAllValues(new HashMap<String, Integer>(), -1);
 			boolean refresh = true;
@@ -105,7 +105,7 @@ class HTMLSupport {
 				}
 
 				String tag = getLeastValuedKey(occurrenceIndexer);
-				value += tag;
+				value.append(tag);
 
 				text = text.substring(text.indexOf(tag));
 				text = text.replaceFirst(tag, "");
@@ -114,7 +114,7 @@ class HTMLSupport {
 			/*---Insert kv-pair---*/
 			int key = component.hashCode();
 			List<String> list = tags.containsKey(key) ? tags.get(key) : new LinkedList<String>();
-			list.add(value);
+			list.add(value.toString());
 			tags.put(key, list);
 		}
 	}

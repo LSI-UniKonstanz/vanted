@@ -881,14 +881,13 @@ public class GravistoService implements HelperClass {
 				freeMemory(!e.isShiftDown());
 			}
 		});
-		final float factor = Toolbox.getDPIScalingRatio();
+		final JLabelScaler scaler = new JLabelScaler(Toolbox.getDPIScalingRatio());
 		Timer t = new Timer(1000, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				memLabel.setText(getCurrentMemoryInfo(shortInfo));
 				if (shortInfo)
 					memLabel.setToolTipText(getCurrentMemoryInfo(false)
 							.replaceFirst(":", " (click to garbage-collect):").replaceFirst("<font color='gray'>", ""));
-				JLabelScaler scaler = new JLabelScaler(factor);
 				scaler.coscaleHTML(memLabel);
 				memLabel.repaint(1000);
 			}
@@ -946,11 +945,8 @@ public class GravistoService implements HelperClass {
 
 	public static void addKnownMemoryHog(MemoryHog memoryHog) {
 		synchronized (memoryHogs) {
-			if (memoryHogs.contains(memoryHog)) {
-				System.out.println("Set already contains " + memoryHog);
+			if (memoryHogs.contains(memoryHog))
 				return;
-			}
-			System.out.println("Adding new hog " + memoryHog);
 			memoryHogs.add(memoryHog);
 		}
 	}
