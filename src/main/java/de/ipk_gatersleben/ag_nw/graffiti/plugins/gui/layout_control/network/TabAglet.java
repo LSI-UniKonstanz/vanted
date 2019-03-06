@@ -37,7 +37,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.network.BroadCastService;
  * 
  * @version $Revision$
  * 
- * @vanted.revision 2.6.6
+ * @vanted.revision 2.7
  */
 public class TabAglet extends InspectorTab implements Runnable {
 

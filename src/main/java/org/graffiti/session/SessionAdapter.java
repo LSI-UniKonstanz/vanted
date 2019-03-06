@@ -12,7 +12,7 @@ package org.graffiti.session;
  * empty implementation. Useful, given you don't need all interface methods.
  * 
  * @author D. Garkov
- * @since 2.6.6
+ * @since 2.7
  *
  */
 public class SessionAdapter implements SessionListener {

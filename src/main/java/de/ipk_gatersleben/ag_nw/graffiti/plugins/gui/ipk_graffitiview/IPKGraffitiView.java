@@ -144,7 +144,7 @@ public class IPKGraffitiView extends GraffitiView
 	}
 
 	/**
-	 * @vanted.revision 2.6.6
+	 * @vanted.revision 2.7
 	 */
 	@Override
 	public String getPreferencesAlternativeName() {

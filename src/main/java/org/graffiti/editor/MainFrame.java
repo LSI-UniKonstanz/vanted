@@ -212,7 +212,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.zoomfit.ZoomFitChangeCompon
  * Constructs a new graffiti frame, which contains the main gui components.
  * 
  * @version $Revision: 1.164.2.2 $
- * @vanted.revision 2.6.6
+ * @vanted.revision 2.7
  */
 public class MainFrame extends JFrame
 		implements SessionManager, SessionListener, PluginManagerListener, UndoableEditListener, EditorDefaultValues,
@@ -765,7 +765,7 @@ public class MainFrame extends JFrame
 	/**
 	 * 
 	 * @return the global Attribute Component Manager
-	 * @since 2.6.6
+	 * @since 2.7
 	 */
 	public AttributeComponentManager getAttributeComponentManager() {
 		return attributeComponentManager;
@@ -996,7 +996,7 @@ public class MainFrame extends JFrame
 	 * Removes the session from the list of sessions.
 	 * 
 	 * @param s the session to remove.
-	 * @since 2.6.6
+	 * @since 2.7
 	 */
 	public void removeSession(Session s) {
 		sessions.remove(s);

@@ -368,7 +368,7 @@ public class ComponentRegulator {
 	public void clearModifiedPool() {
 		if (modified != null) {
 			modifiedHash = modified.hashCode();
-			modified.clear();
+			modified = null;
 		}
 	}
 

@@ -43,7 +43,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
  * Places all nodes on a circle with a user specified radius.
  * 
  * @author Dirk Koschützki, Christian Klukas, Matthias Klapperstueck
- * @vanted.revision 2.6.6
+ * @vanted.revision 2.7
  */
 public class CircleLayouterAlgorithm extends AbstractAlgorithm {
 

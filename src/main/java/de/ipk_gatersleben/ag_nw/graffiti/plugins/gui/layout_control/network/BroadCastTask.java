@@ -28,7 +28,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.network.BroadCastService;
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  * 
- * @vanted.revision 2.6.6
+ * @vanted.revision 2.7
  */
 public class BroadCastTask extends TimerTask {
 

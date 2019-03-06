@@ -43,7 +43,6 @@ import org.graffiti.editor.MessageType;
 import org.graffiti.plugin.inspector.InspectorTab;
 import org.graffiti.plugin.view.GraphView;
 import org.graffiti.plugin.view.View;
-import org.graffiti.session.Session;
 import org.w3c.dom.Document;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.Experiment;

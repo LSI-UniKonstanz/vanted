@@ -14,7 +14,7 @@ package org.graffiti.selection;
  * selection model.
  * 
  * @version $Revision: 1.4 $
- * @vanted.revision 2.6.6
+ * @vanted.revision 2.7
  */
 public interface SelectionListener {
 	/**

@@ -70,11 +70,6 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 		onlyOne = ((BooleanParameter) params[idx++]).getBoolean();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		// graph.getListenerManager().transactionStarted(this);
 		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
