@@ -29,7 +29,7 @@ import org.graffiti.event.ListenerManager;
  * modification according to the description in <code>Graph</code>.
  * 
  * @version $Revision: 1.12.4.1.2.1 $
- * @vanted.revision 2.7
+ * @vanted.revision 2.7.0
  * @see Graph
  * @see AbstractGraph
  * @see AdjListNode

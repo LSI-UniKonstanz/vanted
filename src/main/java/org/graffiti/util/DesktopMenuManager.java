@@ -48,7 +48,7 @@ import org.graffiti.session.SessionListener;
  * @author Michael Forster
  * @version $Revision: 1.9 $ $Date: 2011/06/30 06:55:30 $
  * 
- * @vanted.revision 2.7
+ * @vanted.revision 2.7.0
  */
 public class DesktopMenuManager extends MenuAdapter implements SessionListener {
 	// ~ Instance fields ========================================================

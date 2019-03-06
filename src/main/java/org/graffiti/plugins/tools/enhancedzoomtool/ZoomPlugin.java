@@ -16,7 +16,7 @@ import org.graffiti.plugin.gui.GraffitiComponent;
  * This plug-in is contained in the standard editing tools.
  * 
  * @version $Revision: 1.6 $
- * @vanted.revision 2.7
+ * @vanted.revision 2.7.0
  */
 public class ZoomPlugin extends EditorPluginAdapter {
 

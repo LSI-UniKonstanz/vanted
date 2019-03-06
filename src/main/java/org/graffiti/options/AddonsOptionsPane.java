@@ -27,7 +27,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
  * 
- * @vanted.revision 2.7
+ * @vanted.revision 2.7.0
  */
 public class AddonsOptionsPane extends AbstractOptionPane {
 
@@ -35,7 +35,7 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 	private static double border = 5;
 
 	/**
-	 * @vanted.revision 2.7
+	 * @vanted.revision 2.7.0
 	 */
 	protected AddonsOptionsPane() {
 		super("Add-on Manager");
@@ -47,7 +47,7 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 	}
 
 	/**
-	 * @vanted.revision 2.7
+	 * @vanted.revision 2.7.0
 	 */
 	@Override
 	public String getOptionName() {
@@ -74,7 +74,7 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 	}
 
 	/**
-	 * @vanted.revision 2.7
+	 * @vanted.revision 2.7.0
 	 */
 	private void createUI() {
 		double[][] size = {
@@ -93,7 +93,7 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 	}
 
 	/**
-	 * @vanted.revision 2.7
+	 * @vanted.revision 2.7.0
 	 */
 	private JButton getAddOnManagerButton() {
 		final JButton result = new JMButton("<html>Install / Configure Add-ons");
@@ -165,7 +165,7 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 	}
 
 	/**
-	 * @since 2.7
+	 * @since 2.7.0
 	 */
 	private static String getAddonManagerInfo() {
 		return "<html>"
@@ -177,7 +177,7 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 	/**
 	 * 
 	 * @return
-	 * @since 2.7
+	 * @since 2.7.0
 	 */
 	private static String getPreferencesFolderInfo() {
 		/*network downloads cache files -> cache files*/
@@ -188,7 +188,7 @@ public class AddonsOptionsPane extends AbstractOptionPane {
 	}
 
 	/**
-	 * @vanted.revision 2.7
+	 * @vanted.revision 2.7.0
 	 */
 	public static void openPreferencesFolder() {
 		BackgroundTaskHelper.executeLaterOnSwingTask(100, new Runnable() {

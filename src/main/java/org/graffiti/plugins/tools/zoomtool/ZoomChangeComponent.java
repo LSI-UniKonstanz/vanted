@@ -26,7 +26,7 @@ import org.graffiti.session.SessionListener;
 
 /**
  * DOCUMENT ME!
- * @vanted.revision 2.7
+ * @vanted.revision 2.7.0
  * @deprecated Use {@link org.graffiti.plugins.tools.enhancedzoomtool.ZoomChangeComponent} instead.
  */
 public class ZoomChangeComponent extends AbstractGraffitiComponent

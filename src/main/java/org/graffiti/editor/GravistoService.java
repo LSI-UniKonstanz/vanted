@@ -4,8 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyVetoException;
@@ -80,7 +80,7 @@ import scenario.ScenarioService;
  * Provides access to global variables, needed for various extensions to
  * Graffiti. Plugins can use the Preferences structure to save settings.
  * 
- * @vanted.revision 2.6.5
+ * @vanted.revision 2.7.0
  */
 public class GravistoService implements HelperClass {
 
@@ -134,8 +134,7 @@ public class GravistoService implements HelperClass {
 	 * Adds a optionPane to the list of known options-panes. The list of known
 	 * option-panes can be retrieved with <code>getKnownOptionPanes</code>.
 	 * 
-	 * @param optionPane
-	 *            A new known optionPane. If already known, not added again.
+	 * @param optionPane A new known optionPane. If already known, not added again.
 	 */
 	public void addKnownOptionPane(Object identifyer, OptionPane optionPane) {
 		if (!this.optionPaneIdentifiers.contains(identifyer)) {
@@ -166,9 +165,8 @@ public class GravistoService implements HelperClass {
 	 * A global variable, for communication between the IPK Editing Tools and some
 	 * IPK Layouter. This will be later eventually be removed.
 	 * 
-	 * @param value
-	 *            set to true, if the selection should not be moved by the layouter
-	 *            algorithms.
+	 * @param value set to true, if the selection should not be moved by the
+	 *              layouter algorithms.
 	 */
 	public synchronized void pluginSetMoveAllowed(boolean value) {
 		plugins_MoveSelectionsAllowed = value;
@@ -261,8 +259,7 @@ public class GravistoService implements HelperClass {
 	 * by the method <code>isEditorFrameSelected</code> for the decision, whether a
 	 * given frame is a editor frame or a pattern editor frame.
 	 * 
-	 * @param frame
-	 *            New pattern editor frame.
+	 * @param frame New pattern editor frame.
 	 */
 	public void addFrame(GraffitiInternalFrame frame) {
 		if (frames == null) {
@@ -276,9 +273,8 @@ public class GravistoService implements HelperClass {
 	 * Adds a Session to the list of patternSessions. This method is called by the
 	 * patternInspector in the action handler for the load and new button action.
 	 * 
-	 * @param session
-	 *            The new session, which should be known as a session, containing a
-	 *            pattern graph.
+	 * @param session The new session, which should be known as a session,
+	 *                containing a pattern graph.
 	 */
 	public void addPatternSession(Session session) {
 		if (patternSessions == null) {
@@ -339,8 +335,7 @@ public class GravistoService implements HelperClass {
 	/**
 	 * Returns a algorithm instance, defined by its name (e.g. menu item text)
 	 * 
-	 * @param name
-	 *            The menu item text.
+	 * @param name The menu item text.
 	 * @return The algorithm instance.
 	 */
 	public Algorithm getAlgorithmInstanceFromFriendlyName(String name) {
@@ -411,11 +406,10 @@ public class GravistoService implements HelperClass {
 	/**
 	 * Starts a plugin and returns, as soon as the plugin execution has finished.
 	 * 
-	 * @param pluginNameOrClassName
-	 *            of Algorithm to execute or Menu Item Text (from PluginMenu or
-	 *            Context Menu) or Classname of Plugin.
-	 * @param g
-	 *            Graph instance the plugin should work with.
+	 * @param pluginNameOrClassName of Algorithm to execute or Menu Item Text (from
+	 *                              PluginMenu or Context Menu) or Classname of
+	 *                              Plugin.
+	 * @param g                     Graph instance the plugin should work with.
 	 */
 	public void runPlugin(final String pluginNameOrClassName, final Graph g, final ActionEvent event) {
 		try {
@@ -811,10 +805,8 @@ public class GravistoService implements HelperClass {
 	}
 
 	/**
-	 * @param w
-	 *            negative values have special meaning, they are ignored
-	 * @param h
-	 *            at least w or h needs to be positive
+	 * @param w negative values have special meaning, they are ignored
+	 * @param h at least w or h needs to be positive
 	 */
 	public static BufferedImage getScaledImage(Image icon, int w, int h) {
 		BufferedImage destImage = new BufferedImage(icon.getWidth(null), icon.getHeight(null),
@@ -833,10 +825,8 @@ public class GravistoService implements HelperClass {
 	}
 
 	/**
-	 * @param w
-	 *            negative values have special meaning, they are ignored
-	 * @param h
-	 *            at least w or h needs to be positive
+	 * @param w negative values have special meaning, they are ignored
+	 * @param h at least w or h needs to be positive
 	 */
 	public static BufferedImage getScaledImage(BufferedImage icon, int w, int h) {
 		if (icon.getWidth() <= w && icon.getHeight() <= h)
@@ -886,21 +876,9 @@ public class GravistoService implements HelperClass {
 		final JLabel memLabel = new JLabel(getCurrentMemoryInfo(false));
 		memLabel.setToolTipText(
 				"Click for memory garbage collection (incl. Database Flush)<br>Shift-Click for pure GC.");
-		memLabel.addMouseListener(new MouseListener() {
+		memLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				freeMemory(!e.isShiftDown());
-			}
-
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			public void mouseExited(MouseEvent e) {
-			}
-
-			public void mousePressed(MouseEvent e) {
-			}
-
-			public void mouseReleased(MouseEvent e) {
 			}
 		});
 		final float factor = Toolbox.getDPIScalingRatio();
@@ -968,9 +946,11 @@ public class GravistoService implements HelperClass {
 
 	public static void addKnownMemoryHog(MemoryHog memoryHog) {
 		synchronized (memoryHogs) {
-			for (MemoryHog mh : memoryHogs)
-				if (mh.getClass() == memoryHog.getClass())
-					return;
+			if (memoryHogs.contains(memoryHog)) {
+				System.out.println("Set already contains " + memoryHog);
+				return;
+			}
+			System.out.println("Adding new hog " + memoryHog);
 			memoryHogs.add(memoryHog);
 		}
 	}
@@ -1066,8 +1046,7 @@ public class GravistoService implements HelperClass {
 				}
 
 				if (!entry.isDirectory()) {
-					bos = new BufferedOutputStream(
-							new FileOutputStream(new File(destDir, entryFileName)));
+					bos = new BufferedOutputStream(new FileOutputStream(new File(destDir, entryFileName)));
 					bis = new BufferedInputStream(zipFile.getInputStream(entry));
 
 					while ((len = bis.read(buffer)) > 0) {
@@ -1080,12 +1059,12 @@ public class GravistoService implements HelperClass {
 		} finally {
 			if (zipFile != null)
 				zipFile.close();
-			
+
 			if (bos != null) {
 				bos.flush();
 				bos.close();
 			}
-			
+
 			if (bis != null)
 				bis.close();
 		}

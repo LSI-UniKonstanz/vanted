@@ -28,7 +28,7 @@ import org.graffiti.session.SessionListener;
 
 /**
  * DOCUMENT ME!
- * @vanted.revision 2.7
+ * @vanted.revision 2.7.0
  */
 public class ZoomChangeComponent extends AbstractGraffitiComponent
 		implements ActionListener, ViewListener, SessionListener {

@@ -40,8 +40,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.FileDownloadStatusInf
 import de.ipk_gatersleben.ag_nw.graffiti.services.GUIhelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
-public class EnzymeService extends MemoryHog
-		implements BackgroundTaskStatusProvider, FileDownloadStatusInformationProvider, HelperClass {
+public class EnzymeService
+		implements MemoryHog, BackgroundTaskStatusProvider, FileDownloadStatusInformationProvider, HelperClass {
 	// Enzyme Class related variables
 	private static boolean read_enzclass_txt = false;
 
@@ -66,6 +66,20 @@ public class EnzymeService extends MemoryHog
 	private FolderPanel res;
 	private JLabel labelStatus1;
 	private JLabel labelStatus2;
+
+	private static EnzymeService instance = null;
+
+	private EnzymeService() {
+		registerMemoryHog();
+		enablePeriodicFreeMemory();
+	}
+
+	public static EnzymeService getInstance() {
+		if (instance == null)
+			instance = new EnzymeService();
+		
+		return instance;
+	}
 
 	public synchronized void finishedNewDownload() {
 		read_enzclass_txt = false;
@@ -92,7 +106,7 @@ public class EnzymeService extends MemoryHog
 	 */
 	private static HashMap<String, EnzymeEntry> knownEnzymeAlternativeNamesEntries = new HashMap<String, EnzymeEntry>();
 
-	private synchronized static void initService(boolean initInBackground) {
+	private static synchronized void initService(boolean initInBackground) {
 		if (initInBackground) {
 			if (!read_enzclass_txt || !read_enzyme_DB_txt) {
 				final boolean todoReadEnzClass = !read_enzclass_txt;
@@ -122,7 +136,7 @@ public class EnzymeService extends MemoryHog
 				read_enzyme_DB_txt = true;
 			}
 		}
-		noteRequest();
+		getInstance().noteRequest();
 	}
 
 	/**
@@ -312,7 +326,7 @@ public class EnzymeService extends MemoryHog
 		}
 	}
 
-	public static boolean isDatabaseAvailable(boolean checkInternal) {
+	public boolean isDatabaseAvailable(boolean checkInternal) {
 		noteRequest();
 		String fileName = "enzyme.dat";
 		ClassLoader cl = EnzymeService.class.getClassLoader();
@@ -335,7 +349,7 @@ public class EnzymeService extends MemoryHog
 	 * @return The release information from the enzyme-classes file (enzclass.txt).
 	 */
 	public static String getReleaseVersionForEnzymeClasses() {
-		noteRequest();
+		getInstance().noteRequest();
 		initService(false);
 		return enzymeRelease;
 	}
@@ -347,19 +361,20 @@ public class EnzymeService extends MemoryHog
 	 * "Oxidoreductases", "Acting on the CH-OH group of donors", "With a quinone or
 	 * similar compound as acceptor" }
 	 * 
-	 * @param ec_number_or_synonyme
-	 *            A EC Number in the form "EC1.2.3.4" or "1.2.3.4" or " 1. 2. 3 . 4"
-	 *            (space is ignored while matching) Also a synonym to a EC number
-	 *            can be used, in this case a lookup to the known synonyms is done
-	 *            to get the corresponding EC number.
-	 * @param lazy
-	 *            If lazy is TRUE, then the service is inited in background, this
-	 *            method will return immeadeately, but might not return reliable
-	 *            results until the database is inited.
+	 * @param ec_number_or_synonyme A EC Number in the form "EC1.2.3.4" or "1.2.3.4"
+	 *                              or " 1. 2. 3 . 4" (space is ignored while
+	 *                              matching) Also a synonym to a EC number can be
+	 *                              used, in this case a lookup to the known
+	 *                              synonyms is done to get the corresponding EC
+	 *                              number.
+	 * @param lazy                  If lazy is TRUE, then the service is inited in
+	 *                              background, this method will return
+	 *                              immeadeately, but might not return reliable
+	 *                              results until the database is inited.
 	 * @return A string array of all matching categories or descriptions.
 	 */
 	public static List<String> getEnzymeClasses(String ec_number_or_synonyme, boolean lazy) {
-		noteRequest();
+		getInstance().noteRequest();
 		initService(lazy);
 		if (ec_number_or_synonyme.toUpperCase().startsWith("EC:"))
 			ec_number_or_synonyme = ec_number_or_synonyme.substring("ec:".length());
@@ -387,12 +402,11 @@ public class EnzymeService extends MemoryHog
 	/**
 	 * Get a EnzymeEntry with the associated information.
 	 * 
-	 * @param ec_or_synonyme
-	 *            A EC number (1.2.3.4) or known synonyme.
+	 * @param ec_or_synonyme A EC number (1.2.3.4) or known synonyme.
 	 * @return NULL, if no info is found or a corresponding entry.
 	 */
 	public static EnzymeEntry getEnzymeInformation(String ec_or_synonyme, boolean lazy) {
-		noteRequest();
+		getInstance().noteRequest();
 		initService(lazy);
 		if (ec_or_synonyme.toUpperCase().startsWith("EC:"))
 			ec_or_synonyme = ec_or_synonyme.substring("ec:".length());
@@ -423,7 +437,7 @@ public class EnzymeService extends MemoryHog
 	 * @return The release information of the enzyme.dat file.
 	 */
 	public static String getReleaseVersionForEnzymeInformation() {
-		noteRequest();
+		getInstance().noteRequest();
 		initService(false);
 		return enzymeDBrelease;
 	}
@@ -434,8 +448,7 @@ public class EnzymeService extends MemoryHog
 	 * like "6.6.6.666" which probably does not exist would increase the number
 	 * count.
 	 * 
-	 * @param graph
-	 *            All nodes from this graph will be checked
+	 * @param graph All nodes from this graph will be checked
 	 * @return The number of nodes which have a <code>QuadNumber</code> valid
 	 *         structure, meaning, a name of substance name like a.b.c.d, where abcd
 	 *         are either numbers or "-".
@@ -458,79 +471,30 @@ public class EnzymeService extends MemoryHog
 		return cnt;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * getCurrentStatusValue()
-	 */
 	public int getCurrentStatusValue() {
 		return statusVal;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * getCurrentStatusValueFine()
-	 */
 	public double getCurrentStatusValueFine() {
 		return getCurrentStatusValue();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * getCurrentStatusMessage1()
-	 */
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * getCurrentStatusMessage2()
-	 */
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * pleaseStop()
-	 */
 	public void pleaseStop() {
 		// pleaseStop = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * pluginWaitsForUser()
-	 */
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * pleaseContinueRun()
-	 */
 	public void pleaseContinueRun() {
 		// empty
 	}
@@ -699,11 +663,7 @@ public class EnzymeService extends MemoryHog
 			jc.setBackground(Color.white);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.editor.MemoryHog#freeMemory()
-	 */
+	@Override
 	public void freeMemory() {
 		if (doFreeMemory())
 			finishedNewDownload();

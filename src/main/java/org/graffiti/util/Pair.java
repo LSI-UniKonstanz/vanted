@@ -13,8 +13,8 @@ package org.graffiti.util;
  * Encapsulates two values in a pair.
  * 
  * @author Paul, D. Garkov
- * @version 2.7
- * @vanted.revision 2.7
+ * @version 2.7.0
+ * @vanted.revision 2.7.0
  */
 public class Pair<T, V> {
 

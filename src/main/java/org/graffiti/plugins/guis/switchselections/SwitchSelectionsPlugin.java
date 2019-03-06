@@ -18,7 +18,7 @@ import org.graffiti.selection.SelectionListener;
  * Provides a spring embedder algorithm a la KK.
  * 
  * @version $Revision: 1.5 $
- * @vanted.revision 2.7
+ * @vanted.revision 2.7.0
  */
 public class SwitchSelectionsPlugin extends EditorPluginAdapter implements SelectionListener {
 

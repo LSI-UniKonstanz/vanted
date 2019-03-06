@@ -12,7 +12,7 @@ package org.graffiti.selection;
  * empty implementation. Useful, given you don't need all interface methods.
  * 
  * @author D. Garkov
- * @since 2.7
+ * @since 2.7.0
  *
  */
 public class SelectionAdapter implements SelectionListener {

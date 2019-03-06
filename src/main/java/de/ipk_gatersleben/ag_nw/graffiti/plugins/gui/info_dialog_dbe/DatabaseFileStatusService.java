@@ -31,7 +31,7 @@ public class DatabaseFileStatusService implements HelperClass {
 
 		ArrayList<FileDownloadStatusInformationProvider> statusProviders = new ArrayList<FileDownloadStatusInformationProvider>();
 
-		statusProviders.add(new EnzymeService());
+		statusProviders.add(EnzymeService.getInstance());
 
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.DEBUG)
 			statusProviders.add(new TranspathService());
