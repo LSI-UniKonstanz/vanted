@@ -80,6 +80,10 @@ public class JTabbedPaneScaler extends ComponentScaler implements HTMLScaler {
 	 */
 	@Override
 	public void coscaleHTML(JComponent component) {
+		/* Scale the HTML label only for emulated DPIs. */
+		if (scaleFactor == 1f)
+			return;
+		
 		JTabbedPane pane = (JTabbedPane) component;
 
 		for (int j = 0; j < pane.getTabCount(); j++) {

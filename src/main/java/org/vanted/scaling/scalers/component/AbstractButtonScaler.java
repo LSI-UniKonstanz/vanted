@@ -77,6 +77,10 @@ public class AbstractButtonScaler extends ComponentScaler implements HTMLScaler 
 	 */
 	@Override
 	public void coscaleHTML(JComponent component) {
+		/* Scale the HTML label only for emulated DPIs. */
+		if (scaleFactor == 1f)
+			return;
+		
 		AbstractButton button = (AbstractButton) component;
 		/**
 		 * The order of the HTML texts is preserved and acts as second implicit key to

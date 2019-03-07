@@ -24,13 +24,14 @@ import java.util.Set;
 
 import javax.swing.JComponent;
 
+import org.apache.commons.lang.StringUtils;
 import org.vanted.scaling.ComponentRegulator;
 
 /**
- * It handles several HTML tags, see {@linkplain AwareTags#ALL} for detailed
- * list. These are problematic, because they do not respect a font change on its
- * own and are replaced by a calculated font size, e.g. &#60;font size="-1">.
- * With the help of a {@link TextListener} we dynamic changes are tracked.
+ * It handles several HTML tags, see {@linkplain Tags#ALL} for detailed list.
+ * These are problematic, because they do not respect a font change on its own
+ * and are replaced by a calculated font size, e.g. &#60;font size="-1">. With
+ * the help of a {@link TextListener} we dynamic changes are tracked.
  * 
  * @see {@link ComponentRegulator#scaleHTML(JComponent)}
  * 
@@ -54,23 +55,23 @@ class HTMLSupport {
 	 * Checks whether the given text uses font modifying HTML tags in its
 	 * specification. HTML-formatted strings have &#60;small> and &#60;big> tags.
 	 * 
-	 * @param text
-	 *            the String to be parsed
+	 * @param text the String to be parsed
 	 * 
 	 * @return true if styled with font-modifying tags
 	 */
 	static boolean isHTMLStyled(String text) {
-		if (text != null && text.toLowerCase(Locale.ROOT).contains("<html>") && AwareTags.ALL.isTagged(text))
+		if (text != null && text.toLowerCase(Locale.ROOT).contains("<html>") && Tags.ALL.isTagged(text))
 			return true;
 
 		return false;
 	}
 
 	/**
-	 * Stores all used tags of the form &#60;small> or &#60;big>, while preserving the
-	 * order. Supporting data structure: {@link HTMLSupport#tags}. As key is used
-	 * the hash-code of the given component, thus identifying it uniquely during a
-	 * working session. It also supports more than one HTML text per component.
+	 * Stores all used tags of the form &#60;small> or &#60;big>, while preserving
+	 * the order. Supporting data structure: {@link HTMLSupport#tags}. As key is
+	 * used the hash-code of the given component, thus identifying it uniquely
+	 * during a working session. It also supports more than one HTML text per
+	 * component.
 	 * <p>
 	 * 
 	 * Example:<br>
@@ -78,18 +79,16 @@ class HTMLSupport {
 	 * &#60;html>&#60;big>3&#60;small>&#60;br>&nbsp;nodes<br>
 	 * &#60;big>&#60;small>
 	 * 
-	 * @param component
-	 *            used to get the key
-	 * @param text
-	 *            used to get the tags
+	 * @param component used to get the key
+	 * @param text      used to get the tags
 	 */
 	static void storeTags(JComponent component, String text) {
-		if (AwareTags.SPECIAL.isTagged(text) && !tags.containsKey(component.hashCode())) {
+		if (Tags.SPECIAL.isTagged(text) && !tags.containsKey(component.hashCode())) {
 
 			/*---Construct value---*/
 			StringBuilder value = new StringBuilder();
 
-			Map<String, Integer> occurrenceIndexer = AwareTags.SPECIAL.putAllValues(new HashMap<String, Integer>(), -1);
+			Map<String, Integer> occurrenceIndexer = Tags.SPECIAL.putAllValues(new HashMap<String, Integer>(), -1);
 			boolean refresh = true;
 			text = text.toLowerCase(Locale.ROOT);
 			while (refresh) {
@@ -150,10 +149,11 @@ class HTMLSupport {
 	 * 
 	 * Difference between &#60;small> and &#60;big> tags in font size is 2.
 	 * 
-	 * @param text
-	 *            to be parsed
-	 * @param component
-	 *            owner of the text
+	 * @see HTMLSupport#getFontFactor(JComponent, float)
+	 * @see HTMLSupport#modifyTag(String, int)
+	 * 
+	 * @param text      to be parsed
+	 * @param component owner of the text
 	 * 
 	 * @return String with replaced and processed according to the given font size
 	 *         tags
@@ -169,46 +169,40 @@ class HTMLSupport {
 			else {
 				String[] parts = text.split(pattern);
 				String[] initialTags = restoreTags(component);
-				text = parts[0];
+				StringBuilder textBuilder = new StringBuilder(parts[0]);
 				for (int i = 0, j = 0; i < parts.length - 1; i++, j++) {
-					boolean wasReplaced = j < initialTags.length && !AwareTags.ADDITIVE.values.contains(initialTags[j]);
+					boolean wasReplaced = j < initialTags.length && !Tags.ADDITIVE.values.contains(initialTags[j]);
 
-					text += (wasReplaced ? initialTags[j] : "");
-					text += parts[i + 1].replaceAll("^(-|\\+)*[1-9]+\">", "");
+					textBuilder.append(wasReplaced ? initialTags[j] : "");
+					textBuilder.append(parts[i + 1].replaceAll("^(-|\\+)*[1-9]+\">", ""));
 				}
 
-				return text;
+				return textBuilder.toString();
 			}
 		}
 
 		// Insert font modifiers accordingly
 		DecimalFormat df = new DecimalFormat("+#;-#");
 		if (text.indexOf(pattern) == -1) { // from standard to emulated
-			for (String tag : AwareTags.ALL.values) {
-				factor = getTagBias(tag, factor);
-				if (!AwareTags.ADDITIVE.values.contains(tag))
-					text = text.replaceAll(tag, pattern + df.format(factor) + "\">");
-				else
-					text = text.replaceAll(tag, tag + pattern + df.format(factor) + "\">");
-			}
+			for (String tag : Tags.ALL.values)
+				text = StringUtils.replace(text, tag,
+						(Tags.ADDITIVE.values.contains(tag)) ? 
+								tag + pattern + df.format(modifyTag(tag, factor)) + "\">" :
+								pattern + df.format(modifyTag(tag, factor)) + "\">");
+			return text;
 		} else { // from emulated to emulated
-			String[] parts = text.split(pattern + "(-|\\+)*[1-9]+");
-			text = "";
-			for (int i = 0; i < parts.length; i++)
-				text += parts[i] + pattern + df.format(factor);
+			return text.replaceAll(pattern + "(-|\\+)*[1-9]+", pattern + df.format(factor));
 		}
-
-		return text;
 	}
 
-	private static int getTagBias(String tag, int factor) {
+	private static int modifyTag(String tag, int factor) {
 		switch (tag) {
 		case "<big>":
 			return factor += 2;
 		case "<small>":
 			return factor -= 2;
 
-		// add other biases here
+		// add other modifiers here
 		}
 
 		return factor;
@@ -261,8 +255,7 @@ class HTMLSupport {
 	 * previously added, but this may bring some unwanted overhead.
 	 * 
 	 * @param component
-	 * @param remove
-	 *            true to remove previously added listener
+	 * @param remove    true to remove previously added listener
 	 */
 	static void handleTextListener(JComponent component, boolean remove) {
 
@@ -282,8 +275,7 @@ class HTMLSupport {
 	 * {@link HTMLSupport#storeTags(JComponent, String)}, and preserves their
 	 * initial order.
 	 * 
-	 * @param component
-	 *            to get native tags back
+	 * @param component to get native tags back
 	 * 
 	 * @return an array with the native tags in order of appearance
 	 */
@@ -323,7 +315,7 @@ class HTMLSupport {
 
 	}
 
-	public enum AwareTags {
+	public enum Tags {
 		ALL("ALL", "<small>", "<big>", "<font size=\"", "<code>"),
 
 		SPECIAL("SPECIAL", "<small>", "<big>", "<code>"),
@@ -332,7 +324,7 @@ class HTMLSupport {
 
 		private final Set<String> values;
 
-		private AwareTags(String type, String... values) {
+		private Tags(String type, String... values) {
 			this.values = Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(values)));
 		}
 

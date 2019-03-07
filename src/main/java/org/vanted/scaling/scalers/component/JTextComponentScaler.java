@@ -59,6 +59,10 @@ public class JTextComponentScaler extends ComponentScaler implements HTMLScaler 
 	 */
 	@Override
 	public void coscaleHTML(JComponent component) {
+		/* Scale the HTML label only for emulated DPIs. */
+		if (scaleFactor == 1f)
+			return;
+		
 		JTextComponent text = (JTextComponent) component;
 
 		/**

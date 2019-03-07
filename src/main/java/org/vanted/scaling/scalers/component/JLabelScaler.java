@@ -64,6 +64,11 @@ public class JLabelScaler extends ComponentScaler implements HTMLScaler {
 	 */
 	@Override
 	public void coscaleHTML(JComponent component) {
+		/* Scale the HTML label only for emulated DPIs. */
+		if (scaleFactor == 1f)
+			return;
+		
+		JLabel label = (JLabel) component;
 		/**
 		 * The order of the HTML texts is preserved and acts as second implicit key to
 		 * allow mapping of multiple texts to a single component.
@@ -71,8 +76,8 @@ public class JLabelScaler extends ComponentScaler implements HTMLScaler {
 		 * Just implement and add your HTML-modification method below following the
 		 * template.
 		 */
-		modifyHTML(((JLabel) component).getText(), (JLabel) component);
-		modifyHTMLTooltip(((JLabel) component).getToolTipText(), (JLabel) component);
+		modifyHTML(label.getText(), label);
+		modifyHTMLTooltip(label.getToolTipText(), label);
 	}
 
 	/**

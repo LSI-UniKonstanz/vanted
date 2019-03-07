@@ -887,7 +887,7 @@ public class GravistoService implements HelperClass {
 				memLabel.setText(getCurrentMemoryInfo(shortInfo));
 				if (shortInfo)
 					memLabel.setToolTipText(getCurrentMemoryInfo(false)
-							.replaceFirst(":", " (click to garbage-collect):").replaceFirst("<font color='gray'>", ""));
+							.replace(":", " (click to garbage-collect):").replace("<font color='gray'>", ""));
 				scaler.coscaleHTML(memLabel);
 				memLabel.repaint(1000);
 			}
