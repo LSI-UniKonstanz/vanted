@@ -88,8 +88,6 @@ import org.jfree.chart.axis.Axis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.CategoryItemRenderer;
-import org.vanted.scaling.Toolbox;
-import org.vanted.scaling.scalers.component.JTabbedPaneScaler;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.MyInputHelper;
@@ -199,8 +197,6 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	private boolean showLegend = false;
 	private float outlineBorderWidth = 10f;
 
-	private float oldRatio = 1f;
-
 	/**
 	 * Initialize GUI
 	 */
@@ -239,24 +235,6 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 		this.setLayout(new TableLayout(size));
 		this.add(stat, "1,1");
 		this.validate();
-
-		// Scaling sync-up
-		Toolbox.addScalingListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ((evt.getNewValue().equals(Toolbox.STATE_ON_SLIDER)
-						|| evt.getNewValue().equals(Toolbox.STATE_RESCALED))
-						|| (evt.getOldValue().equals(Toolbox.STATE_ON_START)
-								&& evt.getNewValue().equals(Toolbox.STATE_IDLE)))
-					// if not part of the active component tree, then scale here
-					if (!MainFrame.getInstance().isSessionActive())
-						new JTabbedPaneScaler(Toolbox.getDPIScalingRatio() / oldRatio).coscaleFont(stat);
-
-				if (evt.getNewValue().equals(Toolbox.STATE_IDLE))
-					oldRatio = Toolbox.getDPIScalingRatio();
-
-			}
-		});
 	}
 
 	public JTabbedPane getTabbedPane() {
@@ -1091,12 +1069,6 @@ public class TabStatistics extends InspectorTab implements ActionListener, Conta
 	public void transactionStarted(TransactionEvent e) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == findCorrButton) {
 			checkProbabilityInput(jTextFieldProb1findCorr);

@@ -86,7 +86,6 @@ import org.graffiti.undo.ChangeAttributesEdit;
 import org.graffiti.util.InstanceCreationException;
 import org.graffiti.util.InstanceLoader;
 import org.graffiti.util.PluginHelper;
-import org.vanted.scaling.Toolbox;
 
 /**
  * Represents the edit panel in the inspector.
@@ -135,8 +134,6 @@ public class DefaultEditPanel extends EditPanel {
 
 	private static Object lock = new Object();
 	private static HashSet<String> discardedRowIDs = new HashSet<String>();
-
-	private float oldRatio;
 
 	// ~ Constructors ===========================================================
 
@@ -267,21 +264,6 @@ public class DefaultEditPanel extends EditPanel {
 		getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ENTER, 0),
 				"apply");
 		getActionMap().put("apply", applyAction);
-
-		// Scaling sync-up
-		Toolbox.addScalingListener(new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if ((evt.getNewValue().equals(Toolbox.STATE_ON_SLIDER)
-						|| evt.getNewValue().equals(Toolbox.STATE_RESCALED))
-						&& !Toolbox.isComponentScaled(DefaultEditPanel.this))
-					Toolbox.scaleComponent(DefaultEditPanel.this, (Toolbox.getDPIScalingRatio() / oldRatio), false);
-
-				if (evt.getNewValue().equals(Toolbox.STATE_IDLE))
-					oldRatio = Toolbox.getDPIScalingRatio();
-
-			}
-		});
 	}
 
 	private void addDiscarded(HashSet<String> discardedRowIDs2, String[] strings) {

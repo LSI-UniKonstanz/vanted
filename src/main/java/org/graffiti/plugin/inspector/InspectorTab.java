@@ -25,6 +25,8 @@ import org.apache.log4j.Logger;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.view.View;
 import org.graffiti.selection.SelectionListener;
+import org.vanted.scaling.ComponentRegulator;
+import org.vanted.scaling.Toolbox;
 
 /**
  * An <code>InspectorTab</code> is a generic component for an
@@ -69,6 +71,8 @@ public abstract class InspectorTab extends JComponent implements ComponentListen
 	private ImageIcon icon;
 
 	private int preferredTabPosition = 0;
+	
+	private ComponentRegulator componentRegulator;
 
 	// ~ Methods ================================================================
 
@@ -77,6 +81,7 @@ public abstract class InspectorTab extends JComponent implements ComponentListen
 	 */
 	public InspectorTab() {
 		addComponentListener(this);
+		componentRegulator = new ComponentRegulator(Toolbox.getDPIScalingRatio());
 	}
 
 	/**
@@ -309,12 +314,13 @@ public abstract class InspectorTab extends JComponent implements ComponentListen
 	}
 
 	/**
-	 * override this method to trigger any action to be done, if this tab gains
-	 * visibility
+	 * Override this method to trigger any action to be done, if this tab gains
+	 * visibility.
 	 */
 	@Override
 	public void componentShown(ComponentEvent e) {
-		// logger.debug("Showing "+ getTitle());
+		componentRegulator.setFactor(Toolbox.getDPIScalingRatio());
+		componentRegulator.scaleComponentsOf(this, true, true);
 	}
 
 	@Override

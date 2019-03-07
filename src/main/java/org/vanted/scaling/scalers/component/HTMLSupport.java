@@ -195,12 +195,20 @@ class HTMLSupport {
 		}
 	}
 
+	/**
+	 * 
+	 * @param tag
+	 * @param factor
+	 * @return
+	 * 
+	 * @vanted.revision 2.7.0 Remove bias
+	 */
 	private static int modifyTag(String tag, int factor) {
 		switch (tag) {
 		case "<big>":
-			return factor += 2;
+			return factor += 0;
 		case "<small>":
-			return factor -= 2;
+			return factor -= 0;
 
 		// add other modifiers here
 		}
