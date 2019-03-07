@@ -297,7 +297,7 @@ public abstract class InspectorTab extends JComponent implements ComponentListen
 	/**
 	 * Returns the preferred tab position in its parent tab. It can be
 	 * InspectorTab.{LEADING,TRAILING,RANDOM,POSNUM} where POSNUM is the absolute
-	 * positionnumber This gives more control about the layout of subtabs
+	 * position number This gives more control about the layout of subtabs
 	 * 
 	 * @return
 	 */
