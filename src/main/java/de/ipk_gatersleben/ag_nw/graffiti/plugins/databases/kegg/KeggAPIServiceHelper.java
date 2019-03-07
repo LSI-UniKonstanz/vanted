@@ -22,10 +22,10 @@ import java.util.concurrent.RecursiveAction;
 import javax.swing.JComponent;
 
 import org.HelperClass;
+import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.log4j.Logger;
 
-import sun.net.www.http.HttpClient;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.databases.FileDownloadStatusInformationProvider;
 
 /**

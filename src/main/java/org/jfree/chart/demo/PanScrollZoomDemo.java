@@ -74,13 +74,13 @@ import org.jfree.data.XYSeries;
 import org.jfree.data.XYSeriesCollection;
 import org.jfree.ui.RefineryUtilities;
 
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
-
 /**
  * A demo for panning, scrolling and zooming.
  */
 public class PanScrollZoomDemo extends JFrame
 		implements ActionListener, ChangeListener, ChartChangeListener, MouseListener, MouseMotionListener {
+
+	private static final long serialVersionUID = 1L;
 
 	/** The panel that displays the chart. */
 	private ChartPanel chartPanel;
@@ -172,7 +172,7 @@ public class PanScrollZoomDemo extends JFrame
 
 		// remove popup menu to allow panning
 		// with right mouse pressed
-		this.chartPanel.setPopupMenu(null);
+		//this.chartPanel.setPopupMenu(null);
 
 		getContentPane().add(this.chartPanel);
 	}
@@ -724,8 +724,7 @@ public class PanScrollZoomDemo extends JFrame
 	public static void main(final String[] args) {
 
 		try {
-			final String lookAndFeelClassName = WindowsLookAndFeel.class.getName();
-			UIManager.setLookAndFeel(lookAndFeelClassName);
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 		}

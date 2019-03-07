@@ -65,17 +65,11 @@ public abstract class RectangularNodeShape extends AbstractArrowShape implements
 		return thickShape.getBounds2D();
 	}
 
-	/**
-	 * @see java.awt.Shape#getPathIterator(java.awt.geom.AffineTransform)
-	 */
 	@Override
 	public PathIterator getPathIterator(AffineTransform at) {
 		return thickShape.getPathIterator(at);
 	}
 
-	/**
-	 * @see java.awt.Shape#getPathIterator(java.awt.geom.AffineTransform, double)
-	 */
 	@Override
 	public PathIterator getPathIterator(AffineTransform at, double flatness) {
 		return thickShape.getPathIterator(at, flatness);
@@ -149,17 +143,11 @@ public abstract class RectangularNodeShape extends AbstractArrowShape implements
 		return this.contains(r.getX(), r.getY(), r.getWidth(), r.getHeight());
 	}
 
-	/**
-	 * @see java.awt.Shape#contains(double, double)
-	 */
 	@Override
 	public boolean contains(double x, double y) {
 		return thickShape.contains(x, y);
 	}
 
-	/**
-	 * @see java.awt.Shape#contains(double, double, double, double)
-	 */
 	@Override
 	public boolean contains(double x, double y, double w, double h) {
 		return thickShape.contains(x, y, w, h);

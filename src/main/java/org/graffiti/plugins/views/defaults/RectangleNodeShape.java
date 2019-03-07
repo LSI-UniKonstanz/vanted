@@ -54,9 +54,6 @@ public class RectangleNodeShape extends RectangularNodeShape {
 
 	// ~ Methods ================================================================
 
-	/**
-	 * @see org.graffiti.plugin.view.NodeShape#getIntersection(Line2D)
-	 */
 	public Point2D getIntersection(Line2D line) {
 		Rectangle2D rect = getRealBounds2D();
 

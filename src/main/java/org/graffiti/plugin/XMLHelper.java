@@ -35,6 +35,7 @@ import javax.xml.validation.Validator;
 import org.ErrorMsg;
 import org.HelperClass;
 import org.StringManipulationTools;
+import org.apache.xerces.jaxp.DocumentBuilderFactoryImpl;
 import org.jdom.JDOMException;
 import org.jdom.input.DOMBuilder;
 import org.jdom.output.Format;
@@ -43,8 +44,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl;
 
 /**
  * Contains some (static) auxiliary methods for writing XML.
