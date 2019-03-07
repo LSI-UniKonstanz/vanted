@@ -45,6 +45,7 @@ import org.graffiti.session.EditorSession;
 import org.graffiti.session.Session;
 import org.graffiti.session.SessionListener;
 import org.graffiti.util.DelayThread;
+import org.vanted.scaling.Toolbox;
 
 /**
  * Represents an inspector tab.
@@ -76,7 +77,6 @@ public abstract class AbstractTab extends InspectorTab
 	/**
 	 * Avoids duplicate updates
 	 */
-
 	private DelayThread delayThreadAttributeChanged;
 
 	private DelayThread delayThreadAttributeAddedRemoved;
@@ -224,7 +224,6 @@ public abstract class AbstractTab extends InspectorTab
 	}
 
 	protected void rebuildTreeAction() {
-
 		/** The tree view of the attribute hierarchy. */
 		logger.debug("rebuildtree for classname: " + this.getClass().getName());
 		JTree attributeTree;
@@ -273,6 +272,7 @@ public abstract class AbstractTab extends InspectorTab
 	@Override
 	public void componentShown(ComponentEvent e) {
 		rebuildTreeAction();
+		Toolbox.scaleComponent(this, true);
 	}
 
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {

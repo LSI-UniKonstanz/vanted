@@ -43,7 +43,7 @@ public class GraphTab extends AbstractTab {
 
 	@Override
 	public String getEmptyDescription() {
-		return "Properties of active network are editable at this place.";
+		return "Properties of active networks are editable at this place.";
 	}
 
 	@Override

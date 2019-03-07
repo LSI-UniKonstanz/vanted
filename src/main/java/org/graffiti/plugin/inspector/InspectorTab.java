@@ -25,7 +25,6 @@ import org.apache.log4j.Logger;
 import org.graffiti.graph.GraphElement;
 import org.graffiti.plugin.view.View;
 import org.graffiti.selection.SelectionListener;
-import org.vanted.scaling.ComponentRegulator;
 import org.vanted.scaling.Toolbox;
 
 /**
@@ -72,8 +71,6 @@ public abstract class InspectorTab extends JComponent implements ComponentListen
 
 	private int preferredTabPosition = 0;
 	
-	private ComponentRegulator componentRegulator;
-
 	// ~ Methods ================================================================
 
 	/**
@@ -81,7 +78,6 @@ public abstract class InspectorTab extends JComponent implements ComponentListen
 	 */
 	public InspectorTab() {
 		addComponentListener(this);
-		componentRegulator = new ComponentRegulator(Toolbox.getDPIScalingRatio());
 	}
 
 	/**
@@ -315,12 +311,11 @@ public abstract class InspectorTab extends JComponent implements ComponentListen
 
 	/**
 	 * Override this method to trigger any action to be done, if this tab gains
-	 * visibility.
+	 * visibility. Then also call <code>super(e);</code> to enable DPI scaling. 
 	 */
 	@Override
 	public void componentShown(ComponentEvent e) {
-		componentRegulator.setFactor(Toolbox.getDPIScalingRatio());
-		componentRegulator.scaleComponentsOf(this, true, true);
+		Toolbox.scaleComponent(this, true);
 	}
 
 	@Override

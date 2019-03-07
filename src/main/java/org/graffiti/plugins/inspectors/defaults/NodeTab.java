@@ -36,7 +36,7 @@ public class NodeTab extends AbstractTab {
 
 	@Override
 	public String getEmptyDescription() {
-		return "Properties of active node selection are editable at this place.";
+		return "Properties of active node selections are editable at this place.";
 	}
 
 	public static NodeTab getInstance() {

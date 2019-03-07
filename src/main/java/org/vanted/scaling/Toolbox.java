@@ -245,17 +245,29 @@ public class Toolbox {
 	}
 
 	/**
+	 * Version of {@linkplain Toolbox#scaleComponent(JComponent, float, boolean)}
+	 * using the default DPI scaling ratio.
+	 * 
+	 * @param component container to start scaling from
+	 * @param check     if true it will make sure to avoid doubly scaling
+	 */
+	public static void scaleComponent(JComponent component, boolean check) {
+		scaleComponent(component, getDPIScalingRatio(), check);
+	}
+
+	/**
 	 * This automatically marks the component and its children as scaled, while
 	 * doing so.
 	 * 
 	 * @param component container to start scaling from
 	 * @param DPIratio  see {@linkplain Toolbox#getDPIScalingRatio()}
+	 * @param           check, if true it will make sure to avoid doubly scaling
 	 */
-	public static void scaleComponent(JComponent component, float DPIratio, boolean checkScaled) {
+	public static void scaleComponent(JComponent component, float DPIratio, boolean check) {
 		if (DPIratio == 1f)
 			return;
 
-		assignScaler(component, DPIratio, checkScaled, true);
+		assignScaler(component, DPIratio, check, true);
 	}
 
 	public static int getSliderValue() {
@@ -263,31 +275,42 @@ public class Toolbox {
 	}
 
 	private static void assignScaler(JComponent component, float factor, boolean check, boolean mark) {
-		// scale children
-		if (component.getComponentCount() > 0)
+		// scale all
+		if (component.getComponentCount() > 0) {
 			if (check)
 				new ComponentRegulator(factor).scaleComponentsOf(component, check, mark);
 			else
 				new ComponentRegulator(factor).scaleComponentsOf(component);
+		} else {
+			// scale top-most only
+			if ((check && Toolbox.isComponentScaled(component)) || !ComponentRegulator.isInitialized)
+				return;
 
-		// scale top-most component
-		if (check && Toolbox.isComponentScaled(component))
-			return;
+			if (component instanceof JLabel)
+				new JLabelScaler(factor).scaleComponent(component);
+			else if (component instanceof AbstractButton)
+				new AbstractButtonScaler(factor).scaleComponent(component);
+			else if (component instanceof JTextComponent)
+				new JTextComponentScaler(factor).scaleComponent(component);
+			else if (component instanceof JOptionPane)
+				new JOptionPaneScaler(factor).scaleComponent(component);
+			else if (component instanceof JTabbedPane)
+				new JTabbedPaneScaler(factor).scaleComponent(component);
+			else
+				new ComponentScaler(factor).scaleComponent(component);
 
-		if (component instanceof JLabel)
-			new JLabelScaler(factor).scaleComponent(component);
-		else if (component instanceof AbstractButton)
-			new AbstractButtonScaler(factor).scaleComponent(component);
-		else if (component instanceof JTextComponent)
-			new JTextComponentScaler(factor).scaleComponent(component);
-		else if (component instanceof JOptionPane)
-			new JOptionPaneScaler(factor).scaleComponent(component);
-		else if (component instanceof JTabbedPane)
-			new JTabbedPaneScaler(factor).scaleComponent(component);
-		else
-			new ComponentScaler(factor).scaleComponent(component);
+			if (mark)
+				ComponentRegulator.addScaledComponent(component);
+		}
+	}
 
-		if (mark)
-			ComponentRegulator.addScaledComponent(component);
+	/**
+	 * By overriding the order for all, you can allow proxy scalers to run before
+	 * the application DPI scaling init. This may lead to Exceptions. To scale a
+	 * specific single component, you can just use one of the component scalers
+	 * directly.
+	 */
+	public static void overrideExecutionOrder() {
+		ComponentRegulator.overrideForAll();
 	}
 }

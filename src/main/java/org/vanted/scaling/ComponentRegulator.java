@@ -62,7 +62,7 @@ public class ComponentRegulator {
 	private static int originalMomentHash;
 
 	/* No scaling should be done, before the global scaling has run. */
-	private static boolean isInitialized = false;
+	static boolean isInitialized = false;
 
 	/**
 	 * This holds all relevant component classes (i.e. their superclasses up to
@@ -262,12 +262,9 @@ public class ComponentRegulator {
 	 * Override default behaviour to run proxy scalers before the
 	 * application / init DPI scaler.
 	 * 
-	 * @return the proxy ComponentRegulator that has overridden the
-	 * default behaviour.
 	 */
-	public ComponentRegulator override() {
+	public static void overrideForAll() {
 		ComponentRegulator.isInitialized = true;
-		return this;
 	}
 
 	/**

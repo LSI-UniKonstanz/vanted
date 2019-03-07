@@ -564,7 +564,7 @@ public class FolderPanel extends JComponent {
 					cmdButton.setIcon(uncondensedIcon);
 				showCondensed.put(title, Boolean.valueOf(condensedState));
 				layoutRows();
-				Toolbox.scaleComponent(FolderPanel.this, Toolbox.getDPIScalingRatio(), true);
+				Toolbox.scaleComponent(FolderPanel.this, true);
 				for (ActionListener al : collapse_listeners) {
 					al.actionPerformed(new ActionEvent(this, condensedState ? 1 : 0, "collapseevent"));
 				}
