@@ -105,10 +105,9 @@ public class ComponentRegulator {
 
 		// ensure some extra capacity beforehand
 		System.gc();
-
-		doExternalScaling(container);
-
+		
 		isInitialized = true;
+		doExternalScaling(container);
 	}
 
 	/**
