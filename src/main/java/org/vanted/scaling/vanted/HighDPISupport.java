@@ -44,15 +44,16 @@ public class HighDPISupport implements PreferencesInterface {
 			? "Mac Look and Feel is restrictive," + " so for superior performance choose more tolerant alternative.<br>"
 			: "";
 
-	public static final String DESCRIPTION = "<html>&#10148; Emulate your desired DPI by moving the slider.<br>"
-			+ "&#10148; <i>Lifesaver</i> guards you against bad values. It acts on next start-up.<br>"
+	public static final String DESCRIPTION = 
+			"<html>&#10148; Emulate DPI with the slider below.<br>"
+			+ "&#10148; <i>Lifesaver</i> guards you from accidental values. It acts on next start-up.<br>"
 
 			/*********************************************************************/
 			/*--------------------Disabled for version 2.6.4---------------------*/
 			/*********************************************************************/
 			// + "&#10148; " + macText
 
-			+ "&#10148; Lastly, for optimal performance you could restart VANTED.<br><br>";
+			+ "&#10148; For optimal scaling you can restart VANTED.<br><br>";
 
 	public static final String PREFERENCES_MAC_LAF = "<html>Mac Look and Feel&emsp;";
 

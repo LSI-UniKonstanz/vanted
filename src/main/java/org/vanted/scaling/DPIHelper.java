@@ -54,7 +54,7 @@ public class DPIHelper {
 	/*--------Scaling Preferences-------- */
 	static final String PREFERENCE_SCALING = "Scaling Preferences";
 	/** Standard value, when no scaling is to be performed. Useful for resetting. */
-	public static final int STANDARD_VALUE = ScalingSlider.median;
+	public static final int STANDARD_VALUE = ScalingSlider.center;
 	/** Default value, when not setting any particular value. */
 	public static final int VALUE_DEFAULT = -1;
 	/** Internal value for checking if any values are stored. */
@@ -87,16 +87,13 @@ public class DPIHelper {
 	 * different than default, one should initialize a ScalingSlider with such new
 	 * values.
 	 * 
-	 * @param sValue
-	 *            sliderValue (get it from Preferences)
+	 * @param sValue sliderValue (get it from Preferences)
 	 * @return float DPI value
 	 */
 	public static float processEmulatedDPIValue(int sValue) {
-		int standard = ScalingSlider.getStandard(); // also sets MIN_DPI for public use!
-
-		// handling the artificial 0
-		return (sValue == ScalingSlider.min) ? ScalingSlider.MIN_DPI
-				: standard * (sValue / (float) ScalingSlider.median);
+		return (sValue == 0) /* handle the artificial 0 */
+				? ScalingSlider.MIN_DPI
+				: ScalingSlider.getStandard() * (sValue / 50f);
 	}
 
 	/**
@@ -126,15 +123,10 @@ public class DPIHelper {
 	/**
 	 * Insert the preferencing Components into the specified pane.
 	 * 
-	 * @param pane
-	 *            to add into
+	 * @param pane to add into
 	 */
-	public static void addScalingComponents(AbstractOptionPane pane, Container main) {
-		String name = "Emulated DPI";
-		// first we add the label
-		pane.addComponent(new JLabel(name));
-		// afterwards - the actual component
-		pane.addComponent("\t\t", new ScalingSlider(main));
+	public static void addScalingComponents(AbstractOptionPane pane, Container main, int min, int max) {
+		pane.addComponent("<html>Emulate DPI&emsp;&emsp;&emsp;", new ScalingSlider(min, max, main));
 		final JCheckBox lifesaver = UIManager.getLookAndFeel().getName().toLowerCase().contains("mac") ? new JCheckBox()
 				: new ImmutableCheckBox();
 		lifesaver.setSelected(DPIHelper.getLifesaverBoolean());
@@ -150,11 +142,8 @@ public class DPIHelper {
 			}
 		});
 
-		pane.addComponent("<html>Enable Lifesaver&emsp;&emsp;", lifesaver);
+		pane.addComponent("<html>Enable Lifesaver&emsp;", lifesaver);
 
-		addEmptyLine(pane);
-		addEmptyLine(pane);
-		addEmptyLine(pane);
 		addEmptyLine(pane);
 		addEmptyLine(pane);
 
@@ -169,8 +158,7 @@ public class DPIHelper {
 	/**
 	 * Builds and displays a reset button for user convenience.
 	 * 
-	 * @param pane
-	 *            onto which to display
+	 * @param pane onto which to display
 	 */
 	private static void addResetter(AbstractOptionPane pane) {
 		final JButton resetter = new JButton("Reset");
@@ -251,8 +239,7 @@ public class DPIHelper {
 	/**
 	 * Get the contents of the reset dialog ready.
 	 * 
-	 * @param value
-	 *            the ScalingSlider value, saved in Preferences
+	 * @param value the ScalingSlider value, saved in Preferences
 	 * @return a JPanel, filled with all needed contents
 	 */
 	private static JPanel getContents(int value) {
@@ -294,8 +281,7 @@ public class DPIHelper {
 	 * simplicity, as unsafe values are regarded those having less than one third of
 	 * the standard DPI.
 	 * 
-	 * @param value
-	 *            value to check "safety" against
+	 * @param value value to check "safety" against
 	 * 
 	 * @return true if set Slider value is in the defined usability boundaries
 	 */
@@ -334,14 +320,12 @@ public class DPIHelper {
 	 * get</code> parameter. To get: <code>DPIHelper.PREFERENCES_GET</code>,
 	 * respectively.
 	 * 
-	 * @param val
-	 *            Our new ScalingSlider value. Used only, when putting into (i.e.
+	 * @param val Our new ScalingSlider value. Used only, when putting into (i.e.
 	 *            <b>get</b> is <b>false</b>). Meaning when querying values, you
 	 *            could just use <code>
 	 * DPIHelper.VALUE_DEFAULT</code>.
 	 * 
-	 * @param get
-	 *            When <b>true</b>, it returns the previously stored value.
+	 * @param get When <b>true</b>, it returns the previously stored value.
 	 * 
 	 * @return Stored value under 'Scaling Preferences' or <code>
 	 * DPIHelper.VALUE_DEFAULT</code> for potential error checking, if <b>get</b> is
@@ -357,7 +341,7 @@ public class DPIHelper {
 
 		// do not put new value
 		if (get)
-			return scalingPreferences.getInt(PREFERENCE_SCALING, ScalingSlider.median);
+			return scalingPreferences.getInt(PREFERENCE_SCALING, ScalingSlider.center);
 
 		scalingPreferences.putInt(PREFERENCE_SCALING, val);
 
@@ -395,10 +379,8 @@ public class DPIHelper {
 	 * A resource loading utility method for resources placed in the resource
 	 * package.
 	 * 
-	 * @param clazz
-	 *            delegates to the respective class loader
-	 * @param filename
-	 *            the resource name
+	 * @param clazz    delegates to the respective class loader
+	 * @param filename the resource name
 	 * 
 	 * @return the loaded resource
 	 * 

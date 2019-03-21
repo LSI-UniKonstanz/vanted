@@ -22,9 +22,6 @@ import org.vanted.scaling.vanted.HighDPISupport;
 
 public class ParameterOptionPane extends AbstractOptionPane {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 132078280776703961L;
 
 	private static Logger logger = Logger.getLogger(ParameterOptionPane.class);
@@ -45,25 +42,21 @@ public class ParameterOptionPane extends AbstractOptionPane {
 
 	@Override
 	public String getCategory() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public String getOptionName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public JComponent getOptionDialogComponent() {
-		// TODO Auto-generated method stub
 		return super.getOptionDialogComponent();
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return super.getName();
 	}
 
@@ -91,7 +84,7 @@ public class ParameterOptionPane extends AbstractOptionPane {
 				 * flaw.
 				 */
 				if (curParameter.getDescription().equals(HighDPISupport.DESCRIPTION)) {
-					DPIHelper.addScalingComponents(this, MainFrame.getInstance());
+					DPIHelper.addScalingComponents(this, MainFrame.getInstance(), 10, 90);
 					logger.debug("added Scaling Components AFTER " + curParameter.getName());
 				}
 				logger.debug("added " + curParameter.getName() + " as valueeditcomponent");

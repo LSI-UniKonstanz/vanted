@@ -38,19 +38,13 @@ import org.vanted.scaling.Toolbox;
  * color-coded.
  * 
  * @author D. Garkov
- *
+ * @since 2.6.4
  */
 public class ImmutableSlider extends JSlider {
 
 	private static final long serialVersionUID = -5190816962285639529L;
 
 	private FontUIResource font;
-
-	/*
-	 * ================================================================ *
-	 * Constructors *
-	 * ================================================================
-	 */
 
 	public ImmutableSlider() {
 		saveDefaults();
@@ -81,20 +75,10 @@ public class ImmutableSlider extends JSlider {
 		saveDefaults();
 	}
 
-	/*
-	 * ================================================================ * Overridden
-	 * * ================================================================
-	 */
-
 	@Override
 	public Font getFont() {
 		return font;
 	}
-
-	/*
-	 * ================================================================ * Methods *
-	 * ================================================================
-	 */
 
 	private void saveDefaults() {
 		font = (FontUIResource) UIManager.get("Slider.font");
@@ -106,17 +90,13 @@ public class ImmutableSlider extends JSlider {
 		this.setUI(iUI);
 	}
 
-	/*
-	 * ================================================================ * Helper
-	 * Classes * ================================================================
-	 */
-
 	/**
 	 * By saving and loading certain LAF Defaults, we deactivate any LAF influences
 	 * from then on, that might be brought through a LAF change. Thus, we turn it
 	 * LAF-immutable.
 	 * 
 	 * @author D. Garkov
+	 * @since 2.6.4
 	 *
 	 */
 	protected static class PlainImmutableSliderUI extends BasicSliderUI {
@@ -183,21 +163,21 @@ public class ImmutableSlider extends JSlider {
 	}
 
 	/**
-	 * This gives the ScalingSlider a rainbow-look. This serves a couple of
-	 * purposes, first, it color-maps the scaling regions to stimulate better mental
-	 * representation. E.g. the high-memory region with very small DPI is
-	 * color-coded in red. This corresponds well to the subsequently shown Warning
-	 * message. This is not the only case. Second, it has its own unique look and
-	 * thus leaves a strong impression. Also by overridding the painting procedures,
-	 * we turn it immutable. For completion (e.g. to avoid size-changing), it
-	 * extends the {@linkplain PlainImmutableSliderUI}.
+	 * This serves a couple of purposes, among those are - visually color-maps
+	 * scaling regions to stimulate better mental representation and leave stronger
+	 * impression to the user. This also corresponds well to the subsequently shown
+	 * Warning message. By overridding the painting procedures, we turn it
+	 * immutable. For completion (e.g. to avoid size-changing), it extends the
+	 * {@linkplain PlainImmutableSliderUI}.
 	 * 
 	 * @author D. Garkov
+	 * @since 2.6.4
+	 * @vanted.revision 2.7.0 Monochromatic look
 	 *
 	 */
 	protected static class ColoredImmutableSliderUI extends PlainImmutableSliderUI {
 
-		private static float[] fracs = { 0f, .1f, .2f, .6f, .8f, 1f };
+		private static float[] fracs = { 0.1f, 0.66f, 1f };
 		private LinearGradientPaint p;
 
 		public ColoredImmutableSliderUI(JSlider slider) {
@@ -234,7 +214,7 @@ public class ImmutableSlider extends JSlider {
 			Rectangle t = trackRect;
 			Point2D start = new Point2D.Float(t.x, t.y);
 			Point2D end = new Point2D.Float(t.x + t.width, t.y + t.height);
-			Color[] colors = { Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE };
+			Color[] colors = { new Color(92, 92, 92) /* 2x darker light gray */, Color.LIGHT_GRAY, Color.WHITE };
 			p = new LinearGradientPaint(start, end, fracs, colors);
 			g2d.setPaint(p);
 			if (slider.getOrientation() == JSlider.HORIZONTAL)
