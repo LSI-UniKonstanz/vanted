@@ -29,12 +29,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.process_alternative_ids.Re
 public class ReplaceDiagramTitleFromAlternativeSubstanceNames extends AbstractAlgorithm {
 
 	public String getName() {
-		return "Set Diagram-Title";
+		return "Set Diagram Title";
 	}
 
 	@Override
 	public String getCategory() {
-		return "Mapping.Alternate identifiers";
+		return "Mapping.Alternative Identifiers";
 	}
 
 	@Override
@@ -64,8 +64,8 @@ public class ReplaceDiagramTitleFromAlternativeSubstanceNames extends AbstractAl
 			MainFrame.showMessageDialog("No alternative identifiers available!", "No data available");
 		} else {
 			ArrayList<String> selvals = new ArrayList<String>();
-			selvals.add("-1 Show All Identifiers (comma delimited)");
-			// selvals.add("-1 Show All Identifiers (line break)");
+			String all = "Show All (comma-delimited)";
+			selvals.add(all);
 			for (int i = 0; i <= maxID; i++) {
 				String s = "" + i;
 				String example = exampleValues.get(Integer.valueOf(i));
@@ -74,66 +74,64 @@ public class ReplaceDiagramTitleFromAlternativeSubstanceNames extends AbstractAl
 				selvals.add(s);
 			}
 			Object result = JOptionPane.showInputDialog(MainFrame.getInstance(),
-					"<html>Select the alternative identifier index which will be used to set the<br>"
-							+ "diagram title of the data charts (0 is the default value from the input form).<br>"
-							+ "You may also select &quot;Show All&quot; to displa all identifiers.:",
+					"<html>Select the alternative identifier index to set the diagram title<br>"
+							+ "for the data charts (0 is the default value from the input form).<br>"
+							+ "You may also select &quot;Show All&quot; to display all identifiers.",
 					"Select Identifier", JOptionPane.QUESTION_MESSAGE, null, selvals.toArray(), null);
-			if (result == null) {
-				MainFrame.showMessageDialog("No value selected, substance ids remain unchanged.", "Information");
-			} else {
-				@SuppressWarnings("unused")
-				int workCnt = 0;
-				String number = (String) result;
-				if (number.contains(" ")) {
-					number = number.substring(0, number.indexOf(" "));
-					number = number.trim();
-				}
-				int idx = Integer.parseInt(number);
-				graph.getListenerManager().transactionStarted(this);
-				for (Node n : getSelectedOrAllNodes()) {
-					NodeHelper nh = new NodeHelper(n);
-					String newName = nh.getLabel();
-					int mappingId = 0;
-					for (SubstanceInterface md : nh.getMappings()) {
-						String oMain = md.getName();
-						if (idx < 0) {
-							ArrayList<String> allNames = new ArrayList<String>();
-							for (int i = 0; i < maxID; i++) {
-								String otherName = md.getSynonyme(i);
-								if (oMain != null && otherName != null) {
-									workCnt++;
-									allNames.add(otherName);
-								}
-							}
-							if (oMain != null && allNames.size() > 0) {
-								newName = "";
-								for (int i = 0; i < allNames.size(); i++) {
-									if (idx == -1)
-										newName = newName + allNames.get(i) + ", ";
-									// else
-									// newName = newName + allNames.get(i) + "\n";// + "<br>";
-								}
-								if (newName.endsWith("\n"))
-									newName = newName.substring(0, newName.length() - "\n".length());
-								if (newName.endsWith(", "))
-									newName = newName.substring(0, newName.length() - ", ".length());
-							}
-							// if (idx == -1 && !newName.startsWith("<html>"))
-							// newName = "<html>" + newName;
-						} else {
-							String oAlternative = md.getSynonyme(idx);
-							if (oMain != null && oAlternative != null) {
+			if (result == null)
+				return; // Cancel
+
+			@SuppressWarnings("unused")
+			int workCnt = 0;
+			String number = result.equals(all) ? "-1" : (String) result;
+			if (number.indexOf(' ') != -1)
+				number = number.substring(0, number.indexOf(' ')).trim();
+			
+			int idx = Integer.parseInt(number);
+			graph.getListenerManager().transactionStarted(this);
+			for (Node n : getSelectedOrAllNodes()) {
+				NodeHelper nh = new NodeHelper(n);
+				String newName = nh.getLabel();
+				int mappingId = 0;
+				for (SubstanceInterface md : nh.getMappings()) {
+					String oMain = md.getName();
+					if (idx < 0) {
+						ArrayList<String> allNames = new ArrayList<String>();
+						for (int i = 0; i < maxID; i++) {
+							String otherName = md.getSynonyme(i);
+							if (oMain != null && otherName != null) {
 								workCnt++;
-								md.setName(oAlternative);
-								newName = oAlternative;
+								allNames.add(otherName);
 							}
 						}
-						AttributeHelper.setAttribute(n, "charting", "chartTitle" + (++mappingId), newName);
+						if (oMain != null && allNames.size() > 0) {
+							newName = "";
+							for (int i = 0; i < allNames.size(); i++) {
+								if (idx == -1)
+									newName = newName + allNames.get(i) + ", ";
+								// else
+								// newName = newName + allNames.get(i) + "\n";// + "<br>";
+							}
+							if (newName.endsWith("\n"))
+								newName = newName.substring(0, newName.length() - "\n".length());
+							if (newName.endsWith(", "))
+								newName = newName.substring(0, newName.length() - ", ".length());
+						}
+						// if (idx == -1 && !newName.startsWith("<html>"))
+						// newName = "<html>" + newName;
+					} else {
+						String oAlternative = md.getSynonyme(idx);
+						if (oMain != null && oAlternative != null) {
+							workCnt++;
+							md.setName(oAlternative);
+							newName = oAlternative;
+						}
 					}
+					AttributeHelper.setAttribute(n, "charting", "chartTitle" + (++mappingId), newName);
 				}
-				graph.getListenerManager().transactionFinished(this, true);
-				GraphHelper.issueCompleteRedrawForGraph(graph);
 			}
+			graph.getListenerManager().transactionFinished(this, true);
+			GraphHelper.issueCompleteRedrawForGraph(graph);
 		}
 	}
 }

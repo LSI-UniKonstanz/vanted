@@ -57,20 +57,20 @@ public class BundleParallelEdges extends AbstractAlgorithm {
 
 	@Override
 	public String getDescription() {
-		return "<html>This algorithm will bundle edges that connect nodes belonging"
-				+ "to different classes. The definition of the classes can be taken from"
-				+ "the node's cluster name or a slected node attribute.";
+		return "<html>It bundles edges that connect nodes, belonging "
+				+ "to different classes. The node's class can be determined from "
+				+ "its cluster or other, selected attribute.";
 	}
 
 	@Override
 	public Parameter[] getParameters() {
 		return new Parameter[] {
 				new DoubleParameter(scalingFactor, "Edge distance",
-						"Indicates the distance between edges when bundled"),
+						"Indicates the distance between edges, when bundled."),
 				new ObjectListParameter(shape, "Edge Shape", "", Shapes.values()),
-				new ObjectListParameter(source, "Source of class Information",
-						"Determines, which attribute will be used for the definition of classes",
-						new String[] { "Cluster ID", "Source Attribut" }) };
+				new ObjectListParameter(source, "Class Information source",
+						"Determines, which attribute to be used for the definition of classes.",
+						new String[] { "Cluster ID", "Source Attribute" }) };
 	}
 
 	@Override

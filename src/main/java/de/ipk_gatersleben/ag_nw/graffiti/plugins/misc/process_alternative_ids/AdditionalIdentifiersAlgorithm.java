@@ -23,6 +23,7 @@ import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
+import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.xml_attribute.XMLAttribute;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.SubstanceInterface;
@@ -40,39 +41,33 @@ public class AdditionalIdentifiersAlgorithm extends AbstractAlgorithm {
 
 	private boolean ignoreFirstRow = false;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+	@Override
 	public String getName() {
 		return "Add Alternative Data Identifiers";
 	}
 
 	@Override
 	public String getDescription() {
-		return "<html>" + "This command reads (multiple) mapping tables and adds alternative<br>"
-				+ "substance ID to the mapped data. The same process could be<br>"
-				+ "performed before a data mapping from the experiments side<br>"
-				+ "panel for the experiment datasets with the corresponding<br>"
-				+ "command button. In case the source file or network connection<br>"
-				+ "for data mapping is not available and new substance IDs should<br>"
-				+ "be added to the mapped datasets, this command may be used.<br><br>"
+		return HTMLScaleSupport.scaleHTMLText("<html>"
+				+ "This command reads (multiple) mapping tables and adds alternative<br>"
+				+ "substance IDs to the mapped data. The same process could be per-<br>"
+				+ "formed before data mapping from the Experiments Tab. In case, data<br>"
+				+ "source file or network connection are unavailable and substance IDs<br>"
+				+ "should be added, this command may come in handy.<br><br>"
 				+ "Alternative substance IDs are processed by several commands<br>"
-				+ "e.g. the ones available from the &quot;Hierarchy&quot;-menu.<br>" + "<br>"
+				+ "e.g. the ones available in &quot;Network &#8594; Hierarchy&quot;.<br>" + "<br>"
 				+ "Existing alternative substance IDs are removed during this<br>"
-				+ "process, also in case no new substance IDs are available for<br>"
-				+ "a given data mapping (this behavior is different from the<br>"
-				+ "options in the experiment side tab).<br> <br>" + "<br>"
-				+ "Layout of input file (multiple IDs may span columns or may<br>"
-				+ "be specified in additional rows):<br><br>" + "<code>"
+				+ "process, and in case no new substance IDs are available for<br>"
+				+ "given data mapping (different from the options in Experiments Tab).<br><br>" + "<br>"
+				+ "Layout of input file (multiple IDs may span columns or be<br>"
+				+ "specified in additional rows):<br><br>" + "<code>"
 				+ "[Column A | Column B | [Column C] | ...]<br>" + "Main ID 1| alt ID 1 | alt ID 2 ...<br>"
-				+ "Main ID 2| alt ID 1<br>" + "Main ID 1| alt ID 3<br>" + "</code><br><br>";
+				+ "Main ID 2| alt ID 1<br>" + "Main ID 1| alt ID 3<br>" + "</code><br><br>");
 	}
 
 	@Override
 	public String getCategory() {
-		return "Mapping";
+		return "Mapping.Alternative Identifiers";
 	}
 
 	@Override

@@ -98,7 +98,7 @@ public class JTabbedPaneScaler extends ComponentScaler implements HTMLScaler {
 
 	/**
 	 * Worker method processing the title of a TabComponent, given it is
-	 * HTML-styled, see {@link HTMLSupport#isHTMLStyled(String)}, by performing
+	 * HTML-styled, see {@link HTMLScaleSupport#isHTMLStyled(String)}, by performing
 	 * parsing, substitution, removal and installation of {@link TextListener}.
 	 * 
 	 * @param pane
@@ -109,44 +109,44 @@ public class JTabbedPaneScaler extends ComponentScaler implements HTMLScaler {
 	private static void modifyHTML(JTabbedPane pane, int index) {
 		String t = pane.getTitleAt(index);
 
-		if (!HTMLSupport.isHTMLStyled(t))
+		if (!HTMLScaleSupport.isHTMLStyled(t))
 			return;
 
 		JComponent c = (JComponent) pane.getComponentAt(index);
 		// save the initial tags and their order for later
-		HTMLSupport.storeTags(c, t);
+		HTMLScaleSupport.storeTags(c, t);
 
 		// convert tags to font size tag
-		t = HTMLSupport.parseHTMLtoFontSize(t, c);
+		t = HTMLScaleSupport.parseHTMLtoFontSize(t, c);
 
 		if (t.equals(pane.getTitleAt(index)))
 			return;
 
 		// remove listener to avoid looping
-		HTMLSupport.handleTextListener(c, true);
+		HTMLScaleSupport.handleTextListener(c, true);
 
 		pane.setTitleAt(index, t);
 
 		// install listener for subsequent dynamic changes
-		HTMLSupport.handleTextListener(c, false);
+		HTMLScaleSupport.handleTextListener(c, false);
 	}
 
 	private static void modifyHTMLTooltip(JTabbedPane pane, int index) {
 		String t = pane.getToolTipTextAt(index);
 
-		if (!HTMLSupport.isHTMLStyled(t))
+		if (!HTMLScaleSupport.isHTMLStyled(t))
 			return;
 
 		JComponent c = (JComponent) pane.getComponentAt(index);
 
-		HTMLSupport.storeTags(c, t);
-		t = HTMLSupport.parseHTMLtoFontSize(t, c);
+		HTMLScaleSupport.storeTags(c, t);
+		t = HTMLScaleSupport.parseHTMLtoFontSize(t, c);
 
 		if (t.equals(pane.getToolTipTextAt(index)))
 			return;
 
-		HTMLSupport.handleTextListener(c, true);
+		HTMLScaleSupport.handleTextListener(c, true);
 		pane.setToolTipTextAt(index, t);
-		HTMLSupport.handleTextListener(c, false);
+		HTMLScaleSupport.handleTextListener(c, false);
 	}
 }

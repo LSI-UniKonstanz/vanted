@@ -108,7 +108,7 @@ public class JLabelScaler extends ComponentScaler implements HTMLScaler {
 
 	/**
 	 * Worker method processing the text, given it is HTML-styled, see
-	 * {@link HTMLSupport#isHTMLStyled(String)}, by performing parsing,
+	 * {@link HTMLScaleSupport#isHTMLStyled(String)}, by performing parsing,
 	 * substitution, removal and installation of {@link TextListener} plus text
 	 * setting, if necessary.
 	 * 
@@ -118,24 +118,24 @@ public class JLabelScaler extends ComponentScaler implements HTMLScaler {
 	 *            JTextComponent
 	 */
 	private static void modifyHTML(String t, JLabel label) {
-		if (!HTMLSupport.isHTMLStyled(t))
+		if (!HTMLScaleSupport.isHTMLStyled(t))
 			return;
 
 		// save the initial tags and their order for later
-		HTMLSupport.storeTags(label, t);
+		HTMLScaleSupport.storeTags(label, t);
 		// convert tags to font size tag
-		t = HTMLSupport.parseHTMLtoFontSize(t, label);
+		t = HTMLScaleSupport.parseHTMLtoFontSize(t, label);
 
 		if (t.equals(label.getText()))
 			return;
 
 		// remove listener to avoid looping
-		HTMLSupport.handleTextListener(label, true);
+		HTMLScaleSupport.handleTextListener(label, true);
 
 		label.setText(t);
 
 		// install listener for subsequent dynamic changes
-		HTMLSupport.handleTextListener(label, false);
+		HTMLScaleSupport.handleTextListener(label, false);
 	}
 
 	/**
@@ -148,18 +148,18 @@ public class JLabelScaler extends ComponentScaler implements HTMLScaler {
 	 *            JLabel
 	 */
 	private static void modifyHTMLTooltip(String tooltip, JLabel label) {
-		if (!HTMLSupport.isHTMLStyled(tooltip))
+		if (!HTMLScaleSupport.isHTMLStyled(tooltip))
 			return;
 
-		HTMLSupport.storeTags(label, tooltip);
+		HTMLScaleSupport.storeTags(label, tooltip);
 
-		tooltip = HTMLSupport.parseHTMLtoFontSize(tooltip, label);
+		tooltip = HTMLScaleSupport.parseHTMLtoFontSize(tooltip, label);
 
 		if (tooltip.equals(label.getToolTipText()))
 			return;
 
-		HTMLSupport.handleTextListener(label, true);
+		HTMLScaleSupport.handleTextListener(label, true);
 		label.setToolTipText(tooltip);
-		HTMLSupport.handleTextListener(label, false);
+		HTMLScaleSupport.handleTextListener(label, false);
 	}
 }

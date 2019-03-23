@@ -297,7 +297,7 @@ public class ComponentRegulator {
 	 * 
 	 * @param component
 	 * 
-	 * @see HTMLSupport
+	 * @see HTMLScaleSupport
 	 */
 	public static void scaleHTML(JComponent component) {
 		for (Entry<Class<?>, ComponentScaler> entry : scalers.entrySet()) {

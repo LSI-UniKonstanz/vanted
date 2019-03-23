@@ -14,16 +14,13 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
+import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 public class IntroduceBendsAlgorithm extends AbstractAlgorithm {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+	@Override
 	public String getName() {
 		return "Introduce Bends";
 	}
@@ -50,15 +47,18 @@ public class IntroduceBendsAlgorithm extends AbstractAlgorithm {
 		return "Introduce Bends Parameters";
 	}
 
+	/**
+	 * @vanted.revision 2.7.0 - Added DPI scaling for text with HTML tags.
+	 */
 	@Override
 	public Parameter[] getParameters() {
-		return new Parameter[] {
-				new IntegerParameter(lineStyle,
-						"<html>" + "<b>Select a drawing style:</b><br><small>"
-								+ "&nbsp;&nbsp;&nbsp;Style <b>1</b> - Segmented Line (two segments)<br>"
-								+ "&nbsp;&nbsp;&nbsp;Style <b>2</b> - Smooth Line (one bend)<br>"
-								+ "&nbsp;&nbsp;&nbsp;Style <b>3</b> - Smooth Line (two bends)",
-						"Select one of the edge drawing styles"),
+		String styleText = "<html>" + "<b>Select a drawing style:</b><br><small>"
+				+ "&nbsp;&nbsp;&nbsp;Style <b>1</b> - Segmented Line (two segments)<br>"
+				+ "&nbsp;&nbsp;&nbsp;Style <b>2</b> - Smooth Line (one bend)<br>"
+				+ "&nbsp;&nbsp;&nbsp;Style <b>3</b> - Smooth Line (two bends)";
+		//Scale the HTML text, provided there is DPI emulation
+		styleText = HTMLScaleSupport.scaleHTMLText(styleText);
+		return new Parameter[] { new IntegerParameter(lineStyle, styleText, "Select one of the edge drawing styles"),
 				new IntegerParameter(minPercent, "Minimum Percentage", ""),
 				new BooleanParameter(massCenterFromSelection, "Calculate Center from Selection",
 						"If selected, the mass center will be calculated from the selection instead from the whole graph")
@@ -97,11 +97,7 @@ public class IntroduceBendsAlgorithm extends AbstractAlgorithm {
 					"Drawing Style \"" + lineStyle + "\" not supported.<br>" + "Use the drawing style 1, 2 or 3!");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
+	@Override
 	public void execute() {
 		HashSet<Edge> workEdges = new HashSet<Edge>();
 		if (selection == null || selection.getEdges().size() == 0)

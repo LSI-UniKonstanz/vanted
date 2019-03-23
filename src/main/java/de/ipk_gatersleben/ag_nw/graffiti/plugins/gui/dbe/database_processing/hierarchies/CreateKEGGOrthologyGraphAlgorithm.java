@@ -100,12 +100,12 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 	public String getDescription() {
 		return "<html>"
 				+ "This command creates a hierarchy-tree. The hierarchy information may be given by the node labels,<br>"
-				+ "by alternative substance identifiers (for nodes with mapped data) or by a data annotation, provided<br>"
+				+ "by alternative substance identifiers (for nodes with mapping data) or by a data annotation, provided<br>"
 				+ "directly in the input template (type 2)." + "<br>"
 				+ "The hierarchy information may be evaluated directly, in case it is given by a '.' or ';' divided text<br>"
-				+ "annotation. It is also possible to look-up a KEGG Pathway hierarchy, in case the selected identifier<br>"
+				+ "annotation. It is also possible to look up a KEGG Pathway hierarchy, in case the selected identifier<br>"
 				+ "is recognized as a enzyme name or ID and it is found in the KO database. Another possibility is to<br>"
-				+ "lookup and interpret the given identifers as gene names, listed in the KO database. In this case the<br>"
+				+ "look up and interpret the given identifers as gene names, listed in the KO database. In this case the<br>"
 				+ "gene data is also put in context to the KEGG Pathway hierarchy.<br>";
 	}
 
@@ -114,6 +114,9 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 		return "Network.Hierarchy";
 	}
 
+	/**
+	 * @vanted.revision 2.7.0 - Removed 'Choose Onthology' param, as only KO is in use
+	 */
 	@Override
 	public Parameter[] getParameters() {
 		/*
@@ -128,12 +131,12 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 				break;
 			}
 		}
-
-		Collection<String> possibleOntologies = new ArrayList<String>();
-		possibleOntologies.add(settingCreateKO);
-		// possibleOntologies.add(settingCreateGO);
-		ObjectListParameter objectListParameterPossibleOntologies = new ObjectListParameter(settingCreateKO,
-				"Choose Ontology", "Select one of the supported Ontologies", possibleOntologies);
+		// Only KEGG Onthology -> no need for (drop-down) parameter
+//		Collection<String> possibleOntologies = new ArrayList<String>();
+//		possibleOntologies.add(settingCreateKO);
+//		// possibleOntologies.add(settingCreateGO);
+//		ObjectListParameter objectListParameterPossibleOntologies = new ObjectListParameter(settingCreateKO,
+//				"Choose Ontology", "Select one of the supported Ontologies", possibleOntologies);
 
 		Collection<String> possibleEvaluations = new ArrayList<String>();
 		possibleEvaluations.add(settingOntologyIdentifiersGiven);
@@ -157,7 +160,7 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 
 		Parameter[] parameters = new Parameter[numParams];
 		int i = 0;
-		parameters[i++] = objectListParameterPossibleOntologies;
+//		parameters[i++] = objectListParameterPossibleOntologies;
 		parameters[i++] = objectListParameterPossibleEvaluations;
 		parameters[i++] = boolParameterSearchLabel;
 		if (hasAlternativeLabels)
@@ -169,18 +172,14 @@ public class CreateKEGGOrthologyGraphAlgorithm extends AbstractAlgorithm {
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
-		selectedOntology = (String) ((ObjectListParameter) params[i++]).getValue();
+		selectedOntology = settingCreateKO;//(String) ((ObjectListParameter) params[i++]).getValue();
 		selectedIdentifierType = (String) ((ObjectListParameter) params[i++]).getValue();
 		selectedSearchMainLabel = (Boolean) ((BooleanParameter) params[i++]).getValue();
 		if (params.length == 4)
 			selectedSearchAlternativeLabel = (Boolean) ((BooleanParameter) params[i++]).getValue();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
+	@Override
 	public void execute() {
 		final Collection<Node> workNodes = new ArrayList<Node>(getSelectedOrAllNodes());
 		final HashSet<Node> newNodes = new HashSet<Node>();

@@ -84,7 +84,7 @@ public class JTextComponentScaler extends ComponentScaler implements HTMLScaler 
 
 	/**
 	 * Worker method processing the text, given it is HTML-styled, see
-	 * {@link HTMLSupport#isHTMLStyled(String)}, by performing parsing,
+	 * {@link HTMLScaleSupport#isHTMLStyled(String)}, by performing parsing,
 	 * substitution, removal and installation of {@link TextListener} plus text
 	 * setting, if necessary.
 	 * 
@@ -94,39 +94,39 @@ public class JTextComponentScaler extends ComponentScaler implements HTMLScaler 
 	 *            JTextComponent
 	 */
 	private static void modifyHTML(String t, JTextComponent text) {
-		if (!HTMLSupport.isHTMLStyled(t))
+		if (!HTMLScaleSupport.isHTMLStyled(t))
 			return;
 
 		// save the initial tags for later
-		HTMLSupport.storeTags(text, t);
+		HTMLScaleSupport.storeTags(text, t);
 		// convert tags to font size
-		t = HTMLSupport.parseHTMLtoFontSize(t, text);
+		t = HTMLScaleSupport.parseHTMLtoFontSize(t, text);
 
 		if (t.equals(text.getText()))
 			return;
 
 		// remove listener to avoid looping
-		HTMLSupport.handleTextListener(text, true);
+		HTMLScaleSupport.handleTextListener(text, true);
 
 		text.setText(t);
 
 		// install listener for subsequent dynamic changes
-		HTMLSupport.handleTextListener(text, false);
+		HTMLScaleSupport.handleTextListener(text, false);
 	}
 
 	private static void modifyHTMLTooltip(String tooltip, JTextComponent text) {
-		if (!HTMLSupport.isHTMLStyled(tooltip))
+		if (!HTMLScaleSupport.isHTMLStyled(tooltip))
 			return;
 
-		HTMLSupport.storeTags(text, tooltip);
+		HTMLScaleSupport.storeTags(text, tooltip);
 
-		tooltip = HTMLSupport.parseHTMLtoFontSize(tooltip, text);
+		tooltip = HTMLScaleSupport.parseHTMLtoFontSize(tooltip, text);
 		if (tooltip.equals(text.getToolTipText()))
 			return;
 
-		HTMLSupport.handleTextListener(text, true);
+		HTMLScaleSupport.handleTextListener(text, true);
 		text.setToolTipText(tooltip);
-		HTMLSupport.handleTextListener(text, false);
+		HTMLScaleSupport.handleTextListener(text, false);
 	}
 
 	/**

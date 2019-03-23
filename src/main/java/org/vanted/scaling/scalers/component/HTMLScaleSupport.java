@@ -26,6 +26,7 @@ import javax.swing.JComponent;
 
 import org.apache.commons.lang.StringUtils;
 import org.vanted.scaling.ComponentRegulator;
+import org.vanted.scaling.Toolbox;
 
 /**
  * It handles several HTML tags, see {@linkplain Tags#ALL} for detailed list.
@@ -37,7 +38,7 @@ import org.vanted.scaling.ComponentRegulator;
  * 
  * @author D. Garkov
  */
-class HTMLSupport {
+public class HTMLScaleSupport {
 
 	/** A listener for text changes to HTML-styled components. */
 	private static PropertyChangeListener textListener = new TextListener();
@@ -48,7 +49,7 @@ class HTMLSupport {
 	 */
 	private static HashMap<Integer, List<String>> tags = new HashMap<>();
 
-	private HTMLSupport() {
+	private HTMLScaleSupport() {
 	}
 
 	/**
@@ -68,8 +69,8 @@ class HTMLSupport {
 
 	/**
 	 * Stores all used tags of the form &#60;small> or &#60;big>, while preserving
-	 * the order. Supporting data structure: {@link HTMLSupport#tags}. As key is
-	 * used the hash-code of the given component, thus identifying it uniquely
+	 * the order. Supporting data structure: {@link HTMLScaleSupport#tags}. As key
+	 * is used the hash-code of the given component, thus identifying it uniquely
 	 * during a working session. It also supports more than one HTML text per
 	 * component.
 	 * <p>
@@ -134,6 +135,31 @@ class HTMLSupport {
 	}
 
 	/**
+	 * Scales hard-sized HTML tags, such as small, big, code, etc. by replacing them
+	 * with a an equivalent scaled fontsize tag. No tags are stored, as this is
+	 * thought to be a one-time non-reversible (on new instance) scaling.
+	 * 
+	 * @param text      the HTML text
+	 * @param component component to infer font size from
+	 * @return DPI-scaled HTML text
+	 * @since 2.7.0
+	 */
+	public static String scaleHTMLText(String text) {
+		if (Toolbox.getDPIScalingRatio() == 1f)
+			return text;
+
+		int factor = HTMLScaleSupport.getFontFactor((int) (12f * Toolbox.getDPIScalingRatio()), 12f);
+		String pattern = "<FONT SIZE=\"";
+		// Insert font modifiers accordingly
+		DecimalFormat df = new DecimalFormat("+#;-#");
+		for (String tag : Tags.ALL.values)
+			text = StringUtils.replace(text, tag,
+					(Tags.ADDITIVE.values.contains(tag)) ? tag + pattern + df.format(modifyTag(tag, factor)) + "\">"
+							: pattern + df.format(modifyTag(tag, factor)) + "\">");
+		return text;
+	}
+
+	/**
 	 * This method replaces the tags, or adds right after them, with a calculated
 	 * value according the current font size. If the font size is default, no
 	 * replacement takes place, even the opposite, if previously replaced, they are
@@ -149,8 +175,8 @@ class HTMLSupport {
 	 * 
 	 * Difference between &#60;small> and &#60;big> tags in font size is 2.
 	 * 
-	 * @see HTMLSupport#getFontFactor(JComponent, float)
-	 * @see HTMLSupport#modifyTag(String, int)
+	 * @see HTMLScaleSupport#getFontFactorFromJComponent(JComponent, float)
+	 * @see HTMLScaleSupport#modifyTag(String, int)
 	 * 
 	 * @param text      to be parsed
 	 * @param component owner of the text
@@ -159,7 +185,7 @@ class HTMLSupport {
 	 *         tags
 	 */
 	static String parseHTMLtoFontSize(String text, JComponent component) {
-		int factor = HTMLSupport.getFontFactor(component, 12f);
+		int factor = HTMLScaleSupport.getFontFactorFromJComponent(component, 12f);
 		String pattern = "<FONT SIZE=\"";
 
 		// Restore initial tagging
@@ -186,9 +212,8 @@ class HTMLSupport {
 		if (text.indexOf(pattern) == -1) { // from standard to emulated
 			for (String tag : Tags.ALL.values)
 				text = StringUtils.replace(text, tag,
-						(Tags.ADDITIVE.values.contains(tag)) ? 
-								tag + pattern + df.format(modifyTag(tag, factor)) + "\">" :
-								pattern + df.format(modifyTag(tag, factor)) + "\">");
+						(Tags.ADDITIVE.values.contains(tag)) ? tag + pattern + df.format(modifyTag(tag, factor)) + "\">"
+								: pattern + df.format(modifyTag(tag, factor)) + "\">");
 			return text;
 		} else { // from emulated to emulated
 			return text.replaceAll(pattern + "(-|\\+)*[1-9]+", pattern + df.format(factor));
@@ -216,10 +241,14 @@ class HTMLSupport {
 		return factor;
 	}
 
-	private static int getFontFactor(JComponent component, float anchorSize) {
+	private static int getFontFactorFromJComponent(JComponent component, float anchorSize) {
 		int font = component.getFont().getSize();
+		return getFontFactor(font, anchorSize);
+	}
+
+	private static int getFontFactor(int refSize, float anchorSize) {
 		float _DEFAULT_SIZE = anchorSize;
-		float ratio = font / _DEFAULT_SIZE;
+		float ratio = refSize / _DEFAULT_SIZE;
 
 		// no emulated DPI => no change
 		if (ratio == 1f)
@@ -231,7 +260,7 @@ class HTMLSupport {
 		// lower emulated DPI => bigger font size
 		if (ratio > 1) {
 			negative = false;
-			float f = font;
+			float f = refSize;
 			while (f > _DEFAULT_SIZE) {
 				f = f / 2.0f;
 				factor += 1;
@@ -239,7 +268,7 @@ class HTMLSupport {
 			// higher emulated DPI => smaller font size
 		} else {
 			negative = true;
-			float f = font;
+			float f = refSize;
 
 			factor = 1; // bias
 			while (f < _DEFAULT_SIZE) {
@@ -280,7 +309,7 @@ class HTMLSupport {
 
 	/**
 	 * This method restores the previously stored tags in an array form, see also
-	 * {@link HTMLSupport#storeTags(JComponent, String)}, and preserves their
+	 * {@link HTMLScaleSupport#storeTags(JComponent, String)}, and preserves their
 	 * initial order.
 	 * 
 	 * @param component to get native tags back
@@ -309,7 +338,7 @@ class HTMLSupport {
 
 	/**
 	 * Listener for any changes on a Swing Component regarding its text. See
-	 * {@link HTMLSupport#handleTextListener(JComponent, boolean)} for usage.
+	 * {@link HTMLScaleSupport#handleTextListener(JComponent, boolean)} for usage.
 	 * 
 	 * @author D. Garkov
 	 *
