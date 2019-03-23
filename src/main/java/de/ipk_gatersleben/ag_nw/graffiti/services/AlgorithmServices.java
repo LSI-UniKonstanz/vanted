@@ -71,51 +71,27 @@ public class AlgorithmServices implements HelperClass {
 			this.nodes = nodes;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-		 * getCurrentStatusValue()
-		 */
+		@Override
 		public int getCurrentStatusValue() {
 			return (int) Math.round(statusProgress);
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-		 * getCurrentStatusMessage1()
-		 */
+		@Override
 		public String getCurrentStatusMessage1() {
 			return status1;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-		 * getCurrentStatusMessage2()
-		 */
+		@Override
 		public String getCurrentStatusMessage2() {
 			return status2;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#pleaseStop()
-		 */
+		@Override
 		public void pleaseStop() {
 			pleaseStop = true;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.lang.Runnable#run()
-		 */
+		@Override
 		public void run() {
 			// work
 			HashMap<Integer, Node> nodeAndCirclePosition = new HashMap<Integer, Node>();
@@ -275,38 +251,22 @@ public class AlgorithmServices implements HelperClass {
 			return result;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-		 * getCurrentStatusValueFine()
-		 */
+		@Override
 		public double getCurrentStatusValueFine() {
 			return statusProgress;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-		 * pluginWaitsForUser()
-		 */
+		@Override
 		public boolean pluginWaitsForUser() {
 			return false;
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see
-		 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-		 * pleaseContinueRun()
-		 */
+		@Override
 		public void pleaseContinueRun() {
 			// empty
 		}
 
+		@Override
 		public void setCurrentStatusValue(int value) {
 			statusProgress = value;
 		}

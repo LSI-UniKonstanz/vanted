@@ -38,16 +38,11 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  */
 public class ClusterGraphLayout extends AbstractAlgorithm implements AlgorithmWithComponentDescription {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return "Apply Pathway-Overview Layout";
 		else
-			return "Apply Layout of Overview-Graph to Nodes";// Re-Layout based on Cluster-Graph Layout";
+			return "2. Layout Source Graph via Overview Graph";// Re-Layout based on Cluster-Graph Layout";
 	}
 
 	@Override
@@ -88,11 +83,6 @@ public class ClusterGraphLayout extends AbstractAlgorithm implements AlgorithmWi
 	public void setParameters(Parameter[] params) {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.extension.Extension#getCategory()
-	 */
 	@Override
 	public String getCategory() {
 		return "Cluster";
@@ -126,11 +116,6 @@ public class ClusterGraphLayout extends AbstractAlgorithm implements AlgorithmWi
 			throw new PreconditionException("No " + cluster + " information available for this graph!");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		String cluster = "overview-graph";
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
@@ -143,7 +128,7 @@ public class ClusterGraphLayout extends AbstractAlgorithm implements AlgorithmWi
 		ActionListenerForClusterGraphBasedLayout al = new ActionListenerForClusterGraphBasedLayout();
 		final Timer t = new Timer(100, al);
 		al.setAlgorithmDialog(rad);
-		al.setOptions(getName(), t, false, false, graph);
+		al.setOptions(getName(), t, graph);
 
 		t.setRepeats(true);
 		t.start();
@@ -160,12 +145,6 @@ class ActionListenerForClusterGraphBasedLayout implements ActionListener {
 
 	private Graph graph;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	public void actionPerformed(ActionEvent e) {
 		if (!rad.isVisible() && rad.getAlgorithm() != null) {
 			tref.stop();
@@ -177,8 +156,7 @@ class ActionListenerForClusterGraphBasedLayout implements ActionListener {
 			rad.setAlwaysOnTop(true);
 	}
 
-	public void setOptions(String name, Timer t, boolean currentOptionShowGraphs, boolean currentOptionWaitForLayout,
-			Graph graph) {
+	public void setOptions(String name, Timer t, Graph graph) {
 		this.name = name;
 		this.graph = graph;
 		tref = t;

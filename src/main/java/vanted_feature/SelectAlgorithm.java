@@ -18,12 +18,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.InvertSel
 @Deprecated
 public class SelectAlgorithm extends LaunchGui {
 
-	public SelectAlgorithm() {
-		super();
-		algBTsize = ButtonSize.DYNAMIC;
-		modal = false;
-	}
-
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
@@ -76,4 +70,8 @@ public class SelectAlgorithm extends LaunchGui {
 		return null;
 	}
 
+	@Override
+	public boolean isModal() {
+		return false;
+	}
 }

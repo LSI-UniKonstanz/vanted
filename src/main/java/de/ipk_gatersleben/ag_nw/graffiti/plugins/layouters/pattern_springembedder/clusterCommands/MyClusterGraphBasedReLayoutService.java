@@ -53,12 +53,7 @@ public class MyClusterGraphBasedReLayoutService
 		this.graph = g;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusValue()
-	 */
+	@Override
 	public int getCurrentStatusValue() {
 		return (int) statusValue;
 	}
@@ -68,51 +63,27 @@ public class MyClusterGraphBasedReLayoutService
 		this.optLayoutAlgorithm2 = optAlgorithm2;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusValueFine()
-	 */
+	@Override
 	public double getCurrentStatusValueFine() {
 		return statusValue;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusMessage1()
-	 */
+	@Override
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusMessage2()
-	 */
+	@Override
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#pleaseStop()
-	 */
+	@Override
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Runnable#run()
-	 */
+	@Override
 	public void run() {
 		if (checkStop())
 			return;
@@ -239,7 +210,9 @@ public class MyClusterGraphBasedReLayoutService
 				clusterGraph.setModified(false);
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						MainFrame.getInstance().showGraph(clusterGraph, null);
+						//If there is ES, then the graph has already been shown, don't do twice
+						if (MainFrame.getInstance().getEditorSessionForGraph(clusterGraph) == null)
+							MainFrame.getInstance().showGraph(clusterGraph, null);
 					}
 				});
 				status1 = "You may now manually modify the overview-graph layout!";
@@ -356,24 +329,12 @@ public class MyClusterGraphBasedReLayoutService
 		return pleaseStop;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * pluginWaitsForUser()
-	 */
+	@Override
 	public boolean pluginWaitsForUser() {
 		return userBreak;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * pleaseContinueRun()
-	 */
+	@Override
 	public void pleaseContinueRun() {
 		userBreak = false;
 	}
@@ -399,12 +360,7 @@ public class MyClusterGraphBasedReLayoutService
 		status2 = status;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.BackgroundTaskStatusProviderSupportingExternalCall#
-	 * setCurrentStatusValueFineAdd(double)
-	 */
+	@Override
 	public void setCurrentStatusValueFineAdd(double smallProgressStep) {
 		statusValue += smallProgressStep;
 	}

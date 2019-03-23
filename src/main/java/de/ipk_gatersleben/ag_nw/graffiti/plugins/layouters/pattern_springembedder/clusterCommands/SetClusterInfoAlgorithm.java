@@ -22,22 +22,18 @@ public class SetClusterInfoAlgorithm extends AbstractAlgorithm {
 
 	private String currentValue = "";
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
 		else
-			return "Enter and set cluster-ID";
+			return "Enter Cluster ID";
 	}
 
 	@Override
 	public String getDescription() {
-		return "<html>" + "With this command you may assign a new or modified cluster Id to<br>"
-				+ "the selected nodes (or all nodes, if no node is selected).";
+		return "<html>" + "Assign/Modify cluster ID for<br>"
+				+ "selected or all nodes, given none are selected.";
 	}
 
 	@Override
@@ -45,7 +41,7 @@ public class SetClusterInfoAlgorithm extends AbstractAlgorithm {
 		try {
 			HashSet<String> ids = new HashSet<String>();
 			for (GraphElement ge : getSelectedOrAllGraphElements()) {
-				ids.add(NodeTools.getClusterID(ge, "-"));
+				ids.add(NodeTools.getClusterID(ge, ""));
 			}
 			currentValue = "";
 			for (String s : ids) {
@@ -57,18 +53,13 @@ public class SetClusterInfoAlgorithm extends AbstractAlgorithm {
 		} catch (Exception e) {
 			// ignore
 		}
-		return new Parameter[] { new StringParameter(currentValue, "New Cluster ID", null) };
+		return new Parameter[] { new StringParameter(currentValue, "Cluster ID", null) };
 	}
 
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
 		currentValue = ((StringParameter) params[i++]).getString();
-	}
-
-	@Override
-	public String getCategory() {
-		return "Elements"; // "menu.edit";
 	}
 
 	@Override

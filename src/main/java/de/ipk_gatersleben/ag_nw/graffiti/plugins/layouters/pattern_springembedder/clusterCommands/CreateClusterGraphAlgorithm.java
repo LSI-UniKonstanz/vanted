@@ -34,13 +34,12 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.ClusterColorAttribute;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.ClusterColorParameter;
-import de.ipk_gatersleben.ag_nw.graffiti.services.AlgorithmServices;
 
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
-	boolean applyLayout = true;
+//	boolean applyLayout = true;
 
 	boolean resizeNodes = true;
 
@@ -78,16 +77,16 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		ClusterColorParameter op = new ClusterColorParameter(cca_new, "Cluster-Colors", ClusterColorAttribute.desc);
 
 		Parameter[] result = new Parameter[] {
-				new BooleanParameter(applyLayout, "Layout Overview-Graph",
-						"Select a layout algorithm to run on the overview-graph"),
+//				new BooleanParameter(applyLayout, "Layout Overview-Graph",
+//						"Select a layout algorithm to run on the overview-graph"),
 				new BooleanParameter(resizeNodes, "Resize Nodes",
 						"Resize Nodes depending on number of nodes related to the cluster-node"),
-				new IntegerParameter(minNodeSize, "Min. Node-Size", "The minimum size of a node"),
-				new IntegerParameter(maxNodeSize, "Max. Node-Size", "The maximum size of a node"),
-				new BooleanParameter(resizeEdges, "Set Edge-Width",
-						"Set the edge-width depending on the number of edges that go from one cluster to another"),
-				new IntegerParameter(minEdgeSize, "Min. Edge-Width", "The minimum width of a edge"),
-				new IntegerParameter(maxEdgeSize, "Max. Edge-Width", "The maximum width of a edge"),
+				new IntegerParameter(minNodeSize, "Min. Node Size", "Node minimum size attribute."),
+				new IntegerParameter(maxNodeSize, "Max. Node Size", "Node maximum size attribute."),
+				new BooleanParameter(resizeEdges, "Set Edge Thickness",
+						"Set edge thickness depending on the number of edges that go from one cluster to another"),
+				new IntegerParameter(minEdgeSize, "Min. Edge Thickness", "The minimum edge thickness attribute."),
+				new IntegerParameter(maxEdgeSize, "Max. Edge Thickness", "The maximum edge thickness attribute."),
 				new BooleanParameter(colorCode, "Color-Code Clusters", "<html>"
 						+ "Change the color of the nodes in the source- and cluster-graph according to their cluster number.<br>"
 						+ "The colors can be changed later with the corresponding attribute-editor in the graph-tab"),
@@ -98,7 +97,7 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
-		applyLayout = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
+		//applyLayout = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		resizeNodes = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		minNodeSize = ((IntegerParameter) params[i++]).getInteger().intValue();
 		maxNodeSize = ((IntegerParameter) params[i++]).getInteger().intValue();
@@ -113,29 +112,19 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		graph.addAttribute(cca, ClusterColorAttribute.attributeFolder);
 
 	}
+//
+//	@Override
+//	public void reset() {
+//		applyLayout = true;
+//	}
 
-	@Override
-	public void reset() {
-		applyLayout = true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.extension.Extension#getName()
-	 */
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
-			return "Create Cluster Overview-Graph";
+			return "1. Create Overview Graph";
 		else
 			return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.extension.Extension#getCategory()
-	 */
 	@Override
 	public String getCategory() {
 		return "Cluster";
@@ -151,11 +140,6 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		return new HashSet<Category>(Arrays.asList(Category.CLUSTER, Category.GRAPH));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
 	public void execute() {
 		HashMap<String, Integer> clusterNodeIDandNumberOfContainingNodes = new HashMap<String, Integer>();
 		Graph clusterReferenceGraph = GraphHelper.createClusterReferenceGraph(graph,
@@ -184,10 +168,13 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 			MainFrame.getInstance().showGraph(clusterReferenceGraph, null);
 		}
 
-		if (applyLayout) {
-			AlgorithmServices.selectAndRunLayoutAlgorithm(clusterReferenceGraph, new Selection(),
-					"Apply a Layout-Algorithm to the Overview-Graph", true);
-		}
+//		if (applyLayout) {
+//			ClusterGraphLayout cgl = new ClusterGraphLayout();
+//			cgl.attach(clusterReferenceGraph, new Selection());
+//			cgl.execute();
+////			AlgorithmServices.selectAndRunLayoutAlgorithm(clusterReferenceGraph, new Selection(),
+////					"Apply a Layout-Algorithm to the Overview-Graph", true);
+//		}
 
 		clusterReferenceGraph.setModified(false);
 	}

@@ -1791,7 +1791,7 @@ public class MainFrame extends JFrame
 
 		outpS.close();
 	}
-
+	
 	public void showGraph(final Graph g, final ActionEvent e) {
 		showGraph(g, e, LoadSetting.VIEW_CHOOSER_FOR_LARGE_GRAPHS_ONLY);
 	}

@@ -117,7 +117,6 @@ public class SortIntoCluster extends AbstractAlgorithm {
 		 * get attribute type, where the clustering depends on
 		 */
 
-		// TODO Auto-generated method stub
 		Object attrValue = null;
 		attrType = null;
 

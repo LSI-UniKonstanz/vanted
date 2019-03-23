@@ -26,27 +26,17 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
  */
 public class SetClusterInfoFromSubgraphAlgorithm extends AbstractAlgorithm {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
 		else
-			return "<html>" + "Detect connected subgraphs and set<br>" + "cluster ID to differentiate subgraphs";
+			return "<html>" + "Get Cluster IDs from Connected Sub-Graphs";
 	}
 
 	@Override
 	public String getDescription() {
-		return "<html>"
-				+ "About to use the information about connected subgraphs for the assignment of a cluster ID.<br>";
-	}
-
-	@Override
-	public String getCategory() {
-		return "Elements"; // "menu.edit";
+		return "<html>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Undoable operation, continue?&nbsp;";
 	}
 
 	@Override

@@ -20,29 +20,20 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 public class SetClusterInfoFromLabelAlgorithm extends AbstractAlgorithm {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
 		else
-			return "Copy node/edge label to cluster ID";
+			return "Copy Cluster IDs from Labels";
 	}
 
 	@Override
 	public String getDescription() {
-		return "<html>" + "About to use the node labels for the assignment of a cluster ID.<br><br>"
-				+ "<small>Hint: Commands dealing with alternative substance IDs, available from<br>"
-				+ "the mappings menu may be useful to temporaty modify the node labels, before<br>"
-				+ "using this command.";
-	}
-
-	@Override
-	public String getCategory() {
-		return "Elements"; // "menu.edit";
+		return "<html>" + "Undoable operation, continue?<br><br><br>"
+				+ "Hint: Commands dealing with alternative substance IDs, available from<br>"
+				+ "the Mapping menu may be useful to temporarily modify labels, before<br>"
+				+ "application of this command.";
 	}
 
 	@Override

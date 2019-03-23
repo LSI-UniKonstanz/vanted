@@ -79,7 +79,7 @@ public class GraphHelper implements HelperClass {
 	 * @param the
 	 *            graph to be displayed
 	 */
-	public static void diplayGraph(Graph g) {
+	public static void displayGraph(Graph g) {
 		EditorSession es = new EditorSession(g);
 
 		GravistoService.getInstance().getMainFrame().showViewChooserDialog(es, false, null);

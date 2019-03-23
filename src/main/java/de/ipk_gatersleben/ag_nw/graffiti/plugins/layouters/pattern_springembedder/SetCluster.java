@@ -18,11 +18,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedde
 
 public class SetCluster extends LaunchGui {
 
-	public SetCluster() {
-		super();
-		modal = false;
-	}
-
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
@@ -54,4 +49,10 @@ public class SetCluster extends LaunchGui {
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.GRAPH, Category.CLUSTER, Category.ANNOTATION));
 	}
+
+	@Override
+	public boolean isModal() {
+		return false;
+	}
+	
 }
