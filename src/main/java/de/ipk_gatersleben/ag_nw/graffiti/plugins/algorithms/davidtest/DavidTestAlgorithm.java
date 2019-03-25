@@ -17,6 +17,7 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
+import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.layout_control.statistics.TabStatistics;
@@ -47,11 +48,11 @@ public class DavidTestAlgorithm extends AbstractAlgorithm {
 
 	@Override
 	public String getDescription() {
-		return "<html><b>David et al. Quicktest for normality distribution.</b><br>"
-				+ "All nodes which contain samples which are <b>not</b><br>"
+		return HTMLScaleSupport.scaleHTMLText("<html><b>David et al. Quicktest for normality distribution.</b><br>"
+				+ "All nodes that contain samples and are <b>not</b><br>"
 				+ "normally distributed, will be <b>selected</b>.<br>"
 				+ "<small>Each sample needs to contain at least 5 values<br>"
-				+ "and at most 500 values!</small><br><br>Specify the alpha value (P):";
+				+ "and at most 500 values!</small><br><br>Specify the alpha value (P):");
 	}
 
 	public void execute() {

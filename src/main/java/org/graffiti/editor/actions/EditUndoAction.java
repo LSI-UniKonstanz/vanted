@@ -26,13 +26,9 @@ import org.graffiti.session.EditorSession;
  * @version $Revision: 1.10 $
  */
 public class EditUndoAction extends GraffitiAction {
-	// ~ Constructors ===========================================================
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
+	
+	// ~ Constructors ===========================================================
 	/**
 	 * Creates a new EditUndoAction object.
 	 * 
@@ -46,17 +42,11 @@ public class EditUndoAction extends GraffitiAction {
 
 	// ~ Methods ================================================================
 
-	/**
-	 * @see javax.swing.Action#isEnabled()
-	 */
 	@Override
 	public boolean isEnabled() {
 		return enabled;
 	}
 
-	/**
-	 * @see org.graffiti.plugin.actions.GraffitiAction#getHelpContext()
-	 */
 	@Override
 	public HelpContext getHelpContext() {
 		return null;

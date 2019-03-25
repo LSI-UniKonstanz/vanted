@@ -12,8 +12,8 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -101,11 +101,6 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 	// public Algorithm selectedAlgorithm;
 	private MyPluginTreeNode lastSelectedMpt;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see javax.swing.JDialog#dialogInit()
-	 */
 	@Override
 	protected void dialogInit() {
 		super.dialogInit();
@@ -130,33 +125,15 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
-		addWindowListener(new WindowListener() {
+		addWindowListener(new WindowAdapter() {
 
-			public void windowOpened(WindowEvent e) {
-			}
-
-			@SuppressWarnings("deprecation")
+			@Override
 			public void windowClosing(WindowEvent e) {
 				if (optionsForPlugin != null) {
 					optionsForPlugin.setAbortWanted(true);
 				}
-				hide();
+				setVisible(false);
 				dispose();
-			}
-
-			public void windowClosed(WindowEvent e) {
-			}
-
-			public void windowIconified(WindowEvent e) {
-			}
-
-			public void windowDeiconified(WindowEvent e) {
-			}
-
-			public void windowActivated(WindowEvent e) {
-			}
-
-			public void windowDeactivated(WindowEvent e) {
 			}
 		});
 	}
@@ -521,30 +498,28 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 		settingsPanel.validate();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.Dialog#getTitle()
-	 */
 	@Override
 	public String getTitle() {
 		return "Plugin Manager";
 	}
 
+	/**
+	 * 
+	 * @param alg
+	 * @param graph
+	 * @param selection
+	 * 
+	 * @vanted.revision 2.7.0 Undoable Algorithm support
+	 */
 	void runAlgorithm(final Algorithm alg, Graph graph, Selection selection) {
 		alg.reset();
 		alg.attach(graph, selection);
 		ScenarioService.postWorkflowStep(alg, alg.getParameters());
 		alg.execute();
+		GravistoService.processUndoableAlgorithm(alg);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.managers.pluginmgr.PluginManagerListener#pluginAdded(org.
-	 * graffiti.plugin.GenericPlugin,
-	 * org.graffiti.managers.pluginmgr.PluginDescription)
-	 */
+	@Override
 	public void pluginAdded(GenericPlugin plugin, PluginDescription desc) {
 
 		final String todoReplaceString = "DEPENDENCY NOT SOLVED:";

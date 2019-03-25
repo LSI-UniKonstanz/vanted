@@ -43,6 +43,7 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+import javax.swing.undo.UndoableEditSupport;
 
 import org.ApplicationStatus;
 import org.ErrorMsg;
@@ -58,6 +59,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.managers.pluginmgr.DefaultPluginEntry;
 import org.graffiti.managers.pluginmgr.PluginEntry;
 import org.graffiti.options.OptionPane;
+import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.AlgorithmWithComponentDescription;
 import org.graffiti.plugin.algorithm.CalculatingAlgorithm;
@@ -490,6 +492,8 @@ public class GravistoService implements HelperClass {
 	 * @param algorithm
 	 * @param nonInteractiveGraph
 	 * @param nonInteractiveSelection
+	 * 
+	 * @vanted.revision 2.7.0 Undoable Algorithm support
 	 */
 	public void runAlgorithm(Algorithm algorithm, Graph graph, Selection selection,
 			boolean enableMultipleSessionProcessing, ActionEvent event) {
@@ -546,6 +550,7 @@ public class GravistoService implements HelperClass {
 								+ ((CalculatingAlgorithm) algorithm).getResult().toString());
 					}
 					algorithm.reset();
+					processUndoableAlgorithm(algorithm);
 				} catch (PreconditionException e) {
 					if (MainFrame.getInstance() != null)
 						JOptionPane.showMessageDialog(MainFrame.getInstance(), "<html>" + e.getMessage(),
@@ -558,6 +563,24 @@ public class GravistoService implements HelperClass {
 		}
 	}
 
+	/**
+	 * Process undoable edits for {@linkplain AbstractAlgorithm} instances.
+	 * 
+	 * @since 2.7.0
+	 * @param algorithm the previously executed algorithm
+	 */
+	public static void processUndoableAlgorithm(Algorithm algorithm) {
+		if (!(algorithm instanceof AbstractAlgorithm) || !((AbstractAlgorithm) algorithm).doesUndo())
+			return;
+
+		AbstractAlgorithm abstractAlg = (AbstractAlgorithm) algorithm;
+		abstractAlg.markExecutionDone();
+		UndoableEditSupport undo = MainFrame.getInstance().getUndoSupport();
+		undo.beginUpdate();
+		undo.postEdit(abstractAlg);
+		undo.endUpdate();
+	}
+	
 	private static JLabel holder = new JLabel();
 
 	/**
@@ -666,6 +689,7 @@ public class GravistoService implements HelperClass {
 					JOptionPane.showMessageDialog(null, "<html>Result of algorithm:<p>"
 							+ ((CalculatingAlgorithm) algorithm).getResult().toString());
 				}
+				processUndoableAlgorithm(algorithm);
 			} catch (PreconditionException e) {
 				processError(algorithm, g, errors, e);
 			}
@@ -683,7 +707,7 @@ public class GravistoService implements HelperClass {
 					JOptionPane.showMessageDialog(null, "<html>Result of algorithm:<p>"
 							+ ((CalculatingAlgorithm) algorithm).getResult().toString());
 				}
-
+				processUndoableAlgorithm(algorithm);
 			} catch (PreconditionException e) {
 				processError(algorithm, graph, errors, e);
 			}
@@ -886,8 +910,8 @@ public class GravistoService implements HelperClass {
 			public void actionPerformed(ActionEvent e) {
 				memLabel.setText(getCurrentMemoryInfo(shortInfo));
 				if (shortInfo)
-					memLabel.setToolTipText(getCurrentMemoryInfo(false)
-							.replace(":", " (click to garbage-collect):").replace("<font color='gray'>", ""));
+					memLabel.setToolTipText(getCurrentMemoryInfo(false).replace(":", " (click to garbage-collect):")
+							.replace("<font color='gray'>", ""));
 				scaler.coscaleHTML(memLabel);
 				memLabel.repaint(1000);
 			}

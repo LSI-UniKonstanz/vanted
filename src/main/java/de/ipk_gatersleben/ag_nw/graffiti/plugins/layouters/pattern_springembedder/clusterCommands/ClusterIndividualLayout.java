@@ -50,16 +50,12 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 	boolean currentOptionShowGraphs = false;
 	boolean currentOptionWaitForLayout = false;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
+	@Override
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return "Layout Pathway-Subgraphs";
 		else
-			return "Layout Cluster";
+			return "Layout Each Cluster";
 	}
 
 	@Override
@@ -101,11 +97,6 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 			currentOptionShowGraphs = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.extension.Extension#getCategory()
-	 */
 	@Override
 	public String getCategory() {
 		return "Network.Cluster";
@@ -144,11 +135,7 @@ public class ClusterIndividualLayout extends AbstractAlgorithm {
 		// }
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.algorithm.Algorithm#execute()
-	 */
+	@Override
 	public void execute() {
 		String cluster = "Cluster";
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
@@ -178,12 +165,7 @@ class MyActionListener implements ActionListener {
 	private boolean currentOptionShowGraphs;
 	private boolean currentOptionWaitForLayout;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (!rad.isVisible() && rad.getAlgorithm() != null) {
 			tref.stop();
@@ -220,12 +202,7 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 
 	private Algorithm layoutAlgorithm;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusValue()
-	 */
+	@Override
 	public int getCurrentStatusValue() {
 		return statusInt;
 	}
@@ -234,51 +211,27 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 		this.layoutAlgorithm = algorithm;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusValueFine()
-	 */
+	@Override
 	public double getCurrentStatusValueFine() {
 		return statusInt;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusMessage1()
-	 */
+	@Override
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusMessage2()
-	 */
+	@Override
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#pleaseStop()
-	 */
+	@Override
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Runnable#run()
-	 */
+	@Override
 	public void run() {
 		if (checkStop())
 			return;
@@ -297,7 +250,7 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 			MainFrame.showMessageDialog("Error: Working-graph could not be determined", "Error");
 		} else {
 			status1 = "Set Node IDs for reference purposes...";
-			int refID = 0;
+			// int refID = 0;
 			// for (Node n : mainGraph.getNodes())
 			// n.setID(refID++);
 			String cluster4 = "cluster";
