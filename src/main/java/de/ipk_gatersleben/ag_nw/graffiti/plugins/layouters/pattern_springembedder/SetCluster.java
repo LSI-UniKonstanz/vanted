@@ -11,6 +11,7 @@ import org.ReleaseInfo;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.Category;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.clustering.sorting.SortIntoCluster;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.SetClusterInfoAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.SetClusterInfoFromLabelAlgorithm;
@@ -23,6 +24,7 @@ public class SetCluster extends LaunchGui {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
 		res.add(new SetClusterInfoAlgorithm());
 		res.add(new SetClusterInfoFromLabelAlgorithm());
+		res.add(new SortIntoCluster());
 		res.add(new SetClusterInfoFromSubgraphAlgorithm());
 		return res;
 	}

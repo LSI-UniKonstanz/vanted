@@ -38,6 +38,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  * the algorithm is executed.
  * 
  * @author matthiak
+ * @vanted.revision 2.7.0 Moved to Set Cluster ID LaunchGui window
  */
 public class SortIntoCluster extends AbstractAlgorithm {
 
@@ -59,7 +60,7 @@ public class SortIntoCluster extends AbstractAlgorithm {
 
 	@Override
 	public String getName() {
-		return "Sort into Cluster";
+		return "Sort into Cluster(s) by Attribute";
 	}
 
 	@Override
@@ -100,10 +101,10 @@ public class SortIntoCluster extends AbstractAlgorithm {
 		return returnParameters;
 	}
 
-	@Override
-	public String getCategory() {
-		return "Network.Cluster";
-	}
+//	@Override
+//	public String getCategory() {
+//		return "Network.Cluster";
+//	}
 
 	@Override
 	public Set<Category> getSetCategory() {
