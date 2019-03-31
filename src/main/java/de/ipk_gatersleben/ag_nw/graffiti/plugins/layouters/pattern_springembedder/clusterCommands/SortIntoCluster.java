@@ -6,6 +6,7 @@ package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedd
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +17,7 @@ import org.AttributeHelper;
 import org.apache.log4j.Logger;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.dialog.DefaultParameterDialog;
+import org.graffiti.graph.GraphElement;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
@@ -24,7 +26,7 @@ import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
-import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.AttributePathNameSearchType;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchAndSelecAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchType;
@@ -38,7 +40,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
  * the algorithm is executed.
  * 
  * @author matthiak
- * @vanted.revision 2.7.0 Moved to Set Cluster ID LaunchGui window
+ * @vanted.revision 2.7.0 Moved to Set Cluster ID LaunchGui window, Java 8 Minimum Compat; Undo/Redo
  */
 public class SortIntoCluster extends AbstractAlgorithm {
 
@@ -101,11 +103,6 @@ public class SortIntoCluster extends AbstractAlgorithm {
 		return returnParameters;
 	}
 
-//	@Override
-//	public String getCategory() {
-//		return "Network.Cluster";
-//	}
-
 	@Override
 	public Set<Category> getSetCategory() {
 		return new HashSet<Category>(Arrays.asList(Category.CLUSTER, Category.COMPUTATION));
@@ -162,23 +159,17 @@ public class SortIntoCluster extends AbstractAlgorithm {
 			clusterByString(nodesWithSelectedAttribute);
 			break;
 		case NUMERIC:
-
 			clusterByValue(nodesWithSelectedAttribute);
+			break;
 		}
 
 	}
 
-	/**
-	 * 
-	 */
 	private void clusterByString(List<Node> nodesWithSelectedAttribute) {
-
-		for (Node curNode : nodesWithSelectedAttribute) {
-			String attributeValue = (String) AttributeHelper.getAttributeValue(curNode, selAttrPath, selAttrName, null,
-					new String());
-			NodeTools.setClusterID(curNode, attributeValue);
-		}
-
+		HashMap<GraphElement, String> ge2newClusterID = new HashMap<>();
+		nodesWithSelectedAttribute.forEach(node -> ge2newClusterID.put(node,
+				(String) AttributeHelper.getAttributeValue(node, selAttrPath, selAttrName, null, new String())));
+		GraphHelper.applyUndoableClusterIdAssignment(graph, ge2newClusterID, getName(), true);
 	}
 
 	/**
@@ -251,33 +242,26 @@ public class SortIntoCluster extends AbstractAlgorithm {
 		for (; i < numClusters; i++)
 			clusterNames[i] = "Cluster between " + limits[i - 1] + " and " + limits[i];
 
-		BackgroundTaskHelper.issueSimpleTask("Sorting into Clusters", null, new Runnable() {
+		BackgroundTaskHelper.issueSimpleTask("Sorting into Clusters", null, () -> {
 
-			@Override
-			public void run() {
-				for (Node curNode : nodesWithSelectedAttribute) {
-					Object attributeValue = AttributeHelper.getAttributeValue(curNode, selAttrPath, selAttrName, null,
+				HashMap<GraphElement, String> ge2newCLusterID = new HashMap<>();
+				nodesWithSelectedAttribute.forEach((node) -> {
+					Object attributeValue = AttributeHelper.getAttributeValue(node, selAttrPath, selAttrName, null,
 							null);
-
 					double value = 0;
-					if (attributeValue instanceof Number)
+					if (attributeValue instanceof Number) {
 						value = ((Number) attributeValue).doubleValue();
-					else
-						continue;
-
-					int curIdx = 0;
-					@SuppressWarnings("unused")
-					double result;
-					while ((result = value - limits[curIdx++]) > 0) {
-					}
-
-					NodeTools.setClusterID(curNode, clusterNames[curIdx - 1]); // +2 because undo the decrement (+1) and
+						
+						int curIdx = 0;
+						while ((value - limits[curIdx++]) > 0);
+						
+						ge2newCLusterID.put(node, clusterNames[curIdx - 1]); // +2 because undo the decrement (+1) and
 																				// the splitpoint cluster name is
 																				// splitpoint + 1 (+1)
-
-				}
-			}
-		}, null);
+					}
+				});
+				GraphHelper.applyUndoableClusterIdAssignment(graph, ge2newCLusterID, getName(), true);
+			}, null);
 	}
 
 	/**
@@ -296,7 +280,6 @@ public class SortIntoCluster extends AbstractAlgorithm {
 
 		for (int i = 0; i < numClusters - 1; i++) {
 			splitParameters[i] = new DoubleParameter(min + increment * (i + 1), "Split point (" + (i + 1) + ")", null);
-
 		}
 
 		return splitParameters;
