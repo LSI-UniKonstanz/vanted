@@ -176,10 +176,41 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 	private ArrayDeque<Selection> redoStack = new ArrayDeque<>();
 
 	/**
-	 * This is the selection handle for graph elements of the UndoableEdit - both
-	 * Undo or Redo.
+	 * This is the selection handle for the Undo/Redo methods.
 	 */
 	protected Selection recycledSelection;
+	/**
+	 * This is the graph handle for the Undo/Redo methods, internally that is the
+	 * graph of the first graph element from the recycled selection.
+	 * 
+	 */
+	protected Graph recycledGraph;
+	
+	/**
+	 * The equivalent of {@linkplain AbstractAlgorithm#getSelectedOrAllNodes()}}, but for
+	 * the <code>undo()</code> and  <code>redo()</code> implementations.
+	 * 
+	 * @return
+	 */
+	protected Collection<Node> getSelectedOrAllNodesRecycled() {
+		if (recycledSelection == null || recycledSelection.getNodes().size() <= 0)
+			return recycledGraph.getNodes();
+		else
+			return recycledSelection.getNodes();
+	}
+
+	/**
+	 * The equivalent of {@linkplain AbstractAlgorithm#getSelectedOrAllGraphElements()}}, but for
+	 * the <code>undo()</code> and  <code>redo()</code> implementations.
+	 * 
+	 * @return
+	 */
+	protected Collection<GraphElement> getSelectedOrAllGraphElementsRecycled() {
+		if (recycledSelection == null || recycledSelection.getElements().size() <= 0)
+			return recycledGraph.getGraphElements();
+		else
+			return recycledSelection.getElements();
+	}
 
 	/**
 	 * <p>
@@ -235,6 +266,7 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 		undoStack.clear();
 		redoStack.clear();
 		recycledSelection = null;
+		recycledGraph = null;
 		reset();
 	}
 
@@ -277,13 +309,14 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 		if (!canRedo())
 			throw new CannotRedoException();
 		recycledSelection = redoStack.removeFirst();
+		recycledGraph = recycledSelection.getGraph().iterator().next();
 		// Default Redo behaviour occurs only here
 		try {
 			if (getClass().getMethod("redo").getDeclaringClass().equals(AbstractAlgorithm.class)) {
 				final Selection cacheSelection = selection;
 				final Graph cacheGraph = graph;
 				selection = recycledSelection;
-				graph = selection.getGraph().iterator().next();
+				graph = recycledGraph;
 				execute();
 				selection = cacheSelection;
 				graph = cacheGraph;
@@ -310,6 +343,7 @@ public abstract class AbstractAlgorithm implements Algorithm, UndoableEdit {
 		if (!canUndo())
 			throw new CannotUndoException();
 		recycledSelection = undoStack.removeFirst();
+		recycledGraph = recycledSelection.getGraph().iterator().next();
 		// Ideally, it would be called last in undo(), but since it bares information
 		// only to other methods, it is generally enough to call it anywhere in undo().
 		markUndoDone();

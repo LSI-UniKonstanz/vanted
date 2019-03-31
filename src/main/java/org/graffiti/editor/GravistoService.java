@@ -549,8 +549,8 @@ public class GravistoService implements HelperClass {
 						JOptionPane.showMessageDialog(null, "<html>Result of algorithm:<p>"
 								+ ((CalculatingAlgorithm) algorithm).getResult().toString());
 					}
-					algorithm.reset();
 					processUndoableAlgorithm(algorithm);
+					algorithm.reset();
 				} catch (PreconditionException e) {
 					if (MainFrame.getInstance() != null)
 						JOptionPane.showMessageDialog(MainFrame.getInstance(), "<html>" + e.getMessage(),

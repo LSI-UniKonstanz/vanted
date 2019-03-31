@@ -284,12 +284,10 @@ public class DataMapping extends AbstractExperimentDataProcessor {
 			final boolean doLayout, final Collection<GraphElement> selectedGraphElements,
 			final Experiment2GraphHelper mappingService, final int minimumLineCount, final int diagramsPerRow,
 			final boolean considerEnzymeDb, final boolean considerMappingToKEGGmapNodes, final Graph workGraph) {
-		return new Runnable() {
-			public void run() {
-				doMapping(doc, createNodesIfNotMapped, doLayout, // workSession,
-						selectedGraphElements, mappingService, minimumLineCount, diagramsPerRow, considerEnzymeDb,
-						considerMappingToKEGGmapNodes, workGraph);
-			}
+		return () -> {
+			doMapping(doc, createNodesIfNotMapped, doLayout, // workSession,
+					selectedGraphElements, mappingService, minimumLineCount, diagramsPerRow, considerEnzymeDb,
+					considerMappingToKEGGmapNodes, workGraph);
 		};
 	}
 

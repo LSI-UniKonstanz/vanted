@@ -69,44 +69,6 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 		onlyOne = ((BooleanParameter) params[idx++]).getBoolean();
 	}
 
-	public void execute() {
-		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
-		final BackgroundTaskStatusProviderSupportingExternalCall status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
-				"Initialize...", "");
-		if (workNodes.size() > 0)
-			BackgroundTaskHelper.issueSimpleTask(getName(), "Initialize...", new Runnable() {
-				public void run() {
-					status.setCurrentStatusValue(-1);
-					status.setCurrentStatusText1("Extracting mapped data...");
-					status.setCurrentStatusText2("");
-					try {
-						status.setCurrentStatusText2("Getting mapped data from elements");
-						status.setCurrentStatusValue(0);
-
-						for (ExperimentInterface e : getExperiments(workNodes, onlyOne, status)) {
-							String expname = e.getName();
-							if (expname == null) {
-								ErrorMsg.addErrorMessage("Error occured: could not determine experiment name!");
-								expname = "unknown";
-							}
-							TabDBE.addOrUpdateExperimentPane(new ProjectEntity(expname, e));
-						}
-
-						status.setCurrentStatusValue(-1);
-					} finally {
-						status.setCurrentStatusValue(100);
-					}
-					if (status.wantsToStop())
-						status.setCurrentStatusText1("Processing aborted");
-					else
-						status.setCurrentStatusText1("Finished");
-					status.setCurrentStatusText2("");
-				}
-
-			}, null, status);
-
-	}
-
 	@Override
 	public void check() throws PreconditionException {
 		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
@@ -115,6 +77,41 @@ public class ExtractMappingDataAlgorithm extends AbstractAlgorithm {
 				return;
 		}
 		throw new PreconditionException("Network does not contain experimental data");
+	}
+
+	@Override
+	public void execute() {
+		final Collection<GraphElement> workNodes = getSelectedOrAllGraphElements();
+		final BackgroundTaskStatusProviderSupportingExternalCall status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
+				"Initialize...", "");
+		BackgroundTaskHelper.issueSimpleTask(getName(), "Initialize...", () -> {
+			status.setCurrentStatusValue(-1);
+			status.setCurrentStatusText1("Extracting mapping data...");
+			status.setCurrentStatusText2("");
+			try {
+				status.setCurrentStatusText2("Getting mapping data from elements");
+				status.setCurrentStatusValue(0);
+
+				for (ExperimentInterface e : getExperiments(workNodes, onlyOne, status)) {
+					String expname = e.getName();
+					if (expname == null) {
+						ErrorMsg.addErrorMessage("Error occured: could not determine experiment name!");
+						expname = "unknown";
+					}
+					TabDBE.addOrUpdateExperimentPane(new ProjectEntity(expname, e));
+				}
+				status.setCurrentStatusValue(-1);
+			} finally {
+				status.setCurrentStatusValue(100);
+			}
+			if (status.wantsToStop())
+				status.setCurrentStatusText1("Processing aborted");
+			else
+				status.setCurrentStatusText1("Finished");
+			status.setCurrentStatusText2("");
+
+		}, null, status);
+
 	}
 
 	public static Collection<ExperimentInterface> getExperiments(Collection<GraphElement> workNodes, boolean onlyOne,

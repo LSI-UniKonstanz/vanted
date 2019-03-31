@@ -706,74 +706,37 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seede.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusValue()
-	 */
+	@Override
 	public int getCurrentStatusValue() {
 		return progressValue;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seede.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusMessage1()
-	 */
+	@Override
 	public String getCurrentStatusMessage1() {
 		return status1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seede.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusMessage2()
-	 */
+	@Override
 	public String getCurrentStatusMessage2() {
 		return status2;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#pleaseStop ()
-	 */
+	@Override
 	public void pleaseStop() {
 		pleaseStop = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seede.ipk_gatersleben.ag_nw.graffiti.BackgroundTaskStatusProvider#
-	 * getCurrentStatusValueFine()
-	 */
+	@Override
 	public double getCurrentStatusValueFine() {
 		return getCurrentStatusValue();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider
-	 * #pluginWaitsForUser()
-	 */
+	@Override
 	public boolean pluginWaitsForUser() {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider
-	 * #pleaseContinueRun()
-	 */
+	@Override
 	public void pleaseContinueRun() {
 		// empty
 	}
@@ -782,33 +745,27 @@ public class Experiment2GraphHelper implements BackgroundTaskStatusProviderSuppo
 		progressValue = value;
 	}
 
-	/**
-	 * not implemented because it's not supported (non-Javadoc)
-	 * 
-	 * @see org.BackgroundTaskStatusProviderSupportingExternalCall#setCurrentStatusValueFine(double)
-	 */
+	@Override
 	public void setCurrentStatusValueFine(double value) {
 
 	}
 
+	@Override
 	public boolean wantsToStop() {
 		return pleaseStop;
 	}
 
+	@Override
 	public void setCurrentStatusText1(String status) {
 		status1 = status;
 	}
 
+	@Override
 	public void setCurrentStatusText2(String status) {
 		status2 = status;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @seeorg.BackgroundTaskStatusProviderSupportingExternalCall#
-	 * setCurrentStatusValueFineAdd(double)
-	 */
+	@Override
 	public void setCurrentStatusValueFineAdd(double smallProgressStep) {
 		progressValue += smallProgressStep;
 	}
