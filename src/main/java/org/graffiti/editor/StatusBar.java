@@ -12,7 +12,6 @@ package org.graffiti.editor;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -20,8 +19,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.util.ArrayList;
@@ -41,7 +40,6 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
-import javax.swing.UIManager;
 
 import org.AttributeHelper;
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
@@ -69,6 +67,7 @@ import org.graffiti.selection.SelectionListener;
 import org.graffiti.session.EditorSession;
 import org.graffiti.session.Session;
 import org.graffiti.session.SessionListener;
+import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 
 /**
  * Represents a status line ui component, which can display info and error
@@ -76,6 +75,7 @@ import org.graffiti.session.SessionListener;
  * which will be zoomed into the view
  * 
  * @version $Revision: 1.23.2.1.2.2 $
+ * @vanted.revision 2.7.0
  */
 public class StatusBar extends JPanel implements SessionListener, SelectionListener, GraphListener {
 	// ~ Static fields/initializers =============================================
@@ -160,7 +160,7 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 		statusLine = new MyJLabel("");
 		statusLine.setBorder(BorderFactory.createEtchedBorder());
 		// statusLine.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-		statusLine.setToolTipText("<html><small>Click or <b>use F2</b> to view full status text");
+		statusLine.setToolTipText(HTMLScaleSupport.scaleHTMLText("<html><small>Click or <b>use F2</b> to view full status text"));
 		/*
 		 * statusLine.setBorder(BorderFactory.createCompoundBorder(
 		 * BorderFactory.createLoweredBevelBorder(), statusLine.getBorder()));
@@ -181,32 +181,13 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 		nodesLabel = new JLabel(" ");
 		nodesLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		// nodesLabel.addActionListener(new ActionListener() {
-		// public void actionPerformed(ActionEvent e) {
-		// }});
-		nodesLabel.addMouseListener(new MouseListener() {
+		nodesLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				processRightClick(e, true);
 			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}
 		});
-		nodesLabel.setToolTipText(sBundle.getString("statusBar.nodes.tooltip"));
+		nodesLabel.setToolTipText(HTMLScaleSupport.scaleHTMLText(sBundle.getString("statusBar.nodes.tooltip")));
 		nodesLabel.setBorder(BorderFactory.createEtchedBorder());
 		/*
 		 * nodesLabel.setBorder(BorderFactory.createCompoundBorder(
@@ -240,29 +221,13 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 
 		edgesLabel = new JLabel(" ");
 		edgesLabel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		edgesLabel.addMouseListener(new MouseListener() {
+		edgesLabel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				processRightClick(e, false);
 			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-			}
 		});
-		edgesLabel.setToolTipText(sBundle.getString("statusBar.edges.tooltip"));
+		edgesLabel.setToolTipText(HTMLScaleSupport.scaleHTMLText(sBundle.getString("statusBar.edges.tooltip")));
 		edgesLabel.setBorder(BorderFactory.createEtchedBorder());
 		/*
 		 * edgesLabel.setBorder(BorderFactory.createCompoundBorder(
@@ -345,27 +310,18 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 		// setToolTipText(null);
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#postEdgeAdded(GraphEvent)
-	 */
 	@Override
 	public void postEdgeAdded(GraphEvent e) {
 		edges++;
 		updateGraphInfo();
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#postEdgeRemoved(GraphEvent)
-	 */
 	@Override
 	public void postEdgeRemoved(GraphEvent e) {
 		edges--;
 		updateGraphInfo();
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#postGraphCleared(GraphEvent)
-	 */
 	@Override
 	public void postGraphCleared(GraphEvent e) {
 		edges = 0;
@@ -374,62 +330,38 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 		updateGraphInfo();
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#postNodeAdded(GraphEvent)
-	 */
 	@Override
 	public void postNodeAdded(GraphEvent e) {
 		nodes++;
 		updateGraphInfo();
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#postNodeRemoved(GraphEvent)
-	 */
 	@Override
 	public void postNodeRemoved(GraphEvent e) {
 		nodes--;
 		updateGraphInfo();
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#preEdgeAdded(GraphEvent)
-	 */
 	@Override
 	public void preEdgeAdded(GraphEvent e) {
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#preEdgeRemoved(GraphEvent)
-	 */
 	@Override
 	public void preEdgeRemoved(GraphEvent e) {
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#preGraphCleared(GraphEvent)
-	 */
 	@Override
 	public void preGraphCleared(GraphEvent e) {
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#preNodeAdded(GraphEvent)
-	 */
 	@Override
 	public void preNodeAdded(GraphEvent e) {
 	}
 
-	/**
-	 * @see org.graffiti.event.GraphListener#preNodeRemoved(GraphEvent)
-	 */
 	@Override
 	public void preNodeRemoved(GraphEvent e) {
 	}
 
-	/**
-	 * @see org.graffiti.selection.SelectionListener#selectionChanged(SelectionEvent)
-	 */
 	@Override
 	public void selectionChanged(SelectionEvent e) {
 		logger.debug("selectionChanged");
@@ -440,9 +372,6 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 		}
 	}
 
-	/**
-	 * @see org.graffiti.selection.SelectionListener#selectionListChanged(org.graffiti.selection.SelectionEvent)
-	 */
 	@Override
 	public void selectionListChanged(SelectionEvent e) {
 		logger.debug("selectionListChanged");
@@ -453,9 +382,6 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 		}
 	}
 
-	/**
-	 * @see org.graffiti.session.SessionListener#sessionChanged(Session)
-	 */
 	@Override
 	public void sessionChanged(Session session) {
 		logger.debug("sessionChanged");
@@ -510,9 +436,6 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 		updateGraphInfo();
 	}
 
-	/**
-	 * @see org.graffiti.session.SessionListener#sessionDataChanged(Session)
-	 */
 	@Override
 	public void sessionDataChanged(Session s) {
 		updateGraphInfo();
@@ -556,9 +479,8 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 			}
 		});
 
-		statusLine.setFont(new Font("dialog", Font.BOLD, setStatuslineFontsize()));
 		statusLine.setForeground(Color.red);
-		statusLine.setText(status);
+		statusLine.setText(HTMLScaleSupport.scaleHTMLText(status));
 		timer.setInitialDelay(timeMillis);
 		timer.setRepeats(false);
 		timer.start();
@@ -602,32 +524,13 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 			}
 		});
 
-		statusLine.setFont(new Font("dialog", Font.PLAIN, setStatuslineFontsize()));
 		statusLine.setForeground(Color.black);
-		statusLine.setText(message);
+		statusLine.setText(HTMLScaleSupport.scaleHTMLText(message));
 		timer.setInitialDelay(timeMillis);
 		timer.setRepeats(false);
 		timer.start();
 	}
 
-	/**
-	 * Sets size by taking and adjusting the respective LAF default.
-	 * 
-	 * @return LAF-respecting font size
-	 * @author D. Garkov
-	 * @since 2.6.4
-	 */
-	private int setStatuslineFontsize() {
-		int size = UIManager.getDefaults().getFont("Label.font").getSize();
-		if (size > (12 + size / 6))
-			size -= size / 6;
-
-		return size;
-	}
-
-	/**
-	 * @see org.graffiti.event.TransactionListener#transactionFinished(TransactionEvent)
-	 */
 	@Override
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {
 		// ignoreUpdate--;
@@ -640,9 +543,6 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 		}
 	}
 
-	/**
-	 * @see org.graffiti.event.TransactionListener#transactionStarted(TransactionEvent)
-	 */
 	@Override
 	public void transactionStarted(TransactionEvent e) {
 		ignoreUpdate++;
@@ -749,8 +649,8 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 		nodeText = nodeText.replaceAll(" ", "&nbsp;");
 		edgeText = edgeText.replaceAll("all 1<", "1<");
 		edgeText = edgeText.replaceAll("&nbsp;", "&nbsp;");
-		nodesLabel.setText(nodeText);
-		edgesLabel.setText(edgeText);
+		nodesLabel.setText(HTMLScaleSupport.scaleHTMLText(nodeText));
+		edgesLabel.setText(HTMLScaleSupport.scaleHTMLText(edgeText));
 	}
 
 	private void processRightClick(MouseEvent e, final boolean processNodesTrue_otherwiseEdges) {

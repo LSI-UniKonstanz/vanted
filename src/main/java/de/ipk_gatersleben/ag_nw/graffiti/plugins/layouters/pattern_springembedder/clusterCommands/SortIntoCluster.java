@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.clustering.sorting;
+package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,7 +60,7 @@ public class SortIntoCluster extends AbstractAlgorithm {
 
 	@Override
 	public String getName() {
-		return "Sort into Cluster(s) by Attribute";
+		return "Sort into Clusters by Attribute";
 	}
 
 	@Override
@@ -156,9 +156,9 @@ public class SortIntoCluster extends AbstractAlgorithm {
 
 		switch (attrType) {
 		case STRING:
-			JOptionPane.showMessageDialog(MainFrame.getInstance(),
-					"<html>Creating cluster from selected String attribute.<br/>Nodes with the same string value will be put<br?> into the same cluster",
-					"Cluster Creation", JOptionPane.INFORMATION_MESSAGE);
+//			JOptionPane.showMessageDialog(MainFrame.getInstance(),
+//					"<html>Creating cluster from selected String attribute.<br/>Nodes with the same string value will be put<br?> into the same cluster",
+//					"Cluster Creation", JOptionPane.INFORMATION_MESSAGE);
 			clusterByString(nodesWithSelectedAttribute);
 			break;
 		case NUMERIC:

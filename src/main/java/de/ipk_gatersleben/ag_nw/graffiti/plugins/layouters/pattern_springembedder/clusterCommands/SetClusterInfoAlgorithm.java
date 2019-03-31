@@ -4,6 +4,7 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,8 +17,13 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.StringParameter;
 
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 
+/**
+ * 
+ * @vanted.revision 2.7.0 Added Undo/Redo
+ */
 public class SetClusterInfoAlgorithm extends AbstractAlgorithm {
 
 	private String currentValue = "";
@@ -26,14 +32,13 @@ public class SetClusterInfoAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
-		else
-			return "Enter Cluster ID";
+
+		return "Enter Cluster ID";
 	}
 
 	@Override
 	public String getDescription() {
-		return "<html>" + "Assign/Modify cluster ID for<br>"
-				+ "selected or all nodes, given none are selected.";
+		return "<html>" + "Assign/Modify cluster ID for<br>" + "selected or all nodes, given none are selected.";
 	}
 
 	@Override
@@ -78,9 +83,9 @@ public class SetClusterInfoAlgorithm extends AbstractAlgorithm {
 	public void execute() {
 		graph.getListenerManager().transactionStarted(this);
 		try {
-			for (GraphElement ge : getSelectedOrAllGraphElements()) {
-				NodeTools.setClusterID(ge, currentValue);
-			}
+			HashMap<GraphElement, String> ge2newClusterID = new HashMap<>();
+			getSelectedOrAllGraphElements().forEach(ge -> ge2newClusterID.put(ge, currentValue));
+			GraphHelper.applyUndoableClusterIdAssignment(graph, ge2newClusterID, getName(), true);
 		} finally {
 			graph.getListenerManager().transactionFinished(this);
 		}

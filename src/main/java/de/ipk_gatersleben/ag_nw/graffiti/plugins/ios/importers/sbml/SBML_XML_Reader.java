@@ -263,7 +263,7 @@ public class SBML_XML_Reader extends AbstractInputSerializer {
 			SBMLDocument document = null;
 			status.setCurrentStatusText1("loading SBML document");
 			status.setCurrentStatusValue(30);
-			logger.info("start parsing sbml documet  (InputStream)");
+			logger.info("start parsing sbml document  (InputStream)");
 			document = reader.readSBMLFromStream(in);
 			if (document != null) {
 				if (status.wantsToStop()) {

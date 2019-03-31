@@ -1,4 +1,4 @@
-package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder;
+package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,21 +11,19 @@ import org.ReleaseInfo;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.Category;
 
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.clustering.sorting.SortIntoCluster;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.launch_gui.LaunchGui;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.SetClusterInfoAlgorithm;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.SetClusterInfoFromLabelAlgorithm;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.SetClusterInfoFromSubgraphAlgorithm;
 
-public class SetCluster extends LaunchGui {
+public class SetClusterLaunchGui extends LaunchGui {
 
 	@Override
 	protected Collection<Algorithm> getAlgorithms() {
 		ArrayList<Algorithm> res = new ArrayList<Algorithm>();
 		res.add(new SetClusterInfoAlgorithm());
 		res.add(new SetClusterInfoFromLabelAlgorithm());
-		res.add(new SortIntoCluster());
 		res.add(new SetClusterInfoFromSubgraphAlgorithm());
+		res.add(null);
+		res.add(new SortIntoCluster());
+		
 		return res;
 	}
 

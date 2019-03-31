@@ -2655,12 +2655,20 @@ public class MainFrame extends JFrame
 			System.out.println(type.toString() + ": " + message);
 			return;
 		}
-		if (type == MessageType.ERROR) {
+
+		switch(type) {
+		case ERROR:
 			getInstance().statusBar.showError(message, timeMillis);
-		} else if (type == MessageType.INFO) {
+			break;
+		case INFO:
 			getInstance().statusBar.showInfo(message, timeMillis);
-		} else if (type == MessageType.PERMANENT_INFO) {
+			break;
+		case PERMANENT_INFO:
 			getInstance().statusBar.showInfo(message, Integer.MAX_VALUE);
+			break;
+		default:
+			System.err.println("Unqualified MessageType for: " + message);
+			break;	
 		}
 	}
 

@@ -23,6 +23,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 
 /**
  * @author Christian Klukas
+ * @vanted.revision 2.7.0
  */
 public class SetClusterInfoFromSubgraphAlgorithm extends AbstractAlgorithm {
 
@@ -30,13 +31,8 @@ public class SetClusterInfoFromSubgraphAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
-		else
-			return "<html>" + "Get Cluster IDs from Connected Sub-Graphs";
-	}
 
-	@Override
-	public String getDescription() {
-		return "<html>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Undoable operation, continue?&nbsp;";
+		return "Get Cluster ID from Connected Sub-Graph";
 	}
 
 	@Override
@@ -48,7 +44,7 @@ public class SetClusterInfoFromSubgraphAlgorithm extends AbstractAlgorithm {
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No graph available!");
-		if (graph.getNumberOfNodes() <= 0)
+		if (graph.getNumberOfNodes() < 1)
 			throw new PreconditionException("Graph contains no graph elements!");
 	}
 

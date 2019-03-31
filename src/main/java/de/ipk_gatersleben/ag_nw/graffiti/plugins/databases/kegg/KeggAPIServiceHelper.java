@@ -22,7 +22,6 @@ import java.util.concurrent.RecursiveAction;
 import javax.swing.JComponent;
 
 import org.HelperClass;
-import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.log4j.Logger;
 
@@ -73,8 +72,6 @@ public class KeggAPIServiceHelper implements HelperClass, FileDownloadStatusInfo
 			return name;
 		}
 	}
-
-	HttpClient client;
 
 	Map<String, KoEntry> mapKOIdToEntry;
 	Map<String, HashSet<KoEntry>> mapECIdToEntry;

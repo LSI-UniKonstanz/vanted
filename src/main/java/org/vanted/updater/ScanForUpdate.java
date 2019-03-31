@@ -45,14 +45,15 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 
 /**
- * @author matthiak Update file has very simple format: For the message string..
- *         it only has to be surrounded by '{{' and '}}' and can go over many
- *         lines first line: version:<version> //x.x.x <+|-><type>:<filename> ..
- *         message:{{<MESSAGESTRING> <MESSAGESTRING> <MESSAGESTRING> }} // + =
- *         add the file - = remove the file type = type of file (core, lib)
- *         filename = url to file # comment line e.g.: # some comment version:
- *         2.5.0 +core: vanted-core.jar +lib: lib-name.jar -lib: lib-name2.jar
- *         message:{{ some text message }} // # end of update entry
+ * Update file has very simple format: For the message string.. it only has to
+ * be surrounded by '{{' and '}}' and can go over many lines first line:
+ * version:<version> //x.x.x <+|-><type>:<filename> .. message:{{<MESSAGESTRING>
+ * <MESSAGESTRING> <MESSAGESTRING> }} // + = add the file - = remove the file
+ * type = type of file (core, lib) filename = url to file # comment line e.g.: #
+ * some comment version: 2.5.0 +core: vanted-core.jar +lib: lib-name.jar -lib:
+ * lib-name2.jar message:{{ some text message }} // # end of update entry
+ * 
+ * @author matthiak
  */
 public class ScanForUpdate implements PreferencesInterface// , Runnable
 {
