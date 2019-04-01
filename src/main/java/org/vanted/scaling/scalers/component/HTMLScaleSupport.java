@@ -144,7 +144,7 @@ public class HTMLScaleSupport {
 	 * @return DPI-scaled HTML text
 	 * @since 2.7.0
 	 */
-	public static String scaleHTMLText(String text) {
+	public static String scaleText(String text) {
 		if (Toolbox.getDPIScalingRatio() == 1f)
 			return text;
 

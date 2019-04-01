@@ -48,7 +48,7 @@ public class AdditionalIdentifiersAlgorithm extends AbstractAlgorithm {
 
 	@Override
 	public String getDescription() {
-		return HTMLScaleSupport.scaleHTMLText("<html>"
+		return HTMLScaleSupport.scaleText("<html>"
 				+ "This command reads (multiple) mapping tables and adds alternative<br>"
 				+ "substance IDs to the mapped data. The same process could be per-<br>"
 				+ "formed before data mapping from the Experiments Tab. In case, data<br>"

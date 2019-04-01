@@ -57,7 +57,7 @@ public class IntroduceBendsAlgorithm extends AbstractAlgorithm {
 				+ "&nbsp;&nbsp;&nbsp;Style <b>2</b> - Smooth Line (one bend)<br>"
 				+ "&nbsp;&nbsp;&nbsp;Style <b>3</b> - Smooth Line (two bends)";
 		//Scale the HTML text, provided there is DPI emulation
-		styleText = HTMLScaleSupport.scaleHTMLText(styleText);
+		styleText = HTMLScaleSupport.scaleText(styleText);
 		return new Parameter[] { new IntegerParameter(lineStyle, styleText, "Select one of the edge drawing styles"),
 				new IntegerParameter(minPercent, "Minimum Percentage", ""),
 				new BooleanParameter(massCenterFromSelection, "Calculate Center from Selection",

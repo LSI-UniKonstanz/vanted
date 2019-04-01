@@ -160,7 +160,7 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 		statusLine = new MyJLabel("");
 		statusLine.setBorder(BorderFactory.createEtchedBorder());
 		// statusLine.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-		statusLine.setToolTipText(HTMLScaleSupport.scaleHTMLText("<html><small>Click or <b>use F2</b> to view full status text"));
+		statusLine.setToolTipText(HTMLScaleSupport.scaleText("<html><small>Click or <b>use F2</b> to view full status text"));
 		/*
 		 * statusLine.setBorder(BorderFactory.createCompoundBorder(
 		 * BorderFactory.createLoweredBevelBorder(), statusLine.getBorder()));
@@ -187,7 +187,7 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 				processRightClick(e, true);
 			}
 		});
-		nodesLabel.setToolTipText(HTMLScaleSupport.scaleHTMLText(sBundle.getString("statusBar.nodes.tooltip")));
+		nodesLabel.setToolTipText(HTMLScaleSupport.scaleText(sBundle.getString("statusBar.nodes.tooltip")));
 		nodesLabel.setBorder(BorderFactory.createEtchedBorder());
 		/*
 		 * nodesLabel.setBorder(BorderFactory.createCompoundBorder(
@@ -227,7 +227,7 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 				processRightClick(e, false);
 			}
 		});
-		edgesLabel.setToolTipText(HTMLScaleSupport.scaleHTMLText(sBundle.getString("statusBar.edges.tooltip")));
+		edgesLabel.setToolTipText(HTMLScaleSupport.scaleText(sBundle.getString("statusBar.edges.tooltip")));
 		edgesLabel.setBorder(BorderFactory.createEtchedBorder());
 		/*
 		 * edgesLabel.setBorder(BorderFactory.createCompoundBorder(
@@ -480,7 +480,7 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 		});
 
 		statusLine.setForeground(Color.red);
-		statusLine.setText(HTMLScaleSupport.scaleHTMLText(status));
+		statusLine.setText(HTMLScaleSupport.scaleText(status));
 		timer.setInitialDelay(timeMillis);
 		timer.setRepeats(false);
 		timer.start();
@@ -525,7 +525,7 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 		});
 
 		statusLine.setForeground(Color.black);
-		statusLine.setText(HTMLScaleSupport.scaleHTMLText(message));
+		statusLine.setText(HTMLScaleSupport.scaleText(message));
 		timer.setInitialDelay(timeMillis);
 		timer.setRepeats(false);
 		timer.start();
@@ -649,8 +649,8 @@ public class StatusBar extends JPanel implements SessionListener, SelectionListe
 		nodeText = nodeText.replaceAll(" ", "&nbsp;");
 		edgeText = edgeText.replaceAll("all 1<", "1<");
 		edgeText = edgeText.replaceAll("&nbsp;", "&nbsp;");
-		nodesLabel.setText(HTMLScaleSupport.scaleHTMLText(nodeText));
-		edgesLabel.setText(HTMLScaleSupport.scaleHTMLText(edgeText));
+		nodesLabel.setText(HTMLScaleSupport.scaleText(nodeText));
+		edgesLabel.setText(HTMLScaleSupport.scaleText(edgeText));
 	}
 
 	private void processRightClick(MouseEvent e, final boolean processNodesTrue_otherwiseEdges) {

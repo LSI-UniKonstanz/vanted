@@ -66,7 +66,7 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 
 	@Override
 	public String getDescription() {
-		return HTMLScaleSupport.scaleHTMLText("<html>Calculates the ratio between any two substances.<br>" + "<br>"
+		return HTMLScaleSupport.scaleText("<html>Calculates the ratio between any two substances.<br>" + "<br>"
 				+ "<small>For the example three substances where selected. The<br>"
 				+ "resulting new graph view contains a n*n matrix which shows<br>"
 				+ "the ratio for the example time series data.<br><br>" + "<br>");

@@ -48,7 +48,7 @@ public class DavidTestAlgorithm extends AbstractAlgorithm {
 
 	@Override
 	public String getDescription() {
-		return HTMLScaleSupport.scaleHTMLText("<html><b>David et al. Quicktest for normality distribution.</b><br>"
+		return HTMLScaleSupport.scaleText("<html><b>David et al. Quicktest for normality distribution.</b><br>"
 				+ "All nodes that contain samples and are <b>not</b><br>"
 				+ "normally distributed, will be <b>selected</b>.<br>"
 				+ "<small>Each sample needs to contain at least 5 values<br>"
