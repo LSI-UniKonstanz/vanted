@@ -317,11 +317,11 @@ public class HTMLScaleSupport {
 	 * @return an array with the native tags in order of appearance
 	 */
 	static String[] restoreTags(JComponent component) {
-
-		if (tags.get(component.hashCode()).isEmpty())
+		List<String> compTags = tags.get(component.hashCode());
+		if (compTags == null || compTags.isEmpty())
 			return new String[] { "" };
 
-		String value = tags.get(component.hashCode()).get(0);
+		String value = compTags.get(0);
 		final String del = "<";
 
 		ArrayList<String> tagslist = new ArrayList<>(Arrays.asList(value.split(del)));
@@ -331,7 +331,7 @@ public class HTMLScaleSupport {
 			result[i] = del + result[i];
 
 		// remove processed value from the map's list
-		tags.get(component.hashCode()).remove(0);
+		compTags.remove(0);
 
 		return result;
 	}

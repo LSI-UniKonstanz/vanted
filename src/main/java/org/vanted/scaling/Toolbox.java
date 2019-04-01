@@ -266,7 +266,6 @@ public class Toolbox {
 	public static void scaleComponent(JComponent component, float DPIratio, boolean check) {
 		if (DPIratio == 1f)
 			return;
-
 		assignScaler(component, DPIratio, check, true);
 	}
 

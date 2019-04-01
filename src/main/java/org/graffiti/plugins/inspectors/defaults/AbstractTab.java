@@ -272,7 +272,7 @@ public abstract class AbstractTab extends InspectorTab
 	@Override
 	public void componentShown(ComponentEvent e) {
 		rebuildTreeAction();
-		Toolbox.scaleComponent(this, true);
+		Toolbox.scaleComponent(this, Toolbox.getDPIScalingRatio() * 0.75f/*... too, hacky*/, true);
 	}
 
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {

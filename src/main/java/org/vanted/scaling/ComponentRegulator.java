@@ -53,7 +53,7 @@ public class ComponentRegulator {
 
 	private float factor;
 
-	/** A set holding the hash-codes of the components with modified aspect. */
+	/** A set holding the hash-codes of the components with modified aspects. */
 	private static HashSet<Integer> modified;
 
 	/** The hash code of the modifed pool/set. */
@@ -182,6 +182,9 @@ public class ComponentRegulator {
 		if (!isInitialized)
 			return;
 
+		// Update the scalers with the current factor
+		scalers.values().forEach(v -> v.setScaleFactor(factor));
+		
 		for (Component c : components) {
 			// delegate further extraction
 			if (c instanceof JComponent) {
@@ -232,6 +235,9 @@ public class ComponentRegulator {
 	public void scaleComponentsOf(Component[] components, boolean check, boolean mark) {
 		if (!isInitialized) // Cannot run before the application DPI Scaling, initialize with init()
 			return;
+		
+		// Update the scalers with the current factor
+		scalers.values().forEach(v -> v.setScaleFactor(factor));
 
 		if (!check) // marks component in any case
 			scaleComponentsOf(components);
@@ -272,11 +278,11 @@ public class ComponentRegulator {
 	 * 
 	 * @param component the to be scaled component
 	 */
-	private static void conduct(JComponent component) {
+	private void conduct(JComponent component) {
 		ComponentScaler scaler;
 		for (Entry<Class<?>, ComponentScaler> entry : scalers.entrySet()) {
 			if (matches(component, entry.getKey())) {
-				scaler = entry.getValue();
+				scaler = entry.getValue();				
 				scaler.scaleComponent(component);
 
 				break;
