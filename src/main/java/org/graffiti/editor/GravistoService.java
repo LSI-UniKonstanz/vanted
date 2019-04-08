@@ -603,6 +603,7 @@ public class GravistoService implements HelperClass {
 			if (algorithm instanceof AlgorithmWithComponentDescription) {
 				try {
 					desc = ((AlgorithmWithComponentDescription) algorithm).getDescriptionComponent();
+					Toolbox.scaleComponent(desc, true);
 				} catch (Exception e) {
 					ErrorMsg.addErrorMessage(e);
 					desc = null;

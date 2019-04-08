@@ -43,6 +43,9 @@ import org.graffiti.plugin.parameter.SelectionParameter;
 import org.graffiti.selection.Selection;
 import org.graffiti.util.InstanceCreationException;
 import org.graffiti.util.InstanceLoader;
+import org.vanted.scaling.Toolbox;
+import org.vanted.scaling.scalers.component.HTMLScaleSupport;
+import org.vanted.scaling.scalers.component.JLabelScaler;
 
 /**
  * Represents a parameter edit panel.
@@ -70,12 +73,9 @@ public class ParameterEditPanel extends JPanel {
 	/**
 	 * Instantiates a new edit panel.
 	 * 
-	 * @param parameters
-	 *            DOCUMENT ME!
-	 * @param editTypes
-	 *            DOCUMENT ME!
-	 * @param selection
-	 *            DOCUMENT ME!
+	 * @param parameters DOCUMENT ME!
+	 * @param editTypes  DOCUMENT ME!
+	 * @param selection  DOCUMENT ME!
 	 */
 
 	public ParameterEditPanel(Parameter[] parameters, Map<?, ?> editTypes, Selection selection, String title,
@@ -88,6 +88,18 @@ public class ParameterEditPanel extends JPanel {
 		super();
 
 		this.parameters = parameters;
+		JLabelScaler iconScaler = new JLabelScaler(Toolbox.getDPIScalingRatio());
+		// Scale paramters HTML texts
+		if (this.parameters != null)
+			for (Parameter param : this.parameters) {
+				param.setDescription(HTMLScaleSupport.scaleText(param.getDescription()));
+				if (param.getValue() instanceof String)
+					param.setValue(HTMLScaleSupport.scaleText((String) param.getValue()));
+				// list values not scaled (no guarantee we can modify the collection)
+				if (param.getIcon() != null)
+					iconScaler.coscaleIcon(param.getIcon());
+			}
+		
 		this.displayedVEC = new LinkedList<ValueEditComponent>();
 		setEditTypeMap(editTypes);
 
@@ -154,8 +166,7 @@ public class ParameterEditPanel extends JPanel {
 	/**
 	 * Sets the map of displayable types to the given map.
 	 * 
-	 * @param map
-	 *            DOCUMENT ME!
+	 * @param map DOCUMENT ME!
 	 */
 	public void setEditTypeMap(Map<?, ?> map) {
 		this.editTypeMap = map;
@@ -186,10 +197,8 @@ public class ParameterEditPanel extends JPanel {
 	/**
 	 * Builds the table that is used for editing parameters
 	 * 
-	 * @param selection
-	 *            list of parameters.
-	 * @param myPanel
-	 *            The folder Panel where the rows are added
+	 * @param selection list of parameters.
+	 * @param myPanel   The folder Panel where the rows are added
 	 */
 	public void buildTable(Selection selection, FolderPanel myPanel) {
 		myPanel.clearGuiComponentList();
@@ -203,8 +212,7 @@ public class ParameterEditPanel extends JPanel {
 	 * <code>toString</code> method of the parameter. Used when there is no
 	 * registered <code>ValueEditComponent</code>.
 	 * 
-	 * @param parameter
-	 *            DOCUMENT ME!
+	 * @param parameter DOCUMENT ME!
 	 * @return DOCUMENT ME!
 	 */
 	private static ValueEditComponent getStandardEditComponent(Parameter parameter) {
