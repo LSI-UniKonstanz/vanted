@@ -18,9 +18,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.Timer;
 
+import org.AttributeHelper;
 import org.FolderPanel;
 import org.Release;
 import org.ReleaseInfo;
+import org.graffiti.attributes.Attribute;
+import org.graffiti.attributes.AttributeNotFoundException;
+import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractAlgorithm;
@@ -28,6 +32,8 @@ import org.graffiti.plugin.algorithm.AlgorithmWithComponentDescription;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
+import org.graffiti.plugin.view.View;
+import org.graffiti.session.EditorSession;
 
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.services.RunAlgorithmDialog;
@@ -120,6 +126,30 @@ public class ClusterGraphLayout extends AbstractAlgorithm implements AlgorithmWi
 		String cluster = "overview-graph";
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			cluster = "Pathway-Overview Graph";
+
+		// If the selected graph is the overview graph, switch to its cluster graph
+		try {
+			AttributeHelper.getAttribute(graph, "cluster" + AttributeHelper.attributeSeparator + "clustergraph");
+		} catch (AttributeNotFoundException anfe) {
+			MainFrame.getInstance();
+			for (EditorSession es : MainFrame.getEditorSessions()) {
+				for (View v : es.getViews()) {
+					if (v != null) {
+						try {
+							AttributeHelper
+									.getAttribute(v.getGraph(),
+											"cluster" + AttributeHelper.attributeSeparator + "clustergraph")
+									.getName().contains(graph.getName());
+							graph = v.getGraph();
+							break;
+						} catch (AttributeNotFoundException anfe2) {
+							continue;
+						}
+
+					}
+				}
+			}
+		}
 
 		RunAlgorithmDialog rad = new RunAlgorithmDialog("Select " + cluster + " Layout", graph, selection, true, false);
 		rad.setAlwaysOnTop(true);
