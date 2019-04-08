@@ -22,7 +22,6 @@ import org.AttributeHelper;
 import org.FolderPanel;
 import org.Release;
 import org.ReleaseInfo;
-import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
@@ -41,6 +40,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 
 /**
  * @author Christian Klukas (c) 2006 IPK-Gatersleben
+ * @vanted.revision <html>2.7.0 Layout G from G<sub>O</sub> too.</html>
  */
 public class ClusterGraphLayout extends AbstractAlgorithm implements AlgorithmWithComponentDescription {
 
@@ -48,7 +48,7 @@ public class ClusterGraphLayout extends AbstractAlgorithm implements AlgorithmWi
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return "Apply Pathway-Overview Layout";
 		else
-			return "2. Layout Source Graph via Overview Graph";// Re-Layout based on Cluster-Graph Layout";
+			return "Layout Source Graph via Overview Graph";// Re-Layout based on Cluster-Graph Layout";
 	}
 
 	@Override

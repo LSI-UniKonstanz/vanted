@@ -34,12 +34,13 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.ClusterColorAttribute;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.ClusterColorParameter;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.NullLayoutAlgorithm;
 
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
 public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
-//	boolean applyLayout = true;
+	boolean applyLayout = true;
 
 	boolean resizeNodes = true;
 
@@ -77,8 +78,8 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		ClusterColorParameter op = new ClusterColorParameter(cca_new, "Cluster-Colors", ClusterColorAttribute.desc);
 
 		Parameter[] result = new Parameter[] {
-//				new BooleanParameter(applyLayout, "Layout Overview-Graph",
-//						"Select a layout algorithm to run on the overview-graph"),
+				new BooleanParameter(applyLayout, "Layout Overview-Graph",
+						"Select a layout algorithm to run on the overview-graph"),
 				new BooleanParameter(resizeNodes, "Resize Nodes",
 						"Resize Nodes depending on number of nodes related to the cluster-node"),
 				new IntegerParameter(minNodeSize, "Min. Node Size", "Node minimum size attribute."),
@@ -97,7 +98,7 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
-		//applyLayout = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
+		applyLayout = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		resizeNodes = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		minNodeSize = ((IntegerParameter) params[i++]).getInteger().intValue();
 		maxNodeSize = ((IntegerParameter) params[i++]).getInteger().intValue();
@@ -112,15 +113,15 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		graph.addAttribute(cca, ClusterColorAttribute.attributeFolder);
 
 	}
-//
-//	@Override
-//	public void reset() {
-//		applyLayout = true;
-//	}
+
+	@Override
+	public void reset() {
+		applyLayout = true;
+	}
 
 	public String getName() {
 		if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
-			return "1. Create Overview Graph";
+			return "Create Overview Graph";
 		else
 			return null;
 	}
@@ -168,13 +169,16 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 			MainFrame.getInstance().showGraph(clusterReferenceGraph, null);
 		}
 
-//		if (applyLayout) {
+		if (applyLayout) {
+			MyClusterGraphBasedReLayoutService clusterLayoutService = new MyClusterGraphBasedReLayoutService(false, graph);
+			clusterLayoutService.setAlgorithm(new NullLayoutAlgorithm(), null);
+			clusterLayoutService.run();
 //			ClusterGraphLayout cgl = new ClusterGraphLayout();
 //			cgl.attach(clusterReferenceGraph, new Selection());
 //			cgl.execute();
 ////			AlgorithmServices.selectAndRunLayoutAlgorithm(clusterReferenceGraph, new Selection(),
 ////					"Apply a Layout-Algorithm to the Overview-Graph", true);
-//		}
+		}
 
 		clusterReferenceGraph.setModified(false);
 	}

@@ -105,7 +105,7 @@ public class ComponentRegulator {
 
 		// ensure some extra capacity beforehand
 		System.gc();
-		
+
 		isInitialized = true;
 		doExternalScaling(container);
 	}
@@ -171,6 +171,11 @@ public class ComponentRegulator {
 	 */
 	public void scaleComponentsOf(Container container) {
 		scaleComponentsOf(container.getComponents());
+
+//		if (container instanceof Window) {
+//			Dimension size = ((Window) container).getSize();
+//			((Window) container).setSize((int) (size.getWidth() * factor), (int) (size.getHeight() * factor));
+//		}
 	}
 
 	/**
@@ -184,7 +189,7 @@ public class ComponentRegulator {
 
 		// Update the scalers with the current factor
 		scalers.values().forEach(v -> v.setScaleFactor(factor));
-		
+
 		for (Component c : components) {
 			// delegate further extraction
 			if (c instanceof JComponent) {
@@ -228,14 +233,14 @@ public class ComponentRegulator {
 	 * and {@linkplain ComponentRegulator#scaleComponentsOf(Component[])}.
 	 * 
 	 * @param components
-	 * @param check true to check components for being scaled and avoid double
-	 *                    scaling
-	 * @param mark        true to mark any scaled components as such
+	 * @param check      true to check components for being scaled and avoid double
+	 *                   scaling
+	 * @param mark       true to mark any scaled components as such
 	 */
 	public void scaleComponentsOf(Component[] components, boolean check, boolean mark) {
 		if (!isInitialized) // Cannot run before the application DPI Scaling, initialize with init()
 			return;
-		
+
 		// Update the scalers with the current factor
 		scalers.values().forEach(v -> v.setScaleFactor(factor));
 
@@ -264,8 +269,8 @@ public class ComponentRegulator {
 	}
 
 	/**
-	 * Override default behaviour to run proxy scalers before the
-	 * application / init DPI scaler.
+	 * Override default behaviour to run proxy scalers before the application / init
+	 * DPI scaler.
 	 * 
 	 */
 	public static void overrideForAll() {
@@ -282,7 +287,7 @@ public class ComponentRegulator {
 		ComponentScaler scaler;
 		for (Entry<Class<?>, ComponentScaler> entry : scalers.entrySet()) {
 			if (matches(component, entry.getKey())) {
-				scaler = entry.getValue();				
+				scaler = entry.getValue();
 				scaler.scaleComponent(component);
 
 				break;
@@ -305,7 +310,7 @@ public class ComponentRegulator {
 	 * 
 	 * @see HTMLScaleSupport
 	 */
-	public static void scaleHTML(JComponent component) {
+	public static void scaleHTMLComponent(JComponent component) {
 		for (Entry<Class<?>, ComponentScaler> entry : scalers.entrySet()) {
 			if (matches(component, entry.getKey())) {
 				// through reflection

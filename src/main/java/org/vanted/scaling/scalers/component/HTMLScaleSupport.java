@@ -34,7 +34,7 @@ import org.vanted.scaling.Toolbox;
  * and are replaced by a calculated font size, e.g. &#60;font size="-1">. With
  * the help of a {@link TextListener} we dynamic changes are tracked.
  * 
- * @see {@link ComponentRegulator#scaleHTML(JComponent)}
+ * @see {@link ComponentRegulator#scaleHTMLComponent(JComponent)}
  * 
  * @author D. Garkov
  */
@@ -347,7 +347,7 @@ public class HTMLScaleSupport {
 
 		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
-			ComponentRegulator.scaleHTML((JComponent) evt.getSource());
+			ComponentRegulator.scaleHTMLComponent((JComponent) evt.getSource());
 		}
 
 	}

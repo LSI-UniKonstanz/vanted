@@ -21,7 +21,6 @@ public class SetClusterLaunchGui extends LaunchGui {
 		res.add(new SetClusterInfoAlgorithm());
 		res.add(new SetClusterInfoFromLabelAlgorithm());
 		res.add(new SetClusterInfoFromSubgraphAlgorithm());
-		res.add(null);
 		res.add(new SortIntoCluster());
 		
 		return res;
