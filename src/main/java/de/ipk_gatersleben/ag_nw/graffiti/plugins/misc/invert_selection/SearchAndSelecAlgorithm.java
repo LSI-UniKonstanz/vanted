@@ -215,18 +215,12 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 		return result;
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#reset()
-	 */
 	@Override
 	public void reset() {
 		graph = null;
 		selection = null;
 	}
 
-	/**
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getName()
-	 */
 	public String getName() {
 		return "Search";
 	}
@@ -251,6 +245,7 @@ public class SearchAndSelecAlgorithm extends AbstractEditorAlgorithm
 		this.selection = selection;
 	}
 
+	@Override
 	public boolean activeForView(View v) {
 		return v != null;
 	}

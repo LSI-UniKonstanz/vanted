@@ -11,6 +11,7 @@ import java.awt.Color;
 import org.AttributeHelper;
 import org.StringManipulationTools;
 import org.graffiti.graph.GraphElement;
+import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 
 public class AttributePathNameSearchType {
 	private String attributePath;
@@ -71,7 +72,7 @@ public class AttributePathNameSearchType {
 		if (searchType == SearchType.searchString)
 			st = "text";
 
-		return "<small><font color=\"gray\"> - " + st + "</font></small>";
+		return HTMLScaleSupport.scaleText("<small><font color=\"gray\"> - " + st + "</font></small>");
 	}
 
 	public String getNiceID() {

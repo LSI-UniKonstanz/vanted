@@ -32,7 +32,7 @@ public class SetClusterInfoFromSubgraphAlgorithm extends AbstractAlgorithm {
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			return null;
 
-		return "Get Cluster ID from Connected Sub-Graph";
+		return "Compute Cluster ID from Connected Sub-Graphs";
 	}
 
 	@Override
