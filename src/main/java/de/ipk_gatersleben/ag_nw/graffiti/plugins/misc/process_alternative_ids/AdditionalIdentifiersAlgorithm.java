@@ -23,7 +23,6 @@ import org.graffiti.plugin.algorithm.AbstractAlgorithm;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
-import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.xml_attribute.XMLAttribute;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.SubstanceInterface;
@@ -48,7 +47,7 @@ public class AdditionalIdentifiersAlgorithm extends AbstractAlgorithm {
 
 	@Override
 	public String getDescription() {
-		return HTMLScaleSupport.scaleText("<html>"
+		return "<html>"
 				+ "This command reads (multiple) mapping tables and adds alternative<br>"
 				+ "substance IDs to the mapped data. The same process could be per-<br>"
 				+ "formed before data mapping from the Experiments Tab. In case, data<br>"
@@ -62,7 +61,7 @@ public class AdditionalIdentifiersAlgorithm extends AbstractAlgorithm {
 				+ "Layout of input file (multiple IDs may span columns or be<br>"
 				+ "specified in additional rows):<br><br>" + "<code>"
 				+ "[Column A | Column B | [Column C] | ...]<br>" + "Main ID 1| alt ID 1 | alt ID 2 ...<br>"
-				+ "Main ID 2| alt ID 1<br>" + "Main ID 1| alt ID 3<br>" + "</code><br><br>");
+				+ "Main ID 2| alt ID 1<br>" + "Main ID 1| alt ID 3<br>" + "</code><br><br>";
 	}
 
 	@Override

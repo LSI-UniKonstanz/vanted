@@ -32,7 +32,6 @@ import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
-import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.DataMappingId;
@@ -66,10 +65,10 @@ public class SubstanceRatioCalculationAlgorithm extends AbstractAlgorithm implem
 
 	@Override
 	public String getDescription() {
-		return HTMLScaleSupport.scaleText("<html>Calculates the ratio between any two substances.<br>" + "<br>"
+		return "<html>Calculates the ratio between any two substances.<br>" + "<br>"
 				+ "<small>For the example three substances where selected. The<br>"
 				+ "resulting new graph view contains a n*n matrix which shows<br>"
-				+ "the ratio for the example time series data.<br><br>" + "<br>");
+				+ "the ratio for the example time series data.<br><br>" + "<br>";
 	}
 
 	@Override

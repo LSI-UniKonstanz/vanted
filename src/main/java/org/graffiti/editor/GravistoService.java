@@ -74,6 +74,7 @@ import org.graffiti.selection.Selection;
 import org.graffiti.session.EditorSession;
 import org.graffiti.session.Session;
 import org.vanted.scaling.Toolbox;
+import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 import org.vanted.scaling.scalers.component.JLabelScaler;
 
 import scenario.ScenarioService;
@@ -522,12 +523,7 @@ public class GravistoService implements HelperClass {
 		if (!(algorithm instanceof AlgorithmWithComponentDescription) && algorithm.getDescription() != null
 				&& algorithm.getDescription().trim().length() > 0 && (parameters == null || parameters.length <= 0)
 				&& SwingUtilities.isEventDispatchThread()) {
-
-			// scaling
-			String desc = scaleDescription(algorithm.getDescription());
-			desc = (desc == null) ? algorithm.getDescription() : desc;
-
-			int res = JOptionPane.showConfirmDialog(MainFrame.getInstance(), desc,
+			int res = JOptionPane.showConfirmDialog(MainFrame.getInstance(), HTMLScaleSupport.scaleText(algorithm.getDescription()),
 					StringManipulationTools.removeHTMLtags(algorithm.getName()), JOptionPane.OK_CANCEL_OPTION,
 					JOptionPane.PLAIN_MESSAGE, null);
 			if (res == JOptionPane.CANCEL_OPTION) {
@@ -580,22 +576,6 @@ public class GravistoService implements HelperClass {
 		undo.postEdit(abstractAlg);
 		undo.endUpdate();
 	}
-	
-	private static JLabel holder = new JLabel();
-
-	/**
-	 * Scales the HTML, if such, description of the respective algorithm.
-	 */
-	private static String scaleDescription(String desc) {
-		float factor = Toolbox.getDPIScalingRatio();
-		if (factor != 1f) {
-			holder.setText(desc);
-			new JLabelScaler(factor).coscaleHTML(holder);
-			return holder.getText();
-		}
-
-		return null;
-	}
 
 	private boolean doThreadSafe(final Algorithm algorithm, final Selection selection,
 			final boolean enableMultipleSessionProcessing, final Parameter[] parameters, final boolean doReturn,
@@ -633,7 +613,7 @@ public class GravistoService implements HelperClass {
 				algName = ((EditorAlgorithm) algorithm).getShortName();
 			}
 			paramDialog = new DefaultParameterDialog(getMainFrame().getEditComponentManager(), getMainFrame(),
-					parameters, selection, StringManipulationTools.removeHTMLtags(algName), algorithm.getDescription(),
+					parameters, selection, StringManipulationTools.removeHTMLtags(algName), HTMLScaleSupport.scaleText(algorithm.getDescription()),
 					desc, checkRelease(algorithm.mayWorkOnMultipleGraphs() && enableMultipleSessionProcessing));
 		}
 

@@ -37,6 +37,7 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.selection.Selection;
 import org.vanted.scaling.Toolbox;
+import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 import org.vanted.scaling.scalers.component.JLabelScaler;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.plugin_settings.MyPluginTreeNode;
@@ -164,7 +165,7 @@ public class AlgorithmPanelFactory extends JPanel implements TreeSelectionListen
 
 		progressAndStatus.setLayout(new TableLayout(size));
 
-		String desc = alg.getDescription();
+		String desc = HTMLScaleSupport.scaleText(alg.getDescription());
 		JLabel info = new JLabel(desc);
 		info.setBorder(BorderFactory.createLoweredBevelBorder());
 		info.setOpaque(false);
