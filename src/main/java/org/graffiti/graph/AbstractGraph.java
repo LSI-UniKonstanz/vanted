@@ -36,6 +36,7 @@ import org.graffiti.event.ListenerManager;
  * Provides further functionality for graphs.
  * 
  * @version $Revision: 1.10 $
+ * @vanted.revision 2.7.0
  * @see Graph
  * @see AdjListGraph
  */
@@ -107,6 +108,8 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		this.listenerManager = new ListenerManager();
 		this.attributeConsumers = new HashSet<AttributeConsumer>();
 		setBoolean("directed", true);
+		
+		globalGraphElementIdGeneratorField = 1;
 	}
 
 	/**
@@ -120,6 +123,8 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		this.listenerManager = listenerManager;
 		this.attributeConsumers = new HashSet<AttributeConsumer>();
 		setBoolean("directed", true);
+		
+		globalGraphElementIdGeneratorField = 1;
 	}
 
 	/**
@@ -136,6 +141,8 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 		super(coll);
 		this.listenerManager = listenerManager;
 		this.attributeConsumers = new HashSet<AttributeConsumer>();
+		
+		globalGraphElementIdGeneratorField = 1;
 	}
 
 	// ~ Methods ================================================================
@@ -223,13 +230,11 @@ public abstract class AbstractGraph extends AbstractAttributable implements Grap
 
 	@Override
 	public long generateNextUniqueGraphElementId() {
-		// TODO Auto-generated method stub
 		return globalGraphElementIdGeneratorField++;
 	}
 
 	@Override
 	public long getCurrentMaxGraphElementId() {
-		// TODO Auto-generated method stub
 		return globalGraphElementIdGeneratorField - 1;
 	}
 

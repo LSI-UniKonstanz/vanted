@@ -175,20 +175,19 @@ public class GraphHelper implements HelperClass {
 	public static Graph getClusterSubGraph(Graph mainGraph, String validClusterID) {
 		AdjListGraph clusterSubGraph = new AdjListGraph(mainGraph, new ListenerManager());
 		ArrayList<Long> validNodeIDs = new ArrayList<Long>();
-		for (Iterator<?> it = mainGraph.getNodesIterator(); it.hasNext();) {
-			Node n = (Node) it.next();
+		for (Node n : clusterSubGraph.getNodes()) {
 			String clusterID = NodeTools.getClusterID(n, "");
 			if (clusterID.equals(validClusterID))
 				validNodeIDs.add(Long.valueOf(n.getID()));
 		}
 
-		ArrayList<org.graffiti.graph.Node> toBeDeleted = new ArrayList<org.graffiti.graph.Node>();
-		for (org.graffiti.graph.Node n : clusterSubGraph.getNodes()) {
+		ArrayList<Node> toBeDeleted = new ArrayList<Node>();
+		for (Node n : clusterSubGraph.getNodes()) {
 			if (!validNodeIDs.contains(Long.valueOf(n.getID()))) {
 				toBeDeleted.add(n);
 			}
 		}
-		for (org.graffiti.graph.Node n : toBeDeleted)
+		for (Node n : toBeDeleted)
 			clusterSubGraph.deleteNode(n);
 
 		return clusterSubGraph;

@@ -11,9 +11,9 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -233,7 +233,7 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 
 	@Override
 	public void run() {
-		if (checkStop())
+		if (mustStop())
 			return;
 		Graph mainGraph = null;
 		try {
@@ -241,7 +241,7 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 		} catch (NullPointerException npe) {
 			ErrorMsg.addErrorMessage(npe.getLocalizedMessage());
 		}
-		TreeSet<String> clusters = new TreeSet<String>();
+		Collection<String> clusters;
 		HashMap<Long, Point2D> newCoordinates = new HashMap<Long, Point2D>();
 		HashMap<Long, Vector2d> newSizes = new HashMap<Long, Vector2d>();
 		// HashMap<String, Point2D> centerForClusterGraph = new HashMap<String,
@@ -257,21 +257,14 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 			if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 				cluster4 = "pathway";
 			status1 = "Read " + cluster4 + " information";
-			for (Iterator<?> it = mainGraph.getNodesIterator(); it.hasNext();) {
-				if (checkStop())
-					return;
-				Node n = (Node) it.next();
-				String clusterId = NodeTools.getClusterID(n, "");
-				if (!clusterId.equals(""))
-					clusters.add(clusterId);
-			}
-
+			
 			int cnt = 0;
-
 			ArrayList<Graph> clusterGraphsToBeAnalyzed = new ArrayList<Graph>();
+			
+			clusters = GraphHelper.getClusters(mainGraph.getNodes());
 
 			for (String clusterID : clusters) {
-				if (checkStop())
+				if (mustStop())
 					break;
 				status1 = "Apply " + layoutAlgorithm.getName() + " to Subgraph (" + cluster4 + " " + clusterID + ")...";
 
@@ -300,7 +293,7 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 				statusInt = (int) (++cnt * 100f / clusters.size());
 			}
 
-			if (!checkStop()) {
+			if (!mustStop()) {
 				if (currentOptionShowGraphs)
 					for (final Graph clusterSubGraph : clusterGraphsToBeAnalyzed)
 						SwingUtilities.invokeLater(new Runnable() {
@@ -376,7 +369,7 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 	/**
 	 * @return
 	 */
-	private boolean checkStop() {
+	private boolean mustStop() {
 		if (pleaseStop) {
 			status1 = "Layout not complete: aborted";
 			status2 = "";
@@ -385,28 +378,17 @@ class MyLayoutService implements BackgroundTaskStatusProvider, Runnable {
 		return pleaseStop;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * pluginWaitsForUser()
-	 */
+	@Override
 	public boolean pluginWaitsForUser() {
 		return userBreak;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider#
-	 * pleaseContinueRun()
-	 */
+	@Override
 	public void pleaseContinueRun() {
 		userBreak = false;
 	}
 
+	@Override
 	public void setCurrentStatusValue(int value) {
 		statusInt = value;
 	}
