@@ -1540,7 +1540,7 @@ public class AttributeHelper implements HelperClass {
 	}
 
 	/**
-	 * Return a Attribute value, if not present it returns the defaultValue.
+	 * Return an Attribute value, if not present, return the defaultValue.
 	 */
 	public static Object getAttributeValue(Attributable attributable, String path, String attributeName,
 			Object defaultValue, Object resultType, boolean setDefaultIfMissing) {

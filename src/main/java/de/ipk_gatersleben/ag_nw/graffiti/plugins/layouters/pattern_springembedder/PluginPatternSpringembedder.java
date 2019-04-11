@@ -50,11 +50,6 @@ public class PluginPatternSpringembedder extends IPK_PluginAdapter {
 				new RemoveBendsAlgorithm(), new IntroduceSelfEdgeBends(), new IntroduceBendsAlgorithm() };
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.graffiti.plugin.GenericPlugin#configure(java.util.prefs.Preferences)
-	 */
 	@Override
 	public void configure(Preferences p) {
 		super.configure(p);

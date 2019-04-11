@@ -793,14 +793,14 @@ public class GraphHelper implements HelperClass {
 	}
 
 	/**
-	 * @param nodes nodes to extract Cluster IDs from
+	 * @param elements graph elements to extract Cluster IDs from
 	 * @return A Set of distinct Strings, which contain the cluster IDs, obtained from the list of
 	 *        nodes.
 	 */
-	public static Collection<String> getClusters(List<?> nodes) {
+	public static Collection<String> getClusters(Collection<? extends GraphElement> elements) {
 		Set<String> result = new TreeSet<String>();
-		for (Iterator<?> n = nodes.iterator(); n.hasNext();) {
-			String cluster = NodeTools.getClusterID((Node) n.next(), "");
+		for (Iterator<? extends GraphElement> ge = elements.iterator(); ge.hasNext();) {
+			String cluster = NodeTools.getClusterID(ge.next(), "");
 			if (!cluster.equals(""))
 				result.add(cluster);
 		}

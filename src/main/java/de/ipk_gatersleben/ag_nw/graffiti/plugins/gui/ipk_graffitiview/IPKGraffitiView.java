@@ -61,6 +61,7 @@ import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.plugins.views.defaults.NodeComponent;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.ClusterColorAttribute;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.PajekClusterColor;
 
 /**
  * An implementation of <code>org.graffiti.plugin.view.View2D</code>, that
@@ -144,7 +145,7 @@ public class IPKGraffitiView extends GraffitiView
 	}
 
 	/**
-	 * @vanted.revision 2.7.0
+	 * @vanted.revision 2.7.0 How it shows in Preferences
 	 */
 	@Override
 	public String getPreferencesAlternativeName() {
@@ -293,7 +294,6 @@ public class IPKGraffitiView extends GraffitiView
 	public void repaint() {
 		// logger.debug("issuing repaint");
 		super.repaint();
-
 	}
 
 	/**
@@ -468,6 +468,7 @@ public class IPKGraffitiView extends GraffitiView
 	public void postAttributeChanged(AttributeEvent e) {
 		super.postAttributeChanged(e);
 		// dirty = true;
+		PajekClusterColor.executeClusterColoringOnGraph(getGraph());
 	}
 
 	@Override
@@ -593,10 +594,8 @@ public class IPKGraffitiView extends GraffitiView
 	}
 
 	/**
-	 * @param smallestX
-	 *            Value 1
-	 * @param cx
-	 *            Value 2
+	 * @param smallestX Value 1
+	 * @param cx        Value 2
 	 * @return The smaller one of the parameters
 	 */
 	private static double min2(double smallestX, double cx) {

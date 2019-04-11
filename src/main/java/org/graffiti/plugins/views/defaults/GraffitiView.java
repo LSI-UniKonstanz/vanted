@@ -1773,8 +1773,14 @@ public class GraffitiView extends AbstractView implements View2D, GraphView, Gra
 			}
 			if (attrComp != null) {
 				int indexOf = listCopyComponents.indexOf(gec);
-				this.add(attrComp, indexOf); // , 0);
-				listCopyComponents.add(indexOf, attrComp);
+				if (indexOf < 0) {
+					this.add(attrComp, 0);
+					listCopyComponents.add(0, attrComp);
+				} else {
+					this.add(attrComp, indexOf); // , 0);
+					listCopyComponents.add(indexOf, attrComp);
+				}
+
 			}
 			return true;
 		} catch (AttributeComponentNotFoundException acnfe) {

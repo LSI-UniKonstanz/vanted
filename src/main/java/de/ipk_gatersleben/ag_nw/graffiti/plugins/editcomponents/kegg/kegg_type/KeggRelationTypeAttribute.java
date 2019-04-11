@@ -65,8 +65,6 @@ public class KeggRelationTypeAttribute extends StringAttribute {
 
 	@Override
 	protected void doSetValue(Object o) throws IllegalArgumentException {
-		assert o != null;
-
 		try {
 			setString((String) o);
 		} catch (ClassCastException cce) {

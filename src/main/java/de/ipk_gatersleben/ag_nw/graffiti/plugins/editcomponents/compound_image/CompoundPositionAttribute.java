@@ -66,8 +66,6 @@ public class CompoundPositionAttribute extends StringAttribute {
 
 	@Override
 	protected void doSetValue(Object o) throws IllegalArgumentException {
-		assert o != null;
-
 		try {
 			value = (String) o;
 		} catch (ClassCastException cce) {

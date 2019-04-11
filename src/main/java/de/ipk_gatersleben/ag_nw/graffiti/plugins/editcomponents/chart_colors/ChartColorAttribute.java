@@ -31,7 +31,7 @@ public class ChartColorAttribute extends StringAttribute {
 	public static String attributeName = "chart_colors";
 	public static String attributeFolder = "";
 
-	private final String notSet = "undefined"; // "0,0,0,255:255,255,255,255;255,0,0,255:0,255,255,255;50,50,0,255:255,55,55,255";
+	private final String notSet = "undefined";
 
 	public ChartColorAttribute() {
 		super(attributeName);
@@ -275,8 +275,6 @@ public class ChartColorAttribute extends StringAttribute {
 
 	@Override
 	protected void doSetValue(Object o) throws IllegalArgumentException {
-		assert o != null;
-
 		try {
 			value = (String) o;
 		} catch (ClassCastException cce) {
