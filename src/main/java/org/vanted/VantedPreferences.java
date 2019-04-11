@@ -38,6 +38,7 @@ import org.vanted.scaling.ScalerLoader;
  * class.
  * 
  * @author matthiak
+ * @vanted.revision 2.7.0 Standard save format 
  */
 public class VantedPreferences implements PreferencesInterface {
 
@@ -88,12 +89,10 @@ public class VantedPreferences implements PreferencesInterface {
 		if (MainFrame.getInstance() != null) {
 			Set<String> graphFileExtensions = MainFrame.getInstance().getIoManager().getGraphFileExtensions();
 			String[] possibleValues = graphFileExtensions.toArray(new String[graphFileExtensions.size()]);
-			params.add(new ObjectListParameter("", PREFERENCE_STANDARD_SAVE_FILEFORMAT,
-					"Standard file format, that is selected for file saving", possibleValues));
+			params.add(new ObjectListParameter("", PREFERENCE_STANDARD_SAVE_FILEFORMAT, "", possibleValues));
 		} else {
 			String[] possibleValues = new String[] { "" };
-			params.add(new ObjectListParameter("", PREFERENCE_STANDARD_SAVE_FILEFORMAT,
-					"Standard file format, that is selected for file saving", possibleValues));
+			params.add(new ObjectListParameter("", PREFERENCE_STANDARD_SAVE_FILEFORMAT, "", possibleValues));
 
 		}
 
@@ -165,8 +164,8 @@ public class VantedPreferences implements PreferencesInterface {
 			System.setProperty("http.proxySet", "false");
 		}
 
-		PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE = Boolean.valueOf(
-				preferences.get(PREFERENCE_DEBUG_SHOWPANELFRAMES, "false"));
+		PREFERENCE_DEBUG_SHOWPANELFRAMES_VALUE = Boolean
+				.valueOf(preferences.get(PREFERENCE_DEBUG_SHOWPANELFRAMES, "false"));
 	}
 
 	@Override
