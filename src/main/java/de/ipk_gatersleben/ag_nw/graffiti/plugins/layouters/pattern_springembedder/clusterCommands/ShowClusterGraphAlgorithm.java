@@ -52,11 +52,9 @@ public class ShowClusterGraphAlgorithm extends AbstractAlgorithm {
 		Graph clusterGraph = (Graph) AttributeHelper.getAttributeValue(graph, "cluster", "clustergraph", emptyGraph,
 				new AdjListGraph(), false);
 		if (clusterGraph.equals(emptyGraph)) {
-			throw new PreconditionException("No overview-graph available!<br>"
-					+ "Please load a graph file with cluster-information (e.g. a PAJEK file),<br>"
-					+ "or do a Cluster-Analysis to add Cluster-Information to this graph.<br>"
-					+ "Then use the command <i>" + new CreateClusterGraphAlgorithm().getName() + "</i>,"
-					+ "<br>to create and layout a overview-graph.");
+			throw new PreconditionException("No overview-graph available!<br><br>"
+					+ "Please, add (from the <i>Set Cluster ID</> menu) or import (as PAJEK file) cluster information."
+					+ "Then create an overview graph G<sub>O</sub> using the <i>Create Overview Graph</i> command.");
 		}
 	}
 

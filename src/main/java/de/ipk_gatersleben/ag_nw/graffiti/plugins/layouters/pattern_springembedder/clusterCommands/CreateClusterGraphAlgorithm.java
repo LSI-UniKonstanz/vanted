@@ -38,9 +38,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.NullLayoutAlgo
 
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
+ * 
+ * @vanted.revision 2.7.0 Default layout of overview graph, based on source graph. 
  */
 public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
-	boolean applyLayout = true;
 
 	boolean resizeNodes = true;
 
@@ -78,8 +79,6 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		ClusterColorParameter op = new ClusterColorParameter(cca_new, "Cluster-Colors", ClusterColorAttribute.desc);
 
 		Parameter[] result = new Parameter[] {
-				new BooleanParameter(applyLayout, "Layout Overview-Graph",
-						"Select a layout algorithm to run on the overview-graph"),
 				new BooleanParameter(resizeNodes, "Resize Nodes",
 						"Resize Nodes depending on number of nodes related to the cluster-node"),
 				new IntegerParameter(minNodeSize, "Min. Node Size", "Node minimum size attribute."),
@@ -98,7 +97,6 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 	@Override
 	public void setParameters(Parameter[] params) {
 		int i = 0;
-		applyLayout = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		resizeNodes = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 		minNodeSize = ((IntegerParameter) params[i++]).getInteger().intValue();
 		maxNodeSize = ((IntegerParameter) params[i++]).getInteger().intValue();
@@ -112,11 +110,6 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 			graph.removeAttribute(cca.getPath());
 		graph.addAttribute(cca, ClusterColorAttribute.attributeFolder);
 
-	}
-
-	@Override
-	public void reset() {
-		applyLayout = true;
 	}
 
 	public String getName() {
@@ -169,16 +162,9 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 			MainFrame.getInstance().showGraph(clusterReferenceGraph, null);
 		}
 
-		if (applyLayout) {
-			MyClusterGraphBasedReLayoutService clusterLayoutService = new MyClusterGraphBasedReLayoutService(false, graph);
-			clusterLayoutService.setAlgorithm(new NullLayoutAlgorithm(), null);
-			clusterLayoutService.run();
-//			ClusterGraphLayout cgl = new ClusterGraphLayout();
-//			cgl.attach(clusterReferenceGraph, new Selection());
-//			cgl.execute();
-////			AlgorithmServices.selectAndRunLayoutAlgorithm(clusterReferenceGraph, new Selection(),
-////					"Apply a Layout-Algorithm to the Overview-Graph", true);
-		}
+		MyClusterGraphBasedReLayoutService clusterLayoutService = new MyClusterGraphBasedReLayoutService(false, graph);
+		clusterLayoutService.setAlgorithm(new NullLayoutAlgorithm(), null);
+		clusterLayoutService.run();
 
 		clusterReferenceGraph.setModified(false);
 	}
