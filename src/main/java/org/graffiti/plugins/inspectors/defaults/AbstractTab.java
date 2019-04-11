@@ -45,7 +45,6 @@ import org.graffiti.session.EditorSession;
 import org.graffiti.session.Session;
 import org.graffiti.session.SessionListener;
 import org.graffiti.util.DelayThread;
-import org.vanted.scaling.Toolbox;
 
 /**
  * Represents an inspector tab.
@@ -272,7 +271,6 @@ public abstract class AbstractTab extends InspectorTab
 	@Override
 	public void componentShown(ComponentEvent e) {
 		rebuildTreeAction();
-		Toolbox.scaleComponent(this, Toolbox.getDPIScalingRatio() * 0.75f/*... too, hacky*/, true);
 	}
 
 	public void transactionFinished(TransactionEvent e, BackgroundTaskStatusProviderSupportingExternalCall status) {

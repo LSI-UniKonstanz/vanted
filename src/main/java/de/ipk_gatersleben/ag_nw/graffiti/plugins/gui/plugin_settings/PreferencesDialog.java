@@ -372,7 +372,6 @@ public class PreferencesDialog extends JDialog implements PluginManagerListener 
 			}
 			settingsPanel.validate();
 		}
-
 	}
 
 	public void initAlgorithmPreferencesPanel(final JDialog thisDialog, final Algorithm alg, final Graph graph,

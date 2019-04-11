@@ -315,7 +315,7 @@ public abstract class InspectorTab extends JComponent implements ComponentListen
 	 */
 	@Override
 	public void componentShown(ComponentEvent e) {
-		Toolbox.scaleComponent(this, Toolbox.getDPIScalingRatio() * 0.75f/*... too, hacky*/, true);
+		Toolbox.scaleComponent(this, Toolbox.getDPIScalingRatio() * 0.5f, true);
 	}
 
 	@Override

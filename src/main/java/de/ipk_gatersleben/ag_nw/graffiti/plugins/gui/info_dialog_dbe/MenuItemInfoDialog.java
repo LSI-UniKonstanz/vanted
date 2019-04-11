@@ -62,6 +62,7 @@ import org.graffiti.editor.actions.ClipboardService;
 import org.graffiti.plugin.gui.GraffitiContainer;
 import org.graffiti.plugin.gui.GraffitiMenu;
 import org.vanted.osx.OSXSupport;
+import org.vanted.scaling.scalers.component.HTMLScaleSupport;
 import org.vanted.updater.ScanForUpdate;
 
 import de.ipk_gatersleben.ag_nw.graffiti.FileHelper;
@@ -483,7 +484,7 @@ public class MenuItemInfoDialog extends GraffitiMenu implements GraffitiContaine
 					err.append("<html><body><h2>No error messages available.</h2></body></html>");
 				}
 				// GraffitiSingleton.getInstance().getMainFrame().showMessageDialog(err);
-				JEditorPane errMsg = new JEditorPane("text/html", err.toString());
+				JEditorPane errMsg = new JEditorPane("text/html", HTMLScaleSupport.scaleText(err.toString()));
 				errMsg.setEditable(false);
 				errMsg.setAutoscrolls(false);
 

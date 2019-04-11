@@ -43,8 +43,6 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
-import org.vanted.scaling.Toolbox;
-
 /**
  * @author Christian Klukas (c) 2004 IPK-Gatersleben
  */
@@ -564,7 +562,6 @@ public class FolderPanel extends JComponent {
 					cmdButton.setIcon(uncondensedIcon);
 				showCondensed.put(title, Boolean.valueOf(condensedState));
 				layoutRows();
-				Toolbox.scaleComponent(FolderPanel.this, Toolbox.getDPIScalingRatio() * 0.75f/*... too, hacky*/, true);
 				for (ActionListener al : collapse_listeners) {
 					al.actionPerformed(new ActionEvent(this, condensedState ? 1 : 0, "collapseevent"));
 				}
