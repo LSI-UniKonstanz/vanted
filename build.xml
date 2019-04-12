@@ -47,7 +47,7 @@
 	<target name="compile" depends="nextbuildnumber, init">
 		
 		
-		<javac target="1.7" source="1.7" destdir="target/classes" encoding="utf-8">
+		<javac target="1.8" source="1.8" destdir="target/classes" encoding="utf-8">
 			<src path="src/main/java" />
 			<!-- ignore symbol file due to compiling errors when trying to find somting 
 				inside com.sun.image.codec.jpeg.* http://www.javaroots.com/2013/01/javac-error-using-classes-from-rtjar.html -->
