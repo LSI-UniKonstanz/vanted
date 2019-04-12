@@ -7,11 +7,10 @@
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.AttributeHelper;
 import org.Release;
@@ -27,7 +26,6 @@ import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
-import org.graffiti.selection.Selection;
 import org.graffiti.session.Session;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
@@ -56,26 +54,20 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 	int maxEdgeSize = 10;
 
 	boolean colorCode = true;
+	
+	private ClusterColorAttribute clusterColorAttribute;
 
 	@Override
 	public Parameter[] getParameters() {
+		Collection<String> clusters = GraphHelper.getClusters(graph.getNodes());
 
-		Graph g = graph;
-		Set<String> clusters = new TreeSet<String>();
-		for (Iterator<?> it = g.getNodesIterator(); it.hasNext();) {
-			Node n = (Node) it.next();
-			String clusterId = NodeTools.getClusterID(n, "");
-			if (!clusterId.equals(""))
-				clusters.add(clusterId);
-		}
-
-		ClusterColorAttribute cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(g,
+		clusterColorAttribute = (ClusterColorAttribute) AttributeHelper.getAttributeValue(graph,
 				ClusterColorAttribute.attributeFolder, ClusterColorAttribute.attributeName,
 				ClusterColorAttribute.getDefaultValue(clusters), new ClusterColorAttribute("resulttype"), false);
 
 		// cca.ensureMinimumColorSelection(clusters.size());
-		cca.updateClusterList(clusters);
-		ClusterColorAttribute cca_new = new ClusterColorAttribute(ClusterColorAttribute.attributeName, cca.getString());
+		clusterColorAttribute.updateClusterList(clusters);
+		ClusterColorAttribute cca_new = new ClusterColorAttribute(ClusterColorAttribute.attributeName, clusterColorAttribute.getString());
 		ClusterColorParameter op = new ClusterColorParameter(cca_new, "Cluster-Colors", ClusterColorAttribute.desc);
 
 		Parameter[] result = new Parameter[] {
@@ -105,10 +97,10 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		maxEdgeSize = ((IntegerParameter) params[i++]).getInteger().intValue();
 		colorCode = ((BooleanParameter) params[i++]).getBoolean().booleanValue();
 
-		ClusterColorAttribute cca = (ClusterColorAttribute) ((ClusterColorParameter) params[i++]).getValue();
-		if (graph.getAttributes().getCollection().containsKey(cca.getPath()))
-			graph.removeAttribute(cca.getPath());
-		graph.addAttribute(cca, ClusterColorAttribute.attributeFolder);
+		clusterColorAttribute = (ClusterColorAttribute) ((ClusterColorParameter) params[i++]).getValue();
+		if (graph.getAttributes().getCollection().containsKey(clusterColorAttribute.getPath()))
+			graph.removeAttribute(clusterColorAttribute.getPath());
+		graph.addAttribute(clusterColorAttribute, ClusterColorAttribute.attributeFolder);
 
 	}
 
@@ -140,12 +132,8 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 				clusterNodeIDandNumberOfContainingNodes);
 		AttributeHelper.setAttribute(graph, "cluster", "clustergraph", clusterReferenceGraph);
 
-		if (colorCode) {
-			PajekClusterColor pcc = new PajekClusterColor();
-			pcc.attach(graph, new Selection(""));
-			pcc.execute();
-		}
-
+		if (colorCode)
+			PajekClusterColor.executeClusterColoringOnGraph(graph, clusterColorAttribute);
 		if (resizeEdges)
 			processEdgeWidth(clusterReferenceGraph, minEdgeSize, maxEdgeSize);
 		if (resizeNodes)
@@ -169,7 +157,7 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		clusterReferenceGraph.setModified(false);
 	}
 
-	private void processNodeSize(Graph clusterReferenceGraph,
+	private static void processNodeSize(Graph clusterReferenceGraph,
 			HashMap<String, Integer> clusterNodeIDandNumberOfContainingNodes, double minNodeSize, double maxNodeSize) {
 		// search minimum and maximum of cluster/node size
 		int minNodes = Integer.MAX_VALUE;
@@ -210,7 +198,7 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		}
 	}
 
-	private void processEdgeWidth(Graph clusterReferenceGraph, double minWidth, double maxWidth) {
+	private static void processEdgeWidth(Graph clusterReferenceGraph, double minWidth, double maxWidth) {
 		// search min and max edgecount
 		int minCnt = Integer.MAX_VALUE;
 		int maxCnt = Integer.MIN_VALUE;
