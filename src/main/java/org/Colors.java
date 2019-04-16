@@ -27,9 +27,10 @@ public class Colors implements HelperClass {
 	 * @param numberOfColors
 	 *            number of different colors to create
 	 * @return Collection of Color objects
+	 * @vanted.revision 2.7.0 Increase saturation from 20% to 50% (most recent: 20%; 80%; 50%;)
 	 */
 	public static ArrayList<Color> get(int numberOfColors) {
-		return get(numberOfColors, 0.2f); // 0.8f); // 0.5f);
+		return get(numberOfColors, 0.5f); //0.2f); // 0.8f); // 0.5f);
 	}
 
 	public static ArrayList<Color> get(int numberOfColors, double saturation) {
