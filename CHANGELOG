@@ -1,5 +1,24 @@
 <h3>Changelog</h3>
 
+<h4>VANTED v2.7.0 release (??/??/2019)</h4>
+<ul>
+<li>Minimum Java 8 compatibility</li>
+<li>Clustering bugfixes</li>
+<li>Add-on Manager and Pane revamped</li>
+<li>DPI Scaling adjusted</li>
+<li>Undo/Redo additions</li>
+<li>Usability improvements, such as</br>
+	<ul>
+		<li>Menu frontend updates</li>
+		<li>First graph window fits in pane</li>
+		<li>Undo limit increased to 20 operations</li>
+		</ul>
+</li>
+<li>Standard format is GML</li>
+<li>Internal API improvements</li>
+<li>Replaced non-API Sun references</li>
+</ul>
+
 <h4>VANTED v2.6.5 release (29/03/2018)</h4>
 <ul>
 <li>Java 9 Compatibility Update</li>
@@ -30,12 +49,12 @@
 <li>Windows Installer update</li>
 <li>Overall performance and stability improvements</li>
 <li>Minor bug fixes</li>
-</ul> 
+</ul>
 
 <h4>VANTED v2.6.3 release (16/09/2016)</h4>
 <ul>
 <li>Fixed drawing problems of nodes with border size 1
-<li>Fixed GraphML reader. 
+<li>Fixed GraphML reader.
 <li>Added support for more SBGN shapes
 <li>Added BioModels backup webservice location
 <li>Changed MetaCrop maps to cupport new SBGN Shapes
@@ -89,5 +108,3 @@ Improvements:
 </ul>
 <h4>VANTED v2.5.2 release (16/09/2015)</h4>
 This release contains only minor bugfixes which improve user experience and speed.
-
-

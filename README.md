@@ -23,8 +23,18 @@ If you have questions or suggestions regarding VANTED, please contact us at:
 
 ## News ##
 
-### VANTED v2.7.0 release (??/04/2019) ###
-    ...
+### VANTED v2.7.0 release (??/??/2019) ###
+    Minimum Java 8 compatibility
+    Clustering bugfixes
+    Add-on Manager and Pane revamped
+    DPI Scaling adjusted
+    Undo/Redo additions
+    Usability improvements, such as
+      First graph window fits in pane
+      Undo limit increased to 20 operations
+    Standard format is GML
+    Internal API improvements
+    Replaced non-API Sun references
 
 ### VANTED v2.6.5 release (29/03/2018) ###
 
