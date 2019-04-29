@@ -1,0 +1,79 @@
+%! TeX program = lualatex
+\documentclass[11pt]{article} % Schriftgrösse 12;
+\usepackage[utf8]{inputenc} % Verwendung von Umlauten im tex
+\usepackage[T1]{fontenc}    % Neues LaTeX Font Encoding für korrekte Darstellung von Umlauten im PDF
+\usepackage[ngerman]{babel}  % Neue deutsche Rechtschreibung
+\usepackage[babel]{csquotes} % Anführungszeichen leicht gemacht: \enquote{Text in Anführungszeichen}
+\usepackage{amsmath}  % Verbesserungen für mathematischen Formelsatz
+\usepackage{amssymb}  % Erweiterte mathematische Symbole, lädt Paket 'amsfonts'
+\usepackage{amsthm}   % Theoremumgebungen
+\usepackage{marvosym} % Mehr Symbole. Zum Beispiel: Euro-Zeichen, Warnhinweise
+\usepackage[colorlinks=true, urlcolor=blue]{hyperref} % Hyperlinks mit blauer Schrift
+\usepackage{graphicx}                                 % Einbinden von Grafiken (JPG, PNG, SVG, ...)
+\usepackage{listings}                                 % Darstellung/Einbinden von Source Code
+\usepackage{enumitem}
+% TikZ bietet viele nützliche Bibliotheken, die wir verwenden können (einfach das Kommentarzeichen entfernen)
+
+% Code-Highlighting soll standardmässig Java Code darstellen
+\lstset{language=Java, breaklines=true, showstringspaces=false}
+% Beispiel-Code für die Darstellung von Java Code
+%\begin{lstlisting}
+%     Hier würde der Java-Code hinkommen und entsprechend die Syntax markiert. Selbst einrücken.
+%\end{lstlisting}
+%ODER:
+% \lstinputlisting[language=Java]{name.java}
+
+% Formatierung der Seite damit wir mehr Platz haben
+\topmargin -2cm
+\textheight 24cm
+\textwidth 16.0 cm
+\oddsidemargin -0.1cm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%\mathcode`,="013B
+%\mathcode`.="613A
+% Kopfzeile
+\usepackage{datetime}
+
+\newcommand{\names}{Team 2.2}
+\newcommand{\deadline}{\formatdate{6}{7}{2018} 12:00}
+
+
+\begin{document}
+\thispagestyle{plain}
+{\footnotesize \parindent0em
+    {\sc Universität Konstanz} \hfill {\sc Softwareprojekt}\par
+    {\sc Fachbereich Informatik \& Informationswissenschaft} \hfill Wintersemester 2019 \par
+    \textbf{\names} \hfill \today\par
+    \begin{center}
+      {\Large\bf Protokoll --- Internes Treffen am \today}
+    \end{center}}
+  \par{\textbf{Anwesend:}} Jannik, Tobias, René, Theodor, Gordian
+\subsubsection*{Inhalte:}
+  \begin{itemize}
+  \item Recap des Initialmeetings/der Problemstellung
+    \begin{itemize}
+    \item Diskussion was als erstes zu tun ist
+    \item Erklärung der Grundidee von Stress Minimization und
+      des Multilevel Frameworks am Whiteboard
+    \item Klärung, mit welcher Art von Graphen wir arbeiten müssen
+      (ungerichtet und keine Kantengewichte (?))
+    \item Klärung des Beispiels mit dem Dreiecksgraph (Sierpiński triangle) aus einem der Paper
+    \end{itemize}
+  \item Aufteilung in (temporäre) Arbeitsgruppen
+    \begin{itemize}
+    \item Stress Minimization: Theodor, René, Jannik
+    \item Multilevel Framework: Gordian, Tobias, Jonas
+    \end{itemize}
+  \item Besprechung, was für das Pflichtenheft zu tun ist
+    (Arbeitsgruppen sollen sich ins jeweilige Thema einlesen,
+    und den Aufwand für den Zeitplan grob abschätzen)
+  \item Ausmachen eines Termins, an dem wir uns treffen, um
+    das Pflichtenheft zu machen:
+    \begin{itemize}
+    \item {\large \bf Mittwoch 1. Mai, um 10 (vor der Bibliothek)}
+    \end{itemize}
+  \end{itemize}  
+\end{document}
