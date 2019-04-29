@@ -1,4 +1,4 @@
-# Protkoll des ad hoc Treffens nach dem ersten Treffen mit den Betreuenden
+# Protokoll des ad hoc Treffens nach dem ersten Treffen mit den Betreuenden
 
 Datum | Uhrzeit | Anwesend
 ------|---------|---------
