@@ -1,0 +1,93 @@
+<h3>Changelog</h3>
+
+<h4>VANTED v2.6.5 release (29/03/2018)</h4>
+<ul>
+<li>Java 9 Compatibility Update</li>
+<li>Several algorithms improved, including<br/>
+	<ol>
+		<li>Find and Layout Circles</li>
+		<li>Merge Nodes</li>
+		<li>Erdos-Renyi Graph Generation</li>
+		<li>Watts-Strogatz Graph Generation</li>
+		<li>Grubbs' Test</li>
+		<li>David Test</li>
+	</ol>
+</li>
+<li>Minor BioModels update</li>
+<li>OS X in-graph grid movement fix</li>
+<li>Overall internal improvements</li>
+</ul>
+
+<h4>VANTED v2.6.4 release (09/12/2017)</h4>
+<ul>
+<li><i>High DPI Support</i> feature</li>
+<li>Nimbus LookAndFeel is now disabled</li>
+<li>Edge selection positioning</li>
+<li>Metacrop stability improvements</li>
+<li>Detached mode update</li>
+<li>Node Functions enhancements</li>
+<li>Server update</li>
+<li>Windows Installer update</li>
+<li>Overall performance and stability improvements</li>
+<li>Minor bug fixes</li>
+</ul> 
+
+<h4>VANTED v2.6.3 release (16/09/2016)</h4>
+<ul>
+<li>Fixed drawing problems of nodes with border size 1
+<li>Fixed GraphML reader. 
+<li>Added support for more SBGN shapes
+<li>Added BioModels backup webservice location
+<li>Changed MetaCrop maps to cupport new SBGN Shapes
+</ul>
+
+<h4>VANTED v2.6.2 release (09/03/2016)</h4>
+<ul>
+<li>Minor bugfixes
+<li>Native support for more SBGN Shapes
+<li>Relative positioning of labels
+
+</ul>
+
+
+<h4>VANTED v2.6.1 release (19/01/2016)</h4>
+<ul>
+<li>Bugfixes including broken compatibility with SBGN-Ed
+<li>Update to new jsbml 1.1 library
+<li>Changes and bugfixes in APIs for Developers
+</ul>
+
+<h4>VANTED v2.6.0 release (27/11/2015)</h4>
+Bugfixes:
+<ul>
+<li>Code clean-up and removal of bugs using bug-scanner tools
+<li>Cluster background was not exported to image
+<li>Introducing edge bends is now working properly
+<li>Sometimes specific changes didn't visually appear and a redraw had to be triggered
+</ul>
+Improvements:
+<ul>
+<li>Update scan improved to support md5-hash and includes add-ons as well
+<li>Performance improvement for larger networks (30k Nodes and more)
+<li>Support for the SBML-Layout extension
+<li>Added Animation Framework
+<li>Selection frames can now be drawn inside nodes using Ctrl+Shift
+<li>Nodes can be created inside other nodes using Ctrl+Shift
+</ul>
+
+<h4>VANTED v2.5.3 release (05/10/2015)</h4>
+Bugfixes:
+<ul>
+<li>start up problems, when no previous preferences were found to select LookAndFeel
+<li>several minor bugfixes found and fixed throughout heavy usage
+</ul>
+Improvements:
+<ul>
+<li>the "Remove Connecting Nodes" algorithm will now not only remove nodes and keep the overall connection of the network, but also respect the original direction
+<li>the ESC key will also deselect network elements
+
+</ul>
+<h4>VANTED v2.5.2 release (16/09/2015)</h4>
+This release contains only minor bugfixes which improve user experience and speed.
+
+
