@@ -1,0 +1,5 @@
+# latex side products
+**/*.aux
+**/*.log
+**/*.out
+**/*.synctex.gz
