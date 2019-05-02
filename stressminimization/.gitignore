@@ -1,5 +1,6 @@
 # latex side products
 **/*.aux
 **/*.log
+**/*.dvi
 **/*.out
 **/*.synctex.gz
