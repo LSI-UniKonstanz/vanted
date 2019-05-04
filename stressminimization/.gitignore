@@ -4,3 +4,6 @@
 **/*.dvi
 **/*.out
 **/*.synctex.gz
+
+# eclipse project settings
+**/.metadata/*
