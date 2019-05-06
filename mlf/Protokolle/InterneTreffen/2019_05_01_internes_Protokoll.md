@@ -1,10 +1,10 @@
-#Protokoll-Internes Treffen am 01.Mai 2019  
+# Protokoll-Internes Treffen am 01.Mai 2019  
 
-##Anwesend: 
+## Anwesend: 
 Jannik, René, Theodor, Gordian, Jonas
 
 
-###Inhalte:
+## Inhalte:
 Vostellung der 2 Themen mit schwerpunkt auf Verständnis
 
 Fragen und Vorbereitung auf das Betreuer-Meeting für 02. Mai 2019.
