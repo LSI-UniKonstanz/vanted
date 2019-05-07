@@ -1,9 +1,9 @@
-#Protokoll — Internes Treffen am 29. April 2019
+# Protokoll — Internes Treffen am 29. April 2019
 
-##Anwesend:
+## Anwesend:
 Jannik, Tobias, René, Theodor, Gordian
 
-###Inhalte:
+## Inhalte:
 Recap des Initialmeetings/der Problemstellung
 - Diskussion was als erstes zu tun ist
 - Erklärung der Grundidee von Stress Minimization und des Multilevel-Frameworks am Whiteboard
@@ -18,4 +18,4 @@ Besprechung was für das Pflichtenheft bis zum nächsten Treffen zu tun ist
 - Arbeitsgruppen sollen sich ins jeweilige Thema einlesen und den Aufwand grob abschätzen (für den Projektzeitplan)
 
 Ausmachen eines Termins, um am Pflichtenheft zu arbeiten:
-- Mittwoch 1. Mai, um 10(vor der Bibliothek)
+- Mittwoch 1. Mai, um 10 (vor der Bibliothek)
