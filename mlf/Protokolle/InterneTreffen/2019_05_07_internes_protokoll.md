@@ -4,4 +4,4 @@
 Gordian, Jannik, Theodor
 
 ## Inhalte:
-- SRS in einem abgebbaren Zustand überführen.
+- SRS in einen abgebbaren Zustand überführen.
