@@ -5,6 +5,7 @@ Gordian, Jannik, Theodor, René, Tobias
 
 ## Entscheidungen:
 - Entscheidung nach Absage keinen extra Raum zu nehmen
+- Erneutes Treffen am 7. Mai um 13:30
 
 ## Inhalte:
 - Besprechung der Änderung im SRS am Wochenende
