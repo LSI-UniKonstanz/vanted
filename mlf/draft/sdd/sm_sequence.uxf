@@ -122,7 +122,7 @@ calculateDistances()</panel_attributes>
       <w>150</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>_:EquationSolver_</panel_attributes>
+    <panel_attributes>_:IterativeAlgorithm_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>

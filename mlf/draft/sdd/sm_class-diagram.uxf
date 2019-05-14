@@ -97,7 +97,7 @@
       <w>90</w>
       <h>100</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=.&gt;
 &lt;&lt;uses&gt;&gt;</panel_attributes>
     <additional_attributes>30.0;10.0;10.0;80.0</additional_attributes>
   </element>
@@ -121,7 +121,7 @@
       <w>230</w>
       <h>100</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=.&gt;
 &lt;&lt;uses&gt;&gt;</panel_attributes>
     <additional_attributes>210.0;10.0;10.0;80.0</additional_attributes>
   </element>
@@ -133,7 +133,7 @@
       <w>120</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;.
 &lt;&lt;uses&gt;&gt;</panel_attributes>
     <additional_attributes>100.0;20.0;10.0;20.0</additional_attributes>
   </element>
@@ -145,7 +145,7 @@
       <w>130</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>EquationSolver</panel_attributes>
+    <panel_attributes>IterativeAlgorithm</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -156,7 +156,7 @@
       <w>170</w>
       <h>100</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=.&gt;
 &lt;&lt;uses&gt;&gt;</panel_attributes>
     <additional_attributes>10.0;10.0;150.0;80.0</additional_attributes>
   </element>
@@ -168,7 +168,7 @@
       <w>120</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>lt=&lt;-
+    <panel_attributes>lt=&lt;.
 &lt;&lt;uses&gt;&gt;</panel_attributes>
     <additional_attributes>10.0;20.0;100.0;20.0</additional_attributes>
   </element>
