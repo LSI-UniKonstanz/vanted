@@ -206,6 +206,9 @@ public class ClusterColorAttributeEditor extends AbstractValueEditComponent {
 			if (clusterGraph != emptyGraph) {
 				PajekClusterColor.executeClusterColoringOnGraph(clusterGraph, cca);
 			}
+			// Colour also the source graph (or w/o overview graph)
+			if (ReleaseInfo.getRunningReleaseStatus() != Release.KGML_EDITOR)
+				PajekClusterColor.executeClusterColoringOnGraph(g, cca);
 		}
 	}
 }

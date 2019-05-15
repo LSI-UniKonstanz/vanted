@@ -61,7 +61,6 @@ import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.plugins.views.defaults.NodeComponent;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.editcomponents.cluster_colors.ClusterColorAttribute;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands.PajekClusterColor;
 
 /**
  * An implementation of <code>org.graffiti.plugin.view.View2D</code>, that
@@ -468,7 +467,6 @@ public class IPKGraffitiView extends GraffitiView
 	public void postAttributeChanged(AttributeEvent e) {
 		super.postAttributeChanged(e);
 		// dirty = true;
-		PajekClusterColor.executeClusterColoringOnGraph(getGraph());
 	}
 
 	@Override

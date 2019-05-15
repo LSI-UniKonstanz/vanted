@@ -59,7 +59,7 @@ public class ClusterGraphLayout extends AbstractAlgorithm implements AlgorithmWi
 		String cluster2 = "cluster";
 		if (ReleaseInfo.getRunningReleaseStatus() == Release.KGML_EDITOR)
 			cluster2 = "pathway";
-		return "<html>" + "Using this command<br>" + "a " + cluster + " graph is<br>" + "created (2) from<br>"
+		return "<html>" + "Using this command<br>" + "an " + cluster + " graph is<br>" + "created (2) from<br>"
 				+ "the source graph (1), " + "<br>which needs to<br>" + "contain nodes with<br>" + "different "
 				+ cluster2 + " IDs.<br>" + "<br>The " + cluster + " graph<br>" + "may be automatically<br>"
 				+ "layouted, or manually.<br>" + "For that you need to<br>" + "select the<br>"

@@ -70,32 +70,19 @@ public abstract class AbstractValueEditComponent extends ValueEditComponentAdapt
 		return this.displayable;
 	}
 
-	/*
-	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#setEnabled(boolean)
-	 */
 	public void setEnabled(boolean enabled) {
 		getComponent().setEnabled(enabled);
 	}
 
-	/*
-	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#isEnabled()
-	 */
 	public boolean isEnabled() {
 		return getComponent().isEnabled();
 	}
 
-	/*
-	 * @see
-	 * org.graffiti.plugin.editcomponent.ValueEditComponent#setShowEmpty(boolean)
-	 */
 	public void setShowEmpty(boolean showEmpty) {
 		this.showEmpty = showEmpty;
 		setEditFieldValue();
 	}
 
-	/**
-	 * @see org.graffiti.plugin.editcomponent.ValueEditComponent#getShowEmpty()
-	 */
 	public boolean getShowEmpty() {
 		return this.showEmpty;
 	}
