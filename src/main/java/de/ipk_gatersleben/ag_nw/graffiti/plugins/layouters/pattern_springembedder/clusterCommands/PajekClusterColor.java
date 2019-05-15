@@ -7,6 +7,7 @@
  */
 package de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.clusterCommands;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -61,7 +62,7 @@ public class PajekClusterColor extends AbstractAlgorithm {
 	public void check() throws PreconditionException {
 		if (graph == null)
 			throw new PreconditionException("No graph available!");
-		
+
 		Collection<String> clusters = GraphHelper.getClusters(graph.getGraphElements());
 		if (clusters.size() <= 0)
 			throw new PreconditionException("No cluster information available for this graph!");
@@ -161,7 +162,8 @@ public class PajekClusterColor extends AbstractAlgorithm {
 	}
 
 	/**
-	 * Colour clusters based on the stored {@linkplain ClusterColorAttribute} for the graph.
+	 * Colour clusters based on the stored {@linkplain ClusterColorAttribute} for
+	 * the graph.
 	 * 
 	 * @param g graph {@linkplain Graph}
 	 * @since 2.7.0
@@ -171,10 +173,10 @@ public class PajekClusterColor extends AbstractAlgorithm {
 		ClusterColorAttribute cca = (ClusterColorAttribute) AttributeHelper.getAttributeValue(g,
 				ClusterColorAttribute.attributeFolder, ClusterColorAttribute.attributeName,
 				ClusterColorAttribute.getDefaultValue(clusters), new ClusterColorAttribute("resulttype"), false);
-		
+
 		executeClusterColoringOnGraph(g, cca);
 	}
-	
+
 	public static void executeClusterColoringOnGraph(Graph g, ClusterColorAttribute cca) {
 		Collection<String> clusters = GraphHelper.getClusters(g.getGraphElements());
 		executeClusterColoringOnGraph(g, clusters, cca);
@@ -204,6 +206,25 @@ public class PajekClusterColor extends AbstractAlgorithm {
 		} finally {
 			g.getListenerManager().transactionFinished(g);
 		}
+	}
+
+	/**
+	 * Re-colours graph elements to their default fill and outline colours.
+	 * Colouring attribute values are preserved.
+	 * 
+	 * @param g
+	 * @since 2.7.0
+	 */
+	public static void removeClusterColoringOnGraph(Graph g) {
+		g.getListenerManager().transactionStarted(g);
+		for (GraphElement ge : g.getGraphElements()) {
+			AttributeHelper.setFillColor(ge, Color.WHITE);
+			if (ge instanceof Edge)
+				AttributeHelper.setOutlineColor(ge, Color.BLACK);
+			else
+				AttributeHelper.setOutlineColor(ge, Color.BLACK);
+		}
+		g.getListenerManager().transactionFinished(g);
 	}
 
 	@Override

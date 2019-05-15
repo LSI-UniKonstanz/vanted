@@ -132,8 +132,15 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 				clusterNodeIDandNumberOfContainingNodes);
 		AttributeHelper.setAttribute(graph, "cluster", "clustergraph", clusterReferenceGraph);
 
-		if (colorCode)
+		if (colorCode) {
 			PajekClusterColor.executeClusterColoringOnGraph(graph, clusterColorAttribute);
+			PajekClusterColor.executeClusterColoringOnGraph(clusterReferenceGraph, clusterColorAttribute);
+		}
+		else {
+			
+			PajekClusterColor.removeClusterColoringOnGraph(graph);
+			//clusterReferenceGraph is not coloured by default, when created
+		}
 		if (resizeEdges)
 			processEdgeWidth(clusterReferenceGraph, minEdgeSize, maxEdgeSize);
 		if (resizeNodes)
