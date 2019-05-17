@@ -5,8 +5,8 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>140</x>
-      <y>190</y>
+      <x>480</x>
+      <y>310</y>
       <w>160</w>
       <h>30</h>
     </coordinates>
@@ -16,8 +16,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>210</x>
-      <y>210</y>
+      <x>550</x>
+      <y>330</y>
       <w>30</w>
       <h>50</h>
     </coordinates>
@@ -28,8 +28,8 @@ layer=-1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>20</x>
-      <y>200</y>
+      <x>360</x>
+      <y>320</y>
       <w>30</w>
       <h>530</h>
     </coordinates>
@@ -39,8 +39,8 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>310</x>
-      <y>190</y>
+      <x>650</x>
+      <y>310</y>
       <w>160</w>
       <h>30</h>
     </coordinates>
@@ -50,8 +50,8 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>480</x>
-      <y>190</y>
+      <x>820</x>
+      <y>310</y>
       <w>160</w>
       <h>30</h>
     </coordinates>
@@ -61,8 +61,8 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>650</x>
-      <y>190</y>
+      <x>990</x>
+      <y>310</y>
       <w>160</w>
       <h>30</h>
     </coordinates>
@@ -72,19 +72,19 @@ layer=-1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
-      <y>280</y>
+      <x>720</x>
+      <y>440</y>
       <w>30</w>
-      <h>450</h>
+      <h>410</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;430.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;390.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>550</x>
-      <y>210</y>
+      <x>890</x>
+      <y>330</y>
       <w>30</w>
       <h>130</h>
     </coordinates>
@@ -94,8 +94,8 @@ layer=-1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>720</x>
-      <y>210</y>
+      <x>1060</x>
+      <y>330</y>
       <w>30</w>
       <h>310</h>
     </coordinates>
@@ -105,8 +105,8 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>0</x>
-      <y>120</y>
+      <x>340</x>
+      <y>240</y>
       <w>60</w>
       <h>120</h>
     </coordinates>
@@ -117,8 +117,8 @@ layer=-1</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>210</x>
-      <y>240</y>
+      <x>550</x>
+      <y>360</y>
       <w>20</w>
       <h>440</h>
     </coordinates>
@@ -130,22 +130,22 @@ bg=white</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>20</x>
-      <y>220</y>
+      <x>360</x>
+      <y>340</y>
       <w>210</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-layout graph(parameters)</panel_attributes>
+execute(parameters)</panel_attributes>
     <additional_attributes>190.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>380</x>
-      <y>250</y>
+      <x>720</x>
+      <y>370</y>
       <w>20</w>
-      <h>40</h>
+      <h>80</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -153,46 +153,34 @@ layout graph(parameters)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>230</y>
+      <x>560</x>
+      <y>350</y>
       <w>180</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-build levels
+buildCoarseningLevels
 </panel_attributes>
     <additional_attributes>160.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>270</y>
+      <x>560</x>
+      <y>430</y>
       <w>180</w>
-      <h>40</h>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
+return 
 coarsened graphs</panel_attributes>
     <additional_attributes>10.0;20.0;160.0;20.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>220</x>
-      <y>300</y>
-      <w>350</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;&lt;&lt;-
-Set Parameters
-</panel_attributes>
-    <additional_attributes>330.0;20.0;10.0;20.0</additional_attributes>
-  </element>
-  <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>80</x>
-      <y>390</y>
+      <x>420</x>
+      <y>510</y>
       <w>720</w>
       <h>200</h>
     </coordinates>
@@ -203,32 +191,10 @@ layer=-3</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
-    <id>UMLGeneric</id>
-    <coordinates>
-      <x>550</x>
-      <y>320</y>
-      <w>20</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes/>
-    <additional_attributes/>
-  </element>
-  <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>360</y>
-      <w>350</w>
-      <h>30</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;10.0;330.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>220</x>
-      <y>390</y>
+      <x>560</x>
+      <y>510</y>
       <w>350</w>
       <h>40</h>
     </coordinates>
@@ -239,8 +205,8 @@ Layout next Level</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>550</x>
-      <y>410</y>
+      <x>890</x>
+      <y>530</y>
       <w>20</w>
       <h>60</h>
     </coordinates>
@@ -250,8 +216,8 @@ Layout next Level</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>450</y>
+      <x>560</x>
+      <y>570</y>
       <w>350</w>
       <h>50</h>
     </coordinates>
@@ -263,21 +229,21 @@ Layouted Level
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>480</y>
+      <x>560</x>
+      <y>600</y>
       <w>520</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-Redeploy vertices(Layouted Level)
+reduceCoarseningLevel()
 </panel_attributes>
     <additional_attributes>500.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>720</x>
-      <y>500</y>
+      <x>1060</x>
+      <y>620</y>
       <w>20</w>
       <h>60</h>
     </coordinates>
@@ -287,32 +253,32 @@ Redeploy vertices(Layouted Level)
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>540</y>
+      <x>560</x>
+      <y>660</y>
       <w>520</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
-updated Graph</panel_attributes>
+layout lower level</panel_attributes>
     <additional_attributes>10.0;20.0;500.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>590</y>
+      <x>560</x>
+      <y>710</y>
       <w>350</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-Layout original Graph</panel_attributes>
+Layout uncoarsened Graph</panel_attributes>
     <additional_attributes>330.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>550</x>
-      <y>610</y>
+      <x>890</x>
+      <y>730</y>
       <w>20</w>
       <h>50</h>
     </coordinates>
@@ -322,8 +288,8 @@ Layout original Graph</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>220</x>
-      <y>640</y>
+      <x>560</x>
+      <y>760</y>
       <w>350</w>
       <h>40</h>
     </coordinates>
@@ -334,8 +300,8 @@ updated Graph</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>20</x>
-      <y>660</y>
+      <x>360</x>
+      <y>780</y>
       <w>210</w>
       <h>40</h>
     </coordinates>
@@ -346,8 +312,8 @@ display layout</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>210</x>
-      <y>670</y>
+      <x>550</x>
+      <y>790</y>
       <w>30</w>
       <h>60</h>
     </coordinates>
@@ -358,8 +324,8 @@ layer=-1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
-      <y>210</y>
+      <x>720</x>
+      <y>330</y>
       <w>30</w>
       <h>60</h>
     </coordinates>
@@ -370,20 +336,20 @@ layer=-1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>550</x>
-      <y>360</y>
+      <x>890</x>
+      <y>430</y>
       <w>30</w>
-      <h>70</h>
+      <h>120</h>
     </coordinates>
     <panel_attributes>lt=.
 layer=-1</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>550</x>
-      <y>460</y>
+      <x>890</x>
+      <y>580</y>
       <w>30</w>
       <h>170</h>
     </coordinates>
@@ -394,8 +360,8 @@ layer=-1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>550</x>
-      <y>650</y>
+      <x>890</x>
+      <y>770</y>
       <w>30</w>
       <h>80</h>
     </coordinates>
@@ -406,8 +372,8 @@ layer=-1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>720</x>
-      <y>550</y>
+      <x>1060</x>
+      <y>670</y>
       <w>30</w>
       <h>180</h>
     </coordinates>
