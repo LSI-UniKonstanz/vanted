@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>15</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>225</x>
+      <y>285</y>
+      <w>510</w>
+      <h>195</h>
+    </coordinates>
+    <panel_attributes>MultiLevelFramework
+--
+--
++ execute()
++ isLayoutAlgorithm(): boolean
++ setParameters(param: Parameter[])
++ getParameters(): Parameter[]
++ check()
+- buildComponentGraphs(): MultilevelGraph[]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>435</x>
+      <y>225</y>
+      <w>45</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1095</x>
+      <y>285</y>
+      <w>555</w>
+      <h>195</h>
+    </coordinates>
+    <panel_attributes>MultilevelGraph
+--
+--
++ MultilevelGraph(g: Graph) &lt;&lt;constructor&gt;&gt;
++ getNumberOfLevels(): int
++ getNodes(level: int): Node[]
++ getEdges(level: int): Node[]
++ newCoarseningLevel(MergedNode[], Edge[]): int
++ isComplete(level: int): boolean</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1275</x>
+      <y>165</y>
+      <w>180</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>/Graph/
+&lt;&lt;interface&gt;&gt;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1350</x>
+      <y>210</y>
+      <w>45</w>
+      <h>105</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>660</y>
+      <w>510</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>/Merger/
+&lt;&lt;interface&gt;&gt;
+--
++ buildCoarseningLevels(mlg: MultilevelGraph)
++ getParameters(): Parameter[]
++ setParameters(p: Parameter[])</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>540</x>
+      <y>660</y>
+      <w>525</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>/Placer/
+&lt;&lt;interface&gt;&gt;
+--
++ reduceCoarseningLevel(mlg: MultilevelGraph)
++ getParameters(): Parameter[]
++ setParameters(p: Parameter[])</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>240</x>
+      <y>465</y>
+      <w>135</w>
+      <h>225</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+r2=mergers
+m2=1..*
+</panel_attributes>
+    <additional_attributes>60.0;10.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>555</x>
+      <y>465</y>
+      <w>255</w>
+      <h>225</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+r2=placers
+m2=1..*</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>345</x>
+      <y>180</y>
+      <w>225</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>/AbstractAlgorithm/
+&lt;&lt;interface&gt;&gt;
+--
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>135</x>
+      <y>180</y>
+      <w>240</w>
+      <h>375</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+r2=layouters
+m2=1..*</panel_attributes>
+    <additional_attributes>70.0;200.0;70.0;230.0;10.0;230.0;10.0;20.0;140.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>375</x>
+      <y>75</y>
+      <w>150</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>/Algorithm/
+&lt;&lt;interface&gt;&gt;
+--
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>435</x>
+      <y>120</y>
+      <w>45</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1500</x>
+      <y>525</y>
+      <w>465</w>
+      <h>195</h>
+    </coordinates>
+    <panel_attributes>MergedNode
+--
+--
++ MergedNode(n: Node[]) &lt;&lt;constructor&gt;&gt;
++ getInnerNodes(): Node[]
++ numberOfRepresentedNodes(): int
++ getLevel(): int
+- calculateRadius(): double
+- calculateCenter(): Vector2d</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1620</x>
+      <y>165</y>
+      <w>180</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>/Node/
+&lt;&lt;interface&gt;&gt;
+--
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1695</x>
+      <y>210</y>
+      <w>45</w>
+      <h>345</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;210.0</additional_attributes>
+  </element>
+</diagram>
