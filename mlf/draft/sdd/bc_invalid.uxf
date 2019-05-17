@@ -4,8 +4,8 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>900</x>
-      <y>470</y>
+      <x>690</x>
+      <y>300</y>
       <w>100</w>
       <h>30</h>
     </coordinates>
@@ -15,8 +15,8 @@
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>630</x>
-      <y>430</y>
+      <x>420</x>
+      <y>260</y>
       <w>60</w>
       <h>110</h>
     </coordinates>
@@ -26,8 +26,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>940</x>
-      <y>490</y>
+      <x>730</x>
+      <y>320</y>
       <w>30</w>
       <h>60</h>
     </coordinates>
@@ -37,10 +37,10 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>940</x>
-      <y>530</y>
+      <x>730</x>
+      <y>360</y>
       <w>20</w>
-      <h>260</h>
+      <h>300</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -48,8 +48,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>660</x>
-      <y>520</y>
+      <x>450</x>
+      <y>350</y>
       <w>300</w>
       <h>40</h>
     </coordinates>
@@ -60,10 +60,10 @@ select layouter</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>650</x>
-      <y>530</y>
+      <x>440</x>
+      <y>360</y>
       <w>20</w>
-      <h>270</h>
+      <h>310</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -71,10 +71,10 @@ select layouter</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>950</x>
-      <y>560</y>
+      <x>740</x>
+      <y>390</y>
       <w>20</w>
-      <h>180</h>
+      <h>100</h>
     </coordinates>
     <panel_attributes>
 bg=white
@@ -84,9 +84,9 @@ layer=1</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>950</x>
-      <y>540</y>
-      <w>150</w>
+      <x>740</x>
+      <y>370</y>
+      <w>140</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
@@ -96,10 +96,10 @@ check(graph)</panel_attributes>
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>540</x>
-      <y>610</y>
-      <w>450</w>
-      <h>140</h>
+      <x>340</x>
+      <y>430</y>
+      <w>460</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>halign=left
 break
@@ -110,8 +110,8 @@ break
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>660</x>
-      <y>620</y>
+      <x>450</x>
+      <y>450</y>
       <w>310</w>
       <h>40</h>
     </coordinates>
@@ -122,31 +122,31 @@ PreconditionException(reasons)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>950</x>
-      <y>720</y>
-      <w>70</w>
-      <h>60</h>
+      <x>740</x>
+      <y>480</y>
+      <w>60</w>
+      <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;.</panel_attributes>
-    <additional_attributes>10.0;40.0;50.0;40.0;50.0;10.0;20.0;10.0</additional_attributes>
+    <additional_attributes>10.0;30.0;40.0;30.0;40.0;10.0;20.0;10.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>660</x>
-      <y>760</y>
+      <x>450</x>
+      <y>640</y>
       <w>300</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
-layouter accepts</panel_attributes>
+layouter accepts(reserves)</panel_attributes>
     <additional_attributes>10.0;20.0;280.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>650</x>
-      <y>790</y>
+      <x>440</x>
+      <y>660</y>
       <w>30</w>
       <h>50</h>
     </coordinates>
@@ -156,12 +156,48 @@ layouter accepts</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>940</x>
-      <y>780</y>
+      <x>730</x>
+      <y>650</y>
       <w>30</w>
       <h>60</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
     <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>740</x>
+      <y>510</y>
+      <w>190</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+determine reserves()</panel_attributes>
+    <additional_attributes>20.0;30.0;40.0;30.0;40.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>740</x>
+      <y>540</y>
+      <w>20</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>
+bg=white
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>740</x>
+      <y>620</y>
+      <w>60</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;30.0;40.0;30.0;40.0;10.0;20.0;10.0</additional_attributes>
   </element>
 </diagram>
