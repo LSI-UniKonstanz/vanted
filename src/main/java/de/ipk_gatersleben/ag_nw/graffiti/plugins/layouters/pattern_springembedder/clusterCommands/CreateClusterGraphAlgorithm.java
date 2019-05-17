@@ -126,6 +126,7 @@ public class CreateClusterGraphAlgorithm extends AbstractAlgorithm {
 		return new HashSet<Category>(Arrays.asList(Category.CLUSTER, Category.GRAPH));
 	}
 
+	@Override
 	public void execute() {
 		HashMap<String, Integer> clusterNodeIDandNumberOfContainingNodes = new HashMap<String, Integer>();
 		Graph clusterReferenceGraph = GraphHelper.createClusterReferenceGraph(graph,
