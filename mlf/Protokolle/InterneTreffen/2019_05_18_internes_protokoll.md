@@ -15,7 +15,7 @@
 		
 	Jannik: Stressfunktion, einbindung in Vanted, nodeValueMatrix
 		
-	Theo: implementierung shortesDistance
+	Theo: implementierung shortesPaths
 		
 			
 5. Die Implemtierung des initialPlacer machen wir später 
