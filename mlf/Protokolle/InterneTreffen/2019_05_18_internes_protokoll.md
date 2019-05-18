@@ -9,7 +9,7 @@
 	b) Korrektur von kleinichkeiten, wie Rechtschreibung
 2. Weiter in Wanted eingearbeitet
 3. Zweiwochenbericht fertig gestellt 
-4. Verteilung der Aufgaben für die folgende Woche:
+4. Verteilung der Aufgaben für die folgenden Wochen:
 
 	Rene: implementierung intuitivePositioningAlgorithm 
 		
