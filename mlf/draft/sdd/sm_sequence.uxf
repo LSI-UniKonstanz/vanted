@@ -4,8 +4,8 @@
   <element>
     <id>UMLActor</id>
     <coordinates>
-      <x>350</x>
-      <y>110</y>
+      <x>450</x>
+      <y>470</y>
       <w>60</w>
       <h>110</h>
     </coordinates>
@@ -15,8 +15,8 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>560</x>
-      <y>130</y>
+      <x>660</x>
+      <y>490</y>
       <w>30</w>
       <h>100</h>
     </coordinates>
@@ -26,21 +26,21 @@
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>500</x>
-      <y>110</y>
-      <w>150</w>
+      <x>560</x>
+      <y>470</y>
+      <w>230</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>_:StressMinLayouter_</panel_attributes>
+    <panel_attributes>_:StressMinimizationLayouter_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>560</x>
-      <y>210</y>
+      <x>660</x>
+      <y>570</y>
       <w>20</w>
-      <h>290</h>
+      <h>350</h>
     </coordinates>
     <panel_attributes>
 bg=white</panel_attributes>
@@ -49,8 +49,8 @@ bg=white</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
-      <y>200</y>
+      <x>480</x>
+      <y>560</y>
       <w>200</w>
       <h>40</h>
     </coordinates>
@@ -61,8 +61,8 @@ setParameters(p)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>810</x>
-      <y>130</y>
+      <x>870</x>
+      <y>490</y>
       <w>30</w>
       <h>150</h>
     </coordinates>
@@ -72,19 +72,19 @@ setParameters(p)</panel_attributes>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>750</x>
-      <y>110</y>
-      <w>150</w>
+      <x>820</x>
+      <y>470</y>
+      <w>130</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>_:DistanceAlgorithm_</panel_attributes>
+    <panel_attributes>_:ShortestsPaths_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>810</x>
-      <y>260</y>
+      <x>870</x>
+      <y>620</y>
       <w>20</w>
       <h>40</h>
     </coordinates>
@@ -94,42 +94,42 @@ setParameters(p)</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>570</x>
-      <y>250</y>
-      <w>260</w>
+      <x>670</x>
+      <y>610</y>
+      <w>220</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-calculateDistances()</panel_attributes>
-    <additional_attributes>240.0;20.0;10.0;20.0</additional_attributes>
+getShortestPaths(nodes)</panel_attributes>
+    <additional_attributes>200.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>810</x>
-      <y>290</y>
+      <x>870</x>
+      <y>650</y>
       <w>30</w>
-      <h>280</h>
+      <h>340</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;260.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;320.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>920</x>
-      <y>110</y>
-      <w>150</w>
+      <x>1100</x>
+      <y>470</y>
+      <w>220</w>
       <h>30</h>
     </coordinates>
-    <panel_attributes>_:IterativeAlgorithm_</panel_attributes>
+    <panel_attributes>_:IterativePositionAlgorithm_</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>380</x>
-      <y>230</y>
+      <x>480</x>
+      <y>590</y>
       <w>200</w>
       <h>40</h>
     </coordinates>
@@ -140,33 +140,33 @@ execute()</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>570</x>
-      <y>310</y>
-      <w>430</w>
+      <x>670</x>
+      <y>730</y>
+      <w>550</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-iterateNewPositions(oldPositions)</panel_attributes>
-    <additional_attributes>410.0;20.0;10.0;20.0</additional_attributes>
+updatePositions(graph, distances)</panel_attributes>
+    <additional_attributes>530.0;20.0;10.0;20.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>980</x>
-      <y>130</y>
+      <x>1200</x>
+      <y>490</y>
       <w>30</w>
-      <h>210</h>
+      <h>270</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;190.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;250.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>370</x>
-      <y>210</y>
+      <x>470</x>
+      <y>570</y>
       <w>20</w>
-      <h>300</h>
+      <h>360</h>
     </coordinates>
     <panel_attributes/>
     <additional_attributes/>
@@ -174,9 +174,9 @@ iterateNewPositions(oldPositions)</panel_attributes>
   <element>
     <id>UMLFrame</id>
     <coordinates>
-      <x>510</x>
-      <y>310</y>
-      <w>510</w>
+      <x>610</x>
+      <y>730</y>
+      <w>620</w>
       <h>160</h>
     </coordinates>
     <panel_attributes>loop
@@ -188,26 +188,26 @@ iterateNewPositions(oldPositions)</panel_attributes>
 
 
 
-change in stress &gt; epsilon</panel_attributes>
+change in stress &gt; epsilon and iterations &lt;= max iterations</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>570</x>
-      <y>270</y>
-      <w>260</w>
+      <x>670</x>
+      <y>630</y>
+      <w>220</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
 distance matrix</panel_attributes>
-    <additional_attributes>10.0;20.0;240.0;20.0</additional_attributes>
+    <additional_attributes>10.0;20.0;200.0;20.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>980</x>
-      <y>320</y>
+      <x>1200</x>
+      <y>740</y>
       <w>20</w>
       <h>40</h>
     </coordinates>
@@ -217,20 +217,76 @@ distance matrix</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>570</x>
-      <y>330</y>
-      <w>430</w>
+      <x>670</x>
+      <y>760</y>
+      <w>550</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;530.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1200</x>
+      <y>770</y>
+      <w>30</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>660</x>
+      <y>910</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>890</y>
+      <w>200</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>lt=&lt;.
-new positions</panel_attributes>
-    <additional_attributes>10.0;20.0;410.0;20.0</additional_attributes>
+finished</panel_attributes>
+    <additional_attributes>10.0;20.0;180.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>470</x>
+      <y>920</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>830</y>
+      <w>100</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+stress</panel_attributes>
+    <additional_attributes>10.0;30.0;40.0;30.0;40.0;10.0;20.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLGeneric</id>
     <coordinates>
-      <x>570</x>
-      <y>390</y>
+      <x>670</x>
+      <y>810</y>
       <w>20</w>
       <h>40</h>
     </coordinates>
@@ -242,70 +298,80 @@ bg=white</panel_attributes>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>570</x>
-      <y>370</y>
-      <w>150</w>
+      <x>670</x>
+      <y>790</y>
+      <w>180</w>
       <h>50</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-
-Update graph</panel_attributes>
+calculateStress()</panel_attributes>
     <additional_attributes>20.0;30.0;40.0;30.0;40.0;10.0;10.0;10.0</additional_attributes>
   </element>
   <element>
-    <id>Relation</id>
+    <id>UMLGeneric</id>
     <coordinates>
-      <x>570</x>
-      <y>410</y>
-      <w>160</w>
-      <h>50</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;.
-updated graph</panel_attributes>
-    <additional_attributes>10.0;30.0;40.0;30.0;40.0;10.0;20.0;10.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>980</x>
-      <y>350</y>
-      <w>30</w>
-      <h>220</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;200.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>560</x>
-      <y>490</y>
-      <w>30</w>
-      <h>80</h>
-    </coordinates>
-    <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>380</x>
+      <x>970</x>
       <y>470</y>
-      <w>200</w>
+      <w>110</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>_:InitialPlacer_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLGeneric</id>
+    <coordinates>
+      <x>1010</x>
+      <y>670</y>
+      <w>20</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>lt=&lt;.
-finished</panel_attributes>
-    <additional_attributes>10.0;20.0;180.0;20.0</additional_attributes>
+    <panel_attributes/>
+    <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>370</x>
-      <y>500</y>
+      <x>670</x>
+      <y>660</y>
+      <w>360</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-
+setupInitialPlacement(graph)</panel_attributes>
+    <additional_attributes>340.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1010</x>
+      <y>490</y>
       <w>30</w>
-      <h>70</h>
+      <h>200</h>
     </coordinates>
     <panel_attributes>lt=.</panel_attributes>
-    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+    <additional_attributes>10.0;10.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1010</x>
+      <y>700</y>
+      <w>30</w>
+      <h>280</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;260.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>670</x>
+      <y>690</y>
+      <w>360</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;340.0;10.0</additional_attributes>
   </element>
 </diagram>
