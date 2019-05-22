@@ -3,9 +3,9 @@ package org.vanted.addons.stressminimization;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.Main;
 
 /**
- * Helper method for starting vanted with the addon. 
+ * Helper method for starting vanted with the stress minimization addon. 
  */
-public class StartVantedWithAddon {
+public class StartVantedWithStressMinAddon {
 
 	public static void main(String[] args) {
 		
