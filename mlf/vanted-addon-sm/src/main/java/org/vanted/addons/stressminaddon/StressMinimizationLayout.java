@@ -1,19 +1,25 @@
 package org.vanted.addons.stressminaddon;
 
+import org.graffiti.attributes.Attribute;
+import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 
+import java.util.*;
+
 /**
- * Just a small class to show how you can add layout add-ons. Implements the
- * usual {@link AbstractEditorAlgorithm}.
- * 
- * @author Christian Klukas
+ * Implements a version of a stress minimization add-on that can be used
+ * in VANTED.
  */
 public class StressMinimizationLayout extends AbstractEditorAlgorithm {
-	
-	private double defaultRadius = 250;
+
+	/**
+	 * Path of an attribute that is set to the index of an node.
+	 */
+	public static final String INDEX_ATTRIBUTE =
+			"StressMinimization" + Attribute.SEPARATOR + "index";
 	
 	/**
 	 * Creates a new {@link StressMinimizationLayout} object.
@@ -58,7 +64,29 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 	 * Performs the layout.
 	 */
 	public void execute() {
-		/* TODO */
+		ArrayList<Node> pureNodes;
+		if (selection.isEmpty()) {
+			pureNodes = new ArrayList<>(graph.getNodes());
+		} else {
+			pureNodes = new ArrayList<>(selection.getNodes());
+		}
+
+		List<Node> nodes = Collections.unmodifiableList(pureNodes);
+		// Set positions attribute for hopefully better handling
+		for (int pos = 0; pos < nodes.size(); pos++) {
+			nodes.get(pos).setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, pos);
+			System.out.println(nodes.get(pos).getAttribute(INDEX_ATTRIBUTE));
+		}
+
+		//////////////////////////////
+		// TODO implement algorithm //
+		//////////////////////////////
+
+
+		// Reset attributes
+		for (Node node : nodes) {
+			node.removeAttribute(StressMinimizationLayout.INDEX_ATTRIBUTE);
+		}
 	}
 	
 	@Override

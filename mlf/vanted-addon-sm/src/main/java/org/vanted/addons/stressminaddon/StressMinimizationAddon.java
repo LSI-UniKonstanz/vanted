@@ -1,11 +1,7 @@
 package org.vanted.addons.stressminaddon;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.addons.AddonAdapter;
-import org.ErrorMsg;
-import org.graffiti.editor.GravistoService;
 import org.graffiti.plugin.algorithm.Algorithm;
-
-import javax.swing.*;
 
 /**
  * @author Hendrik Rohn
