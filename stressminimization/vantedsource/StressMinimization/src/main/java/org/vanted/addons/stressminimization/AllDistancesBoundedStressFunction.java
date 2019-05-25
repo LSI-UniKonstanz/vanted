@@ -1,12 +1,7 @@
 package org.vanted.addons.stressminimization;
 
-import java.util.Arrays;
-
 import org.apache.commons.math3.analysis.MultivariateFunction;
-import org.apache.commons.math3.exception.NotStrictlyPositiveException;
-import org.apache.commons.math3.exception.OutOfRangeException;
-import org.apache.commons.math3.linear.AbstractRealMatrix;
-import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.analysis.MultivariateVectorFunction;
 import org.apache.commons.math3.linear.RealMatrix;
 
 /**
@@ -15,10 +10,10 @@ import org.apache.commons.math3.linear.RealMatrix;
  * Emden R. Gansner, Yehuda Koren and Stephen North at 
  * AT&T Labs — Research, Florham Park, NJ 07932, 2005
  * 
- * This function is used to minimize the original stress-function
+ * This function is used to minimize the original stress function
  * that takes all distances into account.
  * 
- * For the configuration X, passed on construction, 
+ * For the configuration X(t), passed on construction, 
  * the value is equal to the stress of that configuration.
  * The next better configuration is obtained by minimizing this function,
  * however this function is NOT identical to the actual stress-function.
@@ -28,8 +23,13 @@ import org.apache.commons.math3.linear.RealMatrix;
  * simple vectors. See {@link #value(double[]) value(double[])}} 
  * for further details.
  */
-public class AllDistancesBoundedStressFunction implements MultivariateFunction {
+class AllDistancesBoundedStressFunction implements MultivariateFunction {
 
+	// TODO check up the whole math in this class
+	// I'm unsure about a few things
+	// 1) Not differentiating by dimensions but just putting everything into one vector
+	// 2) the gradient... is this the used function really the gradient?
+	
 	// matrix dimensions required for input and output matrices
 	// the values are actually duplicate, since they may be obtained
 	// from the intitialLayout matrix, for example
@@ -41,14 +41,14 @@ public class AllDistancesBoundedStressFunction implements MultivariateFunction {
 	
 	// the constructor ensures that these constants
 	// all have the required dimension matches
-	private final RealMatrix weights;
-	private final RealMatrix distances;
-	private final RealMatrix initialLayout;
+	private final VectorMappingMatrix weights;
+	private final VectorMappingMatrix distances;
+	private final VectorMappingMatrix initialLayout;
 	
 	/**
 	 * Creates a new AllDistancesBoundedStressFunction instance,
 	 * with the given weights, distances and the current layout.
-	 * @param layout The current layout: A two dimensional n*d matrix 
+	 * @param layout The current or initial layout: A two dimensional n*d matrix 
 	 * where n is the number of nodes and d is the dimension (typically two).
 	 * @param distances The distance matrix (n*n matrix) with distance 
 	 * of the nodes i and j at position i,j
@@ -56,7 +56,7 @@ public class AllDistancesBoundedStressFunction implements MultivariateFunction {
 	 * the nodes i and j and position i,j
 	 * @throws IllegalArgumentException 
 	 */
-	public AllDistancesBoundedStressFunction(RealMatrix layout, RealMatrix distances, RealMatrix weights) throws IllegalArgumentException {
+	public AllDistancesBoundedStressFunction(VectorMappingMatrix layout, VectorMappingMatrix distances, VectorMappingMatrix weights) throws IllegalArgumentException {
 		
 		// check dimensions match and other required properties
 		if (!weights.isSquare()) {
@@ -80,6 +80,16 @@ public class AllDistancesBoundedStressFunction implements MultivariateFunction {
 		this.d = layout.getColumnDimension();
 	}
 
+	/**
+	 * Calculates the stress of the initial layout passed to the constructor.
+	 * @return stress of the initial layout.
+	 */
+	public double getInitialLayoutStress() {
+		// stress of initial layout is the bounded layout function
+		// of the initial layout, see paper, page 4.
+		return calc(initialLayout);
+	}
+	
 	/**
 	 * Calculates the value of the bounded stress function 
 	 * described in the paper referenced in the class javadoc.
@@ -106,16 +116,32 @@ public class AllDistancesBoundedStressFunction implements MultivariateFunction {
 	public double value(double[] suggestedLayout) {
 		
 		// variable naming after paper, see class javadoc
-		RealMatrix X = new VectorMappingMatrix(d, suggestedLayout);
-		RealMatrix XT = X.transpose();
-		RealMatrix Z = initialLayout;
-		RealMatrix LW = calcWeightedLaplacian(weights);
-		RealMatrix LZ = calcLZ(weights, distances, Z);
+		VectorMappingMatrix X = new VectorMappingMatrix(d, suggestedLayout);
 		
+		try {
+			return calc(X);
+		} catch (IllegalArgumentException ex) {
+			throw new IllegalArgumentException("Input vector does not have the required length: input.lenght = " + suggestedLayout.length + " != " + n * d, ex);
+		}
+	}
+
+	/**
+	 * Calculates the bounded stress function for the given layout X.
+	 * @param X the input layout matrix.
+	 * @return $F^Z$(X) (see paper referenced in class javadoc, page 3).
+	 * @throws IllegalArgumentException if the input matrix isn't a n*d matrix.
+	 */
+	private double calc(VectorMappingMatrix X) throws IllegalArgumentException {
+
 		// check input length / transformed matrix dimensions
 		if (X.getRowDimension() != n || X.getColumnDimension() != d) {
-			throw new IllegalArgumentException("Input vector does not have the required length: input.lenght = " + suggestedLayout.length + " != " + n * d);
+			throw new IllegalArgumentException("Misdimensioned input matrix. Expected Dimensions: " + n + "*" + d + ", actuall dimensions:" + X.getRowDimension() + "*" + X.getColumnDimension());
 		}
+
+		RealMatrix XT = X.transpose();
+		VectorMappingMatrix Z = initialLayout;
+		VectorMappingMatrix LW = calcWeightedLaplacian(weights);
+		VectorMappingMatrix LZ = calcLZ(weights, distances, Z);
 		
 		// TODO Milestone 3: optimize
 		// - cache constant values
@@ -134,7 +160,51 @@ public class AllDistancesBoundedStressFunction implements MultivariateFunction {
 		
 		return value;
 	}
+	
+	// MARK: Gradient function
+	private class Gradient implements MultivariateVectorFunction {
 
+		@Override
+		public double[] value(double[] suggestedLayout) throws IllegalArgumentException {
+
+			// variable naming after paper, see class javadoc
+			VectorMappingMatrix X = new VectorMappingMatrix(d, suggestedLayout);
+			
+			try {
+				// TODO we need to return the result the same form as the input.
+				return calc(X).getVector();
+			} catch (IllegalArgumentException ex) {
+				throw new IllegalArgumentException("Input vector does not have the required length: input.lenght = " + suggestedLayout.length + " != " + n * d, ex);
+			}
+		}
+		
+		private VectorMappingMatrix calc(VectorMappingMatrix X) throws IllegalArgumentException {
+
+			// check input length / transformed matrix dimensions
+			if (X.getRowDimension() != n || X.getColumnDimension() != d) {
+				throw new IllegalArgumentException("Misdimensioned input matrix. Expected Dimensions: " + n + "*" + d + ", actuall dimensions:" + X.getRowDimension() + "*" + X.getColumnDimension());
+			}
+
+			VectorMappingMatrix Z = initialLayout;
+			VectorMappingMatrix LW = calcWeightedLaplacian(weights);
+			VectorMappingMatrix LZ = calcLZ(weights, distances, Z);
+			
+			// result is a n*d matrix
+			RealMatrix value = ( LZ.multiply(Z) ).subtract( LW.multiply(X) );
+			
+			// without knowing the internals of AbstractRealMatrix,
+			// blind casting does not seem safe for me.
+			// therefore we eventually copy the matrix.
+			return VectorMappingMatrix.asVectorMappingMatrix(value);
+			
+		}
+		
+	}
+
+	public MultivariateVectorFunction getGradient() {
+		return new Gradient();
+	}
+	
 	// MARK: Primitives
 	
 	/**
@@ -143,8 +213,8 @@ public class AllDistancesBoundedStressFunction implements MultivariateFunction {
 	 * @param w the weight matrix that should be the basis for the calculated weighted laplacian.
 	 * @return the weighted laplacian matrix of the input
 	 */
-	private RealMatrix calcWeightedLaplacian(RealMatrix w) {
-		RealMatrix LW = new Array2DRowRealMatrix(w.getRowDimension(), w.getColumnDimension());
+	private VectorMappingMatrix calcWeightedLaplacian(VectorMappingMatrix w) {
+		VectorMappingMatrix LW = new VectorMappingMatrix(w.getRowDimension(), w.getColumnDimension());
 		
 		for (int i = 0; i < w.getRowDimension(); i += 1) {
 			for (int j = 0; j < w.getColumnDimension(); j += 1) {
@@ -175,8 +245,8 @@ public class AllDistancesBoundedStressFunction implements MultivariateFunction {
 	 * @param Z the "Z" matrix the output matrix will be calculated from.
 	 * @return The LZ matrix calculated from w,d and Z
 	 */
-	private RealMatrix calcLZ(RealMatrix w, RealMatrix d, RealMatrix Z) {
-		RealMatrix LZ = new Array2DRowRealMatrix(w.getRowDimension(), w.getColumnDimension());
+	private VectorMappingMatrix calcLZ(VectorMappingMatrix w, VectorMappingMatrix d, VectorMappingMatrix Z) {
+		VectorMappingMatrix LZ = new VectorMappingMatrix(w.getRowDimension(), w.getColumnDimension());
 		
 		// fill entries that are not on the diagonal first
 		double sumOverAllNonDiagonal = 0; // will be used for the diagonal elements
@@ -206,77 +276,6 @@ public class AllDistancesBoundedStressFunction implements MultivariateFunction {
 	}
 	
 	// MARK: Utilities
-	
-	/**
-	 * A helper class that makes an input vector accessible as a matrix.
-	 * The input vector is seen as a (n*d) matrix, by virtually grouping
-	 * every d elements into a row in the matrix.
-	 * For further details, please refer to {@link #value(double[]) the value method}.
-	 * 
-	 * This class only does index transformations and 
-	 * does not copy the vector entries.
-	 */
-	private class VectorMappingMatrix extends AbstractRealMatrix {
 
-		// the virtual matrix's dimensions
-		private final int n, d;
-		private final double[] vector;
-		
-		/**
-		 * Creates a new VectorMappingMatrix from the given input vector
-		 * with the specified number of columns. 
-		 * No length checking is performed, if the length of the input vector
-		 * is not divisible by the given number of columns,
-		 * some vector elements will be fully ignored.
-		 * @param d the number of columns this matrix should have
-		 * @param vector
-		 */
-		public VectorMappingMatrix(int d, double[] vector) {
-			super();
-			this.n = vector.length / d;
-			this.d = d;
-			this.vector = vector;
-		}
-
-		@Override
-		public RealMatrix copy() {
-			return new VectorMappingMatrix(d, Arrays.copyOf(vector, vector.length));
-		}
-
-		@Override
-		public RealMatrix createMatrix(int arg0, int arg1) throws NotStrictlyPositiveException {
-			if (arg0 < 1) {
-				throw new NotStrictlyPositiveException(arg0);
-			}
-			if (arg1 < 1) {
-				throw new NotStrictlyPositiveException(arg1);
-			}
-			
-			return new VectorMappingMatrix(d, new double[n * d]);
-		}
-
-		@Override
-		public int getColumnDimension() {
-			return d;
-		}
-
-		@Override
-		public int getRowDimension() {
-			return n;
-		}
-
-		@Override
-		public double getEntry(int row, int col) throws OutOfRangeException {
-			int index = row * d + col;
-			return vector[index];
-		}
-
-		@Override
-		public void setEntry(int row, int col, double val) throws OutOfRangeException {
-			int index = row * d + col;
-			vector[index] = val;
-		}
-		
-	}
 	
 }

@@ -48,10 +48,20 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 
 	// MARK: algorithm execution
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void check() throws PreconditionException {
-		// TODO Auto-generated method stub
 		super.check();
+		
+		if (graph.isEmpty()) {
+			throw new PreconditionException("Stress Minimization Layout cannot work on empty graphs");
+		}
+		if (graph.isDirected()) {
+			throw new PreconditionException("Stress Minimization Layout cannot work on directed graphs");
+		}
+		
 	}
 	
 	@Override
@@ -68,8 +78,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 	
 	@Override
 	public void execute() {
-		// TODO Auto-generated method stub
-		
+		// TODO: 
 	}
 	
 	@Override
