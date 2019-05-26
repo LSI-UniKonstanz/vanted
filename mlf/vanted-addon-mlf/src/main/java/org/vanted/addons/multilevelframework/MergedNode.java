@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * @see Node
  */
 public class MergedNode extends AdjListNode {
-    private Collection<Node> nodes;
+    private Set<Node> nodes;
 
     /**
      * Create a new {@link MergedNode}.
@@ -26,7 +26,7 @@ public class MergedNode extends AdjListNode {
      *     Note that the collection will not be copied, but is used directly by this instance.
      * @see AdjListNode#AdjListNode(Graph)
      */
-    public MergedNode(Graph g, Collection<Node> nodes) {
+    public MergedNode(Graph g, Set<Node> nodes) {
         super(Objects.requireNonNull(g, "MergedNode graph must not be null."));
         this.nodes = Objects.requireNonNull(nodes, "MergedNode nodes must not be null.");
         this.updateLabel();
@@ -40,6 +40,7 @@ public class MergedNode extends AdjListNode {
      */
     public MergedNode(Graph g, CollectionAttribute col) {
         super(Objects.requireNonNull(g), Objects.requireNonNull(col));
+        this.nodes = new HashSet<>();
         this.updateLabel();
     }
 
@@ -51,8 +52,7 @@ public class MergedNode extends AdjListNode {
      */
     public MergedNode(Graph g) {
         super(g);
-        this.nodes = new ArrayList<>();
-        this.checkNoDuplicates(this.nodes);
+        this.nodes = new HashSet<>();
         this.updateLabel();
     }
 
@@ -73,7 +73,7 @@ public class MergedNode extends AdjListNode {
      *     {@link MergedNode} (i.e. not in {@link MergedNode#getInnerNodes()}).
      */
     public void addInnerNode(Node node) {
-        if (this.nodes.contains(node)) { // TODO: use identity comparison (consistency with checkNoDuplicates())
+        if (this.nodes.contains(node)) {
             throw new IllegalArgumentException("MergedNode must not contain the same node twice.");
         }
         this.nodes.add(Objects.requireNonNull(node, "MergedNode cannot represent null nodes."));
@@ -87,22 +87,5 @@ public class MergedNode extends AdjListNode {
                 .collect(Collectors.joining(", "));
         label += " [" + this.nodes.size() + "]";
         AttributeHelper.setLabel(this, label);
-    }
-
-    /**
-     * Check whether the collection {@code items} contains duplicates.
-     * The check conceptually uses identity comparisons ("{@code ==}").
-     * @param items
-     *     The collection to check. Must not be {@code null}.
-     */
-    private void checkNoDuplicates(Collection<?> items) {
-        IdentityHashMap<Object, Integer> counts = new IdentityHashMap<>();
-        for (Object item : items) {
-            int count = counts.getOrDefault(item, 0) + 1;
-            if (count >= 2) {
-                throw new IllegalArgumentException("MergedNode must not contain the same node twice.");
-            }
-            counts.put(item, count);
-        }
     }
 }

@@ -12,6 +12,7 @@
 package org.vanted.addons.multilevelframework;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 import org.AttributeHelper;
 import org.graffiti.graph.AdjListGraph;
@@ -34,7 +35,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
 	@Override
 	public String getDescription() {
-		return "<html>" + "Multilevel Framework";
+		return "<html><b>Multilevel Framework</b></html>";
 	}
 
 	/**
@@ -89,8 +90,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 		AttributeHelper.setLabel(n1, "1");
 		MultilevelGraph mlg = new MultilevelGraph(alg);
 		mlg.newCoarseningLevel();
-		MergedNode mn1 = mlg.addNode(Arrays.asList(n1,n2));
-		MergedNode mn2 = mlg.addNode(Arrays.asList(n3,n4));
+		MergedNode mn1 = mlg.addNode(new HashSet<>(Arrays.asList(n1,n2)));
+		MergedNode mn2 = mlg.addNode(new HashSet<>(Arrays.asList(n3,n4)));
 		mlg.addEdge(mn1, mn2);
 		assert mlg.isComplete();
 		GraphHelper.diplayGraph(mlg.getTopLevel());
