@@ -78,7 +78,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 	
 	@Override
 	public void execute() {
-		// TODO: 
+		
+		new StressMajorizationImpl(graph).doLayout();
+		
 	}
 	
 	@Override
