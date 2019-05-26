@@ -1,0 +1,185 @@
+\documentclass[]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage[ngerman]{babel}
+%\usepackage[babel]{csquotes}
+\usepackage{tikz}
+\usepackage{verbatim}
+\usepackage{fancybox}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+%\usepackage{dsfont}
+%\usepackage{stmaryrd}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{verbatim}
+%\usepackage{marvosym}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usetikzlibrary{matrix,backgrounds}
+%\usepackage[colorlinks=true, urlcolor=blue]{hyperref}
+%\usepackage{graphicx}
+%\usepackage{listings}
+%\usepackage{algorithm2e}
+ %\LinesNumbered
+ %\DontPrintSemicolon
+\usepackage[table,xcdraw]{}
+ \usepackage[normalem]{ulem}
+ \useunder{\uline}{\ul}{}
+
+\usepackage{adjustbox}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+\usepackage{longtable,booktabs}
+
+\usepackage{struktex}
+\usetikzlibrary{
+  %arrows,            % Viele verschiedene Spitzen-Typen für Pfeile (mehr: http://tex.stackexchange.com/a/42679)
+  automata,          % Zeichnen von Automaten
+  %backgrounds,       % Hintergründe ändern
+  chains,            % Abläufe darstellen
+  %matrix,            % Matrizen malen
+  %shadows,           % Schatten um Formen
+  shapes,            % Alle zusätzlichen Formen
+  %shapes.geometric,  % Mehr geometrische Formen
+  %shapes.symbols,    % Mehr symbolische Formen
+  %shapes.arrows,     % Mehr Pfeilformen (nicht zu verwechseln mit den Pfeilen für Pfade)
+  %shapes.multipart,  % Formen unterteilen
+  %shapes.callouts,   % Z.b. Sprechblasen wie man sie aus Comics kennt
+  %shapes.misc,       % Diverse andere Formen, z.B. durchgestrichene Formen (crossout, strikeout)
+  %spy,               % "Genaueres Hinsehen" in Diagrammen verdeutlichen
+  %trees              % Bäume zeichnen
+  }
+\usetikzlibrary{arrows}
+
+\tikzset{
+  treenode/.style = {align=center, inner sep=0pt, text centered,
+    font=\sffamily},
+  tn/.style = {treenode, circle, black, font=\sffamily\bfseries, draw=black,
+    fill=white, text width=1.5em},
+}
+
+\PassOptionsToPackage{unicode=true}{hyperref} % options for packages loaded elsewhere
+\PassOptionsToPackage{hyphens}{url}
+%
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provides euro and other symbols
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\usepackage{hyperref}
+\hypersetup{
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\date{}
+
+\begin{document}
+
+{\footnotesize \parindent0em
+    {\sc Universität Konstanz} \hfill {\sc Software Projekt, Gruppe 2.1}\par
+    {\sc Fachbereich Informatik \& Informationswissenschaft} \hfill Sommersemester 19 \par
+    Silvan Reiner \hfill \today\par
+    \bigskip
+    \begin{center}
+    {\LARGE\bf Zweiter zwei Wochen Bericht}
+    \bigskip
+    \end{center}
+}
+
+Dieser Bericht deckt die Wochen vom 06.05.2019 bis zum 19.05.2019 ab. \\
+
+\begin{itemize}
+	\item  Für das System Design Document teilten wir uns in zwei Gruppen auf. Benjamin, Jakob und Josua erstellten die Diagramme und schrieben die Texte für das Stress Minimization Add-on. David, Thomas und Silvan taten das Gleiche für das Multilevel Framework.
+	\item Darüber hinaus entwarfen beide Teilgruppen eine grobe Klassenstruktur für das jeweilige Add-on.
+	\item David und Silvan erstellten für die beiden Add-ons je ein Eclipse-Projekt mit den entworfenen Klassenstrukturen auf separaten branches.
+	\item David fasste die Ergebnisse unseres Treffens mit Benjamin und Wilhelm in einer Anleitung zum Installieren von Vanted übers repository zusammen und protokollierte wie immer unsere Treffen.
+	\item Jedes Gruppenmitglied konnte den sourcecode aus unserem git kompilieren und alle haben sich so weit mit der Struktur von VANTED vertraut gemacht, dass sie in der Lage sind ein einfaches Add-on zu schreiben.
+	\item Alle haben sich noch weiter in die Literatur zu Multilevel Layoutverfahren und verschiedenen Layoutverfahren mit Stress Minimization eingelesen.
+	\item Die Gruppe hat gemeinsam test cases für unsere Add-ons formuliert.
+\end{itemize} 
+
+\end{document}
