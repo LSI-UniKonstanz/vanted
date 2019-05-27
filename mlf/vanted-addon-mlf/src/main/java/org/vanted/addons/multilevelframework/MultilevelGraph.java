@@ -1,10 +1,14 @@
 package org.vanted.addons.multilevelframework;
 
-import org.graffiti.attributes.*;
-import org.graffiti.graph.*;
+import org.graffiti.graph.AdjListEdge;
+import org.graffiti.graph.Edge;
+import org.graffiti.graph.Graph;
+import org.graffiti.graph.Node;
 
-import java.util.*;
-import java.util.function.BooleanSupplier;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * This class stores the coarsening levels of a graph, as well as the original graph.
@@ -21,6 +25,7 @@ public class MultilevelGraph {
      * New coarsening levels can be added, e.g. by calling {@link this#newCoarseningLevel()}.
      * @param level_0
      *     The original graph. Must not be {@code null}.
+     * @author Gordian
      */
     public MultilevelGraph(Graph level_0) {
         this.levels = new ArrayList<>();
@@ -31,6 +36,7 @@ public class MultilevelGraph {
     /**
      * Calculate the number of levels.
      * @return the number of levels (including the original graph)
+     * @author Gordian
      */
     public int getNumberOfLevels() {
         return this.levels.size() + 1;
@@ -39,6 +45,7 @@ public class MultilevelGraph {
     /**
      * Get the topmost (i.e. the "coarsest") coarsening level.
      * @return the topmost coarsening level or the original graph if there are no coarsened versions.
+     * @author Gordian
      */
     public Graph getTopLevel() {
         if (this.levels.isEmpty()) {
@@ -56,6 +63,7 @@ public class MultilevelGraph {
      * @return
      *     the level number of the new coarsening level (starting at {@code 1}, the original
      *     graph is level {@code 0})
+     * @author Gordian
      */
     public int newCoarseningLevel() {
         if (!this.levels.isEmpty() && !this.isComplete()) {
@@ -78,6 +86,7 @@ public class MultilevelGraph {
      *     The {@link Node}s that the {@link MergedNode} represents.
      *     Note that you add new represented {@code Node}s later using the methods of {@link MergedNode}.
      * @return the {@link MergedNode} that was created.
+     * @author Gordian
      */
     public MergedNode addNode(Set<Node> representedNodes) {
         MergedNode mn = this.topInternalLevel().createNode(representedNodes);
@@ -90,6 +99,7 @@ public class MultilevelGraph {
      * by a {@link MergedNode} in the top level. Note that this is a rather expensive computation.
      * Also note that this obviously requires that at least one coarsening level exist.
      * @return {@code true} if the level is complete or {@code false} otherwise
+     * @author Gordian
      */
     public boolean isComplete() {
         if (this.levels.isEmpty()) {
@@ -116,6 +126,7 @@ public class MultilevelGraph {
      *     The edge's target. Must not be {@code null}.
      * @return
      *     The newly created edge.
+     * @author Gordian
      */
     public Edge addEdge(Node source, Node target) {
         return this.topInternalLevel().addEdge(Objects.requireNonNull(source,
@@ -127,6 +138,7 @@ public class MultilevelGraph {
     /**
      * Throw an exception if there are no coarsening levels. Otherwise
      * @return the topmost (i.e. "coarsest") coarsening level.
+     * @author Gordian
      */
     private InternalGraph topInternalLevel() {
         if (this.levels.isEmpty()) {

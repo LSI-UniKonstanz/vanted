@@ -11,9 +11,7 @@
  ************************************************************************************/
 package org.vanted.addons.multilevelframework;
 
-import java.util.Arrays;
-import java.util.HashSet;
-
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import org.AttributeHelper;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Node;
@@ -23,9 +21,9 @@ import org.graffiti.plugin.parameter.JComponentParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 
-import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
-
 import javax.swing.*;
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 	

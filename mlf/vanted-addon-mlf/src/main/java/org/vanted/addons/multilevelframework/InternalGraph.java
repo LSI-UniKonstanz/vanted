@@ -17,6 +17,7 @@ class InternalGraph extends AdjListGraph {
      * This method just calls the superclass' method with the same signature.
      * Note that {@code false} must be passed to the {@code directed} parameter.
      * @see AdjListGraph#doAddEdge(Node, Node, boolean)
+     * @author Gordian
      */
     @Override
     public Edge doAddEdge(Node source, Node target, boolean directed) {
@@ -28,6 +29,7 @@ class InternalGraph extends AdjListGraph {
      * This method just calls the superclass' method with the same signature.
      * Note that {@code false} must be passed to the {@code directed} parameter.
      * @see AdjListGraph#doAddEdge(Node, Node, boolean, CollectionAttribute)
+     * @author Gordian
      */
     @Override
     protected Edge doAddEdge(Node source, Node target, boolean directed, CollectionAttribute col) {
@@ -40,6 +42,7 @@ class InternalGraph extends AdjListGraph {
      * @param node
      *     Must be an instance of {@link MergedNode} and must not be {@code null}.
      * @see AdjListGraph#doAddNode(Node)
+     * @author Gordian
      */
     @Override
     public void doAddNode(Node node) {
@@ -54,6 +57,7 @@ class InternalGraph extends AdjListGraph {
      * Create a new {@link MergedNode}.
      * @return the new {@link MergedNode}
      * @see AdjListGraph#createNode()
+     * @author Gordian
      */
     @Override
     protected MergedNode createNode() {
@@ -65,6 +69,7 @@ class InternalGraph extends AdjListGraph {
      * Create a new {@link MergedNode} with the given {@link CollectionAttribute}.
      * @return the new {@link MergedNode}
      * @see AdjListGraph#createNode(CollectionAttribute)
+     * @author Gordian
      */
     @Override
     public Node createNode(CollectionAttribute col) {
@@ -78,6 +83,7 @@ class InternalGraph extends AdjListGraph {
      *     {@link Node}s to be represented. This parameter must not be {@code null}.
      * @return
      *     The newly created {@link MergedNode}.
+     * @author Gordian
      */
     public MergedNode createNode(Set<Node> nodes) {
         this.setModified(true);
@@ -93,6 +99,7 @@ class InternalGraph extends AdjListGraph {
      * @param directed
      *     Must be {@code false}.
      * @see AdjListGraph#createEdge(Node, Node, boolean)
+     * @author Gordian
      */
     @Override
     public Edge createEdge(Node source, Node target, boolean directed) {
@@ -105,6 +112,7 @@ class InternalGraph extends AdjListGraph {
      * @param directed
      *     Must be {@code false}.
      * @see AdjListGraph#createEdge(Node, Node, boolean, CollectionAttribute)
+     * @author Gordian
      */
     @Override
     protected Edge createEdge(Node source, Node target, boolean directed, CollectionAttribute col) {
@@ -115,6 +123,7 @@ class InternalGraph extends AdjListGraph {
     /**
      * {@link InternalGraph}'s are always undirected.
      * @return {@code false}.
+     * @author Gordian
      */
     @Override
     public boolean isDirected() {
@@ -124,6 +133,7 @@ class InternalGraph extends AdjListGraph {
     /**
      * {@link InternalGraph}'s are always undirected.
      * @param directed Must be {@code false}.
+     * @author Gordian
      */
     @Override
     public void setDirected(boolean directed) {
@@ -135,6 +145,7 @@ class InternalGraph extends AdjListGraph {
      * {@link InternalGraph}'s are always undirected.
      * @param directed Must be {@code false}.
      * @see AdjListGraph#setDirected(boolean, boolean)
+     * @author Gordian
      */
     @Override
     public void setDirected(boolean directed, boolean adjustArrows) {
@@ -145,6 +156,7 @@ class InternalGraph extends AdjListGraph {
     /**
      * @param g Must be a undirected {@link Graph}.
      * @see AdjListGraph#addGraph(Graph)
+     * @author Gordian
      */
     @Override
     public Collection<GraphElement> addGraph(Graph g) {
@@ -162,6 +174,7 @@ class InternalGraph extends AdjListGraph {
      *     represented by a {@link MergedNode} of this graph (returned by {@link InternalGraph#getNodes()}).
      * @return
      *     The copied node.
+     * @author Gordian
      */
     @Override
     public Node addNodeCopy(Node node) {
@@ -175,6 +188,7 @@ class InternalGraph extends AdjListGraph {
     /**
      * @throws IllegalArgumentException if the parameter is {@code true}.
      * @param directed {@code true} or {@code false}.
+     * @author Gordian
      */
     private void checkUndirected(boolean directed) {
         if (directed) {
@@ -186,6 +200,7 @@ class InternalGraph extends AdjListGraph {
      * Checks whether {@link Node} is an instance of {@link MergedNode}.
      * @param n
      *     The {@link Node} to be checked.
+     * @author Gordian
      */
     private void checkMergedNode(Node n) {
         if (!(n instanceof MergedNode)) {
@@ -197,6 +212,7 @@ class InternalGraph extends AdjListGraph {
      * Checks whether there are multiple {@link MergedNode}s which represent the same nodes in the underlying graph.
      * @param ref
      *    If not {@code null}, this parameter will also be checked for overlaps with the existing nodes.
+     * @author Gordian
      */
     public boolean checkNoOverlappingMergedNodes(MergedNode ref) {
             final Set<Node> representedNodes = new HashSet<>();

@@ -12,6 +12,10 @@ import java.util.Iterator;
 
 import static org.junit.Assert.*;
 
+/**
+ * @see InternalGraph
+ * @author Gordian
+ */
 public class InternalGraphTest {
 
     InternalGraph ig;

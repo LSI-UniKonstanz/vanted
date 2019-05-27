@@ -1,7 +1,6 @@
 package org.vanted.addons.multilevelframework;
 
 import org.AttributeHelper;
-import org.apache.xpath.operations.Mult;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
@@ -9,13 +8,16 @@ import org.graffiti.graph.Node;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.help.Merge;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
 import static org.junit.Assert.*;
 
+/**
+ * @see MultilevelGraph
+ * @author Gordian
+ */
 public class MultilevelGraphTest {
     private Graph g;
     private HashSet<Node> innerNodes;

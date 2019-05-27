@@ -1,7 +1,6 @@
 package org.vanted.addons.multilevelframework;
 
 import org.AttributeHelper;
-import org.graffiti.attributes.Attribute;
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
@@ -12,10 +11,14 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+/**
+ * @see MergedNode
+ * @author Gordian
+ */
 public class MergedNodeTest {
 
     private Graph g;
