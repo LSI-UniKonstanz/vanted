@@ -12,7 +12,7 @@ import java.util.Set;
  * It cannot use {@link AdjListGraph} since some of the functionality it needs is not provided by
  * {@link AdjListGraph}'s public interface.
  */
-class InternalGraph extends AdjListGraph {
+class InternalGraph extends AdjListGraph implements CoarsenedGraph {
     /**
      * This method just calls the superclass' method with the same signature.
      * Note that {@code false} must be passed to the {@code directed} parameter.
@@ -227,5 +227,16 @@ class InternalGraph extends AdjListGraph {
                 representedNodes.addAll(mn.getInnerNodes());
             }
             return true;
+    }
+
+    /**
+     * @see CoarsenedGraph#getMergedNodes()
+     */
+    @Override
+    // only containing MergedNodes is an invariant that this wrapper class tries to
+    // sustain, so this _should_ be safe
+    @SuppressWarnings("unchecked")
+    public Collection<?extends MergedNode> getMergedNodes() {
+        return (Collection) this.nodes; // see comment above, this cast _should_ be safe
     }
 }

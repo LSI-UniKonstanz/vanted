@@ -26,73 +26,72 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
-	
-	public MultilevelFrameworkLayouter() {
-		super();
-	}
 
-	@Override
-	public String getDescription() {
-		return "<html><b>Multilevel Framework</b></html>";
-	}
+    public MultilevelFrameworkLayouter() {
+        super();
+    }
 
-	/**
-	 * @see super#reset()
-	 */
-	@Override
-	public void reset() {
-		super.reset();
-	}
-	
-	/**
-	 * @return the algorithm's name
-	 */
-	public String getName() {
-		return "Multilevel Framework Layouter";
-	}
-	
-	/**
-	 * Checks, if a graph was given and that the radius is positive.
-	 * 
-	 * @throws PreconditionException
-	 *            if no graph was given during algorithm invocation or the
-	 *            radius is negative
-	 */
-	@Override
-	public void check() throws PreconditionException {
-		PreconditionException errors = new PreconditionException();
-		
-		if (graph == null) {
-			errors.add("No graph available!");
-		}
-		
-		if (!errors.isEmpty()) {
-			throw errors;
-		}
-		
-		if (graph.getNumberOfNodes() <= 0) {
-			throw new PreconditionException("The graph is empty. Cannot run layouter.");
-		}
-	}
-	
-	/**
-	 * Performs the layout.
-	 */
-	public void execute() {
-		AdjListGraph alg = new AdjListGraph();
-		Node n1 = alg.addNode();
-		Node n2 = alg.addNode();
-		Node n3 = alg.addNode();
-		Node n4 = alg.addNode();
-		AttributeHelper.setLabel(n1, "1");
-		AttributeHelper.setLabel(n1, "1");
-		MultilevelGraph mlg = new MultilevelGraph(alg);
-		mlg.newCoarseningLevel();
-		MergedNode mn1 = mlg.addNode(new HashSet<>(Arrays.asList(n1,n2)));
-		MergedNode mn2 = mlg.addNode(new HashSet<>(Arrays.asList(n3,n4)));
-		mlg.addEdge(mn1, mn2);
-		assert mlg.isComplete();
-		GraphHelper.diplayGraph(mlg.getTopLevel());
+    @Override
+    public String getDescription() {
+        return "<html><b>Multilevel Framework</b></html>";
+    }
+
+    /**
+     * @see super#reset()
+     */
+    @Override
+    public void reset() {
+        super.reset();
+    }
+
+    /**
+     * @return the algorithm's name
+     */
+    public String getName() {
+        return "Multilevel Framework Layouter";
+    }
+
+    /**
+     * Checks, if a graph was given and that the radius is positive.
+     *
+     * @throws PreconditionException if no graph was given during algorithm invocation or the
+     *                               radius is negative
+     */
+    @Override
+    public void check() throws PreconditionException {
+        PreconditionException errors = new PreconditionException();
+
+        if (graph == null) {
+            errors.add("No graph available!");
+        }
+
+        if (!errors.isEmpty()) {
+            throw errors;
+        }
+
+        if (graph.getNumberOfNodes() <= 0) {
+            throw new PreconditionException("The graph is empty. Cannot run layouter.");
+        }
+    }
+
+    /**
+     * Performs the layout.
+     */
+    public void execute() {
+        AdjListGraph alg = new AdjListGraph();
+        Node n1 = alg.addNode();
+        Node n2 = alg.addNode();
+        Node n3 = alg.addNode();
+        Node n4 = alg.addNode();
+        AttributeHelper.setLabel(n1, "1");
+        AttributeHelper.setLabel(n1, "1");
+        MultilevelGraph mlg = new MultilevelGraph(alg);
+        mlg.newCoarseningLevel();
+        MergedNode mn1 = mlg.addNode(new HashSet<>(Arrays.asList(n1, n2)));
+        MergedNode mn2 = mlg.addNode(new HashSet<>(Arrays.asList(n3, n4)));
+        mlg.addEdge(mn1, mn2);
+        assert mlg.isComplete();
+        GraphHelper.diplayGraph(mlg.getTopLevel());
 
 //		Collection<Node> workNodes = new ArrayList<Node>();
 //		if (selection.getNodes().size() > 0)
@@ -118,48 +117,47 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 //
 //		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions,
 //							getName());
-	}
-	
-	/**
-	 * @return the parameter array
-	 */
-	@Override
-	public Parameter[] getParameters() {
-		// TODO
-		JComponentParameter param =
-				new JComponentParameter(new JButton("text"), "name", "description");
+    }
 
-		return new Parameter[] { param };
-	}
-	
-	/**
-	 * Sets the radius parameter to the given value.
-	 * 
-	 * @param params
-	 *           An array with exact one DoubleParameter.
-	 */
-	@Override
-	public void setParameters(Parameter[] params) {
-		this.parameters = params;
-	}
-	
-	/*
-	 * @see org.graffiti.plugin.algorithm.Algorithm#getCategory()
-	 */
-	@Override
-	public String getCategory() {
-		return "Layout";
-	}
-	
-	/**
-	 * This makes sure the algorithm is moved to the layout-tab of VANTED
-	 */
-	@Override
-	public boolean isLayoutAlgorithm() {
-		return true;
-	}
-	
-	public boolean activeForView(View v) {
-		return v != null;
-	}
+    /**
+     * @return the parameter array
+     */
+    @Override
+    public Parameter[] getParameters() {
+        // TODO
+        JComponentParameter param =
+                new JComponentParameter(new JButton("text"), "name", "description");
+
+        return new Parameter[]{param};
+    }
+
+    /**
+     * Sets the radius parameter to the given value.
+     *
+     * @param params An array with exact one DoubleParameter.
+     */
+    @Override
+    public void setParameters(Parameter[] params) {
+        this.parameters = params;
+    }
+
+    /*
+     * @see org.graffiti.plugin.algorithm.Algorithm#getCategory()
+     */
+    @Override
+    public String getCategory() {
+        return "Layout";
+    }
+
+    /**
+     * This makes sure the algorithm is moved to the layout-tab of VANTED
+     */
+    @Override
+    public boolean isLayoutAlgorithm() {
+        return true;
+    }
+
+    public boolean activeForView(View v) {
+        return v != null;
+    }
 }
