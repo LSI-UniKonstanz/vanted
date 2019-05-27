@@ -9,6 +9,8 @@ import org.graffiti.graph.Node;
 import java.util.*;
 import java.util.stream.Collectors;
 
+// TODO: maybe extract the relevant methods to an interface
+
 /**
  * A {@link Node} implementation that represents several nodes in a coarsening level within {@link MultilevelGraph}.
  * @see org.graffiti.graph.AdjListNode

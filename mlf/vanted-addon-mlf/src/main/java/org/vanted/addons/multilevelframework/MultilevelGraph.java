@@ -79,6 +79,11 @@ public class MultilevelGraph {
         return this.levels.size();
     }
 
+    public InternalGraph popCoarseningLevel()  {
+        return this.topInternalLevel();
+        // TODO delete top level
+    }
+
     /**
      * Add a new {@link MergedNode} to the topmost coarsening level (i.e. the one returned by
      * {@link MultilevelGraph#getTopLevel()})
