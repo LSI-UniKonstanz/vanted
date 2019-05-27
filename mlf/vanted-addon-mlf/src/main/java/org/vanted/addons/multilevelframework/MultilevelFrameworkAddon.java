@@ -1,12 +1,10 @@
 package org.vanted.addons.multilevelframework;
 
-import javax.swing.ImageIcon;
-
-import org.ErrorMsg;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.addons.AddonAdapter;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.plugin.algorithm.Algorithm;
 
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.addons.AddonAdapter;
+import javax.swing.*;
 
 public class MultilevelFrameworkAddon extends AddonAdapter {
 

@@ -25,6 +25,7 @@ public class MergedNode extends AdjListNode {
      *     The {@link Node}s represented by this node. Must not be {@code null}.
      *     Note that the collection will not be copied, but is used directly by this instance.
      * @see AdjListNode#AdjListNode(Graph)
+     * @author Gordian
      */
     public MergedNode(Graph g, Set<Node> nodes) {
         super(Objects.requireNonNull(g, "MergedNode graph must not be null."));
@@ -37,6 +38,7 @@ public class MergedNode extends AdjListNode {
      * @param g
      *     The {@link Graph} that contains this node. Must not be {@code null}.
      * @see AdjListNode#AdjListNode(Graph, CollectionAttribute)
+     * @author Gordian
      */
     public MergedNode(Graph g, CollectionAttribute col) {
         super(Objects.requireNonNull(g), Objects.requireNonNull(col));
@@ -49,6 +51,7 @@ public class MergedNode extends AdjListNode {
      * @param g
      *     The {@link Graph} that contains this node. Must not be {@code null}.
      * @see AdjListNode#AdjListNode(Graph)
+     * @author Gordian
      */
     public MergedNode(Graph g) {
         super(g);
@@ -60,6 +63,7 @@ public class MergedNode extends AdjListNode {
      * @return
      *    the {@link Node}s represented by this {@link MergedNode}.
      *    The returned value must not be modified (see {@link MergedNode#addInnerNode(Node)}).
+     * @author Gordian
      */
     public Collection<?extends Node> getInnerNodes() {
         return Collections.unmodifiableCollection(this.nodes);
@@ -71,6 +75,7 @@ public class MergedNode extends AdjListNode {
      * @param node
      *     The {@link Node} to be added. Must not be {@code null}. Must not be already contained in this
      *     {@link MergedNode} (i.e. not in {@link MergedNode#getInnerNodes()}).
+     * @author Gordian
      */
     public void addInnerNode(Node node) {
         if (this.nodes.contains(node)) {
@@ -80,6 +85,11 @@ public class MergedNode extends AdjListNode {
         this.updateLabel();
     }
 
+    /**
+     * Create a label that contains information about the nodes represented by this {@link MergedNode}.
+     * The label is set using {@link AttributeHelper}.
+     * @author Gordian, Tobias
+     */
     private void updateLabel() {
         // TODO: maybe display a nicer label if the represented nodes are unlabeled
         String label = this.nodes.stream()

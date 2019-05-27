@@ -1,14 +1,16 @@
 package org.vanted.addons.multilevelframework;
 
-import org.ErrorMsg;
 import org.junit.After;
 import org.junit.Test;
 
 import javax.swing.*;
-import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
+/**
+ * @see MultilevelFrameworkAddon
+ * @author Gordian
+ */
 public class MultilevelFrameworkAddonTest {
 
     private String old_name;
