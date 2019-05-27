@@ -13,5 +13,8 @@
 - "Last Week in SM": NodeValueMatrix implementieren, 
  ShortestDistances implementieren
 - "Last Week in MLF": MultilevelGraph mit einem Graph pro Ebene
-- HashSet<Node, ...> kann verwandt werden, da VANTED es auch überall verwendet
-- MLF: Treffen am Donnerstag um 14:00
+- HashMap<Node, ...> kann verwandt werden, da VANTED es auch überall verwendet
+ (Wir waren uns zunächst nicht sicher, da die Nodes nicht "hashCode()" 
+ nicht überschreiben)
+- MLF: Weiteres Treffen am Donnerstag um 14:00, um den trivialen Merger und 
+ Placer zu implementieren
