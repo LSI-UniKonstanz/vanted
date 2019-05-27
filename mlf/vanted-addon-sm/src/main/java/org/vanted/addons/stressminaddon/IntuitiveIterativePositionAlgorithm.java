@@ -44,11 +44,11 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
         }
 
         for (int current = 0; current < nodes.size(); current++){
-            Vector2d currentNode = positions.get(current); //node position
 
-            double newXPos = 0;     // X position from the moved node
-            double newYPos = 0;     // Y position from the moved node
-            double totalWeight = 0; // sum of every weight between nodes
+            Vector2d currentNode = positions.get(current);  //node position
+            double newXPos = 0;                             // X position from the moved node
+            double newYPos = 0;                             // Y position from the moved node
+            double totalWeight = 0;                         // sum of every weight between nodes
 
             for (int other = 0; other < nodes.size(); other++){
                 if (current == other){
@@ -57,23 +57,23 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
                 Vector2d otherNode = positions.get(other);
 
                 double euclideanDist = euclidDistance(currentNode,otherNode);   //get the euclidean distance
-                double weight = weights.get(current, other);                    //get the weight from weight-matrix
-                double desDistance = distances.get(current, other);             //get ideal distance from distances-matrix
-                double otherX = otherNode.x;                                    //get the new x-position from other-nodes
-                double otherY = otherNode.y;                                    //get the new y-position from other-nodes
+                double weight       = weights.get(current, other);              //get the weight from weight-matrix
+                double desDistance  = distances.get(current, other);            //get ideal distance from distances-matrix
+                double otherX       = otherNode.x;                              //get the new x-position from other-nodes
+                double otherY       = otherNode.y;                              //get the new y-position from other-nodes
 
                 /**
                  * calculate only with distance greater 0
                  */
                 if (euclideanDist != 0) {
-                    otherX += desDistance * (currentNode.x - otherX) / euclideanDist;
+                    otherX  += desDistance * (currentNode.x - otherX) / euclideanDist;
                 }
                 if (euclideanDist != 0) {
-                    otherY += desDistance * (currentNode.y - otherY) / euclideanDist;
+                    otherY  += desDistance * (currentNode.y - otherY) / euclideanDist;
                 }
 
-                newXPos += weight * otherX;                 //pre-finale new x-position
-                newYPos += weight * otherY;                 //pre-finale new y-position
+                newXPos     += weight * otherX;             //pre-finale new x-position
+                newYPos     += weight * otherY;             //pre-finale new y-position
                 totalWeight += weight;                      //sum up every weight
 
                 if (totalWeight != 0) {
@@ -104,11 +104,59 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
      */
     public double euclidDistance(Vector2d currentNode, Vector2d otherNode){
 
-        double xDiff = currentNode.x -otherNode.x;
-        double yDiff = currentNode.y - otherNode.y;
+        double xDiff    = currentNode.x -otherNode.x;
+        double yDiff    = currentNode.y - otherNode.y;
         double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
 
         return distance;
+    }
+
+    /**
+     * Calculate the stress from the given graph
+     * @param nodes
+     *      the nodes to be worked on. The indices of the nodes in this list correspond to
+     *      the indices used by {@code distances} and {@code weights}.
+     * @param distances
+     *      the matrix containing the node graphical distances between the nodes.
+     *      The implementing class shall only read the values in this matrix.
+     * @param weights
+     *      the matrix containing the node graphical distances between the nodes.
+     *      The implementing class shall only read the values in this matrix.
+     * @return
+     *      stress - a double that represents the quality of layout
+     */
+    public double clacStress(List<Node> nodes, NodeValueMatrix distances, NodeValueMatrix weights){
+
+        double stress=0;
+        /**
+         * create an ArrayList for saving the node position
+         * fill the ArrayList with the positions of nodes from Graph
+         */
+        ArrayList<Vector2d> positions = new ArrayList<>(nodes.size());
+        for (Node n : nodes){
+            positions.add(AttributeHelper.getPositionVec2d(n));
+        }
+
+        /**
+         * double loop that iterate the upper half (without main diagonal) of the given Graph-matrix
+         */
+        for(int current = 0; current< nodes.size()-1;current++){
+
+            Vector2d currentNode = positions.get(current);  //position of the viewed node
+
+            for(int other = current+1; other < nodes.size() ; other++){
+
+                Vector2d otherNode  = positions.get(other); //position of the node that is in relation with currentNode
+                double distance     = euclidDistance(currentNode , otherNode);
+
+                if (distance != 0) {
+                    double idealDiff = (distances.get(current, other) - distance) * (distances.get(current, other) - distance);
+                    stress = stress + weights.get(current, other) * idealDiff;
+                }
+            }
+        }
+
+        return stress;
     }
 
 }
