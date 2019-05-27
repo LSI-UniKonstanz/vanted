@@ -62,6 +62,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 	
 	/**
 	 * Performs the layout.
+	 * @author Jannik
 	 */
 	public void execute() {
 		ArrayList<Node> pureNodes;
