@@ -9,8 +9,10 @@ import org.graffiti.plugin.view.View;
  * Layout algorithm performing a stress minimization layout process.
  * @author David Boetius
  */
-public class StressMinimizationLayout extends AbstractEditorAlgorithm {
-
+public class StressMinimizationLayout extends AbstractEditorAlgorithm implements BackgroundAlgorithm {
+	
+	private BackgroundExecutionAlgorithm bea;
+	
 	/**
 	 * Creates a new StressMinimizationLayout instance.
 	 */
@@ -85,6 +87,12 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 	public void reset() {
 		// TODO Auto-generated method stub
 		super.reset();
+	}
+
+	@Override
+	public void setBackgroundExecutionAlgorithm(BackgroundExecutionAlgorithm bea) {
+		this.bea=bea;
+		
 	}
 
 }
