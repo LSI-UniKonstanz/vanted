@@ -1,0 +1,6 @@
+# ignoring generated png files
+# I am generating these files to compare the outputs
+# of our implementation
+# with those of graphviz
+
+**/*.png

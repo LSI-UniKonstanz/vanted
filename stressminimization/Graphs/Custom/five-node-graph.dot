@@ -1,0 +1,15 @@
+graph myGraph {
+node [label="\N", shape=box, fontsize=12];
+graph [overlap="false",splines="polyline",rankdir="LR",bb="0,0,322,356"]
+    1 [ label = "1" , height="0.35", width="0.35", pos="39,25"];
+    2 [ label = "2" , height="0.35", width="0.35", pos="127,336"];
+    3 [ label = "3" , height="0.35", width="0.35", pos="20,77"];
+    4 [ label = "4" , height="0.35", width="0.35", pos="160,132"];
+    5 [ label = "5" , height="0.35", width="0.35", pos="297,200"];
+    1 -- 2;
+    2 -- 3;
+    2 -- 4;
+    2 -- 5;
+    3 -- 5;
+    4 -- 5;
+}
