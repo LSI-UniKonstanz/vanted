@@ -124,7 +124,7 @@ public class NodeValueMatrix implements Cloneable {
     }
 
     @Override
-    protected NodeValueMatrix clone() {
+    public NodeValueMatrix clone() {
         return new NodeValueMatrix(this);
     }
 }

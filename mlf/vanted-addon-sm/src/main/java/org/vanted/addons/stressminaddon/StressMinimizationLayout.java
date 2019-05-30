@@ -144,8 +144,10 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
      * @param weights the weighs of each node.
      *
      * @return the stress value.
+     *
+     * @author Jannik
      */
-    private double calculateStress(final List<Node> nodes,
+    private static double calculateStress(final List<Node> nodes,
                                    final NodeValueMatrix distances,
                                    final NodeValueMatrix weights) {
         assert distances.getDimension() == nodes.size() && nodes.size() == weights.getDimension();
@@ -184,8 +186,10 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
      * @return
      *      <code>true</code> if the difference between every pair of positions (with the same index) is strictly
      *      smaller than {@code epsilon}, <code>false</code> otherwise.
+     *
+     * @author Jannik
      */
-    private boolean differencePositionsSmallerEpsilon(final ArrayList<Vector2d> oldPositions, final ArrayList<Vector2d> newPositions,
+    private static boolean differencePositionsSmallerEpsilon(final ArrayList<Vector2d> oldPositions, final ArrayList<Vector2d> newPositions,
                                        final double epsilon) {
         assert oldPositions.size() == newPositions.size();
         
