@@ -1,29 +1,23 @@
 package org.vanted.addons.stressminimization;
 
+import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.AttributeHelper;
 import org.Vector2d;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.optim.InitialGuess;
-import org.apache.commons.math3.optim.MaxEval;
-import org.apache.commons.math3.optim.MaxIter;
-import org.apache.commons.math3.optim.OptimizationData;
-import org.apache.commons.math3.optim.PointValuePair;
-import org.apache.commons.math3.optim.SimpleValueChecker;
-import org.apache.commons.math3.optim.nonlinear.scalar.GoalType;
-import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
-import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunctionGradient;
-import org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizer;
 import org.graffiti.attributes.AttributeNotFoundException;
+import org.graffiti.editor.GravistoService;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
-import org.sbml.jsbml.ext.arrays.test.ArraysWriteTest;
+import org.graffiti.selection.Selection;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
 
 /**
  * This class implements the stress majorization process 
@@ -47,13 +41,20 @@ class StressMajorizationImpl {
 		List<Node> nodes = g.getNodes();
 		int n = nodes.size();
 		final int d = 2; // only implemented for two dimensional space
-		
+
+		System.out.println("Calculating distances...");
 		RealMatrix distances = calcDistances();
+		System.out.println("Calculating weights...");
 		RealMatrix weights = getWeightsForDistances(distances, 2); // TODO make alpha selectable by user
 		
-		// TODO get the current layout. We now just use a random layout...
-		RealMatrix layout = getRandomMatrix(n, d); 
-		
+		System.out.println("Copying layout...");
+		RealMatrix layout = new Array2DRowRealMatrix(n, d); //getRandomMatrix(n, d); 
+		for (int i = 0; i < n; i += 1) {
+			Point2D position = AttributeHelper.getPosition(nodes.get(i));
+			layout.setRow(i, new double[] {position.getX(), position.getY()});
+		}
+
+		System.out.println("Optimizing layout...");
 		double prevStress, newStress;
 		do {
 
@@ -62,36 +63,28 @@ class StressMajorizationImpl {
 			
 			layout = c.calcOptimizedLayout();
 			newStress = c.calcStress(layout);
-			
-			System.out.println("p: " + prevStress);
-			System.out.println("n: " + newStress);
-			System.out.println("d: " + ((prevStress - newStress) / prevStress) + "; " + ((prevStress - newStress) / prevStress >= EPSILON));
-			
-		} while ( (prevStress - newStress) / prevStress >= EPSILON );
-		
-		// guarantee that no nodes are outside the window
-		double minX = Double.POSITIVE_INFINITY;
-		double minY = Double.POSITIVE_INFINITY;
-		for (int i = 0; i < n; i += 1) {
-			double[] pos = layout.getRow(i);
-			minX = pos[0] < minX ? pos[0] : minX;
-			minY = pos[1] < minY ? pos[1] : minY;
-		}
 
-		double offsetX = -minX + 50;
-		double offsetY = -minY + 50;
-		double scaleFactor = 100;
+			System.out.println("===============================");
+			System.out.println("prev: " + prevStress);
+			System.out.println("new:  " + newStress);
+			System.out.println("diff: " + ((prevStress - newStress) / prevStress) + "; " + ((prevStress - newStress) / prevStress >= EPSILON));
+			
+		} while ( (prevStress - newStress) / prevStress >= EPSILON ); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
 		
+		double scaleFactor = 100;
 		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
 		for (int i = 0; i < n; i += 1) {
 			double[] pos = layout.getRow(i);
-			Vector2d position = new Vector2d(offsetX + pos[0] * scaleFactor, 
-											 offsetY + pos[1] * scaleFactor);
+			Vector2d position = new Vector2d(pos[0] * scaleFactor, 
+											 pos[1] * scaleFactor);
 			nodes2newPositions.put(nodes.get(i), position);
 		}
-		
+
+		System.out.println("Updating layout...");
 		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, "Stress Majorization");
-		
+		// center graph layout
+		GravistoService.getInstance().runAlgorithm(new CenterLayouterAlgorithm(), g,
+				new Selection(""), null);
 	}
 	
 	/**
@@ -172,35 +165,6 @@ class StressMajorizationImpl {
 			}
 		}
 		return weights;
-	}
-	
-	// FIXME pure testing utilities
-	
-	private RealMatrix getRandomMatrix(int n, int d) {
-		RealMatrix m = new Array2DRowRealMatrix(n, d);
-		for (int i = 0; i < n; i += 1) {
-			for (int j = 0; j < d; j += 1) {
-				double value = Math.random();
-				m.setEntry(i, j, value);
-			}
-		}
-		return m;
-	}
-	
-	private RealMatrix getRandomSymetrixMatrixWith0Diagonal(int n) {
-		RealMatrix m = new Array2DRowRealMatrix(n, n);
-		for (int i = 0; i < n; i += 1) {
-			for (int j = 0; j <= i; j += 1) {
-				if (i == j) {
-					m.setEntry(i, j, 0.0);
-				} else {
-					double value = Math.random();
-					m.setEntry(i, j, value);
-					m.setEntry(j, i, value);
-				}
-			}
-		}
-		return m;
 	}
 	
 }

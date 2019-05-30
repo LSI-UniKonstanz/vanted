@@ -109,7 +109,7 @@ class StressMajorizationLayoutCalculator {
 			X.setEntry(0, a, 0);
 		}
 		
-		// since first node is fixed (above) therefore we skip the first node
+		// since first node is fixed (see above), we skip the first node
 		for (int i = 1; i < n; i += 1) {
 			RealVector Xi = X.getRowVector(i);
 			for (int a = 0; a < d; a += 1) {
