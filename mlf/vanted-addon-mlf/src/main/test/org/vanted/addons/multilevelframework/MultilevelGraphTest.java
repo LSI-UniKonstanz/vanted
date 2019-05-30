@@ -63,8 +63,10 @@ public class MultilevelGraphTest {
         assertTrue(mlg.getTopLevel().containsNode(mn2));
         assertEquals(mlg.newCoarseningLevel(), 2);
         assertFalse(mlg.isComplete());
-        mlg.addNode(new HashSet<>(Arrays.asList(mn, mn2)));
+        MergedNode mn3 = mlg.addNode(new HashSet<>(Arrays.asList(mn, mn2)));
         assertTrue(mlg.isComplete());
+        CoarsenedGraph top = mlg.popCoarseningLevel();
+        assertTrue(top.getMergedNodes().contains(mn3));
     }
 
     @Test(expected = IllegalStateException.class)
@@ -79,5 +81,11 @@ public class MultilevelGraphTest {
     public void addNodeFail() {
         MultilevelGraph mlg = new MultilevelGraph(this.g);
         mlg.addNode(new HashSet<>(Arrays.asList(n1, n2)));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void popCoarseningLevelFail() {
+        MultilevelGraph mlg = new MultilevelGraph(this.g);
+        mlg.popCoarseningLevel();
     }
 }
