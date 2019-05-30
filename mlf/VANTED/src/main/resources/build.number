@@ -1,6 +1,6 @@
 #Vanted version and build information. ONLY EDIT THE VANTED VERSION PROPERTY!
-#Sat, 17 Feb 2018 01:37:58 +0100
+#Mon, 29 Apr 2019 15:17:33 +0200
 build.number=10
-build.date=20180217
+build.date=20190429
 vanted.version.number=2.6.5
 vanted.min.compatibility=2.5.0
