@@ -63,7 +63,7 @@ public enum ConnectedComponentsHelper {
                 // add all new refSets
                 for (Node neighbor : neighbors) {
                     if (!connectedComponent.contains(neighbor) && !nodesToProcess.contains(neighbor) &&
-                            !allNodes.contains(neighbor)) { // new neighbour found that is in working set
+                            allNodes.contains(neighbor)) { // new neighbour found that is in working set
                         nodesToProcess.push(neighbor);
                     }
                 }
