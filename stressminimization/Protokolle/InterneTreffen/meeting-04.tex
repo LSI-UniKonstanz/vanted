@@ -1,0 +1,112 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
+\usepackage[unicode=true]{hyperref}
+\hypersetup{
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{longtable,booktabs}
+% Fix footnotes in tables (requires footnote package)
+\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{long table}}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\date{}
+
+\begin{document}
+
+\section{Protokoll des 4. internen
+Treffens}\label{protokoll-des-4.-internen-treffens}
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+Datum & Uhrzeit \\ \hline
+23.05 & 17:00 \\ \hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+\tightlist
+\item
+  Wir werden nochmal mail wegen der Graphen fürs benchmarking schreiben
+\item
+  Wir verteilen die Aufgaben für die Implementierungen für den nächsten
+  Milestone:
+\end{itemize}
+
+\begin{center}
+\begin{tabular}{|p{6cm}|l|}
+\hline
+Aufgabe  & Personen \\ \hline
+Background Execution \& Ui Updates - allgemeine Algorithmus GUI, wie
+Force Directed & Benjamin \\ \hline
+Stress Minimization Kernimplementierung & David, Joshi \\ \hline
+Multilevel Kernimplementierung & Silvan, Thomas, Jakob \\ \hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+\tightlist
+\item
+  Wir haben eine API Documentation Guideline formuliert, siehe
+  orga/Documentation\_Guideline.md
+\item
+  Wir haben uns darauf geeiningt, dass wir keine strikte Code Style
+  Guideline benötigen, wir benutzten die
+  \href{https://www.oracle.com/technetwork/java/javase/documentation/codeconventions-142311.html\#449}{Standard
+  Java Guideline von Oracle} als Referenz
+\item
+  Nächste Woche Donnerstag ist Feiertag: Wir unterhalten uns nach dem
+  Betreuendentreffen
+\item
+  Nächste Woche: Zwei Wochenbericht, Thomas: Ihm nochmal schreiben was
+  wir gemacht haben
+\end{itemize}
+
+\end{document}

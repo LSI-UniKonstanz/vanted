@@ -5,15 +5,13 @@
  "http://www.graffiti.org/dtd/1.0/plugin.dtd">
 
 <plugin>
-    <author>Matthias Klapperstueck</author>
-    <description>Extends VANTED to show how you can write Add-ons for VANTED. There are plenty of extension possibilities available (algorithms, context-menu entries,...).</description>
+    <author>David Boetius, Benjamin Halbritter, Thomas Komander, Silvan Reiner, Josua Sattler, Jakob Wietstock</author>
+    <description>Adds Stress Minimization Layouter to VANTED.</description>
     <plugindesc>
-        <name>Exemplary Add-on</name>
-        <main>org.vanted.addons.exampleaddon.ExemplaryAddon</main>
-        <version>2.0</version>
-        <feedname>Example-Add-on Changelog</feedname>
-        <feedurl>https://immersive-analytics.infotech.monash.edu/vanted/addons/example/rss-changelog.xml</feedurl>
+        <name>Stress Minimization Add-on</name>
+        <main>org.vanted.addons.stressminimization.StressMinimizationAddon</main>
+        <version>0.1</version>
         <compatibility>2.5.0</compatibility>
-        <available>https://bitbucket.org/matthiak/vanted-addon-example/</available>
+        <available>https://git.uni-konstanz.de/kn/swp2019/team-2.1</available>
     </plugindesc>
 </plugin>
