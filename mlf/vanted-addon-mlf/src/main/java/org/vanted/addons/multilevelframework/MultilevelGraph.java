@@ -23,8 +23,8 @@ public class MultilevelGraph {
     /**
      * Create a {@link MultilevelGraph}. Initially only the original graph will be contained.
      * New coarsening levels can be added, e.g. by calling {@link this#newCoarseningLevel()}.
-     * @param level_0
-     *     The original graph. Must not be {@code null}.
+     *
+     * @param level_0 The original graph. Must not be {@code null}.
      * @author Gordian
      */
     public MultilevelGraph(Graph level_0) {
@@ -35,6 +35,7 @@ public class MultilevelGraph {
 
     /**
      * Calculate the number of levels.
+     *
      * @return the number of levels (including the original graph)
      * @author Gordian
      */
@@ -44,6 +45,7 @@ public class MultilevelGraph {
 
     /**
      * Get the topmost (i.e. the "coarsest") coarsening level.
+     *
      * @return the topmost coarsening level or the original graph if there are no coarsened versions.
      * @author Gordian
      */
@@ -60,14 +62,14 @@ public class MultilevelGraph {
      * {@link MultilevelGraph#getTopLevel()}). Note that this method will throw
      * an {@link IllegalStateException} if the current coarsening level is not complete
      * (see {@link MultilevelGraph#isComplete()}).
-     * @return
-     *     the level number of the new coarsening level (starting at {@code 1}, the original
-     *     graph is level {@code 0})
+     *
+     * @return the level number of the new coarsening level (starting at {@code 1}, the original
+     * graph is level {@code 0})
      * @author Gordian
      */
     public int newCoarseningLevel() {
         if (!this.levels.isEmpty() && !this.isComplete()) {
-            throw new IllegalStateException( "Multilevel cannot add a new coarsening level if there are ");
+            throw new IllegalStateException("Multilevel cannot add a new coarsening level if there are ");
         }
         this.levels.add(new InternalGraph());
 
@@ -79,17 +81,27 @@ public class MultilevelGraph {
         return this.levels.size();
     }
 
-    public InternalGraph popCoarseningLevel()  {
-        return this.topInternalLevel();
-        // TODO delete top level
+    /**
+     * Removes the coarsest coarsening level. This is supposed to used by implementations of the
+     * {@link Placer} interface.
+     * This method can only be called if {@link #getNumberOfLevels()} >= 2 (i.e. the original graph cannot be removed).
+     *
+     * @return the topmost coarsening level
+     * @author Gordian
+     */
+    public CoarsenedGraph popCoarseningLevel() {
+        if (this.levels.isEmpty()) {
+            throw new IllegalStateException("MultilevelGraph: Cannot pop the original graph.");
+        }
+        return this.levels.remove(this.levels.size() - 1);
     }
 
     /**
      * Add a new {@link MergedNode} to the topmost coarsening level (i.e. the one returned by
      * {@link MultilevelGraph#getTopLevel()})
-     * @param representedNodes
-     *     The {@link Node}s that the {@link MergedNode} represents.
-     *     Note that you add new represented {@code Node}s later using the methods of {@link MergedNode}.
+     *
+     * @param representedNodes The {@link Node}s that the {@link MergedNode} represents.
+     *                         Note that you add new represented {@code Node}s later using the methods of {@link MergedNode}.
      * @return the {@link MergedNode} that was created.
      * @author Gordian
      */
@@ -103,6 +115,7 @@ public class MultilevelGraph {
      * Checks whether the top level is complete, i.e. whether all nodes in the underlying level are represented
      * by a {@link MergedNode} in the top level. Note that this is a rather expensive computation.
      * Also note that this obviously requires that at least one coarsening level exist.
+     *
      * @return {@code true} if the level is complete or {@code false} otherwise
      * @author Gordian
      */
@@ -125,12 +138,10 @@ public class MultilevelGraph {
     /**
      * Adds an undirected {@link AdjListEdge} to the topmost level (i.e. the one returned by
      * {@link MultilevelGraph#getTopLevel()}) connecting two {@link MergedNode}s.
-     * @param source
-     *     The edge's source. Must not be {@code null}.
-     * @param target
-     *     The edge's target. Must not be {@code null}.
-     * @return
-     *     The newly created edge.
+     *
+     * @param source The edge's source. Must not be {@code null}.
+     * @param target The edge's target. Must not be {@code null}.
+     * @return The newly created edge.
      * @author Gordian
      */
     public Edge addEdge(Node source, Node target) {
@@ -142,6 +153,7 @@ public class MultilevelGraph {
 
     /**
      * Throw an exception if there are no coarsening levels. Otherwise
+     *
      * @return the topmost (i.e. "coarsest") coarsening level.
      * @author Gordian
      */
