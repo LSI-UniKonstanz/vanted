@@ -126,11 +126,13 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 
     /**
      * Calculates the stress function for a given set of nodes as given by the following formular
-     * <p>
+     * <pre>
      *    \sum_{i < j} w_{ij}(d_{ij} - ||p_i - p_j ||)^2
-     * </p>
+     * </pre>
      * with {@code w} being the node weights, {@code d} being the gr. theo. distance,
-     * p being the positions and ||.|| being the Euclidian distance.
+     * p being the positions and {@code ||.||} being the Euclidean distance.
+     *
+     * All three arguments must have the same dimension/size.
      *
      * @param nodes the nodes to be used.
      * @param distances the graph theoretical distances between the nodes
@@ -141,35 +143,52 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
     private double calculateStress(final List<Node> nodes,
                                    final NodeValueMatrix distances,
                                    final NodeValueMatrix weights) {
+        assert distances.getDimension() == nodes.size() && nodes.size() == weights.getDimension();
         // get needed distances
         final List<Vector2d> positions = new ArrayList<>(nodes.size());
         for (Node n : nodes) {
-            positions.add(AttributeHelper.getPosition(n));
+            positions.add(AttributeHelper.getPositionVec2d(n));
         }
 
         double result = 0.0;
-        Vector2d posI, posJ; // posittion sof nodes in the loop
-        double diffX, diffY; // taxi distance between them
-        double euclidian; // holds euclidian distance
         double parenthesis; // holds contents of parentheses
 
         // i < j is short for a double sum
         for (int i = 0; i < nodes.size(); i++) {
             for (int j = i+1; j < nodes.size(); j++) {
-                // inner parenthesis
-                //  euclidian distance
-                Vector2d posI = positions.get(i), posJ = positions.get(j);
-                diffX = posI.x - posJ.x;
-                diffY = posI.y - posJ.y;
-                euclidian = Math.sqrt(diffX*diffX + diffY*diffY);
                 // inner sum term
-                parenthesis = distances.get(i, j) - euclidian;
-
+                parenthesis = distances.get(i, j) - positions.get(i).distance(positions.get(j));
                 result += weights.get(i, j)*parenthesis*parenthesis;
             }
         }
 
         return result;
+    }
 
+    /**
+     * This method checks whether the difference in distance between two sets of positions (with must have the same size)
+     * is below (<) a given threshold {@code epsilon}.
+     *
+     * @param oldPositions
+     *      the first set of positions to be used.
+     * @param newPositions
+     *      the second set of positions to be used.
+     * @param epsilon
+     *      the threshold to be used.
+     *
+     * @return
+     *      <code>true</code> if the difference between every pair of positions (with the same index) is strictly
+     *      smaller than {@code epsilon}, <code>false</code> otherwise.
+     */
+    private boolean differencePositionsSmallerEpsilon(final ArrayList<Vector2d> oldPositions, final ArrayList<Vector2d> newPositions,
+                                       final double epsilon) {
+        assert oldPositions.size() == newPositions.size();
+        
+        for (int pos = 0; pos < oldPositions.size(); pos++) {
+            if (oldPositions.get(pos).distance(newPositions.get(pos)) >= epsilon) {
+                return false; // a counter example is found. no further calculation needed.
+            }
+        }
+        return true;
     }
 }
