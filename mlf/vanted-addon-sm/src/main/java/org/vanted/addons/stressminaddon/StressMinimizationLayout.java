@@ -24,6 +24,11 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
     public static final String INDEX_ATTRIBUTE =
             "StressMinimization" + Attribute.SEPARATOR + "index";
 
+    /** The epsilon to use with the stress function with a reasonable default. */
+    private double stressEpsilon = 0.0001;
+    /** The epsilon to use with the new distances with a reasonable default. */
+    private double positionChangeEpsilon = 0.0001;
+
     /**
      * Creates a new {@link StressMinimizationLayout} object.
      */
