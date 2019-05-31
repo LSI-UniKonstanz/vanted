@@ -7,6 +7,12 @@ import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Implementing classes can calculate the next iteration of positions of a given set of
+ * nodes and their positions.
+ *
+ * @author Jannik
+ */
 public interface IterativePositionAlgorithm {
 
     /**
@@ -22,8 +28,12 @@ public interface IterativePositionAlgorithm {
      *      the matrix containing the node graphical distances between the nodes.
      *      The implementing class shall only read the values in this matrix.
      * @return
+     *      the newly iterated positions of the nodes in an list with the same
+     *      index.
+     *
+     * @author Jannik
      */
-    public HashMap<Node, Vector2d> nextIteration(final List<Node> nodes,
-                                                 final NodeValueMatrix distances,
-                                                 final NodeValueMatrix weights);
+    public List<Vector2d> nextIteration(final List<Node> nodes,
+                                        final NodeValueMatrix distances,
+                                        final NodeValueMatrix weights);
 }
