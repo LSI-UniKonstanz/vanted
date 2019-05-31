@@ -6,6 +6,8 @@ import java.util.function.DoubleUnaryOperator;
 /**
  * An object that stores a specific double value to a pair of nodes.
  * The matrix is always symmetrical, a square matrix and has a 0 value diagonal.
+ *
+ * @author Jannik
  */
 public class NodeValueMatrix implements Cloneable {
 
@@ -28,6 +30,7 @@ public class NodeValueMatrix implements Cloneable {
      *      the dimension of the square matrix. This value must be positive (>0)
      * @throws IllegalArgumentException
      *      if {@code dimension} is non-positive.
+     * @author Jannik
      */
     public NodeValueMatrix(final int dimension) {
         if ((this.dimension = dimension) <= 0)
@@ -43,6 +46,7 @@ public class NodeValueMatrix implements Cloneable {
      * Creates a clone.
      * @param other
      *      the matrix to be cloned. May not be {@code null}.
+     * @author Jannik
      */
     private NodeValueMatrix(final NodeValueMatrix other) {
         this.dimension = other.dimension;
@@ -54,6 +58,7 @@ public class NodeValueMatrix implements Cloneable {
 
     /**
      * @return the dimension of the matrix.
+     * @author Jannik
      */
     public int getDimension() {
         return dimension;
@@ -69,6 +74,7 @@ public class NodeValueMatrix implements Cloneable {
      *      the value at this cell or {@code 0} if {@code row} equals {@code col}.
      *
      * @throws IndexOutOfBoundsException if {@code row} or {@code col} are out of bounds.
+     * @author Jannik
      */
     public double get(final int row, final int col) {
         if (row < 0 || row > dimension-1)
@@ -90,8 +96,9 @@ public class NodeValueMatrix implements Cloneable {
      *
      * @throws IndexOutOfBoundsException if {@code row} or {@code col} are out of bounds.
      * @throws UnsupportedOperationException if {@code row} and {@code col} are equal.
+     * @author Jannik
      */
-    public void set(final int row, final int col, final double value) {
+    public synchronized void set(final int row, final int col, final double value) {
         if (row < 0 || row > dimension-1)
             throw new IndexOutOfBoundsException("Index 'row' out of bounds: 0 <= row <= " + (dimension-1));
         if (col < 0 || col > dimension-1)
@@ -112,6 +119,7 @@ public class NodeValueMatrix implements Cloneable {
      *
      * @return
      *      the matrix itself.
+     * @author Jannik
      */
     public NodeValueMatrix apply(final DoubleUnaryOperator operator) {
         if (null == operator) throw new NullPointerException("Operator may not be null!");
@@ -123,8 +131,14 @@ public class NodeValueMatrix implements Cloneable {
         return this;
     }
 
+    /**
+     * @see Object#clone()
+     * @return
+     *      a clone of the current NodeValueMatrix.
+     * @author Jannik
+     */
     @Override
-    protected NodeValueMatrix clone() {
+    public NodeValueMatrix clone() {
         return new NodeValueMatrix(this);
     }
 }
