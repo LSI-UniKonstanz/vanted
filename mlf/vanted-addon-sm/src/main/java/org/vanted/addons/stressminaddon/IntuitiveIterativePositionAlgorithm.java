@@ -9,9 +9,17 @@ import org.graffiti.graph.Node;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * An implementation of the {@link IterativePositionAlgorithm} that calculates the new
+ * distances for every node separately by using the vote of all other nodes.
+ * This is more intuitive.
+ *
+ * @author René
+ */
 public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlgorithm
 {
 
@@ -27,14 +35,16 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
      * @param weights
      *      the matrix containing the node graphical distances between the nodes.
      *      The implementing class shall only read the values in this matrix.
-     * @return result
-     *      result is a type of List<Vector2d> that contains the new Layout
+     * @return
+     *      the newly iterated positions of the nodes in an list with the same
+     *
+     * @author René, Jannik
      */
     @Override
-    public HashMap<Node, Vector2d> nextIteration(List<Node> nodes, NodeValueMatrix distances, NodeValueMatrix weights) {
+    public List<Vector2d> nextIteration(List<Node> nodes, NodeValueMatrix distances, NodeValueMatrix weights) {
 
 
-        /**
+        /*
          * create an ArrayList for saving the node position
          * fill the ArrayList with the positions of nodes from Graph
          */
@@ -56,13 +66,13 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
                 }
                 Vector2d otherNode = positions.get(other);
 
-                double euclideanDist = euclidDistance(currentNode,otherNode);   //get the euclidean distance
-                double weight       = weights.get(current, other);              //get the weight from weight-matrix
-                double desDistance  = distances.get(current, other);            //get ideal distance from distances-matrix
-                double otherX       = otherNode.x;                              //get the new x-position from other-nodes
-                double otherY       = otherNode.y;                              //get the new y-position from other-nodes
+                double euclideanDist = currentNode.distance(otherNode);   //get the euclidean distance
+                double weight       = weights.get(current, other);        //get the weight from weight-matrix
+                double desDistance  = distances.get(current, other);      //get ideal distance from distances-matrix
+                double otherX       = otherNode.x;                        //get the new x-position from other-nodes
+                double otherY       = otherNode.y;                        //get the new y-position from other-nodes
 
-                /**
+                /*
                  * calculate only with distance greater 0
                  */
                 if (euclideanDist != 0) {
@@ -80,83 +90,10 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
                     currentNode.x = newXPos / totalWeight;  //finale new x-position
                     currentNode.y = newYPos / totalWeight;  //finale new y-position
                 }
-
-
             }
 
         }
-        // put the distances back into the graph
-        HashMap<Node, Vector2d> result = new HashMap<>(nodes.size());
-        for (int i = 0; i < nodes.size(); i++) {
-            result.put(nodes.get(i), positions.get(i));
-        }
-        GraphHelper.applyUndoableNodePositionUpdate(result, "Iterative Position Step");
-
-        return result;
+        // make the positions unmodifiable
+        return Collections.unmodifiableList(positions);
     }
-
-    /**
-     * Calculate the euclidean distance
-     *
-     * @param currentNode - the 2D node that has to change position
-     * @param otherNode - a 2D node from the graph
-     * @return distance - euclidean distance
-     */
-    public double euclidDistance(Vector2d currentNode, Vector2d otherNode){
-
-        double xDiff    = currentNode.x -otherNode.x;
-        double yDiff    = currentNode.y - otherNode.y;
-        double distance = Math.sqrt(xDiff * xDiff + yDiff * yDiff);
-
-        return distance;
-    }
-
-    /**
-     * Calculate the stress from the given graph
-     * @param nodes
-     *      the nodes to be worked on. The indices of the nodes in this list correspond to
-     *      the indices used by {@code distances} and {@code weights}.
-     * @param distances
-     *      the matrix containing the node graphical distances between the nodes.
-     *      The implementing class shall only read the values in this matrix.
-     * @param weights
-     *      the matrix containing the node graphical distances between the nodes.
-     *      The implementing class shall only read the values in this matrix.
-     * @return
-     *      stress - a double that represents the quality of layout
-     */
-    public double clacStress(List<Node> nodes, NodeValueMatrix distances, NodeValueMatrix weights){
-
-        double stress=0;
-        /**
-         * create an ArrayList for saving the node position
-         * fill the ArrayList with the positions of nodes from Graph
-         */
-        ArrayList<Vector2d> positions = new ArrayList<>(nodes.size());
-        for (Node n : nodes){
-            positions.add(AttributeHelper.getPositionVec2d(n));
-        }
-
-        /**
-         * double loop that iterate the upper half (without main diagonal) of the given Graph-matrix
-         */
-        for(int current = 0; current< nodes.size()-1;current++){
-
-            Vector2d currentNode = positions.get(current);  //position of the viewed node
-
-            for(int other = current+1; other < nodes.size() ; other++){
-
-                Vector2d otherNode  = positions.get(other); //position of the node that is in relation with currentNode
-                double distance     = euclidDistance(currentNode , otherNode);
-
-                if (distance != 0) {
-                    double idealDiff = (distances.get(current, other) - distance) * (distances.get(current, other) - distance);
-                    stress = stress + weights.get(current, other) * idealDiff;
-                }
-            }
-        }
-
-        return stress;
-    }
-
 }
