@@ -1,5 +1,6 @@
 package org.vanted.addons.stressminaddon;
 
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import org.AttributeHelper;
 import org.Vector2d;
 import org.graffiti.attributes.Attribute;
@@ -8,9 +9,12 @@ import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
+import org.vanted.addons.stressminaddon.util.ConnectedComponentsHelper;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Implements a version of a stress minimization add-on that can be used
@@ -74,26 +78,31 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
     public void execute() {
         ArrayList<Node> pureNodes;
         if (selection.isEmpty()) {
-            pureNodes = new ArrayList<>(graph.getNodes());
+            pureNodes = new ArrayList<>(GraphHelper.getVisibleNodes(graph.getNodes()));
         } else {
-            pureNodes = new ArrayList<>(selection.getNodes());
+            pureNodes = new ArrayList<>(GraphHelper.getVisibleNodes(selection.getNodes()));
         }
 
-        List<Node> nodes = Collections.unmodifiableList(pureNodes);
-        // Set positions attribute for hopefully better handling
-        for (int pos = 0; pos < nodes.size(); pos++) {
-            nodes.get(pos).setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, pos);
-            System.out.println(nodes.get(pos).getAttribute(INDEX_ATTRIBUTE));
-        }
 
-        //////////////////////////////
-        // TODO implement algorithm //
-        //////////////////////////////
+        // TODO layout components
+
+        final Set<List<Node>> connectedComponents = ConnectedComponentsHelper.getConnectedComponents(pureNodes);
+        for (List<Node> connectedComponent : connectedComponents) {
+            // Set positions attribute for hopefully better handling
+            for (int pos = 0; pos < connectedComponent.size(); pos++) {
+                connectedComponent.get(pos).setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, pos);
+                System.out.println(connectedComponent.get(pos).getAttribute(INDEX_ATTRIBUTE));
+            }
+
+            //////////////////////////////
+            // TODO implement algorithm //
+            //////////////////////////////
 
 
-        // Reset attributes
-        for (Node node : nodes) {
-            node.removeAttribute(StressMinimizationLayout.INDEX_ATTRIBUTE);
+            // Reset attributes
+            for (Node node : connectedComponent) {
+                node.removeAttribute(StressMinimizationLayout.INDEX_ATTRIBUTE);
+            }
         }
     }
 
