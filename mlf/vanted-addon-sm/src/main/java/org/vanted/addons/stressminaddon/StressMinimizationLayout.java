@@ -32,9 +32,11 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
     public static final IterativePositionAlgorithm positionAlgorithm = new IntuitiveIterativePositionAlgorithm();
 
     /** The epsilon to use with the stress function with a reasonable default. */
-    private double stressEpsilon = 0.0001;
+    private double stressEpsilon = 0.0001; // TODO make configurable
     /** The epsilon to use with the new distances with a reasonable default. */
-    private double positionChangeEpsilon = 0.0001;
+    private double positionChangeEpsilon = 0.0001; // TODO make configurable
+    /** The maximal iterations to make. */
+    private int maxIterations = 1_000_000; // TODO make configurable
 
     /**
      * Creates a new {@link StressMinimizationLayout} object.
@@ -43,6 +45,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         super();
     }
 
+    /**
+     * @return the description of the algorithm.
+     */
     @Override
     public String getDescription() {
         return ""; // TODO
@@ -95,49 +100,45 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         // TODO temporary
         RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
         rla.attach(graph, selection);
-      //  rla.execute();
+        //  rla.execute();
 
         List<WorkUnit> workUnits = new ArrayList<>(connectedComponents.size());
 
-        // prepare
+        // prepare (set helper attribute)
         for (List<Node> component : connectedComponents) {
             // Set positions attribute for hopefully better handling
             for (int pos = 0; pos < component.size(); pos++) {
                 component.get(pos).setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, pos);
             }
             WorkUnit unit = new WorkUnit(component);
-            //System.out.println(unit);
-            //System.out.print("{ distances =\n" + unit.distances);
-            //System.out.print("weights =\n" + unit.weights);
-            //System.out.println("component = " + component.toString() +
-            //        ", maxsize = " +ConnectedComponentsHelper.getMaxNodeSize(component) + "}");
+            System.out.println(unit.toString());
 
-            workUnits.add(new WorkUnit(component));
+            workUnits.add(unit);
         }
 
         boolean someoneIsWorking = true;
 
+        // iterate
         HashMap<Node, Vector2d> move = new HashMap<>();
-        final int iterationMax = 1_000_000;
-        for (int iteration = 1; someoneIsWorking && iteration <= iterationMax; ++iteration) {
+        for (int iteration = 1; someoneIsWorking && iteration <= maxIterations; ++iteration) {
             System.out.println("iteration = " + iteration);
             someoneIsWorking = false;
             move.clear();
-
+            // execute every work unit
             for (WorkUnit unit : workUnits) {
                 if (unit.hasStopped)
                     continue;
                 move.putAll(unit.nextIteration());
-
+                // something was worked on
                 someoneIsWorking = true;
-                System.out.println(unit);
+                System.out.println(unit.toStringShort());
             }
 
             GraphHelper.applyUndoableNodePositionUpdate(move, "Do iteration.");
         }
 
 
-        // end
+        // finish (remove helper attribute)
         for (List<Node> connectedComponent : connectedComponents) {
             // Reset attributes
             for (Node node : connectedComponent) {
@@ -148,12 +149,18 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents);
     }
 
+    /**
+     * @return the parameters the algorithm uses.
+     */
     @Override
     public Parameter[] getParameters() {
         // TODO
         return null;
     }
 
+    /**
+     * @param params set the parameters.
+     */
     @Override
     public void setParameters(Parameter[] params) {
         // TODO
@@ -193,7 +200,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
      * @param nodes the nodes to be used.
      * @param distances the graph theoretical distances between the nodes
      * @param positions the positions to use for calculation
-     * @param weights the weighs of each node.
+     * @param weights the weights of each node.
      *
      * @return the stress value.
      *
@@ -250,46 +257,87 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         return true;
     }
 
+    /**
+     * Represents a unit (in most cases a connected component) the stress minimization
+     * algorithm works on.
+     * All data relevant for the session will be saved and the algorithm will be run
+     * for every WorkUnit separately.
+     *
+     * @author Jannik
+     */
     class WorkUnit {
+        /** The nodes to work on. */
         final List<Node> nodes;
+        /** The graph theoretical distances to work with. These will not change once calculated. */
         final NodeValueMatrix distances;
+        /** The weights used for every node pair. These will not change once calculated. */
         final NodeValueMatrix weights;
 
+        /**
+         * The current calculated stress from the {@link #calculateStress(List, List, NodeValueMatrix, NodeValueMatrix)}
+         * method.
+         */
         double currentStress;
+        /** The current positions of the nodes. */
         List<Vector2d> currentPositions;
 
+        /** Whether the stress minimization has terminated on this {@link WorkUnit}. */
         boolean hasStopped;
 
+        /**
+         * Creates a new {@link WorkUnit} and initializes all relevant fields like <code>distances</code>,
+         * <code>weights</code>, <code>currentStress</code> and <code>currentPositions</code>.
+         *
+         * @param nodes the nodes this {@link WorkUnit} shall work on.
+         *
+         * @author Jannik
+         */
         public WorkUnit(final List<Node> nodes) {
             this.nodes = nodes;
             this.distances = MockShortestDistances.getShortestPaths(nodes);
             final double scalingFactor = ConnectedComponentsHelper.getMaxNodeSize(nodes);
+            // scale for better display TODO make configurable
             this.distances.apply(x -> x*scalingFactor*5);
-            this.weights = this.distances.clone().apply(x -> 1/(x*x));
+            this.weights = this.distances.clone().apply(x -> 1/(x*x)); // derive weights TODO make configurable
 
             // TODO implement preprocessing
+            // calculate first values
             this.currentPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
             this.currentStress = StressMinimizationLayout.calculateStress(nodes, this.currentPositions, this.distances, this.weights);
             this.hasStopped = false;
         }
 
+        /**
+         * Perform the next iteration and return the positions to be changed
+         * in a format accepted by {@link GraphHelper#applyUndoableNodePositionUpdate(HashMap, String)}.
+         *
+         * @return
+         *      the new positions or an empty map if the {@link WorkUnit} has already stopped.
+         *
+         * @author Jannik
+         */
         public Map<Node, Vector2d> nextIteration() {
             if (hasStopped) return Collections.emptyMap();
 
+            // calculate new positions
             List<Vector2d> newPositions = StressMinimizationLayout.positionAlgorithm.nextIteration(
                     this.nodes, this.distances, this.weights);
 
+            // calculate new stress
             double newStress = StressMinimizationLayout.calculateStress(
                     this.nodes, newPositions, this.distances, this.weights);
 
-            if ((this.currentStress - newStress)/this.currentStress < StressMinimizationLayout.this.stressEpsilon ||
-                StressMinimizationLayout.differencePositionsSmallerEpsilon(newPositions, this.currentPositions,
-                        StressMinimizationLayout.this.positionChangeEpsilon)) {
+            // shall we stop? is the change in stress or position is smaller than the given epsilon
+            if ((this.currentStress - newStress)/this.currentStress < stressEpsilon ||
+                differencePositionsSmallerEpsilon(newPositions, this.currentPositions, positionChangeEpsilon)) {
                this.hasStopped = true;
             }
+
+            // update with new values
             this.currentPositions = newPositions;
             this.currentStress = newStress;
 
+            // create the output
             HashMap<Node, Vector2d> result = new HashMap<>(this.nodes.size());
             for (int node = 0; node < this.nodes.size(); node++) {
                 System.out.println(this.nodes.get(node) + " to " + this.currentPositions.get(node));
@@ -298,8 +346,27 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             return result;
         }
 
+        /**
+         * @return a string representation of the {@link WorkUnit}.
+         * @author IntelliJ
+         */
         @Override
         public String toString() {
+            return "WorkUnit{" +
+                    "nodes=" + nodes +
+                    ", distances=\n" + distances +
+                    "weights=\n" + weights +
+                    "currentStress=" + currentStress +
+                    ", currentPositions=" + currentPositions +
+                    ", hasStopped=" + hasStopped +
+                    '}';
+        }
+
+        /**
+         * @return a short string representation of the {@link WorkUnit}.
+         * @author IntelliJ
+         */
+        public String toStringShort() {
             return "WorkUnit{" +
                     "currentStress=" + currentStress +
                     ", hasStopped=" + hasStopped +
