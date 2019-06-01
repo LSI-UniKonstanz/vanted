@@ -54,4 +54,39 @@ public class TestGraphs {
         }
     }
 
+
+    /** Contains a graph with 4 Nodes, all the Nodes are on the same position. */
+    public static final Graph GRAPH_OnePosition;
+    /** The positions of nodes in graph onePosition.  */
+    public static final ArrayList<Vector2d> GRAPH_OnePosition_POSITIONS;
+    /** The nodes of graph onePosition. */
+    public static final ArrayList<Node> GRAPH_OnePosition_NODES;
+    /** The distances between nodes of graph onePosition. */
+    public static final NodeValueMatrix GRAPH_OnePosition_DISTANCES;
+
+    /*
+      Initialize graphs
+      @author Rene
+     */
+
+    static{
+        GRAPH_OnePosition_POSITIONS = new ArrayList<>(Arrays.asList(
+                new Vector2d(0.0,0.0), new Vector2d(0.0,0.0), new Vector2d(0.0,0.0), new Vector2d(0.0,0.0)));
+        GRAPH_OnePosition = new AdjListGraph();
+        GRAPH_OnePosition_NODES = new ArrayList<>();
+        GRAPH_OnePosition_DISTANCES = new NodeValueMatrix(GRAPH_OnePosition_POSITIONS.size());
+
+        GRAPH_OnePosition_DISTANCES.apply(x->2);
+
+        for (Vector2d pos : GRAPH_OnePosition_POSITIONS){
+            GRAPH_OnePosition_NODES.add(GraphHelper.addNodeToGraph(
+                    GRAPH_OnePosition, pos.x, pos.y, 1, 1, 1, Color.WHITE, Color.BLACK));
+        }
+
+        for(int i = 0; i< GRAPH_OnePosition_NODES.size(); i++){
+            GRAPH_OnePosition.addEdge(GRAPH_OnePosition_NODES.get(i), GRAPH_OnePosition_NODES.get((i+1) % GRAPH_OnePosition_NODES.size()), false);
+            GRAPH_OnePosition_DISTANCES.set(i,(i+1) % GRAPH_OnePosition_NODES.size(), 1);
+        }
+    }
+
 }
