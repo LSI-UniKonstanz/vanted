@@ -2,12 +2,16 @@ package org.vanted.addons.stressminaddon.util;
 
 import org.AttributeHelper;
 import org.Vector2d;
+import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
+import org.graffiti.managers.pluginmgr.DefaultPluginManager;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.geom.Rectangle2D;
 import java.util.*;
+import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
 import static data.TestGraphs.*;
@@ -18,6 +22,17 @@ import static org.junit.Assert.*;
  * @author Jannik
  */
 public class ConnectedComponentsHelperTest {
+
+
+    /**
+     * Setup tests
+     */
+    @Before
+    public void setUp() {
+        // set up mock MainFrame for testing with GraphHelper
+        if (MainFrame.getInstance() == null)
+            new MainFrame(new DefaultPluginManager(Preferences.userRoot()), Preferences.userRoot());
+    }
 
     /**
      * Test method {@link ConnectedComponentsHelper#getConnectedComponents(Collection)}.
@@ -69,7 +84,6 @@ public class ConnectedComponentsHelperTest {
      */
     @Test
     public void layoutConnectedComponents() {
-        // TODO find out how to test properly without VANTED running
         // TODO test only one component
         // TODO test graphs with bends
         // create copy of working graph so that the actual graph isn't changed
@@ -87,7 +101,6 @@ public class ConnectedComponentsHelperTest {
             oldPos = oldPositions.get(pos);
             newPos = newPositions.get(pos);
 
-            System.out.println(oldPos.distance(newPos));
             assertTrue("Node was moved", oldPos.distance(newPos) > 0);
         }
     }
