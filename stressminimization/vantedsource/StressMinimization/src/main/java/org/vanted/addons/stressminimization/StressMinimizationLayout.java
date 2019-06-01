@@ -11,7 +11,7 @@ import org.graffiti.plugin.view.View;
  */
 public class StressMinimizationLayout extends AbstractEditorAlgorithm implements BackgroundAlgorithm {
 	
-	private BackgroundExecutionAlgorithm bea;
+	private BackgroundExecutionAlgorithm bea= new BackgroundExecutionAlgorithm(this);
 	
 	/**
 	 * Creates a new StressMinimizationLayout instance.
@@ -40,7 +40,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
 	
 	@Override
 	public boolean isLayoutAlgorithm() {
-		return true;
+		return false;
 	}
 	
 	@Override
@@ -80,7 +80,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
 	
 	@Override
 	public void execute() {
+		bea.setStatus(1);
 		// TODO: 
+		bea.setStatus(3);
 	}
 	
 	@Override

@@ -24,6 +24,7 @@ class StressMajorizationImpl {
 	private final double EPSILON = 1E-4;
 	
 	private final Graph g;
+	private BackgroundExecutionAlgorithm bea;
 	public StressMajorizationImpl(Graph g) {
 		this.g = g;
 	}
