@@ -1,5 +1,5 @@
 
-package test.stressmin;
+package org.vanted.addons.stressminimization;
 
 import junit.framework.TestCase;
 
@@ -9,7 +9,6 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.selection.Selection;
 import org.junit.Test;
-import org.vanted.addons.stressminimization.StressMinimizationLayout;
 
 /**
  * General test cases for StressMinimizationLayouter
@@ -18,18 +17,25 @@ public class TestStressMinimizationLayout extends TestCase {
 	
 	private StressMinimizationLayout layout = new StressMinimizationLayout();
 	
-	@Test(expected = PreconditionException.class)
+	@Test()
 	public void testCheckThrowsOnEmpty() throws PreconditionException {
 		
 		Graph empty = new AdjListGraph();
 		Selection sel = new Selection();
 		
 		layout.attach(empty, sel);
-		layout.check();
+		try {
+			// the @Test(expected = PreconditionException.class)
+			// seems not to work or not to work as I expect it
+			layout.check();
+			fail("Expected precodition exception for empty graph");
+		} catch (Exception ex) {
+			assert(ex instanceof PreconditionException);
+		}
 		
 	}
 	
-	@Test(expected = PreconditionException.class)
+	@Test()
 	public void testCheckThrowsOnDirected() throws PreconditionException {
 		
 		Graph directed = new AdjListGraph();
@@ -39,7 +45,12 @@ public class TestStressMinimizationLayout extends TestCase {
 		Selection sel = new Selection();
 		
 		layout.attach(directed, sel);
-		layout.check();
+		try {
+			layout.check();
+			fail("Expected precodition exception for directed graph");
+		} catch (Exception ex) {
+			assert(ex instanceof PreconditionException);
+		}
 		
 	}
 }
