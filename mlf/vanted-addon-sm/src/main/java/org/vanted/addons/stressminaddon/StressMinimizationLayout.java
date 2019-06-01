@@ -76,6 +76,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
      * Performs the layout.
      */
     public void execute() {
+        // get nodes to work with
         ArrayList<Node> pureNodes;
         if (selection.isEmpty()) {
             pureNodes = new ArrayList<>(GraphHelper.getVisibleNodes(graph.getNodes()));
@@ -84,14 +85,14 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         }
 
 
-        // TODO layout components
-
+        // get connected components and layout them
         final Set<List<Node>> connectedComponents = ConnectedComponentsHelper.getConnectedComponents(pureNodes);
+        ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents);
+
         for (List<Node> connectedComponent : connectedComponents) {
             // Set positions attribute for hopefully better handling
             for (int pos = 0; pos < connectedComponent.size(); pos++) {
                 connectedComponent.get(pos).setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, pos);
-                System.out.println(connectedComponent.get(pos).getAttribute(INDEX_ATTRIBUTE));
             }
 
             //////////////////////////////

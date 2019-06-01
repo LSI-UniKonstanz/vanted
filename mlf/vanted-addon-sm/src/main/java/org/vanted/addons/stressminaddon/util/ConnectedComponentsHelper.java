@@ -1,8 +1,12 @@
 package org.vanted.addons.stressminaddon.util;
 
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import org.AttributeHelper;
 import org.Vector2d;
+import org.graffiti.graph.Edge;
+import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
+import org.graffiti.graphics.CoordinateAttribute;
 
 import java.awt.geom.Rectangle2D;
 import java.util.*;
@@ -19,7 +23,7 @@ public enum ConnectedComponentsHelper {
      * as unmodifiable {@link RandomAccess} lists.
      *
      * This code is currently almost an exact copy of
-     * {@link de.ipk_gatersleben.ag_nw.graffiti.GraphHelper#getConnectedComponents(Collection)}
+     * {@link GraphHelper#getConnectedComponents(Collection)}
      * with the addition that only nodes from the working set are regarded, not all nodes that share the same
      * connected component.
      *
@@ -84,39 +88,201 @@ public enum ConnectedComponentsHelper {
 
     /**
      * Layout connected components so that they do not overlap.
-     * This action can be undoable.
+     * This action can be undone.<br>
+     * This code is almost an exact copy of
+     * {@link de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#layoutConnectedComponents(Graph)}
+     * except for a few adjustments
+     * <ul>
+     *     <li>regard only connected components in the selection</li>
+     *     <li>use individual bounds method
+     *     {@link ConnectedComponentsHelper#getConnectedComponetBounds(List, double, double, double, double)}</li>
+     *     <li>make changes undoable (in one step)</li>
+     *     <li>maybe make some perceived improvements to code regarding duplicates and strange code</li>
+     * </ul>
+     * <br>
+     * <br>
+     * The default values for the componet bound margins are set to
+     * {@code marginFractionWidth = marginFractionHeight = 0.1} and
+     * {@code minMarginWidth = minMarginHeight = 10.0} respectively.
      *
      * @param connectedComponents
      *      the connected components to be layouted.
      *
+     * @see de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#layoutConnectedComponents(Graph)
+     * @see ConnectedComponentsHelper#layoutConnectedComponents(Set, double, double, double, double)
+     *
+     * @author Jannik
+     */
+    public static void layoutConnectedComponents(final Set<List<Node>> connectedComponents) {
+        ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents,
+                0.1, 0.1, 10, 10);
+    }
+
+    /**
+     * Layout connected components so that they do not overlap.
+     * This action can be undone.<br>
+     *
+     * This code is almost an exact copy of
+     * {@link de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#layoutConnectedComponents(Graph)}
+     * except for a few adjustments:
+     * <ul>
+     *     <li>regard only connected components in the selection</li>
+     *     <li>use individual bounds method
+     *     {@link ConnectedComponentsHelper#getConnectedComponetBounds(List, double, double, double, double)}</li>
+     *     <li>make changes undoable (in one step)</li>
+     *     <li>maybe make some perceived improvements to code regarding duplicates and strange code</li>
+     * </ul>
+     *
+     * @param connectedComponents
+     *      the connected components to be layouted.
+     *
+     * @param marginFractionWidth
+     *      the size of the additional width margin as fraction of the calculated width of every component.
+     *      Must be {@code >= 0}.
+     * @param marginFractionHeight
+     *      the size of the additional height margin as fraction of the calculated height of every component.
+     *      Must be {@code >= 0}.
+     * @param minMarginWidth the minimum width margin to be used for every component.
+     * @param minMarginHeight the minimum height margin to be used for every component.
+     *
+     * @see de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#layoutConnectedComponents(Graph)
+     * @see ConnectedComponentsHelper#getConnectedComponetBounds(List, double, double, double, double)
+     *
      * @author Jannik
      */
     public static void layoutConnectedComponents(final Set<List<Node>> connectedComponents,
-                                                 final double scaleWidth, final double scaleHeight,
-                                                 final double minWidth, final double minHeight) {
-        // TODO
+                                                 final double marginFractionWidth, final double marginFractionHeight,
+                                                 final double minMarginWidth, final double minMarginHeight) {
+        // #######################################################################################
+        // preprocessing
+
+        if (connectedComponents.size() <= 1)
+            return;
+
+        ArrayList<List<Node>> componentList = new ArrayList<>(connectedComponents);
+
+        // sort by node count
+        componentList.sort((l1, l2) -> l2.size() - l1.size());
+
+        // get components bounds
+        Rectangle2D.Double[] componentsBoundsWithAnchor = new Rectangle2D.Double[componentList.size()];
+        for (int i = 0; i < componentList.size(); i++) {
+            componentsBoundsWithAnchor[i] = ConnectedComponentsHelper.getConnectedComponetBounds(componentList.get(i), marginFractionWidth,
+                    marginFractionHeight, minMarginWidth, minMarginHeight);
+        }
+
+        // #######################################################################################
+        // arrange components
+        Vector2d[] componentOffsets = new Vector2d[componentList.size()];
+        componentOffsets[0] = new Vector2d(0, 0);
+
+        Vector2d[] bestComponentOffsets = new Vector2d[componentOffsets.length];
+        double bestScore = 0;
+
+        for (int numberOfCCsInFirstLine = 1; numberOfCCsInFirstLine < componentList.size(); numberOfCCsInFirstLine++) {
+            // get maximum row Width
+            double maxRowWidth = 0;
+            double maxRowHeight = componentOffsets[0].y;
+
+            for (int i = 0; i < numberOfCCsInFirstLine; i++)
+                maxRowWidth += componentsBoundsWithAnchor[i].width;
+
+            double actRowOffsetY = 0;
+            double actRowOffsetX = 0;
+
+            for (int actCcCount = 0; actCcCount < componentList.size(); actCcCount++) {
+                double actEndX = actRowOffsetX + componentsBoundsWithAnchor[actCcCount].width;
+                double actEndY = actRowOffsetY + componentsBoundsWithAnchor[actCcCount].height;
+
+                if (actEndX <= maxRowWidth) {
+                    // extends current row
+                    componentOffsets[actCcCount] = new Vector2d(actRowOffsetX, actRowOffsetY);
+
+                    actRowOffsetX = actEndX;
+
+                    if (actEndY > maxRowHeight)
+                        maxRowHeight = actEndY;
+                } else {
+                    // start new row - complete line reset
+
+                    actRowOffsetX = 0;
+                    actRowOffsetY = maxRowHeight;
+
+                    componentOffsets[actCcCount] = new Vector2d(actRowOffsetX, actRowOffsetY);
+
+                    actRowOffsetX = componentsBoundsWithAnchor[actCcCount].width;
+                    maxRowHeight = actEndY;
+                }
+            }
+
+            // assess result and remember the best
+            double score = (maxRowWidth > maxRowHeight) ? maxRowHeight / maxRowWidth : maxRowWidth / maxRowHeight;
+
+            if (score > bestScore) {
+                bestComponentOffsets = componentOffsets;
+                bestScore = score;
+            } else
+                // every further result will be worse
+                break;
+        }
+
+        HashMap<Node, Vector2d> newNodePositions = new HashMap<>();
+        HashMap<CoordinateAttribute, Vector2d> newBendPositions = new HashMap<>();
+
+        // #######################################################################################
+        // assign node position
+        for (int i = 0; i < componentList.size(); i++) {
+            Rectangle2D.Double rect = componentsBoundsWithAnchor[i]; // faster access
+
+            double shiftX = bestComponentOffsets[i].x - rect.x;
+            double shiftY = bestComponentOffsets[i].y - rect.y;
+
+            Set<Edge> conComponentEdges = new HashSet<>();
+            // move nodes
+            for (Node node : componentList.get(i)) {
+                Vector2d pos = AttributeHelper.getPositionVec2d(node);
+                pos.x += shiftX;
+                pos.y += shiftY;
+                newNodePositions.put(node, pos);
+                // prepare edges
+                conComponentEdges.addAll(node.getEdges());
+            }
+
+            // move edge bends
+            // TODO maybe interpolate bend position if edge leads outside of connected component
+            for (Edge edge : conComponentEdges) {
+                for (CoordinateAttribute bendCA : AttributeHelper.getEdgeBendCoordinateAttributes(edge)) {
+                    Vector2d pos = new Vector2d(bendCA.getX() + shiftX, bendCA.getY() + shiftY);
+                    newBendPositions.put(bendCA, pos);
+                }
+            }
+        }
+        // do move
+        GraphHelper.applyUndoableNodeAndBendPositionUpdate(
+                newNodePositions, newBendPositions, "Layout connected components");
     }
 
     /**
      * Calculates the bounding rectangle of a connected component.
      *
      * @param connectedComponent the connected component which's bounds shall be calculated.
-     * @param scaleWidth the amount to scale the width by. Must be >= 1.
-     * @param scaleHeight the amount to scale the height by. Must be >= 1.
-     * @param minWidth the minimum width to be used.
-     * @param minHeight the minimum height to be used.
+     *
+     * @param marginFractionWidth the size of the additional width margin as fraction of the calculated width. Must be {@code >= 0}.
+     * @param marginFractionHeight the size of the additional height margin as fraction of the calculated height. Must be {@code >= 0}.
+     * @param minMarginWidth the minimum width margin to be used.
+     * @param minMarginHeight the minimum height margin to be used.
      *
      * @return the bounds of the connected component.
-     *
-     * @see de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#getBoundsOfNodes(Set)
      *
      * @author Jannik
      */
     public static Rectangle2D.Double getConnectedComponetBounds(final List<Node> connectedComponent,
-                                                                final double scaleWidth, final double scaleHeight,
-                                                                final double minWidth, final double minHeight) {
-        if (scaleWidth < 1)  throw new IllegalArgumentException("Scaling width must not be smaller than 1: " + scaleWidth);
-        if (scaleHeight < 1) throw new IllegalArgumentException("Scaling height must not be smaller than 1: " + scaleHeight);
+                                                                final double marginFractionWidth, final double marginFractionHeight,
+                                                                final double minMarginWidth, final double minMarginHeight) {
+        if (marginFractionWidth < 0)
+            throw new IllegalArgumentException("Margin fraction width must be non negative: " + marginFractionWidth);
+        if (marginFractionHeight < 0)
+            throw new IllegalArgumentException("Margin fraction height must be non negative: " + marginFractionHeight);
 
         // positions of the left upper edge of the rectangle
         double xPosMin = Double.POSITIVE_INFINITY;
@@ -148,14 +314,14 @@ public enum ConnectedComponentsHelper {
         // additional scaling
         double width = xPosMax - xPosMin;
         double height = yPosMax - yPosMin;
-        if (width < minWidth)   width = minWidth;
-        if (height < minHeight) height = minHeight;
 
-        double scaledXMargin = (scaleWidth*width - width) / 2;
-        double scaledYMargin = (scaleHeight*height - height) / 2;
+        double marginWidth = width*marginFractionWidth;
+        double marginHeight = height*marginFractionHeight;
+        if (marginWidth < minMarginWidth)   marginWidth = minMarginWidth;
+        if (marginHeight < minMarginHeight) marginHeight = minMarginHeight;
 
-        return new Rectangle2D.Double(xPosMin - scaledXMargin, yPosMin - scaledYMargin,
-                width*scaleWidth, height*scaleHeight);
+        return new Rectangle2D.Double(xPosMin - marginWidth, yPosMin - marginHeight,
+                width + 2*marginWidth, height + 2*marginHeight);
     }
 
     /**
