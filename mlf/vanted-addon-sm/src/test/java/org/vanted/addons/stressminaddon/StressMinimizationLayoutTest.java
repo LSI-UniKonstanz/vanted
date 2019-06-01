@@ -9,8 +9,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import static org.junit.Assert.*;
 import static data.TestGraphs.*;
+import static org.junit.Assert.*;
 
 /**
  * Test the {@link StressMinimizationLayout}-class
@@ -33,9 +33,9 @@ public class StressMinimizationLayoutTest {
     public void setUp() throws Exception {
         // get private methods to test
         Objects.requireNonNull(stressMin = StressMinimizationLayout.class.getDeclaredMethod(
-                "calculateStress", List.class, NodeValueMatrix.class, NodeValueMatrix.class));
+                "calculateStress", List.class, List.class, NodeValueMatrix.class, NodeValueMatrix.class));
         Objects.requireNonNull(posDiff = StressMinimizationLayout.class.getDeclaredMethod(
-                "differencePositionsSmallerEpsilon", ArrayList.class, ArrayList.class, double.class));
+                "differencePositionsSmallerEpsilon", List.class, List.class, double.class));
         layout = new StressMinimizationLayout();
 
     }
@@ -100,12 +100,13 @@ public class StressMinimizationLayoutTest {
         // test the method
         // expected value calculated by hand.
         double stress = (double) invokePrivateMethod(null, stressMin,
-                GRAPH_1_NODES, GRAPH_1_DISTANCES, weights);
+                GRAPH_1_NODES, GRAPH_1_POSITIONS, GRAPH_1_DISTANCES, weights);
         assertEquals(3 -2*Math.sqrt(2), stress, 0.001);
 
         // Test only one node edge case
         stress = (double) invokePrivateMethod(null, stressMin,
-                Collections.singletonList(GRAPH_1_NODES.get(0)), new NodeValueMatrix(1), new NodeValueMatrix(1));
+                Collections.singletonList(GRAPH_1_NODES.get(0)), GRAPH_1_POSITIONS.subList(0, 1),
+                new NodeValueMatrix(1), new NodeValueMatrix(1));
         assertEquals(0.0, stress, 0.001);
     }
 
