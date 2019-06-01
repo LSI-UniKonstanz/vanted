@@ -10,11 +10,11 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.vanted.addons.stressminaddon.util.ConnectedComponentsHelper;
+import org.vanted.addons.stressminaddon.util.MockShortestDistances;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Implements a version of a stress minimization add-on that can be used
@@ -27,6 +27,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
      */
     public static final String INDEX_ATTRIBUTE =
             "StressMinimization" + Attribute.SEPARATOR + "index";
+
+    public static final IterativePositionAlgorithm positionAlgorithm = new IntuitiveIterativePositionAlgorithm();
 
     /** The epsilon to use with the stress function with a reasonable default. */
     private double stressEpsilon = 0.0001;
@@ -89,17 +91,38 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         final Set<List<Node>> connectedComponents = ConnectedComponentsHelper.getConnectedComponents(pureNodes);
         ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents);
 
-        for (List<Node> connectedComponent : connectedComponents) {
+        List<WorkUnit> workUnits = new ArrayList<>(connectedComponents.size());
+
+        // prepare
+        for (List<Node> component : connectedComponents) {
             // Set positions attribute for hopefully better handling
-            for (int pos = 0; pos < connectedComponent.size(); pos++) {
-                connectedComponent.get(pos).setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, pos);
+            for (int pos = 0; pos < component.size(); pos++) {
+                component.get(pos).setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, pos);
             }
 
-            //////////////////////////////
-            // TODO implement algorithm //
-            //////////////////////////////
+            workUnits.add(new WorkUnit(component));
+        }
+
+        boolean someoneIsWorking = true;
+
+        HashMap<Node, Vector2d> move = new HashMap<>();
+        final int iterationMax = 1_000_000;
+        for (int iteration = 1; someoneIsWorking || iteration <= iterationMax; ++iteration) {
+            someoneIsWorking = false;
+            move.clear();
+
+            for (WorkUnit unit : workUnits) {
+                if (unit.hasStopped)
+                    continue;
+                move.putAll(unit.nextIteration());
+            }
+
+            GraphHelper.applyUndoableNodePositionUpdate(move, "Do iteration.");
+        }
 
 
+        // end
+        for (List<Node> connectedComponent : connectedComponents) {
             // Reset attributes
             for (Node node : connectedComponent) {
                 node.removeAttribute(StressMinimizationLayout.INDEX_ATTRIBUTE);
@@ -151,6 +174,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
      *
      * @param nodes the nodes to be used.
      * @param distances the graph theoretical distances between the nodes
+     * @param positions the positions to use for calculation
      * @param weights the weighs of each node.
      *
      * @return the stress value.
@@ -158,14 +182,11 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
      * @author Jannik
      */
     private static double calculateStress(final List<Node> nodes,
+                                   final List<Vector2d> positions,
                                    final NodeValueMatrix distances,
                                    final NodeValueMatrix weights) {
         assert distances.getDimension() == nodes.size() && nodes.size() == weights.getDimension();
         // get needed distances
-        final List<Vector2d> positions = new ArrayList<>(nodes.size());
-        for (Node n : nodes) {
-            positions.add(AttributeHelper.getPositionVec2d(n));
-        }
 
         double result = 0.0;
         double parenthesis; // holds contents of parentheses
@@ -199,7 +220,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
      *
      * @author Jannik
      */
-    private static boolean differencePositionsSmallerEpsilon(final ArrayList<Vector2d> oldPositions, final ArrayList<Vector2d> newPositions,
+    private static boolean differencePositionsSmallerEpsilon(final List<Vector2d> oldPositions, final List<Vector2d> newPositions,
                                        final double epsilon) {
         assert oldPositions.size() == newPositions.size();
         
@@ -209,5 +230,52 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             }
         }
         return true;
+    }
+
+    class WorkUnit {
+        final List<Node> nodes;
+        final NodeValueMatrix distances;
+        final NodeValueMatrix weights;
+
+        double currentStress;
+        List<Vector2d> currentPositions;
+
+        boolean hasStopped;
+
+        public WorkUnit(final List<Node> nodes) {
+            this.nodes = nodes;
+            this.distances = MockShortestDistances.getShortestPaths(nodes);
+            this.weights = this.distances.clone().apply(x -> 1/(x*x));
+
+            // TODO implement preprocessing
+            this.currentPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
+            this.currentStress = StressMinimizationLayout.calculateStress(nodes, this.currentPositions, this.distances, this.weights);
+            this.hasStopped = false;
+        }
+
+        public Map<Node, Vector2d> nextIteration() {
+            if (hasStopped) return Collections.emptyMap();
+
+            List<Vector2d> newPositions = StressMinimizationLayout.positionAlgorithm.nextIteration(
+                    this.nodes, this.distances, this.weights);
+
+            double newStress = StressMinimizationLayout.calculateStress(
+                    this.nodes, newPositions, this.distances, this.weights);
+
+            if ((this.currentStress - newStress)/this.currentStress < StressMinimizationLayout.this.stressEpsilon ||
+                StressMinimizationLayout.differencePositionsSmallerEpsilon(newPositions, this.currentPositions,
+                        StressMinimizationLayout.this.positionChangeEpsilon)) {
+               this.hasStopped = true;
+            }
+            this.currentPositions = newPositions;
+            this.currentStress = newStress;
+
+            HashMap<Node, Vector2d> result = new HashMap<>(this.nodes.size());
+            for (int node = 0; node < this.nodes.size(); node++) {
+                result.put(this.nodes.get(node), this.currentPositions.get(node));
+            }
+            return result;
+        }
+
     }
 }
