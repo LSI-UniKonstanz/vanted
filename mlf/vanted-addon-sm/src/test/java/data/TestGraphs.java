@@ -77,7 +77,7 @@ public class TestGraphs {
         // create nodes and place them
         for (Vector2d pos : GRAPH_2_POSITIONS) {
             GRAPH_2_NODES.add(GraphHelper.addNodeToGraph(
-                    GRAPH_2, pos.x, pos.y, 1, 1, 1, Color.WHITE, Color.BLACK));
+                    GRAPH_2, pos.x, pos.y, 1, 42, 42, Color.WHITE, Color.BLACK));
         }
         // connect the nodes
         final int half = GRAPH_2_NODES.size()/2;

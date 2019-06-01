@@ -108,6 +108,8 @@ public enum ConnectedComponentsHelper {
      * @param connectedComponents
      *      the connected components to be layouted.
      *
+     * @throws IllegalArgumentException if any fraction is negative.
+     *
      * @see de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#layoutConnectedComponents(Graph)
      * @see ConnectedComponentsHelper#layoutConnectedComponents(Set, double, double, double, double)
      *
@@ -145,6 +147,8 @@ public enum ConnectedComponentsHelper {
      * @param minMarginWidth the minimum width margin to be used for every component.
      * @param minMarginHeight the minimum height margin to be used for every component.
      *
+     * @throws IllegalArgumentException if any fraction is negative.
+     *
      * @see de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#layoutConnectedComponents(Graph)
      * @see ConnectedComponentsHelper#getConnectedComponetBounds(List, double, double, double, double)
      *
@@ -156,6 +160,7 @@ public enum ConnectedComponentsHelper {
         // #######################################################################################
         // preprocessing
 
+        Objects.requireNonNull(connectedComponents);
         if (connectedComponents.size() <= 1)
             return;
 
@@ -273,6 +278,8 @@ public enum ConnectedComponentsHelper {
      * @param minMarginHeight the minimum height margin to be used.
      *
      * @return the bounds of the connected component.
+     *
+     * @throws IllegalArgumentException if any fraction is negative.
      *
      * @author Jannik
      */
