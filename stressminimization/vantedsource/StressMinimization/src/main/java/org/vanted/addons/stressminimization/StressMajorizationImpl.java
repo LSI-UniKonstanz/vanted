@@ -32,8 +32,10 @@ class StressMajorizationImpl {
 	private final double EPSILON = 1E-4;
 	
 	private final Graph g;
-	public StressMajorizationImpl(Graph g) {
+	private BackgroundExecutionAlgorithm bea;
+	public StressMajorizationImpl(Graph g, BackgroundExecutionAlgorithm bea) {
 		this.g = g;
+		this.bea =bea;
 	}
 	
 	void doLayout() {
@@ -68,23 +70,17 @@ class StressMajorizationImpl {
 			System.out.println("prev: " + prevStress);
 			System.out.println("new:  " + newStress);
 			System.out.println("diff: " + ((prevStress - newStress) / prevStress) + "; " + ((prevStress - newStress) / prevStress >= EPSILON));
+
+			if(bea.getAutoDraw()) {
+				bea.newLayout(n, layout, nodes);
+			}
+			bea.isStopButtonClick();
 			
 		} while ( (prevStress - newStress) / prevStress >= EPSILON ); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
 		
-		double scaleFactor = 100;
-		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
-		for (int i = 0; i < n; i += 1) {
-			double[] pos = layout.getRow(i);
-			Vector2d position = new Vector2d(pos[0] * scaleFactor, 
-											 pos[1] * scaleFactor);
-			nodes2newPositions.put(nodes.get(i), position);
-		}
 
 		System.out.println("Updating layout...");
-		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, "Stress Majorization");
-		// center graph layout
-		GravistoService.getInstance().runAlgorithm(new CenterLayouterAlgorithm(), g,
-				new Selection(""), null);
+		bea.newLayout(n, layout, nodes);
 	}
 	
 	/**
