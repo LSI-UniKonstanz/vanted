@@ -6,6 +6,8 @@ import org.graffiti.graph.AdjListNode;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 
+import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -33,6 +35,7 @@ public class MergedNode extends AdjListNode {
         super(Objects.requireNonNull(g, "MergedNode graph must not be null."));
         this.nodes = Objects.requireNonNull(nodes, "MergedNode nodes must not be null.");
         this.updateLabel();
+        AttributeHelper.setPosition(this, NodeTools.getCenter(nodes));
     }
 
     /**
