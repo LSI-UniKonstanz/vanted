@@ -1,6 +1,7 @@
 package org.vanted.addons.stressminaddon;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import org.AttributeHelper;
 import org.Vector2d;
 import org.graffiti.attributes.Attribute;
@@ -91,6 +92,11 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         final Set<List<Node>> connectedComponents = ConnectedComponentsHelper.getConnectedComponents(pureNodes);
         ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents);
 
+        // TODO temporary
+        RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
+        rla.attach(graph, selection);
+      //  rla.execute();
+
         List<WorkUnit> workUnits = new ArrayList<>(connectedComponents.size());
 
         // prepare
@@ -99,6 +105,12 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             for (int pos = 0; pos < component.size(); pos++) {
                 component.get(pos).setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, pos);
             }
+            WorkUnit unit = new WorkUnit(component);
+            //System.out.println(unit);
+            //System.out.print("{ distances =\n" + unit.distances);
+            //System.out.print("weights =\n" + unit.weights);
+            //System.out.println("component = " + component.toString() +
+            //        ", maxsize = " +ConnectedComponentsHelper.getMaxNodeSize(component) + "}");
 
             workUnits.add(new WorkUnit(component));
         }
@@ -107,7 +119,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 
         HashMap<Node, Vector2d> move = new HashMap<>();
         final int iterationMax = 1_000_000;
-        for (int iteration = 1; someoneIsWorking || iteration <= iterationMax; ++iteration) {
+        for (int iteration = 1; someoneIsWorking && iteration <= iterationMax; ++iteration) {
+            System.out.println("iteration = " + iteration);
             someoneIsWorking = false;
             move.clear();
 
@@ -115,6 +128,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                 if (unit.hasStopped)
                     continue;
                 move.putAll(unit.nextIteration());
+
+                someoneIsWorking = true;
+                System.out.println(unit);
             }
 
             GraphHelper.applyUndoableNodePositionUpdate(move, "Do iteration.");
@@ -128,6 +144,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                 node.removeAttribute(StressMinimizationLayout.INDEX_ATTRIBUTE);
             }
         }
+
+        ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents);
     }
 
     @Override
@@ -245,6 +263,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         public WorkUnit(final List<Node> nodes) {
             this.nodes = nodes;
             this.distances = MockShortestDistances.getShortestPaths(nodes);
+            final double scalingFactor = ConnectedComponentsHelper.getMaxNodeSize(nodes);
+            this.distances.apply(x -> x*scalingFactor*5);
             this.weights = this.distances.clone().apply(x -> 1/(x*x));
 
             // TODO implement preprocessing
@@ -272,10 +292,18 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 
             HashMap<Node, Vector2d> result = new HashMap<>(this.nodes.size());
             for (int node = 0; node < this.nodes.size(); node++) {
+                System.out.println(this.nodes.get(node) + " to " + this.currentPositions.get(node));
                 result.put(this.nodes.get(node), this.currentPositions.get(node));
             }
             return result;
         }
 
+        @Override
+        public String toString() {
+            return "WorkUnit{" +
+                    "currentStress=" + currentStress +
+                    ", hasStopped=" + hasStopped +
+                    '}';
+        }
     }
 }
