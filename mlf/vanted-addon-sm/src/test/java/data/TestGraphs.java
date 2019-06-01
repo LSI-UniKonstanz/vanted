@@ -89,4 +89,37 @@ public class TestGraphs {
         }
 
     }
+
+    /** Contains a graph with 4 Nodes in a circle, all the Nodes are on the same position (0,0). */
+    public static final Graph GRAPH_COLLAPSED_NODES;
+    /** The positions of nodes in graph onePosition.  */
+    public static final ArrayList<Vector2d> GRAPH_COLLAPSED_NODES_POSITIONS;
+    /** The nodes of graph onePosition. */
+    public static final ArrayList<Node> GRAPH_COLLAPSED_NODES_NODES;
+    /** The distances between nodes of graph onePosition. */
+    public static final NodeValueMatrix GRAPH_COLLAPSED_DISTANCES;
+
+    /*
+      Initialize graphs
+      @author Rene
+     */
+    static{
+        GRAPH_COLLAPSED_NODES_POSITIONS = new ArrayList<>(Arrays.asList(
+                new Vector2d(0.0,0.0), new Vector2d(0.0,0.0), new Vector2d(0.0,0.0), new Vector2d(0.0,0.0)));
+        GRAPH_COLLAPSED_NODES = new AdjListGraph();
+        GRAPH_COLLAPSED_NODES_NODES = new ArrayList<>();
+        GRAPH_COLLAPSED_DISTANCES = new NodeValueMatrix(GRAPH_COLLAPSED_NODES_POSITIONS.size());
+
+        GRAPH_COLLAPSED_DISTANCES.apply(x->2);
+
+        for (Vector2d pos : GRAPH_COLLAPSED_NODES_POSITIONS){
+            GRAPH_COLLAPSED_NODES_NODES.add(GraphHelper.addNodeToGraph(
+                    GRAPH_COLLAPSED_NODES, pos.x, pos.y, 1, 1, 1, Color.WHITE, Color.BLACK));
+        }
+
+        for(int i = 0; i< GRAPH_COLLAPSED_NODES_NODES.size(); i++){
+            GRAPH_COLLAPSED_NODES.addEdge(GRAPH_COLLAPSED_NODES_NODES.get(i), GRAPH_COLLAPSED_NODES_NODES.get((i+1) % GRAPH_COLLAPSED_NODES_NODES.size()), false);
+            GRAPH_COLLAPSED_DISTANCES.set(i,(i+1) % GRAPH_COLLAPSED_NODES_NODES.size(), 1);
+        }
+    }
 }
