@@ -2,12 +2,18 @@ package org.vanted.addons.stressminaddon.util;
 
 import org.AttributeHelper;
 import org.Vector2d;
+import org.graffiti.editor.MainFrame;
+import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
+import org.graffiti.graphics.EdgeGraphicAttribute;
+import org.graffiti.managers.pluginmgr.DefaultPluginManager;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.geom.Rectangle2D;
 import java.util.*;
+import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 
 import static data.TestGraphs.*;
@@ -18,6 +24,16 @@ import static org.junit.Assert.*;
  * @author Jannik
  */
 public class ConnectedComponentsHelperTest {
+
+    /**
+     * Setup tests
+     */
+    @Before
+    public void setUp() {
+        // set up mock MainFrame for testing with GraphHelper
+        if (MainFrame.getInstance() == null)
+            new MainFrame(new DefaultPluginManager(Preferences.userRoot()), Preferences.userRoot());
+    }
 
     /**
      * Test method {@link ConnectedComponentsHelper#getConnectedComponents(Collection)}.
@@ -69,16 +85,16 @@ public class ConnectedComponentsHelperTest {
      */
     @Test
     public void layoutConnectedComponents() {
-        // TODO find out how to test properly without VANTED running
-        // TODO test only one component
-        // TODO test graphs with bends
         // create copy of working graph so that the actual graph isn't changed
         Graph graph = (Graph) GRAPH_2.copy();
-        final List<Node> nodes = graph.getNodes();
-        final Set<List<Node>> components = ConnectedComponentsHelper.getConnectedComponents(nodes);
-        final List<Vector2d> oldPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
+        List<Node> nodes = graph.getNodes();
+        Set<List<Node>> components = ConnectedComponentsHelper.getConnectedComponents(nodes);
+        List<Vector2d> oldPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
+        Edge edge = nodes.get(0).getEdges().iterator().next();
+        edge.addAttribute(new EdgeGraphicAttribute(), "");
+        AttributeHelper.addEdgeBend(edge, oldPositions.get(0));
         ConnectedComponentsHelper.layoutConnectedComponents(components);
-        final List<Vector2d> newPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
+        List<Vector2d> newPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
 
 
         // only test whether something was changed TODO maybe deeper test
@@ -87,8 +103,24 @@ public class ConnectedComponentsHelperTest {
             oldPos = oldPositions.get(pos);
             newPos = newPositions.get(pos);
 
-            System.out.println(oldPos.distance(newPos));
             assertTrue("Node was moved", oldPos.distance(newPos) > 0);
+        }
+
+        // Test one component graph
+        graph = (Graph) GRAPH_1.copy();
+        nodes = graph.getNodes();
+        components = ConnectedComponentsHelper.getConnectedComponents(nodes);
+        oldPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
+        ConnectedComponentsHelper.layoutConnectedComponents(components);
+        newPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
+
+
+        // only test whether nothing was changed
+        for (int pos = 0; pos < nodes.size(); pos++) {
+            oldPos = oldPositions.get(pos);
+            newPos = newPositions.get(pos);
+
+            assertFalse("Node wasn't moved", oldPos.distance(newPos) > 0);
         }
     }
 
