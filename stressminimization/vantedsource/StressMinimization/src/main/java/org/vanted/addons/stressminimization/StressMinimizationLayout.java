@@ -1,6 +1,6 @@
 package org.vanted.addons.stressminimization;
 
-import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
+
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
@@ -9,9 +9,7 @@ import org.graffiti.plugin.view.View;
  * Layout algorithm performing a stress minimization layout process.
  * @author David Boetius
  */
-public class StressMinimizationLayout extends AbstractEditorAlgorithm implements BackgroundAlgorithm {
-	
-	private BackgroundExecutionAlgorithm bea= new BackgroundExecutionAlgorithm(this);
+public class StressMinimizationLayout extends BackgroundAlgorithm{
 	
 	/**
 	 * Creates a new StressMinimizationLayout instance.
@@ -60,9 +58,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
 		if (graph.isEmpty()) {
 			throw new PreconditionException("Stress Minimization Layout cannot work on empty graphs");
 		}
-		if (graph.isDirected()) {
-			throw new PreconditionException("Stress Minimization Layout cannot work on directed graphs");
-		}
+//		if (graph.isDirected()) {
+//			throw new PreconditionException("Stress Minimization Layout cannot work on directed graphs");
+//		}
 		
 	}
 	
@@ -80,9 +78,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
 	
 	@Override
 	public void execute() {
-		bea.setStatus(1);
-		new StressMajorizationImpl(graph,bea).doLayout();
-		bea.setStatus(3);
+		setStatus(1);	//set status "running"
+		new StressMajorizationImpl(graph, this.getPropertyChangeListener()).doLayout();
+		setStatus(3);	//set status "finished"
 	}
 	
 	@Override
@@ -90,11 +88,4 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
 		// TODO Auto-generated method stub
 		super.reset();
 	}
-
-	@Override
-	public void setBackgroundExecutionAlgorithm(BackgroundExecutionAlgorithm bea) {
-		this.bea=bea;
-		
-	}
-
 }

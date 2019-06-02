@@ -1,23 +1,19 @@
 package org.vanted.addons.stressminimization;
 
 import java.awt.geom.Point2D;
+import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.AttributeHelper;
-import org.Vector2d;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.graffiti.attributes.AttributeNotFoundException;
-import org.graffiti.editor.GravistoService;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
-import org.graffiti.selection.Selection;
-
-import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
+import org.graffiti.plugin.view.View;
 
 /**
  * This class implements the stress majorization process 
@@ -27,15 +23,14 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover
  * that uses the original stress function that
  * takes the distances between all nodes into account.
  */
-class StressMajorizationImpl {
+class StressMajorizationImpl extends BackgroundAlgorithm {
 
 	private final double EPSILON = 1E-4;
 	
 	private final Graph g;
-	private BackgroundExecutionAlgorithm bea;
-	public StressMajorizationImpl(Graph g, BackgroundExecutionAlgorithm bea) {
+	public StressMajorizationImpl(Graph g, PropertyChangeListener[] pcl) {
 		this.g = g;
-		this.bea =bea;
+		this.addPropertyChangeListeners(pcl);
 	}
 	
 	void doLayout() {
@@ -70,17 +65,19 @@ class StressMajorizationImpl {
 			System.out.println("prev: " + prevStress);
 			System.out.println("new:  " + newStress);
 			System.out.println("diff: " + ((prevStress - newStress) / prevStress) + "; " + ((prevStress - newStress) / prevStress >= EPSILON));
-
-			if(bea.getAutoDraw()) {
-				bea.newLayout(n, layout, nodes);
-			}
-			bea.isStopButtonClick();
+			
+			//update GUI layout
+			setLayout(layout);
+			
+			//TODO stop algorithm if button stop clicked
+			//BackgroundExecutionAlgorithm b =(BackgroundExecutionAlgorithm)((Object) getPropertyChangeListener()[0]);
+			//b.isStopButtonClick();
 			
 		} while ( (prevStress - newStress) / prevStress >= EPSILON ); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
 		
 
 		System.out.println("Updating layout...");
-		bea.newLayout(n, layout, nodes);
+		setEndLayout(layout);
 	}
 	
 	/**
@@ -162,5 +159,19 @@ class StressMajorizationImpl {
 		}
 		return weights;
 	}
-	
+
+	@Override
+	public boolean activeForView(View v) {
+		return false;
+	}
+
+	@Override
+	public String getName() {
+		return null;
+	}
+
+	@Override
+	public void execute() {
+		doLayout();
+	}
 }

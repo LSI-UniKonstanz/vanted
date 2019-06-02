@@ -2,6 +2,8 @@ package org.vanted.addons.stressminimization;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -38,7 +40,7 @@ import info.clearthought.layout.SingleFiledLayout;
  * Executes a BackgroundAlgorithm and manage the GUI interaction.
  * 
  */
-public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm {
+public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements PropertyChangeListener {
 
 	private BackgroundAlgorithm algorithm;
 	private Graph graph;
@@ -64,15 +66,15 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm {
 		else {
 			parameterAlgo=null;
 		}
-		//reference to BackgroundExecutionAlgorithm to apply newLayout and setState
-		algorithm.setBackgroundExecutionAlgorithm(this);
+		
+		algorithm.addPropertyChangeListener(this);
 	}
 	
 	/**
 	 * set status of running algorithm
 	 * @param statusValue
 	 */
-	public synchronized void setStatus(int statusValue) {
+	private synchronized void setStatus(int statusValue) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				if (statusValue == 0) {
@@ -103,10 +105,12 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm {
 	 * update the GUI graph in the background
 	 * @param nodes2newPositions
 	 */
-	public synchronized void newLayout(int n,RealMatrix layout,List<Node> nodes) {
+	private synchronized void newLayout(RealMatrix layout) {
 		//run new thread
 		new Thread(new Runnable() {
 			public void run() {
+				List<Node> nodes = graph.getNodes();
+				int n = nodes.size();
 				double scaleFactor = 100;
 				HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
 				for (int i = 0; i < n; i += 1) {
@@ -120,14 +124,6 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm {
 						new Selection(""), null);
 			}
 		}).start();
-	}
-	
-	/**
-	 * return boolean if auto draw check box is checked
-	 * @return
-	 */
-	public synchronized boolean getAutoDraw(){
-		return autoDraw;
 	}
 	
 	/**
@@ -147,13 +143,6 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm {
 		}
 	}
 	
-	/**
-	 * set parameter to stop or continue the background task 
-	 * @param stop
-	 */
-	private synchronized void setStop(boolean stop) {
-		this.stop=stop;
-	}
 	
 	@Override
 	public String getName() {
@@ -180,9 +169,9 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm {
 	@Override
 	public void execute() {
 		
-		//current graph position and selection 
+		//current graph position and selection#
 		graph =GravistoService.getInstance().getMainFrame().getActiveSession().getGraph();
-		selection =GravistoService.getInstance().getMainFrame().getActiveEditorSession().getSelectionModel().getActiveSelection();
+		selection = GravistoService.getInstance().getMainFrame().getActiveEditorSession().getSelectionModel().getActiveSelection();;
 		
 		Runnable algoExecution = new Runnable() {
 			public void run() {
@@ -276,12 +265,12 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm {
 					execute();
 				}
 				if(status.compareTo("running")==0) {
-					setStop(true);	//stop background thread
+					stop=true;	//stop background thread
 					setStatus(2);
 					startButton.setText("Continue");
 				}
 				if(status.compareTo("idle")==0) {
-					setStop(false);	//continue background thread
+					stop=false;	//continue background thread
 					setStatus(3);
 					startButton.setText("Stop Algorithm");
 				}
@@ -303,19 +292,16 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm {
 		if(algorithm.getParameters()!=null) {
 			for(int i=0;i<algorithm.getParameters().length;i++) {
 				
-				//name of the parameter
+				//name of the algorithm parameter
 				JLabel paramLabel = new JLabel(algorithm.getParameters()[i].getName());
 				jc.add(paramLabel);
 				
-				//spinner component
 				SpinnerEditComponent spinnerComponent = new SpinnerEditComponent(algorithm.getParameters()[i]);
 				jc.add(spinnerComponent.getComponent());
 				parameterAlgo[i]=spinnerComponent;
 				
 				JSpinner spinner =(JSpinner)spinnerComponent.getComponent();
-				spinner.setToolTipText(algorithm.getDescription());
 				spinner.addChangeListener(new ChangeListener() {
-
 					@Override
 					public void stateChanged(ChangeEvent arg0) {
 						System.out.println("Parameter "+ spinner.getName() +":  "+spinner.getValue());
@@ -326,7 +312,6 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm {
 				});
 			}
 		}
-		
 		return true;
 	}
 	
@@ -349,12 +334,12 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm {
 
 	@Override
 	public void executeThreadSafe(ThreadSafeOptions options) {
-		
+		execute();
 	}
 
 	@Override
 	public void resetDataCache(ThreadSafeOptions options) {
-		
+		reset();
 	}
 
 	@Override
@@ -362,5 +347,21 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm {
 		this.graph=g;
 		this.selection=selection;
 		algorithm.attach(g, selection);
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent arg0) {
+		//updating layout and status if the background algorithm request
+		if(arg0.getPropertyName().compareTo("setLayout")==0) {
+			if(autoDraw) {
+				newLayout((RealMatrix)arg0.getNewValue());
+			}
+		}
+		if(arg0.getPropertyName().compareTo("setStatus")==0) {
+			setStatus((int)arg0.getNewValue());
+		}
+		if(arg0.getPropertyName().compareTo("setEndLayout")==0) {
+			newLayout((RealMatrix)arg0.getNewValue());
+		}
 	}
 }
