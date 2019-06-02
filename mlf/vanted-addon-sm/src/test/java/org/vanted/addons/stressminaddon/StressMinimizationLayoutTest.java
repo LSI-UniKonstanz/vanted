@@ -1,6 +1,11 @@
 package org.vanted.addons.stressminaddon;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.NullView;
 import org.Vector2d;
+import org.graffiti.graph.AdjListGraph;
+import org.graffiti.plugin.algorithm.PreconditionException;
+import org.graffiti.plugin.view.View;
+import org.graffiti.selection.Selection;
 import org.junit.Before;
 import org.junit.Test;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
@@ -9,8 +14,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
 
-import static org.junit.Assert.*;
 import static data.TestGraphs.*;
+import static org.junit.Assert.*;
 
 /**
  * Test the {@link StressMinimizationLayout}-class
@@ -33,9 +38,9 @@ public class StressMinimizationLayoutTest {
     public void setUp() throws Exception {
         // get private methods to test
         Objects.requireNonNull(stressMin = StressMinimizationLayout.class.getDeclaredMethod(
-                "calculateStress", List.class, NodeValueMatrix.class, NodeValueMatrix.class));
+                "calculateStress", List.class, List.class, NodeValueMatrix.class, NodeValueMatrix.class));
         Objects.requireNonNull(posDiff = StressMinimizationLayout.class.getDeclaredMethod(
-                "differencePositionsSmallerEpsilon", ArrayList.class, ArrayList.class, double.class));
+                "differencePositionsSmallerEpsilon", List.class, List.class, double.class));
         layout = new StressMinimizationLayout();
 
     }
@@ -100,12 +105,13 @@ public class StressMinimizationLayoutTest {
         // test the method
         // expected value calculated by hand.
         double stress = (double) invokePrivateMethod(null, stressMin,
-                GRAPH_1_NODES, GRAPH_1_DISTANCES, weights);
+                GRAPH_1_NODES, GRAPH_1_POSITIONS, GRAPH_1_DISTANCES, weights);
         assertEquals(3 -2*Math.sqrt(2), stress, 0.001);
 
         // Test only one node edge case
         stress = (double) invokePrivateMethod(null, stressMin,
-                Collections.singletonList(GRAPH_1_NODES.get(0)), new NodeValueMatrix(1), new NodeValueMatrix(1));
+                Collections.singletonList(GRAPH_1_NODES.get(0)), GRAPH_1_POSITIONS.subList(0, 1),
+                new NodeValueMatrix(1), new NodeValueMatrix(1));
         assertEquals(0.0, stress, 0.001);
     }
 
@@ -114,14 +120,49 @@ public class StressMinimizationLayoutTest {
         // TODO
     }
 
+    /**
+     * Test name given by algorithm.
+     * @author Jannik
+     */
     @Test
     public void getName() {
-        // TODO
+        assertEquals("Stress Minimization", layout.getName());
     }
 
+    /**
+     * Test checking method of algorithm.
+     * @author Jannik
+     */
     @Test
     public void check() {
-        // TODO
+        // check normal graph
+        try {
+            layout.attach(GRAPH_1, new Selection(GRAPH_1_NODES));
+            layout.check();
+        } catch (PreconditionException e) {
+            e.printStackTrace();
+            fail("No exception should have been thrown!");
+        }
+
+        // check null graph
+        try {
+            layout.attach(null, null);
+            layout.check();
+            fail("No exception thrown!");
+        } catch (PreconditionException e) {}
+        catch (Throwable t) {
+            fail("Wrong Throwable thrown.");
+        }
+
+        // check empty graph
+        try {
+            layout.attach(new AdjListGraph(), new Selection());
+            layout.check();
+            fail("No exception thrown!");
+        } catch (PreconditionException e) {}
+        catch (Throwable t) {
+            fail("Wrong Throwable thrown.");
+        }
     }
 
     @Test
@@ -139,18 +180,31 @@ public class StressMinimizationLayoutTest {
         // TODO
     }
 
+    /**
+     * Test category given by algorithm.
+     * @author Jannik
+     */
     @Test
     public void getCategory() {
-        // TODO
+        assertEquals("Layout", layout.getCategory());
     }
 
+    /**
+     * Test method {@link StressMinimizationLayout#isLayoutAlgorithm()}.
+     * @author Jannik
+     */
     @Test
     public void isLayoutAlgorithm() {
-        // TODO
+        assertTrue(layout.isLayoutAlgorithm());
     }
 
+    /**
+     * Test method {@link StressMinimizationLayout#activeForView(View)}.
+     * @author Jannik
+     */
     @Test
     public void activeForView() {
-        // TODO
+        assertFalse(layout.activeForView(null));
+        assertTrue(layout.activeForView(new NullView()));
     }
 }
