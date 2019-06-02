@@ -6,6 +6,9 @@ import org.graffiti.selection.Selection;
 
 import java.util.*;
 
+/**
+ * Helper methods for the multilevel framework add-on.
+ */
 public enum MlfHelper {
     ; // no instances needed
 
@@ -33,14 +36,14 @@ public enum MlfHelper {
             for (Node n : connectedNodes) {
                 MergedNode newNode = new MergedNode(connectedComponentGraph, Collections.singleton(n));
                 connectedComponentGraph.doAddNode(newNode);
-//                Node newNode = connectedComponentGraph.addNodeCopy(n);
                 sourceGraphNode2connectedGraphNode.put(n, newNode);
             }
             for (Node n : connectedNodes) {
                 for (Edge e : n.getEdges()) {
-                    if (connectedNodes.contains(e.getSource()) || connectedNodes.contains(e.getTarget()))
+                    if (connectedNodes.contains(e.getSource()) && connectedNodes.contains(e.getTarget())) {
                         connectedComponentGraph.addEdgeCopy(e, sourceGraphNode2connectedGraphNode.get(e.getSource()),
                                 sourceGraphNode2connectedGraphNode.get(e.getTarget()));
+                    }
                 }
             }
             graphList.add(connectedComponentGraph);

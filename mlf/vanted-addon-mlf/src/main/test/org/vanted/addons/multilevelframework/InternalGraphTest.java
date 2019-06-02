@@ -13,8 +13,8 @@ import java.util.Iterator;
 import static org.junit.Assert.*;
 
 /**
- * @see InternalGraph
  * @author Gordian
+ * @see InternalGraph
  */
 public class InternalGraphTest {
 
@@ -34,6 +34,7 @@ public class InternalGraphTest {
     public void doAddEdge() {
         Edge e = this.ig.doAddEdge(this.n1, this.n2, false); // this should work
         this.ig.deleteEdge(e);
+        // this should throw an exception, because InternalGraph only supports undirected edges
         this.ig.doAddEdge(this.n1, this.n2, true);
     }
 
@@ -42,12 +43,13 @@ public class InternalGraphTest {
         // this should work
         Edge e = this.ig.doAddEdge(this.n1, this.n2, false, new EdgeLabelAttribute("test"));
         this.ig.deleteEdge(e);
-        // this should throw
+        // this should throw an exception, because InternalGraph only supports undirected edges
         this.ig.doAddEdge(this.n1, this.n2, true, new EdgeLabelAttribute("nope"));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void doAddNode() {
+        // create a node with an invalid node class
         Node nope = new AbstractNode(this.ig) {
             @Override public int compareTo(GraphElement o) { return 0; }
             @Override public Iterator<Edge> getDirectedInEdgesIterator() { return null; }
@@ -57,6 +59,7 @@ public class InternalGraphTest {
             @Override public void setGraph(Graph graph) { }
             @Override public int getDegree() { return 0; }
         };
+        // this fails because InternalGraph only supports MergedNodes
         this.ig.doAddNode(nope);
     }
 
@@ -74,23 +77,27 @@ public class InternalGraphTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void createEdge() {
+        // this should throw an exception, because InternalGraph only supports undirected edges
         this.ig.createEdge(this.n1, this.n2, true);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void createEdge2() {
+        // this should throw an exception, because InternalGraph only supports undirected edges
         this.ig.createEdge(this.n1, this.n2, true, new EdgeLabelAttribute("test"));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void setDirected() {
         this.ig.setDirected(false); // this should work
+        // this should throw an exception, because InternalGraph only supports undirected edges
         this.ig.setDirected(true);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void setDirected1() {
         this.ig.setDirected(false, true); // this should work
+        // this should throw an exception, because InternalGraph only supports undirected edges
         this.ig.setDirected(true, true);
     }
 
@@ -105,7 +112,7 @@ public class InternalGraphTest {
         AdjListGraph a = new AdjListGraph();
         a.addNode();
         a.setDirected(false);
-        this.ig.addGraph(a); // this should throw
+        this.ig.addGraph(a); // this should throw an exception, because a contains a node that is not a MergedNode
     }
 
     @Test
