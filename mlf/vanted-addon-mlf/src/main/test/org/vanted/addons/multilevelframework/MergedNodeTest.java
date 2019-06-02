@@ -16,8 +16,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * @see MergedNode
  * @author Gordian
+ * @see MergedNode
  */
 public class MergedNodeTest {
 

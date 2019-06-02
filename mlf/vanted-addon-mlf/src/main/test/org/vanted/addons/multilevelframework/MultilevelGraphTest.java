@@ -15,8 +15,8 @@ import java.util.HashSet;
 import static org.junit.Assert.*;
 
 /**
- * @see MultilevelGraph
  * @author Gordian
+ * @see MultilevelGraph
  */
 public class MultilevelGraphTest {
     private Graph g;
@@ -27,6 +27,7 @@ public class MultilevelGraphTest {
 
     @Before
     public void setUp() throws Exception {
+        // create a simple test graph
         this.g = new AdjListGraph();
         this.innerNodes = new HashSet<>();
         this.n1 = g.addNode();
@@ -38,25 +39,26 @@ public class MultilevelGraphTest {
         AttributeHelper.setLabel(n3, "3");
         AttributeHelper.setLabel(n4, "4");
         this.innerNodes.addAll(Arrays.asList(n1, n2, n3, n4));
-        this. e1 = g.addEdge(n1, n2, false);
-        this. e2 = g.addEdge(n2, n3, false);
-        this. e3 = g.addEdge(n3, n4, false);
-        this. e4 = g.addEdge(n4, n2, false);
+        this.e1 = g.addEdge(n1, n2, false);
+        this.e2 = g.addEdge(n2, n3, false);
+        this.e3 = g.addEdge(n3, n4, false);
+        this.e4 = g.addEdge(n4, n2, false);
     }
 
     @Test
     public void coarsening() {
+        // create some coarsening levels
         MultilevelGraph mlg = new MultilevelGraph(this.g);
-        assertTrue(mlg.isComplete());
+        assertTrue(mlg.isComplete()); // level 0 is complete by definition
         assertEquals(mlg.getNumberOfLevels(), 1);
         assertEquals(mlg.getTopLevel(), this.g);
         assertEquals(mlg.newCoarseningLevel(), 1);
-        assertNotSame(mlg.getTopLevel(), this.g);
+        assertNotSame(mlg.getTopLevel(), this.g); // check whether a new level was actually added
         MergedNode mn = mlg.addNode(new HashSet<>(Arrays.asList(n1, n2)));
-        assertFalse(mlg.isComplete());
+        assertFalse(mlg.isComplete()); // n3, n4 are not yet represented by a MergedNode
         mn.addInnerNode(this.n3);
         MergedNode mn2 = mlg.addNode(Collections.singleton(this.n4));
-        assertTrue(mlg.isComplete());
+        assertTrue(mlg.isComplete()); // now all the nodes are represented by MergedNodes
         Edge e = mlg.addEdge(mn, mn2);
         assertTrue(mlg.getTopLevel().containsEdge(e));
         assertTrue(mlg.getTopLevel().containsNode(mn));
@@ -74,18 +76,21 @@ public class MultilevelGraphTest {
         MultilevelGraph mlg = new MultilevelGraph(this.g);
         mlg.newCoarseningLevel();
         mlg.addNode(new HashSet<>(Arrays.asList(n1, n2)));
+        // this fails because not all nodes are represented in the current coarsening level
         mlg.newCoarseningLevel();
     }
 
     @Test(expected = UnsupportedOperationException.class)
     public void addNodeFail() {
         MultilevelGraph mlg = new MultilevelGraph(this.g);
+        // this fails because the MultilevelGraph doesn't modify level 0 (the original graph)
         mlg.addNode(new HashSet<>(Arrays.asList(n1, n2)));
     }
 
     @Test(expected = IllegalStateException.class)
     public void popCoarseningLevelFail() {
         MultilevelGraph mlg = new MultilevelGraph(this.g);
+        // this fails because the original graph (level 0) cannot be removed
         mlg.popCoarseningLevel();
     }
 }

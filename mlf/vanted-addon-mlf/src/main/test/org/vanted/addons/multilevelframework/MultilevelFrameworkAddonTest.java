@@ -8,8 +8,8 @@ import javax.swing.*;
 import static org.junit.Assert.*;
 
 /**
- * @see MultilevelFrameworkAddon
  * @author Gordian
+ * @see MultilevelFrameworkAddon
  */
 public class MultilevelFrameworkAddonTest {
 

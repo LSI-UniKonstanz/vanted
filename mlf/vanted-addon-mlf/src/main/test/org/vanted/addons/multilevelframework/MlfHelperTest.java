@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 
 /**
  * @author Gordian
+ * @see MlfHelper
  */
 public class MlfHelperTest {
 
@@ -40,25 +41,32 @@ public class MlfHelperTest {
         //isolated node
         Node isolated = g.addNode();
 
+        // select the triangle and the isolated node
         Collection<? extends CoarsenedGraph> components =
                 MlfHelper.calculateConnectedComponentsOfSelection(new HashSet<>(Arrays.asList(n1, n2, n3, isolated)));
 
         for (CoarsenedGraph cg : components) {
-            if (cg.getMergedNodes().size() == 1) {
+            if (cg.getMergedNodes().size() == 1) { // this has to be the isolated node
                 Collection<?> a = cg.getMergedNodes().iterator().next().getInnerNodes();
                 assertEquals(1, a.size());
                 assertTrue(a.contains(isolated));
-            } else if (cg.getMergedNodes().size() == 3) {
+                assertEquals(1, MlfHelper.getConnectedNodes(cg.getMergedNodes().iterator().next(),
+                        new HashSet<>(cg.getMergedNodes())).size());
+            } else if (cg.getMergedNodes().size() == 3) { // this has to be the triangle
                 HashSet<Node> nodes = new HashSet<>();
                 for (MergedNode m : cg.getMergedNodes()) {
                     nodes.addAll(m.getInnerNodes());
                 }
                 assertEquals(new HashSet<>(Arrays.asList(n1, n2, n3)), nodes);
+                assertEquals(3, MlfHelper.getConnectedNodes(cg.getMergedNodes().iterator().next(),
+                        new HashSet<>(cg.getMergedNodes())).size());
             } else {
+                // the selection only contained the isolated node and the triangle, so any other size would be an error
                 fail("More/other connected components than expected");
             }
         }
 
+        // select the two circles
         Collection<? extends CoarsenedGraph> components2 =
                 MlfHelper.calculateConnectedComponentsOfSelection(
                         new HashSet<>(Arrays.asList(n1, n2, n3, n4, n5, n6, n7)));
@@ -70,16 +78,26 @@ public class MlfHelperTest {
                     nodes.addAll(m.getInnerNodes());
                 }
                 assertEquals(new HashSet<>(Arrays.asList(n4, n5, n6, n7)), nodes);
+                assertEquals(4, MlfHelper.getConnectedNodes(cg.getMergedNodes().iterator().next(),
+                        new HashSet<>(cg.getMergedNodes())).size());
             } else if (cg.getMergedNodes().size() == 3) {
                 HashSet<Node> nodes = new HashSet<>();
                 for (MergedNode m : cg.getMergedNodes()) {
                     nodes.addAll(m.getInnerNodes());
                 }
                 assertEquals(new HashSet<>(Arrays.asList(n1, n2, n3)), nodes);
+                assertEquals(3, MlfHelper.getConnectedNodes(cg.getMergedNodes().iterator().next(),
+                        new HashSet<>(cg.getMergedNodes())).size());
             } else {
                 fail("More/other connected components than expected");
             }
         }
+
+        // select two parts of the circle that are not directly connected
+        Collection<? extends CoarsenedGraph> components3 =
+                MlfHelper.calculateConnectedComponentsOfSelection(
+                        new HashSet<>(Arrays.asList(n4, n6)));
+        assertEquals(2, components3.size());
     }
 
     @Test
