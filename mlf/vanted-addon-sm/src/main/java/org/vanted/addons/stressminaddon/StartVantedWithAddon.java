@@ -10,7 +10,7 @@ public class StartVantedWithAddon {
 	 * correct xml-file. Starting with more than one Add-on at the same time is
 	 * not supported yet, but should be sufficient for most cases.
 	 * <p>
-	 * In the SM-Add-on.xml (which may be renamed if you want to) you can specify the description, version, ... for your Add-on. This information is used
+	 * In the Add-on-Stress-Minimization.xml (which may be renamed if you want to) you can specify the description, version, ... for your Add-on. This information is used
 	 * for the listing of your Add-on in the Add-on-Manager dialog. Additionally the Plugin-class is instantiated by entering the location
 	 * (<main>example_addon.StressMinimizationAddon</main> means that Vanted tries to find the class "StressMinimizationAddon" in the package "example_addon") and instantiates it.
 	 * <p>
@@ -32,7 +32,7 @@ public class StartVantedWithAddon {
 	}
 
 	public static String getAddonName() {
-		return "SM-Add-on.xml";
+		return "Add-on-Stress-Minimization.xml";
 	}
 
 }
