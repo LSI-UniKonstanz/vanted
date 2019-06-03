@@ -12,24 +12,36 @@
 package org.vanted.addons.multilevelframework;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
+import org.AttributeHelper;
 import org.Vector2d;
+import org.graffiti.attributes.Attribute;
+import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Node;
-import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
-import org.graffiti.plugin.algorithm.PreconditionException;
+import org.graffiti.plugin.algorithm.*;
 import org.graffiti.plugin.parameter.JComponentParameter;
+import org.graffiti.plugin.parameter.ObjectListParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
+import org.graffiti.selection.Selection;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
+    private Map<String, LayoutAlgorithmWrapper> layoutAlgorithms;
+    private final static String DEFAULT_ALGORITHM = "Force Directed (\"parameter\" GUI)";
+    private JComboBox<String> algorithmListComboBox;
+    private JButton setUpLayoutAlgorithmButton;
+
     public MultilevelFrameworkLayouter() {
         super();
+        this.setUpParameters();
     }
 
     @Override
@@ -56,22 +68,15 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      * Checks, if a graph was given and that the radius is positive.
      *
      * @throws PreconditionException if no graph was given during algorithm invocation or the
-     *                               radius is negative
+     *                               number of nodes is zero or negative
      */
     @Override
     public void check() throws PreconditionException {
-        PreconditionException errors = new PreconditionException();
-
         if (graph == null) {
-            errors.add("No graph available!");
+            throw new PreconditionException("Cannot run Multilevel Framework Layouter on null graph.");
         }
-
-        if (!errors.isEmpty()) {
-            throw errors;
-        }
-
         if (graph.getNumberOfNodes() <= 0) {
-            throw new PreconditionException("The graph is empty. Cannot run layouter.");
+            throw new PreconditionException("The graph is empty. Cannot run Multilevel Framework Layouter.");
         }
     }
 
@@ -79,45 +84,44 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      * Performs the layout.
      */
     public void execute() {
-//        AdjListGraph alg = new AdjListGraph();
-//        Node n1 = alg.addNode();
-//        Node n2 = alg.addNode();
-//        Node n3 = alg.addNode();
-//        Node n4 = alg.addNode();
-//        AttributeHelper.setLabel(n1, "1");
-//        AttributeHelper.setLabel(n1, "1");
-//        MultilevelGraph mlg = new MultilevelGraph(alg);
-//        mlg.newCoarseningLevel();
-//        MergedNode mn1 = mlg.addNode(new HashSet<>(Arrays.asList(n1, n2)));
-//        MergedNode mn2 = mlg.addNode(new HashSet<>(Arrays.asList(n3, n4)));
-//        mlg.addEdge(mn1, mn2);
-//        assert mlg.isComplete();
-//        GraphHelper.diplayGraph(mlg.getTopLevel());
+        // split the subgraph induced by the selection into connected components
+        final Collection<? extends CoarsenedGraph> connectedComponents =
+                MlfHelper.calculateConnectedComponentsOfSelection(new HashSet<>(this.getSelectedOrAllNodes()));
 
-        Collection<Node> workNodes = new ArrayList<Node>();
-        if (selection.getNodes().size() > 0)
-            workNodes.addAll(selection.getNodes());
-        else
-            workNodes.addAll(graph.getNodes());
+        final Merger merger = new RandomMerger();
+        final Placer placer = new RandomPlacer();
+        final LayoutAlgorithmWrapper algorithm =
+                this.layoutAlgorithms.get(Objects.toString(this.algorithmListComboBox.getSelectedItem()));
+        final Selection emptySelection = new Selection();
 
-        workNodes = GraphHelper.getVisibleNodes(workNodes);
-
-        int numberOfNodes = workNodes.size();
-        double singleStep = 2 * Math.PI / numberOfNodes;
-
-        Vector2d ctr = NodeTools.getCenter(workNodes);
-        HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
-
-        int i = 0;
-        for (Node n : workNodes) {
-            double newX = Math.sin(singleStep * i) * 15 + ctr.x;
-            double newY = Math.cos(singleStep * i) * 15 + ctr.y;
-            nodes2newPositions.put(n, new Vector2d(newX, newY));
-            i++;
+        // layout each connected component
+        for (CoarsenedGraph cg : connectedComponents) {
+            MultilevelGraph componentMLG = new MultilevelGraph(cg);
+            merger.buildCoarseningLevels(componentMLG);
+            while (componentMLG.getNumberOfLevels() > 1) {
+                System.out.println("Layouting level " + componentMLG.getNumberOfLevels());
+                algorithm.execute(componentMLG.getTopLevel(), emptySelection);
+                placer.reduceCoarseningLevel(componentMLG);
+            }
+            assert componentMLG.getNumberOfLevels() == 1 : "Not all coarsening levels were removed";
+            System.out.println("Layouting level 0");
+            algorithm.execute(componentMLG.getTopLevel(), emptySelection);
         }
 
-        GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions,
-                getName());
+        // apply position updates
+
+        HashMap<Node, Vector2d> nodes2newPositions = new HashMap<>();
+
+        for (CoarsenedGraph cg : connectedComponents) {
+            for (MergedNode mn : cg.getMergedNodes()) {
+                final Node representedNode = mn.getInnerNodes().iterator().next();
+                assert mn.getInnerNodes().size() == 1 : "More than one node represented in level 0";
+                AttributeHelper.setPosition(representedNode, AttributeHelper.getPosition(mn));
+            }
+        }
+
+        GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
+        ConnectedComponentLayout.layoutConnectedComponents(this.graph);
     }
 
     /**
@@ -125,11 +129,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      */
     @Override
     public Parameter[] getParameters() {
-        // TODO
-        JComponentParameter param =
-                new JComponentParameter(new JButton("text"), "name", "description");
-
-        return new Parameter[]{param};
+        return this.parameters;
     }
 
     /**
@@ -160,5 +160,45 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
     public boolean activeForView(View v) {
         return v != null;
+    }
+
+    /**
+     * The handler that gets called if the "Set up Layouter" button was clicked.
+     * @param e
+     *      Ignored.
+     * @author Gordian
+     */
+    private void clickSetUpLayoutAlgorithmButton(ActionEvent e) {
+        final String selected = (String) this.algorithmListComboBox.getSelectedItem();
+        if (selected == null) {
+            return;
+        }
+        final LayoutAlgorithmWrapper current = this.layoutAlgorithms.get(selected);
+        JOptionPane.showMessageDialog(MainFrame.getInstance(), current.getGUI(), selected, JOptionPane.PLAIN_MESSAGE);
+    }
+
+    /**
+     * Create the parameter objects.
+     * @author Gordian
+     */
+    private void setUpParameters() {
+        this.layoutAlgorithms = LayoutAlgorithmWrapper.getLayoutAlgorithms();
+        String defaultAlgorithm = this.layoutAlgorithms.keySet().contains(DEFAULT_ALGORITHM) ? DEFAULT_ALGORITHM :
+                this.layoutAlgorithms.keySet().iterator().next();
+        this.algorithmListComboBox = new JComboBox<>(this.layoutAlgorithms.keySet().stream()
+                .sorted().toArray(String[]::new));
+        JComponentParameter algorithmList = new JComponentParameter(this.algorithmListComboBox, "Layout Algorithm",
+                "Layout Algorithm to be run on each level of the coarsened graph.");
+        this.algorithmListComboBox.setSelectedItem(defaultAlgorithm);
+
+        this.setUpLayoutAlgorithmButton = new JButton("Set up layouter");
+        this.setUpLayoutAlgorithmButton.addActionListener(this::clickSetUpLayoutAlgorithmButton);
+        JComponentParameter setUpLayoutAlgorithmButtonParameter =
+                new JComponentParameter(this.setUpLayoutAlgorithmButton, "Set up layouter",
+                        "Click the button to change the parameters of the layout algorithm.");
+
+        // TODO add GUI for Mergers and Placers
+
+        this.parameters = new Parameter[] {algorithmList, setUpLayoutAlgorithmButtonParameter};
     }
 }
