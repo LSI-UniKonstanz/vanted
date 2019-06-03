@@ -1,6 +1,8 @@
 package org.vanted.addons.multilevelframework;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -10,6 +12,8 @@ import org.Vector2d;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
+import org.graffiti.plugin.parameter.DoubleParameter;
+import org.graffiti.plugin.parameter.Parameter;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -58,5 +62,14 @@ public class RandomPlacerTest {
     	assertFalse(oldpos[1].distance(AttributeHelper.getPositionVec2d(n2)) == 0.0);
     	assertFalse(oldpos[2].distance(AttributeHelper.getPositionVec2d(n3)) == 0.0);
     	assertFalse(oldpos[3].distance(AttributeHelper.getPositionVec2d(n4)) == 0.0);
+    }
+    @Test
+    public void testParameters() {
+    	Parameter[] parameters = {new DoubleParameter("maxPlaceDistance", "")};
+    	parameters[0].setValue(50.0);
+    	assertNull(rp.getParameters());
+    	rp.setParameters(parameters);
+    	System.out.println(rp.getParameters());
+    	assertArrayEquals(parameters, rp.getParameters());
     }
 }
