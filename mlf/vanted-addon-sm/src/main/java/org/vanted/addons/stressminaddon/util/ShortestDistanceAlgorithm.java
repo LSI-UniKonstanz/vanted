@@ -71,7 +71,6 @@ public class ShortestDistanceAlgorithm {
                         queue.add(neighbour);
                     }
                 }
-             System.out.println("\n");
             }
             // copy distances to resultMatrix for node n
             for (int i = 0; i < posStartNode; i++) {
