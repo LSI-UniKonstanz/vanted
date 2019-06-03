@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 
 <!DOCTYPE plugin
-  PUBLIC "-//GRAFFITI/DTD Plugin Descriptin 1.0//EN"
- "http://www.graffiti.org/dtd/1.0/plugin.dtd">
+        PUBLIC "-//GRAFFITI/DTD Plugin Descriptin 1.0//EN"
+        "http://www.graffiti.org/dtd/1.0/plugin.dtd">
 
 <plugin>
-    <author>Team 2.2</author>
-    <description>Extends VANTED to have a stress minimization layouter.</description>
+    <author>Team 2.2 SM</author>
+    <description>This add-on adds a stress minimization layouter to VANTED.</description>
     <plugindesc>
         <name>Stress Minimization Add-on</name>
         <main>org.vanted.addons.stressminaddon.StressMinimizationAddon</main>
-        <version>0.0</version>
+        <version>0.1</version>
         <compatibility>2.5.0</compatibility>
-        <available>https://git.uni-konstanz.de/kn/swp2019/team-2.2/</available>
+        <available>https://git.uni-konstanz.de/kn/swp2019/team-2.2</available>
     </plugindesc>
 </plugin>
