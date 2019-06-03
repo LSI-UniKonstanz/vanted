@@ -104,13 +104,8 @@ class StressMajorizationLayoutCalculator {
 	private RealMatrix localizedOptimizationLayout() {
 		RealMatrix X = initialLayout.copy();
 
-		// fix first row as in paper (X_1 := 0)
-		for (int a = 0; a < d; a += 1) {
-			X.setEntry(0, a, 0);
-		}
-		
 		// since first node is fixed (see above), we skip the first node
-		for (int i = 1; i < n; i += 1) {
+		for (int i = 0; i < n; i += 1) {
 			RealVector Xi = X.getRowVector(i);
 			for (int a = 0; a < d; a += 1) {
 				double numerator = 0;

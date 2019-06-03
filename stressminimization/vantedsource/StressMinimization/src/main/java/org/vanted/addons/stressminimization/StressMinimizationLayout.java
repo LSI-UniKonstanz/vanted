@@ -58,9 +58,12 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 		if (graph.isEmpty()) {
 			throw new PreconditionException("Stress Minimization Layout cannot work on empty graphs");
 		}
+		
+		/* A
 		if (graph.isDirected()) {
 			throw new PreconditionException("Stress Minimization Layout cannot work on directed graphs");
 		}
+		*/
 		
 	}
 	
