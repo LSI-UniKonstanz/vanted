@@ -12,8 +12,8 @@
 package org.vanted.addons.multilevelframework;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
-import org.AttributeHelper;
-import org.graffiti.graph.AdjListGraph;
+import de.ipk_gatersleben.ag_nw.graffiti.NodeTools;
+import org.Vector2d;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
@@ -22,8 +22,9 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 
 import javax.swing.*;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 
 public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
@@ -78,45 +79,45 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      * Performs the layout.
      */
     public void execute() {
-        AdjListGraph alg = new AdjListGraph();
-        Node n1 = alg.addNode();
-        Node n2 = alg.addNode();
-        Node n3 = alg.addNode();
-        Node n4 = alg.addNode();
-        AttributeHelper.setLabel(n1, "1");
-        AttributeHelper.setLabel(n1, "1");
-        MultilevelGraph mlg = new MultilevelGraph(alg);
-        mlg.newCoarseningLevel();
-        MergedNode mn1 = mlg.addNode(new HashSet<>(Arrays.asList(n1, n2)));
-        MergedNode mn2 = mlg.addNode(new HashSet<>(Arrays.asList(n3, n4)));
-        mlg.addEdge(mn1, mn2);
-        assert mlg.isComplete();
-        GraphHelper.diplayGraph(mlg.getTopLevel());
+//        AdjListGraph alg = new AdjListGraph();
+//        Node n1 = alg.addNode();
+//        Node n2 = alg.addNode();
+//        Node n3 = alg.addNode();
+//        Node n4 = alg.addNode();
+//        AttributeHelper.setLabel(n1, "1");
+//        AttributeHelper.setLabel(n1, "1");
+//        MultilevelGraph mlg = new MultilevelGraph(alg);
+//        mlg.newCoarseningLevel();
+//        MergedNode mn1 = mlg.addNode(new HashSet<>(Arrays.asList(n1, n2)));
+//        MergedNode mn2 = mlg.addNode(new HashSet<>(Arrays.asList(n3, n4)));
+//        mlg.addEdge(mn1, mn2);
+//        assert mlg.isComplete();
+//        GraphHelper.diplayGraph(mlg.getTopLevel());
 
-//		Collection<Node> workNodes = new ArrayList<Node>();
-//		if (selection.getNodes().size() > 0)
-//			workNodes.addAll(selection.getNodes());
-//		else
-//			workNodes.addAll(graph.getNodes());
-//
-//		workNodes = GraphHelper.getVisibleNodes(workNodes);
-//
-//		int numberOfNodes = workNodes.size();
-//		double singleStep = 2 * Math.PI / numberOfNodes;
-//
-//		Vector2d ctr = NodeTools.getCenter(workNodes);
-//		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
-//
-//		int i = 0;
-//		for (Node n : workNodes) {
-//			double newX = Math.sin(singleStep * i) * defaultRadius + ctr.x;
-//			double newY = Math.cos(singleStep * i) * defaultRadius + ctr.y;
-//			nodes2newPositions.put(n, new Vector2d(newX, newY));
-//			i++;
-//		}
-//
-//		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions,
-//							getName());
+        Collection<Node> workNodes = new ArrayList<Node>();
+        if (selection.getNodes().size() > 0)
+            workNodes.addAll(selection.getNodes());
+        else
+            workNodes.addAll(graph.getNodes());
+
+        workNodes = GraphHelper.getVisibleNodes(workNodes);
+
+        int numberOfNodes = workNodes.size();
+        double singleStep = 2 * Math.PI / numberOfNodes;
+
+        Vector2d ctr = NodeTools.getCenter(workNodes);
+        HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
+
+        int i = 0;
+        for (Node n : workNodes) {
+            double newX = Math.sin(singleStep * i) * 15 + ctr.x;
+            double newY = Math.cos(singleStep * i) * 15 + ctr.y;
+            nodes2newPositions.put(n, new Vector2d(newX, newY));
+            i++;
+        }
+
+        GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions,
+                getName());
     }
 
     /**

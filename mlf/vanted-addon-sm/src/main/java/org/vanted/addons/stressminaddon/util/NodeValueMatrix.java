@@ -138,7 +138,20 @@ public class NodeValueMatrix implements Cloneable {
      * @author Jannik
      */
     @Override
-    protected NodeValueMatrix clone() {
+    public NodeValueMatrix clone() {
         return new NodeValueMatrix(this);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        for (int row = 0; row < dimension; row++) {
+            for (int col = 0; col < dimension; col++) {
+                result.append(String.format("%2.2f ", this.get(row, col)));
+            }
+            result.append("\n");
+        }
+
+        return result.toString();
     }
 }
