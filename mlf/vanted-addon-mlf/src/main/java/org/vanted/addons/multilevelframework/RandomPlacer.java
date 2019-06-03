@@ -5,6 +5,7 @@ import java.util.Random;
 
 import org.AttributeHelper;
 import org.graffiti.graph.Node;
+import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
 
 /**
@@ -41,7 +42,8 @@ public class RandomPlacer implements Placer {
 
 		for (Parameter param : this.parameters) {
 			if (param.getName().equals("maxPlaceDistance")) {
-				maxPlaceDistance = (double) param.getValue();
+				DoubleParameter p = (DoubleParameter) param;
+				maxPlaceDistance = p.getDouble();
 			}
 		}
 	}
@@ -69,11 +71,13 @@ public class RandomPlacer implements Placer {
 				double randy = (-1.0 + 2.0 * random.nextDouble()) * maxPlaceDistance;
 
 				double x = AttributeHelper.getPositionX(mergedNode) + randx;
-				if (x < 0)
+				if (x < 0) {
 					x = -x;
+				}
 				double y = AttributeHelper.getPositionY(mergedNode) + randy;
-				if (y < 0)
+				if (y < 0) {
 					y = -y;
+				}
 
 				AttributeHelper.setPosition(node, x, y);
 			}
