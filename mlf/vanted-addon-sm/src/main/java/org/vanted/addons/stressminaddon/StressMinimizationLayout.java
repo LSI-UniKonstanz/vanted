@@ -41,6 +41,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
     public static final String INDEX_ATTRIBUTE =
             "StressMinimization" + Attribute.SEPARATOR + "index";
 
+    /** The {@link IntuitiveIterativePositionAlgorithm} to use. */
     public static final IterativePositionAlgorithm positionAlgorithm = new IntuitiveIterativePositionAlgorithm();
 
     /** The epsilon to use with the stress function with a reasonable default. */
@@ -364,7 +365,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             this.id = id;
             this.nodes = nodes;
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate distances..."));
-            this.distances = new ShortestDistanceAlgorithm().getShortestPaths(nodes, Integer.MAX_VALUE);
+            this.distances = ShortestDistanceAlgorithm.calculateShortestPaths(nodes, Integer.MAX_VALUE); // TODO make configurable
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate scaling factor..."));
             final double scalingFactor = ConnectedComponentsHelper.getMaxNodeSize(nodes);
             // scale for better display TODO make configurable

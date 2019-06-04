@@ -18,7 +18,7 @@ public class ShortestDistanceAlgorithmTest {
     public void getShortestPaths() {
 
         SDA = new ShortestDistanceAlgorithm();
-        NodeValueMatrix result = SDA.getShortestPaths(GRAPH_1_NODES);
+        NodeValueMatrix result = SDA.calculateShortestPaths(GRAPH_1_NODES);
 
         //compares all cells
         for(int row = 0; row < GRAPH_1_NODES.size(); row++) {
