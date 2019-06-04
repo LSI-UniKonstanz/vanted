@@ -1,15 +1,16 @@
 package org.vanted.addons.stressminaddon.util;
 
-import org.graffiti.graph.Edge;
+import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.graph.Node;
+import org.vanted.addons.stressminaddon.StressMinimizationLayout;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author theo
@@ -25,9 +26,13 @@ public class ShortestDistanceAlgorithm {
      */
     private class BFSRunnable implements Runnable {
 
-        private Node n;
-        private ArrayList<Node> nodes;
+        /** The node to start from. */
+        private Node start;
+        /** The maximum number of nodes to process. */
         private int numberNodes;
+        /** The maximal depth to reach before terminating prematurely. */
+        private int maxDepth;
+        /** The resulting matrix. This will be shared between all {@link BFSRunnable}s. */
         private NodeValueMatrix results;
 
         /**
@@ -39,11 +44,12 @@ public class ShortestDistanceAlgorithm {
          *
          * @author theo
          */
-        public BFSRunnable(Node n, final ArrayList<Node>  nodes, NodeValueMatrix results) {
-            this.nodes = nodes;
-            this.n = n;
-            this.numberNodes = nodes.size();
+        BFSRunnable(final Node start, final NodeValueMatrix results, final int maxDepth) {
+            assert start != null && results != null;
+            this.start = start;
+            this.numberNodes = results.getDimension();
             this.results = results;
+            this.maxDepth = maxDepth;
         }
 
         /**
@@ -57,32 +63,40 @@ public class ShortestDistanceAlgorithm {
             // stores distances to all nodes from startNode
             double[] distances = new double[numberNodes];
             // all distances are -1 in the beginning
-            for (int i = 0; i < numberNodes; i++) {
-                distances[i] = -1;
+            for (int i = 0; i < numberNodes; i++) { // TODO maybe initialize faster with System.arraycopy()
+                distances[i] = Double.POSITIVE_INFINITY;
             }
 
-            int posStartNode = nodes.indexOf(n);
+            int posStartNode = start.getInteger(StressMinimizationLayout.INDEX_ATTRIBUTE);
             distances[posStartNode] = 0;
 
             // Create a queue for BFS
-            LinkedList<Node> queue = new LinkedList<Node>();
-            queue.add(n);
+            Queue<Node> queue = new LinkedList<>();
+            queue.add(start);
 
-            Collection<Edge> edgesOfCurrentNode;
-
+            Node current;
+            int posCurrent;
             // BFS
             while (queue.size() != 0) {
-                n = queue.poll();
+                current = queue.poll();
+                posCurrent = current.getInteger(StressMinimizationLayout.INDEX_ATTRIBUTE);
+                if (distances[posCurrent] >= this.maxDepth)
+                    break;
 
-                for (Node neighbour : n.getNeighbors()) {
-                    int posInGraph = nodes.indexOf(neighbour);
-                    if (distances[posInGraph] == -1) {
-                        distances[posInGraph] = distances[nodes.indexOf(n)] +1;
-                        queue.add(neighbour);
+
+                for (Node neighbour : current.getNeighbors()) {
+                    try {
+                        int posInGraph = neighbour.getInteger(StressMinimizationLayout.INDEX_ATTRIBUTE);
+                        if (distances[posInGraph] == Double.POSITIVE_INFINITY) {
+                            distances[posInGraph] = distances[posCurrent] + 1;
+                            queue.add(neighbour);
+                        }
+                    } catch (AttributeNotFoundException e) {
+                        // Node is not in the current connected component
                     }
                 }
             }
-            // copy distances to resultMatrix for node n
+            // copy distances to resultMatrix for node start
             for (int i = 0; i < posStartNode; i++) {
                 results.set(posStartNode, i, distances[i]);
             }
@@ -100,22 +114,23 @@ public class ShortestDistanceAlgorithm {
      *
      * @author theo
      */
-    public NodeValueMatrix getShortestPaths(final ArrayList<Node> nodes) {
+    public NodeValueMatrix getShortestPaths(final List<Node> nodes, final int maxDepth) {
 
         int numberOfNodes = nodes.size();
         NodeValueMatrix resultMatrix = new NodeValueMatrix(numberOfNodes);
         // create a new ThreadPool
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        try {
-            for (Node n : nodes) {
-                executor.execute(new BFSRunnable(n, nodes, resultMatrix));
-            }
-        } catch (Exception err) {
-            err.printStackTrace();
+        ArrayList<Callable<Object>> todo = new ArrayList<>(numberOfNodes);
+        for (Node n : nodes) {
+            todo.add(Executors.callable(new BFSRunnable(n, resultMatrix, maxDepth)));
         }
-        executor.shutdown();
+
+        try {
+            executor.invokeAll(todo);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return resultMatrix;
-
     }
 }
