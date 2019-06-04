@@ -2,7 +2,9 @@ package org.vanted.addons.stressminaddon;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import org.AttributeHelper;
+import org.BackgroundTaskStatusProvider;
 import org.Vector2d;
 import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.Node;
@@ -11,17 +13,27 @@ import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.vanted.addons.stressminaddon.util.ConnectedComponentsHelper;
-import org.vanted.addons.stressminaddon.util.MockShortestDistances;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
+import org.vanted.addons.stressminaddon.util.ShortestDistanceAlgorithm;
 
 import java.util.*;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /**
  * Implements a version of a stress minimization add-on that can be used
  * in VANTED.
  */
-public class StressMinimizationLayout extends AbstractEditorAlgorithm {
+public class StressMinimizationLayout extends AbstractEditorAlgorithm  implements BackgroundTaskStatusProvider {
+
+    /** The time in ms the algorithm started. Used to calculate elapsed time. */
+    long startTime;
+
+    /** The current displayed status of the algorithm. */
+    volatile String status = "";
+    /** Whether the algorithm was not stopped by the user. */
+    volatile AtomicBoolean keepRunning = new AtomicBoolean(true);
 
     /**
      * Path of an attribute that is set to the index of an node.
@@ -92,61 +104,92 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             pureNodes = new ArrayList<>(GraphHelper.getVisibleNodes(selection.getNodes()));
         }
 
+        BackgroundTaskHelper.issueSimpleTask("Stress Minimization", "Init", () -> {
+            startTime = System.currentTimeMillis();
+            System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Start (n = " + pureNodes.size() + ")"));
+            System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Getting connected components..."));
+            // get connected components and layout them
+            final Set<List<Node>> connectedComponents = ConnectedComponentsHelper.getConnectedComponents(pureNodes);
+            ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents);
+            System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Got connected components. (" + connectedComponents.size() + ")"));
 
-        // get connected components and layout them
-        final Set<List<Node>> connectedComponents = ConnectedComponentsHelper.getConnectedComponents(pureNodes);
-        ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents);
+            // TODO temporary
+            System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Running random..."));
+            RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
+            rla.attach(graph, selection);
+            rla.execute();
+            System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Finished random."));
 
-        // TODO temporary
-        RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
-        rla.attach(graph, selection);
-        //  rla.execute();
+            List<WorkUnit> workUnits = new ArrayList<>(connectedComponents.size());
 
-        List<WorkUnit> workUnits = new ArrayList<>(connectedComponents.size());
-
-        // prepare (set helper attribute)
-        for (List<Node> component : connectedComponents) {
-            // Set positions attribute for hopefully better handling
-            for (int pos = 0; pos < component.size(); pos++) {
-                component.get(pos).setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, pos);
-            }
-            WorkUnit unit = new WorkUnit(component);
-            System.out.println(unit.toString());
-
-            workUnits.add(unit);
-        }
-
-        boolean someoneIsWorking = true;
-
-        // iterate
-        HashMap<Node, Vector2d> move = new HashMap<>();
-        for (int iteration = 1; someoneIsWorking && iteration <= maxIterations; ++iteration) {
-            System.out.println("iteration = " + iteration);
-            someoneIsWorking = false;
-            move.clear();
-            // execute every work unit
-            for (WorkUnit unit : workUnits) {
-                if (unit.hasStopped)
-                    continue;
-                move.putAll(unit.nextIteration());
-                // something was worked on
-                someoneIsWorking = true;
+            // prepare (set helper attribute)
+            int id = 0;
+            for (List<Node> component : connectedComponents) {
+                // Set positions attribute for hopefully better handling
+                System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Preparing connected components for algorithm.") + " (n = " + component.size() + ")");
+                for (int pos = 0; pos < component.size(); pos++) {
+                    component.get(pos).setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, pos);
+                }
+                WorkUnit unit = new WorkUnit(component, id++);
                 System.out.println(unit.toStringShort());
+
+                workUnits.add(unit);
+            }
+            System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Finished preparing"));
+
+            boolean someoneIsWorking = true;
+
+            ExecutorService executor = Executors.newWorkStealingPool(Runtime.getRuntime().availableProcessors());
+            List<Callable<Object>> todo = new ArrayList<>(workUnits.size());
+            // iterate
+            ConcurrentMap<Node, Vector2d> move = new ConcurrentHashMap<>();
+            for (int iteration = 1; keepRunning.get() && someoneIsWorking && iteration <= maxIterations; ++iteration) {
+                System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Iteration " + iteration));
+                someoneIsWorking = false;
+                move.clear();
+                // execute every work unit
+                for (WorkUnit unit : workUnits) {
+                    if (unit.hasStopped) {
+                        continue;
+                    }
+                    todo.add(Executors.callable(() -> move.putAll(unit.nextIteration())));
+                    // something was worked on
+                    someoneIsWorking = true;
+                    //System.out.println(unit.toStringShort());
+                }
+
+                try {
+                    if (keepRunning.get()) {
+                        executor.invokeAll(todo);
+                    }
+                    todo.clear();
+                } catch (InterruptedException e) {
+                    keepRunning.set(false);
+                    e.printStackTrace();
+                }
+
+                GraphHelper.applyUndoableNodePositionUpdate(new HashMap<>(move), "Do iteration.");
+            }
+            System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Finish work."));
+
+
+            System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Postprocessing..."));
+            // finish (remove helper attribute)
+            for (List<Node> connectedComponent : connectedComponents) {
+                // Reset attributes
+                for (Node node : connectedComponent) {
+                    node.removeAttribute(StressMinimizationLayout.INDEX_ATTRIBUTE);
+                }
             }
 
-            GraphHelper.applyUndoableNodePositionUpdate(move, "Do iteration.");
-        }
+            ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents);
+            startTime = System.currentTimeMillis() - startTime;
+            System.out.println(startTime + " SM: " + (status = "Finished.") + " Took " + (startTime/1000.0) + "s");
+            keepRunning.set(true);
+
+        }, null, this, 10);
 
 
-        // finish (remove helper attribute)
-        for (List<Node> connectedComponent : connectedComponents) {
-            // Reset attributes
-            for (Node node : connectedComponent) {
-                node.removeAttribute(StressMinimizationLayout.INDEX_ATTRIBUTE);
-            }
-        }
-
-        ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents);
     }
 
     /**
@@ -258,6 +301,27 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
     }
 
     /**
+     * Returns a status message on what is going on. WARNING: This method must be
+     * Thread-Safe!
+     *
+     * @return A status message, or null if not needed.
+     */
+    @Override
+    public String getCurrentStatusMessage1() {
+        return status;
+    }
+
+    /**
+     * If this method is called on the status provider, the linked work task should
+     * stop its execution as soon as possible.
+     */
+    @Override
+    public void pleaseStop() {
+        keepRunning.set(false);
+    }
+
+
+    /**
      * Represents a unit (in most cases a connected component) the stress minimization
      * algorithm works on.
      * All data relevant for the session will be saved and the algorithm will be run
@@ -266,6 +330,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
      * @author Jannik
      */
     class WorkUnit {
+
+        /** The identifier of this unit. Should be unique. */
+        final int id;
         /** The nodes to work on. */
         final List<Node> nodes;
         /** The graph theoretical distances to work with. These will not change once calculated. */
@@ -289,22 +356,30 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
          * <code>weights</code>, <code>currentStress</code> and <code>currentPositions</code>.
          *
          * @param nodes the nodes this {@link WorkUnit} shall work on.
+         * @param id the identifier of this {@link WorkUnit}. Shall be unique.
          *
          * @author Jannik
          */
-        public WorkUnit(final List<Node> nodes) {
+        public WorkUnit(final List<Node> nodes, final int id) {
+            this.id = id;
             this.nodes = nodes;
-            this.distances = MockShortestDistances.getShortestPaths(nodes);
+            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate distances..."));
+            this.distances = new ShortestDistanceAlgorithm().getShortestPaths(nodes, Integer.MAX_VALUE);
+            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate scaling factor..."));
             final double scalingFactor = ConnectedComponentsHelper.getMaxNodeSize(nodes);
             // scale for better display TODO make configurable
             this.distances.apply(x -> x*scalingFactor*5);
+            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate weights..."));
             this.weights = this.distances.clone().apply(x -> 1/(x*x)); // derive weights TODO make configurable
 
             // TODO implement preprocessing
             // calculate first values
+            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Get positions..."));
             this.currentPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
+            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate initial stress..."));
             this.currentStress = StressMinimizationLayout.calculateStress(nodes, this.currentPositions, this.distances, this.weights);
             this.hasStopped = false;
+            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Preprocessing finished."));
         }
 
         /**
@@ -320,14 +395,17 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             if (hasStopped) return Collections.emptyMap();
 
             // calculate new positions
+            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+this.id+": Iterate new positions...");
             List<Vector2d> newPositions = StressMinimizationLayout.positionAlgorithm.nextIteration(
                     this.nodes, this.distances, this.weights);
 
             // calculate new stress
+            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+this.id+": Calculate new stress...");
             double newStress = StressMinimizationLayout.calculateStress(
                     this.nodes, newPositions, this.distances, this.weights);
 
             // shall we stop? is the change in stress or position is smaller than the given epsilon
+            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+this.id+": Check stop condition...");
             if ((this.currentStress - newStress)/this.currentStress < stressEpsilon ||
                 differencePositionsSmallerEpsilon(newPositions, this.currentPositions, positionChangeEpsilon)) {
                this.hasStopped = true;
@@ -338,11 +416,13 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             this.currentStress = newStress;
 
             // create the output
+            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+this.id+": Prepare result...");
             HashMap<Node, Vector2d> result = new HashMap<>(this.nodes.size());
             for (int node = 0; node < this.nodes.size(); node++) {
-                System.out.println(this.nodes.get(node) + " to " + this.currentPositions.get(node));
+                //System.out.println(this.nodes.get(node) + " to " + this.currentPositions.get(node));
                 result.put(this.nodes.get(node), this.currentPositions.get(node));
             }
+            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+this.id+": Iteration finished.");
             return result;
         }
 
@@ -352,7 +432,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
          */
         @Override
         public String toString() {
-            return "WorkUnit{" +
+            return "WorkUnit"+id+"{" +
                     "nodes=" + nodes +
                     ", distances=\n" + distances +
                     "weights=\n" + weights +
@@ -367,10 +447,37 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
          * @author IntelliJ
          */
         public String toStringShort() {
-            return "WorkUnit{" +
+            return "WorkUnit"+id+"{" +
                     "currentStress=" + currentStress +
                     ", hasStopped=" + hasStopped +
                     '}';
         }
     }
+
+    // Unused methods from BackgroundTaskStatusProvider interface //
+    /**
+     * Returns the completion status. WARNING: This method must be Thread-Safe!
+     *
+     * @return A number from 0..100 which represents the completion status. If -1 is
+     * returned, the progress bar is set to "indeterminate", which means,
+     * that the progress bar will float from left to right and reverse.
+     * (Useful if status can not be determined) Other values let the
+     * progressbar disappear.
+     */
+    @Override
+    public int getCurrentStatusValue() {
+        return -1;
+    }
+
+    @Override
+    public void setCurrentStatusValue(int value) {}
+    @Override
+    public double getCurrentStatusValueFine() { return -1; }
+    @Override
+    public String getCurrentStatusMessage2() { return null; }
+    @Override
+    public boolean pluginWaitsForUser() { return false; }
+    @Override
+    public void pleaseContinueRun() {}
+    // End Methods from BackgroundTaskStatusProvider interface //
 }
