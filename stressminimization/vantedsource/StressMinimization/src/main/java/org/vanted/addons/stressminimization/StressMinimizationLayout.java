@@ -1,9 +1,17 @@
 package org.vanted.addons.stressminimization;
 
+import java.util.Collection;
+
+import org.graffiti.editor.GravistoService;
+import org.graffiti.graph.Graph;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
+import org.graffiti.selection.Selection;
+
+import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
 
 /**
  * Layout algorithm performing a stress minimization layout process.
@@ -59,7 +67,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 			throw new PreconditionException("Stress Minimization Layout cannot work on empty graphs");
 		}
 		
-		/* A
+		/* 
 		if (graph.isDirected()) {
 			throw new PreconditionException("Stress Minimization Layout cannot work on directed graphs");
 		}
@@ -82,7 +90,19 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 	@Override
 	public void execute() {
 		
-		new StressMajorizationImpl(graph).doLayout();
+		Collection<Graph> components = GraphHelper.getConnectedComponentsAsCopy(graph);
+		
+		for (Graph component : components) {
+			new StressMajorizationImpl(component).doLayout();
+		}
+		
+		// center graph layout
+		GravistoService.getInstance().runAlgorithm(
+				new CenterLayouterAlgorithm(), 
+				graph,	
+				new Selection(""), 
+				null
+		);
 		
 	}
 	

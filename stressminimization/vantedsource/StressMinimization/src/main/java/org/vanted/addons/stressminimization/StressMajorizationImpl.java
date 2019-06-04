@@ -38,23 +38,26 @@ class StressMajorizationImpl {
 	
 	void doLayout() {
 
+		// enable or disable console logging
+		final boolean LOG = true;
+		
 		List<Node> nodes = g.getNodes();
 		int n = nodes.size();
 		final int d = 2; // only implemented for two dimensional space
 
-		System.out.println("Calculating distances...");
+		if (LOG) { System.out.println("Calculating distances..."); }
 		RealMatrix distances = calcDistances();
-		System.out.println("Calculating weights...");
+		if (LOG) { System.out.println("Calculating weights..."); }
 		RealMatrix weights = getWeightsForDistances(distances, 2); // TODO make alpha selectable by user
 		
-		System.out.println("Copying layout...");
+		if (LOG) { System.out.println("Copying layout..."); }
 		RealMatrix layout = new Array2DRowRealMatrix(n, d); //getRandomMatrix(n, d); 
 		for (int i = 0; i < n; i += 1) {
 			Point2D position = AttributeHelper.getPosition(nodes.get(i));
 			layout.setRow(i, new double[] {position.getX(), position.getY()});
 		}
 
-		System.out.println("Optimizing layout...");
+		if (LOG) { System.out.println("Optimizing layout..."); }
 		double prevStress, newStress;
 		do {
 
@@ -64,10 +67,12 @@ class StressMajorizationImpl {
 			layout = c.calcOptimizedLayout();
 			newStress = c.calcStress(layout);
 
-			System.out.println("===============================");
-			System.out.println("prev: " + prevStress);
-			System.out.println("new:  " + newStress);
-			System.out.println("diff: " + ((prevStress - newStress) / prevStress) + "; " + ((prevStress - newStress) / prevStress >= EPSILON));
+			if (LOG) { 
+				System.out.println("===============================");
+				System.out.println("prev: " + prevStress);
+				System.out.println("new:  " + newStress);
+				System.out.println("diff: " + ((prevStress - newStress) / prevStress) + "; " + ((prevStress - newStress) / prevStress >= EPSILON));
+			}
 			
 		} while ( (prevStress - newStress) / prevStress >= EPSILON ); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
 		
@@ -80,11 +85,9 @@ class StressMajorizationImpl {
 			nodes2newPositions.put(nodes.get(i), position);
 		}
 
-		System.out.println("Updating layout...");
+		if (LOG) { System.out.println("Updating layout..."); }
 		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, "Stress Majorization");
-		// center graph layout
-		GravistoService.getInstance().runAlgorithm(new CenterLayouterAlgorithm(), g,
-				new Selection(""), null);
+		
 	}
 	
 	/**
