@@ -144,14 +144,23 @@ public class NodeValueMatrix implements Cloneable {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
+        return "NodeValueMatrix{" +
+                "#values=" + (dimension*(dimension-1)/2) +
+                ", dimension=" + dimension +
+                '}';
+    }
+
+    /**
+     * Prints the values of this matrix to stdout. For debugging purposes.
+     * @author Jannik
+     */
+    public void print() {
         for (int row = 0; row < dimension; row++) {
             for (int col = 0; col < dimension; col++) {
-                result.append(String.format("%2.2f ", this.get(row, col)));
+                System.out.printf("%2.2f ", this.get(row, col));
             }
-            result.append("\n");
+            System.out.println();
         }
 
-        return result.toString();
     }
 }
