@@ -16,8 +16,9 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
     /**
      * This method just calls the superclass' method with the same signature.
      * Note that {@code false} must be passed to the {@code directed} parameter.
-     * @see AdjListGraph#doAddEdge(Node, Node, boolean)
+     *
      * @author Gordian
+     * @see AdjListGraph#doAddEdge(Node, Node, boolean)
      */
     @Override
     public Edge doAddEdge(Node source, Node target, boolean directed) {
@@ -28,8 +29,9 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
     /**
      * This method just calls the superclass' method with the same signature.
      * Note that {@code false} must be passed to the {@code directed} parameter.
-     * @see AdjListGraph#doAddEdge(Node, Node, boolean, CollectionAttribute)
+     *
      * @author Gordian
+     * @see AdjListGraph#doAddEdge(Node, Node, boolean, CollectionAttribute)
      */
     @Override
     protected Edge doAddEdge(Node source, Node target, boolean directed, CollectionAttribute col) {
@@ -39,10 +41,10 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
 
     /**
      * This method just calls the superclass' method with the same signature.
-     * @param node
-     *     Must be an instance of {@link MergedNode} and must not be {@code null}.
-     * @see AdjListGraph#doAddNode(Node)
+     *
+     * @param node Must be an instance of {@link MergedNode} and must not be {@code null}.
      * @author Gordian
+     * @see AdjListGraph#doAddNode(Node)
      */
     @Override
     public void doAddNode(Node node) {
@@ -55,9 +57,10 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
 
     /**
      * Create a new {@link MergedNode}.
+     *
      * @return the new {@link MergedNode}
-     * @see AdjListGraph#createNode()
      * @author Gordian
+     * @see AdjListGraph#createNode()
      */
     @Override
     protected MergedNode createNode() {
@@ -67,9 +70,10 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
 
     /**
      * Create a new {@link MergedNode} with the given {@link CollectionAttribute}.
+     *
      * @return the new {@link MergedNode}
-     * @see AdjListGraph#createNode(CollectionAttribute)
      * @author Gordian
+     * @see AdjListGraph#createNode(CollectionAttribute)
      */
     @Override
     public Node createNode(CollectionAttribute col) {
@@ -79,10 +83,9 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
 
     /**
      * Create a new {@link MergedNode} representing the given nodes.
-     * @param nodes
-     *     {@link Node}s to be represented. This parameter must not be {@code null}.
-     * @return
-     *     The newly created {@link MergedNode}.
+     *
+     * @param nodes {@link Node}s to be represented. This parameter must not be {@code null}.
+     * @return The newly created {@link MergedNode}.
      * @author Gordian
      */
     public MergedNode createNode(Set<Node> nodes) {
@@ -96,10 +99,10 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
 
     /**
      * This just calls the superclass' method of the same signature, but makes sure that the edge is undirected.
-     * @param directed
-     *     Must be {@code false}.
-     * @see AdjListGraph#createEdge(Node, Node, boolean)
+     *
+     * @param directed Must be {@code false}.
      * @author Gordian
+     * @see AdjListGraph#createEdge(Node, Node, boolean)
      */
     @Override
     public Edge createEdge(Node source, Node target, boolean directed) {
@@ -109,10 +112,10 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
 
     /**
      * This just calls the superclass' method of the same signature, but makes sure that the edge is undirected.
-     * @param directed
-     *     Must be {@code false}.
-     * @see AdjListGraph#createEdge(Node, Node, boolean, CollectionAttribute)
+     *
+     * @param directed Must be {@code false}.
      * @author Gordian
+     * @see AdjListGraph#createEdge(Node, Node, boolean, CollectionAttribute)
      */
     @Override
     protected Edge createEdge(Node source, Node target, boolean directed, CollectionAttribute col) {
@@ -122,6 +125,7 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
 
     /**
      * {@link InternalGraph}'s are always undirected.
+     *
      * @return {@code false}.
      * @author Gordian
      */
@@ -132,6 +136,7 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
 
     /**
      * {@link InternalGraph}'s are always undirected.
+     *
      * @param directed Must be {@code false}.
      * @author Gordian
      */
@@ -143,9 +148,10 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
 
     /**
      * {@link InternalGraph}'s are always undirected.
+     *
      * @param directed Must be {@code false}.
-     * @see AdjListGraph#setDirected(boolean, boolean)
      * @author Gordian
+     * @see AdjListGraph#setDirected(boolean, boolean)
      */
     @Override
     public void setDirected(boolean directed, boolean adjustArrows) {
@@ -155,8 +161,8 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
 
     /**
      * @param g Must be a undirected {@link Graph}.
-     * @see AdjListGraph#addGraph(Graph)
      * @author Gordian
+     * @see AdjListGraph#addGraph(Graph)
      */
     @Override
     public Collection<GraphElement> addGraph(Graph g) {
@@ -168,12 +174,10 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
     }
 
     /**
-     * @param node
-     *     Must be an instance of {@link MergedNode}. The {@link MergedNode}'s
-     *     {@link MergedNode#getInnerNodes()} method must not return any nodes already
-     *     represented by a {@link MergedNode} of this graph (returned by {@link InternalGraph#getNodes()}).
-     * @return
-     *     The copied node.
+     * @param node Must be an instance of {@link MergedNode}. The {@link MergedNode}'s
+     *             {@link MergedNode#getInnerNodes()} method must not return any nodes already
+     *             represented by a {@link MergedNode} of this graph (returned by {@link InternalGraph#getNodes()}).
+     * @return The copied node.
      * @author Gordian
      */
     @Override
@@ -181,13 +185,13 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
         this.checkMergedNode(node);
         assert this.checkNoOverlappingMergedNodes((MergedNode) node) :
                 "MultilevelGraph cannot contain multiple MergedNodes representing "
-                + "the same nodes in the underlying graph.";
+                        + "the same nodes in the underlying graph.";
         return super.addNodeCopy(node);
     }
 
     /**
-     * @throws IllegalArgumentException if the parameter is {@code true}.
      * @param directed {@code true} or {@code false}.
+     * @throws IllegalArgumentException if the parameter is {@code true}.
      * @author Gordian
      */
     private void checkUndirected(boolean directed) {
@@ -198,8 +202,8 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
 
     /**
      * Checks whether {@link Node} is an instance of {@link MergedNode}.
-     * @param n
-     *     The {@link Node} to be checked.
+     *
+     * @param n The {@link Node} to be checked.
      * @author Gordian
      */
     private void checkMergedNode(Node n) {
@@ -210,33 +214,34 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
 
     /**
      * Checks whether there are multiple {@link MergedNode}s which represent the same nodes in the underlying graph.
-     * @param ref
-     *    If not {@code null}, this parameter will also be checked for overlaps with the existing nodes.
+     *
+     * @param ref If not {@code null}, this parameter will also be checked for overlaps with the existing nodes.
      * @author Gordian
      */
     public boolean checkNoOverlappingMergedNodes(MergedNode ref) {
-            final Set<Node> representedNodes = new HashSet<>();
-            if (ref != null) {
-                representedNodes.addAll(ref.getInnerNodes());
+        final Set<Node> representedNodes = new HashSet<>();
+        if (ref != null) {
+            representedNodes.addAll(ref.getInnerNodes());
+        }
+        for (Node n : this.nodes) {
+            final MergedNode mn = (MergedNode) n;
+            if (mn.getInnerNodes().stream().anyMatch(representedNodes::contains)) {
+                return false;
             }
-            for (Node n : this.nodes) {
-                final MergedNode mn = (MergedNode) n;
-                if (mn.getInnerNodes().stream().anyMatch(representedNodes::contains)) {
-                    return  false;
-                }
-                representedNodes.addAll(mn.getInnerNodes());
-            }
-            return true;
+            representedNodes.addAll(mn.getInnerNodes());
+        }
+        return true;
     }
 
     /**
+     * @author Gordian
      * @see CoarsenedGraph#getMergedNodes()
      */
     @Override
     // only containing MergedNodes is an invariant that this wrapper class tries to
     // sustain, so this _should_ be safe
     @SuppressWarnings("unchecked")
-    public Collection<?extends MergedNode> getMergedNodes() {
+    public Collection<? extends MergedNode> getMergedNodes() {
         return (Collection) this.nodes; // see comment above, this cast _should_ be safe
     }
 }
