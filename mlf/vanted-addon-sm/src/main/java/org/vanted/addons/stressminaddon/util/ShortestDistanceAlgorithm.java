@@ -15,12 +15,13 @@ import java.util.concurrent.TimeUnit;
  * @author theo
  *
  * ShortestDistanceAlgorithm finds all the shortest paths in the given set of knots.
- * BFS is performed on all n nodes. This step will be parallelized.
+ * BFS is performed on all start nodes. This step will be parallelized.
  */
 public class ShortestDistanceAlgorithm {
 
     /**
-     * implements runnable
+     * Does the actual task of BFS from a specified start node.
+     * @author theo
      */
     private class BFSRunnable implements Runnable {
 
@@ -30,9 +31,13 @@ public class ShortestDistanceAlgorithm {
         private NodeValueMatrix results;
 
         /**
+         * Constructs a new {@link BFSRunnable} for execution.
          * 
-         * @param n       the node BFS starts from
-         * @param results matrux the final result is written
+         * @param start   the node BFS starts from
+         * @param results matrix the final result is written to
+         * @param maxDepth the maximal depth to reach before terminating prematurely
+         *
+         * @author theo
          */
         public BFSRunnable(Node n, final ArrayList<Node>  nodes, NodeValueMatrix results) {
             this.nodes = nodes;
@@ -41,9 +46,14 @@ public class ShortestDistanceAlgorithm {
             this.results = results;
         }
 
+        /**
+         * Starts the BFS search from the specified start node and writes the result until the position of the start
+         * node to the result matrix.
+         *
+         * @author theo
+         */
         @Override
         public void run() {
-
             // stores distances to all nodes from startNode
             double[] distances = new double[numberNodes];
             // all distances are -1 in the beginning
@@ -80,15 +90,21 @@ public class ShortestDistanceAlgorithm {
     }
 
     /**
-     * executes the algorithm. BFSRunnable is called once on all nodes. This steps are parallized.
-     * 
-     * @return a NodeValueMatrix containig the results of all n BFS
+     * Executes the BFS algorithm form every node and returns the result in a {@link NodeValueMatrix}.
+     * BFSRunnable is called once on all nodes. These steps are parallelized.
+     *
+     * @param nodes the nodes to work with. The BFSs will not account for other nodes.
+     * @param maxDepth the maximal depth to reach before terminating prematurely.
+     *
+     * @return a NodeValueMatrix containing the results of all start BFSs.
+     *
+     * @author theo
      */
     public NodeValueMatrix getShortestPaths(final ArrayList<Node> nodes) {
 
         int numberOfNodes = nodes.size();
         NodeValueMatrix resultMatrix = new NodeValueMatrix(numberOfNodes);
-        //create a new ThreadPool
+        // create a new ThreadPool
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
         try {
             for (Node n : nodes) {
@@ -102,5 +118,4 @@ public class ShortestDistanceAlgorithm {
         return resultMatrix;
 
     }
-
 }
