@@ -1,6 +1,9 @@
 package org.vanted.addons.stressminimization;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,7 +101,6 @@ class StressMajorizationImpl {
 	private RealMatrix calcDistances() {
 		
 		int n = g.getNumberOfNodes();
-		
 		Map<Node, Integer> node2Index = new HashMap<>();
 		int nextFreeIndex = 0;
 		for (Node node : g.getNodes()) {
@@ -108,8 +110,58 @@ class StressMajorizationImpl {
 		
 		RealMatrix distances = new Array2DRowRealMatrix(n, n);
 		
-		// Floyd–Warshall algorithm
+		//Breadth first Search
+		for (int i = 0; i < n; i += 1) {
+			for (int j = 0; j < n; j += 1) {
+				distances.setEntry(i, j, Double.POSITIVE_INFINITY);
+			}
+		}
+		for (int i = 0; i < n; i += 1) {
+			distances.setEntry(i, i, 0);
+		}
 		
+		for(int i = 0; i < n; i++) {
+			//o contains all neighbors
+			Collection<Node> o = g.getNodes().get(i).getAllInNeighbors();
+			//If we only consider directed distances in the graph, delete this line
+			o.addAll(g.getNodes().get(i).getAllInNeighbors());
+			
+			int dist = 1;
+			//Already visited nodes
+			boolean[] visited = new boolean[n];
+			Arrays.fill(visited, false);
+			//p contains the next layer o nodes
+			Collection<Node> p;
+			
+			while(o.size() != 0) {
+				//next layer is empty at first
+				p = new ArrayList<Node>();
+				
+				for(Node node : o) {
+					int j = node2Index.get(node);
+					if(!visited[j]) {
+						if(distances.getEntry(i, j) > dist) {
+							distances.setEntry(i, j, dist);
+							distances.setEntry(j, i, dist);							
+						}
+						visited[j] = true;
+						//Add neighbors of node to next layer
+						p.addAll(node.getAllOutNeighbors());
+						p.addAll(node.getAllInNeighbors());
+						p.remove(node);
+					}
+				}
+				//current layer is done
+				o = p;
+				dist++;
+			}
+			
+			
+		}
+		
+		
+		// Floyd–Warshall algorithm
+		/*
 		for (int i = 0; i < n; i += 1) {
 			for (int j = 0; j < n; j += 1) {
 				distances.setEntry(i, j, Double.POSITIVE_INFINITY);
@@ -148,6 +200,7 @@ class StressMajorizationImpl {
 				}
 			}
 		}
+		*/
 		
 		return distances;
 	}
