@@ -22,7 +22,7 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm{
 	/**
 	 * status of the algorithm
 	 */
-	private int status;
+	private BackgroundStatus status;
 	/**
 	 * layout changes of the graph
 	 */
@@ -82,7 +82,27 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm{
      * notify listener classes a new status of the algorithm is available
      * @param status
      */
-    public void setStatus(int status) {
+    public void setStatus(BackgroundStatus status) {
     	pcs.firePropertyChange("setStatus", this.status, status);
+    }
+    
+    /**
+     * check if first listener in the list is form class BackgroundExecutionAlgorithm 
+     * and if true than check if stop Button pressed. And if true then thread stop
+     * until status of stop button has changed
+     */
+    public void isStopButtonPressed() {
+    	if(((Object) getPropertyChangeListener()[0]).getClass().equals(BackgroundExecutionAlgorithm.class)) {
+    		BackgroundExecutionAlgorithm b =(BackgroundExecutionAlgorithm)((Object) getPropertyChangeListener()[0]);
+    		if(b.getStop()) {
+    			while(b.getStop()) {
+    				try {
+    					Thread.sleep(100);
+    				} catch (InterruptedException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    		}
+    	}
     }
 }

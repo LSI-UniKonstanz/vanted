@@ -78,9 +78,9 @@ public class StressMinimizationLayout extends BackgroundAlgorithm{
 	
 	@Override
 	public void execute() {
-		setStatus(1);	//set status "running"
+		setStatus(BackgroundStatus.RUNNING);	//set status "running"
 		new StressMajorizationImpl(graph, this.getPropertyChangeListener()).doLayout();
-		setStatus(3);	//set status "finished"
+		setStatus(BackgroundStatus.FINISHED);	//set status "finished"
 	}
 	
 	@Override

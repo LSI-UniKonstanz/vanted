@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.BackgroundTaskStatusProvider;
 import org.JMButton;
 import org.Vector2d;
 import org.apache.commons.math3.linear.RealMatrix;
@@ -34,6 +35,9 @@ import org.graffiti.selection.Selection;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskWindow;
 import info.clearthought.layout.SingleFiledLayout;
 
 /**
@@ -45,7 +49,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	private BackgroundAlgorithm algorithm;
 	private Graph graph;
 	private Selection selection;
-	private String status;
+	private BackgroundStatus status;
 	private Thread backgroundTask;
 	private JButton startButton;
 	private JCheckBox autoDrawCheckBox;
@@ -53,11 +57,10 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	private SpinnerEditComponent[] parameterAlgo;
 	private boolean stop;
 	
-	
 	public BackgroundExecutionAlgorithm(BackgroundAlgorithm algorithm) {
 		super();
 		this.algorithm=algorithm;
-		status="init, not started";
+		status=BackgroundStatus.INIT;
 		autoDraw=false;
 		stop=false;
 		if(algorithm.getParameters()!=null) {
@@ -74,27 +77,27 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	 * set status of running algorithm
 	 * @param statusValue
 	 */
-	private synchronized void setStatus(int statusValue) {
+	private synchronized void setStatus(BackgroundStatus statusValue) {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				if (statusValue == 0) {
-					status="init, not started";
+				if (statusValue == BackgroundStatus.INIT) {
+					status=BackgroundStatus.INIT;
 					startButton.setText("Layout Network");
 				}
-				else if (statusValue == 1) {
-					status= "running";
+				else if (statusValue == BackgroundStatus.RUNNING) {
+					status= BackgroundStatus.RUNNING;
 					autoDrawCheckBox.setEnabled(false);
 				}
-				else if (statusValue == 2) {
-					status= "idle";
+				else if (statusValue == BackgroundStatus.IDLE) {
+					status= BackgroundStatus.IDLE;
 				}
-				else if (statusValue == 3) {
-					status="finished";
+				else if (statusValue == BackgroundStatus.FINISHED) {
+					status=BackgroundStatus.FINISHED;
 					startButton.setText("Layout Network");
 					autoDrawCheckBox.setEnabled(true);
 				}
 				else {
-					status= "status error";
+					status= BackgroundStatus.STATUSERROR;
 				}
 				System.out.println("Status background task: "+status);
 			}
@@ -127,22 +130,12 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	}
 	
 	/**
-	 * Check if stop button clicked. If stop button
-	 * clicked the Thread sleep until the button is
-	 * pressed again. 
+	 * return if stop button is clicked
+	 * @return stop
 	 */
-	public synchronized void isStopButtonClick() {
-		if(stop) {
-			while(stop) {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+	public boolean getStop() {
+		return stop;
 	}
-	
 	
 	@Override
 	public String getName() {
@@ -159,8 +152,6 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		return algorithm.getParameters();
 	}
 
-	
-
 	@Override
 	public void check() throws PreconditionException {
 		algorithm.check();
@@ -168,13 +159,13 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 
 	@Override
 	public void execute() {
-		
-		//current graph position and selection#
+		//current graph position and selection
 		graph =GravistoService.getInstance().getMainFrame().getActiveSession().getGraph();
 		selection = GravistoService.getInstance().getMainFrame().getActiveEditorSession().getSelectionModel().getActiveSelection();;
 		
 		Runnable algoExecution = new Runnable() {
 			public void run() {
+				
 				Selection selectAll = new Selection();
 				selectAll.addAll(graph.getNodes());
 				
@@ -186,7 +177,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 					e.printStackTrace();
 				}
 				algorithm.execute();
-				setStatus(0);
+				setStatus(BackgroundStatus.INIT);
 			}
 		};
 		backgroundTask = new Thread(algoExecution);
@@ -260,20 +251,21 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		startButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(status.compareTo("init, not started")==0||status.compareTo("finished")==0) {
+				if(status==BackgroundStatus.INIT||status==BackgroundStatus.FINISHED) {
 					startButton.setText("Stop Algorithm");
 					execute();
 				}
-				if(status.compareTo("running")==0) {
+				if(status==BackgroundStatus.RUNNING) {
 					stop=true;	//stop background thread
-					setStatus(2);
+					setStatus(BackgroundStatus.IDLE);
 					startButton.setText("Continue");
 				}
-				if(status.compareTo("idle")==0) {
+				if(status==BackgroundStatus.IDLE) {
 					stop=false;	//continue background thread
-					setStatus(3);
+					setStatus(BackgroundStatus.RUNNING);
 					startButton.setText("Stop Algorithm");
 				}
+				
 			}
 		});
 		jc.add(startButton);
@@ -358,7 +350,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			}
 		}
 		if(arg0.getPropertyName().compareTo("setStatus")==0) {
-			setStatus((int)arg0.getNewValue());
+			setStatus((BackgroundStatus)arg0.getNewValue());
 		}
 		if(arg0.getPropertyName().compareTo("setEndLayout")==0) {
 			newLayout((RealMatrix)arg0.getNewValue());

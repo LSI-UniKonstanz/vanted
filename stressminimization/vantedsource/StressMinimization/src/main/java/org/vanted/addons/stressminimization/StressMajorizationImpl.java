@@ -69,9 +69,7 @@ class StressMajorizationImpl extends BackgroundAlgorithm {
 			//update GUI layout
 			setLayout(layout);
 			
-			//TODO stop algorithm if button stop clicked
-			//BackgroundExecutionAlgorithm b =(BackgroundExecutionAlgorithm)((Object) getPropertyChangeListener()[0]);
-			//b.isStopButtonClick();
+			isStopButtonPressed();
 			
 		} while ( (prevStress - newStress) / prevStress >= EPSILON ); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
 		
