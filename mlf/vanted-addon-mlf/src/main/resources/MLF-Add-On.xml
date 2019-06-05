@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 
 <!DOCTYPE plugin
-  PUBLIC "-//GRAFFITI/DTD Plugin Descriptin 1.0//EN"
- "http://www.graffiti.org/dtd/1.0/plugin.dtd">
+        PUBLIC "-//GRAFFITI/DTD Plugin Descriptin 1.0//EN"
+        "http://www.graffiti.org/dtd/1.0/plugin.dtd">
 
 <plugin>
-    <author>Matthias Klapperstueck</author>
-    <description>Extends VANTED to show how you can write Add-ons for VANTED. There are plenty of extension possibilities available (algorithms, context-menu entries,...).</description>
+    <author>Team 2.2 SM</author>
+    <description>This add-on adds a "multilevel framework" to VANTED.</description>
     <plugindesc>
-        <name>Exemplary Add-on</name>
+        <name>MLF Add-On</name>
         <main>org.vanted.addons.multilevelframework.MultilevelFrameworkAddon</main>
-        <version>2.0</version>
-        <feedname>Example-Add-on Changelog</feedname>
-        <feedurl>https://immersive-analytics.infotech.monash.edu/vanted/addons/example/rss-changelog.xml</feedurl>
+        <version>0.1</version>
         <compatibility>2.5.0</compatibility>
-        <available>https://bitbucket.org/matthiak/vanted-addon-example/</available>
+        <available>https://git.uni-konstanz.de/kn/swp2019/team-2.2</available>
     </plugindesc>
 </plugin>
