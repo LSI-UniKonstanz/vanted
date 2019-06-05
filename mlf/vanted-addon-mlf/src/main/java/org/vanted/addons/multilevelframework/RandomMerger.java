@@ -6,8 +6,8 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.parameter.Parameter;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
-import static org.apache.commons.collections15.CollectionUtils.size;
 
 public class RandomMerger implements Merger {
     @Override
@@ -30,7 +30,10 @@ public class RandomMerger implements Merger {
     private int minNumberOfNodesPerLevel = 2;
 
     // the maximum amount of levels for one multilevelGraph
-    private int maxNumberOfIterations = 1000;
+    private int maxNumberOfIterations = 100;
+
+    // prefer merging MergedNodes that don't already represent lots of nodes
+    private boolean useWeights = true;
 
     /**
      * builds the coarsening levels for the graph depending on parameters. These Parameters shrinkRatio
@@ -44,18 +47,24 @@ public class RandomMerger implements Merger {
      */
     public void buildCoarseningLevels(MultilevelGraph multilevelGraph) {
 
+        final long startTime = System.nanoTime();
+
         // checks whether the coarseningFactor is in Range and the graph component does contain multiple edges.
         // no edges leave inhibit any coarsening while merged on the last edge
-        if ((multilevelGraph.getTopLevel().getEdges().size() > 1) && (0 < coarseningFactor) && (coarseningFactor > 1)){
+        if ((multilevelGraph.getTopLevel().getEdges().size() > minNumberOfNodesPerLevel)
+                && (0 < coarseningFactor) && (coarseningFactor < 1)) {
             // calls upon build level to create multiple levels
             for (int i = 0; i < this.maxNumberOfIterations; i++) {
-                buildLevel(this.coarseningFactor, multilevelGraph);
+                buildLevel(this.coarseningFactor, multilevelGraph, i != 0 && this.useWeights);
                 if (multilevelGraph.getTopLevel().getNumberOfNodes() <= this.minNumberOfNodesPerLevel) {
                     break;
                 }
             }
         }
 
+        final long endTime = System.nanoTime();
+        System.out.println("Built coarsening levels in: " +
+                TimeUnit.NANOSECONDS.toSeconds(endTime - startTime) + " seconds.");
     }
 
     /**
@@ -63,8 +72,11 @@ public class RandomMerger implements Merger {
      * the resulting coarsened Level is added as the new top level
      * @param coarseningPerLevel the ratio between in sizes of the baseLevel and the resulting coarsened Level
      * @param mlg the {@link MultilevelGraph} receiving an additional coarsening level.
+     * @param sortByWeights if {@code true}, sort the edge list by the sum of the nodes' weights and prefer the
+     *                      nodes with low weight (note that this requires {@link MergedNode}s)
+     * @author Tobias
      */
-    private void buildLevel(double coarseningPerLevel, MultilevelGraph mlg){
+    private void buildLevel(double coarseningPerLevel, MultilevelGraph mlg, boolean sortByWeights){
         Graph baseLevel = mlg.getTopLevel();
 
         // initializing the new level for the resulting coarsened Graph
@@ -79,8 +91,13 @@ public class RandomMerger implements Merger {
         int maxMergedEdges = (int) Math.min((edges.size()* coarseningPerLevel),
                 (baseLevel.getNumberOfNodes()*coarseningPerLevel ));
 
-        // shuffling the list to obtain random Edges
-        Collections.shuffle(edges);
+        if (sortByWeights) {
+            edges.sort(Comparator.comparing(e ->
+                    ((MergedNode) e.getSource()).getWeight() + ((MergedNode) e.getTarget()).getWeight()));
+        } else {
+            // shuffling the list to obtain random Edges
+            Collections.shuffle(edges);
+        }
 
 
         // merging nodes and adding their origins and nodes to node2nodeSet
@@ -88,21 +105,24 @@ public class RandomMerger implements Merger {
             Node source = edges.get(i).getSource();
             Node target = edges.get(i).getTarget();
 
-            if (node2nodeSet.containsKey(source)) {
-                // the source node being already in the HashMap
-                node2nodeSet.get(source).add(target);
-                node2nodeSet.put(target, node2nodeSet.get(source));
-            } else if (node2nodeSet.containsKey(target)) {
-                // the target node being already in the HashMap
-                node2nodeSet.get(target).add(source);
-                node2nodeSet.put(source, node2nodeSet.get(target));
-            } else {
-                // both the nodes not being in represented in the HashMap
-                Set<Node> represented = new HashSet<>();
-                represented.add(target);
-                represented.add(source);
-                node2nodeSet.put(source, represented);
-                node2nodeSet.put(target, represented);
+            // if both source and target are already represented, nothing should be done
+            if (!node2nodeSet.containsKey(source) || !node2nodeSet.containsKey(target)) {
+                if (node2nodeSet.containsKey(source)) {
+                    // the source node being already in the HashMap
+                    node2nodeSet.get(source).add(target);
+                    node2nodeSet.put(target, node2nodeSet.get(source));
+                } else if (node2nodeSet.containsKey(target)) {
+                    // the target node being already in the HashMap
+                    node2nodeSet.get(target).add(source);
+                    node2nodeSet.put(source, node2nodeSet.get(target));
+                } else {
+                    // both the nodes not being in represented in the HashMap
+                    Set<Node> represented = new HashSet<>();
+                    represented.add(target);
+                    represented.add(source);
+                    node2nodeSet.put(source, represented);
+                    node2nodeSet.put(target, represented);
+                }
             }
         }
 
@@ -148,7 +168,8 @@ public class RandomMerger implements Merger {
             MergedNode target = node2mergedNode.get(i.getTarget());
             // TODO: getUndirectedEdges() creates a new collection each time. Maybe performance could be improved
             // by manually storing which edges have been added.
-            if (!source.getNeighbors().contains(target) && !target.getNeighbors().contains(source)) {
+            if (source != target && !source.getNeighbors().contains(target)
+                    && !target.getNeighbors().contains(source)) {
                 mlg.addEdge(source, target);
             }
         }

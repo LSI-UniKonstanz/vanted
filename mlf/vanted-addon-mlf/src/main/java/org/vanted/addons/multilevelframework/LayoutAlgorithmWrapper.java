@@ -6,10 +6,12 @@ import info.clearthought.layout.TableLayoutConstants;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.dialog.ParameterEditPanel;
+import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.managers.EditComponentManager;
 import org.graffiti.managers.pluginmgr.PluginEntry;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.algorithm.ThreadSafeAlgorithm;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.plugin.parameter.Parameter;
@@ -23,8 +25,9 @@ import java.util.*;
  */
 public class LayoutAlgorithmWrapper {
     private final Algorithm algorithm;
+    private final static Graph dummyGraph = new AdjListGraph();
+    private final static Selection dummySelection = new Selection();
     private ThreadSafeOptions threadSafeOptions;
-    private Parameter[] parameters;
     // PatternSpringembedder throws NPEs if getParameters wasn't called before execute
     // but calling it multiple times could result in parameters being reset...
     private boolean getParametersCalled = false;
@@ -87,12 +90,13 @@ public class LayoutAlgorithmWrapper {
             if (res == null) {
                 this.threadSafeOptions = null;
                 this.threadSafeGUI = false;
+                this.getParametersCalled = false;
             } else {
                 return res;
             }
             tsa.reset();
         }
-        JComponent res = getParameterGUI(this.algorithm, null, null);
+        JComponent res = getParameterGUI(this.algorithm, dummyGraph, dummySelection);
         if (res != null) {
             return res;
         } else {
@@ -130,7 +134,16 @@ public class LayoutAlgorithmWrapper {
             this.algorithm.setParameters(this.oldGUI.getUpdatedParameters());
         }
         this.algorithm.attach(graph, selection);
-        this.algorithm.execute();
+        try {
+            this.algorithm.check();
+            this.algorithm.execute();
+        } catch (PreconditionException e) {
+            e.printStackTrace();
+            MainFrame.showMessageDialog(e.getMessage(), "Multilevel Framework Error");
+            // in the release version (if asserts are disabled) just show the message go on,
+            // maybe the next level will work...
+            assert false : "Precondition check failed.";
+        }
     }
 
     /**
@@ -230,6 +243,9 @@ public class LayoutAlgorithmWrapper {
 
         ParameterEditPanel paramPanel;
         algorithm.attach(graph, selection);
+        if (this.oldGUI != null) {
+            this.algorithm.setParameters(this.oldGUI.getUpdatedParameters());
+        }
         this.getParametersCalled = true;
         if (algorithm.getParameters() != null) {
             paramPanel = new ParameterEditPanel(algorithm.getParameters(), editComponentManager.getEditComponents(), selection,
@@ -259,7 +275,6 @@ public class LayoutAlgorithmWrapper {
         return "LayoutAlgorithmWrapper{" +
                 "algorithm=" + algorithm +
                 ", threadSafeOptions=" + threadSafeOptions +
-                ", parameters=" + Arrays.toString(parameters) +
                 ", getParametersCalled=" + getParametersCalled +
                 ", threadSafeGUI=" + threadSafeGUI +
                 ", guiName='" + guiName + '\'' +

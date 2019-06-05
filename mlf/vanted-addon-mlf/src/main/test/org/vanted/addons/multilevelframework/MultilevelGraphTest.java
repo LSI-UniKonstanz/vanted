@@ -34,6 +34,10 @@ public class MultilevelGraphTest {
         this.n2 = g.addNode();
         this.n3 = g.addNode();
         this.n4 = g.addNode();
+        AttributeHelper.setPosition(n1, 0, 0);
+        AttributeHelper.setPosition(n2, 0, 0);
+        AttributeHelper.setPosition(n3, 0, 0);
+        AttributeHelper.setPosition(n4, 0, 0);
         AttributeHelper.setLabel(n1, "1");
         AttributeHelper.setLabel(n2, "2");
         AttributeHelper.setLabel(n3, "3");
