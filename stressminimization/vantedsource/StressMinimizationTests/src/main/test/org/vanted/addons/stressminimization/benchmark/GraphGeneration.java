@@ -295,6 +295,80 @@ public class GraphGeneration {
 		
 	}
 	
+	/**
+	 * Generates a Sierpisky Triangle graph with {@code recusionDepth} levels. 
+	 * @param recursionDepth How many levels of nested triangles shawl be generated. A value of 1 generates one simple triangle.
+	 */
+	public Graph generateSierpinskyTriangle(int recursionDepth) {
+		
+		if (recursionDepth < 1) {
+			throw new IllegalArgumentException("recursionDepth must be >= 1.");
+		}
+		
+		Graph graph = new AdjListGraph();
+		
+		// the triangle structures of each "recursion step" 
+		// are stored for the next iteration
+		List<Triangle> triangles = new ArrayList<Triangle>();
+		
+		// create the first triangle (recursion step 0)
+		// edges are added after all nodes were generated
+		Node n1 = graph.addNode();
+		Node n2 = graph.addNode();
+		Node n3 = graph.addNode();
+		triangles.add(new Triangle(n1, n2, n3));
+		
+		for (int level = 0; level < recursionDepth; level += 1) {
+			
+			List<Triangle> newTriangles = new ArrayList<Triangle>();
+			
+			for (Triangle oldTriangle : triangles) {
+				Node old1 = oldTriangle.corner1;
+				Node old2 = oldTriangle.corner2;
+				Node old3 = oldTriangle.corner3;
+				
+				Node new1 = graph.addNode();
+				Node new2 = graph.addNode();
+				Node new3 = graph.addNode();
+				
+				Triangle t1 = new Triangle(old1, new1, new3);
+				Triangle t2 = new Triangle(old2, new1, new2);
+				Triangle t3 = new Triangle(old3, new2, new3);
+				
+				newTriangles.add(t1);
+				newTriangles.add(t2);
+				newTriangles.add(t3);
+			}
+			
+			triangles = newTriangles;
+		}
+		
+		// add the edges in the triangles
+		for (Triangle t : triangles) {
+			graph.addEdge(t.corner1, t.corner2, false);
+			graph.addEdge(t.corner1, t.corner3, false);
+			graph.addEdge(t.corner2, t.corner3, false);
+		}
+		
+		positionNodesRandom(graph);
+		return graph;
+		
+	}
+	
+	private class Triangle {
+		public final Node corner1;
+		public final Node corner2;
+		public final Node corner3;
+		
+		public Triangle(Node corner1, Node corner2, Node corner3) {
+			super();
+			this.corner1 = corner1;
+			this.corner2 = corner2;
+			this.corner3 = corner3;
+		}
+		
+	}
+	
 	// MARK: Utils
 	 
 	/**
