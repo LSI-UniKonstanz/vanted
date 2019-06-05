@@ -15,6 +15,7 @@ public final class Benchmarking {
 
 		System.out.println("--------------------------------------------------------------------------------");
 		System.out.println("Starting Benchmark: " + benchmarkName);
+		System.out.println("Warmup rounds: " + warmupRounds + ", Rounds: " + rounds);
 		
 		System.out.println("Running carbage collection.");
 		// try to create comparable conditions for execution: clean up memory
@@ -25,7 +26,9 @@ public final class Benchmarking {
 		for (int i = 0; i < warmupRounds; i += 1) {
 			action.perform();
 		}
-		
+
+		// memory may adapt. Therefore measure after warmup
+		System.out.println("OS Name: " + System.getProperty("os.name") + ", Total available Memory: " + Runtime.getRuntime().totalMemory() / (1024.0 * 1024.0) + " MiB, Available CPUs: " + Runtime.getRuntime().availableProcessors());
 		System.out.println("Benchmark: " + rounds + " rounds.");
 		
 		long[] runtimes = new long[rounds];
@@ -79,14 +82,12 @@ public final class Benchmarking {
 		double standardDeviation = Math.sqrt(variance);
 		
 
-		System.out.println("Benchmarked: " + benchmarkName);
-		System.out.println("OS Name: " + System.getProperty("os.name") + ", Total available Memory: " + Runtime.getRuntime().totalMemory() + ", Available CPUs: " + Runtime.getRuntime().availableProcessors());
-		System.out.println("Warmup rounds: " + warmupRounds + ", Rounds: " + rounds);
-		System.out.println("Results: " + Arrays.toString(runtimes));
 		System.out.println("--------------------------------------------------------------------------------");
-		System.out.println("Overall runtime: " + overallTime);
-		System.out.println("Mean runtime: " + mean + "; standard deviation: " + standardDeviation);
-		System.out.println("Min: " + min + "; Median: " + median + "; Max: " + max);
+		System.out.println("Benchmarked: " + benchmarkName);
+		System.out.println("Results: " + Arrays.toString(runtimes));
+		System.out.println("Overall runtime: " + overallTime + "ms");
+		System.out.println("Mean runtime: " + mean + "ms; standard deviation: " + standardDeviation + "ms");
+		System.out.println("Min: " + min + "ms; Median: " + median + "ms; Max: " + max + "ms");
 		System.out.println("--------------------------------------------------------------------------------");
 		
 		return mean;

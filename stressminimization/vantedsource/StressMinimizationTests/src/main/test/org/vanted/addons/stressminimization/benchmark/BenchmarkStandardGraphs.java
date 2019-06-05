@@ -11,6 +11,9 @@ import org.vanted.addons.stressminimization.StressMinimizationLayout;
  */
 public abstract class BenchmarkStandardGraphs {
 
+	protected static final int WARMUP_ROUNDS = 20;
+	protected static final int ROUNDS = 50;
+	
 	protected abstract int getN();
 	
 	private Graph starGraph;
@@ -57,7 +60,7 @@ public abstract class BenchmarkStandardGraphs {
 				e.printStackTrace();
 			}
 			
-		}, 10, 100, "star graph (n = " + n + ")"); 
+		}, WARMUP_ROUNDS, ROUNDS, "star graph (n = " + n + ")"); 
 		
 		Benchmarking.benchmark(() -> {
 			
@@ -74,7 +77,7 @@ public abstract class BenchmarkStandardGraphs {
 				e.printStackTrace();
 			}
 			
-		}, 10, 100, "wheel graph (n = " + n + ")"); 
+		}, WARMUP_ROUNDS, ROUNDS, "wheel graph (n = " + n + ")"); 
 
 		Benchmarking.benchmark(() -> {
 			
@@ -91,7 +94,7 @@ public abstract class BenchmarkStandardGraphs {
 				e.printStackTrace();
 			}
 			
-		}, 10, 100, "complete graph (n = " + n + ")"); 
+		}, WARMUP_ROUNDS, ROUNDS, "complete graph (n = " + n + ")"); 
 		
 		Benchmarking.benchmark(() -> {
 			
@@ -108,7 +111,7 @@ public abstract class BenchmarkStandardGraphs {
 				e.printStackTrace();
 			}
 			
-		}, 10, 100, "line graph (n = " + n + ")"); 
+		}, WARMUP_ROUNDS, ROUNDS, "line graph (n = " + n + ")"); 
 		
 		Benchmarking.benchmark(() -> {
 			
@@ -125,7 +128,7 @@ public abstract class BenchmarkStandardGraphs {
 				e.printStackTrace();
 			}
 			
-		}, 10, 100, "\"natural\" graph (n = " + n + ")"); 
+		}, WARMUP_ROUNDS, ROUNDS, "\"natural\" graph (n = " + n + ")"); 
 		
 		System.exit(0);
 		
