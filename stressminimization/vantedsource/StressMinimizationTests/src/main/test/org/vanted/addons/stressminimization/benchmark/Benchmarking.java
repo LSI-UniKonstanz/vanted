@@ -16,7 +16,7 @@ public final class Benchmarking {
 		System.out.println("--------------------------------------------------------------------------------");
 		System.out.println("Starting Benchmark: " + benchmarkName);
 		System.out.println("Warmup rounds: " + warmupRounds + ", Rounds: " + rounds);
-		
+
 		System.out.println("Running carbage collection.");
 		// try to create comparable conditions for execution: clean up memory
 		System.gc();

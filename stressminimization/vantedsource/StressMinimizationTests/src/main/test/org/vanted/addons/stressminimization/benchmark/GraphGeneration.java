@@ -1,11 +1,15 @@
 package org.vanted.addons.stressminimization.benchmark;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import org.AttributeHelper;
+import org.PositionGridGenerator;
 import org.graffiti.graph.*;
+
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.graph_generation.WattsStrogatzGraphGenerator;
 
 
 /**
@@ -142,29 +146,28 @@ public class GraphGeneration {
 	}
 
 	/**
-	 * Generates a "natural" graph: A graph that is somewhat similar to typical human made graphs.
-	 * This method generates a (pseudo-random, deterministic) Barabási–Albert network.
+	 * Generates a Barabási–Albert graph: A graph that has similarities to some human made 
+	 * and natural networks, for example the internet or social networks (wikipedia).
 	 * @param numberOfNodes
 	 */
-	public Graph generateNatural(int numberOfNodes) {
+	public Graph generateBarabasiAlbertNetwork(int numberOfNodes) {
 		
 		if (numberOfNodes < 3) {
-			throw new IllegalArgumentException("numberOfNodes must be >= 3 for natural network.");
+			throw new IllegalArgumentException("numberOfNodes must be >= 3 for Barabási Albert network.");
 		}
 
-		return generateBarabásiAlbertNetwork(numberOfNodes, 3, 3, 1.0);
+		return generateBarabasiAlbertNetwork(numberOfNodes, 3, 3, 1.0);
 		
 	}
 
 	/**
 	 * This method generates a (pseudo-random, deterministic) Barabási–Albert network.
-	 * This method is not guaranteed to terminate.
 	 * @param N the number of nodes to generate
 	 * @param m0 Size of the initial connected component
 	 * @param m Desired degree of each node outside the initial component
 	 * @param a Parameter to control the degree distribution
 	 */
-	public Graph generateBarabásiAlbertNetwork(int N, int m0, int m, double a) {
+	public Graph generateBarabasiAlbertNetwork(int N, int m0, int m, double a) {
 		
 		if (N < 1) {
 			throw new IllegalArgumentException("numberOfNodes must be >= 1.");
@@ -211,7 +214,89 @@ public class GraphGeneration {
 		return graph;
 		
 	}
+
+	/**
+	 * Generates a Watts Strogatz graph: A graph with "small world" properties.
+	 * @param numberOfNodes
+	 */
+	public Graph generateWattsStrogatzNetwork(int numberOfNodes) {
+
+		return generateWattsStrogatzNetwork(numberOfNodes, 3, 0.5);
+		
+	}
 	
+	/**
+	 * This method generates a (pseudo-random, deterministic) Watts-Strogatz network.
+	 * @param numberOfNodes
+	 * @param k Initial degree of each node.
+	 * @param p Probability that an edge will be "rewired"
+	 * @return
+	 */
+	public Graph generateWattsStrogatzNetwork(int numberOfNodes, int k, double p) {
+
+		// NOTE: We don't use the other generator, because we want to control the random numbers used for generation
+		
+		if (numberOfNodes < 1) {
+			throw new IllegalArgumentException("numberOfNodes must be >= 1.");
+		}
+		if (k < 2) {
+			throw new IllegalArgumentException("k must be >= 2.");
+		}
+
+		Random rand = new Random(RANDOM_SEED);
+
+		Graph graph = new AdjListGraph();
+		
+		// generate the initial graph
+		for (int i = 0; i < numberOfNodes; i++) {
+			graph.addNode();
+		}
+		for (int i = 0; i < numberOfNodes; i++) {
+			Node node = graph.getNodes().get(i);
+			
+			int currentDegree = 0;
+			int j = i - k / 2;
+			if (j < 0) {
+				j += numberOfNodes;
+			}
+			while (currentDegree < k) {
+				j = (j + 1) % numberOfNodes;
+				
+				Node other = graph.getNodes().get(j);
+				if (!node.getNeighbors().contains(other) && node != other) {
+					graph.addEdge(node, other, false);
+				}
+				currentDegree += 1;
+			}
+			
+		}
+		
+		// "rewire" nodes
+		for (Edge edge : graph.getEdges()) {
+			double r = rand.nextDouble();
+			
+			if (r <= p) {
+				
+				Node node = edge.getSource();
+				ArrayList<Node> unconnected = new ArrayList<Node>(graph.getNodes());
+				unconnected.remove(node);
+				unconnected.removeAll(node.getNeighbors());
+				
+				if (unconnected.size() > 0) {
+					int j = rand.nextInt(unconnected.size());
+					Node newTarget = unconnected.get(j);
+					edge.setTarget(newTarget);
+				}
+				
+			}
+		}
+		
+		return graph;
+		
+	}
+	
+	// MARK: Utils
+	 
 	/**
 	 * Assigns a random position to each node in the graph
 	 */

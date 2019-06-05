@@ -16,11 +16,36 @@ public abstract class BenchmarkStandardGraphs {
 	
 	protected abstract int getN();
 	
+	protected boolean benchmarkStarGraph() {
+		return true;
+	}
+	
+	protected boolean benchmarkWheelGraph() {
+		return true;
+	}
+	
+	protected boolean benchmarkCompleteGraph() {
+		return true;
+	}
+	
+	protected boolean benchmarkLineGraph() {
+		return true;
+	}
+	
+	protected boolean benchmarkBarabasisAlbertGraph() {
+		return true;
+	}
+
+	protected boolean benchmarkWattsStrogatzGraph() {
+		return true;
+	}
+	
 	private Graph starGraph;
 	private Graph wheelGraph;
 	private Graph completeGraph;
 	private Graph lineGraph;
-	private Graph naturalGraph;
+	private Graph barabasiAlbertGraph;
+	private Graph wattsStrogatzGraph;
 
 	StressMinimizationLayout algorithm = new StressMinimizationLayout();
 	
@@ -32,106 +57,86 @@ public abstract class BenchmarkStandardGraphs {
 		wheelGraph = gen.generateWheel(n);
 		completeGraph = gen.generateComplete(n);
 		lineGraph = gen.generateLine(n);
-		naturalGraph = gen.generateNatural(n);
+		barabasiAlbertGraph = gen.generateBarabasiAlbertNetwork(n);
+		wattsStrogatzGraph = gen.generateWattsStrogatzNetwork(n);
 		
 	}
 	
 	public void benchmark() {
 
+		int n = getN();
+		
 		System.out.println("Starting VANTED...");
 		StartVantedWithStressMinAddon.main(new String[0]);
 		
+		System.out.println("==================================================");
+		System.out.println("Standard Graph Benchmark Suite (n = " + n + ")");
 		System.out.println("Setting up...");
-		int n = getN();
 		setUp(n);
 		
-		Benchmarking.benchmark(() -> {
-			
-			try {
-
-				algorithm.attach(starGraph, new Selection(""));
-				algorithm.check();
-				algorithm.setParameters( algorithm.getParameters() );
-				
-				algorithm.execute();
-				algorithm.reset();
-				
-			} catch (PreconditionException e) {
-				e.printStackTrace();
-			}
-			
-		}, WARMUP_ROUNDS, ROUNDS, "star graph (n = " + n + ")"); 
+		String starGraphName = "star graph (n = " + n + ")";
+		if (benchmarkStarGraph()) {
+			singleBenchmark(starGraph, starGraphName);
+		} else {
+			System.out.println("Ommited benchmark: " + starGraphName);
+		}
 		
-		Benchmarking.benchmark(() -> {
-			
-			try {
+		String wheelGraphName = "wheel graph (n = " + n + ")";
+		if (benchmarkWheelGraph()) {
+			singleBenchmark(wheelGraph, wheelGraphName);
+		} else {
+			System.out.println("Ommited benchmark: " + wheelGraphName);
+		}
 
-				algorithm.attach(wheelGraph, new Selection(""));
-				algorithm.check();
-				algorithm.setParameters( algorithm.getParameters() );
-				
-				algorithm.execute();
-				algorithm.reset();
-				
-			} catch (PreconditionException e) {
-				e.printStackTrace();
-			}
-			
-		}, WARMUP_ROUNDS, ROUNDS, "wheel graph (n = " + n + ")"); 
-
-		Benchmarking.benchmark(() -> {
-			
-			try {
-
-				algorithm.attach(completeGraph, new Selection(""));
-				algorithm.check();
-				algorithm.setParameters( algorithm.getParameters() );
-				
-				algorithm.execute();
-				algorithm.reset();
-				
-			} catch (PreconditionException e) {
-				e.printStackTrace();
-			}
-			
-		}, WARMUP_ROUNDS, ROUNDS, "complete graph (n = " + n + ")"); 
+		String completeGraphName = "complete graph (n = " + n + ")";
+		if (benchmarkCompleteGraph()) {
+			singleBenchmark(completeGraph, completeGraphName);
+		} else {
+			System.out.println("Ommited benchmark: " + completeGraphName);
+		}
 		
-		Benchmarking.benchmark(() -> {
-			
-			try {
-
-				algorithm.attach(lineGraph, new Selection(""));
-				algorithm.check();
-				algorithm.setParameters( algorithm.getParameters() );
-				
-				algorithm.execute();
-				algorithm.reset();
-				
-			} catch (PreconditionException e) {
-				e.printStackTrace();
-			}
-			
-		}, WARMUP_ROUNDS, ROUNDS, "line graph (n = " + n + ")"); 
+		String lineGraphName = "line graph (n = " + n + ")";
+		if (benchmarkCompleteGraph()) {
+			singleBenchmark(lineGraph, lineGraphName);
+		} else {
+			System.out.println("Ommited benchmark: " + lineGraphName);
+		}
 		
-		Benchmarking.benchmark(() -> {
-			
-			try {
+		String barabasisAlbertGraphName = "barabasis albert graph (n = " + n + ")";
+		if (benchmarkCompleteGraph()) {
+			singleBenchmark(barabasiAlbertGraph, barabasisAlbertGraphName);
+		} else {
+			System.out.println("Ommited benchmark: " + barabasisAlbertGraphName);
+		}
 
-				algorithm.attach(naturalGraph, new Selection(""));
-				algorithm.check();
-				algorithm.setParameters( algorithm.getParameters() );
-				
-				algorithm.execute();
-				algorithm.reset();
-				
-			} catch (PreconditionException e) {
-				e.printStackTrace();
-			}
-			
-		}, WARMUP_ROUNDS, ROUNDS, "\"natural\" graph (n = " + n + ")"); 
+		String wattsStrogatzGraphName = "watts strogatz graph (n = " + n + ")";
+		if (benchmarkCompleteGraph()) {
+			singleBenchmark(wattsStrogatzGraph, wattsStrogatzGraphName);
+		} else {
+			System.out.println("Ommited benchmark: " + wattsStrogatzGraphName);
+		}
 		
 		System.exit(0);
 		
+	}
+	
+	protected void singleBenchmark(Graph graph, String name) {
+		Benchmarking.benchmark(() -> {
+			
+			try {
+
+				algorithm.attach(barabasiAlbertGraph, new Selection(""));
+				algorithm.check();
+				algorithm.setParameters( algorithm.getParameters() );
+				
+				algorithm.execute();
+				algorithm.reset();
+				
+			} catch (PreconditionException e) {
+				e.printStackTrace();
+			}
+			
+		}, WARMUP_ROUNDS, ROUNDS, name); 
 	}
 	
 }
