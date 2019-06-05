@@ -5,6 +5,7 @@ import org.graffiti.graph.Node;
 import org.graffiti.selection.Selection;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Helper methods for the multilevel framework add-on.
@@ -21,14 +22,15 @@ public enum MlfHelper {
      * @param selection The {@link Selection}. Must not be {@code null}.
      * @return The connected components of the subgraph in induced by the selection, as {@link CoarsenedGraph}s.
      */
-    public static Collection<? extends CoarsenedGraph>
+    public static Collection<?extends CoarsenedGraph>
     calculateConnectedComponentsOfSelection(Set<Node> selection) {
+        long startTime = System.nanoTime();
         if (selection.size() <= 0) {
             return Collections.emptyList();
         }
 
-        ArrayList<InternalGraph> graphList = new ArrayList<InternalGraph>();
-        HashMap<Node, Node> sourceGraphNode2connectedGraphNode = new LinkedHashMap<Node, Node>();
+        ArrayList<InternalGraph> graphList = new ArrayList<>();
+        HashMap<Node, Node> sourceGraphNode2connectedGraphNode = new HashMap<>();
         while (!selection.isEmpty()) {
             Node startNode = selection.iterator().next();
             Set<Node> connectedNodes = getConnectedNodes(startNode, selection);
@@ -49,6 +51,10 @@ public enum MlfHelper {
             graphList.add(connectedComponentGraph);
             selection.removeAll(connectedNodes);
         }
+        long endTime = System.nanoTime();
+
+        System.out.println("Built connected components in: " +
+                TimeUnit.NANOSECONDS.toSeconds(endTime - startTime) + " seconds.");
         return graphList;
     }
 
