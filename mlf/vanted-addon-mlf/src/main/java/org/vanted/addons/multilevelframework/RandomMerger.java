@@ -6,8 +6,8 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.parameter.Parameter;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
-import static org.apache.commons.collections15.CollectionUtils.size;
 
 public class RandomMerger implements Merger {
     @Override
@@ -32,6 +32,9 @@ public class RandomMerger implements Merger {
     // the maximum amount of levels for one multilevelGraph
     private int maxNumberOfIterations = 100;
 
+    // prefer merging MergedNodes that don't already represent lots of nodes
+    private boolean useWeights = true;
+
     /**
      * builds the coarsening levels for the graph depending on parameters. These Parameters shrinkRatio
      * and mergesPer Step determine how the top coarsening level compares in size to the complete graph
@@ -44,19 +47,24 @@ public class RandomMerger implements Merger {
      */
     public void buildCoarseningLevels(MultilevelGraph multilevelGraph) {
 
+        final long startTime = System.nanoTime();
+
         // checks whether the coarseningFactor is in Range and the graph component does contain multiple edges.
         // no edges leave inhibit any coarsening while merged on the last edge
         if ((multilevelGraph.getTopLevel().getEdges().size() > minNumberOfNodesPerLevel)
                 && (0 < coarseningFactor) && (coarseningFactor < 1)) {
             // calls upon build level to create multiple levels
             for (int i = 0; i < this.maxNumberOfIterations; i++) {
-                buildLevel(this.coarseningFactor, multilevelGraph);
+                buildLevel(this.coarseningFactor, multilevelGraph, i != 0 && this.useWeights);
                 if (multilevelGraph.getTopLevel().getNumberOfNodes() <= this.minNumberOfNodesPerLevel) {
                     break;
                 }
             }
         }
 
+        final long endTime = System.nanoTime();
+        System.out.println("Built coarsening levels in: " +
+                TimeUnit.NANOSECONDS.toSeconds(endTime - startTime) + " seconds.");
     }
 
     /**
@@ -64,8 +72,11 @@ public class RandomMerger implements Merger {
      * the resulting coarsened Level is added as the new top level
      * @param coarseningPerLevel the ratio between in sizes of the baseLevel and the resulting coarsened Level
      * @param mlg the {@link MultilevelGraph} receiving an additional coarsening level.
+     * @param sortByWeights if {@code true}, sort the edge list by the sum of the nodes' weights and prefer the
+     *                      nodes with low weight (note that this requires {@link MergedNode}s)
+     * @author Tobias
      */
-    private void buildLevel(double coarseningPerLevel, MultilevelGraph mlg){
+    private void buildLevel(double coarseningPerLevel, MultilevelGraph mlg, boolean sortByWeights){
         Graph baseLevel = mlg.getTopLevel();
 
         // initializing the new level for the resulting coarsened Graph
@@ -80,8 +91,13 @@ public class RandomMerger implements Merger {
         int maxMergedEdges = (int) Math.min((edges.size()* coarseningPerLevel),
                 (baseLevel.getNumberOfNodes()*coarseningPerLevel ));
 
-        // shuffling the list to obtain random Edges
-        Collections.shuffle(edges);
+        if (sortByWeights) {
+            edges.sort(Comparator.comparing(e ->
+                    ((MergedNode) e.getSource()).getWeight() + ((MergedNode) e.getTarget()).getWeight()));
+        } else {
+            // shuffling the list to obtain random Edges
+            Collections.shuffle(edges);
+        }
 
 
         // merging nodes and adding their origins and nodes to node2nodeSet
