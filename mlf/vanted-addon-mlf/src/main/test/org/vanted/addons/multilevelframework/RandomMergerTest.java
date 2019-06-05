@@ -1,5 +1,6 @@
 package org.vanted.addons.multilevelframework;
 
+import org.AttributeHelper;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
@@ -32,6 +33,9 @@ public class RandomMergerTest {
         n2 = g1.addNode();
         n3 = g1.addNode();
         n4 = g1.addNode();
+        for (Node n : g1.getNodes()) {
+            AttributeHelper.setPosition(n, 0, 0);
+        }
         g1.addEdge(n1,n2,false);
         g1.addEdge(n3,n2,false);
         g1.addEdge(n4,n2,false);
@@ -40,6 +44,9 @@ public class RandomMergerTest {
 
         n1 = g2.addNode();
         n2 = g2.addNode();
+        for (Node n : g2.getNodes()) {
+            AttributeHelper.setPosition(n, 0, 0);
+        }
 
         mg2 = new MultilevelGraph(g2);
 
