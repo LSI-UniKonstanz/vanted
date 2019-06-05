@@ -13,9 +13,12 @@ package org.vanted.addons.multilevelframework;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import org.AttributeHelper;
 import org.Vector2d;
+import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
+import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.*;
 import org.graffiti.plugin.parameter.JComponentParameter;
@@ -88,47 +91,54 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         // to work
         final Session oldSession = MainFrame.getInstance().getActiveSession();
         final View oldView = MainFrame.getInstance().getActiveSession().getActiveView();
-        // split the subgraph induced by the selection into connected components
-        final Collection<? extends CoarsenedGraph> connectedComponents =
-                MlfHelper.calculateConnectedComponentsOfSelection(new HashSet<>(this.getSelectedOrAllNodes()));
-
         final Merger merger = new RandomMerger();
         final Placer placer = new RandomPlacer();
         final LayoutAlgorithmWrapper algorithm =
                 this.layoutAlgorithms.get(Objects.toString(this.algorithmListComboBox.getSelectedItem()));
-        final Selection emptySelection = new Selection();
+        final Collection<?extends CoarsenedGraph>[] connectedComponents = new Collection[1];
 
-        // layout each connected component
-        for (CoarsenedGraph cg : connectedComponents) {
-            MultilevelGraph componentMLG = new MultilevelGraph(cg);
-            merger.buildCoarseningLevels(componentMLG);
-            while (componentMLG.getNumberOfLevels() > 1) {
-                System.out.println("Layouting level " + componentMLG.getNumberOfLevels());
-                GraphHelper.diplayGraph(componentMLG.getTopLevel());
+        System.out.println("-----------------------------------------------------------------------------------------");
+
+        // displaying levels doesn't work in a background task
+
+//        BackgroundTaskHelper.issueSimpleTask(this.getName(), "", () -> {
+            // split the subgraph induced by the selection into connected components
+            connectedComponents[0] =
+                    MlfHelper.calculateConnectedComponentsOfSelection(new HashSet<>(this.getSelectedOrAllNodes()));
+
+            final Selection emptySelection = new Selection();
+
+            // layout each connected component
+            for (CoarsenedGraph cg : connectedComponents[0]) {
+                MultilevelGraph componentMLG = new MultilevelGraph(cg);
+                merger.buildCoarseningLevels(componentMLG);
+                while (componentMLG.getNumberOfLevels() > 1) {
+                    System.out.println("Layouting level " + componentMLG.getNumberOfLevels());
+                    GraphHelper.diplayGraph(componentMLG.getTopLevel());
+                    algorithm.execute(componentMLG.getTopLevel(), emptySelection);
+                    placer.reduceCoarseningLevel(componentMLG);
+                }
+                assert componentMLG.getNumberOfLevels() == 1 : "Not all coarsening levels were removed";
+                System.out.println("Layouting level 0");
                 algorithm.execute(componentMLG.getTopLevel(), emptySelection);
-                placer.reduceCoarseningLevel(componentMLG);
             }
-            assert componentMLG.getNumberOfLevels() == 1 : "Not all coarsening levels were removed";
-            System.out.println("Layouting level 0");
-            algorithm.execute(componentMLG.getTopLevel(), emptySelection);
-        }
+//        }, () -> {
+            // apply position updates
+            HashMap<Node, Vector2d> nodes2newPositions = new HashMap<>();
 
-        // apply position updates
-
-        HashMap<Node, Vector2d> nodes2newPositions = new HashMap<>();
-
-        for (CoarsenedGraph cg : connectedComponents) {
-            for (MergedNode mn : cg.getMergedNodes()) {
-                final Node representedNode = mn.getInnerNodes().iterator().next();
-                assert mn.getInnerNodes().size() == 1 : "More than one node represented in level 0";
-                nodes2newPositions.put(representedNode, AttributeHelper.getPositionVec2d(mn));
+            for (CoarsenedGraph cg : connectedComponents[0]) {
+                for (MergedNode mn : cg.getMergedNodes()) {
+                    final Node representedNode = mn.getInnerNodes().iterator().next();
+                    assert mn.getInnerNodes().size() == 1 : "More than one node represented in level 0";
+                    nodes2newPositions.put(representedNode, AttributeHelper.getPositionVec2d(mn));
+                }
             }
-        }
 
 
-        MainFrame.getInstance().setActiveSession(oldSession, oldView);
-        GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
-        ConnectedComponentLayout.layoutConnectedComponents(this.graph);
+            MainFrame.getInstance().setActiveSession(oldSession, oldView);
+            GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
+            ConnectedComponentLayout.layoutConnectedComponents(this.graph);
+//        });
     }
 
     /**
