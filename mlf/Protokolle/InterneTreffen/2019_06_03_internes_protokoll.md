@@ -3,9 +3,6 @@
 ## Anwesend:
  Jannik, Tobias, Theodor, Gordian, René, Jonas (2 Stunden später)
 
-## Entscheidungen:
-- Wie mit Janas umgehen?
-
 ## Fragen:
 - Sind die schlechten Ergebnisse für kleine Graphen für SM normal?
 
