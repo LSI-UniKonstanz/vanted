@@ -22,6 +22,7 @@ public final class Benchmarking {
 		System.out.println("Warmup: " + warmupRounds + " rounds.");
 		// try to create comparable conditions for execution: warmup
 		for (int i = 0; i < warmupRounds; i += 1) {
+			System.out.println("Starting warmup round: " + i);
 			action.perform();
 		}
 		
@@ -30,6 +31,7 @@ public final class Benchmarking {
 		long[] runtimes = new long[rounds];
 		for (int i = 0; i < rounds; i += 1) {
 			
+			System.out.println("Starting round: " + i);
 			long timeBefore = System.currentTimeMillis();
 			action.perform();
 			long timeAfter = System.currentTimeMillis();
@@ -81,11 +83,12 @@ public final class Benchmarking {
 		System.out.println("Benchmarked: " + benchmarkName);
 		System.out.println("OS Name: " + System.getProperty("os.name") + ", Total available Memory: " + Runtime.getRuntime().totalMemory() + ", Available CPUs: " + Runtime.getRuntime().availableProcessors());
 		System.out.println("Warmup rounds: " + warmupRounds + ", Rounds: " + rounds);
-		System.out.println("--------------------------------------------------------------------------------");
 		System.out.println("Results: " + Arrays.toString(runtimes));
+		System.out.println("--------------------------------------------------------------------------------");
 		System.out.println("Overall runtime: " + overallTime);
 		System.out.println("Mean runtime: " + mean + "; standard deviation: " + standardDeviation);
-		System.out.println("Min: " + min + "Median: " + median + "; Max: " + max);
+		System.out.println("Min: " + min + "; Median: " + median + "; Max: " + max);
+		System.out.println("===============================================================================");
 		
 		return mean;
 		
