@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.AttributeHelper;
 import org.Vector2d;
@@ -34,30 +35,34 @@ class StressMajorizationImpl {
 
 	private final double EPSILON = 1E-4;
 	
-	private final Graph g;
-	public StressMajorizationImpl(Graph g) {
-		this.g = g;
+	private final List<Node> nodes;
+	
+	// nodes restricts which nodes should be layouted
+	public StressMajorizationImpl(Set<Node> nodes) {
+		this.nodes = new ArrayList<>(nodes);
 	}
 	
-	void doLayout() {
+	Map<Node, Vector2d> calculateLayout() {
 
-		List<Node> nodes = g.getNodes();
+		// enable or disable console logging
+		final boolean LOG = true;
+		
 		int n = nodes.size();
 		final int d = 2; // only implemented for two dimensional space
 
-		System.out.println("Calculating distances...");
+		if (LOG) { System.out.println("Calculating distances..."); }
 		RealMatrix distances = calcDistances();
-		System.out.println("Calculating weights...");
+		if (LOG) { System.out.println("Calculating weights..."); }
 		RealMatrix weights = getWeightsForDistances(distances, 2); // TODO make alpha selectable by user
 		
-		System.out.println("Copying layout...");
+		if (LOG) { System.out.println("Copying layout..."); }
 		RealMatrix layout = new Array2DRowRealMatrix(n, d); //getRandomMatrix(n, d); 
 		for (int i = 0; i < n; i += 1) {
 			Point2D position = AttributeHelper.getPosition(nodes.get(i));
 			layout.setRow(i, new double[] {position.getX(), position.getY()});
 		}
 
-		System.out.println("Optimizing layout...");
+		if (LOG) { System.out.println("Optimizing layout..."); }
 		double prevStress, newStress;
 		do {
 
@@ -67,10 +72,12 @@ class StressMajorizationImpl {
 			layout = c.calcOptimizedLayout();
 			newStress = c.calcStress(layout);
 
-			System.out.println("===============================");
-			System.out.println("prev: " + prevStress);
-			System.out.println("new:  " + newStress);
-			System.out.println("diff: " + ((prevStress - newStress) / prevStress) + "; " + ((prevStress - newStress) / prevStress >= EPSILON));
+			if (LOG) { 
+				System.out.println("===============================");
+				System.out.println("prev: " + prevStress);
+				System.out.println("new:  " + newStress);
+				System.out.println("diff: " + ((prevStress - newStress) / prevStress) + "; " + ((prevStress - newStress) / prevStress >= EPSILON));
+			}
 			
 		} while ( (prevStress - newStress) / prevStress >= EPSILON ); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
 		
@@ -83,11 +90,8 @@ class StressMajorizationImpl {
 			nodes2newPositions.put(nodes.get(i), position);
 		}
 
-		System.out.println("Updating layout...");
-		GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, "Stress Majorization");
-		// center graph layout
-		GravistoService.getInstance().runAlgorithm(new CenterLayouterAlgorithm(), g,
-				new Selection(""), null);
+		return nodes2newPositions;
+		
 	}
 	
 	/**
@@ -97,12 +101,10 @@ class StressMajorizationImpl {
 	 */
 	private RealMatrix calcDistances() {
 		
-		int n = g.getNumberOfNodes();
+		int n = nodes.size();
 		Map<Node, Integer> node2Index = new HashMap<>();
-		int nextFreeIndex = 0;
-		for (Node node : g.getNodes()) {
-			node2Index.put(node, nextFreeIndex);
-			nextFreeIndex += 1;
+		for (int i = 0; i < n; i += 1) {
+			node2Index.put(nodes.get(i), i);
 		}
 		
 		RealMatrix distances = new Array2DRowRealMatrix(n, n);
@@ -113,28 +115,27 @@ class StressMajorizationImpl {
 				distances.setEntry(i, j, Double.POSITIVE_INFINITY);
 			}
 		}
+		
 		for (int i = 0; i < n; i += 1) {
 			distances.setEntry(i, i, 0);
 		}
 		
 		for(int i = 0; i < n; i++) {
-			//o contains all neighbors
-			Collection<Node> o = g.getNodes().get(i).getAllInNeighbors();
-			//If we only consider directed distances in the graph, delete this line
-			o.addAll(g.getNodes().get(i).getAllInNeighbors());
+			
+			Collection<Node> nodesToVisit = nodes.get(i).getNeighbors();
 			
 			int dist = 1;
-			//Already visited nodes
+			
 			boolean[] visited = new boolean[n];
 			Arrays.fill(visited, false);
-			//p contains the next layer o nodes
-			Collection<Node> p;
 			
-			while(o.size() != 0) {
+			Collection<Node> nodesToVisitNext;
+			
+			while(nodesToVisit.size() != 0) {
 				//next layer is empty at first
-				p = new ArrayList<Node>();
+				nodesToVisitNext = new ArrayList<Node>();
 				
-				for(Node node : o) {
+				for(Node node : nodesToVisit) {
 					int j = node2Index.get(node);
 					if(!visited[j]) {
 						if(distances.getEntry(i, j) > dist) {
@@ -143,61 +144,17 @@ class StressMajorizationImpl {
 						}
 						visited[j] = true;
 						//Add neighbors of node to next layer
-						p.addAll(node.getAllOutNeighbors());
-						p.addAll(node.getAllInNeighbors());
-						p.remove(node);
+						nodesToVisitNext.addAll(node.getNeighbors());
+						nodesToVisitNext.remove(node);
 					}
 				}
 				//current layer is done
-				o = p;
+				nodesToVisit = nodesToVisitNext;
 				dist++;
 			}
 			
 			
 		}
-		
-		
-		// Floyd–Warshall algorithm
-		/*
-		for (int i = 0; i < n; i += 1) {
-			for (int j = 0; j < n; j += 1) {
-				distances.setEntry(i, j, Double.POSITIVE_INFINITY);
-			}
-		}
-
-		// all edges are guaranteed to be undirected (algorithm precondition)
-		for (Edge edge : g.getEdges()) {
-			double edgeWeight;
-			try {
-				// TODO find out how to really get the edge weight
-				edgeWeight = edge.getDouble("weight");
-			} catch (AttributeNotFoundException ex) {
-				edgeWeight = 1; // use uniform weight
-			}
-			
-			int i = node2Index.get(edge.getSource());
-			int j = node2Index.get(edge.getTarget());
-			
-			distances.setEntry(i, j, edgeWeight);
-			distances.setEntry(j, i, edgeWeight); // non directed edges
-		}
-		
-		for (int i = 0; i < n; i += 1) {
-			distances.setEntry(i, i, 0);
-		}
-		
-		for (int k = 0; k < n; k += 1) {
-			for (int i = 0; i < n; i += 1) {
-				for (int j = 0; j < n; j += 1) {
-					double dij = distances.getEntry(i, j);
-					double comp = distances.getEntry(i, k) + distances.getEntry(k, j);
-					if (dij > comp) {
-						distances.setEntry(i, j, comp);
-					}
-				}
-			}
-		}
-		*/
 		
 		return distances;
 	}
