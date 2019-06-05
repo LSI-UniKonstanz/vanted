@@ -45,7 +45,7 @@ class StressMajorizationImpl {
 	Map<Node, Vector2d> calculateLayout() {
 
 		// enable or disable console logging
-		final boolean LOG = true;
+		final boolean LOG = false;
 		
 		int n = nodes.size();
 		final int d = 2; // only implemented for two dimensional space

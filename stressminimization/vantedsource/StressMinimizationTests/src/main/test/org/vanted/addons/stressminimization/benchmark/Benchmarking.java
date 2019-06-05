@@ -12,7 +12,8 @@ public final class Benchmarking {
 	}
 	
 	public static double benchmark(Action action, int warmupRounds, int rounds, String benchmarkName) {
-		
+
+		System.out.println("--------------------------------------------------------------------------------");
 		System.out.println("Starting Benchmark: " + benchmarkName);
 		
 		System.out.println("Running carbage collection.");
@@ -22,7 +23,6 @@ public final class Benchmarking {
 		System.out.println("Warmup: " + warmupRounds + " rounds.");
 		// try to create comparable conditions for execution: warmup
 		for (int i = 0; i < warmupRounds; i += 1) {
-			System.out.println("Starting warmup round: " + i);
 			action.perform();
 		}
 		
@@ -31,7 +31,6 @@ public final class Benchmarking {
 		long[] runtimes = new long[rounds];
 		for (int i = 0; i < rounds; i += 1) {
 			
-			System.out.println("Starting round: " + i);
 			long timeBefore = System.currentTimeMillis();
 			action.perform();
 			long timeAfter = System.currentTimeMillis();
@@ -88,7 +87,7 @@ public final class Benchmarking {
 		System.out.println("Overall runtime: " + overallTime);
 		System.out.println("Mean runtime: " + mean + "; standard deviation: " + standardDeviation);
 		System.out.println("Min: " + min + "; Median: " + median + "; Max: " + max);
-		System.out.println("===============================================================================");
+		System.out.println("--------------------------------------------------------------------------------");
 		
 		return mean;
 		

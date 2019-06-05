@@ -127,6 +127,8 @@ public abstract class BenchmarkStandardGraphs {
 			
 		}, 10, 100, "\"natural\" graph (n = " + n + ")"); 
 		
+		System.exit(0);
+		
 	}
 	
 }
