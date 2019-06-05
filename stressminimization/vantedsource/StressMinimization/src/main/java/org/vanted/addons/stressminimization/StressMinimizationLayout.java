@@ -1,9 +1,15 @@
 package org.vanted.addons.stressminimization;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import org.Vector2d;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.graph.Graph;
+import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.Parameter;
@@ -11,6 +17,7 @@ import org.graffiti.plugin.view.View;
 import org.graffiti.selection.Selection;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
 
 /**
@@ -90,11 +97,20 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 	@Override
 	public void execute() {
 		
-		Collection<Graph> components = GraphHelper.getConnectedComponentsAsCopy(graph);
+		List<Node> nodes = graph.getNodes();
+		Set<Set<Node>> components = GraphHelper.getConnectedComponents(nodes);
+		HashMap<Node, Vector2d> newPositions = new HashMap<>();
 		
-		for (Graph component : components) {
-			new StressMajorizationImpl(component).doLayout();
+		for (Set<Node> component : components) {
+			
+			StressMajorizationImpl impl = new StressMajorizationImpl(component);
+			Map<Node, Vector2d> newComponentPositions = impl.calculateLayout();
+			
+			newPositions.putAll(newComponentPositions);
+			
 		}
+
+		GraphHelper.applyUndoableNodePositionUpdate(newPositions, "Stress Majorization");
 		
 		// center graph layout
 		GravistoService.getInstance().runAlgorithm(
@@ -103,6 +119,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 				new Selection(""), 
 				null
 		);
+
+		// remove space between components / remove overlapping
+		ConnectedComponentLayout.layoutConnectedComponents(graph);
 		
 	}
 	
