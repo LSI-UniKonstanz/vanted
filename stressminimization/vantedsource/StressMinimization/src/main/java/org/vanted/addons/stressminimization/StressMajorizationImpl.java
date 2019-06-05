@@ -37,11 +37,19 @@ class StressMajorizationImpl {
 	
 	private final List<Node> nodes;
 	
-	// nodes restricts which nodes should be layouted
+	/**
+	 * Constructs a new StressMajorizationImpl instance that works on the given set of nodes
+	 * @param nodes The nodes this instance will work on.
+	 */
 	public StressMajorizationImpl(Set<Node> nodes) {
 		this.nodes = new ArrayList<>(nodes);
 	}
 	
+	/**
+	 * Calculates a approximately optimal layout for the set of nodes that was passed on construction 
+	 * in regard to layout stress.
+	 * @return A new layout of the nodes of this instance that has close to minimal stress.
+	 */
 	Map<Node, Vector2d> calculateLayout() {
 
 		// enable or disable console logging
