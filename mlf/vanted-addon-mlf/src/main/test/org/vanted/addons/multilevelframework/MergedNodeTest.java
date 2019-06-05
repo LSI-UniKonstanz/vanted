@@ -1,6 +1,7 @@
 package org.vanted.addons.multilevelframework;
 
 import org.AttributeHelper;
+import org.Vector2d;
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
@@ -9,7 +10,10 @@ import org.graffiti.graphics.NodeLabelAttribute;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.geom.Point2D;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
@@ -33,6 +37,10 @@ public class MergedNodeTest {
         this.n2 = g.addNode();
         this.n3 = g.addNode();
         this.n4 = g.addNode();
+        AttributeHelper.setPosition(n1, 0, 0);
+        AttributeHelper.setPosition(n2, 0, 0);
+        AttributeHelper.setPosition(n3, 0, 0);
+        AttributeHelper.setPosition(n4, 0, 0);
         AttributeHelper.setLabel(n1, "1");
         AttributeHelper.setLabel(n2, "2");
         AttributeHelper.setLabel(n3, "3");
@@ -74,6 +82,18 @@ public class MergedNodeTest {
     public void addInnerNode() {
         MergedNode mn = new MergedNode(this.g, this.innerNodes);
         mn.addInnerNode(this.n1);
+    }
+
+    @Test
+    public void updatePositionFail() {
+        Graph g = new AdjListGraph();
+        Node n = g.addNode();
+        AttributeHelper.setPosition(n, Double.NaN, 123);
+        MergedNode mn = new MergedNode(g, Collections.singleton(n));
+        assertEquals(AttributeHelper.getPosition(mn), new Point2D.Double(0, 0));
+        AttributeHelper.setPosition(n, Double.NEGATIVE_INFINITY, 123);
+        mn = new MergedNode(g, Collections.singleton(n));
+        assertEquals(AttributeHelper.getPosition(mn), new Point2D.Double(0, 0));
     }
 
     @Test

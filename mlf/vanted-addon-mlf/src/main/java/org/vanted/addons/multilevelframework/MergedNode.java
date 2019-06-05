@@ -114,7 +114,8 @@ public class MergedNode extends AdjListNode {
             return;
         }
         Vector2d center = NodeTools.getCenter(this.getInnerNodes());
-        if (Double.isNaN(center.x) || Double.isNaN(center.y)) {
+        // note that isFinite returns false for NaN as well as for INFINITY
+        if (!Double.isFinite(center.x) || !Double.isFinite(center.y)) {
             center = new Vector2d(0, 0);
         }
         AttributeHelper.setPosition(this, center);
