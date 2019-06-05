@@ -72,7 +72,7 @@ public class InternalGraphTest {
     @Test
     public void createNode2() {
         Node n = this.ig.createNode(new NodeLabelAttribute("ignored"));
-        assertEquals(" [0]", AttributeHelper.getLabel(n, "nope"));
+        assertTrue(AttributeHelper.getLabel(n, "nope").contains("[0]"));
     }
 
     @Test(expected = IllegalArgumentException.class)

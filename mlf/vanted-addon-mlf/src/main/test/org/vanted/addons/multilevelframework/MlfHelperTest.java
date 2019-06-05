@@ -1,5 +1,6 @@
 package org.vanted.addons.multilevelframework;
 
+import org.AttributeHelper;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Node;
 import org.junit.Test;
@@ -40,6 +41,10 @@ public class MlfHelperTest {
         g.addEdge(n7, n4, false);
         //isolated node
         Node isolated = g.addNode();
+
+        for (Node n : Arrays.asList(n1, n2, n3, n4, n5, n6, n7, isolated)) {
+            AttributeHelper.setPosition(n, 0, 0);
+        }
 
         // select the triangle and the isolated node
         Collection<? extends CoarsenedGraph> components =

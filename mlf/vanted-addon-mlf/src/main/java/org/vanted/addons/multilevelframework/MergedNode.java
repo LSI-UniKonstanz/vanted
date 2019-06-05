@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  */
 public class MergedNode extends AdjListNode {
     private Set<Node> nodes;
+    private int weight;
 
     /**
      * Create a new {@link MergedNode}.
@@ -37,6 +38,7 @@ public class MergedNode extends AdjListNode {
         this.nodes = Objects.requireNonNull(nodes, "MergedNode nodes must not be null.");
         this.updateLabel();
         this.updatePosition();
+        this.updateWeight();
     }
 
     /**
@@ -53,6 +55,7 @@ public class MergedNode extends AdjListNode {
         this.nodes = new HashSet<>();
         this.updateLabel();
         this.updatePosition();
+        this.updateWeight();
     }
 
     /**
@@ -69,6 +72,7 @@ public class MergedNode extends AdjListNode {
         this.nodes = new HashSet<>();
         this.updateLabel();
         this.updatePosition();
+        this.updateWeight();
     }
 
     /**
@@ -98,6 +102,36 @@ public class MergedNode extends AdjListNode {
         this.nodes.add(Objects.requireNonNull(node, "MergedNode cannot represent null nodes."));
         this.updateLabel();
         this.updatePosition();
+        this.updateWeight();
+    }
+
+    /**
+     * @return the number of nodes that the {@link MergedNode} represents (other {@link MergedNode}s are not counted,
+     * just the notes that they in turn represent)
+     * @author Gordian
+     */
+    public int getWeight() {
+        return this.weight;
+    }
+
+    /**
+     * Calculate the number of nodes that the {@link MergedNode} represents (other {@link MergedNode}s are not counted,
+     * just the notes that they in turn represent)
+     * @author Gordian
+     */
+    private void updateWeight() {
+        if (this.getInnerNodes().isEmpty()) {
+            this.weight = 0;
+        }
+        int sum = 0;
+        for (Node n : this.nodes) {
+            if (n instanceof MergedNode) {
+                sum += ((MergedNode) n).getWeight();
+            } else {
+                sum += 1;
+            }
+        }
+        this.weight = sum;
     }
 
     /**
@@ -130,9 +164,15 @@ public class MergedNode extends AdjListNode {
     private void updateLabel() {
         // TODO: maybe display a nicer label if the represented nodes are unlabeled
         String label = this.nodes.stream()
-                .map(n -> AttributeHelper.getLabel(n, "unknown"))
+                .map(n -> {
+                    if (n instanceof MergedNode) {
+                        return "[" + ((MergedNode) n).getInnerNodes().size() + "]";
+                    } else {
+                        return AttributeHelper.getLabel(n, "unknown");
+                    }
+                })
                 .collect(Collectors.joining(", "));
-        label += " [" + this.nodes.size() + "]";
+        label += "| [" + this.nodes.size() + "]";
         AttributeHelper.setLabel(this, label);
     }
 }
