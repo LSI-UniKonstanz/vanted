@@ -86,10 +86,11 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
                 newYPos     += weight * otherY;             //pre-finale new y-position
                 totalWeight += weight;                      //sum up every weight
 
-                if (totalWeight != 0) {
-                    currentNode.x = newXPos / totalWeight;  //finale new x-position
-                    currentNode.y = newYPos / totalWeight;  //finale new y-position
-                }
+            }
+            
+            if (totalWeight != 0) {
+                currentNode.x = newXPos / totalWeight;  //finale new x-position
+                currentNode.y = newYPos / totalWeight;  //finale new y-position
             }
 
         }
