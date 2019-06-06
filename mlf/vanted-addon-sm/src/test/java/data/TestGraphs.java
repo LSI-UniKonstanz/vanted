@@ -5,6 +5,7 @@ import org.Vector2d;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
+import org.vanted.addons.stressminaddon.StressMinimizationLayout;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
 import java.awt.*;
@@ -42,7 +43,6 @@ public class TestGraphs {
       @author Jannik
      */
     static {
-
         // init graph 1
         ///////////////////////////////////////////
         GRAPH_1_POSITIONS = new ArrayList<>(Arrays.asList(
@@ -54,9 +54,12 @@ public class TestGraphs {
         GRAPH_1_DISTANCES.apply(x -> 2); // maximum distance
 
         // create nodes and place them
-        for (Vector2d pos : GRAPH_1_POSITIONS) {
-            GRAPH_1_NODES.add(GraphHelper.addNodeToGraph(
-                    GRAPH_1, pos.x, pos.y, 1, 1, 1, Color.WHITE, Color.BLACK));
+        for (int i = 0; i < GRAPH_1_POSITIONS.size(); i++) {
+            Vector2d pos = GRAPH_1_POSITIONS.get(i);
+            Node n = GraphHelper.addNodeToGraph(
+                    GRAPH_1, pos.x, pos.y, 1, 1, 1, Color.WHITE, Color.BLACK);
+            n.setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, i);
+            GRAPH_1_NODES.add(n);
         }
         // connect the nodes
         for (int i = 0; i < GRAPH_1_NODES.size(); i++) {
@@ -73,11 +76,14 @@ public class TestGraphs {
         GRAPH_2_NODES = new ArrayList<>();
         GRAPH_2_DISTANCES = new NodeValueMatrix(GRAPH_2_POSITIONS.size());
 
-        GRAPH_2_DISTANCES.apply(x -> 2); // maximum distance
+        GRAPH_2_DISTANCES.apply(x -> Double.POSITIVE_INFINITY); // some nodes have no connection at all
         // create nodes and place them
-        for (Vector2d pos : GRAPH_2_POSITIONS) {
-            GRAPH_2_NODES.add(GraphHelper.addNodeToGraph(
-                    GRAPH_2, pos.x, pos.y, 1, 42, 42, Color.WHITE, Color.BLACK));
+        for (int i = 0; i < GRAPH_2_POSITIONS.size(); i++) {
+            Vector2d pos = GRAPH_2_POSITIONS.get(i);
+            Node n = GraphHelper.addNodeToGraph(
+                    GRAPH_2, pos.x, pos.y, 1, 42, 42, Color.WHITE, Color.BLACK);
+            n.setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, i);
+            GRAPH_2_NODES.add(n);
         }
         // connect the nodes
         final int half = GRAPH_2_NODES.size()/2;
@@ -86,6 +92,11 @@ public class TestGraphs {
             GRAPH_2_DISTANCES.set(i, (i+1) % half, 1); // update distances
             GRAPH_2.addEdge(GRAPH_2_NODES.get(i + half), GRAPH_2_NODES.get((i+1) % half + half), false);
             GRAPH_2_DISTANCES.set(i + half, (i+1) % half + half, 1); // update distances
+        }
+        // set distances of two
+        for (int i = 0; i < half/2; i++) {
+            GRAPH_2_DISTANCES.set(i, i + half/2, 2);
+            GRAPH_2_DISTANCES.set(i + half, i + half + half/2, 2);
         }
 
     }
@@ -112,9 +123,12 @@ public class TestGraphs {
 
         GRAPH_COLLAPSED_DISTANCES.apply(x->2);
 
-        for (Vector2d pos : GRAPH_COLLAPSED_NODES_POSITIONS){
-            GRAPH_COLLAPSED_NODES_NODES.add(GraphHelper.addNodeToGraph(
-                    GRAPH_COLLAPSED_NODES, pos.x, pos.y, 1, 1, 1, Color.WHITE, Color.BLACK));
+        for (int i = 0; i < GRAPH_COLLAPSED_NODES_POSITIONS.size(); i++) {
+            Vector2d pos = GRAPH_COLLAPSED_NODES_POSITIONS.get(i);
+            Node n = GraphHelper.addNodeToGraph(
+                            GRAPH_COLLAPSED_NODES, pos.x, pos.y, 1, 1, 1, Color.WHITE, Color.BLACK);
+            n.setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, i);
+            GRAPH_COLLAPSED_NODES_NODES.add(n);
         }
 
         for(int i = 0; i< GRAPH_COLLAPSED_NODES_NODES.size(); i++){

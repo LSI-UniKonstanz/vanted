@@ -26,6 +26,7 @@ public class StartVantedWithAddon {
 		System.out.println("Starting VANTED with Add-on " + getAddonName()
 							+ " for development...");
 		Main.startVanted(args, getAddonName());
+		//Main.main(args);
 
 		// alternatively you may also start several Addons at the same time:
 		// Main.startVantedExt(args, new String[]{"","",...});

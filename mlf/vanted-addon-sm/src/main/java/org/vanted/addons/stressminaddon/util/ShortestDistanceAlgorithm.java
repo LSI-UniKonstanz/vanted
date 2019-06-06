@@ -1,78 +1,103 @@
 package org.vanted.addons.stressminaddon.util;
 
-import org.graffiti.graph.Edge;
+import org.graffiti.attributes.AttributeNotFoundException;
 import org.graffiti.graph.Node;
+import org.vanted.addons.stressminaddon.StressMinimizationLayout;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author theo
  *
  * ShortestDistanceAlgorithm finds all the shortest paths in the given set of knots.
- * BFS is performed on all n nodes. This step will be parallelized.
+ * BFS is performed on all start nodes. This step will be parallelized.
  */
-public class ShortestDistanceAlgorithm {
+public enum  ShortestDistanceAlgorithm {
+    ; // No need for instances
 
     /**
-     * implements runnable
+     * Does the actual task of BFS from a specified start node.
+     * @author theo
      */
-    private class BFSRunnable implements Runnable {
+    private static class BFSRunnable implements Runnable {
 
-        private Node n;
-        private ArrayList<Node> nodes;
+        /** The node to start from. */
+        private Node start;
+        /** The maximum number of nodes to process. */
         private int numberNodes;
+        /** The maximal depth to reach before terminating prematurely. */
+        private int maxDepth;
+        /** The resulting matrix. This will be shared between all {@link BFSRunnable}s. */
         private NodeValueMatrix results;
 
         /**
+         * Constructs a new {@link BFSRunnable} for execution.
          * 
-         * @param n       the node BFS starts from
-         * @param results matrux the final result is written
+         * @param start   the node BFS starts from
+         * @param results matrix the final result is written to
+         * @param maxDepth the maximal depth to reach before terminating prematurely
+         *
+         * @author theo
          */
-        public BFSRunnable(Node n, final ArrayList<Node>  nodes, NodeValueMatrix results) {
-            this.nodes = nodes;
-            this.n = n;
-            this.numberNodes = nodes.size();
+        BFSRunnable(final Node start, final NodeValueMatrix results, final int maxDepth) {
+            assert start != null && results != null;
+            this.start = start;
+            this.numberNodes = results.getDimension();
             this.results = results;
+            this.maxDepth = maxDepth;
         }
 
+        /**
+         * Starts the BFS search from the specified start node and writes the result until the position of the start
+         * node to the result matrix.
+         *
+         * @author theo
+         */
         @Override
         public void run() {
-
             // stores distances to all nodes from startNode
             double[] distances = new double[numberNodes];
             // all distances are -1 in the beginning
-            for (int i = 0; i < numberNodes; i++) {
-                distances[i] = -1;
+            for (int i = 0; i < numberNodes; i++) { // TODO maybe initialize faster with System.arraycopy()
+                distances[i] = Double.POSITIVE_INFINITY;
             }
 
-            int posStartNode = nodes.indexOf(n);
+            int posStartNode = start.getInteger(StressMinimizationLayout.INDEX_ATTRIBUTE);
             distances[posStartNode] = 0;
 
             // Create a queue for BFS
-            LinkedList<Node> queue = new LinkedList<Node>();
-            queue.add(n);
+            Queue<Node> queue = new LinkedList<>();
+            queue.add(start);
 
-            Collection<Edge> edgesOfCurrentNode;
-
+            Node current;
+            int posCurrent;
             // BFS
             while (queue.size() != 0) {
-                n = queue.poll();
+                current = queue.poll();
+                posCurrent = current.getInteger(StressMinimizationLayout.INDEX_ATTRIBUTE);
+                if (distances[posCurrent] >= this.maxDepth)
+                    break;
 
-                for (Node neighbour : n.getNeighbors()) {
-                    int posInGraph = nodes.indexOf(neighbour);
-                    if (distances[posInGraph] == -1) {
-                        distances[posInGraph] = distances[nodes.indexOf(n)] +1;
-                        queue.add(neighbour);
+
+                for (Node neighbour : current.getNeighbors()) {
+                    try {
+                        int posInGraph = neighbour.getInteger(StressMinimizationLayout.INDEX_ATTRIBUTE);
+                        if (distances[posInGraph] == Double.POSITIVE_INFINITY) {
+                            distances[posInGraph] = distances[posCurrent] + 1;
+                            queue.add(neighbour);
+                        }
+                    } catch (AttributeNotFoundException e) {
+                        // Node is not in the current connected component
                     }
                 }
             }
-            // copy distances to resultMatrix for node n
+            // copy distances to resultMatrix for node start
             for (int i = 0; i < posStartNode; i++) {
                 results.set(posStartNode, i, distances[i]);
             }
@@ -80,27 +105,33 @@ public class ShortestDistanceAlgorithm {
     }
 
     /**
-     * executes the algorithm. BFSRunnable is called once on all nodes. This steps are parallized.
-     * 
-     * @return a NodeValueMatrix containig the results of all n BFS
+     * Executes the BFS algorithm form every node and returns the result in a {@link NodeValueMatrix}.
+     * BFSRunnable is called once on all nodes. These steps are parallelized.
+     *
+     * @param nodes the nodes to work with. The BFSs will not account for other nodes.
+     * @param maxDepth the maximal depth to reach before terminating prematurely.
+     *
+     * @return a NodeValueMatrix containing the results of all start BFSs.
+     *
+     * @author theo
      */
-    public NodeValueMatrix getShortestPaths(final ArrayList<Node> nodes) {
+    public static NodeValueMatrix calculateShortestPaths(final List<Node> nodes, final int maxDepth) {
 
         int numberOfNodes = nodes.size();
         NodeValueMatrix resultMatrix = new NodeValueMatrix(numberOfNodes);
-        //create a new ThreadPool
+        // create a new ThreadPool
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        try {
-            for (Node n : nodes) {
-                executor.execute(new BFSRunnable(n, nodes, resultMatrix));
-            }
-        } catch (Exception err) {
-            err.printStackTrace();
+        ArrayList<Callable<Object>> todo = new ArrayList<>(numberOfNodes);
+        for (Node n : nodes) {
+            todo.add(Executors.callable(new BFSRunnable(n, resultMatrix, maxDepth)));
         }
-        executor.shutdown();
+
+        try {
+            executor.invokeAll(todo);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return resultMatrix;
-
     }
-
 }
