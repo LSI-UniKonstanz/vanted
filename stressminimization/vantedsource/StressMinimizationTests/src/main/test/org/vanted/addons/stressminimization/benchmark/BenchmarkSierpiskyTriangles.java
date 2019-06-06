@@ -15,7 +15,7 @@ import org.vanted.addons.stressminimization.StressMinimizationLayout;
 public class BenchmarkSierpiskyTriangles {
 
 	private static final int START_DEPTH = 3;
-	private static final int GENERATE_UP_TO_DEPTH = 10;
+	private static final int GENERATE_UP_TO_DEPTH = 8;
 	
 	private Map<Integer, Graph> triangles;
 
