@@ -14,7 +14,7 @@ import org.vanted.addons.stressminimization.StressMinimizationLayout;
 /**
  * Abstract class for standard benchmarks. Number of nodes can be specified by sub class;
  */
-public class BenchmarkWattsStrogatzNetwork {
+public class BenchmarkBarabasiAlbertNetwork {
 
 	private static final int START_SIZE = 100;
 	private static final int STEP_SIZE = 100;
@@ -30,7 +30,7 @@ public class BenchmarkWattsStrogatzNetwork {
 
 		graphs = new ArrayList<>();
 		for (int n = START_SIZE; n <= END_SIZE; n += STEP_SIZE) {
-			Graph g = gen.generateWattsStrogatzNetwork(n);
+			Graph g = gen.generateBarabasiAlbertNetwork(n);
 			graphs.add(g);
 		}
 		
@@ -42,7 +42,7 @@ public class BenchmarkWattsStrogatzNetwork {
 		StartVantedWithStressMinAddon.main(new String[0]);
 		
 		System.out.println("================================================================================");
-		System.out.println("Watts Strogatz Network Benchmark Suite");
+		System.out.println("Barabasi Albert Network Benchmark Suite");
 		System.out.println("Setting up...");
 		setUp();
 		
@@ -66,7 +66,7 @@ public class BenchmarkWattsStrogatzNetwork {
 					e.printStackTrace();
 				}
 				
-			}, warmupRounds, rounds, "Watts Strogatz Network (n = " + g.getNumberOfNodes() + "; e = " + g.getNumberOfEdges() + ")"); 
+			}, warmupRounds, rounds, "Barabasi Albert Network (n = " + g.getNumberOfNodes() + "; e = " + g.getNumberOfEdges() + ")"); 
 			
 			
 		}
@@ -77,7 +77,7 @@ public class BenchmarkWattsStrogatzNetwork {
 
 	public static void main(String[] args) {
 		
-		BenchmarkWattsStrogatzNetwork b = new BenchmarkWattsStrogatzNetwork();
+		BenchmarkBarabasiAlbertNetwork b = new BenchmarkBarabasiAlbertNetwork();
 		b.benchmark();
 		
 	}
