@@ -4,88 +4,31 @@ Datum | Uhrzeit
 ------|--------
 06.06 | 17:00   
 
-## Wer hat was gemacht
- - Benjamin
- - David
- - Jakob
- - Joshi
- - Silvan
- - Thomas
+- Stressminimization:
+  * Algorithmus von Nutzer parametrisieren lassen
+    + Epsilon
+    + Alpha
+    + Abbruch Kriterium
+  * Kann in zwei Wochen fertig sein.
+- Background Execution:
+  * Läuft (Fast abgeschlossen)
+  * Schon was gemacht für UI.
+- Multilevel:
+  * Thomas ist ausgestiegen
+    + Joshi schreibt Mail an Betreuende
+  * Milestone 2 fast erreicht, benchmarks fehlen
+  * Benchmarks können von Multilevel übernommen werden.
 
 ## Milestone 2
+
 > First non-comparative implementations of multilevel framework and stress minimization layout algorithm are functional, benchmarks defined
 
-# Stressmin Sierpinsky Benchmark
+ * Bis jetzt Benchmarks:
+   - Fünf graphen (Stern, Rad, Pfad, Vollständig, zwei zufällige Netzwerke mit Ähnlichkeiten zu in der Natur vorkommen den Graphen)
+ * Skalierungstests sind sinnvoll.
+ * Visuelle Benchmarks? -> verschieben auf später
+ * Memory Usage: Abgeschätzt durch Anzeige in VANTED
 
-```
---------------------------------------------------------------------------------
-Starting Benchmark: Sierpisky triangle (depth: 3; n = 42; e = 81)
-Warmup rounds: 20, Rounds: 50
-Running carbage collection.
-Warmup: 20 rounds.
-OS Name: Mac OS X, Total available Memory: 1230.5 MiB, Available CPUs: 4
-Benchmark: 50 rounds.
---------------------------------------------------------------------------------
-Benchmarked: Sierpisky triangle (depth: 3; n = 42; e = 81)
-Results: [14, 10, 11, 11, 12, 11, 12, 11, 11, 10, 11, 14, 11, 11, 11, 12, 11, 10, 10, 10, 11, 10, 10, 10, 10, 11, 11, 10, 13, 11, 10, 11, 10, 11, 10, 10, 11, 10, 10, 10, 10, 10, 11, 10, 11, 10, 10, 10, 10, 10]
-Overall runtime: 536.0ms
-Mean runtime: 10.72ms; standard deviation: 0.96ms
-Min: 10ms; Median: 10.5ms; Max: 14ms
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
-Starting Benchmark: Sierpisky triangle (depth: 4; n = 123; e = 243)
-Warmup rounds: 15, Rounds: 38
-Running carbage collection.
-Warmup: 15 rounds.
-OS Name: Mac OS X, Total available Memory: 1318.0 MiB, Available CPUs: 4
-Benchmark: 38 rounds.
---------------------------------------------------------------------------------
-Benchmarked: Sierpisky triangle (depth: 4; n = 123; e = 243)
-Results: [137, 123, 130, 124, 128, 123, 127, 124, 126, 136, 127, 129, 127, 130, 126, 126, 123, 125, 127, 129, 123, 125, 123, 121, 127, 123, 130, 123, 126, 132, 127, 125, 129, 128, 122, 127, 128, 126]
-Overall runtime: 4812.0ms
-Mean runtime: 126.63157894736842ms; standard deviation: 3.444454373043405ms
-Min: 121ms; Median: 126.5ms; Max: 137ms
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
-Starting Benchmark: Sierpisky triangle (depth: 5; n = 366; e = 729)
-Warmup rounds: 12, Rounds: 30
-Running carbage collection.
-Warmup: 12 rounds.
-OS Name: Mac OS X, Total available Memory: 1267.5 MiB, Available CPUs: 4
-Benchmark: 30 rounds.
---------------------------------------------------------------------------------
-Benchmarked: Sierpisky triangle (depth: 5; n = 366; e = 729)
-Results: [1557, 1557, 1559, 1555, 1558, 1555, 1554, 1560, 1554, 1556, 1556, 1554, 1551, 1557, 1553, 1557, 1552, 1553, 1555, 1556, 1554, 1553, 1553, 1553, 1554, 1554, 1556, 1555, 1556, 1550]
-Overall runtime: 46647.0ms
-Mean runtime: 1554.9ms; standard deviation: 2.2113344387495975ms
-Min: 1550ms; Median: 1555.0ms; Max: 1560ms
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
-Starting Benchmark: Sierpisky triangle (depth: 6; n = 1095; e = 2187)
-Warmup rounds: 10, Rounds: 25
-Running carbage collection.
-Warmup: 10 rounds.
-OS Name: Mac OS X, Total available Memory: 1847.5 MiB, Available CPUs: 4
-Benchmark: 25 rounds.
---------------------------------------------------------------------------------
-Benchmarked: Sierpisky triangle (depth: 6; n = 1095; e = 2187)
-Results: [19628, 19623, 19643, 19622, 19613, 19612, 19994, 19592, 19621, 19601, 19599, 19581, 19593, 19595, 19595, 19580, 19588, 19606, 19593, 19592, 19606, 19608, 19607, 19622, 19988]
-Overall runtime: 490902.0ms
-Mean runtime: 19636.08ms; standard deviation: 105.73321899951787ms
-Min: 19580ms; Median: 19606.0ms; Max: 19994ms
---------------------------------------------------------------------------------
---------------------------------------------------------------------------------
-Starting Benchmark: Sierpisky triangle (depth: 7; n = 3282; e = 6561)
-Warmup rounds: 9, Rounds: 22
-Running carbage collection.
-Warmup: 9 rounds.
-OS Name: Mac OS X, Total available Memory: 2805.0 MiB, Available CPUs: 4
-Benchmark: 22 rounds.
---------------------------------------------------------------------------------
-Benchmarked: Sierpisky triangle (depth: 7; n = 3282; e = 6561)
-Results: [243044, 243066, 243205, 243380, 243047, 243081, 243214, 243389, 243145, 242828, 243102, 243785, 243189, 243517, 243288, 243525, 243152, 243094, 243106, 243127, 243142, 243516]
-Overall runtime: 5350942.0ms
-Mean runtime: 243224.63636363635ms; standard deviation: 210.30206531959206ms
-Min: 242828ms; Median: 243148.5ms; Max: 243785ms
---------------------------------------------------------------------------------
-```
+ * Stressminimization: Stress Majorization versagt bei sehr großen Graphen (n > 10.000). Vielleicht LandmarkMDS implementieren?
+   - Ähnlich zu Multilevel
+   - Benchmarks an Karsten schicken und dann nach Rücksprache neu evaluieren.
