@@ -5,7 +5,7 @@ Datum | Uhrzeit
 06.06 | 17:00   
 
 - Stressminimization:
-  * Algorithmus von Nutzer parametrisieren lassen
+  * TODO: Algorithmus von Nutzer parametrisieren lassen
     + Epsilon
     + Alpha
     + Abbruch Kriterium
@@ -17,7 +17,7 @@ Datum | Uhrzeit
   * Thomas ist ausgestiegen
     + Joshi schreibt Mail an Betreuende
   * Milestone 2 fast erreicht, benchmarks fehlen
-  * Benchmarks können von Multilevel übernommen werden.
+  * Benchmarks können von Stressminimization übernommen werden.
 
 ## Milestone 2
 
