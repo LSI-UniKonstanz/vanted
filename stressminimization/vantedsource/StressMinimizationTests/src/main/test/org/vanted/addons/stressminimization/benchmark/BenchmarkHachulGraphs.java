@@ -15,8 +15,9 @@ import org.vanted.addons.stressminimization.StressMinimizationLayout;
  */
 public abstract class BenchmarkHachulGraphs {
 
-	protected static final int WARMUP_ROUNDS = 3;
-	protected static final int ROUNDS = 3;
+	// no serious benchmark with these values...
+	protected static final int WARMUP_ROUNDS = 0;
+	protected static final int ROUNDS = 1;
 	
 	private List<Pair<String, Graph>> graphs;
 	
