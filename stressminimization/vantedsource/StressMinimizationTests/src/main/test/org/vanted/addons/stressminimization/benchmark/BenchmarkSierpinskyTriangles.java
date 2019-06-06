@@ -1,6 +1,8 @@
 package org.vanted.addons.stressminimization.benchmark;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.graffiti.graph.Graph;
@@ -12,12 +14,12 @@ import org.vanted.addons.stressminimization.StressMinimizationLayout;
 /**
  * Abstract class for standard benchmarks. Number of nodes can be specified by sub class;
  */
-public class BenchmarkSierpiskyTriangles {
+public class BenchmarkSierpinskyTriangles {
 
 	private static final int START_DEPTH = 3;
 	private static final int GENERATE_UP_TO_DEPTH = 8;
 	
-	private Map<Integer, Graph> triangles;
+	private List<Pair<Integer, Graph>> triangles;
 
 	StressMinimizationLayout algorithm = new StressMinimizationLayout();
 	
@@ -25,10 +27,10 @@ public class BenchmarkSierpiskyTriangles {
 		
 		GraphGeneration gen = new GraphGeneration();
 
-		triangles = new HashMap<>();
+		triangles = new ArrayList<>();
 		for (int levels = START_DEPTH; levels <= GENERATE_UP_TO_DEPTH; levels += 1) {
 			Graph triangle = gen.generateSierpinskyTriangle(levels);
-			triangles.put(levels, triangle);
+			triangles.add(new Pair<Integer, Graph>(levels, triangle));
 		}
 		
 	}
@@ -43,8 +45,9 @@ public class BenchmarkSierpiskyTriangles {
 		System.out.println("Setting up...");
 		setUp();
 		
-		for (Integer levels : triangles.keySet()) {
-			Graph triangle = triangles.get(levels);
+		for (Pair<Integer, Graph> levelsAndGraph : triangles) {
+			int levels = levelsAndGraph.first;
+			Graph triangle = levelsAndGraph.second;
 			
 			// we don't want to wait forever: we use less rounds if the graph is big.
 			int warmupRounds = (int) Math.ceil((20.0 * START_DEPTH) / levels);
@@ -77,7 +80,7 @@ public class BenchmarkSierpiskyTriangles {
 
 	public static void main(String[] args) {
 		
-		BenchmarkSierpiskyTriangles b = new BenchmarkSierpiskyTriangles();
+		BenchmarkSierpinskyTriangles b = new BenchmarkSierpinskyTriangles();
 		b.benchmark();
 		
 	}

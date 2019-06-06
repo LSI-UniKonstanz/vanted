@@ -291,6 +291,7 @@ public class GraphGeneration {
 			}
 		}
 		
+		positionNodesRandom(graph);
 		return graph;
 		
 	}

@@ -96,21 +96,21 @@ public abstract class BenchmarkStandardGraphs {
 		}
 		
 		String lineGraphName = "line graph (n = " + n + ")";
-		if (benchmarkCompleteGraph()) {
+		if (benchmarkLineGraph()) {
 			singleBenchmark(lineGraph, lineGraphName);
 		} else {
 			System.out.println("Ommited benchmark: " + lineGraphName);
 		}
 		
 		String barabasisAlbertGraphName = "barabasis albert graph (n = " + n + ")";
-		if (benchmarkCompleteGraph()) {
+		if (benchmarkBarabasisAlbertGraph()) {
 			singleBenchmark(barabasiAlbertGraph, barabasisAlbertGraphName);
 		} else {
 			System.out.println("Ommited benchmark: " + barabasisAlbertGraphName);
 		}
 
 		String wattsStrogatzGraphName = "watts strogatz graph (n = " + n + ")";
-		if (benchmarkCompleteGraph()) {
+		if (benchmarkWattsStrogatzGraph()) {
 			singleBenchmark(wattsStrogatzGraph, wattsStrogatzGraphName);
 		} else {
 			System.out.println("Ommited benchmark: " + wattsStrogatzGraphName);
@@ -125,7 +125,7 @@ public abstract class BenchmarkStandardGraphs {
 			
 			try {
 
-				algorithm.attach(barabasiAlbertGraph, new Selection(""));
+				algorithm.attach(graph, new Selection(""));
 				algorithm.check();
 				algorithm.setParameters( algorithm.getParameters() );
 				
