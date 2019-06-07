@@ -30,7 +30,7 @@ public class TestStressMajorizationLayoutCalculator {
 		});
 		
 		try {
-			StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
+			new StressMajorizationLayoutCalculator(layout, distances, weights);
 			fail();
 		} catch (Exception ex) {
 			assert(ex instanceof IllegalArgumentException);
@@ -56,7 +56,7 @@ public class TestStressMajorizationLayoutCalculator {
 		});
 		
 		try {
-			StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
+			new StressMajorizationLayoutCalculator(layout, distances, weights);
 			fail();
 		} catch (Exception ex) {
 			assert(ex instanceof IllegalArgumentException);
@@ -82,7 +82,7 @@ public class TestStressMajorizationLayoutCalculator {
 		});
 		
 		try {
-			StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
+			new StressMajorizationLayoutCalculator(layout, distances, weights);
 			fail();
 		} catch (Exception ex) {
 			assert(ex instanceof IllegalArgumentException);
@@ -108,7 +108,7 @@ public class TestStressMajorizationLayoutCalculator {
 		});
 		
 		try {
-			StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
+			new StressMajorizationLayoutCalculator(layout, distances, weights);
 			fail();
 		} catch (Exception ex) {
 			assert(ex instanceof IllegalArgumentException);
@@ -134,7 +134,7 @@ public class TestStressMajorizationLayoutCalculator {
 		});
 		
 		try {
-			StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
+			new StressMajorizationLayoutCalculator(layout, distances, weights);
 			fail();
 		} catch (Exception ex) {
 			assert(ex instanceof IllegalArgumentException);
@@ -288,7 +288,30 @@ public class TestStressMajorizationLayoutCalculator {
 		assertEquals(0.1715728753, layoutCalculator.calcStress(layout), 1e-8);
 		
 	}
-
+	
+	@Test
+	public void testStressCalculationTranslatedTriangle() {
+		
+		RealMatrix layout = new Array2DRowRealMatrix(new double[][] { 
+			{-0.5, 0}, 
+			{0.5, 0}, 
+			{-0.5, 1}, 
+		});
+		RealMatrix distances = new Array2DRowRealMatrix(new double[][] { 
+			{0, 1, 1}, 
+			{1, 0, 1}, 
+			{1, 1, 0}, 
+		});
+		RealMatrix weights = new Array2DRowRealMatrix(new double[][] {
+			{inf, 1, 1}, 
+			{1, inf, 1},
+			{1, 1, inf}
+		});
+		
+		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
+		assertEquals(0.1715728753, layoutCalculator.calcStress(layout), 1e-8);
+		
+	}
 	@Test
 	public void testStressCalculationSquare1() {
 		
@@ -342,31 +365,262 @@ public class TestStressMajorizationLayoutCalculator {
 		assertEquals(0.3431457505, layoutCalculator.calcStress(layout), 1e-8);
 		
 	}
+
+	// ===================================================
+	// MARK: test layout calculation
+	// ===================================================
 	
-	/**
-	 * Paper Graph Drawing by Stress Majorization fixes
-	 * the the first nodes position at 0,0
-	 */
-	/* Not fixing the first node at (0,0) gave an significant speed benefit
-	 * and furthermore enhanced the layouts
 	@Test
-	public void testFixesFirstNodeAtZero() {
+	public void testStressDecliningAfterLayoutCalculationStarOnGrid() {
+		
+		// tests layout calculation for a star (n = 4) graph
+		// that is initially placed on a grid
 		
 		RealMatrix layout = new Array2DRowRealMatrix(new double[][] { 
-			{10, 7}, 
+			{0, 0}, 
+			{1, 0}, 
+			{0, 1},
+			{1, 1},  
 		});
 		RealMatrix distances = new Array2DRowRealMatrix(new double[][] { 
-			{0}, 
+			{0, 1, 1, 1}, 
+			{1, 0, 2, 2}, 
+			{1, 2, 0, 2}, 
+			{1, 2, 2, 0}, 
 		});
 		RealMatrix weights = new Array2DRowRealMatrix(new double[][] {
-			{inf},
+			{inf, 1, 1, 1}, 
+			{1, inf, 0.25, 0.25},
+			{1, 0.25, inf, 0.25},
+			{1, 0.25, 0.25, inf},
 		});
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
-		assertArrayEquals(new double[] {0, 0}, flat(layoutCalculator.calcOptimizedLayout().getData()), 1e-8);
+		
+		double stress1 = layoutCalculator.calcStress(layout);
+		RealMatrix newLayout = layoutCalculator.calcOptimizedLayout();
+		double stress2 = layoutCalculator.calcStress(newLayout);
+		
+		// initial layout is not optimal,
+		// so stress needs to decline
+		assert(stress2 < stress1);
 		
 	}
-	*/
+	
+	@Test
+	public void testStressDecliningAfterLayoutCalculationStarOnGrid2() {
+		
+		// tests layout calculation for a star (n = 20) graph
+		// that is initially placed on a non symetric grid
+		
+		RealMatrix layout = new Array2DRowRealMatrix(new double[][] { 
+			{0, 0}, {0, 1}, {0, 2}, {0, 3}, {0, 4}, 
+			{1, 0}, {1, 1}, {1, 2}, {1, 3}, {1, 4}, 
+			{2, 0}, {2, 1}, {2, 2}, {2, 3}, {2, 4}, 
+			{3, 0}, {3, 1}, {3, 2}, {3, 3}, {3, 4}, 
+		});
+		RealMatrix distances = new Array2DRowRealMatrix(new double[][] { 
+			{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,}, 
+			{1, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,}, 
+			{1, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,}, 
+			{1, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,}, 
+			{1, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,}, 
+			{1, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,}, 
+			{1, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,}, 
+			{1, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,}, 
+			{1, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,}, 
+			{1, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,}, 
+			{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2,}, 
+			{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2,}, 
+			{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2,}, 
+			{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2,}, 
+			{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2,}, 
+			{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2,}, 
+			{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2,}, 
+			{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2,}, 
+			{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2,}, 
+			{1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,}, 
+		});
+		RealMatrix weights = new Array2DRowRealMatrix(new double[][] {
+			{inf, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,}, 
+			{1, inf, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, inf, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, inf, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, inf, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, inf, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, 0.25, inf, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, inf, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, inf, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, inf, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, inf, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, inf, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, inf, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, inf, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, inf, 0.25, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, inf, 0.25, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, inf, 0.25, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, inf, 0.25, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, inf, 0.25,},
+			{1, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, 0.25, inf,},
+		});
+		
+		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
+		
+		double stress1 = layoutCalculator.calcStress(layout);
+		RealMatrix newLayout = layoutCalculator.calcOptimizedLayout();
+		double stress2 = layoutCalculator.calcStress(newLayout);
+		
+		// initial layout is not optimal,
+		// so stress needs to decline
+		assert(stress2 < stress1);
+		
+	}
+
+	@Test
+	public void testStressDecliningAfterLayoutCalculationLineOnStar() {
+		
+		// tests layout calculation for a line (n = 4) graph
+		// that is initially placed on a star graph
+		
+		RealMatrix layout = new Array2DRowRealMatrix(new double[][] { 
+			{0, 0}, 
+			{1.5, 0}, 
+			{0.77, 0.86},
+			{0.77, 1.86},  
+		});
+		RealMatrix distances = new Array2DRowRealMatrix(new double[][] { 
+			{0, 1, 2, 3}, 
+			{1, 0, 1, 2}, 
+			{2, 1, 0, 1}, 
+			{3, 2, 1, 0}, 
+		});
+		RealMatrix weights = new Array2DRowRealMatrix(new double[][] {
+			{inf, 1, 0.25, 1 / 9}, 
+			{1, inf, 1, 0.25},
+			{0.25, 1, inf, 1},
+			{1/9, 0.25, 1, inf},
+		});
+		
+		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
+		
+		double stress1 = layoutCalculator.calcStress(layout);
+		RealMatrix newLayout = layoutCalculator.calcOptimizedLayout();
+		double stress2 = layoutCalculator.calcStress(newLayout);
+		
+		// initial layout is not optimal,
+		// so stress needs to decline
+		assert(stress2 < stress1);
+		
+	}
+
+	@Test
+	public void testStressDecliningAfterLayoutCalculationDistoredGrid() {
+		
+		// tests layout calculation for a grid (n = 6) graph
+		// with initially distorted layout
+		
+		RealMatrix layout = new Array2DRowRealMatrix(new double[][] { 
+			{0, 0}, {0, 0.75}, {0, 2},
+			{1, -0.25}, {1.25, 1.25}, {1, 1.75}
+		});
+		RealMatrix distances = new Array2DRowRealMatrix(new double[][] { 
+			{0, 1, 2, 1, 2, 3}, 
+			{1, 0, 1, 2, 1, 2}, 
+			{2, 1, 0, 3, 2, 1}, 
+			{1, 2, 3, 0, 1, 2}, 
+			{2, 1, 2, 1, 0, 1}, 
+			{3, 2, 1, 2, 1, 0}, 
+		});
+		RealMatrix weights = new Array2DRowRealMatrix(new double[][] {
+			{inf, 1, 0.25, 1, 0.25, 1/9}, 
+			{1, inf, 1, 0.25, 1, 0.25}, 
+			{0.25, 1, inf, 1/9, 0.25, 1},
+			{1, 0.25, 1/9, inf, 1, 0.25},
+			{0.25, 1, 0.25, 1, inf, 1},
+			{1/9, 0.25, 1, 0.25, 1, inf},    
+		});
+		
+		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
+		
+		double stress1 = layoutCalculator.calcStress(layout);
+		RealMatrix newLayout = layoutCalculator.calcOptimizedLayout();
+		double stress2 = layoutCalculator.calcStress(newLayout);
+		
+		// initial layout is not optimal,
+		// so stress needs to decline
+		assert(stress2 < stress1);
+		
+	}
+
+	@Test
+	public void testStressDecliningAfterLayoutCalculationSierpiskyTriangle() {
+		
+		// tests layout calculation for a sierpinsky triangle of order 3
+		// that is initially placed like a rectangular triangle
+		
+		RealMatrix layout = new Array2DRowRealMatrix(new double[][] { 
+			{0, 0}, // 1
+			{1, 0}, // 2
+			{0, 1}, // 3
+			{2, 0}, // 4
+			{1, 1}, // 5
+			{0, 2}, // 6
+			{3, 0}, // 7
+			{2, 1}, // 8
+			{1, 2}, // 9
+			{0, 3}, // 10
+			{4, 0}, // 11
+			{3, 1}, // 12
+			{2, 2}, // 13
+			{1, 3}, // 14
+			{0, 4}, // 15
+		});
+		RealMatrix distances = new Array2DRowRealMatrix(new double[][] { 
+			{0, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4}, 
+			{1, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4}, 
+			{1, 1, 0, 2, 1, 1, 3, 3, 2, 2, 4, 4, 3, 3, 3}, 
+			{2, 1, 2, 0, 1, 2, 1, 1, 3, 3, 2, 2, 2, 3, 4}, 
+			{2, 1, 1, 1, 0, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3}, 
+			{2, 2, 1, 2, 1, 0, 3, 3, 1, 1, 4, 3, 2, 2, 2}, 
+			{3, 2, 3, 1, 2, 3, 0, 1, 3, 4, 1, 1, 2, 3, 4}, 
+			{3, 2, 3, 1, 2, 3, 1, 0, 2, 3, 2, 1, 1, 2, 3}, 
+			{3, 3, 2, 3, 2, 1, 3, 2, 0, 1, 3, 2, 1, 1, 2}, 
+			{3, 3, 2, 3, 2, 1, 4, 3, 1, 0, 4, 3, 2, 1, 1}, 
+			{4, 3, 4, 2, 3, 4, 1, 2, 3, 4, 0, 1, 2, 3, 4}, 
+			{4, 3, 4, 2, 3, 3, 1, 1, 2, 3, 1, 0, 1, 2, 3}, 
+			{4, 3, 3, 2, 3, 2, 2, 1, 1, 2, 2, 1, 0, 1, 2}, 
+			{4, 4, 3, 3, 3, 2, 3, 2, 1, 1, 3, 2, 1, 0, 1}, 
+			{4, 4, 3, 4, 3, 2, 4, 3, 2, 1, 4, 3, 2, 1, 0}, 
+		});
+		RealMatrix weights = new Array2DRowRealMatrix(new double[][] {
+			{inf, 1, 1, 0.25, 0.25, 0.25, 1/9, 1/9, 1/9, 1/9, 0.0625, 0.0625, 0.0625, 0.0625, 0.0625}, 
+			{1, inf, 1, 1, 1, 0.25, 0.25, 0.25, 1/9, 1/9, 1/9, 1/9, 0.0625, 0.0625, 0.0625}, 
+			{1, 1, inf, 0.25, 1, 1, 1/9, 1/9, 0.25, 0.25, 0.0625, 0.0625, 1/9, 1/9, 1/9}, 
+			{0.25, 1, 0.25, inf, 1, 0.25, 1, 1, 1/9, 1/9, 0.25, 0.25, 0.25, 1/9, 0.0625}, 
+			{0.25, 1, 1, 1, inf, 1, 0.25, 0.25, 0.25, 0.25, 1/9, 1/9, 1/9, 1/9, 1/9}, 
+			{0.25, 0.25, 1, 0.25, 1, inf, 1/9, 1/9, 1, 1, 0.0625, 1/9, 0.25, 0.25, 0.25}, 
+			{1/9, 0.25, 1/9, 1, 0.25, 1/9, inf, 1, 1/9, 0.0625, 1, 1, 0.25, 1/9, 0.0625}, 
+			{1/9, 0.25, 1/9, 1, 0.25, 1/9, 1, inf, 0.25, 1/9, 0.25, 1, 1, 0.25, 1/9}, 
+			{1/9, 1/9, 0.25, 1/9, 0.25, 1, 1/9, 0.25, inf, 1, 1/9, 0.25, 1, 1, 0.25}, 
+			{1/9, 1/9, 0.25, 1/9, 0.25, 1, 0.0625, 1/9, 1, inf, 0.0625, 1/9, 0.25, 1, 1}, 
+			{0.0625, 1/9, 0.0625, 0.25, 1/9, 0.0625, 1, 0.25, 1/9, 0.0625, inf, 1, 0.25, 1/9, 0.0625}, 
+			{0.0625, 1/9, 0.0625, 0.25, 1/9, 1/9, 1, 1, 0.25, 1/9, 1, inf, 1, 0.25, 1/9}, 
+			{0.0625, 1/9, 1/9, 0.25, 1/9, 0.25, 0.25, 1, 1, 0.25, 0.25, 1, inf, 1, 0.25}, 
+			{0.0625, 0.0625, 1/9, 1/9, 1/9, 0.25, 1/9, 0.25, 1, 1, 1/9, 0.25, 1, inf, 1}, 
+			{0.0625, 0.0625, 1/9, 0.0625, 1/9, 0.25, 0.0625, 1/9, 0.25, 1, 0.0625, 1/9, 0.25, 1, inf}, 
+		});
+		
+		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
+		
+		double stress1 = layoutCalculator.calcStress(layout);
+		RealMatrix newLayout = layoutCalculator.calcOptimizedLayout();
+		double stress2 = layoutCalculator.calcStress(newLayout);
+		
+		// initial layout is not optimal,
+		// so stress needs to decline
+		assert(stress2 < stress1);
+		
+	}
 	
 	// ===================================================
 	// MARK: util
