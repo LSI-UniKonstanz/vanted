@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.AttributeHelper;
+import org.Vector2d;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.graffiti.attributes.AttributeNotFoundException;
@@ -66,8 +67,18 @@ class StressMajorizationImpl extends BackgroundAlgorithm {
 			System.out.println("new:  " + newStress);
 			System.out.println("diff: " + ((prevStress - newStress) / prevStress) + "; " + ((prevStress - newStress) / prevStress >= EPSILON));
 			
+			
+			double scaleFactor = 100;
+			HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
+			for (int i = 0; i < n; i += 1) {
+				double[] pos = layout.getRow(i);
+				Vector2d position = new Vector2d(pos[0] * scaleFactor, 
+												 pos[1] * scaleFactor);
+				nodes2newPositions.put(nodes.get(i), position);
+			}
+			
 			//update GUI layout
-			setLayout(layout);
+			setLayout(nodes2newPositions);
 			
 			isStopButtonPressed();
 			
@@ -75,7 +86,15 @@ class StressMajorizationImpl extends BackgroundAlgorithm {
 		
 
 		System.out.println("Updating layout...");
-		setEndLayout(layout);
+		double scaleFactor = 100;
+		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
+		for (int i = 0; i < n; i += 1) {
+			double[] pos = layout.getRow(i);
+			Vector2d position = new Vector2d(pos[0] * scaleFactor, 
+											 pos[1] * scaleFactor);
+			nodes2newPositions.put(nodes.get(i), position);
+		}
+		setEndLayout(nodes2newPositions);
 	}
 	
 	/**

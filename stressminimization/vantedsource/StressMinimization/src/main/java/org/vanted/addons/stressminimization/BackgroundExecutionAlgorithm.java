@@ -4,8 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
 import javax.swing.JButton;
@@ -18,10 +18,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.BackgroundTaskStatusProvider;
 import org.JMButton;
 import org.Vector2d;
-import org.apache.commons.math3.linear.RealMatrix;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
@@ -33,11 +31,9 @@ import org.graffiti.plugin.editcomponent.SpinnerEditComponent;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
+
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
-import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
-import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskWindow;
 import info.clearthought.layout.SingleFiledLayout;
 
 /**
@@ -78,7 +74,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	 * @param statusValue
 	 */
 	private synchronized void setStatus(BackgroundStatus statusValue) {
-		SwingUtilities.invokeLater(new Runnable() {
+		Thread statusUpdate =new Thread(new Runnable() {
 			public void run() {
 				if (statusValue == BackgroundStatus.INIT) {
 					status=BackgroundStatus.INIT;
@@ -102,31 +98,27 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				System.out.println("Status background task: "+status);
 			}
 		});
+		statusUpdate.setName("update Status");
+		statusUpdate.start();
 	}
 	
 	/**
 	 * update the GUI graph in the background
 	 * @param nodes2newPositions
 	 */
-	private synchronized void newLayout(RealMatrix layout) {
-		//run new thread
-		new Thread(new Runnable() {
-			public void run() {
-				List<Node> nodes = graph.getNodes();
-				int n = nodes.size();
-				double scaleFactor = 100;
-				HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
-				for (int i = 0; i < n; i += 1) {
-					double[] pos = layout.getRow(i);
-					Vector2d position = new Vector2d(pos[0] * scaleFactor, 
-													 pos[1] * scaleFactor);
-					nodes2newPositions.put(nodes.get(i), position);
+	private void newLayout(HashMap<Node, Vector2d> nodes2newPositions) {
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				public void run() {
+					GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());	
+					GravistoService.getInstance().runAlgorithm(new CenterLayouterAlgorithm(), graph,
+							new Selection(""), null);
 				}
-				GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());	
-				GravistoService.getInstance().runAlgorithm(new CenterLayouterAlgorithm(), graph,
-						new Selection(""), null);
-			}
-		}).start();
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -181,6 +173,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			}
 		};
 		backgroundTask = new Thread(algoExecution);
+		backgroundTask.setName(algorithm.getName()+" background execution");
 		backgroundTask.start();
 	}
 
@@ -309,7 +302,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	
 	/**
 	 * pick out all algorithm parameters from the GUI components  
-	 * @return
+	 * @return Parameter[]
 	 */
 	private Parameter[] updateParameters() {
 		if(parameterAlgo!=null) {
@@ -341,19 +334,20 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		algorithm.attach(g, selection);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
 		//updating layout and status if the background algorithm request
 		if(arg0.getPropertyName().compareTo("setLayout")==0) {
 			if(autoDraw) {
-				newLayout((RealMatrix)arg0.getNewValue());
+				newLayout((HashMap<Node, Vector2d>)arg0.getNewValue());
 			}
 		}
 		if(arg0.getPropertyName().compareTo("setStatus")==0) {
 			setStatus((BackgroundStatus)arg0.getNewValue());
 		}
 		if(arg0.getPropertyName().compareTo("setEndLayout")==0) {
-			newLayout((RealMatrix)arg0.getNewValue());
+			newLayout((HashMap<Node, Vector2d> )arg0.getNewValue());
 		}
 	}
 }

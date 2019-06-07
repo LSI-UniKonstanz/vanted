@@ -4,8 +4,10 @@ package org.vanted.addons.stressminimization;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.HashMap;
 
-import org.apache.commons.math3.linear.RealMatrix;
+import org.Vector2d;
+import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 
 
@@ -26,7 +28,7 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm{
 	/**
 	 * layout changes of the graph
 	 */
-	private RealMatrix layout;
+	private HashMap<Node, Vector2d> nodes2newPositions;
 	
 	/**
 	 * return list of PropertyChangeListener
@@ -64,18 +66,18 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm{
     /**
      * notify listener classes a new graph layout is available and
      * send the old and the new layout
-     * @param layout
+     * @param nodes2newPositions
      */
-    public void setLayout(RealMatrix layout) {
-    	 pcs.firePropertyChange("setLayout",this.layout, layout);
+    public void setLayout(HashMap<Node, Vector2d> nodes2newPositions) {
+    	 pcs.firePropertyChange("setLayout",this.nodes2newPositions, nodes2newPositions);
     }
     
     /**
      * notify listener classes end layout of the graph is available
-     * @param layout
+     * @param nodes2newPositions
      */
-    public void setEndLayout(RealMatrix layout) {
-   	 pcs.firePropertyChange("setEndLayout",this.layout, layout);
+    public void setEndLayout(HashMap<Node, Vector2d> nodes2newPositions) {
+   	 pcs.firePropertyChange("setEndLayout",this.nodes2newPositions, nodes2newPositions);
    }
     
     /**

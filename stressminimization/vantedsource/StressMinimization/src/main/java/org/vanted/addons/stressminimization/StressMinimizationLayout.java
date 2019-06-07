@@ -58,9 +58,9 @@ public class StressMinimizationLayout extends BackgroundAlgorithm{
 		if (graph.isEmpty()) {
 			throw new PreconditionException("Stress Minimization Layout cannot work on empty graphs");
 		}
-//		if (graph.isDirected()) {
-//			throw new PreconditionException("Stress Minimization Layout cannot work on directed graphs");
-//		}
+		if (graph.isDirected()) {
+			throw new PreconditionException("Stress Minimization Layout cannot work on directed graphs");
+		}
 		
 	}
 	
