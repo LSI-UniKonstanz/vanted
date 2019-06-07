@@ -77,6 +77,8 @@ public class NodeValueMatrix implements Cloneable {
      * @author Jannik
      */
     public double get(final int row, final int col) {
+        //assert 0 <= row && row < dimension : "Index of 'row' out of bounds: 0 <= " + row + "<= " + (dimension-1);
+        //assert 0 <= col && col < dimension : "Index of 'col' out of bounds: 0 <= " + col + "<= " + (dimension-1);
         if (row < 0 || row > dimension-1)
             throw new IndexOutOfBoundsException("Index of 'row' out of bounds: 0 <= row <= " + (dimension-1));
         if (col < 0 || col > dimension-1)
@@ -125,6 +127,28 @@ public class NodeValueMatrix implements Cloneable {
         if (null == operator) throw new NullPointerException("Operator may not be null!");
         for (int row = 0; row < dimension - 1; row++) {
             for (int col = 0; col < row + 1; col++) {
+                this.values[row][col] = operator.applyAsDouble(this.values[row][col]);
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Applies a specified operation on every non-diagonal cell of the matrix
+     * and updates it, while not overstepping the boundaries given.
+     *
+     * @param operator
+     *      the operator to be applied. May not be {@code null}.
+     *
+     *
+     * @return
+     *      the matrix itself.
+     * @author Jannik
+     */
+    public NodeValueMatrix apply(final DoubleUnaryOperator operator, final int maxRow, final int maxCol) {
+        if (null == operator) throw new NullPointerException("Operator may not be null!");
+        for (int row = 0; row < maxRow - 1; row++) {
+            for (int col = 0; col < row + 1 && col < maxCol - 1; col++) {
                 this.values[row][col] = operator.applyAsDouble(this.values[row][col]);
             }
         }

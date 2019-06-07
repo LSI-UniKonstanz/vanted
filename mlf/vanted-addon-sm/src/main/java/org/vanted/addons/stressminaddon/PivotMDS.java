@@ -40,6 +40,8 @@ public class PivotMDS implements InitialPlacer {
         final int n = distances.getDimension();
 
         RealMatrixImpl c = new RealMatrixImpl(n, amountPivots);
+        NodeValueMatrix squared = distances.clone().apply(x -> x*x, n, amountPivots);
+
         double  [][] results = c.getDataRef();
         for(int row = 0; row < n; row++){
             for (int col= 0; col < amountPivots; col++){
@@ -50,21 +52,21 @@ public class PivotMDS implements InitialPlacer {
 
                 //calculates sumOne
                 for(int r = 0; r < n; r++){
-                     sumOne += Math.pow(distances.get(r, col), 2);
+                     sumOne += squared.get(r, col);
 
                      //calculate sumThree
                     for (int s = 0; s< amountPivots; s++){
-                        sumThree += Math.pow(distances.get(r, s), 2);
+                        sumThree += squared.get(r, s);
 
                     }
                 }
                 //calculate sumTwo
                 for(int k = 0; k < amountPivots; k++){
-                    sumTwo += Math.pow(distances.get(row, k), 2);
+                    sumTwo += squared.get(row, k);
                 }
 
 
-                results[row][col] = 0.5 *(Math.pow(distances.get(row, col), 2) -(1/n)*sumOne - (1/amountPivots)* sumTwo +(1/(n*amountPivots)) * sumThree);
+                results[row][col] = -0.5 *(squared.get(row, col) -(1.0/n)*sumOne - (1.0/amountPivots)* sumTwo +(1.0/(n*amountPivots)) * sumThree);
             }
         }
         return c;
