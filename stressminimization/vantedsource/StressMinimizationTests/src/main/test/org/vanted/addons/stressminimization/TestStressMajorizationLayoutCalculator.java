@@ -343,11 +343,13 @@ public class TestStressMajorizationLayoutCalculator {
 		
 	}
 	
-	@Test
 	/**
 	 * Paper Graph Drawing by Stress Majorization fixes
 	 * the the first nodes position at 0,0
 	 */
+	/* Not fixing the first node at (0,0) gave an significant speed benefit
+	 * and furthermore enhanced the layouts
+	@Test
 	public void testFixesFirstNodeAtZero() {
 		
 		RealMatrix layout = new Array2DRowRealMatrix(new double[][] { 
@@ -364,6 +366,7 @@ public class TestStressMajorizationLayoutCalculator {
 		assertArrayEquals(new double[] {0, 0}, flat(layoutCalculator.calcOptimizedLayout().getData()), 1e-8);
 		
 	}
+	*/
 	
 	// ===================================================
 	// MARK: util

@@ -22,7 +22,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover
 
 /**
  * Layout algorithm performing a stress minimization layout process.
- * @author David Boetius
  */
 public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 

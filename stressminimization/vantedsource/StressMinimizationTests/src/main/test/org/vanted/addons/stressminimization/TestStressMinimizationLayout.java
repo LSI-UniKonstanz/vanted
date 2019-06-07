@@ -35,7 +35,8 @@ public class TestStressMinimizationLayout extends TestCase {
 		
 	}
 	
-	@Test()
+	/* The tested behaviour is not intended
+	@Test
 	public void testCheckThrowsOnDirected() throws PreconditionException {
 		
 		Graph directed = new AdjListGraph();
@@ -53,4 +54,5 @@ public class TestStressMinimizationLayout extends TestCase {
 		}
 		
 	}
+	*/
 }
