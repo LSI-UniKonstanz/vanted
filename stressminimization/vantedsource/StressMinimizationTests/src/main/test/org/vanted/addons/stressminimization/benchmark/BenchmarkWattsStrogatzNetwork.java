@@ -12,10 +12,13 @@ import org.vanted.addons.stressminimization.StartVantedWithStressMinAddon;
 import org.vanted.addons.stressminimization.StressMinimizationLayout;
 
 /**
- * Abstract class for standard benchmarks. Number of nodes can be specified by sub class;
+ * Benchmark suite that tests performance scaling for watss strogatz networks.
  */
 public class BenchmarkWattsStrogatzNetwork {
 
+	private static final int WARMUP_ROUNDS = 20;
+	private static final int ROUNDS = 50;
+	
 	private static final int START_SIZE = 100;
 	private static final int STEP_SIZE = 100;
 	private static final int END_SIZE = 1000;
@@ -66,7 +69,7 @@ public class BenchmarkWattsStrogatzNetwork {
 					e.printStackTrace();
 				}
 				
-			}, warmupRounds, rounds, "Watts Strogatz Network (n = " + g.getNumberOfNodes() + "; e = " + g.getNumberOfEdges() + ")"); 
+			}, WARMUP_ROUNDS, ROUNDS, "Watts Strogatz Network (n = " + g.getNumberOfNodes() + "; e = " + g.getNumberOfEdges() + ")"); 
 			
 			
 		}

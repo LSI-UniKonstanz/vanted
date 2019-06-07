@@ -1,0 +1,93 @@
+Starting VANTED...
+Welcome! About to start the application...
+2019-06-07 14:50:34 DEBUG Main:205 - installing max os x handlers
+2019-06-07 14:50:34 DEBUG ScanForUpdate:131 - waiting for update scan until app has started
+==================================================
+Standard Graph Benchmark Suite (n = 100)
+Setting up...
+Trying to load Add-ons... 
+No Add-on found.
+--------------------------------------------------------------------------------
+Starting Benchmark: star graph (n = 100)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 501.0 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: star graph (n = 100)
+Results: [47, 46, 44, 45, 63, 49, 43, 46, 48, 42, 49, 64, 46, 44, 44, 42, 43, 44, 44, 43, 46, 47, 46, 46, 67, 73, 48, 43, 49, 42, 44, 45, 43, 47, 44, 45, 43, 46, 43, 44, 42, 54, 76, 58, 46, 44, 42, 45, 46, 47]
+Overall runtime: 2387.0ms
+Mean runtime: 47.74ms; standard deviation: 7.696258831406334ms
+Min: 42ms; Median: 45.5ms; Max: 76ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: wheel graph (n = 100)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 1076.5 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: wheel graph (n = 100)
+Results: [185, 197, 172, 175, 183, 166, 157, 183, 178, 156, 175, 164, 205, 172, 176, 165, 150, 157, 157, 187, 179, 186, 153, 169, 148, 192, 174, 170, 164, 184, 183, 164, 166, 170, 173, 152, 189, 162, 163, 214, 178, 163, 143, 158, 183, 153, 150, 145, 167, 167]
+Overall runtime: 8522.0ms
+Mean runtime: 170.44ms; standard deviation: 15.11841261508628ms
+Min: 143ms; Median: 169.5ms; Max: 214ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: complete graph (n = 100)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 1456.0 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: complete graph (n = 100)
+Results: [198, 192, 198, 194, 188, 191, 190, 184, 184, 194, 193, 186, 188, 184, 191, 188, 181, 179, 186, 183, 184, 181, 183, 183, 182, 186, 186, 182, 182, 182, 182, 184, 180, 182, 184, 182, 182, 182, 184, 183, 182, 182, 182, 184, 183, 185, 184, 185, 182, 182]
+Overall runtime: 9259.0ms
+Mean runtime: 185.18ms; standard deviation: 4.443827179357906ms
+Min: 179ms; Median: 184.0ms; Max: 198ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: line graph (n = 100)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 271.5 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: line graph (n = 100)
+Results: [29237, 29222, 29223, 29238, 29219, 29318, 29241, 29258, 30095, 29360, 29326, 29315, 30716, 30734, 29497, 29498, 29523, 29568, 29255, 29247, 29241, 29394, 29499, 29507, 29488, 29372, 29332, 29787, 29457, 29440, 29629, 29285, 29443, 29285, 29271, 29106, 29072, 29558, 30639, 29990, 30017, 29733, 29881, 29959, 31175, 30748, 30438, 30428, 30652, 29782]
+Overall runtime: 1482698.0ms
+Mean runtime: 29653.96ms; standard deviation: 516.8411345858609ms
+Min: 29072ms; Median: 29472.5ms; Max: 31175ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: barabasis albert graph (n = 100)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 434.0 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: barabasis albert graph (n = 100)
+Results: [73, 72, 72, 71, 71, 73, 71, 72, 71, 70, 71, 70, 71, 69, 70, 73, 72, 71, 72, 70, 71, 70, 70, 71, 71, 69, 71, 70, 70, 72, 69, 70, 73, 69, 72, 69, 70, 73, 69, 71, 71, 70, 71, 70, 70, 71, 70, 69, 73, 69]
+Overall runtime: 3539.0ms
+Mean runtime: 70.78ms; standard deviation: 1.2213107712617624ms
+Min: 69ms; Median: 71.0ms; Max: 73ms
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Starting Benchmark: watts strogatz graph (n = 100)
+Warmup rounds: 20, Rounds: 50
+Running carbage collection.
+Warmup: 20 rounds.
+OS Name: Mac OS X, Total available Memory: 475.0 MiB, Available CPUs: 4
+Benchmark: 50 rounds.
+--------------------------------------------------------------------------------
+Benchmarked: watts strogatz graph (n = 100)
+Results: [64, 66, 65, 65, 65, 64, 64, 65, 64, 63, 64, 64, 62, 65, 63, 63, 64, 63, 64, 64, 64, 64, 65, 63, 63, 64, 63, 63, 64, 62, 63, 65, 63, 62, 63, 64, 63, 62, 63, 64, 63, 63, 64, 62, 63, 63, 65, 62, 63, 64]
+Overall runtime: 3180.0ms
+Mean runtime: 63.6ms; standard deviation: 0.9591663046625437ms
+Min: 62ms; Median: 64.0ms; Max: 66ms
+--------------------------------------------------------------------------------

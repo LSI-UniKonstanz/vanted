@@ -12,10 +12,13 @@ import org.vanted.addons.stressminimization.StartVantedWithStressMinAddon;
 import org.vanted.addons.stressminimization.StressMinimizationLayout;
 
 /**
- * Abstract class for standard benchmarks. Number of nodes can be specified by sub class;
+ * Benchmark suite that tests performance scaling for barabasi albert networks.
  */
 public class BenchmarkBarabasiAlbertNetwork {
-
+	
+	private static final int WARMUP_ROUNDS = 20;
+	private static final int ROUNDS = 50;
+	
 	private static final int START_SIZE = 100;
 	private static final int STEP_SIZE = 100;
 	private static final int END_SIZE = 1000;
@@ -48,9 +51,6 @@ public class BenchmarkBarabasiAlbertNetwork {
 		
 		for (Graph g : graphs) {
 			
-			int warmupRounds = 5;
-			int rounds = 10;
-			
 			Benchmarking.benchmark(() -> {
 				
 				try {
@@ -66,7 +66,7 @@ public class BenchmarkBarabasiAlbertNetwork {
 					e.printStackTrace();
 				}
 				
-			}, warmupRounds, rounds, "Barabasi Albert Network (n = " + g.getNumberOfNodes() + "; e = " + g.getNumberOfEdges() + ")"); 
+			}, WARMUP_ROUNDS, ROUNDS, "Barabasi Albert Network (n = " + g.getNumberOfNodes() + "; e = " + g.getNumberOfEdges() + ")"); 
 			
 			
 		}

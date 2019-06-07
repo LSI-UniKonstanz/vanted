@@ -12,6 +12,7 @@ public class BenchmarkN500StandardGraphs extends BenchmarkStandardGraphs {
 	protected boolean benchmarkLineGraph() {
 		// calculating a layout for a 500 line takes 
 		// too much time for a quick benchmark 
+		// return false;
 		return false;
 	}
 	

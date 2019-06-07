@@ -12,7 +12,7 @@ import org.vanted.addons.stressminimization.StartVantedWithStressMinAddon;
 import org.vanted.addons.stressminimization.StressMinimizationLayout;
 
 /**
- * Abstract class for standard benchmarks. Number of nodes can be specified by sub class;
+ * Benchmark suite that tests performance scaling for sierpisky triangles.
  */
 public class BenchmarkSierpinskyTriangles {
 

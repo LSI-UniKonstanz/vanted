@@ -11,13 +11,15 @@ import org.vanted.addons.stressminimization.StartVantedWithStressMinAddon;
 import org.vanted.addons.stressminimization.StressMinimizationLayout;
 
 /**
- * Abstract class for standard benchmarks. Number of nodes can be specified by sub class;
+ * Test suite for graphs in Graphs/Hachul.
+ * This test suite is currently not functional, 
+ * since the graphs can not be loaded.
  */
-public abstract class BenchmarkHachulGraphs {
+public class BenchmarkHachulGraphs {
 
 	// no serious benchmark with these values...
-	protected static final int WARMUP_ROUNDS = 0;
-	protected static final int ROUNDS = 1;
+	private static final int WARMUP_ROUNDS = 0;
+	private static final int ROUNDS = 1;
 	
 	private List<Pair<String, Graph>> graphs;
 	
@@ -40,6 +42,7 @@ public abstract class BenchmarkHachulGraphs {
 		for (int i = 0; i < names.length; i += 1) {
 			
 			try {
+				System.out.println("Loading: " + names[i]);
 				Graph graph = MainFrame.getInstance().getGraph(new File(resourcesDirectory + names[i]));
 				graphs.add(new Pair<>(names[i], graph));
 			} catch (Exception e) {
@@ -48,6 +51,11 @@ public abstract class BenchmarkHachulGraphs {
 			
 		}
 		
+	}
+	
+	public static void main(String[] args) {
+		BenchmarkHachulGraphs b = new BenchmarkHachulGraphs();
+		b.benchmark();
 	}
 	
 	public void benchmark() {
