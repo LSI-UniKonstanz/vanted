@@ -22,11 +22,15 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm{
 	 */
 	protected PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	/**
-	 * status of the algorithm
+	 * old status of the algorithm
 	 */
 	private BackgroundStatus status;
 	/**
-	 * layout changes of the graph
+	 * old stress value of the stress function
+	 */
+	private double oldStressValue;
+	/**
+	 * old layout changes of the graph
 	 */
 	private HashMap<Node, Vector2d> nodes2newPositions;
 	
@@ -70,6 +74,7 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm{
      */
     public void setLayout(HashMap<Node, Vector2d> nodes2newPositions) {
     	 pcs.firePropertyChange("setLayout",this.nodes2newPositions, nodes2newPositions);
+    	 this.nodes2newPositions=nodes2newPositions;
     }
     
     /**
@@ -77,8 +82,9 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm{
      * @param nodes2newPositions
      */
     public void setEndLayout(HashMap<Node, Vector2d> nodes2newPositions) {
-   	 pcs.firePropertyChange("setEndLayout",this.nodes2newPositions, nodes2newPositions);
-   }
+   	 	pcs.firePropertyChange("setEndLayout",this.nodes2newPositions, nodes2newPositions);
+   	 	this.nodes2newPositions=nodes2newPositions;
+   	}
     
     /**
      * notify listener classes a new status of the algorithm is available
@@ -86,18 +92,30 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm{
      */
     public void setStatus(BackgroundStatus status) {
     	pcs.firePropertyChange("setStatus", this.status, status);
+    	this.status=status;
     }
     
     /**
-     * check if first listener in the list is form class BackgroundExecutionAlgorithm 
-     * and if true than check if stop Button pressed. And if true then thread stop
-     * until status of stop button has changed
+     * notify listener classes a new stress value is available
+     * @param newStressValue
      */
-    public void isStopButtonPressed() {
+    public void setStressValue(double newStressValue) {
+    	pcs.firePropertyChange("setStressValue", this.oldStressValue, newStressValue);
+    	oldStressValue=newStressValue;
+    }
+    
+    /**
+     * check whether first listener in the list is form class BackgroundExecutionAlgorithm 
+     * and if true than check whether pause Button pressed. And if true then thread stop
+     * until status of pause button has changed.
+     * Then check if stop button pressed and if button clicked then return true else return false.
+     * @return boolean
+     */
+    public boolean isPauseButtonPressed() {
     	if(((Object) getPropertyChangeListener()[0]).getClass().equals(BackgroundExecutionAlgorithm.class)) {
     		BackgroundExecutionAlgorithm b =(BackgroundExecutionAlgorithm)((Object) getPropertyChangeListener()[0]);
-    		if(b.getStop()) {
-    			while(b.getStop()) {
+    		if(b.pauseButtonPressed()) {
+    			while(b.pauseButtonPressed()) {
     				try {
     					Thread.sleep(100);
     				} catch (InterruptedException e) {
@@ -105,6 +123,9 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm{
     				}
     			}
     		}
+    		System.out.println("Stop Button pressed: "+b.stopButtonPressed());
+    		return b.stopButtonPressed();
     	}
+    	return false;
     }
 }
