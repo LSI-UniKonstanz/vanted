@@ -114,13 +114,20 @@ public class LayoutAlgorithmWrapper {
      * @author Gordian
      */
     public void execute(Graph graph, Selection selection) {
-        if (this.threadSafeGUI && this.threadSafeOptions != null && this.algorithm instanceof ThreadSafeAlgorithm) {
+        if (this.threadSafeGUI && this.algorithm instanceof ThreadSafeAlgorithm) {
             try {
+                if (this.threadSafeOptions == null) {
+                    this.threadSafeOptions = new ThreadSafeOptions();
+                }
                 this.threadSafeOptions.setGraphInstance(graph);
                 this.threadSafeOptions.setSelection(selection);
+                this.threadSafeOptions.doRandomInit = false;
+                this.threadSafeOptions.doFinishMoveToTop = false;
+                this.threadSafeOptions.redraw = false;
                 ((ThreadSafeAlgorithm) this.algorithm).executeThreadSafe(this.threadSafeOptions);
                 return;
             } catch (Exception e) {
+                this.threadSafeOptions = null;
                 MainFrame.showMessageDialog("Threadsafe execution failed. Trying normal execution.", "Error");
             }
         }
