@@ -6,15 +6,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.graffiti.graph.Graph;
+import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.selection.Selection;
 import org.vanted.addons.stressminimization.StartVantedWithStressMinAddon;
 import org.vanted.addons.stressminimization.StressMinimizationLayout;
 
 /**
- * Benchmark suite that tests performance scaling for watss strogatz networks.
+ * Benchmark suite that tests performance scaling for watts strogatz networks.
  */
-public class BenchmarkWattsStrogatzNetwork {
+public class BenchmarkWattsStrogatzNetwork extends AlgorithmBenchmarkSuite {
 
 	private static final int WARMUP_ROUNDS = 20;
 	private static final int ROUNDS = 50;
@@ -22,59 +23,34 @@ public class BenchmarkWattsStrogatzNetwork {
 	private static final int START_SIZE = 100;
 	private static final int STEP_SIZE = 100;
 	private static final int END_SIZE = 1000;
-	
-	private List<Graph> graphs;
 
-	StressMinimizationLayout algorithm = new StressMinimizationLayout();
-	
-	private void setUp() {
-		
-		GraphGeneration gen = new GraphGeneration();
-
-		graphs = new ArrayList<>();
-		for (int n = START_SIZE; n <= END_SIZE; n += STEP_SIZE) {
-			Graph g = gen.generateWattsStrogatzNetwork(n);
-			graphs.add(g);
-		}
-		
+	@Override
+	protected String getBenchmarkSuiteName() {
+		return "Watts Strogatz Network Benchmark Suite";
 	}
 	
-	public void benchmark() {
+	@Override
+	protected Algorithm createAlgorithm() {
+		return new StressMinimizationLayout();
+	}
 
-		System.out.println("Starting VANTED...");
-		StartVantedWithStressMinAddon.main(new String[0]);
-		
-		System.out.println("================================================================================");
-		System.out.println("Watts Strogatz Network Benchmark Suite");
-		System.out.println("Setting up...");
-		setUp();
-		
-		for (Graph g : graphs) {
-			
-			int warmupRounds = 5;
-			int rounds = 10;
-			
-			Benchmarking.benchmark(() -> {
-				
-				try {
+	@Override
+	protected List<Quadtuple<Graph, String, Integer, Integer>> createGraphs() {
 
-					algorithm.attach(g, new Selection(""));
-					algorithm.check();
-					algorithm.setParameters( algorithm.getParameters() );
-					
-					algorithm.execute();
-					algorithm.reset();
-					
-				} catch (PreconditionException e) {
-					e.printStackTrace();
-				}
-				
-			}, WARMUP_ROUNDS, ROUNDS, "Watts Strogatz Network (n = " + g.getNumberOfNodes() + "; e = " + g.getNumberOfEdges() + ")"); 
-			
-			
+		GraphGeneration gen = new GraphGeneration();
+
+		List<Quadtuple<Graph, String, Integer, Integer>> cases = new ArrayList<>();
+		for (int n = START_SIZE; n <= END_SIZE; n += STEP_SIZE) {
+			Graph g = gen.generateWattsStrogatzNetwork(n);
+			cases.add(new Quadtuple<Graph, String, Integer, Integer>(
+					g, 
+					"Watts Strogatz Network (n = " + g.getNumberOfNodes() + "; e = " + g.getNumberOfEdges() + ")", 
+					WARMUP_ROUNDS, 
+					ROUNDS
+			));
 		}
 		
-		System.exit(0);
+		return cases;
 		
 	}
 
@@ -84,4 +60,5 @@ public class BenchmarkWattsStrogatzNetwork {
 		b.benchmark();
 		
 	}
+
 }

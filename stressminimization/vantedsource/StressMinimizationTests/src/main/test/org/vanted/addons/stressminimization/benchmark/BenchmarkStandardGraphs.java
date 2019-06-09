@@ -1,6 +1,10 @@
 package org.vanted.addons.stressminimization.benchmark;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.graffiti.graph.Graph;
+import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.selection.Selection;
 import org.vanted.addons.stressminimization.StartVantedWithStressMinAddon;
@@ -9,7 +13,7 @@ import org.vanted.addons.stressminimization.StressMinimizationLayout;
 /**
  * Abstract class for standard benchmarks. Number of nodes can be specified by sub class;
  */
-public abstract class BenchmarkStandardGraphs {
+public abstract class BenchmarkStandardGraphs extends AlgorithmBenchmarkSuite {
 
 	protected static final int WARMUP_ROUNDS = 20;
 	protected static final int ROUNDS = 50;
@@ -40,103 +44,117 @@ public abstract class BenchmarkStandardGraphs {
 		return true;
 	}
 	
-	private Graph starGraph;
-	private Graph wheelGraph;
-	private Graph completeGraph;
-	private Graph lineGraph;
-	private Graph barabasiAlbertGraph;
-	private Graph wattsStrogatzGraph;
-
-	StressMinimizationLayout algorithm = new StressMinimizationLayout();
+	@Override
+	protected String getBenchmarkSuiteName() {
+		return "Standard graphs benchmark suite: (n = " + getN() + ")"; 
+	}
 	
-	private void setUp(int n) {
+	@Override
+	protected Algorithm createAlgorithm() {
+		return new StressMinimizationLayout();
+	}
+	
+	@Override
+	protected List<Quadtuple<Graph, String, Integer, Integer>> createGraphs() {
+		
+		int n = getN();
 		
 		GraphGeneration gen = new GraphGeneration();
 
-		starGraph = gen.generateStar(n);
-		wheelGraph = gen.generateWheel(n);
-		completeGraph = gen.generateComplete(n);
-		lineGraph = gen.generateLine(n);
-		barabasiAlbertGraph = gen.generateBarabasiAlbertNetwork(n);
-		wattsStrogatzGraph = gen.generateWattsStrogatzNetwork(n);
+		List<Quadtuple<Graph, String, Integer, Integer>> cases = new ArrayList<>();
 		
-	}
-	
-	public void benchmark() {
-
-		int n = getN();
-		
-		System.out.println("Starting VANTED...");
-		StartVantedWithStressMinAddon.main(new String[0]);
-		
-		System.out.println("==================================================");
-		System.out.println("Standard Graph Benchmark Suite (n = " + n + ")");
-		System.out.println("Setting up...");
-		setUp(n);
-		
-		String starGraphName = "star graph (n = " + n + ")";
 		if (benchmarkStarGraph()) {
-			singleBenchmark(starGraph, starGraphName);
+
+			Graph starGraph = gen.generateStar(n);
+			
+			cases.add(new Quadtuple<Graph, String, Integer, Integer>(
+					starGraph, 
+					"star graph (n = " + n + ")", 
+					WARMUP_ROUNDS, 
+					ROUNDS
+			));
+			
 		} else {
-			System.out.println("Ommited benchmark: " + starGraphName);
+			System.out.println("Ommitting benchmark: star graph");
 		}
-		
-		String wheelGraphName = "wheel graph (n = " + n + ")";
+
 		if (benchmarkWheelGraph()) {
-			singleBenchmark(wheelGraph, wheelGraphName);
+
+			Graph wheelGraph = gen.generateWheel(n);
+			
+			cases.add(new Quadtuple<Graph, String, Integer, Integer>(
+					wheelGraph, 
+					"wheel graph (n = " + n + ")", 
+					WARMUP_ROUNDS, 
+					ROUNDS
+			));
+			
 		} else {
-			System.out.println("Ommited benchmark: " + wheelGraphName);
+			System.out.println("Ommitting benchmark: wheel graph");
 		}
 
-		String completeGraphName = "complete graph (n = " + n + ")";
 		if (benchmarkCompleteGraph()) {
-			singleBenchmark(completeGraph, completeGraphName);
+
+			Graph completeGraph = gen.generateComplete(n);
+			
+			cases.add(new Quadtuple<Graph, String, Integer, Integer>(
+					completeGraph, 
+					"complete graph (n = " + n + ")", 
+					WARMUP_ROUNDS, 
+					ROUNDS
+			));
+			
 		} else {
-			System.out.println("Ommited benchmark: " + completeGraphName);
+			System.out.println("Ommitting benchmark: complete graph");
 		}
-		
-		String lineGraphName = "line graph (n = " + n + ")";
+
 		if (benchmarkLineGraph()) {
-			singleBenchmark(lineGraph, lineGraphName);
+
+			Graph lineGraph = gen.generateLine(n);
+			
+			cases.add(new Quadtuple<Graph, String, Integer, Integer>(
+					lineGraph, 
+					"line graph (n = " + n + ")", 
+					WARMUP_ROUNDS, 
+					ROUNDS
+			));
+			
 		} else {
-			System.out.println("Ommited benchmark: " + lineGraphName);
+			System.out.println("Ommitting benchmark: line graph");
 		}
 		
-		String barabasisAlbertGraphName = "barabasis albert graph (n = " + n + ")";
 		if (benchmarkBarabasisAlbertGraph()) {
-			singleBenchmark(barabasiAlbertGraph, barabasisAlbertGraphName);
+
+			Graph barabasiAlbertGraph = gen.generateBarabasiAlbertNetwork(n);
+			
+			cases.add(new Quadtuple<Graph, String, Integer, Integer>(
+					barabasiAlbertGraph, 
+					"barabasis albert graph (n = " + n + ")", 
+					WARMUP_ROUNDS, 
+					ROUNDS
+			));
+			
 		} else {
-			System.out.println("Ommited benchmark: " + barabasisAlbertGraphName);
+			System.out.println("Ommitting benchmark: barabasis albert graph");
 		}
 
-		String wattsStrogatzGraphName = "watts strogatz graph (n = " + n + ")";
 		if (benchmarkWattsStrogatzGraph()) {
-			singleBenchmark(wattsStrogatzGraph, wattsStrogatzGraphName);
-		} else {
-			System.out.println("Ommited benchmark: " + wattsStrogatzGraphName);
-		}
-		
-		System.exit(0);
-		
-	}
-	
-	protected void singleBenchmark(Graph graph, String name) {
-		Benchmarking.benchmark(() -> {
-			
-			try {
 
-				algorithm.attach(graph, new Selection(""));
-				algorithm.check();
-				algorithm.setParameters( algorithm.getParameters() );
-				
-				algorithm.execute();
-				algorithm.reset();
-				
-			} catch (PreconditionException e) {
-				e.printStackTrace();
-			}
+			Graph wattsStrogatzGraph = gen.generateWattsStrogatzNetwork(n);
+
+			cases.add(new Quadtuple<Graph, String, Integer, Integer>(
+					wattsStrogatzGraph, 
+					"watts strogatz graph (n = " + n + ")", 
+					WARMUP_ROUNDS, 
+					ROUNDS
+			));
 			
-		}, WARMUP_ROUNDS, ROUNDS, name); 
+		} else {
+			System.out.println("Ommitting benchmark: watts strogatz graph");
+		}
+
+		return cases;
+		
 	}
 	
 }
