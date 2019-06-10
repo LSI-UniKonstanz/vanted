@@ -3,10 +3,13 @@ package org.vanted.addons.stressminaddon.util;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Random;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 
 public class NodeValueMatrixTest {
 
@@ -66,11 +69,14 @@ public class NodeValueMatrixTest {
         try {
             try {matrix.get(-1,0); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
             try {matrix.set(-1,0, Double.NaN); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
+            try {matrix.apply(x -> x, -1,0); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
+            try {matrix.apply(x -> x, 0, DIMENSION); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
             try {matrix.get(0, DIMENSION); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
             try {matrix.set(0, DIMENSION, Double.NaN); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
         } catch (Throwable t) {
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
+        // test setting diagonal
         try{
             int i = rand.nextInt(DIMENSION);
             matrix.set(i, i, Double.NaN);
@@ -79,9 +85,17 @@ public class NodeValueMatrixTest {
         } catch (Throwable t) {
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
+
         // non-null
         try {
             matrix.apply(null);
+            fail("No exception thrown");
+        } catch (NullPointerException e) {
+        } catch (Throwable t) {
+            fail("Wrong exception thrown: " + t.getClass().getSimpleName());
+        }
+        try {
+            matrix.apply(null, 0, 0);
             fail("No exception thrown");
         } catch (NullPointerException e) {
         } catch (Throwable t) {
@@ -106,5 +120,82 @@ public class NodeValueMatrixTest {
                 }
             }
         }
+    }
+
+    @Test
+    public void applyLimited() {
+        // test no apply
+        for (int tries = 0; tries < 20; tries++) {
+            int[] pos = rand.ints(0, DIMENSION).distinct().limit(2).toArray();
+            matrix.apply(x->1);
+            matrix.apply(x -> 42, pos[0], pos[1]);
+            for (int row = 0; row < DIMENSION; row++) {
+                for (int col = 0; col < DIMENSION; col++) {
+                    if (row == col) {
+                        assertEquals(0, matrix.get(row, col), 0.0001);
+                    } else if  ( row <= pos[0] && col <= pos[1] || col <= pos[0] && row <= pos[1]) {
+                        assertEquals(42, matrix.get(row, col), 0.0001);
+                    } else {
+                        assertEquals(1, matrix.get(row, col), 0.0001);
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    public void collectRows() {
+        int[] rows = rand.ints(0, DIMENSION).limit(rand.nextInt(DIMENSION)).toArray();
+        int val = 1;
+        for (int row = 0; row < DIMENSION; row++) {
+            for (int col = 0; col <= row; col++) {
+                if (row == col) continue;
+                matrix.set(row, col, val++);
+            }
+        }
+
+        double[][] result = matrix.collectRows(rows);
+        for (int i = 0; i < rows.length; i++) {
+            int row = rows[i];
+            for (int col = 0; col < DIMENSION; col++) {
+                assertEquals(matrix.get(row, col), result[i][col], 0.0001);
+            }
+        }
+    }
+
+    @Test
+    public void collectColumns() {
+        int[] cols = rand.ints(0, DIMENSION).limit(rand.nextInt(DIMENSION)).toArray();
+        int val = 1;
+        for (int row = 0; row < DIMENSION; row++) {
+            for (int col = 0; col <= row; col++) {
+                if (row == col) continue;
+                matrix.set(row, col, val++);
+            }
+        }
+
+        double[][] result = matrix.collectColumns(cols);
+        for (int i = 0; i < cols.length; i++) {
+            int col = cols[i];
+            for (int row = 0; row < DIMENSION; row++) {
+                assertEquals(matrix.get(row, col), result[row][i], 0.0001);
+            }
+        }
+    }
+
+    @Test
+    public void print() {
+        PrintStream originalOut = System.out;
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+
+        System.setOut(new PrintStream(outContent));
+        matrix.print();
+        assertEquals(DIMENSION, outContent.toString().split("\n").length);
+        System.setOut(originalOut);
+    }
+
+    @Test
+    public void testToString() {
+        assertEquals("NodeValueMatrix{#values="+((DIMENSION-1)*DIMENSION/2)+", dimension="+DIMENSION+"}", matrix.toString());
     }
 }
