@@ -34,6 +34,15 @@ public class NodeValueMatrixTest {
     }
 
     @Test
+    public void getTranslated() {
+        int[] pos = rand.ints(0, DIMENSION).distinct().limit(2).toArray();
+        int[] translation = rand.ints(0, DIMENSION).distinct().limit(DIMENSION).toArray();
+
+        assertEquals(matrix.get(translation[pos[0]], translation[pos[1]]), matrix.get(pos[1],pos[0], translation),
+                0.001); // check for right translation
+    }
+
+    @Test
     public void set() {
         int[] pos = rand.ints(0, DIMENSION).distinct().limit(2).toArray(); // get two different indices
         matrix.set(pos[0], pos[1], Double.NEGATIVE_INFINITY); // set value
@@ -123,8 +132,29 @@ public class NodeValueMatrixTest {
     }
 
     @Test
-    public void applyLimited() {
+    public void applyLimitedTranslated() {
         // test no apply
+        for (int tries = 0; tries < 5; tries++) {
+            int[] pos = rand.ints(0, DIMENSION).distinct().limit(2).toArray();
+            int[] translation = rand.ints(0, DIMENSION).distinct().limit(DIMENSION).toArray();
+            matrix.apply(x->1);
+            matrix.apply(x -> 42, pos[0], pos[1], translation);
+            for (int row = 0; row < DIMENSION; row++) {
+                for (int col = 0; col < DIMENSION; col++) {
+                    if (row == col) {
+                        assertEquals(0, matrix.get(row, col, translation), 0.0001);
+                    } else if  ( row <= pos[0] && col <= pos[1] || col <= pos[0] && row <= pos[1]) {
+                        assertEquals(42, matrix.get(row, col,translation), 0.0001);
+                    } else {
+                        assertEquals(1, matrix.get(row, col, translation), 0.0001);
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    public void applyLimited() {
         for (int tries = 0; tries < 20; tries++) {
             int[] pos = rand.ints(0, DIMENSION).distinct().limit(2).toArray();
             matrix.apply(x->1);
@@ -197,5 +227,10 @@ public class NodeValueMatrixTest {
     @Test
     public void testToString() {
         assertEquals("NodeValueMatrix{#values="+((DIMENSION-1)*DIMENSION/2)+", dimension="+DIMENSION+"}", matrix.toString());
+    }
+
+    @Test
+    public void getDimension() {
+        assertEquals(DIMENSION, matrix.getDimension());
     }
 }

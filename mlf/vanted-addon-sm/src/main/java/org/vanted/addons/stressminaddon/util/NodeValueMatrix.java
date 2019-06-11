@@ -76,7 +76,7 @@ public class NodeValueMatrix implements Cloneable {
      * @throws IndexOutOfBoundsException if {@code row} or {@code col} are out of bounds.
      * @author Jannik
      */
-    public double get(final int row, final int col) {
+    public final double get(final int row, final int col) {
         //assert 0 <= row && row < dimension : "Index of 'row' out of bounds: 0 <= " + row + "<= " + (dimension-1);
         //assert 0 <= col && col < dimension : "Index of 'col' out of bounds: 0 <= " + col + "<= " + (dimension-1);
         if (row < 0 || row > dimension-1)
@@ -87,6 +87,28 @@ public class NodeValueMatrix implements Cloneable {
         if (row == col)     return 0; // the diagonal is always 0
         else if (row > col) return this.values[row-1][col]; // the first row is not saved
         else                return this.values[col-1][row]; // the matrix is symmetrical
+    }
+    
+    /**
+     * Get a specific cell of the matrix via a translated index.<br>
+     * This just calls {@code get(translation[row], translation[col])}.
+     *
+     * @param row the row beginning from 0 and a maximum of {@code dimension-1}
+     * @param col the column beginning from 0 and a maximum of {@code dimension-1}
+     * @param translation
+     *      the translation table to be used. Values in the array represent the
+     *      actual index, the index the translated index. This array must have
+     *      the same length as the dimension of this matrix.
+     *
+     * @return
+     *      the value at this cell or {@code 0} if {@code row} equals {@code col}.
+     *
+     * @throws IndexOutOfBoundsException if {@code row} or {@code col} are out of bounds.
+     * @author Jannik
+     */
+    public final double get(final int row, final int col, final int[] translation) {
+        assert translation.length == this.dimension;
+        return this.get(translation[row], translation[col]); // Hope that the compiler inlines this method.
     }
 
     /**
@@ -160,17 +182,73 @@ public class NodeValueMatrix implements Cloneable {
         if (maxRow < 0 || maxRow > dimension-1)
             throw new IndexOutOfBoundsException("Index 'maxRow' out of bounds: 0 <= maxRow <= " + (dimension-1));
         if (maxCol < 0 || maxCol > dimension-1)
-            throw new IndexOutOfBoundsException("Index 'col' out of bounds: 0 <= col <= " + (dimension-1));
+            throw new IndexOutOfBoundsException("Index 'maxCol' out of bounds: 0 <= maxCol <= " + (dimension-1));
         if (null == operator) throw new NullPointerException("Operator may not be null!");
 
+        // apply on first rows
         for (int row = 0; row < maxRow; row++) {
             for (int col = 0; col <= row && col <= maxCol; col++) {
                 this.values[row][col] = operator.applyAsDouble(this.values[row][col]);
             }
         }
+        // apply on the rest of the rows to set the mirrored column size, if necessary
         for (int row = maxRow; row < maxCol; row++) {
             for (int col = 0; col <= row && col <= maxRow; col++) {
                 this.values[row][col] = operator.applyAsDouble(this.values[row][col]);
+            }
+        }
+        return this;
+    }
+
+    /**
+     * Applies a specified operation on every non-diagonal cell of the matrix
+     * and updates it, while not overstepping the boundaries given and using
+     * the provided translation mapping.
+     *
+     * @param operator
+     *      the operator to be applied. May not be {@code null}.
+     * @param maxRow
+     *      the maximum row to update. The function will not be applied to any row
+     *      past this number. Range {@code 0} to {@code dimension-1}.<br>
+     *      This will not be translated.
+     * @param maxCol
+     *      the maximum column to update. The function will not be applied to any column
+     *      past this number. Range {@code 0} to {@code dimension-1}.<br>
+     *      This will not be translated.
+     * @param translation
+     *      the translation table to be used. Values in the array represent the
+     *      actual index, the index the translated index. This array must have
+     *      the same length as the dimension of this matrix.
+     *
+     * @return
+     *      the matrix itself.
+     *
+     * @throws IndexOutOfBoundsException if {@code row} or {@code col} are out of bounds.
+     * @see #get(int, int, int[])
+     * @author Jannik
+     */
+    public NodeValueMatrix apply(final DoubleUnaryOperator operator, final int maxRow, final int maxCol,
+                                 final int[] translation) {
+        assert translation.length == this.dimension;
+        //assert 0 <= maxRow && maxRow         // apply on the rest of the rows to set the mirrored column size, if necessary< dimension : "Index of 'maxRow' out of bounds: 0 <= " + maxRow + "<= " + (dimension-1);
+        //assert 0 <= maxCol && maxCol < dimension : "Index of 'maxCol' out of bounds: 0 <= " + maxCol + "<= " + (dimension-1);
+        if (maxRow < 0 || maxRow > dimension-1)
+            throw new IndexOutOfBoundsException("Index 'maxRow' out of bounds (translation): 0 <= maxRow <= " + (dimension-1));
+        if (maxCol < 0 || maxCol > dimension-1)
+            throw new IndexOutOfBoundsException("Index 'maxCol' out of bounds (translation): 0 <= maxCol <= " + (dimension-1));
+        if (null == operator) throw new NullPointerException("Operator may not be null!");
+
+        // apply on first rows // TODO maybe optimize
+        for (int row = 0; row < maxRow; row++) {
+            for (int col = 0; col <= maxCol; col++) {
+                final int actualRow = translation[row], actualCol = translation[col];
+                if (actualCol < actualRow) {
+                    this.values[actualRow-1][actualCol] =
+                            operator.applyAsDouble(this.values[actualRow-1][actualCol]);
+                } else if (actualRow < actualCol) {
+                    this.values[actualCol-1][actualRow] =
+                            operator.applyAsDouble(this.values[actualCol-1][actualRow]);
+                }
             }
         }
         return this;
