@@ -128,12 +128,11 @@ public class PivotMDS implements InitialPlacer {
     }
 
     /**
+     * Calculates the double centered Matrix C.
      *
-     * calculates the double doublecenter Matrix C
-     *
-     * @param distances NodeValueMatrix containing all shortes distances
+     * @param distances NodeValueMatrix containing all shortest distances
      * @param amountPivots the amount of pivot elements we want to use
-     * @return  n x amountPivot Realmatrix containing the calculated values
+     * @return  n x amountPivot RealMatrix containing the calculated values
      *
      * @author theo
      *
@@ -146,22 +145,24 @@ public class PivotMDS implements InitialPlacer {
         NodeValueMatrix squared = distances.clone().apply(x -> x*x, n, amountPivots);
 
         double  [][] results = c.getDataRef();
+        // Sum three is independent of the current position so it can be calculated only once
+        double sumThree = 0;
+        for (int r = 0; r < n; r++) {
+            for (int s = 0; s < amountPivots; s++) {
+                sumThree += squared.get(r, s);
+            }
+        }
+        sumThree *= (1.0/(n*amountPivots));
+
         for(int row = 0; row < n; row++){
             for (int col= 0; col < amountPivots; col++){
 
                 int sumOne = 0;
                 int sumTwo = 0;
-                int sumThree = 0;
 
                 //calculates sumOne
                 for(int r = 0; r < n; r++){
                      sumOne += squared.get(r, col);
-
-                     //calculate sumThree
-                    for (int s = 0; s< amountPivots; s++){
-                        sumThree += squared.get(r, s);
-
-                    }
                 }
                 //calculate sumTwo
                 for(int k = 0; k < amountPivots; k++){
@@ -169,7 +170,7 @@ public class PivotMDS implements InitialPlacer {
                 }
 
 
-                results[row][col] = -0.5 *(squared.get(row, col) -(1.0/n)*sumOne - (1.0/amountPivots)* sumTwo +(1.0/(n*amountPivots)) * sumThree);
+                results[row][col] = -0.5 *(squared.get(row, col) -(1.0/n)*sumOne - (1.0/amountPivots)* sumTwo + sumThree);
             }
         }
         return c;
