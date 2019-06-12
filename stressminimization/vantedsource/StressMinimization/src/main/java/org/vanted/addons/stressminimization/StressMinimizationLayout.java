@@ -1,5 +1,7 @@
 package org.vanted.addons.stressminimization;
 
+import java.beans.PropertyChangeListener;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -23,8 +25,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover
 /**
  * Layout algorithm performing a stress minimization layout process.
  */
-public class StressMinimizationLayout extends AbstractEditorAlgorithm {
-
+public class StressMinimizationLayout extends BackgroundAlgorithm{
+	
 	/**
 	 * Creates a new StressMinimizationLayout instance.
 	 */
@@ -52,7 +54,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 	
 	@Override
 	public boolean isLayoutAlgorithm() {
-		return true;
+		return false;
 	}
 	
 	@Override
@@ -95,6 +97,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 	
 	@Override
 	public void execute() {
+
+		setStatus(BackgroundStatus.RUNNING);
 		
 		List<Node> nodes = graph.getNodes();
 		Set<Set<Node>> components = GraphHelper.getConnectedComponents(nodes);
@@ -103,6 +107,12 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 		for (Set<Node> component : components) {
 			
 			StressMajorizationImpl impl = new StressMajorizationImpl(component);
+			
+			// TODO: change this
+			for (PropertyChangeListener pcl : Arrays.asList(this.getPropertyChangeListener())) {
+				impl.pcs.addPropertyChangeListener(pcl);
+			}
+			
 			Map<Node, Vector2d> newComponentPositions = impl.calculateLayout();
 			
 			newPositions.putAll(newComponentPositions);
@@ -122,6 +132,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 		// remove space between components / remove overlapping
 		ConnectedComponentLayout.layoutConnectedComponents(graph);
 		
+		setStatus(BackgroundStatus.FINISHED);
 	}
 	
 	@Override
@@ -129,5 +140,4 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 		// TODO Auto-generated method stub
 		super.reset();
 	}
-
 }

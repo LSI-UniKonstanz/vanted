@@ -13,15 +13,8 @@ import org.AttributeHelper;
 import org.Vector2d;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
-import org.graffiti.attributes.AttributeNotFoundException;
-import org.graffiti.editor.GravistoService;
-import org.graffiti.graph.Edge;
-import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
-import org.graffiti.selection.Selection;
-
-import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
+import org.graffiti.plugin.view.View;
 
 /**
  * This class implements the stress majorization process 
@@ -31,7 +24,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover
  * that uses the original stress function that
  * takes the distances between all nodes into account.
  */
-class StressMajorizationImpl {
+class StressMajorizationImpl extends BackgroundAlgorithm {
 
 	private final double EPSILON = 1E-4;
 	
@@ -45,12 +38,17 @@ class StressMajorizationImpl {
 		this.nodes = new ArrayList<>(nodes);
 	}
 	
+	@Override
+	public void execute() {
+		calculateLayout();
+	}
+	
 	/**
 	 * Calculates a approximately optimal layout for the set of nodes that was passed on construction 
 	 * in regard to layout stress.
 	 * @return A new layout of the nodes of this instance that has close to minimal stress.
 	 */
-	Map<Node, Vector2d> calculateLayout() {
+	public Map<Node, Vector2d> calculateLayout() {
 
 		// enable or disable console logging
 		final boolean LOG = false;
@@ -87,8 +85,24 @@ class StressMajorizationImpl {
 				System.out.println("diff: " + ((prevStress - newStress) / prevStress) + "; " + ((prevStress - newStress) / prevStress >= EPSILON));
 			}
 			
-		} while ( (prevStress - newStress) / prevStress >= EPSILON ); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
+			
+			double scaleFactor = 100;
+			HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
+			for (int i = 0; i < n; i += 1) {
+				double[] pos = layout.getRow(i);
+				Vector2d position = new Vector2d(pos[0] * scaleFactor, 
+												 pos[1] * scaleFactor);
+				nodes2newPositions.put(nodes.get(i), position);
+			}
+			
+			//update GUI layout
+			setLayout(nodes2newPositions);
+			setStressValue(newStress);
+			
+		} while ( (prevStress - newStress) / prevStress >= EPSILON && !isPauseButtonPressed()); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
 		
+
+		System.out.println("Updating layout...");
 		double scaleFactor = 100;
 		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
 		for (int i = 0; i < n; i += 1) {
@@ -97,7 +111,8 @@ class StressMajorizationImpl {
 											 pos[1] * scaleFactor);
 			nodes2newPositions.put(nodes.get(i), position);
 		}
-
+		
+		setEndLayout(nodes2newPositions);
 		return nodes2newPositions;
 		
 	}
@@ -184,5 +199,15 @@ class StressMajorizationImpl {
 		}
 		return weights;
 	}
-	
+
+	@Override
+	public boolean activeForView(View v) {
+		return false;
+	}
+
+	@Override
+	public String getName() {
+		return null;
+	}
+
 }

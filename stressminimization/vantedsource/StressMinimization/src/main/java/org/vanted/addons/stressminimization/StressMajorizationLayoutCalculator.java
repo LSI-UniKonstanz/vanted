@@ -438,3 +438,4 @@ class StressMajorizationLayoutCalculator {
 	}
 
 }
+
