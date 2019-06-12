@@ -112,20 +112,22 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm{
      * @return boolean
      */
     public boolean isPauseButtonPressed() {
-    	if(((Object) getPropertyChangeListener()[0]).getClass().equals(BackgroundExecutionAlgorithm.class)) {
-    		BackgroundExecutionAlgorithm b =(BackgroundExecutionAlgorithm)((Object) getPropertyChangeListener()[0]);
-    		if(b.pauseButtonPressed()) {
-    			while(b.pauseButtonPressed()) {
-    				try {
-    					Thread.sleep(100);
-    				} catch (InterruptedException e) {
-    					e.printStackTrace();
-    				}
-    			}
-    		}
-    		System.out.println("Stop Button pressed: "+b.stopButtonPressed());
-    		return b.stopButtonPressed();
-    	}
-    	return false;
+	    if(getPropertyChangeListener().length!=0) {
+	    	if(((Object) getPropertyChangeListener()[0]).getClass().equals(BackgroundExecutionAlgorithm.class)) {
+	    		BackgroundExecutionAlgorithm b =(BackgroundExecutionAlgorithm)((Object) getPropertyChangeListener()[0]);
+	    		if(b.pauseButtonPressed()) {
+	    			while(b.pauseButtonPressed()) {
+	    				try {
+	    					Thread.sleep(100);
+	    				} catch (InterruptedException e) {
+	    					e.printStackTrace();
+	    				}
+	    			}
+	    		}
+	    		System.out.println("Stop Button pressed: "+b.stopButtonPressed());
+	    		return b.stopButtonPressed();
+	    	}
+	    }
+    	return true;
     }
 }

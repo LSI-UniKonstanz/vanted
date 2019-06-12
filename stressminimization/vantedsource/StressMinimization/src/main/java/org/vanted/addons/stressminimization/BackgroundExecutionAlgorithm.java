@@ -8,28 +8,28 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Set;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JSpinner;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 import org.JMButton;
 import org.Vector2d;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.editor.MessageType;
+import org.graffiti.editor.dialog.ParameterEditPanel;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
+import org.graffiti.managers.EditComponentManager;
 import org.graffiti.plugin.algorithm.Category;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.algorithm.ThreadSafeAlgorithm;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
-import org.graffiti.plugin.editcomponent.SpinnerEditComponent;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
@@ -49,32 +49,22 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	private Graph graph;
 	private Selection selection;
 	private BackgroundStatus status;
-	private Thread backgroundTask;
 	private JButton startButton;
 	private JButton stopButton;
 	private JCheckBox autoDrawCheckBox;
-	private boolean autoDraw;
-	private SpinnerEditComponent[] parameterAlgo;
 	private boolean stop;
 	private boolean pause;
-	private double diffStress;
+	private double differenceStressValue;
 	
 	public BackgroundExecutionAlgorithm(BackgroundAlgorithm algorithm) {
 		super();
 		this.algorithm=algorithm;
 		status=BackgroundStatus.INIT;
-		autoDraw=false;
 		pause=false;
 		stop=false;
-		diffStress=0;
+		differenceStressValue=0;
 		
-		if(algorithm.getParameters()!=null) {
-			parameterAlgo = new SpinnerEditComponent[algorithm.getParameters().length];
-		}
-		else {
-			parameterAlgo=null;
-		}
-		
+		//add BackgroundExecutionAlgorithm to listener list of algorithm
 		algorithm.addPropertyChangeListener(this);
 	}
 	
@@ -113,10 +103,10 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				
 				System.out.println("Status background task: "+status);
 				//show status of the running algorithm in the bar at the bottom of the main frame
-				if(diffStress==0) {
+				if(differenceStressValue==0) {
 					MainFrame.showMessage("Stress Minimization: "+status+"calc distances", MessageType.PERMANENT_INFO);
 				}
-				MainFrame.showMessage("Stress Minimization: "+status+", difference: "+diffStress, MessageType.PERMANENT_INFO);
+				MainFrame.showMessage("Stress Minimization: "+status+", difference: "+differenceStressValue, MessageType.PERMANENT_INFO);
 			}
 		});
 	}
@@ -151,8 +141,8 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			public void run() {
 //				MainFrame.showMessage("Stress Minimization: "+status+", old stress value: "+oldStressValue+", new stress value: "+
 //						newStressValue+", difference: "+((oldStressValue - newStressValue) / oldStressValue), MessageType.PERMANENT_INFO);
-				diffStress=((oldStressValue - newStressValue) / oldStressValue);
-				MainFrame.showMessage("Stress Minimization: "+status+", difference: "+diffStress, MessageType.PERMANENT_INFO);
+				differenceStressValue=((oldStressValue - newStressValue) / oldStressValue);
+				MainFrame.showMessage("Stress Minimization: "+status+", difference: "+differenceStressValue, MessageType.PERMANENT_INFO);
 			}
 		});
 	}
@@ -202,11 +192,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		Runnable algoExecution = new Runnable() {
 			public void run() {
 				
-				Selection selectAll = new Selection();
-				selectAll.addAll(graph.getNodes());
-				
 				algorithm.attach(graph, selection);
-				algorithm.setParameters(updateParameters());
 				try {
 					algorithm.check();
 				} catch (PreconditionException e) {
@@ -216,7 +202,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				setStatus(BackgroundStatus.INIT);
 			}
 		};
-		backgroundTask = new Thread(algoExecution);
+		Thread backgroundTask = new Thread(algoExecution);
 		backgroundTask.setName(algorithm.getName()+" background execution");
 		backgroundTask.start();
 	}
@@ -283,6 +269,19 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		SingleFiledLayout sfl = new SingleFiledLayout(SingleFiledLayout.COLUMN, SingleFiledLayout.FULL, 1);
 		jc.setLayout(sfl);
 		
+		//create input component for each algorithm parameter and save all in ParameterEditPanel pep
+		EditComponentManager ecm = MainFrame.getInstance().getEditComponentManager();
+		ParameterEditPanel pep = null;
+		pep = new ParameterEditPanel(algorithm.getParameters(), ecm.getEditComponents(), selection,
+				algorithm.getName(), true, algorithm.getName());
+		final ParameterEditPanel finalParamPanel = pep;
+		
+		//panel with all algorithm parameter components
+		JPanel parameterPanel=new JPanel();
+		parameterPanel.setLayout(sfl);
+		parameterPanel.add(Box.createVerticalStrut(10));
+		parameterPanel.add(pep);
+		
 		//initialization of start and pause button
 		startButton = new JMButton("Layout Network");
 		startButton.addActionListener(new ActionListener(){
@@ -292,10 +291,12 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				
 				case INIT:
 					startButton.setText("Pause");
+					algorithm.setParameters(finalParamPanel.getUpdatedParameters());
 					execute();
 					break;
 				case FINISHED:
 					startButton.setText("Pause");
+					algorithm.setParameters(finalParamPanel.getUpdatedParameters());
 					execute();
 					break;
 				case RUNNING:
@@ -328,63 +329,20 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		stopButton.setEnabled(false);
 		
 		//check box to print the layout after each iteration
-		autoDrawCheckBox = new JCheckBox("Auto Redraw",this.autoDraw);
-		autoDrawCheckBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				autoDraw=autoDrawCheckBox.isSelected();
-			}
-		});
+		autoDrawCheckBox = new JCheckBox("Auto Redraw",false);
 		
 		//add stop button and check box to component
 		jc.add(TableLayout.get3Split(stopButton, autoDrawCheckBox, new JLabel(),
 			TableLayout.PREFERRED, TableLayout.PREFERRED,TableLayout.FILL ));
-				
 		
-		//for each parameter of the algorithm a JSpinner component is created
-		if(algorithm.getParameters()!=null) {
-			for(int i=0;i<algorithm.getParameters().length;i++) {
-				
-				//name of the algorithm parameter
-				JLabel paramLabel = new JLabel(algorithm.getParameters()[i].getName());
-				jc.add(paramLabel);
-				
-				SpinnerEditComponent spinnerComponent = new SpinnerEditComponent(algorithm.getParameters()[i]);
-				jc.add(spinnerComponent.getComponent());
-				parameterAlgo[i]=spinnerComponent;
-				
-				JSpinner spinner =(JSpinner)spinnerComponent.getComponent();
-				spinner.addChangeListener(new ChangeListener() {
-					@Override
-					public void stateChanged(ChangeEvent arg0) {
-						System.out.println("Parameter "+ spinner.getName() +":  "+spinner.getValue());
-						//check JSpinner value and update value of the Parameter Object 
-						spinnerComponent.getDisplayable().setValue(spinner.getValue());
-					}
-					
-				});
-			}
+		//add parameter panel to component
+		if(finalParamPanel!=null) {
+			jc.add(parameterPanel);
 		}
+		
 		return true;
 	}
 	
-	/**
-	 * pick out all algorithm parameters from the GUI components  
-	 * @return Parameter[]
-	 */
-	private Parameter[] updateParameters() {
-		if(parameterAlgo!=null) {
-			Parameter[] param = new Parameter[algorithm.getParameters().length];
-			if(algorithm.getParameters()!=null) {
-				for(int i=0;i<algorithm.getParameters().length;i++) {
-					param[i]=(Parameter)parameterAlgo[i].getDisplayable();	
-				}
-			}
-			return param;
-		}
-		return null;
-	}
-
 	@Override
 	public void executeThreadSafe(ThreadSafeOptions options) {
 		execute();
@@ -410,7 +368,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		switch(arg0.getPropertyName()) {
 			
 		case "setLayout":
-			if(autoDraw) {
+			if(autoDrawCheckBox.isSelected()) {
 				newLayout((HashMap<Node, Vector2d>)arg0.getNewValue());
 			}
 			break;
