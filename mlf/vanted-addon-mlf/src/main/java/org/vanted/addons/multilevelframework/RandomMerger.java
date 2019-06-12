@@ -18,22 +18,33 @@ public class RandomMerger implements Merger {
     @Override
     public void setParameters(Parameter[] parameters) {
 
+        // TODO: set parameters
 
+        // update comparator to use the new path
+        this.edgeWeightComparator = MlfHelper.createEdgeWeightComparator(weightAttributePath);
     }
 
     // Variables containing the future parameters
 
     // the ratio in size of the baseLevel and the resulting coarsening level
-    private double coarseningFactor = 0.5;
+    double coarseningFactor = 0.5;
 
     // the minimal number of nodes for a coarsening level
-    private int minNumberOfNodesPerLevel = 2;
+    int minNumberOfNodesPerLevel = 20;
 
     // the maximum amount of levels for one multilevelGraph
-    private int maxNumberOfIterations = 100;
+    int maxNumberOfIterations = 100;
 
     // prefer merging MergedNodes that don't already represent lots of nodes
-    private boolean useWeights = true;
+    boolean useWeights = true;
+
+    // the path at which edge weights are stored (weights must be doubles or ints)
+    String weightAttributePath = "weight";
+
+    // if this is true, the merger will prefer merging edges with low weight
+    boolean considerEdgeWeights = true;
+
+    Comparator<Edge> edgeWeightComparator = MlfHelper.createEdgeWeightComparator(weightAttributePath);
 
     /**
      * builds the coarsening levels for the graph depending on parameters. These Parameters shrinkRatio
@@ -51,7 +62,7 @@ public class RandomMerger implements Merger {
 
         // checks whether the coarseningFactor is in Range and the graph component does contain multiple edges.
         // no edges leave inhibit any coarsening while merged on the last edge
-        if ((multilevelGraph.getTopLevel().getEdges().size() > minNumberOfNodesPerLevel)
+        if ((multilevelGraph.getTopLevel().getNodes().size() > minNumberOfNodesPerLevel)
                 && (0 < coarseningFactor) && (coarseningFactor < 1)) {
             // calls upon build level to create multiple levels
             for (int i = 0; i < this.maxNumberOfIterations; i++) {
@@ -64,7 +75,7 @@ public class RandomMerger implements Merger {
 
         final long endTime = System.nanoTime();
         System.out.println("Built coarsening levels in: " +
-                TimeUnit.NANOSECONDS.toSeconds(endTime - startTime) + " seconds.");
+                TimeUnit.NANOSECONDS.toMillis(endTime - startTime) + " ms.");
     }
 
     /**
@@ -97,6 +108,11 @@ public class RandomMerger implements Merger {
         } else {
             // shuffling the list to obtain random Edges
             Collections.shuffle(edges);
+        }
+
+        // sort by edge weights if the user enabled this option
+        if (this.considerEdgeWeights) {
+            edges.sort(this.edgeWeightComparator);
         }
 
 
