@@ -6,12 +6,15 @@ import org.apache.commons.math.linear.RealMatrixImpl;
 import org.graffiti.graph.Node;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
 public class PivotMDS implements InitialPlacer {
 
     static final double EPSILON = 1 - 0.0000000001;
+    /** A {@link Random} used to get random positions and vectors. */
+    private static final Random RAND = new Random();
 
 
     @Override
@@ -23,17 +26,89 @@ public class PivotMDS implements InitialPlacer {
         return null;
     }
 
+    /**
+     * Gets pivots by doing a min-max-search on the distances of the nodes.
+     * This tries to maximize the distances between chosen pivot nodes.
+     * The nodes will be moved to the front of the {@link NodeValueMatrix} by
+     * using a translation table.
+     *
+     * @param distances the distances to be used.
+     * @param amountPivots
+     *      the amount of pivots to get. Must not be bigger than the
+     *      amount of nodes, but at least one.
+     *
+     * @return
+     *      the translation table used to move the nodes to the front of the distance
+     *      matrix.
+     *
+     * @see NodeValueMatrix#get(int, int, int[])
+     * @see NodeValueMatrix#apply(java.util.function.DoubleUnaryOperator, int, int, int[])
+     *
+     * @author Jannik
+     */
+    private int[] getPivots(final NodeValueMatrix distances, final int amountPivots) {
+        final int numNodes = distances.getDimension();
+        assert amountPivots <= numNodes && amountPivots > 0;
+
+        int[] result = new int[numNodes];
+        int currentPivots = 0;
+        HashSet<Integer> nonPivots = new HashSet<>(numNodes);
+        for (int nodeIdx = 0; nodeIdx < numNodes; nodeIdx++) { nonPivots.add(nodeIdx); } // add all nodes
+
+        result[currentPivots++] = RAND.nextInt(result.length); // get first
+        nonPivots.remove(result[0]);
+
+        double currentMax, currentMin, distance; // holds the distances to be maximized and minimized
+        int maxNode; // the node that is the next candidate to be a pivot
+        for (int pivotsGot = 1; pivotsGot <= amountPivots && nonPivots.size() > 0; pivotsGot++) {
+            currentMax = Double.NEGATIVE_INFINITY; // maximize this
+            maxNode = -1;
+
+            // look at every node that is not already a pivot
+            for (int possiblePivot : nonPivots) {
+                currentMin = Double.POSITIVE_INFINITY; // minimize this
+                // get minimum distance to pivots
+                for (int pivot = 0; pivot < currentPivots; pivot++) {
+                    distance = distances.get(possiblePivot, result[pivot]);
+                    if (distance < currentMin) { // check whether
+                        currentMin = distance;
+                    }
+                }
+                // only update if a connection was found
+                if (currentMin != Double.POSITIVE_INFINITY && currentMin > currentMax) {
+                    currentMax = currentMin;
+                    maxNode = possiblePivot;
+                }
+            }
+
+            // add new pivot
+            if (currentMax == Double.NEGATIVE_INFINITY) { // no value found: Use last node looked at as good approximation
+                maxNode = nonPivots.iterator().next();
+            }
+            result[currentPivots++] = maxNode;
+            nonPivots.remove(maxNode);
+        }
+
+        // copy the rest to the array
+        for (Integer nonPivot : nonPivots) {
+            result[currentPivots++] = nonPivot;
+        }
+
+        return result;
+    }
+
 
     /**
-     * creates to random Vectors
-     * @param dimension the domension the vectors  shall have
-     * @return a realMatrixIml dimension x 2 constaing the two vectors
+     * Creates to random Vectors.
+     *
+     * @param dimension the dimension the vectors  shall have
+     * @return a RealMatrixIml dimension x 2 containing the two vectors
      *
      * @author theo
      */
     private RealMatrixImpl getRandomVectors(final int dimension) {
 
-        Random r = new Random();
+        Random r = PivotMDS.RAND;
 
         RealMatrixImpl result = new RealMatrixImpl(dimension, 2);
         double[][] resultArray = result.getDataRef();
@@ -79,10 +154,10 @@ public class PivotMDS implements InitialPlacer {
 
 
     /**
-     * Calculating the two eigenValues using powerIteration
+     * Calculating the two eigen values using powerIteration.
      *
-     * @param matrix containing the doubleCentred distance values
-     * @return a doubleArray containing the two eigeValues
+     * @param matrix containing the doubleCentred distance values.
+     * @return a doubleArray containing the two eigen values.
      *
      * @author theo
      */
