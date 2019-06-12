@@ -13,14 +13,18 @@ package org.vanted.addons.multilevelframework;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import org.AttributeHelper;
 import org.Vector2d;
-import org.graffiti.editor.GravistoService;
+import org.apache.commons.lang.ArrayUtils;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
-import org.graffiti.plugin.algorithm.*;
+import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
+import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.algorithm.PreconditionException;
+import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.JComponentParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
@@ -38,6 +42,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     private JComboBox<String> algorithmListComboBox;
     private JButton setUpLayoutAlgorithmButton;
     private String lastSelectedAlgorithm = DEFAULT_ALGORITHM;
+    private int randomTopParameterIndex = 0;
+    private boolean randomTop = false;
 
     public MultilevelFrameworkLayouter() {
         super();
@@ -101,7 +107,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
         // displaying levels doesn't work in a background task
 
-//        BackgroundTaskHelper.issueSimpleTask(this.getName(), "", () -> {
+        BackgroundTaskHelper.issueSimpleTask(this.getName(), "", () -> {
             // split the subgraph induced by the selection into connected components
             connectedComponents[0] =
                     MlfHelper.calculateConnectedComponentsOfSelection(new HashSet<>(this.getSelectedOrAllNodes()));
@@ -112,9 +118,14 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
             for (CoarsenedGraph cg : connectedComponents[0]) {
                 MultilevelGraph componentMLG = new MultilevelGraph(cg);
                 merger.buildCoarseningLevels(componentMLG);
+                if (this.randomTop) {
+                    final RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
+                    rla.attach(componentMLG.getTopLevel(), emptySelection);
+                    rla.execute();
+                }
                 while (componentMLG.getNumberOfLevels() > 1) {
                     System.out.println("Layouting level " + componentMLG.getNumberOfLevels());
-                    GraphHelper.diplayGraph(componentMLG.getTopLevel());
+//                    this.display(componentMLG.getTopLevel());
                     algorithm.execute(componentMLG.getTopLevel(), emptySelection);
                     placer.reduceCoarseningLevel(componentMLG);
                 }
@@ -122,7 +133,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 System.out.println("Layouting level 0");
                 algorithm.execute(componentMLG.getTopLevel(), emptySelection);
             }
-//        }, () -> {
+        }, () -> {
             // apply position updates
             HashMap<Node, Vector2d> nodes2newPositions = new HashMap<>();
 
@@ -138,7 +149,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
             MainFrame.getInstance().setActiveSession(oldSession, oldView);
             GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
             ConnectedComponentLayout.layoutConnectedComponents(this.graph);
-//        });
+        });
     }
 
     /**
@@ -158,6 +169,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     @Override
     public void setParameters(Parameter[] params) {
         this.parameters = params;
+        this.randomTop = (Boolean) this.parameters[this.randomTopParameterIndex].getValue();
     }
 
     /*
@@ -179,6 +191,19 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
     public boolean activeForView(View v) {
         return v != null;
+    }
+
+    /**
+     * Calls {@link GraphHelper#diplayGraph(Graph)} in the event dispatcher thread (it throws exceptions if called from
+     * other threads).
+     * @param g
+     *      The {@link Graph} to pass along.
+     * @author Gordian
+     */
+    private void display(Graph g) {
+        try {
+            SwingUtilities.invokeAndWait(() -> GraphHelper.diplayGraph(g));
+        } catch (InterruptedException | InvocationTargetException ignored) { }
     }
 
     /**
@@ -219,6 +244,9 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         this.updateParameters();
     }
 
+    /**
+     * @author Gordian
+     */
     private void updateParameters() {
         Map<String, LayoutAlgorithmWrapper> tmp = LayoutAlgorithmWrapper.getLayoutAlgorithms();
         boolean changed = false;
@@ -251,9 +279,16 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                     new JComponentParameter(this.setUpLayoutAlgorithmButton, "Set up layouter",
                             "Click the button to change the parameters of the layout algorithm.");
 
+            BooleanParameter randomLayoutParameter = new BooleanParameter(this.randomTop,
+                    "Random initial layout on top level",
+                    "Do an random layout on the top (i.e. coarsest) coarsening level");
+
             // TODO add GUI for Mergers and Placers
 
-            this.parameters = new Parameter[]{algorithmList, setUpLayoutAlgorithmButtonParameter};
+            this.parameters = new Parameter[]{algorithmList, setUpLayoutAlgorithmButtonParameter,
+                    randomLayoutParameter};
+
+            this.randomTopParameterIndex = ArrayUtils.indexOf(this.parameters, randomLayoutParameter);
         }
     }
 }
