@@ -1,11 +1,12 @@
 package org.vanted.addons.multilevelframework;
 
+import org.graffiti.attributes.*;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
 import org.graffiti.selection.Selection;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 /**
  * Helper methods for the multilevel framework add-on.
@@ -43,8 +44,8 @@ public enum MlfHelper {
             for (Node n : connectedNodes) {
                 for (Edge e : n.getEdges()) {
                     if (connectedNodes.contains(e.getSource()) && connectedNodes.contains(e.getTarget())) {
-                        connectedComponentGraph.addEdgeCopy(e, sourceGraphNode2connectedGraphNode.get(e.getSource()),
-                                sourceGraphNode2connectedGraphNode.get(e.getTarget()));
+                        connectedComponentGraph.doAddEdge(sourceGraphNode2connectedGraphNode.get(e.getSource()),
+                                sourceGraphNode2connectedGraphNode.get(e.getTarget()), false);
                     }
                 }
             }
@@ -53,8 +54,7 @@ public enum MlfHelper {
         }
         long endTime = System.nanoTime();
 
-        System.out.println("Built connected components in: " +
-                TimeUnit.NANOSECONDS.toSeconds(endTime - startTime) + " seconds.");
+        System.out.println("Built connected components in: " + NANOSECONDS.toSeconds(endTime - startTime) + " seconds.");
         return graphList;
     }
 
@@ -91,5 +91,50 @@ public enum MlfHelper {
         }
 
         return hashSet;
+    }
+
+    /**
+     * Note that edges with no weight will be considered to have a default weight of 0.
+     * @param weightPath
+     *      The path of the weight attribute (see {@link MlfHelper#getEdgeWeight(Edge, String, double)}).
+     * @return a {@link Comparator} that compares {@link Edge}s according to their weight.
+     * @author Gordian
+     */
+    static Comparator<Edge> createEdgeWeightComparator(String weightPath) {
+        return Comparator.comparingDouble(e -> getEdgeWeight(e, weightPath, 0));
+    }
+
+    /**
+     * Get the edge weight.
+     * @param e
+     *      The {@link Edge} to get the weight from. Must not be {@code null}.
+     * @param weightPath
+     *      The path of the weight attribute. Not that the attribute must either be an {@link IntegerAttribute},
+     *      {@link LongAttribute}, {@link FloatAttribute} or {@link DoubleAttribute}.
+     * @param defaultValue
+     *      The default value to return if the attribute is not present or doesn't meet the above conditions.
+     * @return
+     *      The weight (as a double) or the {@code defaultValue} if the weight could not be obtained.
+     * @author Gordian
+     */
+    static double getEdgeWeight(Edge e, String weightPath, double defaultValue) {
+        final Map<String, Attribute> attributes = e.getAttributes().getCollection();
+        if (!attributes.containsKey(weightPath)) {
+            return defaultValue;
+        }
+        final Attribute a = attributes.get(weightPath);
+        if (a instanceof DoubleAttribute) {
+            return ((DoubleAttribute) a).getDouble();
+        }
+        if (a instanceof IntegerAttribute) {
+            return ((IntegerAttribute) a).getInteger();
+        }
+        if (a instanceof FloatAttribute) {
+            return ((FloatAttribute) a).getFloat();
+        }
+        if (a instanceof LongAttribute) {
+            return ((LongAttribute) a).getLong();
+        }
+        return defaultValue;
     }
 }

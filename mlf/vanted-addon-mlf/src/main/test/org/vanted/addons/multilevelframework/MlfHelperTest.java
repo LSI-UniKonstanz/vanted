@@ -2,6 +2,7 @@ package org.vanted.addons.multilevelframework;
 
 import org.AttributeHelper;
 import org.graffiti.graph.AdjListGraph;
+import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
 import org.junit.Test;
 
@@ -129,5 +130,49 @@ public class MlfHelperTest {
 
         assertEquals(MlfHelper.getConnectedNodes(isolated, Collections.emptySet()),
                 Collections.singleton(isolated));
+    }
+
+    @Test
+    public void createEdgeWeightComparator() {
+        String path = "weight";
+        Comparator<Edge> weightComparator = MlfHelper.createEdgeWeightComparator(path);
+        AdjListGraph dummy = new AdjListGraph();
+        Node n1 = dummy.addNode();
+        Node n2 = dummy.addNode();
+        Edge e1 = dummy.addEdge(n1, n2, true);
+        Edge e2 = dummy.addEdge(n2, n1, true);
+        e1.setDouble(path, 1);
+        e2.setDouble(path, 0);
+        assertTrue(weightComparator.compare(e1, e2) > 0);
+        e1.setDouble(path, -134);
+        e2.setDouble(path, 35);
+        assertTrue(weightComparator.compare(e1, e2) < 0);
+        e1.setDouble(path, 0);
+        e2.setDouble(path, 0);
+        assertEquals(0, weightComparator.compare(e1, e2));
+    }
+
+    @Test
+    public void getEdgeWeight() {
+        String path = "weight";
+        AdjListGraph dummy = new AdjListGraph();
+        Node n1 = dummy.addNode();
+        Node n2 = dummy.addNode();
+        Edge e = dummy.addEdge(n1, n2, false);
+        e.setDouble(path, 123.2);
+        assertEquals(123.2, MlfHelper.getEdgeWeight(e, path, 0), 0.0);
+        e.removeAttribute(path);
+        e.setFloat(path, 123.2f);
+        assertEquals(123.2f, MlfHelper.getEdgeWeight(e, path, 0), 0.0);
+        e.removeAttribute(path);
+        e.setInteger(path, 1337);
+        assertEquals(1337, MlfHelper.getEdgeWeight(e, path, 0), 0.0);
+        e.removeAttribute(path);
+        e.setLong(path, 1337L);
+        assertEquals(1337L, MlfHelper.getEdgeWeight(e, path, 0), 0.0);
+        e.removeAttribute(path);
+        assertEquals(42, MlfHelper.getEdgeWeight(e, path, 42), 0.0);
+        e.setString(path, "nope");
+        assertEquals(42, MlfHelper.getEdgeWeight(e, path, 42), 0.0);
     }
 }
