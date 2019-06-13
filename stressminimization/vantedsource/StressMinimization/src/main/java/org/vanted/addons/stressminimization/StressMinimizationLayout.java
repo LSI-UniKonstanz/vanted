@@ -214,7 +214,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			setLayout(layout, nodes);
 			// inverse displaying: high values get close to 0, values close to EPSILON get close to 1
 			// TODO: this formula isn't working
-			setProgress( 1 / ((prevStress - newStress) / prevStress - 1 + EPSILON) );
+			setProgress( Math.exp( -(prevStress - newStress) / prevStress + EPSILON) );
 
 			if (LOG) { 
 				System.out.println("===============================");

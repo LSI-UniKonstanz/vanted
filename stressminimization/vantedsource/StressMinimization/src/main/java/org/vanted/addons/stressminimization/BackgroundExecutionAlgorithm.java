@@ -131,13 +131,12 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	 * @param oldStressValue
 	 * @param newStressValue
 	 */
-	private void printStressValueDiff(double oldStressValue, double newStressValue){
+	private void printProgress(double oldProgress, double newProgress){
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 //				MainFrame.showMessage("Stress Minimization: "+status+", old stress value: "+oldStressValue+", new stress value: "+
 //						newStressValue+", difference: "+((oldStressValue - newStressValue) / oldStressValue), MessageType.PERMANENT_INFO);
-				differenceStressValue=((oldStressValue - newStressValue) / oldStressValue);
-				MainFrame.showMessage("Stress Minimization: "+status+", difference: "+differenceStressValue, MessageType.PERMANENT_INFO);
+				MainFrame.showMessage("Stress Minimization: "+status+", progress: "+ newProgress * 100 + "%", MessageType.PERMANENT_INFO);
 			}
 		});
 	}
@@ -340,7 +339,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			break;
 		case "setProgress":
 			// TODO: 
-			printStressValueDiff((double)arg0.getOldValue(), (double)arg0.getNewValue());
+			printProgress((double)arg0.getOldValue(), (double)arg0.getNewValue());
 			break;
 		default:
 			break;
