@@ -249,7 +249,7 @@ public class PivotMDS implements InitialPlacer {
         final int n = distances.getDimension();
 
         RealMatrixImpl c = new RealMatrixImpl(n, amountPivots);
-        NodeValueMatrix squared = distances.clone().apply(x -> x*x, n, amountPivots, distanceTranslation);
+        NodeValueMatrix squared = distances.clone().apply(x -> x*x, n-1, amountPivots-1, distanceTranslation);
 
         double  [][] results = c.getDataRef();
 

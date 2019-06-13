@@ -159,7 +159,11 @@ public class NodeValueMatrix implements Cloneable {
 
     /**
      * Applies a specified operation on every non-diagonal cell of the matrix
-     * and updates it, while not overstepping the boundaries given.
+     * and updates it, in the rectangle given by using {@code maxRow} lower and
+     * {@code maxCol} right “line” (including) with the width {@code maxRow+1} and
+     * height of {@code maxCol+1}.<br>
+     * Node that these bounds act as indices so {@code 0} refers to the first
+     * row/column.<br>
      *
      * @param operator
      *      the operator to be applied. May not be {@code null}.
@@ -202,8 +206,13 @@ public class NodeValueMatrix implements Cloneable {
 
     /**
      * Applies a specified operation on every non-diagonal cell of the matrix
-     * and updates it, while not overstepping the boundaries given and using
-     * the provided translation mapping.
+     * and updates it, in the rectangle given by using {@code maxRow} lower and
+     * {@code maxCol} right “line” (including) with the width {@code maxRow+1} and
+     * height of {@code maxCol+1}.<br>
+     * Node that these bounds act as indices so {@code 0} refers to the first
+     * row/column.<br>
+     * Before setting every value that would be in this rectangle is set it is
+     * translated using the provided translation table ({@code translation}).
      *
      * @param operator
      *      the operator to be applied. May not be {@code null}.
@@ -227,21 +236,35 @@ public class NodeValueMatrix implements Cloneable {
      * @see #get(int, int, int[])
      * @author Jannik
      */
+    @SuppressWarnings("Duplicates") // wanted for speed
     public NodeValueMatrix apply(final DoubleUnaryOperator operator, final int maxRow, final int maxCol,
                                  final int[] translation) {
         assert translation.length == this.dimension;
         //assert 0 <= maxRow && maxRow         // apply on the rest of the rows to set the mirrored column size, if necessary< dimension : "Index of 'maxRow' out of bounds: 0 <= " + maxRow + "<= " + (dimension-1);
         //assert 0 <= maxCol && maxCol < dimension : "Index of 'maxCol' out of bounds: 0 <= " + maxCol + "<= " + (dimension-1);
-        if (maxRow < 0 || maxRow > dimension)
-            throw new IndexOutOfBoundsException("Index 'maxRow' out of bounds (translation): 0 <= maxRow <= " + (dimension));
-        if (maxCol < 0 || maxCol > dimension)
-            throw new IndexOutOfBoundsException("Index 'maxCol' out of bounds (translation): 0 <= maxCol <= " + (dimension));
+        if (maxRow < 0 || maxRow > dimension-1)
+            throw new IndexOutOfBoundsException("Index 'maxRow' out of bounds (translation): 0 <= maxRow <= " + (dimension-1));
+        if (maxCol < 0 || maxCol > dimension-1)
+            throw new IndexOutOfBoundsException("Index 'maxCol' out of bounds (translation): 0 <= maxCol <= " + (dimension-1));
         if (null == operator) throw new NullPointerException("Operator may not be null!");
 
-        // apply on first rows // TODO maybe optimize
+        // apply on first rows
         for (int row = 0; row < maxRow; row++) {
-            for (int col = 0; col < maxCol; col++) {
-                final int actualRow = translation[row], actualCol = translation[col];
+            for (int col = 0; col <= row && col <= maxCol; col++) {
+                final int actualRow = translation[row+1], actualCol = translation[col];
+                if (actualCol < actualRow) {
+                    this.values[actualRow-1][actualCol] =
+                            operator.applyAsDouble(this.values[actualRow-1][actualCol]);
+                } else if (actualRow < actualCol) {
+                    this.values[actualCol-1][actualRow] =
+                            operator.applyAsDouble(this.values[actualCol-1][actualRow]);
+                }
+            }
+        }
+        // apply on the rest of the rows to set the mirrored column size, if necessary
+        for (int row = maxRow; row < maxCol; row++) {
+            for (int col = 0; col <= row && col <= maxRow; col++) {
+                final int actualRow = translation[row+1], actualCol = translation[col];
                 if (actualCol < actualRow) {
                     this.values[actualRow-1][actualCol] =
                             operator.applyAsDouble(this.values[actualRow-1][actualCol]);

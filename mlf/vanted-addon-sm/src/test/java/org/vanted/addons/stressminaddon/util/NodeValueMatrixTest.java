@@ -134,7 +134,7 @@ public class NodeValueMatrixTest {
     @Test
     public void applyLimitedTranslated() {
         // test no apply
-        for (int tries = 0; tries < 5; tries++) {
+        for (int tries = 0; tries < 20; tries++) {
             int[] pos = rand.ints(0, DIMENSION).distinct().limit(2).toArray();
             int[] translation = rand.ints(0, DIMENSION).distinct().limit(DIMENSION).toArray();
             matrix.apply(x->1);
