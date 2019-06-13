@@ -133,11 +133,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		
 		for (Set<Node> component : components) {
 			
-			waitIfPaused();
-			if (this.isStopped()) { 
-				setStatus(BackgroundStatus.FINISHED);
-				return; 
-			}
+			if (waitIfPausedAndCheckStop()) { return; }
 			
 			List<Node> nodes = new ArrayList<>(component);
 			calculateLayoutForNodes(nodes);
@@ -184,11 +180,14 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		final int n = nodes.size();
 		final int d = 2; // only implemented for two dimensional space
 
+		if (waitIfPausedAndCheckStop()) { return; }
+		
 		if (LOG) { System.out.println("Calculating distances..."); }
 		RealMatrix distances = calcDistances(nodes);
+
 		if (LOG) { System.out.println("Calculating weights..."); }
 		RealMatrix weights = getWeightsForDistances(distances, 2); // TODO make alpha selectable by user
-		
+
 		if (LOG) { System.out.println("Copying layout..."); }
 		RealMatrix layout = new Array2DRowRealMatrix(n, d); 
 		for (int i = 0; i < n; i += 1) {
@@ -203,12 +202,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		double prevStress, newStress;
 		do {
 
-			waitIfPaused();
-			// if stopped, terminate immediately
-			if (this.isStopped()) { 
-				setStatus(BackgroundStatus.FINISHED);
-				return; 
-			}
+			if (waitIfPausedAndCheckStop()) { return; }
 			
 			StressMajorizationLayoutCalculator c = new StressMajorizationLayoutCalculator(layout, distances, weights);
 			prevStress = c.calcStress(layout);
@@ -266,7 +260,22 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		
 	}
 	
-	// TODO: this implementation is super buggy
+	/**
+	 * Helper function that combines waiting and ckecking if stopped. 
+	 * @return Will return true if execution was stopped
+	 */
+	private boolean waitIfPausedAndCheckStop() {
+		
+		waitIfPaused();
+		
+		// if stopped, terminate immediately
+		if (this.isStopped()) { 
+			setStatus(BackgroundStatus.FINISHED);
+			return true; 
+		}
+		
+		return false;
+	}
 	
 	/**
 	 * If this algorithm was paused, this method waits until resume is called.
