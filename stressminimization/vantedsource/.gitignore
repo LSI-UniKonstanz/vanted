@@ -3,5 +3,8 @@
 # ignoring compiled addons 
 **/target/
 
+# ignore compiled java files
+**/*.class
+
 # eclipse is readdin this folder...
 MultilevelFramework/
