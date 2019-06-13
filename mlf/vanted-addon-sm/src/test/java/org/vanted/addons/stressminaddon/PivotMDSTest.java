@@ -14,6 +14,7 @@ public class PivotMDSTest {
 
     @Test
     public void calculateInitialPositionsTest() {
+        pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
 
     }
 

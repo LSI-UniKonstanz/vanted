@@ -32,13 +32,16 @@ public class PivotMDS implements InitialPlacer {
 
         final int numPivots = Math.min(100, distances.getDimension()); // TODO make configurable
 
-        final int[] pivotTranslation = this.getPivots(distances, numPivots);
+        final int[] pivotTranslation = new int[distances.getDimension()];
+        final int[] inversePivotTranslation = new int[distances.getDimension()];
+
+        this.getPivots(distances, numPivots, pivotTranslation, inversePivotTranslation);
 
         //calculate the doubleCentered matrix
         RealMatrix c = doubleCenter(distances, numPivots, pivotTranslation);
 
         //calculate the two largest eigenVectors
-        final RealMatrix eigenVecs = powerIterate( c);
+        final RealMatrix eigenVecs = powerIterate(c);
 
         // get new XPos and YPos
         RealMatrix newX = c.multiply(eigenVecs.getColumnMatrix(0));
@@ -47,10 +50,9 @@ public class PivotMDS implements InitialPlacer {
         // create a list containing the new coordinates
         List<Vector2d> newPosList = new ArrayList<>();
         for(int i = 0; i < numPivots; i++){
-            newPosList.add(new Vector2d(newX.getEntry(i, 0), newY.getEntry(i, 0)));
+            newPosList.add(new Vector2d(newX.getEntry(inversePivotTranslation[i], 0),
+                                        newY.getEntry(inversePivotTranslation[i], 0)));
         }
-        // TODO reapply translated nodes to insure correctness!
-
         return newPosList;
     }
 
@@ -58,33 +60,58 @@ public class PivotMDS implements InitialPlacer {
      * Gets pivots by doing a min-max-search on the distances of the nodes.
      * This tries to maximize the distances between chosen pivot nodes.
      * The nodes will be moved to the front of the {@link NodeValueMatrix} by
-     * using a translation table.
+     * using a translation table (which must be provided as the return parameter
+     * {@code table}). An inverse table {@code inverseTable} will also be generated.
      *
      * @param distances the distances to be used.
      * @param amountPivots
      *      the amount of pivots to get. Must not be bigger than the
      *      amount of nodes, but at least one.
+     * @param table
+     *      the array representing the table to save to.
+     *      This array must have the same length as the dimension of the {@code distances}!<br>
+     *      Each (node) index contains the actual position of this node in the {@code distances}
+     *      matrix.<br>
+     *      {@code inverseTable[table[i]] = i} always holds.<br>
+     *      <br>
+     *      This return parameter is used to be consistent because this method has two return values.
      *
-     * @return
-     *      the translation table used to move the nodes to the front of the distance
-     *      matrix.
+     * @param inverseTable
+     *      the array representing the inverse of the {@code table} table to save to.
+     *      This array must have the same length as the dimension of the {@code distances}!<br>
+     *      Each actual (node) index contains the translated position of this node in the {@code distances}
+     *      matrix.<br>
+     *      {@code inverseTable[table[i]] = i} always holds.<br>
+     *      <br>
+     *      This return parameter is used to be consistent because this method has two return values.
+     *
+     *
+     * @return the parameter {@code table}.
      *
      * @see NodeValueMatrix#get(int, int, int[])
      * @see NodeValueMatrix#apply(java.util.function.DoubleUnaryOperator, int, int, int[])
      *
      * @author Jannik
      */
-    public int[] getPivots(final NodeValueMatrix distances, final int amountPivots) {
+    public int[] getPivots(final NodeValueMatrix distances, final int amountPivots,
+                           int[] table, int[] inverseTable) {
         final int numNodes = distances.getDimension();
-        assert amountPivots <= numNodes && amountPivots > 0;
+        assert amountPivots <= numNodes && amountPivots > 0
+                && table.length == distances.getDimension() && inverseTable.length == distances.getDimension();
 
-        int[] result = new int[numNodes];
         int currentPivots = 0;
         HashSet<Integer> nonPivots = new HashSet<>(numNodes);
-        for (int nodeIdx = 0; nodeIdx < numNodes; nodeIdx++) { nonPivots.add(nodeIdx); } // add all nodes
+        double[] nonPivotsMinDistance = new double[numNodes];
 
-        result[currentPivots++] = RAND.nextInt(result.length); // get first
-        nonPivots.remove(result[0]);
+        int lastPivot = RAND.nextInt(table.length);
+        table[currentPivots++] = lastPivot; // get first pivot
+        inverseTable[lastPivot] = 0;
+        // fill non pivots and set first distance
+        for (int nodeIdx = 0; nodeIdx < numNodes; nodeIdx++) {
+            nonPivots.add(nodeIdx);
+            nonPivotsMinDistance[nodeIdx] = Double.POSITIVE_INFINITY;
+        } // add all nodes
+        nonPivots.remove(lastPivot);
 
         double currentMax, currentMin, distance; // holds the distances to be maximized and minimized
         int maxNode; // the node that is the next candidate to be a pivot
@@ -94,14 +121,11 @@ public class PivotMDS implements InitialPlacer {
 
             // look at every node that is not already a pivot
             for (int possiblePivot : nonPivots) {
-                currentMin = Double.POSITIVE_INFINITY; // minimize this
-                // get minimum distance to pivots
-                for (int pivot = 0; pivot < currentPivots; pivot++) {
-                    distance = distances.get(possiblePivot, result[pivot]);
-                    if (distance < currentMin) { // check whether
-                        currentMin = distance;
-                    }
-                }
+                distance = distances.get(possiblePivot, table[lastPivot]); // only the last pivot could change this value
+                currentMin = nonPivotsMinDistance[possiblePivot];
+                nonPivotsMinDistance[possiblePivot] = currentMin = // so update the value and minimize it
+                        (distance < currentMin ? distance : currentMin);
+
                 // only update if a connection was found
                 if (currentMin != Double.POSITIVE_INFINITY && currentMin > currentMax) {
                     currentMax = currentMin;
@@ -113,16 +137,18 @@ public class PivotMDS implements InitialPlacer {
             if (currentMax == Double.NEGATIVE_INFINITY) { // no value found: Use last node looked at as good approximation
                 maxNode = nonPivots.iterator().next();
             }
-            result[currentPivots++] = maxNode;
+            table[currentPivots]  = maxNode;
+            inverseTable[maxNode] = currentPivots++;
             nonPivots.remove(maxNode);
         }
 
         // copy the rest to the array
         for (Integer nonPivot : nonPivots) {
-            result[currentPivots++] = nonPivot;
+            table[currentPivots] = nonPivot;
+            inverseTable[nonPivot] = currentPivots++;
         }
 
-        return result;
+        return table;
     }
 
 
