@@ -19,6 +19,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
+import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.graffiti.selection.Selection;
@@ -91,13 +92,30 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	
 	// TODO: parameters
 
+	// ================
+	// MARK: parameters
+	// ================
+	
+	private static final String ALPHA_PARAMETER_NAME = "Weight Factor";
+	private static final int ALPHA_DEFAULT_VALUE = 2;
+	private int alpha = ALPHA_DEFAULT_VALUE;
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public Parameter[] getParameters() {
-		// TODO Auto-generated method stub
-		return super.getParameters();
+		List<Parameter> params = new ArrayList<>();
+		
+		params.add(new IntegerParameter(
+				ALPHA_DEFAULT_VALUE, 
+				0,
+				2, 
+				ALPHA_PARAMETER_NAME, 
+				"Determines how important correct distancing of nodes is that are far away to each other in an itteration step. High values mean placing of far away nodes is less important."
+		));
+		
+		return params.toArray(new Parameter[0]);
 	}
 
 	/**
@@ -105,8 +123,13 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
-		// TODO Auto-generated method stub
-		super.setParameters(params);
+		for (Parameter p : params) {
+			
+			if (ALPHA_PARAMETER_NAME.equals(p.getName())) {
+				this.alpha = (Integer) p.getValue();
+			}
+			
+		}
 	}
 
 	/**
@@ -174,7 +197,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	private void calculateLayoutForNodes(List<Node> nodes) {
 
 		// enable or disable console logging
-		final boolean LOG = false;
+		final boolean LOG = true;
 		final double EPSILON = 1e-4; // TODO: as parameter
 		
 		final int n = nodes.size();
@@ -185,9 +208,13 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		if (LOG) { System.out.println("Calculating distances..."); }
 		RealMatrix distances = calcDistances(nodes);
 
+		if (waitIfPausedAndCheckStop()) { return; }
+		
 		if (LOG) { System.out.println("Calculating weights..."); }
-		RealMatrix weights = getWeightsForDistances(distances, 2); // TODO make alpha selectable by user
+		RealMatrix weights = getWeightsForDistances(distances, alpha); // TODO make alpha selectable by user
 
+		if (waitIfPausedAndCheckStop()) { return; }
+		
 		if (LOG) { System.out.println("Copying layout..."); }
 		RealMatrix layout = new Array2DRowRealMatrix(n, d); 
 		for (int i = 0; i < n; i += 1) {
@@ -213,8 +240,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			//update GUI layout
 			setLayout(layout, nodes);
 			// inverse displaying: high values get close to 0, values close to EPSILON get close to 1
-			// TODO: this formula isn't working
-			setProgress( Math.exp( -(prevStress - newStress) / prevStress + EPSILON) );
+			setProgress( Math.exp( -(prevStress - newStress) / prevStress + EPSILON) * 100 );
 
 			if (LOG) { 
 				System.out.println("===============================");

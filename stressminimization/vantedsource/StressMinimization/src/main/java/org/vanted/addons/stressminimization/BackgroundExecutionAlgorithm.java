@@ -76,21 +76,25 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 					status = BackgroundStatus.INIT;
 					startButton.setText("Pause");
 					stopButton.setEnabled(true);
+					paramPanel.setVisible(false);
 					break;
 				case RUNNING:
 					status = BackgroundStatus.RUNNING;
 					startButton.setText("Pause");
 					stopButton.setEnabled(true);
+					paramPanel.setVisible(false);
 					break;
 				case IDLE:
 					status = BackgroundStatus.IDLE;
 					startButton.setText("Continue");
 					stopButton.setEnabled(true);
+					paramPanel.setVisible(false);
 					break;
 				case FINISHED:
 					status = BackgroundStatus.FINISHED;
 					startButton.setText("Layout Network");
 					stopButton.setEnabled(false);
+					paramPanel.setVisible(true);
 					break;
 				default:
 					status = BackgroundStatus.STATUSERROR;
@@ -186,6 +190,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				} catch (PreconditionException e) {
 					e.printStackTrace();
 				}
+				algorithm.setParameters(paramPanel.getUpdatedParameters());
 				algorithm.execute();
 			}
 		};
@@ -250,6 +255,8 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		return algorithm.mayWorkOnMultipleGraphs();
 	}
 
+	private ParameterEditPanel paramPanel;
+	
 	@Override
 	public boolean setControlInterface(ThreadSafeOptions options, JComponent jc) {
 		//set component layout
@@ -261,7 +268,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		ParameterEditPanel pep = null;
 		pep = new ParameterEditPanel(algorithm.getParameters(), ecm.getEditComponents(), selection,
 				algorithm.getName(), true, algorithm.getName());
-		final ParameterEditPanel finalParamPanel = pep;
+		paramPanel = pep;
 		
 		//panel with all algorithm parameter components
 		JPanel parameterPanel=new JPanel();
@@ -278,7 +285,6 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				switch(status) {
 				case FINISHED:
 					startButton.setText("Layout Network");
-					algorithm.setParameters(finalParamPanel.getUpdatedParameters());
 					execute();
 					break;
 				case INIT:
@@ -303,6 +309,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			public void actionPerformed(ActionEvent e) {
 				algorithm.stop();
 				stopButton.setEnabled(false);
+				startButton.setEnabled(false);
 			}
 		});
 		stopButton.setEnabled(false);
@@ -315,7 +322,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			TableLayout.PREFERRED, TableLayout.PREFERRED,TableLayout.FILL ));
 		
 		//add parameter panel to component
-		if(finalParamPanel!=null) {
+		if(paramPanel!=null) {
 			jc.add(parameterPanel);
 		}
 		
@@ -347,16 +354,17 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	}
 	
 	// both never used but required for thread safe algorithm
-	// ThreadSafeAlgorithm is adopted for GUI customization
+	// ThreadSafeAlgorithm is adopted since it alone provides 
+	// GUI customization
 	
 	@Override
 	public void executeThreadSafe(ThreadSafeOptions options) {
-		execute();
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void resetDataCache(ThreadSafeOptions options) {
-		reset();
+		throw new UnsupportedOperationException();
 	}
 
 }
