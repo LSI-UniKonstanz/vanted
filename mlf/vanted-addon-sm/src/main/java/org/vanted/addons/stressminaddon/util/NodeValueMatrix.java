@@ -232,15 +232,15 @@ public class NodeValueMatrix implements Cloneable {
         assert translation.length == this.dimension;
         //assert 0 <= maxRow && maxRow         // apply on the rest of the rows to set the mirrored column size, if necessary< dimension : "Index of 'maxRow' out of bounds: 0 <= " + maxRow + "<= " + (dimension-1);
         //assert 0 <= maxCol && maxCol < dimension : "Index of 'maxCol' out of bounds: 0 <= " + maxCol + "<= " + (dimension-1);
-        if (maxRow < 0 || maxRow > dimension-1)
-            throw new IndexOutOfBoundsException("Index 'maxRow' out of bounds (translation): 0 <= maxRow <= " + (dimension-1));
-        if (maxCol < 0 || maxCol > dimension-1)
-            throw new IndexOutOfBoundsException("Index 'maxCol' out of bounds (translation): 0 <= maxCol <= " + (dimension-1));
+        if (maxRow < 0 || maxRow > dimension)
+            throw new IndexOutOfBoundsException("Index 'maxRow' out of bounds (translation): 0 <= maxRow <= " + (dimension));
+        if (maxCol < 0 || maxCol > dimension)
+            throw new IndexOutOfBoundsException("Index 'maxCol' out of bounds (translation): 0 <= maxCol <= " + (dimension));
         if (null == operator) throw new NullPointerException("Operator may not be null!");
 
         // apply on first rows // TODO maybe optimize
         for (int row = 0; row < maxRow; row++) {
-            for (int col = 0; col <= maxCol; col++) {
+            for (int col = 0; col < maxCol; col++) {
                 final int actualRow = translation[row], actualCol = translation[col];
                 if (actualCol < actualRow) {
                     this.values[actualRow-1][actualCol] =
@@ -253,6 +253,7 @@ public class NodeValueMatrix implements Cloneable {
         }
         return this;
     }
+
 
     /**
      * Creates a multidimensional array containing all the rows specified in the array.

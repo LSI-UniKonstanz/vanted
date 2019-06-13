@@ -6,17 +6,26 @@ import org.apache.commons.math.linear.RealMatrixImpl;
 import org.graffiti.graph.Node;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
 public class PivotMDS implements InitialPlacer {
 
-    static final double EPSILON = 1 - 0.0000000001;
+    static final double EPSILON = 0.0000000001;
     /** A {@link Random} used to get random positions and vectors. */
     private static final Random RAND = new Random();
 
-
+    /**
+     * executes PivotMDS
+     *
+     * @param nodes list of nodes, the algorithm should get executed on
+     * @param distances NodeValueMatrix storing all distances for the nodes
+     * @return list containing the new positions
+     *
+     * @author theo, jannik
+     */
     @Override
     public List<Vector2d> calculateInitialPositions(final List<Node> nodes, final NodeValueMatrix distances) {
         assert nodes.size() == distances.getDimension();
@@ -25,10 +34,24 @@ public class PivotMDS implements InitialPlacer {
 
         final int[] pivotTranslation = this.getPivots(distances, numPivots);
 
+        //calculate the doubleCentered matrix
+        RealMatrix c = doubleCenter(distances, numPivots, pivotTranslation);
 
+        //calculate the two largest eigenVectors
+        final RealMatrix eigenVecs = powerIterate( c);
+
+        // get new XPos and YPos
+        RealMatrix newX = c.multiply(eigenVecs.getColumnMatrix(0));
+        RealMatrix newY = c.multiply(eigenVecs.getColumnMatrix(1));
+
+        // create a list containing the new coordinates
+        List<Vector2d> newPosList = new ArrayList<>();
+        for(int i = 0; i < numPivots; i++){
+            newPosList.add(new Vector2d(newX.getEntry(i, 0), newY.getEntry(i, 0)));
+        }
         // TODO reapply translated nodes to insure correctness!
 
-        return null;
+        return newPosList;
     }
 
     /**
@@ -51,7 +74,7 @@ public class PivotMDS implements InitialPlacer {
      *
      * @author Jannik
      */
-    private int[] getPivots(final NodeValueMatrix distances, final int amountPivots) {
+    public int[] getPivots(final NodeValueMatrix distances, final int amountPivots) {
         final int numNodes = distances.getDimension();
         assert amountPivots <= numNodes && amountPivots > 0;
 
@@ -127,6 +150,7 @@ public class PivotMDS implements InitialPlacer {
 
 
     /**
+     *returns the min of a,b
      *
      * @param a value 1
      * @param b value 2
@@ -134,27 +158,33 @@ public class PivotMDS implements InitialPlacer {
      *
      * @author theo
      */
-    private double updateMin(final double a, final double b ){
-        return ((b> a) ? b : a);
+    private double getMin(final double a, final double b ){
+        return ((a < b) ? a : b);
     }
 
 
     /**
-     * Multiplies the i-th elements of the two Arrays and adds up all products
+     * calculates the difference between the two arrays. For this, the values of a and b are summed,
+     * and then the smaller one is divided by the larger one
      *
      * @param a first double-array
      * @param b second double-array
-     * @return a double value
+     * @return a double representing the difference
      *
      * @author theo
      */
-    private double prod(final double[] a, final double[] b){
-
-        double result = 0;
+    private double getdifference(final double[] a, final double[] b){
+        double sumA = 0;
+        double sumB = 0;
         for (int i = 0; i < a.length; i++) {
-            result += a[i] * b[i];
+            sumA += a[i];
+            sumB += b[i];
         }
-        return result;
+
+        if(sumA > sumB){
+            return sumB/sumA;
+        }
+        return sumA/sumB;
     }
 
 
@@ -166,25 +196,22 @@ public class PivotMDS implements InitialPlacer {
      *
      * @author theo
      */
-    private double[] powerIterate(final RealMatrix matrix) {
-
-        double r = 0;
-
-        double[] eigenVal = new double[2];
+    public RealMatrix powerIterate(final RealMatrix matrix) {
 
         //C^T * C
         RealMatrixImpl c = (RealMatrixImpl) matrix.transpose().multiply(matrix);
-
-
         final int dimension = c.getRowDimension();
 
         //create 2  random vectors
         RealMatrixImpl eigenVec = getRandomVectors(dimension);
 
-        while(r < EPSILON){
+        double change = 1;
+
+        //stopp, whenn the change is smaller 1e-10
+        while(change > EPSILON){
 
             // remember old values
-            RealMatrixImpl tmpOld = (RealMatrixImpl) eigenVec.copy();
+            RealMatrixImpl oldEigenVecs = (RealMatrixImpl) eigenVec.copy();
 
             //c * eigenVec
             eigenVec = (RealMatrixImpl) c.multiply(eigenVec);
@@ -192,19 +219,14 @@ public class PivotMDS implements InitialPlacer {
             // calculate new eigenVec
             eigenVec = (RealMatrixImpl) eigenVec.scalarMultiply(1/eigenVec.getNorm());
 
-            //create norm of the two eigenVec
-            eigenVal[0] = eigenVec.getSubMatrix(0,dimension-1, 0, 0).getNorm();
-            eigenVal[1] = eigenVec.getSubMatrix(0,dimension-1, 1, 1).getNorm();
-
-
-            // calculate new r
-            r = 1;
+            //calculate the difference between the oldEigenVecs and the new eigenVecs
+            double newDiff;
             for(int i = 0; i < 2; i++){
-
-                r = updateMin(r, Math.abs(prod(eigenVec.getColumn(i), tmpOld.getColumn(i))));
+                newDiff = Math.abs(getdifference(oldEigenVecs.getColumn(i), eigenVec.getColumn(i)));
+                change = getMin(change, newDiff);
             }
         }
-        return eigenVal;
+        return eigenVec;
     }
 
     /**
@@ -221,7 +243,7 @@ public class PivotMDS implements InitialPlacer {
      * @author theo, Jannik
      *
      */
-    private RealMatrix doubleCenter(final NodeValueMatrix distances, final int amountPivots,
+    public RealMatrix doubleCenter(final NodeValueMatrix distances, final int amountPivots,
                                     final int[] distanceTranslation) {
 
         final int n = distances.getDimension();
@@ -230,6 +252,7 @@ public class PivotMDS implements InitialPlacer {
         NodeValueMatrix squared = distances.clone().apply(x -> x*x, n, amountPivots, distanceTranslation);
 
         double  [][] results = c.getDataRef();
+
         // Sum three is independent of the current position so it can be calculated only once
         double sumThree = 0;
         for (int r = 0; r < n; r++) {
