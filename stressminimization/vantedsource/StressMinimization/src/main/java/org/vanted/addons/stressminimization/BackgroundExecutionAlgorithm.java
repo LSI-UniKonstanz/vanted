@@ -57,7 +57,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	public BackgroundExecutionAlgorithm(BackgroundAlgorithm algorithm) {
 		super();
 		this.algorithm=algorithm;
-		status=BackgroundStatus.INIT;
+		status = BackgroundStatus.FINISHED;
 		differenceStressValue=0;
 		
 		//add BackgroundExecutionAlgorithm to listener list of algorithm
@@ -73,26 +73,27 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			public void run() {
 				switch(statusValue) {
 				case INIT:
-					status=BackgroundStatus.INIT;
+					status = BackgroundStatus.INIT;
 					startButton.setText("Pause");
+					stopButton.setEnabled(true);
 					break;
 				case RUNNING:
-					status= BackgroundStatus.RUNNING;
-					autoDrawCheckBox.setEnabled(false);
+					status = BackgroundStatus.RUNNING;
+					startButton.setText("Pause");
 					stopButton.setEnabled(true);
 					break;
 				case IDLE:
-					status= BackgroundStatus.IDLE;
-					stopButton.setEnabled(false);
+					status = BackgroundStatus.IDLE;
+					startButton.setText("Continue");
+					stopButton.setEnabled(true);
 					break;
 				case FINISHED:
-					status=BackgroundStatus.FINISHED;
-					startButton.setText("Pause");
-					autoDrawCheckBox.setEnabled(true);
+					status = BackgroundStatus.FINISHED;
+					startButton.setText("Layout Network");
 					stopButton.setEnabled(false);
 					break;
 				default:
-					status= BackgroundStatus.STATUSERROR;
+					status = BackgroundStatus.STATUSERROR;
 					break;
 				}
 				
@@ -170,10 +171,13 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 
 	@Override
 	public void execute() {
-		//current graph position and selection
-		graph =GravistoService.getInstance().getMainFrame().getActiveSession().getGraph();
-		selection = GravistoService.getInstance().getMainFrame().getActiveEditorSession().getSelectionModel().getActiveSelection();;
 		
+		algorithm.reset();
+		
+		//current graph position and selection
+		graph = GravistoService.getInstance().getMainFrame().getActiveSession().getGraph();
+		selection = GravistoService.getInstance().getMainFrame().getActiveEditorSession().getSelectionModel().getActiveSelection();;
+
 		Runnable algoExecution = new Runnable() {
 			public void run() {
 				
@@ -183,12 +187,12 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				} catch (PreconditionException e) {
 					e.printStackTrace();
 				}
-				setStatus(BackgroundStatus.INIT);
 				algorithm.execute();
 			}
 		};
 		Thread backgroundTask = new Thread(algoExecution);
 		backgroundTask.setName(algorithm.getName()+" background execution");
+		setStatus(BackgroundStatus.INIT);
 		backgroundTask.start();
 	}
 
@@ -271,27 +275,19 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		startButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				switch(status) {
 				
-				case INIT:
-					startButton.setText("Pause");
-					algorithm.setParameters(finalParamPanel.getUpdatedParameters());
-					execute();
-					break;
+				switch(status) {
 				case FINISHED:
-					startButton.setText("Pause");
+					startButton.setText("Layout Network");
 					algorithm.setParameters(finalParamPanel.getUpdatedParameters());
 					execute();
 					break;
+				case INIT:
 				case RUNNING:
 					algorithm.pause();
-					setStatus(BackgroundStatus.IDLE);
-					startButton.setText("Continue");
 					break;
 				case IDLE:
 					algorithm.resume();
-					setStatus(BackgroundStatus.RUNNING);
-					startButton.setText("Pause");
 					break;
 				default:
 					setStatus(BackgroundStatus.STATUSERROR);
@@ -313,7 +309,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		stopButton.setEnabled(false);
 		
 		//check box to print the layout after each iteration
-		autoDrawCheckBox = new JCheckBox("Auto Redraw",false);
+		autoDrawCheckBox = new JCheckBox("Auto Redraw", false);
 		
 		//add stop button and check box to component
 		jc.add(TableLayout.get3Split(stopButton, autoDrawCheckBox, new JLabel(),

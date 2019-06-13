@@ -90,25 +90,39 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	}
 	
 	// TODO: parameters
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Parameter[] getParameters() {
 		// TODO Auto-generated method stub
 		return super.getParameters();
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setParameters(Parameter[] params) {
 		// TODO Auto-generated method stub
 		super.setParameters(params);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
 		super.reset();
+		this.graph = null;
+		this.selection = null;
+		this.parameters = null;
 	}
-	
+
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void execute() {
 
@@ -120,7 +134,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		for (Set<Node> component : components) {
 			
 			waitIfPaused();
-			if (this.isStopped()) { return; }
+			if (this.isStopped()) { 
+				setStatus(BackgroundStatus.FINISHED);
+				return; 
+			}
 			
 			List<Node> nodes = new ArrayList<>(component);
 			calculateLayoutForNodes(nodes);
@@ -188,7 +205,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 			waitIfPaused();
 			// if stopped, terminate immediately
-			if (this.isStopped()) { return; }
+			if (this.isStopped()) { 
+				setStatus(BackgroundStatus.FINISHED);
+				return; 
+			}
 			
 			StressMajorizationLayoutCalculator c = new StressMajorizationLayoutCalculator(layout, distances, weights);
 			prevStress = c.calcStress(layout);
@@ -209,7 +229,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				System.out.println("diff: " + ((prevStress - newStress) / prevStress) + "; " + ((prevStress - newStress) / prevStress >= EPSILON));
 			}
 			
-		} while ( (prevStress - newStress) / prevStress >= EPSILON && !isPaused()); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
+		} while ( (prevStress - newStress) / prevStress >= EPSILON); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
 		
 
 		System.out.println("Updating layout...");
@@ -252,7 +272,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	 * If this algorithm was paused, this method waits until resume is called.
 	 */
 	private void waitIfPaused() {
+		boolean hasPaused = false;
 		while (isPaused()) {
+			setStatus(BackgroundStatus.IDLE);
+			hasPaused = true;
 			try {
 				synchronized(this) {
 					this.wait();
@@ -260,6 +283,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			} catch (InterruptedException e) {
 				// never mind, wait again
 			}
+		}
+		
+		if (hasPaused) {
+			setStatus(BackgroundStatus.RUNNING);
 		}
 	}
 	
@@ -274,10 +301,9 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	
 	@Override
 	public void stop() {
-		super.stop();
 		// necessary to make thread terminate if currently paused
-		// TODO illegal monitor state exception
-		this.notifyAll();
+		this.resume();
+		super.stop();
 	}
 	
 	// =====================================

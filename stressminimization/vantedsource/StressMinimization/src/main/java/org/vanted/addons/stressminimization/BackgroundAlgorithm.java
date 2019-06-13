@@ -22,7 +22,7 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 	/**
 	 * old status of the algorithm
 	 */
-	private BackgroundStatus status;
+	private volatile BackgroundStatus status;
 	/**
 	 * some progress measure. Value between 0.0 and 1.0.
 	 */
@@ -35,12 +35,12 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 	/**
 	 * Whether this algorithm was told to pause by the executing frontend algorithm.
 	 */
-	private boolean paused = false;
+	private volatile boolean paused = false;
 	
 	/**
 	 * Whether this algorithm was told to stop by the executing frontend algorithm.
 	 */
-	private boolean stopped = false;
+	private volatile boolean stopped = false;
 	
 	/**
 	 * return list of PropertyChangeListener
@@ -120,9 +120,20 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
     
     /**
      * Stops the execution of the algorithm. In contrast to pause the algorithm will terminate.
+     * reset has to be called before the next execution of the algorithm.
      */
     public void stop() {
     	this.stopped = true;
+    }
+    
+    @Override
+    public void reset() {
+    	super.reset();
+    	this.paused = false;
+    	this.stopped = false;
+    	this.status = null;
+    	this.progress = 0.0;
+    	this.layout = null;
     }
 
 	public BackgroundStatus getStatus() {
