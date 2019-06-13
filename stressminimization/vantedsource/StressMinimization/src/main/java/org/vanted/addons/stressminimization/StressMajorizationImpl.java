@@ -97,9 +97,9 @@ class StressMajorizationImpl extends BackgroundAlgorithm {
 			
 			//update GUI layout
 			setLayout(nodes2newPositions);
-			setStressValue(newStress);
+			setProgress((prevStress - newStress) / prevStress);
 			
-		} while ( (prevStress - newStress) / prevStress >= EPSILON && !isPauseButtonPressed()); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
+		} while ( (prevStress - newStress) / prevStress >= EPSILON && !isPaused()); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
 		
 
 		System.out.println("Updating layout...");
@@ -112,7 +112,7 @@ class StressMajorizationImpl extends BackgroundAlgorithm {
 			nodes2newPositions.put(nodes.get(i), position);
 		}
 		
-		setEndLayout(nodes2newPositions);
+		setLayout(nodes2newPositions);
 		return nodes2newPositions;
 		
 	}

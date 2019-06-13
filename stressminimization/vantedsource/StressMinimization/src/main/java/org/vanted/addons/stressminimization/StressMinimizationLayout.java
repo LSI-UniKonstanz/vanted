@@ -1,6 +1,8 @@
 package org.vanted.addons.stressminimization;
 
+import java.awt.geom.Point2D;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -8,7 +10,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.AttributeHelper;
 import org.Vector2d;
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.RealMatrix;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
@@ -21,11 +26,12 @@ import org.graffiti.selection.Selection;
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterPlugin;
 
 /**
  * Layout algorithm performing a stress minimization layout process.
  */
-public class StressMinimizationLayout extends BackgroundAlgorithm{
+public class StressMinimizationLayout extends BackgroundAlgorithm {
 	
 	/**
 	 * Creates a new StressMinimizationLayout instance.
@@ -43,7 +49,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm{
 
 	@Override
 	public String getDescription() {
-		// TODO write description, may also be left empty
+		// 
 		return "";
 	}
 
@@ -54,7 +60,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm{
 	
 	@Override
 	public boolean isLayoutAlgorithm() {
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -83,6 +89,8 @@ public class StressMinimizationLayout extends BackgroundAlgorithm{
 		
 	}
 	
+	// TODO: parameters
+	
 	@Override
 	public Parameter[] getParameters() {
 		// TODO Auto-generated method stub
@@ -94,28 +102,38 @@ public class StressMinimizationLayout extends BackgroundAlgorithm{
 		// TODO Auto-generated method stub
 		super.setParameters(params);
 	}
+
+	@Override
+	public void reset() {
+		// TODO Auto-generated method stub
+		super.reset();
+	}
 	
 	@Override
 	public void execute() {
 
 		setStatus(BackgroundStatus.RUNNING);
 		
-		List<Node> nodes = graph.getNodes();
-		Set<Set<Node>> components = GraphHelper.getConnectedComponents(nodes);
+		Set<Set<Node>> components = GraphHelper.getConnectedComponents(graph.getNodes());
 		HashMap<Node, Vector2d> newPositions = new HashMap<>();
 		
 		for (Set<Node> component : components) {
 			
+			waitIfPaused();
+			if (this.isStopped()) { return; }
+			
+			List<Node> nodes = new ArrayList<>(component);
+			calculateLayoutForNodes(nodes);
+			
+			/*
 			StressMajorizationImpl impl = new StressMajorizationImpl(component);
 			
-			// TODO: change this
-			for (PropertyChangeListener pcl : Arrays.asList(this.getPropertyChangeListener())) {
-				impl.pcs.addPropertyChangeListener(pcl);
-			}
+			impl.addPropertyChangeListeners(this.getPropertyChangeListener());
 			
 			Map<Node, Vector2d> newComponentPositions = impl.calculateLayout();
 			
 			newPositions.putAll(newComponentPositions);
+			*/
 			
 		}
 
@@ -135,9 +153,218 @@ public class StressMinimizationLayout extends BackgroundAlgorithm{
 		setStatus(BackgroundStatus.FINISHED);
 	}
 	
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		super.reset();
+	/**
+	 * Calculates an optimized layout for specific nodes of a graph. The nodes are seen as a subgraph. 
+	 * The other nodes of the original graph are not touched.
+	 * @param nodes The nodes a layout is calculated for.
+	 */
+	private void calculateLayoutForNodes(List<Node> nodes) {
+
+		// enable or disable console logging
+		final boolean LOG = false;
+		final double EPSILON = 1e-4; // TODO: as parameter
+		
+		final int n = nodes.size();
+		final int d = 2; // only implemented for two dimensional space
+
+		if (LOG) { System.out.println("Calculating distances..."); }
+		RealMatrix distances = calcDistances(nodes);
+		if (LOG) { System.out.println("Calculating weights..."); }
+		RealMatrix weights = getWeightsForDistances(distances, 2); // TODO make alpha selectable by user
+		
+		if (LOG) { System.out.println("Copying layout..."); }
+		RealMatrix layout = new Array2DRowRealMatrix(n, d); 
+		for (int i = 0; i < n; i += 1) {
+			Point2D position = AttributeHelper.getPosition(nodes.get(i));
+			layout.setRow(i, new double[] {position.getX(), position.getY()});
+		}
+
+		// TODO: parameter: randomize input layout
+		// TODO: always randomize if null layout?
+		
+		if (LOG) { System.out.println("Optimizing layout..."); }
+		double prevStress, newStress;
+		do {
+
+			waitIfPaused();
+			// if stopped, terminate immediately
+			if (this.isStopped()) { return; }
+			
+			StressMajorizationLayoutCalculator c = new StressMajorizationLayoutCalculator(layout, distances, weights);
+			prevStress = c.calcStress(layout);
+			
+			layout = c.calcOptimizedLayout();
+			newStress = c.calcStress(layout);
+
+			//update GUI layout
+			setLayout(layout, nodes);
+			// inverse displaying: high values get close to 0, values close to EPSILON get close to 1
+			// TODO: this formula isn't working
+			setProgress( 1 / ((prevStress - newStress) / prevStress - 1 + EPSILON) );
+
+			if (LOG) { 
+				System.out.println("===============================");
+				System.out.println("prev: " + prevStress);
+				System.out.println("new:  " + newStress);
+				System.out.println("diff: " + ((prevStress - newStress) / prevStress) + "; " + ((prevStress - newStress) / prevStress >= EPSILON));
+			}
+			
+		} while ( (prevStress - newStress) / prevStress >= EPSILON && !isPaused()); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
+		
+
+		System.out.println("Updating layout...");
+		double scaleFactor = 100;
+		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
+		for (int i = 0; i < n; i += 1) {
+			double[] pos = layout.getRow(i);
+			Vector2d position = new Vector2d(pos[0] * scaleFactor, 
+											 pos[1] * scaleFactor);
+			nodes2newPositions.put(nodes.get(i), position);
+		}
+		
+		setLayout(nodes2newPositions);
+		
 	}
+
+	// =========================
+	// MARK: threading utilities
+	// =========================
+	
+	private void setLayout(RealMatrix newLayout, List<Node> nodes) {
+
+		double scaleFactor = 100;
+		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
+		for (int i = 0; i < nodes.size(); i += 1) {
+			double[] pos = newLayout.getRow(i);
+			Vector2d position = new Vector2d(pos[0] * scaleFactor, 
+											 pos[1] * scaleFactor);
+			nodes2newPositions.put(nodes.get(i), position);
+		}
+		
+		//update GUI layout
+		setLayout(nodes2newPositions);
+		
+	}
+	
+	// TODO: this implementation is super buggy
+	
+	/**
+	 * If this algorithm was paused, this method waits until resume is called.
+	 */
+	private void waitIfPaused() {
+		while (isPaused()) {
+			try {
+				synchronized(this) {
+					this.wait();
+				}
+			} catch (InterruptedException e) {
+				// never mind, wait again
+			}
+		}
+	}
+	
+	@Override
+	public void resume() {
+		super.resume();
+		// wakes up waitIfPaused
+		synchronized(this) {
+			this.notifyAll();
+		}
+	}
+	
+	@Override
+	public void stop() {
+		super.stop();
+		// necessary to make thread terminate if currently paused
+		// TODO illegal monitor state exception
+		this.notifyAll();
+	}
+	
+	// =====================================
+	// MARK: distance and weight calculation
+	// =====================================
+	
+	/**
+	 * Calculates the distance matrix of the given nodes set.
+	 * @param nodesSet A set of nodes. For these nodes the distances to the other nodes in the set will be calculated.
+	 * @return the distance matrix
+	 */
+	private RealMatrix calcDistances(List<Node> nodes) {
+		
+		int n = nodes.size();
+		Map<Node, Integer> node2Index = new HashMap<>();
+		for (int i = 0; i < n; i += 1) {
+			node2Index.put(nodes.get(i), i);
+		}
+		
+		RealMatrix distances = new Array2DRowRealMatrix(n, n);
+		
+		//Breadth first Search
+		for (int i = 0; i < n; i += 1) {
+			for (int j = 0; j < n; j += 1) {
+				distances.setEntry(i, j, Double.POSITIVE_INFINITY);
+			}
+		}
+		
+		for (int i = 0; i < n; i += 1) {
+			distances.setEntry(i, i, 0);
+		}
+		
+		for(int i = 0; i < n; i++) {
+			
+			Collection<Node> nodesToVisit = nodes.get(i).getNeighbors();
+			
+			int dist = 1;
+			
+			boolean[] visited = new boolean[n];
+			Arrays.fill(visited, false);
+			
+			Collection<Node> nodesToVisitNext;
+			
+			while(nodesToVisit.size() != 0) {
+				//next layer is empty at first
+				nodesToVisitNext = new ArrayList<Node>();
+				
+				for(Node node : nodesToVisit) {
+					int j = node2Index.get(node);
+					if(!visited[j]) {
+						if(distances.getEntry(i, j) > dist) {
+							distances.setEntry(i, j, dist);
+							distances.setEntry(j, i, dist);							
+						}
+						visited[j] = true;
+						//Add neighbors of node to next layer
+						nodesToVisitNext.addAll(node.getNeighbors());
+						nodesToVisitNext.remove(node);
+					}
+				}
+				//current layer is done
+				nodesToVisit = nodesToVisitNext;
+				dist++;
+			}
+			
+			
+		}
+		
+		return distances;
+	}
+	
+	/**
+	 * Computes default weights from the given distance matrix, using the simple formula <br>
+	 * $$
+	 * w_{ij} := d_{ij}^{-\alpha}
+	 * $$
+	 * @return the calculated weight matrix
+	 */
+	private RealMatrix getWeightsForDistances(RealMatrix distances, int alpha) {
+		RealMatrix weights = new Array2DRowRealMatrix(distances.getRowDimension(), distances.getColumnDimension());
+		for (int i = 0; i < weights.getRowDimension(); i += 1) {
+			for (int j = 0; j < weights.getColumnDimension(); j += 1) {
+				double wij = Math.pow(distances.getEntry(i, j), -alpha);
+				weights.setEntry(i, j, wij);
+			}
+		}
+		return weights;
+	}
+
 }

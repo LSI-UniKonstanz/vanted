@@ -92,6 +92,8 @@ class StressMajorizationLayoutCalculator {
 		
 	}
 
+	// MARK: Layout calculation
+	
 	public RealMatrix calcOptimizedLayout() {
 		// to define test, we use the localized process to define test cases, etc.
 		return localizedOptimizationLayout();

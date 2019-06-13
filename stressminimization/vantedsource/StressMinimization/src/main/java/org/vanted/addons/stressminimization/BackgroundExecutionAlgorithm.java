@@ -52,16 +52,12 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	private JButton startButton;
 	private JButton stopButton;
 	private JCheckBox autoDrawCheckBox;
-	private boolean stop;
-	private boolean pause;
 	private double differenceStressValue;
 	
 	public BackgroundExecutionAlgorithm(BackgroundAlgorithm algorithm) {
 		super();
 		this.algorithm=algorithm;
 		status=BackgroundStatus.INIT;
-		pause=false;
-		stop=false;
 		differenceStressValue=0;
 		
 		//add BackgroundExecutionAlgorithm to listener list of algorithm
@@ -78,7 +74,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				switch(statusValue) {
 				case INIT:
 					status=BackgroundStatus.INIT;
-					startButton.setText("Layout Network");
+					startButton.setText("Pause");
 					break;
 				case RUNNING:
 					status= BackgroundStatus.RUNNING;
@@ -91,17 +87,15 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 					break;
 				case FINISHED:
 					status=BackgroundStatus.FINISHED;
-					startButton.setText("Layout Network");
+					startButton.setText("Pause");
 					autoDrawCheckBox.setEnabled(true);
 					stopButton.setEnabled(false);
-					stop=false;
 					break;
 				default:
 					status= BackgroundStatus.STATUSERROR;
 					break;
 				}
 				
-				System.out.println("Status background task: "+status);
 				//show status of the running algorithm in the bar at the bottom of the main frame
 				if(differenceStressValue==0) {
 					MainFrame.showMessage("Stress Minimization: "+status+"calc distances", MessageType.PERMANENT_INFO);
@@ -147,25 +141,16 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		});
 	}
 	
-	/**
-	 * return whether pause button was pressed
-	 * @return pause
-	 */
-	public boolean pauseButtonPressed() {
-		return pause;
-	}
-	
-	/**
-	 * return whether stop button was pressed
-	 * @return stop
-	 */
-	public boolean stopButtonPressed() {
-		return stop;
-	}
-	
 	@Override
 	public String getName() {
 		return algorithm.getName();
+	}
+
+	@Override
+	public void attach(Graph g, Selection selection) {
+		this.graph=g;
+		this.selection=selection;
+		algorithm.attach(g, selection);
 	}
 
 	@Override
@@ -198,8 +183,8 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				} catch (PreconditionException e) {
 					e.printStackTrace();
 				}
-				algorithm.execute();
 				setStatus(BackgroundStatus.INIT);
+				algorithm.execute();
 			}
 		};
 		Thread backgroundTask = new Thread(algoExecution);
@@ -212,7 +197,6 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		algorithm.reset();
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public String getCategory() {
 		return algorithm.getCategory();
@@ -230,7 +214,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 
 	@Override
 	public boolean isLayoutAlgorithm() {
-		return true;
+		return algorithm.isLayoutAlgorithm();
 	}
 
 	@Override
@@ -300,12 +284,12 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 					execute();
 					break;
 				case RUNNING:
-					pause=true;	//stop background thread
+					algorithm.pause();
 					setStatus(BackgroundStatus.IDLE);
 					startButton.setText("Continue");
 					break;
 				case IDLE:
-					pause=false;	//continue background thread
+					algorithm.resume();
 					setStatus(BackgroundStatus.RUNNING);
 					startButton.setText("Pause");
 					break;
@@ -322,7 +306,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		stopButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				stop=true;
+				algorithm.stop();
 				stopButton.setEnabled(false);
 			}
 		});
@@ -343,23 +327,6 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		return true;
 	}
 	
-	@Override
-	public void executeThreadSafe(ThreadSafeOptions options) {
-		execute();
-	}
-
-	@Override
-	public void resetDataCache(ThreadSafeOptions options) {
-		reset();
-	}
-
-	@Override
-	public void attach(Graph g, Selection selection) {
-		this.graph=g;
-		this.selection=selection;
-		algorithm.attach(g, selection);
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
@@ -375,14 +342,26 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		case "setStatus":
 			setStatus((BackgroundStatus)arg0.getNewValue());
 			break;
-		case "setEndLayout":
-			newLayout((HashMap<Node, Vector2d> )arg0.getNewValue());
-			break;
-		case "setStressValue":
+		case "setProgress":
+			// TODO: 
 			printStressValueDiff((double)arg0.getOldValue(), (double)arg0.getNewValue());
 			break;
 		default:
 			break;
 		}
 	}
+	
+	// both never used but required for thread safe algorithm
+	// ThreadSafeAlgorithm is adopted for GUI customization
+	
+	@Override
+	public void executeThreadSafe(ThreadSafeOptions options) {
+		execute();
+	}
+
+	@Override
+	public void resetDataCache(ThreadSafeOptions options) {
+		reset();
+	}
+
 }
