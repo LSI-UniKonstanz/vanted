@@ -345,7 +345,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			setStatus((BackgroundStatus)arg0.getNewValue());
 			break;
 		case "setProgress":
-			// TODO: 
+			// TODO: better progress
 			printProgress((double)arg0.getOldValue(), (double)arg0.getNewValue());
 			break;
 		default:

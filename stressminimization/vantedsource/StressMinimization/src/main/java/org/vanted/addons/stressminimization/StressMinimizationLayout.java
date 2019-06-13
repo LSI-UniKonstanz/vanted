@@ -19,6 +19,8 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
+import org.graffiti.plugin.parameter.DoubleParameter;
+import org.graffiti.plugin.parameter.EnumParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
@@ -99,6 +101,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	private static final String ALPHA_PARAMETER_NAME = "Weight Factor";
 	private static final int ALPHA_DEFAULT_VALUE = 2;
 	private int alpha = ALPHA_DEFAULT_VALUE;
+
+	private static final String EPSILON_PARAMETER_NAME = "Stress Change Termination Threshold";
+	private static final double EPSILON_DEFAULT_VALUE = 1e-4;
+	private double epsilon = EPSILON_DEFAULT_VALUE;
 	
 	/**
 	 * {@inheritDoc}
@@ -108,11 +114,19 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		List<Parameter> params = new ArrayList<>();
 		
 		params.add(new IntegerParameter(
-				ALPHA_DEFAULT_VALUE, 
+				alpha, 
 				0,
 				2, 
 				ALPHA_PARAMETER_NAME, 
 				"Determines how important correct distancing of nodes is that are far away to each other in an itteration step. High values mean placing of far away nodes is less important."
+		));
+		
+		params.add(new DoubleParameter(
+				epsilon, 
+				1e-8, 
+				1.0, 
+				EPSILON_PARAMETER_NAME, 
+				"Termination criterion of the stress minimization process. Low values will give better layouts, but computation will consume more time."
 		));
 		
 		return params.toArray(new Parameter[0]);
@@ -125,8 +139,13 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	public void setParameters(Parameter[] params) {
 		for (Parameter p : params) {
 			
-			if (ALPHA_PARAMETER_NAME.equals(p.getName())) {
+			switch (p.getName()) {
+			case ALPHA_PARAMETER_NAME:
 				this.alpha = (Integer) p.getValue();
+				break;
+			case EPSILON_PARAMETER_NAME:
+				this.epsilon = (Double) p.getValue();
+				break;
 			}
 			
 		}
@@ -198,7 +217,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 		// enable or disable console logging
 		final boolean LOG = true;
-		final double EPSILON = 1e-4; // TODO: as parameter
 		
 		final int n = nodes.size();
 		final int d = 2; // only implemented for two dimensional space
@@ -240,16 +258,16 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			//update GUI layout
 			setLayout(layout, nodes);
 			// inverse displaying: high values get close to 0, values close to EPSILON get close to 1
-			setProgress( Math.exp( -(prevStress - newStress) / prevStress + EPSILON) * 100 );
+			setProgress( Math.exp( -(prevStress - newStress) / prevStress + epsilon) * 100 );
 
 			if (LOG) { 
 				System.out.println("===============================");
 				System.out.println("prev: " + prevStress);
 				System.out.println("new:  " + newStress);
-				System.out.println("diff: " + ((prevStress - newStress) / prevStress) + "; " + ((prevStress - newStress) / prevStress >= EPSILON));
+				System.out.println("diff: " + ((prevStress - newStress) / prevStress));
 			}
 			
-		} while ( (prevStress - newStress) / prevStress >= EPSILON); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
+		} while ( (prevStress - newStress) / prevStress >= epsilon); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
 		
 
 		System.out.println("Updating layout...");
