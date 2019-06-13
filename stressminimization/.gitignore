@@ -9,3 +9,6 @@
 **/.metadata/*
 /.metadata/
 /.recommenders/
+
+#Ignore java class files
+**/*.class
