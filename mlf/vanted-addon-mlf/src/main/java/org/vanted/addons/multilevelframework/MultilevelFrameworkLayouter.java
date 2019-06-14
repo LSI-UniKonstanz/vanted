@@ -35,7 +35,9 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     private JButton setUpLayoutAlgorithmButton;
     private String lastSelectedAlgorithm = DEFAULT_ALGORITHM;
     private int randomTopParameterIndex = 0;
+    private int removeBendsParameterIndex = 0;
     private boolean randomTop = false;
+    private boolean removeBends = false;
 
     public MultilevelFrameworkLayouter() {
         super();
@@ -100,6 +102,9 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         // displaying levels doesn't work in a background task
 
         BackgroundTaskHelper.issueSimpleTask(this.getName(), "Multilevel Framework is running", () -> {
+            if (this.removeBends) {
+                GraphHelper.removeAllBends(this.graph, true);
+            }
             // split the subgraph induced by the selection into connected components
             connectedComponents[0] =
                     MlfHelper.calculateConnectedComponentsOfSelection(new HashSet<>(this.getSelectedOrAllNodes()));
@@ -182,6 +187,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     public void setParameters(Parameter[] params) {
         this.parameters = params;
         this.randomTop = (Boolean) this.parameters[this.randomTopParameterIndex].getValue();
+        this.removeBends = (Boolean) this.parameters[this.removeBendsParameterIndex].getValue();
     }
 
     /*
@@ -343,12 +349,17 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                     "Random initial layout on top level",
                     "Do an random layout on the top (i.e. coarsest) coarsening level");
 
+            BooleanParameter removeBendsParameter = new BooleanParameter(this.removeBends,
+                    "Remove bends",
+                    "Remove all edge bends from the graph");
+
             // TODO add GUI for Mergers and Placers
 
             this.parameters = new Parameter[]{algorithmList, setUpLayoutAlgorithmButtonParameter,
-                    randomLayoutParameter};
+                    randomLayoutParameter, removeBendsParameter};
 
             this.randomTopParameterIndex = ArrayUtils.indexOf(this.parameters, randomLayoutParameter);
+            this.removeBendsParameterIndex = ArrayUtils.indexOf(this.parameters, removeBendsParameter);
         }
     }
 }
