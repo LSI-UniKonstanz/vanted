@@ -11,20 +11,30 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * A class that implements the Pivot Multidimensional Scaling algorithm
+ * as an initial layout for some nodes.
+ */
 public class PivotMDS implements InitialPlacer {
 
-    static final double EPSILON = 0.0000000001;
+    /** When to stop the power iteration. */
+    private static final double EPSILON = 0.0000000001;
     /** A {@link Random} used to get random positions and vectors. */
     private static final Random RAND = new Random();
 
     /**
-     * executes PivotMDS
+     * Executes the PivotMDS algorithm on a given set of nodes.
      *
-     * @param nodes list of nodes, the algorithm should get executed on
-     * @param distances NodeValueMatrix storing all distances for the nodes
-     * @return list containing the new positions
+     * @param nodes
+     *      the nodes which will be layouted. The indices of the nodes in this list correspond to
+     *      the indices used by {@code distances}.
+     * @param distances
+     *      the matrix containing the node theoretical distances between the nodes.
+     *      The implementing class shall only read the values in this matrix.
      *
-     * @author theo, jannik
+     * @return the new positions the nodes should be moved to.
+     *
+     * @author theo, Jannik
      */
     @Override
     public List<Vector2d> calculateInitialPositions(final List<Node> nodes, final NodeValueMatrix distances) {
@@ -153,10 +163,10 @@ public class PivotMDS implements InitialPlacer {
 
 
     /**
-     * Creates to random Vectors.
+     * Creates two random Vectors.
      *
-     * @param dimension the dimension the vectors  shall have
-     * @return a RealMatrixIml dimension x 2 containing the two vectors
+     * @param dimension the dimension the vectors shall have.
+     * @return a {@code dimension x 2} RealMatrixIml containing the two vectors
      *
      * @author theo
      */
@@ -176,7 +186,7 @@ public class PivotMDS implements InitialPlacer {
 
 
     /**
-     *returns the min of a,b
+     * Returns the min of a, b.
      *
      * @param a value 1
      * @param b value 2
@@ -190,7 +200,7 @@ public class PivotMDS implements InitialPlacer {
 
 
     /**
-     * calculates the difference between the two arrays. For this, the values of a and b are summed,
+     * Calculates the difference between the two arrays. For this, the values of a and b are summed,
      * and then the smaller one is divided by the larger one
      *
      * @param a first double-array
@@ -199,7 +209,7 @@ public class PivotMDS implements InitialPlacer {
      *
      * @author theo
      */
-    private double getdifference(final double[] a, final double[] b){
+    private double getDifference(final double[] a, final double[] b){
         double sumA = 0;
         double sumB = 0;
         for (int i = 0; i < a.length; i++) {
@@ -215,7 +225,7 @@ public class PivotMDS implements InitialPlacer {
 
 
     /**
-     * Calculating the two eigen values using powerIteration.
+     * Calculate the two eigen values using powerIteration.
      *
      * @param matrix containing the doubleCentred distance values.
      * @return a doubleArray containing the two eigen values.
@@ -233,7 +243,7 @@ public class PivotMDS implements InitialPlacer {
 
         double change = 1;
 
-        //stopp, whenn the change is smaller 1e-10
+        //stop, when the change is smaller 1e-10
         while(change > EPSILON){
 
             // remember old values
@@ -248,7 +258,7 @@ public class PivotMDS implements InitialPlacer {
             //calculate the difference between the oldEigenVecs and the new eigenVecs
             double newDiff;
             for(int i = 0; i < 2; i++){
-                newDiff = Math.abs(getdifference(oldEigenVecs.getColumn(i), eigenVec.getColumn(i)));
+                newDiff = Math.abs(getDifference(oldEigenVecs.getColumn(i), eigenVec.getColumn(i)));
                 change = getMin(change, newDiff);
             }
         }
@@ -310,7 +320,4 @@ public class PivotMDS implements InitialPlacer {
         }
         return c;
     }
-
-
-
 }

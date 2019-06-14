@@ -4,7 +4,6 @@ import org.Vector2d;
 import org.graffiti.graph.Node;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,11 +20,12 @@ public interface IterativePositionAlgorithm {
      * @param nodes
      *      the nodes to be worked on. The indices of the nodes in this list correspond to
      *      the indices used by {@code distances} and {@code weights}.
+     *      The implementing class shall not change their position (attribute) in any way.
      * @param distances
-     *      the matrix containing the node graphical distances between the nodes.
+     *      the matrix containing the node theoretical distances between the nodes.
      *      The implementing class shall only read the values in this matrix.
      * @param weights
-     *      the matrix containing the node graphical distances between the nodes.
+     *      the matrix containing the weights associated with each node pair.
      *      The implementing class shall only read the values in this matrix.
      * @return
      *      the newly iterated positions of the nodes in an list with the same

@@ -1,16 +1,12 @@
 package org.vanted.addons.stressminaddon;
 
-import antlr.collections.impl.Vector;
-import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import org.AttributeHelper;
 import org.Vector2d;
-import org.Vector3d;
 import org.graffiti.graph.Node;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -30,11 +26,10 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
      *      the nodes to be worked on. The indices of the nodes in this list correspond to
      *      the indices used by {@code distances} and {@code weights}.
      * @param distances
-     *      the matrix containing the node graphical distances between the nodes.
-     *      The implementing class shall only read the values in this matrix.
+     *      the matrix containing the node theoretical distances between the nodes.
      * @param weights
-     *      the matrix containing the node graphical distances between the nodes.
-     *      The implementing class shall only read the values in this matrix.
+     *      the matrix containing the weights associated with each node pair.
+     *
      * @return
      *      the newly iterated positions of the nodes in an list with the same
      *
@@ -42,8 +37,6 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
      */
     @Override
     public List<Vector2d> nextIteration(List<Node> nodes, NodeValueMatrix distances, NodeValueMatrix weights) {
-
-
         /*
          * create an ArrayList for saving the node position
          * fill the ArrayList with the positions of nodes from Graph
