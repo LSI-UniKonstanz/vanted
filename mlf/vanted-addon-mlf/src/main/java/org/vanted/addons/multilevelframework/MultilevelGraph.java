@@ -18,7 +18,7 @@ public class MultilevelGraph {
      * Contains the coarsening levels. The highest index corresponds to the "coarsest" level.
      */
     private final ArrayList<InternalGraph> levels;
-    private final Graph original_graph;
+    private final Graph originalGraph;
 
     /**
      * Create a {@link MultilevelGraph}. Initially only the original graph will be contained.
@@ -29,7 +29,7 @@ public class MultilevelGraph {
      */
     public MultilevelGraph(Graph level_0) {
         this.levels = new ArrayList<>();
-        this.original_graph = Objects.requireNonNull(level_0,
+        this.originalGraph = Objects.requireNonNull(level_0,
                 "MultilevelGraph's level 0 must not be null.");
     }
 
@@ -44,6 +44,19 @@ public class MultilevelGraph {
     }
 
     /**
+     * @return
+     *      the total number of nodes contained within all the levels (including the original graph).
+     * @author Gordian
+     */
+    public int getTotalNumberOfNodes() {
+        int result = this.originalGraph.getNumberOfNodes();
+        for (InternalGraph g : this.levels) {
+            result += g.getNumberOfNodes();
+        }
+        return result;
+    }
+
+    /**
      * Get the topmost (i.e. the "coarsest") coarsening level.
      *
      * @return the topmost coarsening level or the original graph if there are no coarsened versions.
@@ -51,7 +64,7 @@ public class MultilevelGraph {
      */
     public Graph getTopLevel() {
         if (this.levels.isEmpty()) {
-            return this.original_graph;
+            return this.originalGraph;
         } else {
             return this.levels.get(this.levels.size() - 1);
         }
@@ -74,7 +87,7 @@ public class MultilevelGraph {
         this.levels.add(new InternalGraph());
 
         // set a nicer name for the coarsened graph
-        String original_name = this.original_graph.getName();
+        String original_name = this.originalGraph.getName();
         original_name = original_name == null ? "unknown" : original_name;
         this.topInternalLevel().setName("Level " + this.levels.size() + " of " + original_name);
 
@@ -125,7 +138,7 @@ public class MultilevelGraph {
         }
         // TODO: safe to hash nodes?
         // TODO: does this meet performance goals?
-        final Graph prev = this.levels.size() == 1 ? this.original_graph : this.levels.get(this.levels.size() - 2);
+        final Graph prev = this.levels.size() == 1 ? this.originalGraph : this.levels.get(this.levels.size() - 2);
         final Set<Node> previousNodes = new HashSet<>(prev.getNodes());
         final Set<Node> representedNodes = new HashSet<>();
         for (Node n : this.topInternalLevel().getNodes()) {

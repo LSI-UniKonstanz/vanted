@@ -38,7 +38,7 @@ public class RandomMerger implements Merger {
     // prefer merging MergedNodes that don't already represent lots of nodes
     boolean useWeights = true;
 
-    // the path at which edge weights are stored (weights must be doubles or ints)
+    // the path at which edge weights are stored see MlfHelper.getEdgeWeight
     String weightAttributePath = "weight";
 
     // if this is true, the merger will prefer merging edges with low weight

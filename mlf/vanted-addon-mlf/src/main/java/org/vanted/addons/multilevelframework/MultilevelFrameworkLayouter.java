@@ -4,6 +4,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider;
 import org.AttributeHelper;
 import org.Vector2d;
 import org.apache.commons.lang.ArrayUtils;
@@ -91,13 +92,15 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         final Placer placer = new RandomPlacer();
         final LayoutAlgorithmWrapper algorithm =
                 this.layoutAlgorithms.get(Objects.toString(this.algorithmListComboBox.getSelectedItem()));
-        final Collection<?extends CoarsenedGraph>[] connectedComponents = new Collection[1];
+        final List<?extends CoarsenedGraph>[] connectedComponents = new List[1];
 
         System.out.println("-----------------------------------------------------------------------------------------");
 
+        final MLFBackgroundTaskStatus bts = new MLFBackgroundTaskStatus();
+
         // displaying levels doesn't work in a background task
 
-        BackgroundTaskHelper.issueSimpleTask(this.getName(), "", () -> {
+        BackgroundTaskHelper.issueSimpleTask(this.getName(), "Multilevel Framework is running", () -> {
             // split the subgraph induced by the selection into connected components
             connectedComponents[0] =
                     MlfHelper.calculateConnectedComponentsOfSelection(new HashSet<>(this.getSelectedOrAllNodes()));
@@ -105,23 +108,40 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
             final Selection emptySelection = new Selection();
 
             // layout each connected component
-            for (CoarsenedGraph cg : connectedComponents[0]) {
+            for (int i = 0; i < connectedComponents[0].size(); i++) {
+                final CoarsenedGraph cg = connectedComponents[0].get(i);
+                if (bts.isStopped) { break; }
                 MultilevelGraph componentMLG = new MultilevelGraph(cg);
                 merger.buildCoarseningLevels(componentMLG);
+
+                // keep track of how many nodes coarsening levels there were at the start (for the progress bar)
+                final int numLevelsAtStart = componentMLG.getNumberOfLevels();
+                // indicate that this is a coarsened graph to allow for optimizations in the level layouter
+                componentMLG.getTopLevel().setBoolean("GRAPH_IS_MLF_COARSENING_LEVEL", true);
+                // indicate that this is the top level
+                componentMLG.getTopLevel().setBoolean("GRAPH_IS_MLF_COARSENING_TOP_LEVEL", true);
+
                 if (this.randomTop) {
                     final RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
                     rla.attach(componentMLG.getTopLevel(), emptySelection);
                     rla.execute();
                 }
-                while (componentMLG.getNumberOfLevels() > 1) {
-                    System.out.println("Layouting level " + componentMLG.getNumberOfLevels());
+
+                while (componentMLG.getNumberOfLevels() > 1 && !bts.isStopped) {
+                    bts.statusMessage = this.makeStatusMessage(componentMLG.getNumberOfLevels(),
+                            connectedComponents[0], i);
+                    bts.status = this.calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
 //                    this.display(componentMLG.getTopLevel());
                     algorithm.execute(componentMLG.getTopLevel(), emptySelection);
                     placer.reduceCoarseningLevel(componentMLG);
+                    // indicate that this is a coarsened graph to allow for optimizations in the level layouter
+                    componentMLG.getTopLevel().setBoolean("GRAPH_IS_MLF_COARSENING_LEVEL", true);
                 }
+
                 assert componentMLG.getNumberOfLevels() == 1 : "Not all coarsening levels were removed";
                 System.out.println("Layouting level 0");
                 algorithm.execute(componentMLG.getTopLevel(), emptySelection);
+                bts.status = -1;
             }
         }, () -> {
             // apply position updates
@@ -139,7 +159,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
             MainFrame.getInstance().setActiveSession(oldSession, oldView);
             GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
             ConnectedComponentLayout.layoutConnectedComponents(this.graph);
-        });
+        }, bts);
     }
 
     /**
@@ -194,6 +214,50 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         try {
             SwingUtilities.invokeAndWait(() -> GraphHelper.diplayGraph(g));
         } catch (InterruptedException | InvocationTargetException ignored) { }
+    }
+
+    /**
+     * Make a status message for the GUI.
+     * @param level
+     *      The current level.
+     * @param connectedComponents
+     *      The connected components of the current graph. Must not be {@code null}.
+     * @param current
+     *      The index of the connected component that is currently being laid out.
+     * @return
+     *      the status message.
+     * @author Gordian
+     */
+    private String makeStatusMessage(int level, List<?extends CoarsenedGraph> connectedComponents, int current) {
+        return "Laying out level "
+                + level
+                + " of connected component "
+                + (current + 1)
+                + " (out of " + connectedComponents.size() + ") of graph \""
+                + this.graph.getName() + "\"";
+    }
+
+    /**
+     * Create a percentage for the GUI. Calculates the progress for the current connected component.
+     * @param mlg
+     *      The {@link MultilevelGraph}. Must not be {@code null}.
+     * @param connectedComponents
+     *      The list of connected components for the graph that is currently being processed.
+     * @param currentIndex
+     *      The index of the connected component that is currently being processed.
+     * @param numberOfLevelsAtStart
+     *      The total number of coarsening levels.
+     * @return
+     *      the calculated progress
+     * @author Gordian
+     */
+    private double calculateProgress(MultilevelGraph mlg, List<?extends CoarsenedGraph> connectedComponents,
+                                     int currentIndex, int numberOfLevelsAtStart) {
+        if (numberOfLevelsAtStart == 0 || connectedComponents.size() == 0) { return -1; }
+        // calculate the progress as the percentage of nodes and connected components already processed
+        return 100.0 * (1 - (double)mlg.getNumberOfLevels()/numberOfLevelsAtStart)
+                * (currentIndex + 1.0)
+                / connectedComponents.size();
     }
 
     /**
@@ -281,4 +345,55 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
             this.randomTopParameterIndex = ArrayUtils.indexOf(this.parameters, randomLayoutParameter);
         }
     }
+}
+
+
+/**
+ * @author Gordian
+ * @see BackgroundTaskStatusProvider
+ */
+class MLFBackgroundTaskStatus implements BackgroundTaskStatusProvider {
+    boolean isStopped = false;
+    double status = -1;
+    String statusMessage = "";
+
+    /**
+     * @see org.BackgroundTaskStatusProvider#getCurrentStatusValue()
+     */
+    @Override public int getCurrentStatusValue() { return (int) Math.ceil(this.getCurrentStatusValueFine()); }
+
+    /**
+     * @see org.BackgroundTaskStatusProvider#setCurrentStatusValue(int)
+     */
+    @Override public void setCurrentStatusValue(int value) { this.status = value; }
+
+    /**
+     * @see org.BackgroundTaskStatusProvider#getCurrentStatusValueFine()
+     */
+    @Override public double getCurrentStatusValueFine() { return this.status; }
+
+    /**
+     * @see org.BackgroundTaskStatusProvider#getCurrentStatusMessage1()
+     */
+    @Override public String getCurrentStatusMessage1() { return this.statusMessage; }
+
+    /**
+     * @see org.BackgroundTaskStatusProvider#getCurrentStatusMessage2()
+     */
+    @Override public String getCurrentStatusMessage2() { return null; }
+
+    /**
+     * @see org.BackgroundTaskStatusProvider#pleaseStop()
+     */
+    @Override public void pleaseStop() { this.isStopped = true; }
+
+    /**
+     * @see org.BackgroundTaskStatusProvider#pluginWaitsForUser()
+     */
+    @Override public boolean pluginWaitsForUser() { return false; }
+
+    /**
+     * @see org.BackgroundTaskStatusProvider#pleaseContinueRun()
+     */
+    @Override public void pleaseContinueRun() { }
 }
