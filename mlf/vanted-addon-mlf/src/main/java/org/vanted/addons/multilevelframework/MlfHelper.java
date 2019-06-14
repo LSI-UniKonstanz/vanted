@@ -23,7 +23,7 @@ public enum MlfHelper {
      * @param selection The {@link Selection}. Must not be {@code null}.
      * @return The connected components of the subgraph in induced by the selection, as {@link CoarsenedGraph}s.
      */
-    public static Collection<?extends CoarsenedGraph>
+    public static List<?extends CoarsenedGraph>
     calculateConnectedComponentsOfSelection(Set<Node> selection) {
         long startTime = System.nanoTime();
         if (selection.size() <= 0) {
