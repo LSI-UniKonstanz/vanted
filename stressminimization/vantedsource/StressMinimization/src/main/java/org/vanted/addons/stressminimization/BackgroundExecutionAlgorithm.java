@@ -341,6 +341,9 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				newLayout((HashMap<Node, Vector2d>)arg0.getNewValue());
 			}
 			break;
+		case "setEndLayout":
+			newLayout((HashMap<Node, Vector2d>)arg0.getNewValue());
+			break;
 		case "setStatus":
 			setStatus((BackgroundStatus)arg0.getNewValue());
 			break;

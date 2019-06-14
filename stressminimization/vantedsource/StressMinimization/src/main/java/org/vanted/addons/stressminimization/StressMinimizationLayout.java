@@ -15,6 +15,8 @@ import org.Vector2d;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.graffiti.editor.GravistoService;
+import org.graffiti.graph.AdjListGraph;
+import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
@@ -117,7 +119,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		
 		params.add(new DoubleParameter(
 				epsilon, 
-				1e-8, 
+				0.0, // FIXME: use other Parameter Class
 				1.0, 
 				EPSILON_PARAMETER_NAME, 
 				"Termination criterion of the stress minimization process. Low values will give better layouts, but computation will consume more time."
@@ -139,6 +141,8 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				break;
 			case EPSILON_PARAMETER_NAME:
 				this.epsilon = (Double) p.getValue();
+				// FIXME: 
+				this.epsilon = 1e-4;
 				break;
 			}
 			
@@ -164,39 +168,48 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 		setStatus(BackgroundStatus.RUNNING);
 		
-		Set<Set<Node>> components = GraphHelper.getConnectedComponents(graph.getNodes());
-		HashMap<Node, Vector2d> newPositions = new HashMap<>();
+		Collection<Node> workNodes;
+		
+		if (selection.isEmpty()) {
+			workNodes = graph.getNodes();
+		} else {
+			workNodes = selection.getNodes();
+			// for all selected edges, add source and target nodes
+			for (Edge e : selection.getEdges()) {
+				workNodes.add(e.getSource());
+				workNodes.add(e.getTarget());
+			}
+		}
+		
+		// IMPORTANT: components will add nodes that are not in workNodes to single components!
+		Set<Set<Node>> components = GraphHelper.getConnectedComponents(workNodes);
 		
 		for (Set<Node> component : components) {
+			
+			if (!selection.isEmpty()) {
+				component.retainAll(workNodes);
+			}
 			
 			if (waitIfPausedAndCheckStop()) { return; }
 			
 			List<Node> nodes = new ArrayList<>(component);
 			calculateLayoutForNodes(nodes);
 			
-			/*
-			StressMajorizationImpl impl = new StressMajorizationImpl(component);
-			
-			impl.addPropertyChangeListeners(this.getPropertyChangeListener());
-			
-			Map<Node, Vector2d> newComponentPositions = impl.calculateLayout();
-			
-			newPositions.putAll(newComponentPositions);
-			*/
-			
 		}
-
-		GraphHelper.applyUndoableNodePositionUpdate(newPositions, "Stress Majorization");
+		
+		setEndLayout();
 		
 		// center graph layout
 		GravistoService.getInstance().runAlgorithm(
 				new CenterLayouterAlgorithm(), 
 				graph,	
-				new Selection(""), 
+				selection, 
 				null
 		);
 
 		// remove space between components / remove overlapping
+		// do not run as regular algorithm, since that triggers a gui dialogue
+		// however, then there is no direct way to work only on the selection
 		ConnectedComponentLayout.layoutConnectedComponents(graph);
 		
 		setStatus(BackgroundStatus.FINISHED);
@@ -399,7 +412,16 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				nodesToVisitNext = new ArrayList<Node>();
 				
 				for(Node node : nodesToVisit) {
-					int j = node2Index.get(node);
+					Integer indexIfPresent = node2Index.get(node);
+					
+					// due to the selection, we may get nodes here, that are not present in the node2Index map
+					// these nodes will be ignored
+					if (indexIfPresent == null) {
+						continue;
+					}
+					
+					int j = indexIfPresent;
+					
 					if(!visited[j]) {
 						if(distances.getEntry(i, j) > dist) {
 							distances.setEntry(i, j, dist);

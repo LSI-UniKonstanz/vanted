@@ -14,7 +14,6 @@ public class StressMinimizationAddon extends AddonAdapter {
 	@Override
 	protected void initializeAddon() {
 		this.algorithms = new Algorithm[] {
-				new StressMinimizationLayout(),
 				new BackgroundExecutionAlgorithm(new StressMinimizationLayout())
 		};
 		// other fields are initialized with empty arrays by default

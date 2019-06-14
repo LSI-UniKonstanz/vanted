@@ -80,16 +80,25 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
      * send the old and the new layout
      * @param layout
      */
-    public void setLayout(HashMap<Node, Vector2d> nodes2newPositions) {
+    protected void setLayout(HashMap<Node, Vector2d> nodes2newPositions) {
     	 pcs.firePropertyChange("setLayout",this.layout, nodes2newPositions);
     	 this.layout=nodes2newPositions;
     }
+
+    /**
+     * notify listener classes that the final graph layout is available and
+     * send the old and the new layout.
+     * @param layout
+     */
+    protected void setEndLayout() {
+    	 pcs.firePropertyChange("setEndLayout",null, this.layout);
+    }
     
     /**
-     * notify listener classes a new status of the algorithm is available
+     * notify listener classes a new status of the algorithm is available.
      * @param status
      */
-    public void setStatus(BackgroundStatus status) {
+    protected void setStatus(BackgroundStatus status) {
     	pcs.firePropertyChange("setStatus", this.status, status);
     	this.status=status;
     }
@@ -98,7 +107,7 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
      * notify listener classes a new stress value is available
      * @param newStressValue
      */
-    public void setProgress(double newProgress) {
+    protected void setProgress(double newProgress) {
     	double oldProgress = this.progress;
     	this.progress = newProgress;
     	pcs.firePropertyChange("setProgress", oldProgress, newProgress);
