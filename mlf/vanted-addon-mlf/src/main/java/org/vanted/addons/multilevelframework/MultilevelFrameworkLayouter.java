@@ -20,6 +20,7 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.Session;
+import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -29,7 +30,7 @@ import java.util.*;
 public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
     private Map<String, LayoutAlgorithmWrapper> layoutAlgorithms;
-    private final static String DEFAULT_ALGORITHM = "Force Directed (\"parameter\" GUI)";
+    private final static String DEFAULT_ALGORITHM = BlockingForceDirected.springName;
     private JComboBox<String> algorithmListComboBox;
     private JButton setUpLayoutAlgorithmButton;
     private String lastSelectedAlgorithm = DEFAULT_ALGORITHM;
@@ -94,8 +95,6 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 this.layoutAlgorithms.get(Objects.toString(this.algorithmListComboBox.getSelectedItem()));
         final List<?extends CoarsenedGraph>[] connectedComponents = new List[1];
 
-        System.out.println("-----------------------------------------------------------------------------------------");
-
         final MLFBackgroundTaskStatus bts = new MLFBackgroundTaskStatus();
 
         // displaying levels doesn't work in a background task
@@ -128,7 +127,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 }
 
                 while (componentMLG.getNumberOfLevels() > 1 && !bts.isStopped) {
-                    bts.statusMessage = this.makeStatusMessage(componentMLG.getNumberOfLevels(),
+                    bts.statusMessage = this.makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
                             connectedComponents[0], i);
                     bts.status = this.calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
 //                    this.display(componentMLG.getTopLevel());
@@ -139,8 +138,11 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 }
 
                 assert componentMLG.getNumberOfLevels() == 1 : "Not all coarsening levels were removed";
-                System.out.println("Layouting level 0");
+                bts.status = this.calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
+                bts.statusMessage = this.makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
+                        connectedComponents[0], i);
                 algorithm.execute(componentMLG.getTopLevel(), emptySelection);
+                bts.statusMessage = "Finished laying out the levels";
                 bts.status = -1;
             }
         }, () -> {
@@ -218,6 +220,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
     /**
      * Make a status message for the GUI.
+     * @param totalLevels
+     *      The total number of coarsening levels.
      * @param level
      *      The current level.
      * @param connectedComponents
@@ -228,9 +232,11 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      *      the status message.
      * @author Gordian
      */
-    private String makeStatusMessage(int level, List<?extends CoarsenedGraph> connectedComponents, int current) {
+    private String makeStatusMessage(int totalLevels, int level, List<?extends CoarsenedGraph> connectedComponents,
+                                     int current) {
         return "Laying out level "
                 + level
+                + " (out of " + totalLevels + ")"
                 + " of connected component "
                 + (current + 1)
                 + " (out of " + connectedComponents.size() + ") of graph \""
