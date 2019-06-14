@@ -53,8 +53,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 	@Override
 	public String getDescription() {
-		// 
-		return "";
+		return "Layouting Algorithm based on graph theoretical distances. Tries to minimize a global stress function and thereby tries to fit distances in the layout to the graph theoretical distances of the nodes.";
 	}
 
 	@Override
@@ -84,12 +83,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		if (graph.isEmpty()) {
 			throw new PreconditionException("Stress Minimization Layout cannot work on empty graphs");
 		}
-		
-		/* 
-		if (graph.isDirected()) {
-			throw new PreconditionException("Stress Minimization Layout cannot work on directed graphs");
-		}
-		*/
 		
 	}
 	

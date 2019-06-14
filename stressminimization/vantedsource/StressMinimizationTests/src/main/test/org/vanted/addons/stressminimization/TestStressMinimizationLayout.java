@@ -86,9 +86,12 @@ public class TestStressMinimizationLayout extends TestCase {
 		assert(positionsUnique);
 	}
 	
-	/* The tested behaviour is not intended
+	/**
+	 * The first implementation did not accept directed inputs, 
+	 * but this behavior is undesired.
+	 */
 	@Test
-	public void testCheckThrowsOnDirected() throws PreconditionException {
+	public void testCheckDoesNotThrowOnDirected() {
 		
 		Graph directed = new AdjListGraph();
 		Node n1 = directed.addNode();
@@ -99,11 +102,9 @@ public class TestStressMinimizationLayout extends TestCase {
 		layout.attach(directed, sel);
 		try {
 			layout.check();
-			fail("Expected precodition exception for directed graph");
-		} catch (Exception ex) {
-			assert(ex instanceof PreconditionException);
+		} catch (PreconditionException ex) {
+			fail("Implementation did not accept directed input");
 		}
 		
 	}
-	*/
 }
