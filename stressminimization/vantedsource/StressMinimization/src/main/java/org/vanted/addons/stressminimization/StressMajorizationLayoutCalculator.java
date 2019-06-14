@@ -104,8 +104,8 @@ class StressMajorizationLayoutCalculator {
 	// ===========================================
 	
 	private RealMatrix localizedOptimizationLayout() {
+		
 		RealMatrix X = initialLayout.copy();
-
 
 		for (int i = 0; i < n; i += 1) {
 			RealVector Xi = X.getRowVector(i);
@@ -129,7 +129,9 @@ class StressMajorizationLayoutCalculator {
 					}
 				}
 				
-				double value = numerator / denominator;
+				// if no node was visisted, denominator will be 0, 
+				// but we don't want to set the coordinate to NaN (result of division by zero)
+				double value = denominator != 0 ? numerator / denominator : 0;
 				Xi.setEntry(a, value);
 			}
 			X.setRowVector(i, Xi);

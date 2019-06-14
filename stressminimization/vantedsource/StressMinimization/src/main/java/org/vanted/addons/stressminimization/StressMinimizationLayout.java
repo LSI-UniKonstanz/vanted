@@ -21,6 +21,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
+import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.EnumParameter;
 import org.graffiti.plugin.parameter.IntegerParameter;
@@ -33,6 +34,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterPlugin;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 
 /**
  * Layout algorithm performing a stress minimization layout process.
@@ -88,19 +90,26 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		
 	}
 	
-	// TODO: parameters
-
+	
 	// ================
 	// MARK: parameters
 	// ================
+	
+	// NOTE: we do not use the parameters field
+	// because using an array for storing parameters
+	// seemed very uncomfortable to us.
 	
 	private static final String ALPHA_PARAMETER_NAME = "Weight Factor";
 	private static final int ALPHA_DEFAULT_VALUE = 2;
 	private int alpha = ALPHA_DEFAULT_VALUE;
 
-	private static final String EPSILON_PARAMETER_NAME = "Stress Change Termination Threshold";
-	private static final double EPSILON_DEFAULT_VALUE = 1e-4;
+	private static final String EPSILON_PARAMETER_NAME = "Stress Change Termination Threshold: 10^{-x} Choose x:";
+	private static final double EPSILON_DEFAULT_VALUE = -4;
 	private double epsilon = EPSILON_DEFAULT_VALUE;
+	
+	private static final String RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME = "Randomize initial layout.";
+	private static final boolean RANDOMIZE_INPUT_LAYOUT_DEFAULT_VALUE = false;
+	private boolean randomizeInputLayout = RANDOMIZE_INPUT_LAYOUT_DEFAULT_VALUE;
 	
 	/**
 	 * {@inheritDoc}
@@ -118,11 +127,17 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		));
 		
 		params.add(new DoubleParameter(
-				epsilon, 
-				0.0, // FIXME: use other Parameter Class
-				1.0, 
+				-4.0, 
+				Double.NEGATIVE_INFINITY,
+				0.0, 
 				EPSILON_PARAMETER_NAME, 
 				"Termination criterion of the stress minimization process. Low values will give better layouts, but computation will consume more time."
+		));
+		
+		params.add(new BooleanParameter(
+				randomizeInputLayout, 
+				RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME, 
+				"Use a random layout as initial layout rather than the present layout."
 		));
 		
 		return params.toArray(new Parameter[0]);
@@ -141,9 +156,11 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				break;
 			case EPSILON_PARAMETER_NAME:
 				this.epsilon = (Double) p.getValue();
-				// FIXME: 
-				this.epsilon = 1e-4;
+				// TODO: parameter currently not working
+				this.epsilon = Math.pow(10, (Double) p.getValue());
 				break;
+			case RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME:
+				this.randomizeInputLayout = (Boolean) p.getValue();
 			}
 			
 		}
@@ -167,6 +184,12 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	public void execute() {
 
 		setStatus(BackgroundStatus.RUNNING);
+
+		if (randomizeInputLayout) {
+			RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
+			rla.attach(graph, selection);
+			rla.execute();
+		}
 		
 		Collection<Node> workNodes;
 		
@@ -211,10 +234,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		// do not run as regular algorithm, since that triggers a gui dialogue
 		// however, then there is no direct way to work only on the selection
 		ConnectedComponentLayout.layoutConnectedComponents(graph);
-		
+
 		setStatus(BackgroundStatus.FINISHED);
 	}
-	
+
 	/**
 	 * Calculates an optimized layout for specific nodes of a graph. The nodes are seen as a subgraph. 
 	 * The other nodes of the original graph are not touched.
@@ -241,11 +264,19 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		if (waitIfPausedAndCheckStop()) { return; }
 		
 		if (LOG) { System.out.println("Copying layout..."); }
+		
 		RealMatrix layout = new Array2DRowRealMatrix(n, d); 
 		for (int i = 0; i < n; i += 1) {
 			Point2D position = AttributeHelper.getPosition(nodes.get(i));
-			layout.setRow(i, new double[] {position.getX(), position.getY()});
+			layout.setRow(i, new double[] { position.getX(), position.getY() });
 		}
+		
+		// remove the scaling that is done at the end of the layout process
+		// layouts in VANTED look good with distances at about 100
+		// but our algorithm works with distances around 1.0
+		// scaling down the positions by the scale factor also
+		// makes this algorithm work better with results from other algorithms
+		layout = unscaleLayout(layout);
 
 		// TODO: parameter: randomize input layout
 		// TODO: always randomize if null layout?
@@ -265,7 +296,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			//update GUI layout
 			setLayout(layout, nodes);
 			// inverse displaying: high values get close to 0, values close to EPSILON get close to 1
-			setProgress( Math.exp( -(prevStress - newStress) / prevStress + epsilon) * 100 );
+			setProgress( 1 - Math.sqrt( (prevStress - newStress) / prevStress + epsilon) );
 
 			if (LOG) { 
 				System.out.println("===============================");
@@ -278,15 +309,61 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		
 
 		System.out.println("Updating layout...");
-		double scaleFactor = 100;
+		setLayout(layout, nodes);
+		
+	}
+
+	// ======================
+	// MARK: layout utilities
+	// ======================
+	
+	/**
+	 * Layout scale factor, see scaleLayout.
+	 */
+	private final double LAYOUT_SCALE_FACTOR = 100;
+	
+	/**
+	 * Layouts in VANTED look good with distances at about 100
+	 * but the background algorithm works with distances around 1.0
+	 * To make the resulting layouts look good, we scale up the results by a scale factor
+	 */
+	private RealMatrix scaleLayout(final RealMatrix layout) {
+		RealMatrix newLayout = new Array2DRowRealMatrix(layout.getRowDimension(), layout.getColumnDimension());
+		for (int i = 0; i < layout.getRowDimension(); i += 1) {
+			for (int d = 0; d < layout.getColumnDimension(); d += 1) {
+				double value = layout.getEntry(i, d) * LAYOUT_SCALE_FACTOR;
+				newLayout.setEntry(i, d, value);
+			}
+		}
+		return newLayout;
+	}
+
+	/**
+	 * Reverses the scaling done in scaleLayout
+	 */
+	private RealMatrix unscaleLayout(final RealMatrix layout) {
+		RealMatrix newLayout = new Array2DRowRealMatrix(layout.getRowDimension(), layout.getColumnDimension());
+		for (int i = 0; i < layout.getRowDimension(); i += 1) {
+			for (int d = 0; d < layout.getColumnDimension(); d += 1) {
+				double value = layout.getEntry(i, d) / LAYOUT_SCALE_FACTOR;
+				newLayout.setEntry(i, d, value);
+			}
+		}
+		return newLayout;
+	}
+	
+	private void setLayout(final RealMatrix layout, final List<Node> nodes) {
+
+		RealMatrix newLayout = scaleLayout(layout);
+		
 		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
-		for (int i = 0; i < n; i += 1) {
-			double[] pos = layout.getRow(i);
-			Vector2d position = new Vector2d(pos[0] * scaleFactor, 
-											 pos[1] * scaleFactor);
+		for (int i = 0; i < nodes.size(); i += 1) {
+			double[] pos = newLayout.getRow(i);
+			Vector2d position = new Vector2d(pos[0], pos[1]);
 			nodes2newPositions.put(nodes.get(i), position);
 		}
 		
+		//update GUI layout
 		setLayout(nodes2newPositions);
 		
 	}
@@ -295,24 +372,8 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	// MARK: threading utilities
 	// =========================
 	
-	private void setLayout(RealMatrix newLayout, List<Node> nodes) {
-
-		double scaleFactor = 100;
-		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
-		for (int i = 0; i < nodes.size(); i += 1) {
-			double[] pos = newLayout.getRow(i);
-			Vector2d position = new Vector2d(pos[0] * scaleFactor, 
-											 pos[1] * scaleFactor);
-			nodes2newPositions.put(nodes.get(i), position);
-		}
-		
-		//update GUI layout
-		setLayout(nodes2newPositions);
-		
-	}
-	
 	/**
-	 * Helper function that combines waiting and ckecking if stopped. 
+	 * Helper function that combines waiting and checking if stopped. 
 	 * @return Will return true if execution was stopped
 	 */
 	private boolean waitIfPausedAndCheckStop() {

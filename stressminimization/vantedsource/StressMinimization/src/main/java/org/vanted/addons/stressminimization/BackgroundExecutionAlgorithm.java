@@ -119,6 +119,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			SwingUtilities.invokeAndWait(new Runnable() {
 				public void run() {
 					GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());	
+					// keeps intermediate layouts from leaving the screen
 					GravistoService.getInstance().runAlgorithm(new CenterLayouterAlgorithm(), graph,
 							new Selection(""), null);
 				}

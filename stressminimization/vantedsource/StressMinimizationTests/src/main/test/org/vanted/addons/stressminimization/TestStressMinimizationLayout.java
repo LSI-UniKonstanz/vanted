@@ -87,7 +87,6 @@ public class TestStressMinimizationLayout extends TestCase {
 		}
 		assert(positionsUnique);
 	}
-	
 
 	@Test
 	public void testWorkingOnSingleNodes() {
