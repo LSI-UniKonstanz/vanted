@@ -114,7 +114,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
             // layout each connected component
             for (int i = 0; i < connectedComponents[0].size(); i++) {
                 final CoarsenedGraph cg = connectedComponents[0].get(i);
-                if (bts.isStopped) { break; }
+                if (bts.isStopped) { bts.status = -1; return; }
                 MultilevelGraph componentMLG = new MultilevelGraph(cg);
                 merger.buildCoarseningLevels(componentMLG);
 
@@ -125,13 +125,15 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 // indicate that this is the top level
                 componentMLG.getTopLevel().setBoolean("GRAPH_IS_MLF_COARSENING_TOP_LEVEL", true);
 
+                if (bts.isStopped) { bts.status = -1; return; }
+
                 if (this.randomTop) {
                     final RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
                     rla.attach(componentMLG.getTopLevel(), emptySelection);
                     rla.execute();
                 }
 
-                while (componentMLG.getNumberOfLevels() > 1 && !bts.isStopped) {
+                while (componentMLG.getNumberOfLevels() > 1) {
                     bts.statusMessage = this.makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
                             connectedComponents[0], i);
                     bts.status = this.calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
@@ -140,6 +142,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                     placer.reduceCoarseningLevel(componentMLG);
                     // indicate that this is a coarsened graph to allow for optimizations in the level layouter
                     componentMLG.getTopLevel().setBoolean("GRAPH_IS_MLF_COARSENING_LEVEL", true);
+                    if (bts.isStopped) { bts.status = -1; return; }
                 }
 
                 assert componentMLG.getNumberOfLevels() == 1 : "Not all coarsening levels were removed";
@@ -161,7 +164,6 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                     nodes2newPositions.put(representedNode, AttributeHelper.getPositionVec2d(mn));
                 }
             }
-
 
             MainFrame.getInstance().setActiveSession(oldSession, oldView);
             GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());

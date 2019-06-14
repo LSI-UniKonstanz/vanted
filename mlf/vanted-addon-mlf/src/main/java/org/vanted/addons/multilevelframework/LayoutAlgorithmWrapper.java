@@ -17,7 +17,6 @@ import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
-import org.vanted.addons.multilevelframework.pse_hack.BlockingPatternSpringEmbedder;
 
 import javax.swing.*;
 import java.util.*;
@@ -48,9 +47,9 @@ public class LayoutAlgorithmWrapper {
     // cache the GUI
     private JComponent oldThreadSafeGUI = null;
 
-    private static List<String> WHITELIST = Arrays.asList("Circle", "Grid Layout", "Stress Minimization",
+    final static List<String> WHITELIST = Arrays.asList("Circle", "Grid Layout", "Stress Minimization",
             "Move Nodes to Grid-Points", "Null-Layout", "Random", "Remove Node Overlaps", BlockingForceDirected.springName,
-            "Force Directed (\"parameter\" GUI)", BlockingPatternSpringEmbedder.springName);
+            "Force Directed (\"parameter\" GUI)");
 
     /**
      * Create a new {@link LayoutAlgorithmWrapper}. This method is for internal use only and thus private.
@@ -142,7 +141,11 @@ public class LayoutAlgorithmWrapper {
                 if (!this.getThreadSafeGUITimerStarted) {
                     // the "thread safe GUI" starts a timer that runs every 200 ms and sets a value
                     // I have no clue as to why, but if I don't do this, things start to get weird...
-                    SwingUtilities.invokeAndWait(this::getGUI); // needs to be in the event-dispatcher thread
+                    if (!SwingUtilities.isEventDispatchThread()) {
+                        SwingUtilities.invokeAndWait(this::getGUI); // needs to be in the event-dispatcher thread
+                    } else {
+                        this.getGUI();
+                    }
                     this.getThreadSafeGUITimerStarted = true;
                 }
                 ((ThreadSafeAlgorithm) this.algorithm).executeThreadSafe(this.threadSafeOptions);
@@ -218,7 +221,7 @@ public class LayoutAlgorithmWrapper {
                     .forEach(a -> {
                         // ThreadSafeAlgorithms such as PatternSpringembedder have two GUI's, so they appear twice
                         if (a instanceof ThreadSafeAlgorithm) {
-                            final String alternateName = a.getName() + " (\"thread safe\" GUI)";
+                            final String alternateName = a.getName() + " (\"thread-safe\" GUI)";
                             if (WHITELIST.contains(alternateName)) {
                                 result.put(alternateName, new LayoutAlgorithmWrapper(alternateName, a, true));
                             }
@@ -233,8 +236,6 @@ public class LayoutAlgorithmWrapper {
         }
         final BlockingForceDirected bfd = new BlockingForceDirected();
         result.put(bfd.getName(), new LayoutAlgorithmWrapper(bfd.getName(), bfd, true));
-        final BlockingPatternSpringEmbedder bpse = new BlockingPatternSpringEmbedder();
-        result.put(bpse.getName(), new LayoutAlgorithmWrapper(bpse.getName(), bpse, true));
         return Collections.unmodifiableMap(result);
     }
 
