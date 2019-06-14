@@ -46,6 +46,7 @@ public class PivotMDSTest {
         final int amountPivots = 3;
         final int[] pivotTranslation = new int[GRAPH_1_NODES.size()];
         final int[] inversePivotTranslation = new int[GRAPH_1_NODES.size()];
+
         int[] distanceTranslation = pivotMDS.getPivots(GRAPH_1_DISTANCES, amountPivots, pivotTranslation, inversePivotTranslation);
         RealMatrix testC = pivotMDS.doubleCenter(GRAPH_1_DISTANCES, amountPivots, distanceTranslation);
 

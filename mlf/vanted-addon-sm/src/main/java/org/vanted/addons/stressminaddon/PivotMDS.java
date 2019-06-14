@@ -6,10 +6,7 @@ import org.apache.commons.math.linear.RealMatrixImpl;
 import org.graffiti.graph.Node;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * A class that implements the Pivot Multidimensional Scaling algorithm
@@ -40,7 +37,7 @@ public class PivotMDS implements InitialPlacer {
     public List<Vector2d> calculateInitialPositions(final List<Node> nodes, final NodeValueMatrix distances) {
         assert nodes.size() == distances.getDimension();
 
-        final int numPivots = Math.min(100, distances.getDimension()); // TODO make configurable
+        final int numPivots = Math.min(500, distances.getDimension()); // TODO make configurable
 
         final int[] pivotTranslation = new int[distances.getDimension()];
         final int[] inversePivotTranslation = new int[distances.getDimension()];
@@ -186,22 +183,8 @@ public class PivotMDS implements InitialPlacer {
 
 
     /**
-     * Returns the min of a, b.
-     *
-     * @param a value 1
-     * @param b value 2
-     * @return b if b > a else a
-     *
-     * @author theo
-     */
-    private double getMin(final double a, final double b ){
-        return ((a < b) ? a : b);
-    }
-
-
-    /**
-     * Calculates the difference between the two arrays. For this, the values of a and b are summed,
-     * and then the smaller one is divided by the larger one
+     * Calculates the difference between the two arrays. For this we compare the values of all cells
+     * and sum the differences together to get the total difference.
      *
      * @param a first double-array
      * @param b second double-array
@@ -209,18 +192,19 @@ public class PivotMDS implements InitialPlacer {
      *
      * @author theo
      */
-    private double getDifference(final double[] a, final double[] b){
-        double sumA = 0;
-        double sumB = 0;
-        for (int i = 0; i < a.length; i++) {
-            sumA += a[i];
-            sumB += b[i];
-        }
+    private double getDifference(final RealMatrix a, final RealMatrix b){
+        double aVal = 0;
+        double bVal = 0;
+        double result = 0;
+        for(int row = 0; row < a.getRowDimension(); row++){
+            for(int col= 0; col< a.getColumnDimension(); col++){
+                aVal= Math.abs(a.getEntry(row, col));
+                bVal = Math.abs(b.getEntry(row, col));
 
-        if(sumA > sumB){
-            return sumB/sumA;
+                result += Math.abs(aVal -bVal);
+            }
         }
-        return sumA/sumB;
+        return result;
     }
 
 
@@ -256,11 +240,7 @@ public class PivotMDS implements InitialPlacer {
             eigenVec = (RealMatrixImpl) eigenVec.scalarMultiply(1/eigenVec.getNorm());
 
             //calculate the difference between the oldEigenVecs and the new eigenVecs
-            double newDiff;
-            for(int i = 0; i < 2; i++){
-                newDiff = Math.abs(getDifference(oldEigenVecs.getColumn(i), eigenVec.getColumn(i)));
-                change = getMin(change, newDiff);
-            }
+            change = Math.abs(getDifference(oldEigenVecs, eigenVec));
         }
         return eigenVec;
     }
@@ -312,8 +292,6 @@ public class PivotMDS implements InitialPlacer {
                 for(int k = 0; k < amountPivots; k++){
                     sumTwo += squared.get(row, k, distanceTranslation);
                 }
-
-
                 results[row][col] = -0.5 *(squared.get(row, col, distanceTranslation)
                         -(1.0/n)*sumOne - (1.0/amountPivots)* sumTwo + sumThree);
             }
