@@ -13,8 +13,6 @@ import static data.TestGraphs.*;
  * Test the {@link IntuitiveIterativePositionAlgorithm}-class
  * @author Rene
  */
-
-
 public class IntuitiveIterativePositionAlgorithmTest {
 
     /** The object to test with. */

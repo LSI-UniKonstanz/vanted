@@ -59,7 +59,7 @@ public class PivotMDS implements InitialPlacer {
 
         // create a list containing the new coordinates
         List<Vector2d> newPosList = new ArrayList<>();
-        for(int i = 0; i < numPivots; i++){
+        for(int i = 0; i < distances.getDimension(); i++){
             newPosList.add(new Vector2d(newX.getEntry(inversePivotTranslation[i], 0),
                                         newY.getEntry(inversePivotTranslation[i], 0)));
         }

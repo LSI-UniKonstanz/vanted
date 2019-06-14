@@ -42,7 +42,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             "StressMinimization" + Attribute.SEPARATOR + "index";
 
     /** The {@link IntuitiveIterativePositionAlgorithm} to use. */
-    public static final IterativePositionAlgorithm positionAlgorithm = new IntuitiveIterativePositionAlgorithm();
+    private static final IterativePositionAlgorithm positionAlgorithm = new IntuitiveIterativePositionAlgorithm();
+    /** The {@link InitialPlacer} to use. */
+    private static final InitialPlacer initialPlacer = new PivotMDS();
 
     /** The epsilon to use with the stress function with a reasonable default. */
     private double stressEpsilon = 0.0001; // TODO make configurable
@@ -115,10 +117,10 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Got connected components. (" + connectedComponents.size() + ")"));
 
             // TODO temporary
-            System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Running random..."));
-            RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
-            rla.attach(graph, selection);
-            rla.execute();
+          //System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Running random..."));
+          //RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
+          //rla.attach(graph, selection);
+          //rla.execute();
             System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Finished random."));
 
             List<WorkUnit> workUnits = new ArrayList<>(connectedComponents.size());
@@ -373,10 +375,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate weights..."));
             this.weights = this.distances.clone().apply(x -> 1/(x*x)); // derive weights TODO make configurable
 
-            // TODO implement preprocessing
+            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate initial layout..."));
+            this.currentPositions = initialPlacer.calculateInitialPositions(nodes, this.distances);
             // calculate first values
-            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Get positions..."));
-            this.currentPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate initial stress..."));
             this.currentStress = StressMinimizationLayout.calculateStress(nodes, this.currentPositions, this.distances, this.weights);
             this.hasStopped = false;
