@@ -94,6 +94,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 					status = BackgroundStatus.FINISHED;
 					startButton.setText("Layout Network");
 					stopButton.setEnabled(false);
+					startButton.setEnabled(true);
 					paramPanel.setVisible(true);
 					break;
 				default:

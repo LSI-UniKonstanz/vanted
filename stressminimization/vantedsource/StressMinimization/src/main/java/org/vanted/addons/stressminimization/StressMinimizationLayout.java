@@ -98,19 +98,31 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	// NOTE: we do not use the parameters field
 	// because using an array for storing parameters
 	// seemed very uncomfortable to us.
+
+	private static final String RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME = "Randomize initial layout.";
+	private static final boolean RANDOMIZE_INPUT_LAYOUT_DEFAULT_VALUE = false;
+	private boolean randomizeInputLayout = RANDOMIZE_INPUT_LAYOUT_DEFAULT_VALUE;
 	
 	private static final String ALPHA_PARAMETER_NAME = "Weight Factor";
 	private static final int ALPHA_DEFAULT_VALUE = 2;
 	private int alpha = ALPHA_DEFAULT_VALUE;
 
-	private static final String EPSILON_PARAMETER_NAME = "Stress Change Termination Threshold: 10^{-x} Choose x:";
-	private static final double EPSILON_DEFAULT_VALUE = -4;
-	private double epsilon = EPSILON_DEFAULT_VALUE;
+	private static final String STRESS_CHANGE_EPSILON_PARAMETER_NAME = "Stress Change Termination Threshold: 10^{-x}: Choose x";
+	private static final double STRESS_CHANGE_EPSILON_DEFAULT_VALUE = -4;
+	private double stressChangeEpsilon = STRESS_CHANGE_EPSILON_DEFAULT_VALUE;
+
+	private static final String MINIMUM_NODE_MOVEMENT_PARAMETER_NAME = "Minimum Node Movement Termination Threshold";
+	private static final double MINIMUM_NODE_MOVEMENT_DEFAULT_VALUE = 0.0;
+	private double minimumNodeMovementThreshold = MINIMUM_NODE_MOVEMENT_DEFAULT_VALUE;
+
+	private static final String INITIAL_STRESS_PERCENTAGE_THERESHOLD_PARAMETER_NAME = "Initial Stress Termination Percentage";
+	private static final double INITIAL_STRESS_PERCENTAGE_DEFAULT_VALUE = 0.0;
+	private double initialStressPercentage = INITIAL_STRESS_PERCENTAGE_DEFAULT_VALUE;
 	
-	private static final String RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME = "Randomize initial layout.";
-	private static final boolean RANDOMIZE_INPUT_LAYOUT_DEFAULT_VALUE = false;
-	private boolean randomizeInputLayout = RANDOMIZE_INPUT_LAYOUT_DEFAULT_VALUE;
-	
+	private static final String ITERATIONS_THRESHOLD_PARAMETER_NAME = "Interations Termination Maximum";
+	private static final double ITERATIONS_THRESHOLD_DEFAULT_VALUE = Double.POSITIVE_INFINITY;
+	private double iterationsThreshold = ITERATIONS_THRESHOLD_DEFAULT_VALUE;
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -130,8 +142,33 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				-4.0, 
 				Double.NEGATIVE_INFINITY,
 				0.0, 
-				EPSILON_PARAMETER_NAME, 
-				"Termination criterion of the stress minimization process. Low values will give better layouts, but computation will consume more time."
+				STRESS_CHANGE_EPSILON_PARAMETER_NAME, 
+				"Change in stress of succeeding layouts termination criterion. Low values will give better layouts, but computation will consume more time."
+		));
+
+		params.add(new DoubleParameter(
+				minimumNodeMovementThreshold, 
+				0.0,
+				Double.POSITIVE_INFINITY, 
+				MINIMUM_NODE_MOVEMENT_PARAMETER_NAME, 
+				"Minimum required movement of any node for continuation of termination. If all nodes move less than this value in an interation, execution is terminated."
+		));
+
+		params.add(new DoubleParameter(
+				initialStressPercentage, 
+			    0.0,
+				100.0, 
+				INITIAL_STRESS_PERCENTAGE_THERESHOLD_PARAMETER_NAME, 
+				"If the stress of an layout falls below this percentage of the initial stress, executions is terminated."
+		));
+
+		params.add(new DoubleParameter(
+				iterationsThreshold, 
+			    1.0,
+				Double.POSITIVE_INFINITY, 
+				1.0,
+				ITERATIONS_THRESHOLD_PARAMETER_NAME, 
+				"Number of iterations after which algorithm excution will be terminated."
 		));
 		
 		params.add(new BooleanParameter(
@@ -154,10 +191,19 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			case ALPHA_PARAMETER_NAME:
 				this.alpha = (Integer) p.getValue();
 				break;
-			case EPSILON_PARAMETER_NAME:
-				this.epsilon = (Double) p.getValue();
+			case STRESS_CHANGE_EPSILON_PARAMETER_NAME:
+				this.stressChangeEpsilon = (Double) p.getValue();
 				// TODO: parameter currently not working
-				this.epsilon = Math.pow(10, (Double) p.getValue());
+				this.stressChangeEpsilon = Math.pow(10, (Double) p.getValue());
+				break;
+			case MINIMUM_NODE_MOVEMENT_PARAMETER_NAME:
+				this.minimumNodeMovementThreshold = (Double) p.getValue();
+				break;
+			case INITIAL_STRESS_PERCENTAGE_THERESHOLD_PARAMETER_NAME:
+				this.initialStressPercentage = (Double) p.getValue();
+				break;
+			case ITERATIONS_THRESHOLD_PARAMETER_NAME:
+				this.iterationsThreshold = (Double) p.getValue();
 				break;
 			case RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME:
 				this.randomizeInputLayout = (Boolean) p.getValue();
@@ -259,7 +305,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		if (waitIfPausedAndCheckStop()) { return; }
 		
 		if (LOG) { System.out.println("Calculating weights..."); }
-		RealMatrix weights = getWeightsForDistances(distances, alpha); // TODO make alpha selectable by user
+		RealMatrix weights = getWeightsForDistances(distances, alpha);
 
 		if (waitIfPausedAndCheckStop()) { return; }
 		
@@ -278,34 +324,50 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		// makes this algorithm work better with results from other algorithms
 		layout = unscaleLayout(layout);
 
-		// TODO: parameter: randomize input layout
-		// TODO: always randomize if null layout?
-		
 		if (LOG) { System.out.println("Optimizing layout..."); }
-		double prevStress, newStress;
+
+		StressMajorizationLayoutCalculator c = new StressMajorizationLayoutCalculator(layout, distances, weights);
+		final double initialStress = c.calcStress(layout);
+		
+		final double stressThreshold = initialStress * (initialStressPercentage / 100);
+		long iterationCount = 0;
+		
+		double newStress, prevStress = initialStress;
+		RealMatrix prevLayout = layout;
+		boolean terminate = false;
 		do {
 
+			iterationCount += 1;
+			
 			if (waitIfPausedAndCheckStop()) { return; }
 			
-			StressMajorizationLayoutCalculator c = new StressMajorizationLayoutCalculator(layout, distances, weights);
-			prevStress = c.calcStress(layout);
+			// TODO: do not create a new object in each iteration
+			c = new StressMajorizationLayoutCalculator(layout, distances, weights);
 			
 			layout = c.calcOptimizedLayout();
-			newStress = c.calcStress(layout);
-
-			//update GUI layout
+			
 			setLayout(layout, nodes);
-			// inverse displaying: high values get close to 0, values close to EPSILON get close to 1
-			setProgress( 1 - Math.sqrt( (prevStress - newStress) / prevStress + epsilon) );
+			
+			newStress = c.calcStress(layout);
+			
+			// TODO: check termination
+			// TODO: offer choice between change limit and number of iterations, offer choices of epsilon
+			terminate = checkTerminationCriteria(prevStress, newStress, prevLayout, layout, iterationCount, stressThreshold);
 
 			if (LOG) { 
 				System.out.println("===============================");
+				System.out.println("#iter: " + iterationCount);
 				System.out.println("prev: " + prevStress);
 				System.out.println("new:  " + newStress);
 				System.out.println("diff: " + ((prevStress - newStress) / prevStress));
 			}
 			
-		} while ( (prevStress - newStress) / prevStress >= epsilon); // TODO: offer choice between change limit and number of iterations, offer choices of epsilon
+			setProgress( 1 - newStress / initialStress );
+
+			prevLayout = layout;
+			prevStress = newStress;
+
+		} while (!terminate);
 		
 
 		System.out.println("Updating layout...");
@@ -313,6 +375,44 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		
 	}
 
+	/**
+	 * Checks all termination criteria. 
+	 * If one criterion meets the input values the method will return true,
+	 * indicating the algorithm to terminate.
+	 * @param prevStress Stress of the previous layout
+	 * @param newStress Stress of the updated layout
+	 * @param layout The new layout
+	 * @param interationCount Number of iterations done so far
+	 * @param stressThreshold stress threshold
+	 * @return Whether one criterion was met.
+	 */
+	private boolean checkTerminationCriteria(double prevStress, double newStress, RealMatrix prevLayout, RealMatrix newLayout, long iterationCount, double stressThreshold) {
+		
+		boolean terminate = false;
+
+		terminate |= (prevStress - newStress) / prevStress < stressChangeEpsilon;
+		
+		terminate |= newStress <= stressThreshold;
+		
+		terminate |= iterationCount >= iterationsThreshold;
+		
+		// only check minimum node movement criterion
+		// if the threshold is != 0 
+		// (actually 1e-25; double comparison with threshold)
+		if (minimumNodeMovementThreshold > 1e-25) {
+			double maxMovement = 0.0;
+			for (int i = 0; i < newLayout.getRowDimension(); i += 1) {
+				double movement = prevLayout.getRowVector(i).getDistance(newLayout.getRowVector(i));
+				maxMovement = movement > maxMovement ? movement : maxMovement;
+			}
+			terminate |= maxMovement <= minimumNodeMovementThreshold;
+		}
+		
+		
+		return terminate;
+		
+	}
+	
 	// ======================
 	// MARK: layout utilities
 	// ======================
