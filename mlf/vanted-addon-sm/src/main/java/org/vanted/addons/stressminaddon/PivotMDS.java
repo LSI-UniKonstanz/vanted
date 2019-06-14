@@ -93,7 +93,7 @@ public class PivotMDS implements InitialPlacer {
      *
      * @author Jannik
      */
-    public int[] getPivots(final NodeValueMatrix distances, final int amountPivots,
+    int[] getPivots(final NodeValueMatrix distances, final int amountPivots,
                            int[] table, int[] inverseTable) {
         final int numNodes = distances.getDimension();
         assert amountPivots <= numNodes && amountPivots > 0

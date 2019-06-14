@@ -1,9 +1,14 @@
 package org.vanted.addons.stressminaddon;
 
+import org.Vector2d;
 import org.apache.commons.math.linear.RealMatrix;
 import org.junit.Test;
+
 import java.util.Arrays;
-import static data.TestGraphs.*;
+import java.util.List;
+
+import static data.TestGraphs.GRAPH_1_DISTANCES;
+import static data.TestGraphs.GRAPH_1_NODES;
 
 
 
@@ -14,7 +19,7 @@ public class PivotMDSTest {
 
     @Test
     public void calculateInitialPositionsTest() {
-        pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
+        final List<Vector2d> positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
 
     }
 
@@ -24,7 +29,9 @@ public class PivotMDSTest {
 
         final int amountPivots = 3;
 
-        int[] distanceTranslation = pivotMDS.getPivots(GRAPH_1_DISTANCES, amountPivots);
+        final int[] pivotTranslation = new int[GRAPH_1_NODES.size()];
+        final int[] inversePivotTranslation = new int[GRAPH_1_NODES.size()];
+        int[] distanceTranslation = pivotMDS.getPivots(GRAPH_1_DISTANCES, amountPivots, pivotTranslation, inversePivotTranslation);
 
         RealMatrix testC = pivotMDS.doubleCenter(GRAPH_1_DISTANCES, amountPivots, distanceTranslation);
         for (int i = 0; i < amountPivots; i++) {
@@ -37,7 +44,9 @@ public class PivotMDSTest {
     public void powerIterateTest() {
 
         final int amountPivots = 3;
-        int[] distanceTranslation = pivotMDS.getPivots(GRAPH_1_DISTANCES, amountPivots);
+        final int[] pivotTranslation = new int[GRAPH_1_NODES.size()];
+        final int[] inversePivotTranslation = new int[GRAPH_1_NODES.size()];
+        int[] distanceTranslation = pivotMDS.getPivots(GRAPH_1_DISTANCES, amountPivots, pivotTranslation, inversePivotTranslation);
         RealMatrix testC = pivotMDS.doubleCenter(GRAPH_1_DISTANCES, amountPivots, distanceTranslation);
 
         RealMatrix eigenVecsTest = pivotMDS.powerIterate(testC);
