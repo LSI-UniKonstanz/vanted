@@ -54,7 +54,7 @@ public enum MlfHelper {
         }
         long endTime = System.nanoTime();
 
-        System.out.println("Built connected components in: " + NANOSECONDS.toSeconds(endTime - startTime) + " seconds.");
+        System.out.println("Built connected components in: " + NANOSECONDS.toMillis(endTime - startTime) + " ms.");
         return graphList;
     }
 
