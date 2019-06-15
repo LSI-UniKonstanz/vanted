@@ -1454,10 +1454,10 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
             if (moveRun <= 0.1) {
                 try {
                     options.runStatus = 2; // idle
-                    MainFrame.showMessage("Spring Embedder - IDLE", MessageType.INFO, 10000);
-                    Thread.sleep(50);
+//                    MainFrame.showMessage("Spring Embedder - IDLE", MessageType.INFO, 10000);
+                    Thread.sleep(1); // TODO: decreased this to from 50 to 1ms to make it run faster
                 } catch (InterruptedException e) {
-                    // ignore (no problem)
+//                     ignore (no problem)
                 }
             } else {
                 options.runStatus = 1; // running
@@ -1483,7 +1483,7 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
             System.err.println("Internal Error: SpringEmbedder: stopped threads!");
         }
         try {
-            run.awaitTermination(2, TimeUnit.SECONDS);
+            run.awaitTermination(1, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             ErrorMsg.addErrorMessage(e);
         }

@@ -90,7 +90,7 @@ public class MultilevelGraphTest {
     @Test(expected = UnsupportedOperationException.class)
     public void addNodeFail() {
         MultilevelGraph mlg = new MultilevelGraph(this.g);
-        // this fails because the MultilevelGraph doesn't modify level 0 (the original graph)
+        // this fails because the MultilevelGraph doesn'vanted modify level 0 (the original graph)
         mlg.addNode(new HashSet<>(Arrays.asList(n1, n2)));
     }
 
