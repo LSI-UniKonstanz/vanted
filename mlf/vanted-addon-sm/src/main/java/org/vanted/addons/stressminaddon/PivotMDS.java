@@ -260,7 +260,7 @@ public class PivotMDS implements InitialPlacer {
      *
      */
     public RealMatrix doubleCenter(final NodeValueMatrix distances, final int amountPivots,
-                                    final int[] distanceTranslation) {
+                                   final int[] distanceTranslation) {
 
         final int n = distances.getDimension();
 
@@ -278,24 +278,29 @@ public class PivotMDS implements InitialPlacer {
         }
         sumThree /= (n*amountPivots);
 
+        // calculate sumOnes
+        double[] allSumOnes = new double[amountPivots];
+        for(int col = 0; col < amountPivots; col++){
+            for(int r = 0; r < n; r++){
+                allSumOnes[col] += squared.get(r, col, distanceTranslation);
+            }
+        }
+
         for(int row = 0; row < n; row++){
+
+            //calculate sumTwo
+            int sumTwo = 0;
+            for(int k = 0; k < amountPivots; k++){
+                sumTwo += squared.get(row, k, distanceTranslation);
+            }
+
+            //calculate result[row][col]
             for (int col= 0; col < amountPivots; col++){
-
-                int sumOne = 0;
-                int sumTwo = 0;
-
-                //calculates sumOne
-                for(int r = 0; r < n; r++){
-                     sumOne += squared.get(r, col, distanceTranslation);
-                }
-                //calculate sumTwo
-                for(int k = 0; k < amountPivots; k++){
-                    sumTwo += squared.get(row, k, distanceTranslation);
-                }
                 results[row][col] = -0.5 *(squared.get(row, col, distanceTranslation)
-                        -(1.0/n)*sumOne - (1.0/amountPivots)* sumTwo + sumThree);
+                        -(1.0/n)*allSumOnes[col] - (1.0/amountPivots)* sumTwo + sumThree);
             }
         }
         return c;
     }
+
 }
