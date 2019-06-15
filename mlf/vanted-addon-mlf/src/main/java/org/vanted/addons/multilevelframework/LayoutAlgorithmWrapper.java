@@ -52,7 +52,8 @@ public class LayoutAlgorithmWrapper {
             "Force Directed (\"parameter\" GUI)");
 
     /**
-     * Create a new {@link LayoutAlgorithmWrapper}. This method is for internal use only and thus private.
+     * Create a new {@link LayoutAlgorithmWrapper}. This method is for internal use only. It's package-private so it can
+     * be accessed by tests.
      *
      * @param guiName       The name the algorithm has in the GUI. This can be different from
      *                      {@link Algorithm#getName()}, because some algorithms are shown twice in the list of
@@ -70,7 +71,7 @@ public class LayoutAlgorithmWrapper {
      *                      {@code false}.
      * @author Gordian
      */
-    private LayoutAlgorithmWrapper(String guiName, Algorithm algorithm, boolean threadSafeGUI) {
+    LayoutAlgorithmWrapper(String guiName, Algorithm algorithm, boolean threadSafeGUI) {
         this.algorithm = Objects.requireNonNull(algorithm);
         if (!this.algorithm.isLayoutAlgorithm()) {
             throw new IllegalArgumentException("LayoutAlgorithmWrapper only works with layout algorithms.");
@@ -135,7 +136,6 @@ public class LayoutAlgorithmWrapper {
                 this.threadSafeOptions.setGraphInstance(graph);
                 this.threadSafeOptions.setSelection(selection);
                 this.threadSafeOptions.doRandomInit = false;
-                this.threadSafeOptions.doFinishMoveToTop = false;
                 this.threadSafeOptions.redraw = false;
                 this.threadSafeOptions.autoRedraw = false;
                 if (!this.getThreadSafeGUITimerStarted) {

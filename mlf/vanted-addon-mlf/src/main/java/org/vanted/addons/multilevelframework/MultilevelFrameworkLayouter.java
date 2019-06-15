@@ -26,6 +26,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
@@ -87,6 +88,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      * Performs the layout.
      */
     public void execute() {
+        final long startTime = System.nanoTime();
         // need to save old session and view, because they need to be restored for applyUndoableNodePositionUpdate
         // to work
         final Session oldSession = MainFrame.getInstance().getActiveSession();
@@ -168,6 +170,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
             MainFrame.getInstance().setActiveSession(oldSession, oldView);
             GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
             ConnectedComponentLayout.layoutConnectedComponents(this.graph);
+            final long endTime = System.nanoTime();
+            System.out.println("MLF run took " + TimeUnit.NANOSECONDS.toMillis(endTime - startTime) + " ms in total.");
         }, bts);
     }
 
