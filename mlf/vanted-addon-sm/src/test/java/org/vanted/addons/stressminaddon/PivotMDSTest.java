@@ -40,7 +40,7 @@ public class PivotMDSTest {
     }
 
     @Test
-    public void calculateInitialPositionsTest() {
+    public void calculateInitialPositions() {
         random.setSeed(42);
         // TODO test correctly
         final List<Vector2d> positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
@@ -48,7 +48,7 @@ public class PivotMDSTest {
 
 
     @Test
-    public void doubleCenterTest() {
+    public void doubleCenter() {
         random.setSeed(42);
 
         final int amountPivots = 3;
@@ -73,7 +73,7 @@ public class PivotMDSTest {
 
 
     @Test
-    public void powerIterateTest() {
+    public void powerIterate() {
         random.setSeed(42);
 
         final int amountPivots = 3;

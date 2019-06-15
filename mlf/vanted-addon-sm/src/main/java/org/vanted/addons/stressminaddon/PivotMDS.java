@@ -271,33 +271,29 @@ public class PivotMDS implements InitialPlacer {
 
         // Sum three is independent of the current position so it can be calculated only once
         double sumThree = 0;
-        for (int r = 0; r < n; r++) {
-            for (int s = 0; s < amountPivots; s++) {
-                sumThree += squared.get(r, s, distanceTranslation);
+        double[] allSumOnes = new double[amountPivots]; // holds 'sumOne's
+        for (int col = 0; col < amountPivots; col++) {
+            for (int row = 0; row < n; row++) {
+                sumThree += squared.get(row, col, distanceTranslation); // for sumThree
+                allSumOnes[col] += squared.get(row, col, distanceTranslation); // for sumOne
             }
+            allSumOnes[col] /= n;
         }
         sumThree /= (n*amountPivots);
-
-        // calculate sumOnes
-        double[] allSumOnes = new double[amountPivots];
-        for(int col = 0; col < amountPivots; col++){
-            for(int r = 0; r < n; r++){
-                allSumOnes[col] += squared.get(r, col, distanceTranslation);
-            }
-        }
 
         for(int row = 0; row < n; row++){
 
             //calculate sumTwo
-            int sumTwo = 0;
-            for(int k = 0; k < amountPivots; k++){
-                sumTwo += squared.get(row, k, distanceTranslation);
+            double sumTwo = 0;
+            for(int col = 0; col < amountPivots; col++){
+                sumTwo += squared.get(row, col, distanceTranslation);
             }
+            sumTwo/=amountPivots;
 
             //calculate result[row][col]
             for (int col= 0; col < amountPivots; col++){
-                results[row][col] = -0.5 *(squared.get(row, col, distanceTranslation)
-                        -(1.0/n)*allSumOnes[col] - (1.0/amountPivots)* sumTwo + sumThree);
+                results[row][col] = -(squared.get(row, col, distanceTranslation)
+                        -allSumOnes[col] - sumTwo + sumThree)/2;
             }
         }
         return c;
