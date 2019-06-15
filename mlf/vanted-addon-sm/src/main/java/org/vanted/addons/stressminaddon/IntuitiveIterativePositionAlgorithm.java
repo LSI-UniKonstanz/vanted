@@ -1,6 +1,5 @@
 package org.vanted.addons.stressminaddon;
 
-import org.AttributeHelper;
 import org.Vector2d;
 import org.graffiti.graph.Node;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
@@ -25,6 +24,8 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
      * @param nodes
      *      the nodes to be worked on. The indices of the nodes in this list correspond to
      *      the indices used by {@code distances} and {@code weights}.
+     * @param positions
+     *      the positions that are used as basis for the next iteration.
      * @param distances
      *      the matrix containing the node theoretical distances between the nodes.
      * @param weights
@@ -36,19 +37,18 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
      * @author René, Jannik
      */
     @Override
-    public List<Vector2d> nextIteration(List<Node> nodes, NodeValueMatrix distances, NodeValueMatrix weights) {
-        /*
-         * create an ArrayList for saving the node position
-         * fill the ArrayList with the positions of nodes from Graph
-         */
-        ArrayList<Vector2d> positions = new ArrayList<>(nodes.size());
-        for (Node n : nodes){
-            positions.add(AttributeHelper.getPositionVec2d(n));
+    public List<Vector2d> nextIteration(final List<Node> nodes, final List<Vector2d> positions,
+                                        final NodeValueMatrix distances, final NodeValueMatrix weights) {
+        ArrayList<Vector2d> newPositions = new ArrayList<>(positions.size());
+        for (Vector2d position : positions) { // create a copy of the positions
+            newPositions.add(new Vector2d(position));
         }
 
-        for (int current = 0; current < nodes.size(); current++){
+        final int numberOfNodes = nodes.size();
 
-            Vector2d currentNode = positions.get(current);  //node position
+        for (int current = 0; current < numberOfNodes; current++){
+
+            Vector2d currentNode = newPositions.get(current);  //node position
             double newXPos = 0;                             // X position from the moved node
             double newYPos = 0;                             // Y position from the moved node
             double totalWeight = 0;                         // sum of every weight between nodes
@@ -57,7 +57,7 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
                 if (current == other){
                     continue;
                 }
-                Vector2d otherNode = positions.get(other);
+                Vector2d otherNode = newPositions.get(other);
 
                 double euclideanDist = currentNode.distance(otherNode);   //get the euclidean distance
                 double weight       = weights.get(current, other);        //get the weight from weight-matrix
@@ -87,6 +87,6 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
 
         }
         // make the positions unmodifiable
-        return Collections.unmodifiableList(positions);
+        return Collections.unmodifiableList(newPositions);
     }
 }

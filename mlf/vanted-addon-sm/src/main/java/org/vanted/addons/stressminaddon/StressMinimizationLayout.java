@@ -399,7 +399,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             // calculate new positions
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+this.id+": Iterate new positions...");
             List<Vector2d> newPositions = StressMinimizationLayout.positionAlgorithm.nextIteration(
-                    this.nodes, this.distances, this.weights);
+                    this.nodes, this.currentPositions, this.distances, this.weights);
 
             // calculate new stress
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+this.id+": Calculate new stress...");

@@ -19,8 +19,15 @@ public interface IterativePositionAlgorithm {
      *
      * @param nodes
      *      the nodes to be worked on. The indices of the nodes in this list correspond to
-     *      the indices used by {@code distances} and {@code weights}.
-     *      The implementing class shall not change their position (attribute) in any way.
+     *      the indices used by {@code positions}, {@code distances} and {@code weights}.<br>
+     *      The implementing class shall not change their position (attribute) in any way.<br>
+     *      The position of these nodes may not represent the actual positions of these
+     *      nodes in the calling class (because they <i>may</i> only be updated after
+     *      all iterations are done).
+     *      The implementing class should refer to {@code positions} to get these positions reliably.
+     * @param positions
+     *      the positions the algorithm shall work with.<br>
+     *      The implementing class shall not change their values in any way.
      * @param distances
      *      the matrix containing the node theoretical distances between the nodes.
      *      The implementing class shall only read the values in this matrix.
@@ -34,6 +41,7 @@ public interface IterativePositionAlgorithm {
      * @author Jannik
      */
     public List<Vector2d> nextIteration(final List<Node> nodes,
+                                        final List<Vector2d> positions,
                                         final NodeValueMatrix distances,
                                         final NodeValueMatrix weights);
 }
