@@ -128,7 +128,7 @@ public class PivotMDS implements InitialPlacer {
 
             // look at every node that is not already a pivot
             for (int possiblePivot : nonPivots) {
-                distance = distances.get(possiblePivot, table[lastPivot]); // only the last pivot could change this value
+                distance = distances.get(possiblePivot, lastPivot); // only the last pivot could change this value
                 currentMin = nonPivotsMinDistance[possiblePivot];
                 nonPivotsMinDistance[possiblePivot] = currentMin = // so update the value and minimize it
                         (distance < currentMin ? distance : currentMin);
@@ -216,7 +216,7 @@ public class PivotMDS implements InitialPlacer {
      *
      * @author theo
      */
-    public RealMatrix powerIterate(final RealMatrix matrix) {
+     RealMatrix powerIterate(final RealMatrix matrix) {
 
         //C^T * C
         RealMatrixImpl c = (RealMatrixImpl) matrix.transpose().multiply(matrix);
@@ -276,7 +276,7 @@ public class PivotMDS implements InitialPlacer {
                 sumThree += squared.get(r, s, distanceTranslation);
             }
         }
-        sumThree *= (1.0/(n*amountPivots));
+        sumThree /= (n*amountPivots);
 
         for(int row = 0; row < n; row++){
             for (int col= 0; col < amountPivots; col++){
