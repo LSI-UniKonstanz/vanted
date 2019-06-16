@@ -1,9 +1,7 @@
 package org.vanted.addons.stressminaddon;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
-import org.AttributeHelper;
 import org.BackgroundTaskStatusProvider;
 import org.Vector2d;
 import org.graffiti.attributes.Attribute;
@@ -15,11 +13,11 @@ import org.graffiti.plugin.view.View;
 import org.vanted.addons.stressminaddon.util.ConnectedComponentsHelper;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 import org.vanted.addons.stressminaddon.util.ShortestDistanceAlgorithm;
+import org.vanted.addons.stressminaddon.util.gui.EnableableNumberParameter;
 
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 /**
  * Implements a version of a stress minimization add-on that can be used
@@ -46,12 +44,25 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
     /** The {@link InitialPlacer} to use. */
     private static final InitialPlacer initialPlacer = new PivotMDS();
 
-    /** The epsilon to use with the stress function with a reasonable default. */
-    private double stressEpsilon = 0.0001; // TODO make configurable
-    /** The epsilon to use with the new distances with a reasonable default. */
-    private double positionChangeEpsilon = 0.0001; // TODO make configurable
-    /** The maximal iterations to make. */
-    private int maxIterations = 1_000_000; // TODO make configurable
+    ///// Parameters and defaults /////
+    /** Whether to use the stress epsilon by default.*/
+    private static final Boolean USE_STRESS_EPSILON_DEFAULT = Boolean.TRUE;
+    /** The default value for the epsilon to use with stress function. */
+    private static final double STRESS_EPSILON_DEFAULT = 0.0001;
+    /** The epsilon to use with the stress function. */
+    private double stressEpsilon = STRESS_EPSILON_DEFAULT;
+    /** Whether to use the position change epsilon by default.*/
+    private static final Boolean USE_POSITION_CHANGE_EPSILON_DEFAULT = Boolean.TRUE;
+    /** The default value for the epsilon to use with the difference between old and new distances. */
+    private static final double POSITION_CHANGE_EPSILON_DEFAULT = 0.0001;
+    /** The epsilon to use with the difference between old  new distances. */
+    private double positionChangeEpsilon = POSITION_CHANGE_EPSILON_DEFAULT;
+    /** Whether to use the max iterations stop criterion by default.*/
+    private static final Boolean USE_MAX_ITERATIONS_DEFAULT = Boolean.TRUE;
+    /** The default value for the maximal iterations to make. */
+    private static final int MAX_ITERATIONS_DEFAULT = 1_000_000;
+    /** The maximal iterations to make.*/
+    private long maxIterations = MAX_ITERATIONS_DEFAULT;
 
     /**
      * Creates a new {@link StressMinimizationLayout} object.
@@ -197,24 +208,70 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
 
     /**
      * @return the parameters the algorithm uses.
+     *
+     * @author Jannik
      */
     @Override
     public Parameter[] getParameters() {
-        // TODO
-        return null;
+
+        Parameter[] result = new Parameter[] {
+                EnableableNumberParameter.canBeEnabledDisabled(STRESS_EPSILON_DEFAULT,
+                        0.0, Double.MAX_VALUE, 0.0001,
+                        USE_STRESS_EPSILON_DEFAULT, "Used", "Not used",
+                        "Stress change stop",
+                        "<html>Stop the iterations if the change in stress is smaller than smaller than this value.<br>" +
+                                "The algorithm will only stop on this criterion, if this is enabled.</html>"),
+                EnableableNumberParameter.canBeEnabledDisabled(POSITION_CHANGE_EPSILON_DEFAULT,
+                        0.0, Double.MAX_VALUE, 0.0001,
+                        USE_POSITION_CHANGE_EPSILON_DEFAULT, "Used", "Not used",
+                        "Position change stop",
+                        "<html>Stop the iterations if the maximum change in positions of the nodes is smaller " +
+                                "than smaller than this value.<br>" +
+                                "The algorithm will only stop on this criterion, if this is enabled.</html>"),
+                EnableableNumberParameter.canBeEnabledDisabled(MAX_ITERATIONS_DEFAULT,
+                        0, Integer.MAX_VALUE, 1,
+                        USE_MAX_ITERATIONS_DEFAULT, "Used", "Not Used",
+                        "Max iterations stop",
+                        "<html>Stop after provided number of iterations.<br>" +
+                                "The algorithm will only stop on this criterion, if this is enabled.</html>"),
+        };
+
+        return result;
     }
 
     /**
      * @param params set the parameters.
      */
     @Override
+    @SuppressWarnings("unchecked") // will always work (see above) if calling class does not temper with args too much
     public void setParameters(Parameter[] params) {
-        // TODO
+        EnableableNumberParameter<Double> doubleParameter;
+        EnableableNumberParameter<Integer> integerParameter;
+        // Stress epsilon
+        doubleParameter = (EnableableNumberParameter<Double>) params[0].getValue();
+        if (doubleParameter.isEnabled()) {
+            this.stressEpsilon = doubleParameter.getValue();
+        } else {
+            this.stressEpsilon = Double.NEGATIVE_INFINITY;
+        }
+        // Position epsilon
+        doubleParameter = (EnableableNumberParameter<Double>) params[1].getValue();
+        if (doubleParameter.isEnabled()) {
+            this.positionChangeEpsilon = doubleParameter.getValue();
+        } else {
+            this.positionChangeEpsilon = Double.NEGATIVE_INFINITY;
+        }
+        // Max iterations
+        integerParameter = ((EnableableNumberParameter<Integer>) params[2].getValue());
+        if (integerParameter.isEnabled()) {
+            this.maxIterations = integerParameter.getValue();
+        } else {
+            this.maxIterations = Long.MAX_VALUE;
+        }
     }
 
     /*
-     * (non-Javadoc)
-     * @see org.graffiti.plugin.algorithm.Algorithm#getCategory()
+     * The category of this layouter.
      */
     @Override
     public String getCategory() {
