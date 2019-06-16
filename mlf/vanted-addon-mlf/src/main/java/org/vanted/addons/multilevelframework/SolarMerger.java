@@ -7,7 +7,7 @@ import org.graffiti.plugin.parameter.Parameter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-public class SolarMerger implements  Merger{
+class SolarMerger implements  Merger{
     @Override
     public Parameter[] getParameters() {
         return new Parameter[0];
@@ -21,8 +21,8 @@ public class SolarMerger implements  Merger{
 
 
     // Variables containing the stopping criteria for the SolarMerger
-    int minNodes = 20;
-    int maxLevels;
+    private final int minNodes = 20;
+    private int maxLevelFactor = 10;
 
 
 
@@ -31,10 +31,13 @@ public class SolarMerger implements  Merger{
 
         final long startTime = System.nanoTime();
 
+        // Determine MaxLevels from Factor
+        int maxLevels = multilevelGraph.getTotalNumberOfNodes() / this.maxLevelFactor;
+
         // checks whether the multilevelGraph contains too many Levels and whether the topLevel has enough Nodes
         if (multilevelGraph.getTopLevel().getNodes().size() > minNodes) {
             // calls upon build level to create multiple levels
-            for (int i = 0; i < this.maxLevels; i++) {
+            for (int i = 0; i < maxLevels; i++) {
                 processGalaxy(multilevelGraph);
                 if (multilevelGraph.getTopLevel().getNumberOfNodes() <= this.minNodes) {
                     break;
@@ -64,7 +67,10 @@ public class SolarMerger implements  Merger{
 
         // HashMaps containing suns and their planets as well as planets and their moons
         HashMap <Node, Set<Node>> sun2Planet = new HashMap<>();
-        HashMap <Node, Set<Node>> planet2Moon = new HashMap<>();
+        HashMap <Node, Set<Node>> planet2Moons = new HashMap<>();
+
+        // Set containing all moons of the
+        Set<Node> allMoons = new HashSet<>();
 
         // find planets and moons for all the suns
         for (Node n : suns){
@@ -86,19 +92,21 @@ public class SolarMerger implements  Merger{
 
                     for (Node o : candidateMoons) {
                         // checking whether the current node is already a moon
-                        if (!planet2Moon.containsValue(o)) {
+                        if (!(allMoons.contains(o))) {
+                            allMoons.add(o);
                             moons.add(o);
+
                         }
                     }
                     // Adding all planets and their moons to planet2Moon
-                    planet2Moon.put(n,moons);
+                    planet2Moons.put(n,moons);
                 }
             }
         }
 
         // HashMap mapping the collapsed Suns to the Sets of potential neighbors for the resulting collapsed Sun
         HashMap<MergedNode, Set<Node>> collapsedSuns2N = new HashMap<>();
-        // Set containing the already represented inner Nodes, to prohibit the occurence of edge-duplicates
+        // Set containing the already represented inner Nodes, to prohibit the occurrence of edge-duplicates
         Set <Node> representedNodes = new HashSet<>();
 
         //Collapsing the solarSystems of the galaxy into their suns
@@ -112,7 +120,7 @@ public class SolarMerger implements  Merger{
             innerNodes.addAll(planets);
             // Adding moons for each planet
             for (Node p : planets){
-                Set<Node> moons = planet2Moon.get(p);
+                Set<Node> moons = planet2Moons.get(p);
                 //Todo Edges have to be calculated, weights have to be calculated
                 innerNodes.addAll(moons);
             }
@@ -157,7 +165,7 @@ public class SolarMerger implements  Merger{
                 }
             }
         }
-        
+
         // Adding the Edges resulting from interSystemNeighbors to the TopLevel
         for (Map.Entry<MergedNode, Set<Node>> interSN : collapsedSuns2N.entrySet()){
             // Traversing all noted neighbors of the sun
