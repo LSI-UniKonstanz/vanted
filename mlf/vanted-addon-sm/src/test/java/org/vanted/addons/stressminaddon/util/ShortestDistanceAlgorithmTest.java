@@ -4,8 +4,7 @@ package org.vanted.addons.stressminaddon.util;
 import org.junit.Test;
 
 import static data.TestGraphs.*;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ShortestDistanceAlgorithmTest {
 

@@ -45,24 +45,38 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
     private static final InitialPlacer initialPlacer = new PivotMDS();
 
     ///// Parameters and defaults /////
+    // stop conditions
     /** Whether to use the stress epsilon by default.*/
-    private static final Boolean USE_STRESS_EPSILON_DEFAULT = Boolean.TRUE;
+    private static final boolean USE_STRESS_EPSILON_DEFAULT = true;
     /** The default value for the epsilon to use with stress function. */
     private static final double STRESS_EPSILON_DEFAULT = 0.0001;
     /** The epsilon to use with the stress function. */
     private double stressEpsilon = STRESS_EPSILON_DEFAULT;
     /** Whether to use the position change epsilon by default.*/
-    private static final Boolean USE_POSITION_CHANGE_EPSILON_DEFAULT = Boolean.TRUE;
+    private static final boolean USE_POSITION_CHANGE_EPSILON_DEFAULT = true;
     /** The default value for the epsilon to use with the difference between old and new distances. */
     private static final double POSITION_CHANGE_EPSILON_DEFAULT = 0.0001;
     /** The epsilon to use with the difference between old  new distances. */
     private double positionChangeEpsilon = POSITION_CHANGE_EPSILON_DEFAULT;
     /** Whether to use the max iterations stop criterion by default.*/
-    private static final Boolean USE_MAX_ITERATIONS_DEFAULT = Boolean.TRUE;
+    private static final boolean USE_MAX_ITERATIONS_DEFAULT = true;
     /** The default value for the maximal iterations to make. */
     private static final int MAX_ITERATIONS_DEFAULT = 1_000_000;
     /** The maximal iterations to make.*/
     private long maxIterations = MAX_ITERATIONS_DEFAULT;
+    // scaling and weight
+    /** The default scaling factor for edges between the nodes (as fraction of the biggest node). */
+    private static final double EDGE_SCALING_FACTOR_DEFAULT = 5.0;
+    /** The scaling factor for the edges between the nodes (as fraction of the biggest node). */
+    private double edgeScalingFactor = EDGE_SCALING_FACTOR_DEFAULT;
+    /** The default constant scale factor for the calculated weight between two nodes. */
+    private static final double WEIGHT_SCALING_FACTOR_DEFAULT = 1.0;
+    /** The constant scale factor for the calculated weight between two nodes. */
+    private double weightScalingFactor = WEIGHT_SCALING_FACTOR_DEFAULT;
+    /** The default power of the distance for the calculated weight between two nodes. */
+    private static final double WEIGHT_POWER_DEFAULT = -2.0;
+    /** The constant power of the distance for the calculated weight between two nodes. */
+    private double weightPower = WEIGHT_POWER_DEFAULT;
 
     /**
      * Creates a new {@link StressMinimizationLayout} object.
@@ -234,6 +248,17 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
                         "Max iterations stop",
                         "<html>Stop after provided number of iterations.<br>" +
                                 "The algorithm will only stop on this criterion, if this is enabled.</html>"),
+                EnableableNumberParameter.alwaysEnabled(EDGE_SCALING_FACTOR_DEFAULT, 0.0, Double.MAX_VALUE, 0.5,
+                        "Edge scaling factor", "<html>The amount of space that the algorithm tries to ensure between two nodes<br>" +
+                                "(length of the edges) as faction of the size of the largest node encountered.</html>"),
+                EnableableNumberParameter.alwaysEnabled(WEIGHT_SCALING_FACTOR_DEFAULT, 0.0, Double.MAX_VALUE, 0.5,
+                        "Weight scaling factor", "<html>The constant factor &alpha; used in the weight function that derives a weight<br>" +
+                                "between two given nodes <i>i</i> and <i>j</i> from their graph theoretical distance &delta;.<br>" +
+                                "The weight function is &alpha;&delta;<sup>&beta;</sup><sub>ij</sub>.</html>"),
+                EnableableNumberParameter.alwaysEnabled(WEIGHT_POWER_DEFAULT, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0,
+                        "Weight distance power", "<html>The power for the distance &beta; used in the weight function that derives a weight<br>" +
+                                "between two given nodes <i>i</i> and <i>j</i> from their graph theoretical distance &delta;.<br>" +
+                                "The weight function is &alpha;&delta;<sup>&beta;</sup><sub>ij</sub>.</html>"),
         };
 
         return result;
@@ -250,14 +275,22 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
         // Stress epsilon
         doubleParameter = (EnableableNumberParameter<Double>) params[0].getValue();
         if (doubleParameter.isEnabled()) {
-            this.stressEpsilon = doubleParameter.getValue();
+            if (doubleParameter.getValue() == 0.0) {
+                this.stressEpsilon = Double.MIN_VALUE;
+            } else {
+                this.stressEpsilon = doubleParameter.getValue();
+            }
         } else {
             this.stressEpsilon = Double.NEGATIVE_INFINITY;
         }
         // Position epsilon
         doubleParameter = (EnableableNumberParameter<Double>) params[1].getValue();
         if (doubleParameter.isEnabled()) {
-            this.positionChangeEpsilon = doubleParameter.getValue();
+            if (doubleParameter.getValue() == 0.0) {
+                this.positionChangeEpsilon = Double.MIN_VALUE;
+            } else {
+                this.positionChangeEpsilon = doubleParameter.getValue();
+            }
         } else {
             this.positionChangeEpsilon = Double.NEGATIVE_INFINITY;
         }
@@ -268,6 +301,18 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
         } else {
             this.maxIterations = Long.MAX_VALUE;
         }
+        // Scaling factor
+        doubleParameter = (EnableableNumberParameter<Double>) params[3].getValue();
+        if (doubleParameter.getValue() == 0.0) {
+            this.edgeScalingFactor = Double.MIN_VALUE;
+        } else {
+            this.edgeScalingFactor = doubleParameter.getValue();
+        }
+        // weight variables
+        doubleParameter = (EnableableNumberParameter<Double>) params[4].getValue();
+        this.weightScalingFactor = doubleParameter.getValue();
+        doubleParameter = (EnableableNumberParameter<Double>) params[5].getValue();
+        this.weightPower = doubleParameter.getValue();
     }
 
     /*
@@ -278,7 +323,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
         return "Layout";
     }
 
-    /**
+    /**)
      * This method is important, because it will move the algorithm to the layout-tab of Vanted
      */
     @Override
@@ -427,10 +472,10 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             this.distances = ShortestDistanceAlgorithm.calculateShortestPaths(nodes, Integer.MAX_VALUE); // TODO make configurable
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate scaling factor..."));
             final double scalingFactor = ConnectedComponentsHelper.getMaxNodeSize(nodes);
-            // scale for better display TODO make configurable
-            this.distances.apply(x -> x*scalingFactor*5);
+            // scale for better display
+            this.distances.apply(x -> x*scalingFactor*StressMinimizationLayout.this.edgeScalingFactor);
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate weights..."));
-            this.weights = this.distances.clone().apply(x -> 1/(x*x)); // derive weights TODO make configurable
+            this.weights = this.distances.clone().apply(x -> weightScalingFactor*Math.pow(x, weightPower));
 
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate initial layout..."));
             this.currentPositions = initialPlacer.calculateInitialPositions(nodes, this.distances);

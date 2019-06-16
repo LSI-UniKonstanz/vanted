@@ -6,7 +6,10 @@ import org.apache.commons.math.linear.RealMatrixImpl;
 import org.graffiti.graph.Node;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 
 /**
  * A class that implements the Pivot Multidimensional Scaling algorithm

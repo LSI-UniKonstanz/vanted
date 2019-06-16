@@ -121,12 +121,12 @@ public class EnableableNumberParameter<T extends Number & Comparable<T>> extends
      * @param max the maximum allowed value for the {@link JSpinner}.
      * @param steps the step with with each click on an button of the {@link JSpinner}.
      * @param name
-     *      the name of the underlying Doub{@link org.graffiti.plugin.parameter.Parameter}.
+     *      the name of the underlying {@link org.graffiti.plugin.parameter.Parameter}.
      * @param description
      *      the description of the underlying {@link org.graffiti.plugin.parameter.Parameter}.
      *
      * @return
-     *      a {@link JComponentParameter} containing a {@link EnableableNumberParameter} as argument.
+     *      a {@link JComponentParameter} containing a {@link EnableableNumberParameter} as value.
      *
      * @author Jannik
      */
