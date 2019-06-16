@@ -4,10 +4,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.parameter.Parameter;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class SolarMerger implements  Merger{
@@ -38,7 +35,7 @@ public class SolarMerger implements  Merger{
         if (multilevelGraph.getTopLevel().getNodes().size() > minNodes) {
             // calls upon build level to create multiple levels
             for (int i = 0; i < this.maxLevels; i++) {
-                buildGalaxy(multilevelGraph);
+                processGalaxy(multilevelGraph);
                 if (multilevelGraph.getTopLevel().getNumberOfNodes() <= this.minNodes) {
                     break;
                 }
@@ -52,12 +49,15 @@ public class SolarMerger implements  Merger{
 
 
     /**
-     *
+     * Builds a Galaxy for the current multilevel consisting of several solar Systems.
+     * Each solar System has a sun, planets(dist 1 to the sun) and one or no moon for each planet.
      */
-    private void buildGalaxy(MultilevelGraph multilevelGraph) {
+    private void processGalaxy(MultilevelGraph multilevelGraph) {
 
         // Graph storing the current topLevel as baseLevel for this coarsening step
         Graph baseLevel = multilevelGraph.getTopLevel();
+        // adding a new level to the coarsening graph
+        multilevelGraph.newCoarseningLevel();
 
         // Determining suns for all the solar systems of the galaxy
         List<Node> suns = findSuns(baseLevel);
@@ -73,10 +73,97 @@ public class SolarMerger implements  Merger{
             sun2Planet.put(n, planets);
 
             for (Node m : planets){
-                Set<Node> moons = m.getNeighbors();
-                moons.removeAll(planets);
-                // Adding all planets and their moons to planet2Moon
-                planet2Moon.put(m, moons);
+                Set<Node> candidateMoons = m.getNeighbors();
+                // TODO the closest planet to each moon should be used
+                // prevent the sun and the planets to become their own moons
+                candidateMoons.remove(n);
+                candidateMoons.removeAll(planets);
+
+                // checking whether the planet has a potential moon
+                if(!candidateMoons.isEmpty()) {
+                    // HashSet to collect and add the planets moons
+                    Set<Node> moons = new HashSet<>();
+
+                    for (Node o : candidateMoons) {
+                        // checking whether the current node is already a moon
+                        if (!planet2Moon.containsValue(o)) {
+                            moons.add(o);
+                        }
+                    }
+                    // Adding all planets and their moons to planet2Moon
+                    planet2Moon.put(n,moons);
+                }
+            }
+        }
+
+        // HashMap mapping the collapsed Suns to the Sets of potential neighbors for the resulting collapsed Sun
+        HashMap<MergedNode, Set<Node>> collapsedSuns2N = new HashMap<>();
+        // Set containing the already represented inner Nodes, to prohibit the occurence of edge-duplicates
+        Set <Node> representedNodes = new HashSet<>();
+
+        //Collapsing the solarSystems of the galaxy into their suns
+        for (Map.Entry<Node, Set<Node>> entry  :  sun2Planet.entrySet()){
+            // Preparing the inner Nodes for the collapsing sun
+            Set<Node> innerNodes = new HashSet<>();
+            // Adding the sun
+            innerNodes.add(entry.getKey());
+            // Adding Planets
+            Set<Node> planets = entry.getValue();
+            innerNodes.addAll(planets);
+            // Adding moons for each planet
+            for (Node p : planets){
+                Set<Node> moons = planet2Moon.get(p);
+                //Todo Edges have to be calculated, weights have to be calculated
+                innerNodes.addAll(moons);
+            }
+
+            // Calculating interSystemNeighbors of the collapsing sun
+            Set<Node> interSystemNeighbors = new HashSet<>();
+            for (Node n : innerNodes){
+                interSystemNeighbors.addAll(n.getNeighbors());
+            }
+            // adding all innerNodes to the Set of already represented Nodes
+            representedNodes.addAll(innerNodes);
+
+            /* removing already represented innerNodes and intraSystemNeighbors from the Set of
+               interSolar Neighbors
+             */
+            interSystemNeighbors.removeAll(representedNodes);
+
+            // Adding the new MergedNode to the current TopLevel
+            MergedNode nMergedNode = multilevelGraph.addNode(innerNodes);
+
+            // Adding the merged Node and its neighbors to the HashMap
+            collapsedSuns2N.put(nMergedNode,interSystemNeighbors);
+
+            /* Introducing the created mergedNode as interSystemNeighbor.
+            Since neighborhood includes source and target finding one of the is enough.
+            Not checking the currently added nodes does not ignore existing edges.
+            */
+            // traversing all the inner Nodes
+            for (Node in : innerNodes ){
+                //Searching existing mergedNodes having these inner Nodes as neighbors
+                for (Map.Entry<MergedNode,Set<Node>> ns: collapsedSuns2N.entrySet()){
+                    if(ns.getValue().contains(in)){
+                        // Creating new NeighborSet containing the new MergedNode
+                        Set<Node> neighborSet = ns.getValue();
+                        // Removing the inner Node
+                        neighborSet.remove(in);
+                        // Adding MergedNode
+                        neighborSet.add(nMergedNode);
+                        // Introducing new NeighborSet to the HashMap
+                        ns.setValue(neighborSet);
+                    }
+                }
+            }
+        }
+        
+        // Adding the Edges resulting from interSystemNeighbors to the TopLevel
+        for (Map.Entry<MergedNode, Set<Node>> interSN : collapsedSuns2N.entrySet()){
+            // Traversing all noted neighbors of the sun
+            for (Node n : interSN.getValue()){
+                // Adding the Edge to the TopLevel
+                multilevelGraph.addEdge(interSN.getKey(),n);
             }
         }
 
@@ -85,14 +172,13 @@ public class SolarMerger implements  Merger{
     }
 
     /**
-     * determines suns for the solarsystems which will represent the current level of the multilevelgraph
+     * determines suns for the solarSystems which will represent the current level of the multiLevelGraph
      * @param baseLevel  the level current of the multilevel framework
+     * @return sunList a List of the central Nodes of the solar systems
      */
-    private List<Node> findSuns(Graph baseLevel) {
-        // Graph containing a copy of the the baseLevel to determine suns    !!!!UNUSED!!!!
-        Graph sunCanditates = baseLevel;
+    private ArrayList<Node> findSuns(Graph baseLevel) {
         // List containing the suns for this level
-        List<Node> sunList = new List;
+        ArrayList<Node> sunList = new ArrayList<>();
         // HashMap containing all Nodes of the Top list with their Neighbors
         HashMap<Integer, Node> degree2Node = new HashMap<>();
 
@@ -122,15 +208,6 @@ public class SolarMerger implements  Merger{
                 }
             }
         }
-
-
-
-
-
-
-
-
-
         return sunList;
     }
 }
