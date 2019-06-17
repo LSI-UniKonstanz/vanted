@@ -1,6 +1,5 @@
 package org.vanted.addons.stressminaddon;
 
-import antlr.collections.impl.Vector;
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import org.AttributeHelper;
@@ -397,11 +396,11 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
         doubleParameter = (EnableableNumberParameter<Double>) params[5].getValue();
         this.weightPower = doubleParameter.getValue();
         // Remove edge bends
-        this.removeEdgeBends = ((BooleanParameter) params[6].getValue()).getBoolean();
+        this.removeEdgeBends = ((BooleanParameter) params[6]).getBoolean();
         // Intermediates undoable
-        this.intermediateUndoable = ((BooleanParameter) params[7].getValue()).getBoolean();
+        this.intermediateUndoable = ((BooleanParameter) params[7]).getBoolean();
         // Do animation
-        this.doAnimations = ((BooleanParameter) params[8].getValue()).getBoolean();
+        this.doAnimations = ((BooleanParameter) params[8]).getBoolean();
         if (intermediateUndoable) { // intermediateUndoable => doAnimations
             doAnimations = true;
         }
