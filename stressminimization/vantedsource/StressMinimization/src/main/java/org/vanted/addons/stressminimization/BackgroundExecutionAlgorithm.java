@@ -205,10 +205,11 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 						if(algorithm.getProgress() < 0.9) {
 							currentStatus = (int) (algorithm.getProgress()*100 * 4/9);
 						}
-						//90-99 get 20% in the progress bar
+						//90-99 get 30% in the progress bar
 						else if(algorithm.getProgress() < 0.99) {
 							currentStatus = (int) ((algorithm.getProgress()-0.9)*1000 * 3/9 + 40);
 						}
+						//99-100 get 30% in the progress bar
 						else if(algorithm.getProgress() < 0.999) {
 							currentStatus = (int) ((algorithm.getProgress()-0.99)*10000 * 3/9 + 70);
 						}
