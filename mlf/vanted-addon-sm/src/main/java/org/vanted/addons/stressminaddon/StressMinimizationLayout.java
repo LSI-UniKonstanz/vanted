@@ -198,9 +198,11 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
                 if (this.intermediateUndoable) {
                     GraphHelper.applyUndoableNodePositionUpdate(new HashMap<>(move), "Initial layout");
                 } else {
+                    graph.getListenerManager().transactionStarted(this);
                     for (Map.Entry<Node, Vector2d> entry : move.entrySet()) {
                         AttributeHelper.setPosition(entry.getKey(), entry.getValue());
                     }
+                    graph.getListenerManager().transactionFinished(this);
                 }
             }
             System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Finished preparing"));
@@ -221,11 +223,16 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
                     }
                     todo.add(Executors.callable(() -> {
                         unit.nextIteration();
+
                         if (this.doAnimations) {
+                            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+unit.id+": Prepare result.");
+                            HashMap<Node, Vector2d> result = new HashMap<>();
                             for (int idx = 0; idx < unit.nodes.size(); idx++) {
-                                move.put(unit.nodes.get(idx), unit.currentPositions.get(idx));
+                                result.put(unit.nodes.get(idx), unit.currentPositions.get(idx));
                             }
+                            move.putAll(result);
                         }
+                        System.out.println((System.currentTimeMillis() - startTime) + " SM@"+unit.id+": Iteration finished.");
                     }));
                     // something was worked on
                     someoneIsWorking = true;
@@ -246,9 +253,11 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
                     if (this.intermediateUndoable) {
                         GraphHelper.applyUndoableNodePositionUpdate(new HashMap<>(move), "Do iteration " + iteration);
                     } else {
+                        graph.getListenerManager().transactionStarted(this);
                         for (Map.Entry<Node, Vector2d> entry : move.entrySet()) {
                             AttributeHelper.setPosition(entry.getKey(), entry.getValue());
                         }
+                        graph.getListenerManager().transactionFinished(this);
                     }
                 }
             }
@@ -265,22 +274,26 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             }
 
             if (!doAnimations) { // => !intermediateUndoable
+                graph.getListenerManager().transactionStarted(this);
                 for (WorkUnit unit : workUnits) { // prepare for layout connected components
                     for (int idx = 0; idx < unit.nodes.size(); idx++) {
                         AttributeHelper.setPosition(unit.nodes.get(idx), unit.currentPositions.get(idx));
                     }
                 }
+                graph.getListenerManager().transactionFinished(this);
             }
 
             ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents, this.intermediateUndoable);
             // create only one undo
             if (!this.intermediateUndoable) {
+                graph.getListenerManager().transactionStarted(this);
                 for (int idx = 0; idx < pureNodes.size(); idx++) {
                     Node node = pureNodes.get(idx);
                     move.put(node, AttributeHelper.getPositionVec2d(node));
                     // reset to old position so that only undo has correct starting positions
                     AttributeHelper.setPosition(node, oldPositions.get(idx));
                 }
+                graph.getListenerManager().transactionFinished(this);
                 GraphHelper.applyUndoableNodePositionUpdate(new HashMap<>(move), "Stress Minimization");
             }
 
@@ -334,9 +347,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
                                 "The weight function is &alpha;&delta;<sup>&beta;</sup><sub>ij</sub>.</html>"),
                 new BooleanParameter(REMOVE_EDGE_BENDS_DEFAULT, "Remove edge bends",
                         "<html>Remove edge bends before starting the algorithm.<br><b>Highly recommended</b> because the algorithm does not" +
-                                "move edge bends. Always undoable as extra undo.</html>"),
+                                "move edge bends.<br>Always undoable as extra undo.</html>"),
                 new BooleanParameter(INTERMEDIATE_UNDOABLE_DEFAULT, "Iterations undoable",
-                        "<html>Should each iteration step be undoable (only recommended for small iteration sizes).</html>"),
+                        "<html>Should each iteration step be undoable (only recommended for small iteration sizes).<br>This parameter implies “Animate iterations”.</html>"),
                 new BooleanParameter(DO_ANIMATIONS_DEFAULT, "Animate iterations",
                         "<html>Whether every iteration should update the node positions.</html>"),
         };
@@ -618,7 +631,6 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             // update with new values
             this.currentPositions = newPositions;
             this.currentStress = newStress;
-            System.out.println((System.currentTimeMillis() - startTime) + " SM@"+this.id+": Iteration finished.");
             return this.currentPositions;
         }
 
