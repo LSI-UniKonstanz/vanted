@@ -330,12 +330,11 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 		if (LOG) { System.out.println("Optimizing layout..."); }
 
-		StressMajorizationLayoutCalculator c = new StressMajorizationLayoutCalculator(layout, distances, weights);
-		final double initialStress = c.calcStress(layout);
+		StressMajorizationLayoutCalculator optim = new StressMajorizationLayoutCalculator(layout, distances, weights);
 		
+		final double initialStress = optim.calcStress();
 		final double stressThreshold = initialStress * (initialStressPercentage / 100);
 		long iterationCount = 0;
-		
 		double newStress, prevStress = initialStress;
 		RealMatrix prevLayout = layout;
 		boolean terminate = false;
@@ -346,13 +345,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			if (waitIfPausedAndCheckStop()) { return; }
 			
 			// TODO: do not create a new object in each iteration
-			c = new StressMajorizationLayoutCalculator(layout, distances, weights);
 			
-			layout = c.calcOptimizedLayout();
-			
+			layout = optim.calcOptimizedLayout();
 			setLayout(layout, nodes);
-			
-			newStress = c.calcStress(layout);
+			newStress = optim.calcStress();
 			
 			// TODO: check termination
 			// TODO: offer choice between change limit and number of iterations, offer choices of epsilon

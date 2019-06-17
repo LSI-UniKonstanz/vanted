@@ -1,7 +1,10 @@
 package org.vanted.addons.stressminimization;
 
+import java.util.Arrays;
+
 import org.apache.commons.math3.analysis.MultivariateFunction;
 import org.apache.commons.math3.analysis.MultivariateVectorFunction;
+import org.apache.commons.math3.distribution.GeometricDistribution;
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.CholeskyDecomposition;
 import org.apache.commons.math3.linear.DecompositionSolver;
@@ -17,7 +20,9 @@ import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunction;
 import org.apache.commons.math3.optim.nonlinear.scalar.ObjectiveFunctionGradient;
 import org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjugateGradientOptimizer;
 
-
+/**
+ * Provides stress calculation and stress optimization functionality on basis of a stored layout.
+ */
 class StressMajorizationLayoutCalculator {
 
 	// matrix dimensions required for input and output matrices
@@ -33,7 +38,8 @@ class StressMajorizationLayoutCalculator {
 	// all have the required dimension matches
 	private final RealMatrix weights;
 	private final RealMatrix distances;
-	private final RealMatrix initialLayout;
+	
+	private RealMatrix layout;
 	
 	/**
 	 * Creates a new StressMajorizationLayoutCalculator instance,
@@ -58,26 +64,43 @@ class StressMajorizationLayoutCalculator {
 		if (weights.getRowDimension() != distances.getRowDimension()) {
 			throw new IllegalArgumentException("weight and distance matrices need to have the same dimensions.");
 		}
-		if (weights.getRowDimension() != layout.getRowDimension()) {
-			throw new IllegalArgumentException("layout matrix and weight matrix need to have the exact same number of rows.");
-		}
-		
-		this.weights = weights;
-		this.distances = distances;
-		this.initialLayout = layout;
 		
 		this.n = weights.getRowDimension();
 		this.d = layout.getColumnDimension();
+
+		this.weights = weights;
+		this.distances = distances;
+		
+		setLayout(layout);
+		
 	}
 
+	private void setLayout(RealMatrix layout) {
+		
+		// all registered nodes needs to be contained in the new layout
+		if (this.n != layout.getRowDimension()) {
+			throw new IllegalArgumentException("layout matrix and weight matrix need to have the exact same number of rows.");
+		}
+		
+		this.layout = layout;
+		
+	}
+	
 	/**
-	 * Calculates the stress for the given layout using the formula
+	 * Returns the current layout
+	 */
+	public RealMatrix getLayout() {
+		return this.layout;
+	}
+	
+	/**
+	 * Calculates the stress for the storred layout using the formula
 	 * $$
 	 * stress(X) = \sum_{i<j} wij * (||Xi - Xj|| - dij)^2
 	 * $$
-	 * @return The layout the stress will be calculated for.
+	 * @return The stress of the current layout.
 	 */
-	public double calcStress(RealMatrix layout) {
+	public double calcStress() {
 
 		double stress = 0;
 		for (int i = 0; i < n; i += 1) {
@@ -94,9 +117,14 @@ class StressMajorizationLayoutCalculator {
 
 	// MARK: Layout calculation
 	
+	/**
+	 * Optimizes the stored layout and updates it to the optimized version.
+	 * @return
+	 */
 	public RealMatrix calcOptimizedLayout() {
-		// to define test, we use the localized process to define test cases, etc.
-		return localizedOptimizationLayout();
+		RealMatrix layout = localizedOptimizationLayout();
+		setLayout(layout);
+		return layout;
 	}
 	
 	// ===========================================
@@ -105,7 +133,7 @@ class StressMajorizationLayoutCalculator {
 	
 	private RealMatrix localizedOptimizationLayout() {
 		
-		RealMatrix X = initialLayout.copy();
+		RealMatrix X = layout.copy();
 
 		for (int i = 0; i < n; i += 1) {
 			RealVector Xi = X.getRowVector(i);
@@ -140,48 +168,6 @@ class StressMajorizationLayoutCalculator {
 		return X;
 	}
 	
-	// ===========================================
-	// Implementation using Cholesky Factorization
-	// ===========================================
-	// IMPORTANT: buggy implementation!
-	
-	private RealMatrix choleskyFactorizationLayout() {
-
-		/*
-		// fix first row as in paper (X_1 := 0)
-		layout.setRow(0, new double[] {0, 0});
-		*/
-		
-		RealMatrix Z = initialLayout;
-		RealMatrix LW = calcWeightedLaplacian(weights);
-		RealMatrix LZ = calcLZ(weights, distances, Z);
-		
-		RealMatrix X = new VectorMappingMatrix(n-1, d); // X1/X0 is fixed
-		
-		// as in paper, we remove the first row and column of LW
-		// and the first row of LZ
-		
-		LW = LW.getSubMatrix(1, n-1, 1, n-1);
-		
-		// solve equation system LW*X = LZ*Z for each dimension
-		for (int a = 0; a < d; a += 1) {
-			
-			DecompositionSolver solver = new CholeskyDecomposition(LW).getSolver();
-			RealMatrix Za = Z.getColumnMatrix(a);
-			RealMatrix LZZa = LZ.multiply(Za);
-			LZZa = LZZa.getSubMatrix(1, n-1, 0, 0);
-			RealVector Xa = solver.solve(LZZa.getColumnVector(0));
-			
-			X.setColumnVector(a, Xa);
-		}
-		
-		// we add the first vector again (which has value 0)
-		RealMatrix fullX = Z.copy();
-		fullX.setSubMatrix(X.getData(), 1, 0);
-		return fullX;
-		
-	}
-
 	// =======================================
 	// Implementation using Conjugate Gradient
 	// =======================================
@@ -189,11 +175,6 @@ class StressMajorizationLayoutCalculator {
 	
 	private VectorMappingMatrix conjugateGradientLayout() {
 
-		/*
-		// fix first row as in paper (X_1 := 0)
-		layout.setRow(0, new double[] {0, 0});
-		*/
-		
 		final double EPSILON = 1e-4;
 		
 		NonLinearConjugateGradientOptimizer optimizer = new NonLinearConjugateGradientOptimizer(
@@ -206,7 +187,7 @@ class StressMajorizationLayoutCalculator {
 		PointValuePair minimum = optimizer.optimize(
 				new MaxEval(Integer.MAX_VALUE),
 				new MaxIter(Integer.MAX_VALUE),
-				new InitialGuess(VectorMappingMatrix.asVectorMappingMatrix(initialLayout).getVector()),
+				new InitialGuess(VectorMappingMatrix.asVectorMappingMatrix(layout).getVector()),
 				new ObjectiveFunction(F), 
 				new ObjectiveFunctionGradient(F.getGradient()),
 				GoalType.MINIMIZE
@@ -235,16 +216,6 @@ class StressMajorizationLayoutCalculator {
 	 * for further details.
 	 */
 	private class BoundedStressFunction implements MultivariateFunction {
-
-		/**
-		 * Calculates the stress of the initial layout passed to the constructor.
-		 * @return stress of the initial layout.
-		 */
-		public double getInitialLayoutStress() {
-			// stress of initial layout is the bounded layout function
-			// of the initial layout, see paper, page 4.
-			return calc(VectorMappingMatrix.asVectorMappingMatrix(initialLayout));
-		}
 
 		// TODO check up the whole math in the below
 		// I'm unsure about a few things
@@ -300,7 +271,7 @@ class StressMajorizationLayoutCalculator {
 			}
 
 			RealMatrix XT = X.transpose();
-			RealMatrix Z = initialLayout;
+			RealMatrix Z = layout;
 			RealMatrix LW = calcWeightedLaplacian(weights);
 			RealMatrix LZ = calcLZ(weights, distances, Z);
 			
@@ -346,7 +317,7 @@ class StressMajorizationLayoutCalculator {
 					throw new IllegalArgumentException("Misdimensioned input matrix. Expected Dimensions: " + n + "*" + d + ", actuall dimensions:" + X.getRowDimension() + "*" + X.getColumnDimension());
 				}
 
-				RealMatrix Z = initialLayout;
+				RealMatrix Z = layout;
 				RealMatrix LW = calcWeightedLaplacian(weights);
 				RealMatrix LZ = calcLZ(weights, distances, Z);
 				
@@ -415,20 +386,11 @@ class StressMajorizationLayoutCalculator {
 	private RealMatrix calcLZ(RealMatrix w, RealMatrix d, RealMatrix Z) {
 		RealMatrix LZ = new Array2DRowRealMatrix(n, n);
 		
-		// IMPORTANT
-		// this formula deviates from the formula in the paper referenced in class javadoc
-		// the updates formula is from https://www.sciencedirect.com/science/article/pii/S0012365X08000083
-		// and matches with the implementation in graphviz,
-		// referenced in the paper referenced in class javadoc
-		
-		// TODO check this in paper!
-		
-		// fill entries that are not on the diagonal first
 		for (int i = 0; i < LZ.getRowDimension(); i += 1) {
 			double sumOverAllNonDiagonal = 0; // will be used for the diagonal element
 			for (int j = 0; j < LZ.getColumnDimension(); j += 1) {
 				if (i != j) {
-					double distance = Z.getRowVector(i).subtract(Z.getRowVector(j)).getNorm();
+					double distance = Z.getRowVector(i).getDistance(Z.getRowVector(j));
 					double value = -w.getEntry(i, j) * d.getEntry(i, j) * inv(distance);
 					
 					LZ.setEntry(i, j, value);
