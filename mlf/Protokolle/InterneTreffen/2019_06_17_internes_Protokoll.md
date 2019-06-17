@@ -11,4 +11,6 @@
 (#21) Discussion über eine klare Umsetzung
 
 - MLF:
-(#6) Besprechung von Solar-mergen
+(#6) Besprechung von SolarMerger
+internes MLF-treffen Mittwoch 13:30, bis dahin SolarMerger gefixt(Tobias) und dynamische Node größen nutzbar(Jonas)
+
