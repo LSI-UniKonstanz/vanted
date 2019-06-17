@@ -163,7 +163,7 @@ public class TestStressMajorizationLayoutCalculator {
 		});
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
-		assert(layoutCalculator.calcStress(layout) == 0);
+		assert(layoutCalculator.calcStress() == 0);
 		assertArrayEquals(flat(layout.getData()), flat(layoutCalculator.calcOptimizedLayout().getData()), 1e-8);
 		
 	}
@@ -189,7 +189,7 @@ public class TestStressMajorizationLayoutCalculator {
 		});
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
-		assertEquals(0.0, layoutCalculator.calcStress(layout), 1e-8);
+		assertEquals(0.0, layoutCalculator.calcStress(), 1e-8);
 		assertArrayEquals(flat(layout.getData()), flat(layoutCalculator.calcOptimizedLayout().getData()), 1e-8);
 		
 	}
@@ -221,7 +221,7 @@ public class TestStressMajorizationLayoutCalculator {
 		});
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
-		assertEquals(0.0, layoutCalculator.calcStress(layout), 1e-8);
+		assertEquals(0.0, layoutCalculator.calcStress(), 1e-8);
 		assertArrayEquals(flat(layout.getData()), flat(layoutCalculator.calcOptimizedLayout().getData()), 1e-8);
 		
 	}
@@ -240,7 +240,7 @@ public class TestStressMajorizationLayoutCalculator {
 		});
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
-		assertEquals(0.0, layoutCalculator.calcStress(layout), 1e-8);
+		assertEquals(0.0, layoutCalculator.calcStress(), 1e-8);
 		
 	}
 	
@@ -261,7 +261,7 @@ public class TestStressMajorizationLayoutCalculator {
 		});
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
-		assertEquals(1.0, layoutCalculator.calcStress(layout), 1e-8);
+		assertEquals(1.0, layoutCalculator.calcStress(), 1e-8);
 		
 	}
 	
@@ -285,7 +285,7 @@ public class TestStressMajorizationLayoutCalculator {
 		});
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
-		assertEquals(0.1715728753, layoutCalculator.calcStress(layout), 1e-8);
+		assertEquals(0.1715728753, layoutCalculator.calcStress(), 1e-8);
 		
 	}
 	
@@ -309,7 +309,7 @@ public class TestStressMajorizationLayoutCalculator {
 		});
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
-		assertEquals(0.1715728753, layoutCalculator.calcStress(layout), 1e-8);
+		assertEquals(0.1715728753, layoutCalculator.calcStress(), 1e-8);
 		
 	}
 	@Test
@@ -335,7 +335,7 @@ public class TestStressMajorizationLayoutCalculator {
 		});
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
-		assertEquals(0.1715728753, layoutCalculator.calcStress(layout), 1e-8);
+		assertEquals(0.1715728753, layoutCalculator.calcStress(), 1e-8);
 		
 	}
 	
@@ -362,7 +362,7 @@ public class TestStressMajorizationLayoutCalculator {
 		});
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
-		assertEquals(0.3431457505, layoutCalculator.calcStress(layout), 1e-8);
+		assertEquals(0.3431457505, layoutCalculator.calcStress(), 1e-8);
 		
 	}
 
@@ -397,9 +397,9 @@ public class TestStressMajorizationLayoutCalculator {
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
 		
-		double stress1 = layoutCalculator.calcStress(layout);
-		RealMatrix newLayout = layoutCalculator.calcOptimizedLayout();
-		double stress2 = layoutCalculator.calcStress(newLayout);
+		double stress1 = layoutCalculator.calcStress();
+		layoutCalculator.calcOptimizedLayout();
+		double stress2 = layoutCalculator.calcStress();
 		
 		// initial layout is not optimal,
 		// so stress needs to decline
@@ -466,9 +466,9 @@ public class TestStressMajorizationLayoutCalculator {
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
 		
-		double stress1 = layoutCalculator.calcStress(layout);
-		RealMatrix newLayout = layoutCalculator.calcOptimizedLayout();
-		double stress2 = layoutCalculator.calcStress(newLayout);
+		double stress1 = layoutCalculator.calcStress();
+		layoutCalculator.calcOptimizedLayout();
+		double stress2 = layoutCalculator.calcStress();
 		
 		// initial layout is not optimal,
 		// so stress needs to decline
@@ -503,9 +503,9 @@ public class TestStressMajorizationLayoutCalculator {
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
 		
-		double stress1 = layoutCalculator.calcStress(layout);
-		RealMatrix newLayout = layoutCalculator.calcOptimizedLayout();
-		double stress2 = layoutCalculator.calcStress(newLayout);
+		double stress1 = layoutCalculator.calcStress();
+		layoutCalculator.calcOptimizedLayout();
+		double stress2 = layoutCalculator.calcStress();
 		
 		// initial layout is not optimal,
 		// so stress needs to decline
@@ -542,9 +542,9 @@ public class TestStressMajorizationLayoutCalculator {
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
 		
-		double stress1 = layoutCalculator.calcStress(layout);
-		RealMatrix newLayout = layoutCalculator.calcOptimizedLayout();
-		double stress2 = layoutCalculator.calcStress(newLayout);
+		double stress1 = layoutCalculator.calcStress();
+		layoutCalculator.calcOptimizedLayout();
+		double stress2 = layoutCalculator.calcStress();
 		
 		// initial layout is not optimal,
 		// so stress needs to decline
@@ -612,9 +612,9 @@ public class TestStressMajorizationLayoutCalculator {
 		
 		StressMajorizationLayoutCalculator layoutCalculator = new StressMajorizationLayoutCalculator(layout, distances, weights);
 		
-		double stress1 = layoutCalculator.calcStress(layout);
-		RealMatrix newLayout = layoutCalculator.calcOptimizedLayout();
-		double stress2 = layoutCalculator.calcStress(newLayout);
+		double stress1 = layoutCalculator.calcStress();
+		layoutCalculator.calcOptimizedLayout();
+		double stress2 = layoutCalculator.calcStress();
 		
 		// initial layout is not optimal,
 		// so stress needs to decline

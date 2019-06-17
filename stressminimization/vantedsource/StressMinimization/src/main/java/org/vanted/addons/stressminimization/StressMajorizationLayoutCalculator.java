@@ -39,8 +39,6 @@ class StressMajorizationLayoutCalculator {
 	private final RealMatrix weights;
 	private final RealMatrix distances;
 	
-	private RealMatrix layout;
-	
 	/**
 	 * Creates a new StressMajorizationLayoutCalculator instance,
 	 * with the given weights, distances and the current layout.
@@ -75,6 +73,13 @@ class StressMajorizationLayoutCalculator {
 		
 	}
 
+	private RealMatrix layout;
+	// naming according to paper
+	private RealMatrix LW;
+	private RealMatrix LZ;
+	
+	private double weightsAndDistancesStressSummand;
+	
 	private void setLayout(RealMatrix layout) {
 		
 		// all registered nodes needs to be contained in the new layout
@@ -83,6 +88,9 @@ class StressMajorizationLayoutCalculator {
 		}
 		
 		this.layout = layout;
+		
+		this.LW = calcWeightedLaplacian(weights);
+		this.LZ = calcLZ(weights, distances, layout);
 		
 	}
 	
@@ -102,6 +110,8 @@ class StressMajorizationLayoutCalculator {
 	 */
 	public double calcStress() {
 
+		// TODO: may be optimized using LW and LZ
+		
 		double stress = 0;
 		for (int i = 0; i < n; i += 1) {
 			for (int j = i + 1; j < n; j += 1) {
@@ -122,9 +132,10 @@ class StressMajorizationLayoutCalculator {
 	 * @return
 	 */
 	public RealMatrix calcOptimizedLayout() {
-		RealMatrix layout = localizedOptimizationLayout();
-		setLayout(layout);
-		return layout;
+		// RealMatrix optimzedLayout = localizedOptimizationLayout();
+		RealMatrix optimizedLayout = conjugateGradientLayout();
+		setLayout(optimizedLayout);
+		return optimizedLayout;
 	}
 	
 	// ===========================================
@@ -173,7 +184,7 @@ class StressMajorizationLayoutCalculator {
 	// =======================================
 	// IMPORTANT: buggy implementation!
 	
-	private VectorMappingMatrix conjugateGradientLayout() {
+	private RealMatrix conjugateGradientLayout() {
 
 		final double EPSILON = 1e-4;
 		
@@ -182,161 +193,94 @@ class StressMajorizationLayoutCalculator {
 				new SimpleValueChecker(EPSILON, EPSILON) // TODO choose better one, probably set maxItter
 		);
 
-		BoundedStressFunction F = new BoundedStressFunction();
+		RealMatrix newLayout = new Array2DRowRealMatrix(n, d);
+		EquationSystemOptimizationFunctionSupplier supplier = new EquationSystemOptimizationFunctionSupplier();
 		
-		PointValuePair minimum = optimizer.optimize(
-				new MaxEval(Integer.MAX_VALUE),
-				new MaxIter(Integer.MAX_VALUE),
-				new InitialGuess(VectorMappingMatrix.asVectorMappingMatrix(layout).getVector()),
-				new ObjectiveFunction(F), 
-				new ObjectiveFunctionGradient(F.getGradient()),
-				GoalType.MINIMIZE
-		);
+		for (int a = 0; a < d; a += 1) {
+			
+			PointValuePair minimum = optimizer.optimize(
+					new MaxEval(Integer.MAX_VALUE),
+					new MaxIter(Integer.MAX_VALUE),
+					new InitialGuess(layout.getColumn(a)),
+					new ObjectiveFunction(supplier.getObjectiveFunction(a)), 
+					new ObjectiveFunctionGradient(supplier.getGradient(a)),
+					GoalType.MINIMIZE
+			);
+			
+			newLayout.setColumn(a, minimum.getPoint());
+			
+		}
 		
-		return new VectorMappingMatrix(d, minimum.getPoint());
+		return newLayout;
 	}
 	
 	/**
-	 * This class implements the function F^{X} 
-	 * described in "Graph Drawing by Stress Majorization” by 
-	 * Emden R. Gansner, Yehuda Koren and Stephen North at 
-	 * AT&T Labs — Research, Florham Park, NJ 07932, 2005
-	 * 
-	 * This function is used to minimize the original stress function
-	 * that takes all distances into account.
-	 * 
-	 * For the configuration X(t), passed on construction, 
-	 * the value is equal to the stress of that configuration.
-	 * The next better configuration is obtained by minimizing this function,
-	 * however this function is NOT identical to the actual stress-function.
-	 * 
-	 * There is a little workaround in this implementation since F actually 
-	 * works on matrices, but math3.optim.nonlinear.scalar works with
-	 * simple vectors. See {@link #value(double[]) value(double[])}} 
-	 * for further details.
+	 * This class implements a function used to solve the equations system
+	 * LW*X = LZ * Z
+	 * in each dimension of X using the conjugate gradient optimization method.
 	 */
-	private class BoundedStressFunction implements MultivariateFunction {
+	private class EquationSystemOptimizationFunctionSupplier {
 
-		// TODO check up the whole math in the below
-		// I'm unsure about a few things
-		// 1) Not differentiating by dimensions but just putting everything into one vector
-		// 2) the gradient... is this the used function really the gradient?
-		
-		/**
-		 * Calculates the value of the bounded stress function 
-		 * described in the paper referenced in the class javadoc.
-		 * 
-		 * This class is provided for use with the 
-		 * apache math optimizer package, therefore it works 
-		 * on an input vector. However, the underlying 
-		 * bounded stress function is defined for input matrices.
-		 * We are currently working around this by viewing the input
-		 * vector as a matrix. 
-		 * From the beginning of the vector every d elements 
-		 * (where d is the column dimension of the initial layout 
-		 * matrix passed to the constructor) are seen as a row.
-		 * 
-		 * As an example: the input <pre> 1, 2, 3, 4, 5, 6, 7, 8 </pre> will be seen as this matrix:
-		 * <pre>
-		 * 1, 2 <br>
-		 * 3, 4 <br>
-		 * 5, 6 <br>
-		 * 7, 8 
-		 * </pre> if the initial layout has two dimensions.
-		 */
-		@Override
-		public double value(double[] suggestedLayout) {
-			
-			// variable naming after paper, see class javadoc
-			VectorMappingMatrix X = new VectorMappingMatrix(d, suggestedLayout);
-			
-			try {
-				return calc(X);
-			} catch (IllegalArgumentException ex) {
-				throw new IllegalArgumentException("Input vector does not have the required length: input.lenght = " + suggestedLayout.length + " != " + n * d, ex);
-			}
+		private RealMatrix LZZ;
+		public EquationSystemOptimizationFunctionSupplier() {
+			this.LZZ = LZ.multiply(layout);
 		}
 
-		/**
-		 * Calculates the bounded stress function for the given layout X.
-		 * @param X the input layout matrix.
-		 * @return $F^Z$(X) (see paper referenced in class javadoc, page 3).
-		 * @throws IllegalArgumentException if the input matrix isn't a n*d matrix.
-		 */
-		private double calc(VectorMappingMatrix X) throws IllegalArgumentException {
+		public MultivariateFunction getObjectiveFunction(int dimension) {
+			return new ObjectiveFunction(dimension);
+		}
+		
+		public MultivariateVectorFunction getGradient(int dimension) {
+			return new Gradient(dimension);
+		}
+		
+		private class ObjectiveFunction implements MultivariateFunction {
 
-			// check input length / transformed matrix dimensions
-			if (X.getRowDimension() != n || X.getColumnDimension() != d) {
-				throw new IllegalArgumentException("Misdimensioned input matrix. Expected Dimensions: " + n + "*" + d + ", actuall dimensions:" + X.getRowDimension() + "*" + X.getColumnDimension());
+			private RealMatrix LZZaT;
+			
+			public ObjectiveFunction(int a) {
+				this.LZZaT = LZZ.getColumnMatrix(a).transpose();
+			}
+			
+			/**
+			 * Calculates the value of a function whose gradient is LW * Xa - LZ^T * Za
+			 */
+			@Override
+			public double value(double[] suggestedLayout) {
+
+				// variable naming after paper, see class javadoc
+				Array2DRowRealMatrix Xa = new Array2DRowRealMatrix(n, 1);
+				Xa.setColumn(0, suggestedLayout);
+				
+				// 1/2 * Xa^T * LW * Xa - (LZ*Za)^T * Xa
+				return 0.5 * (Xa.transpose().multiply(LW).multiply(Xa)).getEntry(0, 0) - ( LZZaT.multiply(Xa) ).getEntry(0, 0);
+				
 			}
 
-			RealMatrix XT = X.transpose();
-			RealMatrix Z = layout;
-			RealMatrix LW = calcWeightedLaplacian(weights);
-			RealMatrix LZ = calcLZ(weights, distances, Z);
-			
-			// TODO Milestone 3: optimize
-			// - cache constant values
-			// - replace trace by untransformed equations from paper (probably faster, since not all matrix elements need to be calculated?)
-			
-			double value = 0;
-			for (int i = 0; i < n; i += 1) {
-				for (int j = i + 1; j < d; j += 1) {
-					double wij = weights.getEntry(i, j);
-					double dij = distances.getEntry(i, j);
-					value +=  wij* Math.pow(dij, 2);
-				}
-			}
-			value += (XT.multiply(LW).multiply(X)).getTrace();
-			value += -2 * (XT.multiply(LZ).multiply(Z)).getTrace();
-			
-			return value;
 		}
 		
 		// MARK: Gradient function
 		private class Gradient implements MultivariateVectorFunction {
 
+			private RealMatrix LZZa;
+			
+			public Gradient(int a) {
+				this.LZZa = LZZ.getColumnMatrix(a);
+			}
+			
 			@Override
 			public double[] value(double[] suggestedLayout) throws IllegalArgumentException {
 
 				// variable naming after paper, see class javadoc
-				VectorMappingMatrix X = new VectorMappingMatrix(d, suggestedLayout);
+				Array2DRowRealMatrix Xa = new Array2DRowRealMatrix(n, 1);
+				Xa.setColumn(0, suggestedLayout);
 				
-				try {
-					// TODO we need to return the result the same form as the input.
-					return calc(X).getVector();
-				} catch (IllegalArgumentException ex) {
-					throw new IllegalArgumentException("Input vector does not have the required length: input.lenght = " + suggestedLayout.length + " != " + n * d, ex);
-				}
-			}
-			
-			private VectorMappingMatrix calc(VectorMappingMatrix X) throws IllegalArgumentException {
-
-				// check input length / transformed matrix dimensions
-				if (X.getRowDimension() != n || X.getColumnDimension() != d) {
-					throw new IllegalArgumentException("Misdimensioned input matrix. Expected Dimensions: " + n + "*" + d + ", actuall dimensions:" + X.getRowDimension() + "*" + X.getColumnDimension());
-				}
-
-				RealMatrix Z = layout;
-				RealMatrix LW = calcWeightedLaplacian(weights);
-				RealMatrix LZ = calcLZ(weights, distances, Z);
-				
-				// result is a n*d matrix
-				RealMatrix value = ( LZ.multiply(Z) ).subtract( LW.multiply(X) );
-				
-				// without knowing the internals of AbstractRealMatrix,
-				// blind casting does not seem safe for me.
-				// therefore we eventually copy the matrix.
-				return VectorMappingMatrix.asVectorMappingMatrix(value);
-				
+				RealMatrix result = ( LW.multiply(Xa) ).subtract( LZZa );
+				return result.getColumn(0);
 			}
 			
 		}
 
-		public MultivariateVectorFunction getGradient() {
-			return new Gradient();
-		}
-		
 	}
 	
 	// MARK: Primitives
