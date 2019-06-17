@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import org.BackgroundTaskStatusProviderSupportingExternalCall;
 import org.JMButton;
 import org.Vector2d;
 import org.graffiti.editor.GravistoService;
@@ -36,6 +37,8 @@ import org.graffiti.selection.Selection;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProviderSupportingExternalCallImpl;
 import info.clearthought.layout.SingleFiledLayout;
 import info.clearthought.layout.TableLayout;
 
@@ -106,7 +109,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				if(differenceStressValue==0) {
 					MainFrame.showMessage("Stress Minimization: "+status+"calc distances", MessageType.PERMANENT_INFO);
 				}
-				MainFrame.showMessage("Stress Minimization: "+status+", difference: "+differenceStressValue, MessageType.PERMANENT_INFO);
+				MainFrame.showMessage("Stress Minimization: "+status+", progress: "+differenceStressValue, MessageType.PERMANENT_INFO);
 			}
 		});
 	}
@@ -176,6 +179,45 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 
 	@Override
 	public void execute() {
+
+		final BackgroundTaskStatusProviderSupportingExternalCall provider = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
+				"Computing Layout", "Stress minimization progress:");
+		
+		Runnable myTask = new Runnable() {
+			public void run() {
+				System.out.println("Running");
+				provider.setCurrentStatusValue(0);
+				int currentStatus = 0;
+				double a = Math.pow(10, -8);
+				double b = Math.pow(10, 10);
+				while(algorithm.getProgress()<1) {
+					try {
+						Thread.sleep(100);
+						
+						//Exponential growth. a and b are chosen so 
+						//the following points hold: (0/0), (1/100), (0.9/10)
+						currentStatus = (int) (a * Math.pow(b, algorithm.getProgress() - a));
+						
+						if(currentStatus < 0) {
+							currentStatus = 0;
+						}
+						
+						provider.setCurrentStatusValue(currentStatus);
+
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+
+		// the task which will be executed even if the user has stopped the
+		// thread
+		Runnable myFinishTask = new Runnable() {
+			public void run() {
+				System.out.println("Completed");
+			}
+		};
 		
 		algorithm.reset();
 		
@@ -200,6 +242,10 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		backgroundTask.setName(algorithm.getName()+" background execution");
 		setStatus(BackgroundStatus.INIT);
 		backgroundTask.start();
+		
+		BackgroundTaskHelper.issueSimpleTask("Stress Minimization Progress",
+				"Computing...", myTask, myFinishTask, provider);
+		
 	}
 
 	@Override

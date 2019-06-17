@@ -233,50 +233,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	@Override
 	public void execute() {
 		
-		final BackgroundTaskStatusProviderSupportingExternalCall status = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
-				"Computing Layout", "Loading bar might make backwards movement too");
-		
-		Runnable myTask = new Runnable() {
-			public void run() {
-				status.setCurrentStatusValue(0);
-				int currentStatus = 0;
-				double a = Math.pow(10, -8);
-				double b = Math.pow(10, 10);
-				while(getProgress()<1) {
-					try {
-						Thread.sleep(100);
-						
-						//Exponential growth. a and b are chosen so 
-						//the following points hold: (0/0), (1/100), (0.9/10)
-						currentStatus = (int) (a * Math.pow(b, getProgress() - a));
-						
-						if(currentStatus<0)
-							currentStatus = 0;
-						
-						status.setCurrentStatusValue(currentStatus);
-
-						// if the user presses the stop-button you can react on
-						// that (here we just stop working)
-						if (status.wantsToStop())
-							return;
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		};
-
-		// the task which will be executed even if the user has stopped the
-		// thread
-		Runnable myFinishTask = new Runnable() {
-			public void run() {
-				System.out.println("Completed");
-			}
-		};
-		
-		BackgroundTaskHelper.issueSimpleTask("Stress Minimization",
-				"Computing...", myTask, myFinishTask, status);
-		
 		setStatus(BackgroundStatus.RUNNING);
 		
 		if (randomizeInputLayout) {
@@ -530,6 +486,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		// if stopped, terminate immediately
 		if (this.isStopped()) { 
 			setStatus(BackgroundStatus.FINISHED);
+			setProgress(1);
 			return true; 
 		}
 		
