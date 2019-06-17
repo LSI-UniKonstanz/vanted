@@ -188,18 +188,29 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				System.out.println("Running");
 				provider.setCurrentStatusValue(0);
 				int currentStatus = 0;
-				double a = Math.pow(10, -8);
-				double b = Math.pow(10, 10);
+				//double a = Math.pow(10, -8);
+				//double b = Math.pow(10, 10);
 				while(algorithm.getProgress()<1) {
 					try {
 						Thread.sleep(100);
 						
 						//Exponential growth. a and b are chosen so 
 						//the following points hold: (0/0), (1/100), (0.9/10)
-						currentStatus = (int) (a * Math.pow(b, algorithm.getProgress() - a));
+						//currentStatus = (int) (a * Math.pow(b, algorithm.getProgress() - a));
 						
 						if(currentStatus < 0) {
 							currentStatus = 0;
+						}
+						//First 90% get 40% in the progress bar
+						if(algorithm.getProgress() < 0.9) {
+							currentStatus = (int) (algorithm.getProgress()*100 * 4/9);
+						}
+						//90-99 get 20% in the progress bar
+						else if(algorithm.getProgress() < 0.99) {
+							currentStatus = (int) ((algorithm.getProgress()-0.9)*1000 * 3/9 + 40);
+						}
+						else if(algorithm.getProgress() < 0.999) {
+							currentStatus = (int) ((algorithm.getProgress()-0.99)*10000 * 3/9 + 70);
 						}
 						
 						provider.setCurrentStatusValue(currentStatus);
