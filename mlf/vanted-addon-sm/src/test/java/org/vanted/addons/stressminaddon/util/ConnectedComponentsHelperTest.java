@@ -80,7 +80,7 @@ public class ConnectedComponentsHelperTest {
     }
 
     /**
-     * Test method {@link ConnectedComponentsHelper#layoutConnectedComponents(Set)}.
+     * Test method {@link ConnectedComponentsHelper#layoutConnectedComponents(Set, boolean)}.
      * @author Jannik
      */
     @Test
@@ -93,7 +93,7 @@ public class ConnectedComponentsHelperTest {
         Edge edge = nodes.get(0).getEdges().iterator().next();
         edge.addAttribute(new EdgeGraphicAttribute(), "");
         AttributeHelper.addEdgeBend(edge, oldPositions.get(0));
-        ConnectedComponentsHelper.layoutConnectedComponents(components);
+        ConnectedComponentsHelper.layoutConnectedComponents(components, true);
         List<Vector2d> newPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
 
 
@@ -111,7 +111,7 @@ public class ConnectedComponentsHelperTest {
         nodes = graph.getNodes();
         components = ConnectedComponentsHelper.getConnectedComponents(nodes);
         oldPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
-        ConnectedComponentsHelper.layoutConnectedComponents(components);
+        ConnectedComponentsHelper.layoutConnectedComponents(components, false);
         newPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
 
 
@@ -194,7 +194,7 @@ public class ConnectedComponentsHelperTest {
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
         try {
-            ConnectedComponentsHelper.layoutConnectedComponents(null); fail("No exception thrown");
+            ConnectedComponentsHelper.layoutConnectedComponents(null, false); fail("No exception thrown");
         } catch (NullPointerException e) {
         } catch (Throwable t) {
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
