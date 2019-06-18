@@ -12,7 +12,7 @@ public class ShortestDistanceAlgorithmTest {
     public void getShortestPaths() {
 
         // test accuracy
-        NodeValueMatrix result = ShortestDistanceAlgorithm.calculateShortestPaths(GRAPH_1_NODES, Integer.MAX_VALUE);
+        NodeValueMatrix result = ShortestDistanceAlgorithm.calculateShortestPaths(GRAPH_1_NODES, Integer.MAX_VALUE, true);
 
         //compares all cells
         for(int row = 0; row < GRAPH_1_NODES.size(); row++) {
@@ -22,7 +22,7 @@ public class ShortestDistanceAlgorithmTest {
         }
 
         // test unconnected components
-        result = ShortestDistanceAlgorithm.calculateShortestPaths(GRAPH_2_NODES, Integer.MAX_VALUE);
+        result = ShortestDistanceAlgorithm.calculateShortestPaths(GRAPH_2_NODES, Integer.MAX_VALUE, true);
 
         //compares all cells
         for(int row = 0; row < GRAPH_2_NODES.size(); row++) {

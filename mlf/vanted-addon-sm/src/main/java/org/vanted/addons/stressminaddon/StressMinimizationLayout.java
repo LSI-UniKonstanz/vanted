@@ -79,6 +79,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
     private static final double WEIGHT_POWER_DEFAULT = -2.0;
     /** The constant power of the distance for the calculated weight between two nodes. */
     private double weightPower = WEIGHT_POWER_DEFAULT;
+    // looks
     /** Whether to remove edge bends by default.*/
     private static final Boolean REMOVE_EDGE_BENDS_DEFAULT = Boolean.TRUE;
     /** Whether to remove edge bends.*/
@@ -91,6 +92,15 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
     private static final Boolean DO_ANIMATIONS_DEFAULT = Boolean.TRUE;
     /** Whether the algorithm should be animated. */
     private boolean doAnimations = DO_ANIMATIONS_DEFAULT;
+    // multi threading
+    /** Whether the algorithm should run in a background task by default. */
+    private static final Boolean BACKGROUND_TASK_DEFAULT = Boolean.TRUE;
+    /** Whether the algorithm should run in a background task. */
+    private boolean backgroundTask = BACKGROUND_TASK_DEFAULT;
+    /** Whether the algorithm should use multiple threads by default. */
+    private static final Boolean MULTIPLE_THREADS_DEFAULT = Boolean.TRUE;
+    /** Whether the algorithm should use multiple threads. */
+    private boolean multipleThreads = MULTIPLE_THREADS_DEFAULT;
 
     /**
      * Creates a new {@link StressMinimizationLayout} object.
@@ -147,7 +157,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             pureNodes = new ArrayList<>(GraphHelper.getVisibleNodes(selection.getNodes()));
         }
 
-        BackgroundTaskHelper.issueSimpleTask("Stress Minimization", "Init", () -> {
+        Runnable task = () -> {
             startTime = System.currentTimeMillis();
             System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Start (n = " + pureNodes.size() + ")"));
             // remove bends
@@ -209,7 +219,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
 
             boolean someoneIsWorking = true;
 
-            ExecutorService executor = Executors.newWorkStealingPool(Runtime.getRuntime().availableProcessors());
+            ExecutorService executor = Executors.newFixedThreadPool(Math.min(Runtime.getRuntime().availableProcessors(), connectedComponents.size()));
             List<Callable<Object>> todo = new ArrayList<>(workUnits.size());
             // iterate
             for (int iteration = 1; keepRunning.get() && someoneIsWorking && iteration <= maxIterations; ++iteration) {
@@ -241,10 +251,16 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
 
                 try {
                     if (keepRunning.get()) {
-                        executor.invokeAll(todo);
+                        if (this.multipleThreads) {
+                            executor.invokeAll(todo);
+                        } else {
+                            for (Callable<Object> callable : todo) {
+                                callable.call();
+                            }
+                        }
                     }
                     todo.clear();
-                } catch (InterruptedException e) {
+                } catch (Exception e) {
                     keepRunning.set(false);
                     e.printStackTrace();
                 }
@@ -300,8 +316,13 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             startTime = System.currentTimeMillis() - startTime;
             System.out.println(startTime + " SM: " + (status = "Finished.") + " Took " + (startTime/1000.0) + "s");
             keepRunning.set(true);
-
-        }, null, this, 10);
+        };
+        // run!
+        if (this.backgroundTask) {
+            BackgroundTaskHelper.issueSimpleTask("Stress Minimization", "Init", task, null, this, 10);
+        } else {
+            task.run();
+        }
 
 
     }
@@ -352,9 +373,13 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
                         "<html>Should each iteration step be undoable (only recommended for small iteration sizes).<br>This parameter implies “Animate iterations”.</html>"),
                 new BooleanParameter(DO_ANIMATIONS_DEFAULT, "Animate iterations",
                         "<html>Whether every iteration should update the node positions.</html>"),
+                new BooleanParameter(BACKGROUND_TASK_DEFAULT, "Run in background",
+                        "<html>Create a background task and run the algorithm from there.<br>" +
+                                "<b>Highly recommended:</b> If this is disabled <i>VANTED</i> will freeze until the algorithm is complete.</html>"),
+                new BooleanParameter(MULTIPLE_THREADS_DEFAULT, "Use parallelism",
+                        "<html>Create multiple threads to run the algorithm from.<br>" +
+                                "Increases overall performance in most cases.</html>"),
         };
-
-        ((BooleanParameter) result[7]).addDependentParameters((new BooleanParameter[]{(BooleanParameter) result[8]}));
 
         return result;
     }
@@ -417,7 +442,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
         if (intermediateUndoable) { // intermediateUndoable => doAnimations
             doAnimations = true;
         }
-
+        // Threading
+        this.backgroundTask = ((BooleanParameter) params[9]).getBoolean();
+        this.multipleThreads = ((BooleanParameter) params[10]).getBoolean();
     }
 
     /*
@@ -574,13 +601,14 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             this.id = id;
             this.nodes = nodes;
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate distances..."));
-            this.distances = ShortestDistanceAlgorithm.calculateShortestPaths(nodes, Integer.MAX_VALUE); // TODO make configurable
+            this.distances = ShortestDistanceAlgorithm.calculateShortestPaths(nodes, Integer.MAX_VALUE, multipleThreads); // TODO make configurable
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate scaling factor..."));
             final double scalingFactor = ConnectedComponentsHelper.getMaxNodeSize(nodes);
             // scale for better display
             this.distances.apply(x -> x*scalingFactor*StressMinimizationLayout.this.edgeScalingFactor);
 
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate initial layout..."));
+            //this.currentPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
             this.currentPositions = initialPlacer.calculateInitialPositions(nodes, this.distances);
             // calculate weight only before it's needed (to save some memory for the initial layout)
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate weights..."));
