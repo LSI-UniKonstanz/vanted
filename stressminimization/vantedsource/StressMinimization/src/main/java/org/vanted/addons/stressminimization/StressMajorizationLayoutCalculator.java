@@ -22,15 +22,15 @@ import org.apache.commons.math3.optim.nonlinear.scalar.gradient.NonLinearConjuga
 
 /**
  * Provides stress calculation and stress optimization functionality on basis of a stored layout.
+ * Based on the paper
+ * "Graph Drawing by Stress Majorization" 
+ * Emden R. Gansner, Yehuda Koren and Stephen North 
+ * at AT&T Labs — Research, Florham Park, NJ 07932, 2005
  */
 class StressMajorizationLayoutCalculator {
 
 	// matrix dimensions required for input and output matrices
-	// the values are actually duplicate, since they may be obtained
-	// from the intitialLayout matrix, for example
-	// but to manifest that these values are the same for all matrices
-	// and checked by preconditions they are 
-	// stored as private constants here
+	// fixed here, since needed very often.
 	private final int n;
 	private final int d;
 	
@@ -38,6 +38,9 @@ class StressMajorizationLayoutCalculator {
 	// all have the required dimension matches
 	private final RealMatrix weights;
 	private final RealMatrix distances;
+	
+	// layout is updated after each optimization round
+	private RealMatrix layout;
 	
 	/**
 	 * Creates a new StressMajorizationLayoutCalculator instance,
@@ -62,34 +65,31 @@ class StressMajorizationLayoutCalculator {
 		if (weights.getRowDimension() != distances.getRowDimension()) {
 			throw new IllegalArgumentException("weight and distance matrices need to have the same dimensions.");
 		}
+		if (weights.getRowDimension() != layout.getRowDimension()) {
+			throw new IllegalArgumentException("layout matrix and weight matrix need to have the exact same number of rows.");
+		}
 		
 		this.n = weights.getRowDimension();
 		this.d = layout.getColumnDimension();
 
 		this.weights = weights;
 		this.distances = distances;
+
+		// Initialize constants through entire process
+		this.LW = calcWeightedLaplacian(weights);
 		
 		setLayout(layout);
 		
 	}
 
-	private RealMatrix layout;
-	// naming according to paper
-	private RealMatrix LW;
-	private RealMatrix LZ;
-	
-	private double weightsAndDistancesStressSummand;
-	
 	private void setLayout(RealMatrix layout) {
 		
 		// all registered nodes needs to be contained in the new layout
-		if (this.n != layout.getRowDimension()) {
+		if (this.n != layout.getRowDimension() && this.d != layout.getColumnDimension()) {
 			throw new IllegalArgumentException("layout matrix and weight matrix need to have the exact same number of rows.");
 		}
 		
 		this.layout = layout;
-		
-		this.LW = calcWeightedLaplacian(weights);
 		this.LZ = calcLZ(weights, distances, layout);
 		
 	}
@@ -100,9 +100,26 @@ class StressMajorizationLayoutCalculator {
 	public RealMatrix getLayout() {
 		return this.layout;
 	}
+
+	// =====================
+	// MARK: "cached" values
+	// =====================
+	// this section contains variables that are constant through the entire optimization process
+	// or during one optimization iteration.
+	// naming is according to paper
+	
+	// constant through whole process:
+	private final RealMatrix LW;
+	
+	// updated for each new layout:
+	private RealMatrix LZ;
+	
+	// ========================
+	// MARK: stress calculation
+	// ========================
 	
 	/**
-	 * Calculates the stress for the storred layout using the formula
+	 * Calculates the stress for the stored layout using the formula
 	 * $$
 	 * stress(X) = \sum_{i<j} wij * (||Xi - Xj|| - dij)^2
 	 * $$
@@ -110,8 +127,6 @@ class StressMajorizationLayoutCalculator {
 	 */
 	public double calcStress() {
 
-		// TODO: may be optimized using LW and LZ
-		
 		double stress = 0;
 		for (int i = 0; i < n; i += 1) {
 			for (int j = i + 1; j < n; j += 1) {
@@ -121,6 +136,7 @@ class StressMajorizationLayoutCalculator {
 				stress += wij * Math.pow(norm - dij, 2);
 			}
 		}
+		
 		return stress;
 		
 	}
@@ -186,11 +202,16 @@ class StressMajorizationLayoutCalculator {
 	
 	private RealMatrix conjugateGradientLayout() {
 
-		final double EPSILON = 1e-4;
+		// the values were chosen based on experience,
+		// mainly with sierpinsky 6
+		final double CONVERGENCE_EPSILON = 1e-3;
+		final double LINE_SEARCH_EPSILON = 1e-2;
 		
 		NonLinearConjugateGradientOptimizer optimizer = new NonLinearConjugateGradientOptimizer(
 				NonLinearConjugateGradientOptimizer.Formula.POLAK_RIBIERE, 
-				new SimpleValueChecker(EPSILON, EPSILON) // TODO choose better one, probably set maxItter
+				// these values
+				new SimpleValueChecker(CONVERGENCE_EPSILON, CONVERGENCE_EPSILON),
+				LINE_SEARCH_EPSILON, LINE_SEARCH_EPSILON, LINE_SEARCH_EPSILON
 		);
 
 		RealMatrix newLayout = new Array2DRowRealMatrix(n, d);
@@ -247,11 +268,11 @@ class StressMajorizationLayoutCalculator {
 			 */
 			@Override
 			public double value(double[] suggestedLayout) {
-
+				
 				// variable naming after paper, see class javadoc
 				Array2DRowRealMatrix Xa = new Array2DRowRealMatrix(n, 1);
 				Xa.setColumn(0, suggestedLayout);
-				
+
 				// 1/2 * Xa^T * LW * Xa - (LZ*Za)^T * Xa
 				return 0.5 * (Xa.transpose().multiply(LW).multiply(Xa)).getEntry(0, 0) - ( LZZaT.multiply(Xa) ).getEntry(0, 0);
 				
@@ -283,7 +304,9 @@ class StressMajorizationLayoutCalculator {
 
 	}
 	
+	// ================
 	// MARK: Primitives
+	// ================
 
 	private double inv(double x) {
 		return x != 0 ? 1/x : 0;
