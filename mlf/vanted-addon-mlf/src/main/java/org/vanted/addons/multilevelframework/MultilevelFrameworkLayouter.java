@@ -91,7 +91,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         // to work
         final Session oldSession = MainFrame.getInstance().getActiveSession();
         final View oldView = oldSession.getActiveView();
-        final Merger merger = new RandomMerger();
+        final Merger merger = new SolarMerger(); // ChangedFromRandomMerger by Tobse
         final Placer placer = new RandomPlacer();
         final LayoutAlgorithmWrapper algorithm =
                 this.layoutAlgorithms.get(Objects.toString(this.algorithmListComboBox.getSelectedItem()));

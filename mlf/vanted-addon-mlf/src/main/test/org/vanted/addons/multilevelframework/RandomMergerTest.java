@@ -91,9 +91,25 @@ public class RandomMergerTest {
     }
 
     @Test
-    public void buildCoarseningLevels2() {
+    public void buildCoarseningLevels2(){
+        rM.maxNumberOfIterations = 0;
+        Graph oldmg1 = mg1.getTopLevel();
+        this.rM.buildCoarseningLevels(mg1);
+        assertTrue(mg1.getTopLevel() == oldmg1);
+    }
+
+    @Test
+    public void buildCoarseningLevels3() {
         this.rM.buildCoarseningLevels(mg2);
         assertTrue(mg2.isComplete());
+    }
+
+    @Test
+    public void buildCoarseningLevels4(){
+        rM.minNumberOfNodesPerLevel = 10000;
+        Graph oldmg1 = mg1.getTopLevel();
+        this.rM.buildCoarseningLevels(mg1);
+        assertTrue(mg1.getTopLevel() == oldmg1);
     }
 
 }
