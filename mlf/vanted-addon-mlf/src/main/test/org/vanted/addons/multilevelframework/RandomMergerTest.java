@@ -112,4 +112,20 @@ public class RandomMergerTest {
         assertTrue(mg1.getTopLevel() == oldmg1);
     }
 
+    @Test
+    public void buildCoarseningLevels5(){
+        rM.coarseningFactor = 0;
+        Graph oldmg1 = mg1.getTopLevel();
+        this.rM.buildCoarseningLevels(mg1);
+        assertTrue(mg1.getTopLevel() == oldmg1);
+    }
+
+    @Test
+    public void buildCoarseningLevels6(){
+        rM.coarseningFactor = 1;
+        Graph oldmg1 = mg1.getTopLevel();
+        this.rM.buildCoarseningLevels(mg1);
+        assertTrue(mg1.getTopLevel() == oldmg1);
+    }
+
 }
