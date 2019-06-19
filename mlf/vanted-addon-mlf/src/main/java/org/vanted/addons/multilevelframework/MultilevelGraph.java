@@ -82,7 +82,7 @@ public class MultilevelGraph {
      */
     public int newCoarseningLevel() {
         if (!this.levels.isEmpty() && !this.isComplete()) {
-            throw new IllegalStateException("Multilevel cannot add a new coarsening level if there are ");
+            throw new IllegalStateException("Multilevel cannot add a new coarsening level if there are unrepresented nodes.");
         }
         this.levels.add(new InternalGraph());
 
