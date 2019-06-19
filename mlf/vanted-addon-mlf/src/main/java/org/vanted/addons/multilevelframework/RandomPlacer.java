@@ -71,13 +71,7 @@ public class RandomPlacer implements Placer {
 				double randy = (-1.0 + 2.0 * random.nextDouble()) * maxPlaceDistance;
 
 				double x = AttributeHelper.getPositionX(mergedNode) + randx;
-				if (x < 0) {
-					x = -x;
-				}
 				double y = AttributeHelper.getPositionY(mergedNode) + randy;
-				if (y < 0) {
-					y = -y;
-				}
 
 				AttributeHelper.setPosition(node, x, y);
 			}
