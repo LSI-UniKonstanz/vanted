@@ -3,6 +3,8 @@ package org.vanted.addons.stressminimization;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 import org.Vector2d;
 import org.graffiti.graph.Node;
@@ -29,10 +31,14 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 	private double progress;
 
 	/**
-	 * old layout changes of the graph
+	 * A supplier that gives the current layout.
+	 * Instead of a simple Map, a supplier is used here, 
+	 * because some conversion maybe necessary from the format of the running algorithm
+	 * to this format and unnecessary conversion may be avoided, 
+	 * in case the algorithm is not showing intermediate results.
 	 */
-	private HashMap<Node, Vector2d> layout;
-
+	private Supplier<HashMap<Node, Vector2d>> layout;
+	
 	/**
 	 * Whether this algorithm was told to pause by the executing frontend algorithm.
 	 */
@@ -81,18 +87,9 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 	 * send the old and the new layout
 	 * @param layout
 	 */
-	protected void setLayout(HashMap<Node, Vector2d> nodes2newPositions) {
-		pcs.firePropertyChange("setLayout",this.layout, nodes2newPositions);
-		this.layout=nodes2newPositions;
-	}
-
-	/**
-	 * notify listener classes that the final graph layout is available and
-	 * send the old and the new layout.
-	 * @param layout
-	 */
-	protected void setEndLayout() {
-		pcs.firePropertyChange("setEndLayout",null, this.layout);
+	protected void setLayout(Supplier<HashMap<Node, Vector2d>> layoutSupplier) {
+		pcs.firePropertyChange("setLayout",this.layout, layoutSupplier);
+		this.layout=layoutSupplier;
 	}
 
 	/**
@@ -154,7 +151,7 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 		return progress;
 	}
 
-	public HashMap<Node, Vector2d> getLayout() {
+	public Supplier<HashMap<Node, Vector2d>> getLayout() {
 		return layout;
 	}
 

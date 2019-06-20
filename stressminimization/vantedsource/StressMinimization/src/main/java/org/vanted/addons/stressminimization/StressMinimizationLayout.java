@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.AttributeHelper;
 import org.Vector2d;
@@ -245,6 +246,14 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		// IMPORTANT: components will add nodes that are not in workNodes to single components!
 		Set<Set<Node>> components = GraphHelper.getConnectedComponents(workNodes);
 
+		// NOTE: applying the final nodes position updates in this class
+		// has two benefits:
+		// * algorithm is more easy usable by the Multilevel Framework
+		// * there's a magic speedup in some of the benchmarks, which I can not explain. 
+		//   the milestone 2 benchmarks profited from this speedup, so for comparability
+		//   later benchmarks should also profit from this speedup...
+		HashMap<Node, Vector2d> nodes2NewPositions = new HashMap<Node, Vector2d>();
+		
 		for (Set<Node> component : components) {
 
 			if (!selection.isEmpty()) {
@@ -255,10 +264,12 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 			List<Node> nodes = new ArrayList<>(component);
 			calculateLayoutForNodes(nodes);
+			
+			nodes2NewPositions.putAll( getLayout().get() );
 
 		}
-
-		setEndLayout();
+		
+		GraphHelper.applyUndoableNodePositionUpdate(nodes2NewPositions, "Stress Minimization");	
 
 		// center graph layout
 		GravistoService.getInstance().runAlgorithm(
@@ -440,17 +451,22 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 	private void setLayout(final RealMatrix layout, final List<Node> nodes) {
 
-		RealMatrix newLayout = scaleLayout(layout);
+		Supplier<HashMap<Node, Vector2d>> layoutSupplier = () -> {
 
-		HashMap<Node, Vector2d> nodes2newPositions = new HashMap<Node, Vector2d>();
-		for (int i = 0; i < nodes.size(); i += 1) {
+			RealMatrix newLayout = scaleLayout(layout);
+
+			HashMap<Node, Vector2d> nodes2NewPositions = new HashMap<Node, Vector2d>();
+			for (int i = 0; i < nodes.size(); i += 1) {
 			double[] pos = newLayout.getRow(i);
 			Vector2d position = new Vector2d(pos[0], pos[1]);
-			nodes2newPositions.put(nodes.get(i), position);
-		}
-
-		//update GUI layout
-		setLayout(nodes2newPositions);
+			nodes2NewPositions.put(nodes.get(i), position);
+			}
+			
+			return nodes2NewPositions;
+			
+		};
+		
+		setLayout(layoutSupplier);
 
 	}
 
