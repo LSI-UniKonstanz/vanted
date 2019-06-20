@@ -317,6 +317,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		layout = unscaleLayout(layout);
 
 		if (LOG) { System.out.println("Optimizing layout..."); }
+		if (LOG) { System.out.println("Preprocessing..."); }
 
 		StressMajorizationLayoutCalculator optim = new StressMajorizationLayoutCalculator(layout, distances, weights);
 
@@ -352,6 +353,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			prevStress = newStress;
 
 		} while (!terminate);
+
 		if (LOG) { System.out.println("Final Progress: " + getProgress()); }
 		setProgress(1);
 		if (LOG) { System.out.println("Updating layout..."); }
@@ -392,7 +394,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			}
 			terminate |= maxMovement <= minimumNodeMovementThreshold;
 		}
-
 
 		return terminate;
 
