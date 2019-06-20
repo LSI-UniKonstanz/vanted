@@ -4,6 +4,8 @@ import org.Vector2d;
 import org.apache.commons.math.linear.RealMatrix;
 import org.apache.commons.math.linear.RealMatrixImpl;
 import org.graffiti.graph.Node;
+import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
 import java.util.ArrayList;
@@ -302,4 +304,32 @@ public class PivotMDS implements InitialPlacer {
         return c;
     }
 
+    /**
+     * Gets a list of {@link Parameter}s this {@link PivotMDS}
+     * provides.
+     *
+     * @return gets a list of Parameters this class provides.
+     * @author Jannik
+     * @see Algorithm#getParameters()
+     */
+    @Override
+    public Parameter[] getParameters() {
+        // TODO implement settings e.g. setting number of pivots
+        return new Parameter[0];
+    }
+
+    /**
+     * Provides a list of {@link Parameter}s that should be accepted by
+     * the {@link PivotMDS}.<br>
+     * This setter should only be called if the implementing class is not currently
+     * executing something else.
+     *
+     * @param parameters the parameters to be set.
+     * @author Jannik
+     * @see Algorithm#setParameters(Parameter[])
+     */
+    @Override
+    public void setParameters(Parameter[] parameters) {
+        // TODO implement settings e.g. setting number of pivots
+    }
 }

@@ -10,6 +10,7 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
+import org.graffiti.plugin.parameter.JComponentParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.vanted.addons.stressminaddon.util.ConnectedComponentsHelper;
@@ -17,6 +18,7 @@ import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 import org.vanted.addons.stressminaddon.util.ShortestDistanceAlgorithm;
 import org.vanted.addons.stressminaddon.util.gui.EnableableNumberParameter;
 
+import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -63,7 +65,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
     /** Whether to use the max iterations stop criterion by default.*/
     private static final boolean USE_MAX_ITERATIONS_DEFAULT = true;
     /** The default value for the maximal iterations to make. */
-    private static final int MAX_ITERATIONS_DEFAULT = 1_000_000;
+    private static final int MAX_ITERATIONS_DEFAULT = 1_000;
     /** The maximal iterations to make.*/
     private long maxIterations = MAX_ITERATIONS_DEFAULT;
     // scaling and weight
@@ -336,51 +338,59 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
     public Parameter[] getParameters() {
 
         Parameter[] result = new Parameter[] {
+                new JComponentParameter(new JPanel(), "<html><u>Stop criterion</u></html>",
+                        "<html>Select one or multiple stop criterion for the algorithm.<br>This can be used to influence running time and quality.</html>"), //hacky section header
                 EnableableNumberParameter.canBeEnabledDisabled(STRESS_EPSILON_DEFAULT,
                         0.0, Double.MAX_VALUE, 0.0001,
                         USE_STRESS_EPSILON_DEFAULT, "Used", "Not used",
-                        "Stress change stop",
+                        "Stress change",
                         "<html>Stop the iterations if the change in stress is smaller than smaller than this value.<br>" +
                                 "The algorithm will only stop on this criterion, if this is enabled.</html>"),
                 EnableableNumberParameter.canBeEnabledDisabled(POSITION_CHANGE_EPSILON_DEFAULT,
                         0.0, Double.MAX_VALUE, 0.0001,
                         USE_POSITION_CHANGE_EPSILON_DEFAULT, "Used", "Not used",
-                        "Position change stop",
+                        "Position change",
                         "<html>Stop the iterations if the maximum change in positions of the nodes is smaller " +
                                 "than smaller than this value.<br>" +
                                 "The algorithm will only stop on this criterion, if this is enabled.</html>"),
                 EnableableNumberParameter.canBeEnabledDisabled(MAX_ITERATIONS_DEFAULT,
                         0, Integer.MAX_VALUE, 1,
                         USE_MAX_ITERATIONS_DEFAULT, "Used", "Not Used",
-                        "Max iterations stop",
+                        "Max iterations",
                         "<html>Stop after provided number of iterations.<br>" +
                                 "The algorithm will only stop on this criterion, if this is enabled.</html>"),
-                EnableableNumberParameter.alwaysEnabled(EDGE_SCALING_FACTOR_DEFAULT, 0.0, Double.MAX_VALUE, 0.5,
-                        "Edge scaling factor", "<html>The amount of space that the algorithm tries to ensure between two nodes<br>" +
-                                "(length of the edges) as faction of the size of the largest node encountered.</html>"),
+                new JComponentParameter(new JPanel(), "<html><u>Weights</u></html>",
+                        "<html>The weight function is used to determine how much distance nodes can influence each other.</html>"), //hacky section header
                 EnableableNumberParameter.alwaysEnabled(WEIGHT_SCALING_FACTOR_DEFAULT, 0.0, Double.MAX_VALUE, 0.5,
-                        "Weight scaling factor", "<html>The constant factor &alpha; used in the weight function that derives a weight<br>" +
+                        "Scaling factor", "<html>The constant factor &alpha; used in the weight function that derives a weight<br>" +
                                 "between two given nodes <i>i</i> and <i>j</i> from their graph theoretical distance &delta;.<br>" +
                                 "The weight function is &alpha;&delta;<sup>&beta;</sup><sub>ij</sub>.</html>"),
                 EnableableNumberParameter.alwaysEnabled(WEIGHT_POWER_DEFAULT, -Double.MAX_VALUE, Double.MAX_VALUE, 1.0,
-                        "Weight distance power", "<html>The power for the distance &beta; used in the weight function that derives a weight<br>" +
+                        "Distance power", "<html>The power for the distance &beta; used in the weight function that derives a weight<br>" +
                                 "between two given nodes <i>i</i> and <i>j</i> from their graph theoretical distance &delta;.<br>" +
                                 "The weight function is &alpha;&delta;<sup>&beta;</sup><sub>ij</sub>.</html>"),
+                new JComponentParameter(new JPanel(), "<html><u>General layout</u></html>",
+                        "<html>Some general settings for the layouter.</html>"), //hacky section header
+                EnableableNumberParameter.alwaysEnabled(EDGE_SCALING_FACTOR_DEFAULT, 0.0, Double.MAX_VALUE, 0.5,
+                        "Edge scaling factor", "<html>The amount of space that the algorithm tries to ensure between two nodes<br>" +
+                                "(length of the edges) as faction of the size of the largest node encountered.</html>"),
                 new BooleanParameter(REMOVE_EDGE_BENDS_DEFAULT, "Remove edge bends",
-                        "<html>Remove edge bends before starting the algorithm.<br><b>Highly recommended</b> because the algorithm does not" +
+                        "<html>Remove edge bends before starting the algorithm.<br><b>Highly recommended</b> because the algorithm does not " +
                                 "move edge bends.<br>Always undoable as extra undo.</html>"),
                 new BooleanParameter(INTERMEDIATE_UNDOABLE_DEFAULT, "Iterations undoable",
                         "<html>Should each iteration step be undoable (only recommended for small iteration sizes).<br>This parameter implies “Animate iterations”.</html>"),
                 new BooleanParameter(DO_ANIMATIONS_DEFAULT, "Animate iterations",
                         "<html>Whether every iteration should update the node positions.</html>"),
+                new JComponentParameter(new JPanel(), "<html><u>Parallelism (advanced)</u></html>",
+                        "<html>Sets threading options for running.<br><b>Should not be changed by inexperienced users.</b></html>"), //hacky section header
                 new BooleanParameter(BACKGROUND_TASK_DEFAULT, "Run in background",
                         "<html>Create a background task and run the algorithm from there.<br>" +
                                 "<b>Highly recommended:</b> If this is disabled <i>VANTED</i> will freeze until the algorithm is complete.</html>"),
                 new BooleanParameter(MULTIPLE_THREADS_DEFAULT, "Use parallelism",
                         "<html>Create multiple threads to run the algorithm from.<br>" +
                                 "Increases overall performance in most cases.</html>"),
-        };
 
+        };
         return result;
     }
 
@@ -393,7 +403,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
         EnableableNumberParameter<Double> doubleParameter;
         EnableableNumberParameter<Integer> integerParameter;
         // Stress epsilon
-        doubleParameter = (EnableableNumberParameter<Double>) params[0].getValue();
+        doubleParameter = (EnableableNumberParameter<Double>) params[1].getValue();
         if (doubleParameter.isEnabled()) {
             if (doubleParameter.getValue() == 0.0) {
                 this.stressEpsilon = Double.MIN_VALUE;
@@ -404,7 +414,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             this.stressEpsilon = Double.NEGATIVE_INFINITY;
         }
         // Position epsilon
-        doubleParameter = (EnableableNumberParameter<Double>) params[1].getValue();
+        doubleParameter = (EnableableNumberParameter<Double>) params[2].getValue();
         if (doubleParameter.isEnabled()) {
             if (doubleParameter.getValue() == 0.0) {
                 this.positionChangeEpsilon = Double.MIN_VALUE;
@@ -415,36 +425,35 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             this.positionChangeEpsilon = Double.NEGATIVE_INFINITY;
         }
         // Max iterations
-        integerParameter = ((EnableableNumberParameter<Integer>) params[2].getValue());
+        integerParameter = ((EnableableNumberParameter<Integer>) params[3].getValue());
         if (integerParameter.isEnabled()) {
             this.maxIterations = integerParameter.getValue();
         } else {
             this.maxIterations = Long.MAX_VALUE;
         }
-        // Scaling factor
-        doubleParameter = (EnableableNumberParameter<Double>) params[3].getValue();
+        // weight variables
+        doubleParameter = (EnableableNumberParameter<Double>) params[5].getValue();
+        this.weightScalingFactor = doubleParameter.getValue();
+        doubleParameter = (EnableableNumberParameter<Double>) params[6].getValue();
+        this.weightPower = doubleParameter.getValue();
+        // General settings
+        doubleParameter = (EnableableNumberParameter<Double>) params[8].getValue();
         if (doubleParameter.getValue() == 0.0) {
             this.edgeScalingFactor = Double.MIN_VALUE;
         } else {
             this.edgeScalingFactor = doubleParameter.getValue();
         }
-        // weight variables
-        doubleParameter = (EnableableNumberParameter<Double>) params[4].getValue();
-        this.weightScalingFactor = doubleParameter.getValue();
-        doubleParameter = (EnableableNumberParameter<Double>) params[5].getValue();
-        this.weightPower = doubleParameter.getValue();
-        // Remove edge bends
-        this.removeEdgeBends = ((BooleanParameter) params[6]).getBoolean();
+        this.removeEdgeBends = ((BooleanParameter) params[9]).getBoolean();
         // Intermediates undoable
-        this.intermediateUndoable = ((BooleanParameter) params[7]).getBoolean();
+        this.intermediateUndoable = ((BooleanParameter) params[10]).getBoolean();
         // Do animation
-        this.doAnimations = ((BooleanParameter) params[8]).getBoolean();
+        this.doAnimations = ((BooleanParameter) params[11]).getBoolean();
         if (intermediateUndoable) { // intermediateUndoable => doAnimations
             doAnimations = true;
         }
         // Threading
-        this.backgroundTask = ((BooleanParameter) params[9]).getBoolean();
-        this.multipleThreads = ((BooleanParameter) params[10]).getBoolean();
+        this.backgroundTask = ((BooleanParameter) params[13]).getBoolean();
+        this.multipleThreads = ((BooleanParameter) params[14]).getBoolean();
     }
 
     /*

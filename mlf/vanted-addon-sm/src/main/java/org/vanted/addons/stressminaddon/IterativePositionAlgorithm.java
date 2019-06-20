@@ -3,6 +3,7 @@ package org.vanted.addons.stressminaddon;
 import org.Vector2d;
 import org.graffiti.graph.Node;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
+import org.vanted.addons.stressminaddon.util.gui.Parameterizable;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author Jannik
  */
-public interface IterativePositionAlgorithm {
+public interface IterativePositionAlgorithm extends Parameterizable {
 
     /**
      * Performs the next iteration and calculates the new positions from the old ones.
