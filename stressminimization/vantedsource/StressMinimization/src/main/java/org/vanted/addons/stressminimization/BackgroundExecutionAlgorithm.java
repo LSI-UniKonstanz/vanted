@@ -6,7 +6,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -398,11 +400,9 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			
 		case "setLayout":
 			if(autoDrawCheckBox.isSelected()) {
-				newLayout((HashMap<Node, Vector2d>)arg0.getNewValue());
+				Supplier<HashMap<Node, Vector2d>> layoutSupplier = (Supplier<HashMap<Node, Vector2d>>)arg0.getNewValue();
+				newLayout(layoutSupplier.get());
 			}
-			break;
-		case "setEndLayout":
-			newLayout((HashMap<Node, Vector2d>)arg0.getNewValue());
 			break;
 		case "setStatus":
 			setStatus((BackgroundStatus)arg0.getNewValue());
