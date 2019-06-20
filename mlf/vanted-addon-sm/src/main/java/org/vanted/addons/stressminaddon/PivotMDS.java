@@ -37,7 +37,7 @@ public class PivotMDS implements InitialPlacer {
     public List<Vector2d> calculateInitialPositions(final List<Node> nodes, final NodeValueMatrix distances) {
         assert nodes.size() == distances.getDimension();
 
-        final int numPivots = Math.min(500, distances.getDimension()); // TODO make configurable
+        final int numPivots = Math.min(100, distances.getDimension()); // TODO make configurable
 
         final int[] pivotTranslation = new int[distances.getDimension()];
         final int[] inversePivotTranslation = new int[distances.getDimension()];
@@ -47,12 +47,18 @@ public class PivotMDS implements InitialPlacer {
         //calculate the doubleCentered matrix
         RealMatrix c = doubleCenter(distances, numPivots, pivotTranslation);
 
-        //calculate the two largest eigenVectors
-        final RealMatrix eigenVecs = powerIterate(c);
+        //calculate the largest eigenVector
+        final RealMatrix firstEigenVec = powerIterate(c, getRandomVector(numPivots));
+
+        System.out.println(Arrays.toString(firstEigenVec.getColumn(0)));
+        // calculate second largest eigenVector
+        final RealMatrix secondEigenVec = powerIterate(c, getStartForSecEigenVal(firstEigenVec, numPivots));
+
+        System.out.println(Arrays.toString(secondEigenVec.getColumn(0)));
 
         // get new XPos and YPos
-        RealMatrix newX = c.multiply(eigenVecs.getColumnMatrix(0));
-        RealMatrix newY = c.multiply(eigenVecs.getColumnMatrix(1));
+        RealMatrix newX = c.multiply(firstEigenVec.getColumnMatrix(0));
+        RealMatrix newY = c.multiply(secondEigenVec.getColumnMatrix(0));
 
         // create a list containing the new coordinates
         List<Vector2d> newPosList = new ArrayList<>();
@@ -158,6 +164,29 @@ public class PivotMDS implements InitialPlacer {
         return table;
     }
 
+    private double dotProduct(final RealMatrix a, final RealMatrix b){
+        if(a.getColumnDimension() >1 || b.getColumnDimension() > 1){
+            throw new IndexOutOfBoundsException("Dot product only with column dimension 1");
+        }
+
+        double result = 0;
+        for(int i = 0; i < a.getColumnDimension(); i++){
+            result *= a.getEntry(i, 0) * b.getEntry(i, 0);
+        }
+
+        return result;
+
+    }
+
+    private RealMatrixImpl getStartForSecEigenVal(final RealMatrix firstEigenVal, final int numPivots){
+
+        RealMatrixImpl secondEigenVec = getRandomVector(numPivots);
+
+        secondEigenVec = (RealMatrixImpl) secondEigenVec.subtract(firstEigenVal.scalarMultiply(dotProduct(firstEigenVal,secondEigenVec)));
+
+        return secondEigenVec;
+    }
+
 
     /**
      * Creates two random Vectors.
@@ -167,16 +196,15 @@ public class PivotMDS implements InitialPlacer {
      *
      * @author theo
      */
-    private RealMatrixImpl getRandomVectors(final int dimension) {
+    private RealMatrixImpl getRandomVector(final int dimension) {
 
         Random r = PivotMDS.RAND;
 
-        RealMatrixImpl result = new RealMatrixImpl(dimension, 2);
+        RealMatrixImpl result = new RealMatrixImpl(dimension, 1);
         double[][] resultArray = result.getDataRef();
 
         for(int row =0; row<dimension; row++){
             resultArray[row][0] = r.nextInt();
-            resultArray[row][1] = r.nextInt();
         }
         return result;
     }
@@ -216,14 +244,13 @@ public class PivotMDS implements InitialPlacer {
      *
      * @author theo
      */
-     RealMatrix powerIterate(final RealMatrix matrix) {
+     RealMatrix powerIterate(final RealMatrix matrix, RealMatrix vec) {
+
+         RealMatrix eigenVec = vec;
 
         //C^T * C
         RealMatrixImpl c = (RealMatrixImpl) matrix.transpose().multiply(matrix);
         final int dimension = c.getRowDimension();
-
-        //create 2  random vectors
-        RealMatrixImpl eigenVec = getRandomVectors(dimension);
 
         double change = 1;
 

@@ -86,9 +86,14 @@ public class PivotMDSTest {
 
         // the matrix should have eigen values 4, 2, 0
         // with eigen vectors (1, -1, 0); (1, 1, -2); (1, 1, 1)
+        RealMatrixImpl randomVec = new RealMatrixImpl(amountPivots, 1);
+        double[][] tmp = randomVec.getDataRef();
+        tmp[0][0] =1;
+        tmp[1][0] =1;
+        tmp[2][0] =1;
 
         RealMatrix ctc = testC.transpose().multiply(testC);
-        RealMatrix eigenVecsTest = pivotMDS.powerIterate(testC);
+        RealMatrix eigenVecsTest = pivotMDS.powerIterate(testC, randomVec);
         double[][] expectedVectors = {{+1,+1},
                                       {-1,+1},
                                       { 0,-2}};
