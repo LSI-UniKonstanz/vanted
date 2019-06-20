@@ -185,7 +185,6 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		
 		Runnable myTask = new Runnable() {
 			public void run() {
-				System.out.println("Running");
 				provider.setCurrentStatusValue(0);
 				int currentStatus = 0;
 				//double a = Math.pow(10, -8);
@@ -215,7 +214,11 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 						}
 						
 						provider.setCurrentStatusValue(currentStatus);
-
+						
+						if (provider.wantsToStop()) {
+							algorithm.stop();
+						}
+						
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -226,9 +229,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		// the task which will be executed even if the user has stopped the
 		// thread
 		Runnable myFinishTask = new Runnable() {
-			public void run() {
-				System.out.println("Completed");
-			}
+			public void run() {}
 		};
 		
 		algorithm.reset();
