@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -88,25 +89,20 @@ public class PivotMDSTest {
         // with eigen vectors (1, -1, 0); (1, 1, -2); (1, 1, 1)
         RealMatrixImpl randomVec = new RealMatrixImpl(amountPivots, 1);
         double[][] tmp = randomVec.getDataRef();
-        tmp[0][0] =1;
-        tmp[1][0] =1;
-        tmp[2][0] =1;
+        tmp[0][0] =4358;
+        tmp[1][0] =2478;
+        tmp[2][0] =6543;
 
         RealMatrix ctc = testC.transpose().multiply(testC);
-        RealMatrix eigenVecsTest = pivotMDS.powerIterate(testC, randomVec);
-        double[][] expectedVectors = {{+1,+1},
-                                      {-1,+1},
-                                      { 0,-2}};
+        RealMatrix eigenVecTest = pivotMDS.powerIterate(ctc, randomVec).scalarMultiply(1);
+        double[] expectedVectors = {1, -1, 0};
 
-        for (int i = 0; i < 2; i++) {
-            // the expected eigen vectors and the actual eigen vectors should be linear dependent
-            RealMatrix eigenVector = eigenVecsTest.getColumnMatrix(i);
-            eigenVector = eigenVector.scalarMultiply(1/eigenVector.getEntry(0, 0)); // normalize to first entry
+        System.out.println(Arrays.toString(eigenVecTest.getColumn(0)));
 
-            for (int row = 0; row < amountPivots; row++) {
-                assertEquals("Eigen vector " + i + ", row " + row, expectedVectors[row][i],
-                        eigenVector.getEntry(row, 0), 0.0001);
-            }
+
+        for (int row = 0; row < amountPivots; row++) {
+            assertEquals("Eigen vector " + row, expectedVectors[row],
+                    eigenVecTest.getEntry(row, 0), 0.3);
         }
     }
 
@@ -129,6 +125,8 @@ public class PivotMDSTest {
         int[] expected = new int[]{2, 0, 1, 3};
         assertArrayEquals("Pivots", expected, translation);
     }
+
+
 }
 
 
