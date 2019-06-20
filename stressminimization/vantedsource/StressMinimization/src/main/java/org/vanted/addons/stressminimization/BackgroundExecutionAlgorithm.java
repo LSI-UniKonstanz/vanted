@@ -181,6 +181,13 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 
 	@Override
 	public void execute() {
+		algorithm.execute();
+	}
+	
+	/**
+	 * Starts new thread which executes the BackgroundAlgorithm and starts the progress bar
+	 */
+	public void executeBackgroundAlgorithm() {
 
 		final BackgroundTaskStatusProviderSupportingExternalCall provider = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 				"Computing Layout", "Stress minimization progress:");
@@ -234,7 +241,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			public void run() {}
 		};
 		
-		algorithm.reset();
+		reset();
 		
 		//current graph position and selection
 		graph = GravistoService.getInstance().getMainFrame().getActiveSession().getGraph();
@@ -243,14 +250,14 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		Runnable algoExecution = new Runnable() {
 			public void run() {
 				
-				algorithm.attach(graph, selection);
+				attach(graph, selection);
 				try {
-					algorithm.check();
+					check();
 				} catch (PreconditionException e) {
 					e.printStackTrace();
 				}
-				algorithm.setParameters(paramPanel.getUpdatedParameters());
-				algorithm.execute();
+				setParameters(paramPanel.getUpdatedParameters());
+				execute();
 			}
 		};
 		Thread backgroundTask = new Thread(algoExecution);
@@ -260,7 +267,6 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		
 		BackgroundTaskHelper.issueSimpleTask("Stress Minimization Progress",
 				"Computing...", myTask, myFinishTask, provider);
-		
 	}
 
 	@Override
@@ -348,7 +354,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				switch(status) {
 				case FINISHED:
 					startButton.setText("Layout Network");
-					execute();
+					executeBackgroundAlgorithm();
 					break;
 				case INIT:
 				case RUNNING:
