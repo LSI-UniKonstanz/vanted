@@ -7,6 +7,7 @@ import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.parameter.Parameter;
 
+import javax.help.Merge;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -25,8 +26,8 @@ class SolarMerger implements Merger {
 
 
     // Variables containing the stopping criteria for the SolarMerger
-    int minNodes = 1;
-    int maxLevelFactor = 1;
+    int minNodes = 20;
+    int maxLevelFactor = 10;
 
 
     @Override
@@ -62,7 +63,6 @@ class SolarMerger implements Merger {
 
         // Graph storing the current topLevel as baseLevel for this coarsening step
         Graph baseLevel = multilevelGraph.getTopLevel();
-        assert GraphHelper.getConnectedComponents(baseLevel.getNodes()).size() == 1;
         // adding a new level to the coarsening graph
         multilevelGraph.newCoarseningLevel();
 
@@ -173,23 +173,16 @@ class SolarMerger implements Merger {
 
 
         // Test stuff
-        assert GraphHelper.getConnectedComponents(multilevelGraph.getTopLevel().getNodes()).size() == 1;
+        assert GraphHelper.getConnectedComponents(multilevelGraph.getTopLevel().getNodes()).size() == 1
+                : "Graph isn't connected anymore";
 
-        Set<Node> nodes = new HashSet<>(baseLevel.getNodes());
-        nodes.removeAll(multilevelGraph.getTopLevel().getNodes().stream().flatMap(n -> {
+        // Make sure we didn't loose any nodes
+        Set<Node> unrepresentedNodes = new HashSet<>(baseLevel.getNodes());
+        unrepresentedNodes.removeAll(multilevelGraph.getTopLevel().getNodes().stream().flatMap(n -> {
             MergedNode mn = (MergedNode) n;
             return mn.getInnerNodes().stream();
         }).collect(Collectors.toSet()));
-        System.out.println("Unrepresented Nodes:");
-        for (Node n : nodes) {
-            MergedNode mn = (MergedNode)n;
-            for (Node node : mn.getInnerNodes()) {
-                System.out.print(", ");
-                System.out.print(AttributeHelper.getLabel(node, "Unknown"));
-            }
-        }
-        System.out.println();
-
+        assert unrepresentedNodes.isEmpty() : "Some nodes have been lost (not represented in the top level).";
     }
 
     /**
@@ -206,7 +199,10 @@ class SolarMerger implements Merger {
 
         // Establishing solar systems on the current level as long as there are unmatched nodes
         while (!sunCandidates.isEmpty()) {
-            Node sun = sunCandidates.iterator().next();
+            Node sun = sunCandidates.stream()
+                    // find the minimum weight node, use default weight of 0 if the nodes aren't MergedNodes
+                    .min(Comparator.comparing(n -> n instanceof MergedNode ? ((MergedNode) n).getWeight() : 0))
+                    .orElseThrow(IllegalStateException::new); // this cannot happen as we checked isEmpty() before
             sunCandidates.remove(sun);
             // Adds the new Sun to the Set
             sunSet.add(sun);
