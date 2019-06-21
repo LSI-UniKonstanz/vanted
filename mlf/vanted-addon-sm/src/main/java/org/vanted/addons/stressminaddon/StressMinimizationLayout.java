@@ -339,20 +339,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
 
         // initial placers
         InitialPlacer[] initialPlacers = new InitialPlacer[] {new PivotMDS()};
-        Map<String, Parameterizable> initialPlacerNames = new HashMap<>();
-        Map<String, String> initialPlacerDescriptions = new HashMap<>();
-        for (InitialPlacer placer : initialPlacers) {
-            initialPlacerNames.put(placer.getName(), placer);
-            initialPlacerDescriptions.put(placer.getName(), placer.getDescription());
-        }
         // iterative algorithms
         IterativePositionAlgorithm[] iterativeAlgorithms = new IterativePositionAlgorithm[] {new IntuitiveIterativePositionAlgorithm()};
-        Map<String, Parameterizable> iterativeAlgorithmNames = new HashMap<>();
-        Map<String, String> iterativeAlgorithmDescriptions = new HashMap<>();
-        for (IterativePositionAlgorithm algorithm : iterativeAlgorithms) {
-            iterativeAlgorithmNames.put(algorithm.getName(), algorithm);
-            iterativeAlgorithmDescriptions.put(algorithm.getName(), algorithm.getDescription());
-        }
 
         Parameter[] result = new Parameter[] {
                 new JComponentParameter(new JPanel(), "<html><u>Stop criterion</u></html>",
@@ -388,13 +376,13 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
                                 "The weight function is &alpha;&delta;<sup>&beta;</sup><sub>ij</sub>.</html>"),
                 new JComponentParameter(new JPanel(), "<html><u>Initial layout</u></html>",
                         "<html>The layout to apply before the actual algorithm is run.</html>"), //hacky section header
-                ParameterizableSelectorParameter.getFromMap(initialPlacers[0].getName(), initialPlacerNames,
-                        initialPlacerDescriptions, selection, "Select layout",
+                ParameterizableSelectorParameter.getFromList(0, new ArrayList<>(Arrays.asList(initialPlacers)),
+                        selection, "Select layout",
                         "<html>The layout to apply before the actual algorithm is run.</html>"),
                 new JComponentParameter(new JPanel(), "<html><u>Iterative algorithm</u></html>",
                         "<html>The algorithm that should be used to calculate the new positions of in every iteration step.</html>"), //hacky section header
-                ParameterizableSelectorParameter.getFromMap(iterativeAlgorithms[0].getName(), iterativeAlgorithmNames,
-                        iterativeAlgorithmDescriptions, selection, "Select algorithm",
+                ParameterizableSelectorParameter.getFromList(0, new ArrayList<>(Arrays.asList(iterativeAlgorithms)),
+                        selection, "Select algorithm",
                         "<html>The algorithm that should be used to calculate the new positions of in every iteration step.</html>"),
                 new JComponentParameter(new JPanel(), "<html><u>General layout</u></html>",
                         "<html>Some general settings for the layouter.</html>"), //hacky section header

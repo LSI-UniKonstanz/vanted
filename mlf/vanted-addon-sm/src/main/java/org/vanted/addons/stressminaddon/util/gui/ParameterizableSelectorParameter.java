@@ -382,6 +382,8 @@ public class ParameterizableSelectorParameter extends JPanel {
     /**
      * Creates a new parameter (which is a {@link JPanel}) that holds a {@link JComboBox} that allows the
      * user to select different {@link Parameterizable}s and packs it in the returned {@link JComponentParameter}.
+     * The used descriptions will be automatically derived from the given {@link Parameterizable}s, if they are
+     * instances of {@link Describable}.
      *
      * @param initialSelection the element to select initially in the JComboBox.
      * @param displayNameParameterizableMap
@@ -403,7 +405,50 @@ public class ParameterizableSelectorParameter extends JPanel {
         if (!displayNameParameterizableMap.containsKey(initialSelection)) {
             throw new IllegalArgumentException("'initialSelection' must be a key in 'displayNameParameterizableMap'!");
         }
+        Map<String, String> descriptions = new HashMap<>();
+        for (Map.Entry<String, Parameterizable> entry : displayNameParameterizableMap.entrySet()) {
+            if (entry.getValue() instanceof Describable) {
+                descriptions.put(entry.getKey(), ((Describable) entry.getValue()).getDescription());
+            }
+        }
         return new JComponentParameter(new ParameterizableSelectorParameter(
-                initialSelection, displayNameParameterizableMap, null, selection), name, description);
+                initialSelection, displayNameParameterizableMap, descriptions, selection), name, description);
+    }
+
+    /**
+     * Creates a new parameter (which is a {@link JPanel}) that holds a {@link JComboBox} that allows the
+     * user to select different {@link Parameterizable}s and packs it in the returned {@link JComponentParameter}.
+     * The used names descriptions will be automatically derived from the given {@link Parameterizable}s.
+     *
+     * @param initialSelection the element to select initially in the JComboBox.
+     * @param describableParameterizableList
+     *      a list containing the objects to be selectable. Their name and description will be used
+     *      to fill the JComboBox.
+     * @param selection
+     *      the current selection. This will be used for {@link SelectionParameter}s.
+     * @param name the name of the returned {@link JComponentParameter}.
+     * @param description the description of the returned {@link JComponentParameter}.
+     *
+     * @see ParameterizableSelectorParameter
+     * @author Jannik
+     */
+    public static <T extends Parameterizable & Describable> JComponentParameter
+                                      getFromList(final int initialSelection,
+                                                  final List<T> describableParameterizableList,
+                                                  final Selection selection,
+                                                  final String name, final String description) {
+        Objects.requireNonNull(describableParameterizableList);
+        if (0 > initialSelection || initialSelection >= describableParameterizableList.size()) {
+            throw new IndexOutOfBoundsException("'initialSelection' must point in 'displayNameParameterizableMap'!");
+        }
+        Map<String, Parameterizable> parameterizable = new HashMap<>();
+        Map<String, String> descriptions = new HashMap<>();
+        for (T item : describableParameterizableList) {
+            parameterizable.put(item.getName(), item);
+            descriptions.put(item.getName(), item.getDescription());
+        }
+        return new JComponentParameter(new ParameterizableSelectorParameter(
+                describableParameterizableList.get(initialSelection).getName(),
+                parameterizable, descriptions, selection), name, description);
     }
 }
