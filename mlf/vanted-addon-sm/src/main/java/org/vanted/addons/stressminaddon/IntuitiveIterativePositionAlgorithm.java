@@ -121,4 +121,27 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
     public void setParameters(Parameter[] parameters) {
         // TODO implement settings
     }
+
+    /**
+     * @return the name of the this algorithm.
+     *         This may be be used to represent this class to the user.
+     * @author Jannik
+     */
+    @Override
+    public String getName() {
+        return "Intuitive Algorithm";
+    }
+
+    /**
+     * @return the description of the this algorithm.
+     *         This may be be used to explain the behaviour of this class to the user.
+     * @author Jannik
+     */
+    @Override
+    public String getDescription() {
+        return "<html>This algorithm uses the position of each node to “vote” for the<br>" +
+                "for the node of the current node i.e. nodes will be moved<br>" +
+                "to the weighted average of all other node positions.<br>" +
+                "Running time <code>amountNodes<sup>2</sup></code>.</html>";
+    }
 }

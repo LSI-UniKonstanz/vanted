@@ -16,7 +16,7 @@ import org.graffiti.plugin.view.View;
 import org.vanted.addons.stressminaddon.util.ConnectedComponentsHelper;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 import org.vanted.addons.stressminaddon.util.ShortestDistanceAlgorithm;
-import org.vanted.addons.stressminaddon.util.gui.EnableableNumberParameter;
+import org.vanted.addons.stressminaddon.util.gui.*;
 
 import javax.swing.*;
 import java.util.*;
@@ -44,9 +44,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             "StressMinimization" + Attribute.SEPARATOR + "index";
 
     /** The {@link IntuitiveIterativePositionAlgorithm} to use. */
-    private static final IterativePositionAlgorithm positionAlgorithm = new IntuitiveIterativePositionAlgorithm();
+    private IterativePositionAlgorithm positionAlgorithm = new IntuitiveIterativePositionAlgorithm();
     /** The {@link InitialPlacer} to use. */
-    private static final InitialPlacer initialPlacer = new PivotMDS();
+    private InitialPlacer initialPlacer = new PivotMDS();
 
     ///// Parameters and defaults /////
     // stop conditions
@@ -337,6 +337,23 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
     @Override
     public Parameter[] getParameters() {
 
+        // initial placers
+        InitialPlacer[] initialPlacers = new InitialPlacer[] {new PivotMDS()};
+        Map<String, Parameterizable> initialPlacerNames = new HashMap<>();
+        Map<String, String> initialPlacerDescriptions = new HashMap<>();
+        for (InitialPlacer placer : initialPlacers) {
+            initialPlacerNames.put(placer.getName(), placer);
+            initialPlacerDescriptions.put(placer.getName(), placer.getDescription());
+        }
+        // iterative algorithms
+        IterativePositionAlgorithm[] iterativeAlgorithms = new IterativePositionAlgorithm[] {new IntuitiveIterativePositionAlgorithm()};
+        Map<String, Parameterizable> iterativeAlgorithmNames = new HashMap<>();
+        Map<String, String> iterativeAlgorithmDescriptions = new HashMap<>();
+        for (IterativePositionAlgorithm algorithm : iterativeAlgorithms) {
+            iterativeAlgorithmNames.put(algorithm.getName(), algorithm);
+            iterativeAlgorithmDescriptions.put(algorithm.getName(), algorithm.getDescription());
+        }
+
         Parameter[] result = new Parameter[] {
                 new JComponentParameter(new JPanel(), "<html><u>Stop criterion</u></html>",
                         "<html>Select one or multiple stop criterion for the algorithm.<br>This can be used to influence running time and quality.</html>"), //hacky section header
@@ -369,6 +386,16 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
                         "Distance power", "<html>The power for the distance &beta; used in the weight function that derives a weight<br>" +
                                 "between two given nodes <i>i</i> and <i>j</i> from their graph theoretical distance &delta;.<br>" +
                                 "The weight function is &alpha;&delta;<sup>&beta;</sup><sub>ij</sub>.</html>"),
+                new JComponentParameter(new JPanel(), "<html><u>Initial layout</u></html>",
+                        "<html>The layout to apply before the actual algorithm is run.</html>"), //hacky section header
+                ParameterizableSelectorParameter.getFromMap(initialPlacers[0].getName(), initialPlacerNames,
+                        initialPlacerDescriptions, selection, "Select layout",
+                        "<html>The layout to apply before the actual algorithm is run.</html>"),
+                new JComponentParameter(new JPanel(), "<html><u>Iterative algorithm</u></html>",
+                        "<html>The algorithm that should be used to calculate the new positions of in every iteration step.</html>"), //hacky section header
+                ParameterizableSelectorParameter.getFromMap(iterativeAlgorithms[0].getName(), iterativeAlgorithmNames,
+                        iterativeAlgorithmDescriptions, selection, "Select algorithm",
+                        "<html>The algorithm that should be used to calculate the new positions of in every iteration step.</html>"),
                 new JComponentParameter(new JPanel(), "<html><u>General layout</u></html>",
                         "<html>Some general settings for the layouter.</html>"), //hacky section header
                 EnableableNumberParameter.alwaysEnabled(EDGE_SCALING_FACTOR_DEFAULT, 0.0, Double.MAX_VALUE, 0.5,
@@ -378,7 +405,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
                         "<html>Remove edge bends before starting the algorithm.<br><b>Highly recommended</b> because the algorithm does not " +
                                 "move edge bends.<br>Always undoable as extra undo.</html>"),
                 new BooleanParameter(INTERMEDIATE_UNDOABLE_DEFAULT, "Iterations undoable",
-                        "<html>Should each iteration step be undoable (only recommended for small iteration sizes).<br>This parameter implies “Animate iterations”.</html>"),
+                        "<html>Should each iteration step be undoable (only recommended for small iteration sizes).<br>" +
+                                "This parameter implies “Animate iterations”.</html>"),
                 new BooleanParameter(DO_ANIMATIONS_DEFAULT, "Animate iterations",
                         "<html>Whether every iteration should update the node positions.</html>"),
                 new JComponentParameter(new JPanel(), "<html><u>Parallelism (advanced)</u></html>",
@@ -402,6 +430,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
     public void setParameters(Parameter[] params) {
         EnableableNumberParameter<Double> doubleParameter;
         EnableableNumberParameter<Integer> integerParameter;
+        ParameterizableSelectorParameter selectorParameter;
         // Stress epsilon
         doubleParameter = (EnableableNumberParameter<Double>) params[1].getValue();
         if (doubleParameter.isEnabled()) {
@@ -436,24 +465,32 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
         this.weightScalingFactor = doubleParameter.getValue();
         doubleParameter = (EnableableNumberParameter<Double>) params[6].getValue();
         this.weightPower = doubleParameter.getValue();
+        // initial layout
+        selectorParameter = ((ParameterizableSelectorParameter) params[8].getValue());
+        this.initialPlacer = ((InitialPlacer) selectorParameter.getSelectedParameterizable());
+        this.initialPlacer.setParameters(selectorParameter.getUpdatedParameters());
+        // position algorithm
+        selectorParameter = ((ParameterizableSelectorParameter) params[10].getValue());
+        this.positionAlgorithm = ((IterativePositionAlgorithm) selectorParameter.getSelectedParameterizable());
+        this.positionAlgorithm.setParameters(selectorParameter.getUpdatedParameters());
         // General settings
-        doubleParameter = (EnableableNumberParameter<Double>) params[8].getValue();
+        doubleParameter = (EnableableNumberParameter<Double>) params[12].getValue();
         if (doubleParameter.getValue() == 0.0) {
             this.edgeScalingFactor = Double.MIN_VALUE;
         } else {
             this.edgeScalingFactor = doubleParameter.getValue();
         }
-        this.removeEdgeBends = ((BooleanParameter) params[9]).getBoolean();
+        this.removeEdgeBends = ((BooleanParameter) params[13]).getBoolean();
         // Intermediates undoable
-        this.intermediateUndoable = ((BooleanParameter) params[10]).getBoolean();
+        this.intermediateUndoable = ((BooleanParameter) params[14]).getBoolean();
         // Do animation
-        this.doAnimations = ((BooleanParameter) params[11]).getBoolean();
+        this.doAnimations = ((BooleanParameter) params[15]).getBoolean();
         if (intermediateUndoable) { // intermediateUndoable => doAnimations
             doAnimations = true;
         }
         // Threading
-        this.backgroundTask = ((BooleanParameter) params[13]).getBoolean();
-        this.multipleThreads = ((BooleanParameter) params[14]).getBoolean();
+        this.backgroundTask = ((BooleanParameter) params[17]).getBoolean();
+        this.multipleThreads = ((BooleanParameter) params[18]).getBoolean();
     }
 
     /*
@@ -643,7 +680,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
 
             // calculate new positions
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+this.id+": Iterate new positions...");
-            List<Vector2d> newPositions = StressMinimizationLayout.positionAlgorithm.nextIteration(
+            List<Vector2d> newPositions = positionAlgorithm.nextIteration(
                     this.nodes, this.currentPositions, this.distances, this.weights);
 
             // check position change
