@@ -4,6 +4,7 @@ import org.Vector2d;
 import org.apache.commons.math.linear.RealMatrix;
 import org.apache.commons.math.linear.RealMatrixImpl;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -27,7 +28,7 @@ public class PivotMDSTest {
     private Random random;
 
     @Before
-    public void setUp() throws NoSuchFieldException, IllegalAccessException {
+    public  void setUp() throws NoSuchFieldException, IllegalAccessException {
         pivotMDS = new PivotMDS();
         random = new Random(42);
         // overwrite internal random for consistency
@@ -43,8 +44,17 @@ public class PivotMDSTest {
     @Test
     public void calculateInitialPositions() {
         random.setSeed(42);
-        // TODO test correctly
         final List<Vector2d> positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
+        // calculated for eigenvalues 4, 4, 1, 0
+        // with eigenvectors (0,0,-1,1),(-1,1,0,0),(-1,-1,1,1),(1,1,1,1)
+        double[] expectedXPos = new double[]{-1.1574392460783163,-0.8126096182256408, 1.157439246092345, 0.8126096182116118};
+        double[] expectedYPos = new double[]{ 0.8126096182117397,-1.157439246078444 ,-0.8126096182255129,1.1574392460922174};
+
+        for (int idx = 0; idx < positions.size(); idx++) {
+            Vector2d position = positions.get(idx);
+            assertEquals("X pos", expectedXPos[idx], position.x, 0.0001);
+            assertEquals("Y pos", expectedYPos[idx], position.y, 0.0001);
+        }
     }
 
 
@@ -85,24 +95,24 @@ public class PivotMDSTest {
         int[] distanceTranslation = pivotMDS.getPivots(GRAPH_1_DISTANCES, amountPivots, pivotTranslation, inversePivotTranslation);
         RealMatrix testC = pivotMDS.doubleCenter(GRAPH_1_DISTANCES, amountPivots, distanceTranslation);
 
-        // the matrix should have eigen values 4, 2, 0
-        // with eigen vectors (1, -1, 0); (1, 1, -2); (1, 1, 1)
         RealMatrixImpl randomVec = new RealMatrixImpl(amountPivots, 1);
         double[][] tmp = randomVec.getDataRef();
-        tmp[0][0] =4358;
-        tmp[1][0] =2478;
-        tmp[2][0] =6543;
+        tmp[0][0] =random.nextInt();
+        tmp[1][0] =random.nextInt();
+        tmp[2][0] =random.nextInt();
 
         RealMatrix ctc = testC.transpose().multiply(testC);
-        RealMatrix eigenVecTest = pivotMDS.powerIterate(ctc, randomVec).scalarMultiply(1);
+        RealMatrix eigenVecTest = pivotMDS.powerIterate(ctc, randomVec);
+
+        // the matrix should have eigen values 4, 2, 0
+        // with eigen vectors (1, -1, 0); (1, 1, -2); (1, 1, 1)
         double[] expectedVectors = {1, -1, 0};
-
-        System.out.println(Arrays.toString(eigenVecTest.getColumn(0)));
-
+        // the expected and the actual vector should be linearly dependant
+        eigenVecTest = eigenVecTest.scalarMultiply(1/eigenVecTest.getEntry(0, 0)); // normalize to first entry
 
         for (int row = 0; row < amountPivots; row++) {
             assertEquals("Eigen vector " + row, expectedVectors[row],
-                    eigenVecTest.getEntry(row, 0), 0.3);
+                    eigenVecTest.getEntry(row, 0), 0.0001);
         }
     }
 
