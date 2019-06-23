@@ -1,7 +1,6 @@
 package org.vanted.addons.multilevelframework;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider;
@@ -22,34 +21,55 @@ import org.graffiti.plugin.view.View;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.Session;
 import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
+import org.vanted.addons.multilevelframework.sm_util.ConnectedComponentsHelper;
+import org.vanted.addons.multilevelframework.sm_util.gui.ParameterizableSelectorParameter;
 
-import javax.help.MainWindow;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
     private Map<String, LayoutAlgorithmWrapper> layoutAlgorithms;
+    private static List<Merger> mergers = Collections.synchronizedList(new ArrayList<>());
+    private static List<Placer> placers = Collections.synchronizedList(new ArrayList<>());
     private final static String DEFAULT_ALGORITHM = BlockingForceDirected.springName;
+    private final static String DEFAULT_PLACER = new RandomPlacer().getName();
+    private final static String DEFAULT_MERGER = new RandomMerger().getName();
     private final static String COARSENING_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_LEVEL";
     private final static String COARSENING_TOP_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_TOP_LEVEL";
     private final static String WORKING_ATTRIBUTE_PATH = "MLF_EXECUTING";
     private JComboBox<String> algorithmListComboBox;
     private JButton setUpLayoutAlgorithmButton;
     private String lastSelectedAlgorithm = DEFAULT_ALGORITHM;
+    private String lastSelectedPlacer = DEFAULT_PLACER;
+    private String lastSelectedMerger = DEFAULT_MERGER;
     private int randomTopParameterIndex = 0;
     private int removeBendsParameterIndex = 0;
+    private int mergerPSPIndex = 0;
+    private int placerPSPIndex = 0;
+    private ParameterizableSelectorParameter mergerPSP;
+    private ParameterizableSelectorParameter placerPSP;
     private boolean randomTop = false;
     private boolean removeBends = false;
+
+    // add the default mergers and placers
+    static {
+        MultilevelFrameworkLayouter.mergers.add(new SolarMerger());
+        MultilevelFrameworkLayouter.mergers.add(new RandomMerger());
+        MultilevelFrameworkLayouter.placers.add(new RandomPlacer());
+    }
 
     public MultilevelFrameworkLayouter() {
         super();
         this.setUpParameters();
     }
 
+    /**
+     * @see Algorithm#getDescription()
+     */
     @Override
     public String getDescription() {
         return "<html><b>Multilevel Framework</b></html>";
@@ -91,6 +111,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
     /**
      * Performs the layout.
+     * @author Gordian
      */
     public void execute() {
         // need to save old session and view, because they need to be restored for applyUndoableNodePositionUpdate
@@ -103,8 +124,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         final Selection selection = this.selection;
         final boolean removeBends = this.removeBends;
         final boolean randomTop = this.randomTop;
-        final Merger merger = new SolarMerger(); // ChangedFromRandomMerger by Tobse
-        final Placer placer = new RandomPlacer();
+        final Merger merger = this.getSelectedMergerAndSetParameters();
+        final Placer placer = this.getSelectedPlacerAndSetParameters();
         final LayoutAlgorithmWrapper algorithm =
                 this.layoutAlgorithms.get(Objects.toString(this.algorithmListComboBox.getSelectedItem()));
         final List<?extends CoarsenedGraph>[] connectedComponents = new List[1];
@@ -194,7 +215,9 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
             MainFrame.getInstance().setActiveSession(oldSession, oldView);
             GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
-            ConnectedComponentLayout.layoutConnectedComponents(graph);
+//            ConnectedComponentLayout.layoutConnectedComponents(graph);
+            ConnectedComponentsHelper.layoutConnectedComponents(ConnectedComponentsHelper.getConnectedComponents(
+                    getSelectedOrAllNodes(graph, selection)), true);
             graph.setBoolean(WORKING_ATTRIBUTE_PATH, false);
         }, bts);
     }
@@ -238,6 +261,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         this.parameters = params;
         this.randomTop = (Boolean) this.parameters[this.randomTopParameterIndex].getValue();
         this.removeBends = (Boolean) this.parameters[this.removeBendsParameterIndex].getValue();
+        this.mergerPSP = (ParameterizableSelectorParameter) this.parameters[this.mergerPSPIndex].getValue();
+        this.placerPSP = (ParameterizableSelectorParameter) this.parameters[this.placerPSPIndex].getValue();
     }
 
     /*
@@ -257,8 +282,41 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         return true;
     }
 
+    /**
+     * @see org.graffiti.plugin.algorithm.EditorAlgorithm#activeForView(View)
+     */
+    @Override
     public boolean activeForView(View v) {
         return v != null;
+    }
+
+
+    /**
+     * Add a new {@link Merger} that will be available for the user to choose.
+     * This method is meant to be called by other VANTED add-ons that seek to extend the MLF with new {@link Merger}s.
+     * @param merger
+     *      The {@link Merger} to add. Must not be {@code null}.
+     * @author Gordian
+     */
+    public static void addMerger(Merger merger) {
+        Objects.requireNonNull(merger, "Cannot add null Merger to the MLF");
+        if (!MultilevelFrameworkLayouter.mergers.contains(merger)) {
+            MultilevelFrameworkLayouter.mergers.add(merger);
+        }
+    }
+
+    /**
+     * Add a new {@link Placer} that will be available for the user to choose.
+     * This method is meant to be called by other VANTED add-ons that seek to extend the MLF with new {@link Placer}s.
+     * @param placer
+     *      The {@link Placer} to add. Must not be {@code null}.
+     * @author Gordian
+     */
+    public static void addPlacer(Placer placer) {
+        Objects.requireNonNull(placer, "Cannot add null placer to the MLF");
+        if (!MultilevelFrameworkLayouter.placers.contains(placer)) {
+            MultilevelFrameworkLayouter.placers.add(placer);
+        }
     }
 
     /**
@@ -302,6 +360,32 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     }
 
     /**
+     * @return
+     *     the {@link Merger} selected by the user and set it up using the parameters specified by the user through
+     *     the GUI.
+     * @author Gordian
+     */
+    private Merger getSelectedMergerAndSetParameters() {
+        final Merger merger = (Merger) this.mergerPSP.getSelectedParameterizable();
+        this.lastSelectedMerger = merger.getName();
+        merger.setParameters(this.mergerPSP.getUpdatedParameters());
+        return merger;
+    }
+
+    /**
+     * @return
+     *     the {@link Placer} selected by the user and set it up using the parameters specified by the user through
+     *     the GUI.
+     * @author Gordian
+     */
+    private Placer getSelectedPlacerAndSetParameters() {
+        final Placer placer = (Placer) this.placerPSP.getSelectedParameterizable();
+        this.lastSelectedPlacer = placer.getName();
+        placer.setParameters(this.placerPSP.getUpdatedParameters());
+        return placer;
+    }
+
+    /**
      * Create a percentage for the GUI. Calculates the progress for the current connected component.
      * @param mlg
      *      The {@link MultilevelGraph}. Must not be {@code null}.
@@ -319,18 +403,18 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                                      int currentIndex, int numberOfLevelsAtStart) {
         if (numberOfLevelsAtStart == 0 || connectedComponents.size() == 0) { return -1; }
         // calculate the progress as the percentage of nodes and connected components already processed
-        return 100.0 * (1 - (double)mlg.getNumberOfLevels()/numberOfLevelsAtStart)
+        return 100.0 * (1 - (double) mlg.getNumberOfLevels() / numberOfLevelsAtStart)
                 * (currentIndex + 1.0)
                 / connectedComponents.size();
     }
 
     /**
      * The handler that gets called if the "Set up Layouter" button was clicked.
-     * @param e
+     * @param ignored
      *      Ignored.
      * @author Gordian
      */
-    private void clickSetUpLayoutAlgorithmButton(ActionEvent e) {
+    private void clickSetUpLayoutAlgorithmButton(ActionEvent ignored) {
         final LayoutAlgorithmWrapper current = this.layoutAlgorithms.get(this.lastSelectedAlgorithm);
         final JComponent gui = current.getGUI();
         if (gui != null) {
@@ -341,11 +425,11 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
     /**
      * The handler that gets called if the user changes to a different layout algorithm for the levels.
-     * @param e
+     * @param ignored
      *      Ignored.
      * @author Gordian
      */
-    private void changeSelectedAlgorithm(ActionEvent e) {
+    private void changeSelectedAlgorithm(ActionEvent ignored) {
         final String selected = (String) this.algorithmListComboBox.getSelectedItem();
         if (selected == null) {
             return;
@@ -363,56 +447,92 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     }
 
     /**
+     * Updates the parameter object. Among other things this puts new {@link Merger}s, {@link Algorithm}s
+     * or {@link Placer}s into the GUI.
      * @author Gordian
      */
     private void updateParameters() {
         Map<String, LayoutAlgorithmWrapper> tmp = LayoutAlgorithmWrapper.getLayoutAlgorithms();
-        boolean changed = false;
         for (Map.Entry<String, LayoutAlgorithmWrapper> e : tmp.entrySet()) {
             if (!this.layoutAlgorithms.containsKey(e.getKey())) {
                 this.layoutAlgorithms.put(e.getKey(), e.getValue());
-                changed = true;
             }
         }
-        if (changed || this.parameters == null) {
-            if (!this.layoutAlgorithms.containsKey(this.lastSelectedAlgorithm)) {
-                MainFrame.showMessageDialog("Algorithm \"" + this.layoutAlgorithms + "\" doesn't seem to exist.",
-                        "Error");
-                this.lastSelectedAlgorithm = this.layoutAlgorithms.keySet().contains(this.lastSelectedAlgorithm) ?
-                        this.lastSelectedAlgorithm : this.layoutAlgorithms.keySet().iterator().next();
-            }
-
-            this.algorithmListComboBox = new JComboBox<>(this.layoutAlgorithms.keySet().stream()
-                    .sorted().toArray(String[]::new));
-            this.algorithmListComboBox.addActionListener(this::changeSelectedAlgorithm);
-
-            JComponentParameter algorithmList = new JComponentParameter(this.algorithmListComboBox, "Layout Algorithm",
-                    "Layout Algorithm to be run on each level of the coarsened graph.");
-            this.algorithmListComboBox.setSelectedItem(this.lastSelectedAlgorithm);
-
-            this.setUpLayoutAlgorithmButton = new JButton("Set up layouter");
-            this.setUpLayoutAlgorithmButton.addActionListener(this::clickSetUpLayoutAlgorithmButton);
-
-            JComponentParameter setUpLayoutAlgorithmButtonParameter =
-                    new JComponentParameter(this.setUpLayoutAlgorithmButton, "Set up layouter",
-                            "Click the button to change the parameters of the layout algorithm.");
-
-            BooleanParameter randomLayoutParameter = new BooleanParameter(this.randomTop,
-                    "Random initial layout on top level",
-                    "Do an random layout on the top (i.e. coarsest) coarsening level");
-
-            BooleanParameter removeBendsParameter = new BooleanParameter(this.removeBends,
-                    "Remove bends",
-                    "Remove all edge bends from the graph");
-
-            // TODO add GUI for Mergers and Placers
-
-            this.parameters = new Parameter[]{algorithmList, setUpLayoutAlgorithmButtonParameter,
-                    randomLayoutParameter, removeBendsParameter};
-
-            this.randomTopParameterIndex = ArrayUtils.indexOf(this.parameters, randomLayoutParameter);
-            this.removeBendsParameterIndex = ArrayUtils.indexOf(this.parameters, removeBendsParameter);
+        // the algorithm that used to be selected no longer exists
+        if (!this.layoutAlgorithms.containsKey(this.lastSelectedAlgorithm)) {
+            MainFrame.showMessageDialog("Algorithm \"" + this.layoutAlgorithms + "\" doesn't seem to exist.",
+                    "Error");
+            this.lastSelectedAlgorithm = this.layoutAlgorithms.keySet().contains(this.lastSelectedAlgorithm) ?
+                    this.lastSelectedAlgorithm : this.layoutAlgorithms.keySet().iterator().next();
         }
+
+        // combobox that lets the user choose an algorithm
+        if (this.algorithmListComboBox != null) {
+            for (ActionListener actionListener : this.algorithmListComboBox.getActionListeners()) {
+                this.algorithmListComboBox.removeActionListener(actionListener);
+            }
+        }
+        this.algorithmListComboBox = new JComboBox<>(this.layoutAlgorithms.keySet().stream()
+                .sorted().toArray(String[]::new));
+        this.algorithmListComboBox.addActionListener(this::changeSelectedAlgorithm);
+
+        JComponentParameter algorithmList = new JComponentParameter(this.algorithmListComboBox,
+                "Layout Algorithm",
+                "Layout Algorithm to be run on each level of the coarsened graph.");
+        this.algorithmListComboBox.setSelectedItem(this.lastSelectedAlgorithm);
+
+        if (this.setUpLayoutAlgorithmButton != null) {
+            for (ActionListener actionListener : this.setUpLayoutAlgorithmButton.getActionListeners()) {
+                this.setUpLayoutAlgorithmButton.removeActionListener(actionListener);
+            }
+        }
+        this.setUpLayoutAlgorithmButton = new JButton("Set up layout algorithm");
+        this.setUpLayoutAlgorithmButton.addActionListener(this::clickSetUpLayoutAlgorithmButton);
+
+        JComponentParameter setUpLayoutAlgorithmButtonParameter =
+                new JComponentParameter(this.setUpLayoutAlgorithmButton, "",
+                        "Click the button to change the parameters of the layout algorithm.");
+
+        BooleanParameter randomLayoutParameter = new BooleanParameter(this.randomTop,
+                "Random init on top",
+                "Do an random layout on the top (i.e. coarsest) coarsening level");
+
+        BooleanParameter removeBendsParameter = new BooleanParameter(this.removeBends,
+                "Remove edge bends",
+                "Remove all edge bends from the graph");
+
+        // needs to be a copy as the synchronized list "mergers" cannot be iterated over without a synchronized
+        // block
+        ArrayList<Merger> tmpMergers = new ArrayList<>(MultilevelFrameworkLayouter.mergers);
+        tmpMergers.sort(Comparator.comparing(Merger::getName));
+        // select the default or last selected merger
+        int mergerIndex = tmpMergers.stream()
+                .filter(m -> m.getName().equals(this.lastSelectedMerger))
+                .map(tmpMergers::indexOf).findAny().orElse(0);
+        JComponentParameter mergerPSP = ParameterizableSelectorParameter.getFromList(mergerIndex,
+                tmpMergers, this.selection, "Choose the merger",
+                "The merger is used to merge multiple nodes into one in order " +
+                        "to create the coarsening levels.");
+
+        // see above
+        ArrayList<Placer> tmpPlacers = new ArrayList<>(MultilevelFrameworkLayouter.placers);
+        tmpPlacers.sort(Comparator.comparing(Placer::getName));
+        // select the default or last selected placer
+        int placerIndex = tmpPlacers.stream()
+                .filter(p -> p.getName().equals(this.lastSelectedPlacer))
+                .map(tmpPlacers::indexOf).findAny().orElse(0);
+        JComponentParameter placerPSP = ParameterizableSelectorParameter.getFromList(placerIndex,
+                tmpPlacers, this.selection, "Choose the placer",
+                "The placer determines how the nodes contained within merged nodes are placed back into"
+                        + " the graph during the uncoarsening process.");
+
+        this.parameters = new Parameter[]{algorithmList, setUpLayoutAlgorithmButtonParameter,
+                randomLayoutParameter, removeBendsParameter, mergerPSP, placerPSP};
+
+        this.randomTopParameterIndex = ArrayUtils.indexOf(this.parameters, randomLayoutParameter);
+        this.removeBendsParameterIndex = ArrayUtils.indexOf(this.parameters, removeBendsParameter);
+        this.mergerPSPIndex = ArrayUtils.indexOf(this.parameters, mergerPSP);
+        this.placerPSPIndex = ArrayUtils.indexOf(this.parameters, placerPSP);
     }
 }
 
