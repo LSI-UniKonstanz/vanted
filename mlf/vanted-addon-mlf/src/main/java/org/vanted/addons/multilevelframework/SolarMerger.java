@@ -1,34 +1,70 @@
 package org.vanted.addons.multilevelframework;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
-import org.AttributeHelper;
-import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
+import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
+import org.vanted.addons.multilevelframework.sm_util.gui.Describable;
 
-import javax.help.Merge;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
+
 class SolarMerger implements Merger {
-    @Override
-    public Parameter[] getParameters() {
-        return new Parameter[0];
-    }
-
-    @Override
-    public void setParameters(Parameter[] parameters) {
-        // TODO: set parameters
-
-    }
-
+    private final static String MIN_NODES_NAME        = "Minimum number of nodes";
+    private final static String MAX_LEVEL_FACTOR_NAME = "Maximum level factor";
 
     // Variables containing the stopping criteria for the SolarMerger
     int minNodes = 20;
     int maxLevelFactor = 10;
 
+    private Parameter[] parameters = {
+            new IntegerParameter(minNodes, MIN_NODES_NAME,
+                    "The minimum number of nodes on a coarsening level. " +
+                    "If the number of nodes gets lower than this, the solar merger will stop."),
+            new IntegerParameter(maxLevelFactor, MAX_LEVEL_FACTOR_NAME,
+                    "Determines how many levels are maximally created. The maximum number of levels " +
+                            "is the number of nodes in the graph divided by this parameter."),
+    };
+
+
+    /**
+     * @see Merger#getParameters()
+     * @author Gordian
+     */
+    @Override
+    public Parameter[] getParameters() {
+        return this.parameters;
+    }
+
+    /**
+     * @see Merger#setParameters(Parameter[])
+     * @author Gordian
+     */
+    @Override
+    public void setParameters(Parameter[] parameters) {
+        for (Parameter parameter : parameters) {
+            switch (parameter.getName()) {
+                case MAX_LEVEL_FACTOR_NAME: {
+                    final int value = ((IntegerParameter) parameter).getInteger();
+                    validateNumber(value, 0, Integer.MAX_VALUE, MAX_LEVEL_FACTOR_NAME);
+                    this.maxLevelFactor = value;
+                    break;
+                }
+                case MIN_NODES_NAME: {
+                    final int value = ((IntegerParameter) parameter).getInteger();
+                    validateNumber(value, 0, Integer.MAX_VALUE, MIN_NODES_NAME);
+                    this.minNodes = value;
+                    break;
+                }
+                default:
+                    throw new IllegalStateException("Invalid parameter name passed to solar merger.");
+            }
+        }
+    }
 
     @Override
     public void buildCoarseningLevels(MultilevelGraph multilevelGraph) {
@@ -214,5 +250,25 @@ class SolarMerger implements Merger {
             }
         }
         return sunSet;
+    }
+
+    /**
+     * @see Describable#getName()
+     * @author Gordian
+     */
+    @Override
+    public String getName() {
+        return "Solar Merger";
+    }
+
+    /**
+     * @see Describable#getDescription()
+     * @author Gordian
+     */
+    @Override
+    public String getDescription() {
+        return "Merges nodes by partitioning the graph into \"solar systems\" and" +
+                " classifying each node as a sun, planet or moon. The solar system is then" +
+                " collapsed into a single merged node.";
     }
 }
