@@ -107,17 +107,18 @@ public enum ConnectedComponentsHelper {
      *
      * @param connectedComponents
      *      the connected components to be layouted.
+     * @param isUndoable whether this action should be undoable.
      *
      * @throws IllegalArgumentException if any fraction is negative.
      *
      * @see de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#layoutConnectedComponents(Graph)
-     * @see ConnectedComponentsHelper#layoutConnectedComponents(Set, double, double, double, double)
+     * @see ConnectedComponentsHelper#layoutConnectedComponents(Set, double, double, double, double, boolean)
      *
      * @author Jannik
      */
-    public static void layoutConnectedComponents(final Set<List<Node>> connectedComponents) {
+    public static void layoutConnectedComponents(final Set<List<Node>> connectedComponents, final boolean isUndoable) {
         ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents,
-                0.1, 0.1, 10, 10);
+                0.1, 0.1, 10, 10, isUndoable);
     }
 
     /**
@@ -146,6 +147,7 @@ public enum ConnectedComponentsHelper {
      *      Must be {@code >= 0}.
      * @param minMarginWidth the minimum width margin to be used for every component.
      * @param minMarginHeight the minimum height margin to be used for every component.
+     * @param isUndoable whether this action should be undoable.
      *
      * @throws IllegalArgumentException if any fraction is negative.
      *
@@ -156,7 +158,8 @@ public enum ConnectedComponentsHelper {
      */
     public static void layoutConnectedComponents(final Set<List<Node>> connectedComponents,
                                                  final double marginFractionWidth, final double marginFractionHeight,
-                                                 final double minMarginWidth, final double minMarginHeight) {
+                                                 final double minMarginWidth, final double minMarginHeight,
+                                                 final boolean isUndoable) {
         // #######################################################################################
         // preprocessing
 
@@ -263,8 +266,17 @@ public enum ConnectedComponentsHelper {
             }
         }
         // do move
-        GraphHelper.applyUndoableNodeAndBendPositionUpdate(
-                newNodePositions, newBendPositions, "Layout connected components");
+        if (isUndoable) {
+            GraphHelper.applyUndoableNodeAndBendPositionUpdate(
+                    newNodePositions, newBendPositions, "Layout connected components");
+        } else {
+            for (Map.Entry<Node, Vector2d> entry : newNodePositions.entrySet()) {
+                AttributeHelper.setPosition(entry.getKey(), entry.getValue());
+            }
+            for (Map.Entry<CoordinateAttribute, Vector2d> entry : newBendPositions.entrySet()) {
+                entry.getKey().setCoordinate(entry.getValue().x, entry.getValue().y);
+            }
+        }
     }
 
     /**

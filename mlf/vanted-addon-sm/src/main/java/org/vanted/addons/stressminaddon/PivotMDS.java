@@ -4,9 +4,14 @@ import org.Vector2d;
 import org.apache.commons.math.linear.RealMatrix;
 import org.apache.commons.math.linear.RealMatrixImpl;
 import org.graffiti.graph.Node;
+import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
 
 /**
  * A class that implements the Pivot Multidimensional Scaling algorithm
@@ -356,4 +361,56 @@ public class PivotMDS implements InitialPlacer {
         return c;
     }
 
+    /**
+     * Gets a list of {@link Parameter}s this {@link PivotMDS}
+     * provides.
+     *
+     * @return gets a list of Parameters this class provides.
+     * @author Jannik
+     * @see Algorithm#getParameters()
+     */
+    @Override
+    public Parameter[] getParameters() {
+        // TODO implement settings e.g. setting number of pivots
+        return new Parameter[] {
+        };
+    }
+
+    /**
+     * Provides a list of {@link Parameter}s that should be accepted by
+     * the {@link PivotMDS}.<br>
+     * This setter should only be called if the implementing class is not currently
+     * executing something else.
+     *
+     * @param parameters the parameters to be set.
+     * @author Jannik
+     * @see Algorithm#setParameters(Parameter[])
+     */
+    @Override
+    public void setParameters(Parameter[] parameters) {
+        // TODO implement settings e.g. setting number of pivots
+    }
+
+    /**
+     * @return the name of the this class.
+     *         This may be be used to represent this class to the user.
+     * @author Jannik
+     */
+    @Override
+    public String getName() {
+        return "PivotMDS";
+    }
+
+    /**
+     * @return the description of the this class.
+     *         This may be be used to explain the behaviour of this class to the user.
+     * @author Jannik
+     */
+    @Override
+    public String getDescription() {
+        return "<html>Performs PivotMDS as initial layout. This is in most cases slower than using<br>" +
+                "a random layout but creates a layout that results in less iterations being made<br>" +
+                " and thus a hopefully faster running time.<br>" +
+                "Running time <code>3*amountPivots*amountNodes</code>.</html>";
+    }
 }

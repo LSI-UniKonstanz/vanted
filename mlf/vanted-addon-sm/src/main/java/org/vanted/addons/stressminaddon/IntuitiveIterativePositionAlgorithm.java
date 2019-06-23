@@ -2,6 +2,8 @@ package org.vanted.addons.stressminaddon;
 
 import org.Vector2d;
 import org.graffiti.graph.Node;
+import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
 import java.util.ArrayList;
@@ -89,5 +91,57 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
         }
         // make the positions unmodifiable
         return Collections.unmodifiableList(newPositions);
+    }
+
+    /**
+     * Gets a list of {@link Parameter}s this {@link IntuitiveIterativePositionAlgorithm}
+     * provides.
+     *
+     * @return gets a list of Parameters this class provides.
+     * @author Jannik
+     * @see Algorithm#getParameters()
+     */
+    @Override
+    public Parameter[] getParameters() {
+        // TODO implement settings
+        return new Parameter[0];
+    }
+
+    /**
+     * Provides a list of {@link Parameter}s that should be accepted by
+     * the {@link IntuitiveIterativePositionAlgorithm}.<br>
+     * This setter should only be called if the {@link IntuitiveIterativePositionAlgorithm}
+     * not currently used by the top level algorithm.
+     *
+     * @param parameters the parameters to be set.
+     * @author Jannik
+     * @see Algorithm#setParameters(Parameter[])
+     */
+    @Override
+    public void setParameters(Parameter[] parameters) {
+        // TODO implement settings
+    }
+
+    /**
+     * @return the name of the this algorithm.
+     *         This may be be used to represent this class to the user.
+     * @author Jannik
+     */
+    @Override
+    public String getName() {
+        return "Intuitive Algorithm";
+    }
+
+    /**
+     * @return the description of the this algorithm.
+     *         This may be be used to explain the behaviour of this class to the user.
+     * @author Jannik
+     */
+    @Override
+    public String getDescription() {
+        return "<html>This algorithm uses the position of each node to “vote” for the<br>" +
+                "for the node of the current node i.e. nodes will be moved<br>" +
+                "to the weighted average of all other node positions.<br>" +
+                "Running time <code>amountNodes<sup>2</sup></code>.</html>";
     }
 }

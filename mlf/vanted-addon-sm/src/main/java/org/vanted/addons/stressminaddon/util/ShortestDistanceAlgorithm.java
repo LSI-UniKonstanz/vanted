@@ -110,25 +110,35 @@ public enum  ShortestDistanceAlgorithm {
      *
      * @param nodes the nodes to work with. The BFSs will not account for other nodes.
      * @param maxDepth the maximal depth to reach before terminating prematurely.
+     * @param multipleThreads whether to use multiple threads for execution.
      *
      * @return a NodeValueMatrix containing the results of all start BFSs.
      *
      * @author theo
      */
-    public static NodeValueMatrix calculateShortestPaths(final List<Node> nodes, final int maxDepth) {
+    public static NodeValueMatrix calculateShortestPaths(final List<Node> nodes, final int maxDepth, final boolean multipleThreads) {
 
         int numberOfNodes = nodes.size();
         NodeValueMatrix resultMatrix = new NodeValueMatrix(numberOfNodes);
         // create a new ThreadPool
-        ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        ExecutorService executor = null;
+        if (multipleThreads) {
+            executor = Executors.newFixedThreadPool(Math.min(Runtime.getRuntime().availableProcessors(), numberOfNodes));
+        }
         ArrayList<Callable<Object>> todo = new ArrayList<>(numberOfNodes);
         for (Node n : nodes) {
             todo.add(Executors.callable(new BFSRunnable(n, resultMatrix, maxDepth)));
         }
 
         try {
-            executor.invokeAll(todo);
-        } catch (InterruptedException e) {
+            if (multipleThreads) {
+                executor.invokeAll(todo);
+            } else {
+                for (Callable<Object> callable : todo) {
+                    callable.call();
+                }
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

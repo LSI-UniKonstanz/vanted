@@ -4,11 +4,10 @@ import org.Vector2d;
 import org.junit.Test;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
 import static data.TestGraphs.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Test the {@link IntuitiveIterativePositionAlgorithm}-class
