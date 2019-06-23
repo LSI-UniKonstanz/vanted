@@ -15,6 +15,7 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.vanted.addons.stressminaddon.util.ConnectedComponentsHelper;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
+import org.vanted.addons.stressminaddon.util.NullPlacer;
 import org.vanted.addons.stressminaddon.util.ShortestDistanceAlgorithm;
 import org.vanted.addons.stressminaddon.util.gui.EnableableNumberParameter;
 import org.vanted.addons.stressminaddon.util.gui.ParameterizableSelectorParameter;
@@ -104,6 +105,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
     private static final Boolean MULTIPLE_THREADS_DEFAULT = Boolean.TRUE;
     /** Whether the algorithm should use multiple threads. */
     private boolean multipleThreads = MULTIPLE_THREADS_DEFAULT;
+    /** MultiLevelFramework compatibility mode. */
+    private boolean compatibilityMLF = false;
 
     /**
      * Creates a new {@link StressMinimizationLayout} object.
@@ -120,7 +123,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
         return "<html>Performs the stress minimization layout on<br>" +
                 "the given graph.<br>" +
                 "A faster runtime (configurable below) may result<br>" +
-                "in a worse layout.";
+                "in a worse layout.</html>";
     }
 
     /**
@@ -183,7 +186,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             final Set<List<Node>> connectedComponents = ConnectedComponentsHelper.getConnectedComponents(pureNodes);
 
 
-            ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents, this.intermediateUndoable);
+            if (this.doAnimations) {
+                ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents, this.intermediateUndoable);
+            }
             System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Got connected components. (" + connectedComponents.size() + ")"));
 
             // TODO add random initial layout
@@ -306,8 +311,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             }
 
             ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents, this.intermediateUndoable);
-            // create only one undo
-            if (!this.intermediateUndoable) {
+            // create only one undo (or nothing in compatibility mode)
+            if (!compatibilityMLF && !this.intermediateUndoable) {
                 graph.getListenerManager().transactionStarted(this);
                 for (int idx = 0; idx < pureNodes.size(); idx++) {
                     Node node = pureNodes.get(idx);
@@ -342,7 +347,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
     public Parameter[] getParameters() {
 
         // initial placers
-        InitialPlacer[] initialPlacers = new InitialPlacer[] {new PivotMDS()};
+        InitialPlacer[] initialPlacers = new InitialPlacer[] {new PivotMDS(), new NullPlacer()};
         // iterative algorithms
         IterativePositionAlgorithm[] iterativeAlgorithms = new IterativePositionAlgorithm[] {new IntuitiveIterativePositionAlgorithm()};
 
@@ -483,6 +488,17 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
         // Threading
         this.backgroundTask = ((BooleanParameter) params[17]).getBoolean();
         this.multipleThreads = ((BooleanParameter) params[18]).getBoolean();
+
+        // MultiLevelFramework compatibility
+        if (graph.getBoolean("GRAPH_IS_MLF_COARSENING_LEVEL")) {
+            this.compatibilityMLF = true;
+            if (!graph.getBoolean("GRAPH_IS_MLF_COARSENING_TOP_LEVEL")) {
+                this.initialPlacer = new NullPlacer(); // we are not at top level
+            }
+            this.intermediateUndoable = false;
+            this.doAnimations = false;
+            this.backgroundTask = false;
+        }
     }
 
     /*
