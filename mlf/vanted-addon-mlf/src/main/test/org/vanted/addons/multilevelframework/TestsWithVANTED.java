@@ -1,6 +1,7 @@
 package org.vanted.addons.multilevelframework;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.graph_generation.WattsStrogatzGraphGenerator;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.CircleLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
@@ -16,12 +17,14 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
+import org.vanted.addons.multilevelframework.sm_util.ConnectedComponentsHelper;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -388,4 +391,33 @@ public class TestsWithVANTED {
         }, true);
     }
 
+
+
+//----------------------------------------------------RandomMerger------------------------------------------------------
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void testRandomMergerBigGraph() {
+//        Graph g = ErdosRenyiGraphGenerator.createGraph(1000, false, 1.0, true, false);
+        Graph g;
+        g = WattsStrogatzGraphGenerator.createGraph(1000, false, 10, 1);
+        // shouldn't happen very often if the probability is set to 1
+        while (MlfHelper.calculateConnectedComponentsOfSelection(new HashSet<>(g.getNodes())).size() > 1) {
+            System.err.println("Random graph contained more than one connected component");
+            g = WattsStrogatzGraphGenerator.createGraph(1000, false, 10, 1);
+        }
+        RandomMerger rM = new RandomMerger();
+        MultilevelGraph mlg = new MultilevelGraph(g);
+        rM.buildCoarseningLevels(mlg);
+        assertTrue(mlg.getNumberOfLevels() > 3);
+        while (mlg.getNumberOfLevels() > 1) {
+            assertTrue(mlg.isComplete());
+            CoarsenedGraph cg = mlg.popCoarseningLevel();
+            for (MergedNode mn : cg.getMergedNodes()) {
+                assertFalse(mn.getInnerNodes().isEmpty());
+            }
+        }
+    }
 }

@@ -17,12 +17,12 @@ import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
  */
 public class RandomMerger implements Merger {
 
-    private final static String COARSENING_FACTOR_NAME     = "Coarsening Factor";
-    private final static String MIN_LEVEL_NODE_NUM_NAME    = "Minimum number of nodes per level";
-    private final static String MAX_NAM_ITERATIONS_NAME    = "Maximum number of iterations";
-    private final static String USE_WEIGHTS_NAME           = "Use merged-node weights";
-    private final static String CONSIDER_EDGE_WEIGHTS_NAME = "Consider edge weights";
-    private final static String WEIGHT_ATTR_PATH_NAME      = "Weight attribute path";
+    final static String COARSENING_FACTOR_NAME     = "Coarsening Factor";
+    final static String MIN_LEVEL_NODE_NUM_NAME    = "Minimum number of nodes per level";
+    final static String MAX_NAM_ITERATIONS_NAME    = "Maximum number of iterations";
+    final static String USE_WEIGHTS_NAME           = "Use merged-node weights";
+    final static String CONSIDER_EDGE_WEIGHTS_NAME = "Consider edge weights";
+    final static String WEIGHT_ATTR_PATH_NAME      = "Weight attribute path";
 
     // Variables containing the parameter values
 
@@ -290,7 +290,6 @@ public class RandomMerger implements Merger {
                 mlg.addEdge(source, target);
             }
         }
-
     }
 }
 
