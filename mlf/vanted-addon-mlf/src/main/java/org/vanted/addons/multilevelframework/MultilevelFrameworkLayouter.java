@@ -40,7 +40,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     private final static String DEFAULT_MERGER = new RandomMerger().getName();
     private final static String COARSENING_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_LEVEL";
     private final static String COARSENING_TOP_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_TOP_LEVEL";
-    private final static String WORKING_ATTRIBUTE_PATH = "MLF_EXECUTING";
+    final static String WORKING_ATTRIBUTE_PATH = "MLF_EXECUTING";
     private JComboBox<String> algorithmListComboBox;
     private JButton setUpLayoutAlgorithmButton;
     private String lastSelectedAlgorithm = DEFAULT_ALGORITHM;
@@ -306,6 +306,14 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     }
 
     /**
+     * @return the currently registered {@link Merger}s as an unmodifiable {@link Collection}.
+     * @author Gordian
+     */
+    public static Collection<Merger> getMergers() {
+        return Collections.unmodifiableList(MultilevelFrameworkLayouter.mergers);
+    }
+
+    /**
      * Add a new {@link Placer} that will be available for the user to choose.
      * This method is meant to be called by other VANTED add-ons that seek to extend the MLF with new {@link Placer}s.
      * @param placer
@@ -317,6 +325,14 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         if (!MultilevelFrameworkLayouter.placers.contains(placer)) {
             MultilevelFrameworkLayouter.placers.add(placer);
         }
+    }
+
+    /**
+     * @return the currently registered {@link Placer}s as an unmodifiable {@link Collection}.
+     * @author Gordian
+     */
+    public static Collection<Placer> getPlacers() {
+        return Collections.unmodifiableList(MultilevelFrameworkLayouter.placers);
     }
 
     /**
@@ -348,7 +364,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      *      the status message.
      * @author Gordian
      */
-    private static String makeStatusMessage(int totalLevels, int level, List<?extends CoarsenedGraph> connectedComponents,
+    static String makeStatusMessage(int totalLevels, int level, List<?extends CoarsenedGraph> connectedComponents,
                                      int current, String graphName) {
         return "Laying out level "
                 + level
@@ -399,7 +415,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      *      the calculated progress
      * @author Gordian
      */
-    private static double calculateProgress(MultilevelGraph mlg, List<?extends CoarsenedGraph> connectedComponents,
+    static double calculateProgress(MultilevelGraph mlg, List<?extends CoarsenedGraph> connectedComponents,
                                      int currentIndex, int numberOfLevelsAtStart) {
         if (numberOfLevelsAtStart == 0 || connectedComponents.size() == 0) { return -1; }
         // calculate the progress as the percentage of nodes and connected components already processed

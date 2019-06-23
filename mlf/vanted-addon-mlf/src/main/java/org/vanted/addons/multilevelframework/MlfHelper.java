@@ -156,7 +156,7 @@ public enum MlfHelper {
             MainFrame.getInstance().showMessageDialog("The value for \"" + name + "\" is out of range. " +
                     "You passed in \"" + number + "\", but the value must be in the range (" + minValue + ", " +
                     maxValue + ").");
-            throw new IllegalStateException("Invalid number passed to random merger.");
+            throw new IllegalArgumentException("Invalid number passed to random merger.");
         }
     }
 }

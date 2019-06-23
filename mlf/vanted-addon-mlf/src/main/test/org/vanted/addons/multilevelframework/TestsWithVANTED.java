@@ -1,15 +1,19 @@
 package org.vanted.addons.multilevelframework;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.graph_generation.ErdosRenyiGraphGenerator;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.algorithms.graph_generation.WattsStrogatzGraphGenerator;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.CircleLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import org.AttributeHelper;
+import org.apache.xpath.operations.Mult;
+import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.*;
+import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 import org.junit.After;
@@ -17,16 +21,12 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
-import org.vanted.addons.multilevelframework.sm_util.ConnectedComponentsHelper;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -420,4 +420,224 @@ public class TestsWithVANTED {
             }
         }
     }
+
+
+
+//----------------------------------------------------MlfHelper------------------------------------------------------
+
+    /**
+     * @author Gordian
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void validateNumberFail() {
+        MlfHelper.validateNumber(100, 200, 300, "asdf");
+    }
+
+
+
+
+//----------------------------------------------------MultilevelFrameworkLayouter---------------------------------------
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void getDescription() {
+        assertTrue(new MultilevelFrameworkLayouter().getDescription().toLowerCase().contains("multilevel"));
+        assertTrue(new MultilevelFrameworkLayouter().getDescription().toLowerCase().contains("framework"));
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void reset() {
+        MultilevelFrameworkLayouter mfl = new MultilevelFrameworkLayouter();
+        Parameter[] before = mfl.getParameters();
+        mfl.setParameters(before);
+        mfl.reset();
+        assertNotSame(before, mfl.getParameters());
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void getName() {
+        MultilevelFrameworkLayouter mfl = new MultilevelFrameworkLayouter();
+        mfl.setParameters(mfl.getParameters());
+        assertTrue(mfl.getName().toLowerCase().contains("multilevel"));
+        assertTrue(mfl.getName().toLowerCase().contains("framework"));
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test(expected = PreconditionException.class)
+    public void checkFail() throws PreconditionException {
+        MultilevelFrameworkLayouter mlfl = new MultilevelFrameworkLayouter();
+        mlfl.attach(new AdjListGraph(), new Selection());
+        mlfl.check();
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test(expected = PreconditionException.class)
+    public void checkFail2() throws PreconditionException {
+        MultilevelFrameworkLayouter mlfl = new MultilevelFrameworkLayouter();
+        mlfl.attach(null, null);
+        mlfl.check();
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void executeMultilevelFrameworkLayouter() throws NoSuchFieldException, IllegalAccessException {
+        MultilevelFrameworkLayouter mfl = new MultilevelFrameworkLayouter();
+        Graph g = ErdosRenyiGraphGenerator.createGraph(1000, false, 0.1, true, true);
+        Field lastSelectedAlgorithm = MultilevelFrameworkLayouter.class.getDeclaredField("lastSelectedAlgorithm");
+        lastSelectedAlgorithm.setAccessible(true);
+        lastSelectedAlgorithm.set(mfl, "Null-Layout");
+        mfl.setParameters(mfl.getParameters());
+        mfl.attach(g, new Selection());
+        mfl.execute();
+        assertTrue(g.getBoolean(MultilevelFrameworkLayouter.WORKING_ATTRIBUTE_PATH));
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void setParameters() {
+        MultilevelFrameworkLayouter mfl = new MultilevelFrameworkLayouter();
+        Parameter[] parameters = mfl.getParameters();
+        boolean newValue = false;
+        for (Parameter parameter : parameters) {
+            String name = parameter.getName().toLowerCase();
+            if (name.contains("random") && name.contains("top")) {
+                newValue = ! ((BooleanParameter)parameter).getBoolean();
+                parameter.setValue(newValue);
+            }
+        }
+        mfl.setParameters(parameters);
+        for (Parameter parameter : mfl.getParameters()) {
+            String name = parameter.getName().toLowerCase();
+            if (name.contains("random") && name.contains("top")) {
+                assertSame(newValue, ((BooleanParameter)parameter).getBoolean());
+            }
+        }
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void getCategory() {
+        assertEquals("Layout", new MultilevelFrameworkLayouter().getCategory());
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void isLayoutAlgorithm() {
+        assertTrue(new MultilevelFrameworkLayouter().isLayoutAlgorithm());
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void activeForView() {
+        assertFalse(new MultilevelFrameworkLayouter().activeForView(null));
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void addMerger() {
+        Merger m = new Merger() {
+            @Override public Parameter[] getParameters() { return new Parameter[0]; }
+            @Override public void setParameters(Parameter[] parameters) { }
+            @Override public void buildCoarseningLevels(MultilevelGraph multilevelGraph) { }
+            @Override public String getName() { return "DummyMerger"; }
+            @Override public String getDescription() { return null; }
+        };
+        assertFalse(MultilevelFrameworkLayouter.getMergers().contains(m));
+        MultilevelFrameworkLayouter.addMerger(m);
+        assertTrue(MultilevelFrameworkLayouter.getMergers().contains(m));
+        Set<Merger> mergersBefore = new HashSet<>(MultilevelFrameworkLayouter.getMergers());
+        MultilevelFrameworkLayouter.addMerger(m); // add it again
+        Set<Merger> mergersAfter = new HashSet<>(MultilevelFrameworkLayouter.getMergers());
+        assertEquals(mergersAfter, mergersBefore);
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void addPlacer() {
+        Placer p = new Placer() {
+            @Override public Parameter[] getParameters() { return new Parameter[0]; }
+            @Override public void setParameters(Parameter[] parameters) { }
+            @Override public void reduceCoarseningLevel(MultilevelGraph multilevelGraph) { }
+            @Override public String getName() { return "DummyPlacer"; }
+            @Override public String getDescription() { return null; }
+        };
+        assertFalse(MultilevelFrameworkLayouter.getPlacers().contains(p));
+        MultilevelFrameworkLayouter.addPlacer(p);
+        assertTrue(MultilevelFrameworkLayouter.getPlacers().contains(p));
+        Set<Placer> placersBefore = new HashSet<>(MultilevelFrameworkLayouter.getPlacers());
+        MultilevelFrameworkLayouter.addPlacer(p); // add it again
+        Set<Placer> placersAfter = new HashSet<>(MultilevelFrameworkLayouter.getPlacers());
+        assertEquals(placersAfter, placersBefore);
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void calculateProgress() {
+        AdjListGraph g = new AdjListGraph();
+        Node n1 = g.addNode();
+        Node n2 = g.addNode();
+        Node n3 = g.addNode();
+        Node isolated = g.addNode();
+        for (Node n : g.getNodes()) { AttributeHelper.setPosition(n, 0, 0); }
+        g.addEdge(n1, n2, false);
+        g.addEdge(n2, n3, false);
+        g.addEdge(n3, n1, false);
+        MultilevelGraph mlg = new MultilevelGraph(g);
+        List<?extends CoarsenedGraph> con = MlfHelper.calculateConnectedComponentsOfSelection(new HashSet<>(g.getNodes()));
+        assertEquals(0.0, MultilevelFrameworkLayouter.calculateProgress(mlg, con, 0, 1), 0.001);
+        assertEquals(50.0, MultilevelFrameworkLayouter.calculateProgress(mlg, con, 1, 2), 0.001);
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void makeStatusMessage() {
+        int totalLevels = 123;
+        int level = 42;
+        AdjListGraph g = new AdjListGraph();
+        g.addNode();
+        g.addNode();
+        g.addNode();
+        for (Node n : g.getNodes()) { AttributeHelper.setPosition(n, 0, 0); }
+        List<?extends CoarsenedGraph> con = MlfHelper.calculateConnectedComponentsOfSelection(new HashSet<>(g.getNodes()));
+        int current = 1;
+        String graph = "i use arch btw";
+        String msg = MultilevelFrameworkLayouter.makeStatusMessage(totalLevels, level, con, current, graph);
+        assertTrue(msg.contains(Integer.toString(totalLevels)));
+        assertTrue(msg.contains(Integer.toString(level)));
+        assertTrue(msg.contains(Integer.toString(con.size())));
+        assertTrue(msg.contains(Integer.toString(current)));
+        assertTrue(msg.contains(graph));
+    }
+
+
 }
