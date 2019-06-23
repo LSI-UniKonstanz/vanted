@@ -20,7 +20,7 @@ import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
 public class RandomPlacer implements Placer {
 
     private double maxPlaceDistance = 50;
-    private final static String MAX_PLACE_DIST_NAME = "Maximum place distance";
+    final static String MAX_PLACE_DIST_NAME = "Maximum place distance";
 
     /**
      * Array of parameters that will be displayed in the GUI.
