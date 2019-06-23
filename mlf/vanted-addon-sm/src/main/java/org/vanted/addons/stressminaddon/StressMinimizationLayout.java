@@ -117,7 +117,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
      */
     @Override
     public String getDescription() {
-        return ""; // TODO
+        return "Performs the stress minimization layout on the given graph. A faster runtime (configurable below)" +
+                " may result in a worse layout.";
     }
 
     /**
