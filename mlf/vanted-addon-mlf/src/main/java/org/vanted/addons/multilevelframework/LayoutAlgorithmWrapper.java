@@ -153,7 +153,9 @@ public class LayoutAlgorithmWrapper {
                 // this fixes IndexOutOfBoundsExceptions that occur when the levels are displayed
                 // and seems to work more reliably otherwise as well
                 if (this.algorithm instanceof BlockingForceDirected || this.algorithm instanceof PatternSpringembedder) {
-                    Thread.sleep(1000);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ignored) {}
                 }
                 return;
             } catch (Exception e) {

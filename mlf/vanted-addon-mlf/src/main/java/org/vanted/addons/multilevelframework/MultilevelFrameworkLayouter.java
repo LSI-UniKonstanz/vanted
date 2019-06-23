@@ -268,7 +268,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      *      The {@link Graph} to pass along.
      * @author Gordian
      */
-    private static void display(Graph g) {
+    static void display(Graph g) {
         try {
             SwingUtilities.invokeAndWait(() -> GraphHelper.diplayGraph(g));
         } catch (InterruptedException | InvocationTargetException ignored) { }
