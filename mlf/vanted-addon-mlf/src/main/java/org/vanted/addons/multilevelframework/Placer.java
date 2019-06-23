@@ -1,15 +1,18 @@
 package org.vanted.addons.multilevelframework;
 
 import org.graffiti.plugin.parameter.Parameter;
+import org.vanted.addons.multilevelframework.sm_util.gui.Describable;
+import org.vanted.addons.multilevelframework.sm_util.gui.Parameterizable;
 
 /**
  * Deconstructs coarsening levels.
  * @see MultilevelGraph
  */
-public interface Placer {
+public interface Placer extends Parameterizable, Describable {
     /**
      * Settings (parameters) for the {@link Placer}.
      * @return an array of {@link Parameter}s
+     * @see Parameterizable#getParameters()
      */
     Parameter[] getParameters();
 
@@ -17,6 +20,7 @@ public interface Placer {
      * Called by the Multilevel Framework when the user updates the parameters.
      * @param parameters
      *     The updated {@link Parameter}.
+     * @see Parameterizable#setParameters(Parameter[])
      */
     void setParameters(Parameter[] parameters);
 
