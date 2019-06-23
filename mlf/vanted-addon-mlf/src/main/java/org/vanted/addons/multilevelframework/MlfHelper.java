@@ -1,6 +1,7 @@
 package org.vanted.addons.multilevelframework;
 
 import org.graffiti.attributes.*;
+import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
 import org.graffiti.selection.Selection;
@@ -136,5 +137,26 @@ public enum MlfHelper {
             return ((LongAttribute) a).getLong();
         }
         return defaultValue;
+    }
+
+    /**
+     * Check whether a number is finite and in range. Display an error message if it is not.
+     * @param number
+     *      The number to check.
+     * @param minValue
+     *      The (exclusive) minimum value.
+     * @param maxValue
+     *      The (exclusive) maximum value.
+     * @param name
+     *      The name of the corresponding parameter.
+     * @author Gordian
+     */
+    public static void validateNumber(double number, double minValue, double maxValue, String name) {
+        if (!(number > minValue && number < maxValue && Double.isFinite(number))) {
+            MainFrame.getInstance().showMessageDialog("The value for \"" + name + "\" is out of range. " +
+                    "You passed in \"" + number + "\", but the value must be in the range (" + minValue + ", " +
+                    maxValue + ").");
+            throw new IllegalArgumentException("Invalid number passed to random merger.");
+        }
     }
 }

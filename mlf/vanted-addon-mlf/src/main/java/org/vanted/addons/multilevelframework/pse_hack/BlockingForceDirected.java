@@ -25,10 +25,7 @@ import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
 import org.graffiti.graphics.CoordinateAttribute;
-import org.graffiti.plugin.algorithm.Category;
-import org.graffiti.plugin.algorithm.PreconditionException;
-import org.graffiti.plugin.algorithm.ThreadSafeAlgorithm;
-import org.graffiti.plugin.algorithm.ThreadSafeOptions;
+import org.graffiti.plugin.algorithm.*;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugins.views.defaults.DrawMode;
@@ -297,7 +294,7 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
         useClusterInfo.setOpaque(false);
         finishToTop.setOpaque(false);
         borderForce.setOpaque(false);
-        randomInit.setOpaque(false);
+//        randomInit.setOpaque(false);
         removeOverlapping.setOpaque(false);
 
         attributeSelection.setOpaque(false);
@@ -393,7 +390,7 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
 
         FolderPanel other = new FolderPanel("Options, Post/Pre-Processing", true, true, false, null);
         other.addGuiComponentRow(null, borderForce, false, 2);
-        other.addGuiComponentRow(null, randomInit, false, 2);
+//        other.addGuiComponentRow(null, randomInit, false, 2);
 
         if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH)) {
 
@@ -1181,15 +1178,6 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
         // });
         // jc.add(useSelection);
 
-        JCheckBox randomInit = new JCheckBox("Init: Random Node Positions", options.doRandomInit);
-        randomInit.setToolTipText("<html>If selected, the graph will have a random layout applied<br>"
-                + "before executing the spring embedder layouter");
-        randomInit.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                options.doRandomInit = ((JCheckBox) e.getSource()).isSelected();
-            }
-        });
-
         JCheckBox removeOverlapping = new JCheckBox("Finish: Remove Node Overlaps", options.doFinishRemoveOverlapp);
         removeOverlapping.setToolTipText("If selected, the final layout will be modified to remove any node overlaps");
         removeOverlapping.addActionListener(new ActionListener() {
@@ -1207,54 +1195,6 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
             }
         });
 
-        // useIndepClusterLayout.setSelected(options.getBval(
-        // myOp.BvalIndexDoIndividualClusterLayoutIndex, false));
-        // useIndepClusterLayout.setText("Do individual Cluster Layout");
-        // useIndepClusterLayout.addActionListener(new ActionListener() {
-        // public void actionPerformed(ActionEvent e) {
-        // boolean newVal = ((JCheckBox) e.getSource()).isSelected();
-        // options.setBval(myOp.BvalIndexDoIndividualClusterLayoutIndex,
-        // newVal);
-        // options.setBval(myOp.BvalIndexDoClusterLayoutIndex, !newVal);
-        // if (newVal)
-        // useClusterInfo.setSelected(!useIndepClusterLayout.isSelected());
-        // }
-        // });
-        // jc.add(useIndepClusterLayout, "1,21");
-
-        // /////////////////////////////
-        // double threadBorder = 2;
-        // double[][] threadSize = {
-        // { threadBorder, TableLayout.PREFERRED, TableLayoutConstants.FILL,
-        // threadBorder },
-        // // Columns
-        // { threadBorder, TableLayout.PREFERRED, threadBorder } }; // Rows
-        // JPanel componentForThreadSetting = new JPanel();
-        // componentForThreadSetting.setLayout(new TableLayout(threadSize));
-
-        // JLabel threadDesc = new JLabel("Thread-Count:");
-
-        // JSpinner maxThreads = new JSpinner();
-        // maxThreads.addChangeListener(new ChangeListener() {
-        //
-        // public void stateChanged(ChangeEvent e) {
-        // try {
-        // options.maxThreads = ((Integer) ((JSpinner) e.getSource())
-        // .getValue()).intValue();
-        // if (options.maxThreads < 0)
-        // options.maxThreads = 0;
-        // if (options.maxThreads > maxThreadCount)
-        // options.maxThreads = maxThreadCount;
-        // } finally {
-        // ((JSpinner) e.getSource()).setValue(Integer.valueOf(
-        // options.maxThreads));
-        // }
-        // }
-        // });
-        // componentForThreadSetting.add(threadDesc, "1,1");
-        // componentForThreadSetting.add(maxThreads, "2,1");
-        // componentForThreadSetting.validate();
-        // jc.add(componentForThreadSetting, "1,21");
 
         sliderLength.setValue(100);
         // sliderStiffnes.setValue(10);
@@ -1263,7 +1203,7 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
 
         addGUIelements(options, jc, attributeSelection, edgeWeight, labelSliderLength, sliderLength, sliderEnergyHor,
                 sliderEnergyVert, sliderMultiplyRepulsiveClusters, sliderMultiplyRepulsiveSubgraphs, stiffnessDesc,
-                sliderStiffnes, useClusterInfo, sliderClusterForce, tempSlider, finishToTop, borderForce, randomInit,
+                sliderStiffnes, useClusterInfo, sliderClusterForce, tempSlider, finishToTop, borderForce, null,
                 removeOverlapping);
 
         jc.validate();
@@ -1320,13 +1260,6 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
 
         MainFrame.showMessage("Force Directed Layout: Init", MessageType.PERMANENT_INFO);
 
-        if (options.doRandomInit) {
-            MainFrame.showMessage("Force Directed Layout: Init Random Positions", MessageType.PERMANENT_INFO);
-            RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
-            rla.attach(options.getGraphInstance(), options.getSelection());
-            rla.execute();
-        }
-
         if (options.doCopyPatternLayout) {
             MainFrame.showMessage("Force Directed Layout: Init apply Search-Graph Layout", MessageType.PERMANENT_INFO);
             GravistoService.getInstance().runPlugin(new CopyPatternLayoutAlgorithm().getName(),
@@ -1353,10 +1286,10 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
 
         nodeCombination2skewValue.clear();
 
-        final HashMap<CoordinateAttribute, Vector2d> oldPositions = new HashMap<CoordinateAttribute, Vector2d>();
-        final HashMap<CoordinateAttribute, Vector2d> newPositions = new HashMap<CoordinateAttribute, Vector2d>();
-
-        GraphHelper.enumerateNodePositions(options.getGraphInstance(), oldPositions);
+//        final HashMap<CoordinateAttribute, Vector2d> oldPositions = new HashMap<CoordinateAttribute, Vector2d>();
+//        final HashMap<CoordinateAttribute, Vector2d> newPositions = new HashMap<CoordinateAttribute, Vector2d>();
+//
+//        GraphHelper.enumerateNodePositions(options.getGraphInstance(), oldPositions);
 
         int n = options.getGraphInstance().getNumberOfNodes();
 
@@ -1389,63 +1322,13 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
 
             loopTime = System.currentTimeMillis();
 
-            if (threadCount != executorTC) {
-                if (run.shutdownNow().size() > 0) {
-                    System.err.println("Internal Error: SpringEmbedder: stopped threads!");
-                }
-                try {
-                    run.awaitTermination(1, TimeUnit.SECONDS);
-                } catch (InterruptedException e) {
-                    ErrorMsg.addErrorMessage(e);
-                }
-                run = Executors.newFixedThreadPool(threadCount);
-                executorTC = threadCount;
-            }
-
             moveRun = doSpringEmbedder(options, runValue, n, threadCount, run);
 
             long loopTime2 = System.currentTimeMillis() - loopTime;
 
-            if (calibrate) {
-                if (threadCount > threadMaxCount)
-                    threadCount = threadMinCount;
-                if (!threadCount2speed.containsKey(threadCount))
-                    threadCount2speed.put(threadCount, new ArrayList<Long>());
-                threadCount2speed.get(threadCount).add(loopTime2);
-                if (threadCount == threadMaxCount && threadCount2speed.get(threadCount).size() == maxCalRun) {
-                    calibrate = false;
-                    int bestThreadCount = 1;
-                    double bestThreadTiming = Double.MAX_VALUE;
-                    for (int test = threadMinCount; test <= threadMaxCount; test++) {
-                        long sumTime = 0;
-                        for (long l : threadCount2speed.get(test))
-                            sumTime += l;
-                        long speed = sumTime / threadCount2speed.get(test).size();
-                        if (test == 1)
-                            speed1 = speed;
-                        System.out.println("Average loop time for " + test + " threads is " + speed + " ms");
-                        if (speed < bestThreadTiming) {
-                            bestThreadTiming = speed;
-                            bestThreadCount = test;
-                        }
-                    }
-                    System.out.println("Best thread count: " + bestThreadCount + " (average loop speed "
-                            + (long) bestThreadTiming + " ms)");
-                    System.out.println("Speed-up: " + AttributeHelper.formatNumber(speed1 / bestThreadTiming, "#.#"));
-                    threadCount = bestThreadCount;
-                } else {
-                    threadCount++;
-                }
-            }
-
             options.temperature_max_move *= options.temp_alpha;
-            if (options.redraw) {
-                propagateCachedGraphPositions(options);
-            }
 
-            if (!options.autoRedraw) {
-                options.redraw = false;
-            }
+            options.redraw = false;
 
             cachedClusterForce = options.getDval(myOp.DvalIndexSliderClusterForce, myOp.InitClusterForce);
 
@@ -1484,6 +1367,9 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
         }
         try {
             run.awaitTermination(1, TimeUnit.SECONDS);
+            if (!run.isTerminated()) {
+                MainFrame.getInstance().showMessageDialog("Couldn't terminate thread pool");
+            }
         } catch (InterruptedException e) {
             ErrorMsg.addErrorMessage(e);
         }
@@ -1500,50 +1386,56 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
                 MessageType.PERMANENT_INFO);
 
         EditorSession es = GravistoService.getInstance().getMainFrame().getActiveEditorSession();
-        if (es.getActiveView() instanceof GraffitiView)
-            ((GraffitiView) es.getActiveView()).setDrawMode(DrawMode.NORMAL);
+//        if (es.getActiveView() instanceof GraffitiView)
+//            ((GraffitiView) es.getActiveView()).setDrawMode(DrawMode.NORMAL);
 
-        if (!SwingUtilities.isEventDispatchThread()) {
-            try {
-                SwingUtilities.invokeAndWait(() -> {
-                    propagateCachedGraphPositions(options);
-                    GraphHelper.enumerateNodePositions(options.getGraphInstance(), newPositions);
-                    GraphHelper.postUndoableChanges(options.getGraphInstance(), oldPositions, newPositions, getName());
 
-                    if (options.doFinishRemoveOverlapp) {
-                        // int enlDir = getEnlargeDirectionFromNodesSize(options.nodeArray);
-                        MainFrame.showMessage("Remove node overlapps", MessageType.PERMANENT_INFO);
-                        GravistoService.getInstance().runAlgorithm(new NoOverlappLayoutAlgorithmAS(5, 5),
-                                options.getGraphInstance(), options.getSelection(), getActionEvent());
-                    }
-                    if (options.doFinishMoveToTop)
-                        MainFrame.showMessage("Move Network to Top-Left", MessageType.PERMANENT_INFO);
-                    GravistoService.getInstance().runAlgorithm(new CenterLayouterAlgorithm(), options.getGraphInstance(),
-                            new Selection(""), getActionEvent());
-                    MainFrame.showMessage("Spring Embedder - Finished (main layout loop took " + timeDesc + ")",
-                            MessageType.INFO, 3000);
-                });
-            } catch (InterruptedException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        } else {
+//        if (!SwingUtilities.isEventDispatchThread()) {
+//            try {
+//                SwingUtilities.invokeAndWait(() -> {
+//                    propagateCachedGraphPositions(options);
+//                    GraphHelper.enumerateNodePositions(options.getGraphInstance(), newPositions);
+//                    GraphHelper.postUndoableChanges(options.getGraphInstance(), oldPositions, newPositions, getName());
+//
+//                    if (options.doFinishRemoveOverlapp) {
+//                        // int enlDir = getEnlargeDirectionFromNodesSize(options.nodeArray);
+//                        MainFrame.showMessage("Remove node overlapps", MessageType.PERMANENT_INFO);
+//                        GravistoService.getInstance().runAlgorithm(new NoOverlappLayoutAlgorithmAS(5, 5),
+//                                options.getGraphInstance(), options.getSelection(), getActionEvent());
+//                    }
+//                    if (options.doFinishMoveToTop)
+//                        MainFrame.showMessage("Move Network to Top-Left", MessageType.PERMANENT_INFO);
+//                    GravistoService.getInstance().runAlgorithm(new CenterLayouterAlgorithm(), options.getGraphInstance(),
+//                            new Selection(""), getActionEvent());
+//                    MainFrame.showMessage("Spring Embedder - Finished (main layout loop took " + timeDesc + ")",
+//                            MessageType.INFO, 3000);
+//                });
+//            } catch (InterruptedException | InvocationTargetException e) {
+//                e.printStackTrace();
+//            }
+//        } else {
             propagateCachedGraphPositions(options);
-            GraphHelper.enumerateNodePositions(options.getGraphInstance(), newPositions);
-            GraphHelper.postUndoableChanges(options.getGraphInstance(), oldPositions, newPositions, getName());
+//            GraphHelper.enumerateNodePositions(options.getGraphInstance(), newPositions);
+//            GraphHelper.postUndoableChanges(options.getGraphInstance(), oldPositions, newPositions, getName());
 
             if (options.doFinishRemoveOverlapp) {
                 // int enlDir = getEnlargeDirectionFromNodesSize(options.nodeArray);
-                MainFrame.showMessage("Remove node overlapps", MessageType.PERMANENT_INFO);
-                GravistoService.getInstance().runAlgorithm(new NoOverlappLayoutAlgorithmAS(5, 5),
-                        options.getGraphInstance(), options.getSelection(), getActionEvent());
+                System.out.println("Remove node overlaps");
+                Algorithm a = new NoOverlappLayoutAlgorithmAS(5, 5);
+                a.setActionEvent(getActionEvent());
+                a.attach(options.getGraphInstance(), options.getSelection());
+                a.execute();
             }
-            if (options.doFinishMoveToTop)
-                MainFrame.showMessage("Move Network to Top-Left", MessageType.PERMANENT_INFO);
-            GravistoService.getInstance().runAlgorithm(new CenterLayouterAlgorithm(), options.getGraphInstance(),
-                    new Selection(""), getActionEvent());
+            if (options.doFinishMoveToTop) {
+                System.out.println("Move Network to Top-Left");
+                Algorithm a = new CenterLayouterAlgorithm();
+                a.attach(options.getGraphInstance(), new Selection(""));
+                a.setActionEvent(getActionEvent());
+                a.execute();
+            }
             MainFrame.showMessage("Spring Embedder - Finished (main layout loop took " + timeDesc + ")",
                     MessageType.INFO, 3000);
-        }
+//        }
 
         options.setAbortWanted(false);
 
@@ -1585,9 +1477,7 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
             } else {
                 propagatePositions(options);
             }
-        } catch (InterruptedException e) {
-            ErrorMsg.addErrorMessage(e);
-        } catch (InvocationTargetException e) {
+        } catch (InterruptedException | InvocationTargetException e) {
             ErrorMsg.addErrorMessage(e);
         }
     }
