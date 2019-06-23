@@ -294,7 +294,7 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
         useClusterInfo.setOpaque(false);
         finishToTop.setOpaque(false);
         borderForce.setOpaque(false);
-        randomInit.setOpaque(false);
+//        randomInit.setOpaque(false);
         removeOverlapping.setOpaque(false);
 
         attributeSelection.setOpaque(false);
@@ -390,7 +390,7 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
 
         FolderPanel other = new FolderPanel("Options, Post/Pre-Processing", true, true, false, null);
         other.addGuiComponentRow(null, borderForce, false, 2);
-        other.addGuiComponentRow(null, randomInit, false, 2);
+//        other.addGuiComponentRow(null, randomInit, false, 2);
 
         if (ReleaseInfo.getIsAllowedFeature(FeatureSet.TAB_PATTERNSEARCH)) {
 
@@ -1178,15 +1178,6 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
         // });
         // jc.add(useSelection);
 
-        JCheckBox randomInit = new JCheckBox("Init: Random Node Positions", options.doRandomInit);
-        randomInit.setToolTipText("<html>If selected, the graph will have a random layout applied<br>"
-                + "before executing the spring embedder layouter");
-        randomInit.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                options.doRandomInit = ((JCheckBox) e.getSource()).isSelected();
-            }
-        });
-
         JCheckBox removeOverlapping = new JCheckBox("Finish: Remove Node Overlaps", options.doFinishRemoveOverlapp);
         removeOverlapping.setToolTipText("If selected, the final layout will be modified to remove any node overlaps");
         removeOverlapping.addActionListener(new ActionListener() {
@@ -1204,54 +1195,6 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
             }
         });
 
-        // useIndepClusterLayout.setSelected(options.getBval(
-        // myOp.BvalIndexDoIndividualClusterLayoutIndex, false));
-        // useIndepClusterLayout.setText("Do individual Cluster Layout");
-        // useIndepClusterLayout.addActionListener(new ActionListener() {
-        // public void actionPerformed(ActionEvent e) {
-        // boolean newVal = ((JCheckBox) e.getSource()).isSelected();
-        // options.setBval(myOp.BvalIndexDoIndividualClusterLayoutIndex,
-        // newVal);
-        // options.setBval(myOp.BvalIndexDoClusterLayoutIndex, !newVal);
-        // if (newVal)
-        // useClusterInfo.setSelected(!useIndepClusterLayout.isSelected());
-        // }
-        // });
-        // jc.add(useIndepClusterLayout, "1,21");
-
-        // /////////////////////////////
-        // double threadBorder = 2;
-        // double[][] threadSize = {
-        // { threadBorder, TableLayout.PREFERRED, TableLayoutConstants.FILL,
-        // threadBorder },
-        // // Columns
-        // { threadBorder, TableLayout.PREFERRED, threadBorder } }; // Rows
-        // JPanel componentForThreadSetting = new JPanel();
-        // componentForThreadSetting.setLayout(new TableLayout(threadSize));
-
-        // JLabel threadDesc = new JLabel("Thread-Count:");
-
-        // JSpinner maxThreads = new JSpinner();
-        // maxThreads.addChangeListener(new ChangeListener() {
-        //
-        // public void stateChanged(ChangeEvent e) {
-        // try {
-        // options.maxThreads = ((Integer) ((JSpinner) e.getSource())
-        // .getValue()).intValue();
-        // if (options.maxThreads < 0)
-        // options.maxThreads = 0;
-        // if (options.maxThreads > maxThreadCount)
-        // options.maxThreads = maxThreadCount;
-        // } finally {
-        // ((JSpinner) e.getSource()).setValue(Integer.valueOf(
-        // options.maxThreads));
-        // }
-        // }
-        // });
-        // componentForThreadSetting.add(threadDesc, "1,1");
-        // componentForThreadSetting.add(maxThreads, "2,1");
-        // componentForThreadSetting.validate();
-        // jc.add(componentForThreadSetting, "1,21");
 
         sliderLength.setValue(100);
         // sliderStiffnes.setValue(10);
@@ -1260,7 +1203,7 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
 
         addGUIelements(options, jc, attributeSelection, edgeWeight, labelSliderLength, sliderLength, sliderEnergyHor,
                 sliderEnergyVert, sliderMultiplyRepulsiveClusters, sliderMultiplyRepulsiveSubgraphs, stiffnessDesc,
-                sliderStiffnes, useClusterInfo, sliderClusterForce, tempSlider, finishToTop, borderForce, randomInit,
+                sliderStiffnes, useClusterInfo, sliderClusterForce, tempSlider, finishToTop, borderForce, null,
                 removeOverlapping);
 
         jc.validate();
@@ -1316,13 +1259,6 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
         // }
 
         MainFrame.showMessage("Force Directed Layout: Init", MessageType.PERMANENT_INFO);
-
-        if (options.doRandomInit) {
-            MainFrame.showMessage("Force Directed Layout: Init Random Positions", MessageType.PERMANENT_INFO);
-            RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
-            rla.attach(options.getGraphInstance(), options.getSelection());
-            rla.execute();
-        }
 
         if (options.doCopyPatternLayout) {
             MainFrame.showMessage("Force Directed Layout: Init apply Search-Graph Layout", MessageType.PERMANENT_INFO);
@@ -1385,19 +1321,6 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
             runValue++;
 
             loopTime = System.currentTimeMillis();
-
-            if (threadCount != executorTC) {
-                if (run.shutdownNow().size() > 0) {
-                    System.err.println("Internal Error: SpringEmbedder: stopped threads!");
-                }
-                try {
-                    run.awaitTermination(1, TimeUnit.SECONDS);
-                } catch (InterruptedException e) {
-                    ErrorMsg.addErrorMessage(e);
-                }
-                run = Executors.newFixedThreadPool(threadCount);
-                executorTC = threadCount;
-            }
 
             moveRun = doSpringEmbedder(options, runValue, n, threadCount, run);
 
@@ -1554,9 +1477,7 @@ public class BlockingForceDirected extends ThreadSafeAlgorithm
             } else {
                 propagatePositions(options);
             }
-        } catch (InterruptedException e) {
-            ErrorMsg.addErrorMessage(e);
-        } catch (InvocationTargetException e) {
+        } catch (InterruptedException | InvocationTargetException e) {
             ErrorMsg.addErrorMessage(e);
         }
     }
