@@ -16,7 +16,8 @@ import org.graffiti.plugin.view.View;
 import org.vanted.addons.stressminaddon.util.ConnectedComponentsHelper;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 import org.vanted.addons.stressminaddon.util.ShortestDistanceAlgorithm;
-import org.vanted.addons.stressminaddon.util.gui.*;
+import org.vanted.addons.stressminaddon.util.gui.EnableableNumberParameter;
+import org.vanted.addons.stressminaddon.util.gui.ParameterizableSelectorParameter;
 
 import javax.swing.*;
 import java.util.*;
