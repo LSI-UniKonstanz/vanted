@@ -1,5 +1,6 @@
 package org.vanted.addons.multilevelframework;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
 import de.ipk_gatersleben.ag_nw.graffiti.services.HandlesAlgorithmData;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
@@ -149,6 +150,11 @@ public class LayoutAlgorithmWrapper {
                     this.getThreadSafeGUITimerStarted = true;
                 }
                 ((ThreadSafeAlgorithm) this.algorithm).executeThreadSafe(this.threadSafeOptions);
+                // this fixes IndexOutOfBoundsExceptions that occur when the levels are displayed
+                // and seems to work more reliably otherwise as well
+                if (this.algorithm instanceof BlockingForceDirected || this.algorithm instanceof PatternSpringembedder) {
+                    Thread.sleep(1000);
+                }
                 return;
             } catch (Exception e) {
                 this.threadSafeOptions = null;
