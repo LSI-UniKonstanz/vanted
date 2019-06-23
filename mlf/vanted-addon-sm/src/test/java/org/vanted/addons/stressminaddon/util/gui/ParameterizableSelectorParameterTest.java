@@ -229,16 +229,24 @@ public class ParameterizableSelectorParameterTest {
         field.set(psp, false);
         box.setSelectedIndex(1);
 
-        int activeWindows = Window.getWindows().length;
+        Set<Window> oldWindows = new HashSet<>(Arrays.asList(Window.getWindows()));
+        int activeWindows = oldWindows.size();
 
         assertTrue("Button enabled", button.isEnabled());
         Thread t = new Thread(button::doClick);
         t.start();
         Thread.sleep(100);
         Window[] windows = Window.getWindows();
+        JDialog popUp = null;
+        for (Window window : windows) {
+            if (window instanceof JDialog && !oldWindows.contains(window)) {
+                popUp = (JDialog) window;
+                break;
+            }
+        }
+        assertNotNull(popUp);
         assertEquals("Window opened", activeWindows+1, windows.length);
-        ((JButton)((JPanel)((JOptionPane)((JDialog)
-                windows[1]).getContentPane().getComponent(0)).getComponent(1)).getComponent(0))
+        ((JButton)((JPanel)((JOptionPane)popUp.getContentPane().getComponent(0)).getComponent(1)).getComponent(0))
                 .doClick(); // click on okay button to close
 
         // check no window opened
