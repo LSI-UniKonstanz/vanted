@@ -123,21 +123,18 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	public Parameter[] getParameters() {
 		List<Parameter> params = new ArrayList<>();
 
-		params.add(new IntegerParameter(
+		params.add(new SliderParameter(
 				alpha,
-				0,
-				2,
 				ALPHA_PARAMETER_NAME,
-				"Determines how important correct distancing of nodes is that are far away to each other in an itteration step. High values mean placing of far away nodes is less important."
-				));
+				"Determines how important correct distancing of nodes is that are far away to each other in an itteration step. High values mean placing of far away nodes is less important.",
+				0,2));
 
-		params.add(new DoubleParameter(
-				-4.0,
-				Double.NEGATIVE_INFINITY,
-				0.0,
+		//MAKE STUFF HERE 
+		params.add(new SliderParameter(
+				-4,
 				STRESS_CHANGE_EPSILON_PARAMETER_NAME,
-				"Change in stress of succeeding layouts termination criterion. Low values will give better layouts, but computation will consume more time."
-				));
+				"Change in stress of succeeding layouts termination criterion. Low values will give better layouts, but computation will consume more time.",
+				-8, -1, false, true));
 
 		params.add(new DoubleParameter(
 				minimumNodeMovementThreshold,
@@ -186,6 +183,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				break;
 			case STRESS_CHANGE_EPSILON_PARAMETER_NAME:
 				this.stressChangeEpsilon = (Double) p.getValue();
+				System.out.println("Epsilon = " + p.getValue());
 				// TODO: parameter currently not working
 				this.stressChangeEpsilon = Math.pow(10, (Double) p.getValue());
 				break;
