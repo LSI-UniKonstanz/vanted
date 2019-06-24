@@ -14,7 +14,7 @@ public class StressMinimizationAddon extends AddonAdapter {
 
 	@Override
 	protected void initializeAddon() {
-		valueEditComponents.put(EpsilonParameter.class, EpsilonComponent.class);
+		valueEditComponents.put(SliderParameter.class, SliderComponent.class);
 		this.algorithms = new Algorithm[] {
 				new BackgroundExecutionAlgorithm(new StressMinimizationLayout())
 		};
