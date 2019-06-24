@@ -5,10 +5,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import org.AttributeHelper;
 import org.BackgroundTaskStatusProvider;
 import org.Vector2d;
-import org.apache.log4j.chainsaw.Main;
 import org.graffiti.attributes.Attribute;
-import org.graffiti.attributes.AttributeNotFoundException;
-import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
@@ -119,7 +116,6 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
      * Creates a new {@link StressMinimizationLayout} object.
      */
     public StressMinimizationLayout() {
-        super();
     }
 
     /**
@@ -174,33 +170,40 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             pureNodes = new ArrayList<>(GraphHelper.getVisibleNodes(selection.getNodes()));
         }
 
+        // --- MultiLevelFramework compatibility ---
+
+        // MultiLevelFramework compatibility mode.
+        boolean compatibilityMLFOuter = false;
+        // MultiLevelFramework compatibility mode for top level.
+        boolean compatibilityMLFtTopLevelOuter = false;
+
+        // backup old values
+        boolean oldIntermediateUndoable = this.intermediateUndoable,
+                oldDoAnimations         = this.doAnimations,
+                oldBackgroundTask       = this.backgroundTask;
+        InitialPlacer oldInitialPlacer  = this.initialPlacer;
+
+        if (graph.getAttributes().getCollection().containsKey(MLF_COMPATIBILITY_IS_COARSENING_LEVEL) &&
+                graph.getBoolean(MLF_COMPATIBILITY_IS_COARSENING_LEVEL)) {
+            compatibilityMLFOuter = true;
+            this.intermediateUndoable = false;
+            this.doAnimations = false;
+            this.backgroundTask = false;
+            if (graph.getAttributes().getCollection().containsKey(MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL) &&
+                    graph.getBoolean(MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL)) {
+                this.initialPlacer = new NullPlacer(); // we are not at top level
+                compatibilityMLFtTopLevelOuter = true;
+            }
+        }
+
+        // for use in lambda
+        final boolean compatibilityMLF = compatibilityMLFOuter;
+        final boolean compatibilityMLFtTopLevel = compatibilityMLFtTopLevelOuter;
+
         Runnable task = () -> {
             startTime = System.currentTimeMillis();
 
-            // MultiLevelFramework compatibility mode.
-            boolean compatibilityMLF = false;
-            // MultiLevelFramework compatibility mode for top level.
-            boolean compatibilityMLFtTpLevel = false;
 
-            // backup old values
-            boolean oldIntermediateUndoable = this.intermediateUndoable,
-                    oldDoAnimations         = this.doAnimations,
-                    oldBackgroundTask       = this.backgroundTask;
-            InitialPlacer oldInitialPlacer  = this.initialPlacer;
-
-            // MultiLevelFramework compatibility
-            if (graph.getAttributes().getCollection().containsKey(MLF_COMPATIBILITY_IS_COARSENING_LEVEL) &&
-                    graph.getBoolean(MLF_COMPATIBILITY_IS_COARSENING_LEVEL)) {
-                compatibilityMLF = true;
-                this.intermediateUndoable = false;
-                this.doAnimations = false;
-                this.backgroundTask = false;
-                if (graph.getAttributes().getCollection().containsKey(MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL) &&
-                        graph.getBoolean(MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL)) {
-                    this.initialPlacer = new NullPlacer(); // we are not at top level
-                    compatibilityMLFtTpLevel = true;
-                }
-            }
 
             System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Start (n = " + pureNodes.size() + ")"));
             // remove bends
@@ -365,7 +368,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
                 this.intermediateUndoable = oldIntermediateUndoable;
                 this.doAnimations = oldDoAnimations;
                 this.backgroundTask = oldBackgroundTask;
-                if (compatibilityMLFtTpLevel) {
+                if (compatibilityMLFtTopLevel) {
                     this.initialPlacer = oldInitialPlacer;
                 }
             }
