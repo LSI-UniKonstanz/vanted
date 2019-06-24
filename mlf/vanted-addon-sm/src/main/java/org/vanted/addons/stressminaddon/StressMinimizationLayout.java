@@ -52,6 +52,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
 
     ///// Parameters and defaults /////
     // stop conditions
+    /** Contains the parameters of this {@link StressMinimizationLayout}. */
+    private Parameter[] parameters = null;
     /** Whether to use the stress epsilon by default.*/
     private static final boolean USE_STRESS_EPSILON_DEFAULT = true;
     /** The default value for the epsilon to use with stress function. */
@@ -390,6 +392,18 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
      */
     @Override
     public Parameter[] getParameters() {
+        if (this.parameters == null) {
+            this.parameters = getNewParameters();
+        }
+        return this.parameters;
+    }
+
+    /**
+     * @return
+     *      a new set of parameters to work with.
+     * @author Jannik
+     */
+    private Parameter[] getNewParameters() {
 
         // initial placers
         InitialPlacer[] initialPlacers = new InitialPlacer[] {new PivotMDS(), new NullPlacer()};
