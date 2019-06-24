@@ -118,8 +118,6 @@ class SolarMerger implements Merger {
         // HashMaps containing suns and their planets as well as planets and their moons
         HashMap<Node, Set<Node>> sunsToPlanets = new HashMap<>();
         HashMap<Node, Set<Node>> planetsToMoons = new HashMap<>();
-        HashMap<Node, Node> moonToPlanet = new HashMap<>();
-        HashMap<Node, Node> planetToSun = new HashMap<>();
 
         // Set containing the already processed nodes of the base level
         Set<Node> alreadyUsed = new HashSet<>(suns);
@@ -136,9 +134,6 @@ class SolarMerger implements Merger {
             allPlanets.addAll(planets);
             //Adding all suns and their planet sunsToPlanets
             sunsToPlanets.put(sun, planets);
-            for (Node planet : planets) {
-                planetToSun.put(planet, sun);
-            }
         }
 
         // Add the remaining neighbors of the Planets as moons
@@ -154,9 +149,6 @@ class SolarMerger implements Merger {
                 // HashSet to collect and add the planets moons
                 // Adding all planets and their moons to planet2Moon
                 planetsToMoons.put(planet, moons);
-                for (Node moon : moons) {
-                    moonToPlanet.put(moon, planet);
-                }
             }
         }
 
@@ -164,8 +156,6 @@ class SolarMerger implements Merger {
         HashMap<MergedNode, Set<Node>> collapsedSunsToNeighbors = new HashMap<>();
         // HashMap mapping baseLevelNodes to their merged Node
         HashMap<Node, MergedNode> nodeToMergedNode = new HashMap<>();
-
-        HashMap<Node, Set<List<Node>>> nodeToPaths = new HashMap<>();
 
         //Collapsing the solarSystems of the galaxy into their suns
         for (Map.Entry<Node, Set<Node>> sunWithPlanets : sunsToPlanets.entrySet()) {
@@ -192,21 +182,6 @@ class SolarMerger implements Merger {
             Set<Node> interSystemNeighbors = new HashSet<>();
             for (Node n : innerNodes) {
                 interSystemNeighbors.addAll(n.getNeighbors());
-                for (Node neighbor : n.getNeighbors()) {
-                    if (!innerNodes.contains(neighbor)) { // the neighbor is from another solar system
-                        interSystemNeighbors.add(neighbor);
-                        if (nodeToPaths.get(n) == null) {
-                            nodeToPaths.put(n, new HashSet<>());
-                        }
-                        ArrayList<Node> path = new ArrayList<>();
-                        path.add(sunWithPlanets.getKey()); // path starts at the sun
-                        if (!allPlanets.contains(n)) { // n is a moon
-                            path.add(moonToPlanet.get(n));
-                        }
-                        path.add(n);
-                        nodeToPaths.get(n).add(path);
-                    }
-                }
                 // Adding the new inner Nodes mapped to the MergedNode to nodeToMergedNode
                 nodeToMergedNode.put(n,nMergedNode);
             }
@@ -215,23 +190,6 @@ class SolarMerger implements Merger {
 
             // Adding the merged Node and its neighbors to the HashMap
             collapsedSunsToNeighbors.put(nMergedNode, interSystemNeighbors);
-        }
-
-        for (Set<List<Node>> paths : nodeToPaths.values()) {
-            for (List<Node> path : paths) { // the last element of every path is in the other solar system, but not a sun
-                Node last = path.get(path.size() - 1);
-                if (!allPlanets.contains(last)) { // it's a moon
-                    Node otherPlanet = moonToPlanet.get(last);
-                    path.add(otherPlanet);
-                    path.add(planetToSun.get(otherPlanet));
-                } else { // it's a planet
-                    path.add(planetToSun.get(last));
-                }
-            }
-            // remove duplicate paths in the other direction
-            paths.removeIf(path ->
-                System.identityHashCode(path.get(0)) <= System.identityHashCode(path.get(path.size() - 1))
-            );
         }
 
         // contains suns whose edges have already been added
@@ -260,10 +218,11 @@ class SolarMerger implements Merger {
         }
 
         // store information for the solar placer
-        InternalGraph top = (InternalGraph) multilevelGraph.getTopLevel();
-        top.setObject(SUNS_KEY, suns);
-        top.setObject(NODE_TO_PATHS_KEY, nodeToPaths);
-        top.setObject(SUN_TO_PLANETS_KEY, sunsToPlanets);
+        // TODO
+//        InternalGraph top = (InternalGraph) multilevelGraph.getTopLevel();
+//        top.setObject(SUNS_KEY, suns);
+//        top.setObject(NODE_TO_PATHS_KEY, nodeToPaths);
+//        top.setObject(SUN_TO_PLANETS_KEY, sunsToPlanets);
 
         // color the nodes in a the debug version, when asserts are enabled
         // also assert we didn't loose any nodes
