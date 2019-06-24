@@ -6,7 +6,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -20,6 +19,7 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import org.BackgroundTaskStatusProviderSupportingExternalCall;
+import org.ErrorMsg;
 import org.JMButton;
 import org.Vector2d;
 import org.graffiti.editor.GravistoService;
@@ -36,7 +36,6 @@ import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
 
-
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
@@ -46,7 +45,7 @@ import info.clearthought.layout.TableLayout;
 
 /**
  * Executes a BackgroundAlgorithm and manage the GUI interaction.
- * 
+ *
  */
 public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements PropertyChangeListener {
 
@@ -57,24 +56,23 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	private JButton startButton;
 	private JButton stopButton;
 	private JCheckBox autoDrawCheckBox;
-	private double differenceStressValue;
-	
+
 	public BackgroundExecutionAlgorithm(BackgroundAlgorithm algorithm) {
 		super();
 		this.algorithm=algorithm;
 		status = BackgroundStatus.FINISHED;
-		differenceStressValue=0;
-		
+
 		//add BackgroundExecutionAlgorithm to listener list of algorithm
 		algorithm.addPropertyChangeListener(this);
 	}
-	
+
 	/**
 	 * set status of running algorithm
 	 * @param statusValue
 	 */
 	private void setStatus(BackgroundStatus statusValue) {
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				switch(statusValue) {
 				case INIT:
@@ -106,16 +104,11 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 					status = BackgroundStatus.STATUSERROR;
 					break;
 				}
-				
-				//show status of the running algorithm in the bar at the bottom of the main frame
-				if(differenceStressValue==0) {
-					MainFrame.showMessage("Stress Minimization: "+status+"calc distances", MessageType.PERMANENT_INFO);
-				}
-				MainFrame.showMessage("Stress Minimization: "+status+", progress: "+differenceStressValue, MessageType.PERMANENT_INFO);
+
 			}
 		});
 	}
-	
+
 	/**
 	 * update the GUI graph in the background
 	 * @param nodes2newPositions
@@ -123,8 +116,9 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	private void newLayout(HashMap<Node, Vector2d> nodes2newPositions) {
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
 				public void run() {
-					GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());	
+					GraphHelper.applyUndoableNodePositionUpdate(nodes2newPositions, getName());
 					// keeps intermediate layouts from leaving the screen
 					GravistoService.getInstance().runAlgorithm(new CenterLayouterAlgorithm(), graph,
 							new Selection(""), null);
@@ -135,23 +129,22 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * shows the difference between old stress value and new stress value
-	 * in the bar at the bottom of the main frame 
+	 * in the bar at the bottom of the main frame
 	 * @param oldStressValue
 	 * @param newStressValue
 	 */
-	private void printProgress(double oldProgress, double newProgress){
+	private void printStatusDescription(String statusDescription){
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
-//				MainFrame.showMessage("Stress Minimization: "+status+", old stress value: "+oldStressValue+", new stress value: "+
-//						newStressValue+", difference: "+((oldStressValue - newStressValue) / oldStressValue), MessageType.PERMANENT_INFO);
-				MainFrame.showMessage("Stress Minimization: "+status+", progress: "+ newProgress * 100 + "%", MessageType.PERMANENT_INFO);
+				MainFrame.showMessage(statusDescription, MessageType.PERMANENT_INFO);
 			}
 		});
 	}
-	
+
 	@Override
 	public String getName() {
 		return algorithm.getName();
@@ -183,7 +176,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	public void execute() {
 		algorithm.execute();
 	}
-	
+
 	/**
 	 * Starts new thread which executes the BackgroundAlgorithm and starts the progress bar
 	 */
@@ -191,21 +184,22 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 
 		final BackgroundTaskStatusProviderSupportingExternalCall provider = new BackgroundTaskStatusProviderSupportingExternalCallImpl(
 				"Computing Layout", "Stress minimization progress:");
-		
+
 		Runnable myTask = new Runnable() {
+			@Override
 			public void run() {
 				provider.setCurrentStatusValue(0);
 				int currentStatus = 0;
 				//double a = Math.pow(10, -8);
 				//double b = Math.pow(10, 10);
-				while(algorithm.getProgress()<1) {
+				while(algorithm.getStatus() != BackgroundStatus.FINISHED) {
 					try {
 						Thread.sleep(100);
-						
-						//Exponential growth. a and b are chosen so 
+
+						//Exponential growth. a and b are chosen so
 						//the following points hold: (0/0), (1/100), (0.9/10)
 						//currentStatus = (int) (a * Math.pow(b, algorithm.getProgress() - a));
-						
+
 						if(currentStatus < 0) {
 							currentStatus = 0;
 						}
@@ -221,13 +215,13 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 						else if(algorithm.getProgress() < 0.999) {
 							currentStatus = (int) ((algorithm.getProgress()-0.99)*10000 * 3/9 + 70);
 						}
-						
+
 						provider.setCurrentStatusValue(currentStatus);
-						
+
 						if (provider.wantsToStop()) {
 							algorithm.stop();
 						}
-						
+
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -238,18 +232,20 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		// the task which will be executed even if the user has stopped the
 		// thread
 		Runnable myFinishTask = new Runnable() {
+			@Override
 			public void run() {}
 		};
-		
+
 		reset();
-		
+
 		//current graph position and selection
 		graph = GravistoService.getInstance().getMainFrame().getActiveSession().getGraph();
 		selection = GravistoService.getInstance().getMainFrame().getActiveEditorSession().getSelectionModel().getActiveSelection();;
 
 		Runnable algoExecution = new Runnable() {
+			@Override
 			public void run() {
-				
+
 				attach(graph, selection);
 				try {
 					check();
@@ -257,14 +253,22 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 					e.printStackTrace();
 				}
 				setParameters(paramPanel.getUpdatedParameters());
-				execute();
+
+				try {
+					execute();
+				} catch (OutOfMemoryError error) {
+					ErrorMsg.addErrorMessage("We ran out of memory! Pleace increase heap memory of the JVM");
+				} catch (Exception ex) {
+					ErrorMsg.addErrorMessage(ex);
+				}
+
 			}
 		};
 		Thread backgroundTask = new Thread(algoExecution);
 		backgroundTask.setName(algorithm.getName()+" background execution");
 		setStatus(BackgroundStatus.INIT);
 		backgroundTask.start();
-		
+
 		BackgroundTaskHelper.issueSimpleTask("Stress Minimization Progress",
 				"Computing...", myTask, myFinishTask, provider);
 	}
@@ -325,32 +329,32 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	}
 
 	private ParameterEditPanel paramPanel;
-	
+
 	@Override
 	public boolean setControlInterface(ThreadSafeOptions options, JComponent jc) {
 		//set component layout
 		SingleFiledLayout sfl = new SingleFiledLayout(SingleFiledLayout.COLUMN, SingleFiledLayout.FULL, 1);
 		jc.setLayout(sfl);
-		
+
 		//create input component for each algorithm parameter and save all in ParameterEditPanel pep
 		EditComponentManager ecm = MainFrame.getInstance().getEditComponentManager();
 		ParameterEditPanel pep = null;
 		pep = new ParameterEditPanel(algorithm.getParameters(), ecm.getEditComponents(), selection,
 				algorithm.getName(), true, algorithm.getName());
 		paramPanel = pep;
-		
+
 		//panel with all algorithm parameter components
 		JPanel parameterPanel=new JPanel();
 		parameterPanel.setLayout(sfl);
 		parameterPanel.add(Box.createVerticalStrut(10));
 		parameterPanel.add(pep);
-		
+
 		//initialization of start and pause button
 		startButton = new JMButton("Layout Network");
 		startButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+
 				switch(status) {
 				case FINISHED:
 					startButton.setText("Layout Network");
@@ -370,7 +374,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			}
 		});
 		jc.add(startButton);
-		
+
 		//initialization of stop button
 		stopButton = new JButton("Stop");
 		stopButton.addActionListener(new ActionListener(){
@@ -382,29 +386,29 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			}
 		});
 		stopButton.setEnabled(false);
-		
+
 		//check box to print the layout after each iteration
 		autoDrawCheckBox = new JCheckBox("Auto Redraw", false);
-		
+
 		//add stop button and check box to component
 		jc.add(TableLayout.get3Split(stopButton, autoDrawCheckBox, new JLabel(),
-			TableLayout.PREFERRED, TableLayout.PREFERRED,TableLayout.FILL ));
-		
+				TableLayout.PREFERRED, TableLayout.PREFERRED,TableLayout.FILL ));
+
 		//add parameter panel to component
 		if(paramPanel!=null) {
 			jc.add(parameterPanel);
 		}
-		
+
 		return true;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void propertyChange(PropertyChangeEvent arg0) {
 		//updating layout and status if the background algorithm request
-		
+
 		switch(arg0.getPropertyName()) {
-			
+
 		case "setLayout":
 			if(autoDrawCheckBox.isSelected()) {
 				Supplier<HashMap<Node, Vector2d>> layoutSupplier = (Supplier<HashMap<Node, Vector2d>>)arg0.getNewValue();
@@ -414,19 +418,18 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		case "setStatus":
 			setStatus((BackgroundStatus)arg0.getNewValue());
 			break;
-		case "setProgress":
-			// TODO: better progress
-			printProgress((double)arg0.getOldValue(), (double)arg0.getNewValue());
+		case "setStatusDescription":
+			printStatusDescription((String)arg0.getNewValue());
 			break;
 		default:
 			break;
 		}
 	}
-	
+
 	// both never used but required for thread safe algorithm
-	// ThreadSafeAlgorithm is adopted since it alone provides 
+	// ThreadSafeAlgorithm is adopted since it alone provides
 	// GUI customization
-	
+
 	@Override
 	public void executeThreadSafe(ThreadSafeOptions options) {
 		throw new UnsupportedOperationException();

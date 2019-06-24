@@ -3,7 +3,6 @@ package org.vanted.addons.stressminimization;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Supplier;
 
 import org.Vector2d;
@@ -31,14 +30,20 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 	private double progress;
 
 	/**
+	 * A textual description of the current status.
+	 * Used as a replacement for console logging.
+	 */
+	private String statusDescription;
+
+	/**
 	 * A supplier that gives the current layout.
-	 * Instead of a simple Map, a supplier is used here, 
+	 * Instead of a simple Map, a supplier is used here,
 	 * because some conversion maybe necessary from the format of the running algorithm
-	 * to this format and unnecessary conversion may be avoided, 
+	 * to this format and unnecessary conversion may be avoided,
 	 * in case the algorithm is not showing intermediate results.
 	 */
 	private Supplier<HashMap<Node, Vector2d>> layout;
-	
+
 	/**
 	 * Whether this algorithm was told to pause by the executing frontend algorithm.
 	 */
@@ -111,6 +116,12 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 		pcs.firePropertyChange("setProgress", oldProgress, newProgress);
 	}
 
+	protected void setStatusDescription(String newStatusDescription) {
+		String oldStatusDescription = this.statusDescription;
+		this.statusDescription = newStatusDescription;
+		pcs.firePropertyChange("setStatusDescription", oldStatusDescription, newStatusDescription);
+	}
+
 	/**
 	 * Pauses the execution of this algorithm, if the algorithm is running.
 	 */
@@ -149,6 +160,10 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 
 	public double getProgress() {
 		return progress;
+	}
+
+	public String getStatusDescription() {
+		return statusDescription;
 	}
 
 	public Supplier<HashMap<Node, Vector2d>> getLayout() {

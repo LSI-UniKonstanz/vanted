@@ -2,7 +2,7 @@ package org.vanted.addons.stressminimization;
 
 import org.apache.commons.math3.analysis.MultivariateFunction;
 import org.apache.commons.math3.analysis.MultivariateVectorFunction;
-import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.BlockRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.optim.InitialGuess;
@@ -209,7 +209,7 @@ class StressMajorizationLayoutCalculator {
 				LINE_SEARCH_EPSILON, LINE_SEARCH_EPSILON, LINE_SEARCH_EPSILON
 				);
 
-		RealMatrix newLayout = new Array2DRowRealMatrix(n, d);
+		RealMatrix newLayout = layout.createMatrix(n, d);
 		EquationSystemOptimizationFunctionSupplier supplier = new EquationSystemOptimizationFunctionSupplier();
 
 		for (int a = 0; a < d; a += 1) {
@@ -265,7 +265,7 @@ class StressMajorizationLayoutCalculator {
 			public double value(double[] suggestedLayout) {
 
 				// variable naming after paper, see class javadoc
-				Array2DRowRealMatrix Xa = new Array2DRowRealMatrix(n, 1);
+				RealMatrix Xa = new BlockRealMatrix(n, 1);
 				Xa.setColumn(0, suggestedLayout);
 
 				// 1/2 * Xa^T * LW * Xa - (LZ*Za)^T * Xa
@@ -288,7 +288,7 @@ class StressMajorizationLayoutCalculator {
 			public double[] value(double[] suggestedLayout) throws IllegalArgumentException {
 
 				// variable naming after paper, see class javadoc
-				Array2DRowRealMatrix Xa = new Array2DRowRealMatrix(n, 1);
+				RealMatrix Xa = new BlockRealMatrix(n, 1);
 				Xa.setColumn(0, suggestedLayout);
 
 				RealMatrix result = ( LW.multiply(Xa) ).subtract( LZZa );
@@ -314,7 +314,7 @@ class StressMajorizationLayoutCalculator {
 	 * @return the weighted laplacian matrix of the input
 	 */
 	private RealMatrix calcWeightedLaplacian(RealMatrix w) {
-		RealMatrix LW = new Array2DRowRealMatrix(n, n);
+		RealMatrix LW = w.createMatrix(n, n);
 
 		for (int i = 0; i < LW.getRowDimension(); i += 1) {
 			for (int j = 0; j < LW.getColumnDimension(); j += 1) {
@@ -346,7 +346,7 @@ class StressMajorizationLayoutCalculator {
 	 * @return The LZ matrix calculated from w,d and Z
 	 */
 	private RealMatrix calcLZ(RealMatrix w, RealMatrix d, RealMatrix Z) {
-		RealMatrix LZ = new Array2DRowRealMatrix(n, n);
+		RealMatrix LZ = w.createMatrix(n, n);
 
 		for (int i = 0; i < LZ.getRowDimension(); i += 1) {
 			double sumOverAllNonDiagonal = 0; // will be used for the diagonal element
