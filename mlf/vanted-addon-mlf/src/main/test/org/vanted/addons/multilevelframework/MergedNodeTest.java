@@ -10,11 +10,9 @@ import org.graffiti.graphics.NodeLabelAttribute;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -109,5 +107,21 @@ public class MergedNodeTest {
         assertSame(2, mn.getWeight());
         assertTrue(mn.getInnerNodes().containsAll(Arrays.asList(n1, n2)));
         assertTrue(Arrays.asList(n1, n2).containsAll(mn.getInnerNodes()));
+    }
+
+    @Test
+    public void sizeUpdate() {
+        AttributeHelper.setSize(this.n1, 0xbadbeef, 0xcaffee);
+        MergedNode mn = new MergedNode(this.g, Collections.singleton(this.n1));
+        assertEquals(0xbadbeef * 1.1, AttributeHelper.getHeight(mn), 0.00001);
+        assertEquals(0xbadbeef * 1.1, AttributeHelper.getWidth(mn), 0.00001);
+
+        AttributeHelper.setSize(this.n1, 10, 20);
+        AttributeHelper.setSize(this.n2, 30, 40);
+        AttributeHelper.setSize(this.n3, 50, 60);
+        AttributeHelper.setSize(this.n4, 70, 80);
+        MergedNode mn2 = new MergedNode(this.g, new HashSet<>(Arrays.asList(n1, n2, n3, n4)));
+        assertEquals(80 * 1.1 * 2, AttributeHelper.getWidth(mn2), 0.00001);
+        assertEquals(80 * 1.1 * 2, AttributeHelper.getHeight(mn2), 0.00001);
     }
 }

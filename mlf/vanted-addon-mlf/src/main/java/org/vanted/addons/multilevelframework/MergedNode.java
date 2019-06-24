@@ -37,7 +37,7 @@ public class MergedNode extends AdjListNode {
         super(Objects.requireNonNull(g, "MergedNode graph must not be null."));
         this.nodes = Objects.requireNonNull(nodes, "MergedNode nodes must not be null.");
         this.updateLabel();
-        this.updatePosition();
+        this.updatePositionAndSize();
         this.updateWeight();
     }
 
@@ -54,7 +54,7 @@ public class MergedNode extends AdjListNode {
         super(Objects.requireNonNull(g), Objects.requireNonNull(col));
         this.nodes = new HashSet<>();
         this.updateLabel();
-        this.updatePosition();
+        this.updatePositionAndSize();
         this.updateWeight();
     }
 
@@ -71,7 +71,7 @@ public class MergedNode extends AdjListNode {
         super(g);
         this.nodes = new HashSet<>();
         this.updateLabel();
-        this.updatePosition();
+        this.updatePositionAndSize();
         this.updateWeight();
     }
 
@@ -101,7 +101,7 @@ public class MergedNode extends AdjListNode {
         }
         this.nodes.add(Objects.requireNonNull(node, "MergedNode cannot represent null nodes."));
         this.updateLabel();
-        this.updatePosition();
+        this.updatePositionAndSize();
         this.updateWeight();
     }
 
@@ -140,9 +140,9 @@ public class MergedNode extends AdjListNode {
      * In case the returned center contains {@code NaN} values (see {@link Double#isNaN(double)}) or there are no
      * represented nodes the center will be set to the origin (0,0).
      *
-     * @author Gordian
+     * @author Gordian, Katze
      */
-    private void updatePosition() {
+    private void updatePositionAndSize() {
         if (this.nodes.isEmpty()) {
             AttributeHelper.setPosition(this, 0, 0);
             return;
@@ -153,6 +153,21 @@ public class MergedNode extends AdjListNode {
             center = new Vector2d(0, 0);
         }
         AttributeHelper.setPosition(this, center);
+        
+        double maxdiam = 0.0;
+        
+        for (Node i : nodes) {
+        	if(AttributeHelper.getHeight(i) > maxdiam) {
+        		maxdiam = AttributeHelper.getHeight(i);
+        	}
+        	if(AttributeHelper.getWidth(i) > maxdiam) {
+        		maxdiam = AttributeHelper.getWidth(i);
+        	}
+        }
+        
+        double size = Math.ceil(Math.sqrt(nodes.size())) * maxdiam * 1.1;
+        AttributeHelper.setHeight(this, size);
+        AttributeHelper.setWidth(this, size);
     }
 
     /**
