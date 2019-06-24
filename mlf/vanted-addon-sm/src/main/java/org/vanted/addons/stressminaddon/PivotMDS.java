@@ -63,12 +63,14 @@ public class PivotMDS implements InitialPlacer {
         // get new XPos and YPos
         RealMatrix newX = c.multiply(firstEigenVec.getColumnMatrix(0));
         RealMatrix newY = c.multiply(secondEigenVec.getColumnMatrix(0));
+        
+        double toAdd = largerAbS(findMinInMatrix(newX), findMinInMatrix(newY));
 
         // create a list containing the new coordinates
         List<Vector2d> newPosList = new ArrayList<>();
         for(int i = 0; i < distances.getDimension(); i++){
-            newPosList.add(new Vector2d(newX.getEntry(inversePivotTranslation[i], 0),
-                                        newY.getEntry(inversePivotTranslation[i], 0)));
+            newPosList.add(new Vector2d(newX.getEntry(inversePivotTranslation[i], 0) + toAdd,
+                                        newY.getEntry(inversePivotTranslation[i], 0) + toAdd));
         }
         return newPosList;
     }
@@ -166,6 +168,51 @@ public class PivotMDS implements InitialPlacer {
         }
 
         return table;
+    }
+    
+    
+    /**
+     * returns the absolute value of a and b. a and b need to be negative
+     *
+     * @param a value 1
+     * @param b value 2
+     * @return double containing the larger absolute value of value a and b
+     * 
+     * @author theo
+     */
+    private double largerAbS(double a , double b){
+         a = -1 *a;
+         b = -1 *b;
+         if(a>b){
+             return a;
+         }
+         else{
+             return b;
+         }
+    }
+
+    /**
+     * find the min entry in a matrix. if min> 0 return 0
+     *
+     * @param matrix where the min of is needed
+     * @return double containing the smallest entry in Matrix
+     * 
+     * @author theo
+     */
+    private  double findMinInMatrix(RealMatrix matrix){
+         double min =0;
+         for(int row = 0; row<matrix.getRowDimension(); row++){
+             for(int col = 0; col<matrix.getColumnDimension(); col++){
+
+                 if(matrix.getEntry(row, col)< min){
+                     min = matrix.getEntry(row,  col);
+                 }
+             }
+         }
+        if(min< 0 ){
+            return min;
+        }
+        return 0;
     }
 
 
@@ -326,9 +373,7 @@ public class PivotMDS implements InitialPlacer {
                                    final int[] distanceTranslation) {
 
         final int n = distances.getDimension();
-
         RealMatrixImpl c = new RealMatrixImpl(n, amountPivots);
-        NodeValueMatrix squared = distances.clone().apply(x -> x*x, n-1, amountPivots-1, distanceTranslation);
         double  [][] results = c.getDataRef();
 
         // Sum three is independent of the current position so it can be calculated only once
@@ -336,8 +381,8 @@ public class PivotMDS implements InitialPlacer {
         double[] allSumOnes = new double[amountPivots]; // holds 'sumOne's
         for (int col = 0; col < amountPivots; col++) {
             for (int row = 0; row < n; row++) {
-                sumThree += squared.get(row, col, distanceTranslation); // for sumThree
-                allSumOnes[col] += squared.get(row, col, distanceTranslation); // for sumOne
+                sumThree += distances.get(row, col, distanceTranslation); // for sumThree
+                allSumOnes[col] += distances.get(row, col, distanceTranslation); // for sumOne
             }
             allSumOnes[col] /= n;
         }
@@ -348,13 +393,13 @@ public class PivotMDS implements InitialPlacer {
             //calculate sumTwo
             double sumTwo = 0;
             for(int col = 0; col < amountPivots; col++){
-                sumTwo += squared.get(row, col, distanceTranslation);
+                sumTwo += distances.get(row, col, distanceTranslation);
             }
             sumTwo/=amountPivots;
 
             //calculate result[row][col]
             for (int col= 0; col < amountPivots; col++){
-                results[row][col] = -(squared.get(row, col, distanceTranslation)
+                results[row][col] = -(distances.get(row, col, distanceTranslation)
                         -allSumOnes[col] - sumTwo + sumThree)/2;
             }
         }
