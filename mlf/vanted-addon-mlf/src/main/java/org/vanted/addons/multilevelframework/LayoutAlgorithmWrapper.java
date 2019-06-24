@@ -231,14 +231,17 @@ public class LayoutAlgorithmWrapper {
                         if (a instanceof ThreadSafeAlgorithm) {
                             final String alternateName = a.getName() + " (\"thread-safe\" GUI)";
                             if (WHITELIST.contains(alternateName)) {
-                                result.put(alternateName, new LayoutAlgorithmWrapper(alternateName, a, true));
+                                result.put(alternateName, new LayoutAlgorithmWrapper(alternateName,
+                                        tryMakingNewInstance(a), true));
                             }
                             final String parameterName = a.getName() + " (\"parameter\" GUI)";
                             if (WHITELIST.contains(parameterName)) {
-                                result.put(parameterName, new LayoutAlgorithmWrapper(parameterName, a, false));
+                                result.put(parameterName, new LayoutAlgorithmWrapper(parameterName,
+                                        tryMakingNewInstance(a), false));
                             }
                         } else if (WHITELIST.contains(a.getName())) {
-                            result.put(a.getName(), new LayoutAlgorithmWrapper(null, a, false));
+                            result.put(a.getName(), new LayoutAlgorithmWrapper(null,
+                                    tryMakingNewInstance(a), false));
                         }
                     });
         }
@@ -295,6 +298,7 @@ public class LayoutAlgorithmWrapper {
         algorithm.attach(graph, selection);
         if (this.oldGUI != null) {
             this.algorithm.setParameters(this.oldGUI.getUpdatedParameters());
+            return this.oldGUI;
         }
         this.getParametersCalled = true;
         if (algorithm.getParameters() != null) {
@@ -329,5 +333,25 @@ public class LayoutAlgorithmWrapper {
                 ", threadSafeGUI=" + threadSafeGUI +
                 ", guiName='" + guiName + '\'' +
                 '}';
+    }
+
+    /**
+     * Create new instances of the layouters to avoid interfering with the ones that VANTED holds.
+     * @param t
+     *      The object to duplicate.
+     * @param <T>
+     *      The class of the object to duplicate.
+     * @return
+     *      The duplicated object, or the old one if {@link Class#newInstance()} throws an exception.
+     * @author Gordian
+     */
+    static <T> T tryMakingNewInstance(T t) {
+        final Class clazz = t.getClass();
+        try {
+            return (T) clazz.newInstance();
+        } catch (IllegalAccessException | InstantiationException e) {
+            System.err.println("Failed to create new instance of ");
+            return t;
+        }
     }
 }

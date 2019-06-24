@@ -144,7 +144,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         // if not, indicate that the MLF is running on the graph
         graph.setBoolean(WORKING_ATTRIBUTE_PATH, true);
 
-        // displaying levels doesn't work in a background task
+        System.out.println("Running MLF using " + merger.getName() + ", " + placer.getName() + ", "
+                + algorithm.getAlgorithm().getName());
 
         BackgroundTaskHelper.issueSimpleTask(this.getName(), "Multilevel Framework is running", () -> {
             if (removeBends) {

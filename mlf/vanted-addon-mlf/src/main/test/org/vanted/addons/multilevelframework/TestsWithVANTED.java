@@ -7,8 +7,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.CircleLayouter
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import org.AttributeHelper;
-import org.apache.xpath.operations.Mult;
-import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
@@ -389,6 +387,37 @@ public class TestsWithVANTED {
             @Override public ActionEvent getActionEvent() { return null; }
             @Override public boolean mayWorkOnMultipleGraphs() { return false; }
         }, true);
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void tryMakingNewInstance() {
+        String bOriginal = "b{2}|[^b]{2}";
+        String notBOriginal = LayoutAlgorithmWrapper.tryMakingNewInstance(bOriginal);
+        assertNotSame(bOriginal, notBOriginal);
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void tryMakingNewInstanceFail() {
+        class DummyFailure {
+            private long iJustStoreAUselessDummyLong;
+            public DummyFailure(long leLong) {
+                this.iJustStoreAUselessDummyLong = leLong;
+            }
+            public long getRidOfNotUsedWarning() {
+                return this.iJustStoreAUselessDummyLong;
+            }
+        }
+        DummyFailure original = new DummyFailure(0xFAAAA1L);
+        // calling the ctor will fail in this method
+        DummyFailure newOne = LayoutAlgorithmWrapper.tryMakingNewInstance(original);
+        // so it should return the original as a fallback
+        assertSame(original, newOne);
     }
 
 
