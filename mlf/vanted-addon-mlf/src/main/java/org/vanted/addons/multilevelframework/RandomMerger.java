@@ -3,28 +3,28 @@ package org.vanted.addons.multilevelframework;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
-import org.graffiti.plugin.parameter.Parameter;
+import org.graffiti.plugin.parameter.*;
+import org.vanted.addons.multilevelframework.sm_util.gui.Describable;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
 
+
+/**
+ * {@link Merger} that randomly merges edges.
+ */
 public class RandomMerger implements Merger {
-    @Override
-    public Parameter[] getParameters() {
-        return new Parameter[0];
-    }
 
-    @Override
-    public void setParameters(Parameter[] parameters) {
+    final static String COARSENING_FACTOR_NAME     = "Coarsening Factor";
+    final static String MIN_LEVEL_NODE_NUM_NAME    = "Minimum number of nodes per level";
+    final static String MAX_NAM_ITERATIONS_NAME    = "Maximum number of iterations";
+    final static String USE_WEIGHTS_NAME           = "Use merged-node weights";
+    final static String CONSIDER_EDGE_WEIGHTS_NAME = "Consider edge weights";
+    final static String WEIGHT_ATTR_PATH_NAME      = "Weight attribute path";
 
-        // TODO: set parameters
-
-        // update comparator to use the new path
-        this.edgeWeightComparator = MlfHelper.createEdgeWeightComparator(weightAttributePath);
-    }
-
-    // Variables containing the future parameters
+    // Variables containing the parameter values
 
     // the ratio in size of the baseLevel and the resulting coarsening level
     double coarseningFactor = 0.5;
@@ -38,13 +38,96 @@ public class RandomMerger implements Merger {
     // prefer merging MergedNodes that don't already represent lots of nodes
     boolean useWeights = true;
 
-    // the path at which edge weights are stored (weights must be doubles or ints)
+    // the path at which edge weights are stored see MlfHelper.getEdgeWeight
     String weightAttributePath = "weight";
 
     // if this is true, the merger will prefer merging edges with low weight
-    boolean considerEdgeWeights = true;
+    boolean considerEdgeWeights = false;
 
     Comparator<Edge> edgeWeightComparator = MlfHelper.createEdgeWeightComparator(weightAttributePath);
+
+    /**
+     * Array of parameters that will be displayed in the GUI.
+     */
+    private Parameter[] parameters = {
+            new DoubleParameter(coarseningFactor, COARSENING_FACTOR_NAME,
+                    "The random merger will aim to reduce the number of nodes in each level by this factor."
+                            + " It must be between 0 and 1."),
+            new IntegerParameter(minNumberOfNodesPerLevel, MIN_LEVEL_NODE_NUM_NAME,
+                    "The minimum number of nodes per level. If there are less nodes than this number on "
+                            + "a level, the random merger will terminate."),
+            new IntegerParameter(maxNumberOfIterations, MAX_NAM_ITERATIONS_NAME,
+                    "The random merger will stop after this number of iterations, regardless of whether the"
+                            + " other termination criteria are met."),
+            new BooleanParameter(useWeights, USE_WEIGHTS_NAME,
+                    "If this parameter is set, the random merger will prefer merging the nodes that " +
+                            "represent the least amount of nodes of the original graph."),
+            new BooleanParameter(considerEdgeWeights, CONSIDER_EDGE_WEIGHTS_NAME,
+                    "If this parameter is set, the random merger will prefer merging edges with low " +
+                            "weight. Note that this only applies to the original graph. Also note that you need to " +
+                            "set the name of the attribute yourself since there is no standard name for it."),
+            new StringParameter(weightAttributePath, WEIGHT_ATTR_PATH_NAME,
+                    "This is the attribute path that will be used to obtain the edge weight."),
+    };
+
+    /**
+     * @see Merger#getParameters()
+     * @author Gordian
+     */
+    @Override
+    public Parameter[] getParameters() {
+        return this.parameters;
+    }
+
+    /**
+     * @param parameters
+     *     The updated {@link Parameter}.
+     * @see Merger#setParameters(Parameter[])
+     * @author Gordian
+     */
+    @Override
+    public void setParameters(Parameter[] parameters) {
+        this.parameters = parameters;
+        for (Parameter parameter : parameters) {
+            switch (parameter.getName()) {
+                case COARSENING_FACTOR_NAME: {
+                    final double value = ((DoubleParameter) parameter).getDouble();
+                    validateNumber(value, 0, 1, COARSENING_FACTOR_NAME);
+                    this.coarseningFactor = value;
+                    break;
+                }
+                case MIN_LEVEL_NODE_NUM_NAME: {
+                    final int value = ((IntegerParameter) parameter).getInteger();
+                    validateNumber(value, 0, Integer.MAX_VALUE, MIN_LEVEL_NODE_NUM_NAME);
+                    this.minNumberOfNodesPerLevel = value;
+                    break;
+                }
+                case MAX_NAM_ITERATIONS_NAME: {
+                    final int value = ((IntegerParameter) parameter).getInteger();
+                    validateNumber(value, 1, Integer.MAX_VALUE, MAX_NAM_ITERATIONS_NAME);
+                    this.maxNumberOfIterations = value;
+                    break;
+                }
+                case USE_WEIGHTS_NAME: {
+                    this.useWeights = ((BooleanParameter) parameter).getBoolean();
+                    break;
+                }
+                case CONSIDER_EDGE_WEIGHTS_NAME: {
+                    this.considerEdgeWeights = ((BooleanParameter) parameter).getBoolean();
+                    break;
+                }
+                case WEIGHT_ATTR_PATH_NAME: {
+                    this.weightAttributePath = ((StringParameter) parameter).getString();
+                    break;
+                }
+                default:
+                    throw new IllegalStateException("Invalid parameter name passed to random merger.");
+            }
+        }
+
+        // update comparator to use the new path
+        this.edgeWeightComparator = MlfHelper.createEdgeWeightComparator(weightAttributePath);
+    }
 
     /**
      * builds the coarsening levels for the graph depending on parameters. These Parameters shrinkRatio
@@ -76,6 +159,25 @@ public class RandomMerger implements Merger {
         final long endTime = System.nanoTime();
         System.out.println("Built coarsening levels in: " +
                 TimeUnit.NANOSECONDS.toMillis(endTime - startTime) + " ms.");
+    }
+
+    /**
+     * @see Describable#getName()
+     * @author Gordian
+     */
+    @Override
+    public String getName() {
+        return "Random Merger";
+    }
+
+    /**
+     * @see Describable#getDescription()
+     * @author Gordian
+     */
+    @Override
+    public String getDescription() {
+        return "Merges edges randomly. Also has the ability to prefer edges which aren't incident to merged nodes that"
+                + "already contain lots of nodes in order to avoid merging too many nodes into one merged node.";
     }
 
     /**
@@ -182,14 +284,12 @@ public class RandomMerger implements Merger {
         for(Edge i : edges) {
             MergedNode source = node2mergedNode.get(i.getSource());
             MergedNode target = node2mergedNode.get(i.getTarget());
-            // TODO: getUndirectedEdges() creates a new collection each time. Maybe performance could be improved
-            // by manually storing which edges have been added.
+            // make sure we're not adding a loop or redundant edges
             if (source != target && !source.getNeighbors().contains(target)
                     && !target.getNeighbors().contains(source)) {
                 mlg.addEdge(source, target);
             }
         }
-
     }
 }
 

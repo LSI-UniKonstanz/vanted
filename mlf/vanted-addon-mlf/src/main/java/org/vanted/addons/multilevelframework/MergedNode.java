@@ -187,7 +187,7 @@ public class MergedNode extends AdjListNode {
                     }
                 })
                 .collect(Collectors.joining(", "));
-        label += "| [" + this.nodes.size() + "]";
+        label += " | [" + this.nodes.size() + "]";
         AttributeHelper.setLabel(this, label);
     }
 }

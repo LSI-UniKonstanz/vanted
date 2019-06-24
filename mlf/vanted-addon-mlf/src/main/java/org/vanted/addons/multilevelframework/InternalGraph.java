@@ -196,7 +196,7 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
      */
     private void checkUndirected(boolean directed) {
         if (directed) {
-            throw new IllegalArgumentException("Levels of MultilevelGraph must only contain directed nodes.");
+            throw new IllegalArgumentException("Levels of MultilevelGraph must only contain directed edges.");
         }
     }
 

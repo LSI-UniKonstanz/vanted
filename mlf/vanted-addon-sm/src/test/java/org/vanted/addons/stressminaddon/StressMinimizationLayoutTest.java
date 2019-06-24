@@ -4,8 +4,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.ipk_graffitiview.NullView;
 import org.Vector2d;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.plugin.algorithm.PreconditionException;
+import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.graffiti.selection.Selection;
+import org.jruby.util.AssertError;
 import org.junit.Before;
 import org.junit.Test;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
@@ -115,9 +117,13 @@ public class StressMinimizationLayoutTest {
         assertEquals(0.0, stress, 0.001);
     }
 
+    /**
+     * Test method {@link StressMinimizationLayout#getDescription()}.
+     * @author Jannik
+     */
     @Test
     public void getDescription() {
-        // TODO
+        assertTrue(layout.getDescription() != null && !layout.getDescription().trim().isEmpty());
     }
 
     /**
@@ -170,14 +176,32 @@ public class StressMinimizationLayoutTest {
         // TODO
     }
 
+    /**
+     * Test method {@link StressMinimizationLayout#getParameters()}.
+     * @author Jannik
+     */
     @Test
     public void getParameters() {
-        // TODO
+        Parameter[] parameters = layout.getParameters();
+        assertNotNull(parameters);
+        assertTrue(parameters.length > 0);
     }
 
+    /**
+     * Test method {@link StressMinimizationLayout#setParameters(Parameter[])}.
+     * @author Jannik
+     */
     @Test
     public void setParameters() {
-        // TODO
+        try {
+            final List<Parameter> parameters = Arrays.asList(layout.getParameters()).subList(0, layout.getParameters().length-1);
+            Collections.shuffle(parameters);
+            layout.setParameters(parameters.toArray(new Parameter[0])); // something must fail
+            fail("Nothing failed");
+        } catch (Throwable t) {
+            if (t instanceof AssertError)
+                throw t;
+        }
     }
 
     /**

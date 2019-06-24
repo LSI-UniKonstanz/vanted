@@ -53,12 +53,14 @@ public class MultilevelGraphTest {
     public void coarsening() {
         // create some coarsening levels
         MultilevelGraph mlg = new MultilevelGraph(this.g);
+        assertSame(4, mlg.getTotalNumberOfNodes());
         assertTrue(mlg.isComplete()); // level 0 is complete by definition
         assertEquals(mlg.getNumberOfLevels(), 1);
         assertEquals(mlg.getTopLevel(), this.g);
         assertEquals(mlg.newCoarseningLevel(), 1);
         assertNotSame(mlg.getTopLevel(), this.g); // check whether a new level was actually added
         MergedNode mn = mlg.addNode(new HashSet<>(Arrays.asList(n1, n2)));
+        assertSame(5, mlg.getTotalNumberOfNodes());
         assertFalse(mlg.isComplete()); // n3, n4 are not yet represented by a MergedNode
         mn.addInnerNode(this.n3);
         MergedNode mn2 = mlg.addNode(Collections.singleton(this.n4));
@@ -70,6 +72,7 @@ public class MultilevelGraphTest {
         assertEquals(mlg.newCoarseningLevel(), 2);
         assertFalse(mlg.isComplete());
         MergedNode mn3 = mlg.addNode(new HashSet<>(Arrays.asList(mn, mn2)));
+        assertSame(7, mlg.getTotalNumberOfNodes());
         assertTrue(mlg.isComplete());
         CoarsenedGraph top = mlg.popCoarseningLevel();
         assertTrue(top.getMergedNodes().contains(mn3));
@@ -87,7 +90,7 @@ public class MultilevelGraphTest {
     @Test(expected = UnsupportedOperationException.class)
     public void addNodeFail() {
         MultilevelGraph mlg = new MultilevelGraph(this.g);
-        // this fails because the MultilevelGraph doesn't modify level 0 (the original graph)
+        // this fails because the MultilevelGraph doesn'vanted modify level 0 (the original graph)
         mlg.addNode(new HashSet<>(Arrays.asList(n1, n2)));
     }
 

@@ -1,5 +1,6 @@
 package org.vanted.addons.multilevelframework;
 
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
 import de.ipk_gatersleben.ag_nw.graffiti.services.HandlesAlgorithmData;
 import info.clearthought.layout.TableLayout;
 import info.clearthought.layout.TableLayoutConstants;
@@ -16,6 +17,7 @@ import org.graffiti.plugin.algorithm.ThreadSafeAlgorithm;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
+import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
 
 import javax.swing.*;
 import java.util.*;
@@ -40,9 +42,19 @@ public class LayoutAlgorithmWrapper {
     private String guiName;
     // stores the last returned parameter GUI so the parameters can be retrieved
     private ParameterEditPanel oldGUI = null;
+    // keeps track of whether or not the "thread safe" GUI was called
+    // if not, it needs to be generated because it starts a timer that affects the algorithm's execution
+    private boolean getThreadSafeGUITimerStarted = false;
+    // cache the GUI
+    private JComponent oldThreadSafeGUI = null;
+
+    final static List<String> WHITELIST = Arrays.asList("Circle", "Grid Layout", "Stress Minimization",
+            "Move Nodes to Grid-Points", "Null-Layout", "Random", "Remove Node Overlaps", BlockingForceDirected.springName,
+            "Force Directed (\"parameter\" GUI)");
 
     /**
-     * Create a new {@link LayoutAlgorithmWrapper}. This method is for internal use only and thus private.
+     * Create a new {@link LayoutAlgorithmWrapper}. This method is for internal use only. It's package-private so it can
+     * be accessed by tests.
      *
      * @param guiName       The name the algorithm has in the GUI. This can be different from
      *                      {@link Algorithm#getName()}, because some algorithms are shown twice in the list of
@@ -60,7 +72,7 @@ public class LayoutAlgorithmWrapper {
      *                      {@code false}.
      * @author Gordian
      */
-    private LayoutAlgorithmWrapper(String guiName, Algorithm algorithm, boolean threadSafeGUI) {
+    LayoutAlgorithmWrapper(String guiName, Algorithm algorithm, boolean threadSafeGUI) {
         this.algorithm = Objects.requireNonNull(algorithm);
         if (!this.algorithm.isLayoutAlgorithm()) {
             throw new IllegalArgumentException("LayoutAlgorithmWrapper only works with layout algorithms.");
@@ -86,13 +98,16 @@ public class LayoutAlgorithmWrapper {
             if (this.threadSafeOptions == null) {
                 this.threadSafeOptions = new ThreadSafeOptions();
             }
-            JComponent res = LayoutAlgorithmWrapper.getThreadsafeGUI(tsa, this.threadSafeOptions);
-            if (res == null) {
+            if (this.oldThreadSafeGUI == null) {
+                this.oldThreadSafeGUI = LayoutAlgorithmWrapper.getThreadsafeGUI(tsa, this.threadSafeOptions);
+            }
+            this.getThreadSafeGUITimerStarted = true;
+            if (this.oldThreadSafeGUI == null) {
                 this.threadSafeOptions = null;
                 this.threadSafeGUI = false;
                 this.getParametersCalled = false;
             } else {
-                return res;
+                return this.oldThreadSafeGUI;
             }
             tsa.reset();
         }
@@ -122,9 +137,26 @@ public class LayoutAlgorithmWrapper {
                 this.threadSafeOptions.setGraphInstance(graph);
                 this.threadSafeOptions.setSelection(selection);
                 this.threadSafeOptions.doRandomInit = false;
-                this.threadSafeOptions.doFinishMoveToTop = false;
                 this.threadSafeOptions.redraw = false;
+                this.threadSafeOptions.autoRedraw = false;
+                if (!this.getThreadSafeGUITimerStarted) {
+                    // the "thread safe GUI" starts a timer that runs every 200 ms and sets a value
+                    // I have no clue as to why, but if I don't do this, things start to get weird...
+                    if (!SwingUtilities.isEventDispatchThread()) {
+                        SwingUtilities.invokeAndWait(this::getGUI); // needs to be in the event-dispatcher thread
+                    } else {
+                        this.getGUI();
+                    }
+                    this.getThreadSafeGUITimerStarted = true;
+                }
                 ((ThreadSafeAlgorithm) this.algorithm).executeThreadSafe(this.threadSafeOptions);
+                // this fixes IndexOutOfBoundsExceptions that occur when the levels are displayed
+                // and seems to work more reliably otherwise as well
+                if (this.algorithm instanceof BlockingForceDirected || this.algorithm instanceof PatternSpringembedder) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ignored) {}
+                }
                 return;
             } catch (Exception e) {
                 this.threadSafeOptions = null;
@@ -133,7 +165,12 @@ public class LayoutAlgorithmWrapper {
         }
         // some algorithms only work if getParameters was called, see above
         if (!this.getParametersCalled) {
-            this.algorithm.getParameters();
+            try {
+                this.algorithm.getParameters();
+            } catch (NullPointerException npe) { // some algorithms require attach *before* getParameters()
+                this.algorithm.attach(dummyGraph, dummySelection);
+                this.algorithm.getParameters();
+            }
         }
         this.algorithm.reset();
         // set parameters in case the user changed them using the "parameter" GUI
@@ -192,15 +229,21 @@ public class LayoutAlgorithmWrapper {
                     .forEach(a -> {
                         // ThreadSafeAlgorithms such as PatternSpringembedder have two GUI's, so they appear twice
                         if (a instanceof ThreadSafeAlgorithm) {
-                            String alternateName = a.getName() + " (try alternative GUI)";
-                            result.put(alternateName, new LayoutAlgorithmWrapper(alternateName, a, true));
-                            String parameterName = a.getName() + " (\"parameter\" GUI)";
-                            result.put(parameterName, new LayoutAlgorithmWrapper(parameterName, a, false));
-                        } else {
+                            final String alternateName = a.getName() + " (\"thread-safe\" GUI)";
+                            if (WHITELIST.contains(alternateName)) {
+                                result.put(alternateName, new LayoutAlgorithmWrapper(alternateName, a, true));
+                            }
+                            final String parameterName = a.getName() + " (\"parameter\" GUI)";
+                            if (WHITELIST.contains(parameterName)) {
+                                result.put(parameterName, new LayoutAlgorithmWrapper(parameterName, a, false));
+                            }
+                        } else if (WHITELIST.contains(a.getName())) {
                             result.put(a.getName(), new LayoutAlgorithmWrapper(null, a, false));
                         }
                     });
         }
+        final BlockingForceDirected bfd = new BlockingForceDirected();
+        result.put(bfd.getName(), new LayoutAlgorithmWrapper(bfd.getName(), bfd, true));
         return Collections.unmodifiableMap(result);
     }
 

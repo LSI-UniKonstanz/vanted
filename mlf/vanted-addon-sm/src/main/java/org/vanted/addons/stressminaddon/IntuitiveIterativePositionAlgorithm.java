@@ -1,16 +1,13 @@
 package org.vanted.addons.stressminaddon;
 
-import antlr.collections.impl.Vector;
-import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
-import org.AttributeHelper;
 import org.Vector2d;
-import org.Vector3d;
 import org.graffiti.graph.Node;
+import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,33 +26,31 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
      * @param nodes
      *      the nodes to be worked on. The indices of the nodes in this list correspond to
      *      the indices used by {@code distances} and {@code weights}.
+     * @param positions
+     *      the positions that are used as basis for the next iteration.
      * @param distances
-     *      the matrix containing the node graphical distances between the nodes.
-     *      The implementing class shall only read the values in this matrix.
+     *      the matrix containing the node theoretical distances between the nodes.
      * @param weights
-     *      the matrix containing the node graphical distances between the nodes.
-     *      The implementing class shall only read the values in this matrix.
+     *      the matrix containing the weights associated with each node pair.
+     *
      * @return
      *      the newly iterated positions of the nodes in an list with the same
      *
      * @author René, Jannik
      */
     @Override
-    public List<Vector2d> nextIteration(List<Node> nodes, NodeValueMatrix distances, NodeValueMatrix weights) {
-
-
-        /*
-         * create an ArrayList for saving the node position
-         * fill the ArrayList with the positions of nodes from Graph
-         */
-        ArrayList<Vector2d> positions = new ArrayList<>(nodes.size());
-        for (Node n : nodes){
-            positions.add(AttributeHelper.getPositionVec2d(n));
+    public List<Vector2d> nextIteration(final List<Node> nodes, final List<Vector2d> positions,
+                                        final NodeValueMatrix distances, final NodeValueMatrix weights) {
+        ArrayList<Vector2d> newPositions = new ArrayList<>(positions.size());
+        for (Vector2d position : positions) { // create a copy of the positions
+            newPositions.add(new Vector2d(position));
         }
 
-        for (int current = 0; current < nodes.size(); current++){
+        final int numberOfNodes = nodes.size();
 
-            Vector2d currentNode = positions.get(current);  //node position
+        for (int current = 0; current < numberOfNodes; current++){
+
+            Vector2d currentNode = newPositions.get(current);  //node position
             double newXPos = 0;                             // X position from the moved node
             double newYPos = 0;                             // Y position from the moved node
             double totalWeight = 0;                         // sum of every weight between nodes
@@ -64,7 +59,7 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
                 if (current == other){
                     continue;
                 }
-                Vector2d otherNode = positions.get(other);
+                Vector2d otherNode = newPositions.get(other);
 
                 double euclideanDist = currentNode.distance(otherNode);   //get the euclidean distance
                 double weight       = weights.get(current, other);        //get the weight from weight-matrix
@@ -95,6 +90,58 @@ public class IntuitiveIterativePositionAlgorithm implements IterativePositionAlg
 
         }
         // make the positions unmodifiable
-        return Collections.unmodifiableList(positions);
+        return Collections.unmodifiableList(newPositions);
+    }
+
+    /**
+     * Gets a list of {@link Parameter}s this {@link IntuitiveIterativePositionAlgorithm}
+     * provides.
+     *
+     * @return gets a list of Parameters this class provides.
+     * @author Jannik
+     * @see Algorithm#getParameters()
+     */
+    @Override
+    public Parameter[] getParameters() {
+        // TODO implement settings
+        return new Parameter[0];
+    }
+
+    /**
+     * Provides a list of {@link Parameter}s that should be accepted by
+     * the {@link IntuitiveIterativePositionAlgorithm}.<br>
+     * This setter should only be called if the {@link IntuitiveIterativePositionAlgorithm}
+     * not currently used by the top level algorithm.
+     *
+     * @param parameters the parameters to be set.
+     * @author Jannik
+     * @see Algorithm#setParameters(Parameter[])
+     */
+    @Override
+    public void setParameters(Parameter[] parameters) {
+        // TODO implement settings
+    }
+
+    /**
+     * @return the name of the this algorithm.
+     *         This may be be used to represent this class to the user.
+     * @author Jannik
+     */
+    @Override
+    public String getName() {
+        return "Intuitive Algorithm";
+    }
+
+    /**
+     * @return the description of the this algorithm.
+     *         This may be be used to explain the behaviour of this class to the user.
+     * @author Jannik
+     */
+    @Override
+    public String getDescription() {
+        return "<html>This algorithm uses the position of each node to “vote” for the<br>" +
+                "for the node of the current node i.e. nodes will be moved<br>" +
+                "to the weighted average of all other node positions.<br>" +
+                "Running time <code>amountNodes<sup>2</sup></code>.</html>";
     }
 }
