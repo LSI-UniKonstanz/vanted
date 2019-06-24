@@ -7,6 +7,7 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.addons.multilevelframework.sm_util.gui.Describable;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Random;
 
 import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
@@ -66,7 +67,7 @@ public class RandomPlacer implements Placer {
      *
      * @param multilevelGraph the coarsened Graph. Needs to contain at least one
      *                        {@link InternalGraph}
-     * @author Katze
+     * @author Katze, Gordian
      */
     @Override
     public void reduceCoarseningLevel(MultilevelGraph multilevelGraph) {
@@ -75,15 +76,32 @@ public class RandomPlacer implements Placer {
 
         Random random = new Random();
 
+
         for (MergedNode mergedNode : allMergedNodes) {
             Collection<? extends Node> innerNodes = mergedNode.getInnerNodes();
+
+            // Compute minimum distance from the center of the MergedNode.
+            // If multiple nodes are placed within this distance they are going to overlap.
+            // Note that this doesn't guarantee that nodes won't overlap (it's a random placer after all),
+            // it just makes it less likely.
+            // Divide by "almost 2", so the nodes don't lie right next to each other.
+            double minPlaceDistanceX = innerNodes.stream()
+                    .map(AttributeHelper::getWidth)
+                    .max(Comparator.naturalOrder()).orElse(0.0) / 1.9;
+            double minPlaceDistanceY = innerNodes.stream()
+                    .map(AttributeHelper::getHeight)
+                    .max(Comparator.naturalOrder()).orElse(0.0) / 1.9;
 
             for (Node node : innerNodes) {
                 double randx = (-1.0 + 2.0 * random.nextDouble()) * maxPlaceDistance;
                 double randy = (-1.0 + 2.0 * random.nextDouble()) * maxPlaceDistance;
 
-                double x = AttributeHelper.getPositionX(mergedNode) + randx;
-                double y = AttributeHelper.getPositionY(mergedNode) + randy;
+                // scale the minimum distance using a random combination of 1 and -1
+                double xFactor = random.nextBoolean() ? 1 : -1;
+                double yFactor = random.nextBoolean() ? 1 : -1;
+
+                double x = minPlaceDistanceX * xFactor + AttributeHelper.getPositionX(mergedNode) + randx;
+                double y = minPlaceDistanceY * yFactor + AttributeHelper.getPositionY(mergedNode) + randy;
 
                 AttributeHelper.setPosition(node, x, y);
             }

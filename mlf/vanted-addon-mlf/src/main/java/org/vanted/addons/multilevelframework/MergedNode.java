@@ -156,7 +156,7 @@ public class MergedNode extends AdjListNode {
         
         double maxdiam = 0.0;
         
-        for (Node i:nodes) {
+        for (Node i : nodes) {
         	if(AttributeHelper.getHeight(i) > maxdiam) {
         		maxdiam = AttributeHelper.getHeight(i);
         	}
