@@ -20,7 +20,6 @@ import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
-import org.graffiti.plugin.parameter.IntegerParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 
@@ -129,7 +128,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				"Determines how important correct distancing of nodes is that are far away to each other in an itteration step. High values mean placing of far away nodes is less important.",
 				0,2));
 
-		//MAKE STUFF HERE 
+		//MAKE STUFF HERE
 		params.add(new SliderParameter(
 				-4,
 				STRESS_CHANGE_EPSILON_PARAMETER_NAME,
@@ -183,7 +182,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				break;
 			case STRESS_CHANGE_EPSILON_PARAMETER_NAME:
 				this.stressChangeEpsilon = (Double) p.getValue();
-				System.out.println("Epsilon = " + p.getValue());
 				// TODO: parameter currently not working
 				this.stressChangeEpsilon = Math.pow(10, (Double) p.getValue());
 				break;
