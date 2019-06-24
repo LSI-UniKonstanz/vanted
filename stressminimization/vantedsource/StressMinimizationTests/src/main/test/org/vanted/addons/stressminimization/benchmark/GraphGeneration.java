@@ -374,7 +374,7 @@ public class GraphGeneration {
 	/**
 	 * Assigns a random position to each node in the graph
 	 */
-	private void positionNodesRandom(Graph graph) {
+	public static void positionNodesRandom(Graph graph) {
 
 		Random rand = new Random(RANDOM_SEED);
 
