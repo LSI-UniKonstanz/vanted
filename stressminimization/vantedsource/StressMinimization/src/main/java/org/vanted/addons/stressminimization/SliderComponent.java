@@ -22,6 +22,7 @@ public class SliderComponent extends AbstractValueEditComponent{
 	private int def;
 	private boolean pos;
 	private boolean neg;
+	private Dictionary dict;
 	
 	public SliderComponent(Displayable disp){
 		super(disp);
@@ -31,6 +32,7 @@ public class SliderComponent extends AbstractValueEditComponent{
 		this.def = pars.getDef();
 		this.pos = pars.isPos();
 		this.neg = pars.isNeg();
+		this.dict = pars.getDict();
 		
 		//If we want infinity, create a value on the slider for that
 		if(pos) {
@@ -49,19 +51,21 @@ public class SliderComponent extends AbstractValueEditComponent{
 		slider.setPaintLabels(true);
 		
 		//Create the Labels for the Slider
-		Dictionary dict = new Hashtable();
-		for(int i = min; i<=max; i++) {
-			if(pos && i==max) {
-				dict.put(i, new JLabel("\u221e"));
+		if(dict == null) {
+			dict = new Hashtable();
+			for(int i = min; i<=max; i++) {
+				if(pos && i==max) {
+					dict.put(i, new JLabel("\u221e"));
+				}
+				else if(neg && i==min) {
+					dict.put(i, new JLabel("-\u221e"));
+				}
+				else 
+					dict.put(i, new JLabel(Integer.toString(i)));
+				
 			}
-			else if(neg && i==min) {
-				dict.put(i, new JLabel("-\u221e"));
-			}
-			else 
-				dict.put(i, new JLabel(Integer.toString(i)));
-			
+
 		}
-		
 		slider.setLabelTable(dict);
 		
 		

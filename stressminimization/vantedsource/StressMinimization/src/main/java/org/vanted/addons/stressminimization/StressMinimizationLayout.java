@@ -4,11 +4,15 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
+
+import javax.swing.JLabel;
 
 import org.AttributeHelper;
 import org.Vector2d;
@@ -129,11 +133,17 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				0,2));
 
 		//MAKE STUFF HERE
+		Dictionary dict = new Hashtable();
+		dict.put(-9, new JLabel("0"));
+		dict.put(-8, new JLabel("10\u207b\u2078"));
+		dict.put(-6, new JLabel("10\u207b\u2076"));
+		dict.put(-4, new JLabel("10\u207b\u2074"));
+		dict.put(-2, new JLabel("10\u207b\u00B2"));
 		params.add(new SliderParameter(
 				-4,
 				STRESS_CHANGE_EPSILON_PARAMETER_NAME,
 				"Change in stress of succeeding layouts termination criterion. Low values will give better layouts, but computation will consume more time.",
-				-8, -1, false, true));
+				-8, -1, false, true, dict));
 
 		params.add(new DoubleParameter(
 				minimumNodeMovementThreshold,
