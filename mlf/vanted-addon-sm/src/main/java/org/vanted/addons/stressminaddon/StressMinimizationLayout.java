@@ -5,7 +5,10 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import org.AttributeHelper;
 import org.BackgroundTaskStatusProvider;
 import org.Vector2d;
+import org.apache.log4j.chainsaw.Main;
 import org.graffiti.attributes.Attribute;
+import org.graffiti.attributes.AttributeNotFoundException;
+import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 import org.graffiti.plugin.algorithm.PreconditionException;
@@ -105,8 +108,12 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
     private static final Boolean MULTIPLE_THREADS_DEFAULT = Boolean.TRUE;
     /** Whether the algorithm should use multiple threads. */
     private boolean multipleThreads = MULTIPLE_THREADS_DEFAULT;
-    /** MultiLevelFramework compatibility mode. */
-    private boolean compatibilityMLF = false;
+
+    // MultiLevelFramework support
+    /** Name of attribute that signals the current graph is a coarsening level. */
+    private static final String MLF_COMPATIBILITY_IS_COARSENING_LEVEL = "GRAPH_IS_MLF_COARSENING_LEVEL";
+    /** Name of attribute that signals the current graph is the top coarsening level. */
+    private static final String MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL = "GRAPH_IS_MLF_COARSENING_TOP_LEVEL";
 
     /**
      * Creates a new {@link StressMinimizationLayout} object.
@@ -158,6 +165,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
      */
     public void execute() {
         assert (!this.intermediateUndoable || this.doAnimations); // intermediateUndoable => doAnimations
+
         // get nodes to work with
         ArrayList<Node> pureNodes;
         if (selection.isEmpty()) {
@@ -168,6 +176,32 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
 
         Runnable task = () -> {
             startTime = System.currentTimeMillis();
+
+            // MultiLevelFramework compatibility mode.
+            boolean compatibilityMLF = false;
+            // MultiLevelFramework compatibility mode for top level.
+            boolean compatibilityMLFtTpLevel = false;
+
+            // backup old values
+            boolean oldIntermediateUndoable = this.intermediateUndoable,
+                    oldDoAnimations         = this.doAnimations,
+                    oldBackgroundTask       = this.backgroundTask;
+            InitialPlacer oldInitialPlacer  = this.initialPlacer;
+
+            // MultiLevelFramework compatibility
+            if (graph.getAttributes().getCollection().containsKey(MLF_COMPATIBILITY_IS_COARSENING_LEVEL) &&
+                    graph.getBoolean(MLF_COMPATIBILITY_IS_COARSENING_LEVEL)) {
+                compatibilityMLF = true;
+                this.intermediateUndoable = false;
+                this.doAnimations = false;
+                this.backgroundTask = false;
+                if (graph.getAttributes().getCollection().containsKey(MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL) &&
+                        graph.getBoolean(MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL)) {
+                    this.initialPlacer = new NullPlacer(); // we are not at top level
+                    compatibilityMLFtTpLevel = true;
+                }
+            }
+
             System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Start (n = " + pureNodes.size() + ")"));
             // remove bends
             if (this.removeEdgeBends) {
@@ -205,7 +239,6 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
                     component.get(pos).setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, pos);
                 }
                 WorkUnit unit = new WorkUnit(component, id++);
-                System.out.println(unit.toStringShort());
 
                 workUnits.add(unit);
 
@@ -327,6 +360,15 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             startTime = System.currentTimeMillis() - startTime;
             System.out.println(startTime + " SM: " + (status = "Finished.") + " Took " + (startTime/1000.0) + "s");
             keepRunning.set(true);
+
+            if (compatibilityMLF) {
+                this.intermediateUndoable = oldIntermediateUndoable;
+                this.doAnimations = oldDoAnimations;
+                this.backgroundTask = oldBackgroundTask;
+                if (compatibilityMLFtTpLevel) {
+                    this.initialPlacer = oldInitialPlacer;
+                }
+            }
         };
         // run!
         if (this.backgroundTask) {
@@ -488,17 +530,6 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
         // Threading
         this.backgroundTask = ((BooleanParameter) params[17]).getBoolean();
         this.multipleThreads = ((BooleanParameter) params[18]).getBoolean();
-
-        // MultiLevelFramework compatibility
-        if (graph.getBoolean("GRAPH_IS_MLF_COARSENING_LEVEL")) {
-            this.compatibilityMLF = true;
-            if (!graph.getBoolean("GRAPH_IS_MLF_COARSENING_TOP_LEVEL")) {
-                this.initialPlacer = new NullPlacer(); // we are not at top level
-            }
-            this.intermediateUndoable = false;
-            this.doAnimations = false;
-            this.backgroundTask = false;
-        }
     }
 
     /*
