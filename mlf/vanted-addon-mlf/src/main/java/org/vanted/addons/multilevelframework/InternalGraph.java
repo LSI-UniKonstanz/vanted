@@ -3,9 +3,7 @@ package org.vanted.addons.multilevelframework;
 import org.graffiti.attributes.CollectionAttribute;
 import org.graffiti.graph.*;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A subclass of {@link AdjListGraph} used by the {@link MultilevelGraph} implementation.
@@ -13,6 +11,12 @@ import java.util.Set;
  * {@link AdjListGraph}'s public interface.
  */
 class InternalGraph extends AdjListGraph implements CoarsenedGraph {
+    /**
+     * Store "object attributes" associated with this level. (See {@link InternalGraph#setObject(String, Object)}).
+     * Lazily initialized as it is not always needed.
+     */
+    private HashMap<String, Object> objectAttributes;
+
     /**
      * This method just calls the superclass' method with the same signature.
      * Note that {@code false} must be passed to the {@code directed} parameter.
@@ -243,5 +247,35 @@ class InternalGraph extends AdjListGraph implements CoarsenedGraph {
     @SuppressWarnings("unchecked")
     public Collection<? extends MergedNode> getMergedNodes() {
         return (Collection) this.nodes; // see comment above, this cast _should_ be safe
+    }
+
+    /**
+     * Add an object attribute to the graph. Works similar to the attributes in
+     * {@link org.graffiti.attributes.Attributable}.
+     * @param key
+     *      The key at which the object is stored. Must not be {@code null}.
+     * @param value
+     *      The value to store. Must not be {@code null}.
+     * @author Gordian
+     */
+    public void setObject(String key, Object value) {
+        if (this.objectAttributes == null) {
+            this.objectAttributes = new HashMap<>();
+        }
+        this.objectAttributes.put(Objects.requireNonNull(key), Objects.requireNonNull(value));
+    }
+
+    /**
+     * @param key
+     *      The key to retrieve. If this is {@code null}, {@link Optional#empty()} will be returned.
+     * @return
+     *      The object stored at {@code key}, as an {@link Optional}. This method will never return {@code null}.
+     * @author Gordian
+     */
+    public Optional<Object> getObject(String key) {
+        if (this.objectAttributes == null || key == null || !this.objectAttributes.containsKey(key)) {
+            return Optional.empty();
+        }
+        return Optional.of(this.objectAttributes.get(key));
     }
 }

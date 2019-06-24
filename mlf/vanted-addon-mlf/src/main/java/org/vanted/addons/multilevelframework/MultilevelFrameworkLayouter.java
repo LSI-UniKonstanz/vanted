@@ -52,7 +52,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     private int placerPSPIndex = 0;
     private ParameterizableSelectorParameter mergerPSP;
     private ParameterizableSelectorParameter placerPSP;
-    private boolean randomTop = false;
+    private boolean randomTop = true;
     private boolean removeBends = false;
 
     // add the default mergers and placers
@@ -60,6 +60,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         MultilevelFrameworkLayouter.mergers.add(new SolarMerger());
         MultilevelFrameworkLayouter.mergers.add(new RandomMerger());
         MultilevelFrameworkLayouter.placers.add(new RandomPlacer());
+        MultilevelFrameworkLayouter.placers.add(new SolarPlacer());
     }
 
     public MultilevelFrameworkLayouter() {
@@ -183,7 +184,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                     bts.statusMessage = makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
                             connectedComponents[0], i, graph.getName());
                     bts.status = calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
-//                    display(componentMLG.getTopLevel());
+                    display(componentMLG.getTopLevel());
                     // force directed sometimes takes tens of seconds to "layout" a single node
                     if (componentMLG.getTopLevel().getNumberOfNodes() > 2) {
                         algorithm.execute(componentMLG.getTopLevel(), emptySelection);
@@ -198,6 +199,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 bts.status = calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
                 bts.statusMessage = makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
                         connectedComponents[0], i, graph.getName());
+                display(componentMLG.getTopLevel());
                 algorithm.execute(componentMLG.getTopLevel(), emptySelection);
                 bts.statusMessage = "Finished laying out the levels";
                 bts.status = -1;
@@ -494,7 +496,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         this.algorithmListComboBox.addActionListener(this::changeSelectedAlgorithm);
 
         JComponentParameter algorithmList = new JComponentParameter(this.algorithmListComboBox,
-                "Layout Algorithm",
+                "Level Layout Algorithm",
                 "Layout Algorithm to be run on each level of the coarsened graph.");
         this.algorithmListComboBox.setSelectedItem(this.lastSelectedAlgorithm);
 
