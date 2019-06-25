@@ -203,17 +203,23 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 						if(currentStatus < 0) {
 							currentStatus = 0;
 						}
+						
+						// First 10% get the first 10%
+						if(algorithm.getProgress() < 1.0) {
+							currentStatus = (int) (algorithm.getProgress() * 100);
+						}
+						
 						//First 90% get 40% in the progress bar
 						if(algorithm.getProgress() < 0.9) {
-							currentStatus = (int) (algorithm.getProgress()*100 * 4/9);
+							currentStatus = (int) (algorithm.getProgress()*100 * 0.4 + 10);
 						}
 						//90-99 get 30% in the progress bar
 						else if(algorithm.getProgress() < 0.99) {
-							currentStatus = (int) ((algorithm.getProgress()-0.9)*1000 * 3/9 + 40);
+							currentStatus = (int) ((algorithm.getProgress()-0.9)*1000 * 0.3 + 50);
 						}
-						//99-100 get 30% in the progress bar
+						//99-100 get 20% in the progress bar
 						else if(algorithm.getProgress() < 0.999) {
-							currentStatus = (int) ((algorithm.getProgress()-0.99)*10000 * 3/9 + 70);
+							currentStatus = (int) ((algorithm.getProgress()-0.99)*10000 * 0.2 + 80);
 						}
 
 						provider.setCurrentStatusValue(currentStatus);
@@ -260,6 +266,8 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 					ErrorMsg.addErrorMessage("We ran out of memory! Pleace increase heap memory of the JVM");
 				} catch (Exception ex) {
 					ErrorMsg.addErrorMessage(ex);
+				} finally {
+					setStatus(BackgroundStatus.FINISHED);
 				}
 
 			}

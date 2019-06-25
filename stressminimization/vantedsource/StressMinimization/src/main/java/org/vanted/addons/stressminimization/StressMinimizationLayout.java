@@ -95,6 +95,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	// because using an array for storing parameters
 	// seemed very uncomfortable to us.
 
+	private static final String NUMBER_OF_LANDMARKS_NAME = "Number of Landmarks";
+	private static final int NUMBER_OF_LANDMARKS_DEFAULT_VALUE = 1000;
+	private int numberOfLandmarks = NUMBER_OF_LANDMARKS_DEFAULT_VALUE;
+
 	private static final String RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME = "Randomize initial layout.";
 	private static final boolean RANDOMIZE_INPUT_LAYOUT_DEFAULT_VALUE = false;
 	private boolean randomizeInputLayout = RANDOMIZE_INPUT_LAYOUT_DEFAULT_VALUE;
@@ -119,10 +123,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	private static final double ITERATIONS_THRESHOLD_DEFAULT_VALUE = Double.POSITIVE_INFINITY;
 	private double iterationsThreshold = ITERATIONS_THRESHOLD_DEFAULT_VALUE;
 	
-	private static final String NUMBER_OF_LANDMARKS_NAME = "Number of Landmarks for Layout";
-	private static final int NUMBER_OF_LANDMARKS_DEFAULT_VALUE = 1;
-	private int landmarks = NUMBER_OF_LANDMARKS_DEFAULT_VALUE;
-
 	/**
 	 * {@inheritDoc}
 	 */
@@ -130,12 +130,16 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	public Parameter[] getParameters() {
 		List<Parameter> params = new ArrayList<>();
 
+		/*
+		//TODO Find a way to replace the 5 with n or delete this
 		params.add(new SliderParameter(
-				alpha,
-				ALPHA_PARAMETER_NAME,
-				"Determines how important correct distancing of nodes is that are far away to each other in an itteration step. High values mean placing of far away nodes is less important.",
-				0,2));
-
+				numberOfLandmarks,
+				NUMBER_OF_LANDMARKS_NAME,
+				"The number of nodes that will be mainly layouted. All remaining nodes will be positioned relatively to these nodes.",
+				0, Integer.MAX_VALUE
+				));
+  		*/
+		
 		//MAKE STUFF HERE
 		Dictionary dict = new Hashtable();
 		dict.put(-9, new JLabel("0"));
@@ -177,14 +181,12 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				"Number of iterations after which algorithm excution will be terminated.",
 				1,1200, true, false, iterDict
 				));
-		
-		//TODO Find a way to replace the 5 with n or delete this
+
 		params.add(new SliderParameter(
-				landmarks,
-				NUMBER_OF_LANDMARKS_NAME,
-				"Landmarks for layout.",
-				0, 5
-				));
+				alpha,
+				ALPHA_PARAMETER_NAME,
+				"Determines how important correct distancing of nodes is that are far away to each other in an itteration step. High values mean placing of far away nodes is less important.",
+				0,2));
 
 		params.add(new BooleanParameter(
 				randomizeInputLayout,
@@ -207,8 +209,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				this.alpha = (int) ((double) p.getValue());
 				break;
 			case STRESS_CHANGE_EPSILON_PARAMETER_NAME:
-				this.stressChangeEpsilon = (Double) p.getValue();
-				// TODO: parameter currently not working
 				this.stressChangeEpsilon = Math.pow(10, (Double) p.getValue());
 				break;
 			case MINIMUM_NODE_MOVEMENT_PARAMETER_NAME:
@@ -222,9 +222,18 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				break;
 			case RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME:
 				this.randomizeInputLayout = (Boolean) p.getValue();
+			case NUMBER_OF_LANDMARKS_NAME:
+				this.numberOfLandmarks = (Integer) p.getValue();
 			}
 
 		}
+		
+		// FIXME: remove when slider implementation is working again
+		this.alpha = 2;
+		this.stressChangeEpsilon = 1e-4;
+		this.iterationsThreshold = 75;
+		this.numberOfLandmarks = 3000;
+		
 	}
 
 	/**
@@ -273,11 +282,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		Set<Set<Node>> components = GraphHelper.getConnectedComponents(workNodes);
 
 		// NOTE: applying the final nodes position updates in this class
-		// has two benefits:
-		// * algorithm is more easy usable by the Multilevel Framework
-		// * there's a magic speedup in some of the benchmarks, which I can not explain.
-		//   the milestone 2 benchmarks profited from this speedup, so for comparability
-		//   later benchmarks should also profit from this speedup...
+		// has the benefit, that the algorithm is more easy usable by the Multilevel Framework
 		HashMap<Node, Vector2d> nodes2NewPositions = new HashMap<Node, Vector2d>();
 
 		for (Set<Node> component : components) {
@@ -325,6 +330,14 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		final int n = nodes.size();
 		final int d = 2; // only implemented for two dimensional space
 
+		if (waitIfPausedAndCheckStop()) { return; }
+
+		setStatusDescription("Stress Minimization: selecting numberOfLandmarks");
+		List<Node> landmarkNodes = new ArrayList<>(numberOfLandmarks);
+		for (int i = 0; i < numberOfLandmarks; i += 1) {
+			// TODO: 
+		}
+		
 		if (waitIfPausedAndCheckStop()) { return; }
 
 		setStatusDescription("Stress Minimization: calculating distances...");
@@ -494,7 +507,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 	/**
 	 * Calculates the distance matrix of the given nodes set.
-	 * @param nodesSet A set of nodes. For these nodes the distances to the other nodes in the set will be calculated.
+	 * @param nodes A list of nodes. For these nodes the distances to the other nodes in the set will be calculated.
 	 * @return the distance matrix
 	 */
 	public RealMatrix calcDistances(List<Node> nodes) {
