@@ -115,6 +115,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	private static final String ITERATIONS_THRESHOLD_PARAMETER_NAME = "Interations Termination Maximum";
 	private static final double ITERATIONS_THRESHOLD_DEFAULT_VALUE = Double.POSITIVE_INFINITY;
 	private double iterationsThreshold = ITERATIONS_THRESHOLD_DEFAULT_VALUE;
+	
+	private static final String NUMBER_OF_LANDMARKS_NAME = "Number of Landmarks for Layout";
+	private static final int NUMBER_OF_LANDMARKS_DEFAULT_VALUE = 1;
+	private int landmarks = NUMBER_OF_LANDMARKS_DEFAULT_VALUE;
 
 	/**
 	 * {@inheritDoc}
@@ -159,6 +163,13 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				1.0,
 				ITERATIONS_THRESHOLD_PARAMETER_NAME,
 				"Number of iterations after which algorithm excution will be terminated."
+				));
+		//TODO Find a way to replace the 5 with n or delete this
+		params.add(new SliderParameter(
+				landmarks,
+				NUMBER_OF_LANDMARKS_NAME,
+				"Landmarks for layout.",
+				0, 5
 				));
 
 		params.add(new BooleanParameter(
