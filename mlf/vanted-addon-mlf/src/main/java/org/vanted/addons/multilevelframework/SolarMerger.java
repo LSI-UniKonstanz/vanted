@@ -25,6 +25,7 @@ class SolarMerger implements Merger {
     public final static String SUNS_KEY               = "SOLAR_MERGER_SUNS_SET";
     public final static String SUN_TO_PLANETS_KEY     = "SOLAR_MERGER_SUN_TO_PLANETS_SET";
     public final static String NODE_TO_PATHS_KEY      = "SOLAR_MERGER_NODE_TO_PATHS_SET";
+    public final static String PLANET_TO_MOONS_KEY    = "SOLAR_MERGER_PLANET_TO_MOONS_SET";
 
     // Variables containing the stopping criteria for the SolarMerger
     int minNodes = 20;
@@ -219,10 +220,10 @@ class SolarMerger implements Merger {
 
         // store information for the solar placer
         // TODO
-//        InternalGraph top = (InternalGraph) multilevelGraph.getTopLevel();
-//        top.setObject(SUNS_KEY, suns);
-//        top.setObject(NODE_TO_PATHS_KEY, nodeToPaths);
-//        top.setObject(SUN_TO_PLANETS_KEY, sunsToPlanets);
+        InternalGraph top = (InternalGraph) multilevelGraph.getTopLevel();
+        top.setObject(SUNS_KEY, suns);
+        top.setObject(SUN_TO_PLANETS_KEY, sunsToPlanets);
+        top.setObject(PLANET_TO_MOONS_KEY, planetsToMoons);
 
         // color the nodes in a the debug version, when asserts are enabled
         // also assert we didn't loose any nodes
