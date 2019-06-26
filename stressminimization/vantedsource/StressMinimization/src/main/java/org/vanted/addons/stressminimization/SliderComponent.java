@@ -30,6 +30,7 @@ public class SliderComponent extends AbstractValueEditComponent{
 		this.min = pars.getMin();
 		this.max = pars.getMax();
 		this.def = pars.getDef();
+		this.value = def;
 		this.pos = pars.isPos();
 		this.neg = pars.isNeg();
 		this.dict = pars.getDict();
