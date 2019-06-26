@@ -70,7 +70,6 @@ public class SolarPlacer implements Placer {
 				}
 			}
 		}
-		fakeZeroEngergyLength = fakeZeroEngergyLength / 3;
 
 		for (MergedNode node : top.getMergedNodes()) {
 			double centerX = AttributeHelper.getPositionX(node);
@@ -84,25 +83,43 @@ public class SolarPlacer implements Placer {
 			Set<Node> planets = sunToPlanets.get(sun);
 			for (Node planet : planets) {
 				// determine how many intra-system connections lead to a planet
-				Set<Node> neighbors = planet.getInNeighbors();
-				int deg = neighbors.size(); // all neighbors
-				deg -= planetToMoons.get(planet).size(); // minus all moons
+				Set<Node> neighbors = planet.getNeighbors(); // all neighbors
+				neighbors.remove(sun); // minus the sun
+				neighbors.removeAll(planetToMoons.get(planet)); // minus all moons
 
-				for (Node neighbor : neighbors) { // minus all inter-system connections
-					if (sunToPlanets.get(sun).contains(neighbor)) {
-						deg--;
-					}
+				for (Node neighbor : neighbors) {
+					if (planets.contains(neighbor)) {
+						neighbors.remove(neighbor);
+					} // minus all inter-system connections
 				}
 
-				if (deg == 0) {
+				int deg = neighbors.size(); // amount of remaining connections. These are all intra-system connections
+
+				if (deg == 0) { // no intra-system connections
 					double angle = Math.random() * Math.PI * 2;
-					double x = Math.cos(angle) * fakeZeroEngergyLength + centerX;
-					double y = Math.sin(angle) * fakeZeroEngergyLength + centerY;
+					double x = Math.cos(angle) * (fakeZeroEngergyLength / 3) + centerX;
+					double y = Math.sin(angle) * (fakeZeroEngergyLength / 3) + centerY;
 					AttributeHelper.setPosition(planet, x, y);
-				} else if (deg == 1) {
-					// TODO
-				} else if (deg > 1) {
-					// TODO
+				} else { // connected to other solar system(s)
+					for (Node neighbor : neighbors) {
+						if (suns.contains(neighbor)) { // neighbor is a sun
+							// lambda = 1/2
+						}
+						else {
+							for (Node otherSun : suns) {
+								if(sunToPlanets.get(otherSun).contains(neighbor)) {
+									// lambda = 1/3
+								}
+								else {
+									for (Node otherPlanet : sunToPlanets.get(sun)) {
+										if (planetToMoons.get(otherPlanet).contains(neighbor)) {
+											// lambda = 1/4
+										}
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}
