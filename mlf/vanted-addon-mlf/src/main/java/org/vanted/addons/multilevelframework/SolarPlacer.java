@@ -1,12 +1,13 @@
 package org.vanted.addons.multilevelframework;
 
-import org.AttributeHelper;
-import org.graffiti.graph.Node;
-import org.graffiti.plugin.parameter.Parameter;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
+
+import org.AttributeHelper;
+import org.Vector2d;
+import org.graffiti.graph.Node;
+import org.graffiti.plugin.parameter.Parameter;
 
 public class SolarPlacer implements Placer {
 	/**
@@ -71,58 +72,56 @@ public class SolarPlacer implements Placer {
 			}
 		}
 
-		for (MergedNode node : top.getMergedNodes()) {
-			double centerX = AttributeHelper.getPositionX(node);
-			double centerY = AttributeHelper.getPositionY(node);
-
-			Collection<? extends Node> innerNodes = node.getInnerNodes();
-			Node sun = innerNodes.iterator().next(); // every first Node is the sun Node
-			AttributeHelper.setPosition(sun, centerX, centerY); // place the sun node at the position of the collapsed
-																// solar system
-
-			Set<Node> planets = sunToPlanets.get(sun);
-			for (Node planet : planets) {
-				// determine how many intra-system connections lead to a planet
-				Set<Node> neighbors = planet.getNeighbors(); // all neighbors
-				neighbors.remove(sun); // minus the sun
-				neighbors.removeAll(planetToMoons.get(planet)); // minus all moons
-
-				for (Node neighbor : neighbors) {
-					if (planets.contains(neighbor)) {
-						neighbors.remove(neighbor);
-					} // minus all inter-system connections
-				}
-
-				int deg = neighbors.size(); // amount of remaining connections. These are all intra-system connections
-
-				if (deg == 0) { // no intra-system connections
-					double angle = Math.random() * Math.PI * 2;
-					double x = Math.cos(angle) * (fakeZeroEngergyLength / 3) + centerX;
-					double y = Math.sin(angle) * (fakeZeroEngergyLength / 3) + centerY;
-					AttributeHelper.setPosition(planet, x, y);
-				} else { // connected to other solar system(s)
-					for (Node neighbor : neighbors) {
-						if (suns.contains(neighbor)) { // neighbor is a sun
-							// lambda = 1/2
-						}
-						else {
-							for (Node otherSun : suns) {
-								if(sunToPlanets.get(otherSun).contains(neighbor)) {
-									// lambda = 1/3
-								}
-								else {
-									for (Node otherPlanet : sunToPlanets.get(sun)) {
-										if (planetToMoons.get(otherPlanet).contains(neighbor)) {
-											// lambda = 1/4
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
+//		for (MergedNode node : top.getMergedNodes()) {
+//			Vector2d center = AttributeHelper.getPositionVec2d(node);
+//
+//			Collection<? extends Node> innerNodes = node.getInnerNodes();
+//			Node sun = innerNodes.iterator().next(); // every first Node is the sun Node Also this is shitty code
+//			AttributeHelper.setPosition(sun, center); // place the sun node at the position of its ancestor
+//			Set<Node> planets = sunToPlanets.get(sun);
+//			for (Node planet : planets) {
+//				// determine how many intra-system connections lead to a planet
+//				Set<Node> neighbors = planet.getNeighbors(); // all neighbors
+//				neighbors.remove(sun); // minus the sun
+//				neighbors.removeAll(planetToMoons.get(planet)); // minus all moons
+//
+//				for (Node neighbor : neighbors) {
+//					if (planets.contains(neighbor)) {
+//						neighbors.remove(neighbor);
+//					} // minus all inter-system connections
+//				}
+//
+//				int deg = neighbors.size(); // amount of remaining connections. These are all intra-system connections
+//
+//				if (deg == 0) { // no intra-system connections
+//					double angle = Math.random() * Math.PI * 2;
+//					double x = Math.cos(angle) * (fakeZeroEngergyLength / 3) + center.x;
+//					double y = Math.sin(angle) * (fakeZeroEngergyLength / 3) + center.y;
+//					AttributeHelper.setPosition(planet, x, y);
+//				} else { // connected to other solar system(s)
+//					for (Node neighbor : neighbors) {
+//						if (suns.contains(neighbor)) { // neighbor is a sun
+//							double lambda = 1.0 / 2.0;
+//							Vector2d t = AttributeHelper.getPositionVec2d(neighbor);
+//							Vector2d s = AttributeHelper.getPositionVec2d(sun);
+//							AttributeHelper.setPosition(planet, new Vector2d());
+//						} else {
+//							for (Node otherSun : suns) {
+//								if (sunToPlanets.get(otherSun).contains(neighbor)) {
+//									double lambda = 1.0 / 3.0;
+//								} else {
+//									for (Node otherPlanet : sunToPlanets.get(sun)) {
+//										if (planetToMoons.get(otherPlanet).contains(neighbor)) {
+//											double lambda = 1.0 / 3.0;
+//										}
+//									}
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
 	}
 
 	/**
