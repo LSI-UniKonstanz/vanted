@@ -8,7 +8,7 @@
     <author>David Boetius, Benjamin Halbritter, Thomas Komander, Silvan Reiner, Josua Sattler, Jakob Wietstock</author>
     <description>Adds Stress Minimization Layouter to VANTED.</description>
     <plugindesc>
-        <name>Stress Minimization Add-on</name>
+        <name>Stress Minimization Visual Testing Add-on</name>
         <main>org.vanted.addons.stressminimization.visualtesting.VisualTestingAddon</main>
         <version>0.1</version>
         <compatibility>2.5.0</compatibility>

@@ -19,6 +19,7 @@ import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
+import org.vanted.addons.stressminimization.parameters.LandmarkParameter;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
@@ -89,7 +90,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	// seemed very uncomfortable to us.
 
 	private static final String NUMBER_OF_LANDMARKS_NAME = "Number of Landmarks";
-	private static final int NUMBER_OF_LANDMARKS_DEFAULT_VALUE = 1000;
+	private static final int NUMBER_OF_LANDMARKS_DEFAULT_VALUE = 100;
 	private int numberOfLandmarks = NUMBER_OF_LANDMARKS_DEFAULT_VALUE;
 
 	private static final String RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME = "Randomize initial layout.";
@@ -123,15 +124,11 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	public Parameter[] getParameters() {
 		List<Parameter> params = new ArrayList<>();
 
-		/*
-		//TODO Find a way to replace the 5 with n or delete this
-		params.add(new SliderParameter(
+		params.add(new LandmarkParameter(
 				numberOfLandmarks,
 				NUMBER_OF_LANDMARKS_NAME,
-				"The number of nodes that will be mainly layouted. All remaining nodes will be positioned relatively to these nodes.",
-				0, Integer.MAX_VALUE
+				"The number of nodes that will be mainly layouted. All remaining nodes will be positioned relatively to these nodes."
 				));
-		 */
 
 		//MAKE STUFF HERE
 		Dictionary dict = new Hashtable();
@@ -227,7 +224,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		this.alpha = 2;
 		this.stressChangeEpsilon = 1e-4;
 		this.iterationsThreshold = 75;
-		this.numberOfLandmarks = 100;
 
 	}
 

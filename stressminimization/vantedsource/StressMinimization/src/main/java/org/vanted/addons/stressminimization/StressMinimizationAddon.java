@@ -2,6 +2,8 @@
 package org.vanted.addons.stressminimization;
 
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.vanted.addons.stressminimization.parameters.LandmarkParameter;
+import org.vanted.addons.stressminimization.parameters.LandmarkSliderComponent;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.addons.AddonAdapter;
 
@@ -19,6 +21,7 @@ public class StressMinimizationAddon extends AddonAdapter {
 		};
 
 		valueEditComponents.put(SliderParameter.class, SliderComponent.class);
+		valueEditComponents.put(LandmarkParameter.class, LandmarkSliderComponent.class);
 
 		// other fields are initialized with empty arrays by default
 	}
