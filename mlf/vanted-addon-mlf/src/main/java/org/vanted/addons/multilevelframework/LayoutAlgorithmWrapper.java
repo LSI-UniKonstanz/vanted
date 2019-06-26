@@ -49,8 +49,8 @@ public class LayoutAlgorithmWrapper {
     private JComponent oldThreadSafeGUI = null;
 
     final static List<String> WHITELIST = Arrays.asList("Circle", "Grid Layout", "Stress Minimization",
-            "Move Nodes to Grid-Points", "Null-Layout", "Random", "Remove Node Overlaps", BlockingForceDirected.springName,
-            "Force Directed (\"parameter\" GUI)");
+            "Move Nodes to Grid-Points", "Null-Layout", "Random", "Remove Node Overlaps", BlockingForceDirected.springName
+            /*, "Force Directed (\"parameter\" GUI)"*/);
 
     /**
      * Create a new {@link LayoutAlgorithmWrapper}. This method is for internal use only. It's package-private so it can
@@ -227,7 +227,7 @@ public class LayoutAlgorithmWrapper {
                     // some algorithms seem to have no name
                     .filter(a -> a.getName() != null && !a.getName().trim().isEmpty())
                     .forEach(a -> {
-                        // ThreadSafeAlgorithms such as PatternSpringembedder have two GUI's, so they appear twice
+                        // ThreadSafeAlgorithms such as PatternSpringembedder have two GUIs, so they appear twice
                         if (a instanceof ThreadSafeAlgorithm) {
                             final String alternateName = a.getName() + " (\"thread-safe\" GUI)";
                             if (WHITELIST.contains(alternateName)) {
@@ -350,7 +350,7 @@ public class LayoutAlgorithmWrapper {
         try {
             return (T) clazz.newInstance();
         } catch (IllegalAccessException | InstantiationException e) {
-            System.err.println("Failed to create new instance of ");
+            System.err.println("Failed to create new instance of " + t.getClass().getName());
             return t;
         }
     }
