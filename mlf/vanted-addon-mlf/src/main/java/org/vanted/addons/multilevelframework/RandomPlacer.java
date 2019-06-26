@@ -96,9 +96,9 @@ public class RandomPlacer implements Placer {
                 double randx = (-1.0 + 2.0 * random.nextDouble()) * maxPlaceDistance;
                 double randy = (-1.0 + 2.0 * random.nextDouble()) * maxPlaceDistance;
 
-                // scale the minimum distance using a random combination of 1 and -1
-                double xFactor = random.nextBoolean() ? 1 : -1;
-                double yFactor = random.nextBoolean() ? 1 : -1;
+                // scale the minimum distances so they point in the same direction as randx, randy
+                double xFactor = randx > 0 ? 1 : -1;
+                double yFactor = randy > 0 ? 1 : -1;
 
                 double x = minPlaceDistanceX * xFactor + AttributeHelper.getPositionX(mergedNode) + randx;
                 double y = minPlaceDistanceY * yFactor + AttributeHelper.getPositionY(mergedNode) + randy;

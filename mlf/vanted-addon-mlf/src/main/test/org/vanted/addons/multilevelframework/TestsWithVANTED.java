@@ -7,6 +7,8 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.circle.CircleLayouter
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.PatternSpringembedder;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import org.AttributeHelper;
+import org.Vector2d;
+import org.graffiti.attributes.Attribute;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
@@ -22,6 +24,7 @@ import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.geom.Point2D;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -668,5 +671,44 @@ public class TestsWithVANTED {
         assertTrue(msg.contains(graph));
     }
 
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void removeOverlaps() {
+        AdjListGraph g = new AdjListGraph();
+        Node n1 = g.addNode();
+        Node n2 = g.addNode();
+        AttributeHelper.setPosition(n1, 0, 0); AttributeHelper.setPosition(n2, 50, 50);
+        AttributeHelper.setSize(n1, 100, 200);
+        AttributeHelper.setSize(n2, 100, 200);
+        MultilevelFrameworkLayouter.removeOverlaps(g);
+        Vector2d size1 = AttributeHelper.getSize(n1);
+        Vector2d size2 = AttributeHelper.getSize(n2);
+        if (size1 == null || size2 == null) {
+            throw new IllegalStateException("The sizes should not be null");
+        }
+        double minDistX = size1.x/2.0 + size2.x/2.0;
+        double minDistY = size1.y/2.0 + size2.y/2.0;
+        // if there are no overlaps in either x or y direction (or both) , then the bounding boxes don't overlap
+        assertTrue(Math.abs(AttributeHelper.getPositionX(n1) - AttributeHelper.getPositionX(n2)) > minDistX
+                || Math.abs(AttributeHelper.getPositionY(n1) - AttributeHelper.getPositionY(n2)) > minDistY);
+    }
 
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void randomLayout() {
+        AdjListGraph g = new AdjListGraph();
+        Node n1 = g.addNode();
+        Node n2 = g.addNode();
+        Node n3 = g.addNode();
+        g.getNodes().forEach(n -> AttributeHelper.setPosition(n, 0, 0));
+        MultilevelFrameworkLayouter.randomLayout(g);
+        Point2D nn = new Point2D.Double(0, 0);
+        assertTrue(!nn.equals(AttributeHelper.getPosition(n1))
+                || !nn.equals(AttributeHelper.getPosition(n2))
+                || !nn.equals(AttributeHelper.getPosition(n3)));
+    }
 }
