@@ -1,6 +1,7 @@
 package org.vanted.addons.multilevelframework;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
+import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.no_overlapp_as_tim.NoOverlappLayoutAlgorithmAS;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvider;
@@ -48,12 +49,14 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     private String lastSelectedMerger = DEFAULT_MERGER;
     private int randomTopParameterIndex = 0;
     private int removeBendsParameterIndex = 0;
+    private int removeOverlapsParameterIndex = 0;
     private int mergerPSPIndex = 0;
     private int placerPSPIndex = 0;
     private ParameterizableSelectorParameter mergerPSP;
     private ParameterizableSelectorParameter placerPSP;
     private boolean randomTop = false;
     private boolean removeBends = false;
+    private boolean removeOverlaps = false;
 
     // add the default mergers and placers
     static {
@@ -123,6 +126,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         final Graph graph = this.graph;
         final Selection selection = this.selection;
         final boolean removeBends = this.removeBends;
+        final boolean removeOverlaps = this.removeOverlaps;
         final boolean randomTop = this.randomTop;
         final Merger merger = this.getSelectedMergerAndSetParameters();
         final Placer placer = this.getSelectedPlacerAndSetParameters();
@@ -173,11 +177,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
                 if (bts.isStopped) { bts.status = -1; return; }
 
-                if (randomTop) {
-                    final RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
-                    rla.attach(componentMLG.getTopLevel(), emptySelection);
-                    rla.execute();
-                }
+                if (randomTop) { randomLayout(componentMLG.getTopLevel()); }
 
                 while (componentMLG.getNumberOfLevels() > 1) {
                     bts.statusMessage = makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
@@ -185,9 +185,10 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                     bts.status = calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
 //                    display(componentMLG.getTopLevel());
                     // force directed sometimes takes tens of seconds to "layout" a single node
-                    if (componentMLG.getTopLevel().getNumberOfNodes() > 2) {
+                    if (componentMLG.getTopLevel().getNumberOfNodes() >= 2) {
                         algorithm.execute(componentMLG.getTopLevel(), emptySelection);
                     }
+                    if (removeOverlaps) { removeOverlaps(componentMLG.getTopLevel()); }
                     placer.reduceCoarseningLevel(componentMLG);
                     // indicate that this is a coarsened graph to allow for optimizations in the level layouter
                     componentMLG.getTopLevel().setBoolean(COARSENING_LEVEL_INDICATOR_ATTRIBUTE_PATH, true);
@@ -199,6 +200,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 bts.statusMessage = makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
                         connectedComponents[0], i, graph.getName());
                 algorithm.execute(componentMLG.getTopLevel(), emptySelection);
+                if (removeOverlaps) { removeOverlaps(componentMLG.getTopLevel()); }
                 bts.statusMessage = "Finished laying out the levels";
                 bts.status = -1;
             }
@@ -262,6 +264,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         this.parameters = params;
         this.randomTop = (Boolean) this.parameters[this.randomTopParameterIndex].getValue();
         this.removeBends = (Boolean) this.parameters[this.removeBendsParameterIndex].getValue();
+        this.removeOverlaps = (Boolean) this.parameters[this.removeOverlapsParameterIndex].getValue();
         this.mergerPSP = (ParameterizableSelectorParameter) this.parameters[this.mergerPSPIndex].getValue();
         this.placerPSP = (ParameterizableSelectorParameter) this.parameters[this.placerPSPIndex].getValue();
     }
@@ -464,6 +467,30 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     }
 
     /**
+     * Apply a random layout to the given graph.
+     * @param graph
+     *      The graph to layout. Must not be {@code null}.
+     * @author Gordian
+     */
+    static void randomLayout(Graph graph) {
+        final RandomLayouterAlgorithm rla = new RandomLayouterAlgorithm();
+        rla.attach(graph, new Selection());
+        rla.execute();
+    }
+
+    /**
+     * Apply the "no overlap" algorithm to the given graph.
+     * @param graph
+     *      The graph to layout. Must not be {@code null}.
+     * @author Gordian
+     */
+    static void removeOverlaps(Graph graph) {
+        Algorithm noOverlapAlgorithm = new NoOverlappLayoutAlgorithmAS(1, 1);
+        noOverlapAlgorithm.attach(graph, new Selection());
+        noOverlapAlgorithm.execute();
+    }
+
+    /**
      * Updates the parameter object. Among other things this puts new {@link Merger}s, {@link Algorithm}s
      * or {@link Placer}s into the GUI.
      * @author Gordian
@@ -518,6 +545,11 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 "Remove edge bends",
                 "Remove all edge bends from the graph");
 
+        BooleanParameter removeOverlapsParameter = new BooleanParameter(this.removeOverlaps,
+                "Remove overlaps",
+                "Remove overlaps using VANTED's builtin no-overlap-algorithm after each level.");
+
+
         // needs to be a copy as the synchronized list "mergers" cannot be iterated over without a synchronized
         // block
         ArrayList<Merger> tmpMergers = new ArrayList<>(MultilevelFrameworkLayouter.mergers);
@@ -544,10 +576,11 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                         + " the graph during the uncoarsening process.");
 
         this.parameters = new Parameter[]{algorithmList, setUpLayoutAlgorithmButtonParameter,
-                randomLayoutParameter, removeBendsParameter, mergerPSP, placerPSP};
+                randomLayoutParameter, removeBendsParameter, removeOverlapsParameter, mergerPSP, placerPSP};
 
         this.randomTopParameterIndex = ArrayUtils.indexOf(this.parameters, randomLayoutParameter);
         this.removeBendsParameterIndex = ArrayUtils.indexOf(this.parameters, removeBendsParameter);
+        this.removeOverlapsParameterIndex = ArrayUtils.indexOf(this.parameters, removeOverlapsParameter);
         this.mergerPSPIndex = ArrayUtils.indexOf(this.parameters, mergerPSP);
         this.placerPSPIndex = ArrayUtils.indexOf(this.parameters, placerPSP);
     }
