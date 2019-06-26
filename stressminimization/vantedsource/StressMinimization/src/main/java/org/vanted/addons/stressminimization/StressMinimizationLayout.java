@@ -20,6 +20,7 @@ import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.vanted.addons.stressminimization.parameters.LandmarkParameter;
+import org.vanted.addons.stressminimization.parameters.SliderParameter;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;

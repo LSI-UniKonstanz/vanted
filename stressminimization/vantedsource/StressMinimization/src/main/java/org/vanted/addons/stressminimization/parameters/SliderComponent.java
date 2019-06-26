@@ -1,4 +1,4 @@
-package org.vanted.addons.stressminimization;
+package org.vanted.addons.stressminimization.parameters;
 
 
 import java.util.Dictionary;
