@@ -1,23 +1,16 @@
 package org.vanted.addons.stressminimization;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.function.Supplier;
 
 import javax.swing.JLabel;
 
-import org.AttributeHelper;
 import org.Vector2d;
-import org.apache.commons.math3.linear.BlockRealMatrix;
-import org.apache.commons.math3.linear.RealMatrix;
 import org.graffiti.editor.GravistoService;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
@@ -120,9 +113,9 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	private double initialStressPercentage = INITIAL_STRESS_PERCENTAGE_DEFAULT_VALUE;
 
 	private static final String ITERATIONS_THRESHOLD_PARAMETER_NAME = "Interations Termination Maximum";
-	private static final double ITERATIONS_THRESHOLD_DEFAULT_VALUE = Double.POSITIVE_INFINITY;
+	private static final double ITERATIONS_THRESHOLD_DEFAULT_VALUE = 75;
 	private double iterationsThreshold = ITERATIONS_THRESHOLD_DEFAULT_VALUE;
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -138,8 +131,8 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				"The number of nodes that will be mainly layouted. All remaining nodes will be positioned relatively to these nodes.",
 				0, Integer.MAX_VALUE
 				));
-  		*/
-		
+		 */
+
 		//MAKE STUFF HERE
 		Dictionary dict = new Hashtable();
 		dict.put(-9, new JLabel("0"));
@@ -222,18 +215,20 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				break;
 			case RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME:
 				this.randomizeInputLayout = (Boolean) p.getValue();
+				break;
 			case NUMBER_OF_LANDMARKS_NAME:
 				this.numberOfLandmarks = (Integer) p.getValue();
+				break;
 			}
 
 		}
-		
+
 		// FIXME: remove when slider implementation is working again
 		this.alpha = 2;
 		this.stressChangeEpsilon = 1e-4;
 		this.iterationsThreshold = 75;
-		this.numberOfLandmarks = 3000;
-		
+		this.numberOfLandmarks = 100;
+
 	}
 
 	/**
@@ -278,6 +273,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			}
 		}
 
+		setStatusDescription("Stress Minimization: calculating components");
 		// IMPORTANT: components will add nodes that are not in workNodes to single components!
 		Set<Set<Node>> components = GraphHelper.getConnectedComponents(workNodes);
 
@@ -295,8 +291,8 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 			if (waitIfPausedAndCheckStop()) { return; }
 
-			List<Node> nodes = new ArrayList<>(component);
-			calculateLayoutForNodes(nodes);
+			StressMinimizationImplementation impl = new StressMinimizationImplementation(component, this, numberOfLandmarks, alpha, stressChangeEpsilon, initialStressPercentage, minimumNodeMovementThreshold, iterationsThreshold);
+			impl.calculateLayout();
 
 			nodes2NewPositions.putAll( getLayout().get() );
 
@@ -314,287 +310,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 		// remove space between components / remove overlapping
 		// do not run as regular algorithm, since that triggers a gui dialogue
-		// however, then there is no direct way to work only on the selection
+		// this means however, that we are also changing the positions of non selected nodes
 		ConnectedComponentLayout.layoutConnectedComponents(graph);
 
 		setStatus(BackgroundStatus.FINISHED);
-	}
-
-	/**
-	 * Calculates an optimized layout for specific nodes of a graph. The nodes are seen as a subgraph.
-	 * The other nodes of the original graph are not touched.
-	 * @param nodes The nodes a layout is calculated for.
-	 */
-	private void calculateLayoutForNodes(List<Node> nodes) {
-
-		final int n = nodes.size();
-		final int d = 2; // only implemented for two dimensional space
-
-		if (waitIfPausedAndCheckStop()) { return; }
-
-		setStatusDescription("Stress Minimization: selecting numberOfLandmarks");
-		List<Node> landmarkNodes = new ArrayList<>(numberOfLandmarks);
-		for (int i = 0; i < numberOfLandmarks; i += 1) {
-			// TODO: 
-		}
-		
-		if (waitIfPausedAndCheckStop()) { return; }
-
-		setStatusDescription("Stress Minimization: calculating distances...");
-
-		RealMatrix distances = calcDistances(nodes);
-
-		if (waitIfPausedAndCheckStop()) { return; }
-
-		setStatusDescription("Stress Minimization: calculating weights...");
-
-		RealMatrix weights = getWeightsForDistances(distances, alpha);
-
-		if (waitIfPausedAndCheckStop()) { return; }
-
-		setStatusDescription("Stress Minimization: copying layout...");
-
-		RealMatrix layout = new BlockRealMatrix(n, d);
-		for (int i = 0; i < n; i += 1) {
-			Point2D position = AttributeHelper.getPosition(nodes.get(i));
-			layout.setRow(i, new double[] { position.getX(), position.getY() });
-		}
-
-		// remove the scaling that is done at the end of the layout process
-		// layouts in VANTED look good with distances at about 100
-		// but our algorithm works with distances around 1.0
-		// scaling down the positions by the scale factor also
-		// makes this algorithm work better with results from other algorithms
-		layout = unscaleLayout(layout);
-
-		setStatusDescription("Stress Minimization: optimizing layout - preprocessing...");
-
-		StressMajorizationLayoutCalculator optim = new StressMajorizationLayoutCalculator(layout, distances, weights);
-
-		final double initialStress = optim.calcStress();
-		final double stressThreshold = initialStress * (initialStressPercentage / 100);
-		long iterationCount = 0;
-		double newStress, prevStress = initialStress;
-		RealMatrix prevLayout = layout;
-		boolean terminate = false;
-		do {
-
-			iterationCount += 1;
-
-			if (waitIfPausedAndCheckStop()) { return; }
-
-			layout = optim.calcOptimizedLayout();
-			setLayout(layout, nodes);
-			newStress = optim.calcStress();
-
-			terminate = checkTerminationCriteria(prevStress, newStress, prevLayout, layout, iterationCount, stressThreshold);
-
-			setStressProgress( 1 - newStress / initialStress );
-			setStatusDescription("Stress Minimization: optimizing layout - iteration: " + iterationCount + "; current stress reduction: " + getProgress() * 100 + "%");
-
-			prevLayout = layout;
-			prevStress = newStress;
-
-		} while (!terminate);
-
-		setStatusDescription("Stress Minimization: optimization finished - iterations: " + iterationCount + "; total stress reduction: " + getProgress() * 100 + "%");
-
-		setLayout(layout, nodes);
-
-	}
-
-	/**
-	 * Checks all termination criteria.
-	 * If one criterion meets the input values the method will return true,
-	 * indicating the algorithm to terminate.
-	 * @param prevStress Stress of the previous layout
-	 * @param newStress Stress of the updated layout
-	 * @param layout The new layout
-	 * @param interationCount Number of iterations done so far
-	 * @param stressThreshold stress threshold
-	 * @return Whether one criterion was met.
-	 */
-	private boolean checkTerminationCriteria(double prevStress, double newStress, RealMatrix prevLayout, RealMatrix newLayout, long iterationCount, double stressThreshold) {
-
-		boolean terminate = false;
-
-		terminate |= (prevStress - newStress) / prevStress < stressChangeEpsilon;
-
-		terminate |= newStress <= stressThreshold;
-
-		terminate |= iterationCount >= iterationsThreshold;
-
-		// only check minimum node movement criterion
-		// if the threshold is != 0
-		// (actually 1e-25; double comparison with threshold)
-
-		if (minimumNodeMovementThreshold > 1e-25) {
-			double maxMovement = 0.0;
-			for (int i = 0; i < newLayout.getRowDimension(); i += 1) {
-				double movement = prevLayout.getRowVector(i).getDistance(newLayout.getRowVector(i));
-				maxMovement = movement > maxMovement ? movement : maxMovement;
-			}
-			terminate |= maxMovement <= minimumNodeMovementThreshold;
-		}
-
-		return terminate;
-
-	}
-
-	// ======================
-	// MARK: layout utilities
-	// ======================
-
-	/**
-	 * Layout scale factor, see scaleLayout.
-	 */
-	private final double LAYOUT_SCALE_FACTOR = 100;
-
-	/**
-	 * Layouts in VANTED look good with distances at about 100
-	 * but the background algorithm works with distances around 1.0
-	 * To make the resulting layouts look good, we scale up the results by a scale factor
-	 */
-	private RealMatrix scaleLayout(final RealMatrix layout) {
-		RealMatrix newLayout = layout.createMatrix(layout.getRowDimension(), layout.getColumnDimension());
-		for (int i = 0; i < layout.getRowDimension(); i += 1) {
-			for (int d = 0; d < layout.getColumnDimension(); d += 1) {
-				double value = layout.getEntry(i, d) * LAYOUT_SCALE_FACTOR;
-				newLayout.setEntry(i, d, value);
-			}
-		}
-		return newLayout;
-	}
-
-	/**
-	 * Reverses the scaling done in scaleLayout
-	 */
-	private RealMatrix unscaleLayout(final RealMatrix layout) {
-		RealMatrix newLayout = layout.createMatrix(layout.getRowDimension(), layout.getColumnDimension());
-		for (int i = 0; i < layout.getRowDimension(); i += 1) {
-			for (int d = 0; d < layout.getColumnDimension(); d += 1) {
-				double value = layout.getEntry(i, d) / LAYOUT_SCALE_FACTOR;
-				newLayout.setEntry(i, d, value);
-			}
-		}
-		return newLayout;
-	}
-
-	private void setLayout(final RealMatrix layout, final List<Node> nodes) {
-
-		Supplier<HashMap<Node, Vector2d>> layoutSupplier = () -> {
-
-			RealMatrix newLayout = scaleLayout(layout);
-
-			HashMap<Node, Vector2d> nodes2NewPositions = new HashMap<Node, Vector2d>();
-			for (int i = 0; i < nodes.size(); i += 1) {
-				double[] pos = newLayout.getRow(i);
-				Vector2d position = new Vector2d(pos[0], pos[1]);
-				nodes2NewPositions.put(nodes.get(i), position);
-			}
-
-			return nodes2NewPositions;
-
-		};
-
-		setLayout(layoutSupplier);
-
-	}
-
-	// =====================================
-	// MARK: distance and weight calculation
-	// =====================================
-
-	/**
-	 * Calculates the distance matrix of the given nodes set.
-	 * @param nodes A list of nodes. For these nodes the distances to the other nodes in the set will be calculated.
-	 * @return the distance matrix
-	 */
-	public RealMatrix calcDistances(List<Node> nodes) {
-
-		int n = nodes.size();
-		Map<Node, Integer> node2Index = new HashMap<>();
-		for (int i = 0; i < n; i += 1) {
-			node2Index.put(nodes.get(i), i);
-		}
-
-		RealMatrix distances = new BlockRealMatrix(n, n);
-
-		//Breadth first Search
-		for (int i = 0; i < n; i += 1) {
-			for (int j = 0; j < n; j += 1) {
-				distances.setEntry(i, j, Double.POSITIVE_INFINITY);
-			}
-		}
-
-		for (int i = 0; i < n; i += 1) {
-			distances.setEntry(i, i, 0);
-		}
-
-		for(int i = 0; i < n; i++) {
-
-			Collection<Node> nodesToVisit = nodes.get(i).getNeighbors();
-
-			int dist = 1;
-
-			boolean[] visited = new boolean[n];
-			Arrays.fill(visited, false);
-
-			Collection<Node> nodesToVisitNext;
-
-			while(nodesToVisit.size() != 0) {
-				//next layer is empty at first
-				nodesToVisitNext = new ArrayList<Node>();
-
-				for(Node node : nodesToVisit) {
-					Integer indexIfPresent = node2Index.get(node);
-
-					// due to the selection, we may get nodes here, that are not present in the node2Index map
-					// these nodes will be ignored
-					if (indexIfPresent == null) {
-						continue;
-					}
-
-					int j = indexIfPresent;
-
-					if(!visited[j]) {
-						if(distances.getEntry(i, j) > dist) {
-							distances.setEntry(i, j, dist);
-							distances.setEntry(j, i, dist);
-						}
-						visited[j] = true;
-						//Add neighbors of node to next layer
-						nodesToVisitNext.addAll(node.getNeighbors());
-					}
-				}
-				//current layer is done
-				nodesToVisit = nodesToVisitNext;
-				dist++;
-			}
-
-			setDistancesProgress(i / n);
-
-		}
-
-		return distances;
-	}
-
-	/**
-	 * Computes default weights from the given distance matrix, using the simple formula <br>
-	 * $$
-	 * w_{ij} := d_{ij}^{-\alpha}
-	 * $$
-	 * @return the calculated weight matrix
-	 */
-	private RealMatrix getWeightsForDistances(RealMatrix distances, int alpha) {
-		RealMatrix weights = distances.createMatrix(distances.getRowDimension(), distances.getColumnDimension());
-		for (int i = 0; i < weights.getRowDimension(); i += 1) {
-			for (int j = 0; j < weights.getColumnDimension(); j += 1) {
-				double wij = Math.pow(distances.getEntry(i, j), -alpha);
-				weights.setEntry(i, j, wij);
-			}
-		}
-		return weights;
 	}
 
 	// =========================
@@ -605,7 +324,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	 * Helper function that combines waiting and checking if stopped.
 	 * @return Will return true if execution was stopped
 	 */
-	private boolean waitIfPausedAndCheckStop() {
+	boolean waitIfPausedAndCheckStop() {
 
 		waitIfPaused();
 
@@ -664,12 +383,30 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	// the first 10% are reserved for distance calculation
 	// the remaining 90% are used for stress progress
 
-	private void setDistancesProgress(double nodesVisitedPercentage) {
+	void setDistancesProgress(double nodesVisitedPercentage) {
 		setProgress(nodesVisitedPercentage * 0.10);
 	}
 
-	private void setStressProgress(double stressProgress) {
+	void setIterationProgress(double newStress, double initialStress, int iterationCount) {
+
+		double stressProgress = calcStressProgress(newStress, initialStress);
+
 		setProgress(0.10 + stressProgress * 0.90);
+		setStatusDescription("Stress Minimization: optimizing layout - iteration: " + iterationCount + "; current stress reduction: " + stressProgress * 100 + "%");
+
+	}
+
+	void setFinalProgress(double finalStress, double initialStress, int iterationCount) {
+
+		double stressProgress = calcStressProgress(finalStress, initialStress);
+
+		setProgress(1.0);
+		setStatusDescription("Stress Minimization: optimization finished - iterations: " + iterationCount + "; total stress reduction: " + stressProgress * 100 + "%");
+
+	}
+
+	private double calcStressProgress(double newStress, double initialStress) {
+		return 1 - newStress / initialStress;
 	}
 
 }
