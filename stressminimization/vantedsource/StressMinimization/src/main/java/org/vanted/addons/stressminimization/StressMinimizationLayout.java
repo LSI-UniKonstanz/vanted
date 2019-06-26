@@ -103,8 +103,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	private int alpha = ALPHA_DEFAULT_VALUE;
 
 	private static final String STRESS_CHANGE_EPSILON_PARAMETER_NAME = "Stress Change Termination Threshold";
-	private static final double STRESS_CHANGE_EPSILON_DEFAULT_VALUE = -4;
-	private double stressChangeEpsilon = STRESS_CHANGE_EPSILON_DEFAULT_VALUE;
+	private double stressChangeEpsilon = 1e-4;
 
 	private static final String MINIMUM_NODE_MOVEMENT_PARAMETER_NAME = "Minimum Node Movement Termination Threshold";
 	private static final double MINIMUM_NODE_MOVEMENT_DEFAULT_VALUE = 0.0;
@@ -115,7 +114,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	private double initialStressPercentage = INITIAL_STRESS_PERCENTAGE_DEFAULT_VALUE;
 
 	private static final String ITERATIONS_THRESHOLD_PARAMETER_NAME = "Interations Termination Maximum";
-	private static final double ITERATIONS_THRESHOLD_DEFAULT_VALUE = 75;
+	private static final int ITERATIONS_THRESHOLD_DEFAULT_VALUE = 75;
 	private double iterationsThreshold = ITERATIONS_THRESHOLD_DEFAULT_VALUE;
 
 	/**
@@ -161,16 +160,16 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				));
 
 		Dictionary iterDict = new Hashtable();
-		iterDict.put(1, new JLabel("10"));
-		iterDict.put(500, new JLabel("100"));
-		iterDict.put(1000, new JLabel("1000"));
-		iterDict.put(1201, new JLabel("\u221e"));
+		iterDict.put(25, new JLabel("25"));
+		iterDict.put(50, new JLabel("50"));
+		iterDict.put(75, new JLabel("75"));
+		iterDict.put(100, new JLabel("100"));
+		iterDict.put(125, new JLabel("\u221e"));
 		params.add(new SliderParameter(
-				//(int) ITERATIONS_THRESHOLD_DEFAULT_VALUE,
-				1,
+				ITERATIONS_THRESHOLD_DEFAULT_VALUE,
 				ITERATIONS_THRESHOLD_PARAMETER_NAME,
 				"Number of iterations after which algorithm excution will be terminated.",
-				1,1200, true, false, iterDict
+				25, 124, true, false, iterDict
 				));
 
 		params.add(new SliderParameter(
@@ -209,7 +208,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				this.initialStressPercentage = (Double) p.getValue();
 				break;
 			case ITERATIONS_THRESHOLD_PARAMETER_NAME:
-				this.iterationsThreshold = Math.pow(10, ((double) p.getValue())/500 + 1);
+				this.iterationsThreshold = (double) p.getValue();
 				break;
 			case RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME:
 				this.randomizeInputLayout = (Boolean) p.getValue();
@@ -220,11 +219,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			}
 
 		}
-
-		// FIXME: remove when slider implementation is working again
-		this.alpha = 2;
-		this.stressChangeEpsilon = 1e-4;
-		this.iterationsThreshold = 75;
 
 	}
 

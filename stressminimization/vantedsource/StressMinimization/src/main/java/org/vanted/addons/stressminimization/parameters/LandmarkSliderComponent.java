@@ -29,7 +29,6 @@ public class LandmarkSliderComponent extends AbstractValueEditComponent implemen
 
 		value = (Integer) disp.getValue();
 
-
 		//Create the slider
 		slider = new JSlider(JSlider.HORIZONTAL, 5, 100, value);
 		slider.addChangeListener(this);
