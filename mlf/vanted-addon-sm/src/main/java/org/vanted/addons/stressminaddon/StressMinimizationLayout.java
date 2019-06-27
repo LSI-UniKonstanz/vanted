@@ -381,8 +381,6 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
         } else {
             task.run();
         }
-
-
     }
 
     /**
