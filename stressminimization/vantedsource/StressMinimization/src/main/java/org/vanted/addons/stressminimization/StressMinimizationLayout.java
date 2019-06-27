@@ -132,6 +132,12 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				"The number of nodes that will be mainly layouted. All remaining nodes will be positioned relatively to these nodes."
 				));
 
+		params.add(new SliderParameter(
+				alpha,
+				ALPHA_PARAMETER_NAME,
+				"Determines how important correct distancing of nodes is that are far away to each other in an itteration step. High values mean placing of far away nodes is less important.",
+				0,2));
+
 		//MAKE STUFF HERE
 		Dictionary dict = new Hashtable();
 		dict.put(-9, new JLabel("0"));
@@ -148,7 +154,8 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		params.add(new DoubleParameter(
 				minimumNodeMovementThreshold,
 				0.0,
-				Double.POSITIVE_INFINITY,
+				1.0,
+				0.05,
 				MINIMUM_NODE_MOVEMENT_PARAMETER_NAME,
 				"Minimum required movement of any node for continuation of termination. If all nodes move less than this value in an interation, execution is terminated."
 				));
@@ -177,12 +184,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				25, 124, true, false, iterDict
 				));
 
-		params.add(new SliderParameter(
-				alpha,
-				ALPHA_PARAMETER_NAME,
-				"Determines how important correct distancing of nodes is that are far away to each other in an itteration step. High values mean placing of far away nodes is less important.",
-				0,2));
-
 		params.add(new BooleanParameter(
 				randomizeInputLayout,
 				RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME,
@@ -197,11 +198,15 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
+		
 		for (Parameter p : params) {
 
 			switch (p.getName()) {
+			case NUMBER_OF_LANDMARKS_NAME:
+				this.numberOfLandmarks = (int) p.getValue();
+				break;
 			case ALPHA_PARAMETER_NAME:
-				this.alpha = (int) ((double) p.getValue());
+				this.alpha = (int) (double) p.getValue();
 				break;
 			case STRESS_CHANGE_EPSILON_PARAMETER_NAME:
 				this.stressChangeEpsilon = Math.pow(10, (Double) p.getValue());
@@ -217,9 +222,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				break;
 			case RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME:
 				this.randomizeInputLayout = (Boolean) p.getValue();
-				break;
-			case NUMBER_OF_LANDMARKS_NAME:
-				this.numberOfLandmarks = (Integer) p.getValue();
 				break;
 			}
 

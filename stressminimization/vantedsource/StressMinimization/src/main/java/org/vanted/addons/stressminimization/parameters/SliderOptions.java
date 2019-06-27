@@ -6,12 +6,12 @@ public class SliderOptions {
 		//Range of the Slider and if that slider should have infinity at one end or not
 		private int min;
 		private int max;
-		private int def;
+		private double def;
 		private boolean pos;
 		private boolean neg;
 		Dictionary dict;
 		
-		public SliderOptions(int min, int max, int def) {
+		public SliderOptions(int min, int max, double def) {
 			this.min = min;
 			this.max = max;
 			this.def = def;
@@ -20,7 +20,7 @@ public class SliderOptions {
 			dict = null;
 		}
 		
-		public SliderOptions(int min, int max, int def, boolean pos, boolean neg) {
+		public SliderOptions(int min, int max, double def, boolean pos, boolean neg) {
 			this.min = min;
 			this.max = max;
 			this.def = def;
@@ -29,7 +29,7 @@ public class SliderOptions {
 			dict = null;
 		}
 		
-		public SliderOptions(int min, int max, int def, boolean pos, boolean neg, Dictionary dict) {
+		public SliderOptions(int min, int max, double def, boolean pos, boolean neg, Dictionary dict) {
 			this.min = min;
 			this.max = max;
 			this.def = def;
@@ -46,7 +46,7 @@ public class SliderOptions {
 			return max;
 		}
 		
-		public int getDef() {
+		public double getDef() {
 			return def;
 		}
 

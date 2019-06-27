@@ -19,14 +19,14 @@ public class SliderComponent extends AbstractValueEditComponent{
 	private double value;
 	private int min;
 	private int max;
-	private int def;
+	private double def;
 	private boolean pos;
 	private boolean neg;
 	private Dictionary dict;
 	
 	public SliderComponent(Displayable disp){
 		super(disp);
-		SliderOptions pars = (SliderOptions)disp.getValue();
+		SliderOptions pars = ((SliderParameter)disp).getSliderOptions();
 		this.min = pars.getMin();
 		this.max = pars.getMax();
 		this.def = pars.getDef();
@@ -45,11 +45,13 @@ public class SliderComponent extends AbstractValueEditComponent{
 		
 		
 		//Create the slider
-		slider = new JSlider(JSlider.HORIZONTAL, min, max, def);
+		slider = new JSlider(JSlider.HORIZONTAL, min, max, (int) def);
 		slider.setMajorTickSpacing(2);
 		slider.setMinorTickSpacing(1);
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
+
+		this.value = def;
 		
 		//Create the Labels for the Slider
 		if(dict == null) {

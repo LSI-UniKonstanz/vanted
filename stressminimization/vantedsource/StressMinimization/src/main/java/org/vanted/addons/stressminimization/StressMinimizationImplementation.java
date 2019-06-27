@@ -77,10 +77,6 @@ class StressMinimizationImplementation {
 	 */
 	void calculateLayout() {
 
-		if (nodes.size() <= 1) {
-			return;
-		}
-
 		final int d = 2; // only implemented for two dimensional space
 		boolean noLandmarking = this.numberOfLandmarks >= n;
 		int numberOfLandmarks = noLandmarking ? n : this.numberOfLandmarks;
@@ -429,7 +425,6 @@ class StressMinimizationImplementation {
 	 * @return the calculated weight matrix
 	 */
 	private RealMatrix getBarycenterWeightsForDistances(final RealMatrix distances) {
-
 		return calcWeightsForDistances(distances, d -> Math.exp(-d));
 	}
 
