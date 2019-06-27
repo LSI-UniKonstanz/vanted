@@ -126,6 +126,8 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 		params.add(new LandmarkParameter(
 				numberOfLandmarks,
+				10, // values below this give no more significant speed up
+				1000, // values above this consume to much time in the current implementation
 				NUMBER_OF_LANDMARKS_NAME,
 				"The number of nodes that will be mainly layouted. All remaining nodes will be positioned relatively to these nodes."
 				));

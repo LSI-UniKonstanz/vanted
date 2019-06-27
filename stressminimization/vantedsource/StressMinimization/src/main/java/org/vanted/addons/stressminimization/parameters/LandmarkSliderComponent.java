@@ -1,11 +1,14 @@
 package org.vanted.addons.stressminimization.parameters;
 
 
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -16,49 +19,73 @@ import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
 import org.graffiti.session.Session;
 import org.graffiti.session.SessionListener;
 
+/**
+ * Slider component specially for selecting landmarks. Exponential scale with the opportunity to select all nodes.
+ */
 public class LandmarkSliderComponent extends AbstractValueEditComponent implements SessionListener, ChangeListener {
 
 	private JSlider slider;
+	private JLabel valueLabel;
+	private JPanel container;
+	private final int minValue;
+	private final int maxValue;
 	private int value;
+	private int numberOfNodes;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public LandmarkSliderComponent(Displayable disp){
 		super(disp);
 
 		MainFrame.getInstance().addSessionListener(this);
 
-		value = (Integer) disp.getValue();
+		LandmarkParameter landmarkParameter = (LandmarkParameter) disp;
 
-		//Create the slider
-		slider = new JSlider(JSlider.HORIZONTAL, 5, 100, value);
-		slider.addChangeListener(this);
+		this.minValue = landmarkParameter.getMinUsefullValue();
+		this.maxValue = landmarkParameter.getMaxUsefullValue();
+		this.value = (Integer) landmarkParameter.getValue();
+		this.numberOfNodes = MainFrame.getInstance().getActiveEditorSession().getGraph().getNumberOfNodes();
 
-		slider.setMinimum(5);
-		slider.setValue(value);
-		slider.setPaintTicks(true);
-		slider.setPaintLabels(true);
+		this.valueLabel = new JLabel("" + this.value);
+		this.valueLabel.setToolTipText("Selected number of landmarks");
 
-		int numberOfNodes = MainFrame.getInstance().getActiveEditorSession().getGraph().getNumberOfNodes();
-		updateSlider(numberOfNodes);
+		this.slider = new JSlider(JSlider.HORIZONTAL, minValue, maxValue, value);
+		this.slider.addChangeListener(this);
+
+		this.slider.setPaintTicks(true);
+		this.slider.setPaintLabels(true);
+
+		this.container = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+		this.container.setBackground(Color.WHITE);
+		this.container.add(valueLabel);
+		this.container.add(slider);
+
+		updateSlider();
 
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void updateSlider(int numberOfNodes) {
+	private void updateSlider() {
 
-		slider.setMaximum(numberOfNodes);
+		int minDecimalDigits = (int) Math.log10(minValue);
+		int maxDecimalDigits = (int) Math.log10(maxValue);
 
-		slider.setMajorTickSpacing(numberOfNodes / 5);
+		slider.setMinimum(minValue);
+		slider.setValue(value);
+		slider.setMajorTickSpacing((int) Math.pow(10, maxDecimalDigits - 1));
 
 		Dictionary labelsDict = new Hashtable();
-		for (int i = 0; i < numberOfNodes; i += numberOfNodes / 5) {
-			labelsDict.put(i, new JLabel(i + ""));
+		for (int i = minDecimalDigits; i <= maxDecimalDigits; i += 1) {
+			int transformedValue = (int) Math.pow(10, i);
+			labelsDict.put(transformedValue, new JLabel(transformedValue + ""));
 		}
 
-		int min = slider.getMinimum();
-		int max = slider.getMaximum();
-		labelsDict.put(min, new JLabel(min + ""));
-		labelsDict.put(max, new JLabel(max + ""));
+		if (maxValue >= numberOfNodes) {
+			slider.setMaximum(numberOfNodes);
+			labelsDict.put(numberOfNodes, new JLabel("all"));
+		} else {
+			slider.setMaximum(maxValue + 1);
+			labelsDict.put(maxValue + 1, new JLabel("all"));
+		}
+
 
 		slider.setLabelTable(labelsDict);
 
@@ -66,7 +93,7 @@ public class LandmarkSliderComponent extends AbstractValueEditComponent implemen
 
 	@Override
 	public JComponent getComponent() {
-		return slider;
+		return container;
 	}
 
 	@Override
@@ -87,14 +114,24 @@ public class LandmarkSliderComponent extends AbstractValueEditComponent implemen
 	@Override
 	public void sessionDataChanged(Session s) {
 		if (s != null && s.getGraph() != null) {
-			int numberOfNodes = s.getGraph().getNumberOfNodes();
-			updateSlider(numberOfNodes);
+			this.numberOfNodes = s.getGraph().getNumberOfNodes();
+			updateSlider();
 		}
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		value = slider.getValue();
+
+		int val = slider.getValue();
+
+		if (maxValue < numberOfNodes && val == maxValue + 1) {
+			this.value = numberOfNodes;
+		} else {
+			this.value = val;
+		}
+
+		valueLabel.setText("" + this.value);
+
 	}
 
 }
