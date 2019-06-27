@@ -153,13 +153,16 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				"Minimum required movement of any node for continuation of termination. If all nodes move less than this value in an interation, execution is terminated."
 				));
 
-		params.add(new DoubleParameter(
-				initialStressPercentage,
-				0.0,
-				100.0,
+
+		Dictionary stressDict = new Hashtable();
+		stressDict.put(0, new JLabel("0%"));
+		stressDict.put(50, new JLabel("50%"));
+		stressDict.put(100, new JLabel("100%"));
+		params.add(new SliderParameter(
+				(int) initialStressPercentage,
 				INITIAL_STRESS_PERCENTAGE_THERESHOLD_PARAMETER_NAME,
-				"If the stress of an layout falls below this percentage of the initial stress, executions is terminated."
-				));
+				"If the stress of an layout falls below this percentage of the initial stress, executions is terminated.",
+				0,100, false, false, stressDict));
 
 		Dictionary iterDict = new Hashtable();
 		iterDict.put(25, new JLabel("25"));
