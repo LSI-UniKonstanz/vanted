@@ -795,7 +795,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             final double scalingFactor = Math.max(
                     ConnectedComponentsHelper.getMaxNodeSize(nodes)*state.edgeScalingFactor, state.edgeLengthMinimum);
             // scale for better display
-            this.distances.apply(x -> x*scalingFactor* StressMinimizationLayout.this.state.edgeScalingFactor);
+            this.distances.apply(x -> x*scalingFactor);
 
             System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = id + ": Calculate initial layout..."));
             //this.currentPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
