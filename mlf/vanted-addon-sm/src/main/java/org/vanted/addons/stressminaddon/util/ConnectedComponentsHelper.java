@@ -95,7 +95,7 @@ public enum ConnectedComponentsHelper {
      * <ul>
      *     <li>regard only connected components in the selection</li>
      *     <li>use individual bounds method
-     *     {@link ConnectedComponentsHelper#getConnectedComponetBounds(List, double, double, double, double)}</li>
+     *     {@link ConnectedComponentsHelper#getConnectedComponentBounds(List, double, double, double, double)}</li>
      *     <li>make changes undoable (in one step)</li>
      *     <li>maybe make some perceived improvements to code regarding duplicates and strange code</li>
      * </ul>
@@ -131,7 +131,7 @@ public enum ConnectedComponentsHelper {
      * <ul>
      *     <li>regard only connected components in the selection</li>
      *     <li>use individual bounds method
-     *     {@link ConnectedComponentsHelper#getConnectedComponetBounds(List, double, double, double, double)}</li>
+     *     {@link ConnectedComponentsHelper#getConnectedComponentBounds(List, double, double, double, double)}</li>
      *     <li>make changes undoable (in one step)</li>
      *     <li>maybe make some perceived improvements to code regarding duplicates and strange code</li>
      * </ul>
@@ -152,7 +152,7 @@ public enum ConnectedComponentsHelper {
      * @throws IllegalArgumentException if any fraction is negative.
      *
      * @see de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#layoutConnectedComponents(Graph)
-     * @see ConnectedComponentsHelper#getConnectedComponetBounds(List, double, double, double, double)
+     * @see ConnectedComponentsHelper#getConnectedComponentBounds(List, double, double, double, double)
      *
      * @author Jannik
      */
@@ -175,7 +175,7 @@ public enum ConnectedComponentsHelper {
         // get components bounds
         Rectangle2D.Double[] componentsBoundsWithAnchor = new Rectangle2D.Double[componentList.size()];
         for (int i = 0; i < componentList.size(); i++) {
-            componentsBoundsWithAnchor[i] = ConnectedComponentsHelper.getConnectedComponetBounds(componentList.get(i), marginFractionWidth,
+            componentsBoundsWithAnchor[i] = ConnectedComponentsHelper.getConnectedComponentBounds(componentList.get(i), marginFractionWidth,
                     marginFractionHeight, minMarginWidth, minMarginHeight);
         }
 
@@ -295,9 +295,9 @@ public enum ConnectedComponentsHelper {
      *
      * @author Jannik
      */
-    public static Rectangle2D.Double getConnectedComponetBounds(final List<Node> connectedComponent,
-                                                                final double marginFractionWidth, final double marginFractionHeight,
-                                                                final double minMarginWidth, final double minMarginHeight) {
+    public static Rectangle2D.Double getConnectedComponentBounds(final List<Node> connectedComponent,
+                                                                 final double marginFractionWidth, final double marginFractionHeight,
+                                                                 final double minMarginWidth, final double minMarginHeight) {
         if (marginFractionWidth < 0)
             throw new IllegalArgumentException("Margin fraction width must be non negative: " + marginFractionWidth);
         if (marginFractionHeight < 0)

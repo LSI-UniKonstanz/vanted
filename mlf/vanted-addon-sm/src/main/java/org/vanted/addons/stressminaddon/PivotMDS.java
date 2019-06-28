@@ -417,8 +417,7 @@ public class PivotMDS implements InitialPlacer {
     @Override
     public Parameter[] getParameters() {
         // TODO implement settings e.g. setting number of pivots
-        return new Parameter[] {
-        };
+        return null; // maybe cache the parameters for reuse
     }
 
     /**

@@ -17,7 +17,7 @@ public interface Parameterizable {
      * Gets a list of {@link Parameter}s this class provides.
      * They will be modified and returned to the class.
      *
-     * @return gets a list of Parameters this class provides.
+     * @return a list of Parameters this class provides.
      *
      * @author Jannik
      *

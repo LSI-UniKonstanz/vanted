@@ -15,6 +15,7 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.vanted.addons.stressminaddon.util.ConnectedComponentsHelper;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
+import org.vanted.addons.stressminaddon.util.NullPlacer;
 import org.vanted.addons.stressminaddon.util.ShortestDistanceAlgorithm;
 import org.vanted.addons.stressminaddon.util.gui.EnableableNumberParameter;
 import org.vanted.addons.stressminaddon.util.gui.ParameterizableSelectorParameter;
@@ -51,6 +52,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
 
     ///// Parameters and defaults /////
     // stop conditions
+    /** Contains the parameters of this {@link StressMinimizationLayout}. */
+    private Parameter[] parameters = null;
     /** Whether to use the stress epsilon by default.*/
     private static final boolean USE_STRESS_EPSILON_DEFAULT = true;
     /** The default value for the epsilon to use with stress function. */
@@ -105,11 +108,16 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
     /** Whether the algorithm should use multiple threads. */
     private boolean multipleThreads = MULTIPLE_THREADS_DEFAULT;
 
+    // MultiLevelFramework support
+    /** Name of attribute that signals the current graph is a coarsening level. */
+    private static final String MLF_COMPATIBILITY_IS_COARSENING_LEVEL = "GRAPH_IS_MLF_COARSENING_LEVEL";
+    /** Name of attribute that signals the current graph is the top coarsening level. */
+    private static final String MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL = "GRAPH_IS_MLF_COARSENING_TOP_LEVEL";
+
     /**
      * Creates a new {@link StressMinimizationLayout} object.
      */
     public StressMinimizationLayout() {
-        super();
     }
 
     /**
@@ -117,8 +125,10 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
      */
     @Override
     public String getDescription() {
-        return "Performs the stress minimization layout on the given graph. A faster runtime (configurable below)" +
-                " may result in a worse layout.";
+        return "<html>Performs the stress minimization layout on<br>" +
+                "the given graph.<br>" +
+                "A faster runtime (configurable below) may result<br>" +
+                "in a worse layout.</html>";
     }
 
     /**
@@ -153,6 +163,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
      */
     public void execute() {
         assert (!this.intermediateUndoable || this.doAnimations); // intermediateUndoable => doAnimations
+
         // get nodes to work with
         ArrayList<Node> pureNodes;
         if (selection.isEmpty()) {
@@ -161,8 +172,41 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             pureNodes = new ArrayList<>(GraphHelper.getVisibleNodes(selection.getNodes()));
         }
 
+        // --- MultiLevelFramework compatibility ---
+
+        // MultiLevelFramework compatibility mode.
+        boolean compatibilityMLFOuter = false;
+        // MultiLevelFramework compatibility mode for top level.
+        boolean compatibilityMLFtTopLevelOuter = false;
+
+        // backup old values
+        boolean oldIntermediateUndoable = this.intermediateUndoable,
+                oldDoAnimations         = this.doAnimations,
+                oldBackgroundTask       = this.backgroundTask;
+        InitialPlacer oldInitialPlacer  = this.initialPlacer;
+
+        if (graph.getAttributes().getCollection().containsKey(MLF_COMPATIBILITY_IS_COARSENING_LEVEL) &&
+                graph.getBoolean(MLF_COMPATIBILITY_IS_COARSENING_LEVEL)) {
+            compatibilityMLFOuter = true;
+            this.intermediateUndoable = false;
+            this.doAnimations = false;
+            this.backgroundTask = false;
+            if (graph.getAttributes().getCollection().containsKey(MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL) &&
+                    graph.getBoolean(MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL)) {
+                this.initialPlacer = new NullPlacer(); // we are not at top level
+                compatibilityMLFtTopLevelOuter = true;
+            }
+        }
+
+        // for use in lambda
+        final boolean compatibilityMLF = compatibilityMLFOuter;
+        final boolean compatibilityMLFtTopLevel = compatibilityMLFtTopLevelOuter;
+
         Runnable task = () -> {
             startTime = System.currentTimeMillis();
+
+
+
             System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Start (n = " + pureNodes.size() + ")"));
             // remove bends
             if (this.removeEdgeBends) {
@@ -181,7 +225,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             final Set<List<Node>> connectedComponents = ConnectedComponentsHelper.getConnectedComponents(pureNodes);
 
 
-            ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents, this.intermediateUndoable);
+            if (this.doAnimations) {
+                ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents, this.intermediateUndoable);
+            }
             System.out.println((System.currentTimeMillis() - startTime) + " SM: " + (status = "Got connected components. (" + connectedComponents.size() + ")"));
 
             // TODO add random initial layout
@@ -198,7 +244,6 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
                     component.get(pos).setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, pos);
                 }
                 WorkUnit unit = new WorkUnit(component, id++);
-                System.out.println(unit.toStringShort());
 
                 workUnits.add(unit);
 
@@ -304,8 +349,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             }
 
             ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents, this.intermediateUndoable);
-            // create only one undo
-            if (!this.intermediateUndoable) {
+            // create only one undo (or nothing in compatibility mode)
+            if (!compatibilityMLF && !this.intermediateUndoable) {
                 graph.getListenerManager().transactionStarted(this);
                 for (int idx = 0; idx < pureNodes.size(); idx++) {
                     Node node = pureNodes.get(idx);
@@ -320,6 +365,15 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             startTime = System.currentTimeMillis() - startTime;
             System.out.println(startTime + " SM: " + (status = "Finished.") + " Took " + (startTime/1000.0) + "s");
             keepRunning.set(true);
+
+            if (compatibilityMLF) {
+                this.intermediateUndoable = oldIntermediateUndoable;
+                this.doAnimations = oldDoAnimations;
+                this.backgroundTask = oldBackgroundTask;
+                if (compatibilityMLFtTopLevel) {
+                    this.initialPlacer = oldInitialPlacer;
+                }
+            }
         };
         // run!
         if (this.backgroundTask) {
@@ -327,8 +381,6 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
         } else {
             task.run();
         }
-
-
     }
 
     /**
@@ -338,9 +390,21 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
      */
     @Override
     public Parameter[] getParameters() {
+        if (this.parameters == null) {
+            this.parameters = getNewParameters();
+        }
+        return this.parameters;
+    }
+
+    /**
+     * @return
+     *      a new set of parameters to work with.
+     * @author Jannik
+     */
+    private Parameter[] getNewParameters() {
 
         // initial placers
-        InitialPlacer[] initialPlacers = new InitialPlacer[] {new PivotMDS()};
+        InitialPlacer[] initialPlacers = new InitialPlacer[] {new PivotMDS(), new NullPlacer()};
         // iterative algorithms
         IterativePositionAlgorithm[] iterativeAlgorithms = new IterativePositionAlgorithm[] {new IntuitiveIterativePositionAlgorithm()};
 
