@@ -1,7 +1,6 @@
 package org.vanted.addons.stressminimization.primitives;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.math3.linear.ArrayRealVector;
@@ -83,8 +82,7 @@ public class BasicGraphOperations {
 
 		int dist = 1;
 
-		boolean[] visited = new boolean[n];
-		Arrays.fill(visited, false);
+		IndexedNodeSet alreadyVisited = inSet.emptySubset();
 
 		while(nodesToVisit.size() != 0) {
 			//next layer is empty at first
@@ -92,17 +90,20 @@ public class BasicGraphOperations {
 
 			for(Integer j : nodesToVisit) {
 
-				if(!visited[j]) {
+				if(!alreadyVisited.contains(j)) {
+
 					if(distances.getEntry(j) > dist) {
 						distances.setEntry(j, dist);
 					}
-					visited[j] = true;
+
+					alreadyVisited.add(j);
+
 					//Add neighbors of node to next layer
-					Node jNode = inSet.get(j);
-					nodesToVisitNext.union( inSet.getNeighbors(jNode) );
+					nodesToVisitNext.union( inSet.getNeighbors(j) );
 				}
 			}
 			//current layer is done
+			nodesToVisitNext.setMinus(alreadyVisited);
 			nodesToVisit = nodesToVisitNext;
 			dist++;
 		}

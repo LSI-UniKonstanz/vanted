@@ -16,6 +16,9 @@ import javax.swing.event.ChangeListener;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.plugin.Displayable;
 import org.graffiti.plugin.editcomponent.AbstractValueEditComponent;
+import org.graffiti.selection.Selection;
+import org.graffiti.selection.SelectionModel;
+import org.graffiti.session.EditorSession;
 import org.graffiti.session.Session;
 import org.graffiti.session.SessionListener;
 
@@ -42,12 +45,11 @@ public class LandmarkSliderComponent extends AbstractValueEditComponent implemen
 		this.minValue = landmarkParameter.getMinUsefullValue();
 		this.maxValue = landmarkParameter.getMaxUsefullValue();
 		this.value = (Integer) landmarkParameter.getValue();
-		this.numberOfNodes = MainFrame.getInstance().getActiveEditorSession().getGraph().getNumberOfNodes();
 
 		this.valueLabel = new JLabel("" + this.value);
 		this.valueLabel.setToolTipText("Selected number of landmarks");
 
-		this.slider = new JSlider(JSlider.HORIZONTAL, minValue, maxValue, value);
+		this.slider = new JSlider(JSlider.HORIZONTAL, 0, value, value);
 		this.slider.addChangeListener(this);
 
 		this.slider.setPaintTicks(true);
@@ -64,6 +66,8 @@ public class LandmarkSliderComponent extends AbstractValueEditComponent implemen
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void updateSlider() {
+
+		updateNumberOfNodes();
 
 		int minDecimalDigits = (int) Math.log10(minValue);
 		int maxDecimalDigits = (int) Math.log10(maxValue);
@@ -91,6 +95,25 @@ public class LandmarkSliderComponent extends AbstractValueEditComponent implemen
 
 	}
 
+	private void updateNumberOfNodes() {
+
+		EditorSession activeSession = MainFrame.getInstance().getActiveEditorSession();
+
+		if (activeSession == null || activeSession.getGraph() == null) {
+			return;
+		}
+
+		SelectionModel selectionModel = activeSession.getSelectionModel();
+		Selection sel = selectionModel == null ? null : selectionModel.getActiveSelection();
+
+		if (sel == null || sel.isEmpty()) {
+			numberOfNodes = activeSession.getGraph().getNumberOfNodes();
+		} else {
+			numberOfNodes = sel.getNumberOfNodes();
+		}
+
+	}
+
 	@Override
 	public JComponent getComponent() {
 		return container;
@@ -114,7 +137,6 @@ public class LandmarkSliderComponent extends AbstractValueEditComponent implemen
 	@Override
 	public void sessionDataChanged(Session s) {
 		if (s != null && s.getGraph() != null) {
-			this.numberOfNodes = s.getGraph().getNumberOfNodes();
 			updateSlider();
 		}
 	}

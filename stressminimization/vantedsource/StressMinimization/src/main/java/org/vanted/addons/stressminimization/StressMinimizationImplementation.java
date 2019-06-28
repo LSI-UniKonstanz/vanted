@@ -96,6 +96,8 @@ class StressMinimizationImplementation {
 
 			for (int i = 0; i < numberOfLandmarks; i += 1) {
 
+				if (callingLayout.waitIfPausedAndCheckStop()) { return; }
+
 				int newLandmarkIndex = selectNextLandmark(i, landmarkToAllDistances);
 				landmarkIndicesInGenerationOrder[i] = newLandmarkIndex;
 

@@ -11,7 +11,6 @@ import javax.swing.JLabel;
 
 import org.Vector2d;
 import org.graffiti.editor.GravistoService;
-import org.graffiti.graph.Edge;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.PreconditionException;
 import org.graffiti.plugin.parameter.BooleanParameter;
@@ -265,11 +264,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			workNodesCollection = graph.getNodes();
 		} else {
 			workNodesCollection = selection.getNodes();
-			// for all selected edges, add source and target nodes
-			for (Edge e : selection.getEdges()) {
-				workNodesCollection.add(e.getSource());
-				workNodesCollection.add(e.getTarget());
-			}
 		}
 
 		IndexedNodeSet workNodes = IndexedNodeSet.setOfAllIn(workNodesCollection);
@@ -300,7 +294,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 			impl.calculateLayout();
 
-			nodes2NewPositions.putAll( getLayout().get() );
+			if (getLayout() != null) {
+				// == null might happen if algorithm was stopped
+				nodes2NewPositions.putAll( getLayout().get() );
+			}
 
 		}
 

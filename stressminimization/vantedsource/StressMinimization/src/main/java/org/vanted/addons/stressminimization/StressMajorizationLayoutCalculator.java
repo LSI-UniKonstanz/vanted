@@ -193,12 +193,9 @@ class StressMajorizationLayoutCalculator {
 	// =======================================
 	// Implementation using Conjugate Gradient
 	// =======================================
-	// IMPORTANT: buggy implementation!
 
 	private RealMatrix conjugateGradientLayout() {
 
-		// the values were chosen based on experience,
-		// mainly with sierpinsky 6
 		final double CONVERGENCE_EPSILON = 1e-3;
 		final double LINE_SEARCH_EPSILON = 1e-2;
 
@@ -215,8 +212,8 @@ class StressMajorizationLayoutCalculator {
 		for (int a = 0; a < d; a += 1) {
 
 			PointValuePair minimum = optimizer.optimize(
-					new MaxEval(Integer.MAX_VALUE),
-					new MaxIter(Integer.MAX_VALUE),
+					MaxEval.unlimited(),
+					MaxIter.unlimited(),
 					new InitialGuess(layout.getColumn(a)),
 					new ObjectiveFunction(supplier.getObjectiveFunction(a)),
 					new ObjectiveFunctionGradient(supplier.getGradient(a)),
@@ -228,6 +225,7 @@ class StressMajorizationLayoutCalculator {
 		}
 
 		return newLayout;
+
 	}
 
 	/**

@@ -183,13 +183,11 @@ public class IndexedNodeSet implements Iterable<Integer> {
 				continue;
 			}
 
-			if (!contains(neighborIndex)) {
-				continue;
-			}
-
 			neighbors.add(neighborIndex);
 
 		}
+
+		neighbors.intersection(this);
 
 		return neighbors;
 

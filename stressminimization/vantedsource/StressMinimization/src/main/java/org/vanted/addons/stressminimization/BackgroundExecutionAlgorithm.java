@@ -15,6 +15,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
@@ -56,6 +57,9 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 	private JButton startButton;
 	private JButton stopButton;
 	private JCheckBox autoDrawCheckBox;
+	private ParameterEditPanel paramPanel;
+	private JLabel statusLabel;
+
 
 	public BackgroundExecutionAlgorithm(BackgroundAlgorithm algorithm) {
 		super();
@@ -77,28 +81,35 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				switch(statusValue) {
 				case INIT:
 					status = BackgroundStatus.INIT;
+					startButton.setEnabled(true);
 					startButton.setText("Pause");
 					stopButton.setEnabled(true);
 					paramPanel.setVisible(false);
+					statusLabel.setVisible(true);
 					break;
 				case RUNNING:
 					status = BackgroundStatus.RUNNING;
+					startButton.setEnabled(true);
 					startButton.setText("Pause");
 					stopButton.setEnabled(true);
 					paramPanel.setVisible(false);
+					statusLabel.setVisible(true);
 					break;
 				case IDLE:
 					status = BackgroundStatus.IDLE;
+					startButton.setEnabled(true);
 					startButton.setText("Continue");
 					stopButton.setEnabled(true);
 					paramPanel.setVisible(false);
+					statusLabel.setVisible(true);
 					break;
 				case FINISHED:
 					status = BackgroundStatus.FINISHED;
+					startButton.setEnabled(true);
 					startButton.setText("Layout Network");
 					stopButton.setEnabled(false);
-					startButton.setEnabled(true);
 					paramPanel.setVisible(true);
+					statusLabel.setVisible(false);
 					break;
 				default:
 					status = BackgroundStatus.STATUSERROR;
@@ -141,6 +152,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 			@Override
 			public void run() {
 				MainFrame.showMessage(statusDescription, MessageType.PERMANENT_INFO);
+				statusLabel.setText(statusDescription);
 			}
 		});
 	}
@@ -203,12 +215,12 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 						if(currentStatus < 0) {
 							currentStatus = 0;
 						}
-						
+
 						// First 10% get the first 10%
 						if(algorithm.getProgress() < 1.0) {
 							currentStatus = (int) (algorithm.getProgress() * 100);
 						}
-						
+
 						//First 90% get 40% in the progress bar
 						if(algorithm.getProgress() < 0.9) {
 							currentStatus = (int) (algorithm.getProgress()*100 * 0.4 + 10);
@@ -256,7 +268,9 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				try {
 					check();
 				} catch (PreconditionException e) {
-					e.printStackTrace();
+					ErrorMsg.addErrorMessage(e.getMessage());
+					setStatus(BackgroundStatus.FINISHED);
+					return;
 				}
 				setParameters(paramPanel.getUpdatedParameters());
 
@@ -265,7 +279,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				} catch (OutOfMemoryError error) {
 					ErrorMsg.addErrorMessage("We ran out of memory! Pleace increase heap memory of the JVM");
 				} catch (Exception ex) {
-					ErrorMsg.addErrorMessage(ex);
+					ErrorMsg.addErrorMessage("Failed to calculate layout: " + ex.getMessage());
 				} finally {
 					setStatus(BackgroundStatus.FINISHED);
 				}
@@ -336,8 +350,6 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		return algorithm.mayWorkOnMultipleGraphs();
 	}
 
-	private ParameterEditPanel paramPanel;
-
 	@Override
 	public boolean setControlInterface(ThreadSafeOptions options, JComponent jc) {
 		//set component layout
@@ -401,6 +413,12 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		//add stop button and check box to component
 		jc.add(TableLayout.get3Split(stopButton, autoDrawCheckBox, new JLabel(),
 				TableLayout.PREFERRED, TableLayout.PREFERRED,TableLayout.FILL ));
+
+		jc.add(new JSeparator(JSeparator.HORIZONTAL));
+
+		statusLabel = new JLabel();
+		statusLabel.setVisible(false);
+		jc.add(statusLabel);
 
 		//add parameter panel to component
 		if(paramPanel!=null) {

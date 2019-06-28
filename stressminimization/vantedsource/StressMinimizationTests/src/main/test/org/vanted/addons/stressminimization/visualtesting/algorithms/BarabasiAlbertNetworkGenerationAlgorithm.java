@@ -67,7 +67,7 @@ public class BarabasiAlbertNetworkGenerationAlgorithm extends AbstractAlgorithm 
 		if (initialComponentSize < 1 || initialComponentSize > numberOfNodes) {
 			throw new PreconditionException("Choose Initial Components Size between 1 and number of nodes.");
 		}
-		if (desiredDegree < initialComponentSize) {
+		if (desiredDegree > initialComponentSize) {
 			throw new PreconditionException("Desired degree may not be larger than the initial component size");
 		}
 		if (degreeDistribution < 0.0) {
