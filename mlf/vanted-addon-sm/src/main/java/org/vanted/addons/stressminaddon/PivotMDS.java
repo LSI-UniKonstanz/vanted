@@ -8,10 +8,7 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * A class that implements the Pivot Multidimensional Scaling algorithm
@@ -41,6 +38,10 @@ public class PivotMDS implements InitialPlacer {
     @Override
     public List<Vector2d> calculateInitialPositions(final List<Node> nodes, final NodeValueMatrix distances) {
         assert nodes.size() == distances.getDimension();
+
+        if (nodes.size() == 1) {
+            return Collections.singletonList(new Vector2d(0.0, 0.0));
+        }
 
         final int numPivots = Math.min(50, distances.getDimension()); // TODO make configurable
 
@@ -172,23 +173,17 @@ public class PivotMDS implements InitialPlacer {
     
     
     /**
-     * returns the absolute value of a and b. a and b need to be negative
+     * Returns the absolute value of a and b. a and b need to be negative
      *
-     * @param a value 1
-     * @param b value 2
+     * @param a value 1 (needs to be negative)
+     * @param b value 2 (needs to be negative)
      * @return double containing the larger absolute value of value a and b
      * 
      * @author theo
      */
     private double largerAbS(double a , double b){
-         a = -1 *a;
-         b = -1 *b;
-         if(a>b){
-             return a;
-         }
-         else{
-             return b;
-         }
+        assert (a <= 0 && b <= 0) : "Values need to be negative.";
+        return (a < b) ? -a : -b;
     }
 
     /**
@@ -217,38 +212,43 @@ public class PivotMDS implements InitialPlacer {
 
 
     /**
-     * calcultaes the eigenvalue for a Matrix and a corresponding eigenvector.
+     * Calculates the eigenvalue for a Matrix and a corresponding eigenvector.
      *
-     * @param matrix
-     * @param eigenVec
+     * @param matrix the matrix to find the eigenvalue for.
+     * @param eigenVec the eigenvector of the eigenvalue to find.
      * @return the eigenvalue
      *
-     * @theo
+     * @author theo
      */
-     private double findEigenVal(final RealMatrix matrix, final RealMatrix eigenVec){
+    private double findEigenVal(final RealMatrix matrix, final RealMatrix eigenVec){
 
         RealMatrix tmp = matrix.multiply(eigenVec);
 
-        double result = tmp.getEntry(0, 0)/eigenVec.getEntry(0,0);
+        double result;
+        if (tmp.getEntry(0, 0) != 0 || eigenVec.getEntry(0, 0) != 0.0) {
+            result = tmp.getEntry(0, 0)/eigenVec.getEntry(0,0);
+        } else {
+            result = 0.0;
+        }
 
         return result;
     }
 
 
     /**
-     * deflates a given Matrix by an corresponding pair of eigenvalue and eigenvector.
+     * Deflates a given Matrix by an corresponding pair of eigenvalue and eigenvector.
      *
      * @param matrix  the matrix that shall get deflated
      * @param firstEigenVec  eigenVec from the eigenspaces of the eigenvalue
      * @param firstEigenVal the largest eigenValue of the matrix
      * @return RealMatrix containing the deflated matrix c'
      *
-     * @theo
+     * @author theo
      */
     private RealMatrix deflateMatrix(final RealMatrix matrix, final RealMatrix firstEigenVec, final double firstEigenVal){
 
         //matrix - eigenVal * (eigenVec *eigenVec^T)
-        return matrix.subtract((RealMatrixImpl) firstEigenVec.multiply(firstEigenVec.transpose()).scalarMultiply(firstEigenVal));
+        return matrix.subtract(firstEigenVec.multiply(firstEigenVec.transpose()).scalarMultiply(firstEigenVal));
     }
 
 
@@ -262,13 +262,11 @@ public class PivotMDS implements InitialPlacer {
      */
     private RealMatrixImpl getRandomVector(final int dimension) {
 
-        Random r = PivotMDS.RAND;
-
         RealMatrixImpl result = new RealMatrixImpl(dimension, 1);
         double[][] resultArray = result.getDataRef();
 
         for(int row =0; row<dimension; row++){
-            resultArray[row][0] = r.nextInt();
+            resultArray[row][0] = PivotMDS.RAND.nextInt();
         }
         return result;
     }
@@ -285,8 +283,8 @@ public class PivotMDS implements InitialPlacer {
      * @author theo
      */
     private double getDifference(final RealMatrix a, final RealMatrix b){
-        double aVal = 0;
-        double bVal = 0;
+        double aVal;
+        double bVal;
         double result = 0;
         for(int row = 0; row < a.getRowDimension(); row++){
             for(int col= 0; col< a.getColumnDimension(); col++){
@@ -300,12 +298,12 @@ public class PivotMDS implements InitialPlacer {
     }
 
     /**
-     * calculates the euclidean norm for a given vector
+     * Calculates the euclidean norm for a given vector
      *
      * @param vec RealMatrix with 1 column
      * @return double representing the euclidean norm
      *
-     * @theo
+     * @author theo
      */
     private double getEuclideanNorm(final RealMatrix vec){
         if(vec.getColumnDimension() >1){
@@ -324,16 +322,17 @@ public class PivotMDS implements InitialPlacer {
     /**
      * Calculate the two eigen values using powerIteration.
      *
-     * @param c containing the doubleCentred distance values.
+     * @param cTc with C being doubleCentred distance values, this
+     *            parameter should contain the result of the multiplication
+     *            C<sup>T</sup>C.
+     * @param vec the vector to start the iteration from.
      * @return a doubleArray containing the two eigenvalues.
      *
      * @author theo
      */
-     public RealMatrix powerIterate(final RealMatrix c, RealMatrix vec) {
+     RealMatrix powerIterate(final RealMatrix cTc, RealMatrix vec) {
 
          RealMatrix eigenVec = vec;
-
-        final int dimension = c.getRowDimension();
 
         double change = 1;
 
@@ -343,11 +342,14 @@ public class PivotMDS implements InitialPlacer {
             // remember old values
             RealMatrixImpl oldEigenVecs = (RealMatrixImpl) eigenVec.copy();
 
-            //c * eigenVec
-            eigenVec = (RealMatrixImpl) c.multiply(eigenVec);
+            //cTc * eigenVec
+            eigenVec = cTc.multiply(eigenVec);
 
             // calculate new eigenVec
-            eigenVec = (RealMatrixImpl) eigenVec.scalarMultiply(1/getEuclideanNorm(eigenVec));
+            double euclideanNorm = getEuclideanNorm(eigenVec);
+            if (euclideanNorm != 0.0) {
+                eigenVec = eigenVec.scalarMultiply(1/euclideanNorm);
+            }
 
             //calculate the difference between the oldEigenVecs and the new eigenVecs
             change = Math.abs(getDifference(oldEigenVecs, eigenVec));
@@ -369,7 +371,7 @@ public class PivotMDS implements InitialPlacer {
      * @author theo, Jannik
      *
      */
-    public RealMatrix doubleCenter(final NodeValueMatrix distances, final int amountPivots,
+    RealMatrix doubleCenter(final NodeValueMatrix distances, final int amountPivots,
                                    final int[] distanceTranslation) {
 
         final int n = distances.getDimension();
