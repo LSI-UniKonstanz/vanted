@@ -77,6 +77,10 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
     private static final double EDGE_SCALING_FACTOR_DEFAULT = 5.0;
     /** The scaling factor for the edges between the nodes (as fraction of the biggest node). */
     private double edgeScalingFactor = EDGE_SCALING_FACTOR_DEFAULT;
+    /** The default minimum required length of the edges between the nodes after they are scaled. */
+    private static final double EDGE_LENGTH_MINIMUM_DEFAULT = 25.0;
+    /** The minimum required length of the edges between the nodes after they are scaled. */
+    private double edgeLengthMinimum = EDGE_LENGTH_MINIMUM_DEFAULT;
     /** The default constant scale factor for the calculated weight between two nodes. */
     private static final double WEIGHT_SCALING_FACTOR_DEFAULT = 1.0;
     /** The constant scale factor for the calculated weight between two nodes. */
@@ -455,6 +459,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
                 EnableableNumberParameter.alwaysEnabled(EDGE_SCALING_FACTOR_DEFAULT, 0.0, Double.MAX_VALUE, 0.5,
                         "Edge scaling factor", "<html>The amount of space that the algorithm tries to ensure between two nodes<br>" +
                                 "(length of the edges) as faction of the size of the largest node encountered.</html>"),
+                EnableableNumberParameter.alwaysEnabled(EDGE_LENGTH_MINIMUM_DEFAULT, 0.0, Double.MAX_VALUE, 1.0,
+                        "Edge length minimum", "<html>The amount of space that the algorithm at least tries to ensure between two nodes.<br>" +
+                                "This value will be used if the scaled length (see above) is smaller than it.</html>"),
                 new BooleanParameter(REMOVE_EDGE_BENDS_DEFAULT, "Remove edge bends",
                         "<html>Remove edge bends before starting the algorithm.<br><b>Highly recommended</b> because the algorithm does not " +
                                 "move edge bends.<br>Always undoable as extra undo.</html>"),
@@ -534,17 +541,23 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
         } else {
             this.edgeScalingFactor = doubleParameter.getValue();
         }
-        this.removeEdgeBends = ((BooleanParameter) params[13]).getBoolean();
+        doubleParameter = (EnableableNumberParameter<Double>) params[13].getValue();
+        if (doubleParameter.getValue() == 0.0) {
+            this.edgeLengthMinimum = Double.MIN_VALUE;
+        } else {
+            this.edgeLengthMinimum = doubleParameter.getValue();
+        }
+        this.removeEdgeBends = ((BooleanParameter) params[14]).getBoolean();
         // Intermediates undoable
-        this.intermediateUndoable = ((BooleanParameter) params[14]).getBoolean();
+        this.intermediateUndoable = ((BooleanParameter) params[15]).getBoolean();
         // Do animation
-        this.doAnimations = ((BooleanParameter) params[15]).getBoolean();
+        this.doAnimations = ((BooleanParameter) params[16]).getBoolean();
         if (intermediateUndoable) { // intermediateUndoable => doAnimations
             doAnimations = true;
         }
         // Threading
-        this.backgroundTask = ((BooleanParameter) params[17]).getBoolean();
-        this.multipleThreads = ((BooleanParameter) params[18]).getBoolean();
+        this.backgroundTask = ((BooleanParameter) params[18]).getBoolean();
+        this.multipleThreads = ((BooleanParameter) params[19]).getBoolean();
     }
 
     /*
@@ -703,7 +716,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm  implement
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate distances..."));
             this.distances = ShortestDistanceAlgorithm.calculateShortestPaths(nodes, Integer.MAX_VALUE, multipleThreads); // TODO make configurable
             System.out.println((System.currentTimeMillis() - startTime) + " SM@"+(status = id+": Calculate scaling factor..."));
-            final double scalingFactor = ConnectedComponentsHelper.getMaxNodeSize(nodes);
+            final double scalingFactor = Math.max(
+                    ConnectedComponentsHelper.getMaxNodeSize(nodes)*StressMinimizationLayout.this.edgeScalingFactor,
+                    StressMinimizationLayout.this.edgeLengthMinimum);
             // scale for better display
             this.distances.apply(x -> x*scalingFactor*StressMinimizationLayout.this.edgeScalingFactor);
 
