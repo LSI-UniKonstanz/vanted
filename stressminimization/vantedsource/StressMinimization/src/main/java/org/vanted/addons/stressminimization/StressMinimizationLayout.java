@@ -6,7 +6,6 @@ import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Set;
 
 import javax.swing.JLabel;
 
@@ -21,6 +20,8 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.view.View;
 import org.vanted.addons.stressminimization.parameters.LandmarkParameter;
 import org.vanted.addons.stressminimization.parameters.SliderParameter;
+import org.vanted.addons.stressminimization.primitives.BasicGraphOperations;
+import org.vanted.addons.stressminimization.primitives.IndexedNodeSet;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout;
@@ -198,7 +199,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	 */
 	@Override
 	public void setParameters(Parameter[] params) {
-		
+
 		for (Parameter p : params) {
 
 			switch (p.getName()) {
@@ -258,38 +259,45 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 			rla.execute();
 		}
 
-		Collection<Node> workNodes;
+		Collection<Node> workNodesCollection;
 
 		if (selection.isEmpty()) {
-			workNodes = graph.getNodes();
+			workNodesCollection = graph.getNodes();
 		} else {
-			workNodes = selection.getNodes();
+			workNodesCollection = selection.getNodes();
 			// for all selected edges, add source and target nodes
 			for (Edge e : selection.getEdges()) {
-				workNodes.add(e.getSource());
-				workNodes.add(e.getTarget());
+				workNodesCollection.add(e.getSource());
+				workNodesCollection.add(e.getTarget());
 			}
 		}
 
+		IndexedNodeSet workNodes = IndexedNodeSet.setOfAllIn(workNodesCollection);
+
 		setStatusDescription("Stress Minimization: calculating components");
-		// IMPORTANT: components will add nodes that are not in workNodes to single components!
-		Set<Set<Node>> components = GraphHelper.getConnectedComponents(workNodes);
+		List<IndexedNodeSet> components = BasicGraphOperations.getComponents(workNodes);
 
 		// NOTE: applying the final nodes position updates in this class
 		// has the benefit, that the algorithm is more easy usable by the Multilevel Framework
 		HashMap<Node, Vector2d> nodes2NewPositions = new HashMap<Node, Vector2d>();
 
-		for (Set<Node> component : components) {
+		for (IndexedNodeSet component : components) {
 
 			setStatusDescription("Stress Minimization: layouting next component");
 
-			if (!selection.isEmpty()) {
-				component.retainAll(workNodes);
-			}
-
 			if (waitIfPausedAndCheckStop()) { return; }
 
-			StressMinimizationImplementation impl = new StressMinimizationImplementation(component, this, numberOfLandmarks, alpha, stressChangeEpsilon, initialStressPercentage, minimumNodeMovementThreshold, iterationsThreshold);
+			StressMinimizationImplementation impl = new StressMinimizationImplementation(
+					component,
+					this,
+					numberOfLandmarks,
+					alpha,
+					stressChangeEpsilon,
+					initialStressPercentage,
+					minimumNodeMovementThreshold,
+					iterationsThreshold
+					);
+
 			impl.calculateLayout();
 
 			nodes2NewPositions.putAll( getLayout().get() );
