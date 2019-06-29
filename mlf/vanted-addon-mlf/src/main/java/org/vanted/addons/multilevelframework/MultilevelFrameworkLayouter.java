@@ -79,8 +79,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     }
 
     /**
-     * Does nothing. This layouter doesn't currently support resetting; it causes problems with the GUI of
-     * sub-algorithms (such as the level layouter).
+     * Calls {@code super.reset()} and updates the parameters.
      * @see super#reset()
      */
     @Override
@@ -199,6 +198,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 bts.status = calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
                 bts.statusMessage = makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
                         connectedComponents[0], i, graph.getName());
+//                display(componentMLG.getTopLevel());
                 algorithm.execute(componentMLG.getTopLevel(), emptySelection);
                 if (removeOverlaps) { removeOverlaps(componentMLG.getTopLevel()); }
                 bts.statusMessage = "Finished laying out the levels";
@@ -592,8 +592,17 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
  * @see BackgroundTaskStatusProvider
  */
 class MLFBackgroundTaskStatus implements BackgroundTaskStatusProvider {
+    /**
+     * This is set to {@code true} if the user clicks the stop button.
+     */
     boolean isStopped = false;
+    /**
+     * Current state of the progress bar.
+     */
     double status = -1;
+    /**
+     * Status message displayed above the progress bar in VANTED.
+     */
     String statusMessage = "";
 
     /**
