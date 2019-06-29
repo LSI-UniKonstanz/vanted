@@ -58,6 +58,15 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     private boolean removeBends = false;
     private boolean removeOverlaps = false;
 
+    /**
+     * Set this to true to make execute() block until it is finished and use the specified mergers instead of the ones
+     * selected through the GUI.
+     */
+    public boolean benchmarkMode = false;
+    public Merger nonInteractiveMerger = null;
+    public Placer nonInteractivePlacer = null;
+    public String nonInteractiveAlgorithm = null;
+
     // add the default mergers and placers
     static {
         MultilevelFrameworkLayouter.mergers.add(new SolarMerger());
@@ -127,10 +136,18 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         final boolean removeBends = this.removeBends;
         final boolean removeOverlaps = this.removeOverlaps;
         final boolean randomTop = this.randomTop;
-        final Merger merger = this.getSelectedMergerAndSetParameters();
-        final Placer placer = this.getSelectedPlacerAndSetParameters();
-        final LayoutAlgorithmWrapper algorithm =
-                this.layoutAlgorithms.get(Objects.toString(this.algorithmListComboBox.getSelectedItem()));
+        final Merger merger;
+        final Placer placer;
+        final LayoutAlgorithmWrapper algorithm;
+        if (!this.benchmarkMode) { // otherwise the caller needs to set those values
+            merger = this.getSelectedMergerAndSetParameters();
+            placer = this.getSelectedPlacerAndSetParameters();
+            algorithm = this.layoutAlgorithms.get(Objects.toString(this.algorithmListComboBox.getSelectedItem()));
+        } else {
+            merger = this.nonInteractiveMerger;
+            placer = this.nonInteractivePlacer;
+            algorithm = this.layoutAlgorithms.get(this.nonInteractiveAlgorithm);
+        }
         final List<?extends CoarsenedGraph>[] connectedComponents = new List[1];
 
         final MLFBackgroundTaskStatus bts = new MLFBackgroundTaskStatus();
@@ -150,7 +167,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         System.out.println("Running MLF using " + merger.getName() + ", " + placer.getName() + ", "
                 + algorithm.getAlgorithm().getName());
 
-        BackgroundTaskHelper.issueSimpleTask(this.getName(), "Multilevel Framework is running", () -> {
+        final Runnable backgroundTask = () -> {
             if (removeBends) {
                 GraphHelper.removeAllBends(graph, true);
             }
@@ -204,7 +221,9 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 bts.statusMessage = "Finished laying out the levels";
                 bts.status = -1;
             }
-        }, () -> {
+        };
+
+        final Runnable finishSwingTask = () -> {
             // apply position updates
             HashMap<Node, Vector2d> nodes2newPositions = new HashMap<>();
 
@@ -222,7 +241,19 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
             ConnectedComponentsHelper.layoutConnectedComponents(ConnectedComponentsHelper.getConnectedComponents(
                     getSelectedOrAllNodes(graph, selection)), true);
             graph.setBoolean(WORKING_ATTRIBUTE_PATH, false);
-        }, bts);
+        };
+
+        if (this.benchmarkMode) { // this is basically only useful for benchmarking
+            backgroundTask.run();
+            try {
+                SwingUtilities.invokeAndWait(finishSwingTask);
+            } catch (InterruptedException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        } else { // the normal case, when the algorithm is executed interactively
+            BackgroundTaskHelper.issueSimpleTask(this.getName(), "Multilevel Framework is running",
+                    backgroundTask, finishSwingTask, bts);
+        }
     }
 
     /**
