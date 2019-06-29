@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
 
-class SolarMerger implements Merger {
+public class SolarMerger implements Merger {
     private final static String MIN_NODES_NAME        = "Minimum number of nodes";
     private final static String MAX_LEVEL_FACTOR_NAME = "Maximum level factor";
 
