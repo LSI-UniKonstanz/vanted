@@ -65,13 +65,11 @@ public class PivotMDS implements InitialPlacer {
         RealMatrix newX = c.multiply(firstEigenVec.getColumnMatrix(0));
         RealMatrix newY = c.multiply(secondEigenVec.getColumnMatrix(0));
         
-        double toAdd = largerAbS(findMinInMatrix(newX), findMinInMatrix(newY));
-
         // create a list containing the new coordinates
         List<Vector2d> newPosList = new ArrayList<>();
         for(int i = 0; i < distances.getDimension(); i++){
-            newPosList.add(new Vector2d(newX.getEntry(inversePivotTranslation[i], 0) + toAdd,
-                                        newY.getEntry(inversePivotTranslation[i], 0) + toAdd));
+            newPosList.add(new Vector2d(newX.getEntry(inversePivotTranslation[i], 0),
+                                        newY.getEntry(inversePivotTranslation[i], 0)));
         }
         return newPosList;
     }
@@ -171,46 +169,6 @@ public class PivotMDS implements InitialPlacer {
         return table;
     }
     
-    
-    /**
-     * Returns the absolute value of a and b. a and b need to be negative
-     *
-     * @param a value 1 (needs to be negative)
-     * @param b value 2 (needs to be negative)
-     * @return double containing the larger absolute value of value a and b
-     * 
-     * @author theo
-     */
-    private double largerAbS(double a , double b){
-        assert (a <= 0 && b <= 0) : "Values need to be negative.";
-        return (a < b) ? -a : -b;
-    }
-
-    /**
-     * find the min entry in a matrix. if min> 0 return 0
-     *
-     * @param matrix where the min of is needed
-     * @return double containing the smallest entry in Matrix
-     * 
-     * @author theo
-     */
-    private  double findMinInMatrix(RealMatrix matrix){
-         double min =0;
-         for(int row = 0; row<matrix.getRowDimension(); row++){
-             for(int col = 0; col<matrix.getColumnDimension(); col++){
-
-                 if(matrix.getEntry(row, col)< min){
-                     min = matrix.getEntry(row,  col);
-                 }
-             }
-         }
-        if(min< 0 ){
-            return min;
-        }
-        return 0;
-    }
-
-
     /**
      * Calculates the eigenvalue for a Matrix and a corresponding eigenvector.
      *
