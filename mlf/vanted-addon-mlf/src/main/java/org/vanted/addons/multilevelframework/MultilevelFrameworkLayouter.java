@@ -200,7 +200,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                     bts.statusMessage = makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
                             connectedComponents[0], i, graph.getName());
                     bts.status = calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
-                    display(componentMLG.getTopLevel());
+//                    display(componentMLG.getTopLevel());
                     // force directed sometimes takes tens of seconds to "layout" a single node
                     if (componentMLG.getTopLevel().getNumberOfNodes() >= 2) {
                         algorithm.execute(componentMLG.getTopLevel(), emptySelection);
@@ -252,8 +252,17 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 e.printStackTrace();
             }
         } else { // the normal case, when the algorithm is executed interactively
+            // make sure the running attribute is removed if an exception is thrown
+            final Runnable tryBackgroundTask = () -> {
+                try {
+                    backgroundTask.run();
+                } catch (Exception e) { // need to remove the "MLF running" attribute
+                    graph.setBoolean(WORKING_ATTRIBUTE_PATH, false);
+                    throw e; // rethrow
+                }
+            };
             BackgroundTaskHelper.issueSimpleTask(this.getName(), "Multilevel Framework is running",
-                    backgroundTask, finishSwingTask, bts);
+                    tryBackgroundTask, finishSwingTask, bts);
         }
     }
 

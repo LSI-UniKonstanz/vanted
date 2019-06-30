@@ -2,6 +2,7 @@ package org.vanted.addons.multilevelframework;
 
 import org.AttributeHelper;
 import org.Vector2d;
+import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.parameter.Parameter;
 
@@ -166,28 +167,18 @@ public class SolarPlacer implements Placer {
     }
 
     /**
-     * Get an object attribute cast into the correct type. Throws an exception if it
+     * Get an object attribute. Throws an exception if it
      * doesn't work.
      *
      * @param internalGraph The {@link InternalGraph} to get the attribute from.
      *                      Must not be {@code null}.
      * @param key           The key to get.
-     * @param clazz         The class of the return type.
-     * @param <T>           The return type.
-     * @return The object returned by {@link InternalGraph#getObject(String)}, cast
-     * to {@code T}.
+     * @return the object returned by {@link InternalGraph#getObject(String)}.
      * @author Gordian
      */
-//	private static <T> T getElement(InternalGraph internalGraph, String key, Class<T> clazz) {
-//		final Object tmp = internalGraph.getObject(key).orElseThrow(
-//				() -> new IllegalArgumentException("SolarPlacer can only be run on graphs merged by Solar Merger."));
-//		if (!clazz.isInstance(tmp)) {
-//			throw new IllegalStateException("Invalid object found at key \"" + key + "\"");
-//		}
-//		return clazz.cast(tmp);
-//	}
     private static Object getElement(InternalGraph internalGraph, String key) {
         if (!internalGraph.getObject(SolarMerger.SUNS_KEY).isPresent()) {
+            MainFrame.getInstance().showMessageDialog("SolarPlacer can only be run on graphs merged by Solar Merger.");
             throw new IllegalArgumentException("SolarPlacer can only be run on graphs merged by Solar Merger.");
         }
         try {

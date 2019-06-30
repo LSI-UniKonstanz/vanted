@@ -136,8 +136,6 @@ public class MultilevelGraph {
         if (this.levels.isEmpty()) {
             return true;
         }
-        // TODO: safe to hash nodes?
-        // TODO: does this meet performance goals?
         final Graph prev = this.levels.size() == 1 ? this.originalGraph : this.levels.get(this.levels.size() - 2);
         final Set<Node> previousNodes = new HashSet<>(prev.getNodes());
         final Set<Node> representedNodes = new HashSet<>();
