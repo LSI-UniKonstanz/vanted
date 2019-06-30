@@ -80,7 +80,8 @@ public class ConnectedComponentsHelperTest {
     }
 
     /**
-     * Test method {@link ConnectedComponentsHelper#layoutConnectedComponents(Set, boolean)}.
+     * Test methods {@link ConnectedComponentsHelper#layoutConnectedComponents(Set, boolean)} and
+     * {@link ConnectedComponentsHelper#layoutConnectedComponents(List, List, boolean)}.
      * @author Jannik
      */
     @Test
@@ -106,22 +107,35 @@ public class ConnectedComponentsHelperTest {
             assertTrue("Node was moved", oldPos.distance(newPos) > 0);
         }
 
-        // Test one component graph
+        // Test one component graph (and position update)
         graph = (Graph) GRAPH_1.copy();
         nodes = graph.getNodes();
-        components = ConnectedComponentsHelper.getConnectedComponents(nodes);
-        oldPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
-        ConnectedComponentsHelper.layoutConnectedComponents(components, false);
-        newPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
+        List<List<Node>> componentsList = new ArrayList<>(ConnectedComponentsHelper.getConnectedComponents(nodes));
+        List<List<Vector2d>> componentsPosList = componentsList.stream().map(l -> l.stream().map(
+                AttributeHelper::getPositionVec2d).collect(Collectors.toList())).collect(
+                        Collectors.toList());
+        oldPositions = componentsPosList.stream().flatMap(Collection::stream).map(Vector2d::new).collect(Collectors.toList());
+        edge = nodes.get(0).getEdges().iterator().next();
+        edge.addAttribute(new EdgeGraphicAttribute(), "");
+        AttributeHelper.addEdgeBend(edge, oldPositions.get(0));
+        ConnectedComponentsHelper.layoutConnectedComponents(componentsList, componentsPosList, false);
+        newPositions = componentsList.stream().flatMap(Collection::stream).map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
 
 
-        // only test whether nothing was changed
+        Vector2d givenPos;
+        List<Vector2d> givenPositions = componentsPosList.stream().flatMap(Collection::stream).collect(Collectors.toList());
+        // only test whether something was changed
         for (int pos = 0; pos < nodes.size(); pos++) {
             oldPos = oldPositions.get(pos);
             newPos = newPositions.get(pos);
+            givenPos = givenPositions.get(pos);
 
-            assertFalse("Node wasn't moved", oldPos.distance(newPos) > 0);
+            assertTrue("Node was moved", oldPos.distance(newPos) > 0);
+            assertEquals("Given node was moved", 0, newPos.distance(givenPos), 0.0);
         }
+
+        // test empty graph (this shouldn't throw an exception)
+        ConnectedComponentsHelper.layoutConnectedComponents(Collections.emptySet(), true);
     }
 
     /**
@@ -191,12 +205,18 @@ public class ConnectedComponentsHelperTest {
             ConnectedComponentsHelper.getConnectedComponents(null); fail("No exception thrown");
         } catch (NullPointerException e) {
         } catch (Throwable t) {
+            if ("No exception thrown".equals(t.getMessage())) {
+                throw t;
+            }
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
         try {
             ConnectedComponentsHelper.layoutConnectedComponents(null, false); fail("No exception thrown");
         } catch (NullPointerException e) {
         } catch (Throwable t) {
+            if ("No exception thrown".equals(t.getMessage())) {
+                throw t;
+            }
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
         try {
@@ -205,12 +225,18 @@ public class ConnectedComponentsHelperTest {
             fail("No exception thrown");
         } catch (NullPointerException e) {
         } catch (Throwable t) {
+            if ("No exception thrown".equals(t.getMessage())) {
+                throw t;
+            }
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
         try {
             ConnectedComponentsHelper.getMaxNodeSize(null); fail("No exception thrown");
         } catch (NullPointerException e) {
         } catch (Throwable t) {
+            if ("No exception thrown".equals(t.getMessage())) {
+                throw t;
+            }
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
 
@@ -221,6 +247,9 @@ public class ConnectedComponentsHelperTest {
             fail("No exception thrown");
         } catch (IllegalArgumentException e) {
         } catch (Throwable t) {
+            if ("No exception thrown".equals(t.getMessage())) {
+                throw t;
+            }
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
         try {
@@ -229,7 +258,35 @@ public class ConnectedComponentsHelperTest {
             fail("No exception thrown");
         } catch (IllegalArgumentException e) {
         } catch (Throwable t) {
+            if ("No exception thrown".equals(t.getMessage())) {
+                throw t;
+            }
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
+        }
+
+        // test assertions
+        try {
+            ConnectedComponentsHelper.layoutConnectedComponents(
+                    Collections.singletonList(Collections.emptyList()), Collections.emptyList(), true);
+            fail("No exception thrown!");
+        } catch (AssertionError e) {
+            if ("No exception thrown!".equals(e.getMessage())) {
+                throw e;
+            }
+        } catch (Throwable t) {
+            fail("Wrong exception thrown!");
+        }
+        try {
+            ConnectedComponentsHelper.layoutConnectedComponents(
+                    Collections.singletonList(Collections.singletonList(null)),
+                    Collections.singletonList(Collections.emptyList()), false);
+            fail("No exception thrown!");
+        } catch (AssertionError e) {
+            if ("No exception thrown!".equals(e.getMessage())) {
+                throw e;
+            }
+        } catch (Throwable t) {
+            fail("Wrong exception thrown!");
         }
     }
 }
