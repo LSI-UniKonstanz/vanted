@@ -1,6 +1,8 @@
 package org.vanted.addons.multilevelframework;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -50,11 +52,31 @@ public class SolarPlacer implements Placer {
 		final HashMap<Node, Set<Node>> planetToMoons = (HashMap<Node, Set<Node>>) getElement(top,
 				SolarMerger.PLANET_TO_MOONS_KEY);
 
+		// generate Map of moons to their respective planets
 		HashMap<Node, Node> moonToPlanet = new HashMap<>();
 		for (Entry<Node, Set<Node>> planetWMoons : planetToMoons.entrySet()) {
 			Node planet = planetWMoons.getKey();
 			for (Node moon : planetWMoons.getValue()) {
 				moonToPlanet.put(moon, planet);
+			}
+		}
+
+		// generate Map of planets to their respective suns
+		HashMap<Node, Node> planetToSun = new HashMap<>();
+		for (Entry<Node, Set<Node>> sunWPlanets : sunToPlanets.entrySet()) {
+			Node sun = sunWPlanets.getKey();
+			for (Node planet : sunWPlanets.getValue()) {
+				planetToSun.put(planet, sun);
+			}
+		}
+
+		// generate Map of suns to their respective solar systems
+		HashMap<Node, MergedNode> sunToSolarSystem = new HashMap<>();
+		for (MergedNode solarSystem : top.getMergedNodes()) {
+			for (Node stellar : solarSystem.getInnerNodes()) {
+				if (suns.contains(stellar)) {
+					sunToSolarSystem.put(stellar, solarSystem);
+				}
 			}
 		}
 
@@ -72,60 +94,60 @@ public class SolarPlacer implements Placer {
 		}
 
 		// Place suns first
-		for (MergedNode solarSystem : top.getMergedNodes()) {
-			Vector2d center = AttributeHelper.getPositionVec2d(solarSystem);
-			for (Node stellarBody : solarSystem.getInnerNodes()) {
-				if (suns.contains(stellarBody)) {
-					AttributeHelper.setPosition(stellarBody, center);
-					break;
-				}
-			}
+		for (Node sun : suns) {
+			Vector2d center = AttributeHelper.getPositionVec2d(sunToSolarSystem.get(sun));
+			AttributeHelper.setPosition(sun, center);
 		}
 
-		for (Node sun : suns) {
-			Vector2d center = AttributeHelper.getPositionVec2d(sun);
-			// TODO check if instead of computing very Planet and Moon separately, using
-			// paths is faster
-			Set<Node> planets = sunToPlanets.get(sun);
-			if (planets != null) {
-				for (Node planet : planets) {
-					// determine how many intra-system connections lead to a planet
-					Set<Node> neighbors = planet.getNeighbors(); // all neighbors
-					neighbors.remove(sun); // minus the sun
-					neighbors.removeAll(planetToMoons.get(planet)); // minus all moons
-					neighbors.removeAll(planets); // minus all inter-system connections
+		HashSet<Node> allBodies = new HashSet<>();
+		if (allPlanets != null) {
+			allBodies.addAll(allPlanets);
+		}
+		if (allMoons != null) {
+			allBodies.addAll(allMoons);
+		}
 
-					int deg = neighbors.size(); // amount of remaining connections. These are all intra-system
-												// connections
+		for (Node planet : allBodies) {
+			// get A collection of all stellar bodies in the same solar system as the
+			// current planet
+			@SuppressWarnings("unchecked")
+			Collection<Node> issb = (Collection<Node>) sunToSolarSystem.get(planetToSun.get(planet)).getInnerNodes();
+			// calculate the amount of intra-solar-system connections
+			Set<Node> neighbors = planet.getNeighbors(); // all neighbors
+			neighbors.removeAll(issb); // remove all inter-solar-system bodies
+			int essc = neighbors.size(); // number of intra-solar-system connections
 
-					if (deg == 0) { // no intra-system connections
-						double angle = Math.random() * Math.PI * 2;
-						double x = Math.cos(angle) * (fakeZeroEngergyLength / 3) + center.x;
-						double y = Math.sin(angle) * (fakeZeroEngergyLength / 3) + center.y;
-						AttributeHelper.setPosition(planet, x, y);
-					} else { // connected to other solar system(s)
-						double planetPositionX = 0.0;
-						double planetPositionY = 0.0;
-						for (Node neighbor : neighbors) {
-							double lambda = 0.0;
-							if (suns.contains(neighbor)) { // neighbor is a sun
-								lambda = 1.0 / 2.0;
+			Vector2d center = AttributeHelper.getPositionVec2d(sunToSolarSystem.get(planetToSun.get(planet)));
+			if (essc == 0) { // no intra-solar-system connections. Place Planets randomly around sun
+				double angle = Math.random() * Math.PI * 2;
+				double x = Math.cos(angle) * (fakeZeroEngergyLength / 3) + center.x;
+				double y = Math.sin(angle) * (fakeZeroEngergyLength / 3) + center.y;
+				AttributeHelper.setPosition(planet, x, y);
+			} else { // connected to other solar system(s)
+				double planetPositionX = 0.0;
+				double planetPositionY = 0.0;
+				for (Node neighbor : neighbors) {
+					double lambda = 0.0;
+					if (suns.contains(neighbor)) { // neighbor is a sun
+						lambda = 1.0 / 2.0;
+					} else {
+						if (allPlanets != null) {
+							if (allPlanets.contains(neighbor)) { // neighbor is a planet
+								lambda = 1.0 / 3.0;
 							} else {
-								if (allPlanets.contains(neighbor)) { // neighbor is a planet
-									lambda = 1.0 / 3.0;
-								} else {
+								if (allMoons != null) {
 									if (allMoons.contains(neighbor)) { // neighbor is a moon
 										lambda = 1.0 / 4.0;
 									}
 								}
 							}
-							Vector2d t = AttributeHelper.getPositionVec2d(neighbor);
-							planetPositionX += center.x - (lambda * (t.x - center.x));
-							planetPositionY += center.y - (lambda * (t.y - center.y));
 						}
-						AttributeHelper.setPosition(planet, planetPositionX / deg, planetPositionY / deg);
 					}
+					Vector2d t = AttributeHelper.getPositionVec2d(neighbor);
+					planetPositionX += center.x - (lambda * (t.x - center.x));
+					planetPositionY += center.y - (lambda * (t.y - center.y));
 				}
+				AttributeHelper.setPosition(planet, planetPositionX / essc, planetPositionY / essc);
 			}
 		}
 	}
@@ -170,8 +192,14 @@ public class SolarPlacer implements Placer {
 //		return clazz.cast(tmp);
 //	}
 	private static Object getElement(InternalGraph internalGraph, String key) {
-		final Object tmp = internalGraph.getObject(key).orElseThrow(
-				() -> new IllegalArgumentException("SolarPlacer can only be run on graphs merged by Solar Merger."));
-		return tmp;
+		if (!internalGraph.getObject(SolarMerger.SUNS_KEY).isPresent()) {
+			throw new IllegalArgumentException("SolarPlacer can only be run on graphs merged by Solar Merger.");
+		}
+		try {
+			final Object tmp = internalGraph.getObject(key).get();
+			return tmp;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }
