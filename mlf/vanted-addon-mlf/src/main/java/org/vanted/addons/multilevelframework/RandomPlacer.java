@@ -9,6 +9,7 @@ import org.vanted.addons.multilevelframework.sm_util.gui.Describable;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Random;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
 
@@ -77,6 +78,8 @@ public class RandomPlacer implements Placer {
         Random random = new Random();
 
 
+        long startTime = System.nanoTime();
+        multilevelGraph.getTopLevel().getListenerManager().transactionStarted(this);
         for (MergedNode mergedNode : allMergedNodes) {
             Collection<? extends Node> innerNodes = mergedNode.getInnerNodes();
 
@@ -96,9 +99,9 @@ public class RandomPlacer implements Placer {
                 double randx = (-1.0 + 2.0 * random.nextDouble()) * maxPlaceDistance;
                 double randy = (-1.0 + 2.0 * random.nextDouble()) * maxPlaceDistance;
 
-                // scale the minimum distance using a random combination of 1 and -1
-                double xFactor = random.nextBoolean() ? 1 : -1;
-                double yFactor = random.nextBoolean() ? 1 : -1;
+                // scale the minimum distances so they point in the same direction as randx, randy
+                double xFactor = randx > 0 ? 1 : -1;
+                double yFactor = randy > 0 ? 1 : -1;
 
                 double x = minPlaceDistanceX * xFactor + AttributeHelper.getPositionX(mergedNode) + randx;
                 double y = minPlaceDistanceY * yFactor + AttributeHelper.getPositionY(mergedNode) + randy;
@@ -106,6 +109,9 @@ public class RandomPlacer implements Placer {
                 AttributeHelper.setPosition(node, x, y);
             }
         }
+        multilevelGraph.getTopLevel().getListenerManager().transactionFinished(this);
+        long endTime = System.nanoTime();
+        System.out.println("RandomPlacer took " + NANOSECONDS.toMillis(endTime - startTime) + " ms.");
 
     }
 
