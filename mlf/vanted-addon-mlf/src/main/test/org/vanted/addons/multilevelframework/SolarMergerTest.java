@@ -62,7 +62,41 @@ public class SolarMergerTest {
         this.sM.buildCoarseningLevels(mg1);
     }
 
+    @Test
+    public void buildCoarseningLevels2(){
+        MultilevelGraph untouchedMg1 = mg1;
+        sM.minNodes = 0;
+        this.sM.buildCoarseningLevels(mg1);
+        assertTrue(untouchedMg1 == mg1);
+    }
 
+    @Test
+    public void buildCoarseningLevels3(){
+        MultilevelGraph untouchedMg1 = mg1;
+        sM.maxLevelFactor = Integer.MAX_VALUE;
+        this.sM.buildCoarseningLevels(mg1);
+        assertTrue(untouchedMg1 == mg1);
+    }
+
+    @Test
+    public void buildCoarseningLevels4(){
+        MultilevelGraph mg0 = new MultilevelGraph(new AdjListGraph());
+        MultilevelGraph untouchedMg1 = mg0;
+        sM.minNodes = 0;
+        this.sM.buildCoarseningLevels(mg0);
+        assertTrue(untouchedMg1 == mg0);
+    }
+
+
+    /**
+     * @author Tobias credits to Gordian
+     */
+    @Test
+    public void getNameAndDescription() {
+        assertTrue(sM.getName().toLowerCase().contains("solar"));
+        assertTrue(sM.getName().toLowerCase().contains("merger"));
+        assertTrue(sM.getDescription().toLowerCase().contains("solar"));
+    }
 
 
 }

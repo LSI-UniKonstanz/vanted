@@ -77,6 +77,9 @@ public class SolarMerger implements Merger {
     }
 
     @Override
+    /**
+     *  Builds Levels for the multilevel Graph.
+     */
     public void buildCoarseningLevels(MultilevelGraph multilevelGraph) {
 
         final long startTime = System.nanoTime();
@@ -87,7 +90,7 @@ public class SolarMerger implements Merger {
         // checks whether the multilevelGraph contains too many Levels and whether the
         // topLevel has enough Nodes
         if (multilevelGraph.getTopLevel().getNodes().size() > minNodes) {
-            // calls upon build level to create multiple levels
+            // calls upon build level to create inner Graphs
             for (int i = 0; i < maxLevels; i++) {
                 processGalaxy(multilevelGraph);
                 if (multilevelGraph.getTopLevel().getNumberOfNodes() <= this.minNodes) {
@@ -95,7 +98,7 @@ public class SolarMerger implements Merger {
                 }
             }
         }
-
+        // Time for building the innerGraphs
         final long endTime = System.nanoTime();
         System.out.println("Built coarsening levels in: " + NANOSECONDS.toMillis(endTime - startTime) + " ms.");
     }
@@ -220,6 +223,7 @@ public class SolarMerger implements Merger {
             }
         }
 
+        // Preparing HashMaps and HashSets for the solarMerger
         InternalGraph top = (InternalGraph) multilevelGraph.getTopLevel();
         top.setObject(SUNS_KEY, suns);
         top.setObject(PLANETS_KEY, allPlanets);
@@ -249,7 +253,7 @@ public class SolarMerger implements Merger {
             return unrepresentedNodes.isEmpty();
         })).get() : "Some nodes have been lost (not represented in the top level).";
 
-        // Test stuff
+        // Asserting that newly introduced graph is still connected
         assert GraphHelper.getConnectedComponents(multilevelGraph.getTopLevel().getNodes())
                 .size() == 1 : "Graph isn't connected anymore";
     }
