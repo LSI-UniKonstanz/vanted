@@ -54,7 +54,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     private int placerPSPIndex = 0;
     private ParameterizableSelectorParameter mergerPSP;
     private ParameterizableSelectorParameter placerPSP;
-    private boolean randomTop = false;
+    private boolean randomTop = true;
     private boolean removeBends = false;
     private boolean removeOverlaps = false;
 
@@ -72,6 +72,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         MultilevelFrameworkLayouter.mergers.add(new SolarMerger());
         MultilevelFrameworkLayouter.mergers.add(new RandomMerger());
         MultilevelFrameworkLayouter.placers.add(new RandomPlacer());
+        MultilevelFrameworkLayouter.placers.add(new SolarPlacer());
     }
 
     public MultilevelFrameworkLayouter() {
@@ -251,8 +252,17 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                 e.printStackTrace();
             }
         } else { // the normal case, when the algorithm is executed interactively
+            // make sure the running attribute is removed if an exception is thrown
+            final Runnable tryBackgroundTask = () -> {
+                try {
+                    backgroundTask.run();
+                } catch (Exception e) { // need to remove the "MLF running" attribute
+                    graph.setBoolean(WORKING_ATTRIBUTE_PATH, false);
+                    throw e; // rethrow
+                }
+            };
             BackgroundTaskHelper.issueSimpleTask(this.getName(), "Multilevel Framework is running",
-                    backgroundTask, finishSwingTask, bts);
+                    tryBackgroundTask, finishSwingTask, bts);
         }
     }
 
@@ -552,7 +562,7 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         this.algorithmListComboBox.addActionListener(this::changeSelectedAlgorithm);
 
         JComponentParameter algorithmList = new JComponentParameter(this.algorithmListComboBox,
-                "Layout Algorithm",
+                "Level Layout Algorithm",
                 "Layout Algorithm to be run on each level of the coarsened graph.");
         this.algorithmListComboBox.setSelectedItem(this.lastSelectedAlgorithm);
 

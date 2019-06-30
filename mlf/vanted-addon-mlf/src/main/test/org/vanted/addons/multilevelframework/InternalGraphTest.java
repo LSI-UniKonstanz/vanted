@@ -7,7 +7,10 @@ import org.graffiti.graphics.NodeLabelAttribute;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.awt.*;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import static org.junit.Assert.*;
@@ -131,4 +134,20 @@ public class InternalGraphTest {
         this.n2.addInnerNode(n3);
         assertFalse(this.ig.checkNoOverlappingMergedNodes(this.n2));
     }
+
+    @Test
+    public void testSetGetObject() {
+        Color test = new Color(0xca, 0xff, 0xee);
+        this.ig.setObject("key", test);
+        assertSame(test, this.ig.getObject("key").orElse(null));
+
+        assertFalse(this.ig.getObject("non_existent_key").isPresent());
+    }
+
+    @Test
+    public void testGetMergedNodes() {
+        assertEquals(new HashSet<Node>(Arrays.asList(this.n1, this.n2)), new HashSet<Node>(this.ig.getMergedNodes()));
+        assertTrue(new InternalGraph().getMergedNodes().isEmpty());
+    }
+
 }
