@@ -176,8 +176,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                 state.doAnimations = false;
                 state.moveIntoView = false;
                 state.backgroundTask = false;
-                if (state.graph.getAttributes().getCollection().containsKey(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL) &&
-                        state.graph.getBoolean(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL)) {
+                if (!state.graph.getAttributes().getCollection().containsKey(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL) ||
+                    !state.graph.getBoolean(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL)) {
                     state.initialPlacer = new NullPlacer(); // we are not at top level
                 }
             } else {
