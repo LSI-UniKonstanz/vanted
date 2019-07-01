@@ -142,6 +142,17 @@ class StressMinimizationImplementation {
 		// makes this algorithm work better with results from other algorithms
 		landmarkLayout = unscaleLayout(landmarkLayout);
 
+		// algorithm isn't working well with layouts
+		// in which too many nodes are placed to the same
+		// position.
+		// therefore we add some "noise" to the initial layout
+		// to work around that.
+		for (int i = 0; i < numberOfLandmarks; i += 1) {
+			for (int a = 0; a < d; a += 1) {
+				landmarkLayout.setEntry(i, a, landmarkLayout.getEntry(i, a) + Math.random() * 0.01);
+			}
+		}
+
 		if (callingLayout.waitIfPausedAndCheckStop()) { return; }
 		callingLayout.setStatusDescription("Stress Minimization: optimizing layout - preprocessing...");
 

@@ -282,8 +282,10 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 					execute();
 				} catch (OutOfMemoryError error) {
 					ErrorMsg.addErrorMessage("We ran out of memory! Pleace increase heap memory of the JVM");
+					algorithm.reset();
 				} catch (Exception ex) {
 					ErrorMsg.addErrorMessage("Failed to calculate layout: " + ex.getMessage());
+					algorithm.reset();
 				} finally {
 					setStatus(BackgroundStatus.FINISHED);
 				}
