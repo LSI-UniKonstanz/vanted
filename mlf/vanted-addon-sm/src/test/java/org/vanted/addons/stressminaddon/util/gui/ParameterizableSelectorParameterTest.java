@@ -14,6 +14,7 @@ import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.plugin.parameter.SelectionParameter;
 import org.graffiti.plugins.editcomponents.defaults.BooleanEditComponent;
 import org.graffiti.selection.Selection;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -52,6 +53,14 @@ public class ParameterizableSelectorParameterTest {
         new MainFrame(new DefaultPluginManager(Preferences.userRoot()), Preferences.userRoot());
         MainFrame.getInstance().getEditComponentManager().getEditComponents().put(JComponentParameter.class, JComponentParameterEditor.class);
         MainFrame.getInstance().getEditComponentManager().getEditComponents().put(BooleanParameter.class, BooleanEditComponent.class);
+    }
+
+    /** Close all spawned windows for safety. @author Jannik */
+    @AfterClass
+    public static void closeVANTED() {
+        for (Window w : Window.getWindows()) {
+            w.dispose();
+        }
     }
 
     /**
@@ -314,7 +323,7 @@ public class ParameterizableSelectorParameterTest {
                 fail("No exception thrown");
             } catch (IllegalArgumentException e) {}
         } catch (Throwable t) {
-            if (t instanceof AssertionError) throw t;
+            if ("No exception thrown".equals(t.getMessage())) throw t;
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
 

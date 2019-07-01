@@ -27,6 +27,7 @@ public class ConnectedComponentsHelperTest {
 
     /**
      * Setup tests
+     * @author Jannik
      */
     @Before
     public void setUp() {
