@@ -1,5 +1,6 @@
 package org.vanted.addons.multilevelframework.benchmark;
 
+import org.AttributeHelper;
 import org.graffiti.editor.LoadSetting;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
@@ -22,7 +23,7 @@ public class StartBenchmarks {
     /**
      * How many times each benchmark will be repeated.
      */
-    private final static int REPEAT_TIMES = 1;
+    private final static int REPEAT_TIMES = 3;
     /**
      * File where the benchmark results are written.
      */
@@ -31,6 +32,21 @@ public class StartBenchmarks {
      * Don't execute force directed on graphs larger than this number of nodes.
      */
     private final static int FORCE_DIRECTED_MAX = 1500;
+    /**
+     * Benchmark configurations. Structure: Merger, Placer, Name of Algorithm
+     */
+    private final static Object[][] configurations = {
+            {new RandomMerger(), new RandomPlacer(), "Null-Layout"},
+            {new SolarMerger(),  new RandomPlacer(), "Null-Layout"},
+            {new SolarMerger(),  new SolarPlacer(),  "Null-Layout"},
+            {new RandomMerger(), new RandomPlacer(), "Stress Minimization"},
+            {new SolarMerger(),  new RandomPlacer(), "Stress Minimization"},
+            {new SolarMerger(),  new SolarPlacer(),  "Stress Minimization"},
+            {new RandomMerger(), new RandomPlacer(), new BlockingForceDirected().getName()},
+            {new SolarMerger(),  new RandomPlacer(), new BlockingForceDirected().getName()},
+            {new SolarMerger(),  new SolarPlacer(),  new BlockingForceDirected().getName()},
+    };
+
     /**
      * Run some benchmarks for the MLF in VANTED.
      * @param args
@@ -48,8 +64,7 @@ public class StartBenchmarks {
                 .filter(path -> Files.isReadable(path) && Files.isRegularFile(path) && graphMatcher.matches(path.getFileName()))
                 .toArray(Path[]::new);
         Arrays.sort(paths, Comparator.comparing(Path::getFileName));
-        try (OutputStream os = Files.newOutputStream(OUTPUT)) {
-            final PrintStream out = new PrintStream(os);
+        try (OutputStream os = Files.newOutputStream(OUTPUT); final PrintStream out = new PrintStream(os)) {
             runBenchmarks(paths, out);
         }
         vanted.stop();
@@ -70,14 +85,6 @@ public class StartBenchmarks {
             out.print(path.getFileName().toString());
         }
         out.println();
-        final Object[][] configurations = {
-                {new RandomMerger(), new RandomPlacer(), "Stress Minimization"},
-                {new SolarMerger(),  new RandomPlacer(), "Stress Minimization"},
-//                {new SolarMerger(),  new SolarPlacer(), "Stress Minimization"},
-                {new RandomMerger(), new RandomPlacer(), new BlockingForceDirected().getName()},
-                {new SolarMerger(),  new RandomPlacer(), new BlockingForceDirected().getName()},
-//                {new SolarMerger(),  new SolarPlacer(), new BlockingForceDirected().getName()},
-        };
         for (Object[] config : configurations) {
             out.print(((Merger)config[0]).getName());
             out.print("/");
@@ -91,6 +98,7 @@ public class StartBenchmarks {
                     final MultilevelFrameworkLayouter mfl = new MultilevelFrameworkLayouter();
                     mfl.benchmarkMode = true;
                     final Graph graph = MainFrame.getInstance().getGraph(path.toFile());
+                    graph.getNodes().forEach(n -> AttributeHelper.setPosition(n, 0, 0));
                     if (config[2].toString().matches("Force") && graph.getNumberOfNodes() > FORCE_DIRECTED_MAX) {
                         runningTimeMs = Long.MAX_VALUE;
                         break;
