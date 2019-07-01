@@ -17,15 +17,13 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
 
 public class SolarMerger implements Merger {
-    private final static String MIN_NODES_NAME = "Minimum number of nodes";
-    private final static String MAX_LEVEL_FACTOR_NAME = "Maximum level factor";
+    final static String MIN_NODES_NAME = "Minimum number of nodes";
+    final static String MAX_LEVEL_FACTOR_NAME = "Maximum level factor";
 
     // keys to store the information for the SolarPlacer
     public final static String SUNS_KEY = "SOLAR_MERGER_SUNS_SET";
     public final static String PLANETS_KEY = "SOLAR_MERGER_PLANETS_SET";
-    public final static String MOONS_KEY = "SOLAR_MERGER_MOONS_SET";
     public final static String SUN_TO_PLANETS_KEY = "SOLAR_MERGER_SUN_TO_PLANETS_SET";
-    public final static String NODE_TO_PATHS_KEY = "SOLAR_MERGER_NODE_TO_PATHS_SET";
     public final static String PLANET_TO_MOONS_KEY = "SOLAR_MERGER_PLANET_TO_MOONS_SET";
 
     // Variables containing the stopping criteria for the SolarMerger
@@ -33,10 +31,10 @@ public class SolarMerger implements Merger {
     int maxLevelFactor = 10;
 
     private Parameter[] parameters = {
-            new IntegerParameter(minNodes, MIN_NODES_NAME,
+            new IntegerParameter(minNodes, 1, Integer.MAX_VALUE, MIN_NODES_NAME,
                     "The minimum number of nodes on a coarsening level. "
                             + "If the number of nodes gets lower than this, the solar merger will stop."),
-            new IntegerParameter(maxLevelFactor, MAX_LEVEL_FACTOR_NAME,
+            new IntegerParameter(maxLevelFactor, 1, Integer.MAX_VALUE, MAX_LEVEL_FACTOR_NAME,
                     "Determines how many levels are maximally created. The maximum number of levels "
                             + "is the number of nodes in the graph divided by this parameter."),};
 
@@ -76,10 +74,10 @@ public class SolarMerger implements Merger {
         }
     }
 
-    @Override
     /**
      *  Builds Levels for the multilevel Graph.
      */
+    @Override
     public void buildCoarseningLevels(MultilevelGraph multilevelGraph) {
 
         final long startTime = System.nanoTime();
@@ -108,7 +106,7 @@ public class SolarMerger implements Merger {
      * Systems. Each solar System has a sun, planets(dist 1 to the sun) and one or
      * no moon(1+1 dist to sun) for each planet.
      */
-    private void processGalaxy(MultilevelGraph multilevelGraph) {
+    void processGalaxy(MultilevelGraph multilevelGraph) {
 
         // Graph storing the current topLevel as baseLevel for this coarsening step
         Graph baseLevel = multilevelGraph.getTopLevel();
@@ -265,7 +263,7 @@ public class SolarMerger implements Merger {
      * @param baseLevel the level current of the multilevel framework
      * @return sunList a List of the central Nodes of the solar systems
      */
-    private Set<Node> findSuns(Graph baseLevel) {
+    Set<Node> findSuns(Graph baseLevel) {
         final long startTime = System.nanoTime();
         // HashSet containing the suns for this level
         Set<Node> sunSet = new HashSet<>();
