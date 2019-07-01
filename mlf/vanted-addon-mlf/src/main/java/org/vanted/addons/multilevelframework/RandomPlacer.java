@@ -28,7 +28,7 @@ public class RandomPlacer implements Placer {
      * Array of parameters that will be displayed in the GUI.
      */
     private Parameter[] parameters = {
-            new DoubleParameter(this.maxPlaceDistance, MAX_PLACE_DIST_NAME,
+            new DoubleParameter(this.maxPlaceDistance, 0.0, Double.MAX_VALUE, MAX_PLACE_DIST_NAME,
                     "The maximum distance from the position of the merged node " +
                             "where the represented nodes will be placed")
     };
