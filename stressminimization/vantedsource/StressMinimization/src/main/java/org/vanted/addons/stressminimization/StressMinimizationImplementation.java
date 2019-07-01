@@ -83,9 +83,13 @@ class StressMinimizationImplementation {
 
 			callingLayout.setStatusDescription("Stress Minimization: calculating distances");
 
+			RealMatrix allDistances = calcDistances(nodes);
+			if (allDistances == null) { return; } // calcDistances did abort because algorithm was stopped
+
 			landmarks = nodes;
-			landmarkToLandmarkDistances = calcDistances(nodes);
+			landmarkToLandmarkDistances = allDistances;
 			landmarkToAllDistances = landmarkToLandmarkDistances;
+
 
 		} else {
 
@@ -305,6 +309,7 @@ class StressMinimizationImplementation {
 			distances.setRowVector(i, dist);
 			distances.setColumnVector(i, dist);
 
+			if (callingLayout.waitIfPausedAndCheckStop()) { return null; }
 			callingLayout.setDistancesProgress(i / n);
 
 		}

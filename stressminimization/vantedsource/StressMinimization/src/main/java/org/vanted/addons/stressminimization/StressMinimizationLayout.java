@@ -234,10 +234,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	 */
 	@Override
 	public void reset() {
+		this.stop();
 		super.reset();
 		this.graph = null;
 		this.selection = null;
-		this.parameters = null;
 	}
 
 	/**

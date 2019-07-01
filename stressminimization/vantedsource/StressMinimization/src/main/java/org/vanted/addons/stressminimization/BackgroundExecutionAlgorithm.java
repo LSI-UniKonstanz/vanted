@@ -36,6 +36,8 @@ import org.graffiti.plugin.algorithm.ThreadSafeAlgorithm;
 import org.graffiti.plugin.algorithm.ThreadSafeOptions;
 import org.graffiti.plugin.parameter.Parameter;
 import org.graffiti.selection.Selection;
+import org.graffiti.session.Session;
+import org.graffiti.session.SessionListener;
 
 import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.graph_to_origin_mover.CenterLayouterAlgorithm;
@@ -48,7 +50,7 @@ import info.clearthought.layout.TableLayout;
  * Executes a BackgroundAlgorithm and manage the GUI interaction.
  *
  */
-public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements PropertyChangeListener {
+public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements PropertyChangeListener, SessionListener {
 
 	private BackgroundAlgorithm algorithm;
 	private Graph graph;
@@ -65,6 +67,8 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		super();
 		this.algorithm=algorithm;
 		status = BackgroundStatus.FINISHED;
+
+		MainFrame.getInstance().addSessionListener(this);
 
 		//add BackgroundExecutionAlgorithm to listener list of algorithm
 		algorithm.addPropertyChangeListener(this);
@@ -258,7 +262,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 
 		//current graph position and selection
 		graph = GravistoService.getInstance().getMainFrame().getActiveSession().getGraph();
-		selection = GravistoService.getInstance().getMainFrame().getActiveEditorSession().getSelectionModel().getActiveSelection();;
+		selection = GravistoService.getInstance().getMainFrame().getActiveEditorSession().getSelectionModel().getActiveSelection();
 
 		Runnable algoExecution = new Runnable() {
 			@Override
@@ -450,6 +454,25 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void sessionChanged(Session s) {
+		sessionDataChanged(s);
+	}
+
+	@Override
+	public void sessionDataChanged(Session s) {
+
+		if (s == null || s.getGraph() == null) {
+			return;
+		}
+
+		if (status != BackgroundStatus.FINISHED) {
+			algorithm.stop();
+		}
+
+
 	}
 
 	// both never used but required for thread safe algorithm
