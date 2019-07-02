@@ -159,4 +159,29 @@ public enum MlfHelper {
             throw new IllegalArgumentException("Invalid number passed to random merger.");
         }
     }
+
+    /**
+     * Create new instances of the layouters to avoid interfering with the ones that VANTED holds.
+     * This is useful, for example if the MLF runs on multiple graphs at the same time but the
+     * algorithms/mergers/placers it uses aren't thread safe.
+     * If a new instance cannot be created, there's nothing that can be done except reusing the old one.
+     * (For all existing mergers, placers and algorithms this doesn't happen though.)
+     * @param t
+     *      The object to duplicate.
+     * @param <T>
+     *      The class of the object to duplicate.
+     * @return
+     *      The duplicated object, or the old one if {@link Class#newInstance()} throws an exception.
+     * @author Gordian
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T tryMakingNewInstance(T t) {
+        final Class clazz = t.getClass();
+        try {
+            return (T) clazz.newInstance();
+        } catch (IllegalAccessException | InstantiationException e) {
+            System.err.println("Failed to create new instance of " + t.getClass().getName());
+            return t;
+        }
+    }
 }

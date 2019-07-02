@@ -22,6 +22,8 @@ import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
 import javax.swing.*;
 import java.util.*;
 
+import static org.vanted.addons.multilevelframework.MlfHelper.tryMakingNewInstance;
+
 /**
  * Provides a uniform interface for layout algorithms (e.g. getting the GUI interface, running the algorithm).
  */
@@ -333,25 +335,5 @@ public class LayoutAlgorithmWrapper {
                 ", threadSafeGUI=" + threadSafeGUI +
                 ", guiName='" + guiName + '\'' +
                 '}';
-    }
-
-    /**
-     * Create new instances of the layouters to avoid interfering with the ones that VANTED holds.
-     * @param t
-     *      The object to duplicate.
-     * @param <T>
-     *      The class of the object to duplicate.
-     * @return
-     *      The duplicated object, or the old one if {@link Class#newInstance()} throws an exception.
-     * @author Gordian
-     */
-    static <T> T tryMakingNewInstance(T t) {
-        final Class clazz = t.getClass();
-        try {
-            return (T) clazz.newInstance();
-        } catch (IllegalAccessException | InstantiationException e) {
-            System.err.println("Failed to create new instance of " + t.getClass().getName());
-            return t;
-        }
     }
 }
