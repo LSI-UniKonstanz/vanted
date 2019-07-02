@@ -90,7 +90,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	// because using an array for storing parameters
 	// seemed very uncomfortable to us.
 
-	private static final String NUMBER_OF_LANDMARKS_NAME = "Number of Landmarks";
+	private static final String NUMBER_OF_LANDMARKS_NAME = "Landmarks Count";
 	private static final int NUMBER_OF_LANDMARKS_DEFAULT_VALUE = 100;
 	private int numberOfLandmarks = NUMBER_OF_LANDMARKS_DEFAULT_VALUE;
 
@@ -102,18 +102,18 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	private static final int ALPHA_DEFAULT_VALUE = 2;
 	private int alpha = ALPHA_DEFAULT_VALUE;
 
-	private static final String STRESS_CHANGE_EPSILON_PARAMETER_NAME = "Stress Change Termination Threshold";
+	private static final String STRESS_CHANGE_EPSILON_PARAMETER_NAME = "Stress Change Threshold";
 	private double stressChangeEpsilon = 1e-4;
 
-	private static final String MINIMUM_NODE_MOVEMENT_PARAMETER_NAME = "Minimum Node Movement Termination Threshold";
+	private static final String MINIMUM_NODE_MOVEMENT_PARAMETER_NAME = "Node Movement Threshold";
 	private static final double MINIMUM_NODE_MOVEMENT_DEFAULT_VALUE = 0.0;
 	private double minimumNodeMovementThreshold = MINIMUM_NODE_MOVEMENT_DEFAULT_VALUE;
 
-	private static final String INITIAL_STRESS_PERCENTAGE_THERESHOLD_PARAMETER_NAME = "Initial Stress Termination Percentage";
+	private static final String INITIAL_STRESS_PERCENTAGE_THERESHOLD_PARAMETER_NAME = "Initial Stress Percentage Threshold";
 	private static final double INITIAL_STRESS_PERCENTAGE_DEFAULT_VALUE = 0.0;
 	private double initialStressPercentage = INITIAL_STRESS_PERCENTAGE_DEFAULT_VALUE;
 
-	private static final String ITERATIONS_THRESHOLD_PARAMETER_NAME = "Interations Termination Maximum";
+	private static final String ITERATIONS_THRESHOLD_PARAMETER_NAME = "Interation Maximum";
 	private static final int ITERATIONS_THRESHOLD_DEFAULT_VALUE = 75;
 	private double iterationsThreshold = ITERATIONS_THRESHOLD_DEFAULT_VALUE;
 
@@ -129,13 +129,13 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				10, // values below this give no more significant speed up
 				1000, // values above this consume to much time in the current implementation
 				NUMBER_OF_LANDMARKS_NAME,
-				"The number of nodes that will be mainly layouted. All remaining nodes will be positioned relatively to these nodes."
+				"The number of nodes that will be mainly layouted. All remaining nodes will be positioned relatively to these nodes. You may turn of this option by selecting all nodes as landmarks."
 				));
 
 		params.add(new SliderParameter(
 				alpha,
 				ALPHA_PARAMETER_NAME,
-				"Determines how important correct distancing of nodes is that are far away to each other in an itteration step. High values mean placing of far away nodes is less important.",
+				"Sets the importance of correct distance placement of very distanced nodes. A high value indicates that nodes with a high distance to one individual node will have less impact of the placement of this node, while nodes with a low distance will have a bigger impact.",
 				0,2));
 
 		//MAKE STUFF HERE
@@ -148,7 +148,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		params.add(new SliderParameter(
 				-4,
 				STRESS_CHANGE_EPSILON_PARAMETER_NAME,
-				"Change in stress of succeeding layouts termination criterion. Low values will give better layouts, but computation will consume more time.",
+				"Change in stress of succeeding layouts threshold. If the change is below this threshold the layouter will terminate. Low values will give better layouts, but computation will consume more time.",
 				-8, -1, false, true, dict));
 
 		params.add(new DoubleParameter(
@@ -168,7 +168,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		params.add(new SliderParameter(
 				(int) initialStressPercentage,
 				INITIAL_STRESS_PERCENTAGE_THERESHOLD_PARAMETER_NAME,
-				"If the stress of an layout falls below this percentage of the initial stress, executions is terminated.",
+				"If the stress of an layout falls below this percentage of the initial stress, execution is terminated.",
 				0,100, false, false, stressDict));
 
 		Dictionary iterDict = new Hashtable();
@@ -180,7 +180,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		params.add(new SliderParameter(
 				ITERATIONS_THRESHOLD_DEFAULT_VALUE,
 				ITERATIONS_THRESHOLD_PARAMETER_NAME,
-				"Number of iterations after which algorithm excution will be terminated.",
+				"Maximum number of iterations after which algorithm excution will be terminated.",
 				25, 124, true, false, iterDict
 				));
 

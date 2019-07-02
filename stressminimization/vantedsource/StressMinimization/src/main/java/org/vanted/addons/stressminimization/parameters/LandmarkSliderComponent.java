@@ -2,10 +2,11 @@ package org.vanted.addons.stressminimization.parameters;
 
 
 import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.Dimension;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,10 +31,13 @@ public class LandmarkSliderComponent extends AbstractValueEditComponent implemen
 	private JSlider slider;
 	private JLabel valueLabel;
 	private JPanel container;
+
 	private final int minValue;
 	private final int maxValue;
+
 	private int value;
 	private int numberOfNodes;
+	private int numberOfNodesSliderValue;
 
 	public LandmarkSliderComponent(Displayable disp){
 		super(disp);
@@ -48,6 +52,7 @@ public class LandmarkSliderComponent extends AbstractValueEditComponent implemen
 
 		this.valueLabel = new JLabel("" + this.value);
 		this.valueLabel.setToolTipText("Selected number of landmarks");
+		this.valueLabel.setMaximumSize(new Dimension(100, 30));
 
 		this.slider = new JSlider(JSlider.HORIZONTAL, 0, value, value);
 		this.slider.addChangeListener(this);
@@ -55,7 +60,8 @@ public class LandmarkSliderComponent extends AbstractValueEditComponent implemen
 		this.slider.setPaintTicks(true);
 		this.slider.setPaintLabels(true);
 
-		this.container = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+		this.container = new JPanel();
+		this.container.setLayout(new BoxLayout(this.container, BoxLayout.LINE_AXIS));
 		this.container.setBackground(Color.WHITE);
 		this.container.add(valueLabel);
 		this.container.add(slider);
@@ -69,25 +75,23 @@ public class LandmarkSliderComponent extends AbstractValueEditComponent implemen
 
 		updateNumberOfNodes();
 
-		int minDecimalDigits = (int) Math.log10(minValue);
-		int maxDecimalDigits = (int) Math.log10(maxValue);
-
-		slider.setMinimum(minValue);
+		slider.setMinimum(0);
 		slider.setValue(value);
-		slider.setMajorTickSpacing((int) Math.pow(10, maxDecimalDigits - 1));
+
+		int majorTickSpanning = 100;
+		slider.setMajorTickSpacing(majorTickSpanning);
 
 		Dictionary labelsDict = new Hashtable();
-		for (int i = minDecimalDigits; i <= maxDecimalDigits; i += 1) {
-			int transformedValue = (int) Math.pow(10, i);
-			labelsDict.put(transformedValue, new JLabel(transformedValue + ""));
-		}
+		labelsDict.put(minValue, new JLabel("" + minValue));
 
 		if (maxValue >= numberOfNodes) {
+			numberOfNodesSliderValue = numberOfNodes;
 			slider.setMaximum(numberOfNodes);
-			labelsDict.put(numberOfNodes, new JLabel("all"));
+			labelsDict.put(numberOfNodes, new JLabel("off"));
 		} else {
-			slider.setMaximum(maxValue + 1);
-			labelsDict.put(maxValue + 1, new JLabel("all"));
+			numberOfNodesSliderValue = maxValue + majorTickSpanning;
+			slider.setMaximum(numberOfNodesSliderValue);
+			labelsDict.put(numberOfNodesSliderValue, new JLabel("off"));
 		}
 
 
@@ -146,8 +150,19 @@ public class LandmarkSliderComponent extends AbstractValueEditComponent implemen
 
 		int val = slider.getValue();
 
-		if (maxValue < numberOfNodes && val == maxValue + 1) {
-			this.value = numberOfNodes;
+		if (maxValue < numberOfNodes && val > maxValue) {
+
+			// divide the space between maxValue and numberOfNodes in two halves
+			// in the first half, the value will be maxValue, in the other numberOfNodes
+			int maxValueToNumberOfNodesSliderValueDifference = numberOfNodesSliderValue - maxValue;
+			if (val < maxValue + maxValueToNumberOfNodesSliderValueDifference/2) {
+				this.value = maxValue;
+			} else {
+				this.value = numberOfNodes;
+			}
+
+		} else if (val < minValue) {
+			this.value = minValue;
 		} else {
 			this.value = val;
 		}
