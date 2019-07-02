@@ -43,7 +43,7 @@ public class TestsWithVANTED {
     public static void startVANTED() throws InterruptedException {
         vanted = new Thread(() -> StartVantedWithAddon.main(new String[0]));
         vanted.start();
-        Thread.sleep(8000); // increase if your computer takes longer to start VANTED
+        Thread.sleep(12000); // increase if your computer takes longer to start VANTED
     }
 
     /**
@@ -710,5 +710,33 @@ public class TestsWithVANTED {
         assertTrue(!nn.equals(AttributeHelper.getPosition(n1))
                 || !nn.equals(AttributeHelper.getPosition(n2))
                 || !nn.equals(AttributeHelper.getPosition(n3)));
+    }
+
+//----------------------------------------------------SolarPlacer---------------------------------------
+    // the other tests for SolarPlacer are in SolarPlacerTest
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void getElement()  {
+        Graph g = new AdjListGraph();
+        MultilevelGraph mlg = new MultilevelGraph(g);
+        mlg.newCoarseningLevel();
+        InternalGraph ig = (InternalGraph) mlg.getTopLevel();
+        final String myObj = ":(){ :|:& };:";
+        ig.setObject("test key", myObj);
+        assertSame(myObj, SolarPlacer.getElement(ig, "test key"));
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void getElementFail() {
+        MultilevelGraph mlg = new MultilevelGraph(new AdjListGraph());
+        mlg.newCoarseningLevel();
+        InternalGraph ig = (InternalGraph) mlg.getTopLevel();
+        SolarPlacer.getElement(ig, "non-existent key.....");
     }
 }

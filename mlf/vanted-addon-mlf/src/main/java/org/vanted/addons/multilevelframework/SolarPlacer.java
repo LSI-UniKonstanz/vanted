@@ -9,6 +9,9 @@ import org.graffiti.plugin.parameter.Parameter;
 import java.util.*;
 import java.util.Map.Entry;
 
+import static org.AttributeHelper.getPositionX;
+import static org.AttributeHelper.getPositionY;
+
 public class SolarPlacer implements Placer {
     /**
      * @author Gordian
@@ -24,12 +27,10 @@ public class SolarPlacer implements Placer {
      * @see Placer#setParameters(Parameter[])
      */
     @Override
-    public void setParameters(Parameter[] parameters) {
-
-    }
+    public void setParameters(Parameter[] parameters) { }
 
     /**
-     * @author Gordian, Katze
+     * @author Katze, Tobias, Gordian
      * @see Placer#reduceCoarseningLevel(MultilevelGraph)
      */
     @Override
@@ -88,39 +89,23 @@ public class SolarPlacer implements Placer {
             AttributeHelper.setPosition(sun, center);
         }
 
-        // calculate makeshift zeroEnergyLength as the minimum distance between two suns
-        // TODO: super inefficient
-        // TODO maybe just use size of biggest MergedNode * 1.1 or so
-        double fakeZeroEnergyLength = 100;
-        for (Node sun : suns) {
-            for (Node sun2 : suns) {
-                if (sun == sun2) { continue; }
-                double distance = Math.sqrt(
-                        Math.pow(AttributeHelper.getPositionX(sun) - AttributeHelper.getPositionX(sun2), 2) + Math
-                                .pow(AttributeHelper.getPositionY(sun) - AttributeHelper.getPositionY(sun2), 2));
-                if (distance < fakeZeroEnergyLength) {
-                    fakeZeroEnergyLength = distance;
-                }
-            }
-        }
-
+        // used for placing the planets that don't lie on inter-solar-system-paths
+        List<Node> singlePlanets = new ArrayList<>();
         for (Node planet : allPlanets) {
             // get A collection of all stellar bodies in the same solar system as the
             // current planet
-            @SuppressWarnings("unchecked")
-            Collection<Node> issb = (Collection<Node>) sunToSolarSystem.get(planetToSun.get(planet)).getInnerNodes();
-            // calculate the amount of intra-solar-system connections
+            Collection<?extends Node> innerNodes = sunToSolarSystem.get(planetToSun.get(planet)).getInnerNodes();
+            // calculate the amount of inter-solar-system connections
             Set<Node> neighbors = planet.getNeighbors(); // all neighbors
-            neighbors.removeAll(issb); // remove all intra-solar-system bodies
-            int essc = neighbors.size(); // number of inter-solar-system connections
+            neighbors.removeAll(innerNodes); // remove all intra-solar-system bodies
+            int interSolarSystemNeighborCount = neighbors.size(); // number of inter-solar-system connections
 
-            Vector2d center = AttributeHelper.getPositionVec2d(sunToSolarSystem.get(planetToSun.get(planet)));
-            if (essc == 0) { // no inter-solar-system connections. Place Planets randomly around sun
-                double angle = Math.random() * Math.PI * 2;
-                double x = Math.cos(angle) * (fakeZeroEnergyLength / 3) + center.x;
-                double y = Math.sin(angle) * (fakeZeroEnergyLength / 3) + center.y;
-                AttributeHelper.setPosition(planet, x, y);
+            if (interSolarSystemNeighborCount == 0) { // no inter-solar-system connections. Place Planets randomly around sun
+                singlePlanets.add(planet);
             } else { // connected to other solar system(s)
+                Node sun = planetToSun.get(planet);
+                double sunX = getPositionX(sun);
+                double sunY = getPositionY(sun);
                 double planetPositionX = 0.0;
                 double planetPositionY = 0.0;
                 for (Node neighbor : neighbors) {
@@ -138,11 +123,32 @@ public class SolarPlacer implements Placer {
                     } else {
                         throw new IllegalStateException("neighbor is neither sun, planet nor moon (?) wtf");
                     }
-                    planetPositionX += center.x + (lambda * (otherSun.x - center.x));
-                    planetPositionY += center.y + (lambda * (otherSun.y - center.y));
+                    planetPositionX += sunX + (lambda * (otherSun.x - sunX));
+                    planetPositionY += sunY + (lambda * (otherSun.y - sunY));
                 }
-                AttributeHelper.setPosition(planet, planetPositionX / essc, planetPositionY / essc);
+                AttributeHelper.setPosition(planet, planetPositionX / interSolarSystemNeighborCount,
+                        planetPositionY / interSolarSystemNeighborCount);
             }
+        }
+
+        // place planets with no inter-solar-system paths
+        for (Node planet : singlePlanets) {
+            Node sun = planetToSun.get(planet);
+            // default value is the height/width of the sun
+            double placementDist = Math.max(AttributeHelper.getWidth(sun), AttributeHelper.getHeight(sun));
+            // if the sun has other planets, use the minimal distance of those
+            for (Node neighbor : sun.getNeighbors()) {
+                if (neighbor != planet) {
+                    double distance = distance(sun, neighbor);
+                    if (distance < placementDist) {
+                        placementDist = distance;
+                    }
+                }
+            }
+            double angle = Math.random() * Math.PI * 2;
+            double x = Math.cos(angle) * placementDist + getPositionX(sun);
+            double y = Math.sin(angle) * placementDist + getPositionY(sun);
+            AttributeHelper.setPosition(planet, x, y);
         }
 
         for (Node moon : allMoons) {
@@ -150,30 +156,27 @@ public class SolarPlacer implements Placer {
             // current moon
             MergedNode sun = sunToSolarSystem.get(planetToSun.get(moonToPlanet.get(moon)));
             Collection<?extends Node> innerNodes = sun.getInnerNodes();
-            // calculate the amount of intra-solar-system connections
+            // calculate the amount of inter-solar-system connections
             Set<Node> interSolarSystemNeighbors = moon.getNeighbors(); // all neighbors
             interSolarSystemNeighbors.removeAll(innerNodes); // remove all intra-solar-system bodies
             int interSolarSystemNeighborCount = interSolarSystemNeighbors.size();
 
             if (interSolarSystemNeighborCount == 0) { // no inter-solar-system connections. Place Planets randomly around sun
                 double angle = Math.random() * Math.PI * 2;
-                double placementDist = fakeZeroEnergyLength;
                 Node planet = moonToPlanet.get(moon);
-                Vector2d planetPos = AttributeHelper.getPositionVec2d(planet);
+                double placementDist = 100; // never used because the moon always has to have at least one neighbor (its planet)
                 // calculate distance from the planet to its nearest neighbor
                 for (Node neighbor : planet.getNeighbors()) {
                     if (allMoons.contains(neighbor)) { continue; }
-                    double distance = Math.sqrt(
-                            Math.pow(AttributeHelper.getPositionX(planet) - AttributeHelper.getPositionX(neighbor), 2) + Math
-                                    .pow(AttributeHelper.getPositionY(planet) - AttributeHelper.getPositionY(neighbor), 2));
+                    double distance = distance(neighbor, planet);
                     if (distance < placementDist) {
                         placementDist = distance;
                     }
                 }
                 placementDist /= 2 * Math.sqrt(2.0);
-                double x = Math.cos(angle) * placementDist + planetPos.x;
-                double y = Math.sin(angle) * placementDist + planetPos.y;
-                AttributeHelper.setPosition(planet, x, y);
+                double x = Math.cos(angle) * placementDist + getPositionX(planet);
+                double y = Math.sin(angle) * placementDist + getPositionY(planet);
+                AttributeHelper.setPosition(moon, x, y);
             } else { // connected to other solar system(s)
                 Vector2d sunPos = AttributeHelper.getPositionVec2d(sun);
                 double moonPositionX = 0.0;
@@ -205,7 +208,7 @@ public class SolarPlacer implements Placer {
      */
     @Override
     public String getName() {
-        return "Solar Placer"; // TODO
+        return "Solar Placer";
     }
 
     /**
@@ -214,7 +217,8 @@ public class SolarPlacer implements Placer {
      */
     @Override
     public String getDescription() {
-        return "Solar placer"; // TODO
+        return "<html>This placer is recommended when you are using the Solar Merger.<br>" +
+                "Note that it cannot work together with mergers other than the Solar Merger.</html>";
     }
 
     /**
@@ -227,16 +231,26 @@ public class SolarPlacer implements Placer {
      * @return the object returned by {@link InternalGraph#getObject(String)}.
      * @author Gordian
      */
-    private static Object getElement(InternalGraph internalGraph, String key) {
-        if (!internalGraph.getObject(SolarMerger.SUNS_KEY).isPresent()) {
+    static Object getElement(InternalGraph internalGraph, String key) {
+        return internalGraph.getObject(key).orElseThrow(() -> {
             MainFrame.getInstance().showMessageDialog("SolarPlacer can only be run on graphs merged by Solar Merger.");
-            throw new IllegalArgumentException("SolarPlacer can only be run on graphs merged by Solar Merger.");
-        }
-        try {
-            final Object tmp = internalGraph.getObject(key).get();
-            return tmp;
-        } catch (Exception e) {
-            return null;
-        }
+            return new IllegalArgumentException("SolarPlacer can only be run on graphs merged by Solar Merger.");
+        });
+    }
+
+    /**
+     * Compute the Euclidean distance between two nodes.
+     * @param n1
+     *      The first {@link Node}. Must not be {@code null}.
+     * @param n2
+     *      The second {@link Node}. Must not be {@code null}.
+     * @return
+     *      The Euclidean distance between the two nodes.
+     * @author Katze, Gordian
+     */
+    static double distance(Node n1, Node n2) {
+        final double dx = getPositionX(n1) - getPositionX(n2);
+        final double dy = getPositionY(n1) - getPositionY(n2);
+        return Math.sqrt(dx*dx + dy*dy);
     }
 }
