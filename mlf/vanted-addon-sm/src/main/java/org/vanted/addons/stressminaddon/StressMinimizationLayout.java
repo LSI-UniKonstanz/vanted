@@ -834,6 +834,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             final double scalingFactor = Math.max(
                     ConnectedComponentsHelper.getMaxNodeSize(nodes)*state.edgeScalingFactor, state.edgeLengthMinimum);
             // scale for better display
+            // TODO maybe place this after initial layout to prevent over scaling
             this.distances.apply(x -> x*scalingFactor);
 
             System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate initial layout..."));

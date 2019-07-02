@@ -21,6 +21,9 @@ public class PivotMDS implements InitialPlacer {
     /** A {@link Random} used to get random positions and vectors. */
     private static final Random RAND = new Random();
 
+    /** Whether to use squared distances for the C matrix. */
+    boolean doSquaring = true;
+
     /**
      * Executes the PivotMDS algorithm on a given set of nodes.
      *
@@ -178,7 +181,7 @@ public class PivotMDS implements InitialPlacer {
      *
      * @author theo
      */
-    private double findEigenVal(final RealMatrix matrix, final RealMatrix eigenVec){
+    double findEigenVal(final RealMatrix matrix, final RealMatrix eigenVec){
 
         RealMatrix tmp = matrix.multiply(eigenVec);
 
@@ -263,9 +266,9 @@ public class PivotMDS implements InitialPlacer {
      *
      * @author theo
      */
-    private double getEuclideanNorm(final RealMatrix vec){
+    double getEuclideanNorm(final RealMatrix vec){
         if(vec.getColumnDimension() >1){
-            throw new IndexOutOfBoundsException();
+            throw new IllegalArgumentException("Given vector must have only one column!");
         }
         double result = 0;
         for(int i = 0; i< vec.getRowDimension(); i++){
@@ -336,13 +339,21 @@ public class PivotMDS implements InitialPlacer {
         RealMatrixImpl c = new RealMatrixImpl(n, amountPivots);
         double  [][] results = c.getDataRef();
 
+        NodeValueMatrix processed;
+
+        if (this.doSquaring) {
+            processed = distances.clone().apply(x -> x*x, n-1, amountPivots-1, distanceTranslation);
+        } else {
+            processed = distances;
+        }
+
         // Sum three is independent of the current position so it can be calculated only once
         double sumThree = 0;
         double[] allSumOnes = new double[amountPivots]; // holds 'sumOne's
         for (int col = 0; col < amountPivots; col++) {
             for (int row = 0; row < n; row++) {
-                sumThree += distances.get(row, col, distanceTranslation); // for sumThree
-                allSumOnes[col] += distances.get(row, col, distanceTranslation); // for sumOne
+                sumThree += processed.get(row, col, distanceTranslation); // for sumThree
+                allSumOnes[col] += processed.get(row, col, distanceTranslation); // for sumOne
             }
             allSumOnes[col] /= n;
         }
@@ -353,13 +364,13 @@ public class PivotMDS implements InitialPlacer {
             //calculate sumTwo
             double sumTwo = 0;
             for(int col = 0; col < amountPivots; col++){
-                sumTwo += distances.get(row, col, distanceTranslation);
+                sumTwo += processed.get(row, col, distanceTranslation);
             }
             sumTwo/=amountPivots;
 
             //calculate result[row][col]
             for (int col= 0; col < amountPivots; col++){
-                results[row][col] = -(distances.get(row, col, distanceTranslation)
+                results[row][col] = -(processed.get(row, col, distanceTranslation)
                         -allSumOnes[col] - sumTwo + sumThree)/2;
             }
         }
