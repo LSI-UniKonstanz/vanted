@@ -18,6 +18,8 @@ import org.vanted.addons.stressminimization.primitives.IndexedNodeSet;
 
 class StressMinimizationImplementation {
 
+	// number of dimensions. Fixed to 2 in the current implementation
+	private final int d = 2;
 	private final int n; // fixed here to make clear that this number is always constant
 	private final IndexedNodeSet nodes;
 	private final StressMinimizationLayout callingLayout;
@@ -66,103 +68,108 @@ class StressMinimizationImplementation {
 	 */
 	void calculateLayout() {
 
-		final int d = 2; // only implemented for two dimensional space
 		boolean noLandmarking = this.numberOfLandmarks >= n;
-		int numberOfLandmarks = noLandmarking ? n : this.numberOfLandmarks;
 
 		if (callingLayout.waitIfPausedAndCheckStop()) { return; }
 
-		// Note that we can not use the indices from this
-		// IndexedNodeSet to access the landmark specific matrices
-		// such as landmarkToLandmarkDistances or landmarkLayout.
-		IndexedNodeSet landmarks;
-		RealMatrix landmarkToLandmarkDistances = new BlockRealMatrix(numberOfLandmarks, numberOfLandmarks);
-		RealMatrix landmarkToAllDistances = new BlockRealMatrix(numberOfLandmarks, n);
-
 		if (noLandmarking) {
 
-			callingLayout.setStatusDescription("Stress Minimization: calculating distances");
-
-			RealMatrix allDistances = calcDistances(nodes);
-			if (allDistances == null) { return; } // calcDistances did abort because algorithm was stopped
-
-			landmarks = nodes;
-			landmarkToLandmarkDistances = allDistances;
-			landmarkToAllDistances = landmarkToLandmarkDistances;
-
+			calcFullStressModel();
 
 		} else {
 
-			callingLayout.setStatusDescription("Stress Minimization: selecting landmarks");
-
-			List<Node> landmarkNodes = new ArrayList<>();
-			int[] landmarkIndicesInGenerationOrder = new int[numberOfLandmarks];
-
-			for (int i = 0; i < numberOfLandmarks; i += 1) {
-
-				if (callingLayout.waitIfPausedAndCheckStop()) { return; }
-
-				int newLandmarkIndex = selectNextLandmark(i, landmarkToAllDistances);
-				landmarkIndicesInGenerationOrder[i] = newLandmarkIndex;
-
-				Node landmark = nodes.get(newLandmarkIndex);
-				landmarkNodes.add(landmark);
-
-				RealVector toAllDistances = calcDistances(newLandmarkIndex);
-
-				landmarkToAllDistances.setRowVector(i, toAllDistances);
-
-				callingLayout.setDistancesProgress(i / numberOfLandmarks);
-			}
-
-			int[] from0ToNumberOfLandmarks = new int[numberOfLandmarks];
-			for (int i = 0; i < numberOfLandmarks; i += 1) {
-				from0ToNumberOfLandmarks[i] = i;
-			}
-			landmarkToLandmarkDistances = landmarkToAllDistances.getSubMatrix(from0ToNumberOfLandmarks, landmarkIndicesInGenerationOrder);
-
-			landmarks = IndexedNodeSet.setOfAllIn(landmarkNodes);
+			calcLandmarked(this.numberOfLandmarks);
 
 		}
+	}
+
+	private void calcFullStressModel() {
+
+		callingLayout.setStatusDescription("Stress Minimization: calculating distances");
+
+		RealMatrix allDistances = calcDistances(nodes);
+		if (allDistances == null) { return; } // calcDistances did abort because algorithm was stopped
+
+		calcLayoutForSelectedNodes(nodes, allDistances, allDistances);
+
+	}
+
+	private void calcLandmarked(int numberOfLandmarks) {
+
+		callingLayout.setStatusDescription("Stress Minimization: selecting landmarks");
+
+		RealMatrix landmarkToLandmarkDistances = new BlockRealMatrix(numberOfLandmarks, numberOfLandmarks);
+		RealMatrix landmarkToAllDistances = new BlockRealMatrix(numberOfLandmarks, n);
+		List<Node> landmarkNodes = new ArrayList<>();
+
+		int[] landmarkIndicesInGenerationOrder = new int[numberOfLandmarks];
+
+		for (int i = 0; i < numberOfLandmarks; i += 1) {
+
+			if (callingLayout.waitIfPausedAndCheckStop()) { return; }
+
+			int newLandmarkIndex = selectNextLandmark(i, landmarkToAllDistances);
+			landmarkIndicesInGenerationOrder[i] = newLandmarkIndex;
+
+			Node landmark = nodes.get(newLandmarkIndex);
+			landmarkNodes.add(landmark);
+
+			RealVector toAllDistances = calcDistances(newLandmarkIndex);
+
+			landmarkToAllDistances.setRowVector(i, toAllDistances);
+
+			callingLayout.setDistancesProgress(i / numberOfLandmarks);
+		}
+
+		int[] from0ToNumberOfLandmarks = new int[numberOfLandmarks];
+		for (int i = 0; i < numberOfLandmarks; i += 1) {
+			from0ToNumberOfLandmarks[i] = i;
+		}
+		landmarkToLandmarkDistances = landmarkToAllDistances.getSubMatrix(from0ToNumberOfLandmarks, landmarkIndicesInGenerationOrder);
+
+		IndexedNodeSet landmarks = IndexedNodeSet.setOfAllIn(landmarkNodes);
+
+		calcLayoutForSelectedNodes(landmarks, landmarkToLandmarkDistances, landmarkToAllDistances);
+
+	}
+
+	private void calcLayoutForSelectedNodes(IndexedNodeSet selectedNodes, RealMatrix selectedToSelectedDistances, RealMatrix selectedToAllDistances) {
 
 		if (callingLayout.waitIfPausedAndCheckStop()) { return; }
 		callingLayout.setStatusDescription("Stress Minimization: calculating weights...");
 
-		RealMatrix weights = getStressMinimizationWeightsForDistances(landmarkToLandmarkDistances);
+		RealMatrix weights = getStressMinimizationWeightsForDistances(selectedToSelectedDistances);
 
 		if (callingLayout.waitIfPausedAndCheckStop()) { return; }
 		callingLayout.setStatusDescription("Stress Minimization: copying layout...");
 
-		RealMatrix landmarkLayout = getLayout(landmarks, d);
+		RealMatrix selectedNodesLayout = getLayout(selectedNodes, d);
 
 		// remove the scaling that is done at the end of the layout process
-		// layouts in VANTED look good with distances at about 100
-		// but our algorithm works with distances around 1.0
-		// scaling down the positions by the scale factor also
+		// scaling down the positions also
 		// makes this algorithm work better with results from other algorithms
-		landmarkLayout = unscaleLayout(landmarkLayout);
+		selectedNodesLayout = unscaleLayout(selectedNodesLayout);
 
-		// algorithm isn't working well with layouts
+		// StressMajorizationLayoutCalculator isn't working well with layouts
 		// in which too many nodes are placed to the same
-		// position.
-		// therefore we add some "noise" to the initial layout
-		// to work around that.
-		for (int i = 0; i < numberOfLandmarks; i += 1) {
+		// position. We add some "noise" to avoid this case
+		for (int i = 0; i < selectedNodes.size(); i += 1) {
 			for (int a = 0; a < d; a += 1) {
-				landmarkLayout.setEntry(i, a, landmarkLayout.getEntry(i, a) + Math.random() * 0.01);
+				double noisyPosition = selectedNodesLayout.getEntry(i, a) + Math.random() * 0.01 - 0.005;
+				selectedNodesLayout.setEntry(i, a, noisyPosition);
 			}
 		}
 
 		if (callingLayout.waitIfPausedAndCheckStop()) { return; }
 		callingLayout.setStatusDescription("Stress Minimization: optimizing layout - preprocessing...");
 
-		StressMajorizationLayoutCalculator optim = new StressMajorizationLayoutCalculator(landmarkLayout, landmarkToLandmarkDistances, weights);
+		StressMajorizationLayoutCalculator optim = new StressMajorizationLayoutCalculator(selectedNodesLayout, selectedToSelectedDistances, weights);
 
 		final double initialStress = optim.calcStress();
 		final double stressThreshold = initialStress * (initialStressPercentage / 100);
 		int iterationCount = 0;
 		double newStress, prevStress = initialStress;
-		RealMatrix prevLayout = landmarkLayout;
+		RealMatrix prevLayout = selectedNodesLayout;
 		boolean terminate = false;
 		do {
 
@@ -170,21 +177,21 @@ class StressMinimizationImplementation {
 
 			if (callingLayout.waitIfPausedAndCheckStop()) { return; }
 
-			landmarkLayout = optim.calcOptimizedLayout();
-			setLayout(noLandmarking, landmarks, landmarkToAllDistances, landmarkLayout);
+			selectedNodesLayout = optim.calcOptimizedLayout();
+			setLayout(selectedNodes, selectedToAllDistances, selectedNodesLayout);
 			newStress = optim.calcStress();
 
-			terminate = checkTerminationCriteria(prevStress, newStress, prevLayout, landmarkLayout, iterationCount, stressThreshold);
+			terminate = checkTerminationCriteria(prevStress, newStress, prevLayout, selectedNodesLayout, iterationCount, stressThreshold);
 
 			callingLayout.setIterationProgress(newStress, initialStress, iterationCount);
 
-			prevLayout = landmarkLayout;
+			prevLayout = selectedNodesLayout;
 			prevStress = newStress;
 
 		} while (!terminate);
 
 		callingLayout.setIterationProgress(newStress, initialStress, iterationCount);
-		setLayout(noLandmarking, landmarks, landmarkToAllDistances, landmarkLayout);
+		setLayout(selectedNodes, selectedToAllDistances, selectedNodesLayout);
 
 	}
 
@@ -425,12 +432,13 @@ class StressMinimizationImplementation {
 		return newLayout;
 	}
 
-	private void setLayout(final boolean noLandmarking, final IndexedNodeSet landmarks, final RealMatrix landmarksToAllDistances, final RealMatrix landmarkLayout) {
+	private void setLayout(final IndexedNodeSet landmarks, final RealMatrix landmarksToAllDistances, final RealMatrix landmarkLayout) {
 
 		Supplier<HashMap<Node, Vector2d>> layoutSupplier = () -> {
 
 			RealMatrix layout;
-			if (noLandmarking) {
+			// if all nodes are selected as landmarks
+			if (landmarksToAllDistances.getRowDimension() == landmarksToAllDistances.getColumnDimension()) {
 				layout = landmarkLayout.copy();
 			} else {
 				layout = positionNodesAtBarycentersOfLandmarks(landmarks, landmarksToAllDistances, landmarkLayout);

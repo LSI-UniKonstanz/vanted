@@ -53,6 +53,7 @@ public class LandmarkSliderComponent extends AbstractValueEditComponent implemen
 		this.valueLabel = new JLabel("" + this.value);
 		this.valueLabel.setToolTipText("Selected number of landmarks");
 		this.valueLabel.setMaximumSize(new Dimension(100, 30));
+		this.valueLabel.setMinimumSize(new Dimension(100, 30));
 
 		this.slider = new JSlider(JSlider.HORIZONTAL, 0, value, value);
 		this.slider.addChangeListener(this);

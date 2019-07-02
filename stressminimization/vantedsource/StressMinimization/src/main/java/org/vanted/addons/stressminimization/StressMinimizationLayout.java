@@ -113,13 +113,18 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	private static final double INITIAL_STRESS_PERCENTAGE_DEFAULT_VALUE = 0.0;
 	private double initialStressPercentage = INITIAL_STRESS_PERCENTAGE_DEFAULT_VALUE;
 
-	private static final String ITERATIONS_THRESHOLD_PARAMETER_NAME = "Interation Maximum";
+	private static final String ITERATIONS_THRESHOLD_PARAMETER_NAME = "Iteration Maximum";
 	private static final int ITERATIONS_THRESHOLD_DEFAULT_VALUE = 75;
 	private double iterationsThreshold = ITERATIONS_THRESHOLD_DEFAULT_VALUE;
+
+	private static final int PREPROCESSING_NUMBER_OF_LANDMARKS = 15;
+	private static final double PREPROCESSING_STRESS_CHANGE_EPSILON = 1e-6;
+	private static final double PREPROCESSING_ITERATIONS_THRESHOLD = 100;
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Parameter[] getParameters() {
 		List<Parameter> params = new ArrayList<>();
@@ -168,7 +173,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		params.add(new SliderParameter(
 				(int) initialStressPercentage,
 				INITIAL_STRESS_PERCENTAGE_THERESHOLD_PARAMETER_NAME,
-				"If the stress of an layout falls below this percentage of the initial stress, execution is terminated.",
+				"If the stress of an layout falls below this percentage of the stress on the beginning of the core process (after any preprocessing), execution is terminated.",
 				0,100, false, false, stressDict));
 
 		Dictionary iterDict = new Hashtable();
@@ -279,6 +284,30 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 			setStatusDescription("Stress Minimization: layouting next component");
 
+			// if too few nodes shawl be layout, our preprocessing does not make sense
+			if (Math.min(this.numberOfLandmarks, component.size()) > 2 * PREPROCESSING_NUMBER_OF_LANDMARKS) {
+				setStatusDescription("Stress Minimization: preprocessing");
+				if (waitIfPausedAndCheckStop()) { return; }
+
+				StressMinimizationLayout preLayout = new StressMinimizationLayout();
+				StressMinimizationImplementation pre = new StressMinimizationImplementation(
+						component,
+						preLayout,
+						PREPROCESSING_NUMBER_OF_LANDMARKS,
+						alpha,
+						PREPROCESSING_STRESS_CHANGE_EPSILON,
+						0,
+						0,
+						PREPROCESSING_ITERATIONS_THRESHOLD
+						);
+
+				pre.calculateLayout();
+				if (preLayout.getLayout() != null) {
+					setLayout(preLayout.getLayout());
+				}
+			}
+
+			setStatusDescription("Stress Minimization: starting core process");
 			if (waitIfPausedAndCheckStop()) { return; }
 
 			StressMinimizationImplementation impl = new StressMinimizationImplementation(
