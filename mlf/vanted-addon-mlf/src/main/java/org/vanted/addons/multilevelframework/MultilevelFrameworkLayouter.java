@@ -41,6 +41,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     private final static String DEFAULT_MERGER = new RandomMerger().getName();
     private final static String COARSENING_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_LEVEL";
     private final static String COARSENING_TOP_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_TOP_LEVEL";
+    private final static String COARSENING_BOTTOM_LEVEL_INDICATOR_ATTRIBUTE_PATH
+            = "GRAPH_IS_MLF_COARSENING_BOTTOM_LEVEL";
     final static String WORKING_ATTRIBUTE_PATH = "MLF_EXECUTING";
     private JComboBox<String> algorithmListComboBox;
     private JButton setUpLayoutAlgorithmButton;
@@ -220,7 +222,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                     if (bts.isStopped) { bts.status = -1; return; }
                 }
 
-                assert componentMLG.getNumberOfLevels() == 1 : "Not all coarsening levels were removed";
+                // indicate that this is the bottom level
+                componentMLG.getTopLevel().setBoolean(COARSENING_BOTTOM_LEVEL_INDICATOR_ATTRIBUTE_PATH, true);
                 bts.status = calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
                 bts.statusMessage = makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
                         connectedComponents[0], i, graph.getName());
