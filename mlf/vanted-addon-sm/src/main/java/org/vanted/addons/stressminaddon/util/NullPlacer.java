@@ -26,7 +26,7 @@ public class NullPlacer implements InitialPlacer {
      * @author Jannik
      */
     @Override
-    public List<Vector2d> calculateInitialPositions(List<Node> nodes, NodeValueMatrix distances) {
+    public List<Vector2d> calculateInitialPositions(List<Node> nodes, NodeValueMatrix distances, double notUsed, boolean usedNot) {
         List<Vector2d> result = new ArrayList<>();
         for (Node node : nodes) {
             result.add(AttributeHelper.getPositionVec2d(node));

@@ -62,7 +62,7 @@ public class ParameterizableSelectorParameterTest {
     public void setUp() {
         // add some dummy objects
         list.add(new InitialPlacer() {
-            @Override public List<Vector2d> calculateInitialPositions(List<Node> nodes, NodeValueMatrix distances) { return null; }
+            @Override public List<Vector2d> calculateInitialPositions(List<Node> nodes, NodeValueMatrix distances, double a , boolean b) { return null; }
             @Override public String getName() { return "TEST1"; }
             @Override public String getDescription() { return null; }
             @Override public void setParameters(Parameter[] parameters) {}
@@ -256,7 +256,7 @@ public class ParameterizableSelectorParameterTest {
                     @Override public void setParameters(Parameter[] parameters) { }
                     @Override public String getName() { return ""; }
                     @Override public String getDescription() { return null; }
-                    @Override public List<Vector2d> calculateInitialPositions(List<Node> nodes, NodeValueMatrix distances) { return null; }});
+                    @Override public List<Vector2d> calculateInitialPositions(List<Node> nodes, NodeValueMatrix distances, double a , boolean b) { return null; }});
         emptyParams.put("2", emptyParams.get("1"));
         this.psp = ((ParameterizableSelectorParameter) ParameterizableSelectorParameter.getFromMap(
                 "1", emptyParams, null, new Selection(), "Test", "TestDesc").getValue());
@@ -309,7 +309,7 @@ public class ParameterizableSelectorParameterTest {
                             @Override public void setParameters(Parameter[] parameters) {}
                             @Override public String getName() { return null; }
                             @Override public String getDescription() { return null; }
-                            @Override public List<Vector2d> calculateInitialPositions(List<Node> nodes, NodeValueMatrix distances) { return null; }
+                            @Override public List<Vector2d> calculateInitialPositions(List<Node> nodes, NodeValueMatrix distances, double a , boolean b) { return null; }
                         }), new Selection(), null, null);
                 fail("No exception thrown");
             } catch (IllegalArgumentException e) {}

@@ -64,6 +64,11 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
     private static final boolean USE_MAX_ITERATIONS_DEFAULT = true;
     /** The default value for the maximal iterations to make. */
     private static final int MAX_ITERATIONS_DEFAULT = 1_000;
+
+    // InitialLayout
+    private static final double AMOUNT_PIVOTS_DEFAULT = 0.1;
+    private static final boolean QUADRATIC_DOUBLECENTER_DEFAULT = false;
+
     // scaling and weight
     /** The default scaling factor for edges between the nodes (as fraction of the biggest node). */
     private static final double EDGE_SCALING_FACTOR_DEFAULT = 5.0;
@@ -443,6 +448,12 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                 ParameterizableSelectorParameter.getFromList(0, new ArrayList<>(Arrays.asList(initialPlacers)),
                         selection, "Select layout",
                         "<html>The layout to apply before the actual algorithm is run.</html>"),
+                EnableableNumberParameter.alwaysEnabled(AMOUNT_PIVOTS_DEFAULT, 0.0, 1.0, 0.025,
+                        "Amount pivots", "<html>Percent of the total nodes, which should be used as pivot elements</html>" ),
+
+                new BooleanParameter(QUADRATIC_DOUBLECENTER_DEFAULT, "Quadratic DoubleCenter",
+                        "<html> Whether the distances in PivotMDS should be squared or not.<br>" +
+                                "pulls apart initial layout strongly. May slow down performance.</html>"),
                 new JComponentParameter(new JPanel(), "<html><u>Iterative algorithm</u></html>",
                         "<html>The algorithm that should be used to calculate the new positions of in every iteration step.</html>"), //hacky section header
                 ParameterizableSelectorParameter.getFromList(0, new ArrayList<>(Arrays.asList(iterativeAlgorithms)),
@@ -529,35 +540,38 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         selectorParameter = ((ParameterizableSelectorParameter) params[8].getValue());
         this.state.initialPlacer = ((InitialPlacer) selectorParameter.getSelectedParameterizable());
         this.state.initialPlacer.setParameters(selectorParameter.getUpdatedParameters());
+        doubleParameter = (EnableableNumberParameter<Double>) params[9].getValue();
+        this.state.percentigePivot =doubleParameter.getValue();
+        this.state.quadraticDoubleCenter =  ((BooleanParameter) params[10]).getBoolean();
         // position algorithm
-        selectorParameter = ((ParameterizableSelectorParameter) params[10].getValue());
+        selectorParameter = ((ParameterizableSelectorParameter) params[12].getValue());
         this.state.positionAlgorithm = ((IterativePositionAlgorithm) selectorParameter.getSelectedParameterizable());
         this.state.positionAlgorithm.setParameters(selectorParameter.getUpdatedParameters());
         // General settings
-        doubleParameter = (EnableableNumberParameter<Double>) params[12].getValue();
+        doubleParameter = (EnableableNumberParameter<Double>) params[14].getValue();
         if (doubleParameter.getValue() == 0.0) {
             this.state.edgeScalingFactor = Double.MIN_VALUE;
         } else {
             this.state.edgeScalingFactor = doubleParameter.getValue();
         }
-        doubleParameter = (EnableableNumberParameter<Double>) params[13].getValue();
+        doubleParameter = (EnableableNumberParameter<Double>) params[15].getValue();
         if (doubleParameter.getValue() == 0.0) {
             this.state.edgeLengthMinimum = Double.MIN_VALUE;
         } else {
             this.state.edgeLengthMinimum = doubleParameter.getValue();
         }
-        this.state.removeEdgeBends = ((BooleanParameter) params[14]).getBoolean();
+        this.state.removeEdgeBends = ((BooleanParameter) params[16]).getBoolean();
         // Intermediates undoable
-        this.state.intermediateUndoable = ((BooleanParameter) params[15]).getBoolean();
+        this.state.intermediateUndoable = ((BooleanParameter) params[17]).getBoolean();
         // Do animation
-        this.state.doAnimations = ((BooleanParameter) params[16]).getBoolean();
+        this.state.doAnimations = ((BooleanParameter) params[18]).getBoolean();
         if (state.intermediateUndoable) { // intermediateUndoable => doAnimations
             state.doAnimations = true;
         }
-        this.state.moveIntoView = ((BooleanParameter) params[17]).getBoolean();
+        this.state.moveIntoView = ((BooleanParameter) params[19]).getBoolean();
         // Threading
-        this.state.backgroundTask = ((BooleanParameter) params[19]).getBoolean();
-        this.state.multipleThreads = ((BooleanParameter) params[20]).getBoolean();
+        this.state.backgroundTask = ((BooleanParameter) params[21]).getBoolean();
+        this.state.multipleThreads = ((BooleanParameter) params[22]).getBoolean();
     }
 
     /*
@@ -676,6 +690,10 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         IterativePositionAlgorithm positionAlgorithm;
         /** The {@link InitialPlacer} to use. */
         InitialPlacer initialPlacer;
+        /** The percentage of pivots to use*/
+        double percentigePivot;
+        /**Wheather the distances should get squared*/
+        boolean quadraticDoubleCenter;
         /** The epsilon to use with the stress function. */
         double stressEpsilon;
         /** The epsilon to use with the difference between old  new distances. */
@@ -726,6 +744,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             this.status = "";
             this.positionAlgorithm = new IntuitiveIterativePositionAlgorithm();
             this.initialPlacer = new PivotMDS();
+            this.quadraticDoubleCenter = QUADRATIC_DOUBLECENTER_DEFAULT;
+            this.percentigePivot = AMOUNT_PIVOTS_DEFAULT;
         }
 
         /**
@@ -838,7 +858,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 
             System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate initial layout..."));
             //this.currentPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
-            this.currentPositions = state.initialPlacer.calculateInitialPositions(nodes, this.distances);
+            this.currentPositions = state.initialPlacer.calculateInitialPositions(nodes, this.distances, state.percentigePivot, state.quadraticDoubleCenter);
             // calculate weight only before it's needed (to save some memory for the initial layout)
             System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate weights..."));
             this.weights = this.distances.clone().apply(x -> state.weightScalingFactor *Math.pow(x, state.weightPower));
