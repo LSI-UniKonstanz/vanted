@@ -36,21 +36,14 @@ public class PivotMDS implements InitialPlacer {
      * @author theo, Jannik
      */
     @Override
-    public List<Vector2d> calculateInitialPositions(final List<Node> nodes, final NodeValueMatrix distances, double percentigePivots, boolean square) {
+    public List<Vector2d> calculateInitialPositions(final List<Node> nodes, final NodeValueMatrix distances) {
         assert nodes.size() == distances.getDimension();
 
         if (nodes.size() == 1) {
             return Collections.singletonList(new Vector2d(0.0, 0.0));
         }
 
-        final int numPivots;
-        int pivots = (int)(nodes.size()*percentigePivots);
-        if(pivots == 0.0 && percentigePivots != 0.0){
-            numPivots = 1;
-        }
-        else{
-            numPivots = pivots;
-        }
+        final int numPivots = Math.min(50, distances.getDimension()); // TODO make configurable
 
         final int[] pivotTranslation = new int[distances.getDimension()];
         final int[] inversePivotTranslation = new int[distances.getDimension()];
@@ -58,14 +51,7 @@ public class PivotMDS implements InitialPlacer {
         this.getPivots(distances, numPivots, pivotTranslation, inversePivotTranslation);
 
         //calculate the doubleCentered matrix
-        RealMatrix c;
-        if(square){
-            NodeValueMatrix squared = distances.clone().apply(x -> x*x);
-            c = doubleCenter(squared, numPivots, pivotTranslation);
-        }
-        else {
-            c = doubleCenter(distances, numPivots, pivotTranslation);
-        }
+        RealMatrix c = doubleCenter(distances, numPivots, pivotTranslation);
         //C^T * C
         RealMatrix cTc = c.transpose().multiply(c);
 

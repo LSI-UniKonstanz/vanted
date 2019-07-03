@@ -44,7 +44,7 @@ public class PivotMDSTest {
     @Test
     public void calculateInitialPositions() {
         random.setSeed(42);
-        final List<Vector2d> positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES, 0.3, true);
+        final List<Vector2d> positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
         // calculated for eigenvalues 4, 4, 1, 0
         // with eigenvectors (0,0,-1,1),(-1,1,0,0),(-1,-1,1,1),(1,1,1,1)
         double[] expectedXPos = new double[]{-1.1574392460783163,-0.8126096182256408, 1.157439246092345, 0.8126096182116118};

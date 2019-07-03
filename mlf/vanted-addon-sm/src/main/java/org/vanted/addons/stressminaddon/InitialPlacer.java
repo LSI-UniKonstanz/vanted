@@ -32,10 +32,6 @@ public interface InitialPlacer extends Parameterizable, Describable {
      *
      * @author Jannik
      */
-
     public List<Vector2d> calculateInitialPositions(final List<Node> nodes,
-                                                    final NodeValueMatrix distances,
-                                                    double percentagePivots,
-                                                    boolean booleanValue);
-
+                                                    final NodeValueMatrix distances);
 }
