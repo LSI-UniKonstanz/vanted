@@ -3,6 +3,8 @@ package org.vanted.addons.stressminaddon;
 import org.graffiti.editor.MainFrame;
 import org.junit.Test;
 
+import java.awt.*;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +29,9 @@ public class StartVantedWithAddonTest {
         assertTrue("Is installed",
                 MainFrame.getInstance().getPluginManager().getPluginEntries().stream()
                         .anyMatch(x -> x.getPlugin().getClass().equals(StressMinimizationAddon.class)));
+        for (Window window : Window.getWindows()) {
+            window.dispose();
+        }
     }
 
     /**

@@ -257,7 +257,6 @@ public class ParameterizableSelectorParameterTest {
         assertEquals("Window opened", activeWindows+1, windows.length);
         ((JButton)((JPanel)((JOptionPane)popUp.getContentPane().getComponent(0)).getComponent(1)).getComponent(0))
                 .doClick(); // click on okay button to close
-
         // check no window opened
         Map<String, Parameterizable> emptyParams = new HashMap<>(2);
         emptyParams.put("1", new InitialPlacer(){

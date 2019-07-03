@@ -298,6 +298,9 @@ public enum ConnectedComponentsHelper {
 
             // sort by node count
             connectedComponents.sort((l1, l2) -> l2.size() - l1.size());
+            if (connectedComponentPositions != null) {
+                connectedComponentPositions.sort((l1, l2) -> l2.size() - l1.size());
+            }
 
             // get components bounds
             Rectangle2D.Double[] componentsBoundsWithAnchor = new Rectangle2D.Double[connectedComponents.size()];

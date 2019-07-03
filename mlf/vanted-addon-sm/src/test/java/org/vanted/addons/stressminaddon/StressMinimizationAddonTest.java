@@ -3,7 +3,8 @@ package org.vanted.addons.stressminaddon;
 import org.graffiti.plugin.algorithm.Algorithm;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests the class {@link StressMinimizationAddon}.
