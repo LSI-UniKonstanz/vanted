@@ -138,7 +138,8 @@ public class SolarPlacer implements Placer {
             double placementDist = Math.max(AttributeHelper.getWidth(sun), AttributeHelper.getHeight(sun));
             // if the sun has other planets, use the minimal distance of those
             for (Node neighbor : sun.getNeighbors()) {
-                if (neighbor != planet) {
+                if (!singlePlanets.contains(neighbor)) { // the planets in singlePlanets haven't been laid out yet
+                                                         // their position is meaningless at this point
                     double distance = distance(sun, neighbor);
                     if (distance < placementDist) {
                         placementDist = distance;
