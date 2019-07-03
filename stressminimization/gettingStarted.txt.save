@@ -1,0 +1,8 @@
+Stressmin Addon
+getting started
+
+This add-on calculates the collected stress on the nodes in the graph
+and changes the layout to minimize this stress. This usually results 
+in nice looking layouts if the number of edges is not too high.
+
+
