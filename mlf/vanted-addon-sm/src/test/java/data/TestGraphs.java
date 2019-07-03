@@ -11,6 +11,7 @@ import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Contains some graphs for testing.
@@ -38,6 +39,18 @@ public class TestGraphs {
     /** The distances between nodes of graph 2. @see {@link TestGraphs#GRAPH_2} */
     public static final NodeValueMatrix GRAPH_2_DISTANCES;
 
+
+    // Long path graph
+    /**
+     * Contains a graph that is a not layouted 1000 element path with random positions.
+     * Can be used if a operation on a graph should take longer. */
+    public static final Graph GRAPH_LONG_PATH;
+    /** The positions of nodes in the long path graph. @see {@link TestGraphs#GRAPH_LONG_PATH} */
+    public static final ArrayList<Vector2d> GRAPH_LONG_PATH_POSITIONS;
+    /** The nodes of the long path graph. @see {@link TestGraphs#GRAPH_LONG_PATH} */
+    public static final ArrayList<Node> GRAPH_LONG_PATH_NODES;
+    /** The distances between nodes of the long path graph. @see {@link TestGraphs#GRAPH_LONG_PATH} */
+    public static final NodeValueMatrix GRAPH_LONG_PATH_DISTANCES;
     /*
       Initialize graphs
       @author Jannik
@@ -99,6 +112,32 @@ public class TestGraphs {
             GRAPH_2_DISTANCES.set(i + half, i + half + half/2, 2);
         }
 
+        // init long path graph
+        ///////////////////////////////////////////
+        GRAPH_LONG_PATH_POSITIONS = new ArrayList<>(1000);
+        Random random = new Random(42); // keep the positions predictable
+        for (int num = 0; num < 1000; num++) {
+            GRAPH_LONG_PATH_POSITIONS.add(new Vector2d(random.nextDouble()*1000, random.nextDouble()));
+        }
+        GRAPH_LONG_PATH = new AdjListGraph();
+        GRAPH_LONG_PATH_NODES = new ArrayList<>();
+        GRAPH_LONG_PATH_DISTANCES = new NodeValueMatrix(GRAPH_LONG_PATH_POSITIONS.size());
+
+        // create nodes and place them
+        for (int i = 0; i < GRAPH_LONG_PATH_POSITIONS.size(); i++) {
+            Vector2d pos = GRAPH_LONG_PATH_POSITIONS.get(i);
+            Node n = GraphHelper.addNodeToGraph(
+                    GRAPH_LONG_PATH, pos.x, pos.y, 1, 42, 42, Color.WHITE, Color.BLACK);
+            n.setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, i);
+            GRAPH_LONG_PATH_NODES.add(n);
+        }
+        // connect the nodes
+        for (int i = 1; i < GRAPH_LONG_PATH_NODES.size(); i++) {
+            GRAPH_LONG_PATH.addEdge(GRAPH_LONG_PATH_NODES.get(i-1), GRAPH_LONG_PATH_NODES.get(i), false);
+            for (int j = 0; j < i; j++) { // update distances
+                GRAPH_LONG_PATH_DISTANCES.set(i, j, i-j);
+            }
+        }
     }
 
     /** Contains a graph with 4 Nodes in a circle, all the Nodes are on the same position (0,0). */
