@@ -49,8 +49,6 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
     private static final String MLF_COMPATIBILITY_IS_COARSENING_LEVEL = "GRAPH_IS_MLF_COARSENING_LEVEL";
     /** Name of attribute that signals the current graph is the top coarsening level. */
     private static final String MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL = "GRAPH_IS_MLF_COARSENING_TOP_LEVEL";
-    /** Name of attribute that signals the current graph is the bottom coarsening level. */
-    private static final String MLF_COMPATIBILITY_IS_BOTTOM_COARSENING_LEVEL = "GRAPH_IS_MLF_COARSENING_BOTTOM_LEVEL";
 
     ///// Parameters and defaults /////
     // stop conditions
@@ -178,13 +176,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                 state.doAnimations = false;
                 state.moveIntoView = false;
                 state.backgroundTask = false;
-                if (!state.graph.getAttributes().getCollection().containsKey(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL) ||
-                    !state.graph.getBoolean(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL)) {
-                    state.initialPlacer = new NullPlacer(); // we are not at top level (disable initial placer)
-                }
-                if (!state.graph.getAttributes().getCollection().containsKey(StressMinimizationLayout.MLF_COMPATIBILITY_IS_BOTTOM_COARSENING_LEVEL) ||
-                        !state.graph.getBoolean(StressMinimizationLayout.MLF_COMPATIBILITY_IS_BOTTOM_COARSENING_LEVEL)) {
-                    state.edgeScalingFactor = 1.0; // we are not at bottom level (no edge scaling allowed)
+                if (state.graph.getAttributes().getCollection().containsKey(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL) &&
+                        state.graph.getBoolean(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL)) {
+                    state.initialPlacer = new NullPlacer(); // we are not at top level
                 }
             } else {
                 compatibilityMLF = false;
@@ -669,7 +663,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
      *
      * @author Jannik
      */
-    private static class State implements BackgroundTaskStatusProvider {
+    static class State implements BackgroundTaskStatusProvider {
         /** The graph to work with. */
         public Graph graph;
         /** The time in ms the algorithm started. Used to calculate elapsed time. */
