@@ -175,4 +175,31 @@ public class MlfHelperTest {
         e.setString(path, "nope");
         assertEquals(42, MlfHelper.getEdgeWeight(e, path, 42), 0.0);
     }
+
+    @Test
+    public void tryMakingNewInstance() {
+        String bOriginal = "b{2}|[^b]{2}";
+        String notBOriginal = MlfHelper.tryMakingNewInstance(bOriginal);
+        assertNotSame(bOriginal, notBOriginal);
+    }
+
+    @Test
+    public void tryMakingNewInstanceFail() {
+        class DummyFailure {
+            private long iJustStoreAUselessDummyLong;
+            public DummyFailure(long leLong) {
+                this.iJustStoreAUselessDummyLong = leLong;
+            }
+            public long getRidOfNotUsedWarning() {
+                return this.iJustStoreAUselessDummyLong;
+            }
+        }
+        DummyFailure original = new DummyFailure(0xFAAAA1L);
+        // calling the ctor will fail in this method
+        DummyFailure newOne = MlfHelper.tryMakingNewInstance(original);
+        // so it should return the original as a fallback
+        assertSame(original, newOne);
+    }
+
+
 }

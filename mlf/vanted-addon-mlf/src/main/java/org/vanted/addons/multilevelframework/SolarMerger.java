@@ -17,8 +17,8 @@ import static java.util.concurrent.TimeUnit.NANOSECONDS;
 import static org.vanted.addons.multilevelframework.MlfHelper.validateNumber;
 
 public class SolarMerger implements Merger {
-    private final static String MIN_NODES_NAME = "Minimum number of nodes";
-    private final static String MAX_LEVEL_FACTOR_NAME = "Maximum level factor";
+    final static String MIN_NODES_NAME = "Minimum number of nodes";
+    final static String MAX_LEVEL_FACTOR_NAME = "Maximum level factor";
 
     // keys to store the information for the SolarPlacer
     public final static String SUNS_KEY = "SOLAR_MERGER_SUNS_SET";
@@ -106,7 +106,7 @@ public class SolarMerger implements Merger {
      * Systems. Each solar System has a sun, planets(dist 1 to the sun) and one or
      * no moon(1+1 dist to sun) for each planet.
      */
-    private void processGalaxy(MultilevelGraph multilevelGraph) {
+    void processGalaxy(MultilevelGraph multilevelGraph) {
 
         // Graph storing the current topLevel as baseLevel for this coarsening step
         Graph baseLevel = multilevelGraph.getTopLevel();
@@ -263,7 +263,7 @@ public class SolarMerger implements Merger {
      * @param baseLevel the level current of the multilevel framework
      * @return sunList a List of the central Nodes of the solar systems
      */
-    private Set<Node> findSuns(Graph baseLevel) {
+    Set<Node> findSuns(Graph baseLevel) {
         final long startTime = System.nanoTime();
         // HashSet containing the suns for this level
         Set<Node> sunSet = new HashSet<>();

@@ -23,11 +23,13 @@ import org.junit.Test;
 import org.vanted.addons.multilevelframework.pse_hack.BlockingForceDirected;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.geom.Point2D;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -392,37 +394,6 @@ public class TestsWithVANTED {
         }, true);
     }
 
-    /**
-     * @author Gordian
-     */
-    @Test
-    public void tryMakingNewInstance() {
-        String bOriginal = "b{2}|[^b]{2}";
-        String notBOriginal = LayoutAlgorithmWrapper.tryMakingNewInstance(bOriginal);
-        assertNotSame(bOriginal, notBOriginal);
-    }
-
-    /**
-     * @author Gordian
-     */
-    @Test
-    public void tryMakingNewInstanceFail() {
-        class DummyFailure {
-            private long iJustStoreAUselessDummyLong;
-            public DummyFailure(long leLong) {
-                this.iJustStoreAUselessDummyLong = leLong;
-            }
-            public long getRidOfNotUsedWarning() {
-                return this.iJustStoreAUselessDummyLong;
-            }
-        }
-        DummyFailure original = new DummyFailure(0xFAAAA1L);
-        // calling the ctor will fail in this method
-        DummyFailure newOne = LayoutAlgorithmWrapper.tryMakingNewInstance(original);
-        // so it should return the original as a fallback
-        assertSame(original, newOne);
-    }
-
 
 
 //----------------------------------------------------RandomMerger------------------------------------------------------
@@ -528,14 +499,39 @@ public class TestsWithVANTED {
     @Test
     public void executeMultilevelFrameworkLayouter() throws NoSuchFieldException, IllegalAccessException {
         MultilevelFrameworkLayouter mfl = new MultilevelFrameworkLayouter();
-        Graph g = ErdosRenyiGraphGenerator.createGraph(1000, false, 0.1, true, true);
+        Graph g = ErdosRenyiGraphGenerator.createGraph(100, false, 0.1, true, true);
         Field lastSelectedAlgorithm = MultilevelFrameworkLayouter.class.getDeclaredField("lastSelectedAlgorithm");
         lastSelectedAlgorithm.setAccessible(true);
         lastSelectedAlgorithm.set(mfl, "Null-Layout");
-        mfl.setParameters(mfl.getParameters());
+        Parameter[] parameters = mfl.getParameters();
+        for (Parameter p : parameters) {
+            if (p.getName().matches("(?i)remove.*overlaps") || p.getName().matches("(?i)remove.*bends")) {
+                p.setValue(true);
+            }
+        }
+        mfl.setParameters(parameters);
         mfl.attach(g, new Selection());
         mfl.execute();
         assertTrue(g.getBoolean(MultilevelFrameworkLayouter.WORKING_ATTRIBUTE_PATH));
+    }
+
+    /**
+     * @author Gordian
+     */
+    @Test
+    public void clickSetUpLayoutAlgorithmButton() throws NoSuchFieldException, IllegalAccessException, InterruptedException {
+        MultilevelFrameworkLayouter mfl = new MultilevelFrameworkLayouter();
+        Field lastSelectedAlgorithm = MultilevelFrameworkLayouter.class.getDeclaredField("lastSelectedAlgorithm");
+        lastSelectedAlgorithm.setAccessible(true);
+        lastSelectedAlgorithm.set(mfl, "Random");
+        Window[] windowsBefore = Window.getWindows();
+        new Thread(() -> mfl.clickSetUpLayoutAlgorithmButton(null)).start();
+        Thread.sleep(100);
+        Window[] windowsAfter = Window.getWindows();
+        assertTrue(windowsAfter.length > windowsBefore.length);
+        assertTrue(Arrays.stream(windowsAfter).anyMatch(w -> w instanceof JDialog
+                && ((JDialog)w).getTitle().toLowerCase().contains("set up")
+                && ((JDialog)w).getTitle().toLowerCase().contains("random")));
     }
 
     /**

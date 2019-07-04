@@ -31,17 +31,36 @@ import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+/**
+ * Main class of the MLF add-on that contains the method that actually performs the layout.
+ * @see AbstractEditorAlgorithm
+ * @author Gordian
+ */
 public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
+    // store the available mergers, placers and algorithms
     private Map<String, LayoutAlgorithmWrapper> layoutAlgorithms;
     private static List<Merger> mergers = Collections.synchronizedList(new ArrayList<>());
     private static List<Placer> placers = Collections.synchronizedList(new ArrayList<>());
+
+    // default values
     private final static String DEFAULT_ALGORITHM = BlockingForceDirected.springName;
     private final static String DEFAULT_PLACER = new RandomPlacer().getName();
     private final static String DEFAULT_MERGER = new RandomMerger().getName();
+    private boolean randomTop = true;
+    private boolean removeBends = false;
+    private boolean removeOverlaps = false;
+
+    // Default names of the attributes that indicate to the algorithms that the graphs they work on
+    // coarsened graph instead of the original graph. The algorithm can use this for optimizations.
+    // Currently only used by Stress Minimization.
     private final static String COARSENING_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_LEVEL";
     private final static String COARSENING_TOP_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_TOP_LEVEL";
+    private final static String COARSENING_BOTTOM_LEVEL_INDICATOR_ATTRIBUTE_PATH
+            = "GRAPH_IS_MLF_COARSENING_BOTTOM_LEVEL";
     final static String WORKING_ATTRIBUTE_PATH = "MLF_EXECUTING";
+
+    // fields for the GUI objects / the parameter system
     private JComboBox<String> algorithmListComboBox;
     private JButton setUpLayoutAlgorithmButton;
     private String lastSelectedAlgorithm = DEFAULT_ALGORITHM;
@@ -54,15 +73,13 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     private int placerPSPIndex = 0;
     private ParameterizableSelectorParameter mergerPSP;
     private ParameterizableSelectorParameter placerPSP;
-    private boolean randomTop = true;
-    private boolean removeBends = false;
-    private boolean removeOverlaps = false;
 
     /**
      * Set this to true to make execute() block until it is finished and use the specified mergers instead of the ones
      * selected through the GUI.
      */
     public boolean benchmarkMode = false;
+    // merger, placer and algorithm to use in non-interactive (benchmark) mode
     public Merger nonInteractiveMerger = null;
     public Placer nonInteractivePlacer = null;
     public String nonInteractiveAlgorithm = null;
@@ -123,6 +140,14 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
     /**
      * Performs the layout.
+     * Can be executed on multiple graphs at the same time (by calling attach, execute, attach, execute...),
+     * but only if the {@link Algorithm} used for the levels supports thread safe execution
+     * (i.e. multiple execute methods running at the same time using the same instance).
+     * This is only possible if the algorithm's execute method copies the parameter values or the
+     * {@link org.graffiti.plugin.algorithm.ThreadSafeOptions} object in case of a
+     * {@link org.graffiti.plugin.algorithm.ThreadSafeAlgorithm}.
+     * Unless you can guarantee that the algorithm you're using does this, it is not recommended to run this on
+     * multiple graphs at the same time.
      * @author Gordian
      */
     public void execute() {
@@ -141,13 +166,13 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
         final Placer placer;
         final LayoutAlgorithmWrapper algorithm;
         if (!this.benchmarkMode) { // otherwise the caller needs to set those values
-            merger = this.getSelectedMergerAndSetParameters();
-            placer = this.getSelectedPlacerAndSetParameters();
+            merger = this.getSelectedMergerCopyAndSetParameters();
+            placer = this.getSelectedPlacerCopyAndSetParameters();
             algorithm = this.layoutAlgorithms.get(Objects.toString(this.algorithmListComboBox.getSelectedItem()));
         } else {
-            merger = this.nonInteractiveMerger;
-            placer = this.nonInteractivePlacer;
-            algorithm = this.layoutAlgorithms.get(this.nonInteractiveAlgorithm);
+            merger = MlfHelper.tryMakingNewInstance(this.nonInteractiveMerger);
+            placer = MlfHelper.tryMakingNewInstance(this.nonInteractivePlacer);
+            algorithm = MlfHelper.tryMakingNewInstance(this.layoutAlgorithms.get(this.nonInteractiveAlgorithm));
         }
         final List<?extends CoarsenedGraph>[] connectedComponents = new List[1];
 
@@ -212,7 +237,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
                     if (bts.isStopped) { bts.status = -1; return; }
                 }
 
-                assert componentMLG.getNumberOfLevels() == 1 : "Not all coarsening levels were removed";
+                // indicate that this is the bottom level
+                componentMLG.getTopLevel().setBoolean(COARSENING_BOTTOM_LEVEL_INDICATOR_ATTRIBUTE_PATH, true);
                 bts.status = calculateProgress(componentMLG, connectedComponents[0], i, numLevelsAtStart);
                 bts.statusMessage = makeStatusMessage(numLevelsAtStart, componentMLG.getNumberOfLevels(),
                         connectedComponents[0], i, graph.getName());
@@ -426,8 +452,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      *     the GUI.
      * @author Gordian
      */
-    private Merger getSelectedMergerAndSetParameters() {
-        final Merger merger = (Merger) this.mergerPSP.getSelectedParameterizable();
+    private Merger getSelectedMergerCopyAndSetParameters() {
+        final Merger merger = MlfHelper.tryMakingNewInstance((Merger) this.mergerPSP.getSelectedParameterizable());
         this.lastSelectedMerger = merger.getName();
         merger.setParameters(this.mergerPSP.getUpdatedParameters());
         return merger;
@@ -439,8 +465,8 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      *     the GUI.
      * @author Gordian
      */
-    private Placer getSelectedPlacerAndSetParameters() {
-        final Placer placer = (Placer) this.placerPSP.getSelectedParameterizable();
+    private Placer getSelectedPlacerCopyAndSetParameters() {
+        final Placer placer = MlfHelper.tryMakingNewInstance((Placer) this.placerPSP.getSelectedParameterizable());
         this.lastSelectedPlacer = placer.getName();
         placer.setParameters(this.placerPSP.getUpdatedParameters());
         return placer;
@@ -475,12 +501,12 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
      *      Ignored.
      * @author Gordian
      */
-    private void clickSetUpLayoutAlgorithmButton(ActionEvent ignored) {
+    void clickSetUpLayoutAlgorithmButton(ActionEvent ignored) {
         final LayoutAlgorithmWrapper current = this.layoutAlgorithms.get(this.lastSelectedAlgorithm);
         final JComponent gui = current.getGUI();
         if (gui != null) {
             JOptionPane.showMessageDialog(MainFrame.getInstance(), gui,
-                    this.lastSelectedAlgorithm, JOptionPane.PLAIN_MESSAGE);
+                    "Set up " + this.lastSelectedAlgorithm, JOptionPane.PLAIN_MESSAGE);
         }
     }
 

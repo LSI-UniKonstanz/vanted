@@ -6,6 +6,10 @@ import org.graffiti.plugin.algorithm.Algorithm;
 
 import javax.swing.*;
 
+/**
+ * See the documentation for {@link AddonAdapter}.
+ * @see AddonAdapter
+ */
 public class MultilevelFrameworkAddon extends AddonAdapter {
 
     // not final to allow test to change it

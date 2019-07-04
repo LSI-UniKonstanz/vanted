@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+    <script src="lib/jquery-3.4.0.min.js"></script>
+    <script src="lib/popper.min.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+    <script src="lib/d3.min.js"></script>
+    <script src="js/index.mjs" type="module"></script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a
+            aria-controls="splom"
+            aria-selected="true"
+            class="nav-link"
+            data-toggle="tab"
+            href="#splom"
+            id="splom-tab"
+            role="tab"
+            >SPLOM</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            aria-controls="pcp"
+            aria-selected="false"
+            class="nav-link"
+            data-toggle="tab"
+            href="#pcp"
+            id="pcp-tab"
+            role="tab"
+            >PCP</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            aria-controls="projections"
+            aria-selected="false"
+            class="nav-link disabled"
+            data-toggle="tab"
+            href="#projections"
+            id="projections-tab"
+            role="tab"
+            >Projections</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            aria-controls="pvm"
+            aria-selected="false"
+            class="nav-link active"
+            data-toggle="tab"
+            href="#pvm"
+            id="pvm-tab"
+            role="tab"
+            >Pixel Visualization</a
+          >
+        </li>
+        <li class="nav-item">
+          <div class="btn-group btn-group-sm">
+            <div class="btn-group btn-group-sm dropleft" role="group">
+              <button
+                aria-expanded="false"
+                aria-haspopup="true"
+                class="btn btn-primary dropdown-toggle dropdown-toggle-split"
+                data-toggle="dropdown"
+                type="button"
+              >
+                <span class="sr-only">Toggle Dropleft</span>
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" id="csv_singleSteps">csv_singleSteps</a>
+                <a class="dropdown-item" id="education-dataset"
+                  >Education Dataset</a
+                >
+                <a class="dropdown-item" id="iris-dataset">Iris Dataset</a>
+                <a class="dropdown-item" id="nutrients-dataset"
+                  >Nutrients Dataset</a
+                >
+                <a class="dropdown-item" id="wine-dataset">Wine Dataset</a>
+              </div>
+            </div>
+            <button
+              class="btn btn-primary btn-sm"
+              id="csv-button"
+              type="button"
+            >
+              Load CSV File
+            </button>
+            <input id="csv-input" type="file" />
+          </div>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div
+          aria-labelledby="splom-tab"
+          class="tab-pane fade"
+          id="splom"
+          role="tabpanel"
+        >
+          <div class="row">
+            <div class="col-2">
+              <div class="form-check" class="class-colors-checkbox">
+                <input
+                  class="form-check-input"
+                  id="splom__class-colors-checkbox"
+                  type="checkbox"
+                />
+                <label
+                  class="form-check-label"
+                  for="splom__class-colors-checkbox"
+                  >Encode classes as colors</label
+                >
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  id="minimal-spanning-tree-checkbox"
+                  type="checkbox"
+                />
+                <label
+                  class="form-check-label"
+                  for="minimal-spanning-tree-checkbox"
+                  >Show MST</label
+                >
+              </div>
+            </div>
+            <div class="col-10" id="scagnostics">
+              <div id="distribution-consistency">
+                <label for="distribution-consistency-slider"
+                  >Distribution Consistency:</label
+                ><input
+                  disabled
+                  id="distribution-consistency-slider"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                  type="range"
+                  value="0"
+                />
+                <span>
+                  0
+                </span>
+              </div>
+              <div id="outlying-measure">
+                <label for="outlying-measure-slider">Outlying Measure:</label
+                ><input
+                  disabled
+                  id="outlying-measure-slider"
+                  min="0"
+                  max="1"
+                  step="0.001"
+                  type="range"
+                  value="1"
+                />
+                <span>
+                  1
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col" id="scatterplot-matrix-container">
+              <span id="scatterplot-matrix-placeholder"
+                >Load a CSV file to see its scatterplot matrix displayed
+                here...</span
+              >
+              <div id="scatterplot-matrix"></div>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-labelledby="pcp-tab"
+          class="tab-pane fade"
+          id="pcp"
+          role="tabpanel"
+        >
+          <div class="row">
+            <div class="col-2">
+              <div class="form-check class-colors-checkbox">
+                <input
+                  class="form-check-input"
+                  id="pcp__class-colors-checkbox"
+                  type="checkbox"
+                />
+                <label class="form-check-label" for="pcp__class-colors-checkbox"
+                  >Encode classes as colors</label
+                >
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  id="pcp__edge-bundling-checkbox"
+                  type="checkbox"
+                />
+                <label
+                  class="form-check-label"
+                  for="pcp__edge-bundling-checkbox"
+                  >Bundle Edges</label
+                >
+              </div>
+            </div>
+            <div class="col-10">
+              <div id="line-crossings">
+                <div id="line-crossings-number">
+                  <span>Number of Line Crossings:</span>
+                  <span>
+                    0
+                  </span>
+                  <span>
+                    (min.: 0, max.: 0)
+                  </span>
+                </div>
+                <div id="dimension-ordering-buttons">
+                  <button
+                    class="btn btn-outline-primary"
+                    id="dimension-ordering-buttons__mininum"
+                    type="button"
+                  >
+                    ⤮ Min
+                  </button>
+                  <button
+                    class="btn btn-outline-primary"
+                    id="dimension-ordering-buttons__maximum"
+                    type="button"
+                  >
+                    ⤮ Max
+                  </button>
+                </div>
+              </div>
+              <div id="edge-bundling-parameters">
+                <div id="edge-bundling-parameters__smoothness">
+                  <label for="edge-bundling-parameters__smoothness__slider"
+                    >Smoothness:</label
+                  ><input
+                    disabled
+                    id="edge-bundling-parameters__smoothness__slider"
+                    min="0"
+                    max="1"
+                    step="0.001"
+                    type="range"
+                    value="0.5"
+                  />
+                  <span>
+                    0.5
+                  </span>
+                </div>
+                <div id="edge-bundling-parameters__strength">
+                  <label for="edge-bundling-parameters__strength__slider"
+                    >Bundling Strength:</label
+                  ><input
+                    disabled
+                    id="edge-bundling-parameters__strength__slider"
+                    min="0"
+                    max="1"
+                    step="0.001"
+                    type="range"
+                    value="0.5"
+                  />
+                  <span>
+                    0.5
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col" id="parallel-coordinates-plot-container">
+              <span id="parallel-coordinates-plot-placeholder"
+                >Load a CSV file to see its parallel coordinates plot displayed
+                here...</span
+              >
+              <div id="parallel-coordinates-plot"></div>
+            </div>
+          </div>
+        </div>
+        <div
+          aria-labelledby="projections-tab"
+          class="tab-pane fade"
+          id="projections"
+          role="tabpanel"
+        >
+          <div class="row"></div>
+        </div>
+        <div
+          aria-labelledby="pvm-tab"
+          class="tab-pane fade show active"
+          id="pvm"
+          role="tabpanel"
+        >
+          <div class="row">
+            <div class="col-4">
+              <span>Select the Primary Dimension:</span>
+              <div
+                class="dropdown"
+                id="pixel-visualization-matrix__primary-dimension-selection"
+              >
+                <button
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                  class="btn btn-outline-primary dropdown-toggle"
+                  data-toggle="dropdown"
+                  disabled
+                  id="pixel-visualization-matrix__primary-dimension-selection__button"
+                  type="button"
+                >
+                  Dimension
+                </button>
+                <div
+                  class="dropdown-menu disabled"
+                  aria-labelledby="pixel-visualization-matrix__primary-dimension-selection__button"
+                ></div>
+              </div>
+            </div>
+            <div class="col">
+              <span>Choose a Layout:</span>
+              <div
+                class="btn-group btn-group-toggle"
+                data-toggle="buttons"
+                id="pvm_layout-selection"
+              >
+                <label class="btn btn-outline-primary" id="pvm_naive-layout">
+                  <input autocomplete="off" name="options" type="radio" />
+                  Naive
+                </label>
+                <label
+                  class="btn btn-outline-primary active"
+                  id="pvm_peano-hilbert-layout"
+                >
+                  <input
+                    autocomplete="off"
+                    checked
+                    name="options"
+                    type="radio"
+                  />
+                  Peano-Hilbert Curve
+                </label>
+              </div>
+              <input id="pvm_show-layout-checkbox" type="checkbox" />
+              <label class="form-check-label" for="pvm_show-layout-checkbox"
+                >Show Layout</label
+              >
+            </div>
+          </div>
+          <div class="row">
+            <div class="col" id="pixel-visualization-matrix-container">
+              <span id="pixel-visualization-matrix-placeholder"
+                >Load a CSV file to see its pixel visualization matrix displayed
+                here...</span
+              >
+              <div id="pixel-visualization-matrix"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -6,11 +6,16 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Random;
+import java.util.function.DoubleUnaryOperator;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.*;
 
+/**
+ * Test the class {@link NodeValueMatrix}.
+ * @author Jannik
+ */
 public class NodeValueMatrixTest {
 
     /** The dimension of the test matrix. */
@@ -18,14 +23,23 @@ public class NodeValueMatrixTest {
     /** The matrix to test with. */
     NodeValueMatrix matrix;
 
+    /** Used for random indices. */
     public static final Random rand = new Random();
 
+    /**
+     * Create a matrix for testing.
+     * @author Jannik
+     */
     @Before
     public void setUp() {
         this.matrix = new NodeValueMatrix(DIMENSION);
         matrix.apply(x -> Math.random()*21+21);
     }
 
+    /**
+     * Test the method {@link NodeValueMatrix#get(int, int)}
+     * @author Jannik
+     */
     @Test
     public void get() {
         int[] pos = rand.ints(0, DIMENSION).distinct().limit(2).toArray();
@@ -33,6 +47,10 @@ public class NodeValueMatrixTest {
         assertEquals(matrix.get(pos[0], pos[1]), matrix.get(pos[1],pos[0]), 0.001); // check symmetry
     }
 
+    /**
+     * Test the method {@link NodeValueMatrix#get(int, int, int[])}
+     * @author Jannik
+     */
     @Test
     public void getTranslated() {
         int[] pos = rand.ints(0, DIMENSION).distinct().limit(2).toArray();
@@ -42,6 +60,10 @@ public class NodeValueMatrixTest {
                 0.001); // check for right translation
     }
 
+    /**
+     * Test the method {@link NodeValueMatrix#set(int, int, double)}
+     * @author Jannik
+     */
     @Test
     public void set() {
         int[] pos = rand.ints(0, DIMENSION).distinct().limit(2).toArray(); // get two different indices
@@ -52,6 +74,10 @@ public class NodeValueMatrixTest {
 
     }
 
+    /**
+     * Test the method {@link NodeValueMatrix#apply(DoubleUnaryOperator)}
+     * @author Jannik
+     */
     @Test
     public void apply() {
         matrix.apply(x -> 42);
@@ -64,6 +90,10 @@ public class NodeValueMatrixTest {
         }
     }
 
+    /**
+     * Test whether the right exceptions are thrown.
+     * @author Jannik
+     */
     @Test
     public void exceptions() {
         // test constructor with illegal dimension
@@ -72,6 +102,9 @@ public class NodeValueMatrixTest {
             fail("No exception thrown");
         } catch (IllegalArgumentException e) {
         } catch (Throwable t) {
+            if ("No exception thrown".equals(t.getMessage())) {
+                throw t;
+            }
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
         // test index out of bounds
@@ -80,9 +113,14 @@ public class NodeValueMatrixTest {
             try {matrix.set(-1,0, Double.NaN); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
             try {matrix.apply(x -> x, -1,0); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
             try {matrix.apply(x -> x, 0, DIMENSION); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
+            try {matrix.apply(x -> x, -1,0, new int[DIMENSION]); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
+            try {matrix.apply(x -> x, 0, DIMENSION, new int[DIMENSION]); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
             try {matrix.get(0, DIMENSION); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
             try {matrix.set(0, DIMENSION, Double.NaN); fail("No exception thrown");} catch (IndexOutOfBoundsException e) {}
         } catch (Throwable t) {
+            if ("No exception thrown".equals(t.getMessage())) {
+                throw t;
+            }
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
         // test setting diagonal
@@ -92,6 +130,9 @@ public class NodeValueMatrixTest {
             fail("No exception thrown");
         } catch (UnsupportedOperationException e) {
         } catch (Throwable t) {
+            if ("No exception thrown".equals(t.getMessage())) {
+                throw t;
+            }
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
 
@@ -101,6 +142,9 @@ public class NodeValueMatrixTest {
             fail("No exception thrown");
         } catch (NullPointerException e) {
         } catch (Throwable t) {
+            if ("No exception thrown".equals(t.getMessage())) {
+                throw t;
+            }
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
         try {
@@ -108,10 +152,27 @@ public class NodeValueMatrixTest {
             fail("No exception thrown");
         } catch (NullPointerException e) {
         } catch (Throwable t) {
+            if ("No exception thrown".equals(t.getMessage())) {
+                throw t;
+            }
+            fail("Wrong exception thrown: " + t.getClass().getSimpleName());
+        }
+        try {
+            matrix.apply(null, 0, 0, new int[DIMENSION]);
+            fail("No exception thrown");
+        } catch (NullPointerException e) {
+        } catch (Throwable t) {
+            if ("No exception thrown".equals(t.getMessage())) {
+                throw t;
+            }
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
     }
 
+    /**
+     * Test the method {@link NodeValueMatrix#clone()}
+     * @author Jannik
+     */
     @Test
     public void testClone() {
         matrix.apply(x->42);
@@ -131,6 +192,10 @@ public class NodeValueMatrixTest {
         }
     }
 
+    /**
+     * Test the method {@link NodeValueMatrix#apply(DoubleUnaryOperator, int, int, int[])}
+     * @author Jannik
+     */
     @Test
     public void applyLimitedTranslated() {
         // test no apply
@@ -153,6 +218,10 @@ public class NodeValueMatrixTest {
         }
     }
 
+    /**
+     * Test the method {@link NodeValueMatrix#apply(DoubleUnaryOperator, int, int)}
+     * @author Jannik
+     */
     @Test
     public void applyLimited() {
         for (int tries = 0; tries < 20; tries++) {
@@ -173,6 +242,10 @@ public class NodeValueMatrixTest {
         }
     }
 
+    /**
+     * Test the method {@link NodeValueMatrix#collectRows(int...)}
+     * @author Jannik
+     */
     @Test
     public void collectRows() {
         int[] rows = rand.ints(0, DIMENSION).limit(rand.nextInt(DIMENSION)).toArray();
@@ -193,6 +266,10 @@ public class NodeValueMatrixTest {
         }
     }
 
+    /**
+     * Test the method {@link NodeValueMatrix#collectColumns(int...)}
+     * @author Jannik
+     */
     @Test
     public void collectColumns() {
         int[] cols = rand.ints(0, DIMENSION).limit(rand.nextInt(DIMENSION)).toArray();
@@ -213,6 +290,10 @@ public class NodeValueMatrixTest {
         }
     }
 
+    /**
+     * Test the method {@link NodeValueMatrix#print()}
+     * @author Jannik
+     */
     @Test
     public void print() {
         PrintStream originalOut = System.out;
@@ -224,11 +305,19 @@ public class NodeValueMatrixTest {
         System.setOut(originalOut);
     }
 
+    /**
+     * Test the method {@link NodeValueMatrix#toString()}
+     * @author Jannik
+     */
     @Test
     public void testToString() {
         assertEquals("NodeValueMatrix{#values="+((DIMENSION-1)*DIMENSION/2)+", dimension="+DIMENSION+"}", matrix.toString());
     }
 
+    /**
+     * Test the method {@link NodeValueMatrix#getDimension()}
+     * @author Jannik
+     */
     @Test
     public void getDimension() {
         assertEquals(DIMENSION, matrix.getDimension());
