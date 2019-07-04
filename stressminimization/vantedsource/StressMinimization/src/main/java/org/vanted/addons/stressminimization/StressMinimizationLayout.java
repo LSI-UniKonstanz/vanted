@@ -300,7 +300,6 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 			setStatusDescription("Stress Minimization: layouting next component");
 
-			System.out.println("disable: " + disableLandmarkPreprocessing + ", second: " + (Math.min(this.numberOfLandmarks, component.size()) > 2 * PREPROCESSING_NUMBER_OF_LANDMARKS) + ", whole: " + (!disableLandmarkPreprocessing && (Math.min(this.numberOfLandmarks, component.size()) > 2 * PREPROCESSING_NUMBER_OF_LANDMARKS)));
 			// if too few nodes shawl be layout, our preprocessing does not make sense
 			if (!disableLandmarkPreprocessing && Math.min(this.numberOfLandmarks, component.size()) > 2 * PREPROCESSING_NUMBER_OF_LANDMARKS) {
 				
