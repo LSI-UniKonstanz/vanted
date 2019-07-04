@@ -117,6 +117,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 	private static final int ITERATIONS_THRESHOLD_DEFAULT_VALUE = 75;
 	private double iterationsThreshold = ITERATIONS_THRESHOLD_DEFAULT_VALUE;
 
+	private static final String DISABLE_LANDMARK_PREPROCESSING_PARAMETER_NAME = "Disable Landmark Preprocessing";
+	private static final boolean DISABLE_LANDMARK_PREPROCESSING_DEFAULT_VALUE = false;
+	private boolean disableLandmarkPreprocessing = DISABLE_LANDMARK_PREPROCESSING_DEFAULT_VALUE;
+	
 	private static final int PREPROCESSING_NUMBER_OF_LANDMARKS = 15;
 	private static final double PREPROCESSING_STRESS_CHANGE_EPSILON = 1e-6;
 	private static final double PREPROCESSING_ITERATIONS_THRESHOLD = 100;
@@ -135,14 +139,14 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				1000, // values above this consume to much time in the current implementation
 				NUMBER_OF_LANDMARKS_NAME,
 				"The number of nodes that will be mainly layouted. All remaining nodes will be positioned relatively to these nodes. You may turn off this option by selecting all nodes as landmarks."
-				));
+		));
 
-		params.add(new SliderParameter(
-				alpha,
-				ALPHA_PARAMETER_NAME,
-				"Sets the importance of correct distance placement of very distanced nodes. A high value indicates that nodes with a high distance to one individual node will have less impact of the placement of this node, while nodes with a low distance will have a bigger impact.",
-				0,2));
-
+		params.add(new BooleanParameter(
+				disableLandmarkPreprocessing, 
+				DISABLE_LANDMARK_PREPROCESSING_PARAMETER_NAME, 
+				"Turn of landmark preprocessing. In general this preprocessing speeds up execution, but will slow it down if you have an optimized initial layout (since that may be destroyed) or if you are using this layouter in a multilevel framework."
+		));
+		
 		//MAKE STUFF HERE
 		Dictionary dict = new Hashtable();
 		dict.put(-9, new JLabel("0"));
@@ -154,7 +158,8 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				-4,
 				STRESS_CHANGE_EPSILON_PARAMETER_NAME,
 				"Change in stress of succeeding layouts threshold. If the change is below this threshold the layouter will terminate. Low values will give better layouts, but computation will consume more time.",
-				-8, -1, false, true, dict));
+				-8, -1, false, true, dict
+		));
 
 		params.add(new DoubleParameter(
 				minimumNodeMovementThreshold,
@@ -163,7 +168,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				0.05,
 				MINIMUM_NODE_MOVEMENT_PARAMETER_NAME,
 				"Minimum required movement of any node for continuation of computation. If all nodes move less than this value in an iteration, execution is terminated."
-				));
+		));
 
 
 		Dictionary stressDict = new Hashtable();
@@ -174,7 +179,8 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				(int) initialStressPercentage,
 				INITIAL_STRESS_PERCENTAGE_THERESHOLD_PARAMETER_NAME,
 				"If the stress of a layout falls below this percentage of the stress on the beginning of the core process (after any preprocessing), execution is terminated.",
-				0,100, false, false, stressDict));
+				0,100, false, false, stressDict
+		));
 
 		Dictionary iterDict = new Hashtable();
 		iterDict.put(25, new JLabel("25"));
@@ -187,13 +193,20 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				ITERATIONS_THRESHOLD_PARAMETER_NAME,
 				"Maximum number of iterations after which algorithm excution will be terminated.",
 				25, 124, true, false, iterDict
-				));
+		));
 
+		params.add(new SliderParameter(
+				alpha,
+				ALPHA_PARAMETER_NAME,
+				"Sets the importance of correct distance placement of more distanced nodes. A high value indicates that nodes with a high distance to one individual node will have less impact of the placement of this node, while nodes with a low distance will have a bigger impact.",
+				0,2
+		));
+		
 		params.add(new BooleanParameter(
 				randomizeInputLayout,
 				RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME,
 				"Use a random layout as initial layout rather than the present layout."
-				));
+		));
 
 		return params.toArray(new Parameter[0]);
 	}
@@ -227,6 +240,9 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				break;
 			case RANDOMIZE_INPUT_LAYOUT_PARAMETER_NAME:
 				this.randomizeInputLayout = (Boolean) p.getValue();
+				break;
+			case DISABLE_LANDMARK_PREPROCESSING_PARAMETER_NAME:
+				this.disableLandmarkPreprocessing = (Boolean) p.getValue();
 				break;
 			}
 
@@ -284,8 +300,10 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 
 			setStatusDescription("Stress Minimization: layouting next component");
 
+			System.out.println("disable: " + disableLandmarkPreprocessing + ", second: " + (Math.min(this.numberOfLandmarks, component.size()) > 2 * PREPROCESSING_NUMBER_OF_LANDMARKS) + ", whole: " + (!disableLandmarkPreprocessing && (Math.min(this.numberOfLandmarks, component.size()) > 2 * PREPROCESSING_NUMBER_OF_LANDMARKS)));
 			// if too few nodes shawl be layout, our preprocessing does not make sense
-			if (Math.min(this.numberOfLandmarks, component.size()) > 2 * PREPROCESSING_NUMBER_OF_LANDMARKS) {
+			if (!disableLandmarkPreprocessing && Math.min(this.numberOfLandmarks, component.size()) > 2 * PREPROCESSING_NUMBER_OF_LANDMARKS) {
+				
 				setStatusDescription("Stress Minimization: preprocessing");
 				if (waitIfPausedAndCheckStop()) { return; }
 
@@ -299,12 +317,12 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 						0,
 						0,
 						PREPROCESSING_ITERATIONS_THRESHOLD
-						);
+				);
 
 				pre.calculateLayout();
 				if (preLayout.getLayout() != null) {
-					setLayout(preLayout.getLayout());
 					GraphHelper.applyUndoableNodePositionUpdate(preLayout.getLayout().get(), "Stress Minimization Preprocessing");
+					setLayout(preLayout.getLayout());
 				}
 			}
 
