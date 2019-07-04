@@ -10,7 +10,7 @@ import org.graffiti.plugin.algorithm.Algorithm;
  *         will be thrown and a standard addon icon will be used.
  */
 public class StressMinimizationAddon extends AddonAdapter {
-	
+
 	/**
 	 * This class will automatically start all implemented Algorithms, views and
 	 * other extensions written in your Add-on. A code formatting template

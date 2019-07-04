@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>9</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>135</x>
+      <y>243</y>
+      <w>297</w>
+      <h>153</h>
+    </coordinates>
+    <panel_attributes>MultiLevelFramework
+--
+--
++ execute()
++ isLayoutAlgorithm(): boolean
++ setParameters(param: Parameter[])
++ getParameters(): Parameter[]
++ check()
+_+ addMerger(m: Merger)_
+_+ addPlacer(p: Placer)_
+- buildComponentGraphs(): MultilevelGraph[]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>261</x>
+      <y>198</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>990</x>
+      <y>342</y>
+      <w>351</w>
+      <h>135</h>
+    </coordinates>
+    <panel_attributes>MultilevelGraph
+--
+--
++ MultilevelGraph(g: Graph) &lt;&lt;constructor&gt;&gt;
++ getNumberOfLevels(): int
++ newCoarseningLevel(): int
++ isComplete(): boolean
++ addNode(representedNodes: Node[]): MergedNode
++ addEdge(s: MergedNode, t: MergedNode): Edge
++ getTopLevel(): Graph</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>468</y>
+      <w>306</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>/Merger/
+&lt;&lt;interface&gt;&gt;
+--
++ buildCoarseningLevels(mlg: MultilevelGraph)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>324</x>
+      <y>468</y>
+      <w>315</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>/Placer/
+&lt;&lt;interface&gt;&gt;
+--
++ reduceCoarseningLevel(mlg: MultilevelGraph)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>144</x>
+      <y>387</y>
+      <w>90</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+r2=mergers
+m2=1..*
+</panel_attributes>
+    <additional_attributes>60.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>333</x>
+      <y>387</y>
+      <w>117</w>
+      <h>99</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+r2=placers
+m2=1..*</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>207</x>
+      <y>180</y>
+      <w>135</w>
+      <h>27</h>
+    </coordinates>
+    <panel_attributes>/AbstractAlgorithm/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>81</x>
+      <y>117</y>
+      <w>162</w>
+      <h>333</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+r2=layouters
+m2=1..*</panel_attributes>
+    <additional_attributes>70.0;310.0;70.0;350.0;10.0;350.0;10.0;20.0;160.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>225</x>
+      <y>117</y>
+      <w>90</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>/Algorithm/
+&lt;&lt;interface&gt;&gt;
+--
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>261</x>
+      <y>144</y>
+      <w>27</w>
+      <h>54</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1026</x>
+      <y>243</y>
+      <w>279</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>MergedNode
+--
+--
++ MergedNode(n: Node[]) &lt;&lt;constructor&gt;&gt;
++ getInnerNodes(): Node[]
++ numberOfRepresentedNodes(): int
++ getWeight(): int</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1098</x>
+      <y>171</y>
+      <w>108</w>
+      <h>36</h>
+    </coordinates>
+    <panel_attributes>/Node/
+&lt;&lt;interface&gt;&gt;
+--
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1143</x>
+      <y>198</y>
+      <w>27</w>
+      <h>63</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>126</x>
+      <y>621</y>
+      <w>225</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>/Parameterizable/
+&lt;&lt;interface&gt;&gt;
+--
++ getParameters(): Parameter[]
++ setParameters(p: Parameter[])</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>153</x>
+      <y>522</y>
+      <w>54</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>40.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>261</x>
+      <y>522</y>
+      <w>144</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;110.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>387</x>
+      <y>621</y>
+      <w>225</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>/Describable/
+&lt;&lt;interface&gt;&gt;
+--
++ getName(): String
++ getDescription(): String</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>216</x>
+      <y>522</y>
+      <w>261</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>270.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>495</x>
+      <y>522</y>
+      <w>27</w>
+      <h>117</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>10.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

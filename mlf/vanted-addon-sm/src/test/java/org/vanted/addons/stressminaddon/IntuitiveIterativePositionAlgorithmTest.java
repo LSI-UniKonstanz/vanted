@@ -1,13 +1,15 @@
 package org.vanted.addons.stressminaddon;
 
 import org.Vector2d;
+import org.graffiti.plugin.parameter.BooleanParameter;
+import org.graffiti.plugin.parameter.Parameter;
 import org.junit.Test;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
 import java.util.List;
 
 import static data.TestGraphs.*;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 /**
  * Test the {@link IntuitiveIterativePositionAlgorithm}-class
@@ -73,5 +75,47 @@ public class IntuitiveIterativePositionAlgorithmTest {
             assertEquals("X position", expectedPos.x, myPos.x,0.0001);
             assertEquals("Y position", expectedPos.y, myPos.y,0.0001);
         }
+    }
+
+    /**
+     * Test method {@link IntuitiveIterativePositionAlgorithm#getName()}
+     * @author Jannik
+     */
+    @Test
+    public void getName() {
+        // only test whether the name would be readable for user
+        assertNotNull(alg.getName());
+        assertFalse(alg.getName().trim().isEmpty());
+    }
+
+    /**
+     * Test method {@link IntuitiveIterativePositionAlgorithm#getDescription()}
+     * @author Jannik
+     */
+    @Test
+    public void getDescription() {
+        // only test whether the description would be readable for user
+        assertNotNull(alg.getDescription());
+        assertFalse(alg.getDescription().trim().isEmpty());
+    }
+
+    /**
+     * Test method {@link IntuitiveIterativePositionAlgorithm#getParameters()}}
+     * @author Jannik
+     */
+    @Test
+    public void getParameters() {
+        // should not have any parameters (for now)
+        assertTrue(alg.getParameters() == null || alg.getParameters().length == 0);
+    }
+
+    /**
+     * Test method {@link IntuitiveIterativePositionAlgorithm#setParameters(Parameter[])}
+     * @author Jannik
+     */
+    @Test
+    public void setParameters() {
+        // should do nothing (for now)
+        alg.setParameters(new Parameter[] {new BooleanParameter(true, "TEST", "test")});
     }
 }
