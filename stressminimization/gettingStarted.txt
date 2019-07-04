@@ -20,7 +20,9 @@ Lower numbers will greatly decreses the computation time.
 If this value is too low, the resulting layout will not be optimal.
 
 * Weight factor
-TODO find out how this works
+Determines how importand distant nodes are for computing the total 
+stress. By default this is 2 and in most cases this parameter does 
+not need to be changed.
 
 * Stress chnge threshold
 The minimum amount of total stress change that has to happen in
