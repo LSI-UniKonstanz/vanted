@@ -49,52 +49,49 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
     private static final String MLF_COMPATIBILITY_IS_COARSENING_LEVEL = "GRAPH_IS_MLF_COARSENING_LEVEL";
     /** Name of attribute that signals the current graph is the top coarsening level. */
     private static final String MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL = "GRAPH_IS_MLF_COARSENING_TOP_LEVEL";
+    /** Name of attribute that signals the current graph is the bottom coarsening level. */
+    private static final String MLF_COMPATIBILITY_IS_BOTTOM_COARSENING_LEVEL = "GRAPH_IS_MLF_COARSENING_BOTTOM_LEVEL";
 
     ///// Parameters and defaults /////
     // stop conditions
     /** Whether to use the stress epsilon by default.*/
-    private static final boolean USE_STRESS_EPSILON_DEFAULT = true;
+    static final boolean USE_STRESS_EPSILON_DEFAULT = true;
     /** The default value for the epsilon to use with stress function. */
-    private static final double STRESS_EPSILON_DEFAULT = 0.0001;
+    static final double STRESS_EPSILON_DEFAULT = 0.0001;
     /** Whether to use the position change epsilon by default.*/
-    private static final boolean USE_POSITION_CHANGE_EPSILON_DEFAULT = true;
+    static final boolean USE_POSITION_CHANGE_EPSILON_DEFAULT = true;
     /** The default value for the epsilon to use with the difference between old and new distances. */
-    private static final double POSITION_CHANGE_EPSILON_DEFAULT = 0.0001;
+    static final double POSITION_CHANGE_EPSILON_DEFAULT = 0.0001;
     /** Whether to use the max iterations stop criterion by default.*/
-    private static final boolean USE_MAX_ITERATIONS_DEFAULT = true;
+    static final boolean USE_MAX_ITERATIONS_DEFAULT = true;
     /** The default value for the maximal iterations to make. */
-    private static final int MAX_ITERATIONS_DEFAULT = 1_000;
+    static final int MAX_ITERATIONS_DEFAULT = 1_000;
     // scaling and weight
     /** The default scaling factor for edges between the nodes (as fraction of the biggest node). */
-    private static final double EDGE_SCALING_FACTOR_DEFAULT = 5.0;
+    static final double EDGE_SCALING_FACTOR_DEFAULT = 5.0;
     /** The default minimum required length of the edges between the nodes after they are scaled. */
-    private static final double EDGE_LENGTH_MINIMUM_DEFAULT = 25.0;
+    static final double EDGE_LENGTH_MINIMUM_DEFAULT = 25.0;
     /** The default constant scale factor for the calculated weight between two nodes. */
-    private static final double WEIGHT_SCALING_FACTOR_DEFAULT = 1.0;
+    static final double WEIGHT_SCALING_FACTOR_DEFAULT = 1.0;
     /** The default power of the distance for the calculated weight between two nodes. */
-    private static final double WEIGHT_POWER_DEFAULT = -2.0;
+    static final double WEIGHT_POWER_DEFAULT = -2.0;
     // looks
     /** Whether to remove edge bends by default.*/
-    private static final Boolean REMOVE_EDGE_BENDS_DEFAULT = Boolean.TRUE;
+    static final Boolean REMOVE_EDGE_BENDS_DEFAULT = Boolean.TRUE;
     /** Whether the intermediate steps should be undoable by default. */
-    private static final Boolean INTERMEDIATE_UNDOABLE_DEFAULT = Boolean.FALSE;
+    static final Boolean INTERMEDIATE_UNDOABLE_DEFAULT = Boolean.FALSE;
     /** Whether the algorithm should be animated by default. */
-    private static final Boolean DO_ANIMATIONS_DEFAULT = Boolean.TRUE;
+    static final Boolean DO_ANIMATIONS_DEFAULT = Boolean.TRUE;
     /** Whether the algorithm should always layout the graph components every iteration by default. */
-    private static final Boolean MOVE_INTO_VIEW_DEFAULT = Boolean.TRUE;
+    static final Boolean MOVE_INTO_VIEW_DEFAULT = Boolean.TRUE;
     // multi threading
     /** Whether the algorithm should run in a background task by default. */
-    private static final Boolean BACKGROUND_TASK_DEFAULT = Boolean.TRUE;
+    static final Boolean BACKGROUND_TASK_DEFAULT = Boolean.TRUE;
     /** Whether the algorithm should use multiple threads by default. */
-    private static final Boolean MULTIPLE_THREADS_DEFAULT = Boolean.TRUE;
+    static final Boolean MULTIPLE_THREADS_DEFAULT = Boolean.TRUE;
 
     /** Contains the parameters of this {@link StressMinimizationLayout}. */
     private Parameter[] parameters;
-    /**
-     * Creates a new {@link StressMinimizationLayout} object.
-     */
-    public StressMinimizationLayout() {
-    }
 
     /**
      * @return the description of the algorithm.
@@ -154,10 +151,10 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         final boolean compatibilityMLF;
 
         try {
-            assert (!state.intermediateUndoable || state.doAnimations); // intermediateUndoable => doAnimations
-            this.state = new State();
             // add graph
             state.graph = this.graph;
+            assert (!state.intermediateUndoable || state.doAnimations); // intermediateUndoable => doAnimations
+            this.state = new State();
 
             // get nodes to work with
             if (selection.isEmpty()) {
@@ -179,6 +176,10 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                 if (state.graph.getAttributes().getCollection().containsKey(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL) &&
                         state.graph.getBoolean(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL)) {
                     state.initialPlacer = new NullPlacer(); // we are not at top level
+                }
+                if (!state.graph.getAttributes().getCollection().containsKey(StressMinimizationLayout.MLF_COMPATIBILITY_IS_BOTTOM_COARSENING_LEVEL) ||
+                        !state.graph.getBoolean(StressMinimizationLayout.MLF_COMPATIBILITY_IS_BOTTOM_COARSENING_LEVEL)) {
+                    state.edgeScalingFactor = 1.0; // we are not at bottom level (no edge scaling allowed)
                 }
             } else {
                 compatibilityMLF = false;
@@ -773,9 +774,16 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         @Override
         public String getCurrentStatusMessage2() {/* No op*/ return null;}
 
+        /**
+         * @return
+         *      <code>false</code>, because plugin does not wait for user.
+         */
         @Override
         public boolean pluginWaitsForUser() {/* No op*/return false;}
 
+        /**
+         * Does nothing because plugin does not wait for user.
+         */
         @Override
         public void pleaseContinueRun() {/* No-op */}
     }
@@ -834,6 +842,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             final double scalingFactor = Math.max(
                     ConnectedComponentsHelper.getMaxNodeSize(nodes)*state.edgeScalingFactor, state.edgeLengthMinimum);
             // scale for better display
+            // TODO maybe place this after initial layout to prevent over scaling
             this.distances.apply(x -> x*scalingFactor);
 
             System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate initial layout..."));

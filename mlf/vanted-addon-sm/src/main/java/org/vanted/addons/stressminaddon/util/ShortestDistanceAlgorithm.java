@@ -13,10 +13,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * @author theo
- *
  * ShortestDistanceAlgorithm finds all the shortest paths in the given set of knots.
  * BFS is performed on all start nodes. This step will be parallelized.
+ * @author theo
  */
 public enum  ShortestDistanceAlgorithm {
     ; // No need for instances

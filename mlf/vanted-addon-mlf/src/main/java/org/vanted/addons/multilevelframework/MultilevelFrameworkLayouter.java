@@ -31,19 +31,36 @@ import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
+/**
+ * Main class of the MLF add-on that contains the method that actually performs the layout.
+ * @see AbstractEditorAlgorithm
+ * @author Gordian
+ */
 public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
 
+    // store the available mergers, placers and algorithms
     private Map<String, LayoutAlgorithmWrapper> layoutAlgorithms;
     private static List<Merger> mergers = Collections.synchronizedList(new ArrayList<>());
     private static List<Placer> placers = Collections.synchronizedList(new ArrayList<>());
+
+    // default values
     private final static String DEFAULT_ALGORITHM = BlockingForceDirected.springName;
     private final static String DEFAULT_PLACER = new RandomPlacer().getName();
     private final static String DEFAULT_MERGER = new RandomMerger().getName();
+    private boolean randomTop = true;
+    private boolean removeBends = false;
+    private boolean removeOverlaps = false;
+
+    // Default names of the attributes that indicate to the algorithms that the graphs they work on
+    // coarsened graph instead of the original graph. The algorithm can use this for optimizations.
+    // Currently only used by Stress Minimization.
     private final static String COARSENING_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_LEVEL";
     private final static String COARSENING_TOP_LEVEL_INDICATOR_ATTRIBUTE_PATH = "GRAPH_IS_MLF_COARSENING_TOP_LEVEL";
     private final static String COARSENING_BOTTOM_LEVEL_INDICATOR_ATTRIBUTE_PATH
             = "GRAPH_IS_MLF_COARSENING_BOTTOM_LEVEL";
     final static String WORKING_ATTRIBUTE_PATH = "MLF_EXECUTING";
+
+    // fields for the GUI objects / the parameter system
     private JComboBox<String> algorithmListComboBox;
     private JButton setUpLayoutAlgorithmButton;
     private String lastSelectedAlgorithm = DEFAULT_ALGORITHM;
@@ -56,15 +73,13 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     private int placerPSPIndex = 0;
     private ParameterizableSelectorParameter mergerPSP;
     private ParameterizableSelectorParameter placerPSP;
-    private boolean randomTop = true;
-    private boolean removeBends = false;
-    private boolean removeOverlaps = false;
 
     /**
      * Set this to true to make execute() block until it is finished and use the specified mergers instead of the ones
      * selected through the GUI.
      */
     public boolean benchmarkMode = false;
+    // merger, placer and algorithm to use in non-interactive (benchmark) mode
     public Merger nonInteractiveMerger = null;
     public Placer nonInteractivePlacer = null;
     public String nonInteractiveAlgorithm = null;
