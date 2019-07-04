@@ -136,10 +136,12 @@ public class ParameterizableSelectorParameter extends JPanel {
         comboBox.addActionListener(e -> updateEditPanel());
         // listen for changes in the hierarchy to get the components we are added to
         this.addHierarchyListener(e -> {
-            if ( parent == null && e.getChangedParent() instanceof FolderPanel) {
+            if (e.getChangedParent() != parent && e.getChangedParent() instanceof FolderPanel) {
                 parent = (FolderPanel) e.getChangedParent();
             }
-            if (editPanel == null && e.getChangedParent() instanceof ParameterEditPanel) {
+            if (e.getChangedParent() != editPanel && e.getChangedParent() instanceof ParameterEditPanel) {
+                this.displayedParameters = 0;
+                this.selectedIndex = -1;
                 editPanel = (ParameterEditPanel) e.getChangedParent();
                 editPanelAccessible = setUpEditPanel();
                 updateEditPanel();
@@ -202,6 +204,9 @@ public class ParameterizableSelectorParameter extends JPanel {
 
 
         this.selectedParameterizable = this.displayNameParameterizableMap.get((String) comboBox.getSelectedItem());
+        if (parametersOfParameterizable != null) {
+            this.getUpdatedParameters(); // save values of old parameters
+        }
         this.parametersOfParameterizable = this.selectedParameterizable.getParameters();
         this.comboBox.setToolTipText(this.displayNameDescriptionMap.getOrDefault(
                 (String) comboBox.getSelectedItem(),null));
