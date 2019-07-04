@@ -6,7 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class GraphKonstructor {
+public class GraphBuilder {
 
     public static String starGraph(int nodes, int components) {
         int i = 1;
@@ -166,7 +166,7 @@ public class GraphKonstructor {
         PrintWriter pWriter = null;
         try {
             pWriter = new PrintWriter(new BufferedWriter(new FileWriter("testGraph1.gml")));
-            pWriter.println(circleGraph(4,4));
+            pWriter.println(circleGraph(500,1));
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } finally {

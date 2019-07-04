@@ -15,7 +15,6 @@ import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collection;
 
 /**
  * Benchamark that tests different deep class off sierpinski triangle.
@@ -24,11 +23,11 @@ import java.util.Collection;
  * @author rene
  */
 
-public class SM_Benchmark {
+public class SM_Benchmark_Sierpinskirow {
 
     private final static int REPEAT_TIMES = 1;
-    private final static int START_DEEP = 4;
-    private final static int END_DEEP = 4;
+    private final static int START_DEEP = 7;
+    private final static int END_DEEP = 7;
     private final static int MIN_COMPONENT = 1;
     private final static int MAX_COMPONENT = 1;
     /**
@@ -181,11 +180,11 @@ public class SM_Benchmark {
                 }
             }
             if(pivotOn) {
-                save_csv(csv_singleSteps.toString(), "csv_singleSteps");
-                save_csv(csv_average.toString(), "csv_average");
+                save_csv(csv_singleSteps.toString(), "csv_singleSteps_Sierpinskirow");
+                save_csv(csv_average.toString(), "csv_average_Sierpinskirow");
             }else{
-                save_csv(csv_singleSteps.toString(), "csv_singleSteps_withoutPivot");
-                save_csv(csv_average.toString(), "csv_average_withoutPivot");
+                save_csv(csv_singleSteps.toString(), "csv_singleSteps_Sierpinskirow_withoutPivot");
+                save_csv(csv_average.toString(), "csv_average_Sierpinskirow_withoutPivot");
 
             }
             System.err.println("FINISHED!");
