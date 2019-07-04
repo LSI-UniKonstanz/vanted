@@ -304,6 +304,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				pre.calculateLayout();
 				if (preLayout.getLayout() != null) {
 					setLayout(preLayout.getLayout());
+					GraphHelper.applyUndoableNodePositionUpdate(preLayout.getLayout().get(), "Stress Minimization Preprocessing");
 				}
 			}
 
