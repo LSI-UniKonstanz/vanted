@@ -61,6 +61,57 @@ public class TestIndexedNodeSet {
 		
 	}
 	
+	@Test
+	public void testEmptySubsetCreation() {
+
+		Graph g = new AdjListGraph();
+		List<Node> nodes = new ArrayList<>();
+		for (int i = 0; i < 10; i += 1) {
+			nodes.add(g.addNode());
+		}
+		
+		IndexedNodeSet superSet = IndexedNodeSet.emptySetOf(nodes);
+		
+		IndexedNodeSet subSet = superSet.emptySubset();
+		
+		assert(subSet.isEmpty());
+		
+	}
+	
+	@Test
+	public void testSubsetCreationWithContainedElements() {
+
+		Graph g = new AdjListGraph();
+		List<Node> nodes = new ArrayList<>();
+		for (int i = 0; i < 10; i += 1) {
+			nodes.add(g.addNode());
+		}
+		
+		IndexedNodeSet superSet = IndexedNodeSet.emptySetOf(nodes);
+		
+		superSet.add(0);
+		superSet.add(2);
+		superSet.add(3);
+		superSet.add(7);
+		superSet.add(9);
+		
+		IndexedNodeSet subSet = superSet.setOfContainedNodesWithOwnIndices();
+		
+		assert(subSet.contains(nodes.get(0)));
+		assert(subSet.contains(nodes.get(2)));
+		assert(subSet.contains(nodes.get(3)));
+		assert(subSet.contains(nodes.get(7)));
+		assert(subSet.contains(nodes.get(9)));
+
+		assert(subSet.getIndex(nodes.get(0)) == 0);
+		assert(subSet.getIndex(nodes.get(2)) == 1);
+		assert(subSet.getIndex(nodes.get(3)) == 2);
+		assert(subSet.getIndex(nodes.get(7)) == 3);
+		assert(subSet.getIndex(nodes.get(9)) == 4);
+		
+		
+	}
+	
 	// ==============
 	// MARK: indexing
 	// ==============
@@ -378,6 +429,86 @@ public class TestIndexedNodeSet {
 		assert(!set1.contains(4));
 		assert(!set1.contains(5));
 		assert(!set1.contains(9));
+		
+	}
+	
+	@Test
+	public void testComplement() {
+
+		Graph g = new AdjListGraph();
+		List<Node> nodes = new ArrayList<>();
+		for (int i = 0; i < 10; i += 1) {
+			nodes.add(g.addNode());
+		}
+		
+		IndexedNodeSet set1 = IndexedNodeSet.emptySetOf(nodes);
+		
+		set1.add(9);
+		set1.add(8);
+		set1.add(7);
+		set1.add(6);
+		
+		set1.complement();
+		
+		assert(set1.contains(0));
+		assert(set1.contains(1));
+		assert(set1.contains(2));
+		assert(set1.contains(3));
+		assert(set1.contains(4));
+		assert(set1.contains(5));
+		
+	}
+
+	// ===============
+	// MARK: iteration
+	// ===============
+	
+	@Test
+	public void testIterationOrder() {
+
+		Graph g = new AdjListGraph();
+		List<Node> nodes = new ArrayList<>();
+		for (int i = 0; i < 10; i += 1) {
+			nodes.add(g.addNode());
+		}
+		
+		IndexedNodeSet nodeSet = IndexedNodeSet.setOfAllIn(nodes);
+		
+		nodeSet.remove(7);
+		
+		int lastIndex = -1;
+		for (int index : nodeSet) {
+			assert(index != 7);
+			assert(index > lastIndex);
+			lastIndex = index;
+		}
+		
+	}
+
+	// ===================
+	// MARK: neighborhoods
+	// ===================
+	
+	@Test
+	public void testNeighborhoodExtraction() {
+
+		Graph g = new AdjListGraph();
+		List<Node> nodes = new ArrayList<>();
+		for (int i = 0; i < 10; i += 1) {
+			nodes.add(g.addNode());
+		}
+
+		g.addEdge(nodes.get(3), nodes.get(5), false);
+		g.addEdge(nodes.get(3), nodes.get(2), false);
+		g.addEdge(nodes.get(3), nodes.get(9), false);
+		
+		IndexedNodeSet nodeSet = IndexedNodeSet.setOfAllIn(nodes);
+		
+		IndexedNodeSet neighbors = nodeSet.getNeighbors(3);
+		
+		for (int index : neighbors) {
+			assert(index == 5 || index == 2 || index == 9);
+		}
 		
 	}
 	
