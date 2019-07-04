@@ -472,7 +472,7 @@ class StressMinimizationImplementation {
 		for (int i : nodes) {
 
 			Node node = nodes.get(i);
-			if (landmarks.isContainedInSetAndBasisCollection(node)) {
+			if (landmarks.isContainedBasisCollectionAndSet(node)) {
 
 				int landmarkIndex = landmarks.getIndex(node);
 				barycenterLayout.setRow(i, landmarkLayout.getRow(landmarkIndex));

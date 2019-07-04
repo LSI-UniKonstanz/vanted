@@ -16,6 +16,9 @@ import org.graffiti.graph.Node;
  * An IndexedNodeSet is always connected to a basis collection of nodes.
  * Nodes outside this collection cannot be added.
  *
+ * The set operations are very fast if copies or subsets of one superset are compared,
+ * however set operations on sets not sharing a superset will require linear time in the basis collection.
+ *
  * Iteration is guaranteed to be in index order.
  */
 public class IndexedNodeSet implements Iterable<Integer> {
@@ -251,7 +254,12 @@ public class IndexedNodeSet implements Iterable<Integer> {
 		containedNodes.clear(index);
 	}
 
-	public boolean isContainedInSetAndBasisCollection(Node node) {
+	/**
+	 * Returns true if node is contained in this sets basis collection as well as in this set itself.
+	 * @param node The node to check
+	 * @return True if the node is contained in the basis collection and in this set, false otherwise.
+	 */
+	public boolean isContainedBasisCollectionAndSet(Node node) {
 		try {
 			return contains(node);
 		} catch (NotIndexedException ex) {
@@ -286,12 +294,9 @@ public class IndexedNodeSet implements Iterable<Integer> {
 	 * @param other
 	 */
 	public void union(IndexedNodeSet other) {
-		if (other.allNodes != allNodes || !other.allNodes.equals(allNodes)) {
-			throw new IllegalArgumentException("node supersets need to be identical");
-		}
+		checkBaseCollectionsIdentical(other);
 		this.containedNodes.or(other.containedNodes);
 	}
-
 
 	/**
 	 * Performs the intersection operation with the given other IndexedNodeSet.
@@ -301,16 +306,12 @@ public class IndexedNodeSet implements Iterable<Integer> {
 	 * @param other
 	 */
 	public void intersection(IndexedNodeSet other) {
-		if (other.allNodes != allNodes || !other.allNodes.equals(allNodes)) {
-			throw new IllegalArgumentException("node supersets need to be identical");
-		}
+		checkBaseCollectionsIdentical(other);
 		this.containedNodes.and(other.containedNodes);
 	}
 
 	public void setMinus(IndexedNodeSet other) {
-		if (other.allNodes != allNodes || !other.allNodes.equals(allNodes)) {
-			throw new IllegalArgumentException("node supersets need to be identical");
-		}
+		checkBaseCollectionsIdentical(other);
 
 		IndexedNodeSet complement = other.copy();
 		complement.complement();
@@ -318,6 +319,12 @@ public class IndexedNodeSet implements Iterable<Integer> {
 		intersection(complement);
 	}
 
+	private void checkBaseCollectionsIdentical(IndexedNodeSet other) {
+		if (other.allNodes != allNodes && !other.allNodes.equals(allNodes)) {
+			throw new IllegalArgumentException("base collections need to be identical");
+		}
+	}
+	
 	/**
 	 * Performs the complement operation on this set.
 	 * After the operation this set will contain exactly those nodes
@@ -404,7 +411,9 @@ public class IndexedNodeSet implements Iterable<Integer> {
 	}
 
 	/**
-	 * Returns the index in this set, if the node is present in it, otherwise a NotIndexedException is thrown.
+	 * Returns the index in this set, based on the indexing of the based collection. 
+	 * If it node is not part of the base collection a NotIndexedException is thrown.
+	 * Note that the node may not be contained in this set, although it has an index.
 	 */
 	public int getIndex(final Node node) {
 		int index;
@@ -413,6 +422,7 @@ public class IndexedNodeSet implements Iterable<Integer> {
 		} catch (AttributeNotFoundException ex) {
 			throw new NotIndexedException("the given node isn't indexed.", ex);
 		}
+		
 		return index;
 	}
 
@@ -423,6 +433,10 @@ public class IndexedNodeSet implements Iterable<Integer> {
 		}
 	}
 
+	public class NodeNotContainedException extends RuntimeException {
+		private static final long serialVersionUID = -1136751379963201755L;
+	}
+	
 	// ====================
 	// MARK: identification
 	// ====================
