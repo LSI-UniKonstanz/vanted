@@ -9,7 +9,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.no_overlapp_as_tim.No
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.MyNonInteractiveSpringEmb;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.MyTools;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.pattern_springembedder.NodeCacheEntry;
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.random.RandomLayouterAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.AttributePathNameSearchType;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchAndSelecAlgorithm;
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.misc.invert_selection.SearchType;
@@ -24,12 +23,9 @@ import org.graffiti.editor.MessageType;
 import org.graffiti.graph.AdjListGraph;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
-import org.graffiti.graphics.CoordinateAttribute;
 import org.graffiti.plugin.algorithm.*;
 import org.graffiti.plugin.parameter.DoubleParameter;
 import org.graffiti.plugin.parameter.Parameter;
-import org.graffiti.plugins.views.defaults.DrawMode;
-import org.graffiti.plugins.views.defaults.GraffitiView;
 import org.graffiti.selection.Selection;
 import org.graffiti.session.EditorSession;
 
