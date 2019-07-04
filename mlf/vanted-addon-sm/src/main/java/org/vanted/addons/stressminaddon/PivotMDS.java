@@ -27,11 +27,11 @@ public class PivotMDS implements InitialPlacer {
 
     /** Whether to use squared distances for the C matrix. */
     boolean doSquaring = false;
-    double percentPivots = 0.1;
+    double percentPivots = 10;
 
     // InitialLayout
-    private static final double AMOUNT_PIVOTS_DEFAULT = 0.1;
-    private static final boolean QUADRATIC_DOUBLECENTER_DEFAULT = false;
+    static final double AMOUNT_PIVOTS_DEFAULT = 10.0;
+    static final boolean QUADRATIC_DOUBLECENTER_DEFAULT = false;
 
 
     /** Contains the parameters of this {@link StressMinimizationLayout}. */
@@ -59,15 +59,7 @@ public class PivotMDS implements InitialPlacer {
             return Collections.singletonList(new Vector2d(0.0, 0.0));
         }
 
-        final int numPivots;
-        int pivots = (int)(nodes.size()*percentPivots);
-        if(pivots == 0.0 && percentPivots != 0.0){
-            numPivots = 1;
-        }
-        else{
-            numPivots = pivots;
-        }
-
+        final int numPivots = Math.max( (int) Math.ceil(nodes.size() * (percentPivots / 100)), 1);
 
         final int[] pivotTranslation = new int[distances.getDimension()];
         final int[] inversePivotTranslation = new int[distances.getDimension()];
@@ -75,14 +67,7 @@ public class PivotMDS implements InitialPlacer {
         this.getPivots(distances, numPivots, pivotTranslation, inversePivotTranslation);
 
         //calculate the doubleCentered matrix
-        RealMatrix c;
-        if(doSquaring){
-            NodeValueMatrix squared = distances.clone().apply(x -> x*x);
-            c = doubleCenter(squared, numPivots, pivotTranslation);
-        }
-        else {
-            c = doubleCenter(distances, numPivots, pivotTranslation);
-        }
+        RealMatrix c = doubleCenter(distances, numPivots, pivotTranslation);
 
         //C^T * C
         RealMatrix cTc = c.transpose().multiply(c);
@@ -431,14 +416,13 @@ public class PivotMDS implements InitialPlacer {
 
         Parameter[] result = new Parameter[] {
 
-                EnableableNumberParameter.alwaysEnabled(AMOUNT_PIVOTS_DEFAULT, 0.0, 1.0, 0.025,
-                        "Amount pivots", "<html>Percent of the total nodes, which should be used as pivot elements</html>" ),
+                EnableableNumberParameter.alwaysEnabled(AMOUNT_PIVOTS_DEFAULT, 0.0, 100.0, 1.0,
+                        "Amount pivots in percent", "<html>Percent of the total nodes, which should be used as pivot elements</html>" ),
 
                 new BooleanParameter(QUADRATIC_DOUBLECENTER_DEFAULT, "Quadratic DoubleCenter",
                         "<html> Whether the distances in PivotMDS should be squared or not.<br>" +
                                 "Pulls apart initial layout strongly. May slow down performance.</html>")
         };
-
         return result;
     }
     /**
