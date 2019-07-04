@@ -8,6 +8,10 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
+import org.graffiti.plugin.parameter.BooleanParameter;
+
+import org.vanted.addons.stressminaddon.util.gui.EnableableNumberParameter;
+
 import java.util.*;
 
 /**
@@ -22,7 +26,16 @@ public class PivotMDS implements InitialPlacer {
     private static final Random RAND = new Random();
 
     /** Whether to use squared distances for the C matrix. */
-    boolean doSquaring = true;
+    boolean doSquaring = false;
+    double percentPivots = 0.1;
+
+    // InitialLayout
+    private static final double AMOUNT_PIVOTS_DEFAULT = 0.1;
+    private static final boolean QUADRATIC_DOUBLECENTER_DEFAULT = false;
+
+
+    /** Contains the parameters of this {@link StressMinimizationLayout}. */
+    private Parameter[] parameters;
 
     /**
      * Executes the PivotMDS algorithm on a given set of nodes.
@@ -46,7 +59,15 @@ public class PivotMDS implements InitialPlacer {
             return Collections.singletonList(new Vector2d(0.0, 0.0));
         }
 
-        final int numPivots = Math.min(50, distances.getDimension()); // TODO make configurable
+        final int numPivots;
+        int pivots = (int)(nodes.size()*percentPivots);
+        if(pivots == 0.0 && percentPivots != 0.0){
+            numPivots = 1;
+        }
+        else{
+            numPivots = pivots;
+        }
+
 
         final int[] pivotTranslation = new int[distances.getDimension()];
         final int[] inversePivotTranslation = new int[distances.getDimension()];
@@ -54,7 +75,15 @@ public class PivotMDS implements InitialPlacer {
         this.getPivots(distances, numPivots, pivotTranslation, inversePivotTranslation);
 
         //calculate the doubleCentered matrix
-        RealMatrix c = doubleCenter(distances, numPivots, pivotTranslation);
+        RealMatrix c;
+        if(doSquaring){
+            NodeValueMatrix squared = distances.clone().apply(x -> x*x);
+            c = doubleCenter(squared, numPivots, pivotTranslation);
+        }
+        else {
+            c = doubleCenter(distances, numPivots, pivotTranslation);
+        }
+
         //C^T * C
         RealMatrix cTc = c.transpose().multiply(c);
 
@@ -382,28 +411,53 @@ public class PivotMDS implements InitialPlacer {
      * provides.
      *
      * @return gets a list of Parameters this class provides.
-     * @author Jannik
+     * @author Jannik, Theo
      * @see Algorithm#getParameters()
      */
     @Override
     public Parameter[] getParameters() {
-        // TODO implement settings e.g. setting number of pivots
-        return null; // maybe cache the parameters for reuse
+        if (this.parameters == null) {
+            this.parameters = getNewParameters();
+        }
+        return this.parameters;
     }
 
+    /**
+     * @return
+     *      a new set of parameters to work with.
+     * @author Jannik, theo
+     */
+    private Parameter[] getNewParameters() {
+
+        Parameter[] result = new Parameter[] {
+
+                EnableableNumberParameter.alwaysEnabled(AMOUNT_PIVOTS_DEFAULT, 0.0, 1.0, 0.025,
+                        "Amount pivots", "<html>Percent of the total nodes, which should be used as pivot elements</html>" ),
+
+                new BooleanParameter(QUADRATIC_DOUBLECENTER_DEFAULT, "Quadratic DoubleCenter",
+                        "<html> Whether the distances in PivotMDS should be squared or not.<br>" +
+                                "Pulls apart initial layout strongly. May slow down performance.</html>")
+        };
+
+        return result;
+    }
     /**
      * Provides a list of {@link Parameter}s that should be accepted by
      * the {@link PivotMDS}.<br>
      * This setter should only be called if the implementing class is not currently
      * executing something else.
      *
-     * @param parameters the parameters to be set.
-     * @author Jannik
+     * @param params the parameters to be set.
+     * @author Jannik,  theo
      * @see Algorithm#setParameters(Parameter[])
      */
     @Override
-    public void setParameters(Parameter[] parameters) {
-        // TODO implement settings e.g. setting number of pivots
+    public void setParameters(Parameter[] params) {
+
+        EnableableNumberParameter<Double> doubleParameter;
+        doubleParameter = (EnableableNumberParameter<Double>) params[0].getValue();
+        percentPivots =doubleParameter.getValue();
+        doSquaring =  ((BooleanParameter) params[1]).getBoolean();
     }
 
     /**
