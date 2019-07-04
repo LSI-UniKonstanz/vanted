@@ -1,6 +1,5 @@
 package org.vanted.addons.stressminaddon;
 
-import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.editing_tools.script_helper.EdgeHelper;
 import org.AttributeHelper;
 import org.graffiti.graph.Edge;
 import org.graffiti.graph.Graph;
@@ -8,6 +7,7 @@ import org.graffiti.graph.Graph;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.Collection;
+
 
 
 public class QualityMeasures {
