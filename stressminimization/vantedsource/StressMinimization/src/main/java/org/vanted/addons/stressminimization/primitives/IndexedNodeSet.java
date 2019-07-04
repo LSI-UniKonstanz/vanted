@@ -416,7 +416,7 @@ public class IndexedNodeSet implements Iterable<Integer> {
 		return index;
 	}
 
-	private class NotIndexedException extends RuntimeException {
+	public class NotIndexedException extends RuntimeException {
 		private static final long serialVersionUID = -4294175391400892274L;
 		public NotIndexedException(String message, Throwable cause) {
 			super(message, cause);
