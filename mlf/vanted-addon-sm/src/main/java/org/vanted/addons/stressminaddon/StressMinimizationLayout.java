@@ -49,6 +49,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
     private static final String MLF_COMPATIBILITY_IS_COARSENING_LEVEL = "GRAPH_IS_MLF_COARSENING_LEVEL";
     /** Name of attribute that signals the current graph is the top coarsening level. */
     private static final String MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL = "GRAPH_IS_MLF_COARSENING_TOP_LEVEL";
+    /** Name of attribute that signals the current graph is the bottom coarsening level. */
+    private static final String MLF_COMPATIBILITY_IS_BOTTOM_COARSENING_LEVEL = "GRAPH_IS_MLF_COARSENING_BOTTOM_LEVEL";
 
     ///// Parameters and defaults /////
     // stop conditions
@@ -174,6 +176,10 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                 if (state.graph.getAttributes().getCollection().containsKey(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL) &&
                         state.graph.getBoolean(StressMinimizationLayout.MLF_COMPATIBILITY_IS_TOP_COARSENING_LEVEL)) {
                     state.initialPlacer = new NullPlacer(); // we are not at top level
+                }
+                if (!state.graph.getAttributes().getCollection().containsKey(StressMinimizationLayout.MLF_COMPATIBILITY_IS_BOTTOM_COARSENING_LEVEL) ||
+                        !state.graph.getBoolean(StressMinimizationLayout.MLF_COMPATIBILITY_IS_BOTTOM_COARSENING_LEVEL)) {
+                    state.edgeScalingFactor = 1.0; // we are not at bottom level (no edge scaling allowed)
                 }
             } else {
                 compatibilityMLF = false;
