@@ -134,7 +134,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				10, // values below this give no more significant speed up
 				1000, // values above this consume to much time in the current implementation
 				NUMBER_OF_LANDMARKS_NAME,
-				"The number of nodes that will be mainly layouted. All remaining nodes will be positioned relatively to these nodes. You may turn of this option by selecting all nodes as landmarks."
+				"The number of nodes that will be mainly layouted. All remaining nodes will be positioned relatively to these nodes. You may turn off this option by selecting all nodes as landmarks."
 				));
 
 		params.add(new SliderParameter(
@@ -162,7 +162,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 				1.0,
 				0.05,
 				MINIMUM_NODE_MOVEMENT_PARAMETER_NAME,
-				"Minimum required movement of any node for continuation of termination. If all nodes move less than this value in an interation, execution is terminated."
+				"Minimum required movement of any node for continuation of computation. If all nodes move less than this value in an iteration, execution is terminated."
 				));
 
 
@@ -173,7 +173,7 @@ public class StressMinimizationLayout extends BackgroundAlgorithm {
 		params.add(new SliderParameter(
 				(int) initialStressPercentage,
 				INITIAL_STRESS_PERCENTAGE_THERESHOLD_PARAMETER_NAME,
-				"If the stress of an layout falls below this percentage of the stress on the beginning of the core process (after any preprocessing), execution is terminated.",
+				"If the stress of a layout falls below this percentage of the stress on the beginning of the core process (after any preprocessing), execution is terminated.",
 				0,100, false, false, stressDict));
 
 		Dictionary iterDict = new Hashtable();
