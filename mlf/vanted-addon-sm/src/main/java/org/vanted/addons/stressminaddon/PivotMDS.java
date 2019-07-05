@@ -8,6 +8,10 @@ import org.graffiti.plugin.algorithm.Algorithm;
 import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 
+import org.graffiti.plugin.parameter.BooleanParameter;
+
+import org.vanted.addons.stressminaddon.util.gui.EnableableNumberParameter;
+
 import java.util.*;
 
 /**
@@ -22,7 +26,21 @@ public class PivotMDS implements InitialPlacer {
     private static final Random RAND = new Random();
 
     /** Whether to use squared distances for the C matrix. */
-    boolean doSquaring = true;
+    boolean doSquaring = false;
+    /** Whether to scale down the graph after PivotMDS */
+    boolean doScaling = true;
+
+    /** The percentage how many pivots shall get used  */
+    double percentPivots = 10;
+
+    // default values
+    static final double AMOUNT_PIVOTS_DEFAULT = 5.0;
+    static final boolean QUADRATIC_DOUBLECENTER_DEFAULT = false;
+    static final boolean  SCALING_DEFAULT = true;
+
+
+    /** Contains the parameters of this {@link StressMinimizationLayout}. */
+    private Parameter[] parameters;
 
     /**
      * Executes the PivotMDS algorithm on a given set of nodes.
@@ -46,7 +64,7 @@ public class PivotMDS implements InitialPlacer {
             return Collections.singletonList(new Vector2d(0.0, 0.0));
         }
 
-        final int numPivots = Math.min(50, distances.getDimension()); // TODO make configurable
+        final int numPivots = Math.max( (int) Math.ceil(nodes.size() * (percentPivots / 100)), 1);
 
         final int[] pivotTranslation = new int[distances.getDimension()];
         final int[] inversePivotTranslation = new int[distances.getDimension()];
@@ -55,6 +73,7 @@ public class PivotMDS implements InitialPlacer {
 
         //calculate the doubleCentered matrix
         RealMatrix c = doubleCenter(distances, numPivots, pivotTranslation);
+
         //C^T * C
         RealMatrix cTc = c.transpose().multiply(c);
 
@@ -73,8 +92,58 @@ public class PivotMDS implements InitialPlacer {
         for(int i = 0; i < distances.getDimension(); i++){
             newPosList.add(new Vector2d(newX.getEntry(inversePivotTranslation[i], 0),
                                         newY.getEntry(inversePivotTranslation[i], 0)));
+
         }
+        if(doScaling){
+            double maxEuclid = findMaxEuclidean(newPosList);
+            if (maxEuclid == 0.0) {
+                return newPosList;
+            }
+            double maxGraphDistance = distances.getMaximumValue();
+            scaleInitialPos(maxEuclid, maxGraphDistance, newPosList);
+        }
+
         return newPosList;
+    }
+    
+    /**
+     * finds the largest euclidean distance in a given list of nodes
+     *
+     * @param pos list of Vector2d  representing the current pos of all nodes
+     * @return the biggest euclidean distance as double
+     *
+     * @author theo
+     */
+    public double findMaxEuclidean(final List<Vector2d> pos ){
+        double result = 0;
+        for(Vector2d q : pos){
+            for(Vector2d p : pos){
+                double current = p.distance(q);
+                if(result < current){
+                    result = current;
+                }
+            }
+        }
+        return result;
+    }
+
+
+    
+    /**
+     * Scales the euclidean distance to the graph theoretical distance
+     *
+     * @param maxEuclidean largest euclidean distance in the graph
+     * @param maxDistance largest grah theoretical distance
+     * @param currentPos   Vector2d list containing the current node positions
+     *
+     * @author theo
+     */
+    public void scaleInitialPos(double maxEuclidean, double  maxDistance, List<Vector2d> currentPos ){
+        double factor = maxDistance/maxEuclidean;
+        for(Vector2d pos : currentPos){
+            pos.x *= factor;
+            pos.y *= factor;
+        }
     }
 
     /**
@@ -382,28 +451,56 @@ public class PivotMDS implements InitialPlacer {
      * provides.
      *
      * @return gets a list of Parameters this class provides.
-     * @author Jannik
+     * @author Jannik, Theo
      * @see Algorithm#getParameters()
      */
     @Override
     public Parameter[] getParameters() {
-        // TODO implement settings e.g. setting number of pivots
-        return null; // maybe cache the parameters for reuse
+        if (this.parameters == null) {
+            this.parameters = getNewParameters();
+        }
+        return this.parameters;
     }
 
+    /**
+     * @return
+     *      a new set of parameters to work with.
+     * @author Jannik, theo
+     */
+    private Parameter[] getNewParameters() {
+
+        Parameter[] result = new Parameter[] {
+
+                EnableableNumberParameter.alwaysEnabled(AMOUNT_PIVOTS_DEFAULT, 0.0, 100.0, 1.0,
+                        "Amount pivots in percent", "<html>Percent of the total nodes, which should be used as pivot elements</html>" ),
+
+                new BooleanParameter(QUADRATIC_DOUBLECENTER_DEFAULT, "Quadratic DoubleCenter",
+                        "<html> Whether the distances in PivotMDS should be squared or not.<br>" +
+                                "Pulls apart initial layout strongly. May slow down performance.</html>"),
+                new BooleanParameter(SCALING_DEFAULT, "Scale",
+                        "<html> whether the graph should be scaled down or not.<br>" +
+                                "Does not change the overall layout. </html>")
+        };
+        return result;
+    }
     /**
      * Provides a list of {@link Parameter}s that should be accepted by
      * the {@link PivotMDS}.<br>
      * This setter should only be called if the implementing class is not currently
      * executing something else.
      *
-     * @param parameters the parameters to be set.
-     * @author Jannik
+     * @param params the parameters to be set.
+     * @author Jannik,  theo
      * @see Algorithm#setParameters(Parameter[])
      */
     @Override
-    public void setParameters(Parameter[] parameters) {
-        // TODO implement settings e.g. setting number of pivots
+    public void setParameters(Parameter[] params) {
+
+        EnableableNumberParameter<Double> doubleParameter;
+        doubleParameter = (EnableableNumberParameter<Double>) params[0].getValue();
+        percentPivots =doubleParameter.getValue();
+        doSquaring =  ((BooleanParameter) params[1]).getBoolean();
+        doScaling =  ((BooleanParameter) params[2]).getBoolean();
     }
 
     /**

@@ -5,8 +5,12 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.function.DoubleUnaryOperator;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -303,6 +307,19 @@ public class NodeValueMatrixTest {
         matrix.print();
         assertEquals(DIMENSION, outContent.toString().split("\n").length);
         System.setOut(originalOut);
+    }
+
+    /**
+     * Test the method {@link NodeValueMatrix#getMaximumValue()}
+     * @author Jannik
+     */
+    @Test
+    public void getMaximumValue() {
+        Random rand2 = new Random(42);
+        List<Double> random = rand2.doubles().limit((DIMENSION-1)*DIMENSION/2).boxed().collect(Collectors.toList());
+        rand2.setSeed(42);
+        matrix.apply(x -> rand2.nextDouble());
+        assertEquals("Max value", (double) Collections.max(random), matrix.getMaximumValue(), 0.0);
     }
 
     /**

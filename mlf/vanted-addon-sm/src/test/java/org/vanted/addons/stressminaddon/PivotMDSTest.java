@@ -3,11 +3,14 @@ package org.vanted.addons.stressminaddon;
 import org.Vector2d;
 import org.apache.commons.math.linear.RealMatrix;
 import org.apache.commons.math.linear.RealMatrixImpl;
+import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.junit.Before;
 import org.junit.Test;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
+import org.vanted.addons.stressminaddon.util.gui.EnableableNumberParameter;
 
+import javax.swing.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Collections;
@@ -65,7 +68,10 @@ public class PivotMDSTest {
         random.setSeed(42);
         // test with squaring
         pivotMDS.doSquaring = true;
+        pivotMDS.percentPivots = 100.0;
+        pivotMDS.doScaling = false;
         List<Vector2d> positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
+
         // calculated for eigenvalues 4, 4, 1, 0
         // with eigenvectors (0,0,-1,1),(-1,1,0,0),(-1,-1,1,1),(1,1,1,1)
         double[] expectedXPos = new double[]{-1.1574392460783163, -0.8126096182256408, 1.157439246092345,  0.8126096182116118};
@@ -77,8 +83,26 @@ public class PivotMDSTest {
             assertEquals("Y pos", expectedYPos[idx], position.y, 0.0001);
         }
 
+        //test scaling
+        double maxEuclid =  pivotMDS.findMaxEuclidean(positions);
+        random.setSeed(42);
+        pivotMDS.doScaling = true;
+        positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
+
+        double maxDistance = GRAPH_1_DISTANCES.getMaximumValue();
+        double scalingFactor = maxDistance/maxEuclid;
+
+
+        for (int idx = 0; idx < positions.size(); idx++) {
+            Vector2d position = positions.get(idx);
+
+            assertEquals("X pos", expectedXPos[idx] *scalingFactor, position.x , 0.0001);
+            assertEquals("Y pos", expectedYPos[idx] *scalingFactor, position.y, 0.0001);
+        }
+
         // test without squaring
         pivotMDS.doSquaring = false;
+        pivotMDS .doScaling = false;
         positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
         // calculated for eigenvalues 1, 1, 0, 0
         // with eigenvectors (0,0,-1,1),(-1,1,0,0),(0,0,1,1),(1,1,0,0)
@@ -100,6 +124,8 @@ public class PivotMDSTest {
             assertEquals("X pos", expectedXPos[idx], position.x, 0);
             assertEquals("Y pos", expectedYPos[idx], position.y, 0);
         }
+
+
     }
 
 
@@ -342,7 +368,8 @@ public class PivotMDSTest {
     public void getParameters() {
         // should not have any parameters
         Parameter[] parameters = pivotMDS.getParameters();
-        // TODO check for number and type of parameters if they are implemented
+        assertNotNull(parameters);
+        assertTrue(parameters.length > 0);
     }
 
     /**
@@ -352,8 +379,27 @@ public class PivotMDSTest {
     @Test
     public void setParameters() {
         Parameter[] parameters = pivotMDS.getParameters();
-        // ... set something ...
-        pivotMDS.setParameters(parameters); // should still be executed correctly
-        // TODO check whether reflected in internal (package-private variables)
+        pivotMDS.setParameters(parameters);
+
+        assertEquals(pivotMDS.AMOUNT_PIVOTS_DEFAULT,pivotMDS.percentPivots, 0.00001 );
+        assertEquals(pivotMDS.QUADRATIC_DOUBLECENTER_DEFAULT, pivotMDS.doSquaring);
+
+        ((JSpinner) ((EnableableNumberParameter) parameters[0].getValue()).getComponent(0)).setValue(0.0);
+        ((BooleanParameter) parameters[1]).setValue(true);
+        ((BooleanParameter) parameters[2]).setValue(false);
+        pivotMDS.setParameters(parameters);
+
+        assertEquals(0.0,pivotMDS.percentPivots, 0.00001 );
+        assertEquals(true, pivotMDS.doSquaring);
+        assertEquals( false, pivotMDS.doScaling);
+
+
+
+
+        ((JSpinner) ((EnableableNumberParameter) parameters[0].getValue()).getComponent(0)).setValue(100.0);
+        pivotMDS.setParameters(parameters);
+
+        assertEquals(100.0,pivotMDS.percentPivots, 0.00001 );
+
     }
 }

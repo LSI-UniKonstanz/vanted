@@ -339,6 +339,22 @@ public class NodeValueMatrix implements Cloneable {
     }
 
     /**
+     * @return
+     *      the biggest value in this matrix.
+     *
+     * @author Jannik
+     */
+    public double getMaximumValue() {
+        double result = 0;
+        for (int row = 0; row < dimension - 1; row++) {
+            for (int col = 0; col <= row; col++) {
+                result = Math.max(result, this.values[row][col]);
+            }
+        }
+        return result;
+    }
+
+    /**
      * @see Object#clone()
      * @return
      *      a clone of the current NodeValueMatrix.
