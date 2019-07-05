@@ -17,6 +17,7 @@ import java.util.Comparator;
 
 /**
  * Run some benchmarks for the MLF in VANTED.
+ * The quality measures will be computed from the gml files.
  * @author Gordian
  */
 public class StartBenchmarks {
@@ -29,13 +30,9 @@ public class StartBenchmarks {
      */
     private final static Path OUTPUT = Paths.get("mlf.csv");
     /**
-     * File where the benchmark results (quality metrics) are written.
-     */
-    private final static Path OUTPUT_METRICS = Paths.get("mlf_metrics.csv");
-    /**
      * Don't execute force directed on graphs larger than this number of nodes.
      */
-    private final static int FORCE_DIRECTED_MAX = 1500;
+    private final static int FORCE_DIRECTED_MAX = 4000;
     /**
      * Benchmark configurations. Structure: Merger, Placer, Name of Algorithm
      */
@@ -119,13 +116,14 @@ public class StartBenchmarks {
                     mfl.execute();
                     long endTime = System.currentTimeMillis();
                     runningTimeMs += endTime - startTime;
-                    if (i == 0 && !"Null-Layout".equalsIgnoreCase(config[2].toString())) { // store generated graph
-                        final String fileName = config[0].getClass().getSimpleName() + "_"
-                                + config[1].getClass().getSimpleName() + "_"
-                                + config[2] + "_" + path.getFileName()
-                                + (path.getFileName().toString().endsWith(".gml") ? "" : ".gml");
-                        MainFrame.getInstance().saveGraphAs(graph, fileName, graph.getFileTypeDescription());
-                    }
+                    // store graph
+                    String fileName = config[0].getClass().getSimpleName() + "_"
+                            + config[1].getClass().getSimpleName() + "_"
+                            + config[2] + "_" + path.getFileName()
+                            + (path.getFileName().toString().endsWith(".gml") ? "" : ".gml");
+                    fileName = fileName.replace(".gml", "_" + i + ".gml");
+                    MainFrame.getInstance().saveGraphAs(graph, fileName, graph.getFileTypeDescription());
+
                     graph.setModified(false); // prevent VANTED from asking if the user wants to save
                     SwingUtilities.invokeAndWait(() -> {
                         MainFrame.getInstance().closeSession(MainFrame.getInstance().getActiveSession());

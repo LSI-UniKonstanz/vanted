@@ -365,7 +365,7 @@ public class TestsWithVANTED {
      */
     @Test(expected = IllegalArgumentException.class)
     public void testIllegalArgumentConstructor2() {
-        new LayoutAlgorithmWrapper(" ", new MultilevelFrameworkLayouter(), true);
+        new LayoutAlgorithmWrapper(" ", new MultilevelFrameworkLayouter(), false);
     }
 
     /**
