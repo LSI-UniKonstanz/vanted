@@ -33,7 +33,11 @@ public class PivotMDS implements InitialPlacer {
     /** The percentage how many pivots shall get used  */
     double percentPivots = 10;
 
+    /**the minimum of pivots*/
+    int minPivots = 50;
+
     // default values
+    static final int MIN_PIVOTS_DEFAULT = 50;
     static final double AMOUNT_PIVOTS_DEFAULT = 5.0;
     static final boolean QUADRATIC_DOUBLECENTER_DEFAULT = false;
     static final boolean  SCALING_DEFAULT = true;
@@ -64,7 +68,7 @@ public class PivotMDS implements InitialPlacer {
             return Collections.singletonList(new Vector2d(0.0, 0.0));
         }
 
-        final int numPivots = Math.max( (int) Math.ceil(nodes.size() * (percentPivots / 100)), 1);
+        final int numPivots = Math.max( (int) Math.ceil(nodes.size() * (percentPivots / 100)), minPivots);
 
         final int[] pivotTranslation = new int[distances.getDimension()];
         final int[] inversePivotTranslation = new int[distances.getDimension()];
@@ -105,7 +109,7 @@ public class PivotMDS implements InitialPlacer {
 
         return newPosList;
     }
-    
+
     /**
      * finds the largest euclidean distance in a given list of nodes
      *
@@ -473,6 +477,9 @@ public class PivotMDS implements InitialPlacer {
 
                 EnableableNumberParameter.alwaysEnabled(AMOUNT_PIVOTS_DEFAULT, 0.0, 100.0, 1.0,
                         "Amount pivots in percent", "<html>Percent of the total nodes, which should be used as pivot elements</html>" ),
+                EnableableNumberParameter.alwaysEnabled(MIN_PIVOTS_DEFAULT, 1, Integer.MAX_VALUE, 1,
+                        "Minimum pivots", "<html>If 'Amount of pivots in percent' is smaller than 'Minimum pivots',<br>" +
+                                "then the final amount of pivot elemts will br 'Minimum pivots'</html>" ),
 
                 new BooleanParameter(QUADRATIC_DOUBLECENTER_DEFAULT, "Quadratic DoubleCenter",
                         "<html> Whether the distances in PivotMDS should be squared or not.<br>" +
@@ -498,9 +505,12 @@ public class PivotMDS implements InitialPlacer {
 
         EnableableNumberParameter<Double> doubleParameter;
         doubleParameter = (EnableableNumberParameter<Double>) params[0].getValue();
+        EnableableNumberParameter<Integer> intParameter;
+        intParameter = (EnableableNumberParameter<Integer>) params[1].getValue();
         percentPivots =doubleParameter.getValue();
-        doSquaring =  ((BooleanParameter) params[1]).getBoolean();
-        doScaling =  ((BooleanParameter) params[2]).getBoolean();
+        minPivots = intParameter.getValue();
+        doSquaring =  ((BooleanParameter) params[2]).getBoolean();
+        doScaling =  ((BooleanParameter) params[3]).getBoolean();
     }
 
     /**

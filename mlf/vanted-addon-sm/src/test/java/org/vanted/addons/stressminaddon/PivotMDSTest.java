@@ -47,6 +47,7 @@ public class PivotMDSTest {
     public void setUp() throws NoSuchFieldException, IllegalAccessException {
         pivotMDS = new PivotMDS();
         pivotMDS.doSquaring = true; // compatibility with old tests
+        pivotMDS.minPivots = 1;
         random = new Random(42);
         // overwrite internal random for consistency
         final Field rand = PivotMDS.class.getDeclaredField("RAND");
@@ -383,13 +384,17 @@ public class PivotMDSTest {
 
         assertEquals(pivotMDS.AMOUNT_PIVOTS_DEFAULT,pivotMDS.percentPivots, 0.00001 );
         assertEquals(pivotMDS.QUADRATIC_DOUBLECENTER_DEFAULT, pivotMDS.doSquaring);
+        assertEquals(pivotMDS.SCALING_DEFAULT, pivotMDS.doScaling);
+        assertEquals(pivotMDS.MIN_PIVOTS_DEFAULT, pivotMDS.minPivots);
 
         ((JSpinner) ((EnableableNumberParameter) parameters[0].getValue()).getComponent(0)).setValue(0.0);
-        ((BooleanParameter) parameters[1]).setValue(true);
-        ((BooleanParameter) parameters[2]).setValue(false);
+        ((JSpinner) ((EnableableNumberParameter) parameters[1].getValue()).getComponent(0)).setValue(Integer.MAX_VALUE);
+        ((BooleanParameter) parameters[2]).setValue(true);
+        ((BooleanParameter) parameters[3]).setValue(false);
         pivotMDS.setParameters(parameters);
 
         assertEquals(0.0,pivotMDS.percentPivots, 0.00001 );
+        assertEquals(Integer.MAX_VALUE, pivotMDS.minPivots);
         assertEquals(true, pivotMDS.doSquaring);
         assertEquals( false, pivotMDS.doScaling);
 
