@@ -27,11 +27,16 @@ public class PivotMDS implements InitialPlacer {
 
     /** Whether to use squared distances for the C matrix. */
     boolean doSquaring = false;
+    /** Whether to scale down the graph after PivotMDS */
+    boolean doScaling = true;
+
+    /** The percentage how many pivots shall get used  */
     double percentPivots = 10;
 
-    // InitialLayout
+    // default values
     static final double AMOUNT_PIVOTS_DEFAULT = 5.0;
     static final boolean QUADRATIC_DOUBLECENTER_DEFAULT = false;
+    static final boolean  SCALING_DEFAULT = true;
 
 
     /** Contains the parameters of this {@link StressMinimizationLayout}. */
@@ -89,17 +94,18 @@ public class PivotMDS implements InitialPlacer {
                                         newY.getEntry(inversePivotTranslation[i], 0)));
 
         }
-
-        double maxEuclid = findMaxEuclidean(newPosList);
-        if (maxEuclid == 0.0) {
-            return newPosList;
+        if(doScaling){
+            double maxEuclid = findMaxEuclidean(newPosList);
+            if (maxEuclid == 0.0) {
+                return newPosList;
+            }
+            double maxGraphDistance = distances.getMaximumValue();
+            scaleInitialPos(maxEuclid, maxGraphDistance, newPosList);
         }
-        double maxGraphDistance = distances.getMaximumValue();
-        scaleInitialPos(maxEuclid, maxGraphDistance, newPosList);
 
         return newPosList;
     }
-
+    
     /**
      * finds the largest euclidean distance in a given list of nodes
      *
@@ -108,7 +114,7 @@ public class PivotMDS implements InitialPlacer {
      *
      * @author theo
      */
-    private double findMaxEuclidean(final List<Vector2d> pos ){
+    public double findMaxEuclidean(final List<Vector2d> pos ){
         double result = 0;
         for(Vector2d q : pos){
             for(Vector2d p : pos){
@@ -126,13 +132,13 @@ public class PivotMDS implements InitialPlacer {
     /**
      * Scales the euclidean distance to the graph theoretical distance
      *
-     * @param maxEuclidean
-     * @param maxDistance
-     * @param currentPos
+     * @param maxEuclidean largest euclidean distance in the graph
+     * @param maxDistance largest grah theoretical distance
+     * @param currentPos   Vector2d list containing the current node positions
      *
      * @author theo
      */
-    private void scaleInitialPos(double maxEuclidean, double  maxDistance, List<Vector2d> currentPos ){
+    public void scaleInitialPos(double maxEuclidean, double  maxDistance, List<Vector2d> currentPos ){
         double factor = maxDistance/maxEuclidean;
         for(Vector2d pos : currentPos){
             pos.x *= factor;
@@ -470,7 +476,10 @@ public class PivotMDS implements InitialPlacer {
 
                 new BooleanParameter(QUADRATIC_DOUBLECENTER_DEFAULT, "Quadratic DoubleCenter",
                         "<html> Whether the distances in PivotMDS should be squared or not.<br>" +
-                                "Pulls apart initial layout strongly. May slow down performance.</html>")
+                                "Pulls apart initial layout strongly. May slow down performance.</html>"),
+                new BooleanParameter(SCALING_DEFAULT, "Scale",
+                        "<html> whether the graph should be scaled down or not.<br>" +
+                                "Does not change the overall layout. </html>")
         };
         return result;
     }
@@ -491,6 +500,7 @@ public class PivotMDS implements InitialPlacer {
         doubleParameter = (EnableableNumberParameter<Double>) params[0].getValue();
         percentPivots =doubleParameter.getValue();
         doSquaring =  ((BooleanParameter) params[1]).getBoolean();
+        doScaling =  ((BooleanParameter) params[2]).getBoolean();
     }
 
     /**

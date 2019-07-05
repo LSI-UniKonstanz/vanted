@@ -69,6 +69,7 @@ public class PivotMDSTest {
         // test with squaring
         pivotMDS.doSquaring = true;
         pivotMDS.percentPivots = 100.0;
+        pivotMDS.doScaling = false;
         List<Vector2d> positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
 
         // calculated for eigenvalues 4, 4, 1, 0
@@ -82,8 +83,26 @@ public class PivotMDSTest {
             assertEquals("Y pos", expectedYPos[idx], position.y, 0.0001);
         }
 
+        //test scaling
+        double maxEuclid =  pivotMDS.findMaxEuclidean(positions);
+        random.setSeed(42);
+        pivotMDS.doScaling = true;
+        positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
+
+        double maxDistance = GRAPH_1_DISTANCES.getMaximumValue();
+        double scalingFactor = maxDistance/maxEuclid;
+
+
+        for (int idx = 0; idx < positions.size(); idx++) {
+            Vector2d position = positions.get(idx);
+
+            assertEquals("X pos", expectedXPos[idx] *scalingFactor, position.x , 0.0001);
+            assertEquals("Y pos", expectedYPos[idx] *scalingFactor, position.y, 0.0001);
+        }
+
         // test without squaring
         pivotMDS.doSquaring = false;
+        pivotMDS .doScaling = false;
         positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
         // calculated for eigenvalues 1, 1, 0, 0
         // with eigenvectors (0,0,-1,1),(-1,1,0,0),(0,0,1,1),(1,1,0,0)
@@ -105,6 +124,8 @@ public class PivotMDSTest {
             assertEquals("X pos", expectedXPos[idx], position.x, 0);
             assertEquals("Y pos", expectedYPos[idx], position.y, 0);
         }
+
+
     }
 
 
@@ -365,10 +386,13 @@ public class PivotMDSTest {
 
         ((JSpinner) ((EnableableNumberParameter) parameters[0].getValue()).getComponent(0)).setValue(0.0);
         ((BooleanParameter) parameters[1]).setValue(true);
-        pivotMDS.setParameters(parameters); // should still be executed correctly
+        ((BooleanParameter) parameters[2]).setValue(false);
+        pivotMDS.setParameters(parameters);
 
         assertEquals(0.0,pivotMDS.percentPivots, 0.00001 );
         assertEquals(true, pivotMDS.doSquaring);
+        assertEquals( false, pivotMDS.doScaling);
+
 
 
 
