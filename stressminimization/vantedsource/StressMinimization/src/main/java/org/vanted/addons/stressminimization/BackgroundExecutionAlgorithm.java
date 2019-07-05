@@ -453,9 +453,11 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		switch(arg0.getPropertyName()) {
 
 		case "setLayout":
-			if(autoDrawCheckBox.isSelected()) {
-				Supplier<HashMap<Node, Vector2d>> layoutSupplier = (Supplier<HashMap<Node, Vector2d>>)arg0.getNewValue();
-				newLayout(layoutSupplier.get());
+			if(autoDrawCheckBox!=null) {
+				if(autoDrawCheckBox.isSelected()) {
+					Supplier<HashMap<Node, Vector2d>> layoutSupplier = (Supplier<HashMap<Node, Vector2d>>)arg0.getNewValue();
+					newLayout(layoutSupplier.get());
+				}
 			}
 			break;
 		case "setStatus":
