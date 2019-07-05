@@ -25,9 +25,13 @@ public class StartBenchmarks {
      */
     private final static int REPEAT_TIMES = 3;
     /**
-     * File where the benchmark results are written.
+     * File where the benchmark results (running times) are written.
      */
-    private final static Path OUTPUT = Paths.get("/tmp/mlf.csv");
+    private final static Path OUTPUT = Paths.get("mlf.csv");
+    /**
+     * File where the benchmark results (quality metrics) are written.
+     */
+    private final static Path OUTPUT_METRICS = Paths.get("mlf_metrics.csv");
     /**
      * Don't execute force directed on graphs larger than this number of nodes.
      */
@@ -115,6 +119,13 @@ public class StartBenchmarks {
                     mfl.execute();
                     long endTime = System.currentTimeMillis();
                     runningTimeMs += endTime - startTime;
+                    if (i == 0 && !"Null-Layout".equalsIgnoreCase(config[2].toString())) { // store generated graph
+                        final String fileName = config[0].getClass().getSimpleName() + "_"
+                                + config[1].getClass().getSimpleName() + "_"
+                                + config[2] + "_" + path.getFileName()
+                                + (path.getFileName().toString().endsWith(".gml") ? "" : ".gml");
+                        MainFrame.getInstance().saveGraphAs(graph, fileName, graph.getFileTypeDescription());
+                    }
                     graph.setModified(false); // prevent VANTED from asking if the user wants to save
                     SwingUtilities.invokeAndWait(() -> {
                         MainFrame.getInstance().closeSession(MainFrame.getInstance().getActiveSession());

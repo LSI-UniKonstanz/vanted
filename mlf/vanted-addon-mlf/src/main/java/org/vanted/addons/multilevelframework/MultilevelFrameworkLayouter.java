@@ -8,6 +8,7 @@ import de.ipk_gatersleben.ag_nw.graffiti.services.task.BackgroundTaskStatusProvi
 import org.AttributeHelper;
 import org.Vector2d;
 import org.apache.commons.lang.ArrayUtils;
+import org.graffiti.editor.LoadSetting;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
 import org.graffiti.graph.Node;
@@ -409,13 +410,15 @@ public class MultilevelFrameworkLayouter extends AbstractEditorAlgorithm {
     /**
      * Calls {@link GraphHelper#diplayGraph(Graph)} in the event dispatcher thread (it throws exceptions if called from
      * other threads).
-     * @param g
+     * @param graph
      *      The {@link Graph} to pass along.
      * @author Gordian
      */
-    static void display(Graph g) {
+    static void display(Graph graph) {
         try {
-            SwingUtilities.invokeAndWait(() -> GraphHelper.diplayGraph(g));
+            SwingUtilities.invokeAndWait(() -> {
+                MainFrame.getInstance().showGraph(graph, null, LoadSetting.VIEW_CHOOSER_NEVER);
+            });
         } catch (InterruptedException | InvocationTargetException ignored) { }
     }
 
