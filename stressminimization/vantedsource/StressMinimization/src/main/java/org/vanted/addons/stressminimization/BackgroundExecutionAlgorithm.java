@@ -85,35 +85,43 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				switch(statusValue) {
 				case INIT:
 					status = BackgroundStatus.INIT;
-					startButton.setEnabled(true);
-					startButton.setText("Pause");
-					stopButton.setEnabled(true);
-					paramPanel.setVisible(false);
-					statusLabel.setVisible(true);
+					if(startButton!=null) {
+						startButton.setEnabled(true);
+						startButton.setText("Pause");
+						stopButton.setEnabled(true);
+						paramPanel.setVisible(false);
+						statusLabel.setVisible(true);
+					}
 					break;
 				case RUNNING:
 					status = BackgroundStatus.RUNNING;
-					startButton.setEnabled(true);
-					startButton.setText("Pause");
-					stopButton.setEnabled(true);
-					paramPanel.setVisible(false);
-					statusLabel.setVisible(true);
+					if(startButton!=null) {
+						startButton.setEnabled(true);
+						startButton.setText("Pause");
+						stopButton.setEnabled(true);
+						paramPanel.setVisible(false);
+						statusLabel.setVisible(true);
+					}
 					break;
 				case IDLE:
 					status = BackgroundStatus.IDLE;
-					startButton.setEnabled(true);
-					startButton.setText("Continue");
-					stopButton.setEnabled(true);
-					paramPanel.setVisible(false);
-					statusLabel.setVisible(true);
+					if(startButton!=null) {
+						startButton.setEnabled(true);
+						startButton.setText("Continue");
+						stopButton.setEnabled(true);
+						paramPanel.setVisible(false);
+						statusLabel.setVisible(true);
+					}
 					break;
 				case FINISHED:
 					status = BackgroundStatus.FINISHED;
-					startButton.setEnabled(true);
-					startButton.setText("Layout Network");
-					stopButton.setEnabled(false);
-					paramPanel.setVisible(true);
-					statusLabel.setVisible(false);
+					if(startButton!=null) {
+						startButton.setEnabled(true);
+						startButton.setText("Layout Network");
+						stopButton.setEnabled(false);
+						paramPanel.setVisible(true);
+						statusLabel.setVisible(false);
+					}
 					break;
 				default:
 					status = BackgroundStatus.STATUSERROR;
@@ -140,23 +148,23 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				}
 			});
 		} catch (InvocationTargetException | InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * shows the difference between old stress value and new stress value
-	 * in the bar at the bottom of the main frame
-	 * @param oldStressValue
-	 * @param newStressValue
+	 * shows the status description in the bar at the bottom of the main frame
+	 * and in the parameter panel
+	 * @param statusDescription
 	 */
 	private void printStatusDescription(String statusDescription){
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				MainFrame.showMessage(statusDescription, MessageType.PERMANENT_INFO);
-				statusLabel.setText(statusDescription);
+				if(statusLabel!=null) {
+					statusLabel.setText(statusDescription);
+				}
 			}
 		});
 	}
@@ -358,7 +366,8 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 
 	@Override
 	public boolean setControlInterface(ThreadSafeOptions options, JComponent jc) {
-		//set component layout
+		//set component layout (component is the panel above the layout list 
+		//in the layout tab for the chosen BackgroundAlgorithm)
 		SingleFiledLayout sfl = new SingleFiledLayout(SingleFiledLayout.COLUMN, SingleFiledLayout.FULL, 1);
 		jc.setLayout(sfl);
 
@@ -372,6 +381,7 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		//panel with all algorithm parameter components
 		JPanel parameterPanel=new JPanel();
 		parameterPanel.setLayout(sfl);
+		//it is for a gap between start and stop parameter and the specific algorithm parameter
 		parameterPanel.add(Box.createVerticalStrut(10));
 		parameterPanel.add(pep);
 
@@ -421,7 +431,8 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 				TableLayout.PREFERRED, TableLayout.PREFERRED,TableLayout.FILL ));
 
 		jc.add(new JSeparator(JSeparator.HORIZONTAL));
-
+		
+		//add label for status informations to component
 		statusLabel = new JLabel();
 		statusLabel.setVisible(false);
 		jc.add(statusLabel);
@@ -473,8 +484,6 @@ public class BackgroundExecutionAlgorithm extends ThreadSafeAlgorithm implements
 		if (status != BackgroundStatus.FINISHED) {
 			algorithm.stop();
 		}
-
-
 	}
 
 	// both never used but required for thread safe algorithm

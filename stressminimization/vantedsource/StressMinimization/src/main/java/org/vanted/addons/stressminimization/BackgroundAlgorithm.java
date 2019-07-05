@@ -11,7 +11,7 @@ import org.graffiti.plugin.algorithm.AbstractEditorAlgorithm;
 
 /**
  * Algorithm which runs in the background and
- * and able to notify other classes about state
+ * able to notify other classes about state
  * of the algorithm or the layout change of the graph.
  */
 public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
@@ -55,23 +55,23 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 	private volatile boolean stopped = false;
 
 	/**
-	 * return list of PropertyChangeListener
-	 * @return PropertyChangeListener
+	 * returns an array of PropertyChangeListener that were added to the BackgroundAlgorithm
+	 * @return all of the PropertyChangeListeners added or an empty array if no listeners have been added
 	 */
 	public PropertyChangeListener[] getPropertyChangeListener() {
 		return pcs.getPropertyChangeListeners();
 	}
 
 	/**
-	 * add new PropertyChangeListener
-	 * @param pcl
+	 * add new PropertyChangeListener to the listener list
+	 * @param pcl PropertyChangeListner to be added
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.addPropertyChangeListener(pcl);
 	}
 	/**
-	 * remove PropertyChangeListener
-	 * @param pcl
+	 * remove PropertyChangeListener from the listener list
+	 * @param pcl PropertyChangeListener to be removed
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener pcl) {
 		pcs.removePropertyChangeListener(pcl);
@@ -79,7 +79,7 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 
 	/**
 	 * add elements of an array to the property change list
-	 * @param pcl
+	 * @param pcl Array of PropertyChangeListener which should be added to the listener list
 	 */
 	public void addPropertyChangeListeners(PropertyChangeListener[] pcl) {
 		for(PropertyChangeListener listener:pcl) {
@@ -90,7 +90,7 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 	/**
 	 * notify listener classes a new graph layout is available and
 	 * send the old and the new layout
-	 * @param layout
+	 * @param layout new  Supplier<HashMap<Node, Vector2d>> layout
 	 */
 	protected void setLayout(Supplier<HashMap<Node, Vector2d>> layoutSupplier) {
 		pcs.firePropertyChange("setLayout",this.layout, layoutSupplier);
@@ -99,7 +99,7 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 
 	/**
 	 * notify listener classes a new status of the algorithm is available.
-	 * @param status
+	 * @param status new BackgroundStatus value
 	 */
 	protected void setStatus(BackgroundStatus status) {
 		pcs.firePropertyChange("setStatus", this.status, status);
@@ -107,8 +107,8 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 	}
 
 	/**
-	 * notify listener classes a new stress value is available
-	 * @param newStressValue
+	 * notify listener classes a new progress value is available
+	 * @param newProgress new double progress value
 	 */
 	protected void setProgress(double newProgress) {
 		double oldProgress = this.progress;
@@ -116,6 +116,10 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 		pcs.firePropertyChange("setProgress", oldProgress, newProgress);
 	}
 
+	/**
+	 * notify listener classes a new status description is available
+	 * @param newStatusDescription new status description String
+	 */
 	protected void setStatusDescription(String newStatusDescription) {
 		String oldStatusDescription = this.statusDescription;
 		this.statusDescription = newStatusDescription;
