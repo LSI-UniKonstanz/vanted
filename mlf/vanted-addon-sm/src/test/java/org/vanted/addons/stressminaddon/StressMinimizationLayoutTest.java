@@ -266,7 +266,6 @@ public class StressMinimizationLayoutTest {
         Thread.sleep(1000); // wait for execution to finish
         somethingChanged("execute (default)", original, workCopy);
 
-        System.err.println("TEST");
         // test with selection
         {
             // disable background tasks for here on
