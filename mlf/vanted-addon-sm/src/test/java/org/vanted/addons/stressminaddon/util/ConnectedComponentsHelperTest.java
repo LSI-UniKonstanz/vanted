@@ -147,7 +147,7 @@ public class ConnectedComponentsHelperTest {
     public void getConnectedComponetBounds() {
         // Graph 1
         Rectangle2D.Double expectedBounds = new Rectangle2D.Double(0.5, 0.5, 2, 2);
-        Rectangle2D.Double bounds         = ConnectedComponentsHelper.getConnectedComponentBounds(GRAPH_1_NODES,
+        Rectangle2D.Double bounds         = ConnectedComponentsHelper.getConnectedComponentBounds(GRAPH_1_NODES, GRAPH_1_POSITIONS,
                 0, 0, 0, 0);
         assertEquals("Graph 1: x", expectedBounds.x, bounds.x, 0.001);
         assertEquals("Graph 1: y", expectedBounds.y, bounds.y, 0.001);
@@ -156,7 +156,7 @@ public class ConnectedComponentsHelperTest {
 
         // Graph 1 (scaled margin)
         expectedBounds = new Rectangle2D.Double(-0.5, 0.3, 2*2, 2*1.2);
-        bounds         = ConnectedComponentsHelper.getConnectedComponentBounds(GRAPH_1_NODES,
+        bounds         = ConnectedComponentsHelper.getConnectedComponentBounds(GRAPH_1_NODES, null,
                 0.5, 0.1, 0, 0);
         assertEquals("Graph 1 (scaled margin): x", expectedBounds.x, bounds.x, 0.001);
         assertEquals("Graph 1 (scaled margin): y", expectedBounds.y, bounds.y, 0.001);
@@ -165,7 +165,7 @@ public class ConnectedComponentsHelperTest {
 
         // Graph 1 (minimal margin)
         expectedBounds = new Rectangle2D.Double(-15.5, -7.5, 2+2*16, 2+2*8);
-        bounds         = ConnectedComponentsHelper.getConnectedComponentBounds(GRAPH_1_NODES,
+        bounds         = ConnectedComponentsHelper.getConnectedComponentBounds(GRAPH_1_NODES, GRAPH_1_POSITIONS,
                 0, 0, 16, 8);
         assertEquals("Graph 1 (minimal margin): x", expectedBounds.x, bounds.x, 0.001);
         assertEquals("Graph 1 (minimal margin): y", expectedBounds.y, bounds.y, 0.001);
@@ -175,7 +175,7 @@ public class ConnectedComponentsHelperTest {
         // Graph 2 (test node width)
         expectedBounds = new Rectangle2D.Double(-20, -20, 43, 43);
         bounds = ConnectedComponentsHelper.getConnectedComponentBounds(
-                GRAPH_2_NODES.subList(GRAPH_2_NODES.size()/2, GRAPH_2_NODES.size()),
+                GRAPH_2_NODES.subList(GRAPH_2_NODES.size()/2, GRAPH_2_NODES.size()), null,
                 0, 0, 0, 0);
         assertEquals("Graph 2 (node size): x", expectedBounds.x, bounds.x, 0.001);
         assertEquals("Graph 2 (node size): y", expectedBounds.y, bounds.y, 0.001);
@@ -221,7 +221,7 @@ public class ConnectedComponentsHelperTest {
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
         try {
-            ConnectedComponentsHelper.getConnectedComponentBounds(null,
+            ConnectedComponentsHelper.getConnectedComponentBounds(null, null,
                     0, 0, 0, 0);
             fail("No exception thrown");
         } catch (NullPointerException e) {
@@ -243,7 +243,7 @@ public class ConnectedComponentsHelperTest {
 
         // negative fractions
         try {
-            ConnectedComponentsHelper.getConnectedComponentBounds(GRAPH_2_NODES,
+            ConnectedComponentsHelper.getConnectedComponentBounds(GRAPH_2_NODES, null,
                     -0.5, 0, 0, 0);
             fail("No exception thrown");
         } catch (IllegalArgumentException e) {
@@ -254,7 +254,7 @@ public class ConnectedComponentsHelperTest {
             fail("Wrong exception thrown: " + t.getClass().getSimpleName());
         }
         try {
-            ConnectedComponentsHelper.getConnectedComponentBounds(GRAPH_2_NODES,
+            ConnectedComponentsHelper.getConnectedComponentBounds(GRAPH_2_NODES, null,
                     0, -0.5, 0, 0);
             fail("No exception thrown");
         } catch (IllegalArgumentException e) {

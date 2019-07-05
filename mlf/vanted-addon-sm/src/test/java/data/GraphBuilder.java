@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class GraphKonstructor {
+public class GraphBuilder {
 
     public static String starGraph(int nodes, int components) {
         int i = 1;
@@ -96,7 +96,7 @@ public class GraphKonstructor {
         return graph;
     }
 
-    public static String sierpinskiGraph(int deep, int components) {
+    public static void sierpinskiGraph(int deep, int components) {
         String graph = "graph [\n" +
                 " Creator \"makegml\" directed 0 label \"\"\n";
 
@@ -142,7 +142,19 @@ public class GraphKonstructor {
         }
         graph =graph +"]";
 
-        return graph;
+        PrintWriter pWriter = null;
+        try {
+            pWriter = new PrintWriter(new BufferedWriter(new FileWriter("benchmark/java/test_graphs/sierpinski_"+deep+"_"+components+".gml")));
+            pWriter.println(graph);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            if (pWriter != null){
+                pWriter.flush();
+                pWriter.close();
+            }
+        }
+
     }
 
 
@@ -153,7 +165,7 @@ public class GraphKonstructor {
         PrintWriter pWriter = null;
         try {
             pWriter = new PrintWriter(new BufferedWriter(new FileWriter("testGraph1.gml")));
-            pWriter.println(sierpinskiGraph(4,4));
+            pWriter.println(circleGraph(500,1));
         } catch (IOException ioe) {
             ioe.printStackTrace();
         } finally {

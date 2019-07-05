@@ -8,12 +8,10 @@ import org.vanted.addons.stressminaddon.util.NullPlacer;
 
 import javax.swing.*;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collection;
 
 /**
  * Benchamark that tests different deep class off sierpinski triangle.
@@ -22,11 +20,11 @@ import java.util.Collection;
  * @author rene
  */
 
-public class SM_Benchmark {
+public class SM_Benchmark_Sierpinskirow {
 
     private final static int REPEAT_TIMES = 1;
-    private final static int START_DEEP = 4;
-    private final static int END_DEEP = 4;
+    private final static int START_DEEP = 7;
+    private final static int END_DEEP = 7;
     private final static int MIN_COMPONENT = 1;
     private final static int MAX_COMPONENT = 1;
     /**
@@ -37,8 +35,7 @@ public class SM_Benchmark {
      *
      */
     public static void sierpinskiGraph(int deep, int components) {
-        String graph = "graph [\n" +
-                " Creator \"makegml\" directed 0 label \"\"\n";
+        StringBuilder graph = new StringBuilder().append("graph [\n").append(" Creator \"makegml\" directed 0 label \"\"\n");
 
         int counter = 0;
         int node = counter+1;
@@ -68,47 +65,31 @@ public class SM_Benchmark {
             }
 
             for (; node <= counter; node++) {
-
-                graph = graph + "  node [ id " + node + " ]\n";
-
+                graph.append("  node [ id ").append(node).append(" ]\n");
             }
 
 
             for (int i = 0; i < startArray.length; i += 3) {
-                graph = graph + "edge [ source " + startArray[i] + " target " + startArray[i + 1] + " ]\n";
-                graph = graph + "edge [ source " + startArray[i + 1] + " target " + startArray[i + 2] + " ]\n";
-                graph = graph + "edge [ source " + startArray[i + 2] + " target " + startArray[i] + " ]\n";
+                graph.append("edge [ source ").append(startArray[i]).append(" target ").append(startArray[i + 1]).append(" ]\n");
+                graph.append("edge [ source ").append(startArray[i + 1]).append(" target ").append(startArray[i + 2]).append(" ]\n");
+                graph.append("edge [ source ").append(startArray[i + 2]).append(" target ").append(startArray[i]).append(" ]\n");
             }
         }
-        graph =graph +"]";
+        graph.append("]");
 
-        PrintWriter pWriter = null;
-        try {
-            pWriter = new PrintWriter(new BufferedWriter(new FileWriter("benchmark/java/test_graphs/sierpinski_"+deep+"_"+components+".gml")));
-            pWriter.println(graph);
+        try (BufferedWriter bw = Files.newBufferedWriter(Paths.get("benchmark/java/test_graphs/sierpinski_"+deep+"_"+components+".gml"))){
+            bw.write(graph.toString());
         } catch (IOException ioe) {
             ioe.printStackTrace();
-        } finally {
-            if (pWriter != null){
-                pWriter.flush();
-                pWriter.close();
-            }
         }
 
     }
 
     public void save_csv(String csvString, String dataName){
-        PrintWriter pWriter = null;
-        try {
-            pWriter = new PrintWriter(new BufferedWriter(new FileWriter("benchmark/java/csv_data/datasets/"+dataName+".csv")));
-            pWriter.println(csvString);
+        try (BufferedWriter bw = Files.newBufferedWriter(Paths.get("benchmark/java/csv_data/datasets/"+dataName+".csv"))) {
+            bw.write(csvString);
         } catch (IOException ioe) {
             ioe.printStackTrace();
-        } finally {
-            if (pWriter != null){
-                pWriter.flush();
-                pWriter.close();
-            }
         }
 
     }
@@ -120,14 +101,13 @@ public class SM_Benchmark {
         Thread.sleep(15*1000);
         boolean pivotOn = true;
         do {
-            String csv_singleSteps = "\"time_ms\",\"iterations\",\"stress\",\"line_crossings\",\"class\"\n";
-            String csv_average = "\"time_ms\",\"iterations\",\"stress\",\"line_crossings\",\"class\"\n";
+            StringBuilder csv_singleSteps = new StringBuilder("\"time_ms\",\"iterations\",\"stress\",\"line_crossings\",\"class\"\n");
+            StringBuilder csv_average = new StringBuilder("\"time_ms\",\"iterations\",\"stress\",\"line_crossings\",\"class\"\n");
 
             for (int deep = START_DEEP; deep <= END_DEEP; deep++) {
                 for (int duplicate = MIN_COMPONENT; duplicate <= MAX_COMPONENT; duplicate++) {
                     sierpinskiGraph(deep, duplicate);
                     Thread.sleep(15 * 1000);
-                    System.out.println(Paths.get("benchmark/java/test_graphs/sierpinski_" + deep + "_" + duplicate + ".gml").toAbsolutePath());
                     Graph graph = null;
 
                     try {
@@ -149,11 +129,12 @@ public class SM_Benchmark {
 
 
 
-                    long runningLineCrossing = 0;
-                    long runningStress = 0;
-                    long runningIteration = 0;
-                    long runningTimeMs = 0;
+                    long averageLineCrossings = 0;
+                    double averageStress = 0;
+                    long averageIterations = 0;
+                    long averageRunningTimeMs = 0;
                     for (int repeat = 0; repeat < REPEAT_TIMES; repeat++) {
+                        System.err.printf("--- RUN %d/%d ----", repeat+1, REPEAT_TIMES);
                         state = sml.state;
                         state.doAnimations = false;
                         state.backgroundTask = false;
@@ -167,23 +148,25 @@ public class SM_Benchmark {
 
                         long startTime = System.currentTimeMillis();
                         sml.execute();
-                        System.err.println("---REPITITION----");
-                        long endTime = System.currentTimeMillis();
-                        long thisTimeMs = endTime - startTime;
-                        int lineCrossing = QualityMeasures.lineCrossing(graph);
+                        long runningTimeMs = System.currentTimeMillis() - startTime;
+                        int lineCrossings = QualityMeasures.lineCrossings(graph);
                         int iterations = 0;
-                        long stress = 0;
-                        runningTimeMs += thisTimeMs;
-                        runningLineCrossing += lineCrossing;
-                        runningStress += stress;
-                        runningIteration += iterations;
-                        csv_singleSteps = csv_singleSteps + thisTimeMs + "," + iterations + "," + stress + "," + lineCrossing + ",\"sierpinski_" + deep + "_" + duplicate + "\"\n";
-
+                        double stress = 0;
+                        averageRunningTimeMs += runningTimeMs;
+                        averageLineCrossings += lineCrossings;
+                        averageStress += stress;
+                        averageIterations += iterations;
+                        csv_singleSteps.append(runningTimeMs).append(",").append(iterations).append(",").append(stress)
+                                .append(",").append(lineCrossings).append(",\"sierpinski_").append(deep).append("_")
+                                .append(duplicate).append("\"\n");
 
                     }
 
                     graph.setFileTypeDescription("benchmark/java/test_graphs/sierpinski.gml");
-                    csv_average = csv_average + runningTimeMs / REPEAT_TIMES + "," + runningIteration / REPEAT_TIMES + "," + runningStress / REPEAT_TIMES + "," + runningLineCrossing / REPEAT_TIMES + ",\"sierpinski_" + deep + "_" + duplicate + "\"\n";
+
+                    csv_average.append(averageRunningTimeMs / REPEAT_TIMES).append(",").append(averageIterations / REPEAT_TIMES)
+                            .append(",").append(averageStress / REPEAT_TIMES).append(",").append(averageLineCrossings / REPEAT_TIMES)
+                            .append(",\"sierpinski_").append(deep).append("_").append(duplicate).append("\"\n");
                     graph.setModified(false); // prevent VANTED from asking if the user wants to save
                     SwingUtilities.invokeAndWait(() -> {
                         MainFrame.getInstance().closeSession(MainFrame.getInstance().getActiveSession());
@@ -193,17 +176,17 @@ public class SM_Benchmark {
                 }
             }
             if(pivotOn) {
-                save_csv(csv_singleSteps, "csv_singleSteps");
-                save_csv(csv_average, "csv_average");
+                save_csv(csv_singleSteps.toString(), "csv_singleSteps_Sierpinskirow");
+                save_csv(csv_average.toString(), "csv_average_Sierpinskirow");
             }else{
-                save_csv(csv_singleSteps, "csv_singleSteps_withoutPivot");
-                save_csv(csv_average, "csv_average_withoutPivot");
+                save_csv(csv_singleSteps.toString(), "csv_singleSteps_Sierpinskirow_withoutPivot");
+                save_csv(csv_average.toString(), "csv_average_Sierpinskirow_withoutPivot");
 
             }
             System.err.println("FINISHED!");
 
 
             Thread.sleep(8 * 1000);
-        }while (!pivotOn);
+        } while (!pivotOn);
     }
 }

@@ -20,7 +20,7 @@ public class StartVantedWithAddonTest {
      */
     @Test
     public void main() {
-        StartVantedWithAddon.main(new String[0]);
+        StartVantedWithAddon.main(new String[]{"--debug"});
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {

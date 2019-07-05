@@ -79,7 +79,7 @@ public class StressMinimizationLayoutTest {
     public void setUp() throws Exception {
         // get private methods to test
         Objects.requireNonNull(stressMinMethod = StressMinimizationLayout.class.getDeclaredMethod(
-                "calculateStress", List.class, List.class, NodeValueMatrix.class, NodeValueMatrix.class));
+                "calculateStress", List.class, NodeValueMatrix.class, NodeValueMatrix.class));
         Objects.requireNonNull(posDiffMethod = StressMinimizationLayout.class.getDeclaredMethod(
                 "differencePositionsSmallerEpsilon", List.class, List.class, double.class));
         sm = new StressMinimizationLayout();
@@ -111,7 +111,7 @@ public class StressMinimizationLayoutTest {
     }
 
     /**
-     * Test the private method
+     * Test the private static method
      * StressMinimizationLayout#differencePositionsSmallerEpsilon(ArrayList, ArrayList, double)
      * @throws InvocationTargetException if the method was called incorrectly (This shouldn't happen)
      * @author Jannik
@@ -131,7 +131,7 @@ public class StressMinimizationLayoutTest {
     }
 
     /**
-     * Test the private method
+     * Test the private static method
      * StressMinimizationLayout#calculateStress(List, NodeValueMatrix, NodeValueMatrix)
      * @throws InvocationTargetException if the method was called incorrectly (This shouldn't happen)
      * @author Jannik
@@ -145,14 +145,56 @@ public class StressMinimizationLayoutTest {
         // test the method
         // expected value calculated by hand.
         double stress = (double) invokePrivateMethod(null, stressMinMethod,
-                GRAPH_1_NODES, GRAPH_1_POSITIONS, GRAPH_1_DISTANCES, weights);
+                GRAPH_1_POSITIONS, GRAPH_1_DISTANCES, weights);
         assertEquals(3 -2*Math.sqrt(2), stress, 0.001);
 
         // Test only one node edge case
-        stress = (double) invokePrivateMethod(null, stressMinMethod,
-                Collections.singletonList(GRAPH_1_NODES.get(0)), GRAPH_1_POSITIONS.subList(0, 1),
+        stress = (double) invokePrivateMethod(null, stressMinMethod, GRAPH_1_POSITIONS.subList(0, 1),
                 new NodeValueMatrix(1), new NodeValueMatrix(1));
         assertEquals(0.0, stress, 0.001);
+    }
+
+    /**
+     * Test the public static methods {@link StressMinimizationLayout#calculateStress(Graph, boolean)} and
+     * {@link StressMinimizationLayout#calculateStress(Graph, boolean, double, double, double, double)}.
+     * @author Jannik
+     */
+    @Test
+    public void publicCalculateStress() {
+        // test the method with the same value as above
+        List<Double> actualStress = StressMinimizationLayout.calculateStress(GRAPH_1, true,
+                0, 1, 1, -2); // this setup ignores node sizes
+        assertEquals("Size of returned list 1 (cumulative)", 1, actualStress.size());
+        assertEquals("Values 1 (cumulative)", 3 -2*Math.sqrt(2), actualStress.get(0), 0.001);
+
+        // disabling the cumulation should result in the same
+        actualStress = StressMinimizationLayout.calculateStress(GRAPH_1, false,
+                0, 1, 1, -2);
+        assertEquals("Size of returned list 1 (non-cumulative)", 1, actualStress.size());
+        assertEquals("Values 1 (non-cumulative)", 3 -2*Math.sqrt(2), actualStress.get(0), 0.001);
+
+        // test with two component graph
+        actualStress = StressMinimizationLayout.calculateStress(GRAPH_2, true,
+                0, 1, 1, -2);
+        assertEquals("Size of returned list 2 (cumulative)", 1, actualStress.size());
+         // each connected component has the same stress so the cumulated stress should be the same
+        assertEquals("Values 2 (cumulative)", 3 -2*Math.sqrt(2), actualStress.get(0), 0.001);
+
+        // test non cumulative
+        actualStress = StressMinimizationLayout.calculateStress(GRAPH_2, false,
+                0, 1, 1, -2);
+        assertEquals("Size of returned list 2 (non-cumulative)", 2, actualStress.size());
+        // each connected component has the same stress
+        assertEquals("Values 2 (cumulative)", 3 -2*Math.sqrt(2), actualStress.get(0), 0.001);
+        assertEquals("Values 2 (cumulative)", 3 -2*Math.sqrt(2), actualStress.get(1), 0.001);
+
+        // test empty cumulative
+        actualStress = StressMinimizationLayout.calculateStress(new AdjListGraph(), true);
+        assertEquals("Size of returned list empty (cumulative)", 1, actualStress.size());
+        assertEquals("Values empty (cumulative)", Double.NaN, actualStress.get(0), 0.0);
+        // test empty non-cumulative
+        actualStress = StressMinimizationLayout.calculateStress(new AdjListGraph(), false);
+        assertEquals("Size of returned list empty (cumulative)", 0, actualStress.size());
     }
 
     /**
@@ -224,6 +266,7 @@ public class StressMinimizationLayoutTest {
         Thread.sleep(1000); // wait for execution to finish
         somethingChanged("execute (default)", original, workCopy);
 
+        System.err.println("TEST");
         // test with selection
         {
             // disable background tasks for here on
@@ -468,15 +511,15 @@ public class StressMinimizationLayoutTest {
         sm.setParameters(parameters);
         state = sm.state;
 
-        assertEquals(Double.NEGATIVE_INFINITY, state.stressEpsilon, 0.0001);
-        assertEquals(Double.NEGATIVE_INFINITY, state.positionChangeEpsilon, 0.0001);
-        assertEquals(Long.MAX_VALUE, state.maxIterations, 0.0001);
-        assertEquals(WEIGHT_SCALING_FACTOR_DEFAULT, state.weightScalingFactor, 0.0001);
-        assertEquals(WEIGHT_POWER_DEFAULT, state.weightPower, 0.0001);
+        assertEquals(Double.NEGATIVE_INFINITY, state.stressEpsilon, 0.0);
+        assertEquals(Double.NEGATIVE_INFINITY, state.positionChangeEpsilon, 0.0);
+        assertEquals(Long.MAX_VALUE, state.maxIterations);
+        assertEquals(WEIGHT_SCALING_FACTOR_DEFAULT, state.weightScalingFactor, 0.0);
+        assertEquals(WEIGHT_POWER_DEFAULT, state.weightPower, 0.0);
         equalPSP(parameters[8], state.initialPlacer);
         equalPSP(parameters[10], state.positionAlgorithm);
-        assertEquals(EDGE_SCALING_FACTOR_DEFAULT, state.edgeScalingFactor, 0.0001);
-        assertEquals(EDGE_LENGTH_MINIMUM_DEFAULT, state.edgeLengthMinimum, 0.0001);
+        assertEquals(EDGE_SCALING_FACTOR_DEFAULT, state.edgeScalingFactor, 0.0);
+        assertEquals(EDGE_LENGTH_MINIMUM_DEFAULT, state.edgeLengthMinimum, 0.0);
         assertEquals(REMOVE_EDGE_BENDS_DEFAULT, state.removeEdgeBends);
         assertTrue(state.intermediateUndoable);
         assertTrue(state.doAnimations);
@@ -496,15 +539,15 @@ public class StressMinimizationLayoutTest {
         sm.setParameters(parameters);
         state = sm.state;
 
-        assertEquals(Double.MIN_VALUE, state.stressEpsilon, 0.0001);
-        assertEquals(Double.MIN_VALUE, state.positionChangeEpsilon, 0.0001);
-        assertEquals(MAX_ITERATIONS_DEFAULT, state.maxIterations, 0.0001);
-        assertEquals(WEIGHT_SCALING_FACTOR_DEFAULT, state.weightScalingFactor, 0.0001);
-        assertEquals(WEIGHT_POWER_DEFAULT, state.weightPower, 0.0001);
+        assertEquals(SMALLEST_NON_ZERO_VALUE, state.stressEpsilon, 0.0);
+        assertEquals(SMALLEST_NON_ZERO_VALUE, state.positionChangeEpsilon, 0.0);
+        assertEquals(MAX_ITERATIONS_DEFAULT, state.maxIterations);
+        assertEquals(WEIGHT_SCALING_FACTOR_DEFAULT, state.weightScalingFactor, 0.0);
+        assertEquals(WEIGHT_POWER_DEFAULT, state.weightPower, 0.0);
         equalPSP(parameters[8], state.initialPlacer);
         equalPSP(parameters[10], state.positionAlgorithm);
-        assertEquals(Double.MIN_VALUE, state.edgeScalingFactor, 0.0001);
-        assertEquals(Double.MIN_VALUE, state.edgeLengthMinimum, 0.0001);
+        assertEquals(0.0, state.edgeScalingFactor, 0.0);
+        assertEquals(SMALLEST_NON_ZERO_VALUE, state.edgeLengthMinimum, 0.0);
         assertEquals(REMOVE_EDGE_BENDS_DEFAULT, state.removeEdgeBends);
         assertTrue(state.intermediateUndoable);
         assertTrue(state.doAnimations);

@@ -95,7 +95,7 @@ public enum ConnectedComponentsHelper {
      * <ul>
      *     <li>regard only connected components in the selection</li>
      *     <li>use individual bounds method
-     *     {@link ConnectedComponentsHelper#getConnectedComponentBounds(List, double, double, double, double)}</li>
+     *     {@link ConnectedComponentsHelper#getConnectedComponentBounds(List, List, double, double, double, double)}</li>
      *     <li>make changes undoable (in one step)</li>
      *     <li>maybe make some perceived improvements to code regarding duplicates and strange code</li>
      * </ul>
@@ -130,7 +130,7 @@ public enum ConnectedComponentsHelper {
      * <ul>
      *     <li>regard only connected components in the selection</li>
      *     <li>use individual bounds method
-     *     {@link ConnectedComponentsHelper#getConnectedComponentBounds(List, double, double, double, double)}</li>
+     *     {@link ConnectedComponentsHelper#getConnectedComponentBounds(List, List, double, double, double, double)}</li>
      *     <li>make changes undoable (in one step)</li>
      *     <li>maybe make some perceived improvements to code regarding duplicates and strange code</li>
      * </ul>
@@ -172,7 +172,7 @@ public enum ConnectedComponentsHelper {
      * <ul>
      *     <li>regard only connected components in the selection</li>
      *     <li>use individual bounds method
-     *     {@link ConnectedComponentsHelper#getConnectedComponentBounds(List, double, double, double, double)}</li>
+     *     {@link ConnectedComponentsHelper#getConnectedComponentBounds(List, List, double, double, double, double)}</li>
      *     <li>make changes undoable (in one step)</li>
      *     <li>maybe make some perceived improvements to code regarding duplicates and strange code</li>
      * </ul>
@@ -193,7 +193,7 @@ public enum ConnectedComponentsHelper {
      * @throws IllegalArgumentException if any fraction is negative.
      *
      * @see de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#layoutConnectedComponents(Graph)
-     * @see ConnectedComponentsHelper#getConnectedComponentBounds(List, double, double, double, double)
+     * @see ConnectedComponentsHelper#getConnectedComponentBounds(List, List, double, double, double, double)
      *
      * @author Jannik
      */
@@ -216,7 +216,7 @@ public enum ConnectedComponentsHelper {
      * <ul>
      *     <li>regard only connected components in the selection</li>
      *     <li>use individual bounds method
-     *     {@link ConnectedComponentsHelper#getConnectedComponentBounds(List, double, double, double, double)}</li>
+     *     {@link ConnectedComponentsHelper#getConnectedComponentBounds(List, List, double, double, double, double)}</li>
      *     <li>make changes undoable (in one step)</li>
      *     <li>maybe make some perceived improvements to code regarding duplicates and strange code</li>
      * </ul>
@@ -242,7 +242,7 @@ public enum ConnectedComponentsHelper {
      * @throws IllegalArgumentException if any fraction is negative.
      *
      * @see de.ipk_gatersleben.ag_nw.graffiti.plugins.layouters.connected_components.ConnectedComponentLayout#layoutConnectedComponents(Graph)
-     * @see ConnectedComponentsHelper#getConnectedComponentBounds(List, double, double, double, double)
+     * @see ConnectedComponentsHelper#getConnectedComponentBounds(List, List, double, double, double, double)
      *
      * @author Jannik
      */
@@ -257,18 +257,25 @@ public enum ConnectedComponentsHelper {
         Objects.requireNonNull(connectedComponents);
         assert checkPositions(connectedComponents, connectedComponentPositions);
 
+        // make copy of lists to prevent sorting from tempering with their order
+        List<List<Node>> connectedComponentsCopy = new ArrayList<>(connectedComponents);
+        List<List<Vector2d>> connectedComponentPositionsCopy =
+                connectedComponentPositions == null ? null : new ArrayList<>(connectedComponentPositions);
+
+
         HashMap<Node, Vector2d> newNodePositions = new HashMap<>();
         HashMap<CoordinateAttribute, Vector2d> newBendPositions = new HashMap<>();
 
         // trivial cases
-        if (connectedComponents.size() == 0) {
+        if (connectedComponentsCopy.size() == 0) {
             return;
-        } else if (connectedComponents.size() == 1) {
+        } else if (connectedComponentsCopy.size() == 1) {
             // just place single component in upper right corner
-            List<Node> connectedComponent = connectedComponents.get(0);
+            List<Node> connectedComponent = connectedComponentsCopy.get(0);
             List<Vector2d> connectedComponentPos =
-                    connectedComponentPositions == null ? null : connectedComponentPositions.get(0);
-            Rectangle2D.Double bounds = ConnectedComponentsHelper.getConnectedComponentBounds(connectedComponent, marginFractionWidth,
+                    connectedComponentPositionsCopy == null ? null : connectedComponentPositionsCopy.get(0);
+            Rectangle2D.Double bounds = ConnectedComponentsHelper.getConnectedComponentBounds(
+                    connectedComponent, connectedComponentPos, marginFractionWidth,
                     marginFractionHeight, minMarginWidth, minMarginHeight);
             double shiftX = -bounds.x;
             double shiftY = -bounds.y;
@@ -297,27 +304,29 @@ public enum ConnectedComponentsHelper {
             // --- more work to do
 
             // sort by node count
-            connectedComponents.sort((l1, l2) -> l2.size() - l1.size());
-            if (connectedComponentPositions != null) {
-                connectedComponentPositions.sort((l1, l2) -> l2.size() - l1.size());
+            connectedComponentsCopy.sort((l1, l2) -> l2.size() - l1.size());
+            if (connectedComponentPositionsCopy != null) {
+                connectedComponentPositionsCopy.sort((l1, l2) -> l2.size() - l1.size());
             }
 
             // get components bounds
-            Rectangle2D.Double[] componentsBoundsWithAnchor = new Rectangle2D.Double[connectedComponents.size()];
-            for (int i = 0; i < connectedComponents.size(); i++) {
-                componentsBoundsWithAnchor[i] = ConnectedComponentsHelper.getConnectedComponentBounds(connectedComponents.get(i), marginFractionWidth,
-                        marginFractionHeight, minMarginWidth, minMarginHeight);
+            Rectangle2D.Double[] componentsBoundsWithAnchor = new Rectangle2D.Double[connectedComponentsCopy.size()];
+            for (int i = 0; i < connectedComponentsCopy.size(); i++) {
+                componentsBoundsWithAnchor[i] = ConnectedComponentsHelper.getConnectedComponentBounds(
+                        connectedComponentsCopy.get(i),
+                        connectedComponentPositionsCopy == null ? null : connectedComponentPositionsCopy.get(i),
+                        marginFractionWidth, marginFractionHeight, minMarginWidth, minMarginHeight);
             }
 
             // #######################################################################################
             // arrange components
-            Vector2d[] componentOffsets = new Vector2d[connectedComponents.size()];
+            Vector2d[] componentOffsets = new Vector2d[connectedComponentsCopy.size()];
             componentOffsets[0] = new Vector2d(0, 0);
 
             Vector2d[] bestComponentOffsets = new Vector2d[componentOffsets.length];
             double bestScore = 0;
 
-            for (int numberOfCCsInFirstLine = 1; numberOfCCsInFirstLine < connectedComponents.size(); numberOfCCsInFirstLine++) {
+            for (int numberOfCCsInFirstLine = 1; numberOfCCsInFirstLine < connectedComponentsCopy.size(); numberOfCCsInFirstLine++) {
                 // get maximum row Width
                 double maxRowWidth = 0;
                 double maxRowHeight = componentOffsets[0].y;
@@ -328,7 +337,7 @@ public enum ConnectedComponentsHelper {
                 double actRowOffsetY = 0;
                 double actRowOffsetX = 0;
 
-                for (int actCcCount = 0; actCcCount < connectedComponents.size(); actCcCount++) {
+                for (int actCcCount = 0; actCcCount < connectedComponentsCopy.size(); actCcCount++) {
                     double actEndX = actRowOffsetX + componentsBoundsWithAnchor[actCcCount].width;
                     double actEndY = actRowOffsetY + componentsBoundsWithAnchor[actCcCount].height;
 
@@ -366,10 +375,10 @@ public enum ConnectedComponentsHelper {
 
             // #######################################################################################
             // assign node position
-            for (int i = 0; i < connectedComponents.size(); i++) {
+            for (int i = 0; i < connectedComponentsCopy.size(); i++) {
                 Rectangle2D.Double rect = componentsBoundsWithAnchor[i]; // faster access
-                List<Node> connectedComponent = connectedComponents.get(i);
-                List<Vector2d> connectedComponentPos = connectedComponentPositions == null ? null : connectedComponentPositions.get(i);
+                List<Node> connectedComponent = connectedComponentsCopy.get(i);
+                List<Vector2d> connectedComponentPos = connectedComponentPositionsCopy == null ? null : connectedComponentPositionsCopy.get(i);
 
                 double shiftX = bestComponentOffsets[i].x - rect.x;
                 double shiftY = bestComponentOffsets[i].y - rect.y;
@@ -429,8 +438,9 @@ public enum ConnectedComponentsHelper {
             return true;
         } else if (connectedComponents.size() == connectedComponentPositions.size()) {
             for (int idx = 0; idx < connectedComponents.size(); idx++) {
-                if (connectedComponents.get(idx).size() != connectedComponentPositions.get(idx).size())
+                if (connectedComponents.get(idx).size() != connectedComponentPositions.get(idx).size()) {
                     return false;
+                }
             }
             return true;
         } else {
@@ -442,6 +452,9 @@ public enum ConnectedComponentsHelper {
      * Calculates the bounding rectangle of a connected component.
      *
      * @param connectedComponent the connected component which's bounds shall be calculated.
+     * @param connectedComponentPositions
+     *      the positions of the nodes in the connected component to be used.
+     *      If this is <code>null</code> the positions saved in the nodes are used instead.
      *
      * @param marginFractionWidth the size of the additional width margin as fraction of the calculated width. Must be {@code >= 0}.
      * @param marginFractionHeight the size of the additional height margin as fraction of the calculated height. Must be {@code >= 0}.
@@ -454,7 +467,7 @@ public enum ConnectedComponentsHelper {
      *
      * @author Jannik
      */
-    public static Rectangle2D.Double getConnectedComponentBounds(final List<Node> connectedComponent,
+    public static Rectangle2D.Double getConnectedComponentBounds(final List<Node> connectedComponent, final List<Vector2d> connectedComponentPositions,
                                                                  final double marginFractionWidth, final double marginFractionHeight,
                                                                  final double minMarginWidth, final double minMarginHeight) {
         if (marginFractionWidth < 0)
@@ -472,8 +485,10 @@ public enum ConnectedComponentsHelper {
         final Vector2d zeroSize = new Vector2d(0, 0); // use in case of error
 
         Vector2d position, size;
-        for (Node node : connectedComponent) {
-            position = AttributeHelper.getPositionVec2d(node); // center of node
+        for (int idx = 0; idx < connectedComponent.size(); idx++) {
+            Node node = connectedComponent.get(idx);
+            position = connectedComponentPositions == null ?
+                    AttributeHelper.getPositionVec2d(node) : new Vector2d(connectedComponentPositions.get(idx)); // center of node
             size = AttributeHelper.getSize(node); // x = width, y = height
             if (size == null) size = zeroSize;
 

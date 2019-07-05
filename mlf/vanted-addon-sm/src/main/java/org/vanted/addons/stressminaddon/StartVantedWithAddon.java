@@ -3,6 +3,8 @@ package org.vanted.addons.stressminaddon;
 
 import de.ipk_gatersleben.ag_nw.graffiti.plugins.gui.webstart.Main;
 
+import java.util.Arrays;
+
 public class StartVantedWithAddon {
 
 	/**
@@ -25,7 +27,12 @@ public class StartVantedWithAddon {
 	public static void main(String[] args) {
 		System.out.println("Starting VANTED with Add-on " + getAddonName()
 							+ " for development...");
-		Main.startVanted(args, getAddonName());
+		StressMinimizationLayout.debugModeDefault = args.length > 0 && args[0].equals("--debug"); // enable debugMode
+		String[] arguments = args;
+		if (StressMinimizationLayout.debugModeDefault) {
+			arguments = Arrays.copyOfRange(args, 1, args.length);
+		}
+		Main.startVanted(arguments, getAddonName());
 	}
 
 	public static String getAddonName() {

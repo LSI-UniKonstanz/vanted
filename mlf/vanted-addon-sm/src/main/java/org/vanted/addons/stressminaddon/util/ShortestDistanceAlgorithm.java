@@ -105,7 +105,9 @@ public enum  ShortestDistanceAlgorithm {
 
     /**
      * Executes the BFS algorithm form every node and returns the result in a {@link NodeValueMatrix}.
-     * BFSRunnable is called once on all nodes. These steps are parallelized.
+     * BFSRunnable is called once on all nodes. These steps are parallelized.<br>
+     * The {@link StressMinimizationLayout#INDEX_ATTRIBUTE} attribute of each node must be set to it's
+     * position in the nodes list.
      *
      * @param nodes the nodes to work with. The BFSs will not account for other nodes.
      * @param maxDepth the maximal depth to reach before terminating prematurely.
