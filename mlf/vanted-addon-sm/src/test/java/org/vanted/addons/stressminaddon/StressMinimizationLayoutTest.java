@@ -266,6 +266,7 @@ public class StressMinimizationLayoutTest {
         Thread.sleep(1000); // wait for execution to finish
         somethingChanged("execute (default)", original, workCopy);
 
+        System.err.println("TEST");
         // test with selection
         {
             // disable background tasks for here on
@@ -510,15 +511,15 @@ public class StressMinimizationLayoutTest {
         sm.setParameters(parameters);
         state = sm.state;
 
-        assertEquals(Double.NEGATIVE_INFINITY, state.stressEpsilon, 0.0001);
-        assertEquals(Double.NEGATIVE_INFINITY, state.positionChangeEpsilon, 0.0001);
-        assertEquals(Long.MAX_VALUE, state.maxIterations, 0.0001);
-        assertEquals(WEIGHT_SCALING_FACTOR_DEFAULT, state.weightScalingFactor, 0.0001);
-        assertEquals(WEIGHT_POWER_DEFAULT, state.weightPower, 0.0001);
+        assertEquals(Double.NEGATIVE_INFINITY, state.stressEpsilon, 0.0);
+        assertEquals(Double.NEGATIVE_INFINITY, state.positionChangeEpsilon, 0.0);
+        assertEquals(Long.MAX_VALUE, state.maxIterations);
+        assertEquals(WEIGHT_SCALING_FACTOR_DEFAULT, state.weightScalingFactor, 0.0);
+        assertEquals(WEIGHT_POWER_DEFAULT, state.weightPower, 0.0);
         equalPSP(parameters[8], state.initialPlacer);
         equalPSP(parameters[10], state.positionAlgorithm);
-        assertEquals(EDGE_SCALING_FACTOR_DEFAULT, state.edgeScalingFactor, 0.0001);
-        assertEquals(EDGE_LENGTH_MINIMUM_DEFAULT, state.edgeLengthMinimum, 0.0001);
+        assertEquals(EDGE_SCALING_FACTOR_DEFAULT, state.edgeScalingFactor, 0.0);
+        assertEquals(EDGE_LENGTH_MINIMUM_DEFAULT, state.edgeLengthMinimum, 0.0);
         assertEquals(REMOVE_EDGE_BENDS_DEFAULT, state.removeEdgeBends);
         assertTrue(state.intermediateUndoable);
         assertTrue(state.doAnimations);
@@ -538,15 +539,15 @@ public class StressMinimizationLayoutTest {
         sm.setParameters(parameters);
         state = sm.state;
 
-        assertEquals(Double.MIN_VALUE, state.stressEpsilon, 0.0001);
-        assertEquals(Double.MIN_VALUE, state.positionChangeEpsilon, 0.0001);
-        assertEquals(MAX_ITERATIONS_DEFAULT, state.maxIterations, 0.0001);
-        assertEquals(WEIGHT_SCALING_FACTOR_DEFAULT, state.weightScalingFactor, 0.0001);
-        assertEquals(WEIGHT_POWER_DEFAULT, state.weightPower, 0.0001);
+        assertEquals(SMALLEST_NON_ZERO_VALUE, state.stressEpsilon, 0.0);
+        assertEquals(SMALLEST_NON_ZERO_VALUE, state.positionChangeEpsilon, 0.0);
+        assertEquals(MAX_ITERATIONS_DEFAULT, state.maxIterations);
+        assertEquals(WEIGHT_SCALING_FACTOR_DEFAULT, state.weightScalingFactor, 0.0);
+        assertEquals(WEIGHT_POWER_DEFAULT, state.weightPower, 0.0);
         equalPSP(parameters[8], state.initialPlacer);
         equalPSP(parameters[10], state.positionAlgorithm);
-        assertEquals(Double.MIN_VALUE, state.edgeScalingFactor, 0.0001);
-        assertEquals(Double.MIN_VALUE, state.edgeLengthMinimum, 0.0001);
+        assertEquals(0.0, state.edgeScalingFactor, 0.0);
+        assertEquals(SMALLEST_NON_ZERO_VALUE, state.edgeLengthMinimum, 0.0);
         assertEquals(REMOVE_EDGE_BENDS_DEFAULT, state.removeEdgeBends);
         assertTrue(state.intermediateUndoable);
         assertTrue(state.doAnimations);

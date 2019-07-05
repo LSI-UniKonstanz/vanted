@@ -91,6 +91,9 @@ public class PivotMDS implements InitialPlacer {
         }
 
         double maxEuclid = findMaxEuclidean(newPosList);
+        if (maxEuclid == 0.0) {
+            return newPosList;
+        }
         double maxGraphDistance = distances.getMaximumValue();
         scaleInitialPos(maxEuclid, maxGraphDistance, newPosList);
 

@@ -69,6 +69,7 @@ public class PivotMDSTest {
         // test with squaring
         pivotMDS.doSquaring = true;
         pivotMDS.percentPivots = 100.0;
+        // TODO Fix after scaling is a thing
         List<Vector2d> positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
 
         // calculated for eigenvalues 4, 4, 1, 0

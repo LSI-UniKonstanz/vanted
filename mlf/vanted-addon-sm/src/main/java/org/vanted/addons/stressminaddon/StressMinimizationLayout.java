@@ -47,6 +47,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
     public static final String INDEX_ATTRIBUTE = ROOT_ATTRIBUTE + Attribute.SEPARATOR + "index";
     /** Path of an attribute that is set on a graph that is currently processed. */
     public static final String WORKING_ATTRIBUTE = ROOT_ATTRIBUTE + Attribute.SEPARATOR + "working";
+    /** The smallest value that will be used instead of 0 for some parameters. */
+    static final double SMALLEST_NON_ZERO_VALUE = 0.000000000000000001;
 
     // MultiLevelFramework support
     /** Name of attribute that signals the current graph is a coarsening level. */
@@ -104,8 +106,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
     public String getDescription() {
         return "<html>Performs the stress minimization layout on<br>" +
                 "the given graph.<br>" +
-                "A faster runtime (configurable below) may result<br>" +
-                "in a worse layout.</html>";
+                "A faster runtime may result in a worse<br>" +
+                "layout.</html>";
     }
 
     /**
@@ -198,12 +200,12 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             try {
                 state.startTime = System.currentTimeMillis();
 
-                System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + (state.status = "Start (n = " + pureNodes.size() + ")"));
+                state.status = "Start (n = " + pureNodes.size() + ")"; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
                 // remove bends
                 if (state.removeEdgeBends) {
                     GraphHelper.removeBendsBetweenSelectedNodes(pureNodes, true);
                 }
-                System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + (state.status = "Getting connected components..."));
+                state.status = "Getting connected components..."; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
                 // save old positions if the user only wants one position update
                 ArrayList<Vector2d> oldPositions = new ArrayList<>(0);
                 if (!state.intermediateUndoable) {
@@ -219,7 +221,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                 if (state.doAnimations) {
                     ConnectedComponentsHelper.layoutConnectedComponents(connectedComponents, state.intermediateUndoable);
                 }
-                System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + (state.status = "Got connected components. (" + connectedComponents.size() + ")"));
+                state.status = "Got connected components. (" + connectedComponents.size() + ")"; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
 
                 // TODO add random initial layout
 
@@ -235,7 +237,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                 ConcurrentMap<Node, Vector2d> move = new ConcurrentHashMap<>();
                 for (List<Node> component : connectedComponents) {
                     // Set positions attribute for hopefully better handling
-                    System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + (state.status = "Preparing connected components for algorithm.") + " (n = " + component.size() + ")");
+                    state.status = "Preparing connected components for algorithm."; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status + " (n = " + component.size() + ")");}
                     for (int pos = 0; pos < component.size(); pos++) {
                         component.get(pos).setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, pos);
                     }
@@ -267,7 +269,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                         state.graph.getListenerManager().transactionFinished(this);
                     }
                 }
-                System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + (state.status = "Finished preparing"));
+                state.status = "Finished preparing"; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
 
                 boolean someoneIsWorking = true;
 
@@ -276,7 +278,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                 // iterate
                 int iteration;
                 for (iteration = 1; state.keepRunning.get() && someoneIsWorking && iteration <= state.maxIterations; ++iteration) {
-                    System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + (state.status = "Iteration " + iteration));
+                    state.status = "Iteration " + iteration; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
                     someoneIsWorking = false;
                     move.clear();
                     // execute every work unit
@@ -288,7 +290,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                             unit.nextIteration();
 
                             if (state.doAnimations) {
-                                System.out.println((System.currentTimeMillis() - state.startTime) + " SM@" + unit.pos + ": Prepare result.");
+                                if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@" + unit.pos + ": Prepare result.");}
                                 if (state.moveIntoView) {
                                     connectedComponentListPos.set(unit.pos, unit.currentPositions);
                                 } else {
@@ -299,7 +301,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                                     move.putAll(result);
                                 }
                             }
-                            System.out.println((System.currentTimeMillis() - state.startTime) + " SM@" + unit.pos + ": Iteration finished.");
+                            if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@" + unit.pos + ": Iteration finished.");}
                         }));
                         // something was worked on
                         someoneIsWorking = true;
@@ -336,16 +338,13 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                         }
                     }
                 }
-                System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + (state.status = "Finish work."));
+                state.status = "Finish work."; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
 
 
-                System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + (state.status = "Postprocessing..."));
+                state.status = "Postprocessing..."; if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + state.status);}
                 // finish (remove helper attribute)
-                for (List<Node> connectedComponent : connectedComponents) {
-                    // Reset attributes
-                    for (Node node : connectedComponent) {
-                        node.removeAttribute(StressMinimizationLayout.INDEX_ATTRIBUTE);
-                    }
+                for (Node node : pureNodes) {
+                    node.removeAttribute(StressMinimizationLayout.INDEX_ATTRIBUTE);
                 }
 
                 if (!state.doAnimations) { // => !intermediateUndoable
@@ -515,7 +514,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         doubleParameter = (EnableableNumberParameter<Double>) params[1].getValue();
         if (doubleParameter.isEnabled()) {
             if (doubleParameter.getValue() == 0.0) {
-                this.state.stressEpsilon = Double.MIN_VALUE;
+                this.state.stressEpsilon = SMALLEST_NON_ZERO_VALUE;
             } else {
                 this.state.stressEpsilon = doubleParameter.getValue();
             }
@@ -526,7 +525,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         doubleParameter = (EnableableNumberParameter<Double>) params[2].getValue();
         if (doubleParameter.isEnabled()) {
             if (doubleParameter.getValue() == 0.0) {
-                this.state.positionChangeEpsilon = Double.MIN_VALUE;
+                this.state.positionChangeEpsilon = SMALLEST_NON_ZERO_VALUE;
             } else {
                 this.state.positionChangeEpsilon = doubleParameter.getValue();
             }
@@ -555,14 +554,10 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         this.state.positionAlgorithm.setParameters(selectorParameter.getUpdatedParameters());
         // General settings
         doubleParameter = (EnableableNumberParameter<Double>) params[12].getValue();
-        if (doubleParameter.getValue() == 0.0) {
-            this.state.edgeScalingFactor = Double.MIN_VALUE;
-        } else {
-            this.state.edgeScalingFactor = doubleParameter.getValue();
-        }
+        this.state.edgeScalingFactor = doubleParameter.getValue();
         doubleParameter = (EnableableNumberParameter<Double>) params[13].getValue();
         if (doubleParameter.getValue() == 0.0) {
-            this.state.edgeLengthMinimum = Double.MIN_VALUE;
+            this.state.edgeLengthMinimum = SMALLEST_NON_ZERO_VALUE;
         } else {
             this.state.edgeLengthMinimum = doubleParameter.getValue();
         }
@@ -750,12 +745,14 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 
         double result = 0.0;
         double parenthesis; // holds contents of parentheses
+        Vector2d iPos;
 
         // i < j is short for a double sum
-        for (int i = 0; i < nodes.size(); i++) {
-            for (int j = i+1; j < nodes.size(); j++) {
+        for (int i = 0; i < positions.size(); i++) {
+            iPos = positions.get(i);
+            for (int j = i+1; j < positions.size(); j++) {
                 // inner sum term
-                parenthesis = distances.get(i, j) - positions.get(i).distance(positions.get(j));
+                parenthesis = distances.get(i, j) - iPos.distance(positions.get(j));
                 result += weights.get(i, j)*parenthesis*parenthesis;
             }
         }
@@ -994,26 +991,28 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             this.pos = pos;
             this.nodes = nodes;
             this.state = state;
-            System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate distances..."));
+            if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate distances..."));}
             this.distances = ShortestDistanceAlgorithm.calculateShortestPaths(nodes, Integer.MAX_VALUE, state.multipleThreads); // TODO make configurable
-            System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate scaling factor..."));
+            if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate scaling factor..."));}
             final double scalingFactor = Math.max(
                     ConnectedComponentsHelper.getMaxNodeSize(nodes)*state.edgeScalingFactor, state.edgeLengthMinimum);
             // scale for better display
             // TODO maybe place this after initial layout to prevent over scaling
             this.distances.apply(x -> x*scalingFactor);
 
-            System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate initial layout..."));
+            if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate initial layout..."));}
             //this.currentPositions = nodes.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
             this.currentPositions = state.initialPlacer.calculateInitialPositions(nodes, this.distances);
             // calculate weight only before it's needed (to save some memory for the initial layout)
-            System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate weights..."));
+            if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate weights..."));}
             this.weights = this.distances.clone().apply(x -> state.weightScalingFactor *Math.pow(x, state.weightPower));
             // calculate first values
-            System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate initial stress..."));
-            this.currentStress = StressMinimizationLayout.calculateStress(this.currentPositions, this.distances, this.weights);
+            if (state.stressEpsilon != Double.NEGATIVE_INFINITY) { // only calculate if necessary
+                if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate initial stress..."));}
+                this.currentStress = StressMinimizationLayout.calculateStress(this.currentPositions, this.distances, this.weights);
+            }
             this.hasStopped = false;
-            System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Preprocessing finished."));
+            if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Preprocessing finished."));}
         }
 
         /**
@@ -1029,27 +1028,34 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             if (hasStopped) return this.currentPositions;
 
             // calculate new positions
-            System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+this.pos +": Iterate new positions...");
+            if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+this.pos +": Iterate new positions...");}
             List<Vector2d> newPositions = state.positionAlgorithm.nextIteration(
                     this.nodes, this.currentPositions, this.distances, this.weights);
 
-            // check position change
-            System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+this.pos +": Check position stop condition...");
-            if (differencePositionsSmallerEpsilon(newPositions, this.currentPositions, state.positionChangeEpsilon)) {
-                this.hasStopped = true;
-                System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+this.pos +": Iteration finished.");
-                return this.currentPositions = newPositions;
+            // check position change if necessary
+            if (state.positionChangeEpsilon != Double.NEGATIVE_INFINITY) {
+                if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+this.pos +": Check position stop condition...");}
+                if (differencePositionsSmallerEpsilon(newPositions, this.currentPositions, state.positionChangeEpsilon)) {
+                    this.hasStopped = true;
+                    if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+this.pos +": Iteration finished.");}
+                    return this.currentPositions = newPositions;
+                }
             }
 
-            // calculate new stress
-            System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+this.pos +": Calculate new stress...");
-            double newStress = StressMinimizationLayout.calculateStress(
-                    this.nodes, newPositions, this.distances, this.weights);
 
-            // shall we stop? is the change in stress or position is smaller than the given epsilon
-            System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+this.pos +": Check stress stop condition...");
-            if ((this.currentStress - newStress)/this.currentStress < state.stressEpsilon) {
-               this.hasStopped = true;
+            double newStress = Double.NaN;
+            // calculate new stress if necessary
+            if (state.stressEpsilon != Double.NEGATIVE_INFINITY) {
+                if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+this.pos +": Calculate new stress...");}
+                newStress = StressMinimizationLayout.calculateStress(newPositions, this.distances, this.weights);
+
+                // shall we stop? is the change in stress or position is smaller than the given epsilon
+                double stressChange = (this.currentStress - newStress)/this.currentStress;
+                if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+this.pos +": Check stress stop condition..." +
+                        " (" + currentStress + " => " + newStress + ", " + stressChange + ")");}
+                if (stressChange < state.stressEpsilon) {
+                    this.hasStopped = true;
+                }
             }
 
             // update with new values
