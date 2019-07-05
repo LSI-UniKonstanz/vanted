@@ -266,7 +266,6 @@ public class StressMinimizationLayoutTest {
         Thread.sleep(1000); // wait for execution to finish
         somethingChanged("execute (default)", original, workCopy);
 
-        System.err.println("TEST");
         // test with selection
         {
             // disable background tasks for here on
@@ -410,8 +409,8 @@ public class StressMinimizationLayoutTest {
 
         // test interruption
         workCopy = (Graph) original.copy();
-        final PrintStream oldErr = System.err;
-        final ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        PrintStream oldErr = System.err;
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
         System.setErr(new PrintStream(stream));
 
         sm.state.backgroundTask = false;
@@ -425,6 +424,63 @@ public class StressMinimizationLayoutTest {
         Thread.sleep(300); // wait for exception to be printed
         System.setErr(oldErr);
         assertFalse("Exception printed", stream.toString().trim().isEmpty());
+
+
+        // test static register method exceptions
+        InitialPlacer ip = new InitialPlacer() {
+            @Override public List<Vector2d> calculateInitialPositions(List<Node> nodes, NodeValueMatrix distances) { return null; }
+            @Override public String getName() { return "Dummy InitialPlacer"; }
+            @Override public String getDescription() { return null; }
+            @Override public Parameter[] getParameters() { return new Parameter[0]; }
+            @Override public void setParameters(Parameter[] parameters) { }
+        };
+        IterativePositionAlgorithm ipa = new IterativePositionAlgorithm() {
+            @Override public List<Vector2d> nextIteration(List<Node> nodes, List<Vector2d> positions, NodeValueMatrix distances, NodeValueMatrix weights) { return null; }
+            @Override public String getName() { return "Dummy IterativePositionAlgorithm"; }
+            @Override public String getDescription() { return null; }
+            @Override public Parameter[] getParameters() { return new Parameter[0]; }
+            @Override public void setParameters(Parameter[] parameters) { }
+        };
+        try {
+            // name already registered
+            try {StressMinimizationLayout.registerInitialPlacer(new PivotMDS()); fail("No exception thrown");} catch (IllegalArgumentException e) {}
+            try {StressMinimizationLayout.registerIterativePositionAlgorithm(new IntuitiveIterativePositionAlgorithm()); fail("No exception thrown");} catch (IllegalArgumentException e) {}
+            // no suitable constructor
+            try {StressMinimizationLayout.registerInitialPlacer(ip); fail("No exception thrown");} catch (IllegalArgumentException e) {}
+            try {StressMinimizationLayout.registerIterativePositionAlgorithm(ipa); fail("No exception thrown");} catch (IllegalArgumentException e) {}
+        } catch (Throwable thr) {
+            if ("No exception thrown".equals(thr.getMessage())) {
+                throw thr;
+            }
+            fail("Wrong exception thrown: " + t.getClass().getSimpleName());
+        }
+
+        // test cannot copy
+        initialPlacers.add(ip);
+        positionAlgorithms.add(ipa);
+        Parameter[] parameters = sm.getParameters();
+        JComboBox initialPlacerBox = ((JComboBox) ((ParameterizableSelectorParameter) parameters[8].getValue()).getComponent(0));
+        JComboBox iterAlgBox = ((JComboBox) ((ParameterizableSelectorParameter) parameters[10].getValue()).getComponent(0));
+
+        initialPlacerBox.setSelectedItem(ip.getName());
+        stream = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(stream));
+        sm.setParameters(parameters);
+        Thread.sleep(500);
+        System.setErr(oldErr);
+        initialPlacerBox.setSelectedIndex(0);
+        assertFalse("Exception printed initial placer", stream.toString().trim().isEmpty());
+
+        iterAlgBox.setSelectedItem(ipa.getName());
+        stream = new ByteArrayOutputStream();
+        System.setErr(new PrintStream(stream));
+        sm.setParameters(parameters);
+        Thread.sleep(500);
+        System.setErr(oldErr);
+        iterAlgBox.setSelectedIndex(0);
+        assertFalse("Exception printed iteration position algorithm", stream.toString().trim().isEmpty());
+        initialPlacers.removeLast();
+        positionAlgorithms.removeLast();
     }
 
     /**
@@ -474,6 +530,7 @@ public class StressMinimizationLayoutTest {
         Parameter[] parameters = sm.getParameters();
         assertNotNull(parameters);
         assertTrue(parameters.length > 0);
+        assertSame("parameters cached", parameters, sm.getParameters());
     }
 
     /**
@@ -517,7 +574,9 @@ public class StressMinimizationLayoutTest {
         assertEquals(WEIGHT_SCALING_FACTOR_DEFAULT, state.weightScalingFactor, 0.0);
         assertEquals(WEIGHT_POWER_DEFAULT, state.weightPower, 0.0);
         equalPSP(parameters[8], state.initialPlacer);
+        assertNotSame(state.initialPlacer, initialPlacers.get(0)); // check if an copy was created
         equalPSP(parameters[10], state.positionAlgorithm);
+        assertNotSame(state.positionAlgorithm, positionAlgorithms.get(0)); // check if an copy was created
         assertEquals(EDGE_SCALING_FACTOR_DEFAULT, state.edgeScalingFactor, 0.0);
         assertEquals(EDGE_LENGTH_MINIMUM_DEFAULT, state.edgeLengthMinimum, 0.0);
         assertEquals(REMOVE_EDGE_BENDS_DEFAULT, state.removeEdgeBends);
@@ -565,6 +624,59 @@ public class StressMinimizationLayoutTest {
     private void equalPSP(final Parameter expected, final Parameterizable actual) {
         assertEquals(actual.getClass(),
                 ((ParameterizableSelectorParameter) expected.getValue()).getSelectedParameterizable().getClass());
+    }
+
+    /**
+     * Test the static registration algorithms
+     * {@link StressMinimizationLayout#registerInitialPlacer(InitialPlacer)},
+     * {@link StressMinimizationLayout#registerIterativePositionAlgorithm(IterativePositionAlgorithm)},
+     * {@link StressMinimizationLayout#getInitialPlacerNames()} and
+     * {@link StressMinimizationLayout#getIterativePositionAlgorithmNames()}.
+     */
+    @Test
+    public void registers() {
+
+        DummyInitialPlacer ip = new DummyInitialPlacer();
+        DummyIterativePositionAlgorithm ipa = new DummyIterativePositionAlgorithm();
+
+        System.out.println(Arrays.toString(DummyIterativePositionAlgorithm.class.getDeclaredConstructors()));
+
+        Parameter[] parameters = sm.getParameters();
+
+        assertSame("parameters cached", parameters, sm.getParameters());
+
+        registerInitialPlacer(ip);
+        registerIterativePositionAlgorithm(ipa);
+
+        // initial placers
+        assertTrue("ip in list", initialPlacers.contains(ip));
+        assertTrue("ip name in list", StressMinimizationLayout.getInitialPlacerNames().contains(ip.getName()));
+
+        // iterative position algorithm
+        assertTrue("ipa in list", positionAlgorithms.contains(ipa));
+        assertTrue("ipa name in list", StressMinimizationLayout.getIterativePositionAlgorithmNames().contains(ipa.getName()));
+
+        assertNotSame("parameters updated", parameters, sm.getParameters());
+        initialPlacers.removeLast();
+        positionAlgorithms.removeLast();
+    }
+    /** Dummy {@link InitialPlacer} for test {@link #registers()}. @author Jannik */
+    static class DummyInitialPlacer implements InitialPlacer {
+        public DummyInitialPlacer() {}
+        @Override public List<Vector2d> calculateInitialPositions(List<Node> nodes, NodeValueMatrix distances) { return null; }
+        @Override public String getName() { return "Dummy InitialPlacer"; }
+        @Override public String getDescription() { return null; }
+        @Override public Parameter[] getParameters() { return new Parameter[0]; }
+        @Override public void setParameters(Parameter[] parameters) { }
+    }
+    /** Dummy {@link IterativePositionAlgorithm} for test {@link #registers()}. @author Jannik */
+    static class DummyIterativePositionAlgorithm implements IterativePositionAlgorithm {
+        private DummyIterativePositionAlgorithm() {}
+        @Override public List<Vector2d> nextIteration(List<Node> nodes, List<Vector2d> positions, NodeValueMatrix distances, NodeValueMatrix weights) { return null; }
+        @Override public String getName() { return "Dummy IterativePositionAlgorithm"; }
+        @Override public String getDescription() { return null; }
+        @Override public Parameter[] getParameters() { return new Parameter[0]; }
+        @Override public void setParameters(Parameter[] parameters) { }
     }
 
     /**

@@ -5,11 +5,9 @@ import org.apache.commons.math.linear.RealMatrix;
 import org.apache.commons.math.linear.RealMatrixImpl;
 import org.graffiti.graph.Node;
 import org.graffiti.plugin.algorithm.Algorithm;
+import org.graffiti.plugin.parameter.BooleanParameter;
 import org.graffiti.plugin.parameter.Parameter;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
-
-import org.graffiti.plugin.parameter.BooleanParameter;
-
 import org.vanted.addons.stressminaddon.util.gui.EnableableNumberParameter;
 
 import java.util.*;

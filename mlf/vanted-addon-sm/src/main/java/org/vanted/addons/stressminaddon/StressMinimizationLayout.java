@@ -20,20 +20,23 @@ import org.vanted.addons.stressminaddon.util.ConnectedComponentsHelper;
 import org.vanted.addons.stressminaddon.util.NodeValueMatrix;
 import org.vanted.addons.stressminaddon.util.NullPlacer;
 import org.vanted.addons.stressminaddon.util.ShortestDistanceAlgorithm;
+import org.vanted.addons.stressminaddon.util.gui.Describable;
 import org.vanted.addons.stressminaddon.util.gui.EnableableNumberParameter;
+import org.vanted.addons.stressminaddon.util.gui.Parameterizable;
 import org.vanted.addons.stressminaddon.util.gui.ParameterizableSelectorParameter;
 
 import javax.swing.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /**
- * Implements a version of a stress minimization add-on that can be used
- * in VANTED.
+ * Implements a version of a stress minimization add-on that can be used in VANTED.
  */
-public class StressMinimizationLayout extends AbstractEditorAlgorithm {
+public class StressMinimizationLayout extends AbstractEditorAlgorithm implements Parameterizable, Describable {
 
     /** The current state of this {@link StressMinimizationLayout}, that is not used in an call of {@link #execute()}. */
     State state = new State();
@@ -96,8 +99,128 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
     /** Whether the algorithm should use multiple threads by default. */
     static final Boolean MULTIPLE_THREADS_DEFAULT = Boolean.TRUE;
 
+    /**
+     * Contains the registered initial placers.
+     * New initial placers can be registered using the {@link #registerInitialPlacer(InitialPlacer)} method.
+     */
+    static final LinkedList<InitialPlacer> initialPlacers = new LinkedList<>();
+
+    /**
+     * Contains the registered iterative algorithms.
+     * New initial placers can be registered using the {@link #registerIterativePositionAlgorithm(IterativePositionAlgorithm)}
+     * method.
+     */
+    static final LinkedList<IterativePositionAlgorithm> positionAlgorithms = new LinkedList<>();
+
+
     /** Contains the parameters of this {@link StressMinimizationLayout}. */
     private Parameter[] parameters;
+
+    /**
+     * Contains the number of {@link InitialPlacer}s and {@link IterativePositionAlgorithm}s in used
+     * by this {@link StressMinimizationLayout}. This value is used to determine whether the parameters should
+     * be updated.
+     */
+    private int numberOfSubAlgorithms;
+
+
+    /**
+     * Registers a new initial placer for all {@link StressMinimizationLayout} instances.<br>
+     * This initial placer must also have a default Constructor without any arguments.
+     * This constructor does not need to be public (at will be accessed via reflection)
+     * but the resulting object must behave as desired.<br>
+     *
+     * If a {@link StressMinimizationLayout} has already initialized it's cached parameter list, this list will
+     * be updated on the next call of {@link #getParameters()} and every changes made by the user will be lost!
+     *
+     * @param initialPlacer
+     *      the initial placer to add. It's name may not be <code>null</code> and must not be already contained
+     *      in the internal list of initial placers.
+     * @author Jannik
+     */
+    public static void registerInitialPlacer(final InitialPlacer initialPlacer) {
+        Objects.requireNonNull(initialPlacer);
+        final String name = initialPlacer.getName();
+        Objects.requireNonNull(name, "The name of the Initial Placer may not be null!");
+
+        for (InitialPlacer placer : initialPlacers) {
+            if (placer.getName().trim().equals(name)) {
+                throw new IllegalArgumentException("An Initial Placer with this name is already registered.");
+            }
+        }
+
+        for (Constructor<?> constructor : initialPlacer.getClass().getDeclaredConstructors()) {
+            if (constructor.getParameterCount() == 0) {
+                initialPlacers.add(initialPlacer);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("The Iterative Position algorithm has no default constructor.");
+    }
+
+    /**
+     * Registers a new iterative position algorithm for all {@link StressMinimizationLayout} instances.<br>
+     * This iterative position algorithm must also have a default Constructor without any arguments.
+     * This constructor does not need to be public (at will be accessed via reflection) but the resulting object
+     * must behave as desired.<br>
+     *
+     * If a {@link StressMinimizationLayout} has already initialized it's cached parameter list, this list will
+     * be updated on the next call of {@link #getParameters()} and every changes made by the user will be lost!
+     *
+     * @param iterativePositionAlgorithm
+     *      the iterative position algorithm to add. It's name may not be <code>null</code> and must not be already contained
+     *      in the internal list of iterative position algorithms.
+     * @author Jannik
+     */
+    public static void registerIterativePositionAlgorithm(final IterativePositionAlgorithm iterativePositionAlgorithm) {
+        Objects.requireNonNull(iterativePositionAlgorithm);
+        final String name = iterativePositionAlgorithm.getName();
+        Objects.requireNonNull(name, "The name of the Iterative Position Algorithm may not be null!");
+
+        for (IterativePositionAlgorithm iterative : positionAlgorithms) {
+            if (iterative.getName().trim().equals(name)) {
+                throw new IllegalArgumentException("An Iterative Position Algorithm with this name is already registered.");
+            }
+        }
+
+        for (Constructor<?> constructor : iterativePositionAlgorithm.getClass().getDeclaredConstructors()) {
+            if (constructor.getParameterCount() == 0) {
+                positionAlgorithms.add(iterativePositionAlgorithm);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("The Iterative Position algorithm has no default constructor.");
+    }
+
+    /**
+     * @return
+     *      a list of names of already registered {@link InitialPlacer}s.
+     * @author Jannik
+     */
+    public static List<String> getInitialPlacerNames() {
+        return initialPlacers.stream().map(Describable::getName).collect(Collectors.toList());
+    }
+
+    /**
+     * @return
+     *      a list of names of already registered {@link IterativePositionAlgorithm}s.
+     * @author Jannik
+     */
+    public static List<String> getIterativePositionAlgorithmNames() {
+        return positionAlgorithms.stream().map(Describable::getName).collect(Collectors.toList());
+    }
+
+    /*
+     * Registers the default initial placers.
+     * @author Jannik
+     */
+    static {
+        // register default initial placers
+        registerInitialPlacer(new PivotMDS());
+        registerInitialPlacer(new NullPlacer());
+        // register default intuitive position algorithms
+        registerIterativePositionAlgorithm(new IntuitiveIterativePositionAlgorithm());
+    }
 
     /**
      * @return the description of the algorithm.
@@ -401,14 +524,19 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
     }
 
     /**
-     * @return the parameters the algorithm uses.
+     * For a list of the parameters and their indices see {@link #setParameters(Parameter[])}.
+     * @return
+     *      the parameters the algorithm uses. The value of these
+     *      parameters will be reset if any new {@link InitialPlacer}s or {@link IterativePositionAlgorithm}s were registered
+     *      in the meantime.
      *
      * @author Jannik
      */
     @Override
     public Parameter[] getParameters() {
-        if (this.parameters == null) {
+        if (this.parameters == null || this.numberOfSubAlgorithms != initialPlacers.size() + positionAlgorithms.size()) {
             this.parameters = getNewParameters();
+            this.numberOfSubAlgorithms = initialPlacers.size() + positionAlgorithms.size();
         }
         return this.parameters;
     }
@@ -419,13 +547,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
      * @author Jannik
      */
     private Parameter[] getNewParameters() {
-
-        // initial placers
-        InitialPlacer[] initialPlacers = new InitialPlacer[] {new PivotMDS(), new NullPlacer()};
-        // iterative algorithms
-        IterativePositionAlgorithm[] iterativeAlgorithms = new IterativePositionAlgorithm[] {new IntuitiveIterativePositionAlgorithm()};
-
-        Parameter[] result = new Parameter[] {
+        return new Parameter[] {
                 new JComponentParameter(new JPanel(), "<html><u>Stop criterion</u></html>",
                         "<html>Select one or multiple stop criterion for the algorithm.<br>This can be used to influence running time and quality.</html>"), //hacky section header
                 EnableableNumberParameter.canBeEnabledDisabled(STRESS_EPSILON_DEFAULT,
@@ -459,12 +581,12 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                                 "The weight function is &alpha;&delta;<sup>&beta;</sup><sub>ij</sub>.</html>"),
                 new JComponentParameter(new JPanel(), "<html><u>Initial layout</u></html>",
                         "<html>The layout to apply before the actual algorithm is run.</html>"), //hacky section header
-                ParameterizableSelectorParameter.getFromList(0, new ArrayList<>(Arrays.asList(initialPlacers)),
+                ParameterizableSelectorParameter.getFromList(0, new ArrayList<>(initialPlacers),
                         selection, "Select layout",
                         "<html>The layout to apply before the actual algorithm is run.</html>"),
                 new JComponentParameter(new JPanel(), "<html><u>Iterative algorithm</u></html>",
                         "<html>The algorithm that should be used to calculate the new positions of in every iteration step.</html>"), //hacky section header
-                ParameterizableSelectorParameter.getFromList(0, new ArrayList<>(Arrays.asList(iterativeAlgorithms)),
+                ParameterizableSelectorParameter.getFromList(0, new ArrayList<>(positionAlgorithms),
                         selection, "Select algorithm",
                         "<html>The algorithm that should be used to calculate the new positions of in every iteration step.</html>"),
                 new JComponentParameter(new JPanel(), "<html><u>General layout</u></html>",
@@ -498,11 +620,36 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                                 "Increases overall performance in most cases.</html>"),
 
         };
-        return result;
     }
 
     /**
-     * @param params set the parameters.
+     * Sets the parameters. The following parameters are expected at the different indices:
+     * <table>
+     *      <tr><th>Index</th><th>Name</th></tr>
+     *      <tr><td>0</td><td></td></tr>
+     *      <tr><td>1</td><td>Stress change</td></tr>
+     *      <tr><td>2</td><td>Position change</td></tr>
+     *      <tr><td>3</td><td>Max iterations</td></tr>
+     *      <tr><td>4</td><td></td></tr>
+     *      <tr><td>5</td><td>Scaling factor</td></tr>
+     *      <tr><td>6</td><td>Distance power</td></tr>
+     *      <tr><td>7</td><td></td></tr>
+     *      <tr><td>8</td><td>Initial layout</td></tr>
+     *      <tr><td>9</td><td></td></tr>
+     *      <tr><td>10</td><td>Iterative algorithm</td></tr>
+     *      <tr><td>11</td><td></td></tr>
+     *      <tr><td>12</td><td>Edge scaling factor</td></tr>
+     *      <tr><td>13</td><td>Edge length minimum</td></tr>
+     *      <tr><td>14</td><td>Remove edge bends</td></tr>
+     *      <tr><td>15</td><td>Iterations undoable</td></tr>
+     *      <tr><td>16</td><td>Animate iterations</td></tr>
+     *      <tr><td>17</td><td>Move into view</td></tr>
+     *      <tr><td>18</td><td></td></tr>
+     *      <tr><td>19</td><td>Run in background</td></tr>
+     *      <tr><td>20</td><td>Use parallelism</td></tr>
+     * </table>
+     *
+     * @param params the parameters to be set.
      */
     @Override
     @SuppressWarnings("unchecked") // will always work (see above) if calling class does not temper with args too much
@@ -546,12 +693,12 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         this.state.weightPower = doubleParameter.getValue();
         // initial layout
         selectorParameter = ((ParameterizableSelectorParameter) params[8].getValue());
-        this.state.initialPlacer = ((InitialPlacer) selectorParameter.getSelectedParameterizable());
-        this.state.initialPlacer.setParameters(selectorParameter.getUpdatedParameters());
+        InitialPlacer templateInitialPlacer = ((InitialPlacer) selectorParameter.getSelectedParameterizable());
+        Parameter[] parametersInitialPlacer = selectorParameter.getUpdatedParameters();
         // position algorithm
         selectorParameter = ((ParameterizableSelectorParameter) params[10].getValue());
-        this.state.positionAlgorithm = ((IterativePositionAlgorithm) selectorParameter.getSelectedParameterizable());
-        this.state.positionAlgorithm.setParameters(selectorParameter.getUpdatedParameters());
+        IterativePositionAlgorithm templateIterativePositionAlgorithm = ((IterativePositionAlgorithm) selectorParameter.getSelectedParameterizable());
+        Parameter[] parametersIterativePositionAlgorithm = selectorParameter.getUpdatedParameters();
         // General settings
         doubleParameter = (EnableableNumberParameter<Double>) params[12].getValue();
         this.state.edgeScalingFactor = doubleParameter.getValue();
@@ -573,6 +720,26 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         // Threading
         this.state.backgroundTask = ((BooleanParameter) params[19]).getBoolean();
         this.state.multipleThreads = ((BooleanParameter) params[20]).getBoolean();
+
+        // Create copy of InitialPlacer and IterativePositionAlgorithm
+        try {
+            final Constructor<? extends InitialPlacer> constructor =
+                    templateInitialPlacer.getClass().getDeclaredConstructor();
+            constructor.setAccessible(true);
+            this.state.initialPlacer = constructor.newInstance();
+            this.state.initialPlacer.setParameters(parametersInitialPlacer);
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        try {
+            final Constructor<? extends IterativePositionAlgorithm> constructor =
+                    templateIterativePositionAlgorithm.getClass().getDeclaredConstructor();
+            constructor.setAccessible(true);
+            this.state.positionAlgorithm = constructor.newInstance();
+            this.state.positionAlgorithm.setParameters(parametersIterativePositionAlgorithm);
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
     }
 
     /*
