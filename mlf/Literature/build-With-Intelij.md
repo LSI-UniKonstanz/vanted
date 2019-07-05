@@ -1,24 +1,26 @@
-# Building Vanted
+# Building VANTED Add-Ons with IntelliJ
 
-## Cloning Vanted
+## Cloning VANTED
 - Cloning/pulling our team repository
 
-## Cloning vanted-lib-repository
-- git clone https://bitbucket.org/vanted-dev/vanted-lib-repository.git 
-cloning directly into the team repository might be prohibited by git.
-- copy vanted-libs-repository to path of VANTED(next to it)
-- remove the hidden git folder from the copy to avoid conflicts.
-- add vanted-libs-repository copy in team repo to team repos ignore.
+## Cloning `vanted-lib-repository`
+- `git clone https://bitbucket.org/vanted-dev/vanted-lib-repository.git`
+  Cloning directly into the team repository might be prohibited by git.
+- Copy `vanted-libs-repository` to path of VANTED (next to it)
+- Remove the hidden git folder from the copy to avoid conflicts.
+- Add `vanted-libs-repository` copy in team repo to team repos ignore.
 
 ## Building VANTED Using InteliJ+Ant
-- Add Ant to the GUI. Add /VANTED/build.xml
-- Change properties (increase max Heap size  and max Stack size.  2GB and 0.5GB did the trick)
-- Run building Process. SInce the fatjar is needed it is possible that without additional selection just the core version is built.
+- Add Ant to the GUI (View > Tool Windows > Ant Build). Add `/VANTED/build.xml`
+- Change properties (increase max Heap size and max Stack size of Ant. 2GB and 0.5GB did the trick)
+- Run build process. Since the fatjar is needed it is possible that without additional selection just the core version is built.
 
 
-## Running VANTED addons Using InteliJ
--Add the Vanted.jar as librabry to the project structure (VANTED\target\jar\vanted-fatjar-ver2.6.5-build-20190527-10.jar)
--include VANTED sources (VANTED\src\main\java)
--Edit Run configuration: 
-    Choose MainClass StartVantedWithAddon (given by input prompt)
-    set working inventory to the classes working dir.
+## Running VANTED Addons Using InteliJ
+- Add the VANTED fatjar JAR file as librabry to the project structure (`VANTED/target/jar/vanted-fatjar-ver2.6.5-build-[...].jar`)
+- Include VANTED sources (`VANTED/src/main/java`)
+- Edit Run configuration: 
+    - Choose MainClass StartVantedWithAddon (given by input prompt)
+    - (Maybe set working directory to the classes working dir.)
+    - Make sure assertions are disabled if performance is a concern (VM Option `-da`)
+    - If you need to layout large graphs, you might need to increase the Heap size of the JVM (e.g. `-Xmx4g`)
