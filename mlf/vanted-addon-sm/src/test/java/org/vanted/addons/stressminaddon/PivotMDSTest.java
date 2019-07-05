@@ -17,9 +17,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import static data.TestGraphs.GRAPH_1_DISTANCES;
-import static data.TestGraphs.GRAPH_1_NODES;
+import static data.TestGraphs.*;
 import static org.junit.Assert.*;
+import static org.vanted.addons.stressminaddon.PivotMDS.*;
 
 
 /**
@@ -46,7 +46,8 @@ public class PivotMDSTest {
     @Before
     public void setUp() throws NoSuchFieldException, IllegalAccessException {
         pivotMDS = new PivotMDS();
-        pivotMDS.doSquaring = true; // compatibility with old tests
+        pivotMDS.useQuadraticDoubleCenter = true; // compatibility with old tests
+        pivotMDS.minimumAmountPivots = 1;
         random = new Random(42);
         // overwrite internal random for consistency
         final Field rand = PivotMDS.class.getDeclaredField("RAND");
@@ -61,15 +62,15 @@ public class PivotMDSTest {
     /**
      * Test method {@link PivotMDS#calculateInitialPositions(List, NodeValueMatrix)}
      *
-     * @author Jannik
+     * @author Jannik, theo
      */
     @Test
     public void calculateInitialPositions() {
         random.setSeed(42);
-        // test with squaring
-        pivotMDS.doSquaring = true;
+        // test with useQuadraticDoubleCenter
+        pivotMDS.useQuadraticDoubleCenter = true;
         pivotMDS.percentPivots = 100.0;
-        // TODO Fix after scaling is a thing
+        pivotMDS.useScaling = false;
         List<Vector2d> positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
 
         // calculated for eigenvalues 4, 4, 1, 0
@@ -83,8 +84,29 @@ public class PivotMDSTest {
             assertEquals("Y pos", expectedYPos[idx], position.y, 0.0001);
         }
 
-        // test without squaring
-        pivotMDS.doSquaring = false;
+        // test scaling
+        double maxEuclid =  pivotMDS.findMaxEuclidean(positions);
+        random.setSeed(42);
+        pivotMDS.useScaling = true;
+        positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
+
+        double maxDistance = GRAPH_1_DISTANCES.getMaximumValue();
+        double scalingFactor = maxDistance/maxEuclid;
+
+
+        for (int idx = 0; idx < positions.size(); idx++) {
+            Vector2d position = positions.get(idx);
+
+            assertEquals("X pos", expectedXPos[idx] *scalingFactor, position.x , 0.0001);
+            assertEquals("Y pos", expectedYPos[idx] *scalingFactor, position.y, 0.0001);
+        }
+        // should have been scaled to maximum graph theoretical distance.
+        assertEquals("Right scale", maxDistance, pivotMDS.findMaxEuclidean(positions), 0.0001);
+
+
+        // test without useQuadraticDoubleCenter
+        pivotMDS.useQuadraticDoubleCenter = false;
+        pivotMDS .useScaling = false;
         positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
         // calculated for eigenvalues 1, 1, 0, 0
         // with eigenvectors (0,0,-1,1),(-1,1,0,0),(0,0,1,1),(1,1,0,0)
@@ -106,6 +128,21 @@ public class PivotMDSTest {
             assertEquals("X pos", expectedXPos[idx], position.x, 0);
             assertEquals("Y pos", expectedYPos[idx], position.y, 0);
         }
+
+        // test scaling for 1 pivot edge case
+        expectedXPos = new double[GRAPH_1_POSITIONS.size()];
+        expectedYPos = new double[GRAPH_1_POSITIONS.size()];
+        pivotMDS.useScaling = true;
+        pivotMDS.minimumAmountPivots = 1;
+        pivotMDS.percentPivots = 0.0;
+        positions = pivotMDS.calculateInitialPositions(GRAPH_1_NODES, GRAPH_1_DISTANCES);
+
+        for (int idx = 0; idx < positions.size(); idx++) {
+            Vector2d position = positions.get(idx);
+
+            assertEquals("X pos", expectedXPos[idx], position.x , 0.0001);
+            assertEquals("Y pos", expectedYPos[idx], position.y, 0.0001);
+        }
     }
 
 
@@ -126,8 +163,8 @@ public class PivotMDSTest {
         int[] distanceTranslation = pivotMDS.getPivots(GRAPH_1_DISTANCES, amountPivots, pivotTranslation, inversePivotTranslation);
         assertEquals(4, GRAPH_1_NODES.size());
 
-        // test with squaring
-        pivotMDS.doSquaring = true;
+        // test with useQuadraticDoubleCenter
+        pivotMDS.useQuadraticDoubleCenter = true;
         RealMatrixImpl expected = new RealMatrixImpl(GRAPH_1_NODES.size(), amountPivots); // 4x3!
         double[][] expectedVals = expected.getDataRef();
         expectedVals[0] = new double[]{+5 / 6.0, -7 / 6.0, +1 / 3.0};
@@ -140,8 +177,8 @@ public class PivotMDSTest {
             assertArrayEquals("Row (squared)" + col, expectedVals[col], actualVals[col], 0.0001);
         }
 
-        // test without squaring
-        pivotMDS.doSquaring = false;
+        // test without useQuadraticDoubleCenter
+        pivotMDS.useQuadraticDoubleCenter = false;
         expectedVals[0] = new double[]{+1 / 2.0, -1 / 2.0,       +0};
         expectedVals[1] = new double[]{-1 / 2.0, +1 / 2.0,       +0};
         expectedVals[2] = new double[]{-1 / 6.0, -1 / 6.0, +1 / 3.0};
@@ -169,8 +206,8 @@ public class PivotMDSTest {
         assertEquals(4, GRAPH_1_NODES.size());
 
         int[] distanceTranslation = pivotMDS.getPivots(GRAPH_1_DISTANCES, amountPivots, pivotTranslation, inversePivotTranslation);
-        // test with squaring
-        pivotMDS.doSquaring = true;
+        // test with useQuadraticDoubleCenter
+        pivotMDS.useQuadraticDoubleCenter = true;
         RealMatrix testC = pivotMDS.doubleCenter(GRAPH_1_DISTANCES, amountPivots, distanceTranslation);
 
         RealMatrixImpl randomVec = new RealMatrixImpl(amountPivots, 1);
@@ -193,8 +230,8 @@ public class PivotMDSTest {
                     eigenVecTest.getEntry(row, 0), 0.0001);
         }
 
-        // test without squaring
-        pivotMDS.doSquaring = false;
+        // test without useQuadraticDoubleCenter
+        pivotMDS.useQuadraticDoubleCenter = false;
         testC = pivotMDS.doubleCenter(GRAPH_1_DISTANCES, amountPivots, distanceTranslation);
 
         ctc = testC.transpose().multiply(testC);
@@ -287,7 +324,7 @@ public class PivotMDSTest {
      */
     @Test
     public void getEuclideanNorm() {
-       // with test vector
+        // with test vector
         RealMatrixImpl vec = new RealMatrixImpl(3, 1);
         double[][] matrixVals = vec.getDataRef();
         matrixVals[0][0] =  21;
@@ -297,6 +334,16 @@ public class PivotMDSTest {
         double expected = Math.sqrt((21+42)*42);
         double actual   = pivotMDS.getEuclideanNorm(vec);
         assertEquals("euclidean norm", expected, actual, 0.001);
+    }
+
+    /**
+     * Test the method {@link PivotMDS#findMaxEuclidean(List)}
+     * @author Jannik
+     */
+    @Test
+    public void findMaxEuclidean() {
+        // test with
+        assertEquals("max euclid", Math.sqrt(2), pivotMDS.findMaxEuclidean(GRAPH_1_POSITIONS), 0.0001);
     }
 
     /**
@@ -346,7 +393,6 @@ public class PivotMDSTest {
      */
     @Test
     public void getParameters() {
-        // should not have any parameters
         Parameter[] parameters = pivotMDS.getParameters();
         assertNotNull(parameters);
         assertTrue(parameters.length > 0);
@@ -354,24 +400,28 @@ public class PivotMDSTest {
 
     /**
      * Test method {@link PivotMDS#setParameters(Parameter[])}
-     * @author Jannik
+     * @author theo, Jannik
      */
     @Test
     public void setParameters() {
         Parameter[] parameters = pivotMDS.getParameters();
         pivotMDS.setParameters(parameters);
 
-        assertEquals(pivotMDS.AMOUNT_PIVOTS_DEFAULT,pivotMDS.percentPivots, 0.00001 );
-        assertEquals(pivotMDS.QUADRATIC_DOUBLECENTER_DEFAULT, pivotMDS.doSquaring);
+        assertEquals(PERCENT_PIVOTS_DEFAULT,pivotMDS.percentPivots, 0.00001 );
+        assertEquals(USE_QUADRATIC_DOUBLE_CENTER_DEFAULT, pivotMDS.useQuadraticDoubleCenter);
+        assertEquals(USE_SCALING_DEFAULT, pivotMDS.useScaling);
+        assertEquals(MINIMUM_AMOUNT_PIVOTS_DEFAULT, pivotMDS.minimumAmountPivots);
 
         ((JSpinner) ((EnableableNumberParameter) parameters[0].getValue()).getComponent(0)).setValue(0.0);
-        ((BooleanParameter) parameters[1]).setValue(true);
-        pivotMDS.setParameters(parameters); // should still be executed correctly
+        ((JSpinner) ((EnableableNumberParameter) parameters[1].getValue()).getComponent(0)).setValue(Integer.MAX_VALUE);
+        ((BooleanParameter) parameters[2]).setValue(true);
+        ((BooleanParameter) parameters[3]).setValue(false);
+        pivotMDS.setParameters(parameters);
 
         assertEquals(0.0,pivotMDS.percentPivots, 0.00001 );
-        assertEquals(true, pivotMDS.doSquaring);
-
-
+        assertEquals(Integer.MAX_VALUE, pivotMDS.minimumAmountPivots);
+        assertTrue(pivotMDS.useQuadraticDoubleCenter);
+        assertFalse(pivotMDS.useScaling);
 
         ((JSpinner) ((EnableableNumberParameter) parameters[0].getValue()).getComponent(0)).setValue(100.0);
         pivotMDS.setParameters(parameters);

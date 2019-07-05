@@ -25,13 +25,26 @@ public class PivotMDS implements InitialPlacer {
     /** A {@link Random} used to get random positions and vectors. */
     private static final Random RAND = new Random();
 
-    /** Whether to use squared distances for the C matrix. */
-    boolean doSquaring = false;
-    double percentPivots = 10;
+    // default values
+    /** Whether to use squared distances for the C matrix when double centering by default. */
+    static final boolean USE_QUADRATIC_DOUBLE_CENTER_DEFAULT = false;
+    /** The minimum number of pivots to be used by default. */
+    static final int MINIMUM_AMOUNT_PIVOTS_DEFAULT = 50;
+    /** The percentage of how nodes of the maximum will be used as pivots by default. */
+    static final double PERCENT_PIVOTS_DEFAULT = 5.0;
+    /** Whether to scale the graph after PivotMDS by default. */
+    static final boolean USE_SCALING_DEFAULT = true;
 
-    // InitialLayout
-    static final double AMOUNT_PIVOTS_DEFAULT = 5.0;
-    static final boolean QUADRATIC_DOUBLECENTER_DEFAULT = false;
+
+    /** Whether to use squared distances for the C matrix when double centering. */
+    boolean useQuadraticDoubleCenter = USE_QUADRATIC_DOUBLE_CENTER_DEFAULT;
+    /** Whether to scale the graph after PivotMDS */
+    boolean useScaling = USE_SCALING_DEFAULT;
+    /** The percentage of how nodes of the maximum will be used as pivots. */
+    double percentPivots = PERCENT_PIVOTS_DEFAULT;
+    /** The minimum number of pivots to be used. */
+    int minimumAmountPivots = MINIMUM_AMOUNT_PIVOTS_DEFAULT;
+
 
 
     /** Contains the parameters of this {@link StressMinimizationLayout}. */
@@ -59,7 +72,8 @@ public class PivotMDS implements InitialPlacer {
             return Collections.singletonList(new Vector2d(0.0, 0.0));
         }
 
-        final int numPivots = Math.max( (int) Math.ceil(nodes.size() * (percentPivots / 100)), 1);
+        final int numPivots = Math.max( (int) Math.ceil(nodes.size() * (percentPivots / 100)),
+                Math.min(minimumAmountPivots, nodes.size())); // select at least minimumAmountPivots nodes but not more than there are.
 
         final int[] pivotTranslation = new int[distances.getDimension()];
         final int[] inversePivotTranslation = new int[distances.getDimension()];
@@ -89,13 +103,14 @@ public class PivotMDS implements InitialPlacer {
                                         newY.getEntry(inversePivotTranslation[i], 0)));
 
         }
-
-        double maxEuclid = findMaxEuclidean(newPosList);
-        if (maxEuclid == 0.0) {
-            return newPosList;
+        if (useScaling) {
+            double maxEuclid = findMaxEuclidean(newPosList);
+            if (maxEuclid == 0.0) {
+                return newPosList;
+            }
+            double maxGraphDistance = distances.getMaximumValue();
+            scaleInitialPos(maxEuclid, maxGraphDistance, newPosList);
         }
-        double maxGraphDistance = distances.getMaximumValue();
-        scaleInitialPos(maxEuclid, maxGraphDistance, newPosList);
 
         return newPosList;
     }
@@ -108,7 +123,7 @@ public class PivotMDS implements InitialPlacer {
      *
      * @author theo
      */
-    private double findMaxEuclidean(final List<Vector2d> pos ){
+    double findMaxEuclidean(final List<Vector2d> pos ){
         double result = 0;
         for(Vector2d q : pos){
             for(Vector2d p : pos){
@@ -126,9 +141,9 @@ public class PivotMDS implements InitialPlacer {
     /**
      * Scales the euclidean distance to the graph theoretical distance
      *
-     * @param maxEuclidean
-     * @param maxDistance
-     * @param currentPos
+     * @param maxEuclidean largest euclidean distance in the graph
+     * @param maxDistance largest grah theoretical distance
+     * @param currentPos   Vector2d list containing the current node positions
      *
      * @author theo
      */
@@ -404,7 +419,7 @@ public class PivotMDS implements InitialPlacer {
 
         NodeValueMatrix processed;
 
-        if (this.doSquaring) {
+        if (this.useQuadraticDoubleCenter) {
             processed = distances.clone().apply(x -> x*x, n-1, amountPivots-1, distanceTranslation);
         } else {
             processed = distances;
@@ -463,16 +478,21 @@ public class PivotMDS implements InitialPlacer {
      */
     private Parameter[] getNewParameters() {
 
-        Parameter[] result = new Parameter[] {
+        return new Parameter[] {
 
-                EnableableNumberParameter.alwaysEnabled(AMOUNT_PIVOTS_DEFAULT, 0.0, 100.0, 1.0,
-                        "Amount pivots in percent", "<html>Percent of the total nodes, which should be used as pivot elements</html>" ),
-
-                new BooleanParameter(QUADRATIC_DOUBLECENTER_DEFAULT, "Quadratic DoubleCenter",
-                        "<html> Whether the distances in PivotMDS should be squared or not.<br>" +
-                                "Pulls apart initial layout strongly. May slow down performance.</html>")
+                EnableableNumberParameter.alwaysEnabled(PERCENT_PIVOTS_DEFAULT, 0.0, 100.0, 1.0,
+                        "Amount pivots in percent", "<html>Percent of the total nodes, which should be used as pivot elements.</html>" ),
+                EnableableNumberParameter.alwaysEnabled(MINIMUM_AMOUNT_PIVOTS_DEFAULT, 1, Integer.MAX_VALUE, 1,
+                        "Minimum pivots", "<html>Ensure at least this amount of pivots (if possible)<br>" +
+                                "even if the percentage value would be smaller.</html>" ),
+                new BooleanParameter(USE_QUADRATIC_DOUBLE_CENTER_DEFAULT, "Quadratic double center",
+                        "<html> Whether the distances in PivotMDS double centering should be squared.<br>" +
+                                "Pulls the initial layout far apart and thus should be used in tandem with scaling.<br>" +
+                                "May result in a better initial layout.</html>"),
+                new BooleanParameter(USE_SCALING_DEFAULT, "Scale result",
+                        "<html> whether the graph should be scaled to the desired width as postprocessing.<br>" +
+                                "Does not change the overall layout but should reduce number of iterations. </html>")
         };
-        return result;
     }
     /**
      * Provides a list of {@link Parameter}s that should be accepted by
@@ -485,12 +505,17 @@ public class PivotMDS implements InitialPlacer {
      * @see Algorithm#setParameters(Parameter[])
      */
     @Override
+    @SuppressWarnings("unchecked") // should never happen if parameters are kept in the same order
     public void setParameters(Parameter[] params) {
 
         EnableableNumberParameter<Double> doubleParameter;
         doubleParameter = (EnableableNumberParameter<Double>) params[0].getValue();
-        percentPivots =doubleParameter.getValue();
-        doSquaring =  ((BooleanParameter) params[1]).getBoolean();
+        EnableableNumberParameter<Integer> intParameter;
+        intParameter = (EnableableNumberParameter<Integer>) params[1].getValue();
+        percentPivots = doubleParameter.getValue();
+        minimumAmountPivots = intParameter.getValue();
+        useQuadraticDoubleCenter =  ((BooleanParameter) params[2]).getBoolean();
+        useScaling =  ((BooleanParameter) params[3]).getBoolean();
     }
 
     /**
