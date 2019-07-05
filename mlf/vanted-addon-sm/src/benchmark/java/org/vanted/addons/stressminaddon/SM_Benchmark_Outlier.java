@@ -83,7 +83,7 @@ public class SM_Benchmark_Outlier {
                 System.err.println("---REPITITION----");
                 long endTime = System.currentTimeMillis();
                 long thisTimeMs = endTime - startTime;
-                int lineCrossing = QualityMeasures.lineCrossing(graph);
+                int lineCrossing = QualityMeasures.lineCrossings(graph);
                 int iterations = 0;
                 long stress = 0;
                 runningTimeMs += thisTimeMs;

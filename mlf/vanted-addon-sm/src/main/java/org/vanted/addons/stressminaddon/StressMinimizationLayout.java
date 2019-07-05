@@ -27,6 +27,7 @@ import javax.swing.*;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 /**
  * Implements a version of a stress minimization add-on that can be used
@@ -36,6 +37,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
 
     /** The current state of this {@link StressMinimizationLayout}, that is not used in an call of {@link #execute()}. */
     State state = new State();
+
+    /** Whether the debug mode is enabled by default for all instances. This can be manually set for each state. */
+    public static boolean debugModeDefault = false;
 
     /** Path of root attribute. */
     public static final String ROOT_ATTRIBUTE = "StressMinimization";
@@ -220,6 +224,9 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                 // TODO add random initial layout
 
                 List<WorkUnit> workUnits = new ArrayList<>(connectedComponents.size());
+                if (state.debugEnabled) {
+                    state.debugWorkUnits = workUnits;
+                }
                 List<List<Node>> connectComponentList = new ArrayList<>(connectedComponents.size());
                 List<List<Vector2d>> connectedComponentListPos = Collections.synchronizedList(new ArrayList<>(connectedComponents.size()));
 
@@ -267,7 +274,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                 ExecutorService executor = Executors.newFixedThreadPool(Math.min(Runtime.getRuntime().availableProcessors(), connectedComponents.size()));
                 List<Callable<Object>> todo = new ArrayList<>(workUnits.size());
                 // iterate
-                for (int iteration = 1; state.keepRunning.get() && someoneIsWorking && iteration <= state.maxIterations; ++iteration) {
+                int iteration;
+                for (iteration = 1; state.keepRunning.get() && someoneIsWorking && iteration <= state.maxIterations; ++iteration) {
                     System.out.println((System.currentTimeMillis() - state.startTime) + " SM: " + (state.status = "Iteration " + iteration));
                     someoneIsWorking = false;
                     move.clear();
@@ -364,6 +372,17 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
                     }
                     state.graph.getListenerManager().transactionFinished(this);
                     GraphHelper.applyUndoableNodePositionUpdate(new HashMap<>(move), "Stress Minimization");
+                }
+                // debug stuff
+                if (state.debugEnabled) {
+                    state.debugIterations = iteration-1;
+
+                    state.debugCumulativeStress = 0.0;
+                    final int allNodes = pureNodes.size();
+                    for (WorkUnit unit : workUnits) {
+                        state.debugCumulativeStress += (double)unit.nodes.size()/allNodes*unit.currentStress;
+
+                    }
                 }
 
                 state.startTime = System.currentTimeMillis() - state.startTime;
@@ -586,29 +605,147 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
     }
 
     /**
-     * Calculates the stress function for a given set of nodes as given by the following formular
+     * Calculates the stress function for a given graph as given by the following formula
      * <pre>
      *    \sum_{i < j} w_{ij}(d_{ij} - ||p_i - p_j ||)^2
      * </pre>
-     * with {@code w} being the node weights, {@code d} being the gr. theo. distance,
+     * with {@code w} being the node weights, which are defined , {@code d} being the graph theoretical distance,
+     * p being the positions and {@code ||.||} being the Euclidean distance.
+     *
+     * All data structures needed for the calculation will also be calculated.
+     *
+     * @param graph the graph to be used.
+     * @param cumulateStress
+     *      whether to comulate the stress of all connected components as weighted sum relative
+     *      to the number of nodes in it.<br>
+     *      If this is true, the returned list will only contain the cumulated stress as an element.
+     * @param edgeScalingFactor
+     *      the scaling factor for edges between the nodes (as fraction of the biggest node).
+     *      See {@link StressMinimizationLayout#EDGE_SCALING_FACTOR_DEFAULT}.
+     * @param edgeLengthMinimum
+     *      the minimum length to try to ensure for the edges.
+     *      See {@link StressMinimizationLayout#EDGE_LENGTH_MINIMUM_DEFAULT}.
+     * @param weightConstant
+     *      the constant scale factor for the calculated weight between two nodes.
+     *      See {@link StressMinimizationLayout#WEIGHT_SCALING_FACTOR_DEFAULT}.
+     * @param weightPower
+     *      the constant scale factor for the calculated weight between two nodes.
+     *      See {@link StressMinimizationLayout#WEIGHT_POWER_DEFAULT}.
+     *
+     * @return
+     *      the stress values of the different connected components sorted in descending order by the
+     *      number of the node size in the related connected component<br>
+     *      or the cumulated value as single element in a list.<br>
+     *      An empty list will be returned or a list containing <code>NaN</code> in case of cumulation,
+     *      if the graph is empty.
+     *
+     * @author Jannik
+     */
+    public static List<Double> calculateStress(final Graph graph, final boolean cumulateStress,
+                                        final double edgeScalingFactor, final double edgeLengthMinimum,
+                                        final double weightConstant, final double weightPower) {
+        ArrayList<List<Node>> connectedComponents = new ArrayList<>(
+                ConnectedComponentsHelper.getConnectedComponents(graph.getNodes()));
+        if (!cumulateStress) { // else no need to sort
+            connectedComponents.sort((l1, l2) -> l2.size() - l1.size());
+        }
+        List<Double> result = new ArrayList<>(connectedComponents.size());
+
+        // go through every connected component
+        NodeValueMatrix distances, weights;
+        List<Vector2d> positions;
+        for (List<Node> component : connectedComponents) {
+            // set position attribute correctly
+            for (int pos = 0; pos < component.size(); pos++) {
+                component.get(pos).setInteger(StressMinimizationLayout.INDEX_ATTRIBUTE, pos);
+            }
+
+            distances = ShortestDistanceAlgorithm.calculateShortestPaths(component, Integer.MAX_VALUE, true);
+            final double scalingFactor =
+                    Math.max(edgeLengthMinimum, ConnectedComponentsHelper.getMaxNodeSize(component)*edgeScalingFactor);
+            distances.apply(x -> x*scalingFactor);
+            weights = distances.clone().apply(x -> weightConstant*Math.pow(x, weightPower));
+            positions = component.stream().map(AttributeHelper::getPositionVec2d).collect(Collectors.toList());
+
+            result.add(StressMinimizationLayout.calculateStress(positions, distances, weights));
+
+            // remove position attribute
+            for (Node node : component) {
+                node.removeAttribute(StressMinimizationLayout.INDEX_ATTRIBUTE);
+            }
+        }
+
+        if (!cumulateStress) {
+            return result;
+        } else if (connectedComponents.isEmpty()) {
+            return Collections.singletonList(Double.NaN);
+        }
+
+        // calculate the weighted sum
+        double weighted = 0.0;
+        final int allNodes = graph.getNumberOfNodes();
+
+        for (int idx = 0; idx < result.size(); idx++) {
+            weighted += (double)connectedComponents.get(idx).size()/allNodes*result.get(idx);
+        }
+        return Collections.singletonList(weighted);
+    }
+
+    /**
+     * Calculates the stress function for a given graph as given by the following formula
+     * <pre>
+     *    \sum_{i < j} w_{ij}(d_{ij} - ||p_i - p_j ||)^2
+     * </pre>
+     * with {@code w} being the node weights, which are defined , {@code d} being the graph theoretical distance,
+     * p being the positions and {@code ||.||} being the Euclidean distance.
+     *
+     * All data structures needed for the calculation will also be calculated.
+     * This method will use the default values for every needed configurable value.
+     *
+     * @param graph the graph to be used.
+     * @param cumulateStress
+     *      whether to comulate the stress of all connected components as weighted sum relative
+     *      to the number of nodes in it.<br>
+     *      If this is true, the returned list will only contain the cumulated stress as an element.
+     *
+     * @return
+     *      the stress values of the different connected components sorted in descending order by the
+     *      number of the node size in the related connected component<br>
+     *      or the cumulated value as single element in a list.<br>
+     *      An empty list will be returned, if the graph is empty.
+     *
+     * @see StressMinimizationLayout#calculateStress(Graph, boolean, double, double, double, double)
+     * @author Jannik
+     */
+    public static List<Double> calculateStress(final Graph graph, final boolean cumulateStress) {
+        return calculateStress(graph, cumulateStress, EDGE_SCALING_FACTOR_DEFAULT, EDGE_LENGTH_MINIMUM_DEFAULT,
+                WEIGHT_SCALING_FACTOR_DEFAULT, WEIGHT_POWER_DEFAULT);
+    }
+
+    /**
+     * Calculates the stress function for a given set of nodes as given by the following formula
+     * <pre>
+     *    \sum_{i < j} w_{ij}(d_{ij} - ||p_i - p_j ||)^2
+     * </pre>
+     * with {@code w} being the node weights, {@code d} being the graph theoretical distance,
      * p being the positions and {@code ||.||} being the Euclidean distance.
      *
      * All three arguments must have the same dimension/size.
      *
-     * @param nodes the nodes to be used.
-     * @param distances the graph theoretical distances between the nodes
      * @param positions the positions to use for calculation
+     * @param distances the graph theoretical distances between the nodes.
      * @param weights the weights of each node.
      *
      * @return the stress value.
      *
+     * @see StressMinimizationLayout#calculateStress(List, NodeValueMatrix, NodeValueMatrix)
+     *
      * @author Jannik
      */
-    private static double calculateStress(final List<Node> nodes,
-                                   final List<Vector2d> positions,
-                                   final NodeValueMatrix distances,
-                                   final NodeValueMatrix weights) {
-        assert distances.getDimension() == nodes.size() && nodes.size() == weights.getDimension();
+    private static double calculateStress(final List<Vector2d> positions,
+                                          final NodeValueMatrix distances,
+                                          final NodeValueMatrix weights) {
+        assert distances.getDimension() == positions.size() && positions.size() == weights.getDimension();
         // get needed distances
 
         double result = 0.0;
@@ -704,6 +841,22 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         /** Whether the algorithm should use multiple threads. */
         boolean multipleThreads;
 
+        // Debugging and debugging information
+        /** Whether to enable debug mode. */
+        boolean debugEnabled;
+        /**
+         * Whether to print more information to the console. Only has effect if debug mode is active.
+         * Defaults to <code>true</code> and must be disabled for every state separately.
+         */
+        boolean debugOutput;
+        /** The number of iterations after the algorithm is finished. */
+        int debugIterations;
+        /** A list containing all work units. Only set if debug mode is active */
+        List<WorkUnit> debugWorkUnits;
+        /** The cumulated stress value after the algorithm is finished. Only set if debug mode is active. */
+        double debugCumulativeStress;
+
+
         /**
          * Constructs a new state with the default values.
          * @author Jannik
@@ -727,6 +880,11 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             this.status = "";
             this.positionAlgorithm = new IntuitiveIterativePositionAlgorithm();
             this.initialPlacer = new PivotMDS();
+
+            debugEnabled = debugModeDefault;
+            if (debugEnabled) {debugOutput = true;}
+            debugIterations = -1;
+            debugCumulativeStress = Double.NaN;
         }
 
         /**
@@ -812,7 +970,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
         final State state;
 
         /**
-         * The current calculated stress from the {@link #calculateStress(List, List, NodeValueMatrix, NodeValueMatrix)}
+         * The current calculated stress from the {@link #calculateStress(List, NodeValueMatrix, NodeValueMatrix)}
          * method.
          */
         double currentStress;
@@ -853,7 +1011,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm {
             this.weights = this.distances.clone().apply(x -> state.weightScalingFactor *Math.pow(x, state.weightPower));
             // calculate first values
             System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Calculate initial stress..."));
-            this.currentStress = StressMinimizationLayout.calculateStress(nodes, this.currentPositions, this.distances, this.weights);
+            this.currentStress = StressMinimizationLayout.calculateStress(this.currentPositions, this.distances, this.weights);
             this.hasStopped = false;
             System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+(state.status = pos + ": Preprocessing finished."));
         }

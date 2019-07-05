@@ -1,6 +1,5 @@
 package org.vanted.addons.stressminaddon;
 
-import de.ipk_gatersleben.ag_nw.graffiti.GraphHelper;
 import org.graffiti.editor.LoadSetting;
 import org.graffiti.editor.MainFrame;
 import org.graffiti.graph.Graph;
@@ -9,9 +8,7 @@ import org.vanted.addons.stressminaddon.util.NullPlacer;
 
 import javax.swing.*;
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -132,10 +129,10 @@ public class SM_Benchmark_Sierpinskirow {
 
 
 
-                    long runningLineCrossing = 0;
-                    long runningStress = 0;
-                    long runningIteration = 0;
-                    long runningTimeMs = 0;
+                    long averageLineCrossings = 0;
+                    double averageStress = 0;
+                    long averageIterations = 0;
+                    long averageRunningTimeMs = 0;
                     for (int repeat = 0; repeat < REPEAT_TIMES; repeat++) {
                         System.err.printf("--- RUN %d/%d ----", repeat+1, REPEAT_TIMES);
                         state = sml.state;
@@ -151,25 +148,24 @@ public class SM_Benchmark_Sierpinskirow {
 
                         long startTime = System.currentTimeMillis();
                         sml.execute();
-                        long endTime = System.currentTimeMillis();
-                        long thisTimeMs = endTime - startTime;
-                        int lineCrossing = QualityMeasures.lineCrossing(graph);
+                        long runningTimeMs = System.currentTimeMillis() - startTime;
+                        int lineCrossings = QualityMeasures.lineCrossings(graph);
                         int iterations = 0;
-                        long stress = 0;
-                        runningTimeMs += thisTimeMs;
-                        runningLineCrossing += lineCrossing;
-                        runningStress += stress;
-                        runningIteration += iterations;
-                        csv_singleSteps.append(thisTimeMs).append(",").append(iterations).append(",").append(stress)
-                                .append(",").append(lineCrossing).append(",\"sierpinski_").append(deep).append("_")
+                        double stress = 0;
+                        averageRunningTimeMs += runningTimeMs;
+                        averageLineCrossings += lineCrossings;
+                        averageStress += stress;
+                        averageIterations += iterations;
+                        csv_singleSteps.append(runningTimeMs).append(",").append(iterations).append(",").append(stress)
+                                .append(",").append(lineCrossings).append(",\"sierpinski_").append(deep).append("_")
                                 .append(duplicate).append("\"\n");
 
                     }
 
                     graph.setFileTypeDescription("benchmark/java/test_graphs/sierpinski.gml");
 
-                    csv_average.append(runningTimeMs / REPEAT_TIMES).append(",").append(runningIteration / REPEAT_TIMES)
-                            .append(",").append(runningStress / REPEAT_TIMES).append(",").append(runningLineCrossing / REPEAT_TIMES)
+                    csv_average.append(averageRunningTimeMs / REPEAT_TIMES).append(",").append(averageIterations / REPEAT_TIMES)
+                            .append(",").append(averageStress / REPEAT_TIMES).append(",").append(averageLineCrossings / REPEAT_TIMES)
                             .append(",\"sierpinski_").append(deep).append("_").append(duplicate).append("\"\n");
                     graph.setModified(false); // prevent VANTED from asking if the user wants to save
                     SwingUtilities.invokeAndWait(() -> {
