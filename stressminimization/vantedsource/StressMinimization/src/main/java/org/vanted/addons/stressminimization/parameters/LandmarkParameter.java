@@ -14,15 +14,14 @@ public class LandmarkParameter extends IntegerParameter{
 	}
 
 	/**
-	 * Returns the maximum value that is a usefull value for the algorithm
+	 * Returns the maximum value that is a useful value for the algorithm
 	 */
 	public int getMaxUsefullValue() {
 		return maxUsefull;
 	}
 
 	/**
-	 * Returns the minimum usefull value for the algorithm.
-	 * @return
+	 * Returns the minimum useful value for the algorithm.
 	 */
 	public int getMinUsefullValue() {
 		return minUsefull;

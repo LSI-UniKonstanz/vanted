@@ -140,7 +140,6 @@ class StressMajorizationLayoutCalculator {
 
 	/**
 	 * Optimizes the stored layout and updates it to the optimized version.
-	 * @return
 	 */
 	public RealMatrix calcOptimizedLayout() {
 		// RealMatrix optimizedLayout = localizedOptimizationLayout();

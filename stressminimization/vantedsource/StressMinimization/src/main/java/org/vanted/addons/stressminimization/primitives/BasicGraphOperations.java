@@ -62,7 +62,7 @@ public class BasicGraphOperations {
 
 	/**
 	 * Calculates the distance vector from the node at the specified index in the given IndexedNodeSet to all other nodes in the given IndexedNodeSet.
-	 * @param from the distances from this node to all others will be calculated.
+	 * @param fromIndex the distances from this node to all others will be calculated.
 	 * @return the distance vector from the from node to all others
 	 */
 	public static RealVector calcDistances(final int fromIndex, IndexedNodeSet inSet) {

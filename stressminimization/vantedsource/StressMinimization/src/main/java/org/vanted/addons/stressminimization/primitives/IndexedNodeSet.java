@@ -66,7 +66,7 @@ public class IndexedNodeSet implements Iterable<Integer> {
 
 	/**
 	 * Constructs a subset with the same index space and identifier as the superset.
-	 * @param superSet
+	 * @param superset
 	 * @param containedNodes
 	 */
 	protected IndexedNodeSet(IndexedNodeSet superset, BitSet containedNodes) {
@@ -83,7 +83,6 @@ public class IndexedNodeSet implements Iterable<Integer> {
 	 * Constructs an set with the given node collection as basic collection,
 	 * containing all nodes from the basis collection.
 	 * @param allNodes
-	 * @return
 	 */
 	public static IndexedNodeSet setOfAllIn(Collection<Node> allNodes) {
 		IndexedNodeSet allContained = emptySetOf(allNodes);
@@ -94,7 +93,6 @@ public class IndexedNodeSet implements Iterable<Integer> {
 	/**
 	 * Constructs an empty set with the given node collection as basic collection.
 	 * @param allNodes
-	 * @return
 	 */
 	public static IndexedNodeSet emptySetOf(Collection<Node> allNodes) {
 		return new IndexedNodeSet(allNodes);
@@ -138,7 +136,6 @@ public class IndexedNodeSet implements Iterable<Integer> {
 	 * Returns the node at the given index, if it is contained in this set.
 	 * Otherwise null is returned.
 	 * @param index
-	 * @return
 	 */
 	public Node get(int index) {
 
@@ -158,7 +155,6 @@ public class IndexedNodeSet implements Iterable<Integer> {
 	 * of the node specified node
 	 * that are also contained in this set.
 	 * @param of
-	 * @return
 	 */
 	public IndexedNodeSet getNeighbors(Node of) {
 		int ofIndex = getIndex(of);
@@ -169,7 +165,6 @@ public class IndexedNodeSet implements Iterable<Integer> {
 	 * of the node at the specified index
 	 * that are also contained in this set.
 	 * @param ofIndex
-	 * @return
 	 */
 	public IndexedNodeSet getNeighbors(int ofIndex) {
 
@@ -329,7 +324,6 @@ public class IndexedNodeSet implements Iterable<Integer> {
 	 * Performs the complement operation on this set.
 	 * After the operation this set will contain exactly those nodes
 	 * from the super set, that were not contained in this set before the operation.
-	 * @param other
 	 */
 	public void complement() {
 		this.containedNodes.flip(0, allNodes.size());
@@ -339,7 +333,6 @@ public class IndexedNodeSet implements Iterable<Integer> {
 	 * Constructs a new IndexedNodeSet with the nodes contained in this set
 	 * as basis collection of the new set. All nodes are contained in the new set.
 	 * The new set has a seperate index space.
-	 * @return
 	 */
 	public IndexedNodeSet setOfContainedNodesWithOwnIndices() {
 

@@ -90,7 +90,7 @@ public abstract class BackgroundAlgorithm extends AbstractEditorAlgorithm {
 	/**
 	 * notify listener classes a new graph layout is available and
 	 * send the old and the new layout
-	 * @param layout new  Supplier<HashMap<Node, Vector2d>> layout
+	 * @param layoutSupplier new  Supplier<HashMap<Node, Vector2d>> layout
 	 */
 	protected void setLayout(Supplier<HashMap<Node, Vector2d>> layoutSupplier) {
 		pcs.firePropertyChange("setLayout",this.layout, layoutSupplier);

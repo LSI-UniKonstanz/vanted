@@ -337,7 +337,7 @@ class StressMinimizationImplementation {
 
 	/**
 	 * Calculates the distance vector from the node at the specified index to all other nodes.
-	 * @param from the distances from this node to all others will be calculated.
+	 * @param fromIndex the distances from this node to all others will be calculated.
 	 * @return the distance vector from the from node to all others
 	 */
 	public RealVector calcDistances(final int fromIndex) {
