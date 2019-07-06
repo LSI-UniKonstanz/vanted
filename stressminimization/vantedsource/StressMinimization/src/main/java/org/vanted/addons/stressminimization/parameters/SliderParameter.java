@@ -8,6 +8,11 @@ public class SliderParameter extends AbstractSingleParameter{
 
 	private SliderOptions pars;
 	
+
+	//===========================
+	// Constructors
+	//===========================
+	
 	public SliderParameter(double def, String name, String description, int min, int max) {
 		super(def, name, description);
 		pars = new SliderOptions(min, max, def);
@@ -25,6 +30,11 @@ public class SliderParameter extends AbstractSingleParameter{
 		pars = new SliderOptions(min, max, def, pos, neg, dict);
 		setValue(def);
 	}
+	
+
+	//===========================
+	// Getters and Setters
+	//===========================
 	
 	public SliderOptions getSliderOptions() {
 		return pars;

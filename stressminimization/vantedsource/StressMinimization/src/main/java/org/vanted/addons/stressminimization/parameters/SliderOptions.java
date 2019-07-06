@@ -3,13 +3,21 @@ package org.vanted.addons.stressminimization.parameters;
 import java.util.Dictionary;
 
 public class SliderOptions {
-		//Range of the Slider and if that slider should have infinity at one end or not
+		//Range of the Slider, default value and if that slider should have infinity at one end or not
 		private int min;
 		private int max;
 		private double def;
 		private boolean pos;
 		private boolean neg;
+		
+		//Labels for the slider
 		Dictionary dict;
+		
+		
+
+		//===========================
+		// Constructors
+		//===========================
 		
 		public SliderOptions(int min, int max, double def) {
 			this.min = min;

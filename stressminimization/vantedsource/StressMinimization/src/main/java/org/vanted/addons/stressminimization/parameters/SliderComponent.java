@@ -24,6 +24,10 @@ public class SliderComponent extends AbstractValueEditComponent{
 	private boolean neg;
 	private Dictionary dict;
 	
+	//===========================
+	// Constructor
+	//===========================
+	
 	public SliderComponent(Displayable disp){
 		super(disp);
 		SliderOptions pars = ((SliderParameter)disp).getSliderOptions();
@@ -51,12 +55,14 @@ public class SliderComponent extends AbstractValueEditComponent{
 		slider.setPaintTicks(true);
 		slider.setPaintLabels(true);
 
+		//set value to default value
 		this.value = def;
 		
 		//Create the Labels for the Slider
 		if(dict == null) {
 			dict = new Hashtable();
 			for(int i = min; i<=max; i++) {
+				//Label with infinity symbol
 				if(pos && i==max) {
 					dict.put(i, new JLabel("\u221e"));
 				}
@@ -74,11 +80,13 @@ public class SliderComponent extends AbstractValueEditComponent{
 		
 		
 		
-		//Change the value of epsilon on slider movement
+		//Change the value on slider movement
 		slider.addChangeListener(new ChangeListener() {
 	         public void stateChanged(ChangeEvent e) {
-	            value = ((JSlider)e.getSource()).getValue();
-	            //Minimum value of epsilon is 10^(-infinity)
+	            //Set value to slider value
+	        	 value = ((JSlider)e.getSource()).getValue();
+	            
+	        	 //If slider is set to a value representing infinity, change value accordingly
 	            if(value == min && neg) {
 	            	value = Double.NEGATIVE_INFINITY;
 	            }
@@ -89,6 +97,11 @@ public class SliderComponent extends AbstractValueEditComponent{
 	         }
 	      });
 	}
+	
+
+	//=================================================
+	// needed functions for AbstractValueEditComponent
+	//=================================================
 	
 	@Override
 	public JComponent getComponent() {
