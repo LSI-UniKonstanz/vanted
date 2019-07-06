@@ -548,8 +548,8 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
      */
     private Parameter[] getNewParameters() {
         return new Parameter[] {
-                new JComponentParameter(new JPanel(), "<html><u>Stop criterion</u></html>",
-                        "<html>Select one or multiple stop criterion for the algorithm.<br>This can be used to influence running time and quality.</html>"), //hacky section header
+                new JComponentParameter(new JPanel(), "<html><u>Stop criteria</u></html>",
+                        "<html>Select one or multiple stop criteria for the algorithm.<br>This can be used to influence running time and quality.</html>"), //hacky section header
                 EnableableNumberParameter.canBeEnabledDisabled(STRESS_EPSILON_DEFAULT,
                         0.0, Double.MAX_VALUE, 0.0001,
                         USE_STRESS_EPSILON_DEFAULT, "Used", "Not used",
@@ -618,7 +618,6 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                 new BooleanParameter(MULTIPLE_THREADS_DEFAULT, "Use parallelism",
                         "<html>Create multiple threads to run the algorithm from.<br>" +
                                 "Increases overall performance in most cases.</html>"),
-
         };
     }
 
@@ -1220,7 +1219,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
                 double stressChange = (this.currentStress - newStress)/this.currentStress;
                 if (state.debugOutput) {System.out.println((System.currentTimeMillis() - state.startTime) + " SM@"+this.pos +": Check stress stop condition..." +
                         " (" + currentStress + " => " + newStress + ", " + stressChange + ")");}
-                if (stressChange < state.stressEpsilon) {
+                if (stressChange < state.stressEpsilon || this.currentStress == 0.0 || newStress == 0.0) {
                     this.hasStopped = true;
                 }
             }
