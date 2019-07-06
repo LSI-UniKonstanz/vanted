@@ -40,8 +40,6 @@ public class StressMinimizationAddon extends AddonAdapter {
 						),
 		};
 
-		// valueEditComponents.put(IndexAttribute.class, null);
-
 		// other fields are initialized with empty arrays by default
 	}
 
