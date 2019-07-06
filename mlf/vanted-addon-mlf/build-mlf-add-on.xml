@@ -23,7 +23,10 @@
 		<jar destfile="${jar.dest.path}/${target.name}" filesetmanifest="mergewithoutmain">
 
 
-			<fileset dir="target/classes" />
+			<fileset dir="target/classes">
+				<exclude name="**/StartVantedWithAddon.*"/>
+				<exclude name="**/.gitkeep"/>
+			</fileset>
 			<!-- Include sources -->
             <fileset dir="src/main/java">
 				<!--<include name="**/*.java" />-->
@@ -45,8 +48,9 @@
 	</target>
 
   <target name="compile">
-    <javac srcdir="src/main/java" destdir="target/classes" includes="**/*.java" includeantruntime="false">
-
+		<mkdir dir="target/jar"/>
+		<javac srcdir="src/main/java" destdir="target/classes" includes="**/*.java" includeantruntime="false">
+			<exclude name="**/StartVantedWithAddon.java"/>
 		<classpath>
 			<!-- Include VANTED -->
 			<fileset dir="../VANTED/target/jar">

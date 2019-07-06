@@ -13,7 +13,7 @@ folglich für die Berechnung der Test-Coverage vom MLF Add-On ignoriert werden
 muss.
 
 Zudem wurde das Package `pse_hack` nicht getestet, da es den Code des 
-"Force Directed" Layouters aus VANTED enthält, den wir nur leicht angepasst 
+„Force Directed“ Layouters aus VANTED enthält, den wir nur leicht angepasst 
 haben, um die Kompatibilität mit dem MLF sicherzustellen.
 
 Da das Package `benchmark` nicht Teil des Add-Ons ist, gibt es für dieses
@@ -33,17 +33,31 @@ die Performance bei manchen Graphen um einen Faktor von 20 (!).
 
 ## Hinweise zum Stress Minimization Add-On
 
-Die Unit-Tests gehen davon aus, dass Assertions aktiviert sind (JVM Flag: `-ea`)
+### Test Coverage
+
+Einige Unit-Tests gehen davon aus, dass Assertions aktiviert sind (JVM Flag: `-ea`).
+Dieses wird jedoch in den entsprechenden Tests überprüft.
+
+Zu mindestens auf dem Rechner auf dem die Tests ausgeführt wurden gab es mit der
+benutzten IDE ‚IntelliJ‘ manchmal Unit-Tests die sich aufhingen und nicht zu Ende
+ausgeführt wurden. Ein stoppen und erneutes Ausführen sollte das Problem beheben.
+
+Manche Test warten mit fest eingestellten Zeitwerten auf das Beenden einer
+bestimmten Ausgabe, zum Beispiel für die GUI oder Ausgabe. Sollte ein Test
+scheitern müssen diese Werte vielleicht an die ausführende Maschine angepasst
+werden.
+
+Nur Klassen in `src/main`, also diejenigen die Teil des Add-Ons sind, wurden
+getestet.
 
 ## Bauen der JAR-Datei
 
 Es gibt für beide Add-Ons Build-Dateien für ANT
-(`vanted-addon-mlf/build-mlf-add-on.xml`, `vanted-addon-sm/build.xml`).
+(`vanted-addon-mlf/build-mlf-add-on.xml`, `vanted-addon-sm/build-sm-add-on.xml`).
 Bevor der Build-Prozess gestartet wird, müssen folgende Voraussetzungen erfüllt sein:
 
 * Das `vanted-lib-repository` muss sich im Wurzelverzeichnis des geklonten Repository befinden.
   (es kann von [hier](https://bitbucket.org/vanted_dev/vanted-lib-repository/src/master/) heruntergeladen werden)
-* (Zumindest wenn das Projekt auch in einer IDE funktionieren soll muss zusätzlich noch VANTED kompiliert sein und unter
-  `VANTED/target/jar/vanted-fatjar-ver2.6.5-build-[...].jar` gespeichert sein
-  (VANTED kann mittels der `build.xml` im VANTED-Verzeichnis gebaut werden). Für IntelliJ haben wir diese
-  [Anleitung](Literature/build-With-Intelij.md) verfasst.)
+* Zusätzlich muss noch VANTED kompiliert sein und unter `VANTED/target/jar/vanted-fatjar-ver2.6.5-build-[...].jar`
+  gespeichert sein (VANTED kann mittels der `build.xml` im VANTED-Verzeichnis gebaut werden).
+* Für einen Bau in IntelliJ haben wir diese [Anleitung](Literature/build-With-Intelij.md) verfasst.)

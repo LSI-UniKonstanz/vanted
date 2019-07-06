@@ -38,7 +38,7 @@ import java.util.stream.Collectors;
  */
 public class StressMinimizationLayout extends AbstractEditorAlgorithm implements Parameterizable, Describable {
 
-    /** The current state of this {@link StressMinimizationLayout}, that is not used in an call of {@link #execute()}. */
+    /** The current state of this {@link StressMinimizationLayout}, that is not used in a call of {@link #execute()}. */
     State state = new State();
 
     /** Whether the debug mode is enabled by default for all instances. This can be manually set for each state. */
@@ -127,7 +127,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
     /**
      * Registers a new initial placer for all {@link StressMinimizationLayout} instances.<br>
      * This initial placer must also have a default Constructor without any arguments.
-     * This constructor does not need to be public (at will be accessed via reflection)
+     * This constructor does not need to be public (it will be accessed via reflection)
      * but the resulting object must behave as desired.<br>
      *
      * If a {@link StressMinimizationLayout} has already initialized it's cached parameter list, this list will
@@ -161,7 +161,7 @@ public class StressMinimizationLayout extends AbstractEditorAlgorithm implements
     /**
      * Registers a new iterative position algorithm for all {@link StressMinimizationLayout} instances.<br>
      * This iterative position algorithm must also have a default Constructor without any arguments.
-     * This constructor does not need to be public (at will be accessed via reflection) but the resulting object
+     * This constructor does not need to be public (it will be accessed via reflection) but the resulting object
      * must behave as desired.<br>
      *
      * If a {@link StressMinimizationLayout} has already initialized it's cached parameter list, this list will
