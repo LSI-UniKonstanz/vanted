@@ -13,7 +13,6 @@ import de.ipk_gatersleben.ag_nw.graffiti.plugins.addons.AddonAdapter;
 
 /**
  * Plugin container for the Stress-Minimization-Addon
- * @author David Boetius
  */
 public class StressMinimizationAddon extends AddonAdapter {
 
