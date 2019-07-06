@@ -1,4 +1,4 @@
-# Protokoll-Internes Treffen am 07. Juli 2019
+# Protokoll-Internes Treffen am 01. Juli 2019
 
 ## Anwesend: 
  Jannik, Tobias, Gordian, Rene
