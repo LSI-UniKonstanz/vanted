@@ -10,6 +10,9 @@ import org.junit.Test;
 import org.vanted.addons.stressminimization.primitives.BasicGraphOperations;
 import org.vanted.addons.stressminimization.primitives.IndexedNodeSet;
 
+/**
+ * General test cases for BasicGraphOperations
+ */
 public class TestBasicGraphOperations {
 
 	@Test
