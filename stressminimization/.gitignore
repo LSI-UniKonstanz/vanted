@@ -8,4 +8,7 @@
 # eclipse project settings
 **/.metadata/*
 /.metadata/
-.recommenders
+/.recommenders/
+
+#Ignore java class files
+**/*.class

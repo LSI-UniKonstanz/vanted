@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE plugin
+  PUBLIC "-//GRAFFITI/DTD Plugin Descriptin 1.0//EN"
+ "http://www.graffiti.org/dtd/1.0/plugin.dtd">
+
+<plugin>
+    <author>David Boetius, Benjamin Halbritter, Thomas Komander, Silvan Reiner, Josua Sattler, Jakob Wietstock</author>
+    <description>Adds Stress Minimization Layouter to VANTED.</description>
+    <plugindesc>
+        <name>Stress Minimization Visual Testing Add-on</name>
+        <main>org.vanted.addons.stressminimization.visualtesting.VisualTestingAddon</main>
+        <version>0.1</version>
+        <compatibility>2.5.0</compatibility>
+        <available>https://git.uni-konstanz.de/kn/swp2019/team-2.1</available>
+    </plugindesc>
+</plugin>
