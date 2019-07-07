@@ -4,6 +4,8 @@ Repository für Team 2.2  - Java Projekt VANTED Erweiterung durch Layoutverfahre
 
 ## Hinweise zum Multilevel Framework Add-On
 
+Die Benutzerhandbücher finden sich [hier](Abgaben/Dokumente/Benutzerhanbücher).
+
 ### Test Coverage
 
 Das MLF Add-On enthält ein paar Klassen aus dem Stress Minimization Add-On
